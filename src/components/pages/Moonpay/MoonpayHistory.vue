@@ -122,21 +122,21 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
     this.withApi(async () => {
       this.initMoonpayApi(); // MoonpayBridgeInitMixin
 
-      this.setSelectedEvmNetwork(this.ethBridgeEvmNetwork);
-      await this.connectEvmNetwork();
+      this.setSelectedNetwork(this.ethBridgeEvmNetwork);
+      await this.connectExternalNetwork();
 
       await Promise.all([this.getTransactions(), this.getCurrencies()]);
 
       this.unwatchEthereum = await ethersUtil.watchEthereum({
         onAccountChange: (addressList: string[]) => {
           if (addressList.length) {
-            this.changeExternalWallet({ address: addressList[0] });
+            this.setEvmAddress(addressList[0]);
           } else {
-            this.disconnectExternalAccount();
+            this.disconnectEvmAccount();
           }
         },
         onNetworkChange: (networkHex: string) => {
-          this.connectEvmNetwork(networkHex);
+          this.connectExternalNetwork(networkHex);
         },
         onDisconnect: () => {
           this.disconnectExternalNetwork();
@@ -233,7 +233,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   }
 
   get actionButtonText(): string {
-    if (!this.isExternalAccountConnected) return this.t('connectWalletText');
+    if (!this.evmAddress) return this.t('connectWalletText');
 
     if (this.bridgeTxToSora) return this.t('moonpay.buttons.view');
     if (!this.externalAccountIsMoonpayRecipient) return this.t('bridgeTransaction.changeAccount');
@@ -281,10 +281,8 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
 
   async navigateToDetails(item): Promise<void> {
     try {
-      await this.checkConnectionToExternalAccount(async () => {
-        this.selectedItem = item;
-        this.changeView(DetailsView);
-      });
+      this.selectedItem = item;
+      this.changeView(DetailsView);
     } catch (error) {
       console.error(error);
     }
@@ -294,7 +292,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
     if (!this.selectedItem.id) return;
 
     if (!this.isValidNetwork) {
-      this.updateEvmNetwork();
+      this.updateNetworkProvided();
     } else if (this.bridgeTxToSora?.id) {
       await this.prepareEvmNetwork(); // MoonpayBridgeInitMixin
       await this.showHistory(this.bridgeTxToSora.id); // MoonpayBridgeInitMixin

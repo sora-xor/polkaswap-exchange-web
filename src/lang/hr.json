@@ -318,7 +318,7 @@
     "retryText": "Pokušajte ponovo",
     "networkFeeText": "Mrežna naknada",
     "networkFeeTooltipText": "Naknada za mrežu koristi se kako bi se osigurao rast i stabilne performanse sustava {Sora}.",
-    "ethNetworkFeeTooltipText": "Imajte na umu da su naknade za {Ethereum} mrežu prikazane na {AppName} samo grube procjene, možete vidjeti točan iznos naknade u povezanom {Ethereum} novčaniku prije potvrde transakcije.",
+    "ethNetworkFeeTooltipText": "Imajte na umu da su mrežne naknade {network} prikazane na {AppName} samo grube procjene, točan iznos naknade možete vidjeti u svom povezanom {network} novčaniku prije potvrde transakcije.",
     "marketText": "Tržište",
     "marketAlgorithmText": "Algoritam tržišta",
     "firstPerSecond": "{first} po {second}",
@@ -547,7 +547,7 @@
             "title": "Tokeni",
             "placeholder": "Filtrirajte prema ID-u sredstva, nazivu ili simbolu oznake",
             "networkLabelSora": "{Sora} mrežni tokeni",
-            "networkLabelEthereum": "{Ethereum} mrežni zrcalni tokeni",
+            "networkLabelEthereum": "{network} mrežni zrcalni tokeni",
             "emptyListMessage": "Nema rezultata"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Naziv novčanika",
-            "desc": "Ovo je javni naziv vašeg novčanika koji će biti vidljiv svima"
+            "desc": "Ovo je naziv vašeg novčanika koji će vam biti vidljiv"
         },
         "password": {
             "placeholder": "Zaporka",
@@ -1094,7 +1094,8 @@
             "passwords": "Lozinke se ne podudaraju",
             "mnemonic": "Naveden je nevažeći mnemonik bip39",
             "mnemonicLength": "Mnemotehnika treba sadržavati {number} riječi",
-            "jsonFields": "JSON datoteka nema obavezna polja"
+            "jsonFields": "JSON datoteka nema obavezna polja",
+            "alreadyImported": "Račun je već uvezen {address}"
         },
         "assetsAtRiskText": "Imovina u opasnosti!",
         "deleteAccountText": "Račun se ne može oporaviti bez početne fraze, .json datoteke ili ako je pohranjena u nekoj ekstenziji. Bit ćete odjavljeni.",

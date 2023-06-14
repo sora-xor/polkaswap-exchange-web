@@ -24,7 +24,7 @@ const ethBridge: EthBridge = new Bridge({
     [Operation.EthBridgeIncoming]: EthBridgeIncomingReducer,
     [Operation.EthBridgeOutgoing]: EthBridgeOutgoingReducer,
   },
-  signEvm: {
+  signExternal: {
     [Operation.EthBridgeIncoming]: (id: string) => store.dispatch.bridge.signEthBridgeIncomingEvm(id),
     [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEthBridgeOutgoingEvm(id),
   },

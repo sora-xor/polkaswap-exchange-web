@@ -7,6 +7,12 @@ export type EvmAccountAsset = {
   contract?: string;
 };
 
+export type SubAccountAsset = {
+  address: string;
+  decimals: number;
+  balance: CodecString;
+};
+
 export type RegisteredAccountAssetObject = {
   [key: string]: RegisteredAccountAsset;
 };

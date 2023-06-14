@@ -318,7 +318,7 @@
     "retryText": "Próbáld újra",
     "networkFeeText": "Hálózati díj",
     "networkFeeTooltipText": "A hálózati díjat a {Sora} rendszer növekedésének és stabil teljesítményének biztosítására használják.",
-    "ethNetworkFeeTooltipText": "Felhívjuk figyelmedet, hogy a {AppName}-on feltüntetett {Ethereum} hálózati díjak csak durva becslések, a tranzakció megerősítése előtt a csatlakoztatott {Ethereum} tárcádban láthatod a helyes díj összegét.",
+    "ethNetworkFeeTooltipText": "Felhívjuk figyelmét, hogy a {AppName} alkalmazásban megjelenített {network} hálózati díjak csak hozzávetőleges becslések, a tranzakció megerősítése előtt láthatja a helyes díj összegét a csatlakoztatott {network} pénztárcájában.",
     "marketText": "Piac",
     "marketAlgorithmText": "Piaci algoritmus",
     "firstPerSecond": "{first} \/ {second}",
@@ -547,7 +547,7 @@
             "title": "Tokenek",
             "placeholder": "Szűrés eszközazonosító, név vagy szimbólum alapján",
             "networkLabelSora": "{Sora} hálózati tokenek",
-            "networkLabelEthereum": "{Ethereum} hálózati tükör tokenek",
+            "networkLabelEthereum": "{network} hálózati tükrözési tokenek",
             "emptyListMessage": "Nincs eredmény"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Pénztárca neve",
-            "desc": "Ez a pénztárca nyilvános neve, amely mindenki számára látható lesz"
+            "desc": "Ez a pénztárcája neve, amely látható lesz az Ön számára"
         },
         "password": {
             "placeholder": "Jelszó",
@@ -1094,7 +1094,8 @@
             "passwords": "a jelszó nem egyezik",
             "mnemonic": "Érvénytelen bip39 emlékeztető van megadva",
             "mnemonicLength": "A mnemonikának {number} szót kell tartalmaznia",
-            "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket"
+            "jsonFields": "A JSON-fájl nem tartalmaz kötelező mezőket",
+            "alreadyImported": "A fiók már importálva {address}"
         },
         "assetsAtRiskText": "Veszélyben lévő eszközök!",
         "deleteAccountText": "A fiókot nem lehet visszaállítani kezdő kifejezés, .json fájl nélkül, vagy ha azt valamilyen kiterjesztéssel tárolják. Ön ki lesz jelentkezve.",

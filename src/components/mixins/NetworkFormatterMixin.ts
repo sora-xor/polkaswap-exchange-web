@@ -1,19 +1,20 @@
-import { EvmNetworkId } from '@sora-substrate/util/build/evm/consts';
+import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts';
+import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import { EvmLinkType, EVM_NETWORKS } from '@/consts/evm';
-import type { EvmNetworkData } from '@/consts/evm';
 import { state, getter } from '@/store/decorators';
+import type { NetworkData } from '@/types/bridge';
 
 import TranslationMixin from './TranslationMixin';
 
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 @Component
 export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @getter.web3.connectedEvmNetwork connectedEvmNetwork!: Nullable<EvmNetworkData>;
+  @getter.web3.providedNetwork providedNetwork!: Nullable<NetworkData>;
 
   readonly EvmLinkType = EvmLinkType;
 
@@ -22,14 +23,15 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
       return this.TranslationConsts.soraNetwork[this.soraNetwork];
     }
 
-    return this.connectedEvmNetwork?.name ?? '';
+    return this.providedNetwork?.name ?? '';
   }
 
-  getEvmIcon(evmNetwork?: Nullable<EvmNetwork>): string {
-    switch (evmNetwork) {
+  getNetworkIcon(network?: Nullable<BridgeNetworkId>): string {
+    switch (network) {
       // special case
       case 0:
         return 'sora';
+      // evm
       case EvmNetworkId.BinanceSmartChainMainnet:
       case EvmNetworkId.BinanceSmartChainTestnet:
         return 'binance-smart-chain';
@@ -45,13 +47,22 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
       case EvmNetworkId.EthereumClassicMainnet:
       case EvmNetworkId.EthereumClassicTestnetMordor:
         return 'ethereum-classic';
+      // sub
+      case SubNetwork.Polkadot:
+        return 'polkadot';
+      case SubNetwork.Kusama:
+        return 'kusama';
+      case SubNetwork.Rococo:
+        return 'rococo';
+      case SubNetwork.Karura:
+        return 'karura';
       default:
         return 'ethereum';
     }
   }
 
   // TODO [EVM] check network explorers links
-  getEvmExplorerLink(hash: string, type: EvmLinkType, networkId: EvmNetwork): string {
+  getEvmExplorerLink(hash: string, type: EvmLinkType, networkId: BridgeNetworkId): string {
     if (!hash) return '';
 
     const network = EVM_NETWORKS[networkId];

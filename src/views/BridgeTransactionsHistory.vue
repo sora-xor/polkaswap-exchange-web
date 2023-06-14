@@ -32,10 +32,18 @@
               <div class="history-item-info">
                 <div class="history-item-title p4">
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
-                  <i :class="`network-icon network-icon--${getEvmIcon(isOutgoingType(item.type) ? 0 : evmNetwork)}`" />
+                  <i
+                    :class="`network-icon network-icon--${getNetworkIcon(
+                      isOutgoingType(item.type) ? 0 : networkProvided
+                    )}`"
+                  />
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
-                  <i :class="`network-icon network-icon--${getEvmIcon(!isOutgoingType(item.type) ? 0 : evmNetwork)}`" />
+                  <i
+                    :class="`network-icon network-icon--${getNetworkIcon(
+                      !isOutgoingType(item.type) ? 0 : networkProvided
+                    )}`"
+                  />
                 </div>
                 <div class="history-item-date">{{ formatDatetime(item) }}</div>
               </div>
@@ -59,7 +67,7 @@
       </s-form>
     </s-card>
 
-    <bridge-select-network :selected-evm-network="selectedEvmNetwork" @change="changeEvmNetwork" />
+    <bridge-select-network :selected-evm-network="selectedNetwork" />
   </div>
 </template>
 
@@ -77,7 +85,6 @@ import type { EvmAccountAsset } from '@/store/assets/types';
 import { state } from '@/store/decorators';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 @Component({
   components: {
@@ -145,10 +152,6 @@ export default class BridgeTransactionsHistory extends Mixins(
     }).finally(() => {
       this.loading = false;
     });
-  }
-
-  changeEvmNetwork(evmNetwork: EvmNetwork): void {
-    this.setSelectedEvmNetwork(evmNetwork);
   }
 
   getFilteredHistory(history: Array<IBridgeTransaction>): Array<IBridgeTransaction> {
