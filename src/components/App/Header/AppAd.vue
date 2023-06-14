@@ -27,10 +27,15 @@ import { PageNames } from '@/consts';
 import { goTo } from '@/router';
 import { getter } from '@/store/decorators';
 
+const ADS = {
+  card: true,
+  xst: true,
+};
+
 @Component({
   components: {
-    Xst,
     Card,
+    Xst,
   },
 })
 export default class AppAd extends Mixins(mixins.TranslationMixin) {
@@ -44,8 +49,9 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
     this.chooseAdToShow();
   }
 
-  showSoraCardAd = false;
-  showXstArticle = false;
+  showSoraCardAd = ADS.card;
+  showXstArticle = ADS.xst;
+  pageWasRendered = false;
 
   probability = () => Math.random();
 
@@ -54,22 +60,25 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
     this.showXstArticle = false;
 
     // TODO: add check if already applied for SORA Card
-    if (this.soraCardEnabled) {
+    if (this.soraCardEnabled && ADS.card) {
       // 20% chance to show SORA Card ad
-      if (this.probability() > 0.5) {
+      if (this.probability() > 0.8) {
         this.showSoraCardAd = true;
         return;
       }
     }
 
-    // 10% chance to show XST ad
-    if (this.probability() > 0.1) {
+    // 25% chance to show XST ad
+    if (this.probability() > 0.75 && this.pageWasRendered) {
       this.showXstArticle = true;
     }
+
+    // To avoid quick show and disappearance of the banner when being rendered
+    this.pageWasRendered = true;
   }
 
   openArticle(): void {
-    //
+    // redirect to FAQ
   }
 }
 </script>
