@@ -95,7 +95,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
 
   openX1(): void {
     if (!this.isSoraAccountConnected) {
-      return this.connectInternalWallet();
+      return this.connectSoraWallet();
     }
 
     this.showX1Dialog = true;
@@ -107,7 +107,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
 
   async openMoonpayDialog(): Promise<void> {
     if (!this.isSoraAccountConnected) {
-      return this.connectInternalWallet();
+      return this.connectSoraWallet();
     }
 
     if (!this.moonpayEnabled) {
@@ -115,12 +115,11 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
     }
 
     if (!this.isSoraAccountConnected) {
-      return this.connectInternalWallet();
+      return this.connectSoraWallet();
     }
 
-    await this.checkConnectionToExternalAccount(async () => {
-      this.setMoonpayVisibility(true);
-    });
+    await this.connectEvmWallet();
+    this.setMoonpayVisibility(true);
   }
 }
 </script>
