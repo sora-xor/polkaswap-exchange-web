@@ -71,7 +71,7 @@ async function getSubRegisteredAssets(context: ActionContext<any, any>): Promise
     return [
       // KAR
       {
-        '0x0039e99689cd786b9199b9f0dda1b56429efad52c50bf6f2cc66123558e380d1': {
+        '0x00c9b0c0ce84da8283187401b673c5ece0b307f270036076f129fc4edfb9083f': {
           address: '',
           balance: '0',
           decimals: 12,
