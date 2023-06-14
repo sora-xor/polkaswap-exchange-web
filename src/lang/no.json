@@ -1202,5 +1202,17 @@
         "finishBtn": "Å fullføre"
     },
     "accountAddressText": "Kontoadresse",
-    "fiatDisclaimer": "Vær oppmerksom på at fiat-verdiene knyttet til kryptovalutaer på nettsiden vår leveres av eksterne tjenester (Subquery, Subsquid, Ceres API) er omtrentlige. Gitt den iboende kompleksiteten til disse beregningene, kan absolutt presisjon til enhver tid ikke garanteres."
+    "fiatDisclaimer": "Vær oppmerksom på at fiat-verdiene knyttet til kryptovalutaer på nettsiden vår leveres av eksterne tjenester (Subquery, Subsquid, Ceres API) er omtrentlige. Gitt den iboende kompleksiteten til disse beregningene, kan absolutt presisjon til enhver tid ikke garanteres.",
+    "ads": {
+        "xst": "Lær om XST"
+    },
+    "fiatPayment": {
+        "historyBtn": "Innkjøpene mine",
+        "historyTitle": "betalingshistorie",
+        "moonpayTitle": "Kjøp ETH via MoonPay",
+        "moonpayDesc": "Kjøp ETH-tokens på Ethereum og overfør dem til SORA-nettverket via broen",
+        "x1Title": "Kjøp XOR med kortet ditt",
+        "x1Desc": "Kjøp XOR-tokens med ditt debet- eller kredittkort",
+        "x1Btn": "Kjøp XOR med kort"
+    }
 }

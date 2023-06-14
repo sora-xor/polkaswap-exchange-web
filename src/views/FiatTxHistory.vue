@@ -5,10 +5,10 @@
       @back="goTo(PageNames.FiatDepositOptions)"
       has-button-back
     >
-      <template #title="">Transaction History</template>
+      <template #title="">{{ t('fiatPayment.historyTitle') }}</template>
     </generic-page-header>
     <s-tabs class="transaction-fiat-history-tabs" v-model="currentTab" type="rounded">
-      <s-tab v-for="tab in FiatOptionTabs" :key="tab" :label="t(`fiatPayment.${tab}`)" :name="tab" />
+      <s-tab v-for="tab in FiatOptionTabs" :key="tab" :label="getLabel(tab)" :name="tab" />
     </s-tabs>
     <component :is="currentTab" />
     <s-button v-if="!isLoggedIn" class="go-wallet-btn" type="primary" @click="goTo(PageNames.Wallet)">{{
@@ -42,6 +42,11 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, mixin
 
   goTo = goTo;
   PageNames = PageNames;
+
+  getLabel(tab: string): string | undefined {
+    if (tab === 'MoonpayHistory') return 'MoonPay';
+    if (tab === 'X1History') return 'X1EX';
+  }
 }
 </script>
 

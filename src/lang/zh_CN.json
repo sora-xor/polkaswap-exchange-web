@@ -1202,5 +1202,17 @@
         "finishBtn": "去完成"
     },
     "accountAddressText": "账户地址",
-    "fiatDisclaimer": "请注意，我们网站上与加密货币相关的法定价值由外部服务（子查询、Subsquid、Ceres API）提供，是近似值。鉴于这些计算的固有复杂性，无法保证始终绝对精确。"
+    "fiatDisclaimer": "请注意，我们网站上与加密货币相关的法定价值由外部服务（子查询、Subsquid、Ceres API）提供，是近似值。鉴于这些计算的固有复杂性，无法保证始终绝对精确。",
+    "ads": {
+        "xst": "了解XST"
+    },
+    "fiatPayment": {
+        "historyBtn": "我的购买",
+        "historyTitle": "交易记录",
+        "moonpayTitle": "通过 MoonPay 购买 ETH",
+        "moonpayDesc": "在以太坊上购买 ETH 代币并通过网桥将其转移到 SORA 网络",
+        "x1Title": "用您的卡购买 XOR",
+        "x1Desc": "使用借记卡或信用卡购买 XOR 代币",
+        "x1Btn": "用卡买XOR"
+    }
 }

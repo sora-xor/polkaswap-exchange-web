@@ -1202,5 +1202,17 @@
         "finishBtn": "Dokončiť"
     },
     "accountAddressText": "Adresa účtu",
-    "fiatDisclaimer": "Upozorňujeme, že fiat hodnoty spojené s kryptomenami na našej webovej stránke sú poskytované externými službami (Subquery, Subsquid, Ceres API) sú približné. Vzhľadom na prirodzenú zložitosť týchto výpočtov nie je možné zaručiť vždy absolútnu presnosť."
+    "fiatDisclaimer": "Upozorňujeme, že fiat hodnoty spojené s kryptomenami na našej webovej stránke sú poskytované externými službami (Subquery, Subsquid, Ceres API) sú približné. Vzhľadom na prirodzenú zložitosť týchto výpočtov nie je možné zaručiť vždy absolútnu presnosť.",
+    "ads": {
+        "xst": "Naučte sa XST"
+    },
+    "fiatPayment": {
+        "historyBtn": "Moje nákupy",
+        "historyTitle": "história transakcií",
+        "moonpayTitle": "Kúpte si ETH cez MoonPay",
+        "moonpayDesc": "Kúpte si ETH tokeny na Ethereu a preneste ich do siete SORA cez most",
+        "x1Title": "Kúpte si XOR kartou",
+        "x1Desc": "Kúpte si tokeny XOR pomocou svojej debetnej alebo kreditnej karty",
+        "x1Btn": "Kúpte si XOR kartou"
+    }
 }

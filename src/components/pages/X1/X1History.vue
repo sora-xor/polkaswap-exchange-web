@@ -1,11 +1,12 @@
 <template>
   <div class="x1-history">
     <x1ex-logo :theme="libraryTheme" />
-    <div class="message">Coming soon...</div>
+    <div class="message">{{ `${t('comingSoonText')}...` }}</div>
   </div>
 </template>
 
 <script lang="ts">
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Mixins, Component } from 'vue-property-decorator';
 
 import { getter } from '../../../store/decorators';
@@ -18,7 +19,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
     X1exLogo,
   },
 })
-export default class X1History extends Mixins() {
+export default class X1History extends Mixins(mixins.TranslationMixin) {
   @getter.libraryTheme libraryTheme!: Theme;
 }
 </script>

@@ -1202,5 +1202,17 @@
         "finishBtn": "Compléter"
     },
     "accountAddressText": "Adresse du compte",
-    "fiatDisclaimer": "Veuillez noter que les valeurs fiduciaires associées aux crypto-monnaies sur notre site Web sont fournies par des services externes (Subquery, Subsquid, Ceres API) sont approximatives. Compte tenu de la complexité inhérente à ces calculs, une précision absolue à tout moment ne peut être garantie."
+    "fiatDisclaimer": "Veuillez noter que les valeurs fiduciaires associées aux crypto-monnaies sur notre site Web sont fournies par des services externes (Subquery, Subsquid, Ceres API) sont approximatives. Compte tenu de la complexité inhérente à ces calculs, une précision absolue à tout moment ne peut être garantie.",
+    "ads": {
+        "xst": "Découvrir XST"
+    },
+    "fiatPayment": {
+        "historyBtn": "Mes achats",
+        "historyTitle": "Historique des transactions",
+        "moonpayTitle": "Acheter des ETH via MoonPay",
+        "moonpayDesc": "Achetez des jetons ETH sur Ethereum et transférez-les sur le réseau SORA via le pont",
+        "x1Title": "Achetez XOR avec votre carte",
+        "x1Desc": "Achetez des jetons XOR avec votre carte de débit ou de crédit",
+        "x1Btn": "Acheter XOR avec carte"
+    }
 }

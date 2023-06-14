@@ -2,14 +2,14 @@
   <div class="ad">
     <div v-if="showSoraCardAd" @click="goTo(PageNames.SoraCard)" class="ad-card-banner banner">
       <span class="ad-call-to-action">
-        {{ 'Get SORA Card' }}
+        {{ t('card.getSoraCardTitle') }}
         <s-icon name="arrows-arrow-top-right-24" size="20" />
       </span>
       <card />
     </div>
     <div v-if="showXstArticle" @click="openArticle" class="ad-xst-banner banner">
       <span class="ad-call-to-action">
-        {{ 'Learn of XST' }}
+        {{ t('ads.xst') }}
         <s-icon name="arrows-arrow-top-right-24" size="20" />
       </span>
       <xst />

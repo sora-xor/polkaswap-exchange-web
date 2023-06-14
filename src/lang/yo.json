@@ -1202,5 +1202,17 @@
         "finishBtn": "Lati pari"
     },
     "accountAddressText": "adirẹsi iroyin",
-    "fiatDisclaimer": "Jọwọ ṣe akiyesi pe awọn iye fiat ti o ni nkan ṣe pẹlu awọn owo nẹtiwoki lori oju opo wẹẹbu wa ni a pese nipasẹ awọn iṣẹ ita (Subquery, Subsquid, Ceres API) jẹ isunmọ. Fi fun idiju atorunwa ti awọn iṣiro wọnyi, pipe pipe ni gbogbo igba ko le ṣe iṣeduro."
+    "fiatDisclaimer": "Jọwọ ṣe akiyesi pe awọn iye fiat ti o ni nkan ṣe pẹlu awọn owo nẹtiwoki lori oju opo wẹẹbu wa ni a pese nipasẹ awọn iṣẹ ita (Subquery, Subsquid, Ceres API) jẹ isunmọ. Fi fun idiju atorunwa ti awọn iṣiro wọnyi, pipe pipe ni gbogbo igba ko le ṣe iṣeduro.",
+    "ads": {
+        "xst": "Kọ ẹkọ ti XST"
+    },
+    "fiatPayment": {
+        "historyBtn": "Awọn rira mi",
+        "historyTitle": "Itan iṣowo",
+        "moonpayTitle": "Ra ETH nipasẹ MoonPay",
+        "moonpayDesc": "Ra awọn ami ETH lori Ethereum ki o gbe wọn lọ si nẹtiwọki SORA nipasẹ afara",
+        "x1Title": "Ra XOR pẹlu kaadi rẹ",
+        "x1Desc": "Ra awọn ami XOR pẹlu debiti tabi kaadi kirẹditi rẹ",
+        "x1Btn": "Ra XOR pẹlu kaadi"
+    }
 }

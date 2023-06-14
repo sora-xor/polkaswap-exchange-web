@@ -3,18 +3,18 @@
     <div class="pay-options">
       <div class="pay-options__option pay-options-moonpay">
         <moonpay-logo :theme="libraryTheme" />
-        <h4>Buy ETH via MoonPay</h4>
-        <span>Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge</span>
+        <h4>{{ t('fiatPayment.moonpayTitle') }}</h4>
+        <span>{{ t('fiatPayment.moonpayDesc') }}</span>
         <s-button type="primary" @click="openMoonpayDialog">{{ moonpayTextBtn }}</s-button>
       </div>
       <div class="pay-options__option pay-options-x1">
         <x1ex-logo :theme="libraryTheme" />
-        <h4>Buy XOR with your card</h4>
-        <span>Purchase XOR tokens with your debit or credit card.</span>
+        <h4>{{ t('fiatPayment.x1Title') }}</h4>
+        <span>{{ t('fiatPayment.x1Desc') }}</span>
         <s-button type="primary" @click="openX1">{{ x1TextBtn }}</s-button>
       </div>
       <div class="pay-options__history-btn" @click="openFiatTxHistory">
-        <span>My Purchases</span>
+        <span>{{ t('fiatPayment.historyBtn') }}</span>
         <div>
           <span :class="computedCounterClass">{{ hasPendingTx ? 1 : 0 }}</span>
           <s-icon name="arrows-chevron-right-rounded-24" size="18" />
@@ -82,11 +82,11 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
   }
 
   get moonpayTextBtn(): string {
-    return !this.isSoraAccountConnected ? this.t('connectWalletText') : 'BUY ETH VIA MOONPAY';
+    return !this.isSoraAccountConnected ? this.t('connectWalletText') : this.t('fiatPayment.moonpayTitle');
   }
 
   get x1TextBtn(): string {
-    return !this.isSoraAccountConnected ? this.t('connectWalletText') : 'BUY XOR WITH CARD';
+    return !this.isSoraAccountConnected ? this.t('connectWalletText') : this.t('fiatPayment.x1Btn');
   }
 
   openFiatTxHistory(): void {

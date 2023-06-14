@@ -1202,5 +1202,17 @@
         "finishBtn": "Vervolledigen"
     },
     "accountAddressText": "Accountadres",
-    "fiatDisclaimer": "Houd er rekening mee dat de fiat-waarden die zijn gekoppeld aan cryptocurrencies op onze website worden geleverd door externe services (Subquery, Subsquid, Ceres API) bij benadering zijn. Gezien de inherente complexiteit van deze berekeningen kan absolute nauwkeurigheid niet te allen tijde worden gegarandeerd."
+    "fiatDisclaimer": "Houd er rekening mee dat de fiat-waarden die zijn gekoppeld aan cryptocurrencies op onze website worden geleverd door externe services (Subquery, Subsquid, Ceres API) bij benadering zijn. Gezien de inherente complexiteit van deze berekeningen kan absolute nauwkeurigheid niet te allen tijde worden gegarandeerd.",
+    "ads": {
+        "xst": "Leer van XST"
+    },
+    "fiatPayment": {
+        "historyBtn": "Mijn aankopen",
+        "historyTitle": "Transactie Geschiedenis",
+        "moonpayTitle": "Koop ETH via MoonPay",
+        "moonpayDesc": "Koop ETH-tokens op Ethereum en verplaats ze via de bridge naar het SORA-netwerk",
+        "x1Title": "Koop XOR met uw kaart",
+        "x1Desc": "Koop XOR-tokens met uw bankpas of creditcard",
+        "x1Btn": "Koop XOR met kaart"
+    }
 }

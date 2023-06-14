@@ -119,6 +119,13 @@ export default {
   fiatPayment: {
     [FiatOptionTabs.moonpay]: 'MoonPay',
     [FiatOptionTabs.x1ex]: 'x1ex',
+    historyBtn: 'My purchases',
+    historyTitle: 'Transaction History',
+    moonpayTitle: 'Buy ETH via MoonPay',
+    moonpayDesc: 'Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge',
+    x1Title: 'Buy XOR with your card',
+    x1Desc: 'Purchase XOR tokens with your debit or credit card',
+    x1Btn: 'Buy XOR with card',
   },
   headerMenu: {
     showBalances: 'Show Balances',
@@ -840,4 +847,7 @@ export default {
       'Token velocity is the number of times token changes accounts during period (month) on average. It indicates the level of trading activity and liquidity.',
   },
   networkStatisticsText: 'Network statistics',
+  ads: {
+    xst: 'Learn of XST',
+  },
 };

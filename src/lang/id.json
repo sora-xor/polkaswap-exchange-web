@@ -1202,5 +1202,17 @@
         "finishBtn": "Untuk menyelesaikan"
     },
     "accountAddressText": "Alamat akun",
-    "fiatDisclaimer": "Harap perhatikan bahwa nilai fiat yang terkait dengan cryptocurrency di situs web kami disediakan oleh layanan eksternal (Subquery, Subsquid, Ceres API) adalah perkiraan. Mengingat kerumitan perhitungan ini, presisi mutlak setiap saat tidak dapat dijamin."
+    "fiatDisclaimer": "Harap perhatikan bahwa nilai fiat yang terkait dengan cryptocurrency di situs web kami disediakan oleh layanan eksternal (Subquery, Subsquid, Ceres API) adalah perkiraan. Mengingat kerumitan perhitungan ini, presisi mutlak setiap saat tidak dapat dijamin.",
+    "ads": {
+        "xst": "Pelajari XST"
+    },
+    "fiatPayment": {
+        "historyBtn": "pembelian saya",
+        "historyTitle": "sejarah transaksi",
+        "moonpayTitle": "Beli ETH melalui MoonPay",
+        "moonpayDesc": "Beli token ETH di Ethereum dan transfer ke jaringan SORA melalui jembatan",
+        "x1Title": "Beli XOR dengan kartu Anda",
+        "x1Desc": "Beli token XOR dengan kartu debit atau kredit Anda",
+        "x1Btn": "Beli XOR dengan kartu"
+    }
 }
