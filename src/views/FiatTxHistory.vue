@@ -55,7 +55,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, mixin
   @include custom-tabs;
 
   &-tabs {
-    margin-bottom: 16px;
+    margin-bottom: $basic-spacing;
   }
 
   .go-wallet-btn {

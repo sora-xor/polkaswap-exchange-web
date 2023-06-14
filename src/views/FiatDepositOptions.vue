@@ -134,7 +134,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: $basic-spacing;
     padding: 20px 0 20px 0;
     height: 240px;
     background: var(--s-color-utility-body);
@@ -161,8 +161,8 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
     justify-content: space-between;
     background: var(--s-color-utility-body);
     font-size: var(--s-font-size-medium);
-    border-radius: 24px;
-    padding: 18px 16px;
+    border-radius: var(--s-border-radius-small);
+    padding: 18px $basic-spacing;
     color: var(--s-color-base-content-secondary);
     width: 102%;
     i {
@@ -182,7 +182,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
     box-shadow: var(--s-shadow-element);
     border-radius: 30px;
     padding: 1px 12px;
-    margin-right: 8px;
+    margin-right: $basic-spacing / 2;
 
     &--pending {
       background: var(--s-color-base-content-secondary);

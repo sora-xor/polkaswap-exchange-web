@@ -23,6 +23,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import X1exLogo from '../../../components/shared/Logo/X1ex.vue';
 import { getter, state } from '../../../store/decorators';
+import { delay } from '../../../utils';
 import { X1Api, X1Widget } from '../../../utils/x1';
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
@@ -68,9 +69,8 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
     } catch {
       this.closeWidget(true);
     } finally {
-      setTimeout(() => {
-        this.loadingX1 = false;
-      }, 1500);
+      await delay(1500);
+      this.loadingX1 = false;
     }
   }
 
@@ -101,7 +101,7 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   min-height: 320px;
   padding: $basic-spacing-medium;
   margin: -10px -20px;
-  border-radius: 16px;
+  border-radius: var(--s-border-radius-base);
 
   .el-loading-mask {
     border-radius: 20px;
