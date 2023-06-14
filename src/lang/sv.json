@@ -1214,6 +1214,6 @@
         "x1Title": "Köp XOR med ditt kort",
         "x1Desc": "Köp XOR-tokens med ditt betal- eller kreditkort",
         "x1Btn": "Köp XOR med kort",
-        "errorMessage": ""
+        "errorMessage": "Ursäkta besväret. Vi arbetar hårt för att lösa detta. Vänligen försök igen senare."
     }
 }
