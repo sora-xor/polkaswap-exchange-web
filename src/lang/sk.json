@@ -1213,6 +1213,7 @@
         "moonpayDesc": "Kúpte si ETH tokeny na Ethereu a preneste ich do siete SORA cez most",
         "x1Title": "Kúpte si XOR kartou",
         "x1Desc": "Kúpte si tokeny XOR pomocou svojej debetnej alebo kreditnej karty",
-        "x1Btn": "Kúpte si XOR kartou"
+        "x1Btn": "Kúpte si XOR kartou",
+        "errorMessage": ""
     }
 }

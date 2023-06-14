@@ -1213,6 +1213,7 @@
         "moonpayDesc": "Kaufen Sie ETH-Tokens auf Ethereum und übertragen Sie sie über die Bridge an das SORA-Netzwerk",
         "x1Title": "Kaufen Sie XOR mit Ihrer Karte",
         "x1Desc": "Kaufen Sie XOR-Tokens mit Ihrer Debit- oder Kreditkarte",
-        "x1Btn": "Kaufen Sie XOR mit Karte"
+        "x1Btn": "Kaufen Sie XOR mit Karte",
+        "errorMessage": ""
     }
 }

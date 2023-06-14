@@ -1213,6 +1213,7 @@
         "moonpayDesc": "在以太坊上购买 ETH 代币并通过网桥将其转移到 SORA 网络",
         "x1Title": "用您的卡购买 XOR",
         "x1Desc": "使用借记卡或信用卡购买 XOR 代币",
-        "x1Btn": "用卡买XOR"
+        "x1Btn": "用卡买XOR",
+        "errorMessage": ""
     }
 }

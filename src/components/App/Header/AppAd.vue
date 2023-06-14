@@ -60,7 +60,7 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
     this.showXstArticle = false;
 
     // TODO: add check if already applied for SORA Card
-    if (this.soraCardEnabled && ADS.card) {
+    if (ADS.card && this.soraCardEnabled) {
       // 20% chance to show SORA Card ad
       if (this.probability() > 0.8) {
         this.showSoraCardAd = true;
@@ -68,9 +68,11 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
       }
     }
 
-    // 25% chance to show XST ad
-    if (this.probability() > 0.75 && this.pageWasRendered) {
-      this.showXstArticle = true;
+    if (ADS.xst && this.pageWasRendered) {
+      // 25% chance to show XST ad
+      if (this.probability() > 0.75) {
+        this.showXstArticle = true;
+      }
     }
 
     // To avoid quick show and disappearance of the banner when being rendered
@@ -90,7 +92,7 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
     justify-content: center;
     align-items: center;
     height: 43px;
-    border-radius: 32px;
+    border-radius: var(--s-border-radius-medium);
   }
   &-card-banner {
     background: linear-gradient(89.07deg, #f8087b -45.39%, #ee2233 138.94%);
@@ -105,8 +107,8 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
   &-call-to-action {
     color: #fff;
     font-weight: 600;
-    font-size: 18px;
-    margin-left: 16px;
+    font-size: var(--s-font-size-big);
+    margin-left: $basic-spacing;
     letter-spacing: -0.02em;
     text-transform: uppercase;
   }

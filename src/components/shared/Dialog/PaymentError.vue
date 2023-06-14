@@ -4,7 +4,7 @@
       <s-icon class="error-info-banner__icon" name="basic-clear-X-24" size="64px" />
       <h4 class="error-info-banner__header">The payment widget is currently unavailable</h4>
       <p class="error-info-banner__text">
-        Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later.
+        {{ t('fiatPayment.errorMessage') }}
       </p>
       <s-button
         class="error-info-banner__btn s-typography-button--large"

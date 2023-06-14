@@ -1213,6 +1213,7 @@
         "moonpayDesc": "Köp ETH-tokens på Ethereum och överför dem till SORA-nätverket via bryggan",
         "x1Title": "Köp XOR med ditt kort",
         "x1Desc": "Köp XOR-tokens med ditt betal- eller kreditkort",
-        "x1Btn": "Köp XOR med kort"
+        "x1Btn": "Köp XOR med kort",
+        "errorMessage": ""
     }
 }

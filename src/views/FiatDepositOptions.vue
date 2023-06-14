@@ -160,7 +160,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
     align-items: center;
     justify-content: space-between;
     background: var(--s-color-utility-body);
-    font-size: 16px;
+    font-size: var(--s-font-size-medium);
     border-radius: 24px;
     padding: 18px 16px;
     color: var(--s-color-base-content-secondary);

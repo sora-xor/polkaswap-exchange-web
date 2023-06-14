@@ -1213,6 +1213,7 @@
         "moonpayDesc": "Vásároljon ETH tokeneket az Ethereumon, és vigye át őket a hídon keresztül a SORA hálózatba",
         "x1Title": "Vásároljon XOR-t a kártyájával",
         "x1Desc": "Vásároljon XOR tokeneket bankkártyájával vagy hitelkártyájával",
-        "x1Btn": "Vásároljon XOR-t kártyával"
+        "x1Btn": "Vásároljon XOR-t kártyával",
+        "errorMessage": ""
     }
 }
