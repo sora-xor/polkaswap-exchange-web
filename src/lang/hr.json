@@ -1202,5 +1202,16 @@
         "finishBtn": "Dovršiti"
     },
     "accountAddressText": "Adresa računa",
-    "fiatDisclaimer": "Imajte na umu da su fiat vrijednosti povezane s kriptovalutama na našoj web stranici dane od strane vanjskih usluga (Subquery, Subsquid, Ceres API) približne. S obzirom na inherentnu složenost ovih izračuna, ne može se jamčiti apsolutna preciznost u svakom trenutku."
+    "fiatDisclaimer": "Imajte na umu da su fiat vrijednosti povezane s kriptovalutama na našoj web stranici dane od strane vanjskih usluga (Subquery, Subsquid, Ceres API) približne. S obzirom na inherentnu složenost ovih izračuna, ne može se jamčiti apsolutna preciznost u svakom trenutku.",
+    "fiatPayment": {
+        "historyBtn": "Moje kupovine",
+        "historyTitle": "Povijest transakcija",
+        "moonpayTitle": "Kupite ETH putem MoonPaya",
+        "moonpayDesc": "Kupite ETH tokene na Ethereumu i prenesite ih na SORA mrežu putem mosta",
+        "x1Title": "Kupite XOR svojom karticom",
+        "x1Desc": "Kupite XOR tokene svojom debitnom ili kreditnom karticom",
+        "x1Btn": "Kupite XOR karticom",
+        "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije."
+    },
+    "acceptOnScrollText": "Pomaknite se za prihvaćanje"
 }

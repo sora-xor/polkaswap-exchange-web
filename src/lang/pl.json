@@ -1202,5 +1202,16 @@
         "finishBtn": "Ukończyć"
     },
     "accountAddressText": "Adres konta",
-    "fiatDisclaimer": "Należy pamiętać, że wartości fiducjarne związane z kryptowalutami na naszej stronie dostarczane przez zewnętrzne usługi (Subquery, Subsquid, Ceres API) są przybliżone. Biorąc pod uwagę naturalną złożoność tych obliczeń, nie można zagwarantować absolutnej precyzji przez cały czas."
+    "fiatDisclaimer": "Należy pamiętać, że wartości fiducjarne związane z kryptowalutami na naszej stronie dostarczane przez zewnętrzne usługi (Subquery, Subsquid, Ceres API) są przybliżone. Biorąc pod uwagę naturalną złożoność tych obliczeń, nie można zagwarantować absolutnej precyzji przez cały czas.",
+    "fiatPayment": {
+        "historyBtn": "Moje zakupy",
+        "historyTitle": "Historia transakcji",
+        "moonpayTitle": "Kup ETH przez MoonPay",
+        "moonpayDesc": "Kup tokeny ETH na Ethereum i przenieś je do sieci SORA przez most",
+        "x1Title": "Kup XOR za pomocą swojej karty",
+        "x1Desc": "Kup tokeny XOR za pomocą karty debetowej lub kredytowej",
+        "x1Btn": "Kup XOR z kartą",
+        "errorMessage": "Przepraszam za utrudnienia. Intensywnie pracujemy nad rozwiązaniem tego problemu. Spróbuj ponownie później."
+    },
+    "acceptOnScrollText": "Przewiń, aby zaakceptować"
 }
