@@ -33,7 +33,7 @@
       class="disclaimer__accept-btn"
       :disabled="!isActiveAccptBtn"
     >
-      {{ t('acceptText') }}
+      {{ btnText }}
     </s-button>
   </div>
 </template>
@@ -66,6 +66,11 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
 
   handleClose(): void {
     this.toggleVisibility();
+  }
+
+  get btnText(): string {
+    if (this.isActiveAccptBtn) return this.t('acceptText');
+    return this.t('acceptOnScrollText');
   }
 
   get disclaimerPrefix(): string {

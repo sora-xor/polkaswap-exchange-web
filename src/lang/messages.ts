@@ -31,6 +31,7 @@ export default {
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
   acceptText: 'Accept & Hide',
+  acceptOnSctollText: 'Scroll to accept',
   comingSoonText: 'Coming Soon',
   releaseNotesText: 'Release notes',
   memorandum: '{AppName} Memorandum and Terms of Services',
