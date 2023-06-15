@@ -6,6 +6,7 @@ import { ethers } from 'ethers';
 
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
+import { getSubNetworkAdapter } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
 import type { Provider } from '@/utils/ethers-util';
 
@@ -21,11 +22,21 @@ async function connectEvmNetwork(context: ActionContext<any, any>, networkHex?: 
 async function connectSubNetwork(context: ActionContext<any, any>, network?: SubNetwork): Promise<void> {
   // [TODO] connect to substrate network
   // this code just takes network from storage
-  const { commit } = web3ActionContext(context);
+  const { commit, getters } = web3ActionContext(context);
   const provided = network || ethersUtil.getSelectedNetwork();
 
-  if (provided) {
-    commit.setProvidedNetwork(provided);
+  if (!provided) return;
+
+  commit.setProvidedNetwork(provided);
+
+  const endpoint = getters.providedNetwork?.endpointUrls?.[0];
+
+  if (!endpoint) return;
+
+  const adapter = getSubNetworkAdapter(provided as SubNetwork);
+
+  if (!adapter.connection.opened) {
+    await adapter.connect(endpoint);
   }
 }
 
