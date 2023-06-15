@@ -404,6 +404,14 @@ export default class BridgeTransaction extends Mixins(
     return this.t('bridgeTransaction.statuses.pending') + '...';
   }
 
+  get txExternalNetworkName(): string {
+    const id = this.historyItem?.externalNetwork;
+    const type = this.historyItem?.externalNetworkType;
+    const name = this.getNetworkName(type, id);
+
+    return name;
+  }
+
   get txExternalAccount(): string {
     return this.historyItem?.to ?? '';
   }
@@ -476,8 +484,9 @@ export default class BridgeTransaction extends Mixins(
   }
 
   getNetworkText(key: string, isSora = true): string {
-    const network = isSora ? this.TranslationConsts.Sora : this.TranslationConsts.EVM;
+    const network = isSora ? this.TranslationConsts.Sora : this.txExternalNetworkName;
     const text = this.t(key);
+
     return `${network} ${text}`;
   }
 
