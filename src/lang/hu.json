@@ -1203,9 +1203,6 @@
     },
     "accountAddressText": "Fiók címe",
     "fiatDisclaimer": "Felhívjuk figyelmét, hogy a weboldalunkon a kriptovalutákhoz társított fiat értékeket külső szolgáltatások (Subquery, Subsquid, Ceres API) biztosítják, hozzávetőlegesek. Tekintettel ezeknek a számításoknak a bonyolultságára, nem garantálható a mindenkori abszolút pontosság.",
-    "ads": {
-        "xst": "Ismerje meg az XST-t"
-    },
     "fiatPayment": {
         "historyBtn": "Vásárlásaim",
         "historyTitle": "Tranzakciós előzmények",
@@ -1215,5 +1212,6 @@
         "x1Desc": "Vásároljon XOR tokeneket bankkártyájával vagy hitelkártyájával",
         "x1Btn": "Vásároljon XOR-t kártyával",
         "errorMessage": "Elnézést a kellemetlenségért. Szorgalmasan dolgozunk ennek megoldásán. Kérlek, próbáld újra később."
-    }
+    },
+    "acceptOnScrollText": "Görgessen az elfogadáshoz"
 }

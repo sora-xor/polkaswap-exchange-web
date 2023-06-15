@@ -1203,9 +1203,6 @@
     },
     "accountAddressText": "Adres konta",
     "fiatDisclaimer": "Należy pamiętać, że wartości fiducjarne związane z kryptowalutami na naszej stronie dostarczane przez zewnętrzne usługi (Subquery, Subsquid, Ceres API) są przybliżone. Biorąc pod uwagę naturalną złożoność tych obliczeń, nie można zagwarantować absolutnej precyzji przez cały czas.",
-    "ads": {
-        "xst": "Dowiedz się o XST"
-    },
     "fiatPayment": {
         "historyBtn": "Moje zakupy",
         "historyTitle": "Historia transakcji",
@@ -1215,5 +1212,6 @@
         "x1Desc": "Kup tokeny XOR za pomocą karty debetowej lub kredytowej",
         "x1Btn": "Kup XOR z kartą",
         "errorMessage": "Przepraszam za utrudnienia. Intensywnie pracujemy nad rozwiązaniem tego problemu. Spróbuj ponownie później."
-    }
+    },
+    "acceptOnScrollText": "Przewiń, aby zaakceptować"
 }

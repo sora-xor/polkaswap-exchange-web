@@ -1203,9 +1203,6 @@
     },
     "accountAddressText": "Địa chỉ tài khoản",
     "fiatDisclaimer": "Xin lưu ý rằng các giá trị fiat được liên kết với tiền điện tử trên trang web của chúng tôi được cung cấp bởi các dịch vụ bên ngoài (Subquery, Subsquid, Ceres API) là gần đúng. Do sự phức tạp vốn có của các tính toán này, không thể đảm bảo độ chính xác tuyệt đối mọi lúc.",
-    "ads": {
-        "xst": "Tìm hiểu về XST"
-    },
     "fiatPayment": {
         "historyBtn": "Sự thanh toán của tôi",
         "historyTitle": "Lịch sử giao dịch",
@@ -1215,5 +1212,6 @@
         "x1Desc": "Mua mã thông báo XOR bằng thẻ ghi nợ hoặc thẻ tín dụng của bạn",
         "x1Btn": "Mua XOR bằng thẻ",
         "errorMessage": "Xin lỗi vì sự bất tiện. Chúng tôi đang nỗ lực làm việc để giải quyết vấn đề này. Vui lòng thử lại sau."
-    }
+    },
+    "acceptOnScrollText": "Cuộn để chấp nhận"
 }

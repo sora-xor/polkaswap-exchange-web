@@ -1203,9 +1203,6 @@
     },
     "accountAddressText": "Alamat akun",
     "fiatDisclaimer": "Harap perhatikan bahwa nilai fiat yang terkait dengan cryptocurrency di situs web kami disediakan oleh layanan eksternal (Subquery, Subsquid, Ceres API) adalah perkiraan. Mengingat kerumitan perhitungan ini, presisi mutlak setiap saat tidak dapat dijamin.",
-    "ads": {
-        "xst": "Pelajari XST"
-    },
     "fiatPayment": {
         "historyBtn": "pembelian saya",
         "historyTitle": "sejarah transaksi",
@@ -1215,5 +1212,6 @@
         "x1Desc": "Beli token XOR dengan kartu debit atau kredit Anda",
         "x1Btn": "Beli XOR dengan kartu",
         "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti."
-    }
+    },
+    "acceptOnScrollText": "Gulir untuk menerima"
 }

@@ -1203,9 +1203,6 @@
     },
     "accountAddressText": "Kontoadress",
     "fiatDisclaimer": "Observera att fiat-värdena förknippade med kryptovalutor på vår webbplats tillhandahålls av externa tjänster (Subquery, Subsquid, Ceres API) är ungefärliga. Med tanke på den inneboende komplexiteten i dessa beräkningar kan absolut precision inte alltid garanteras.",
-    "ads": {
-        "xst": "Lär dig XST"
-    },
     "fiatPayment": {
         "historyBtn": "Mina inköp",
         "historyTitle": "Transaktionshistorik",
@@ -1215,5 +1212,6 @@
         "x1Desc": "Köp XOR-tokens med ditt betal- eller kreditkort",
         "x1Btn": "Köp XOR med kort",
         "errorMessage": "Ursäkta besväret. Vi arbetar hårt för att lösa detta. Vänligen försök igen senare."
-    }
+    },
+    "acceptOnScrollText": "Bläddra för att acceptera"
 }
