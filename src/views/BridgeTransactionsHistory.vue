@@ -34,14 +34,14 @@
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
-                      isOutgoingType(item.type) ? 0 : networkProvided
+                      isOutgoingType(item.type) ? 0 : item.externalNetwork
                     )}`"
                   />
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
-                      !isOutgoingType(item.type) ? 0 : networkProvided
+                      !isOutgoingType(item.type) ? 0 : item.externalNetwork
                     )}`"
                   />
                 </div>

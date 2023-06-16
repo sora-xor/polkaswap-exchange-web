@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
-    "@soramitsu/soraneo-wallet-web": "1.17.13",
+    "@soramitsu/soraneo-wallet-web": "1.17.14",
     "@walletconnect/web3-provider": "^1.8.0",
     "base-64": "^1.0.0",
     "core-js": "^3.26.0",
@@ -95,7 +95,7 @@
   "resolutions": {
     "@polkadot/extension-dapp": "^0.44.7",
     "@polkadot/extension-inject": "^0.44.7",
-    "@polkadot/util": "^10.2.1",
+    "@polkadot/util": "^10.4.2",
     "ipfs-unixfs": "6.0.6",
     "ipfs-unixfs-exporter": "7.0.6",
     "ipfs-unixfs-importer": "9.0.6"

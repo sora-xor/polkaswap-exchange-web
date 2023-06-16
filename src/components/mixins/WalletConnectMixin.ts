@@ -48,7 +48,7 @@ const handleMetamaskError = (error: any): string => {
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @state.web3.subAddress subAddress!: string;
   @state.web3.evmAddress evmAddress!: string;
-  @state.web3.networkProvided networkProvided!: BridgeNetworkId;
+  @state.web3.networkSelected networkSelected!: BridgeNetworkId;
 
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.web3.selectedNetwork selectedNetwork!: Nullable<NetworkData>;
@@ -59,7 +59,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @mutation.web3.setSelectedNetwork setSelectedNetwork!: (networkId: BridgeNetworkId) => void;
   @mutation.web3.resetEvmAddress private resetEvmAddress!: FnWithoutArgs;
   @mutation.web3.setEvmAddress setEvmAddress!: (address: string) => void;
-  @mutation.web3.resetProvidedNetwork private resetProvidedNetwork!: FnWithoutArgs;
+  @mutation.web3.resetProvidedEvmNetwork resetProvidedEvmNetwork!: FnWithoutArgs;
   @mutation.web3.resetEvmBalance private resetEvmBalance!: FnWithoutArgs;
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
 
@@ -113,9 +113,5 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   disconnectEvmAccount(): void {
     this.resetEvmAddress();
     this.resetEvmBalance();
-  }
-
-  disconnectExternalNetwork(): void {
-    this.resetProvidedNetwork();
   }
 }
