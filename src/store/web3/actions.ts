@@ -49,7 +49,7 @@ const actions = defineActions({
     const { state, rootDispatch } = web3ActionContext(context);
 
     if (state.networkType === BridgeNetworkType.Sub) {
-      await connectSubNetwork(context, network as SubNetwork);
+      await connectSubNetwork(context);
     } else {
       await connectEvmNetwork(context, network);
     }
