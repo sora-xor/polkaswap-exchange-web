@@ -21,14 +21,14 @@ const mutations = defineMutations<BridgeState>()({
     state.amount = value || '';
   },
 
-  getEvmNetworkFeeRequest(state): void {
+  getExternalNetworkFeeRequest(state): void {
     state.evmNetworkFeeFetching = true;
   },
-  getEvmNetworkFeeSuccess(state, fee: CodecString): void {
+  getExternalNetworkFeeSuccess(state, fee: CodecString): void {
     state.evmNetworkFee = fee;
     state.evmNetworkFeeFetching = false;
   },
-  getEvmNetworkFeeFailure(state): void {
+  getExternalNetworkFeeFailure(state): void {
     state.evmNetworkFee = ZeroStringValue;
     state.evmNetworkFeeFetching = false;
   },

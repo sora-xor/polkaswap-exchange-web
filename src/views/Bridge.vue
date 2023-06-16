@@ -353,7 +353,7 @@ export default class Bridge extends Mixins(
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
   @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncFnWithoutArgs;
   @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncFnWithoutArgs;
-  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
+  @action.bridge.getExternalNetworkFee private getExternalNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<IBridgeTransaction>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
 
@@ -528,7 +528,7 @@ export default class Bridge extends Mixins(
 
   async handleSwitchItems(): Promise<void> {
     this.setSoraToEvm(!this.isSoraToEvm);
-    await this.getEvmNetworkFee();
+    await this.getExternalNetworkFee();
   }
 
   handleMaxValue(): void {
@@ -574,7 +574,7 @@ export default class Bridge extends Mixins(
 
     await this.withSelectAssetLoading(async () => {
       await this.setAssetAddress(selectedAsset.address);
-      await this.getEvmNetworkFee();
+      await this.getExternalNetworkFee();
     });
   }
 

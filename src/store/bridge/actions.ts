@@ -144,6 +144,23 @@ function bridgeDataToHistoryItem(
   };
 }
 
+/**
+ * Fetch EVM Network fee for selected bridge asset
+ */
+async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void> {
+  const { getters, commit, state } = bridgeActionContext(context);
+  if (!getters.asset?.address) {
+    return;
+  }
+  commit.getExternalNetworkFeeRequest();
+  try {
+    const fee = await ethersUtil.getEvmNetworkFee(getters.asset.address, state.isSoraToEvm);
+    commit.getExternalNetworkFeeSuccess(fee);
+  } catch (error) {
+    commit.getExternalNetworkFeeFailure();
+  }
+}
+
 const actions = defineActions({
   resetForm(context) {
     const { commit, dispatch } = bridgeActionContext(context);
@@ -185,20 +202,14 @@ const actions = defineActions({
     const blockNumber = value ?? (await (await ethersUtil.getEthersInstance()).getBlockNumber());
     commit.setEvmBlockNumber(blockNumber);
   },
-  /**
-   * Fetch EVM Network fee for selected bridge asset
-   */
-  async getEvmNetworkFee(context): Promise<void> {
-    const { getters, commit, state } = bridgeActionContext(context);
-    if (!getters.asset?.address) {
-      return;
-    }
-    commit.getEvmNetworkFeeRequest();
-    try {
-      const fee = await ethersUtil.getEvmNetworkFee(getters.asset.address, state.isSoraToEvm);
-      commit.getEvmNetworkFeeSuccess(fee);
-    } catch (error) {
-      commit.getEvmNetworkFeeFailure();
+
+  async getExternalNetworkFee(context): Promise<void> {
+    const { getters } = bridgeActionContext(context);
+
+    if (getters.isSubBridge) {
+      // [TODO] sub network fee
+    } else {
+      await getEvmNetworkFee(context);
     }
   },
 

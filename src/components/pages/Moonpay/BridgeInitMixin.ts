@@ -1,4 +1,5 @@
 import { Operation } from '@sora-substrate/util';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
@@ -167,6 +168,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         soraNetworkFee: this.networkFees[Operation.EthBridgeIncoming],
         externalNetworkFee: evmNetworkFee,
         externalNetwork: this.ethBridgeEvmNetwork,
+        externalNetworkType: BridgeNetworkType.EvmLegacy,
         to: ethTransferData.to,
         payload: {
           moonpayId: transaction.id,

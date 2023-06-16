@@ -67,8 +67,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @action.web3.updateNetworkProvided updateNetworkProvided!: AsyncFnWithoutArgs;
   @action.web3.connectExternalNetwork connectExternalNetwork!: (networkHex?: string) => Promise<void>;
   @action.web3.selectExternalNetwork selectExternalNetwork!: (networkId: BridgeNetworkId) => Promise<void>;
-  @action.web3.restoreSelectedEvmNetwork restoreSelectedEvmNetwork!: AsyncFnWithoutArgs;
-  @action.web3.restoreNetworkType restoreNetworkType!: AsyncFnWithoutArgs;
 
   getWalletAddress = getWalletAddress;
   formatAddress = formatAddress;

@@ -20,17 +20,24 @@ import ethersUtil from '@/utils/ethers-util';
 
 @Component
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
-  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
+  @action.bridge.getExternalNetworkFee private getExternalNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.updateEvmBlockNumber private updateEvmBlockNumber!: (block?: number) => Promise<void>;
   @action.assets.updateRegisteredAssets private updateRegisteredAssets!: AsyncFnWithoutArgs;
   @action.assets.updateExternalBalances private updateExternalBalances!: AsyncFnWithoutArgs;
   @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
+  @action.web3.restoreNetworkType restoreNetworkType!: AsyncFnWithoutArgs;
+  @action.web3.restoreSelectedEvmNetwork restoreSelectedEvmNetwork!: AsyncFnWithoutArgs;
 
   @getter.web3.externalAccount private externalAccount!: string;
 
   @Watch('externalAccount')
   private updateAccountExternalBalances(): void {
     this.updateExternalBalances();
+  }
+
+  @Watch('networkSelected')
+  private updateNetworkData(): void {
+    this.onConnectedNetworkChange();
   }
 
   private unwatchEthereum!: FnWithoutArgs;
@@ -44,16 +51,16 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
       await this.getSupportedApps();
       await this.restoreNetworkType();
       await this.restoreSelectedEvmNetwork();
+      await this.connectExternalNetwork();
       await this.onConnectedNetworkChange();
     });
   }
 
   private async updateBalancesAndFees(): Promise<void> {
-    await Promise.all([this.updateExternalBalances(), this.getEvmNetworkFee()]);
+    await Promise.all([this.updateExternalBalances(), this.getExternalNetworkFee()]);
   }
 
-  private async onConnectedNetworkChange(networkHex?: string) {
-    await this.connectExternalNetwork(networkHex);
+  private async onConnectedNetworkChange() {
     await this.updateRegisteredAssets();
     await this.updateBalancesAndFees();
   }
@@ -68,7 +75,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
         }
       },
       onNetworkChange: (networkHex: string) => {
-        this.onConnectedNetworkChange(networkHex);
+        this.connectExternalNetwork(networkHex);
       },
       onDisconnect: () => {
         this.resetProvidedEvmNetwork();
