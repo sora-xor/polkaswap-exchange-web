@@ -69,15 +69,6 @@ const getters = defineGetters<Web3State>()({
       [BridgeNetworkType.Sub]: sub,
     };
   },
-  providedNetwork(...args): Nullable<NetworkData> {
-    const { state } = web3GetterContext(args);
-
-    if (!state.networkProvided) return null;
-
-    const networks = state.networkType === BridgeNetworkType.Sub ? SUB_NETWORKS : EVM_NETWORKS;
-
-    return networks[state.networkProvided] ?? null;
-  },
   selectedNetwork(...args): Nullable<NetworkData> {
     const { state } = web3GetterContext(args);
 
@@ -89,7 +80,10 @@ const getters = defineGetters<Web3State>()({
   },
   isValidNetwork(...args): boolean {
     const { state } = web3GetterContext(args);
-    return state.networkProvided === state.networkSelected;
+
+    if (state.networkType === BridgeNetworkType.Sub) return true;
+
+    return state.evmNetworkProvided === state.networkSelected;
   },
   contractAddress(...args): (asset: KnownEthBridgeAsset) => Nullable<string> {
     return (asset: KnownEthBridgeAsset) => {

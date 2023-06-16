@@ -16,16 +16,16 @@ import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/typ
 @Component
 export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @getter.web3.providedNetwork providedNetwork!: Nullable<NetworkData>;
+  @getter.web3.selectedNetwork selectedNetwork!: Nullable<NetworkData>;
 
   readonly EvmLinkType = EvmLinkType;
 
-  formatProvidedNetwork(isSora: boolean): string {
+  formatSelectedNetwork(isSora: boolean): string {
     if (isSora && this.soraNetwork) {
       return this.TranslationConsts.soraNetwork[this.soraNetwork];
     }
 
-    return this.providedNetwork?.name ?? '';
+    return this.selectedNetwork?.name ?? '';
   }
 
   formatNetworkShortName(isSora: boolean): string {
@@ -33,7 +33,7 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
       return this.TranslationConsts.Sora;
     }
 
-    return this.providedNetwork?.shortName ?? '';
+    return this.selectedNetwork?.shortName ?? '';
   }
 
   getNetworkName(type: Nullable<BridgeNetworkType>, id: Nullable<BridgeNetworkId>): string {

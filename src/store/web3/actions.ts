@@ -15,18 +15,12 @@ import type { ActionContext } from 'vuex';
 async function connectEvmNetwork(context: ActionContext<any, any>, networkHex?: string): Promise<void> {
   const { commit } = web3ActionContext(context);
   const evmNetwork = networkHex ? ethersUtil.hexToNumber(networkHex) : await ethersUtil.getEvmNetworkId();
-  commit.setProvidedNetwork(evmNetwork);
+  commit.setProvidedEvmNetwork(evmNetwork);
 }
 
 async function connectSubNetwork(context: ActionContext<any, any>, network?: SubNetwork): Promise<void> {
   // [TODO] connect to substrate network
   // this code just takes network from storage
-  const { commit } = web3ActionContext(context);
-  const provided = network || ethersUtil.getSelectedNetwork();
-
-  if (provided) {
-    commit.setProvidedNetwork(provided);
-  }
 }
 
 const actions = defineActions({
