@@ -90,8 +90,6 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   mounted(): void {
     if (!this.x1Enabled) this.closeWidget();
     this.X1Widget = X1Api.getWidget(this.soraNetwork);
-    console.info('this.soraNetwork', this.soraNetwork);
-    console.info('this.X1Widget', this.X1Widget);
   }
 }
 </script>

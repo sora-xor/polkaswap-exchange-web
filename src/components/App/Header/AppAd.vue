@@ -1,19 +1,7 @@
 <template>
   <div class="ad">
-    <div v-if="showSoraCardAd" @click="goTo(PageNames.SoraCard)" class="ad-card-banner banner">
-      <span class="ad-call-to-action">
-        {{ t('card.getSoraCardTitle') }}
-        <s-icon name="arrows-arrow-top-right-24" size="20" />
-      </span>
-      <card />
-    </div>
-    <div v-if="showXstArticle" @click="openArticle" class="ad-xst-banner banner">
-      <span class="ad-call-to-action">
-        {{ t('ads.xst') }}
-        <s-icon name="arrows-arrow-top-right-24" size="20" />
-      </span>
-      <xst />
-    </div>
+    <card v-if="showSoraCardAd" @click="goTo(PageNames.SoraCard)" />
+    <xst v-if="showXstArticle" @click="openArticle" />
   </div>
 </template>
 
@@ -80,49 +68,15 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
   }
 
   openArticle(): void {
-    // redirect to FAQ
+    window.open('https://medium.com/sora-xor/xst-a-platform-for-synthetic-assets-on-sora-b45ca526d8d5', '_blank');
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .ad {
-  .banner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 43px;
-    border-radius: var(--s-border-radius-medium);
-  }
-  &-card-banner {
-    background: linear-gradient(89.07deg, #f8087b -45.39%, #ee2233 138.94%);
-    box-shadow: -5px -5px 10px var(--s-color-base-on-accent), 1px 1px 10px rgba(0, 0, 0, 0.1),
-      inset 1px 1px 2px rgba(255, 255, 255, 0.8);
-  }
-
-  &-xst-banner {
-    background: linear-gradient(89.07deg, #f8087b -45.39%, #ff408c 138.94%);
-  }
-
-  &-call-to-action {
-    color: #fff;
-    font-weight: 600;
-    font-size: var(--s-font-size-big);
-    margin-left: $basic-spacing;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-  }
-
   &:hover {
     cursor: pointer;
-  }
-
-  .s-icon-arrows-arrow-top-right-24 {
-    position: relative;
-    bottom: -2px;
-    margin-left: 2px;
-    margin-right: 14px;
-    color: #fff;
   }
 }
 </style>
