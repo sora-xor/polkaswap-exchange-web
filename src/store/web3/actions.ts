@@ -16,24 +16,22 @@ import type { ActionContext } from 'vuex';
 async function connectEvmNetwork(context: ActionContext<any, any>, networkHex?: string): Promise<void> {
   const { commit } = web3ActionContext(context);
   const evmNetwork = networkHex ? ethersUtil.hexToNumber(networkHex) : await ethersUtil.getEvmNetworkId();
-  commit.setProvidedNetwork(evmNetwork);
+  commit.setProvidedEvmNetwork(evmNetwork);
 }
 
-async function connectSubNetwork(context: ActionContext<any, any>, network?: SubNetwork): Promise<void> {
+async function connectSubNetwork(context: ActionContext<any, any>): Promise<void> {
   // [TODO] connect to substrate network
   // this code just takes network from storage
-  const { commit, getters } = web3ActionContext(context);
-  const provided = network || ethersUtil.getSelectedNetwork();
+  const { getters } = web3ActionContext(context);
+  const subNetwork = getters.selectedNetwork;
 
-  if (!provided) return;
+  if (!subNetwork) return;
 
-  commit.setProvidedNetwork(provided);
-
-  const endpoint = getters.providedNetwork?.endpointUrls?.[0];
+  const endpoint = subNetwork?.endpointUrls?.[0];
 
   if (!endpoint) return;
 
-  const adapter = getSubNetworkAdapter(provided as SubNetwork);
+  const adapter = getSubNetworkAdapter(subNetwork.id as SubNetwork);
 
   if (!adapter.connection.opened) {
     await adapter.connect(endpoint);

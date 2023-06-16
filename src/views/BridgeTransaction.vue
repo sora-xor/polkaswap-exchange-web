@@ -522,7 +522,7 @@ export default class BridgeTransaction extends Mixins(
         const link = { type } as WALLET_CONSTS.ExplorerLink;
         if (type === WALLET_CONSTS.ExplorerType.Sorascan) {
           link.value = `${value}/transaction/${txId}`;
-        } else if (WALLET_CONSTS.ExplorerType.Subscan) {
+        } else if (type === WALLET_CONSTS.ExplorerType.Subscan) {
           link.value = `${value}/extrinsic/${txId}`;
         } else if (this.soraTxBlockId) {
           // ExplorerType.Polkadot

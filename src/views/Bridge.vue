@@ -54,7 +54,7 @@
             <div class="input-title">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
               <span class="input-title--network">{{ getBridgeItemTitle(isSoraToEvm) }}</span>
-              <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : networkProvided)}`" />
+              <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : networkSelected)}`" />
             </div>
             <div v-if="sender && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
@@ -145,7 +145,7 @@
             <div class="input-title" @click="handleChangeNetwork">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
               <span class="input-title--network">{{ getBridgeItemTitle(!isSoraToEvm) }}</span>
-              <i :class="`network-icon network-icon--${getNetworkIcon(!isSoraToEvm ? 0 : networkProvided)}`" />
+              <i :class="`network-icon network-icon--${getNetworkIcon(!isSoraToEvm ? 0 : networkSelected)}`" />
             </div>
             <div v-if="sender && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
@@ -263,7 +263,7 @@
         :is-insufficient-balance="isInsufficientBalance"
         :asset="asset"
         :amount="amount"
-        :network="networkProvided"
+        :network="networkSelected"
         :evm-token-symbol="evmTokenSymbol"
         :evm-network-fee="evmNetworkFee"
         :sora-network-fee="soraNetworkFee"
@@ -516,7 +516,7 @@ export default class Bridge extends Mixins(
   }
 
   getBridgeItemTitle(isSoraNetwork = false): string {
-    return this.formatProvidedNetwork(isSoraNetwork);
+    return this.formatSelectedNetwork(isSoraNetwork);
   }
 
   getCopyTooltip(isSoraNetwork = false): string {

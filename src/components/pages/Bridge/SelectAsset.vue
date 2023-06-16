@@ -50,7 +50,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 export default class BridgeSelectAsset extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
 
-  @getter.web3.providedNetwork private providedNetwork!: Nullable<NetworkData>;
+  @getter.web3.selectedNetwork private selectedNetwork!: Nullable<NetworkData>;
   @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
@@ -58,7 +58,7 @@ export default class BridgeSelectAsset extends Mixins(TranslationMixin, SelectAs
   get label(): string {
     if (this.isSoraToEvm) return this.t('selectRegisteredAsset.search.networkLabelSora');
 
-    const network = this.providedNetwork?.shortName ?? '';
+    const network = this.selectedNetwork?.shortName ?? '';
 
     return this.t('selectRegisteredAsset.search.networkLabelEthereum', { network });
   }

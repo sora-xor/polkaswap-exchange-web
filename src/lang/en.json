@@ -1202,5 +1202,16 @@
         "finishBtn": "Finish alert setup"
     },
     "accountAddressText": "Account address",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API)  are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed."
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API)  are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatPayment": {
+        "historyBtn": "My purchases",
+        "historyTitle": "Transaction History",
+        "moonpayTitle": "Buy ETH via MoonPay",
+        "moonpayDesc": "Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge",
+        "x1Title": "Buy XOR with your card",
+        "x1Desc": "Purchase XOR tokens with your debit or credit card",
+        "x1Btn": "Buy XOR with card",
+        "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later."
+    },
+    "acceptOnScrollText": "Scroll to accept"
 }
