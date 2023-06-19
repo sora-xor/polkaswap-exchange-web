@@ -25,8 +25,7 @@ class SubAdapter {
   }
 
   async connect(endpoint: string) {
-    this.stop();
-
+    await this.stop();
     this.connection.endpoint = endpoint;
     await this.connection.open();
   }
@@ -36,13 +35,24 @@ class SubAdapter {
   }
 
   public async getAccountBalance(accountAddress: string) {
-    const data = await this.api.query.system.account(accountAddress);
+    const accountInfo = await this.api.query.system.account(accountAddress);
+    const accountBalance = formatBalance(accountInfo.data);
+    const balance = accountBalance.transferable;
 
-    return formatBalance(data);
+    return balance;
+  }
+
+  public async getTokenBalance(accountAddress: string, tokenAddress?: string) {
+    console.info(`[${this.constructor.name}] getTokenBalance method is not implemented`);
+    return '0';
   }
 }
 
 class RococoAdapter extends SubAdapter {
+  async getTokenBalance(accountAddress: string, tokenAddress?: string) {
+    return await this.getAccountBalance(accountAddress);
+  }
+
   async transfer(asset: Asset, recipient: string, amount: string | number, historyId?: string) {
     const value = new FPNumber(amount, asset.decimals).toCodecString();
 
@@ -104,8 +114,31 @@ class RococoAdapter extends SubAdapter {
   }
 }
 
-const SubstrateRococoAdapter = new RococoAdapter();
+class SubConnector {
+  protected readonly rococoAdapter: SubAdapter = new RococoAdapter();
 
-export const getSubNetworkAdapter = (network: SubNetwork) => {
-  return SubstrateRococoAdapter;
-};
+  public adapter!: SubAdapter;
+
+  protected getAdapterForNetwork(network: SubNetwork): SubAdapter {
+    switch (network) {
+      case SubNetwork.Karura:
+      default:
+        return this.rococoAdapter;
+    }
+  }
+
+  async open(network: SubNetwork, endpoint: string): Promise<void> {
+    // stop current adapter connection
+    await this.stop();
+    // set adapter for network arg
+    this.adapter = this.getAdapterForNetwork(network);
+    // open adapter connection
+    await this.adapter.connect(endpoint);
+  }
+
+  async stop(): Promise<void> {
+    await this.adapter?.stop();
+  }
+}
+
+export const subConnector = new SubConnector();

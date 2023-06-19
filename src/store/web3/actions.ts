@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
-import { getSubNetworkAdapter } from '@/utils/bridge/sub/classes/adapter';
+import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
 import type { Provider } from '@/utils/ethers-util';
 
@@ -31,11 +31,7 @@ async function connectSubNetwork(context: ActionContext<any, any>): Promise<void
 
   if (!endpoint) return;
 
-  const adapter = getSubNetworkAdapter(subNetwork.id as SubNetwork);
-
-  if (!adapter.connection.opened) {
-    await adapter.connect(endpoint);
-  }
+  await subConnector.open(subNetwork.id as SubNetwork, endpoint);
 }
 
 const actions = defineActions({

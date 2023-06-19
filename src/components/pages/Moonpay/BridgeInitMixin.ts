@@ -5,7 +5,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
-import type { RegisteredAccountAssetObject, EvmAccountAsset } from '@/store/assets/types';
+import type { RegisteredAccountAssetObject, BridgeAccountAsset } from '@/store/assets/types';
 import { state, action, mutation, getter } from '@/store/decorators';
 import type { BridgeTxData } from '@/store/moonpay/types';
 import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
@@ -30,7 +30,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @state.web3.evmBalance evmBalance!: CodecString;
   @state.web3.ethBridgeEvmNetwork ethBridgeEvmNetwork!: EvmNetwork;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
+  @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeAccountAsset>;
 
   @getter.settings.moonpayApiKey moonpayApiKey!: string;
   @getter.assets.assetsDataTable assetsDataTable!: RegisteredAccountAssetObject;
