@@ -24,6 +24,10 @@ class SubAdapter {
     return this.api.rx;
   }
 
+  get ready() {
+    return this.api.isReady;
+  }
+
   async connect(endpoint: string) {
     await this.stop();
     this.connection.endpoint = endpoint;
@@ -31,10 +35,14 @@ class SubAdapter {
   }
 
   async stop() {
-    await this.connection.close();
+    if (this.connection.opened) {
+      await this.connection.close();
+    }
   }
 
   public async getAccountBalance(accountAddress: string) {
+    await this.ready;
+
     const accountInfo = await this.api.query.system.account(accountAddress);
     const accountBalance = formatBalance(accountInfo.data);
     const balance = accountBalance.transferable;
@@ -110,6 +118,7 @@ class RococoAdapter extends SubAdapter {
       0
     );
 
+    await this.ready;
     await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account.pair, historyItem);
   }
 }

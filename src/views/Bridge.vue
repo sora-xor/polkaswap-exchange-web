@@ -126,7 +126,6 @@
           data-test-name="switchToken"
           type="action"
           icon="arrows-swap-90-24"
-          :disabled="isSubBridge"
           @click="handleSwitchItems"
         />
 
@@ -485,10 +484,6 @@ export default class Bridge extends Mixins(
   }
 
   formatBalance(isSora = true): string {
-    // [TODO] balance for token in substrate network
-    if (!isSora && this.isSubBridge) {
-      return '-';
-    }
     if (!(this.asset && (this.isRegisteredAsset || isSora))) {
       return '-';
     }
