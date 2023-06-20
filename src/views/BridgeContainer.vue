@@ -33,11 +33,6 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     this.updateExternalBalances();
   }
 
-  @Watch('networkProvided')
-  private updateProvidedNetworkData(): void {
-    this.onConnectedNetworkChange();
-  }
-
   private unwatchEthereum!: FnWithoutArgs;
   private blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
 
@@ -72,9 +67,11 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
           this.disconnectEvmAccount();
         }
       },
-      onNetworkChange: () => {},
+      onNetworkChange: (networkHex: string) => {
+        this.onConnectedNetworkChange(networkHex);
+      },
       onDisconnect: () => {
-        this.disconnectExternalNetwork();
+        this.resetProvidedEvmNetwork();
       },
     });
   }

@@ -404,6 +404,14 @@ export default class BridgeTransaction extends Mixins(
     return this.t('bridgeTransaction.statuses.pending') + '...';
   }
 
+  get txExternalNetworkName(): string {
+    const id = this.historyItem?.externalNetwork;
+    const type = this.historyItem?.externalNetworkType;
+    const name = this.getNetworkName(type, id);
+
+    return name;
+  }
+
   get txExternalAccount(): string {
     return this.historyItem?.to ?? '';
   }
@@ -476,8 +484,9 @@ export default class BridgeTransaction extends Mixins(
   }
 
   getNetworkText(key: string, isSora = true): string {
-    const network = isSora ? this.TranslationConsts.Sora : this.TranslationConsts.EVM;
+    const network = isSora ? this.TranslationConsts.Sora : this.txExternalNetworkName;
     const text = this.t(key);
+
     return `${network} ${text}`;
   }
 
@@ -513,7 +522,7 @@ export default class BridgeTransaction extends Mixins(
         const link = { type } as WALLET_CONSTS.ExplorerLink;
         if (type === WALLET_CONSTS.ExplorerType.Sorascan) {
           link.value = `${value}/transaction/${txId}`;
-        } else if (WALLET_CONSTS.ExplorerType.Subscan) {
+        } else if (type === WALLET_CONSTS.ExplorerType.Subscan) {
           link.value = `${value}/extrinsic/${txId}`;
         } else if (this.soraTxBlockId) {
           // ExplorerType.Polkadot

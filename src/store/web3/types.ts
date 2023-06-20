@@ -31,8 +31,8 @@ export type Web3State = {
   evmBalance: CodecString;
 
   networkType: BridgeNetworkType;
-  networkProvided: Nullable<BridgeNetworkId>;
   networkSelected: Nullable<BridgeNetworkId>;
+  evmNetworkProvided: Nullable<BridgeNetworkId>;
 
   evmNetworkApps: EvmNetwork[];
   subNetworkApps: SubNetworkApps;

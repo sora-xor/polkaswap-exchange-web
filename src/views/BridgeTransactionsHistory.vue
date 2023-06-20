@@ -34,14 +34,14 @@
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
-                      isOutgoingType(item.type) ? 0 : networkProvided
+                      isOutgoingType(item.type) ? 0 : item.externalNetwork
                     )}`"
                   />
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
-                      !isOutgoingType(item.type) ? 0 : networkProvided
+                      !isOutgoingType(item.type) ? 0 : item.externalNetwork
                     )}`"
                   />
                 </div>
@@ -66,8 +66,6 @@
         </div>
       </s-form>
     </s-card>
-
-    <bridge-select-network :selected-evm-network="selectedNetwork" />
   </div>
 </template>
 
@@ -90,7 +88,6 @@ import type { IBridgeTransaction } from '@sora-substrate/util';
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
-    BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
     SearchInput: components.SearchInput,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
