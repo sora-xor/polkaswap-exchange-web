@@ -286,6 +286,8 @@ const parse = (item: AssetData): Record<string, TokenData> => {
   },
 })
 export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
+  readonly DAY = 60 * 60 * 24;
+
   @getter.assets.whitelistAssets private items!: Array<Asset>;
 
   tokensData: Record<string, TokenData> = {};
@@ -349,9 +351,9 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   }
 
   private async fetchTokensData(): Promise<Record<string, TokenData>> {
-    const now = Math.floor(Date.now() / (5 * 60 * 1000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
-    const dayTimestamp = now - 60 * 60 * 24; // latest day snapshot (unix)
-    const weekTimestamp = now - 60 * 60 * 24 * 7; // latest week snapshot (unix)
+    const now = Math.floor(Date.now() / (5 * 60_000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
+    const dayTimestamp = now - this.DAY; // latest day snapshot (unix)
+    const weekTimestamp = now - this.DAY * 7; // latest week snapshot (unix)
     const ids = this.items.map((item) => item.address); // only whitelisted assets
 
     const variables = { ids, dayTimestamp, weekTimestamp };
