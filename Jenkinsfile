@@ -20,6 +20,6 @@ def pipeline = new org.js.AppPipeline(steps: this,
     ipfsHashChatIDStage: '',
     ipfsHashChatIDProd: '',
     // ipfsHashChatID: '-1001375555544',
-    secretScannerExclusion: '.*env.json'
+    secretScannerExclusion: '.*env.json\$|.*env-stage.json\$'
 )
 pipeline.runPipeline()
