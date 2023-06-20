@@ -166,7 +166,6 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { XSTUSD } from '@sora-substrate/util/build/assets/consts';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { components, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
 import { gql } from '@urql/core';
@@ -337,7 +336,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   }
 
   isSynthetic(row: TableItem): boolean {
-    return syntheticAssetRegexp.test(row.address) || row.address === XSTUSD.address;
+    return syntheticAssetRegexp.test(row.address);
   }
 
   // ExplorePageMixin method implementation
