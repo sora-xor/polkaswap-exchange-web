@@ -1,0 +1,66 @@
+{
+  "BASE_API_URL": "test.polkaswap.io",
+  "FAUCET_URL": "https://testfaucet.polkaswap.io/",
+  "SUBQUERY_ENDPOINT": "https://api.subquery.network/sq/sora-xor/sora-staging__c29yY",
+  "API_KEYS": {
+    "moonpay": "pk_test_4ASGxHKGpLPE6sdQq1V3QjtpUFSpWLk",
+    "nftStorage": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDBmMzgwOTMyQTNDODM3ZDNiN2JEYzBBNTc0NmNkMDlBRGIyNUZGMzQiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY0MjU4OTQ2ODA4MSwibmFtZSI6Im5mdC1zdG9yYWdlLWRldiJ9.hkvzea9ltcriXXHKoYd3F2Iu1Y8X5H-zunAQboC_3vw",
+    "etherscan": "UPTTMBUBCE5FIE7XJZYAJ3YZGFE7DA6374"
+  },
+  "FEATURE_FLAGS": {
+    "moonpay": true,
+    "charts": true
+  },
+  "DEFAULT_NETWORKS": [
+    {
+      "chain": "SORA-staging Testnet",
+      "name": "SORA",
+      "address": "wss://ws.framenode-7.s4.stg1.sora2.soramitsu.co.jp"
+    },
+    {
+      "chain": "SORA-staging Testnet",
+      "name": "SORA",
+      "address": "wss://ws.framenode-8.s5.stg1.sora2.soramitsu.co.jp"
+    }
+  ],
+  "NETWORK_TYPE": "Stage",
+  "CHAIN_GENESIS_HASH": "0x1a0983c6c9fd3178ae24656bcfca4510a439ab7b90c83e360a1671609752b09a",
+  "SUB_NETWORKS": [
+    {
+      "name": "ethereum",
+      "id": 0,
+      "symbol": "ETH",
+      "currency": "ETH",
+      "defaultType": "rinkeby",
+      "CONTRACTS": {
+        "XOR": {
+          "MASTER": "0xcceb41100aa2a9a6f144d7c1f876070b810bf7ae"
+        },
+        "VAL": {
+          "MASTER": "0xd7f81ed173cb3af28f983670164df30851fba678"
+        },
+        "OTHER": {
+          "MASTER": "0x78cb1bfd2256515019b03584d66eca516cd5893c"
+        }
+      }
+    },
+    {
+      "name": "energy",
+      "id": 1,
+      "symbol": "VT",
+      "currency": "VT",
+      "defaultType": "private",
+      "CONTRACTS": {
+        "XOR": {
+          "MASTER": ""
+        },
+        "VAL": {
+          "MASTER": ""
+        },
+        "OTHER": {
+          "MASTER": "0x906111a433731a563Aa0d0FA871FF93f9A3B3035"
+        }
+      }
+    }
+  ]
+}
