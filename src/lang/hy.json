@@ -87,11 +87,12 @@
         "noAccounts": "Ձեր {extension} ընդլայնման մեջ կարծես որևէ հաշիվ չկա: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
         "noAccount": "{extension} հաշվի սխալ: Խնդրում ենք ստուգել ձեր հաշիվը {extension} ընդլայնման մեջ",
         "noExtension": "{extension} ընդլայնում չի գտնվել: Խնդրում ենք տեղադրել այն և վերաբեռնել այս էջը",
-        "noSigner": "Մուտքն արգելված է. Գնացեք {extension} ընդլայնման կարգավորումներ և բացեք «Կառավարել վեբ կայքի մուտքը»՝ թույլ տալու համար:"
+        "noSigner": "Մուտքն արգելված է. Գնացեք {extension} ընդլայնման կարգավորումներ և բացեք «Կառավարել վեբ կայքի մուտքը»՝ թույլ տալու համար:",
+        "connectionError": "Դրամապանակը միացնելիս սխալ է տեղի ունեցել: Կարող եք կրկին փորձել միացնել դրամապանակը {extension} ի միջոցով"
     },
     "connection": {
         "title": "{Sora} ցանցի հաշիվ",
-        "text": "Միացրեք կամ ստեղծեք ձեր {Sora} ցանցի հաշիվը {extensions} ընդլայնումներով: Այս ընդլայնումները թույլ են տալիս ապահով կերպով ստորագրել գործարքները և կառավարել ակտիվները {Sora} ցանցում:",
+        "text": "Ընդլայնումները և Google-ը ապահով կերպով պահում են ձեր {Sora} ցանցի հաշիվը: Նրանք թույլ են տալիս ստորագրել գործարքներ և կառավարել ակտիվները:",
         "noAccounts": "{extension} բրաուզերի ընդլայնման մեջ հաշիվ չի գտնվել: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
         "selectAccount": "Ընտրել հաշիվ աշխատելու համար",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Տեղադրեք",
             "connected": "Միացված է",
             "notConnected": "Միացված չէ"
+        },
+        "internalTitle": "Միացեք {wallet} ի միջոցով",
+        "internalText": "Դուք կարող եք ստեղծել կամ կապել գոյություն ունեցող հաշիվ {wallet} ի միջոցով: Այն պահպանում է հաշիվները՝ օգտագործելով կոդավորումը:",
+        "list": {
+            "simplest": "Ամենապարզ տարբերակը",
+            "extensions": "Ընդլայնումներ"
         }
     },
     "wallet": {
         "title": "{Sora} ցանցի հաշիվ",
         "WalletAssets": "Ակտիվներ",
-        "WalletActivity": "Գործունեություն",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Գործունեություն"
     },
     "walletSend": {
         "title": "Ուղարկել",
@@ -516,13 +523,9 @@
         "strategicBonusApy": "Ռազմավարական բոնուս APY"
     },
     "bridge": {
-        "title": "{Hashi} կամուրջ",
+        "title": "Կամուրջ",
         "info": "Փոխարկել տոկենները {Sora} և {Ethereum} ցանցերի միջև:",
         "balance": "Բալանս",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Հաջորդը",
         "connectWallets": "Միացրեք դրամապանակները ՝ համապատասխան գործարքի պատմությունը դիտելու համար:",
         "soraNetworkFee": "{Sora} ցանցային վճար",
@@ -536,8 +539,7 @@
         "networkInfo": "Միացեք {Sora} Ցանցով.",
         "copy": "Պատճենել ցանցի հասցեն",
         "soraAddress": "{Sora} հասցե",
-        "ethereumAddress": "{Ethereum} հասցե",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} հասցե"
     },
     "selectRegisteredAsset": {
         "title": "Ընտրեք տոկեն",
@@ -559,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Հաստատել գործարքը",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Հաստատել գործարքը"
     },
     "bridgeTransaction": {
         "details": "{from} համար {to}",
@@ -602,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} գործարքը սպասման մեջ է...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Ստեղծել նոր գործարք",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText in {Metamask}",
-        "expectedAddress": "Սպասվող հասցե @հասցեում ՝ {Metamask}",
         "title": "Կամուրջի գործարք",
         "expectedMetaMaskAddress": "Սպասվող հասցե @հասցեում ՝ {Metamask}",
         "allowToken": "Թույլ տվեք {AppName} ին օգտագործել ձեր {tokenSymbol}",
@@ -1031,7 +1025,7 @@
     },
     "receivedText": "Ստացվել է",
     "browserNotificationDialog": {
-        "title": "Միացնել բրաուզերի ծանուցումները",
+        "title": "Սահմանել ծանուցումները",
         "info": "Մենք ձեզ կուղարկենք միայն համապատասխան թարմացումներ ձեր դրամապանակի վերաբերյալ, օրինակ՝ ակտիվների մնացորդի փոփոխությունները",
         "button": "Միացնել ծանուցումները",
         "agree": "Այո ես հասկանում եմ",
@@ -1103,10 +1097,16 @@
             "jsonFields": "JSON ֆայլը պարտադիր դաշտեր չունի"
         },
         "assetsAtRiskText": "Ռիսկի տակ գտնվող ակտիվներ!",
-        "deleteAccountText": "Հաշիվը չի կարող վերականգնվել առանց հիմնական արտահայտության, .json ֆայլի կամ եթե այն պահվում է որևէ ընդլայնման մեջ: Դուք դուրս կգրվեք:"
+        "deleteAccountText": "Հաշիվը չի կարող վերականգնվել առանց հիմնական արտահայտության, .json ֆայլի կամ եթե այն պահվում է որևէ ընդլայնման մեջ: Դուք դուրս կգրվեք:",
+        "importSteps": {
+            "selectWallet": "Գնացեք ձեր օգտագործման դրամապանակին",
+            "selectAccount": "Ընտրեք այն հաշիվը, որը ցանկանում եք արտահանել",
+            "exportAccount": "Արտահանել {JSON} ֆայլը"
+        },
+        "exportTutorialsText": "Արտահանման ձեռնարկներ"
     },
     "hashiBridgeText": "{Hashi} կամուրջ",
-    "disclaimerTitle": "Հրաժարում պատասխանատվությունից:",
+    "disclaimerTitle": "Հրաժարում պատասխանատվությունից",
     "explore": {
         "showOnlyMyPositions": "Ցույց տալ միայն իմ դիրքերը"
     },
@@ -1174,5 +1174,32 @@
     },
     "locationText": "Գտնվելու վայրը",
     "acceptText": "Ընդունել և թաքցնել",
-    "newAccountsText": "Նոր հաշիվներ"
+    "newAccountsText": "Նոր հաշիվներ",
+    "dragAndDropText": "Քաշեք և թողեք կամ ընտրեք {extension} ֆայլը",
+    "copyPhraseText": "Պատճենել արտահայտությունը",
+    "stepText": "Քայլ",
+    "alerts": {
+        "drop": "Կաթիլներ ներքևում",
+        "raise": "Բարձրացնում է վերևում",
+        "once": "Մի անգամ",
+        "always": "Միշտ",
+        "edit": "Խմբագրել ծանուցումը",
+        "delete": "Ջնջել ծանուցումը",
+        "onDropDesc": "{token} ընկնում է {price} ից ցածր",
+        "onRaiseDesc": "{token} բարձրանում է {price} ից",
+        "alertsTitle": "Ահազանգեր",
+        "alertsCreateTitle": "Կարգավորեք գների ծանուցում",
+        "alertsTooltip": "Գնային ծանուցումները ծանուցումներ են, որոնք կարող եք սահմանել ձեր կողմից՝ թարմացումներ ստանալու համար, երբ որոշակի նշանի գինը հասնում է ձեր սահմանած որոշակի կետին:",
+        "createBtn": "Ստեղծեք նոր գնային ծանուցում",
+        "enableSwitch": "Միացնել ակտիվների ավանդի մասին ծանուցումները",
+        "currentPrice": "ընթացիկ գինը",
+        "alertTypeTitle": "Զգուշացման տեսակը",
+        "typeTooltip": "Ընտրեք կա՛մ «իջնում է ներքևում», կա՛մ «բարձրացնում է վերևում» տարբերակը՝ գների կարևոր տեղաշարժերին հետևելու ազդանշանային պայմանը նշելու համար: Այս ընտրանքները թույլ են տալիս ժամանակին ծանուցումներ ստանալ, երբ ձեր ակտիվի արժեքը կամ իջնի ձեր նշանակված շեմից կամ բարձրանա:",
+        "alertFrequencyTitle": "Զգուշացման հաճախականությունը",
+        "frequencyTooltip": "Ընտրեք «մեկ անգամ» և «միշտ» միջև՝ որոշելու համար, թե որքան հաճախ եք ստանում ծանուցումներ ընտրված ազդանշանի տեսակի համար: «Once»-ը մեկ ծանուցում կուղարկի, երբ պայմանը կատարվի, մինչդեռ «միշտ»-ը կշարունակի ծանուցել ձեզ ամեն անգամ, երբ գնային շեմը հատվի:",
+        "noSupportMsg": "Ծանուցումները չեն աջակցվում ձեր դիտարկիչի կողմից",
+        "finishBtn": "Ավարտելու համար"
+    },
+    "accountAddressText": "Հաշվի հասցեն",
+    "fiatDisclaimer": "Խնդրում ենք նկատի ունենալ, որ մեր կայքում կրիպտոարժույթների հետ կապված fiat արժեքները տրամադրվում են արտաքին ծառայությունների կողմից (Subquery, Subsquid, Ceres API) մոտավոր են: Հաշվի առնելով այս հաշվարկների բնորոշ բարդությունը, բացարձակ ճշգրտությունը բոլոր ժամանակներում չի կարող երաշխավորվել:"
 }

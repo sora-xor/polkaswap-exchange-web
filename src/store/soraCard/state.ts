@@ -1,6 +1,8 @@
-import { ZeroStringValue } from '@/consts';
-import type { SoraCardState } from './types';
 import { FPNumber } from '@sora-substrate/util';
+
+import { ZeroStringValue } from '@/consts';
+
+import type { SoraCardState } from './types';
 
 function initialState(): SoraCardState {
   return {

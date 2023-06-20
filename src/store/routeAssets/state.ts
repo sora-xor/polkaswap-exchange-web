@@ -1,5 +1,6 @@
-import type { RouteAssetsState } from './types';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
+
+import type { RouteAssetsState } from './types';
 
 function initialState(): RouteAssetsState {
   return {
@@ -8,6 +9,8 @@ function initialState(): RouteAssetsState {
     subscriptions: [],
     enabledAssetsSubscription: null,
     enabledAssets: {
+      tbc: [],
+      xst: {},
       lockedSources: [],
     },
     processingState: {

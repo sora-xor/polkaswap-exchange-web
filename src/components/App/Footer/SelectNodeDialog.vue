@@ -27,16 +27,16 @@
 </template>
 
 <script lang="ts">
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import pick from 'lodash/fp/pick';
 import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import { lazyComponent } from '@/router';
+import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import { getter, state, action } from '@/store/decorators';
 import { Node, NodeItem, ConnectToNodeOptions } from '@/types/nodes';
 import { AppHandledError } from '@/utils/error';
-import { getter, state, action } from '@/store/decorators';
-import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 
 import { NodeModel } from './Node/consts';
 
@@ -228,19 +228,11 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
 
 <style lang="scss">
 .dialog-wrapper.select-node-dialog {
-  .el-dialog .el-dialog__body {
-    padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-mini * 4;
-  }
-
   &--add-node {
     .el-dialog {
       .el-dialog__header {
         padding: 0;
         display: none;
-      }
-
-      .el-dialog__body {
-        padding: $inner-spacing-big $inner-spacing-big $inner-spacing-mini * 4;
       }
     }
   }

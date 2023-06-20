@@ -35,8 +35,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class AdarLogo extends Vue {

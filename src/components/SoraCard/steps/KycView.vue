@@ -14,18 +14,28 @@
 </template>
 
 <script lang="ts">
-import { loadScript, unloadScript } from 'vue-plugin-load-script';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { WALLET_CONSTS, mixins, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
 import { v4 as uuidv4 } from 'uuid';
-import { WALLET_CONSTS, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
-import { soraCard } from '@/utils/card';
+import { soraCard, getUpdatedJwtPair } from '@/utils/card';
+
+type WindowInjectedWeb3 = typeof window & {
+  injectedWeb3?: {
+    'fearless-wallet'?: {
+      enable: (origin: string) => Promise<void>;
+      saveSoraCardToken?: (token: string) => Promise<void>;
+      version: string;
+    };
+  };
+};
 
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin) {
-  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.wallet.account.source private source!: WALLET_CONSTS.AppWallet;
 
   @Prop({ default: '', type: String }) readonly accessToken!: string;
 
@@ -62,18 +72,30 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
       this.showAppNotification(this.t('card.infoMessageTryAgain'));
       this.$emit('confirm-kyc', false);
 
-      unloadScript(kycService.sdkURL);
+      ScriptLoader.unload(kycService.sdkURL, false);
     }
   }
 
+  async updateJwtPairByInterval(): Promise<void> {
+    const setNewJwtPair = async () => {
+      const refreshToken = localStorage.getItem('PW-refresh-token');
+      if (refreshToken) await getUpdatedJwtPair(refreshToken);
+    };
+
+    setNewJwtPair();
+    setInterval(setNewJwtPair, 60_000 * 19.85); // 10 seconds less before token expiration
+  }
+
   async mounted(): Promise<void> {
+    this.updateJwtPairByInterval();
+
     const { kycService, soraProxy } = soraCard(this.soraNetwork);
 
     const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
 
-    await unloadScript(kycService.sdkURL).catch(() => {});
+    await ScriptLoader.unload(kycService.sdkURL, false);
 
-    loadScript(kycService.sdkURL)
+    ScriptLoader.load(kycService.sdkURL)
       .then(() => {
         // @ts-expect-error no-undef
         Paywings.WebKyc.create({
@@ -122,17 +144,21 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
             this.showAppNotification(this.t('card.infoMessageTryAgain'));
             this.$emit('confirm-kyc', false);
 
-            unloadScript(kycService.sdkURL);
+            ScriptLoader.unload(kycService.sdkURL);
 
             // Integrator will be notified if user cancels KYC or something went wrong
             // alert('Something went wrong ' + data.StatusDescription);
           })
-          .on('Success', (data) => {
+          .on('Success', async (data) => {
             // Integrator handles UI from this point on on successful kyc
             // alert('Kyc was successfull, integrator takes control of flow from now on')
 
+            const refreshToken = localStorage.getItem('PW-refresh-token');
+            if (this.source === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
+              await (window as WindowInjectedWeb3).injectedWeb3?.['fearless-wallet']?.saveSoraCardToken?.(refreshToken);
+            }
             this.$emit('confirm-kyc', true);
-            unloadScript(kycService.sdkURL);
+            ScriptLoader.unload(kycService.sdkURL);
 
             // document.getElementById('kyc')!.style.display = 'none';
             // document.getElementById('finish')!.style.display = 'block';

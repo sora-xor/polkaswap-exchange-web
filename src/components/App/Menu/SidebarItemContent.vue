@@ -4,6 +4,9 @@
     <div v-if="icon === 'sora-card'" class="icon-container">
       <side-menu-card class="sora-card-sidebar-icon" />
     </div>
+    <div v-else-if="icon === 'adar-about'" class="icon-container">
+      <side-menu-adar-about class="sora-card-sidebar-icon" />
+    </div>
     <div v-else-if="icon" class="icon-container">
       <s-icon :name="icon" size="28" />
     </div>
@@ -13,12 +16,15 @@
 
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+
+import SideMenuAdarAbout from '@/assets/img/adar/sidebar.svg?inline';
 import SideMenuCard from '@/assets/img/sora-card/sidebar.svg?inline';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component({
   components: {
     SideMenuCard,
+    SideMenuAdarAbout,
   },
 })
 export default class AppSidebarItemContent extends Mixins(TranslationMixin) {

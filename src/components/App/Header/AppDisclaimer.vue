@@ -21,6 +21,7 @@
           })
         "
       />
+      <p class="disclaimer__text-fiat">{{ t('fiatDisclaimer') }}</p>
     </div>
     <s-button
       v-if="!userDisclaimerApprove"
@@ -38,9 +39,9 @@
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { delay } from '@/utils';
-import { mutation, state } from '@/store/decorators';
 import { Links } from '@/consts';
+import { mutation, state } from '@/store/decorators';
+import { delay } from '@/utils';
 
 @Component
 export default class AppDisclaimer extends Mixins(TranslationMixin) {
@@ -66,11 +67,11 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   }
 
   get disclaimerPrefix(): string {
-    return `<span class="disclaimer__prefix">${this.t('disclaimerTitle')}</span>`;
+    return `<span class="disclaimer__prefix">${this.t('disclaimerTitle')}:</span>`;
   }
 
   get memorandumLink(): string {
-    return this.generateDisclaimerLink(Links.terms, this.t('memorandum'));
+    return this.generateDisclaimerLink(Links.terms, this.$t('memorandum', { AppName: 'Polkaswap' }).toString());
   }
 
   get privacyLink(): string {
@@ -78,7 +79,7 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   }
 
   get polkaswapFaqLink(): string {
-    return this.generateDisclaimerLink(Links.faq, this.t('FAQ'));
+    return this.generateDisclaimerLink(Links.faq, this.$t('FAQ', { AppName: 'Polkaswap' }).toString());
   }
 
   generateDisclaimerLink(href: string, content: string): string {
@@ -143,6 +144,10 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
     line-height: var(--s-line-height-extra-small);
     letter-spacing: var(--s-letter-spacing-small);
     color: var(--s-color-base-content-secondary);
+
+    &-fiat {
+      margin-top: $basic-spacing;
+    }
   }
 
   &__accept-btn {

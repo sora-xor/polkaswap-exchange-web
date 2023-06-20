@@ -57,14 +57,15 @@
 
 <script lang="ts">
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components } from '@/consts';
+import { AdarComponents } from '@/modules/ADAR/consts';
+import { adarLazyComponent } from '@/modules/ADAR/router';
+import { lazyComponent } from '@/router';
 import { action, getter } from '@/store/decorators';
 import { Recipient } from '@/store/routeAssets/types';
 import validate from '@/store/routeAssets/utils';
-import { AdarComponents } from '@/modules/ADAR/consts';
-import { adarLazyComponent } from '@/modules/ADAR/router';
 @Component({
   components: {
     FixIssuesDialog: adarLazyComponent(AdarComponents.RouteAssetsFixIssuesDialog),

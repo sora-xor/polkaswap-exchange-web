@@ -1,6 +1,6 @@
-import axios from '@/api';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
+import axios from '@/api';
 import { toQueryString } from '@/utils';
 
 export interface MoonpayEVMTransferAssetData {
@@ -51,6 +51,16 @@ export class MoonpayApi {
     return {
       apiKey: this.publicKey,
     };
+  }
+
+  get accountRecords(): Record<string, string> {
+    const records = api.accountStorage?.get('moonpay');
+
+    return records ? JSON.parse(records) : {};
+  }
+
+  set accountRecords(records: Record<string, string>) {
+    api.accountStorage?.set('moonpay', JSON.stringify(records));
   }
 
   public createWidgetUrl(queryParams, widgetUrl?: string): string {

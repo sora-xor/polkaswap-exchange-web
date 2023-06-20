@@ -87,11 +87,12 @@
         "noAccounts": "Похоже, что в вашем расширении {extension} нет аккаунтов. Пожалуйста, добавьте аккаунт и повторите попытку.",
         "noAccount": "Ошибка аккаунта {extension}. Пожалуйста, проверьте свою учетную запись в расширении {extension}",
         "noExtension": "Расширение {extension} не найдено. Пожалуйста, установите его и перезагрузите эту страницу",
-        "noSigner": "В доступе отказано. Перейдите в настройки {extension} и откройте «Управление доступом к веб-сайту», чтобы разрешить."
+        "noSigner": "В доступе отказано. Перейдите в настройки {extension} и откройте «Управление доступом к веб-сайту», чтобы разрешить.",
+        "connectionError": "Произошла ошибка при подключении кошелька. Вы можете попробовать снова подключить кошелек через {extension}"
     },
     "connection": {
         "title": "Аккаунт сети {Sora}",
-        "text": "Подключите или создайте свой аккаунт сети {Sora} с расширениями {extensions}. Эти расширения позволяют безопасно подписывать транзакции и управлять активами в сети {Sora}.",
+        "text": "Расширения и Google надежно хранят ваш сетевой аккаунт {Sora} . Они позволяют подписывать транзакции и управлять активами.",
         "noAccounts": "Не найдено аккаунтов в вашем {extension} браузерном расширении. Пожалуйста, добавьте аккаунт и повторите попытку.",
         "selectAccount": "Выберите аккаунт для работы",
         "action": {
@@ -105,13 +106,19 @@
             "install": "Установить",
             "connected": "Подключено",
             "notConnected": "Не подключен"
+        },
+        "internalTitle": "Войти через {wallet}",
+        "internalText": "Вы можете создать или связать существующую учетную запись через {wallet} . Он хранит учетные записи с использованием шифрования.",
+        "list": {
+            "simplest": "Самый простой вариант",
+            "extensions": "Расширения"
         }
     },
     "wallet": {
         "title": "Аккаунт сети {Sora}",
         "WalletAssets": "Активы",
-        "WalletActivity": "Активность",
-        "createToken": "@:createTokenText"
+        "createToken": "@:createTokenText",
+        "WalletHistory": "Активность"
     },
     "walletSend": {
         "title": "Отправить",
@@ -516,13 +523,9 @@
         "strategicBonusApy": "Стратегический бонус APY"
     },
     "bridge": {
-        "title": "Мост {Hashi}",
+        "title": "Мост",
         "info": "Конвертировать токены между {Sora} и {Ethereum} сетями.",
         "balance": "Баланс",
-        "connectWallet": "@:connectWalletText",
-        "connected": "@:connectedText",
-        "changeAccount": "@:changeAccountText",
-        "changeNetwork": "@:changeNetworkText",
         "next": "Далее",
         "connectWallets": "Подключите кошельки для просмотра соответствующей истории транзакций.",
         "soraNetworkFee": "{Sora} Комиссия сети",
@@ -536,8 +539,7 @@
         "networkInfo": "Соединить {Sora} Сеть с:",
         "copy": "Скопировать адрес сети",
         "soraAddress": "{Sora} адрес",
-        "ethereumAddress": "{Ethereum} адрес",
-        "tooltipValue": "@:comingSoonText"
+        "ethereumAddress": "{Ethereum} адрес"
     },
     "selectRegisteredAsset": {
         "title": "Выбрать токен",
@@ -559,11 +561,7 @@
         }
     },
     "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Подтвердить транзакцию",
-        "insufficientBalance": "@:insufficientBalanceText",
-        "changeNetwork": "@:changeNetworkText",
-        "confirm": "@:confirmTransactionText",
-        "buttonConfirm": "@:confirmText"
+        "confirmTransaction": "Подтвердить транзакцию"
     },
     "bridgeTransaction": {
         "details": "{from} для {to}",
@@ -602,14 +600,10 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} транзакция в процессе...",
-        "retry": "@:retryText",
         "metamask": "{Metamask}",
         "confirm": "@:confirmTransactionText",
         "newTransaction": "Создать новую транзакцию",
-        "changeNetwork": "@:changeNetworkText",
-        "connectWallet": "@:connectWalletText",
         "changeAccount": "@:changeAccountText в {Metamask}",
-        "expectedAddress": "Ожидаемый адрес в {Metamask}",
         "title": "Транзакция Моста",
         "expectedMetaMaskAddress": "Ожидаемый адрес в {Metamask}",
         "allowToken": "Разрешить {AppName} использовать ваши {tokenSymbol}",
@@ -1031,7 +1025,7 @@
     },
     "receivedText": "Получено",
     "browserNotificationDialog": {
-        "title": "Включить уведомления браузера",
+        "title": "Установить уведомления",
         "info": "Мы будем присылать вам только актуальные обновления о вашем кошельке, например: изменения баланса активов",
         "button": "Включить уведомления",
         "agree": "Да, я понимаю",
@@ -1103,10 +1097,16 @@
             "jsonFields": "JSON-файл не содержит обязательных полей"
         },
         "assetsAtRiskText": "Активы под угрозой!",
-        "deleteAccountText": "Аккаунт не может быть восстановлен без исходной фразы, файла .json или если он хранится в каком-либо расширении. Вы выйдете из системы."
+        "deleteAccountText": "Аккаунт не может быть восстановлен без исходной фразы, файла .json или если он хранится в каком-либо расширении. Вы выйдете из системы.",
+        "importSteps": {
+            "selectWallet": "Перейдите к используемому кошельку",
+            "selectAccount": "Выберите учетную запись, которую вы хотите экспортировать",
+            "exportAccount": "Экспортируйте файл {JSON}"
+        },
+        "exportTutorialsText": "Инструкции по экспорту"
     },
     "hashiBridgeText": "Мост {Hashi}",
-    "disclaimerTitle": "Отказ от ответственности:",
+    "disclaimerTitle": "Отказ от ответственности",
     "explore": {
         "showOnlyMyPositions": "Показать только мои позиции"
     },
@@ -1174,5 +1174,32 @@
     },
     "locationText": "Расположение",
     "acceptText": "Принять и скрыть",
-    "newAccountsText": "Новые аккаунты"
+    "newAccountsText": "Новые аккаунты",
+    "dragAndDropText": "Перетащите или выберите файл {extension}",
+    "copyPhraseText": "Копировать фразу",
+    "stepText": "Шаг",
+    "alerts": {
+        "drop": "Снижение",
+        "raise": "Повышение",
+        "once": "Единожды",
+        "always": "Всегда",
+        "edit": "Изменить оповещение",
+        "delete": "Удалить оповещение",
+        "onDropDesc": "{token} падает ниже {price}",
+        "onRaiseDesc": "{token} поднимается выше {price}",
+        "alertsTitle": "Оповещения",
+        "alertsCreateTitle": "Настроить оповещение о цене",
+        "alertsTooltip": "Оповещения о цене — это уведомления, которые вы можете настроить для получения обновлений, когда цена конкретного токена достигает определенной точки, которую вы установили.",
+        "createBtn": "Создать новое ценовое оповещение",
+        "enableSwitch": "Включить уведомления о депозите активов",
+        "currentPrice": "текущая цена",
+        "alertTypeTitle": "Тип оповещения",
+        "typeTooltip": "Выберите вариант «опускается ниже» или «поднимается выше», чтобы указать условие оповещения для отслеживания важных ценовых движений. Эти параметры позволяют получать своевременные уведомления, когда стоимость вашего актива падает ниже или превышает установленный порог.",
+        "alertFrequencyTitle": "Частота предупреждений",
+        "frequencyTooltip": "Выберите между «один раз» и «всегда», чтобы определить, как часто вы будете получать уведомления для выбранного типа предупреждений. «Один раз» будет отправлять одно уведомление при выполнении условия, а «всегда» будет продолжать уведомлять вас каждый раз, когда порог цены пересекается.",
+        "noSupportMsg": "Уведомления не поддерживаются вашим браузером",
+        "finishBtn": "Завершить"
+    },
+    "accountAddressText": "Адрес аккаунта",
+    "fiatDisclaimer": "Обратите внимание, что фиатные значения, связанные с криптовалютами на нашем веб-сайте, предоставленные внешними сервисами (Subquery, Subsquid, Ceres API), являются приблизительными. Учитывая присущую этим вычислениям сложность, невозможно гарантировать абсолютную точность в любое время."
 }

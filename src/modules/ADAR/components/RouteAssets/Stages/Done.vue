@@ -102,20 +102,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { AdarComponents } from '@/modules/ADAR/consts';
-import { lazyComponent } from '@/router';
-import { adarLazyComponent } from '@/modules/ADAR/router';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { action, getter, state } from '@/store/decorators';
-import { components, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { groupBy, sumBy } from 'lodash';
-import { Recipient, RecipientStatus, TransactionInfo } from '@/store/routeAssets/types';
 import { FPNumber } from '@sora-substrate/util/build';
 import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
-import WarningMessage from '../WarningMessage.vue';
+import { components, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { jsPDF as JsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { groupBy, sumBy } from 'lodash';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { AdarComponents } from '@/modules/ADAR/consts';
+import { adarLazyComponent } from '@/modules/ADAR/router';
+import { lazyComponent } from '@/router';
+import { action, getter, state } from '@/store/decorators';
+import { Recipient, RecipientStatus, TransactionInfo } from '@/store/routeAssets/types';
+
+import WarningMessage from '../WarningMessage.vue';
+
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
@@ -279,6 +282,9 @@ export default class RoutingCompleted extends Mixins(TranslationMixin) {
         fillColor: [255, 250, 251],
       },
       columnStyles: {
+        1: {
+          cellWidth: 35,
+        },
         8: {
           fontStyle: 'bold',
         },

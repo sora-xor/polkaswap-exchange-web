@@ -122,23 +122,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
-
-import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
-import { hasInsufficientXorForFee, formatDecimalPlaces } from '@/utils';
+import router, { lazyComponent } from '@/router';
 import { getter, state, mutation, action } from '@/store/decorators';
-import { FocusedField } from '@/store/removeLiquidity/types';
 import type { LiquidityParams } from '@/store/pool/types';
+import { FocusedField } from '@/store/removeLiquidity/types';
+import { hasInsufficientXorForFee, formatDecimalPlaces } from '@/utils';
+
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 @Component({
   components: {

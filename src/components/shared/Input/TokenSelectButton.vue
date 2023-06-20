@@ -23,14 +23,14 @@
 </template>
 
 <script lang="ts">
+import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { lazyComponent } from '@/router';
+
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

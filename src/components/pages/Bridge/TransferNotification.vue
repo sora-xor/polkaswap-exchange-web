@@ -19,17 +19,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-import ethersUtil from '@/utils/ethers-util';
-import { isEthereumAddress } from '@/utils';
-import { isOutgoingTransaction } from '@/utils/bridge';
 import { getter, state, mutation } from '@/store/decorators';
+import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
+import ethersUtil from '@/utils/ethers-util';
 
-import type { BridgeHistory, RegisteredAccountAsset, RegisteredAsset } from '@sora-substrate/util';
+import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Whitelist } from '@sora-substrate/util/build/assets/types';
 
 @Component({
@@ -40,12 +38,12 @@ import type { Whitelist } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class BridgeTransferNotification extends Mixins(TranslationMixin) {
-  @state.bridge.notificationData private tx!: Nullable<BridgeHistory>;
+  @state.bridge.notificationData private tx!: Nullable<IBridgeTransaction>;
 
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
-  @mutation.bridge.setNotificationData private setNotificationData!: (tx?: BridgeHistory) => void;
+  @mutation.bridge.setNotificationData private setNotificationData!: (tx?: IBridgeTransaction) => void;
 
   get visibility(): boolean {
     return !!this.tx;
@@ -68,7 +66,9 @@ export default class BridgeTransferNotification extends Mixins(TranslationMixin)
   }
 
   get addTokenBtnVisibility(): boolean {
-    return !!this.asset && !isEthereumAddress(this.asset.externalAddress) && isOutgoingTransaction(this.tx);
+    return (
+      !!this.asset && !ethersUtil.isNativeEvmTokenAddress(this.asset.externalAddress) && isOutgoingTransaction(this.tx)
+    );
   }
 
   close(): void {
@@ -78,8 +78,7 @@ export default class BridgeTransferNotification extends Mixins(TranslationMixin)
   async addToken(): Promise<void> {
     if (!this.asset) return;
 
-    const { externalAddress, externalDecimals, symbol, address } = this.asset as RegisteredAccountAsset &
-      RegisteredAsset;
+    const { externalAddress, externalDecimals, symbol, address } = this.asset;
     const image = this.whitelist[address]?.icon;
     await ethersUtil.addToken(externalAddress, symbol, +externalDecimals, image);
   }
@@ -92,8 +91,6 @@ export default class BridgeTransferNotification extends Mixins(TranslationMixin)
   $metamask-icon-filter: drop-shadow(-5px -5px 10px #ffffff) drop-shadow(1px 1px 10px rgba(0, 0, 0, 0.1));
 
   .el-dialog .el-dialog__body {
-    padding: $inner-spacing-mini $inner-spacing-big $inner-spacing-big;
-
     .metamask-icon > .asset-logo {
       background-color: var(--s-color-base-content-secondary);
       background-image: url('~@/assets/img/metamask.svg');

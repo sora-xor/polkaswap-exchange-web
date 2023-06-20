@@ -51,11 +51,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 import PoolCardMixin from '../mixins/PoolCardMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component({
   components: {

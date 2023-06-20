@@ -111,26 +111,26 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Operation } from '@sora-substrate/util';
 import { XOR, XSTUSD } from '@sora-substrate/util/build/assets/consts';
-import type { CodecString } from '@sora-substrate/util';
-import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
-import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import BaseTokenPairMixin from '@/components/mixins/BaseTokenPairMixin';
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
-
-import router, { lazyComponent } from '@/router';
+import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import { Components, PageNames } from '@/consts';
-import { getter, action, mutation, state } from '@/store/decorators';
-import { getMaxValue, isMaxButtonAvailable, hasInsufficientBalance, getAssetBalance } from '@/utils';
+import router, { lazyComponent } from '@/router';
 import { FocusedField } from '@/store/addLiquidity/types';
+import { getter, action, mutation, state } from '@/store/decorators';
 import type { LiquidityParams } from '@/store/pool/types';
+import { getMaxValue, isMaxButtonAvailable, hasInsufficientBalance, getAssetBalance } from '@/utils';
+
+import type { CodecString } from '@sora-substrate/util';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 type SetValue = (v: string) => Promise<void>;
 

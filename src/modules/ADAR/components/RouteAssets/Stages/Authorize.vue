@@ -40,16 +40,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { action, getter, state } from '@/store/decorators';
-import { Recipient } from '@/store/routeAssets/types';
-import { sumBy } from 'lodash';
 import { FPNumber } from '@sora-substrate/util/build';
 import { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import { components, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { sumBy } from 'lodash';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import { action, getter, state } from '@/store/decorators';
+import { Recipient } from '@/store/routeAssets/types';
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
