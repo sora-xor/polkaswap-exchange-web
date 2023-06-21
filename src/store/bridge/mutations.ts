@@ -11,12 +11,18 @@ const mutations = defineMutations<BridgeState>()({
   setSoraToEvm(state, isSoraToEvm: boolean): void {
     state.isSoraToEvm = isSoraToEvm;
   },
+
   setAssetAddress(state, address?: string): void {
     state.assetAddress = address || '';
   },
+
   setAssetBalance(state, balance: Nullable<AccountBalance> = null): void {
     state.assetBalance = balance;
   },
+  setAssetExternalBalance(state, balance: Nullable<AccountBalance> = null): void {
+    state.assetExternalBalance = balance;
+  },
+
   setAmount(state, value?: string): void {
     state.amount = value || '';
   },
@@ -68,6 +74,7 @@ const mutations = defineMutations<BridgeState>()({
   removeTxIdFromProgress(state, id: string): void {
     state.inProgressIds = omit([id], state.inProgressIds);
   },
+
   addTxIdInApprove(state, id: string): void {
     state.waitingForApprove = { ...state.waitingForApprove, [id]: true };
   },
@@ -75,9 +82,10 @@ const mutations = defineMutations<BridgeState>()({
     state.waitingForApprove = omit([id], state.waitingForApprove);
   },
 
-  setEvmBlockNumber(state, blockNumber: number): void {
-    state.evmBlockNumber = blockNumber;
+  setExternalBlockNumber(state, blockNumber: number): void {
+    state.externalBlockNumber = blockNumber;
   },
+
   setHistoryLoading(state, value: boolean): void {
     state.historyLoading = value;
   },

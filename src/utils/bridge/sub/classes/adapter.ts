@@ -3,6 +3,7 @@ import { FPNumber, Operation } from '@sora-substrate/util';
 import { formatBalance } from '@sora-substrate/util/build/assets';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { map } from 'rxjs';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
@@ -44,9 +45,11 @@ class SubAdapter {
     }
   }
 
-  protected async getAccountBalance(accountAddress: string) {
-    if (!this.connected) return '0';
+  protected async getBlockNumberObservable() {
+    return this.apiRx.query.system.number().pipe(map((codec) => codec.toNumber()));
+  }
 
+  protected async getAccountBalance(accountAddress: string) {
     await this.ready;
 
     const accountInfo = await this.api.query.system.account(accountAddress);
@@ -54,6 +57,19 @@ class SubAdapter {
     const balance = accountBalance.transferable;
 
     return balance;
+  }
+
+  public async getAccountBalanceObservable(accountAddress: string) {
+    await this.ready;
+
+    return this.apiRx.query.system.account(accountAddress).pipe(
+      map((accountInfo) => {
+        const accountBalance = formatBalance(accountInfo.data);
+        const balance = accountBalance.transferable;
+
+        return balance;
+      })
+    );
   }
 
   public async getTokenBalance(accountAddress: string, tokenAddress?: string) {

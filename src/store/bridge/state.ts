@@ -6,11 +6,12 @@ function initialState(): BridgeState {
   return {
     isSoraToEvm: true,
     assetAddress: '',
-    assetBalance: null,
+    assetBalance: null, // balance for sora
+    assetExternalBalance: null, // balance for bridge network
     amount: '',
     evmNetworkFee: ZeroStringValue,
     evmNetworkFeeFetching: false,
-    evmBlockNumber: 0,
+    externalBlockNumber: 0,
     // history sources
     historyInternal: {}, // localstorage history
     historyExternal: {}, // network history

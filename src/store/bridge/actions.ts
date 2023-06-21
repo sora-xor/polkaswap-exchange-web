@@ -46,7 +46,7 @@ async function evmTxDataToHistory(
   const transactionState = tx.status;
   const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
   const soraBlockNumber = isOutgoing ? tx.startBlock : tx.endBlock;
-  const evmBlockNumber = isOutgoing ? tx.endBlock : tx.startBlock;
+  const externalBlockNumber = isOutgoing ? tx.endBlock : tx.startBlock;
   const blockId = await api.system.getBlockHash(soraBlockNumber);
   const startTime = await api.system.getBlockTimestamp(blockId);
 
@@ -54,7 +54,7 @@ async function evmTxDataToHistory(
     id,
     txId: id,
     blockId,
-    blockHeight: String(evmBlockNumber),
+    blockHeight: String(externalBlockNumber),
     type: isOutgoing ? Operation.EvmOutgoing : Operation.EvmIncoming,
     hash: tx.soraHash,
     transactionState,
@@ -82,7 +82,7 @@ async function subTxDataToHistory(
   const transactionState = tx.status;
   const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
   const soraBlockNumber = isOutgoing ? tx.startBlock : tx.endBlock;
-  const evmBlockNumber = isOutgoing ? tx.endBlock : tx.startBlock;
+  const externalBlockNumber = isOutgoing ? tx.endBlock : tx.startBlock;
   const blockId = await api.system.getBlockHash(soraBlockNumber);
   const txId = await findUserTxIdInBlock(blockId, id, 'RequestStatusUpdate', 'bridgeProxy');
   const startTime = await api.system.getBlockTimestamp(blockId);
@@ -91,7 +91,7 @@ async function subTxDataToHistory(
     id,
     txId,
     blockId,
-    blockHeight: String(evmBlockNumber),
+    blockHeight: String(externalBlockNumber),
     type: isOutgoing ? Operation.SubstrateOutgoing : Operation.SubstrateIncoming,
     hash: tx.soraHash,
     transactionState,
@@ -172,7 +172,7 @@ const actions = defineActions({
     dispatch.setAssetAddress();
   },
 
-  async updateBalanceSubscription(context): Promise<void> {
+  async updateInternalBalanceSubscription(context): Promise<void> {
     const { getters, commit, rootGetters } = bridgeActionContext(context);
     const updateBalance = (balance: Nullable<AccountBalance>) => commit.setAssetBalance(balance);
 
@@ -187,20 +187,14 @@ const actions = defineActions({
     }
   },
 
-  async resetBalanceSubscription(context): Promise<void> {
+  async resetInternalBalanceSubscription(context): Promise<void> {
     balanceSubscriptions.remove('asset');
   },
 
   async setAssetAddress(context, address?: string): Promise<void> {
     const { commit, dispatch } = bridgeActionContext(context);
     commit.setAssetAddress(address);
-    dispatch.updateBalanceSubscription();
-  },
-
-  async updateEvmBlockNumber(context, value?: number): Promise<void> {
-    const { commit } = bridgeActionContext(context);
-    const blockNumber = value ?? (await (await ethersUtil.getEthersInstance()).getBlockNumber());
-    commit.setEvmBlockNumber(blockNumber);
+    dispatch.updateInternalBalanceSubscription();
   },
 
   async getExternalNetworkFee(context): Promise<void> {

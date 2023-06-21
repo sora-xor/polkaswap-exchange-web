@@ -185,6 +185,7 @@ async function getEthersInstance(): Promise<ethersProvider> {
 async function watchEthereum(cb: {
   onAccountChange: (addressList: string[]) => void;
   onNetworkChange: (networkId: string) => void;
+  onConnect: FnWithoutArgs;
   onDisconnect: FnWithoutArgs;
 }): Promise<FnWithoutArgs> {
   await getEthersInstance();
@@ -194,6 +195,7 @@ async function watchEthereum(cb: {
   if (ethereum) {
     ethereum.on('accountsChanged', cb.onAccountChange);
     ethereum.on('chainChanged', cb.onNetworkChange);
+    ethereum.on('connect', cb.onConnect);
     ethereum.on('disconnect', cb.onDisconnect);
   }
 
@@ -201,6 +203,7 @@ async function watchEthereum(cb: {
     if (ethereum) {
       ethereum.removeListener('accountsChanged', cb.onAccountChange);
       ethereum.removeListener('chainChanged', cb.onNetworkChange);
+      ethereum.removeListener('connect', cb.onConnect);
       ethereum.removeListener('disconnect', cb.onDisconnect);
     }
   };

@@ -350,8 +350,8 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setAmount setAmount!: (value?: string) => void;
 
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
-  @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncFnWithoutArgs;
-  @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncFnWithoutArgs;
+  @action.bridge.resetInternalBalanceSubscription private resetInternalBalanceSubscription!: AsyncFnWithoutArgs;
+  @action.bridge.updateInternalBalanceSubscription private updateInternalBalanceSubscription!: AsyncFnWithoutArgs;
   @action.bridge.getExternalNetworkFee private getExternalNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<IBridgeTransaction>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
@@ -359,9 +359,9 @@ export default class Bridge extends Mixins(
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean) {
     if (nodeConnected) {
-      this.updateBalanceSubscription();
+      this.updateInternalBalanceSubscription();
     } else {
-      this.resetBalanceSubscription();
+      this.resetInternalBalanceSubscription();
     }
   }
 
@@ -502,12 +502,12 @@ export default class Bridge extends Mixins(
       this.setAmount(this.$route.params.xorToDeposit);
     } else {
       this.setAmount();
-      this.updateBalanceSubscription();
+      this.updateInternalBalanceSubscription();
     }
   }
 
   destroyed(): void {
-    this.resetBalanceSubscription();
+    this.resetInternalBalanceSubscription();
   }
 
   getBridgeItemTitle(isSoraNetwork = false): string {

@@ -5,10 +5,11 @@ export type BridgeState = {
   isSoraToEvm: boolean;
   assetAddress: string;
   assetBalance: Nullable<AccountBalance>;
+  assetExternalBalance: Nullable<AccountBalance>;
   amount: string;
   evmNetworkFee: CodecString;
   evmNetworkFeeFetching: boolean;
-  evmBlockNumber: number;
+  externalBlockNumber: number;
   // history sources (unsynced localstorage & network)
   historyInternal: Record<string, IBridgeTransaction>;
   historyExternal: Record<string, IBridgeTransaction>;
