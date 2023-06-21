@@ -263,7 +263,7 @@ router.beforeEach((to, from, next) => {
     }
   }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (BridgeChildPages.includes(current) && isLoggedIn && !store.getters.web3.isExternalAccountConnected) {
+    if (BridgeChildPages.includes(current) && isLoggedIn && !store.getters.web3.externalAccount) {
       setRoute(PageNames.Bridge);
       return;
     }

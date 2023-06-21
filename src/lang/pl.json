@@ -318,7 +318,7 @@
     "retryText": "Spróbuj ponownie",
     "networkFeeText": "Opłata sieciowa",
     "networkFeeTooltipText": "Opłata sieciowa służy zapewnieniu rozwoju i stabilności systemu {Sora}.",
-    "ethNetworkFeeTooltipText": "Należy mieć na uwadze, że opłaty w sieci {Ethereum} widoczne na {AppName} to jedynie przybliżone oszacowanie. Przed potwierdzeniem transakcji można zobaczyć prawidłową kwotę opłaty w podłączonym portfelu sieci {Ethereum}.",
+    "ethNetworkFeeTooltipText": "Pamiętaj, że opłaty sieciowe {network} wyświetlane w {AppName} to tylko przybliżone szacunki. Przed potwierdzeniem transakcji możesz zobaczyć prawidłową kwotę opłaty w połączonym portfelu {network} .",
     "marketText": "Rynek",
     "marketAlgorithmText": "Algorytm rynkowy",
     "firstPerSecond": "{first} za {second}",
@@ -547,7 +547,7 @@
             "title": "Tokeny",
             "placeholder": "Filtruj według identyfikatora waluty, nazwy lub symbolu giełdowego",
             "networkLabelSora": "Tokeny sieci {Sora}",
-            "networkLabelEthereum": "Tokeny lustrzane sieci {Ethereum}",
+            "networkLabelEthereum": "Tokeny lustrzane sieci {network}",
             "emptyListMessage": "Brak wyników"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Nazwa portfela",
-            "desc": "To jest publiczna nazwa Twojego portfela, która będzie widoczna dla wszystkich"
+            "desc": "To nazwa Twojego portfela, która będzie dla Ciebie widoczna"
         },
         "password": {
             "placeholder": "Hasło",
@@ -1094,7 +1094,8 @@
             "passwords": "Hasła nie pasują",
             "mnemonic": "Podano nieprawidłowy mnemonik bip39",
             "mnemonicLength": "Mnemonik powinien zawierać {number} słów",
-            "jsonFields": "Plik JSON nie zawiera wymaganych pól"
+            "jsonFields": "Plik JSON nie zawiera wymaganych pól",
+            "alreadyImported": "Konto już zaimportowane {address}"
         },
         "assetsAtRiskText": "Aktywa zagrożone!",
         "deleteAccountText": "Konta nie można odzyskać bez frazy początkowej, pliku .json lub jeśli jest on przechowywany w jakimś rozszerzeniu. Zostaniesz wylogowany.",
@@ -1201,5 +1202,16 @@
         "finishBtn": "Ukończyć"
     },
     "accountAddressText": "Adres konta",
-    "fiatDisclaimer": "Należy pamiętać, że wartości fiducjarne związane z kryptowalutami na naszej stronie dostarczane przez zewnętrzne usługi (Subquery, Subsquid, Ceres API) są przybliżone. Biorąc pod uwagę naturalną złożoność tych obliczeń, nie można zagwarantować absolutnej precyzji przez cały czas."
+    "fiatDisclaimer": "Należy pamiętać, że wartości fiducjarne związane z kryptowalutami na naszej stronie dostarczane przez zewnętrzne usługi (Subquery, Subsquid, Ceres API) są przybliżone. Biorąc pod uwagę naturalną złożoność tych obliczeń, nie można zagwarantować absolutnej precyzji przez cały czas.",
+    "fiatPayment": {
+        "historyBtn": "Moje zakupy",
+        "historyTitle": "Historia transakcji",
+        "moonpayTitle": "Kup ETH przez MoonPay",
+        "moonpayDesc": "Kup tokeny ETH na Ethereum i przenieś je do sieci SORA przez most",
+        "x1Title": "Kup XOR za pomocą swojej karty",
+        "x1Desc": "Kup tokeny XOR za pomocą karty debetowej lub kredytowej",
+        "x1Btn": "Kup XOR z kartą",
+        "errorMessage": "Przepraszam za utrudnienia. Intensywnie pracujemy nad rozwiązaniem tego problemu. Spróbuj ponownie później."
+    },
+    "acceptOnScrollText": "Przewiń, aby zaakceptować"
 }

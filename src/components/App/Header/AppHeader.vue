@@ -87,11 +87,10 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
 
   async openMoonpayDialog(): Promise<void> {
     if (!this.isSoraAccountConnected) {
-      return this.connectInternalWallet();
+      return this.connectSoraWallet();
     }
-    await this.checkConnectionToExternalAccount(async () => {
-      this.setMoonpayVisibility(true);
-    });
+    await this.connectEvmWallet();
+    this.setMoonpayVisibility(true);
   }
 
   toggleMenu(): void {

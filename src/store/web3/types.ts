@@ -1,7 +1,8 @@
-import type { BridgeType } from '@/consts/evm';
-
 import type { CodecString } from '@sora-substrate/util';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import type { SupportedApps, BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 export type EthBridgeContractsAddresses = {
   XOR: string;
@@ -14,17 +15,32 @@ export type EthBridgeSettings = {
   address: EthBridgeContractsAddresses;
 };
 
+export type SubNetworkApps = Partial<
+  Record<
+    SubNetwork,
+    {
+      addresses: string[];
+    }
+  >
+>;
+
 export type Web3State = {
   evmAddress: string;
-  evmBalance: CodecString;
-  evmNetwork: Nullable<EvmNetwork>;
-  evmNetworksApp: EvmNetwork[];
-  evmNetworksChain: EvmNetwork[];
-  evmNetworkSelected: Nullable<EvmNetwork>;
-  networkType: BridgeType;
+  subAddress: string;
 
-  selectNetworkDialogVisibility: boolean;
+  evmBalance: CodecString;
+
+  networkType: BridgeNetworkType;
+  networkSelected: Nullable<BridgeNetworkId>;
+  evmNetworkProvided: Nullable<BridgeNetworkId>;
+
+  evmNetworkApps: EvmNetwork[];
+  subNetworkApps: SubNetworkApps;
+  supportedApps: SupportedApps;
 
   ethBridgeEvmNetwork: EvmNetwork;
   ethBridgeContractAddress: EthBridgeContractsAddresses;
+
+  selectNetworkDialogVisibility: boolean;
+  selectAccountDialogVisibility: boolean;
 };
