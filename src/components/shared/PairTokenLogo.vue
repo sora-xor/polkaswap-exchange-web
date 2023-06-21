@@ -51,7 +51,6 @@ export default class PairTokenLogo extends Mixins(TranslationMixin) {
     &:first-child {
       top: 0;
       left: 0;
-      z-index: $app-content-layer;
     }
     &:last-child {
       bottom: 0;
