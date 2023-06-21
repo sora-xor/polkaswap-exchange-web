@@ -417,7 +417,7 @@ export default class ReferralProgram extends Mixins(
 
   handleConnect(): void {
     if (!this.isSoraAccountConnected) {
-      this.connectInternalWallet();
+      this.connectSoraWallet();
     }
   }
 

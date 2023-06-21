@@ -30,21 +30,6 @@ const TranslationConsts = {
   Kusama: 'Kusama',
   Metamask: 'MetaMask',
   ROI: 'ROI', // Return of investment
-  // Networks from ETH Bridge
-  bridgeNetwork: {
-    EWC: 'Energy Web Chain',
-    private: 'Volta Testnet',
-    goerli: 'Ethereum Goerli',
-    kovan: 'Ethereum Kovan',
-    rinkeby: 'Ethereum Rinkeby',
-    ropsten: 'Ethereum Ropsten',
-    main: 'Ethereum Mainnet',
-  },
-  // Select EVM network dialog
-  evmNetwork: {
-    ethereum: 'Ethereum',
-    energy: 'Energy Web Chain',
-  },
   mbps: 'mbps',
   online: 'Online',
   offline: 'Offline',

@@ -1,5 +1,5 @@
 import { Operation } from '@sora-substrate/util';
-import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
+import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import store from '@/store';
 import { Bridge } from '@/utils/bridge/common/classes';
@@ -9,7 +9,7 @@ import { EvmBridgeOutgoingReducer, EvmBridgeIncomingReducer } from '@/utils/brid
 import type { EvmBridgeReducer } from '@/utils/bridge/evm/classes/reducers';
 import { updateTransaction } from '@/utils/bridge/evm/utils';
 
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
+import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 interface EvmBridgeConstructorOptions extends IBridgeConstructorOptions<EvmHistory, EvmBridgeReducer> {
   removeTransactionByHash: RemoveTransactionByHash<EvmHistory>;
@@ -22,7 +22,7 @@ const evmBridge: EvmBridge = new Bridge({
     [Operation.EvmIncoming]: EvmBridgeIncomingReducer,
     [Operation.EvmOutgoing]: EvmBridgeOutgoingReducer,
   },
-  signEvm: {
+  signExternal: {
     [Operation.EvmIncoming]: async (id: string) => {},
     [Operation.EvmOutgoing]: async (id: string) => {},
   },
@@ -32,15 +32,15 @@ const evmBridge: EvmBridge = new Bridge({
   // states
   boundaryStates: {
     [Operation.EvmOutgoing]: {
-      done: EvmTxStatus.Done,
-      failed: [EvmTxStatus.Failed],
+      done: BridgeTxStatus.Done,
+      failed: [BridgeTxStatus.Failed],
     },
   },
   // assets
   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),
   getAssetByAddress: (address: string) => store.getters.assets.assetDataByAddress(address),
   // transaction
-  getTransaction: (id: string) => (evmBridgeApi.getHistory(id) as EvmHistory) || store.getters.bridge.history[id],
+  getTransaction: (id: string) => (store.getters.bridge.history[id] || evmBridgeApi.getHistory(id)) as EvmHistory,
   updateTransaction,
   // ui integration
   showNotification: (tx: EvmHistory) => store.commit.bridge.setNotificationData(tx),

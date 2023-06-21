@@ -79,10 +79,11 @@
     </s-form>
 
     <select-token
+      is-add-liquidity
       :visible.sync="showSelectTokenDialog"
       :connected="isLoggedIn"
       :asset="isFirstTokenSelected ? secondToken : firstToken"
-      :is-main-token-providers="isFirstTokenSelected"
+      :is-first-token-selected="isFirstTokenSelected"
       :disabled-custom="isFirstTokenSelected"
       @select="selectToken"
     />

@@ -32,10 +32,18 @@
               <div class="history-item-info">
                 <div class="history-item-title p4">
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
-                  <i :class="`network-icon network-icon--${getEvmIcon(isOutgoingType(item.type) ? 0 : evmNetwork)}`" />
+                  <i
+                    :class="`network-icon network-icon--${getNetworkIcon(
+                      isOutgoingType(item.type) ? 0 : item.externalNetwork
+                    )}`"
+                  />
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
-                  <i :class="`network-icon network-icon--${getEvmIcon(!isOutgoingType(item.type) ? 0 : evmNetwork)}`" />
+                  <i
+                    :class="`network-icon network-icon--${getNetworkIcon(
+                      !isOutgoingType(item.type) ? 0 : item.externalNetwork
+                    )}`"
+                  />
                 </div>
                 <div class="history-item-date">{{ formatDatetime(item) }}</div>
               </div>
@@ -58,8 +66,6 @@
         </div>
       </s-form>
     </s-card>
-
-    <bridge-select-network :selected-evm-network="selectedEvmNetwork" @change="changeEvmNetwork" />
   </div>
 </template>
 
@@ -77,13 +83,11 @@ import type { EvmAccountAsset } from '@/store/assets/types';
 import { state } from '@/store/decorators';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
-    BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
     SearchInput: components.SearchInput,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
@@ -145,10 +149,6 @@ export default class BridgeTransactionsHistory extends Mixins(
     }).finally(() => {
       this.loading = false;
     });
-  }
-
-  changeEvmNetwork(evmNetwork: EvmNetwork): void {
-    this.setSelectedEvmNetwork(evmNetwork);
   }
 
   getFilteredHistory(history: Array<IBridgeTransaction>): Array<IBridgeTransaction> {
