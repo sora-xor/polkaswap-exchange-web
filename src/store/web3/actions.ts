@@ -20,8 +20,6 @@ async function connectEvmNetwork(context: ActionContext<any, any>, networkHex?: 
 }
 
 async function connectSubNetwork(context: ActionContext<any, any>): Promise<void> {
-  // [TODO] connect to substrate network
-  // this code just takes network from storage
   const { getters } = web3ActionContext(context);
   const subNetwork = getters.selectedNetwork;
 
@@ -79,17 +77,15 @@ const actions = defineActions({
     commit.setSupportedApps(supportedApps);
   },
 
-  async restoreSelectedEvmNetwork(context): Promise<void> {
+  async restoreSelectedNetwork(context): Promise<void> {
     const { commit, getters } = web3ActionContext(context);
 
     if (getters.selectedNetwork) return;
 
-    const selectedEvmNetworkId =
-      ethersUtil.getSelectedNetwork() || getters.availableNetworks[BridgeNetworkType.EvmLegacy]?.[0]?.data?.id;
+    const selectedNetworkId =
+      ethersUtil.getSelectedNetwork() ?? getters.availableNetworks[BridgeNetworkType.EvmLegacy]?.[0]?.data?.id;
 
-    if (selectedEvmNetworkId) {
-      commit.setSelectedNetwork(selectedEvmNetworkId);
-    }
+    commit.setSelectedNetwork(selectedNetworkId);
   },
 
   /**
@@ -114,8 +110,7 @@ const actions = defineActions({
       const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi;
       const contractAddress = getters.contractAddress(KnownEthBridgeAsset.Other);
       if (!contractAddress || !contractAbi) {
-        console.error('Contract address/abi is not found');
-        return '';
+        throw new Error('Contract address/abi is not found');
       }
       const ethersInstance = await ethersUtil.getEthersInstance();
       const contractInstance = new ethers.Contract(contractAddress, contractAbi, ethersInstance.getSigner());

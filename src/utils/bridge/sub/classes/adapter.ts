@@ -28,6 +28,10 @@ class SubAdapter {
     return this.api.isReady;
   }
 
+  get connected(): boolean {
+    return this.connection.opened;
+  }
+
   async connect(endpoint: string) {
     await this.stop();
     this.connection.endpoint = endpoint;
@@ -35,12 +39,14 @@ class SubAdapter {
   }
 
   async stop() {
-    if (this.connection.opened) {
+    if (this.connected) {
       await this.connection.close();
     }
   }
 
-  public async getAccountBalance(accountAddress: string) {
+  protected async getAccountBalance(accountAddress: string) {
+    if (!this.connected) return '0';
+
     await this.ready;
 
     const accountInfo = await this.api.query.system.account(accountAddress);
@@ -126,7 +132,7 @@ class RococoAdapter extends SubAdapter {
 class SubConnector {
   protected readonly rococoAdapter: SubAdapter = new RococoAdapter();
 
-  public adapter!: SubAdapter;
+  public adapter: SubAdapter = this.rococoAdapter;
 
   protected getAdapterForNetwork(network: SubNetwork): SubAdapter {
     switch (network) {

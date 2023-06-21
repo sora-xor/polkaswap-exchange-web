@@ -118,10 +118,6 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<Reco
   // fetch balances for current sora account
   const accountAddress = rootState.wallet.account.address;
 
-  if (!subConnector.adapter.connection.opened) {
-    throw new Error('Connection to Sub network is not opened');
-  }
-
   const updated = await Promise.all(
     Object.entries(state.registeredAssets).map(async ([soraAddress, asset]) => {
       const accountAsset = { ...asset };

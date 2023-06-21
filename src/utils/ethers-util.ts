@@ -107,7 +107,6 @@ async function getAccountBalance(accountAddress: string): Promise<CodecString> {
   }
 }
 
-// TODO [EVM]: check FirstTestToken
 async function getAccountAssetBalance(
   accountAddress: string,
   assetAddress: string
