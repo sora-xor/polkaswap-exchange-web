@@ -60,10 +60,10 @@ async function getSubRegisteredAssets(context: ActionContext<any, any>): Promise
     return [
       // ROC
       {
-        '0x005963f9e01c987ae213bca46603d8b569ebbf91d3c52ab59207d7e4dae87bff': {
+        '0x00f62e4fbc53f2fd30879da96b6b9a928ca5cc5573df86c8e583446023803860': {
           address: '',
           balance: '0',
-          decimals: 18,
+          decimals: 12,
         },
       },
     ];
