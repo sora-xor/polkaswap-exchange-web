@@ -5,7 +5,7 @@ export type BridgeState = {
   isSoraToEvm: boolean;
   assetAddress: string;
   assetBalance: Nullable<AccountBalance>;
-  assetExternalBalance: Nullable<AccountBalance>;
+  assetExternalBalance: Nullable<CodecString>;
   amount: string;
   evmNetworkFee: CodecString;
   evmNetworkFeeFetching: boolean;

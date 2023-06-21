@@ -16,6 +16,7 @@ import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
+import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
@@ -161,6 +162,30 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
   }
 }
 
+async function updateEvmExternalBalance(context: ActionContext<any, any>): Promise<void> {
+  const { getters, commit, rootGetters } = bridgeActionContext(context);
+
+  const accountAddress = rootGetters.web3.externalAccount;
+  const externalAddress = getters.asset?.externalAddress;
+
+  const balance = externalAddress
+    ? (await ethersUtil.getAccountAssetBalance(accountAddress, externalAddress)).value
+    : '0';
+
+  commit.setAssetExternalBalance(balance);
+}
+
+async function updateSubExternalBalance(context: ActionContext<any, any>): Promise<void> {
+  const { getters, commit, rootGetters } = bridgeActionContext(context);
+
+  const accountAddress = rootGetters.web3.externalAccount;
+  const externalAddress = getters.asset?.externalAddress;
+
+  const balance = externalAddress ? await subConnector.adapter.getTokenBalance(accountAddress, externalAddress) : '0';
+
+  commit.setAssetExternalBalance(balance);
+}
+
 const actions = defineActions({
   resetForm(context) {
     const { commit, dispatch } = bridgeActionContext(context);
@@ -193,8 +218,12 @@ const actions = defineActions({
 
   async setAssetAddress(context, address?: string): Promise<void> {
     const { commit, dispatch } = bridgeActionContext(context);
+
     commit.setAssetAddress(address);
+    commit.setAssetExternalBalance();
+
     dispatch.updateInternalBalanceSubscription();
+    dispatch.updateExternalBalance();
   },
 
   async getExternalNetworkFee(context): Promise<void> {
@@ -204,6 +233,16 @@ const actions = defineActions({
       // [TODO] sub network fee
     } else {
       await getEvmNetworkFee(context);
+    }
+  },
+
+  async updateExternalBalance(context): Promise<void> {
+    const { getters } = bridgeActionContext(context);
+
+    if (getters.isSubBridge) {
+      await updateSubExternalBalance(context);
+    } else {
+      await updateEvmExternalBalance(context);
     }
   },
 

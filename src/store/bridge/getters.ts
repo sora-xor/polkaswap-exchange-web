@@ -16,13 +16,16 @@ const getters = defineGetters<BridgeState>()({
   asset(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = bridgeGetterContext(args);
     const token = rootGetters.assets.assetDataByAddress(state.assetAddress);
+
+    if (!token) return null;
+
     const balance = state.assetBalance;
+    const externalBalance = state.assetExternalBalance;
 
-    if (balance) {
-      return { ...token, balance } as RegisteredAccountAsset;
-    }
+    if (balance) token.balance = balance;
+    if (externalBalance) token.externalBalance = externalBalance;
 
-    return token;
+    return token as RegisteredAccountAsset;
   },
   isRegisteredAsset(...args): boolean {
     const { getters, rootState } = bridgeGetterContext(args);
