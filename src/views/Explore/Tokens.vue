@@ -1,5 +1,18 @@
 <template>
   <div>
+    <div class="switcher">
+      <s-switch v-model="showOnlySynths" />
+      <span>{{ 'Show only synthetic tokens' }}</span>
+      <s-tooltip
+        class="switcher-tooltip"
+        popper-class="info-tooltip"
+        border-radius="mini"
+        :content="'Here will be content'"
+        tabindex="-1"
+      >
+        <s-icon name="info-16" size="18px" />
+      </s-tooltip>
+    </div>
     <s-table
       ref="table"
       v-loading="loadingState"
@@ -112,7 +125,7 @@
             </sort-button>
           </template>
           <template v-slot="{ row }">
-            <span v-if="isSynthetic(row)">—</span>
+            <span v-if="isSynthetic(row.address)">—</span>
             <formatted-amount
               v-else
               is-fiat-value
@@ -140,7 +153,7 @@
             </sort-button>
           </template>
           <template v-slot="{ row }">
-            <span v-if="isSynthetic(row)">—</span>
+            <span v-if="isSynthetic(row.address)">—</span>
             <formatted-amount
               v-else
               :font-weight-rate="FontWeightRate.MEDIUM"
@@ -290,6 +303,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
   @getter.assets.whitelistAssets private items!: Array<Asset>;
 
+  showOnlySynths = false;
   tokensData: Record<string, TokenData> = {};
   // override ExplorePageMixin
   order = SortDirection.DESC;
@@ -306,6 +320,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
         const asset = this.getAsset(address);
 
         if (!asset) return buffer;
+        if (this.showOnlySynths && !this.isSynthetic(asset.address)) return buffer;
 
         const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? 0);
         const fpPriceDay = tokenData?.startPriceDay ?? FPNumber.ZERO;
@@ -339,8 +354,8 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
       }, []);
   }
 
-  isSynthetic(row: TableItem): boolean {
-    return syntheticAssetRegexp.test(row.address);
+  isSynthetic(address: string): boolean {
+    return syntheticAssetRegexp.test(address);
   }
 
   // ExplorePageMixin method implementation
@@ -370,4 +385,15 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
 <style lang="scss">
 @include explore-table;
+</style>
+
+<style lang="scss" scoped>
+.switcher {
+  display: flex;
+  align-items: center;
+
+  & > span {
+    margin-left: $inner-spacing-small;
+  }
+}
 </style>
