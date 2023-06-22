@@ -186,7 +186,6 @@ export default class Rewards extends Mixins(
         }
       },
       onNetworkChange: () => {},
-      onConnect: () => {},
       onDisconnect: () => {},
     });
   }

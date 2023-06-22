@@ -39,6 +39,13 @@ const actions = defineActions({
     commit.setEvmAddress(address);
   },
 
+  async connectSubAccount(context, address: string): Promise<void> {
+    const { commit, rootDispatch } = web3ActionContext(context);
+    commit.setSubAddress(address);
+
+    await rootDispatch.bridge.updateExternalBalance();
+  },
+
   async connectExternalNetwork(context, network?: string): Promise<void> {
     const { state, rootDispatch } = web3ActionContext(context);
 
@@ -47,8 +54,14 @@ const actions = defineActions({
     } else {
       await connectEvmNetwork(context, network);
     }
+
     // reset bridge form
-    rootDispatch.bridge.resetForm();
+    await Promise.all([
+      rootDispatch.bridge.resetForm(),
+      rootDispatch.assets.updateRegisteredAssets(),
+      rootDispatch.bridge.updateExternalBalance(),
+      rootDispatch.bridge.getExternalNetworkFee(),
+    ]);
   },
 
   async selectExternalNetwork(context, network: BridgeNetworkId): Promise<void> {

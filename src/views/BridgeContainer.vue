@@ -22,12 +22,9 @@ import ethersUtil from '@/utils/ethers-util';
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
   @action.bridge.getExternalNetworkFee private getExternalNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBalance private updateExternalBalance!: AsyncFnWithoutArgs;
-  @action.assets.updateRegisteredAssets private updateRegisteredAssets!: AsyncFnWithoutArgs;
   @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
   @action.web3.restoreNetworkType restoreNetworkType!: AsyncFnWithoutArgs;
   @action.web3.restoreSelectedNetwork restoreSelectedNetwork!: AsyncFnWithoutArgs;
-
-  @getter.web3.externalAccount private externalAccount!: string;
 
   @mutation.bridge.setExternalBlockNumber private setExternalBlockNumber!: (block?: number) => void;
 
@@ -43,17 +40,11 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
       await this.restoreNetworkType();
       await this.restoreSelectedNetwork();
       await this.connectExternalNetwork();
-      await this.onConnectedNetworkChange();
     });
   }
 
   private async updateBalancesAndFees(): Promise<void> {
     await Promise.all([this.updateExternalBalance(), this.getExternalNetworkFee()]);
-  }
-
-  private async onConnectedNetworkChange() {
-    await this.updateRegisteredAssets();
-    await this.updateBalancesAndFees();
   }
 
   private async subscribeOnEvm(): Promise<void> {
@@ -67,11 +58,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
         this.updateExternalBalance();
       },
       onNetworkChange: async (networkHex: string) => {
-        await this.connectExternalNetwork(networkHex);
-        await this.onConnectedNetworkChange();
-      },
-      onConnect: () => {
-        this.onConnectedNetworkChange();
+        this.connectExternalNetwork(networkHex);
       },
       onDisconnect: () => {
         this.resetProvidedEvmNetwork();

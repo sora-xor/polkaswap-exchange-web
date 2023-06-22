@@ -180,8 +180,7 @@ async function updateSubExternalBalance(context: ActionContext<any, any>): Promi
 
   const accountAddress = rootGetters.web3.externalAccount;
   const externalAddress = getters.asset?.externalAddress;
-
-  const balance = externalAddress ? await subConnector.adapter.getTokenBalance(accountAddress, externalAddress) : '0';
+  const balance = await subConnector.adapter.getTokenBalance(accountAddress, externalAddress);
 
   commit.setAssetExternalBalance(balance);
 }
