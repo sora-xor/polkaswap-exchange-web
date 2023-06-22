@@ -1,21 +1,21 @@
-import { Component, Mixins } from 'vue-property-decorator';
 import { Operation } from '@sora-substrate/util';
-import type { CodecString, BridgeHistory } from '@sora-substrate/util';
-import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
-
-import ethersUtil from '@/utils/ethers-util';
-import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
-import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
-import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
-import { state, action, mutation, getter } from '@/store/decorators';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-
-import type { MoonpayTransaction } from '@/utils/moonpay';
-import type { RegisteredAccountAssetObject, EvmAccountAsset } from '@/store/assets/types';
+import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
+import type { RegisteredAccountAssetObject, BridgeAccountAsset } from '@/store/assets/types';
+import { state, action, mutation, getter } from '@/store/decorators';
 import type { BridgeTxData } from '@/store/moonpay/types';
+import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
+import ethersUtil from '@/utils/ethers-util';
+import type { MoonpayTransaction } from '@/utils/moonpay';
+import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
+
+import type { CodecString, BridgeHistory } from '@sora-substrate/util';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 const createError = (text: string, notification: MoonpayNotifications) => {
   const error = new Error(text);
@@ -27,10 +27,9 @@ const createError = (text: string, notification: MoonpayNotifications) => {
 export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, WalletConnectMixin) {
   @state.moonpay.api moonpayApi!: MoonpayApi;
   @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<BridgeHistory>;
-  @state.web3.evmBalance evmBalance!: CodecString;
   @state.web3.ethBridgeEvmNetwork ethBridgeEvmNetwork!: EvmNetwork;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
+  @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeAccountAsset>;
 
   @getter.settings.moonpayApiKey moonpayApiKey!: string;
   @getter.assets.assetsDataTable assetsDataTable!: RegisteredAccountAssetObject;
@@ -48,7 +47,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @action.assets.updateExternalBalances private updateExternalBalances!: AsyncFnWithoutArgs;
 
   async prepareEvmNetwork(): Promise<void> {
-    this.selectEvmNetwork(this.ethBridgeEvmNetwork); // WalletConnectMixin
+    this.selectExternalNetwork(this.ethBridgeEvmNetwork); // WalletConnectMixin
   }
 
   initMoonpayApi(): void {
@@ -127,7 +126,6 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         );
       }
 
-      // while registered assets updating, evmBalance updating too
       await this.updateRegisteredAssets();
       await this.updateExternalBalances();
 
@@ -146,8 +144,8 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
       const asset = this.assetsDataTable[soraAddress];
 
       const evmNetworkFee: CodecString = await ethersUtil.getEvmNetworkFee(soraAddress, false);
-
-      const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(this.evmBalance, evmNetworkFee);
+      const evmNativeBalance = await ethersUtil.getAccountBalance(ethTransferData.to);
+      const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(evmNativeBalance, evmNetworkFee);
 
       if (!hasEthForFee) {
         throw createError('Insufficient ETH for fee', MoonpayNotifications.FeeError);
@@ -168,6 +166,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         soraNetworkFee: this.networkFees[Operation.EthBridgeIncoming],
         externalNetworkFee: evmNetworkFee,
         externalNetwork: this.ethBridgeEvmNetwork,
+        externalNetworkType: BridgeNetworkType.EvmLegacy,
         to: ethTransferData.to,
         payload: {
           moonpayId: transaction.id,

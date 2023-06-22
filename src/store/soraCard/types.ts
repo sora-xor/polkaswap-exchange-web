@@ -1,6 +1,8 @@
-import type { Subscription } from 'rxjs';
 import { FPNumber } from '@sora-substrate/util';
+
 import { KycStatus, VerificationStatus } from '@/types/card';
+
+import type { Subscription } from 'rxjs';
 
 export type SoraCardState = {
   kycStatus: Nullable<KycStatus>;

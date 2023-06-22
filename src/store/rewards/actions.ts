@@ -1,16 +1,18 @@
-import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import { defineActions } from 'direct-vuex';
+import { ethers } from 'ethers';
+
+import { rewardsActionContext } from '@/store/rewards';
+import type { SelectedRewards } from '@/types/rewards';
+import { waitForAccountPair } from '@/utils';
+import ethersUtil from '@/utils/ethers-util';
+
+import state from './state';
+
+import type { ClaimRewardsParams } from './types';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
 import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
-
-import { rewardsActionContext } from '@/store/rewards';
-import { waitForAccountPair } from '@/utils';
-import ethersUtil from '@/utils/ethers-util';
-import { ethers } from 'ethers';
-import type { ClaimRewardsParams } from './types';
-import type { SelectedRewards } from '@/types/rewards';
-import state from './state';
 
 async function getCrowdloanRewardsSubscription(context: ActionContext<any, any>): Promise<Subscription> {
   const { commit, dispatch, getters } = rewardsActionContext(context);

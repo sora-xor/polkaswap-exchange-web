@@ -1,62 +1,104 @@
-import { ethers } from 'ethers';
-import { defineActions } from 'direct-vuex';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import { defineActions } from 'direct-vuex';
+import { ethers } from 'ethers';
 
+import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
+import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
-import { BridgeType, KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
-
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 import type { Provider } from '@/utils/ethers-util';
 
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import type { ActionContext } from 'vuex';
+
+async function connectEvmNetwork(context: ActionContext<any, any>, networkHex?: string): Promise<void> {
+  const { commit } = web3ActionContext(context);
+  const evmNetwork = networkHex ? ethersUtil.hexToNumber(networkHex) : await ethersUtil.getEvmNetworkId();
+  commit.setProvidedEvmNetwork(evmNetwork);
+}
+
+async function connectSubNetwork(context: ActionContext<any, any>): Promise<void> {
+  const { getters } = web3ActionContext(context);
+  const subNetwork = getters.selectedNetwork;
+
+  if (!subNetwork) return;
+
+  const endpoint = subNetwork?.endpointUrls?.[0];
+
+  if (!endpoint) return;
+
+  await subConnector.open(subNetwork.id as SubNetwork, endpoint);
+}
+
 const actions = defineActions({
-  async connectExternalAccount(context, provider: Provider): Promise<void> {
+  async connectEvmAccount(context, provider: Provider): Promise<void> {
     const { commit } = web3ActionContext(context);
     const address = await ethersUtil.onConnect({ provider });
     commit.setEvmAddress(address);
   },
 
-  async connectEvmNetwork(context, networkHex?: string): Promise<void> {
-    const { commit } = web3ActionContext(context);
-    const evmNetwork = networkHex ? ethersUtil.hexToNumber(networkHex) : await ethersUtil.getEvmNetworkId();
-    commit.setEvmNetwork(evmNetwork);
+  async connectSubAccount(context, address: string): Promise<void> {
+    const { commit, rootDispatch } = web3ActionContext(context);
+    commit.setSubAddress(address);
+
+    await rootDispatch.bridge.updateExternalBalance();
   },
 
-  async selectEvmNetwork(context, evmNetwork: EvmNetwork): Promise<void> {
-    const { commit, dispatch } = web3ActionContext(context);
-    commit.setSelectedEvmNetwork(evmNetwork);
-    await dispatch.updateEvmNetwork();
-  },
+  async connectExternalNetwork(context, network?: string): Promise<void> {
+    const { state, rootDispatch } = web3ActionContext(context);
 
-  async updateEvmNetwork(context): Promise<void> {
-    const { dispatch, getters, state } = web3ActionContext(context);
-    const { selectedEvmNetwork: selected } = getters;
-    const { evmNetwork: connectedId } = state;
-
-    // if connected network is not equal to selected, request for provider to change network
-    if (selected && selected.id !== connectedId) {
-      await ethersUtil.switchOrAddChain(selected);
-      await dispatch.connectEvmNetwork();
+    if (state.networkType === BridgeNetworkType.Sub) {
+      await connectSubNetwork(context);
+    } else {
+      await connectEvmNetwork(context, network);
     }
+
+    // reset bridge form
+    await Promise.all([
+      rootDispatch.bridge.resetForm(),
+      rootDispatch.assets.updateRegisteredAssets(),
+      rootDispatch.bridge.updateExternalBalance(),
+      rootDispatch.bridge.getExternalNetworkFee(),
+    ]);
   },
 
-  async getSupportedNetworks(context): Promise<void> {
+  async selectExternalNetwork(context, network: BridgeNetworkId): Promise<void> {
+    const { commit, dispatch } = web3ActionContext(context);
+    commit.setSelectedNetwork(network);
+    await dispatch.updateNetworkProvided();
+  },
+
+  async updateNetworkProvided(context): Promise<void> {
+    const { dispatch, getters, state } = web3ActionContext(context);
+    const { selectedNetwork: selected } = getters;
+    const { networkType } = state;
+
+    if (!selected) return;
+
+    if (networkType !== BridgeNetworkType.Sub) {
+      await ethersUtil.switchOrAddChain(selected);
+    }
+
+    await dispatch.connectExternalNetwork();
+  },
+
+  async getSupportedApps(context): Promise<void> {
     const { commit } = web3ActionContext(context);
-    const networksIds = await api.evm.getAvailableNetworks();
-    commit.setEvmNetworksChain(networksIds);
+    const supportedApps = await api.bridgeProxy.getListApps();
+    commit.setSupportedApps(supportedApps);
   },
 
-  async restoreSelectedEvmNetwork(context): Promise<void> {
+  async restoreSelectedNetwork(context): Promise<void> {
     const { commit, getters } = web3ActionContext(context);
 
-    if (getters.selectedEvmNetwork) return;
+    if (getters.selectedNetwork) return;
 
-    const selectedEvmNetworkId =
-      ethersUtil.getSelectedEvmNetwork() || getters.availableNetworks[BridgeType.ETH]?.[0]?.data?.id;
+    const selectedNetworkId =
+      ethersUtil.getSelectedNetwork() ?? getters.availableNetworks[BridgeNetworkType.EvmLegacy]?.[0]?.data?.id;
 
-    if (selectedEvmNetworkId) {
-      commit.setSelectedEvmNetwork(selectedEvmNetworkId);
-    }
+    commit.setSelectedNetwork(selectedNetworkId);
   },
 
   /**
@@ -67,7 +109,7 @@ const actions = defineActions({
 
     if (state.networkType) return;
 
-    const networkType = ethersUtil.getSelectedBridgeType() ?? BridgeType.ETH;
+    const networkType = ethersUtil.getSelectedBridgeType() ?? BridgeNetworkType.EvmLegacy;
 
     commit.setNetworkType(networkType);
   },
@@ -81,8 +123,7 @@ const actions = defineActions({
       const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi;
       const contractAddress = getters.contractAddress(KnownEthBridgeAsset.Other);
       if (!contractAddress || !contractAbi) {
-        console.error('Contract address/abi is not found');
-        return '';
+        throw new Error('Contract address/abi is not found');
       }
       const ethersInstance = await ethersUtil.getEthersInstance();
       const contractInstance = new ethers.Contract(contractAddress, contractAbi, ethersInstance.getSigner());

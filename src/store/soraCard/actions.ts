@@ -1,11 +1,12 @@
-import { defineActions } from 'direct-vuex';
-import { api, WALLET_CONSTS, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
+import { api, WALLET_CONSTS, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
+import { defineActions } from 'direct-vuex';
 
+import { Status } from '@/types/card';
 import { waitForAccountPair } from '@/utils';
 import { defineUserStatus, getXorPerEuroRatio, getFreeKycAttemptCount, soraCard } from '@/utils/card';
+
 import { soraCardActionContext } from './../soraCard';
-import { Status } from '@/types/card';
 
 const actions = defineActions({
   calculateXorRestPrice(context, xorPerEuro: FPNumber): void {

@@ -5,8 +5,8 @@ import VueI18n from 'vue-i18n';
 import { Language } from '@/consts';
 import { settingsStorage } from '@/utils/storage';
 
-import en from './en.json';
 import enCard from './card/en.json';
+import en from './en.json';
 
 Vue.use(VueI18n);
 

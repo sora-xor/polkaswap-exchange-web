@@ -1,7 +1,7 @@
-import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import store from '../store';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
 
+import store from '../store';
 import { KycStatus, Status, VerificationStatus } from '../types/card';
 
 const getSoraProxyEndpoints = (soraNetwork: string) => {

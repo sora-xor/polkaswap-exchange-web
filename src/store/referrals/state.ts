@@ -1,4 +1,5 @@
 import storage from '@/utils/storage';
+
 import type { ReferralsState } from './types';
 
 export function initialState(): ReferralsState {

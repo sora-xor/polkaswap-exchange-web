@@ -318,7 +318,7 @@
     "retryText": "Prøv igjen",
     "networkFeeText": "Nettverksgebyr",
     "networkFeeTooltipText": "Nettverksavgift brukes til å sikre {Sora} -systemets vekst og stabile ytelse.",
-    "ethNetworkFeeTooltipText": "Vær oppmerksom på at {Ethereum}-nettverksgebyrene som vises på {AppName} bare er grove estimater, du kan se riktig gebyrbeløp i den tilkoblede {Ethereum}-lommeboken før du bekrefter transaksjonen.",
+    "ethNetworkFeeTooltipText": "Vær oppmerksom på at {network} -nettverksavgiftene som vises på {AppName} bare er grove anslag. Du kan se det riktige gebyrbeløpet i den tilkoblede {network} -lommeboken din før du bekrefter transaksjonen.",
     "marketText": "Marked",
     "marketAlgorithmText": "Markedsalgoritme",
     "firstPerSecond": "{first} per {second}",
@@ -547,7 +547,7 @@
             "title": "Tokens",
             "placeholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol",
             "networkLabelSora": "{Sora} nettverk tokens",
-            "networkLabelEthereum": "{Ethereum} nettverk speil tokens",
+            "networkLabelEthereum": "{network} nettverksspeiltokener",
             "emptyListMessage": "Ingen resultat"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Lommeboknavn",
-            "desc": "Dette er det offentlige navnet på lommeboken din som vil være synlig for alle"
+            "desc": "Dette er navnet på lommeboken din som vil være synlig for deg"
         },
         "password": {
             "placeholder": "Passord",
@@ -1094,7 +1094,8 @@
             "passwords": "Passordene stemte ikke",
             "mnemonic": "Ugyldig bip39 mnemonic spesifisert",
             "mnemonicLength": "Mnemonic skal inneholde {number} ord",
-            "jsonFields": "JSON-filen har ikke obligatoriske felt"
+            "jsonFields": "JSON-filen har ikke obligatoriske felt",
+            "alreadyImported": "Kontoen er allerede importert {address}"
         },
         "assetsAtRiskText": "Eiendeler i fare!",
         "deleteAccountText": "Kontoen kan ikke gjenopprettes uten en frøfrase, .json-fil eller hvis den er lagret i en filtype. Du vil bli logget ut.",
@@ -1201,5 +1202,16 @@
         "finishBtn": "Å fullføre"
     },
     "accountAddressText": "Kontoadresse",
-    "fiatDisclaimer": "Vær oppmerksom på at fiat-verdiene knyttet til kryptovalutaer på nettsiden vår leveres av eksterne tjenester (Subquery, Subsquid, Ceres API) er omtrentlige. Gitt den iboende kompleksiteten til disse beregningene, kan absolutt presisjon til enhver tid ikke garanteres."
+    "fiatDisclaimer": "Vær oppmerksom på at fiat-verdiene knyttet til kryptovalutaer på nettsiden vår leveres av eksterne tjenester (Subquery, Subsquid, Ceres API) er omtrentlige. Gitt den iboende kompleksiteten til disse beregningene, kan absolutt presisjon til enhver tid ikke garanteres.",
+    "fiatPayment": {
+        "historyBtn": "Innkjøpene mine",
+        "historyTitle": "betalingshistorie",
+        "moonpayTitle": "Kjøp ETH via MoonPay",
+        "moonpayDesc": "Kjøp ETH-tokens på Ethereum og overfør dem til SORA-nettverket via broen",
+        "x1Title": "Kjøp XOR med kortet ditt",
+        "x1Desc": "Kjøp XOR-tokens med ditt debet- eller kredittkort",
+        "x1Btn": "Kjøp XOR med kort",
+        "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere."
+    },
+    "acceptOnScrollText": "Rull for å godta"
 }

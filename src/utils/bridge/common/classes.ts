@@ -1,7 +1,5 @@
-import type { IBridgeTransaction } from '@sora-substrate/util';
-
 import type {
-  SignEvm,
+  SignExternal,
   SignSora,
   AddAsset,
   GetAssetByAddress,
@@ -19,8 +17,10 @@ import type {
   TransactionHandlerPayload,
 } from '@/utils/bridge/common/types';
 
+import type { IBridgeTransaction } from '@sora-substrate/util';
+
 export class BridgeReducer<Transaction extends IBridgeTransaction> implements IBridgeReducer<Transaction> {
-  protected readonly signEvm!: SignEvm;
+  protected readonly signExternal!: SignExternal;
   protected readonly signSora!: SignSora;
   // asset
   protected readonly addAsset!: AddAsset;
@@ -38,7 +38,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
   protected readonly boundaryStates!: TransactionBoundaryStates<Transaction>;
 
   constructor({
-    signEvm,
+    signExternal,
     signSora,
     // asset
     addAsset,
@@ -55,7 +55,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     // boundary states
     boundaryStates,
   }: IBridgeReducerOptions<Transaction>) {
-    this.signEvm = signEvm;
+    this.signExternal = signExternal;
     this.signSora = signSora;
     this.addAsset = addAsset;
     this.getAssetByAddress = getAssetByAddress;
@@ -76,16 +76,18 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
   async process(transaction: Transaction) {
     await this.changeState(transaction);
 
-    const tx = this.getTransaction(transaction.id as string);
+    try {
+      const tx = this.getTransaction(transaction.id as string);
 
-    if (tx) {
-      const { done, failed } = this.boundaryStates[tx.type];
-      const state = tx.transactionState;
+      if (tx) {
+        const { done, failed } = this.boundaryStates[tx.type];
+        const state = tx.transactionState;
 
-      if (state !== done && !failed.includes(state)) {
-        await this.process(tx);
+        if (state !== done && !failed.includes(state)) {
+          await this.process(tx);
+        }
       }
-    }
+    } catch {}
   }
 
   updateTransactionParams(id: string, params = {}): void {
@@ -98,11 +100,9 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     { nextState, rejectState, handler }: TransactionHandlerPayload<Transaction>
   ): Promise<void> {
     try {
-      if (typeof handler === 'function') {
-        await handler(id);
-      }
+      const updatedId = handler ? (await handler(id)) ?? id : id;
 
-      this.updateTransactionParams(id, { transactionState: nextState });
+      this.updateTransactionParams(updatedId, { transactionState: nextState });
     } catch (error) {
       console.error(error);
 
@@ -157,13 +157,13 @@ export class Bridge<
   protected reducers!: Partial<Record<Transaction['type'], Reducer>>;
   protected readonly getTransaction!: GetTransaction<Transaction>;
 
-  constructor({ reducers, signEvm, signSora, getTransaction, ...rest }: ConstructorOptions) {
+  constructor({ reducers, signExternal, signSora, getTransaction, ...rest }: ConstructorOptions) {
     this.getTransaction = getTransaction;
     this.reducers = Object.entries<Constructable<Reducer>>(reducers).reduce((acc, [operation, Reducer]) => {
       acc[operation] = new Reducer({
         ...rest,
         getTransaction,
-        signEvm: signEvm[operation],
+        signExternal: signExternal[operation],
         signSora: signSora[operation],
       });
       return acc;

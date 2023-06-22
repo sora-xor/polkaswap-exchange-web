@@ -1,13 +1,13 @@
-import { defineMutations } from 'direct-vuex';
 import { CodecString } from '@sora-substrate/util';
-
-import ethersUtil from '@/utils/ethers-util';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { defineMutations } from 'direct-vuex';
 
 import { ZeroStringValue } from '@/consts';
+import ethersUtil from '@/utils/ethers-util';
 
-import type { Web3State, EthBridgeSettings } from './types';
-import type { BridgeType } from '@/consts/evm';
+import type { Web3State, EthBridgeSettings, SubNetworkApps } from './types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { SupportedApps, BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const mutations = defineMutations<Web3State>()({
   setEvmAddress(state, address: string): void {
@@ -18,38 +18,44 @@ const mutations = defineMutations<Web3State>()({
     state.evmAddress = '';
     ethersUtil.removeEvmUserAddress();
   },
-  setEvmNetworksApp(state, networksIds: EvmNetwork[]): void {
-    state.evmNetworksApp = networksIds;
-  },
-  setEvmNetworksChain(state, networksIds: EvmNetwork[]): void {
-    state.evmNetworksChain = networksIds;
-  },
-  // by provider
-  setEvmNetwork(state, networkId: EvmNetwork): void {
-    state.evmNetwork = networkId;
-  },
-  resetEvmNetwork(state): void {
-    state.evmNetwork = null;
-  },
-  // by user
-  setSelectedEvmNetwork(state, networkId: EvmNetwork): void {
-    state.evmNetworkSelected = networkId;
-    ethersUtil.storeSelectedEvmNetwork(networkId);
-  },
-  setEvmBalance(state, balance: CodecString): void {
-    state.evmBalance = balance;
-  },
-  resetEvmBalance(state): void {
-    state.evmBalance = ZeroStringValue;
+
+  setSubAddress(state, address: string): void {
+    state.subAddress = address;
   },
 
-  setNetworkType(state, networkType: BridgeType) {
+  setEvmNetworksApp(state, networksIds: EvmNetwork[]): void {
+    state.evmNetworkApps = networksIds;
+  },
+  setSubNetworkApps(state, apps: SubNetworkApps): void {
+    state.subNetworkApps = apps;
+  },
+  setSupportedApps(state, supportedApps: SupportedApps): void {
+    state.supportedApps = supportedApps;
+  },
+  // by provider
+  setProvidedEvmNetwork(state, networkId: BridgeNetworkId): void {
+    state.evmNetworkProvided = networkId;
+  },
+  resetProvidedEvmNetwork(state): void {
+    state.evmNetworkProvided = null;
+  },
+  // by user
+  setSelectedNetwork(state, networkId: BridgeNetworkId): void {
+    state.networkSelected = networkId;
+    ethersUtil.storeSelectedNetwork(networkId);
+  },
+
+  setNetworkType(state, networkType: BridgeNetworkType) {
     state.networkType = networkType;
     ethersUtil.storeSelectedBridgeType(networkType);
   },
 
   setSelectNetworkDialogVisibility(state, flag: boolean): void {
     state.selectNetworkDialogVisibility = flag;
+  },
+
+  setSelectAccountDialogVisibility(state, flag: boolean): void {
+    state.selectAccountDialogVisibility = flag;
   },
 
   // for hashi bridge

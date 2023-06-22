@@ -1,12 +1,12 @@
 import { defineMutations } from 'direct-vuex';
-import type { Subscription } from 'rxjs';
+
+import type { DemeterFarmingState } from './types';
 import type {
   DemeterPool,
   DemeterAccountPool,
   DemeterRewardToken,
 } from '@sora-substrate/util/build/demeterFarming/types';
-
-import type { DemeterFarmingState } from './types';
+import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<DemeterFarmingState>()({
   setPools(state, pools: Array<DemeterPool>): void {

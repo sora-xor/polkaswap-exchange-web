@@ -1,4 +1,5 @@
 import { axiosInstance } from '@sora-substrate/util';
+
 import type VueRouter from 'vue-router';
 
 export const BASE_URL = process.env.BASE_URL;

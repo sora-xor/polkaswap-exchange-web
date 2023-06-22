@@ -318,7 +318,7 @@
     "retryText": "Coba lagi",
     "networkFeeText": "Biaya Jaringan",
     "networkFeeTooltipText": "Biaya jaringan digunakan untuk memastikan pertumbuhan sistem {Sora} dan kinerja yang stabil.",
-    "ethNetworkFeeTooltipText": "Mohon diingat bahwa biaya jaringan {Ethereum} yang ditampilkan di {AppName} hanya perkiraan sementara, Anda dapat melihat jumlah biaya yang benar di dompet {Ethereum} Anda yang terhubung sebelum mengonfirmasi transaksi.",
+    "ethNetworkFeeTooltipText": "Harap perhatikan bahwa biaya jaringan {network} yang ditampilkan di {AppName} hanyalah perkiraan kasar, Anda dapat melihat jumlah biaya yang benar di dompet {network} yang terhubung sebelum mengonfirmasi transaksi.",
     "marketText": "Pasar",
     "marketAlgorithmText": "Algoritma pasar",
     "firstPerSecond": "{first} per {second}",
@@ -547,7 +547,7 @@
             "title": "Token",
             "placeholder": "Filter menurut ID Aset, Nama, atau Simbol Ticker",
             "networkLabelSora": "Token jaringan {Sora}",
-            "networkLabelEthereum": "Token cermin jaringan {Ethereum}",
+            "networkLabelEthereum": "Token cermin jaringan {network}",
             "emptyListMessage": "Tidak ada hasil"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Nama dompet",
-            "desc": "Ini adalah nama publik dompet Anda yang akan terlihat oleh semua orang"
+            "desc": "Ini adalah nama dompet Anda yang akan terlihat oleh Anda"
         },
         "password": {
             "placeholder": "Kata sandi",
@@ -1094,7 +1094,8 @@
             "passwords": "Kata sandi tidak cocok",
             "mnemonic": "Mnemonic bip39 yang ditentukan tidak valid",
             "mnemonicLength": "Mnemonic harus berisi {number} kata",
-            "jsonFields": "File JSON tidak memiliki bidang yang wajib diisi"
+            "jsonFields": "File JSON tidak memiliki bidang yang wajib diisi",
+            "alreadyImported": "Akun sudah diimpor {address}"
         },
         "assetsAtRiskText": "Aset berisiko!",
         "deleteAccountText": "Akun tidak dapat dipulihkan tanpa seed frase, file .json atau jika disimpan dalam beberapa ekstensi. Anda akan keluar.",
@@ -1201,5 +1202,16 @@
         "finishBtn": "Untuk menyelesaikan"
     },
     "accountAddressText": "Alamat akun",
-    "fiatDisclaimer": "Harap perhatikan bahwa nilai fiat yang terkait dengan cryptocurrency di situs web kami disediakan oleh layanan eksternal (Subquery, Subsquid, Ceres API) adalah perkiraan. Mengingat kerumitan perhitungan ini, presisi mutlak setiap saat tidak dapat dijamin."
+    "fiatDisclaimer": "Harap perhatikan bahwa nilai fiat yang terkait dengan cryptocurrency di situs web kami disediakan oleh layanan eksternal (Subquery, Subsquid, Ceres API) adalah perkiraan. Mengingat kerumitan perhitungan ini, presisi mutlak setiap saat tidak dapat dijamin.",
+    "fiatPayment": {
+        "historyBtn": "pembelian saya",
+        "historyTitle": "sejarah transaksi",
+        "moonpayTitle": "Beli ETH melalui MoonPay",
+        "moonpayDesc": "Beli token ETH di Ethereum dan transfer ke jaringan SORA melalui jembatan",
+        "x1Title": "Beli XOR dengan kartu Anda",
+        "x1Desc": "Beli token XOR dengan kartu debit atau kredit Anda",
+        "x1Btn": "Beli XOR dengan kartu",
+        "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti."
+    },
+    "acceptOnScrollText": "Gulir untuk menerima"
 }

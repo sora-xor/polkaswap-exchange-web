@@ -1,22 +1,20 @@
-import first from 'lodash/fp/first';
 import { SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
+import first from 'lodash/fp/first';
 
-import { getEvmTransactionRecieptByHash } from '@/utils/bridge/common/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
-
+import type { IBridgeReducerOptions, GetBridgeHistoryInstance } from '@/utils/bridge/common/types';
+import { getEvmTransactionRecieptByHash, waitForSoraTransactionHash } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import {
   getTransaction,
   waitForApprovedRequest,
   waitForIncomingRequest,
-  waitForSoraTransactionHash,
   waitForEvmTransaction,
 } from '@/utils/bridge/eth/utils';
 
 import type { BridgeHistory, IBridgeTransaction } from '@sora-substrate/util';
-import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
-import type { IBridgeReducerOptions, GetBridgeHistoryInstance } from '@/utils/bridge/common/types';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
@@ -57,7 +55,7 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
       this.beforeSubmit(id);
 
       try {
-        const { hash: externalHash, fee } = await this.signEvm(id);
+        const { hash: externalHash, fee } = await this.signExternal(id);
 
         this.updateTransactionParams(id, {
           externalHash,
@@ -137,7 +135,11 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
           nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
           handler: async (id: string) => {
-            const hash = await waitForSoraTransactionHash(id);
+            const hash = await waitForSoraTransactionHash({
+              section: 'ethBridge',
+              extrincicMethod: 'transferToSidechain',
+              eventMethod: 'RequestRegistered',
+            })(id, this.getTransaction);
 
             this.updateTransactionParams(id, { hash });
 

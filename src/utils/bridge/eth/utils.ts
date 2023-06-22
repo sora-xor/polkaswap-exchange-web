@@ -1,18 +1,15 @@
 import { Operation, BridgeTxStatus } from '@sora-substrate/util';
-import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { ActionContext } from 'vuex';
-import type { Subscription } from 'rxjs';
-import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import { rootActionContext } from '@/store';
-import { delay } from '@/utils';
-import { BridgeType } from '@/consts/evm';
-import ethersUtil from '@/utils/ethers-util';
+import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
-import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
+import ethersUtil from '@/utils/ethers-util';
 
-const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS; // Block production time
+import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
+import type { Subscription } from 'rxjs';
+import type { ActionContext } from 'vuex';
 
 export const isUnsignedFromPart = (tx: BridgeHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
@@ -108,49 +105,6 @@ export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash:
   return { hash: soraHash, blockId: soraBlockHash };
 };
 
-export const waitForSoraTransactionHash = async (id: string): Promise<string> => {
-  const tx = getTransaction(id);
-
-  if (tx.hash) return tx.hash;
-  const blockId = tx.blockId as string; // blockId cannot be empty
-  const extrinsics = await api.system.getExtrinsicsFromBlock(blockId);
-
-  if (extrinsics.length) {
-    const blockEvents = await api.system.getBlockEvents(blockId);
-
-    const extrinsicIndex = extrinsics.findIndex((item) => {
-      const {
-        signer,
-        method: { method, section },
-      } = item;
-
-      return signer.toString() === tx.from && method === 'transferToSidechain' && section === 'ethBridge';
-    });
-
-    if (!Number.isFinite(extrinsicIndex)) throw new Error('[Bridge]: Transaction was failed');
-
-    const event = blockEvents.find(
-      ({ phase, event }) =>
-        phase.isApplyExtrinsic &&
-        phase.asApplyExtrinsic.eq(extrinsicIndex) &&
-        event.section === 'ethBridge' &&
-        event.method === 'RequestRegistered'
-    );
-
-    if (!event) {
-      throw new Error('[Bridge]: Transaction was failed');
-    }
-
-    const hash = event.event.data[0].toString();
-
-    return hash;
-  }
-
-  await delay(BLOCK_PRODUCE_TIME);
-
-  return await waitForSoraTransactionHash(id);
-};
-
 export const waitForEvmTransaction = async (id: string) => {
   const transaction = getTransaction(id);
   const updatedCallback = (externalHash: string) => updateTransaction(id, { externalHash });
@@ -180,21 +134,21 @@ export const updateEthBridgeHistory =
         bridge: { inProgressIds },
       } = rootState;
 
-      const evmNetworkData = rootGetters.web3.availableNetworks[BridgeType.ETH].find(
+      const networkData = rootGetters.web3.availableNetworks[BridgeNetworkType.EvmLegacy].find(
         ({ data }) => data.id === ethBridgeEvmNetwork
       );
 
-      if (!evmNetworkData) {
+      if (!networkData) {
         throw new Error(
           `[HASHI Bridge History]: Network "${ethBridgeEvmNetwork}" is not available in app. Please check app config`
         );
       }
 
-      await ethersUtil.switchOrAddChain(evmNetworkData.data);
+      await ethersUtil.switchOrAddChain(networkData.data);
 
       if ((await ethersUtil.getEvmNetworkId()) !== ethBridgeEvmNetwork) {
         throw new Error(
-          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.evmNetwork}" is connected, "${ethBridgeEvmNetwork}" expected`
+          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.evmNetworkProvided}" is connected, "${ethBridgeEvmNetwork}" expected`
         );
       }
 

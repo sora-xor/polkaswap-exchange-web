@@ -43,32 +43,30 @@
 </template>
 
 <script lang="ts">
+import { api, connection, components, mixins, settingsStorage } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { connection } from '@sora-substrate/util';
-import { components, mixins, settingsStorage } from '@soramitsu/soraneo-wallet-web';
-import type { History, HistoryItem } from '@sora-substrate/util';
-import type { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
-import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
 
-import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
-
-import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import AppHeader from '@/components/App/Header/AppHeader.vue';
-import AppFooter from '@/components/App/Footer/AppFooter.vue';
-import AppMenu from '@/components/App/Menu/AppMenu.vue';
-
-import { PageNames, Components, Language } from '@/consts';
 import axiosInstance, { updateBaseUrl } from '@/api';
+import AppFooter from '@/components/App/Footer/AppFooter.vue';
+import AppHeader from '@/components/App/Header/AppHeader.vue';
+import AppMenu from '@/components/App/Menu/AppMenu.vue';
+import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
+import SoraLogo from '@/components/shared/Logo/Sora.vue';
+import { PageNames, Components, Language } from '@/consts';
+import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { preloadFontFace, updateDocumentTitle } from '@/utils';
-import { getLocale } from '@/lang';
-import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 import type { FeatureFlags } from '@/store/settings/types';
-import type { EthBridgeSettings } from '@/store/web3/types';
+import type { EthBridgeSettings, SubNetworkApps } from '@/store/web3/types';
+import type { ConnectToNodeOptions, Node } from '@/types/nodes';
+import { preloadFontFace, updateDocumentTitle } from '@/utils';
+
+import type { History, HistoryItem } from '@sora-substrate/util';
+import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 @Component({
   components: {
@@ -119,6 +117,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
+  @mutation.web3.setSubNetworkApps private setSubNetworkApps!: (data: SubNetworkApps) => void;
   @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => Promise<void>;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
 
@@ -213,6 +212,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
       this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
+      this.setSubNetworkApps(data.SUB_NETWORKS);
+
+      if (data.PARACHAIN_IDS) {
+        api.bridgeProxy.sub.parachainIds = data.PARACHAIN_IDS;
+      }
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);
@@ -293,7 +297,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     const disclaimerApprove = settingsStorage.get('disclaimerApprove');
 
     if (!disclaimerApprove) {
-      setTimeout(() => this.toggleDisclaimerDialogVisibility(), 3_000);
+      setTimeout(() => this.toggleDisclaimerDialogVisibility(), 5_000);
     }
   }
 

@@ -318,7 +318,7 @@
     "retryText": "Riprova",
     "networkFeeText": "Fee del network",
     "networkFeeTooltipText": "La fees vengono utilizzate per garantire la crescita e le prestazioni stabili del sistema {Sora}.",
-    "ethNetworkFeeTooltipText": "Tieni presente che le commissioni di rete {Ethereum} visualizzate su {AppName} sono solo stime approssimative, puoi vedere l'importo corretto della commissione nel tuo portafoglio {Ethereum} connesso prima di confermare la transazione.",
+    "ethNetworkFeeTooltipText": "Tieni presente che le commissioni di rete {network} visualizzate su {AppName} sono solo stime approssimative, puoi vedere l'importo corretto della commissione nel portafoglio {network} connesso prima di confermare la transazione.",
     "marketText": "Market",
     "marketAlgorithmText": "Algoritmo di mercato",
     "firstPerSecond": "{first} per {second}",
@@ -547,7 +547,7 @@
             "title": "Tokens",
             "placeholder": "Filtra per Asset ID, Nome o Simbolo Ticker",
             "networkLabelSora": "{Sora} network tokens",
-            "networkLabelEthereum": "{Ethereum} network tokens pegged",
+            "networkLabelEthereum": "{network} token mirror di rete",
             "emptyListMessage": "Nessun risultato"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Nome del portafoglio",
-            "desc": "Questo è il nome pubblico del tuo portafoglio che sarà visibile a tutti"
+            "desc": "Questo è il nome del tuo portafoglio che sarà visibile a te"
         },
         "password": {
             "placeholder": "Password",
@@ -1094,7 +1094,8 @@
             "passwords": "le password non coincidono",
             "mnemonic": "Specificato mnemonico bip39 non valido",
             "mnemonicLength": "Il mnemonico deve contenere {numero} di parole",
-            "jsonFields": "Il file JSON non ha campi obbligatori"
+            "jsonFields": "Il file JSON non ha campi obbligatori",
+            "alreadyImported": "Account già importato {address}"
         },
         "assetsAtRiskText": "Beni a rischio!",
         "deleteAccountText": "L'account non può essere recuperato senza una frase seme, un file .json o se è memorizzato in un'estensione. Verrai disconnesso.",
@@ -1201,5 +1202,16 @@
         "finishBtn": "Completare"
     },
     "accountAddressText": "Indirizzo dell'account",
-    "fiatDisclaimer": "Si noti che i valori fiat associati alle criptovalute sul nostro sito Web sono forniti da servizi esterni (Subquery, Subsquid, Ceres API) sono approssimativi. Data la complessità intrinseca di questi calcoli, non è sempre possibile garantire la precisione assoluta."
+    "fiatDisclaimer": "Si noti che i valori fiat associati alle criptovalute sul nostro sito Web sono forniti da servizi esterni (Subquery, Subsquid, Ceres API) sono approssimativi. Data la complessità intrinseca di questi calcoli, non è sempre possibile garantire la precisione assoluta.",
+    "fiatPayment": {
+        "historyBtn": "I miei acquisti",
+        "historyTitle": "Cronologia delle transazioni",
+        "moonpayTitle": "Acquista ETH tramite MoonPay",
+        "moonpayDesc": "Acquista token ETH su Ethereum e trasferiscili alla rete SORA tramite il bridge",
+        "x1Title": "Acquista XOR con la tua carta",
+        "x1Desc": "Acquista token XOR con la tua carta di debito o di credito",
+        "x1Btn": "Acquista XOR con carta",
+        "errorMessage": "Scuse per l'inconveniente. Stiamo lavorando diligentemente per risolvere questo problema. Per favore riprova più tardi."
+    },
+    "acceptOnScrollText": "Scorri per accettare"
 }

@@ -1,27 +1,11 @@
-import { EvmNetworkId } from '@sora-substrate/util/build/evm/consts';
+import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts';
 
 import INTERNAL_ABI from '@/abi/ethereum/internal/MASTER.json';
 import BRIDGE_ABI from '@/abi/ethereum/other/BRIDGE.json';
 import ERC20_ABI from '@/abi/ethereum/other/ERC20.json';
+import type { NetworkData } from '@/types/bridge';
 
-export interface EvmNetworkData {
-  id: EvmNetworkId;
-  name: string;
-  nativeCurrency: {
-    name: string;
-    symbol: string;
-    decimals: number;
-  };
-  rpcUrls: string[];
-  blockExplorerUrls: string[];
-  shortName: string;
-}
-
-export enum BridgeType {
-  ETH = 'ETH',
-  EVM = 'EVM',
-  SUB = 'SUB',
-}
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 export enum EvmLinkType {
   Account = 'Account',
@@ -50,7 +34,7 @@ export const SmartContracts = {
 
 // EVM networks data
 // This data could be added to Metamask automatically using "switchOrAddChain" function
-export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
+export const EVM_NETWORKS: Record<EvmNetwork, NetworkData> = {
   [EvmNetworkId.EthereumMainnet]: {
     id: EvmNetworkId.EthereumMainnet,
     name: 'Ethereum Mainnet',
@@ -59,7 +43,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'ETH',
       decimals: 18,
     },
-    rpcUrls: ['https://mainnet.infura.io/v3/'],
+    endpointUrls: ['https://mainnet.infura.io/v3/'],
     blockExplorerUrls: ['https://etherscan.io'],
     shortName: 'Ethereum',
   },
@@ -71,7 +55,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'ETH',
       decimals: 18,
     },
-    rpcUrls: ['https://ropsten.infura.io/v3/'],
+    endpointUrls: ['https://ropsten.infura.io/v3/'],
     blockExplorerUrls: ['https://ropsten.etherscan.io'],
     shortName: 'Ropsten',
   },
@@ -83,7 +67,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'ETH',
       decimals: 18,
     },
-    rpcUrls: ['https://rinkeby.infura.io/v3/'],
+    endpointUrls: ['https://rinkeby.infura.io/v3/'],
     blockExplorerUrls: ['https://rinkeby.etherscan.io'],
     shortName: 'Rinkeby',
   },
@@ -95,7 +79,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'ETH',
       decimals: 18,
     },
-    rpcUrls: ['https://goerli.infura.io/v3/'],
+    endpointUrls: ['https://goerli.infura.io/v3/'],
     blockExplorerUrls: ['https://goerli.etherscan.io'],
     shortName: 'Goerli',
   },
@@ -107,7 +91,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'ETH',
       decimals: 18,
     },
-    rpcUrls: ['https://kovan.infura.io/v3/'],
+    endpointUrls: ['https://kovan.infura.io/v3/'],
     blockExplorerUrls: ['https://kovan.etherscan.io'],
     shortName: 'Kovan',
   },
@@ -119,7 +103,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'ETH',
       decimals: 18,
     },
-    rpcUrls: ['https://sepolia.infura.io/v3/'],
+    endpointUrls: ['https://sepolia.infura.io/v3/'],
     blockExplorerUrls: ['https://sepolia.etherscan.io'],
     shortName: 'Sepolia',
   },
@@ -131,7 +115,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'BNB',
       decimals: 18,
     },
-    rpcUrls: ['https://bsc-dataseed.binance.org/'],
+    endpointUrls: ['https://bsc-dataseed.binance.org/'],
     blockExplorerUrls: ['https://bscscan.com'],
     shortName: 'BSC',
   },
@@ -143,8 +127,8 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'tBNB',
       decimals: 18,
     },
-    rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545'],
-    blockExplorerUrls: ['https://testnet.bscscan.com/'],
+    endpointUrls: ['https://bsc-testnet.publicnode.com'],
+    blockExplorerUrls: ['https://testnet.bscscan.com'],
     shortName: 'BSC Testnet',
   },
   [EvmNetworkId.EthereumClassicMainnet]: {
@@ -155,7 +139,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'ETC',
       decimals: 18,
     },
-    rpcUrls: ['https://ethereumclassic.network'],
+    endpointUrls: ['https://etc.rivet.link/'],
     blockExplorerUrls: ['https://blockscout.com/etc/mainnet'],
     shortName: 'ETC',
   },
@@ -167,7 +151,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'ETC',
       decimals: 18,
     },
-    rpcUrls: ['https://www.ethercluster.com/mordor'],
+    endpointUrls: ['https://www.ethercluster.com/mordor'],
     blockExplorerUrls: ['https://blockscout.com/etc/mordor'],
     shortName: 'Mordor',
   },
@@ -179,8 +163,8 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'MATIC',
       decimals: 18,
     },
-    rpcUrls: ['https://polygon-rpc.com'],
-    blockExplorerUrls: ['https://explorer.matic.network/'],
+    endpointUrls: ['https://polygon-rpc.com'],
+    blockExplorerUrls: ['https://polygonscan.com'],
     shortName: 'Matic',
   },
   [EvmNetworkId.PolygonTestnetMumbai]: {
@@ -191,7 +175,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'MATIC',
       decimals: 18,
     },
-    rpcUrls: ['https://matic-mumbai.chainstacklabs.com'],
+    endpointUrls: ['https://rpc-mumbai.maticvigil.com/'],
     blockExplorerUrls: ['https://mumbai.polygonscan.com'],
     shortName: 'Mumbai',
   },
@@ -203,7 +187,7 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'KLAY',
       decimals: 18,
     },
-    rpcUrls: ['https://api.baobab.klaytn.net:8651/'],
+    endpointUrls: ['https://public-node-api.klaytnapi.com/v1/baobab'],
     blockExplorerUrls: ['https://baobab.scope.klaytn.com/'],
     shortName: 'Baobab',
   },
@@ -215,9 +199,9 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'KLAY',
       decimals: 18,
     },
-    rpcUrls: ['https://public-node-api.klaytnapi.com/v1/cypress'],
+    endpointUrls: ['https://public-node-api.klaytnapi.com/v1/cypress'],
     blockExplorerUrls: ['https://scope.klaytn.com'],
-    shortName: 'Klaytn',
+    shortName: 'Cypress',
   },
   [EvmNetworkId.AvalancheMainnet]: {
     id: EvmNetworkId.AvalancheMainnet,
@@ -227,20 +211,68 @@ export const EVM_NETWORKS: Record<EvmNetworkId, EvmNetworkData> = {
       symbol: 'AVAX',
       decimals: 18,
     },
-    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
-    blockExplorerUrls: ['https://snowtrace.io/'],
-    shortName: 'Avalanche',
+    endpointUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://snowtrace.io'],
+    shortName: 'C-Chain',
   },
   [EvmNetworkId.AvalancheTestnetFuji]: {
     id: EvmNetworkId.AvalancheTestnetFuji,
-    name: 'Avalanche FUJI C-Chain',
+    name: 'Avalanche FUJI Testnet',
     nativeCurrency: {
       name: 'Avalanche',
       symbol: 'AVAX',
       decimals: 18,
     },
-    rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
-    blockExplorerUrls: ['https://testnet.snowtrace.io/'],
+    endpointUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://testnet.snowtrace.io'],
     shortName: 'FUJI',
+  },
+  42161: {
+    id: 42161,
+    name: 'Arbitrum One Mainnet',
+    nativeCurrency: {
+      name: 'ETH',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    endpointUrls: ['https://arb1.arbitrum.io/rpc'],
+    blockExplorerUrls: ['https://arbiscan.io'],
+    shortName: 'Arbitrum',
+  },
+  421613: {
+    id: 421613,
+    name: 'Arbitrum Goerli Testnet',
+    nativeCurrency: {
+      name: 'ETH',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    endpointUrls: ['https://goerli-rollup.arbitrum.io/rpc'],
+    blockExplorerUrls: ['https://goerli.arbiscan.io'],
+    shortName: 'Goerli',
+  },
+  250: {
+    id: 250,
+    name: 'Fantom Opera',
+    nativeCurrency: {
+      name: 'Fantom',
+      symbol: 'FTM',
+      decimals: 18,
+    },
+    endpointUrls: ['https://rpc.ankr.com/fantom'],
+    blockExplorerUrls: ['https://ftmscan.com'],
+    shortName: 'Opera',
+  },
+  4002: {
+    id: 4002,
+    name: 'Fantom Testnet',
+    nativeCurrency: {
+      name: 'Fantom',
+      symbol: 'FTM',
+      decimals: 18,
+    },
+    endpointUrls: ['https://rpc.testnet.fantom.network'],
+    blockExplorerUrls: ['https://testnet.ftmscan.com'],
+    shortName: 'FTM Test',
   },
 };

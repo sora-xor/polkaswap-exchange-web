@@ -19,7 +19,6 @@
         "getSoraCardBtn": "Nhận thẻ SORA miễn phí",
         "bridgeTokensBtn": "Token cầu nối",
         "depositX1Btn": "Mua XOR",
-        "getSoraCardDesc": "Nạp thẻ SORA của bạn bằng tiền pháp định hoặc tiền điện tử và thanh toán trực tuyến, tại cửa hàng hoặc rút tiền từ máy ATM. Nhận tài khoản Euro IBAN và Thẻ ghi nợ Mastercard",
         "reIssuanceFee": "€0 phí phát hành lại hàng năm",
         "freeStartDesc": "{value} XOR trong tài khoản của bạn để bắt đầu miễn phí",
         "completeKYC": "Hoàn thành KYC",
@@ -48,7 +47,7 @@
         "blacklistedCountriesExcuse": "Rất tiếc, tại thời điểm này, chúng tôi không thể hỗ trợ các quốc gia sau:",
         "statusPendingText": "Bạn đã hoàn thành thành công KYC của mình. Quá trình xem xét đang chờ xử lý và bạn có thể sớm nhận được quyết định. <br \/><br \/>Thông thường quyết định được đưa ra trong ngày và trong một số trường hợp có thể mất đến 3 ngày.",
         "resendInBtn": "GỬI LẠI VÀO {value}",
-        "statusRejectTitle": "Đơn đăng ký bị từ chối",
+        "statusRejectTitle": "Xác minh bị từ chối",
         "statusRejectText": "Đơn đăng ký của bạn đã bị kiểm toán nội bộ từ chối, vui lòng kiểm tra kỹ các yêu cầu và điều khoản dịch vụ của chúng tôi trước khi đăng ký lại",
         "statusAcceptTitle": "Đơn đăng ký được chấp thuận",
         "noFreeAttemptsDesc": "Bạn đã sử dụng nỗ lực miễn phí của mình để vượt qua quy trình KYC. Chúng tôi vui lòng yêu cầu bạn đợi cho đến lần nâng cấp tiếp theo của ứng dụng để tiếp tục với các lần thử trả phí.",
@@ -57,6 +56,7 @@
         "unsupportedCountriesDisclaimer": "Cư dân từ một số quốc gia nhất định không thể đăng ký Thẻ SORA tại thời điểm này",
         "statusRejectReason": "Lý do từ chối",
         "userNotFound": "Không tìm thấy số điện thoại di động nào, vui lòng kiểm tra lại và thử lại.",
-        "code": "Mã"
+        "code": "Mã",
+        "getSoraCardDesc": "Nhận tài khoản Euro IBAN và Thẻ ghi nợ Mastercard có thể kết nối Ví SORA của bạn"
     }
 }

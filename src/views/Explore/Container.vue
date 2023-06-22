@@ -36,14 +36,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import storage from '@/utils/storage';
-import router, { lazyComponent } from '@/router';
 import { PageNames, Components } from '@/consts';
+import router, { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
+import storage from '@/utils/storage';
 
 const storageKey = 'exploreAccountItems';
 

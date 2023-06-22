@@ -1,10 +1,11 @@
-import invert from 'lodash/fp/invert';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
+import invert from 'lodash/fp/invert';
 
 import { DemeterPageNames } from '@/modules/demeterFarming/consts';
 
 import pkg from '../../package.json';
+
+import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 
 export const app = {
   version: pkg.version,
@@ -182,6 +183,7 @@ export enum Components {
   BridgeTransferNotification = 'pages/Bridge/TransferNotification',
   BridgeSelectAsset = 'pages/Bridge/SelectAsset',
   BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
+  BridgeSelectAccount = 'pages/Bridge/SelectAccount',
   // Moonpay Page
   Moonpay = 'pages/Moonpay/Moonpay',
   MoonpayNotification = 'pages/Moonpay/Notification',

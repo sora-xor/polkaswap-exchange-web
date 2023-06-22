@@ -34,11 +34,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import EmailValidator from 'email-validator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { state } from '@/store/decorators';
 
 const RESEND_INTERVAL = 59;

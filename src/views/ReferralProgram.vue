@@ -172,21 +172,21 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { components, mixins, api, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import last from 'lodash/fp/last';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { components, mixins, api, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { FPNumber } from '@sora-substrate/util';
-import type { CodecString } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
-import router, { lazyView } from '@/router';
-import { PageNames, ZeroStringValue } from '@/consts';
 import { detectBaseUrl } from '@/api';
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import { PageNames, ZeroStringValue } from '@/consts';
+import router, { lazyView } from '@/router';
+import { action, getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
 
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import { action, getter, mutation, state } from '@/store/decorators';
+import type { CodecString } from '@sora-substrate/util';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -417,7 +417,7 @@ export default class ReferralProgram extends Mixins(
 
   handleConnect(): void {
     if (!this.isSoraAccountConnected) {
-      this.connectInternalWallet();
+      this.connectSoraWallet();
     }
   }
 
