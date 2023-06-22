@@ -173,6 +173,8 @@ export enum Components {
   X1Dialog = 'X1/X1Dialog',
   PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
   // Add Liquidity Page
+  AddLiquiditySimple = 'pages/AddLiquidity/AddLiquiditySimple',
+  AddLiquidityDivisible = 'pages/AddLiquidity/AddLiquidityDivisible',
   AddLiquidityConfirm = 'pages/AddLiquidity/Confirm',
   AddLiquidityTransactionDetails = 'pages/AddLiquidity/TransactionDetails',
   // Remove Liquidity Page
