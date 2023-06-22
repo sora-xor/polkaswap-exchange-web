@@ -19,7 +19,6 @@
         "getSoraCardBtn": "Dobijte SORA karticu besplatno",
         "bridgeTokensBtn": "Žetoni mosta",
         "depositX1Btn": "Kupi XOR",
-        "getSoraCardDesc": "Nadopunite svoju SORA karticu fiatnom ili kriptovalutom i platite online, u trgovini ili podignite s bankomata. Nabavite euro IBAN račun i Mastercard debitnu karticu",
         "reIssuanceFee": "€0 godišnja naknada za ponovno izdavanje",
         "freeStartDesc": "{value} XOR na vašem računu za besplatan početak",
         "completeKYC": "Dovršite KYC",
@@ -57,6 +56,7 @@
         "unsupportedCountriesDisclaimer": "Stanovnici određenih zemalja trenutno ne mogu podnijeti zahtjev za SORA karticu",
         "statusRejectReason": "Razlog odbijanja",
         "userNotFound": "Broj mobitela nije pronađen, provjerite ga i pokušajte ponovno.",
-        "code": "Kodirati"
+        "code": "Kodirati",
+        "getSoraCardDesc": "Nabavite IBAN račun u eurima i debitnu karticu Mastercard dostupne u svom SORA novčaniku"
     }
 }

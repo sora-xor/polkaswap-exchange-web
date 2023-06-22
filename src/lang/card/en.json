@@ -19,7 +19,6 @@
         "getSoraCardBtn": "Get SORA Card for free",
         "bridgeTokensBtn": "Bridge tokens",
         "depositX1Btn": "Buy XOR",
-        "getSoraCardDesc": "Top up your SORA Card with fiat or crypto and pay online, in-store or withdraw from an ATM. Get a Euro IBAN account and a Mastercard Debit Card",
         "reIssuanceFee": "€0 annual re-issuance fee",
         "freeStartDesc": "{value} of XOR in your account for free start",
         "completeKYC": "Complete KYC",
@@ -48,7 +47,7 @@
         "blacklistedCountriesExcuse": "Unfortunately, at this moment we’re not able to support the following countries:",
         "statusPendingText": "You have successfully completed your KYC application. The review is pending and you can expect a decision shortly.<br \/><br \/>Usually the decision is made the same day and in some cases can take up to 3 days.",
         "resendInBtn": "RESEND IN {value}",
-        "statusRejectTitle": "Application rejected",
+        "statusRejectTitle": "Verification rejected",
         "statusRejectText": "Your application has been rejected by internal audit, please check out our requirements and terms of service carefully before applying again",
         "statusAcceptTitle": "Application approved",
         "noFreeAttemptsDesc": "You have used your free attempt to pass the KYC process. We kindly ask you to wait until the next upgrade of the application to proceed with paid attempts.",
@@ -57,6 +56,7 @@
         "unsupportedCountriesDisclaimer": "Residents from certain countries can not apply for SORA Card at this moment",
         "statusRejectReason": "Rejection reason",
         "userNotFound": "No mobile number found, please recheck it and try again.",
-        "code": "Code"
+        "code": "Code",
+        "getSoraCardDesc": "Get a Euro IBAN account and Mastercard Debit Card accessible within your SORA Wallet"
     }
 }
