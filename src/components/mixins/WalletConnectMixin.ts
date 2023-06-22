@@ -57,18 +57,15 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
 
   // update selected evm network without metamask request
   @mutation.web3.setSelectedNetwork setSelectedNetwork!: (networkId: BridgeNetworkId) => void;
-  @mutation.web3.resetEvmAddress private resetEvmAddress!: FnWithoutArgs;
+  @mutation.web3.resetEvmAddress resetEvmAddress!: FnWithoutArgs;
   @mutation.web3.setEvmAddress setEvmAddress!: (address: string) => void;
   @mutation.web3.resetProvidedEvmNetwork resetProvidedEvmNetwork!: FnWithoutArgs;
-  @mutation.web3.resetEvmBalance private resetEvmBalance!: FnWithoutArgs;
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
 
   @action.web3.connectEvmAccount private connectEvmAccount!: (provider: Provider) => Promise<void>;
   @action.web3.updateNetworkProvided updateNetworkProvided!: AsyncFnWithoutArgs;
   @action.web3.connectExternalNetwork connectExternalNetwork!: (networkHex?: string) => Promise<void>;
   @action.web3.selectExternalNetwork selectExternalNetwork!: (networkId: BridgeNetworkId) => Promise<void>;
-  @action.web3.restoreSelectedEvmNetwork restoreSelectedEvmNetwork!: AsyncFnWithoutArgs;
-  @action.web3.restoreNetworkType restoreNetworkType!: AsyncFnWithoutArgs;
 
   getWalletAddress = getWalletAddress;
   formatAddress = formatAddress;
@@ -108,10 +105,5 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     } finally {
       this.isExternalWalletConnecting = false;
     }
-  }
-
-  disconnectEvmAccount(): void {
-    this.resetEvmAddress();
-    this.resetEvmBalance();
   }
 }

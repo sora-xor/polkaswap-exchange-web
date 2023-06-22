@@ -351,18 +351,18 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setAmount setAmount!: (value?: string) => void;
 
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
-  @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncFnWithoutArgs;
-  @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncFnWithoutArgs;
-  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
+  @action.bridge.resetInternalBalanceSubscription private resetInternalBalanceSubscription!: AsyncFnWithoutArgs;
+  @action.bridge.updateInternalBalanceSubscription private updateInternalBalanceSubscription!: AsyncFnWithoutArgs;
+  @action.bridge.getExternalNetworkFee private getExternalNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<IBridgeTransaction>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
 
   @Watch('nodeIsConnected')
   private updateConnectionSubsriptions(nodeConnected: boolean) {
     if (nodeConnected) {
-      this.updateBalanceSubscription();
+      this.updateInternalBalanceSubscription();
     } else {
-      this.resetBalanceSubscription();
+      this.resetInternalBalanceSubscription();
     }
   }
 
@@ -423,7 +423,7 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.evmNetworkFee);
+    return hasInsufficientEvmNativeTokenForFee(this.externalBalance, this.evmNetworkFee);
   }
 
   get isInsufficientBalance(): boolean {
@@ -485,10 +485,6 @@ export default class Bridge extends Mixins(
   }
 
   formatBalance(isSora = true): string {
-    // [TODO] balance for token in substrate network
-    if (!isSora && this.isSubBridge) {
-      return '-';
-    }
     if (!(this.asset && (this.isRegisteredAsset || isSora))) {
       return '-';
     }
@@ -507,12 +503,12 @@ export default class Bridge extends Mixins(
       this.setAmount(this.$route.params.xorToDeposit);
     } else {
       this.setAmount();
-      this.updateBalanceSubscription();
+      this.updateInternalBalanceSubscription();
     }
   }
 
   destroyed(): void {
-    this.resetBalanceSubscription();
+    this.resetInternalBalanceSubscription();
   }
 
   getBridgeItemTitle(isSoraNetwork = false): string {
@@ -528,7 +524,7 @@ export default class Bridge extends Mixins(
 
   async handleSwitchItems(): Promise<void> {
     this.setSoraToEvm(!this.isSoraToEvm);
-    await this.getEvmNetworkFee();
+    await this.getExternalNetworkFee();
   }
 
   handleMaxValue(): void {
@@ -574,7 +570,7 @@ export default class Bridge extends Mixins(
 
     await this.withSelectAssetLoading(async () => {
       await this.setAssetAddress(selectedAsset.address);
-      await this.getEvmNetworkFee();
+      await this.getExternalNetworkFee();
     });
   }
 

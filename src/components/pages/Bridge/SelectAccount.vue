@@ -43,7 +43,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SearchInputMixin from '@/components/mixins/SearchInputMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state, mutation, getter } from '@/store/decorators';
+import { action, state, mutation, getter } from '@/store/decorators';
 
 @Component({
   components: {
@@ -56,7 +56,7 @@ import { state, mutation, getter } from '@/store/decorators';
 export default class BridgeSelectAccount extends Mixins(mixins.LoadingMixin, TranslationMixin, SearchInputMixin) {
   @state.web3.selectAccountDialogVisibility private selectAccountDialogVisibility!: boolean;
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
-  @mutation.web3.setSubAddress private setSubAddress!: (address: string) => void;
+  @action.web3.connectSubAccount private connectSubAccount!: (address: string) => Promise<void>;
 
   @state.wallet.account.source private source!: Nullable<WALLET_CONSTS.AppWallet>;
   @getter.wallet.account.isConnectedAccount private isConnectedAccount!: (
@@ -120,7 +120,7 @@ export default class BridgeSelectAccount extends Mixins(mixins.LoadingMixin, Tra
   }
 
   private updateSubAccount(address: string): void {
-    this.setSubAddress(address);
+    this.connectSubAccount(address);
     this.visibility = false;
   }
 }
