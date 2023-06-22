@@ -16,6 +16,7 @@ import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
+import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
@@ -46,7 +47,7 @@ async function evmTxDataToHistory(
   const transactionState = tx.status;
   const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
   const soraBlockNumber = isOutgoing ? tx.startBlock : tx.endBlock;
-  const evmBlockNumber = isOutgoing ? tx.endBlock : tx.startBlock;
+  const externalBlockNumber = isOutgoing ? tx.endBlock : tx.startBlock;
   const blockId = await api.system.getBlockHash(soraBlockNumber);
   const startTime = await api.system.getBlockTimestamp(blockId);
 
@@ -54,7 +55,7 @@ async function evmTxDataToHistory(
     id,
     txId: id,
     blockId,
-    blockHeight: String(evmBlockNumber),
+    blockHeight: String(externalBlockNumber),
     type: isOutgoing ? Operation.EvmOutgoing : Operation.EvmIncoming,
     hash: tx.soraHash,
     transactionState,
@@ -82,7 +83,7 @@ async function subTxDataToHistory(
   const transactionState = tx.status;
   const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
   const soraBlockNumber = isOutgoing ? tx.startBlock : tx.endBlock;
-  const evmBlockNumber = isOutgoing ? tx.endBlock : tx.startBlock;
+  const externalBlockNumber = isOutgoing ? tx.endBlock : tx.startBlock;
   const blockId = await api.system.getBlockHash(soraBlockNumber);
   const txId = await findUserTxIdInBlock(blockId, id, 'RequestStatusUpdate', 'bridgeProxy');
   const startTime = await api.system.getBlockTimestamp(blockId);
@@ -91,7 +92,7 @@ async function subTxDataToHistory(
     id,
     txId,
     blockId,
-    blockHeight: String(evmBlockNumber),
+    blockHeight: String(externalBlockNumber),
     type: isOutgoing ? Operation.SubstrateOutgoing : Operation.SubstrateIncoming,
     hash: tx.soraHash,
     transactionState,
@@ -144,6 +145,51 @@ function bridgeDataToHistoryItem(
   };
 }
 
+/**
+ * Fetch EVM Network fee for selected bridge asset
+ */
+async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void> {
+  const { getters, commit, state } = bridgeActionContext(context);
+  if (!getters.asset?.address) {
+    return;
+  }
+  commit.getExternalNetworkFeeRequest();
+  try {
+    const fee = await ethersUtil.getEvmNetworkFee(getters.asset.address, state.isSoraToEvm);
+    commit.getExternalNetworkFeeSuccess(fee);
+  } catch (error) {
+    commit.getExternalNetworkFeeFailure();
+  }
+}
+
+async function updateEvmExternalBalance(context: ActionContext<any, any>): Promise<void> {
+  const { getters, commit, rootGetters } = bridgeActionContext(context);
+
+  const accountAddress = rootGetters.web3.externalAccount;
+  const externalAddress = getters.asset?.externalAddress;
+
+  const assetBalance = externalAddress
+    ? (await ethersUtil.getAccountAssetBalance(accountAddress, externalAddress)).value
+    : '0';
+
+  const nativeBalance = await ethersUtil.getAccountBalance(accountAddress);
+
+  commit.setAssetExternalBalance(assetBalance);
+  commit.setExternalBalance(nativeBalance);
+}
+
+async function updateSubExternalBalance(context: ActionContext<any, any>): Promise<void> {
+  const { getters, commit, rootGetters } = bridgeActionContext(context);
+
+  const accountAddress = rootGetters.web3.externalAccount;
+  const externalAddress = getters.asset?.externalAddress;
+  const balance = await subConnector.adapter.getTokenBalance(accountAddress, externalAddress);
+  const nativeBalance = await subConnector.adapter.getTokenBalance(accountAddress);
+
+  commit.setAssetExternalBalance(balance);
+  commit.setExternalBalance(nativeBalance);
+}
+
 const actions = defineActions({
   resetForm(context) {
     const { commit, dispatch } = bridgeActionContext(context);
@@ -155,7 +201,7 @@ const actions = defineActions({
     dispatch.setAssetAddress();
   },
 
-  async updateBalanceSubscription(context): Promise<void> {
+  async updateInternalBalanceSubscription(context): Promise<void> {
     const { getters, commit, rootGetters } = bridgeActionContext(context);
     const updateBalance = (balance: Nullable<AccountBalance>) => commit.setAssetBalance(balance);
 
@@ -170,35 +216,37 @@ const actions = defineActions({
     }
   },
 
-  async resetBalanceSubscription(context): Promise<void> {
+  async resetInternalBalanceSubscription(context): Promise<void> {
     balanceSubscriptions.remove('asset');
   },
 
   async setAssetAddress(context, address?: string): Promise<void> {
     const { commit, dispatch } = bridgeActionContext(context);
+
     commit.setAssetAddress(address);
-    dispatch.updateBalanceSubscription();
+    commit.setAssetExternalBalance();
+
+    dispatch.updateInternalBalanceSubscription();
+    dispatch.updateExternalBalance();
   },
 
-  async updateEvmBlockNumber(context, value?: number): Promise<void> {
-    const { commit } = bridgeActionContext(context);
-    const blockNumber = value ?? (await (await ethersUtil.getEthersInstance()).getBlockNumber());
-    commit.setEvmBlockNumber(blockNumber);
-  },
-  /**
-   * Fetch EVM Network fee for selected bridge asset
-   */
-  async getEvmNetworkFee(context): Promise<void> {
-    const { getters, commit, state } = bridgeActionContext(context);
-    if (!getters.asset?.address) {
-      return;
+  async getExternalNetworkFee(context): Promise<void> {
+    const { getters } = bridgeActionContext(context);
+
+    if (getters.isSubBridge) {
+      // [TODO] sub network fee
+    } else {
+      await getEvmNetworkFee(context);
     }
-    commit.getEvmNetworkFeeRequest();
-    try {
-      const fee = await ethersUtil.getEvmNetworkFee(getters.asset.address, state.isSoraToEvm);
-      commit.getEvmNetworkFeeSuccess(fee);
-    } catch (error) {
-      commit.getEvmNetworkFeeFailure();
+  },
+
+  async updateExternalBalance(context): Promise<void> {
+    const { getters } = bridgeActionContext(context);
+
+    if (getters.isSubBridge) {
+      await updateSubExternalBalance(context);
+    } else {
+      await updateEvmExternalBalance(context);
     }
   },
 

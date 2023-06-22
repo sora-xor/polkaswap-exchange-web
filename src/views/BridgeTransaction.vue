@@ -453,7 +453,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.txEvmNetworkFee);
+    return hasInsufficientEvmNativeTokenForFee(this.externalBalance, this.txEvmNetworkFee);
   }
 
   get isAnotherEvmAddress(): boolean {
@@ -565,9 +565,9 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get comfirmationBlocksLeft(): number {
-    if (this.isSoraToEvm || !this.historyItem?.blockHeight || !this.evmBlockNumber) return 0;
+    if (this.isSoraToEvm || !this.historyItem?.blockHeight || !this.externalBlockNumber) return 0;
 
-    const blocksLeft = +this.historyItem.blockHeight + 30 - this.evmBlockNumber;
+    const blocksLeft = +this.historyItem.blockHeight + 30 - this.externalBlockNumber;
 
     return Math.max(blocksLeft, 0);
   }
