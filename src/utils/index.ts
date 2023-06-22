@@ -129,10 +129,10 @@ export const hasInsufficientXorForFee = (
   return FPNumber.lt(fpBalance, fpFee) && !isXorOutputSwap;
 };
 
-export const hasInsufficientEvmNativeTokenForFee = (evmBalance: CodecString, fee: CodecString): boolean => {
+export const hasInsufficientEvmNativeTokenForFee = (nativeBalance: CodecString, fee: CodecString): boolean => {
   if (!fee) return false;
 
-  const fpBalance = FPNumber.fromCodecValue(evmBalance);
+  const fpBalance = FPNumber.fromCodecValue(nativeBalance);
   const fpFee = FPNumber.fromCodecValue(fee);
 
   return FPNumber.lt(fpBalance, fpFee);

@@ -1,4 +1,5 @@
 import { BridgeTxStatus, Operation } from '@sora-substrate/util';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import {
   api,
   historyElementsFilter,
@@ -326,9 +327,10 @@ export class EthBridgeHistory {
         hash,
         externalHash,
         soraNetworkFee,
-        externalNetworkFee,
         transactionState,
         externalNetwork,
+        externalNetworkType: BridgeNetworkType.EvmLegacy,
+        externalNetworkFee,
         to,
       };
 

@@ -44,12 +44,6 @@ const mutations = defineMutations<Web3State>()({
     state.networkSelected = networkId;
     ethersUtil.storeSelectedNetwork(networkId);
   },
-  setEvmBalance(state, balance: CodecString): void {
-    state.evmBalance = balance;
-  },
-  resetEvmBalance(state): void {
-    state.evmBalance = ZeroStringValue;
-  },
 
   setNetworkType(state, networkType: BridgeNetworkType) {
     state.networkType = networkType;

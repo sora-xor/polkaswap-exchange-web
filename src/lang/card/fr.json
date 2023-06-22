@@ -19,7 +19,6 @@
         "getSoraCardBtn": "Obtenez la carte SORA gratuitement",
         "bridgeTokensBtn": "Jetons de bridge",
         "depositX1Btn": "Acheter du XOR",
-        "getSoraCardDesc": "Rechargez votre carte SORA avec fiat ou crypto et payez en ligne, en magasin ou retirez à un guichet automatique. Obtenez un compte Euro IBAN et une carte de débit Mastercard",
         "reIssuanceFee": "0 € de frais de réémission annuels",
         "freeStartDesc": "{value} de XOR dans votre compte pour un démarrage gratuit",
         "completeKYC": "KYC complet",
@@ -57,6 +56,7 @@
         "unsupportedCountriesDisclaimer": "Les résidents de certains pays ne peuvent pas demander de carte SORA pour le moment",
         "statusRejectReason": "Motif de rejet",
         "userNotFound": "Aucun numéro de portable trouvé, veuillez le revérifier et réessayer.",
-        "code": "Code"
+        "code": "Code",
+        "getSoraCardDesc": "Obtenez un IBAN en compte Euros ainsi qu'un carte de débit Mastercard connectés à votre portefeuille SORA"
     }
 }

@@ -19,7 +19,6 @@
         "getSoraCardBtn": "Få SORA-kort gratis",
         "bridgeTokensBtn": "Bropolletter",
         "depositX1Btn": "Köp XOR",
-        "getSoraCardDesc": "Fyll på ditt SORA-kort med fiat eller krypto och betala online, i butik eller ta ut från en bankomat. Skaffa ett Euro IBAN-konto och ett Mastercard-bankkort",
         "reIssuanceFee": "0 € årlig återutgivningsavgift",
         "freeStartDesc": "{value} av XOR på ditt konto för gratis start",
         "completeKYC": "Komplett KYC",
@@ -57,6 +56,7 @@
         "unsupportedCountriesDisclaimer": "Invånare från vissa länder kan inte ansöka om SORA-kort för närvarande",
         "statusRejectReason": "Orsak till avslag",
         "userNotFound": "Inget mobilnummer hittades, kontrollera det igen och försök igen.",
-        "code": "Koda"
+        "code": "Koda",
+        "getSoraCardDesc": "Skaffa ett Euro IBAN-konto och Mastercard-bankkort tillgängligt i din SORA-plånbok"
     }
 }
