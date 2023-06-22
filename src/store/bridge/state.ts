@@ -7,10 +7,11 @@ function initialState(): BridgeState {
     isSoraToEvm: true,
     assetAddress: '',
     assetBalance: null, // balance for sora
-    assetExternalBalance: '', // balance for bridge network
+    assetExternalBalance: ZeroStringValue, // balance for bridge network
     amount: '',
     evmNetworkFee: ZeroStringValue,
     evmNetworkFeeFetching: false,
+    externalBalance: ZeroStringValue, // balance for external native token (like ETH)
     externalBlockNumber: 0,
     // history sources
     historyInternal: {}, // localstorage history

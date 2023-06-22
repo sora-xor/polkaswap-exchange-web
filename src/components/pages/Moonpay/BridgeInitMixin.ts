@@ -27,7 +27,6 @@ const createError = (text: string, notification: MoonpayNotifications) => {
 export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, WalletConnectMixin) {
   @state.moonpay.api moonpayApi!: MoonpayApi;
   @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<BridgeHistory>;
-  @state.web3.evmBalance evmBalance!: CodecString;
   @state.web3.ethBridgeEvmNetwork ethBridgeEvmNetwork!: EvmNetwork;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeAccountAsset>;
@@ -127,7 +126,6 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         );
       }
 
-      // while registered assets updating, evmBalance updating too
       await this.updateRegisteredAssets();
       await this.updateExternalBalances();
 
@@ -146,8 +144,8 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
       const asset = this.assetsDataTable[soraAddress];
 
       const evmNetworkFee: CodecString = await ethersUtil.getEvmNetworkFee(soraAddress, false);
-
-      const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(this.evmBalance, evmNetworkFee);
+      const evmNativeBalance = await ethersUtil.getAccountBalance(ethTransferData.to);
+      const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(evmNativeBalance, evmNetworkFee);
 
       if (!hasEthForFee) {
         throw createError('Insufficient ETH for fee', MoonpayNotifications.FeeError);

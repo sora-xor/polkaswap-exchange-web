@@ -19,8 +19,12 @@ const mutations = defineMutations<BridgeState>()({
   setAssetBalance(state, balance: Nullable<AccountBalance> = null): void {
     state.assetBalance = balance;
   },
-  setAssetExternalBalance(state, balance: Nullable<CodecString> = null): void {
+  setAssetExternalBalance(state, balance: CodecString = ZeroStringValue): void {
     state.assetExternalBalance = balance;
+  },
+
+  setExternalBalance(state, balance: CodecString = ZeroStringValue): void {
+    state.externalBalance = balance;
   },
 
   setAmount(state, value?: string): void {

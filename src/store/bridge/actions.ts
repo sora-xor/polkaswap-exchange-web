@@ -168,11 +168,14 @@ async function updateEvmExternalBalance(context: ActionContext<any, any>): Promi
   const accountAddress = rootGetters.web3.externalAccount;
   const externalAddress = getters.asset?.externalAddress;
 
-  const balance = externalAddress
+  const assetBalance = externalAddress
     ? (await ethersUtil.getAccountAssetBalance(accountAddress, externalAddress)).value
     : '0';
 
-  commit.setAssetExternalBalance(balance);
+  const nativeBalance = await ethersUtil.getAccountBalance(accountAddress);
+
+  commit.setAssetExternalBalance(assetBalance);
+  commit.setExternalBalance(nativeBalance);
 }
 
 async function updateSubExternalBalance(context: ActionContext<any, any>): Promise<void> {
@@ -181,8 +184,10 @@ async function updateSubExternalBalance(context: ActionContext<any, any>): Promi
   const accountAddress = rootGetters.web3.externalAccount;
   const externalAddress = getters.asset?.externalAddress;
   const balance = await subConnector.adapter.getTokenBalance(accountAddress, externalAddress);
+  const nativeBalance = await subConnector.adapter.getTokenBalance(accountAddress);
 
   commit.setAssetExternalBalance(balance);
+  commit.setExternalBalance(nativeBalance);
 }
 
 const actions = defineActions({

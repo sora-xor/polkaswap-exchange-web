@@ -123,10 +123,6 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<Reco
       const accountAsset = { ...asset };
       const balance = await subConnector.adapter.getTokenBalance(accountAddress, accountAsset.address);
       accountAsset.balance = balance;
-      // [TODO] native token balance update
-      if (!accountAsset.address) {
-        rootCommit.web3.setEvmBalance(balance);
-      }
       return { [soraAddress]: accountAsset };
     })
   );
@@ -151,11 +147,6 @@ async function updateEvmBalances(context: ActionContext<any, any>): Promise<Reco
 
           accountAsset.balance = value;
           accountAsset.decimals = decimals;
-
-          // update evmBalance
-          if (ethersUtil.isNativeEvmTokenAddress(accountAsset.address)) {
-            rootCommit.web3.setEvmBalance(value);
-          }
         }
       } catch (error) {
         console.error(error);
