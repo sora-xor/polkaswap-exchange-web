@@ -6,23 +6,36 @@
         is-select-available
         :is-max-available="isFirstMaxButtonAvailable"
         :title="t('createPair.deposit')"
-        :token="firstToken"
-        :value="firstTokenValue"
+        :token="token"
+        :value="tokenValue"
         :disabled="!areTokensSelected"
-        @input="handleTokenChange($event, setFirstTokenValue)"
+        @input="handleTokenChange($event)"
         @focus="setFocusedField(FocusedField.First)"
-        @max="handleAddLiquidityMaxValue($event, setFirstTokenValue)"
-        @select="openSelectTokenDialog(true)"
+        @max="handleAddLiquidityMaxValue($event)"
+        @select="openSelectTokenDialog(showAllAssets)"
       />
 
+      <slippage-tolerance class="slippage-tolerance-settings" />
+
       <template>
-        <div class="liquidity-division-info">
+        <div v-if="!tokenValue" class="liquidity-division-info">
           <p>Polkaswap will automatically split XOR between two tokens to maintain a balanced LP pool</p>
+        </div>
+        <div v-else class="liquidity-division-info">
+          <p>{{ `Your ${tokenValue} ${token.symbol} will be split into` }}</p>
+          <div class="liquidity-division-info-result">
+            <div class="liquidity-division-info-result__value">
+              <token-logo :token="firstToken" size="small" class="token-logo liquidity-options__token-logo" />
+              <span>{{ `${firstTokenSplitResult} ${firstToken.symbol}` }}</span>
+            </div>
+            <div class="liquidity-division-info-result__value">
+              <token-logo :token="secondToken" size="small" class="token-logo liquidity-options__token-logo" />
+              <span>{{ `${secondTokenSplitResult} ${secondToken.symbol}` }}</span>
+            </div>
+          </div>
         </div>
         <p class="liquidity-division-info-sign">You’ll be signing 2 transactions (Swap & Supply).</p>
       </template>
-
-      <slippage-tolerance class="slippage-tolerance-settings" />
 
       <s-button
         type="primary"
@@ -97,10 +110,10 @@
 </template>
 
 <script lang="ts">
-import { Operation } from '@sora-substrate/util';
+import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR, XSTUSD } from '@sora-substrate/util/build/assets/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
 import BaseTokenPairMixin from '@/components/mixins/BaseTokenPairMixin';
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
@@ -109,7 +122,7 @@ import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixi
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
-import { FocusedField } from '@/store/addLiquidity/types';
+import { FocusedField, AddLiquidityType } from '@/store/addLiquidity/types';
 import { getter, action, mutation, state } from '@/store/decorators';
 import type { LiquidityParams } from '@/store/pool/types';
 import { getMaxValue, isMaxButtonAvailable, hasInsufficientBalance, getAssetBalance } from '@/utils';
@@ -117,8 +130,6 @@ import { getMaxValue, isMaxButtonAvailable, hasInsufficientBalance, getAssetBala
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-
-type SetValue = (v: string) => Promise<void>;
 
 @Component({
   components: {
@@ -129,6 +140,7 @@ type SetValue = (v: string) => Promise<void>;
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenInput: lazyComponent(Components.TokenInput),
     InfoLine: components.InfoLine,
+    TokenLogo: components.TokenLogo,
   },
 })
 export default class AddLiquidityDivisible extends Mixins(
@@ -143,6 +155,7 @@ export default class AddLiquidityDivisible extends Mixins(
   readonly FocusedField = FocusedField;
 
   @state.settings.slippageTolerance slippageToleranceValue!: string;
+  @state.addLiquidity.liquidityOption liquidityOption!: AddLiquidityType;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
@@ -162,6 +175,8 @@ export default class AddLiquidityDivisible extends Mixins(
 
   @mutation.addLiquidity.setFocusedField setFocusedField!: (value: FocusedField) => void;
 
+  @Prop({ type: String }) readonly currentTab!: string;
+
   showSelectTokenDialog = false;
   isFirstTokenSelected = false;
   insufficientBalanceTokenSymbol = '';
@@ -180,6 +195,33 @@ export default class AddLiquidityDivisible extends Mixins(
     } else {
       this.resetSubscriptions();
     }
+  }
+
+  get firstTokenSplitResult(): any {
+    return FPNumber.fromNatural(this.firstTokenValue).div(new FPNumber(2));
+  }
+
+  get secondTokenSplitResult(): any {
+    // CALCULATE SWAP RESULT FROM firstTokenSplitResult / 2!!!
+    return FPNumber.fromNatural(this.secondTokenValue).format(2);
+  }
+
+  get token() {
+    if (this.liquidityOption === AddLiquidityType.DivisibleFirstToken) return this.firstToken;
+    if (this.liquidityOption === AddLiquidityType.DivisibleSecondToken) return this.secondToken;
+    return this.firstToken;
+  }
+
+  get tokenValue() {
+    if (this.liquidityOption === AddLiquidityType.DivisibleFirstToken) return this.firstTokenValue;
+    if (this.liquidityOption === AddLiquidityType.DivisibleSecondToken) return this.secondTokenValue;
+    return this.firstTokenValue;
+  }
+
+  get showAllAssets(): boolean {
+    if (this.liquidityOption === AddLiquidityType.DivisibleFirstToken) return true;
+    if (this.liquidityOption === AddLiquidityType.DivisibleSecondToken) return false;
+    return true;
   }
 
   async mounted(): Promise<void> {
@@ -253,9 +295,9 @@ export default class AddLiquidityDivisible extends Mixins(
     return false;
   }
 
-  async handleAddLiquidityMaxValue(token: Nullable<AccountAsset>, setValue: SetValue): Promise<void> {
+  async handleAddLiquidityMaxValue(token: Nullable<AccountAsset>): Promise<void> {
     if (!token) return;
-    await this.handleTokenChange(getMaxValue(token, this.networkFee), setValue);
+    await this.handleTokenChange(getMaxValue(token, this.networkFee));
   }
 
   async handleAddLiquidity(): Promise<void> {
@@ -270,8 +312,13 @@ export default class AddLiquidityDivisible extends Mixins(
     this.openConfirmDialog();
   }
 
-  async handleTokenChange(value: string, setValue: SetValue): Promise<void> {
-    await setValue(value);
+  async handleTokenChange(value: string): Promise<void> {
+    if (this.liquidityOption === AddLiquidityType.DivisibleFirstToken) {
+      await this.setFirstTokenValue(value);
+    }
+    if (this.liquidityOption === AddLiquidityType.DivisibleSecondToken) {
+      await this.setSecondTokenValue(value);
+    }
   }
 
   getTokenBalance(token: any): CodecString {
@@ -336,10 +383,25 @@ export default class AddLiquidityDivisible extends Mixins(
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
+  width: 100%;
   line-height: 150%;
   letter-spacing: -0.02em;
   color: #2a171f;
   padding: 16px 8px 8px 16px;
+
+  &-result {
+    display: flex;
+    &__value {
+      display: flex;
+      margin-right: 24px;
+
+      span {
+        margin-left: 8px;
+        font-weight: 700;
+        font-size: 18px;
+      }
+    }
+  }
 
   &-sign {
     font-size: 16px;

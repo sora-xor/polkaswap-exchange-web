@@ -1,5 +1,7 @@
 import { ZeroStringValue } from '@/consts';
 
+import { AddLiquidityType } from './types';
+
 import type { AddLiquidityState } from './types';
 
 function initialState(): AddLiquidityState {
@@ -12,6 +14,7 @@ function initialState(): AddLiquidityState {
     secondTokenBalance: null,
     focusedField: null,
     minted: ZeroStringValue,
+    liquidityOption: AddLiquidityType.Simple,
     // pool reserves
     reserve: null,
     reserveSubscription: null,

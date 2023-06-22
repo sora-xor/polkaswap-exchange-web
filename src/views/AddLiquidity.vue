@@ -40,7 +40,7 @@
         </s-tab>
       </s-tabs>
     </div>
-    <component :is="getComponent()"></component>
+    <component :is="getComponent()" :currentTab="currentTab"></component>
   </div>
 </template>
 
@@ -55,12 +55,8 @@ import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixi
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
-
-enum AddLiquidityType {
-  Simple = 'Simple',
-  DivisibleFirstToken = 'DivisibleFirstToken',
-  DivisibleSecondToken = 'DivisibleSecondToken',
-}
+import { AddLiquidityType } from '@/store/addLiquidity/types';
+import { action, mutation } from '@/store/decorators';
 
 @Component({
   components: {
@@ -80,7 +76,12 @@ export default class AddLiquidity extends Mixins(
   TokenSelectMixin,
   SelectedTokenRouteMixin
 ) {
-  currentTab = AddLiquidityType.Simple;
+  @mutation.addLiquidity.setLiquidityOption setLiquidityOption!: (type: AddLiquidityType) => void;
+
+  @action.addLiquidity.setFirstTokenValue setFirstTokenValue!: (address: string) => Promise<void>;
+  @action.addLiquidity.setSecondTokenValue setSecondTokenValue!: (address: string) => Promise<void>;
+
+  currentTab: AddLiquidityType = AddLiquidityType.Simple;
   isSplitAutomatic = false;
 
   readonly AddLiquidityType = AddLiquidityType;
@@ -104,6 +105,10 @@ export default class AddLiquidity extends Mixins(
     } else {
       this.isSplitAutomatic = false;
     }
+
+    this.setFirstTokenValue('');
+    this.setSecondTokenValue('');
+    this.setLiquidityOption(this.currentTab);
   }
 
   async mounted(): Promise<void> {

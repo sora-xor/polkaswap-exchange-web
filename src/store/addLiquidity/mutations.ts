@@ -1,6 +1,6 @@
 import { defineMutations } from 'direct-vuex';
 
-import type { AddLiquidityState, FocusedField } from './types';
+import type { AddLiquidityState, AddLiquidityType, FocusedField } from './types';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { Subscription } from 'rxjs';
@@ -56,6 +56,9 @@ const mutations = defineMutations<AddLiquidityState>()({
   resetTotalSupplySubscription(state): void {
     state.totalSupplySubscription?.unsubscribe();
     state.totalSupplySubscription = null;
+  },
+  setLiquidityOption(state, option: AddLiquidityType): void {
+    state.liquidityOption = option;
   },
 });
 

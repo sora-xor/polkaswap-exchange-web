@@ -7,6 +7,12 @@ export enum FocusedField {
   Second = 'secondTokenValue',
 }
 
+export enum AddLiquidityType {
+  Simple = 'Simple',
+  DivisibleFirstToken = 'DivisibleFirstToken',
+  DivisibleSecondToken = 'DivisibleSecondToken',
+}
+
 export type AddLiquidityState = {
   firstTokenAddress: string;
   secondTokenAddress: string;
@@ -16,6 +22,7 @@ export type AddLiquidityState = {
   secondTokenBalance: Nullable<AccountBalance>;
   reserve: Nullable<Array<CodecString>>;
   reserveSubscription: Nullable<Subscription>;
+  liquidityOption: AddLiquidityType;
   minted: CodecString;
   totalSupply: CodecString;
   totalSupplySubscription: Nullable<Subscription>;
