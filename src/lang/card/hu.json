@@ -19,7 +19,6 @@
         "getSoraCardBtn": "Szerezzen SORA kártyát ingyen",
         "bridgeTokensBtn": "Hídjelzők",
         "depositX1Btn": "Vásároljon XOR-t",
-        "getSoraCardDesc": "Töltse fel SORA kártyáját fiattal vagy kriptoval, és fizessen online, az üzletben vagy vegyen ki ATM-ből. Szerezzen Euro IBAN számlát és Mastercard bankkártyát",
         "reIssuanceFee": "0 € éves újrakiadási díj",
         "freeStartDesc": "{value} XOR-ból a fiókjában az ingyenes kezdéshez",
         "completeKYC": "Teljes KYC",
@@ -57,6 +56,7 @@
         "unsupportedCountriesDisclaimer": "Egyes országok lakosai jelenleg nem igényelhetnek SORA kártyát",
         "statusRejectReason": "Elutasítás oka",
         "userNotFound": "Nem található mobilszám. Kérjük, ellenőrizze újra, és próbálja újra.",
-        "code": "Kód"
+        "code": "Kód",
+        "getSoraCardDesc": "Szerezzen be Euro IBAN számlát és Mastercard Betéti kártyát, amely elérhető SORA pénztárcáján belül"
     }
 }
