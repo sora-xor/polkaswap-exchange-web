@@ -250,6 +250,16 @@ const actions = defineActions({
     }
   },
 
+  async updateExternalBlockNumber(context): Promise<void> {
+    const { getters, commit } = bridgeActionContext(context);
+
+    const blockNumber = getters.isSubBridge
+      ? await subConnector.adapter.getBlockNumber()
+      : await (await ethersUtil.getEthersInstance()).getBlockNumber();
+
+    commit.setExternalBlockNumber(blockNumber);
+  },
+
   async generateHistoryItem(context, playground): Promise<IBridgeTransaction> {
     const { dispatch, getters } = bridgeActionContext(context);
     const historyData = bridgeDataToHistoryItem(context, playground);

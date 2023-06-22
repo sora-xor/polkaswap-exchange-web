@@ -45,8 +45,12 @@ class SubAdapter {
     }
   }
 
-  protected async getBlockNumberObservable() {
-    return this.apiRx.query.system.number().pipe(map((codec) => codec.toNumber()));
+  public async getBlockNumber() {
+    await this.ready;
+
+    const result = await this.api.query.system.number();
+
+    return result.toNumber();
   }
 
   protected async getAccountBalance(accountAddress: string) {
