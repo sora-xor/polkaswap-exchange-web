@@ -19,7 +19,6 @@
         "getSoraCardBtn": "Získejte kartu SORA zdarma",
         "bridgeTokensBtn": "Žetony mostu",
         "depositX1Btn": "Kupte si XOR",
-        "getSoraCardDesc": "Nabijte svou kartu SORA kartou fiat nebo kryptoměnami a plaťte online, v obchodě nebo vybírejte z bankomatu. Získejte účet Euro IBAN a debetní kartu Mastercard",
         "reIssuanceFee": "0 € roční poplatek za opětovné vydání",
         "freeStartDesc": "{value} XOR ve vašem účtu pro začátek zdarma",
         "completeKYC": "Kompletní KYC",
@@ -57,6 +56,7 @@
         "unsupportedCountriesDisclaimer": "Obyvatelé některých zemí v tuto chvíli nemohou žádat o kartu SORA",
         "statusRejectReason": "Důvod odmítnutí",
         "userNotFound": "Nebylo nalezeno žádné číslo mobilního telefonu, zkontrolujte ho znovu a zkuste to znovu.",
-        "code": "Kód"
+        "code": "Kód",
+        "getSoraCardDesc": "Získejte účet v eurech IBAN a debetní kartu Mastercard přístupné ve vaší peněžence SORA"
     }
 }
