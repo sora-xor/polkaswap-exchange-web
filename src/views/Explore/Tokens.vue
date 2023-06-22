@@ -300,41 +300,43 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   }
 
   get preparedItems(): TableItem[] {
-    return Object.entries(this.tokensData).reduce<TableItem[]>((buffer, [address, tokenData]) => {
-      const asset = this.getAsset(address);
+    return this.items // TODO: [PW-1166] map fn is used here cuz whitelistAssets has default sorting
+      .map<[string, TokenData]>(({ address }) => [address, this.tokensData[address]])
+      .reduce<TableItem[]>((buffer, [address, tokenData]) => {
+        const asset = this.getAsset(address);
 
-      if (!asset) return buffer;
+        if (!asset) return buffer;
 
-      const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? 0);
-      const fpPriceDay = tokenData?.startPriceDay ?? FPNumber.ZERO;
-      const fpPriceWeek = tokenData?.startPriceWeek ?? FPNumber.ZERO;
-      const fpVolumeDay = tokenData?.volumeDay ?? FPNumber.ZERO;
-      const fpVolumeWeek = tokenData?.volumeWeek ?? FPNumber.ZERO;
-      const fpPriceChangeDay = calcPriceChange(fpPrice, fpPriceDay);
-      const fpPriceChangeWeek = calcPriceChange(fpPrice, fpPriceWeek);
+        const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? 0);
+        const fpPriceDay = tokenData?.startPriceDay ?? FPNumber.ZERO;
+        const fpPriceWeek = tokenData?.startPriceWeek ?? FPNumber.ZERO;
+        const fpVolumeDay = tokenData?.volumeDay ?? FPNumber.ZERO;
+        const fpVolumeWeek = tokenData?.volumeWeek ?? FPNumber.ZERO;
+        const fpPriceChangeDay = calcPriceChange(fpPrice, fpPriceDay);
+        const fpPriceChangeWeek = calcPriceChange(fpPrice, fpPriceWeek);
 
-      const reserves = tokenData?.reserves ?? FPNumber.ZERO;
-      const tvl = reserves.mul(fpPrice);
-      const velocity = tvl.isZero() ? FPNumber.ZERO : fpVolumeWeek.div(tvl);
+        const reserves = tokenData?.reserves ?? FPNumber.ZERO;
+        const tvl = reserves.mul(fpPrice);
+        const velocity = tvl.isZero() ? FPNumber.ZERO : fpVolumeWeek.div(tvl);
 
-      buffer.push({
-        ...asset,
-        price: fpPrice.toNumber(),
-        priceFormatted: new FPNumber(fpPrice.toFixed(7)).toLocaleString(),
-        priceChangeDay: fpPriceChangeDay.toNumber(),
-        priceChangeDayFP: fpPriceChangeDay,
-        priceChangeWeek: fpPriceChangeWeek.toNumber(),
-        priceChangeWeekFP: fpPriceChangeWeek,
-        volumeDay: fpVolumeDay.toNumber(),
-        volumeDayFormatted: formatAmountWithSuffix(fpVolumeDay),
-        tvl: tvl.toNumber(),
-        tvlFormatted: formatAmountWithSuffix(tvl),
-        velocity: velocity.toNumber(),
-        velocityFormatted: String(velocity.toNumber(2)),
-      });
+        buffer.push({
+          ...asset,
+          price: fpPrice.toNumber(),
+          priceFormatted: new FPNumber(fpPrice.toFixed(7)).toLocaleString(),
+          priceChangeDay: fpPriceChangeDay.toNumber(),
+          priceChangeDayFP: fpPriceChangeDay,
+          priceChangeWeek: fpPriceChangeWeek.toNumber(),
+          priceChangeWeekFP: fpPriceChangeWeek,
+          volumeDay: fpVolumeDay.toNumber(),
+          volumeDayFormatted: formatAmountWithSuffix(fpVolumeDay),
+          tvl: tvl.toNumber(),
+          tvlFormatted: formatAmountWithSuffix(tvl),
+          velocity: velocity.toNumber(),
+          velocityFormatted: String(velocity.toNumber(2)),
+        });
 
-      return buffer;
-    }, []);
+        return buffer;
+      }, []);
   }
 
   isSynthetic(row: TableItem): boolean {
