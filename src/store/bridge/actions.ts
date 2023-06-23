@@ -1,4 +1,5 @@
 import { BridgeCurrencyType, BridgeHistory, FPNumber, Operation } from '@sora-substrate/util';
+import { getAssetBalance } from '@sora-substrate/util/build/assets';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
@@ -162,31 +163,47 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
   }
 }
 
-async function updateEvmExternalBalance(context: ActionContext<any, any>): Promise<void> {
-  const { getters, commit, rootGetters } = bridgeActionContext(context);
+async function updateEvmBalances(context: ActionContext<any, any>): Promise<void> {
+  const { commit, getters, state } = bridgeActionContext(context);
+  const { sender, recepient, asset } = getters;
+  const { isSoraToEvm } = state;
 
-  const accountAddress = rootGetters.web3.externalAccount;
-  const externalAddress = getters.asset?.externalAddress;
+  if (!asset?.address) return;
 
-  const assetBalance = externalAddress
-    ? (await ethersUtil.getAccountAssetBalance(accountAddress, externalAddress)).value
-    : '0';
+  const senderBalance = isSoraToEvm
+    ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
+    : (await ethersUtil.getAccountAssetBalance(sender, asset?.externalAddress)).value;
 
-  const nativeBalance = await ethersUtil.getAccountBalance(accountAddress);
+  const recepientBalance = isSoraToEvm
+    ? (await ethersUtil.getAccountAssetBalance(recepient, asset?.externalAddress)).value
+    : (await getAssetBalance(api.api, recepient, asset.address, asset.decimals)).transferable;
 
-  commit.setAssetExternalBalance(assetBalance);
+  const nativeBalance = await ethersUtil.getAccountBalance(isSoraToEvm ? recepient : sender);
+
+  commit.setAssetSenderBalance(senderBalance);
+  commit.setAssetRecepientBalance(recepientBalance);
   commit.setExternalBalance(nativeBalance);
 }
 
-async function updateSubExternalBalance(context: ActionContext<any, any>): Promise<void> {
-  const { getters, commit, rootGetters } = bridgeActionContext(context);
+async function updateSubBalances(context: ActionContext<any, any>): Promise<void> {
+  const { commit, getters, state } = bridgeActionContext(context);
+  const { sender, recepient, asset } = getters;
+  const { isSoraToEvm } = state;
 
-  const accountAddress = rootGetters.web3.externalAccount;
-  const externalAddress = getters.asset?.externalAddress;
-  const balance = await subConnector.adapter.getTokenBalance(accountAddress, externalAddress);
-  const nativeBalance = await subConnector.adapter.getTokenBalance(accountAddress);
+  if (!asset?.address) return;
 
-  commit.setAssetExternalBalance(balance);
+  const senderBalance = isSoraToEvm
+    ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
+    : await subConnector.adapter.getTokenBalance(sender, asset?.externalAddress);
+
+  const recepientBalance = isSoraToEvm
+    ? await subConnector.adapter.getTokenBalance(recepient, asset?.externalAddress)
+    : (await getAssetBalance(api.api, recepient, asset.address, asset.decimals)).transferable;
+
+  const nativeBalance = await subConnector.adapter.getTokenBalance(sender);
+
+  commit.setAssetSenderBalance(senderBalance);
+  commit.setAssetRecepientBalance(recepientBalance);
   commit.setExternalBalance(nativeBalance);
 }
 
@@ -201,32 +218,24 @@ const actions = defineActions({
     dispatch.setAssetAddress();
   },
 
-  async updateInternalBalanceSubscription(context): Promise<void> {
-    const { getters, commit, rootGetters } = bridgeActionContext(context);
-    const updateBalance = (balance: Nullable<AccountBalance>) => commit.setAssetBalance(balance);
+  async switchDirection(context): Promise<void> {
+    const { commit, dispatch, state } = bridgeActionContext(context);
+    const { assetSenderBalance, assetRecepientBalance } = state;
 
-    balanceSubscriptions.remove('asset');
+    commit.setSoraToEvm(!state.isSoraToEvm);
+    commit.setAssetSenderBalance(assetRecepientBalance);
+    commit.setAssetRecepientBalance(assetSenderBalance);
 
-    if (
-      rootGetters.wallet.account.isLoggedIn &&
-      getters.asset?.address &&
-      !(getters.asset.address in rootGetters.wallet.account.accountAssetsAddressTable)
-    ) {
-      balanceSubscriptions.add('asset', { updateBalance, token: getters.asset });
-    }
-  },
-
-  async resetInternalBalanceSubscription(context): Promise<void> {
-    balanceSubscriptions.remove('asset');
+    await dispatch.updateExternalBalance();
   },
 
   async setAssetAddress(context, address?: string): Promise<void> {
     const { commit, dispatch } = bridgeActionContext(context);
 
     commit.setAssetAddress(address);
-    commit.setAssetExternalBalance();
+    commit.setAssetSenderBalance();
+    commit.setAssetRecepientBalance();
 
-    dispatch.updateInternalBalanceSubscription();
     dispatch.updateExternalBalance();
   },
 
@@ -244,9 +253,9 @@ const actions = defineActions({
     const { getters } = bridgeActionContext(context);
 
     if (getters.isSubBridge) {
-      await updateSubExternalBalance(context);
+      await updateSubBalances(context);
     } else {
-      await updateEvmExternalBalance(context);
+      await updateEvmBalances(context);
     }
   },
 
@@ -525,15 +534,15 @@ const actions = defineActions({
     if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
 
     const request = await waitForApprovedRequest(tx); // If it causes an error, then -> catch -> SORA_REJECTED
+    const evmAccount = rootState.web3.evmAddress;
 
-    if (!getters.isTxEvmAccount) {
+    if (!ethersUtil.addressesAreEqual(evmAccount, request.to)) {
       throw new Error(`Change account in MetaMask to ${request.to}`);
     }
 
     const ethersInstance = await ethersUtil.getEthersInstance();
 
     const symbol = asset.symbol as KnownEthBridgeAsset;
-    const evmAccount = rootState.web3.evmAddress;
     const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
     const bridgeAsset: KnownEthBridgeAsset = isValOrXor ? symbol : KnownEthBridgeAsset.Other;
     const contract = SmartContracts[SmartContractType.EthBridge][bridgeAsset];

@@ -17,14 +17,6 @@ const getters = defineGetters<BridgeState>()({
     const { state, rootGetters } = bridgeGetterContext(args);
     const token = rootGetters.assets.assetDataByAddress(state.assetAddress);
 
-    if (!token) return null;
-
-    const balance = state.assetBalance;
-    const externalBalance = state.assetExternalBalance;
-
-    if (balance) token.balance = balance;
-    if (externalBalance) token.externalBalance = externalBalance;
-
     return token as RegisteredAccountAsset;
   },
   isRegisteredAsset(...args): boolean {
@@ -117,15 +109,7 @@ const getters = defineGetters<BridgeState>()({
 
     return getters.history[state.historyId] ?? null;
   },
-  // TODO [EVM] check usage after EVM-SORA flow
-  isTxEvmAccount(...args): boolean {
-    const { getters, rootState } = bridgeGetterContext(args);
 
-    const historyAddress = getters.historyItem?.to;
-    const currentAddress = rootState.web3.evmAddress;
-
-    return !historyAddress || ethersUtil.addressesAreEqual(historyAddress, currentAddress);
-  },
   bridgeApi(...args): typeof ethBridgeApi | typeof evmBridgeApi | typeof subBridgeApi {
     const { getters } = bridgeGetterContext(args);
 

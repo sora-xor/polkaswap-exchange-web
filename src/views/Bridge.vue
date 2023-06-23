@@ -62,7 +62,7 @@
                 value-can-be-hidden
                 with-left-shift
                 value-class="input-value--primary"
-                :value="formatBalance(isSoraToEvm)"
+                :value="formatBalance(assetSenderBalance, this.isSoraToEvm)"
                 :fiat-value="firstFieldFiatBalance"
               />
             </div>
@@ -126,7 +126,6 @@
           data-test-name="switchToken"
           type="action"
           icon="arrows-swap-90-24"
-          :disabled="isSubBridge"
           @click="handleSwitchItems"
         />
 
@@ -153,7 +152,7 @@
                 value-can-be-hidden
                 with-left-shift
                 value-class="input-value--primary"
-                :value="formatBalance(!isSoraToEvm)"
+                :value="formatBalance(assetRecepientBalance, !this.isSoraToEvm)"
                 :fiat-value="secondFieldFiatBalance"
               />
             </div>
@@ -303,7 +302,7 @@ import {
 } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { IBridgeTransaction, RegisteredAccountAsset, CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
@@ -337,6 +336,8 @@ export default class Bridge extends Mixins(
 
   @state.bridge.evmNetworkFeeFetching private evmNetworkFeeFetching!: boolean;
   @state.bridge.amount amount!: string;
+  @state.bridge.assetSenderBalance assetSenderBalance!: CodecString;
+  @state.bridge.assetRecepientBalance assetRecepientBalance!: CodecString;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
   @state.assets.registeredAssetsBalancesUpdating registeredAssetsBalancesUpdating!: boolean;
@@ -351,20 +352,10 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setAmount setAmount!: (value?: string) => void;
 
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
-  @action.bridge.resetInternalBalanceSubscription private resetInternalBalanceSubscription!: AsyncFnWithoutArgs;
-  @action.bridge.updateInternalBalanceSubscription private updateInternalBalanceSubscription!: AsyncFnWithoutArgs;
+  @action.bridge.switchDirection private switchDirection!: AsyncFnWithoutArgs;
   @action.bridge.getExternalNetworkFee private getExternalNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<IBridgeTransaction>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
-
-  @Watch('nodeIsConnected')
-  private updateConnectionSubsriptions(nodeConnected: boolean) {
-    if (nodeConnected) {
-      this.updateInternalBalanceSubscription();
-    } else {
-      this.resetInternalBalanceSubscription();
-    }
-  }
 
   showSelectTokenDialog = false;
   showConfirmTransactionDialog = false;
@@ -480,19 +471,17 @@ export default class Bridge extends Mixins(
     });
   }
 
-  getDecimals(isSora = true): number | undefined {
-    return isSora ? this.asset?.decimals : this.asset?.externalDecimals;
+  getDecimals(isInternalDecimals = true): number | undefined {
+    return isInternalDecimals ? this.asset?.decimals : this.asset?.externalDecimals;
   }
 
-  formatBalance(isSora = true): string {
-    if (!(this.asset && (this.isRegisteredAsset || isSora))) {
+  formatBalance(balance: CodecString, isInternalDecimals: boolean): string {
+    if (!(this.asset && this.isRegisteredAsset)) {
       return '-';
     }
-    const balance = getAssetBalance(this.asset, { internal: isSora });
-    if (!balance) {
-      return '-';
-    }
-    const decimals = this.getDecimals(isSora);
+
+    const decimals = this.getDecimals(isInternalDecimals);
+
     return this.formatCodecNumber(balance, decimals);
   }
 
@@ -503,12 +492,7 @@ export default class Bridge extends Mixins(
       this.setAmount(this.$route.params.xorToDeposit);
     } else {
       this.setAmount();
-      this.updateInternalBalanceSubscription();
     }
-  }
-
-  destroyed(): void {
-    this.resetInternalBalanceSubscription();
   }
 
   getBridgeItemTitle(isSoraNetwork = false): string {
@@ -523,7 +507,7 @@ export default class Bridge extends Mixins(
   }
 
   async handleSwitchItems(): Promise<void> {
-    this.setSoraToEvm(!this.isSoraToEvm);
+    await this.switchDirection();
     await this.getExternalNetworkFee();
   }
 
