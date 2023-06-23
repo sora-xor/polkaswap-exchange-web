@@ -23,7 +23,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { action, getter, mutation, state } from '@/store/decorators';
-import type { NetworkData } from '@/types/bridge';
+import type { AvailableNetwork } from '@/store/web3/types';
 
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
@@ -49,7 +49,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
 
   @getter.web3.availableNetworks availableNetworks!: Record<
     BridgeNetworkType,
-    { disabled: boolean; data: NetworkData }[]
+    Partial<Record<BridgeNetworkId, AvailableNetwork>>
   >;
 
   @mutation.web3.setNetworkType private setNetworkType!: (networkType: BridgeNetworkType) => void;
@@ -67,7 +67,9 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
 
   get networks(): NetworkItem[] {
     return Object.entries(this.availableNetworks)
-      .map(([type, networks]) => {
+      .map(([type, record]) => {
+        const networks = Object.values(record) as AvailableNetwork[];
+
         return networks.map(({ disabled, data: { id, name } }) => {
           const networkName = type === BridgeNetworkType.EvmLegacy ? `${name} (${this.t('hashiBridgeText')})` : name;
 

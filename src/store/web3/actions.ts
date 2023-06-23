@@ -91,12 +91,11 @@ const actions = defineActions({
   },
 
   async restoreSelectedNetwork(context): Promise<void> {
-    const { commit, getters } = web3ActionContext(context);
+    const { commit, getters, state } = web3ActionContext(context);
 
     if (getters.selectedNetwork) return;
 
-    const selectedNetworkId =
-      ethersUtil.getSelectedNetwork() ?? getters.availableNetworks[BridgeNetworkType.EvmLegacy]?.[0]?.data?.id;
+    const selectedNetworkId = ethersUtil.getSelectedNetwork() ?? state.ethBridgeEvmNetwork;
 
     commit.setSelectedNetwork(selectedNetworkId);
   },
