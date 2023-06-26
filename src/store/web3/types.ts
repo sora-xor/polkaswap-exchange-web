@@ -16,14 +16,7 @@ export type EthBridgeSettings = {
   address: EthBridgeContractsAddresses;
 };
 
-export type SubNetworkApps = Partial<
-  Record<
-    SubNetwork,
-    {
-      addresses: string[];
-    }
-  >
->;
+export type SubNetworkApps = Partial<Record<SubNetwork, string>>;
 
 export type AvailableNetwork = {
   disabled: boolean;

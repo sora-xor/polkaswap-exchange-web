@@ -51,12 +51,12 @@ const getters = defineGetters<Web3State>()({
       return buffer;
     }, {});
 
-    const sub = Object.entries(state.subNetworkApps).reduce((buffer, [id, { addresses }]) => {
+    const sub = Object.entries(state.subNetworkApps).reduce((buffer, [id, address]) => {
       const data = SUB_NETWORKS[id];
 
       if (data) {
         // add wss endpoints to endpointUrls
-        data.endpointUrls.push(...addresses);
+        data.endpointUrls.push(address);
 
         buffer[id] = {
           disabled: !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork),
