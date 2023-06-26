@@ -23,7 +23,6 @@ import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 import type { SignTxResult } from './types';
 import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
@@ -220,11 +219,10 @@ const actions = defineActions({
 
   async switchDirection(context): Promise<void> {
     const { commit, dispatch, state } = bridgeActionContext(context);
-    const { assetSenderBalance, assetRecepientBalance } = state;
 
     commit.setSoraToEvm(!state.isSoraToEvm);
-    commit.setAssetSenderBalance(assetRecepientBalance);
-    commit.setAssetRecepientBalance(assetSenderBalance);
+    commit.setAssetSenderBalance();
+    commit.setAssetRecepientBalance();
 
     await dispatch.updateExternalBalance();
   },
@@ -236,7 +234,7 @@ const actions = defineActions({
     commit.setAssetSenderBalance();
     commit.setAssetRecepientBalance();
 
-    dispatch.updateExternalBalance();
+    await dispatch.updateExternalBalance();
   },
 
   async getExternalNetworkFee(context): Promise<void> {

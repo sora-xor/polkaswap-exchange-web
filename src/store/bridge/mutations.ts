@@ -16,11 +16,11 @@ const mutations = defineMutations<BridgeState>()({
     state.assetAddress = address || '';
   },
 
-  setAssetSenderBalance(state, balance: CodecString = ZeroStringValue): void {
+  setAssetSenderBalance(state, balance: Nullable<CodecString> = null): void {
     state.assetSenderBalance = balance;
   },
 
-  setAssetRecepientBalance(state, balance: CodecString = ZeroStringValue): void {
+  setAssetRecepientBalance(state, balance: Nullable<CodecString> = null): void {
     state.assetRecepientBalance = balance;
   },
 

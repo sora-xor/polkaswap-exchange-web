@@ -62,7 +62,7 @@
                 value-can-be-hidden
                 with-left-shift
                 value-class="input-value--primary"
-                :value="formatBalance(assetSenderBalance, this.isSoraToEvm)"
+                :value="formatBalance(isSoraToEvm)"
                 :fiat-value="firstFieldFiatBalance"
               />
             </div>
@@ -152,7 +152,7 @@
                 value-can-be-hidden
                 with-left-shift
                 value-class="input-value--primary"
-                :value="formatBalance(assetRecepientBalance, !this.isSoraToEvm)"
+                :value="formatBalance(!isSoraToEvm)"
                 :fiat-value="secondFieldFiatBalance"
               />
             </div>
@@ -336,8 +336,6 @@ export default class Bridge extends Mixins(
 
   @state.bridge.evmNetworkFeeFetching private evmNetworkFeeFetching!: boolean;
   @state.bridge.amount amount!: string;
-  @state.bridge.assetSenderBalance assetSenderBalance!: CodecString;
-  @state.bridge.assetRecepientBalance assetRecepientBalance!: CodecString;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
   @state.assets.registeredAssetsBalancesUpdating registeredAssetsBalancesUpdating!: boolean;
@@ -471,17 +469,19 @@ export default class Bridge extends Mixins(
     });
   }
 
-  getDecimals(isInternalDecimals = true): number | undefined {
-    return isInternalDecimals ? this.asset?.decimals : this.asset?.externalDecimals;
+  getDecimals(isSora = true): number | undefined {
+    return isSora ? this.asset?.decimals : this.asset?.externalDecimals;
   }
 
-  formatBalance(balance: CodecString, isInternalDecimals: boolean): string {
-    if (!(this.asset && this.isRegisteredAsset)) {
+  formatBalance(isSora = true): string {
+    if (!(this.asset && (this.isRegisteredAsset || isSora))) {
       return '-';
     }
-
-    const decimals = this.getDecimals(isInternalDecimals);
-
+    const balance = getAssetBalance(this.asset, { internal: isSora });
+    if (!balance) {
+      return '-';
+    }
+    const decimals = this.getDecimals(isSora);
     return this.formatCodecNumber(balance, decimals);
   }
 
