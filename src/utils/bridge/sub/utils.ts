@@ -24,5 +24,6 @@ export const getTransaction = (id: string): SubHistory => {
 
 export const updateTransaction = (id: string, params = {}): void => {
   const tx = getTransaction(id);
-  subBridgeApi.saveHistory({ ...tx, ...params });
+  const data = { ...tx, ...params };
+  subBridgeApi.saveHistory(data);
 };

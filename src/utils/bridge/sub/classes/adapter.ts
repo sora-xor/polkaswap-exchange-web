@@ -155,11 +155,12 @@ class RococoAdapter extends SubAdapter {
 class SubConnector {
   public readonly adapters = {
     [SubNetwork.Rococo]: new RococoAdapter(),
+    [SubNetwork.Mainnet]: new SubAdapter(),
   };
 
   public adapter: SubAdapter = this.adapters[SubNetwork.Rococo];
 
-  protected getAdapterForNetwork(network: SubNetwork): SubAdapter {
+  public getAdapterForNetwork(network: SubNetwork): SubAdapter {
     const adapter = this.adapters[network];
 
     if (!adapter) {

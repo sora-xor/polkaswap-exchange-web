@@ -127,11 +127,17 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
   }
 
   private async checkTxSoraHash(id: string): Promise<string> {
-    const hash = await waitForSoraTransactionHash({
+    const tx = this.getTransaction(id);
+
+    if (tx.hash) return tx.hash;
+
+    const eventData = await waitForSoraTransactionHash({
       section: 'bridgeProxy',
-      extrincicMethod: 'burn',
+      method: 'burn',
       eventMethod: 'RequestStatusUpdate',
     })(id, this.getTransaction);
+
+    const hash = eventData[0].toString();
 
     this.updateTransactionParams(id, { hash });
 

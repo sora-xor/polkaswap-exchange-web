@@ -108,11 +108,14 @@ export const findUserTxIdInBlock = async (
 };
 
 export const waitForSoraTransactionHash =
-  <T extends IBridgeTransaction>(options: { section: string; extrincicMethod: string; eventMethod: string }) =>
-  async (id: string, getTransaction: GetTransaction<T>): Promise<string> => {
+  <T extends IBridgeTransaction>(options: {
+    section: string;
+    method: string;
+    eventMethod: string;
+    eventSection?: string;
+  }) =>
+  async (id: string, getTransaction: GetTransaction<T>): Promise<any> => {
     const tx = getTransaction(id);
-
-    if (tx.hash) return tx.hash;
 
     if (tx.status) {
       const blockId = tx.blockId;
@@ -128,7 +131,7 @@ export const waitForSoraTransactionHash =
             method: { method, section },
           } = item;
 
-          return signer.toString() === tx.from && section === options.section && method === options.extrincicMethod;
+          return signer.toString() === tx.from && section === options.section && method === options.method;
         });
 
         if (!Number.isFinite(extrinsicIndex)) throw new Error('[Bridge]: Transaction was failed');
@@ -139,7 +142,7 @@ export const waitForSoraTransactionHash =
           ({ phase, event }) =>
             phase.isApplyExtrinsic &&
             phase.asApplyExtrinsic.eq(extrinsicIndex) &&
-            event.section === options.section &&
+            event.section === (options.eventSection ?? options.section) &&
             event.method === options.eventMethod
         );
 
@@ -147,9 +150,7 @@ export const waitForSoraTransactionHash =
           throw new Error('[Bridge]: Transaction was failed');
         }
 
-        const hash = event.event.data[0].toString();
-
-        return hash;
+        return event.event.data;
       }
     }
 

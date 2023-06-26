@@ -1,4 +1,5 @@
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import { delay } from '@/utils';
@@ -6,6 +7,7 @@ import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
 import { waitForSoraTransactionHash } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
+import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
@@ -71,7 +73,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             await this.waitForTxStatus(currentId);
             await this.checkTxBlockId(currentId);
             await this.checkTxSoraHash(currentId);
-            await this.subscribeOnTxBySoraHash(currentId);
+            const nonce = await this.checkTxSoraMessageNonce(currentId);
+            await this.waitForCollatorMessage(id, nonce);
+            // await this.subscribeOnTxBySoraHash(currentId);
             await this.onComplete(currentId);
             return currentId;
           },
@@ -136,15 +140,78 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
   }
 
   private async checkTxSoraHash(id: string): Promise<string> {
-    const hash = await waitForSoraTransactionHash({
+    const tx = this.getTransaction(id);
+
+    if (tx.hash) return tx.hash;
+
+    const eventData = await waitForSoraTransactionHash({
       section: 'bridgeProxy',
-      extrincicMethod: 'burn',
+      method: 'burn',
       eventMethod: 'RequestStatusUpdate',
     })(id, this.getTransaction);
+
+    const hash = eventData[0].toString();
 
     this.updateTransactionParams(id, { hash });
 
     return hash;
+  }
+
+  private async checkTxSoraMessageNonce(id: string): Promise<number> {
+    const eventData = await waitForSoraTransactionHash({
+      section: 'bridgeProxy',
+      method: 'burn',
+      eventSection: 'substrateBridgeOutboundChannel',
+      eventMethod: 'MessageAccepted',
+    })(id, this.getTransaction);
+
+    const tx = this.getTransaction(id);
+    const messageNonce = eventData[1].toNumber();
+    const payload = { ...tx.payload, messageNonce };
+
+    this.updateTransactionParams(id, { payload });
+
+    return messageNonce;
+  }
+
+  private async waitForCollatorMessage(id: string, nonce: number) {
+    const collator = subConnector.getAdapterForNetwork(SubNetwork.Mainnet);
+
+    await collator.connect();
+
+    let subscription!: Subscription;
+
+    try {
+      const messageHash = await new Promise((resolve, reject) => {
+        const observable = collator.apiRx.query.system.events();
+
+        subscription = observable.subscribe((events) => {
+          let messageHash = '';
+          let messageNonce = 0;
+
+          events.forEach((ev) => {
+            if (ev.phase.isApplyExtrinsic) {
+              if (ev.event.section === 'substrateDispatch' && ev.event.method === 'MessageDispatched') {
+                messageNonce = ev.event.data[0].messageNonce.toNumber();
+              }
+              if (ev.event.section === 'parachainSystem' && ev.event.method === 'UpwardMessageSent') {
+                messageHash = ev.event.data.messageHash.toString();
+              }
+            }
+          });
+
+          if (messageNonce === nonce) {
+            resolve(messageHash);
+          }
+        });
+      });
+
+      this.updateTransactionParams(id, { externalHash: messageHash });
+    } finally {
+      subscription.unsubscribe();
+    }
+
+    await collator.stop();
   }
 
   private async subscribeOnTxBySoraHash(id: string): Promise<void> {
