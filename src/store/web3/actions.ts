@@ -10,6 +10,7 @@ import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
 import type { Provider } from '@/utils/ethers-util';
 
+import type { SubNetworkApps } from './types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { ActionContext } from 'vuex';
 
@@ -25,11 +26,7 @@ async function connectSubNetwork(context: ActionContext<any, any>): Promise<void
 
   if (!subNetwork) return;
 
-  const endpoint = subNetwork?.endpointUrls?.[0];
-
-  if (!endpoint) return;
-
-  await subConnector.open(subNetwork.id as SubNetwork, endpoint);
+  await subConnector.open(subNetwork.id as SubNetwork);
 }
 
 const actions = defineActions({
@@ -88,6 +85,16 @@ const actions = defineActions({
     const { commit } = web3ActionContext(context);
     const supportedApps = await api.bridgeProxy.getListApps();
     commit.setSupportedApps(supportedApps);
+  },
+
+  setSubNetworkApps(context, apps: SubNetworkApps): void {
+    const { commit } = web3ActionContext(context);
+    // update apps in store
+    commit.setSubNetworkApps(apps);
+    // update endpoints in subConnector
+    Object.entries(apps).forEach(([network, endpoint]) => {
+      subConnector.adapters[network]?.setEndpoint(endpoint);
+    });
   },
 
   async restoreSelectedNetwork(context): Promise<void> {

@@ -33,9 +33,12 @@ class SubAdapter {
     return this.connection.opened;
   }
 
-  async connect(endpoint: string) {
-    await this.stop();
+  public setEndpoint(endpoint: string) {
     this.connection.endpoint = endpoint;
+  }
+
+  async connect() {
+    await this.stop();
     await this.connection.open();
   }
 
@@ -150,25 +153,29 @@ class RococoAdapter extends SubAdapter {
 }
 
 class SubConnector {
-  protected readonly rococoAdapter: SubAdapter = new RococoAdapter();
+  public readonly adapters = {
+    [SubNetwork.Rococo]: new RococoAdapter(),
+  };
 
-  public adapter: SubAdapter = this.rococoAdapter;
+  public adapter: SubAdapter = this.adapters[SubNetwork.Rococo];
 
   protected getAdapterForNetwork(network: SubNetwork): SubAdapter {
-    switch (network) {
-      case SubNetwork.Karura:
-      default:
-        return this.rococoAdapter;
+    const adapter = this.adapters[network];
+
+    if (!adapter) {
+      throw new Error(`[${this.constructor.name}] Adapter for "${network}" network not implemented`);
     }
+
+    return adapter;
   }
 
-  async open(network: SubNetwork, endpoint: string): Promise<void> {
+  async open(network: SubNetwork): Promise<void> {
     // stop current adapter connection
     await this.stop();
     // set adapter for network arg
     this.adapter = this.getAdapterForNetwork(network);
     // open adapter connection
-    await this.adapter.connect(endpoint);
+    await this.adapter.connect();
   }
 
   async stop(): Promise<void> {
