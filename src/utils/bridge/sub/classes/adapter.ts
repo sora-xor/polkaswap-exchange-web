@@ -3,12 +3,11 @@ import { FPNumber, Operation } from '@sora-substrate/util';
 import { formatBalance } from '@sora-substrate/util/build/assets';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
-import { map } from 'rxjs';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { ApiPromise } from '@polkadot/api';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAsset } from '@sora-substrate/util';
 
 class SubAdapter {
   protected endpoint!: string;
@@ -69,32 +68,23 @@ class SubAdapter {
     return balance;
   }
 
-  public async getAccountBalanceObservable(accountAddress: string) {
-    await this.ready;
-
-    return this.apiRx.query.system.account(accountAddress).pipe(
-      map((accountInfo) => {
-        const accountBalance = formatBalance(accountInfo.data);
-        const balance = accountBalance.transferable;
-
-        return balance;
-      })
-    );
-  }
-
   public async getTokenBalance(accountAddress: string, tokenAddress?: string) {
     console.info(`[${this.constructor.name}] getTokenBalance method is not implemented`);
     return '0';
   }
+
+  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
+    console.info(`[${this.constructor.name}] transfer method is not implemented`);
+  }
 }
 
 class RococoAdapter extends SubAdapter {
-  async getTokenBalance(accountAddress: string, tokenAddress?: string) {
+  public async getTokenBalance(accountAddress: string, tokenAddress?: string) {
     return await this.getAccountBalance(accountAddress);
   }
 
-  async transfer(asset: Asset, recipient: string, amount: string | number, historyId?: string) {
-    const value = new FPNumber(amount, asset.decimals).toCodecString();
+  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
+    const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
 
     const historyItem = subBridgeApi.getHistory(historyId as string) || {
       type: Operation.SubstrateIncoming,

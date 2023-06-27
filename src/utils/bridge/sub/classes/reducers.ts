@@ -38,6 +38,9 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
           nextState: BridgeTxStatus.Done,
           rejectState: BridgeTxStatus.Failed,
           handler: async (id: string) => {
+            this.beforeSubmit(id);
+            this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
+            await this.checkTxId(id);
             throw new Error(`[${this.constructor.name}]: Not implemented yet :(`);
           },
         });
@@ -49,6 +52,16 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
           rejectState: BridgeTxStatus.Failed,
         });
       }
+    }
+  }
+
+  private async checkTxId(id: string): Promise<void> {
+    const { txId } = this.getTransaction(id);
+    // transaction not signed
+    if (!txId) {
+      await this.signExternal(id);
+      // update history to change tx status in ui
+      this.updateHistory();
     }
   }
 }
@@ -63,18 +76,16 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           nextState: BridgeTxStatus.Done,
           rejectState: BridgeTxStatus.Failed,
           handler: async (id: string) => {
-            const currentId = id;
-            this.beforeSubmit(currentId);
-            this.updateTransactionParams(currentId, { transactionState: BridgeTxStatus.Pending });
-            await this.checkTxId(currentId);
-            await this.waitForTxStatus(currentId);
-            await this.checkTxBlockId(currentId);
-            await this.checkTxSoraHash(currentId);
-            const nonce = await this.checkTxSoraMessageNonce(currentId);
-            const messageHash = await this.waitForCollatorMessage(currentId, nonce);
-            await this.waitForDestinationMessage(currentId, messageHash);
-            await this.onComplete(currentId);
-            return currentId;
+            this.beforeSubmit(id);
+            this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
+            await this.checkTxId(id);
+            await this.waitForTxStatus(id);
+            await this.checkTxBlockId(id);
+            await this.checkTxSoraHash(id);
+            const nonce = await this.checkTxSoraMessageNonce(id);
+            const messageHash = await this.waitForCollatorMessage(id, nonce);
+            await this.waitForDestinationMessage(id, messageHash);
+            await this.onComplete(id);
           },
         });
       }
