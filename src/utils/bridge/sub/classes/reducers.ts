@@ -1,12 +1,12 @@
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { combineLatest } from 'rxjs';
 
 import { delay } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
 import { waitForSoraTransactionHash } from '@/utils/bridge/common/utils';
-import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
@@ -74,8 +74,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             await this.checkTxBlockId(currentId);
             await this.checkTxSoraHash(currentId);
             const nonce = await this.checkTxSoraMessageNonce(currentId);
-            await this.waitForCollatorMessage(id, nonce);
-            // await this.subscribeOnTxBySoraHash(currentId);
+            const messageHash = await this.waitForCollatorMessage(currentId, nonce);
+            await this.waitForDestinationMessage(currentId, messageHash);
             await this.onComplete(currentId);
             return currentId;
           },
@@ -158,6 +158,10 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
   }
 
   private async checkTxSoraMessageNonce(id: string): Promise<number> {
+    const tx = this.getTransaction(id);
+
+    if (tx.payload?.messageNonce) return tx.payload.messageNonce;
+
     const eventData = await waitForSoraTransactionHash({
       section: 'bridgeProxy',
       method: 'burn',
@@ -165,7 +169,6 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       eventMethod: 'MessageAccepted',
     })(id, this.getTransaction);
 
-    const tx = this.getTransaction(id);
     const messageNonce = eventData[1].toNumber();
     const payload = { ...tx.payload, messageNonce };
 
@@ -174,18 +177,20 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     return messageNonce;
   }
 
+  // [TODO] Remove nonce as arg after history fix in js-lib
   private async waitForCollatorMessage(id: string, nonce: number) {
     const collator = subConnector.getAdapterForNetwork(SubNetwork.Mainnet);
 
     await collator.connect();
 
     let subscription!: Subscription;
+    let messageHash!: string;
 
     try {
-      const messageHash = await new Promise((resolve, reject) => {
-        const observable = collator.apiRx.query.system.events();
+      messageHash = await new Promise((resolve) => {
+        const eventsObservable = collator.apiRx.query.system.events();
 
-        subscription = observable.subscribe((events) => {
+        subscription = eventsObservable.subscribe((events) => {
           let messageHash = '';
           let messageNonce = 0;
 
@@ -206,59 +211,64 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         });
       });
 
-      this.updateTransactionParams(id, { externalHash: messageHash });
+      const tx = this.getTransaction(id);
+      const payload = { ...tx.payload, messageHash };
+
+      this.updateTransactionParams(id, payload);
     } finally {
       subscription.unsubscribe();
     }
 
     await collator.stop();
+
+    return messageHash;
   }
 
-  private async subscribeOnTxBySoraHash(id: string): Promise<void> {
-    const { from, externalNetwork, hash } = this.getTransaction(id);
+  private async waitForDestinationMessage(id: string, messageHash: string) {
+    const tx = this.getTransaction(id);
+    const network = tx.externalNetwork as SubNetwork;
+    const adapter = subConnector.getAdapterForNetwork(network);
 
-    if (!from) {
-      throw new Error(
-        `[${this.constructor.name}]: Transaction "from" is empty, unable to subscribe on transacton data`
-      );
-    }
-
-    if (!hash) {
-      throw new Error(
-        `[${this.constructor.name}]: Transaction "hash" is empty, unable to subscribe on transacton data`
-      );
-    }
-
-    if (!externalNetwork) {
-      throw new Error(`[${this.constructor.name}]: Transaction "externalNetwork": "${externalNetwork}" is not correct`);
+    if (!adapter.connected) {
+      await adapter.connect();
     }
 
     let subscription!: Subscription;
+    let blockNumber!: number;
+    let extrinsicIndex!: number;
 
     try {
-      await new Promise<BridgeTxStatus>((resolve, reject) => {
-        const observable = subBridgeApi.subscribeOnTransactionDetails(from, externalNetwork, hash);
+      await new Promise<void>((resolve, reject) => {
+        const eventsObservable = adapter.apiRx.query.system.events();
+        const blockNumberObservable = adapter.apiRx.query.system.number();
 
-        if (!observable) throw new Error(`[${this.constructor.name}]: Unable to subscribe on transacton data`);
+        subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(([events, blockNum]) => {
+          for (const ev of events) {
+            if (ev.phase.isApplyExtrinsic && ev.event.section === 'ump' && ev.event.method === 'ExecutedUpward') {
+              const eventMessageHash = ev.event.data[0].toString();
 
-        subscription = observable.subscribe((data) => {
-          if (!data) {
-            return reject(new Error(`[${this.constructor.name}]: Unable to get transacton data by "hash": "${hash}"`));
-          }
-
-          const status = data.status;
-
-          switch (status) {
-            case BridgeTxStatus.Done:
-            case BridgeTxStatus.Failed: {
-              resolve(status);
-              break;
+              if (eventMessageHash === messageHash) {
+                blockNumber = blockNum.toNumber();
+                extrinsicIndex = ev.phase.asApplyExtrinsic.toNumber();
+                resolve();
+              }
             }
           }
         });
       });
+
+      const blockHash = await adapter.api.rpc.chain.getBlockHash(blockNumber);
+      const blockData = await adapter.api.rpc.chain.getBlock(blockHash);
+      const extrinsic = blockData.block.extrinsics.at(extrinsicIndex);
+      const externalHash = extrinsic?.hash.toString() ?? '';
+
+      this.updateTransactionParams(id, { externalHash, blockHeight: blockHash.toString() });
     } finally {
       subscription.unsubscribe();
+    }
+
+    if (subConnector.adapter !== adapter) {
+      await adapter.stop();
     }
   }
 }

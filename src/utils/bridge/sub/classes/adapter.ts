@@ -38,8 +38,9 @@ class SubAdapter {
   }
 
   async connect() {
-    await this.stop();
-    await this.connection.open();
+    if (!this.connected) {
+      await this.connection.open();
+    }
   }
 
   async stop() {
