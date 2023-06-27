@@ -57,6 +57,7 @@ const getters = defineGetters<Web3State>()({
       if (data) {
         // add wss endpoints to endpointUrls
         data.endpointUrls.push(address);
+        data.blockExplorerUrls.push(address);
 
         buffer[id] = {
           disabled: !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork),

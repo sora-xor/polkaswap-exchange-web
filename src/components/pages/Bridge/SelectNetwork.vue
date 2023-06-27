@@ -47,11 +47,6 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
   @state.web3.networkSelected private networkSelected!: Nullable<BridgeNetworkId>;
   @state.web3.selectNetworkDialogVisibility private selectNetworkDialogVisibility!: boolean;
 
-  @getter.web3.availableNetworks availableNetworks!: Record<
-    BridgeNetworkType,
-    Partial<Record<BridgeNetworkId, AvailableNetwork>>
-  >;
-
   @mutation.web3.setNetworkType private setNetworkType!: (networkType: BridgeNetworkType) => void;
   @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
