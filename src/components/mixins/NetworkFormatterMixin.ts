@@ -1,7 +1,7 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
-import { WALLET_CONSTS, getExplorerLinks } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import { EvmLinkType, EVM_NETWORKS } from '@/consts/evm';
@@ -85,11 +85,11 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
   }
 
   getNetworkExplorerLinks(
+    networkType: BridgeNetworkType,
+    networkId: BridgeNetworkId,
     value: string,
     blockHash = '',
-    type = EvmLinkType.Transaction,
-    networkType: BridgeNetworkType,
-    networkId: BridgeNetworkId
+    type = EvmLinkType.Transaction
   ) {
     if (!value) return [];
 

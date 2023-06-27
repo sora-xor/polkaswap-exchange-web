@@ -548,11 +548,11 @@ export default class BridgeTransaction extends Mixins(
     if (!(this.historyItem?.externalNetworkType && this.historyItem?.externalNetwork)) return [];
 
     return this.getNetworkExplorerLinks(
+      this.historyItem.externalNetworkType,
+      this.historyItem.externalNetwork,
       this.txExternalHash,
       this.historyItem?.blockHeight,
-      this.EvmLinkType.Account,
-      this.historyItem.externalNetworkType,
-      this.historyItem.externalNetwork
+      this.EvmLinkType.Account
     );
   }
 
@@ -560,11 +560,11 @@ export default class BridgeTransaction extends Mixins(
     if (!(this.historyItem?.externalNetworkType && this.historyItem?.externalNetwork)) return [];
 
     return this.getNetworkExplorerLinks(
+      this.historyItem.externalNetworkType,
+      this.historyItem.externalNetwork,
       this.txExternalHash,
       this.historyItem?.blockHeight,
-      this.EvmLinkType.Transaction,
-      this.historyItem.externalNetworkType,
-      this.historyItem.externalNetwork
+      this.EvmLinkType.Transaction
     );
   }
 

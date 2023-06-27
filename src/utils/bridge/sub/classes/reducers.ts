@@ -223,9 +223,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const network = tx.externalNetwork as SubNetwork;
     const adapter = subConnector.getAdapterForNetwork(network);
 
-    if (!adapter.connected) {
-      await adapter.connect();
-    }
+    await adapter.connect();
 
     let subscription!: Subscription;
     let blockNumber!: number;
