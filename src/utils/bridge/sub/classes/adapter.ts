@@ -11,6 +11,8 @@ import type { ApiPromise } from '@polkadot/api';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 class SubAdapter {
+  protected endpoint!: string;
+
   public connection!: Connection;
 
   constructor() {
@@ -34,12 +36,12 @@ class SubAdapter {
   }
 
   public setEndpoint(endpoint: string) {
-    this.connection.endpoint = endpoint;
+    this.endpoint = endpoint;
   }
 
   async connect() {
-    if (!this.connected) {
-      await this.connection.open();
+    if (!this.connected && this.endpoint) {
+      await this.connection.open(this.endpoint);
     }
   }
 

@@ -45,9 +45,6 @@ export class EvmBridgeIncomingReducer extends EvmBridgeReducer {
         return await this.handleState(transaction.id, {
           nextState: BridgeTxStatus.Pending,
           rejectState: BridgeTxStatus.Failed,
-          handler: async (id) => {
-            throw new Error(`[${this.constructor.name}]: Not implemented yet :(`);
-          },
         });
       }
     }
@@ -81,9 +78,6 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
         return await this.handleState(transaction.id, {
           nextState: BridgeTxStatus.Pending,
           rejectState: BridgeTxStatus.Failed,
-          handler: async (id) => {
-            throw new Error(`[${this.constructor.name}]: Not implemented yet :(`);
-          },
         });
       }
     }
