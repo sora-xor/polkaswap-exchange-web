@@ -5,7 +5,6 @@ import { ZeroStringValue } from '@/consts';
 
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 const mutations = defineMutations<BridgeState>()({
   setSoraToEvm(state, isSoraToEvm: boolean): void {
@@ -16,11 +15,11 @@ const mutations = defineMutations<BridgeState>()({
     state.assetAddress = address || '';
   },
 
-  setAssetSenderBalance(state, balance: Nullable<CodecString> = null): void {
+  setAssetSenderBalance(state, balance: CodecString = ZeroStringValue): void {
     state.assetSenderBalance = balance;
   },
 
-  setAssetRecepientBalance(state, balance: Nullable<CodecString> = null): void {
+  setAssetRecepientBalance(state, balance: CodecString = ZeroStringValue): void {
     state.assetRecepientBalance = balance;
   },
 

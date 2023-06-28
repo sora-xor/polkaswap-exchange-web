@@ -146,7 +146,7 @@
               <span class="input-title--network">{{ getBridgeItemTitle(!isSoraToEvm) }}</span>
               <i :class="`network-icon network-icon--${getNetworkIcon(!isSoraToEvm ? 0 : networkSelected)}`" />
             </div>
-            <div v-if="sender && isAssetSelected" class="input-value">
+            <div v-if="recepient && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
               <formatted-amount-with-fiat-value
                 value-can-be-hidden
@@ -157,7 +157,7 @@
               />
             </div>
           </div>
-          <div slot="right" v-if="sender && isAssetSelected" class="s-flex el-buttons">
+          <div slot="right" v-if="recepient && isAssetSelected" class="s-flex el-buttons">
             <token-select-button class="el-button--select-token" :token="asset" />
           </div>
           <template #bottom>

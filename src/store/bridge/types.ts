@@ -3,8 +3,8 @@ import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
 export type BridgeState = {
   isSoraToEvm: boolean;
   assetAddress: string;
-  assetSenderBalance: Nullable<CodecString>;
-  assetRecepientBalance: Nullable<CodecString>;
+  assetSenderBalance: CodecString;
+  assetRecepientBalance: CodecString;
   amount: string;
   evmNetworkFee: CodecString;
   evmNetworkFeeFetching: boolean;

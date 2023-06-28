@@ -5,7 +5,7 @@ import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
-import { MaxUint256 } from '@/consts';
+import { MaxUint256, ZeroStringValue } from '@/consts';
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
 import { bridgeActionContext } from '@/store/bridge';
 import { waitForEvmTransactionMined, findUserTxIdInBlock } from '@/utils/bridge/common/utils';
@@ -145,9 +145,6 @@ function bridgeDataToHistoryItem(
   };
 }
 
-/**
- * Fetch EVM Network fee for selected bridge asset
- */
 async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void> {
   const { getters, commit, state } = bridgeActionContext(context);
   if (!getters.asset?.address) {
@@ -162,22 +159,39 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
   }
 }
 
+async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void> {
+  const { commit } = bridgeActionContext(context);
+  // [TODO] fetch fee
+  commit.getExternalNetworkFeeSuccess(ZeroStringValue);
+}
+
 async function updateEvmBalances(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, state } = bridgeActionContext(context);
   const { sender, recepient, asset } = getters;
   const { isSoraToEvm } = state;
 
-  if (!asset?.address) return;
+  let recepientBalance = ZeroStringValue;
+  let senderBalance = ZeroStringValue;
+  let nativeBalance = ZeroStringValue;
 
-  const senderBalance = isSoraToEvm
-    ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
-    : (await ethersUtil.getAccountAssetBalance(sender, asset?.externalAddress)).value;
+  if (asset?.address) {
+    if (sender) {
+      senderBalance = isSoraToEvm
+        ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
+        : (await ethersUtil.getAccountAssetBalance(sender, asset?.externalAddress)).value;
+    }
+    if (recepient) {
+      recepientBalance = isSoraToEvm
+        ? (await ethersUtil.getAccountAssetBalance(recepient, asset?.externalAddress)).value
+        : (await getAssetBalance(api.api, recepient, asset.address, asset.decimals)).transferable;
+    }
 
-  const recepientBalance = isSoraToEvm
-    ? (await ethersUtil.getAccountAssetBalance(recepient, asset?.externalAddress)).value
-    : (await getAssetBalance(api.api, recepient, asset.address, asset.decimals)).transferable;
+    const spender = isSoraToEvm ? recepient : sender;
 
-  const nativeBalance = await ethersUtil.getAccountBalance(isSoraToEvm ? recepient : sender);
+    if (spender) {
+      nativeBalance = await ethersUtil.getAccountBalance(isSoraToEvm ? recepient : sender);
+    }
+  }
 
   commit.setAssetSenderBalance(senderBalance);
   commit.setAssetRecepientBalance(recepientBalance);
@@ -189,17 +203,24 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<void
   const { sender, recepient, asset } = getters;
   const { isSoraToEvm } = state;
 
-  if (!asset?.address) return;
+  let recepientBalance = ZeroStringValue;
+  let senderBalance = ZeroStringValue;
+  let nativeBalance = ZeroStringValue;
 
-  const senderBalance = isSoraToEvm
-    ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
-    : await subConnector.adapter.getTokenBalance(sender, asset?.externalAddress);
+  if (asset?.address) {
+    if (sender) {
+      senderBalance = isSoraToEvm
+        ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
+        : await subConnector.adapter.getTokenBalance(sender, asset?.externalAddress);
 
-  const recepientBalance = isSoraToEvm
-    ? await subConnector.adapter.getTokenBalance(recepient, asset?.externalAddress)
-    : (await getAssetBalance(api.api, recepient, asset.address, asset.decimals)).transferable;
-
-  const nativeBalance = await subConnector.adapter.getTokenBalance(sender);
+      nativeBalance = await subConnector.adapter.getTokenBalance(sender);
+    }
+    if (recepient) {
+      recepientBalance = isSoraToEvm
+        ? await subConnector.adapter.getTokenBalance(recepient, asset?.externalAddress)
+        : (await getAssetBalance(api.api, recepient, asset.address, asset.decimals)).transferable;
+    }
+  }
 
   commit.setAssetSenderBalance(senderBalance);
   commit.setAssetRecepientBalance(recepientBalance);
@@ -241,7 +262,7 @@ const actions = defineActions({
     const { getters } = bridgeActionContext(context);
 
     if (getters.isSubBridge) {
-      // [TODO] sub network fee
+      await getSubNetworkFee(context);
     } else {
       await getEvmNetworkFee(context);
     }
