@@ -1,4 +1,4 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@fix/js') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
@@ -15,7 +15,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     sonarProjectKey: 'jp.co.soramitsu:polkaswap-exchange-web',
     secretScannerExclusion: 'Jenkinsfile-UCAN|.*env.json',
     fleekDeployProd: true,
-    fleekBranchProd: ['fleek', 'fleek-pre'],
+    fleekBranchesProd: ['fleek', 'fleek-pre'],
     copyFileProd: 'env.json',
     fleekDefaultSiteNameProd: 'long-firefly-8047',
     ipfsHashNotificationProd: true,
