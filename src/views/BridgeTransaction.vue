@@ -263,7 +263,7 @@ export default class BridgeTransaction extends Mixins(
   @state.bridge.inProgressIds private inProgressIds!: Record<string, boolean>;
   @state.router.prev private prevRoute!: Nullable<PageNames>;
 
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.historyItem private historyItem!: Nullable<IBridgeTransaction>;
   @getter.web3.externalAccount private externalAccount!: string;
 
@@ -299,12 +299,6 @@ export default class BridgeTransaction extends Mixins(
 
   get amountFiatValue(): Nullable<string> {
     return this.asset ? this.getFiatAmountByString(this.amount, this.asset) : null;
-  }
-
-  get asset(): Nullable<RegisteredAccountAsset> {
-    if (!this.historyItem?.assetAddress) return null;
-
-    return this.getAsset(this.historyItem.assetAddress);
   }
 
   get isSoraToEvm(): boolean {
@@ -549,7 +543,7 @@ export default class BridgeTransaction extends Mixins(
 
     return this.getNetworkExplorerLinks(
       this.txExternalHash,
-      this.historyItem?.blockHeight,
+      this.historyItem?.externalBlockId,
       this.EvmLinkType.Account,
       this.historyItem.externalNetworkType,
       this.historyItem.externalNetwork
@@ -561,7 +555,7 @@ export default class BridgeTransaction extends Mixins(
 
     return this.getNetworkExplorerLinks(
       this.txExternalHash,
-      this.historyItem?.blockHeight,
+      this.historyItem?.externalBlockId,
       this.EvmLinkType.Transaction,
       this.historyItem.externalNetworkType,
       this.historyItem.externalNetwork

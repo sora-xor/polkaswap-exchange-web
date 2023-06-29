@@ -19,7 +19,6 @@ import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
-import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 import type { SignTxResult } from './types';
 import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
@@ -28,8 +27,6 @@ import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/cons
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { BridgeTransactionData } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { ActionContext } from 'vuex';
-
-const balanceSubscriptions = new TokenBalanceSubscriptions();
 
 function checkEvmNetwork(context: ActionContext<any, any>): void {
   const { rootGetters } = bridgeActionContext(context);
@@ -46,19 +43,20 @@ async function evmTxDataToHistory(
   const asset = assetDataByAddress(tx.soraAssetAddress);
   const transactionState = tx.status;
   const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
-  const soraBlockNumber = isOutgoing ? tx.startBlock : tx.endBlock;
-  const externalBlockNumber = isOutgoing ? tx.endBlock : tx.startBlock;
-  const blockId = await api.system.getBlockHash(soraBlockNumber);
+  const blockHeight = isOutgoing ? tx.startBlock : tx.endBlock;
+  const externalBlockHeight = isOutgoing ? tx.endBlock : tx.startBlock;
+  const blockId = await api.system.getBlockHash(blockHeight);
   const startTime = await api.system.getBlockTimestamp(blockId);
 
   return {
     id,
     txId: id,
     blockId,
-    blockHeight: String(externalBlockNumber),
+    blockHeight,
     type: isOutgoing ? Operation.EvmOutgoing : Operation.EvmIncoming,
     hash: tx.soraHash,
     transactionState,
+    externalBlockHeight,
     externalNetwork: tx.externalNetwork as EvmNetwork,
     externalNetworkType: BridgeNetworkType.Evm,
     // for now we don't know it
@@ -82,9 +80,9 @@ async function subTxDataToHistory(
   const asset = assetDataByAddress(tx.soraAssetAddress);
   const transactionState = tx.status;
   const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
-  const soraBlockNumber = isOutgoing ? tx.startBlock : tx.endBlock;
-  const externalBlockNumber = isOutgoing ? tx.endBlock : tx.startBlock;
-  const blockId = await api.system.getBlockHash(soraBlockNumber);
+  const blockHeight = isOutgoing ? tx.startBlock : tx.endBlock;
+  const externalBlockHeight = isOutgoing ? tx.endBlock : tx.startBlock;
+  const blockId = await api.system.getBlockHash(blockHeight);
   const txId = await findUserTxIdInBlock(blockId, id, 'RequestStatusUpdate', 'bridgeProxy');
   const startTime = await api.system.getBlockTimestamp(blockId);
 
@@ -92,10 +90,11 @@ async function subTxDataToHistory(
     id,
     txId,
     blockId,
-    blockHeight: String(externalBlockNumber),
+    blockHeight,
     type: isOutgoing ? Operation.SubstrateOutgoing : Operation.SubstrateIncoming,
     hash: tx.soraHash,
     transactionState,
+    externalBlockHeight,
     externalNetwork: tx.externalNetwork as SubNetwork,
     externalNetworkType: BridgeNetworkType.Sub,
     // for now we don't know it

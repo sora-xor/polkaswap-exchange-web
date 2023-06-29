@@ -29,10 +29,8 @@ const subBridge: SubBridge = new Bridge({
   },
   // states
   boundaryStates: {
-    [Operation.SubstrateOutgoing]: {
-      done: BridgeTxStatus.Done,
-      failed: [BridgeTxStatus.Failed],
-    },
+    done: BridgeTxStatus.Done,
+    failed: [BridgeTxStatus.Failed],
   },
   // assets
   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),

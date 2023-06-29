@@ -28,6 +28,7 @@ const getters = defineGetters<BridgeState>()({
 
     return asset;
   },
+
   isRegisteredAsset(...args): boolean {
     const { getters, rootState } = bridgeGetterContext(args);
 

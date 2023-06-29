@@ -77,11 +77,10 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
           handler: async (id: string) => {
             this.beforeSubmit(id);
             this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
+
             await this.checkTxId(id);
-
-            const [nonce] = await Promise.all([this.waitForCollatorMessageNonce(id), this.updateTxIncomingData(id)]);
-
-            await this.waitForSoraInboundMessageNonce(id, nonce);
+            await Promise.all([this.waitForCollatorMessageNonce(id), this.updateTxIncomingData(id)]);
+            await this.waitForSoraInboundMessageNonce(id);
             await this.waitSoraBlockByHash(id);
             await this.onComplete(id);
           },
@@ -99,12 +98,12 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
   private async checkTxId(id: string): Promise<void> {
     const { txId } = this.getTransaction(id);
+
+    if (txId) return;
     // transaction not signed
-    if (!txId) {
-      await this.signExternal(id);
-      // update history to change tx status in ui
-      this.updateHistory();
-    }
+    await this.signExternal(id);
+    // update history to change tx status in ui
+    this.updateHistory();
   }
 
   private async updateTxIncomingData(id: string): Promise<void> {
@@ -114,12 +113,16 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     const { txId, blockId } = this.getTransaction(id);
 
     this.updateTransactionParams(id, {
-      externalHash: txId,
-      blockHeight: blockId,
+      externalHash: txId, // parachain tx hash
+      externalBlockId: blockId, // parachain block hash
     });
   }
 
-  private async waitForCollatorMessageNonce(id: string): Promise<number> {
+  private async waitForCollatorMessageNonce(id: string): Promise<void> {
+    const tx = this.getTransaction(id);
+
+    if (tx.payload?.messageNonce) return;
+
     const collator = subConnector.getAdapterForNetwork(SubNetwork.Mainnet);
 
     let subscription!: Subscription;
@@ -164,15 +167,18 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     await collator.stop();
 
-    const tx = this.getTransaction(id);
     const payload = { ...tx.payload, messageNonce };
 
     this.updateTransactionParams(id, { payload });
-
-    return messageNonce;
   }
 
-  private async waitForSoraInboundMessageNonce(id: string, nonce: number): Promise<void> {
+  private async waitForSoraInboundMessageNonce(id: string): Promise<void> {
+    const tx = this.getTransaction(id);
+
+    if (tx.hash) return;
+
+    const messageNonce = tx.payload.messageNonce;
+
     let subscription!: Subscription;
     let soraHash!: string;
 
@@ -192,11 +198,11 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
           const eventNonce = substrateDispatchEvent.event.data[0].messageNonce.toNumber();
 
-          if (eventNonce > nonce) {
+          if (eventNonce > messageNonce) {
             reject(new Error(`[${this.constructor.name}]: Unable to continue track transaction`));
           }
 
-          if (eventNonce !== nonce) return;
+          if (eventNonce !== messageNonce) return;
 
           const bridgeProxyEvent = events.find(
             (e) =>
@@ -248,6 +254,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     this.updateTransactionParams(id, {
       blockId: soraBlockHash,
+      blockHeight: soraBlockNumber,
     });
   }
 }
@@ -268,9 +275,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             await this.waitForTxStatus(id);
             await this.checkTxBlockId(id);
             await this.checkTxSoraHash(id);
-            const nonce = await this.waitForSoraOutboundMessageNonce(id);
-            const messageHash = await this.waitForCollatorMessageHash(id, nonce);
-            await this.waitForDestinationMessage(id, messageHash);
+            await this.waitForSoraOutboundMessageNonce(id);
+            await this.waitForCollatorMessageHash(id);
+            await this.waitForDestinationMessageHash(id);
             await this.onComplete(id);
           },
         });
@@ -295,10 +302,10 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     }
   }
 
-  private async checkTxSoraHash(id: string): Promise<string> {
+  private async checkTxSoraHash(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
-    if (tx.hash) return tx.hash;
+    if (tx.hash) return;
 
     const eventData = await waitForSoraTransactionHash({
       section: 'bridgeProxy',
@@ -309,14 +316,12 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const hash = eventData[0].toString();
 
     this.updateTransactionParams(id, { hash });
-
-    return hash;
   }
 
-  private async waitForSoraOutboundMessageNonce(id: string): Promise<number> {
+  private async waitForSoraOutboundMessageNonce(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
-    if (tx.payload?.messageNonce) return tx.payload.messageNonce;
+    if (tx.payload?.messageNonce) return;
 
     const eventData = await waitForSoraTransactionHash({
       section: 'bridgeProxy',
@@ -325,16 +330,20 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       eventMethod: 'MessageAccepted',
     })(id, this.getTransaction);
 
+    // [TODO] check blockchain
     const messageNonce = eventData[1].toNumber();
     const payload = { ...tx.payload, messageNonce };
 
     this.updateTransactionParams(id, { payload });
-
-    return messageNonce;
   }
 
-  // [TODO] Remove nonce as arg after history fix in js-lib
-  private async waitForCollatorMessageHash(id: string, nonce: number) {
+  private async waitForCollatorMessageHash(id: string): Promise<void> {
+    const tx = this.getTransaction(id);
+
+    if (tx.payload?.messageHash) return;
+
+    const messageNonce = tx.payload.messageNonce;
+
     const collator = subConnector.getAdapterForNetwork(SubNetwork.Mainnet);
 
     let subscription!: Subscription;
@@ -358,15 +367,15 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
           const eventNonce = substrateDispatchEvent.event.data[0].messageNonce.toNumber();
 
-          if (eventNonce > nonce) {
+          if (eventNonce > messageNonce) {
             reject(
               new Error(
-                `[${this.constructor.name}]: Unable to continue track transaction, collator outbound channel nonce ${eventNonce} is larger than tx nonce ${nonce}`
+                `[${this.constructor.name}]: Unable to continue track transaction, collator outbound channel nonce ${eventNonce} is larger than tx nonce ${messageNonce}`
               )
             );
           }
 
-          if (eventNonce !== nonce) return;
+          if (eventNonce !== messageNonce) return;
 
           const parachainSystemEvent = events.find(
             (e) =>
@@ -384,22 +393,20 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           resolve();
         });
       });
-
-      const tx = this.getTransaction(id);
-      const payload = { ...tx.payload, messageHash };
-
-      this.updateTransactionParams(id, { payload });
     } finally {
       subscription.unsubscribe();
     }
 
     await collator.stop();
 
-    return messageHash;
+    const payload = { ...tx.payload, messageHash };
+
+    this.updateTransactionParams(id, { payload });
   }
 
-  private async waitForDestinationMessage(id: string, messageHash: string) {
+  private async waitForDestinationMessageHash(id: string): Promise<void> {
     const tx = this.getTransaction(id);
+    const messageHash = tx.payload.messageHash;
     const network = tx.externalNetwork as SubNetwork;
     const adapter = subConnector.getAdapterForNetwork(network);
 
@@ -441,7 +448,11 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const extrinsic = blockData.block.extrinsics.at(extrinsicIndex);
     const externalHash = extrinsic?.hash.toString() ?? '';
 
-    this.updateTransactionParams(id, { externalHash, blockHeight: blockHash.toString() });
+    this.updateTransactionParams(id, {
+      externalHash, // parachain tx hash
+      externalBlockId: blockHash.toString(), // parachain block hash
+      externalBlockHeight: blockNumber, // parachain block number
+    });
 
     if (subConnector.adapter !== adapter) {
       await adapter.stop();

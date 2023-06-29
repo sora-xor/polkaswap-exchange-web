@@ -80,7 +80,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
       const tx = this.getTransaction(transaction.id as string);
 
       if (tx) {
-        const { done, failed } = this.boundaryStates[tx.type];
+        const { done, failed } = this.boundaryStates;
         const state = tx.transactionState;
 
         if (state !== done && !failed.includes(state)) {
@@ -107,7 +107,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
       console.error(error);
 
       const transaction = this.getTransaction(id);
-      const failedStates = this.boundaryStates[transaction.type].failed;
+      const failedStates = this.boundaryStates.failed;
       const endTime = failedStates.includes(transaction.transactionState) ? transaction.endTime : Date.now();
 
       this.updateTransactionParams(id, {

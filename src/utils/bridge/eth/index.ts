@@ -32,14 +32,8 @@ const ethBridge: EthBridge = new Bridge({
     [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEthBridgeOutgoingSora(id),
   },
   boundaryStates: {
-    [Operation.EthBridgeIncoming]: {
-      done: ETH_BRIDGE_STATES.SORA_COMMITED,
-      failed: [ETH_BRIDGE_STATES.SORA_REJECTED, ETH_BRIDGE_STATES.EVM_REJECTED],
-    },
-    [Operation.EthBridgeOutgoing]: {
-      done: ETH_BRIDGE_STATES.EVM_COMMITED,
-      failed: [ETH_BRIDGE_STATES.SORA_REJECTED, ETH_BRIDGE_STATES.EVM_REJECTED],
-    },
+    done: ETH_BRIDGE_STATES.SORA_COMMITED,
+    failed: [ETH_BRIDGE_STATES.SORA_REJECTED, ETH_BRIDGE_STATES.EVM_REJECTED],
   },
   // assets
   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),
