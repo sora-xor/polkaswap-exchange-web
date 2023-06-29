@@ -59,6 +59,16 @@ const actions = defineActions({
     ]);
   },
 
+  async disconnectExternalNetwork(context): Promise<void> {
+    const { state, commit } = web3ActionContext(context);
+
+    if (state.networkType === BridgeNetworkType.Sub) {
+      await subConnector.stop();
+    } else {
+      commit.resetProvidedEvmNetwork();
+    }
+  },
+
   async selectExternalNetwork(context, network: BridgeNetworkId): Promise<void> {
     const { commit, dispatch } = web3ActionContext(context);
     commit.setSelectedNetwork(network);

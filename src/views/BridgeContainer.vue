@@ -43,6 +43,10 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     });
   }
 
+  beforeDestroy(): void {
+    this.disconnectExternalNetwork();
+  }
+
   private async updateBalancesAndFees(): Promise<void> {
     await Promise.all([this.updateExternalBalance(), this.getExternalNetworkFee()]);
   }
@@ -61,7 +65,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
         this.connectExternalNetwork(networkHex);
       },
       onDisconnect: () => {
-        this.resetProvidedEvmNetwork();
+        this.disconnectExternalNetwork();
       },
     });
   }

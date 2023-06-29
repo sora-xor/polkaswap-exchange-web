@@ -145,7 +145,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
           this.connectExternalNetwork(networkHex);
         },
         onDisconnect: () => {
-          this.resetProvidedEvmNetwork();
+          this.disconnectExternalNetwork();
         },
       });
     });
