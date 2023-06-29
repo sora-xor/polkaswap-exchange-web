@@ -226,6 +226,92 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<void
   commit.setExternalBalance(nativeBalance);
 }
 
+async function updateSubHistory(context: ActionContext<any, any>): Promise<void> {
+  const { commit, dispatch, getters, state, rootState, rootGetters } = bridgeActionContext(context);
+
+  if (!rootGetters.wallet.account.isLoggedIn) return;
+  if (state.historyLoading) return;
+
+  const externalNetwork = rootState.web3.networkSelected;
+
+  if (!externalNetwork) return;
+
+  commit.setHistoryLoading(true);
+
+  const accountAddress = rootState.wallet.account.address;
+  const transactions = await subBridgeApi.getUserTransactions(accountAddress, externalNetwork as SubNetwork);
+  const internalHistory = getters.bridgeApi.historyList as IBridgeTransaction[];
+
+  for (const txData of transactions) {
+    const isInternal = internalHistory.find((item) => item.hash === txData.soraHash);
+
+    if (isInternal) continue;
+
+    const tx = await subTxDataToHistory(rootGetters.assets.assetDataByAddress, txData);
+
+    if (tx.id) {
+      const isInternal = internalHistory.find((item) => item.txId === tx.txId);
+
+      if (!isInternal) {
+        subBridgeApi.saveHistory(tx);
+        dispatch.updateInternalHistory();
+      }
+    }
+  }
+
+  commit.setHistoryLoading(false);
+}
+
+async function updateEthHistory(context: ActionContext<any, any>, clearHistory = false): Promise<void> {
+  const { commit, state, dispatch } = bridgeActionContext(context);
+
+  if (state.historyLoading) return;
+
+  commit.setHistoryLoading(true);
+
+  const updateCallback = () => dispatch.updateInternalHistory();
+  const updateHistoryFn = updateEthBridgeHistory(context);
+
+  await updateHistoryFn(clearHistory, updateCallback);
+
+  commit.setHistoryLoading(false);
+}
+
+async function updateEvmHistory(context: ActionContext<any, any>): Promise<void> {
+  const { commit, dispatch, state, rootState, rootGetters } = bridgeActionContext(context);
+
+  if (!rootGetters.wallet.account.isLoggedIn) return;
+  if (state.historyLoading) return;
+
+  const externalNetwork = rootState.web3.networkSelected;
+
+  if (!externalNetwork) return;
+
+  commit.setHistoryLoading(true);
+
+  const accountAddress = rootState.wallet.account.address;
+  const transactions = await evmBridgeApi.getUserTransactions(accountAddress, externalNetwork as EvmNetwork);
+  const externalHistory = {};
+
+  // [TODO]: update later
+  for (const txData of transactions) {
+    const tx = await evmTxDataToHistory(rootGetters.assets.assetDataByAddress, txData);
+
+    if (tx.id) {
+      const inProgress = state.inProgressIds[tx.id];
+
+      if (!inProgress) {
+        externalHistory[tx.id] = tx;
+
+        await dispatch.removeHistory({ tx, force: false });
+      }
+    }
+  }
+
+  commit.setExternalHistory(externalHistory);
+  commit.setHistoryLoading(false);
+}
+
 const actions = defineActions({
   async switchDirection(context): Promise<void> {
     const { commit, dispatch, state } = bridgeActionContext(context);
@@ -298,16 +384,16 @@ const actions = defineActions({
   },
 
   async updateExternalHistory(context, clearHistory = false): Promise<void> {
-    const { dispatch, getters } = bridgeActionContext(context);
+    const { getters } = bridgeActionContext(context);
 
     if (getters.isEthBridge) {
-      return await dispatch.updateEthHistory(clearHistory);
+      return await updateEthHistory(context, clearHistory);
     }
     if (getters.isEvmBridge) {
-      return await dispatch.updateEvmHistory();
+      return await updateEvmHistory(context);
     }
     if (getters.isSubBridge) {
-      return await dispatch.updateSubHistory();
+      return await updateSubHistory(context);
     }
   },
 
@@ -362,40 +448,6 @@ const actions = defineActions({
   },
 
   // EVM
-  async updateEvmHistory(context): Promise<void> {
-    const { commit, dispatch, state, rootState, rootGetters } = bridgeActionContext(context);
-
-    if (!rootGetters.wallet.account.isLoggedIn) return;
-    if (state.historyLoading) return;
-
-    const externalNetwork = rootState.web3.networkSelected;
-
-    if (!externalNetwork) return;
-
-    commit.setHistoryLoading(true);
-
-    const accountAddress = rootState.wallet.account.address;
-    const transactions = await evmBridgeApi.getUserTransactions(accountAddress, externalNetwork as EvmNetwork);
-    const externalHistory = {};
-
-    for (const txData of transactions) {
-      const tx = await evmTxDataToHistory(rootGetters.assets.assetDataByAddress, txData);
-
-      if (tx.id) {
-        const inProgress = state.inProgressIds[tx.id];
-
-        if (!inProgress) {
-          externalHistory[tx.id] = tx;
-
-          await dispatch.removeHistory({ tx, force: false });
-        }
-      }
-    }
-
-    commit.setExternalHistory(externalHistory);
-    commit.setHistoryLoading(false);
-  },
-
   async signEvmBridgeOutgoingSora(context, id: string) {
     const { rootGetters, rootDispatch } = bridgeActionContext(context);
 
@@ -421,41 +473,6 @@ const actions = defineActions({
   },
 
   // SUB
-  async updateSubHistory(context): Promise<void> {
-    const { commit, dispatch, getters, state, rootState, rootGetters } = bridgeActionContext(context);
-
-    if (!rootGetters.wallet.account.isLoggedIn) return;
-    if (state.historyLoading) return;
-
-    const externalNetwork = rootState.web3.networkSelected;
-
-    if (!externalNetwork) return;
-
-    commit.setHistoryLoading(true);
-
-    const accountAddress = rootState.wallet.account.address;
-    const transactions = await subBridgeApi.getUserTransactions(accountAddress, externalNetwork as SubNetwork);
-
-    for (const txData of transactions) {
-      const tx = await subTxDataToHistory(rootGetters.assets.assetDataByAddress, txData);
-
-      if (tx.id) {
-        const internalHistory = getters.bridgeApi.historyList as IBridgeTransaction[];
-        const internalDuplicate = internalHistory.find((item) => item.hash === tx.hash || item.txId === tx.txId);
-        const inProgress = !!internalDuplicate?.id && state.inProgressIds[internalDuplicate.id];
-
-        if (!inProgress) {
-          if (internalDuplicate) {
-            await dispatch.removeHistory({ tx: internalDuplicate, force: false });
-          }
-
-          commit.updateExternalHistoryItem(tx);
-        }
-      }
-    }
-
-    commit.setHistoryLoading(false);
-  },
 
   async signSubBridgeOutgoingSora(context, id: string) {
     const { rootGetters, rootDispatch } = bridgeActionContext(context);
@@ -516,21 +533,6 @@ const actions = defineActions({
     await bridgeHistory.init(rootState.web3.ethBridgeContractAddress);
 
     return bridgeHistory;
-  },
-
-  async updateEthHistory(context, clearHistory = false): Promise<void> {
-    const { commit, state, dispatch } = bridgeActionContext(context);
-
-    if (state.historyLoading) return;
-
-    commit.setHistoryLoading(true);
-
-    const updateCallback = () => dispatch.updateInternalHistory();
-    const updateHistoryFn = updateEthBridgeHistory(context);
-
-    await updateHistoryFn(clearHistory, updateCallback);
-
-    commit.setHistoryLoading(false);
   },
 
   async signEthBridgeOutgoingSora(context, id: string): Promise<void> {

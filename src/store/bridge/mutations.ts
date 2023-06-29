@@ -56,15 +56,6 @@ const mutations = defineMutations<BridgeState>()({
     state.historyExternal = { ...history };
   },
 
-  updateExternalHistoryItem(state, item: IBridgeTransaction): void {
-    if (!item.id) return;
-
-    state.historyExternal = {
-      ...state.historyExternal,
-      [item.id]: item,
-    };
-  },
-
   setHistoryPage(state, historyPage?: number): void {
     state.historyPage = historyPage || 1;
   },
