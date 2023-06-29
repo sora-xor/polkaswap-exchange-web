@@ -1,4 +1,4 @@
-@Library('jenkins-library@feature/DOPS-2441/separate-fleek') _
+@Library('jenkins-library') _
 
 def pipeline = new org.js.AppPipeline(steps: this,
     dockerImageName: 'adar/web',
@@ -12,8 +12,8 @@ def pipeline = new org.js.AppPipeline(steps: this,
     fleekDeployStage: true,
     fleekDefaultSiteNameStage: 'dawn-block-3896',
     fleekDefaultSiteNameProd: 'wild-hat-6209',
-    fleekBranchStage: 'fleek-pre',
-    fleekBranchProd: 'fleek',
+    fleekBranchStage: ['fleek-pre'],
+    fleekBranchProd: ['fleek'],
     copyFileStage: 'env-stage.json',
     copyFileProd: 'env.json',
     ipfsHashNotificationStage: false,
