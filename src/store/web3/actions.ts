@@ -52,9 +52,7 @@ const actions = defineActions({
       await connectEvmNetwork(context, network);
     }
 
-    // reset bridge form
     await Promise.all([
-      rootDispatch.bridge.resetForm(),
       rootDispatch.assets.updateRegisteredAssets(),
       rootDispatch.bridge.updateExternalBalance(),
       rootDispatch.bridge.getExternalNetworkFee(),
@@ -69,13 +67,13 @@ const actions = defineActions({
 
   async updateNetworkProvided(context): Promise<void> {
     const { dispatch, getters, state } = web3ActionContext(context);
-    const { selectedNetwork: selected } = getters;
+    const { selectedNetwork } = getters;
     const { networkType } = state;
 
-    if (!selected) return;
+    if (!selectedNetwork) return;
 
     if (networkType !== BridgeNetworkType.Sub) {
-      await ethersUtil.switchOrAddChain(selected);
+      await ethersUtil.switchOrAddChain(selectedNetwork);
     }
 
     await dispatch.connectExternalNetwork();

@@ -228,16 +228,6 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<void
 }
 
 const actions = defineActions({
-  resetForm(context) {
-    const { commit, dispatch } = bridgeActionContext(context);
-
-    commit.setSoraToEvm(true);
-    commit.setExternalHistory({});
-    commit.setAmount();
-
-    dispatch.setAssetAddress();
-  },
-
   async switchDirection(context): Promise<void> {
     const { commit, dispatch, state } = bridgeActionContext(context);
 
