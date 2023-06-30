@@ -1,11 +1,10 @@
 import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 export type BridgeState = {
   isSoraToEvm: boolean;
   assetAddress: string;
-  assetBalance: Nullable<AccountBalance>;
-  assetExternalBalance: CodecString;
+  assetSenderBalance: CodecString;
+  assetRecipientBalance: CodecString;
   amount: string;
   evmNetworkFee: CodecString;
   evmNetworkFeeFetching: boolean;

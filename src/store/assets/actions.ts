@@ -7,24 +7,29 @@ import { assetsActionContext } from '@/store/assets';
 import type { BridgeAccountAsset } from '@/store/assets/types';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { ActionContext } from 'vuex';
 
 async function getEthRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, BridgeAccountAsset>[]> {
-  const networkAssets = await ethBridgeApi.getRegisteredAssets();
+  const { rootDispatch } = assetsActionContext(context);
 
-  const registeredAssets = networkAssets.reduce<Record<string, BridgeAccountAsset>[]>((buffer, asset) => {
-    buffer.push({
-      [asset.address]: {
-        address: asset.externalAddress,
+  const networkAssets = await ethBridgeApi.getRegisteredAssets();
+  const registeredAssets: Record<string, BridgeAccountAsset>[] = [];
+
+  for (const asset of networkAssets) {
+    const soraAddress = asset.address;
+    const address = asset.externalAddress || (await rootDispatch.web3.getEvmTokenAddressByAssetId(soraAddress));
+    const decimals = +asset.externalDecimals ?? (await ethersUtil.getAssetDecimals(address));
+
+    registeredAssets.push({
+      [soraAddress]: {
+        address,
         balance: ZeroStringValue,
-        decimals: +asset.externalDecimals,
+        decimals,
       },
     });
-    return buffer;
-  }, []);
+  }
 
   return registeredAssets;
 }
@@ -113,67 +118,6 @@ async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Re
   }
 }
 
-async function updateSubBalances(context: ActionContext<any, any>): Promise<Record<string, BridgeAccountAsset>[]> {
-  const { state, rootCommit, rootState } = assetsActionContext(context);
-  // fetch balances for current sora account
-  const accountAddress = rootState.wallet.account.address;
-
-  const updated = await Promise.all(
-    Object.entries(state.registeredAssets).map(async ([soraAddress, asset]) => {
-      const accountAsset = { ...asset };
-      const balance = await subConnector.adapter.getTokenBalance(accountAddress, accountAsset.address);
-      accountAsset.balance = balance;
-      return { [soraAddress]: accountAsset };
-    })
-  );
-
-  return updated;
-}
-
-async function updateEvmBalances(context: ActionContext<any, any>): Promise<Record<string, BridgeAccountAsset>[]> {
-  const { state, rootDispatch, rootCommit, rootState } = assetsActionContext(context);
-
-  const accountAddress = rootState.web3.evmAddress;
-
-  const updated = await Promise.all(
-    Object.entries(state.registeredAssets).map(async ([soraAddress, asset]) => {
-      const accountAsset = { ...asset };
-      try {
-        if (!accountAsset.address) {
-          accountAsset.address = await rootDispatch.web3.getEvmTokenAddressByAssetId(soraAddress);
-        }
-        if (accountAsset.address) {
-          const { value, decimals } = await ethersUtil.getAccountAssetBalance(accountAddress, accountAsset.address);
-
-          accountAsset.balance = value;
-          accountAsset.decimals = decimals;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      return { [soraAddress]: accountAsset };
-    })
-  );
-
-  return updated;
-}
-
-async function getRegisteredAssetsBalances(
-  context: ActionContext<any, any>
-): Promise<Record<string, BridgeAccountAsset>[]> {
-  const { rootState } = assetsActionContext(context);
-
-  switch (rootState.web3.networkType) {
-    case BridgeNetworkType.EvmLegacy:
-    case BridgeNetworkType.Evm: {
-      return await updateEvmBalances(context);
-    }
-    case BridgeNetworkType.Sub: {
-      return await updateSubBalances(context);
-    }
-  }
-}
-
 const actions = defineActions({
   // for common usage
   async updateRegisteredAssets(context): Promise<void> {
@@ -190,24 +134,6 @@ const actions = defineActions({
     } catch (error) {
       console.error(error);
       commit.resetRegisteredAssets();
-    }
-  },
-
-  // for common usage
-  async updateExternalBalances(context): Promise<void> {
-    const { commit } = assetsActionContext(context);
-
-    commit.setRegisteredAssetsBalancesUpdating(true);
-
-    try {
-      const list = await getRegisteredAssetsBalances(context);
-      const registeredAssets = list.reduce((buffer, asset) => ({ ...buffer, ...asset }), {});
-
-      commit.setRegisteredAssets(registeredAssets);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      commit.setRegisteredAssetsBalancesUpdating(false);
     }
   },
 });

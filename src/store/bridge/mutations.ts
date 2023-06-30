@@ -5,7 +5,6 @@ import { ZeroStringValue } from '@/consts';
 
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 const mutations = defineMutations<BridgeState>()({
   setSoraToEvm(state, isSoraToEvm: boolean): void {
@@ -16,11 +15,12 @@ const mutations = defineMutations<BridgeState>()({
     state.assetAddress = address || '';
   },
 
-  setAssetBalance(state, balance: Nullable<AccountBalance> = null): void {
-    state.assetBalance = balance;
+  setAssetSenderBalance(state, balance: CodecString = ZeroStringValue): void {
+    state.assetSenderBalance = balance;
   },
-  setAssetExternalBalance(state, balance: CodecString = ZeroStringValue): void {
-    state.assetExternalBalance = balance;
+
+  setAssetRecipientBalance(state, balance: CodecString = ZeroStringValue): void {
+    state.assetRecipientBalance = balance;
   },
 
   setExternalBalance(state, balance: CodecString = ZeroStringValue): void {
@@ -54,15 +54,6 @@ const mutations = defineMutations<BridgeState>()({
    */
   setExternalHistory(state, history: Record<string, IBridgeTransaction>): void {
     state.historyExternal = { ...history };
-  },
-
-  updateExternalHistoryItem(state, item: IBridgeTransaction): void {
-    if (!item.id) return;
-
-    state.historyExternal = {
-      ...state.historyExternal,
-      [item.id]: item,
-    };
   },
 
   setHistoryPage(state, historyPage?: number): void {

@@ -22,18 +22,15 @@ const subBridge: SubBridge = new Bridge({
     [Operation.SubstrateOutgoing]: SubBridgeOutgoingReducer,
   },
   signExternal: {
-    [Operation.SubstrateIncoming]: async (id: string) => {},
-    [Operation.SubstrateOutgoing]: async (id: string) => {},
+    [Operation.SubstrateIncoming]: async (id: string) => store.dispatch.bridge.signSubBridgeIncomingSub(id),
   },
   signSora: {
     [Operation.SubstrateOutgoing]: async (id: string) => store.dispatch.bridge.signSubBridgeOutgoingSora(id),
   },
   // states
   boundaryStates: {
-    [Operation.SubstrateOutgoing]: {
-      done: BridgeTxStatus.Done,
-      failed: [BridgeTxStatus.Failed],
-    },
+    done: BridgeTxStatus.Done,
+    failed: [BridgeTxStatus.Failed],
   },
   // assets
   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),

@@ -45,9 +45,6 @@ export class EvmBridgeIncomingReducer extends EvmBridgeReducer {
         return await this.handleState(transaction.id, {
           nextState: BridgeTxStatus.Pending,
           rejectState: BridgeTxStatus.Failed,
-          handler: async (id) => {
-            throw new Error(`[${this.constructor.name}]: Not implemented yet :(`);
-          },
         });
       }
     }
@@ -81,9 +78,6 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
         return await this.handleState(transaction.id, {
           nextState: BridgeTxStatus.Pending,
           rejectState: BridgeTxStatus.Failed,
-          handler: async (id) => {
-            throw new Error(`[${this.constructor.name}]: Not implemented yet :(`);
-          },
         });
       }
     }
@@ -127,11 +121,17 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
   }
 
   private async checkTxSoraHash(id: string): Promise<string> {
-    const hash = await waitForSoraTransactionHash({
+    const tx = this.getTransaction(id);
+
+    if (tx.hash) return tx.hash;
+
+    const eventData = await waitForSoraTransactionHash({
       section: 'bridgeProxy',
-      extrincicMethod: 'burn',
+      method: 'burn',
       eventMethod: 'RequestStatusUpdate',
     })(id, this.getTransaction);
+
+    const hash = eventData[0].toString();
 
     this.updateTransactionParams(id, { hash });
 

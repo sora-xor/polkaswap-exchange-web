@@ -1,8 +1,6 @@
-import { CodecString } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { defineMutations } from 'direct-vuex';
 
-import { ZeroStringValue } from '@/consts';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { Web3State, EthBridgeSettings, SubNetworkApps } from './types';

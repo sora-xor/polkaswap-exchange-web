@@ -47,17 +47,26 @@
         />
 
         <s-dropdown
+          v-if="externalAccountLinks.length"
           class="s-dropdown--hash-menu"
           borderRadius="mini"
           type="ellipsis"
           icon="basic-more-vertical-24"
           placement="bottom-end"
-          @select="handleOpenEvmExplorer(txExternalAccount, EvmLinkType.Account, externalNetworkId)"
         >
           <template slot="menu">
-            <s-dropdown-item class="s-dropdown-menu__item">
-              <span>{{ viewInEtherscan }}</span>
-            </s-dropdown-item>
+            <a
+              v-for="link in externalAccountLinks"
+              :key="link.type"
+              class="transaction-link"
+              :href="link.value"
+              target="_blank"
+              rel="nofollow noopener"
+            >
+              <s-dropdown-item class="s-dropdown-menu__item">
+                {{ t('transaction.viewIn', { explorer: link.type }) }}
+              </s-dropdown-item>
+            </a>
           </template>
         </s-dropdown>
       </div>
@@ -130,10 +139,10 @@
         </s-dropdown>
       </div>
 
-      <div v-if="txEvmHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
+      <div v-if="txExternalHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
         <s-input
           :placeholder="getNetworkText('bridgeTransaction.transactionHash', false)"
-          :value="txEvmHashFormatted"
+          :value="txExternalHashFormatted"
           readonly
         />
         <s-button
@@ -142,20 +151,29 @@
           alternative
           icon="basic-copy-24"
           :tooltip="hashCopyTooltip"
-          @click="handleCopyAddress(txEvmHash, $event)"
+          @click="handleCopyAddress(txExternalHash, $event)"
         />
         <s-dropdown
+          v-if="externalExplorerLinks.length"
           class="s-dropdown--hash-menu"
           borderRadius="mini"
           type="ellipsis"
           icon="basic-more-vertical-24"
           placement="bottom-end"
-          @select="handleOpenEvmExplorer(txEvmHash, EvmLinkType.Transaction, externalNetworkId)"
         >
           <template slot="menu">
-            <s-dropdown-item class="s-dropdown-menu__item">
-              <span>{{ viewInEtherscan }}</span>
-            </s-dropdown-item>
+            <a
+              v-for="link in externalExplorerLinks"
+              :key="link.type"
+              class="transaction-link"
+              :href="link.value"
+              target="_blank"
+              rel="nofollow noopener"
+            >
+              <s-dropdown-item class="s-dropdown-menu__item">
+                {{ t('transaction.viewIn', { explorer: link.type }) }}
+              </s-dropdown-item>
+            </a>
           </template>
         </s-dropdown>
       </div>
@@ -214,7 +232,6 @@ import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { Components, PageNames } from '@/consts';
-import type { EvmLinkType } from '@/consts/evm';
 import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
@@ -246,7 +263,7 @@ export default class BridgeTransaction extends Mixins(
   @state.bridge.inProgressIds private inProgressIds!: Record<string, boolean>;
   @state.router.prev private prevRoute!: Nullable<PageNames>;
 
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.historyItem private historyItem!: Nullable<IBridgeTransaction>;
   @getter.web3.externalAccount private externalAccount!: string;
 
@@ -282,12 +299,6 @@ export default class BridgeTransaction extends Mixins(
 
   get amountFiatValue(): Nullable<string> {
     return this.asset ? this.getFiatAmountByString(this.amount, this.asset) : null;
-  }
-
-  get asset(): Nullable<RegisteredAccountAsset> {
-    if (!this.historyItem?.assetAddress) return null;
-
-    return this.getAsset(this.historyItem.assetAddress);
   }
 
   get isSoraToEvm(): boolean {
@@ -338,12 +349,12 @@ export default class BridgeTransaction extends Mixins(
     return this.formatAddress(this.txSoraHash, FORMATTED_HASH_LENGTH);
   }
 
-  get txEvmHash(): string {
+  get txExternalHash(): string {
     return this.historyItem?.externalHash ?? '';
   }
 
-  get txEvmHashFormatted(): string {
-    return this.formatAddress(this.txEvmHash, FORMATTED_HASH_LENGTH);
+  get txExternalHashFormatted(): string {
+    return this.formatAddress(this.txExternalHash, FORMATTED_HASH_LENGTH);
   }
 
   get txDate(): string {
@@ -429,7 +440,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txId(): Nullable<string> {
-    return this.isSoraToEvm ? this.historyItem?.txId : this.historyItem?.externalHash;
+    return this.isSoraToEvm ? this.soraTxId : this.txExternalHash;
   }
 
   get soraTxId(): Nullable<string> {
@@ -490,12 +501,6 @@ export default class BridgeTransaction extends Mixins(
     return `${network} ${text}`;
   }
 
-  handleOpenEvmExplorer(hash: string, type: EvmLinkType, networkId: EvmNetwork): void {
-    const url = this.getEvmExplorerLink(hash, type, networkId);
-    const win = window.open(url, '_blank');
-    win && win.focus();
-  }
-
   get soraExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
     if (!this.soraNetwork) {
       return [];
@@ -533,6 +538,30 @@ export default class BridgeTransaction extends Mixins(
       .filter((value) => !!value.value); // Polkadot explorer won't be shown without block
   }
 
+  get externalAccountLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    if (!(this.historyItem?.externalNetworkType && this.historyItem?.externalNetwork)) return [];
+
+    return this.getNetworkExplorerLinks(
+      this.historyItem.externalNetworkType,
+      this.historyItem.externalNetwork,
+      this.txExternalHash,
+      this.historyItem?.externalBlockId,
+      this.EvmLinkType.Account
+    );
+  }
+
+  get externalExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    if (!(this.historyItem?.externalNetworkType && this.historyItem?.externalNetwork)) return [];
+
+    return this.getNetworkExplorerLinks(
+      this.historyItem.externalNetworkType,
+      this.historyItem.externalNetwork,
+      this.txExternalHash,
+      this.historyItem?.externalBlockId,
+      this.EvmLinkType.Transaction
+    );
+  }
+
   handleViewTransactionsHistory(): void {
     router.push({ name: PageNames.BridgeTransactionsHistory });
   }
@@ -566,6 +595,7 @@ export default class BridgeTransaction extends Mixins(
 
   get comfirmationBlocksLeft(): number {
     if (this.isSoraToEvm || !this.historyItem?.blockHeight || !this.externalBlockNumber) return 0;
+    if (!Number.isFinite(this.historyItem?.blockHeight)) return 0;
 
     const blocksLeft = +this.historyItem.blockHeight + 30 - this.externalBlockNumber;
 

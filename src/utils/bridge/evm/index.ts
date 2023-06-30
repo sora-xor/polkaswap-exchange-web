@@ -31,10 +31,8 @@ const evmBridge: EvmBridge = new Bridge({
   },
   // states
   boundaryStates: {
-    [Operation.EvmOutgoing]: {
-      done: BridgeTxStatus.Done,
-      failed: [BridgeTxStatus.Failed],
-    },
+    done: BridgeTxStatus.Done,
+    failed: [BridgeTxStatus.Failed],
   },
   // assets
   addAsset: (assetAddress: string) => store.dispatch.wallet.account.addAsset(assetAddress),

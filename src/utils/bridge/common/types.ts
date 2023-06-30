@@ -11,15 +11,10 @@ export type UpdateTransaction<T> = (id: string, params: Partial<T>) => void;
 export type ShowNotification<T> = (tx: T) => void;
 export type SignExternal = (id: string) => Promise<any>;
 export type SignSora = (id: string) => Promise<void>;
-export type TransactionBoundaryStates<T extends IBridgeTransaction> = Partial<
-  Record<
-    T['type'],
-    {
-      done: T['transactionState'];
-      failed: T['transactionState'][];
-    }
-  >
->;
+export type TransactionBoundaryStates<T extends IBridgeTransaction> = {
+  done: T['transactionState'];
+  failed: T['transactionState'][];
+};
 
 export type RemoveTransactionByHash<T> = (options: { tx: Partial<T>; force: boolean }) => void;
 

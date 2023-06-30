@@ -20,5 +20,4 @@ export type RegisteredAccountAssetObject = {
 export type AssetsState = {
   registeredAssets: Record<string, BridgeAccountAsset>;
   registeredAssetsFetching: boolean;
-  registeredAssetsBalancesUpdating: boolean;
 };
