@@ -146,7 +146,7 @@
               <span class="input-title--network">{{ getBridgeItemTitle(!isSoraToEvm) }}</span>
               <i :class="`network-icon network-icon--${getNetworkIcon(!isSoraToEvm ? 0 : networkSelected)}`" />
             </div>
-            <div v-if="recepient && isAssetSelected" class="input-value">
+            <div v-if="recipient && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
               <formatted-amount-with-fiat-value
                 value-can-be-hidden
@@ -157,7 +157,7 @@
               />
             </div>
           </div>
-          <div slot="right" v-if="recepient && isAssetSelected" class="s-flex el-buttons">
+          <div slot="right" v-if="recipient && isAssetSelected" class="s-flex el-buttons">
             <token-select-button class="el-button--select-token" :token="asset" />
           </div>
           <template #bottom>
@@ -169,7 +169,7 @@
               />
               <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" class="input-value" />
             </div>
-            <div v-if="recepient" class="bridge-item-footer">
+            <div v-if="recipient" class="bridge-item-footer">
               <s-divider type="tertiary" />
               <s-tooltip
                 :content="getCopyTooltip(!isSoraToEvm)"
@@ -177,8 +177,8 @@
                 placement="bottom-end"
                 tabindex="-1"
               >
-                <span class="bridge-network-address" @click="handleCopyAddress(recepient, $event)">
-                  {{ formatAddress(recepient, 8) }}
+                <span class="bridge-network-address" @click="handleCopyAddress(recipient, $event)">
+                  {{ formatAddress(recipient, 8) }}
                 </span>
               </s-tooltip>
               <span v-if="isSubBridge" class="bridge-network-address" @click="connectExternalWallet">
@@ -191,7 +191,7 @@
               class="el-button--connect s-typography-button--large"
               data-test-name="connectMetamask"
               type="primary"
-              @click="connectRecepientWallet"
+              @click="connectRecipientWallet"
             >
               {{ t('connectWalletText') }}
             </s-button>
@@ -358,7 +358,7 @@ export default class Bridge extends Mixins(
   showConfirmTransactionDialog = false;
 
   get areNetworksConnected(): boolean {
-    return !!this.sender && !!this.recepient;
+    return !!this.sender && !!this.recipient;
   }
 
   get assetAddress(): string {
@@ -592,7 +592,7 @@ export default class Bridge extends Mixins(
     }
   }
 
-  connectRecepientWallet(): void {
+  connectRecipientWallet(): void {
     if (this.isSoraToEvm) {
       this.connectExternalWallet();
     } else {

@@ -4,7 +4,7 @@ export type BridgeState = {
   isSoraToEvm: boolean;
   assetAddress: string;
   assetSenderBalance: CodecString;
-  assetRecepientBalance: CodecString;
+  assetRecipientBalance: CodecString;
   amount: string;
   evmNetworkFee: CodecString;
   evmNetworkFeeFetching: boolean;

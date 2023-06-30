@@ -4,10 +4,11 @@ import { formatBalance } from '@sora-substrate/util/build/assets';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
+import { ZeroStringValue } from '@/consts';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { ApiPromise } from '@polkadot/api';
-import type { RegisteredAsset } from '@sora-substrate/util';
+import type { RegisteredAsset, CodecString } from '@sora-substrate/util';
 
 class SubAdapter {
   protected endpoint!: string;
@@ -26,40 +27,36 @@ class SubAdapter {
     return this.api.rx;
   }
 
-  get ready() {
-    return this.api.isReady;
-  }
-
   get connected(): boolean {
     return this.connection.opened;
   }
 
-  public setEndpoint(endpoint: string) {
+  public setEndpoint(endpoint: string): void {
     this.endpoint = endpoint;
   }
 
-  async connect() {
+  public async connect(): Promise<void> {
     if (!this.connected && this.endpoint) {
       await this.connection.open(this.endpoint);
     }
   }
 
-  async stop() {
+  public async stop(): Promise<void> {
     if (this.connected) {
       await this.connection.close();
     }
   }
 
-  public async getBlockNumber() {
-    await this.ready;
+  public async getBlockNumber(): Promise<number> {
+    if (!this.connected) return 0;
 
     const result = await this.api.query.system.number();
 
     return result.toNumber();
   }
 
-  protected async getAccountBalance(accountAddress: string) {
-    await this.ready;
+  protected async getAccountBalance(accountAddress: string): Promise<CodecString> {
+    if (!this.connected) return ZeroStringValue;
 
     const accountInfo = await this.api.query.system.account(accountAddress);
     const accountBalance = formatBalance(accountInfo.data);
@@ -68,9 +65,9 @@ class SubAdapter {
     return balance;
   }
 
-  public async getTokenBalance(accountAddress: string, tokenAddress?: string) {
+  public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
     console.info(`[${this.constructor.name}] getTokenBalance method is not implemented`);
-    return '0';
+    return ZeroStringValue;
   }
 
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
@@ -79,7 +76,7 @@ class SubAdapter {
 }
 
 class RococoAdapter extends SubAdapter {
-  public async getTokenBalance(accountAddress: string, tokenAddress?: string) {
+  public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
     return await this.getAccountBalance(accountAddress);
   }
 
@@ -140,7 +137,6 @@ class RococoAdapter extends SubAdapter {
       0
     );
 
-    await this.ready;
     await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account.pair, historyItem);
   }
 }
@@ -163,7 +159,7 @@ class SubConnector {
     return adapter;
   }
 
-  async open(network: SubNetwork): Promise<void> {
+  public async open(network: SubNetwork): Promise<void> {
     // stop current adapter connection
     await this.stop();
     // set adapter for network arg
@@ -172,7 +168,7 @@ class SubConnector {
     await this.adapter.connect();
   }
 
-  async stop(): Promise<void> {
+  public async stop(): Promise<void> {
     await this.adapter?.stop();
   }
 }

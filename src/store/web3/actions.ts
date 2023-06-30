@@ -44,7 +44,9 @@ const actions = defineActions({
   },
 
   async connectExternalNetwork(context, network?: string): Promise<void> {
-    const { state, rootDispatch } = web3ActionContext(context);
+    const { dispatch, state, rootDispatch } = web3ActionContext(context);
+
+    await dispatch.disconnectExternalNetwork();
 
     if (state.networkType === BridgeNetworkType.Sub) {
       await connectSubNetwork(context);
@@ -60,13 +62,11 @@ const actions = defineActions({
   },
 
   async disconnectExternalNetwork(context): Promise<void> {
-    const { state, commit } = web3ActionContext(context);
+    const { commit } = web3ActionContext(context);
 
-    if (state.networkType === BridgeNetworkType.Sub) {
-      await subConnector.stop();
-    } else {
-      commit.resetProvidedEvmNetwork();
-    }
+    await subConnector.stop();
+
+    commit.resetProvidedEvmNetwork();
   },
 
   async selectExternalNetwork(context, network: BridgeNetworkId): Promise<void> {

@@ -14,12 +14,12 @@ import type { IBridgeTransaction, CodecString, RegisteredAccountAsset } from '@s
 const getters = defineGetters<BridgeState>()({
   asset(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = bridgeGetterContext(args);
-    const { assetAddress, assetSenderBalance: sender, assetRecepientBalance: recepient, isSoraToEvm } = state;
+    const { assetAddress, assetSenderBalance: sender, assetRecipientBalance: recipient, isSoraToEvm } = state;
     const token = rootGetters.assets.assetDataByAddress(assetAddress);
 
     if (!token) return null;
-    // to save old logic, pass sender & recepient balances
-    const [balance, externalBalance] = isSoraToEvm ? [sender, recepient] : [recepient, sender];
+    // to save old logic, pass sender & recipient balances
+    const [balance, externalBalance] = isSoraToEvm ? [sender, recipient] : [recipient, sender];
     const asset = {
       ...token,
       balance: { transferable: balance },
@@ -52,7 +52,7 @@ const getters = defineGetters<BridgeState>()({
     return state.isSoraToEvm ? rootState.wallet.account.address : rootState.web3.evmAddress;
   },
 
-  recepient(...args): string {
+  recipient(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
 
     if (getters.isSubBridge) return rootState.web3.subAddress;
