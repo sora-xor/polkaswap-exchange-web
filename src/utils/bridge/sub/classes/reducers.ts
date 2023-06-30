@@ -152,8 +152,6 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
             reject(new Error(`[${this.constructor.name}]: Unable to find "xcmApp.AssetAddedToChannel" event`));
           }
 
-          console.log(assetAddedToChannelEvent.toJSON());
-
           // [TODO]: check assetAddedToChannelEvent data
 
           messageNonce = messageAcceptedEvent.event.data[1].toNumber();
