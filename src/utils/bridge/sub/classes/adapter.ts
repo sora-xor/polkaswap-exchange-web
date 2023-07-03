@@ -216,57 +216,6 @@ class RococoKaruraAdapter extends SubAdapter {
   }
 }
 
-class RococoKaruraAdapter extends SubAdapter {
-  // [TODO] fetch balance by symbol
-  public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
-    return await this.getAccountBalance(accountAddress);
-  }
-
-  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
-    const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
-
-    const historyItem = subBridgeApi.getHistory(historyId as string) || {
-      type: Operation.SubstrateIncoming,
-      symbol: asset.symbol,
-      assetAddress: asset.address,
-      amount: `${amount}`,
-      externalNetwork: SubNetwork.RococoKarura,
-      externalNetworkType: BridgeNetworkType.Sub,
-    };
-
-    const extrinsic = this.api.tx.xTokens.transfer(
-      // currencyId: AcalaPrimitivesCurrencyCurrencyId
-      {
-        Token: asset.symbol,
-      },
-      // amount: u128 (Balance)
-      value,
-      // dest: XcmVersionedMultiLocation
-      {
-        V1: {
-          parents: 1,
-          interior: {
-            X2: [
-              {
-                Parachain: 2011,
-              },
-              {
-                AccountId32: {
-                  id: this.api.createType('AccountId32', recipient).toHex(),
-                },
-              },
-            ],
-          },
-        },
-      },
-      // destWeightLimit
-      'Unlimited'
-    );
-
-    await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account.pair, historyItem);
-  }
-}
-
 class SubConnector {
   public readonly adapters = {
     [SubNetwork.Rococo]: new RococoAdapter(),
