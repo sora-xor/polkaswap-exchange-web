@@ -159,9 +159,21 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
 }
 
 async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void> {
-  const { commit } = bridgeActionContext(context);
-  // [TODO] fetch fee
-  commit.getExternalNetworkFeeSuccess(ZeroStringValue);
+  const { commit, rootState } = bridgeActionContext(context);
+
+  let fee = ZeroStringValue;
+
+  const network = rootState.web3.networkSelected;
+
+  if (network) {
+    commit.getExternalNetworkFeeRequest();
+
+    const adapter = subConnector.getAdapterForNetwork(network as SubNetwork);
+    await adapter.connect();
+    fee = await adapter.getNetworkFee();
+  }
+
+  commit.getExternalNetworkFeeSuccess(fee);
 }
 
 async function updateEvmBalances(context: ActionContext<any, any>): Promise<void> {

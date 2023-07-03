@@ -73,6 +73,11 @@ class SubAdapter {
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
     console.info(`[${this.constructor.name}] transfer method is not implemented`);
   }
+
+  public async getNetworkFee(): Promise<CodecString> {
+    console.info(`[${this.constructor.name}] getNetworkFee method is not implemented`);
+    return ZeroStringValue;
+  }
 }
 
 class RococoAdapter extends SubAdapter {
@@ -80,19 +85,8 @@ class RococoAdapter extends SubAdapter {
     return await this.getAccountBalance(accountAddress);
   }
 
-  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
-    const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
-
-    const historyItem = subBridgeApi.getHistory(historyId as string) || {
-      type: Operation.SubstrateIncoming,
-      symbol: asset.symbol,
-      assetAddress: asset.address,
-      amount: `${amount}`,
-      externalNetwork: SubNetwork.Rococo,
-      externalNetworkType: BridgeNetworkType.Sub,
-    };
-
-    const extrinsic = this.api.tx.xcmPallet.reserveTransferAssets(
+  protected getTransferExtrinsic(value: CodecString, recipient: string) {
+    return this.api.tx.xcmPallet.reserveTransferAssets(
       // dest
       {
         V3: {
@@ -136,6 +130,36 @@ class RococoAdapter extends SubAdapter {
       // feeAssetItem
       0
     );
+  }
+
+  public async getNetworkFee(): Promise<CodecString> {
+    /* Runtime call transactionPaymentApi not works, not decorated? */
+
+    // try {
+    //   const tx = this.getTransferExtrinsic(ZeroStringValue, '');
+    //   const res = await tx.paymentInfo('');
+
+    //   return new FPNumber(res.partialFee, 12).toCodecString();
+    // } catch (error) {
+    //   console.error(error);
+    //   return ZeroStringValue;
+    // }
+    return ZeroStringValue;
+  }
+
+  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
+    const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
+
+    const historyItem = subBridgeApi.getHistory(historyId as string) || {
+      type: Operation.SubstrateIncoming,
+      symbol: asset.symbol,
+      assetAddress: asset.address,
+      amount: `${amount}`,
+      externalNetwork: SubNetwork.Rococo,
+      externalNetworkType: BridgeNetworkType.Sub,
+    };
+
+    const extrinsic = this.getTransferExtrinsic(value, recipient);
 
     await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account.pair, historyItem);
   }
