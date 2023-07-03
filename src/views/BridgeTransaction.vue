@@ -468,7 +468,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isAnotherEvmAddress(): boolean {
-    return this.isSoraToEvm && this.txExternalAccount !== this.externalAccount;
+    return this.isSoraToEvm && this.txExternalAccount.toLowerCase() !== this.externalAccount.toLowerCase();
   }
 
   get confirmationButtonDisabled(): boolean {
