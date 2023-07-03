@@ -35,9 +35,9 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
     await waitForEvmTransaction(id);
 
     const tx = this.getTransaction(id);
-    const { evmNetworkFee, blockHeight } = (await getEvmTransactionRecieptByHash(tx.externalHash as string)) || {};
+    const { fee, blockNumber, blockHash } = (await getEvmTransactionRecieptByHash(tx.externalHash as string)) || {};
 
-    if (!evmNetworkFee || !blockHeight) {
+    if (!(fee && blockNumber && blockHash)) {
       this.updateTransactionParams(id, { externalHash: undefined, externalNetworkFee: undefined });
       throw new Error(
         `[${this.constructor.name}]: Ethereum transaction not found, hash: ${tx.externalHash}. 'externalHash' is reset`
@@ -45,7 +45,11 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
     }
 
     // In BridgeHistory 'blockHeight' will store evm block number
-    this.updateTransactionParams(id, { externalNetworkFee: evmNetworkFee, blockHeight });
+    this.updateTransactionParams(id, {
+      externalNetworkFee: fee,
+      externalBlockHeight: blockNumber,
+      externalBlockId: blockHash,
+    });
   }
 
   async onEvmSubmitted(id: string): Promise<void> {

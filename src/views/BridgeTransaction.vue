@@ -594,10 +594,10 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get comfirmationBlocksLeft(): number {
-    if (this.isSoraToEvm || !this.historyItem?.blockHeight || !this.externalBlockNumber) return 0;
-    if (!Number.isFinite(this.historyItem?.blockHeight)) return 0;
+    if (this.isSoraToEvm || !this.historyItem?.externalBlockHeight || !this.externalBlockNumber) return 0;
+    if (!Number.isFinite(this.historyItem?.externalBlockHeight)) return 0;
 
-    const blocksLeft = +this.historyItem.blockHeight + 30 - this.externalBlockNumber;
+    const blocksLeft = +this.historyItem.externalBlockHeight + 30 - this.externalBlockNumber;
 
     return Math.max(blocksLeft, 0);
   }

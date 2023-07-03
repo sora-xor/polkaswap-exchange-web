@@ -38,6 +38,8 @@ export const isUnsignedTx = (tx: BridgeHistory): boolean => {
 export const getTransaction = (id: string): BridgeHistory => {
   const tx = ethBridgeApi.getHistory(id) as BridgeHistory;
 
+  console.log(tx);
+
   if (!tx) throw new Error(`[Bridge]: Transaction is not exists: ${id}`);
 
   return tx;
