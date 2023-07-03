@@ -65,18 +65,15 @@ export const waitForEvmTransactionMined = async (hash?: string, updatedCallback?
 
 export const getEvmTransactionRecieptByHash = async (
   transactionHash: string
-): Promise<{ evmNetworkFee: string; blockHeight: number; from: string } | null> => {
+): Promise<{ fee: string; blockHash: string; blockNumber: number; from: string } | null> => {
   try {
-    const {
-      from,
-      effectiveGasPrice,
-      gasUsed,
-      blockNumber: blockHeight,
-    } = await ethersUtil.getEvmTransactionReceipt(transactionHash);
+    const { from, effectiveGasPrice, gasUsed, blockNumber, blockHash } = await ethersUtil.getEvmTransactionReceipt(
+      transactionHash
+    );
 
-    const evmNetworkFee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
+    const fee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
 
-    return { evmNetworkFee, blockHeight, from };
+    return { fee, blockHash, blockNumber, from };
   } catch (error) {
     return null;
   }
@@ -115,13 +112,9 @@ export const waitForSoraTransactionHash =
     eventSection?: string;
   }) =>
   async (id: string, getTransaction: GetTransaction<T>): Promise<any> => {
-    const tx = getTransaction(id);
+    const { blockId, status, from } = getTransaction(id);
 
-    if (tx.status) {
-      const blockId = tx.blockId;
-
-      if (!blockId) throw new Error('[Bridge]: Unable to retrieve transaction hash, transaction "blockId" is empty');
-
+    if (status && blockId) {
       const extrinsics = await api.system.getExtrinsicsFromBlock(blockId);
 
       if (extrinsics.length) {
@@ -131,7 +124,7 @@ export const waitForSoraTransactionHash =
             method: { method, section },
           } = item;
 
-          return signer.toString() === tx.from && section === options.section && method === options.method;
+          return signer.toString() === from && section === options.section && method === options.method;
         });
 
         if (!Number.isFinite(extrinsicIndex)) throw new Error('[Bridge]: Transaction was failed');
