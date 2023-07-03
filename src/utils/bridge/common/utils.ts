@@ -115,8 +115,6 @@ export const waitForSoraTransactionHash =
     const { blockId, status, from } = getTransaction(id);
 
     if (status && blockId) {
-      if (!blockId) throw new Error('[Bridge]: Unable to retrieve transaction hash, transaction "blockId" is empty');
-
       const extrinsics = await api.system.getExtrinsicsFromBlock(blockId);
 
       if (extrinsics.length) {
