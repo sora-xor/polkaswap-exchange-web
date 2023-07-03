@@ -123,7 +123,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     if (tx.payload?.messageNonce) return;
 
-    const collator = subConnector.getAdapterForNetwork(SubNetwork.Mainnet);
+    const collator = subConnector.getAdapterForNetwork(SubNetwork.RococoSora);
 
     let subscription!: Subscription;
     let messageNonce!: number;
@@ -342,7 +342,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
     const messageNonce = tx.payload.messageNonce;
 
-    const collator = subConnector.getAdapterForNetwork(SubNetwork.Mainnet);
+    const collator = subConnector.getAdapterForNetwork(SubNetwork.RococoSora);
 
     let subscription!: Subscription;
     let messageHash!: string;
