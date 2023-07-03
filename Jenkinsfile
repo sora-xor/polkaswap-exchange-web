@@ -1,4 +1,4 @@
-@Library('jenkins-library@feature/SNE-341-dependency-confusion-scan-step-in-js-ci') _
+@Library('jenkins-library@feature/SNE-341-dependency-confusion') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
@@ -14,12 +14,12 @@ def pipeline = new org.js.AppPipeline(steps: this,
     sonarProjectName: 'polkaswap-exchange-web',
     sonarProjectKey: 'jp.co.soramitsu:polkaswap-exchange-web',
     secretScannerExclusion: 'Jenkinsfile-UCAN|.*env.json',
-    copyStaticToBranch: true,
-    copyToBranches: ['fleek-pre', 'fleek'],
-    copyFile: 'env.json',
-    ipfsHashNotification: true,
-    fleekDefaultSiteName: 'long-firefly-8047',
-    ipfsHashChatID: '-1001375555544',
+    fleekDeployProd: true,
+    fleekBranchesProd: ['fleek', 'fleek-pre'],
+    copyFileProd: 'env.json',
+    fleekDefaultSiteNameProd: 'long-firefly-8047',
+    ipfsHashNotificationProd: true,
+    ipfsHashChatIDProd: '-1001375555544',
     k8sPrDeploy: true,
     vaultPrPath: "argocd-cc/src/charts/sora2/polkaswap-exchange-web/environments/tachi/",
     vaultUser: "polkaswap-rw",
