@@ -27,13 +27,12 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import MoonpayBridgeInitMixin from '@/components/pages/Moonpay/BridgeInitMixin';
 import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
-
-import { lazyComponent } from '@/router';
 import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { Whitelist } from '@sora-substrate/util/build/assets/types';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 @Component({
   components: {
@@ -63,7 +62,7 @@ export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) 
       isSoraToEvm: false,
       amount: this.bridgeTransactionData.amount,
       asset: this.whitelist[this.bridgeTransactionData.assetAddress as string],
-      evmNetwork: this.bridgeTransactionData.externalNetwork,
+      network: this.bridgeTransactionData.externalNetwork,
       externalNetworkFee: this.bridgeTransactionData.externalNetworkFee,
       soraNetworkFee: this.bridgeTransactionData.soraNetworkFee,
       isValidNetwork: this.isValidNetwork,

@@ -318,7 +318,7 @@
     "retryText": "重试",
     "networkFeeText": "网络费用",
     "networkFeeTooltipText": "网络费是用来保证{Sora}系统的增长和稳定的性能。",
-    "ethNetworkFeeTooltipText": "请注意， {AppName}上显示的{Ethereum}网络费用仅为粗略估算，您可以在确认交易之前在已连接的{Ethereum}钱包中查看正确的费用金额。",
+    "ethNetworkFeeTooltipText": "请注意， {AppName}上显示的{network}网络费用只是粗略估计，您可以在确认交易前在连接的{network}钱包中查看正确的费用金额。",
     "marketText": "市场",
     "marketAlgorithmText": "市场算法",
     "firstPerSecond": "{first}每{second}",
@@ -547,7 +547,7 @@
             "title": "代币",
             "placeholder": "按资产 ID、名称或代币符号进行筛选",
             "networkLabelSora": "{Sora} 网络代币",
-            "networkLabelEthereum": "{Ethereum}网络镜像代币",
+            "networkLabelEthereum": "{network}网络镜像令牌",
             "emptyListMessage": "没有结果"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "钱包名称",
-            "desc": "这是你的钱包的公开名称，每个人都可以看到。"
+            "desc": "这是您可以看到的钱包名称"
         },
         "password": {
             "placeholder": "密码",
@@ -1094,7 +1094,8 @@
             "passwords": "密码不匹配",
             "mnemonic": "指定无效的bip39助记符",
             "mnemonicLength": "助记符应包含{number}单词",
-            "jsonFields": "JSON 文件没有必填字段"
+            "jsonFields": "JSON 文件没有必填字段",
+            "alreadyImported": "帐户已导入{address}"
         },
         "assetsAtRiskText": "资产有风险！",
         "deleteAccountText": "如果没有助记词、.json 文件或存储在某些扩展名中，则无法恢复帐户。您将被注销。",
@@ -1180,13 +1181,11 @@
     "stepText": "步",
     "alerts": {
         "drop": "掉落在下方",
-        "raise": "提高以上",
         "once": "一次",
         "always": "总是",
         "edit": "编辑提醒",
         "delete": "删除警报",
         "onDropDesc": "{token}跌破{price}",
-        "onRaiseDesc": "{token}提高到{price}以上",
         "alertsTitle": "警报",
         "alertsCreateTitle": "设置价格提醒",
         "alertsTooltip": "价格提醒是您可以设置的通知，以便在特定代币的价格达到您设置的特定点时接收更新",
@@ -1194,12 +1193,25 @@
         "enableSwitch": "启用资产存款通知",
         "currentPrice": "时价",
         "alertTypeTitle": "警报类型",
-        "typeTooltip": "选择“低于”或“高于”选项来指定跟踪重要价格变动的警报条件。这些选项允许您在资产价值低于或高于指定阈值时及时收到通知",
         "alertFrequencyTitle": "警报频率",
         "frequencyTooltip": "在“一次”和“始终”之间进行选择以确定您接收所选警报类型通知的频率。 “Once”会在满足条件时发送一条通知，而“always”会在每次超过价格阈值时继续通知您",
         "noSupportMsg": "您的浏览器不支持通知",
-        "finishBtn": "去完成"
+        "finishBtn": "去完成",
+        "raise": "升到高处",
+        "onRaiseDesc": "{token}上涨至高于{price}",
+        "typeTooltip": "选择“低于”或“高于”选项来指定跟踪重要价格变动的警报条件。当您的资产价值低于或高于指定阈值时，这些选项可让您及时收到通知"
     },
     "accountAddressText": "账户地址",
-    "fiatDisclaimer": "请注意，我们网站上与加密货币相关的法定价值由外部服务（子查询、Subsquid、Ceres API）提供，是近似值。鉴于这些计算的固有复杂性，无法保证始终绝对精确。"
+    "fiatDisclaimer": "请注意，我们网站上与加密货币相关的法定价值由外部服务（子查询、Subsquid、Ceres API）提供，是近似值。鉴于这些计算的固有复杂性，无法保证始终绝对精确。",
+    "fiatPayment": {
+        "historyBtn": "我的购买",
+        "historyTitle": "交易记录",
+        "moonpayTitle": "通过 MoonPay 购买 ETH",
+        "moonpayDesc": "在以太坊上购买 ETH 代币并通过网桥将其转移到 SORA 网络",
+        "x1Title": "用您的卡购买 XOR",
+        "x1Desc": "使用借记卡或信用卡购买 XOR 代币",
+        "x1Btn": "用卡买XOR",
+        "errorMessage": "不便之处敬请原谅。我们正在努力解决这个问题。请稍后再试。"
+    },
+    "acceptOnScrollText": "滚动接受"
 }

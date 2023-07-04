@@ -318,7 +318,7 @@
     "retryText": "Thử lại",
     "networkFeeText": "Phí Mạng",
     "networkFeeTooltipText": "Phí mạng được sử dụng để đảm bảo hệ thống {Sora} phát triển và hoạt động ổn định.",
-    "ethNetworkFeeTooltipText": "Xin lưu ý rằng phí mạng {Ethereum} được hiển thị trên {AppName} chỉ là ước tính sơ bộ, bạn có thể thấy chi phí chính xác trong ví {Ethereum} của mình trước khi xác nhận giao dịch.",
+    "ethNetworkFeeTooltipText": "Xin lưu ý rằng phí mạng {network} được hiển thị trên {AppName} chỉ là ước tính sơ bộ, bạn có thể xem số tiền phí chính xác trong ví {network} được kết nối của mình trước khi xác nhận giao dịch.",
     "marketText": "Thị trường",
     "marketAlgorithmText": "Thuật toán thị trường",
     "firstPerSecond": "{first} mỗi {second}",
@@ -547,7 +547,7 @@
             "title": "Tokens",
             "placeholder": "Lọc theo Id Tài sản, Tên hoặc Mã token",
             "networkLabelSora": "Token mạng {Sora}",
-            "networkLabelEthereum": "Token tương ứng trên mạng {Ethereum}",
+            "networkLabelEthereum": "{network} mã thông báo nhân bản mạng",
             "emptyListMessage": "Không có kết quả"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Tên ví",
-            "desc": "Đây là tên công khai của ví của bạn sẽ được hiển thị cho mọi người"
+            "desc": "Đây là tên ví của bạn sẽ hiển thị với bạn"
         },
         "password": {
             "placeholder": "Mật khẩu",
@@ -1094,7 +1094,8 @@
             "passwords": "Mật khẩu không đúng",
             "mnemonic": "Đã chỉ định ghi nhớ bip39 không hợp lệ",
             "mnemonicLength": "Cụm từ ghi nhớ phải chứa {number} từ",
-            "jsonFields": "Tệp JSON không có các trường bắt buộc"
+            "jsonFields": "Tệp JSON không có các trường bắt buộc",
+            "alreadyImported": "Tài khoản đã được nhập {address}"
         },
         "assetsAtRiskText": "Tài sản có nguy cơ!",
         "deleteAccountText": "Không thể khôi phục tài khoản nếu không có cụm từ gốc, tệp .json hoặc nếu tài khoản được lưu trữ trong một số tiện ích mở rộng. Bạn sẽ được đăng xuất.",
@@ -1180,13 +1181,11 @@
     "stepText": "Bước chân",
     "alerts": {
         "drop": "Giọt bên dưới",
-        "raise": "Tăng lên trên",
         "once": "Một lần",
         "always": "Luôn luôn",
         "edit": "Chỉnh sửa cảnh báo",
         "delete": "Xóa cảnh báo",
         "onDropDesc": "{token} giảm xuống dưới {price}",
-        "onRaiseDesc": "{token} tăng trên {price}",
         "alertsTitle": "cảnh báo",
         "alertsCreateTitle": "Thiết lập cảnh báo giá",
         "alertsTooltip": "Thông báo về giá là thông báo mà bạn có thể đặt để nhận thông tin cập nhật khi giá của một mã thông báo cụ thể đạt đến điểm nhất định mà bạn đã đặt",
@@ -1194,12 +1193,25 @@
         "enableSwitch": "Bật thông báo gửi tài sản",
         "currentPrice": "giá hiện tại",
         "alertTypeTitle": "Loại cảnh báo",
-        "typeTooltip": "Chọn tùy chọn 'giảm xuống bên dưới' hoặc 'tăng lên trên' để chỉ định điều kiện cảnh báo để theo dõi các biến động giá quan trọng. Các tùy chọn này cho phép bạn nhận được thông báo kịp thời khi giá trị tài sản của bạn giảm xuống dưới hoặc tăng lên trên ngưỡng được chỉ định của bạn",
         "alertFrequencyTitle": "Tần suất cảnh báo",
         "frequencyTooltip": "Chọn giữa 'một lần' và 'luôn luôn' để xác định tần suất bạn nhận được thông báo cho loại cảnh báo đã chọn. 'Một lần' sẽ gửi một thông báo khi điều kiện được đáp ứng, trong khi 'luôn luôn' sẽ tiếp tục thông báo cho bạn mỗi khi vượt qua ngưỡng giá",
         "noSupportMsg": "Thông báo không được trình duyệt của bạn hỗ trợ",
-        "finishBtn": "Hoàn thành"
+        "finishBtn": "Hoàn thành",
+        "raise": "tăng lên trên",
+        "onRaiseDesc": "{token} tăng cao hơn {price}",
+        "typeTooltip": "Chọn tùy chọn 'giảm xuống bên dưới' hoặc 'tăng lên trên' để chỉ định điều kiện cảnh báo để theo dõi các biến động giá quan trọng. Các tùy chọn này cho phép bạn nhận được thông báo kịp thời khi giá trị tài sản của bạn giảm xuống dưới hoặc tăng lên trên ngưỡng được chỉ định của bạn"
     },
     "accountAddressText": "Địa chỉ tài khoản",
-    "fiatDisclaimer": "Xin lưu ý rằng các giá trị fiat được liên kết với tiền điện tử trên trang web của chúng tôi được cung cấp bởi các dịch vụ bên ngoài (Subquery, Subsquid, Ceres API) là gần đúng. Do sự phức tạp vốn có của các tính toán này, không thể đảm bảo độ chính xác tuyệt đối mọi lúc."
+    "fiatDisclaimer": "Xin lưu ý rằng các giá trị fiat được liên kết với tiền điện tử trên trang web của chúng tôi được cung cấp bởi các dịch vụ bên ngoài (Subquery, Subsquid, Ceres API) là gần đúng. Do sự phức tạp vốn có của các tính toán này, không thể đảm bảo độ chính xác tuyệt đối mọi lúc.",
+    "fiatPayment": {
+        "historyBtn": "Sự thanh toán của tôi",
+        "historyTitle": "Lịch sử giao dịch",
+        "moonpayTitle": "Mua ETH qua MoonPay",
+        "moonpayDesc": "Mua mã thông báo ETH trên Ethereum và chuyển chúng sang mạng SORA qua cầu nối",
+        "x1Title": "Mua XOR bằng thẻ của bạn",
+        "x1Desc": "Mua mã thông báo XOR bằng thẻ ghi nợ hoặc thẻ tín dụng của bạn",
+        "x1Btn": "Mua XOR bằng thẻ",
+        "errorMessage": "Xin lỗi vì sự bất tiện. Chúng tôi đang nỗ lực làm việc để giải quyết vấn đề này. Vui lòng thử lại sau."
+    },
+    "acceptOnScrollText": "Cuộn để chấp nhận"
 }

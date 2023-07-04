@@ -1,18 +1,18 @@
-import { ethers } from 'ethers';
-import WalletConnectProvider from '@walletconnect/web3-provider';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { XOR, VAL, PSWAP, ETH } from '@sora-substrate/util/build/assets/consts';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import { ethers } from 'ethers';
+
+import { ZeroStringValue } from '@/consts';
+import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
+import type { NetworkData } from '@/types/bridge';
+import { settingsStorage } from '@/utils/storage';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { EvmNetwork } from '@sora-substrate/util/build/evm/types';
-
-import { settingsStorage } from '@/utils/storage';
-import { ZeroStringValue } from '@/consts';
-import { BridgeType, KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
-
-import type { EvmNetworkData } from '@/consts/evm';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 type ethersProvider = ethers.providers.Web3Provider;
 
@@ -95,6 +95,26 @@ async function getAccount(): Promise<string> {
   return account.getAddress();
 }
 
+async function getAssetDecimals(assetAddress: string): Promise<number> {
+  let decimals = FPNumber.DEFAULT_PRECISION;
+
+  if (isNativeEvmTokenAddress(assetAddress)) return decimals;
+
+  try {
+    const ethersInstance = await getEthersInstance();
+    const tokenInstance = new ethers.Contract(
+      assetAddress,
+      SmartContracts[SmartContractType.ERC20].abi,
+      ethersInstance.getSigner()
+    );
+    decimals = await tokenInstance.decimals();
+  } catch (error) {
+    console.error(error);
+  }
+
+  return decimals;
+}
+
 async function getAccountBalance(accountAddress: string): Promise<CodecString> {
   try {
     const ethersInstance = await getEthersInstance();
@@ -107,7 +127,6 @@ async function getAccountBalance(accountAddress: string): Promise<CodecString> {
   }
 }
 
-// TODO [EVM]: check FirstTestToken
 async function getAccountAssetBalance(
   accountAddress: string,
   assetAddress: string
@@ -233,7 +252,7 @@ async function addToken(address: string, symbol: string, decimals: number, image
  * @param network network data
  * @param chainName translated chain name
  */
-async function switchOrAddChain(network: EvmNetworkData, chainName?: string): Promise<void> {
+async function switchOrAddChain(network: NetworkData, chainName?: string): Promise<void> {
   const ethereum = (window as any).ethereum;
   const chainId = ethers.utils.hexValue(network.id);
 
@@ -258,7 +277,7 @@ async function switchOrAddChain(network: EvmNetworkData, chainName?: string): Pr
             {
               chainId,
               chainName: chainName || network.name,
-              rpcUrls: network.rpcUrls,
+              endpointUrls: network.endpointUrls,
               nativeCurrency: network.nativeCurrency,
               blockExplorerUrls: network.blockExplorerUrls,
             },
@@ -349,24 +368,24 @@ function removeEvmUserAddress(): void {
   settingsStorage.remove('evmAddress');
 }
 
-function getSelectedEvmNetwork(): Nullable<EvmNetwork> {
-  const evmNetwork = Number(settingsStorage.get('evmNetwork'));
+function getSelectedNetwork(): Nullable<BridgeNetworkId> {
+  const network = settingsStorage.get('evmNetwork');
 
-  return Number.isFinite(evmNetwork) ? evmNetwork : null;
+  return network ? JSON.parse(network) : null;
 }
 
-function storeSelectedEvmNetwork(evmNetwork: EvmNetwork) {
-  settingsStorage.set('evmNetwork' as any, evmNetwork);
+function storeSelectedNetwork(network: BridgeNetworkId) {
+  settingsStorage.set('evmNetwork' as any, JSON.stringify(network));
 }
 
-function getSelectedBridgeType(): Nullable<BridgeType> {
-  const result = settingsStorage.get('bridgeType') as BridgeType;
+function getSelectedBridgeType(): Nullable<BridgeNetworkType> {
+  const result = settingsStorage.get('bridgeType') as BridgeNetworkType;
   const value = result || null;
 
   return value;
 }
 
-function storeSelectedBridgeType(bridgeType: BridgeType) {
+function storeSelectedBridgeType(bridgeType: BridgeNetworkType) {
   settingsStorage.set('bridgeType' as any, bridgeType);
 }
 
@@ -375,6 +394,7 @@ export default {
   getAccount,
   getAccountBalance,
   getAccountAssetBalance,
+  getAssetDecimals,
   getAllowance,
   checkAccountIsConnected,
   getEthersInstance,
@@ -396,8 +416,8 @@ export default {
   storeEvmUserAddress,
   removeEvmUserAddress,
   // evm network storage
-  getSelectedEvmNetwork,
-  storeSelectedEvmNetwork,
+  getSelectedNetwork,
+  storeSelectedNetwork,
   // bridge type
   getSelectedBridgeType,
   storeSelectedBridgeType,

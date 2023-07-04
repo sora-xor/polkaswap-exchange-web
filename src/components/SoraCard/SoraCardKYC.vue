@@ -16,11 +16,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 
 enum KycProcess {
   TermsAndConditions,

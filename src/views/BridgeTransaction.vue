@@ -35,29 +35,38 @@
         </h5>
       </div>
 
-      <div v-if="txEvmAddress" class="transaction-hash-container transaction-hash-container--with-dropdown">
-        <s-input :placeholder="txEvmAddressPlaceholder" :value="txEvmAddressFormatted" readonly />
+      <div v-if="txExternalAccount" class="transaction-hash-container transaction-hash-container--with-dropdown">
+        <s-input :placeholder="txExternalAccountPlaceholder" :value="txExternalAccountFormatted" readonly />
         <s-button
           class="s-button--hash-copy"
           type="action"
           alternative
           icon="basic-copy-24"
-          :tooltip="txEvmAddressCopyTooltip"
-          @click="handleCopyAddress(txEvmAddress, $event)"
+          :tooltip="txExternalAccountCopyTooltip"
+          @click="handleCopyAddress(txExternalAccount, $event)"
         />
 
         <s-dropdown
+          v-if="externalAccountLinks.length"
           class="s-dropdown--hash-menu"
           borderRadius="mini"
           type="ellipsis"
           icon="basic-more-vertical-24"
           placement="bottom-end"
-          @select="handleOpenEvmExplorer(txEvmAddress, EvmLinkType.Account, externalNetworkId)"
         >
           <template slot="menu">
-            <s-dropdown-item class="s-dropdown-menu__item">
-              <span>{{ viewInEtherscan }}</span>
-            </s-dropdown-item>
+            <a
+              v-for="link in externalAccountLinks"
+              :key="link.type"
+              class="transaction-link"
+              :href="link.value"
+              target="_blank"
+              rel="nofollow noopener"
+            >
+              <s-dropdown-item class="s-dropdown-menu__item">
+                {{ t('transaction.viewIn', { explorer: link.type }) }}
+              </s-dropdown-item>
+            </a>
           </template>
         </s-dropdown>
       </div>
@@ -130,10 +139,10 @@
         </s-dropdown>
       </div>
 
-      <div v-if="txEvmHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
+      <div v-if="txExternalHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
         <s-input
           :placeholder="getNetworkText('bridgeTransaction.transactionHash', false)"
-          :value="txEvmHashFormatted"
+          :value="txExternalHashFormatted"
           readonly
         />
         <s-button
@@ -142,20 +151,29 @@
           alternative
           icon="basic-copy-24"
           :tooltip="hashCopyTooltip"
-          @click="handleCopyAddress(txEvmHash, $event)"
+          @click="handleCopyAddress(txExternalHash, $event)"
         />
         <s-dropdown
+          v-if="externalExplorerLinks.length"
           class="s-dropdown--hash-menu"
           borderRadius="mini"
           type="ellipsis"
           icon="basic-more-vertical-24"
           placement="bottom-end"
-          @select="handleOpenEvmExplorer(txEvmHash, EvmLinkType.Transaction, externalNetworkId)"
         >
           <template slot="menu">
-            <s-dropdown-item class="s-dropdown-menu__item">
-              <span>{{ viewInEtherscan }}</span>
-            </s-dropdown-item>
+            <a
+              v-for="link in externalExplorerLinks"
+              :key="link.type"
+              class="transaction-link"
+              :href="link.value"
+              target="_blank"
+              rel="nofollow noopener"
+            >
+              <s-dropdown-item class="s-dropdown-menu__item">
+                {{ t('transaction.viewIn', { explorer: link.type }) }}
+              </s-dropdown-item>
+            </a>
           </template>
         </s-dropdown>
       </div>
@@ -174,7 +192,7 @@
           t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
         }}</template>
         <template v-else-if="isTxPending">{{ t('bridgeTransaction.pending') }}</template>
-        <template v-else-if="!(isSoraToEvm || isExternalAccountConnected)">{{ t('connectWalletText') }}</template>
+        <template v-else-if="isAnotherEvmAddress">{{ t('changeAccountText') }}</template>
         <template v-else-if="!(isSoraToEvm || isValidNetwork)">{{ t('changeNetworkText') }}</template>
         <template v-else-if="isInsufficientBalance">{{
           t('insufficientBalanceText', { tokenSymbol: assetSymbol })
@@ -205,26 +223,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
-import type { CodecString, BridgeHistory, IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
-import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/evm/types';
+import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-
-import router, { lazyComponent } from '@/router';
 import { Components, PageNames } from '@/consts';
+import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
-import { isUnsignedTx as isUnsignedEvmTx } from '@/utils/bridge/evm/utils';
-import { isUnsignedTx as isUnsignedEthTx } from '@/utils/bridge/eth/utils';
-import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
+import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/common/utils';
 
-import type { EvmLinkType } from '@/consts/evm';
+import type { CodecString, IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 const FORMATTED_HASH_LENGTH = 24;
 
@@ -249,9 +263,9 @@ export default class BridgeTransaction extends Mixins(
   @state.bridge.inProgressIds private inProgressIds!: Record<string, boolean>;
   @state.router.prev private prevRoute!: Nullable<PageNames>;
 
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.historyItem private historyItem!: Nullable<IBridgeTransaction>;
-  @getter.bridge.isEthBridge private isEthBridge!: boolean;
+  @getter.web3.externalAccount private externalAccount!: string;
 
   @action.bridge.removeHistory private removeHistory!: ({ tx, force }: { tx: any; force?: boolean }) => Promise<void>;
   @action.bridge.handleBridgeTransaction private handleBridgeTransaction!: (id: string) => Promise<void>;
@@ -264,9 +278,7 @@ export default class BridgeTransaction extends Mixins(
   get txIsUnsigned(): boolean {
     if (!this.historyItem?.id) return false;
 
-    return this.isEthBridge
-      ? isUnsignedEthTx(this.historyItem as BridgeHistory)
-      : isUnsignedEvmTx(this.historyItem as EvmHistory);
+    return isUnsignedTx(this.historyItem);
   }
 
   get txInProcess(): boolean {
@@ -289,12 +301,6 @@ export default class BridgeTransaction extends Mixins(
     return this.asset ? this.getFiatAmountByString(this.amount, this.asset) : null;
   }
 
-  get asset(): Nullable<RegisteredAccountAsset> {
-    if (!this.historyItem?.assetAddress) return null;
-
-    return this.getAsset(this.historyItem.assetAddress);
-  }
-
   get isSoraToEvm(): boolean {
     return isOutgoingTransaction(this.historyItem);
   }
@@ -312,7 +318,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get evmIcon(): string {
-    return this.getEvmIcon(this.externalNetworkId);
+    return this.getNetworkIcon(this.externalNetworkId);
   }
 
   get txSoraNetworkFee(): CodecString {
@@ -343,12 +349,12 @@ export default class BridgeTransaction extends Mixins(
     return this.formatAddress(this.txSoraHash, FORMATTED_HASH_LENGTH);
   }
 
-  get txEvmHash(): string {
+  get txExternalHash(): string {
     return this.historyItem?.externalHash ?? '';
   }
 
-  get txEvmHashFormatted(): string {
-    return this.formatAddress(this.txEvmHash, FORMATTED_HASH_LENGTH);
+  get txExternalHashFormatted(): string {
+    return this.formatAddress(this.txExternalHash, FORMATTED_HASH_LENGTH);
   }
 
   get txDate(): string {
@@ -356,7 +362,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txState(): string {
-    return this.historyItem?.transactionState ?? EvmTxStatus.Pending;
+    return this.historyItem?.transactionState ?? BridgeTxStatus.Pending;
   }
 
   get isTxFailed(): boolean {
@@ -409,24 +415,32 @@ export default class BridgeTransaction extends Mixins(
     return this.t('bridgeTransaction.statuses.pending') + '...';
   }
 
-  get txEvmAddress(): string {
+  get txExternalNetworkName(): string {
+    const id = this.historyItem?.externalNetwork;
+    const type = this.historyItem?.externalNetworkType;
+    const name = this.getNetworkName(type, id);
+
+    return name;
+  }
+
+  get txExternalAccount(): string {
     return this.historyItem?.to ?? '';
   }
 
-  get txEvmAddressFormatted(): string {
-    return this.formatAddress(this.txEvmAddress, FORMATTED_HASH_LENGTH);
+  get txExternalAccountFormatted(): string {
+    return this.formatAddress(this.txExternalAccount, FORMATTED_HASH_LENGTH);
   }
 
-  get txEvmAddressPlaceholder(): string {
+  get txExternalAccountPlaceholder(): string {
     return this.getNetworkText('accountAddressText', false);
   }
 
-  get txEvmAddressCopyTooltip(): string {
-    return this.copyTooltip(this.txEvmAddressPlaceholder);
+  get txExternalAccountCopyTooltip(): string {
+    return this.copyTooltip(this.txExternalAccountPlaceholder);
   }
 
   get txId(): Nullable<string> {
-    return this.isSoraToEvm ? this.historyItem?.txId : this.historyItem?.externalHash;
+    return this.isSoraToEvm ? this.soraTxId : this.txExternalHash;
   }
 
   get soraTxId(): Nullable<string> {
@@ -450,12 +464,17 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.txEvmNetworkFee);
+    return hasInsufficientEvmNativeTokenForFee(this.externalBalance, this.txEvmNetworkFee);
+  }
+
+  get isAnotherEvmAddress(): boolean {
+    return this.isSoraToEvm && this.txExternalAccount.toLowerCase() !== this.externalAccount.toLowerCase();
   }
 
   get confirmationButtonDisabled(): boolean {
     return (
       !(this.isSoraToEvm || this.isValidNetwork) ||
+      this.isAnotherEvmAddress ||
       this.isInsufficientBalance ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
@@ -476,15 +495,10 @@ export default class BridgeTransaction extends Mixins(
   }
 
   getNetworkText(key: string, isSora = true): string {
-    const network = isSora ? this.TranslationConsts.Sora : this.TranslationConsts.EVM;
+    const network = isSora ? this.TranslationConsts.Sora : this.txExternalNetworkName;
     const text = this.t(key);
-    return `${network} ${text}`;
-  }
 
-  handleOpenEvmExplorer(hash: string, type: EvmLinkType, networkId: EvmNetwork): void {
-    const url = this.getEvmExplorerLink(hash, type, networkId);
-    const win = window.open(url, '_blank');
-    win && win.focus();
+    return `${network} ${text}`;
   }
 
   get soraExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
@@ -513,7 +527,7 @@ export default class BridgeTransaction extends Mixins(
         const link = { type } as WALLET_CONSTS.ExplorerLink;
         if (type === WALLET_CONSTS.ExplorerType.Sorascan) {
           link.value = `${value}/transaction/${txId}`;
-        } else if (WALLET_CONSTS.ExplorerType.Subscan) {
+        } else if (type === WALLET_CONSTS.ExplorerType.Subscan) {
           link.value = `${value}/extrinsic/${txId}`;
         } else if (this.soraTxBlockId) {
           // ExplorerType.Polkadot
@@ -522,6 +536,30 @@ export default class BridgeTransaction extends Mixins(
         return link;
       })
       .filter((value) => !!value.value); // Polkadot explorer won't be shown without block
+  }
+
+  get externalAccountLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    if (!(this.historyItem?.externalNetworkType && this.historyItem?.externalNetwork)) return [];
+
+    return this.getNetworkExplorerLinks(
+      this.historyItem.externalNetworkType,
+      this.historyItem.externalNetwork,
+      this.txExternalHash,
+      this.historyItem?.externalBlockId,
+      this.EvmLinkType.Account
+    );
+  }
+
+  get externalExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    if (!(this.historyItem?.externalNetworkType && this.historyItem?.externalNetwork)) return [];
+
+    return this.getNetworkExplorerLinks(
+      this.historyItem.externalNetworkType,
+      this.historyItem.externalNetwork,
+      this.txExternalHash,
+      this.historyItem?.externalBlockId,
+      this.EvmLinkType.Transaction
+    );
   }
 
   handleViewTransactionsHistory(): void {
@@ -556,9 +594,10 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get comfirmationBlocksLeft(): number {
-    if (this.isSoraToEvm || !this.historyItem?.blockHeight || !this.evmBlockNumber) return 0;
+    if (this.isSoraToEvm || !this.historyItem?.externalBlockHeight || !this.externalBlockNumber) return 0;
+    if (!Number.isFinite(this.historyItem?.externalBlockHeight)) return 0;
 
-    const blocksLeft = +this.historyItem.blockHeight + 30 - this.evmBlockNumber;
+    const blocksLeft = +this.historyItem.externalBlockHeight + 30 - this.externalBlockNumber;
 
     return Math.max(blocksLeft, 0);
   }
@@ -568,11 +607,9 @@ export default class BridgeTransaction extends Mixins(
   }
 
   async handleTransaction(withAutoStart = true): Promise<void> {
-    await this.checkConnectionToExternalAccount(async () => {
-      if (withAutoStart && this.historyItem?.id) {
-        await this.handleBridgeTransaction(this.historyItem.id);
-      }
-    });
+    if (withAutoStart && this.historyItem?.id) {
+      await this.handleBridgeTransaction(this.historyItem.id);
+    }
   }
 
   handleBack(): void {

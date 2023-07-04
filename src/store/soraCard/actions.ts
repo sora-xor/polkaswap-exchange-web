@@ -1,11 +1,12 @@
-import { defineActions } from 'direct-vuex';
-import { api, WALLET_CONSTS, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber } from '@sora-substrate/util';
+import { api, WALLET_CONSTS, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
+import { defineActions } from 'direct-vuex';
 
+import { Status } from '@/types/card';
 import { waitForAccountPair } from '@/utils';
 import { defineUserStatus, getXorPerEuroRatio, getFreeKycAttemptCount, soraCard } from '@/utils/card';
+
 import { soraCardActionContext } from './../soraCard';
-import { Status } from '@/types/card';
 
 const actions = defineActions({
   calculateXorRestPrice(context, xorPerEuro: FPNumber): void {
@@ -76,8 +77,8 @@ const actions = defineActions({
     const soraNetwork = rootState.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
     const { authService } = soraCard(soraNetwork);
 
-    await ScriptLoader.unload(authService.sdkURL, false);
-    await ScriptLoader.load(authService.sdkURL, false);
+    await ScriptLoader.unload(authService.sdkURL, true).catch(() => {});
+    await ScriptLoader.load(authService.sdkURL, true).catch(() => {});
 
     // TODO: annotate via TS main calls
     // @ts-expect-error no undefined

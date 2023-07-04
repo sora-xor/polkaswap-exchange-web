@@ -1,15 +1,14 @@
-import { EvmTxStatus } from '@sora-substrate/util/build/evm/consts';
+import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import type { EvmHistory } from '@sora-substrate/util/build/evm/types';
-import type { Subscription } from 'rxjs';
-
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { BridgeReducer } from '@/utils/bridge/common/classes';
 
 import { delay } from '@/utils';
-import { waitForSoraTransactionHash } from '@/utils/bridge/evm/utils';
-
+import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
+import { waitForSoraTransactionHash } from '@/utils/bridge/common/utils';
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
+
+import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { Subscription } from 'rxjs';
 
 type EvmBridgeReducerOptions<T extends EvmHistory> = IBridgeReducerOptions<T> & {
   removeTransactionByHash: RemoveTransactionByHash<EvmHistory>;
@@ -32,20 +31,20 @@ export class EvmBridgeIncomingReducer extends EvmBridgeReducer {
     if (!transaction.id) throw new Error(`[${this.constructor.name}]: Transaction ID cannot be empty`);
 
     switch (transaction.transactionState) {
-      case EvmTxStatus.Pending: {
+      case BridgeTxStatus.Pending: {
         return await this.handleState(transaction.id, {
-          nextState: EvmTxStatus.Done,
-          rejectState: EvmTxStatus.Failed,
+          nextState: BridgeTxStatus.Done,
+          rejectState: BridgeTxStatus.Failed,
           handler: async (id: string) => {
             throw new Error(`[${this.constructor.name}]: Not implemented yet :(`);
           },
         });
       }
 
-      case EvmTxStatus.Failed: {
+      case BridgeTxStatus.Failed: {
         return await this.handleState(transaction.id, {
-          nextState: EvmTxStatus.Pending,
-          rejectState: EvmTxStatus.Failed,
+          nextState: BridgeTxStatus.Pending,
+          rejectState: BridgeTxStatus.Failed,
         });
       }
     }
@@ -57,14 +56,14 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
     if (!transaction.id) throw new Error(`[${this.constructor.name}]: Transaction ID cannot be empty`);
 
     switch (transaction.transactionState) {
-      case EvmTxStatus.Pending: {
+      case BridgeTxStatus.Pending: {
         return await this.handleState(transaction.id, {
-          nextState: EvmTxStatus.Done,
-          rejectState: EvmTxStatus.Failed,
+          nextState: BridgeTxStatus.Done,
+          rejectState: BridgeTxStatus.Failed,
           handler: async (id: string) => {
             let currentId = id;
             this.beforeSubmit(currentId);
-            this.updateTransactionParams(currentId, { transactionState: EvmTxStatus.Pending });
+            this.updateTransactionParams(currentId, { transactionState: BridgeTxStatus.Pending });
             await this.checkTxId(currentId);
             await this.checkTxBlockId(currentId);
 
@@ -75,10 +74,10 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
         });
       }
 
-      case EvmTxStatus.Failed: {
+      case BridgeTxStatus.Failed: {
         return await this.handleState(transaction.id, {
-          nextState: EvmTxStatus.Pending,
-          rejectState: EvmTxStatus.Failed,
+          nextState: BridgeTxStatus.Pending,
+          rejectState: BridgeTxStatus.Failed,
         });
       }
     }
@@ -126,7 +125,13 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
 
     if (tx.hash) return tx.hash;
 
-    const hash = await waitForSoraTransactionHash(id);
+    const eventData = await waitForSoraTransactionHash({
+      section: 'bridgeProxy',
+      method: 'burn',
+      eventMethod: 'RequestStatusUpdate',
+    })(id, this.getTransaction);
+
+    const hash = eventData[0].toString();
 
     this.updateTransactionParams(id, { hash });
 
@@ -155,8 +160,8 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
     let subscription!: Subscription;
 
     try {
-      await new Promise<EvmTxStatus>((resolve, reject) => {
-        const observable = evmBridgeApi.subscribeOnTxDetails(from, externalNetwork, hash);
+      await new Promise<BridgeTxStatus>((resolve, reject) => {
+        const observable = evmBridgeApi.subscribeOnTransactionDetails(from, externalNetwork, hash);
 
         if (!observable) throw new Error(`[${this.constructor.name}]: Unable to subscribe on transacton data`);
 
@@ -170,8 +175,8 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
           const status = data.status;
 
           switch (status) {
-            case EvmTxStatus.Done:
-            case EvmTxStatus.Failed: {
+            case BridgeTxStatus.Done:
+            case BridgeTxStatus.Failed: {
               resolve(status);
               break;
             }

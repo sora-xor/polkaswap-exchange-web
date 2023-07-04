@@ -318,7 +318,7 @@
     "retryText": "Tun gbiyanju",
     "networkFeeText": "Owo ọya Nẹtiwọọki",
     "networkFeeTooltipText": "A lo owo ọya nẹtiwọọki lati rii daju idagbasoke eto {Sora} ati iṣẹ iduroṣinṣin.",
-    "ethNetworkFeeTooltipText": "Jọwọ ṣe akiyesi pe awọn owo nẹtiwọọki {Ethereum} ti o han lori {AppName} jẹ awọn idiyele ti o nira nikan, o le wo iye owo ọya ti o tọ ninu apamọwọ {Ethereum} ti o sopọ ṣaaju fifi idi iṣeduro naa mulẹ.",
+    "ethNetworkFeeTooltipText": "Jọwọ ṣe akiyesi pe awọn owo netiwọki {network} ti o han lori {AppName} jẹ awọn iṣiro inira nikan, o le rii iye ọya ti o pe ninu apamọwọ {network} ti o sopọ ṣaaju ṣiṣe iṣeduro iṣowo naa.",
     "marketText": "Oja",
     "marketAlgorithmText": "Alugoridimu ọja",
     "firstPerSecond": "{first} lori {second}",
@@ -547,7 +547,7 @@
             "title": "Awon Tokini",
             "placeholder": "Àlẹmọ nipasẹ Idanimo dukia, Orukọ tabi Aami Ticker",
             "networkLabelSora": "{Sora} awon tokini netiwooki",
-            "networkLabelEthereum": "{Ethereum} awọn ami digi nẹtiwọọki",
+            "networkLabelEthereum": "{network} awọn ami digi nẹtiwọki",
             "emptyListMessage": "Ko si awọn abajade"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Orukọ apamọwọ",
-            "desc": "Eyi ni orukọ gbogbo eniyan ti apamọwọ rẹ eyiti yoo han si gbogbo eniyan"
+            "desc": "Eyi ni orukọ apamọwọ rẹ ti yoo han si ọ"
         },
         "password": {
             "placeholder": "Ọrọigbaniwọle",
@@ -1094,7 +1094,8 @@
             "passwords": "Awọn ọrọ igbaniwọle ko baramu",
             "mnemonic": "Bip39 mnemonic ti ko tọ ni pato",
             "mnemonicLength": "Mnemonic yẹ ki o ni awọn ọrọ {number} ninu",
-            "jsonFields": "Faili JSON ko ni awọn aaye ti a beere"
+            "jsonFields": "Faili JSON ko ni awọn aaye ti a beere",
+            "alreadyImported": "akowọle ti ko wọle tẹlẹ {address}"
         },
         "assetsAtRiskText": "Awọn dukia ni ewu!",
         "deleteAccountText": "Akoto ko le gba pada laisi gbolohun ọrọ irugbin, faili .json tabi ti o ba wa ni ipamọ ni diẹ ninu itẹsiwaju. O yoo wa ni ibuwolu jade.",
@@ -1180,13 +1181,11 @@
     "stepText": "Igbesẹ",
     "alerts": {
         "drop": "Silẹ ni isalẹ",
-        "raise": "Gbe soke",
         "once": "Lẹẹkan",
         "always": "Nigbagbogbo",
         "edit": "Itaniji Ṣatunkọ",
         "delete": "Pa itaniji rẹ",
         "onDropDesc": "{token} lọ silẹ ni isalẹ {price}",
-        "onRaiseDesc": "{token} ga ju {price}",
         "alertsTitle": "Awọn itaniji",
         "alertsCreateTitle": "Ṣeto itaniji idiyele",
         "alertsTooltip": "Awọn itaniji idiyele jẹ awọn iwifunni ti o le ṣeto nipasẹ rẹ lati gba awọn imudojuiwọn nigbati idiyele ti ami-ami kan pato de aaye kan ti o ṣeto",
@@ -1194,12 +1193,25 @@
         "enableSwitch": "Mu awọn iwifunni idogo dukia ṣiṣẹ",
         "currentPrice": "lọwọlọwọ owo",
         "alertTypeTitle": "Iru itaniji",
-        "typeTooltip": "Yan boya 'ju silẹ ni isalẹ' tabi 'gbe loke' aṣayan lati tokasi ipo itaniji fun titọpa awọn agbeka idiyele pataki. Awọn aṣayan wọnyi gba ọ laaye lati gba awọn iwifunni akoko nigbati iye dukia rẹ boya ṣubu ni isalẹ tabi dide loke iloro ti a yàn",
         "alertFrequencyTitle": "Itaniji igbohunsafẹfẹ",
         "frequencyTooltip": "Yan laarin 'lẹẹkan' ati 'nigbagbogbo' lati pinnu iye igba ti o gba awọn iwifunni fun iru gbigbọn ti o yan. 'Lẹẹkan' yoo fi ifitonileti kan ranṣẹ nigbati ipo naa ba ti pade, lakoko ti 'nigbagbogbo' yoo tẹsiwaju lati fi to ọ leti ni igbakugba ti ẹnu-ọna idiyele ti kọja",
         "noSupportMsg": "Awọn iwifunni ko ni atilẹyin nipasẹ ẹrọ aṣawakiri rẹ",
-        "finishBtn": "Lati pari"
+        "finishBtn": "Lati pari",
+        "raise": "Dide loke",
+        "onRaiseDesc": "{token} ga ju {price}",
+        "typeTooltip": "Yan boya 'ju silẹ ni isalẹ' tabi 'dide loke' aṣayan lati tokasi ipo itaniji fun titọpa awọn agbeka idiyele pataki. Awọn aṣayan wọnyi gba ọ laaye lati gba awọn iwifunni akoko nigbati iye dukia rẹ boya ṣubu ni isalẹ tabi dide loke iloro ti a yàn"
     },
     "accountAddressText": "adirẹsi iroyin",
-    "fiatDisclaimer": "Jọwọ ṣe akiyesi pe awọn iye fiat ti o ni nkan ṣe pẹlu awọn owo nẹtiwoki lori oju opo wẹẹbu wa ni a pese nipasẹ awọn iṣẹ ita (Subquery, Subsquid, Ceres API) jẹ isunmọ. Fi fun idiju atorunwa ti awọn iṣiro wọnyi, pipe pipe ni gbogbo igba ko le ṣe iṣeduro."
+    "fiatDisclaimer": "Jọwọ ṣe akiyesi pe awọn iye fiat ti o ni nkan ṣe pẹlu awọn owo nẹtiwoki lori oju opo wẹẹbu wa ni a pese nipasẹ awọn iṣẹ ita (Subquery, Subsquid, Ceres API) jẹ isunmọ. Fi fun idiju atorunwa ti awọn iṣiro wọnyi, pipe pipe ni gbogbo igba ko le ṣe iṣeduro.",
+    "fiatPayment": {
+        "historyBtn": "Awọn rira mi",
+        "historyTitle": "Itan iṣowo",
+        "moonpayTitle": "Ra ETH nipasẹ MoonPay",
+        "moonpayDesc": "Ra awọn ami ETH lori Ethereum ki o gbe wọn lọ si nẹtiwọki SORA nipasẹ afara",
+        "x1Title": "Ra XOR pẹlu kaadi rẹ",
+        "x1Desc": "Ra awọn ami XOR pẹlu debiti tabi kaadi kirẹditi rẹ",
+        "x1Btn": "Ra XOR pẹlu kaadi",
+        "errorMessage": "Aforiji fun ohun airọrun. A n ṣiṣẹ takuntakun lati yanju eyi. Jọwọ, gbiyanju lẹẹkansi nigbamii."
+    },
+    "acceptOnScrollText": "Yi lọ lati gba"
 }

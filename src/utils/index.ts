@@ -1,18 +1,19 @@
-import debounce from 'lodash/debounce';
-import { api } from '@soramitsu/soraneo-wallet-web';
 import { FPNumber, CodecString } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import type { Route } from 'vue-router';
+import { api } from '@soramitsu/soraneo-wallet-web';
+import debounce from 'lodash/debounce';
+
+import { app, ZeroStringValue } from '@/consts';
+import i18n from '@/lang';
+import router from '@/router';
+import type { AmountWithSuffix } from '@/types/formats';
+
+import storage from './storage';
+
 import type { RegisteredAccountAsset } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
-
-import router from '@/router';
-import i18n from '@/lang';
-import { app, ZeroStringValue } from '@/consts';
-
-import storage from './storage';
-import type { AmountWithSuffix } from '@/types/formats';
+import type { Route } from 'vue-router';
 
 type AssetWithBalance = AccountAsset | AccountLiquidity | RegisteredAccountAsset;
 
@@ -128,10 +129,10 @@ export const hasInsufficientXorForFee = (
   return FPNumber.lt(fpBalance, fpFee) && !isXorOutputSwap;
 };
 
-export const hasInsufficientEvmNativeTokenForFee = (evmBalance: CodecString, fee: CodecString): boolean => {
+export const hasInsufficientEvmNativeTokenForFee = (nativeBalance: CodecString, fee: CodecString): boolean => {
   if (!fee) return false;
 
-  const fpBalance = FPNumber.fromCodecValue(evmBalance);
+  const fpBalance = FPNumber.fromCodecValue(nativeBalance);
   const fpFee = FPNumber.fromCodecValue(fee);
 
   return FPNumber.lt(fpBalance, fpFee);

@@ -318,7 +318,7 @@
     "retryText": "Reintentar",
     "networkFeeText": "Tarifa de red",
     "networkFeeTooltipText": "La comisión de la red se utiliza para garantizar el crecimiento y el rendimiento estable del sistema {Sora}.",
-    "ethNetworkFeeTooltipText": "Por favor, tenga en cuenta que las tarifas de la red {Ethereum} mostradas en {AppName} son sólo estimaciones aproximadas, puede ver la cantidad correcta de la tarifa en su cartera {Ethereum} conectada antes de confirmar la transacción.",
+    "ethNetworkFeeTooltipText": "Tenga en cuenta que las tarifas de la red {network} que se muestran en {AppName} son solo estimaciones aproximadas, puede ver el monto de la tarifa correcta en su billetera {network} conectada antes de confirmar la transacción.",
     "marketText": "Mercado",
     "marketAlgorithmText": "Algoritmo de mercado",
     "firstPerSecond": "{first} por {second}",
@@ -547,7 +547,7 @@
             "title": "Tokens",
             "placeholder": "Filtrar por ID de Activo, Nombre o Símbolo bursátil (ticker)",
             "networkLabelSora": "{Sora} Tokens de la red",
-            "networkLabelEthereum": "{Ethereum} Tokens espejo de la red",
+            "networkLabelEthereum": "tokens espejo de red {network}",
             "emptyListMessage": "No hay resultados"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Nombre de la billetera",
-            "desc": "Este es el nombre público de su cartera que será visible para todos"
+            "desc": "Este es el nombre de su billetera que será visible para usted"
         },
         "password": {
             "placeholder": "Contraseña",
@@ -1094,7 +1094,8 @@
             "passwords": "Las contraseñas no coinciden",
             "mnemonic": "Mnemónico bip39 especificado no válido",
             "mnemonicLength": "El mnemónico debe contener {number} palabras",
-            "jsonFields": "El archivo JSON no tiene los campos requeridos"
+            "jsonFields": "El archivo JSON no tiene los campos requeridos",
+            "alreadyImported": "Cuenta ya importada {address}"
         },
         "assetsAtRiskText": "¡Activos en riesgo!",
         "deleteAccountText": "La cuenta no se puede recuperar sin una frase inicial, un archivo .json o si está almacenada en alguna extensión. Serás desconectado.",
@@ -1180,13 +1181,11 @@
     "stepText": "Paso",
     "alerts": {
         "drop": "Cae por debajo",
-        "raise": "eleva por encima",
         "once": "Una vez",
         "always": "Siempre",
         "edit": "Editar alerta",
         "delete": "Eliminar alerta",
         "onDropDesc": "{token} cae por debajo de {price}",
-        "onRaiseDesc": "{token} sube por encima de {price}",
         "alertsTitle": "Alertas",
         "alertsCreateTitle": "Configurar alerta de precio",
         "alertsTooltip": "Las alertas de precios son notificaciones que usted puede configurar para recibir actualizaciones cuando el precio de un token en particular alcance cierto punto que usted establezca.",
@@ -1194,12 +1193,25 @@
         "enableSwitch": "Habilitar notificaciones de depósito de activos",
         "currentPrice": "precio actual",
         "alertTypeTitle": "Tipo de alerta",
-        "typeTooltip": "Elija la opción 'cae por debajo' o 'sube por encima' para especificar la condición de alerta para el seguimiento de movimientos de precios importantes. Estas opciones le permiten recibir notificaciones oportunas cuando el valor de su activo cae por debajo o sube por encima de su umbral designado",
         "alertFrequencyTitle": "Frecuencia de alerta",
         "frequencyTooltip": "Seleccione entre 'una vez' y 'siempre' para determinar con qué frecuencia recibe notificaciones para el tipo de alerta elegido. 'Una vez' enviará una única notificación cuando se cumpla la condición, mientras que 'siempre' seguirá notificándote cada vez que se supere el umbral de precio.",
         "noSupportMsg": "Las notificaciones no son compatibles con su navegador",
-        "finishBtn": "Completar"
+        "finishBtn": "Completar",
+        "raise": "Sobre sale",
+        "onRaiseDesc": "{token} sube por encima de {price}",
+        "typeTooltip": "Elija la opción 'cae por debajo' o 'aumenta por encima' para especificar la condición de alerta para el seguimiento de movimientos de precios importantes. Estas opciones le permiten recibir notificaciones oportunas cuando el valor de su activo cae por debajo o sube por encima de su umbral designado"
     },
     "accountAddressText": "Dirección de la cuenta",
-    "fiatDisclaimer": "Tenga en cuenta que los valores fiduciarios asociados con las criptomonedas en nuestro sitio web son proporcionados por servicios externos (Subquery, Subsquid, Ceres API) y son aproximados. Dada la complejidad inherente a estos cálculos, no se puede garantizar la precisión absoluta en todo momento."
+    "fiatDisclaimer": "Tenga en cuenta que los valores fiduciarios asociados con las criptomonedas en nuestro sitio web son proporcionados por servicios externos (Subquery, Subsquid, Ceres API) y son aproximados. Dada la complejidad inherente a estos cálculos, no se puede garantizar la precisión absoluta en todo momento.",
+    "fiatPayment": {
+        "historyBtn": "Mis compras",
+        "historyTitle": "Historial de transacciones",
+        "moonpayTitle": "Compre ETH a través de MoonPay",
+        "moonpayDesc": "Compre tokens ETH en Ethereum y transfiéralos a la red SORA a través del puente",
+        "x1Title": "Compra XOR con tu tarjeta",
+        "x1Desc": "Compra tokens XOR con tu tarjeta de débito o crédito",
+        "x1Btn": "Comprar XOR con tarjeta",
+        "errorMessage": "Disculpas por los inconvenientes. Estamos trabajando diligentemente para resolver esto. Por favor, inténtelo de nuevo más tarde."
+    },
+    "acceptOnScrollText": "Desplácese para aceptar"
 }

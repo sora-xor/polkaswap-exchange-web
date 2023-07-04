@@ -318,7 +318,7 @@
     "retryText": "Wiederholen",
     "networkFeeText": "Netzwerkgebühr",
     "networkFeeTooltipText": "Die Netzwerkgebühr wird verwendet, um das Wachstum und eine stabile Leistung des {Sora} -Systems sicherzustellen.",
-    "ethNetworkFeeTooltipText": "Bitte, beachte, dass die auf {AppName} angezeigten {Ethereum}-Netzwerkgebühren nur grobe Schätzungen sind. Du kannst den korrekten Gebührenbetrag in deinem verbundenen {Ethereum}-Wallet sehen, bevor du die Transaktion bestätigst.",
+    "ethNetworkFeeTooltipText": "Bitte beachten Sie, dass es sich bei den auf {AppName} angezeigten {network} -Netzwerkgebühren nur um grobe Schätzungen handelt. Sie können den korrekten Gebührenbetrag in Ihrem verbundenen {network} -Wallet sehen, bevor Sie die Transaktion bestätigen.",
     "marketText": "Markt",
     "marketAlgorithmText": "Marktalgorithmus",
     "firstPerSecond": "{first} pro {second}",
@@ -547,7 +547,7 @@
             "title": "Token",
             "placeholder": "Filter nach Asset-ID, Name oder Tickersymbol",
             "networkLabelSora": "{Sora} Netzwerktoken",
-            "networkLabelEthereum": "{Ethereum} Netzwerksmirror-Token",
+            "networkLabelEthereum": "{network} Netzwerkspiegel-Token",
             "emptyListMessage": "Keine Ergebnisse"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Wallet-Name",
-            "desc": "Dies ist der öffentliche Name Ihrer Brieftasche, der für alle sichtbar ist"
+            "desc": "Dies ist der Name Ihres Wallets, der für Sie sichtbar ist"
         },
         "password": {
             "placeholder": "Passwort",
@@ -1094,7 +1094,8 @@
             "passwords": "Passwörter stimmten nicht überein",
             "mnemonic": "Ungültige bip39-Mnemonik angegeben",
             "mnemonicLength": "Mnemonik sollte {number} Wörter enthalten",
-            "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder"
+            "jsonFields": "Die JSON-Datei enthält keine erforderlichen Felder",
+            "alreadyImported": "Konto bereits importiert {address}"
         },
         "assetsAtRiskText": "Vermögen in Gefahr!",
         "deleteAccountText": "Das Konto kann nicht ohne Seed-Phrase, .json Datei oder wenn es in einer Erweiterung gespeichert ist, wiederhergestellt werden. Sie werden abgemeldet.",
@@ -1180,13 +1181,11 @@
     "stepText": "Schritt",
     "alerts": {
         "drop": "Tropfen unten",
-        "raise": "Erhebt sich oben",
         "once": "Einmal",
         "always": "Stets",
         "edit": "Benachrichtigung bearbeiten",
         "delete": "Benachrichtigung löschen",
         "onDropDesc": "{token} fällt unter {price}",
-        "onRaiseDesc": "{token} steigt über {price}",
         "alertsTitle": "Warnungen",
         "alertsCreateTitle": "Preisalarm einrichten",
         "alertsTooltip": "Preisalarme sind Benachrichtigungen, die von Ihnen eingestellt werden können, um Updates zu erhalten, wenn der Preis eines bestimmten Tokens einen bestimmten, von Ihnen festgelegten Punkt erreicht",
@@ -1194,12 +1193,25 @@
         "enableSwitch": "Aktivieren Sie Benachrichtigungen zur Hinterlegung von Vermögenswerten",
         "currentPrice": "derzeitiger Preis",
         "alertTypeTitle": "Alarmtyp",
-        "typeTooltip": "Wählen Sie entweder die Option „fällt unter“ oder „erhöht sich“, um die Alarmbedingung für die Verfolgung wichtiger Preisbewegungen festzulegen. Diese Optionen ermöglichen es Ihnen, zeitnahe Benachrichtigungen zu erhalten, wenn der Wert Ihres Vermögens entweder unter oder über Ihren festgelegten Schwellenwert fällt",
         "alertFrequencyTitle": "Alarmhäufigkeit",
         "frequencyTooltip": "Wählen Sie zwischen „Einmal“ und „Immer“, um festzulegen, wie oft Sie Benachrichtigungen für den ausgewählten Alarmtyp erhalten. „Einmal“ sendet eine einzelne Benachrichtigung, wenn die Bedingung erfüllt ist, während „immer“ Sie weiterhin jedes Mal benachrichtigt, wenn die Preisschwelle überschritten wird",
         "noSupportMsg": "Benachrichtigungen werden von Ihrem Browser nicht unterstützt",
-        "finishBtn": "Fertigstellen"
+        "finishBtn": "Fertigstellen",
+        "raise": "Erhebt sich oben",
+        "onRaiseDesc": "{token} steigt über {price}",
+        "typeTooltip": "Wählen Sie entweder die Option „Unterschreitet“ oder „Steigt darüber“, um die Alarmbedingung für die Verfolgung wichtiger Preisbewegungen anzugeben. Mit diesen Optionen erhalten Sie zeitnahe Benachrichtigungen, wenn der Wert Ihres Vermögenswerts Ihren festgelegten Schwellenwert unterschreitet oder übersteigt"
     },
     "accountAddressText": "Kontoadresse",
-    "fiatDisclaimer": "Bitte beachten Sie, dass die mit Kryptowährungen auf unserer Website verbundenen Fiat-Werte, die von externen Diensten (Subquery, Subsquid, Ceres API) bereitgestellt werden, ungefähre Werte sind. Aufgrund der inhärenten Komplexität dieser Berechnungen kann eine absolute Genauigkeit zu jedem Zeitpunkt nicht garantiert werden."
+    "fiatDisclaimer": "Bitte beachten Sie, dass die mit Kryptowährungen auf unserer Website verbundenen Fiat-Werte, die von externen Diensten (Subquery, Subsquid, Ceres API) bereitgestellt werden, ungefähre Werte sind. Aufgrund der inhärenten Komplexität dieser Berechnungen kann eine absolute Genauigkeit zu jedem Zeitpunkt nicht garantiert werden.",
+    "fiatPayment": {
+        "historyBtn": "Meine Einkäufe",
+        "historyTitle": "Verlauf der Transaktionen",
+        "moonpayTitle": "Kaufen Sie ETH über MoonPay",
+        "moonpayDesc": "Kaufen Sie ETH-Tokens auf Ethereum und übertragen Sie sie über die Bridge an das SORA-Netzwerk",
+        "x1Title": "Kaufen Sie XOR mit Ihrer Karte",
+        "x1Desc": "Kaufen Sie XOR-Tokens mit Ihrer Debit- oder Kreditkarte",
+        "x1Btn": "Kaufen Sie XOR mit Karte",
+        "errorMessage": "Entschuldigung für die Unannehmlichkeiten. Wir arbeiten fleißig daran, dieses Problem zu lösen. Bitte versuchen Sie es später noch einmal."
+    },
+    "acceptOnScrollText": "Scrollen Sie, um zu akzeptieren"
 }

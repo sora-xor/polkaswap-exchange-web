@@ -6,13 +6,13 @@
 </template>
 
 <script lang="ts">
+import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
-import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { ObjectInit } from '@/consts';
 
-import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

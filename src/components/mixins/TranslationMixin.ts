@@ -1,8 +1,8 @@
-import { Component, Mixins } from 'vue-property-decorator';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
-import { state } from '@/store/decorators';
 import { app } from '@/consts';
+import { state } from '@/store/decorators';
 
 const OrdinalRules = {
   en: (v) => {
@@ -29,23 +29,7 @@ const TranslationConsts = {
   EVM: 'EVM',
   Kusama: 'Kusama',
   Metamask: 'MetaMask',
-  Polkaswap: 'Polkaswap',
   ROI: 'ROI', // Return of investment
-  // Networks from ETH Bridge
-  bridgeNetwork: {
-    EWC: 'Energy Web Chain',
-    private: 'Volta Testnet',
-    goerli: 'Ethereum Goerli',
-    kovan: 'Ethereum Kovan',
-    rinkeby: 'Ethereum Rinkeby',
-    ropsten: 'Ethereum Ropsten',
-    main: 'Ethereum Mainnet',
-  },
-  // Select EVM network dialog
-  evmNetwork: {
-    ethereum: 'Ethereum',
-    energy: 'Energy Web Chain',
-  },
   mbps: 'mbps',
   online: 'Online',
   offline: 'Offline',

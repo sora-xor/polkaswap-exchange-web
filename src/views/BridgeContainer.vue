@@ -9,67 +9,63 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Watch } from 'vue-property-decorator';
-import { ethers } from 'ethers';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import ethersUtil from '@/utils/ethers-util';
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { action } from '@/store/decorators';
+import ethersUtil from '@/utils/ethers-util';
+
+import type { Subscription } from 'rxjs';
 
 @Component
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
-  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
-  @action.bridge.updateEvmBlockNumber private updateEvmBlockNumber!: (block?: number) => Promise<void>;
-  @action.assets.updateRegisteredAssets private updateRegisteredAssets!: AsyncFnWithoutArgs;
-  @action.assets.updateExternalBalances private updateExternalBalances!: AsyncFnWithoutArgs;
-  @action.web3.getSupportedNetworks private getSupportedNetworks!: AsyncFnWithoutArgs;
-
-  @Watch('evmAddress')
-  private updateAccountExternalBalances(): void {
-    this.updateExternalBalances();
-  }
+  @action.bridge.getExternalNetworkFee private getExternalNetworkFee!: AsyncFnWithoutArgs;
+  @action.bridge.updateExternalBalance private updateExternalBalance!: AsyncFnWithoutArgs;
+  @action.bridge.updateExternalBlockNumber private updateExternalBlockNumber!: AsyncFnWithoutArgs;
+  @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
+  @action.web3.restoreNetworkType restoreNetworkType!: AsyncFnWithoutArgs;
+  @action.web3.restoreSelectedNetwork restoreSelectedNetwork!: AsyncFnWithoutArgs;
 
   private unwatchEthereum!: FnWithoutArgs;
-  private blockHeadersSubscriber: ethers.providers.Web3Provider | undefined;
+  private blockHeadersSubscriber: Nullable<Subscription> = null;
 
   async created(): Promise<void> {
-    this.setStartSubscriptions([this.subscribeToEvmBlockHeaders, this.subscribeOnEvm]);
-    this.setResetSubscriptions([this.unsubscribeEvmBlockHeaders, this.unsubscribeFromEvm]);
+    this.setStartSubscriptions([this.subscribeOnSystemBlockUpdate, this.subscribeOnEvm]);
+    this.setResetSubscriptions([this.unsubscribeFromSystemBlockUpdate, this.unsubscribeFromEvm]);
 
     await this.withParentLoading(async () => {
-      await this.getSupportedNetworks();
+      await this.getSupportedApps();
       await this.restoreNetworkType();
-      await this.restoreSelectedEvmNetwork();
-      await this.onConnectedEvmNetworkChange();
+      await this.restoreSelectedNetwork();
+      await this.connectExternalNetwork();
     });
   }
 
-  private async onEvmNetworkUpdate(): Promise<void> {
-    await Promise.all([this.updateExternalBalances(), this.getEvmNetworkFee()]);
+  beforeDestroy(): void {
+    this.disconnectExternalNetwork();
   }
 
-  private async onConnectedEvmNetworkChange(networkHex?: string) {
-    await this.connectEvmNetwork(networkHex);
-    await this.updateRegisteredAssets();
-    await this.onEvmNetworkUpdate();
+  private async updateBalancesAndFees(): Promise<void> {
+    await Promise.all([this.updateExternalBalance(), this.getExternalNetworkFee()]);
   }
 
   private async subscribeOnEvm(): Promise<void> {
     this.unwatchEthereum = await ethersUtil.watchEthereum({
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
-          this.changeExternalWallet({ address: addressList[0] });
+          this.setEvmAddress(addressList[0]);
         } else {
-          this.disconnectExternalAccount();
+          this.resetEvmAddress();
         }
+        this.updateExternalBalance();
       },
-      onNetworkChange: (networkHex: string) => {
-        this.onConnectedEvmNetworkChange(networkHex);
+      onNetworkChange: async (networkHex: string) => {
+        this.connectExternalNetwork(networkHex);
       },
       onDisconnect: () => {
-        this.disconnectExternalNetwork();
+        this.resetProvidedEvmNetwork();
       },
     });
   }
@@ -80,33 +76,18 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     }
   }
 
-  private async subscribeToEvmBlockHeaders(): Promise<void> {
-    try {
-      await this.unsubscribeEvmBlockHeaders();
+  private async subscribeOnSystemBlockUpdate(): Promise<void> {
+    this.unsubscribeFromSystemBlockUpdate();
 
-      const ethersInstance = await ethersUtil.getEthersInstance();
-      await this.updateEvmBlockNumber();
-
-      this.blockHeadersSubscriber = ethersInstance.on('block', (blockNumber) => {
-        this.updateEvmBlockNumber(blockNumber);
-        this.onEvmNetworkUpdate();
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    this.blockHeadersSubscriber = api.system.getBlockNumberObservable().subscribe(() => {
+      this.updateExternalBlockNumber();
+      this.updateBalancesAndFees();
+    });
   }
 
-  private unsubscribeEvmBlockHeaders(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      if (!this.blockHeadersSubscriber) return resolve();
-
-      try {
-        this.blockHeadersSubscriber.off('block');
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
+  private unsubscribeFromSystemBlockUpdate(): void {
+    this.blockHeadersSubscriber?.unsubscribe();
+    this.blockHeadersSubscriber = null;
   }
 }
 </script>

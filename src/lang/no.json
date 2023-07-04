@@ -318,7 +318,7 @@
     "retryText": "Prøv igjen",
     "networkFeeText": "Nettverksgebyr",
     "networkFeeTooltipText": "Nettverksavgift brukes til å sikre {Sora} -systemets vekst og stabile ytelse.",
-    "ethNetworkFeeTooltipText": "Vær oppmerksom på at {Ethereum}-nettverksgebyrene som vises på {AppName} bare er grove estimater, du kan se riktig gebyrbeløp i den tilkoblede {Ethereum}-lommeboken før du bekrefter transaksjonen.",
+    "ethNetworkFeeTooltipText": "Vær oppmerksom på at {network} -nettverksavgiftene som vises på {AppName} bare er grove anslag. Du kan se det riktige gebyrbeløpet i den tilkoblede {network} -lommeboken din før du bekrefter transaksjonen.",
     "marketText": "Marked",
     "marketAlgorithmText": "Markedsalgoritme",
     "firstPerSecond": "{first} per {second}",
@@ -547,7 +547,7 @@
             "title": "Tokens",
             "placeholder": "Filtrer etter Aktivum ID, Navn eller Ticker symbol",
             "networkLabelSora": "{Sora} nettverk tokens",
-            "networkLabelEthereum": "{Ethereum} nettverk speil tokens",
+            "networkLabelEthereum": "{network} nettverksspeiltokener",
             "emptyListMessage": "Ingen resultat"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Lommeboknavn",
-            "desc": "Dette er det offentlige navnet på lommeboken din som vil være synlig for alle"
+            "desc": "Dette er navnet på lommeboken din som vil være synlig for deg"
         },
         "password": {
             "placeholder": "Passord",
@@ -1094,7 +1094,8 @@
             "passwords": "Passordene stemte ikke",
             "mnemonic": "Ugyldig bip39 mnemonic spesifisert",
             "mnemonicLength": "Mnemonic skal inneholde {number} ord",
-            "jsonFields": "JSON-filen har ikke obligatoriske felt"
+            "jsonFields": "JSON-filen har ikke obligatoriske felt",
+            "alreadyImported": "Kontoen er allerede importert {address}"
         },
         "assetsAtRiskText": "Eiendeler i fare!",
         "deleteAccountText": "Kontoen kan ikke gjenopprettes uten en frøfrase, .json-fil eller hvis den er lagret i en filtype. Du vil bli logget ut.",
@@ -1180,13 +1181,11 @@
     "stepText": "Steg",
     "alerts": {
         "drop": "Faller under",
-        "raise": "Hever seg over",
         "once": "En gang",
         "always": "Alltid",
         "edit": "Rediger varsel",
         "delete": "Slett varsel",
         "onDropDesc": "{token} synker under {price}",
-        "onRaiseDesc": "{token} hever over {price}",
         "alertsTitle": "Varsler",
         "alertsCreateTitle": "Sett opp prisvarsel",
         "alertsTooltip": "Prisvarsler er varsler du kan stille inn til å motta oppdateringer når prisen på et bestemt token når et bestemt punkt du angir",
@@ -1194,12 +1193,25 @@
         "enableSwitch": "Aktiver innskuddsvarslinger",
         "currentPrice": "gjeldende pris",
         "alertTypeTitle": "Varslingstype",
-        "typeTooltip": "Velg enten \"fall under\" eller \"hever over\" for å spesifisere varselbetingelse for sporing av viktige prisbevegelser. Disse alternativene lar deg motta rettidige varsler når verdien av eiendelen din enten faller under eller stiger over den angitte terskelen",
         "alertFrequencyTitle": "Varslingsfrekvens",
         "frequencyTooltip": "Velg mellom \"en gang\" og \"alltid\" for å bestemme hvor ofte du mottar varsler for den valgte varslingstypen. 'Once' vil sende ett enkelt varsel når betingelsen er oppfylt, mens 'alltid' vil fortsette å varsle deg hver gang prisgrensen krysses",
         "noSupportMsg": "Varsler støttes ikke av nettleseren din",
-        "finishBtn": "Å fullføre"
+        "finishBtn": "Å fullføre",
+        "raise": "Hever seg over",
+        "onRaiseDesc": "{token} stiger over {price}",
+        "typeTooltip": "Velg enten alternativet \"faller under\" eller \"stiger over\" for å spesifisere varselbetingelse for sporing av viktige prisbevegelser. Disse alternativene lar deg motta rettidige varsler når verdien av eiendelen din enten faller under eller stiger over den angitte terskelen"
     },
     "accountAddressText": "Kontoadresse",
-    "fiatDisclaimer": "Vær oppmerksom på at fiat-verdiene knyttet til kryptovalutaer på nettsiden vår leveres av eksterne tjenester (Subquery, Subsquid, Ceres API) er omtrentlige. Gitt den iboende kompleksiteten til disse beregningene, kan absolutt presisjon til enhver tid ikke garanteres."
+    "fiatDisclaimer": "Vær oppmerksom på at fiat-verdiene knyttet til kryptovalutaer på nettsiden vår leveres av eksterne tjenester (Subquery, Subsquid, Ceres API) er omtrentlige. Gitt den iboende kompleksiteten til disse beregningene, kan absolutt presisjon til enhver tid ikke garanteres.",
+    "fiatPayment": {
+        "historyBtn": "Innkjøpene mine",
+        "historyTitle": "betalingshistorie",
+        "moonpayTitle": "Kjøp ETH via MoonPay",
+        "moonpayDesc": "Kjøp ETH-tokens på Ethereum og overfør dem til SORA-nettverket via broen",
+        "x1Title": "Kjøp XOR med kortet ditt",
+        "x1Desc": "Kjøp XOR-tokens med ditt debet- eller kredittkort",
+        "x1Btn": "Kjøp XOR med kort",
+        "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere."
+    },
+    "acceptOnScrollText": "Rull for å godta"
 }

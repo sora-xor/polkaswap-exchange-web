@@ -318,7 +318,7 @@
     "retryText": "Réessayer",
     "networkFeeText": "Frais de réseau",
     "networkFeeTooltipText": "Les frais de réseau sont utilisés pour assurer la croissance et les performances stables du système {Sora}.",
-    "ethNetworkFeeTooltipText": "Veuillez noter que les frais de réseau {Ethereum} affichés sur {AppName} ne sont que des estimations approximatives, vous pouvez voir le montant exact des frais dans votre portefeuille {Ethereum} connecté avant de confirmer la transaction.",
+    "ethNetworkFeeTooltipText": "Veuillez noter que les frais du réseau {network} affichés sur {AppName} ne sont que des estimations approximatives, vous pouvez voir le montant correct des frais dans votre portefeuille {network} connecté avant de confirmer la transaction.",
     "marketText": "Marché",
     "marketAlgorithmText": "Algorithme de marché",
     "firstPerSecond": "{first} par {second}",
@@ -547,7 +547,7 @@
             "title": "Jetons",
             "placeholder": "Filtrer par ID d'actif, nom ou symbole",
             "networkLabelSora": "{Sora} Frais de réseau",
-            "networkLabelEthereum": "{Ethereum} jetons de miroir réseau",
+            "networkLabelEthereum": "jetons de miroir de réseau {network}",
             "emptyListMessage": "Aucun résultat"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Nom du portefeuille",
-            "desc": "C'est le nom public de votre wallet qui sera visible par tout le monde"
+            "desc": "C'est le nom de votre wallet qui vous sera visible"
         },
         "password": {
             "placeholder": "Mot de passe",
@@ -1094,7 +1094,8 @@
             "passwords": "Les mots de passe ne correspondent pas",
             "mnemonic": "Mnémonique bip39 non valide spécifié",
             "mnemonicLength": "Le mnémonique doit contenir {number} mots",
-            "jsonFields": "Le fichier JSON n'a pas de champs obligatoires"
+            "jsonFields": "Le fichier JSON n'a pas de champs obligatoires",
+            "alreadyImported": "Compte déjà importé {address}"
         },
         "assetsAtRiskText": "Actifs en péril !",
         "deleteAccountText": "Le compte ne peut pas être récupéré sans une phrase de départ, un fichier .json ou s'il est stocké dans une extension. Vous serez déconnecté.",
@@ -1180,13 +1181,11 @@
     "stepText": "Marcher",
     "alerts": {
         "drop": "Tombe au-dessous",
-        "raise": "Monte au-dessus",
         "once": "Une fois",
         "always": "Toujours",
         "edit": "Modifier l'alerte",
         "delete": "Supprimer l'alerte",
         "onDropDesc": "{token} tombe en dessous de {price}",
-        "onRaiseDesc": "{token} augmente au-dessus de {price}",
         "alertsTitle": "Alertes",
         "alertsCreateTitle": "Configurer une alerte de prix",
         "alertsTooltip": "Les alertes de prix sont des notifications que vous pouvez définir pour recevoir des mises à jour lorsque le prix d'un jeton particulier atteint un certain point que vous avez défini",
@@ -1194,12 +1193,25 @@
         "enableSwitch": "Activer les notifications de dépôt d'actifs",
         "currentPrice": "prix actuel",
         "alertTypeTitle": "Type d'alerte",
-        "typeTooltip": "Choisissez l'option \"baisse en dessous\" ou \"augmente au-dessus\" pour spécifier la condition d'alerte pour le suivi des mouvements de prix importants. Ces options vous permettent de recevoir des notifications en temps opportun lorsque la valeur de votre actif tombe en dessous ou dépasse votre seuil désigné.",
         "alertFrequencyTitle": "Fréquence d'alerte",
         "frequencyTooltip": "Sélectionnez entre « une fois » et « toujours » pour déterminer la fréquence à laquelle vous recevez des notifications pour le type d'alerte choisi. \"Une fois\" enverra une seule notification lorsque la condition est remplie, tandis que \"toujours\" continuera à vous informer chaque fois que le seuil de prix est franchi",
         "noSupportMsg": "Les notifications ne sont pas prises en charge par votre navigateur",
-        "finishBtn": "Compléter"
+        "finishBtn": "Compléter",
+        "raise": "Monte au-dessus",
+        "onRaiseDesc": "{token} dépasse {price}",
+        "typeTooltip": "Choisissez l'option \"descend en dessous\" ou \"monte au-dessus\" pour spécifier la condition d'alerte pour suivre les mouvements de prix importants. Ces options vous permettent de recevoir des notifications en temps opportun lorsque la valeur de votre actif tombe en dessous ou dépasse votre seuil désigné."
     },
     "accountAddressText": "Adresse du compte",
-    "fiatDisclaimer": "Veuillez noter que les valeurs fiduciaires associées aux crypto-monnaies sur notre site Web sont fournies par des services externes (Subquery, Subsquid, Ceres API) sont approximatives. Compte tenu de la complexité inhérente à ces calculs, une précision absolue à tout moment ne peut être garantie."
+    "fiatDisclaimer": "Veuillez noter que les valeurs fiduciaires associées aux crypto-monnaies sur notre site Web sont fournies par des services externes (Subquery, Subsquid, Ceres API) sont approximatives. Compte tenu de la complexité inhérente à ces calculs, une précision absolue à tout moment ne peut être garantie.",
+    "fiatPayment": {
+        "historyBtn": "Mes achats",
+        "historyTitle": "Historique des transactions",
+        "moonpayTitle": "Acheter des ETH via MoonPay",
+        "moonpayDesc": "Achetez des jetons ETH sur Ethereum et transférez-les sur le réseau SORA via le pont",
+        "x1Title": "Achetez XOR avec votre carte",
+        "x1Desc": "Achetez des jetons XOR avec votre carte de débit ou de crédit",
+        "x1Btn": "Acheter XOR avec carte",
+        "errorMessage": "Mes excuses pour le derangement. Nous travaillons avec diligence pour résoudre ce problème. Veuillez réessayer plus tard."
+    },
+    "acceptOnScrollText": "Faites défiler pour accepter"
 }

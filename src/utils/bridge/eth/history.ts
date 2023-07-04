@@ -1,7 +1,5 @@
-import first from 'lodash/fp/first';
-import last from 'lodash/fp/last';
-import { ethers } from 'ethers';
 import { BridgeTxStatus, Operation } from '@sora-substrate/util';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import {
   api,
   historyElementsFilter,
@@ -9,18 +7,19 @@ import {
   SUBQUERY_TYPES,
   WALLET_CONSTS,
 } from '@soramitsu/soraneo-wallet-web';
-
-import ethersUtil from '@/utils/ethers-util';
-import { getEvmTransactionRecieptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
-
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { ethers } from 'ethers';
+import first from 'lodash/fp/first';
+import last from 'lodash/fp/last';
 
 import { ZeroStringValue } from '@/consts';
 import { SmartContracts, SmartContractType, KnownEthBridgeAsset } from '@/consts/evm';
-
-import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
 import type { EthBridgeContractsAddresses } from '@/store/web3/types';
+import { getEvmTransactionRecieptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import ethersUtil from '@/utils/ethers-util';
+
+import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 const BRIDGE_INTERFACE = new ethers.utils.Interface([
   ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.XOR].abi, // XOR or VAL
@@ -92,7 +91,11 @@ const getReceiptData = async (externalHash: string) => {
 };
 
 const getEvmBlockNumber = (ethereumTx: ethers.providers.TransactionResponse | null) => {
-  return ethereumTx ? String(ethereumTx.blockNumber) : undefined;
+  return ethereumTx?.blockNumber;
+};
+
+const getEvmBlockId = (ethereumTx: ethers.providers.TransactionResponse | null) => {
+  return ethereumTx?.blockHash;
 };
 
 const getEvmTimestamp = async (ethereumTx: ethers.providers.TransactionResponse | null) => {
@@ -284,7 +287,7 @@ export class EthBridgeHistory {
     for (const historyElement of historyElements) {
       const type = getType(historyElement.module);
       const isOutgoing = isOutgoingTransaction({ type });
-      const { id: txId, blockHash: blockId, data: historyElementData } = historyElement;
+      const { id: txId, blockHash: blockId, blockHeight, data: historyElementData } = historyElement;
       const { requestHash, amount, assetId: assetAddress, sidechainAddress } = historyElementData as HistoryElementData;
 
       const localHistoryItem = currentHistory.find((item: BridgeHistory) =>
@@ -307,8 +310,9 @@ export class EthBridgeHistory {
       const externalHash = ethereumTx?.hash ?? '';
       const recieptData = await getReceiptData(externalHash);
       const to = isOutgoing ? sidechainAddress : recieptData?.from;
-      const externalNetworkFee = recieptData?.evmNetworkFee;
-      const blockHeight = getEvmBlockNumber(ethereumTx);
+      const externalNetworkFee = recieptData?.fee;
+      const externalBlockId = getEvmBlockId(ethereumTx);
+      const externalBlockHeight = getEvmBlockNumber(ethereumTx);
       const evmTimestamp = await getEvmTimestamp(ethereumTx);
 
       const [startTime, endTime] = getTimes(isOutgoing, soraTimestamp, evmTimestamp);
@@ -318,7 +322,7 @@ export class EthBridgeHistory {
         txId,
         type,
         blockId,
-        blockHeight,
+        blockHeight: +blockHeight,
         from: address,
         amount,
         symbol,
@@ -328,9 +332,12 @@ export class EthBridgeHistory {
         hash,
         externalHash,
         soraNetworkFee,
-        externalNetworkFee,
         transactionState,
+        externalBlockId,
+        externalBlockHeight,
         externalNetwork,
+        externalNetworkType: BridgeNetworkType.EvmLegacy,
+        externalNetworkFee,
         to,
       };
 

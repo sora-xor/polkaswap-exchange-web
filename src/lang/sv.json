@@ -318,7 +318,7 @@
     "retryText": "Försök igen",
     "networkFeeText": "Nätverksavgift",
     "networkFeeTooltipText": "Nätverksavgiften används för att säkerställa {Sora} systemets tillväxt och stabila prestanda.",
-    "ethNetworkFeeTooltipText": "Vänligen observera att {Ethereum} nätverksavgifter som visas på {AppName} endast är grova uppskattningar, du kan se rätt avgiftsbelopp i din anslutna {Ethereum}-plånbok innan du bekräftar transaktionen.",
+    "ethNetworkFeeTooltipText": "Observera att nätverksavgifterna {network} som visas på {AppName} bara är grova uppskattningar. Du kan se rätt avgiftsbelopp i din anslutna {network} -plånbok innan du bekräftar transaktionen.",
     "marketText": "Marknad",
     "marketAlgorithmText": "Marknadsalgoritm",
     "firstPerSecond": "{first} per {second}",
@@ -547,7 +547,7 @@
             "title": "Tokens",
             "placeholder": "Filtrera efter Tillgångs-ID, Namn, eller Ticker-symbol",
             "networkLabelSora": "{Sora} nätverks-token",
-            "networkLabelEthereum": "{Ethereum} nätverk speglade tokens",
+            "networkLabelEthereum": "{network} nätverksspegeltokens",
             "emptyListMessage": "Inga resultat"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Plånbokens namn",
-            "desc": "Detta är det offentliga namnet på din plånbok som kommer att vara synligt för alla"
+            "desc": "Detta är namnet på din plånbok som kommer att vara synlig för dig"
         },
         "password": {
             "placeholder": "Lösenord",
@@ -1094,7 +1094,8 @@
             "passwords": "Lösenorden matchade inte",
             "mnemonic": "En ogiltig bip39-minnesanteckning har angetts.",
             "mnemonicLength": "Mnemonic bör innehålla {number} ord",
-            "jsonFields": "JSON-fil har inte obligatoriska fält"
+            "jsonFields": "JSON-fil har inte obligatoriska fält",
+            "alreadyImported": "Kontot har redan importerats {address}"
         },
         "assetsAtRiskText": "Tillgångar i riskzonen!",
         "deleteAccountText": "Kontot kan inte återställas utan en fröfras, .json-fil eller om det är lagrat i något tillägg. Du kommer att loggas ut.",
@@ -1180,13 +1181,11 @@
     "stepText": "Steg",
     "alerts": {
         "drop": "Faller under",
-        "raise": "Höjs över",
         "once": "En gång",
         "always": "Alltid",
         "edit": "Redigera varning",
         "delete": "Ta bort varning",
         "onDropDesc": "{token} sjunker under {price}",
-        "onRaiseDesc": "{token} höjer över {price}",
         "alertsTitle": "Varningar",
         "alertsCreateTitle": "Ställ in prisavisering",
         "alertsTooltip": "Prisaviseringar är aviseringar som kan ställas in av dig för att ta emot uppdateringar när priset på en viss token når en viss punkt som du anger",
@@ -1194,12 +1193,25 @@
         "enableSwitch": "Aktivera aviseringar om insättning av tillgångar",
         "currentPrice": "nuvarande pris",
         "alertTypeTitle": "Varningstyp",
-        "typeTooltip": "Välj antingen alternativet \"sjunker under\" eller \"höjer över\" för att ange varningsvillkor för att spåra viktiga prisrörelser. Dessa alternativ låter dig få aviseringar i rätt tid när värdet på din tillgång antingen faller under eller stiger över din angivna tröskel",
         "alertFrequencyTitle": "Varningsfrekvens",
         "frequencyTooltip": "Välj mellan \"en gång\" och \"alltid\" för att avgöra hur ofta du får aviseringar för den valda varningstypen. \"Once\" kommer att skicka ett enda meddelande när villkoret är uppfyllt, medan \"alltid\" kommer att fortsätta att meddela dig varje gång priströskeln passeras",
         "noSupportMsg": "Aviseringar stöds inte av din webbläsare",
-        "finishBtn": "Att slutföra"
+        "finishBtn": "Att slutföra",
+        "raise": "Reser sig över",
+        "onRaiseDesc": "{token} stiger över {price}",
+        "typeTooltip": "Välj antingen alternativet \"sjunker under\" eller \"stiger över\" för att ange varningsvillkor för att spåra viktiga prisrörelser. Dessa alternativ låter dig få aviseringar i rätt tid när värdet på din tillgång antingen faller under eller stiger över din angivna tröskel"
     },
     "accountAddressText": "Kontoadress",
-    "fiatDisclaimer": "Observera att fiat-värdena förknippade med kryptovalutor på vår webbplats tillhandahålls av externa tjänster (Subquery, Subsquid, Ceres API) är ungefärliga. Med tanke på den inneboende komplexiteten i dessa beräkningar kan absolut precision inte alltid garanteras."
+    "fiatDisclaimer": "Observera att fiat-värdena förknippade med kryptovalutor på vår webbplats tillhandahålls av externa tjänster (Subquery, Subsquid, Ceres API) är ungefärliga. Med tanke på den inneboende komplexiteten i dessa beräkningar kan absolut precision inte alltid garanteras.",
+    "fiatPayment": {
+        "historyBtn": "Mina inköp",
+        "historyTitle": "Transaktionshistorik",
+        "moonpayTitle": "Köp ETH via MoonPay",
+        "moonpayDesc": "Köp ETH-tokens på Ethereum och överför dem till SORA-nätverket via bryggan",
+        "x1Title": "Köp XOR med ditt kort",
+        "x1Desc": "Köp XOR-tokens med ditt betal- eller kreditkort",
+        "x1Btn": "Köp XOR med kort",
+        "errorMessage": "Ursäkta besväret. Vi arbetar hårt för att lösa detta. Vänligen försök igen senare."
+    },
+    "acceptOnScrollText": "Bläddra för att acceptera"
 }

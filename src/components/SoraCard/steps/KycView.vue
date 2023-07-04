@@ -14,9 +14,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
-import { v4 as uuidv4 } from 'uuid';
 import { WALLET_CONSTS, mixins, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
+import { v4 as uuidv4 } from 'uuid';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
@@ -93,7 +93,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
 
     const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
 
-    await ScriptLoader.unload(kycService.sdkURL, false);
+    await ScriptLoader.unload(kycService.sdkURL, false).catch(() => {});
 
     ScriptLoader.load(kycService.sdkURL)
       .then(() => {

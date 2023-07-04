@@ -1,46 +1,52 @@
-import isEmpty from 'lodash/fp/isEmpty';
-import { FPNumber } from '@sora-substrate/util';
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { defineActions } from 'direct-vuex';
+
+import { ZeroStringValue } from '@/consts';
+import { assetsActionContext } from '@/store/assets';
+import type { BridgeAccountAsset } from '@/store/assets/types';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import { evmBridgeApi } from '@/utils/bridge/evm/api';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
+import ethersUtil from '@/utils/ethers-util';
+
 import type { ActionContext } from 'vuex';
 
-import ethersUtil from '@/utils/ethers-util';
-import { assetsActionContext } from '@/store/assets';
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { ZeroStringValue } from '@/consts';
-import { BridgeType } from '@/consts/evm';
+async function getEthRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, BridgeAccountAsset>[]> {
+  const { rootDispatch } = assetsActionContext(context);
 
-import type { EvmAccountAsset } from '@/store/assets/types';
-
-async function getEthRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, EvmAccountAsset>[]> {
   const networkAssets = await ethBridgeApi.getRegisteredAssets();
+  const registeredAssets: Record<string, BridgeAccountAsset>[] = [];
 
-  const registeredAssets = networkAssets.reduce<Record<string, EvmAccountAsset>[]>((buffer, asset) => {
-    buffer.push({
-      [asset.address]: {
-        address: asset.externalAddress,
+  for (const asset of networkAssets) {
+    const soraAddress = asset.address;
+    const address = asset.externalAddress || (await rootDispatch.web3.getEvmTokenAddressByAssetId(soraAddress));
+    const decimals = +asset.externalDecimals ?? (await ethersUtil.getAssetDecimals(address));
+
+    registeredAssets.push({
+      [soraAddress]: {
+        address,
         balance: ZeroStringValue,
-        decimals: +asset.externalDecimals,
+        decimals,
       },
     });
-    return buffer;
-  }, []);
+  }
 
   return registeredAssets;
 }
 
-async function getEvmRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, EvmAccountAsset>[]> {
+async function getEvmRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, BridgeAccountAsset>[]> {
   const { rootState } = assetsActionContext(context);
 
-  const evmNetworkId = rootState.web3.evmNetworkSelected;
-  const networkAssets = await evmBridgeApi.getNetworkAssets(evmNetworkId as number);
+  const evmNetworkId = rootState.web3.networkSelected;
+  const networkAssets = await evmBridgeApi.getRegisteredAssets(evmNetworkId as number);
 
   const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
     const accountAsset = {
-      address: assetData.evmAddress as string,
+      address: assetData.address as string,
       balance: ZeroStringValue,
-      contract: assetData.contract,
-      decimals: FPNumber.DEFAULT_PRECISION,
+      contract: '', // map with appKinds
+      decimals: assetData.decimals,
     };
 
     return {
@@ -51,18 +57,40 @@ async function getEvmRegisteredAssets(context: ActionContext<any, any>): Promise
   return registeredAssets;
 }
 
-async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, EvmAccountAsset>[]> {
+async function getSubRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, BridgeAccountAsset>[]> {
+  const { rootState } = assetsActionContext(context);
+
+  const subNetwork = rootState.web3.networkSelected;
+
+  const networkAssets = await subBridgeApi.getRegisteredAssets(subNetwork as SubNetwork);
+
+  const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
+    const accountAsset = {
+      address: '',
+      balance: ZeroStringValue,
+      decimals: assetData.decimals,
+    };
+
+    return {
+      [soraAddress]: accountAsset,
+    };
+  });
+
+  return registeredAssets;
+}
+
+async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, BridgeAccountAsset>[]> {
   const { rootState } = assetsActionContext(context);
 
   switch (rootState.web3.networkType) {
-    case BridgeType.ETH: {
+    case BridgeNetworkType.EvmLegacy: {
       return await getEthRegisteredAssets(context);
     }
-    case BridgeType.EVM: {
+    case BridgeNetworkType.Evm: {
       return await getEvmRegisteredAssets(context);
     }
-    case BridgeType.SUB: {
-      return [];
+    case BridgeNetworkType.Sub: {
+      return await getSubRegisteredAssets(context);
     }
   }
 }
@@ -76,49 +104,14 @@ const actions = defineActions({
     commit.setRegisteredAssetsFetching(true);
 
     try {
-      const registeredAssetsList = await getRegisteredAssets(context);
-      const registeredAssets = registeredAssetsList.reduce((buffer, asset) => ({ ...buffer, ...asset }), {});
+      const list = await getRegisteredAssets(context);
+      const registeredAssets = list.reduce((buffer, asset) => ({ ...buffer, ...asset }), {});
 
       commit.setRegisteredAssets(registeredAssets);
     } catch (error) {
       console.error(error);
       commit.resetRegisteredAssets();
     }
-  },
-
-  async updateExternalBalances(context): Promise<void> {
-    const { commit, state, rootDispatch, rootCommit, rootState } = assetsActionContext(context);
-
-    commit.setRegisteredAssetsBalancesUpdating(true);
-
-    const accountAddress = rootState.web3.evmAddress;
-    const updated = await Promise.all(
-      Object.entries(state.registeredAssets).map(async ([soraAddress, asset]) => {
-        const accountAsset = { ...asset };
-        try {
-          if (!accountAsset.address) {
-            accountAsset.address = await rootDispatch.web3.getEvmTokenAddressByAssetId(soraAddress);
-          }
-          if (accountAsset.address) {
-            const { value, decimals } = await ethersUtil.getAccountAssetBalance(accountAddress, accountAsset.address);
-
-            accountAsset.balance = value;
-            accountAsset.decimals = decimals;
-
-            // update evmBalance
-            if (ethersUtil.isNativeEvmTokenAddress(accountAsset.address)) {
-              rootCommit.web3.setEvmBalance(value);
-            }
-          }
-        } catch (error) {
-          console.error(error);
-        }
-        return { [soraAddress]: accountAsset };
-      })
-    );
-    const registeredAssets = updated.reduce((buffer, asset) => ({ ...buffer, ...asset }), {});
-    commit.setRegisteredAssets(registeredAssets);
-    commit.setRegisteredAssetsBalancesUpdating(false);
   },
 });
 

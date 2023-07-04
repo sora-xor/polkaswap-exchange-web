@@ -318,7 +318,7 @@
     "retryText": "Opakovať",
     "networkFeeText": "Sieťový poplatok",
     "networkFeeTooltipText": "Sieťový poplatok slúži na zabezpečenie rastu a stabilného výkonu systému {Sora}.",
-    "ethNetworkFeeTooltipText": "Upozorňujeme, že poplatky za sieť {Ethereum} zobrazené v aplikácii {AppName} sú len približné. Správnu výšku poplatku môžete vidieť vo svojej pripojenej {Ethereum} peňaženke pred potvrdením transakcie.",
+    "ethNetworkFeeTooltipText": "Upozorňujeme, že sieťové poplatky {network} zobrazené v {AppName} sú len hrubé odhady. Správnu výšku poplatku si môžete pozrieť vo svojej pripojenej peňaženke {network} pred potvrdením transakcie.",
     "marketText": "Trh",
     "marketAlgorithmText": "Trhový algoritmus",
     "firstPerSecond": "{first} za {second}",
@@ -547,7 +547,7 @@
             "title": "Tokeny",
             "placeholder": "Filtrovať podľa ID, názvu alebo symbolu aktíva",
             "networkLabelSora": "Tokeny siete {Sora}",
-            "networkLabelEthereum": "Zrkadlové tokeny siete {Ethereum}",
+            "networkLabelEthereum": "{network} sieťové zrkadlové tokeny",
             "emptyListMessage": "Žiadne výsledky"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Názov peňaženky",
-            "desc": "Toto je verejný názov vašej peňaženky, ktorý bude viditeľný pre všetkých"
+            "desc": "Toto je názov vašej peňaženky, ktorý sa vám zobrazí"
         },
         "password": {
             "placeholder": "Heslo",
@@ -1094,7 +1094,8 @@
             "passwords": "Heslá sa nezhodovali",
             "mnemonic": "Zadaný nesprávny mnemotechnický znak bip39",
             "mnemonicLength": "Mnemotechnika by mala obsahovať {number} slov",
-            "jsonFields": "Súbor JSON neobsahuje povinné polia"
+            "jsonFields": "Súbor JSON neobsahuje povinné polia",
+            "alreadyImported": "Účet už bol importovaný {address}"
         },
         "assetsAtRiskText": "Majetok v ohrození!",
         "deleteAccountText": "Účet nie je možné obnoviť bez počiatočnej frázy, súboru .json alebo ak je uložený v nejakej prípone. Budete odhlásení.",
@@ -1180,13 +1181,11 @@
     "stepText": "Krok",
     "alerts": {
         "drop": "Kvapky nižšie",
-        "raise": "Zvyšuje vyššie",
         "once": "Raz",
         "always": "Vždy",
         "edit": "Upraviť upozornenie",
         "delete": "Odstrániť upozornenie",
         "onDropDesc": "{token} klesne pod {price}",
-        "onRaiseDesc": "{token} zvyšuje nad {price}",
         "alertsTitle": "Upozornenia",
         "alertsCreateTitle": "Nastaviť upozornenie na cenu",
         "alertsTooltip": "Upozornenia na cenu sú upozornenia, ktoré si môžete nastaviť tak, aby dostávali aktualizácie, keď cena konkrétneho tokenu dosiahne určitý bod, ktorý si nastavíte",
@@ -1194,12 +1193,25 @@
         "enableSwitch": "Povoliť upozornenia na vklad majetku",
         "currentPrice": "súčasná cena",
         "alertTypeTitle": "Typ upozornenia",
-        "typeTooltip": "Vyberte možnosť „poklesy pod“ alebo „zvýšenie nad“, aby ste určili výstražnú podmienku pre sledovanie dôležitých pohybov cien. Tieto možnosti vám umožňujú dostávať včasné upozornenia, keď hodnota vášho majetku klesne pod alebo prekročí vami určenú hranicu",
         "alertFrequencyTitle": "Frekvencia varovania",
         "frequencyTooltip": "Vyberte si medzi „raz“ a „vždy“, aby ste určili, ako často budete dostávať upozornenia pre vybraný typ upozornenia. „Raz“ odošle jediné upozornenie, keď je podmienka splnená, zatiaľ čo „vždy“ vás bude naďalej upozorňovať pri každom prekročení cenového limitu",
         "noSupportMsg": "Váš prehliadač nepodporuje upozornenia",
-        "finishBtn": "Dokončiť"
+        "finishBtn": "Dokončiť",
+        "raise": "Stúpa vyššie",
+        "onRaiseDesc": "{token} stúpa nad {price}",
+        "typeTooltip": "Vyberte možnosť „klesá pod“ alebo „stúpa nad“ a špecifikujte podmienku upozornenia na sledovanie dôležitých pohybov cien. Tieto možnosti vám umožňujú dostávať včasné upozornenia, keď hodnota vášho majetku klesne pod alebo prekročí vami určenú hranicu"
     },
     "accountAddressText": "Adresa účtu",
-    "fiatDisclaimer": "Upozorňujeme, že fiat hodnoty spojené s kryptomenami na našej webovej stránke sú poskytované externými službami (Subquery, Subsquid, Ceres API) sú približné. Vzhľadom na prirodzenú zložitosť týchto výpočtov nie je možné zaručiť vždy absolútnu presnosť."
+    "fiatDisclaimer": "Upozorňujeme, že fiat hodnoty spojené s kryptomenami na našej webovej stránke sú poskytované externými službami (Subquery, Subsquid, Ceres API) sú približné. Vzhľadom na prirodzenú zložitosť týchto výpočtov nie je možné zaručiť vždy absolútnu presnosť.",
+    "fiatPayment": {
+        "historyBtn": "Moje nákupy",
+        "historyTitle": "história transakcií",
+        "moonpayTitle": "Kúpte si ETH cez MoonPay",
+        "moonpayDesc": "Kúpte si ETH tokeny na Ethereu a preneste ich do siete SORA cez most",
+        "x1Title": "Kúpte si XOR kartou",
+        "x1Desc": "Kúpte si tokeny XOR pomocou svojej debetnej alebo kreditnej karty",
+        "x1Btn": "Kúpte si XOR kartou",
+        "errorMessage": "Ospravedlňujeme sa za nepríjemnosti. Na vyriešení tohto problému usilovne pracujeme. Skúste neskôr prosím."
+    },
+    "acceptOnScrollText": "Posuňte sa na prijatie"
 }

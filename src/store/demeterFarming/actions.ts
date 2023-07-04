@@ -1,12 +1,12 @@
-import { defineActions } from 'direct-vuex';
 import { api } from '@soramitsu/soraneo-wallet-web';
+import { defineActions } from 'direct-vuex';
 
-import { waitForAccountPair } from '@/utils';
 import { demeterFarmingActionContext } from '@/store/demeterFarming';
-
-import type { Subscription } from 'rxjs';
-import type { DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
+import { waitForAccountPair } from '@/utils';
+
+import type { DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
+import type { Subscription } from 'rxjs';
 
 const actions = defineActions({
   async subscribeOnPools(context): Promise<void> {

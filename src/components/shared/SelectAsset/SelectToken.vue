@@ -54,18 +54,20 @@
 </template>
 
 <script lang="ts">
+import { XOR, XSTUSD, XST } from '@sora-substrate/util/build/assets/consts';
+import { api, mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
-import { api, mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
-import { XOR, XSTUSD } from '@sora-substrate/util/build/assets/consts';
+import { syntheticAssetRegexp } from '@/utils/regexp';
+
+import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 enum Tabs {
   Assets = 'assets',
@@ -99,9 +101,10 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   tabValue = first(this.tokenTabs);
 
   @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
-  @Prop({ default: ObjectInit, type: Object }) readonly asset!: Asset;
+  @Prop({ default: ObjectInit, type: Object }) readonly asset!: Nullable<Asset>;
   @Prop({ default: false, type: Boolean }) readonly disabledCustom!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isMainTokenProviders!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isFirstTokenSelected!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isAddLiquidity!: boolean;
 
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
   @state.wallet.account.assets private assets!: Asset[];
@@ -131,7 +134,25 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get whitelistAssetsList(): Array<AccountAsset> {
-    const whiteList = this.isMainTokenProviders ? this.getMainSources() : this.whitelistAssets;
+    let whiteList: Array<Asset> = [];
+    if (this.isAddLiquidity) {
+      whiteList = this.isFirstTokenSelected
+        ? this.mainLPSources.filter(
+            (asset) => !(this.asset?.address === XST.address && asset.address === XSTUSD.address)
+          ) // XSTUSD-XST isn't allowed
+        : this.whitelistAssets.filter((asset) => {
+            if (asset.address === XSTUSD.address) return false; // XOR-XSTUSD isn't allowed
+            if (this.asset?.address === XSTUSD.address && [XOR.address, XST.address].includes(asset.address)) {
+              return false; // XSTUSD-XOR & XSTUSD-XST aren't allowed
+            }
+            if (syntheticAssetRegexp.test(asset.address)) {
+              return false; // synthetic pairs aren't allowed
+            }
+            return true;
+          });
+    } else {
+      whiteList = this.whitelistAssets;
+    }
     const assetsAddresses = whiteList.map((asset) => asset.address);
     const excludeAddress = this.asset?.address;
 
@@ -180,7 +201,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     );
   }
 
-  private getMainSources(): Array<Asset> {
+  private get mainLPSources(): Array<Asset> {
     const mainSourceAddresses = [XOR.address, XSTUSD.address];
 
     return this.whitelistAssets.filter((asset) => mainSourceAddresses.includes(asset.address));

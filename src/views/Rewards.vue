@@ -47,7 +47,7 @@
               >
                 <div class="rewards-footer">
                   <s-divider />
-                  <div v-if="isExternalAccountConnected" class="rewards-account">
+                  <div v-if="evmAddress" class="rewards-account">
                     <span>{{ formatAddress(evmAddress, 8) }}</span>
                     <span>{{ t('rewards.connected') }}</span>
                   </div>
@@ -95,26 +95,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
-import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
 import { CodecString, FPNumber } from '@sora-substrate/util';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { RewardType } from '@sora-substrate/util/build/rewards/consts';
+import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
+
+import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
+import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import { action, getter, mutation, state } from '@/store/decorators';
+import type { ClaimRewardsParams } from '@/store/rewards/types';
+import type { RewardsAmountHeaderItem, RewardInfoGroup, SelectedRewards } from '@/types/rewards';
+import { hasInsufficientXorForFee } from '@/utils';
+import ethersUtil from '@/utils/ethers-util';
+
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { RewardInfo, RewardsInfo } from '@sora-substrate/util/build/rewards/types';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-
-import ethersUtil from '@/utils/ethers-util';
-import { lazyComponent } from '@/router';
-import { Components } from '@/consts';
-import { hasInsufficientXorForFee } from '@/utils';
-import { action, getter, mutation, state } from '@/store/decorators';
-
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-
-import type { RewardsAmountHeaderItem, RewardInfoGroup, SelectedRewards } from '@/types/rewards';
-import type { ClaimRewardsParams } from '@/store/rewards/types';
 
 @Component({
   components: {
@@ -181,17 +180,13 @@ export default class Rewards extends Mixins(
     this.unwatchEthereum = await ethersUtil.watchEthereum({
       onAccountChange: (addressList: string[]) => {
         if (addressList.length) {
-          this.changeExternalAccountProcess({ address: addressList[0] });
+          this.changeExternalAccountProcess(addressList[0]);
         } else {
           this.disconnectExternalAccountProcess();
         }
       },
-      onNetworkChange: (networkHex: string) => {
-        this.connectEvmNetwork(networkHex);
-      },
-      onDisconnect: () => {
-        this.disconnectExternalNetwork();
-      },
+      onNetworkChange: () => {},
+      onDisconnect: () => {},
     });
   }
 
@@ -367,7 +362,7 @@ export default class Rewards extends Mixins(
   }
 
   get externalRewardsHintText(): string {
-    if (!this.isExternalAccountConnected) return this.t('rewards.hint.connectExternalAccount');
+    if (!this.evmAddress) return this.t('rewards.hint.connectExternalAccount');
     if (!this.externalRewardsAvailable) return this.t('rewards.hint.connectAnotherAccount');
     return '';
   }
@@ -396,7 +391,7 @@ export default class Rewards extends Mixins(
 
   async handleAction(): Promise<void> {
     if (!this.isSoraAccountConnected) {
-      return this.connectInternalWallet();
+      return this.connectSoraWallet();
     }
     if (this.rewardsAvailable) {
       return await this.claimRewardsProcess();
@@ -418,17 +413,17 @@ export default class Rewards extends Mixins(
   }
 
   async connectExternalAccountProcess(): Promise<void> {
-    await this.connectExternalWallet();
+    await this.connectEvmWallet();
     await this.checkExternalRewards();
   }
 
   private async disconnectExternalAccountProcess(): Promise<void> {
-    this.disconnectExternalAccount();
+    this.resetEvmAddress();
     await this.checkExternalRewards();
   }
 
-  private async changeExternalAccountProcess(options?: any): Promise<void> {
-    await this.changeExternalWallet(options);
+  private async changeExternalAccountProcess(address: string): Promise<void> {
+    await this.setEvmAddress(address);
     await this.checkExternalRewards();
   }
 

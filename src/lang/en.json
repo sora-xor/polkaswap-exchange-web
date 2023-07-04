@@ -318,7 +318,7 @@
     "retryText": "Retry",
     "networkFeeText": "Network Fee",
     "networkFeeTooltipText": "Network fee is used to ensure {Sora} system's growth and stable performance.",
-    "ethNetworkFeeTooltipText": "Please note that the {Ethereum} network fees displayed on {AppName} are only rough estimations, you can see the correct fee amount in your connected {Ethereum} wallet prior to confirming the transaction.",
+    "ethNetworkFeeTooltipText": "Please note that the {network} network fees displayed on {AppName} are only rough estimations, you can see the correct fee amount in your connected {network} wallet prior to confirming the transaction.",
     "marketText": "Market",
     "marketAlgorithmText": "Market algorithm",
     "firstPerSecond": "{first} per {second}",
@@ -547,7 +547,7 @@
             "title": "Tokens",
             "placeholder": "Filter by Asset ID, Name or Ticker Symbol",
             "networkLabelSora": "{Sora} network tokens",
-            "networkLabelEthereum": "{Ethereum} network mirror tokens",
+            "networkLabelEthereum": "{network} network mirror tokens",
             "emptyListMessage": "No results"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Wallet name",
-            "desc": "This is the public name of your wallet which will be visible to everyone"
+            "desc": "This is the name of your wallet which will be visible to you"
         },
         "password": {
             "placeholder": "Password",
@@ -1094,7 +1094,8 @@
             "passwords": "Passwords did not match",
             "mnemonic": "Invalid bip39 mnemonic specified",
             "mnemonicLength": "Mnemonic should contain {number} words",
-            "jsonFields": "JSON file does not have required fields"
+            "jsonFields": "JSON file does not have required fields",
+            "alreadyImported": "Account already imported {address}"
         },
         "assetsAtRiskText": "Assets at risk!",
         "deleteAccountText": "Account can’t be recovered without a seed phrase, .json file or if it’s stored in some extension. You will be logged out.",
@@ -1180,13 +1181,11 @@
     "stepText": "Step",
     "alerts": {
         "drop": "Drops below",
-        "raise": "Raises above",
         "once": "Once",
         "always": "Always",
         "edit": "Edit alert",
         "delete": "Delete alert",
         "onDropDesc": "{token} drops below {price}",
-        "onRaiseDesc": "{token} raises above {price}",
         "alertsTitle": "Alerts",
         "alertsCreateTitle": "Set up price alert",
         "alertsTooltip": "Price alerts are notifications that can be set by you to receive updates when the price of a particular token reaches certain point you set",
@@ -1194,12 +1193,25 @@
         "enableSwitch": "Enable asset deposit notifications",
         "currentPrice": "current price",
         "alertTypeTitle": "Alert type",
-        "typeTooltip": "Choose either 'drops below' or 'raises above' option to specify alert condition for tracking important price movements. These options allow you receive timely notifications when the value of your asset either falls below or rises above your designated threshold",
         "alertFrequencyTitle": "Alert frequency",
         "frequencyTooltip": "Select between 'once' and 'always' to determine how often you receive notifications for the chosen alert type. 'Once' will send a single notification when the condition is met, while 'always' will continue to notify you each time the price threshold is crossed",
         "noSupportMsg": "Notifications aren't supported by your browser",
-        "finishBtn": "Finish alert setup"
+        "finishBtn": "Finish alert setup",
+        "raise": "Rises above",
+        "onRaiseDesc": "{token} rises above {price}",
+        "typeTooltip": "Choose either 'drops below' or 'rises above' option to specify alert condition for tracking important price movements. These options allow you receive timely notifications when the value of your asset either falls below or rises above your designated threshold"
     },
     "accountAddressText": "Account address",
-    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API)  are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed."
+    "fiatDisclaimer": "Please note that the fiat values associated with cryptocurrencies on our website are provided by external services (Subquery, Subsquid, Ceres API)  are approximate. Given the inherent complexity of these calculations, absolute precision at all times cannot be guaranteed.",
+    "fiatPayment": {
+        "historyBtn": "My purchases",
+        "historyTitle": "Transaction History",
+        "moonpayTitle": "Buy ETH via MoonPay",
+        "moonpayDesc": "Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge",
+        "x1Title": "Buy XOR with your card",
+        "x1Desc": "Purchase XOR tokens with your debit or credit card",
+        "x1Btn": "Buy XOR with card",
+        "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later."
+    },
+    "acceptOnScrollText": "Scroll to accept"
 }

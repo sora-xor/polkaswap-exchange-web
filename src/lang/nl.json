@@ -318,7 +318,7 @@
     "retryText": "Probeer opnieuw",
     "networkFeeText": "Netwerkvergoeding",
     "networkFeeTooltipText": "Netwerkvergoeding wordt gebruikt om de groei en stabiele prestaties van het {Sora}-systeem te garanderen.",
-    "ethNetworkFeeTooltipText": "Houd er rekening mee dat de {Ethereum}-netwerkkosten die worden weergegeven op {AppName} slechts ruwe schattingen zijn, u kunt het juiste bedrag in uw verbonden {Ethereum}-wallet zien voordat u de transactie bevestigt.",
+    "ethNetworkFeeTooltipText": "Houd er rekening mee dat de {network} -netwerkkosten die worden weergegeven op {AppName} slechts ruwe schattingen zijn. U kunt het juiste bedrag in uw aangesloten {network} -portemonnee zien voordat u de transactie bevestigt.",
     "marketText": "Markt",
     "marketAlgorithmText": "Markt algoritme",
     "firstPerSecond": "{first} per {second}",
@@ -547,7 +547,7 @@
             "title": "Tokens",
             "placeholder": "Filter op Asset-ID, naam of Tickersymbool",
             "networkLabelSora": "{Sora} netwerk tokens",
-            "networkLabelEthereum": "{Ethereum} netwerk spiegel tokens",
+            "networkLabelEthereum": "{network} netwerkspiegeltokens",
             "emptyListMessage": "Geen resultaten"
         },
         "customAsset": {
@@ -1065,7 +1065,7 @@
         },
         "accountName": {
             "placeholder": "Naam portemonnee",
-            "desc": "Dit is de openbare naam van uw portemonnee die voor iedereen zichtbaar zal zijn"
+            "desc": "Dit is de naam van uw portemonnee die voor u zichtbaar zal zijn"
         },
         "password": {
             "placeholder": "Wachtwoord",
@@ -1094,7 +1094,8 @@
             "passwords": "Wachtwoorden kwamen niet overeen",
             "mnemonic": "Ongeldig bip39 geheugensteuntje opgegeven",
             "mnemonicLength": "Mnemonic moet {number} woorden bevatten",
-            "jsonFields": "JSON-bestand heeft geen verplichte velden"
+            "jsonFields": "JSON-bestand heeft geen verplichte velden",
+            "alreadyImported": "Account al geïmporteerd {address}"
         },
         "assetsAtRiskText": "Activa in gevaar!",
         "deleteAccountText": "Account kan niet worden hersteld zonder een seed-zin, een .json bestand of als het is opgeslagen in een extensie. U wordt uitgelogd.",
@@ -1180,13 +1181,11 @@
     "stepText": "Stap",
     "alerts": {
         "drop": "Zakt onder",
-        "raise": "Stijgt boven",
         "once": "Eenmaal",
         "always": "Altijd",
         "edit": "Melding bewerken",
         "delete": "Melding verwijderen",
         "onDropDesc": "{token} zakt onder {price}",
-        "onRaiseDesc": "{token} verhoogt boven {price}",
         "alertsTitle": "Waarschuwingen",
         "alertsCreateTitle": "Prijsalarm instellen",
         "alertsTooltip": "Prijswaarschuwingen zijn meldingen die door u kunnen worden ingesteld om updates te ontvangen wanneer de prijs van een bepaald token een bepaald door u ingesteld punt bereikt",
@@ -1194,12 +1193,25 @@
         "enableSwitch": "Meldingen van activastortingen inschakelen",
         "currentPrice": "huidige prijs",
         "alertTypeTitle": "Waarschuwingstype",
-        "typeTooltip": "Kies de optie 'drops below' of 'raises above' om een waarschuwingsconditie op te geven voor het volgen van belangrijke prijsbewegingen. Met deze opties ontvangt u tijdige meldingen wanneer de waarde van uw vermogen onder of boven de door u aangegeven drempelwaarde komt",
         "alertFrequencyTitle": "Alert frequentie",
         "frequencyTooltip": "Kies tussen 'eenmalig' en 'altijd' om te bepalen hoe vaak u meldingen ontvangt voor het gekozen waarschuwingstype. 'Eenmaal' stuurt een enkele melding wanneer aan de voorwaarde is voldaan, terwijl 'altijd' u op de hoogte blijft houden telkens wanneer de prijsdrempel wordt overschreden",
         "noSupportMsg": "Meldingen worden niet ondersteund door je browser",
-        "finishBtn": "Vervolledigen"
+        "finishBtn": "Vervolledigen",
+        "raise": "Stijgt boven",
+        "onRaiseDesc": "{token} stijgt boven {price}",
+        "typeTooltip": "Kies de optie 'daalt onder' of 'stijgt boven' om een waarschuwingsconditie op te geven voor het volgen van belangrijke prijsbewegingen. Met deze opties ontvangt u tijdige meldingen wanneer de waarde van uw vermogen onder of boven de door u aangegeven drempelwaarde komt"
     },
     "accountAddressText": "Accountadres",
-    "fiatDisclaimer": "Houd er rekening mee dat de fiat-waarden die zijn gekoppeld aan cryptocurrencies op onze website worden geleverd door externe services (Subquery, Subsquid, Ceres API) bij benadering zijn. Gezien de inherente complexiteit van deze berekeningen kan absolute nauwkeurigheid niet te allen tijde worden gegarandeerd."
+    "fiatDisclaimer": "Houd er rekening mee dat de fiat-waarden die zijn gekoppeld aan cryptocurrencies op onze website worden geleverd door externe services (Subquery, Subsquid, Ceres API) bij benadering zijn. Gezien de inherente complexiteit van deze berekeningen kan absolute nauwkeurigheid niet te allen tijde worden gegarandeerd.",
+    "fiatPayment": {
+        "historyBtn": "Mijn aankopen",
+        "historyTitle": "Transactie Geschiedenis",
+        "moonpayTitle": "Koop ETH via MoonPay",
+        "moonpayDesc": "Koop ETH-tokens op Ethereum en verplaats ze via de bridge naar het SORA-netwerk",
+        "x1Title": "Koop XOR met uw kaart",
+        "x1Desc": "Koop XOR-tokens met uw bankpas of creditcard",
+        "x1Btn": "Koop XOR met kaart",
+        "errorMessage": "Excuses voor het ongemak. We werken er hard aan om dit op te lossen. Probeer het later opnieuw."
+    },
+    "acceptOnScrollText": "Scrol om te accepteren"
 }
