@@ -7,8 +7,9 @@ export type BridgeState = {
   assetRecipientBalance: CodecString;
   amount: string;
   evmNetworkFee: CodecString;
-  evmNetworkFeeFetching: boolean;
+  externalNetworkFeeFetching: boolean;
   externalBalance: CodecString;
+  externalBalancesFetching: boolean;
   externalBlockNumber: number;
   // history sources (unsynced localstorage & network)
   historyInternal: Record<string, IBridgeTransaction>;

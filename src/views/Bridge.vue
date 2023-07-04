@@ -334,7 +334,8 @@ export default class Bridge extends Mixins(
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   readonly KnownSymbols = KnownSymbols;
 
-  @state.bridge.evmNetworkFeeFetching private evmNetworkFeeFetching!: boolean;
+  @state.bridge.externalNetworkFeeFetching private externalNetworkFeeFetching!: boolean;
+  @state.bridge.externalBalancesFetching private externalBalancesFetching!: boolean;
   @state.bridge.amount amount!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
@@ -450,7 +451,12 @@ export default class Bridge extends Mixins(
   }
 
   get isConfirmTxLoading(): boolean {
-    return this.isSelectAssetLoading || this.evmNetworkFeeFetching || this.registeredAssetsFetching;
+    return (
+      this.isSelectAssetLoading ||
+      this.externalNetworkFeeFetching ||
+      this.externalBalancesFetching ||
+      this.registeredAssetsFetching
+    );
   }
 
   get isXorSufficientForNextOperation(): boolean {
