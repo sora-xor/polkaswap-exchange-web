@@ -27,7 +27,7 @@
           <formatted-amount
             class="info-line-value"
             value-can-be-hidden
-            :value="formattedAmount"
+            :value="formattedAmount2"
             :asset-symbol="assetSymbol"
           >
             <i :class="secondNetworkIcon" />
@@ -58,6 +58,15 @@
         :value="formattedAmount"
         :asset-symbol="assetSymbol"
         :fiat-value="amountFiatValue"
+      />
+      <info-line
+        v-if="amount2"
+        is-formatted
+        value-can-be-hidden
+        :label="t('receivedText')"
+        :value="formattedAmount2"
+        :asset-symbol="assetSymbol"
+        :fiat-value="amountFiatValue2"
       />
       <info-line
         is-formatted
@@ -231,8 +240,16 @@ export default class BridgeTransaction extends Mixins(
     return this.historyItem?.amount ?? '';
   }
 
+  get amount2(): string {
+    return this.historyItem?.amount2 ?? this.amount;
+  }
+
   get amountFiatValue(): Nullable<string> {
     return this.asset ? this.getFiatAmountByString(this.amount, this.asset) : null;
+  }
+
+  get amountFiatValue2(): Nullable<string> {
+    return this.asset ? this.getFiatAmountByString(this.amount2, this.asset) : null;
   }
 
   get isSoraToEvm(): boolean {
@@ -241,6 +258,10 @@ export default class BridgeTransaction extends Mixins(
 
   get formattedAmount(): string {
     return this.amount && this.asset ? this.formatStringValue(this.amount, this.asset.decimals) : '';
+  }
+
+  get formattedAmount2(): string {
+    return this.amount2 && this.asset ? this.formatStringValue(this.amount2, this.asset.decimals) : '';
   }
 
   get assetSymbol(): string {
@@ -272,7 +293,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txEvmNetworkFeeFormatted(): string {
-    return this.formatCodecNumber(this.txEvmNetworkFee);
+    return this.formatCodecNumber(this.txEvmNetworkFee, this.asset?.externalDecimals);
   }
 
   get txSoraHash(): string {

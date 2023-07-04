@@ -4,7 +4,7 @@ import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { delay } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
-import { waitForSoraTransactionHash } from '@/utils/bridge/common/utils';
+import { findEventInBlock } from '@/utils/bridge/common/utils';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 
 import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
@@ -125,11 +125,12 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
 
     if (tx.hash) return tx.hash;
 
-    const eventData = await waitForSoraTransactionHash({
+    const eventData = await findEventInBlock({
+      api: evmBridgeApi.api,
+      blockId: tx.blockId as string,
       section: 'bridgeProxy',
-      method: 'burn',
-      eventMethod: 'RequestStatusUpdate',
-    })(id, this.getTransaction);
+      method: 'RequestStatusUpdate',
+    });
 
     const hash = eventData[0].toString();
 

@@ -1,10 +1,11 @@
-import { SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api, SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 import first from 'lodash/fp/first';
 
+import { delay } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { IBridgeReducerOptions, GetBridgeHistoryInstance } from '@/utils/bridge/common/types';
-import { getEvmTransactionRecieptByHash, waitForSoraTransactionHash } from '@/utils/bridge/common/utils';
+import { getEvmTransactionRecieptByHash, findEventInBlock } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import {
@@ -16,7 +17,7 @@ import {
 
 import type { BridgeHistory, IBridgeTransaction } from '@sora-substrate/util';
 
-const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
+const { ETH_BRIDGE_STATES, BLOCK_PRODUCE_TIME } = WALLET_CONSTS;
 
 type EthBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeReducerOptions<T> & {
   getBridgeHistoryInstance: GetBridgeHistoryInstance<EthBridgeHistory>;
@@ -85,6 +86,41 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
       }
     }
   }
+
+  async waitForTxStatus(id: string): Promise<void> {
+    const { status } = this.getTransaction(id);
+
+    if (status) return Promise.resolve();
+
+    await delay(1_000);
+    await this.waitForTxStatus(id);
+  }
+
+  async waitForTxBlockId(id: string): Promise<void> {
+    const { blockId } = this.getTransaction(id);
+
+    if (blockId) return Promise.resolve();
+
+    await delay(1_000);
+    await this.waitForTxBlockId(id);
+  }
+
+  async checkTxBlockId(id: string): Promise<void> {
+    const { txId } = this.getTransaction(id);
+
+    if (!txId) {
+      throw new Error(`[${this.constructor.name}]: Transaction "id" is empty, first sign the transaction`);
+    }
+
+    try {
+      await Promise.race([
+        this.waitForTxBlockId(id),
+        new Promise((resolve, reject) => setTimeout(reject, BLOCK_PRODUCE_TIME * 3)),
+      ]);
+    } catch (error) {
+      console.info(`[${this.constructor.name}]: Implement "blockId" restoration`);
+    }
+  }
 }
 
 export class EthBridgeOutgoingReducer extends EthBridgeReducer {
@@ -139,11 +175,17 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
           nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
           handler: async (id: string) => {
-            const eventData = await waitForSoraTransactionHash({
+            await this.waitForTxStatus(id);
+            await this.checkTxBlockId(id);
+
+            const { blockId } = this.getTransaction(id);
+
+            const eventData = await findEventInBlock({
+              api: api.api,
+              blockId: blockId as string,
               section: 'ethBridge',
-              method: 'transferToSidechain',
-              eventMethod: 'RequestRegistered',
-            })(id, this.getTransaction);
+              method: 'RequestRegistered',
+            });
 
             const hash = eventData[0].toString();
 

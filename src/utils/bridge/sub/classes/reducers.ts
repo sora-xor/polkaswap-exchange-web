@@ -1,3 +1,4 @@
+import { FPNumber } from '@sora-substrate/util';
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
@@ -6,7 +7,7 @@ import { combineLatest } from 'rxjs';
 import { delay } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
-import { waitForSoraTransactionHash } from '@/utils/bridge/common/utils';
+import { findEventInBlock } from '@/utils/bridge/common/utils';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 
 import { subBridgeApi } from '../api';
@@ -106,6 +107,37 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     this.updateHistory();
   }
 
+  private async updateExternalNetworkFee(id: string): Promise<void> {
+    const tx = this.getTransaction(id);
+    const network = tx.externalNetwork as SubNetwork;
+    const blockId = tx.externalBlockId as string;
+    const adapter = subConnector.getAdapterForNetwork(network);
+
+    if (!adapter.connected) {
+      await adapter.connect();
+    }
+
+    const eventData = await findEventInBlock({
+      api: adapter.api,
+      blockId,
+      section: 'transactionPayment',
+      method: 'TransactionFeePaid',
+    });
+
+    const decimals = adapter.api.registry.chainDecimals[0];
+
+    if (subConnector.adapter !== adapter) {
+      await adapter.stop();
+    }
+
+    // decimals hardcoded
+    const txFee = FPNumber.fromCodecValue(eventData[1].toString(), decimals);
+    const existingFee = FPNumber.fromCodecValue(tx.externalNetworkFee ?? '0', decimals);
+    const externalNetworkFee = txFee.add(existingFee).toCodecString();
+
+    this.updateTransactionParams(id, { externalNetworkFee });
+  }
+
   private async updateTxIncomingData(id: string): Promise<void> {
     await this.waitForTxStatus(id);
     await this.checkTxBlockId(id);
@@ -116,6 +148,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       externalHash: txId, // parachain tx hash
       externalBlockId: blockId, // parachain block hash
     });
+
+    await this.updateExternalNetworkFee(id);
   }
 
   private async waitForCollatorMessageNonce(id: string): Promise<void> {
@@ -128,6 +162,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     let subscription!: Subscription;
     let messageNonce!: number;
     let batchNonce!: number;
+    let recipientAmount!: number;
 
     try {
       await collator.connect();
@@ -153,10 +188,16 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
             reject(new Error(`[${this.constructor.name}]: Unable to find "xcmApp.AssetAddedToChannel" event`));
           }
 
+          const { amount, recipient } = assetAddedToChannelEvent.event.data[0].asTransfer;
+          const address = subBridgeApi.formatAddress(recipient.toString());
+
+          if (address !== tx.to) return;
+
           // [TODO]: check assetAddedToChannelEvent data
 
           batchNonce = messageAcceptedEvent.event.data[1].toNumber();
           messageNonce = messageAcceptedEvent.event.data[2].toNumber();
+          recipientAmount = amount.toNumber();
 
           resolve();
         });
@@ -167,9 +208,25 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     await collator.stop();
 
-    const payload = { ...tx.payload, messageNonce, batchNonce };
+    const decimals = (
+      await subBridgeApi.api.query.substrateBridgeApp.sidechainPrecision(tx.externalNetwork, tx.assetAddress)
+    )
+      .unwrap()
+      .toNumber();
 
-    this.updateTransactionParams(id, { payload });
+    const { amount, externalNetworkFee: prevFee, payload: prevPayload } = this.getTransaction(id);
+
+    const fpAmount = new FPNumber(amount as string);
+    const fpAmount2 = FPNumber.fromCodecValue(recipientAmount, decimals);
+    const xcmFee = fpAmount.sub(fpAmount2);
+
+    const amount2 = fpAmount2.toString();
+    const externalNetworkFee = FPNumber.fromCodecValue(prevFee as string, decimals)
+      .add(xcmFee)
+      .toCodecString();
+    const payload = { ...prevPayload, messageNonce, batchNonce };
+
+    this.updateTransactionParams(id, { amount2, externalNetworkFee, payload });
   }
 
   private async waitForSoraInboundMessageNonce(id: string): Promise<void> {
@@ -309,11 +366,12 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
     if (tx.hash) return;
 
-    const eventData = await waitForSoraTransactionHash({
+    const eventData = await findEventInBlock({
+      api: subBridgeApi.api,
+      blockId: tx.blockId as string,
       section: 'bridgeProxy',
-      method: 'burn',
-      eventMethod: 'RequestStatusUpdate',
-    })(id, this.getTransaction);
+      method: 'RequestStatusUpdate',
+    });
 
     const hash = eventData[0].toString();
 
@@ -325,12 +383,12 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
     if (tx.payload?.messageNonce) return;
 
-    const eventData = await waitForSoraTransactionHash({
-      section: 'bridgeProxy',
-      method: 'burn',
-      eventSection: 'substrateBridgeOutboundChannel',
-      eventMethod: 'MessageAccepted',
-    })(id, this.getTransaction);
+    const eventData = await findEventInBlock({
+      api: subBridgeApi.api,
+      blockId: tx.blockId as string,
+      section: 'substrateBridgeOutboundChannel',
+      method: 'MessageAccepted',
+    });
 
     const batchNonce = eventData[1].toNumber();
     const messageNonce = eventData[2].toNumber();

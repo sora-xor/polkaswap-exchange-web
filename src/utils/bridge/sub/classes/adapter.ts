@@ -93,7 +93,7 @@ class RococoAdapter extends SubAdapter {
           parents: 0,
           interior: {
             X1: {
-              Parachain: 2011,
+              Parachain: subBridgeApi.parachainIds[SubNetwork.RococoSora],
             },
           },
         },
@@ -144,6 +144,7 @@ class RococoAdapter extends SubAdapter {
     //   console.error(error);
     //   return ZeroStringValue;
     // }
+
     return ZeroStringValue;
   }
 
@@ -197,7 +198,7 @@ class RococoKaruraAdapter extends SubAdapter {
           interior: {
             X2: [
               {
-                Parachain: 2011,
+                Parachain: subBridgeApi.parachainIds[SubNetwork.RococoSora],
               },
               {
                 AccountId32: {

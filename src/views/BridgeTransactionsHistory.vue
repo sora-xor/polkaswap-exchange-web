@@ -31,14 +31,18 @@
             >
               <div class="history-item-info">
                 <div class="history-item-title p4">
-                  <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
+                  <formatted-amount
+                    value-can-be-hidden
+                    :value="formatAmount(item, false)"
+                    :asset-symbol="item.symbol"
+                  />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
                       isOutgoingType(item.type) ? 0 : item.externalNetwork
                     )}`"
                   />
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
-                  <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
+                  <formatted-amount value-can-be-hidden :value="formatAmount(item, true)" :asset-symbol="item.symbol" />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
                       !isOutgoingType(item.type) ? 0 : item.externalNetwork
@@ -165,12 +169,14 @@ export default class BridgeTransactionsHistory extends Mixins(
     return history;
   }
 
-  formatAmount(historyItem: IBridgeTransaction): string {
-    if (!(historyItem.amount && historyItem.assetAddress)) return '';
+  formatAmount(historyItem: IBridgeTransaction, received = false): string {
+    const amount = received ? historyItem.amount2 ?? historyItem.amount : historyItem.amount;
+
+    if (!historyItem.assetAddress || !amount) return '';
 
     const decimals = this.registeredAssets?.[historyItem.assetAddress]?.decimals;
 
-    return this.formatStringValue(historyItem.amount, decimals);
+    return this.formatStringValue(amount, decimals);
   }
 
   historyStatusClasses(item: IBridgeTransaction): string {
