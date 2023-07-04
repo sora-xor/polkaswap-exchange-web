@@ -1,8 +1,6 @@
-import { CodecString } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { defineMutations } from 'direct-vuex';
 
-import { ZeroStringValue } from '@/consts';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { Web3State, EthBridgeSettings, SubNetworkApps } from './types';
@@ -43,12 +41,6 @@ const mutations = defineMutations<Web3State>()({
   setSelectedNetwork(state, networkId: BridgeNetworkId): void {
     state.networkSelected = networkId;
     ethersUtil.storeSelectedNetwork(networkId);
-  },
-  setEvmBalance(state, balance: CodecString): void {
-    state.evmBalance = balance;
-  },
-  resetEvmBalance(state): void {
-    state.evmBalance = ZeroStringValue;
   },
 
   setNetworkType(state, networkType: BridgeNetworkType) {

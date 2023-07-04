@@ -7,6 +7,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { EvmLinkType, EVM_NETWORKS } from '@/consts/evm';
 import { SUB_NETWORKS } from '@/consts/sub';
 import { state, getter } from '@/store/decorators';
+import type { AvailableNetwork } from '@/store/web3/types';
 import type { NetworkData } from '@/types/bridge';
 
 import TranslationMixin from './TranslationMixin';
@@ -17,6 +18,10 @@ import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/typ
 export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @getter.web3.selectedNetwork selectedNetwork!: Nullable<NetworkData>;
+  @getter.web3.availableNetworks availableNetworks!: Record<
+    BridgeNetworkType,
+    Partial<Record<BridgeNetworkId, AvailableNetwork>>
+  >;
 
   readonly EvmLinkType = EvmLinkType;
 
@@ -72,33 +77,58 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
         return 'kusama';
       case SubNetwork.Rococo:
         return 'rococo';
-      case SubNetwork.Karura:
+      case SubNetwork.RococoKarura:
         return 'karura';
       default:
         return 'ethereum';
     }
   }
 
-  // TODO [EVM] check network explorers links
-  getEvmExplorerLink(hash: string, type: EvmLinkType, networkId: BridgeNetworkId): string {
-    if (!hash) return '';
+  getNetworkExplorerLinks(
+    networkType: BridgeNetworkType,
+    networkId: BridgeNetworkId,
+    value: string,
+    blockHash = '',
+    type = EvmLinkType.Transaction
+  ) {
+    if (!value) return [];
 
-    const network = EVM_NETWORKS[networkId];
+    const networkData = this.availableNetworks[networkType][networkId]?.data;
 
-    if (!network) {
-      console.error(`Network id "${networkId}" is not defined in "EVM_NETWORKS"`);
-      return '';
+    if (!networkData) {
+      console.error(`Network data for "${networkId}" is not defined"`);
+      return [];
     }
 
-    const explorerUrl = network.blockExplorerUrls[0];
+    const explorerUrl = networkData.blockExplorerUrls[0];
 
     if (!explorerUrl) {
-      console.error(`"blockExplorerUrls" is not provided for EVM network id "${networkId}"`);
-      return '';
+      console.error(`"blockExplorerUrls" is not provided for network id "${networkId}"`);
+      return [];
     }
 
-    const path = type === EvmLinkType.Transaction ? 'tx' : 'address';
+    if (networkType === BridgeNetworkType.Sub) {
+      if (type === EvmLinkType.Account) return [];
 
-    return `${explorerUrl}/${path}/${hash}`;
+      if (!blockHash) return [];
+
+      const baseLink = `https://polkadot.js.org/apps/?rpc=${explorerUrl}#/explorer/query`;
+
+      return [
+        {
+          type: WALLET_CONSTS.ExplorerType.Polkadot,
+          value: `${baseLink}/${blockHash}`,
+        },
+      ];
+    } else {
+      const path = type === EvmLinkType.Transaction ? 'tx' : 'address';
+
+      return [
+        {
+          type: this.TranslationConsts.Etherscan as WALLET_CONSTS.ExplorerType,
+          value: `${explorerUrl}/${path}/${value}`,
+        },
+      ];
+    }
   }
 }

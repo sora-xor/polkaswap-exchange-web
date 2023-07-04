@@ -1,17 +1,9 @@
-import { Operation } from '@sora-substrate/util';
-
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 export const isUnsignedTx = (tx: SubHistory): boolean => {
-  if (tx.type === Operation.SubstrateOutgoing) {
-    return !tx.blockId && !tx.txId;
-  } else if (tx.type === Operation.SubstrateIncoming) {
-    return true;
-  } else {
-    return true;
-  }
+  return !tx.blockId && !tx.txId;
 };
 
 export const getTransaction = (id: string): SubHistory => {
@@ -24,5 +16,6 @@ export const getTransaction = (id: string): SubHistory => {
 
 export const updateTransaction = (id: string, params = {}): void => {
   const tx = getTransaction(id);
-  subBridgeApi.saveHistory({ ...tx, ...params });
+  const data = { ...tx, ...params };
+  subBridgeApi.saveHistory(data);
 };

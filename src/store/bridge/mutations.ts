@@ -5,32 +5,42 @@ import { ZeroStringValue } from '@/consts';
 
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
-import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
 const mutations = defineMutations<BridgeState>()({
   setSoraToEvm(state, isSoraToEvm: boolean): void {
     state.isSoraToEvm = isSoraToEvm;
   },
+
   setAssetAddress(state, address?: string): void {
     state.assetAddress = address || '';
   },
-  setAssetBalance(state, balance: Nullable<AccountBalance> = null): void {
-    state.assetBalance = balance;
+
+  setAssetSenderBalance(state, balance: CodecString = ZeroStringValue): void {
+    state.assetSenderBalance = balance;
   },
+
+  setAssetRecipientBalance(state, balance: CodecString = ZeroStringValue): void {
+    state.assetRecipientBalance = balance;
+  },
+
+  setExternalBalance(state, balance: CodecString = ZeroStringValue): void {
+    state.externalBalance = balance;
+  },
+
+  setExternalBalancesFetching(state, flag: boolean): void {
+    state.externalBalancesFetching = flag;
+  },
+
   setAmount(state, value?: string): void {
     state.amount = value || '';
   },
 
-  getEvmNetworkFeeRequest(state): void {
-    state.evmNetworkFeeFetching = true;
+  setExternalNetworkFeeFetching(state, flag: boolean): void {
+    state.externalNetworkFeeFetching = flag;
   },
-  getEvmNetworkFeeSuccess(state, fee: CodecString): void {
+
+  setExternalNetworkFee(state, fee: CodecString): void {
     state.evmNetworkFee = fee;
-    state.evmNetworkFeeFetching = false;
-  },
-  getEvmNetworkFeeFailure(state): void {
-    state.evmNetworkFee = ZeroStringValue;
-    state.evmNetworkFeeFetching = false;
   },
 
   /**
@@ -46,15 +56,6 @@ const mutations = defineMutations<BridgeState>()({
     state.historyExternal = { ...history };
   },
 
-  updateExternalHistoryItem(state, item: IBridgeTransaction): void {
-    if (!item.id) return;
-
-    state.historyExternal = {
-      ...state.historyExternal,
-      [item.id]: item,
-    };
-  },
-
   setHistoryPage(state, historyPage?: number): void {
     state.historyPage = historyPage || 1;
   },
@@ -68,6 +69,7 @@ const mutations = defineMutations<BridgeState>()({
   removeTxIdFromProgress(state, id: string): void {
     state.inProgressIds = omit([id], state.inProgressIds);
   },
+
   addTxIdInApprove(state, id: string): void {
     state.waitingForApprove = { ...state.waitingForApprove, [id]: true };
   },
@@ -75,9 +77,10 @@ const mutations = defineMutations<BridgeState>()({
     state.waitingForApprove = omit([id], state.waitingForApprove);
   },
 
-  setEvmBlockNumber(state, blockNumber: number): void {
-    state.evmBlockNumber = blockNumber;
+  setExternalBlockNumber(state, blockNumber: number): void {
+    state.externalBlockNumber = blockNumber;
   },
+
   setHistoryLoading(state, value: boolean): void {
     state.historyLoading = value;
   },

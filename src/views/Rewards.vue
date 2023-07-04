@@ -185,12 +185,8 @@ export default class Rewards extends Mixins(
           this.disconnectExternalAccountProcess();
         }
       },
-      onNetworkChange: (networkHex: string) => {
-        this.connectExternalNetwork(networkHex);
-      },
-      onDisconnect: () => {
-        this.resetProvidedEvmNetwork();
-      },
+      onNetworkChange: () => {},
+      onDisconnect: () => {},
     });
   }
 
@@ -422,7 +418,7 @@ export default class Rewards extends Mixins(
   }
 
   private async disconnectExternalAccountProcess(): Promise<void> {
-    this.disconnectEvmAccount();
+    this.resetEvmAddress();
     await this.checkExternalRewards();
   }
 

@@ -29,7 +29,7 @@
       <div v-if="alerts.length" class="line" />
     </div>
     <div v-if="showCreateAlertBtn" class="settings-alert-section">
-      <s-button class="el-dialog__close" type="action" icon="plus-16" @click="handleCreateAlert" />
+      <s-button class="el-dialog__close" type="action" icon="plus-16" @click="handleCreateAlert" :disabled="loading" />
       <span class="create">{{ t('alerts.createBtn') }}</span>
     </div>
     <div class="settings-alert-section">
