@@ -45,21 +45,7 @@
           :tooltip="txExternalAccountCopyTooltip"
           @click="handleCopyAddress(txExternalAccount, $event)"
         />
-
-        <s-dropdown
-          class="s-dropdown--hash-menu"
-          borderRadius="mini"
-          type="ellipsis"
-          icon="basic-more-vertical-24"
-          placement="bottom-end"
-          @select="handleOpenEvmExplorer(txExternalAccount, EvmLinkType.Account, externalNetworkId)"
-        >
-          <template slot="menu">
-            <s-dropdown-item class="s-dropdown-menu__item">
-              <span>{{ viewInEtherscan }}</span>
-            </s-dropdown-item>
-          </template>
-        </s-dropdown>
+        <bridge-links-dropdown v-if="externalAccountLinks.length" :links="externalAccountLinks" />
       </div>
 
       <info-line :class="failedClass" :label="t('bridgeTransaction.networkInfo.status')" :value="transactionStatus" />
@@ -105,35 +91,13 @@
           :tooltip="hashCopyTooltip"
           @click="handleCopyAddress(txSoraHash, $event)"
         />
-        <s-dropdown
-          v-if="soraExplorerLinks.length"
-          class="s-dropdown--hash-menu"
-          borderRadius="mini"
-          type="ellipsis"
-          icon="basic-more-vertical-24"
-          placement="bottom-end"
-        >
-          <template slot="menu">
-            <a
-              v-for="link in soraExplorerLinks"
-              :key="link.type"
-              class="transaction-link"
-              :href="link.value"
-              target="_blank"
-              rel="nofollow noopener"
-            >
-              <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
-                {{ t('transaction.viewIn', { explorer: link.type }) }}
-              </s-dropdown-item>
-            </a>
-          </template>
-        </s-dropdown>
+        <bridge-links-dropdown v-if="soraExplorerLinks.length" :links="soraExplorerLinks" />
       </div>
 
-      <div v-if="txEvmHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
+      <div v-if="txExternalHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
         <s-input
           :placeholder="getNetworkText('bridgeTransaction.transactionHash', false)"
-          :value="txEvmHashFormatted"
+          :value="txExternalHashFormatted"
           readonly
         />
         <s-button
@@ -142,22 +106,9 @@
           alternative
           icon="basic-copy-24"
           :tooltip="hashCopyTooltip"
-          @click="handleCopyAddress(txEvmHash, $event)"
+          @click="handleCopyAddress(txExternalHash, $event)"
         />
-        <s-dropdown
-          class="s-dropdown--hash-menu"
-          borderRadius="mini"
-          type="ellipsis"
-          icon="basic-more-vertical-24"
-          placement="bottom-end"
-          @select="handleOpenEvmExplorer(txEvmHash, EvmLinkType.Transaction, externalNetworkId)"
-        >
-          <template slot="menu">
-            <s-dropdown-item class="s-dropdown-menu__item">
-              <span>{{ viewInEtherscan }}</span>
-            </s-dropdown-item>
-          </template>
-        </s-dropdown>
+        <bridge-links-dropdown v-if="externalExplorerLinks.length" :links="externalExplorerLinks" />
       </div>
 
       <s-button
@@ -167,8 +118,8 @@
         :disabled="confirmationButtonDisabled"
         @click="handleTransaction"
       >
-        <template v-if="comfirmationBlocksLeft">
-          {{ t('bridgeTransaction.blocksLeft', { count: comfirmationBlocksLeft }) }}
+        <template v-if="confirmationBlocksLeft">
+          {{ t('bridgeTransaction.blocksLeft', { count: confirmationBlocksLeft }) }}
         </template>
         <template v-else-if="txWaitingForApprove">{{
           t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
@@ -214,7 +165,6 @@ import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { Components, PageNames } from '@/consts';
-import type { EvmLinkType } from '@/consts/evm';
 import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
@@ -229,6 +179,7 @@ const FORMATTED_HASH_LENGTH = 24;
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
+    BridgeLinksDropdown: lazyComponent(Components.BridgeLinksDropdown),
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
   },
@@ -246,7 +197,7 @@ export default class BridgeTransaction extends Mixins(
   @state.bridge.inProgressIds private inProgressIds!: Record<string, boolean>;
   @state.router.prev private prevRoute!: Nullable<PageNames>;
 
-  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.historyItem private historyItem!: Nullable<IBridgeTransaction>;
   @getter.web3.externalAccount private externalAccount!: string;
 
@@ -282,12 +233,6 @@ export default class BridgeTransaction extends Mixins(
 
   get amountFiatValue(): Nullable<string> {
     return this.asset ? this.getFiatAmountByString(this.amount, this.asset) : null;
-  }
-
-  get asset(): Nullable<RegisteredAccountAsset> {
-    if (!this.historyItem?.assetAddress) return null;
-
-    return this.getAsset(this.historyItem.assetAddress);
   }
 
   get isSoraToEvm(): boolean {
@@ -338,12 +283,12 @@ export default class BridgeTransaction extends Mixins(
     return this.formatAddress(this.txSoraHash, FORMATTED_HASH_LENGTH);
   }
 
-  get txEvmHash(): string {
+  get txExternalHash(): string {
     return this.historyItem?.externalHash ?? '';
   }
 
-  get txEvmHashFormatted(): string {
-    return this.formatAddress(this.txEvmHash, FORMATTED_HASH_LENGTH);
+  get txExternalHashFormatted(): string {
+    return this.formatAddress(this.txExternalHash, FORMATTED_HASH_LENGTH);
   }
 
   get txDate(): string {
@@ -429,7 +374,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txId(): Nullable<string> {
-    return this.isSoraToEvm ? this.historyItem?.txId : this.historyItem?.externalHash;
+    return this.isSoraToEvm ? this.soraTxId : this.txExternalHash;
   }
 
   get soraTxId(): Nullable<string> {
@@ -457,7 +402,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isAnotherEvmAddress(): boolean {
-    return this.isSoraToEvm && this.txExternalAccount !== this.externalAccount;
+    return this.isSoraToEvm && this.txExternalAccount.toLowerCase() !== this.externalAccount.toLowerCase();
   }
 
   get confirmationButtonDisabled(): boolean {
@@ -488,12 +433,6 @@ export default class BridgeTransaction extends Mixins(
     const text = this.t(key);
 
     return `${network} ${text}`;
-  }
-
-  handleOpenEvmExplorer(hash: string, type: EvmLinkType, networkId: EvmNetwork): void {
-    const url = this.getEvmExplorerLink(hash, type, networkId);
-    const win = window.open(url, '_blank');
-    win && win.focus();
   }
 
   get soraExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
@@ -533,6 +472,30 @@ export default class BridgeTransaction extends Mixins(
       .filter((value) => !!value.value); // Polkadot explorer won't be shown without block
   }
 
+  get externalAccountLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    if (!(this.historyItem?.externalNetworkType && this.historyItem?.externalNetwork)) return [];
+
+    return this.getNetworkExplorerLinks(
+      this.historyItem.externalNetworkType,
+      this.historyItem.externalNetwork,
+      this.txExternalAccount,
+      this.historyItem?.externalBlockId,
+      this.EvmLinkType.Account
+    );
+  }
+
+  get externalExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    if (!(this.historyItem?.externalNetworkType && this.historyItem?.externalNetwork)) return [];
+
+    return this.getNetworkExplorerLinks(
+      this.historyItem.externalNetworkType,
+      this.historyItem.externalNetwork,
+      this.txExternalHash,
+      this.historyItem?.externalBlockId,
+      this.EvmLinkType.Transaction
+    );
+  }
+
   handleViewTransactionsHistory(): void {
     router.push({ name: PageNames.BridgeTransactionsHistory });
   }
@@ -564,10 +527,11 @@ export default class BridgeTransaction extends Mixins(
     this.setHistoryId();
   }
 
-  get comfirmationBlocksLeft(): number {
-    if (this.isSoraToEvm || !this.historyItem?.blockHeight || !this.externalBlockNumber) return 0;
+  get confirmationBlocksLeft(): number {
+    if (this.isSoraToEvm || !this.historyItem?.externalBlockHeight || !this.externalBlockNumber) return 0;
+    if (!Number.isFinite(this.historyItem?.externalBlockHeight)) return 0;
 
-    const blocksLeft = +this.historyItem.blockHeight + 30 - this.externalBlockNumber;
+    const blocksLeft = +this.historyItem.externalBlockHeight + 30 - this.externalBlockNumber;
 
     return Math.max(blocksLeft, 0);
   }
@@ -660,8 +624,7 @@ $header-font-size: var(--s-heading3-font-size);
     }
   }
 }
-.s-button--hash-copy,
-.s-dropdown--hash-menu {
+.s-button--hash-copy {
   right: $inner-spacing-medium;
   &,
   .el-tooltip {
@@ -669,15 +632,6 @@ $header-font-size: var(--s-heading3-font-size);
       outline: auto;
     }
   }
-}
-.s-dropdown--hash-menu {
-  display: block;
-  text-align: center;
-  font-size: var(--s-size-mini);
-}
-// TODO: fix UI library
-.s-dropdown-menu__item {
-  border-radius: calc(var(--s-border-radius-mini) / 2);
 }
 [design-system-theme='dark'] {
   .transaction-content .s-input {
@@ -713,15 +667,11 @@ $network-title-max-width: 250px;
       margin-top: $inner-spacing-medium;
     }
   }
+
   &-hash-container {
     position: relative;
 
-    & + & {
-      margin-top: $inner-spacing-small;
-    }
-
-    .s-button--hash-copy,
-    .s-dropdown--hash-menu {
+    .s-button--hash-copy {
       position: absolute;
       z-index: $app-content-layer;
       top: 0;
@@ -794,9 +744,5 @@ $network-title-max-width: 250px;
       font-weight: 300;
     }
   }
-}
-.transaction-link {
-  color: inherit;
-  text-decoration: none;
 }
 </style>

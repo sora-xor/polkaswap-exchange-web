@@ -134,9 +134,7 @@ export const updateEthBridgeHistory =
         bridge: { inProgressIds },
       } = rootState;
 
-      const networkData = rootGetters.web3.availableNetworks[BridgeNetworkType.EvmLegacy].find(
-        ({ data }) => data.id === ethBridgeEvmNetwork
-      );
+      const networkData = rootGetters.web3.availableNetworks[BridgeNetworkType.EvmLegacy][ethBridgeEvmNetwork];
 
       if (!networkData) {
         throw new Error(

@@ -1,4 +1,5 @@
-import type { CodecString } from '@sora-substrate/util';
+import type { NetworkData } from '@/types/bridge';
+
 import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
@@ -15,14 +16,12 @@ export type EthBridgeSettings = {
   address: EthBridgeContractsAddresses;
 };
 
-export type SubNetworkApps = Partial<
-  Record<
-    SubNetwork,
-    {
-      addresses: string[];
-    }
-  >
->;
+export type SubNetworkApps = Partial<Record<SubNetwork, string>>;
+
+export type AvailableNetwork = {
+  disabled: boolean;
+  data: NetworkData;
+};
 
 export type Web3State = {
   evmAddress: string;
