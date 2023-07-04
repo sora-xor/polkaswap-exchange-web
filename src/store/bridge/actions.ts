@@ -313,6 +313,12 @@ async function updateEvmHistory(context: ActionContext<any, any>): Promise<void>
 }
 
 const actions = defineActions({
+  async updateBalancesAndFees(context): Promise<void> {
+    const { dispatch } = bridgeActionContext(context);
+
+    await Promise.all([dispatch.updateExternalBalance(), dispatch.getExternalNetworkFee()]);
+  },
+
   async switchDirection(context): Promise<void> {
     const { commit, dispatch, state } = bridgeActionContext(context);
 
@@ -320,7 +326,7 @@ const actions = defineActions({
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await dispatch.updateExternalBalance();
+    await dispatch.updateBalancesAndFees();
   },
 
   async setAssetAddress(context, address?: string): Promise<void> {
@@ -330,7 +336,7 @@ const actions = defineActions({
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await dispatch.updateExternalBalance();
+    await dispatch.updateBalancesAndFees();
   },
 
   async getExternalNetworkFee(context): Promise<void> {
