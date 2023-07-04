@@ -95,6 +95,26 @@ async function getAccount(): Promise<string> {
   return account.getAddress();
 }
 
+async function getAssetDecimals(assetAddress: string): Promise<number> {
+  let decimals = FPNumber.DEFAULT_PRECISION;
+
+  if (isNativeEvmTokenAddress(assetAddress)) return decimals;
+
+  try {
+    const ethersInstance = await getEthersInstance();
+    const tokenInstance = new ethers.Contract(
+      assetAddress,
+      SmartContracts[SmartContractType.ERC20].abi,
+      ethersInstance.getSigner()
+    );
+    decimals = await tokenInstance.decimals();
+  } catch (error) {
+    console.error(error);
+  }
+
+  return decimals;
+}
+
 async function getAccountBalance(accountAddress: string): Promise<CodecString> {
   try {
     const ethersInstance = await getEthersInstance();
@@ -374,6 +394,7 @@ export default {
   getAccount,
   getAccountBalance,
   getAccountAssetBalance,
+  getAssetDecimals,
   getAllowance,
   checkAccountIsConnected,
   getEthersInstance,
