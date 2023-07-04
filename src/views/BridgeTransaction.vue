@@ -45,30 +45,7 @@
           :tooltip="txExternalAccountCopyTooltip"
           @click="handleCopyAddress(txExternalAccount, $event)"
         />
-
-        <s-dropdown
-          v-if="externalAccountLinks.length"
-          class="s-dropdown--hash-menu"
-          borderRadius="mini"
-          type="ellipsis"
-          icon="basic-more-vertical-24"
-          placement="bottom-end"
-        >
-          <template slot="menu">
-            <a
-              v-for="link in externalAccountLinks"
-              :key="link.type"
-              class="transaction-link"
-              :href="link.value"
-              target="_blank"
-              rel="nofollow noopener"
-            >
-              <s-dropdown-item class="s-dropdown-menu__item">
-                {{ t('transaction.viewIn', { explorer: link.type }) }}
-              </s-dropdown-item>
-            </a>
-          </template>
-        </s-dropdown>
+        <bridge-links-dropdown v-if="externalAccountLinks.length" :links="externalAccountLinks" />
       </div>
 
       <info-line :class="failedClass" :label="t('bridgeTransaction.networkInfo.status')" :value="transactionStatus" />
@@ -114,29 +91,7 @@
           :tooltip="hashCopyTooltip"
           @click="handleCopyAddress(txSoraHash, $event)"
         />
-        <s-dropdown
-          v-if="soraExplorerLinks.length"
-          class="s-dropdown--hash-menu"
-          borderRadius="mini"
-          type="ellipsis"
-          icon="basic-more-vertical-24"
-          placement="bottom-end"
-        >
-          <template slot="menu">
-            <a
-              v-for="link in soraExplorerLinks"
-              :key="link.type"
-              class="transaction-link"
-              :href="link.value"
-              target="_blank"
-              rel="nofollow noopener"
-            >
-              <s-dropdown-item class="s-dropdown-menu__item" :disabled="!(soraTxId || soraTxBlockId)">
-                {{ t('transaction.viewIn', { explorer: link.type }) }}
-              </s-dropdown-item>
-            </a>
-          </template>
-        </s-dropdown>
+        <bridge-links-dropdown v-if="soraExplorerLinks.length" :links="soraExplorerLinks" />
       </div>
 
       <div v-if="txExternalHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
@@ -153,29 +108,7 @@
           :tooltip="hashCopyTooltip"
           @click="handleCopyAddress(txExternalHash, $event)"
         />
-        <s-dropdown
-          v-if="externalExplorerLinks.length"
-          class="s-dropdown--hash-menu"
-          borderRadius="mini"
-          type="ellipsis"
-          icon="basic-more-vertical-24"
-          placement="bottom-end"
-        >
-          <template slot="menu">
-            <a
-              v-for="link in externalExplorerLinks"
-              :key="link.type"
-              class="transaction-link"
-              :href="link.value"
-              target="_blank"
-              rel="nofollow noopener"
-            >
-              <s-dropdown-item class="s-dropdown-menu__item">
-                {{ t('transaction.viewIn', { explorer: link.type }) }}
-              </s-dropdown-item>
-            </a>
-          </template>
-        </s-dropdown>
+        <bridge-links-dropdown v-if="externalExplorerLinks.length" :links="externalExplorerLinks" />
       </div>
 
       <s-button
@@ -185,8 +118,8 @@
         :disabled="confirmationButtonDisabled"
         @click="handleTransaction"
       >
-        <template v-if="comfirmationBlocksLeft">
-          {{ t('bridgeTransaction.blocksLeft', { count: comfirmationBlocksLeft }) }}
+        <template v-if="confirmationBlocksLeft">
+          {{ t('bridgeTransaction.blocksLeft', { count: confirmationBlocksLeft }) }}
         </template>
         <template v-else-if="txWaitingForApprove">{{
           t('bridgeTransaction.allowToken', { tokenSymbol: assetSymbol })
@@ -246,6 +179,7 @@ const FORMATTED_HASH_LENGTH = 24;
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
+    BridgeLinksDropdown: lazyComponent(Components.BridgeLinksDropdown),
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
   },
@@ -544,7 +478,7 @@ export default class BridgeTransaction extends Mixins(
     return this.getNetworkExplorerLinks(
       this.historyItem.externalNetworkType,
       this.historyItem.externalNetwork,
-      this.txExternalHash,
+      this.txExternalAccount,
       this.historyItem?.externalBlockId,
       this.EvmLinkType.Account
     );
@@ -593,7 +527,7 @@ export default class BridgeTransaction extends Mixins(
     this.setHistoryId();
   }
 
-  get comfirmationBlocksLeft(): number {
+  get confirmationBlocksLeft(): number {
     if (this.isSoraToEvm || !this.historyItem?.externalBlockHeight || !this.externalBlockNumber) return 0;
     if (!Number.isFinite(this.historyItem?.externalBlockHeight)) return 0;
 
@@ -690,8 +624,7 @@ $header-font-size: var(--s-heading3-font-size);
     }
   }
 }
-.s-button--hash-copy,
-.s-dropdown--hash-menu {
+.s-button--hash-copy {
   right: $inner-spacing-medium;
   &,
   .el-tooltip {
@@ -699,15 +632,6 @@ $header-font-size: var(--s-heading3-font-size);
       outline: auto;
     }
   }
-}
-.s-dropdown--hash-menu {
-  display: block;
-  text-align: center;
-  font-size: var(--s-size-mini);
-}
-// TODO: fix UI library
-.s-dropdown-menu__item {
-  border-radius: calc(var(--s-border-radius-mini) / 2);
 }
 [design-system-theme='dark'] {
   .transaction-content .s-input {
@@ -750,8 +674,7 @@ $network-title-max-width: 250px;
       margin-top: $inner-spacing-small;
     }
 
-    .s-button--hash-copy,
-    .s-dropdown--hash-menu {
+    .s-button--hash-copy {
       position: absolute;
       z-index: $app-content-layer;
       top: 0;
