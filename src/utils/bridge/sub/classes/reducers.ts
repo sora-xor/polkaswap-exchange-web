@@ -127,6 +127,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     let subscription!: Subscription;
     let messageNonce!: number;
+    let batchNonce!: number;
 
     try {
       await collator.connect();
@@ -154,7 +155,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
           // [TODO]: check assetAddedToChannelEvent data
 
-          messageNonce = messageAcceptedEvent.event.data[1].toNumber();
+          batchNonce = messageAcceptedEvent.event.data[1].toNumber();
+          messageNonce = messageAcceptedEvent.event.data[2].toNumber();
 
           resolve();
         });
@@ -165,7 +167,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     await collator.stop();
 
-    const payload = { ...tx.payload, messageNonce };
+    const payload = { ...tx.payload, messageNonce, batchNonce };
 
     this.updateTransactionParams(id, { payload });
   }
@@ -175,6 +177,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     if (tx.hash) return;
 
+    const batchNonce = tx.payload.batchNonce;
     const messageNonce = tx.payload.messageNonce;
 
     let subscription!: Subscription;
@@ -194,13 +197,14 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
           if (!substrateDispatchEvent) return;
 
-          const eventNonce = substrateDispatchEvent.event.data[0].messageNonce.toNumber();
+          const eventMessageNonce = substrateDispatchEvent.event.data[0].messageNonce.toNumber();
+          const eventBatchNonce = substrateDispatchEvent.event.data[0].batchNonce.unwrap().toNumber();
 
-          if (eventNonce > messageNonce) {
+          if (eventBatchNonce > batchNonce) {
             reject(new Error(`[${this.constructor.name}]: Unable to continue track transaction`));
           }
 
-          if (eventNonce !== messageNonce) return;
+          if (eventBatchNonce !== batchNonce || eventMessageNonce !== messageNonce) return;
 
           const bridgeProxyEvent = events.find(
             (e) =>
@@ -328,9 +332,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       eventMethod: 'MessageAccepted',
     })(id, this.getTransaction);
 
-    // [TODO] check blockchain
-    const messageNonce = eventData[1].toNumber();
-    const payload = { ...tx.payload, messageNonce };
+    const batchNonce = eventData[1].toNumber();
+    const messageNonce = eventData[2].toNumber();
+    const payload = { ...tx.payload, batchNonce, messageNonce };
 
     this.updateTransactionParams(id, { payload });
   }
@@ -340,6 +344,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
     if (tx.payload?.messageHash) return;
 
+    const batchNonce = tx.payload.batchNonce;
     const messageNonce = tx.payload.messageNonce;
 
     const collator = subConnector.getAdapterForNetwork(SubNetwork.RococoSora);
@@ -363,17 +368,18 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
           if (!substrateDispatchEvent) return;
 
-          const eventNonce = substrateDispatchEvent.event.data[0].messageNonce.toNumber();
+          const eventBatchNonce = substrateDispatchEvent.event.data[0].batchNonce.unwrap().toNumber();
+          const eventMessageNonce = substrateDispatchEvent.event.data[0].messageNonce.toNumber();
 
-          if (eventNonce > messageNonce) {
+          if (eventBatchNonce > batchNonce) {
             reject(
               new Error(
-                `[${this.constructor.name}]: Unable to continue track transaction, collator outbound channel nonce ${eventNonce} is larger than tx nonce ${messageNonce}`
+                `[${this.constructor.name}]: Unable to continue track transaction, collator outbound channel batch nonce ${eventBatchNonce} is larger than tx batch nonce ${batchNonce}`
               )
             );
           }
 
-          if (eventNonce !== messageNonce) return;
+          if (eventBatchNonce !== batchNonce || eventMessageNonce !== messageNonce) return;
 
           const parachainSystemEvent = events.find(
             (e) =>
