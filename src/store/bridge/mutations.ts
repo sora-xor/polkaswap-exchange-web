@@ -27,20 +27,20 @@ const mutations = defineMutations<BridgeState>()({
     state.externalBalance = balance;
   },
 
+  setExternalBalancesFetching(state, flag: boolean): void {
+    state.externalBalancesFetching = flag;
+  },
+
   setAmount(state, value?: string): void {
     state.amount = value || '';
   },
 
-  getExternalNetworkFeeRequest(state): void {
-    state.evmNetworkFeeFetching = true;
+  setExternalNetworkFeeFetching(state, flag: boolean): void {
+    state.externalNetworkFeeFetching = flag;
   },
-  getExternalNetworkFeeSuccess(state, fee: CodecString): void {
+
+  setExternalNetworkFee(state, fee: CodecString): void {
     state.evmNetworkFee = fee;
-    state.evmNetworkFeeFetching = false;
-  },
-  getExternalNetworkFeeFailure(state): void {
-    state.evmNetworkFee = ZeroStringValue;
-    state.evmNetworkFeeFetching = false;
   },
 
   /**

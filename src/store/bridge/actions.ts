@@ -149,12 +149,12 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
   if (!getters.asset?.address) {
     return;
   }
-  commit.getExternalNetworkFeeRequest();
+
   try {
     const fee = await ethersUtil.getEvmNetworkFee(getters.asset.address, state.isSoraToEvm);
-    commit.getExternalNetworkFeeSuccess(fee);
+    commit.setExternalNetworkFee(fee);
   } catch (error) {
-    commit.getExternalNetworkFeeFailure();
+    commit.setExternalNetworkFee(ZeroStringValue);
   }
 }
 
@@ -166,14 +166,12 @@ async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void>
   const network = rootState.web3.networkSelected;
 
   if (network) {
-    commit.getExternalNetworkFeeRequest();
-
     const adapter = subConnector.getAdapterForNetwork(network as SubNetwork);
     await adapter.connect();
     fee = await adapter.getNetworkFee();
   }
 
-  commit.getExternalNetworkFeeSuccess(fee);
+  commit.setExternalNetworkFee(fee);
 }
 
 async function updateEvmBalances(context: ActionContext<any, any>): Promise<void> {
@@ -325,6 +323,12 @@ async function updateEvmHistory(context: ActionContext<any, any>): Promise<void>
 }
 
 const actions = defineActions({
+  async updateBalancesAndFees(context): Promise<void> {
+    const { dispatch } = bridgeActionContext(context);
+
+    await Promise.all([dispatch.updateExternalBalance(), dispatch.getExternalNetworkFee()]);
+  },
+
   async switchDirection(context): Promise<void> {
     const { commit, dispatch, state } = bridgeActionContext(context);
 
@@ -332,7 +336,7 @@ const actions = defineActions({
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await dispatch.updateExternalBalance();
+    await dispatch.updateBalancesAndFees();
   },
 
   async setAssetAddress(context, address?: string): Promise<void> {
@@ -342,37 +346,49 @@ const actions = defineActions({
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await dispatch.updateExternalBalance();
+    await dispatch.updateBalancesAndFees();
   },
 
   async getExternalNetworkFee(context): Promise<void> {
-    const { getters } = bridgeActionContext(context);
+    const { commit, getters } = bridgeActionContext(context);
+
+    commit.setExternalNetworkFeeFetching(true);
 
     if (getters.isSubBridge) {
       await getSubNetworkFee(context);
     } else {
       await getEvmNetworkFee(context);
     }
+
+    commit.setExternalNetworkFeeFetching(false);
   },
 
   async updateExternalBalance(context): Promise<void> {
-    const { getters } = bridgeActionContext(context);
+    const { commit, getters } = bridgeActionContext(context);
+
+    commit.setExternalBalancesFetching(true);
 
     if (getters.isSubBridge) {
       await updateSubBalances(context);
     } else {
       await updateEvmBalances(context);
     }
+
+    commit.setExternalBalancesFetching(false);
   },
 
   async updateExternalBlockNumber(context): Promise<void> {
     const { getters, commit } = bridgeActionContext(context);
 
-    const blockNumber = getters.isSubBridge
-      ? await subConnector.adapter.getBlockNumber()
-      : await (await ethersUtil.getEthersInstance()).getBlockNumber();
+    try {
+      const blockNumber = getters.isSubBridge
+        ? await subConnector.adapter.getBlockNumber()
+        : await (await ethersUtil.getEthersInstance()).getBlockNumber();
 
-    commit.setExternalBlockNumber(blockNumber);
+      commit.setExternalBlockNumber(blockNumber);
+    } catch {
+      commit.setExternalBlockNumber(0);
+    }
   },
 
   async generateHistoryItem(context, playground): Promise<IBridgeTransaction> {
