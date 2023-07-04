@@ -64,10 +64,12 @@ export default class BridgeLinksDropdown extends Mixins(TranslationMixin) {
   .s-dropdown-menu__item {
     border-radius: calc(var(--s-border-radius-mini) / 2);
   }
+}
+</style>
 
-  .transaction-link {
-    color: inherit;
-    text-decoration: none;
-  }
+<style lang="scss" scoped>
+.transaction-link {
+  color: inherit;
+  text-decoration: none;
 }
 </style>
