@@ -54,11 +54,7 @@ const actions = defineActions({
       await connectEvmNetwork(context, network);
     }
 
-    await Promise.all([
-      rootDispatch.assets.updateRegisteredAssets(),
-      rootDispatch.bridge.updateExternalBalance(),
-      rootDispatch.bridge.getExternalNetworkFee(),
-    ]);
+    await Promise.all([rootDispatch.assets.updateRegisteredAssets(), rootDispatch.bridge.updateBalancesAndFees()]);
   },
 
   async disconnectExternalNetwork(context): Promise<void> {

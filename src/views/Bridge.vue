@@ -126,7 +126,7 @@
           data-test-name="switchToken"
           type="action"
           icon="arrows-swap-90-24"
-          @click="handleSwitchItems"
+          @click="switchDirection"
         />
 
         <s-float-input
@@ -334,7 +334,8 @@ export default class Bridge extends Mixins(
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   readonly KnownSymbols = KnownSymbols;
 
-  @state.bridge.evmNetworkFeeFetching private evmNetworkFeeFetching!: boolean;
+  @state.bridge.externalNetworkFeeFetching private externalNetworkFeeFetching!: boolean;
+  @state.bridge.externalBalancesFetching private externalBalancesFetching!: boolean;
   @state.bridge.amount amount!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
@@ -348,9 +349,8 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
   @mutation.bridge.setAmount setAmount!: (value?: string) => void;
 
+  @action.bridge.switchDirection switchDirection!: AsyncFnWithoutArgs;
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
-  @action.bridge.switchDirection private switchDirection!: AsyncFnWithoutArgs;
-  @action.bridge.getExternalNetworkFee private getExternalNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<IBridgeTransaction>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
 
@@ -450,7 +450,12 @@ export default class Bridge extends Mixins(
   }
 
   get isConfirmTxLoading(): boolean {
-    return this.isSelectAssetLoading || this.evmNetworkFeeFetching || this.registeredAssetsFetching;
+    return (
+      this.isSelectAssetLoading ||
+      this.externalNetworkFeeFetching ||
+      this.externalBalancesFetching ||
+      this.registeredAssetsFetching
+    );
   }
 
   get isXorSufficientForNextOperation(): boolean {
@@ -500,11 +505,6 @@ export default class Bridge extends Mixins(
     return this.copyTooltip(text);
   }
 
-  async handleSwitchItems(): Promise<void> {
-    await this.switchDirection();
-    await this.getExternalNetworkFee();
-  }
-
   handleMaxValue(): void {
     if (this.asset && this.isRegisteredAsset) {
       const fee = this.isSoraToEvm ? this.soraNetworkFee : this.evmNetworkFee;
@@ -548,7 +548,6 @@ export default class Bridge extends Mixins(
 
     await this.withSelectAssetLoading(async () => {
       await this.setAssetAddress(selectedAsset.address);
-      await this.getExternalNetworkFee();
     });
   }
 

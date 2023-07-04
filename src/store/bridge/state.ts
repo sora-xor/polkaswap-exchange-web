@@ -10,8 +10,9 @@ function initialState(): BridgeState {
     assetRecipientBalance: ZeroStringValue, // balance for bridge network
     amount: '',
     evmNetworkFee: ZeroStringValue,
-    evmNetworkFeeFetching: false,
+    externalNetworkFeeFetching: false,
     externalBalance: ZeroStringValue, // balance for external native token (like ETH)
+    externalBalancesFetching: false,
     externalBlockNumber: 0,
     // history sources
     historyInternal: {}, // localstorage history
