@@ -37,16 +37,6 @@ export default class BridgeLinksDropdown extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .s-dropdown--hash-menu {
-  right: $inner-spacing-medium;
-  &,
-  .el-tooltip {
-    &:focus {
-      outline: auto;
-    }
-  }
-}
-
-.s-dropdown--hash-menu {
   position: absolute;
   z-index: $app-content-layer;
   top: 0;
@@ -57,16 +47,27 @@ export default class BridgeLinksDropdown extends Mixins(TranslationMixin) {
   width: var(--s-size-mini);
   height: var(--s-size-mini);
   line-height: 1;
-}
 
-.s-dropdown--hash-menu {
   display: block;
   text-align: center;
   font-size: var(--s-size-mini);
-}
 
-// TODO: fix UI library
-.s-dropdown-menu__item {
-  border-radius: calc(var(--s-border-radius-mini) / 2);
+  right: $inner-spacing-medium;
+  &,
+  .el-tooltip {
+    &:focus {
+      outline: auto;
+    }
+  }
+
+  // TODO: fix UI library
+  .s-dropdown-menu__item {
+    border-radius: calc(var(--s-border-radius-mini) / 2);
+  }
+
+  .transaction-link {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 </style>

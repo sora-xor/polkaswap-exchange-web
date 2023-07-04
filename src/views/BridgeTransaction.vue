@@ -667,12 +667,9 @@ $network-title-max-width: 250px;
       margin-top: $inner-spacing-medium;
     }
   }
+
   &-hash-container {
     position: relative;
-
-    & + & {
-      margin-top: $inner-spacing-small;
-    }
 
     .s-button--hash-copy {
       position: absolute;
@@ -747,9 +744,5 @@ $network-title-max-width: 250px;
       font-weight: 300;
     }
   }
-}
-.transaction-link {
-  color: inherit;
-  text-decoration: none;
 }
 </style>
