@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="switcher">
+    <div class="switcher" v-if="false /* TODO: [SYNTHS] */">
       <s-switch v-model="showOnlySynths" />
       <span>{{ 'Show only synthetic tokens' }}</span>
       <s-tooltip
