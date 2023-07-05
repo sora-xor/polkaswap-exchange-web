@@ -108,7 +108,7 @@ export default class ExplorePageMixin extends Mixins(
     this.changeSort();
   }
 
-  updateExploreData(): void {
+  async updateExploreData(): Promise<void> {
     console.warn('[ExplorePageMixin]: "updateExploreData" method is not implemented');
   }
 
