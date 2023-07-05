@@ -19,7 +19,7 @@
     "test:unit": "vue-cli-service test:unit --testPathIgnorePatterns Translation.spec.ts",
     "test:translation": "vue-cli-service test:unit -- Translation.spec.ts",
     "test:e2e": "vue-cli-service test:e2e",
-    "test:all": "yarn test:unit"
+    "test:all": "yarn test:unit --coverage"
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
