@@ -24,7 +24,7 @@ const mutations = defineMutations<BridgeState>()({
   },
 
   setExternalBalance(state, balance: CodecString = ZeroStringValue): void {
-    state.externalBalance = balance;
+    state.externalNativeBalance = balance;
   },
 
   setExternalBalancesFetching(state, flag: boolean): void {

@@ -8,7 +8,7 @@ import type { CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
 
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
-  @state.bridge.externalBalance externalBalance!: CodecString;
+  @state.bridge.externalNativeBalance externalNativeBalance!: CodecString;
   @state.bridge.externalBlockNumber externalBlockNumber!: number;
 
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
