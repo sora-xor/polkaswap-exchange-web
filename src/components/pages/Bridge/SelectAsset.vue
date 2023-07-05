@@ -33,7 +33,7 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
-import type { BridgeAccountAsset } from '@/store/assets/types';
+import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { state, getter } from '@/store/decorators';
 import type { NetworkData } from '@/types/bridge';
 
@@ -51,7 +51,7 @@ export default class BridgeSelectAsset extends Mixins(TranslationMixin, SelectAs
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
 
   @getter.web3.selectedNetwork private selectedNetwork!: Nullable<NetworkData>;
-  @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeAccountAsset>;
+  @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeRegisteredAsset>;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
 

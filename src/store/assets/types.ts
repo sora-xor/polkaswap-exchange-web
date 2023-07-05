@@ -1,9 +1,8 @@
 import type { RegisteredAccountAsset, CodecString } from '@sora-substrate/util';
 
-export type BridgeAccountAsset = {
+export type BridgeRegisteredAsset = {
   address: string;
   decimals: number;
-  balance: CodecString;
   contract?: string;
 };
 
@@ -18,6 +17,6 @@ export type RegisteredAccountAssetObject = {
 };
 
 export type AssetsState = {
-  registeredAssets: Record<string, BridgeAccountAsset>;
+  registeredAssets: Record<string, BridgeRegisteredAsset>;
   registeredAssetsFetching: boolean;
 };

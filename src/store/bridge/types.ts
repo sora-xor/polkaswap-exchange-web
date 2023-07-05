@@ -6,7 +6,7 @@ export type BridgeState = {
   assetSenderBalance: CodecString;
   assetRecipientBalance: CodecString;
   amount: string;
-  evmNetworkFee: CodecString;
+  externalNetworkFee: CodecString;
   externalNetworkFeeFetching: boolean;
   externalNativeBalance: CodecString;
   externalBalancesFetching: boolean;

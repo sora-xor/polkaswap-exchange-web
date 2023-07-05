@@ -94,10 +94,10 @@ const getters = defineGetters<BridgeState>()({
     const { state, getters } = bridgeGetterContext(args);
 
     if (getters.isEthBridge) {
-      return state.evmNetworkFee;
+      return state.externalNetworkFee;
     } else {
       // In direction SORA -> EVM evm network fee is 0
-      return !state.isSoraToEvm ? state.evmNetworkFee : ZeroStringValue;
+      return !state.isSoraToEvm ? state.externalNetworkFee : ZeroStringValue;
     }
   },
   history(...args): Record<string, IBridgeTransaction> {

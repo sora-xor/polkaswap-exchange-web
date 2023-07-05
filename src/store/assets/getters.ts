@@ -2,6 +2,7 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineGetters } from 'direct-vuex';
 
+import { ZeroStringValue } from '@/consts';
 import { assetsGetterContext } from '@/store/assets';
 
 import type { AssetsState } from './types';
@@ -35,11 +36,7 @@ const getters = defineGetters<AssetsState>()({
 
       if (!asset) return null;
 
-      const {
-        address: externalAddress,
-        balance: externalBalance,
-        decimals: externalDecimals,
-      } = state.registeredAssets[asset.address] || {};
+      const { address: externalAddress, decimals: externalDecimals } = state.registeredAssets[asset.address] || {};
 
       const { balance } = rootGetters.wallet.account.accountAssetsAddressTable[asset.address] || {};
 
@@ -47,7 +44,7 @@ const getters = defineGetters<AssetsState>()({
         ...asset,
         balance,
         externalAddress,
-        externalBalance,
+        externalBalance: ZeroStringValue, // [TODO] remove externalBalance
         externalDecimals,
       };
     };
