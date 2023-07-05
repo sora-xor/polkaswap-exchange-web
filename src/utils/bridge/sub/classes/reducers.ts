@@ -1,16 +1,14 @@
 import { FPNumber } from '@sora-substrate/util';
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { combineLatest } from 'rxjs';
 
-import { delay } from '@/utils';
+import { ZeroStringValue } from '@/consts';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
 import { findEventInBlock } from '@/utils/bridge/common/utils';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
-
-import { subBridgeApi } from '../api';
 
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
@@ -19,8 +17,6 @@ type SubBridgeReducerOptions<T extends SubHistory> = IBridgeReducerOptions<T> & 
   removeTransactionByHash: RemoveTransactionByHash<SubHistory>;
 };
 
-const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS;
-
 export class SubBridgeReducer extends BridgeReducer<SubHistory> {
   protected readonly removeTransactionByHash!: RemoveTransactionByHash<SubHistory>;
 
@@ -28,41 +24,6 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     super(options);
 
     this.removeTransactionByHash = options.removeTransactionByHash;
-  }
-
-  protected async waitForTxStatus(id: string): Promise<void> {
-    const { status } = this.getTransaction(id);
-
-    if (status) return Promise.resolve();
-
-    await delay(1_000);
-    await this.waitForTxStatus(id);
-  }
-
-  protected async waitForTxBlockId(id: string): Promise<void> {
-    const { blockId } = this.getTransaction(id);
-
-    if (blockId) return Promise.resolve();
-
-    await delay(1_000);
-    await this.waitForTxBlockId(id);
-  }
-
-  protected async checkTxBlockId(id: string): Promise<void> {
-    const { txId } = this.getTransaction(id);
-
-    if (!txId) {
-      throw new Error(`[${this.constructor.name}]: Transaction "id" is empty, first sign the transaction`);
-    }
-
-    try {
-      await Promise.race([
-        this.waitForTxBlockId(id),
-        new Promise((resolve, reject) => setTimeout(reject, BLOCK_PRODUCE_TIME * 3)),
-      ]);
-    } catch (error) {
-      console.info(`[${this.constructor.name}]: Implement "blockId" restoration`);
-    }
   }
 }
 
@@ -130,17 +91,17 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       await adapter.stop();
     }
 
-    // decimals hardcoded
+    // expecting that prev fee is 0
+    const prevFee = FPNumber.fromCodecValue(tx.externalNetworkFee ?? ZeroStringValue, decimals);
     const txFee = FPNumber.fromCodecValue(eventData[1].toString(), decimals);
-    const existingFee = FPNumber.fromCodecValue(tx.externalNetworkFee ?? '0', decimals);
-    const externalNetworkFee = txFee.add(existingFee).toCodecString();
+    const externalNetworkFee = txFee.add(prevFee).toCodecString();
 
     this.updateTransactionParams(id, { externalNetworkFee });
   }
 
   private async updateTxIncomingData(id: string): Promise<void> {
-    await this.waitForTxStatus(id);
-    await this.checkTxBlockId(id);
+    await this.waitForTransactionStatus(id);
+    await this.waitForTransactionBlockId(id);
 
     const { txId, blockId } = this.getTransaction(id);
 
@@ -193,8 +154,6 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
           if (address !== tx.to) return;
 
-          // [TODO]: check assetAddedToChannelEvent data
-
           batchNonce = messageAcceptedEvent.event.data[1].toNumber();
           messageNonce = messageAcceptedEvent.event.data[2].toNumber();
           recipientAmount = amount.toNumber();
@@ -208,7 +167,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     await collator.stop();
 
-    const decimals = (
+    const assetDecimals = (
       await subBridgeApi.api.query.substrateBridgeApp.sidechainPrecision(tx.externalNetwork, tx.assetAddress)
     )
       .unwrap()
@@ -217,11 +176,11 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     const { amount, externalNetworkFee: prevFee, payload: prevPayload } = this.getTransaction(id);
 
     const fpAmount = new FPNumber(amount as string);
-    const fpAmount2 = FPNumber.fromCodecValue(recipientAmount, decimals);
+    const fpAmount2 = FPNumber.fromCodecValue(recipientAmount, assetDecimals);
     const xcmFee = fpAmount.sub(fpAmount2);
 
     const amount2 = fpAmount2.toString();
-    const externalNetworkFee = FPNumber.fromCodecValue(prevFee as string, decimals)
+    const externalNetworkFee = FPNumber.fromCodecValue(prevFee as string, assetDecimals)
       .add(xcmFee)
       .toCodecString();
     const payload = { ...prevPayload, messageNonce, batchNonce };
@@ -331,8 +290,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             this.beforeSubmit(id);
             this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
             await this.checkTxId(id);
-            await this.waitForTxStatus(id);
-            await this.checkTxBlockId(id);
+            await this.waitForTransactionStatus(id);
+            await this.waitForTransactionBlockId(id);
             await this.checkTxSoraHash(id);
             await this.waitForSoraOutboundMessageNonce(id);
             await this.waitForCollatorMessageHash(id);
