@@ -92,6 +92,8 @@ async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Re
     case BridgeNetworkType.Sub: {
       return await getSubRegisteredAssets(context);
     }
+    default:
+      return [];
   }
 }
 
