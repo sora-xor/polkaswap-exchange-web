@@ -303,7 +303,7 @@ async function getEvmNetworkId(): Promise<number> {
 async function getEvmNetworkFee(address: string, isSoraToEvm: boolean): Promise<CodecString> {
   try {
     const ethersInstance = await getEthersInstance();
-    const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
+    const gasPrice = (await ethersInstance.getFeeData()).maxFeePerGas?.toNumber() ?? 0;
     const gasLimits = EthereumGasLimits[+isSoraToEvm];
     const key = address in gasLimits ? address : KnownEthBridgeAsset.Other;
     const gasLimit = gasLimits[key];
