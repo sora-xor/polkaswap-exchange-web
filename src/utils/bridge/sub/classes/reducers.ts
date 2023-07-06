@@ -25,6 +25,13 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
 
     this.removeTransactionByHash = options.removeTransactionByHash;
   }
+
+  async getAssetExternalDecimals(externalNetwork: SubNetwork, soraAssetId: string): Promise<number> {
+    const data = await subBridgeApi.api.query.substrateBridgeApp.sidechainPrecision(externalNetwork, soraAssetId);
+    const decimals = data.unwrap().toNumber();
+
+    return decimals;
+  }
 }
 
 export class SubBridgeIncomingReducer extends SubBridgeReducer {
@@ -167,22 +174,25 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     await collator.stop();
 
-    const assetDecimals = (
-      await subBridgeApi.api.query.substrateBridgeApp.sidechainPrecision(tx.externalNetwork, tx.assetAddress)
-    )
-      .unwrap()
-      .toNumber();
+    const {
+      amount,
+      assetAddress,
+      externalNetwork,
+      externalNetworkFee: prevFee,
+      payload: prevPayload,
+    } = this.getTransaction(id);
 
-    const { amount, externalNetworkFee: prevFee, payload: prevPayload } = this.getTransaction(id);
+    const decimals = await this.getAssetExternalDecimals(externalNetwork as SubNetwork, assetAddress as string);
 
-    const fpAmount = new FPNumber(amount as string);
-    const fpAmount2 = FPNumber.fromCodecValue(recipientAmount, assetDecimals);
-    const xcmFee = fpAmount.sub(fpAmount2);
+    const sended = new FPNumber(amount as string);
+    const received = FPNumber.fromCodecValue(recipientAmount, decimals);
+    const amount2 = received.toString();
 
-    const amount2 = fpAmount2.toString();
-    const externalNetworkFee = FPNumber.fromCodecValue(prevFee as string, assetDecimals)
+    const xcmFee = sended.sub(received);
+    const externalNetworkFee = FPNumber.fromCodecValue(prevFee as string, decimals)
       .add(xcmFee)
       .toCodecString();
+
     const payload = { ...prevPayload, messageNonce, batchNonce };
 
     this.updateTransactionParams(id, { amount2, externalNetworkFee, payload });
@@ -427,20 +437,23 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
   private async waitForDestinationMessageHash(id: string): Promise<void> {
     const tx = this.getTransaction(id);
-    const messageHash = tx.payload.messageHash;
-    const network = tx.externalNetwork as SubNetwork;
-    const adapter = subConnector.getAdapterForNetwork(network);
+    const messageHash = tx.payload.messageHash as string;
+
+    if (!messageHash) throw new Error(`[${this.constructor.name}]: Transaction paylaod messageHash cannot be empty`);
+
+    const adapter = subConnector.getAdapterForNetwork(tx.externalNetwork as SubNetwork);
 
     let subscription!: Subscription;
     let blockNumber!: number;
     let extrinsicIndex!: number;
+    let amount!: string;
 
     try {
       if (!adapter.connected) {
         await adapter.connect();
       }
 
-      await new Promise<void>((resolve) => {
+      await new Promise<void>((resolve, reject) => {
         const eventsObservable = adapter.apiRx.query.system.events();
         const blockNumberObservable = adapter.apiRx.query.system.number();
 
@@ -453,16 +466,44 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
           const eventMessageHash = umpExecutedUpwardEvent.event.data[0].toString();
 
-          if (eventMessageHash === messageHash) {
-            blockNumber = blockNum.toNumber();
-            extrinsicIndex = umpExecutedUpwardEvent.phase.asApplyExtrinsic.toNumber();
-            resolve();
-          }
+          if (eventMessageHash !== messageHash) return;
+
+          // Native token for network
+          const balancesDepositEvent = events.find(
+            (e) =>
+              e.phase.isApplyExtrinsic &&
+              e.event.section === 'balances' &&
+              e.event.method === 'Deposit' &&
+              subBridgeApi.formatAddress(e.event.data.who.toString()) === tx.to
+          );
+
+          if (!balancesDepositEvent)
+            reject(new Error(`[${this.constructor.name}]: Unable to find "balances.Deposit" event`));
+
+          amount = balancesDepositEvent.event.data.amount.toString();
+          blockNumber = blockNum.toNumber();
+          extrinsicIndex = umpExecutedUpwardEvent.phase.asApplyExtrinsic.toNumber();
+          resolve();
         });
       });
     } finally {
       subscription.unsubscribe();
     }
+
+    if (subConnector.adapter !== adapter) {
+      await adapter.stop();
+    }
+
+    const decimals = await this.getAssetExternalDecimals(tx.externalNetwork as SubNetwork, tx.assetAddress as string);
+
+    const sended = new FPNumber(tx.amount as string, decimals);
+    const received = FPNumber.fromCodecValue(amount, decimals);
+    const amount2 = received.toString();
+
+    const xcmFee = sended.sub(received);
+    const externalNetworkFee = FPNumber.fromCodecValue(tx.externalNetworkFee as string, decimals)
+      .add(xcmFee)
+      .toCodecString();
 
     const blockHash = await adapter.api.rpc.chain.getBlockHash(blockNumber);
     const blockData = await adapter.api.rpc.chain.getBlock(blockHash);
@@ -470,13 +511,11 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const externalHash = extrinsic?.hash.toString() ?? '';
 
     this.updateTransactionParams(id, {
+      amount2,
+      externalNetworkFee,
       externalHash, // parachain tx hash
       externalBlockId: blockHash.toString(), // parachain block hash
       externalBlockHeight: blockNumber, // parachain block number
     });
-
-    if (subConnector.adapter !== adapter) {
-      await adapter.stop();
-    }
   }
 }
