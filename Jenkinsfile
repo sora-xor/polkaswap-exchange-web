@@ -32,6 +32,8 @@ def pipeline = new org.js.AppPipeline(steps: this,
     targetSecretName: "sora2-${env.CHANGE_ID}-polkaswap-exchange-pr-polkaswap-exchange-web-eso-base",
     downstreamJob: 'polkaswap/e2e-tests/hash_test',
     noIndex: true,
-    privatePackeges: 'soramitsu-js-ui, soraneo-wallet-web'
+    privatePackeges: 'soramitsu-js-ui, soraneo-wallet-web',
+    sonarSrcPath: 'src',
+    sonarTestsPath: 'tests'
 )
 pipeline.runPipeline()
