@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Pažnja",
-        "info": "Vaš XOR saldo bit će manji od {fee} XOR nakon ove transakcije. Nećete moći platiti mrežnu naknadu za drugu transakciju.",
+        "info": "Vaš {symbol} saldo bit će manji od {fee} {symbol} nakon ove transakcije. Nećete moći platiti mrežnu naknadu za drugu transakciju.",
         "payoff": "Morali biste koristiti Most za dobivanje XOR-a s drugih mreža, slanje XOR-a s drugog {Sora} računa ili zamjenu bilo kojeg drugog tokena koji je već na vašem računu u XOR.",
         "button": "Da, razumijem rizik"
     },

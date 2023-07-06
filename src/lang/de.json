@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Achtung",
-        "info": "Dein XOR Saldo beträgt nach dieser Transaktion weniger als {fee} XOR. Du kannst die Netzwerkgebühr für eine andere Transaktion nicht mehr bezahlen.",
+        "info": "Dein {symbol} Saldo beträgt nach dieser Transaktion weniger als {fee} {symbol}. Du kannst die Netzwerkgebühr für eine andere Transaktion nicht mehr bezahlen.",
         "payoff": "Du musst die Bridge verwenden, um XOR von anderen Netzwerken zu erhalten, XOR von einem anderen {Sora}-Konto gesendet zu bekommen oder einen anderen Token, der sich bereits auf deinem Konto befindet, in XOR einzutauschen.",
         "button": "Ja, ich verstehe das Risiko"
     },

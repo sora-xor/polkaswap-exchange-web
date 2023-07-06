@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Attenzione",
-        "info": "Il tuo saldo XOR sarà inferiore a {fee} XOR dopo questa transazione. Non sarai in grado di pagare la commissione di rete per un'altra transazione.",
+        "info": "Il tuo saldo {symbol} sarà inferiore a {fee} {symbol} dopo questa transazione. Non sarai in grado di pagare la commissione di rete per un'altra transazione.",
         "payoff": "Dovresti usare il Bridge per ottenere XOR da altre reti, ricevere XOR da un altro account {Sora} o scambiare qualsiasi altro token già presente nel tuo account in XOR.",
         "button": "Sì, capisco il rischio"
     },

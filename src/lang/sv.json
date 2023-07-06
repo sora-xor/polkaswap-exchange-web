@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Observera",
-        "info": "Ditt XOR-saldo kommer att vara mindre än {fee} XOR efter denna transaktion. Du kommer inte att kunna betala för nätverksavgiften för en annan transaktion.",
+        "info": "Ditt {symbol}-saldo kommer att vara mindre än {fee} {symbol} efter denna transaktion. Du kommer inte att kunna betala för nätverksavgiften för en annan transaktion.",
         "payoff": "Du skulle behöva använda Bryggan för att få XOR från andra nätverk, mottaga skickade XOR från ett annat {Sora}-konto, eller byta vilken annan token som helst som redan finns på ditt konto till XOR.",
         "button": "Ja, jag förstår risken"
     },

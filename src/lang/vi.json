@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Chú ý",
-        "info": "Số dư XOR của bạn sẽ nhỏ hơn {fee} XOR sau giao dịch này. Bạn sẽ không thể trả phí mạng cho một giao dịch khác.",
+        "info": "Số dư {symbol} của bạn sẽ nhỏ hơn {fee} {symbol} sau giao dịch này. Bạn sẽ không thể trả phí mạng cho một giao dịch khác.",
         "payoff": "Bạn sẽ phải sử dụng Cầu nối (Bridge) để nhận XOR từ các mạng khác, nhận XOR từ tài khoản {Sora} khác hoặc hoán đổi bất kỳ mã thông báo nào khác đã có trong tài khoản của bạn thành XOR.",
         "button": "Vâng, tôi hiểu về rủi ro"
     },
