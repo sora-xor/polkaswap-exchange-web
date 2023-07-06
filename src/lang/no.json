@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Merk følgende",
-        "info": "{symbol}-saldoen din vil være mindre enn {fee} {symbol} etter denne transaksjonen. Du vil ikke kunne betale for nettverksavgiften for en annen transaksjon.",
+        "info": "Din {symbol} -saldo vil være mindre enn {fee} {symbol} etter denne transaksjonen. Du vil ikke kunne betale for nettverksavgiften for en annen transaksjon.",
         "payoff": "Du må bruke broen for å få XOR fra andre nettverk, få tilsendt XOR fra en annen {Sora}-konto, eller bytte et hvilket som helst annet token som allerede er på kontoen din til XOR.",
         "button": "Ja, jeg forstår risikoen"
     },

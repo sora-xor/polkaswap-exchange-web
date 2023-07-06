@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Aandacht",
-        "info": "Uw {symbol} saldo zal lager zijn dan {fee} {symbol} na deze transactie. U zult niet in staat zijn om de netwerkvergoeding voor een andere transactie te betalen.",
+        "info": "Uw {symbol} -saldo is na deze transactie minder dan {fee} {symbol} . U kunt de netwerkkosten voor een andere transactie niet betalen.",
         "payoff": "Je zou de Bridge moeten gebruiken om XOR van andere netwerken te krijgen, XOR van een ander {Sora}-account te ontvangen, of een ander token dat al in je account staat om te wisselen naar XOR.",
         "button": "Ja, ik begrijp het risico"
     },

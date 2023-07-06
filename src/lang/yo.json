@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Ifarabalẹ",
-        "info": "Iwọntunwọnsi {symbol} rẹ yoo kere si {fee} {symbol} lẹhin iṣowo yii. Iwọ kii yoo ni anfani lati sanwo fun ọya nẹtiwọki fun iṣowo miiran.",
+        "info": "Iwọntunwọnsi {symbol} rẹ yoo kere ju {fee} {symbol} lẹhin iṣowo yii. Iwọ kii yoo ni anfani lati sanwo fun ọya nẹtiwọki fun iṣowo miiran.",
         "payoff": "Iwọ yoo ni lati lo Afara lati gba XOR lati awọn nẹtiwọọki miiran, firanṣẹ XOR lati akọọlẹ {Sora} miiran, tabi paarọ eyikeyi ami-ami miiran tẹlẹ ninu akọọlẹ rẹ sinu XOR.",
         "button": "Bẹẹni, Mo loye ewu naa"
     },
