@@ -398,7 +398,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(this.externalBalance, this.txEvmNetworkFee);
+    return hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.txEvmNetworkFee);
   }
 
   get isAnotherEvmAddress(): boolean {

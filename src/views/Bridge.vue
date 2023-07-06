@@ -437,7 +437,7 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(this.externalBalance, this.evmNetworkFee);
+    return hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.evmNetworkFee);
   }
 
   get isInsufficientBalance(): boolean {
@@ -503,14 +503,16 @@ export default class Bridge extends Mixins(
 
     // check by symbol because of substrate assets
     const isNativeTokenSelected = this.asset.symbol === this.evmTokenSymbol;
-    const fpBalance = FPNumber.fromCodecValue(this.externalBalance);
+
+    const fpBalance = FPNumber.fromCodecValue(this.externalNativeBalance);
     const fpFee = FPNumber.fromCodecValue(this.evmNetworkFee);
-    const fpAmount = new FPNumber(this.amount);
     const fpAfterFee = fpBalance.sub(fpFee);
 
     if (!isNativeTokenSelected) return FPNumber.gte(fpAfterFee, fpFee);
 
-    const fpAfterTransfer = this.isSoraToEvm ? fpAfterFee.add(fpAmount) : fpAfterFee.sub(fpAmount);
+    const fpAmount = new FPNumber(this.amount, this.asset.externalDecimals);
+    const fpAfterFeeNative = FPNumber.fromCodecValue(fpAfterFee.toCodecString(), this.asset.externalDecimals);
+    const fpAfterTransfer = this.isSoraToEvm ? fpAfterFeeNative.add(fpAmount) : fpAfterFeeNative.sub(fpAmount);
 
     return FPNumber.gte(fpAfterTransfer, fpFee);
   }
