@@ -19,11 +19,11 @@
     "test:unit": "vue-cli-service test:unit --testPathIgnorePatterns Translation.spec.ts",
     "test:translation": "vue-cli-service test:unit -- Translation.spec.ts",
     "test:e2e": "vue-cli-service test:e2e",
-    "test:all": "yarn test:unit"
+    "test:all": "yarn test:unit --coverage"
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
-    "@soramitsu/soraneo-wallet-web": "1.17.17",
+    "@soramitsu/soraneo-wallet-web": "1.17.18",
     "@walletconnect/web3-provider": "^1.8.0",
     "base-64": "^1.0.0",
     "core-js": "^3.26.0",

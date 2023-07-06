@@ -43,10 +43,10 @@
 </template>
 
 <script lang="ts">
-import { api, connection, components, mixins, settingsStorage } from '@soramitsu/soraneo-wallet-web';
+import { api, connection, components, mixins, settingsStorage, AlertsApiService } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import axiosInstance, { updateBaseUrl } from '@/api';
+import axiosInstance, { updateBaseUrl, getFullBaseUrl } from '@/api';
 import AppFooter from '@/components/App/Footer/AppFooter.vue';
 import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
@@ -56,11 +56,11 @@ import { PageNames, Components, Language } from '@/consts';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import type { FeatureFlags } from '@/store/settings/types';
-import type { EthBridgeSettings, SubNetworkApps } from '@/store/web3/types';
-import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 import { preloadFontFace, updateDocumentTitle } from '@/utils';
 
+import type { FeatureFlags } from './store/settings/types';
+import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
+import type { ConnectToNodeOptions, Node } from './types/nodes';
 import type { History, HistoryItem } from '@sora-substrate/util';
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
@@ -195,6 +195,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     preloadFontFace('element-icons');
 
     updateBaseUrl(router);
+    AlertsApiService.baseRoute = getFullBaseUrl(router);
 
     await this.setLanguage(getLocale() as Language);
 
