@@ -178,7 +178,7 @@ import { components, mixins, api, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu
 import last from 'lodash/fp/last';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import { detectBaseUrl } from '@/api';
+import { getFullBaseUrl, getRouterMode } from '@/api';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyView } from '@/router';
@@ -307,12 +307,8 @@ export default class ReferralProgram extends Mixins(
     return cssClasses;
   }
 
-  get routerMode(): string {
-    return router.mode === 'hash' ? '#/' : '';
-  }
-
   get linkHrefBase(): string {
-    return `${detectBaseUrl(router)}${this.routerMode}referral/`;
+    return `${getFullBaseUrl(router)}referral/`;
   }
 
   get referralLink() {
@@ -404,7 +400,8 @@ export default class ReferralProgram extends Mixins(
   }
 
   getLinkLabel(address: string): string {
-    return `<span class="referral-link-address">Polkaswap.io/</span>${this.routerMode}referral/${address}`;
+    const routerMode = getRouterMode(router);
+    return `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${address}`;
   }
 
   getInvitedUserReward(invitedUser: string): string {

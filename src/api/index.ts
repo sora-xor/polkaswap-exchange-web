@@ -18,6 +18,21 @@ export const detectBaseUrl = (router?: VueRouter): string => {
   return '';
 };
 
+export function getRouterMode(router?: VueRouter) {
+  return router?.mode === 'hash' ? '#/' : '';
+}
+
+/**
+ * Returns `detectBaseUrl` + router mode like:
+ *
+ * polkaswap.io/#/
+ */
+export function getFullBaseUrl(router?: VueRouter): string {
+  const routerMode = getRouterMode(router);
+  const baseUrl = detectBaseUrl(router);
+  return baseUrl + routerMode;
+}
+
 export const updateBaseUrl = (router: VueRouter): void => {
   const baseUrl = detectBaseUrl(router);
   axiosInstance.defaults.baseURL = baseUrl;
