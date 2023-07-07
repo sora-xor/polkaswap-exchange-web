@@ -311,7 +311,6 @@ import {
   asZeroValue,
   delay,
 } from '@/utils';
-import ethersUtil from '@/utils/ethers-util';
 
 import type { IBridgeTransaction, RegisteredAccountAsset, CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -564,17 +563,10 @@ export default class Bridge extends Mixins(
   }
 
   handleMaxValue(): void {
-    if (!(this.asset && this.isRegisteredAsset)) return;
-
     this.setAmount(this.maxValue);
   }
 
   async handleConfirmButtonClick(): Promise<void> {
-    if (!this.isValidNetwork) {
-      this.updateNetworkProvided();
-      return;
-    }
-
     // XOR check
     if (!this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
@@ -642,14 +634,6 @@ export default class Bridge extends Mixins(
     }
   }
 
-  connectInternalWallet(): void {
-    if (this.isSubBridge) {
-      this.connectSubWallet();
-    } else {
-      this.connectSoraWallet();
-    }
-  }
-
   connectSenderWallet() {
     if (this.isSoraToEvm || this.isSubBridge) {
       this.connectSoraWallet();
@@ -663,6 +647,14 @@ export default class Bridge extends Mixins(
       this.connectExternalWallet();
     } else {
       this.connectInternalWallet();
+    }
+  }
+
+  private connectInternalWallet(): void {
+    if (this.isSubBridge) {
+      this.connectSubWallet();
+    } else {
+      this.connectSoraWallet();
     }
   }
 }
