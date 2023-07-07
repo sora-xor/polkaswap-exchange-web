@@ -1,10 +1,13 @@
 import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
+import type { Subscription } from 'rxjs';
 
 export type BridgeState = {
   isSoraToEvm: boolean;
   assetAddress: string;
   assetSenderBalance: CodecString;
   assetRecipientBalance: CodecString;
+  assetLockedBalance: Nullable<CodecString>;
+  assetLockedBalanceSubscription: Nullable<Subscription>;
   amount: string;
   externalNetworkFee: CodecString;
   externalNetworkFeeFetching: boolean;

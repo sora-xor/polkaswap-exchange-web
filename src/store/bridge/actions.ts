@@ -329,6 +329,26 @@ const actions = defineActions({
     await Promise.all([dispatch.updateExternalBalance(), dispatch.getExternalNetworkFee()]);
   },
 
+  subscribeOnAssetLockedBalance(context): void {
+    const { commit, getters, state, rootState } = bridgeActionContext(context);
+    const { assetAddress } = state;
+    const { networkSelected } = rootState.web3;
+
+    commit.resetAssetLockedBalanceSubscription();
+
+    if (!(assetAddress && networkSelected)) return;
+
+    if (getters.isEthBridge) return;
+
+    const bridgeApi = getters.bridgeApi as typeof evmBridgeApi | typeof subBridgeApi;
+
+    const subscription = bridgeApi
+      .subscribeOnLockedAsset(networkSelected as never, assetAddress)
+      .subscribe((value) => commit.setAssetLockedBalance(value));
+
+    commit.setAssetLockedBalanceSubscription(subscription);
+  },
+
   async switchDirection(context): Promise<void> {
     const { commit, dispatch, state } = bridgeActionContext(context);
 
@@ -345,6 +365,8 @@ const actions = defineActions({
     commit.setAssetAddress(address);
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
+
+    dispatch.subscribeOnAssetLockedBalance();
 
     await dispatch.updateBalancesAndFees();
   },

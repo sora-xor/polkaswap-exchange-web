@@ -345,6 +345,7 @@ export default class Bridge extends Mixins(
   @state.bridge.externalNetworkFeeFetching private externalNetworkFeeFetching!: boolean;
   @state.bridge.externalBalancesFetching private externalBalancesFetching!: boolean;
   @state.bridge.amount amount!: string;
+  @state.bridge.assetLockedBalance private assetLockedBalance!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
 
