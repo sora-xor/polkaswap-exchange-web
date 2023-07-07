@@ -347,7 +347,6 @@ export default class Bridge extends Mixins(
   @state.bridge.externalNetworkFeeFetching private externalNetworkFeeFetching!: boolean;
   @state.bridge.externalBalancesFetching private externalBalancesFetching!: boolean;
   @state.bridge.amount amount!: string;
-  @state.bridge.assetLockedBalance private assetLockedBalance!: Nullable<CodecString>;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
 
@@ -433,8 +432,8 @@ export default class Bridge extends Mixins(
     if (!(this.asset && this.assetLockedBalance && this.isSoraToEvm)) return false;
 
     const decimals = this.asset.decimals;
-    const fpAmount = this.getFPNumber(this.amount, decimals);
-    const fpLocked = this.getFPNumberFromCodec(this.assetLockedBalance, decimals);
+    const fpAmount = new FPNumber(this.amount, decimals);
+    const fpLocked = FPNumber.fromCodecValue(this.assetLockedBalance, decimals);
 
     return FPNumber.gt(fpAmount, fpLocked);
   }

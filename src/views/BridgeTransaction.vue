@@ -145,6 +145,9 @@
         <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
           t('insufficientBalanceText', { tokenSymbol: evmTokenSymbol })
         }}</template>
+        <template v-else-if="isInsufficientLiquidity">
+          {{ t('swap.insufficientLiquidity') }}
+        </template>
         <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
         <template v-else-if="isTxFailed">{{ t('retryText') }}</template>
         <template v-else>{{
@@ -165,6 +168,7 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
@@ -406,6 +410,16 @@ export default class BridgeTransaction extends Mixins(
     return this.historyItem?.blockId;
   }
 
+  get isInsufficientLiquidity(): boolean {
+    if (!(this.asset && this.assetLockedBalance && this.isSoraToEvm)) return false;
+
+    const decimals = this.asset.decimals;
+    const fpAmount = new FPNumber(this.amount, decimals);
+    const fpLocked = FPNumber.fromCodecValue(this.assetLockedBalance, decimals);
+
+    return FPNumber.gt(fpAmount, fpLocked);
+  }
+
   get isInsufficientBalance(): boolean {
     const fee = this.isSoraToEvm ? this.txSoraNetworkFee : this.txEvmNetworkFee;
 
@@ -430,6 +444,7 @@ export default class BridgeTransaction extends Mixins(
     return (
       !(this.isSoraToEvm || this.isValidNetwork) ||
       this.isAnotherEvmAddress ||
+      this.isInsufficientLiquidity ||
       this.isInsufficientBalance ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
