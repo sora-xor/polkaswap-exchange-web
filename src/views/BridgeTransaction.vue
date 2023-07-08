@@ -127,17 +127,15 @@
         <template v-else-if="isTxPending">{{ t('bridgeTransaction.pending') }}</template>
         <template v-else-if="isAnotherEvmAddress">{{ t('changeAccountText') }}</template>
         <template v-else-if="!(isSoraToEvm || isValidNetwork)">{{ t('changeNetworkText') }}</template>
-        <template v-else-if="txIsUnsigned && isInsufficientBalance">{{
+        <template v-else-if="isInsufficientBalance">{{
           t('insufficientBalanceText', { tokenSymbol: assetSymbol })
         }}</template>
-        <template v-else-if="txIsUnsigned && isInsufficientXorForFee">{{
+        <template v-else-if="isInsufficientXorForFee">{{
           t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR })
         }}</template>
-        <template
-          v-else-if="
-            ((txIsUnsigned && !isSoraToEvm) || (!txIsUnsigned && isSoraToEvm)) && isInsufficientEvmNativeTokenForFee
-          "
-        >{{ t('insufficientBalanceText', { tokenSymbol: evmTokenSymbol }) }}</template>
+        <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
+          t('insufficientBalanceText', { tokenSymbol: evmTokenSymbol })
+        }}</template>
         <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
         <template v-else-if="isTxFailed">{{ t('retryText') }}</template>
         <template v-else>{{
@@ -392,15 +390,18 @@ export default class BridgeTransaction extends Mixins(
 
     if (!this.asset || !this.amount || !fee) return false;
 
-    return hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEvm);
+    return this.txIsUnsigned && hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEvm);
   }
 
   get isInsufficientXorForFee(): boolean {
-    return hasInsufficientXorForFee(this.xor, this.txSoraNetworkFee);
+    return this.txIsUnsigned && hasInsufficientXorForFee(this.xor, this.txSoraNetworkFee);
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(this.externalBalance, this.txEvmNetworkFee);
+    return (
+      ((this.txIsUnsigned && !this.isSoraToEvm) || (!this.txIsUnsigned && this.isSoraToEvm)) &&
+      hasInsufficientEvmNativeTokenForFee(this.externalBalance, this.txEvmNetworkFee)
+    );
   }
 
   get isAnotherEvmAddress(): boolean {
