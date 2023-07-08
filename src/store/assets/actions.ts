@@ -21,7 +21,8 @@ async function getEthRegisteredAssets(context: ActionContext<any, any>): Promise
   for (const asset of networkAssets) {
     const soraAddress = asset.address;
     const address = asset.externalAddress || (await rootDispatch.web3.getEvmTokenAddressByAssetId(soraAddress));
-    const decimals = +asset.externalDecimals ?? (await ethersUtil.getAssetDecimals(address));
+    // [TODO] fix js-lib: externalDecimals = 0 by default, what could be with nft
+    const decimals = +asset.externalDecimals || (await ethersUtil.getAssetDecimals(address));
 
     registeredAssets.push({
       [soraAddress]: {
