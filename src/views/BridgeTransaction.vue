@@ -390,15 +390,18 @@ export default class BridgeTransaction extends Mixins(
 
     if (!this.asset || !this.amount || !fee) return false;
 
-    return hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEvm);
+    return this.txIsUnsigned && hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEvm);
   }
 
   get isInsufficientXorForFee(): boolean {
-    return hasInsufficientXorForFee(this.xor, this.txSoraNetworkFee);
+    return this.txIsUnsigned && hasInsufficientXorForFee(this.xor, this.txSoraNetworkFee);
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(this.externalBalance, this.txEvmNetworkFee);
+    return (
+      ((this.txIsUnsigned && !this.isSoraToEvm) || (!this.txIsUnsigned && this.isSoraToEvm)) &&
+      hasInsufficientEvmNativeTokenForFee(this.externalBalance, this.txEvmNetworkFee)
+    );
   }
 
   get isAnotherEvmAddress(): boolean {
