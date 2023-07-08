@@ -127,15 +127,17 @@
         <template v-else-if="isTxPending">{{ t('bridgeTransaction.pending') }}</template>
         <template v-else-if="isAnotherEvmAddress">{{ t('changeAccountText') }}</template>
         <template v-else-if="!(isSoraToEvm || isValidNetwork)">{{ t('changeNetworkText') }}</template>
-        <template v-else-if="isInsufficientBalance">{{
+        <template v-else-if="txIsUnsigned && isInsufficientBalance">{{
           t('insufficientBalanceText', { tokenSymbol: assetSymbol })
         }}</template>
-        <template v-else-if="isInsufficientXorForFee">{{
+        <template v-else-if="txIsUnsigned && isInsufficientXorForFee">{{
           t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR })
         }}</template>
-        <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
-          t('insufficientBalanceText', { tokenSymbol: evmTokenSymbol })
-        }}</template>
+        <template
+          v-else-if="
+            ((txIsUnsigned && !isSoraToEvm) || (!txIsUnsigned && isSoraToEvm)) && isInsufficientEvmNativeTokenForFee
+          "
+        >{{ t('insufficientBalanceText', { tokenSymbol: evmTokenSymbol }) }}</template>
         <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
         <template v-else-if="isTxFailed">{{ t('retryText') }}</template>
         <template v-else>{{
