@@ -400,7 +400,7 @@ export default class BridgeTransaction extends Mixins(
   get isInsufficientEvmNativeTokenForFee(): boolean {
     return (
       ((this.txIsUnsigned && !this.isSoraToEvm) || (!this.txIsUnsigned && this.isSoraToEvm)) &&
-      hasInsufficientEvmNativeTokenForFee(this.externalBalance, this.txEvmNetworkFee)
+      hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.txEvmNetworkFee)
     );
   }
 
