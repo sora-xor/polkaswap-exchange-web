@@ -139,17 +139,14 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
         const eventsObservable = collator.apiRx.query.system.events();
 
         subscription = eventsObservable.subscribe((events) => {
-          const messageAcceptedEvent = events.find(
-            (e) =>
-              e.phase.isApplyExtrinsic &&
-              e.event.section === 'substrateBridgeOutboundChannel' &&
-              e.event.method === 'MessageAccepted'
+          const messageAcceptedEvent = events.find((e) =>
+            collator.api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
           );
 
           if (!messageAcceptedEvent) return;
 
-          const assetAddedToChannelEvent = events.find(
-            (e) => e.phase.isApplyExtrinsic && e.event.section === 'xcmApp' && e.event.method === 'AssetAddedToChannel'
+          const assetAddedToChannelEvent = events.find((e) =>
+            collator.api.events.xcmApp.AssetAddedToChannel.is(e.event)
           );
 
           if (!assetAddedToChannelEvent) {
@@ -214,11 +211,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
         const eventsObservable = subBridgeApi.apiRx.query.system.events();
 
         subscription = eventsObservable.subscribe((events) => {
-          const substrateDispatchEvent = events.find(
-            (e) =>
-              e.phase.isApplyExtrinsic &&
-              e.event.section === 'substrateDispatch' &&
-              e.event.method === 'MessageDispatched'
+          const substrateDispatchEvent = events.find((e) =>
+            subBridgeApi.api.events.substrateDispatch.MessageDispatched.is(e.event)
           );
 
           if (!substrateDispatchEvent) return;
@@ -232,9 +226,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
           if (eventBatchNonce !== batchNonce || eventMessageNonce !== messageNonce) return;
 
-          const bridgeProxyEvent = events.find(
-            (e) =>
-              e.phase.isApplyExtrinsic && e.event.section === 'bridgeProxy' && e.event.method === 'RequestStatusUpdate'
+          const bridgeProxyEvent = events.find((e) =>
+            subBridgeApi.api.events.bridgeProxy.RequestStatusUpdate.is(e.event)
           );
 
           if (!bridgeProxyEvent) {
@@ -386,11 +379,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         const eventsObservable = collator.apiRx.query.system.events();
 
         subscription = eventsObservable.subscribe((events) => {
-          const substrateDispatchEvent = events.find(
-            (e) =>
-              e.phase.isApplyExtrinsic &&
-              e.event.section === 'substrateDispatch' &&
-              e.event.method === 'MessageDispatched'
+          const substrateDispatchEvent = events.find((e) =>
+            collator.api.events.substrateDispatch.MessageDispatched.is(e.event)
           );
 
           if (!substrateDispatchEvent) return;
@@ -408,11 +398,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
           if (eventBatchNonce !== batchNonce || eventMessageNonce !== messageNonce) return;
 
-          const parachainSystemEvent = events.find(
-            (e) =>
-              e.phase.isApplyExtrinsic &&
-              e.event.section === 'parachainSystem' &&
-              e.event.method === 'UpwardMessageSent'
+          const parachainSystemEvent = events.find((e) =>
+            collator.api.events.parachainSystem.UpwardMessageSent.is(e.event)
           );
 
           if (!parachainSystemEvent) {
@@ -458,9 +445,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         const blockNumberObservable = adapter.apiRx.query.system.number();
 
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(([events, blockNum]) => {
-          const umpExecutedUpwardEvent = events.find(
-            (e) => e.phase.isApplyExtrinsic && e.event.section === 'ump' && e.event.method === 'ExecutedUpward'
-          );
+          const umpExecutedUpwardEvent = events.find((e) => adapter.api.events.ump.ExecutedUpward.is(e.event));
 
           if (!umpExecutedUpwardEvent) return;
 
@@ -471,9 +456,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           // Native token for network
           const balancesDepositEvent = events.find(
             (e) =>
-              e.phase.isApplyExtrinsic &&
-              e.event.section === 'balances' &&
-              e.event.method === 'Deposit' &&
+              adapter.api.events.balances.Deposit.is(e.event) &&
               subBridgeApi.formatAddress(e.event.data.who.toString()) === tx.to
           );
 
