@@ -31,12 +31,15 @@ interface ConnectOptions {
 
 // TODO [EVM]
 const gasLimit = {
-  approve: 70000,
-  sendERC20ToSidechain: 86000,
-  sendEthToSidechain: 50000,
-  mintTokensByPeers: 255000,
-  receiveByEthereumAssetAddress: 250000,
-  receiveBySidechainAssetId: 255000,
+  approve: 47000,
+  sendERC20ToSidechain: 53000,
+  sendEthToSidechain: 26093,
+  mintTokensByPeers: 167000,
+  receiveByEthereumAssetAddress: {
+    ETH: 155000,
+    OTHER: 181000,
+  },
+  receiveBySidechainAssetId: 184000,
 };
 
 /**
@@ -59,8 +62,8 @@ const EthereumGasLimits = [
     [XOR.address]: gasLimit.mintTokensByPeers,
     [VAL.address]: gasLimit.mintTokensByPeers,
     [PSWAP.address]: gasLimit.receiveBySidechainAssetId,
-    [ETH.address]: gasLimit.receiveByEthereumAssetAddress,
-    [KnownEthBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
+    [ETH.address]: gasLimit.receiveByEthereumAssetAddress.ETH,
+    [KnownEthBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress.OTHER,
   },
 ];
 
@@ -303,7 +306,8 @@ async function getEvmNetworkId(): Promise<number> {
 async function getEvmNetworkFee(address: string, isSoraToEvm: boolean): Promise<CodecString> {
   try {
     const ethersInstance = await getEthersInstance();
-    const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
+    const { maxFeePerGas } = await ethersInstance.getFeeData();
+    const gasPrice = maxFeePerGas?.toNumber() ?? 0;
     const gasLimits = EthereumGasLimits[+isSoraToEvm];
     const key = address in gasLimits ? address : KnownEthBridgeAsset.Other;
     const gasLimit = gasLimits[key];

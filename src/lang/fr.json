@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Attention",
-        "info": "Votre solde XOR sera inférieur à {fee} XOR après cette transaction. Vous ne pourrez pas payer les frais de réseau pour une autre transaction.",
+        "info": "Votre solde {symbol} sera inférieur à {fee} {symbol} après cette transaction. Vous ne pourrez pas payer les frais de réseau pour une autre transaction.",
         "payoff": "Vous devrez utiliser le pont pour obtenir XOR d'autres réseaux, recevoir XOR d'un autre compte {Sora} ou échanger tout autre jeton déjà présent dans votre compte en XOR.",
         "button": "Oui, je comprends le risque"
     },

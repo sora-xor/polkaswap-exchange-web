@@ -8,7 +8,7 @@ export type BridgeState = {
   amount: string;
   evmNetworkFee: CodecString;
   externalNetworkFeeFetching: boolean;
-  externalBalance: CodecString;
+  externalNativeBalance: CodecString;
   externalBalancesFetching: boolean;
   externalBlockNumber: number;
   // history sources (unsynced localstorage & network)

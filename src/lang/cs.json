@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Pozor",
-        "info": "Váš zůstatek XOR bude po této transakci nižší než {fee} XOR. Nebudete moci platit za síťový poplatek za další transakci.",
+        "info": "Váš zůstatek {symbol} bude po této transakci nižší než {fee} {symbol} . Nebudete moci platit za síťový poplatek za další transakci.",
         "payoff": "Budete muset použít Bridge k získání XOR z jiných sítí, zaslat si XOR z jiného účtu {Sora}, nebo provést swap jakéhokoli jiného tokenu, který již máte na účtu, za XOR.",
         "button": "Ano, chápu riziko"
     },

@@ -11,7 +11,7 @@ function initialState(): BridgeState {
     amount: '',
     evmNetworkFee: ZeroStringValue,
     externalNetworkFeeFetching: false,
-    externalBalance: ZeroStringValue, // balance for external native token (like ETH)
+    externalNativeBalance: ZeroStringValue, // balance for external native token (like ETH)
     externalBalancesFetching: false,
     externalBlockNumber: 0,
     // history sources

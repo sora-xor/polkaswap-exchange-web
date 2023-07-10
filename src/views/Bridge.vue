@@ -273,6 +273,13 @@
         :fee="formattedSoraNetworkFee"
         @confirm="confirmNetworkFeeWariningDialog"
       />
+      <network-fee-warning-dialog
+        :visible.sync="showWarningExternalFeeDialog"
+        :fee="formattedEvmNetworkFee"
+        :symbol="evmTokenSymbol"
+        :payoff="false"
+        @confirm="confirmExternalNetworkFeeWarningDialog"
+      />
     </s-form>
     <div v-if="!areNetworksConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
   </div>
@@ -299,6 +306,7 @@ import {
   getMaxValue,
   getAssetBalance,
   asZeroValue,
+  delay,
 } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 
@@ -357,6 +365,24 @@ export default class Bridge extends Mixins(
   showSelectTokenDialog = false;
   showConfirmTransactionDialog = false;
 
+  showWarningExternalFeeDialog = false;
+  isWarningExternalFeeDialogConfirmed = false;
+
+  confirmExternalNetworkFeeWarningDialog(): void {
+    this.isWarningExternalFeeDialogConfirmed = true;
+  }
+
+  openWarningExternalFeeDialog(): void {
+    this.showWarningExternalFeeDialog = true;
+  }
+
+  async waitOnExternalFeeWarningConfirmation(ms = 500): Promise<void> {
+    if (!this.showWarningExternalFeeDialog) return;
+
+    await delay(ms);
+    return await this.waitOnExternalFeeWarningConfirmation();
+  }
+
   get areNetworksConnected(): boolean {
     return !!this.sender && !!this.recipient;
   }
@@ -411,7 +437,7 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(this.externalBalance, this.evmNetworkFee);
+    return hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.evmNetworkFee);
   }
 
   get isInsufficientBalance(): boolean {
@@ -434,6 +460,10 @@ export default class Bridge extends Mixins(
 
   get formattedSoraNetworkFee(): string {
     return this.formatCodecNumber(this.soraNetworkFee);
+  }
+
+  get formattedEvmNetworkFee(): string {
+    return this.formatCodecNumber(this.evmNetworkFee);
   }
 
   get isConfirmTxDisabled(): boolean {
@@ -466,6 +496,25 @@ export default class Bridge extends Mixins(
       isXor: isXorAccountAsset(this.asset),
       amount: this.getFPNumber(this.amount),
     });
+  }
+
+  get isNativeTokenSufficientForNextOperation(): boolean {
+    if (!this.asset || this.isZeroAmount) return false;
+
+    // check by symbol because of substrate assets
+    const isNativeTokenSelected = this.asset.symbol === this.evmTokenSymbol;
+
+    const fpBalance = FPNumber.fromCodecValue(this.externalNativeBalance);
+    const fpFee = FPNumber.fromCodecValue(this.evmNetworkFee);
+    const fpAfterFee = fpBalance.sub(fpFee);
+
+    if (!isNativeTokenSelected) return FPNumber.gte(fpAfterFee, fpFee);
+
+    const fpAmount = new FPNumber(this.amount, this.asset.externalDecimals);
+    const fpAfterFeeNative = FPNumber.fromCodecValue(fpAfterFee.toCodecString(), this.asset.externalDecimals);
+    const fpAfterTransfer = this.isSoraToEvm ? fpAfterFeeNative.add(fpAmount) : fpAfterFeeNative.sub(fpAmount);
+
+    return FPNumber.gte(fpAfterTransfer, fpFee);
   }
 
   getDecimals(isSora = true): number | undefined {
@@ -519,13 +568,24 @@ export default class Bridge extends Mixins(
       return;
     }
 
+    // XOR check
     if (!this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
-      await this.waitOnNextTxFailureConfirmation();
+      await this.waitOnFeeWarningConfirmation();
       if (!this.isWarningFeeDialogConfirmed) {
         return;
       }
       this.isWarningFeeDialogConfirmed = false;
+    }
+
+    // Native token check
+    if (!this.isNativeTokenSufficientForNextOperation) {
+      this.openWarningExternalFeeDialog();
+      await this.waitOnExternalFeeWarningConfirmation();
+      if (!this.isWarningExternalFeeDialogConfirmed) {
+        return;
+      }
+      this.isWarningExternalFeeDialogConfirmed = false;
     }
 
     this.showConfirmTransactionDialog = true;

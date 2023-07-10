@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Perhatian",
-        "info": "Saldo XOR Anda akan kurang dari {fee} XOR setelah transaksi ini. Anda tidak akan dapat membayar biaya jaringan untuk transaksi lain.",
+        "info": "Saldo {symbol} Anda akan kurang dari {fee} {symbol} setelah transaksi ini. Anda tidak akan dapat membayar biaya jaringan untuk transaksi lain.",
         "payoff": "Anda harus menggunakan Bridge untuk mendapatkan XOR dari jaringan lain, mengirim XOR dari akun {Sora} lain, atau menukar token lain yang sudah ada di akun Anda ke XOR.",
         "button": "Ya, saya mengerti risikonya"
     },
