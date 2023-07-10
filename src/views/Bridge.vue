@@ -346,6 +346,7 @@ export default class Bridge extends Mixins(
 
   @state.bridge.externalNetworkFeeFetching private externalNetworkFeeFetching!: boolean;
   @state.bridge.externalBalancesFetching private externalBalancesFetching!: boolean;
+  @state.bridge.assetLockedBalanceFetching private assetLockedBalanceFetching!: boolean;
   @state.bridge.amount amount!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
@@ -491,7 +492,8 @@ export default class Bridge extends Mixins(
       this.isSelectAssetLoading ||
       this.externalNetworkFeeFetching ||
       this.externalBalancesFetching ||
-      this.registeredAssetsFetching
+      this.registeredAssetsFetching ||
+      this.assetLockedBalanceFetching
     );
   }
 

@@ -9,7 +9,7 @@ function initialState(): BridgeState {
     assetSenderBalance: ZeroStringValue, // balance for sora
     assetRecipientBalance: ZeroStringValue, // balance for bridge network
     assetLockedBalance: null, // asset balance locked on bridge
-    assetLockedBalanceSubscription: null, // asset balance locked subscription
+    assetLockedBalanceFetching: false,
     amount: '',
     externalNetworkFee: ZeroStringValue,
     externalNetworkFeeFetching: false,

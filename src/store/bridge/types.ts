@@ -7,7 +7,7 @@ export type BridgeState = {
   assetSenderBalance: CodecString;
   assetRecipientBalance: CodecString;
   assetLockedBalance: Nullable<CodecString>;
-  assetLockedBalanceSubscription: Nullable<Subscription>;
+  assetLockedBalanceFetching: boolean;
   amount: string;
   externalNetworkFee: CodecString;
   externalNetworkFeeFetching: boolean;

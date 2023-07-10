@@ -5,7 +5,6 @@ import { ZeroStringValue } from '@/consts';
 
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
-import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<BridgeState>()({
   setSoraToEvm(state, isSoraToEvm: boolean): void {
@@ -27,20 +26,13 @@ const mutations = defineMutations<BridgeState>()({
   setAssetLockedBalance(state, balance: Nullable<CodecString> = null): void {
     state.assetLockedBalance = balance;
   },
-
-  setAssetLockedBalanceSubscription(state, subscription: Subscription): void {
-    state.assetLockedBalanceSubscription = subscription;
-  },
-  resetAssetLockedBalanceSubscription(state): void {
-    state.assetLockedBalanceSubscription?.unsubscribe();
-    state.assetLockedBalanceSubscription = null;
-    state.assetLockedBalance = null;
+  setAssetLockedBalanceFetching(state, flag: boolean): void {
+    state.assetLockedBalanceFetching = flag;
   },
 
   setExternalBalance(state, balance: CodecString = ZeroStringValue): void {
     state.externalNativeBalance = balance;
   },
-
   setExternalBalancesFetching(state, flag: boolean): void {
     state.externalBalancesFetching = flag;
   },

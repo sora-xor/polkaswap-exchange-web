@@ -27,23 +27,12 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
   @action.web3.restoreSelectedNetwork restoreSelectedNetwork!: AsyncFnWithoutArgs;
 
-  @action.bridge.subscribeOnAssetLockedBalance private subscribeOnAssetLockedBalance!: AsyncFnWithoutArgs;
-  @mutation.bridge.resetAssetLockedBalanceSubscription private resetAssetLockedBalanceSubscription!: FnWithoutArgs;
-
   private unwatchEthereum!: FnWithoutArgs;
   private blockHeadersSubscriber: Nullable<Subscription> = null;
 
   async created(): Promise<void> {
-    this.setStartSubscriptions([
-      this.subscribeOnSystemBlockUpdate,
-      this.subscribeOnEvm,
-      this.subscribeOnAssetLockedBalance,
-    ]);
-    this.setResetSubscriptions([
-      this.unsubscribeFromSystemBlockUpdate,
-      this.unsubscribeFromEvm,
-      this.resetAssetLockedBalanceSubscription,
-    ]);
+    this.setStartSubscriptions([this.subscribeOnSystemBlockUpdate, this.subscribeOnEvm]);
+    this.setResetSubscriptions([this.unsubscribeFromSystemBlockUpdate, this.unsubscribeFromEvm]);
 
     await this.withParentLoading(async () => {
       await this.getSupportedApps();
