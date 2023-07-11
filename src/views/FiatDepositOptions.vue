@@ -7,7 +7,7 @@
         <span>{{ t('fiatPayment.moonpayDesc') }}</span>
         <s-button type="primary" @click="openMoonpayDialog">{{ moonpayTextBtn }}</s-button>
       </div>
-      <div class="pay-options__option pay-options-x1">
+      <div v-if="x1Enabled" class="pay-options__option pay-options-x1">
         <x1ex-logo :theme="libraryTheme" />
         <h4>{{ t('fiatPayment.x1Title') }}</h4>
         <span>{{ t('fiatPayment.x1Desc') }}</span>
@@ -63,6 +63,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
 
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.settings.moonpayEnabled moonpayEnabled!: boolean;
+  @getter.settings.x1Enabled x1Enabled!: boolean;
 
   @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
 
