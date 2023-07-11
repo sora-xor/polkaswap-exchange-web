@@ -27,7 +27,7 @@
           <formatted-amount
             class="info-line-value"
             value-can-be-hidden
-            :value="formattedAmount2"
+            :value="formattedAmountReceived"
             :asset-symbol="assetSymbol"
           >
             <i :class="secondNetworkIcon" />
@@ -60,13 +60,13 @@
         :fiat-value="amountFiatValue"
       />
       <info-line
-        v-if="amount2"
+        v-if="amountReceived"
         is-formatted
         value-can-be-hidden
         :label="t('receivedText')"
-        :value="formattedAmount2"
+        :value="formattedAmountReceived"
         :asset-symbol="assetSymbol"
-        :fiat-value="amountFiatValue2"
+        :fiat-value="amountReceivedFiatValue"
       />
       <info-line
         is-formatted
@@ -245,7 +245,7 @@ export default class BridgeTransaction extends Mixins(
     return this.historyItem?.amount ?? '';
   }
 
-  get amount2(): string {
+  get amountReceived(): string {
     return this.historyItem?.amount2 ?? this.amount;
   }
 
@@ -253,8 +253,8 @@ export default class BridgeTransaction extends Mixins(
     return this.asset ? this.getFiatAmountByString(this.amount, this.asset) : null;
   }
 
-  get amountFiatValue2(): Nullable<string> {
-    return this.asset ? this.getFiatAmountByString(this.amount2, this.asset) : null;
+  get amountReceivedFiatValue(): Nullable<string> {
+    return this.asset ? this.getFiatAmountByString(this.amountReceived, this.asset) : null;
   }
 
   get isSoraToEvm(): boolean {
@@ -265,8 +265,8 @@ export default class BridgeTransaction extends Mixins(
     return this.amount && this.asset ? this.formatStringValue(this.amount, this.asset.decimals) : '';
   }
 
-  get formattedAmount2(): string {
-    return this.amount2 && this.asset ? this.formatStringValue(this.amount2, this.asset.decimals) : '';
+  get formattedAmountReceived(): string {
+    return this.amountReceived && this.asset ? this.formatStringValue(this.amountReceived, this.asset.decimals) : '';
   }
 
   get assetSymbol(): string {
