@@ -1,7 +1,6 @@
 import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber, BridgeRequestAssetKind } from '@sora-substrate/util';
-import { ETH } from '@sora-substrate/util/build/assets/consts';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers } from 'ethers';
@@ -42,7 +41,6 @@ const gasLimit = {
   receiveBySidechainAssetId: 184000,
 };
 
-// TODO [EVM]
 /**
  * It's in gwei.
  */

@@ -1,5 +1,4 @@
 import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
-import type { Subscription } from 'rxjs';
 
 export type BridgeState = {
   isSoraToEvm: boolean;

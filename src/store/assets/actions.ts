@@ -46,7 +46,7 @@ async function getEvmRegisteredAssets(
   const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
     return {
       [soraAddress]: {
-        address: assetData.address as string,
+        address: assetData.address,
         decimals: assetData.decimals,
         kind: assetData.appKind,
       },

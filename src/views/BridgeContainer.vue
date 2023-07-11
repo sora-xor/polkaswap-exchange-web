@@ -14,7 +14,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import { action, mutation } from '@/store/decorators';
+import { action } from '@/store/decorators';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { Subscription } from 'rxjs';

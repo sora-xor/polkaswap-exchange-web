@@ -43,7 +43,7 @@ const getters = defineGetters<AssetsState>()({
         ...asset,
         balance,
         externalAddress,
-        externalBalance: ZeroStringValue, // [TODO] remove externalBalance
+        externalBalance: ZeroStringValue, // remove externalBalance
         externalDecimals,
       };
     };
