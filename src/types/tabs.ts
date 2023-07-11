@@ -1,3 +1,8 @@
+export enum OrderBookTabs {
+  Limit = 'limit',
+  Market = 'market',
+}
+
 export enum AlertTypeTabs {
   Drop = 'drop',
   Raise = 'raise',

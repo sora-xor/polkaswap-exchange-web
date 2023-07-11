@@ -138,6 +138,7 @@ export enum PageNames {
   ExploreFarming = 'Explore/Farming',
   ExploreStaking = 'Explore/Staking',
   ExplorePools = 'Explore/Pools',
+  OrderBook = 'OrderBook',
   SoraCard = 'SoraCard',
 }
 
@@ -195,6 +196,11 @@ export enum Components {
   SwapStatusActionBadge = 'pages/Swap/StatusActionBadge',
   SwapTransactionDetails = 'pages/Swap/TransactionDetails',
   SwapSettings = 'pages/Swap/Settings/Settings',
+  // Order Book
+  SetLimitOrder = 'pages/OrderBook/SetLimitOrder',
+  OrderBookBuy = 'pages/OrderBook/LimitOrderBuy',
+  OrderBookSell = 'pages/OrderBook/LimitOrderSell',
+  BookTransactionDetails = 'pages/OrderBook/TransactionDetails',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
@@ -235,6 +241,11 @@ export enum Components {
   StatsFilter = 'shared/Stats/StatsFilter',
   // Shared Chart
   ChartSkeleton = 'shared/Chart/ChartSkeleton',
+}
+
+export enum LimitOrderTabsItems {
+  buy = 'buy',
+  sell = 'sell',
 }
 
 export enum RewardsTabsItems {
@@ -297,6 +308,11 @@ const AccountMenu: Array<SidebarMenuItemLink> = [
     icon: 'finance-wallet-24',
     title: PageNames.Wallet,
     href: '/#/wallet',
+  },
+  {
+    icon: 'grid-block-distribute-vertically-24',
+    title: PageNames.OrderBook,
+    href: '/#/book',
   },
   {
     icon: 'basic-circle-star-24',

@@ -231,6 +231,11 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.Stats),
   },
   {
+    path: '/book',
+    name: PageNames.OrderBook,
+    component: lazyView(PageNames.OrderBook),
+  },
+  {
     path: '*',
     redirect: '/swap',
   },
