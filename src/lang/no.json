@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Merk følgende",
-        "info": "XOR-saldoen din vil være mindre enn {fee} XOR etter denne transaksjonen. Du vil ikke kunne betale for nettverksavgiften for en annen transaksjon.",
+        "info": "Din {symbol} -saldo vil være mindre enn {fee} {symbol} etter denne transaksjonen. Du vil ikke kunne betale for nettverksavgiften for en annen transaksjon.",
         "payoff": "Du må bruke broen for å få XOR fra andre nettverk, få tilsendt XOR fra en annen {Sora}-konto, eller bytte et hvilket som helst annet token som allerede er på kontoen din til XOR.",
         "button": "Ja, jeg forstår risikoen"
     },
@@ -1181,13 +1181,11 @@
     "stepText": "Steg",
     "alerts": {
         "drop": "Faller under",
-        "raise": "Hever seg over",
         "once": "En gang",
         "always": "Alltid",
         "edit": "Rediger varsel",
         "delete": "Slett varsel",
         "onDropDesc": "{token} synker under {price}",
-        "onRaiseDesc": "{token} hever over {price}",
         "alertsTitle": "Varsler",
         "alertsCreateTitle": "Sett opp prisvarsel",
         "alertsTooltip": "Prisvarsler er varsler du kan stille inn til å motta oppdateringer når prisen på et bestemt token når et bestemt punkt du angir",
@@ -1195,11 +1193,13 @@
         "enableSwitch": "Aktiver innskuddsvarslinger",
         "currentPrice": "gjeldende pris",
         "alertTypeTitle": "Varslingstype",
-        "typeTooltip": "Velg enten \"fall under\" eller \"hever over\" for å spesifisere varselbetingelse for sporing av viktige prisbevegelser. Disse alternativene lar deg motta rettidige varsler når verdien av eiendelen din enten faller under eller stiger over den angitte terskelen",
         "alertFrequencyTitle": "Varslingsfrekvens",
         "frequencyTooltip": "Velg mellom \"en gang\" og \"alltid\" for å bestemme hvor ofte du mottar varsler for den valgte varslingstypen. 'Once' vil sende ett enkelt varsel når betingelsen er oppfylt, mens 'alltid' vil fortsette å varsle deg hver gang prisgrensen krysses",
         "noSupportMsg": "Varsler støttes ikke av nettleseren din",
-        "finishBtn": "Å fullføre"
+        "finishBtn": "Å fullføre",
+        "raise": "Hever seg over",
+        "onRaiseDesc": "{token} stiger over {price}",
+        "typeTooltip": "Velg enten alternativet \"faller under\" eller \"stiger over\" for å spesifisere varselbetingelse for sporing av viktige prisbevegelser. Disse alternativene lar deg motta rettidige varsler når verdien av eiendelen din enten faller under eller stiger over den angitte terskelen"
     },
     "accountAddressText": "Kontoadresse",
     "fiatDisclaimer": "Vær oppmerksom på at fiat-verdiene knyttet til kryptovalutaer på nettsiden vår leveres av eksterne tjenester (Subquery, Subsquid, Ceres API) er omtrentlige. Gitt den iboende kompleksiteten til disse beregningene, kan absolutt presisjon til enhver tid ikke garanteres.",

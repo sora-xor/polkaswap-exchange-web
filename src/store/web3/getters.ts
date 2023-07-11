@@ -7,13 +7,9 @@ import { SUB_NETWORKS } from '@/consts/sub';
 import { web3GetterContext } from '@/store/web3';
 import type { NetworkData } from '@/types/bridge';
 
-import type { Web3State } from './types';
+import type { Web3State, AvailableNetwork } from './types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
-
-type AvailableNetwork = {
-  disabled: boolean;
-  data: NetworkData;
-};
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const getters = defineGetters<Web3State>()({
   externalAccount(...args): string {
@@ -26,42 +22,51 @@ const getters = defineGetters<Web3State>()({
     }
   },
 
-  availableNetworks(...args): Record<BridgeNetworkType, AvailableNetwork[]> {
+  availableNetworks(...args): Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>> {
     const { state } = web3GetterContext(args);
 
-    const hashi = [state.ethBridgeEvmNetwork].map((id) => ({
-      disabled: false,
-      data: EVM_NETWORKS[id],
-    }));
-
-    const evm = state.evmNetworkApps.reduce<AvailableNetwork[]>((buffer, id) => {
+    const hashi = [state.ethBridgeEvmNetwork].reduce((buffer, id) => {
       const data = EVM_NETWORKS[id];
 
       if (data) {
-        buffer.push({
-          disabled: !state.supportedApps?.[BridgeNetworkType.Evm]?.[id],
+        buffer[id] = {
+          disabled: false,
           data: EVM_NETWORKS[id],
-        });
+        };
       }
 
       return buffer;
-    }, []);
+    }, {});
 
-    const sub = Object.entries(state.subNetworkApps).reduce<AvailableNetwork[]>((buffer, [id, { addresses }]) => {
+    const evm = state.evmNetworkApps.reduce((buffer, id) => {
+      const data = EVM_NETWORKS[id];
+
+      if (data) {
+        buffer[id] = {
+          disabled: !state.supportedApps?.[BridgeNetworkType.Evm]?.[id],
+          data: EVM_NETWORKS[id],
+        };
+      }
+
+      return buffer;
+    }, {});
+
+    const sub = Object.entries(state.subNetworkApps).reduce((buffer, [id, address]) => {
       const data = SUB_NETWORKS[id];
 
       if (data) {
         // add wss endpoints to endpointUrls
-        data.endpointUrls.push(...addresses);
+        data.endpointUrls.push(address);
+        data.blockExplorerUrls.push(address);
 
-        buffer.push({
+        buffer[id] = {
           disabled: !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork),
           data,
-        });
+        };
       }
 
       return buffer;
-    }, []);
+    }, {});
 
     return {
       [BridgeNetworkType.EvmLegacy]: hashi,
@@ -69,28 +74,24 @@ const getters = defineGetters<Web3State>()({
       [BridgeNetworkType.Sub]: sub,
     };
   },
-  providedNetwork(...args): Nullable<NetworkData> {
-    const { state } = web3GetterContext(args);
 
-    if (!state.networkProvided) return null;
-
-    const networks = state.networkType === BridgeNetworkType.Sub ? SUB_NETWORKS : EVM_NETWORKS;
-
-    return networks[state.networkProvided] ?? null;
-  },
   selectedNetwork(...args): Nullable<NetworkData> {
-    const { state } = web3GetterContext(args);
+    const { state, getters } = web3GetterContext(args);
+    const { networkSelected, networkType } = state;
 
-    if (!state.networkSelected) return null;
+    if (!(networkType && networkSelected)) return null;
 
-    const networks = state.networkType === BridgeNetworkType.Sub ? SUB_NETWORKS : EVM_NETWORKS;
-
-    return networks[state.networkSelected] ?? null;
+    return getters.availableNetworks[networkType][networkSelected]?.data ?? null;
   },
+
   isValidNetwork(...args): boolean {
     const { state } = web3GetterContext(args);
-    return state.networkProvided === state.networkSelected;
+
+    if (state.networkType === BridgeNetworkType.Sub) return true;
+
+    return state.evmNetworkProvided === state.networkSelected;
   },
+
   contractAddress(...args): (asset: KnownEthBridgeAsset) => Nullable<string> {
     return (asset: KnownEthBridgeAsset) => {
       const { state } = web3GetterContext(args);

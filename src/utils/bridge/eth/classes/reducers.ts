@@ -35,9 +35,9 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
     await waitForEvmTransaction(id);
 
     const tx = this.getTransaction(id);
-    const { evmNetworkFee, blockHeight } = (await getEvmTransactionRecieptByHash(tx.externalHash as string)) || {};
+    const { fee, blockNumber, blockHash } = (await getEvmTransactionRecieptByHash(tx.externalHash as string)) || {};
 
-    if (!evmNetworkFee || !blockHeight) {
+    if (!(fee && blockNumber && blockHash)) {
       this.updateTransactionParams(id, { externalHash: undefined, externalNetworkFee: undefined });
       throw new Error(
         `[${this.constructor.name}]: Ethereum transaction not found, hash: ${tx.externalHash}. 'externalHash' is reset`
@@ -45,7 +45,11 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
     }
 
     // In BridgeHistory 'blockHeight' will store evm block number
-    this.updateTransactionParams(id, { externalNetworkFee: evmNetworkFee, blockHeight });
+    this.updateTransactionParams(id, {
+      externalNetworkFee: fee,
+      externalBlockHeight: blockNumber,
+      externalBlockId: blockHash,
+    });
   }
 
   async onEvmSubmitted(id: string): Promise<void> {
@@ -135,11 +139,13 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
           nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
           handler: async (id: string) => {
-            const hash = await waitForSoraTransactionHash({
+            const eventData = await waitForSoraTransactionHash({
               section: 'ethBridge',
-              extrincicMethod: 'transferToSidechain',
+              method: 'transferToSidechain',
               eventMethod: 'RequestRegistered',
             })(id, this.getTransaction);
+
+            const hash = eventData[0].toString();
 
             this.updateTransactionParams(id, { hash });
 

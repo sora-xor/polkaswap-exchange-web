@@ -11,11 +11,9 @@ export function initialState(): Web3State {
     evmAddress: '', // external evm address
     subAddress: '', // external sub address
 
-    evmBalance: ZeroStringValue,
-
     networkType: ethersUtil.getSelectedBridgeType() ?? BridgeNetworkType.EvmLegacy,
-    networkProvided: null, // evm network in provider
-    networkSelected: null, // evm network selected by user
+    networkSelected: null, // network selected by user
+    evmNetworkProvided: null, // evm network in provider
 
     evmNetworkApps: [], // evm networks from app config
     subNetworkApps: {}, // sub netowrks from app config

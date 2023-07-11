@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Pozor",
-        "info": "Váš zůstatek XOR bude po této transakci nižší než {fee} XOR. Nebudete moci platit za síťový poplatek za další transakci.",
+        "info": "Váš zůstatek {symbol} bude po této transakci nižší než {fee} {symbol} . Nebudete moci platit za síťový poplatek za další transakci.",
         "payoff": "Budete muset použít Bridge k získání XOR z jiných sítí, zaslat si XOR z jiného účtu {Sora}, nebo provést swap jakéhokoli jiného tokenu, který již máte na účtu, za XOR.",
         "button": "Ano, chápu riziko"
     },
@@ -1181,13 +1181,11 @@
     "stepText": "Krok",
     "alerts": {
         "drop": "Kapky níže",
-        "raise": "Zvyšuje výše",
         "once": "Jednou",
         "always": "Vždy",
         "edit": "Upravit upozornění",
         "delete": "Smazat upozornění",
         "onDropDesc": "{token} klesá pod {price}",
-        "onRaiseDesc": "{token} zvyšuje nad {price}",
         "alertsTitle": "Upozornění",
         "alertsCreateTitle": "Nastavit upozornění na cenu",
         "alertsTooltip": "Upozornění na cenu jsou upozornění, která si můžete nastavit tak, abyste dostávali aktualizace, když cena konkrétního tokenu dosáhne určitého bodu, který nastavíte",
@@ -1195,11 +1193,13 @@
         "enableSwitch": "Povolit oznámení o vkladu majetku",
         "currentPrice": "aktuální cena",
         "alertTypeTitle": "Typ upozornění",
-        "typeTooltip": "Chcete-li zadat varovnou podmínku pro sledování důležitých cenových pohybů, vyberte možnost „pokles pod“ nebo „navýšení výše“. Tyto možnosti vám umožňují dostávat včasná upozornění, když hodnota vašeho aktiva klesne pod nebo překročí vaši stanovenou hranici",
         "alertFrequencyTitle": "Frekvence upozornění",
         "frequencyTooltip": "Výběrem mezi „jednou“ a „vždy“ určíte, jak často budete dostávat upozornění pro vybraný typ upozornění. „Jednou“ odešle jediné upozornění, když je podmínka splněna, zatímco „vždy“ vás bude i nadále upozorňovat při každém překročení cenového prahu",
         "noSupportMsg": "Váš prohlížeč nepodporuje upozornění",
-        "finishBtn": "Dokončit"
+        "finishBtn": "Dokončit",
+        "raise": "Stoupá výše",
+        "onRaiseDesc": "{token} stoupá nad {price}",
+        "typeTooltip": "Vyberte možnost „pokles pod“ nebo „vzroste nad“ pro určení podmínky výstrahy pro sledování důležitých cenových pohybů. Tyto možnosti vám umožňují dostávat včasná upozornění, když hodnota vašeho aktiva klesne pod nebo překročí vaši stanovenou hranici"
     },
     "accountAddressText": "Adresa účtu",
     "fiatDisclaimer": "Vezměte prosím na vědomí, že hodnoty fiat spojené s kryptoměnami na našich webových stránkách jsou poskytovány externími službami (Subquery, Subsquid, Ceres API) jsou přibližné. Vzhledem k přirozené složitosti těchto výpočtů nelze zaručit absolutní přesnost za všech okolností.",

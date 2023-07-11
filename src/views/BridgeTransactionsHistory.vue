@@ -34,14 +34,14 @@
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
-                      isOutgoingType(item.type) ? 0 : networkProvided
+                      isOutgoingType(item.type) ? 0 : item.externalNetwork
                     )}`"
                   />
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
                   <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
-                      !isOutgoingType(item.type) ? 0 : networkProvided
+                      !isOutgoingType(item.type) ? 0 : item.externalNetwork
                     )}`"
                   />
                 </div>
@@ -79,7 +79,7 @@ import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
-import type { EvmAccountAsset } from '@/store/assets/types';
+import type { BridgeAccountAsset } from '@/store/assets/types';
 import { state } from '@/store/decorators';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
@@ -101,7 +101,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   mixins.PaginationSearchMixin,
   mixins.NumberFormatterMixin
 ) {
-  @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
+  @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeAccountAsset>;
   @state.bridge.historyPage historyPage!: number;
 
   pageAmount = 8; // override PaginationSearchMixin

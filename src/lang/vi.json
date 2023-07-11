@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Chú ý",
-        "info": "Số dư XOR của bạn sẽ nhỏ hơn {fee} XOR sau giao dịch này. Bạn sẽ không thể trả phí mạng cho một giao dịch khác.",
+        "info": "Số dư {symbol} của bạn sẽ ít hơn {fee} {symbol} sau giao dịch này. Bạn sẽ không thể thanh toán phí mạng cho một giao dịch khác.",
         "payoff": "Bạn sẽ phải sử dụng Cầu nối (Bridge) để nhận XOR từ các mạng khác, nhận XOR từ tài khoản {Sora} khác hoặc hoán đổi bất kỳ mã thông báo nào khác đã có trong tài khoản của bạn thành XOR.",
         "button": "Vâng, tôi hiểu về rủi ro"
     },
@@ -1181,13 +1181,11 @@
     "stepText": "Bước chân",
     "alerts": {
         "drop": "Giọt bên dưới",
-        "raise": "Tăng lên trên",
         "once": "Một lần",
         "always": "Luôn luôn",
         "edit": "Chỉnh sửa cảnh báo",
         "delete": "Xóa cảnh báo",
         "onDropDesc": "{token} giảm xuống dưới {price}",
-        "onRaiseDesc": "{token} tăng trên {price}",
         "alertsTitle": "cảnh báo",
         "alertsCreateTitle": "Thiết lập cảnh báo giá",
         "alertsTooltip": "Thông báo về giá là thông báo mà bạn có thể đặt để nhận thông tin cập nhật khi giá của một mã thông báo cụ thể đạt đến điểm nhất định mà bạn đã đặt",
@@ -1195,11 +1193,13 @@
         "enableSwitch": "Bật thông báo gửi tài sản",
         "currentPrice": "giá hiện tại",
         "alertTypeTitle": "Loại cảnh báo",
-        "typeTooltip": "Chọn tùy chọn 'giảm xuống bên dưới' hoặc 'tăng lên trên' để chỉ định điều kiện cảnh báo để theo dõi các biến động giá quan trọng. Các tùy chọn này cho phép bạn nhận được thông báo kịp thời khi giá trị tài sản của bạn giảm xuống dưới hoặc tăng lên trên ngưỡng được chỉ định của bạn",
         "alertFrequencyTitle": "Tần suất cảnh báo",
         "frequencyTooltip": "Chọn giữa 'một lần' và 'luôn luôn' để xác định tần suất bạn nhận được thông báo cho loại cảnh báo đã chọn. 'Một lần' sẽ gửi một thông báo khi điều kiện được đáp ứng, trong khi 'luôn luôn' sẽ tiếp tục thông báo cho bạn mỗi khi vượt qua ngưỡng giá",
         "noSupportMsg": "Thông báo không được trình duyệt của bạn hỗ trợ",
-        "finishBtn": "Hoàn thành"
+        "finishBtn": "Hoàn thành",
+        "raise": "tăng lên trên",
+        "onRaiseDesc": "{token} tăng cao hơn {price}",
+        "typeTooltip": "Chọn tùy chọn 'giảm xuống bên dưới' hoặc 'tăng lên trên' để chỉ định điều kiện cảnh báo để theo dõi các biến động giá quan trọng. Các tùy chọn này cho phép bạn nhận được thông báo kịp thời khi giá trị tài sản của bạn giảm xuống dưới hoặc tăng lên trên ngưỡng được chỉ định của bạn"
     },
     "accountAddressText": "Địa chỉ tài khoản",
     "fiatDisclaimer": "Xin lưu ý rằng các giá trị fiat được liên kết với tiền điện tử trên trang web của chúng tôi được cung cấp bởi các dịch vụ bên ngoài (Subquery, Subsquid, Ceres API) là gần đúng. Do sự phức tạp vốn có của các tính toán này, không thể đảm bảo độ chính xác tuyệt đối mọi lúc.",

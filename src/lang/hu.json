@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Figyelem",
-        "info": "Az XOR egyenlege a tranzakció után kevesebb lesz, mint {fee} XOR. Nem tudja fizetni a hálózati díjat egy másik tranzakcióért.",
+        "info": "A tranzakciót követően az Ön {symbol} egyenlege kevesebb lesz, mint {fee} {symbol} . Egy másik tranzakció esetén nem tudja fizetni a hálózati díjat.",
         "payoff": "A Híd segítségével XOR-t kell kapnia más hálózatokról, XOR-t kell küldenie egy másik {Sora}-fiókból, vagy bármely más, már a fiókjában lévő tokent XOR-ba kell cserélnie.",
         "button": "Igen, megértem a kockázatot"
     },
@@ -1181,13 +1181,11 @@
     "stepText": "Lépés",
     "alerts": {
         "drop": "Alul leesik",
-        "raise": "Feljebb emelkedik",
         "once": "Egyszer",
         "always": "Mindig",
         "edit": "Figyelmeztetés szerkesztése",
         "delete": "Figyelmeztetés törlése",
         "onDropDesc": "{token} {price} alá esik",
-        "onRaiseDesc": "{token} {price} fölé emel",
         "alertsTitle": "Figyelmeztetések",
         "alertsCreateTitle": "Árriasztás beállítása",
         "alertsTooltip": "Az árriasztások olyan értesítések, amelyeket Ön beállíthat, hogy frissítéseket kapjon, amikor egy adott token ára elér egy meghatározott pontot",
@@ -1195,11 +1193,13 @@
         "enableSwitch": "Eszközbefizetési értesítések engedélyezése",
         "currentPrice": "jelenlegi ár",
         "alertTypeTitle": "Figyelmeztetés típusa",
-        "typeTooltip": "Válassza az „alul csökken” vagy a „feljebb emelkedik” opciót, ha figyelmeztetési feltételt szeretne megadni a fontos ármozgások nyomon követéséhez. Ezek az opciók lehetővé teszik, hogy időben értesítést kapjon, ha az eszköz értéke a kijelölt küszöb alá esik vagy fölé emelkedik.",
         "alertFrequencyTitle": "Riasztási gyakoriság",
         "frequencyTooltip": "Válassza az „egyszer” és a „mindig” lehetőséget annak meghatározásához, hogy milyen gyakran kap értesítést a kiválasztott riasztástípusról. Az „Egyszer” egyetlen értesítést küld, ha a feltétel teljesül, míg az „always” továbbra is értesít minden alkalommal, amikor az árküszöböt átlépi.",
         "noSupportMsg": "Az Ön böngészője nem támogatja az értesítéseket",
-        "finishBtn": "Teljesíteni"
+        "finishBtn": "Teljesíteni",
+        "raise": "Feljebb emelkedik",
+        "onRaiseDesc": "{token} {price} fölé emelkedik",
+        "typeTooltip": "Válassza az „alul csökken” vagy a „feljebb emelkedik” opciót, ha figyelmeztetési feltételt szeretne megadni a fontos ármozgások nyomon követéséhez. Ezek a lehetőségek lehetővé teszik, hogy időben értesítést kapjon, ha az eszköz értéke a kijelölt küszöb alá csökken vagy fölé emelkedik."
     },
     "accountAddressText": "Fiók címe",
     "fiatDisclaimer": "Felhívjuk figyelmét, hogy a weboldalunkon a kriptovalutákhoz társított fiat értékeket külső szolgáltatások (Subquery, Subsquid, Ceres API) biztosítják, hozzávetőlegesek. Tekintettel ezeknek a számításoknak a bonyolultságára, nem garantálható a mindenkori abszolút pontosság.",

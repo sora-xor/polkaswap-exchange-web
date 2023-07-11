@@ -33,7 +33,7 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
-import type { EvmAccountAsset } from '@/store/assets/types';
+import type { BridgeAccountAsset } from '@/store/assets/types';
 import { state, getter } from '@/store/decorators';
 import type { NetworkData } from '@/types/bridge';
 
@@ -50,15 +50,15 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 export default class BridgeSelectAsset extends Mixins(TranslationMixin, SelectAssetMixin, mixins.LoadingMixin) {
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
 
-  @getter.web3.providedNetwork private providedNetwork!: Nullable<NetworkData>;
-  @state.assets.registeredAssets private registeredAssets!: Record<string, EvmAccountAsset>;
+  @getter.web3.selectedNetwork private selectedNetwork!: Nullable<NetworkData>;
+  @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeAccountAsset>;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
 
   get label(): string {
     if (this.isSoraToEvm) return this.t('selectRegisteredAsset.search.networkLabelSora');
 
-    const network = this.providedNetwork?.shortName ?? '';
+    const network = this.selectedNetwork?.shortName ?? '';
 
     return this.t('selectRegisteredAsset.search.networkLabelEthereum', { network });
   }

@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Observera",
-        "info": "Ditt XOR-saldo kommer att vara mindre än {fee} XOR efter denna transaktion. Du kommer inte att kunna betala för nätverksavgiften för en annan transaktion.",
+        "info": "Ditt saldo {symbol} kommer att vara mindre än {fee} {symbol} efter denna transaktion. Du kommer inte att kunna betala för nätverksavgiften för en annan transaktion.",
         "payoff": "Du skulle behöva använda Bryggan för att få XOR från andra nätverk, mottaga skickade XOR från ett annat {Sora}-konto, eller byta vilken annan token som helst som redan finns på ditt konto till XOR.",
         "button": "Ja, jag förstår risken"
     },
@@ -1181,13 +1181,11 @@
     "stepText": "Steg",
     "alerts": {
         "drop": "Faller under",
-        "raise": "Höjs över",
         "once": "En gång",
         "always": "Alltid",
         "edit": "Redigera varning",
         "delete": "Ta bort varning",
         "onDropDesc": "{token} sjunker under {price}",
-        "onRaiseDesc": "{token} höjer över {price}",
         "alertsTitle": "Varningar",
         "alertsCreateTitle": "Ställ in prisavisering",
         "alertsTooltip": "Prisaviseringar är aviseringar som kan ställas in av dig för att ta emot uppdateringar när priset på en viss token når en viss punkt som du anger",
@@ -1195,11 +1193,13 @@
         "enableSwitch": "Aktivera aviseringar om insättning av tillgångar",
         "currentPrice": "nuvarande pris",
         "alertTypeTitle": "Varningstyp",
-        "typeTooltip": "Välj antingen alternativet \"sjunker under\" eller \"höjer över\" för att ange varningsvillkor för att spåra viktiga prisrörelser. Dessa alternativ låter dig få aviseringar i rätt tid när värdet på din tillgång antingen faller under eller stiger över din angivna tröskel",
         "alertFrequencyTitle": "Varningsfrekvens",
         "frequencyTooltip": "Välj mellan \"en gång\" och \"alltid\" för att avgöra hur ofta du får aviseringar för den valda varningstypen. \"Once\" kommer att skicka ett enda meddelande när villkoret är uppfyllt, medan \"alltid\" kommer att fortsätta att meddela dig varje gång priströskeln passeras",
         "noSupportMsg": "Aviseringar stöds inte av din webbläsare",
-        "finishBtn": "Att slutföra"
+        "finishBtn": "Att slutföra",
+        "raise": "Reser sig över",
+        "onRaiseDesc": "{token} stiger över {price}",
+        "typeTooltip": "Välj antingen alternativet \"sjunker under\" eller \"stiger över\" för att ange varningsvillkor för att spåra viktiga prisrörelser. Dessa alternativ låter dig få aviseringar i rätt tid när värdet på din tillgång antingen faller under eller stiger över din angivna tröskel"
     },
     "accountAddressText": "Kontoadress",
     "fiatDisclaimer": "Observera att fiat-värdena förknippade med kryptovalutor på vår webbplats tillhandahålls av externa tjänster (Subquery, Subsquid, Ceres API) är ungefärliga. Med tanke på den inneboende komplexiteten i dessa beräkningar kan absolut precision inte alltid garanteras.",

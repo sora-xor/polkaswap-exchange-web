@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Ifarabalẹ",
-        "info": "Iwọntunwọnsi XOR rẹ yoo kere si {fee} XOR lẹhin iṣowo yii. Iwọ kii yoo ni anfani lati sanwo fun ọya nẹtiwọki fun iṣowo miiran.",
+        "info": "Iwọntunwọnsi {symbol} rẹ yoo kere ju {fee} {symbol} lẹhin iṣowo yii. Iwọ kii yoo ni anfani lati sanwo fun ọya nẹtiwọki fun iṣowo miiran.",
         "payoff": "Iwọ yoo ni lati lo Afara lati gba XOR lati awọn nẹtiwọọki miiran, firanṣẹ XOR lati akọọlẹ {Sora} miiran, tabi paarọ eyikeyi ami-ami miiran tẹlẹ ninu akọọlẹ rẹ sinu XOR.",
         "button": "Bẹẹni, Mo loye ewu naa"
     },
@@ -1181,13 +1181,11 @@
     "stepText": "Igbesẹ",
     "alerts": {
         "drop": "Silẹ ni isalẹ",
-        "raise": "Gbe soke",
         "once": "Lẹẹkan",
         "always": "Nigbagbogbo",
         "edit": "Itaniji Ṣatunkọ",
         "delete": "Pa itaniji rẹ",
         "onDropDesc": "{token} lọ silẹ ni isalẹ {price}",
-        "onRaiseDesc": "{token} ga ju {price}",
         "alertsTitle": "Awọn itaniji",
         "alertsCreateTitle": "Ṣeto itaniji idiyele",
         "alertsTooltip": "Awọn itaniji idiyele jẹ awọn iwifunni ti o le ṣeto nipasẹ rẹ lati gba awọn imudojuiwọn nigbati idiyele ti ami-ami kan pato de aaye kan ti o ṣeto",
@@ -1195,11 +1193,13 @@
         "enableSwitch": "Mu awọn iwifunni idogo dukia ṣiṣẹ",
         "currentPrice": "lọwọlọwọ owo",
         "alertTypeTitle": "Iru itaniji",
-        "typeTooltip": "Yan boya 'ju silẹ ni isalẹ' tabi 'gbe loke' aṣayan lati tokasi ipo itaniji fun titọpa awọn agbeka idiyele pataki. Awọn aṣayan wọnyi gba ọ laaye lati gba awọn iwifunni akoko nigbati iye dukia rẹ boya ṣubu ni isalẹ tabi dide loke iloro ti a yàn",
         "alertFrequencyTitle": "Itaniji igbohunsafẹfẹ",
         "frequencyTooltip": "Yan laarin 'lẹẹkan' ati 'nigbagbogbo' lati pinnu iye igba ti o gba awọn iwifunni fun iru gbigbọn ti o yan. 'Lẹẹkan' yoo fi ifitonileti kan ranṣẹ nigbati ipo naa ba ti pade, lakoko ti 'nigbagbogbo' yoo tẹsiwaju lati fi to ọ leti ni igbakugba ti ẹnu-ọna idiyele ti kọja",
         "noSupportMsg": "Awọn iwifunni ko ni atilẹyin nipasẹ ẹrọ aṣawakiri rẹ",
-        "finishBtn": "Lati pari"
+        "finishBtn": "Lati pari",
+        "raise": "Dide loke",
+        "onRaiseDesc": "{token} ga ju {price}",
+        "typeTooltip": "Yan boya 'ju silẹ ni isalẹ' tabi 'dide loke' aṣayan lati tokasi ipo itaniji fun titọpa awọn agbeka idiyele pataki. Awọn aṣayan wọnyi gba ọ laaye lati gba awọn iwifunni akoko nigbati iye dukia rẹ boya ṣubu ni isalẹ tabi dide loke iloro ti a yàn"
     },
     "accountAddressText": "adirẹsi iroyin",
     "fiatDisclaimer": "Jọwọ ṣe akiyesi pe awọn iye fiat ti o ni nkan ṣe pẹlu awọn owo nẹtiwoki lori oju opo wẹẹbu wa ni a pese nipasẹ awọn iṣẹ ita (Subquery, Subsquid, Ceres API) jẹ isunmọ. Fi fun idiju atorunwa ti awọn iṣiro wọnyi, pipe pipe ni gbogbo igba ko le ṣe iṣeduro.",

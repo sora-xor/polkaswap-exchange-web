@@ -54,7 +54,7 @@
             <div class="input-title">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
               <span class="input-title--network">{{ getBridgeItemTitle(isSoraToEvm) }}</span>
-              <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : networkProvided)}`" />
+              <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : networkSelected)}`" />
             </div>
             <div v-if="sender && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
@@ -126,8 +126,7 @@
           data-test-name="switchToken"
           type="action"
           icon="arrows-swap-90-24"
-          :disabled="isSubBridge"
-          @click="handleSwitchItems"
+          @click="switchDirection"
         />
 
         <s-float-input
@@ -145,9 +144,9 @@
             <div class="input-title" @click="handleChangeNetwork">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
               <span class="input-title--network">{{ getBridgeItemTitle(!isSoraToEvm) }}</span>
-              <i :class="`network-icon network-icon--${getNetworkIcon(!isSoraToEvm ? 0 : networkProvided)}`" />
+              <i :class="`network-icon network-icon--${getNetworkIcon(!isSoraToEvm ? 0 : networkSelected)}`" />
             </div>
-            <div v-if="sender && isAssetSelected" class="input-value">
+            <div v-if="recipient && isAssetSelected" class="input-value">
               <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
               <formatted-amount-with-fiat-value
                 value-can-be-hidden
@@ -158,7 +157,7 @@
               />
             </div>
           </div>
-          <div slot="right" v-if="sender && isAssetSelected" class="s-flex el-buttons">
+          <div slot="right" v-if="recipient && isAssetSelected" class="s-flex el-buttons">
             <token-select-button class="el-button--select-token" :token="asset" />
           </div>
           <template #bottom>
@@ -170,7 +169,7 @@
               />
               <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" class="input-value" />
             </div>
-            <div v-if="recepient" class="bridge-item-footer">
+            <div v-if="recipient" class="bridge-item-footer">
               <s-divider type="tertiary" />
               <s-tooltip
                 :content="getCopyTooltip(!isSoraToEvm)"
@@ -178,8 +177,8 @@
                 placement="bottom-end"
                 tabindex="-1"
               >
-                <span class="bridge-network-address" @click="handleCopyAddress(recepient, $event)">
-                  {{ formatAddress(recepient, 8) }}
+                <span class="bridge-network-address" @click="handleCopyAddress(recipient, $event)">
+                  {{ formatAddress(recipient, 8) }}
                 </span>
               </s-tooltip>
               <span v-if="isSubBridge" class="bridge-network-address" @click="connectExternalWallet">
@@ -192,7 +191,7 @@
               class="el-button--connect s-typography-button--large"
               data-test-name="connectMetamask"
               type="primary"
-              @click="connectRecepientWallet"
+              @click="connectRecipientWallet"
             >
               {{ t('connectWalletText') }}
             </s-button>
@@ -263,7 +262,7 @@
         :is-insufficient-balance="isInsufficientBalance"
         :asset="asset"
         :amount="amount"
-        :network="networkProvided"
+        :network="networkSelected"
         :evm-token-symbol="evmTokenSymbol"
         :evm-network-fee="evmNetworkFee"
         :sora-network-fee="soraNetworkFee"
@@ -274,6 +273,13 @@
         :fee="formattedSoraNetworkFee"
         @confirm="confirmNetworkFeeWariningDialog"
       />
+      <network-fee-warning-dialog
+        :visible.sync="showWarningExternalFeeDialog"
+        :fee="formattedEvmNetworkFee"
+        :symbol="evmTokenSymbol"
+        :payoff="false"
+        @confirm="confirmExternalNetworkFeeWarningDialog"
+      />
     </s-form>
     <div v-if="!areNetworksConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
   </div>
@@ -283,7 +289,7 @@
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
@@ -300,6 +306,7 @@ import {
   getMaxValue,
   getAssetBalance,
   asZeroValue,
+  delay,
 } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 
@@ -335,11 +342,11 @@ export default class Bridge extends Mixins(
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   readonly KnownSymbols = KnownSymbols;
 
-  @state.bridge.evmNetworkFeeFetching private evmNetworkFeeFetching!: boolean;
+  @state.bridge.externalNetworkFeeFetching private externalNetworkFeeFetching!: boolean;
+  @state.bridge.externalBalancesFetching private externalBalancesFetching!: boolean;
   @state.bridge.amount amount!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
-  @state.assets.registeredAssetsBalancesUpdating registeredAssetsBalancesUpdating!: boolean;
 
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
@@ -350,27 +357,34 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
   @mutation.bridge.setAmount setAmount!: (value?: string) => void;
 
+  @action.bridge.switchDirection switchDirection!: AsyncFnWithoutArgs;
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
-  @action.bridge.resetBalanceSubscription private resetBalanceSubscription!: AsyncFnWithoutArgs;
-  @action.bridge.updateBalanceSubscription private updateBalanceSubscription!: AsyncFnWithoutArgs;
-  @action.bridge.getEvmNetworkFee private getEvmNetworkFee!: AsyncFnWithoutArgs;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<IBridgeTransaction>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
-
-  @Watch('nodeIsConnected')
-  private updateConnectionSubsriptions(nodeConnected: boolean) {
-    if (nodeConnected) {
-      this.updateBalanceSubscription();
-    } else {
-      this.resetBalanceSubscription();
-    }
-  }
 
   showSelectTokenDialog = false;
   showConfirmTransactionDialog = false;
 
+  showWarningExternalFeeDialog = false;
+  isWarningExternalFeeDialogConfirmed = false;
+
+  confirmExternalNetworkFeeWarningDialog(): void {
+    this.isWarningExternalFeeDialogConfirmed = true;
+  }
+
+  openWarningExternalFeeDialog(): void {
+    this.showWarningExternalFeeDialog = true;
+  }
+
+  async waitOnExternalFeeWarningConfirmation(ms = 500): Promise<void> {
+    if (!this.showWarningExternalFeeDialog) return;
+
+    await delay(ms);
+    return await this.waitOnExternalFeeWarningConfirmation();
+  }
+
   get areNetworksConnected(): boolean {
-    return !!this.sender && !!this.recepient;
+    return !!this.sender && !!this.recipient;
   }
 
   get assetAddress(): string {
@@ -423,7 +437,7 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(this.evmBalance, this.evmNetworkFee);
+    return hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.evmNetworkFee);
   }
 
   get isInsufficientBalance(): boolean {
@@ -448,6 +462,10 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(this.soraNetworkFee);
   }
 
+  get formattedEvmNetworkFee(): string {
+    return this.formatCodecNumber(this.evmNetworkFee);
+  }
+
   get isConfirmTxDisabled(): boolean {
     return (
       !this.isAssetSelected ||
@@ -464,9 +482,9 @@ export default class Bridge extends Mixins(
   get isConfirmTxLoading(): boolean {
     return (
       this.isSelectAssetLoading ||
-      this.evmNetworkFeeFetching ||
-      this.registeredAssetsFetching ||
-      this.registeredAssetsBalancesUpdating
+      this.externalNetworkFeeFetching ||
+      this.externalBalancesFetching ||
+      this.registeredAssetsFetching
     );
   }
 
@@ -480,15 +498,30 @@ export default class Bridge extends Mixins(
     });
   }
 
+  get isNativeTokenSufficientForNextOperation(): boolean {
+    if (!this.asset || this.isZeroAmount) return false;
+
+    // check by symbol because of substrate assets
+    const isNativeTokenSelected = this.asset.symbol === this.evmTokenSymbol;
+
+    const fpBalance = FPNumber.fromCodecValue(this.externalNativeBalance);
+    const fpFee = FPNumber.fromCodecValue(this.evmNetworkFee);
+    const fpAfterFee = fpBalance.sub(fpFee);
+
+    if (!isNativeTokenSelected) return FPNumber.gte(fpAfterFee, fpFee);
+
+    const fpAmount = new FPNumber(this.amount, this.asset.externalDecimals);
+    const fpAfterFeeNative = FPNumber.fromCodecValue(fpAfterFee.toCodecString(), this.asset.externalDecimals);
+    const fpAfterTransfer = this.isSoraToEvm ? fpAfterFeeNative.add(fpAmount) : fpAfterFeeNative.sub(fpAmount);
+
+    return FPNumber.gte(fpAfterTransfer, fpFee);
+  }
+
   getDecimals(isSora = true): number | undefined {
     return isSora ? this.asset?.decimals : this.asset?.externalDecimals;
   }
 
   formatBalance(isSora = true): string {
-    // [TODO] balance for token in substrate network
-    if (!isSora && this.isSubBridge) {
-      return '-';
-    }
     if (!(this.asset && (this.isRegisteredAsset || isSora))) {
       return '-';
     }
@@ -507,16 +540,11 @@ export default class Bridge extends Mixins(
       this.setAmount(this.$route.params.xorToDeposit);
     } else {
       this.setAmount();
-      this.updateBalanceSubscription();
     }
   }
 
-  destroyed(): void {
-    this.resetBalanceSubscription();
-  }
-
   getBridgeItemTitle(isSoraNetwork = false): string {
-    return this.formatProvidedNetwork(isSoraNetwork);
+    return this.formatSelectedNetwork(isSoraNetwork);
   }
 
   getCopyTooltip(isSoraNetwork = false): string {
@@ -524,11 +552,6 @@ export default class Bridge extends Mixins(
     const text = `${networkName} ${this.t('addressText')}`;
 
     return this.copyTooltip(text);
-  }
-
-  async handleSwitchItems(): Promise<void> {
-    this.setSoraToEvm(!this.isSoraToEvm);
-    await this.getEvmNetworkFee();
   }
 
   handleMaxValue(): void {
@@ -545,13 +568,24 @@ export default class Bridge extends Mixins(
       return;
     }
 
+    // XOR check
     if (!this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
-      await this.waitOnNextTxFailureConfirmation();
+      await this.waitOnFeeWarningConfirmation();
       if (!this.isWarningFeeDialogConfirmed) {
         return;
       }
       this.isWarningFeeDialogConfirmed = false;
+    }
+
+    // Native token check
+    if (!this.isNativeTokenSufficientForNextOperation) {
+      this.openWarningExternalFeeDialog();
+      await this.waitOnExternalFeeWarningConfirmation();
+      if (!this.isWarningExternalFeeDialogConfirmed) {
+        return;
+      }
+      this.isWarningExternalFeeDialogConfirmed = false;
     }
 
     this.showConfirmTransactionDialog = true;
@@ -574,7 +608,6 @@ export default class Bridge extends Mixins(
 
     await this.withSelectAssetLoading(async () => {
       await this.setAssetAddress(selectedAsset.address);
-      await this.getEvmNetworkFee();
     });
   }
 
@@ -618,7 +651,7 @@ export default class Bridge extends Mixins(
     }
   }
 
-  connectRecepientWallet(): void {
+  connectRecipientWallet(): void {
     if (this.isSoraToEvm) {
       this.connectExternalWallet();
     } else {

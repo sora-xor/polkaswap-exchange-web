@@ -15,10 +15,10 @@ export default class NetworkFeeDialogMixin extends Vue {
     this.showWarningFeeDialog = true;
   }
 
-  async waitOnNextTxFailureConfirmation(ms = 500): Promise<void> {
+  async waitOnFeeWarningConfirmation(ms = 500): Promise<void> {
     if (!this.showWarningFeeDialog) return;
 
     await delay(ms);
-    return await this.waitOnNextTxFailureConfirmation();
+    return await this.waitOnFeeWarningConfirmation();
   }
 }

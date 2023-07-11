@@ -31,12 +31,15 @@ interface ConnectOptions {
 
 // TODO [EVM]
 const gasLimit = {
-  approve: 70000,
-  sendERC20ToSidechain: 86000,
-  sendEthToSidechain: 50000,
-  mintTokensByPeers: 255000,
-  receiveByEthereumAssetAddress: 250000,
-  receiveBySidechainAssetId: 255000,
+  approve: 47000,
+  sendERC20ToSidechain: 53000,
+  sendEthToSidechain: 26093,
+  mintTokensByPeers: 167000,
+  receiveByEthereumAssetAddress: {
+    ETH: 155000,
+    OTHER: 181000,
+  },
+  receiveBySidechainAssetId: 184000,
 };
 
 /**
@@ -59,8 +62,8 @@ const EthereumGasLimits = [
     [XOR.address]: gasLimit.mintTokensByPeers,
     [VAL.address]: gasLimit.mintTokensByPeers,
     [PSWAP.address]: gasLimit.receiveBySidechainAssetId,
-    [ETH.address]: gasLimit.receiveByEthereumAssetAddress,
-    [KnownEthBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
+    [ETH.address]: gasLimit.receiveByEthereumAssetAddress.ETH,
+    [KnownEthBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress.OTHER,
   },
 ];
 
@@ -95,6 +98,26 @@ async function getAccount(): Promise<string> {
   return account.getAddress();
 }
 
+async function getAssetDecimals(assetAddress: string): Promise<number> {
+  let decimals = FPNumber.DEFAULT_PRECISION;
+
+  if (isNativeEvmTokenAddress(assetAddress)) return decimals;
+
+  try {
+    const ethersInstance = await getEthersInstance();
+    const tokenInstance = new ethers.Contract(
+      assetAddress,
+      SmartContracts[SmartContractType.ERC20].abi,
+      ethersInstance.getSigner()
+    );
+    decimals = await tokenInstance.decimals();
+  } catch (error) {
+    console.error(error);
+  }
+
+  return decimals;
+}
+
 async function getAccountBalance(accountAddress: string): Promise<CodecString> {
   try {
     const ethersInstance = await getEthersInstance();
@@ -107,7 +130,6 @@ async function getAccountBalance(accountAddress: string): Promise<CodecString> {
   }
 }
 
-// TODO [EVM]: check FirstTestToken
 async function getAccountAssetBalance(
   accountAddress: string,
   assetAddress: string
@@ -284,7 +306,8 @@ async function getEvmNetworkId(): Promise<number> {
 async function getEvmNetworkFee(address: string, isSoraToEvm: boolean): Promise<CodecString> {
   try {
     const ethersInstance = await getEthersInstance();
-    const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
+    const { maxFeePerGas } = await ethersInstance.getFeeData();
+    const gasPrice = maxFeePerGas?.toNumber() ?? 0;
     const gasLimits = EthereumGasLimits[+isSoraToEvm];
     const key = address in gasLimits ? address : KnownEthBridgeAsset.Other;
     const gasLimit = gasLimits[key];
@@ -375,6 +398,7 @@ export default {
   getAccount,
   getAccountBalance,
   getAccountAssetBalance,
+  getAssetDecimals,
   getAllowance,
   checkAccountIsConnected,
   getEthersInstance,

@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Attenzione",
-        "info": "Il tuo saldo XOR sarà inferiore a {fee} XOR dopo questa transazione. Non sarai in grado di pagare la commissione di rete per un'altra transazione.",
+        "info": "Il tuo saldo {symbol} sarà inferiore a {fee} {symbol} dopo questa transazione. Non sarai in grado di pagare la commissione di rete per un'altra transazione.",
         "payoff": "Dovresti usare il Bridge per ottenere XOR da altre reti, ricevere XOR da un altro account {Sora} o scambiare qualsiasi altro token già presente nel tuo account in XOR.",
         "button": "Sì, capisco il rischio"
     },
@@ -1181,13 +1181,11 @@
     "stepText": "Fare un passo",
     "alerts": {
         "drop": "Scende al di sotto",
-        "raise": "Alza sopra",
         "once": "Una volta",
         "always": "Sempre",
         "edit": "Modifica avviso",
         "delete": "Elimina avviso",
         "onDropDesc": "{token} scende sotto {price}",
-        "onRaiseDesc": "{token} rilancia oltre {price}",
         "alertsTitle": "Avvisi",
         "alertsCreateTitle": "Imposta avviso di prezzo",
         "alertsTooltip": "Gli avvisi sui prezzi sono notifiche che possono essere impostate da te per ricevere aggiornamenti quando il prezzo di un particolare token raggiunge un determinato punto da te impostato",
@@ -1195,11 +1193,13 @@
         "enableSwitch": "Abilita le notifiche di deposito di beni",
         "currentPrice": "prezzo attuale",
         "alertTypeTitle": "Tipo di avviso",
-        "typeTooltip": "Scegli l'opzione 'scende sotto' o 'aumenta sopra' per specificare la condizione di allerta per tenere traccia di movimenti di prezzo importanti. Queste opzioni ti consentono di ricevere notifiche tempestive quando il valore della tua risorsa scende al di sotto o sale al di sopra della soglia designata",
         "alertFrequencyTitle": "Frequenza degli avvisi",
         "frequencyTooltip": "Seleziona tra \"una volta\" e \"sempre\" per determinare la frequenza con cui ricevi le notifiche per il tipo di avviso scelto. \"Una volta\" invierà una singola notifica quando la condizione è soddisfatta, mentre \"sempre\" continuerà a notificarti ogni volta che viene superata la soglia di prezzo",
         "noSupportMsg": "Le notifiche non sono supportate dal tuo browser",
-        "finishBtn": "Completare"
+        "finishBtn": "Completare",
+        "raise": "Sorge sopra",
+        "onRaiseDesc": "{token} supera {price}",
+        "typeTooltip": "Scegli l'opzione 'scende sotto' o 'sale sopra' per specificare la condizione di allerta per tenere traccia di movimenti di prezzo importanti. Queste opzioni ti consentono di ricevere notifiche tempestive quando il valore della tua risorsa scende al di sotto o sale al di sopra della soglia designata"
     },
     "accountAddressText": "Indirizzo dell'account",
     "fiatDisclaimer": "Si noti che i valori fiat associati alle criptovalute sul nostro sito Web sono forniti da servizi esterni (Subquery, Subsquid, Ceres API) sono approssimativi. Data la complessità intrinseca di questi calcoli, non è sempre possibile garantire la precisione assoluta.",
