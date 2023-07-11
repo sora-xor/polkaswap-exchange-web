@@ -146,17 +146,18 @@ function bridgeDataToHistoryItem(
 }
 
 async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void> {
-  const { getters, commit, state } = bridgeActionContext(context);
-  if (!getters.asset?.address) {
-    return;
+  const { commit, state, rootState } = bridgeActionContext(context);
+
+  let fee = ZeroStringValue;
+
+  const address = state.assetAddress;
+  const registeredAsset = address ? rootState.assets.registeredAssets[address] : null;
+
+  if (registeredAsset) {
+    fee = await ethersUtil.getEvmNetworkFee(registeredAsset.address, registeredAsset.kind, state.isSoraToEvm);
   }
 
-  try {
-    const fee = await ethersUtil.getEvmNetworkFee(getters.asset.address, state.isSoraToEvm);
-    commit.setExternalNetworkFee(fee);
-  } catch (error) {
-    commit.setExternalNetworkFee(ZeroStringValue);
-  }
+  commit.setExternalNetworkFee(fee);
 }
 
 async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void> {

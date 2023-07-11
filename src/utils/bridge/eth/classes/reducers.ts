@@ -237,7 +237,7 @@ export class EthBridgeIncomingReducer extends EthBridgeReducer {
 
       case ETH_BRIDGE_STATES.SORA_REJECTED: {
         return await this.handleState(transaction.id, {
-          nextState: ETH_BRIDGE_STATES.SORA_SUBMITTED,
+          nextState: ETH_BRIDGE_STATES.SORA_PENDING,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
         });
       }
