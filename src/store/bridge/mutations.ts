@@ -23,10 +23,16 @@ const mutations = defineMutations<BridgeState>()({
     state.assetRecipientBalance = balance;
   },
 
-  setExternalBalance(state, balance: CodecString = ZeroStringValue): void {
-    state.externalBalance = balance;
+  setAssetLockedBalance(state, balance: Nullable<CodecString> = null): void {
+    state.assetLockedBalance = balance;
+  },
+  setAssetLockedBalanceFetching(state, flag: boolean): void {
+    state.assetLockedBalanceFetching = flag;
   },
 
+  setExternalBalance(state, balance: CodecString = ZeroStringValue): void {
+    state.externalNativeBalance = balance;
+  },
   setExternalBalancesFetching(state, flag: boolean): void {
     state.externalBalancesFetching = flag;
   },
@@ -40,7 +46,7 @@ const mutations = defineMutations<BridgeState>()({
   },
 
   setExternalNetworkFee(state, fee: CodecString): void {
-    state.evmNetworkFee = fee;
+    state.externalNetworkFee = fee;
   },
 
   /**

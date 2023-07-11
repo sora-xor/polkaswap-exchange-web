@@ -31,14 +31,18 @@
             >
               <div class="history-item-info">
                 <div class="history-item-title p4">
-                  <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
+                  <formatted-amount
+                    value-can-be-hidden
+                    :value="formatAmount(item, false)"
+                    :asset-symbol="item.symbol"
+                  />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
                       isOutgoingType(item.type) ? 0 : item.externalNetwork
                     )}`"
                   />
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
-                  <formatted-amount value-can-be-hidden :value="formatAmount(item)" :asset-symbol="item.symbol" />
+                  <formatted-amount value-can-be-hidden :value="formatAmount(item, true)" :asset-symbol="item.symbol" />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
                       !isOutgoingType(item.type) ? 0 : item.externalNetwork
@@ -79,7 +83,7 @@ import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
-import type { BridgeAccountAsset } from '@/store/assets/types';
+import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { state } from '@/store/decorators';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
@@ -101,7 +105,7 @@ export default class BridgeTransactionsHistory extends Mixins(
   mixins.PaginationSearchMixin,
   mixins.NumberFormatterMixin
 ) {
-  @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeAccountAsset>;
+  @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeRegisteredAsset>;
   @state.bridge.historyPage historyPage!: number;
 
   pageAmount = 8; // override PaginationSearchMixin
@@ -165,12 +169,14 @@ export default class BridgeTransactionsHistory extends Mixins(
     return history;
   }
 
-  formatAmount(historyItem: IBridgeTransaction): string {
-    if (!(historyItem.amount && historyItem.assetAddress)) return '';
+  formatAmount(historyItem: IBridgeTransaction, received = false): string {
+    const amount = received ? historyItem.amount2 ?? historyItem.amount : historyItem.amount;
+
+    if (!historyItem.assetAddress || !amount) return '';
 
     const decimals = this.registeredAssets?.[historyItem.assetAddress]?.decimals;
 
-    return this.formatStringValue(historyItem.amount, decimals);
+    return this.formatStringValue(amount, decimals);
   }
 
   historyStatusClasses(item: IBridgeTransaction): string {

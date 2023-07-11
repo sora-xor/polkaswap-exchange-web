@@ -1,10 +1,10 @@
-import { SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api, SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 import first from 'lodash/fp/first';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { IBridgeReducerOptions, GetBridgeHistoryInstance } from '@/utils/bridge/common/types';
-import { getEvmTransactionRecieptByHash, waitForSoraTransactionHash } from '@/utils/bridge/common/utils';
+import { getEvmTransactionRecieptByHash, findEventInBlock } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import {
@@ -139,11 +139,17 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
           nextState: ETH_BRIDGE_STATES.EVM_SUBMITTED,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
           handler: async (id: string) => {
-            const eventData = await waitForSoraTransactionHash({
+            await this.waitForTransactionStatus(id);
+            await this.waitForTransactionBlockId(id);
+
+            const { blockId } = this.getTransaction(id);
+
+            const eventData = await findEventInBlock({
+              api: api.api,
+              blockId: blockId as string,
               section: 'ethBridge',
-              method: 'transferToSidechain',
-              eventMethod: 'RequestRegistered',
-            })(id, this.getTransaction);
+              method: 'RequestRegistered',
+            });
 
             const hash = eventData[0].toString();
 
@@ -231,7 +237,7 @@ export class EthBridgeIncomingReducer extends EthBridgeReducer {
 
       case ETH_BRIDGE_STATES.SORA_REJECTED: {
         return await this.handleState(transaction.id, {
-          nextState: ETH_BRIDGE_STATES.SORA_SUBMITTED,
+          nextState: ETH_BRIDGE_STATES.SORA_PENDING,
           rejectState: ETH_BRIDGE_STATES.SORA_REJECTED,
         });
       }

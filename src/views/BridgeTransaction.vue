@@ -27,7 +27,7 @@
           <formatted-amount
             class="info-line-value"
             value-can-be-hidden
-            :value="formattedAmount"
+            :value="formattedAmountReceived"
             :asset-symbol="assetSymbol"
           >
             <i :class="secondNetworkIcon" />
@@ -58,6 +58,15 @@
         :value="formattedAmount"
         :asset-symbol="assetSymbol"
         :fiat-value="amountFiatValue"
+      />
+      <info-line
+        v-if="amountReceived"
+        is-formatted
+        value-can-be-hidden
+        :label="t('receivedText')"
+        :value="formattedAmountReceived"
+        :asset-symbol="assetSymbol"
+        :fiat-value="amountReceivedFiatValue"
       />
       <info-line
         is-formatted
@@ -136,6 +145,9 @@
         <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
           t('insufficientBalanceText', { tokenSymbol: evmTokenSymbol })
         }}</template>
+        <template v-else-if="isInsufficientLiquidity">
+          {{ t('swap.insufficientLiquidity') }}
+        </template>
         <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
         <template v-else-if="isTxFailed">{{ t('retryText') }}</template>
         <template v-else>{{
@@ -156,6 +168,7 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
@@ -170,7 +183,8 @@ import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/common/utils';
 
-import type { CodecString, IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 const FORMATTED_HASH_LENGTH = 24;
@@ -231,8 +245,16 @@ export default class BridgeTransaction extends Mixins(
     return this.historyItem?.amount ?? '';
   }
 
+  get amountReceived(): string {
+    return this.historyItem?.amount2 ?? this.amount;
+  }
+
   get amountFiatValue(): Nullable<string> {
     return this.asset ? this.getFiatAmountByString(this.amount, this.asset) : null;
+  }
+
+  get amountReceivedFiatValue(): Nullable<string> {
+    return this.asset ? this.getFiatAmountByString(this.amountReceived, this.asset) : null;
   }
 
   get isSoraToEvm(): boolean {
@@ -241,6 +263,10 @@ export default class BridgeTransaction extends Mixins(
 
   get formattedAmount(): string {
     return this.amount && this.asset ? this.formatStringValue(this.amount, this.asset.decimals) : '';
+  }
+
+  get formattedAmountReceived(): string {
+    return this.amountReceived && this.asset ? this.formatStringValue(this.amountReceived, this.asset.decimals) : '';
   }
 
   get assetSymbol(): string {
@@ -272,7 +298,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txEvmNetworkFeeFormatted(): string {
-    return this.formatCodecNumber(this.txEvmNetworkFee);
+    return this.formatCodecNumber(this.txEvmNetworkFee, this.asset?.externalDecimals);
   }
 
   get txSoraHash(): string {
@@ -385,20 +411,33 @@ export default class BridgeTransaction extends Mixins(
     return this.historyItem?.blockId;
   }
 
+  get isInsufficientLiquidity(): boolean {
+    if (!(this.asset && this.assetLockedBalance && this.isSoraToEvm)) return false;
+
+    const decimals = this.asset.decimals;
+    const fpAmount = new FPNumber(this.amount, decimals);
+    const fpLocked = FPNumber.fromCodecValue(this.assetLockedBalance, decimals);
+
+    return FPNumber.gt(fpAmount, fpLocked);
+  }
+
   get isInsufficientBalance(): boolean {
     const fee = this.isSoraToEvm ? this.txSoraNetworkFee : this.txEvmNetworkFee;
 
     if (!this.asset || !this.amount || !fee) return false;
 
-    return hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEvm);
+    return this.txIsUnsigned && hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEvm);
   }
 
   get isInsufficientXorForFee(): boolean {
-    return hasInsufficientXorForFee(this.xor, this.txSoraNetworkFee);
+    return this.txIsUnsigned && hasInsufficientXorForFee(this.xor, this.txSoraNetworkFee);
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(this.externalBalance, this.txEvmNetworkFee);
+    return (
+      ((this.txIsUnsigned && !this.isSoraToEvm) || (!this.txIsUnsigned && this.isSoraToEvm)) &&
+      hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.txEvmNetworkFee)
+    );
   }
 
   get isAnotherEvmAddress(): boolean {
@@ -409,6 +448,7 @@ export default class BridgeTransaction extends Mixins(
     return (
       !(this.isSoraToEvm || this.isValidNetwork) ||
       this.isAnotherEvmAddress ||
+      this.isInsufficientLiquidity ||
       this.isInsufficientBalance ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||

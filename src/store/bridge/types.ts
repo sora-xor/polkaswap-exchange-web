@@ -5,10 +5,12 @@ export type BridgeState = {
   assetAddress: string;
   assetSenderBalance: CodecString;
   assetRecipientBalance: CodecString;
+  assetLockedBalance: Nullable<CodecString>;
+  assetLockedBalanceFetching: boolean;
   amount: string;
-  evmNetworkFee: CodecString;
+  externalNetworkFee: CodecString;
   externalNetworkFeeFetching: boolean;
-  externalBalance: CodecString;
+  externalNativeBalance: CodecString;
   externalBalancesFetching: boolean;
   externalBlockNumber: number;
   // history sources (unsynced localstorage & network)

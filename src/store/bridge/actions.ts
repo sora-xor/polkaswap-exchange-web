@@ -1,4 +1,4 @@
-import { BridgeCurrencyType, BridgeHistory, FPNumber, Operation } from '@sora-substrate/util';
+import { BridgeCurrencyType, BridgeRequestAssetKind, BridgeHistory, FPNumber, Operation } from '@sora-substrate/util';
 import { getAssetBalance } from '@sora-substrate/util/build/assets';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
@@ -21,7 +21,8 @@ import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { SignTxResult } from './types';
-import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
@@ -145,23 +146,34 @@ function bridgeDataToHistoryItem(
 }
 
 async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void> {
-  const { getters, commit, state } = bridgeActionContext(context);
-  if (!getters.asset?.address) {
-    return;
+  const { commit, state, rootState } = bridgeActionContext(context);
+
+  let fee = ZeroStringValue;
+
+  const address = state.assetAddress;
+  const registeredAsset = address ? rootState.assets.registeredAssets[address] : null;
+
+  if (registeredAsset) {
+    fee = await ethersUtil.getEvmNetworkFee(registeredAsset.address, registeredAsset.kind, state.isSoraToEvm);
   }
 
-  try {
-    const fee = await ethersUtil.getEvmNetworkFee(getters.asset.address, state.isSoraToEvm);
-    commit.setExternalNetworkFee(fee);
-  } catch (error) {
-    commit.setExternalNetworkFee(ZeroStringValue);
-  }
+  commit.setExternalNetworkFee(fee);
 }
 
 async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void> {
-  const { commit } = bridgeActionContext(context);
-  // [TODO] fetch fee
-  commit.setExternalNetworkFee(ZeroStringValue);
+  const { commit, rootState } = bridgeActionContext(context);
+
+  let fee = ZeroStringValue;
+
+  const network = rootState.web3.networkSelected;
+
+  if (network) {
+    const adapter = subConnector.getAdapterForNetwork(network as SubNetwork);
+    await adapter.connect();
+    fee = await adapter.getNetworkFee();
+  }
+
+  commit.setExternalNetworkFee(fee);
 }
 
 async function updateEvmBalances(context: ActionContext<any, any>): Promise<void> {
@@ -312,11 +324,48 @@ async function updateEvmHistory(context: ActionContext<any, any>): Promise<void>
   commit.setHistoryLoading(false);
 }
 
+async function updateEthLockedBalance(context: ActionContext<any, any>): Promise<void> {
+  const { commit, getters, rootGetters, rootState } = bridgeActionContext(context);
+  const { address, externalAddress } = getters.asset || {};
+  const bridgeContractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other);
+
+  if (address && externalAddress && bridgeContractAddress) {
+    const assetKind = rootState.assets.registeredAssets[address]?.kind;
+
+    if (assetKind === BridgeRequestAssetKind.Sidechain) {
+      const { value } = await ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress);
+      commit.setAssetLockedBalance(value);
+      return;
+    }
+  }
+
+  commit.setAssetLockedBalance();
+}
+
+async function updateBridgeProxyLockedBalance(context: ActionContext<any, any>): Promise<void> {
+  const { commit, getters, rootState } = bridgeActionContext(context);
+  const { address } = getters.asset || {};
+  const { networkSelected, networkType } = rootState.web3;
+
+  if (address && networkSelected && networkType) {
+    const bridgeApi = getters.bridgeApi as typeof evmBridgeApi | typeof subBridgeApi;
+    const data = await bridgeApi.getLockedAssets(networkSelected as never, address);
+    const balance = data.toString();
+    commit.setAssetLockedBalance(balance);
+  }
+
+  commit.setAssetLockedBalance();
+}
+
 const actions = defineActions({
   async updateBalancesAndFees(context): Promise<void> {
     const { dispatch } = bridgeActionContext(context);
 
-    await Promise.all([dispatch.updateExternalBalance(), dispatch.getExternalNetworkFee()]);
+    await Promise.all([
+      dispatch.updateExternalBalance(),
+      dispatch.updateExternalLockedBalance(),
+      dispatch.getExternalNetworkFee(),
+    ]);
   },
 
   async switchDirection(context): Promise<void> {
@@ -365,6 +414,20 @@ const actions = defineActions({
     }
 
     commit.setExternalBalancesFetching(false);
+  },
+
+  async updateExternalLockedBalance(context): Promise<void> {
+    const { commit, getters } = bridgeActionContext(context);
+
+    commit.setAssetLockedBalanceFetching(true);
+
+    if (getters.isEthBridge) {
+      await updateEthLockedBalance(context);
+    } else {
+      await updateBridgeProxyLockedBalance(context);
+    }
+
+    commit.setAssetLockedBalanceFetching(false);
   },
 
   async updateExternalBlockNumber(context): Promise<void> {
