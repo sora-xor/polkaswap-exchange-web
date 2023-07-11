@@ -10,8 +10,7 @@ import type { AmountWithSuffix } from '@/types/formats';
 
 import storage from './storage';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util';
-import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { Route } from 'vue-router';
 

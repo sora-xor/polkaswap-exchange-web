@@ -183,7 +183,8 @@ import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/common/utils';
 
-import type { CodecString, IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 
 const FORMATTED_HASH_LENGTH = 24;

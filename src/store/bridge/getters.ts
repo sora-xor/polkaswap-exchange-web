@@ -9,7 +9,8 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { BridgeState } from './types';
-import type { IBridgeTransaction, CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 const getters = defineGetters<BridgeState>()({
   asset(...args): Nullable<RegisteredAccountAsset> {

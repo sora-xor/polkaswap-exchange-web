@@ -1,4 +1,5 @@
-import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 export type AddAsset = (address: string) => Promise<void>;
 export type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountAsset>;

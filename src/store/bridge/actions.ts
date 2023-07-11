@@ -21,7 +21,8 @@ import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { SignTxResult } from './types';
-import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
@@ -323,14 +324,15 @@ async function updateEvmHistory(context: ActionContext<any, any>): Promise<void>
 }
 
 async function updateEthLockedBalance(context: ActionContext<any, any>): Promise<void> {
-  const { commit, getters, rootGetters } = bridgeActionContext(context);
+  const { commit, getters, rootGetters, rootState } = bridgeActionContext(context);
+  const { address, externalAddress } = getters.asset || {};
   const bridgeContractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other);
 
-  if (getters.asset?.address && getters.asset?.externalAddress && bridgeContractAddress) {
-    const assetKind = await ethBridgeApi.getAssetKind(getters.asset.address);
+  if (address && externalAddress && bridgeContractAddress) {
+    const assetKind = rootState.assets.registeredAssets[address]?.kind;
 
     if (assetKind === BridgeRequestAssetKind.Sidechain) {
-      const { value } = await ethersUtil.getAccountAssetBalance(bridgeContractAddress, getters.asset.externalAddress);
+      const { value } = await ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress);
       commit.setAssetLockedBalance(value);
       return;
     }
@@ -341,15 +343,12 @@ async function updateEthLockedBalance(context: ActionContext<any, any>): Promise
 
 async function updateBridgeProxyLockedBalance(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, rootState } = bridgeActionContext(context);
+  const { address } = getters.asset || {};
   const { networkSelected, networkType } = rootState.web3;
 
-  if (getters.asset?.address && networkSelected && networkType) {
+  if (address && networkSelected && networkType) {
     const bridgeApi = getters.bridgeApi as typeof evmBridgeApi | typeof subBridgeApi;
-    // [TODO]: move to js-lib
-    const data = await bridgeApi.api.query.bridgeProxy.lockedAssets(
-      { [networkType]: networkSelected },
-      getters.asset.address
-    );
+    const data = await bridgeApi.getLockedAssets(networkSelected as never, address);
     const balance = data.toString();
     commit.setAssetLockedBalance(balance);
   }

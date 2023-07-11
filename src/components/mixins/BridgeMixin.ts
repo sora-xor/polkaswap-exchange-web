@@ -4,7 +4,8 @@ import { Component, Mixins } from 'vue-property-decorator';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { getter, mutation, state } from '@/store/decorators';
 
-import type { CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {

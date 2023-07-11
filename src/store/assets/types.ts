@@ -1,9 +1,11 @@
-import type { RegisteredAccountAsset, CodecString } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 export type BridgeRegisteredAsset = {
   address: string;
   decimals: number;
   contract?: string;
+  kind?: string;
 };
 
 export type SubAccountAsset = {

@@ -312,8 +312,8 @@ import {
   delay,
 } from '@/utils';
 
-import type { IBridgeTransaction, RegisteredAccountAsset, CodecString } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

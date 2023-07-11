@@ -37,8 +37,7 @@ import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { state, getter } from '@/store/decorators';
 import type { NetworkData } from '@/types/bridge';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

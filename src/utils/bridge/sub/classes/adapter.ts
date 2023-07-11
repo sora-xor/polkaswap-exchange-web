@@ -8,7 +8,8 @@ import { ZeroStringValue } from '@/consts';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { ApiPromise } from '@polkadot/api';
-import type { RegisteredAsset, CodecString } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
+import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 class SubAdapter {
   protected endpoint!: string;
@@ -166,7 +167,7 @@ class RococoAdapter extends SubAdapter {
   }
 }
 
-class RococoKaruraAdapter extends SubAdapter {
+class KusamaKaruraAdapter extends SubAdapter {
   // [TODO] fetch balance by symbol
   public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
     return await this.getAccountBalance(accountAddress);
@@ -180,7 +181,7 @@ class RococoKaruraAdapter extends SubAdapter {
       symbol: asset.symbol,
       assetAddress: asset.address,
       amount: `${amount}`,
-      externalNetwork: SubNetwork.RococoKarura,
+      externalNetwork: SubNetwork.KusamaKarura,
       externalNetworkType: BridgeNetworkType.Sub,
     };
 
@@ -221,7 +222,7 @@ class SubConnector {
   public readonly adapters = {
     [SubNetwork.Rococo]: new RococoAdapter(),
     [SubNetwork.RococoSora]: new SubAdapter(),
-    [SubNetwork.RococoKarura]: new RococoKaruraAdapter(),
+    [SubNetwork.KusamaKarura]: new KusamaKaruraAdapter(),
   };
 
   public adapter: SubAdapter = this.adapters[SubNetwork.Rococo];
