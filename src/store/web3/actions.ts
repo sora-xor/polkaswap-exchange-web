@@ -101,27 +101,26 @@ const actions = defineActions({
     });
   },
 
-  async restoreSelectedNetwork(context): Promise<void> {
-    const { commit, getters, state } = web3ActionContext(context);
-
-    if (getters.selectedNetwork) return;
-
-    const selectedNetworkId = ethersUtil.getSelectedNetwork() ?? state.ethBridgeEvmNetwork;
-
-    commit.setSelectedNetwork(selectedNetworkId);
-  },
-
   /**
-   * Restore selected by user network type (Hashi, EVM, Substrate)
+   * Restore selected by user network & network type (EVMLegacy, EVM, Sub)
    */
-  async restoreNetworkType(context): Promise<void> {
-    const { commit, state } = web3ActionContext(context);
+  async restoreSelectedNetwork(context): Promise<void> {
+    const { commit, state, getters } = web3ActionContext(context);
 
-    if (state.networkType) return;
+    const [type, id] = [ethersUtil.getSelectedBridgeType(), ethersUtil.getSelectedNetwork()];
 
-    const networkType = ethersUtil.getSelectedBridgeType() ?? BridgeNetworkType.EvmLegacy;
+    if (type && id) {
+      const networkData = getters.availableNetworks[type]?.[id];
 
-    commit.setNetworkType(networkType);
+      if (!!networkData && !networkData.disabled) {
+        commit.setNetworkType(type);
+        commit.setSelectedNetwork(id);
+        return;
+      }
+    }
+
+    commit.setNetworkType(BridgeNetworkType.EvmLegacy);
+    commit.setSelectedNetwork(state.ethBridgeEvmNetwork);
   },
 
   async getEvmTokenAddressByAssetId(context, soraAssetId: string): Promise<string> {

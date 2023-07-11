@@ -1,3 +1,6 @@
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+
+import { delay } from '@/utils';
 import type {
   SignExternal,
   SignSora,
@@ -18,6 +21,8 @@ import type {
 } from '@/utils/bridge/common/types';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
+
+const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS;
 
 export class BridgeReducer<Transaction extends IBridgeTransaction> implements IBridgeReducer<Transaction> {
   protected readonly signExternal!: SignExternal;
@@ -146,6 +151,41 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     }
 
     this.addTransactionToProgress(id);
+  }
+
+  async waitForTransactionStatus(id: string): Promise<void> {
+    const { status } = this.getTransaction(id);
+
+    if (status) return;
+
+    await delay(1_000);
+    await this.waitForTransactionStatus(id);
+  }
+
+  private async checkTransactionBlockId(id: string): Promise<void> {
+    const { blockId } = this.getTransaction(id);
+
+    if (blockId) return;
+
+    await delay(1_000);
+    await this.checkTransactionBlockId(id);
+  }
+
+  async waitForTransactionBlockId(id: string): Promise<void> {
+    const { txId } = this.getTransaction(id);
+
+    if (!txId) {
+      throw new Error(`[${this.constructor.name}]: Transaction "id" is empty, first sign the transaction`);
+    }
+
+    try {
+      await Promise.race([
+        this.checkTransactionBlockId(id),
+        new Promise((resolve, reject) => setTimeout(reject, BLOCK_PRODUCE_TIME * 3)),
+      ]);
+    } catch (error) {
+      console.info(`[${this.constructor.name}]: Implement "blockId" restoration by "txId"`);
+    }
   }
 }
 

@@ -1,12 +1,12 @@
 import { defineMutations } from 'direct-vuex';
 
-import type { AssetsState, BridgeAccountAsset } from './types';
+import type { AssetsState, BridgeRegisteredAsset } from './types';
 
 const mutations = defineMutations<AssetsState>()({
   setRegisteredAssetsFetching(state, value: boolean): void {
     state.registeredAssetsFetching = value;
   },
-  setRegisteredAssets(state, assets: Record<string, BridgeAccountAsset>): void {
+  setRegisteredAssets(state, assets: Record<string, BridgeRegisteredAsset>): void {
     state.registeredAssets = assets;
     state.registeredAssetsFetching = false;
   },

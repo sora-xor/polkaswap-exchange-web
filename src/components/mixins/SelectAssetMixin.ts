@@ -5,8 +5,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
 import { getter } from '@/store/decorators';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util';
-import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearchMixin) {
