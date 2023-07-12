@@ -201,6 +201,7 @@ export enum Components {
   OrderBookBuy = 'pages/OrderBook/LimitOrderBuy',
   OrderBookSell = 'pages/OrderBook/LimitOrderSell',
   BookTransactionDetails = 'pages/OrderBook/TransactionDetails',
+  PairListPopover = 'pages/OrderBook/PairListPopover',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
