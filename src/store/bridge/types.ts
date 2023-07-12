@@ -5,8 +5,10 @@ export type BridgeState = {
   assetAddress: string;
   assetSenderBalance: CodecString;
   assetRecipientBalance: CodecString;
+  assetLockedBalance: Nullable<CodecString>;
+  assetLockedBalanceFetching: boolean;
   amount: string;
-  evmNetworkFee: CodecString;
+  externalNetworkFee: CodecString;
   externalNetworkFeeFetching: boolean;
   externalNativeBalance: CodecString;
   externalBalancesFetching: boolean;

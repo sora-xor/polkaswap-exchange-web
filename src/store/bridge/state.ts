@@ -8,8 +8,10 @@ function initialState(): BridgeState {
     assetAddress: '',
     assetSenderBalance: ZeroStringValue, // balance for sora
     assetRecipientBalance: ZeroStringValue, // balance for bridge network
+    assetLockedBalance: null, // asset balance locked on bridge
+    assetLockedBalanceFetching: false,
     amount: '',
-    evmNetworkFee: ZeroStringValue,
+    externalNetworkFee: ZeroStringValue,
     externalNetworkFeeFetching: false,
     externalNativeBalance: ZeroStringValue, // balance for external native token (like ETH)
     externalBalancesFetching: false,

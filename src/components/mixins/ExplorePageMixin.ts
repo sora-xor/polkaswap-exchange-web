@@ -6,7 +6,7 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
 
 import { getter } from '@/store/decorators';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class ExplorePageMixin extends Mixins(

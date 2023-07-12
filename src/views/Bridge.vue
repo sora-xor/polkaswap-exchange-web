@@ -237,6 +237,9 @@
           <template v-else-if="isInsufficientEvmNativeTokenForFee">
             {{ t('insufficientBalanceText', { tokenSymbol: evmTokenSymbol }) }}
           </template>
+          <template v-else-if="isInsufficientLiquidity">
+            {{ t('swap.insufficientLiquidity') }}
+          </template>
           <template v-else>
             {{ t('bridge.next') }}
           </template>
@@ -295,7 +298,7 @@ import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
-import { Components, PageNames } from '@/consts';
+import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { getter, action, mutation, state } from '@/store/decorators';
 import {
@@ -308,10 +311,9 @@ import {
   asZeroValue,
   delay,
 } from '@/utils';
-import ethersUtil from '@/utils/ethers-util';
 
-import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -344,6 +346,7 @@ export default class Bridge extends Mixins(
 
   @state.bridge.externalNetworkFeeFetching private externalNetworkFeeFetching!: boolean;
   @state.bridge.externalBalancesFetching private externalBalancesFetching!: boolean;
+  @state.bridge.assetLockedBalanceFetching private assetLockedBalanceFetching!: boolean;
   @state.bridge.amount amount!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
@@ -400,36 +403,40 @@ export default class Bridge extends Mixins(
   }
 
   get isZeroAmount(): boolean {
-    return +this.amount === 0;
+    return asZeroValue(this.amount);
+  }
+
+  get maxValue(): string {
+    if (!(this.asset && this.isRegisteredAsset)) return ZeroStringValue;
+
+    const fee = this.isSoraToEvm ? this.soraNetworkFee : this.evmNetworkFee;
+    const maxBalance = getMaxValue(this.asset, fee, !this.isSoraToEvm);
+
+    if (this.assetLockedBalance && this.isSoraToEvm) {
+      const fpBalance = this.getFPNumber(maxBalance, this.asset.decimals);
+      const fpLocked = this.getFPNumberFromCodec(this.assetLockedBalance, this.asset.decimals);
+
+      if (FPNumber.gt(fpBalance, fpLocked)) return fpLocked.toString();
+    }
+
+    return maxBalance;
   }
 
   get isMaxAvailable(): boolean {
-    if (!(this.areNetworksConnected && this.asset)) {
+    if (!(this.asset && this.isRegisteredAsset && this.areNetworksConnected && !asZeroValue(this.maxValue)))
       return false;
-    }
-    if (!(this.isRegisteredAsset || this.isSoraToEvm)) {
-      return false;
-    }
-    const balance = getAssetBalance(this.asset, { internal: this.isSoraToEvm });
-    if (asZeroValue(balance)) {
-      return false;
-    }
+
+    return this.maxValue !== this.amount;
+  }
+
+  get isInsufficientLiquidity(): boolean {
+    if (!(this.asset && this.assetLockedBalance && this.isSoraToEvm)) return false;
+
     const decimals = this.asset.decimals;
-    const fpBalance = this.getFPNumberFromCodec(balance, decimals);
-    const fpAmount = this.getFPNumber(this.amount, decimals);
-    if (isXorAccountAsset(this.asset) && this.isSoraToEvm) {
-      const fpFee = this.getFPNumberFromCodec(this.soraNetworkFee, decimals);
-      return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee);
-    }
-    if (
-      this.asset.externalAddress &&
-      ethersUtil.isNativeEvmTokenAddress(this.asset.externalAddress) &&
-      !this.isSoraToEvm
-    ) {
-      const fpFee = this.getFPNumberFromCodec(this.evmNetworkFee);
-      return !FPNumber.eq(fpFee, fpBalance.sub(fpAmount)) && FPNumber.gt(fpBalance, fpFee);
-    }
-    return !FPNumber.eq(fpBalance, fpAmount);
+    const fpAmount = new FPNumber(this.amount, decimals);
+    const fpLocked = FPNumber.fromCodecValue(this.assetLockedBalance, decimals);
+
+    return FPNumber.gt(fpAmount, fpLocked);
   }
 
   get isInsufficientXorForFee(): boolean {
@@ -475,7 +482,8 @@ export default class Bridge extends Mixins(
       this.isZeroAmount ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
-      this.isInsufficientBalance
+      this.isInsufficientBalance ||
+      this.isInsufficientLiquidity
     );
   }
 
@@ -484,7 +492,8 @@ export default class Bridge extends Mixins(
       this.isSelectAssetLoading ||
       this.externalNetworkFeeFetching ||
       this.externalBalancesFetching ||
-      this.registeredAssetsFetching
+      this.registeredAssetsFetching ||
+      this.assetLockedBalanceFetching
     );
   }
 
@@ -555,19 +564,10 @@ export default class Bridge extends Mixins(
   }
 
   handleMaxValue(): void {
-    if (this.asset && this.isRegisteredAsset) {
-      const fee = this.isSoraToEvm ? this.soraNetworkFee : this.evmNetworkFee;
-      const max = getMaxValue(this.asset, fee, !this.isSoraToEvm);
-      this.setAmount(max);
-    }
+    this.setAmount(this.maxValue);
   }
 
   async handleConfirmButtonClick(): Promise<void> {
-    if (!this.isValidNetwork) {
-      this.updateNetworkProvided();
-      return;
-    }
-
     // XOR check
     if (!this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
@@ -635,14 +635,6 @@ export default class Bridge extends Mixins(
     }
   }
 
-  connectInternalWallet(): void {
-    if (this.isSubBridge) {
-      this.connectSubWallet();
-    } else {
-      this.connectSoraWallet();
-    }
-  }
-
   connectSenderWallet() {
     if (this.isSoraToEvm || this.isSubBridge) {
       this.connectSoraWallet();
@@ -656,6 +648,14 @@ export default class Bridge extends Mixins(
       this.connectExternalWallet();
     } else {
       this.connectInternalWallet();
+    }
+  }
+
+  private connectInternalWallet(): void {
+    if (this.isSubBridge) {
+      this.connectSubWallet();
+    } else {
+      this.connectSoraWallet();
     }
   }
 }
