@@ -1213,5 +1213,30 @@
         "x1Btn": "Beli XOR dengan kartu",
         "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti."
     },
-    "acceptOnScrollText": "Gulir untuk menerima"
+    "acceptOnScrollText": "Gulir untuk menerima",
+    "addressBook": {
+        "myExtAccounts": "Akun ekstensi saya",
+        "myBook": "Buku saya",
+        "searchPlaceholder": "Cari berdasarkan alamat, nama atau identitas",
+        "noFoundRecords": "Tidak ada catatan yang ditemukan",
+        "noContacts": "Anda belum menambahkan kontak apa pun",
+        "addContact": "Tambah kontak",
+        "dialogTitle": "Kontak Anda",
+        "identity": "Identitas dalam rantai",
+        "none": "Tidak ada",
+        "detected": "Alamat baru terdeteksi",
+        "save": "Simpan sebagai kontak",
+        "tooltip": "Kumpulkan buku alamat dengan memberikan nama dan alamat agar kontak Anda tetap teratur dan terkini",
+        "notSoraAddress": "Alamat ini akan disimpan sebagai alamat SORA di bawah ini. Pastikan penerima dapat mengakses rantai SORA:",
+        "options": {
+            "send": "Kirim token",
+            "edit": "Mengedit kontak",
+            "delete": "Menghapus"
+        },
+        "btn": {
+            "enterName": "Masukkan nama",
+            "present": "Sudah hadir",
+            "saveChanges": "Simpan perubahan"
+        }
+    }
 }
