@@ -181,28 +181,35 @@ async function updateEvmBalances(context: ActionContext<any, any>): Promise<void
   const { sender, recipient, asset } = getters;
   const { isSoraToEvm } = state;
 
-  let recipientBalance = ZeroStringValue;
-  let senderBalance = ZeroStringValue;
-  let nativeBalance = ZeroStringValue;
+  const spender = isSoraToEvm ? recipient : sender;
 
-  if (asset?.address) {
-    if (sender) {
-      senderBalance = isSoraToEvm
-        ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
-        : (await ethersUtil.getAccountAssetBalance(sender, asset?.externalAddress)).value;
-    }
-    if (recipient) {
-      recipientBalance = isSoraToEvm
-        ? (await ethersUtil.getAccountAssetBalance(recipient, asset?.externalAddress)).value
-        : (await getAssetBalance(api.api, recipient, asset.address, asset.decimals)).transferable;
-    }
+  const getSenderBalance = async () => {
+    if (!(asset?.address && sender)) return ZeroStringValue;
 
-    const spender = isSoraToEvm ? recipient : sender;
+    return isSoraToEvm
+      ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
+      : (await ethersUtil.getAccountAssetBalance(sender, asset?.externalAddress)).value;
+  };
 
-    if (spender) {
-      nativeBalance = await ethersUtil.getAccountBalance(isSoraToEvm ? recipient : sender);
-    }
-  }
+  const getRecipientBalance = async () => {
+    if (!(asset?.address && recipient)) return ZeroStringValue;
+
+    return isSoraToEvm
+      ? (await ethersUtil.getAccountAssetBalance(recipient, asset?.externalAddress)).value
+      : (await getAssetBalance(api.api, recipient, asset.address, asset.decimals)).transferable;
+  };
+
+  const getSpenderBalance = async () => {
+    if (!(asset?.address && spender)) return ZeroStringValue;
+
+    return await ethersUtil.getAccountBalance(spender);
+  };
+
+  const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
+    getSenderBalance(),
+    getRecipientBalance(),
+    getSpenderBalance(),
+  ]);
 
   commit.setAssetSenderBalance(senderBalance);
   commit.setAssetRecipientBalance(recipientBalance);
@@ -214,24 +221,33 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<void
   const { sender, recipient, asset } = getters;
   const { isSoraToEvm } = state;
 
-  let recipientBalance = ZeroStringValue;
-  let senderBalance = ZeroStringValue;
-  let nativeBalance = ZeroStringValue;
+  const getSenderBalance = async () => {
+    if (!(asset?.address && sender)) return ZeroStringValue;
 
-  if (asset?.address) {
-    if (sender) {
-      senderBalance = isSoraToEvm
-        ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
-        : await subConnector.adapter.getTokenBalance(sender, asset?.externalAddress);
+    return isSoraToEvm
+      ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
+      : await subConnector.adapter.getTokenBalance(sender, asset?.externalAddress);
+  };
 
-      nativeBalance = await subConnector.adapter.getTokenBalance(sender);
-    }
-    if (recipient) {
-      recipientBalance = isSoraToEvm
-        ? await subConnector.adapter.getTokenBalance(recipient, asset?.externalAddress)
-        : (await getAssetBalance(api.api, recipient, asset.address, asset.decimals)).transferable;
-    }
-  }
+  const getRecipientBalance = async () => {
+    if (!(asset?.address && recipient)) return ZeroStringValue;
+
+    return isSoraToEvm
+      ? await subConnector.adapter.getTokenBalance(recipient, asset?.externalAddress)
+      : (await getAssetBalance(api.api, recipient, asset.address, asset.decimals)).transferable;
+  };
+
+  const getSpenderBalance = async () => {
+    if (!(asset?.address && sender)) return ZeroStringValue;
+
+    return await subConnector.adapter.getTokenBalance(sender);
+  };
+
+  const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
+    getSenderBalance(),
+    getRecipientBalance(),
+    getSpenderBalance(),
+  ]);
 
   commit.setAssetSenderBalance(senderBalance);
   commit.setAssetRecipientBalance(recipientBalance);
