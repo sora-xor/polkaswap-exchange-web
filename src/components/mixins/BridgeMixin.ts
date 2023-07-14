@@ -4,12 +4,14 @@ import { Component, Mixins } from 'vue-property-decorator';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { getter, mutation, state } from '@/store/decorators';
 
-import type { CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
-  @state.bridge.externalBalance externalBalance!: CodecString;
+  @state.bridge.externalNativeBalance externalNativeBalance!: CodecString;
   @state.bridge.externalBlockNumber externalBlockNumber!: number;
+  @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<CodecString>;
 
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
   @getter.bridge.sender sender!: string;

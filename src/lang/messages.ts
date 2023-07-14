@@ -703,7 +703,7 @@ export default {
   },
   confirmNextTxFailure: {
     header: 'Attention',
-    info: 'Your XOR balance will be less than {fee} XOR after this transaction. You won’t be able to pay for the network fee for another transaction.',
+    info: 'Your {symbol} balance will be less than {fee} {symbol} after this transaction. You won’t be able to pay for the network fee for another transaction.',
     payoff:
       'You would have to use the Bridge to get XOR from other networks, get sent XOR from another {Sora} account, or swap any other token already in your account into XOR.',
     button: 'Yes, I understand the risk',

@@ -25,7 +25,6 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   @action.bridge.updateExternalBalance private updateExternalBalance!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBlockNumber private updateExternalBlockNumber!: AsyncFnWithoutArgs;
   @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
-  @action.web3.restoreNetworkType restoreNetworkType!: AsyncFnWithoutArgs;
   @action.web3.restoreSelectedNetwork restoreSelectedNetwork!: AsyncFnWithoutArgs;
 
   private unwatchEthereum!: FnWithoutArgs;
@@ -37,7 +36,6 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
 
     await this.withParentLoading(async () => {
       await this.getSupportedApps();
-      await this.restoreNetworkType();
       await this.restoreSelectedNetwork();
       await this.connectExternalNetwork();
     });

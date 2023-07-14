@@ -33,12 +33,11 @@ import SelectAssetMixin from '@/components/mixins/SelectAssetMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
-import type { BridgeAccountAsset } from '@/store/assets/types';
+import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { state, getter } from '@/store/decorators';
 import type { NetworkData } from '@/types/bridge';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -51,7 +50,7 @@ export default class BridgeSelectAsset extends Mixins(TranslationMixin, SelectAs
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: AccountAsset;
 
   @getter.web3.selectedNetwork private selectedNetwork!: Nullable<NetworkData>;
-  @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeAccountAsset>;
+  @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeRegisteredAsset>;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
 
@@ -67,7 +66,7 @@ export default class BridgeSelectAsset extends Mixins(TranslationMixin, SelectAs
     const assetsAddresses = Object.keys(this.registeredAssets);
     const excludeAddress = this.asset?.address;
 
-    return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance(!this.isSoraToEvm));
+    return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance);
   }
 
   get filteredAssets(): Array<RegisteredAccountAsset> {

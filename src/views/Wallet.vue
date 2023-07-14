@@ -36,7 +36,6 @@ export default class Wallet extends Mixins(TranslationMixin) {
 
   @action.swap.setTokenFromAddress private setSwapFromAsset!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setSwapToAsset!: (address?: string) => Promise<void>;
-  @action.bridge.setAssetAddress private setBridgeAsset!: (address?: string) => Promise<void>;
   @action.addLiquidity.setFirstTokenAddress private setAddliquidityAssetA!: (address: string) => Promise<void>;
   @action.addLiquidity.setSecondTokenAddress private setAddliquidityAssetB!: (address: string) => Promise<void>;
 
@@ -72,8 +71,7 @@ export default class Wallet extends Mixins(TranslationMixin) {
     router.push({ name: PageNames.AddLiquidity, params });
   }
 
-  async handleBridge(asset: AccountAsset): Promise<void> {
-    await this.setBridgeAsset(asset.address);
+  handleBridge(asset: AccountAsset): void {
     router.push({ name: PageNames.Bridge, params: { address: asset.address } });
   }
 
