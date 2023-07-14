@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Atención",
-        "info": "Su saldo de XOR será inferior a {fee} XOR después de esta transacción. No podrá pagar la tarifa de red para otra transacción.",
+        "info": "Su saldo {symbol} será inferior a {fee} {symbol} después de esta transacción. No podrá pagar la tarifa de red para otra transacción.",
         "payoff": "Tendrías que utilizar el Puente para obtener XOR de otras redes, conseguir que te envíen XOR desde otra cuenta {Sora}, o cambiar cualquier otro token que ya tengas en tu cuenta por XOR.",
         "button": "Si, entiendo el riesgo"
     },

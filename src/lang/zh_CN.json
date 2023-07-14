@@ -865,7 +865,7 @@
     },
     "confirmNextTxFailure": {
         "header": "注意",
-        "info": "在此交易后，您的 XOR 余额将低于{fee}XOR。 您将无法支付另一笔交易的网络费用。",
+        "info": "在此交易后，您的 {symbol} 余额将低于{fee}{symbol} 您将无法支付另一笔交易的网络费用。",
         "payoff": "您必须使用转接桥从其他网络获取 XOR，从另一个 {Sora} 账户发送 XOR，或者将您账户中已有的任何其他代币兑换为 XOR。",
         "button": "是的，我了解风险"
     },

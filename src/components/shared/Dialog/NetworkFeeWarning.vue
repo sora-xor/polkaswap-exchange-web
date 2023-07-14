@@ -1,10 +1,11 @@
 <template>
   <dialog-base :visible.sync="isVisible" :showCloseButton="false">
-    <network-fee-warning class="network-fee" :fee="fee" @confirm="handleConfirm" />
+    <network-fee-warning class="network-fee" :fee="fee" :symbol="symbol" :payoff="payoff" @confirm="handleConfirm" />
   </dialog-base>
 </template>
 
 <script lang="ts">
+import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
@@ -18,6 +19,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 })
 export default class NetworkFeeWarningDialog extends Mixins(mixins.DialogMixin, TranslationMixin) {
   @Prop({ type: String }) readonly fee!: string;
+  @Prop({ type: String, default: KnownSymbols.XOR }) readonly symbol!: string;
+  @Prop({ type: Boolean, default: true }) readonly payoff!: boolean;
 
   handleConfirm(): void {
     this.closeDialog();
@@ -27,8 +30,7 @@ export default class NetworkFeeWarningDialog extends Mixins(mixins.DialogMixin, 
 </script>
 
 <style lang="scss" scoped>
-.network-fee {
-  margin-top: -18px;
-  margin-bottom: var(--s-size-mini);
+.network-fee.content {
+  margin-top: 0px;
 }
 </style>

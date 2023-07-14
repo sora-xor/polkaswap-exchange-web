@@ -12,7 +12,8 @@ import {
 import { swapGetterContext } from '@/store/swap';
 
 import type { SwapState } from './types';
-import type { CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 const getters = defineGetters<SwapState>()({
   tokenFrom(...args): Nullable<RegisteredAccountAsset> {

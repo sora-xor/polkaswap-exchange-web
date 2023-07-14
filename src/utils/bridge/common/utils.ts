@@ -1,19 +1,16 @@
 import { Operation, isBridgeOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/util';
-import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
-import { delay } from '@/utils';
-import type { GetTransaction } from '@/utils/bridge/common/types';
 import { isUnsignedTx as isUnsignedEthTx } from '@/utils/bridge/eth/utils';
 import { isUnsignedTx as isUnsignedEvmTx } from '@/utils/bridge/evm/utils';
 import { isUnsignedTx as isUnsignedSubTx } from '@/utils/bridge/sub/utils';
 import ethersUtil from '@/utils/ethers-util';
 
+import type { ApiPromise } from '@polkadot/api';
 import type { IBridgeTransaction, BridgeHistory } from '@sora-substrate/util';
 import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
-
-const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS; // Block production time
 
 export const waitForEvmTransactionStatus = async (
   hash: string,
@@ -104,53 +101,26 @@ export const findUserTxIdInBlock = async (
   return userExtrinsic.hash.toString();
 };
 
-export const waitForSoraTransactionHash =
-  <T extends IBridgeTransaction>(options: {
-    section: string;
-    method: string;
-    eventMethod: string;
-    eventSection?: string;
-  }) =>
-  async (id: string, getTransaction: GetTransaction<T>): Promise<any> => {
-    const { blockId, status, from } = getTransaction(id);
+export const findEventInBlock = async ({
+  api,
+  blockId,
+  section,
+  method,
+}: {
+  api: ApiPromise;
+  blockId: string;
+  section: string;
+  method: string;
+}) => {
+  const apiInstanceAtBlock = await api.at(blockId);
+  const blockEvents = (await apiInstanceAtBlock.query.system.events()).toArray();
 
-    if (status && blockId) {
-      const extrinsics = await api.system.getExtrinsicsFromBlock(blockId);
+  const event = blockEvents.find(({ event }) => event.section === section && event.method === method);
 
-      if (extrinsics.length) {
-        const extrinsicIndex = extrinsics.findIndex((item) => {
-          const {
-            signer,
-            method: { method, section },
-          } = item;
+  if (!event) throw new Error('Event not found');
 
-          return signer.toString() === from && section === options.section && method === options.method;
-        });
-
-        if (!Number.isFinite(extrinsicIndex)) throw new Error('[Bridge]: Transaction was failed');
-
-        const blockEvents = await api.system.getBlockEvents(blockId);
-
-        const event = blockEvents.find(
-          ({ phase, event }) =>
-            phase.isApplyExtrinsic &&
-            phase.asApplyExtrinsic.eq(extrinsicIndex) &&
-            event.section === (options.eventSection ?? options.section) &&
-            event.method === options.eventMethod
-        );
-
-        if (!event) {
-          throw new Error('[Bridge]: Transaction was failed');
-        }
-
-        return event.event.data;
-      }
-    }
-
-    await delay(BLOCK_PRODUCE_TIME);
-
-    return await waitForSoraTransactionHash(options)(id, getTransaction);
-  };
+  return event.event.data;
+};
 
 export const isOutgoingTransaction = (transaction: Nullable<IBridgeTransaction>): boolean => {
   if (!transaction?.type) return false;

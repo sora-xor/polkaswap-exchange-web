@@ -3,12 +3,14 @@ import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
 export type BridgeState = {
   isSoraToEvm: boolean;
   assetAddress: string;
-  assetSenderBalance: CodecString;
-  assetRecipientBalance: CodecString;
+  assetSenderBalance: Nullable<CodecString>;
+  assetRecipientBalance: Nullable<CodecString>;
+  assetLockedBalance: Nullable<CodecString>;
+  assetLockedBalanceFetching: boolean;
   amount: string;
-  evmNetworkFee: CodecString;
+  externalNetworkFee: CodecString;
   externalNetworkFeeFetching: boolean;
-  externalBalance: CodecString;
+  externalNativeBalance: Nullable<CodecString>;
   externalBalancesFetching: boolean;
   externalBlockNumber: number;
   // history sources (unsynced localstorage & network)
