@@ -15,11 +15,11 @@ const mutations = defineMutations<BridgeState>()({
     state.assetAddress = address || '';
   },
 
-  setAssetSenderBalance(state, balance: CodecString = ZeroStringValue): void {
+  setAssetSenderBalance(state, balance: Nullable<CodecString> = null): void {
     state.assetSenderBalance = balance;
   },
 
-  setAssetRecipientBalance(state, balance: CodecString = ZeroStringValue): void {
+  setAssetRecipientBalance(state, balance: Nullable<CodecString> = null): void {
     state.assetRecipientBalance = balance;
   },
 
@@ -30,7 +30,7 @@ const mutations = defineMutations<BridgeState>()({
     state.assetLockedBalanceFetching = flag;
   },
 
-  setExternalBalance(state, balance: CodecString = ZeroStringValue): void {
+  setExternalBalance(state, balance: Nullable<CodecString> = null): void {
     state.externalNativeBalance = balance;
   },
   setExternalBalancesFetching(state, flag: boolean): void {
