@@ -7,6 +7,8 @@ import { getter } from '@/store/decorators';
 
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
+const isEmpty = (a): boolean => isNil(a.balance) || !+a.balance.transferable;
+
 @Component
 export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearchMixin) {
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
@@ -19,17 +21,13 @@ export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearch
     this.clearAndFocusSearch();
   }
 
-  public sortByBalance(external = false) {
-    const isEmpty = (a): boolean => (external ? !+a.externalBalance : isNil(a.balance) || !+a.balance.transferable);
+  public sortByBalance(a: AccountAsset | RegisteredAccountAsset, b: AccountAsset | RegisteredAccountAsset): number {
+    const emptyABalance = isEmpty(a);
+    const emptyBBalance = isEmpty(b);
 
-    return (a: AccountAsset | RegisteredAccountAsset, b: AccountAsset | RegisteredAccountAsset): number => {
-      const emptyABalance = isEmpty(a);
-      const emptyBBalance = isEmpty(b);
+    if (emptyABalance === emptyBBalance) return 0;
 
-      if (emptyABalance === emptyBBalance) return 0;
-
-      return emptyABalance && !emptyBBalance ? 1 : -1;
-    };
+    return emptyABalance && !emptyBBalance ? 1 : -1;
   }
 
   public getAssetsWithBalances(addresses: string[], excludeAddress = ''): Array<RegisteredAccountAsset> {
