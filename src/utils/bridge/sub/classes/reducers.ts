@@ -170,9 +170,9 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       });
     } finally {
       subscription.unsubscribe();
-    }
 
-    await collator.stop();
+      await collator.stop();
+    }
 
     const {
       amount,
@@ -420,9 +420,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       });
     } finally {
       subscription.unsubscribe();
-    }
 
-    await collator.stop();
+      await collator.stop();
+    }
 
     const payload = { ...tx.payload, messageHash };
 
@@ -456,9 +456,14 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
           if (!umpExecutedUpwardEvent) return;
 
-          const eventMessageHash = umpExecutedUpwardEvent.event.data[0].toString();
+          const [hash, status] = umpExecutedUpwardEvent.event.data;
 
-          if (eventMessageHash !== messageHash) return;
+          if (hash.toString() !== messageHash) return;
+
+          blockNumber = blockNum.toNumber();
+          extrinsicIndex = umpExecutedUpwardEvent.phase.asApplyExtrinsic.toNumber();
+
+          if (!status.isComplete) reject(new Error(`[${this.constructor.name}]: Transaction is incomplete`));
 
           // Native token for network
           const balancesDepositEvent = events.find(
@@ -471,17 +476,27 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             reject(new Error(`[${this.constructor.name}]: Unable to find "balances.Deposit" event`));
 
           amount = balancesDepositEvent.event.data.amount.toString();
-          blockNumber = blockNum.toNumber();
-          extrinsicIndex = umpExecutedUpwardEvent.phase.asApplyExtrinsic.toNumber();
+
           resolve();
         });
       });
     } finally {
       subscription.unsubscribe();
-    }
 
-    if (subConnector.adapter !== adapter) {
-      await adapter.stop();
+      const blockHash = await adapter.api.rpc.chain.getBlockHash(blockNumber);
+      const blockData = await adapter.api.rpc.chain.getBlock(blockHash);
+      const extrinsic = blockData.block.extrinsics.at(extrinsicIndex);
+      const externalHash = extrinsic?.hash.toString() ?? '';
+
+      this.updateTransactionParams(id, {
+        externalHash, // parachain tx hash
+        externalBlockId: blockHash.toString(), // parachain block hash
+        externalBlockHeight: blockNumber, // parachain block number
+      });
+
+      if (subConnector.adapter !== adapter) {
+        await adapter.stop();
+      }
     }
 
     const decimals = await this.getAssetExternalDecimals(tx.externalNetwork as SubNetwork, tx.assetAddress as string);
@@ -495,17 +510,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       .add(xcmFee)
       .toCodecString();
 
-    const blockHash = await adapter.api.rpc.chain.getBlockHash(blockNumber);
-    const blockData = await adapter.api.rpc.chain.getBlock(blockHash);
-    const extrinsic = blockData.block.extrinsics.at(extrinsicIndex);
-    const externalHash = extrinsic?.hash.toString() ?? '';
-
     this.updateTransactionParams(id, {
       amount2,
       externalNetworkFee,
-      externalHash, // parachain tx hash
-      externalBlockId: blockHash.toString(), // parachain block hash
-      externalBlockHeight: blockNumber, // parachain block number
     });
   }
 }
