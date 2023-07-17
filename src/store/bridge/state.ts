@@ -6,8 +6,8 @@ function initialState(): BridgeState {
   return {
     isSoraToEvm: true,
     assetAddress: '',
-    assetSenderBalance: ZeroStringValue, // balance for sora
-    assetRecipientBalance: ZeroStringValue, // balance for bridge network
+    assetSenderBalance: null, // balance for sora
+    assetRecipientBalance: null, // balance for bridge network
     assetLockedBalance: null, // asset balance locked on bridge
     assetLockedBalanceFetching: false,
     amount: '',

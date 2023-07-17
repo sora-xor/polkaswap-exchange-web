@@ -155,7 +155,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     const assetsAddresses = whiteList.map((asset) => asset.address);
     const excludeAddress = this.asset?.address;
 
-    return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance());
+    return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance);
   }
 
   get filteredWhitelistTokens(): Array<AccountAsset> {
@@ -196,7 +196,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     // TODO: we already have balances in nonWhitelistAccountAssets.
     // Need to improve that logic
     return this.getAssetsWithBalances(Object.keys(this.nonWhitelistAccountAssets), excludeAsset?.address).sort(
-      this.sortByBalance()
+      this.sortByBalance
     );
   }
 
