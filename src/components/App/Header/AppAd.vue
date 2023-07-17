@@ -11,7 +11,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import Card from '@/assets/img/ads/card.svg?inline';
 import Xst from '@/assets/img/ads/xst.svg?inline';
-import { PageNames } from '@/consts';
+import { Links, PageNames } from '@/consts';
 import { goTo } from '@/router';
 import { getter } from '@/store/decorators';
 
@@ -68,7 +68,7 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
   }
 
   openArticle(): void {
-    window.open('https://medium.com/sora-xor/xst-a-platform-for-synthetic-assets-on-sora-b45ca526d8d5', '_blank');
+    window.open(Links.xstArticle, '_blank');
   }
 }
 </script>

@@ -83,6 +83,7 @@ export const Links = {
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
   releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
   demeterFarmingPlatform: 'https://farming.deotoken.io/',
+  xstArticle: 'https://medium.com/sora-xor/xst-a-platform-for-synthetic-assets-on-sora-b45ca526d8d5',
 };
 
 export const ObjectInit = () => null;
