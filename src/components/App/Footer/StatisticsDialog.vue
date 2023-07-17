@@ -70,7 +70,7 @@ export default class StatisticsDialog extends Mixins(mixins.DialogMixin, Transla
           {
             key: 'fiatCeres',
             name: 'Ceres',
-            endpoint: 'https://cerestoken.io/api/prices',
+            endpoint: 'https://data.cerestoken.io/api/prices',
             online: true,
           },
           {

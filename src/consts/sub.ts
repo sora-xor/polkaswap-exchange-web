@@ -39,8 +39,8 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     blockExplorerUrls: [],
     shortName: 'Rococo',
   },
-  [SubNetwork.RococoKarura]: {
-    id: SubNetwork.RococoKarura,
+  [SubNetwork.KusamaKarura]: {
+    id: SubNetwork.KusamaKarura,
     name: 'Karura',
     nativeCurrency: {
       name: 'KAR',

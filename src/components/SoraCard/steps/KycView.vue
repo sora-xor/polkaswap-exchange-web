@@ -93,7 +93,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
 
     const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
 
-    await ScriptLoader.unload(kycService.sdkURL, false);
+    await ScriptLoader.unload(kycService.sdkURL, false).catch(() => {});
 
     ScriptLoader.load(kycService.sdkURL)
       .then(() => {

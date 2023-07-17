@@ -15,32 +15,38 @@ const mutations = defineMutations<BridgeState>()({
     state.assetAddress = address || '';
   },
 
-  setAssetSenderBalance(state, balance: CodecString = ZeroStringValue): void {
+  setAssetSenderBalance(state, balance: Nullable<CodecString> = null): void {
     state.assetSenderBalance = balance;
   },
 
-  setAssetRecipientBalance(state, balance: CodecString = ZeroStringValue): void {
+  setAssetRecipientBalance(state, balance: Nullable<CodecString> = null): void {
     state.assetRecipientBalance = balance;
   },
 
-  setExternalBalance(state, balance: CodecString = ZeroStringValue): void {
-    state.externalBalance = balance;
+  setAssetLockedBalance(state, balance: Nullable<CodecString> = null): void {
+    state.assetLockedBalance = balance;
+  },
+  setAssetLockedBalanceFetching(state, flag: boolean): void {
+    state.assetLockedBalanceFetching = flag;
+  },
+
+  setExternalBalance(state, balance: Nullable<CodecString> = null): void {
+    state.externalNativeBalance = balance;
+  },
+  setExternalBalancesFetching(state, flag: boolean): void {
+    state.externalBalancesFetching = flag;
   },
 
   setAmount(state, value?: string): void {
     state.amount = value || '';
   },
 
-  getExternalNetworkFeeRequest(state): void {
-    state.evmNetworkFeeFetching = true;
+  setExternalNetworkFeeFetching(state, flag: boolean): void {
+    state.externalNetworkFeeFetching = flag;
   },
-  getExternalNetworkFeeSuccess(state, fee: CodecString): void {
-    state.evmNetworkFee = fee;
-    state.evmNetworkFeeFetching = false;
-  },
-  getExternalNetworkFeeFailure(state): void {
-    state.evmNetworkFee = ZeroStringValue;
-    state.evmNetworkFeeFetching = false;
+
+  setExternalNetworkFee(state, fee: CodecString): void {
+    state.externalNetworkFee = fee;
   },
 
   /**

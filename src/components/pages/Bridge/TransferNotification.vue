@@ -27,8 +27,8 @@ import { getter, state, mutation } from '@/store/decorators';
 import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { IBridgeTransaction, RegisteredAccountAsset } from '@sora-substrate/util';
-import type { Whitelist } from '@sora-substrate/util/build/assets/types';
+import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { Whitelist, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

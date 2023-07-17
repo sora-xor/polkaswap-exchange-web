@@ -6,12 +6,15 @@ function initialState(): BridgeState {
   return {
     isSoraToEvm: true,
     assetAddress: '',
-    assetSenderBalance: ZeroStringValue, // balance for sora
-    assetRecipientBalance: ZeroStringValue, // balance for bridge network
+    assetSenderBalance: null, // balance for sora
+    assetRecipientBalance: null, // balance for bridge network
+    assetLockedBalance: null, // asset balance locked on bridge
+    assetLockedBalanceFetching: false,
     amount: '',
-    evmNetworkFee: ZeroStringValue,
-    evmNetworkFeeFetching: false,
-    externalBalance: ZeroStringValue, // balance for external native token (like ETH)
+    externalNetworkFee: ZeroStringValue,
+    externalNetworkFeeFetching: false,
+    externalNativeBalance: ZeroStringValue, // balance for external native token (like ETH)
+    externalBalancesFetching: false,
     externalBlockNumber: 0,
     // history sources
     historyInternal: {}, // localstorage history
