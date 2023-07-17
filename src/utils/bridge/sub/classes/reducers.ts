@@ -47,8 +47,11 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
             this.beforeSubmit(id);
             this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
 
-            await this.checkTxId(id);
-            await Promise.all([this.waitForCollatorMessageNonce(id), this.updateTxIncomingData(id)]);
+            await Promise.all([
+              this.checkTxId(id).then(() => this.updateTxIncomingData(id)),
+              this.waitForCollatorMessageNonce(id),
+            ]);
+
             await this.waitForSoraInboundMessageNonce(id);
             await this.waitSoraBlockByHash(id);
             await this.onComplete(id);
@@ -123,7 +126,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
   private async waitForCollatorMessageNonce(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
-    if (tx.payload?.messageNonce) return;
+    if (tx.payload?.batchNonce) return;
 
     const collator = subConnector.getAdapterForNetwork(SubNetwork.RococoSora);
 
@@ -200,8 +203,12 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     if (tx.hash) return;
 
-    const batchNonce = tx.payload.batchNonce;
-    const messageNonce = tx.payload.messageNonce;
+    const batchNonce = tx.payload?.batchNonce;
+    const messageNonce = tx.payload?.messageNonce;
+
+    if (!(Number.isFinite(batchNonce) && Number.isFinite(messageNonce))) {
+      throw new Error(`[${this.constructor.name}]: Transaction batchNonce or messageNonce is incorrect`);
+    }
 
     let subscription!: Subscription;
     let soraHash!: string;
@@ -484,7 +491,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const amount2 = received.toString();
 
     const xcmFee = sended.sub(received);
-    const externalNetworkFee = FPNumber.fromCodecValue(tx.externalNetworkFee as string, decimals)
+    const externalNetworkFee = FPNumber.fromCodecValue((tx.externalNetworkFee as string) ?? ZeroStringValue, decimals)
       .add(xcmFee)
       .toCodecString();
 
