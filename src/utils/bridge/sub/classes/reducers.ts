@@ -4,14 +4,18 @@ import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { combineLatest } from 'rxjs';
 
 import { ZeroStringValue } from '@/consts';
+import { delay } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
 import { findEventInBlock } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
+import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
 
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
+
+const SORA_PARACHAIN_BLOCK_PRODUCTION_TIME = 12_000;
 
 type SubBridgeReducerOptions<T extends SubHistory> = IBridgeReducerOptions<T> & {
   removeTransactionByHash: RemoveTransactionByHash<SubHistory>;
@@ -31,6 +35,30 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     const decimals = data.unwrap().toNumber();
 
     return decimals;
+  }
+
+  async getHashesByBlockNumber(adapter: SubAdapter, blockHeight: number, extrinsicIndex?: number) {
+    let txId = '';
+    let blockId = '';
+
+    if (Number.isFinite(blockHeight)) {
+      const blockHash = await adapter.api.rpc.chain.getBlockHash(blockHeight);
+
+      blockId = blockHash.toString();
+
+      if (Number.isFinite(extrinsicIndex)) {
+        const blockData = await adapter.api.rpc.chain.getBlock(blockHash);
+        const extrinsic = blockData.block.extrinsics.at(extrinsicIndex as number);
+
+        txId = extrinsic?.hash.toString() ?? '';
+      }
+    }
+
+    return {
+      blockHeight,
+      blockId,
+      txId,
+    };
   }
 }
 
@@ -95,9 +123,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     const decimals = adapter.api.registry.chainDecimals[0];
 
-    if (!subConnector.isUsed(adapter)) {
-      await adapter.stop();
-    }
+    await subConnector.safeClose(adapter);
 
     // expecting that prev fee is 0
     const prevFee = FPNumber.fromCodecValue(tx.externalNetworkFee ?? ZeroStringValue, decimals);
@@ -132,19 +158,40 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     let messageNonce!: number;
     let batchNonce!: number;
     let recipientAmount!: number;
+    let blockNumber!: number;
+    let extrinsicIndex!: number;
 
     try {
       await soraParachain.connect();
 
       await new Promise<void>((resolve, reject) => {
         const eventsObservable = soraParachain.apiRx.query.system.events();
+        const blockNumberObservable = soraParachain.apiRx.query.system.number();
 
-        subscription = eventsObservable.subscribe((events) => {
+        subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(([events, blockHeight]) => {
+          const downwardMessagesProcessedEvent = events.find((e) =>
+            soraParachain.api.events.parachainSystem.DownwardMessagesProcessed.is(e.event)
+          );
+
+          if (!downwardMessagesProcessedEvent) return;
+
+          blockNumber = blockHeight.toNumber();
+          extrinsicIndex = downwardMessagesProcessedEvent.phase.asApplyExtrinsic.toNumber();
+
           const messageAcceptedEvent = events.find((e) =>
             soraParachain.api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
           );
 
-          if (!messageAcceptedEvent) return;
+          if (!messageAcceptedEvent) {
+            reject(
+              new Error(
+                `[${this.constructor.name}]: Unable to find "substrateBridgeOutboundChannel.MessageAccepted" event`
+              )
+            );
+          }
+
+          batchNonce = messageAcceptedEvent.event.data[1].toNumber();
+          messageNonce = messageAcceptedEvent.event.data[2].toNumber();
 
           const assetAddedToChannelEvent = events.find((e) =>
             soraParachain.api.events.xcmApp.AssetAddedToChannel.is(e.event)
@@ -159,8 +206,6 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
           if (address !== tx.to) return;
 
-          batchNonce = messageAcceptedEvent.event.data[1].toNumber();
-          messageNonce = messageAcceptedEvent.event.data[2].toNumber();
           recipientAmount = amount.toNumber();
 
           resolve();
@@ -169,31 +214,30 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     } finally {
       subscription.unsubscribe();
 
-      await soraParachain.stop();
+      // run non blocking process promise
+      delay(SORA_PARACHAIN_BLOCK_PRODUCTION_TIME)
+        .then(() => this.getHashesByBlockNumber(soraParachain, blockNumber, extrinsicIndex))
+        .then(({ blockHeight, blockId, txId }) => {
+          this.updateTransactionParams(id, {
+            parachainBlockHeight: blockHeight, // parachain block number
+            parachainBlockId: blockId, // parachain block hash
+            parachainHash: txId, // parachain tx hash
+          });
+        })
+        .finally(() => subConnector.safeClose(soraParachain));
     }
 
-    const {
-      amount,
-      assetAddress,
-      externalNetwork,
-      externalNetworkFee: prevFee,
-      payload: prevPayload,
-    } = this.getTransaction(id);
+    const { amount, assetAddress, externalNetwork, payload: prevPayload } = this.getTransaction(id);
 
     const decimals = await this.getAssetExternalDecimals(externalNetwork as SubNetwork, assetAddress as string);
-
     const sended = new FPNumber(amount as string);
     const received = FPNumber.fromCodecValue(recipientAmount, decimals);
+
     const amount2 = received.toString();
-
-    const xcmFee = sended.sub(received);
-    const externalNetworkFee = FPNumber.fromCodecValue(prevFee as string, decimals)
-      .add(xcmFee)
-      .toCodecString();
-
+    const parachainNetworkFee = sended.sub(received).toCodecString();
     const payload = { ...prevPayload, messageNonce, batchNonce };
 
-    this.updateTransactionParams(id, { amount2, externalNetworkFee, payload });
+    this.updateTransactionParams(id, { amount2, parachainNetworkFee, payload });
   }
 
   private async waitForSoraInboundMessageNonce(id: string): Promise<void> {
@@ -380,14 +424,17 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
     let subscription!: Subscription;
     let messageHash!: string;
+    let blockNumber!: number;
+    let extrinsicIndex!: number;
 
     try {
       await soraParachain.connect();
 
       await new Promise<void>((resolve, reject) => {
         const eventsObservable = soraParachain.apiRx.query.system.events();
+        const blockNumberObservable = soraParachain.apiRx.query.system.number();
 
-        subscription = eventsObservable.subscribe((events) => {
+        subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(([events, blockHeight]) => {
           const substrateDispatchEvent = events.find((e) =>
             soraParachain.api.events.substrateDispatch.MessageDispatched.is(e.event)
           );
@@ -407,6 +454,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
           if (eventBatchNonce !== batchNonce || eventMessageNonce !== messageNonce) return;
 
+          blockNumber = blockHeight.toNumber();
+          extrinsicIndex = substrateDispatchEvent.phase.asApplyExtrinsic.toNumber();
+
           const parachainSystemEvent = events.find((e) =>
             soraParachain.api.events.parachainSystem.UpwardMessageSent.is(e.event)
           );
@@ -423,7 +473,17 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     } finally {
       subscription.unsubscribe();
 
-      await soraParachain.stop();
+      // run non blocking proccess promise
+      delay(SORA_PARACHAIN_BLOCK_PRODUCTION_TIME)
+        .then(() => this.getHashesByBlockNumber(soraParachain, blockNumber, extrinsicIndex))
+        .then(({ blockHeight, blockId, txId }) => {
+          this.updateTransactionParams(id, {
+            parachainBlockHeight: blockHeight, // parachain block number
+            parachainBlockId: blockId, // parachain block hash
+            parachainHash: txId, // parachain tx hash
+          });
+        })
+        .finally(() => subConnector.safeClose(soraParachain));
     }
 
     const payload = { ...tx.payload, messageHash };
@@ -483,36 +543,29 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     } finally {
       subscription.unsubscribe();
 
-      const blockHash = await adapter.api.rpc.chain.getBlockHash(blockNumber);
-      const blockData = await adapter.api.rpc.chain.getBlock(blockHash);
-      const extrinsic = blockData.block.extrinsics.at(extrinsicIndex);
-      const externalHash = extrinsic?.hash.toString() ?? '';
-
-      this.updateTransactionParams(id, {
-        externalHash, // parachain tx hash
-        externalBlockId: blockHash.toString(), // parachain block hash
-        externalBlockHeight: blockNumber, // parachain block number
-      });
-
-      if (!subConnector.isUsed(adapter)) {
-        await adapter.stop();
-      }
+      // run blocking process promise
+      await delay(6_000)
+        .then(() => this.getHashesByBlockNumber(adapter, blockNumber, extrinsicIndex))
+        .then(({ blockHeight, blockId, txId }) => {
+          this.updateTransactionParams(id, {
+            externalBlockHeight: blockHeight, // parachain block number
+            externalBlockId: blockId, // parachain block hash
+            externalHash: txId, // parachain tx hash
+          });
+        })
+        .finally(() => subConnector.safeClose(adapter));
     }
 
     const decimals = await this.getAssetExternalDecimals(tx.externalNetwork as SubNetwork, tx.assetAddress as string);
-
     const sended = new FPNumber(tx.amount as string, decimals);
     const received = FPNumber.fromCodecValue(amount, decimals);
-    const amount2 = received.toString();
 
-    const xcmFee = sended.sub(received);
-    const externalNetworkFee = FPNumber.fromCodecValue((tx.externalNetworkFee as string) ?? ZeroStringValue, decimals)
-      .add(xcmFee)
-      .toCodecString();
+    const amount2 = received.toString();
+    const parachainNetworkFee = sended.sub(received).toCodecString();
 
     this.updateTransactionParams(id, {
       amount2,
-      externalNetworkFee,
+      parachainNetworkFee,
     });
   }
 }

@@ -11,7 +11,7 @@ import type { ApiPromise } from '@polkadot/api';
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
-class SubAdapter {
+export class SubAdapter {
   protected endpoint!: string;
 
   public connection!: Connection;
@@ -250,8 +250,10 @@ class SubConnector {
     await this.adapter?.stop();
   }
 
-  public isUsed(adapter: SubAdapter): boolean {
-    return this.adapter === adapter;
+  public async safeClose(adapter: SubAdapter): Promise<void> {
+    if (this.adapter !== adapter) {
+      await adapter.stop();
+    }
   }
 }
 
