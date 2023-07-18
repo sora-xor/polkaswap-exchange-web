@@ -249,6 +249,10 @@ class SubConnector {
   public async stop(): Promise<void> {
     await this.adapter?.stop();
   }
+
+  public isUsed(adapter: SubAdapter): boolean {
+    return this.adapter === adapter;
+  }
 }
 
 export const subConnector = new SubConnector();

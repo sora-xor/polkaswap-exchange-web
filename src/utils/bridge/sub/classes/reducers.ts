@@ -49,7 +49,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
             await Promise.all([
               this.checkTxId(id).then(() => this.updateTxIncomingData(id)),
-              this.waitForCollatorMessageNonce(id),
+              this.waitForSoraParachainNonce(id),
             ]);
 
             await this.waitForSoraInboundMessageNonce(id);
@@ -84,9 +84,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     const blockId = tx.externalBlockId as string;
     const adapter = subConnector.getAdapterForNetwork(network);
 
-    if (!adapter.connected) {
-      await adapter.connect();
-    }
+    await adapter.connect();
 
     const eventData = await findEventInBlock({
       api: adapter.api,
@@ -97,7 +95,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     const decimals = adapter.api.registry.chainDecimals[0];
 
-    if (subConnector.adapter !== adapter) {
+    if (!subConnector.isUsed(adapter)) {
       await adapter.stop();
     }
 
@@ -123,12 +121,12 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     await this.updateExternalNetworkFee(id);
   }
 
-  private async waitForCollatorMessageNonce(id: string): Promise<void> {
+  private async waitForSoraParachainNonce(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
     if (tx.payload?.batchNonce) return;
 
-    const collator = subConnector.getAdapterForNetwork(SubNetwork.RococoSora);
+    const soraParachain = subConnector.getAdapterForNetwork(SubNetwork.RococoSora);
 
     let subscription!: Subscription;
     let messageNonce!: number;
@@ -136,20 +134,20 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     let recipientAmount!: number;
 
     try {
-      await collator.connect();
+      await soraParachain.connect();
 
       await new Promise<void>((resolve, reject) => {
-        const eventsObservable = collator.apiRx.query.system.events();
+        const eventsObservable = soraParachain.apiRx.query.system.events();
 
         subscription = eventsObservable.subscribe((events) => {
           const messageAcceptedEvent = events.find((e) =>
-            collator.api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
+            soraParachain.api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
           );
 
           if (!messageAcceptedEvent) return;
 
           const assetAddedToChannelEvent = events.find((e) =>
-            collator.api.events.xcmApp.AssetAddedToChannel.is(e.event)
+            soraParachain.api.events.xcmApp.AssetAddedToChannel.is(e.event)
           );
 
           if (!assetAddedToChannelEvent) {
@@ -171,7 +169,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     } finally {
       subscription.unsubscribe();
 
-      await collator.stop();
+      await soraParachain.stop();
     }
 
     const {
@@ -303,8 +301,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             await this.waitForTransactionStatus(id);
             await this.waitForTransactionBlockId(id);
             await this.checkTxSoraHash(id);
-            await this.waitForSoraOutboundMessageNonce(id);
-            await this.waitForCollatorMessageHash(id);
+            await this.waitForSoraOutboundNonce(id);
+            await this.waitForSoraParachainMessageHash(id);
             await this.waitForDestinationMessageHash(id);
             await this.onComplete(id);
           },
@@ -347,10 +345,10 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     this.updateTransactionParams(id, { hash });
   }
 
-  private async waitForSoraOutboundMessageNonce(id: string): Promise<void> {
+  private async waitForSoraOutboundNonce(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
-    if (tx.payload?.messageNonce) return;
+    if (tx.payload?.batchNonce) return;
 
     const eventData = await findEventInBlock({
       api: subBridgeApi.api,
@@ -366,28 +364,32 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     this.updateTransactionParams(id, { payload });
   }
 
-  private async waitForCollatorMessageHash(id: string): Promise<void> {
+  private async waitForSoraParachainMessageHash(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
     if (tx.payload?.messageHash) return;
 
-    const batchNonce = tx.payload.batchNonce;
-    const messageNonce = tx.payload.messageNonce;
+    const batchNonce = tx.payload?.batchNonce;
+    const messageNonce = tx.payload?.messageNonce;
 
-    const collator = subConnector.getAdapterForNetwork(SubNetwork.RococoSora);
+    if (!(Number.isFinite(batchNonce) && Number.isFinite(messageNonce))) {
+      throw new Error(`[${this.constructor.name}]: Transaction batchNonce or messageNonce is incorrect`);
+    }
+
+    const soraParachain = subConnector.getAdapterForNetwork(SubNetwork.RococoSora);
 
     let subscription!: Subscription;
     let messageHash!: string;
 
     try {
-      await collator.connect();
+      await soraParachain.connect();
 
       await new Promise<void>((resolve, reject) => {
-        const eventsObservable = collator.apiRx.query.system.events();
+        const eventsObservable = soraParachain.apiRx.query.system.events();
 
         subscription = eventsObservable.subscribe((events) => {
           const substrateDispatchEvent = events.find((e) =>
-            collator.api.events.substrateDispatch.MessageDispatched.is(e.event)
+            soraParachain.api.events.substrateDispatch.MessageDispatched.is(e.event)
           );
 
           if (!substrateDispatchEvent) return;
@@ -398,7 +400,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           if (eventBatchNonce > batchNonce) {
             reject(
               new Error(
-                `[${this.constructor.name}]: Unable to continue track transaction, collator outbound channel batch nonce ${eventBatchNonce} is larger than tx batch nonce ${batchNonce}`
+                `[${this.constructor.name}]: Unable to continue track transaction, parachain outbound channel batch nonce ${eventBatchNonce} is larger than tx batch nonce ${batchNonce}`
               )
             );
           }
@@ -406,7 +408,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           if (eventBatchNonce !== batchNonce || eventMessageNonce !== messageNonce) return;
 
           const parachainSystemEvent = events.find((e) =>
-            collator.api.events.parachainSystem.UpwardMessageSent.is(e.event)
+            soraParachain.api.events.parachainSystem.UpwardMessageSent.is(e.event)
           );
 
           if (!parachainSystemEvent) {
@@ -421,7 +423,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     } finally {
       subscription.unsubscribe();
 
-      await collator.stop();
+      await soraParachain.stop();
     }
 
     const payload = { ...tx.payload, messageHash };
@@ -443,9 +445,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     let amount!: string;
 
     try {
-      if (!adapter.connected) {
-        await adapter.connect();
-      }
+      await adapter.connect();
 
       await new Promise<void>((resolve, reject) => {
         const eventsObservable = adapter.apiRx.query.system.events();
@@ -494,7 +494,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         externalBlockHeight: blockNumber, // parachain block number
       });
 
-      if (subConnector.adapter !== adapter) {
+      if (!subConnector.isUsed(adapter)) {
         await adapter.stop();
       }
     }
