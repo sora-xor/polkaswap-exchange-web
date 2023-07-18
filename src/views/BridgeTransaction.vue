@@ -121,7 +121,7 @@
       </div>
 
       <s-button
-        v-if="!isTxCompleted"
+        v-if="!txIsFinilized"
         type="primary"
         class="s-typograhy-button--big"
         :disabled="confirmationButtonDisabled"
@@ -149,19 +149,14 @@
           {{ t('swap.insufficientLiquidity') }}
         </template>
         <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
-        <template v-else-if="isTxFailed">{{ t('retryText') }}</template>
-        <template v-else>{{
-          t('bridgeTransaction.confirm', {
-            direction: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'metamask'}`),
-          })
-        }}</template>
+        <template v-else-if="isFailedState && isRetryAvailable">{{ t('retryText') }}</template>
       </s-button>
 
       <div v-if="txWaitingForApprove" class="transaction-approval-text">
         {{ t('bridgeTransaction.approveToken') }}
       </div>
     </div>
-    <s-button v-if="isTxCompleted" class="s-typography-button--large" type="secondary" @click="navigateToBridge">
+    <s-button v-if="txIsFinilized" class="s-typography-button--large" type="secondary" @click="navigateToBridge">
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
   </div>
@@ -170,7 +165,7 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { BridgeTxStatus, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -341,6 +336,10 @@ export default class BridgeTransaction extends Mixins(
     return !this.isTxFailed && !this.isTxCompleted;
   }
 
+  get txIsFinilized(): boolean {
+    return this.isTxCompleted || (this.isTxFailed && !this.isRetryAvailable);
+  }
+
   get headerIconClasses(): string {
     const iconClass = 'header-icon';
     const classes = [iconClass];
@@ -438,6 +437,10 @@ export default class BridgeTransaction extends Mixins(
       ((this.txIsUnsigned && !this.isSoraToEvm) || (!this.txIsUnsigned && this.isSoraToEvm)) &&
       hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.txEvmNetworkFee)
     );
+  }
+
+  get isRetryAvailable(): boolean {
+    return this.txIsUnsigned || this.historyItem?.externalNetworkType === BridgeNetworkType.EvmLegacy;
   }
 
   get isAnotherEvmAddress(): boolean {
