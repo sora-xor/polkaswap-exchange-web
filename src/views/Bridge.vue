@@ -570,7 +570,7 @@ export default class Bridge extends Mixins(
 
   async handleConfirmButtonClick(): Promise<void> {
     // XOR check
-    if (!this.isXorSufficientForNextOperation) {
+    if (this.allowFeePopup && !this.isXorSufficientForNextOperation) {
       this.openWarningFeeDialog();
       await this.waitOnFeeWarningConfirmation();
       if (!this.isWarningFeeDialogConfirmed) {
@@ -580,7 +580,7 @@ export default class Bridge extends Mixins(
     }
 
     // Native token check
-    if (!this.isNativeTokenSufficientForNextOperation) {
+    if (this.allowFeePopup && !this.isNativeTokenSufficientForNextOperation) {
       this.openWarningExternalFeeDialog();
       await this.waitOnExternalFeeWarningConfirmation();
       if (!this.isWarningExternalFeeDialogConfirmed) {
