@@ -57,6 +57,7 @@
         "statusRejectReason": "Motivo del rifiuto",
         "userNotFound": "Nessun numero di cellulare trovato, ricontrollalo e riprova.",
         "code": "Codice",
-        "getSoraCardDesc": "Ottieni un conto Euro IBAN e una carta di debito Mastercard accessibili all'interno del tuo SORA Wallet"
+        "getSoraCardDesc": "Ottieni un conto Euro IBAN e una carta di debito Mastercard accessibili all'interno del tuo SORA Wallet",
+        "emailSpamReminder": "L'e-mail potrebbe richiedere diversi minuti per arrivare. Verifica la tua cartella spam se non hai ricevuto l'e-mail dopo 5 minuti."
     }
 }
