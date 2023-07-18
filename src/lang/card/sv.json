@@ -57,6 +57,7 @@
         "statusRejectReason": "Orsak till avslag",
         "userNotFound": "Inget mobilnummer hittades, kontrollera det igen och försök igen.",
         "code": "Koda",
-        "getSoraCardDesc": "Skaffa ett Euro IBAN-konto och Mastercard-bankkort tillgängligt i din SORA-plånbok"
+        "getSoraCardDesc": "Skaffa ett Euro IBAN-konto och Mastercard-bankkort tillgängligt i din SORA-plånbok",
+        "emailSpamReminder": "Det kan ta flera minuter innan e-postmeddelandet kommer fram. Vänligen verifiera din skräppostmapp om du inte har fått e-postmeddelandet efter 5 minuter."
     }
 }
