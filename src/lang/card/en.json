@@ -57,6 +57,7 @@
         "statusRejectReason": "Rejection reason",
         "userNotFound": "No mobile number found, please recheck it and try again.",
         "code": "Code",
-        "getSoraCardDesc": "Get a Euro IBAN account and Mastercard Debit Card accessible within your SORA Wallet"
+        "getSoraCardDesc": "Get a Euro IBAN account and Mastercard Debit Card accessible within your SORA Wallet",
+        "emailSpamReminder": "The email might take several minutes to arrive. Please verify your spam folder if you haven't received the email after 5 minutes."
     }
 }

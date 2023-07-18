@@ -1,7 +1,7 @@
 {
     "card": {
         "termsAndConditions": "Allgemeine Geschäftsbedingungen",
-        "disclaimerCollectData": "Die SORA-Community sammelt keine personenbezogenen Daten, um die SORA-Karte und das IBAN-Konto zu erhalten, müssen Sie einen Identitätsverifizierungs-Prozess direkt beim Kartenaussteller durchführen.",
+        "disclaimerCollectData": "Die SORA-Community sammelt keine personenbezogenen Daten, um die SORA Card und das IBAN-Konto zu erhalten, müssen Sie einen Identitätsverifizierungs-Prozess direkt beim Kartenaussteller durchführen.",
         "privacyPolicy": "Datenschutz-Bestimmungen",
         "acceptAndContinue": "Akzeptieren und fortfahren",
         "emailPlaceholder": "E-Mail",
@@ -14,7 +14,7 @@
         "statusAcceptText": "Ihre Identitätsverifizierung ist erfolgreich und wir bereiten bereits den Versand der SORA Card vor!",
         "noFreeKycTitle": "Keine Freiversuche mehr",
         "unsupportedCountries": "Nicht unterstützte Länder",
-        "getSoraCardTitle": "Holen Sie sich die SORA-Karte",
+        "getSoraCardTitle": "Holen Sie sich die SORA Card",
         "alreadyAppliedTip": "Ich habe mich bereits beworben",
         "getSoraCardBtn": "Holen Sie sich die SORA Card kostenlos",
         "bridgeTokensBtn": "Bridge-Token",
@@ -57,6 +57,7 @@
         "statusRejectReason": "Ablehnungsgrund",
         "userNotFound": "Keine Handynummer gefunden, bitte überprüfen Sie sie erneut und versuchen Sie es erneut.",
         "code": "Code",
-        "getSoraCardDesc": "Erhalten Sie ein Euro-IBAN Konto und eine Mastercard Debitkarte, auf die Sie mit Ihrem SORA Wallet zugreifen können."
+        "getSoraCardDesc": "Erhalten Sie ein Euro-IBAN Konto und eine Mastercard Debitkarte, auf die Sie mit Ihrem SORA Wallet zugreifen können.",
+        "emailSpamReminder": "Es kann mehrere Minuten dauern, bis die E-Mail ankommt. Bitte überprüfen Sie Ihren Spam-Ordner, wenn Sie die E-Mail nach 5 Minuten noch nicht erhalten haben."
     }
 }

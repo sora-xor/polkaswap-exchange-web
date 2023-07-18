@@ -57,6 +57,7 @@
         "statusRejectReason": "Grunn til avvisning",
         "userNotFound": "Finner ikke mobilnummer, sjekk det på nytt og prøv på nytt.",
         "code": "Kode",
-        "getSoraCardDesc": "Få en Euro IBAN-konto og Mastercard-debetkort tilgjengelig i SORA-lommeboken din"
+        "getSoraCardDesc": "Få en Euro IBAN-konto og Mastercard-debetkort tilgjengelig i SORA-lommeboken din",
+        "emailSpamReminder": "Det kan ta flere minutter før e-posten kommer. Vennligst bekreft søppelpostmappen din hvis du ikke har mottatt e-posten etter 5 minutter."
     }
 }
