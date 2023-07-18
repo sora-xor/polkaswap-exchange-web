@@ -57,6 +57,7 @@
         "statusRejectReason": "Reden afwijzing",
         "userNotFound": "Geen mobiel nummer gevonden, controleer het opnieuw en probeer het opnieuw.",
         "code": "Code",
-        "getSoraCardDesc": "Krijg een Euro IBAN-account en Mastercard-betaalpas die toegankelijk zijn in uw SORA-portemonnee"
+        "getSoraCardDesc": "Krijg een Euro IBAN-account en Mastercard-betaalpas die toegankelijk zijn in uw SORA-portemonnee",
+        "emailSpamReminder": "Het kan enkele minuten duren voordat de e-mail aankomt. Controleer uw spammap als u de e-mail na 5 minuten nog niet heeft ontvangen."
     }
 }
