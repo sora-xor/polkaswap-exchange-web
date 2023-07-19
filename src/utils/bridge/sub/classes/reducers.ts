@@ -3,19 +3,15 @@ import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { combineLatest } from 'rxjs';
 
-import { ZeroStringValue } from '@/consts';
-import { delay } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
-import { findEventInBlock } from '@/utils/bridge/common/utils';
+import { findEventInBlock, getBlockEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
 
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
-
-const SORA_PARACHAIN_BLOCK_PRODUCTION_TIME = 12_000;
 
 type SubBridgeReducerOptions<T extends SubHistory> = IBridgeReducerOptions<T> & {
   removeTransactionByHash: RemoveTransactionByHash<SubHistory>;
@@ -86,10 +82,9 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
             this.beforeSubmit(id);
             this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
 
-            await Promise.all([
-              this.checkTxId(id).then(() => this.updateTxIncomingData(id)),
-              this.waitForSoraParachainNonce(id),
-            ]);
+            await this.checkTxId(id);
+
+            await Promise.all([this.updateTxIncomingData(id), this.waitForSoraParachainNonce(id)]);
 
             await this.waitForSoraInboundMessageNonce(id);
             await this.waitSoraBlockByHash(id);
@@ -117,45 +112,49 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     this.updateHistory();
   }
 
-  private async updateExternalNetworkFee(id: string): Promise<void> {
+  private async updateTxExternalData(id: string): Promise<void> {
     const tx = this.getTransaction(id);
-    const network = tx.externalNetwork as SubNetwork;
-    const blockId = tx.externalBlockId as string;
-    const adapter = subConnector.getAdapterForNetwork(network);
+    const adapter = subConnector.getAdapterForNetwork(tx.externalNetwork as SubNetwork);
 
-    await adapter.connect();
+    try {
+      await adapter.connect();
 
-    const eventData = await findEventInBlock({
-      api: adapter.api,
-      blockId,
-      section: 'transactionPayment',
-      method: 'TransactionFeePaid',
-    });
+      const events = await getBlockEvents(adapter.api, tx.externalBlockId as string);
 
-    const decimals = adapter.api.registry.chainDecimals[0];
+      const feeEvent = events.find((e) => adapter.api.events.transactionPayment.TransactionFeePaid.is(e.event));
+      const xcmEvent = events.find((e) => adapter.api.events.xcmPallet.Attempted.is(e.event));
 
-    await subConnector.safeClose(adapter);
+      if (feeEvent) {
+        const externalNetworkFee = feeEvent.event.data[1].toString();
 
-    // expecting that prev fee is 0
-    const prevFee = FPNumber.fromCodecValue(tx.externalNetworkFee ?? ZeroStringValue, decimals);
-    const txFee = FPNumber.fromCodecValue(eventData[1].toString(), decimals);
-    const externalNetworkFee = txFee.add(prevFee).toCodecString();
+        this.updateTransactionParams(id, { externalNetworkFee });
+      }
 
-    this.updateTransactionParams(id, { externalNetworkFee });
+      if (!xcmEvent?.event?.data?.[0]?.isComplete) {
+        throw new Error(`[${this.constructor.name}]: Transaction is not completed`);
+      }
+    } finally {
+      subConnector.safeClose(adapter);
+    }
+  }
+
+  private async updateTxSigningData(id: string): Promise<void> {
+    const tx = this.getTransaction(id);
+
+    if (!(tx.externalBlockId && tx.externalBlockHeight && tx.externalHash)) {
+      this.updateTransactionParams(id, {
+        externalHash: tx.txId, // parachain tx hash
+        externalBlockId: tx.blockId, // parachain block hash
+        externalBlockHeight: tx.blockHeight, // parachain block number
+      });
+    }
   }
 
   private async updateTxIncomingData(id: string): Promise<void> {
     await this.waitForTransactionStatus(id);
     await this.waitForTransactionBlockId(id);
-
-    const { txId, blockId } = this.getTransaction(id);
-
-    this.updateTransactionParams(id, {
-      externalHash: txId, // parachain tx hash
-      externalBlockId: blockId, // parachain block hash
-    });
-
-    await this.updateExternalNetworkFee(id);
+    await this.updateTxSigningData(id);
+    await this.updateTxExternalData(id);
   }
 
   private async waitForSoraParachainNonce(id: string): Promise<void> {
@@ -240,7 +239,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     const { amount, assetAddress, externalNetwork, payload: prevPayload } = this.getTransaction(id);
 
     const decimals = await this.getAssetExternalDecimals(externalNetwork as SubNetwork, assetAddress as string);
-    const sended = new FPNumber(amount as string);
+    const sended = new FPNumber(amount as string, decimals);
     const received = FPNumber.fromCodecValue(recipientAmount, decimals);
 
     const amount2 = received.toString();

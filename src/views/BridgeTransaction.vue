@@ -78,10 +78,10 @@
       <info-line
         is-formatted
         :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', externalNetworkId)"
-        :value="txEvmNetworkFeeFormatted"
+        :value="txExternalNetworkFeeFormatted"
         :asset-symbol="evmTokenSymbol"
       >
-        <template v-if="txEvmNetworkFeeFormatted" #info-line-value-prefix>
+        <template v-if="txExternalNetworkFeeFormatted" #info-line-value-prefix>
           <span class="info-line-value-prefix">~</span>
         </template>
       </info-line>
@@ -190,7 +190,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { Components, PageNames } from '@/consts';
+import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
@@ -320,12 +320,16 @@ export default class BridgeTransaction extends Mixins(
     return this.getFiatAmountByCodecString(this.txSoraNetworkFee);
   }
 
-  get txEvmNetworkFee(): CodecString {
-    return this.historyItem?.externalNetworkFee ?? this.evmNetworkFee;
+  get txExternalNetworkFee(): CodecString {
+    const externalNetworkFee = FPNumber.fromCodecValue(this.historyItem?.externalNetworkFee ?? this.evmNetworkFee);
+    const xcmFee = FPNumber.fromCodecValue((this.historyItem as SubHistory)?.parachainNetworkFee ?? ZeroStringValue);
+    const fee = externalNetworkFee.add(xcmFee);
+
+    return fee.toCodecString();
   }
 
-  get txEvmNetworkFeeFormatted(): string {
-    return this.formatCodecNumber(this.txEvmNetworkFee, this.asset?.externalDecimals);
+  get txExternalNetworkFeeFormatted(): string {
+    return this.formatCodecNumber(this.txExternalNetworkFee, this.asset?.externalDecimals);
   }
 
   get txSoraHash(): string {
@@ -454,7 +458,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isInsufficientBalance(): boolean {
-    const fee = this.isSoraToEvm ? this.txSoraNetworkFee : this.txEvmNetworkFee;
+    const fee = this.isSoraToEvm ? this.txSoraNetworkFee : this.txExternalNetworkFee;
 
     if (!this.asset || !this.amount || !fee) return false;
 
@@ -468,7 +472,7 @@ export default class BridgeTransaction extends Mixins(
   get isInsufficientEvmNativeTokenForFee(): boolean {
     return (
       ((this.txIsUnsigned && !this.isSoraToEvm) || (!this.txIsUnsigned && this.isSoraToEvm)) &&
-      hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.txEvmNetworkFee)
+      hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.txExternalNetworkFee)
     );
   }
 
