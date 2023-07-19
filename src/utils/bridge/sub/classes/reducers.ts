@@ -250,16 +250,15 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
   }
 
   private async waitForSoraInboundMessageNonce(id: string): Promise<void> {
-    const tx = this.getTransaction(id);
+    const { hash, payload: { batchNonce, messageNonce } = {} } = this.getTransaction(id);
 
-    if (tx.hash) return;
+    if (hash) return;
 
-    const batchNonce = tx.payload?.batchNonce;
-    const messageNonce = tx.payload?.messageNonce;
+    if (!Number.isFinite(batchNonce))
+      throw new Error(`[${this.constructor.name}]: Transaction batchNonce is incorrect`);
 
-    if (!(Number.isFinite(batchNonce) && Number.isFinite(messageNonce))) {
-      throw new Error(`[${this.constructor.name}]: Transaction batchNonce or messageNonce is incorrect`);
-    }
+    if (!Number.isFinite(messageNonce))
+      throw new Error(`[${this.constructor.name}]: Transaction messageNonce is incorrect`);
 
     let subscription!: Subscription;
     let soraHash!: string;
@@ -425,9 +424,11 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const batchNonce = tx.payload?.batchNonce;
     const messageNonce = tx.payload?.messageNonce;
 
-    if (!(Number.isFinite(batchNonce) && Number.isFinite(messageNonce))) {
-      throw new Error(`[${this.constructor.name}]: Transaction batchNonce or messageNonce is incorrect`);
-    }
+    if (!Number.isFinite(batchNonce))
+      throw new Error(`[${this.constructor.name}]: Transaction batchNonce is incorrect`);
+
+    if (!Number.isFinite(messageNonce))
+      throw new Error(`[${this.constructor.name}]: Transaction messageNonce is incorrect`);
 
     const soraParachain = subConnector.getAdapterForNetwork(SubNetwork.RococoSora);
 
@@ -503,7 +504,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const tx = this.getTransaction(id);
     const messageHash = tx.payload.messageHash as string;
 
-    if (!messageHash) throw new Error(`[${this.constructor.name}]: Transaction paylaod messageHash cannot be empty`);
+    if (!messageHash) throw new Error(`[${this.constructor.name}]: Transaction payload messageHash cannot be empty`);
 
     const adapter = subConnector.getAdapterForNetwork(tx.externalNetwork as SubNetwork);
 
