@@ -42,12 +42,23 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     let blockId = '';
 
     if (Number.isFinite(blockHeight)) {
-      const blockHash = await adapter.api.rpc.chain.getBlockHash(blockHeight);
+      let subscription!: Subscription;
 
-      blockId = blockHash.toString();
+      try {
+        await new Promise<void>((resolve) => {
+          subscription = adapter.apiRx.query.system.blockHash(blockHeight).subscribe((hash) => {
+            if (!hash.isEmpty) {
+              blockId = hash.toString();
+              resolve();
+            }
+          });
+        });
+      } finally {
+        subscription.unsubscribe();
+      }
 
       if (Number.isFinite(extrinsicIndex)) {
-        const blockData = await adapter.api.rpc.chain.getBlock(blockHash);
+        const blockData = await adapter.api.rpc.chain.getBlock(blockId);
         const extrinsic = blockData.block.extrinsics.at(extrinsicIndex as number);
 
         txId = extrinsic?.hash.toString() ?? '';
@@ -215,8 +226,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       subscription.unsubscribe();
 
       // run non blocking process promise
-      delay(SORA_PARACHAIN_BLOCK_PRODUCTION_TIME)
-        .then(() => this.getHashesByBlockNumber(soraParachain, blockNumber, extrinsicIndex))
+      this.getHashesByBlockNumber(soraParachain, blockNumber, extrinsicIndex)
         .then(({ blockHeight, blockId, txId }) => {
           this.updateTransactionParams(id, {
             parachainBlockHeight: blockHeight, // parachain block number
@@ -474,8 +484,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       subscription.unsubscribe();
 
       // run non blocking proccess promise
-      delay(SORA_PARACHAIN_BLOCK_PRODUCTION_TIME)
-        .then(() => this.getHashesByBlockNumber(soraParachain, blockNumber, extrinsicIndex))
+      this.getHashesByBlockNumber(soraParachain, blockNumber, extrinsicIndex)
         .then(({ blockHeight, blockId, txId }) => {
           this.updateTransactionParams(id, {
             parachainBlockHeight: blockHeight, // parachain block number
@@ -544,8 +553,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       subscription.unsubscribe();
 
       // run blocking process promise
-      await delay(6_000)
-        .then(() => this.getHashesByBlockNumber(adapter, blockNumber, extrinsicIndex))
+      await this.getHashesByBlockNumber(adapter, blockNumber, extrinsicIndex)
         .then(({ blockHeight, blockId, txId }) => {
           this.updateTransactionParams(id, {
             externalBlockHeight: blockHeight, // parachain block number

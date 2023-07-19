@@ -70,14 +70,14 @@
       />
       <info-line
         is-formatted
-        :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', true)"
+        :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee')"
         :value="txSoraNetworkFeeFormatted"
         :asset-symbol="KnownSymbols.XOR"
         :fiat-value="txSoraNetworkFeeFiatValue"
       />
       <info-line
         is-formatted
-        :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', false)"
+        :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', externalNetworkId)"
         :value="txEvmNetworkFeeFormatted"
         :asset-symbol="evmTokenSymbol"
       >
@@ -88,7 +88,7 @@
 
       <div v-if="txSoraHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
         <s-input
-          :placeholder="getNetworkText('bridgeTransaction.transactionHash', true)"
+          :placeholder="getNetworkText('bridgeTransaction.transactionHash')"
           :value="txSoraHashFormatted"
           readonly
         />
@@ -103,9 +103,26 @@
         <bridge-links-dropdown v-if="soraExplorerLinks.length" :links="soraExplorerLinks" />
       </div>
 
+      <div v-if="txParachainHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
+        <s-input
+          :placeholder="getNetworkText('bridgeTransaction.transactionHash', parachainNetworkId)"
+          :value="txParachainHashFormatted"
+          readonly
+        />
+        <s-button
+          class="s-button--hash-copy"
+          type="action"
+          alternative
+          icon="basic-copy-24"
+          :tooltip="hashCopyTooltip"
+          @click="handleCopyAddress(txParachainHash, $event)"
+        />
+        <bridge-links-dropdown v-if="parachainExplorerLinks.length" :links="parachainExplorerLinks" />
+      </div>
+
       <div v-if="txExternalHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
         <s-input
-          :placeholder="getNetworkText('bridgeTransaction.transactionHash', false)"
+          :placeholder="getNetworkText('bridgeTransaction.transactionHash', externalNetworkId)"
           :value="txExternalHashFormatted"
           readonly
         />
@@ -166,6 +183,7 @@
 import { FPNumber } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { BridgeTxStatus, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -181,6 +199,8 @@ import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/common/utils
 import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const FORMATTED_HASH_LENGTH = 24;
 
@@ -272,6 +292,18 @@ export default class BridgeTransaction extends Mixins(
     return this.historyItem?.externalNetwork as unknown as EvmNetwork;
   }
 
+  get externalNetworkType(): Nullable<BridgeNetworkType> {
+    return this.historyItem?.externalNetworkType;
+  }
+
+  get parachainNetworkId(): Nullable<SubNetwork> {
+    if (this.externalNetworkType === BridgeNetworkType.Sub) {
+      // [TODO]: mapping in js-lib to get sora parachain
+      return SubNetwork.RococoSora;
+    }
+    return null;
+  }
+
   get evmIcon(): string {
     return this.getNetworkIcon(this.externalNetworkId);
   }
@@ -310,6 +342,14 @@ export default class BridgeTransaction extends Mixins(
 
   get txExternalHashFormatted(): string {
     return this.formatAddress(this.txExternalHash, FORMATTED_HASH_LENGTH);
+  }
+
+  get txParachainHash(): string {
+    return (this.historyItem as SubHistory)?.parachainHash ?? '';
+  }
+
+  get txParachainHashFormatted(): string {
+    return this.formatAddress(this.txParachainHash, FORMATTED_HASH_LENGTH);
   }
 
   get txDate(): string {
@@ -374,14 +414,6 @@ export default class BridgeTransaction extends Mixins(
     return this.t('bridgeTransaction.statuses.pending') + '...';
   }
 
-  get txExternalNetworkName(): string {
-    const id = this.historyItem?.externalNetwork;
-    const type = this.historyItem?.externalNetworkType;
-    const name = this.getNetworkName(type, id);
-
-    return name;
-  }
-
   get txExternalAccount(): string {
     return this.historyItem?.to ?? '';
   }
@@ -391,7 +423,8 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txExternalAccountPlaceholder(): string {
-    return this.getNetworkText('accountAddressText', false);
+    const network = this.isSoraToEvm ? (this.externalNetworkId as BridgeNetworkId) : undefined;
+    return this.getNetworkText('accountAddressText', network);
   }
 
   get txExternalAccountCopyTooltip(): string {
@@ -440,7 +473,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isRetryAvailable(): boolean {
-    return this.txIsUnsigned || this.historyItem?.externalNetworkType === BridgeNetworkType.EvmLegacy;
+    return this.txIsUnsigned || this.externalNetworkType === BridgeNetworkType.EvmLegacy;
   }
 
   get isAnotherEvmAddress(): boolean {
@@ -471,9 +504,9 @@ export default class BridgeTransaction extends Mixins(
     return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
   }
 
-  getNetworkText(key: string, isSora = true): string {
-    const network = isSora ? this.TranslationConsts.Sora : this.txExternalNetworkName;
+  getNetworkText(key: string, networkId?: BridgeNetworkId): string {
     const text = this.t(key);
+    const network = networkId ? this.getNetworkName(this.externalNetworkType, networkId) : this.TranslationConsts.Sora;
 
     return `${network} ${text}`;
   }
@@ -516,23 +549,35 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get externalAccountLinks(): Array<WALLET_CONSTS.ExplorerLink> {
-    if (!(this.historyItem?.externalNetworkType && this.historyItem?.externalNetwork)) return [];
+    if (!(this.externalNetworkType && this.externalNetworkId)) return [];
 
     return this.getNetworkExplorerLinks(
-      this.historyItem.externalNetworkType,
-      this.historyItem.externalNetwork,
+      this.externalNetworkType,
+      this.externalNetworkId,
       this.txExternalAccount,
       this.historyItem?.externalBlockId,
       this.EvmLinkType.Account
     );
   }
 
-  get externalExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
-    if (!(this.historyItem?.externalNetworkType && this.historyItem?.externalNetwork)) return [];
+  get parachainExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    if (!(this.externalNetworkType && this.parachainNetworkId)) return [];
 
     return this.getNetworkExplorerLinks(
-      this.historyItem.externalNetworkType,
-      this.historyItem.externalNetwork,
+      this.externalNetworkType,
+      this.parachainNetworkId,
+      this.txParachainHash,
+      (this.historyItem as SubHistory)?.parachainBlockId,
+      this.EvmLinkType.Transaction
+    );
+  }
+
+  get externalExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    if (!(this.externalNetworkType && this.externalNetworkId)) return [];
+
+    return this.getNetworkExplorerLinks(
+      this.externalNetworkType,
+      this.externalNetworkId,
       this.txExternalHash,
       this.historyItem?.externalBlockId,
       this.EvmLinkType.Transaction
