@@ -57,6 +57,7 @@
         "statusRejectReason": "Razlog odbijanja",
         "userNotFound": "Broj mobitela nije pronađen, provjerite ga i pokušajte ponovno.",
         "code": "Kodirati",
-        "getSoraCardDesc": "Nabavite IBAN račun u eurima i debitnu karticu Mastercard dostupne u svom SORA novčaniku"
+        "getSoraCardDesc": "Nabavite IBAN račun u eurima i debitnu karticu Mastercard dostupne u svom SORA novčaniku",
+        "emailSpamReminder": "E-pošta može potrajati nekoliko minuta da stigne. Provjerite svoju spam mapu ako ne primite e-poštu nakon 5 minuta."
     }
 }

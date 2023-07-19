@@ -1213,5 +1213,30 @@
         "x1Btn": "Ra XOR pẹlu kaadi",
         "errorMessage": "Aforiji fun ohun airọrun. A n ṣiṣẹ takuntakun lati yanju eyi. Jọwọ, gbiyanju lẹẹkansi nigbamii."
     },
-    "acceptOnScrollText": "Yi lọ lati gba"
+    "acceptOnScrollText": "Yi lọ lati gba",
+    "addressBook": {
+        "myExtAccounts": "Awọn iroyin itẹsiwaju mi",
+        "myBook": "Iwe Mi",
+        "searchPlaceholder": "Ṣewadii nipasẹ adirẹsi, orukọ tabi idanimọ",
+        "noFoundRecords": "Ko si awọn igbasilẹ ti a rii",
+        "noContacts": "O ko ni awọn olubasọrọ ti a ṣafikun sibẹsibẹ",
+        "addContact": "Fi olubasọrọ kun",
+        "dialogTitle": "Awọn olubasọrọ rẹ",
+        "identity": "On-pq idanimo",
+        "none": "Ko si",
+        "detected": "Adirẹsi titun ti ri",
+        "save": "Fipamọ bi olubasọrọ",
+        "tooltip": "Gba iwe adirẹsi nipa pipese orukọ ati adirẹsi lati jẹ ki awọn olubasọrọ rẹ ṣeto ati imudojuiwọn",
+        "notSoraAddress": "Adirẹsi yii yoo wa ni ipamọ bi adirẹsi SORA ni isalẹ. Rii daju pe olugba le wọle si ẹwọn SORA:",
+        "options": {
+            "send": "Firanṣẹ awọn ami",
+            "edit": "Ṣatunkọ olubasọrọ",
+            "delete": "Paarẹ"
+        },
+        "btn": {
+            "enterName": "Tẹ orukọ sii",
+            "present": "Ti wa tẹlẹ",
+            "saveChanges": "Fi awọn ayipada pamọ"
+        }
+    }
 }
