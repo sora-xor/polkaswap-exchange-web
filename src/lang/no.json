@@ -1213,5 +1213,30 @@
         "x1Btn": "Kjøp XOR med kort",
         "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere."
     },
-    "acceptOnScrollText": "Rull for å godta"
+    "acceptOnScrollText": "Rull for å godta",
+    "addressBook": {
+        "myExtAccounts": "Mine utvidelseskontoer",
+        "myBook": "Min bok",
+        "searchPlaceholder": "Søk på adresse, navn eller identitet",
+        "noFoundRecords": "Ingen opptak funnet",
+        "noContacts": "Du har ingen kontakter lagt til ennå",
+        "addContact": "Legg til kontakt",
+        "dialogTitle": "Dine kontakter",
+        "identity": "Identitet på kjeden",
+        "none": "Ingen",
+        "detected": "Ny adresse oppdaget",
+        "save": "Lagre som kontakt",
+        "tooltip": "Samle adressebok ved å oppgi navn og adresse for å holde kontaktene dine organiserte og oppdaterte",
+        "notSoraAddress": "Denne adressen vil bli lagret som SORA-adresse nedenfor. Sørg for at mottakeren har tilgang til SORA-kjeden:",
+        "options": {
+            "send": "Send tokens",
+            "edit": "Rediger kontakt",
+            "delete": "Slett"
+        },
+        "btn": {
+            "enterName": "Skriv inn navn",
+            "present": "Allerede til stede",
+            "saveChanges": "Lagre endringer"
+        }
+    }
 }

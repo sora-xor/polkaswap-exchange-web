@@ -1213,5 +1213,30 @@
         "x1Btn": "Vásároljon XOR-t kártyával",
         "errorMessage": "Elnézést a kellemetlenségért. Szorgalmasan dolgozunk ennek megoldásán. Kérlek, próbáld újra később."
     },
-    "acceptOnScrollText": "Görgessen az elfogadáshoz"
+    "acceptOnScrollText": "Görgessen az elfogadáshoz",
+    "addressBook": {
+        "myExtAccounts": "Kiterjesztési fiókjaim",
+        "myBook": "Könyvem",
+        "searchPlaceholder": "Keresés cím, név vagy személyazonosság alapján",
+        "noFoundRecords": "Nincs találat",
+        "noContacts": "Még nincsenek hozzáadott névjegyei",
+        "addContact": "Kapcsolat hozzáadása",
+        "dialogTitle": "Az Ön névjegyei",
+        "identity": "Láncon belüli identitás",
+        "none": "Egyik sem",
+        "detected": "Új cím észlelve",
+        "save": "Mentés névjegyként",
+        "tooltip": "Név és cím megadásával gyűjtse össze a címjegyzéket, hogy névjegyeit rendszerezve és naprakészen tartsa",
+        "notSoraAddress": "Ezt a címet a rendszer SORA-címként menti alább. Győződjön meg arról, hogy a címzett hozzáfér a SORA-lánchoz:",
+        "options": {
+            "send": "Tokeneket küldeni",
+            "edit": "Kapcsolat szerkesztése",
+            "delete": "Töröl"
+        },
+        "btn": {
+            "enterName": "Írja be a nevet",
+            "present": "Már jelen van",
+            "saveChanges": "Változtatások mentése"
+        }
+    }
 }
