@@ -1213,5 +1213,30 @@
         "x1Btn": "Kúpte si XOR kartou",
         "errorMessage": "Ospravedlňujeme sa za nepríjemnosti. Na vyriešení tohto problému usilovne pracujeme. Skúste neskôr prosím."
     },
-    "acceptOnScrollText": "Posuňte sa na prijatie"
+    "acceptOnScrollText": "Posuňte sa na prijatie",
+    "addressBook": {
+        "myExtAccounts": "Moje účty rozšírenia",
+        "myBook": "Moja kniha",
+        "searchPlaceholder": "Hľadajte podľa adresy, mena alebo identity",
+        "noFoundRecords": "Nenašli sa žiadne záznamy",
+        "noContacts": "Zatiaľ nemáte pridané žiadne kontakty",
+        "addContact": "Pridať kontakt",
+        "dialogTitle": "Vaše kontakty",
+        "identity": "Identita na reťazci",
+        "none": "žiadne",
+        "detected": "Bola zistená nová adresa",
+        "save": "Uložiť ako kontakt",
+        "tooltip": "Zhromažďujte adresár zadaním mena a adresy, aby boli vaše kontakty organizované a aktuálne",
+        "notSoraAddress": "Táto adresa bude uložená ako adresa SORA nižšie. Uistite sa, že príjemca má prístup k reťazcu SORA:",
+        "options": {
+            "send": "Odoslať tokeny",
+            "edit": "Upraviť kontakt",
+            "delete": "Odstrániť"
+        },
+        "btn": {
+            "enterName": "Zadaj meno",
+            "present": "Už prítomný",
+            "saveChanges": "Uložiť zmeny"
+        }
+    }
 }

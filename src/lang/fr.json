@@ -1213,5 +1213,30 @@
         "x1Btn": "Acheter XOR avec carte",
         "errorMessage": "Mes excuses pour le derangement. Nous travaillons avec diligence pour résoudre ce problème. Veuillez réessayer plus tard."
     },
-    "acceptOnScrollText": "Faites défiler pour accepter"
+    "acceptOnScrollText": "Faites défiler pour accepter",
+    "addressBook": {
+        "myExtAccounts": "Mes comptes d'extension",
+        "myBook": "Mon livre",
+        "searchPlaceholder": "Recherche par adresse, nom ou identité",
+        "noFoundRecords": "Aucun enregistrement trouvé",
+        "noContacts": "Vous n'avez pas encore ajouté de contacts",
+        "addContact": "Ajouter le contact",
+        "dialogTitle": "Vos contacts",
+        "identity": "Identité en chaîne",
+        "none": "Aucun",
+        "detected": "Nouvelle adresse détectée",
+        "save": "Enregistrer comme contact",
+        "tooltip": "Collectez le carnet d'adresses en fournissant le nom et l'adresse pour garder vos contacts organisés et à jour",
+        "notSoraAddress": "Cette adresse sera enregistrée en tant qu'adresse SORA ci-dessous. Assurez-vous que le destinataire peut accéder à la chaîne SORA :",
+        "options": {
+            "send": "Envoyer des jetons",
+            "edit": "Modifier le contact",
+            "delete": "Supprimer"
+        },
+        "btn": {
+            "enterName": "Entrez le nom",
+            "present": "Déjà présent",
+            "saveChanges": "Sauvegarder les modifications"
+        }
+    }
 }
