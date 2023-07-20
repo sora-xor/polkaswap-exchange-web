@@ -33,6 +33,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     downstreamJob: 'polkaswap/e2e-tests/hash_test',
     noIndex: true,
     sonarSrcPath: 'src',
-    sonarTestsPath: 'tests'
+    sonarTestsPath: 'tests',
+    dojoProductType: 'sora'
 )
 pipeline.runPipeline()
