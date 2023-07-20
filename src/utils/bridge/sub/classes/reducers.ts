@@ -299,7 +299,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
             reject(new Error(`[${this.constructor.name}]: Unable to continue track transaction`));
           }
 
-          if (eventBatchNonce !== batchNonce || eventMessageNonce !== messageNonce) return;
+          if (!(eventBatchNonce === batchNonce && eventMessageNonce === messageNonce)) return;
 
           const bridgeProxyEvent = events.find((e) =>
             subBridgeApi.api.events.bridgeProxy.RequestStatusUpdate.is(e.event)
@@ -481,7 +481,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             );
           }
 
-          if (eventBatchNonce !== batchNonce || eventMessageNonce !== messageNonce) return;
+          if (!(eventBatchNonce === batchNonce && eventMessageNonce === messageNonce)) return;
 
           blockNumber = blockHeight.toNumber();
           extrinsicIndex = substrateDispatchEvent.phase.asApplyExtrinsic.toNumber();
