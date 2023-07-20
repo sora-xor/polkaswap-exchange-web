@@ -141,12 +141,29 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
   private async updateTxSigningData(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
-    if (!(tx.externalBlockId && tx.externalBlockHeight && tx.externalHash)) {
+    if (!(tx.externalBlockId && tx.externalHash)) {
       this.updateTransactionParams(id, {
         externalHash: tx.txId, // parachain tx hash
         externalBlockId: tx.blockId, // parachain block hash
-        externalBlockHeight: tx.blockHeight, // parachain block number
       });
+    }
+
+    if (!tx.externalBlockHeight) {
+      const { externalBlockId, externalNetwork } = this.getTransaction(id);
+      const adapter = subConnector.getAdapterForNetwork(externalNetwork as SubNetwork);
+
+      try {
+        await adapter.connect();
+
+        const api = await adapter.api.at(externalBlockId as string);
+        const externalBlockHeight = (await api.query.system.number()).toNumber();
+
+        this.updateTransactionParams(id, {
+          externalBlockHeight, // parachain block number
+        });
+      } finally {
+        subConnector.safeClose(adapter);
+      }
     }
   }
 
