@@ -195,6 +195,7 @@ import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/common/utils';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -297,11 +298,11 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get parachainNetworkId(): Nullable<SubNetwork> {
-    if (this.externalNetworkType === BridgeNetworkType.Sub) {
-      // [TODO]: mapping in js-lib to get sora parachain
-      return SubNetwork.RococoSora;
+    try {
+      return subBridgeApi.getSoraParachain(this.externalNetworkId);
+    } catch {
+      return null;
     }
-    return null;
   }
 
   get evmIcon(): string {

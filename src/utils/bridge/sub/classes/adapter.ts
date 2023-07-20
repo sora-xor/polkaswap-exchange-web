@@ -167,6 +167,7 @@ class RococoAdapter extends SubAdapter {
   }
 }
 
+/** Not used & tested yet */
 class KusamaKaruraAdapter extends SubAdapter {
   // [TODO] fetch balance by symbol
   public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
@@ -199,7 +200,7 @@ class KusamaKaruraAdapter extends SubAdapter {
           interior: {
             X2: [
               {
-                Parachain: subBridgeApi.parachainIds[SubNetwork.RococoSora],
+                Parachain: subBridgeApi.parachainIds[SubNetwork.KusamaSora],
               },
               {
                 AccountId32: {
@@ -222,7 +223,9 @@ class SubConnector {
   public readonly adapters = {
     [SubNetwork.Rococo]: new RococoAdapter(),
     [SubNetwork.RococoSora]: new SubAdapter(),
-    [SubNetwork.KusamaKarura]: new KusamaKaruraAdapter(),
+    /** Not used yet */
+    // [SubNetwork.KusamaKarura]: new KusamaKaruraAdapter(),
+    // [SubNetwork.KusamaSora]: new SubAdapter(),
   };
 
   public adapter: SubAdapter = this.adapters[SubNetwork.Rococo];
