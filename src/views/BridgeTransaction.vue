@@ -199,7 +199,6 @@ import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
@@ -289,8 +288,8 @@ export default class BridgeTransaction extends Mixins(
     return this.asset?.symbol ?? '';
   }
 
-  get externalNetworkId(): Nullable<EvmNetwork> {
-    return this.historyItem?.externalNetwork as unknown as EvmNetwork;
+  get externalNetworkId(): Nullable<BridgeNetworkId> {
+    return this.historyItem?.externalNetwork;
   }
 
   get externalNetworkType(): Nullable<BridgeNetworkType> {
@@ -299,7 +298,7 @@ export default class BridgeTransaction extends Mixins(
 
   get parachainNetworkId(): Nullable<SubNetwork> {
     try {
-      return subBridgeApi.getSoraParachain(this.externalNetworkId);
+      return subBridgeApi.getSoraParachain(this.externalNetworkId as SubNetwork);
     } catch {
       return null;
     }

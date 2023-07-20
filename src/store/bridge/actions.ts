@@ -161,16 +161,13 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
 }
 
 async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void> {
-  const { commit, rootState } = bridgeActionContext(context);
+  const { commit } = bridgeActionContext(context);
 
   let fee = ZeroStringValue;
 
-  const network = rootState.web3.networkSelected;
-
-  if (network) {
-    const adapter = subConnector.getAdapterForNetwork(network as SubNetwork);
-    await adapter.connect();
-    fee = await adapter.getNetworkFee();
+  if (subConnector.networkAdapter) {
+    await subConnector.networkAdapter.connect();
+    fee = await subConnector.networkAdapter.getNetworkFee();
   }
 
   commit.setExternalNetworkFee(fee);
@@ -226,21 +223,21 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<void
 
     return isSoraToEvm
       ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
-      : await subConnector.adapter.getTokenBalance(sender, asset?.externalAddress);
+      : await subConnector.networkAdapter.getTokenBalance(sender, asset?.externalAddress);
   };
 
   const getRecipientBalance = async () => {
     if (!(asset?.address && recipient)) return ZeroStringValue;
 
     return isSoraToEvm
-      ? await subConnector.adapter.getTokenBalance(recipient, asset?.externalAddress)
+      ? await subConnector.networkAdapter.getTokenBalance(recipient, asset?.externalAddress)
       : (await getAssetBalance(api.api, recipient, asset.address, asset.decimals)).transferable;
   };
 
   const getSpenderBalance = async () => {
     if (!(asset?.address && sender)) return ZeroStringValue;
 
-    return await subConnector.adapter.getTokenBalance(sender);
+    return await subConnector.networkAdapter.getTokenBalance(sender);
   };
 
   const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
@@ -451,7 +448,7 @@ const actions = defineActions({
 
     try {
       const blockNumber = getters.isSubBridge
-        ? await subConnector.adapter.getBlockNumber()
+        ? await subConnector.networkAdapter.getBlockNumber()
         : await (await ethersUtil.getEthersInstance()).getBlockNumber();
 
       commit.setExternalBlockNumber(blockNumber);

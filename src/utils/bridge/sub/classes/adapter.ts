@@ -228,7 +228,8 @@ class SubConnector {
     // [SubNetwork.KusamaSora]: new SubAdapter(),
   };
 
-  public adapter: SubAdapter = this.adapters[SubNetwork.Rococo];
+  /** Adapter for Substrate network. Used for network selected in app */
+  public networkAdapter!: SubAdapter;
 
   public getAdapterForNetwork(network: SubNetwork): SubAdapter {
     const adapter = this.adapters[network];
@@ -240,21 +241,30 @@ class SubConnector {
     return adapter;
   }
 
+  /**
+   * Open main connection with Substrate network
+   */
   public async open(network: SubNetwork): Promise<void> {
     // stop current adapter connection
     await this.stop();
     // set adapter for network arg
-    this.adapter = this.getAdapterForNetwork(network);
+    this.networkAdapter = this.getAdapterForNetwork(network);
     // open adapter connection
-    await this.adapter.connect();
+    await this.networkAdapter.connect();
   }
 
+  /**
+   * Close main connection to selected Substrate network
+   */
   public async stop(): Promise<void> {
-    await this.adapter?.stop();
+    await this.networkAdapter?.stop();
   }
 
+  /**
+   * Close adapter connection, if it's not used in app for selected network
+   */
   public async safeClose(adapter: SubAdapter): Promise<void> {
-    if (this.adapter !== adapter) {
+    if (this.networkAdapter !== adapter) {
       await adapter.stop();
     }
   }
