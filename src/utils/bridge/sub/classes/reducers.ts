@@ -18,12 +18,32 @@ type SubBridgeReducerOptions<T extends SubHistory> = IBridgeReducerOptions<T> & 
 };
 
 export class SubBridgeReducer extends BridgeReducer<SubHistory> {
+  protected subNetworkAdapter!: SubAdapter;
+  protected soraParachainAdapter!: SubAdapter;
+
   protected readonly removeTransactionByHash!: RemoveTransactionByHash<SubHistory>;
 
   constructor(options: SubBridgeReducerOptions<SubHistory>) {
     super(options);
 
     this.removeTransactionByHash = options.removeTransactionByHash;
+  }
+
+  async openConnections(id: string): Promise<void> {
+    const { externalNetwork } = this.getTransaction(id);
+
+    if (!externalNetwork) throw new Error(`[${this.constructor.name}]: Transaction "externalNetwork" is not defined`);
+
+    const soraParachainNetwork = subBridgeApi.getSoraParachain(externalNetwork);
+
+    this.subNetworkAdapter = subConnector.getAdapterForNetwork(externalNetwork);
+    this.soraParachainAdapter = subConnector.getAdapterForNetwork(soraParachainNetwork);
+
+    await Promise.all([this.subNetworkAdapter.connect(), this.soraParachainAdapter.connect()]);
+  }
+
+  async closeConnections(): Promise<void> {
+    await Promise.all([this.subNetworkAdapter?.stop(), this.soraParachainAdapter?.stop()]);
   }
 
   async getAssetExternalDecimals(externalNetwork: SubNetwork, soraAssetId: string): Promise<number> {
@@ -79,16 +99,21 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
           nextState: BridgeTxStatus.Done,
           rejectState: BridgeTxStatus.Failed,
           handler: async (id: string) => {
-            this.beforeSubmit(id);
-            this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
+            try {
+              this.beforeSubmit(id);
+              this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
 
-            await this.checkTxId(id);
+              await this.openConnections(id);
+              await this.checkTxId(id);
 
-            await Promise.all([this.updateTxIncomingData(id), this.waitForSoraParachainNonce(id)]);
+              await Promise.all([this.updateTxIncomingData(id), this.waitForSoraParachainNonce(id)]);
 
-            await this.waitForSoraInboundMessageNonce(id);
-            await this.waitSoraBlockByHash(id);
-            await this.onComplete(id);
+              await this.waitForSoraInboundMessageNonce(id);
+              await this.waitSoraBlockByHash(id);
+              await this.onComplete(id);
+            } finally {
+              this.closeConnections();
+            }
           },
         });
       }
