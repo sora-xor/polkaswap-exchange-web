@@ -266,14 +266,14 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
   }
 
   private async waitForSoraInboundMessageNonce(id: string): Promise<void> {
-    const { hash, payload: { batchNonce, messageNonce } = {} } = this.getTransaction(id);
+    const tx = this.getTransaction(id);
 
-    if (hash) return;
+    if (tx.hash) return;
 
-    if (!Number.isFinite(batchNonce))
+    if (!Number.isFinite(tx.payload?.batchNonce))
       throw new Error(`[${this.constructor.name}]: Transaction batchNonce is incorrect`);
 
-    if (!Number.isFinite(messageNonce))
+    if (!Number.isFinite(tx.payload?.messageNonce))
       throw new Error(`[${this.constructor.name}]: Transaction messageNonce is incorrect`);
 
     let subscription!: Subscription;
@@ -290,14 +290,16 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
           if (!substrateDispatchEvent) return;
 
-          const eventMessageNonce = substrateDispatchEvent.event.data[0].messageNonce.toNumber();
-          const eventBatchNonce = substrateDispatchEvent.event.data[0].batchNonce.unwrap().toNumber();
+          const { batchNonce, messageNonce } = substrateDispatchEvent.event.data[0];
+          const eventBatchNonce = batchNonce.unwrap().toNumber();
+          const eventMessageNonce = messageNonce.toNumber();
 
-          if (eventBatchNonce > batchNonce) {
+          if (eventBatchNonce > tx.payload.batchNonce) {
             reject(new Error(`[${this.constructor.name}]: Unable to continue track transaction`));
           }
 
-          if (!(eventBatchNonce === batchNonce && eventMessageNonce === messageNonce)) return;
+          if (eventBatchNonce !== tx.payload.batchNonce) return;
+          if (eventMessageNonce !== tx.payload.messageNonce) return;
 
           const bridgeProxyEvent = events.find((e) =>
             subBridgeApi.api.events.bridgeProxy.RequestStatusUpdate.is(e.event)
@@ -441,13 +443,10 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
     if (tx.payload?.messageHash) return;
 
-    const batchNonce = tx.payload?.batchNonce;
-    const messageNonce = tx.payload?.messageNonce;
-
-    if (!Number.isFinite(batchNonce))
+    if (!Number.isFinite(tx.payload?.batchNonce))
       throw new Error(`[${this.constructor.name}]: Transaction batchNonce is incorrect`);
 
-    if (!Number.isFinite(messageNonce))
+    if (!Number.isFinite(tx.payload?.messageNonce))
       throw new Error(`[${this.constructor.name}]: Transaction messageNonce is incorrect`);
 
     let subscription!: Subscription;
@@ -469,18 +468,20 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
           if (!substrateDispatchEvent) return;
 
-          const eventBatchNonce = substrateDispatchEvent.event.data[0].batchNonce.unwrap().toNumber();
-          const eventMessageNonce = substrateDispatchEvent.event.data[0].messageNonce.toNumber();
+          const { batchNonce, messageNonce } = substrateDispatchEvent.event.data[0];
+          const eventBatchNonce = batchNonce.unwrap().toNumber();
+          const eventMessageNonce = messageNonce.toNumber();
 
-          if (eventBatchNonce > batchNonce) {
+          if (eventBatchNonce > tx.payload.batchNonce) {
             reject(
               new Error(
-                `[${this.constructor.name}]: Unable to continue track transaction, parachain outbound channel batch nonce ${eventBatchNonce} is larger than tx batch nonce ${batchNonce}`
+                `[${this.constructor.name}]: Unable to continue track transaction, parachain outbound channel batch nonce ${eventBatchNonce} is larger than tx batch nonce ${tx.payload.batchNonce}`
               )
             );
           }
 
-          if (!(eventBatchNonce === batchNonce && eventMessageNonce === messageNonce)) return;
+          if (eventBatchNonce !== tx.payload.batchNonce) return;
+          if (eventMessageNonce !== tx.payload.messageNonce) return;
 
           blockNumber = blockHeight.toNumber();
           extrinsicIndex = substrateDispatchEvent.phase.asApplyExtrinsic.toNumber();
