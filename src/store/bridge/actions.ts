@@ -544,78 +544,32 @@ const actions = defineActions({
   // EVM
   async signEvmBridgeOutgoingSora(context, id: string) {
     const { rootGetters, rootDispatch } = bridgeActionContext(context);
+    const { to, amount, assetAddress, externalNetwork } = evmBridgeApi.getHistory(id) as EvmHistory;
+    const asset = rootGetters.assets.assetDataByAddress(assetAddress) as RegisteredAccountAsset;
 
-    const tx = evmBridgeApi.getHistory(id) as EvmHistory;
-
-    if (!tx) throw new Error(`Transaction not found: ${id}`);
-
-    const { to, amount, assetAddress, externalNetwork } = tx;
-
-    if (!externalNetwork) throw new Error('Transaction "externalNetwork" cannot be empty');
-    if (!amount) throw new Error('Transaction "amount" cannot be empty');
-    if (!assetAddress) throw new Error('Transaction "assetAddress" cannot be empty');
-    if (!to) throw new Error('Transaction "to" cannot be empty');
-
-    const asset = rootGetters.assets.assetDataByAddress(assetAddress);
-
-    if (!asset || !asset.externalAddress) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
-
-    if (!tx.txId) {
-      await rootDispatch.wallet.transactions.beforeTransactionSign();
-      await evmBridgeApi.transfer(asset, to, amount, externalNetwork, id);
-    }
+    await rootDispatch.wallet.transactions.beforeTransactionSign();
+    await evmBridgeApi.transfer(asset, to as string, amount as string, externalNetwork as EvmNetwork, id);
   },
 
   // SUB
-
   async signSubBridgeOutgoingSora(context, id: string) {
     const { rootGetters, rootDispatch } = bridgeActionContext(context);
+    const { to, amount, assetAddress, externalNetwork } = subBridgeApi.getHistory(id) as SubHistory;
+    const asset = rootGetters.assets.assetDataByAddress(assetAddress) as RegisteredAccountAsset;
 
-    const tx = subBridgeApi.getHistory(id) as SubHistory;
-
-    if (!tx) throw new Error(`Transaction not found: ${id}`);
-
-    const { to, amount, assetAddress, externalNetwork } = tx;
-
-    if (!externalNetwork) throw new Error('Transaction "externalNetwork" cannot be empty');
-    if (!amount) throw new Error('Transaction "amount" cannot be empty');
-    if (!assetAddress) throw new Error('Transaction "assetAddress" cannot be empty');
-    if (!to) throw new Error('Transaction "to" cannot be empty');
-
-    const asset = rootGetters.assets.assetDataByAddress(assetAddress);
-
-    if (!asset) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
-
-    if (!tx.txId) {
-      await rootDispatch.wallet.transactions.beforeTransactionSign();
-      await subBridgeApi.transfer(asset, to, amount, externalNetwork, id);
-    }
+    await rootDispatch.wallet.transactions.beforeTransactionSign();
+    await subBridgeApi.transfer(asset, to as string, amount as string, externalNetwork as SubNetwork, id);
   },
 
   async signSubBridgeIncomingSub(context, id: string) {
     const { rootGetters, rootDispatch } = bridgeActionContext(context);
+    const { to, amount, assetAddress, externalNetwork } = subBridgeApi.getHistory(id) as SubHistory;
+    const asset = rootGetters.assets.assetDataByAddress(assetAddress) as RegisteredAccountAsset;
 
-    const tx = subBridgeApi.getHistory(id) as SubHistory;
-
-    if (!tx) throw new Error(`Transaction not found: ${id}`);
-
-    const { to, amount, assetAddress, externalNetwork } = tx;
-
-    if (!externalNetwork) throw new Error('Transaction "externalNetwork" cannot be empty');
-    if (!amount) throw new Error('Transaction "amount" cannot be empty');
-    if (!assetAddress) throw new Error('Transaction "assetAddress" cannot be empty');
-    if (!to) throw new Error('Transaction "to" cannot be empty');
-
-    const asset = rootGetters.assets.assetDataByAddress(assetAddress);
-
-    if (!asset) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
-
-    if (!tx.txId) {
-      await rootDispatch.wallet.transactions.beforeTransactionSign();
-      const adapter = subConnector.getAdapterForNetwork(externalNetwork);
-      await adapter.connect();
-      await adapter.transfer(asset, to, amount, id);
-    }
+    await rootDispatch.wallet.transactions.beforeTransactionSign();
+    const adapter = subConnector.getAdapterForNetwork(externalNetwork as SubNetwork);
+    await adapter.connect();
+    await adapter.transfer(asset, to as string, amount as string, id);
   },
 
   // ETH BRIDGE
@@ -631,23 +585,11 @@ const actions = defineActions({
 
   async signEthBridgeOutgoingSora(context, id: string): Promise<void> {
     const { rootGetters, rootDispatch } = bridgeActionContext(context);
-
-    const tx = ethBridgeApi.getHistory(id);
-
-    if (!tx) throw new Error(`Transaction not found: ${id}`);
-
-    const { to, amount, assetAddress } = tx;
-
-    if (!amount) throw new Error('Transaction "amount" cannot be empty');
-    if (!assetAddress) throw new Error('Transaction "assetAddress" cannot be empty');
-    if (!to) throw new Error('Transaction "to" cannot be empty');
-
-    const asset = rootGetters.assets.assetDataByAddress(assetAddress);
-
-    if (!asset || !asset.externalAddress) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
+    const { to, amount, assetAddress } = ethBridgeApi.getHistory(id) as BridgeHistory;
+    const asset = rootGetters.assets.assetDataByAddress(assetAddress) as RegisteredAccountAsset;
 
     await rootDispatch.wallet.transactions.beforeTransactionSign();
-    await ethBridgeApi.transferToEth(asset, to, amount, id);
+    await ethBridgeApi.transferToEth(asset, to as string, amount as string, id);
   },
 
   async signEthBridgeOutgoingEvm(context, id: string): Promise<SignTxResult> {

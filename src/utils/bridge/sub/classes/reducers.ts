@@ -4,7 +4,6 @@ import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { combineLatest } from 'rxjs';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';
-import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
 import { findEventInBlock, getBlockEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -13,21 +12,9 @@ import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
 
-type SubBridgeReducerOptions<T extends SubHistory> = IBridgeReducerOptions<T> & {
-  removeTransactionByHash: RemoveTransactionByHash<SubHistory>;
-};
-
 export class SubBridgeReducer extends BridgeReducer<SubHistory> {
   protected subNetworkAdapter!: SubAdapter;
   protected soraParachainAdapter!: SubAdapter;
-
-  protected readonly removeTransactionByHash!: RemoveTransactionByHash<SubHistory>;
-
-  constructor(options: SubBridgeReducerOptions<SubHistory>) {
-    super(options);
-
-    this.removeTransactionByHash = options.removeTransactionByHash;
-  }
 
   createConnections(id: string): void {
     const { externalNetwork } = this.getTransaction(id);
@@ -130,6 +117,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     if (txId) return;
     // transaction not signed
+    await this.beforeSign(id);
     await this.signExternal(id);
     // update history to change tx status in ui
     this.updateHistory();
@@ -406,6 +394,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const { txId } = this.getTransaction(id);
     // transaction not signed
     if (!txId) {
+      await this.beforeSign(id);
       await this.signSora(id);
       // update history to change tx status in ui
       this.updateHistory();

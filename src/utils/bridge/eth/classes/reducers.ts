@@ -111,6 +111,7 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
 
             // transaction not signed
             if (!txId) {
+              await this.beforeSign(id);
               await this.signSora(id);
             }
 

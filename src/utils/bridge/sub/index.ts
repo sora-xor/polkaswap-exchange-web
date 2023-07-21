@@ -3,18 +3,14 @@ import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import store from '@/store';
 import { Bridge } from '@/utils/bridge/common/classes';
-import type { RemoveTransactionByHash, IBridgeConstructorOptions } from '@/utils/bridge/common/types';
+import type { IBridgeConstructorOptions } from '@/utils/bridge/common/types';
 import { SubBridgeOutgoingReducer, SubBridgeIncomingReducer } from '@/utils/bridge/sub/classes/reducers';
 import type { SubBridgeReducer } from '@/utils/bridge/sub/classes/reducers';
 import { getTransaction, updateTransaction } from '@/utils/bridge/sub/utils';
 
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
-interface SubBridgeConstructorOptions extends IBridgeConstructorOptions<SubHistory, SubBridgeReducer> {
-  removeTransactionByHash: RemoveTransactionByHash<SubHistory>;
-}
-
-type SubBridge = Bridge<SubHistory, SubBridgeReducer, SubBridgeConstructorOptions>;
+type SubBridge = Bridge<SubHistory, SubBridgeReducer, IBridgeConstructorOptions<SubHistory, SubBridgeReducer>>;
 
 const subBridge: SubBridge = new Bridge({
   reducers: {
@@ -50,9 +46,6 @@ const subBridge: SubBridge = new Bridge({
   getActiveTransaction: () => store.getters.bridge.historyItem as SubHistory,
   addTransactionToProgress: (id: string) => store.commit.bridge.addTxIdInProgress(id),
   removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
-  // custom
-  removeTransactionByHash: (options: { tx: Partial<SubHistory>; force: boolean }) =>
-    store.dispatch.bridge.removeHistory(options),
 });
 
 export default subBridge;

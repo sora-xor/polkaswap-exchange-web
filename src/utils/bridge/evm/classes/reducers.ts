@@ -84,6 +84,7 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
 
     // transaction not signed
     if (!txId) {
+      await this.beforeSign(id);
       await this.signSora(id);
       // update history to change tx status in ui
       this.updateHistory();

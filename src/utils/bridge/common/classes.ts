@@ -153,6 +153,25 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     this.addTransactionToProgress(id);
   }
 
+  async beforeSign(id: string): Promise<void> {
+    const tx = this.getTransaction(id);
+
+    if (!tx) throw new Error(`Transaction not found: ${id}`);
+
+    const { to, amount, assetAddress, externalNetwork } = tx;
+
+    if (!externalNetwork) throw new Error('Transaction "externalNetwork" cannot be empty');
+    if (!amount) throw new Error('Transaction "amount" cannot be empty');
+    if (!assetAddress) throw new Error('Transaction "assetAddress" cannot be empty');
+    if (!to) throw new Error('Transaction "to" cannot be empty');
+
+    const asset = this.getAssetByAddress(assetAddress);
+
+    if (!asset) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
+
+    // await rootDispatch.wallet.transactions.beforeTransactionSign();
+  }
+
   async waitForTransactionStatus(id: string): Promise<void> {
     const { status } = this.getTransaction(id);
 

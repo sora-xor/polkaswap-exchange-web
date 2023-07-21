@@ -62,7 +62,10 @@ export interface IBridgeReducer<T extends IBridgeTransaction> {
   handleState: (id: string, payload: TransactionHandlerPayload<T>) => Promise<void>;
   updateTransactionParams: (id: string, params: Partial<T>) => void;
   beforeSubmit: (id: string) => void;
+  beforeSign: (id: string) => void;
   onComplete: (id: string) => Promise<void>;
+  waitForTransactionStatus: (id: string) => Promise<void>;
+  waitForTransactionBlockId: (id: string) => Promise<void>;
 }
 
 export interface IBridgeConstructorOptions<
