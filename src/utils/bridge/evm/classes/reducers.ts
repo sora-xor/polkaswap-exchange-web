@@ -5,7 +5,8 @@ import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bri
 import { findEventInBlock } from '@/utils/bridge/common/utils';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 
-import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { Subscription } from 'rxjs';
 
 type EvmBridgeReducerOptions<T extends EvmHistory> = IBridgeReducerOptions<T> & {
@@ -80,15 +81,15 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
   }
 
   private async checkTxId(id: string): Promise<void> {
-    const { txId } = this.getTransaction(id);
+    const tx = this.getTransaction(id);
 
+    if (tx.txId) return;
     // transaction not signed
-    if (!txId) {
-      await this.beforeSign(id);
-      await this.signSora(id);
-      // update history to change tx status in ui
-      this.updateHistory();
-    }
+    await this.beforeSign(id);
+    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
+    await evmBridgeApi.transfer(asset, tx.to as string, tx.amount as string, tx.externalNetwork as EvmNetwork, id);
+    // update history to change tx status in ui
+    this.updateHistory();
   }
 
   private async checkTxSoraHash(id: string): Promise<string> {

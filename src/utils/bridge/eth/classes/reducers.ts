@@ -15,6 +15,7 @@ import {
 } from '@/utils/bridge/eth/utils';
 
 import type { BridgeHistory, IBridgeTransaction } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
@@ -107,20 +108,21 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
           handler: async (id: string) => {
             this.beforeSubmit(id);
 
-            const { txId, blockId } = getTransaction(id);
+            const tx = getTransaction(id);
 
             // transaction not signed
-            if (!txId) {
+            if (!tx.txId) {
               await this.beforeSign(id);
-              await this.signSora(id);
+              const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
+              await ethBridgeApi.transferToEth(asset, tx.to as string, tx.amount as string, id);
             }
 
             // signed sora transaction has to be parsed by subquery
-            if (txId && !blockId) {
+            if (tx.txId && !tx.blockId) {
               // format account address to sora format
               const address = ethBridgeApi.formatAddress(ethBridgeApi.account.pair.address);
               const bridgeHistory = await this.getBridgeHistoryInstance();
-              const historyItem = first(await bridgeHistory.fetchHistoryElements(address, 0, [txId]));
+              const historyItem = first(await bridgeHistory.fetchHistoryElements(address, 0, [tx.txId]));
 
               if (historyItem) {
                 this.updateTransactionParams(id, {
@@ -128,7 +130,7 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
                   hash: (historyItem.data as SUBQUERY_TYPES.HistoryElementEthBridgeOutgoing).requestHash,
                 });
               } else {
-                throw new Error(`[Bridge]: Can not restore TX from Subquery: ${txId}`);
+                throw new Error(`[Bridge]: Can not restore TX from Subquery: ${tx.txId}`);
               }
             }
           },

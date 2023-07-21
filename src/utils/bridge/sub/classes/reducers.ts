@@ -9,6 +9,7 @@ import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
 
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
 
@@ -113,12 +114,14 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
   }
 
   private async checkTxId(id: string): Promise<void> {
-    const { txId } = this.getTransaction(id);
+    const tx = this.getTransaction(id);
 
-    if (txId) return;
+    if (tx.txId) return;
     // transaction not signed
     await this.beforeSign(id);
-    await this.signExternal(id);
+    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
+    await this.subNetworkAdapter.connect();
+    await this.subNetworkAdapter.transfer(asset, tx.to as string, tx.amount as string, id);
     // update history to change tx status in ui
     this.updateHistory();
   }
@@ -391,14 +394,15 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
   }
 
   private async checkTxId(id: string): Promise<void> {
-    const { txId } = this.getTransaction(id);
+    const tx = this.getTransaction(id);
+
+    if (tx.txId) return;
     // transaction not signed
-    if (!txId) {
-      await this.beforeSign(id);
-      await this.signSora(id);
-      // update history to change tx status in ui
-      this.updateHistory();
-    }
+    await this.beforeSign(id);
+    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
+    await subBridgeApi.transfer(asset, tx.to as string, tx.amount as string, tx.externalNetwork as SubNetwork, id);
+    // update history to change tx status in ui
+    this.updateHistory();
   }
 
   private async checkTxSoraHash(id: string): Promise<void> {

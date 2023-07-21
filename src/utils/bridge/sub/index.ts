@@ -18,10 +18,7 @@ const subBridge: SubBridge = new Bridge({
     [Operation.SubstrateOutgoing]: SubBridgeOutgoingReducer,
   },
   signExternal: {
-    [Operation.SubstrateIncoming]: async (id: string) => store.dispatch.bridge.signSubBridgeIncomingSub(id),
-  },
-  signSora: {
-    [Operation.SubstrateOutgoing]: async (id: string) => store.dispatch.bridge.signSubBridgeOutgoingSora(id),
+    [Operation.SubstrateIncoming]: async (id: string) => {},
   },
   // states
   boundaryStates: {
@@ -46,6 +43,8 @@ const subBridge: SubBridge = new Bridge({
   getActiveTransaction: () => store.getters.bridge.historyItem as SubHistory,
   addTransactionToProgress: (id: string) => store.commit.bridge.addTxIdInProgress(id),
   removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
+  // transaction signing
+  beforeTransactionSign: () => store.dispatch.wallet.transactions.beforeTransactionSign(),
 });
 
 export default subBridge;

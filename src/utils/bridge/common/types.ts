@@ -10,8 +10,8 @@ export type GetBridgeHistoryInstance<T> = () => Promise<T>;
 export type GetTransaction<T> = (id: string) => T;
 export type UpdateTransaction<T> = (id: string, params: Partial<T>) => void;
 export type ShowNotification<T> = (tx: T) => void;
+export type BeforeTransactionSign = () => Promise<void>;
 export type SignExternal = (id: string) => Promise<any>;
-export type SignSora = (id: string) => Promise<void>;
 export type TransactionBoundaryStates<T extends IBridgeTransaction> = Partial<
   Record<
     T['type'],
@@ -47,13 +47,14 @@ export interface IBridgeOptions<T extends IBridgeTransaction> {
   getActiveTransaction: GetActiveTransaction<T>;
   addTransactionToProgress: AddTransactionToProgress;
   removeTransactionFromProgress: RemoveTransactionFromProgress;
+  // transaction signing
+  beforeTransactionSign: BeforeTransactionSign;
   // boundary states ("failed", "done")
   boundaryStates: TransactionBoundaryStates<T>;
 }
 
 export interface IBridgeReducerOptions<T extends IBridgeTransaction> extends IBridgeOptions<T> {
   signExternal: SignExternal;
-  signSora: SignSora;
 }
 
 export interface IBridgeReducer<T extends IBridgeTransaction> {
@@ -74,5 +75,4 @@ export interface IBridgeConstructorOptions<
 > extends IBridgeOptions<Transaction> {
   reducers: Record<Transaction['type'], Constructable<Reducer>>;
   signExternal: Partial<Record<Transaction['type'], SignExternal>>;
-  signSora: Partial<Record<Transaction['type'], SignSora>>;
 }

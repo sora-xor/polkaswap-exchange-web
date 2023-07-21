@@ -541,37 +541,6 @@ const actions = defineActions({
     }
   },
 
-  // EVM
-  async signEvmBridgeOutgoingSora(context, id: string) {
-    const { rootGetters, rootDispatch } = bridgeActionContext(context);
-    const { to, amount, assetAddress, externalNetwork } = evmBridgeApi.getHistory(id) as EvmHistory;
-    const asset = rootGetters.assets.assetDataByAddress(assetAddress) as RegisteredAccountAsset;
-
-    await rootDispatch.wallet.transactions.beforeTransactionSign();
-    await evmBridgeApi.transfer(asset, to as string, amount as string, externalNetwork as EvmNetwork, id);
-  },
-
-  // SUB
-  async signSubBridgeOutgoingSora(context, id: string) {
-    const { rootGetters, rootDispatch } = bridgeActionContext(context);
-    const { to, amount, assetAddress, externalNetwork } = subBridgeApi.getHistory(id) as SubHistory;
-    const asset = rootGetters.assets.assetDataByAddress(assetAddress) as RegisteredAccountAsset;
-
-    await rootDispatch.wallet.transactions.beforeTransactionSign();
-    await subBridgeApi.transfer(asset, to as string, amount as string, externalNetwork as SubNetwork, id);
-  },
-
-  async signSubBridgeIncomingSub(context, id: string) {
-    const { rootGetters, rootDispatch } = bridgeActionContext(context);
-    const { to, amount, assetAddress, externalNetwork } = subBridgeApi.getHistory(id) as SubHistory;
-    const asset = rootGetters.assets.assetDataByAddress(assetAddress) as RegisteredAccountAsset;
-
-    await rootDispatch.wallet.transactions.beforeTransactionSign();
-    const adapter = subConnector.getAdapterForNetwork(externalNetwork as SubNetwork);
-    await adapter.connect();
-    await adapter.transfer(asset, to as string, amount as string, id);
-  },
-
   // ETH BRIDGE
   async getEthBridgeHistoryInstance(context): Promise<EthBridgeHistory> {
     const { rootState } = bridgeActionContext(context);
@@ -581,15 +550,6 @@ const actions = defineActions({
     await bridgeHistory.init(rootState.web3.ethBridgeContractAddress);
 
     return bridgeHistory;
-  },
-
-  async signEthBridgeOutgoingSora(context, id: string): Promise<void> {
-    const { rootGetters, rootDispatch } = bridgeActionContext(context);
-    const { to, amount, assetAddress } = ethBridgeApi.getHistory(id) as BridgeHistory;
-    const asset = rootGetters.assets.assetDataByAddress(assetAddress) as RegisteredAccountAsset;
-
-    await rootDispatch.wallet.transactions.beforeTransactionSign();
-    await ethBridgeApi.transferToEth(asset, to as string, amount as string, id);
   },
 
   async signEthBridgeOutgoingEvm(context, id: string): Promise<SignTxResult> {
