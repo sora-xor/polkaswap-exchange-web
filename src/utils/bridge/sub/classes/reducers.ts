@@ -4,11 +4,12 @@ import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { combineLatest } from 'rxjs';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';
-import { findEventInBlock, getBlockEvents } from '@/utils/bridge/common/utils';
+import { getBlockEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
 
+import type { ApiPromise } from '@polkadot/api';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
@@ -78,6 +79,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     if (!substrateDispatchEvent) return false;
 
     const { batchNonce, messageNonce } = substrateDispatchEvent.event.data[0];
+
     const eventBatchNonce = batchNonce.unwrap().toNumber();
     const eventMessageNonce = messageNonce.toNumber();
 
@@ -88,6 +90,33 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     }
 
     return tx.payload?.batchNonce === eventBatchNonce && tx.payload?.messageNonce === eventMessageNonce;
+  }
+
+  getMessageAcceptedNonces(api: ApiPromise, events: Array<any>): [number, number] {
+    const messageAcceptedEvent = events.find((e) =>
+      api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
+    );
+
+    if (!messageAcceptedEvent) {
+      throw new Error(
+        `[${this.constructor.name}]: Unable to find "substrateBridgeOutboundChannel.MessageAccepted" event`
+      );
+    }
+
+    const batchNonce = messageAcceptedEvent.event.data[1].toNumber();
+    const messageNonce = messageAcceptedEvent.event.data[2].toNumber();
+
+    return [batchNonce, messageNonce];
+  }
+
+  getBridgeProxyHash(api: ApiPromise, events: Array<any>): string {
+    const bridgeProxyEvent = events.find((e) => api.events.bridgeProxy.RequestStatusUpdate.is(e.event));
+
+    if (!bridgeProxyEvent) {
+      throw new Error(`[${this.constructor.name}]: Unable to find "bridgeProxy.RequestStatusUpdate" event`);
+    }
+
+    return bridgeProxyEvent.event.data[0].toString();
   }
 }
 
@@ -220,18 +249,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
           blockNumber = blockHeight.toNumber();
           extrinsicIndex = downwardMessagesProcessedEvent.phase.asApplyExtrinsic.toNumber();
 
-          const messageAcceptedEvent = events.find((e) =>
-            this.soraParachainAdapter.api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
-          );
-
-          if (!messageAcceptedEvent) {
-            throw new Error(
-              `[${this.constructor.name}]: Unable to find "substrateBridgeOutboundChannel.MessageAccepted" event`
-            );
-          }
-
-          batchNonce = messageAcceptedEvent.event.data[1].toNumber();
-          messageNonce = messageAcceptedEvent.event.data[2].toNumber();
+          [batchNonce, messageNonce] = this.getMessageAcceptedNonces(this.soraParachainAdapter.api, events);
 
           const assetAddedToChannelEvent = events.find((e) =>
             this.soraParachainAdapter.api.events.xcmApp.AssetAddedToChannel.is(e.event)
@@ -304,15 +322,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
           if (!this.isTransactionNonces(tx, substrateDispatchEvent)) return;
 
-          const bridgeProxyEvent = events.find((e) =>
-            subBridgeApi.api.events.bridgeProxy.RequestStatusUpdate.is(e.event)
-          );
-
-          if (!bridgeProxyEvent) {
-            throw new Error(`[${this.constructor.name}]: Unable to find "bridgeProxy.RequestStatusUpdate" event`);
-          }
-
-          soraHash = bridgeProxyEvent.event.data[0].toString();
+          soraHash = this.getBridgeProxyHash(subBridgeApi.api, events);
 
           resolve();
         });
@@ -375,8 +385,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             await this.checkTxId(id);
             await this.waitForTransactionStatus(id);
             await this.waitForTransactionBlockId(id);
-            await this.checkTxSoraHash(id);
-            await this.waitForSoraOutboundNonce(id);
+            await this.waitForSoraHashAndNonces(id);
             await this.waitForSoraParachainMessageHash(id);
             await this.waitForDestinationMessageHash(id);
             await this.onComplete(id);
@@ -405,39 +414,18 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     this.updateHistory();
   }
 
-  private async checkTxSoraHash(id: string): Promise<void> {
+  private async waitForSoraHashAndNonces(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
-    if (tx.hash) return;
+    if (tx.hash && Number.isFinite(tx.payload?.batchNonce) && Number.isFinite(tx.payload?.messageNonce)) return;
 
-    const eventData = await findEventInBlock({
-      api: subBridgeApi.api,
-      blockId: tx.blockId as string,
-      section: 'bridgeProxy',
-      method: 'RequestStatusUpdate',
-    });
+    const events = await getBlockEvents(subBridgeApi.api, tx.blockId as string);
 
-    const hash = eventData[0].toString();
-
+    const hash = this.getBridgeProxyHash(subBridgeApi.api, events);
     this.updateTransactionParams(id, { hash });
-  }
 
-  private async waitForSoraOutboundNonce(id: string): Promise<void> {
-    const tx = this.getTransaction(id);
-
-    if (tx.payload?.batchNonce) return;
-
-    const eventData = await findEventInBlock({
-      api: subBridgeApi.api,
-      blockId: tx.blockId as string,
-      section: 'substrateBridgeOutboundChannel',
-      method: 'MessageAccepted',
-    });
-
-    const batchNonce = eventData[1].toNumber();
-    const messageNonce = eventData[2].toNumber();
+    const [batchNonce, messageNonce] = this.getMessageAcceptedNonces(subBridgeApi.api, events);
     const payload = { ...tx.payload, batchNonce, messageNonce };
-
     this.updateTransactionParams(id, { payload });
   }
 
