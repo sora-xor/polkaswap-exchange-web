@@ -241,11 +241,12 @@ class SubConnector {
     if (!(network in this.endpoints)) {
       throw new Error(`[${this.constructor.name}] Endpoint for "${network}" network is not defined`);
     }
-
+    const endpoint = this.endpoints[network];
     const adapter = this.adapters[network]();
-    adapter.setEndpoint(this.endpoints[network]);
 
-    return this.adapters[network]();
+    adapter.setEndpoint(endpoint);
+
+    return adapter;
   }
 
   /**
@@ -265,15 +266,6 @@ class SubConnector {
    */
   public async stop(): Promise<void> {
     await this.networkAdapter?.stop();
-  }
-
-  /**
-   * Close adapter connection, if it's not used in app for selected network
-   */
-  public async safeClose(adapter: SubAdapter): Promise<void> {
-    if (this.networkAdapter !== adapter) {
-      await adapter.stop();
-    }
   }
 }
 

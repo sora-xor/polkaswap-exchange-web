@@ -53,9 +53,7 @@ export interface IBridgeOptions<T extends IBridgeTransaction> {
   boundaryStates: TransactionBoundaryStates<T>;
 }
 
-export interface IBridgeReducerOptions<T extends IBridgeTransaction> extends IBridgeOptions<T> {
-  signExternal: SignExternal;
-}
+export type IBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeOptions<T>;
 
 export interface IBridgeReducer<T extends IBridgeTransaction> {
   process: (transaction: T) => Promise<void>;
@@ -74,5 +72,4 @@ export interface IBridgeConstructorOptions<
   Reducer extends IBridgeReducer<Transaction>
 > extends IBridgeOptions<Transaction> {
   reducers: Record<Transaction['type'], Constructable<Reducer>>;
-  signExternal: Partial<Record<Transaction['type'], SignExternal>>;
 }

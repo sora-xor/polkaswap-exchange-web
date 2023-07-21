@@ -91,9 +91,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
               this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
 
               await this.checkTxId(id);
-
               await Promise.all([this.updateTxIncomingData(id), this.waitForSoraParachainNonce(id)]);
-
               await this.waitForSoraInboundMessageNonce(id);
               await this.waitSoraBlockByHash(id);
               await this.onComplete(id);
@@ -131,6 +129,15 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     await this.subNetworkAdapter.connect();
 
+    if (!tx.externalBlockHeight) {
+      const api = await this.subNetworkAdapter.api.at(tx.externalBlockId as string);
+      const externalBlockHeight = (await api.query.system.number()).toNumber();
+
+      this.updateTransactionParams(id, {
+        externalBlockHeight, // parachain block number
+      });
+    }
+
     const events = await getBlockEvents(this.subNetworkAdapter.api, tx.externalBlockId as string);
 
     const feeEvent = events.find((e) =>
@@ -158,19 +165,6 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
         externalBlockId: tx.blockId, // parachain block hash
       });
     }
-
-    if (!tx.externalBlockHeight) {
-      const { externalBlockId } = this.getTransaction(id);
-
-      await this.subNetworkAdapter.connect();
-
-      const api = await this.subNetworkAdapter.api.at(externalBlockId as string);
-      const externalBlockHeight = (await api.query.system.number()).toNumber();
-
-      this.updateTransactionParams(id, {
-        externalBlockHeight, // parachain block number
-      });
-    }
   }
 
   private async updateTxIncomingData(id: string): Promise<void> {
@@ -178,14 +172,13 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     await this.waitForTransactionBlockId(id);
     await this.updateTxSigningData(id);
     await this.updateTxExternalData(id);
+    await this.subNetworkAdapter.stop();
   }
 
   private async waitForSoraParachainNonce(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
     if (tx.payload?.batchNonce) return;
-
-    const soraParachainAdapter = this.soraParachainAdapter;
 
     let subscription!: Subscription;
     let messageNonce!: number;
@@ -195,7 +188,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     let extrinsicIndex!: number;
 
     try {
-      await soraParachainAdapter.connect();
+      await this.soraParachainAdapter.connect();
 
       await new Promise<void>((resolve, reject) => {
         const eventsObservable = this.soraParachainAdapter.apiRx.query.system.events();
@@ -248,7 +241,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       subscription.unsubscribe();
 
       // run non blocking process promise
-      this.getHashesByBlockNumber(soraParachainAdapter, blockNumber, extrinsicIndex)
+      this.getHashesByBlockNumber(this.soraParachainAdapter, blockNumber, extrinsicIndex)
         .then(({ blockHeight, blockId, txId }) =>
           this.updateTransactionParams(id, {
             parachainBlockHeight: blockHeight, // parachain block number
@@ -371,7 +364,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           rejectState: BridgeTxStatus.Failed,
           handler: async (id: string) => {
             this.beforeSubmit(id);
+            this.createConnections(id);
             this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
+
             await this.checkTxId(id);
             await this.waitForTransactionStatus(id);
             await this.waitForTransactionBlockId(id);
@@ -584,7 +579,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             externalHash: txId, // parachain tx hash
           })
         )
-        .finally(() => subConnector.safeClose(this.subNetworkAdapter));
+        .finally(() => this.subNetworkAdapter.stop());
     }
 
     const decimals = await this.getAssetExternalDecimals(tx.externalNetwork as SubNetwork, tx.assetAddress as string);

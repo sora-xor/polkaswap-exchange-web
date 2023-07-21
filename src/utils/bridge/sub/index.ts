@@ -17,9 +17,6 @@ const subBridge: SubBridge = new Bridge({
     [Operation.SubstrateIncoming]: SubBridgeIncomingReducer,
     [Operation.SubstrateOutgoing]: SubBridgeOutgoingReducer,
   },
-  signExternal: {
-    [Operation.SubstrateIncoming]: async (id: string) => {},
-  },
   // states
   boundaryStates: {
     [Operation.SubstrateIncoming]: {

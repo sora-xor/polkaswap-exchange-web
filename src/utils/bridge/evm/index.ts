@@ -22,10 +22,6 @@ const evmBridge: EvmBridge = new Bridge({
     [Operation.EvmIncoming]: EvmBridgeIncomingReducer,
     [Operation.EvmOutgoing]: EvmBridgeOutgoingReducer,
   },
-  signExternal: {
-    [Operation.EvmIncoming]: async (id: string) => {},
-    [Operation.EvmOutgoing]: async (id: string) => {},
-  },
   // states
   boundaryStates: {
     [Operation.EvmIncoming]: {

@@ -166,7 +166,6 @@ async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void>
   let fee = ZeroStringValue;
 
   if (subConnector.networkAdapter) {
-    await subConnector.networkAdapter.connect();
     fee = await subConnector.networkAdapter.getNetworkFee();
   }
 

@@ -19,6 +19,7 @@
 </template>
 
 <script lang="ts">
+import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -42,7 +43,6 @@ export default class BridgeTransferNotification extends Mixins(TranslationMixin)
 
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
-  @getter.bridge.isSubBridge private isSubBridge!: boolean;
 
   @mutation.bridge.setNotificationData private setNotificationData!: (tx?: IBridgeTransaction) => void;
 
@@ -67,7 +67,8 @@ export default class BridgeTransferNotification extends Mixins(TranslationMixin)
   }
 
   get addTokenBtnVisibility(): boolean {
-    if (this.isSubBridge) return false;
+    if (!this.tx?.externalNetworkType) return false;
+    if (this.tx.externalNetworkType === BridgeNetworkType.Sub) return false;
 
     return (
       !!this.asset && !ethersUtil.isNativeEvmTokenAddress(this.asset.externalAddress) && isOutgoingTransaction(this.tx)

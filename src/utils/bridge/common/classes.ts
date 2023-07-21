@@ -3,7 +3,6 @@ import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { delay } from '@/utils';
 import type {
   BeforeTransactionSign,
-  SignExternal,
   AddAsset,
   GetAssetByAddress,
   GetTransaction,
@@ -25,7 +24,6 @@ import type { IBridgeTransaction } from '@sora-substrate/util';
 const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS;
 
 export class BridgeReducer<Transaction extends IBridgeTransaction> implements IBridgeReducer<Transaction> {
-  protected readonly signExternal!: SignExternal;
   // asset
   protected readonly addAsset!: AddAsset;
   protected readonly getAssetByAddress!: GetAssetByAddress;
@@ -44,7 +42,6 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
   protected readonly boundaryStates!: TransactionBoundaryStates<Transaction>;
 
   constructor({
-    signExternal,
     // asset
     addAsset,
     getAssetByAddress,
@@ -62,7 +59,6 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     // boundary states
     boundaryStates,
   }: IBridgeReducerOptions<Transaction>) {
-    this.signExternal = signExternal;
     this.addAsset = addAsset;
     this.getAssetByAddress = getAssetByAddress;
     this.getTransaction = getTransaction;
@@ -218,13 +214,12 @@ export class Bridge<
   protected reducers!: Partial<Record<Transaction['type'], Reducer>>;
   protected readonly getTransaction!: GetTransaction<Transaction>;
 
-  constructor({ reducers, signExternal, getTransaction, ...rest }: ConstructorOptions) {
+  constructor({ reducers, getTransaction, ...rest }: ConstructorOptions) {
     this.getTransaction = getTransaction;
     this.reducers = Object.entries<Constructable<Reducer>>(reducers).reduce((acc, [operation, Reducer]) => {
       acc[operation] = new Reducer({
         ...rest,
         getTransaction,
-        signExternal: signExternal[operation],
       });
       return acc;
     }, {});
