@@ -5,6 +5,7 @@ import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
 import { ZeroStringValue } from '@/consts';
+import type { SubNetworkApps } from '@/store/web3/types';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { ApiPromise } from '@polkadot/api';
@@ -221,22 +222,29 @@ class KusamaKaruraAdapter extends SubAdapter {
 
 class SubConnector {
   public readonly adapters = {
-    [SubNetwork.Rococo]: new RococoAdapter(),
-    [SubNetwork.RococoSora]: new SubAdapter(),
+    [SubNetwork.Rococo]: () => new RococoAdapter(),
+    [SubNetwork.RococoSora]: () => new SubAdapter(),
     /** Not used yet */
     // [SubNetwork.KusamaKarura]: new KusamaKaruraAdapter(),
     // [SubNetwork.KusamaSora]: new SubAdapter(),
   };
 
+  public endpoints: SubNetworkApps = {};
+
   /** Adapter for Substrate network. Used for network selected in app */
   public networkAdapter!: SubAdapter;
 
   public getAdapterForNetwork(network: SubNetwork): SubAdapter {
-    const adapter = this.adapters[network];
-
-    if (!adapter) {
+    if (!(network in this.adapters)) {
       throw new Error(`[${this.constructor.name}] Adapter for "${network}" network not implemented`);
     }
+    if (!(network in this.endpoints)) {
+      throw new Error(`[${this.constructor.name}] Endpoint for "${network}" network is not defined`);
+    }
+    const endpoint = this.endpoints[network];
+    const adapter = this.adapters[network]();
+
+    adapter.setEndpoint(endpoint);
 
     return adapter;
   }
@@ -258,15 +266,6 @@ class SubConnector {
    */
   public async stop(): Promise<void> {
     await this.networkAdapter?.stop();
-  }
-
-  /**
-   * Close adapter connection, if it's not used in app for selected network
-   */
-  public async safeClose(adapter: SubAdapter): Promise<void> {
-    if (this.networkAdapter !== adapter) {
-      await adapter.stop();
-    }
   }
 }
 
