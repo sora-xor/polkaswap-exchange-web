@@ -92,7 +92,7 @@
         type="primary"
         :disabled="isConfirmSwapDisabled"
         :loading="loading || isSelectAssetLoading"
-        @click="handleConfirmSwap"
+        @click="handleSwapClick"
       >
         <template v-if="!areTokensSelected">
           {{ t('buttons.chooseTokens') }}
@@ -113,6 +113,12 @@
           {{ t('exchange.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
         </template>
         <template v-else>
+          <s-icon
+            v-if="isErrorFiatDifferenceStatus"
+            name="notifications-alert-triangle-24"
+            size="18"
+            class="action-button-icon"
+          />
           {{ t('exchange.Swap') }}
         </template>
       </s-button>
@@ -127,8 +133,13 @@
         :asset="isTokenFromSelected ? tokenTo : tokenFrom"
         @select="handleSelectToken"
       />
+      <swap-loss-warning-dialog
+        :visible.sync="lossWarningVisibility"
+        :value="fiatDifferenceFormatted"
+        @confirm="showConfirmDialog"
+      />
       <swap-confirm
-        :visible.sync="showConfirmSwapDialog"
+        :visible.sync="confirmVisibility"
         :isInsufficientBalance="isInsufficientBalance"
         @confirm="confirmSwap"
       />
@@ -168,6 +179,7 @@ import {
   getAssetBalance,
   debouncedInputHandler,
 } from '@/utils';
+import { DifferenceStatus, getDifferenceStatus } from '@/utils/swap';
 
 import type {
   QuotePayload,
@@ -186,6 +198,7 @@ import type { Subscription } from 'rxjs';
     SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     SwapChart: lazyComponent(Components.SwapChart),
+    SwapLossWarningDialog: lazyComponent(Components.SwapLossWarningDialog),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
     SelectToken: lazyComponent(Components.SelectToken),
@@ -209,6 +222,7 @@ export default class Swap extends Mixins(
   @state.swap.isExchangeB isExchangeB!: boolean;
   @state.swap.fromValue fromValue!: string;
   @state.swap.toValue toValue!: string;
+  @state.swap.allowLossPopup private allowLossPopup!: boolean;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
@@ -263,7 +277,8 @@ export default class Swap extends Mixins(
   isTokenFromSelected = false;
   showSettings = false;
   showSelectTokenDialog = false;
-  showConfirmSwapDialog = false;
+  confirmVisibility = false;
+  lossWarningVisibility = false;
   liquidityReservesSubscription: Nullable<Subscription> = null;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
@@ -320,6 +335,14 @@ export default class Swap extends Mixins(
 
   get fiatDifferenceFormatted(): string {
     return this.formatStringValue(this.fiatDifference);
+  }
+
+  get isErrorFiatDifferenceStatus(): boolean {
+    const value = Number(this.fiatDifference);
+    const prepared = Number.isFinite(value) ? value : 0;
+    const status = getDifferenceStatus(prepared);
+
+    return status === DifferenceStatus.Error;
   }
 
   get isXorOutputSwap(): boolean {
@@ -592,8 +615,16 @@ export default class Swap extends Mixins(
     this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
   }
 
-  handleConfirmSwap(): void {
-    this.showConfirmSwapDialog = true;
+  handleSwapClick(): void {
+    if (this.isErrorFiatDifferenceStatus && this.allowLossPopup) {
+      this.lossWarningVisibility = true;
+    } else {
+      this.showConfirmDialog();
+    }
+  }
+
+  showConfirmDialog(): void {
+    this.confirmVisibility = true;
   }
 
   async confirmSwap(isSwapConfirmed: boolean): Promise<void> {
@@ -702,5 +733,13 @@ export default class Swap extends Mixins(
       padding-right: 2px;
     }
   }
+}
+
+i.action-button-icon[class*=' s-icon-'] {
+  &,
+  &:hover {
+    color: inherit;
+  }
+  margin-right: $inner-spacing-mini;
 }
 </style>

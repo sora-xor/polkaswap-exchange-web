@@ -8,24 +8,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-enum Status {
-  Success = 'success',
-  Warning = 'warning',
-  Error = 'error',
-}
-
-const getStatusDefault = (value: number): string => {
-  if (value > 0) return Status.Success;
-  if (value < -5) return Status.Error;
-  if (value < -1) return Status.Warning;
-  return '';
-};
+import { DifferenceStatus, getDifferenceStatus } from '@/utils/swap';
 
 @Component
 export default class ValueStatusWrapper extends Vue {
   @Prop({ default: false, type: Boolean }) readonly badge!: boolean;
   @Prop({ default: '', type: [String, Number] }) readonly value!: string | number;
-  @Prop({ default: getStatusDefault, type: Function }) readonly getStatus!: (value: number) => string;
+  @Prop({ default: getDifferenceStatus, type: Function }) readonly getStatus!: (value: number) => string;
 
   get formatted(): number {
     const value = Number(this.value);
@@ -38,7 +27,7 @@ export default class ValueStatusWrapper extends Vue {
   }
 
   get errorIcon(): boolean {
-    return this.status === Status.Error && this.badge;
+    return this.status === DifferenceStatus.Error && this.badge;
   }
 }
 </script>
