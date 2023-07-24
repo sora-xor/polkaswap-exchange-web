@@ -483,7 +483,8 @@
         "transactionSubmitted": "Iṣowo ti a fi silẹ",
         "transactionMessage": "{firstToken} ati {secondToken}",
         "ok": "O DARA",
-        "confirm": "Jẹrisi"
+        "confirm": "Jẹrisi",
+        "lossWarning": "Iwọ yoo padanu {value}% lori iṣowo rẹ. A ti rii ọran ipese oloomi kan. Eyi le ja si awọn adanu nla lakoko awọn swaps àmi. Jọwọ rii daju pe oloomi to peye wa fun bata swap ti o fẹ."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",

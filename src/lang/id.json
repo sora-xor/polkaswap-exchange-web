@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transaksi dikirim",
         "transactionMessage": "{firstToken} dan {secondToken}",
         "ok": "Oke",
-        "confirm": "Konfirmasi"
+        "confirm": "Konfirmasi",
+        "lossWarning": "Anda akan kehilangan {value}% pada perdagangan Anda. Kami mendeteksi masalah penyediaan likuiditas. Ini dapat menyebabkan kerugian yang signifikan selama pertukaran token. Pastikan ada likuiditas yang memadai untuk pasangan swap yang Anda inginkan."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",

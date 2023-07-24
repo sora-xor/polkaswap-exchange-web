@@ -8,10 +8,7 @@
       @submit.native.prevent="handleConfirm"
     >
       <template #title>{{ t('confirmNextTxFailure.header') }}</template>
-      <template #text>
-        You are going to lose {{ value }}% on your trade. We've detected a liquidity provision issue. This may lead to
-        significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair.
-      </template>
+      <template #text>{{ t('exchange.lossWarning') }}</template>
     </simple-notification>
   </dialog-base>
 </template>

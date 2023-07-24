@@ -483,7 +483,8 @@
         "transactionSubmitted": "已提交的交易",
         "transactionMessage": "{firstToken}和{secondToken}",
         "ok": "好的",
-        "confirm": "确认"
+        "confirm": "确认",
+        "lossWarning": "您的交易将损失{value}%。我们发现存在流动性供应问题。这可能会导致代币交换期间的重大损失。请确保您所需的掉期对有足够的流动性。"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
