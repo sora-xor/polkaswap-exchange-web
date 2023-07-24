@@ -13,7 +13,7 @@
         <span>{{ t('fiatPayment.x1Desc') }}</span>
         <s-button type="primary" @click="openX1">{{ x1TextBtn }}</s-button>
       </div>
-      <div class="pay-options__history-btn" @click="openFiatTxHistory">
+      <div v-if="isLoggedIn" class="pay-options__history-btn" @click="openFiatTxHistory">
         <span>{{ t('fiatPayment.historyBtn') }}</span>
         <div>
           <span :class="computedCounterClass">{{ hasPendingTx ? 1 : 0 }}</span>
@@ -62,6 +62,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
   @state.moonpay.startBridgeButtonVisibility private startBridgeButtonVisibility!: boolean;
 
   @getter.libraryTheme libraryTheme!: Theme;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.settings.moonpayEnabled moonpayEnabled!: boolean;
   @getter.settings.x1Enabled x1Enabled!: boolean;
 

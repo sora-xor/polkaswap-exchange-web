@@ -228,6 +228,9 @@ const routes: Array<RouteConfig> = [
     path: '/fiat-deposit/history',
     name: PageNames.FiatTxHistory,
     component: lazyView(PageNames.FiatTxHistory),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/stats',
