@@ -120,13 +120,13 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
     try {
       const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('SoraCard');
 
-      this.btnLoading = false;
-
       if (!mediaDevicesAllowance) return;
 
       this.cameraPermission = 'granted';
     } catch (error) {
       console.error('[SoraCard]: Camera error.', error);
+    } finally {
+      this.btnLoading = false;
     }
 
     this.initKyc();
