@@ -1238,5 +1238,13 @@
             "present": "Már jelen van",
             "saveChanges": "Változtatások mentése"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "A kamera hozzáférésének engedélyezése a böngésző beállításaiban",
+        "desc": "A dokumentumok hitelességének biztosításához és a felhasználói személyazonosság érvényesítéséhez a KYC-ellenőrzéshez hozzáférésre van szükség az eszköz kamerájához.",
+        "disclaimer": "A valós idejű dokumentumrögzítéshez kamera-hozzáférés szükséges a csalás megelőzése érdekében.",
+        "btnGoToSettings": "Menj a beállításokhoz",
+        "btnAllow": "Hozzáférést enged"
+    },
+    "continueText": "Folytatni"
 }

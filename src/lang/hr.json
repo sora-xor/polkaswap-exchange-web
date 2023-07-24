@@ -1238,5 +1238,13 @@
             "present": "Već prisutan",
             "saveChanges": "Spremi promjene"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "Dopustite pristup kameri u postavkama preglednika",
+        "desc": "Kako biste osigurali autentičnost dokumenata i potvrdili korisnički identitet za KYC provjeru, potreban je pristup kameri vašeg uređaja.",
+        "disclaimer": "Potreban je pristup kameri za snimanje dokumenata u stvarnom vremenu kako bi se spriječila prijevara.",
+        "btnGoToSettings": "Idite na postavke",
+        "btnAllow": "Dopusti pristup"
+    },
+    "continueText": "Nastaviti"
 }

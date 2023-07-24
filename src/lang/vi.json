@@ -1238,5 +1238,13 @@
             "present": "Đã có mặt",
             "saveChanges": "Lưu thay đổi"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "Cho phép truy cập máy ảnh trong cài đặt trình duyệt",
+        "desc": "Để đảm bảo tính xác thực của tài liệu và xác thực danh tính người dùng để xác minh KYC, cần có quyền truy cập vào máy ảnh trên thiết bị của bạn.",
+        "disclaimer": "Cần có quyền truy cập máy ảnh để chụp tài liệu theo thời gian thực nhằm ngăn chặn gian lận.",
+        "btnGoToSettings": "Chuyển đến cài đặt",
+        "btnAllow": "Cho phép truy cập"
+    },
+    "continueText": "Tiếp tục"
 }

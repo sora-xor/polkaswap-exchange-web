@@ -1238,5 +1238,13 @@
             "present": "Reeds aanwezig",
             "saveChanges": "Wijzigingen opslaan"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "Cameratoegang toestaan in browserinstellingen",
+        "desc": "Om de authenticiteit van documenten te garanderen en de gebruikersidentiteit voor KYC-verificatie te valideren, is toegang tot de camera van uw apparaat vereist.",
+        "disclaimer": "Cameratoegang is vereist voor real-time documentregistratie om fraude te voorkomen.",
+        "btnGoToSettings": "Ga naar Instellingen",
+        "btnAllow": "Toegang te verlenen"
+    },
+    "continueText": "Doorgaan"
 }
