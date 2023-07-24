@@ -304,7 +304,7 @@ section.content {
   }
 
   &-icon {
-    color: #f754a3;
+    color: var(--s-color-status-error);
   }
 
   &-btn {
