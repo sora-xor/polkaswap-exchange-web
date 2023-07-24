@@ -8,7 +8,7 @@
       @submit.native.prevent="handleConfirm"
     >
       <template #title>{{ t('confirmNextTxFailure.header') }}</template>
-      <template #text>{{ t('exchange.lossWarning') }}</template>
+      <template #text>{{ t('exchange.lossWarning', { value }) }}</template>
     </simple-notification>
   </dialog-base>
 </template>
@@ -18,6 +18,7 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { ZeroStringValue } from '@/consts';
 import { mutation } from '@/store/decorators';
 
 @Component({
@@ -27,7 +28,7 @@ import { mutation } from '@/store/decorators';
   },
 })
 export default class SwapLossWarningDialog extends Mixins(mixins.DialogMixin, TranslationMixin) {
-  @Prop({ type: String }) readonly value!: string;
+  @Prop({ default: ZeroStringValue, type: String }) readonly value!: string;
 
   @mutation.swap.setAllowLossPopup private setAllowLossPopup!: (flag: boolean) => void;
 
