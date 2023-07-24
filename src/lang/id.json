@@ -1238,5 +1238,13 @@
             "present": "Sudah hadir",
             "saveChanges": "Simpan perubahan"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "Izinkan akses kamera di setelan browser",
+        "desc": "Untuk memastikan keaslian dokumen dan memvalidasi identitas pengguna untuk verifikasi KYC, diperlukan akses ke kamera perangkat Anda.",
+        "disclaimer": "Akses kamera diperlukan untuk pengambilan dokumen secara real-time untuk mencegah penipuan.",
+        "btnGoToSettings": "Pergi ke pengaturan",
+        "btnAllow": "Izinkan akses"
+    },
+    "continueText": "Melanjutkan"
 }

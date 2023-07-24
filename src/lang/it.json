@@ -1238,5 +1238,13 @@
             "present": "Già presente",
             "saveChanges": "Salvare le modifiche"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "Consenti l'accesso alla fotocamera nelle impostazioni del browser",
+        "desc": "Per garantire l'autenticità dei documenti e convalidare l'identità dell'utente per la verifica KYC, è necessario l'accesso alla fotocamera del dispositivo.",
+        "disclaimer": "L'accesso alla fotocamera è necessario per l'acquisizione di documenti in tempo reale per prevenire le frodi.",
+        "btnGoToSettings": "Vai alle impostazioni",
+        "btnAllow": "Consentire l'accesso"
+    },
+    "continueText": "Continua"
 }

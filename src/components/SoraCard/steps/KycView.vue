@@ -2,15 +2,14 @@
   <div class="sora-card sora-card-kyc-wrapper">
     <div v-if="!hasCameraAccess" class="camera-permission">
       <s-icon name="camera-16" size="48" class="camera-permission-icon" />
-      <h4 class="camera-permission-title">Allow camera access in browser settings</h4>
+      <h4 class="camera-permission-title">{{ t('browserPermission.title') }}</h4>
       <p class="camera-permission-desc">
-        To ensure the authenticity of documents and validate user identity for KYC verification, access to your device's
-        camera is required.
+        {{ t('browserPermission.desc') }}
       </p>
       <div class="camera-permission-disclaimer">
         <div class="tos__disclaimer">
           <p class="tos__disclaimer-paragraph">
-            Camera access is required for real-time document capture to prevent fraud.
+            {{ t('browserPermission.disclaimer') }}
           </p>
           <div class="tos__disclaimer-warning icon">
             <s-icon name="notifications-alert-triangle-24" size="28px" />
@@ -142,9 +141,9 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
   }
 
   get btnCameraText(): string {
-    if (this.forbiddenByBrowser) return 'go to browser settings';
-    if (this.hasCameraAccess) return 'Continue';
-    return 'Allow access';
+    if (this.forbiddenByBrowser) return this.t('browserPermission.btnGoToSettings');
+    if (this.hasCameraAccess) return this.t('continueText');
+    return this.t('browserPermission.btnAllow');
   }
 
   async initKyc(): Promise<void> {
