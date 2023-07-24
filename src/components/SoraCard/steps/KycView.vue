@@ -293,14 +293,14 @@ section.content {
     font-weight: 600;
     font-size: 28px;
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: $inner-spacing-mini;
   }
 
   &-desc {
     font-size: 15px;
     font-weight: 300;
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: $inner-spacing-mini;
   }
 
   &-icon {
@@ -308,7 +308,7 @@ section.content {
   }
 
   &-btn {
-    margin-top: 16px;
+    margin-top: $basic-spacing;
     width: 100%;
   }
 }
@@ -325,9 +325,9 @@ section.content {
 
     &-paragraph {
       margin-bottom: calc(var(--s-basic-spacing) / 2);
-      margin-right: 5%;
+      margin-right: 10%;
       font-weight: 600;
-      font-size: 17px;
+      font-size: var(--s-icon-font-size-mini);
     }
 
     &-warning.icon {
