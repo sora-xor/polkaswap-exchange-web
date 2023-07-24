@@ -1238,5 +1238,13 @@
             "present": "Už prítomný",
             "saveChanges": "Uložiť zmeny"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "Povoliť prístup k fotoaparátu v nastaveniach prehliadača",
+        "desc": "Na zabezpečenie pravosti dokumentov a overenie identity používateľa na overenie KYC je potrebný prístup k fotoaparátu vášho zariadenia.",
+        "disclaimer": "Na zachytávanie dokumentov v reálnom čase je potrebný prístup k fotoaparátu, aby sa zabránilo podvodom.",
+        "btnGoToSettings": "Choď do nastavení",
+        "btnAllow": "Povoliť prístup"
+    },
+    "continueText": "ďalej"
 }

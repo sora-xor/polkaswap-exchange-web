@@ -1238,5 +1238,13 @@
             "present": "Allerede til stede",
             "saveChanges": "Lagre endringer"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "Tillat kameratilgang i nettleserinnstillingene",
+        "desc": "For å sikre autentisiteten til dokumenter og validere brukeridentitet for KYC-verifisering, kreves tilgang til enhetens kamera.",
+        "disclaimer": "Kameratilgang er nødvendig for sanntidsdokumentfangst for å forhindre svindel.",
+        "btnGoToSettings": "Gå til Innstillinger",
+        "btnAllow": "Gi tilgang"
+    },
+    "continueText": "Fortsette"
 }

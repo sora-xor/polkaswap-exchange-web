@@ -1238,5 +1238,13 @@
             "present": "Ti wa tẹlẹ",
             "saveChanges": "Fi awọn ayipada pamọ"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "Gba wiwọle kamẹra laaye ni awọn eto ẹrọ aṣawakiri",
+        "desc": "Lati rii daju pe ododo ti awọn iwe aṣẹ ati lati fọwọsi idanimọ olumulo fun ijẹrisi KYC, iraye si kamẹra ẹrọ rẹ nilo.",
+        "disclaimer": "Wiwọle kamẹra nilo fun gbigba iwe akoko gidi lati ṣe idiwọ jibiti.",
+        "btnGoToSettings": "Lọ si awọn eto",
+        "btnAllow": "Gba wiwọle laaye"
+    },
+    "continueText": "Tesiwaju"
 }
