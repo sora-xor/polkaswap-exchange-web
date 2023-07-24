@@ -336,7 +336,7 @@
         "RemoveLiquidity": "删除流动性",
         "Rewards": "奖励",
         "Explore\/Tokens": "代币",
-        "Explore\/Pools": "游泳池",
+        "Explore\/Pools": "流动池",
         "Explore\/Staking": "质押",
         "Explore\/Farming": "农耕",
         "Staking": "质押"
@@ -509,18 +509,18 @@
         "errorFetching": "获取数据时出错"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
-        "connectToWallet": "连接账户以查看您的流动性。",
+        "connectWallet": "@:连接钱包文本",
+        "connectToWallet": "连接一个账户以查看您的流动性。",
         "liquidityNotFound": "未找到流动性。",
-        "addLiquidity": "增加流动性",
+        "addLiquidity": "添加流动性",
         "removeLiquidity": "移除流动性",
         "createPair": "创建一对",
-        "pooledToken": "{tokenSymbol}流动池",
+        "pooledToken": "{tokenSymbol}流动池化",
         "pairTokens": "{pair}流动池代币",
         "poolShare": "您的流动池份额",
-        "unknownAsset": "@:unknownAssetText",
-        "description": "当您增加流动性时，您将获得代表您头寸的流动池代币。这些代币会自动赚取与您在流动池中所占份额成比例的费用，并且可以随时赎回。",
-        "strategicBonusApy": "战略奖金APY"
+        "unknownAsset": "@:未知资产文本",
+        "description": "当您添加流动性时，您将获得代表您持仓的池子代币。这些代币会自动按照您在池子中所占份额赚取手续费，并且可以随时兑换。",
+        "strategicBonusApy": "战略奖励年化收益率"
     },
     "bridge": {
         "title": "转接桥",
@@ -655,7 +655,7 @@
         "networkFee": "网络费用",
         "alreadyCreated": "代币对已经创建",
         "firstLiquidityProvider": "您是第一个流动性提供者",
-        "firstLiquidityProviderInfo": "您添加的代币比例将决定该流动池的价格。 <br\/>一旦您对费率感到满意，请点击供应进行查看。"
+        "firstLiquidityProviderInfo": "你添加的代币比例将决定这个池子的价格。<br\/>当你对比率满意后，点击供应以进行审核。"
     },
     "confirmSupply": {
         "title": "您的流动池份额将是",
@@ -677,11 +677,11 @@
         "output": "输出",
         "price": "价格",
         "remove": "移除",
-        "description": "移除流动池中的代币会将您的头寸以当前的汇率转换为基础代币，与您在流动池中的份额成正比。累积的费用将包括在您所收到的金额中。",
+        "description": "将池子代币移除会按照当前比例，将您在池子中的份额转换回基础代币。所得金额包括已累积的手续费。",
         "outputMessage": "产出是估计的。如果价格变化超过 {slippageTolerance}% ，您的交易将被取消。",
         "confirmTitle": "您将收到",
         "shareOfPool": "交易后的流动池份额",
-        "locked": "{percent} 您的流动资金池处于 {lock}"
+        "locked": "您提供流动性的池子中的{percent}处于 {lock}"
     },
     "dexSettings": {
         "title": "设置",
@@ -704,8 +704,8 @@
         "port": "端口",
         "min": "最小",
         "marketAlgorithms": {
-            "SMART": "{smartAlgorithm}流动性路由通过仅结合所有可用市场的最佳价格选项来确保任何交易的最佳价格。当可用时，只要资产价格比其他来源更实惠，代币绑定曲线（ {tbcAlgorithm} {xycAlgorithm}流动池将被利用。",
-            "TBC": "{tbcAlgorithm} — 仅从代币绑定曲线（一级市场）购买。 {xycAlgorithm}流动池（二级市场）相比，价格有可能变得不利，但随着时间的推移，从既得奖励中获得的价值可能会变得更加有利.",
+            "SMART": "{smartAlgorithm}流动性路由通过从所有可用市场中仅选择最佳价格选项，确保任何交易的最佳价格。在可用时，将使用Token Bonding Curve（{tbcAlgorithm}）提供流动性，前提是资产价格比其他来源更实惠；否则将利用{xycAlgorithm}池。",
+            "TBC": "{tbcAlgorithm} — 仅从代币绑定曲线（一级市场）购买。 与{xycAlgorithm}流动池（二级市场）相比，价格有可能变得不利，但随着时间的推移，从既得奖励中获得的价值可能会变得更加有利.",
             "XYK": "{xycAlgorithm} — 仅从 XYK 池（二级市场）购买。传统的 XYK 流动池兑换。"
         },
         "charts": "图表",
@@ -942,7 +942,7 @@
     "mobilePopup": {
         "sideMenu": "获取 {Sora} 钱包",
         "header": "下载具有{polkaswapHighlight}功能的 {Sora} 钱包",
-        "info": "兑换来自不同网络的代币 - {Sora}、{Ethereum}、{Polkadot}、{Kusama}。提供流动流动池并从交易费用中赚取 %。"
+        "info": "在不同网络 - {Sora}, {Ethereum}, {Polkadot}, {Kusama}之间兑换代币。提供流动性池并从交易费中赚取%收益。"
     },
     "releaseNotesText": "发行说明",
     "copiedText": "已复制！",
@@ -962,8 +962,8 @@
             "fee": "费用",
             "feeTooltip": "用于您质押金额的存款费",
             "owned": "{symbol} @:balanceText",
-            "poolShare": "您的流动池质押份额",
-            "poolShareWillBe": "您的流动池质押份额将是",
+            "poolShare": "您质押的流动池份额",
+            "poolShareWillBe": "您质押的流动池份额将是",
             "rewardToken": "奖励代币",
             "stake": "您的{symbol}质押",
             "stakeWillBe": "您的{symbol}质押将是",
@@ -991,16 +991,16 @@
             "liquidityrestrictions": "账户流动性限制阻止提款"
         },
         "poolxyk": {
-            "sourcebalanceisnotlargeenough": "源余额不够大",
-            "targetbalanceisnotlargeenough": "目标余额不够大",
-            "impossibletodecidevalidpairvaluesfromrangeforthispool": "提供的数额过于多样化",
-            "calculatedvalueisnotmeetsrequiredboundaries": "数额超出要求的范围",
-            "unabletodepositxorlessthanminimum": "XOR 低于最小值 (0.007)",
-            "zerovalueinamountparameter": "金额参数价值为零"
+            "sourcebalanceisnotlargeenough": "原始余额不够大",
+            "targetbalanceisnotlargeenough": "目标余额不足",
+            "impossibletodecidevalidpairvaluesfromrangeforthispool": "提供的数额差异过大",
+            "calculatedvalueisnotmeetsrequiredboundaries": "数额超出所需范围",
+            "unabletodepositxorlessthanminimum": "XOR 小于最小值 (0.007)",
+            "zerovalueinamountparameter": "金额参数值为零"
         },
         "xstpool": {
-            "poolalreadyinitializedforpair": "流动池对已存在",
-            "slippagelimitexceeded": "滑点公差未达到恰当的限度"
+            "poolalreadyinitializedforpair": "流动池配对已存在",
+            "slippagelimitexceeded": "滑点容忍度未达到适当限制。"
         },
         "referrals": {
             "alreadyhasreferrer": "账户已有一位推荐人",
@@ -1020,7 +1020,7 @@
             "pooldoesnothaverewards": "流动池没有奖励"
         },
         "multicollateralbondingcurvepool": {
-            "pricecalculationfailed": "计算价格时出错"
+            "pricecalculationfailed": "计算价格时发生了错误。"
         }
     },
     "receivedText": "已收到",
@@ -1095,7 +1095,7 @@
             "mnemonic": "指定无效的bip39助记符",
             "mnemonicLength": "助记符应包含{number}单词",
             "jsonFields": "JSON 文件没有必填字段",
-            "alreadyImported": "帐户已导入{address}"
+            "alreadyImported": "账户已导入 {address}"
         },
         "assetsAtRiskText": "资产有风险！",
         "deleteAccountText": "如果没有助记词、.json 文件或存储在某些扩展名中，则无法恢复帐户。您将被注销。",
@@ -1113,7 +1113,7 @@
     },
     "tooltips": {
         "roi": "{ROI}代表投资回报率。它的计算方法是将投资赚取的利润除以该投资的成本（以等值百分比表示）。",
-        "tvl": "{TVL}代表锁定的总价值。它代表以美元等价物锁定在池中的代币。",
+        "tvl": "{TVL}代表总锁定价值。它表示以美元等值计算的在池中锁定的代币。",
         "volume": "交易量是指在特定时间段内在网络上交易或交换的资产总量。交易量是衡量网络流动性和整体活动的重要指标。",
         "fees": "{Sora}区块链上的费用是指在网络上执行交易所产生的费用。这些费用以{Sora}网络的原生加密货币 XOR 支付。费用金额取决于正在执行的交易的复杂性和规模",
         "supply": "代币供应量是指已创建并在网络上流通的代币总数。代币供应量可能会根据网络上质押、销毁或转移的代币数量而波动。",
@@ -1213,5 +1213,38 @@
         "x1Btn": "用卡买XOR",
         "errorMessage": "不便之处敬请原谅。我们正在努力解决这个问题。请稍后再试。"
     },
-    "acceptOnScrollText": "滚动接受"
+    "acceptOnScrollText": "滚动接受",
+    "addressBook": {
+        "myExtAccounts": "我的分机帐户",
+        "myBook": "我的书",
+        "searchPlaceholder": "按地址、姓名或身份搜索",
+        "noFoundRecords": "没有找到记录",
+        "noContacts": "您还没有添加任何联系人",
+        "addContact": "增加联系人",
+        "dialogTitle": "您的联系人",
+        "identity": "链上身份",
+        "none": "没有任何",
+        "detected": "检测到新地址",
+        "save": "另存为联系人",
+        "tooltip": "通过提供姓名和地址来收集地址簿，使您的联系人井井有条并保持最新状态",
+        "notSoraAddress": "该地址将在下面保存为 SORA 地址。确保接收者可以访问 SORA 链：",
+        "options": {
+            "send": "发送代币",
+            "edit": "更改联系资料",
+            "delete": "删除"
+        },
+        "btn": {
+            "enterName": "输入名字",
+            "present": "已经存在",
+            "saveChanges": "保存更改"
+        }
+    },
+    "browserPermission": {
+        "title": "在浏览器设置中允许相机访问",
+        "desc": "为了确保文档的真实性并验证用户身份以进行 KYC 验证，需要访问您设备的摄像头。",
+        "disclaimer": "实时文档捕获需要摄像头访问，以防止欺诈。",
+        "btnGoToSettings": "前往设置",
+        "btnAllow": "允许访问"
+    },
+    "continueText": "继续"
 }

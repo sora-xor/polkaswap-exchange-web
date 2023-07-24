@@ -1213,5 +1213,38 @@
         "x1Btn": "Comprar XOR con tarjeta",
         "errorMessage": "Disculpas por los inconvenientes. Estamos trabajando diligentemente para resolver esto. Por favor, inténtelo de nuevo más tarde."
     },
-    "acceptOnScrollText": "Desplácese para aceptar"
+    "acceptOnScrollText": "Desplácese para aceptar",
+    "addressBook": {
+        "myExtAccounts": "Mis cuentas de extensión",
+        "myBook": "Mi libro",
+        "searchPlaceholder": "Buscar por dirección, nombre o identidad",
+        "noFoundRecords": "No se encontraron registros",
+        "noContacts": "Aún no tienes ningún contacto agregado",
+        "addContact": "Agregar contacto",
+        "dialogTitle": "Sus contactos",
+        "identity": "Identidad en cadena",
+        "none": "Ninguno",
+        "detected": "Nueva dirección detectada",
+        "save": "Guardar como contacto",
+        "tooltip": "Recopile la libreta de direcciones proporcionando el nombre y la dirección para mantener sus contactos organizados y actualizados",
+        "notSoraAddress": "Esta dirección se guardará como dirección SORA a continuación. Asegúrese de que el destinatario pueda acceder a la cadena SORA:",
+        "options": {
+            "send": "Enviar fichas",
+            "edit": "Editar contacto",
+            "delete": "Borrar"
+        },
+        "btn": {
+            "enterName": "Ingrese su nombre",
+            "present": "Ya presente",
+            "saveChanges": "Guardar cambios"
+        }
+    },
+    "browserPermission": {
+        "title": "Permitir el acceso a la cámara en la configuración del navegador",
+        "desc": "Para garantizar la autenticidad de los documentos y validar la identidad del usuario para la verificación KYC, se requiere acceso a la cámara de su dispositivo.",
+        "disclaimer": "Se requiere acceso a la cámara para la captura de documentos en tiempo real para evitar el fraude.",
+        "btnGoToSettings": "Ir a la configuración",
+        "btnAllow": "Permitir el acceso"
+    },
+    "continueText": "Continuar"
 }

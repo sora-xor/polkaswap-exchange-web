@@ -1213,5 +1213,38 @@
         "x1Btn": "Mua XOR bằng thẻ",
         "errorMessage": "Xin lỗi vì sự bất tiện. Chúng tôi đang nỗ lực làm việc để giải quyết vấn đề này. Vui lòng thử lại sau."
     },
-    "acceptOnScrollText": "Cuộn để chấp nhận"
+    "acceptOnScrollText": "Cuộn để chấp nhận",
+    "addressBook": {
+        "myExtAccounts": "Tài khoản mở rộng của tôi",
+        "myBook": "Cuốn sách của tôi",
+        "searchPlaceholder": "Tìm kiếm theo địa chỉ, tên hoặc danh tính",
+        "noFoundRecords": "Không có dữ liệu được tìm thấy",
+        "noContacts": "Bạn chưa thêm địa chỉ liên hệ nào",
+        "addContact": "Thêm liên hệ",
+        "dialogTitle": "Danh bạ của bạn",
+        "identity": "Nhận dạng trên chuỗi",
+        "none": "Không có",
+        "detected": "Đã phát hiện địa chỉ mới",
+        "save": "Lưu dưới dạng liên hệ",
+        "tooltip": "Thu thập sổ địa chỉ bằng cách cung cấp tên và địa chỉ để giữ cho danh bạ của bạn được sắp xếp và cập nhật",
+        "notSoraAddress": "Địa chỉ này sẽ được lưu dưới dạng địa chỉ SORA bên dưới. Đảm bảo người nhận có thể truy cập chuỗi SORA:",
+        "options": {
+            "send": "Gửi mã thông báo",
+            "edit": "Chỉnh sửa liên hệ",
+            "delete": "Xóa bỏ"
+        },
+        "btn": {
+            "enterName": "Nhập tên",
+            "present": "Đã có mặt",
+            "saveChanges": "Lưu thay đổi"
+        }
+    },
+    "browserPermission": {
+        "title": "Cho phép truy cập máy ảnh trong cài đặt trình duyệt",
+        "desc": "Để đảm bảo tính xác thực của tài liệu và xác thực danh tính người dùng để xác minh KYC, cần có quyền truy cập vào máy ảnh trên thiết bị của bạn.",
+        "disclaimer": "Cần có quyền truy cập máy ảnh để chụp tài liệu theo thời gian thực nhằm ngăn chặn gian lận.",
+        "btnGoToSettings": "Chuyển đến cài đặt",
+        "btnAllow": "Cho phép truy cập"
+    },
+    "continueText": "Tiếp tục"
 }
