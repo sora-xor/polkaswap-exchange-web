@@ -1238,5 +1238,13 @@
             "present": "已经存在",
             "saveChanges": "保存更改"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "在浏览器设置中允许相机访问",
+        "desc": "为了确保文档的真实性并验证用户身份以进行 KYC 验证，需要访问您设备的摄像头。",
+        "disclaimer": "实时文档捕获需要摄像头访问，以防止欺诈。",
+        "btnGoToSettings": "前往设置",
+        "btnAllow": "允许访问"
+    },
+    "continueText": "继续"
 }

@@ -1238,5 +1238,13 @@
             "present": "Already present",
             "saveChanges": "Save changes"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "Allow camera access in browser settings",
+        "desc": "To ensure the authenticity of documents and validate user identity for KYC verification, access to your device's camera is required.",
+        "disclaimer": "Camera access is required for real-time document capture to prevent fraud.",
+        "btnGoToSettings": "Go to settings",
+        "btnAllow": "Allow access"
+    },
+    "continueText": "Continue"
 }
