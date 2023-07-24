@@ -1213,5 +1213,13 @@
         "x1Btn": "Beli XOR dengan kartu",
         "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti."
     },
-    "acceptOnScrollText": "Gulir untuk menerima"
+    "acceptOnScrollText": "Gulir untuk menerima",
+    "browserPermission": {
+        "title": "Izinkan akses kamera di setelan browser",
+        "desc": "Untuk memastikan keaslian dokumen dan memvalidasi identitas pengguna untuk verifikasi KYC, diperlukan akses ke kamera perangkat Anda.",
+        "disclaimer": "Akses kamera diperlukan untuk pengambilan dokumen secara real-time untuk mencegah penipuan.",
+        "btnGoToSettings": "Pergi ke pengaturan",
+        "btnAllow": "Izinkan akses"
+    },
+    "continueText": "Melanjutkan"
 }

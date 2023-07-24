@@ -1213,5 +1213,13 @@
         "x1Btn": "Acquista XOR con carta",
         "errorMessage": "Scuse per l'inconveniente. Stiamo lavorando diligentemente per risolvere questo problema. Per favore riprova più tardi."
     },
-    "acceptOnScrollText": "Scorri per accettare"
+    "acceptOnScrollText": "Scorri per accettare",
+    "browserPermission": {
+        "title": "Consenti l'accesso alla fotocamera nelle impostazioni del browser",
+        "desc": "Per garantire l'autenticità dei documenti e convalidare l'identità dell'utente per la verifica KYC, è necessario l'accesso alla fotocamera del dispositivo.",
+        "disclaimer": "L'accesso alla fotocamera è necessario per l'acquisizione di documenti in tempo reale per prevenire le frodi.",
+        "btnGoToSettings": "Vai alle impostazioni",
+        "btnAllow": "Consentire l'accesso"
+    },
+    "continueText": "Continua"
 }

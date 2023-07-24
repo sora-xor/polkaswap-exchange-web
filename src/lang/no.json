@@ -1213,5 +1213,13 @@
         "x1Btn": "Kjøp XOR med kort",
         "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere."
     },
-    "acceptOnScrollText": "Rull for å godta"
+    "acceptOnScrollText": "Rull for å godta",
+    "browserPermission": {
+        "title": "Tillat kameratilgang i nettleserinnstillingene",
+        "desc": "For å sikre autentisiteten til dokumenter og validere brukeridentitet for KYC-verifisering, kreves tilgang til enhetens kamera.",
+        "disclaimer": "Kameratilgang er nødvendig for sanntidsdokumentfangst for å forhindre svindel.",
+        "btnGoToSettings": "Gå til Innstillinger",
+        "btnAllow": "Gi tilgang"
+    },
+    "continueText": "Fortsette"
 }
