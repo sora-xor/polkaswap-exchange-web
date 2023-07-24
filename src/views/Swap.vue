@@ -69,7 +69,7 @@
           <span class="input-title--uppercase input-title--primary"> ({{ t('swap.estimated') }}) </span>
         </template>
         <template #fiat-amount-append v-if="tokenTo">
-          <value-status-wrapper :value="fiatDifference" class="price-difference__value">
+          <value-status-wrapper :value="fiatDifference" badge class="price-difference__value">
             (<formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>)
           </value-status-wrapper>
         </template>
