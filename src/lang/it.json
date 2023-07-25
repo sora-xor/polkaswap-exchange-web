@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transazione inviata",
         "transactionMessage": "{firstToken} e {secondToken}",
         "ok": "OK",
-        "confirm": "Conferma"
+        "confirm": "Conferma",
+        "lossWarning": "Perderai {value}% sulla tua operazione. Abbiamo rilevato un problema di fornitura di liquidità. Ciò può portare a perdite significative durante gli scambi di token. Assicurati che ci sia liquidità adeguata per la coppia di swap desiderata."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",

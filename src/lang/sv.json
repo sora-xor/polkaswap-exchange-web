@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transaktion inskickad",
         "transactionMessage": "{firstToken} och {secondToken}",
         "ok": "OK",
-        "confirm": "Bekräfta"
+        "confirm": "Bekräfta",
+        "lossWarning": "Du kommer att förlora {value}% på din handel. Vi har upptäckt ett likviditetsproblem. Detta kan leda till betydande förluster under tokenswappar. Se till att det finns tillräcklig likviditet för ditt önskade swappar."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",

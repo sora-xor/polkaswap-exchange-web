@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transakcija je poslana",
         "transactionMessage": "{firstToken} i {secondToken}",
         "ok": "U redu",
-        "confirm": "Potvrdite"
+        "confirm": "Potvrdite",
+        "lossWarning": "Izgubit ćete {value}% na svojoj trgovini. Otkrili smo problem s pružanjem likvidnosti. To može dovesti do značajnih gubitaka tijekom zamjene tokena. Provjerite postoji li odgovarajuća likvidnost za vaš željeni swap par."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",

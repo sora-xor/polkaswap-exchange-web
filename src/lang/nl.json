@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transactie ingediend",
         "transactionMessage": "{firstToken} en {secondToken}",
         "ok": "OK",
-        "confirm": "Bevestigen"
+        "confirm": "Bevestigen",
+        "lossWarning": "U verliest {value}% op uw transactie. We hebben een probleem met de liquiditeitsvoorziening ontdekt. Dit kan leiden tot aanzienlijke verliezen tijdens token-swaps. Zorg ervoor dat er voldoende liquiditeit is voor uw gewenste swappaar."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",

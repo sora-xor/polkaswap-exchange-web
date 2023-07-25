@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transakce byla odeslána",
         "transactionMessage": "{firstToken} a {secondToken}",
         "ok": "OK",
-        "confirm": "Potvrdit"
+        "confirm": "Potvrdit",
+        "lossWarning": "Ztratíte {value}% ze svého obchodu. Zjistili jsme problém se zajištěním likvidity. To může vést ke značným ztrátám během swapů tokenů. Ujistěte se, že je pro požadovaný swapový pár dostatečná likvidita."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",

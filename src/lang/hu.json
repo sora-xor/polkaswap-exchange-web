@@ -483,7 +483,8 @@
         "transactionSubmitted": "Tranzakció elküldve",
         "transactionMessage": "{firstToken} és {secondToken}",
         "ok": "Rendben",
-        "confirm": "Megerősítés"
+        "confirm": "Megerősítés",
+        "lossWarning": "{value}%-ot fog veszíteni a kereskedésében. Likviditásellátási problémát észleltünk. Ez jelentős veszteségekhez vezethet a token-csere során. Kérjük, gondoskodjon megfelelő likviditásról a kívánt swappárhoz."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
