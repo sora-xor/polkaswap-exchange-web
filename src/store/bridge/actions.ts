@@ -137,7 +137,7 @@ function bridgeDataToHistoryItem(
     hash: '',
     transactionState,
     soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
-    externalNetworkFee: (params as any).evmNetworkFee ?? getters.evmNetworkFee,
+    externalNetworkFee: (params as any).externalNetworkFee ?? getters.evmNetworkFee,
     externalNetwork,
     externalNetworkType,
     to: (params as any).to ?? rootGetters.web3.externalAccount,

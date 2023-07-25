@@ -11,7 +11,8 @@ function initialState(): BridgeState {
     assetLockedBalance: null, // asset balance locked on bridge
     assetLockedBalanceFetching: false,
     amount: '',
-    externalNetworkFee: ZeroStringValue,
+    externalTransferFee: ZeroStringValue, // fee for transfer between networks (xcm message fee for substrate network)
+    externalNetworkFee: ZeroStringValue, // fee for transaction execution
     externalNetworkFeeFetching: false,
     externalNativeBalance: ZeroStringValue, // balance for external native token (like ETH)
     externalBalancesFetching: false,
