@@ -217,7 +217,6 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     await this.waitForTransactionBlockId(id);
     await this.updateTxSigningData(id);
     await this.updateTxExternalData(id);
-    await this.subNetworkAdapter.stop();
   }
 
   private async waitForSoraParachainNonce(id: string): Promise<void> {
@@ -281,7 +280,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
             parachainHash: txId, // parachain tx hash
           })
         )
-        .finally(() => this.soraParachainAdapter.stop());
+        .finally(() => this.closeConnections());
     }
 
     const { amount, assetAddress, externalNetwork, payload: prevPayload } = this.getTransaction(id);

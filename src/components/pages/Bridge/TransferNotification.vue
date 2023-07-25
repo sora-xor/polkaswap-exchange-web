@@ -1,6 +1,6 @@
 <template>
   <dialog-base :visible.sync="visibility" class="bridge-transfer-notification">
-    <simple-notification success @close="close">
+    <simple-notification modal-content success @submit.native.prevent="close">
       <template #title>{{ t('bridgeTransferNotification.title') }}</template>
       <s-button
         v-if="addTokenBtnVisibility"
