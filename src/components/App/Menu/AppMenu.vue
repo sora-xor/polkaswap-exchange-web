@@ -108,7 +108,7 @@ import {
   SidebarMenuItemLink,
   FaucetLink,
 } from '@/consts';
-import { DemeterPageNames } from '@/modules/demeterFarming/consts';
+import { DemeterPageNames } from '@/modules/staking/consts';
 import { getter, state } from '@/store/decorators';
 
 import AppInfoPopper from './AppInfoPopper.vue';

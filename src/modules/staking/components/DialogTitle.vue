@@ -19,7 +19,7 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
-import type { DemeterAsset } from '@/modules/demeterFarming/types';
+import type { DemeterAsset } from '@/modules/staking/types';
 import { lazyComponent } from '@/router';
 
 @Component({

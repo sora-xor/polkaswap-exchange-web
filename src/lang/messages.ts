@@ -7,7 +7,7 @@ import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
 
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
-import { DemeterPageNames } from '../modules/demeterFarming/consts';
+import { DemeterPageNames } from '../modules/staking/consts';
 
 export default {
   // Wallet project keys

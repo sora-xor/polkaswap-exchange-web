@@ -2,7 +2,7 @@ import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import type { DemeterAsset } from '@/modules/demeterFarming/types';
+import type { StakingAsset } from '@/modules/staking/types';
 import { getter, state } from '@/store/decorators';
 import { hasInsufficientXorForFee } from '@/utils';
 
@@ -13,7 +13,7 @@ import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/type
 
 @Component
 export default class PoolCardMixin extends Mixins(PoolStatusMixin) {
-  @Prop({ default: () => null, type: Object }) readonly baseAsset!: DemeterAsset;
+  @Prop({ default: () => null, type: Object }) readonly baseAsset!: StakingAsset;
   @Prop({ default: () => '', type: String }) readonly tvl!: string;
 
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;

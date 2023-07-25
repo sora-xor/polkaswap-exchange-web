@@ -84,7 +84,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
-import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+import type { DemeterPoolDerivedData } from '@/modules/staking/types';
 import { lazyComponent } from '@/router';
 
 import { DemeterComponents } from '../consts';
@@ -123,7 +123,7 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
   }
 
   get tokensData(): StakingItem[] {
-    return Object.entries(this.pools).reduce<StakingItem[]>((buffer, [address, poolsMap]) => {
+    return Object.entries(this.demeterPools).reduce<StakingItem[]>((buffer, [address, poolsMap]) => {
       const asset = this.demeterAssetsData[address];
 
       if (!asset) return buffer;
@@ -145,7 +145,7 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
 </script>
 
 <style lang="scss">
-.demeter-staking-list {
+.staking-list {
   @include collapse-items;
   .el-collapse-item__header {
     align-items: flex-start;
@@ -170,7 +170,7 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
 <style lang="scss" scoped>
 $title-height: 42px;
 
-.demeter-staking {
+.staking {
   height: 100%;
 }
 

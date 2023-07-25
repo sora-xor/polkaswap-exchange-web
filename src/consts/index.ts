@@ -1,7 +1,7 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import invert from 'lodash/fp/invert';
 
-import { DemeterPageNames } from '@/modules/demeterFarming/consts';
+import { DemeterPageNames } from '@/modules/staking/consts';
 
 import pkg from '../../package.json';
 

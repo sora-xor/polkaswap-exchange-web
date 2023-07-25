@@ -1,8 +1,9 @@
 import { FPNumber } from '@sora-substrate/math';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import type { DemeterAsset, DemeterPoolDerived, DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+import type { DemeterAsset, DemeterPoolDerived, DemeterPoolDerivedData } from '@/modules/staking/types';
 import { state, getter } from '@/store/decorators';
+import { StakingPool } from '@/store/staking/types';
 import { formatDecimalPlaces } from '@/utils';
 
 import AprMixin from './AprMixin';
@@ -15,11 +16,12 @@ import type {
 } from '@sora-substrate/util/build/demeterFarming/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
-type Pool = DemeterPool | DemeterAccountPool;
+type Pool = StakingPool | DemeterPool | DemeterAccountPool;
 
 const createPoolsDoubleMap = <T extends Pool>(pools: readonly T[], isFarm = true): DoubleMap<T[]> => {
   return pools.reduce((buffer, pool) => {
-    if (pool.isFarm !== isFarm) return buffer;
+    // TODO: check it
+    if ('isFarm' in pool && pool.isFarm !== isFarm) return buffer;
 
     if (!buffer[pool.baseAsset]) buffer[pool.baseAsset] = {};
     if (!buffer[pool.baseAsset][pool.poolAsset]) buffer[pool.baseAsset][pool.poolAsset] = [];
@@ -33,6 +35,8 @@ const createPoolsDoubleMap = <T extends Pool>(pools: readonly T[], isFarm = true
 @Component
 export default class BasePageMixin extends Mixins(AprMixin) {
   @Prop({ default: true, type: Boolean }) readonly isFarmingPage!: boolean;
+
+  @state.staking.pools stakingPools!: StakingPool[];
 
   @state.demeterFarming.tokens tokens!: DemeterRewardToken[];
   @state.demeterFarming.pools demeterPools!: DemeterPool[];
@@ -71,22 +75,26 @@ export default class BasePageMixin extends Mixins(AprMixin) {
     }, {});
   }
 
-  get pools(): DoubleMap<DemeterPool[]> {
+  get stakingPoolsMap(): DoubleMap<StakingPool[]> {
+    return createPoolsDoubleMap(this.stakingPools, this.isFarmingPage);
+  }
+
+  get demeterPoolsMap(): DoubleMap<DemeterPool[]> {
     return createPoolsDoubleMap(this.demeterPools, this.isFarmingPage);
   }
 
-  get accountPools(): DoubleMap<DemeterAccountPool[]> {
+  get accountPoolsMap(): DoubleMap<DemeterAccountPool[]> {
     return createPoolsDoubleMap(this.demeterAccountPools, this.isFarmingPage);
   }
 
   get selectedPool(): Nullable<DemeterPool> {
-    if (!this.baseAsset || !this.poolAsset || !this.pools[this.baseAsset][this.poolAsset]) return null;
+    if (!this.baseAsset || !this.poolAsset || !this.demeterPoolsMap[this.baseAsset][this.poolAsset]) return null;
 
-    return this.pools[this.baseAsset][this.poolAsset].find((pool) => pool.rewardAsset === this.rewardAsset);
+    return this.demeterPoolsMap[this.baseAsset][this.poolAsset].find((pool) => pool.rewardAsset === this.rewardAsset);
   }
 
   get selectedAccountPool(): Nullable<DemeterAccountPool> {
-    return this.selectedPool ? this.getAccountPool(this.selectedPool) : null;
+    return this.selectedPool ? this.getDemeterAccountPool(this.selectedPool) : null;
   }
 
   getDerivedPools(pools: DemeterPool[]): DemeterPoolDerived[] {
@@ -94,7 +102,7 @@ export default class BasePageMixin extends Mixins(AprMixin) {
 
     return pools.reduce<DemeterPoolDerived[]>((buffer, pool) => {
       const poolIsActive = !pool.isRemoved;
-      const accountPool = this.getAccountPool(pool);
+      const accountPool = this.getDemeterAccountPool(pool);
       const accountPoolIsActive = !!accountPool && this.isActiveAccountPool(accountPool);
 
       if (!(poolIsActive || accountPoolIsActive)) return buffer;
@@ -140,8 +148,8 @@ export default class BasePageMixin extends Mixins(AprMixin) {
     };
   }
 
-  getAccountPool(pool: DemeterPool): Nullable<DemeterAccountPool> {
-    return this.accountPools[pool.baseAsset]?.[pool.poolAsset]?.find(
+  getDemeterAccountPool(pool: DemeterPool): Nullable<DemeterAccountPool> {
+    return this.accountPoolsMap[pool.baseAsset]?.[pool.poolAsset]?.find(
       (accountPool) => accountPool.rewardAsset === pool.rewardAsset
     );
   }

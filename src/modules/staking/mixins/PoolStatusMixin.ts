@@ -3,19 +3,19 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import type { DemeterAsset } from '@/modules/demeterFarming/types';
+import type { StakingAsset } from '@/modules/staking/types';
+import { StakingPool, StakingAccountPool } from '@/store/staking/types';
 import { getAssetBalance } from '@/utils';
 
-import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 @Component
 export default class PoolStatusMixin extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   @Prop({ default: () => null, type: Object }) readonly liquidity!: Nullable<AccountLiquidity>;
-  @Prop({ default: () => null, type: Object }) readonly pool!: DemeterPool;
-  @Prop({ default: () => null, type: Object }) readonly accountPool!: DemeterAccountPool;
-  @Prop({ default: () => null, type: Object }) readonly poolAsset!: DemeterAsset;
-  @Prop({ default: () => null, type: Object }) readonly rewardAsset!: DemeterAsset;
+  @Prop({ default: () => null, type: Object }) readonly pool!: StakingPool;
+  @Prop({ default: () => null, type: Object }) readonly accountPool!: StakingAccountPool;
+  @Prop({ default: () => null, type: Object }) readonly poolAsset!: StakingAsset;
+  @Prop({ default: () => null, type: Object }) readonly rewardAsset!: StakingAsset;
   @Prop({ default: () => '', type: String }) readonly apr!: string;
 
   get pricesAvailable(): boolean {

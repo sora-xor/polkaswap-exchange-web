@@ -71,7 +71,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import { PageNames } from '@/consts';
-import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+import type { DemeterPoolDerivedData } from '@/modules/staking/types';
 import { lazyView } from '@/router';
 import { state } from '@/store/decorators';
 
@@ -112,7 +112,7 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
   get farmingPoolsByLiquidities(): Record<string, DemeterPoolDerivedData[]> {
     return this.accountLiquidity.reduce((buffer, liquidity) => {
       const key = this.getLiquidityKey(liquidity);
-      const derivedPools = this.getDerivedPools(this.pools[liquidity.firstAddress]?.[liquidity.secondAddress]);
+      const derivedPools = this.getDerivedPools(this.demeterPools[liquidity.firstAddress]?.[liquidity.secondAddress]);
 
       buffer[key] = derivedPools.map((derived) =>
         this.prepareDerivedPoolData(derived.pool, derived.accountPool, liquidity)

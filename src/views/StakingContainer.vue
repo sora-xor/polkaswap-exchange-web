@@ -3,6 +3,7 @@
 </template>
 
 <script lang="ts">
+import { api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 @Component

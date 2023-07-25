@@ -4,8 +4,8 @@ import { Component } from 'vue-property-decorator';
 import VueRouter, { RouteConfig } from 'vue-router';
 
 import { PageNames, BridgeChildPages } from '@/consts';
-import { DemeterPageNames } from '@/modules/demeterFarming/consts';
-import { demeterLazyView } from '@/modules/demeterFarming/router';
+import { DemeterPageNames } from '@/modules/staking/consts';
+import { demeterLazyView } from '@/modules/staking/router';
 import store from '@/store';
 import { updateDocumentTitle } from '@/utils';
 
