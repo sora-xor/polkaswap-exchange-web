@@ -329,6 +329,8 @@ export default {
     transactionMessage: '{firstToken} and {secondToken}',
     confirm: 'Confirm',
     ok: 'OK',
+    lossWarning:
+      "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair.",
   },
   swap: {
     connectWallet: '@:connectWalletText',

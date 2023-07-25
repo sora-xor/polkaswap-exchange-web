@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transakcja została złożona.",
         "transactionMessage": "{firstToken} i {secondToken}",
         "ok": "OK",
-        "confirm": "Potwierdź"
+        "confirm": "Potwierdź",
+        "lossWarning": "Stracisz {value}% na swojej transakcji. Wykryliśmy problem z zapewnieniem płynności. Może to prowadzić do znacznych strat podczas wymiany tokenów. Upewnij się, że dostępna jest odpowiednia płynność dla wybranej pary swapowej."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",

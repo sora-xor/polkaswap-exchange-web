@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transaction soumise",
         "transactionMessage": "{firstToken} et {secondToken}",
         "ok": "OK",
-        "confirm": "Confirmer"
+        "confirm": "Confirmer",
+        "lossWarning": "Vous allez perdre {value}% sur votre échange. Nous avons détecté un problème de provision de liquidités. Cela peut entraîner des pertes importantes lors des échanges de jetons. Veuillez vous assurer qu'il y a une liquidité suffisante pour la paire de swap souhaitée."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",

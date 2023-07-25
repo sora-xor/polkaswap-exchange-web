@@ -1,6 +1,8 @@
 import { defineMutations } from 'direct-vuex';
 import omit from 'lodash/fp/omit';
 
+import { settingsStorage } from '@/utils/storage';
+
 import { initialState } from './state';
 
 import type { SwapState } from './types';
@@ -84,6 +86,10 @@ const mutations = defineMutations<SwapState>()({
   },
   selectDexId(state, dexId: number) {
     state.selectedDexId = dexId;
+  },
+  setAllowLossPopup(state, flag: boolean) {
+    state.allowLossPopup = flag;
+    settingsStorage.set('allowSwapLossPopup' as any, flag);
   },
 });
 
