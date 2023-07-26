@@ -9,14 +9,16 @@ const getSoraProxyEndpoints = (soraNetwork: string) => {
     referenceNumberEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/get-reference-number',
     lastKycStatusEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/kyc-last-status',
     kycAttemptCountEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/kyc-attempt-count',
+    priceOracleEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/prices/xor_euro',
     newAccessTokenEndpoint: 'https://api-auth-test.soracard.com/RequestNewAccessToken',
   };
 
   const prod = {
-    referenceNumberEndpoint: '',
-    lastKycStatusEndpoint: '',
-    kycAttemptCountEndpoint: '',
-    newAccessTokenEndpoint: '',
+    referenceNumberEndpoint: 'https://backend.sora-card.odachi.soramitsu.co.jp/get-reference-number',
+    lastKycStatusEndpoint: 'https://backend.sora-card.odachi.soramitsu.co.jp/kyc-last-status',
+    kycAttemptCountEndpoint: 'https://backend.sora-card.odachi.soramitsu.co.jp/kyc-attempt-count',
+    priceOracleEndpoint: 'https://backend.sora-card.odachi.soramitsu.co.jp/prices/xor-euro',
+    newAccessTokenEndpoint: 'https://api-auth.soracard.com/RequestNewAccessToken',
   };
 
   return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
@@ -126,8 +128,10 @@ const isAccessTokenExpired = (accessToken: string): boolean => {
 };
 
 export const getXorPerEuroRatio = async () => {
+  const soraNetwork = store.state.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
+
   try {
-    const priceResult = await fetch('https://backend.dev.sora-card.tachi.soramitsu.co.jp/prices/xor_euro');
+    const priceResult = await fetch(getSoraProxyEndpoints(soraNetwork).priceOracleEndpoint);
     const parsedData = await priceResult.json();
 
     return parsedData.price;
