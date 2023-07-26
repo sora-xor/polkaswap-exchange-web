@@ -3,27 +3,34 @@ import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { combineLatest } from 'rxjs';
 
-import { ZeroStringValue } from '@/consts';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
-import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
-import { findEventInBlock } from '@/utils/bridge/common/utils';
+import { getBlockEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
+import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
 
+import type { ApiPromise } from '@polkadot/api';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
 
-type SubBridgeReducerOptions<T extends SubHistory> = IBridgeReducerOptions<T> & {
-  removeTransactionByHash: RemoveTransactionByHash<SubHistory>;
-};
-
 export class SubBridgeReducer extends BridgeReducer<SubHistory> {
-  protected readonly removeTransactionByHash!: RemoveTransactionByHash<SubHistory>;
+  protected subNetworkAdapter!: SubAdapter;
+  protected soraParachainAdapter!: SubAdapter;
 
-  constructor(options: SubBridgeReducerOptions<SubHistory>) {
-    super(options);
+  createConnections(id: string): void {
+    const { externalNetwork } = this.getTransaction(id);
 
-    this.removeTransactionByHash = options.removeTransactionByHash;
+    if (!externalNetwork) throw new Error(`[${this.constructor.name}]: Transaction "externalNetwork" is not defined`);
+
+    const soraParachainNetwork = subBridgeApi.getSoraParachain(externalNetwork);
+
+    this.subNetworkAdapter = subConnector.getAdapterForNetwork(externalNetwork);
+    this.soraParachainAdapter = subConnector.getAdapterForNetwork(soraParachainNetwork);
+  }
+
+  async closeConnections(): Promise<void> {
+    await Promise.all([this.subNetworkAdapter?.stop(), this.soraParachainAdapter?.stop()]);
   }
 
   async getAssetExternalDecimals(externalNetwork: SubNetwork, soraAssetId: string): Promise<number> {
@@ -31,6 +38,85 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     const decimals = data.unwrap().toNumber();
 
     return decimals;
+  }
+
+  async getHashesByBlockNumber(adapter: SubAdapter, blockHeight: number, extrinsicIndex?: number) {
+    let txId = '';
+    let blockId = '';
+
+    if (Number.isFinite(blockHeight)) {
+      let subscription!: Subscription;
+
+      try {
+        await new Promise<void>((resolve) => {
+          subscription = adapter.apiRx.query.system.blockHash(blockHeight).subscribe((hash) => {
+            if (!hash.isEmpty) {
+              blockId = hash.toString();
+              resolve();
+            }
+          });
+        });
+      } finally {
+        subscription.unsubscribe();
+      }
+
+      if (Number.isFinite(extrinsicIndex)) {
+        const blockData = await adapter.api.rpc.chain.getBlock(blockId);
+        const extrinsic = blockData.block.extrinsics.at(extrinsicIndex as number);
+
+        txId = extrinsic?.hash.toString() ?? '';
+      }
+    }
+
+    return {
+      blockHeight,
+      blockId,
+      txId,
+    };
+  }
+
+  isTransactionNonces(tx: SubHistory, substrateDispatchEvent: any): boolean {
+    if (!substrateDispatchEvent) return false;
+
+    const { batchNonce, messageNonce } = substrateDispatchEvent.event.data[0];
+
+    const eventBatchNonce = batchNonce.unwrap().toNumber();
+    const eventMessageNonce = messageNonce.toNumber();
+
+    if (eventBatchNonce > tx.payload.batchNonce) {
+      throw new Error(
+        `[${this.constructor.name}]: Unable to continue track transaction, parachain channel batch nonce ${eventBatchNonce} is larger than tx batch nonce ${tx.payload.batchNonce}`
+      );
+    }
+
+    return tx.payload?.batchNonce === eventBatchNonce && tx.payload?.messageNonce === eventMessageNonce;
+  }
+
+  getMessageAcceptedNonces(api: ApiPromise, events: Array<any>): [number, number] {
+    const messageAcceptedEvent = events.find((e) =>
+      api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
+    );
+
+    if (!messageAcceptedEvent) {
+      throw new Error(
+        `[${this.constructor.name}]: Unable to find "substrateBridgeOutboundChannel.MessageAccepted" event`
+      );
+    }
+
+    const batchNonce = messageAcceptedEvent.event.data[1].toNumber();
+    const messageNonce = messageAcceptedEvent.event.data[2].toNumber();
+
+    return [batchNonce, messageNonce];
+  }
+
+  getBridgeProxyHash(api: ApiPromise, events: Array<any>): string {
+    const bridgeProxyEvent = events.find((e) => api.events.bridgeProxy.RequestStatusUpdate.is(e.event));
+
+    if (!bridgeProxyEvent) {
+      throw new Error(`[${this.constructor.name}]: Unable to find "bridgeProxy.RequestStatusUpdate" event`);
+    }
+
+    return bridgeProxyEvent.event.data[0].toString();
   }
 }
 
@@ -44,14 +130,19 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
           nextState: BridgeTxStatus.Done,
           rejectState: BridgeTxStatus.Failed,
           handler: async (id: string) => {
-            this.beforeSubmit(id);
-            this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
+            try {
+              this.beforeSubmit(id);
+              this.createConnections(id);
+              this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
 
-            await this.checkTxId(id);
-            await Promise.all([this.waitForCollatorMessageNonce(id), this.updateTxIncomingData(id)]);
-            await this.waitForSoraInboundMessageNonce(id);
-            await this.waitSoraBlockByHash(id);
-            await this.onComplete(id);
+              await this.checkTxId(id);
+              await Promise.all([this.updateTxIncomingData(id), this.waitForSoraParachainNonce(id)]);
+              await this.waitForSoraInboundMessageNonce(id);
+              await this.waitSoraBlockByHash(id);
+              await this.onComplete(id);
+            } finally {
+              this.closeConnections();
+            }
           },
         });
       }
@@ -66,91 +157,105 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
   }
 
   private async checkTxId(id: string): Promise<void> {
-    const { txId } = this.getTransaction(id);
+    const tx = this.getTransaction(id);
 
-    if (txId) return;
+    if (tx.txId) return;
     // transaction not signed
-    await this.signExternal(id);
+    await this.beforeSign(id);
+    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
+    await this.subNetworkAdapter.connect();
+    await this.subNetworkAdapter.transfer(asset, tx.to as string, tx.amount as string, id);
     // update history to change tx status in ui
     this.updateHistory();
   }
 
-  private async updateExternalNetworkFee(id: string): Promise<void> {
+  private async updateTxExternalData(id: string): Promise<void> {
     const tx = this.getTransaction(id);
-    const network = tx.externalNetwork as SubNetwork;
-    const blockId = tx.externalBlockId as string;
-    const adapter = subConnector.getAdapterForNetwork(network);
 
-    if (!adapter.connected) {
-      await adapter.connect();
+    await this.subNetworkAdapter.connect();
+
+    if (!tx.externalBlockHeight) {
+      const api = await this.subNetworkAdapter.api.at(tx.externalBlockId as string);
+      const externalBlockHeight = (await api.query.system.number()).toNumber();
+
+      this.updateTransactionParams(id, {
+        externalBlockHeight, // parachain block number
+      });
     }
 
-    const eventData = await findEventInBlock({
-      api: adapter.api,
-      blockId,
-      section: 'transactionPayment',
-      method: 'TransactionFeePaid',
-    });
+    const events = await getBlockEvents(this.subNetworkAdapter.api, tx.externalBlockId as string);
 
-    const decimals = adapter.api.registry.chainDecimals[0];
+    const feeEvent = events.find((e) =>
+      this.subNetworkAdapter.api.events.transactionPayment.TransactionFeePaid.is(e.event)
+    );
+    const xcmEvent = events.find((e) => this.subNetworkAdapter.api.events.xcmPallet.Attempted.is(e.event));
 
-    if (subConnector.adapter !== adapter) {
-      await adapter.stop();
+    if (feeEvent) {
+      const externalNetworkFee = feeEvent.event.data[1].toString();
+
+      this.updateTransactionParams(id, { externalNetworkFee });
     }
 
-    // expecting that prev fee is 0
-    const prevFee = FPNumber.fromCodecValue(tx.externalNetworkFee ?? ZeroStringValue, decimals);
-    const txFee = FPNumber.fromCodecValue(eventData[1].toString(), decimals);
-    const externalNetworkFee = txFee.add(prevFee).toCodecString();
+    if (!xcmEvent?.event?.data?.[0]?.isComplete) {
+      throw new Error(`[${this.constructor.name}]: Transaction is not completed`);
+    }
+  }
 
-    this.updateTransactionParams(id, { externalNetworkFee });
+  private async updateTxSigningData(id: string): Promise<void> {
+    const tx = this.getTransaction(id);
+
+    if (!(tx.externalBlockId && tx.externalHash)) {
+      this.updateTransactionParams(id, {
+        externalHash: tx.txId, // parachain tx hash
+        externalBlockId: tx.blockId, // parachain block hash
+      });
+    }
   }
 
   private async updateTxIncomingData(id: string): Promise<void> {
     await this.waitForTransactionStatus(id);
     await this.waitForTransactionBlockId(id);
-
-    const { txId, blockId } = this.getTransaction(id);
-
-    this.updateTransactionParams(id, {
-      externalHash: txId, // parachain tx hash
-      externalBlockId: blockId, // parachain block hash
-    });
-
-    await this.updateExternalNetworkFee(id);
+    await this.updateTxSigningData(id);
+    await this.updateTxExternalData(id);
   }
 
-  private async waitForCollatorMessageNonce(id: string): Promise<void> {
+  private async waitForSoraParachainNonce(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
-    if (tx.payload?.messageNonce) return;
-
-    const collator = subConnector.getAdapterForNetwork(SubNetwork.RococoSora);
+    if (tx.payload?.batchNonce) return;
 
     let subscription!: Subscription;
     let messageNonce!: number;
     let batchNonce!: number;
     let recipientAmount!: number;
+    let blockNumber!: number;
+    let extrinsicIndex!: number;
 
     try {
-      await collator.connect();
+      await this.soraParachainAdapter.connect();
 
-      await new Promise<void>((resolve, reject) => {
-        const eventsObservable = collator.apiRx.query.system.events();
+      await new Promise<void>((resolve) => {
+        const eventsObservable = this.soraParachainAdapter.apiRx.query.system.events();
+        const blockNumberObservable = this.soraParachainAdapter.apiRx.query.system.number();
 
-        subscription = eventsObservable.subscribe((events) => {
-          const messageAcceptedEvent = events.find((e) =>
-            collator.api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
+        subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(([events, blockHeight]) => {
+          const downwardMessagesProcessedEvent = events.find((e) =>
+            this.soraParachainAdapter.api.events.parachainSystem.DownwardMessagesProcessed.is(e.event)
           );
 
-          if (!messageAcceptedEvent) return;
+          if (!downwardMessagesProcessedEvent) return;
+
+          blockNumber = blockHeight.toNumber();
+          extrinsicIndex = downwardMessagesProcessedEvent.phase.asApplyExtrinsic.toNumber();
+
+          [batchNonce, messageNonce] = this.getMessageAcceptedNonces(this.soraParachainAdapter.api, events);
 
           const assetAddedToChannelEvent = events.find((e) =>
-            collator.api.events.xcmApp.AssetAddedToChannel.is(e.event)
+            this.soraParachainAdapter.api.events.xcmApp.AssetAddedToChannel.is(e.event)
           );
 
           if (!assetAddedToChannelEvent) {
-            reject(new Error(`[${this.constructor.name}]: Unable to find "xcmApp.AssetAddedToChannel" event`));
+            throw new Error(`[${this.constructor.name}]: Unable to find "xcmApp.AssetAddedToChannel" event`);
           }
 
           const { amount, recipient } = assetAddedToChannelEvent.event.data[0].asTransfer;
@@ -158,8 +263,6 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
           if (address !== tx.to) return;
 
-          batchNonce = messageAcceptedEvent.event.data[1].toNumber();
-          messageNonce = messageAcceptedEvent.event.data[2].toNumber();
           recipientAmount = amount.toNumber();
 
           resolve();
@@ -167,32 +270,30 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       });
     } finally {
       subscription.unsubscribe();
+
+      // run non blocking process promise
+      this.getHashesByBlockNumber(this.soraParachainAdapter, blockNumber, extrinsicIndex)
+        .then(({ blockHeight, blockId, txId }) =>
+          this.updateTransactionParams(id, {
+            parachainBlockHeight: blockHeight, // parachain block number
+            parachainBlockId: blockId, // parachain block hash
+            parachainHash: txId, // parachain tx hash
+          })
+        )
+        .finally(() => this.closeConnections());
     }
 
-    await collator.stop();
-
-    const {
-      amount,
-      assetAddress,
-      externalNetwork,
-      externalNetworkFee: prevFee,
-      payload: prevPayload,
-    } = this.getTransaction(id);
+    const { amount, assetAddress, externalNetwork, payload: prevPayload } = this.getTransaction(id);
 
     const decimals = await this.getAssetExternalDecimals(externalNetwork as SubNetwork, assetAddress as string);
-
-    const sended = new FPNumber(amount as string);
+    const sended = new FPNumber(amount as string, decimals);
     const received = FPNumber.fromCodecValue(recipientAmount, decimals);
+
     const amount2 = received.toString();
-
-    const xcmFee = sended.sub(received);
-    const externalNetworkFee = FPNumber.fromCodecValue(prevFee as string, decimals)
-      .add(xcmFee)
-      .toCodecString();
-
+    const parachainNetworkFee = sended.sub(received).toCodecString();
     const payload = { ...prevPayload, messageNonce, batchNonce };
 
-    this.updateTransactionParams(id, { amount2, externalNetworkFee, payload });
+    this.updateTransactionParams(id, { amount2, parachainNetworkFee, payload });
   }
 
   private async waitForSoraInboundMessageNonce(id: string): Promise<void> {
@@ -200,14 +301,17 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     if (tx.hash) return;
 
-    const batchNonce = tx.payload.batchNonce;
-    const messageNonce = tx.payload.messageNonce;
+    if (!Number.isFinite(tx.payload?.batchNonce))
+      throw new Error(`[${this.constructor.name}]: Transaction batchNonce is incorrect`);
+
+    if (!Number.isFinite(tx.payload?.messageNonce))
+      throw new Error(`[${this.constructor.name}]: Transaction messageNonce is incorrect`);
 
     let subscription!: Subscription;
     let soraHash!: string;
 
     try {
-      await new Promise<void>((resolve, reject) => {
+      await new Promise<void>((resolve) => {
         const eventsObservable = subBridgeApi.apiRx.query.system.events();
 
         subscription = eventsObservable.subscribe((events) => {
@@ -215,26 +319,9 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
             subBridgeApi.api.events.substrateDispatch.MessageDispatched.is(e.event)
           );
 
-          if (!substrateDispatchEvent) return;
+          if (!this.isTransactionNonces(tx, substrateDispatchEvent)) return;
 
-          const eventMessageNonce = substrateDispatchEvent.event.data[0].messageNonce.toNumber();
-          const eventBatchNonce = substrateDispatchEvent.event.data[0].batchNonce.unwrap().toNumber();
-
-          if (eventBatchNonce > batchNonce) {
-            reject(new Error(`[${this.constructor.name}]: Unable to continue track transaction`));
-          }
-
-          if (eventBatchNonce !== batchNonce || eventMessageNonce !== messageNonce) return;
-
-          const bridgeProxyEvent = events.find((e) =>
-            subBridgeApi.api.events.bridgeProxy.RequestStatusUpdate.is(e.event)
-          );
-
-          if (!bridgeProxyEvent) {
-            reject(new Error(`[${this.constructor.name}]: Unable to find "bridgeProxy.RequestStatusUpdate" event`));
-          }
-
-          soraHash = bridgeProxyEvent.event.data[0].toString();
+          soraHash = this.getBridgeProxyHash(subBridgeApi.api, events);
 
           resolve();
         });
@@ -291,13 +378,14 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           rejectState: BridgeTxStatus.Failed,
           handler: async (id: string) => {
             this.beforeSubmit(id);
+            this.createConnections(id);
             this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
+
             await this.checkTxId(id);
             await this.waitForTransactionStatus(id);
             await this.waitForTransactionBlockId(id);
-            await this.checkTxSoraHash(id);
-            await this.waitForSoraOutboundMessageNonce(id);
-            await this.waitForCollatorMessageHash(id);
+            await this.waitForSoraHashAndNonces(id);
+            await this.waitForSoraParachainMessageHash(id);
             await this.waitForDestinationMessageHash(id);
             await this.onComplete(id);
           },
@@ -314,96 +402,71 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
   }
 
   private async checkTxId(id: string): Promise<void> {
-    const { txId } = this.getTransaction(id);
+    const tx = this.getTransaction(id);
+
+    if (tx.txId) return;
     // transaction not signed
-    if (!txId) {
-      await this.signSora(id);
-      // update history to change tx status in ui
-      this.updateHistory();
-    }
+    await this.beforeSign(id);
+    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
+    await subBridgeApi.transfer(asset, tx.to as string, tx.amount as string, tx.externalNetwork as SubNetwork, id);
+    // update history to change tx status in ui
+    this.updateHistory();
   }
 
-  private async checkTxSoraHash(id: string): Promise<void> {
+  private async waitForSoraHashAndNonces(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
-    if (tx.hash) return;
+    if (tx.hash && Number.isFinite(tx.payload?.batchNonce) && Number.isFinite(tx.payload?.messageNonce)) return;
 
-    const eventData = await findEventInBlock({
-      api: subBridgeApi.api,
-      blockId: tx.blockId as string,
-      section: 'bridgeProxy',
-      method: 'RequestStatusUpdate',
-    });
+    const events = await getBlockEvents(subBridgeApi.api, tx.blockId as string);
 
-    const hash = eventData[0].toString();
-
+    const hash = this.getBridgeProxyHash(subBridgeApi.api, events);
     this.updateTransactionParams(id, { hash });
-  }
 
-  private async waitForSoraOutboundMessageNonce(id: string): Promise<void> {
-    const tx = this.getTransaction(id);
-
-    if (tx.payload?.messageNonce) return;
-
-    const eventData = await findEventInBlock({
-      api: subBridgeApi.api,
-      blockId: tx.blockId as string,
-      section: 'substrateBridgeOutboundChannel',
-      method: 'MessageAccepted',
-    });
-
-    const batchNonce = eventData[1].toNumber();
-    const messageNonce = eventData[2].toNumber();
+    const [batchNonce, messageNonce] = this.getMessageAcceptedNonces(subBridgeApi.api, events);
     const payload = { ...tx.payload, batchNonce, messageNonce };
-
     this.updateTransactionParams(id, { payload });
   }
 
-  private async waitForCollatorMessageHash(id: string): Promise<void> {
+  private async waitForSoraParachainMessageHash(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
     if (tx.payload?.messageHash) return;
 
-    const batchNonce = tx.payload.batchNonce;
-    const messageNonce = tx.payload.messageNonce;
+    if (!Number.isFinite(tx.payload?.batchNonce))
+      throw new Error(`[${this.constructor.name}]: Transaction batchNonce is incorrect`);
 
-    const collator = subConnector.getAdapterForNetwork(SubNetwork.RococoSora);
+    if (!Number.isFinite(tx.payload?.messageNonce))
+      throw new Error(`[${this.constructor.name}]: Transaction messageNonce is incorrect`);
 
     let subscription!: Subscription;
     let messageHash!: string;
+    let blockNumber!: number;
+    let extrinsicIndex!: number;
 
     try {
-      await collator.connect();
+      await this.soraParachainAdapter.connect();
 
-      await new Promise<void>((resolve, reject) => {
-        const eventsObservable = collator.apiRx.query.system.events();
+      await new Promise<void>((resolve) => {
+        const eventsObservable = this.soraParachainAdapter.apiRx.query.system.events();
+        const blockNumberObservable = this.soraParachainAdapter.apiRx.query.system.number();
 
-        subscription = eventsObservable.subscribe((events) => {
+        subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(([events, blockHeight]) => {
           const substrateDispatchEvent = events.find((e) =>
-            collator.api.events.substrateDispatch.MessageDispatched.is(e.event)
+            this.soraParachainAdapter.api.events.substrateDispatch.MessageDispatched.is(e.event)
           );
 
-          if (!substrateDispatchEvent) return;
+          if (!this.isTransactionNonces(tx, substrateDispatchEvent)) return;
 
-          const eventBatchNonce = substrateDispatchEvent.event.data[0].batchNonce.unwrap().toNumber();
-          const eventMessageNonce = substrateDispatchEvent.event.data[0].messageNonce.toNumber();
-
-          if (eventBatchNonce > batchNonce) {
-            reject(
-              new Error(
-                `[${this.constructor.name}]: Unable to continue track transaction, collator outbound channel batch nonce ${eventBatchNonce} is larger than tx batch nonce ${batchNonce}`
-              )
-            );
-          }
-
-          if (eventBatchNonce !== batchNonce || eventMessageNonce !== messageNonce) return;
+          blockNumber = blockHeight.toNumber();
+          extrinsicIndex = substrateDispatchEvent.phase.asApplyExtrinsic.toNumber();
 
           const parachainSystemEvent = events.find((e) =>
-            collator.api.events.parachainSystem.UpwardMessageSent.is(e.event)
+            this.soraParachainAdapter.api.events.parachainSystem.UpwardMessageSent.is(e.event)
           );
 
           if (!parachainSystemEvent) {
-            reject(new Error(`[${this.constructor.name}]: Unable to find "parachainSystem.UpwardMessageSent" event`));
+            throw new Error(`[${this.constructor.name}]: Unable to find "parachainSystem.UpwardMessageSent" event`);
           }
 
           messageHash = parachainSystemEvent.event.data.messageHash.toString();
@@ -413,9 +476,18 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       });
     } finally {
       subscription.unsubscribe();
-    }
 
-    await collator.stop();
+      // run non blocking proccess promise
+      this.getHashesByBlockNumber(this.soraParachainAdapter, blockNumber, extrinsicIndex)
+        .then(({ blockHeight, blockId, txId }) =>
+          this.updateTransactionParams(id, {
+            parachainBlockHeight: blockHeight, // parachain block number
+            parachainBlockId: blockId, // parachain block hash
+            parachainHash: txId, // parachain tx hash
+          })
+        )
+        .finally(() => this.soraParachainAdapter.stop());
+    }
 
     const payload = { ...tx.payload, messageHash };
 
@@ -426,9 +498,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const tx = this.getTransaction(id);
     const messageHash = tx.payload.messageHash as string;
 
-    if (!messageHash) throw new Error(`[${this.constructor.name}]: Transaction paylaod messageHash cannot be empty`);
-
-    const adapter = subConnector.getAdapterForNetwork(tx.externalNetwork as SubNetwork);
+    if (!messageHash) throw new Error(`[${this.constructor.name}]: Transaction payload messageHash cannot be empty`);
 
     let subscription!: Subscription;
     let blockNumber!: number;
@@ -436,69 +506,68 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     let amount!: string;
 
     try {
-      if (!adapter.connected) {
-        await adapter.connect();
-      }
+      await this.subNetworkAdapter.connect();
 
-      await new Promise<void>((resolve, reject) => {
-        const eventsObservable = adapter.apiRx.query.system.events();
-        const blockNumberObservable = adapter.apiRx.query.system.number();
+      await new Promise<void>((resolve) => {
+        const eventsObservable = this.subNetworkAdapter.apiRx.query.system.events();
+        const blockNumberObservable = this.subNetworkAdapter.apiRx.query.system.number();
 
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(([events, blockNum]) => {
-          const umpExecutedUpwardEvent = events.find((e) => adapter.api.events.ump.ExecutedUpward.is(e.event));
+          const umpExecutedUpwardEvent = events.find((e) =>
+            this.subNetworkAdapter.api.events.ump.ExecutedUpward.is(e.event)
+          );
 
           if (!umpExecutedUpwardEvent) return;
 
-          const eventMessageHash = umpExecutedUpwardEvent.event.data[0].toString();
+          const [hash, status] = umpExecutedUpwardEvent.event.data;
 
-          if (eventMessageHash !== messageHash) return;
+          if (hash.toString() !== messageHash) return;
+
+          blockNumber = blockNum.toNumber();
+          extrinsicIndex = umpExecutedUpwardEvent.phase.asApplyExtrinsic.toNumber();
+
+          if (!status.isComplete) throw new Error(`[${this.constructor.name}]: Transaction is incomplete`);
 
           // Native token for network
           const balancesDepositEvent = events.find(
             (e) =>
-              adapter.api.events.balances.Deposit.is(e.event) &&
+              this.subNetworkAdapter.api.events.balances.Deposit.is(e.event) &&
               subBridgeApi.formatAddress(e.event.data.who.toString()) === tx.to
           );
 
           if (!balancesDepositEvent)
-            reject(new Error(`[${this.constructor.name}]: Unable to find "balances.Deposit" event`));
+            throw new Error(`[${this.constructor.name}]: Unable to find "balances.Deposit" event`);
 
           amount = balancesDepositEvent.event.data.amount.toString();
-          blockNumber = blockNum.toNumber();
-          extrinsicIndex = umpExecutedUpwardEvent.phase.asApplyExtrinsic.toNumber();
+
           resolve();
         });
       });
     } finally {
       subscription.unsubscribe();
-    }
 
-    if (subConnector.adapter !== adapter) {
-      await adapter.stop();
+      // run blocking process promise
+      await this.getHashesByBlockNumber(this.subNetworkAdapter, blockNumber, extrinsicIndex)
+        .then(({ blockHeight, blockId, txId }) =>
+          this.updateTransactionParams(id, {
+            externalBlockHeight: blockHeight, // parachain block number
+            externalBlockId: blockId, // parachain block hash
+            externalHash: txId, // parachain tx hash
+          })
+        )
+        .finally(() => this.subNetworkAdapter.stop());
     }
 
     const decimals = await this.getAssetExternalDecimals(tx.externalNetwork as SubNetwork, tx.assetAddress as string);
-
     const sended = new FPNumber(tx.amount as string, decimals);
     const received = FPNumber.fromCodecValue(amount, decimals);
+
     const amount2 = received.toString();
-
-    const xcmFee = sended.sub(received);
-    const externalNetworkFee = FPNumber.fromCodecValue(tx.externalNetworkFee as string, decimals)
-      .add(xcmFee)
-      .toCodecString();
-
-    const blockHash = await adapter.api.rpc.chain.getBlockHash(blockNumber);
-    const blockData = await adapter.api.rpc.chain.getBlock(blockHash);
-    const extrinsic = blockData.block.extrinsics.at(extrinsicIndex);
-    const externalHash = extrinsic?.hash.toString() ?? '';
+    const parachainNetworkFee = sended.sub(received).toCodecString();
 
     this.updateTransactionParams(id, {
       amount2,
-      externalNetworkFee,
-      externalHash, // parachain tx hash
-      externalBlockId: blockHash.toString(), // parachain block hash
-      externalBlockHeight: blockNumber, // parachain block number
+      parachainNetworkFee,
     });
   }
 }

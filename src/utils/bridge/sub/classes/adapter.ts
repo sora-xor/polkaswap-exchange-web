@@ -5,13 +5,14 @@ import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
 import { ZeroStringValue } from '@/consts';
+import type { SubNetworkApps } from '@/store/web3/types';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { ApiPromise } from '@polkadot/api';
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
-class SubAdapter {
+export class SubAdapter {
   protected endpoint!: string;
 
   public connection!: Connection;
@@ -167,6 +168,7 @@ class RococoAdapter extends SubAdapter {
   }
 }
 
+/** Not used & tested yet */
 class KusamaKaruraAdapter extends SubAdapter {
   // [TODO] fetch balance by symbol
   public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
@@ -199,7 +201,7 @@ class KusamaKaruraAdapter extends SubAdapter {
           interior: {
             X2: [
               {
-                Parachain: subBridgeApi.parachainIds[SubNetwork.RococoSora],
+                Parachain: subBridgeApi.parachainIds[SubNetwork.KusamaSora],
               },
               {
                 AccountId32: {
@@ -220,34 +222,50 @@ class KusamaKaruraAdapter extends SubAdapter {
 
 class SubConnector {
   public readonly adapters = {
-    [SubNetwork.Rococo]: new RococoAdapter(),
-    [SubNetwork.RococoSora]: new SubAdapter(),
-    [SubNetwork.KusamaKarura]: new KusamaKaruraAdapter(),
+    [SubNetwork.Rococo]: () => new RococoAdapter(),
+    [SubNetwork.RococoSora]: () => new SubAdapter(),
+    /** Not used yet */
+    // [SubNetwork.KusamaKarura]: new KusamaKaruraAdapter(),
+    // [SubNetwork.KusamaSora]: new SubAdapter(),
   };
 
-  public adapter: SubAdapter = this.adapters[SubNetwork.Rococo];
+  public endpoints: SubNetworkApps = {};
+
+  /** Adapter for Substrate network. Used for network selected in app */
+  public networkAdapter!: SubAdapter;
 
   public getAdapterForNetwork(network: SubNetwork): SubAdapter {
-    const adapter = this.adapters[network];
-
-    if (!adapter) {
+    if (!(network in this.adapters)) {
       throw new Error(`[${this.constructor.name}] Adapter for "${network}" network not implemented`);
     }
+    if (!(network in this.endpoints)) {
+      throw new Error(`[${this.constructor.name}] Endpoint for "${network}" network is not defined`);
+    }
+    const endpoint = this.endpoints[network];
+    const adapter = this.adapters[network]();
+
+    adapter.setEndpoint(endpoint);
 
     return adapter;
   }
 
+  /**
+   * Open main connection with Substrate network
+   */
   public async open(network: SubNetwork): Promise<void> {
     // stop current adapter connection
     await this.stop();
     // set adapter for network arg
-    this.adapter = this.getAdapterForNetwork(network);
+    this.networkAdapter = this.getAdapterForNetwork(network);
     // open adapter connection
-    await this.adapter.connect();
+    await this.networkAdapter.connect();
   }
 
+  /**
+   * Close main connection to selected Substrate network
+   */
   public async stop(): Promise<void> {
-    await this.adapter?.stop();
+    await this.networkAdapter?.stop();
   }
 }
 

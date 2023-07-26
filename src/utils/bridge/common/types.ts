@@ -10,8 +10,8 @@ export type GetBridgeHistoryInstance<T> = () => Promise<T>;
 export type GetTransaction<T> = (id: string) => T;
 export type UpdateTransaction<T> = (id: string, params: Partial<T>) => void;
 export type ShowNotification<T> = (tx: T) => void;
+export type BeforeTransactionSign = () => Promise<void>;
 export type SignExternal = (id: string) => Promise<any>;
-export type SignSora = (id: string) => Promise<void>;
 export type TransactionBoundaryStates<T extends IBridgeTransaction> = Partial<
   Record<
     T['type'],
@@ -47,14 +47,13 @@ export interface IBridgeOptions<T extends IBridgeTransaction> {
   getActiveTransaction: GetActiveTransaction<T>;
   addTransactionToProgress: AddTransactionToProgress;
   removeTransactionFromProgress: RemoveTransactionFromProgress;
+  // transaction signing
+  beforeTransactionSign: BeforeTransactionSign;
   // boundary states ("failed", "done")
   boundaryStates: TransactionBoundaryStates<T>;
 }
 
-export interface IBridgeReducerOptions<T extends IBridgeTransaction> extends IBridgeOptions<T> {
-  signExternal: SignExternal;
-  signSora: SignSora;
-}
+export type IBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeOptions<T>;
 
 export interface IBridgeReducer<T extends IBridgeTransaction> {
   process: (transaction: T) => Promise<void>;
@@ -62,7 +61,10 @@ export interface IBridgeReducer<T extends IBridgeTransaction> {
   handleState: (id: string, payload: TransactionHandlerPayload<T>) => Promise<void>;
   updateTransactionParams: (id: string, params: Partial<T>) => void;
   beforeSubmit: (id: string) => void;
+  beforeSign: (id: string) => void;
   onComplete: (id: string) => Promise<void>;
+  waitForTransactionStatus: (id: string) => Promise<void>;
+  waitForTransactionBlockId: (id: string) => Promise<void>;
 }
 
 export interface IBridgeConstructorOptions<
@@ -70,6 +72,4 @@ export interface IBridgeConstructorOptions<
   Reducer extends IBridgeReducer<Transaction>
 > extends IBridgeOptions<Transaction> {
   reducers: Record<Transaction['type'], Constructable<Reducer>>;
-  signExternal: Partial<Record<Transaction['type'], SignExternal>>;
-  signSora: Partial<Record<Transaction['type'], SignSora>>;
 }

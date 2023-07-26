@@ -101,6 +101,13 @@ export const findUserTxIdInBlock = async (
   return userExtrinsic.hash.toString();
 };
 
+export const getBlockEvents = async (api: ApiPromise, blockHash: string) => {
+  const apiInstanceAtBlock = await api.at(blockHash);
+  const blockEvents = (await apiInstanceAtBlock.query.system.events()).toArray();
+
+  return blockEvents;
+};
+
 export const findEventInBlock = async ({
   api,
   blockId,
@@ -112,9 +119,7 @@ export const findEventInBlock = async ({
   section: string;
   method: string;
 }) => {
-  const apiInstanceAtBlock = await api.at(blockId);
-  const blockEvents = (await apiInstanceAtBlock.query.system.events()).toArray();
-
+  const blockEvents = await getBlockEvents(api, blockId);
   const event = blockEvents.find(({ event }) => event.section === section && event.method === method);
 
   if (!event) throw new Error('Event not found');
