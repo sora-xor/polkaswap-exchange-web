@@ -51,4 +51,17 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     blockExplorerUrls: [],
     shortName: 'Karura',
   },
+  // SORA Parachains
+  [SubNetwork.RococoSora]: {
+    id: SubNetwork.RococoSora,
+    name: 'SORA Parachain',
+    nativeCurrency: {
+      name: 'XOR',
+      symbol: 'XOR',
+      decimals: 12,
+    },
+    endpointUrls: [],
+    blockExplorerUrls: [],
+    shortName: 'SORA Parachain',
+  },
 };
