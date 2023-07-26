@@ -9,6 +9,7 @@ import { MaxUint256, ZeroStringValue } from '@/consts';
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
+import { FocusedField } from '@/store/bridge/types';
 import { waitForEvmTransactionMined, findUserTxIdInBlock } from '@/utils/bridge/common/utils';
 import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
@@ -129,7 +130,8 @@ function bridgeDataToHistoryItem(
 
   return {
     type: (params as any).type ?? getters.operation,
-    amount: (params as any).amount ?? state.amount,
+    amount: (params as any).amount ?? state.amountSend,
+    amount2: (params as any).amount2 ?? state.amountReceived,
     symbol: (params as any).symbol ?? getters.asset?.symbol,
     assetAddress: (params as any).assetAddress ?? getters.asset?.address,
     startTime: date,
@@ -397,6 +399,42 @@ async function getExternalTransferFee(context: ActionContext<any, any>): Promise
 }
 
 const actions = defineActions({
+  setSendedAmount(context, value?: string) {
+    const { commit, state, getters } = bridgeActionContext(context);
+
+    commit.setFocusedField(FocusedField.Sended);
+    commit.setAmountSend(value);
+
+    if (value) {
+      const sended = new FPNumber(value);
+      const fee = FPNumber.fromCodecValue(state.externalTransferFee, getters.asset?.externalDecimals);
+      const expected = sended.sub(fee);
+      const received = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+
+      commit.setAmountReceived(received.toString());
+    } else {
+      commit.setAmountReceived();
+    }
+  },
+
+  setReceivedAmount(context, value?: string) {
+    const { commit, state, getters } = bridgeActionContext(context);
+
+    commit.setFocusedField(FocusedField.Received);
+    commit.setAmountReceived(value);
+
+    if (value) {
+      const received = new FPNumber(value);
+      const fee = FPNumber.fromCodecValue(state.externalTransferFee, getters.asset?.externalDecimals);
+      const expected = received.add(fee);
+      const sended = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+
+      commit.setAmountSend(sended.toString());
+    } else {
+      commit.setAmountSend();
+    }
+  },
+
   async updateBalancesAndFees(context): Promise<void> {
     const { dispatch } = bridgeActionContext(context);
 
@@ -415,6 +453,12 @@ const actions = defineActions({
     commit.setAssetRecipientBalance();
 
     await dispatch.updateBalancesAndFees();
+
+    if (state.focusedField === FocusedField.Received) {
+      await dispatch.setSendedAmount(state.amountReceived);
+    } else {
+      await dispatch.setReceivedAmount(state.amountSend);
+    }
   },
 
   async setAssetAddress(context, address?: string): Promise<void> {

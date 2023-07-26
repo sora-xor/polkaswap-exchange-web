@@ -31,7 +31,7 @@ import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
-import type { Whitelist } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 @Component({
@@ -43,9 +43,9 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) {
   @state.moonpay.confirmationVisibility private confirmationVisibility!: boolean;
 
-  @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.web3.isValidNetwork private isValidNetwork!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
+  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   get visibility(): boolean {
     return this.confirmationVisibility;
@@ -61,7 +61,8 @@ export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) 
     return {
       isSoraToEvm: false,
       amount: this.bridgeTransactionData.amount,
-      asset: this.whitelist[this.bridgeTransactionData.assetAddress as string],
+      amount2: this.bridgeTransactionData.amount2,
+      asset: this.getAsset[this.bridgeTransactionData.assetAddress as string],
       network: this.bridgeTransactionData.externalNetwork,
       externalNetworkFee: this.bridgeTransactionData.externalNetworkFee,
       soraNetworkFee: this.bridgeTransactionData.soraNetworkFee,

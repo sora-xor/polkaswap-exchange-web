@@ -6,25 +6,26 @@
       </slot>
     </template>
     <slot name="content-title" />
-    <div :class="assetsClasses">
+    <div class="tokens">
       <div class="tokens-info-container">
-        <span class="token-value">{{ formattedAmount }}</span>
+        <span class="token-value">{{ formattedAmountSend }}</span>
         <div v-if="asset" class="token">
-          <i class="network-icon network-icon--sora" />
+          <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : network)}`" />
           {{ tokenSymbol }}
         </div>
       </div>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <div class="tokens-info-container">
-        <span class="token-value">{{ formattedAmount }}</span>
+        <span class="token-value">{{ formattedAmountReceived }}</span>
         <div v-if="asset" class="token token-ethereum">
-          <i :class="`network-icon network-icon--${getNetworkIcon(network)}`" />
+          <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? network : 0)}`" />
           {{ tokenSymbol }}
         </div>
       </div>
     </div>
     <s-divider class="s-divider--dialog" />
     <bridge-transaction-details
+      :asset="asset"
       :evm-token-symbol="evmTokenSymbol"
       :external-fee="externalFee"
       :sora-network-fee="soraNetworkFee"
@@ -61,7 +62,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { ZeroStringValue, Components } from '@/consts';
 import { lazyComponent } from '@/router';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 @Component({
@@ -78,8 +79,9 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   NetworkFormatterMixin
 ) {
   @Prop({ default: 0, type: [Number, String] }) readonly network!: BridgeNetworkId;
-  @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;
-  @Prop({ default: () => undefined, type: Object }) readonly asset!: Nullable<Asset>;
+  @Prop({ default: ZeroStringValue, type: String }) readonly amountSend!: string;
+  @Prop({ default: ZeroStringValue, type: String }) readonly amountReceived!: string;
+  @Prop({ default: () => null, type: Object }) readonly asset!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly externalFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
@@ -96,19 +98,12 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
     return !this.isValidNetwork || this.isInsufficientBalance;
   }
 
-  get assetsClasses(): Array<string> {
-    const assetsClass = 'tokens';
-    const classes = [assetsClass];
-
-    if (!this.isSoraToEvm) {
-      classes.push(`${assetsClass}--reverse`);
-    }
-
-    return classes;
+  get formattedAmountSend(): string {
+    return this.amountSend ? this.formatStringValue(this.amountSend) : '';
   }
 
-  get formattedAmount(): string {
-    return this.amount ? this.formatStringValue(this.amount, this.asset?.decimals) : '';
+  get formattedAmountReceived(): string {
+    return this.amountReceived ? this.formatStringValue(this.amountReceived) : '';
   }
 
   get tokenSymbol(): string {

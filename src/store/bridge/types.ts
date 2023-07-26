@@ -1,5 +1,10 @@
 import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
 
+export enum FocusedField {
+  Sended = 'Sended',
+  Received = 'Received',
+}
+
 export type BridgeState = {
   isSoraToEvm: boolean;
   assetAddress: string;
@@ -7,7 +12,9 @@ export type BridgeState = {
   assetRecipientBalance: Nullable<CodecString>;
   assetLockedBalance: Nullable<CodecString>;
   assetLockedBalanceFetching: boolean;
-  amount: string;
+  amountSend: string;
+  amountReceived: string;
+  focusedField: Nullable<FocusedField>;
   externalTransferFee: CodecString;
   externalNetworkFee: CodecString;
   externalNetworkFeeFetching: boolean;

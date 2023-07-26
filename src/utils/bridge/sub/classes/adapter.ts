@@ -147,7 +147,8 @@ class RococoAdapter extends SubAdapter {
     //   return ZeroStringValue;
     // }
 
-    return ZeroStringValue;
+    // [HARDCODE] for Rococo
+    return '62491568';
   }
 
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {

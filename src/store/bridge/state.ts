@@ -10,7 +10,9 @@ function initialState(): BridgeState {
     assetRecipientBalance: null, // balance for bridge network
     assetLockedBalance: null, // asset balance locked on bridge
     assetLockedBalanceFetching: false,
-    amount: '',
+    amountSend: '',
+    amountReceived: '',
+    focusedField: null,
     externalTransferFee: ZeroStringValue, // fee for transfer between networks (xcm message fee for substrate network)
     externalNetworkFee: ZeroStringValue, // fee for transaction execution
     externalNetworkFeeFetching: false,

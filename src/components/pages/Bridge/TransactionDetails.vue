@@ -3,7 +3,7 @@
     <info-line
       :label="t('bridge.soraNetworkFee')"
       :label-tooltip="t('networkFeeTooltipText')"
-      :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
+      :value="formattedSoraNetworkFee"
       :asset-symbol="XOR_SYMBOL"
       :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
       is-formatted
@@ -11,7 +11,7 @@
     <info-line
       :label="formattedNetworkFeeLabel"
       :label-tooltip="t('ethNetworkFeeTooltipText', { network: networkName })"
-      :value="formatFee(externalFee, formattedExternalFee)"
+      :value="formattedExternalFee"
       :asset-symbol="evmTokenSymbol"
       is-formatted
     />
@@ -29,6 +29,7 @@ import { lazyComponent } from '@/router';
 import type { NetworkData } from '@/types/bridge';
 
 import type { CodecString } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -39,6 +40,7 @@ import type { CodecString } from '@sora-substrate/util';
 export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   readonly XOR_SYMBOL = XOR.symbol;
 
+  @Prop({ default: () => null, type: Object }) readonly asset!: RegisteredAccountAsset;
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
   @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
@@ -59,11 +61,7 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
   }
 
   get formattedExternalFee(): string {
-    return this.formatCodecNumber(this.externalFee);
-  }
-
-  formatFee(fee: string, formattedFee: string): string {
-    return fee !== ZeroStringValue ? formattedFee : ZeroStringValue;
+    return this.formatCodecNumber(this.externalFee, this.asset?.externalDecimals);
   }
 }
 </script>
