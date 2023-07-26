@@ -4,9 +4,9 @@
     <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
     <div class="app-controls app-controls--fiat-payment s-flex">
       <app-ad />
-      <s-button type="tertiary" size="medium" @click="goTo(PageNames.FiatDepositOptions)">
+      <s-button :class="computedClassBtn" type="tertiary" size="medium" @click="goTo(PageNames.FiatDepositOptions)">
         <pair-token-logo class="app-menu-payment" :first-token="xor" :second-token="eth" size="small" />
-        <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
+        <span>{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
     </div>
     <div class="app-controls s-flex">
@@ -66,6 +66,14 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
     };
   }
 
+  get computedClassBtn(): string[] {
+    const base = ['app-menu-fiat-btn', 'active'];
+
+    if (this.$route.name === PageNames.FiatDepositOptions) base.push('app-menu-fiat-btn--active');
+
+    return base;
+  }
+
   toggleMenu(): void {
     this.$emit('toggle-menu');
   }
@@ -73,6 +81,14 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
 </script>
 
 <style lang="scss">
+.app-menu-fiat-btn.app-menu-fiat-btn--active.neumorphic.s-tertiary.active {
+  box-shadow: var(--s-shadow-element);
+
+  span {
+    color: var(--s-color-theme-accent);
+  }
+}
+
 .settings-control:hover > span > .header-menu__button i {
   color: var(--s-color-base-content-secondary);
 }
