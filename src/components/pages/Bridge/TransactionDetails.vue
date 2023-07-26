@@ -11,7 +11,7 @@
     <info-line
       :label="formattedNetworkFeeLabel"
       :label-tooltip="t('ethNetworkFeeTooltipText', { network: networkName })"
-      :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
+      :value="formatFee(externalFee, formattedExternalFee)"
       :asset-symbol="evmTokenSymbol"
       is-formatted
     />
@@ -42,7 +42,7 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
   @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
-  @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
+  @Prop({ default: ZeroStringValue, type: String }) readonly externalFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
   @Prop({ default: () => null, type: Object }) readonly network!: NetworkData;
 
@@ -58,8 +58,8 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
     return this.formatCodecNumber(this.soraNetworkFee);
   }
 
-  get formattedEvmNetworkFee(): string {
-    return this.formatCodecNumber(this.evmNetworkFee);
+  get formattedExternalFee(): string {
+    return this.formatCodecNumber(this.externalFee);
   }
 
   formatFee(fee: string, formattedFee: string): string {

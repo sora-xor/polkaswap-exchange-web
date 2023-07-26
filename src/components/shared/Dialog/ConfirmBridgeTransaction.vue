@@ -26,7 +26,7 @@
     <s-divider class="s-divider--dialog" />
     <bridge-transaction-details
       :evm-token-symbol="evmTokenSymbol"
-      :evm-network-fee="evmNetworkFee"
+      :external-fee="externalFee"
       :sora-network-fee="soraNetworkFee"
     />
     <template #footer>
@@ -81,7 +81,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;
   @Prop({ default: () => undefined, type: Object }) readonly asset!: Nullable<Asset>;
   @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
-  @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
+  @Prop({ default: ZeroStringValue, type: String }) readonly externalFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
   @Prop({ default: true, type: Boolean }) readonly isValidNetwork!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
@@ -109,14 +109,6 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
 
   get formattedAmount(): string {
     return this.amount ? this.formatStringValue(this.amount, this.asset?.decimals) : '';
-  }
-
-  get formattedSoraNetworkFee(): string {
-    return this.formatCodecNumber(this.soraNetworkFee);
-  }
-
-  get formattedEvmNetworkFee(): string {
-    return this.formatCodecNumber(this.evmNetworkFee);
   }
 
   get tokenSymbol(): string {

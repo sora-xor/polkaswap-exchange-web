@@ -321,7 +321,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txExternalNetworkFee(): CodecString {
-    const externalNetworkFee = FPNumber.fromCodecValue(this.historyItem?.externalNetworkFee ?? this.evmNetworkFee);
+    const externalNetworkFee = FPNumber.fromCodecValue(this.historyItem?.externalNetworkFee ?? this.externalNetworkFee);
     const xcmFee = FPNumber.fromCodecValue((this.historyItem as SubHistory)?.parachainNetworkFee ?? ZeroStringValue);
     const fee = externalNetworkFee.add(xcmFee);
 

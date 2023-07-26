@@ -17,7 +17,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @getter.bridge.sender sender!: string;
   @getter.bridge.recipient recipient!: string;
   @getter.bridge.soraNetworkFee soraNetworkFee!: CodecString;
-  @getter.bridge.evmNetworkFee evmNetworkFee!: CodecString;
+  @getter.bridge.externalNetworkFee externalNetworkFee!: CodecString;
   @getter.assets.xor xor!: RegisteredAccountAsset;
 
   @mutation.web3.setSelectNetworkDialogVisibility setSelectNetworkDialogVisibility!: (flag: boolean) => void;

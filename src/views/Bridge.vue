@@ -250,7 +250,7 @@
           :info-only="false"
           :is-sora-to-evm="isSoraToEvm"
           :evm-token-symbol="evmTokenSymbol"
-          :evm-network-fee="evmNetworkFee"
+          :external-fee="externalNetworkFee"
           :sora-network-fee="soraNetworkFee"
           :network="selectedNetwork"
         />
@@ -267,7 +267,7 @@
         :amount="amount"
         :network="networkSelected"
         :evm-token-symbol="evmTokenSymbol"
-        :evm-network-fee="evmNetworkFee"
+        :evm-network-fee="externalNetworkFee"
         :sora-network-fee="soraNetworkFee"
         @confirm="confirmTransaction"
       />
@@ -409,7 +409,7 @@ export default class Bridge extends Mixins(
   get maxValue(): string {
     if (!(this.asset && this.isRegisteredAsset)) return ZeroStringValue;
 
-    const fee = this.isSoraToEvm ? this.soraNetworkFee : this.evmNetworkFee;
+    const fee = this.isSoraToEvm ? this.soraNetworkFee : this.externalNetworkFee;
     const maxBalance = getMaxValue(this.asset, fee, !this.isSoraToEvm);
 
     if (this.assetLockedBalance && this.isSoraToEvm) {
@@ -444,13 +444,13 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.evmNetworkFee);
+    return hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.externalNetworkFee);
   }
 
   get isInsufficientBalance(): boolean {
     if (!this.asset) return false;
 
-    const fee = this.isSoraToEvm ? this.soraNetworkFee : this.evmNetworkFee;
+    const fee = this.isSoraToEvm ? this.soraNetworkFee : this.externalNetworkFee;
 
     return (
       !!this.sender && this.isRegisteredAsset && hasInsufficientBalance(this.asset, this.amount, fee, !this.isSoraToEvm)
@@ -470,7 +470,7 @@ export default class Bridge extends Mixins(
   }
 
   get formattedEvmNetworkFee(): string {
-    return this.formatCodecNumber(this.evmNetworkFee);
+    return this.formatCodecNumber(this.externalNetworkFee);
   }
 
   get isConfirmTxDisabled(): boolean {
@@ -514,7 +514,7 @@ export default class Bridge extends Mixins(
     const isNativeTokenSelected = this.asset.symbol === this.evmTokenSymbol;
 
     const fpBalance = FPNumber.fromCodecValue(this.externalNativeBalance);
-    const fpFee = FPNumber.fromCodecValue(this.evmNetworkFee);
+    const fpFee = FPNumber.fromCodecValue(this.externalNetworkFee);
     const fpAfterFee = fpBalance.sub(fpFee);
 
     if (!isNativeTokenSelected) return FPNumber.gte(fpAfterFee, fpFee);

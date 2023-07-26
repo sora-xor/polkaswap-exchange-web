@@ -138,13 +138,13 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
 
       const externalBalance = (await ethersUtil.getAccountAssetBalance(ethTransferData.to, registeredAsset.address))
         .value;
-      const evmNetworkFee: CodecString = await ethersUtil.getEvmNetworkFee(
+      const evmFee: CodecString = await ethersUtil.getEvmNetworkFee(
         registeredAsset.address,
         registeredAsset.kind,
         false
       );
       const evmNativeBalance = await ethersUtil.getAccountBalance(ethTransferData.to);
-      const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(evmNativeBalance, evmNetworkFee);
+      const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(evmNativeBalance, evmFee);
 
       if (!hasEthForFee) {
         throw createError('Insufficient ETH for fee', MoonpayNotifications.FeeError);
@@ -157,7 +157,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         externalAddress: registeredAsset.address,
         externalDecimals: registeredAsset.decimals,
       };
-      const maxAmount = getMaxValue(accountAsset, evmNetworkFee, true); // max balance (minus fee if eth asset)
+      const maxAmount = getMaxValue(accountAsset, evmFee, true); // max balance (minus fee if eth asset)
       const amount = Math.min(Number(maxAmount), Number(ethTransferData.amount));
 
       if (amount <= 0) {
@@ -170,7 +170,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         symbol: accountAsset.symbol,
         assetAddress: accountAsset.address,
         soraNetworkFee: this.networkFees[Operation.EthBridgeIncoming],
-        externalNetworkFee: evmNetworkFee,
+        externalNetworkFee: evmFee,
         externalNetwork: this.ethBridgeEvmNetwork,
         externalNetworkType: BridgeNetworkType.EvmLegacy,
         to: ethTransferData.to,
