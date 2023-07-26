@@ -1,6 +1,7 @@
+import { BridgeTxDirection } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
-import type { NetworkData } from '@/types/bridge';
+import type { NetworkData, SubNetworksFees } from '@/types/bridge';
 
 export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
   [SubNetwork.Kusama]: {
@@ -63,5 +64,14 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     endpointUrls: [],
     blockExplorerUrls: [],
     shortName: 'SORA Parachain',
+  },
+};
+
+export const SUB_TRANSFER_FEES: SubNetworksFees = {
+  [SubNetwork.Rococo]: {
+    ROC: {
+      [BridgeTxDirection.Outgoing]: '10188285',
+      [BridgeTxDirection.Incoming]: '4000000000',
+    },
   },
 };

@@ -49,7 +49,7 @@ const mutations = defineMutations<BridgeState>()({
     state.externalNetworkFee = fee;
   },
 
-  setExternalNetworkTransferFee(state, fee: CodecString): void {
+  setExternalTransferFee(state, fee: CodecString): void {
     state.externalTransferFee = fee;
   },
 

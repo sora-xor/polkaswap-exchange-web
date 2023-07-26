@@ -7,6 +7,7 @@ import { ethers } from 'ethers';
 
 import { MaxUint256, ZeroStringValue } from '@/consts';
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
+import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
 import { waitForEvmTransactionMined, findUserTxIdInBlock } from '@/utils/bridge/common/utils';
 import ethBridge from '@/utils/bridge/eth';
@@ -170,6 +171,16 @@ async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void>
   }
 
   commit.setExternalNetworkFee(fee);
+}
+
+async function getExternalNetworkFee(context: ActionContext<any, any>): Promise<void> {
+  const { getters } = bridgeActionContext(context);
+
+  if (getters.isSubBridge) {
+    await getSubNetworkFee(context);
+  } else {
+    await getEvmNetworkFee(context);
+  }
 }
 
 async function updateEvmBalances(context: ActionContext<any, any>): Promise<void> {
@@ -369,6 +380,22 @@ async function updateBridgeProxyLockedBalance(context: ActionContext<any, any>):
   commit.setAssetLockedBalance();
 }
 
+async function getExternalTransferFee(context: ActionContext<any, any>): Promise<void> {
+  const { commit, getters, state, rootState } = bridgeActionContext(context);
+
+  let fee = ZeroStringValue;
+
+  if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
+    const externalNetwork = rootState.web3.networkSelected as SubNetwork;
+    const direction = state.isSoraToEvm ? BridgeTxDirection.Outgoing : BridgeTxDirection.Incoming;
+    const symbol = getters.asset.symbol;
+
+    fee = SUB_TRANSFER_FEES[externalNetwork]?.[symbol]?.[direction] ?? ZeroStringValue;
+  }
+
+  commit.setExternalTransferFee(fee);
+}
+
 const actions = defineActions({
   async updateBalancesAndFees(context): Promise<void> {
     const { dispatch } = bridgeActionContext(context);
@@ -376,7 +403,7 @@ const actions = defineActions({
     await Promise.all([
       dispatch.updateExternalBalance(),
       dispatch.updateExternalLockedBalance(),
-      dispatch.getExternalNetworkFee(),
+      dispatch.updateExternalFees(),
     ]);
   },
 
@@ -400,16 +427,12 @@ const actions = defineActions({
     await dispatch.updateBalancesAndFees();
   },
 
-  async getExternalNetworkFee(context): Promise<void> {
-    const { commit, getters } = bridgeActionContext(context);
+  async updateExternalFees(context): Promise<void> {
+    const { commit } = bridgeActionContext(context);
 
     commit.setExternalNetworkFeeFetching(true);
 
-    if (getters.isSubBridge) {
-      await getSubNetworkFee(context);
-    } else {
-      await getEvmNetworkFee(context);
-    }
+    await Promise.all([getExternalNetworkFee(context), getExternalTransferFee(context)]);
 
     commit.setExternalNetworkFeeFetching(false);
   },

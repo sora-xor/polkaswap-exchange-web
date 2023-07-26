@@ -1,4 +1,4 @@
-import { Operation } from '@sora-substrate/util';
+import { Operation, FPNumber } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { defineGetters } from 'direct-vuex';
 
