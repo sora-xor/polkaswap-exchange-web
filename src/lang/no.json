@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transaksjon sendt",
         "transactionMessage": "{firstToken} og {secondToken}",
         "ok": "OK",
-        "confirm": "Bekrefte"
+        "confirm": "Bekrefte",
+        "lossWarning": "Du kommer til å miste {value}% på handelen din. Vi har oppdaget et problem med likviditetsavsetning. Dette kan føre til betydelige tap under token-bytte. Sørg for at det er tilstrekkelig likviditet for ønsket byttepar."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1238,5 +1239,13 @@
             "present": "Allerede til stede",
             "saveChanges": "Lagre endringer"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "Tillat kameratilgang i nettleserinnstillingene",
+        "desc": "For å sikre autentisiteten til dokumenter og validere brukeridentitet for KYC-verifisering, kreves tilgang til enhetens kamera.",
+        "disclaimer": "Kameratilgang er nødvendig for sanntidsdokumentfangst for å forhindre svindel.",
+        "btnGoToSettings": "Gå til Innstillinger",
+        "btnAllow": "Gi tilgang"
+    },
+    "continueText": "Fortsette"
 }

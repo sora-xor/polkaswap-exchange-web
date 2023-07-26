@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transaktion übermittelt",
         "transactionMessage": "{firstToken} und {secondToken}",
         "ok": "OK",
-        "confirm": "Bestätigen"
+        "confirm": "Bestätigen",
+        "lossWarning": "Sie werden {value}% bei Ihrem Handel verlieren. Wir haben ein Problem mit der Liquiditätsbereitstellung festgestellt. Dies kann bei Token-Swaps zu erheblichen Verlusten führen. Bitte stellen Sie sicher, dass für Ihr gewünschtes Swap-Paar ausreichend Liquidität vorhanden ist."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1238,5 +1239,13 @@
             "present": "Bereits anwesend",
             "saveChanges": "Änderungen speichern"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "Erlauben Sie den Kamerazugriff in den Browsereinstellungen",
+        "desc": "Um die Authentizität von Dokumenten sicherzustellen und die Benutzeridentität für die KYC-Überprüfung zu validieren, ist Zugriff auf die Kamera Ihres Geräts erforderlich.",
+        "disclaimer": "Für die Dokumentenerfassung in Echtzeit ist ein Kamerazugriff erforderlich, um Betrug zu verhindern.",
+        "btnGoToSettings": "Gehe zu den Einstellungen",
+        "btnAllow": "Erlauben den Zugriff"
+    },
+    "continueText": "Weitermachen"
 }

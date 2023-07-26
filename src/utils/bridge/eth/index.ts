@@ -24,13 +24,6 @@ const ethBridge: EthBridge = new Bridge({
     [Operation.EthBridgeIncoming]: EthBridgeIncomingReducer,
     [Operation.EthBridgeOutgoing]: EthBridgeOutgoingReducer,
   },
-  signExternal: {
-    [Operation.EthBridgeIncoming]: (id: string) => store.dispatch.bridge.signEthBridgeIncomingEvm(id),
-    [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEthBridgeOutgoingEvm(id),
-  },
-  signSora: {
-    [Operation.EthBridgeOutgoing]: (id: string) => store.dispatch.bridge.signEthBridgeOutgoingSora(id),
-  },
   boundaryStates: {
     [Operation.EthBridgeIncoming]: {
       done: ETH_BRIDGE_STATES.SORA_COMMITED,
@@ -53,7 +46,12 @@ const ethBridge: EthBridge = new Bridge({
   removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
   updateHistory: () => store.dispatch.bridge.updateInternalHistory(),
   getActiveTransaction: () => store.getters.bridge.historyItem as BridgeHistory,
+  // transaction signing
+  beforeTransactionSign: () => store.dispatch.wallet.transactions.beforeTransactionSign(),
+  // custom
   getBridgeHistoryInstance: () => store.dispatch.bridge.getEthBridgeHistoryInstance(),
+  signExternalOutgoing: (id: string) => store.dispatch.bridge.signEthBridgeOutgoingEvm(id),
+  signExternalIncoming: (id: string) => store.dispatch.bridge.signEthBridgeIncomingEvm(id),
 });
 
 export default ethBridge;

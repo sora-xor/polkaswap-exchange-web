@@ -1,6 +1,32 @@
 <template>
   <div class="sora-card sora-card-kyc-wrapper">
-    <div>
+    <div v-if="!hasCameraAccess" class="camera-permission">
+      <s-icon name="camera-16" size="48" class="camera-permission-icon" />
+      <h4 class="camera-permission-title">{{ t('browserPermission.title') }}</h4>
+      <p class="camera-permission-desc">
+        {{ t('browserPermission.desc') }}
+      </p>
+      <div class="camera-permission-disclaimer">
+        <div class="tos__disclaimer">
+          <p class="tos__disclaimer-paragraph">
+            {{ t('browserPermission.disclaimer') }}
+          </p>
+          <div class="tos__disclaimer-warning icon">
+            <s-icon name="notifications-alert-triangle-24" size="28px" />
+          </div>
+        </div>
+      </div>
+      <s-button
+        class="camera-permission-btn"
+        type="primary"
+        :disabled="forbiddenByBrowser"
+        :loading="btnLoading"
+        @click="requestCameraAccess"
+      >
+        {{ btnCameraText }}
+      </s-button>
+    </div>
+    <div v-else>
       <div class="sora-card-kyc-view" v-loading="loadingKycView">
         <s-scrollbar>
           <div id="kyc"></div>
@@ -33,13 +59,15 @@ type WindowInjectedWeb3 = typeof window & {
 };
 
 @Component
-export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin) {
+export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin, mixins.CameraPermissionMixin) {
   @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
   @state.wallet.account.source private source!: WALLET_CONSTS.AppWallet;
 
   @Prop({ default: '', type: String }) readonly accessToken!: string;
 
   loadingKycView = true;
+  btnLoading = false;
+  cameraPermission: Nullable<PermissionState> = null;
 
   async getReferenceNumber(URL: string): Promise<string | undefined> {
     const { kycService } = soraCard(this.soraNetwork);
@@ -86,7 +114,39 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
     setInterval(setNewJwtPair, 60_000 * 19.85); // 10 seconds less before token expiration
   }
 
-  async mounted(): Promise<void> {
+  async requestCameraAccess(): Promise<void> {
+    this.btnLoading = true;
+
+    try {
+      const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('SoraCard');
+
+      if (!mediaDevicesAllowance) return;
+
+      this.cameraPermission = 'granted';
+    } catch (error) {
+      console.error('[SoraCard]: Camera error.', error);
+    } finally {
+      this.btnLoading = false;
+    }
+
+    this.initKyc();
+  }
+
+  get hasCameraAccess(): boolean {
+    return this.cameraPermission === 'granted';
+  }
+
+  get forbiddenByBrowser(): boolean {
+    return this.cameraPermission === 'denied';
+  }
+
+  get btnCameraText(): string {
+    if (this.forbiddenByBrowser) return this.t('browserPermission.btnGoToSettings');
+    if (this.hasCameraAccess) return this.t('continueText');
+    return this.t('browserPermission.btnAllow');
+  }
+
+  async initKyc(): Promise<void> {
     this.updateJwtPairByInterval();
 
     const { kycService, soraProxy } = soraCard(this.soraNetwork);
@@ -172,6 +232,19 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
       this.loadingKycView = false;
     }, 5_000);
   }
+
+  async mounted(): Promise<void> {
+    try {
+      const { state } = await navigator.permissions.query({ name: 'camera' } as any);
+      this.cameraPermission = state;
+
+      if (!this.hasCameraAccess) return;
+    } catch (error) {
+      console.error('[SoraCard]: Camera error.', error);
+    }
+
+    this.initKyc();
+  }
 }
 </script>
 
@@ -208,5 +281,74 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
 
 section.content {
   min-height: 800px;
+}
+
+.camera-permission {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &-title {
+    font-weight: 600;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: $inner-spacing-mini;
+  }
+
+  &-desc {
+    font-size: 15px;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: $inner-spacing-mini;
+  }
+
+  &-icon {
+    color: var(--s-color-status-error);
+  }
+
+  &-btn {
+    margin-top: $basic-spacing;
+    width: 100%;
+  }
+}
+
+.tos {
+  &__disclaimer {
+    width: 100%;
+    background-color: var(--s-color-base-background);
+    border-radius: var(--s-border-radius-small);
+    box-shadow: var(--s-shadow-dialog);
+    padding: 20px $basic-spacing;
+    margin-bottom: $basic-spacing;
+    position: relative;
+
+    &-paragraph {
+      margin-bottom: calc(var(--s-basic-spacing) / 2);
+      margin-right: 10%;
+      font-weight: 600;
+      font-size: var(--s-icon-font-size-mini);
+    }
+
+    &-warning.icon {
+      position: absolute;
+      background-color: #479aef;
+      border: 2.25257px solid #f7f3f4;
+      box-shadow: var(--s-shadow-element-pressed);
+      top: 20px;
+      right: 12px;
+      border-radius: 50%;
+      color: #fff;
+      width: 46px;
+      height: 46px;
+
+      .s-icon-notifications-alert-triangle-24 {
+        display: block;
+        color: #fff;
+        margin-top: 5px;
+        margin-left: 7px;
+      }
+    }
+  }
 }
 </style>

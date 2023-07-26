@@ -483,7 +483,8 @@
         "transactionSubmitted": "已提交的交易",
         "transactionMessage": "{firstToken}和{secondToken}",
         "ok": "好的",
-        "confirm": "确认"
+        "confirm": "确认",
+        "lossWarning": "您的交易将损失{value}%。我们发现存在流动性供应问题。这可能会导致代币交换期间的重大损失。请确保您所需的掉期对有足够的流动性。"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1238,5 +1239,13 @@
             "present": "已经存在",
             "saveChanges": "保存更改"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "在浏览器设置中允许相机访问",
+        "desc": "为了确保文档的真实性并验证用户身份以进行 KYC 验证，需要访问您设备的摄像头。",
+        "disclaimer": "实时文档捕获需要摄像头访问，以防止欺诈。",
+        "btnGoToSettings": "前往设置",
+        "btnAllow": "允许访问"
+    },
+    "continueText": "继续"
 }

@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transacción enviada",
         "transactionMessage": "{firstToken} y {secondToken}",
         "ok": "OK",
-        "confirm": "Confirmar"
+        "confirm": "Confirmar",
+        "lossWarning": "Perderá {value}% en su operación. Hemos detectado un problema de provisión de liquidez. Esto puede generar pérdidas significativas durante los intercambios de tokens. Asegúrese de que haya liquidez adecuada para el par de intercambio deseado."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1238,5 +1239,13 @@
             "present": "Ya presente",
             "saveChanges": "Guardar cambios"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "Permitir el acceso a la cámara en la configuración del navegador",
+        "desc": "Para garantizar la autenticidad de los documentos y validar la identidad del usuario para la verificación KYC, se requiere acceso a la cámara de su dispositivo.",
+        "disclaimer": "Se requiere acceso a la cámara para la captura de documentos en tiempo real para evitar el fraude.",
+        "btnGoToSettings": "Ir a la configuración",
+        "btnAllow": "Permitir el acceso"
+    },
+    "continueText": "Continuar"
 }

@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transakcija je poslana",
         "transactionMessage": "{firstToken} i {secondToken}",
         "ok": "U redu",
-        "confirm": "Potvrdite"
+        "confirm": "Potvrdite",
+        "lossWarning": "Izgubit ćete {value}% na svojoj trgovini. Otkrili smo problem s pružanjem likvidnosti. To može dovesti do značajnih gubitaka tijekom zamjene tokena. Provjerite postoji li odgovarajuća likvidnost za vaš željeni swap par."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1238,5 +1239,13 @@
             "present": "Već prisutan",
             "saveChanges": "Spremi promjene"
         }
-    }
+    },
+    "browserPermission": {
+        "title": "Dopustite pristup kameri u postavkama preglednika",
+        "desc": "Kako biste osigurali autentičnost dokumenata i potvrdili korisnički identitet za KYC provjeru, potreban je pristup kameri vašeg uređaja.",
+        "disclaimer": "Potreban je pristup kameri za snimanje dokumenata u stvarnom vremenu kako bi se spriječila prijevara.",
+        "btnGoToSettings": "Idite na postavke",
+        "btnAllow": "Dopusti pristup"
+    },
+    "continueText": "Nastaviti"
 }

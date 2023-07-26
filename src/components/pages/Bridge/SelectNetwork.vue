@@ -22,7 +22,7 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { action, getter, mutation, state } from '@/store/decorators';
+import { action, mutation, state } from '@/store/decorators';
 import type { AvailableNetwork } from '@/store/web3/types';
 
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
@@ -65,16 +65,20 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
       .map(([type, record]) => {
         const networks = Object.values(record) as AvailableNetwork[];
 
-        return networks.map(({ disabled, data: { id, name } }) => {
+        return networks.reduce<NetworkItem[]>((buffer, { available, disabled, data: { id, name } }) => {
           const networkName = type === BridgeNetworkType.EvmLegacy ? `${name} (${this.t('hashiBridgeText')})` : name;
 
-          return {
-            id,
-            value: `${type}-${id}`,
-            name: networkName,
-            disabled,
-          };
-        });
+          if (available) {
+            buffer.push({
+              id,
+              value: `${type}-${id}`,
+              name: networkName,
+              disabled,
+            });
+          }
+
+          return buffer;
+        }, []);
       })
       .flat(1)
       .sort((a, b) => {
