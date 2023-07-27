@@ -254,12 +254,10 @@
           v-if="areNetworksConnected && !isZeroAmountReceived && isRegisteredAsset"
           class="info-line-container"
           :info-only="false"
-          :asset="asset"
-          :is-sora-to-evm="isSoraToEvm"
           :evm-token-symbol="evmTokenSymbol"
-          :external-fee="externalNetworkFee"
-          :sora-network-fee="soraNetworkFee"
-          :network="selectedNetwork"
+          :external-network-fee="formattedExternalNetworkFee"
+          :sora-network-fee="formattedSoraNetworkFee"
+          :network-name="networkName"
         />
       </s-card>
       <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
@@ -267,16 +265,16 @@
       <bridge-select-network />
       <confirm-bridge-transaction-dialog
         :visible.sync="showConfirmTransactionDialog"
-        :is-valid-network-type="isValidNetwork"
+        :is-valid-network="isValidNetwork"
         :is-sora-to-evm="isSoraToEvm"
-        :is-insufficient-balance="isInsufficientBalance"
         :asset="asset"
         :amount-send="amountSend"
         :amount-received="amountReceived"
         :network="networkSelected"
+        :network-type="networkType"
         :evm-token-symbol="evmTokenSymbol"
-        :evm-network-fee="externalNetworkFee"
-        :sora-network-fee="soraNetworkFee"
+        :external-network-fee="formattedExternalNetworkFee"
+        :sora-network-fee="formattedSoraNetworkFee"
         @confirm="confirmTransaction"
       />
       <network-fee-warning-dialog
@@ -286,7 +284,7 @@
       />
       <network-fee-warning-dialog
         :visible.sync="showWarningExternalFeeDialog"
-        :fee="formattedEvmNetworkFee"
+        :fee="formattedExternalNetworkFee"
         :symbol="evmTokenSymbol"
         :payoff="false"
         @confirm="confirmExternalNetworkFeeWarningDialog"
@@ -403,6 +401,10 @@ export default class Bridge extends Mixins(
     return !!this.sender && !!this.recipient;
   }
 
+  get networkName(): string {
+    return this.formatNetworkShortName(false);
+  }
+
   get assetAddress(): string {
     return this.asset?.address ?? '';
   }
@@ -488,8 +490,9 @@ export default class Bridge extends Mixins(
     return this.formatCodecNumber(this.soraNetworkFee);
   }
 
-  get formattedEvmNetworkFee(): string {
-    return this.formatCodecNumber(this.externalNetworkFee);
+  get formattedExternalNetworkFee(): string {
+    const decimals = this.selectedNetwork?.nativeCurrency.decimals;
+    return this.formatCodecNumber(this.externalNetworkFee, decimals);
   }
 
   get isConfirmTxDisabled(): boolean {

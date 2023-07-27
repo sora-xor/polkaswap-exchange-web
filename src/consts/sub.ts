@@ -10,7 +10,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     nativeCurrency: {
       name: 'KSM',
       symbol: 'KSM',
-      decimals: 18,
+      decimals: 12,
     },
     endpointUrls: [],
     blockExplorerUrls: [],
@@ -22,7 +22,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     nativeCurrency: {
       name: 'DOT',
       symbol: 'DOT',
-      decimals: 18,
+      decimals: 10,
     },
     endpointUrls: [],
     blockExplorerUrls: [],
@@ -34,7 +34,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     nativeCurrency: {
       name: 'ROC',
       symbol: 'ROC',
-      decimals: 18,
+      decimals: 12,
     },
     endpointUrls: [],
     blockExplorerUrls: [],

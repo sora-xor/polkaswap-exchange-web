@@ -17,7 +17,7 @@
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedAmountReceived }}</span>
-        <div v-if="asset" class="token token-ethereum">
+        <div v-if="asset" class="token">
           <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? network : 0)}`" />
           {{ tokenSymbol }}
         </div>
@@ -27,26 +27,13 @@
     <bridge-transaction-details
       :asset="asset"
       :evm-token-symbol="evmTokenSymbol"
-      :external-fee="externalFee"
+      :external-network-fee="externalNetworkFee"
       :sora-network-fee="soraNetworkFee"
+      :network-name="networkName"
     />
     <template #footer>
-      <s-button
-        type="primary"
-        class="s-typography-button--large"
-        :loading="loading"
-        :disabled="isConfirmButtonDisabled"
-        @click="handleConfirm"
-      >
-        <template v-if="!isValidNetwork">
-          {{ t('changeNetworkText') }}
-        </template>
-        <template v-else-if="isInsufficientBalance">
-          {{ t('insufficientBalanceText', { tokenSymbol }) }}
-        </template>
-        <template v-else>
-          {{ confirmText }}
-        </template>
+      <s-button type="primary" class="s-typography-button--large" :loading="loading" @click="handleConfirm">
+        {{ confirmText }}
       </s-button>
     </template>
   </dialog-base>
@@ -63,6 +50,7 @@ import { ZeroStringValue, Components } from '@/consts';
 import { lazyComponent } from '@/router';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 @Component({
@@ -79,23 +67,18 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   NetworkFormatterMixin
 ) {
   @Prop({ default: 0, type: [Number, String] }) readonly network!: BridgeNetworkId;
+  @Prop({ default: 0, type: [Number, String] }) readonly networkType!: BridgeNetworkType;
   @Prop({ default: ZeroStringValue, type: String }) readonly amountSend!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly amountReceived!: string;
   @Prop({ default: () => null, type: Object }) readonly asset!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
-  @Prop({ default: ZeroStringValue, type: String }) readonly externalFee!: CodecString;
+  @Prop({ default: ZeroStringValue, type: String }) readonly externalNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
-  @Prop({ default: true, type: Boolean }) readonly isValidNetwork!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
   @Prop({ default: '', type: String }) readonly confirmButtonText!: string;
 
   get confirmText(): string {
     return this.confirmButtonText || this.t('confirmText');
-  }
-
-  get isConfirmButtonDisabled(): boolean {
-    return !this.isValidNetwork || this.isInsufficientBalance;
   }
 
   get formattedAmountSend(): string {
@@ -108,6 +91,10 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
 
   get tokenSymbol(): string {
     return this.asset?.symbol || '';
+  }
+
+  get networkName(): string {
+    return this.getNetworkName(this.networkType, this.network);
   }
 
   async handleConfirm(): Promise<void> {
