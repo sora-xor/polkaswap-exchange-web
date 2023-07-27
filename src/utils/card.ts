@@ -222,8 +222,8 @@ export function soraCard(soraNetwork: string) {
     };
 
     const prod = {
-      sdkURL: '',
-      apiKey: '',
+      sdkURL: 'https://auth.soracard.com/WebSDK/WebSDK.js',
+      apiKey: '7d841274-8fa3-4038-bacd-a4264912ea58',
       env: WALLET_CONSTS.SoraNetwork.Prod,
     };
 
@@ -240,11 +240,11 @@ export function soraCard(soraNetwork: string) {
     };
 
     const prod = {
-      sdkURL: '',
-      username: '',
-      pass: '',
+      sdkURL: 'https://kyc.soracard.com/web/v2/webkyc.js',
+      username: '880b1171-9008-48b0-8a29-b46bbe2af0be',
+      pass: '1b6c4482-a200-4f53-895a-a71245f119cb',
       env: WALLET_CONSTS.SoraNetwork.Prod,
-      unifiedApiKey: '',
+      unifiedApiKey: '7d841274-8fa3-4038-bacd-a4264912ea58',
     };
 
     return soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? prod : test;
