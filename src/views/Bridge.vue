@@ -241,7 +241,7 @@
             {{ t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR }) }}
           </template>
           <template v-else-if="isInsufficientEvmNativeTokenForFee">
-            {{ t('insufficientBalanceText', { tokenSymbol: evmTokenSymbol }) }}
+            {{ t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol }) }}
           </template>
           <template v-else-if="isInsufficientLiquidity">
             {{ t('swap.insufficientLiquidity') }}
@@ -254,7 +254,7 @@
           v-if="areNetworksConnected && !isZeroAmountReceived && isRegisteredAsset"
           class="info-line-container"
           :info-only="false"
-          :evm-token-symbol="evmTokenSymbol"
+          :native-token-symbol="nativeTokenSymbol"
           :external-network-fee="formattedExternalNetworkFee"
           :sora-network-fee="formattedSoraNetworkFee"
           :network-name="networkName"
@@ -265,14 +265,13 @@
       <bridge-select-network />
       <confirm-bridge-transaction-dialog
         :visible.sync="showConfirmTransactionDialog"
-        :is-valid-network="isValidNetwork"
         :is-sora-to-evm="isSoraToEvm"
         :asset="asset"
         :amount-send="amountSend"
         :amount-received="amountReceived"
         :network="networkSelected"
         :network-type="networkType"
-        :evm-token-symbol="evmTokenSymbol"
+        :native-token-symbol="nativeTokenSymbol"
         :external-network-fee="formattedExternalNetworkFee"
         :sora-network-fee="formattedSoraNetworkFee"
         @confirm="confirmTransaction"
@@ -285,7 +284,7 @@
       <network-fee-warning-dialog
         :visible.sync="showWarningExternalFeeDialog"
         :fee="formattedExternalNetworkFee"
-        :symbol="evmTokenSymbol"
+        :symbol="nativeTokenSymbol"
         :payoff="false"
         @confirm="confirmExternalNetworkFeeWarningDialog"
       />
@@ -491,8 +490,7 @@ export default class Bridge extends Mixins(
   }
 
   get formattedExternalNetworkFee(): string {
-    const decimals = this.selectedNetwork?.nativeCurrency.decimals;
-    return this.formatCodecNumber(this.externalNetworkFee, decimals);
+    return this.formatCodecNumber(this.externalNetworkFee, this.nativeTokenDecimals);
   }
 
   get isConfirmTxDisabled(): boolean {
@@ -534,7 +532,7 @@ export default class Bridge extends Mixins(
     if (!this.asset || this.isZeroAmountSend) return false;
 
     // check by symbol because of substrate assets
-    const isNativeTokenSelected = this.asset.symbol === this.evmTokenSymbol;
+    const isNativeTokenSelected = this.asset.symbol === this.nativeTokenSymbol;
 
     const fpBalance = FPNumber.fromCodecValue(this.externalNativeBalance);
     const fpFee = FPNumber.fromCodecValue(this.externalNetworkFee);

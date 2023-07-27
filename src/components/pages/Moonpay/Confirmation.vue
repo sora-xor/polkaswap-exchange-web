@@ -43,7 +43,6 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) {
   @state.moonpay.confirmationVisibility private confirmationVisibility!: boolean;
 
-  @getter.web3.isValidNetwork private isValidNetwork!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
@@ -67,7 +66,6 @@ export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) 
       networkType: this.bridgeTransactionData.externalNetworkType,
       externalNetworkFee: this.bridgeTransactionData.externalNetworkFee,
       soraNetworkFee: this.bridgeTransactionData.soraNetworkFee,
-      isValidNetwork: this.isValidNetwork,
     };
   }
 }

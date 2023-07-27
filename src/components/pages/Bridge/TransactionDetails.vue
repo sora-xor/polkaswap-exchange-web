@@ -12,7 +12,7 @@
       :label="formattedNetworkFeeLabel"
       :label-tooltip="t('ethNetworkFeeTooltipText', { network: networkName })"
       :value="externalNetworkFee"
-      :asset-symbol="evmTokenSymbol"
+      :asset-symbol="nativeTokenSymbol"
       is-formatted
     />
   </transaction-details>
@@ -26,7 +26,6 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import type { NetworkData } from '@/types/bridge';
 
 import type { CodecString } from '@sora-substrate/util';
 
@@ -40,7 +39,7 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
   readonly XOR_SYMBOL = XOR.symbol;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
-  @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
+  @Prop({ default: '', type: String }) readonly nativeTokenSymbol!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly externalNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
   @Prop({ default: '', type: String }) readonly networkName!: string;

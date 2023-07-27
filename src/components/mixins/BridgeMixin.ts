@@ -22,7 +22,11 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
 
   @mutation.web3.setSelectNetworkDialogVisibility setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
-  get evmTokenSymbol(): string {
+  get nativeTokenSymbol(): string {
     return this.selectedNetwork?.nativeCurrency?.symbol ?? '';
+  }
+
+  get nativeTokenDecimals(): number | undefined {
+    return this.selectedNetwork?.nativeCurrency?.decimals;
   }
 }

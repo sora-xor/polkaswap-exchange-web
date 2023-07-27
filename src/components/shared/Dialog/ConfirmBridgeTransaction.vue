@@ -26,7 +26,7 @@
     <s-divider class="s-divider--dialog" />
     <bridge-transaction-details
       :asset="asset"
-      :evm-token-symbol="evmTokenSymbol"
+      :native-token-symbol="nativeTokenSymbol"
       :external-network-fee="externalNetworkFee"
       :sora-network-fee="soraNetworkFee"
       :network-name="networkName"
@@ -71,7 +71,7 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   @Prop({ default: ZeroStringValue, type: String }) readonly amountSend!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly amountReceived!: string;
   @Prop({ default: () => null, type: Object }) readonly asset!: Nullable<RegisteredAccountAsset>;
-  @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
+  @Prop({ default: '', type: String }) readonly nativeTokenSymbol!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly externalNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
