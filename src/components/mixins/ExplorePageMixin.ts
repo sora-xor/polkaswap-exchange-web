@@ -88,6 +88,7 @@ export default class ExplorePageMixin extends Mixins(
   }
 
   get tableItems() {
+    console.log('this.sortedItems', this.sortedItems);
     return this.getPageItems(this.sortedItems);
   }
 

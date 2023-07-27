@@ -8,7 +8,7 @@
           <div class="order-book-choose-btn">
             <div class="order-book-pair-name">
               <pair-token-logo :first-token="tokenFrom" :second-token="tokenTo" />
-              <span>XST-XOR</span>
+              <span>XOR-ETH</span>
             </div>
             <s-icon :name="icon" class="order-book-choose-btn-icon" />
           </div>
@@ -26,7 +26,7 @@
       <s-tab v-for="tab in OrderBookTabs" :key="tab" :label="t(`orderBook.${tab}`)" :name="tab" />
     </s-tabs>
 
-    <token-input
+    <!-- <token-input
       :balance="getTokenBalance(tokenFrom)"
       :is-max-available="false"
       :title="'Limit price'"
@@ -47,7 +47,7 @@
       @max="handleMaxValue"
       @select="openSelectTokenDialog(true)"
       class="order-book-input"
-    />
+    /> -->
 
     <s-button type="primary" class="buy-btn s-typography-button--medium" @click="handleConfirm">
       <span> {{ t(buttonText) }}</span>
@@ -64,7 +64,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
-import { AlertTypeTabs, OrderBookTabs } from '@/types/tabs';
+import { OrderBookTabs } from '@/types/tabs';
 import {
   isMaxButtonAvailable,
   getMaxValue,
