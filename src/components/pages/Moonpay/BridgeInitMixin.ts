@@ -167,6 +167,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
       return {
         type: Operation.EthBridgeIncoming,
         amount: String(amount),
+        amount2: String(amount),
         symbol: accountAsset.symbol,
         assetAddress: accountAsset.address,
         soraNetworkFee: this.networkFees[Operation.EthBridgeIncoming],

@@ -91,7 +91,8 @@ const getters = defineGetters<BridgeState>()({
     const { getters, rootState } = bridgeGetterContext(args);
     return rootState.wallet.settings.networkFees[getters.operation] ?? ZeroStringValue;
   },
-  evmNetworkFee(...args): CodecString {
+  // fee for transaction execution
+  externalNetworkFee(...args): CodecString {
     const { state, getters } = bridgeGetterContext(args);
 
     if (getters.isEthBridge) {
