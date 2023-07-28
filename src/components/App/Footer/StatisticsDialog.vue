@@ -1,209 +1,139 @@
 <template>
-  <dialog-base class="statistics-dialog" :visible.sync="isVisible" :title="t('footer.statistics.dialog.title')">
-    <s-scrollbar class="statistics-dialog__scrollbar">
-      <div class="statistics-dialog__group" v-for="(group, index) in groupServices" :key="group.key">
-        <span class="statistics-dialog__group-title">{{ t(group.title) }}</span>
-        <s-radio-group v-model="model[group.key]" class="statistics-dialog__block s-flex" disabled>
-          <s-radio
-            v-for="service in group.services"
-            :key="service.key"
-            :label="service.endpoint"
-            :value="service.endpoint"
-            size="medium"
-            class="statistics-dialog__item s-flex"
-          >
-            <div class="service-item s-flex">
-              <div class="service-item__label s-flex">
-                <div class="service-item__name">{{ service.name }}</div>
-                <div class="service-item__endpoint">{{ service.endpoint }}</div>
-              </div>
-              <div class="service-item__status" :class="service.online ? 'success' : 'error'">
-                {{ service.online ? TranslationConsts.online : TranslationConsts.offline }}
-              </div>
-            </div>
-          </s-radio>
-        </s-radio-group>
-        <s-divider v-if="index !== groupServices.length - 1" :key="group.title + '_divider'" />
-      </div>
-    </s-scrollbar>
+  <dialog-base :visible.sync="visibility" :title="t('footer.statistics.dialog.title')" class="select-indexer-dialog">
+    <statistics
+      v-model="selectedIndexerType"
+      :ceres-api="useCeresApi"
+      :indexers="indexers"
+      :environment="soraNetwork"
+    />
   </dialog-base>
 </template>
 
 <script lang="ts">
-import { components, mixins, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import { state } from '@/store/decorators';
+import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+import { state, mutation } from '@/store/decorators';
+import { Indexer } from '@/types/indexers';
 
-import TranslationMixin from '../../mixins/TranslationMixin';
-
-type StatisticsModel = {
-  fiat: Nullable<string>;
-  chartsAndActivity: Nullable<string>;
-};
+const IndexerListView = 'IndexerListView';
+const IndexerInfoView = 'IndexerInfoView';
 
 @Component({
   components: {
     DialogBase: components.DialogBase,
+    Statistics: lazyComponent(Components.Statistics),
+    IndexerInfo: lazyComponent(Components.IndexerInfo),
   },
 })
-export default class StatisticsDialog extends Mixins(mixins.DialogMixin, TranslationMixin) {
-  @state.wallet.settings.subqueryEndpoint private subqueryEndpoint!: Nullable<string>;
+export default class SelectIndexerDialog extends Mixins(TranslationMixin, mixins.NotificationMixin) {
+  @state.settings.selectIndexerDialogVisibility private selectIndexerDialogVisibility!: boolean;
+  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
+  @state.wallet.settings.subqueryEndpoint subqueryEndpoint!: Indexer['endpoint'];
+  @state.wallet.settings.subsquidEndpoint subsquidEndpoint!: Indexer['endpoint'];
   @state.wallet.settings.subqueryStatus private subqueryStatus!: WALLET_TYPES.ConnectionStatus;
+  @state.wallet.settings.subsquidStatus private subsquidStatus!: WALLET_TYPES.ConnectionStatus;
+  @state.wallet.settings.indexerType indexerType!: Indexer['type'];
+
+  @mutation.settings.setSelectIndexerDialogVisibility setSelectIndexerDialogVisibility!: (flag: boolean) => void;
+  @mutation.wallet.settings.setIndexerType setIndexerType!: (type: WALLET_CONSTS.IndexerType) => void;
+
+  currentView = IndexerListView;
 
   get isSubqueryOnline(): boolean {
     return this.subqueryStatus === WALLET_TYPES.ConnectionStatus.Available;
   }
 
-  get groupServices() {
+  get isSubsquidOnline(): boolean {
+    return this.subsquidStatus === WALLET_TYPES.ConnectionStatus.Available;
+  }
+
+  get indexers(): Indexer[] {
     return [
       {
-        key: 'fiat',
-        title: 'footer.statistics.dialog.fiat',
-        services: [
-          {
-            key: 'fiatSubquery',
-            name: 'Subquery',
-            endpoint: this.subqueryEndpoint,
-            online: this.isSubqueryOnline,
-          },
-          {
-            key: 'fiatCeres',
-            name: 'Ceres',
-            endpoint: 'https://cerestoken.io/api/prices',
-            online: true,
-          },
-          {
-            key: 'fiatSubsquid',
-            name: 'Subsquid',
-            endpoint: 'coming soon...',
-            online: false,
-          },
-        ],
+        name: 'Subquery',
+        type: WALLET_CONSTS.IndexerType.SUBQUERY,
+        endpoint: this.subqueryEndpoint,
+        online: this.isSubqueryOnline,
       },
       {
-        key: 'chartsAndActivity',
-        title: 'footer.statistics.dialog.chartsAndActivity',
-        services: [
-          {
-            key: 'chartsAndActivitySubquery',
-            name: 'Subquery',
-            endpoint: this.subqueryEndpoint,
-            online: this.isSubqueryOnline,
-          },
-          {
-            key: 'chartsAndActivitySubsquid',
-            name: 'Subsquid',
-            endpoint: 'coming soon...',
-            online: false,
-          },
-        ],
+        name: 'Subsquid',
+        type: WALLET_CONSTS.IndexerType.SUBSQUID,
+        endpoint: this.subsquidEndpoint,
+        online: this.isSubsquidOnline,
       },
     ];
   }
 
-  private get modelInit(): StatisticsModel {
-    return {
-      fiat: this.subqueryEndpoint,
-      chartsAndActivity: this.subqueryEndpoint,
-    };
+  get indexer(): Indexer {
+    const indexer = this.indexers.find((indexer) => indexer.type === this.indexerType);
+    if (!indexer) throw new Error('Unknown indexer type');
+    return indexer;
   }
 
-  private _model: Nullable<StatisticsModel> = undefined;
-
-  get model() {
-    return this._model ?? this.modelInit;
+  get visibility(): boolean {
+    return this.selectIndexerDialogVisibility;
   }
 
-  set model(value: StatisticsModel) {
-    this._model = value;
+  set visibility(flag: boolean) {
+    this.setSelectIndexerDialogVisibility(flag);
+    if (!flag) {
+      this.handleBack();
+    }
+  }
+
+  get useCeresApi(): boolean {
+    return true;
+  }
+
+  get selectedIndexerType(): WALLET_CONSTS.IndexerType {
+    return this.indexerType ?? '';
+  }
+
+  set selectedIndexerType(type: WALLET_CONSTS.IndexerType) {
+    if (type === this.indexerType) return;
+
+    const indexer = this.findIndexerInListByType(type);
+
+    this.handleIndexer(indexer);
+  }
+
+  handleIndexer(indexer: Indexer): void {
+    this.setIndexerType(indexer.type);
+
+    if (this.indexer.type === indexer.type && this.currentView === IndexerInfoView) {
+      this.handleBack();
+    }
+  }
+
+  handleBack(): void {
+    this.changeView(IndexerListView);
+  }
+
+  private changeView(view: string): void {
+    this.currentView = view;
+  }
+
+  private findInList(list: Indexer[], type: string): any {
+    return list.find((item) => item.type === type);
+  }
+
+  private findIndexerInListByType(type: WALLET_CONSTS.IndexerType): any {
+    return this.findInList(this.indexers, type);
   }
 }
 </script>
 
 <style lang="scss">
-.statistics-dialog__item {
-  &.el-radio {
-    &.s-medium {
-      height: initial;
-    }
-    .el-radio__label {
-      flex: 1;
-    }
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-$statistics-border-radius: 8px;
-
-.statistics-dialog {
-  &__group {
-    &-title {
-      font-weight: 600;
-      letter-spacing: var(--s-letter-spacing-small);
-      line-height: var(--s-line-height-small);
-      font-size: var(--s-font-size-small);
-    }
-  }
-
-  &__block {
-    flex-direction: column;
-    margin-top: $inner-spacing-small;
-  }
-
-  &__item {
-    margin-right: 0;
-    align-items: center;
-    padding: $inner-spacing-small $inner-spacing-big;
-    white-space: normal;
-  }
-}
-.service-item {
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  letter-spacing: var(--s-letter-spacing-small);
-  line-height: var(--s-line-height-medium);
-
-  &__label {
-    flex-direction: column;
-    flex: 1;
-    margin-right: $inner-spacing-mini;
-  }
-
-  &__name {
-    color: var(--s-color-base-content-primary);
-    font-size: var(--s-font-size-medium);
-    font-weight: 600;
-  }
-
-  &__endpoint {
-    background: var(--s-color-base-background);
-    padding: 6px;
-    margin-top: 6px;
-    border-radius: $statistics-border-radius;
-    color: var(--s-color-base-content-secondary);
-    font-size: var(--s-font-size-mini);
-    font-weight: 300;
-  }
-
-  &__status {
-    $status-classes: 'error', 'success';
-
-    padding: 2px 6px;
-    border-radius: $statistics-border-radius;
-    font-weight: 400;
-    font-size: var(--s-font-size-mini);
-    letter-spacing: var(--s-letter-spacing-small);
-
-    @each $status in $status-classes {
-      &.#{$status} {
-        color: var(--s-color-status-#{$status});
-        background-color: var(--s-color-status-#{$status}-background);
-        [design-system-theme='dark'] & {
-          --s-color-status-#{$status}: var(--s-color-base-on-accent);
-        }
+.dialog-wrapper.select-indexer-dialog {
+  &--add-indexer {
+    .el-dialog {
+      .el-dialog__header {
+        padding: 0;
+        display: none;
       }
     }
   }

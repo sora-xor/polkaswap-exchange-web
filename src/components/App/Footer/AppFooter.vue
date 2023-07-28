@@ -52,9 +52,8 @@
       </template>
     </footer-popper>
     <select-node-dialog />
-    <select-indexer-dialog />
+    <statistics-dialog />
     <no-internet-dialog />
-    <statistics-dialog :visible.sync="showStatisticsDialog" />
   </div>
 </template>
 
@@ -81,9 +80,8 @@ const MAX_INTERNET_CONNECTION_LIMIT = 10;
   components: {
     FooterPopper,
     NoInternetDialog,
-    StatisticsDialog: lazyComponent(Components.StatisticsDialog),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
-    SelectIndexerDialog: lazyComponent(Components.SelectIndexerDialog),
+    StatisticsDialog: lazyComponent(Components.Statistics),
   },
 })
 export default class AppFooter extends Mixins(TranslationMixin) {

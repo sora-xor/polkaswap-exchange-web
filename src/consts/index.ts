@@ -154,12 +154,11 @@ export enum Components {
   SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
   AppFooter = 'App/Footer/AppFooter',
   AppDisclaimer = 'App/Header/AppDisclaimer',
+  Statistics = 'App/Footer/Statistics',
   StatisticsDialog = 'App/Footer/StatisticsDialog',
   SelectNodeDialog = 'App/Footer/SelectNodeDialog',
   SelectNode = 'App/Footer/Node/SelectNode',
   NodeInfo = 'App/Footer/Node/NodeInfo',
-  SelectIndexerDialog = 'App/Footer/SelectIndexerDialog',
-  SelectIndexer = 'App/Footer/Indexer/SelectIndexer',
   IndexerInfo = 'App/Footer/Indexer/IndexerInfo',
   // SORA Card
   SoraCard = 'SoraCard',
