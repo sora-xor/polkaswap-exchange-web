@@ -2667,70 +2667,69 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@sora-substrate/api@1.17.13":
-  version "1.17.13"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.17.13.tgz#32aed571347ff3a1fac28a4bc44d4168d49bd59a"
-  integrity sha512-ehqQ0N4rNbPOfucfK6FJFA+4XtTEVW9cenZcsgCxi3PAvFPpA/G1oeVSvl8Thl2S7WiGGEGMg+5psI2NdKXb7g==
+"@sora-substrate/api@1.18.9":
+  version "1.18.9"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.18.9.tgz#2bfd789095f76ab9ae61fd51f5e47ca1b0f525a3"
+  integrity sha512-um0dDiSXPLT4SGMgtulTe6nnWyR+u+hdV/hV/q8/5bXtqqmXNvydNZ1Kl7QDfZEzbJtvKuQ98rB8e4EKE8gPQQ==
   dependencies:
     "@open-web3/orml-api-derive" "1.1.4"
     "@polkadot/api" "9.14.2"
-    "@sora-substrate/types" "1.17.13"
+    "@sora-substrate/types" "1.18.9"
 
-"@sora-substrate/connection@1.17.13":
-  version "1.17.13"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/connection/-/connection-1.17.13.tgz#8408a4dee869adcb43bdf7515fb2db5f1c7b9556"
-  integrity sha512-cX/d/aovwsW2Jgip8GFzTxLpau1zHj1fa8IvSDNaxLCe9ZKexj9k9hoMp7JHmj4OjvxURMS6jiGFA2/i9xReWQ==
+"@sora-substrate/connection@1.18.9":
+  version "1.18.9"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/connection/-/connection-1.18.9.tgz#a95cae7cfbe09fff19c8b82cce183773290de5b4"
+  integrity sha512-X2M+dCwiGhu6gj/LlsoXWUkS8NCtNTpyJB1vkGCPPXrz+thxfvPIjHF9sCKgfjigKMAGldxGBnCyi3lO839Iow==
   dependencies:
-    "@sora-substrate/api" "1.17.13"
+    "@sora-substrate/api" "1.18.9"
 
-"@sora-substrate/liquidity-proxy@1.17.13":
-  version "1.17.13"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/liquidity-proxy/-/liquidity-proxy-1.17.13.tgz#7d93f505aa5084e3ec61c86ca730c39a78422b89"
-  integrity sha512-CQscykH5YlHWi+RtNr3fNmf+GuG7fr/J4bJIrXcBBPn3BlLB156ofL3zzwS3DM0rDsl4ydN850jVY12of5Guqg==
+"@sora-substrate/liquidity-proxy@1.18.9":
+  version "1.18.9"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/liquidity-proxy/-/liquidity-proxy-1.18.9.tgz#e4678ac0c730a5aa959eda357998dad6687a252b"
+  integrity sha512-TIO35G2tAISfBvHX0XUj9ASVrdgT0hvg9TUo/KaI81C5c/3+rVkGHOreT3Up/zLAwBp4Euqhc+3VIkDgKszM5g==
   dependencies:
-    "@sora-substrate/math" "1.17.13"
+    "@sora-substrate/math" "1.18.9"
 
-"@sora-substrate/math@1.17.13":
-  version "1.17.13"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/math/-/math-1.17.13.tgz#3377d48fd0425972de88f23194eec1e4675b94d7"
-  integrity sha512-60PaOR+P+sBIyi9QHknT3mj5UEkd7IaHD/ygtxSkZOkerZxLxt5dDJl5v05pxzxvwCxyEseWwsakCucbCTg+SQ==
+"@sora-substrate/math@1.18.9":
+  version "1.18.9"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/math/-/math-1.18.9.tgz#403993d0cc8fdceca33d2e716259f1bd16bc4875"
+  integrity sha512-MyVnilpJiiATIMb9mFFmW4kdgV8PCx5aqTZsREVIeaP9BEfVgJWPyMmOUxmu9uDxch9W0Wiijz/ZdUB74E4kHw==
   dependencies:
     "@polkadot/types" "9.14.2"
     bignumber.js "^9.0.1"
     lodash "^4.17.15"
 
-"@sora-substrate/type-definitions@1.17.13":
-  version "1.17.13"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.17.13.tgz#859874d891466980f8d008fc138ee60740de2086"
-  integrity sha512-TJPmw4ISx5IOMzJTm2O3iPJQ6i0G5u/O0wK60TT9ttTw7o8ZVhVJjG02pDVhx4p+ok1EBdNfA1OQoU73kxS4dg==
+"@sora-substrate/type-definitions@1.18.9":
+  version "1.18.9"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.18.9.tgz#bae996b171b4eea0777a5d80dd2fededa2813d14"
+  integrity sha512-U9Y5XZV3q4RQLPVOSakRTssFMatFsv5NLwJKBJhQVwhu1mrsviYPHIdgWfNq52jibxINNEel66xqs9GLyySBbw==
   dependencies:
     "@open-web3/orml-type-definitions" "1.1.4"
 
-"@sora-substrate/types@1.17.13":
-  version "1.17.13"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.17.13.tgz#5c1615e1871b678ffade6b160a35f249e6488e93"
-  integrity sha512-yatnvGlRzyNTrBmY1zOxZWyEwpmn2YVoTh/qkGUJEZhC2+HpcZuLNlY3xE+j3294TM1YBfslA6huWxRLHX2SZg==
+"@sora-substrate/types@1.18.9":
+  version "1.18.9"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.18.9.tgz#2fdaa84cdbe84a5713da3ad87b4f3ea933fe1f4a"
+  integrity sha512-pk5E6r8FZgdzKeeCN7NvPJfBsHAWcaRVekfOfWfCiWXJXjf0WSOn5lyIaRjvWDsugLIXLeUaSkCQNhcsdtMiFQ==
   dependencies:
     "@open-web3/api-mobx" "0.9.4-26"
     "@open-web3/orml-types" "1.1.4"
     "@polkadot/api" "9.14.2"
     "@polkadot/typegen" "9.14.2"
     "@polkadot/types" "9.14.2"
-    "@sora-substrate/type-definitions" "1.17.13"
+    "@sora-substrate/type-definitions" "1.18.9"
 
-"@sora-substrate/util@1.17.13":
-  version "1.17.13"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.17.13.tgz#8b18daf36dd4c480de9e9e8c772233a968db5be0"
-  integrity sha512-EtYBYG8logM/2n6kr3ib0b9tRPriW+u0N+OYtH9IoYksXeE/7SSG6DtSFKEHApM0nq5rsWWIFsTcOZisriLxvw==
+"@sora-substrate/util@1.18.9":
+  version "1.18.9"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.18.9.tgz#35046bc4cb21599968ffda87500f67c2b859a488"
+  integrity sha512-GqU8wHR/PmB3n00je7MB37gJtv73i/EsWcbFkKs5ajjLHc2w1i84+iDn92aCVAZ4gd2LQabA9cOmw3qTV67aUQ==
   dependencies:
     "@polkadot/ui-keyring" "2.12.1"
-    "@sora-substrate/api" "1.17.13"
-    "@sora-substrate/connection" "1.17.13"
-    "@sora-substrate/liquidity-proxy" "1.17.13"
-    "@sora-substrate/math" "1.17.13"
-    "@sora-substrate/types" "1.17.13"
+    "@sora-substrate/api" "1.18.9"
+    "@sora-substrate/connection" "1.18.9"
+    "@sora-substrate/liquidity-proxy" "1.18.9"
+    "@sora-substrate/math" "1.18.9"
+    "@sora-substrate/types" "1.18.9"
     axios "^0.21.1"
-    bignumber.js "^9.0.1"
     crypto-js "^4.0.0"
     lodash "^4.17.15"
 
@@ -2762,13 +2761,13 @@
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
 
-"@soramitsu/soraneo-wallet-web@1.18.0-beta.7":
-  version "1.18.0-beta.7"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.18.0-beta.7.tgz#961f791a56588fc05f1cc8f4908f7de1ef3afec6"
-  integrity sha512-O/DjcagtB25U8XkcBwg8Fcmz/xct+7JedHv4kvXyg5sWurPCT/lgdW1LnqTs7KknzUBt3+kQDpGTeTu+1d+siA==
+"@soramitsu/soraneo-wallet-web@1.18.0-beta.8":
+  version "1.18.0-beta.8"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.18.0-beta.8.tgz#aa369f3e850eb01fe27b67eb3e7722b46faa40b5"
+  integrity sha512-zu2aucQuks0QS1FOQEj+5svIJqojtayrSfejOGScBL7yIUOHCDGO8s1ph5O7KYKt3uTOnmO5CaWtkM7wPz5mxA==
   dependencies:
     "@polkadot/vue-identicon" "2.12.1"
-    "@sora-substrate/util" "1.17.13"
+    "@sora-substrate/util" "1.18.9"
     "@sora-test/wallet-connect" "^0.0.9"
     "@soramitsu/soramitsu-js-ui" "^1.0.45"
     "@urql/core" "^3.0.5"
