@@ -18,6 +18,7 @@ export enum Module {
   Rewards = 'rewards',
   DemeterFarming = 'demeterFarming',
   SoraCard = 'soraCard',
+  OrderBook = 'orderBook',
 }
 
 export const Modules = [...Object.values(Module), ...WalletModules];

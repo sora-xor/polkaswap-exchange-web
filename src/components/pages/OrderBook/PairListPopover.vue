@@ -11,8 +11,7 @@
         <template #header>
           <span>Token pair</span>
         </template>
-        <template v-slot="{ $index, row }">
-          <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
+        <template v-slot="{ row }">
           <pair-token-logo
             :first-token="row.baseAsset"
             :second-token="row.targetAsset"
@@ -20,7 +19,7 @@
             class="explore-table-item-logo"
           />
           <div class="explore-table-item-info explore-table-item-info--body">
-            <div class="explore-table-item-name">{{ row.baseAsset.symbol }}-{{ row.targetAsset.symbol }}</div>
+            <div class="explore-table-item-name">{{ row.baseAsset.symbol }}-{{ row.quoteAsset.symbol }}</div>
           </div>
         </template>
       </s-table-column>
@@ -65,7 +64,7 @@ import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
 })
 export default class PairListPopover extends Mixins(TranslationMixin) {
   get tableItems() {
-    return ['one', 'two'];
+    return [{}, {}];
   }
 }
 </script>
