@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transaktion inskickad",
         "transactionMessage": "{firstToken} och {secondToken}",
         "ok": "OK",
-        "confirm": "Bekräfta"
+        "confirm": "Bekräfta",
+        "lossWarning": "Du kommer att förlora {value}% på din handel. Vi har upptäckt ett likviditetsproblem. Detta kan leda till betydande förluster under tokenswappar. Se till att det finns tillräcklig likviditet för ditt önskade swappar."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +866,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Observera",
-        "info": "Ditt XOR-saldo kommer att vara mindre än {fee} XOR efter denna transaktion. Du kommer inte att kunna betala för nätverksavgiften för en annan transaktion.",
+        "info": "Ditt saldo {symbol} kommer att vara mindre än {fee} {symbol} efter denna transaktion. Du kommer inte att kunna betala för nätverksavgiften för en annan transaktion.",
         "payoff": "Du skulle behöva använda Bryggan för att få XOR från andra nätverk, mottaga skickade XOR från ett annat {Sora}-konto, eller byta vilken annan token som helst som redan finns på ditt konto till XOR.",
         "button": "Ja, jag förstår risken"
     },
@@ -1181,13 +1182,11 @@
     "stepText": "Steg",
     "alerts": {
         "drop": "Faller under",
-        "raise": "Höjs över",
         "once": "En gång",
         "always": "Alltid",
         "edit": "Redigera varning",
         "delete": "Ta bort varning",
         "onDropDesc": "{token} sjunker under {price}",
-        "onRaiseDesc": "{token} höjer över {price}",
         "alertsTitle": "Varningar",
         "alertsCreateTitle": "Ställ in prisavisering",
         "alertsTooltip": "Prisaviseringar är aviseringar som kan ställas in av dig för att ta emot uppdateringar när priset på en viss token når en viss punkt som du anger",
@@ -1195,12 +1194,58 @@
         "enableSwitch": "Aktivera aviseringar om insättning av tillgångar",
         "currentPrice": "nuvarande pris",
         "alertTypeTitle": "Varningstyp",
-        "typeTooltip": "Välj antingen alternativet \"sjunker under\" eller \"höjer över\" för att ange varningsvillkor för att spåra viktiga prisrörelser. Dessa alternativ låter dig få aviseringar i rätt tid när värdet på din tillgång antingen faller under eller stiger över din angivna tröskel",
         "alertFrequencyTitle": "Varningsfrekvens",
         "frequencyTooltip": "Välj mellan \"en gång\" och \"alltid\" för att avgöra hur ofta du får aviseringar för den valda varningstypen. \"Once\" kommer att skicka ett enda meddelande när villkoret är uppfyllt, medan \"alltid\" kommer att fortsätta att meddela dig varje gång priströskeln passeras",
         "noSupportMsg": "Aviseringar stöds inte av din webbläsare",
-        "finishBtn": "Att slutföra"
+        "finishBtn": "Att slutföra",
+        "raise": "Reser sig över",
+        "onRaiseDesc": "{token} stiger över {price}",
+        "typeTooltip": "Välj antingen alternativet \"sjunker under\" eller \"stiger över\" för att ange varningsvillkor för att spåra viktiga prisrörelser. Dessa alternativ låter dig få aviseringar i rätt tid när värdet på din tillgång antingen faller under eller stiger över din angivna tröskel"
     },
     "accountAddressText": "Kontoadress",
-    "fiatDisclaimer": "Observera att fiat-värdena förknippade med kryptovalutor på vår webbplats tillhandahålls av externa tjänster (Subquery, Subsquid, Ceres API) är ungefärliga. Med tanke på den inneboende komplexiteten i dessa beräkningar kan absolut precision inte alltid garanteras."
+    "fiatDisclaimer": "Observera att fiat-värdena förknippade med kryptovalutor på vår webbplats tillhandahålls av externa tjänster (Subquery, Subsquid, Ceres API) är ungefärliga. Med tanke på den inneboende komplexiteten i dessa beräkningar kan absolut precision inte alltid garanteras.",
+    "fiatPayment": {
+        "historyBtn": "Mina inköp",
+        "historyTitle": "Transaktionshistorik",
+        "moonpayTitle": "Köp ETH via MoonPay",
+        "moonpayDesc": "Köp ETH-tokens på Ethereum och överför dem till SORA-nätverket via bryggan",
+        "x1Title": "Köp XOR med ditt kort",
+        "x1Desc": "Köp XOR-tokens med ditt betal- eller kreditkort",
+        "x1Btn": "Köp XOR med kort",
+        "errorMessage": "Ursäkta besväret. Vi arbetar hårt för att lösa detta. Vänligen försök igen senare."
+    },
+    "acceptOnScrollText": "Bläddra för att acceptera",
+    "addressBook": {
+        "myExtAccounts": "Mina förlängningskonton",
+        "myBook": "Min bok",
+        "searchPlaceholder": "Sök på adress, namn eller identitet",
+        "noFoundRecords": "Inga uppgifter funna",
+        "noContacts": "Du har inte lagt till några kontakter än",
+        "addContact": "Lägg till kontakt",
+        "dialogTitle": "Dina kontakter",
+        "identity": "Identitet på kedjan",
+        "none": "Ingen",
+        "detected": "Ny adress upptäckt",
+        "save": "Spara som kontakt",
+        "tooltip": "Samla in adressboken genom att ange namn och adress för att hålla dina kontakter organiserade och uppdaterade",
+        "notSoraAddress": "Denna adress kommer att sparas som SORA-adress nedan. Se till att mottagaren kan komma åt SORA-kedjan:",
+        "options": {
+            "send": "Skicka tokens",
+            "edit": "Redigera kontakt",
+            "delete": "Radera"
+        },
+        "btn": {
+            "enterName": "Skriv namn",
+            "present": "Redan närvarande",
+            "saveChanges": "Spara ändringar"
+        }
+    },
+    "browserPermission": {
+        "title": "Tillåt kameraåtkomst i webbläsarinställningarna",
+        "desc": "För att säkerställa äktheten av dokument och validera användaridentitet för KYC-verifiering krävs åtkomst till enhetens kamera.",
+        "disclaimer": "Kameraåtkomst krävs för att fånga dokument i realtid för att förhindra bedrägeri.",
+        "btnGoToSettings": "Gå till Inställningar",
+        "btnAllow": "Tillåta åtkomst"
+    },
+    "continueText": "Fortsätta"
 }

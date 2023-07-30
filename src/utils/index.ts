@@ -10,8 +10,7 @@ import type { AmountWithSuffix } from '@/types/formats';
 
 import storage from './storage';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util';
-import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { Route } from 'vue-router';
 
@@ -129,10 +128,10 @@ export const hasInsufficientXorForFee = (
   return FPNumber.lt(fpBalance, fpFee) && !isXorOutputSwap;
 };
 
-export const hasInsufficientEvmNativeTokenForFee = (evmBalance: CodecString, fee: CodecString): boolean => {
+export const hasInsufficientEvmNativeTokenForFee = (nativeBalance: CodecString, fee: CodecString): boolean => {
   if (!fee) return false;
 
-  const fpBalance = FPNumber.fromCodecValue(evmBalance);
+  const fpBalance = FPNumber.fromCodecValue(nativeBalance);
   const fpFee = FPNumber.fromCodecValue(fee);
 
   return FPNumber.lt(fpBalance, fpFee);

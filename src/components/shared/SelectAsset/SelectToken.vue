@@ -141,7 +141,6 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
             (asset) => !(this.asset?.address === XST.address && asset.address === XSTUSD.address)
           ) // XSTUSD-XST isn't allowed
         : this.whitelistAssets.filter((asset) => {
-            if (asset.address === XSTUSD.address) return false; // XOR-XSTUSD isn't allowed
             if (this.asset?.address === XSTUSD.address && [XOR.address, XST.address].includes(asset.address)) {
               return false; // XSTUSD-XOR & XSTUSD-XST aren't allowed
             }
@@ -156,7 +155,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     const assetsAddresses = whiteList.map((asset) => asset.address);
     const excludeAddress = this.asset?.address;
 
-    return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance());
+    return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance);
   }
 
   get filteredWhitelistTokens(): Array<AccountAsset> {
@@ -197,7 +196,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     // TODO: we already have balances in nonWhitelistAccountAssets.
     // Need to improve that logic
     return this.getAssetsWithBalances(Object.keys(this.nonWhitelistAccountAssets), excludeAsset?.address).sort(
-      this.sortByBalance()
+      this.sortByBalance
     );
   }
 

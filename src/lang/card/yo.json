@@ -19,7 +19,6 @@
         "getSoraCardBtn": "Gba kaadi SORA fun ọfẹ",
         "bridgeTokensBtn": "Bridge àmi",
         "depositX1Btn": "Ra XOR",
-        "getSoraCardDesc": "Pari Kaadi SORA rẹ pẹlu fiat tabi crypto ki o sanwo lori ayelujara, ni ile itaja tabi yọkuro lati ATM kan. Gba akọọlẹ Euro IBAN kan ati Kaadi Debit Mastercard kan",
         "reIssuanceFee": "€ 0 lododun tun-ipinfunni ọya",
         "freeStartDesc": "{value} ti XOR ninu akọọlẹ rẹ fun ibẹrẹ ọfẹ",
         "completeKYC": "Pari KYC",
@@ -57,6 +56,8 @@
         "unsupportedCountriesDisclaimer": "Awọn olugbe lati awọn orilẹ-ede kan ko le beere fun Kaadi SORA ni akoko yii",
         "statusRejectReason": "Idi ijusile",
         "userNotFound": "Ko si nọmba alagbeka ti a rii, jọwọ tun ṣayẹwo rẹ ki o tun gbiyanju lẹẹkansi.",
-        "code": "Koodu"
+        "code": "Koodu",
+        "getSoraCardDesc": "Gba akọọlẹ Euro IBAN kan ati Kaadi Debit kaadi Mastercard ti o wa laarin apo apamọwọ SORA rẹ",
+        "emailSpamReminder": "Imeeli le gba to iṣẹju diẹ lati de. Jọwọ ṣayẹwo folda spam rẹ ti o ko ba gba imeeli lẹhin iṣẹju 5."
     }
 }

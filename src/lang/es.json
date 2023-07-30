@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transacción enviada",
         "transactionMessage": "{firstToken} y {secondToken}",
         "ok": "OK",
-        "confirm": "Confirmar"
+        "confirm": "Confirmar",
+        "lossWarning": "Perderá {value}% en su operación. Hemos detectado un problema de provisión de liquidez. Esto puede generar pérdidas significativas durante los intercambios de tokens. Asegúrese de que haya liquidez adecuada para el par de intercambio deseado."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +866,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Atención",
-        "info": "Su saldo de XOR será inferior a {fee} XOR después de esta transacción. No podrá pagar la tarifa de red para otra transacción.",
+        "info": "Su saldo {symbol} será inferior a {fee} {symbol} después de esta transacción. No podrá pagar la tarifa de red para otra transacción.",
         "payoff": "Tendrías que utilizar el Puente para obtener XOR de otras redes, conseguir que te envíen XOR desde otra cuenta {Sora}, o cambiar cualquier otro token que ya tengas en tu cuenta por XOR.",
         "button": "Si, entiendo el riesgo"
     },
@@ -1181,13 +1182,11 @@
     "stepText": "Paso",
     "alerts": {
         "drop": "Cae por debajo",
-        "raise": "eleva por encima",
         "once": "Una vez",
         "always": "Siempre",
         "edit": "Editar alerta",
         "delete": "Eliminar alerta",
         "onDropDesc": "{token} cae por debajo de {price}",
-        "onRaiseDesc": "{token} sube por encima de {price}",
         "alertsTitle": "Alertas",
         "alertsCreateTitle": "Configurar alerta de precio",
         "alertsTooltip": "Las alertas de precios son notificaciones que usted puede configurar para recibir actualizaciones cuando el precio de un token en particular alcance cierto punto que usted establezca.",
@@ -1195,12 +1194,58 @@
         "enableSwitch": "Habilitar notificaciones de depósito de activos",
         "currentPrice": "precio actual",
         "alertTypeTitle": "Tipo de alerta",
-        "typeTooltip": "Elija la opción 'cae por debajo' o 'sube por encima' para especificar la condición de alerta para el seguimiento de movimientos de precios importantes. Estas opciones le permiten recibir notificaciones oportunas cuando el valor de su activo cae por debajo o sube por encima de su umbral designado",
         "alertFrequencyTitle": "Frecuencia de alerta",
         "frequencyTooltip": "Seleccione entre 'una vez' y 'siempre' para determinar con qué frecuencia recibe notificaciones para el tipo de alerta elegido. 'Una vez' enviará una única notificación cuando se cumpla la condición, mientras que 'siempre' seguirá notificándote cada vez que se supere el umbral de precio.",
         "noSupportMsg": "Las notificaciones no son compatibles con su navegador",
-        "finishBtn": "Completar"
+        "finishBtn": "Completar",
+        "raise": "Sobre sale",
+        "onRaiseDesc": "{token} sube por encima de {price}",
+        "typeTooltip": "Elija la opción 'cae por debajo' o 'aumenta por encima' para especificar la condición de alerta para el seguimiento de movimientos de precios importantes. Estas opciones le permiten recibir notificaciones oportunas cuando el valor de su activo cae por debajo o sube por encima de su umbral designado"
     },
     "accountAddressText": "Dirección de la cuenta",
-    "fiatDisclaimer": "Tenga en cuenta que los valores fiduciarios asociados con las criptomonedas en nuestro sitio web son proporcionados por servicios externos (Subquery, Subsquid, Ceres API) y son aproximados. Dada la complejidad inherente a estos cálculos, no se puede garantizar la precisión absoluta en todo momento."
+    "fiatDisclaimer": "Tenga en cuenta que los valores fiduciarios asociados con las criptomonedas en nuestro sitio web son proporcionados por servicios externos (Subquery, Subsquid, Ceres API) y son aproximados. Dada la complejidad inherente a estos cálculos, no se puede garantizar la precisión absoluta en todo momento.",
+    "fiatPayment": {
+        "historyBtn": "Mis compras",
+        "historyTitle": "Historial de transacciones",
+        "moonpayTitle": "Compre ETH a través de MoonPay",
+        "moonpayDesc": "Compre tokens ETH en Ethereum y transfiéralos a la red SORA a través del puente",
+        "x1Title": "Compra XOR con tu tarjeta",
+        "x1Desc": "Compra tokens XOR con tu tarjeta de débito o crédito",
+        "x1Btn": "Comprar XOR con tarjeta",
+        "errorMessage": "Disculpas por los inconvenientes. Estamos trabajando diligentemente para resolver esto. Por favor, inténtelo de nuevo más tarde."
+    },
+    "acceptOnScrollText": "Desplácese para aceptar",
+    "addressBook": {
+        "myExtAccounts": "Mis cuentas de extensión",
+        "myBook": "Mi libro",
+        "searchPlaceholder": "Buscar por dirección, nombre o identidad",
+        "noFoundRecords": "No se encontraron registros",
+        "noContacts": "Aún no tienes ningún contacto agregado",
+        "addContact": "Agregar contacto",
+        "dialogTitle": "Sus contactos",
+        "identity": "Identidad en cadena",
+        "none": "Ninguno",
+        "detected": "Nueva dirección detectada",
+        "save": "Guardar como contacto",
+        "tooltip": "Recopile la libreta de direcciones proporcionando el nombre y la dirección para mantener sus contactos organizados y actualizados",
+        "notSoraAddress": "Esta dirección se guardará como dirección SORA a continuación. Asegúrese de que el destinatario pueda acceder a la cadena SORA:",
+        "options": {
+            "send": "Enviar fichas",
+            "edit": "Editar contacto",
+            "delete": "Borrar"
+        },
+        "btn": {
+            "enterName": "Ingrese su nombre",
+            "present": "Ya presente",
+            "saveChanges": "Guardar cambios"
+        }
+    },
+    "browserPermission": {
+        "title": "Permitir el acceso a la cámara en la configuración del navegador",
+        "desc": "Para garantizar la autenticidad de los documentos y validar la identidad del usuario para la verificación KYC, se requiere acceso a la cámara de su dispositivo.",
+        "disclaimer": "Se requiere acceso a la cámara para la captura de documentos en tiempo real para evitar el fraude.",
+        "btnGoToSettings": "Ir a la configuración",
+        "btnAllow": "Permitir el acceso"
+    },
+    "continueText": "Continuar"
 }

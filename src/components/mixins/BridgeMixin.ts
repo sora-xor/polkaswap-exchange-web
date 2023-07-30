@@ -4,23 +4,29 @@ import { Component, Mixins } from 'vue-property-decorator';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { getter, mutation, state } from '@/store/decorators';
 
-import type { CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
-  @state.web3.evmBalance evmBalance!: CodecString;
-  @state.bridge.evmBlockNumber evmBlockNumber!: number;
+  @state.bridge.externalNativeBalance externalNativeBalance!: CodecString;
+  @state.bridge.externalBlockNumber externalBlockNumber!: number;
+  @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<CodecString>;
 
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
   @getter.bridge.sender sender!: string;
-  @getter.bridge.recepient recepient!: string;
+  @getter.bridge.recipient recipient!: string;
   @getter.bridge.soraNetworkFee soraNetworkFee!: CodecString;
-  @getter.bridge.evmNetworkFee evmNetworkFee!: CodecString;
+  @getter.bridge.externalNetworkFee externalNetworkFee!: CodecString;
   @getter.assets.xor xor!: RegisteredAccountAsset;
 
   @mutation.web3.setSelectNetworkDialogVisibility setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
-  get evmTokenSymbol(): string {
+  get nativeTokenSymbol(): string {
     return this.selectedNetwork?.nativeCurrency?.symbol ?? '';
+  }
+
+  get nativeTokenDecimals(): number | undefined {
+    return this.selectedNetwork?.nativeCurrency?.decimals;
   }
 }

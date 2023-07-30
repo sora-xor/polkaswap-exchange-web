@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transaktion übermittelt",
         "transactionMessage": "{firstToken} und {secondToken}",
         "ok": "OK",
-        "confirm": "Bestätigen"
+        "confirm": "Bestätigen",
+        "lossWarning": "Sie werden {value}% bei Ihrem Handel verlieren. Wir haben ein Problem mit der Liquiditätsbereitstellung festgestellt. Dies kann bei Token-Swaps zu erheblichen Verlusten führen. Bitte stellen Sie sicher, dass für Ihr gewünschtes Swap-Paar ausreichend Liquidität vorhanden ist."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +866,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Achtung",
-        "info": "Dein XOR Saldo beträgt nach dieser Transaktion weniger als {fee} XOR. Du kannst die Netzwerkgebühr für eine andere Transaktion nicht mehr bezahlen.",
+        "info": "Ihr {symbol} -Guthaben wird nach dieser Transaktion weniger als {fee} {symbol} betragen. Sie können die Netzwerkgebühr für eine weitere Transaktion nicht bezahlen.",
         "payoff": "Du musst die Bridge verwenden, um XOR von anderen Netzwerken zu erhalten, XOR von einem anderen {Sora}-Konto gesendet zu bekommen oder einen anderen Token, der sich bereits auf deinem Konto befindet, in XOR einzutauschen.",
         "button": "Ja, ich verstehe das Risiko"
     },
@@ -1181,13 +1182,11 @@
     "stepText": "Schritt",
     "alerts": {
         "drop": "Tropfen unten",
-        "raise": "Erhebt sich oben",
         "once": "Einmal",
         "always": "Stets",
         "edit": "Benachrichtigung bearbeiten",
         "delete": "Benachrichtigung löschen",
         "onDropDesc": "{token} fällt unter {price}",
-        "onRaiseDesc": "{token} steigt über {price}",
         "alertsTitle": "Warnungen",
         "alertsCreateTitle": "Preisalarm einrichten",
         "alertsTooltip": "Preisalarme sind Benachrichtigungen, die von Ihnen eingestellt werden können, um Updates zu erhalten, wenn der Preis eines bestimmten Tokens einen bestimmten, von Ihnen festgelegten Punkt erreicht",
@@ -1195,12 +1194,58 @@
         "enableSwitch": "Aktivieren Sie Benachrichtigungen zur Hinterlegung von Vermögenswerten",
         "currentPrice": "derzeitiger Preis",
         "alertTypeTitle": "Alarmtyp",
-        "typeTooltip": "Wählen Sie entweder die Option „fällt unter“ oder „erhöht sich“, um die Alarmbedingung für die Verfolgung wichtiger Preisbewegungen festzulegen. Diese Optionen ermöglichen es Ihnen, zeitnahe Benachrichtigungen zu erhalten, wenn der Wert Ihres Vermögens entweder unter oder über Ihren festgelegten Schwellenwert fällt",
         "alertFrequencyTitle": "Alarmhäufigkeit",
         "frequencyTooltip": "Wählen Sie zwischen „Einmal“ und „Immer“, um festzulegen, wie oft Sie Benachrichtigungen für den ausgewählten Alarmtyp erhalten. „Einmal“ sendet eine einzelne Benachrichtigung, wenn die Bedingung erfüllt ist, während „immer“ Sie weiterhin jedes Mal benachrichtigt, wenn die Preisschwelle überschritten wird",
         "noSupportMsg": "Benachrichtigungen werden von Ihrem Browser nicht unterstützt",
-        "finishBtn": "Fertigstellen"
+        "finishBtn": "Fertigstellen",
+        "raise": "Erhebt sich oben",
+        "onRaiseDesc": "{token} steigt über {price}",
+        "typeTooltip": "Wählen Sie entweder die Option „Unterschreitet“ oder „Steigt darüber“, um die Alarmbedingung für die Verfolgung wichtiger Preisbewegungen anzugeben. Mit diesen Optionen erhalten Sie zeitnahe Benachrichtigungen, wenn der Wert Ihres Vermögenswerts Ihren festgelegten Schwellenwert unterschreitet oder übersteigt"
     },
     "accountAddressText": "Kontoadresse",
-    "fiatDisclaimer": "Bitte beachten Sie, dass die mit Kryptowährungen auf unserer Website verbundenen Fiat-Werte, die von externen Diensten (Subquery, Subsquid, Ceres API) bereitgestellt werden, ungefähre Werte sind. Aufgrund der inhärenten Komplexität dieser Berechnungen kann eine absolute Genauigkeit zu jedem Zeitpunkt nicht garantiert werden."
+    "fiatDisclaimer": "Bitte beachten Sie, dass die mit Kryptowährungen auf unserer Website verbundenen Fiat-Werte, die von externen Diensten (Subquery, Subsquid, Ceres API) bereitgestellt werden, ungefähre Werte sind. Aufgrund der inhärenten Komplexität dieser Berechnungen kann eine absolute Genauigkeit zu jedem Zeitpunkt nicht garantiert werden.",
+    "fiatPayment": {
+        "historyBtn": "Meine Einkäufe",
+        "historyTitle": "Verlauf der Transaktionen",
+        "moonpayTitle": "Kaufen Sie ETH über MoonPay",
+        "moonpayDesc": "Kaufen Sie ETH-Tokens auf Ethereum und übertragen Sie sie über die Bridge an das SORA-Netzwerk",
+        "x1Title": "Kaufen Sie XOR mit Ihrer Karte",
+        "x1Desc": "Kaufen Sie XOR-Tokens mit Ihrer Debit- oder Kreditkarte",
+        "x1Btn": "Kaufen Sie XOR mit Karte",
+        "errorMessage": "Entschuldigung für die Unannehmlichkeiten. Wir arbeiten fleißig daran, dieses Problem zu lösen. Bitte versuchen Sie es später noch einmal."
+    },
+    "acceptOnScrollText": "Scrollen Sie, um zu akzeptieren",
+    "addressBook": {
+        "myExtAccounts": "Meine Nebenkonten",
+        "myBook": "Mein Buch",
+        "searchPlaceholder": "Suchen Sie nach Adresse, Name oder Identität",
+        "noFoundRecords": "Keine Aufzeichnungen gefunden",
+        "noContacts": "Sie haben noch keine Kontakte hinzugefügt",
+        "addContact": "Kontakt hinzufügen",
+        "dialogTitle": "Deine Kontakte",
+        "identity": "Identität in der Kette",
+        "none": "Keiner",
+        "detected": "Neue Adresse erkannt",
+        "save": "Als Kontakt speichern",
+        "tooltip": "Sammeln Sie Ihr Adressbuch, indem Sie Namen und Adresse angeben, um Ihre Kontakte organisiert und auf dem neuesten Stand zu halten",
+        "notSoraAddress": "Diese Adresse wird unten als SORA-Adresse gespeichert. Stellen Sie sicher, dass der Empfänger auf die SORA-Kette zugreifen kann:",
+        "options": {
+            "send": "Senden Sie Token",
+            "edit": "Kontakt bearbeiten",
+            "delete": "Löschen"
+        },
+        "btn": {
+            "enterName": "Name eingeben",
+            "present": "Bereits anwesend",
+            "saveChanges": "Änderungen speichern"
+        }
+    },
+    "browserPermission": {
+        "title": "Erlauben Sie den Kamerazugriff in den Browsereinstellungen",
+        "desc": "Um die Authentizität von Dokumenten sicherzustellen und die Benutzeridentität für die KYC-Überprüfung zu validieren, ist Zugriff auf die Kamera Ihres Geräts erforderlich.",
+        "disclaimer": "Für die Dokumentenerfassung in Echtzeit ist ein Kamerazugriff erforderlich, um Betrug zu verhindern.",
+        "btnGoToSettings": "Gehe zu den Einstellungen",
+        "btnAllow": "Erlauben den Zugriff"
+    },
+    "continueText": "Weitermachen"
 }

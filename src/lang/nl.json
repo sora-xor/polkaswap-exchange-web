@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transactie ingediend",
         "transactionMessage": "{firstToken} en {secondToken}",
         "ok": "OK",
-        "confirm": "Bevestigen"
+        "confirm": "Bevestigen",
+        "lossWarning": "U verliest {value}% op uw transactie. We hebben een probleem met de liquiditeitsvoorziening ontdekt. Dit kan leiden tot aanzienlijke verliezen tijdens token-swaps. Zorg ervoor dat er voldoende liquiditeit is voor uw gewenste swappaar."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +866,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Aandacht",
-        "info": "Uw XOR saldo zal lager zijn dan {fee} XOR na deze transactie. U zult niet in staat zijn om de netwerkvergoeding voor een andere transactie te betalen.",
+        "info": "Uw {symbol} -saldo is na deze transactie minder dan {fee} {symbol} . U kunt de netwerkkosten voor een andere transactie niet betalen.",
         "payoff": "Je zou de Bridge moeten gebruiken om XOR van andere netwerken te krijgen, XOR van een ander {Sora}-account te ontvangen, of een ander token dat al in je account staat om te wisselen naar XOR.",
         "button": "Ja, ik begrijp het risico"
     },
@@ -1181,13 +1182,11 @@
     "stepText": "Stap",
     "alerts": {
         "drop": "Zakt onder",
-        "raise": "Stijgt boven",
         "once": "Eenmaal",
         "always": "Altijd",
         "edit": "Melding bewerken",
         "delete": "Melding verwijderen",
         "onDropDesc": "{token} zakt onder {price}",
-        "onRaiseDesc": "{token} verhoogt boven {price}",
         "alertsTitle": "Waarschuwingen",
         "alertsCreateTitle": "Prijsalarm instellen",
         "alertsTooltip": "Prijswaarschuwingen zijn meldingen die door u kunnen worden ingesteld om updates te ontvangen wanneer de prijs van een bepaald token een bepaald door u ingesteld punt bereikt",
@@ -1195,12 +1194,58 @@
         "enableSwitch": "Meldingen van activastortingen inschakelen",
         "currentPrice": "huidige prijs",
         "alertTypeTitle": "Waarschuwingstype",
-        "typeTooltip": "Kies de optie 'drops below' of 'raises above' om een waarschuwingsconditie op te geven voor het volgen van belangrijke prijsbewegingen. Met deze opties ontvangt u tijdige meldingen wanneer de waarde van uw vermogen onder of boven de door u aangegeven drempelwaarde komt",
         "alertFrequencyTitle": "Alert frequentie",
         "frequencyTooltip": "Kies tussen 'eenmalig' en 'altijd' om te bepalen hoe vaak u meldingen ontvangt voor het gekozen waarschuwingstype. 'Eenmaal' stuurt een enkele melding wanneer aan de voorwaarde is voldaan, terwijl 'altijd' u op de hoogte blijft houden telkens wanneer de prijsdrempel wordt overschreden",
         "noSupportMsg": "Meldingen worden niet ondersteund door je browser",
-        "finishBtn": "Vervolledigen"
+        "finishBtn": "Vervolledigen",
+        "raise": "Stijgt boven",
+        "onRaiseDesc": "{token} stijgt boven {price}",
+        "typeTooltip": "Kies de optie 'daalt onder' of 'stijgt boven' om een waarschuwingsconditie op te geven voor het volgen van belangrijke prijsbewegingen. Met deze opties ontvangt u tijdige meldingen wanneer de waarde van uw vermogen onder of boven de door u aangegeven drempelwaarde komt"
     },
     "accountAddressText": "Accountadres",
-    "fiatDisclaimer": "Houd er rekening mee dat de fiat-waarden die zijn gekoppeld aan cryptocurrencies op onze website worden geleverd door externe services (Subquery, Subsquid, Ceres API) bij benadering zijn. Gezien de inherente complexiteit van deze berekeningen kan absolute nauwkeurigheid niet te allen tijde worden gegarandeerd."
+    "fiatDisclaimer": "Houd er rekening mee dat de fiat-waarden die zijn gekoppeld aan cryptocurrencies op onze website worden geleverd door externe services (Subquery, Subsquid, Ceres API) bij benadering zijn. Gezien de inherente complexiteit van deze berekeningen kan absolute nauwkeurigheid niet te allen tijde worden gegarandeerd.",
+    "fiatPayment": {
+        "historyBtn": "Mijn aankopen",
+        "historyTitle": "Transactie Geschiedenis",
+        "moonpayTitle": "Koop ETH via MoonPay",
+        "moonpayDesc": "Koop ETH-tokens op Ethereum en verplaats ze via de bridge naar het SORA-netwerk",
+        "x1Title": "Koop XOR met uw kaart",
+        "x1Desc": "Koop XOR-tokens met uw bankpas of creditcard",
+        "x1Btn": "Koop XOR met kaart",
+        "errorMessage": "Excuses voor het ongemak. We werken er hard aan om dit op te lossen. Probeer het later opnieuw."
+    },
+    "acceptOnScrollText": "Scrol om te accepteren",
+    "addressBook": {
+        "myExtAccounts": "Mijn extensieaccounts",
+        "myBook": "Mijn boek",
+        "searchPlaceholder": "Zoek op adres, naam of identiteit",
+        "noFoundRecords": "Geen verslagen gevonden",
+        "noContacts": "Je hebt nog geen contacten toegevoegd",
+        "addContact": "Contactpersoon toevoegen",
+        "dialogTitle": "Jouw contacten",
+        "identity": "On-chain identiteit",
+        "none": "Geen",
+        "detected": "Nieuw adres gedetecteerd",
+        "save": "Opslaan als contactpersoon",
+        "tooltip": "Verzamel adresboek door naam en adres op te geven om uw contacten georganiseerd en up-to-date te houden",
+        "notSoraAddress": "Dit adres wordt opgeslagen als SORA-adres hieronder. Zorg ervoor dat de ontvanger toegang heeft tot de SORA-keten:",
+        "options": {
+            "send": "Tokens verzenden",
+            "edit": "Bewerk contact",
+            "delete": "Verwijderen"
+        },
+        "btn": {
+            "enterName": "Voer naam in",
+            "present": "Reeds aanwezig",
+            "saveChanges": "Wijzigingen opslaan"
+        }
+    },
+    "browserPermission": {
+        "title": "Cameratoegang toestaan in browserinstellingen",
+        "desc": "Om de authenticiteit van documenten te garanderen en de gebruikersidentiteit voor KYC-verificatie te valideren, is toegang tot de camera van uw apparaat vereist.",
+        "disclaimer": "Cameratoegang is vereist voor real-time documentregistratie om fraude te voorkomen.",
+        "btnGoToSettings": "Ga naar Instellingen",
+        "btnAllow": "Toegang te verlenen"
+    },
+    "continueText": "Doorgaan"
 }

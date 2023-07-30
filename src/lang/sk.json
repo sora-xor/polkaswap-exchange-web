@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transakcia bola odoslaná",
         "transactionMessage": "{firstToken} a {secondToken}",
         "ok": "OK",
-        "confirm": "Potvrdiť"
+        "confirm": "Potvrdiť",
+        "lossWarning": "Pri svojom obchode stratíte {value}%. Zistili sme problém s poskytovaním likvidity. To môže viesť k významným stratám počas výmeny tokenov. Uistite sa, že máte dostatočnú likviditu pre požadovaný swapový pár."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +866,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Pozornosť",
-        "info": "Váš zostatok XOR bude po tejto transakcii nižší ako {fee} XOR. Nebudete môcť zaplatiť sieťový poplatok za ďalšiu transakciu.",
+        "info": "Váš zostatok {symbol} bude po tejto transakcii nižší ako {fee} {symbol} . Nebudete môcť zaplatiť sieťový poplatok za ďalšiu transakciu.",
         "payoff": "Na získanie XOR z iných sietí, odoslanie XOR z iného účtu {Sora} alebo výmenu akéhokoľvek iného tokenu, ktorý už máte na účte, za XOR by ste museli použiť Most.",
         "button": "Áno, rozumiem riziko"
     },
@@ -1181,13 +1182,11 @@
     "stepText": "Krok",
     "alerts": {
         "drop": "Kvapky nižšie",
-        "raise": "Zvyšuje vyššie",
         "once": "Raz",
         "always": "Vždy",
         "edit": "Upraviť upozornenie",
         "delete": "Odstrániť upozornenie",
         "onDropDesc": "{token} klesne pod {price}",
-        "onRaiseDesc": "{token} zvyšuje nad {price}",
         "alertsTitle": "Upozornenia",
         "alertsCreateTitle": "Nastaviť upozornenie na cenu",
         "alertsTooltip": "Upozornenia na cenu sú upozornenia, ktoré si môžete nastaviť tak, aby dostávali aktualizácie, keď cena konkrétneho tokenu dosiahne určitý bod, ktorý si nastavíte",
@@ -1195,12 +1194,58 @@
         "enableSwitch": "Povoliť upozornenia na vklad majetku",
         "currentPrice": "súčasná cena",
         "alertTypeTitle": "Typ upozornenia",
-        "typeTooltip": "Vyberte možnosť „poklesy pod“ alebo „zvýšenie nad“, aby ste určili výstražnú podmienku pre sledovanie dôležitých pohybov cien. Tieto možnosti vám umožňujú dostávať včasné upozornenia, keď hodnota vášho majetku klesne pod alebo prekročí vami určenú hranicu",
         "alertFrequencyTitle": "Frekvencia varovania",
         "frequencyTooltip": "Vyberte si medzi „raz“ a „vždy“, aby ste určili, ako často budete dostávať upozornenia pre vybraný typ upozornenia. „Raz“ odošle jediné upozornenie, keď je podmienka splnená, zatiaľ čo „vždy“ vás bude naďalej upozorňovať pri každom prekročení cenového limitu",
         "noSupportMsg": "Váš prehliadač nepodporuje upozornenia",
-        "finishBtn": "Dokončiť"
+        "finishBtn": "Dokončiť",
+        "raise": "Stúpa vyššie",
+        "onRaiseDesc": "{token} stúpa nad {price}",
+        "typeTooltip": "Vyberte možnosť „klesá pod“ alebo „stúpa nad“ a špecifikujte podmienku upozornenia na sledovanie dôležitých pohybov cien. Tieto možnosti vám umožňujú dostávať včasné upozornenia, keď hodnota vášho majetku klesne pod alebo prekročí vami určenú hranicu"
     },
     "accountAddressText": "Adresa účtu",
-    "fiatDisclaimer": "Upozorňujeme, že fiat hodnoty spojené s kryptomenami na našej webovej stránke sú poskytované externými službami (Subquery, Subsquid, Ceres API) sú približné. Vzhľadom na prirodzenú zložitosť týchto výpočtov nie je možné zaručiť vždy absolútnu presnosť."
+    "fiatDisclaimer": "Upozorňujeme, že fiat hodnoty spojené s kryptomenami na našej webovej stránke sú poskytované externými službami (Subquery, Subsquid, Ceres API) sú približné. Vzhľadom na prirodzenú zložitosť týchto výpočtov nie je možné zaručiť vždy absolútnu presnosť.",
+    "fiatPayment": {
+        "historyBtn": "Moje nákupy",
+        "historyTitle": "história transakcií",
+        "moonpayTitle": "Kúpte si ETH cez MoonPay",
+        "moonpayDesc": "Kúpte si ETH tokeny na Ethereu a preneste ich do siete SORA cez most",
+        "x1Title": "Kúpte si XOR kartou",
+        "x1Desc": "Kúpte si tokeny XOR pomocou svojej debetnej alebo kreditnej karty",
+        "x1Btn": "Kúpte si XOR kartou",
+        "errorMessage": "Ospravedlňujeme sa za nepríjemnosti. Na vyriešení tohto problému usilovne pracujeme. Skúste neskôr prosím."
+    },
+    "acceptOnScrollText": "Posuňte sa na prijatie",
+    "addressBook": {
+        "myExtAccounts": "Moje účty rozšírenia",
+        "myBook": "Moja kniha",
+        "searchPlaceholder": "Hľadajte podľa adresy, mena alebo identity",
+        "noFoundRecords": "Nenašli sa žiadne záznamy",
+        "noContacts": "Zatiaľ nemáte pridané žiadne kontakty",
+        "addContact": "Pridať kontakt",
+        "dialogTitle": "Vaše kontakty",
+        "identity": "Identita na reťazci",
+        "none": "žiadne",
+        "detected": "Bola zistená nová adresa",
+        "save": "Uložiť ako kontakt",
+        "tooltip": "Zhromažďujte adresár zadaním mena a adresy, aby boli vaše kontakty organizované a aktuálne",
+        "notSoraAddress": "Táto adresa bude uložená ako adresa SORA nižšie. Uistite sa, že príjemca má prístup k reťazcu SORA:",
+        "options": {
+            "send": "Odoslať tokeny",
+            "edit": "Upraviť kontakt",
+            "delete": "Odstrániť"
+        },
+        "btn": {
+            "enterName": "Zadaj meno",
+            "present": "Už prítomný",
+            "saveChanges": "Uložiť zmeny"
+        }
+    },
+    "browserPermission": {
+        "title": "Povoliť prístup k fotoaparátu v nastaveniach prehliadača",
+        "desc": "Na zabezpečenie pravosti dokumentov a overenie identity používateľa na overenie KYC je potrebný prístup k fotoaparátu vášho zariadenia.",
+        "disclaimer": "Na zachytávanie dokumentov v reálnom čase je potrebný prístup k fotoaparátu, aby sa zabránilo podvodom.",
+        "btnGoToSettings": "Choď do nastavení",
+        "btnAllow": "Povoliť prístup"
+    },
+    "continueText": "ďalej"
 }

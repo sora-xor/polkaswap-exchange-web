@@ -483,7 +483,8 @@
         "transactionSubmitted": "Iṣowo ti a fi silẹ",
         "transactionMessage": "{firstToken} ati {secondToken}",
         "ok": "O DARA",
-        "confirm": "Jẹrisi"
+        "confirm": "Jẹrisi",
+        "lossWarning": "Iwọ yoo padanu {value}% lori iṣowo rẹ. A ti rii ọran ipese oloomi kan. Eyi le ja si awọn adanu nla lakoko awọn swaps àmi. Jọwọ rii daju pe oloomi to peye wa fun bata swap ti o fẹ."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +866,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Ifarabalẹ",
-        "info": "Iwọntunwọnsi XOR rẹ yoo kere si {fee} XOR lẹhin iṣowo yii. Iwọ kii yoo ni anfani lati sanwo fun ọya nẹtiwọki fun iṣowo miiran.",
+        "info": "Iwọntunwọnsi {symbol} rẹ yoo kere ju {fee} {symbol} lẹhin iṣowo yii. Iwọ kii yoo ni anfani lati sanwo fun ọya nẹtiwọki fun iṣowo miiran.",
         "payoff": "Iwọ yoo ni lati lo Afara lati gba XOR lati awọn nẹtiwọọki miiran, firanṣẹ XOR lati akọọlẹ {Sora} miiran, tabi paarọ eyikeyi ami-ami miiran tẹlẹ ninu akọọlẹ rẹ sinu XOR.",
         "button": "Bẹẹni, Mo loye ewu naa"
     },
@@ -1181,13 +1182,11 @@
     "stepText": "Igbesẹ",
     "alerts": {
         "drop": "Silẹ ni isalẹ",
-        "raise": "Gbe soke",
         "once": "Lẹẹkan",
         "always": "Nigbagbogbo",
         "edit": "Itaniji Ṣatunkọ",
         "delete": "Pa itaniji rẹ",
         "onDropDesc": "{token} lọ silẹ ni isalẹ {price}",
-        "onRaiseDesc": "{token} ga ju {price}",
         "alertsTitle": "Awọn itaniji",
         "alertsCreateTitle": "Ṣeto itaniji idiyele",
         "alertsTooltip": "Awọn itaniji idiyele jẹ awọn iwifunni ti o le ṣeto nipasẹ rẹ lati gba awọn imudojuiwọn nigbati idiyele ti ami-ami kan pato de aaye kan ti o ṣeto",
@@ -1195,12 +1194,58 @@
         "enableSwitch": "Mu awọn iwifunni idogo dukia ṣiṣẹ",
         "currentPrice": "lọwọlọwọ owo",
         "alertTypeTitle": "Iru itaniji",
-        "typeTooltip": "Yan boya 'ju silẹ ni isalẹ' tabi 'gbe loke' aṣayan lati tokasi ipo itaniji fun titọpa awọn agbeka idiyele pataki. Awọn aṣayan wọnyi gba ọ laaye lati gba awọn iwifunni akoko nigbati iye dukia rẹ boya ṣubu ni isalẹ tabi dide loke iloro ti a yàn",
         "alertFrequencyTitle": "Itaniji igbohunsafẹfẹ",
         "frequencyTooltip": "Yan laarin 'lẹẹkan' ati 'nigbagbogbo' lati pinnu iye igba ti o gba awọn iwifunni fun iru gbigbọn ti o yan. 'Lẹẹkan' yoo fi ifitonileti kan ranṣẹ nigbati ipo naa ba ti pade, lakoko ti 'nigbagbogbo' yoo tẹsiwaju lati fi to ọ leti ni igbakugba ti ẹnu-ọna idiyele ti kọja",
         "noSupportMsg": "Awọn iwifunni ko ni atilẹyin nipasẹ ẹrọ aṣawakiri rẹ",
-        "finishBtn": "Lati pari"
+        "finishBtn": "Lati pari",
+        "raise": "Dide loke",
+        "onRaiseDesc": "{token} ga ju {price}",
+        "typeTooltip": "Yan boya 'ju silẹ ni isalẹ' tabi 'dide loke' aṣayan lati tokasi ipo itaniji fun titọpa awọn agbeka idiyele pataki. Awọn aṣayan wọnyi gba ọ laaye lati gba awọn iwifunni akoko nigbati iye dukia rẹ boya ṣubu ni isalẹ tabi dide loke iloro ti a yàn"
     },
     "accountAddressText": "adirẹsi iroyin",
-    "fiatDisclaimer": "Jọwọ ṣe akiyesi pe awọn iye fiat ti o ni nkan ṣe pẹlu awọn owo nẹtiwoki lori oju opo wẹẹbu wa ni a pese nipasẹ awọn iṣẹ ita (Subquery, Subsquid, Ceres API) jẹ isunmọ. Fi fun idiju atorunwa ti awọn iṣiro wọnyi, pipe pipe ni gbogbo igba ko le ṣe iṣeduro."
+    "fiatDisclaimer": "Jọwọ ṣe akiyesi pe awọn iye fiat ti o ni nkan ṣe pẹlu awọn owo nẹtiwoki lori oju opo wẹẹbu wa ni a pese nipasẹ awọn iṣẹ ita (Subquery, Subsquid, Ceres API) jẹ isunmọ. Fi fun idiju atorunwa ti awọn iṣiro wọnyi, pipe pipe ni gbogbo igba ko le ṣe iṣeduro.",
+    "fiatPayment": {
+        "historyBtn": "Awọn rira mi",
+        "historyTitle": "Itan iṣowo",
+        "moonpayTitle": "Ra ETH nipasẹ MoonPay",
+        "moonpayDesc": "Ra awọn ami ETH lori Ethereum ki o gbe wọn lọ si nẹtiwọki SORA nipasẹ afara",
+        "x1Title": "Ra XOR pẹlu kaadi rẹ",
+        "x1Desc": "Ra awọn ami XOR pẹlu debiti tabi kaadi kirẹditi rẹ",
+        "x1Btn": "Ra XOR pẹlu kaadi",
+        "errorMessage": "Aforiji fun ohun airọrun. A n ṣiṣẹ takuntakun lati yanju eyi. Jọwọ, gbiyanju lẹẹkansi nigbamii."
+    },
+    "acceptOnScrollText": "Yi lọ lati gba",
+    "addressBook": {
+        "myExtAccounts": "Awọn iroyin itẹsiwaju mi",
+        "myBook": "Iwe Mi",
+        "searchPlaceholder": "Ṣewadii nipasẹ adirẹsi, orukọ tabi idanimọ",
+        "noFoundRecords": "Ko si awọn igbasilẹ ti a rii",
+        "noContacts": "O ko ni awọn olubasọrọ ti a ṣafikun sibẹsibẹ",
+        "addContact": "Fi olubasọrọ kun",
+        "dialogTitle": "Awọn olubasọrọ rẹ",
+        "identity": "On-pq idanimo",
+        "none": "Ko si",
+        "detected": "Adirẹsi titun ti ri",
+        "save": "Fipamọ bi olubasọrọ",
+        "tooltip": "Gba iwe adirẹsi nipa pipese orukọ ati adirẹsi lati jẹ ki awọn olubasọrọ rẹ ṣeto ati imudojuiwọn",
+        "notSoraAddress": "Adirẹsi yii yoo wa ni ipamọ bi adirẹsi SORA ni isalẹ. Rii daju pe olugba le wọle si ẹwọn SORA:",
+        "options": {
+            "send": "Firanṣẹ awọn ami",
+            "edit": "Ṣatunkọ olubasọrọ",
+            "delete": "Paarẹ"
+        },
+        "btn": {
+            "enterName": "Tẹ orukọ sii",
+            "present": "Ti wa tẹlẹ",
+            "saveChanges": "Fi awọn ayipada pamọ"
+        }
+    },
+    "browserPermission": {
+        "title": "Gba wiwọle kamẹra laaye ni awọn eto ẹrọ aṣawakiri",
+        "desc": "Lati rii daju pe ododo ti awọn iwe aṣẹ ati lati fọwọsi idanimọ olumulo fun ijẹrisi KYC, iraye si kamẹra ẹrọ rẹ nilo.",
+        "disclaimer": "Wiwọle kamẹra nilo fun gbigba iwe akoko gidi lati ṣe idiwọ jibiti.",
+        "btnGoToSettings": "Lọ si awọn eto",
+        "btnAllow": "Gba wiwọle laaye"
+    },
+    "continueText": "Tesiwaju"
 }

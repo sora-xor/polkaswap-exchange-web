@@ -1,6 +1,7 @@
+import { BridgeTxDirection } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
-import type { NetworkData } from '@/types/bridge';
+import type { NetworkData, SubNetworksFees } from '@/types/bridge';
 
 export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
   [SubNetwork.Kusama]: {
@@ -9,7 +10,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     nativeCurrency: {
       name: 'KSM',
       symbol: 'KSM',
-      decimals: 18,
+      decimals: 12,
     },
     endpointUrls: [],
     blockExplorerUrls: [],
@@ -21,7 +22,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     nativeCurrency: {
       name: 'DOT',
       symbol: 'DOT',
-      decimals: 18,
+      decimals: 10,
     },
     endpointUrls: [],
     blockExplorerUrls: [],
@@ -33,14 +34,14 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     nativeCurrency: {
       name: 'ROC',
       symbol: 'ROC',
-      decimals: 18,
+      decimals: 12,
     },
     endpointUrls: [],
     blockExplorerUrls: [],
     shortName: 'Rococo',
   },
-  [SubNetwork.Karura]: {
-    id: SubNetwork.Karura,
+  [SubNetwork.KusamaKarura]: {
+    id: SubNetwork.KusamaKarura,
     name: 'Karura',
     nativeCurrency: {
       name: 'KAR',
@@ -50,5 +51,27 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     endpointUrls: [],
     blockExplorerUrls: [],
     shortName: 'Karura',
+  },
+  // SORA Parachains
+  [SubNetwork.RococoSora]: {
+    id: SubNetwork.RococoSora,
+    name: 'SORA Parachain',
+    nativeCurrency: {
+      name: 'XOR',
+      symbol: 'XOR',
+      decimals: 12,
+    },
+    endpointUrls: [],
+    blockExplorerUrls: [],
+    shortName: 'SORA Parachain',
+  },
+};
+
+export const SUB_TRANSFER_FEES: SubNetworksFees = {
+  [SubNetwork.Rococo]: {
+    ROC: {
+      [BridgeTxDirection.Outgoing]: '10188285',
+      [BridgeTxDirection.Incoming]: '4000000000',
+    },
   },
 };

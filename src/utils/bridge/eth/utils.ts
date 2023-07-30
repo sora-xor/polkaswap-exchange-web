@@ -134,9 +134,7 @@ export const updateEthBridgeHistory =
         bridge: { inProgressIds },
       } = rootState;
 
-      const networkData = rootGetters.web3.availableNetworks[BridgeNetworkType.EvmLegacy].find(
-        ({ data }) => data.id === ethBridgeEvmNetwork
-      );
+      const networkData = rootGetters.web3.availableNetworks[BridgeNetworkType.EvmLegacy][ethBridgeEvmNetwork];
 
       if (!networkData) {
         throw new Error(
@@ -148,7 +146,7 @@ export const updateEthBridgeHistory =
 
       if ((await ethersUtil.getEvmNetworkId()) !== ethBridgeEvmNetwork) {
         throw new Error(
-          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.networkProvided}" is connected, "${ethBridgeEvmNetwork}" expected`
+          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.evmNetworkProvided}" is connected, "${ethBridgeEvmNetwork}" expected`
         );
       }
 

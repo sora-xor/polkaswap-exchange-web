@@ -19,7 +19,6 @@
         "getSoraCardBtn": "Dapatkan Kartu SORA secara gratis",
         "bridgeTokensBtn": "Token jembatan",
         "depositX1Btn": "Beli XOR",
-        "getSoraCardDesc": "Isi ulang Kartu SORA Anda dengan fiat atau crypto dan bayar online, di dalam toko, atau tarik dari ATM. Dapatkan akun Euro IBAN dan Kartu Debit Mastercard",
         "reIssuanceFee": "€0 biaya penerbitan ulang tahunan",
         "freeStartDesc": "{value} XOR di akun Anda untuk awal gratis",
         "completeKYC": "KYC lengkap",
@@ -57,6 +56,8 @@
         "unsupportedCountriesDisclaimer": "Penduduk dari negara tertentu tidak dapat mengajukan SORA Card untuk saat ini",
         "statusRejectReason": "Alasan penolakan",
         "userNotFound": "Nomor ponsel tidak ditemukan, harap periksa kembali dan coba lagi.",
-        "code": "Kode"
+        "code": "Kode",
+        "getSoraCardDesc": "Dapatkan akun Euro IBAN dan Kartu Debit Mastercard yang dapat diakses di dalam SORA Wallet Anda",
+        "emailSpamReminder": "Email mungkin membutuhkan waktu beberapa menit untuk sampai. Harap verifikasi folder spam Anda jika Anda belum menerima email setelah 5 menit."
     }
 }

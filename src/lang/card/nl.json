@@ -19,7 +19,6 @@
         "getSoraCardBtn": "Ontvang de SORA-kaart gratis",
         "bridgeTokensBtn": "Brug tokens",
         "depositX1Btn": "XOR kopen",
-        "getSoraCardDesc": "Waardeer uw SORA-kaart op met fiat of crypto en betaal online, in de winkel of neem geld op bij een geldautomaat. Neem een Euro IBAN rekening en een Mastercard Betaalpas",
         "reIssuanceFee": "€ 0 jaarlijkse heruitgiftekosten",
         "freeStartDesc": "{value} van XOR in uw account voor een gratis start",
         "completeKYC": "Voltooi KYC",
@@ -57,6 +56,8 @@
         "unsupportedCountriesDisclaimer": "Inwoners uit bepaalde landen kunnen op dit moment geen SORA Card aanvragen",
         "statusRejectReason": "Reden afwijzing",
         "userNotFound": "Geen mobiel nummer gevonden, controleer het opnieuw en probeer het opnieuw.",
-        "code": "Code"
+        "code": "Code",
+        "getSoraCardDesc": "Krijg een Euro IBAN-account en Mastercard-betaalpas die toegankelijk zijn in uw SORA-portemonnee",
+        "emailSpamReminder": "Het kan enkele minuten duren voordat de e-mail aankomt. Controleer uw spammap als u de e-mail na 5 minuten nog niet heeft ontvangen."
     }
 }

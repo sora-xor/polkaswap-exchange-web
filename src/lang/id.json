@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transaksi dikirim",
         "transactionMessage": "{firstToken} dan {secondToken}",
         "ok": "Oke",
-        "confirm": "Konfirmasi"
+        "confirm": "Konfirmasi",
+        "lossWarning": "Anda akan kehilangan {value}% pada perdagangan Anda. Kami mendeteksi masalah penyediaan likuiditas. Ini dapat menyebabkan kerugian yang signifikan selama pertukaran token. Pastikan ada likuiditas yang memadai untuk pasangan swap yang Anda inginkan."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +866,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Perhatian",
-        "info": "Saldo XOR Anda akan kurang dari {fee} XOR setelah transaksi ini. Anda tidak akan dapat membayar biaya jaringan untuk transaksi lain.",
+        "info": "Saldo {symbol} Anda akan kurang dari {fee} {symbol} setelah transaksi ini. Anda tidak akan dapat membayar biaya jaringan untuk transaksi lain.",
         "payoff": "Anda harus menggunakan Bridge untuk mendapatkan XOR dari jaringan lain, mengirim XOR dari akun {Sora} lain, atau menukar token lain yang sudah ada di akun Anda ke XOR.",
         "button": "Ya, saya mengerti risikonya"
     },
@@ -1181,13 +1182,11 @@
     "stepText": "Melangkah",
     "alerts": {
         "drop": "Jatuh di bawah",
-        "raise": "Menaikkan di atas",
         "once": "Sekali",
         "always": "Selalu",
         "edit": "Edit lansiran",
         "delete": "Hapus lansiran",
         "onDropDesc": "{token} turun di bawah {price}",
-        "onRaiseDesc": "{token} naik di atas {price}",
         "alertsTitle": "Lansiran",
         "alertsCreateTitle": "Siapkan peringatan harga",
         "alertsTooltip": "Peringatan harga adalah pemberitahuan yang dapat Anda atur untuk menerima pembaruan saat harga token tertentu mencapai titik tertentu yang Anda tetapkan",
@@ -1195,12 +1194,58 @@
         "enableSwitch": "Aktifkan notifikasi setoran aset",
         "currentPrice": "harga sekarang",
         "alertTypeTitle": "Jenis peringatan",
-        "typeTooltip": "Pilih opsi 'turun di bawah' atau 'naik di atas' untuk menentukan kondisi waspada untuk melacak pergerakan harga penting. Opsi ini memungkinkan Anda menerima pemberitahuan tepat waktu saat nilai aset Anda turun di bawah atau naik di atas ambang batas yang Anda tetapkan",
         "alertFrequencyTitle": "Frekuensi peringatan",
         "frequencyTooltip": "Pilih antara 'sekali' dan 'selalu' untuk menentukan seberapa sering Anda menerima pemberitahuan untuk jenis lansiran yang dipilih. 'Sekali' akan mengirimkan satu notifikasi saat kondisi terpenuhi, sementara 'selalu' akan terus memberi tahu Anda setiap kali ambang harga dilewati",
         "noSupportMsg": "Notifikasi tidak didukung oleh browser Anda",
-        "finishBtn": "Untuk menyelesaikan"
+        "finishBtn": "Untuk menyelesaikan",
+        "raise": "Naik di atas",
+        "onRaiseDesc": "{token} naik di atas {price}",
+        "typeTooltip": "Pilih opsi 'turun di bawah' atau 'naik di atas' untuk menentukan kondisi waspada untuk melacak pergerakan harga penting. Opsi ini memungkinkan Anda menerima pemberitahuan tepat waktu saat nilai aset Anda turun di bawah atau naik di atas ambang batas yang Anda tetapkan"
     },
     "accountAddressText": "Alamat akun",
-    "fiatDisclaimer": "Harap perhatikan bahwa nilai fiat yang terkait dengan cryptocurrency di situs web kami disediakan oleh layanan eksternal (Subquery, Subsquid, Ceres API) adalah perkiraan. Mengingat kerumitan perhitungan ini, presisi mutlak setiap saat tidak dapat dijamin."
+    "fiatDisclaimer": "Harap perhatikan bahwa nilai fiat yang terkait dengan cryptocurrency di situs web kami disediakan oleh layanan eksternal (Subquery, Subsquid, Ceres API) adalah perkiraan. Mengingat kerumitan perhitungan ini, presisi mutlak setiap saat tidak dapat dijamin.",
+    "fiatPayment": {
+        "historyBtn": "pembelian saya",
+        "historyTitle": "sejarah transaksi",
+        "moonpayTitle": "Beli ETH melalui MoonPay",
+        "moonpayDesc": "Beli token ETH di Ethereum dan transfer ke jaringan SORA melalui jembatan",
+        "x1Title": "Beli XOR dengan kartu Anda",
+        "x1Desc": "Beli token XOR dengan kartu debit atau kredit Anda",
+        "x1Btn": "Beli XOR dengan kartu",
+        "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti."
+    },
+    "acceptOnScrollText": "Gulir untuk menerima",
+    "addressBook": {
+        "myExtAccounts": "Akun ekstensi saya",
+        "myBook": "Buku saya",
+        "searchPlaceholder": "Cari berdasarkan alamat, nama atau identitas",
+        "noFoundRecords": "Tidak ada catatan yang ditemukan",
+        "noContacts": "Anda belum menambahkan kontak apa pun",
+        "addContact": "Tambah kontak",
+        "dialogTitle": "Kontak Anda",
+        "identity": "Identitas dalam rantai",
+        "none": "Tidak ada",
+        "detected": "Alamat baru terdeteksi",
+        "save": "Simpan sebagai kontak",
+        "tooltip": "Kumpulkan buku alamat dengan memberikan nama dan alamat agar kontak Anda tetap teratur dan terkini",
+        "notSoraAddress": "Alamat ini akan disimpan sebagai alamat SORA di bawah ini. Pastikan penerima dapat mengakses rantai SORA:",
+        "options": {
+            "send": "Kirim token",
+            "edit": "Mengedit kontak",
+            "delete": "Menghapus"
+        },
+        "btn": {
+            "enterName": "Masukkan nama",
+            "present": "Sudah hadir",
+            "saveChanges": "Simpan perubahan"
+        }
+    },
+    "browserPermission": {
+        "title": "Izinkan akses kamera di setelan browser",
+        "desc": "Untuk memastikan keaslian dokumen dan memvalidasi identitas pengguna untuk verifikasi KYC, diperlukan akses ke kamera perangkat Anda.",
+        "disclaimer": "Akses kamera diperlukan untuk pengambilan dokumen secara real-time untuk mencegah penipuan.",
+        "btnGoToSettings": "Pergi ke pengaturan",
+        "btnAllow": "Izinkan akses"
+    },
+    "continueText": "Melanjutkan"
 }

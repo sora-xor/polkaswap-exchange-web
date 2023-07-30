@@ -7,23 +7,29 @@ import { bridgeGetterContext } from '@/store/bridge';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
-import ethersUtil from '@/utils/ethers-util';
 
 import type { BridgeState } from './types';
-import type { IBridgeTransaction, CodecString, RegisteredAccountAsset } from '@sora-substrate/util';
+import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 const getters = defineGetters<BridgeState>()({
   asset(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = bridgeGetterContext(args);
-    const token = rootGetters.assets.assetDataByAddress(state.assetAddress);
-    const balance = state.assetBalance;
+    const { assetAddress, assetSenderBalance: sender, assetRecipientBalance: recipient, isSoraToEvm } = state;
+    const token = rootGetters.assets.assetDataByAddress(assetAddress);
 
-    if (balance) {
-      return { ...token, balance } as RegisteredAccountAsset;
-    }
+    if (!token) return null;
+    // to save old logic, pass sender & recipient balances
+    const [balance, externalBalance] = isSoraToEvm ? [sender, recipient] : [recipient, sender];
+    const asset = {
+      ...token,
+      balance: { transferable: balance },
+      externalBalance,
+    } as RegisteredAccountAsset;
 
-    return token;
+    return asset;
   },
+
   isRegisteredAsset(...args): boolean {
     const { getters, rootState } = bridgeGetterContext(args);
 
@@ -47,7 +53,7 @@ const getters = defineGetters<BridgeState>()({
     return state.isSoraToEvm ? rootState.wallet.account.address : rootState.web3.evmAddress;
   },
 
-  recepient(...args): string {
+  recipient(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
 
     if (getters.isSubBridge) return rootState.web3.subAddress;
@@ -85,14 +91,15 @@ const getters = defineGetters<BridgeState>()({
     const { getters, rootState } = bridgeGetterContext(args);
     return rootState.wallet.settings.networkFees[getters.operation] ?? ZeroStringValue;
   },
-  evmNetworkFee(...args): CodecString {
+  // fee for transaction execution
+  externalNetworkFee(...args): CodecString {
     const { state, getters } = bridgeGetterContext(args);
 
     if (getters.isEthBridge) {
-      return state.evmNetworkFee;
+      return state.externalNetworkFee;
     } else {
       // In direction SORA -> EVM evm network fee is 0
-      return !state.isSoraToEvm ? state.evmNetworkFee : ZeroStringValue;
+      return !state.isSoraToEvm ? state.externalNetworkFee : ZeroStringValue;
     }
   },
   history(...args): Record<string, IBridgeTransaction> {
@@ -114,15 +121,7 @@ const getters = defineGetters<BridgeState>()({
 
     return getters.history[state.historyId] ?? null;
   },
-  // TODO [EVM] check usage after EVM-SORA flow
-  isTxEvmAccount(...args): boolean {
-    const { getters, rootState } = bridgeGetterContext(args);
 
-    const historyAddress = getters.historyItem?.to;
-    const currentAddress = rootState.web3.evmAddress;
-
-    return !historyAddress || ethersUtil.addressesAreEqual(historyAddress, currentAddress);
-  },
   bridgeApi(...args): typeof ethBridgeApi | typeof evmBridgeApi | typeof subBridgeApi {
     const { getters } = bridgeGetterContext(args);
 

@@ -1,6 +1,6 @@
 {
   "name": "polkaswap-exchange-web",
-  "version": "1.17.0",
+  "version": "1.18.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/sora-xor/polkaswap-exchange-web.git"
@@ -19,7 +19,7 @@
     "test:unit": "vue-cli-service test:unit --testPathIgnorePatterns Translation.spec.ts",
     "test:translation": "vue-cli-service test:unit -- Translation.spec.ts",
     "test:e2e": "vue-cli-service test:e2e",
-    "test:all": "yarn test:unit"
+    "test:all": "yarn test:unit --coverage"
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
@@ -95,7 +95,7 @@
   "resolutions": {
     "@polkadot/extension-dapp": "^0.44.7",
     "@polkadot/extension-inject": "^0.44.7",
-    "@polkadot/util": "^10.2.1",
+    "@polkadot/util": "^10.4.2",
     "ipfs-unixfs": "6.0.6",
     "ipfs-unixfs-exporter": "7.0.6",
     "ipfs-unixfs-importer": "9.0.6"

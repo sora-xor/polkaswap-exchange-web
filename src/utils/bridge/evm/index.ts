@@ -22,15 +22,12 @@ const evmBridge: EvmBridge = new Bridge({
     [Operation.EvmIncoming]: EvmBridgeIncomingReducer,
     [Operation.EvmOutgoing]: EvmBridgeOutgoingReducer,
   },
-  signExternal: {
-    [Operation.EvmIncoming]: async (id: string) => {},
-    [Operation.EvmOutgoing]: async (id: string) => {},
-  },
-  signSora: {
-    [Operation.EvmOutgoing]: async (id: string) => store.dispatch.bridge.signEvmBridgeOutgoingSora(id),
-  },
   // states
   boundaryStates: {
+    [Operation.EvmIncoming]: {
+      done: BridgeTxStatus.Done,
+      failed: [BridgeTxStatus.Failed],
+    },
     [Operation.EvmOutgoing]: {
       done: BridgeTxStatus.Done,
       failed: [BridgeTxStatus.Failed],
@@ -48,6 +45,8 @@ const evmBridge: EvmBridge = new Bridge({
   getActiveTransaction: () => store.getters.bridge.historyItem as EvmHistory,
   addTransactionToProgress: (id: string) => store.commit.bridge.addTxIdInProgress(id),
   removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
+  // transaction signing
+  beforeTransactionSign: () => store.dispatch.wallet.transactions.beforeTransactionSign(),
   // custom
   removeTransactionByHash: (options: { tx: Partial<EvmHistory>; force: boolean }) =>
     store.dispatch.bridge.removeHistory(options),

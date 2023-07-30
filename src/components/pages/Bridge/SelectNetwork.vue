@@ -22,8 +22,8 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { action, getter, mutation, state } from '@/store/decorators';
-import type { NetworkData } from '@/types/bridge';
+import { action, mutation, state } from '@/store/decorators';
+import type { AvailableNetwork } from '@/store/web3/types';
 
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
@@ -47,11 +47,6 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
   @state.web3.networkSelected private networkSelected!: Nullable<BridgeNetworkId>;
   @state.web3.selectNetworkDialogVisibility private selectNetworkDialogVisibility!: boolean;
 
-  @getter.web3.availableNetworks availableNetworks!: Record<
-    BridgeNetworkType,
-    { disabled: boolean; data: NetworkData }[]
-  >;
-
   @mutation.web3.setNetworkType private setNetworkType!: (networkType: BridgeNetworkType) => void;
   @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
@@ -67,17 +62,23 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
 
   get networks(): NetworkItem[] {
     return Object.entries(this.availableNetworks)
-      .map(([type, networks]) => {
-        return networks.map(({ disabled, data: { id, name } }) => {
+      .map(([type, record]) => {
+        const networks = Object.values(record) as AvailableNetwork[];
+
+        return networks.reduce<NetworkItem[]>((buffer, { available, disabled, data: { id, name } }) => {
           const networkName = type === BridgeNetworkType.EvmLegacy ? `${name} (${this.t('hashiBridgeText')})` : name;
 
-          return {
-            id,
-            value: `${type}-${id}`,
-            name: networkName,
-            disabled,
-          };
-        });
+          if (available) {
+            buffer.push({
+              id,
+              value: `${type}-${id}`,
+              name: networkName,
+              disabled,
+            });
+          }
+
+          return buffer;
+        }, []);
       })
       .flat(1)
       .sort((a, b) => {

@@ -33,6 +33,8 @@ export default {
   selectIndexerText: 'Select indexer',
   bridgeText: 'Bridge',
   acceptText: 'Accept & Hide',
+  continueText: 'Continue',
+  acceptOnSctollText: 'Scroll to accept',
   comingSoonText: 'Coming Soon',
   releaseNotesText: 'Release notes',
   memorandum: '{AppName} Memorandum and Terms of Services',
@@ -339,6 +341,8 @@ export default {
     transactionMessage: '{firstToken} and {secondToken}',
     confirm: 'Confirm',
     ok: 'OK',
+    lossWarning:
+      "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair.",
   },
   swap: {
     connectWallet: '@:connectWalletText',
@@ -714,7 +718,7 @@ export default {
   },
   confirmNextTxFailure: {
     header: 'Attention',
-    info: 'Your XOR balance will be less than {fee} XOR after this transaction. You won’t be able to pay for the network fee for another transaction.',
+    info: 'Your {symbol} balance will be less than {fee} {symbol} after this transaction. You won’t be able to pay for the network fee for another transaction.',
     payoff:
       'You would have to use the Bridge to get XOR from other networks, get sent XOR from another {Sora} account, or swap any other token already in your account into XOR.',
     button: 'Yes, I understand the risk',
@@ -849,4 +853,11 @@ export default {
       'Token velocity is the number of times token changes accounts during period (month) on average. It indicates the level of trading activity and liquidity.',
   },
   networkStatisticsText: 'Network statistics',
+  browserPermission: {
+    title: 'Allow camera access in browser settings',
+    desc: "To ensure the authenticity of documents and validate user identity for KYC verification, access to your device's camera is required.",
+    disclaimer: 'Camera access is required for real-time document capture to prevent fraud.',
+    btnGoToSettings: 'Go to settings',
+    btnAllow: 'Allow access',
+  },
 };

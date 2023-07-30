@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transakcja została złożona.",
         "transactionMessage": "{firstToken} i {secondToken}",
         "ok": "OK",
-        "confirm": "Potwierdź"
+        "confirm": "Potwierdź",
+        "lossWarning": "Stracisz {value}% na swojej transakcji. Wykryliśmy problem z zapewnieniem płynności. Może to prowadzić do znacznych strat podczas wymiany tokenów. Upewnij się, że dostępna jest odpowiednia płynność dla wybranej pary swapowej."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +866,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Uwaga",
-        "info": "Po tej transakcji Twoje saldo w walucie XOR będzie mniejsze niż {fee} XOR. Nie będziesz w stanie uiścić opłaty sieciowej za kolejną transakcję.",
+        "info": "Twoje saldo {symbol} będzie mniejsze niż {fee} {symbol} po tej transakcji. Nie będziesz w stanie opłacić opłaty sieciowej za kolejną transakcję.",
         "payoff": "Będziesz musiał użyć mostu, aby uzyskać XOR z innych sieci, wysłać XOR z innego konta sieci {Sora} lub zamienić dowolny token, znajdujący się już na Twoim koncie, na XOR.",
         "button": "Tak, rozumiem ryzyko."
     },
@@ -1181,13 +1182,11 @@
     "stepText": "Krok",
     "alerts": {
         "drop": "Krople poniżej",
-        "raise": "Podnosi powyżej",
         "once": "Raz",
         "always": "Zawsze",
         "edit": "Edytuj alert",
         "delete": "Usuń alert",
         "onDropDesc": "{token} spada poniżej {price}",
-        "onRaiseDesc": "{token} podnosi powyżej {price}",
         "alertsTitle": "Alerty",
         "alertsCreateTitle": "Ustaw alert cenowy",
         "alertsTooltip": "Alerty cenowe to powiadomienia, które możesz ustawić, aby otrzymywać aktualizacje, gdy cena określonego tokena osiągnie określony przez Ciebie punkt",
@@ -1195,12 +1194,58 @@
         "enableSwitch": "Włącz powiadomienia o depozytach aktywów",
         "currentPrice": "aktualna cena",
         "alertTypeTitle": "Typ alertu",
-        "typeTooltip": "Wybierz opcję „spada poniżej” lub „podbija powyżej”, aby określić warunek alertu do śledzenia ważnych ruchów cen. Opcje te umożliwiają otrzymywanie na czas powiadomień, gdy wartość aktywów spadnie poniżej lub wzrośnie powyżej wyznaczonego progu",
         "alertFrequencyTitle": "Częstotliwość alertów",
         "frequencyTooltip": "Wybierz pomiędzy „raz” a „zawsze”, aby określić, jak często będziesz otrzymywać powiadomienia dla wybranego typu alertu. „Raz” wyśle pojedyncze powiadomienie, gdy warunek zostanie spełniony, a „zawsze” będzie nadal powiadamiać Cię za każdym razem, gdy próg cenowy zostanie przekroczony",
         "noSupportMsg": "Twoja przeglądarka nie obsługuje powiadomień",
-        "finishBtn": "Ukończyć"
+        "finishBtn": "Ukończyć",
+        "raise": "Wznosi się ponad",
+        "onRaiseDesc": "{token} wzrasta powyżej {price}",
+        "typeTooltip": "Wybierz opcję „spada poniżej” lub „wzrasta powyżej”, aby określić warunek alertu do śledzenia ważnych ruchów cen. Opcje te umożliwiają otrzymywanie na czas powiadomień, gdy wartość aktywów spadnie poniżej lub wzrośnie powyżej wyznaczonego progu"
     },
     "accountAddressText": "Adres konta",
-    "fiatDisclaimer": "Należy pamiętać, że wartości fiducjarne związane z kryptowalutami na naszej stronie dostarczane przez zewnętrzne usługi (Subquery, Subsquid, Ceres API) są przybliżone. Biorąc pod uwagę naturalną złożoność tych obliczeń, nie można zagwarantować absolutnej precyzji przez cały czas."
+    "fiatDisclaimer": "Należy pamiętać, że wartości fiducjarne związane z kryptowalutami na naszej stronie dostarczane przez zewnętrzne usługi (Subquery, Subsquid, Ceres API) są przybliżone. Biorąc pod uwagę naturalną złożoność tych obliczeń, nie można zagwarantować absolutnej precyzji przez cały czas.",
+    "fiatPayment": {
+        "historyBtn": "Moje zakupy",
+        "historyTitle": "Historia transakcji",
+        "moonpayTitle": "Kup ETH przez MoonPay",
+        "moonpayDesc": "Kup tokeny ETH na Ethereum i przenieś je do sieci SORA przez most",
+        "x1Title": "Kup XOR za pomocą swojej karty",
+        "x1Desc": "Kup tokeny XOR za pomocą karty debetowej lub kredytowej",
+        "x1Btn": "Kup XOR z kartą",
+        "errorMessage": "Przepraszam za utrudnienia. Intensywnie pracujemy nad rozwiązaniem tego problemu. Spróbuj ponownie później."
+    },
+    "acceptOnScrollText": "Przewiń, aby zaakceptować",
+    "addressBook": {
+        "myExtAccounts": "Moje konta rozszerzeń",
+        "myBook": "Moja książka",
+        "searchPlaceholder": "Szukaj według adresu, nazwiska lub tożsamości",
+        "noFoundRecords": "Nic nie znaleziono",
+        "noContacts": "Nie masz jeszcze dodanych żadnych kontaktów",
+        "addContact": "Dodaj kontakt",
+        "dialogTitle": "Twoje kontakty",
+        "identity": "Tożsamość w łańcuchu",
+        "none": "Nic",
+        "detected": "Wykryto nowy adres",
+        "save": "Zapisz jako kontakt",
+        "tooltip": "Zbierz książkę adresową, podając imię i nazwisko oraz adres, aby uporządkować i aktualizować kontakty",
+        "notSoraAddress": "Ten adres zostanie zapisany jako adres SORA poniżej. Upewnij się, że odbiorca ma dostęp do łańcucha SORA:",
+        "options": {
+            "send": "Wyślij tokeny",
+            "edit": "Edytuj kontakt",
+            "delete": "Usuwać"
+        },
+        "btn": {
+            "enterName": "Wprowadź imię",
+            "present": "Już obecny",
+            "saveChanges": "Zapisz zmiany"
+        }
+    },
+    "browserPermission": {
+        "title": "Zezwól na dostęp do aparatu w ustawieniach przeglądarki",
+        "desc": "Aby zapewnić autentyczność dokumentów i zweryfikować tożsamość użytkownika na potrzeby weryfikacji KYC, wymagany jest dostęp do aparatu urządzenia.",
+        "disclaimer": "Dostęp do aparatu jest wymagany do przechwytywania dokumentów w czasie rzeczywistym w celu zapobiegania oszustwom.",
+        "btnGoToSettings": "Przejdź do ustawień",
+        "btnAllow": "Umożliwić dostęp"
+    },
+    "continueText": "Kontynuować"
 }

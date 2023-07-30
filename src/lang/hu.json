@@ -483,7 +483,8 @@
         "transactionSubmitted": "Tranzakció elküldve",
         "transactionMessage": "{firstToken} és {secondToken}",
         "ok": "Rendben",
-        "confirm": "Megerősítés"
+        "confirm": "Megerősítés",
+        "lossWarning": "{value}%-ot fog veszíteni a kereskedésében. Likviditásellátási problémát észleltünk. Ez jelentős veszteségekhez vezethet a token-csere során. Kérjük, gondoskodjon megfelelő likviditásról a kívánt swappárhoz."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -865,7 +866,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Figyelem",
-        "info": "Az XOR egyenlege a tranzakció után kevesebb lesz, mint {fee} XOR. Nem tudja fizetni a hálózati díjat egy másik tranzakcióért.",
+        "info": "A tranzakciót követően az Ön {symbol} egyenlege kevesebb lesz, mint {fee} {symbol} . Egy másik tranzakció esetén nem tudja fizetni a hálózati díjat.",
         "payoff": "A Híd segítségével XOR-t kell kapnia más hálózatokról, XOR-t kell küldenie egy másik {Sora}-fiókból, vagy bármely más, már a fiókjában lévő tokent XOR-ba kell cserélnie.",
         "button": "Igen, megértem a kockázatot"
     },
@@ -1181,13 +1182,11 @@
     "stepText": "Lépés",
     "alerts": {
         "drop": "Alul leesik",
-        "raise": "Feljebb emelkedik",
         "once": "Egyszer",
         "always": "Mindig",
         "edit": "Figyelmeztetés szerkesztése",
         "delete": "Figyelmeztetés törlése",
         "onDropDesc": "{token} {price} alá esik",
-        "onRaiseDesc": "{token} {price} fölé emel",
         "alertsTitle": "Figyelmeztetések",
         "alertsCreateTitle": "Árriasztás beállítása",
         "alertsTooltip": "Az árriasztások olyan értesítések, amelyeket Ön beállíthat, hogy frissítéseket kapjon, amikor egy adott token ára elér egy meghatározott pontot",
@@ -1195,12 +1194,58 @@
         "enableSwitch": "Eszközbefizetési értesítések engedélyezése",
         "currentPrice": "jelenlegi ár",
         "alertTypeTitle": "Figyelmeztetés típusa",
-        "typeTooltip": "Válassza az „alul csökken” vagy a „feljebb emelkedik” opciót, ha figyelmeztetési feltételt szeretne megadni a fontos ármozgások nyomon követéséhez. Ezek az opciók lehetővé teszik, hogy időben értesítést kapjon, ha az eszköz értéke a kijelölt küszöb alá esik vagy fölé emelkedik.",
         "alertFrequencyTitle": "Riasztási gyakoriság",
         "frequencyTooltip": "Válassza az „egyszer” és a „mindig” lehetőséget annak meghatározásához, hogy milyen gyakran kap értesítést a kiválasztott riasztástípusról. Az „Egyszer” egyetlen értesítést küld, ha a feltétel teljesül, míg az „always” továbbra is értesít minden alkalommal, amikor az árküszöböt átlépi.",
         "noSupportMsg": "Az Ön böngészője nem támogatja az értesítéseket",
-        "finishBtn": "Teljesíteni"
+        "finishBtn": "Teljesíteni",
+        "raise": "Feljebb emelkedik",
+        "onRaiseDesc": "{token} {price} fölé emelkedik",
+        "typeTooltip": "Válassza az „alul csökken” vagy a „feljebb emelkedik” opciót, ha figyelmeztetési feltételt szeretne megadni a fontos ármozgások nyomon követéséhez. Ezek a lehetőségek lehetővé teszik, hogy időben értesítést kapjon, ha az eszköz értéke a kijelölt küszöb alá csökken vagy fölé emelkedik."
     },
     "accountAddressText": "Fiók címe",
-    "fiatDisclaimer": "Felhívjuk figyelmét, hogy a weboldalunkon a kriptovalutákhoz társított fiat értékeket külső szolgáltatások (Subquery, Subsquid, Ceres API) biztosítják, hozzávetőlegesek. Tekintettel ezeknek a számításoknak a bonyolultságára, nem garantálható a mindenkori abszolút pontosság."
+    "fiatDisclaimer": "Felhívjuk figyelmét, hogy a weboldalunkon a kriptovalutákhoz társított fiat értékeket külső szolgáltatások (Subquery, Subsquid, Ceres API) biztosítják, hozzávetőlegesek. Tekintettel ezeknek a számításoknak a bonyolultságára, nem garantálható a mindenkori abszolút pontosság.",
+    "fiatPayment": {
+        "historyBtn": "Vásárlásaim",
+        "historyTitle": "Tranzakciós előzmények",
+        "moonpayTitle": "Vásároljon ETH-t a MoonPay-en keresztül",
+        "moonpayDesc": "Vásároljon ETH tokeneket az Ethereumon, és vigye át őket a hídon keresztül a SORA hálózatba",
+        "x1Title": "Vásároljon XOR-t a kártyájával",
+        "x1Desc": "Vásároljon XOR tokeneket bankkártyájával vagy hitelkártyájával",
+        "x1Btn": "Vásároljon XOR-t kártyával",
+        "errorMessage": "Elnézést a kellemetlenségért. Szorgalmasan dolgozunk ennek megoldásán. Kérlek, próbáld újra később."
+    },
+    "acceptOnScrollText": "Görgessen az elfogadáshoz",
+    "addressBook": {
+        "myExtAccounts": "Kiterjesztési fiókjaim",
+        "myBook": "Könyvem",
+        "searchPlaceholder": "Keresés cím, név vagy személyazonosság alapján",
+        "noFoundRecords": "Nincs találat",
+        "noContacts": "Még nincsenek hozzáadott névjegyei",
+        "addContact": "Kapcsolat hozzáadása",
+        "dialogTitle": "Az Ön névjegyei",
+        "identity": "Láncon belüli identitás",
+        "none": "Egyik sem",
+        "detected": "Új cím észlelve",
+        "save": "Mentés névjegyként",
+        "tooltip": "Név és cím megadásával gyűjtse össze a címjegyzéket, hogy névjegyeit rendszerezve és naprakészen tartsa",
+        "notSoraAddress": "Ezt a címet a rendszer SORA-címként menti alább. Győződjön meg arról, hogy a címzett hozzáfér a SORA-lánchoz:",
+        "options": {
+            "send": "Tokeneket küldeni",
+            "edit": "Kapcsolat szerkesztése",
+            "delete": "Töröl"
+        },
+        "btn": {
+            "enterName": "Írja be a nevet",
+            "present": "Már jelen van",
+            "saveChanges": "Változtatások mentése"
+        }
+    },
+    "browserPermission": {
+        "title": "A kamera hozzáférésének engedélyezése a böngésző beállításaiban",
+        "desc": "A dokumentumok hitelességének biztosításához és a felhasználói személyazonosság érvényesítéséhez a KYC-ellenőrzéshez hozzáférésre van szükség az eszköz kamerájához.",
+        "disclaimer": "A valós idejű dokumentumrögzítéshez kamera-hozzáférés szükséges a csalás megelőzése érdekében.",
+        "btnGoToSettings": "Menj a beállításokhoz",
+        "btnAllow": "Hozzáférést enged"
+    },
+    "continueText": "Folytatni"
 }

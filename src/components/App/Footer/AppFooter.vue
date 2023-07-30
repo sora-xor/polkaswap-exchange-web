@@ -13,7 +13,7 @@
     >
       <template #label>
         <span>{{ t('selectNodeConnected') }}</span>
-        <span>{{ node.chain }}</span>
+        <span>{{ node.name }}</span>
       </template>
       <template>
         <span>{{ node.address }}</span>

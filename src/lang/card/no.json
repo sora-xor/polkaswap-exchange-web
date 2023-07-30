@@ -19,7 +19,6 @@
         "getSoraCardBtn": "Få SORA-kort gratis",
         "bridgeTokensBtn": "Brotegn",
         "depositX1Btn": "Kjøp XOR",
-        "getSoraCardDesc": "Fyll på SORA-kortet ditt med fiat eller krypto og betal på nett, i butikk eller ta ut penger i en minibank. Skaff deg en Euro IBAN-konto og et Mastercard-debetkort",
         "reIssuanceFee": "€0 årlig gjenutstedelsesgebyr",
         "freeStartDesc": "{value} av XOR på kontoen din for gratis start",
         "completeKYC": "Fullfør KYC",
@@ -57,6 +56,8 @@
         "unsupportedCountriesDisclaimer": "Innbyggere fra enkelte land kan ikke søke om SORA-kort for øyeblikket",
         "statusRejectReason": "Grunn til avvisning",
         "userNotFound": "Finner ikke mobilnummer, sjekk det på nytt og prøv på nytt.",
-        "code": "Kode"
+        "code": "Kode",
+        "getSoraCardDesc": "Få en Euro IBAN-konto og Mastercard-debetkort tilgjengelig i SORA-lommeboken din",
+        "emailSpamReminder": "Det kan ta flere minutter før e-posten kommer. Vennligst bekreft søppelpostmappen din hvis du ikke har mottatt e-posten etter 5 minutter."
     }
 }
