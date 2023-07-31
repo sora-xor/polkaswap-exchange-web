@@ -17,7 +17,7 @@ const getSoraProxyEndpoints = (soraNetwork: string) => {
     referenceNumberEndpoint: 'https://backend.sora-card.odachi.soramitsu.co.jp/get-reference-number',
     lastKycStatusEndpoint: 'https://backend.sora-card.odachi.soramitsu.co.jp/kyc-last-status',
     kycAttemptCountEndpoint: 'https://backend.sora-card.odachi.soramitsu.co.jp/kyc-attempt-count',
-    priceOracleEndpoint: 'https://backend.dev.sora-card.tachi.soramitsu.co.jp/prices/xor_euro',
+    priceOracleEndpoint: 'https://backend.sora-card.odachi.soramitsu.co.jp/prices/xor_euro',
     newAccessTokenEndpoint: 'https://api-auth.soracard.com/RequestNewAccessToken',
   };
 
