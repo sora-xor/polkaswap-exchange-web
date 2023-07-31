@@ -7,8 +7,9 @@
           <div>TOKEN PAIR</div>
           <div class="order-book-choose-btn">
             <div class="order-book-pair-name">
-              <pair-token-logo :first-token="tokenFrom" :second-token="tokenTo" />
+              <pair-token-logo :first-token="baseAsset" :second-token="quoteAsset" />
               <span>XOR-ETH</span>
+              <s-icon name="arrows-swap-90-24" />
             </div>
             <s-icon :name="icon" class="order-book-choose-btn-icon" />
           </div>
@@ -23,31 +24,32 @@
     </el-popover>
 
     <s-tabs class="order-book-tab" v-model="currentTypeTab" type="rounded" @click="handleTabClick">
-      <s-tab v-for="tab in OrderBookTabs" :key="tab" :label="t(`orderBook.${tab}`)" :name="tab" />
+      <s-tab><span slot="label">Limit</span></s-tab>
+      <s-tab><span slot="label">Market</span></s-tab>
+      <!-- <s-tab v-for="tab in OrderBookTabs" :key="tab" :label="t(`orderBook.${tab}`)" :name="tab" /> -->
     </s-tabs>
 
-    <!-- <token-input
-      :balance="getTokenBalance(tokenFrom)"
+    <token-input
+      :balance="getTokenBalance(baseAsset)"
       :is-max-available="false"
       :title="'Limit price'"
-      :token="tokenFrom"
-      :value="fromValue"
+      :token="baseAsset"
+      :value="baseValue"
       @input="handleInputFieldFrom"
       class="order-book-input"
     />
 
     <token-input
-      :balance="getTokenBalance(tokenFrom)"
+      :balance="getTokenBalance(quoteAsset)"
       :is-max-available="isMaxSwapAvailable"
       :title="'Amount'"
-      :token="tokenTo"
-      :value="toValue"
+      :token="quoteAsset"
+      :value="quoteValue"
       @input="handleInputFieldFrom"
       @focus="handleFocusField(false)"
       @max="handleMaxValue"
-      @select="openSelectTokenDialog(true)"
       class="order-book-input"
-    /> -->
+    />
 
     <s-button type="primary" class="buy-btn s-typography-button--medium" @click="handleConfirm">
       <span> {{ t(buttonText) }}</span>
@@ -57,13 +59,14 @@
 </template>
 
 <script lang="ts">
+import { FPNumber, Operation } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
 import { OrderBookTabs } from '@/types/tabs';
 import {
   isMaxButtonAvailable,
@@ -87,11 +90,16 @@ import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/type
   },
 })
 export default class LimitOrderBuy extends Mixins(TranslationMixin) {
+  @state.orderBook.baseValue baseValue!: string;
+  @state.orderBook.quoteValue quoteValue!: string;
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.orderBook.baseAsset baseAsset!: AccountAsset;
+  @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
 
   currentTypeTab: OrderBookTabs = OrderBookTabs.Limit;
-  tokenFrom = '';
-  tokenTo = '';
+
   isSelectPairOpen = false;
 
   readonly OrderBookTabs = OrderBookTabs;
@@ -101,7 +109,7 @@ export default class LimitOrderBuy extends Mixins(TranslationMixin) {
       return 'connectWalletText';
     }
 
-    return 'buy xst';
+    return `Buy ${this.baseAsset.symbol}`;
   }
 
   get icon(): string {
@@ -112,8 +120,13 @@ export default class LimitOrderBuy extends Mixins(TranslationMixin) {
     return getAssetBalance(token);
   }
 
+  get networkFee(): CodecString {
+    // TODO: change to Operation.OrderBook(Buy/Sell)
+    return this.networkFees[Operation.Swap];
+  }
+
   handleMaxValue(): void {
-    const max = getMaxValue(this.tokenFrom, this.networkFee);
+    const max = getMaxValue(this.baseAsset, this.networkFee);
 
     this.handleInputFieldFrom(max);
   }
@@ -123,7 +136,7 @@ export default class LimitOrderBuy extends Mixins(TranslationMixin) {
   }
 
   get isMaxSwapAvailable(): boolean {
-    if (!(this.tokenFrom && this.tokenTo)) return false;
+    if (!(this.baseAsset && this.quoteAsset)) return false;
     return (
       this.isLoggedIn &&
       isMaxButtonAvailable(

@@ -16,8 +16,8 @@ const orderBook = defineModule({
   actions,
 });
 
-const soraCardGetterContext = (args: [any, any, any, any]) => localGetterContext(args, Module.OrderBook, orderBook);
-const soraCardActionContext = (context: any) => localActionContext(context, Module.OrderBook, orderBook);
+const orderBookGetterContext = (args: [any, any, any, any]) => localGetterContext(args, Module.OrderBook, orderBook);
+const orderBookActionContext = (context: any) => localActionContext(context, Module.OrderBook, orderBook);
 
-export { soraCardActionContext, soraCardGetterContext };
+export { orderBookActionContext, orderBookGetterContext };
 export default orderBook;

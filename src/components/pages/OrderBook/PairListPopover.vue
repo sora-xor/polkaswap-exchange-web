@@ -63,8 +63,14 @@ import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class PairListPopover extends Mixins(TranslationMixin) {
+  @getter.orderBook.orderBooks orderBooks: any;
+
   get tableItems() {
-    return [{}, {}];
+    return [{ 1: 1 }, { 2: 2 }];
+  }
+
+  mounted(): void {
+    console.log('orderBooks', this.orderBooks);
   }
 }
 </script>
