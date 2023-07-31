@@ -46,6 +46,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
+import { delay } from '@/utils';
 import { soraCard, getUpdatedJwtPair } from '@/utils/card';
 
 type WindowInjectedWeb3 = typeof window & {
@@ -60,7 +61,7 @@ type WindowInjectedWeb3 = typeof window & {
 
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin, mixins.CameraPermissionMixin) {
-  @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.wallet.account.source private source!: WALLET_CONSTS.AppWallet;
 
   @Prop({ default: '', type: String }) readonly accessToken!: string;
@@ -69,8 +70,15 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
   btnLoading = false;
   cameraPermission: Nullable<PermissionState> = null;
 
+  private async waitForSoraNetworkFromEnv(): Promise<WALLET_CONSTS.SoraNetwork> {
+    if (this.soraNetwork) return this.soraNetwork;
+    await delay(250); // TODO: avoid delays in user flow
+    return this.waitForSoraNetworkFromEnv();
+  }
+
   async getReferenceNumber(URL: string): Promise<string | undefined> {
-    const { kycService } = soraCard(this.soraNetwork);
+    const soraNetwork = await this.waitForSoraNetworkFromEnv();
+    const { kycService } = soraCard(soraNetwork);
     const token = localStorage.getItem('PW-token');
 
     try {
@@ -148,8 +156,8 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
 
   async initKyc(): Promise<void> {
     this.updateJwtPairByInterval();
-
-    const { kycService, soraProxy } = soraCard(this.soraNetwork);
+    const soraNetwork = await this.waitForSoraNetworkFromEnv();
+    const { kycService, soraProxy } = soraCard(soraNetwork);
 
     const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
 
@@ -241,6 +249,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
       if (!this.hasCameraAccess) return;
     } catch (error) {
       console.error('[SoraCard]: Camera error.', error);
+      return;
     }
 
     this.initKyc();
