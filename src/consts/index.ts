@@ -154,7 +154,7 @@ export enum Components {
   SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
   AppFooter = 'App/Footer/AppFooter',
   AppDisclaimer = 'App/Header/AppDisclaimer',
-  Statistics = 'App/Footer/Statistics',
+  SelectIndexer = 'App/Footer/Indexer/SelectIndexer',
   StatisticsDialog = 'App/Footer/StatisticsDialog',
   SelectNodeDialog = 'App/Footer/SelectNodeDialog',
   SelectNode = 'App/Footer/Node/SelectNode',

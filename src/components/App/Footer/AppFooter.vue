@@ -81,7 +81,7 @@ const MAX_INTERNET_CONNECTION_LIMIT = 10;
     FooterPopper,
     NoInternetDialog,
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
-    StatisticsDialog: lazyComponent(Components.Statistics),
+    StatisticsDialog: lazyComponent(Components.StatisticsDialog),
   },
 })
 export default class AppFooter extends Mixins(TranslationMixin) {

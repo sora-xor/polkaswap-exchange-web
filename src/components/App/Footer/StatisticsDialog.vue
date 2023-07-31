@@ -1,6 +1,6 @@
 <template>
   <dialog-base :visible.sync="visibility" :title="t('footer.statistics.dialog.title')" class="select-indexer-dialog">
-    <statistics
+    <select-indexer
       v-model="selectedIndexerType"
       :ceres-api="useCeresApi"
       :indexers="indexers"
@@ -25,7 +25,7 @@ const IndexerInfoView = 'IndexerInfoView';
 @Component({
   components: {
     DialogBase: components.DialogBase,
-    Statistics: lazyComponent(Components.Statistics),
+    SelectIndexer: lazyComponent(Components.SelectIndexer),
     IndexerInfo: lazyComponent(Components.IndexerInfo),
   },
 })
