@@ -102,7 +102,6 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
 
   async loadX1(): Promise<void> {
     try {
-      console.info('this.X1Widget.sdkUrl', this.X1Widget.sdkUrl);
       await ScriptLoader.load(this.X1Widget.sdkUrl, false);
     } catch {
       this.showErrorInfoBanner = true;
@@ -113,7 +112,7 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   }
 
   unloadX1(): void {
-    // ScriptLoader.unload(this.X1Widget.sdkUrl, false);
+    ScriptLoader.unload(this.X1Widget.sdkUrl, false).catch(() => {});
   }
 }
 </script>
