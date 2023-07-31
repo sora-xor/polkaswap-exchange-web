@@ -7,7 +7,9 @@ import { ethers } from 'ethers';
 
 import { MaxUint256, ZeroStringValue } from '@/consts';
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
+import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
+import { FocusedField } from '@/store/bridge/types';
 import { waitForEvmTransactionMined, findUserTxIdInBlock } from '@/utils/bridge/common/utils';
 import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
@@ -128,7 +130,8 @@ function bridgeDataToHistoryItem(
 
   return {
     type: (params as any).type ?? getters.operation,
-    amount: (params as any).amount ?? state.amount,
+    amount: (params as any).amount ?? state.amountSend,
+    amount2: (params as any).amount2 ?? state.amountReceived,
     symbol: (params as any).symbol ?? getters.asset?.symbol,
     assetAddress: (params as any).assetAddress ?? getters.asset?.address,
     startTime: date,
@@ -137,7 +140,7 @@ function bridgeDataToHistoryItem(
     hash: '',
     transactionState,
     soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
-    externalNetworkFee: (params as any).evmNetworkFee ?? getters.evmNetworkFee,
+    externalNetworkFee: (params as any).externalNetworkFee ?? getters.externalNetworkFee,
     externalNetwork,
     externalNetworkType,
     to: (params as any).to ?? rootGetters.web3.externalAccount,
@@ -170,6 +173,16 @@ async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void>
   }
 
   commit.setExternalNetworkFee(fee);
+}
+
+async function getExternalNetworkFee(context: ActionContext<any, any>): Promise<void> {
+  const { getters } = bridgeActionContext(context);
+
+  if (getters.isSubBridge) {
+    await getSubNetworkFee(context);
+  } else {
+    await getEvmNetworkFee(context);
+  }
 }
 
 async function updateEvmBalances(context: ActionContext<any, any>): Promise<void> {
@@ -369,14 +382,66 @@ async function updateBridgeProxyLockedBalance(context: ActionContext<any, any>):
   commit.setAssetLockedBalance();
 }
 
+async function getExternalTransferFee(context: ActionContext<any, any>): Promise<void> {
+  const { commit, getters, state, rootState } = bridgeActionContext(context);
+
+  let fee = ZeroStringValue;
+
+  if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
+    const externalNetwork = rootState.web3.networkSelected as SubNetwork;
+    const direction = state.isSoraToEvm ? BridgeTxDirection.Outgoing : BridgeTxDirection.Incoming;
+    const symbol = getters.asset.symbol;
+
+    fee = SUB_TRANSFER_FEES[externalNetwork]?.[symbol]?.[direction] ?? ZeroStringValue;
+  }
+
+  commit.setExternalTransferFee(fee);
+}
+
 const actions = defineActions({
+  setSendedAmount(context, value?: string) {
+    const { commit, state, getters } = bridgeActionContext(context);
+
+    commit.setFocusedField(FocusedField.Sended);
+    commit.setAmountSend(value);
+
+    if (value) {
+      const sended = new FPNumber(value);
+      const fee = FPNumber.fromCodecValue(state.externalTransferFee, getters.asset?.externalDecimals);
+      const expected = sended.sub(fee);
+      const received = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+
+      commit.setAmountReceived(received.toString());
+    } else {
+      commit.setAmountReceived();
+    }
+  },
+
+  setReceivedAmount(context, value?: string) {
+    const { commit, state, getters } = bridgeActionContext(context);
+
+    commit.setFocusedField(FocusedField.Received);
+    commit.setAmountReceived(value);
+
+    if (value) {
+      const received = new FPNumber(value);
+      const fee = FPNumber.fromCodecValue(state.externalTransferFee, getters.asset?.externalDecimals);
+      const expected = received.add(fee);
+      const sended = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+
+      commit.setAmountSend(sended.toString());
+    } else {
+      commit.setAmountSend();
+    }
+  },
+
   async updateBalancesAndFees(context): Promise<void> {
     const { dispatch } = bridgeActionContext(context);
 
     await Promise.all([
       dispatch.updateExternalBalance(),
       dispatch.updateExternalLockedBalance(),
-      dispatch.getExternalNetworkFee(),
+      dispatch.updateExternalFees(),
     ]);
   },
 
@@ -388,6 +453,12 @@ const actions = defineActions({
     commit.setAssetRecipientBalance();
 
     await dispatch.updateBalancesAndFees();
+
+    if (state.focusedField === FocusedField.Received) {
+      await dispatch.setSendedAmount(state.amountReceived);
+    } else {
+      await dispatch.setReceivedAmount(state.amountSend);
+    }
   },
 
   async setAssetAddress(context, address?: string): Promise<void> {
@@ -400,16 +471,12 @@ const actions = defineActions({
     await dispatch.updateBalancesAndFees();
   },
 
-  async getExternalNetworkFee(context): Promise<void> {
-    const { commit, getters } = bridgeActionContext(context);
+  async updateExternalFees(context): Promise<void> {
+    const { commit } = bridgeActionContext(context);
 
     commit.setExternalNetworkFeeFetching(true);
 
-    if (getters.isSubBridge) {
-      await getSubNetworkFee(context);
-    } else {
-      await getEvmNetworkFee(context);
-    }
+    await Promise.all([getExternalNetworkFee(context), getExternalTransferFee(context)]);
 
     commit.setExternalNetworkFeeFetching(false);
   },

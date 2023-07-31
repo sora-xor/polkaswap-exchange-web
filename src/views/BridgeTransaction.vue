@@ -79,7 +79,7 @@
         is-formatted
         :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', externalNetworkId)"
         :value="txExternalNetworkFeeFormatted"
-        :asset-symbol="evmTokenSymbol"
+        :asset-symbol="nativeTokenSymbol"
       >
         <template v-if="txExternalNetworkFeeFormatted" #info-line-value-prefix>
           <span class="info-line-value-prefix">~</span>
@@ -160,7 +160,7 @@
           t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR })
         }}</template>
         <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
-          t('insufficientBalanceText', { tokenSymbol: evmTokenSymbol })
+          t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol })
         }}</template>
         <template v-else-if="isInsufficientLiquidity">
           {{ t('swap.insufficientLiquidity') }}
@@ -321,11 +321,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txExternalNetworkFee(): CodecString {
-    const externalNetworkFee = FPNumber.fromCodecValue(this.historyItem?.externalNetworkFee ?? this.evmNetworkFee);
-    const xcmFee = FPNumber.fromCodecValue((this.historyItem as SubHistory)?.parachainNetworkFee ?? ZeroStringValue);
-    const fee = externalNetworkFee.add(xcmFee);
-
-    return fee.toCodecString();
+    return this.historyItem?.externalNetworkFee ?? this.externalNetworkFee;
   }
 
   get txExternalNetworkFeeFormatted(): string {
