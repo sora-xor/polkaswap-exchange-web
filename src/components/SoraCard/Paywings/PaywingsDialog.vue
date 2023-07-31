@@ -30,11 +30,11 @@ export default class PaywingsDialog extends Mixins(mixins.DialogMixin, mixins.Lo
   }
 
   private loadPaywings(): void {
-    ScriptLoader.load('https://checkout.paywings.io/HostedFields/custom/js/client.min.js', false);
+    // ScriptLoader.load('https://checkout.paywings.io/HostedFields/custom/js/client.min.js', false);
   }
 
   private unloadPaywings(): void {
-    ScriptLoader.unload('https://checkout.paywings.io/HostedFields/custom/js/client.min.js', false);
+    // ScriptLoader.unload('https://checkout.paywings.io/HostedFields/custom/js/client.min.js', false);
   }
 }
 </script>
