@@ -59,7 +59,7 @@ import { X1Api, X1Widget } from '@/utils/x1';
 })
 export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingMixin, mixins.TranslationMixin) {
   @state.soraCard.euroBalance private euroBalance!: string;
-  @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @getter.soraCard.accountAddress accountAddress!: string;
 
   X1Widget: X1Widget = { sdkUrl: '', widgetId: '' };
@@ -74,6 +74,14 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
       this.unloadX1();
       this.loadingX1 = true;
     }
+  }
+
+  @Watch('soraNetwork', { immediate: true })
+  private checkEnvCongig(value: Nullable<WALLET_CONSTS.SoraNetwork>): void {
+    if (!value) {
+      return; // if env config is not loaded
+    }
+    this.X1Widget = X1Api.getWidget(value);
   }
 
   get restEuroToDeposit(): number {
@@ -106,12 +114,6 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
 
   unloadX1(): void {
     // ScriptLoader.unload(this.X1Widget.sdkUrl, false);
-  }
-
-  mounted(): void {
-    console.info('soraNetwork:', this.soraNetwork);
-    console.info('X1Api.getWidget(this.soraNetwork)', X1Api.getWidget(this.soraNetwork));
-    this.X1Widget = X1Api.getWidget(this.soraNetwork);
   }
 }
 </script>
