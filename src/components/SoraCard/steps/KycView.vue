@@ -103,7 +103,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
 
       return data.ReferenceNumber;
     } catch (data) {
-      console.error('[SoraCard]: Error while initiating KYC', data);
+      console.error('[SoraCard]: Error while getting reference number', data);
 
       this.showAppNotification(this.t('card.infoMessageTryAgain'));
       this.$emit('confirm-kyc', false);
