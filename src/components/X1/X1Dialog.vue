@@ -81,6 +81,7 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
     if (!value) {
       return; // if env config is not loaded
     }
+    console.info('value', value);
     this.X1Widget = X1Api.getWidget(value);
   }
 

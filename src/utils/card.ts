@@ -85,6 +85,7 @@ async function getUserStatus(accessToken: string): Promise<Status> {
   const soraNetwork = store.state.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
 
   console.info('soraNetwork', soraNetwork);
+  console.info('endpoint', getSoraProxyEndpoints(soraNetwork).lastKycStatusEndpoint);
 
   try {
     const result = await fetch(getSoraProxyEndpoints(soraNetwork).lastKycStatusEndpoint, {
