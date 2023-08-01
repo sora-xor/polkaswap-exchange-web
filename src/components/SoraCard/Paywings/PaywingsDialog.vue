@@ -10,7 +10,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import { getter, state } from '@/store/decorators';
 
-// TODO: Set up widget for payment
+// TODO: [CARD] Set up widget for payment
 @Component({
   components: {
     DialogBase: components.DialogBase,
