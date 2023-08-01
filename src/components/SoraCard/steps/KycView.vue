@@ -164,8 +164,9 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
             // document.getElementById('finish')!.style.display = 'block';
           });
       })
-      .catch(() => {
+      .catch((error) => {
         // Failed to fetch script
+        console.error('[SoraCard]: Error while fetching script', error);
       });
     setTimeout(() => {
       this.loadingKycView = false;
