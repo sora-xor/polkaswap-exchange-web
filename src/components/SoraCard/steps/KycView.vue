@@ -100,7 +100,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
       });
 
       const data = await result.json();
-
+      console.info('referenceNumber got:', data.ReferenceNumber);
       return data.ReferenceNumber;
     } catch (data) {
       console.error('[SoraCard]: Error while getting reference number', data);

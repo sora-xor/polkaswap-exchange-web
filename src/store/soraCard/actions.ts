@@ -77,8 +77,8 @@ const actions = defineActions({
     const soraNetwork = rootState.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
     const { authService } = soraCard(soraNetwork);
 
-    await ScriptLoader.unload(authService.sdkURL, true).catch(() => {});
-    await ScriptLoader.load(authService.sdkURL, true).catch(() => {});
+    await ScriptLoader.unload(authService.sdkURL, false).catch(() => {});
+    await ScriptLoader.load(authService.sdkURL, false).catch(() => {});
 
     // TODO: annotate via TS main calls
     // @ts-expect-error no undefined
