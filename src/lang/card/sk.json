@@ -57,7 +57,7 @@
         "statusRejectReason": "Dôvod odmietnutia",
         "userNotFound": "Nenašlo sa žiadne mobilné číslo, skontrolujte ho a skúste to znova.",
         "code": "kód",
-        "getSoraCardDesc": "Získajte účet v mene Euro IBAN a debetnú kartu Mastercard, ktoré sú dostupné vo vašej peňaženke SORA",
+        "getSoraCardDesc": "Získajte účet v mene Euro IBAN a debetnú kartu, ktoré sú dostupné vo vašej peňaženke SORA",
         "emailSpamReminder": "Doručenie e-mailu môže trvať niekoľko minút. Ak ste e-mail nedostali do 5 minút, overte si priečinok so spamom."
     }
 }

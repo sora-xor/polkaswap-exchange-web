@@ -57,7 +57,7 @@
         "statusRejectReason": "Elutasítás oka",
         "userNotFound": "Nem található mobilszám. Kérjük, ellenőrizze újra, és próbálja újra.",
         "code": "Kód",
-        "getSoraCardDesc": "Szerezzen be Euro IBAN számlát és Mastercard Betéti kártyát, amely elérhető SORA pénztárcáján belül",
+        "getSoraCardDesc": "Szerezzen be egy Euro IBAN számlát és bankkártyát, amely elérhető a SORA Walleton belül",
         "emailSpamReminder": "Az e-mail megérkezése több percig is eltarthat. Kérjük, ellenőrizze a spam mappát, ha 5 percen belül nem kapta meg az e-mailt."
     }
 }
