@@ -57,7 +57,7 @@
         "statusRejectReason": "Motif de rejet",
         "userNotFound": "Aucun numéro de portable trouvé, veuillez le revérifier et réessayer.",
         "code": "Code",
-        "getSoraCardDesc": "Obtenez un IBAN en compte Euros ainsi qu'un carte de débit Mastercard connectés à votre portefeuille SORA",
+        "getSoraCardDesc": "Obtenez un IBAN en compte Euros ainsi qu'un carte de débit connectés à votre portefeuille SORA",
         "emailSpamReminder": "L'e-mail peut mettre plusieurs minutes à arriver. Veuillez vérifier votre dossier spam si vous n'avez pas reçu l'e-mail après 5 minutes."
     }
 }

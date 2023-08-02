@@ -46,6 +46,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
+import { delay, waitForSoraNetworkFromEnv } from '@/utils';
 import { soraCard, getUpdatedJwtPair } from '@/utils/card';
 
 type WindowInjectedWeb3 = typeof window & {
@@ -60,7 +61,7 @@ type WindowInjectedWeb3 = typeof window & {
 
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin, mixins.CameraPermissionMixin) {
-  @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
+  @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.wallet.account.source private source!: WALLET_CONSTS.AppWallet;
 
   @Prop({ default: '', type: String }) readonly accessToken!: string;
@@ -70,7 +71,8 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
   cameraPermission: Nullable<PermissionState> = null;
 
   async getReferenceNumber(URL: string): Promise<string | undefined> {
-    const { kycService } = soraCard(this.soraNetwork);
+    const soraNetwork = this.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+    const { kycService } = soraCard(soraNetwork);
     const token = localStorage.getItem('PW-token');
 
     try {
@@ -92,10 +94,9 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
       });
 
       const data = await result.json();
-
       return data.ReferenceNumber;
     } catch (data) {
-      console.error('[SoraCard]: Error while initiating KYC', data);
+      console.error('[SoraCard]: Error while getting reference number', data);
 
       this.showAppNotification(this.t('card.infoMessageTryAgain'));
       this.$emit('confirm-kyc', false);
@@ -147,9 +148,9 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
   }
 
   async initKyc(): Promise<void> {
+    const soraNetwork = this.soraNetwork ?? (await waitForSoraNetworkFromEnv());
     this.updateJwtPairByInterval();
-
-    const { kycService, soraProxy } = soraCard(this.soraNetwork);
+    const { kycService, soraProxy } = soraCard(soraNetwork);
 
     const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
 
@@ -241,6 +242,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
       if (!this.hasCameraAccess) return;
     } catch (error) {
       console.error('[SoraCard]: Camera error.', error);
+      return;
     }
 
     this.initKyc();

@@ -57,7 +57,7 @@
         "statusRejectReason": "Motivo de rechazo",
         "userNotFound": "No se ha encontrado ningún número de móvil, vuelva a comprobarlo e inténtelo de nuevo.",
         "code": "Código",
-        "getSoraCardDesc": "Consigue una cuenta Euro IBAN y Tarjeta de Débito Mastercard conectadas a tu billetera SORA",
+        "getSoraCardDesc": "Consigue una cuenta Euro IBAN y Tarjeta de Débito conectadas a tu billetera SORA",
         "emailSpamReminder": "El correo electrónico puede tardar varios minutos en llegar. Verifique su carpeta de correo no deseado si no ha recibido el correo electrónico después de 5 minutos."
     }
 }

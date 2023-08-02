@@ -57,7 +57,7 @@
         "statusRejectReason": "拒绝原因",
         "userNotFound": "未找到手机号码，请重新检查并重试。",
         "code": "代码",
-        "getSoraCardDesc": "在您的SORA钱包中获取一个欧元IBAN账户和可访问的Mastercard借记卡",
+        "getSoraCardDesc": "获取可在 SORA 钱包中访问的欧元 IBAN 帐户和借记卡",
         "emailSpamReminder": "电子邮件可能需要几分钟才能到达。如果 5 分钟后仍未收到电子邮件，请验证您的垃圾邮件文件夹。"
     }
 }

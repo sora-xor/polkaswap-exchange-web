@@ -31,7 +31,7 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
     this.updateSubscriptions();
   }
 
-  // [TODO]
+  // TODO: [TECH]
   // We need subscription management
   // when every subscription have own unsubscribe call, which is not stored in vuex
   // to change this hook to beforeDestroy

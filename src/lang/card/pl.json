@@ -57,7 +57,7 @@
         "statusRejectReason": "Powód odrzucenia",
         "userNotFound": "Nie znaleziono numeru telefonu komórkowego, sprawdź go ponownie i spróbuj ponownie.",
         "code": "Kod",
-        "getSoraCardDesc": "Uzyskaj dostęp do konta Euro IBAN i karty debetowej Mastercard w swoim portfelu SORA",
+        "getSoraCardDesc": "Uzyskaj dostęp do konta Euro IBAN i karty debetowej w swoim portfelu SORA",
         "emailSpamReminder": "Dostarczenie wiadomości e-mail może zająć kilka minut. Sprawdź folder ze spamem, jeśli nie otrzymałeś e-maila po 5 minutach."
     }
 }
