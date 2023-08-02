@@ -53,28 +53,25 @@ const KycServiceData = {
   },
 };
 
-type ConfigLike = {
-  [WALLET_CONSTS.SoraNetwork.Test]: any;
-  [WALLET_CONSTS.SoraNetwork.Prod]: any;
-};
-
-function getConfig(obj: ConfigLike, soraNetwork: WALLET_CONSTS.SoraNetwork) {
-  if (soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) {
-    return obj.Prod;
-  }
-  return obj.Test;
-}
-
 function getSoraProxyEndpoints(soraNetwork: WALLET_CONSTS.SoraNetwork) {
-  return getConfig(SoraProxyEndpoints, soraNetwork);
+  if (soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) {
+    return SoraProxyEndpoints.Prod;
+  }
+  return SoraProxyEndpoints.Test;
 }
 
 function getAuthServiceData(soraNetwork: WALLET_CONSTS.SoraNetwork) {
-  return getConfig(AuthServiceData, soraNetwork);
+  if (soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) {
+    return AuthServiceData.Prod;
+  }
+  return AuthServiceData.Test;
 }
 
 function getKycServiceData(soraNetwork: WALLET_CONSTS.SoraNetwork) {
-  return getConfig(KycServiceData, soraNetwork);
+  if (soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) {
+    return KycServiceData.Prod;
+  }
+  return KycServiceData.Test;
 }
 
 // Defines user's KYC status.
