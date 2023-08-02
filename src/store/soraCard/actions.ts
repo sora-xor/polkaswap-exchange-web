@@ -1,12 +1,12 @@
 import { FPNumber } from '@sora-substrate/util';
-import { api, WALLET_CONSTS, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
+import { api, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
-import { Status } from '@/types/card';
-import { waitForAccountPair } from '@/utils';
+import { soraCardActionContext } from '@/store/soraCard';
+import { waitForAccountPair, waitForSoraNetworkFromEnv } from '@/utils';
 import { defineUserStatus, getXorPerEuroRatio, getFreeKycAttemptCount, soraCard } from '@/utils/card';
 
-import { soraCardActionContext } from './../soraCard';
+import type { Status } from '../../types/card';
 
 const actions = defineActions({
   calculateXorRestPrice(context, xorPerEuro: FPNumber): void {
@@ -74,13 +74,16 @@ const actions = defineActions({
 
   async initPayWingsAuthSdk(context): Promise<void> {
     const { commit, rootState } = soraCardActionContext(context);
-    const soraNetwork = rootState.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
+    let soraNetwork = rootState.wallet.settings.soraNetwork;
+    if (!soraNetwork) {
+      soraNetwork = await waitForSoraNetworkFromEnv();
+    }
     const { authService } = soraCard(soraNetwork);
 
     await ScriptLoader.unload(authService.sdkURL, false).catch(() => {});
     await ScriptLoader.load(authService.sdkURL, false).catch(() => {});
 
-    // TODO: annotate via TS main calls
+    // TODO: [CARD] annotate via TS main calls
     // @ts-expect-error no undefined
     const login = Paywings.WebSDK.create({
       Domain: 'soracard.com',

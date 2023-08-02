@@ -78,7 +78,6 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
 
   @Watch('soraNetwork', { immediate: true })
   private checkEnvConfig(value: Nullable<WALLET_CONSTS.SoraNetwork>): void {
-    console.info('checkEnvConfig value', value);
     if (!value) {
       return; // if env config is not loaded
     }
