@@ -206,6 +206,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         throw new Error('NETWORK_TYPE is not set');
       }
 
+      console.info('NETWORK_TYPE', data.NETWORK_TYPE);
+
       await this.setApiKeys(data?.API_KEYS);
       await this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
