@@ -7,8 +7,11 @@
       :disabled="loading"
       type="email"
     />
-    <p class="sora-card__email-input-description">{{ emailInputDescription }}</p>
-    <s-icon v-if="emailSent" name="basic-check-mark-24" size="16px" />
+    <p :class="computedClassEmail">{{ emailInputDescription }}</p>
+    <template v-if="emailSent">
+      <s-icon name="basic-check-mark-24" size="16px" />
+      <p v-if="emailSent" class="sora-card__email-input-description">{{ t('card.emailSpamReminder') }}</p>
+    </template>
     <div v-if="showNameInputs">
       <s-input
         class="sora-card__input-name"
@@ -105,6 +108,14 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   get emailInputDescription(): string {
     if (this.emailSent) return this.t('card.emailInputAfterSendDesc');
     return this.t('card.emailInputBeforeSendDesc');
+  }
+
+  get computedClassEmail(): string {
+    const base = ['sora-card__email-input-description'];
+
+    if (this.emailSent) base.push('sora-card__email-input-description--sent');
+
+    return base.join(' ');
   }
 
   get buttonText() {
@@ -214,6 +225,10 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
     line-height: var(--s-line-height-base);
     padding: var(--s-basic-spacing) var(--s-basic-spacing) calc(var(--s-basic-spacing) * 2)
       calc(var(--s-basic-spacing) * 1.5);
+
+    &--sent {
+      padding-bottom: 0;
+    }
   }
 
   &__btn {

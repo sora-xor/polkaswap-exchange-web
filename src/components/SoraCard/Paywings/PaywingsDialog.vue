@@ -10,7 +10,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import { getter, state } from '@/store/decorators';
 
-// TODO: Set up widget for payment
+// TODO: [CARD] Set up widget for payment
 @Component({
   components: {
     DialogBase: components.DialogBase,
@@ -30,11 +30,11 @@ export default class PaywingsDialog extends Mixins(mixins.DialogMixin, mixins.Lo
   }
 
   private loadPaywings(): void {
-    ScriptLoader.load('https://checkout.paywings.io/HostedFields/custom/js/client.min.js', false);
+    // ScriptLoader.load('https://checkout.paywings.io/HostedFields/custom/js/client.min.js', false);
   }
 
   private unloadPaywings(): void {
-    ScriptLoader.unload('https://checkout.paywings.io/HostedFields/custom/js/client.min.js', false);
+    // ScriptLoader.unload('https://checkout.paywings.io/HostedFields/custom/js/client.min.js', false);
   }
 }
 </script>

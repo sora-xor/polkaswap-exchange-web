@@ -1213,5 +1213,13 @@
         "x1Btn": "Kaufen Sie XOR mit Karte",
         "errorMessage": "Entschuldigung für die Unannehmlichkeiten. Wir arbeiten fleißig daran, dieses Problem zu lösen. Bitte versuchen Sie es später noch einmal."
     },
-    "acceptOnScrollText": "Scrollen Sie, um zu akzeptieren"
+    "acceptOnScrollText": "Scrollen Sie, um zu akzeptieren",
+    "browserPermission": {
+        "title": "Erlauben Sie den Kamerazugriff in den Browsereinstellungen",
+        "desc": "Um die Authentizität von Dokumenten sicherzustellen und die Benutzeridentität für die KYC-Überprüfung zu validieren, ist Zugriff auf die Kamera Ihres Geräts erforderlich.",
+        "disclaimer": "Für die Dokumentenerfassung in Echtzeit ist ein Kamerazugriff erforderlich, um Betrug zu verhindern.",
+        "btnGoToSettings": "Gehe zu den Einstellungen",
+        "btnAllow": "Erlauben den Zugriff"
+    },
+    "continueText": "Weitermachen"
 }

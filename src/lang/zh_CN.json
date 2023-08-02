@@ -1213,5 +1213,13 @@
         "x1Btn": "用卡买XOR",
         "errorMessage": "不便之处敬请原谅。我们正在努力解决这个问题。请稍后再试。"
     },
-    "acceptOnScrollText": "滚动接受"
+    "acceptOnScrollText": "滚动接受",
+    "browserPermission": {
+        "title": "在浏览器设置中允许相机访问",
+        "desc": "为了确保文档的真实性并验证用户身份以进行 KYC 验证，需要访问您设备的摄像头。",
+        "disclaimer": "实时文档捕获需要摄像头访问，以防止欺诈。",
+        "btnGoToSettings": "前往设置",
+        "btnAllow": "允许访问"
+    },
+    "continueText": "继续"
 }

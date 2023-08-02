@@ -1,7 +1,7 @@
 {
     "card": {
         "termsAndConditions": "Conditions d'utilisation",
-        "disclaimerCollectData": "Pour obtenir un compte IBAN nécessaire pour la carte SORA, les utilisateurs doivent se soumettre à un processus KYC avec l'émetteur de la carte. Il s'agit d'une conformité obligatoire. La communauté SORA ne collecte et ne collectera aucune de vos données personnelles.",
+        "disclaimerCollectData": "Pour obtenir un compte IBAN nécessaire pour la SORA Card, les utilisateurs doivent se soumettre à un processus KYC avec l'émetteur de la carte. Il s'agit d'une conformité obligatoire. La communauté SORA ne collecte et ne collectera aucune de vos données personnelles.",
         "privacyPolicy": "Politique de confidentialité",
         "acceptAndContinue": "Accepter et continuer",
         "emailPlaceholder": "E-mail",
@@ -14,9 +14,9 @@
         "statusAcceptText": "Votre vérification KYC a été validée et nous préparons déjà votre carte pour vous l'envoyer!",
         "noFreeKycTitle": "Nombre d'essais gratuits épuisé",
         "unsupportedCountries": "Pays non pris en charge",
-        "getSoraCardTitle": "Obtenir la carte SORA",
+        "getSoraCardTitle": "Obtenir la SORA Card",
         "alreadyAppliedTip": "J'ai déjà postulé",
-        "getSoraCardBtn": "Obtenez la carte SORA gratuitement",
+        "getSoraCardBtn": "Obtenez la SORA Card gratuitement",
         "bridgeTokensBtn": "Jetons de bridge",
         "depositX1Btn": "Acheter du XOR",
         "reIssuanceFee": "0 € de frais de réémission annuels",
@@ -53,10 +53,11 @@
         "noFreeAttemptsDesc": "Vous avez utilisé votre tentative gratuite pour réussir le processus de KYC. Nous vous prions de bien vouloir attendre la prochaine mise à jour de l'application pour procéder aux tentatives payantes",
         "retryKycBtn": "Complétez à nouveau la procédure de KYC",
         "unsupportedCountriesLink": "Voir la liste",
-        "unsupportedCountriesDisclaimer": "Les résidents de certains pays ne peuvent pas demander de carte SORA pour le moment",
+        "unsupportedCountriesDisclaimer": "Les résidents de certains pays ne peuvent pas accéder à SORA Card pour le moment",
         "statusRejectReason": "Motif de rejet",
         "userNotFound": "Aucun numéro de portable trouvé, veuillez le revérifier et réessayer.",
         "code": "Code",
-        "getSoraCardDesc": "Obtenez un IBAN en compte Euros ainsi qu'un carte de débit Mastercard connectés à votre portefeuille SORA"
+        "getSoraCardDesc": "Obtenez un IBAN en compte Euros ainsi qu'un carte de débit connectés à votre portefeuille SORA",
+        "emailSpamReminder": "L'e-mail peut mettre plusieurs minutes à arriver. Veuillez vérifier votre dossier spam si vous n'avez pas reçu l'e-mail après 5 minutes."
     }
 }

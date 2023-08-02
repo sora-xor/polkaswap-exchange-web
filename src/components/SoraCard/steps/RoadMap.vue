@@ -80,7 +80,7 @@ import { clearTokensFromLocalStorage } from '@/utils/card';
     NotificationEnablingPage: components.NotificationEnablingPage,
   },
 })
-export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.CameraPermissionMixin) {
+export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
@@ -100,14 +100,6 @@ export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixi
   permissionDialogVisibility = false;
 
   async handleConfirm(): Promise<void> {
-    try {
-      const mediaDevicesAllowance = await this.checkMediaDevicesAllowance('SoraCard');
-
-      if (!mediaDevicesAllowance) return;
-    } catch (error) {
-      console.error('[SoraCard]: Camera error.', error);
-    }
-
     this.$emit('confirm');
   }
 

@@ -1213,5 +1213,13 @@
         "x1Btn": "Köp XOR med kort",
         "errorMessage": "Ursäkta besväret. Vi arbetar hårt för att lösa detta. Vänligen försök igen senare."
     },
-    "acceptOnScrollText": "Bläddra för att acceptera"
+    "acceptOnScrollText": "Bläddra för att acceptera",
+    "browserPermission": {
+        "title": "Tillåt kameraåtkomst i webbläsarinställningarna",
+        "desc": "För att säkerställa äktheten av dokument och validera användaridentitet för KYC-verifiering krävs åtkomst till enhetens kamera.",
+        "disclaimer": "Kameraåtkomst krävs för att fånga dokument i realtid för att förhindra bedrägeri.",
+        "btnGoToSettings": "Gå till Inställningar",
+        "btnAllow": "Tillåta åtkomst"
+    },
+    "continueText": "Fortsätta"
 }
