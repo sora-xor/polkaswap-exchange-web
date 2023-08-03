@@ -51,7 +51,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
         await new Promise<void>((resolve) => {
           subscription = adapter.apiRx.query.system.blockHash(blockHeight).subscribe((hash) => {
             if (!hash.isEmpty) {
-              blockId = hash.toString();
+              txId = blockId = hash.toString();
               resolve();
             }
           });
@@ -502,7 +502,6 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
     let subscription!: Subscription;
     let blockNumber!: number;
-    let extrinsicIndex!: number;
     let amount!: string;
 
     try {
@@ -513,20 +512,17 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         const blockNumberObservable = this.subNetworkAdapter.apiRx.query.system.number();
 
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(([events, blockNum]) => {
-          const umpExecutedUpwardEvent = events.find((e) =>
-            this.subNetworkAdapter.api.events.ump.ExecutedUpward.is(e.event)
+          const messageQueueProcessedEvent = events.find((e) =>
+            this.subNetworkAdapter.api.events.messageQueue.Processed.is(e.event)
           );
 
-          if (!umpExecutedUpwardEvent) return;
+          if (!messageQueueProcessedEvent) return;
 
-          const [hash, status] = umpExecutedUpwardEvent.event.data;
+          const [hash] = messageQueueProcessedEvent.event.data;
 
           if (hash.toString() !== messageHash) return;
 
           blockNumber = blockNum.toNumber();
-          extrinsicIndex = umpExecutedUpwardEvent.phase.asApplyExtrinsic.toNumber();
-
-          if (!status.isComplete) throw new Error(`[${this.constructor.name}]: Transaction is incomplete`);
 
           // Native token for network
           const balancesDepositEvent = events.find(
@@ -547,7 +543,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       subscription.unsubscribe();
 
       // run blocking process promise
-      await this.getHashesByBlockNumber(this.subNetworkAdapter, blockNumber, extrinsicIndex)
+      await this.getHashesByBlockNumber(this.subNetworkAdapter, blockNumber)
         .then(({ blockHeight, blockId, txId }) =>
           this.updateTransactionParams(id, {
             externalBlockHeight: blockHeight, // parachain block number
