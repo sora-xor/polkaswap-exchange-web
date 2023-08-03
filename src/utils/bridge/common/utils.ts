@@ -77,12 +77,13 @@ export const getEvmTransactionRecieptByHash = async (
 };
 
 export const findUserTxIdInBlock = async (
+  api: ApiPromise,
   blockHash: string,
   soraHash: string,
   eventMethod: string,
   eventSection: string
 ): Promise<string | undefined> => {
-  const blockEvents = await api.system.getBlockEvents(blockHash);
+  const blockEvents = await getBlockEvents(api, blockHash);
 
   const event = blockEvents.find(
     ({ phase, event }) =>
@@ -95,7 +96,8 @@ export const findUserTxIdInBlock = async (
   if (!event) return undefined;
 
   const index = event.phase.asApplyExtrinsic.toNumber();
-  const extrinsics = await api.system.getExtrinsicsFromBlock(blockHash);
+  const signedBlock = await api.rpc.chain.getBlock(blockHash);
+  const extrinsics = signedBlock.block?.extrinsics.toArray() ?? [];
   const userExtrinsic = extrinsics[index];
 
   return userExtrinsic.hash.toString();

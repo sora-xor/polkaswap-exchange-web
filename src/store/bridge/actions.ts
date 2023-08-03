@@ -20,6 +20,7 @@ import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
+import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { SignTxResult } from './types';
@@ -75,18 +76,28 @@ async function evmTxDataToHistory(
   };
 }
 
-async function subTxDataToHistory(
-  assetDataByAddress: (address: string) => Nullable<RegisteredAccountAsset>,
-  tx: BridgeTransactionData
-): Promise<SubHistory> {
+async function subTxDataToHistory({
+  assetDataByAddress,
+  tx,
+  subNetworkAdapter,
+  soraParachainAdapter,
+}: {
+  assetDataByAddress: (address: string) => Nullable<RegisteredAccountAsset>;
+  tx: BridgeTransactionData;
+  subNetworkAdapter: SubAdapter;
+  soraParachainAdapter: SubAdapter;
+}): Promise<SubHistory> {
   const id = tx.soraHash;
   const asset = assetDataByAddress(tx.soraAssetAddress);
   const transactionState = tx.status;
   const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
+
+  const parachainBlockHeight = isOutgoing ? tx.endBlock : tx.startBlock;
+  const parachainBlockId = (await soraParachainAdapter.api.query.system.blockHash(parachainBlockHeight)).toString();
+
   const blockHeight = isOutgoing ? tx.startBlock : tx.endBlock;
-  const externalBlockHeight = isOutgoing ? tx.endBlock : tx.startBlock;
   const blockId = await api.system.getBlockHash(blockHeight);
-  const txId = await findUserTxIdInBlock(blockId, id, 'RequestStatusUpdate', 'bridgeProxy');
+  const txId = await findUserTxIdInBlock(subBridgeApi, blockId, id, 'RequestStatusUpdate', 'bridgeProxy');
   const startTime = await api.system.getBlockTimestamp(blockId);
 
   return {
@@ -275,26 +286,37 @@ async function updateSubHistory(context: ActionContext<any, any>): Promise<void>
 
   commit.setHistoryLoading(true);
 
+  const { assetDataByAddress } = rootGetters.assets;
   const accountAddress = rootState.wallet.account.address;
-  const transactions = await subBridgeApi.getUserTransactions(accountAddress, externalNetwork as SubNetwork);
+  const soraParachainNetwork = subBridgeApi.getSoraParachain(externalNetwork as SubNetwork);
+  const subNetworkAdapter = subConnector.getAdapterForNetwork(externalNetwork as SubNetwork);
+  const soraParachainAdapter = subConnector.getAdapterForNetwork(soraParachainNetwork);
   const internalHistory = getters.bridgeApi.historyList as IBridgeTransaction[];
+  const [transactions] = await Promise.all([
+    subBridgeApi.getUserTransactions(accountAddress, externalNetwork as SubNetwork),
+    subNetworkAdapter.connect(),
+    soraParachainAdapter.connect(),
+  ]);
 
-  for (const txData of transactions) {
-    const isInternal = internalHistory.find((item) => item.hash === txData.soraHash);
+  for (const tx of transactions) {
+    const isInternal = internalHistory.find((item) => item.hash === tx.soraHash);
 
     if (isInternal) continue;
 
-    const tx = await subTxDataToHistory(rootGetters.assets.assetDataByAddress, txData);
+    const history = await subTxDataToHistory({ assetDataByAddress, tx, subNetworkAdapter, soraParachainAdapter });
 
-    if (tx.id) {
-      const isInternal = internalHistory.find((item) => item.txId === tx.txId);
+    if (history.id) {
+      const isInternal = internalHistory.find((item) => item.txId === history.txId);
 
       if (!isInternal) {
-        subBridgeApi.saveHistory(tx);
+        subBridgeApi.saveHistory(history);
         dispatch.updateInternalHistory();
       }
     }
   }
+
+  subNetworkAdapter.stop();
+  soraParachainAdapter.stop();
 
   commit.setHistoryLoading(false);
 }
