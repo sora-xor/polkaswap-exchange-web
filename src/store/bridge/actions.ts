@@ -97,7 +97,8 @@ async function subTxDataToHistory({
 
   const blockHeight = isOutgoing ? tx.startBlock : tx.endBlock;
   const blockId = await api.system.getBlockHash(blockHeight);
-  const txId = await findUserTxIdInBlock(subBridgeApi, blockId, id, 'RequestStatusUpdate', 'bridgeProxy');
+  const txId = await findUserTxIdInBlock(subBridgeApi.api, blockId, id, 'RequestStatusUpdate', 'bridgeProxy');
+
   const startTime = await api.system.getBlockTimestamp(blockId);
 
   return {
@@ -108,7 +109,9 @@ async function subTxDataToHistory({
     type: isOutgoing ? Operation.SubstrateOutgoing : Operation.SubstrateIncoming,
     hash: tx.soraHash,
     transactionState,
-    externalBlockHeight,
+    parachainBlockHeight,
+    parachainBlockId,
+    // externalBlockHeight,
     externalNetwork: tx.externalNetwork as SubNetwork,
     externalNetworkType: BridgeNetworkType.Sub,
     // for now we don't know it

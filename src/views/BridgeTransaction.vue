@@ -336,12 +336,20 @@ export default class BridgeTransaction extends Mixins(
     return this.formatAddress(this.txSoraHash, FORMATTED_HASH_LENGTH);
   }
 
+  get txExternalBlockId(): string {
+    return this.historyItem?.externalBlockId ?? '';
+  }
+
   get txExternalHash(): string {
-    return this.historyItem?.externalHash ?? '';
+    return this.historyItem?.externalHash ?? this.txExternalBlockId;
   }
 
   get txExternalHashFormatted(): string {
     return this.formatAddress(this.txExternalHash, FORMATTED_HASH_LENGTH);
+  }
+
+  get txParachainBlockId(): string {
+    return (this.historyItem as SubHistory)?.parachainBlockId ?? '';
   }
 
   get txParachainHash(): string {
@@ -555,7 +563,7 @@ export default class BridgeTransaction extends Mixins(
       this.externalNetworkType,
       this.externalNetworkId,
       this.txExternalAccount,
-      this.historyItem?.externalBlockId,
+      this.txExternalBlockId,
       this.EvmLinkType.Account
     );
   }
@@ -567,7 +575,7 @@ export default class BridgeTransaction extends Mixins(
       this.externalNetworkType,
       this.parachainNetworkId,
       this.txParachainHash,
-      (this.historyItem as SubHistory)?.parachainBlockId,
+      this.txParachainBlockId,
       this.EvmLinkType.Transaction
     );
   }
@@ -579,7 +587,7 @@ export default class BridgeTransaction extends Mixins(
       this.externalNetworkType,
       this.externalNetworkId,
       this.txExternalHash,
-      this.historyItem?.externalBlockId,
+      this.txExternalBlockId,
       this.EvmLinkType.Transaction
     );
   }
