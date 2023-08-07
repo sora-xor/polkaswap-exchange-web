@@ -103,10 +103,10 @@
         <bridge-links-dropdown v-if="soraExplorerLinks.length" :links="soraExplorerLinks" />
       </div>
 
-      <div v-if="txParachainHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
+      <div v-if="txParachainBlockId" class="transaction-hash-container transaction-hash-container--with-dropdown">
         <s-input
-          :placeholder="getNetworkText('bridgeTransaction.transactionHash', parachainNetworkId)"
-          :value="txParachainHashFormatted"
+          :placeholder="getNetworkText('transaction.blockId', parachainNetworkId)"
+          :value="txParachainBlockIdFormatted"
           readonly
         />
         <s-button
@@ -115,7 +115,7 @@
           alternative
           icon="basic-copy-24"
           :tooltip="hashCopyTooltip"
-          @click="handleCopyAddress(txParachainHash, $event)"
+          @click="handleCopyAddress(txParachainBlockId, $event)"
         />
         <bridge-links-dropdown v-if="parachainExplorerLinks.length" :links="parachainExplorerLinks" />
       </div>
@@ -352,12 +352,8 @@ export default class BridgeTransaction extends Mixins(
     return (this.historyItem as SubHistory)?.parachainBlockId ?? '';
   }
 
-  get txParachainHash(): string {
-    return (this.historyItem as SubHistory)?.parachainHash ?? '';
-  }
-
-  get txParachainHashFormatted(): string {
-    return this.formatAddress(this.txParachainHash, FORMATTED_HASH_LENGTH);
+  get txParachainBlockIdFormatted(): string {
+    return this.formatAddress(this.txParachainBlockId, FORMATTED_HASH_LENGTH);
   }
 
   get txDate(): string {
@@ -574,7 +570,7 @@ export default class BridgeTransaction extends Mixins(
     return this.getNetworkExplorerLinks(
       this.externalNetworkType,
       this.parachainNetworkId,
-      this.txParachainHash,
+      this.txParachainBlockId,
       this.txParachainBlockId,
       this.EvmLinkType.Transaction
     );

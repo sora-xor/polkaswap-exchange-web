@@ -10,7 +10,7 @@ import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
 import { FocusedField } from '@/store/bridge/types';
-import { waitForEvmTransactionMined, findUserTxIdInBlock } from '@/utils/bridge/common/utils';
+import { waitForEvmTransactionMined, findUserTxIdInBlock, getBlockHash } from '@/utils/bridge/common/utils';
 import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
@@ -91,14 +91,17 @@ async function subTxDataToHistory({
   const asset = assetDataByAddress(tx.soraAssetAddress);
   const transactionState = tx.status;
   const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
-
-  const parachainBlockHeight = isOutgoing ? tx.endBlock : tx.startBlock;
-  const parachainBlockId = (await soraParachainAdapter.api.query.system.blockHash(parachainBlockHeight)).toString();
-
   const blockHeight = isOutgoing ? tx.startBlock : tx.endBlock;
-  const blockId = await api.system.getBlockHash(blockHeight);
-  const txId = await findUserTxIdInBlock(subBridgeApi.api, blockId, id, 'RequestStatusUpdate', 'bridgeProxy');
+  const parachainBlockHeight = isOutgoing ? tx.endBlock : tx.startBlock;
 
+  console.log(blockHeight, parachainBlockHeight);
+
+  const [blockId, parachainBlockId] = await Promise.all([
+    getBlockHash(subBridgeApi.api, blockHeight),
+    getBlockHash(soraParachainAdapter.api, parachainBlockHeight),
+  ]);
+
+  const txId = await findUserTxIdInBlock(subBridgeApi.api, blockId, id, 'RequestStatusUpdate', 'bridgeProxy');
   const startTime = await api.system.getBlockTimestamp(blockId);
 
   return {
@@ -109,8 +112,8 @@ async function subTxDataToHistory({
     type: isOutgoing ? Operation.SubstrateOutgoing : Operation.SubstrateIncoming,
     hash: tx.soraHash,
     transactionState,
-    parachainBlockHeight,
     parachainBlockId,
+    parachainBlockHeight,
     // externalBlockHeight,
     externalNetwork: tx.externalNetwork as SubNetwork,
     externalNetworkType: BridgeNetworkType.Sub,
@@ -295,33 +298,36 @@ async function updateSubHistory(context: ActionContext<any, any>): Promise<void>
   const subNetworkAdapter = subConnector.getAdapterForNetwork(externalNetwork as SubNetwork);
   const soraParachainAdapter = subConnector.getAdapterForNetwork(soraParachainNetwork);
   const internalHistory = getters.bridgeApi.historyList as IBridgeTransaction[];
-  const [transactions] = await Promise.all([
-    subBridgeApi.getUserTransactions(accountAddress, externalNetwork as SubNetwork),
-    subNetworkAdapter.connect(),
-    soraParachainAdapter.connect(),
-  ]);
 
-  for (const tx of transactions) {
-    const isInternal = internalHistory.find((item) => item.hash === tx.soraHash);
+  try {
+    const [transactions] = await Promise.all([
+      subBridgeApi.getUserTransactions(accountAddress, externalNetwork as SubNetwork),
+      subNetworkAdapter.connect(),
+      soraParachainAdapter.connect(),
+    ]);
 
-    if (isInternal) continue;
+    for (const tx of transactions) {
+      const isInternal = internalHistory.find((item) => item.hash === tx.soraHash);
 
-    const history = await subTxDataToHistory({ assetDataByAddress, tx, subNetworkAdapter, soraParachainAdapter });
+      if (isInternal) continue;
 
-    if (history.id) {
-      const isInternal = internalHistory.find((item) => item.txId === history.txId);
+      const history = await subTxDataToHistory({ assetDataByAddress, tx, subNetworkAdapter, soraParachainAdapter });
 
-      if (!isInternal) {
-        subBridgeApi.saveHistory(history);
-        dispatch.updateInternalHistory();
+      if (history.id) {
+        const isInternal = internalHistory.find((item) => item.txId === history.txId);
+
+        if (!isInternal) {
+          subBridgeApi.saveHistory(history);
+          dispatch.updateInternalHistory();
+        }
       }
     }
+  } finally {
+    subNetworkAdapter.stop();
+    soraParachainAdapter.stop();
+
+    commit.setHistoryLoading(false);
   }
-
-  subNetworkAdapter.stop();
-  soraParachainAdapter.stop();
-
-  commit.setHistoryLoading(false);
 }
 
 async function updateEthHistory(context: ActionContext<any, any>, clearHistory = false): Promise<void> {
