@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="order-book-widget" v-loading="loadingState">
     <div class="order-book-tabs">
       <s-tabs :value="currentTab" type="card" @input="handleChangeTab">
         <s-tab
@@ -10,35 +10,43 @@
         />
       </s-tabs>
     </div>
-
     <div>
-      <buy v-if="currentTab === LimitOrderTabsItems.buy" />
-      <sell v-else-if="currentTab === LimitOrderTabsItems.sell" />
+      <buy-sell />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, LimitOrderTabsItems } from '@/consts';
+import { Components, LimitOrderSide } from '@/consts';
 import { lazyComponent } from '@/router';
+import { getter, mutation, state } from '@/store/decorators';
 
 @Component({
   components: {
-    Buy: lazyComponent(Components.OrderBookBuy),
-    Sell: lazyComponent(Components.OrderBookSell),
+    BuySell: lazyComponent(Components.BuySell),
   },
 })
-export default class SetLimitOrder extends Mixins(TranslationMixin) {
-  readonly LimitOrderTabsItems = LimitOrderTabsItems;
+export default class SetLimitOrderWidget extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  @getter.orderBook.baseAsset baseAsset!: any;
+  @getter.orderBook.baseAsset quoteAsset!: any;
 
-  currentTab = LimitOrderTabsItems.buy;
+  @mutation.orderBook.setSide setSide!: (side: LimitOrderSide) => void;
 
-  handleChangeTab(tabName: LimitOrderTabsItems): void {
-    this.currentTab = tabName;
+  readonly LimitOrderTabsItems = LimitOrderSide;
+
+  currentTab = LimitOrderSide.buy;
+
+  get loadingState(): boolean {
+    return this.parentLoading || this.loading || !this.baseAsset || !this.quoteAsset;
+  }
+
+  handleChangeTab(side: LimitOrderSide): void {
+    this.currentTab = side;
+    this.setSide(side);
   }
 }
 </script>
@@ -47,6 +55,7 @@ export default class SetLimitOrder extends Mixins(TranslationMixin) {
 $book-tabs-height: 64px;
 
 .order-book-tabs {
+  border-radius: var(--s-border-radius-small);
   padding-top: 0;
   padding-right: 0;
   padding-left: 0;

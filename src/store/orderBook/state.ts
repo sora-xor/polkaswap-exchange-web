@@ -1,5 +1,7 @@
 import { XOR, ETH } from '@sora-substrate/util/build/assets/consts';
 
+import { LimitOrderSide } from '@/consts';
+
 import type { OrderBookState } from './types';
 
 function initialState(): OrderBookState {
@@ -10,6 +12,7 @@ function initialState(): OrderBookState {
     quoteAssetAddress: XOR.address,
     baseValue: '',
     quoteValue: '',
+    side: LimitOrderSide.buy,
   };
 }
 

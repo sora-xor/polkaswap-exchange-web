@@ -1,3 +1,5 @@
+import type { LimitOrderSide } from '@/consts';
+
 import type { Subscription } from 'rxjs';
 
 export type OrderBookState = {
@@ -7,4 +9,5 @@ export type OrderBookState = {
   quoteAssetAddress: Nullable<string>;
   baseValue: string;
   quoteValue: string;
+  side: LimitOrderSide;
 };

@@ -197,11 +197,13 @@ export enum Components {
   SwapTransactionDetails = 'pages/Swap/TransactionDetails',
   SwapSettings = 'pages/Swap/Settings/Settings',
   // Order Book
-  SetLimitOrder = 'pages/OrderBook/SetLimitOrder',
-  OrderBookBuy = 'pages/OrderBook/LimitOrderBuy',
-  OrderBookSell = 'pages/OrderBook/LimitOrderSell',
   BookTransactionDetails = 'pages/OrderBook/TransactionDetails',
-  PairListPopover = 'pages/OrderBook/PairListPopover',
+  SetLimitOrderWidget = 'pages/OrderBook/SetLimitOrderWidget',
+  HistoryOrderWidget = 'pages/OrderBook/HistoryOrderWidget',
+  BookChartsWidget = 'pages/OrderBook/BookChartsWidget',
+  BuySell = 'pages/OrderBook/BuySell',
+  DatePicker = 'pages/OrderBook/Popovers/DatePicker',
+  PairListPopover = 'pages/OrderBook/Popovers/PairListPopover',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
@@ -244,7 +246,7 @@ export enum Components {
   ChartSkeleton = 'shared/Chart/ChartSkeleton',
 }
 
-export enum LimitOrderTabsItems {
+export enum LimitOrderSide {
   buy = 'buy',
   sell = 'sell',
 }

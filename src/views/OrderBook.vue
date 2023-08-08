@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <set-limit-order />
+  <div class="order-book-widgets">
+    <set-limit-order-widget />
+    <history-order-widget />
+    <book-charts-widget />
   </div>
 </template>
 
@@ -14,10 +16,28 @@ import { lazyComponent } from '@/router';
 
 @Component({
   components: {
-    SetLimitOrder: lazyComponent(Components.SetLimitOrder),
+    SetLimitOrderWidget: lazyComponent(Components.SetLimitOrderWidget),
+    HistoryOrderWidget: lazyComponent(Components.HistoryOrderWidget),
+    BookChartsWidget: lazyComponent(Components.BookChartsWidget),
   },
 })
 export default class OrderBook extends Mixins(TranslationMixin) {}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.order-book {
+  &-widgets {
+    display: flex;
+    margin-left: calc($sidebar-max-width + 8px);
+  }
+
+  &-widget {
+    margin: 8px;
+    padding: unset;
+    background-color: var(--s-color-utility-surface);
+    box-shadow: var(--s-shadow-dialog);
+    color: var(--s-color-base-content-primary);
+    border-radius: var(--s-border-radius-small);
+  }
+}
+</style>

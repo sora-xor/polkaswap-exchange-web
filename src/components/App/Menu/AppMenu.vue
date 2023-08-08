@@ -352,6 +352,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       flex: 1;
       flex-flow: column nowrap;
       justify-content: space-between;
+      max-width: $sidebar-max-width;
     }
   }
 }

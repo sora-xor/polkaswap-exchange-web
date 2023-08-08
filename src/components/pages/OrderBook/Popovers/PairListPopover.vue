@@ -12,14 +12,9 @@
           <span>Token pair</span>
         </template>
         <template v-slot="{ row }">
-          <pair-token-logo
-            :first-token="row.baseAsset"
-            :second-token="row.targetAsset"
-            size="small"
-            class="explore-table-item-logo"
-          />
-          <div class="explore-table-item-info explore-table-item-info--body">
-            <div class="explore-table-item-name">{{ row.baseAsset.symbol }}-{{ row.quoteAsset.symbol }}</div>
+          <pair-token-logo :first-token="row.baseAsset" :second-token="row.targetAsset" size="small" />
+          <div>
+            <div>{{ row.pair }}</div>
           </div>
         </template>
       </s-table-column>
@@ -27,15 +22,32 @@
         <template #header>
           <span>Price</span>
         </template>
+        <template v-slot="{ row }">
+          <span>{{ row.price }}</span>
+        </template>
       </s-table-column>
       <s-table-column>
         <template #header>
           <span>Volume</span>
         </template>
+        <template v-slot="{ row }">
+          <span>{{ row.volume }}</span>
+        </template>
+      </s-table-column>
+      <s-table-column>
+        <template #header>
+          <span>Daily change</span>
+        </template>
+        <template v-slot="{ row }">
+          <span>{{ row.dailyChange }}</span>
+        </template>
       </s-table-column>
       <s-table-column>
         <template #header>
           <span>Status</span>
+        </template>
+        <template v-slot="{ row }">
+          <span>{{ row.status }}</span>
         </template>
       </s-table-column>
     </s-table>
@@ -63,10 +75,14 @@ import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class PairListPopover extends Mixins(TranslationMixin) {
-  @getter.orderBook.orderBooks orderBooks: any;
+  @state.orderBook.orderBooks orderBooks!: any;
 
   get tableItems() {
-    return [{ 1: 1 }, { 2: 2 }];
+    return [
+      { pair: 'XOR-XST', price: '50.12', dailyChange: '+34.30%', volume: '334,13.99', status: 'active' },
+      { pair: 'XOR-ETH', price: '43.1', dailyChange: '-80.01%', volume: '114,03.45', status: 'inactive' },
+      { pair: 'XOR-XST', price: '50.12', dailyChange: '+34.30%', volume: '334,13.99', status: 'active' },
+    ];
   }
 
   mounted(): void {
