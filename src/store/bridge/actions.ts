@@ -10,7 +10,12 @@ import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
 import { FocusedField } from '@/store/bridge/types';
-import { waitForEvmTransactionMined, findUserTxIdInBlock, getBlockHash } from '@/utils/bridge/common/utils';
+import {
+  waitForEvmTransactionMined,
+  findUserTxIdInBlock,
+  getBlockHash,
+  findEventInBlock,
+} from '@/utils/bridge/common/utils';
 import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory } from '@/utils/bridge/eth/history';
@@ -21,6 +26,7 @@ import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
+import { getRelayChainBlockNumber } from '@/utils/bridge/sub/utils';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { SignTxResult } from './types';
@@ -94,15 +100,53 @@ async function subTxDataToHistory({
   const blockHeight = isOutgoing ? tx.startBlock : tx.endBlock;
   const parachainBlockHeight = isOutgoing ? tx.endBlock : tx.startBlock;
 
-  console.log(blockHeight, parachainBlockHeight);
-
   const [blockId, parachainBlockId] = await Promise.all([
     getBlockHash(subBridgeApi.api, blockHeight),
     getBlockHash(soraParachainAdapter.api, parachainBlockHeight),
   ]);
 
-  const txId = await findUserTxIdInBlock(subBridgeApi.api, blockId, id, 'RequestStatusUpdate', 'bridgeProxy');
-  const startTime = await api.system.getBlockTimestamp(blockId);
+  const [txId, startTime] = await Promise.all([
+    findUserTxIdInBlock(subBridgeApi.api, blockId, id, 'RequestStatusUpdate', 'bridgeProxy'),
+    api.system.getBlockTimestamp(blockId),
+  ]);
+
+  let externalBlockHeight!: number;
+  let externalBlockId!: string;
+
+  if (isOutgoing) {
+    const [parachainEventData, relayChainBlockNumber] = await Promise.all([
+      findEventInBlock({
+        api: soraParachainAdapter.api,
+        blockId: parachainBlockId,
+        section: 'parachainSystem',
+        method: 'UpwardMessageSent',
+      }),
+      getRelayChainBlockNumber(soraParachainAdapter.api, parachainBlockId),
+    ]);
+    // sended parachain message hash
+    const messageHash = parachainEventData[0].toString();
+    // relay chain should have received message in this blocks range
+    for (let n = relayChainBlockNumber + 2; n <= n + 1; n++) {
+      try {
+        const blockId = await getBlockHash(subNetworkAdapter.api, n);
+        const eventData = await findEventInBlock({
+          api: subNetworkAdapter.api,
+          blockId,
+          section: 'messageQueue',
+          method: 'Processed',
+        });
+
+        const incomingHash = eventData[0].toString();
+
+        if (incomingHash === messageHash) {
+          externalBlockId = blockId;
+          externalBlockHeight = n;
+        }
+      } catch {
+        continue;
+      }
+    }
+  }
 
   return {
     id,
@@ -114,17 +158,15 @@ async function subTxDataToHistory({
     transactionState,
     parachainBlockId,
     parachainBlockHeight,
-    // externalBlockHeight,
+    externalBlockId,
+    externalBlockHeight,
     externalNetwork: tx.externalNetwork as SubNetwork,
     externalNetworkType: BridgeNetworkType.Sub,
-    // for now we don't know it
-    externalHash: '',
     amount: FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString(),
     assetAddress: asset?.address,
     symbol: asset?.symbol,
     from: tx.soraAccount,
     to: tx.externalAccount,
-    // for now we only know sora block, assume what this is start & end times
     startTime: startTime,
     endTime: startTime,
   };

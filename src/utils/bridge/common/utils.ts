@@ -1,5 +1,4 @@
 import { Operation, isBridgeOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/util';
-import { api } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
 import { isUnsignedTx as isUnsignedEthTx } from '@/utils/bridge/eth/utils';
