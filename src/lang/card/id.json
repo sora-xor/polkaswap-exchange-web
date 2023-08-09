@@ -57,6 +57,7 @@
         "statusRejectReason": "Alasan penolakan",
         "userNotFound": "Nomor ponsel tidak ditemukan, harap periksa kembali dan coba lagi.",
         "code": "Kode",
-        "getSoraCardDesc": "Dapatkan akun Euro IBAN dan Kartu Debit Mastercard yang dapat diakses di dalam SORA Wallet Anda"
+        "getSoraCardDesc": "Dapatkan akun Euro IBAN dan kartu debit yang dapat diakses di dalam SORA Wallet Anda",
+        "emailSpamReminder": "Email mungkin membutuhkan waktu beberapa menit untuk sampai. Harap verifikasi folder spam Anda jika Anda belum menerima email setelah 5 menit."
     }
 }

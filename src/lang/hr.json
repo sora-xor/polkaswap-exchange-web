@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transakcija je poslana",
         "transactionMessage": "{firstToken} i {secondToken}",
         "ok": "U redu",
-        "confirm": "Potvrdite"
+        "confirm": "Potvrdite",
+        "lossWarning": "Izgubit ćete {value}% na svojoj trgovini. Otkrili smo problem s pružanjem likvidnosti. To može dovesti do značajnih gubitaka tijekom zamjene tokena. Provjerite postoji li odgovarajuća likvidnost za vaš željeni swap par."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1213,5 +1214,38 @@
         "x1Btn": "Kupite XOR karticom",
         "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije."
     },
-    "acceptOnScrollText": "Pomaknite se za prihvaćanje"
+    "acceptOnScrollText": "Pomaknite se za prihvaćanje",
+    "addressBook": {
+        "myExtAccounts": "Moji računi proširenja",
+        "myBook": "Moja knjiga",
+        "searchPlaceholder": "Pretraživanje po adresi, imenu ili identitetu",
+        "noFoundRecords": "Nema pronađenih zapisa",
+        "noContacts": "Još nemate dodanih kontakata",
+        "addContact": "Dodaj kontakt",
+        "dialogTitle": "Vaši kontakti",
+        "identity": "Identitet na lancu",
+        "none": "Nijedan",
+        "detected": "Nova adresa otkrivena",
+        "save": "Spremi kao kontakt",
+        "tooltip": "Prikupite adresar unosom imena i adrese kako bi vaši kontakti bili organizirani i ažurni",
+        "notSoraAddress": "Ova adresa će biti spremljena kao SORA adresa ispod. Provjerite može li primatelj pristupiti SORA lancu:",
+        "options": {
+            "send": "Pošaljite tokene",
+            "edit": "Uredi kontakt",
+            "delete": "Izbrisati"
+        },
+        "btn": {
+            "enterName": "Unesite ime",
+            "present": "Već prisutan",
+            "saveChanges": "Spremi promjene"
+        }
+    },
+    "browserPermission": {
+        "title": "Dopustite pristup kameri u postavkama preglednika",
+        "desc": "Kako biste osigurali autentičnost dokumenata i potvrdili korisnički identitet za KYC provjeru, potreban je pristup kameri vašeg uređaja.",
+        "disclaimer": "Potreban je pristup kameri za snimanje dokumenata u stvarnom vremenu kako bi se spriječila prijevara.",
+        "btnGoToSettings": "Idite na postavke",
+        "btnAllow": "Dopusti pristup"
+    },
+    "continueText": "Nastaviti"
 }

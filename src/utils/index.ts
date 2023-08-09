@@ -1,20 +1,34 @@
 import { FPNumber, CodecString } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import debounce from 'lodash/debounce';
 
 import { app, ZeroStringValue } from '@/consts';
 import i18n from '@/lang';
 import router from '@/router';
-import type { AmountWithSuffix } from '@/types/formats';
+import store from '@/store';
 
 import storage from './storage';
 
+import type { AmountWithSuffix } from '../types/formats';
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 import type { Route } from 'vue-router';
 
 type AssetWithBalance = AccountAsset | AccountLiquidity | RegisteredAccountAsset;
+
+export async function waitForSoraNetworkFromEnv(): Promise<WALLET_CONSTS.SoraNetwork> {
+  return new Promise<WALLET_CONSTS.SoraNetwork>((resolve) => {
+    store.original.watch(
+      (state) => state.wallet.settings.soraNetwork,
+      (value) => {
+        if (value) {
+          resolve(value);
+        }
+      }
+    );
+  });
+}
 
 export const copyToClipboard = async (text: string): Promise<void> => {
   try {

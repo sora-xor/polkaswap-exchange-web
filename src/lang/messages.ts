@@ -32,6 +32,7 @@ export default {
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
   acceptText: 'Accept & Hide',
+  continueText: 'Continue',
   acceptOnSctollText: 'Scroll to accept',
   comingSoonText: 'Coming Soon',
   releaseNotesText: 'Release notes',
@@ -328,6 +329,8 @@ export default {
     transactionMessage: '{firstToken} and {secondToken}',
     confirm: 'Confirm',
     ok: 'OK',
+    lossWarning:
+      "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair.",
   },
   swap: {
     connectWallet: '@:connectWalletText',
@@ -838,4 +841,11 @@ export default {
       'Token velocity is the number of times token changes accounts during period (month) on average. It indicates the level of trading activity and liquidity.',
   },
   networkStatisticsText: 'Network statistics',
+  browserPermission: {
+    title: 'Allow camera access in browser settings',
+    desc: "To ensure the authenticity of documents and validate user identity for KYC verification, access to your device's camera is required.",
+    disclaimer: 'Camera access is required for real-time document capture to prevent fraud.',
+    btnGoToSettings: 'Go to settings',
+    btnAllow: 'Allow access',
+  },
 };

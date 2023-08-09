@@ -3,7 +3,7 @@
     <template #title>
       <moonpay-logo :theme="libraryTheme" />
     </template>
-    <simple-notification :success="success" @close="close">
+    <simple-notification :success="success" @submit.native.prevent="close">
       <template #title>{{ title }}</template>
       <template #text><div v-html="text" /></template>
     </simple-notification>

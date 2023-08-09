@@ -1,5 +1,6 @@
 <template>
-  <div :class="['value-status-wrapper', status]">
+  <div :class="['value-status-wrapper', status, { badge }]">
+    <s-icon v-if="errorIcon" name="notifications-alert-triangle-24" size="12" class="value-status-wrapper-icon" />
     <slot />
   </div>
 </template>
@@ -7,17 +8,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-const getStatusDefault = (value: number): string => {
-  if (value > 0) return 'success';
-  if (value < -5) return 'error';
-  if (value < -1) return 'warning';
-  return '';
-};
+import { DifferenceStatus, getDifferenceStatus } from '@/utils/swap';
 
 @Component
 export default class ValueStatusWrapper extends Vue {
+  @Prop({ default: false, type: Boolean }) readonly badge!: boolean;
   @Prop({ default: '', type: [String, Number] }) readonly value!: string | number;
-  @Prop({ default: getStatusDefault, type: Function }) readonly getStatus!: (value: number) => string;
+  @Prop({ default: getDifferenceStatus, type: Function }) readonly getStatus!: (value: number) => string;
 
   get formatted(): number {
     const value = Number(this.value);
@@ -28,22 +25,45 @@ export default class ValueStatusWrapper extends Vue {
   get status(): string {
     return this.getStatus(this.formatted);
   }
+
+  get errorIcon(): boolean {
+    return this.status === DifferenceStatus.Error && this.badge;
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-@mixin wrapper-status($status: 'success') {
+@mixin text-status($status: 'success', $property: 'color') {
   &.#{$status} {
-    color: var(--s-color-status-#{$status});
+    #{$property}: var(--s-color-status-#{$status});
   }
 }
 
 .value-status-wrapper {
   display: flex;
   flex-flow: row nowrap;
+  align-items: baseline;
+  gap: $inner-spacing-tiny;
 
-  @include wrapper-status('success');
-  @include wrapper-status('warning');
-  @include wrapper-status('error');
+  &:not(.badge) {
+    @include text-status('success');
+    @include text-status('warning');
+    @include text-status('error');
+  }
+
+  &.badge {
+    color: white;
+    background-color: var(--s-color-base-content-tertiary);
+    padding: 0 $inner-spacing-mini;
+    border-radius: 100px;
+
+    @include text-status('success', 'background-color');
+    @include text-status('warning', 'background-color');
+    @include text-status('error', 'background-color');
+  }
+
+  &-icon {
+    color: white;
+  }
 }
 </style>

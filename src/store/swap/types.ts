@@ -29,4 +29,5 @@ export type SwapState = {
   route: readonly string[];
   selectedDexId: number;
   dexQuoteData: Record<number, DexQuoteData>;
+  allowLossPopup: boolean;
 };

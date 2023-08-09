@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transakcja została złożona.",
         "transactionMessage": "{firstToken} i {secondToken}",
         "ok": "OK",
-        "confirm": "Potwierdź"
+        "confirm": "Potwierdź",
+        "lossWarning": "Stracisz {value}% na swojej transakcji. Wykryliśmy problem z zapewnieniem płynności. Może to prowadzić do znacznych strat podczas wymiany tokenów. Upewnij się, że dostępna jest odpowiednia płynność dla wybranej pary swapowej."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1213,5 +1214,38 @@
         "x1Btn": "Kup XOR z kartą",
         "errorMessage": "Przepraszam za utrudnienia. Intensywnie pracujemy nad rozwiązaniem tego problemu. Spróbuj ponownie później."
     },
-    "acceptOnScrollText": "Przewiń, aby zaakceptować"
+    "acceptOnScrollText": "Przewiń, aby zaakceptować",
+    "addressBook": {
+        "myExtAccounts": "Moje konta rozszerzeń",
+        "myBook": "Moja książka",
+        "searchPlaceholder": "Szukaj według adresu, nazwiska lub tożsamości",
+        "noFoundRecords": "Nic nie znaleziono",
+        "noContacts": "Nie masz jeszcze dodanych żadnych kontaktów",
+        "addContact": "Dodaj kontakt",
+        "dialogTitle": "Twoje kontakty",
+        "identity": "Tożsamość w łańcuchu",
+        "none": "Nic",
+        "detected": "Wykryto nowy adres",
+        "save": "Zapisz jako kontakt",
+        "tooltip": "Zbierz książkę adresową, podając imię i nazwisko oraz adres, aby uporządkować i aktualizować kontakty",
+        "notSoraAddress": "Ten adres zostanie zapisany jako adres SORA poniżej. Upewnij się, że odbiorca ma dostęp do łańcucha SORA:",
+        "options": {
+            "send": "Wyślij tokeny",
+            "edit": "Edytuj kontakt",
+            "delete": "Usuwać"
+        },
+        "btn": {
+            "enterName": "Wprowadź imię",
+            "present": "Już obecny",
+            "saveChanges": "Zapisz zmiany"
+        }
+    },
+    "browserPermission": {
+        "title": "Zezwól na dostęp do aparatu w ustawieniach przeglądarki",
+        "desc": "Aby zapewnić autentyczność dokumentów i zweryfikować tożsamość użytkownika na potrzeby weryfikacji KYC, wymagany jest dostęp do aparatu urządzenia.",
+        "disclaimer": "Dostęp do aparatu jest wymagany do przechwytywania dokumentów w czasie rzeczywistym w celu zapobiegania oszustwom.",
+        "btnGoToSettings": "Przejdź do ustawień",
+        "btnAllow": "Umożliwić dostęp"
+    },
+    "continueText": "Kontynuować"
 }

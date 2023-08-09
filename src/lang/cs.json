@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transakce byla odeslána",
         "transactionMessage": "{firstToken} a {secondToken}",
         "ok": "OK",
-        "confirm": "Potvrdit"
+        "confirm": "Potvrdit",
+        "lossWarning": "Ztratíte {value}% ze svého obchodu. Zjistili jsme problém se zajištěním likvidity. To může vést ke značným ztrátám během swapů tokenů. Ujistěte se, že je pro požadovaný swapový pár dostatečná likvidita."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1213,5 +1214,38 @@
         "x1Btn": "Koupit XOR s kartou",
         "errorMessage": "Omlouváme se za nepříjemnosti. Na vyřešení tohoto problému usilovně pracujeme. Prosím zkuste to znovu později."
     },
-    "acceptOnScrollText": "Přejděte k přijetí"
+    "acceptOnScrollText": "Přejděte k přijetí",
+    "addressBook": {
+        "myExtAccounts": "Moje účty rozšíření",
+        "myBook": "Má kniha",
+        "searchPlaceholder": "Vyhledávání podle adresy, jména nebo identity",
+        "noFoundRecords": "Nenalezeny žádné záznamy",
+        "noContacts": "Zatím nemáte přidány žádné kontakty",
+        "addContact": "Přidat kontakt",
+        "dialogTitle": "Vaše kontakty",
+        "identity": "Identita na řetězu",
+        "none": "Žádný",
+        "detected": "Byla zjištěna nová adresa",
+        "save": "Uložit jako kontakt",
+        "tooltip": "Sbírejte adresář zadáním jména a adresy, abyste měli své kontakty organizované a aktuální",
+        "notSoraAddress": "Tato adresa bude níže uložena jako adresa SORA. Ujistěte se, že příjemce má přístup k řetězci SORA:",
+        "options": {
+            "send": "Pošlete tokeny",
+            "edit": "Upravit kontakt",
+            "delete": "Vymazat"
+        },
+        "btn": {
+            "enterName": "Napište jméno",
+            "present": "Již přítomný",
+            "saveChanges": "Uložit změny"
+        }
+    },
+    "browserPermission": {
+        "title": "Povolit přístup k fotoaparátu v nastavení prohlížeče",
+        "desc": "Pro zajištění pravosti dokumentů a ověření identity uživatele pro ověření KYC je vyžadován přístup ke kameře vašeho zařízení.",
+        "disclaimer": "Pro zachycení dokumentů v reálném čase je vyžadován přístup k fotoaparátu, aby se zabránilo podvodům.",
+        "btnGoToSettings": "Jdi do nastavení",
+        "btnAllow": "Povolit přístup"
+    },
+    "continueText": "Pokračovat"
 }

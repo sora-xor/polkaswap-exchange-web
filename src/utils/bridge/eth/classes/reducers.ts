@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import first from 'lodash/fp/first';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';
-import type { IBridgeReducerOptions, GetBridgeHistoryInstance } from '@/utils/bridge/common/types';
+import type { IBridgeReducerOptions, GetBridgeHistoryInstance, SignExternal } from '@/utils/bridge/common/types';
 import { getEvmTransactionRecieptByHash, findEventInBlock } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
@@ -15,20 +15,27 @@ import {
 } from '@/utils/bridge/eth/utils';
 
 import type { BridgeHistory, IBridgeTransaction } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
 type EthBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeReducerOptions<T> & {
   getBridgeHistoryInstance: GetBridgeHistoryInstance<EthBridgeHistory>;
+  signExternalOutgoing: SignExternal;
+  signExternalIncoming: SignExternal;
 };
 
 export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
   protected readonly getBridgeHistoryInstance!: GetBridgeHistoryInstance<EthBridgeHistory>;
+  protected readonly signExternalOutgoing!: SignExternal;
+  protected readonly signExternalIncoming!: SignExternal;
 
   constructor(options: EthBridgeReducerOptions<BridgeHistory>) {
     super(options);
 
     this.getBridgeHistoryInstance = options.getBridgeHistoryInstance;
+    this.signExternalOutgoing = options.signExternalOutgoing;
+    this.signExternalIncoming = options.signExternalIncoming;
   }
 
   async onEvmPending(id: string): Promise<void> {
@@ -52,14 +59,14 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
     });
   }
 
-  async onEvmSubmitted(id: string): Promise<void> {
+  async onEvmSubmitted(id: string, signExternal: SignExternal): Promise<void> {
     const tx = this.getTransaction(id);
 
     if (!tx.externalHash) {
       this.beforeSubmit(id);
 
       try {
-        const { hash: externalHash, fee } = await this.signExternal(id);
+        const { hash: externalHash, fee } = await signExternal(id);
 
         this.updateTransactionParams(id, {
           externalHash,
@@ -107,19 +114,21 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
           handler: async (id: string) => {
             this.beforeSubmit(id);
 
-            const { txId, blockId } = getTransaction(id);
+            const tx = getTransaction(id);
 
             // transaction not signed
-            if (!txId) {
-              await this.signSora(id);
+            if (!tx.txId) {
+              await this.beforeSign(id);
+              const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
+              await ethBridgeApi.transferToEth(asset, tx.to as string, tx.amount as string, id);
             }
 
             // signed sora transaction has to be parsed by subquery
-            if (txId && !blockId) {
+            if (tx.txId && !tx.blockId) {
               // format account address to sora format
               const address = ethBridgeApi.formatAddress(ethBridgeApi.account.pair.address);
               const bridgeHistory = await this.getBridgeHistoryInstance();
-              const historyItem = first(await bridgeHistory.fetchHistoryElements(address, 0, [txId]));
+              const historyItem = first(await bridgeHistory.fetchHistoryElements(address, 0, [tx.txId]));
 
               if (historyItem) {
                 this.updateTransactionParams(id, {
@@ -127,7 +136,7 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
                   hash: (historyItem.data as SUBQUERY_TYPES.HistoryElementEthBridgeOutgoing).requestHash,
                 });
               } else {
-                throw new Error(`[Bridge]: Can not restore TX from Subquery: ${txId}`);
+                throw new Error(`[Bridge]: Can not restore TX from Subquery: ${tx.txId}`);
               }
             }
           },
@@ -168,7 +177,7 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
         return await this.handleState(transaction.id, {
           nextState: ETH_BRIDGE_STATES.EVM_PENDING,
           rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
-          handler: async (id: string) => await this.onEvmSubmitted(id),
+          handler: async (id: string) => await this.onEvmSubmitted(id, this.signExternalOutgoing),
         });
       }
 
@@ -210,7 +219,7 @@ export class EthBridgeIncomingReducer extends EthBridgeReducer {
         return await this.handleState(transaction.id, {
           nextState: ETH_BRIDGE_STATES.EVM_PENDING,
           rejectState: ETH_BRIDGE_STATES.EVM_REJECTED,
-          handler: async (id: string) => await this.onEvmSubmitted(id),
+          handler: async (id: string) => await this.onEvmSubmitted(id, this.signExternalIncoming),
         });
       }
 

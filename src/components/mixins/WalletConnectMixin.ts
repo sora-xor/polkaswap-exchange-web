@@ -8,6 +8,7 @@ import type { NetworkData } from '@/types/bridge';
 import { getWalletAddress, formatAddress } from '@/utils';
 import { Provider } from '@/utils/ethers-util';
 
+import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const checkExtensionKey = 'provider.messages.checkExtension';
@@ -49,6 +50,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @state.web3.subAddress subAddress!: string;
   @state.web3.evmAddress evmAddress!: string;
   @state.web3.networkSelected networkSelected!: BridgeNetworkId;
+  @state.web3.networkType networkType!: BridgeNetworkType;
 
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.web3.selectedNetwork selectedNetwork!: Nullable<NetworkData>;

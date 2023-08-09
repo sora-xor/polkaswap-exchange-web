@@ -7,7 +7,9 @@ import { ethers } from 'ethers';
 
 import { MaxUint256, ZeroStringValue } from '@/consts';
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
+import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
+import { FocusedField } from '@/store/bridge/types';
 import { waitForEvmTransactionMined, findUserTxIdInBlock } from '@/utils/bridge/common/utils';
 import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
@@ -128,7 +130,8 @@ function bridgeDataToHistoryItem(
 
   return {
     type: (params as any).type ?? getters.operation,
-    amount: (params as any).amount ?? state.amount,
+    amount: (params as any).amount ?? state.amountSend,
+    amount2: (params as any).amount2 ?? state.amountReceived,
     symbol: (params as any).symbol ?? getters.asset?.symbol,
     assetAddress: (params as any).assetAddress ?? getters.asset?.address,
     startTime: date,
@@ -137,7 +140,7 @@ function bridgeDataToHistoryItem(
     hash: '',
     transactionState,
     soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
-    externalNetworkFee: (params as any).evmNetworkFee ?? getters.evmNetworkFee,
+    externalNetworkFee: (params as any).externalNetworkFee ?? getters.externalNetworkFee,
     externalNetwork,
     externalNetworkType,
     to: (params as any).to ?? rootGetters.web3.externalAccount,
@@ -161,19 +164,25 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
 }
 
 async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void> {
-  const { commit, rootState } = bridgeActionContext(context);
+  const { commit } = bridgeActionContext(context);
 
   let fee = ZeroStringValue;
 
-  const network = rootState.web3.networkSelected;
-
-  if (network) {
-    const adapter = subConnector.getAdapterForNetwork(network as SubNetwork);
-    await adapter.connect();
-    fee = await adapter.getNetworkFee();
+  if (subConnector.networkAdapter) {
+    fee = await subConnector.networkAdapter.getNetworkFee();
   }
 
   commit.setExternalNetworkFee(fee);
+}
+
+async function getExternalNetworkFee(context: ActionContext<any, any>): Promise<void> {
+  const { getters } = bridgeActionContext(context);
+
+  if (getters.isSubBridge) {
+    await getSubNetworkFee(context);
+  } else {
+    await getEvmNetworkFee(context);
+  }
 }
 
 async function updateEvmBalances(context: ActionContext<any, any>): Promise<void> {
@@ -181,28 +190,35 @@ async function updateEvmBalances(context: ActionContext<any, any>): Promise<void
   const { sender, recipient, asset } = getters;
   const { isSoraToEvm } = state;
 
-  let recipientBalance = ZeroStringValue;
-  let senderBalance = ZeroStringValue;
-  let nativeBalance = ZeroStringValue;
+  const spender = isSoraToEvm ? recipient : sender;
 
-  if (asset?.address) {
-    if (sender) {
-      senderBalance = isSoraToEvm
-        ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
-        : (await ethersUtil.getAccountAssetBalance(sender, asset?.externalAddress)).value;
-    }
-    if (recipient) {
-      recipientBalance = isSoraToEvm
-        ? (await ethersUtil.getAccountAssetBalance(recipient, asset?.externalAddress)).value
-        : (await getAssetBalance(api.api, recipient, asset.address, asset.decimals)).transferable;
-    }
+  const getSenderBalance = async () => {
+    if (!(asset?.address && sender)) return ZeroStringValue;
 
-    const spender = isSoraToEvm ? recipient : sender;
+    return isSoraToEvm
+      ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
+      : (await ethersUtil.getAccountAssetBalance(sender, asset?.externalAddress)).value;
+  };
 
-    if (spender) {
-      nativeBalance = await ethersUtil.getAccountBalance(isSoraToEvm ? recipient : sender);
-    }
-  }
+  const getRecipientBalance = async () => {
+    if (!(asset?.address && recipient)) return ZeroStringValue;
+
+    return isSoraToEvm
+      ? (await ethersUtil.getAccountAssetBalance(recipient, asset?.externalAddress)).value
+      : (await getAssetBalance(api.api, recipient, asset.address, asset.decimals)).transferable;
+  };
+
+  const getSpenderBalance = async () => {
+    if (!(asset?.address && spender)) return ZeroStringValue;
+
+    return await ethersUtil.getAccountBalance(spender);
+  };
+
+  const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
+    getSenderBalance(),
+    getRecipientBalance(),
+    getSpenderBalance(),
+  ]);
 
   commit.setAssetSenderBalance(senderBalance);
   commit.setAssetRecipientBalance(recipientBalance);
@@ -214,24 +230,33 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<void
   const { sender, recipient, asset } = getters;
   const { isSoraToEvm } = state;
 
-  let recipientBalance = ZeroStringValue;
-  let senderBalance = ZeroStringValue;
-  let nativeBalance = ZeroStringValue;
+  const getSenderBalance = async () => {
+    if (!(asset?.address && sender)) return ZeroStringValue;
 
-  if (asset?.address) {
-    if (sender) {
-      senderBalance = isSoraToEvm
-        ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
-        : await subConnector.adapter.getTokenBalance(sender, asset?.externalAddress);
+    return isSoraToEvm
+      ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
+      : await subConnector.networkAdapter.getTokenBalance(sender, asset?.externalAddress);
+  };
 
-      nativeBalance = await subConnector.adapter.getTokenBalance(sender);
-    }
-    if (recipient) {
-      recipientBalance = isSoraToEvm
-        ? await subConnector.adapter.getTokenBalance(recipient, asset?.externalAddress)
-        : (await getAssetBalance(api.api, recipient, asset.address, asset.decimals)).transferable;
-    }
-  }
+  const getRecipientBalance = async () => {
+    if (!(asset?.address && recipient)) return ZeroStringValue;
+
+    return isSoraToEvm
+      ? await subConnector.networkAdapter.getTokenBalance(recipient, asset?.externalAddress)
+      : (await getAssetBalance(api.api, recipient, asset.address, asset.decimals)).transferable;
+  };
+
+  const getSpenderBalance = async () => {
+    if (!(asset?.address && sender)) return ZeroStringValue;
+
+    return await subConnector.networkAdapter.getTokenBalance(sender);
+  };
+
+  const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
+    getSenderBalance(),
+    getRecipientBalance(),
+    getSpenderBalance(),
+  ]);
 
   commit.setAssetSenderBalance(senderBalance);
   commit.setAssetRecipientBalance(recipientBalance);
@@ -357,14 +382,66 @@ async function updateBridgeProxyLockedBalance(context: ActionContext<any, any>):
   commit.setAssetLockedBalance();
 }
 
+async function getExternalTransferFee(context: ActionContext<any, any>): Promise<void> {
+  const { commit, getters, state, rootState } = bridgeActionContext(context);
+
+  let fee = ZeroStringValue;
+
+  if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
+    const externalNetwork = rootState.web3.networkSelected as SubNetwork;
+    const direction = state.isSoraToEvm ? BridgeTxDirection.Outgoing : BridgeTxDirection.Incoming;
+    const symbol = getters.asset.symbol;
+
+    fee = SUB_TRANSFER_FEES[externalNetwork]?.[symbol]?.[direction] ?? ZeroStringValue;
+  }
+
+  commit.setExternalTransferFee(fee);
+}
+
 const actions = defineActions({
+  setSendedAmount(context, value?: string) {
+    const { commit, state, getters } = bridgeActionContext(context);
+
+    commit.setFocusedField(FocusedField.Sended);
+    commit.setAmountSend(value);
+
+    if (value) {
+      const sended = new FPNumber(value);
+      const fee = FPNumber.fromCodecValue(state.externalTransferFee, getters.asset?.externalDecimals);
+      const expected = sended.sub(fee);
+      const received = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+
+      commit.setAmountReceived(received.toString());
+    } else {
+      commit.setAmountReceived();
+    }
+  },
+
+  setReceivedAmount(context, value?: string) {
+    const { commit, state, getters } = bridgeActionContext(context);
+
+    commit.setFocusedField(FocusedField.Received);
+    commit.setAmountReceived(value);
+
+    if (value) {
+      const received = new FPNumber(value);
+      const fee = FPNumber.fromCodecValue(state.externalTransferFee, getters.asset?.externalDecimals);
+      const expected = received.add(fee);
+      const sended = FPNumber.isGreaterThan(expected, FPNumber.ZERO) ? expected : FPNumber.ZERO;
+
+      commit.setAmountSend(sended.toString());
+    } else {
+      commit.setAmountSend();
+    }
+  },
+
   async updateBalancesAndFees(context): Promise<void> {
     const { dispatch } = bridgeActionContext(context);
 
     await Promise.all([
       dispatch.updateExternalBalance(),
       dispatch.updateExternalLockedBalance(),
-      dispatch.getExternalNetworkFee(),
+      dispatch.updateExternalFees(),
     ]);
   },
 
@@ -376,6 +453,12 @@ const actions = defineActions({
     commit.setAssetRecipientBalance();
 
     await dispatch.updateBalancesAndFees();
+
+    if (state.focusedField === FocusedField.Received) {
+      await dispatch.setSendedAmount(state.amountReceived);
+    } else {
+      await dispatch.setReceivedAmount(state.amountSend);
+    }
   },
 
   async setAssetAddress(context, address?: string): Promise<void> {
@@ -388,16 +471,12 @@ const actions = defineActions({
     await dispatch.updateBalancesAndFees();
   },
 
-  async getExternalNetworkFee(context): Promise<void> {
-    const { commit, getters } = bridgeActionContext(context);
+  async updateExternalFees(context): Promise<void> {
+    const { commit } = bridgeActionContext(context);
 
     commit.setExternalNetworkFeeFetching(true);
 
-    if (getters.isSubBridge) {
-      await getSubNetworkFee(context);
-    } else {
-      await getEvmNetworkFee(context);
-    }
+    await Promise.all([getExternalNetworkFee(context), getExternalTransferFee(context)]);
 
     commit.setExternalNetworkFeeFetching(false);
   },
@@ -435,7 +514,7 @@ const actions = defineActions({
 
     try {
       const blockNumber = getters.isSubBridge
-        ? await subConnector.adapter.getBlockNumber()
+        ? await subConnector.networkAdapter.getBlockNumber()
         : await (await ethersUtil.getEthersInstance()).getBlockNumber();
 
       commit.setExternalBlockNumber(blockNumber);
@@ -528,83 +607,6 @@ const actions = defineActions({
     }
   },
 
-  // EVM
-  async signEvmBridgeOutgoingSora(context, id: string) {
-    const { rootGetters, rootDispatch } = bridgeActionContext(context);
-
-    const tx = evmBridgeApi.getHistory(id) as EvmHistory;
-
-    if (!tx) throw new Error(`Transaction not found: ${id}`);
-
-    const { to, amount, assetAddress, externalNetwork } = tx;
-
-    if (!externalNetwork) throw new Error('Transaction "externalNetwork" cannot be empty');
-    if (!amount) throw new Error('Transaction "amount" cannot be empty');
-    if (!assetAddress) throw new Error('Transaction "assetAddress" cannot be empty');
-    if (!to) throw new Error('Transaction "to" cannot be empty');
-
-    const asset = rootGetters.assets.assetDataByAddress(assetAddress);
-
-    if (!asset || !asset.externalAddress) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
-
-    if (!tx.txId) {
-      await rootDispatch.wallet.transactions.beforeTransactionSign();
-      await evmBridgeApi.transfer(asset, to, amount, externalNetwork, id);
-    }
-  },
-
-  // SUB
-
-  async signSubBridgeOutgoingSora(context, id: string) {
-    const { rootGetters, rootDispatch } = bridgeActionContext(context);
-
-    const tx = subBridgeApi.getHistory(id) as SubHistory;
-
-    if (!tx) throw new Error(`Transaction not found: ${id}`);
-
-    const { to, amount, assetAddress, externalNetwork } = tx;
-
-    if (!externalNetwork) throw new Error('Transaction "externalNetwork" cannot be empty');
-    if (!amount) throw new Error('Transaction "amount" cannot be empty');
-    if (!assetAddress) throw new Error('Transaction "assetAddress" cannot be empty');
-    if (!to) throw new Error('Transaction "to" cannot be empty');
-
-    const asset = rootGetters.assets.assetDataByAddress(assetAddress);
-
-    if (!asset) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
-
-    if (!tx.txId) {
-      await rootDispatch.wallet.transactions.beforeTransactionSign();
-      await subBridgeApi.transfer(asset, to, amount, externalNetwork, id);
-    }
-  },
-
-  async signSubBridgeIncomingSub(context, id: string) {
-    const { rootGetters, rootDispatch } = bridgeActionContext(context);
-
-    const tx = subBridgeApi.getHistory(id) as SubHistory;
-
-    if (!tx) throw new Error(`Transaction not found: ${id}`);
-
-    const { to, amount, assetAddress, externalNetwork } = tx;
-
-    if (!externalNetwork) throw new Error('Transaction "externalNetwork" cannot be empty');
-    if (!amount) throw new Error('Transaction "amount" cannot be empty');
-    if (!assetAddress) throw new Error('Transaction "assetAddress" cannot be empty');
-    if (!to) throw new Error('Transaction "to" cannot be empty');
-
-    const asset = rootGetters.assets.assetDataByAddress(assetAddress);
-
-    if (!asset) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
-
-    if (!tx.txId) {
-      await rootDispatch.wallet.transactions.beforeTransactionSign();
-      const adapter = subConnector.getAdapterForNetwork(externalNetwork);
-      await adapter.connect();
-      await adapter.transfer(asset, to, amount, id);
-    }
-  },
-
   // ETH BRIDGE
   async getEthBridgeHistoryInstance(context): Promise<EthBridgeHistory> {
     const { rootState } = bridgeActionContext(context);
@@ -614,27 +616,6 @@ const actions = defineActions({
     await bridgeHistory.init(rootState.web3.ethBridgeContractAddress);
 
     return bridgeHistory;
-  },
-
-  async signEthBridgeOutgoingSora(context, id: string): Promise<void> {
-    const { rootGetters, rootDispatch } = bridgeActionContext(context);
-
-    const tx = ethBridgeApi.getHistory(id);
-
-    if (!tx) throw new Error(`Transaction not found: ${id}`);
-
-    const { to, amount, assetAddress } = tx;
-
-    if (!amount) throw new Error('Transaction "amount" cannot be empty');
-    if (!assetAddress) throw new Error('Transaction "assetAddress" cannot be empty');
-    if (!to) throw new Error('Transaction "to" cannot be empty');
-
-    const asset = rootGetters.assets.assetDataByAddress(assetAddress);
-
-    if (!asset || !asset.externalAddress) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
-
-    await rootDispatch.wallet.transactions.beforeTransactionSign();
-    await ethBridgeApi.transferToEth(asset, to, amount, id);
   },
 
   async signEthBridgeOutgoingEvm(context, id: string): Promise<SignTxResult> {
