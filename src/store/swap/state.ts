@@ -1,8 +1,12 @@
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 
+import { settingsStorage } from '@/utils/storage';
+
 import type { SwapState } from './types';
 
 export function initialState(): SwapState {
+  const allowLossPopup = settingsStorage.get('allowSwapLossPopup' as any);
+
   return {
     tokenFromAddress: '',
     tokenToAddress: '',
@@ -22,6 +26,8 @@ export function initialState(): SwapState {
     route: [],
     selectedDexId: DexId.XOR,
     dexQuoteData: {},
+    // modals
+    allowLossPopup: allowLossPopup ? Boolean(JSON.parse(allowLossPopup)) : true,
   };
 }
 

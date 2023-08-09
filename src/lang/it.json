@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transazione inviata",
         "transactionMessage": "{firstToken} e {secondToken}",
         "ok": "OK",
-        "confirm": "Conferma"
+        "confirm": "Conferma",
+        "lossWarning": "Perderai {value}% sulla tua operazione. Abbiamo rilevato un problema di fornitura di liquidità. Ciò può portare a perdite significative durante gli scambi di token. Assicurati che ci sia liquidità adeguata per la coppia di swap desiderata."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1214,6 +1215,31 @@
         "errorMessage": "Scuse per l'inconveniente. Stiamo lavorando diligentemente per risolvere questo problema. Per favore riprova più tardi."
     },
     "acceptOnScrollText": "Scorri per accettare",
+    "addressBook": {
+        "myExtAccounts": "I miei account di estensione",
+        "myBook": "Il mio libro",
+        "searchPlaceholder": "Cerca per indirizzo, nome o identità",
+        "noFoundRecords": "Nessun record trovato",
+        "noContacts": "Non hai ancora nessun contatto aggiunto",
+        "addContact": "Aggiungi contatto",
+        "dialogTitle": "I tuoi contatti",
+        "identity": "Identità sulla catena",
+        "none": "Nessuno",
+        "detected": "Nuovo indirizzo rilevato",
+        "save": "Salva come contatto",
+        "tooltip": "Raccogli la rubrica fornendo nome e indirizzo per mantenere i tuoi contatti organizzati e aggiornati",
+        "notSoraAddress": "Questo indirizzo verrà salvato come indirizzo SORA di seguito. Assicurati che il destinatario possa accedere alla catena SORA:",
+        "options": {
+            "send": "Invia token",
+            "edit": "Modifica il contatto",
+            "delete": "Eliminare"
+        },
+        "btn": {
+            "enterName": "Inserisci il nome",
+            "present": "Già presente",
+            "saveChanges": "Salvare le modifiche"
+        }
+    },
     "browserPermission": {
         "title": "Consenti l'accesso alla fotocamera nelle impostazioni del browser",
         "desc": "Per garantire l'autenticità dei documenti e convalidare l'identità dell'utente per la verifica KYC, è necessario l'accesso alla fotocamera del dispositivo.",

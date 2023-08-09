@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transaction submitted",
         "transactionMessage": "{firstToken} and {secondToken}",
         "ok": "OK",
-        "confirm": "Confirm"
+        "confirm": "Confirm",
+        "lossWarning": "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1214,6 +1215,31 @@
         "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later."
     },
     "acceptOnScrollText": "Scroll to accept",
+    "addressBook": {
+        "myExtAccounts": "My extension accounts",
+        "myBook": "My Book",
+        "searchPlaceholder": "Search by address, name or identity",
+        "noFoundRecords": "No records found",
+        "noContacts": "You don’t have any contacts added yet",
+        "addContact": "Add contact",
+        "dialogTitle": "Your contacts",
+        "identity": "On-chain identity",
+        "none": "None",
+        "detected": "New address detected",
+        "save": "Save as contact",
+        "tooltip": "Collect address book by providing name and address to keep your contacts organized and up-to-date",
+        "notSoraAddress": "This address will be saved as SORA address below. Make sure the recipient can access the SORA chain:",
+        "options": {
+            "send": "Send tokens",
+            "edit": "Edit contact",
+            "delete": "Delete"
+        },
+        "btn": {
+            "enterName": "Enter name",
+            "present": "Already present",
+            "saveChanges": "Save changes"
+        }
+    },
     "browserPermission": {
         "title": "Allow camera access in browser settings",
         "desc": "To ensure the authenticity of documents and validate user identity for KYC verification, access to your device's camera is required.",
