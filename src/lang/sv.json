@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transaktion inskickad",
         "transactionMessage": "{firstToken} och {secondToken}",
         "ok": "OK",
-        "confirm": "Bekräfta"
+        "confirm": "Bekräfta",
+        "lossWarning": "Du kommer att förlora {value}% på din handel. Vi har upptäckt ett likviditetsproblem. Detta kan leda till betydande förluster under tokenswappar. Se till att det finns tillräcklig likviditet för ditt önskade swappar."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1214,6 +1215,31 @@
         "errorMessage": "Ursäkta besväret. Vi arbetar hårt för att lösa detta. Vänligen försök igen senare."
     },
     "acceptOnScrollText": "Bläddra för att acceptera",
+    "addressBook": {
+        "myExtAccounts": "Mina förlängningskonton",
+        "myBook": "Min bok",
+        "searchPlaceholder": "Sök på adress, namn eller identitet",
+        "noFoundRecords": "Inga uppgifter funna",
+        "noContacts": "Du har inte lagt till några kontakter än",
+        "addContact": "Lägg till kontakt",
+        "dialogTitle": "Dina kontakter",
+        "identity": "Identitet på kedjan",
+        "none": "Ingen",
+        "detected": "Ny adress upptäckt",
+        "save": "Spara som kontakt",
+        "tooltip": "Samla in adressboken genom att ange namn och adress för att hålla dina kontakter organiserade och uppdaterade",
+        "notSoraAddress": "Denna adress kommer att sparas som SORA-adress nedan. Se till att mottagaren kan komma åt SORA-kedjan:",
+        "options": {
+            "send": "Skicka tokens",
+            "edit": "Redigera kontakt",
+            "delete": "Radera"
+        },
+        "btn": {
+            "enterName": "Skriv namn",
+            "present": "Redan närvarande",
+            "saveChanges": "Spara ändringar"
+        }
+    },
     "browserPermission": {
         "title": "Tillåt kameraåtkomst i webbläsarinställningarna",
         "desc": "För att säkerställa äktheten av dokument och validera användaridentitet för KYC-verifiering krävs åtkomst till enhetens kamera.",

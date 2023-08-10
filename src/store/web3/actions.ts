@@ -96,9 +96,7 @@ const actions = defineActions({
     // update apps in store
     commit.setSubNetworkApps(apps);
     // update endpoints in subConnector
-    Object.entries(apps).forEach(([network, endpoint]) => {
-      subConnector.adapters[network]?.setEndpoint(endpoint);
-    });
+    subConnector.endpoints = apps;
   },
 
   /**

@@ -70,25 +70,25 @@
       />
       <info-line
         is-formatted
-        :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', true)"
+        :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee')"
         :value="txSoraNetworkFeeFormatted"
         :asset-symbol="KnownSymbols.XOR"
         :fiat-value="txSoraNetworkFeeFiatValue"
       />
       <info-line
         is-formatted
-        :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', false)"
-        :value="txEvmNetworkFeeFormatted"
-        :asset-symbol="evmTokenSymbol"
+        :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', externalNetworkId)"
+        :value="txExternalNetworkFeeFormatted"
+        :asset-symbol="nativeTokenSymbol"
       >
-        <template v-if="txEvmNetworkFeeFormatted" #info-line-value-prefix>
+        <template v-if="txExternalNetworkFeeFormatted" #info-line-value-prefix>
           <span class="info-line-value-prefix">~</span>
         </template>
       </info-line>
 
       <div v-if="txSoraHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
         <s-input
-          :placeholder="getNetworkText('bridgeTransaction.transactionHash', true)"
+          :placeholder="getNetworkText('bridgeTransaction.transactionHash')"
           :value="txSoraHashFormatted"
           readonly
         />
@@ -103,9 +103,26 @@
         <bridge-links-dropdown v-if="soraExplorerLinks.length" :links="soraExplorerLinks" />
       </div>
 
+      <div v-if="txParachainHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
+        <s-input
+          :placeholder="getNetworkText('bridgeTransaction.transactionHash', parachainNetworkId)"
+          :value="txParachainHashFormatted"
+          readonly
+        />
+        <s-button
+          class="s-button--hash-copy"
+          type="action"
+          alternative
+          icon="basic-copy-24"
+          :tooltip="hashCopyTooltip"
+          @click="handleCopyAddress(txParachainHash, $event)"
+        />
+        <bridge-links-dropdown v-if="parachainExplorerLinks.length" :links="parachainExplorerLinks" />
+      </div>
+
       <div v-if="txExternalHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
         <s-input
-          :placeholder="getNetworkText('bridgeTransaction.transactionHash', false)"
+          :placeholder="getNetworkText('bridgeTransaction.transactionHash', externalNetworkId)"
           :value="txExternalHashFormatted"
           readonly
         />
@@ -121,7 +138,7 @@
       </div>
 
       <s-button
-        v-if="!isTxCompleted"
+        v-if="!txIsFinilized"
         type="primary"
         class="s-typograhy-button--big"
         :disabled="confirmationButtonDisabled"
@@ -143,25 +160,20 @@
           t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR })
         }}</template>
         <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
-          t('insufficientBalanceText', { tokenSymbol: evmTokenSymbol })
+          t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol })
         }}</template>
         <template v-else-if="isInsufficientLiquidity">
           {{ t('swap.insufficientLiquidity') }}
         </template>
         <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
-        <template v-else-if="isTxFailed">{{ t('retryText') }}</template>
-        <template v-else>{{
-          t('bridgeTransaction.confirm', {
-            direction: t(`bridgeTransaction.${isSoraToEvm ? 'sora' : 'metamask'}`),
-          })
-        }}</template>
+        <template v-else-if="isFailedState && isRetryAvailable">{{ t('retryText') }}</template>
       </s-button>
 
       <div v-if="txWaitingForApprove" class="transaction-approval-text">
         {{ t('bridgeTransaction.approveToken') }}
       </div>
     </div>
-    <s-button v-if="isTxCompleted" class="s-typography-button--large" type="secondary" @click="navigateToBridge">
+    <s-button v-if="txIsFinilized" class="s-typography-button--large" type="secondary" @click="navigateToBridge">
       {{ t('bridgeTransaction.newTransaction') }}
     </s-button>
   </div>
@@ -170,22 +182,25 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { BridgeTxStatus, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { Components, PageNames } from '@/consts';
+import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
 import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/common/utils';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const FORMATTED_HASH_LENGTH = 24;
 
@@ -273,8 +288,20 @@ export default class BridgeTransaction extends Mixins(
     return this.asset?.symbol ?? '';
   }
 
-  get externalNetworkId(): Nullable<EvmNetwork> {
-    return this.historyItem?.externalNetwork as unknown as EvmNetwork;
+  get externalNetworkId(): Nullable<BridgeNetworkId> {
+    return this.historyItem?.externalNetwork;
+  }
+
+  get externalNetworkType(): Nullable<BridgeNetworkType> {
+    return this.historyItem?.externalNetworkType;
+  }
+
+  get parachainNetworkId(): Nullable<SubNetwork> {
+    try {
+      return subBridgeApi.getSoraParachain(this.externalNetworkId as SubNetwork);
+    } catch {
+      return null;
+    }
   }
 
   get evmIcon(): string {
@@ -293,12 +320,12 @@ export default class BridgeTransaction extends Mixins(
     return this.getFiatAmountByCodecString(this.txSoraNetworkFee);
   }
 
-  get txEvmNetworkFee(): CodecString {
-    return this.historyItem?.externalNetworkFee ?? this.evmNetworkFee;
+  get txExternalNetworkFee(): CodecString {
+    return this.historyItem?.externalNetworkFee ?? this.externalNetworkFee;
   }
 
-  get txEvmNetworkFeeFormatted(): string {
-    return this.formatCodecNumber(this.txEvmNetworkFee, this.asset?.externalDecimals);
+  get txExternalNetworkFeeFormatted(): string {
+    return this.formatCodecNumber(this.txExternalNetworkFee, this.asset?.externalDecimals);
   }
 
   get txSoraHash(): string {
@@ -315,6 +342,14 @@ export default class BridgeTransaction extends Mixins(
 
   get txExternalHashFormatted(): string {
     return this.formatAddress(this.txExternalHash, FORMATTED_HASH_LENGTH);
+  }
+
+  get txParachainHash(): string {
+    return (this.historyItem as SubHistory)?.parachainHash ?? '';
+  }
+
+  get txParachainHashFormatted(): string {
+    return this.formatAddress(this.txParachainHash, FORMATTED_HASH_LENGTH);
   }
 
   get txDate(): string {
@@ -339,6 +374,10 @@ export default class BridgeTransaction extends Mixins(
 
   get isTxPending(): boolean {
     return !this.isTxFailed && !this.isTxCompleted;
+  }
+
+  get txIsFinilized(): boolean {
+    return this.isTxCompleted || (this.isTxFailed && !this.isRetryAvailable);
   }
 
   get headerIconClasses(): string {
@@ -375,14 +414,6 @@ export default class BridgeTransaction extends Mixins(
     return this.t('bridgeTransaction.statuses.pending') + '...';
   }
 
-  get txExternalNetworkName(): string {
-    const id = this.historyItem?.externalNetwork;
-    const type = this.historyItem?.externalNetworkType;
-    const name = this.getNetworkName(type, id);
-
-    return name;
-  }
-
   get txExternalAccount(): string {
     return this.historyItem?.to ?? '';
   }
@@ -392,7 +423,8 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txExternalAccountPlaceholder(): string {
-    return this.getNetworkText('accountAddressText', false);
+    const network = this.isSoraToEvm ? (this.externalNetworkId as BridgeNetworkId) : undefined;
+    return this.getNetworkText('accountAddressText', network);
   }
 
   get txExternalAccountCopyTooltip(): string {
@@ -422,7 +454,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isInsufficientBalance(): boolean {
-    const fee = this.isSoraToEvm ? this.txSoraNetworkFee : this.txEvmNetworkFee;
+    const fee = this.isSoraToEvm ? this.txSoraNetworkFee : this.txExternalNetworkFee;
 
     if (!this.asset || !this.amount || !fee) return false;
 
@@ -436,8 +468,12 @@ export default class BridgeTransaction extends Mixins(
   get isInsufficientEvmNativeTokenForFee(): boolean {
     return (
       ((this.txIsUnsigned && !this.isSoraToEvm) || (!this.txIsUnsigned && this.isSoraToEvm)) &&
-      hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.txEvmNetworkFee)
+      hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.txExternalNetworkFee)
     );
+  }
+
+  get isRetryAvailable(): boolean {
+    return this.txIsUnsigned || this.externalNetworkType === BridgeNetworkType.EvmLegacy;
   }
 
   get isAnotherEvmAddress(): boolean {
@@ -468,9 +504,9 @@ export default class BridgeTransaction extends Mixins(
     return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
   }
 
-  getNetworkText(key: string, isSora = true): string {
-    const network = isSora ? this.TranslationConsts.Sora : this.txExternalNetworkName;
+  getNetworkText(key: string, networkId?: BridgeNetworkId): string {
     const text = this.t(key);
+    const network = networkId ? this.getNetworkName(this.externalNetworkType, networkId) : this.TranslationConsts.Sora;
 
     return `${network} ${text}`;
   }
@@ -513,23 +549,35 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get externalAccountLinks(): Array<WALLET_CONSTS.ExplorerLink> {
-    if (!(this.historyItem?.externalNetworkType && this.historyItem?.externalNetwork)) return [];
+    if (!(this.externalNetworkType && this.externalNetworkId)) return [];
 
     return this.getNetworkExplorerLinks(
-      this.historyItem.externalNetworkType,
-      this.historyItem.externalNetwork,
+      this.externalNetworkType,
+      this.externalNetworkId,
       this.txExternalAccount,
       this.historyItem?.externalBlockId,
       this.EvmLinkType.Account
     );
   }
 
-  get externalExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
-    if (!(this.historyItem?.externalNetworkType && this.historyItem?.externalNetwork)) return [];
+  get parachainExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    if (!(this.externalNetworkType && this.parachainNetworkId)) return [];
 
     return this.getNetworkExplorerLinks(
-      this.historyItem.externalNetworkType,
-      this.historyItem.externalNetwork,
+      this.externalNetworkType,
+      this.parachainNetworkId,
+      this.txParachainHash,
+      (this.historyItem as SubHistory)?.parachainBlockId,
+      this.EvmLinkType.Transaction
+    );
+  }
+
+  get externalExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    if (!(this.externalNetworkType && this.externalNetworkId)) return [];
+
+    return this.getNetworkExplorerLinks(
+      this.externalNetworkType,
+      this.externalNetworkId,
       this.txExternalHash,
       this.historyItem?.externalBlockId,
       this.EvmLinkType.Transaction

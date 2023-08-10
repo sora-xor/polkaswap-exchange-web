@@ -1,9 +1,7 @@
 import { defineMutations } from 'direct-vuex';
 import omit from 'lodash/fp/omit';
 
-import { ZeroStringValue } from '@/consts';
-
-import type { BridgeState } from './types';
+import type { BridgeState, FocusedField } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
 
 const mutations = defineMutations<BridgeState>()({
@@ -37,8 +35,16 @@ const mutations = defineMutations<BridgeState>()({
     state.externalBalancesFetching = flag;
   },
 
-  setAmount(state, value?: string): void {
-    state.amount = value || '';
+  setAmountSend(state, value?: string): void {
+    state.amountSend = value || '';
+  },
+
+  setAmountReceived(state, value?: string): void {
+    state.amountReceived = value || '';
+  },
+
+  setFocusedField(state, field: FocusedField): void {
+    state.focusedField = field;
   },
 
   setExternalNetworkFeeFetching(state, flag: boolean): void {
@@ -47,6 +53,10 @@ const mutations = defineMutations<BridgeState>()({
 
   setExternalNetworkFee(state, fee: CodecString): void {
     state.externalNetworkFee = fee;
+  },
+
+  setExternalTransferFee(state, fee: CodecString): void {
+    state.externalTransferFee = fee;
   },
 
   /**

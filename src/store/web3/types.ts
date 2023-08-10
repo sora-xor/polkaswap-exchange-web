@@ -19,6 +19,9 @@ export type EthBridgeSettings = {
 export type SubNetworkApps = Partial<Record<SubNetwork, string>>;
 
 export type AvailableNetwork = {
+  /** available on networks list */
+  available: boolean;
+  /** disabled on networks list */
   disabled: boolean;
   data: NetworkData;
 };

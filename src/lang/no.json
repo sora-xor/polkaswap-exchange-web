@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transaksjon sendt",
         "transactionMessage": "{firstToken} og {secondToken}",
         "ok": "OK",
-        "confirm": "Bekrefte"
+        "confirm": "Bekrefte",
+        "lossWarning": "Du kommer til å miste {value}% på handelen din. Vi har oppdaget et problem med likviditetsavsetning. Dette kan føre til betydelige tap under token-bytte. Sørg for at det er tilstrekkelig likviditet for ønsket byttepar."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1214,6 +1215,31 @@
         "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere."
     },
     "acceptOnScrollText": "Rull for å godta",
+    "addressBook": {
+        "myExtAccounts": "Mine utvidelseskontoer",
+        "myBook": "Min bok",
+        "searchPlaceholder": "Søk på adresse, navn eller identitet",
+        "noFoundRecords": "Ingen opptak funnet",
+        "noContacts": "Du har ingen kontakter lagt til ennå",
+        "addContact": "Legg til kontakt",
+        "dialogTitle": "Dine kontakter",
+        "identity": "Identitet på kjeden",
+        "none": "Ingen",
+        "detected": "Ny adresse oppdaget",
+        "save": "Lagre som kontakt",
+        "tooltip": "Samle adressebok ved å oppgi navn og adresse for å holde kontaktene dine organiserte og oppdaterte",
+        "notSoraAddress": "Denne adressen vil bli lagret som SORA-adresse nedenfor. Sørg for at mottakeren har tilgang til SORA-kjeden:",
+        "options": {
+            "send": "Send tokens",
+            "edit": "Rediger kontakt",
+            "delete": "Slett"
+        },
+        "btn": {
+            "enterName": "Skriv inn navn",
+            "present": "Allerede til stede",
+            "saveChanges": "Lagre endringer"
+        }
+    },
     "browserPermission": {
         "title": "Tillat kameratilgang i nettleserinnstillingene",
         "desc": "For å sikre autentisiteten til dokumenter og validere brukeridentitet for KYC-verifisering, kreves tilgang til enhetens kamera.",
