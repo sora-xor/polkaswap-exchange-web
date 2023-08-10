@@ -204,6 +204,8 @@ export enum Components {
   BuySell = 'pages/OrderBook/BuySell',
   DatePicker = 'pages/OrderBook/Popovers/DatePicker',
   PairListPopover = 'pages/OrderBook/Popovers/PairListPopover',
+  AllOrders = 'pages/OrderBook/Tables/AllOrders',
+  OpenOrders = 'pages/OrderBook/Tables/OpenOrders',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',

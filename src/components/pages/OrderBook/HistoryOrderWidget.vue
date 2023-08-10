@@ -6,7 +6,9 @@
           `Open orders ${openOrdersCount}`
         }}</span>
         <span @click="switchFilter(Filter.all)" :class="getComputedFilterClasses(Filter.all)">Order history</span>
-        <span @click="switchFilter(Filter.closed)" :class="getComputedFilterClasses(Filter.closed)">Trade history</span>
+        <span @click="switchFilter(Filter.executed)" :class="getComputedFilterClasses(Filter.executed)">
+          Trade history
+        </span>
       </div>
       <div v-if="isLoggedIn" class="order-history-header-cancel-buttons">
         <span :class="getComputedCancelClasses(Cancel.multiple)">Cancel order</span>
@@ -15,64 +17,8 @@
     </div>
     <div class="delimiter" />
     <div v-if="isLoggedIn">
-      <div v-if="currentFilter === Filter.open">
-        <s-table :data="openOrders" :highlight-current-row="false">
-          <s-table-column type="selection" />
-          <s-table-column>
-            <template #header>
-              <span>Time</span>
-            </template>
-            <template v-slot="{ row }">
-              <div>
-                <div>{{ row.date.date }}</div>
-                <div>{{ row.date.time }}</div>
-              </div>
-            </template>
-          </s-table-column>
-          <s-table-column>
-            <template #header>
-              <span>Pair</span>
-            </template>
-            <template v-slot="{ row }">
-              <div>
-                <div>{{ row.pair }}</div>
-              </div>
-            </template>
-          </s-table-column>
-          <s-table-column>
-            <template #header>
-              <span>Price</span>
-            </template>
-            <template v-slot="{ row }">
-              <span>{{ row.price }}</span>
-            </template>
-          </s-table-column>
-          <s-table-column>
-            <template #header>
-              <span>Volume</span>
-            </template>
-            <template v-slot="{ row }">
-              <span>{{ row.volume }}</span>
-            </template>
-          </s-table-column>
-          <s-table-column>
-            <template #header>
-              <span>Daily change</span>
-            </template>
-            <template v-slot="{ row }">
-              <span>{{ row.dailyChange }}</span>
-            </template>
-          </s-table-column>
-          <s-table-column>
-            <template #header>
-              <span>Status</span>
-            </template>
-            <template v-slot="{ row }">
-              <span>{{ row.status }}</span>
-            </template>
-          </s-table-column>
-        </s-table>
-      </div>
+      <open-orders v-if="currentFilter === Filter.open" />
+      <all-orders v-else :filter="currentFilter" />
     </div>
     <div v-else class="order-history-connect-account">
       <h4>Connect an account to start trading</h4>
@@ -88,72 +34,21 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, LimitOrderSide } from '@/consts';
 import { lazyComponent } from '@/router';
 import { mutation, getter } from '@/store/decorators';
-
-enum Filter {
-  open = 'open',
-  all = 'all',
-  closed = 'closed',
-}
-
-enum Cancel {
-  multiple = 'multiple',
-  all = 'all',
-}
+import { Filter, Cancel } from '@/types/orderBook';
 
 @Component({
-  components: {},
+  components: {
+    AllOrders: lazyComponent(Components.AllOrders),
+    OpenOrders: lazyComponent(Components.OpenOrders),
+  },
 })
 export default class OrderHistoryWidget extends Mixins(TranslationMixin) {
-  [x: string]: any;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   currentFilter = Filter.open;
 
   Filter = Filter;
   Cancel = Cancel;
-
-  get openOrders(): any {
-    return [
-      {
-        date: { date: '8/26', time: '14:12:25' },
-        pair: 'XOR-ETH',
-        side: 'buy',
-        price: '103.39',
-        amount: '5',
-        filled: '100',
-        expired: 'a week',
-        total: '13,3423.77',
-      },
-      {
-        date: { date: '8/26', time: '16:19:11' },
-        pair: 'XOR-ETH',
-        side: 'buy',
-        price: '103.39',
-        amount: '5',
-        filled: '100',
-        expired: 'a week',
-        total: '13,3423.77',
-      },
-      {
-        date: { date: '8/25', time: '11:15:45' },
-        pair: 'XOR-ETH',
-        side: 'buy',
-        price: '103.39',
-        amount: '5',
-        filled: '100',
-        expired: 'a week',
-        total: '13,3423.77',
-      },
-    ];
-  }
-
-  get allOrders(): any {
-    return [];
-  }
-
-  get closedOrders(): any {
-    return [];
-  }
 
   get openOrdersCount(): string {
     if (!this.isLoggedIn) return '';
@@ -174,6 +69,11 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin) {
   getComputedCancelClasses(cancel: Cancel): string[] {
     const base = ['order-history-cancel'];
 
+    // TODO: write logic when the option is active
+    const noOpenOrders = false;
+
+    if (noOpenOrders) base.push('order-history-cancel--inactive');
+
     return base;
   }
 
@@ -185,7 +85,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .order-book-widget.history {
-  min-width: 900px;
+  min-width: 950px;
   max-height: 450px;
 
   .el-table-column--selection.is-leaf {
@@ -215,9 +115,23 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin) {
     &--active {
       color: var(--s-color-theme-accent);
     }
+  }
+
+  &-cancel {
+    color: var(--s-color-theme-accent);
+    margin-left: 16px;
+
+    &:hover {
+      cursor: pointer;
+      color: var(--s-color-theme-accent);
+    }
 
     &--inactive {
-      opacity: 0.7;
+      opacity: 0.5;
+
+      &:hover {
+        cursor: default;
+      }
     }
   }
 
