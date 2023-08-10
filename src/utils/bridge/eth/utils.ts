@@ -4,7 +4,7 @@ import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts
 import { rootActionContext } from '@/store';
 import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { EthBridgeHistory } from '@/utils/bridge/eth/history';
+import { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
@@ -111,57 +111,3 @@ export const waitForEvmTransaction = async (id: string) => {
 
   await waitForEvmTransactionMined(transaction.externalHash, updatedCallback);
 };
-
-/**
- * Restore ETH bridge account transactions, using Subquery & Etherscan
- * @param context store context
- */
-export const updateEthBridgeHistory =
-  (context: ActionContext<any, any>) =>
-  async (clearHistory = false, updateCallback?: VoidFunction): Promise<void> => {
-    try {
-      const { rootState, rootGetters } = rootActionContext(context);
-
-      const {
-        wallet: {
-          account: { address },
-          settings: {
-            apiKeys: { etherscan: etherscanApiKey },
-            networkFees,
-          },
-        },
-        web3: { ethBridgeEvmNetwork, ethBridgeContractAddress },
-        bridge: { inProgressIds },
-      } = rootState;
-
-      const networkData = rootGetters.web3.availableNetworks[BridgeNetworkType.EvmLegacy][ethBridgeEvmNetwork];
-
-      if (!networkData) {
-        throw new Error(
-          `[HASHI Bridge History]: Network "${ethBridgeEvmNetwork}" is not available in app. Please check app config`
-        );
-      }
-
-      await ethersUtil.switchOrAddChain(networkData.data);
-
-      if ((await ethersUtil.getEvmNetworkId()) !== ethBridgeEvmNetwork) {
-        throw new Error(
-          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.evmNetworkProvided}" is connected, "${ethBridgeEvmNetwork}" expected`
-        );
-      }
-
-      const assets = rootGetters.assets.assetsDataTable;
-
-      const ethBridgeHistory = new EthBridgeHistory(etherscanApiKey);
-
-      await ethBridgeHistory.init(ethBridgeContractAddress);
-
-      if (clearHistory) {
-        await ethBridgeHistory.clearHistory(updateCallback);
-      }
-
-      await ethBridgeHistory.updateAccountHistory(address, assets, networkFees, inProgressIds, updateCallback);
-    } catch (error) {
-      console.error(error);
-    }
-  };

@@ -10,25 +10,17 @@ import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
 import { FocusedField } from '@/store/bridge/types';
-import {
-  waitForEvmTransactionMined,
-  findUserTxIdInBlock,
-  getBlockHash,
-  getBlockExtrinsics,
-  getBlockEvents,
-  findEventInBlock,
-} from '@/utils/bridge/common/utils';
+import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { EthBridgeHistory } from '@/utils/bridge/eth/history';
-import { waitForApprovedRequest, updateEthBridgeHistory } from '@/utils/bridge/eth/utils';
+import { EthBridgeHistory, updateEthBridgeHistory } from '@/utils/bridge/eth/classes/history';
+import { waitForApprovedRequest } from '@/utils/bridge/eth/utils';
 import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
-import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
-import { getRelayChainBlockNumber } from '@/utils/bridge/sub/utils';
+import { updateSubBridgeHistory } from '@/utils/bridge/sub/classes/history';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { SignTxResult } from './types';
@@ -36,8 +28,7 @@ import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
-import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
-import type { BridgeTransactionData } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { BridgeTransactionData, BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { ActionContext } from 'vuex';
 
 function checkEvmNetwork(context: ActionContext<any, any>): void {
@@ -84,145 +75,6 @@ async function evmTxDataToHistory(
   };
 }
 
-async function subTxDataToHistory({
-  assetDataByAddress,
-  tx,
-  subNetworkAdapter,
-  soraParachainAdapter,
-}: {
-  assetDataByAddress: (address: string) => Nullable<RegisteredAccountAsset>;
-  tx: BridgeTransactionData;
-  subNetworkAdapter: SubAdapter;
-  soraParachainAdapter: SubAdapter;
-}): Promise<SubHistory> {
-  const id = tx.soraHash;
-  const asset = assetDataByAddress(tx.soraAssetAddress);
-  const amount = FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString();
-  const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
-  const blockHeight = isOutgoing ? tx.startBlock : tx.endBlock;
-  const parachainBlockHeight = isOutgoing ? tx.endBlock : tx.startBlock;
-  const soraParachainId = subBridgeApi.parachainIds[subBridgeApi.getSoraParachain(tx.externalNetwork as SubNetwork)];
-
-  const history: SubHistory = {
-    id,
-    blockHeight,
-    type: isOutgoing ? Operation.SubstrateOutgoing : Operation.SubstrateIncoming,
-    hash: tx.soraHash,
-    transactionState: tx.status,
-    parachainBlockHeight,
-    externalNetwork: tx.externalNetwork as SubNetwork,
-    externalNetworkType: BridgeNetworkType.Sub,
-    amount,
-    assetAddress: asset?.address,
-    symbol: asset?.symbol,
-  };
-
-  const [blockId, parachainBlockId] = await Promise.all([
-    getBlockHash(subBridgeApi.api, blockHeight),
-    getBlockHash(soraParachainAdapter.api, parachainBlockHeight),
-  ]);
-
-  history.blockId = blockId;
-  history.parachainBlockId = parachainBlockId;
-
-  const [txId, startTime] = await Promise.all([
-    findUserTxIdInBlock(subBridgeApi.api, blockId, id, 'RequestStatusUpdate', 'bridgeProxy'),
-    api.system.getBlockTimestamp(blockId),
-  ]);
-
-  history.txId = txId;
-  history.startTime = history.endTime = startTime;
-
-  if (isOutgoing) {
-    const [parachainEventData, relayChainBlockNumber] = await Promise.all([
-      findEventInBlock({
-        api: soraParachainAdapter.api,
-        blockId: parachainBlockId,
-        section: 'parachainSystem',
-        method: 'UpwardMessageSent',
-      }),
-      getRelayChainBlockNumber(soraParachainAdapter.api, parachainBlockId),
-    ]);
-    // sended parachain message hash
-    const messageHash = parachainEventData[0].toString();
-    // relay chain should have received message in this blocks range
-    const startSearch = relayChainBlockNumber + 2;
-    const endSearch = startSearch + 1;
-    for (let n = startSearch; n <= endSearch; n++) {
-      try {
-        const blockId = await getBlockHash(subNetworkAdapter.api, n);
-        const events = await getBlockEvents(subNetworkAdapter.api, blockId);
-
-        const messageQueueEvent = events.find(
-          ({ event }) =>
-            event.section === 'messageQueue' && event.method === 'Processed' && event.data[0].toString() === messageHash
-        );
-
-        if (messageQueueEvent) {
-          const to = subBridgeApi.formatAddress(tx.externalAccount);
-          // Native token for network
-          const balancesDepositEvent = events.find(
-            ({ event }) =>
-              event.section === 'balances' &&
-              event.method === 'Deposit' &&
-              subBridgeApi.formatAddress(event.data.who.toString()) === to
-          );
-          const received = balancesDepositEvent.event.data.amount.toString();
-
-          history.externalBlockId = blockId;
-          history.externalBlockHeight = n;
-          history.amount2 = FPNumber.fromCodecValue(received, asset?.externalDecimals).toString();
-          history.from = tx.soraAccount;
-          history.to = to;
-          break;
-        }
-      } catch {
-        continue;
-      }
-    }
-  } else {
-    const relayChainBlockNumber = await getRelayChainBlockNumber(soraParachainAdapter.api, parachainBlockId);
-    const startSearch = relayChainBlockNumber;
-    const endSearch = startSearch - 2;
-
-    for (let n = startSearch; n >= endSearch; n--) {
-      const blockId = await getBlockHash(subNetworkAdapter.api, n);
-      const extrinsics = await getBlockExtrinsics(subNetworkAdapter.api, blockId);
-
-      for (const extrinsic of extrinsics) {
-        try {
-          if (extrinsic.method.section === 'xcmPallet' && extrinsic.method.method === 'reserveTransferAssets') {
-            const [dest, beneficiary] = extrinsic.args;
-            const parachainId = (dest as any).asV3.interior.asX1.asParachain.toNumber();
-            const accountId = (beneficiary as any).asV3.interior.asX1.asAccountId32.id.toString();
-            const receiver = subBridgeApi.formatAddress(accountId);
-
-            if (parachainId === soraParachainId && receiver === tx.soraAccount) {
-              const feeData = await findEventInBlock({
-                api: subNetworkAdapter.api,
-                blockId,
-                section: 'transactionPayment',
-                method: 'TransactionFeePaid',
-              });
-
-              history.externalNetworkFee = feeData[1].toString();
-              history.externalBlockId = blockId;
-              history.externalBlockHeight = n;
-              history.from = tx.soraAccount;
-              history.to = subBridgeApi.formatAddress(extrinsic.signer.toString());
-              break;
-            }
-          }
-        } catch {
-          continue;
-        }
-      }
-    }
-  }
-
-  return history;
-}
-
 function bridgeDataToHistoryItem(
   context: ActionContext<any, any>,
   { date = Date.now(), payload = {}, ...params } = {}
@@ -230,8 +82,7 @@ function bridgeDataToHistoryItem(
   const { getters, state, rootState, rootGetters } = bridgeActionContext(context);
   const { isEthBridge, isEvmBridge } = getters;
   const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : BridgeTxStatus.Pending;
-  // [TODO] use BridgeNetworkId
-  const externalNetwork = rootState.web3.networkSelected as any;
+  const externalNetwork = rootState.web3.networkSelected as BridgeNetworkId as any;
   const externalNetworkType = isEthBridge
     ? BridgeNetworkType.EvmLegacy
     : isEvmBridge
@@ -373,49 +224,18 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<void
   commit.setExternalBalance(nativeBalance);
 }
 
-async function updateSubHistory(context: ActionContext<any, any>): Promise<void> {
-  const { dispatch, getters, rootState, rootGetters } = bridgeActionContext(context);
-  const externalNetwork = rootState.web3.networkSelected;
+async function updateSubHistory(context: ActionContext<any, any>, clearHistory = false): Promise<void> {
+  const { dispatch } = bridgeActionContext(context);
+  const updateHistoryFn = updateSubBridgeHistory(context);
 
-  if (!externalNetwork) return;
-
-  const { assetDataByAddress } = rootGetters.assets;
-  const accountAddress = rootState.wallet.account.address;
-  const soraParachainNetwork = subBridgeApi.getSoraParachain(externalNetwork as SubNetwork);
-  const subNetworkAdapter = subConnector.getAdapterForNetwork(externalNetwork as SubNetwork);
-  const soraParachainAdapter = subConnector.getAdapterForNetwork(soraParachainNetwork);
-  const internalHistory = getters.bridgeApi.historyList as IBridgeTransaction[];
-
-  try {
-    const transactions = await subBridgeApi.getUserTransactions(accountAddress, externalNetwork as SubNetwork);
-
-    for (const tx of transactions) {
-      const isInternal = internalHistory.find((item) => item.hash === tx.soraHash);
-
-      if (isInternal) continue;
-
-      await Promise.all([subNetworkAdapter.connect(), soraParachainAdapter.connect()]);
-
-      const history = await subTxDataToHistory({ assetDataByAddress, tx, subNetworkAdapter, soraParachainAdapter });
-
-      if (history.id) {
-        subBridgeApi.saveHistory(history);
-        dispatch.updateInternalHistory();
-      }
-    }
-  } finally {
-    subNetworkAdapter.stop();
-    soraParachainAdapter.stop();
-  }
+  await updateHistoryFn(clearHistory, dispatch.updateInternalHistory);
 }
 
 async function updateEthHistory(context: ActionContext<any, any>, clearHistory = false): Promise<void> {
   const { dispatch } = bridgeActionContext(context);
-
-  const updateCallback = () => dispatch.updateInternalHistory();
   const updateHistoryFn = updateEthBridgeHistory(context);
 
-  await updateHistoryFn(clearHistory, updateCallback);
+  await updateHistoryFn(clearHistory, dispatch.updateInternalHistory);
 }
 
 async function updateEvmHistory(context: ActionContext<any, any>): Promise<void> {
@@ -648,13 +468,13 @@ const actions = defineActions({
     commit.setHistoryLoading(true);
 
     if (getters.isEthBridge) {
-      return await updateEthHistory(context, clearHistory);
+      await updateEthHistory(context, clearHistory);
     }
     if (getters.isEvmBridge) {
-      return await updateEvmHistory(context);
+      await updateEvmHistory(context);
     }
     if (getters.isSubBridge) {
-      return await updateSubHistory(context);
+      await updateSubHistory(context, clearHistory);
     }
 
     commit.setHistoryLoading(false);

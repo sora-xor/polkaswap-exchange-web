@@ -122,6 +122,13 @@ export const getBlockEvents = async (api: ApiPromise, blockHash: string) => {
   return blockEvents;
 };
 
+export const getBlockTimestamp = async (api: ApiPromise, blockHash: string): Promise<number> => {
+  const apiInstanceAtBlock = await api.at(blockHash);
+  const timestamp = await apiInstanceAtBlock.query.timestamp.now();
+
+  return timestamp.toNumber();
+};
+
 export const findEventInBlock = async ({
   api,
   blockId,

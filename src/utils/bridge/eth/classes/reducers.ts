@@ -6,7 +6,7 @@ import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { IBridgeReducerOptions, GetBridgeHistoryInstance, SignExternal } from '@/utils/bridge/common/types';
 import { getEvmTransactionRecieptByHash, findEventInBlock } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
+import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
 import {
   getTransaction,
   waitForApprovedRequest,
