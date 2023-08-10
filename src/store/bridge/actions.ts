@@ -374,16 +374,10 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<void
 }
 
 async function updateSubHistory(context: ActionContext<any, any>): Promise<void> {
-  const { commit, dispatch, getters, state, rootState, rootGetters } = bridgeActionContext(context);
-
-  if (!rootGetters.wallet.account.isLoggedIn) return;
-  if (state.historyLoading) return;
-
+  const { dispatch, getters, rootState, rootGetters } = bridgeActionContext(context);
   const externalNetwork = rootState.web3.networkSelected;
 
   if (!externalNetwork) return;
-
-  commit.setHistoryLoading(true);
 
   const { assetDataByAddress } = rootGetters.assets;
   const accountAddress = rootState.wallet.account.address;
@@ -412,37 +406,23 @@ async function updateSubHistory(context: ActionContext<any, any>): Promise<void>
   } finally {
     subNetworkAdapter.stop();
     soraParachainAdapter.stop();
-
-    commit.setHistoryLoading(false);
   }
 }
 
 async function updateEthHistory(context: ActionContext<any, any>, clearHistory = false): Promise<void> {
-  const { commit, state, dispatch } = bridgeActionContext(context);
-
-  if (state.historyLoading) return;
-
-  commit.setHistoryLoading(true);
+  const { dispatch } = bridgeActionContext(context);
 
   const updateCallback = () => dispatch.updateInternalHistory();
   const updateHistoryFn = updateEthBridgeHistory(context);
 
   await updateHistoryFn(clearHistory, updateCallback);
-
-  commit.setHistoryLoading(false);
 }
 
 async function updateEvmHistory(context: ActionContext<any, any>): Promise<void> {
   const { commit, dispatch, state, rootState, rootGetters } = bridgeActionContext(context);
-
-  if (!rootGetters.wallet.account.isLoggedIn) return;
-  if (state.historyLoading) return;
-
   const externalNetwork = rootState.web3.networkSelected;
 
   if (!externalNetwork) return;
-
-  commit.setHistoryLoading(true);
 
   const accountAddress = rootState.wallet.account.address;
   const transactions = await evmBridgeApi.getUserTransactions(accountAddress, externalNetwork as EvmNetwork);
@@ -464,7 +444,6 @@ async function updateEvmHistory(context: ActionContext<any, any>): Promise<void>
   }
 
   commit.setExternalHistory(externalHistory);
-  commit.setHistoryLoading(false);
 }
 
 async function updateEthLockedBalance(context: ActionContext<any, any>): Promise<void> {
@@ -662,7 +641,11 @@ const actions = defineActions({
   },
 
   async updateExternalHistory(context, clearHistory = false): Promise<void> {
-    const { getters } = bridgeActionContext(context);
+    const { commit, getters, state } = bridgeActionContext(context);
+
+    if (state.historyLoading) return;
+
+    commit.setHistoryLoading(true);
 
     if (getters.isEthBridge) {
       return await updateEthHistory(context, clearHistory);
@@ -673,6 +656,8 @@ const actions = defineActions({
     if (getters.isSubBridge) {
       return await updateSubHistory(context);
     }
+
+    commit.setHistoryLoading(false);
   },
 
   removeHistory(context, { tx, force = false }: { tx: Partial<IBridgeTransaction>; force: boolean }): void {
