@@ -121,11 +121,7 @@
       </div>
 
       <div v-if="txExternalHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
-        <s-input
-          :placeholder="getNetworkText('bridgeTransaction.transactionHash', externalNetworkId)"
-          :value="txExternalHashFormatted"
-          readonly
-        />
+        <s-input :placeholder="txExternalHashPlaceholder" :value="txExternalHashFormatted" readonly />
         <s-button
           class="s-button--hash-copy"
           type="action"
@@ -344,6 +340,12 @@ export default class BridgeTransaction extends Mixins(
     return this.historyItem?.externalHash ?? this.txExternalBlockId;
   }
 
+  get txExternalHashPlaceholder(): string {
+    const key = this.historyItem?.externalHash ? 'bridgeTransaction.transactionHash' : 'transaction.blockId';
+
+    return this.getNetworkText(key, this.externalNetworkId);
+  }
+
   get txExternalHashFormatted(): string {
     return this.formatAddress(this.txExternalHash, FORMATTED_HASH_LENGTH);
   }
@@ -427,7 +429,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txExternalAccountPlaceholder(): string {
-    const network = this.isSoraToEvm ? (this.externalNetworkId as BridgeNetworkId) : undefined;
+    const network = this.isSoraToEvm ? this.externalNetworkId : undefined;
     return this.getNetworkText('accountAddressText', network);
   }
 
@@ -508,7 +510,7 @@ export default class BridgeTransaction extends Mixins(
     return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
   }
 
-  getNetworkText(key: string, networkId?: BridgeNetworkId): string {
+  getNetworkText(key: string, networkId?: Nullable<BridgeNetworkId>): string {
     const text = this.t(key);
     const network = networkId ? this.getNetworkName(this.externalNetworkType, networkId) : this.TranslationConsts.Sora;
 
