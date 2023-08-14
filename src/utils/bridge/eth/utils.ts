@@ -1,15 +1,10 @@
 import { Operation, BridgeTxStatus } from '@sora-substrate/util';
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 
-import { rootActionContext } from '@/store';
 import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
-import ethersUtil from '@/utils/ethers-util';
 
 import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
 import type { Subscription } from 'rxjs';
-import type { ActionContext } from 'vuex';
 
 export const isUnsignedFromPart = (tx: BridgeHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
