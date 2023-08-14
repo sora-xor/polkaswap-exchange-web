@@ -103,10 +103,10 @@
         <bridge-links-dropdown v-if="soraExplorerLinks.length" :links="soraExplorerLinks" />
       </div>
 
-      <div v-if="txParachainHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
+      <div v-if="txParachainBlockId" class="transaction-hash-container transaction-hash-container--with-dropdown">
         <s-input
-          :placeholder="getNetworkText('bridgeTransaction.transactionHash', parachainNetworkId)"
-          :value="txParachainHashFormatted"
+          :placeholder="getNetworkText('transaction.blockId', parachainNetworkId)"
+          :value="txParachainBlockIdFormatted"
           readonly
         />
         <s-button
@@ -115,17 +115,13 @@
           alternative
           icon="basic-copy-24"
           :tooltip="hashCopyTooltip"
-          @click="handleCopyAddress(txParachainHash, $event)"
+          @click="handleCopyAddress(txParachainBlockId, $event)"
         />
         <bridge-links-dropdown v-if="parachainExplorerLinks.length" :links="parachainExplorerLinks" />
       </div>
 
       <div v-if="txExternalHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
-        <s-input
-          :placeholder="getNetworkText('bridgeTransaction.transactionHash', externalNetworkId)"
-          :value="txExternalHashFormatted"
-          readonly
-        />
+        <s-input :placeholder="txExternalHashPlaceholder" :value="txExternalHashFormatted" readonly />
         <s-button
           class="s-button--hash-copy"
           type="action"
@@ -336,20 +332,30 @@ export default class BridgeTransaction extends Mixins(
     return this.formatAddress(this.txSoraHash, FORMATTED_HASH_LENGTH);
   }
 
+  get txExternalBlockId(): string {
+    return this.historyItem?.externalBlockId ?? '';
+  }
+
   get txExternalHash(): string {
-    return this.historyItem?.externalHash ?? '';
+    return this.historyItem?.externalHash ?? this.txExternalBlockId;
+  }
+
+  get txExternalHashPlaceholder(): string {
+    const key = this.historyItem?.externalHash ? 'bridgeTransaction.transactionHash' : 'transaction.blockId';
+
+    return this.getNetworkText(key, this.externalNetworkId);
   }
 
   get txExternalHashFormatted(): string {
     return this.formatAddress(this.txExternalHash, FORMATTED_HASH_LENGTH);
   }
 
-  get txParachainHash(): string {
-    return (this.historyItem as SubHistory)?.parachainHash ?? '';
+  get txParachainBlockId(): string {
+    return (this.historyItem as SubHistory)?.parachainBlockId ?? '';
   }
 
-  get txParachainHashFormatted(): string {
-    return this.formatAddress(this.txParachainHash, FORMATTED_HASH_LENGTH);
+  get txParachainBlockIdFormatted(): string {
+    return this.formatAddress(this.txParachainBlockId, FORMATTED_HASH_LENGTH);
   }
 
   get txDate(): string {
@@ -423,7 +429,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txExternalAccountPlaceholder(): string {
-    const network = this.isSoraToEvm ? (this.externalNetworkId as BridgeNetworkId) : undefined;
+    const network = this.isSoraToEvm ? this.externalNetworkId : undefined;
     return this.getNetworkText('accountAddressText', network);
   }
 
@@ -504,7 +510,7 @@ export default class BridgeTransaction extends Mixins(
     return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
   }
 
-  getNetworkText(key: string, networkId?: BridgeNetworkId): string {
+  getNetworkText(key: string, networkId?: Nullable<BridgeNetworkId>): string {
     const text = this.t(key);
     const network = networkId ? this.getNetworkName(this.externalNetworkType, networkId) : this.TranslationConsts.Sora;
 
@@ -555,7 +561,7 @@ export default class BridgeTransaction extends Mixins(
       this.externalNetworkType,
       this.externalNetworkId,
       this.txExternalAccount,
-      this.historyItem?.externalBlockId,
+      this.txExternalBlockId,
       this.EvmLinkType.Account
     );
   }
@@ -566,8 +572,8 @@ export default class BridgeTransaction extends Mixins(
     return this.getNetworkExplorerLinks(
       this.externalNetworkType,
       this.parachainNetworkId,
-      this.txParachainHash,
-      (this.historyItem as SubHistory)?.parachainBlockId,
+      this.txParachainBlockId,
+      this.txParachainBlockId,
       this.EvmLinkType.Transaction
     );
   }
@@ -579,7 +585,7 @@ export default class BridgeTransaction extends Mixins(
       this.externalNetworkType,
       this.externalNetworkId,
       this.txExternalHash,
-      this.historyItem?.externalBlockId,
+      this.txExternalBlockId,
       this.EvmLinkType.Transaction
     );
   }
