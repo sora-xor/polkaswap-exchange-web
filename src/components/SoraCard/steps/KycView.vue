@@ -281,6 +281,10 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
   }
 }
 
+button#CancelKyc {
+  display: none !important;
+}
+
 section.content {
   min-height: 800px;
 }
