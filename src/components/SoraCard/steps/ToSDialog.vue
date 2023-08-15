@@ -26,6 +26,8 @@ import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state } from '@/store/decorators';
 
+const BLACKLIST_URL = 'https://whitelist.polkaswap2.io/card/blacklist.json';
+
 @Component({
   components: {
     DialogBase: components.DialogBase,
@@ -37,6 +39,7 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
   @Prop({ default: '', type: String }) readonly title!: string;
 
   @state.settings.displayRegions private displayRegions!: Nullable<Intl.DisplayNames>;
+  private blacklistedCountries: Record<string, string> = {};
 
   countryCodeEmoji = countryCodeEmoji;
 
@@ -58,64 +61,19 @@ export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, m
     return Object.entries(this.blacklistedCountries);
   }
 
-  blacklistedCountries = {
-    af: 'Afghanistan',
-    al: 'Albania',
-    dz: 'Algeria',
-    bd: 'Bangladesh',
-    bb: 'Barbados',
-    by: 'Belarus',
-    bo: 'Bolivia',
-    bf: 'Burkina Faso',
-    kh: 'Cambodia',
-    ky: 'Cayman Islands',
-    cf: 'Central African Republic',
-    cd: 'Congo',
-    cn: 'China',
-    cu: 'Cuba',
-    cy: 'Cyprus',
-    er: 'Eritrea',
-    et: 'Ethiopia',
-    gi: 'Gibraltar',
-    gh: 'Ghana',
-    ht: 'Haiti',
-    hk: 'Hong Kong',
-    ir: 'Iran',
-    iq: 'Iraq',
-    ci: 'Ivory Coast',
-    jm: 'Jamaica',
-    jo: 'Jordan',
-    kp: 'Korea',
-    kg: 'Kyrgyzstan',
-    lb: 'Lebanon',
-    lr: 'Liberia',
-    ly: 'Libya',
-    mk: 'Macedonia',
-    ml: 'Mali',
-    mz: 'Mozambique',
-    mm: 'Myanmar',
-    np: 'Nepal',
-    ng: 'Nigeria',
-    pa: 'Panama',
-    ph: 'Philippines',
-    ru: 'Russian Federation',
-    sd: 'Sudan',
-    sn: 'Senegal',
-    so: 'Somalia',
-    za: 'South Africa',
-    ss: 'South Sudan',
-    sy: 'Syria',
-    tz: 'Tanzania',
-    tr: 'Turkey',
-    th: 'Thailand',
-    ug: 'Uganda',
-    ae: 'United Arab Emirates',
-    us: 'United States',
-    ve: 'Venezuela',
-    vn: 'Vietnam',
-    ye: 'Yemen',
-    zw: 'Zimbabwe',
-  } as const;
+  async getBlacklistedCountries(): Promise<void> {
+    try {
+      const response = await fetch(BLACKLIST_URL, { cache: 'no-cache' });
+      const data = await response.json();
+      this.blacklistedCountries = data;
+    } catch (error) {
+      this.blacklistedCountries = {};
+    }
+  }
+
+  mounted(): void {
+    this.getBlacklistedCountries();
+  }
 }
 </script>
 

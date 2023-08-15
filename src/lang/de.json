@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transaktion übermittelt",
         "transactionMessage": "{firstToken} und {secondToken}",
         "ok": "OK",
-        "confirm": "Bestätigen"
+        "confirm": "Bestätigen",
+        "lossWarning": "Sie werden {value}% bei Ihrem Handel verlieren. Wir haben ein Problem mit der Liquiditätsbereitstellung festgestellt. Dies kann bei Token-Swaps zu erheblichen Verlusten führen. Bitte stellen Sie sicher, dass für Ihr gewünschtes Swap-Paar ausreichend Liquidität vorhanden ist."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1214,6 +1215,31 @@
         "errorMessage": "Entschuldigung für die Unannehmlichkeiten. Wir arbeiten fleißig daran, dieses Problem zu lösen. Bitte versuchen Sie es später noch einmal."
     },
     "acceptOnScrollText": "Scrollen Sie, um zu akzeptieren",
+    "addressBook": {
+        "myExtAccounts": "Meine Nebenkonten",
+        "myBook": "Mein Buch",
+        "searchPlaceholder": "Suchen Sie nach Adresse, Name oder Identität",
+        "noFoundRecords": "Keine Aufzeichnungen gefunden",
+        "noContacts": "Sie haben noch keine Kontakte hinzugefügt",
+        "addContact": "Kontakt hinzufügen",
+        "dialogTitle": "Deine Kontakte",
+        "identity": "Identität in der Kette",
+        "none": "Keiner",
+        "detected": "Neue Adresse erkannt",
+        "save": "Als Kontakt speichern",
+        "tooltip": "Sammeln Sie Ihr Adressbuch, indem Sie Namen und Adresse angeben, um Ihre Kontakte organisiert und auf dem neuesten Stand zu halten",
+        "notSoraAddress": "Diese Adresse wird unten als SORA-Adresse gespeichert. Stellen Sie sicher, dass der Empfänger auf die SORA-Kette zugreifen kann:",
+        "options": {
+            "send": "Senden Sie Token",
+            "edit": "Kontakt bearbeiten",
+            "delete": "Löschen"
+        },
+        "btn": {
+            "enterName": "Name eingeben",
+            "present": "Bereits anwesend",
+            "saveChanges": "Änderungen speichern"
+        }
+    },
     "browserPermission": {
         "title": "Erlauben Sie den Kamerazugriff in den Browsereinstellungen",
         "desc": "Um die Authentizität von Dokumenten sicherzustellen und die Benutzeridentität für die KYC-Überprüfung zu validieren, ist Zugriff auf die Kamera Ihres Geräts erforderlich.",

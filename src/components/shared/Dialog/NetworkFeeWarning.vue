@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :showCloseButton="false">
+  <dialog-base :visible.sync="isVisible">
     <network-fee-warning class="network-fee" :fee="fee" :symbol="symbol" :payoff="payoff" @confirm="handleConfirm" />
   </dialog-base>
 </template>
@@ -28,9 +28,3 @@ export default class NetworkFeeWarningDialog extends Mixins(mixins.DialogMixin, 
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.network-fee.content {
-  margin-top: 0px;
-}
-</style>

@@ -483,7 +483,8 @@
         "transactionSubmitted": "Transactie ingediend",
         "transactionMessage": "{firstToken} en {secondToken}",
         "ok": "OK",
-        "confirm": "Bevestigen"
+        "confirm": "Bevestigen",
+        "lossWarning": "U verliest {value}% op uw transactie. We hebben een probleem met de liquiditeitsvoorziening ontdekt. Dit kan leiden tot aanzienlijke verliezen tijdens token-swaps. Zorg ervoor dat er voldoende liquiditeit is voor uw gewenste swappaar."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1214,6 +1215,31 @@
         "errorMessage": "Excuses voor het ongemak. We werken er hard aan om dit op te lossen. Probeer het later opnieuw."
     },
     "acceptOnScrollText": "Scrol om te accepteren",
+    "addressBook": {
+        "myExtAccounts": "Mijn extensieaccounts",
+        "myBook": "Mijn boek",
+        "searchPlaceholder": "Zoek op adres, naam of identiteit",
+        "noFoundRecords": "Geen verslagen gevonden",
+        "noContacts": "Je hebt nog geen contacten toegevoegd",
+        "addContact": "Contactpersoon toevoegen",
+        "dialogTitle": "Jouw contacten",
+        "identity": "On-chain identiteit",
+        "none": "Geen",
+        "detected": "Nieuw adres gedetecteerd",
+        "save": "Opslaan als contactpersoon",
+        "tooltip": "Verzamel adresboek door naam en adres op te geven om uw contacten georganiseerd en up-to-date te houden",
+        "notSoraAddress": "Dit adres wordt opgeslagen als SORA-adres hieronder. Zorg ervoor dat de ontvanger toegang heeft tot de SORA-keten:",
+        "options": {
+            "send": "Tokens verzenden",
+            "edit": "Bewerk contact",
+            "delete": "Verwijderen"
+        },
+        "btn": {
+            "enterName": "Voer naam in",
+            "present": "Reeds aanwezig",
+            "saveChanges": "Wijzigingen opslaan"
+        }
+    },
     "browserPermission": {
         "title": "Cameratoegang toestaan in browserinstellingen",
         "desc": "Om de authenticiteit van documenten te garanderen en de gebruikersidentiteit voor KYC-verificatie te valideren, is toegang tot de camera van uw apparaat vereist.",
