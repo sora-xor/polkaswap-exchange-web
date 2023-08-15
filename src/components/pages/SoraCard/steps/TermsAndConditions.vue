@@ -1,5 +1,9 @@
 <template>
   <div class="tos" v-loading="parentLoading">
+    <p class="tos__pre-disclaimer">
+      We want you to know exactly how SORA Card services work, who needs your details and why. Reviewing these policies
+      will help you to continue using the app with peace of mind.
+    </p>
     <div class="tos__disclaimer">
       <h4 class="tos__disclaimer-header">{{ t('disclaimerTitle') }}</h4>
       <p class="tos__disclaimer-paragraph">
@@ -93,48 +97,20 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
 
 <style lang="scss" scoped>
 .tos {
-  &__disclaimer {
-    width: 100%;
-    background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-small);
-    box-shadow: var(--s-shadow-dialog);
-    padding: 20px $basic-spacing;
-    margin-bottom: $basic-spacing;
-    position: relative;
-
-    &-header {
-      font-weight: 500;
-      margin-bottom: 10px;
-    }
-
-    &-paragraph {
-      color: var(--s-color-base-content-secondary);
-      margin-bottom: calc(var(--s-basic-spacing) / 2);
-    }
-
-    &-warning.icon {
-      position: absolute;
-      background-color: #479aef;
-      border: 2.25257px solid #f7f3f4;
-      box-shadow: var(--s-shadow-element-pressed);
-      top: 20px;
-      right: 20px;
-      border-radius: 50%;
-      color: #fff;
-      width: 46px;
-      height: 46px;
-
-      .s-icon-notifications-alert-triangle-24 {
-        display: block;
-        color: #fff;
-        margin-top: 5px;
-        margin-left: 7px;
-      }
-    }
-
-    * {
-      width: 85%;
-    }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &__pre-disclaimer {
+    text-align: center;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 150%;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: var(--s-color-brand-day);
+    width: 95%;
+    margin-bottom: 16px;
   }
 
   &__section {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sora-card-wrapper">
     <confirmation-info v-if="step === Step.ConfirmationInfo" v-loading="loading" @confirm-apply="openStartPage" />
     <sora-card-intro v-else-if="step === Step.StartPage" @confirm-apply="confirmApply" />
     <sora-card-kyc
@@ -8,6 +8,7 @@
       :openKycForm="openKycForm"
       @go-to-start="openStartPage"
     />
+    <dashboard v-else-if="step === Step.Dashboard" />
   </div>
 </template>
 
@@ -27,6 +28,7 @@ enum Step {
   StartPage = 'StartPage',
   KYC = 'KYC',
   ConfirmationInfo = 'ConfirmationInfo',
+  Dashboard = 'Dashboard',
 }
 
 @Component({
@@ -34,6 +36,7 @@ enum Step {
     SoraCardIntro: lazyComponent(Components.SoraCardIntroPage),
     SoraCardKyc: lazyComponent(Components.SoraCardKYC),
     ConfirmationInfo: lazyComponent(Components.ConfirmationInfo),
+    Dashboard: lazyComponent(Components.Dashboard),
   },
 })
 export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
@@ -56,6 +59,7 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
   step: Nullable<Step> = null;
   userApplied = false;
   openKycForm = false;
+  isRedirectFromFearless = true;
 
   @Watch('soraCardEnabled', { immediate: true })
   private checkAvailability(value: Nullable<boolean>): void {
@@ -143,12 +147,17 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
   }
 
   mounted(): void {
-    this.checkKyc();
+    // this.checkKyc();
+    this.step = Step.Dashboard;
   }
 }
 </script>
 
 <style lang="scss">
+.sora-card-wrapper {
+  position: relative;
+}
+
 .el-button.neumorphic.s-primary.sora-card__btn {
   margin-top: var(--s-size-mini);
 

@@ -20,11 +20,13 @@
         v-if="!showErrorInfoBanner"
         :id="widgetId"
         data-from-currency="EUR"
+        data-to-blockchain="XOR"
+        data-locale="en"
+        :data-disable-to-blockchain="true"
         :data-address="accountAddress"
         :data-from-amount="restEuroToDeposit"
         :data-hide-buy-more-button="true"
         :data-hide-try-again-button="false"
-        data-locale="en"
       />
       <div v-else class="x1-error-info-banner">
         <s-icon class="x1-error-info-banner__icon" name="basic-clear-X-24" size="64px" />

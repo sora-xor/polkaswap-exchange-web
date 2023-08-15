@@ -3,7 +3,6 @@
     <div class="map">
       <div class="map__text-info">
         <div class="map__section">
-          <email-icon class="map__icon"></email-icon>
           <div class="text">
             <h4 class="map__point">{{ t('card.roadmap.contactInfoTitle') }}</h4>
             <span class="map__point-desc">{{ t('card.roadmap.contactInfoDesc') }}</span>
@@ -16,7 +15,6 @@
           <div v-else class="point" />
         </div>
         <div class="map__section">
-          <user-icon class="map__icon"></user-icon>
           <div class="text">
             <h4 class="map__point">{{ t('card.roadmap.docsTitle') }}</h4>
             <span class="map__point-desc">{{ t('card.roadmap.docsDesc') }}</span>
@@ -29,7 +27,6 @@
           <div v-else class="point" />
         </div>
         <div class="map__section">
-          <card-icon class="map__icon"></card-icon>
           <div class="text">
             <h4 class="map__point">{{ t('card.roadmap.personalDataTitle') }}</h4>
             <span class="map__point-desc">{{ t('card.roadmap.personalDataTitle') }}</span>
@@ -65,18 +62,12 @@
 import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import CardIcon from '@/assets/img/sora-card/card.svg?inline';
-import EmailIcon from '@/assets/img/sora-card/email.svg?inline';
-import UserIcon from '@/assets/img/sora-card/user.svg?inline';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, state } from '@/store/decorators';
 import { clearTokensFromLocalStorage } from '@/utils/card';
 
 @Component({
   components: {
-    EmailIcon,
-    CardIcon,
-    UserIcon,
     NotificationEnablingPage: components.NotificationEnablingPage,
   },
 })

@@ -150,4 +150,59 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
 .el-card {
   margin: var(--s-size-mini) auto 0;
 }
+.sora-card-kyc-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.post-disclaimer {
+  color: var(--s-color-base-content-secondary);
+  text-align: center;
+  margin-top: 16px;
+  font-size: 16px;
+  width: 25%;
+  line-height: 24px;
+}
+</style>
+
+<style lang="scss">
+.tos__disclaimer {
+  width: 100%;
+  background-color: var(--s-color-base-background);
+  border-radius: var(--s-border-radius-small);
+  box-shadow: var(--s-shadow-dialog);
+  padding: 20px $basic-spacing;
+  margin-bottom: $basic-spacing;
+  position: relative;
+  &-header {
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  &-paragraph {
+    color: var(--s-color-base-content-secondary);
+    margin-bottom: calc(var(--s-basic-spacing) / 2);
+  }
+  &-warning.icon {
+    position: absolute;
+    background-color: #479aef;
+    border: 2.25257px solid #f7f3f4;
+    box-shadow: var(--s-shadow-element-pressed);
+    top: 20px;
+    right: 20px;
+    border-radius: 50%;
+    color: #fff;
+    width: 46px;
+    height: 46px;
+    .s-icon-notifications-alert-triangle-24 {
+      display: block;
+      color: #fff;
+      margin-top: 5px;
+      margin-left: 7px;
+    }
+  }
+  * {
+    width: 85%;
+  }
+}
 </style>

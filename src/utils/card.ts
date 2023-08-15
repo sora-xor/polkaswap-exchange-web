@@ -231,7 +231,11 @@ export const clearTokensFromLocalStorage = () => {
   localStorage.removeItem('PW-refresh-token');
 };
 
-export const clearPayWingsKeysFromLocalStorage = () => {
+export const clearPayWingsKeysFromLocalStorage = (logout = false) => {
+  if (logout) {
+    localStorage.removeItem('PW-token');
+    localStorage.removeItem('PW-refresh-token');
+  }
   localStorage.removeItem('PW-ProcessID');
   localStorage.removeItem('PW-conf');
   localStorage.removeItem('PW-Country');
