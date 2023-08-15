@@ -450,9 +450,8 @@ export default class Bridge extends Mixins(
   get isInsufficientLiquidity(): boolean {
     if (!(this.asset && this.assetLockedBalance && this.isSoraToEvm)) return false;
 
-    const decimals = this.asset.decimals;
-    const fpAmount = new FPNumber(this.amountSend, decimals);
-    const fpLocked = FPNumber.fromCodecValue(this.assetLockedBalance, decimals);
+    const fpAmount = new FPNumber(this.amountSend, this.asset.decimals);
+    const fpLocked = FPNumber.fromCodecValue(this.assetLockedBalance, this.asset.externalDecimals);
 
     return FPNumber.gt(fpAmount, fpLocked);
   }
