@@ -484,7 +484,7 @@
         "transactionMessage": "{firstToken}和{secondToken}",
         "ok": "好的",
         "confirm": "确认",
-        "lossWarning": "您的交易将损失{value}%。我们发现存在流动性供应问题。这可能会导致代币交换期间的重大损失。请确保您所需的掉期对有足够的流动性。"
+        "lossWarning": "您的交易可能会损失{value}%。我们检测到了流动性供应问题。这可能导致在代币兑换过程中出现重大亏损。请确保所选的兑换对具有足够的流动性。"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1102,7 +1102,7 @@
         "deleteAccountText": "如果没有助记词、.json 文件或存储在某些扩展名中，则无法恢复帐户。您将被注销。",
         "importSteps": {
             "selectWallet": "转到您使用的钱包",
-            "selectAccount": "选择您要导出的帐户",
+            "selectAccount": "请选择您要导出的账户。",
             "exportAccount": "导出{JSON}文件"
         },
         "exportTutorialsText": "导出教程"
@@ -1179,7 +1179,7 @@
     "newAccountsText": "新帐户",
     "dragAndDropText": "拖放或选择{extension}文件",
     "copyPhraseText": "复制短语",
-    "stepText": "步",
+    "stepText": "步骤",
     "alerts": {
         "drop": "掉落在下方",
         "once": "一次",
@@ -1197,7 +1197,7 @@
         "alertFrequencyTitle": "警报频率",
         "frequencyTooltip": "在“一次”和“始终”之间进行选择以确定您接收所选警报类型通知的频率。 “Once”会在满足条件时发送一条通知，而“always”会在每次超过价格阈值时继续通知您",
         "noSupportMsg": "您的浏览器不支持通知",
-        "finishBtn": "去完成",
+        "finishBtn": "完成警报设置",
         "raise": "升到高处",
         "onRaiseDesc": "{token}上涨至高于{price}",
         "typeTooltip": "选择“低于”或“高于”选项来指定跟踪重要价格变动的警报条件。当您的资产价值低于或高于指定阈值时，这些选项可让您及时收到通知"
