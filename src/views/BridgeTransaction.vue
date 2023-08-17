@@ -321,7 +321,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txExternalNetworkFeeFormatted(): string {
-    return this.formatCodecNumber(this.txExternalNetworkFee, this.asset?.externalDecimals);
+    return this.formatCodecNumber(this.txExternalNetworkFee, this.nativeTokenDecimals);
   }
 
   get txSoraHash(): string {
