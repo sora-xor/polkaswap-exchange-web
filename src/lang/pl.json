@@ -92,7 +92,7 @@
     },
     "connection": {
         "title": "Konto sieci {Sora}",
-        "text": "Rozszerzenia i Google bezpiecznie przechowują Twoje konto w sieci {Sora} . Pozwalają podpisywać transakcje i zarządzać aktywami.",
+        "text": "Aby zarządzać aktywami i podpisywać transakcje na {Sora}, konto musi być połączone. Konta {Sora} można tworzyć i łączyć za pomocą naszych zintegrowanych portfeli lub rozszerzeń przeglądarki.",
         "noAccounts": "W Twoim rozszerzeniu przeglądarki {extension} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
         "action": {
@@ -107,10 +107,10 @@
             "connected": "Połączony",
             "notConnected": "Nie połączony"
         },
-        "internalTitle": "Połącz przez {wallet}",
-        "internalText": "Możesz utworzyć lub połączyć istniejące konto za pośrednictwem {wallet} . Przechowuje konta przy użyciu szyfrowania.",
+        "internalTitle": "Połącz się z {wallet}",
+        "internalText": "Możesz utworzyć lub zaimportować istniejące konto {Sora}, aby połączyć je z kontem {wallet}. Wszystkie dane przechowywane przez {wallet} są szyfrowane przy użyciu wbudowanego zaawansowanego szyfrowania.",
         "list": {
-            "simplest": "Najprostsza opcja",
+            "integrated": "Zintegrowany",
             "extensions": "Rozszerzenia"
         }
     },
@@ -1053,8 +1053,8 @@
             "importAccount": "Importuj konto"
         },
         "heading": {
-            "seedPhraseTitle": "Nasiona frazy",
-            "confirmSeedTitle": "Potwierdź źródłową frazę",
+            "seedPhraseTitle": "Hasło",
+            "confirmSeedTitle": "Potwierdź hasło",
             "accountDetailsTitle": "Szczegóły Konta",
             "importTitle": "Importuj konto"
         },
@@ -1065,12 +1065,12 @@
             "importAccount": "Importuj konto"
         },
         "accountName": {
-            "placeholder": "Nazwa portfela",
-            "desc": "To nazwa Twojego portfela, która będzie dla Ciebie widoczna"
+            "placeholder": "Nazwa konta",
+            "desc": "To jest nazwa twojego konta. Będzie widoczny tylko dla Ciebie w {Polkaswap}."
         },
         "password": {
             "placeholder": "Hasło",
-            "desc": "Upewnij się, że używasz silnego hasła dla właściwej ochrony."
+            "desc": "Upewnij się, że używasz silnego, unikatowego hasła zapewniającego odpowiednią ochronę (minimum 8 znaków)"
         },
         "confirmPassword": {
             "placeholder": "Potwierdź hasło"
@@ -1078,11 +1078,11 @@
         "accountMnemonic": {
             "placeholder": "Fraza mnemoniczna"
         },
-        "seedAdviceText": "To jest tajne ziarno Twojego konta. Upewnij się, że przechowujesz go na nośniku innym niż cyfrowy, na przykład - papierowym",
-        "confirmSeedText": "Potwierdź wyrażenie wyjściowe klikając na słowa w odpowiedniej kolejności",
-        "errorMnemonicText": "Nieprawidłowa kolejność wyrażeń ziarnistych",
-        "exportOptionText": "Eksportuj plik konta .json",
-        "exportJsonText": "Zawsze będziesz mieć dostęp do swojego konta, importując ten plik .json. Nie udostępniaj go nikomu!",
+        "seedAdviceText": "12-wyrazowe hasło to klucz prywatny umożliwiający odzyskanie dostępu do konta {Sora} w przypadku utraty dostępu do konta {wallet}. Przechowuj go bezpiecznie w dokładnie takiej kolejności, w jakiej występuje powyżej.",
+        "confirmSeedText": "Potwierdź hasło, klikając słowa we właściwej kolejności",
+        "errorMnemonicText": "Nieprawidłowa kolejność haseł",
+        "exportOptionText": "Wyeksportuj plik {JSON} w celu przywrócenia konta",
+        "exportJsonText": "Zawsze będziesz mógł przywrócić swoje konto, importując ten plik {JSON}. Nie udostępniaj go nikomu! Przechowuj je bezpiecznie, najlepiej w postaci zaszyfrowanej.",
         "addAccount": "Dodaj konto",
         "dialog": {
             "confirmTitle": "Potwierdź hasłem",
@@ -1101,11 +1101,13 @@
         "assetsAtRiskText": "Aktywa zagrożone!",
         "deleteAccountText": "Konta nie można odzyskać bez frazy początkowej, pliku .json lub jeśli jest on przechowywany w jakimś rozszerzeniu. Zostaniesz wylogowany.",
         "importSteps": {
-            "selectWallet": "Przejdź do używanego portfela",
+            "selectWallet": "Otwórz portfel z istniejącymi kontami",
             "selectAccount": "Wybierz konto, które chcesz wyeksportować",
             "exportAccount": "Wyeksportuj plik {JSON}"
         },
-        "exportTutorialsText": "Eksportuj samouczki"
+        "exportTutorialsText": "Eksportuj samouczki",
+        "seedAdviceAdditionTitle": "Nigdy nie udostępniaj nikomu swojego hasła!",
+        "seedAdviceAdditionText": "Jeśli ktoś poprosi Cię o podanie hasła, najprawdopodobniej próbuje Cię oszukać i ukraść Twoje aktywa!"
     },
     "hashiBridgeText": "Most {Hashi}",
     "disclaimerTitle": "Zastrzeżenie",
@@ -1178,7 +1180,7 @@
     "acceptText": "Zaakceptuj i ukryj",
     "newAccountsText": "Nowe konta",
     "dragAndDropText": "Przeciągnij i upuść lub wybierz plik {extension}",
-    "copyPhraseText": "Skopiuj frazę",
+    "copyPhraseText": "Skopiuj krypto frazę",
     "stepText": "Krok",
     "alerts": {
         "drop": "Krople poniżej",
@@ -1216,7 +1218,7 @@
     },
     "acceptOnScrollText": "Przewiń, aby zaakceptować",
     "addressBook": {
-        "myExtAccounts": "Moje konta rozszerzeń",
+        "myAccounts": "Moje konta",
         "myBook": "Moja książka",
         "searchPlaceholder": "Szukaj według adresu, nazwiska lub tożsamości",
         "noFoundRecords": "Nic nie znaleziono",

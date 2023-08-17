@@ -10,16 +10,17 @@ import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts
 import { SUB_TRANSFER_FEES } from '@/consts/sub';
 import { bridgeActionContext } from '@/store/bridge';
 import { FocusedField } from '@/store/bridge/types';
-import { waitForEvmTransactionMined, findUserTxIdInBlock } from '@/utils/bridge/common/utils';
+import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { EthBridgeHistory } from '@/utils/bridge/eth/history';
-import { waitForApprovedRequest, updateEthBridgeHistory } from '@/utils/bridge/eth/utils';
+import { EthBridgeHistory, updateEthBridgeHistory } from '@/utils/bridge/eth/classes/history';
+import { waitForApprovedRequest } from '@/utils/bridge/eth/utils';
 import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
+import { updateSubBridgeHistory } from '@/utils/bridge/sub/classes/history';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { SignTxResult } from './types';
@@ -27,8 +28,7 @@ import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
-import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
-import type { BridgeTransactionData } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { BridgeTransactionData, BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { ActionContext } from 'vuex';
 
 function checkEvmNetwork(context: ActionContext<any, any>): void {
@@ -75,44 +75,6 @@ async function evmTxDataToHistory(
   };
 }
 
-async function subTxDataToHistory(
-  assetDataByAddress: (address: string) => Nullable<RegisteredAccountAsset>,
-  tx: BridgeTransactionData
-): Promise<SubHistory> {
-  const id = tx.soraHash;
-  const asset = assetDataByAddress(tx.soraAssetAddress);
-  const transactionState = tx.status;
-  const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
-  const blockHeight = isOutgoing ? tx.startBlock : tx.endBlock;
-  const externalBlockHeight = isOutgoing ? tx.endBlock : tx.startBlock;
-  const blockId = await api.system.getBlockHash(blockHeight);
-  const txId = await findUserTxIdInBlock(blockId, id, 'RequestStatusUpdate', 'bridgeProxy');
-  const startTime = await api.system.getBlockTimestamp(blockId);
-
-  return {
-    id,
-    txId,
-    blockId,
-    blockHeight,
-    type: isOutgoing ? Operation.SubstrateOutgoing : Operation.SubstrateIncoming,
-    hash: tx.soraHash,
-    transactionState,
-    externalBlockHeight,
-    externalNetwork: tx.externalNetwork as SubNetwork,
-    externalNetworkType: BridgeNetworkType.Sub,
-    // for now we don't know it
-    externalHash: '',
-    amount: FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString(),
-    assetAddress: asset?.address,
-    symbol: asset?.symbol,
-    from: tx.soraAccount,
-    to: tx.externalAccount,
-    // for now we only know sora block, assume what this is start & end times
-    startTime: startTime,
-    endTime: startTime,
-  };
-}
-
 function bridgeDataToHistoryItem(
   context: ActionContext<any, any>,
   { date = Date.now(), payload = {}, ...params } = {}
@@ -120,8 +82,7 @@ function bridgeDataToHistoryItem(
   const { getters, state, rootState, rootGetters } = bridgeActionContext(context);
   const { isEthBridge, isEvmBridge } = getters;
   const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : BridgeTxStatus.Pending;
-  // [TODO] use BridgeNetworkId
-  const externalNetwork = rootState.web3.networkSelected as any;
+  const externalNetwork = rootState.web3.networkSelected as BridgeNetworkId as any;
   const externalNetworkType = isEthBridge
     ? BridgeNetworkType.EvmLegacy
     : isEvmBridge
@@ -263,68 +224,25 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<void
   commit.setExternalBalance(nativeBalance);
 }
 
-async function updateSubHistory(context: ActionContext<any, any>): Promise<void> {
-  const { commit, dispatch, getters, state, rootState, rootGetters } = bridgeActionContext(context);
+async function updateSubHistory(context: ActionContext<any, any>, clearHistory = false): Promise<void> {
+  const { dispatch } = bridgeActionContext(context);
+  const updateHistoryFn = updateSubBridgeHistory(context);
 
-  if (!rootGetters.wallet.account.isLoggedIn) return;
-  if (state.historyLoading) return;
-
-  const externalNetwork = rootState.web3.networkSelected;
-
-  if (!externalNetwork) return;
-
-  commit.setHistoryLoading(true);
-
-  const accountAddress = rootState.wallet.account.address;
-  const transactions = await subBridgeApi.getUserTransactions(accountAddress, externalNetwork as SubNetwork);
-  const internalHistory = getters.bridgeApi.historyList as IBridgeTransaction[];
-
-  for (const txData of transactions) {
-    const isInternal = internalHistory.find((item) => item.hash === txData.soraHash);
-
-    if (isInternal) continue;
-
-    const tx = await subTxDataToHistory(rootGetters.assets.assetDataByAddress, txData);
-
-    if (tx.id) {
-      const isInternal = internalHistory.find((item) => item.txId === tx.txId);
-
-      if (!isInternal) {
-        subBridgeApi.saveHistory(tx);
-        dispatch.updateInternalHistory();
-      }
-    }
-  }
-
-  commit.setHistoryLoading(false);
+  await updateHistoryFn(clearHistory, dispatch.updateInternalHistory);
 }
 
 async function updateEthHistory(context: ActionContext<any, any>, clearHistory = false): Promise<void> {
-  const { commit, state, dispatch } = bridgeActionContext(context);
-
-  if (state.historyLoading) return;
-
-  commit.setHistoryLoading(true);
-
-  const updateCallback = () => dispatch.updateInternalHistory();
+  const { dispatch } = bridgeActionContext(context);
   const updateHistoryFn = updateEthBridgeHistory(context);
 
-  await updateHistoryFn(clearHistory, updateCallback);
-
-  commit.setHistoryLoading(false);
+  await updateHistoryFn(clearHistory, dispatch.updateInternalHistory);
 }
 
 async function updateEvmHistory(context: ActionContext<any, any>): Promise<void> {
   const { commit, dispatch, state, rootState, rootGetters } = bridgeActionContext(context);
-
-  if (!rootGetters.wallet.account.isLoggedIn) return;
-  if (state.historyLoading) return;
-
   const externalNetwork = rootState.web3.networkSelected;
 
   if (!externalNetwork) return;
-
-  commit.setHistoryLoading(true);
 
   const accountAddress = rootState.wallet.account.address;
   const transactions = await evmBridgeApi.getUserTransactions(accountAddress, externalNetwork as EvmNetwork);
@@ -346,7 +264,6 @@ async function updateEvmHistory(context: ActionContext<any, any>): Promise<void>
   }
 
   commit.setExternalHistory(externalHistory);
-  commit.setHistoryLoading(false);
 }
 
 async function updateEthLockedBalance(context: ActionContext<any, any>): Promise<void> {
@@ -544,17 +461,23 @@ const actions = defineActions({
   },
 
   async updateExternalHistory(context, clearHistory = false): Promise<void> {
-    const { getters } = bridgeActionContext(context);
+    const { commit, getters, state } = bridgeActionContext(context);
+
+    if (state.historyLoading) return;
+
+    commit.setHistoryLoading(true);
 
     if (getters.isEthBridge) {
-      return await updateEthHistory(context, clearHistory);
+      await updateEthHistory(context, clearHistory);
     }
     if (getters.isEvmBridge) {
-      return await updateEvmHistory(context);
+      await updateEvmHistory(context);
     }
     if (getters.isSubBridge) {
-      return await updateSubHistory(context);
+      await updateSubHistory(context, clearHistory);
     }
+
+    commit.setHistoryLoading(false);
   },
 
   removeHistory(context, { tx, force = false }: { tx: Partial<IBridgeTransaction>; force: boolean }): void {
