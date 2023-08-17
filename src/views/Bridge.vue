@@ -432,7 +432,7 @@ export default class Bridge extends Mixins(
 
     if (this.assetLockedBalance && this.isSoraToEvm) {
       const fpBalance = this.getFPNumber(maxBalance, this.asset.decimals);
-      const fpLocked = this.getFPNumberFromCodec(this.assetLockedBalance, this.asset.decimals);
+      const fpLocked = this.getFPNumberFromCodec(this.assetLockedBalance, this.asset.externalDecimals);
 
       if (FPNumber.gt(fpBalance, fpLocked)) return fpLocked.toString();
     }
