@@ -92,7 +92,7 @@
     },
     "connection": {
         "title": "{Sora} hálózati fiók",
-        "text": "A bővítmények és a Google biztonságosan tárolja {Sora} Network-fiókját. Lehetővé teszik a tranzakciók aláírását és az eszközök kezelését.",
+        "text": "Az eszközök kezeléséhez és a tranzakciók aláírásához a {Sora} webhelyen fiókot kell csatlakoztatni. {Sora} fiókok hozhatók létre és kapcsolhatók össze integrált pénztárcánkkal vagy böngészőbővítményeinkkel.",
         "noAccounts": "Nincs fiók a {extension} böngészőbővítményben. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "selectAccount": "Válaszd ki a használni kívánt fiókot",
         "action": {
@@ -107,10 +107,10 @@
             "connected": "csatlakoztatva",
             "notConnected": "Nem kapcsolódik"
         },
-        "internalTitle": "Csatlakozás a következőn keresztül {wallet}",
-        "internalText": "Létrehozhat vagy összekapcsolhat meglévő fiókot {wallet} segítségével. Titkosítással tárolja a fiókokat.",
+        "internalTitle": "Csatlakozás a következővel {wallet}",
+        "internalText": "Létrehozhat vagy importálhat egy meglévő {Sora} -fiókot, hogy összekapcsolódjon {wallet} -fiókjával. A {wallet} által tárolt összes adat a beépített fejlett titkosítással titkosítva van.",
         "list": {
-            "simplest": "A legegyszerűbb lehetőség",
+            "integrated": "Integrált",
             "extensions": "Kiterjesztések"
         }
     },
@@ -1053,8 +1053,8 @@
             "importAccount": "Fiók importálása"
         },
         "heading": {
-            "seedPhraseTitle": "Mag kifejezés",
-            "confirmSeedTitle": "Erősítse meg a mag kifejezést",
+            "seedPhraseTitle": "Jelszó",
+            "confirmSeedTitle": "Erősítse meg a jelszót",
             "accountDetailsTitle": "Számlaadatok",
             "importTitle": "Fiók importálása"
         },
@@ -1065,12 +1065,12 @@
             "importAccount": "Fiók importálása"
         },
         "accountName": {
-            "placeholder": "Pénztárca neve",
-            "desc": "Ez a pénztárcája neve, amely látható lesz az Ön számára"
+            "placeholder": "Felhasználónév",
+            "desc": "Ez a fiók neve. Csak te láthatod {Polkaswap} szolgáltatásban."
         },
         "password": {
             "placeholder": "Jelszó",
-            "desc": "Győződjön meg róla, hogy erős jelszót használ a megfelelő védelem érdekében"
+            "desc": "Győződjön meg róla, hogy erős egyedi jelszót használ a megfelelő védelem érdekében (legalább 8 karakter)."
         },
         "confirmPassword": {
             "placeholder": "Jelszó megerősítése"
@@ -1078,11 +1078,11 @@
         "accountMnemonic": {
             "placeholder": "Emlékeztető kifejezés"
         },
-        "seedAdviceText": "Ez a fiókod titkos magja. Ügyeljen arra, hogy nem digitális hordozón, például papíron tárolja",
-        "confirmSeedText": "A megfelelő sorrendben lévő szavakra kattintva erősítse meg a magmondatot.",
-        "errorMnemonicText": "Helytelen magkifejezés-sorrend",
-        "exportOptionText": ".json-fiókfájl exportálása",
-        "exportJsonText": "A .json fájl importálásával mindig hozzáférhet fiókjához. Ne oszd meg senkivel!",
+        "seedAdviceText": "A 12 szavas jelszó egy privát kulcs, amellyel visszaszerezheti a hozzáférést {Sora} -fiókjához, ha elveszítené a hozzáférést {wallet} -fiókjához. Tárolja biztonságosan a fent látható sorrendben.",
+        "confirmSeedText": "Erősítse meg a jelszót a szavakra kattintva a megfelelő sorrendben",
+        "errorMnemonicText": "Helytelen jelmondatok sorrendje",
+        "exportOptionText": "Exportáljon {JSON} fájlt a fiók visszaállításához",
+        "exportJsonText": "Fiókját bármikor visszaállíthatja a(z {JSON} fájl importálásával. Ne oszd meg senkivel! Tárolja biztonságosan, lehetőleg titkosítva.",
         "addAccount": "Fiók hozzáadása",
         "dialog": {
             "confirmTitle": "Erősítse meg jelszóval",
@@ -1101,11 +1101,13 @@
         "assetsAtRiskText": "Veszélyben lévő eszközök!",
         "deleteAccountText": "A fiókot nem lehet visszaállítani kezdő kifejezés, .json fájl nélkül, vagy ha azt valamilyen kiterjesztéssel tárolják. Ön ki lesz jelentkezve.",
         "importSteps": {
-            "selectWallet": "Menjen a használt pénztárcához",
+            "selectWallet": "Nyissa meg a pénztárcát meglévő fiókjával\/fiókjaival",
             "selectAccount": "Válassza ki az exportálni kívánt fiókot",
             "exportAccount": "Exportálja a {JSON} fájlt"
         },
-        "exportTutorialsText": "Oktatóanyagok exportálása"
+        "exportTutorialsText": "Oktatóanyagok exportálása",
+        "seedAdviceAdditionTitle": "Soha ne ossza meg jelszavát senkivel!",
+        "seedAdviceAdditionText": "Ha valaki megkéri a jelszavát, akkor valószínűleg átverni próbálja és ellopni a vagyonát!"
     },
     "hashiBridgeText": "{Hashi} híd",
     "disclaimerTitle": "Jogi nyilatkozat",
@@ -1178,7 +1180,7 @@
     "acceptText": "Elfogadás és elrejtés",
     "newAccountsText": "Új fiókok",
     "dragAndDropText": "Fogd és vidd, vagy válasszon {extension} fájlt",
-    "copyPhraseText": "Kifejezés másolása",
+    "copyPhraseText": "Jelszó másolása",
     "stepText": "Lépés",
     "alerts": {
         "drop": "Alul leesik",
@@ -1216,7 +1218,7 @@
     },
     "acceptOnScrollText": "Görgessen az elfogadáshoz",
     "addressBook": {
-        "myExtAccounts": "Kiterjesztési fiókjaim",
+        "myAccounts": "Saját számláim",
         "myBook": "Könyvem",
         "searchPlaceholder": "Keresés cím, név vagy személyazonosság alapján",
         "noFoundRecords": "Nincs találat",

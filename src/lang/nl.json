@@ -92,7 +92,7 @@
     },
     "connection": {
         "title": "{Sora} Netwerk account",
-        "text": "Extensies en Google slaan uw {Sora} Network-account veilig op. Hiermee kunt u transacties ondertekenen en activa beheren.",
+        "text": "Om activa te beheren en transacties op {Sora} te ondertekenen, moet een account zijn gekoppeld. {Sora} accounts kunnen worden gemaakt en verbonden met onze geïntegreerde portefeuilles of browserextensies.",
         "noAccounts": "Geen account gevonden in uw {extension} browser extensie. Voeg een account toe en probeer het opnieuw.",
         "selectAccount": "Selecteer account om mee te werken",
         "action": {
@@ -107,10 +107,10 @@
             "connected": "Verbonden",
             "notConnected": "Niet verbonden"
         },
-        "internalTitle": "Maak verbinding via {wallet}",
-        "internalText": "U kunt een bestaand account aanmaken of koppelen via {wallet} . Het slaat accounts op met behulp van codering.",
+        "internalTitle": "Maak verbinding met {wallet}",
+        "internalText": "U kunt een bestaand {Sora} account maken of importeren om verbinding te maken met uw {wallet} -account. Alle gegevens die worden opgeslagen door {wallet} zijn versleuteld met ingebouwde geavanceerde versleuteling.",
         "list": {
-            "simplest": "Eenvoudigste optie",
+            "integrated": "Geïntegreerd",
             "extensions": "Extensies"
         }
     },
@@ -1053,8 +1053,8 @@
             "importAccount": "Account importeren"
         },
         "heading": {
-            "seedPhraseTitle": "Zaadzin",
-            "confirmSeedTitle": "Zaadzin bevestigen",
+            "seedPhraseTitle": "Wachtwoordzin",
+            "confirmSeedTitle": "Wachtwoordzin bevestigen",
             "accountDetailsTitle": "Accountgegevens",
             "importTitle": "Importrekening"
         },
@@ -1065,12 +1065,12 @@
             "importAccount": "Importrekening"
         },
         "accountName": {
-            "placeholder": "Naam portemonnee",
-            "desc": "Dit is de naam van uw portemonnee die voor u zichtbaar zal zijn"
+            "placeholder": "Accountnaam",
+            "desc": "Dit is de naam van uw account. Het zal alleen voor jou zichtbaar zijn in {Polkaswap}."
         },
         "password": {
             "placeholder": "Wachtwoord",
-            "desc": "Zorg ervoor dat u een sterk wachtwoord gebruikt voor een goede beveiliging"
+            "desc": "Zorg ervoor dat u een sterk uniek wachtwoord gebruikt voor een goede bescherming (minimaal 8 tekens)"
         },
         "confirmPassword": {
             "placeholder": "Bevestig wachtwoord"
@@ -1078,11 +1078,11 @@
         "accountMnemonic": {
             "placeholder": "Mnemotechnische zin"
         },
-        "seedAdviceText": "Dit is een geheime seed van je account. Bewaar het op een niet-digitale drager, bijvoorbeeld papier",
-        "confirmSeedText": "Bevestig de seed-zin door op de woorden in de juiste volgorde te klikken",
-        "errorMnemonicText": "Onjuiste volgorde van zaadzinnen",
-        "exportOptionText": ".json accountbestand exporteren",
-        "exportJsonText": "Je hebt altijd toegang tot je account door dat .json bestand te importeren. Deel het met niemand!",
+        "seedAdviceText": "De wachtwoordzin van 12 woorden is een persoonlijke sleutel om weer toegang te krijgen tot uw {Sora} account voor het geval u de toegang tot uw {wallet} -account kwijtraakt. Bewaar het veilig in de exacte volgorde zoals hierboven weergegeven.",
+        "confirmSeedText": "Bevestig de wachtwoordzin door op de woorden in de juiste volgorde te klikken",
+        "errorMnemonicText": "Onjuiste volgorde van wachtwoordzin",
+        "exportOptionText": "Exporteer {JSON} -bestand voor accountherstel.",
+        "exportJsonText": "U kunt uw account altijd herstellen door dit {JSON} -bestand te importeren. Deel het met niemand! Bewaar deze veilig, bij voorkeur versleuteld.",
         "addAccount": "Een account toevoegen",
         "dialog": {
             "confirmTitle": "Bevestig met wachtwoord",
@@ -1101,11 +1101,13 @@
         "assetsAtRiskText": "Activa in gevaar!",
         "deleteAccountText": "Account kan niet worden hersteld zonder een seed-zin, een .json bestand of als het is opgeslagen in een extensie. U wordt uitgelogd.",
         "importSteps": {
-            "selectWallet": "Ga naar de portemonnee van uw gebruik",
+            "selectWallet": "Open de portemonnee met uw bestaande rekening(en)",
             "selectAccount": "Selecteer het account dat u wilt exporteren",
             "exportAccount": "Exporteer het {JSON} -bestand"
         },
-        "exportTutorialsText": "Tutorials exporteren"
+        "exportTutorialsText": "Tutorials exporteren",
+        "seedAdviceAdditionTitle": "Deel nooit uw wachtwoordzin met iemand!",
+        "seedAdviceAdditionText": "Als iemand u om uw wachtwoordzin vraagt, proberen ze u waarschijnlijk op te lichten en uw bezittingen te stelen!"
     },
     "hashiBridgeText": "{Hashi} brug",
     "disclaimerTitle": "Disclaimer",
@@ -1178,7 +1180,7 @@
     "acceptText": "Accepteren & verbergen",
     "newAccountsText": "Nieuwe rekeningen",
     "dragAndDropText": "Drag & drop of kies {extension} bestand",
-    "copyPhraseText": "Kopieer zin",
+    "copyPhraseText": "Kopieer Passphrase",
     "stepText": "Stap",
     "alerts": {
         "drop": "Zakt onder",
@@ -1216,7 +1218,7 @@
     },
     "acceptOnScrollText": "Scrol om te accepteren",
     "addressBook": {
-        "myExtAccounts": "Mijn extensieaccounts",
+        "myAccounts": "Mijn accounts",
         "myBook": "Mijn boek",
         "searchPlaceholder": "Zoek op adres, naam of identiteit",
         "noFoundRecords": "Geen verslagen gevonden",
