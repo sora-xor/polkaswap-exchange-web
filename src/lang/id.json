@@ -92,7 +92,7 @@
     },
     "connection": {
         "title": "Akun Jaringan {Sora}",
-        "text": "Ekstensi & Google menyimpan akun Jaringan {Sora} Anda dengan aman. Mereka memungkinkan Anda untuk menandatangani transaksi & mengelola aset.",
+        "text": "Untuk mengelola aset dan menandatangani transaksi di {Sora} , akun harus terhubung. Akun {Sora} dapat dibuat dan dihubungkan menggunakan dompet terintegrasi atau ekstensi browser kami.",
         "noAccounts": "Tidak ada akun yang ditemukan di ekstensi browser {extension} anda. Silakan tambahkan akun, lalu coba kembali.",
         "selectAccount": "Pilih akun untuk dikerjakan",
         "action": {
@@ -107,10 +107,10 @@
             "connected": "Terhubung",
             "notConnected": "Tidak terhubung"
         },
-        "internalTitle": "Terhubung melalui {wallet}",
-        "internalText": "Anda dapat membuat atau menautkan akun yang sudah ada melalui {wallet} . Ini menyimpan akun menggunakan enkripsi.",
+        "internalTitle": "Terhubung dengan {wallet}",
+        "internalText": "Anda dapat membuat atau mengimpor akun {Sora} yang sudah ada untuk terhubung dengan akun {wallet} Anda. Semua data yang disimpan oleh {wallet} dienkripsi menggunakan enkripsi lanjutan bawaan.",
         "list": {
-            "simplest": "Opsi paling sederhana",
+            "integrated": "Terintegrasi",
             "extensions": "Ekstensi"
         }
     },
@@ -1053,8 +1053,8 @@
             "importAccount": "Impor Akun"
         },
         "heading": {
-            "seedPhraseTitle": "Frase benih",
-            "confirmSeedTitle": "Konfirmasikan frasa benih",
+            "seedPhraseTitle": "Frasa sandi",
+            "confirmSeedTitle": "Konfirmasi frasa sandi",
             "accountDetailsTitle": "Detail akun",
             "importTitle": "Impor akun"
         },
@@ -1065,12 +1065,12 @@
             "importAccount": "Impor akun"
         },
         "accountName": {
-            "placeholder": "Nama dompet",
-            "desc": "Ini adalah nama dompet Anda yang akan terlihat oleh Anda"
+            "placeholder": "Nama akun",
+            "desc": "Ini adalah nama akun Anda. Ini hanya akan terlihat oleh Anda di {Polkaswap}."
         },
         "password": {
             "placeholder": "Kata sandi",
-            "desc": "Pastikan Anda menggunakan kata sandi yang kuat untuk perlindungan yang tepat"
+            "desc": "Pastikan Anda menggunakan kata sandi unik yang kuat untuk perlindungan yang tepat (minimal 8 karakter)"
         },
         "confirmPassword": {
             "placeholder": "Konfirmasi sandi"
@@ -1078,11 +1078,11 @@
         "accountMnemonic": {
             "placeholder": "Frasa mnemonik"
         },
-        "seedAdviceText": "Ini adalah benih rahasia akun Anda. Pastikan untuk menyimpannya di pembawa non-digital, misalnya - kertas",
-        "confirmSeedText": "Konfirmasikan frasa benih dengan mengklik kata-kata dalam urutan yang benar",
-        "errorMnemonicText": "Urutan frase seed salah",
-        "exportOptionText": "Ekspor file akun .json",
-        "exportJsonText": "Anda akan selalu dapat mengakses akun Anda dengan mengimpor file .json itu. Jangan berbagi dengan siapa pun!",
+        "seedAdviceText": "Frasa sandi 12 kata adalah kunci pribadi untuk mendapatkan kembali akses ke akun {Sora} Anda jika Anda kehilangan akses ke akun {wallet} Anda. Simpan dengan aman sesuai urutan yang ditampilkan di atas.",
+        "confirmSeedText": "Konfirmasikan frasa sandi dengan mengeklik kata dalam urutan yang benar",
+        "errorMnemonicText": "Urutan frasa sandi salah",
+        "exportOptionText": "Ekspor file {JSON} untuk pemulihan akun",
+        "exportJsonText": "Anda akan selalu dapat memulihkan akun dengan mengimpor file {JSON} ini. Jangan berbagi dengan siapa pun! Simpan dengan aman, sebaiknya dienkripsi.",
         "addAccount": "Tambahkan akun",
         "dialog": {
             "confirmTitle": "Konfirmasi dengan kata sandi",
@@ -1101,11 +1101,13 @@
         "assetsAtRiskText": "Aset berisiko!",
         "deleteAccountText": "Akun tidak dapat dipulihkan tanpa seed frase, file .json atau jika disimpan dalam beberapa ekstensi. Anda akan keluar.",
         "importSteps": {
-            "selectWallet": "Buka dompet yang Anda gunakan",
+            "selectWallet": "Buka dompet dengan akun Anda yang ada",
             "selectAccount": "Pilih akun yang ingin Anda ekspor",
             "exportAccount": "Ekspor file {JSON}"
         },
-        "exportTutorialsText": "Ekspor tutorial"
+        "exportTutorialsText": "Ekspor tutorial",
+        "seedAdviceAdditionTitle": "Jangan pernah membagikan frasa sandi Anda dengan siapa pun!",
+        "seedAdviceAdditionText": "Jika seseorang menanyakan frasa sandi Anda, kemungkinan besar mereka mencoba menipu Anda dan mencuri aset Anda!"
     },
     "hashiBridgeText": "Jembatan {Hashi}",
     "disclaimerTitle": "Penafian",
@@ -1178,7 +1180,7 @@
     "acceptText": "Terima & Sembunyikan",
     "newAccountsText": "Akun baru",
     "dragAndDropText": "Seret & lepas atau pilih file {extension}",
-    "copyPhraseText": "Salin Frasa",
+    "copyPhraseText": "Salin Frasa Sandi",
     "stepText": "Melangkah",
     "alerts": {
         "drop": "Jatuh di bawah",
@@ -1216,7 +1218,7 @@
     },
     "acceptOnScrollText": "Gulir untuk menerima",
     "addressBook": {
-        "myExtAccounts": "Akun ekstensi saya",
+        "myAccounts": "Akun saya",
         "myBook": "Buku saya",
         "searchPlaceholder": "Cari berdasarkan alamat, nama atau identitas",
         "noFoundRecords": "Tidak ada catatan yang ditemukan",
