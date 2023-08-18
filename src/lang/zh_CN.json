@@ -92,7 +92,7 @@
     },
     "connection": {
         "title": "{Sora}网络账户",
-        "text": "扩展程序和 Google 安全地存储您的{Sora} Network 帐户。它们允许您签署交易和管理资产。",
+        "text": "为了在{Sora}上管理资产并签署交易，必须连接一个账户。可以使用我们的集成钱包或浏览器扩展来创建和连接{Sora}账户。",
         "noAccounts": "在您的{extension}浏览器扩展中没有找到账户。请添加一个账户并重试。",
         "selectAccount": "选择要使用的账户",
         "action": {
@@ -107,10 +107,10 @@
             "connected": "连接的",
             "notConnected": "未连接"
         },
-        "internalTitle": "通过{wallet}连接",
-        "internalText": "您可以通过{wallet}创建或链接现有帐户。它使用加密存储帐户。",
+        "internalTitle": "连接{wallet}",
+        "internalText": "您可以创建或导入现有的{Sora}账户来连接您的{wallet}账户。 {wallet}存储的所有数据均使用内置高级加密进行加密。",
         "list": {
-            "simplest": "最简单的选择",
+            "integrated": "融合的",
             "extensions": "扩展"
         }
     },
@@ -484,7 +484,7 @@
         "transactionMessage": "{firstToken}和{secondToken}",
         "ok": "好的",
         "confirm": "确认",
-        "lossWarning": "您的交易将损失{value}%。我们发现存在流动性供应问题。这可能会导致代币交换期间的重大损失。请确保您所需的掉期对有足够的流动性。"
+        "lossWarning": "您的交易可能会损失{value}%。我们检测到了流动性供应问题。这可能导致在代币兑换过程中出现重大亏损。请确保所选的兑换对具有足够的流动性。"
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -1053,8 +1053,8 @@
             "importAccount": "进口账户"
         },
         "heading": {
-            "seedPhraseTitle": "种子短语",
-            "confirmSeedTitle": "确认助记词",
+            "seedPhraseTitle": "密码",
+            "confirmSeedTitle": "确认密码",
             "accountDetailsTitle": "帐户详情",
             "importTitle": "导入账户"
         },
@@ -1065,12 +1065,12 @@
             "importAccount": "导入账户"
         },
         "accountName": {
-            "placeholder": "钱包名称",
-            "desc": "这是您可以看到的钱包名称"
+            "placeholder": "帐户名称",
+            "desc": "这是您的账户名称。只有您在{Polkaswap}中才能看到它。"
         },
         "password": {
             "placeholder": "密码",
-            "desc": "确保你使用一个强大的密码来进行适当的保护"
+            "desc": "确保您使用强大的唯一密码来提供适当地保护（至少 8 个字符）"
         },
         "confirmPassword": {
             "placeholder": "确认密码"
@@ -1078,11 +1078,11 @@
         "accountMnemonic": {
             "placeholder": "助记词"
         },
-        "seedAdviceText": "这是您帐户的秘密种子。确保将其存储在非数字载体上，例如 - 纸张",
-        "confirmSeedText": "通过按正确顺序单击单词来确认助记词",
-        "errorMnemonicText": "种子短语顺序不正确",
-        "exportOptionText": "导出 .json 账户文件",
-        "exportJsonText": "您将始终能够通过导入该 .json 文件来访问您的帐户。不要与任何人分享！",
+        "seedAdviceText": "12 个单词的密码是一个私钥，可在您失去对{wallet} {Sora}帐户的访问权限。按照上面显示的顺序安全地存储它。",
+        "confirmSeedText": "按正确顺序单击单词来确认密码",
+        "errorMnemonicText": "密码短语顺序不正确",
+        "exportOptionText": "导出{JSON}文件以恢复账户",
+        "exportJsonText": "您始终可以通过导入此{JSON}文件来恢复您的账户。不要与任何人分享！安全存储，最好加密。",
         "addAccount": "添加帐户",
         "dialog": {
             "confirmTitle": "用密码确认",
@@ -1101,11 +1101,13 @@
         "assetsAtRiskText": "资产有风险！",
         "deleteAccountText": "如果没有助记词、.json 文件或存储在某些扩展名中，则无法恢复帐户。您将被注销。",
         "importSteps": {
-            "selectWallet": "转到您使用的钱包",
-            "selectAccount": "选择您要导出的帐户",
+            "selectWallet": "使用您现有的账户打开钱包",
+            "selectAccount": "请选择您要导出的账户。",
             "exportAccount": "导出{JSON}文件"
         },
-        "exportTutorialsText": "导出教程"
+        "exportTutorialsText": "导出教程",
+        "seedAdviceAdditionTitle": "切勿与任何人分享您的密码！",
+        "seedAdviceAdditionText": "如果有人询问您的密码，他们很可能试图欺骗您并窃取您的资产！"
     },
     "hashiBridgeText": "{Hashi}桥",
     "disclaimerTitle": "免责声明:",
@@ -1178,8 +1180,8 @@
     "acceptText": "接受并隐藏",
     "newAccountsText": "新帐户",
     "dragAndDropText": "拖放或选择{extension}文件",
-    "copyPhraseText": "复制短语",
-    "stepText": "步",
+    "copyPhraseText": "复制密码短语",
+    "stepText": "步骤",
     "alerts": {
         "drop": "掉落在下方",
         "once": "一次",
@@ -1197,7 +1199,7 @@
         "alertFrequencyTitle": "警报频率",
         "frequencyTooltip": "在“一次”和“始终”之间进行选择以确定您接收所选警报类型通知的频率。 “Once”会在满足条件时发送一条通知，而“always”会在每次超过价格阈值时继续通知您",
         "noSupportMsg": "您的浏览器不支持通知",
-        "finishBtn": "去完成",
+        "finishBtn": "完成警报设置",
         "raise": "升到高处",
         "onRaiseDesc": "{token}上涨至高于{price}",
         "typeTooltip": "选择“低于”或“高于”选项来指定跟踪重要价格变动的警报条件。当您的资产价值低于或高于指定阈值时，这些选项可让您及时收到通知"
@@ -1216,7 +1218,7 @@
     },
     "acceptOnScrollText": "滚动接受",
     "addressBook": {
-        "myExtAccounts": "我的分机帐户",
+        "myAccounts": "我的账户",
         "myBook": "我的书",
         "searchPlaceholder": "按地址、姓名或身份搜索",
         "noFoundRecords": "没有找到记录",
