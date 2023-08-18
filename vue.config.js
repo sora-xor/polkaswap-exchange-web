@@ -37,14 +37,9 @@ module.exports = defineConfig({
     svgRule.uses.clear();
     config.module
       .rule('svg')
-        .oneOf('inline-svg')
+        .oneOf('inline')
           .resourceQuery(/inline/)
-          .use('babel')
-            .loader('babel-loader')
-            .end()
-          .use('vue-svg-loader')
-            .loader('vue-svg-loader')
-            .end()
+          .type('asset/inline')
           .end()
         .oneOf('file')
           .type('asset/resource')
@@ -55,7 +50,7 @@ module.exports = defineConfig({
     imagesRule.uses.clear();
     config.module
       .rule('images')
-        .oneOf('asset-inline')
+        .oneOf('inline')
           .resourceQuery(/inline/)
           .type('asset/inline')
           .end()

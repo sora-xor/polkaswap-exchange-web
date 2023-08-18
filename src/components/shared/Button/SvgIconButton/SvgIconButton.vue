@@ -10,8 +10,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { SvgIcons } from './icons';
 
 const components = {
-  [SvgIcons.LineIcon]: () => import('@/assets/img/charts/line.svg?inline'),
-  [SvgIcons.CandleIcon]: () => import('@/assets/img/charts/candle.svg?inline'),
+  [SvgIcons.LineIcon]: () => import('./Icons/Line.vue'),
+  [SvgIcons.CandleIcon]: () => import('./Icons/Candle.vue'),
 };
 
 @Component({

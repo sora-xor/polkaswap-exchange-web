@@ -89,7 +89,6 @@
     "typescript": "~4.4.4",
     "vue-cli-plugin-electron-builder": "^3.0.0-alpha.3",
     "vue-cli-plugin-test-attrs": "^0.1.5",
-    "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "2.6.14"
   },
   "resolutions": {

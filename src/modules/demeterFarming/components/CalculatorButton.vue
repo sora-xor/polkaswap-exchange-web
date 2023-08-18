@@ -8,7 +8,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import CalculatorIcon from '@/assets/img/calculator/signs.svg?inline';
+import CalculatorIcon from './CalculatorIcon.vue';
 
 @Component({
   components: {
