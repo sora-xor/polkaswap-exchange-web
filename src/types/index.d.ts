@@ -9,3 +9,13 @@ type DataMap<T> = {
 };
 
 type DoubleMap<T> = DataMap<DataMap<T>>;
+
+type WindowInjectedWeb3 = typeof window & {
+  injectedWeb3?: {
+    'fearless-wallet'?: {
+      enable: (origin: string) => Promise<void>;
+      saveSoraCardToken?: (token: string) => Promise<void>;
+      version: string;
+    };
+  };
+};
