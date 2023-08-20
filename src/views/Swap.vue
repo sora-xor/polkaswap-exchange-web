@@ -70,7 +70,7 @@
         </template>
         <template #fiat-amount-append v-if="tokenTo">
           <value-status-wrapper :value="fiatDifference" badge class="price-difference__value">
-            (<formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>)
+            <formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>
           </value-status-wrapper>
         </template>
       </token-input>
@@ -426,7 +426,7 @@ export default class Swap extends Mixins(
     });
   }
 
-  getTokenBalance(token: AccountAsset): CodecString {
+  getTokenBalance(token: Nullable<AccountAsset>): CodecString {
     return getAssetBalance(token);
   }
 
