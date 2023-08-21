@@ -1112,7 +1112,9 @@
     "hashiBridgeText": "Ponte {Hashi}",
     "disclaimerTitle": "Disclaimer",
     "explore": {
-        "showOnlyMyPositions": "Mostra solo le mie posizioni"
+        "showOnly": "Mostra solo {entities}",
+        "myPositions": "le mie posizioni",
+        "synthetics": "token sintetici"
     },
     "tooltips": {
         "roi": "{ROI} sta per ritorno sull'investimento. Viene calcolato dividendo il profitto ottenuto su un investimento per il costo di tale investimento in una percentuale equivalente.",

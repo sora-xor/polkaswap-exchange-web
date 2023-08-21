@@ -1112,7 +1112,9 @@
     "hashiBridgeText": "Cầu {Hashi}",
     "disclaimerTitle": "Disclaimer",
     "explore": {
-        "showOnlyMyPositions": "Chỉ hiển thị vị trí của tôi"
+        "showOnly": "Chỉ hiển thị {entities}",
+        "myPositions": "vị trí của tôi",
+        "synthetics": "token tổng hợp"
     },
     "tooltips": {
         "roi": "{ROI} là viết tắt của Lợi tức đầu tư. Nó được tính bằng cách chia lợi nhuận kiếm được từ một khoản đầu tư cho chi phí của khoản đầu tư đó theo tỷ lệ phần trăm tương đương.",

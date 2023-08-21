@@ -1112,7 +1112,9 @@
     "hashiBridgeText": "Most {Hashi}",
     "disclaimerTitle": "Zastrzeżenie",
     "explore": {
-        "showOnlyMyPositions": "Pokaż tylko moje pozycje"
+        "showOnly": "Pokaż tylko {entities}",
+        "myPositions": "moje pozycje",
+        "synthetics": "tokeny syntetyczne"
     },
     "tooltips": {
         "roi": "{ROI} oznacza zwrot z inwestycji. Oblicza się go, dzieląc zysk uzyskany z inwestycji przez koszt tej inwestycji w ekwiwalencie procentowym.",

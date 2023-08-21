@@ -1112,7 +1112,9 @@
     "hashiBridgeText": "{Hashi} most",
     "disclaimerTitle": "Disclaimer:",
     "explore": {
-        "showOnlyMyPositions": "Pokaži samo moje pozicije"
+        "showOnly": "Pokaži samo {entities}",
+        "myPositions": "moje pozicije",
+        "synthetics": "sintetički tokeni"
     },
     "tooltips": {
         "roi": "{ROI} je kratica za povrat ulaganja. Izračunava se dijeljenjem dobiti ostvarene ulaganjem troškom tog ulaganja u postotnom ekvivalentu.",

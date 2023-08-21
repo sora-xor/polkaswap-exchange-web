@@ -213,7 +213,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
   }
 
   get preparedItems(): TableItem[] {
-    if (!this.isAccountItems) return this.items;
+    if (!this.isAccountItemsOnly) return this.items;
 
     return this.items.filter((item) => item.isAccountItem);
   }
