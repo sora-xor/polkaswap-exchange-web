@@ -1112,7 +1112,9 @@
     "hashiBridgeText": "Pont {Hashi}",
     "disclaimerTitle": "Avertissement",
     "explore": {
-        "showOnlyMyPositions": "Afficher uniquement mes positions"
+        "showOnly": "Afficher uniquement {entities}",
+        "myPositions": "mes postes",
+        "synthetics": "jetons synthétiques"
     },
     "tooltips": {
         "roi": "{ROI} signifie retour sur investissement. Il est calculé en divisant le bénéfice réalisé sur un investissement par le coût de cet investissement en pourcentage équivalent.",

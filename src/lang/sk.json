@@ -1112,7 +1112,9 @@
     "hashiBridgeText": "Most {Hashi}",
     "disclaimerTitle": "Vylúčenie zodpovednosti",
     "explore": {
-        "showOnlyMyPositions": "Zobraziť iba moje pozície"
+        "showOnly": "Zobraziť iba {entities}",
+        "myPositions": "moje pozície",
+        "synthetics": "syntetické žetóny"
     },
     "tooltips": {
         "roi": "{ROI} znamená návratnosť investícií. Vypočítava sa vydelením zisku získaného z investície nákladmi na túto investíciu v percentuálnom ekvivalente.",
