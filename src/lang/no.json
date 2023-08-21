@@ -1112,7 +1112,9 @@
     "hashiBridgeText": "{Hashi} bro",
     "disclaimerTitle": "Ansvarsfraskrivelse",
     "explore": {
-        "showOnlyMyPositions": "Vis bare mine posisjoner"
+        "showOnly": "Vis bare {entities}",
+        "myPositions": "mine posisjoner",
+        "synthetics": "syntetiske tokens"
     },
     "tooltips": {
         "roi": "{ROI} står for Return on Investment. Den beregnes ved å dele fortjenesten opptjent på en investering med kostnaden for den investeringen i en prosentekvivalent.",
