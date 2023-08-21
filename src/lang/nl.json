@@ -1112,7 +1112,9 @@
     "hashiBridgeText": "{Hashi} brug",
     "disclaimerTitle": "Disclaimer",
     "explore": {
-        "showOnlyMyPositions": "Toon alleen mijn posities"
+        "showOnly": "Toon alleen {entities}",
+        "myPositions": "mijn posities",
+        "synthetics": "synthetische tokens"
     },
     "tooltips": {
         "roi": "{ROI} staat voor Return on Investment. Het wordt berekend door de winst op een investering te delen door de kosten van die investering in een procentueel equivalent.",

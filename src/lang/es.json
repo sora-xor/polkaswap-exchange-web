@@ -1112,7 +1112,9 @@
     "hashiBridgeText": "Puente {Hashi}",
     "disclaimerTitle": "Aviso legal",
     "explore": {
-        "showOnlyMyPositions": "Mostrar solo mis posiciones"
+        "showOnly": "Mostrar solo {entities}",
+        "myPositions": "mis posiciones",
+        "synthetics": "tokens sintéticos"
     },
     "tooltips": {
         "roi": "{ROI} significa Retorno de la Inversión. Se calcula dividiendo la ganancia obtenida en una inversión por el costo de esa inversión en un porcentaje equivalente.",
