@@ -301,7 +301,8 @@
         "txId": "ID транзакции",
         "viewIn": "Смотреть в {explorer}",
         "referrer": "Реферер",
-        "referral": "Реферал"
+        "referral": "Реферал",
+        "adarTxDetailsTitle": "ADAR - Детали транзакции"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Сменить сеть в {Metamask}",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "Нет вознаграждений за этот актив"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Выбранный источник ликвидности не разрешен"
+            "forbiddenfilter": "Выбранный источник ликвидности не разрешен",
+            "slippagenottolerated": "Влияние на цену превысило выбранное значение"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Недостаточно средств",
@@ -1182,6 +1184,7 @@
     "acceptText": "Принять и скрыть",
     "newAccountsText": "Новые аккаунты",
     "dragAndDropText": "Перетащите или выберите файл {extension}",
+    "multipleRecipients": "Нескольким получателям",
     "copyPhraseText": "Скопировать парольную фразу",
     "stepText": "Шаг",
     "alerts": {

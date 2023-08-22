@@ -301,7 +301,8 @@
         "txId": "Identyfikator transakcji",
         "viewIn": "Pokaż w {explorer}",
         "referrer": "Osoba polecająca",
-        "referral": "Kod polecający"
+        "referral": "Kod polecający",
+        "adarTxDetailsTitle": "Szczegóły transakcji ADAR"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Zmień sieć w portfelu {Metamask}",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "Nie ma nagród za ten zasób"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Wybrane źródło płynności jest niedozwolone"
+            "forbiddenfilter": "Wybrane źródło płynności jest niedozwolone",
+            "slippagenottolerated": "Wpływ na cenę przekroczył wybraną wartość"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Niewystarczające środki",
@@ -1182,6 +1184,7 @@
     "acceptText": "Zaakceptuj i ukryj",
     "newAccountsText": "Nowe konta",
     "dragAndDropText": "Przeciągnij i upuść lub wybierz plik {extension}",
+    "multipleRecipients": "Wielu odbiorców",
     "copyPhraseText": "Skopiuj krypto frazę",
     "stepText": "Krok",
     "alerts": {

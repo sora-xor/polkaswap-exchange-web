@@ -301,7 +301,8 @@
         "txId": "Tranzakció azonosítója",
         "viewIn": "Megtekintés {explorer}-ben",
         "referrer": "Ajánló",
-        "referral": "Ajánlás"
+        "referral": "Ajánlás",
+        "adarTxDetailsTitle": "ADAR tranzakció részlete"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Hálózatváltás a {Metamask}",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "Ehhez az eszközhöz nem jár jutalom"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "A kiválasztott likviditási forrás nem engedélyezett"
+            "forbiddenfilter": "A kiválasztott likviditási forrás nem engedélyezett",
+            "slippagenottolerated": "Az árhatás meghaladta a kiválasztott értéket"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Fedezethiány",
@@ -1182,6 +1184,7 @@
     "acceptText": "Elfogadás és elrejtés",
     "newAccountsText": "Új fiókok",
     "dragAndDropText": "Fogd és vidd, vagy válasszon {extension} fájlt",
+    "multipleRecipients": "Több címzett",
     "copyPhraseText": "Jelszó másolása",
     "stepText": "Lépés",
     "alerts": {

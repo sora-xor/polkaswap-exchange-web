@@ -301,7 +301,8 @@
         "txId": "ID de transacción",
         "viewIn": "Ver en {explorer}",
         "referrer": "Referente",
-        "referral": "Referencia"
+        "referral": "Referencia",
+        "adarTxDetailsTitle": "Detalles de la transacción ADAR"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Cambiar de red en {Metamask}",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "No hay recompensas para este activo."
         },
         "liquidityproxy": {
-            "forbiddenfilter": "La fuente de liquidez seleccionada no está permitida"
+            "forbiddenfilter": "La fuente de liquidez seleccionada no está permitida",
+            "slippagenottolerated": "El impacto en el precio ha superado el valor seleccionado"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Fondos insuficientes",
@@ -1182,6 +1184,7 @@
     "acceptText": "Aceptar y ocultar",
     "newAccountsText": "Nuevas cuentas",
     "dragAndDropText": "Arrastrar y soltar o elegir el archivo {extension}",
+    "multipleRecipients": "Múltiples destinatarios",
     "copyPhraseText": "Copiar Frase de Contraseña",
     "stepText": "Paso",
     "alerts": {

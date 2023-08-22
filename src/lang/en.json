@@ -301,7 +301,8 @@
         "txId": "Transaction Id",
         "viewIn": "View in {explorer}",
         "referrer": "Referrer",
-        "referral": "Referral"
+        "referral": "Referral",
+        "adarTxDetailsTitle": "ADAR transaction details"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Change network in {Metamask}",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "There are no rewards for this asset"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Selected liquidity source is not allowed"
+            "forbiddenfilter": "Selected liquidity source is not allowed",
+            "slippagenottolerated": "The price impact has exceeded the selected value"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Insufficient funds",
@@ -1182,6 +1184,7 @@
     "acceptText": "Accept & Hide",
     "newAccountsText": "New accounts",
     "dragAndDropText": "Drag & drop or choose {extension} file",
+    "multipleRecipients": "Multiple Recipients",
     "copyPhraseText": "Copy Passphrase",
     "stepText": "Step",
     "alerts": {

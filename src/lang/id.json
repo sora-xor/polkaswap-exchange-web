@@ -301,7 +301,8 @@
         "txId": "Id transaksi",
         "viewIn": "Lihat di {explorer}",
         "referrer": "Perujuk",
-        "referral": "Rujukan"
+        "referral": "Rujukan",
+        "adarTxDetailsTitle": "Rincian transaksi ADAR"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Ubah jaringan di {Metamask}",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "Tidak ada imbalan untuk aset ini"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Sumber likuiditas yang dipilih tidak diperbolehkan"
+            "forbiddenfilter": "Sumber likuiditas yang dipilih tidak diperbolehkan",
+            "slippagenottolerated": "Dampak harga telah melebihi nilai yang dipilih"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Dana tidak mencukupi",
@@ -1182,6 +1184,7 @@
     "acceptText": "Terima & Sembunyikan",
     "newAccountsText": "Akun baru",
     "dragAndDropText": "Seret & lepas atau pilih file {extension}",
+    "multipleRecipients": "Penerima Multipel",
     "copyPhraseText": "Salin Frasa Sandi",
     "stepText": "Melangkah",
     "alerts": {

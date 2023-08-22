@@ -301,7 +301,8 @@
         "txId": "ID giao dịch",
         "viewIn": "Xem trong {explorer}",
         "referrer": "Người giới thiệu",
-        "referral": "Giới thiệu"
+        "referral": "Giới thiệu",
+        "adarTxDetailsTitle": "Chi tiết giao dịch ADAR"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Thay đổi mạng trong {Metamask}",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "Không có phần thưởng nào cho tài sản này"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Nguồn thanh khoản đã chọn không được phép"
+            "forbiddenfilter": "Nguồn thanh khoản đã chọn không được phép",
+            "slippagenottolerated": "Tác động đến giá đã vượt quá giá trị được chọn"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Không đủ tiền",
@@ -1182,6 +1184,7 @@
     "acceptText": "Chấp nhận & Ẩn",
     "newAccountsText": "tài khoản mới",
     "dragAndDropText": "Kéo và thả hoặc chọn tệp {extension}",
+    "multipleRecipients": "Nhiều người nhận",
     "copyPhraseText": "Sao chép cụm mật khẩu",
     "stepText": "Bước chân",
     "alerts": {

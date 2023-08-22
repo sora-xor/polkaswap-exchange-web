@@ -301,7 +301,8 @@
         "txId": "ID transakcije",
         "viewIn": "Pogledajte u {explorer}",
         "referrer": "Preporučitelj",
-        "referral": "Preporuka"
+        "referral": "Preporuka",
+        "adarTxDetailsTitle": "Detalji ADAR transakcije"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Promijenite mrežu u {Metamask}",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "Za ovu imovinu nema nagrada"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Odabrani izvor likvidnosti nije dopušten"
+            "forbiddenfilter": "Odabrani izvor likvidnosti nije dopušten",
+            "slippagenottolerated": "Utjecaj cijene premašio je odabranu vrijednost"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Nedostatna sredstva",
@@ -1182,6 +1184,7 @@
     "acceptText": "Prihvati i sakrij",
     "newAccountsText": "Novi računi",
     "dragAndDropText": "Povucite i ispustite ili odaberite {extension} datoteku",
+    "multipleRecipients": "Višestruki primatelji",
     "copyPhraseText": "Kopirajte lozinku frazu",
     "stepText": "Korak",
     "alerts": {

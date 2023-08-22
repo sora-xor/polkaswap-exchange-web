@@ -301,7 +301,8 @@
         "txId": "Transaksjons ID",
         "viewIn": "Vis i {explorer}",
         "referrer": "Henviser",
-        "referral": "Henvisning"
+        "referral": "Henvisning",
+        "adarTxDetailsTitle": "ADAR transaksjonsdetaljer"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Bytt nettverk i {Metamask}",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "Det er ingen belønninger for denne ressursen"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Valgt likviditetskilde er ikke tillatt"
+            "forbiddenfilter": "Valgt likviditetskilde er ikke tillatt",
+            "slippagenottolerated": "Prisimpakten har overskredet den valgte verdien"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Utilstrekkelige midler",
@@ -1182,6 +1184,7 @@
     "acceptText": "Godta og skjul",
     "newAccountsText": "Nye kontoer",
     "dragAndDropText": "Dra og slipp eller velg {extension} -fil",
+    "multipleRecipients": "Flere mottakere",
     "copyPhraseText": "Kopier passordfrasen",
     "stepText": "Steg",
     "alerts": {

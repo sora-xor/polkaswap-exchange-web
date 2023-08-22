@@ -301,7 +301,8 @@
         "txId": "Գործարքի ID",
         "viewIn": "Դիտել {explorer}- ում",
         "referrer": "Ուղղորդող",
-        "referral": "Ուղղորդում"
+        "referral": "Ուղղորդում",
+        "adarTxDetailsTitle": "ADAR գործարքի մանրամասներ"
     },
     "appName": "{AppName} (Փոլքասվափ)",
     "changeNetworkText": "Փոխել ցանցը {Metamask}- ում",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "Այս ակտիվի համար պարգևներ չկան"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Իրացվելիության ընտրված աղբյուրը չի թույլատրվում"
+            "forbiddenfilter": "Իրացվելիության ընտրված աղբյուրը չի թույլատրվում",
+            "slippagenottolerated": "Գինը ազդել է ընտրված արժեքը"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Անբավարար միջոցներ",
@@ -1182,6 +1184,7 @@
     "acceptText": "Ընդունել և թաքցնել",
     "newAccountsText": "Նոր հաշիվներ",
     "dragAndDropText": "Քաշեք և թողեք կամ ընտրեք {extension} ֆայլը",
+    "multipleRecipients": "Մի շարք ստացողներ",
     "copyPhraseText": "Պատճենել արտահայտությունը",
     "stepText": "Քայլ",
     "alerts": {

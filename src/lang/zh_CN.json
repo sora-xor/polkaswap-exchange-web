@@ -301,7 +301,8 @@
         "txId": "交易ID",
         "viewIn": "在{explorer}中查看",
         "referrer": "推荐人",
-        "referral": "推荐"
+        "referral": "推荐",
+        "adarTxDetailsTitle": "ADAR 交易详情"
     },
     "appName": "{AppName}",
     "changeNetworkText": "在 {Metamask} 中更改网络",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "该资产没有奖励"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "您选择的流动性来源不被允许"
+            "forbiddenfilter": "您选择的流动性来源不被允许",
+            "slippagenottolerated": "价格冲击已超过选择的值"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "资金不足",
@@ -1182,6 +1184,7 @@
     "acceptText": "接受并隐藏",
     "newAccountsText": "新帐户",
     "dragAndDropText": "拖放或选择{extension}文件",
+    "multipleRecipients": "多个接收方",
     "copyPhraseText": "复制密码短语",
     "stepText": "步骤",
     "alerts": {

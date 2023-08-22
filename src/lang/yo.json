@@ -301,7 +301,8 @@
         "txId": "Id Idunadura",
         "viewIn": "Wo ni {explorer}",
         "referrer": "Atọkasi",
-        "referral": "Ifiranṣẹ"
+        "referral": "Ifiranṣẹ",
+        "adarTxDetailsTitle": "Àwọn àwọn èrò akójọ awoṣe ADAR"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Yi nẹtiwọọki pada ni {Metamask}",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "Ko si awọn ere fun dukia yii"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Ti a ti yan orisun oloomi ko gba laaye"
+            "forbiddenfilter": "Ti a ti yan orisun oloomi ko gba laaye",
+            "slippagenottolerated": "Àfikún ìlọpọ àkántọ̀ ohun ti ṣe ṣiṣe àpapọ fún ìdíje yii"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Awọn owo ti ko to",
@@ -1182,6 +1184,7 @@
     "acceptText": "Gba & Tọju",
     "newAccountsText": "Awọn iroyin titun",
     "dragAndDropText": "Fa & ju silẹ tabi yan faili {extension}",
+    "multipleRecipients": "Awọn olukọni pupọ",
     "copyPhraseText": "Daakọ Aṣẹ Iwifunni",
     "stepText": "Igbesẹ",
     "alerts": {

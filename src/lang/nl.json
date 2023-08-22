@@ -301,7 +301,8 @@
         "txId": "Transactie ID",
         "viewIn": "Bekijk in {explorer}",
         "referrer": "Verwijzer",
-        "referral": "Verwijzing"
+        "referral": "Verwijzing",
+        "adarTxDetailsTitle": "ADAR transactiegegevens"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Netwerk wijzigen in {Metamask}",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "Er zijn geen beloningen voor dit item"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Geselecteerde liquiditeitsbron is niet toegestaan"
+            "forbiddenfilter": "Geselecteerde liquiditeitsbron is niet toegestaan",
+            "slippagenottolerated": "De prijsimpact heeft de geselecteerde waarde overschreden"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Onvoldoende middelen",
@@ -1182,6 +1184,7 @@
     "acceptText": "Accepteren & verbergen",
     "newAccountsText": "Nieuwe rekeningen",
     "dragAndDropText": "Drag & drop of kies {extension} bestand",
+    "multipleRecipients": "Meerdere ontvangers",
     "copyPhraseText": "Kopieer Passphrase",
     "stepText": "Stap",
     "alerts": {

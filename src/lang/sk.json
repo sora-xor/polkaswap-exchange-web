@@ -301,7 +301,8 @@
         "txId": "ID transakcie",
         "viewIn": "Zobraziť v {explorer}",
         "referrer": "Sprostredkovateľ",
-        "referral": "Doporučenie"
+        "referral": "Doporučenie",
+        "adarTxDetailsTitle": "Detaily transakcie ADAR"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Zmeňiť sieť v {Metamask}",
@@ -1013,7 +1014,8 @@
             "norewardsforasset": "Za toto aktívum nie sú žiadne odmeny"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Zvolený zdroj likvidity nie je povolený"
+            "forbiddenfilter": "Zvolený zdroj likvidity nie je povolený",
+            "slippagenottolerated": "Dopad na cenu prekročil vybranú hodnotu"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Nedostatok prostriedkov",
@@ -1182,6 +1184,7 @@
     "acceptText": "Prijať a skryť",
     "newAccountsText": "Nové účty",
     "dragAndDropText": "Presuňte myšou alebo vyberte súbor {extension}",
+    "multipleRecipients": "Viacerí prijímatelia",
     "copyPhraseText": "Kopírovať heslovú frázu",
     "stepText": "Krok",
     "alerts": {
