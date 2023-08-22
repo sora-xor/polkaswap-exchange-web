@@ -10,11 +10,6 @@ module.exports = defineConfig({
     config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all';
     config.optimization.splitChunks.cacheGroups.common.chunks = 'all';
 
-    // Remove cache-loader from vue-loader (vue cli 5.0.8 migration)
-    const vueRule = config.module.rules.find((rule) => rule.test.toString().indexOf('vue') !== -1);
-    vueRule.use[0].options = { compilerOptions: { whitespace: 'condense' } };
-    delete vueRule.use[1];
-
     // prepare icons content to unicode
     config.module.rules
       .filter((rule) => {
@@ -38,21 +33,38 @@ module.exports = defineConfig({
   /* eslint-disable */
   /* prettier-ignore-start */
   chainWebpack: (config) => {
+    // [vue-cli-service 5.0.8 migration]
+    // [Issue]: Deprecated in webpack 5 "cache-loader" appends to vue rule, if it's exists in node-modules
+    // https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/config/base.js#L59
+    // [Solution]: Write default vue rule config
+    const vueRule = config.module.rule('vue');
+    vueRule.uses.clear();
+    vueRule
+      .use('vue-loader')
+        .loader(require.resolve('@vue/vue-loader-v15'))
+        .options({
+          compilerOptions: {
+            whitespace: 'condense'
+          }
+        });
+
     const svgRule = config.module.rule('svg');
+    const svgGenerator = svgRule.get('generator');
     svgRule.uses.clear();
     svgRule.delete('type');
     svgRule.delete('generator');
     svgRule
-        .oneOf('inline')
-          .resourceQuery(/inline/)
-          .type('asset/inline')
-          .end()
-        .oneOf('file')
-          .type('asset/resource')
-          .end();
+      .oneOf('inline')
+        .resourceQuery(/inline/)
+        .type('asset/inline')
+        .end()
+      .oneOf('file')
+        .type('asset/resource')
+        .set('generator', svgGenerator)
+        .end();
 
-    // https://webpack.js.org/guides/asset-modules/
     const imagesRule = config.module.rule('images');
+    const imagesGenerator = imagesRule.get('generator');
     imagesRule.uses.clear();
     imagesRule.delete('type');
     imagesRule.delete('generator');
@@ -63,6 +75,7 @@ module.exports = defineConfig({
           .end()
         .oneOf('asset')
           .type('asset')
+          .set('generator', imagesGenerator)
           .end();
   },
   /* eslint-enable */
