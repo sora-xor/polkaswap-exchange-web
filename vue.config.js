@@ -10,6 +10,11 @@ module.exports = defineConfig({
     config.optimization.splitChunks.cacheGroups.defaultVendors.chunks = 'all';
     config.optimization.splitChunks.cacheGroups.common.chunks = 'all';
 
+    // Remove cache-loader from vue-loader (vue cli 5.0.8 migration)
+    const vueRule = config.module.rules.find((rule) => rule.test.toString().indexOf('vue') !== -1);
+    vueRule.use[0].options = { compilerOptions: { whitespace: 'condense' } };
+    delete vueRule.use[1];
+
     // prepare icons content to unicode
     config.module.rules
       .filter((rule) => {
@@ -35,8 +40,9 @@ module.exports = defineConfig({
   chainWebpack: (config) => {
     const svgRule = config.module.rule('svg');
     svgRule.uses.clear();
-    config.module
-      .rule('svg')
+    svgRule.delete('type');
+    svgRule.delete('generator');
+    svgRule
         .oneOf('inline')
           .resourceQuery(/inline/)
           .type('asset/inline')
@@ -48,8 +54,9 @@ module.exports = defineConfig({
     // https://webpack.js.org/guides/asset-modules/
     const imagesRule = config.module.rule('images');
     imagesRule.uses.clear();
-    config.module
-      .rule('images')
+    imagesRule.delete('type');
+    imagesRule.delete('generator');
+    imagesRule
         .oneOf('inline')
           .resourceQuery(/inline/)
           .type('asset/inline')
