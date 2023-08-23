@@ -25,8 +25,7 @@ export const SoramitsuElementsImport = (vue: VueConstructor) => {
 export const WalletImport = (vue: VueConstructor) => {
   vue.use(Vuex);
   const store = new Vuex.Store({ modules: {} });
-  // [TODO] remove any
-  vue.use(Wallet as any, { store });
+  vue.use(Wallet, { store });
 };
 
 export const useDescribe = (name: string, component: VueConstructor<Vue>, fn: jest.EmptyFunction) =>

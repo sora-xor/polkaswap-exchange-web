@@ -16,9 +16,9 @@
         </div>
       </div>
       <div class="popup-app">
-        <img src="@/assets/img/mobile/sora-app-left.png?inline" class="popup-app__left-image" />
-        <img src="@/assets/img/mobile/qr-code.svg?inline" class="popup-app__qr-code" />
-        <img src="@/assets/img/mobile/sora-app-right.png?inline" class="popup-app__right-image" />
+        <img src="@/assets/img/mobile/sora-app-left.png?inline" alt="mobile-left" class="popup-app__left-image" />
+        <img src="@/assets/img/mobile/qr-code.svg?inline" alt="qr-code" class="popup-app__qr-code" />
+        <img src="@/assets/img/mobile/sora-app-right.png?inline" alt="mobile-right" class="popup-app__right-image" />
       </div>
     </div>
   </dialog-base>

@@ -1,6 +1,6 @@
 <template>
   <s-button :class="['svg-icon-button', { 's-pressed': active }]" type="action" v-bind="$attrs" v-on="$listeners">
-    <component :is="icon" :class="{ active }" />
+    <component :is="icon" />
   </s-button>
 </template>
 
@@ -29,8 +29,19 @@ export default class SvgIconButton extends Vue {
     & > path {
       fill: var(--s-color-base-content-tertiary);
     }
+  }
 
-    &.active {
+  &:hover,
+  &:focus {
+    svg {
+      & > path {
+        fill: var(--s-color-base-content-secondary);
+      }
+    }
+  }
+
+  &.s-pressed {
+    svg {
       & > path {
         fill: var(--s-color-theme-accent);
       }

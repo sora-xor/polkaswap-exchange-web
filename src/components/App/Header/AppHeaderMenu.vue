@@ -282,14 +282,16 @@ $icon-size: 28px;
     margin: auto 0;
     fill: var(--s-color-base-content-tertiary);
 
-    &:hover {
-      fill: var(--s-color-base-content-secondary);
+    &--dropdown {
+      margin-top: $inner-spacing-mini;
+      margin-right: $basic-spacing-mini;
     }
   }
 
-  &__bell--dropdown {
-    margin-top: $inner-spacing-mini;
-    margin-right: $basic-spacing-mini;
+  &:hover {
+    .notif-option__bell {
+      fill: var(--s-color-base-content-secondary);
+    }
   }
 }
 
