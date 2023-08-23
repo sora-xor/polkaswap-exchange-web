@@ -3,7 +3,7 @@
     <div class="map">
       <div class="map__text-info">
         <div class="map__section">
-          <img src="@/assets/img/sora-card/email.svg?inline" class="map__icon" />
+          <img src="@/assets/img/sora-card/email.svg?inline" alt="email" class="map__icon" />
           <div class="text">
             <h4 class="map__point">{{ t('card.roadmap.contactInfoTitle') }}</h4>
             <span class="map__point-desc">{{ t('card.roadmap.contactInfoDesc') }}</span>
@@ -16,7 +16,7 @@
           <div v-else class="point" />
         </div>
         <div class="map__section">
-          <img src="@/assets/img/sora-card/user.svg?inline" class="map__icon" />
+          <img src="@/assets/img/sora-card/user.svg?inline" alt="user" class="map__icon" />
           <div class="text">
             <h4 class="map__point">{{ t('card.roadmap.docsTitle') }}</h4>
             <span class="map__point-desc">{{ t('card.roadmap.docsDesc') }}</span>
@@ -29,7 +29,7 @@
           <div v-else class="point" />
         </div>
         <div class="map__section">
-          <img src="@/assets/img/sora-card/card.svg?inline" class="map__icon" />
+          <img src="@/assets/img/sora-card/card.svg?inline" alt="card" class="map__icon" />
           <div class="text">
             <h4 class="map__point">{{ t('card.roadmap.personalDataTitle') }}</h4>
             <span class="map__point-desc">{{ t('card.roadmap.personalDataTitle') }}</span>
