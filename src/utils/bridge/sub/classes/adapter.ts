@@ -58,7 +58,7 @@ export class SubAdapter {
   }
 
   protected async getAccountBalance(accountAddress: string): Promise<CodecString> {
-    if (!this.connected) return ZeroStringValue;
+    if (!(this.connected && accountAddress)) return ZeroStringValue;
 
     const accountInfo = await this.api.query.system.account(accountAddress);
     const accountBalance = formatBalance(accountInfo.data);

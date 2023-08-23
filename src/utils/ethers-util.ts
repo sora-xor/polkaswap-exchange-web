@@ -155,12 +155,16 @@ async function getTokenDecimals(tokenAddress: string): Promise<number> {
 }
 
 async function getAccountAssetBalance(accountAddress: string, assetAddress: string): Promise<CodecString> {
+  if (!(accountAddress && assetAddress)) return ZeroStringValue;
+
   return isNativeEvmTokenAddress(assetAddress)
     ? await getAccountBalance(accountAddress)
     : await getAccountTokenBalance(accountAddress, assetAddress);
 }
 
 async function getAllowance(accountAddress: string, contractAddress: string, assetAddress: string): Promise<string> {
+  if (!(accountAddress && assetAddress && contractAddress)) return ZeroStringValue;
+
   const methodArgs = [accountAddress, contractAddress];
   const contract = await getTokenContract(assetAddress);
   const decimals = await getTokenDecimals(assetAddress);

@@ -8,6 +8,7 @@ import i18n from '@/lang';
 import router from '@/router';
 import store from '@/store';
 
+import ethersUtil from './ethers-util';
 import storage from './storage';
 
 import type { AmountWithSuffix } from '../types/formats';
@@ -46,13 +47,6 @@ export const isXorAccountAsset = (asset: Asset | AssetWithBalance): boolean => {
   return asset ? asset.address === XOR.address : false;
 };
 
-export const isNativeEvmTokenAddress = (address: string): boolean => {
-  const numberString = address.replace(/^0x/, '');
-  const number = parseInt(numberString, 16);
-
-  return number === 0;
-};
-
 export const isMaxButtonAvailable = (
   areAssetsSelected: boolean,
   asset: AssetWithBalance,
@@ -89,7 +83,7 @@ const getMaxBalance = (
   if (
     !asZeroValue(fee) &&
     ((!isExternalBalance && isXorAccountAsset(asset)) ||
-      (isExternalBalance && isNativeEvmTokenAddress((asset as RegisteredAccountAsset).externalAddress))) &&
+      (isExternalBalance && ethersUtil.isNativeEvmTokenAddress((asset as RegisteredAccountAsset).externalAddress))) &&
     !isBondedBalance
   ) {
     const fpFee = FPNumber.fromCodecValue(fee);
