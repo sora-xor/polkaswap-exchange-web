@@ -130,7 +130,7 @@ async function getAccountTokenBalance(accountAddress: string, tokenAddress: stri
   try {
     const tokenInstance = await getTokenContract(tokenAddress);
     const methodArgs = [accountAddress];
-    const balance = await tokenInstance.balanceOf(...methodArgs);
+    const balance: bigint = await tokenInstance.balanceOf(...methodArgs);
 
     return balance.toString();
   } catch (error) {
@@ -143,7 +143,7 @@ async function getTokenDecimals(tokenAddress: string): Promise<number> {
   if (!isNativeEvmTokenAddress(tokenAddress)) {
     try {
       const contract = await getTokenContract(tokenAddress);
-      const result = await contract.decimals();
+      const result: bigint = await contract.decimals();
 
       return Number(result);
     } catch (error) {
@@ -164,9 +164,9 @@ async function getAllowance(accountAddress: string, contractAddress: string, ass
   const methodArgs = [accountAddress, contractAddress];
   const contract = await getTokenContract(assetAddress);
   const decimals = await getTokenDecimals(assetAddress);
-  const allowance = await contract.allowance(...methodArgs);
+  const allowance: bigint = await contract.allowance(...methodArgs);
 
-  return FPNumber.fromCodecValue(String(allowance), decimals).toString();
+  return FPNumber.fromCodecValue(allowance.toString(), decimals).toString();
 }
 
 // TODO: remove this check, when MetaMask issue will be resolved
