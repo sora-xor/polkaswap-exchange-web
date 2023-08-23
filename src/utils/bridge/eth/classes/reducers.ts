@@ -4,15 +4,14 @@ import first from 'lodash/fp/first';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { IBridgeReducerOptions, GetBridgeHistoryInstance, SignExternal } from '@/utils/bridge/common/types';
-import { getEvmTransactionRecieptByHash, findEventInBlock } from '@/utils/bridge/common/utils';
+import {
+  getEvmTransactionRecieptByHash,
+  findEventInBlock,
+  waitForEvmTransactionMined,
+} from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
-import {
-  getTransaction,
-  waitForApprovedRequest,
-  waitForIncomingRequest,
-  waitForEvmTransaction,
-} from '@/utils/bridge/eth/utils';
+import { getTransaction, waitForApprovedRequest, waitForIncomingRequest } from '@/utils/bridge/eth/utils';
 
 import type { BridgeHistory, IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -39,10 +38,13 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
   }
 
   async onEvmPending(id: string): Promise<void> {
-    await waitForEvmTransaction(id);
-
     const tx = this.getTransaction(id);
-    const { fee, blockNumber, blockHash } = (await getEvmTransactionRecieptByHash(tx.externalHash as string)) || {};
+    const updatedCallback = (externalHash: string) => this.updateTransactionParams(id, { externalHash });
+
+    await waitForEvmTransactionMined(tx.externalHash, updatedCallback);
+
+    const { fee, blockNumber, blockHash } =
+      (await getEvmTransactionRecieptByHash(this.getTransaction(id).externalHash as string)) || {};
 
     if (!(fee && blockNumber && blockHash)) {
       this.updateTransactionParams(id, { externalHash: undefined, externalNetworkFee: undefined });

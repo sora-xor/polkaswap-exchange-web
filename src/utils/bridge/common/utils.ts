@@ -11,32 +11,27 @@ import type { IBridgeTransaction, BridgeHistory } from '@sora-substrate/util';
 import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
-export const waitForEvmTransactionStatus = async (
+const waitForEvmTransactionStatus = async (
   hash: string,
   replaceCallback: (hash: string) => any,
   cancelCallback: (hash: string) => any
 ) => {
-  const ethersInstance = await ethersUtil.getEthersInstance();
   try {
-    // the confirmations value was reduced from 5 to 1
-    // since after the block release, we can be sure that the transaction is completed
-    const confirmations = 1;
-    const timeout = 0;
-
-    await ethersInstance.waitForTransaction(hash, confirmations, timeout);
+    const ethersInstance = await ethersUtil.getEthersInstance();
+    await ethersInstance.waitForTransaction(hash);
   } catch (error: any) {
     if (ethers.isError(error, 'TRANSACTION_REPLACED')) {
-      if (error.reason === 'repriced' || error.reason === 'replaced') {
-        replaceCallback(error.replacement.hash);
-      } else {
+      if (error.reason === 'cancelled') {
         cancelCallback(error.replacement.hash);
+      } else {
+        replaceCallback(error.replacement.hash);
       }
     }
   }
 };
 
 export const waitForEvmTransactionMined = async (hash?: string, updatedCallback?: (hash: string) => void) => {
-  if (!hash) throw new Error('[Bridge]: evm hash cannot be empty!');
+  if (!hash) throw new Error('[waitForEvmTransactionMined]: hash cannot be empty!');
 
   await waitForEvmTransactionStatus(
     hash,
@@ -45,7 +40,7 @@ export const waitForEvmTransactionMined = async (hash?: string, updatedCallback?
       await waitForEvmTransactionMined(replaceHash, updatedCallback);
     },
     (cancelHash) => {
-      throw new Error(`[Bridge]: The transaction was canceled by the user [${cancelHash}]`);
+      throw new Error(`[waitForEvmTransactionMined]: The transaction was canceled by the user [${cancelHash}]`);
     }
   );
 };
@@ -60,7 +55,7 @@ export const getEvmTransactionRecieptByHash = async (
 
     const { from, gasPrice, gasUsed, blockNumber, blockHash } = receipt;
 
-    const fee = ethersUtil.calcEvmFee(Number(gasPrice), Number(gasUsed));
+    const fee = ethersUtil.calcEvmFee(gasPrice, gasUsed);
 
     return { fee, blockHash, blockNumber, from };
   } catch (error) {

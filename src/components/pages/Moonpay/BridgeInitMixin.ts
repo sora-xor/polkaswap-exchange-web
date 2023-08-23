@@ -136,8 +136,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         );
       }
 
-      const externalBalance = (await ethersUtil.getAccountAssetBalance(ethTransferData.to, registeredAsset.address))
-        .value;
+      const externalBalance = await ethersUtil.getAccountAssetBalance(ethTransferData.to, registeredAsset.address);
       const evmNetworkFee: CodecString = await ethersUtil.getEvmNetworkFee(
         registeredAsset.address,
         registeredAsset.kind,

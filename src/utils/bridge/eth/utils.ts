@@ -1,6 +1,5 @@
 import { Operation, BridgeTxStatus } from '@sora-substrate/util';
 
-import { waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 
 import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
@@ -98,11 +97,4 @@ export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash:
   const soraBlockHash = await ethBridgeApi.getSoraBlockHashByRequestHash(tx.externalHash as string);
 
   return { hash: soraHash, blockId: soraBlockHash };
-};
-
-export const waitForEvmTransaction = async (id: string) => {
-  const transaction = getTransaction(id);
-  const updatedCallback = (externalHash: string) => updateTransaction(id, { externalHash });
-
-  await waitForEvmTransactionMined(transaction.externalHash, updatedCallback);
 };

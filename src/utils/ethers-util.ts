@@ -89,81 +89,84 @@ async function onConnectWallet(url = 'https://cloudflare-eth.com'): Promise<stri
   return getAccount();
 }
 
+async function getSigner(): Promise<ethers.JsonRpcSigner> {
+  const ethersInstance = await getEthersInstance();
+  const signer = await ethersInstance.getSigner();
+
+  return signer;
+}
+
 async function getAccount(): Promise<string> {
   const ethersInstance = await getEthersInstance();
   await ethersInstance.send('eth_requestAccounts', []);
-  const signer = await ethersInstance.getSigner();
+  const signer = await getSigner();
   return signer.getAddress();
 }
 
-async function getAssetDecimals(assetAddress: string): Promise<number> {
-  let decimals = FPNumber.DEFAULT_PRECISION;
+async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> {
+  const signer = await getSigner();
+  const contract = new ethers.Contract(tokenAddress, SmartContracts[SmartContractType.ERC20].abi, signer);
 
-  if (isNativeEvmTokenAddress(assetAddress)) return decimals;
-
-  try {
-    const ethersInstance = await getEthersInstance();
-    const signer = await ethersInstance.getSigner();
-    const tokenInstance = new ethers.Contract(assetAddress, SmartContracts[SmartContractType.ERC20].abi, signer);
-    decimals = await tokenInstance.decimals();
-  } catch (error) {
-    console.error(error);
-  }
-
-  return decimals;
+  return contract;
 }
 
+/**
+ * Get account native token balance (ETH for Ethereum)
+ * @param accountAddress address of account
+ */
 async function getAccountBalance(accountAddress: string): Promise<CodecString> {
   try {
     const ethersInstance = await getEthersInstance();
     const wei = await ethersInstance.getBalance(accountAddress);
-    const balance = ethers.formatEther(wei.toString());
-    return new FPNumber(balance).toCodecString();
+
+    return wei.toString();
   } catch (error) {
     console.error(error);
     return ZeroStringValue;
   }
 }
 
-async function getAccountAssetBalance(
-  accountAddress: string,
-  assetAddress: string
-): Promise<{ value: CodecString; decimals: number }> {
-  let value = ZeroStringValue;
-  let decimals = FPNumber.DEFAULT_PRECISION;
+async function getAccountTokenBalance(accountAddress: string, tokenAddress: string): Promise<CodecString> {
+  try {
+    const tokenInstance = await getTokenContract(tokenAddress);
+    const methodArgs = [accountAddress];
+    const balance = await tokenInstance.balanceOf(...methodArgs);
 
-  if (accountAddress && assetAddress) {
+    return balance.toString();
+  } catch (error) {
+    console.error(error);
+    return ZeroStringValue;
+  }
+}
+
+async function getTokenDecimals(tokenAddress: string): Promise<number> {
+  if (!isNativeEvmTokenAddress(tokenAddress)) {
     try {
-      const isNativeEvmToken = isNativeEvmTokenAddress(assetAddress);
+      const contract = await getTokenContract(tokenAddress);
+      const result = await contract.decimals();
 
-      if (isNativeEvmToken) {
-        value = await getAccountBalance(accountAddress);
-      } else {
-        const ethersInstance = await getEthersInstance();
-        const signer = await ethersInstance.getSigner();
-        const tokenInstance = new ethers.Contract(assetAddress, SmartContracts[SmartContractType.ERC20].abi, signer);
-        const methodArgs = [accountAddress];
-        const balance = await tokenInstance.balanceOf(...methodArgs);
-        decimals = await tokenInstance.decimals();
-        value = FPNumber.fromCodecValue(balance._hex, +decimals).toCodecString();
-      }
+      return Number(result);
     } catch (error) {
-      console.error(assetAddress);
       console.error(error);
     }
   }
 
-  return { value, decimals };
+  return FPNumber.DEFAULT_PRECISION;
+}
+
+async function getAccountAssetBalance(accountAddress: string, assetAddress: string): Promise<CodecString> {
+  return isNativeEvmTokenAddress(assetAddress)
+    ? await getAccountBalance(accountAddress)
+    : await getAccountTokenBalance(accountAddress, assetAddress);
 }
 
 async function getAllowance(accountAddress: string, contractAddress: string, assetAddress: string): Promise<string> {
-  const ethersInstance = await getEthersInstance();
-  const signer = await ethersInstance.getSigner();
-  const tokenInstance = new ethers.Contract(assetAddress, SmartContracts[SmartContractType.ERC20].abi, signer);
   const methodArgs = [accountAddress, contractAddress];
-  const allowance = await tokenInstance.allowance(...methodArgs);
+  const contract = await getTokenContract(assetAddress);
+  const decimals = await getTokenDecimals(assetAddress);
+  const allowance = await contract.allowance(...methodArgs);
 
-  return FPNumber.fromCodecValue(allowance._hex).toString();
+  return FPNumber.fromCodecValue(String(allowance), decimals).toString();
 }
 
 // TODO: remove this check, when MetaMask issue will be resolved
@@ -301,8 +304,8 @@ async function getEvmNetworkFee(
   try {
     const ethersInstance = await getEthersInstance();
     const { maxFeePerGas } = await ethersInstance.getFeeData();
-    const gasPrice = maxFeePerGas ? Number(maxFeePerGas) : 0;
-    const gasLimit = getEthBridgeGasLimit(assetEvmAddress, assetKind as BridgeRequestAssetKind, isSoraToEvm);
+    const gasPrice = maxFeePerGas ?? BigInt(0);
+    const gasLimit = BigInt(getEthBridgeGasLimit(assetEvmAddress, assetKind as BridgeRequestAssetKind, isSoraToEvm));
     const fee = calcEvmFee(gasPrice, gasLimit);
 
     return fee;
@@ -312,8 +315,8 @@ async function getEvmNetworkFee(
   }
 }
 
-function calcEvmFee(gasPrice: number, gasAmount: number) {
-  return FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasAmount)).toCodecString();
+function calcEvmFee(gasPrice: bigint, gasAmount: bigint) {
+  return (gasPrice * gasAmount).toString();
 }
 
 async function getEvmTransaction(hash: string): Promise<ethers.TransactionResponse | null> {
@@ -338,7 +341,7 @@ async function getBlock(number: number): Promise<ethers.Block | null> {
 }
 
 async function accountAddressToHex(address: string): Promise<string> {
-  return Buffer.from(decodeAddress(address)).toString('hex');
+  return ethers.hexlify(decodeAddress(address));
 }
 
 function hexToNumber(hex: string): number {
@@ -387,10 +390,12 @@ function storeSelectedBridgeType(bridgeType: BridgeNetworkType) {
 
 export default {
   onConnect,
+  getSigner,
   getAccount,
   getAccountBalance,
   getAccountAssetBalance,
-  getAssetDecimals,
+  getTokenContract,
+  getTokenDecimals,
   getAllowance,
   checkAccountIsConnected,
   getEthersInstance,
