@@ -8,7 +8,7 @@ if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
 
 def pipeline = new org.js.AppPipeline(steps: this,
     dockerImageName: 'polkaswap/exchange-web',
-    buildDockerImage: 'docker.soramitsu.co.jp/build-tools/node:14-ubuntu-extended',
+    buildDockerImage: 'build-tools/node:16-ubuntu',
     dockerRegistryCred: 'bot-polkaswap-rw',
     buildEnvironment: buildEnvironment,
     sonarProjectName: 'polkaswap-exchange-web',
