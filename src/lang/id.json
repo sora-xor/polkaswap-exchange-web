@@ -1112,7 +1112,9 @@
     "hashiBridgeText": "Jembatan {Hashi}",
     "disclaimerTitle": "Penafian",
     "explore": {
-        "showOnlyMyPositions": "Hanya tampilkan posisi saya"
+        "showOnly": "Hanya tampilkan {entities}",
+        "myPositions": "posisi saya",
+        "synthetics": "token sintetis"
     },
     "tooltips": {
         "roi": "{ROI} adalah singkatan dari Pengembalian Investasi. Ini dihitung dengan membagi laba yang diperoleh dari investasi dengan biaya investasi itu dalam persentase yang setara.",
