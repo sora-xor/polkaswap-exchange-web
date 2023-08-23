@@ -32,7 +32,7 @@
     "direct-vuex": "^0.12.1",
     "echarts": "^5.4.1",
     "email-validator": "^2.0.4",
-    "ethers": "5.7.2",
+    "ethers": "6.7.1",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "uuidv4": "^6.2.13",

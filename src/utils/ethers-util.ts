@@ -13,7 +13,7 @@ import { settingsStorage } from '@/utils/storage';
 import type { CodecString } from '@sora-substrate/util';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
-type ethersProvider = ethers.providers.Web3Provider;
+type ethersProvider = ethers.BrowserProvider;
 
 let provider: any = null;
 let ethersInstance: ethersProvider | null = null;
@@ -92,8 +92,8 @@ async function onConnectWallet(url = 'https://cloudflare-eth.com'): Promise<stri
 async function getAccount(): Promise<string> {
   const ethersInstance = await getEthersInstance();
   await ethersInstance.send('eth_requestAccounts', []);
-  const account = ethersInstance.getSigner();
-  return account.getAddress();
+  const signer = await ethersInstance.getSigner();
+  return signer.getAddress();
 }
 
 async function getAssetDecimals(assetAddress: string): Promise<number> {
@@ -103,11 +103,8 @@ async function getAssetDecimals(assetAddress: string): Promise<number> {
 
   try {
     const ethersInstance = await getEthersInstance();
-    const tokenInstance = new ethers.Contract(
-      assetAddress,
-      SmartContracts[SmartContractType.ERC20].abi,
-      ethersInstance.getSigner()
-    );
+    const signer = await ethersInstance.getSigner();
+    const tokenInstance = new ethers.Contract(assetAddress, SmartContracts[SmartContractType.ERC20].abi, signer);
     decimals = await tokenInstance.decimals();
   } catch (error) {
     console.error(error);
@@ -120,7 +117,7 @@ async function getAccountBalance(accountAddress: string): Promise<CodecString> {
   try {
     const ethersInstance = await getEthersInstance();
     const wei = await ethersInstance.getBalance(accountAddress);
-    const balance = ethers.utils.formatEther(wei.toString());
+    const balance = ethers.formatEther(wei.toString());
     return new FPNumber(balance).toCodecString();
   } catch (error) {
     console.error(error);
@@ -137,16 +134,14 @@ async function getAccountAssetBalance(
 
   if (accountAddress && assetAddress) {
     try {
-      const ethersInstance = await getEthersInstance();
       const isNativeEvmToken = isNativeEvmTokenAddress(assetAddress);
+
       if (isNativeEvmToken) {
         value = await getAccountBalance(accountAddress);
       } else {
-        const tokenInstance = new ethers.Contract(
-          assetAddress,
-          SmartContracts[SmartContractType.ERC20].abi,
-          ethersInstance.getSigner()
-        );
+        const ethersInstance = await getEthersInstance();
+        const signer = await ethersInstance.getSigner();
+        const tokenInstance = new ethers.Contract(assetAddress, SmartContracts[SmartContractType.ERC20].abi, signer);
         const methodArgs = [accountAddress];
         const balance = await tokenInstance.balanceOf(...methodArgs);
         decimals = await tokenInstance.decimals();
@@ -163,11 +158,8 @@ async function getAccountAssetBalance(
 
 async function getAllowance(accountAddress: string, contractAddress: string, assetAddress: string): Promise<string> {
   const ethersInstance = await getEthersInstance();
-  const tokenInstance = new ethers.Contract(
-    assetAddress,
-    SmartContracts[SmartContractType.ERC20].abi,
-    ethersInstance.getSigner()
-  );
+  const signer = await ethersInstance.getSigner();
+  const tokenInstance = new ethers.Contract(assetAddress, SmartContracts[SmartContractType.ERC20].abi, signer);
   const methodArgs = [accountAddress, contractAddress];
   const allowance = await tokenInstance.allowance(...methodArgs);
 
@@ -198,7 +190,7 @@ async function getEthersInstance(): Promise<ethersProvider> {
   }
   if (!ethersInstance) {
     // 'any' - because ethers throws errors after network switch
-    ethersInstance = new ethers.providers.Web3Provider(provider, 'any');
+    ethersInstance = new ethers.BrowserProvider(provider, 'any');
   }
   return ethersInstance;
 }
@@ -255,7 +247,7 @@ async function addToken(address: string, symbol: string, decimals: number, image
  */
 async function switchOrAddChain(network: NetworkData, chainName?: string): Promise<void> {
   const ethereum = (window as any).ethereum;
-  const chainId = ethers.utils.hexValue(network.id);
+  const chainId = ethers.toQuantity(network.id);
 
   try {
     await ethereum.request({
@@ -295,7 +287,7 @@ async function getEvmNetworkId(): Promise<number> {
   const ethersInstance = await getEthersInstance();
   const network = await ethersInstance.getNetwork();
 
-  return network.chainId;
+  return Number(network.chainId);
 }
 
 /**
@@ -309,7 +301,7 @@ async function getEvmNetworkFee(
   try {
     const ethersInstance = await getEthersInstance();
     const { maxFeePerGas } = await ethersInstance.getFeeData();
-    const gasPrice = maxFeePerGas?.toNumber() ?? 0;
+    const gasPrice = maxFeePerGas ? Number(maxFeePerGas) : 0;
     const gasLimit = getEthBridgeGasLimit(assetEvmAddress, assetKind as BridgeRequestAssetKind, isSoraToEvm);
     const fee = calcEvmFee(gasPrice, gasLimit);
 
@@ -324,21 +316,21 @@ function calcEvmFee(gasPrice: number, gasAmount: number) {
   return FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasAmount)).toCodecString();
 }
 
-async function getEvmTransaction(hash: string): Promise<ethers.providers.TransactionResponse> {
+async function getEvmTransaction(hash: string): Promise<ethers.TransactionResponse | null> {
   const ethersInstance = await getEthersInstance();
   const tx = await ethersInstance.getTransaction(hash);
 
   return tx;
 }
 
-async function getEvmTransactionReceipt(hash: string): Promise<ethers.providers.TransactionReceipt> {
+async function getEvmTransactionReceipt(hash: string): Promise<ethers.TransactionReceipt | null> {
   const ethersInstance = await getEthersInstance();
   const tx = await ethersInstance.getTransactionReceipt(hash);
 
   return tx;
 }
 
-async function getBlock(number: number): Promise<ethers.providers.Block> {
+async function getBlock(number: number): Promise<ethers.Block | null> {
   const ethersInstance = await getEthersInstance();
   const block = await ethersInstance.getBlock(number);
 
@@ -346,7 +338,7 @@ async function getBlock(number: number): Promise<ethers.providers.Block> {
 }
 
 async function accountAddressToHex(address: string): Promise<string> {
-  return ethers.utils.hexlify(Array.from(decodeAddress(address).values()));
+  return Buffer.from(decodeAddress(address)).toString('hex');
 }
 
 function hexToNumber(hex: string): number {

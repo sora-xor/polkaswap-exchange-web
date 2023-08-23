@@ -561,6 +561,7 @@ const actions = defineActions({
     }
 
     const ethersInstance = await ethersUtil.getEthersInstance();
+    const signer = await ethersInstance.getSigner();
 
     const symbol = asset.symbol as KnownEthBridgeAsset;
     const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
@@ -568,7 +569,7 @@ const actions = defineActions({
     const contract = SmartContracts[SmartContractType.EthBridge][bridgeAsset];
     const jsonInterface = contract.abi;
     const contractAddress = rootGetters.web3.contractAddress(bridgeAsset) as string;
-    const contractInstance = new ethers.Contract(contractAddress, jsonInterface, ethersInstance.getSigner());
+    const contractInstance = new ethers.Contract(contractAddress, jsonInterface, signer);
     const method = isValOrXor
       ? 'mintTokensByPeers'
       : request.currencyType === BridgeCurrencyType.TokenAddress
@@ -600,10 +601,10 @@ const actions = defineActions({
     );
 
     checkEvmNetwork(context);
-    const transaction: ethers.providers.TransactionResponse = await contractInstance[method](...methodArgs);
+    const transaction: ethers.TransactionResponse = await contractInstance[method](...methodArgs);
 
     const fee = transaction.gasPrice
-      ? ethersUtil.calcEvmFee(transaction.gasPrice.toNumber(), transaction.gasLimit.toNumber())
+      ? ethersUtil.calcEvmFee(Number(transaction.gasPrice), Number(transaction.gasLimit))
       : undefined;
 
     return {
@@ -632,10 +633,11 @@ const actions = defineActions({
       const allowance = await ethersUtil.getAllowance(evmAccount, contractAddress, asset.externalAddress);
       if (FPNumber.isLessThan(new FPNumber(allowance), new FPNumber(tx.amount))) {
         commit.addTxIdInApprove(tx.id);
+        const signer = await ethersInstance.getSigner();
         const tokenInstance = new ethers.Contract(
           asset.externalAddress,
           SmartContracts[SmartContractType.ERC20].abi,
-          ethersInstance.getSigner()
+          signer
         );
         const methodArgs = [
           contractAddress, // address spender
@@ -654,10 +656,11 @@ const actions = defineActions({
     }
     const soraAccountAddress = rootState.wallet.account.address;
     const accountId = await ethersUtil.accountAddressToHex(soraAccountAddress);
+    const signer = await ethersInstance.getSigner();
     const contractInstance = new ethers.Contract(
       contractAddress,
       SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi,
-      ethersInstance.getSigner()
+      signer
     );
     const decimals = isNativeEvmToken
       ? undefined
@@ -665,7 +668,7 @@ const actions = defineActions({
           const tokenInstance = new ethers.Contract(
             asset.externalAddress,
             SmartContracts[SmartContractType.ERC20].abi,
-            ethersInstance.getSigner()
+            signer
           );
           const decimals = await tokenInstance.decimals();
           return +decimals;
@@ -684,9 +687,9 @@ const actions = defineActions({
     const overrides = isNativeEvmToken ? { value: amount } : {};
 
     checkEvmNetwork(context);
-    const transaction: ethers.providers.TransactionResponse = await contractInstance[method](...methodArgs, overrides);
+    const transaction: ethers.TransactionResponse = await contractInstance[method](...methodArgs, overrides);
     const fee = transaction.gasPrice
-      ? ethersUtil.calcEvmFee(transaction.gasPrice.toNumber(), transaction.gasLimit.toNumber())
+      ? ethersUtil.calcEvmFee(Number(transaction.gasPrice), Number(transaction.gasLimit))
       : undefined;
     return {
       hash: transaction.hash,

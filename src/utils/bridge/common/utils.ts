@@ -22,22 +22,13 @@ export const waitForEvmTransactionStatus = async (
     // since after the block release, we can be sure that the transaction is completed
     const confirmations = 1;
     const timeout = 0;
-    const currentBlock = await ethersInstance.getBlockNumber();
-    const blockOffset = currentBlock - 20;
-    const { data, from, nonce, to, value } = await ethersInstance.getTransaction(hash);
-    await ethersInstance._waitForTransaction(hash, confirmations, timeout, {
-      data,
-      from,
-      nonce,
-      to: to ?? '',
-      value,
-      startBlock: blockOffset,
-    });
+
+    await ethersInstance.waitForTransaction(hash, confirmations, timeout);
   } catch (error: any) {
-    if (error.code === ethers.errors.TRANSACTION_REPLACED) {
+    if (ethers.isError(error, 'TRANSACTION_REPLACED')) {
       if (error.reason === 'repriced' || error.reason === 'replaced') {
         replaceCallback(error.replacement.hash);
-      } else if (error.reason === 'canceled') {
+      } else {
         cancelCallback(error.replacement.hash);
       }
     }
@@ -63,11 +54,13 @@ export const getEvmTransactionRecieptByHash = async (
   transactionHash: string
 ): Promise<{ fee: string; blockHash: string; blockNumber: number; from: string } | null> => {
   try {
-    const { from, effectiveGasPrice, gasUsed, blockNumber, blockHash } = await ethersUtil.getEvmTransactionReceipt(
-      transactionHash
-    );
+    const receipt = await ethersUtil.getEvmTransactionReceipt(transactionHash);
 
-    const fee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
+    if (!receipt) throw new Error(`Transaction receipt "${transactionHash}" not found`);
+
+    const { from, gasPrice, gasUsed, blockNumber, blockHash } = receipt;
+
+    const fee = ethersUtil.calcEvmFee(Number(gasPrice), Number(gasUsed));
 
     return { fee, blockHash, blockNumber, from };
   } catch (error) {

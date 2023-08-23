@@ -133,7 +133,8 @@ const actions = defineActions({
         throw new Error('Contract address/abi is not found');
       }
       const ethersInstance = await ethersUtil.getEthersInstance();
-      const contractInstance = new ethers.Contract(contractAddress, contractAbi, ethersInstance.getSigner());
+      const signer = await ethersInstance.getSigner();
+      const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
       const methodArgs = [soraAssetId];
       const externalAddress = await contractInstance._sidechainTokens(...methodArgs);
       return externalAddress;

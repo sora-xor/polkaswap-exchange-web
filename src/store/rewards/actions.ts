@@ -178,9 +178,10 @@ const actions = defineActions({
       if (externalRewardsSelected && state.transactionStep === 1) {
         const ethersInstance = await ethersUtil.getEthersInstance();
         const internalAddressHex = await ethersUtil.accountAddressToHex(internalAddress);
-        const keccakHex = ethers.utils.keccak256(internalAddressHex);
-        const message = ethers.utils.arrayify(keccakHex); // Uint8Array
-        const signature = await ethersInstance.getSigner().signMessage(message);
+        const keccakHex = ethers.keccak256(internalAddressHex);
+        const message = ethers.getBytes(keccakHex); // Uint8Array
+        const signer = await ethersInstance.getSigner();
+        const signature = await signer.signMessage(message);
 
         commit.setSignature(signature);
         commit.setTxStep(2);
