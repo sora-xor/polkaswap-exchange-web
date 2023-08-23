@@ -281,6 +281,10 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
   }
 }
 
+button#CancelKyc {
+  display: none !important;
+}
+
 section.content {
   min-height: 800px;
 }
@@ -312,45 +316,6 @@ section.content {
   &-btn {
     margin-top: $basic-spacing;
     width: 100%;
-  }
-}
-
-.tos {
-  &__disclaimer {
-    width: 100%;
-    background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-small);
-    box-shadow: var(--s-shadow-dialog);
-    padding: 20px $basic-spacing;
-    margin-bottom: $basic-spacing;
-    position: relative;
-
-    &-paragraph {
-      margin-bottom: calc(var(--s-basic-spacing) / 2);
-      margin-right: 10%;
-      font-weight: 600;
-      font-size: var(--s-icon-font-size-mini);
-    }
-
-    &-warning.icon {
-      position: absolute;
-      background-color: #479aef;
-      border: 2.25257px solid #f7f3f4;
-      box-shadow: var(--s-shadow-element-pressed);
-      top: 20px;
-      right: 12px;
-      border-radius: 50%;
-      color: #fff;
-      width: 46px;
-      height: 46px;
-
-      .s-icon-notifications-alert-triangle-24 {
-        display: block;
-        color: #fff;
-        margin-top: 5px;
-        margin-left: 7px;
-      }
-    }
   }
 }
 </style>

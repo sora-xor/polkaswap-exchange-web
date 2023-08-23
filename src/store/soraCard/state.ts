@@ -17,6 +17,9 @@ function initialState(): SoraCardState {
     hasFreeAttempts: null,
     wantsToPassKycAgain: false,
     rejectReason: null,
+    userInfo: {
+      iban: null,
+    },
   };
 }
 

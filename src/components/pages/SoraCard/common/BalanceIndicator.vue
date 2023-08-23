@@ -17,6 +17,7 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/math';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch, Ref } from 'vue-property-decorator';
 
@@ -24,12 +25,10 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
 import { delay } from '@/utils';
 
-import type { FPNumber } from '@sora-substrate/math';
-
 const hundred = 100;
 
 @Component
-export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+export default class BalanceIndicator extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
   @state.soraCard.euroBalance private euroBalance!: string;
 
@@ -41,14 +40,17 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   get balanceIndicatorAmount(): string {
-    return `You need ${this.xorToDeposit.format(3)} more XOR (€${hundred - Number(this.euroBalance)})`;
+    const euroBalance = FPNumber.fromNatural(this.euroBalance);
+    const remaining = FPNumber.HUNDRED.sub(euroBalance);
+
+    return `You need ${this.xorToDeposit.format(3)} more XOR (€${remaining.toFixed(2)})`;
   }
 
   async runProgressBarAnimation(): Promise<void> {
     if (this.progressBar) {
       const balanceInteger = Math.round(Number(this.euroBalance));
       for (let i = 0; i < balanceInteger; i = i + 0.5) {
-        await delay(30);
+        await delay(20);
         this.progressBar.style.setProperty('width', `${i}%`);
       }
     }

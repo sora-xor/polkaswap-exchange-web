@@ -83,6 +83,7 @@ export const Links = {
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
   releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
   demeterFarmingPlatform: 'https://farming.deotoken.io/',
+  soraCardSupportChannel: 'https://t.me/soracardofficial',
 };
 
 export const ObjectInit = () => null;
@@ -168,8 +169,8 @@ export enum Components {
   ToSDialog = 'pages/SoraCard/steps/ToSDialog',
   Phone = 'pages/SoraCard/steps/Phone',
   Email = 'pages/SoraCard/steps/Email',
-  Payment = 'SoraCard/steps/Payment',
-  RoadMap = 'SoraCard/steps/RoadMap',
+  Payment = 'pages/SoraCard/steps/Payment',
+  RoadMap = 'pages/SoraCard/steps/RoadMap',
   KycView = 'pages/SoraCard/steps/KycView',
   // Paywings
   X1Dialog = 'pages/X1/X1Dialog',

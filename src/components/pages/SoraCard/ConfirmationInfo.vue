@@ -16,7 +16,7 @@
     <div class="sora-card__header">{{ t(titleKey) }}</div>
     <p class="sora-card__status-info" v-html="text" />
 
-    <div v-if="currentStatus === VerificationStatus.Rejected" class="sora-card__rejection">
+    <div v-if="isRejected" class="sora-card__rejection">
       <s-button
         v-if="hasFreeAttempts"
         type="primary"
@@ -32,6 +32,11 @@
         </p>
       </div>
     </div>
+    <div v-if="isRejectedOrPending" class="sora-card__support">
+      <s-button class="sora-card__btn sora-card__btn-support s-typography-button--large" @click="openSupportChannel">
+        <span class="text">{{ 'Telegram support' }}</span>
+      </s-button>
+    </div>
   </div>
 </template>
 
@@ -40,6 +45,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Links } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { VerificationStatus } from '@/types/card';
 import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
@@ -63,6 +69,14 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       return `${this.t('card.statusRejectReason')}: ${this.rejectReason}`;
     }
     return this.t('card.statusRejectText');
+  }
+
+  get isRejected(): boolean {
+    return this.currentStatus === VerificationStatus.Rejected;
+  }
+
+  get isRejectedOrPending(): boolean {
+    return [VerificationStatus.Pending, VerificationStatus.Rejected].includes(this.currentStatus);
   }
 
   get titleKey(): string {
@@ -127,9 +141,14 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
     }
   }
 
+  openSupportChannel(): void {
+    window.open(Links.soraCardSupportChannel, '_blank');
+  }
+
   handleKycRetry(): void {
     this.setWillToPassKycAgain(true);
-    this.$emit('confirm-apply');
+    const openGetReadyPage = true;
+    this.$emit('confirm-apply', openGetReadyPage);
   }
 
   async mounted(): Promise<void> {
@@ -162,6 +181,9 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   &__rejection {
     width: 100%;
   }
+  &__support {
+    width: 100%;
+  }
   &__status-info-test {
     white-space: pre-line;
     margin-top: $basic-spacing;
@@ -180,6 +202,14 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   }
   &__btn {
     width: 100%;
+
+    &-support {
+      margin-top: 8px;
+      span.text {
+        font-variation-settings: 'wght' 700 !important;
+        font-size: 18px;
+      }
+    }
   }
   &__no-more-free-kyc {
     margin-top: var(--s-size-mini);

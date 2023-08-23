@@ -29,12 +29,6 @@
       </div>
       <balance-indicator v-else />
     </div>
-    <div class="sora-card__unsupported-countries-disclaimer">
-      {{ t('card.unsupportedCountriesDisclaimer') }}
-      <span class="sora-card__unsupported-countries-disclaimer--link" @click="openList">{{
-        t('card.unsupportedCountriesLink')
-      }}</span>
-    </div>
     <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
       <s-button
         type="primary"
@@ -45,12 +39,13 @@
         <span class="text"> {{ buttonText }}</span>
       </s-button>
     </div>
-    <div class="sora-card__unsupported-countries-disclaimer">
+
+    <!-- <div class="sora-card__unsupported-countries-disclaimer">
       {{ t('card.unsupportedCountriesDisclaimer') }}
       <span class="sora-card__unsupported-countries-disclaimer--link" @click="openList">{{
         t('card.unsupportedCountriesLink')
       }}</span>
-    </div>
+    </div> -->
     <tos-dialog :visible.sync="showListDialog" :title="t('card.unsupportedCountries')" />
   </div>
 </template>
@@ -262,6 +257,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   }
 
   &__unsupported-countries-disclaimer {
+    // display: none;
     position: absolute;
     color: var(--s-color-base-content-secondary);
     text-align: center;

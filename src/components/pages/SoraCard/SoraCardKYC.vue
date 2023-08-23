@@ -2,15 +2,16 @@
   <wallet-base
     v-loading="loading"
     :title="title"
-    :show-back="showBackBtn"
+    :show-back="true"
     :title-center="true"
     @back="handleBack"
     class="sora-card"
   >
     <terms-and-conditions v-if="step === KycProcess.TermsAndConditions" @confirm="confirmToS" />
-    <road-map v-else-if="step === KycProcess.RoadMap" @confirm="confirmSignIn" :userApplied="userApplied" />
-    <phone v-else-if="step === KycProcess.Phone" @confirm="confirmPhone" :userApplied="userApplied" />
+    <phone v-else-if="step === KycProcess.Phone" @confirm="confirmPhone" />
     <email v-else-if="step === KycProcess.Email" @confirm="confirmEmail" />
+    <payment v-else-if="step === KycProcess.Payment" @confirm="confirmPayment" />
+    <road-map v-else-if="step === KycProcess.RoadMap" @confirm="confirmReadiness" />
     <kyc-view v-else-if="step === KycProcess.KycView" @confirm-kyc="redirectToView" />
   </wallet-base>
 </template>
@@ -22,12 +23,14 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
+import { CardUIViews } from '@/types/card';
 
 enum KycProcess {
   TermsAndConditions,
   RoadMap,
   Phone,
   Email,
+  Payment,
   KycView,
 }
 
@@ -38,40 +41,40 @@ enum KycProcess {
     RoadMap: lazyComponent(Components.RoadMap),
     Phone: lazyComponent(Components.Phone),
     Email: lazyComponent(Components.Email),
+    Payment: lazyComponent(Components.Payment),
     KycView: lazyComponent(Components.KycView),
   },
 })
 export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly openKycForm!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly getReadyPage!: boolean;
 
   step: KycProcess = KycProcess.TermsAndConditions;
 
   KycProcess = KycProcess;
 
   handleBack(): void {
-    if (this.userApplied && this.step === KycProcess.RoadMap) {
-      this.$emit('go-to-start');
-      return;
-    }
-
     if (this.step === KycProcess.TermsAndConditions) {
       this.$emit('go-to-start');
       return;
     }
 
-    if (this.step === KycProcess.RoadMap) {
-      this.step = KycProcess.TermsAndConditions;
-      return;
-    }
-
     if (this.step === KycProcess.Phone) {
-      this.step = KycProcess.RoadMap;
+      this.step = KycProcess.TermsAndConditions;
       return;
     }
 
     if (this.step === KycProcess.Email) {
       this.step = KycProcess.Phone;
+      return;
+    }
+
+    if (this.step === KycProcess.Payment) {
+      this.step = KycProcess.TermsAndConditions;
+      return;
+    }
+
+    if (this.step === KycProcess.RoadMap) {
+      this.step = KycProcess.TermsAndConditions;
       return;
     }
 
@@ -97,50 +100,63 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
     }
   }
 
-  get showBackBtn(): boolean {
-    return !(this.step === KycProcess.KycView);
-  }
-
   confirmToS(): void {
-    this.step = KycProcess.RoadMap;
+    this.step = KycProcess.Phone;
   }
 
   confirmSignIn(): void {
     this.step = KycProcess.Phone;
   }
 
-  confirmPhone(state): void {
-    if (state.startKyc) {
-      this.step = KycProcess.KycView;
-      return;
-    }
-
-    if (state.goToEmail) {
-      this.step = KycProcess.Email;
-      return;
-    }
-
-    if (state.showBanner) {
-      this.$emit('go-to-start');
-    }
-  }
-
-  confirmEmail(): void {
+  confirmPayment(): void {
     this.step = KycProcess.KycView;
   }
 
-  redirectToView(success: boolean): void {
-    success ? this.$emit('go-to-start', success) : (this.step = KycProcess.RoadMap);
-  }
+  confirmPhone(state: CardUIViews): void {
+    if (state === CardUIViews.Payment) {
+      this.step = KycProcess.Payment;
+      return;
+    }
 
-  mounted(): void {
-    if (this.userApplied) {
+    if (state === CardUIViews.Kyc) {
       this.step = KycProcess.RoadMap;
       return;
     }
 
-    if (this.openKycForm) {
-      this.step = KycProcess.KycView;
+    if (state === CardUIViews.Email) {
+      this.step = KycProcess.Email;
+      return;
+    }
+
+    if (state === CardUIViews.KycResult) {
+      this.$emit('go-to-kyc-result');
+    }
+
+    if (state === CardUIViews.Start) {
+      this.$emit('go-to-start');
+    }
+
+    if (state === CardUIViews.Dashboard) {
+      this.$emit('go-to-dashboard');
+    }
+  }
+
+  confirmEmail(): void {
+    this.step = KycProcess.Payment;
+  }
+
+  confirmReadiness(): void {
+    this.step = KycProcess.KycView;
+  }
+
+  redirectToView(success: boolean): void {
+    // TODO: change
+    success ? this.$emit('go-to-start', success) : (this.step = KycProcess.RoadMap);
+  }
+
+  mounted(): void {
+    if (this.getReadyPage) {
+      this.step = KycProcess.RoadMap;
     }
   }
 }

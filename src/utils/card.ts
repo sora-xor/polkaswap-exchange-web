@@ -1,3 +1,5 @@
+import { log } from 'console';
+
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 
@@ -14,6 +16,7 @@ const SoraProxyEndpoints = {
     lastKycStatusEndpoint: `${soraCardTestBaseEndpoint}/kyc-last-status`,
     kycAttemptCountEndpoint: `${soraCardTestBaseEndpoint}/kyc-attempt-count`,
     priceOracleEndpoint: `${soraCardTestBaseEndpoint}/prices/xor_euro`,
+    ibanEndpoint: `${soraCardTestBaseEndpoint}/ibans`,
     newAccessTokenEndpoint: 'https://api-auth-test.soracard.com/RequestNewAccessToken',
   },
   [WALLET_CONSTS.SoraNetwork.Prod]: {
@@ -21,6 +24,7 @@ const SoraProxyEndpoints = {
     lastKycStatusEndpoint: `${soraCardProdBaseEndpoint}/kyc-last-status`,
     kycAttemptCountEndpoint: `${soraCardProdBaseEndpoint}/kyc-attempt-count`,
     priceOracleEndpoint: `${soraCardProdBaseEndpoint}/prices/xor_euro`,
+    ibanEndpoint: `${soraCardProdBaseEndpoint}/ibans`,
     newAccessTokenEndpoint: 'https://api-auth.soracard.com/RequestNewAccessToken',
   },
 };
@@ -187,6 +191,47 @@ export const getXorPerEuroRatio = async () => {
     return parsedData.price;
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const getUserIbanNumber = async () => {
+  const sessionRefreshToken = localStorage.getItem('PW-refresh-token');
+  let sessionAccessToken = localStorage.getItem('PW-token');
+
+  if (!(sessionAccessToken && sessionRefreshToken)) {
+    return null;
+  }
+
+  if (isAccessTokenExpired(sessionAccessToken)) {
+    const accessToken = await getUpdatedJwtPair(sessionRefreshToken);
+
+    if (accessToken) {
+      sessionAccessToken = accessToken;
+    } else {
+      return null;
+    }
+  }
+
+  const soraNetwork = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+
+  try {
+    const result = await fetch(getSoraProxyEndpoints(soraNetwork).ibanEndpoint, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${sessionAccessToken}`,
+      },
+    });
+
+    const data = await result.json();
+
+    if (data.IBANs && data.IBANs[0].StatusDescription === 'Active') {
+      const iban = data.IBANs[0].Iban;
+      return iban;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('[SoraCard]: Error while getting IBAN', error);
   }
 };
 

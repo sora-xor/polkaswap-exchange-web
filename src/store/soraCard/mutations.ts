@@ -42,6 +42,9 @@ const mutations = defineMutations<SoraCardState>()({
   setRejectReason(state, rejectReason: string) {
     state.rejectReason = rejectReason;
   },
+  setUserIban(state, iban: string) {
+    state.userInfo.iban = iban;
+  },
 });
 
 export default mutations;

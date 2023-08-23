@@ -1,14 +1,15 @@
 <template>
   <div class="sora-card-wrapper">
-    <confirmation-info v-if="step === Step.ConfirmationInfo" v-loading="loading" @confirm-apply="openStartPage" />
-    <sora-card-intro v-else-if="step === Step.StartPage" @confirm-apply="confirmApply" />
+    <confirmation-info v-if="step === Step.ConfirmationInfo" v-loading="loading" @confirm-apply="openKycPage" />
+    <sora-card-intro v-else-if="step === Step.StartPage" @confirm-apply="openKycPage" />
     <sora-card-kyc
       v-else-if="step === Step.KYC"
-      :userApplied="userApplied"
-      :openKycForm="openKycForm"
+      :getReadyPage="getReadyPage"
       @go-to-start="openStartPage"
+      @go-to-kyc-result="openKycResultPage"
+      @go-to-dashboard="openDashboard"
     />
-    <dashboard v-else-if="step === Step.Dashboard" />
+    <dashboard v-else-if="step === Step.Dashboard" @logout="logout" />
   </div>
 </template>
 
@@ -20,7 +21,7 @@ import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import { Components, PageNames } from '@/consts';
 import { goTo, lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
-import { KycStatus, VerificationStatus } from '@/types/card';
+import { KycStatus, UserInfo, VerificationStatus } from '@/types/card';
 
 import type { NavigationGuardNext, Route } from 'vue-router';
 
@@ -44,6 +45,7 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
 
   @state.soraCard.hasFreeAttempts private hasFreeAttempts!: boolean;
   @state.soraCard.wantsToPassKycAgain private wantsToPassKycAgain!: boolean;
+  @state.soraCard.userInfo userInfo!: UserInfo;
 
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
   @getter.settings.soraCardEnabled soraCardEnabled!: Nullable<boolean>;
@@ -52,13 +54,13 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
   @mutation.soraCard.setVerificationStatus private setVerificationStatus!: (verStatus: VerificationStatus) => void;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
+  @action.soraCard.getUserIban private getUserIban!: AsyncFnWithoutArgs;
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
   @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncFnWithoutArgs;
   @action.wallet.account.loginAccount private loginAccount!: (payload: WALLET_TYPES.PolkadotJsAccount) => Promise<void>;
 
   step: Nullable<Step> = null;
-  userApplied = false;
-  openKycForm = false;
+  getReadyPage = false;
   isRedirectFromFearless = true;
 
   @Watch('soraCardEnabled', { immediate: true })
@@ -66,22 +68,6 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
     if (value === false) {
       goTo(PageNames.Swap);
     }
-  }
-
-  confirmApply(userApplied: boolean): void {
-    this.userApplied = userApplied;
-    this.step = Step.KYC;
-  }
-
-  openStartPage(withoutCheck: boolean): void {
-    if (withoutCheck) {
-      this.setKycStatus(KycStatus.Completed);
-      this.setVerificationStatus(VerificationStatus.Pending);
-      this.step = Step.ConfirmationInfo;
-      return;
-    }
-
-    this.checkKyc();
   }
 
   get hasTokens(): boolean {
@@ -93,23 +79,49 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
     return !!accessToken && !!refreshToken;
   }
 
+  openKycPage(openGetReadyPage = false): void {
+    this.getReadyPage = openGetReadyPage;
+    this.step = Step.KYC;
+  }
+
+  openStartPage(): void {
+    this.step = Step.StartPage;
+  }
+
+  openKycResultPage(): void {
+    this.step = Step.ConfirmationInfo;
+  }
+
+  openDashboard(): void {
+    this.step = Step.Dashboard;
+  }
+
+  logout(): void {
+    this.openStartPage();
+  }
+
   async checkKyc(): Promise<void> {
     await this.getUserStatus();
 
     if (this.currentStatus === VerificationStatus.Rejected && this.wantsToPassKycAgain && this.hasFreeAttempts) {
-      this.openKycForm = true;
+      this.getReadyPage = true;
       this.step = Step.KYC;
       return;
     }
 
-    if (this.currentStatus) {
+    if (this.currentStatus === VerificationStatus.Accepted) {
+      await this.getUserIban();
+
+      if (this.userInfo.iban) {
+        this.step = Step.Dashboard;
+        return;
+      } else {
+        this.step = Step.ConfirmationInfo;
+      }
+    }
+
+    if ([VerificationStatus.Pending, VerificationStatus.Rejected].includes(this.currentStatus)) {
       this.step = Step.ConfirmationInfo;
-      return;
-    }
-
-    if (this.hasTokens) {
-      this.openKycForm = true;
-      this.step = Step.KYC;
       return;
     }
 
@@ -147,8 +159,7 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
   }
 
   mounted(): void {
-    // this.checkKyc();
-    this.step = Step.Dashboard;
+    this.checkKyc();
   }
 }
 </script>
@@ -163,7 +174,7 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
 
   span.text {
     font-variation-settings: 'wght' 700 !important;
-    font-size: 19px;
+    font-size: 18px;
   }
 }
 </style>
