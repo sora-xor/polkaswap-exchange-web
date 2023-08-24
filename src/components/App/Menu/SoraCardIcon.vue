@@ -1,0 +1,16 @@
+<template>
+  <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M0 5C0 2.79086 1.79086 1 4 1H20C22.2091 1 24 2.79086 24 5V6.25H0V5ZM24 10.25V7.75H0V10.25H24ZM24 11.75H0V19C0 21.2091 1.79086 23 4 23H20C22.2091 23 24 21.2091 24 19V11.75ZM6 16.25C5.58579 16.25 5.25 16.5858 5.25 17C5.25 17.4142 5.58579 17.75 6 17.75H8C8.41421 17.75 8.75 17.4142 8.75 17C8.75 16.5858 8.41421 16.25 8 16.25H6Z"
+    />
+  </svg>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component
+export default class SoraCardIcon extends Vue {}
+</script>

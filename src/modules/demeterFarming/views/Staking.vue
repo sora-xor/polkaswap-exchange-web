@@ -176,7 +176,7 @@ $title-height: 42px;
 
 .staking-info-badges {
   flex-flow: wrap;
-  gap: $inner-spacing-mini / 2;
+  gap: $inner-spacing-tiny;
 }
 
 .staking-info {

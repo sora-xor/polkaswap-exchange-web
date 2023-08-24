@@ -690,20 +690,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: $inner-spacing-medium $inner-spacing-medium $inner-spacing-big;
-  }
-  .bridge-item {
-    &--evm {
-      .s-input {
-        .el-input > input {
-          // TODO: remove user select
-          cursor: initial;
-        }
-      }
-    }
-    > .el-card__body {
-      padding: 0;
-    }
   }
 
   &-form {
