@@ -93,13 +93,8 @@ const getters = defineGetters<BridgeState>()({
   // fee for transaction execution
   externalNetworkFee(...args): CodecString {
     const { state, getters } = bridgeGetterContext(args);
-
-    if (getters.isEthBridge) {
-      return state.externalNetworkFee;
-    } else {
-      // In direction SORA -> EVM evm network fee is 0
-      return !state.isSoraToEvm ? state.externalNetworkFee : ZeroStringValue;
-    }
+    // [TODO]: remove this getter
+    return state.externalNetworkFee;
   },
   history(...args): Record<string, IBridgeTransaction> {
     const { state } = bridgeGetterContext(args);

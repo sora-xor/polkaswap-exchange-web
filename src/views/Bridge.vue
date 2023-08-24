@@ -89,12 +89,15 @@
           </div>
           <template #bottom>
             <div class="input-line input-line--footer">
-              <formatted-amount
-                v-if="asset && isSoraToEvm"
-                is-fiat-value
-                :value="getFiatAmountByString(amountSend, asset)"
-              />
-              <token-address v-if="isAssetSelected" v-bind="asset" :external="!isSoraToEvm" class="input-value" />
+              <template v-if="isAssetSelected">
+                <formatted-amount v-if="isSoraToEvm" is-fiat-value :value="getFiatAmountByString(amountSend, asset)" />
+                <token-address
+                  v-if="isSoraToEvm || asset.externalAddress"
+                  v-bind="asset"
+                  :external="!isSoraToEvm"
+                  class="input-value"
+                />
+              </template>
             </div>
             <div v-if="sender" class="bridge-item-footer">
               <s-divider type="tertiary" />
@@ -165,12 +168,19 @@
           </div>
           <template #bottom>
             <div class="input-line input-line--footer">
-              <formatted-amount
-                v-if="asset && !isSoraToEvm"
-                :value="getFiatAmountByString(amountReceived, asset)"
-                is-fiat-value
-              />
-              <token-address v-if="isAssetSelected" v-bind="asset" :external="isSoraToEvm" class="input-value" />
+              <template v-if="isAssetSelected">
+                <formatted-amount
+                  v-if="!isSoraToEvm"
+                  :value="getFiatAmountByString(amountReceived, asset)"
+                  is-fiat-value
+                />
+                <token-address
+                  v-if="!isSoraToEvm || asset.externalAddress"
+                  v-bind="asset"
+                  :external="isSoraToEvm"
+                  class="input-value"
+                />
+              </template>
             </div>
             <div v-if="recipient" class="bridge-item-footer">
               <s-divider type="tertiary" />
@@ -427,6 +437,7 @@ export default class Bridge extends Mixins(
     if (!(this.asset && this.isRegisteredAsset)) return ZeroStringValue;
 
     const fee = this.isSoraToEvm ? this.soraNetworkFee : this.externalNetworkFee;
+    // [TODO]: check for ROC
     const maxBalance = getMaxValue(this.asset, fee, !this.isSoraToEvm);
 
     if (this.assetLockedBalance && this.isSoraToEvm) {

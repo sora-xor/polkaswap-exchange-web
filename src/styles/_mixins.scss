@@ -67,7 +67,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     &--footer {
       margin-top: $inner-spacing-tiny;
       margin-bottom: 0;
-      min-height: $inner-spacing-mini * 2.25;
+      min-height: $inner-spacing-mini * 2.625; // 21px
 
       .formatted-amount--fiat-value {
         flex-grow: 1;
