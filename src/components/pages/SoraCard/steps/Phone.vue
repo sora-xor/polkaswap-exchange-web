@@ -175,10 +175,6 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
     return this.t('card.sendCodeBtn');
   }
 
-  get isMainnet(): boolean {
-    return this.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod;
-  }
-
   get isPhoneNumberValid(): boolean {
     const code = this.countryCode.replace('+', '');
     return !!(+code && this.phoneNumber && `${code}${this.phoneNumber}`.length >= MIN_PHONE_LENGTH_WITH_CODE);
@@ -194,7 +190,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
 
   get phoneInputDescription(): string {
     if (this.smsSent) {
-      return this.isMainnet ? this.t('card.phoneInputAfterSendDesc') : 'Your code for testing purposes: 123456';
+      return this.t('card.phoneInputAfterSendDesc');
     }
     return this.t('card.phoneInputBeforeSendDesc');
   }

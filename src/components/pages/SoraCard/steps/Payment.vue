@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
@@ -61,6 +61,13 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
   showPaywingsDialog = false;
 
   WALLET_CONSTS = WALLET_CONSTS;
+
+  @Watch('isEuroBalanceEnough', { immediate: true })
+  private handleXorDeposit(isEnough: boolean): void {
+    if (isEnough) {
+      this.$emit('confirm');
+    }
+  }
 
   readonly buyOptions: Array<BuyButton> = [
     { type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' },

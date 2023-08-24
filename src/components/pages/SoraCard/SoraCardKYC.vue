@@ -109,40 +109,40 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
   }
 
   confirmPayment(): void {
-    this.step = KycProcess.KycView;
+    this.step = KycProcess.RoadMap;
   }
 
   confirmPhone(state: CardUIViews): void {
+    switch (state) {
+      case CardUIViews.Payment:
+        this.step = KycProcess.Payment;
+        break;
+      case CardUIViews.Kyc:
+        this.step = KycProcess.RoadMap;
+        break;
+      case CardUIViews.Email:
+        this.step = KycProcess.Email;
+        break;
+      case CardUIViews.KycResult:
+        this.$emit('go-to-kyc-result');
+        break;
+      case CardUIViews.Start:
+        this.$emit('go-to-start');
+        break;
+      case CardUIViews.Dashboard:
+        this.$emit('go-to-dashboard');
+        break;
+    }
+  }
+
+  confirmEmail(state: CardUIViews): void {
     if (state === CardUIViews.Payment) {
       this.step = KycProcess.Payment;
-      return;
     }
 
     if (state === CardUIViews.Kyc) {
       this.step = KycProcess.RoadMap;
-      return;
     }
-
-    if (state === CardUIViews.Email) {
-      this.step = KycProcess.Email;
-      return;
-    }
-
-    if (state === CardUIViews.KycResult) {
-      this.$emit('go-to-kyc-result');
-    }
-
-    if (state === CardUIViews.Start) {
-      this.$emit('go-to-start');
-    }
-
-    if (state === CardUIViews.Dashboard) {
-      this.$emit('go-to-dashboard');
-    }
-  }
-
-  confirmEmail(): void {
-    this.step = KycProcess.Payment;
   }
 
   confirmReadiness(): void {
