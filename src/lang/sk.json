@@ -92,7 +92,7 @@
     },
     "connection": {
         "title": "Sieťový účet {Sora}",
-        "text": "Rozšírenia a Google bezpečne ukladajú váš účet siete {Sora} . Umožňujú vám podpisovať transakcie a spravovať aktíva.",
+        "text": "Ak chcete spravovať aktíva a podpisovať transakcie na {Sora}, musí byť pripojený účet. Účty {Sora} je možné vytvoriť a prepojiť pomocou našich integrovaných peňaženiek alebo rozšírení prehliadača.",
         "noAccounts": "Vo vašom rozšírení prehliadača {extension} nebol nájdený žiadny účet. Pridajte účet a skúste to znova.",
         "selectAccount": "Vyberte účet, s ktorým chcete pracovať",
         "action": {
@@ -107,10 +107,10 @@
             "connected": "Pripojené",
             "notConnected": "Nepripojený"
         },
-        "internalTitle": "Pripojiť cez {wallet}",
-        "internalText": "Existujúci účet môžete vytvoriť alebo prepojiť prostredníctvom služby {wallet} . Ukladá účty pomocou šifrovania.",
+        "internalTitle": "Spojte sa s {wallet}",
+        "internalText": "Môžete si vytvoriť alebo importovať existujúci účet {Sora} a spojiť sa so svojím účtom {wallet}. Všetky údaje uložené v službe {wallet} sú šifrované pomocou vstavaného pokročilého šifrovania.",
         "list": {
-            "simplest": "Najjednoduchšia možnosť",
+            "integrated": "Integrovaný",
             "extensions": "Rozšírenia"
         }
     },
@@ -1053,8 +1053,8 @@
             "importAccount": "Importovať účet"
         },
         "heading": {
-            "seedPhraseTitle": "Semená fráza",
-            "confirmSeedTitle": "Potvrďte počiatočnú frázu",
+            "seedPhraseTitle": "Prístupová fráza",
+            "confirmSeedTitle": "Potvrďte prístupovú frázu",
             "accountDetailsTitle": "Podrobnosti o účte",
             "importTitle": "Importovať účet"
         },
@@ -1065,12 +1065,12 @@
             "importAccount": "Importovať účet"
         },
         "accountName": {
-            "placeholder": "Názov peňaženky",
-            "desc": "Toto je názov vašej peňaženky, ktorý sa vám zobrazí"
+            "placeholder": "Názov účtu",
+            "desc": "Toto je názov vášho účtu. Bude viditeľný iba pre vás v {Polkaswap}."
         },
         "password": {
             "placeholder": "Heslo",
-            "desc": "Pre správnu ochranu sa uistite, že používate silné heslo"
+            "desc": "Uistite sa, že používate silné jedinečné heslo na správnu ochranu (minimálne 8 znakov)"
         },
         "confirmPassword": {
             "placeholder": "Potvrďte heslo"
@@ -1078,11 +1078,11 @@
         "accountMnemonic": {
             "placeholder": "Mnemotechnická fráza"
         },
-        "seedAdviceText": "Toto je tajný základ vášho účtu. Uistite sa, že ste ho uložili na iný ako digitálny nosič, napríklad na papier",
-        "confirmSeedText": "Heslo potvrďte výberom slov v správnom poradí",
-        "errorMnemonicText": "Nesprávne poradie počiatočných fráz",
-        "exportOptionText": "Exportujte súbor účtu .json",
-        "exportJsonText": "Vždy budete mať prístup k svojmu účtu importovaním tohto súboru .json. Nezdieľajte to s nikým!",
+        "seedAdviceText": "12-slovná prístupová fráza je súkromný kľúč na opätovné získanie prístupu k vášmu účtu {Sora} v prípade, že stratíte prístup k účtu {wallet}. Uložte ho bezpečne v presnom poradí, v akom je uvedené vyššie.",
+        "confirmSeedText": "Potvrďte prístupovú frázu kliknutím na slová v správnom poradí",
+        "errorMnemonicText": "Nesprávne poradie prístupovej frázy",
+        "exportOptionText": "Exportujte súbor {JSON} na obnovenie účtu",
+        "exportJsonText": "Vždy budete môcť obnoviť svoj účet importovaním tohto súboru {JSON}. Nezdieľajte to s nikým! Uložte ho bezpečne, najlepšie zašifrovaný.",
         "addAccount": "Pridajte účet",
         "dialog": {
             "confirmTitle": "Potvrďte heslom",
@@ -1101,16 +1101,20 @@
         "assetsAtRiskText": "Majetok v ohrození!",
         "deleteAccountText": "Účet nie je možné obnoviť bez počiatočnej frázy, súboru .json alebo ak je uložený v nejakej prípone. Budete odhlásení.",
         "importSteps": {
-            "selectWallet": "Prejdite do peňaženky, ktorú používate",
+            "selectWallet": "Otvorte peňaženku s existujúcim účtom (účtami)",
             "selectAccount": "Vyberte účet, ktorý chcete exportovať",
             "exportAccount": "Exportujte súbor {JSON}"
         },
-        "exportTutorialsText": "Exportujte návody"
+        "exportTutorialsText": "Exportujte návody",
+        "seedAdviceAdditionTitle": "Nikdy s nikým nezdieľajte svoju prístupovú frázu!",
+        "seedAdviceAdditionText": "Ak vás niekto požiada o vašu prístupovú frázu, s najväčšou pravdepodobnosťou sa vás pokúša oklamať a ukradnúť váš majetok!"
     },
     "hashiBridgeText": "Most {Hashi}",
     "disclaimerTitle": "Vylúčenie zodpovednosti",
     "explore": {
-        "showOnlyMyPositions": "Zobraziť iba moje pozície"
+        "showOnly": "Zobraziť iba {entities}",
+        "myPositions": "moje pozície",
+        "synthetics": "syntetické žetóny"
     },
     "tooltips": {
         "roi": "{ROI} znamená návratnosť investícií. Vypočítava sa vydelením zisku získaného z investície nákladmi na túto investíciu v percentuálnom ekvivalente.",
@@ -1178,7 +1182,7 @@
     "acceptText": "Prijať a skryť",
     "newAccountsText": "Nové účty",
     "dragAndDropText": "Presuňte myšou alebo vyberte súbor {extension}",
-    "copyPhraseText": "Kopírovať frázu",
+    "copyPhraseText": "Kopírovať heslovú frázu",
     "stepText": "Krok",
     "alerts": {
         "drop": "Kvapky nižšie",
@@ -1216,7 +1220,7 @@
     },
     "acceptOnScrollText": "Posuňte sa na prijatie",
     "addressBook": {
-        "myExtAccounts": "Moje účty rozšírenia",
+        "myAccounts": "Moje účty",
         "myBook": "Moja kniha",
         "searchPlaceholder": "Hľadajte podľa adresy, mena alebo identity",
         "noFoundRecords": "Nenašli sa žiadne záznamy",

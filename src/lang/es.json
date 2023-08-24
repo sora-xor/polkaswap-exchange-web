@@ -92,7 +92,7 @@
     },
     "connection": {
         "title": "Cuenta de la Red {Sora}",
-        "text": "Extensions y Google almacenan su cuenta de {Sora} Network de forma segura. Le permiten firmar transacciones y administrar activos.",
+        "text": "Para administrar activos y firmar transacciones en {Sora}, se debe conectar una cuenta. Las cuentas {Sora} se pueden crear y conectar utilizando nuestras carteras integradas o extensiones de navegador.",
         "noAccounts": "No se ha encontrado ninguna cuenta en su extensión de navegador {extension}. Por favor añade una cuenta e inténtalo de nuevo.",
         "selectAccount": "Seleccione la cuenta con la que desea trabajar",
         "action": {
@@ -107,10 +107,10 @@
             "connected": "Conectado",
             "notConnected": "No conectado"
         },
-        "internalTitle": "Conéctese a través de {wallet}",
-        "internalText": "Puede crear o vincular una cuenta existente a través de {wallet} . Almacena cuentas usando encriptación.",
+        "internalTitle": "Conectar con {wallet}",
+        "internalText": "Puede crear o importar una cuenta {Sora} existente para conectarse con su cuenta {wallet}. Todos los datos almacenados por {wallet} se cifran mediante el cifrado avanzado incorporado.",
         "list": {
-            "simplest": "opción más simple",
+            "integrated": "Integrado",
             "extensions": "Extensiones"
         }
     },
@@ -1053,8 +1053,8 @@
             "importAccount": "Importar Cuenta"
         },
         "heading": {
-            "seedPhraseTitle": "Frase semilla",
-            "confirmSeedTitle": "Confirmar frase inicial",
+            "seedPhraseTitle": "Frase de contraseña",
+            "confirmSeedTitle": "Confirmar frase de contraseña",
             "accountDetailsTitle": "Detalles de la cuenta",
             "importTitle": "Importar cuenta"
         },
@@ -1065,12 +1065,12 @@
             "importAccount": "Importar cuenta"
         },
         "accountName": {
-            "placeholder": "Nombre de la billetera",
-            "desc": "Este es el nombre de su billetera que será visible para usted"
+            "placeholder": "Nombre de la cuenta",
+            "desc": "Este es el nombre de su cuenta. Solo será visible para ti en {Polkaswap}."
         },
         "password": {
             "placeholder": "Contraseña",
-            "desc": "Asegúrese de utilizar una contraseña segura para una protección adecuada"
+            "desc": "Asegúrese de utilizar una contraseña única y segura para una protección adecuada (8 caracteres como mínimo)"
         },
         "confirmPassword": {
             "placeholder": "Confirmar contraseña"
@@ -1078,11 +1078,11 @@
         "accountMnemonic": {
             "placeholder": "Frase mnemónica"
         },
-        "seedAdviceText": "Esta es una semilla secreta de su cuenta. Asegúrese de almacenarla en un soporte no digital, por ejemplo - papel",
-        "confirmSeedText": "Confirme la frase semilla haciendo clic en las palabras en el orden correcto",
-        "errorMnemonicText": "Orden incorrecto de la frase semilla",
-        "exportOptionText": "Exportar archivo de cuenta .json",
-        "exportJsonText": "Siempre podrá acceder a su cuenta importando ese archivo .json. ¡No lo comparta con nadie!",
+        "seedAdviceText": "La frase de contraseña de 12 palabras es una clave privada para recuperar el acceso a su cuenta de {Sora} en caso de que pierda el acceso a su cuenta {wallet}. Guárdelo de forma segura en el orden exacto en que aparece arriba.",
+        "confirmSeedText": "Confirme la frase de contraseña haciendo clic en las palabras en el orden correcto",
+        "errorMnemonicText": "Orden de frase de contraseña incorrecto",
+        "exportOptionText": "Exportar archivo {JSON} para restaurar la cuenta",
+        "exportJsonText": "Siempre podrá restaurar su cuenta importando este archivo {JSON}. ¡No lo compartas con nadie! Guárdelo de forma segura, preferiblemente encriptada.",
         "addAccount": "Agregar una cuenta",
         "dialog": {
             "confirmTitle": "Confirmar con contraseña",
@@ -1101,16 +1101,20 @@
         "assetsAtRiskText": "¡Activos en riesgo!",
         "deleteAccountText": "La cuenta no se puede recuperar sin una frase inicial, un archivo .json o si está almacenada en alguna extensión. Serás desconectado.",
         "importSteps": {
-            "selectWallet": "Ir a la billetera de su uso",
+            "selectWallet": "Abra la billetera con su(s) cuenta(s) existente(s)",
             "selectAccount": "Seleccione la cuenta que desea exportar",
             "exportAccount": "Exportar el archivo {JSON}"
         },
-        "exportTutorialsText": "Tutoriales de exportación"
+        "exportTutorialsText": "Tutoriales de exportación",
+        "seedAdviceAdditionTitle": "¡Nunca comparta su contraseña con nadie!",
+        "seedAdviceAdditionText": "Si alguien le pide su frase de contraseña, lo más probable es que esté tratando de estafarlo y robar sus activos."
     },
     "hashiBridgeText": "Puente {Hashi}",
     "disclaimerTitle": "Aviso legal",
     "explore": {
-        "showOnlyMyPositions": "Mostrar solo mis posiciones"
+        "showOnly": "Mostrar solo {entities}",
+        "myPositions": "mis posiciones",
+        "synthetics": "tokens sintéticos"
     },
     "tooltips": {
         "roi": "{ROI} significa Retorno de la Inversión. Se calcula dividiendo la ganancia obtenida en una inversión por el costo de esa inversión en un porcentaje equivalente.",
@@ -1178,7 +1182,7 @@
     "acceptText": "Aceptar y ocultar",
     "newAccountsText": "Nuevas cuentas",
     "dragAndDropText": "Arrastrar y soltar o elegir el archivo {extension}",
-    "copyPhraseText": "Copiar frase",
+    "copyPhraseText": "Copiar Frase de Contraseña",
     "stepText": "Paso",
     "alerts": {
         "drop": "Cae por debajo",
@@ -1216,7 +1220,7 @@
     },
     "acceptOnScrollText": "Desplácese para aceptar",
     "addressBook": {
-        "myExtAccounts": "Mis cuentas de extensión",
+        "myAccounts": "Mis cuentas",
         "myBook": "Mi libro",
         "searchPlaceholder": "Buscar por dirección, nombre o identidad",
         "noFoundRecords": "No se encontraron registros",

@@ -1,17 +1,11 @@
 <template>
   <div>
-    <div class="switcher" v-if="false /* TODO: [SYNTHS] */">
-      <s-switch v-model="showOnlySynths" />
-      <span>{{ 'Show only synthetic tokens' }}</span>
-      <s-tooltip
-        class="switcher-tooltip"
-        popper-class="info-tooltip"
-        border-radius="mini"
-        :content="'Here will be content'"
-        tabindex="-1"
-      >
-        <s-icon name="info-16" size="18px" />
-      </s-tooltip>
+    <div class="switcher">
+      <s-switch v-model="isSynthsOnly" />
+      <span>
+        {{ t('explore.showOnly') }}
+        <external-link default-class="p3" :title="t('explore.synthetics')" :href="SYNTHS_LINK" />
+      </span>
     </div>
     <s-table
       ref="table"
@@ -192,6 +186,7 @@ import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
 import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
 import { syntheticAssetRegexp } from '@/utils/regexp';
+import storage from '@/utils/storage';
 
 import type { AmountWithSuffix } from '../../types/formats';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
@@ -234,6 +229,8 @@ type TableItem = {
   velocity: number;
   velocityFormatted: string;
 } & Asset;
+
+const storageKey = 'exploreSyntheticTokens';
 
 const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
   query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
@@ -290,6 +287,7 @@ const parse = (item: AssetData): Record<string, TokenData> => {
 
 @Component({
   components: {
+    ExternalLink: lazyComponent(Components.ExternalLink),
     PriceChange: lazyComponent(Components.PriceChange),
     SortButton: lazyComponent(Components.SortButton),
     TokenAddress: components.TokenAddress,
@@ -299,11 +297,23 @@ const parse = (item: AssetData): Record<string, TokenData> => {
   },
 })
 export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
-  readonly DAY = 60 * 60 * 24;
+  private readonly DAY = 60 * 60 * 24;
+  readonly SYNTHS_LINK =
+    'https://medium.com/polkaswap/unveiling-synthetic-assets-a-game-changer-in-the-financial-landscape-1720e5858422';
 
   @getter.assets.whitelistAssets private items!: Array<Asset>;
 
-  showOnlySynths = false;
+  private isSynths = storage.get(storageKey as any) ? JSON.parse(storage.get(storageKey as any)) : false;
+
+  get isSynthsOnly(): boolean {
+    return this.isSynths;
+  }
+
+  set isSynthsOnly(value: boolean) {
+    storage.set(storageKey as any, value); // TODO: Update StorageKey
+    this.isSynths = value;
+  }
+
   tokensData: Record<string, TokenData> = {};
   // override ExplorePageMixin
   order = SortDirection.DESC;
@@ -320,7 +330,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
         const asset = this.getAsset(address);
 
         if (!asset) return buffer;
-        if (this.showOnlySynths && !this.isSynthetic(asset.address)) return buffer;
+        if (this.isSynthsOnly && !this.isSynthetic(asset.address)) return buffer;
 
         const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? 0);
         const fpPriceDay = tokenData?.startPriceDay ?? FPNumber.ZERO;

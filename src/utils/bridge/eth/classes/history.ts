@@ -13,13 +13,15 @@ import last from 'lodash/fp/last';
 
 import { ZeroStringValue } from '@/consts';
 import { SmartContracts, SmartContractType, KnownEthBridgeAsset } from '@/consts/evm';
+import { rootActionContext } from '@/store';
 import type { EthBridgeContractsAddresses } from '@/store/web3/types';
 import { getEvmTransactionRecieptByHash, isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { ActionContext } from 'vuex';
 
 const BRIDGE_INTERFACE = new ethers.utils.Interface([
   ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.XOR].abi, // XOR or VAL
@@ -268,9 +270,9 @@ export class EthBridgeHistory {
 
   public async updateAccountHistory(
     address: string,
-    assets: Record<string, Asset>,
     networkFees: NetworkFeesObject,
     inProgressIds: Record<string, boolean>,
+    assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>,
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
     const historyElements = await this.fetchHistoryElements(address, this.historySyncTimestamp);
@@ -299,7 +301,8 @@ export class EthBridgeHistory {
       if (hasFinishedState(localHistoryItem)) continue;
 
       const hash = await getSoraHash(isOutgoing, requestHash);
-      const symbol = assets[assetAddress]?.symbol;
+      const asset = assetDataByAddress(assetAddress);
+      const symbol = asset?.symbol;
       const soraNetworkFee = getSoraNetworkFee(isOutgoing, networkFees);
       const soraTimestamp = historyElement.timestamp * 1000;
       const soraPartCompleted = await isSoraPartCompleted(isOutgoing, hash);
@@ -354,3 +357,62 @@ export class EthBridgeHistory {
     this.historySyncTimestamp = historySyncTimestampUpdated;
   }
 }
+
+/**
+ * Restore ETH bridge account transactions, using Subquery & Etherscan
+ * @param context store context
+ */
+export const updateEthBridgeHistory =
+  (context: ActionContext<any, any>) =>
+  async (clearHistory = false, updateCallback?: VoidFunction): Promise<void> => {
+    try {
+      const { rootState, rootGetters } = rootActionContext(context);
+
+      const {
+        wallet: {
+          account: { address },
+          settings: {
+            apiKeys: { etherscan: etherscanApiKey },
+            networkFees,
+          },
+        },
+        web3: { ethBridgeEvmNetwork, ethBridgeContractAddress },
+        bridge: { inProgressIds },
+      } = rootState;
+
+      const networkData = rootGetters.web3.availableNetworks[BridgeNetworkType.EvmLegacy][ethBridgeEvmNetwork];
+
+      if (!networkData) {
+        throw new Error(
+          `[HASHI Bridge History]: Network "${ethBridgeEvmNetwork}" is not available in app. Please check app config`
+        );
+      }
+
+      await ethersUtil.switchOrAddChain(networkData.data);
+
+      if ((await ethersUtil.getEvmNetworkId()) !== ethBridgeEvmNetwork) {
+        throw new Error(
+          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.evmNetworkProvided}" is connected, "${ethBridgeEvmNetwork}" expected`
+        );
+      }
+
+      const assetDataByAddress = rootGetters.assets.assetDataByAddress;
+      const ethBridgeHistory = new EthBridgeHistory(etherscanApiKey);
+
+      await ethBridgeHistory.init(ethBridgeContractAddress);
+
+      if (clearHistory) {
+        await ethBridgeHistory.clearHistory(updateCallback);
+      }
+
+      await ethBridgeHistory.updateAccountHistory(
+        address,
+        networkFees,
+        inProgressIds,
+        assetDataByAddress,
+        updateCallback
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };

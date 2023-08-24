@@ -92,7 +92,7 @@
     },
     "connection": {
         "title": "Рачун мреже {Sora}",
-        "text": "Додаци и Google безбедно чувају ваш налог мреже {Sora} . Они вам омогућавају да потписујете трансакције и управљате имовином.",
+        "text": "Da biste upravljali sredstvima i potpisali transakcije na {Sora}, nalog mora biti povezan. {Sora} nalozi se mogu kreirati i povezati pomoću naših integrisanih novčanika ili proširenja pregledača.",
         "noAccounts": "Није пронађен ниједан рачун у екстензију прегледача {extension} . Додајте рачун и покушајте поново.",
         "selectAccount": "Изаберите рачун са којим ћете радити",
         "action": {
@@ -107,10 +107,10 @@
             "connected": "Повезан",
             "notConnected": "Није повезан"
         },
-        "internalTitle": "Повежите се преко {wallet}",
-        "internalText": "Можете да направите или повежете постојећи налог преко {wallet} . Чува налоге користећи шифровање.",
+        "internalTitle": "Повежите се са {wallet}",
+        "internalText": "Можете да креирате или увезете постојећи {Sora} налог да бисте се повезали са својим {wallet} налогом. Сви подаци које чува {wallet} су шифровани помоћу уграђене напредне енкрипције.",
         "list": {
-            "simplest": "Најједноставнија опција",
+            "integrated": "Integrisano",
             "extensions": "Екстензије"
         }
     },
@@ -1053,8 +1053,8 @@
             "importAccount": "Увези налог"
         },
         "heading": {
-            "seedPhraseTitle": "Семе фраза",
-            "confirmSeedTitle": "Потврдите почетну фразу",
+            "seedPhraseTitle": "Pristupna fraza",
+            "confirmSeedTitle": "Potvrda fraze za prolaz",
             "accountDetailsTitle": "детаљи о рачуну",
             "importTitle": "Увези налог"
         },
@@ -1065,12 +1065,12 @@
             "importAccount": "Увези налог"
         },
         "accountName": {
-            "placeholder": "Ime новчаника",
-            "desc": "Ово је назив вашег новчаника који ће вам бити видљив"
+            "placeholder": "Ime naloga",
+            "desc": "Ovo je ime vašeg naloga. Biće vidljiv samo vama u {Polkaswap}."
         },
         "password": {
             "placeholder": "Лозинка",
-            "desc": "Уверите се да користите јаку лозинку за одговарајућу заштиту"
+            "desc": "Uverite se da koristite jaku jedinstvenu lozinku za pravilnu zaštitu (minimum 8 znakova)"
         },
         "confirmPassword": {
             "placeholder": "Потврди лозинку"
@@ -1078,11 +1078,11 @@
         "accountMnemonic": {
             "placeholder": "Мнемоничка фраза"
         },
-        "seedAdviceText": "Ово је тајно семе вашег налога. Обавезно га чувајте на недигиталном носачу, на пример - папиру",
-        "confirmSeedText": "Потврдите seed фразу кликом на речи у исправном редоследу",
-        "errorMnemonicText": "Netačan redosled seed fraze",
-        "exportOptionText": "Извезите .јсон датотеку налога",
-        "exportJsonText": "Увек ћете моћи да приступите свом налогу тако што ћете увести ту .јсон датотеку. Не делите то ни са ким!",
+        "seedAdviceText": "Fraza za prolaz od 12 reči je privatni ključ za vraćanje pristupa nalogu {Sora} u slučaju da izgubite pristup {wallet} nalogu. Bezbedno ga uskladištite tačnim redosledom kojim se pojavljuje iznad.",
+        "confirmSeedText": "Potvrdite frazu za prolaz tako što ćete kliknuti na reči ispravnim redosledom",
+        "errorMnemonicText": "Netačan redosled fraza za prolaz",
+        "exportOptionText": "Izvezi {JSON} datoteku za obnavljanje naloga",
+        "exportJsonText": "Uvek ćete moći da vratite nalog u prethodno stanje uvozom ove {JSON} datoteke. Ne deli to ni sa kim! Uskladištite ga bezbedno, po mogućstvu šifrovano.",
         "addAccount": "Додајте налог",
         "dialog": {
             "confirmTitle": "Потврдите лозинком",
@@ -1101,16 +1101,20 @@
         "assetsAtRiskText": "Имовина у опасности!",
         "deleteAccountText": "Налог се не може опоравити без почетне фразе, .јсон датотеке или ако је сачуван у некој екстензији. Бићете одјављени.",
         "importSteps": {
-            "selectWallet": "Идите на новчаник који користите",
+            "selectWallet": "Otvaranje novčanika pomoću postojećih naloga",
             "selectAccount": "Изаберите налог који желите да извезете",
             "exportAccount": "Извезите {JSON} датотеку"
         },
-        "exportTutorialsText": "Извоз туторијала"
+        "exportTutorialsText": "Извоз туторијала",
+        "seedAdviceAdditionTitle": "Nikada ne delite svoju frazu za prolaz ni sa kim!",
+        "seedAdviceAdditionText": "Ako vam neko zatraži frazu za prolaz, najverovatnije pokušava da vas prevari i ukrade vam imovinu!"
     },
     "hashiBridgeText": "{Hashi} most",
     "disclaimerTitle": "Одрицање одговорности",
     "explore": {
-        "showOnlyMyPositions": "Prikaži samo moje pozicije"
+        "showOnly": "Prikaži samo {entities}",
+        "myPositions": "moje pozicije",
+        "synthetics": "sintetički tokeni"
     },
     "tooltips": {
         "roi": "{ROI} označava povraćaj investicije. Obračunava se deljenjem dobiti ostvarene na investiciji po trošku te investicije u procentualno ekvivalentnom iznosu.",
@@ -1178,7 +1182,7 @@
     "acceptText": "Прихвати и сакриј",
     "newAccountsText": "Нови налози",
     "dragAndDropText": "Превуците и отпустите или изаберите датотеку {extension}",
-    "copyPhraseText": "Копирај фразу",
+    "copyPhraseText": "Kopirajte lozinku frazu",
     "stepText": "Корак",
     "alerts": {
         "drop": "Пада испод",
@@ -1216,7 +1220,7 @@
     },
     "acceptOnScrollText": "Листајте да бисте прихватили",
     "addressBook": {
-        "myExtAccounts": "Моји налози за проширење",
+        "myAccounts": "Moji računi",
         "myBook": "Моја књига",
         "searchPlaceholder": "Претражујте по адреси, имену или идентитету",
         "noFoundRecords": "Није пронађен ниједан запис",

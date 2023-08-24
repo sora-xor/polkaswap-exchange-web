@@ -53,8 +53,8 @@ const mutations = defineMutations<SettingsState>()({
     storage.set('marketAlgorithm', value);
   },
   setChartsEnabled(state, value: boolean): void {
-    state.сhartsEnabled = value;
-    storage.set('сhartsEnabled', value);
+    state.chartsEnabled = value;
+    storage.set('сhartsEnabled', value); // TODO: replace Cyrillic character
   },
   setTransactionDeadline(state, value: number): void {
     state.transactionDeadline = value;
