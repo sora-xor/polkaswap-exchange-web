@@ -184,7 +184,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
-import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
+import { calcPriceChange, formatAmountWithSuffix, sortAssets } from '@/utils';
 import { syntheticAssetRegexp } from '@/utils/regexp';
 import storage from '@/utils/storage';
 
@@ -301,7 +301,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   readonly SYNTHS_LINK =
     'https://medium.com/polkaswap/unveiling-synthetic-assets-a-game-changer-in-the-financial-landscape-1720e5858422';
 
-  @getter.assets.whitelistAssets private items!: Array<Asset>;
+  @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
 
   private isSynths = storage.get(storageKey as any) ? JSON.parse(storage.get(storageKey as any)) : false;
 
@@ -323,14 +323,13 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     return Object.keys(this.tokensData).length !== 0;
   }
 
-  get preparedItems(): TableItem[] {
-    return this.items // TODO: [PW-1166] map fn is used here cuz whitelistAssets has default sorting
+  get items(): TableItem[] {
+    const items = this.whitelistAssets // TODO: [PW-1166] map fn is used here cuz whitelistAssets has default sorting
       .map<[string, TokenData]>(({ address }) => [address, this.tokensData[address]])
       .reduce<TableItem[]>((buffer, [address, tokenData]) => {
         const asset = this.getAsset(address);
 
         if (!asset) return buffer;
-        if (this.isSynthsOnly && !this.isSynthetic(asset.address)) return buffer;
 
         const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? 0);
         const fpPriceDay = tokenData?.startPriceDay ?? FPNumber.ZERO;
@@ -362,6 +361,14 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
         return buffer;
       }, []);
+
+    const defaultSorted = [...items].sort((a, b) => sortAssets(a, b));
+
+    return defaultSorted;
+  }
+
+  get preparedItems(): TableItem[] {
+    return this.isSynthsOnly ? this.items.filter((item) => this.isSynthetic(item.address)) : this.items;
   }
 
   isSynthetic(address: string): boolean {
@@ -381,7 +388,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     const now = Math.floor(Date.now() / (5 * 60_000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
     const dayTimestamp = now - this.DAY; // latest day snapshot (unix)
     const weekTimestamp = now - this.DAY * 7; // latest week snapshot (unix)
-    const ids = this.items.map((item) => item.address); // only whitelisted assets
+    const ids = this.whitelistAssets.map((item) => item.address); // only whitelisted assets
 
     const variables = { ids, dayTimestamp, weekTimestamp };
     const items = await SubqueryExplorerService.fetchAllEntities(AssetsQuery, variables, parse);
