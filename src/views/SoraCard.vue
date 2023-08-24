@@ -117,6 +117,7 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
         return;
       } else {
         this.step = Step.ConfirmationInfo;
+        return;
       }
     }
 

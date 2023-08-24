@@ -46,7 +46,8 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
-import { delay, waitForSoraNetworkFromEnv } from '@/utils';
+import { CardUIViews } from '@/types/card';
+import { waitForSoraNetworkFromEnv } from '@/utils';
 import { soraCard, getUpdatedJwtPair } from '@/utils/card';
 
 type WindowInjectedWeb3 = typeof window & {
@@ -99,7 +100,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
       console.error('[SoraCard]: Error while getting reference number', data);
 
       this.showAppNotification(this.t('card.infoMessageTryAgain'));
-      this.$emit('confirm-kyc', false);
+      this.$emit('confirm', CardUIViews.Start);
 
       ScriptLoader.unload(kycService.sdkURL, false);
     }
@@ -203,7 +204,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
             console.error('[SoraCard]: Error while initiating KYC', data);
 
             this.showAppNotification(this.t('card.infoMessageTryAgain'));
-            this.$emit('confirm-kyc', false);
+            this.$emit('confirm', CardUIViews.Start);
 
             ScriptLoader.unload(kycService.sdkURL);
 
@@ -218,7 +219,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
             if (this.source === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
               await (window as WindowInjectedWeb3).injectedWeb3?.['fearless-wallet']?.saveSoraCardToken?.(refreshToken);
             }
-            this.$emit('confirm-kyc', true);
+            this.$emit('confirm', CardUIViews.KycResult);
             ScriptLoader.unload(kycService.sdkURL);
 
             // document.getElementById('kyc')!.style.display = 'none';
@@ -261,6 +262,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
 
 .sora-card-kyc-view {
   height: 800px;
+  width: 400px;
 
   .el-scrollbar {
     height: 800px;

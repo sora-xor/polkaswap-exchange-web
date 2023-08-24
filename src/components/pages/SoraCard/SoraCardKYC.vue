@@ -12,7 +12,7 @@
     <email v-else-if="step === KycProcess.Email" @confirm="confirmEmail" />
     <payment v-else-if="step === KycProcess.Payment" @confirm="confirmPayment" />
     <road-map v-else-if="step === KycProcess.RoadMap" @confirm="confirmReadiness" />
-    <kyc-view v-else-if="step === KycProcess.KycView" @confirm-kyc="redirectToView" />
+    <kyc-view v-else-if="step === KycProcess.KycView" @confirm="confirmKyc" />
   </wallet-base>
 </template>
 
@@ -149,9 +149,13 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
     this.step = KycProcess.KycView;
   }
 
-  redirectToView(success: boolean): void {
-    // TODO: change
-    success ? this.$emit('go-to-start', success) : (this.step = KycProcess.RoadMap);
+  confirmKyc(state: CardUIViews): void {
+    if (state === CardUIViews.KycResult) {
+      this.$emit('go-to-kyc-result');
+      return;
+    }
+
+    this.$emit('go-to-start');
   }
 
   mounted(): void {
