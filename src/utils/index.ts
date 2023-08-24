@@ -18,7 +18,7 @@ import type { Route } from 'vue-router';
 
 type AssetWithBalance = AccountAsset | AccountLiquidity | RegisteredAccountAsset;
 
-type PoolAssets = { baseAsset: Asset; poolAsset: Asset };
+type PoolAssets<T extends Asset> = { baseAsset: T; poolAsset: T };
 
 export async function waitForSoraNetworkFromEnv(): Promise<WALLET_CONSTS.SoraNetwork> {
   return new Promise<WALLET_CONSTS.SoraNetwork>((resolve) => {
@@ -313,13 +313,13 @@ export const formatDecimalPlaces = (value: FPNumber | number, asPercent = false)
   return `${formatted}${postfix}`;
 };
 
-const sortAssetsByProp = (a: Asset, b: Asset, prop: 'address' | 'symbol' | 'name') => {
+const sortAssetsByProp = <T extends Asset>(a: T, b: T, prop: 'address' | 'symbol' | 'name') => {
   if (a[prop] < b[prop]) return -1;
   if (a[prop] > b[prop]) return 1;
   return 0;
 };
 
-export const sortAssets = (a: Asset, b: Asset) => {
+export const sortAssets = <T extends Asset>(a: T, b: T) => {
   const isNativeA = isNativeAsset(a);
   const isNativeB = isNativeAsset(b);
   // sort native assets by address
@@ -336,7 +336,7 @@ export const sortAssets = (a: Asset, b: Asset) => {
   return sortAssetsByProp(a, b, 'symbol');
 };
 
-export const sortPools = (a: PoolAssets, b: PoolAssets) => {
+export const sortPools = <T extends Asset>(a: PoolAssets<T>, b: PoolAssets<T>) => {
   const byBaseAsset = sortAssets(a.baseAsset, b.baseAsset);
 
   return byBaseAsset === 0 ? sortAssets(a.poolAsset, b.poolAsset) : byBaseAsset;
