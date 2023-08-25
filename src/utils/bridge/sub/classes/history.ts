@@ -100,6 +100,8 @@ class SubBridgeHistory {
 
         const historyItemData = await this.txDataToHistory(tx, networkFees, assetDataByAddress);
 
+        if (!historyItemData) continue;
+
         // update or create local history item
         if (localHistoryItem) {
           subBridgeApi.saveHistory({ ...localHistoryItem, ...historyItemData } as SubHistory);
@@ -119,55 +121,66 @@ class SubBridgeHistory {
     tx: BridgeTransactionData,
     networkFees: NetworkFeesObject,
     assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>
-  ): Promise<SubHistory> {
-    const id = tx.soraHash;
-    const asset = assetDataByAddress(tx.soraAssetAddress);
-    const amount = FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString();
-    const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
-    const type = getType(isOutgoing);
-    const [blockHeight, parachainBlockHeight] = getBlockHeights(isOutgoing, tx);
-    const soraNetworkFee = networkFees[type] ?? ZeroStringValue;
+  ): Promise<Nullable<SubHistory>> {
+    try {
+      const id = tx.soraHash;
+      const isOutgoing = tx.direction === BridgeTxDirection.Outgoing;
+      const [blockHeight, parachainBlockHeight] = getBlockHeights(isOutgoing, tx);
 
-    const history: SubHistory = {
-      id,
-      blockHeight,
-      type,
-      hash: id,
-      transactionState: tx.status,
-      parachainBlockHeight,
-      externalNetwork: this.externalNetwork,
-      externalNetworkType: BridgeNetworkType.Sub,
-      amount,
-      assetAddress: asset?.address,
-      symbol: asset?.symbol,
-      soraNetworkFee,
-      from: tx.soraAccount,
-    };
+      if (!parachainBlockHeight) {
+        console.info(`[${id}] SORA parachain block number is: ${parachainBlockHeight}, skip;`);
+        return null;
+      }
 
-    const [blockId, parachainBlockId] = await Promise.all([
-      getBlockHash(this.soraApi, blockHeight),
-      getBlockHash(this.parachainApi, parachainBlockHeight),
-    ]);
+      const asset = assetDataByAddress(tx.soraAssetAddress);
+      const amount = FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString();
+      const type = getType(isOutgoing);
+      const soraNetworkFee = networkFees[type] ?? ZeroStringValue;
 
-    history.blockId = blockId;
-    history.parachainBlockId = parachainBlockId;
+      const history: SubHistory = {
+        id,
+        blockHeight,
+        type,
+        hash: id,
+        transactionState: tx.status,
+        parachainBlockHeight,
+        externalNetwork: this.externalNetwork,
+        externalNetworkType: BridgeNetworkType.Sub,
+        amount,
+        assetAddress: asset?.address,
+        symbol: asset?.symbol,
+        soraNetworkFee,
+        from: tx.soraAccount,
+      };
 
-    const [txId, startTime, relayChainBlockNumber] = await Promise.all([
-      findUserTxIdInBlock(this.soraApi, blockId, id, 'RequestStatusUpdate', 'bridgeProxy'),
-      getBlockTimestamp(this.soraApi, blockId),
-      getRelayChainBlockNumber(this.parachainApi, parachainBlockId),
-    ]);
+      const [blockId, parachainBlockId] = await Promise.all([
+        getBlockHash(this.soraApi, blockHeight),
+        getBlockHash(this.parachainApi, parachainBlockHeight),
+      ]);
 
-    history.txId = txId;
-    history.startTime = history.endTime = startTime;
+      history.blockId = blockId;
+      history.parachainBlockId = parachainBlockId;
 
-    if (isOutgoing) {
-      await this.processOutgoingTxExternalData({ tx, parachainBlockId, relayChainBlockNumber, history, asset });
-    } else {
-      await this.processIncomingTxExternalData({ relayChainBlockNumber, history });
+      const [txId, startTime, relayChainBlockNumber] = await Promise.all([
+        findUserTxIdInBlock(this.soraApi, blockId, id, 'RequestStatusUpdate', 'bridgeProxy'),
+        getBlockTimestamp(this.soraApi, blockId),
+        getRelayChainBlockNumber(this.parachainApi, parachainBlockId),
+      ]);
+
+      history.txId = txId;
+      history.startTime = history.endTime = startTime;
+
+      if (isOutgoing) {
+        await this.processOutgoingTxExternalData({ tx, parachainBlockId, relayChainBlockNumber, history, asset });
+      } else {
+        await this.processIncomingTxExternalData({ relayChainBlockNumber, history });
+      }
+
+      return history;
+    } catch (error) {
+      console.error(error);
+      return null;
     }
-
-    return history;
   }
 
   private async processOutgoingTxExternalData({
