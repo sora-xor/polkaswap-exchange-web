@@ -39,7 +39,7 @@ const getters = defineGetters<BridgeState>()({
     if (!asset) return false;
     if (!(asset.address in registeredAssets)) return false;
 
-    // [TODO]: We don't have external address for substrate bridge yet
+    // We don't have asset external address for substrate bridge
     if (isSubBridge) return true;
 
     return !!asset?.externalAddress;
@@ -89,12 +89,6 @@ const getters = defineGetters<BridgeState>()({
   soraNetworkFee(...args): CodecString {
     const { getters, rootState } = bridgeGetterContext(args);
     return rootState.wallet.settings.networkFees[getters.operation] ?? ZeroStringValue;
-  },
-  // fee for transaction execution
-  externalNetworkFee(...args): CodecString {
-    const { state, getters } = bridgeGetterContext(args);
-    // [TODO]: remove this getter
-    return state.externalNetworkFee;
   },
   history(...args): Record<string, IBridgeTransaction> {
     const { state } = bridgeGetterContext(args);
