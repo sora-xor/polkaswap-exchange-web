@@ -103,16 +103,17 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
+import { sortPools } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 type LiquidityItem = AccountLiquidity & {
-  firstAsset?: Nullable<AccountAsset>;
+  firstAsset: AccountAsset;
   firstAssetSymbol?: string;
   firstBalanceFormatted?: string;
   firstBalanceFiat?: Nullable<string>;
-  secondAsset?: Nullable<AccountAsset>;
+  secondAsset: AccountAsset;
   secondAssetSymbol?: string;
   secondBalanceFormatted?: string;
   secondBalanceFiat?: Nullable<string>;
@@ -148,10 +149,10 @@ export default class Pool extends Mixins(
   activeCollapseItems: string[] = [];
 
   get accountLiquidityData() {
-    return this.accountLiquidity.map((liquidity) => {
-      const firstAsset = this.getAsset(liquidity.firstAddress);
+    const items = this.accountLiquidity.map((liquidity) => {
+      const firstAsset = this.getAsset(liquidity.firstAddress) as AccountAsset;
       const firstAssetSymbol = this.getAssetSymbol(firstAsset);
-      const secondAsset = this.getAsset(liquidity.secondAddress);
+      const secondAsset = this.getAsset(liquidity.secondAddress) as AccountAsset;
       const secondAssetSymbol = this.getAssetSymbol(secondAsset);
 
       return {
@@ -169,6 +170,15 @@ export default class Pool extends Mixins(
         title: this.getPairTitle(firstAssetSymbol, secondAssetSymbol),
       };
     });
+
+    const defaultSorted = [...items].sort((a, b) =>
+      sortPools(
+        { baseAsset: a.firstAsset, poolAsset: a.secondAsset },
+        { baseAsset: b.firstAsset, poolAsset: b.secondAsset }
+      )
+    );
+
+    return defaultSorted;
   }
 
   updateActiveCollapseItems(items: string[]) {
