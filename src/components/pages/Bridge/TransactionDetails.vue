@@ -14,7 +14,9 @@
       :value="externalNetworkFee"
       :asset-symbol="nativeTokenSymbol"
       is-formatted
-    />
+    >
+      <template #info-line-value-prefix><span class="info-line-value-prefix">~</span></template>
+    </info-line>
   </transaction-details>
 </template>
 

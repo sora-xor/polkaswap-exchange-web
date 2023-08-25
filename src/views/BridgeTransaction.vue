@@ -81,7 +81,7 @@
         :value="txExternalNetworkFeeFormatted"
         :asset-symbol="nativeTokenSymbol"
       >
-        <template v-if="txExternalNetworkFeeFormatted" #info-line-value-prefix>
+        <template v-if="!txHasExternalNetworkFee" #info-line-value-prefix>
           <span class="info-line-value-prefix">~</span>
         </template>
       </info-line>
@@ -313,6 +313,10 @@ export default class BridgeTransaction extends Mixins(
 
   get txSoraNetworkFeeFiatValue(): Nullable<string> {
     return this.getFiatAmountByCodecString(this.txSoraNetworkFee);
+  }
+
+  get txHasExternalNetworkFee(): boolean {
+    return !!this.historyItem?.externalNetworkFee;
   }
 
   get txExternalNetworkFee(): CodecString {

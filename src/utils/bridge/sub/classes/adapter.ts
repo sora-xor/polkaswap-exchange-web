@@ -101,10 +101,11 @@ export class SubAdapter {
 
   /* [Substrate 5] Runtime call transactionPaymentApi */
   public async getNetworkFee(): Promise<CodecString> {
+    const decimals = this.api.registry.chainDecimals[0];
     const tx = this.getTransferExtrinsic({} as RegisteredAsset, '', ZeroStringValue);
     const res = await tx.paymentInfo('');
 
-    return new FPNumber(res.partialFee, 12).toCodecString();
+    return new FPNumber(res.partialFee, decimals).toCodecString();
   }
 }
 
