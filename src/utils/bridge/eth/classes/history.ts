@@ -7,7 +7,7 @@ import {
   SUBQUERY_TYPES,
   WALLET_CONSTS,
 } from '@soramitsu/soraneo-wallet-web';
-import { ethers, EtherscanProvider, Networkish, BlockTag } from 'ethers';
+import { ethers, EtherscanProvider, BlockTag } from 'ethers';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 
