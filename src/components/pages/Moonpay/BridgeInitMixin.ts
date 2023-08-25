@@ -136,6 +136,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         );
       }
 
+      const isExternalNative = ethersUtil.isNativeEvmTokenAddress(registeredAsset.address);
       const externalBalance = await ethersUtil.getAccountAssetBalance(ethTransferData.to, registeredAsset.address);
       const evmNetworkFee: CodecString = await ethersUtil.getEvmNetworkFee(
         registeredAsset.address,
@@ -156,7 +157,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         externalAddress: registeredAsset.address,
         externalDecimals: registeredAsset.decimals,
       };
-      const maxAmount = getMaxValue(accountAsset, evmNetworkFee, true); // max balance (minus fee if eth asset)
+      const maxAmount = getMaxValue(accountAsset, evmNetworkFee, { isExternalBalance: true, isExternalNative }); // max balance (minus fee if eth asset)
       const amount = Math.min(Number(maxAmount), Number(ethTransferData.amount));
 
       if (amount <= 0) {

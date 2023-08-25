@@ -437,8 +437,10 @@ export default class Bridge extends Mixins(
     if (!(this.asset && this.isRegisteredAsset)) return ZeroStringValue;
 
     const fee = this.isSoraToEvm ? this.soraNetworkFee : this.externalNetworkFee;
-    // [TODO]: check for ROC
-    const maxBalance = getMaxValue(this.asset, fee, !this.isSoraToEvm);
+    const maxBalance = getMaxValue(this.asset, fee, {
+      isExternalBalance: !this.isSoraToEvm,
+      isExternalNative: this.isNativeTokenSelected,
+    });
 
     if (this.assetLockedBalance && this.isSoraToEvm) {
       const fpBalance = this.getFPNumber(maxBalance, this.asset.decimals);
@@ -537,17 +539,19 @@ export default class Bridge extends Mixins(
     });
   }
 
+  get isNativeTokenSelected(): boolean {
+    // check by symbol because of substrate assets
+    return this.asset?.symbol === this.nativeTokenSymbol;
+  }
+
   get isNativeTokenSufficientForNextOperation(): boolean {
     if (!this.asset || this.isZeroAmountSend) return false;
-
-    // check by symbol because of substrate assets
-    const isNativeTokenSelected = this.asset.symbol === this.nativeTokenSymbol;
 
     const fpBalance = FPNumber.fromCodecValue(this.externalNativeBalance);
     const fpFee = FPNumber.fromCodecValue(this.externalNetworkFee);
     const fpAfterFee = fpBalance.sub(fpFee);
 
-    if (!isNativeTokenSelected) return FPNumber.gte(fpAfterFee, fpFee);
+    if (!this.isNativeTokenSelected) return FPNumber.gte(fpAfterFee, fpFee);
 
     const fpAmount = new FPNumber(this.amountSend, this.asset.externalDecimals);
     const fpAfterFeeNative = FPNumber.fromCodecValue(fpAfterFee.toCodecString(), this.asset.externalDecimals);

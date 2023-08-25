@@ -61,7 +61,7 @@ export const isMaxButtonAvailable = (
   }
 
   const fpAmount = new FPNumber(amount, asset.decimals);
-  const fpMaxBalance = getMaxBalance(asset, fee, false, parseAsLiquidity);
+  const fpMaxBalance = getMaxBalance(asset, fee, { parseAsLiquidity });
 
   return !FPNumber.eq(fpMaxBalance, fpAmount) && !hasInsufficientXorForFee(xorAsset, fee, isXorOutputSwap);
 };
@@ -69,9 +69,7 @@ export const isMaxButtonAvailable = (
 const getMaxBalance = (
   asset: AssetWithBalance,
   fee: CodecString,
-  isExternalBalance = false,
-  parseAsLiquidity = false,
-  isBondedBalance = false
+  { isExternalBalance = false, isExternalNative = false, parseAsLiquidity = false, isBondedBalance = false } = {}
 ): FPNumber => {
   const balance = getAssetBalance(asset, { internal: !isExternalBalance, parseAsLiquidity, isBondedBalance });
   const decimals: number = asset[isExternalBalance ? 'externalDecimals' : 'decimals'];
@@ -81,12 +79,11 @@ const getMaxBalance = (
   let fpResult = FPNumber.fromCodecValue(balance, decimals);
 
   if (
+    !isBondedBalance &&
     !asZeroValue(fee) &&
-    ((!isExternalBalance && isXorAccountAsset(asset)) ||
-      (isExternalBalance && ethersUtil.isNativeEvmTokenAddress((asset as RegisteredAccountAsset).externalAddress))) &&
-    !isBondedBalance
+    ((!isExternalBalance && isXorAccountAsset(asset)) || (isExternalBalance && isExternalNative))
   ) {
-    const fpFee = FPNumber.fromCodecValue(fee);
+    const fpFee = FPNumber.fromCodecValue(fee, decimals);
     fpResult = fpResult.sub(fpFee);
   }
 
@@ -96,10 +93,9 @@ const getMaxBalance = (
 export const getMaxValue = (
   asset: AccountAsset | RegisteredAccountAsset,
   fee: CodecString,
-  isExternalBalance = false,
-  isBondedBalance = false
+  { isExternalBalance = false, isExternalNative = false, isBondedBalance = false } = {}
 ): string => {
-  return getMaxBalance(asset, fee, isExternalBalance, false, isBondedBalance).toString();
+  return getMaxBalance(asset, fee, { isExternalBalance, isExternalNative, isBondedBalance }).toString();
 };
 
 export const getDeltaPercent = (desiredPrice: FPNumber, currentPrice: FPNumber): FPNumber => {
@@ -115,7 +111,7 @@ export const hasInsufficientBalance = (
   isBondedBalance = false
 ): boolean => {
   const fpAmount = new FPNumber(amount, asset.decimals);
-  const fpMaxBalance = getMaxBalance(asset, fee, isExternalBalance, false, isBondedBalance);
+  const fpMaxBalance = getMaxBalance(asset, fee, { isExternalBalance, isBondedBalance });
 
   return FPNumber.lt(fpMaxBalance, fpAmount);
 };
