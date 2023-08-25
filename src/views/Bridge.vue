@@ -250,7 +250,7 @@
           <template v-else-if="isInsufficientXorForFee">
             {{ t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR }) }}
           </template>
-          <template v-else-if="isInsufficientEvmNativeTokenForFee">
+          <template v-else-if="isInsufficientNativeTokenForFee">
             {{ t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol }) }}
           </template>
           <template v-else-if="isInsufficientLiquidity">
@@ -321,7 +321,7 @@ import {
   isXorAccountAsset,
   hasInsufficientBalance,
   hasInsufficientXorForFee,
-  hasInsufficientEvmNativeTokenForFee,
+  hasInsufficientNativeTokenForFee,
   getMaxValue,
   getAssetBalance,
   asZeroValue,
@@ -472,8 +472,8 @@ export default class Bridge extends Mixins(
     return hasInsufficientXorForFee(this.xor, this.soraNetworkFee);
   }
 
-  get isInsufficientEvmNativeTokenForFee(): boolean {
-    return hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.externalNetworkFee);
+  get isInsufficientNativeTokenForFee(): boolean {
+    return hasInsufficientNativeTokenForFee(this.externalNativeBalance, this.externalNetworkFee);
   }
 
   get isInsufficientBalance(): boolean {
@@ -513,7 +513,7 @@ export default class Bridge extends Mixins(
       this.isZeroAmountSend ||
       this.isZeroAmountReceived ||
       this.isInsufficientXorForFee ||
-      this.isInsufficientEvmNativeTokenForFee ||
+      this.isInsufficientNativeTokenForFee ||
       this.isInsufficientBalance ||
       this.isInsufficientLiquidity
     );

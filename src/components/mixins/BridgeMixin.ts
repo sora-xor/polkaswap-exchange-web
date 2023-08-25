@@ -12,13 +12,13 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @state.bridge.externalNativeBalance externalNativeBalance!: CodecString;
   @state.bridge.externalBlockNumber externalBlockNumber!: number;
   @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<CodecString>;
-  @state.bridge.externalNetworkFee externalNetworkFee!: CodecString;
 
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.sender sender!: string;
   @getter.bridge.recipient recipient!: string;
   @getter.bridge.soraNetworkFee soraNetworkFee!: CodecString;
+  @getter.bridge.externalNetworkFee externalNetworkFee!: CodecString;
   @getter.assets.xor xor!: RegisteredAccountAsset;
 
   @mutation.web3.setSelectNetworkDialogVisibility setSelectNetworkDialogVisibility!: (flag: boolean) => void;

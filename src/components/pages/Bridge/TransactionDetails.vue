@@ -15,7 +15,9 @@
       :asset-symbol="nativeTokenSymbol"
       is-formatted
     >
-      <template #info-line-value-prefix><span class="info-line-value-prefix">~</span></template>
+      <template v-if="isExternalFeeNotZero" #info-line-value-prefix>
+        <span class="info-line-value-prefix">~</span>
+      </template>
     </info-line>
   </transaction-details>
 </template>
@@ -48,6 +50,10 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
 
   get formattedNetworkFeeLabel(): string {
     return `${this.networkName} ${this.t('networkFeeText')}`;
+  }
+
+  get isExternalFeeNotZero(): boolean {
+    return this.externalNetworkFee !== ZeroStringValue;
   }
 }
 </script>

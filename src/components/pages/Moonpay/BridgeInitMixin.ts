@@ -8,7 +8,7 @@ import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { state, action, mutation, getter } from '@/store/decorators';
 import type { BridgeTxData } from '@/store/moonpay/types';
-import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
+import { getMaxValue, hasInsufficientNativeTokenForFee } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 import type { MoonpayTransaction } from '@/utils/moonpay';
 import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
@@ -144,7 +144,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         false
       );
       const evmNativeBalance = await ethersUtil.getAccountBalance(ethTransferData.to);
-      const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(evmNativeBalance, evmNetworkFee);
+      const hasEthForFee = !hasInsufficientNativeTokenForFee(evmNativeBalance, evmNetworkFee);
 
       if (!hasEthForFee) {
         throw createError('Insufficient ETH for fee', MoonpayNotifications.FeeError);

@@ -9,7 +9,6 @@ import i18n from '@/lang';
 import router from '@/router';
 import store from '@/store';
 
-import ethersUtil from './ethers-util';
 import storage from './storage';
 
 import type { AmountWithSuffix } from '../types/formats';
@@ -135,7 +134,7 @@ export const hasInsufficientXorForFee = (
   return FPNumber.lt(fpBalance, fpFee) && !isXorOutputSwap;
 };
 
-export const hasInsufficientEvmNativeTokenForFee = (nativeBalance: CodecString, fee: CodecString): boolean => {
+export const hasInsufficientNativeTokenForFee = (nativeBalance: CodecString, fee: CodecString): boolean => {
   if (!fee) return false;
 
   const fpBalance = FPNumber.fromCodecValue(nativeBalance);
