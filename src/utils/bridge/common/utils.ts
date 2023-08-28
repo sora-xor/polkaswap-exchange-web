@@ -64,6 +64,18 @@ export const getEvmTransactionRecieptByHash = async (
   }
 };
 
+export const getTransactionEvents = async (blockHash: string, transactionHash: string, api: ApiPromise) => {
+  const extrinsics = await soraApi.system.getExtrinsicsFromBlock(blockHash, api);
+  const extrinsicIndex = extrinsics.findIndex((ext) => ext.hash.toString() === transactionHash);
+
+  if (extrinsicIndex === -1) throw new Error(`Unable to find extrinsic "${transactionHash}" in block "${blockHash}"`);
+
+  const blockEvents = await soraApi.system.getBlockEvents(blockHash, api);
+  const transactionEvents = blockEvents.filter((event) => event.phase.asApplyExtrinsic.toNumber() === extrinsicIndex);
+
+  return transactionEvents;
+};
+
 export const findUserTxIdInBlock = async (
   api: ApiPromise,
   blockHash: string,
