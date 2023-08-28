@@ -33,13 +33,6 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     await Promise.all([this.subNetworkAdapter?.stop(), this.soraParachainAdapter?.stop()]);
   }
 
-  async getAssetExternalDecimals(externalNetwork: SubNetwork, soraAssetId: string): Promise<number> {
-    const data = await subBridgeApi.api.query.substrateBridgeApp.sidechainPrecision(externalNetwork, soraAssetId);
-    const decimals = data.unwrap().toNumber();
-
-    return decimals;
-  }
-
   async getHashesByBlockNumber(adapter: SubAdapter, blockHeight: number, extrinsicIndex?: number) {
     let txId = '';
     let blockId = '';
@@ -49,9 +42,9 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
 
       try {
         await new Promise<void>((resolve) => {
-          subscription = adapter.apiRx.query.system.blockHash(blockHeight).subscribe((hash) => {
-            if (!hash.isEmpty) {
-              txId = blockId = hash.toString();
+          subscription = api.system.getBlockHashObservable(blockHeight, adapter.apiRx).subscribe((hash) => {
+            if (hash) {
+              txId = blockId = hash;
               resolve();
             }
           });
@@ -175,8 +168,10 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     await this.subNetworkAdapter.connect();
 
     if (!tx.externalBlockHeight) {
-      const api = await this.subNetworkAdapter.api.at(tx.externalBlockId as string);
-      const externalBlockHeight = (await api.query.system.number()).toNumber();
+      const externalBlockHeight = await api.system.getBlockNumber(
+        tx.externalBlockId as string,
+        this.subNetworkAdapter.api
+      );
 
       this.updateTransactionParams(id, {
         externalBlockHeight, // parachain block number
@@ -234,8 +229,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       await this.soraParachainAdapter.connect();
 
       await new Promise<void>((resolve) => {
-        const eventsObservable = this.soraParachainAdapter.apiRx.query.system.events();
-        const blockNumberObservable = this.soraParachainAdapter.apiRx.query.system.number();
+        const eventsObservable = api.system.getEventsObservable(this.soraParachainAdapter.apiRx);
+        const blockNumberObservable = api.system.getBlockNumberObservable(this.soraParachainAdapter.apiRx);
 
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(([events, blockHeight]) => {
           const downwardMessagesProcessedEvent = events.find((e) =>
@@ -244,7 +239,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
           if (!downwardMessagesProcessedEvent) return;
 
-          blockNumber = blockHeight.toNumber();
+          blockNumber = blockHeight;
 
           [batchNonce, messageNonce] = this.getMessageAcceptedNonces(this.soraParachainAdapter.api, events);
 
@@ -283,7 +278,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     const { amount, assetAddress, externalNetwork, payload: prevPayload } = this.getTransaction(id);
 
-    const decimals = await this.getAssetExternalDecimals(externalNetwork as SubNetwork, assetAddress as string);
+    const decimals = await subBridgeApi.getSubAssetDecimals(externalNetwork as SubNetwork, assetAddress as string);
     const sended = new FPNumber(amount as string, decimals);
     const received = FPNumber.fromCodecValue(recipientAmount, decimals);
 
@@ -310,7 +305,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     try {
       await new Promise<void>((resolve) => {
-        const eventsObservable = subBridgeApi.apiRx.query.system.events();
+        const eventsObservable = api.system.getEventsObservable(subBridgeApi.apiRx);
 
         subscription = eventsObservable.subscribe((events) => {
           const substrateDispatchEvent = events.find((e) =>
@@ -444,8 +439,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       await this.soraParachainAdapter.connect();
 
       await new Promise<void>((resolve) => {
-        const eventsObservable = this.soraParachainAdapter.apiRx.query.system.events();
-        const blockNumberObservable = this.soraParachainAdapter.apiRx.query.system.number();
+        const eventsObservable = api.system.getEventsObservable(this.soraParachainAdapter.apiRx);
+        const blockNumberObservable = api.system.getBlockNumberObservable(this.soraParachainAdapter.apiRx);
 
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(([events, blockHeight]) => {
           const substrateDispatchEvent = events.find((e) =>
@@ -454,7 +449,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
           if (!this.isTransactionNonces(tx, substrateDispatchEvent)) return;
 
-          blockNumber = blockHeight.toNumber();
+          blockNumber = blockHeight;
 
           const parachainSystemEvent = events.find((e) =>
             this.soraParachainAdapter.api.events.parachainSystem.UpwardMessageSent.is(e.event)
@@ -503,10 +498,10 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       await this.subNetworkAdapter.connect();
 
       await new Promise<void>((resolve) => {
-        const eventsObservable = this.subNetworkAdapter.apiRx.query.system.events();
-        const blockNumberObservable = this.subNetworkAdapter.apiRx.query.system.number();
+        const eventsObservable = api.system.getEventsObservable(this.subNetworkAdapter.apiRx);
+        const blockNumberObservable = api.system.getBlockNumberObservable(this.subNetworkAdapter.apiRx);
 
-        subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(([events, blockNum]) => {
+        subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(([events, blockHeight]) => {
           const messageQueueProcessedEvent = events.find((e) =>
             this.subNetworkAdapter.api.events.messageQueue.Processed.is(e.event)
           );
@@ -517,7 +512,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
           if (hash.toString() !== messageHash) return;
 
-          blockNumber = blockNum.toNumber();
+          blockNumber = blockHeight;
 
           // Native token for network
           const balancesDepositEvent = events.find(
@@ -549,7 +544,10 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         .finally(() => this.subNetworkAdapter.stop());
     }
 
-    const decimals = await this.getAssetExternalDecimals(tx.externalNetwork as SubNetwork, tx.assetAddress as string);
+    const decimals = await subBridgeApi.getSubAssetDecimals(
+      tx.externalNetwork as SubNetwork,
+      tx.assetAddress as string
+    );
     const sended = new FPNumber(tx.amount as string, decimals);
     const received = FPNumber.fromCodecValue(amount, decimals);
 

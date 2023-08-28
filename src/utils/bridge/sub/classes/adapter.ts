@@ -8,7 +8,7 @@ import { ZeroStringValue } from '@/consts';
 import type { SubNetworkApps } from '@/store/web3/types';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
-import type { ApiPromise } from '@polkadot/api';
+import type { ApiPromise, ApiRx } from '@polkadot/api';
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
 import type { ISubmittableResult } from '@polkadot/types/types';
 import type { CodecString } from '@sora-substrate/util';
@@ -30,7 +30,7 @@ export class SubAdapter {
   }
 
   get apiRx() {
-    return this.api.rx;
+    return this.api.rx as ApiRx;
   }
 
   get connected(): boolean {
