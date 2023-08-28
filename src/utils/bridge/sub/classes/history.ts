@@ -1,16 +1,10 @@
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { api } from '@soramitsu/soraneo-wallet-web';
 
 import { ZeroStringValue } from '@/consts';
 import { rootActionContext } from '@/store';
-import {
-  getBlockHash,
-  getBlockEvents,
-  getBlockExtrinsics,
-  getBlockTimestamp,
-  findUserTxIdInBlock,
-  findEventInBlock,
-} from '@/utils/bridge/common/utils';
+import { findUserTxIdInBlock, findEventInBlock } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
@@ -154,8 +148,8 @@ class SubBridgeHistory {
       };
 
       const [blockId, parachainBlockId] = await Promise.all([
-        getBlockHash(this.soraApi, blockHeight),
-        getBlockHash(this.parachainApi, parachainBlockHeight),
+        api.system.getBlockHash(blockHeight, this.soraApi),
+        api.system.getBlockHash(parachainBlockHeight, this.parachainApi),
       ]);
 
       history.blockId = blockId;
@@ -163,8 +157,8 @@ class SubBridgeHistory {
 
       const [txId, startTime, relayChainBlockNumber] = await Promise.all([
         findUserTxIdInBlock(this.soraApi, blockId, id, 'RequestStatusUpdate', 'bridgeProxy'),
-        getBlockTimestamp(this.soraApi, blockId),
-        getRelayChainBlockNumber(this.parachainApi, parachainBlockId),
+        api.system.getBlockTimestamp(blockId, this.soraApi),
+        getRelayChainBlockNumber(parachainBlockId, this.parachainApi),
       ]);
 
       history.txId = txId;
@@ -210,8 +204,8 @@ class SubBridgeHistory {
 
     for (let n = startSearch; n <= endSearch; n++) {
       try {
-        const blockId = await getBlockHash(this.externalApi, n);
-        const events = await getBlockEvents(this.externalApi, blockId);
+        const blockId = await api.system.getBlockHash(n, this.externalApi);
+        const events = await api.system.getBlockEvents(blockId, this.externalApi);
 
         const messageQueueEvent = events.find(
           ({ event }) =>
@@ -254,8 +248,8 @@ class SubBridgeHistory {
     const endSearch = startSearch - 2;
 
     for (let n = startSearch; n >= endSearch; n--) {
-      const blockId = await getBlockHash(this.externalApi, n);
-      const extrinsics = await getBlockExtrinsics(this.externalApi, blockId);
+      const blockId = await api.system.getBlockHash(n, this.externalApi);
+      const extrinsics = await api.system.getExtrinsicsFromBlock(blockId, this.externalApi);
 
       for (const extrinsic of extrinsics) {
         try {

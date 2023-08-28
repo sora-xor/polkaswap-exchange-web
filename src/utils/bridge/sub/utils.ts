@@ -21,7 +21,7 @@ export const updateTransaction = (id: string, params = {}): void => {
   subBridgeApi.saveHistory(data);
 };
 
-export const getRelayChainBlockNumber = async (api: ApiPromise, blockHash: string): Promise<number> => {
+export const getRelayChainBlockNumber = async (blockHash: string, api: ApiPromise): Promise<number> => {
   const apiInstanceAtBlock = await api.at(blockHash);
   const blockNumber = await apiInstanceAtBlock.query.parachainSystem.lastRelayChainBlockNumber();
 

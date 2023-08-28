@@ -1,10 +1,10 @@
 import { FPNumber } from '@sora-substrate/util';
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { api } from '@soramitsu/soraneo-wallet-web';
 import { combineLatest } from 'rxjs';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';
-import { getBlockEvents, getBlockExtrinsics, getBlockHash } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
@@ -61,7 +61,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
       }
 
       if (Number.isFinite(extrinsicIndex)) {
-        const extrinsics = await getBlockExtrinsics(adapter.api, blockId);
+        const extrinsics = await api.system.getExtrinsicsFromBlock(blockId, adapter.api);
         const extrinsic = extrinsics[extrinsicIndex as number];
 
         txId = extrinsic?.hash.toString() ?? '';
@@ -183,7 +183,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       });
     }
 
-    const events = await getBlockEvents(this.subNetworkAdapter.api, tx.externalBlockId as string);
+    const events = await api.system.getBlockEvents(tx.externalBlockId as string, this.subNetworkAdapter.api);
 
     const feeEvent = events.find((e) =>
       this.subNetworkAdapter.api.events.transactionPayment.TransactionFeePaid.is(e.event)
@@ -356,7 +356,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       subscription.unsubscribe();
     }
 
-    const soraBlockHash = await getBlockHash(subBridgeApi.api, soraBlockNumber);
+    const soraBlockHash = await api.system.getBlockHash(soraBlockNumber, subBridgeApi.api);
 
     this.updateTransactionParams(id, {
       blockId: soraBlockHash,
@@ -416,8 +416,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
     if (tx.hash && Number.isFinite(tx.payload?.batchNonce) && Number.isFinite(tx.payload?.messageNonce)) return;
 
-    const events = await getBlockEvents(subBridgeApi.api, tx.blockId as string);
-
+    const events = await api.system.getBlockEvents(tx.blockId as string, subBridgeApi.api);
     const hash = this.getBridgeProxyHash(subBridgeApi.api, events);
     this.updateTransactionParams(id, { hash });
 

@@ -1,4 +1,5 @@
 import { Operation, isBridgeOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/util';
+import { api as soraApi } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
 import { isUnsignedTx as isUnsignedEthTx } from '@/utils/bridge/eth/utils';
@@ -70,7 +71,7 @@ export const findUserTxIdInBlock = async (
   eventMethod: string,
   eventSection: string
 ): Promise<string | undefined> => {
-  const blockEvents = await getBlockEvents(api, blockHash);
+  const blockEvents = await soraApi.system.getBlockEvents(blockHash, api);
 
   const event = blockEvents.find(
     ({ phase, event }) =>
@@ -83,38 +84,10 @@ export const findUserTxIdInBlock = async (
   if (!event) return undefined;
 
   const index = event.phase.asApplyExtrinsic.toNumber();
-  const extrinsics = await getBlockExtrinsics(api, blockHash);
+  const extrinsics = await soraApi.system.getExtrinsicsFromBlock(blockHash, api);
   const userExtrinsic = extrinsics[index];
 
   return userExtrinsic.hash.toString();
-};
-
-export const getBlockHash = async (api: ApiPromise, blockNumber: number): Promise<string> => {
-  if (!blockNumber) return '';
-
-  const result = await api.rpc.chain.getBlockHash(blockNumber);
-
-  return result.toString();
-};
-
-export const getBlockExtrinsics = async (api: ApiPromise, blockHash: string) => {
-  const signedBlock = await api.rpc.chain.getBlock(blockHash);
-
-  return signedBlock.block?.extrinsics.toArray() ?? [];
-};
-
-export const getBlockEvents = async (api: ApiPromise, blockHash: string) => {
-  const apiInstanceAtBlock = await api.at(blockHash);
-  const blockEvents = (await apiInstanceAtBlock.query.system.events()).toArray();
-
-  return blockEvents;
-};
-
-export const getBlockTimestamp = async (api: ApiPromise, blockHash: string): Promise<number> => {
-  const apiInstanceAtBlock = await api.at(blockHash);
-  const timestamp = await apiInstanceAtBlock.query.timestamp.now();
-
-  return timestamp.toNumber();
 };
 
 export const findEventInBlock = async ({
@@ -128,7 +101,7 @@ export const findEventInBlock = async ({
   section: string;
   method: string;
 }) => {
-  const blockEvents = await getBlockEvents(api, blockId);
+  const blockEvents = await soraApi.system.getBlockEvents(blockId, api);
   const event = blockEvents.find(({ event }) => event.section === section && event.method === method);
 
   if (!event) throw new Error('Event not found');
