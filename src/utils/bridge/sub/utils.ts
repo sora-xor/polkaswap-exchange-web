@@ -1,6 +1,8 @@
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { ApiPromise } from '@polkadot/api';
+import type { CodecString } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 export const isUnsignedTx = (tx: SubHistory): boolean => {
@@ -63,4 +65,25 @@ export const isMessageDispatchedNonces = (
   }
 
   return sendedBatchNonce === eventBatchNonce && sendedMessageNonce === eventMessageNonce;
+};
+
+export const isAssetAddedToChannel = (
+  e: any,
+  asset: RegisteredAccountAsset,
+  to: string,
+  sended: CodecString,
+  api: ApiPromise
+): boolean => {
+  if (!api.events.xcmApp.AssetAddedToChannel.is(e.event)) return false;
+
+  const { amount, assetId, recipient } = e.event.data[0].asTransfer;
+  // address check
+  if (subBridgeApi.formatAddress(recipient.toString()) !== to) return false;
+  // asset check
+  if (assetId.toString() !== asset.address) return false;
+  // amount check
+  // [WARNING] Implementation could be changed: sora parachain doesn't spent xcm fee from amount
+  if (amount.toString() !== sended) return false;
+
+  return true;
 };

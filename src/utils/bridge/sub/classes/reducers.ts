@@ -9,7 +9,7 @@ import { getTransactionEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
-import { getMessageAcceptedNonces, isMessageDispatchedNonces } from '@/utils/bridge/sub/utils';
+import { getMessageAcceptedNonces, isMessageDispatchedNonces, isAssetAddedToChannel } from '@/utils/bridge/sub/utils';
 
 import type { ApiPromise } from '@polkadot/api';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -209,31 +209,22 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
             if (!downwardMessagesProcessedEvent) return;
 
-            const assetAddedToChannelEventIndex = events.findIndex((e) => {
-              const matched = this.soraParachainAdapter.api.events.xcmApp.AssetAddedToChannel.is(e.event);
-
-              if (!matched) return false;
-
-              const { amount, assetId, recipient } = e.event.data[0].asTransfer;
-              // address check
-              if (subBridgeApi.formatAddress(recipient.toString()) !== tx.to) return false;
-              // asset check
-              if (assetId.toString() !== tx.assetAddress) return false;
-              // amount check
-              // [WARNING] Implementation could be changed: sora parachain doesn't spent xcm fee from amount
-              if (amount.toString() !== sended.toCodecString()) return false;
-
-              recipientAmount = amount.toString();
-
-              return true;
-            });
+            const assetAddedToChannelEventIndex = events.findIndex((e) =>
+              isAssetAddedToChannel(
+                e,
+                this.asset,
+                tx.to as string,
+                sended.toCodecString(),
+                this.soraParachainAdapter.api
+              )
+            );
 
             if (assetAddedToChannelEventIndex === -1) {
               throw new Error(`[${this.constructor.name}]: Unable to find "xcmApp.AssetAddedToChannel" event`);
             }
 
+            recipientAmount = events[assetAddedToChannelEventIndex].event.data[0].asTransfer.amount.toString();
             blockNumber = blockHeight;
-
             [batchNonce, messageNonce] = getMessageAcceptedNonces(
               events.slice(assetAddedToChannelEventIndex),
               this.soraParachainAdapter.api
