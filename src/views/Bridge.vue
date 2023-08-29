@@ -90,7 +90,7 @@
           <template #bottom>
             <div class="input-line input-line--footer">
               <template v-if="isAssetSelected">
-                <formatted-amount v-if="isSoraToEvm" is-fiat-value :value="getFiatAmountByString(amountSend, asset)" />
+                <formatted-amount is-fiat-value :value="getFiatAmountByString(amountSend, asset)" />
                 <token-address
                   v-if="isSoraToEvm || asset.externalAddress"
                   v-bind="asset"
@@ -169,11 +169,7 @@
           <template #bottom>
             <div class="input-line input-line--footer">
               <template v-if="isAssetSelected">
-                <formatted-amount
-                  v-if="!isSoraToEvm"
-                  :value="getFiatAmountByString(amountReceived, asset)"
-                  is-fiat-value
-                />
+                <formatted-amount is-fiat-value :value="getFiatAmountByString(amountReceived, asset)" />
                 <token-address
                   v-if="!isSoraToEvm || asset.externalAddress"
                   v-bind="asset"
@@ -263,7 +259,7 @@
         <bridge-transaction-details
           v-if="areNetworksConnected && !isZeroAmountReceived && isRegisteredAsset"
           class="info-line-container"
-          :info-only="false"
+          :asset="asset"
           :native-token-symbol="nativeTokenSymbol"
           :external-network-fee="formattedExternalNetworkFee"
           :sora-network-fee="formattedSoraNetworkFee"
@@ -497,11 +493,11 @@ export default class Bridge extends Mixins(
   }
 
   get formattedSoraNetworkFee(): string {
-    return this.formatCodecNumber(this.soraNetworkFee);
+    return this.getStringFromCodec(this.soraNetworkFee);
   }
 
   get formattedExternalNetworkFee(): string {
-    return this.formatCodecNumber(this.externalNetworkFee, this.nativeTokenDecimals);
+    return this.getStringFromCodec(this.externalNetworkFee, this.nativeTokenDecimals);
   }
 
   get isConfirmTxDisabled(): boolean {

@@ -1,18 +1,19 @@
 <template>
-  <transaction-details :info-only="infoOnly">
+  <transaction-details>
     <info-line
       :label="t('bridge.soraNetworkFee')"
       :label-tooltip="t('networkFeeTooltipText')"
-      :value="soraNetworkFee"
-      :asset-symbol="XOR_SYMBOL"
-      :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
+      :value="formatStringValue(soraNetworkFee)"
+      :asset-symbol="XOR.symbol"
+      :fiat-value="getFiatAmountByString(soraNetworkFee, XOR)"
       is-formatted
     />
     <info-line
       :label="formattedNetworkFeeLabel"
       :label-tooltip="t('ethNetworkFeeTooltipText', { network: networkName })"
-      :value="externalNetworkFee"
+      :value="formatStringValue(externalNetworkFee)"
       :asset-symbol="nativeTokenSymbol"
+      :fiat-value="getFiatAmountByString(externalNetworkFee, asset)"
       is-formatted
     >
       <template v-if="isExternalFeeNotZero" #info-line-value-prefix>
@@ -32,6 +33,7 @@ import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
 
 import type { CodecString } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -40,9 +42,9 @@ import type { CodecString } from '@sora-substrate/util';
   },
 })
 export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  readonly XOR_SYMBOL = XOR.symbol;
+  readonly XOR = XOR;
 
-  @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
+  @Prop({ default: () => null, type: Object }) readonly asset!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: '', type: String }) readonly nativeTokenSymbol!: string;
   @Prop({ default: ZeroStringValue, type: String }) readonly externalNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
