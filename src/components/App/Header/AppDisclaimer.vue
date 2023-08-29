@@ -156,7 +156,7 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   &__header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: $basic-spacing / 2;
+    margin-bottom: $inner-spacing-mini;
 
     &-title {
       font-weight: 600;

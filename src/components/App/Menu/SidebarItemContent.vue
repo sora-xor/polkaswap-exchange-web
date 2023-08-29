@@ -2,7 +2,7 @@
   <component :is="tag" :class="classes" :tabindex="tabindex">
     <!-- TODO: [TECH] move from fonts provided values -->
     <div v-if="icon === 'sora-card'" class="icon-container">
-      <side-menu-card class="sora-card-sidebar-icon" />
+      <sora-card-icon class="sora-card-sidebar-icon" />
     </div>
     <div v-else-if="icon" class="icon-container">
       <s-icon :name="icon" size="28" />
@@ -14,12 +14,13 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import SideMenuCard from '@/assets/img/sora-card/sidebar.svg?inline';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+
+import SoraCardIcon from './SoraCardIcon.vue';
 
 @Component({
   components: {
-    SideMenuCard,
+    SoraCardIcon,
   },
 })
 export default class AppSidebarItemContent extends Mixins(TranslationMixin) {

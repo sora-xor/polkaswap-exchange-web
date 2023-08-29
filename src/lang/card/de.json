@@ -57,7 +57,7 @@
         "statusRejectReason": "Ablehnungsgrund",
         "userNotFound": "Keine Handynummer gefunden, bitte überprüfen Sie sie erneut und versuchen Sie es erneut.",
         "code": "Code",
-        "getSoraCardDesc": "Erhalten Sie ein Euro-IBAN Konto und eine Mastercard Debitkarte, auf die Sie mit Ihrem SORA Wallet zugreifen können.",
+        "getSoraCardDesc": "Erhalten Sie ein Euro-IBAN Konto und eine Debitkarte, auf die Sie mit Ihrem SORA Wallet zugreifen können.",
         "emailSpamReminder": "Es kann mehrere Minuten dauern, bis die E-Mail ankommt. Bitte überprüfen Sie Ihren Spam-Ordner, wenn Sie die E-Mail nach 5 Minuten noch nicht erhalten haben."
     }
 }

@@ -57,7 +57,7 @@
         "statusRejectReason": "Lý do từ chối",
         "userNotFound": "Không tìm thấy số điện thoại di động nào, vui lòng kiểm tra lại và thử lại.",
         "code": "Mã",
-        "getSoraCardDesc": "Nhận tài khoản Euro IBAN và Thẻ ghi nợ Mastercard có thể kết nối Ví SORA của bạn",
+        "getSoraCardDesc": "Nhận tài khoản Euro IBAN và thẻ ghi nợ có thể truy cập trong Ví SORA của bạn",
         "emailSpamReminder": "Email có thể mất vài phút để đến nơi. Vui lòng xác minh thư mục thư rác nếu bạn không nhận được email sau 5 phút."
     }
 }

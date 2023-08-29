@@ -92,7 +92,7 @@
     },
     "connection": {
         "title": "Tài khoản Mạng {Sora}",
-        "text": "Tiện ích mở rộng & Google lưu trữ an toàn tài khoản Mạng {Sora} của bạn. Chúng cho phép bạn ký giao dịch và quản lý tài sản.",
+        "text": "Để quản lý tài sản và ký giao dịch trên {Sora} , tài khoản phải được kết nối. Tài khoản {Sora} có thể được tạo và kết nối bằng ví tích hợp hoặc tiện ích mở rộng trình duyệt của chúng tôi.",
         "noAccounts": "Không có tài khoản nào trong tiện ích (extension) {extension} của bạn. Vui lòng thêm tài khoản và thử lại.",
         "selectAccount": "Chọn tài khoản để dùng",
         "action": {
@@ -107,10 +107,10 @@
             "connected": "kết nối",
             "notConnected": "Không kết nối"
         },
-        "internalTitle": "Kết nối qua {wallet}",
-        "internalText": "Bạn có thể tạo hoặc liên kết tài khoản hiện có qua {wallet} . Nó lưu trữ tài khoản sử dụng mã hóa.",
+        "internalTitle": "Kết nối với {wallet}",
+        "internalText": "Bạn có thể tạo hoặc nhập tài khoản {Sora} hiện có để kết nối với tài khoản {wallet} của mình. Tất cả dữ liệu được lưu trữ bởi {wallet} được mã hóa bằng mã hóa nâng cao tích hợp.",
         "list": {
-            "simplest": "tùy chọn đơn giản nhất",
+            "integrated": "tích hợp",
             "extensions": "tiện ích mở rộng"
         }
     },
@@ -1053,8 +1053,8 @@
             "importAccount": "Nhập tài khoản"
         },
         "heading": {
-            "seedPhraseTitle": "Cụm từ hạt giống",
-            "confirmSeedTitle": "Xác nhận cụm từ hạt giống",
+            "seedPhraseTitle": "cụm mật khẩu",
+            "confirmSeedTitle": "Xác nhận cụm mật khẩu",
             "accountDetailsTitle": "Chi tiết tài khoản",
             "importTitle": "Nhập tài khoản"
         },
@@ -1065,12 +1065,12 @@
             "importAccount": "Nhập tài khoản"
         },
         "accountName": {
-            "placeholder": "Tên ví",
-            "desc": "Đây là tên ví của bạn sẽ hiển thị với bạn"
+            "placeholder": "Tên tài khoản",
+            "desc": "Đây là tên tài khoản của bạn. Nó sẽ chỉ hiển thị với bạn trong {Polkaswap}."
         },
         "password": {
             "placeholder": "Mật khẩu",
-            "desc": "Đảm bảo bạn đang sử dụng mật khẩu mạnh để được bảo vệ thích hợp"
+            "desc": "Đảm bảo bạn đang sử dụng một mật khẩu mạnh duy nhất để bảo vệ thích hợp (tối thiểu 8 ký tự)"
         },
         "confirmPassword": {
             "placeholder": "Xác nhận mật khẩu"
@@ -1078,11 +1078,11 @@
         "accountMnemonic": {
             "placeholder": "Cụm từ ghi nhớ"
         },
-        "seedAdviceText": "Đây là hạt giống bí mật của tài khoản của bạn. Đảm bảo lưu trữ nó trên một nhà cung cấp dịch vụ không phải kỹ thuật số, ví dụ ghi ra giấy",
-        "confirmSeedText": "Xác nhận cụm từ hạt giống bằng cách nhấp vào các từ theo đúng thứ tự",
-        "errorMnemonicText": "Thứ tự cụm từ hạt giống không chính xác",
-        "exportOptionText": "Xuất tệp tài khoản .json",
-        "exportJsonText": "Bạn sẽ luôn có thể truy cập tài khoản của mình bằng cách nhập tệp .json đó. Đừng chia sẻ nó với bất kỳ ai!",
+        "seedAdviceText": "Cụm mật khẩu 12 từ là khóa riêng tư để lấy lại quyền truy cập vào tài khoản {Sora} của bạn trong trường hợp bạn mất quyền truy cập vào tài khoản {wallet} của mình. Lưu trữ nó một cách an toàn theo thứ tự chính xác mà nó xuất hiện ở trên.",
+        "confirmSeedText": "Xác nhận cụm mật khẩu bằng cách nhấp vào các từ theo đúng thứ tự",
+        "errorMnemonicText": "Thứ tự cụm mật khẩu không chính xác",
+        "exportOptionText": "Xuất tệp {JSON} để khôi phục tài khoản",
+        "exportJsonText": "Bạn sẽ luôn có thể khôi phục tài khoản của mình bằng cách nhập tệp {JSON} này. Đừng chia sẻ nó với bất cứ ai! Lưu trữ nó một cách an toàn, tốt nhất là được mã hóa.",
         "addAccount": "Thêm tài khoản",
         "dialog": {
             "confirmTitle": "Xác nhận bằng mật khẩu",
@@ -1101,16 +1101,20 @@
         "assetsAtRiskText": "Tài sản có nguy cơ!",
         "deleteAccountText": "Không thể khôi phục tài khoản nếu không có cụm từ gốc, tệp .json hoặc nếu tài khoản được lưu trữ trong một số tiện ích mở rộng. Bạn sẽ được đăng xuất.",
         "importSteps": {
-            "selectWallet": "Chuyển đến ví bạn sử dụng",
+            "selectWallet": "Mở ví bằng (các) tài khoản hiện tại của bạn",
             "selectAccount": "Chọn tài khoản bạn muốn xuất",
             "exportAccount": "Xuất tệp {JSON}"
         },
-        "exportTutorialsText": "Xuất hướng dẫn"
+        "exportTutorialsText": "Xuất hướng dẫn",
+        "seedAdviceAdditionTitle": "Không bao giờ chia sẻ cụm mật khẩu của bạn với bất cứ ai!",
+        "seedAdviceAdditionText": "Nếu ai đó hỏi bạn về cụm mật khẩu của bạn, rất có thể họ đang cố lừa đảo bạn và đánh cắp tài sản của bạn!"
     },
     "hashiBridgeText": "Cầu {Hashi}",
     "disclaimerTitle": "Disclaimer",
     "explore": {
-        "showOnlyMyPositions": "Chỉ hiển thị vị trí của tôi"
+        "showOnly": "Chỉ hiển thị {entities}",
+        "myPositions": "vị trí của tôi",
+        "synthetics": "token tổng hợp"
     },
     "tooltips": {
         "roi": "{ROI} là viết tắt của Lợi tức đầu tư. Nó được tính bằng cách chia lợi nhuận kiếm được từ một khoản đầu tư cho chi phí của khoản đầu tư đó theo tỷ lệ phần trăm tương đương.",
@@ -1178,7 +1182,7 @@
     "acceptText": "Chấp nhận & Ẩn",
     "newAccountsText": "tài khoản mới",
     "dragAndDropText": "Kéo và thả hoặc chọn tệp {extension}",
-    "copyPhraseText": "Sao chép cụm từ",
+    "copyPhraseText": "Sao chép cụm mật khẩu",
     "stepText": "Bước chân",
     "alerts": {
         "drop": "Giọt bên dưới",
@@ -1216,7 +1220,7 @@
     },
     "acceptOnScrollText": "Cuộn để chấp nhận",
     "addressBook": {
-        "myExtAccounts": "Tài khoản mở rộng của tôi",
+        "myAccounts": "Tài khoản của tôi",
         "myBook": "Cuốn sách của tôi",
         "searchPlaceholder": "Tìm kiếm theo địa chỉ, tên hoặc danh tính",
         "noFoundRecords": "Không có dữ liệu được tìm thấy",

@@ -92,7 +92,7 @@
     },
     "connection": {
         "title": "{Sora}-Netzwerk-Konto",
-        "text": "Erweiterungen und Google speichern Ihr {Sora} Network-Konto sicher. Sie ermöglichen es Ihnen, Transaktionen zu unterzeichnen und Vermögenswerte zu verwalten.",
+        "text": "Um Vermögenswerte zu verwalten und Transaktionen auf {Sora} zu signieren, muss ein Konto verbunden sein. {Sora} Konten können mithilfe unserer integrierten Wallets oder Browsererweiterungen erstellt und verbunden werden.",
         "noAccounts": "Es wurde kein Konto in deiner {extension} Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
         "action": {
@@ -107,10 +107,10 @@
             "connected": "In Verbindung gebracht",
             "notConnected": "Nicht verbunden"
         },
-        "internalTitle": "Über {wallet} verbinden",
-        "internalText": "Sie können ein bestehendes Konto über {wallet} erstellen oder verknüpfen. Es speichert Konten mit Verschlüsselung.",
+        "internalTitle": "Mit {wallet} verbinden",
+        "internalText": "Sie können ein bestehendes {Sora} Konto erstellen oder importieren, um es mit Ihrem {wallet} Konto zu verbinden. Alle von {wallet} gespeicherten Daten werden mithilfe der integrierten erweiterten Verschlüsselung verschlüsselt.",
         "list": {
-            "simplest": "Einfachste Möglichkeit",
+            "integrated": "Integriert",
             "extensions": "Erweiterungen"
         }
     },
@@ -1053,8 +1053,8 @@
             "importAccount": "Konto importieren"
         },
         "heading": {
-            "seedPhraseTitle": "Seed-Phrase",
-            "confirmSeedTitle": "Seed-Phrase bestätigen",
+            "seedPhraseTitle": "Passphrase",
+            "confirmSeedTitle": "Passphrase bestätigen",
             "accountDetailsTitle": "Konto Details",
             "importTitle": "Konto importieren"
         },
@@ -1065,12 +1065,12 @@
             "importAccount": "Konto importieren"
         },
         "accountName": {
-            "placeholder": "Wallet-Name",
-            "desc": "Dies ist der Name Ihres Wallets, der für Sie sichtbar ist"
+            "placeholder": "Kontoname",
+            "desc": "Dies ist der Name Ihres Kontos. Es ist nur für Sie in {Polkaswap} sichtbar."
         },
         "password": {
             "placeholder": "Passwort",
-            "desc": "Stellen Sie sicher, dass Sie für einen angemessenen Schutz ein sicheres Passwort verwenden"
+            "desc": "Stellen Sie sicher, dass Sie für einen angemessenen Schutz ein sicheres, eindeutiges Passwort verwenden (mindestens 8 Zeichen)."
         },
         "confirmPassword": {
             "placeholder": "Passwort bestätigen"
@@ -1078,11 +1078,11 @@
         "accountMnemonic": {
             "placeholder": "Mnemonische Phrase"
         },
-        "seedAdviceText": "Dies ist ein geheimer Code für Ihr Konto. Achten Sie darauf, ihn auf einem nicht-digitalen Träger zu speichern, zum Beispiel auf Papier.",
-        "confirmSeedText": "Bestätigen Sie die Startphrase, indem Sie die Wörter in der richtigen Reihenfolge anklicken",
-        "errorMnemonicText": "Falsche Seed-Phrase-Reihenfolge",
-        "exportOptionText": ".json-Kontodatei exportieren",
-        "exportJsonText": "Sie können immer auf Ihr Konto zugreifen, indem Sie diese .json-Datei importieren. Teilen Sie es mit niemandem!",
+        "seedAdviceText": "Die aus 12 Wörtern bestehende Passphrase ist ein privater Schlüssel, mit dem Sie wieder Zugriff auf Ihr {Sora} Konto erhalten, falls Sie den Zugriff auf Ihr {wallet} Konto verlieren. Bewahren Sie es sicher in der oben angegebenen Reihenfolge auf.",
+        "confirmSeedText": "Bestätigen Sie die Passphrase, indem Sie auf die Wörter in der richtigen Reihenfolge klicken",
+        "errorMnemonicText": "Falsche Passphrasenreihenfolge",
+        "exportOptionText": "Exportieren Sie die {JSON} Datei zur Kontowiederherstellung",
+        "exportJsonText": "Sie können Ihr Konto jederzeit wiederherstellen, indem Sie diese {JSON} Datei importieren. Teilen Sie es mit niemandem! Bewahren Sie es sicher auf, vorzugsweise verschlüsselt.",
         "addAccount": "Füge ein Konto hinzu",
         "dialog": {
             "confirmTitle": "Mit Passwort bestätigen",
@@ -1101,16 +1101,20 @@
         "assetsAtRiskText": "Vermögen in Gefahr!",
         "deleteAccountText": "Das Konto kann nicht ohne Seed-Phrase, .json Datei oder wenn es in einer Erweiterung gespeichert ist, wiederhergestellt werden. Sie werden abgemeldet.",
         "importSteps": {
-            "selectWallet": "Gehen Sie zur Brieftasche Ihrer Verwendung",
+            "selectWallet": "Eröffnen Sie die Wallet mit Ihrem\/Ihren bestehenden Konto(n)",
             "selectAccount": "Wählen Sie das Konto aus, das Sie exportieren möchten",
             "exportAccount": "Exportieren Sie die {JSON} -Datei"
         },
-        "exportTutorialsText": "Tutorials exportieren"
+        "exportTutorialsText": "Tutorials exportieren",
+        "seedAdviceAdditionTitle": "Geben Sie Ihr Passwort niemals an Dritte weiter!",
+        "seedAdviceAdditionText": "Wenn Sie jemand nach Ihrem Passwort fragt, versucht er höchstwahrscheinlich, Sie zu betrügen und Ihr Vermögen zu stehlen!"
     },
     "hashiBridgeText": "{Hashi} Brücke",
     "disclaimerTitle": "Haftungsausschluss",
     "explore": {
-        "showOnlyMyPositions": "Nur meine Positionen anzeigen"
+        "showOnly": "Nur {entities} anzeigen",
+        "myPositions": "Meine Positionen",
+        "synthetics": "Synthetische Tokens"
     },
     "tooltips": {
         "roi": "{ROI} steht für Return on Investment. Es wird berechnet, indem der mit einer Investition erzielte Gewinn durch die Kosten dieser Investition in einem prozentualen Äquivalent dividiert wird.",
@@ -1178,7 +1182,7 @@
     "acceptText": "Akzeptieren & ausblenden",
     "newAccountsText": "Neue Konten",
     "dragAndDropText": "Drag & Drop oder Datei {extension} auswählen",
-    "copyPhraseText": "Satz kopieren",
+    "copyPhraseText": "Passphrase kopieren",
     "stepText": "Schritt",
     "alerts": {
         "drop": "Tropfen unten",
@@ -1216,7 +1220,7 @@
     },
     "acceptOnScrollText": "Scrollen Sie, um zu akzeptieren",
     "addressBook": {
-        "myExtAccounts": "Meine Nebenkonten",
+        "myAccounts": "Meine Accounts",
         "myBook": "Mein Buch",
         "searchPlaceholder": "Suchen Sie nach Adresse, Name oder Identität",
         "noFoundRecords": "Keine Aufzeichnungen gefunden",

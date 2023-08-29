@@ -277,8 +277,8 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   }
 
   &__image {
-    margin-top: -56px;
-    height: 311px;
+    margin-top: -48px;
+    height: 262px;
   }
 
   &__balance-indicator {

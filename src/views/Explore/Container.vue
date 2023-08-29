@@ -19,13 +19,13 @@
 
       <div v-if="switcherAvailable" class="switcher">
         <s-switch v-model="isAccountItemsOnly" />
-        <span>{{ t('explore.showOnlyMyPositions') }}</span>
+        <span>{{ t('explore.showOnly', { entities: t('explore.myPositions') }) }}</span>
       </div>
 
       <router-view
         v-bind="{
           exploreQuery,
-          isAccountItems,
+          isAccountItemsOnly,
           parentLoading,
           ...$attrs,
         }"
@@ -57,14 +57,14 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
 
   exploreQuery = '';
-  isAccountItems = storage.get(storageKey as any) ? JSON.parse(storage.get(storageKey as any)) : false;
+  private isAccountItems = storage.get(storageKey as any) ? JSON.parse(storage.get(storageKey as any)) : false;
 
   get isAccountItemsOnly(): boolean {
     return this.isAccountItems;
   }
 
   set isAccountItemsOnly(value: boolean) {
-    storage.set(storageKey as any, value);
+    storage.set(storageKey as any, value); // TODO: Update StorageKey
     this.isAccountItems = value;
   }
 

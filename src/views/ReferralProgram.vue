@@ -463,6 +463,7 @@ export default class ReferralProgram extends Mixins(
       .btn-next,
       .el-icon-arrow-right,
       .el-icon-arrow-left {
+        position: relative;
         width: var(--s-icon-font-size-medium);
         height: var(--s-icon-font-size-medium);
       }

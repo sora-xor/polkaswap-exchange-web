@@ -70,8 +70,8 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
 export const SUB_TRANSFER_FEES: SubNetworksFees = {
   [SubNetwork.Rococo]: {
     ROC: {
-      [BridgeTxDirection.Outgoing]: '10188285',
-      [BridgeTxDirection.Incoming]: '4000000000',
+      [BridgeTxDirection.Outgoing]: '10124190',
+      [BridgeTxDirection.Incoming]: '0',
     },
   },
 };

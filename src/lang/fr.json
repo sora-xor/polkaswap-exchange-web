@@ -92,7 +92,7 @@
     },
     "connection": {
         "title": "Compte réseau {Sora}",
-        "text": "Les extensions et Google stockent votre compte réseau {Sora} en toute sécurité. Ils vous permettent de signer des transactions et de gérer des actifs.",
+        "text": "Afin de gérer des actifs et de signer des transactions sur {Sora}, un compte doit être connecté. Les comptes {Sora} peuvent être créés et connectés à l'aide de nos portefeuilles intégrés ou extensions de navigateur.",
         "noAccounts": "Aucun compte n'a été trouvé dans votre extension de navigateur {extension} Veuillez ajouter un compte et réessayer.",
         "selectAccount": "Sélectionnez le compte approprié",
         "action": {
@@ -107,10 +107,10 @@
             "connected": "Connecté",
             "notConnected": "Pas connecté"
         },
-        "internalTitle": "Connectez-vous via {wallet}",
-        "internalText": "Vous pouvez créer ou lier un compte existant via {wallet} . Il stocke les comptes en utilisant le cryptage.",
+        "internalTitle": "Connectez-vous avec {wallet}",
+        "internalText": "Vous pouvez créer ou importer un compte {Sora} existant pour vous connecter à votre compte {wallet}. Toutes les données stockées par {wallet} sont cryptées à l'aide du cryptage avancé intégré.",
         "list": {
-            "simplest": "Option la plus simple",
+            "integrated": "Intégré",
             "extensions": "Rallonges"
         }
     },
@@ -1053,8 +1053,8 @@
             "importAccount": "Compte d'importation"
         },
         "heading": {
-            "seedPhraseTitle": "Phrase de départ",
-            "confirmSeedTitle": "Confirmer la phrase de départ",
+            "seedPhraseTitle": "Mot de passe",
+            "confirmSeedTitle": "Confirmer la phrase secrète",
             "accountDetailsTitle": "Détails du compte",
             "importTitle": "Importer un compte"
         },
@@ -1065,12 +1065,12 @@
             "importAccount": "Importer un compte"
         },
         "accountName": {
-            "placeholder": "Nom du portefeuille",
-            "desc": "C'est le nom de votre wallet qui vous sera visible"
+            "placeholder": "Nom du compte",
+            "desc": "C'est le nom de votre compte. Il ne sera visible que par vous dans {Polkaswap}."
         },
         "password": {
             "placeholder": "Mot de passe",
-            "desc": "Assurez-vous que vous utilisez un mot de passe fort pour une protection adéquate."
+            "desc": "Assurez-vous d'utiliser un mot de passe unique fort pour une protection adéquate (8 caractères minimum)"
         },
         "confirmPassword": {
             "placeholder": "Confirmez le mot de passe"
@@ -1078,11 +1078,11 @@
         "accountMnemonic": {
             "placeholder": "Phrase mnémonique"
         },
-        "seedAdviceText": "Il s'agit d'une graine secrète de votre compte. Veillez à la stocker sur un support non numérique, par exemple du papier.",
-        "confirmSeedText": "Confirmez la phrase de départ en cliquant sur les mots dans le bon ordre",
-        "errorMnemonicText": "Ordre incorrect des phrases de départ",
-        "exportOptionText": "Exporter le fichier de compte .json",
-        "exportJsonText": "Vous pourrez toujours accéder à votre compte en important ce fichier .json. Ne le partagez pas avec qui que ce soit !",
+        "seedAdviceText": "La phrase secrète de 12 mots est une clé privée pour retrouver l'accès à votre compte {Sora} au cas où vous perdriez l'accès à votre compte {wallet}. Rangez-le en toute sécurité dans l'ordre exact dans lequel il apparaît ci-dessus.",
+        "confirmSeedText": "Confirmez la phrase secrète en cliquant sur les mots dans le bon ordre",
+        "errorMnemonicText": "Ordre de phrase de passe incorrect",
+        "exportOptionText": "Exporter le fichier {JSON} pour la restauration du compte",
+        "exportJsonText": "Vous pourrez toujours restaurer votre compte en important ce fichier {JSON}. Ne le partagez avec personne ! Stockez-le en toute sécurité, de préférence crypté.",
         "addAccount": "Ajouter un compte",
         "dialog": {
             "confirmTitle": "Confirmer avec mot de passe",
@@ -1101,16 +1101,20 @@
         "assetsAtRiskText": "Actifs en péril !",
         "deleteAccountText": "Le compte ne peut pas être récupéré sans une phrase de départ, un fichier .json ou s'il est stocké dans une extension. Vous serez déconnecté.",
         "importSteps": {
-            "selectWallet": "Accédez au portefeuille de votre utilisation",
+            "selectWallet": "Ouvrez le portefeuille avec votre (vos) compte(s) existant(s)",
             "selectAccount": "Sélectionnez le compte que vous souhaitez exporter",
             "exportAccount": "Exportez le fichier {JSON}"
         },
-        "exportTutorialsText": "Exporter des tutoriels"
+        "exportTutorialsText": "Exporter des tutoriels",
+        "seedAdviceAdditionTitle": "Ne partagez jamais votre phrase secrète avec qui que ce soit !",
+        "seedAdviceAdditionText": "Si quelqu'un vous demande votre mot de passe, il essaie probablement de vous arnaquer et de voler vos actifs!"
     },
     "hashiBridgeText": "Pont {Hashi}",
     "disclaimerTitle": "Avertissement",
     "explore": {
-        "showOnlyMyPositions": "Afficher uniquement mes positions"
+        "showOnly": "Afficher uniquement {entities}",
+        "myPositions": "mes postes",
+        "synthetics": "jetons synthétiques"
     },
     "tooltips": {
         "roi": "{ROI} signifie retour sur investissement. Il est calculé en divisant le bénéfice réalisé sur un investissement par le coût de cet investissement en pourcentage équivalent.",
@@ -1178,7 +1182,7 @@
     "acceptText": "Accepter et masquer",
     "newAccountsText": "Nouveaux comptes",
     "dragAndDropText": "Faites glisser et déposez ou choisissez le fichier {extension}",
-    "copyPhraseText": "Copier la phrase",
+    "copyPhraseText": "Copier la phrase secrète",
     "stepText": "Marcher",
     "alerts": {
         "drop": "Tombe au-dessous",
@@ -1216,7 +1220,7 @@
     },
     "acceptOnScrollText": "Faites défiler pour accepter",
     "addressBook": {
-        "myExtAccounts": "Mes comptes d'extension",
+        "myAccounts": "Mes comptes",
         "myBook": "Mon livre",
         "searchPlaceholder": "Recherche par adresse, nom ou identité",
         "noFoundRecords": "Aucun enregistrement trouvé",

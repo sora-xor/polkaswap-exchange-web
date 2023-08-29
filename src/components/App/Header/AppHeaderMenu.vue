@@ -28,7 +28,7 @@
             {{ text }}
           </s-dropdown-item>
           <div @click="openNotificationDialog" class="notif-option el-dropdown-menu__item header-menu__item">
-            <bell-icon class="notif-option__bell notif-option__bell--dropdown"></bell-icon>
+            <bell-icon class="notif-option__bell notif-option__bell--dropdown" />
             <span class="notif-option__text">{{ t('browserNotificationDialog.title') }}</span>
           </div>
         </template>
@@ -42,9 +42,10 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import BellIcon from '@/assets/img/browser-notification/bell.svg?inline';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, mutation, state } from '@/store/decorators';
+
+import BellIcon from './BellIcon.vue';
 
 enum HeaderMenuType {
   HideBalances = 'hide-balances',
@@ -243,16 +244,18 @@ $icon-size: 28px;
     width: $icon-size;
     height: $icon-size;
     margin: auto 0;
+    fill: var(--s-color-base-content-tertiary);
+
+    &--dropdown {
+      margin-top: $inner-spacing-mini;
+      margin-right: $basic-spacing-mini;
+    }
   }
 
-  &__bell--dropdown {
-    margin-top: $inner-spacing-mini;
-    margin-right: $basic-spacing-mini;
-    color: var(--s-color-base-content-tertiary);
-  }
-
-  &:hover &__bell--dropdown {
-    color: var(--s-color-base-content-secondary);
+  &:hover {
+    .notif-option__bell {
+      fill: var(--s-color-base-content-secondary);
+    }
   }
 }
 

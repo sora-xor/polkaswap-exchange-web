@@ -55,7 +55,7 @@ const getters = defineGetters<SettingsState>()({
   },
   chartsEnabled(...args): boolean {
     const { state } = settingsGetterContext(args);
-    return !!state.featureFlags.charts && state.сhartsEnabled;
+    return !!state.featureFlags.charts && state.chartsEnabled;
   },
   soraCardEnabled(...args): Nullable<boolean> {
     const { state } = settingsGetterContext(args);
