@@ -27,3 +27,40 @@ export const getRelayChainBlockNumber = async (blockHash: string, api: ApiPromis
 
   return Number(blockNumber.toString());
 };
+
+export const getMessageAcceptedNonces = (events: Array<any>, api: ApiPromise): [number, number] => {
+  const messageAcceptedEvent = events.find((e) =>
+    api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
+  );
+
+  if (!messageAcceptedEvent) {
+    throw new Error('Unable to find "substrateBridgeOutboundChannel.MessageAccepted" event');
+  }
+
+  const batchNonce = messageAcceptedEvent.event.data[1].toNumber();
+  const messageNonce = messageAcceptedEvent.event.data[2].toNumber();
+
+  return [batchNonce, messageNonce];
+};
+
+export const isMessageDispatchedNonces = (
+  sendedBatchNonce: number,
+  sendedMessageNonce: number,
+  e: any,
+  api: ApiPromise
+): boolean => {
+  if (!api.events.substrateDispatch.MessageDispatched.is(e.event)) return false;
+
+  const { batchNonce, messageNonce } = e.event.data[0];
+
+  const eventBatchNonce = batchNonce.unwrap().toNumber();
+  const eventMessageNonce = messageNonce.toNumber();
+
+  if (eventBatchNonce > sendedBatchNonce) {
+    throw new Error(
+      `Parachain channel batch nonce ${eventBatchNonce} is larger than tx batch nonce ${sendedBatchNonce}`
+    );
+  }
+
+  return sendedBatchNonce === eventBatchNonce && sendedMessageNonce === eventMessageNonce;
+};

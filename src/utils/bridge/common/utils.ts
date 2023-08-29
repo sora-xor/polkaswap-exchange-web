@@ -71,35 +71,11 @@ export const getTransactionEvents = async (blockHash: string, transactionHash: s
   if (extrinsicIndex === -1) throw new Error(`Unable to find extrinsic "${transactionHash}" in block "${blockHash}"`);
 
   const blockEvents = await soraApi.system.getBlockEvents(blockHash, api);
-  const transactionEvents = blockEvents.filter((event) => event.phase.asApplyExtrinsic.toNumber() === extrinsicIndex);
-
-  return transactionEvents;
-};
-
-export const findUserTxIdInBlock = async (
-  api: ApiPromise,
-  blockHash: string,
-  soraHash: string,
-  eventMethod: string,
-  eventSection: string
-): Promise<string | undefined> => {
-  const blockEvents = await soraApi.system.getBlockEvents(blockHash, api);
-
-  const event = blockEvents.find(
-    ({ phase, event }) =>
-      phase.isApplyExtrinsic &&
-      event.section === eventSection &&
-      event.method === eventMethod &&
-      event.data?.[0]?.toString() === soraHash
+  const transactionEvents = blockEvents.filter(
+    ({ phase }) => phase.isApplyExtrinsic && phase.asApplyExtrinsic.toNumber() === extrinsicIndex
   );
 
-  if (!event) return undefined;
-
-  const index = event.phase.asApplyExtrinsic.toNumber();
-  const extrinsics = await soraApi.system.getExtrinsicsFromBlock(blockHash, api);
-  const userExtrinsic = extrinsics[index];
-
-  return userExtrinsic.hash.toString();
+  return transactionEvents;
 };
 
 export const findEventInBlock = async ({

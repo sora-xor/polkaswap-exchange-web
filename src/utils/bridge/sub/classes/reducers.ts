@@ -9,6 +9,7 @@ import { getTransactionEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
+import { getMessageAcceptedNonces, isMessageDispatchedNonces } from '@/utils/bridge/sub/utils';
 
 import type { ApiPromise } from '@polkadot/api';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -18,6 +19,8 @@ import type { Subscription } from 'rxjs';
 export class SubBridgeReducer extends BridgeReducer<SubHistory> {
   protected subNetworkAdapter!: SubAdapter;
   protected soraParachainAdapter!: SubAdapter;
+
+  protected asset!: RegisteredAccountAsset;
 
   createConnections(id: string): void {
     const { externalNetwork } = this.getTransaction(id);
@@ -58,40 +61,6 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
       blockHeight,
       blockId,
     };
-  }
-
-  isMessageDispatchedNonces(tx: SubHistory, e: any, api: ApiPromise): boolean {
-    if (!api.events.substrateDispatch.MessageDispatched.is(e.event)) return false;
-
-    const { batchNonce, messageNonce } = e.event.data[0];
-
-    const eventBatchNonce = batchNonce.unwrap().toNumber();
-    const eventMessageNonce = messageNonce.toNumber();
-
-    if (eventBatchNonce > tx.payload.batchNonce) {
-      throw new Error(
-        `[${this.constructor.name}]: Unable to continue track transaction, parachain channel batch nonce ${eventBatchNonce} is larger than tx batch nonce ${tx.payload.batchNonce}`
-      );
-    }
-
-    return tx.payload?.batchNonce === eventBatchNonce && tx.payload?.messageNonce === eventMessageNonce;
-  }
-
-  getMessageAcceptedNonces(events: Array<any>, api: ApiPromise): [number, number] {
-    const messageAcceptedEvent = events.find((e) =>
-      api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
-    );
-
-    if (!messageAcceptedEvent) {
-      throw new Error(
-        `[${this.constructor.name}]: Unable to find "substrateBridgeOutboundChannel.MessageAccepted" event`
-      );
-    }
-
-    const batchNonce = messageAcceptedEvent.event.data[1].toNumber();
-    const messageNonce = messageAcceptedEvent.event.data[2].toNumber();
-
-    return [batchNonce, messageNonce];
   }
 
   getBridgeProxyHash(events: Array<any>, api: ApiPromise): string {
@@ -143,11 +112,13 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
   private async checkTxId(id: string): Promise<void> {
     const tx = this.getTransaction(id);
+    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
+
+    this.asset = { ...asset };
 
     if (tx.txId) return;
     // transaction not signed
     await this.beforeSign(id);
-    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
     await this.subNetworkAdapter.connect();
     await this.subNetworkAdapter.transfer(asset, tx.to as string, tx.amount as string, id);
     // update history to change tx status in ui
@@ -213,6 +184,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     if (tx.payload?.batchNonce) return;
 
+    const sended = new FPNumber(tx.amount as string, this.asset.externalDecimals);
+
     let subscription!: Subscription;
     let messageNonce!: number;
     let batchNonce!: number;
@@ -246,8 +219,11 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
               if (subBridgeApi.formatAddress(recipient.toString()) !== tx.to) return false;
               // asset check
               if (assetId.toString() !== tx.assetAddress) return false;
-              // we can add amount check if all external networks doesn't spent some fee from this amount
-              recipientAmount = amount.toNumber();
+              // amount check
+              // [WARNING] Implementation could be changed: sora parachain doesn't spent xcm fee from amount
+              if (amount.toString() !== sended.toCodecString()) return false;
+
+              recipientAmount = amount.toString();
 
               return true;
             });
@@ -258,7 +234,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
             blockNumber = blockHeight;
 
-            [batchNonce, messageNonce] = this.getMessageAcceptedNonces(
+            [batchNonce, messageNonce] = getMessageAcceptedNonces(
               events.slice(assetAddedToChannelEventIndex),
               this.soraParachainAdapter.api
             );
@@ -281,12 +257,9 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
         .finally(() => this.closeConnections());
     }
 
-    const { amount, assetAddress, externalNetwork, payload: prevPayload } = this.getTransaction(id);
+    const { payload: prevPayload } = this.getTransaction(id);
 
-    const decimals = await subBridgeApi.getSubAssetDecimals(externalNetwork as SubNetwork, assetAddress as string);
-    const sended = new FPNumber(amount as string, decimals);
-    const received = FPNumber.fromCodecValue(recipientAmount, decimals);
-
+    const received = FPNumber.fromCodecValue(recipientAmount, this.asset.externalDecimals);
     const amount2 = received.toString();
     const parachainNetworkFee = sended.sub(received).toCodecString();
     const payload = { ...prevPayload, messageNonce, batchNonce };
@@ -315,7 +288,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
         subscription = eventsObservable.subscribe((eventsVec) => {
           const events = [...eventsVec.toArray()].reverse();
           const substrateDispatchEventIndex = events.findIndex((e) =>
-            this.isMessageDispatchedNonces(tx, e, subBridgeApi.api)
+            isMessageDispatchedNonces(tx.payload.batchNonce, tx.payload.messageNonce, e, subBridgeApi.api)
           );
 
           if (substrateDispatchEventIndex === -1) return;
@@ -402,11 +375,13 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
   private async checkTxId(id: string): Promise<void> {
     const tx = this.getTransaction(id);
+    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
+
+    this.asset = { ...asset };
 
     if (tx.txId) return;
     // transaction not signed
     await this.beforeSign(id);
-    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
     await subBridgeApi.transfer(asset, tx.to as string, tx.amount as string, tx.externalNetwork as SubNetwork, id);
     // update history to change tx status in ui
     this.updateHistory();
@@ -424,7 +399,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const hash = this.getBridgeProxyHash(transactionEvents, subBridgeApi.api);
     this.updateTransactionParams(id, { hash });
 
-    const [batchNonce, messageNonce] = this.getMessageAcceptedNonces(transactionEvents, subBridgeApi.api);
+    const [batchNonce, messageNonce] = getMessageAcceptedNonces(transactionEvents, subBridgeApi.api);
     const payload = { ...tx.payload, batchNonce, messageNonce };
     this.updateTransactionParams(id, { payload });
   }
@@ -455,7 +430,12 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           ([eventsVec, blockHeight]) => {
             const events = [...eventsVec.toArray()].reverse();
             const substrateDispatchEventIndex = events.findIndex((e) =>
-              this.isMessageDispatchedNonces(tx, e, this.soraParachainAdapter.api)
+              isMessageDispatchedNonces(
+                tx.payload.batchNonce,
+                tx.payload.messageNonce,
+                e,
+                this.soraParachainAdapter.api
+              )
             );
 
             if (substrateDispatchEventIndex === -1) return;
@@ -558,12 +538,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         .finally(() => this.subNetworkAdapter.stop());
     }
 
-    const decimals = await subBridgeApi.getSubAssetDecimals(
-      tx.externalNetwork as SubNetwork,
-      tx.assetAddress as string
-    );
-    const sended = new FPNumber(tx.amount as string, decimals);
-    const received = FPNumber.fromCodecValue(amount, decimals);
+    const sended = new FPNumber(tx.amount as string, this.asset.externalDecimals);
+    const received = FPNumber.fromCodecValue(amount, this.asset.externalDecimals);
 
     const amount2 = received.toString();
     const parachainNetworkFee = sended.sub(received).toCodecString();
