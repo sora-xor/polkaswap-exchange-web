@@ -49,8 +49,8 @@ export default class BalanceIndicator extends Mixins(TranslationMixin, mixins.Lo
   async runProgressBarAnimation(): Promise<void> {
     if (this.progressBar) {
       const balanceInteger = Math.round(Number(this.euroBalance));
-      for (let i = 0; i < balanceInteger; i = i + 0.5) {
-        await delay(20);
+      for (let i = 0; i < balanceInteger; i = i + 0.12) {
+        await delay(1);
         this.progressBar.style.setProperty('width', `${i}%`);
       }
     }
