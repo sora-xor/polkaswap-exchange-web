@@ -60,8 +60,8 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
     }
 
     if (ADS.xst && this.pageWasRendered) {
-      // 35% chance to show XST ad
-      if (this.probability() > 0.65) {
+      // 65% chance to show XST ad
+      if (this.probability() > 0.35) {
         this.showXstArticle = true;
       }
     }
