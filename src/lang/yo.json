@@ -1214,9 +1214,9 @@
         "moonpayTitle": "Ra ETH nipasẹ MoonPay",
         "moonpayDesc": "Ra awọn ami ETH lori Ethereum ki o gbe wọn lọ si nẹtiwọki SORA nipasẹ afara",
         "x1Title": "Ra XOR pẹlu kaadi rẹ",
-        "x1Desc": "Ra awọn ami XOR pẹlu debiti tabi kaadi kirẹditi rẹ",
         "x1Btn": "Ra XOR pẹlu kaadi",
-        "errorMessage": "Aforiji fun ohun airọrun. A n ṣiṣẹ takuntakun lati yanju eyi. Jọwọ, gbiyanju lẹẹkansi nigbamii."
+        "errorMessage": "Aforiji fun ohun airọrun. A n ṣiṣẹ takuntakun lati yanju eyi. Jọwọ, gbiyanju lẹẹkansi nigbamii.",
+        "x1Desc": "Ra awọn ami XOR taara lori nẹtiwọọki SORA pẹlu debiti tabi kaadi kirẹditi rẹ"
     },
     "acceptOnScrollText": "Yi lọ lati gba",
     "addressBook": {
