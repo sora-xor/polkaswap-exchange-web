@@ -34,8 +34,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     await Promise.all([this.subNetworkAdapter?.stop(), this.soraParachainAdapter?.stop()]);
   }
 
-  async getHashesByBlockNumber(adapter: SubAdapter, blockHeight: number, extrinsicIndex?: number) {
-    let txId = '';
+  async getHashesByBlockNumber(adapter: SubAdapter, blockHeight: number) {
     let blockId = '';
 
     if (Number.isFinite(blockHeight)) {
@@ -45,7 +44,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
         await new Promise<void>((resolve) => {
           subscription = api.system.getBlockHashObservable(blockHeight, adapter.apiRx).subscribe((hash) => {
             if (hash) {
-              txId = blockId = hash;
+              blockId = hash;
               resolve();
             }
           });
@@ -53,26 +52,18 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
       } finally {
         subscription.unsubscribe();
       }
-
-      if (Number.isFinite(extrinsicIndex)) {
-        const extrinsics = await api.system.getExtrinsicsFromBlock(blockId, adapter.api);
-        const extrinsic = extrinsics[extrinsicIndex as number];
-
-        txId = extrinsic?.hash.toString() ?? '';
-      }
     }
 
     return {
       blockHeight,
       blockId,
-      txId,
     };
   }
 
-  isTransactionNonces(tx: SubHistory, substrateDispatchEvent: any): boolean {
-    if (!substrateDispatchEvent) return false;
+  isMessageDispatchedNonces(tx: SubHistory, e: any, api: ApiPromise): boolean {
+    if (!api.events.substrateDispatch.MessageDispatched.is(e.event)) return false;
 
-    const { batchNonce, messageNonce } = substrateDispatchEvent.event.data[0];
+    const { batchNonce, messageNonce } = e.event.data[0];
 
     const eventBatchNonce = batchNonce.unwrap().toNumber();
     const eventMessageNonce = messageNonce.toNumber();
@@ -86,7 +77,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     return tx.payload?.batchNonce === eventBatchNonce && tx.payload?.messageNonce === eventMessageNonce;
   }
 
-  getMessageAcceptedNonces(api: ApiPromise, events: Array<any>): [number, number] {
+  getMessageAcceptedNonces(events: Array<any>, api: ApiPromise): [number, number] {
     const messageAcceptedEvent = events.find((e) =>
       api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
     );
@@ -103,7 +94,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     return [batchNonce, messageNonce];
   }
 
-  getBridgeProxyHash(api: ApiPromise, events: Array<any>): string {
+  getBridgeProxyHash(events: Array<any>, api: ApiPromise): string {
     const bridgeProxyEvent = events.find((e) => api.events.bridgeProxy.RequestStatusUpdate.is(e.event));
 
     if (!bridgeProxyEvent) {
@@ -268,8 +259,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
             blockNumber = blockHeight;
 
             [batchNonce, messageNonce] = this.getMessageAcceptedNonces(
-              this.soraParachainAdapter.api,
-              events.slice(assetAddedToChannelEventIndex)
+              events.slice(assetAddedToChannelEventIndex),
+              this.soraParachainAdapter.api
             );
 
             resolve();
@@ -281,11 +272,10 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
       // run non blocking process promise
       this.getHashesByBlockNumber(this.soraParachainAdapter, blockNumber)
-        .then(({ blockHeight, blockId, txId }) =>
+        .then(({ blockHeight, blockId }) =>
           this.updateTransactionParams(id, {
             parachainBlockHeight: blockHeight, // parachain block number
             parachainBlockId: blockId, // parachain block hash
-            parachainHash: txId, // parachain tx hash
           })
         )
         .finally(() => this.closeConnections());
@@ -324,14 +314,13 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
         subscription = eventsObservable.subscribe((eventsVec) => {
           const events = [...eventsVec.toArray()].reverse();
-          const substrateDispatchEventIndex = events.findIndex(
-            (e) =>
-              subBridgeApi.api.events.substrateDispatch.MessageDispatched.is(e.event) && this.isTransactionNonces(tx, e)
+          const substrateDispatchEventIndex = events.findIndex((e) =>
+            this.isMessageDispatchedNonces(tx, e, subBridgeApi.api)
           );
 
           if (substrateDispatchEventIndex === -1) return;
 
-          soraHash = this.getBridgeProxyHash(subBridgeApi.api, events.slice(substrateDispatchEventIndex));
+          soraHash = this.getBridgeProxyHash(events.slice(substrateDispatchEventIndex), subBridgeApi.api);
 
           resolve();
         });
@@ -432,10 +421,10 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const transactionHash = tx.txId as string;
     const transactionEvents = await getTransactionEvents(blockHash, transactionHash, subBridgeApi.api);
 
-    const hash = this.getBridgeProxyHash(subBridgeApi.api, transactionEvents);
+    const hash = this.getBridgeProxyHash(transactionEvents, subBridgeApi.api);
     this.updateTransactionParams(id, { hash });
 
-    const [batchNonce, messageNonce] = this.getMessageAcceptedNonces(subBridgeApi.api, transactionEvents);
+    const [batchNonce, messageNonce] = this.getMessageAcceptedNonces(transactionEvents, subBridgeApi.api);
     const payload = { ...tx.payload, batchNonce, messageNonce };
     this.updateTransactionParams(id, { payload });
   }
@@ -465,10 +454,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(
           ([eventsVec, blockHeight]) => {
             const events = [...eventsVec.toArray()].reverse();
-            const substrateDispatchEventIndex = events.findIndex(
-              (e) =>
-                this.soraParachainAdapter.api.events.substrateDispatch.MessageDispatched.is(e.event) &&
-                this.isTransactionNonces(tx, e)
+            const substrateDispatchEventIndex = events.findIndex((e) =>
+              this.isMessageDispatchedNonces(tx, e, this.soraParachainAdapter.api)
             );
 
             if (substrateDispatchEventIndex === -1) return;
@@ -494,11 +481,10 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
       // run non blocking proccess promise
       this.getHashesByBlockNumber(this.soraParachainAdapter, blockNumber)
-        .then(({ blockHeight, blockId, txId }) =>
+        .then(({ blockHeight, blockId }) =>
           this.updateTransactionParams(id, {
             parachainBlockHeight: blockHeight, // parachain block number
             parachainBlockId: blockId, // parachain block hash
-            parachainHash: txId, // parachain tx hash
           })
         )
         .finally(() => this.soraParachainAdapter.stop());
@@ -563,11 +549,10 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
       // run blocking process promise
       await this.getHashesByBlockNumber(this.subNetworkAdapter, blockNumber)
-        .then(({ blockHeight, blockId, txId }) =>
+        .then(({ blockHeight, blockId }) =>
           this.updateTransactionParams(id, {
             externalBlockHeight: blockHeight, // parachain block number
             externalBlockId: blockId, // parachain block hash
-            externalHash: txId, // parachain tx hash
           })
         )
         .finally(() => this.subNetworkAdapter.stop());
