@@ -1,7 +1,12 @@
 <template>
   <div class="ad">
-    <card v-if="showSoraCardAd" @click="goTo(PageNames.SoraCard)" />
-    <xst v-if="showXstArticle" @click="openArticle" />
+    <img
+      v-if="showSoraCardAd"
+      src="@/assets/img/ads/card.svg?inline"
+      alt="soracard"
+      @click="goTo(PageNames.SoraCard)"
+    />
+    <img v-if="showXstArticle" src="@/assets/img/ads/xst.svg?inline" alt="xst platform" @click="openArticle" />
   </div>
 </template>
 
@@ -9,25 +14,22 @@
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import Card from '@/assets/img/ads/card.svg?inline';
-import Xst from '@/assets/img/ads/xst.svg?inline';
 import { Links, PageNames } from '@/consts';
 import { goTo } from '@/router';
-import { getter } from '@/store/decorators';
+import { action, getter } from '@/store/decorators';
+import { VerificationStatus } from '@/types/card';
 
 const ADS = {
   card: true,
   xst: true,
 };
 
-@Component({
-  components: {
-    Card,
-    Xst,
-  },
-})
+@Component
 export default class AppAd extends Mixins(mixins.TranslationMixin) {
   @getter.settings.soraCardEnabled soraCardEnabled!: Nullable<boolean>;
+  @getter.soraCard.currentStatus currentStatus!: VerificationStatus;
+
+  @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
 
   goTo = goTo;
   PageNames = PageNames;
@@ -43,12 +45,13 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
 
   probability = () => Math.random();
 
-  chooseAdToShow(): void {
+  async chooseAdToShow(): Promise<void> {
     this.showSoraCardAd = false;
     this.showXstArticle = false;
 
-    // TODO: add check if already applied for SORA Card
-    if (ADS.card && this.soraCardEnabled) {
+    await this.getUserStatus();
+
+    if (ADS.card && this.soraCardEnabled && !this.currentStatus) {
       // 20% chance to show SORA Card ad
       if (this.probability() > 0.8) {
         this.showSoraCardAd = true;
