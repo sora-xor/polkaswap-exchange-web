@@ -211,6 +211,7 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
     line-height: 15px;
     width: 15.8px;
     padding: 0;
+    position: relative;
 
     background-color: var(--s-color-base-content-tertiary);
     color: var(--s-color-base-on-accent) !important;

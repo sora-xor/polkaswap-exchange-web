@@ -126,7 +126,7 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   }
 
   ul {
-    margin-top: $basic-spacing / 2;
+    margin-top: $inner-spacing-mini;
   }
 }
 [design-system-theme='dark'] .disclaimer-warning-icon .s-icon-notifications-alert-triangle-24 {
