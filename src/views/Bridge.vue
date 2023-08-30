@@ -63,7 +63,7 @@
                 value-can-be-hidden
                 with-left-shift
                 value-class="input-value--primary"
-                :value="formatBalance(isSoraToEvm)"
+                :value="formatBalance(firstBalance)"
                 :fiat-value="firstFieldFiatBalance"
               />
             </div>
@@ -158,7 +158,7 @@
                 value-can-be-hidden
                 with-left-shift
                 value-class="input-value--primary"
-                :value="formatBalance(!isSoraToEvm)"
+                :value="formatBalance(secondBalance)"
                 :fiat-value="secondFieldFiatBalance"
               />
             </div>
@@ -259,8 +259,7 @@
         <bridge-transaction-details
           v-if="areNetworksConnected && !isZeroAmountReceived && isRegisteredAsset"
           class="info-line-container"
-          :asset="asset"
-          :native-token-symbol="nativeTokenSymbol"
+          :native-token="nativeToken"
           :external-network-fee="formattedExternalNetworkFee"
           :sora-network-fee="formattedSoraNetworkFee"
           :network-name="networkName"
@@ -277,19 +276,19 @@
         :amount-received="amountReceived"
         :network="networkSelected"
         :network-type="networkType"
-        :native-token-symbol="nativeTokenSymbol"
+        :native-token="nativeToken"
         :external-network-fee="formattedExternalNetworkFee"
         :sora-network-fee="formattedSoraNetworkFee"
         @confirm="confirmTransaction"
       />
       <network-fee-warning-dialog
         :visible.sync="showWarningFeeDialog"
-        :fee="formattedSoraNetworkFee"
+        :fee="formatStringValue(formattedSoraNetworkFee)"
         @confirm="confirmNetworkFeeWariningDialog"
       />
       <network-fee-warning-dialog
         :visible.sync="showWarningExternalFeeDialog"
-        :fee="formattedExternalNetworkFee"
+        :fee="formatStringValue(formattedExternalNetworkFee)"
         :symbol="nativeTokenSymbol"
         :payoff="false"
         @confirm="confirmExternalNetworkFeeWarningDialog"
@@ -413,12 +412,22 @@ export default class Bridge extends Mixins(
     return this.asset?.address ?? '';
   }
 
+  get firstBalance(): Nullable<FPNumber> {
+    return this.getBalance(this.isSoraToEvm);
+  }
+
+  get secondBalance(): Nullable<FPNumber> {
+    return this.getBalance(!this.isSoraToEvm);
+  }
+
   get firstFieldFiatBalance(): Nullable<string> {
-    return this.isSoraToEvm ? this.getFiatBalance(this.asset as AccountAsset) : undefined;
+    return this.firstBalance ? this.getFiatAmountByFPNumber(this.firstBalance, this.asset as AccountAsset) : undefined;
   }
 
   get secondFieldFiatBalance(): Nullable<string> {
-    return !this.isSoraToEvm ? this.getFiatBalance(this.asset as AccountAsset) : undefined;
+    return this.secondBalance
+      ? this.getFiatAmountByFPNumber(this.secondBalance, this.asset as AccountAsset)
+      : undefined;
   }
 
   get isZeroAmountSend(): boolean {
@@ -536,8 +545,7 @@ export default class Bridge extends Mixins(
   }
 
   get isNativeTokenSelected(): boolean {
-    // check by symbol because of substrate assets
-    return this.asset?.symbol === this.nativeTokenSymbol;
+    return this.nativeToken?.address === this.asset?.address;
   }
 
   get isNativeTokenSufficientForNextOperation(): boolean {
@@ -560,16 +568,20 @@ export default class Bridge extends Mixins(
     return isSora ? this.asset?.decimals : this.asset?.externalDecimals;
   }
 
-  formatBalance(isSora = true): string {
+  private getBalance(isSora = true): Nullable<FPNumber> {
     if (!(this.asset && (this.isRegisteredAsset || isSora))) {
-      return '-';
+      return null;
     }
     const balance = getAssetBalance(this.asset, { internal: isSora });
     if (!balance) {
-      return '-';
+      return null;
     }
     const decimals = this.getDecimals(isSora);
-    return this.formatCodecNumber(balance, decimals);
+    return this.getFPNumberFromCodec(balance, decimals);
+  }
+
+  formatBalance(balance: Nullable<FPNumber>): string {
+    return balance ? balance.toLocaleString() : '-';
   }
 
   async created(): Promise<void> {

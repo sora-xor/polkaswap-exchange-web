@@ -10,7 +10,7 @@ import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 const getters = defineGetters<BridgeState>()({
   asset(...args): Nullable<RegisteredAccountAsset> {
@@ -28,6 +28,24 @@ const getters = defineGetters<BridgeState>()({
     } as RegisteredAccountAsset;
 
     return asset;
+  },
+
+  nativeToken(...args): Nullable<RegisteredAccountAsset> {
+    const { rootGetters, state } = bridgeGetterContext(args);
+    const { selectedNetwork } = rootGetters.web3;
+
+    if (!selectedNetwork) return null;
+
+    const { symbol } = selectedNetwork.nativeCurrency;
+    const soraAsset = rootGetters.assets.whitelistAssets.find((asset) => asset.symbol === symbol);
+
+    if (!soraAsset) return null;
+
+    const assetData = rootGetters.assets.assetDataByAddress(soraAsset.address);
+
+    if (!assetData) return null;
+
+    return assetData;
   },
 
   isRegisteredAsset(...args): boolean {

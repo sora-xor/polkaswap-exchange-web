@@ -13,7 +13,7 @@
       :label-tooltip="t('ethNetworkFeeTooltipText', { network: networkName })"
       :value="formatStringValue(externalNetworkFee)"
       :asset-symbol="nativeTokenSymbol"
-      :fiat-value="getFiatAmountByString(externalNetworkFee, asset)"
+      :fiat-value="getFiatAmountByString(externalNetworkFee, nativeToken)"
       is-formatted
     >
       <template v-if="isExternalFeeNotZero" #info-line-value-prefix>
@@ -44,11 +44,14 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   readonly XOR = XOR;
 
-  @Prop({ default: () => null, type: Object }) readonly asset!: Nullable<RegisteredAccountAsset>;
-  @Prop({ default: '', type: String }) readonly nativeTokenSymbol!: string;
+  @Prop({ default: () => null, type: Object }) readonly nativeToken!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: ZeroStringValue, type: String }) readonly externalNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
   @Prop({ default: '', type: String }) readonly networkName!: string;
+
+  get nativeTokenSymbol(): string {
+    return this.nativeToken?.symbol ?? '';
+  }
 
   get formattedNetworkFeeLabel(): string {
     return `${this.networkName} ${this.t('networkFeeText')}`;

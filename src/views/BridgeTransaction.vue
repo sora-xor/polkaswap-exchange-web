@@ -80,6 +80,7 @@
         :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', externalNetworkId)"
         :value="txExternalNetworkFeeFormatted"
         :asset-symbol="nativeTokenSymbol"
+        :fiat-value="txExternalNetworkFeeFiatValue"
       >
         <template v-if="!txHasExternalNetworkFee" #info-line-value-prefix>
           <span class="info-line-value-prefix">~</span>
@@ -307,7 +308,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txSoraNetworkFeeFormatted(): string {
-    return this.getStringFromCodec(this.txSoraNetworkFee, this.xor?.decimals);
+    return this.formatCodecNumber(this.txSoraNetworkFee, this.xor?.decimals);
   }
 
   get txSoraNetworkFeeFiatValue(): Nullable<string> {
@@ -324,6 +325,10 @@ export default class BridgeTransaction extends Mixins(
 
   get txExternalNetworkFeeFormatted(): string {
     return this.formatCodecNumber(this.txExternalNetworkFee, this.nativeTokenDecimals);
+  }
+
+  get txExternalNetworkFeeFiatValue(): Nullable<string> {
+    return this.nativeToken ? this.getFiatAmountByCodecString(this.txExternalNetworkFee, this.nativeToken) : null;
   }
 
   get txSoraHash(): string {
