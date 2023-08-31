@@ -436,7 +436,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txExternalAccountPlaceholder(): string {
-    const network = this.isSoraToEvm ? this.externalNetworkId : undefined;
+    const network = this.isEvmTxType || this.isSoraToEvm ? this.externalNetworkId : undefined;
     return this.getNetworkText('accountAddressText', network);
   }
 
@@ -484,8 +484,15 @@ export default class BridgeTransaction extends Mixins(
     );
   }
 
+  get isEvmTxType(): boolean {
+    return (
+      !!this.externalNetworkType &&
+      [BridgeNetworkType.EvmLegacy, BridgeNetworkType.Evm].includes(this.externalNetworkType)
+    );
+  }
+
   get isRetryAvailable(): boolean {
-    return this.txIsUnsigned || this.externalNetworkType === BridgeNetworkType.EvmLegacy;
+    return this.txIsUnsigned || this.isEvmTxType;
   }
 
   get isAnotherEvmAddress(): boolean {
