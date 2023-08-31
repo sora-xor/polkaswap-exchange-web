@@ -237,21 +237,15 @@ export default class AddLiquidity extends Mixins(
   }
 
   get isFirstMaxButtonAvailable(): boolean {
-    if (!this.firstToken) return false;
+    if (!(this.firstToken && this.isLoggedIn)) return false;
 
-    return (
-      this.isLoggedIn &&
-      isMaxButtonAvailable(this.areTokensSelected, this.firstToken, this.firstTokenValue, this.networkFee, this.xor)
-    );
+    return isMaxButtonAvailable(this.firstToken, this.firstTokenValue, this.networkFee, this.xor);
   }
 
   get isSecondMaxButtonAvailable(): boolean {
-    if (!this.secondToken) return false;
+    if (!(this.secondToken && this.isLoggedIn)) return false;
 
-    return (
-      this.isLoggedIn &&
-      isMaxButtonAvailable(this.areTokensSelected, this.secondToken, this.secondTokenValue, this.networkFee, this.xor)
-    );
+    return isMaxButtonAvailable(this.secondToken, this.secondTokenValue, this.networkFee, this.xor);
   }
 
   get isInsufficientBalance(): boolean {

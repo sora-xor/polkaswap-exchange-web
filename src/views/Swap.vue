@@ -349,18 +349,14 @@ export default class Swap extends Mixins(
   }
 
   get isMaxSwapAvailable(): boolean {
-    if (!(this.tokenFrom && this.tokenTo)) return false;
-    return (
-      this.isLoggedIn &&
-      isMaxButtonAvailable(
-        this.areTokensSelected,
-        this.tokenFrom,
-        this.fromValue,
-        this.networkFee,
-        this.xor,
-        false,
-        this.isXorOutputSwap
-      )
+    if (!this.preparedForSwap) return false;
+
+    return isMaxButtonAvailable(
+      this.tokenFrom as AccountAsset,
+      this.fromValue,
+      this.networkFee,
+      this.xor,
+      this.isXorOutputSwap
     );
   }
 
