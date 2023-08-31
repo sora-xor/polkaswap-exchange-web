@@ -1112,7 +1112,9 @@
     "hashiBridgeText": "{Hashi} híd",
     "disclaimerTitle": "Jogi nyilatkozat",
     "explore": {
-        "showOnlyMyPositions": "Csak az én pozíciómat mutasd"
+        "showOnly": "Csak {entities} megjelenítése",
+        "myPositions": "saját pozícióim",
+        "synthetics": "szintetikus tokenek"
     },
     "tooltips": {
         "roi": "A {ROI} a befektetés megtérülését jelenti. Kiszámítása úgy történik, hogy a befektetésen megszerzett nyereséget elosztjuk a befektetés százalékban kifejezett költségével.",

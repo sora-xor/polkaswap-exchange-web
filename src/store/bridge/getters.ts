@@ -78,7 +78,6 @@ const getters = defineGetters<BridgeState>()({
   },
   operation(...args): Operation {
     const { state, getters } = bridgeGetterContext(args);
-    // [TODO]: add SUB network operations
     if (getters.isEthBridge) {
       return state.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming;
     } else if (getters.isEvmBridge) {

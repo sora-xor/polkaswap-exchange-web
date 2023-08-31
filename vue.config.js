@@ -33,34 +33,49 @@ module.exports = defineConfig({
   /* eslint-disable */
   /* prettier-ignore-start */
   chainWebpack: (config) => {
-    const svgRule = config.module.rule('svg');
-    svgRule.uses.clear();
-    config.module
-      .rule('svg')
-        .oneOf('inline-svg')
-          .resourceQuery(/inline/)
-          .use('babel')
-            .loader('babel-loader')
-            .end()
-          .use('vue-svg-loader')
-            .loader('vue-svg-loader')
-            .end()
-          .end()
-        .oneOf('file')
-          .type('asset/resource')
-          .end();
+    // [vue-cli-service 5.0.8 migration]
+    // [Issue]: Deprecated in webpack 5 "cache-loader" appends to vue rule, if it's exists in node-modules
+    // https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/config/base.js#L59
+    // [Solution]: Write default vue rule config
+    const vueRule = config.module.rule('vue');
+    vueRule.uses.clear();
+    vueRule
+      .use('vue-loader')
+        .loader(require.resolve('@vue/vue-loader-v15'))
+        .options({
+          compilerOptions: {
+            whitespace: 'condense'
+          }
+        });
 
-    // https://webpack.js.org/guides/asset-modules/
+    const svgRule = config.module.rule('svg');
+    const svgGenerator = svgRule.get('generator');
+    svgRule.uses.clear();
+    svgRule.delete('type');
+    svgRule.delete('generator');
+    svgRule
+      .oneOf('inline')
+        .resourceQuery(/inline/)
+        .type('asset/inline')
+        .end()
+      .oneOf('file')
+        .type('asset/resource')
+        .set('generator', svgGenerator)
+        .end();
+
     const imagesRule = config.module.rule('images');
+    const imagesGenerator = imagesRule.get('generator');
     imagesRule.uses.clear();
-    config.module
-      .rule('images')
-        .oneOf('asset-inline')
+    imagesRule.delete('type');
+    imagesRule.delete('generator');
+    imagesRule
+        .oneOf('inline')
           .resourceQuery(/inline/)
           .type('asset/inline')
           .end()
         .oneOf('asset')
           .type('asset')
+          .set('generator', imagesGenerator)
           .end();
   },
   /* eslint-enable */

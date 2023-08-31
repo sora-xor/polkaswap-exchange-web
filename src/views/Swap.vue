@@ -70,7 +70,7 @@
         </template>
         <template #fiat-amount-append v-if="tokenTo">
           <value-status-wrapper :value="fiatDifference" badge class="price-difference__value">
-            (<formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>)
+            <formatted-amount :value="fiatDifferenceFormatted">%</formatted-amount>
           </value-status-wrapper>
         </template>
       </token-input>
@@ -156,7 +156,6 @@
 </template>
 
 <script lang="ts">
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
@@ -169,7 +168,6 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, MarketAlgorithms, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import type { DexQuoteData } from '@/store/swap/types';
 import {
   isMaxButtonAvailable,
   getMaxValue,
@@ -181,6 +179,8 @@ import {
 } from '@/utils';
 import { DifferenceStatus, getDifferenceStatus } from '@/utils/swap';
 
+import type { DexQuoteData } from '../store/swap/types';
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type {
   QuotePayload,
   PrimaryMarketsEnabledAssets,
@@ -215,7 +215,6 @@ export default class Swap extends Mixins(
   TokenSelectMixin,
   SelectedTokenRouteMixin
 ) {
-  @state.settings.сhartsEnabled сhartsEnabled!: boolean;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.swap.dexQuoteData private dexQuoteData!: Record<DexId, DexQuoteData>;
   @state.swap.enabledAssets private enabledAssets!: PrimaryMarketsEnabledAssets;
@@ -426,7 +425,7 @@ export default class Swap extends Mixins(
     });
   }
 
-  getTokenBalance(token: AccountAsset): CodecString {
+  getTokenBalance(token: Nullable<AccountAsset>): CodecString {
     return getAssetBalance(token);
   }
 

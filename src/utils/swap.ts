@@ -6,7 +6,7 @@ export enum DifferenceStatus {
 
 export const getDifferenceStatus = (value: number): string => {
   if (value > 0) return DifferenceStatus.Success;
-  if (value < -5) return DifferenceStatus.Error;
+  if (value < -10) return DifferenceStatus.Error;
   if (value < -1) return DifferenceStatus.Warning;
   return '';
 };

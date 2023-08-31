@@ -1112,7 +1112,9 @@
     "hashiBridgeText": "{Hashi} Afara",
     "disclaimerTitle": "Akiyesi",
     "explore": {
-        "showOnlyMyPositions": "Ṣe afihan awọn ipo mi nikan"
+        "showOnly": "Ṣafihan {entities} nikan",
+        "myPositions": "awọn ipo mi",
+        "synthetics": "sintetiki àmi"
     },
     "tooltips": {
         "roi": "{ROI} duro fun Pada lori Idoko-owo. O ṣe iṣiro nipasẹ pinpin èrè ti o jo'gun lori idoko-owo nipasẹ idiyele ti idoko-owo yẹn ni deede ogorun kan.",
