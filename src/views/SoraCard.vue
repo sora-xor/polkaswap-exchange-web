@@ -131,13 +131,13 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
   }
 
   created(): void {
+    this.withApi(this.handleAccountChange);
+
     const refreshToken = localStorage.getItem('PW-refresh-token');
 
     if (this.source === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
       (window as WindowInjectedWeb3).injectedWeb3?.['fearless-wallet']?.saveSoraCardToken?.(refreshToken);
     }
-
-    this.withApi(this.handleAccountChange);
   }
 
   async beforeRouteUpdate(to: Route, from: Route, next: NavigationGuardNext<Vue>): Promise<void> {
