@@ -130,8 +130,8 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
     this.subscribeToTotalXorBalance();
   }
 
-  created(): void {
-    this.withApi(this.handleAccountChange);
+  async created(): Promise<void> {
+    await this.withApi(this.handleAccountChange);
 
     const refreshToken = localStorage.getItem('PW-refresh-token');
 
