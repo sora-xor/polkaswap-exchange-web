@@ -82,7 +82,7 @@
         :asset-symbol="nativeTokenSymbol"
         :fiat-value="txExternalNetworkFeeFiatValue"
       >
-        <template v-if="!txHasExternalNetworkFee" #info-line-value-prefix>
+        <template v-if="txExternalNetworkFeePrefix" #info-line-value-prefix>
           <span class="info-line-value-prefix">~</span>
         </template>
       </info-line>
@@ -187,10 +187,15 @@ import { Component, Mixins } from 'vue-property-decorator';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { Components, PageNames } from '@/consts';
+import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
-import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientNativeTokenForFee } from '@/utils';
+import {
+  asZeroValue,
+  hasInsufficientBalance,
+  hasInsufficientXorForFee,
+  hasInsufficientNativeTokenForFee,
+} from '@/utils';
 import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
@@ -315,16 +320,18 @@ export default class BridgeTransaction extends Mixins(
     return this.getFiatAmountByCodecString(this.txSoraNetworkFee);
   }
 
-  get txHasExternalNetworkFee(): boolean {
-    return !!this.historyItem?.externalNetworkFee;
-  }
-
   get txExternalNetworkFee(): CodecString {
     return this.historyItem?.externalNetworkFee ?? this.externalNetworkFee;
   }
 
   get txExternalNetworkFeeFormatted(): string {
     return this.formatCodecNumber(this.txExternalNetworkFee, this.nativeTokenDecimals);
+  }
+
+  get txExternalNetworkFeePrefix(): boolean {
+    if (this.txExternalNetworkFeeFormatted === ZeroStringValue) return false;
+
+    return !this.historyItem?.externalNetworkFee;
   }
 
   get txExternalNetworkFeeFiatValue(): Nullable<string> {

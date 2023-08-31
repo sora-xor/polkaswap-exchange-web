@@ -4,6 +4,7 @@ import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { combineLatest } from 'rxjs';
 
+import { ZeroStringValue } from '@/consts';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import { getTransactionEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
@@ -252,10 +253,9 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     const received = FPNumber.fromCodecValue(recipientAmount, this.asset.externalDecimals);
     const amount2 = received.toString();
-    const parachainNetworkFee = sended.sub(received).toCodecString();
     const payload = { ...prevPayload, messageNonce, batchNonce };
 
-    this.updateTransactionParams(id, { amount2, parachainNetworkFee, payload });
+    this.updateTransactionParams(id, { amount2, payload });
   }
 
   private async waitForSoraInboundMessageNonce(id: string): Promise<void> {
@@ -529,15 +529,12 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         .finally(() => this.subNetworkAdapter.stop());
     }
 
-    const sended = new FPNumber(tx.amount as string, this.asset.externalDecimals);
     const received = FPNumber.fromCodecValue(amount, this.asset.externalDecimals);
-
     const amount2 = received.toString();
-    const parachainNetworkFee = sended.sub(received).toCodecString();
 
     this.updateTransactionParams(id, {
       amount2,
-      parachainNetworkFee,
+      externalNetworkFee: ZeroStringValue,
     });
   }
 }
