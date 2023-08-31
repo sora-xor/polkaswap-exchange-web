@@ -31,6 +31,15 @@ import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/cons
 import type { BridgeTransactionData, BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { ActionContext } from 'vuex';
 
+function getBridgeApi(context: ActionContext<any, any>) {
+  const { getters } = bridgeActionContext(context);
+
+  if (getters.isSubBridge) return subBridgeApi;
+  if (getters.isEvmBridge) return evmBridgeApi;
+
+  return ethBridgeApi;
+}
+
 function checkEvmNetwork(context: ActionContext<any, any>): void {
   const { rootGetters } = bridgeActionContext(context);
   if (!rootGetters.web3.isValidNetwork) {
@@ -290,7 +299,7 @@ async function updateBridgeProxyLockedBalance(context: ActionContext<any, any>):
   const { networkSelected, networkType } = rootState.web3;
 
   if (address && networkSelected && networkType) {
-    const bridgeApi = getters.bridgeApi as typeof evmBridgeApi | typeof subBridgeApi;
+    const bridgeApi = getBridgeApi(context) as typeof evmBridgeApi | typeof subBridgeApi;
     const data = await bridgeApi.getLockedAssets(networkSelected as never, address);
     const balance = data.toString();
     commit.setAssetLockedBalance(balance);
@@ -441,9 +450,10 @@ const actions = defineActions({
   },
 
   async generateHistoryItem(context, playground): Promise<IBridgeTransaction> {
-    const { dispatch, getters } = bridgeActionContext(context);
+    const { dispatch } = bridgeActionContext(context);
     const historyData = bridgeDataToHistoryItem(context, playground);
-    const historyItem = getters.bridgeApi.generateHistoryItem(historyData as any);
+    const bridgeApi = getBridgeApi(context);
+    const historyItem = bridgeApi.generateHistoryItem(historyData as any);
 
     if (!historyItem) {
       throw new Error('[Bridge]: "generateHistoryItem" failed');
@@ -455,8 +465,9 @@ const actions = defineActions({
   },
 
   updateInternalHistory(context): void {
-    const { getters, commit } = bridgeActionContext(context);
-    const history = getters.bridgeApi.history;
+    const { commit } = bridgeActionContext(context);
+    const bridgeApi = getBridgeApi(context);
+    const history = bridgeApi.history;
     commit.setInternalHistory(history as Record<string, IBridgeTransaction>);
   },
 
@@ -487,7 +498,8 @@ const actions = defineActions({
 
     if (!id) return;
 
-    const item = getters.bridgeApi.history[id] as IBridgeTransaction;
+    const bridgeApi = getBridgeApi(context);
+    const item = bridgeApi.history[id] as IBridgeTransaction;
 
     if (!item) return;
 
@@ -511,7 +523,7 @@ const actions = defineActions({
       };
     }
     // remove tx from history
-    getters.bridgeApi.removeHistory(id);
+    bridgeApi.removeHistory(id);
 
     dispatch.updateInternalHistory();
   },

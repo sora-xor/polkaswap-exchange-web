@@ -147,7 +147,7 @@
           @focus="setFocusedField(FocusedField.Received)"
         >
           <div slot="top" class="input-line">
-            <div class="input-title" @click="handleChangeNetwork">
+            <div class="input-title">
               <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
               <span class="input-title--network">{{ getBridgeItemTitle(!isSoraToEvm) }}</span>
               <i :class="`network-icon network-icon--${getNetworkIcon(!isSoraToEvm ? 0 : networkSelected)}`" />
@@ -725,6 +725,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
 .bridge {
   flex-direction: column;
   align-items: center;
+
   &-content {
     @include bridge-content;
     @include token-styles;
@@ -747,29 +748,23 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   &-header-buttons {
     display: flex;
     align-items: center;
+    gap: $inner-spacing-mini;
     margin-left: auto;
-
-    & > *:not(:first-child) {
-      margin-left: $inner-spacing-mini;
-    }
   }
 
-  .bridge-item {
-    &-footer {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      font-size: var(--s-font-size-mini);
-      line-height: var(--s-line-height-medium);
-      color: var(--s-color-base-content-primary);
-    }
-    & + .bridge-info {
-      margin-top: $basic-spacing * 2;
-    }
+  &-item-footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-medium);
+    color: var(--s-color-base-content-primary);
   }
-  .bridge-network-address {
+
+  &-network-address {
     @include copy-address;
   }
+
   &-footer {
     display: flex;
     align-items: center;

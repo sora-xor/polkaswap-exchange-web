@@ -4,13 +4,10 @@ import { defineGetters } from 'direct-vuex';
 
 import { ZeroStringValue } from '@/consts';
 import { bridgeGetterContext } from '@/store/bridge';
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
-import type { RegisteredAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 const getters = defineGetters<BridgeState>()({
   asset(...args): Nullable<RegisteredAccountAsset> {
@@ -31,21 +28,20 @@ const getters = defineGetters<BridgeState>()({
   },
 
   nativeToken(...args): Nullable<RegisteredAccountAsset> {
-    const { rootGetters, state } = bridgeGetterContext(args);
-    const { selectedNetwork } = rootGetters.web3;
+    const { rootGetters } = bridgeGetterContext(args);
+    const {
+      web3: { selectedNetwork },
+      assets: { whitelistAssets, assetDataByAddress },
+    } = rootGetters;
 
     if (!selectedNetwork) return null;
-
+    // find sora asset in whitelist by symbol (we know only external native token symbol)
     const { symbol } = selectedNetwork.nativeCurrency;
-    const soraAsset = rootGetters.assets.whitelistAssets.find((asset) => asset.symbol === symbol);
+    const soraAsset = whitelistAssets.find((asset) => asset.symbol === symbol);
 
     if (!soraAsset) return null;
 
-    const assetData = rootGetters.assets.assetDataByAddress(soraAsset.address);
-
-    if (!assetData) return null;
-
-    return assetData;
+    return assetDataByAddress(soraAsset.address);
   },
 
   isRegisteredAsset(...args): boolean {
@@ -135,14 +131,6 @@ const getters = defineGetters<BridgeState>()({
     if (!state.historyId) return null;
 
     return getters.history[state.historyId] ?? null;
-  },
-
-  bridgeApi(...args): typeof ethBridgeApi | typeof evmBridgeApi | typeof subBridgeApi {
-    const { getters } = bridgeGetterContext(args);
-
-    if (getters.isSubBridge) return subBridgeApi;
-
-    return getters.isEthBridge ? ethBridgeApi : evmBridgeApi;
   },
 });
 
