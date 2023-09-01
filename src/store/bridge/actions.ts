@@ -1,6 +1,9 @@
+import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { BridgeCurrencyType, BridgeRequestAssetKind, BridgeHistory, FPNumber, Operation } from '@sora-substrate/util';
 import { getAssetBalance } from '@sora-substrate/util/build/assets';
+import { DAI } from '@sora-substrate/util/build/assets/consts';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { DexId } from '@sora-substrate/util/build/dex/consts';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
@@ -24,11 +27,12 @@ import { updateSubBridgeHistory } from '@/utils/bridge/sub/classes/history';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { SignTxResult } from './types';
-import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { BridgeTransactionData, BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 
 function getBridgeApi(context: ActionContext<any, any>) {
@@ -324,6 +328,27 @@ async function getExternalTransferFee(context: ActionContext<any, any>): Promise
   commit.setExternalTransferFee(fee);
 }
 
+async function calcAssetLimitAmount(assetAddress: string, amountUSD: CodecString): Promise<CodecString> {
+  const limitUSD = FPNumber.fromCodecValue(amountUSD);
+
+  if (limitUSD.isZero()) return ZeroStringValue;
+
+  const { amount } = await api.swap.getResultFromBackend(
+    DAI.address,
+    assetAddress,
+    1,
+    true,
+    LiquiditySourceTypes.MulticollateralBondingCurvePool,
+    false,
+    DexId.XOR
+  );
+
+  const assetPriceUSD = FPNumber.fromCodecValue(amount);
+  const assetLimit = limitUSD.div(assetPriceUSD).toCodecString();
+
+  return assetLimit;
+}
+
 const actions = defineActions({
   setSendedAmount(context, value?: string) {
     const { commit, state, getters } = bridgeActionContext(context);
@@ -394,7 +419,7 @@ const actions = defineActions({
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await dispatch.updateBalancesAndFees();
+    await Promise.all([dispatch.updateBalancesAndFees(), dispatch.updateAssetLimitSubscription()]);
   },
 
   async updateExternalFees(context): Promise<void> {
@@ -433,6 +458,33 @@ const actions = defineActions({
     }
 
     commit.setAssetLockedBalanceFetching(false);
+  },
+
+  async updateAssetLimitSubscription(context): Promise<void> {
+    const { state, commit } = bridgeActionContext(context);
+
+    commit.resetAssetLimitSubscription();
+
+    const { assetAddress } = state;
+
+    if (!assetAddress) return;
+
+    const hasTransferLimit = await api.bridgeProxy.isAssetTransferLimited(assetAddress);
+
+    if (!hasTransferLimit) return;
+
+    let subscription!: Subscription;
+
+    await new Promise<void>((resolve) => {
+      subscription = api.bridgeProxy.getCurrentTransferLimitObservable().subscribe(async (amountUSD) => {
+        const assetLimit = await calcAssetLimitAmount(assetAddress, amountUSD);
+        commit.setAssetLimit(assetLimit);
+
+        resolve();
+      });
+    });
+
+    commit.setAssetLimitSubscription(subscription);
   },
 
   async updateExternalBlockNumber(context): Promise<void> {

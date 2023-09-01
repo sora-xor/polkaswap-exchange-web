@@ -10,6 +10,8 @@ function initialState(): BridgeState {
     assetRecipientBalance: null, // balance for bridge network
     assetLockedBalance: null, // asset balance locked on bridge
     assetLockedBalanceFetching: false,
+    assetLimit: null, // asset outgoing transfer limit
+    assetLimitSubscription: null,
     amountSend: '',
     amountReceived: '',
     focusedField: null,

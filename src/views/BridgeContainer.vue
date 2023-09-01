@@ -14,25 +14,35 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import { action } from '@/store/decorators';
+import { action, mutation } from '@/store/decorators';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { Subscription } from 'rxjs';
 
 @Component
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
+  @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
+  @action.web3.restoreSelectedNetwork restoreSelectedNetwork!: AsyncFnWithoutArgs;
   @action.bridge.updateBalancesAndFees private updateBalancesAndFees!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBalance private updateExternalBalance!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBlockNumber private updateExternalBlockNumber!: AsyncFnWithoutArgs;
-  @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
-  @action.web3.restoreSelectedNetwork restoreSelectedNetwork!: AsyncFnWithoutArgs;
+  @action.bridge.updateAssetLimitSubscription private updateAssetLimitSubscription!: AsyncFnWithoutArgs;
+  @mutation.bridge.resetAssetLimitSubscription private resetAssetLimitSubscription!: FnWithoutArgs;
 
   private unwatchEthereum!: FnWithoutArgs;
   private blockHeadersSubscriber: Nullable<Subscription> = null;
 
   async created(): Promise<void> {
-    this.setStartSubscriptions([this.subscribeOnSystemBlockUpdate, this.subscribeOnEvm]);
-    this.setResetSubscriptions([this.unsubscribeFromSystemBlockUpdate, this.unsubscribeFromEvm]);
+    this.setStartSubscriptions([
+      this.subscribeOnSystemBlockUpdate,
+      this.subscribeOnEvm,
+      this.updateAssetLimitSubscription,
+    ]);
+    this.setResetSubscriptions([
+      this.unsubscribeFromSystemBlockUpdate,
+      this.unsubscribeFromEvm,
+      this.resetAssetLimitSubscription,
+    ]);
 
     await this.withParentLoading(async () => {
       await this.getSupportedApps();

@@ -3,6 +3,7 @@ import omit from 'lodash/fp/omit';
 
 import type { BridgeState, FocusedField } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
+import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<BridgeState>()({
   setSoraToEvm(state, isSoraToEvm: boolean): void {
@@ -33,6 +34,20 @@ const mutations = defineMutations<BridgeState>()({
   },
   setExternalBalancesFetching(state, flag: boolean): void {
     state.externalBalancesFetching = flag;
+  },
+
+  setAssetLimit(state, limit: CodecString): void {
+    state.assetLimit = limit;
+  },
+
+  setAssetLimitSubscription(state, subscription: Subscription): void {
+    state.assetLimitSubscription = subscription;
+  },
+
+  resetAssetLimitSubscription(state): void {
+    state.assetLimitSubscription?.unsubscribe();
+    state.assetLimitSubscription = null;
+    state.assetLimit = null;
   },
 
   setAmountSend(state, value?: string): void {
