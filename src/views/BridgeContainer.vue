@@ -26,8 +26,8 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   @action.bridge.updateBalancesAndFees private updateBalancesAndFees!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBalance private updateExternalBalance!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBlockNumber private updateExternalBlockNumber!: AsyncFnWithoutArgs;
-  @action.bridge.updateAssetLimitSubscription private updateAssetLimitSubscription!: AsyncFnWithoutArgs;
-  @mutation.bridge.resetAssetLimitSubscription private resetAssetLimitSubscription!: FnWithoutArgs;
+  @action.bridge.subscribeOnOutgoingLimitUSD private subscribeOnOutgoingLimitUSD!: AsyncFnWithoutArgs;
+  @mutation.bridge.resetOutgoingLimitUSDSubscription private resetOutgoingLimitUSDSubscription!: FnWithoutArgs;
 
   private unwatchEthereum!: FnWithoutArgs;
   private blockHeadersSubscriber: Nullable<Subscription> = null;
@@ -36,12 +36,12 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     this.setStartSubscriptions([
       this.subscribeOnSystemBlockUpdate,
       this.subscribeOnEvm,
-      this.updateAssetLimitSubscription,
+      this.subscribeOnOutgoingLimitUSD,
     ]);
     this.setResetSubscriptions([
       this.unsubscribeFromSystemBlockUpdate,
       this.unsubscribeFromEvm,
-      this.resetAssetLimitSubscription,
+      this.resetOutgoingLimitUSDSubscription,
     ]);
 
     await this.withParentLoading(async () => {

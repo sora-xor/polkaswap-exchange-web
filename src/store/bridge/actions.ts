@@ -149,13 +149,23 @@ async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void>
   commit.setExternalNetworkFee(fee);
 }
 
-async function getExternalNetworkFee(context: ActionContext<any, any>): Promise<void> {
+async function updateExternalNetworkFee(context: ActionContext<any, any>): Promise<void> {
   const { getters } = bridgeActionContext(context);
 
   if (getters.isSubBridge) {
     await getSubNetworkFee(context);
   } else {
     await getEvmNetworkFee(context);
+  }
+}
+
+async function updateExternalLockedBalance(context: ActionContext<any, any>): Promise<void> {
+  const { getters } = bridgeActionContext(context);
+
+  if (getters.isEthBridge) {
+    await updateEthLockedBalance(context);
+  } else {
+    await updateBridgeProxyLockedBalance(context);
   }
 }
 
@@ -312,7 +322,7 @@ async function updateBridgeProxyLockedBalance(context: ActionContext<any, any>):
   commit.setAssetLockedBalance();
 }
 
-async function getExternalTransferFee(context: ActionContext<any, any>): Promise<void> {
+async function updateExternalTransferFee(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, state, rootState } = bridgeActionContext(context);
 
   let fee = ZeroStringValue;
@@ -328,25 +338,49 @@ async function getExternalTransferFee(context: ActionContext<any, any>): Promise
   commit.setExternalTransferFee(fee);
 }
 
-async function calcAssetLimitAmount(assetAddress: string, amountUSD: CodecString): Promise<CodecString> {
-  const limitUSD = FPNumber.fromCodecValue(amountUSD);
+async function updateAssetTransferLimit(context: ActionContext<any, any>): Promise<void> {
+  const { state, commit } = bridgeActionContext(context);
 
-  if (limitUSD.isZero()) return ZeroStringValue;
+  if (!(state.assetAddress && state.assetTransferLimited && state.outgoingLimitUSD)) {
+    commit.setAssetTransferLimit(null);
+    return;
+  }
 
-  const { amount } = await api.swap.getResultFromBackend(
-    DAI.address,
-    assetAddress,
-    1,
-    true,
-    LiquiditySourceTypes.MulticollateralBondingCurvePool,
-    false,
-    DexId.XOR
-  );
+  const limitUSD = FPNumber.fromCodecValue(state.outgoingLimitUSD);
 
-  const assetPriceUSD = FPNumber.fromCodecValue(amount);
+  if (limitUSD.isZero()) {
+    commit.setAssetTransferLimit(ZeroStringValue);
+    return;
+  }
+
+  const referenceAssetAddress = DAI.address;
+
+  let assetPriceUSD!: FPNumber;
+
+  if (state.assetAddress !== referenceAssetAddress) {
+    try {
+      const result = await api.swap.getResultFromBackend(
+        referenceAssetAddress,
+        state.assetAddress,
+        1,
+        true,
+        LiquiditySourceTypes.MulticollateralBondingCurvePool,
+        false,
+        DexId.XOR
+      );
+
+      assetPriceUSD = FPNumber.fromCodecValue(result.amount);
+    } catch {
+      // [TODO] Zero or null?
+      commit.setAssetTransferLimit(null);
+    }
+  } else {
+    assetPriceUSD = FPNumber.ONE;
+  }
+
   const assetLimit = limitUSD.div(assetPriceUSD).toCodecString();
 
-  return assetLimit;
+  commit.setAssetTransferLimit(assetLimit);
 }
 
 const actions = defineActions({
@@ -387,13 +421,20 @@ const actions = defineActions({
   },
 
   async updateBalancesAndFees(context): Promise<void> {
-    const { dispatch } = bridgeActionContext(context);
+    const { commit, dispatch } = bridgeActionContext(context);
+    const { updateExternalBalance } = dispatch;
+
+    commit.setBalancesAndFeesFetching(true);
 
     await Promise.all([
-      dispatch.updateExternalBalance(),
-      dispatch.updateExternalLockedBalance(),
-      dispatch.updateExternalFees(),
+      updateExternalBalance(),
+      updateExternalLockedBalance(context),
+      updateExternalNetworkFee(context),
+      updateExternalTransferFee(context),
+      updateAssetTransferLimit(context),
     ]);
+
+    commit.setBalancesAndFeesFetching(false);
   },
 
   async switchDirection(context): Promise<void> {
@@ -419,72 +460,46 @@ const actions = defineActions({
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await Promise.all([dispatch.updateBalancesAndFees(), dispatch.updateAssetLimitSubscription()]);
-  },
-
-  async updateExternalFees(context): Promise<void> {
-    const { commit } = bridgeActionContext(context);
-
-    commit.setExternalNetworkFeeFetching(true);
-
-    await Promise.all([getExternalNetworkFee(context), getExternalTransferFee(context)]);
-
-    commit.setExternalNetworkFeeFetching(false);
+    await dispatch.checkAssetTransferLimit();
+    await dispatch.updateBalancesAndFees();
   },
 
   async updateExternalBalance(context): Promise<void> {
-    const { commit, getters } = bridgeActionContext(context);
-
-    commit.setExternalBalancesFetching(true);
+    const { getters } = bridgeActionContext(context);
 
     if (getters.isSubBridge) {
       await updateSubBalances(context);
     } else {
       await updateEvmBalances(context);
     }
-
-    commit.setExternalBalancesFetching(false);
   },
 
-  async updateExternalLockedBalance(context): Promise<void> {
-    const { commit, getters } = bridgeActionContext(context);
-
-    commit.setAssetLockedBalanceFetching(true);
-
-    if (getters.isEthBridge) {
-      await updateEthLockedBalance(context);
-    } else {
-      await updateBridgeProxyLockedBalance(context);
-    }
-
-    commit.setAssetLockedBalanceFetching(false);
-  },
-
-  async updateAssetLimitSubscription(context): Promise<void> {
+  async checkAssetTransferLimit(context): Promise<void> {
     const { state, commit } = bridgeActionContext(context);
 
-    commit.resetAssetLimitSubscription();
+    if (!state.assetAddress) return;
 
-    const { assetAddress } = state;
+    const hasLimit = await api.bridgeProxy.isAssetTransferLimited(state.assetAddress);
 
-    if (!assetAddress) return;
+    commit.setAssetTransferLimited(hasLimit);
+  },
 
-    const hasTransferLimit = await api.bridgeProxy.isAssetTransferLimited(assetAddress);
+  async subscribeOnOutgoingLimitUSD(context): Promise<void> {
+    const { commit } = bridgeActionContext(context);
 
-    if (!hasTransferLimit) return;
+    commit.resetOutgoingLimitUSDSubscription();
 
     let subscription!: Subscription;
 
     await new Promise<void>((resolve) => {
-      subscription = api.bridgeProxy.getCurrentTransferLimitObservable().subscribe(async (amountUSD) => {
-        const assetLimit = await calcAssetLimitAmount(assetAddress, amountUSD);
-        commit.setAssetLimit(assetLimit);
-
+      subscription = api.bridgeProxy.getCurrentTransferLimitObservable().subscribe((amountUSD) => {
+        commit.setOutgoingLimitUSD(amountUSD);
+        updateAssetTransferLimit(context);
         resolve();
       });
     });
 
-    commit.setAssetLimitSubscription(subscription);
+    commit.setOutgoingLimitUSDSubscription(subscription);
   },
 
   async updateExternalBlockNumber(context): Promise<void> {

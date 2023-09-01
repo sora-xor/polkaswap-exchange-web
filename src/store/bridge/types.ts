@@ -12,17 +12,17 @@ export type BridgeState = {
   assetSenderBalance: Nullable<CodecString>;
   assetRecipientBalance: Nullable<CodecString>;
   assetLockedBalance: Nullable<CodecString>;
-  assetLockedBalanceFetching: boolean;
-  assetLimit: Nullable<CodecString>;
-  assetLimitSubscription: Nullable<Subscription>;
+  assetTransferLimited: boolean;
+  assetTransferLimit: Nullable<CodecString>;
+  outgoingLimitUSD: Nullable<CodecString>;
+  outgoingLimitUSDSubscription: Nullable<Subscription>;
   amountSend: string;
   amountReceived: string;
   focusedField: Nullable<FocusedField>;
   externalTransferFee: CodecString;
   externalNetworkFee: CodecString;
-  externalNetworkFeeFetching: boolean;
+  balancesAndFeesFetching: boolean;
   externalNativeBalance: Nullable<CodecString>;
-  externalBalancesFetching: boolean;
   externalBlockNumber: number;
   // history sources (unsynced localstorage & network)
   historyInternal: Record<string, IBridgeTransaction>;

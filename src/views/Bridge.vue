@@ -356,9 +356,7 @@ export default class Bridge extends Mixins(
   readonly KnownSymbols = KnownSymbols;
   readonly FocusedField = FocusedField;
 
-  @state.bridge.externalNetworkFeeFetching private externalNetworkFeeFetching!: boolean;
-  @state.bridge.externalBalancesFetching private externalBalancesFetching!: boolean;
-  @state.bridge.assetLockedBalanceFetching private assetLockedBalanceFetching!: boolean;
+  @state.bridge.balancesAndFeesFetching private balancesAndFeesFetching!: boolean;
   @state.bridge.amountSend amountSend!: string;
   @state.bridge.amountReceived amountReceived!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
@@ -525,13 +523,7 @@ export default class Bridge extends Mixins(
   }
 
   get isConfirmTxLoading(): boolean {
-    return (
-      this.isSelectAssetLoading ||
-      this.externalNetworkFeeFetching ||
-      this.externalBalancesFetching ||
-      this.registeredAssetsFetching ||
-      this.assetLockedBalanceFetching
-    );
+    return this.isSelectAssetLoading || this.balancesAndFeesFetching || this.registeredAssetsFetching;
   }
 
   get isXorSufficientForNextOperation(): boolean {

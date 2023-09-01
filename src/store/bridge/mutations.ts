@@ -25,29 +25,32 @@ const mutations = defineMutations<BridgeState>()({
   setAssetLockedBalance(state, balance: Nullable<CodecString> = null): void {
     state.assetLockedBalance = balance;
   },
-  setAssetLockedBalanceFetching(state, flag: boolean): void {
-    state.assetLockedBalanceFetching = flag;
-  },
 
   setExternalBalance(state, balance: Nullable<CodecString> = null): void {
     state.externalNativeBalance = balance;
   },
-  setExternalBalancesFetching(state, flag: boolean): void {
-    state.externalBalancesFetching = flag;
+
+  setAssetTransferLimited(state, flag: boolean): void {
+    state.assetTransferLimited = flag;
   },
 
-  setAssetLimit(state, limit: CodecString): void {
-    state.assetLimit = limit;
+  setAssetTransferLimit(state, amount: Nullable<CodecString>): void {
+    state.assetTransferLimit = amount;
   },
 
-  setAssetLimitSubscription(state, subscription: Subscription): void {
-    state.assetLimitSubscription = subscription;
+  setOutgoingLimitUSD(state, limitUSD: Nullable<CodecString>): void {
+    state.outgoingLimitUSD = limitUSD;
   },
 
-  resetAssetLimitSubscription(state): void {
-    state.assetLimitSubscription?.unsubscribe();
-    state.assetLimitSubscription = null;
-    state.assetLimit = null;
+  setOutgoingLimitUSDSubscription(state, subscription: Subscription): void {
+    state.outgoingLimitUSDSubscription = subscription;
+  },
+
+  resetOutgoingLimitUSDSubscription(state): void {
+    state.outgoingLimitUSDSubscription?.unsubscribe();
+    state.outgoingLimitUSDSubscription = null;
+    state.outgoingLimitUSD = null;
+    state.assetTransferLimit = null;
   },
 
   setAmountSend(state, value?: string): void {
@@ -62,8 +65,8 @@ const mutations = defineMutations<BridgeState>()({
     state.focusedField = field;
   },
 
-  setExternalNetworkFeeFetching(state, flag: boolean): void {
-    state.externalNetworkFeeFetching = flag;
+  setBalancesAndFeesFetching(state, flag: boolean): void {
+    state.balancesAndFeesFetching = flag;
   },
 
   setExternalNetworkFee(state, fee: CodecString): void {

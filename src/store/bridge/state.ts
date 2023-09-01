@@ -9,17 +9,17 @@ function initialState(): BridgeState {
     assetSenderBalance: null, // balance for sora
     assetRecipientBalance: null, // balance for bridge network
     assetLockedBalance: null, // asset balance locked on bridge
-    assetLockedBalanceFetching: false,
-    assetLimit: null, // asset outgoing transfer limit
-    assetLimitSubscription: null,
+    assetTransferLimited: false, // is asset outgoing transfer limited
+    assetTransferLimit: null, // outgoing transfer limit in asset amount
+    outgoingLimitUSD: null, // outgoing transfer limit in USD
+    outgoingLimitUSDSubscription: null,
     amountSend: '',
     amountReceived: '',
     focusedField: null,
     externalTransferFee: ZeroStringValue, // fee for transfer between networks (xcm message fee for substrate network)
     externalNetworkFee: ZeroStringValue, // fee for transaction execution
-    externalNetworkFeeFetching: false,
+    balancesAndFeesFetching: false,
     externalNativeBalance: ZeroStringValue, // balance for external native token (like ETH)
-    externalBalancesFetching: false,
     externalBlockNumber: 0,
     // history sources
     historyInternal: {}, // localstorage history
