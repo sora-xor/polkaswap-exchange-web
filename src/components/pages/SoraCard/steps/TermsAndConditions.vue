@@ -1,8 +1,7 @@
 <template>
   <div class="tos" v-loading="parentLoading">
     <p class="tos__pre-disclaimer">
-      We want you to know exactly how SORA Card services work, who needs your details and why. Reviewing these policies
-      will help you to continue using the app with peace of mind.
+      {{ t('card.termsAndConditionsPreDisclaimer') }}
     </p>
     <div class="tos__disclaimer">
       <h4 class="tos__disclaimer-header">{{ t('disclaimerTitle') }}</h4>
@@ -29,6 +28,7 @@
         <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
       </div>
     </div>
+    <p class="tos__continue-block">{{ t('card.termsAndConditionsWarning') }}</p>
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirmToS">
       <span class="text">{{ t('card.acceptAndContinue') }}</span>
     </s-button>
@@ -108,7 +108,6 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
     line-height: 150%;
     text-align: center;
     letter-spacing: -0.02em;
-    color: var(--s-color-brand-day);
     width: 95%;
     margin-bottom: 16px;
   }
@@ -158,6 +157,11 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
       margin-bottom: var(--s-size-mini);
       padding-right: var(--s-size-mini);
     }
+  }
+
+  &__continue-block {
+    margin: 0 20px;
+    text-align: center;
   }
 
   .sora-card__btn {

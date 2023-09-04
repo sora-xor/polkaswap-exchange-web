@@ -1,9 +1,22 @@
 {
     "card": {
         "termsAndConditions": "Zasady i Warunki",
+        "termsAndConditionsPreDisclaimer": "Chcemy, abyś wiedział dokładnie, jak będzie działać usługa karty SORA, kto i dlaczego potrzebuje Twoich danych. Zapoznanie się z tymi zasadami pomoże Ci bezpiecznie korzystać z aplikacji.",
         "disclaimerCollectData": "Aby uzyskać konto IBAN potrzebne do karty SORA, użytkownicy muszą przejść proces KYC z wystawcą karty. Jest to wymagana zgodność. Społeczność SORA nie gromadzi i nie będzie gromadzić żadnych danych osobowych.",
         "privacyPolicy": "Polityka prywatności",
+        "termsAndConditionsWarning": "Kontynuując, potwierdzasz, że przeczytałeś, zrozumiałeś i zaakceptowałeś te zasady",
         "acceptAndContinue": "Zaakceptuj i kontynuuj",
+        "getPrepared": "Przygotować się",
+        "guideline": {
+            "photoTitle": "Prześlij zdjęcie swojego dokumentu tożsamości",
+            "photoDesc": "Paszport, prawo jazdy, dowód osobisty lub zezwolenie na pobyt",
+            "selfieTitle": "Zrobić selfie",
+            "selfieDesc": "Wytyczne zostaną przekazane w trakcie procesu",
+            "proofAddressTitle": "Prześlij zdjęcie potwierdzające adres",
+            "proofAddressDesc": "Oficjalny dokument (rachunek za media, wyciąg bankowy, oświadczenie rządowe lub korespondencja), który zawiera Twoje pełne imię i nazwisko oraz adres i który nie jest starszy niż 3 miesiące. \n\n Uwaga: wyciągi z neobanków, takich jak Revolut i N26, nie są obecnie postrzegane jako ważny dowód adresu.",
+            "personalTitle": "Prześlij swoje dane osobowe",
+            "personalDesc": "Wypełnij formularz, podając swoje imię i nazwisko oraz adres"
+        },
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "Wyślij kod SMS",
         "firstNamePlaceholder": "Imię",
@@ -19,19 +32,10 @@
         "getSoraCardBtn": "Odbierz Kartę SORA za darmo",
         "bridgeTokensBtn": "Żetony mostowe",
         "depositX1Btn": "Kup XORa",
-        "reIssuanceFee": "Roczna opłata za ponowne wydanie 0 €",
         "freeStartDesc": "{value} XOR na Twoim koncie na darmowy start",
         "completeKYC": "Ukończ KYC",
         "phoneConfirmation": "Potwierdzenie telefoniczne",
         "emailConfirmation": "Potwierdzenie e-mail",
-        "roadmap": {
-            "contactInfoTitle": "Zweryfikuj dane kontaktowe",
-            "contactInfoDesc": "Adres e-mail i numer telefonu",
-            "docsTitle": "Zweryfikuj dokumenty",
-            "docsDesc": "Selfie z dokumentem",
-            "personalDataTitle": "Prześlij dane osobowe",
-            "personalDataDesc": "Imię i nazwisko oraz potwierdzenie adresu"
-        },
         "letsStartBtn": "zaczynajmy",
         "otpPlaceholder": "Kod weryfikacyjny",
         "confirmCodeBtn": "Potwierdź kod SMS",
@@ -58,6 +62,28 @@
         "userNotFound": "Nie znaleziono numeru telefonu komórkowego, sprawdź go ponownie i spróbuj ponownie.",
         "code": "Kod",
         "getSoraCardDesc": "Uzyskaj dostęp do konta Euro IBAN i karty debetowej w swoim portfelu SORA",
-        "emailSpamReminder": "Dostarczenie wiadomości e-mail może zająć kilka minut. Sprawdź folder ze spamem, jeśli nie otrzymałeś e-maila po 5 minutach."
+        "reIssuanceFee": "Roczna opłata za usługę 0 €",
+        "freeCardIssuance": "Bezpłatne wydanie karty",
+        "loginBtn": "Zaloguj się albo Zarejestruj",
+        "telegramSupport": "Wsparcie telegramu",
+        "cardHub": {
+            "logout": "Wyloguj się z karty SORA",
+            "topup": "Uzupełniać",
+            "transfer": "Przenosić",
+            "exchange": "Giełda",
+            "freeze": "Zamrażać",
+            "comingSoon": "Zarządzanie kartami już wkrótce",
+            "ibanLabel": "Dane konta IBAN"
+        },
+        "emailSpamReminder": "Dostarczenie wiadomości e-mail może zająć kilka minut. Sprawdź folder ze spamem, jeśli nie otrzymałeś e-maila po 5 minutach.",
+        "gettingCardForFree": "Kartę otrzymujesz za darmo!",
+        "holdSufficientXor": "Na swoim koncie SORA posiadasz XOR o wartości 100 EUR",
+        "holdNotSufficientXor": "Jeśli posiadasz, stawiasz lub zapewniasz płynność XOR o wartości co najmniej 100 € na swoim koncie SORA",
+        "xorAmountNeeded": "Potrzebujesz jeszcze {xorAmount} XOR (€ {euroAmount} )",
+        "xorAmountNeededTitle": "Potrzebujesz {value} XOR, aby otrzymać bezpłatną kartę",
+        "cardhub": {
+            "accountInfo": "informacje o koncie"
+        },
+        "attentionText": "Uwaga"
     }
 }

@@ -11,7 +11,7 @@
     <phone v-else-if="step === KycProcess.Phone" @confirm="confirmPhone" />
     <email v-else-if="step === KycProcess.Email" @confirm="confirmEmail" />
     <payment v-else-if="step === KycProcess.Payment" @confirm="confirmPayment" />
-    <road-map v-else-if="step === KycProcess.RoadMap" @confirm="confirmReadiness" />
+    <guidance v-else-if="step === KycProcess.Guidance" @confirm="confirmReadiness" />
     <kyc-view v-else-if="step === KycProcess.KycView" @confirm="confirmKyc" />
   </wallet-base>
 </template>
@@ -27,10 +27,10 @@ import { CardUIViews } from '@/types/card';
 
 enum KycProcess {
   TermsAndConditions,
-  RoadMap,
   Phone,
   Email,
   Payment,
+  Guidance,
   KycView,
 }
 
@@ -38,7 +38,7 @@ enum KycProcess {
   components: {
     WalletBase: components.WalletBase,
     TermsAndConditions: lazyComponent(Components.TermsAndConditions),
-    RoadMap: lazyComponent(Components.RoadMap),
+    Guidance: lazyComponent(Components.Guidance),
     Phone: lazyComponent(Components.Phone),
     Email: lazyComponent(Components.Email),
     Payment: lazyComponent(Components.Payment),
@@ -73,13 +73,13 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
       return;
     }
 
-    if (this.step === KycProcess.RoadMap) {
+    if (this.step === KycProcess.Guidance) {
       this.step = KycProcess.TermsAndConditions;
       return;
     }
 
     if (this.step === KycProcess.KycView) {
-      this.step = KycProcess.RoadMap;
+      this.step = KycProcess.Guidance;
     }
   }
 
@@ -87,8 +87,8 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
     switch (this.step) {
       case KycProcess.TermsAndConditions:
         return this.t('card.termsAndConditions');
-      case KycProcess.RoadMap:
-        return this.t('card.completeKYC');
+      case KycProcess.Guidance:
+        return this.t('card.getPrepared');
       case KycProcess.Phone:
         return this.t('card.phoneConfirmation');
       case KycProcess.Email:
@@ -109,7 +109,7 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
   }
 
   confirmPayment(): void {
-    this.step = KycProcess.RoadMap;
+    this.step = KycProcess.Guidance;
   }
 
   confirmPhone(state: CardUIViews): void {
@@ -118,7 +118,7 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
         this.step = KycProcess.Payment;
         break;
       case CardUIViews.Kyc:
-        this.step = KycProcess.RoadMap;
+        this.step = KycProcess.Guidance;
         break;
       case CardUIViews.Email:
         this.step = KycProcess.Email;
@@ -141,7 +141,7 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
     }
 
     if (state === CardUIViews.Kyc) {
-      this.step = KycProcess.RoadMap;
+      this.step = KycProcess.Guidance;
     }
   }
 
@@ -160,7 +160,7 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
 
   mounted(): void {
     if (this.getReadyPage) {
-      this.step = KycProcess.RoadMap;
+      this.step = KycProcess.Guidance;
     }
   }
 }

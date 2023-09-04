@@ -170,7 +170,7 @@ export enum Components {
   Phone = 'pages/SoraCard/steps/Phone',
   Email = 'pages/SoraCard/steps/Email',
   Payment = 'pages/SoraCard/steps/Payment',
-  RoadMap = 'pages/SoraCard/steps/RoadMap',
+  Guidance = 'pages/SoraCard/steps/Guidance',
   KycView = 'pages/SoraCard/steps/KycView',
   // Paywings
   X1Dialog = 'pages/X1/X1Dialog',

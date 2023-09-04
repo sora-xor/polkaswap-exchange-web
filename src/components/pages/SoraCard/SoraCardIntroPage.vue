@@ -10,7 +10,7 @@
     <div v-if="isLoggedIn" class="sora-card__info">
       <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
       <p class="sora-card__info-text">
-        <span class="sora-card__info-text">{{ '$0 annual service fee' }}</span>
+        <span class="sora-card__info-text">{{ t('card.reIssuanceFee') }}</span>
       </p>
     </div>
     <div v-if="wasEuroBalanceLoaded && isLoggedIn" class="sora-card__balance-indicator">
@@ -18,16 +18,22 @@
         <div class="sora-card__balance-section">
           <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
           <div>
-            <p class="sora-card__info-text">Free card issuance</p>
+            <p class="sora-card__info-text">{{ t('card.freeCardIssuance') }}</p>
             <p class="sora-card__info-text-details sora-card__info-text-details--secondary">
-              You hold $100 worth of XOR in your SORA Account
+              {{ t('card.holdSufficientXor') }}
             </p>
             <span class="progress-bar progress-bar--complete" />
-            <p class="sora-card__info-text-details">You’re getting the card for free!</p>
+            <p class="sora-card__info-text-details">{{ t('card.gettingCardForFree') }}</p>
           </div>
         </div>
       </div>
       <balance-indicator v-else />
+    </div>
+    <div class="sora-card__unsupported-countries-disclaimer">
+      {{ t('card.unsupportedCountriesDisclaimer') }}
+      <span class="sora-card__unsupported-countries-disclaimer--link" @click="openList">{{
+        t('card.unsupportedCountriesLink')
+      }}</span>
     </div>
     <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
       <s-button
@@ -40,12 +46,6 @@
       </s-button>
     </div>
 
-    <!-- <div class="sora-card__unsupported-countries-disclaimer">
-      {{ t('card.unsupportedCountriesDisclaimer') }}
-      <span class="sora-card__unsupported-countries-disclaimer--link" @click="openList">{{
-        t('card.unsupportedCountriesLink')
-      }}</span>
-    </div> -->
     <tos-dialog :visible.sync="showListDialog" :title="t('card.unsupportedCountries')" />
   </div>
 </template>
@@ -97,7 +97,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
       return this.t('connectWalletText');
     }
 
-    return 'Log in or Sign up';
+    return this.t('card.loginBtn');
   }
 
   get btnLoading(): boolean {
@@ -257,17 +257,13 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   }
 
   &__unsupported-countries-disclaimer {
-    // display: none;
-    position: absolute;
     color: var(--s-color-base-content-secondary);
     text-align: center;
-    font-size: 16px;
-    bottom: -70px;
-    width: 24%;
-    line-height: 24px;
-
+    margin-top: var(--s-size-mini);
+    width: 75%;
     &--link {
-      border-bottom: 1px solid;
+      border-bottom: 1px solid var(--s-color-theme-accent);
+      color: var(--s-color-theme-accent);
       &:hover {
         cursor: pointer;
       }

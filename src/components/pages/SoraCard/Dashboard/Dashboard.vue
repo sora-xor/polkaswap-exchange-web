@@ -9,7 +9,7 @@
         draggable="false"
         class="unselectable sora-card-hub-image"
       />
-      <p class="sora-card-hub-text">Card management coming soon</p>
+      <p class="sora-card-hub-text">{{ t('card.cardHub.comingSoon') }}</p>
       <div class="sora-card-hub-options">
         <s-button
           v-for="option in options"
@@ -26,13 +26,13 @@
     </div>
 
     <div class="sora-card container sora-card-hub-info" v-loading="loading">
-      <h4 class="sora-card-hub-info-title">Account information</h4>
+      <h4 class="sora-card-hub-info-title">{{ t('card.cardhub.accountInfo') }}</h4>
       <div v-if="userInfo.iban" class="sora-card-hub-info-iban">
-        <s-input :placeholder="'IBAN Account Details'" :value="iban" readonly />
+        <s-input :placeholder="t('card.cardHub.ibanLabel')" :value="iban" readonly />
         <s-icon name="basic-copy-24" @click.native="handleCopyIban" />
       </div>
       <div class="sora-card-hub-logout" @click="logoutFromSoraCard">
-        <span>{{ 'Log out from SORA Card' }}</span>
+        <span>{{ t('card.cardHub.logout') }}</span>
         <s-icon name="arrows-chevron-right-rounded-24" size="18" />
       </div>
     </div>
@@ -43,10 +43,6 @@
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import ExchangeIcon from '@/assets/img/sora-card/hub/exchange.svg?inline';
-import FreezeIcon from '@/assets/img/sora-card/hub/freeze.svg?inline';
-import TopUpIcon from '@/assets/img/sora-card/hub/topup.svg?inline';
-import TransferIcon from '@/assets/img/sora-card/hub/transfer.svg?inline';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
 import { UserInfo } from '@/types/card';
@@ -71,20 +67,20 @@ type Options = { icon: OptionsIcon; text: string; type: Option };
 
 @Component({
   components: {
-    TopUpIcon,
-    TransferIcon,
-    FreezeIcon,
-    ExchangeIcon,
+    TopUpIcon: () => import('./Icons/TopUp.vue'),
+    TransferIcon: () => import('./Icons/Transfer.vue'),
+    FreezeIcon: () => import('./Icons/Freeze.vue'),
+    ExchangeIcon: () => import('./Icons/Exchange.vue'),
   },
 })
 export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @state.soraCard.userInfo userInfo!: UserInfo;
 
-  readonly options: Array<Options> = [
-    { icon: OptionsIcon.TopUp, text: 'Top Up', type: Option.TopUp },
-    { icon: OptionsIcon.Transfer, text: 'Transfer', type: Option.Transfer },
-    { icon: OptionsIcon.Freeze, text: 'Freeze', type: Option.Freeze },
-    { icon: OptionsIcon.Exchange, text: 'Exchange', type: Option.Exchange },
+  options: Array<Options> = [
+    { icon: OptionsIcon.TopUp, text: this.t('card.cardHub.topup'), type: Option.TopUp },
+    { icon: OptionsIcon.Transfer, text: this.t('card.cardHub.transfer'), type: Option.Transfer },
+    { icon: OptionsIcon.Freeze, text: this.t('card.cardHub.freeze'), type: Option.Freeze },
+    { icon: OptionsIcon.Exchange, text: this.t('card.cardHub.exchange'), type: Option.Exchange },
   ];
 
   get iban(): Nullable<string> {

@@ -75,7 +75,7 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
   ];
 
   get title(): string {
-    return `You need ${this.xorToDeposit.format(3)} XOR to receive a free card`;
+    return this.t('card.xorAmountNeededTitle', { value: this.xorToDeposit.format(3) });
   }
 
   get btnLoading(): boolean {

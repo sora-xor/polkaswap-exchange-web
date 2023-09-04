@@ -1,9 +1,22 @@
 {
     "card": {
         "termsAndConditions": "podmienky",
+        "termsAndConditionsPreDisclaimer": "Chceme, aby ste presne vedeli, ako bude služba SORA karta fungovať, kto potrebuje vaše údaje a prečo. Ak si prečítate tieto pravidlá, pomôže vám to pokojne používať aplikáciu.",
         "disclaimerCollectData": "Aby používatelia získali účet IBAN potrebný pre kartu SORA, musia prejsť procesom KYC s vydavateľom karty. Vyžaduje sa to súlad. Komunita SORA nezhromažďuje a nebude zhromažďovať žiadne vaše osobné údaje.",
         "privacyPolicy": "Zásady ochrany osobných údajov",
+        "termsAndConditionsWarning": "Pokračovaním potvrdzujete, že ste si prečítali, porozumeli a prijali tieto zásady",
         "acceptAndContinue": "Prijať a pokračovať",
+        "getPrepared": "Pripravte sa",
+        "guideline": {
+            "photoTitle": "Odošlite fotografiu dokladu totožnosti",
+            "photoDesc": "Pas, vodičský preukaz, občiansky preukaz alebo povolenie na pobyt",
+            "selfieTitle": "Urobte si selfie",
+            "selfieDesc": "Usmernenie bude poskytnuté počas procesu",
+            "proofAddressTitle": "Predložte fotografiu dokladu o adrese",
+            "proofAddressDesc": "Oficiálny dokument (účet za energie, výpis z účtu, vyhlásenie vlády alebo korešpondencia), ktorý obsahuje vaše celé meno a adresu a ktorý nie je starší ako 3 mesiace. \n\n Poznámka: Výpisy z neobankov ako Revolut a N26 sa v súčasnosti nepovažujú za platný doklad o adrese.",
+            "personalTitle": "Odošlite svoje osobné údaje",
+            "personalDesc": "Vo formulári vyplňte svoje meno a adresu"
+        },
         "emailPlaceholder": "Email",
         "sendCodeBtn": "Pošlite SMS kód",
         "firstNamePlaceholder": "Krstné meno",
@@ -19,19 +32,10 @@
         "getSoraCardBtn": "Získajte kartu SORA zadarmo",
         "bridgeTokensBtn": "Mostové žetóny",
         "depositX1Btn": "Kúpte si XOR",
-        "reIssuanceFee": "0 € ročný poplatok za opätovné vydanie",
         "freeStartDesc": "{value} XOR vo vašom účte na bezplatný začiatok",
         "completeKYC": "Dokončite KYC",
         "phoneConfirmation": "Telefonické potvrdenie",
         "emailConfirmation": "E-mailové potvrdenie",
-        "roadmap": {
-            "contactInfoTitle": "Overte kontaktné údaje",
-            "contactInfoDesc": "Email a telefónne číslo",
-            "docsTitle": "Overte dokumenty",
-            "docsDesc": "Selfie s dokumentom",
-            "personalDataTitle": "Odošlite osobné údaje",
-            "personalDataDesc": "Celé meno a doklad o adrese"
-        },
         "letsStartBtn": "Začnime",
         "otpPlaceholder": "Overovací kód",
         "confirmCodeBtn": "Potvrďte SMS kód",
@@ -58,6 +62,28 @@
         "userNotFound": "Nenašlo sa žiadne mobilné číslo, skontrolujte ho a skúste to znova.",
         "code": "kód",
         "getSoraCardDesc": "Získajte účet v mene Euro IBAN a debetnú kartu, ktoré sú dostupné vo vašej peňaženke SORA",
-        "emailSpamReminder": "Doručenie e-mailu môže trvať niekoľko minút. Ak ste e-mail nedostali do 5 minút, overte si priečinok so spamom."
+        "reIssuanceFee": "0 € ročný servisný poplatok",
+        "freeCardIssuance": "Bezplatné vydanie karty",
+        "loginBtn": "Prihláste sa alebo sa zaregistrujte",
+        "telegramSupport": "Podpora telegramov",
+        "cardHub": {
+            "logout": "Odhláste sa z karty SORA",
+            "topup": "Doplňte",
+            "transfer": "Prestup",
+            "exchange": "Výmena",
+            "freeze": "Zmraziť",
+            "comingSoon": "Správa kariet bude čoskoro k dispozícii",
+            "ibanLabel": "Podrobnosti účtu IBAN"
+        },
+        "emailSpamReminder": "Doručenie e-mailu môže trvať niekoľko minút. Ak ste e-mail nedostali do 5 minút, overte si priečinok so spamom.",
+        "gettingCardForFree": "Kartu dostanete zadarmo!",
+        "holdSufficientXor": "Na svojom SORA účte máte XOR v hodnote 100 €",
+        "holdNotSufficientXor": "Ak na svojom účte SORA držíte, vkladáte alebo poskytujete likviditu XOR v hodnote aspoň 100 EUR",
+        "xorAmountNeeded": "Potrebujete o {xorAmount} viac XOR (€ {euroAmount} )",
+        "xorAmountNeededTitle": "Na získanie bezplatnej karty potrebujete {value} XOR",
+        "cardhub": {
+            "accountInfo": "Informácie o účte"
+        },
+        "attentionText": "Pozornosť"
     }
 }

@@ -1,7 +1,7 @@
 <template>
   <div v-loading="parentLoading">
     <div class="tos__disclaimer">
-      <h4 class="tos__disclaimer-header">{{ 'Attention' }}</h4>
+      <h4 class="tos__disclaimer-header">{{ t('card.attentionText') }}</h4>
       <p class="tos__disclaimer-paragraph">
         {{
           'You have only 2 attempts to pass the KYC process without extra wating time. To maximize your chances of success please follow these simple guidelines:'
@@ -16,36 +16,32 @@
         <div class="kyc-instructions__section">
           <span class="kyc-instructions__number">1</span>
           <div class="text">
-            <h4 class="kyc-instructions__point">{{ 'Submit a photo of your ID document' }}</h4>
-            <span class="kyc-instructions__point-desc">{{
-              'Passport, Driver License, ID card or Residence Permit'
-            }}</span>
+            <h4 class="kyc-instructions__point">{{ t('card.guideline.photoTitle') }}</h4>
+            <span class="kyc-instructions__point-desc">{{ t('card.guideline.photoDesc') }}</span>
             <div class="line" />
           </div>
         </div>
         <div class="kyc-instructions__section">
           <span class="kyc-instructions__number">2</span>
           <div class="text">
-            <h4 class="kyc-instructions__point">{{ 'Take a selfie' }}</h4>
-            <span class="kyc-instructions__point-desc">{{ 'The guidance will be provided during the process' }}</span>
+            <h4 class="kyc-instructions__point">{{ t('card.guideline.selfieTitle') }}</h4>
+            <span class="kyc-instructions__point-desc">{{ t('card.guideline.selfieDesc') }}</span>
             <div class="line" />
           </div>
         </div>
         <div class="kyc-instructions__section">
           <span class="kyc-instructions__number">3</span>
           <div class="text">
-            <h4 class="kyc-instructions__point">{{ 'Submit a photo of proof of address' }}</h4>
-            <span class="kyc-instructions__point-desc">{{
-              'An official document (utility bill, bank statement, government statement or correspondence) that contains your full name and address, and that is no older then 3 months'
-            }}</span>
+            <h4 class="kyc-instructions__point">{{ t('card.guideline.proofAddressTitle') }}</h4>
+            <span class="kyc-instructions__point-desc">{{ t('card.guideline.proofAddressDesc') }}</span>
             <div class="line" />
           </div>
         </div>
         <div class="kyc-instructions__section">
           <span class="kyc-instructions__number">4</span>
           <div class="text">
-            <h4 class="kyc-instructions__point">{{ 'Submit your personal info' }}</h4>
-            <span class="kyc-instructions__point-desc">{{ 'Fill in the form with your name and address' }}</span>
+            <h4 class="kyc-instructions__point">{{ t('card.guideline.personalTitle') }}</h4>
+            <span class="kyc-instructions__point-desc">{{ t('card.guideline.personalDesc') }}</span>
             <div class="line line--last" />
           </div>
         </div>
@@ -66,7 +62,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 @Component({
   components: {},
 })
-export default class RoadMap extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+export default class Guidance extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   async handleConfirm(): Promise<void> {
     this.$emit('confirm');
   }

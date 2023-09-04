@@ -1,9 +1,22 @@
 {
     "card": {
         "termsAndConditions": "Điều khoản và điều kiện",
+        "termsAndConditionsPreDisclaimer": "Chúng tôi muốn bạn biết chính xác dịch vụ thẻ SORA sẽ hoạt động như thế nào, ai cần thông tin chi tiết của bạn và tại sao. Việc xem xét các chính sách này sẽ giúp bạn yên tâm sử dụng ứng dụng.",
         "disclaimerCollectData": "Cộng đồng SORA không thu thập bất kỳ dữ liệu cá nhân nào, để có được Thẻ SORA và tài khoản IBAN, bạn sẽ cần hoàn thành quy trình KYC trực tiếp với tổ chức phát hành thẻ.",
         "privacyPolicy": "Chính sách bảo mật",
+        "termsAndConditionsWarning": "Bằng cách tiếp tục, bạn xác nhận rằng bạn đã đọc, hiểu và chấp nhận các chính sách này",
         "acceptAndContinue": "Chấp nhận & Tiếp tục",
+        "getPrepared": "Chuẩn bị sẵn sàng",
+        "guideline": {
+            "photoTitle": "Gửi ảnh giấy tờ tùy thân của bạn",
+            "photoDesc": "Hộ chiếu, Giấy phép lái xe, Chứng minh nhân dân hoặc Giấy phép cư trú",
+            "selfieTitle": "Chụp ảnh selfie",
+            "selfieDesc": "Hướng dẫn sẽ được cung cấp trong quá trình này",
+            "proofAddressTitle": "Gửi ảnh giấy tờ chứng minh địa chỉ",
+            "proofAddressDesc": "Một tài liệu chính thức (hóa đơn tiện ích, bảng sao kê ngân hàng, bảng sao kê của chính phủ hoặc thư từ) có chứa tên đầy đủ và địa chỉ của bạn, và không cũ hơn 3 tháng",
+            "personalTitle": "Gửi thông tin cá nhân của bạn",
+            "personalDesc": "Điền vào biểu mẫu với tên và địa chỉ của bạn"
+        },
         "emailPlaceholder": "Email",
         "sendCodeBtn": "Gửi mã SMS",
         "firstNamePlaceholder": "Họ",
@@ -19,19 +32,10 @@
         "getSoraCardBtn": "Nhận thẻ SORA miễn phí",
         "bridgeTokensBtn": "Token cầu nối",
         "depositX1Btn": "Mua XOR",
-        "reIssuanceFee": "€0 phí phát hành lại hàng năm",
         "freeStartDesc": "{value} XOR trong tài khoản của bạn để bắt đầu miễn phí",
         "completeKYC": "Hoàn thành KYC",
         "phoneConfirmation": "Xác nhận số điện thoại",
         "emailConfirmation": "Xác nhận email",
-        "roadmap": {
-            "contactInfoTitle": "Xác minh thông tin liên hệ",
-            "contactInfoDesc": "Email và số điện thoại",
-            "docsTitle": "Xác minh tài liệu",
-            "docsDesc": "Selfie với một tài liệu",
-            "personalDataTitle": "Gửi dữ liệu cá nhân",
-            "personalDataDesc": "Tên đầy đủ và bằng chứng về địa chỉ"
-        },
         "letsStartBtn": "hãy bắt đầu",
         "otpPlaceholder": "Mã xác nhận",
         "confirmCodeBtn": "Xác nhận mã SMS",
@@ -58,6 +62,28 @@
         "userNotFound": "Không tìm thấy số điện thoại di động nào, vui lòng kiểm tra lại và thử lại.",
         "code": "Mã",
         "getSoraCardDesc": "Nhận tài khoản Euro IBAN và thẻ ghi nợ có thể truy cập trong Ví SORA của bạn",
-        "emailSpamReminder": "Email có thể mất vài phút để đến nơi. Vui lòng xác minh thư mục thư rác nếu bạn không nhận được email sau 5 phút."
+        "reIssuanceFee": "€0 phí dịch vụ hàng năm",
+        "freeCardIssuance": "Miễn phí phát hành thẻ",
+        "loginBtn": "Đăng nhập hoặc đăng ký",
+        "telegramSupport": "Hỗ trợ Telegram",
+        "cardHub": {
+            "logout": "Đăng xuất khỏi SORA Card",
+            "topup": "Nạp tiền",
+            "transfer": "Chuyển",
+            "exchange": "Giao dịch",
+            "freeze": "Đông lạnh",
+            "comingSoon": "Quản lý thẻ sắp ra mắt",
+            "ibanLabel": "Chi tiết tài khoản IBAN"
+        },
+        "emailSpamReminder": "Email có thể mất vài phút để đến nơi. Vui lòng xác minh thư mục thư rác nếu bạn không nhận được email sau 5 phút.",
+        "gettingCardForFree": "Bạn đang nhận được thẻ miễn phí!",
+        "holdSufficientXor": "Bạn giữ XOR trị giá €100 trong Tài khoản SORA của mình",
+        "holdNotSufficientXor": "Nếu bạn nắm giữ, đặt cược hoặc cung cấp tính thanh khoản cho XOR trị giá ít nhất €100 trong tài khoản SORA của bạn",
+        "xorAmountNeeded": "Bạn cần thêm {xorAmount} XOR (€ {euroAmount} )",
+        "xorAmountNeededTitle": "Bạn cần có {value} XOR để nhận thẻ miễn phí",
+        "cardhub": {
+            "accountInfo": "thông tin tài khoản"
+        },
+        "attentionText": "Chú ý"
     }
 }

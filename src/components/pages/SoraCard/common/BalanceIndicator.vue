@@ -3,9 +3,9 @@
     <div class="sora-card__balance-section">
       <s-icon class="sora-card__icon--closed" name="basic-close-24" size="16px" />
       <div>
-        <p class="sora-card__info-text">Free card issuance</p>
+        <p class="sora-card__info-text">{{ t('card.freeCardIssuance') }}</p>
         <p class="sora-card__info-text-details sora-card__info-text-details--secondary">
-          If you hold, stake or provide liquidity for at least €100 worth of XOR in your SORA account
+          {{ t('card.holdNotSufficientXor') }}
         </p>
         <span class="progress-bar">
           <span class="progress-bar--in-progress" ref="progress" />
@@ -43,7 +43,7 @@ export default class BalanceIndicator extends Mixins(TranslationMixin, mixins.Lo
     const euroBalance = FPNumber.fromNatural(this.euroBalance);
     const remaining = FPNumber.HUNDRED.sub(euroBalance);
 
-    return `You need ${this.xorToDeposit.format(3)} more XOR (€${remaining.toFixed(2)})`;
+    return this.t('card.xorAmountNeeded', { xorAmount: this.xorToDeposit.format(3), euroAmount: remaining.toFixed(2) });
   }
 
   async runProgressBarAnimation(): Promise<void> {
