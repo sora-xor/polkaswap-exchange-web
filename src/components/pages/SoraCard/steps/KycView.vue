@@ -50,16 +50,6 @@ import { CardUIViews } from '@/types/card';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 import { soraCard, getUpdatedJwtPair } from '@/utils/card';
 
-type WindowInjectedWeb3 = typeof window & {
-  injectedWeb3?: {
-    'fearless-wallet'?: {
-      enable: (origin: string) => Promise<void>;
-      saveSoraCardToken?: (token: string) => Promise<void>;
-      version: string;
-    };
-  };
-};
-
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin, mixins.CameraPermissionMixin) {
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
