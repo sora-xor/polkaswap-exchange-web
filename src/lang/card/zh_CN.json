@@ -13,9 +13,10 @@
             "selfieTitle": "自拍",
             "selfieDesc": "在过程中将提供指导",
             "proofAddressTitle": "提交地址证明照片",
-            "proofAddressDesc": "一份官方文件（水电费账单、银行对账单、政府声明或通信），上面包含您的全名和地址，并且不早于三个月前。",
+            "proofAddressDesc": "包含您的全名和地址且不超过 3 个月的正式文件（水电费账单、银行对账单、政府声明或信件）。",
             "personalTitle": "提交个人信息",
-            "personalDesc": "请填写表格，包括您的姓名和地址。"
+            "personalDesc": "请填写表格，包括您的姓名和地址。",
+            "proofAddressNote": "注意：Revolut 和 N26 等新银行的声明目前不被视为有效的地址证明。"
         },
         "emailPlaceholder": "电子邮件",
         "sendCodeBtn": "发送短信代码",

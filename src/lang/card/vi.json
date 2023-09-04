@@ -13,9 +13,10 @@
             "selfieTitle": "Chụp ảnh selfie",
             "selfieDesc": "Hướng dẫn sẽ được cung cấp trong quá trình này",
             "proofAddressTitle": "Gửi ảnh giấy tờ chứng minh địa chỉ",
-            "proofAddressDesc": "Một tài liệu chính thức (hóa đơn tiện ích, bảng sao kê ngân hàng, bảng sao kê của chính phủ hoặc thư từ) có chứa tên đầy đủ và địa chỉ của bạn, và không cũ hơn 3 tháng",
+            "proofAddressDesc": "Một tài liệu chính thức (hóa đơn tiện ích, bảng sao kê ngân hàng, bảng sao kê của chính phủ hoặc thư từ) có chứa tên đầy đủ và địa chỉ của bạn, và không cũ hơn 3 tháng.",
             "personalTitle": "Gửi thông tin cá nhân của bạn",
-            "personalDesc": "Điền vào biểu mẫu với tên và địa chỉ của bạn"
+            "personalDesc": "Điền vào biểu mẫu với tên và địa chỉ của bạn",
+            "proofAddressNote": "Lưu ý: Các báo cáo từ các neobank như Revolut và N26 hiện không được coi là bằng chứng địa chỉ hợp lệ."
         },
         "emailPlaceholder": "Email",
         "sendCodeBtn": "Gửi mã SMS",

@@ -13,9 +13,10 @@
             "selfieTitle": "Prenez un selfie",
             "selfieDesc": "Un guide sera fourni durant l'opération",
             "proofAddressTitle": "Soumettre une photo de votre preuve d'adresse",
-            "proofAddressDesc": "Un document officiel (facture d'électricité, bancaire, gouvernemental) contenant votre nom\/prénom officiel et adresse, datant de moins de 3 mois",
+            "proofAddressDesc": "Un document officiel (facture de services publics, relevé bancaire, relevé gouvernemental ou correspondance) contenant votre nom complet et votre adresse et datant de moins de 3 mois.",
             "personalTitle": "Soumettez vos informations personnelles",
-            "personalDesc": "Remplissez le formulaire avec votre nom et adresse"
+            "personalDesc": "Remplissez le formulaire avec votre nom et adresse",
+            "proofAddressNote": "Remarque : les relevés de néobanques comme Revolut et N26 ne sont actuellement pas considérés comme un justificatif de domicile valide."
         },
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "Envoyer le code",

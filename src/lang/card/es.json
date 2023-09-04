@@ -13,9 +13,10 @@
             "selfieTitle": "Hazte un selfie",
             "selfieDesc": "Se facilitará la guía durante el proceso",
             "proofAddressTitle": "Envía una foto con prueba de domicilio",
-            "proofAddressDesc": "Un documento oficial (factura, certificado del banco, declaración del gobierno o correspondencia) que contenga tu nombre completo y dirección, y que no tenga más de 3 meses de antigüedad",
+            "proofAddressDesc": "Un documento oficial (factura de servicios públicos, extracto bancario, estado de cuenta del gobierno o correspondencia) que contenga su nombre completo y dirección, y que no tenga más de 3 meses.",
             "personalTitle": "Enviar tu información personal",
-            "personalDesc": "Rellena el formulario con tu nombre y dirección"
+            "personalDesc": "Rellena el formulario con tu nombre y dirección",
+            "proofAddressNote": "Nota: Los extractos de neobancos como Revolut y N26 actualmente no se consideran prueba de domicilio válida."
         },
         "emailPlaceholder": "Correo electrónico",
         "sendCodeBtn": "Enviar código SMS",

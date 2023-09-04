@@ -13,9 +13,10 @@
             "selfieTitle": "Take a selfie",
             "selfieDesc": "The guidance will be provided during the process",
             "proofAddressTitle": "Submit a photo of proof of address",
-            "proofAddressDesc": "An official document (utility bill, bank statement, government statement or correspondence) that contains your full name and address, and that is no older then 3 months.\n\nNote: Statements from neobanks like Revolut and N26 are currently not seen as valid proof of address.",
+            "proofAddressDesc": "An official document (utility bill, bank statement, government statement or correspondence) that contains your full name and address, and that is no older then 3 months.",
             "personalTitle": "Submit your personal info",
-            "personalDesc": "Fill in the form with your name and address"
+            "personalDesc": "Fill in the form with your name and address",
+            "proofAddressNote": "Note: Statements from neobanks like Revolut and N26 are currently not seen as valid proof of address."
         },
         "emailPlaceholder": "Email",
         "sendCodeBtn": "Send SMS code",

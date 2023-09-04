@@ -13,9 +13,10 @@
             "selfieTitle": "Ta en selfie",
             "selfieDesc": "Veiledningen vil bli gitt under prosessen",
             "proofAddressTitle": "Send inn et bilde av bevis på adresse",
-            "proofAddressDesc": "Et offisielt dokument (bruksregning, kontoutskrift, myndighetsutskrift eller korrespondanse) som inneholder ditt fulle navn og adresse, og som ikke er eldre enn 3 måneder. \n\n Merk: Uttalelser fra neobanker som Revolut og N26 anses foreløpig ikke som gyldig bevis på adresse.",
+            "proofAddressDesc": "Et offisielt dokument (bruksregning, kontoutskrift, myndighetsutskrift eller korrespondanse) som inneholder ditt fulle navn og adresse, og som ikke er eldre enn 3 måneder.",
             "personalTitle": "Send inn din personlige informasjon",
-            "personalDesc": "Fyll ut skjemaet med navn og adresse"
+            "personalDesc": "Fyll ut skjemaet med navn og adresse",
+            "proofAddressNote": "Merk: Uttalelser fra neobanker som Revolut og N26 anses foreløpig ikke som gyldig bevis på adresse."
         },
         "emailPlaceholder": "E-post",
         "sendCodeBtn": "Send SMS-kode",

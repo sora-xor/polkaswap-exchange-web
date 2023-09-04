@@ -13,9 +13,10 @@
             "selfieTitle": "Ta en selfie",
             "selfieDesc": "Vägledning kommer att ges under processen",
             "proofAddressTitle": "Skicka in ett foto på adressbevis",
-            "proofAddressDesc": "Ett officiellt dokument (nyttoräkning, kontoutdrag, regeringsutdrag eller korrespondens) som innehåller ditt fullständiga namn och adress och som inte är äldre än 3 månader. \n\n Obs: Uttalanden från neobanker som Revolut och N26 ses för närvarande inte som ett giltigt adressbevis.",
+            "proofAddressDesc": "Ett officiellt dokument (elräkning, kontoutdrag, regeringsutdrag eller korrespondens) som innehåller ditt fullständiga namn och adress, och som inte är äldre än 3 månader.",
             "personalTitle": "Skicka in din personliga information",
-            "personalDesc": "Fyll i formuläret med ditt namn och adress"
+            "personalDesc": "Fyll i formuläret med ditt namn och adress",
+            "proofAddressNote": "Obs: Uttalanden från neobanker som Revolut och N26 ses för närvarande inte som ett giltigt adressbevis."
         },
         "emailPlaceholder": "E-post",
         "sendCodeBtn": "Skicka SMS-kod",

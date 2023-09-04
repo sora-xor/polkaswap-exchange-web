@@ -13,9 +13,10 @@
             "selfieTitle": "Сними селфи",
             "selfieDesc": "Смернице ће бити обезбеђене током процеса",
             "proofAddressTitle": "Пошаљите фотографију доказа адресе",
-            "proofAddressDesc": "Званичан документ (рачун за комуналне услуге, банковни извод, извод владе или преписка) који садржи ваше пуно име и адресу, а који није старији од 3 месеца. \n\n Напомена: Изјаве необанака као што су Револут и Н26 тренутно се не сматрају валидним доказом адресе.",
+            "proofAddressDesc": "Zvanični dokument (komunalni račun, izvod iz banke, vladin izvod ili prepiska) koji sadrži vaše puno ime i adresu, a to nije starije od 3 meseca.",
             "personalTitle": "Пошаљите своје личне податке",
-            "personalDesc": "Попуните формулар својим именом и адресом"
+            "personalDesc": "Попуните формулар својим именом и адресом",
+            "proofAddressNote": "Напомена: Изјаве необанака као што су Револут и Н26 тренутно се не сматрају валидним доказом адресе."
         },
         "emailPlaceholder": "Емаил",
         "sendCodeBtn": "Пошаљите СМС код",

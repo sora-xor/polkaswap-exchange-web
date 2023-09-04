@@ -13,9 +13,10 @@
             "selfieTitle": "Ya selfie",
             "selfieDesc": "Itọsọna naa yoo pese lakoko ilana naa",
             "proofAddressTitle": "Fi aworan kan ti ẹri adirẹsi",
-            "proofAddressDesc": "Iwe aṣẹ osise (owo-owo ohun elo, alaye banki, alaye ijọba tabi lẹta) ti o ni orukọ kikun ati adirẹsi rẹ ninu, ati pe ko dagba ju oṣu mẹta lọ. \n\n Akiyesi: Awọn alaye lati awọn banki neobank bi Revolut ati N26 ni a ko rii lọwọlọwọ bi ẹri adirẹsi ti o wulo.",
+            "proofAddressDesc": "Iwe aṣẹ osise (owo-owo ohun elo, alaye banki, alaye ijọba tabi lẹta) ti o ni orukọ kikun ati adirẹsi rẹ ninu, ati pe ko dagba ju oṣu mẹta lọ.",
             "personalTitle": "Fi alaye ti ara ẹni silẹ",
-            "personalDesc": "Fọwọsi fọọmu naa pẹlu orukọ ati adirẹsi rẹ"
+            "personalDesc": "Fọwọsi fọọmu naa pẹlu orukọ ati adirẹsi rẹ",
+            "proofAddressNote": "Akiyesi: Awọn alaye lati awọn banki neobank bi Revolut ati N26 ni a ko rii lọwọlọwọ bi ẹri adirẹsi ti o wulo."
         },
         "emailPlaceholder": "Imeeli",
         "sendCodeBtn": "Fi koodu SMS ranṣẹ",

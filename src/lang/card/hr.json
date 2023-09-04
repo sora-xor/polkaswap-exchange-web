@@ -13,9 +13,10 @@
             "selfieTitle": "Slikaj selfie",
             "selfieDesc": "Smjernice će biti pružene tijekom procesa",
             "proofAddressTitle": "Pošaljite fotografiju kao dokaz adrese",
-            "proofAddressDesc": "Službeni dokument (račun za režije, bankovni izvod, državni izvod ili korespondencija) koji sadrži vaše puno ime i prezime i adresu, a koji nije stariji od 3 mjeseca. \n\n Napomena: Izvodi neobanki kao što su Revolut i N26 trenutno se ne smatraju važećim dokazom adrese.",
+            "proofAddressDesc": "Službeni dokument (račun za režije, bankovni izvod, državni izvod ili korespondencija) koji sadrži vaše puno ime i prezime i adresu, a koji nije stariji od 3 mjeseca.",
             "personalTitle": "Pošaljite svoje osobne podatke",
-            "personalDesc": "Ispunite obrazac sa svojim imenom i adresom"
+            "personalDesc": "Ispunite obrazac sa svojim imenom i adresom",
+            "proofAddressNote": "Napomena: Izvodi neobanki kao što su Revolut i N26 trenutno se ne smatraju važećim dokazom adrese."
         },
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "Pošalji SMS kod",

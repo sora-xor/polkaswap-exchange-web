@@ -13,9 +13,10 @@
             "selfieTitle": "Machen Sie ein Selfie",
             "selfieDesc": "Der Leitfaden wird während des Prozesses zur Verfügung gestellt",
             "proofAddressTitle": "Reichen Sie ein Foto des Adressnachweises ein",
-            "proofAddressDesc": "Ein offizielles Dokument (Rechnung eines Versorgungsunternehmens, Kontoauszug, Bescheinigung einer Behörde oder Korrespondenz), das Ihren vollständigen Namen und Ihre Adresse enthält und nicht älter als 3 Monate ist",
+            "proofAddressDesc": "Ein offizielles Dokument (Stromrechnung, Kontoauszug, Regierungsbescheinigung oder Korrespondenz), das Ihren vollständigen Namen und Ihre Adresse enthält und nicht älter als 3 Monate ist.",
             "personalTitle": "Senden Sie Ihre persönlichen Daten",
-            "personalDesc": "Füllen Sie das Formular mit Ihrem Namen und Ihrer Adresse aus"
+            "personalDesc": "Füllen Sie das Formular mit Ihrem Namen und Ihrer Adresse aus",
+            "proofAddressNote": "Hinweis: Kontoauszüge von Neobanken wie Revolut und N26 gelten derzeit nicht als gültiger Adressnachweis."
         },
         "emailPlaceholder": "E-Mail",
         "sendCodeBtn": "SMS Code senden",

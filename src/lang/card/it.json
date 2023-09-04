@@ -13,9 +13,10 @@
             "selfieTitle": "Fatti un selfie",
             "selfieDesc": "Le indicazioni verranno fornite durante il processo",
             "proofAddressTitle": "Invia una foto della prova dell'indirizzo",
-            "proofAddressDesc": "Un documento ufficiale (bolletta, estratto conto bancario, estratto conto o corrispondenza) che contenga il tuo nome completo e indirizzo e che non sia più vecchio di 3 mesi. \n\n Nota: le dichiarazioni di neobanche come Revolut e N26 non sono attualmente considerate una prova di indirizzo valida.",
+            "proofAddressDesc": "Un documento ufficiale (bolletta, estratto conto bancario, estratto conto o corrispondenza) che contenga il tuo nome completo e indirizzo e che non sia più vecchio di 3 mesi.",
             "personalTitle": "Invia le tue informazioni personali",
-            "personalDesc": "Compila il modulo con il tuo nome e indirizzo"
+            "personalDesc": "Compila il modulo con il tuo nome e indirizzo",
+            "proofAddressNote": "Nota: le dichiarazioni di neobanche come Revolut e N26 non sono attualmente considerate una prova di indirizzo valida."
         },
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "Invia codice SMS",

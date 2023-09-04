@@ -13,9 +13,10 @@
             "selfieTitle": "Zrobić selfie",
             "selfieDesc": "Wytyczne zostaną przekazane w trakcie procesu",
             "proofAddressTitle": "Prześlij zdjęcie potwierdzające adres",
-            "proofAddressDesc": "Oficjalny dokument (rachunek za media, wyciąg bankowy, oświadczenie rządowe lub korespondencja), który zawiera Twoje pełne imię i nazwisko oraz adres i który nie jest starszy niż 3 miesiące. \n\n Uwaga: wyciągi z neobanków, takich jak Revolut i N26, nie są obecnie postrzegane jako ważny dowód adresu.",
+            "proofAddressDesc": "Oficjalny dokument (rachunek za media, wyciąg bankowy, oświadczenie rządowe lub korespondencja) zawierający pełne imię i nazwisko oraz adres i nie starszy niż 3 miesiące.",
             "personalTitle": "Prześlij swoje dane osobowe",
-            "personalDesc": "Wypełnij formularz, podając swoje imię i nazwisko oraz adres"
+            "personalDesc": "Wypełnij formularz, podając swoje imię i nazwisko oraz adres",
+            "proofAddressNote": "Uwaga: wyciągi z neobanków, takich jak Revolut i N26, nie są obecnie postrzegane jako ważny dowód adresu."
         },
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "Wyślij kod SMS",

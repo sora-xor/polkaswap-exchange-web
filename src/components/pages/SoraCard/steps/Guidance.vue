@@ -34,6 +34,7 @@
           <div class="text">
             <h4 class="kyc-instructions__point">{{ t('card.guideline.proofAddressTitle') }}</h4>
             <span class="kyc-instructions__point-desc">{{ t('card.guideline.proofAddressDesc') }}</span>
+            <p class="kyc-instructions__point-note">{{ t('card.guideline.proofAddressNote') }}</p>
             <div class="line" />
           </div>
         </div>
@@ -124,6 +125,15 @@ export default class Guidance extends Mixins(TranslationMixin, mixins.LoadingMix
     color: var(--s-color-base-content-secondary);
     margin-top: 3px;
     display: block;
+    margin-right: 20px;
+  }
+
+  &__point-note {
+    margin-top: 8px;
+    color: #efac47;
+    font-size: var(--s-font-size-small);
+    font-weight: 550;
+    margin-right: 8px;
   }
 
   .s-icon-basic-check-mark-24 {

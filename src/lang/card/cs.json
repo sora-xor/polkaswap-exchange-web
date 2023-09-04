@@ -13,9 +13,10 @@
             "selfieTitle": "Udělejte si selfie",
             "selfieDesc": "Návod bude poskytnut během procesu",
             "proofAddressTitle": "Předložte fotografii dokladu o adrese",
-            "proofAddressDesc": "Oficiální dokument (účet za energie, bankovní výpis, vládní prohlášení nebo korespondence), který obsahuje vaše celé jméno a adresu a není starší než 3 měsíce. \n\n Poznámka: Výpisy od neobank, jako je Revolut a N26, nejsou v současné době považovány za platný doklad o adrese.",
+            "proofAddressDesc": "Oficiální dokument (účet za energie, bankovní výpis, vládní prohlášení nebo korespondence), který obsahuje vaše celé jméno a adresu a není starší než 3 měsíce.",
             "personalTitle": "Odešlete své osobní údaje",
-            "personalDesc": "Vyplňte formulář se svým jménem a adresou"
+            "personalDesc": "Vyplňte formulář se svým jménem a adresou",
+            "proofAddressNote": "Poznámka: Výpisy od neobank, jako je Revolut a N26, nejsou v současné době považovány za platný doklad o adrese."
         },
         "emailPlaceholder": "E-mailem",
         "sendCodeBtn": "Pošlete SMS kód",

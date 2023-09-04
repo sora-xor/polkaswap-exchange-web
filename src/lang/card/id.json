@@ -13,9 +13,10 @@
             "selfieTitle": "Ambil selfie",
             "selfieDesc": "Bimbingan akan diberikan selama proses tersebut",
             "proofAddressTitle": "Kirimkan foto bukti alamat",
-            "proofAddressDesc": "Dokumen resmi (tagihan utilitas, laporan bank, laporan pemerintah atau korespondensi) yang berisi nama lengkap dan alamat Anda, dan berumur tidak lebih dari 3 bulan. \n\n Catatan: Pernyataan dari neobank seperti Revolut dan N26 saat ini tidak dianggap sebagai bukti alamat yang sah.",
+            "proofAddressDesc": "Dokumen resmi (tagihan utilitas, laporan bank, laporan pemerintah atau korespondensi) yang berisi nama lengkap dan alamat Anda, dan berumur tidak lebih dari 3 bulan.",
             "personalTitle": "Kirimkan informasi pribadi Anda",
-            "personalDesc": "Isi formulir dengan nama dan alamat Anda"
+            "personalDesc": "Isi formulir dengan nama dan alamat Anda",
+            "proofAddressNote": "Catatan: Pernyataan dari neobank seperti Revolut dan N26 saat ini tidak dianggap sebagai bukti alamat yang sah."
         },
         "emailPlaceholder": "Surel",
         "sendCodeBtn": "Kirim kode SMS",
