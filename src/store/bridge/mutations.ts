@@ -42,15 +42,13 @@ const mutations = defineMutations<BridgeState>()({
     state.outgoingLimitUSD = limitUSD;
   },
 
-  setOutgoingLimitUSDSubscription(state, subscription: Subscription): void {
-    state.outgoingLimitUSDSubscription = subscription;
+  setBridgeSubscription(state, subscription: Subscription): void {
+    state.bridgeSubscription = subscription;
   },
 
-  resetOutgoingLimitUSDSubscription(state): void {
-    state.outgoingLimitUSDSubscription?.unsubscribe();
-    state.outgoingLimitUSDSubscription = null;
-    state.outgoingLimitUSD = null;
-    state.assetTransferLimit = null;
+  resetBridgeSubscription(state): void {
+    state.bridgeSubscription?.unsubscribe();
+    state.bridgeSubscription = null;
   },
 
   setAmountSend(state, value?: string): void {

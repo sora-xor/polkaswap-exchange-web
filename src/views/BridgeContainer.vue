@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { api, mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
@@ -17,32 +17,19 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { action, mutation } from '@/store/decorators';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { Subscription } from 'rxjs';
-
 @Component
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
   @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
-  @action.web3.restoreSelectedNetwork restoreSelectedNetwork!: AsyncFnWithoutArgs;
-  @action.bridge.updateBalancesAndFees private updateBalancesAndFees!: AsyncFnWithoutArgs;
+  @action.web3.restoreSelectedNetwork private restoreSelectedNetwork!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBalance private updateExternalBalance!: AsyncFnWithoutArgs;
-  @action.bridge.updateExternalBlockNumber private updateExternalBlockNumber!: AsyncFnWithoutArgs;
-  @action.bridge.subscribeOnOutgoingLimitUSD private subscribeOnOutgoingLimitUSD!: AsyncFnWithoutArgs;
-  @mutation.bridge.resetOutgoingLimitUSDSubscription private resetOutgoingLimitUSDSubscription!: FnWithoutArgs;
+  @action.bridge.startBridgeSubscription private startBridgeSubscription!: AsyncFnWithoutArgs;
+  @mutation.bridge.resetBridgeSubscription private resetBridgeSubscription!: FnWithoutArgs;
 
   private unwatchEthereum!: FnWithoutArgs;
-  private blockHeadersSubscriber: Nullable<Subscription> = null;
 
   async created(): Promise<void> {
-    this.setStartSubscriptions([
-      this.subscribeOnSystemBlockUpdate,
-      this.subscribeOnEvm,
-      this.subscribeOnOutgoingLimitUSD,
-    ]);
-    this.setResetSubscriptions([
-      this.unsubscribeFromSystemBlockUpdate,
-      this.unsubscribeFromEvm,
-      this.resetOutgoingLimitUSDSubscription,
-    ]);
+    this.setStartSubscriptions([this.subscribeOnEvm, this.startBridgeSubscription]);
+    this.setResetSubscriptions([this.unsubscribeFromEvm, this.resetBridgeSubscription]);
 
     await this.withParentLoading(async () => {
       await this.getSupportedApps();
@@ -78,20 +65,6 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     if (typeof this.unwatchEthereum === 'function') {
       this.unwatchEthereum();
     }
-  }
-
-  private async subscribeOnSystemBlockUpdate(): Promise<void> {
-    this.unsubscribeFromSystemBlockUpdate();
-
-    this.blockHeadersSubscriber = api.system.getBlockNumberObservable().subscribe(() => {
-      this.updateExternalBlockNumber();
-      this.updateBalancesAndFees();
-    });
-  }
-
-  private unsubscribeFromSystemBlockUpdate(): void {
-    this.blockHeadersSubscriber?.unsubscribe();
-    this.blockHeadersSubscriber = null;
   }
 }
 </script>

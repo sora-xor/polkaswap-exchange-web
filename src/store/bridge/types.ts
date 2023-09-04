@@ -15,7 +15,7 @@ export type BridgeState = {
   assetTransferLimited: boolean;
   assetTransferLimit: Nullable<CodecString>;
   outgoingLimitUSD: Nullable<CodecString>;
-  outgoingLimitUSDSubscription: Nullable<Subscription>;
+  bridgeSubscription: Nullable<Subscription>;
   amountSend: string;
   amountReceived: string;
   focusedField: Nullable<FocusedField>;

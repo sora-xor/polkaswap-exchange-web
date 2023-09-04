@@ -12,7 +12,7 @@ function initialState(): BridgeState {
     assetTransferLimited: false, // is asset outgoing transfer limited
     assetTransferLimit: null, // outgoing transfer limit in asset amount
     outgoingLimitUSD: null, // outgoing transfer limit in USD
-    outgoingLimitUSDSubscription: null,
+    bridgeSubscription: null,
     amountSend: '',
     amountReceived: '',
     focusedField: null,

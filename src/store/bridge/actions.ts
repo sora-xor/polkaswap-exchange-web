@@ -7,6 +7,7 @@ import { DexId } from '@sora-substrate/util/build/dex/consts';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
+import { combineLatest } from 'rxjs';
 
 import { MaxUint256, ZeroStringValue } from '@/consts';
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
@@ -27,12 +28,11 @@ import { updateSubBridgeHistory } from '@/utils/bridge/sub/classes/history';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { SignTxResult } from './types';
-import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
+import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { BridgeTransactionData, BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 
 function getBridgeApi(context: ActionContext<any, any>) {
@@ -371,8 +371,8 @@ async function updateAssetTransferLimit(context: ActionContext<any, any>): Promi
 
       assetPriceUSD = FPNumber.fromCodecValue(result.amount);
     } catch {
-      // [TODO] Zero or null?
-      commit.setAssetTransferLimit(null);
+      commit.setAssetTransferLimit(ZeroStringValue);
+      return;
     }
   } else {
     assetPriceUSD = FPNumber.ONE;
@@ -381,6 +381,20 @@ async function updateAssetTransferLimit(context: ActionContext<any, any>): Promi
   const assetLimit = limitUSD.div(assetPriceUSD).toCodecString();
 
   commit.setAssetTransferLimit(assetLimit);
+}
+
+async function updateExternalBlockNumber(context: ActionContext<any, any>): Promise<void> {
+  const { getters, commit } = bridgeActionContext(context);
+
+  try {
+    const blockNumber = getters.isSubBridge
+      ? await subConnector.networkAdapter.getBlockNumber()
+      : await (await ethersUtil.getEthersInstance()).getBlockNumber();
+
+    commit.setExternalBlockNumber(blockNumber);
+  } catch {
+    commit.setExternalBlockNumber(0);
+  }
 }
 
 const actions = defineActions({
@@ -420,19 +434,24 @@ const actions = defineActions({
     }
   },
 
-  async updateBalancesAndFees(context): Promise<void> {
+  async updateBalancesAndFees(context, withAssetLimit = false): Promise<void> {
     const { commit, dispatch } = bridgeActionContext(context);
     const { updateExternalBalance } = dispatch;
 
     commit.setBalancesAndFeesFetching(true);
 
-    await Promise.all([
+    const updates = [
       updateExternalBalance(),
       updateExternalLockedBalance(context),
       updateExternalNetworkFee(context),
       updateExternalTransferFee(context),
-      updateAssetTransferLimit(context),
-    ]);
+    ];
+
+    if (withAssetLimit) {
+      updates.push(updateAssetTransferLimit(context));
+    }
+
+    await Promise.all(updates);
 
     commit.setBalancesAndFeesFetching(false);
   },
@@ -444,7 +463,7 @@ const actions = defineActions({
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await dispatch.updateBalancesAndFees();
+    await dispatch.updateBalancesAndFees(false);
 
     if (state.focusedField === FocusedField.Received) {
       await dispatch.setSendedAmount(state.amountReceived);
@@ -461,7 +480,7 @@ const actions = defineActions({
     commit.setAssetRecipientBalance();
 
     await dispatch.checkAssetTransferLimit();
-    await dispatch.updateBalancesAndFees();
+    await dispatch.updateBalancesAndFees(true);
   },
 
   async updateExternalBalance(context): Promise<void> {
@@ -484,36 +503,21 @@ const actions = defineActions({
     commit.setAssetTransferLimited(hasLimit);
   },
 
-  async subscribeOnOutgoingLimitUSD(context): Promise<void> {
-    const { commit } = bridgeActionContext(context);
+  async startBridgeSubscription(context): Promise<void> {
+    const { commit, dispatch } = bridgeActionContext(context);
 
-    commit.resetOutgoingLimitUSDSubscription();
+    commit.resetBridgeSubscription();
 
-    let subscription!: Subscription;
+    const blockNumberObservable = api.system.getBlockNumberObservable();
+    const transferLimitObservable = api.bridgeProxy.getCurrentTransferLimitObservable();
+    const subscription = combineLatest([blockNumberObservable, transferLimitObservable]).subscribe(([_, amountUSD]) => {
+      commit.setOutgoingLimitUSD(amountUSD);
 
-    await new Promise<void>((resolve) => {
-      subscription = api.bridgeProxy.getCurrentTransferLimitObservable().subscribe((amountUSD) => {
-        commit.setOutgoingLimitUSD(amountUSD);
-        updateAssetTransferLimit(context);
-        resolve();
-      });
+      updateExternalBlockNumber(context);
+      dispatch.updateBalancesAndFees(true);
     });
 
-    commit.setOutgoingLimitUSDSubscription(subscription);
-  },
-
-  async updateExternalBlockNumber(context): Promise<void> {
-    const { getters, commit } = bridgeActionContext(context);
-
-    try {
-      const blockNumber = getters.isSubBridge
-        ? await subConnector.networkAdapter.getBlockNumber()
-        : await (await ethersUtil.getEthersInstance()).getBlockNumber();
-
-      commit.setExternalBlockNumber(blockNumber);
-    } catch {
-      commit.setExternalBlockNumber(0);
-    }
+    commit.setBridgeSubscription(subscription);
   },
 
   async generateHistoryItem(context, playground): Promise<IBridgeTransaction> {
