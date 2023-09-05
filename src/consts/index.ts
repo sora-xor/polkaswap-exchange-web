@@ -84,6 +84,7 @@ export const Links = {
   releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
   demeterFarmingPlatform: 'https://farming.deotoken.io/',
   soraCardSupportChannel: 'https://t.me/soracardofficial',
+  xstArticle: 'https://medium.com/sora-xor/xst-a-platform-for-synthetic-assets-on-sora-b45ca526d8d5',
 };
 
 export const ObjectInit = () => null;
@@ -130,7 +131,8 @@ export enum PageNames {
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
-  MoonpayHistory = 'MoonpayHistory',
+  FiatDepositOptions = 'FiatDepositOptions',
+  FiatTxHistory = 'FiatTxHistory',
   StakingContainer = 'StakingContainer',
   // just for router name & different titles
   ExploreContainer = 'Explore/Container',
@@ -173,7 +175,7 @@ export enum Components {
   Guidance = 'pages/SoraCard/steps/Guidance',
   KycView = 'pages/SoraCard/steps/KycView',
   // Paywings
-  X1Dialog = 'pages/X1/X1Dialog',
+  PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
   // Add Liquidity Page
   AddLiquidityConfirm = 'pages/AddLiquidity/Confirm',
   AddLiquidityTransactionDetails = 'pages/AddLiquidity/TransactionDetails',
@@ -191,7 +193,10 @@ export enum Components {
   Moonpay = 'pages/Moonpay/Moonpay',
   MoonpayNotification = 'pages/Moonpay/Notification',
   MoonpayConfirmation = 'pages/Moonpay/Confirmation',
-  MoonpayHistoryButton = 'pages/Moonpay/HistoryButton',
+  MoonpayHistory = 'pages/Moonpay/MoonpayHistory',
+  // X1 Page
+  X1Dialog = 'pages/X1/X1Dialog',
+  X1History = 'pages/X1/X1History',
   // Swap Page
   SwapConfirm = 'pages/Swap/Confirm',
   SwapChart = 'pages/Swap/Chart',
@@ -228,6 +233,7 @@ export enum Components {
   // Shared Dialogs
   ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
   NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',
+  PaymentErrorDialog = 'shared/Dialog/PaymentError',
   // Shared Asset selection
   SelectAssetList = 'shared/SelectAsset/List',
   SelectToken = 'shared/SelectAsset/SelectToken',

@@ -1,4 +1,4 @@
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { XOR, ETH } from '@sora-substrate/util/build/assets/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineGetters } from 'direct-vuex';
 
@@ -51,6 +51,10 @@ const getters = defineGetters<AssetsState>()({
   xor(...args): Nullable<RegisteredAccountAsset> {
     const { getters } = assetsGetterContext(args);
     return getters.assetDataByAddress(XOR.address);
+  },
+  eth(...args): Nullable<RegisteredAccountAsset> {
+    const { getters } = assetsGetterContext(args);
+    return getters.assetDataByAddress(ETH.address);
   },
 });
 

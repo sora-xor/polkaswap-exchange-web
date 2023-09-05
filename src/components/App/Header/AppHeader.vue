@@ -2,30 +2,18 @@
   <header class="header">
     <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
     <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
-    <div v-if="areMoonpayButtonsVisible" class="app-controls app-controls--moonpay s-flex">
-      <s-button
-        type="tertiary"
-        size="medium"
-        icon="various-atom-24"
-        class="moonpay-button moonpay-button--buy"
-        @click="openMoonpayDialog"
-      >
-        <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
+    <div class="app-controls app-controls--fiat-payment s-flex">
+      <app-ad />
+      <s-button :class="computedClassBtn" type="tertiary" size="medium" @click="goTo(PageNames.FiatDepositOptions)">
+        <pair-token-logo class="app-menu-payment" :first-token="xor" :second-token="eth" size="small" />
+        <span>{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
-      <moonpay-history-button class="moonpay-button moonpay-button--history" />
     </div>
-    <div class="app-controls s-flex" :class="{ 'without-moonpay': !areMoonpayButtonsVisible }">
+    <div class="app-controls s-flex">
       <app-account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
       <app-header-menu />
     </div>
-
     <select-language-dialog />
-
-    <template v-if="moonpayEnabled">
-      <moonpay />
-      <moonpay-notification />
-      <moonpay-confirmation />
-    </template>
   </header>
 </template>
 
@@ -34,30 +22,29 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import PolkaswapLogo from '@/components/shared/Logo/Polkaswap.vue';
-import { PageNames, Components } from '@/consts';
-import { lazyComponent, goTo } from '@/router';
-import { getter, mutation } from '@/store/decorators';
+import WalletConnectMixin from '../../../components/mixins/WalletConnectMixin';
+import PolkaswapLogo from '../../../components/shared/Logo/Polkaswap.vue';
+import { PageNames, Components } from '../../../consts';
+import { lazyComponent, goTo } from '../../../router';
+import { getter } from '../../../store/decorators';
 
 import AppAccountButton from './AppAccountButton.vue';
+import AppAd from './AppAd.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
 import AppLogoButton from './AppLogoButton.vue';
 
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 @Component({
   components: {
     PolkaswapLogo,
     AppAccountButton,
+    AppAd,
     AppHeaderMenu,
     AppLogoButton,
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
-    Moonpay: lazyComponent(Components.Moonpay),
-    MoonpayNotification: lazyComponent(Components.MoonpayNotification),
-    MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
-    MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
-    TokenLogo: components.TokenLogo,
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     WalletAvatar: components.WalletAvatar,
   },
 })
@@ -67,10 +54,8 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
   @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
 
   @getter.libraryTheme libraryTheme!: Theme;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.settings.moonpayEnabled moonpayEnabled!: boolean;
-
-  @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
+  @getter.assets.xor xor!: Nullable<AccountAsset>;
+  @getter.assets.eth eth!: Nullable<AccountAsset>;
 
   goTo = goTo;
 
@@ -81,16 +66,12 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
     };
   }
 
-  get areMoonpayButtonsVisible(): boolean {
-    return this.moonpayEnabled && this.isLoggedIn;
-  }
+  get computedClassBtn(): string[] {
+    const base = ['app-menu-fiat-btn', 'active'];
 
-  async openMoonpayDialog(): Promise<void> {
-    if (!this.isSoraAccountConnected) {
-      return this.connectSoraWallet();
-    }
-    await this.connectEvmWallet();
-    this.setMoonpayVisibility(true);
+    if (this.$route.name === PageNames.FiatDepositOptions) base.push('app-menu-fiat-btn--active');
+
+    return base;
   }
 
   toggleMenu(): void {
@@ -100,40 +81,21 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
 </script>
 
 <style lang="scss">
+.app-menu-fiat-btn.app-menu-fiat-btn--active.neumorphic.s-tertiary.active {
+  box-shadow: var(--s-shadow-element);
+
+  span {
+    color: var(--s-color-theme-accent);
+  }
+}
+
 .settings-control:hover > span > .header-menu__button i {
   color: var(--s-color-base-content-secondary);
 }
 
-.moonpay-button {
-  &.el-button.neumorphic.s-medium {
-    padding-left: 9px;
-    padding-right: 9px;
-  }
-
-  &--buy {
-    max-width: 114px;
-  }
-
-  &--history {
-    max-width: 134px;
-  }
-
-  &-text {
-    display: none;
-    white-space: normal;
-    text-align: left;
-
-    @include large-mobile {
-      display: inline-block;
-    }
-  }
-
-  & i + &-text {
-    padding-left: 6px;
-  }
-
-  &:not(.s-action).s-i-position-left > span > i[class^='s-icon-'] {
-    margin-right: 0;
+.app-menu-payment {
+  .token-logo.second-logo .asset-logo {
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_15602_344599)'%3E%3Cpath d='M9.99998 19C14.9706 19 19 14.9706 19 10C19 5.02944 14.9706 1 9.99998 1C5.02944 1 1 5.02944 1 10C1 14.9706 5.02944 19 9.99998 19Z' fill='%23627EEA'/%3E%3Cpath d='M9.99805 3.45166V8.29193L14.0891 10.12L9.99805 3.45166Z' fill='white' fill-opacity='0.6'/%3E%3Cpath d='M9.99881 3.45166L5.90723 10.12L9.99881 8.29193V3.45166Z' fill='white'/%3E%3Cpath d='M9.99805 13.2565V16.5453L14.0918 10.8816L9.99805 13.2565Z' fill='white' fill-opacity='0.6'/%3E%3Cpath d='M9.99783 16.5453V13.2559L5.90625 10.8816L9.99783 16.5453Z' fill='white'/%3E%3Cpath d='M9.99805 12.4953L14.0891 10.12L9.99805 8.29297V12.4953Z' fill='white' fill-opacity='0.2'/%3E%3Cpath d='M5.90625 10.12L9.99783 12.4953V8.29297L5.90625 10.12Z' fill='white' fill-opacity='0.6'/%3E%3C/g%3E%3Crect x='0.5' y='0.5' width='19' height='19' rx='9.5' stroke='%23F4F0F1'/%3E%3Cdefs%3E%3CclipPath id='clip0_15602_344599'%3E%3Crect x='1' y='1' width='18' height='18' rx='9' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E") !important;
   }
 }
 </style>
@@ -187,15 +149,11 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
     }
   }
 
-  &.without-moonpay {
-    margin-left: auto;
-  }
-
   @include desktop {
     margin-left: auto;
   }
 
-  &--moonpay {
+  &--fiat-payment {
     margin-left: auto;
 
     @include desktop {
