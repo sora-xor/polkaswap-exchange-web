@@ -6,13 +6,7 @@ import { settingsStorage } from '@/utils/storage';
 import { initialState } from './state';
 
 import type { SwapState } from './types';
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type {
-  QuotePaths,
-  PrimaryMarketsEnabledAssets,
-  QuotePayload,
-  LPRewardsInfo,
-} from '@sora-substrate/liquidity-proxy/build/types';
+import type { QuotePayload, LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
@@ -57,31 +51,16 @@ const mutations = defineMutations<SwapState>()({
   setLiquidityProviderFee(state, value: CodecString): void {
     state.liquidityProviderFee = value;
   },
-  setPrimaryMarketsEnabledAssets(state, assets: PrimaryMarketsEnabledAssets): void {
-    state.enabledAssets = Object.freeze({ ...assets });
-  },
   setRewards(state, rewards: Array<LPRewardsInfo>): void {
     state.rewards = Object.freeze([...rewards]);
   },
   setRoute(state, route: string[]): void {
     state.route = Object.freeze([...route]);
   },
-  setSubscriptionPayload(
-    state,
-    {
-      dexId,
-      payload,
-      paths,
-      liquiditySources,
-    }: { payload: QuotePayload; dexId: number; paths: QuotePaths; liquiditySources: Array<LiquiditySourceTypes> }
-  ): void {
+  setSubscriptionPayload(state, { dexId, payload }: { payload: QuotePayload; dexId: number }): void {
     state.dexQuoteData = {
       ...state.dexQuoteData,
-      [dexId]: Object.freeze({
-        payload,
-        paths,
-        pairLiquiditySources: liquiditySources,
-      }),
+      [dexId]: payload,
     };
   },
   selectDexId(state, dexId: number) {
