@@ -165,9 +165,11 @@ export default class ReferralBonding extends Mixins(
   }
 
   handleMaxValue(): void {
-    if (!this.xor) return;
+    const { xor, networkFee, isBondedBalance } = this;
 
-    this.handleInputXor(getMaxValue(this.xor, this.networkFee, false, this.isBondedBalance));
+    if (!xor) return;
+
+    this.handleInputXor(getMaxValue(xor, networkFee, { isBondedBalance }));
   }
 
   handleConfirmBond(): void {

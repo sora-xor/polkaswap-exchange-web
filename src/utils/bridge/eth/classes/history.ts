@@ -7,7 +7,7 @@ import {
   SUBQUERY_TYPES,
   WALLET_CONSTS,
 } from '@soramitsu/soraneo-wallet-web';
-import { ethers } from 'ethers';
+import { ethers, EtherscanProvider, BlockTag } from 'ethers';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 
@@ -23,7 +23,21 @@ import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { ActionContext } from 'vuex';
 
-const BRIDGE_INTERFACE = new ethers.utils.Interface([
+export default class EtherscanHistoryProvider extends EtherscanProvider {
+  async getHistory(address: string, startBlock?: BlockTag, endBlock?: BlockTag): Promise<Array<any>> {
+    const params = {
+      action: 'txlist',
+      address,
+      startblock: startBlock == null ? 0 : startBlock,
+      endblock: endBlock == null ? 99999999 : endBlock,
+      sort: 'asc',
+    };
+
+    return this.fetch('account', params);
+  }
+}
+
+const BRIDGE_INTERFACE = new ethers.Interface([
   ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.XOR].abi, // XOR or VAL
   ...SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi, // Other
 ]);
@@ -92,22 +106,23 @@ const getReceiptData = async (externalHash: string) => {
   return externalHash ? await getEvmTransactionRecieptByHash(externalHash) : null;
 };
 
-const getEvmBlockNumber = (ethereumTx: ethers.providers.TransactionResponse | null) => {
+const getEvmBlockNumber = (ethereumTx: ethers.TransactionResponse | null) => {
   return ethereumTx?.blockNumber;
 };
 
-const getEvmBlockId = (ethereumTx: ethers.providers.TransactionResponse | null) => {
+const getEvmBlockId = (ethereumTx: ethers.TransactionResponse | null) => {
   return ethereumTx?.blockHash;
 };
 
-const getEvmTimestamp = async (ethereumTx: ethers.providers.TransactionResponse | null) => {
-  if (ethereumTx?.timestamp) {
-    return ethereumTx.timestamp * 1000;
-  } else if (ethereumTx?.blockNumber) {
-    return (await ethersUtil.getBlock(ethereumTx.blockNumber)).timestamp * 1000;
-  } else {
-    return Date.now();
+const getEvmTimestamp = async (ethereumTx: ethers.TransactionResponse | null) => {
+  if (ethereumTx?.blockNumber) {
+    const block = await ethersUtil.getBlock(ethereumTx.blockNumber);
+
+    if (block) {
+      return block.timestamp * 1000;
+    }
   }
+  return Date.now();
 };
 
 const getTimes = (isOutgoing: boolean, soraTimestamp: number, evmTimestamp: number) => {
@@ -118,7 +133,7 @@ type TimestampMap<T> = {
   [key: number]: T;
 };
 
-type EthTransactionsMap = DataMap<ethers.providers.TransactionResponse>;
+type EthTransactionsMap = DataMap<ethers.TransactionResponse>;
 type HistoryElement = SUBQUERY_TYPES.HistoryElement;
 type HistoryElementData = SUBQUERY_TYPES.HistoryElementEthBridgeOutgoing &
   SUBQUERY_TYPES.HistoryElementEthBridgeIncoming;
@@ -131,7 +146,7 @@ export class EthBridgeHistory {
   private ethStartBlock: TimestampMap<number> = {};
 
   private etherscanApiKey!: string;
-  private etherscanInstance!: ethers.providers.EtherscanProvider;
+  private etherscanInstance!: EtherscanHistoryProvider;
 
   constructor(etherscanApiKey: string) {
     this.etherscanApiKey = etherscanApiKey;
@@ -149,7 +164,7 @@ export class EthBridgeHistory {
     const ethersInstance = await ethersUtil.getEthersInstance();
     const network = await ethersInstance.getNetwork();
 
-    this.etherscanInstance = new ethers.providers.EtherscanProvider(network, this.etherscanApiKey);
+    this.etherscanInstance = new EtherscanHistoryProvider(network, this.etherscanApiKey);
     this.externalNetwork = await ethersUtil.getEvmNetworkId();
     this.contracts = contracts;
   }
@@ -210,7 +225,7 @@ export class EthBridgeHistory {
     accountAddress: string,
     hash: string,
     fromTimestamp: number
-  ): Promise<ethers.providers.TransactionResponse | null> {
+  ): Promise<ethers.TransactionResponse | null> {
     if (!(accountAddress && hash)) return null;
     const contracts = Object.values(this.contracts);
     const transactions = await this.getEthAccountTransactions(accountAddress, fromTimestamp, contracts);
@@ -219,7 +234,7 @@ export class EthBridgeHistory {
       try {
         const decodedInput = BRIDGE_INTERFACE.parseTransaction(tx);
 
-        if (decodedInput.args.txHash.toLowerCase() === hash.toLowerCase()) {
+        if (decodedInput?.args.txHash.toLowerCase() === hash.toLowerCase()) {
           return tx;
         }
       } catch (err) {
@@ -230,7 +245,7 @@ export class EthBridgeHistory {
     return null;
   }
 
-  public async findEthTxByEthereumHash(externalHash: string): Promise<ethers.providers.TransactionResponse> {
+  public async findEthTxByEthereumHash(externalHash: string): Promise<ethers.TransactionResponse | null> {
     for (const address in this.ethAccountTransactionsMap) {
       if (externalHash in this.ethAccountTransactionsMap[address]) {
         return this.ethAccountTransactionsMap[address][externalHash];
