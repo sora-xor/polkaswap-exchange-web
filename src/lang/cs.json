@@ -1214,9 +1214,9 @@
         "moonpayTitle": "Kupte si ETH přes MoonPay",
         "moonpayDesc": "Kupte si ETH tokeny na Ethereu a přeneste je do sítě SORA přes most",
         "x1Title": "Kupte si XOR svou kartou",
-        "x1Desc": "Kupte si tokeny XOR debetní nebo kreditní kartou",
         "x1Btn": "Koupit XOR s kartou",
-        "errorMessage": "Omlouváme se za nepříjemnosti. Na vyřešení tohoto problému usilovně pracujeme. Prosím zkuste to znovu později."
+        "errorMessage": "Omlouváme se za nepříjemnosti. Na vyřešení tohoto problému usilovně pracujeme. Prosím zkuste to znovu později.",
+        "x1Desc": "Kupte si tokeny XOR přímo v síti SORA svou debetní nebo kreditní kartou"
     },
     "acceptOnScrollText": "Přejděte k přijetí",
     "addressBook": {

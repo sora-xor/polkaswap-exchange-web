@@ -1,79 +1,71 @@
 <template>
-  <div class="container" v-loading="parentLoading">
-    <generic-page-header
-      :has-button-back="!isHistoryView"
-      class="page-header-title--moonpay-history"
-      @back="handleBack"
-    >
-      <moonpay-logo :theme="libraryTheme" slot="title" />
-    </generic-page-header>
-    <div class="moonpay-history">
-      <template v-if="isHistoryView">
-        <div class="moonpay-history-title">{{ t('moonpay.history.title') }}</div>
-        <div :class="['moonpay-history-list', { empty: emptyHistory }]" v-loading="loading">
-          <div
-            v-button
-            v-for="item in formattedItems"
-            :key="item.id"
-            class="moonpay-history-item"
-            tabindex="0"
-            @click="navigateToDetails(item)"
-          >
-            <div class="moonpay-history-item-data">
-              <div class="moonpay-history-item__date">{{ item.formatted.date }}</div>
-              <div class="moonpay-history-item__amount">
-                <template v-if="item.formatted.cryptoAmount">
-                  <formatted-amount
-                    class="moonpay-history-item-amount"
-                    value-can-be-hidden
-                    :value="item.formatted.cryptoAmount"
-                    :font-size-rate="FontSizeRate.MEDIUM"
-                    :asset-symbol="item.formatted.crypto"
-                  />
-                  <i class="network-icon network-icon--ethereum" />&nbsp; <span>{{ t('forText') }}</span>
-                  &nbsp;
-                </template>
+  <div class="moonpay-history">
+    <moonpay-logo :theme="libraryTheme" />
+    <template v-if="isHistoryView">
+      <div class="moonpay-history-title">{{ t('moonpay.history.title') }}</div>
+      <div :class="['moonpay-history-list', { empty: emptyHistory }]" v-loading="loading">
+        <div
+          v-button
+          v-for="item in formattedItems"
+          :key="item.id"
+          class="moonpay-history-item"
+          tabindex="0"
+          @click="navigateToDetails(item)"
+        >
+          <div class="moonpay-history-item-data">
+            <div class="moonpay-history-item__date">{{ item.formatted.date }}</div>
+            <div class="moonpay-history-item__amount">
+              <template v-if="item.formatted.cryptoAmount">
                 <formatted-amount
                   class="moonpay-history-item-amount"
                   value-can-be-hidden
-                  :value="item.formatted.fiatAmount"
+                  :value="item.formatted.cryptoAmount"
                   :font-size-rate="FontSizeRate.MEDIUM"
-                  :asset-symbol="item.formatted.fiat"
+                  :asset-symbol="item.formatted.crypto"
                 />
-              </div>
-              <div class="moonpay-history-item__wallet-address">
-                {{ item.walletAddress }}
-              </div>
+                <i class="network-icon network-icon--ethereum" />&nbsp; <span>{{ t('forText') }}</span>
+                &nbsp;
+              </template>
+              <formatted-amount
+                class="moonpay-history-item-amount"
+                value-can-be-hidden
+                :value="item.formatted.fiatAmount"
+                :font-size-rate="FontSizeRate.MEDIUM"
+                :asset-symbol="item.formatted.fiat"
+              />
             </div>
-            <s-icon :class="['moonpay-history-item-icon', item.status]" :name="item.formatted.icon" size="14" />
+            <div class="moonpay-history-item__wallet-address">
+              {{ item.walletAddress }}
+            </div>
           </div>
-          <span v-if="emptyHistory">{{ t('moonpay.history.empty') }}</span>
+          <s-icon :class="['moonpay-history-item-icon', item.status]" :name="item.formatted.icon" size="14" />
         </div>
-        <history-pagination
-          v-if="!emptyHistory"
-          class="moonpay-history-pagination"
-          :current-page="currentPage"
-          :page-amount="pageAmount"
-          :total="total"
-          :loading="loading"
-          :last-page="lastPage"
-          @pagination-click="handlePaginationClick"
-        />
-      </template>
-      <template v-else>
-        <widget :src="detailsWidgetUrl" />
-        <s-button
-          v-if="isCompletedTransaction"
-          :type="actionButtonType"
-          :disabled="actionButtonDisabled"
-          :loading="loading"
-          class="moonpay-details-button s-typography-button--big"
-          @click="handleTransaction"
-        >
-          {{ actionButtonText }}
-        </s-button>
-      </template>
-    </div>
+        <span v-if="emptyHistory">{{ t('moonpay.history.empty') }}</span>
+      </div>
+      <history-pagination
+        v-if="!emptyHistory"
+        class="moonpay-history-pagination"
+        :current-page="currentPage"
+        :page-amount="pageAmount"
+        :total="total"
+        :loading="loading"
+        :last-page="lastPage"
+        @pagination-click="handlePaginationClick"
+      />
+    </template>
+    <template v-else>
+      <widget :src="detailsWidgetUrl" />
+      <s-button
+        v-if="isCompletedTransaction"
+        :type="actionButtonType"
+        :disabled="actionButtonDisabled"
+        :loading="loading"
+        class="moonpay-details-button s-typography-button--big"
+        @click="handleTransaction"
+      >
+        {{ actionButtonText }}
+      </s-button>
+    </template>
   </div>
 </template>
 
@@ -81,16 +73,17 @@
 import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import MoonpayBridgeInitMixin from '@/components/pages/Moonpay/BridgeInitMixin';
-import MoonpayLogo from '@/components/shared/Logo/Moonpay.vue';
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
-import { action, getter, state } from '@/store/decorators';
-import { getCssVariableValue, toQueryString } from '@/utils';
-import ethersUtil from '@/utils/ethers-util';
-import { MoonpayTransactionStatus } from '@/utils/moonpay';
-import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '@/utils/moonpay';
+import MoonpayBridgeInitMixin from '../../../components/pages/Moonpay/BridgeInitMixin';
+import MoonpayLogo from '../../../components/shared/Logo/Moonpay.vue';
+import X1exLogo from '../../../components/shared/Logo/X1ex.vue';
+import { Components } from '../../../consts';
+import { lazyComponent } from '../../../router';
+import { action, getter, state } from '../../../store/decorators';
+import { getCssVariableValue, toQueryString } from '../../../utils';
+import ethersUtil from '../../../utils/ethers-util';
+import { MoonpayTransactionStatus } from '../../../utils/moonpay';
 
+import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '../../../utils/moonpay';
 import type { BridgeHistory } from '@sora-substrate/util';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
@@ -100,6 +93,7 @@ const DetailsView = 'details';
 @Component({
   components: {
     MoonpayLogo,
+    X1exLogo,
     FormattedAmount: components.FormattedAmount,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     Widget: lazyComponent(Components.Widget),
@@ -316,6 +310,10 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
 }
 .moonpay-history-pagination {
   width: 100%;
+}
+
+.pay-option-tab {
+  display: block;
 }
 </style>
 

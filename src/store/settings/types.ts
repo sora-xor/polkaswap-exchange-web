@@ -5,6 +5,7 @@ import type { Subscription } from 'rxjs';
 
 export type FeatureFlags = {
   moonpay?: boolean;
+  x1ex?: boolean;
   charts?: boolean;
   soraCard?: boolean;
 };

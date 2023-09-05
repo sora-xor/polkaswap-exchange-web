@@ -17,14 +17,6 @@
             <router-view :parent-loading="loading || !nodeIsConnected" />
             <app-disclaimer v-if="disclaimerVisibility" />
           </div>
-          <footer class="app-footer">
-            <div class="sora-logo">
-              <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-              <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
-                <sora-logo :theme="libraryTheme" />
-              </a>
-            </div>
-          </footer>
         </s-scrollbar>
       </div>
     </div>
@@ -519,12 +511,6 @@ i.icon-divider {
   @include icon-styles;
 }
 
-@include tablet {
-  .app-footer {
-    flex-direction: row;
-  }
-}
-
 @include desktop {
   .app-main {
     &.app-main--swap.app-main--has-charts {
@@ -544,9 +530,6 @@ i.icon-divider {
 </style>
 
 <style lang="scss" scoped>
-$sora-logo-height: 36px;
-$sora-logo-width: 173.7px;
-
 .app {
   &-main {
     display: flex;
@@ -564,9 +547,6 @@ $sora-logo-width: 173.7px;
     max-width: 100%;
     &__about {
       overflow: hidden;
-      .app-footer {
-        justify-content: center;
-      }
     }
   }
 
@@ -589,28 +569,6 @@ $sora-logo-width: 173.7px;
 
   @include large-mobile {
     display: none;
-  }
-}
-
-.sora-logo {
-  display: flex;
-  align-items: center;
-  align-self: flex-end;
-
-  &__title {
-    text-transform: uppercase;
-    font-weight: 200;
-    color: var(--s-color-base-content-secondary);
-    font-size: 15px;
-    line-height: 16px;
-    margin-right: $basic-spacing;
-    white-space: nowrap;
-  }
-
-  &__image {
-    width: $sora-logo-width;
-    height: $sora-logo-height;
-    @include focus-outline;
   }
 }
 </style>
