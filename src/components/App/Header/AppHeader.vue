@@ -13,6 +13,7 @@
         <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
       <moonpay-history-button class="moonpay-button moonpay-button--history" />
+      <app-ad v-show="isDesktop" class="app-controls--adv" />
     </div>
     <div class="app-controls s-flex" :class="{ 'without-moonpay': !areMoonpayButtonsVisible }">
       <app-account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
@@ -41,10 +42,13 @@ import { lazyComponent, goTo } from '@/router';
 import { getter, mutation } from '@/store/decorators';
 
 import AppAccountButton from './AppAccountButton.vue';
+import AppAd from './AppAd.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
 import AppLogoButton from './AppLogoButton.vue';
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+
+const BREAKPOINT = 1024;
 
 @Component({
   components: {
@@ -52,6 +56,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
     AppAccountButton,
     AppHeaderMenu,
     AppLogoButton,
+    AppAd,
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
     Moonpay: lazyComponent(Components.Moonpay),
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
@@ -74,6 +79,8 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
 
   goTo = goTo;
 
+  isDesktop: boolean = window.innerWidth >= BREAKPOINT;
+
   get nodeLogo() {
     return {
       size: WALLET_CONSTS.LogoSize.MEDIUM,
@@ -95,6 +102,18 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
 
   toggleMenu(): void {
     this.$emit('toggle-menu');
+  }
+
+  private setIsDesktop(): void {
+    this.isDesktop = window.innerWidth >= BREAKPOINT;
+  }
+
+  mounted(): void {
+    window.addEventListener('resize', this.setIsDesktop);
+  }
+
+  beforeDestroy(): void {
+    window.removeEventListener('resize', this.setIsDesktop);
   }
 }
 </script>
@@ -193,6 +212,10 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
 
   @include desktop {
     margin-left: auto;
+  }
+
+  &--adv {
+    margin-right: $inner-spacing-medium;
   }
 
   &--moonpay {
