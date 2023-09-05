@@ -317,7 +317,7 @@ import {
   hasInsufficientBalance,
   hasInsufficientXorForFee,
   hasInsufficientNativeTokenForFee,
-  getMaxValue,
+  getMaxBalance,
   getAssetBalance,
   asZeroValue,
   delay,
@@ -436,23 +436,40 @@ export default class Bridge extends Mixins(
     return asZeroValue(this.amountReceived);
   }
 
+  get lockedBalance(): FPNumber | null {
+    if (!(this.asset && this.assetLockedBalance)) return null;
+
+    return this.getFPNumberFromCodec(this.assetLockedBalance, this.asset.externalDecimals);
+  }
+
+  get transferLimitBalance(): FPNumber | null {
+    if (!(this.asset && this.assetTransferLimit)) return null;
+
+    return this.getFPNumberFromCodec(this.assetTransferLimit, this.asset.decimals);
+  }
+
+  get withdrawLimitBalance(): FPNumber | null {
+    const filtered = [this.lockedBalance, this.transferLimitBalance].filter((item) => item !== null) as FPNumber[];
+
+    if (!filtered.length) return null;
+
+    return FPNumber.min(...filtered);
+  }
+
   get maxValue(): string {
     if (!(this.asset && this.isRegisteredAsset)) return ZeroStringValue;
 
     const fee = this.isSoraToEvm ? this.soraNetworkFee : this.externalNetworkFee;
-    const maxBalance = getMaxValue(this.asset, fee, {
+    const maxBalance = getMaxBalance(this.asset, fee, {
       isExternalBalance: !this.isSoraToEvm,
       isExternalNative: this.isNativeTokenSelected,
     });
 
-    if (this.assetLockedBalance && this.isSoraToEvm) {
-      const fpBalance = this.getFPNumber(maxBalance, this.asset.decimals);
-      const fpLocked = this.getFPNumberFromCodec(this.assetLockedBalance, this.asset.externalDecimals);
-
-      if (FPNumber.gt(fpBalance, fpLocked)) return fpLocked.toString();
+    if (this.isSoraToEvm && this.withdrawLimitBalance) {
+      if (FPNumber.gt(maxBalance, this.withdrawLimitBalance)) return this.withdrawLimitBalance.toString();
     }
 
-    return maxBalance;
+    return maxBalance.toString();
   }
 
   get isMaxAvailable(): boolean {
@@ -463,12 +480,11 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientLiquidity(): boolean {
-    if (!(this.asset && this.assetLockedBalance && this.isSoraToEvm)) return false;
+    if (!(this.asset && this.withdrawLimitBalance && this.isSoraToEvm)) return false;
 
     const fpAmount = new FPNumber(this.amountSend, this.asset.decimals);
-    const fpLocked = FPNumber.fromCodecValue(this.assetLockedBalance, this.asset.externalDecimals);
 
-    return FPNumber.gt(fpAmount, fpLocked);
+    return FPNumber.gt(fpAmount, this.withdrawLimitBalance);
   }
 
   get isInsufficientXorForFee(): boolean {
