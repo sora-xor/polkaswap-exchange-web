@@ -1,5 +1,3 @@
-import { log } from 'console';
-
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 
@@ -17,6 +15,7 @@ const SoraProxyEndpoints = {
     kycAttemptCountEndpoint: `${soraCardTestBaseEndpoint}/kyc-attempt-count`,
     priceOracleEndpoint: `${soraCardTestBaseEndpoint}/prices/xor_euro`,
     ibanEndpoint: `${soraCardTestBaseEndpoint}/ibans`,
+    x1TransactionStatus: `${soraCardTestBaseEndpoint}/ws/x1-payment-status`,
     newAccessTokenEndpoint: 'https://api-auth-test.soracard.com/RequestNewAccessToken',
   },
   [WALLET_CONSTS.SoraNetwork.Prod]: {
@@ -25,6 +24,7 @@ const SoraProxyEndpoints = {
     kycAttemptCountEndpoint: `${soraCardProdBaseEndpoint}/kyc-attempt-count`,
     priceOracleEndpoint: `${soraCardProdBaseEndpoint}/prices/xor_euro`,
     ibanEndpoint: `${soraCardProdBaseEndpoint}/ibans`,
+    x1TransactionStatus: `${soraCardProdBaseEndpoint}/ws/x1-payment-status`,
     newAccessTokenEndpoint: 'https://api-auth.soracard.com/RequestNewAccessToken',
   },
 };

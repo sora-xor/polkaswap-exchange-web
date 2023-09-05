@@ -10,6 +10,7 @@
         :data-from-amount="restEuroToDeposit"
         :data-hide-buy-more-button="true"
         :data-hide-try-again-button="false"
+        :data-payload="payloadId"
       />
       <div v-else class="x1-error-info-banner">
         <s-icon class="x1-error-info-banner__icon" name="basic-clear-X-24" size="64px" />
@@ -32,6 +33,7 @@
 
 <script lang="ts">
 import { components, mixins, WALLET_CONSTS, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
+import { v4 as uuidv4 } from 'uuid';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import { getter, state } from '@/store/decorators';
@@ -77,8 +79,10 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
     return this.X1Widget.widgetId;
   }
 
-  get isMainnet(): boolean {
-    return this.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod;
+  get payloadId() {
+    return {
+      session_id: uuidv4(),
+    };
   }
 
   async loadX1(): Promise<void> {
