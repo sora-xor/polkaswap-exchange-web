@@ -1214,9 +1214,9 @@
         "moonpayTitle": "Kupite ETH putem MoonPaya",
         "moonpayDesc": "Kupite ETH tokene na Ethereumu i prenesite ih na SORA mrežu putem mosta",
         "x1Title": "Kupite XOR svojom karticom",
-        "x1Desc": "Kupite XOR tokene svojom debitnom ili kreditnom karticom",
         "x1Btn": "Kupite XOR karticom",
-        "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije."
+        "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije.",
+        "x1Desc": "Kupite XOR tokene izravno na SORA mreži svojom debitnom ili kreditnom karticom"
     },
     "acceptOnScrollText": "Pomaknite se za prihvaćanje",
     "addressBook": {

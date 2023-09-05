@@ -1214,9 +1214,9 @@
         "moonpayTitle": "通过 MoonPay 购买 ETH",
         "moonpayDesc": "在以太坊上购买 ETH 代币并通过网桥将其转移到 SORA 网络",
         "x1Title": "用您的卡购买 XOR",
-        "x1Desc": "使用借记卡或信用卡购买 XOR 代币",
         "x1Btn": "用卡买XOR",
-        "errorMessage": "不便之处敬请原谅。我们正在努力解决这个问题。请稍后再试。"
+        "errorMessage": "不便之处敬请原谅。我们正在努力解决这个问题。请稍后再试。",
+        "x1Desc": "使用借记卡或信用卡直接在 SORA 网络上购买 XOR 代币"
     },
     "acceptOnScrollText": "滚动接受",
     "addressBook": {
