@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Zamień",
         "Transfer": "Transfer",
+        "SwapTransferBatch": "{ADAR} Transfer",
         "AddLiquidity": "Dodaj płynność",
         "RemoveLiquidity": "Usuń płynność",
         "CreatePair": "Utwórz parę",
@@ -32,6 +33,7 @@
         "andText": "i",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Zamieniono {amount} {symbol} na {amount2} {symbol2}",
             "AddLiquidity": "Dodano {amount} {symbol} i {amount2} {symbol2}",
             "RemoveLiquidity": "Usunięto {amount} {symbol} i {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Nie udało się {action} {amount} {symbol}",
             "Swap": "Nie udało się zamienić {amount} {symbol} na {amount2} {symbol2}.",
             "AddLiquidity": "Nie udało się dodać {amount} {symbol} i {amount2} {symbol2}.",
             "RemoveLiquidity": "Nie udało się usunąć {amount} {symbol} i {amount2} {symbol2}.",
@@ -302,7 +305,7 @@
         "viewIn": "Pokaż w {explorer}",
         "referrer": "Osoba polecająca",
         "referral": "Kod polecający",
-        "adarTxDetailsTitle": "Szczegóły transakcji {ADAR}"
+        "adarTxDetailsTitle": "Szczegóły transakcji"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Zmień sieć w portfelu {Metamask}",

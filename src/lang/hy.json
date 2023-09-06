@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Փոխանակել",
         "Transfer": "Տեղափոխել",
+        "SwapTransferBatch": "{ADAR} Տեղափոխել",
         "AddLiquidity": "Ավելացնել իրացվելիություն",
         "RemoveLiquidity": "Հեռացնել իրացվելիությունը",
         "CreatePair": "Ստեղծել զույգ",
@@ -32,6 +33,7 @@
         "andText": "և",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2}",
             "AddLiquidity": "Մատակարարված {amount} {symbol} և {amount2} {symbol2}",
             "RemoveLiquidity": "Հեռացված {amount} {symbol} և {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Չհաջողվեց {action} {amount} {symbol}",
             "Swap": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2}",
             "AddLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} եւ {amount2} {symbol2}",
             "RemoveLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {amount2} {symbol2}",
@@ -302,7 +305,7 @@
         "viewIn": "Դիտել {explorer}- ում",
         "referrer": "Ուղղորդող",
         "referral": "Ուղղորդում",
-        "adarTxDetailsTitle": "{ADAR} գործարքի մանրամասներ"
+        "adarTxDetailsTitle": "գործարքի մանրամասներ"
     },
     "appName": "{AppName} (Փոլքասվափ)",
     "changeNetworkText": "Փոխել ցանցը {Metamask}- ում",

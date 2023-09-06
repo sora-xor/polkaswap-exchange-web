@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Échanger",
         "Transfer": "Transférer",
+        "SwapTransferBatch": "{ADAR} Transférer",
         "AddLiquidity": "Ajouter de la liquidité",
         "RemoveLiquidity": "Retirer de la liquidité",
         "CreatePair": "Créer une paire",
@@ -32,6 +33,7 @@
         "andText": "et",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "{amount} {symbol} échangés contre {amount2} {symbol2}",
             "AddLiquidity": "Dépôt de {amount} {symbol} et de {amount2} {symbol2}",
             "RemoveLiquidity": "Retrait de {amount} {symbol} et de {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Échec de {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Échec de {action} {amount} {symbol}",
             "Swap": "Échec de l'échange de {amount} {symbol} contre {amount2} {symbol2}",
             "AddLiquidity": "Échec du dépôt de {amount} {symbol} et de {amount2} {symbol2}",
             "RemoveLiquidity": "Échec du retrait de {amount} {symbol} et de {amount2} {symbol2}",
@@ -302,7 +305,7 @@
         "viewIn": "Visualisez dans {explorer}",
         "referrer": "Référent",
         "referral": "Référence",
-        "adarTxDetailsTitle": "Détails de la transaction {ADAR}"
+        "adarTxDetailsTitle": "Détails de la transaction"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Changer de réseau dans {Metamask}",

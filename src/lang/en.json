@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Swap",
         "Transfer": "Transfer",
+        "SwapTransferBatch": "{ADAR} transfer",
         "AddLiquidity": "Add Liquidity",
         "RemoveLiquidity": "Remove Liquidity",
         "CreatePair": "Create Pair",
@@ -32,6 +33,7 @@
         "andText": "and",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Supplied {amount} {symbol} and {amount2} {symbol2}",
             "RemoveLiquidity": "Removed {amount} {symbol} and {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Failed to {action} {amount} {symbol}",
             "Swap": "Failed to swap {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
             "RemoveLiquidity": "Failed to remove {amount} {symbol} and {amount2} {symbol2}",
@@ -302,7 +305,7 @@
         "viewIn": "View in {explorer}",
         "referrer": "Referrer",
         "referral": "Referral",
-        "adarTxDetailsTitle": "{ADAR} transaction details"
+        "adarTxDetailsTitle": "Transaction details"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Change network in {Metamask}",

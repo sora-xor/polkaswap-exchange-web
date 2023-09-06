@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "兑换",
         "Transfer": "转账",
+        "SwapTransferBatch": "{ADAR} 转账",
         "AddLiquidity": "增加流动性",
         "RemoveLiquidity": "移除流动性",
         "CreatePair": "创建流动性对",
@@ -32,6 +33,7 @@
         "andText": "和",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "已把{amount} {symbol}兑换为{amount2} {symbol2}",
             "AddLiquidity": "已提供{amount} {symbol}和{amount2} {symbol2}",
             "RemoveLiquidity": "已删除{amount} {symbol}和{amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
+            "SwapTransferBatch": "{action} {amount} {symbol}失败",
             "Swap": "未能将{amount} {symbol}交换为{amount2} {symbol2}",
             "AddLiquidity": "未能提供{amount} {symbol}和{amount2} {symbol2}",
             "RemoveLiquidity": "未能删除{amount} {symbol}和{amount2} {symbol2}",
@@ -302,7 +305,7 @@
         "viewIn": "在{explorer}中查看",
         "referrer": "推荐人",
         "referral": "推荐",
-        "adarTxDetailsTitle": "{ADAR} 交易详情"
+        "adarTxDetailsTitle": "交易详情"
     },
     "appName": "{AppName}",
     "changeNetworkText": "在 {Metamask} 中更改网络",

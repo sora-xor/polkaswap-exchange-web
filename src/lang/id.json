@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Swap",
         "Transfer": "Transfer",
+        "SwapTransferBatch": "{ADAR} Transfer",
         "AddLiquidity": "Tambahkan Likuiditas",
         "RemoveLiquidity": "Hapus Likuiditas",
         "CreatePair": "Buat Pair",
@@ -32,6 +33,7 @@
         "andText": "dan",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Telah diswap {amount} {symbol} untuk {amount2} {symbol2}",
             "AddLiquidity": "Disuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RemoveLiquidity": "Dihapus {amount} {symbol} dan {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Gagal {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Gagal {action} {amount} {symbol}",
             "Swap": "Gagal menswap {amount} {symbol} dengan {amount2} {symbol2}",
             "AddLiquidity": "Gagal menyuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RemoveLiquidity": "Gagal menghapus {amount} {symbol} dan {amount2} {symbol2}",
@@ -302,7 +305,7 @@
         "viewIn": "Lihat di {explorer}",
         "referrer": "Perujuk",
         "referral": "Rujukan",
-        "adarTxDetailsTitle": "Rincian transaksi {ADAR}"
+        "adarTxDetailsTitle": "Rincian transaksi"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Ubah jaringan di {Metamask}",

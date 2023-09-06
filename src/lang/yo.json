@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Iŕopo",
         "Transfer": "Firanśe",
+        "SwapTransferBatch": "{ADAR} Firanśe",
         "AddLiquidity": "Fi liquidity si",
         "RemoveLiquidity": "Yọ liquidity kuro",
         "CreatePair": "Ṣẹda Pair",
@@ -32,6 +33,7 @@
         "andText": "ati",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Ti paarọ {amount} {symbol} fun {amount2} {symbol2}",
             "AddLiquidity": "Ti pese {amount} {symbol} ati {amount2} {symbol2}",
             "RemoveLiquidity": "Ti yọ {amount} {symbol} ati {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Kuna lati {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Kuna lati {action} {amount} {symbol}",
             "Swap": "Kuna lati separada {amount} {symbol} fun {amount2} {symbol2}",
             "AddLiquidity": "Kuna lati pese {amount} {symbol} ati {amount2} {symbol2}",
             "RemoveLiquidity": "Kuna lati yọ {amount} {symbol} ati {amount2} {symbol2}",
@@ -302,7 +305,7 @@
         "viewIn": "Wo ni {explorer}",
         "referrer": "Atọkasi",
         "referral": "Ifiranṣẹ",
-        "adarTxDetailsTitle": "Àwọn àwọn èrò akójọ awoṣe {ADAR}"
+        "adarTxDetailsTitle": "Àwọn àwọn èrò akójọ awoṣe"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Yi nẹtiwọọki pada ni {Metamask}",

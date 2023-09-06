@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Zamijenite",
         "Transfer": "Prijenos",
+        "SwapTransferBatch": "{ADAR} Prijenos",
         "AddLiquidity": "Dodajte likvidnost",
         "RemoveLiquidity": "Uklonite likvidnost",
         "CreatePair": "Stvorite Par",
@@ -32,6 +33,7 @@
         "andText": "i",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Zamijenjeno je {amount} {symbol} za {amount2} {symbol2}",
             "AddLiquidity": "Isporučeno {amount} {symbol} i {amount2} {symbol2}",
             "RemoveLiquidity": "Uklonjeno {amount} {symbol} i {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} nije uspio",
+            "SwapTransferBatch": "{action} {amount} {symbol} nije uspio",
             "Swap": "Zamjena {amount} {symbol} za {amount2} {symbol2} nije uspjela",
             "AddLiquidity": "Opskrba {amount} {symbol} i {amount2} {symbol2} nije uspjela",
             "RemoveLiquidity": "Uklanjanje{amount} {symbol} i {amount2} {symbol2} nije uspjelo",
@@ -302,7 +305,7 @@
         "viewIn": "Pogledajte u {explorer}",
         "referrer": "Preporučitelj",
         "referral": "Preporuka",
-        "adarTxDetailsTitle": "Detalji {ADAR} transakcije"
+        "adarTxDetailsTitle": "Detalji transakcije"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Promijenite mrežu u {Metamask}",
