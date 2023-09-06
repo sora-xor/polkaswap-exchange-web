@@ -302,7 +302,7 @@
         "viewIn": "Xem trong {explorer}",
         "referrer": "Người giới thiệu",
         "referral": "Giới thiệu",
-        "adarTxDetailsTitle": "Chi tiết giao dịch ADAR"
+        "adarTxDetailsTitle": "Chi tiết giao dịch {ADAR}"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Thay đổi mạng trong {Metamask}",

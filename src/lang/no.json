@@ -302,7 +302,7 @@
         "viewIn": "Vis i {explorer}",
         "referrer": "Henviser",
         "referral": "Henvisning",
-        "adarTxDetailsTitle": "ADAR transaksjonsdetaljer"
+        "adarTxDetailsTitle": "{ADAR} transaksjonsdetaljer"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Bytt nettverk i {Metamask}",

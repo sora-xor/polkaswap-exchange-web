@@ -302,7 +302,7 @@
         "viewIn": "Прикажите у {explorer}",
         "referrer": "Предложилтељ",
         "referral": "Препорука",
-        "adarTxDetailsTitle": "Detalji ADAR transakcije"
+        "adarTxDetailsTitle": "Detalji {ADAR} transakcije"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Промените мрежу у {Metamask}",

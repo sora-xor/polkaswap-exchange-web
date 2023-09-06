@@ -302,7 +302,7 @@
         "viewIn": "在{explorer}中查看",
         "referrer": "推荐人",
         "referral": "推荐",
-        "adarTxDetailsTitle": "ADAR 交易详情"
+        "adarTxDetailsTitle": "{ADAR} 交易详情"
     },
     "appName": "{AppName}",
     "changeNetworkText": "在 {Metamask} 中更改网络",

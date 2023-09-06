@@ -302,7 +302,7 @@
         "viewIn": "Смотреть в {explorer}",
         "referrer": "Реферер",
         "referral": "Реферал",
-        "adarTxDetailsTitle": "ADAR - Детали транзакции"
+        "adarTxDetailsTitle": "{ADAR} - Детали транзакции"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Сменить сеть в {Metamask}",

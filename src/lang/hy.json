@@ -302,7 +302,7 @@
         "viewIn": "Դիտել {explorer}- ում",
         "referrer": "Ուղղորդող",
         "referral": "Ուղղորդում",
-        "adarTxDetailsTitle": "ADAR գործարքի մանրամասներ"
+        "adarTxDetailsTitle": "{ADAR} գործարքի մանրամասներ"
     },
     "appName": "{AppName} (Փոլքասվափ)",
     "changeNetworkText": "Փոխել ցանցը {Metamask}- ում",

@@ -302,7 +302,7 @@
         "viewIn": "Bekijk in {explorer}",
         "referrer": "Verwijzer",
         "referral": "Verwijzing",
-        "adarTxDetailsTitle": "ADAR transactiegegevens"
+        "adarTxDetailsTitle": "{ADAR} transactiegegevens"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Netwerk wijzigen in {Metamask}",

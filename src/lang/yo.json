@@ -302,7 +302,7 @@
         "viewIn": "Wo ni {explorer}",
         "referrer": "Atọkasi",
         "referral": "Ifiranṣẹ",
-        "adarTxDetailsTitle": "Àwọn àwọn èrò akójọ awoṣe ADAR"
+        "adarTxDetailsTitle": "Àwọn àwọn èrò akójọ awoṣe {ADAR}"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Yi nẹtiwọọki pada ni {Metamask}",

@@ -302,7 +302,7 @@
         "viewIn": "Zobraziť v {explorer}",
         "referrer": "Sprostredkovateľ",
         "referral": "Doporučenie",
-        "adarTxDetailsTitle": "Detaily transakcie ADAR"
+        "adarTxDetailsTitle": "Detaily transakcie {ADAR}"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Zmeňiť sieť v {Metamask}",

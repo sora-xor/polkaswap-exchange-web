@@ -302,7 +302,7 @@
         "viewIn": "Ver en {explorer}",
         "referrer": "Referente",
         "referral": "Referencia",
-        "adarTxDetailsTitle": "Detalles de la transacción ADAR"
+        "adarTxDetailsTitle": "Detalles de la transacción {ADAR}"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Cambiar de red en {Metamask}",

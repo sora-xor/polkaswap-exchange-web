@@ -302,7 +302,7 @@
         "viewIn": "Pokaż w {explorer}",
         "referrer": "Osoba polecająca",
         "referral": "Kod polecający",
-        "adarTxDetailsTitle": "Szczegóły transakcji ADAR"
+        "adarTxDetailsTitle": "Szczegóły transakcji {ADAR}"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Zmień sieć w portfelu {Metamask}",
