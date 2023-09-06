@@ -443,9 +443,9 @@ export default class Bridge extends Mixins(
   }
 
   get transferLimitBalance(): FPNumber | null {
-    if (!(this.asset && this.assetTransferLimit)) return null;
+    if (!(this.asset && this.outgoingMaxLimit)) return null;
 
-    return this.getFPNumberFromCodec(this.assetTransferLimit, this.asset.decimals);
+    return this.getFPNumberFromCodec(this.outgoingMaxLimit, this.asset.decimals);
   }
 
   get withdrawLimitBalance(): FPNumber | null {

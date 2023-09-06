@@ -12,7 +12,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @state.bridge.externalNativeBalance externalNativeBalance!: CodecString;
   @state.bridge.externalBlockNumber externalBlockNumber!: number;
   @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<CodecString>;
-  @state.bridge.assetTransferLimit assetTransferLimit!: Nullable<CodecString>;
+  @state.bridge.outgoingMaxLimit outgoingMaxLimit!: Nullable<CodecString>;
 
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;

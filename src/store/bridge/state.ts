@@ -9,10 +9,10 @@ function initialState(): BridgeState {
     assetSenderBalance: null, // balance for sora
     assetRecipientBalance: null, // balance for bridge network
     assetLockedBalance: null, // asset balance locked on bridge
-    assetTransferLimited: false, // is asset outgoing transfer limited
-    assetTransferLimit: null, // outgoing transfer limit in asset amount
-    outgoingLimitUSD: null, // outgoing transfer limit in USD
-    bridgeSubscription: null,
+    incomingMinLimit: null, // incoming min limit in asset amount
+    outgoingMaxLimit: null, // outgoing max limit in asset amount
+    outgoingMaxLimitSubscription: null, // outgoing transfer limit in USD
+    blockUpdatesSubscription: null,
     amountSend: '',
     amountReceived: '',
     focusedField: null,

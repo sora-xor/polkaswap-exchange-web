@@ -30,25 +30,27 @@ const mutations = defineMutations<BridgeState>()({
     state.externalNativeBalance = balance;
   },
 
-  setAssetTransferLimited(state, flag: boolean): void {
-    state.assetTransferLimited = flag;
+  setOutgoingMaxLimit(state, amount: Nullable<CodecString>): void {
+    state.outgoingMaxLimit = amount;
   },
 
-  setAssetTransferLimit(state, amount: Nullable<CodecString>): void {
-    state.assetTransferLimit = amount;
+  setOutgoingMaxLimitSubscription(state, subscription: Subscription): void {
+    state.outgoingMaxLimitSubscription = subscription;
   },
 
-  setOutgoingLimitUSD(state, limitUSD: Nullable<CodecString>): void {
-    state.outgoingLimitUSD = limitUSD;
+  resetOutgoingMaxLimitSubscription(state): void {
+    state.outgoingMaxLimitSubscription?.unsubscribe();
+    state.outgoingMaxLimitSubscription = null;
+    state.outgoingMaxLimit = null;
   },
 
-  setBridgeSubscription(state, subscription: Subscription): void {
-    state.bridgeSubscription = subscription;
+  setBlockUpdatesSubscription(state, subscription: Subscription): void {
+    state.blockUpdatesSubscription = subscription;
   },
 
-  resetBridgeSubscription(state): void {
-    state.bridgeSubscription?.unsubscribe();
-    state.bridgeSubscription = null;
+  resetBlockUpdatesSubscription(state): void {
+    state.blockUpdatesSubscription?.unsubscribe();
+    state.blockUpdatesSubscription = null;
   },
 
   setAmountSend(state, value?: string): void {

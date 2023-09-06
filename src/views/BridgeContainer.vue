@@ -22,14 +22,20 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
   @action.web3.restoreSelectedNetwork private restoreSelectedNetwork!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBalance private updateExternalBalance!: AsyncFnWithoutArgs;
-  @action.bridge.startBridgeSubscription private startBridgeSubscription!: AsyncFnWithoutArgs;
-  @mutation.bridge.resetBridgeSubscription private resetBridgeSubscription!: FnWithoutArgs;
+  @action.bridge.subscribeOnBlockUpdates private subscribeOnBlockUpdates!: AsyncFnWithoutArgs;
+  @action.bridge.subscribeOnAssetMaxLimit private subscribeOnAssetMaxLimit!: AsyncFnWithoutArgs;
+  @mutation.bridge.resetBlockUpdatesSubscription private resetBlockUpdatesSubscription!: FnWithoutArgs;
+  @mutation.bridge.resetOutgoingMaxLimitSubscription private resetOutgoingMaxLimitSubscription!: FnWithoutArgs;
 
   private unwatchEthereum!: FnWithoutArgs;
 
   async created(): Promise<void> {
-    this.setStartSubscriptions([this.subscribeOnEvm, this.startBridgeSubscription]);
-    this.setResetSubscriptions([this.unsubscribeFromEvm, this.resetBridgeSubscription]);
+    this.setStartSubscriptions([this.subscribeOnEvm, this.subscribeOnBlockUpdates, this.subscribeOnAssetMaxLimit]);
+    this.setResetSubscriptions([
+      this.unsubscribeFromEvm,
+      this.resetBlockUpdatesSubscription,
+      this.resetOutgoingMaxLimitSubscription,
+    ]);
 
     await this.withParentLoading(async () => {
       await this.getSupportedApps();
