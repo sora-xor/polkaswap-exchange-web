@@ -59,11 +59,6 @@ export default class BridgeLinksDropdown extends Mixins(TranslationMixin) {
       outline: auto;
     }
   }
-
-  // TODO: fix UI library
-  .s-dropdown-menu__item {
-    border-radius: calc(var(--s-border-radius-mini) / 2);
-  }
 }
 </style>
 

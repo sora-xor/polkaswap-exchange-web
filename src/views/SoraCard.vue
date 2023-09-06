@@ -52,6 +52,7 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
   @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncFnWithoutArgs;
   @action.wallet.account.loginAccount private loginAccount!: (payload: WALLET_TYPES.PolkadotJsAccount) => Promise<void>;
+  @state.wallet.account.source private source!: WALLET_CONSTS.AppWallet;
 
   step: Nullable<Step> = null;
   userApplied = false;
@@ -129,8 +130,14 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
     this.subscribeToTotalXorBalance();
   }
 
-  created(): void {
-    this.withApi(this.handleAccountChange);
+  async created(): Promise<void> {
+    await this.withApi(this.handleAccountChange);
+
+    const refreshToken = localStorage.getItem('PW-refresh-token');
+
+    if (this.source === WALLET_CONSTS.AppWallet.FearlessWallet && refreshToken) {
+      (window as WindowInjectedWeb3).injectedWeb3?.['fearless-wallet']?.saveSoraCardToken?.(refreshToken);
+    }
   }
 
   async beforeRouteUpdate(to: Route, from: Route, next: NavigationGuardNext<Vue>): Promise<void> {

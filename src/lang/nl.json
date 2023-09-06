@@ -1217,9 +1217,9 @@
         "moonpayTitle": "Koop ETH via MoonPay",
         "moonpayDesc": "Koop ETH-tokens op Ethereum en verplaats ze via de bridge naar het SORA-netwerk",
         "x1Title": "Koop XOR met uw kaart",
-        "x1Desc": "Koop XOR-tokens met uw bankpas of creditcard",
         "x1Btn": "Koop XOR met kaart",
-        "errorMessage": "Excuses voor het ongemak. We werken er hard aan om dit op te lossen. Probeer het later opnieuw."
+        "errorMessage": "Excuses voor het ongemak. We werken er hard aan om dit op te lossen. Probeer het later opnieuw.",
+        "x1Desc": "Koop XOR-tokens rechtstreeks op het SORA-netwerk met uw bankpas of creditcard"
     },
     "acceptOnScrollText": "Scrol om te accepteren",
     "addressBook": {

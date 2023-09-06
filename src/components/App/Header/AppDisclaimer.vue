@@ -156,7 +156,7 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   &__header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: $basic-spacing / 2;
+    margin-bottom: $inner-spacing-mini;
 
     &-title {
       font-weight: 600;
@@ -194,6 +194,14 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   &__accept-btn {
     margin-top: $basic-spacing;
     width: 100%;
+  }
+}
+</style>
+
+<style lang="scss">
+.disclaimer {
+  .el-scrollbar__bar.is-vertical {
+    opacity: 1;
   }
 }
 </style>

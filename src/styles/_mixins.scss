@@ -67,7 +67,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     &--footer {
       margin-top: $inner-spacing-tiny;
       margin-bottom: 0;
-      min-height: $inner-spacing-mini * 2.25;
+      min-height: $inner-spacing-mini * 2.625; // 21px
 
       .formatted-amount--fiat-value {
         flex-grow: 1;
@@ -463,6 +463,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     &__arrow {
       margin-right: 0;
       flex-shrink: 0;
+      position: relative;
     }
 
     &.is-active {
@@ -716,10 +717,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
     .el-table__empty-block {
       width: 100% !important; // overrides element-ui js style property
-    }
-
-    .el-table__empty-text {
-      color: var(--s-color-base-content-tertiary); // TODO [1.4]: remove after fix in ui-lib
     }
 
     .cell {

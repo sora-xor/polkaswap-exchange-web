@@ -1217,9 +1217,9 @@
         "moonpayTitle": "Buy ETH via MoonPay",
         "moonpayDesc": "Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge",
         "x1Title": "Buy XOR with your card",
-        "x1Desc": "Purchase XOR tokens with your debit or credit card",
         "x1Btn": "Buy XOR with card",
-        "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later."
+        "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later.",
+        "x1Desc": "Purchase XOR tokens directly on the SORA network with your debit or credit card"
     },
     "acceptOnScrollText": "Scroll to accept",
     "addressBook": {

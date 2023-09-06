@@ -1217,9 +1217,9 @@
         "moonpayTitle": "Kjøp ETH via MoonPay",
         "moonpayDesc": "Kjøp ETH-tokens på Ethereum og overfør dem til SORA-nettverket via broen",
         "x1Title": "Kjøp XOR med kortet ditt",
-        "x1Desc": "Kjøp XOR-tokens med ditt debet- eller kredittkort",
         "x1Btn": "Kjøp XOR med kort",
-        "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere."
+        "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere.",
+        "x1Desc": "Kjøp XOR-tokens direkte på SORA-nettverket med ditt debet- eller kredittkort"
     },
     "acceptOnScrollText": "Rull for å godta",
     "addressBook": {

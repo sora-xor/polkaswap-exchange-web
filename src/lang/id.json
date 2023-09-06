@@ -1217,9 +1217,9 @@
         "moonpayTitle": "Beli ETH melalui MoonPay",
         "moonpayDesc": "Beli token ETH di Ethereum dan transfer ke jaringan SORA melalui jembatan",
         "x1Title": "Beli XOR dengan kartu Anda",
-        "x1Desc": "Beli token XOR dengan kartu debit atau kredit Anda",
         "x1Btn": "Beli XOR dengan kartu",
-        "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti."
+        "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti.",
+        "x1Desc": "Beli token XOR langsung di jaringan SORA dengan kartu debit atau kredit Anda"
     },
     "acceptOnScrollText": "Gulir untuk menerima",
     "addressBook": {
