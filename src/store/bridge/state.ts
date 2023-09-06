@@ -11,7 +11,7 @@ function initialState(): BridgeState {
     assetLockedBalance: null, // asset balance locked on bridge
     incomingMinLimit: null, // incoming min limit in asset amount
     outgoingMaxLimit: null, // outgoing max limit in asset amount
-    outgoingMaxLimitSubscription: null, // outgoing transfer limit in USD
+    outgoingMaxLimitSubscription: null,
     blockUpdatesSubscription: null,
     amountSend: '',
     amountReceived: '',

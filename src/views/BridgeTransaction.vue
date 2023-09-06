@@ -459,12 +459,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isInsufficientLiquidity(): boolean {
-    if (!(this.asset && this.assetLockedBalance && this.isSoraToEvm)) return false;
-
-    const fpAmount = new FPNumber(this.amount, this.asset.decimals);
-    const fpLocked = FPNumber.fromCodecValue(this.assetLockedBalance, this.asset.externalDecimals);
-
-    return FPNumber.gt(fpAmount, fpLocked);
+    return !this.isSufficientLiquidity(this.amount, this.asset, this.isSoraToEvm);
   }
 
   get isInsufficientBalance(): boolean {

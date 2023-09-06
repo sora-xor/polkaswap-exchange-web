@@ -34,6 +34,7 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { BridgeTransactionData, BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 
 function getBridgeApi(context: ActionContext<any, any>) {
@@ -339,7 +340,7 @@ async function updateExternalTransferFee(context: ActionContext<any, any>): Prom
   commit.setExternalTransferFee(fee);
 }
 
-function calculateAssetLimit(
+function calculateMaxLimit(
   limitAsset: string,
   quoteAsset: string,
   usdLimit: CodecString,
@@ -455,8 +456,7 @@ const actions = defineActions({
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await dispatch.subscribeOnAssetMaxLimit();
-    await dispatch.updateBalancesAndFees();
+    await Promise.all([dispatch.subscribeOnOutgoingMaxLimit(), dispatch.updateBalancesAndFees()]);
   },
 
   async updateExternalBalance(context): Promise<void> {
@@ -469,9 +469,9 @@ const actions = defineActions({
     }
   },
 
-  async subscribeOnAssetMaxLimit(context): Promise<void> {
+  async subscribeOnOutgoingMaxLimit(context): Promise<void> {
     const { state, commit } = bridgeActionContext(context);
-    const quoteAsset = DAI.address;
+
     const limitAsset = state.assetAddress;
 
     commit.resetOutgoingMaxLimitSubscription();
@@ -482,15 +482,19 @@ const actions = defineActions({
 
     if (!hasOutgoingLimit) return;
 
+    const quoteAsset = DAI.address;
+    const sources = [LiquiditySourceTypes.XYKPool, LiquiditySourceTypes.XSTPool];
     const limitObservable = api.bridgeProxy.getCurrentTransferLimitObservable();
-    const quoteObservable = await api.swap.getSwapQuoteObservable(quoteAsset, limitAsset, [
-      LiquiditySourceTypes.XYKPool,
-      LiquiditySourceTypes.XSTPool,
-    ]);
+    const quoteObservable = await api.swap.getSwapQuoteObservable(quoteAsset, limitAsset, sources, DexId.XOR);
 
-    const subscription = combineLatest([limitObservable, quoteObservable]).subscribe(([usdLimit, quote]) => {
-      const outgoingMaxLimit = calculateAssetLimit(limitAsset, quoteAsset, usdLimit, quote);
-      commit.setOutgoingMaxLimit(outgoingMaxLimit);
+    let subscription!: Subscription;
+
+    await new Promise<void>((resolve) => {
+      subscription = combineLatest([limitObservable, quoteObservable]).subscribe(([usdLimit, quote]) => {
+        const outgoingMaxLimit = calculateMaxLimit(limitAsset, quoteAsset, usdLimit, quote);
+        commit.setOutgoingMaxLimit(outgoingMaxLimit);
+        resolve();
+      });
     });
 
     commit.setOutgoingMaxLimitSubscription(subscription);
@@ -502,6 +506,7 @@ const actions = defineActions({
     commit.resetBlockUpdatesSubscription();
 
     const subscription = api.system.updated.subscribe(() => {
+      updateExternalBlockNumber(context);
       dispatch.updateBalancesAndFees();
     });
 

@@ -1,3 +1,4 @@
+import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -31,5 +32,35 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
 
   get nativeTokenDecimals(): number | undefined {
     return this.nativeToken?.externalDecimals;
+  }
+
+  get lockedBalance(): FPNumber | null {
+    if (!(this.asset && this.assetLockedBalance)) return null;
+
+    return FPNumber.fromCodecValue(this.assetLockedBalance, this.asset.externalDecimals);
+  }
+
+  get outgoingMaxBalance(): FPNumber | null {
+    if (!(this.asset && this.outgoingMaxLimit)) return null;
+
+    return FPNumber.fromCodecValue(this.outgoingMaxLimit, this.asset.decimals);
+  }
+
+  get outgoingLimitBalance(): FPNumber | null {
+    const filtered = [this.lockedBalance, this.outgoingMaxBalance].filter((item) => item !== null) as FPNumber[];
+
+    if (!filtered.length) return null;
+
+    return FPNumber.min(...filtered);
+  }
+
+  isSufficientLiquidity(amount: string, asset: Nullable<RegisteredAccountAsset>, isSoraToEvm: boolean): boolean {
+    if (asset && isSoraToEvm && this.outgoingLimitBalance) {
+      const fpAmount = new FPNumber(amount, asset.decimals);
+
+      return FPNumber.lte(fpAmount, this.outgoingLimitBalance);
+    }
+
+    return true;
   }
 }

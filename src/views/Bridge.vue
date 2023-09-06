@@ -436,26 +436,6 @@ export default class Bridge extends Mixins(
     return asZeroValue(this.amountReceived);
   }
 
-  get lockedBalance(): FPNumber | null {
-    if (!(this.asset && this.assetLockedBalance)) return null;
-
-    return this.getFPNumberFromCodec(this.assetLockedBalance, this.asset.externalDecimals);
-  }
-
-  get transferLimitBalance(): FPNumber | null {
-    if (!(this.asset && this.outgoingMaxLimit)) return null;
-
-    return this.getFPNumberFromCodec(this.outgoingMaxLimit, this.asset.decimals);
-  }
-
-  get withdrawLimitBalance(): FPNumber | null {
-    const filtered = [this.lockedBalance, this.transferLimitBalance].filter((item) => item !== null) as FPNumber[];
-
-    if (!filtered.length) return null;
-
-    return FPNumber.min(...filtered);
-  }
-
   get maxValue(): string {
     if (!(this.asset && this.isRegisteredAsset)) return ZeroStringValue;
 
@@ -465,8 +445,8 @@ export default class Bridge extends Mixins(
       isExternalNative: this.isNativeTokenSelected,
     });
 
-    if (this.isSoraToEvm && this.withdrawLimitBalance) {
-      if (FPNumber.gt(maxBalance, this.withdrawLimitBalance)) return this.withdrawLimitBalance.toString();
+    if (this.isSoraToEvm && this.outgoingLimitBalance) {
+      if (FPNumber.gt(maxBalance, this.outgoingLimitBalance)) return this.outgoingLimitBalance.toString();
     }
 
     return maxBalance.toString();
@@ -480,11 +460,7 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientLiquidity(): boolean {
-    if (!(this.asset && this.withdrawLimitBalance && this.isSoraToEvm)) return false;
-
-    const fpAmount = new FPNumber(this.amountSend, this.asset.decimals);
-
-    return FPNumber.gt(fpAmount, this.withdrawLimitBalance);
+    return !this.isSufficientLiquidity(this.amountSend, this.asset, this.isSoraToEvm);
   }
 
   get isInsufficientXorForFee(): boolean {
