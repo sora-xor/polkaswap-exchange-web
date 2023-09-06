@@ -249,7 +249,7 @@
           <template v-else-if="isInsufficientNativeTokenForFee">
             {{ t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol }) }}
           </template>
-          <template v-else-if="isInsufficientLiquidity">
+          <template v-else-if="isGreaterThanMaxAmount">
             {{ t('swap.insufficientLiquidity') }}
           </template>
           <template v-else>
@@ -459,8 +459,12 @@ export default class Bridge extends Mixins(
     return this.maxValue !== this.amountSend;
   }
 
-  get isInsufficientLiquidity(): boolean {
-    return !this.isSufficientLiquidity(this.amountSend, this.asset, this.isSoraToEvm);
+  get isGreaterThanMaxAmount(): boolean {
+    return this.isGreaterThanOutgoingMaxAmount(this.amountSend, this.asset, this.isSoraToEvm);
+  }
+
+  get isLowerThanMinAmount(): boolean {
+    return this.isLowerThanIncomingMinAmount(this.amountSend, this.asset, this.isSoraToEvm);
   }
 
   get isInsufficientXorForFee(): boolean {
@@ -510,7 +514,8 @@ export default class Bridge extends Mixins(
       this.isInsufficientXorForFee ||
       this.isInsufficientNativeTokenForFee ||
       this.isInsufficientBalance ||
-      this.isInsufficientLiquidity
+      this.isGreaterThanMaxAmount ||
+      this.isLowerThanMinAmount
     );
   }
 

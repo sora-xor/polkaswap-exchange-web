@@ -159,7 +159,7 @@
         <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
           t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol })
         }}</template>
-        <template v-else-if="isInsufficientLiquidity">
+        <template v-else-if="isGreaterThanMaxAmount">
           {{ t('swap.insufficientLiquidity') }}
         </template>
         <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
@@ -458,8 +458,12 @@ export default class BridgeTransaction extends Mixins(
     return this.historyItem?.blockId;
   }
 
-  get isInsufficientLiquidity(): boolean {
-    return !this.isSufficientLiquidity(this.amount, this.asset, this.isSoraToEvm);
+  get isGreaterThanMaxAmount(): boolean {
+    return this.txIsUnsigned && this.isGreaterThanOutgoingMaxAmount(this.amount, this.asset, this.isSoraToEvm);
+  }
+
+  get isLowerThanMinAmount(): boolean {
+    return this.txIsUnsigned && this.isLowerThanIncomingMinAmount(this.amount, this.asset, this.isSoraToEvm);
   }
 
   get isInsufficientBalance(): boolean {
@@ -500,8 +504,9 @@ export default class BridgeTransaction extends Mixins(
     return (
       !(this.isSoraToEvm || this.isValidNetwork) ||
       this.isAnotherEvmAddress ||
-      this.isInsufficientLiquidity ||
       this.isInsufficientBalance ||
+      this.isGreaterThanMaxAmount ||
+      this.isLowerThanMinAmount ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
       this.isTxPending

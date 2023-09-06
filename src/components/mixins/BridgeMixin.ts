@@ -14,6 +14,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @state.bridge.externalBlockNumber externalBlockNumber!: number;
   @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<CodecString>;
   @state.bridge.outgoingMaxLimit outgoingMaxLimit!: Nullable<CodecString>;
+  @state.bridge.incomingMinLimit incomingMinLimit!: CodecString;
 
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
@@ -40,6 +41,12 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     return FPNumber.fromCodecValue(this.assetLockedBalance, this.asset.externalDecimals);
   }
 
+  get incomingMinBalance(): FPNumber {
+    if (!this.asset) return FPNumber.ZERO;
+
+    return FPNumber.fromCodecValue(this.incomingMinLimit, this.asset.externalDecimals);
+  }
+
   get outgoingMaxBalance(): FPNumber | null {
     if (!(this.asset && this.outgoingMaxLimit)) return null;
 
@@ -54,13 +61,23 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     return FPNumber.min(...filtered);
   }
 
-  isSufficientLiquidity(amount: string, asset: Nullable<RegisteredAccountAsset>, isSoraToEvm: boolean): boolean {
-    if (asset && isSoraToEvm && this.outgoingLimitBalance) {
-      const fpAmount = new FPNumber(amount, asset.decimals);
+  isGreaterThanOutgoingMaxAmount(
+    amount: string,
+    asset: Nullable<RegisteredAccountAsset>,
+    isSoraToEvm: boolean
+  ): boolean {
+    if (!(asset && isSoraToEvm && this.outgoingLimitBalance)) return false;
 
-      return FPNumber.lte(fpAmount, this.outgoingLimitBalance);
-    }
+    const fpAmount = new FPNumber(amount);
 
-    return true;
+    return FPNumber.gt(fpAmount, this.outgoingLimitBalance);
+  }
+
+  isLowerThanIncomingMinAmount(amount: string, asset: Nullable<RegisteredAccountAsset>, isSoraToEvm: boolean) {
+    if (!(asset && !isSoraToEvm && this.incomingMinBalance)) return false;
+
+    const fpAmount = new FPNumber(amount);
+
+    return FPNumber.lt(fpAmount, this.incomingMinBalance);
   }
 }
