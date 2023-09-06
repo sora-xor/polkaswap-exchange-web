@@ -477,7 +477,7 @@ export default class About extends Mixins(TranslationMixin) {
 
 .text {
   font-weight: 200;
-  font-size: 18px;
+  font-size: var(--s-font-size-big);
   line-height: 1.4;
   z-index: $app-content-layer;
 

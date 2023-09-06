@@ -197,3 +197,11 @@ export default class AppDisclaimer extends Mixins(TranslationMixin) {
   }
 }
 </style>
+
+<style lang="scss">
+.disclaimer {
+  .el-scrollbar__bar.is-vertical {
+    opacity: 1;
+  }
+}
+</style>
