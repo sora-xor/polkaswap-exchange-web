@@ -421,14 +421,12 @@ const actions = defineActions({
 
     commit.setBalancesAndFeesFetching(true);
 
-    const updates = [
+    await Promise.all([
       updateExternalBalance(),
       updateExternalLockedBalance(context),
       updateExternalNetworkFee(context),
       updateExternalTransferFee(context),
-    ];
-
-    await Promise.all(updates);
+    ]);
 
     commit.setBalancesAndFeesFetching(false);
   },
@@ -456,7 +454,11 @@ const actions = defineActions({
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await Promise.all([dispatch.subscribeOnOutgoingMaxLimit(), dispatch.updateBalancesAndFees()]);
+    await Promise.all([
+      dispatch.updateOutgoingMaxLimit(),
+      dispatch.updateIncomingMinLimit(),
+      dispatch.updateBalancesAndFees(),
+    ]);
   },
 
   async updateExternalBalance(context): Promise<void> {
@@ -469,7 +471,31 @@ const actions = defineActions({
     }
   },
 
-  async subscribeOnOutgoingMaxLimit(context): Promise<void> {
+  async updateIncomingMinLimit(context): Promise<void> {
+    const { getters, commit, state, rootState } = bridgeActionContext(context);
+
+    let minLimit = ZeroStringValue;
+
+    if (getters.isSubBridge && state.assetAddress) {
+      const externalNetwork = rootState.web3.networkSelected as SubNetwork;
+      const parachainNetwork = subBridgeApi.getSoraParachain(externalNetwork);
+      const parachainAdapter = subConnector.getAdapterForNetwork(parachainNetwork);
+
+      try {
+        await parachainAdapter.connect();
+
+        minLimit = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(state.assetAddress, parachainAdapter.api);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        parachainAdapter.stop();
+      }
+    }
+
+    commit.setIncomingMinLimit(minLimit);
+  },
+
+  async updateOutgoingMaxLimit(context): Promise<void> {
     const { state, commit } = bridgeActionContext(context);
 
     const limitAsset = state.assetAddress;

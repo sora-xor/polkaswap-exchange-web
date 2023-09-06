@@ -9,7 +9,7 @@ function initialState(): BridgeState {
     assetSenderBalance: null, // balance for sora
     assetRecipientBalance: null, // balance for bridge network
     assetLockedBalance: null, // asset balance locked on bridge
-    incomingMinLimit: null, // incoming min limit in asset amount
+    incomingMinLimit: ZeroStringValue, // incoming min limit in asset amount
     outgoingMaxLimit: null, // outgoing max limit in asset amount
     outgoingMaxLimitSubscription: null,
     blockUpdatesSubscription: null,

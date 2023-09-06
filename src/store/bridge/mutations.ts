@@ -30,6 +30,10 @@ const mutations = defineMutations<BridgeState>()({
     state.externalNativeBalance = balance;
   },
 
+  setIncomingMinLimit(state, amount: CodecString): void {
+    state.incomingMinLimit = amount;
+  },
+
   setOutgoingMaxLimit(state, amount: Nullable<CodecString>): void {
     state.outgoingMaxLimit = amount;
   },

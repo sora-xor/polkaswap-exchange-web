@@ -23,14 +23,14 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   @action.web3.restoreSelectedNetwork private restoreSelectedNetwork!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBalance private updateExternalBalance!: AsyncFnWithoutArgs;
   @action.bridge.subscribeOnBlockUpdates private subscribeOnBlockUpdates!: AsyncFnWithoutArgs;
-  @action.bridge.subscribeOnOutgoingMaxLimit private subscribeOnOutgoingMaxLimit!: AsyncFnWithoutArgs;
+  @action.bridge.updateOutgoingMaxLimit private updateOutgoingMaxLimit!: AsyncFnWithoutArgs;
   @mutation.bridge.resetBlockUpdatesSubscription private resetBlockUpdatesSubscription!: FnWithoutArgs;
   @mutation.bridge.resetOutgoingMaxLimitSubscription private resetOutgoingMaxLimitSubscription!: FnWithoutArgs;
 
   private unwatchEthereum!: FnWithoutArgs;
 
   async created(): Promise<void> {
-    this.setStartSubscriptions([this.subscribeOnEvm, this.subscribeOnBlockUpdates, this.subscribeOnOutgoingMaxLimit]);
+    this.setStartSubscriptions([this.subscribeOnEvm, this.subscribeOnBlockUpdates, this.updateOutgoingMaxLimit]);
     this.setResetSubscriptions([
       this.unsubscribeFromEvm,
       this.resetBlockUpdatesSubscription,
