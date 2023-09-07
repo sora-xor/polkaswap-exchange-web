@@ -105,6 +105,10 @@
     "*.{js,jsx,vue,ts,tsx}": [
       "vue-cli-service lint",
       "git add"
+    ],
+    "*.{json}": [
+      "prettier --write",
+      "git add"
     ]
   }
 }
