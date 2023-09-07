@@ -8,11 +8,7 @@ import { findEventInBlock } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
-import {
-  getRelayChainBlockNumber,
-  getMessageAcceptedNonces,
-  isMessageDispatchedNonces,
-} from '@/utils/bridge/sub/utils';
+import { getMessageAcceptedNonces, isMessageDispatchedNonces } from '@/utils/bridge/sub/utils';
 
 import type { ApiPromise } from '@polkadot/api';
 import type { NetworkFeesObject } from '@sora-substrate/util';
@@ -182,7 +178,7 @@ class SubBridgeHistory {
       const [{ hash, events }, startTime, relayChainBlockNumber] = await Promise.all([
         findTxInBlock(blockId, id),
         api.system.getBlockTimestamp(blockId, this.soraApi),
-        getRelayChainBlockNumber(parachainBlockId, this.parachainApi),
+        subBridgeApi.soraParachainApi.getRelayChainBlockNumber(parachainBlockId, this.parachainApi),
       ]);
 
       history.txId = hash;
