@@ -17,11 +17,6 @@ export function initialState(): SwapState {
     amountWithoutImpact: '',
     liquidityProviderFee: '',
     isExchangeB: false,
-    enabledAssets: {
-      tbc: [],
-      xst: {},
-      lockedSources: [],
-    },
     rewards: [],
     route: [],
     selectedDexId: DexId.XOR,

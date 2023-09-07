@@ -80,8 +80,9 @@
         :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', externalNetworkId)"
         :value="txExternalNetworkFeeFormatted"
         :asset-symbol="nativeTokenSymbol"
+        :fiat-value="txExternalNetworkFeeFiatValue"
       >
-        <template v-if="txExternalNetworkFeeFormatted" #info-line-value-prefix>
+        <template v-if="txExternalNetworkFeePrefix" #info-line-value-prefix>
           <span class="info-line-value-prefix">~</span>
         </template>
       </info-line>
@@ -189,12 +190,11 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
-import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientEvmNativeTokenForFee } from '@/utils';
+import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientNativeTokenForFee } from '@/utils';
 import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
@@ -308,7 +308,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txSoraNetworkFeeFormatted(): string {
-    return this.getStringFromCodec(this.txSoraNetworkFee, this.xor?.decimals);
+    return this.formatCodecNumber(this.txSoraNetworkFee, this.xor?.decimals);
   }
 
   get txSoraNetworkFeeFiatValue(): Nullable<string> {
@@ -321,6 +321,16 @@ export default class BridgeTransaction extends Mixins(
 
   get txExternalNetworkFeeFormatted(): string {
     return this.formatCodecNumber(this.txExternalNetworkFee, this.nativeTokenDecimals);
+  }
+
+  get txExternalNetworkFeePrefix(): boolean {
+    if (this.txExternalNetworkFeeFormatted === ZeroStringValue) return false;
+
+    return !this.historyItem?.externalNetworkFee;
+  }
+
+  get txExternalNetworkFeeFiatValue(): Nullable<string> {
+    return this.nativeToken ? this.getFiatAmountByCodecString(this.txExternalNetworkFee, this.nativeToken) : null;
   }
 
   get txSoraHash(): string {
@@ -428,7 +438,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txExternalAccountPlaceholder(): string {
-    const network = this.isSoraToEvm ? this.externalNetworkId : undefined;
+    const network = this.isEvmTxType || this.isSoraToEvm ? this.externalNetworkId : undefined;
     return this.getNetworkText('accountAddressText', network);
   }
 
@@ -472,12 +482,19 @@ export default class BridgeTransaction extends Mixins(
   get isInsufficientEvmNativeTokenForFee(): boolean {
     return (
       ((this.txIsUnsigned && !this.isSoraToEvm) || (!this.txIsUnsigned && this.isSoraToEvm)) &&
-      hasInsufficientEvmNativeTokenForFee(this.externalNativeBalance, this.txExternalNetworkFee)
+      hasInsufficientNativeTokenForFee(this.externalNativeBalance, this.txExternalNetworkFee)
+    );
+  }
+
+  get isEvmTxType(): boolean {
+    return (
+      !!this.externalNetworkType &&
+      [BridgeNetworkType.EvmLegacy, BridgeNetworkType.Evm].includes(this.externalNetworkType)
     );
   }
 
   get isRetryAvailable(): boolean {
-    return this.txIsUnsigned || this.externalNetworkType === BridgeNetworkType.EvmLegacy;
+    return this.txIsUnsigned || this.isEvmTxType;
   }
 
   get isAnotherEvmAddress(): boolean {

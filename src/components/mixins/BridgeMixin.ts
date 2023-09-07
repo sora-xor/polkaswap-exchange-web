@@ -15,6 +15,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
 
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
+  @getter.bridge.nativeToken nativeToken!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.sender sender!: string;
   @getter.bridge.recipient recipient!: string;
   @getter.bridge.soraNetworkFee soraNetworkFee!: CodecString;
@@ -24,10 +25,10 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @mutation.web3.setSelectNetworkDialogVisibility setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
   get nativeTokenSymbol(): string {
-    return this.selectedNetwork?.nativeCurrency?.symbol ?? '';
+    return this.nativeToken?.symbol ?? '';
   }
 
   get nativeTokenDecimals(): number | undefined {
-    return this.selectedNetwork?.nativeCurrency?.decimals;
+    return this.nativeToken?.externalDecimals;
   }
 }
