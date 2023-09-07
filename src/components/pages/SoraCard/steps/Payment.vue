@@ -117,15 +117,15 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
     align-items: center;
 
     .logo {
-      margin-top: -32px;
-      margin-bottom: 24px;
+      margin-top: calc(--s-size-small * -1);
+      margin-bottom: $inner-spacing-big;
     }
 
     &-title {
       text-transform: none;
       margin: 0 80px;
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: $inner-spacing-big;
     }
   }
   &__btn {

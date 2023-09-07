@@ -102,14 +102,14 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
   justify-content: center;
   align-items: center;
   &__pre-disclaimer {
+    font-size: var(--s-font-size-small);
+    margin-bottom: $basic-spacing;
     text-align: center;
     font-weight: 300;
-    font-size: 14px;
     line-height: 150%;
     text-align: center;
     letter-spacing: -0.02em;
     width: 95%;
-    margin-bottom: 16px;
   }
 
   &__section {

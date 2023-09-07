@@ -104,7 +104,7 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
 
 <style lang="scss">
 .sora-card.container.sora-card-hub-info {
-  margin-top: 24px;
+  margin-top: var(--s-size-mini);
 }
 
 .sora-card {
@@ -122,28 +122,28 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
 .sora-card {
   &-hub {
     &-title {
-      margin-bottom: 16px;
+      margin-bottom: $basic-spacing;
     }
     &-image {
-      margin-bottom: 16px;
+      margin-bottom: $basic-spacing;
     }
     &-text {
       color: var(--s-color-base-content-secondary);
       text-align: center;
-      font-size: 18px;
+      font-size: var(--s-font-size-big);
       font-weight: 500;
       letter-spacing: -0.3px;
-      margin-bottom: 16px;
+      margin-bottom: $basic-spacing;
     }
     &-button {
-      margin: 8px 8px 0 0;
+      margin: $inner-spacing-mini $inner-spacing-mini 0 0;
 
       svg {
-        margin-right: 8px;
+        margin-right: $inner-spacing-mini;
       }
     }
     &-logout {
-      margin-top: 8px;
+      margin-top: $inner-spacing-mini;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -169,15 +169,15 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
   &-hub-info {
     &-title {
       font-weight: 500;
-      margin-bottom: 16px;
+      margin-bottom: $basic-spacing;
     }
     &-iban {
       position: relative;
 
       .s-icon-basic-copy-24 {
         position: absolute;
-        right: 16px;
-        top: 16px;
+        right: $basic-spacing;
+        top: $basic-spacing;
         margin-top: auto;
         margin-bottom: auto;
         color: var(--s-color-base-content-tertiary);

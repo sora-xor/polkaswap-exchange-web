@@ -147,7 +147,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   }
   &__info {
     background-color: var(--s-color-base-border-primary);
-    padding: 16px;
+    padding: $basic-spacing;
     margin-top: var(--s-basic-spacing);
     border-radius: calc(var(--s-basic-spacing) / 2);
     width: 100%;
@@ -183,16 +183,16 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   display: block;
   width: 96%;
   height: 4px;
-  border-radius: 16px;
-  margin: 8px 0;
+  border-radius: var(--s-border-radius-base);
+  margin: $inner-spacing-mini 0;
   background: #e8e1e1;
   &--complete {
-    background: #34ad87;
+    background: var(--s-color-status-success);
   }
   &--in-progress {
     display: block;
-    border-radius: 16px;
-    background: #a19a9d;
+    border-radius: var(--s-border-radius-base);
+    background: var(--s-color-brand-day);
     height: 4px;
     width: 0%;
   }
@@ -209,7 +209,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 
   &__info {
     background-color: var(--s-color-base-border-primary);
-    padding: 16px;
+    padding: $basic-spacing;
     margin-top: var(--s-basic-spacing);
     border-radius: calc(var(--s-basic-spacing) / 2);
     width: 100%;

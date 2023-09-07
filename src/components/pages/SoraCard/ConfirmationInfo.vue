@@ -34,7 +34,7 @@
     </div>
     <div v-if="isRejectedOrPending" class="sora-card__support">
       <s-button class="sora-card__btn sora-card__btn-support s-typography-button--large" @click="openSupportChannel">
-        <span class="text">{{ 'Telegram support' }}</span>
+        <span class="text">{{ t('card.telegramSupport') }}</span>
       </s-button>
     </div>
   </div>
@@ -204,10 +204,10 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
     width: 100%;
 
     &-support {
-      margin-top: 8px;
+      margin-top: $inner-spacing-mini;
       span.text {
         font-variation-settings: 'wght' 700 !important;
-        font-size: 18px;
+        font-size: var(--s-font-size-big);
       }
     }
   }

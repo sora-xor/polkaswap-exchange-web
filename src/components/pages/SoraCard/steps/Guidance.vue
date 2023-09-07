@@ -103,12 +103,12 @@ export default class Guidance extends Mixins(TranslationMixin, mixins.LoadingMix
 
   &__number {
     display: block;
-    width: 24px;
-    height: 24px;
+    width: var(--s-size-mini);
+    height: var(--s-size-mini);
     font-weight: 600;
     font-size: 24px;
     color: #a19a9d;
-    margin-right: 16px;
+    margin-right: $basic-spacing;
     margin-top: 4px;
   }
 
@@ -129,11 +129,11 @@ export default class Guidance extends Mixins(TranslationMixin, mixins.LoadingMix
   }
 
   &__point-note {
-    margin-top: 8px;
-    color: #efac47;
+    margin-top: $inner-spacing-mini;
+    margin-right: $inner-spacing-mini;
     font-size: var(--s-font-size-small);
     font-weight: 550;
-    margin-right: 8px;
+    color: #efac47;
   }
 
   .s-icon-basic-check-mark-24 {

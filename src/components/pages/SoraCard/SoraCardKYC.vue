@@ -179,10 +179,10 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
 .post-disclaimer {
   color: var(--s-color-base-content-secondary);
   text-align: center;
-  margin-top: 16px;
-  font-size: 16px;
+  margin-top: $basic-spacing;
+  font-size: $basic-spacing;
   width: 25%;
-  line-height: 24px;
+  line-height: var(--s-size-mini);
 }
 </style>
 
