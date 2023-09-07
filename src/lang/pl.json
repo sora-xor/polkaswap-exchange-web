@@ -540,7 +540,8 @@
         "networkInfo": "Połącz za pomocą mostu sieć {Sora} z:",
         "copy": "Skopiuj adres sieciowy",
         "soraAddress": "{Sora} adres",
-        "ethereumAddress": "{Ethereum} adres"
+        "ethereumAddress": "{Ethereum} adres",
+        "limitMessage": "Obecnie istnieje {type} {amount} {symbol} do mostkowania, aby zapewnić stabilność i bezpieczeństwo sieci {Sora} . Doceniamy twoje zrozumienie."
     },
     "selectRegisteredAsset": {
         "title": "Wybierz token",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Przejdź do ustawień",
         "btnAllow": "Umożliwić dostęp"
     },
-    "continueText": "Kontynuować"
+    "continueText": "Kontynuować",
+    "minAmountText": "min. kwota",
+    "maxAmountText": "maks. kwota",
+    "exceededAmountText": "Przekroczono {amount}"
 }

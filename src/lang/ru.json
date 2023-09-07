@@ -540,7 +540,8 @@
         "networkInfo": "Соединить {Sora} Сеть с:",
         "copy": "Скопировать адрес сети",
         "soraAddress": "{Sora} адрес",
-        "ethereumAddress": "{Ethereum} адрес"
+        "ethereumAddress": "{Ethereum} адрес",
+        "limitMessage": "В настоящее время существует {type} {amount} {symbol} для моста, обеспечивающая стабильность и безопасность сети {Sora}. Мы ценим ваше понимание."
     },
     "selectRegisteredAsset": {
         "title": "Выбрать токен",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Перейдите в настройки",
         "btnAllow": "Разрешить доступ"
     },
-    "continueText": "Продолжать"
+    "continueText": "Продолжать",
+    "minAmountText": "мин. сумма",
+    "maxAmountText": "макс. сумма",
+    "exceededAmountText": "{amount} превышена"
 }

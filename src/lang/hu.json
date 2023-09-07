@@ -540,7 +540,8 @@
         "networkInfo": "{Sora} hálózati híd a következőkkel:",
         "copy": "Hálózati cím másolása",
         "soraAddress": "{Sora} cím",
-        "ethereumAddress": "{Ethereum} cím"
+        "ethereumAddress": "{Ethereum} cím",
+        "limitMessage": "Jelenleg létezik egy {type} {amount} {symbol} áthidalás, amely biztosítja a {Sora} hálózat stabilitását és biztonságát. Köszönjük megértését."
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Menj a beállításokhoz",
         "btnAllow": "Hozzáférést enged"
     },
-    "continueText": "Folytatni"
+    "continueText": "Folytatni",
+    "minAmountText": "min. összeg",
+    "maxAmountText": "max. összeg",
+    "exceededAmountText": "{amount} túllépve"
 }

@@ -540,7 +540,8 @@
         "networkInfo": "Brygga {Sora} Nätverk med:",
         "copy": "Kopiera nätverksadress",
         "soraAddress": "{Sora} adress",
-        "ethereumAddress": "{Ethereum} adress"
+        "ethereumAddress": "{Ethereum} adress",
+        "limitMessage": "För närvarande finns det en {type} {amount} {symbol} för överbryggning för att säkerställa stabiliteten och säkerheten i {Sora} -nätverket. Vi uppskattar din förståelse."
     },
     "selectRegisteredAsset": {
         "title": "Välj en token",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Gå till Inställningar",
         "btnAllow": "Tillåta åtkomst"
     },
-    "continueText": "Fortsätta"
+    "continueText": "Fortsätta",
+    "minAmountText": "min. belopp",
+    "maxAmountText": "max. belopp",
+    "exceededAmountText": "{amount} har överskridits"
 }

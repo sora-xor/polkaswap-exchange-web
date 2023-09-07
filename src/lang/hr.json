@@ -540,7 +540,8 @@
         "networkInfo": "Bridge {Sora} mrežna naknada s:",
         "copy": "Kopiraj mrežnu adresu",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "limitMessage": "Trenutno postoji {type} {amount} {symbol} za premošćivanje kako bi se osigurala stabilnost i sigurnost {Sora} mreže. Cijenimo vaše razumijevanje."
     },
     "selectRegisteredAsset": {
         "title": "Odaberite token",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Idite na postavke",
         "btnAllow": "Dopusti pristup"
     },
-    "continueText": "Nastaviti"
+    "continueText": "Nastaviti",
+    "minAmountText": "min. iznos",
+    "maxAmountText": "max. iznos",
+    "exceededAmountText": "{amount} premašeno"
 }

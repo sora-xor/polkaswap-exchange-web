@@ -540,7 +540,8 @@
         "networkInfo": "Bridge {Sora} Network con:",
         "copy": "Copia l'indirizzo di rete",
         "soraAddress": "{Sora} indirizzo",
-        "ethereumAddress": "{Ethereum} indirizzo"
+        "ethereumAddress": "{Ethereum} indirizzo",
+        "limitMessage": "Attualmente, esiste un {type} {amount} {symbol} per il bridging per garantire la stabilità e la sicurezza della rete {Sora} . Apprezziamo la tua comprensione."
     },
     "selectRegisteredAsset": {
         "title": "Seleziona un token",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Vai alle impostazioni",
         "btnAllow": "Consentire l'accesso"
     },
-    "continueText": "Continua"
+    "continueText": "Continua",
+    "minAmountText": "min. quantità",
+    "maxAmountText": "massimo quantità",
+    "exceededAmountText": "{amount} superato"
 }

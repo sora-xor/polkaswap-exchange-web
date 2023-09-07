@@ -540,7 +540,8 @@
         "networkInfo": "Pont {Sora} Réseau avec:",
         "copy": "Copier l'adresse réseau",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse"
+        "ethereumAddress": "{Ethereum} adresse",
+        "limitMessage": "Actuellement, il existe un {type} {amount} {symbol} pour le pontage afin de garantir la stabilité et la sécurité du réseau {Sora}. Nous apprécions votre compréhension."
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Aller aux paramètres",
         "btnAllow": "Permettre l'accès"
     },
-    "continueText": "Continuer"
+    "continueText": "Continuer",
+    "minAmountText": "min. montant",
+    "maxAmountText": "max. montant",
+    "exceededAmountText": "{amount} dépassé"
 }

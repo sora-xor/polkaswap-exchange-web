@@ -540,7 +540,8 @@
         "networkInfo": "Puente de la red {Sora} con:",
         "copy": "Copiar dirección de red",
         "soraAddress": "Dirección de {Sora}",
-        "ethereumAddress": "dirección {Ethereum}"
+        "ethereumAddress": "dirección {Ethereum}",
+        "limitMessage": "Actualmente, existe un {type} {amount} {symbol} para establecer puentes para garantizar la estabilidad y seguridad de la red {Sora} . apreciamos su comprensión."
     },
     "selectRegisteredAsset": {
         "title": "Seleccione un Token",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Ir a la configuración",
         "btnAllow": "Permitir el acceso"
     },
-    "continueText": "Continuar"
+    "continueText": "Continuar",
+    "minAmountText": "mín. cantidad",
+    "maxAmountText": "máx. cantidad",
+    "exceededAmountText": "{amount} superada"
 }

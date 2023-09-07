@@ -540,7 +540,8 @@
         "networkInfo": "Safara {Sora} Nẹtiwọọki pẹlu:",
         "copy": "Daakọ adirẹsi nẹtiwọki",
         "soraAddress": "{Sora} adirẹsi",
-        "ethereumAddress": "{Ethereum} adirẹsi"
+        "ethereumAddress": "{Ethereum} adirẹsi",
+        "limitMessage": "Lọwọlọwọ, {type} {amount} {symbol} wa fun sisọpọ lati rii daju iduroṣinṣin ati aabo ti Nẹtiwọọki {Sora} . A dupe oye rẹ."
     },
     "selectRegisteredAsset": {
         "title": "Yan Tokini kan",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Lọ si awọn eto",
         "btnAllow": "Gba wiwọle laaye"
     },
-    "continueText": "Tesiwaju"
+    "continueText": "Tesiwaju",
+    "minAmountText": "min. iye",
+    "maxAmountText": "o pọju. iye",
+    "exceededAmountText": "{amount} ti kọja"
 }

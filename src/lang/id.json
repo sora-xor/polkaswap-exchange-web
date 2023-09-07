@@ -540,7 +540,8 @@
         "networkInfo": "Bridge Jaringan {Sora} dengan:",
         "copy": "Salin alamat jaringan",
         "soraAddress": "{Sora} alamat",
-        "ethereumAddress": "{Ethereum} alamat"
+        "ethereumAddress": "{Ethereum} alamat",
+        "limitMessage": "Saat ini, ada {type} {amount} {symbol} untuk menjembatani guna memastikan stabilitas dan keamanan Jaringan {Sora} . Kami menghargai pengertian Anda."
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Pergi ke pengaturan",
         "btnAllow": "Izinkan akses"
     },
-    "continueText": "Melanjutkan"
+    "continueText": "Melanjutkan",
+    "minAmountText": "menit. jumlah",
+    "maxAmountText": "maks. jumlah",
+    "exceededAmountText": "{amount} terlampaui"
 }

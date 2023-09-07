@@ -540,7 +540,8 @@
         "networkInfo": "与 {Sora} 网络桥接：",
         "copy": "复制网络地址",
         "soraAddress": "{Sora} 地址",
-        "ethereumAddress": "{Ethereum} 地址"
+        "ethereumAddress": "{Ethereum} 地址",
+        "limitMessage": "目前，有一个{type} {amount} {symbol}用于桥接，以确保 {Sora} 网络的稳定性和安全性。我们感谢您的理解。"
     },
     "selectRegisteredAsset": {
         "title": "选择一个代币",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "前往设置",
         "btnAllow": "允许访问"
     },
-    "continueText": "继续"
+    "continueText": "继续",
+    "minAmountText": "分钟。数量",
+    "maxAmountText": "最大限度。数量",
+    "exceededAmountText": "超出{amount}"
 }

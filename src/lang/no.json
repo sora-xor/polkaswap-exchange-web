@@ -540,7 +540,8 @@
         "networkInfo": "Bridge {Sora} Network med:",
         "copy": "Kopier nettverksadressen",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse"
+        "ethereumAddress": "{Ethereum} adresse",
+        "limitMessage": "For øyeblikket er det en {type} {amount} {symbol} for brobygging for å sikre stabiliteten og sikkerheten til {Sora} -nettverket. Vi setter pris på din forståelse."
     },
     "selectRegisteredAsset": {
         "title": "Velg token",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Gå til Innstillinger",
         "btnAllow": "Gi tilgang"
     },
-    "continueText": "Fortsette"
+    "continueText": "Fortsette",
+    "minAmountText": "min. beløp",
+    "maxAmountText": "maks. beløp",
+    "exceededAmountText": "{amount} overskredet"
 }

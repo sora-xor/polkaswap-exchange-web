@@ -540,7 +540,8 @@
         "networkInfo": "Prepojiť {Sora} sieť s:",
         "copy": "Skopírujte sieťovú adresu",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "limitMessage": "V súčasnosti existuje {type} {amount} {symbol} na premostenie na zaistenie stability a bezpečnosti siete {Sora}. Ďakujeme za pochopenie."
     },
     "selectRegisteredAsset": {
         "title": "Vybrať token",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Choď do nastavení",
         "btnAllow": "Povoliť prístup"
     },
-    "continueText": "ďalej"
+    "continueText": "ďalej",
+    "minAmountText": "min. čiastka",
+    "maxAmountText": "max. čiastka",
+    "exceededAmountText": "{amount} bola prekročená"
 }

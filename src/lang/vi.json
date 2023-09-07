@@ -540,7 +540,8 @@
         "networkInfo": "Cầu nối Mạng {Sora} với:",
         "copy": "Sao chép địa chỉ mạng",
         "soraAddress": "địa chỉ {Sora}",
-        "ethereumAddress": "địa chỉ {Ethereum}"
+        "ethereumAddress": "địa chỉ {Ethereum}",
+        "limitMessage": "Hiện tại, có một {type} {amount} {symbol} để kết nối nhằm đảm bảo tính ổn định và bảo mật của Mạng {Sora} . Chúng tôi đánh giá cao sự hiểu biết của bạn."
     },
     "selectRegisteredAsset": {
         "title": "Chọn token",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Chuyển đến cài đặt",
         "btnAllow": "Cho phép truy cập"
     },
-    "continueText": "Tiếp tục"
+    "continueText": "Tiếp tục",
+    "minAmountText": "phút. số lượng",
+    "maxAmountText": "tối đa. số lượng",
+    "exceededAmountText": "vượt quá {amount}"
 }

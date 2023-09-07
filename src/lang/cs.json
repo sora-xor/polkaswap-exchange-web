@@ -540,7 +540,8 @@
         "networkInfo": "Přemostit {Sora} síť s:",
         "copy": "Zkopírujte síťovou adresu",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "limitMessage": "V současné době existuje {type} {amount} {symbol} pro přemostění, aby byla zajištěna stabilita a bezpečnost sítě {Sora}. Děkujeme za pochopení."
     },
     "selectRegisteredAsset": {
         "title": "Vyberte token",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Jdi do nastavení",
         "btnAllow": "Povolit přístup"
     },
-    "continueText": "Pokračovat"
+    "continueText": "Pokračovat",
+    "minAmountText": "min. množství",
+    "maxAmountText": "max. množství",
+    "exceededAmountText": "{amount} překročeno"
 }

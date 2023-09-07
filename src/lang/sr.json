@@ -540,7 +540,8 @@
         "networkInfo": "Бриџ {Sora} мрежа са:",
         "copy": "Копирајте мрежну адресу",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "limitMessage": "Тренутно постоји {type} {amount} {symbol} за премошћавање да би се обезбедила стабилност и безбедност мреже {Sora} . Ценимо ваше разумевање."
     },
     "selectRegisteredAsset": {
         "title": "Изаберите токен",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Идите на Подешавања",
         "btnAllow": "Дозволи приступ"
     },
-    "continueText": "Настави"
+    "continueText": "Настави",
+    "minAmountText": "мин. износ",
+    "maxAmountText": "мак. износ",
+    "exceededAmountText": "{amount} је премашен"
 }
