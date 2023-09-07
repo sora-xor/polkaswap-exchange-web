@@ -52,7 +52,6 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -60,7 +59,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { PageNames, Components } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
-import { clearPayWingsKeysFromLocalStorage, clearTokensFromLocalStorage } from '@/utils/card';
+import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
 
 enum BuyButtonType {
   X1,

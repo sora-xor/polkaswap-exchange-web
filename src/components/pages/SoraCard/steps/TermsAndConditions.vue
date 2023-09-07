@@ -107,7 +107,6 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
     text-align: center;
     font-weight: 300;
     line-height: 150%;
-    text-align: center;
     letter-spacing: -0.02em;
     width: 95%;
   }

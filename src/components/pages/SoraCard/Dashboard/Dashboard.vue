@@ -97,8 +97,6 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
     clearPayWingsKeysFromLocalStorage(true);
     this.$emit('logout');
   }
-
-  mounted(): void {}
 }
 </script>
 

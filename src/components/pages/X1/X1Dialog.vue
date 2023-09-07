@@ -32,7 +32,6 @@
 
 <script lang="ts">
 import { components, mixins, WALLET_CONSTS, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
-import { v4 as uuidv4 } from 'uuid';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import { getter, state } from '@/store/decorators';
