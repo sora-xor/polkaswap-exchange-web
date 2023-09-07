@@ -1,12 +1,8 @@
-import { getPathsAndPairLiquiditySources } from '@sora-substrate/liquidity-proxy';
-import { DexId } from '@sora-substrate/util/build/dex/consts';
-import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
 import { swapActionContext } from '@/store/swap';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
-import type { QuotePayload } from '@sora-substrate/liquidity-proxy/build/types';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { ActionContext } from 'vuex';
 
@@ -76,32 +72,6 @@ const actions = defineActions({
     }
   },
 
-  setSubscriptionPayload(context, { dexId, payload }: { dexId: number; payload: QuotePayload }): void {
-    const { state, getters, commit } = swapActionContext(context);
-
-    const inputAssetId = getters.tokenFrom?.address;
-    const outputAssetId = getters.tokenTo?.address;
-
-    if (!(inputAssetId && outputAssetId && payload)) {
-      return;
-    }
-
-    // tbc & xst is enabled only on dex 0
-    const enabledAssets = dexId === DexId.XOR ? state.enabledAssets : { tbc: [], xst: {}, lockedSources: [] };
-    const baseAssetId = api.dex.getBaseAssetId(dexId);
-    const syntheticBaseAssetId = api.dex.getSyntheticBaseAssetId(dexId);
-
-    const { paths, liquiditySources } = getPathsAndPairLiquiditySources(
-      inputAssetId,
-      outputAssetId,
-      payload,
-      enabledAssets,
-      baseAssetId,
-      syntheticBaseAssetId
-    );
-
-    commit.setSubscriptionPayload({ dexId, liquiditySources, paths, payload });
-  },
   async updateSubscriptions(context): Promise<void> {
     updateTokenSubscription(context, Direction.From);
     updateTokenSubscription(context, Direction.To);
