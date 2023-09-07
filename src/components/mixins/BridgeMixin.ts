@@ -64,17 +64,23 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   isGreaterThanOutgoingMaxAmount(
     amount: string,
     asset: Nullable<RegisteredAccountAsset>,
-    isSoraToEvm: boolean
+    isSoraToEvm: boolean,
+    isRegisteredAsset = true
   ): boolean {
-    if (!(asset && isSoraToEvm && this.outgoingLimitBalance)) return false;
+    if (!(asset && isRegisteredAsset && isSoraToEvm && this.outgoingLimitBalance)) return false;
 
     const fpAmount = new FPNumber(amount);
 
     return FPNumber.gt(fpAmount, this.outgoingLimitBalance);
   }
 
-  isLowerThanIncomingMinAmount(amount: string, asset: Nullable<RegisteredAccountAsset>, isSoraToEvm: boolean) {
-    if (!(asset && !isSoraToEvm && this.incomingMinBalance)) return false;
+  isLowerThanIncomingMinAmount(
+    amount: string,
+    asset: Nullable<RegisteredAccountAsset>,
+    isSoraToEvm: boolean,
+    isRegisteredAsset = true
+  ) {
+    if (!(asset && isRegisteredAsset && !isSoraToEvm && this.incomingMinBalance)) return false;
 
     const fpAmount = new FPNumber(amount);
 

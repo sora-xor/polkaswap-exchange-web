@@ -1255,5 +1255,5 @@
     "continueText": "Продолжать",
     "minAmountText": "мин. сумма",
     "maxAmountText": "макс. сумма",
-    "exceededAmountText": "{amount} превышена"
+    "exceededAmountText": "{amount} ограничена"
 }
