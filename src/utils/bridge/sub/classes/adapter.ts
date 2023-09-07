@@ -34,7 +34,7 @@ export class SubAdapter {
   }
 
   get connected(): boolean {
-    return this.connection.opened;
+    return !!this.api?.isConnected;
   }
 
   public setEndpoint(endpoint: string): void {
@@ -44,6 +44,7 @@ export class SubAdapter {
   public async connect(): Promise<void> {
     if (!this.connected && this.endpoint) {
       await this.connection.open(this.endpoint);
+      await this.api.isReady;
     }
   }
 
