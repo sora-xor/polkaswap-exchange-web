@@ -96,6 +96,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
       networkType === BridgeNetworkType.Sub ? (networkSelected as BridgeNetworkId) : Number(networkSelected);
     this.setNetworkType(networkType as BridgeNetworkType);
     this.selectExternalNetwork(networkFormatted);
+    this.visibility = false;
   }
 }
 </script>

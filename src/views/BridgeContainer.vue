@@ -21,6 +21,7 @@ import ethersUtil from '@/utils/ethers-util';
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
   @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
   @action.web3.restoreSelectedNetwork private restoreSelectedNetwork!: AsyncFnWithoutArgs;
+  @action.web3.disconnectExternalNetwork disconnectExternalNetwork!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBalance private updateExternalBalance!: AsyncFnWithoutArgs;
   @action.bridge.subscribeOnBlockUpdates private subscribeOnBlockUpdates!: AsyncFnWithoutArgs;
   @action.bridge.updateOutgoingMaxLimit private updateOutgoingMaxLimit!: AsyncFnWithoutArgs;
@@ -40,7 +41,6 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     await this.withParentLoading(async () => {
       await this.getSupportedApps();
       await this.restoreSelectedNetwork();
-      await this.connectExternalNetwork();
     });
   }
 
@@ -59,7 +59,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
         this.updateExternalBalance();
       },
       onNetworkChange: async (networkHex: string) => {
-        this.connectExternalNetwork(networkHex);
+        this.connectEvmNetwork(networkHex);
       },
       onDisconnect: () => {
         this.resetProvidedEvmNetwork();

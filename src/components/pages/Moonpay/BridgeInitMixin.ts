@@ -16,6 +16,7 @@ import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
 import type { CodecString, BridgeHistory } from '@sora-substrate/util';
 import type { Asset, AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 const createError = (text: string, notification: MoonpayNotifications) => {
@@ -39,6 +40,8 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @mutation.moonpay.setNotificationVisibility setNotificationVisibility!: (flag: boolean) => void;
   @mutation.moonpay.setNotificationKey setNotificationKey!: (key: string) => void;
   @mutation.moonpay.setBridgeTxData setBridgeTxData!: (options?: BridgeTxData) => void;
+
+  @action.web3.selectExternalNetwork selectExternalNetwork!: (networkId: BridgeNetworkId) => Promise<void>;
 
   @action.moonpay.getTransactionTranserData private getTransactionTranserData!: (
     hash: string
