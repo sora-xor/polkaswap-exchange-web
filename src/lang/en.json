@@ -540,7 +540,8 @@
         "networkInfo": "Bridge {Sora} Network with:",
         "copy": "Copy network address",
         "soraAddress": "{Sora} address",
-        "ethereumAddress": "{Ethereum} address"
+        "ethereumAddress": "{Ethereum} address",
+        "limitMessage": "Currently, there's a {type} {amount} {symbol} for bridging to ensure the stability and security of the SORA Network. We appreciate your understanding."
     },
     "selectRegisteredAsset": {
         "title": "Select a token",
@@ -1251,5 +1252,8 @@
         "btnGoToSettings": "Go to settings",
         "btnAllow": "Allow access"
     },
-    "continueText": "Continue"
+    "continueText": "Continue",
+    "minAmountText": "min. amount",
+    "maxAmountText": "max. amount",
+    "exceededAmountText": "{amount} exceeded"
 }

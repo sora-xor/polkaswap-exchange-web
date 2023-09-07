@@ -160,7 +160,10 @@
           t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol })
         }}</template>
         <template v-else-if="isGreaterThanMaxAmount">
-          {{ t('swap.insufficientLiquidity') }}
+          {{ t('exceededAmountText', { amount: t('maxAmountText') }) }}
+        </template>
+        <template v-else-if="isLowerThanMinAmount">
+          {{ t('exceededAmountText', { amount: t('minAmountText') }) }}
         </template>
         <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
         <template v-else-if="isFailedState && isRetryAvailable">{{ t('retryText') }}</template>

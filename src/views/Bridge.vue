@@ -250,14 +250,26 @@
             {{ t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol }) }}
           </template>
           <template v-else-if="isGreaterThanMaxAmount">
-            {{ t('swap.insufficientLiquidity') }}
+            {{ t('exceededAmountText', { amount: t('maxAmountText') }) }}
+          </template>
+          <template v-else-if="isLowerThanMinAmount">
+            {{ t('exceededAmountText', { amount: t('minAmountText') }) }}
           </template>
           <template v-else>
             {{ t('bridge.next') }}
           </template>
         </s-button>
+
+        <bridge-limit-card
+          v-if="!isZeroAmountSend && (isGreaterThanMaxAmount || isLowerThanMinAmount)"
+          class="bridge-limit-card"
+          :max="isGreaterThanMaxAmount"
+          :amount="isGreaterThanMaxAmount ? outgoingLimitBalance.toLocaleString() : incomingMinBalance.toLocaleString()"
+          :symbol="asset.symbol"
+        />
+
         <bridge-transaction-details
-          v-if="areNetworksConnected && !isZeroAmountReceived && isRegisteredAsset"
+          v-else-if="areNetworksConnected && !isZeroAmountReceived && isRegisteredAsset"
           class="info-line-container"
           :native-token="nativeToken"
           :external-network-fee="formattedExternalNetworkFee"
@@ -332,6 +344,7 @@ import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/
     BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
     BridgeSelectAccount: lazyComponent(Components.BridgeSelectAccount),
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
+    BridgeLimitCard: lazyComponent(Components.BridgeLimitCard),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
@@ -761,6 +774,10 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     font-size: var(--s-font-size-mini);
     line-height: var(--s-line-height-big);
     color: var(--s-color-base-content-secondary);
+  }
+
+  &-limit-card {
+    margin-top: $inner-spacing-medium;
   }
 }
 </style>
