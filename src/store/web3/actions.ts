@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
-import { subConnector } from '@/utils/bridge/sub/classes/adapter';
+import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
 import type { Provider } from '@/utils/ethers-util';
 
@@ -26,7 +26,7 @@ const actions = defineActions({
 
     if (!subNetwork) return;
 
-    await subConnector.open(subNetwork.id as SubNetwork);
+    await subBridgeConnector.open(subNetwork.id as SubNetwork);
   },
 
   async connectEvmAccount(context, provider: Provider): Promise<void> {
@@ -63,7 +63,7 @@ const actions = defineActions({
   async disconnectExternalNetwork(context): Promise<void> {
     const { commit } = web3ActionContext(context);
 
-    await subConnector.stop();
+    await subBridgeConnector.stop();
 
     commit.resetProvidedEvmNetwork();
   },
@@ -96,8 +96,8 @@ const actions = defineActions({
     const { commit } = web3ActionContext(context);
     // update apps in store
     commit.setSubNetworkApps(apps);
-    // update endpoints in subConnector
-    subConnector.endpoints = apps;
+    // update endpoints in SubNetworksConnector class
+    SubNetworksConnector.endpoints = apps;
   },
 
   /**

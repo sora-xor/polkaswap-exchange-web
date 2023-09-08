@@ -54,8 +54,12 @@ export class SubAdapter {
     }
   }
 
+  public getSoraParachainNetwork(): SubNetwork {
+    return subBridgeApi.getSoraParachain(this.subNetwork);
+  }
+
   public getSoraParachainId(): number | undefined {
-    const soraParachain = subBridgeApi.getSoraParachain(this.subNetwork);
+    const soraParachain = this.getSoraParachainNetwork();
     const soraParachainId = subBridgeApi.parachainIds[soraParachain];
 
     return soraParachainId;
@@ -198,7 +202,15 @@ class KusamaAdapter extends SubAdapter {
   }
 }
 
-class SubConnector {
+export class SubNetworksConnector {
+  public network!: SubNetwork;
+  public parachainNetwork!: SubNetwork;
+  public networkAdapter!: SubAdapter;
+  public parachainAdapter!: SubAdapter;
+  public parachainId!: number;
+
+  public static endpoints: SubNetworkApps = {};
+
   public readonly adapters = {
     [SubNetwork.Rococo]: () => new KusamaAdapter(SubNetwork.Rococo),
     [SubNetwork.Kusama]: () => new KusamaAdapter(SubNetwork.Kusama),
@@ -206,20 +218,14 @@ class SubConnector {
     [SubNetwork.KusamaSora]: () => new SubAdapter(SubNetwork.KusamaSora),
   };
 
-  public endpoints: SubNetworkApps = {};
-
-  /** Adapters for Substrate network. Used for network selected in app */
-  public networkAdapter!: SubAdapter;
-  public parachainAdapter!: SubAdapter;
-
   public getAdapterForNetwork(network: SubNetwork): SubAdapter {
     if (!(network in this.adapters)) {
       throw new Error(`[${this.constructor.name}] Adapter for "${network}" network not implemented`);
     }
-    if (!(network in this.endpoints)) {
+    if (!(network in SubNetworksConnector.endpoints)) {
       throw new Error(`[${this.constructor.name}] Endpoint for "${network}" network is not defined`);
     }
-    const endpoint = this.endpoints[network];
+    const endpoint = SubNetworksConnector.endpoints[network];
     const adapter = this.adapters[network]();
 
     adapter.setEndpoint(endpoint);
@@ -227,26 +233,39 @@ class SubConnector {
     return adapter;
   }
 
+  public async init(network: SubNetwork): Promise<void> {
+    this.network = network;
+    this.networkAdapter = this.getAdapterForNetwork(this.network);
+    this.parachainNetwork = this.networkAdapter.getSoraParachainNetwork();
+    this.parachainAdapter = this.getAdapterForNetwork(this.parachainNetwork);
+    this.parachainId = this.parachainAdapter.getSoraParachainId() as number;
+  }
+
   /**
    * Open main connection with Substrate network & Sora parachain
    */
   public async open(network: SubNetwork): Promise<void> {
-    const parachainNetwork = subBridgeApi.getSoraParachain(network);
     // stop current connections
     await this.stop();
     // set adapter for network arg
-    this.networkAdapter = this.getAdapterForNetwork(network);
-    this.parachainAdapter = this.getAdapterForNetwork(parachainNetwork);
-    // open adapter connection
+    await this.init(network);
+    // open adapters connections
+    await this.start();
+  }
+
+  /**
+   * Connect to Substrate network & Sora parachain
+   */
+  public async start(): Promise<void> {
     await Promise.all([this.networkAdapter.connect(), this.parachainAdapter.connect()]);
   }
 
   /**
-   * Close main connection to selected Substrate network & Sora parachain
+   * Close connections to Substrate network & Sora parachain
    */
   public async stop(): Promise<void> {
     await Promise.all([this.networkAdapter?.stop(), this.parachainAdapter?.stop()]);
   }
 }
 
-export const subConnector = new SubConnector();
+export const subBridgeConnector = new SubNetworksConnector();

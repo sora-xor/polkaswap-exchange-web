@@ -23,7 +23,7 @@ import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
-import { subConnector } from '@/utils/bridge/sub/classes/adapter';
+import { subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
 import { updateSubBridgeHistory } from '@/utils/bridge/sub/classes/history';
 import ethersUtil from '@/utils/ethers-util';
 
@@ -144,8 +144,8 @@ async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void>
 
   let fee = ZeroStringValue;
 
-  if (subConnector.networkAdapter) {
-    fee = await subConnector.networkAdapter.getNetworkFee();
+  if (subBridgeConnector.networkAdapter) {
+    fee = await subBridgeConnector.networkAdapter.getNetworkFee();
   }
 
   commit.setExternalNetworkFee(fee);
@@ -221,21 +221,21 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<void
 
     return isSoraToEvm
       ? (await getAssetBalance(api.api, sender, asset.address, asset.decimals)).transferable
-      : await subConnector.networkAdapter.getTokenBalance(sender, asset?.externalAddress);
+      : await subBridgeConnector.networkAdapter.getTokenBalance(sender, asset?.externalAddress);
   };
 
   const getRecipientBalance = async () => {
     if (!(asset?.address && recipient)) return ZeroStringValue;
 
     return isSoraToEvm
-      ? await subConnector.networkAdapter.getTokenBalance(recipient, asset?.externalAddress)
+      ? await subBridgeConnector.networkAdapter.getTokenBalance(recipient, asset?.externalAddress)
       : (await getAssetBalance(api.api, recipient, asset.address, asset.decimals)).transferable;
   };
 
   const getSpenderBalance = async () => {
     if (!(asset?.address && sender)) return ZeroStringValue;
 
-    return await subConnector.networkAdapter.getTokenBalance(sender);
+    return await subBridgeConnector.networkAdapter.getTokenBalance(sender);
   };
 
   const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
@@ -369,7 +369,7 @@ async function updateExternalBlockNumber(context: ActionContext<any, any>): Prom
 
   try {
     const blockNumber = getters.isSubBridge
-      ? await subConnector.networkAdapter.getBlockNumber()
+      ? await subBridgeConnector.networkAdapter.getBlockNumber()
       : await (await ethersUtil.getEthersInstance()).getBlockNumber();
 
     commit.setExternalBlockNumber(blockNumber);
@@ -480,7 +480,7 @@ const actions = defineActions({
       try {
         minLimit = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(
           state.assetAddress,
-          subConnector.parachainAdapter.api
+          subBridgeConnector.parachainAdapter.api
         );
       } catch (error) {
         console.error(error);
