@@ -55,9 +55,11 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
       this.resetOutgoingMaxLimitSubscription,
     ]);
 
-    await this.withParentLoading(async () => {
-      await this.getSupportedApps();
-      await this.restoreSelectedNetwork();
+    await this.withLoading(async () => {
+      await this.withParentLoading(async () => {
+        await this.getSupportedApps();
+        await this.restoreSelectedNetwork();
+      });
     });
   }
 
@@ -75,7 +77,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
         }
       },
       onNetworkChange: async (networkHex: string) => {
-        this.connectEvmNetwork(networkHex);
+        this.updateProvidedEvmNetwork(networkHex);
       },
       onDisconnect: () => {
         this.resetProvidedEvmNetwork();

@@ -141,7 +141,6 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
 
 async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void> {
   const { commit } = bridgeActionContext(context);
-
   let fee = ZeroStringValue;
 
   if (subBridgeConnector.networkAdapter) {
@@ -492,8 +491,6 @@ const actions = defineActions({
 
     if (getters.isSubBridge && getters.isRegisteredAsset && state.assetAddress) {
       try {
-        await subBridgeConnector.parachainAdapter.api.isReady;
-
         minLimit = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(
           state.assetAddress,
           subBridgeConnector.parachainAdapter.api

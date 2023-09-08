@@ -13,7 +13,7 @@ import type { SubNetworkApps } from './types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
 const actions = defineActions({
-  async connectEvmNetwork(context, networkHex?: string): Promise<void> {
+  async updateProvidedEvmNetwork(context, networkHex?: string): Promise<void> {
     const { commit } = web3ActionContext(context);
     const evmNetwork = networkHex ? ethersUtil.hexToNumber(networkHex) : await ethersUtil.getEvmNetworkId();
     commit.setProvidedEvmNetwork(evmNetwork);
@@ -45,7 +45,7 @@ const actions = defineActions({
     if (type === BridgeNetworkType.Sub) {
       await dispatch.connectSubNetwork();
     } else {
-      await dispatch.connectEvmNetwork();
+      await dispatch.updateProvidedEvmNetwork();
     }
   },
 

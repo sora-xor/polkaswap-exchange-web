@@ -595,14 +595,16 @@ export default class Bridge extends Mixins(
   }
 
   async created(): Promise<void> {
-    const { address, amount, isIncoming } = this.$route.params;
-    if (address) {
-      this.updateAssetAddress(address);
-    }
-    if (isIncoming) {
-      this.setSoraToEvm(false);
-    }
-    this.setSendedAmount(amount);
+    await this.withParentLoading(async () => {
+      const { address, amount, isIncoming } = this.$route.params;
+      this.setSendedAmount(amount);
+      if (isIncoming) {
+        this.setSoraToEvm(false);
+      }
+      if (address) {
+        this.updateAssetAddress(address);
+      }
+    });
   }
 
   getBridgeItemTitle(isSoraNetwork = false): string {
