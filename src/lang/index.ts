@@ -72,19 +72,19 @@ export async function setI18nLocale(lang: Language): Promise<void> {
   if (!loadedLanguages.includes(locale)) {
     // transform locale string 'eu-ES' to filename 'eu_ES' like in localise
     const filename = locale.replace('-', '_');
-    const { default: messages } = await import(
+    const messagesModule = await import(
       /* webpackChunkName: "lang-[request]" */
       /* webpackMode: "lazy" */
       `@/lang/${filename}.json`
     );
 
-    const { default: messagesCard } = await import(
+    const cardMessagesModule = await import(
       /* webpackChunkName: "lang-card-[request]" */
       /* webpackMode: "lazy" */
       `@/lang/card/${filename}.json`
     );
 
-    i18n.setLocaleMessage(locale, { ...messages, ...messagesCard });
+    i18n.setLocaleMessage(locale, { ...messagesModule.default, ...cardMessagesModule.default });
     loadedLanguages.push(locale);
   }
 
