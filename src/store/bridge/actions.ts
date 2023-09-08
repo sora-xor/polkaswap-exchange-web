@@ -415,6 +415,16 @@ const actions = defineActions({
     }
   },
 
+  async afterNetworkChange(context): Promise<void> {
+    const { dispatch, rootDispatch } = bridgeActionContext(context);
+
+    await Promise.all([
+      dispatch.setAssetAddress(),
+      dispatch.setSendedAmount(),
+      rootDispatch.assets.updateRegisteredAssets(),
+    ]);
+  },
+
   async updateBalancesAndFees(context): Promise<void> {
     const { commit, dispatch } = bridgeActionContext(context);
     const { updateExternalBalance } = dispatch;

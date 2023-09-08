@@ -41,14 +41,20 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @mutation.moonpay.setNotificationKey setNotificationKey!: (key: string) => void;
   @mutation.moonpay.setBridgeTxData setBridgeTxData!: (options?: BridgeTxData) => void;
 
-  @action.web3.selectExternalNetwork selectExternalNetwork!: (networkId: BridgeNetworkId) => Promise<void>;
+  @action.web3.selectExternalNetwork selectExternalNetwork!: (network: {
+    id: BridgeNetworkId;
+    type: BridgeNetworkType;
+  }) => Promise<void>;
 
   @action.moonpay.getTransactionTranserData private getTransactionTranserData!: (
     hash: string
   ) => Promise<Nullable<MoonpayEVMTransferAssetData>>;
 
   async prepareEvmNetwork(): Promise<void> {
-    await this.selectExternalNetwork(this.ethBridgeEvmNetwork); // WalletConnectMixin
+    await this.selectExternalNetwork({
+      id: this.ethBridgeEvmNetwork,
+      type: BridgeNetworkType.EvmLegacy,
+    }); // WalletConnectMixin
   }
 
   initMoonpayApi(): void {

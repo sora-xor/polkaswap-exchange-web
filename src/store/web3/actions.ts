@@ -42,36 +42,25 @@ const actions = defineActions({
     await rootDispatch.bridge.updateExternalBalance();
   },
 
-  async connectExternalNetwork(context, network?: string): Promise<void> {
-    const { dispatch, state, rootDispatch } = web3ActionContext(context);
+  async disconnectExternalNetwork(context): Promise<void> {
+    await subBridgeConnector.stop();
+  },
 
-    await dispatch.disconnectExternalNetwork();
+  async selectExternalNetwork(context, { id, type }: { id: BridgeNetworkId; type: BridgeNetworkType }): Promise<void> {
+    const { commit, dispatch, rootDispatch } = web3ActionContext(context);
 
-    await Promise.all([
-      rootDispatch.bridge.setAssetAddress(),
-      rootDispatch.bridge.setSendedAmount(),
-      rootDispatch.assets.updateRegisteredAssets(),
-    ]);
+    dispatch.disconnectExternalNetwork();
 
-    if (state.networkType === BridgeNetworkType.Sub) {
+    commit.setNetworkType(type);
+    commit.setSelectedNetwork(id);
+
+    rootDispatch.bridge.afterNetworkChange();
+
+    if (type === BridgeNetworkType.Sub) {
       await dispatch.connectSubNetwork();
     } else {
-      await dispatch.connectEvmNetwork(network);
+      await dispatch.connectEvmNetwork();
     }
-  },
-
-  async disconnectExternalNetwork(context): Promise<void> {
-    const { commit } = web3ActionContext(context);
-
-    await subBridgeConnector.stop();
-
-    commit.resetProvidedEvmNetwork();
-  },
-
-  async selectExternalNetwork(context, network: BridgeNetworkId): Promise<void> {
-    const { commit, dispatch } = web3ActionContext(context);
-    commit.setSelectedNetwork(network);
-    await dispatch.connectExternalNetwork();
   },
 
   async updateNetworkProvided(context): Promise<void> {
@@ -79,9 +68,7 @@ const actions = defineActions({
     const { selectedNetwork } = getters;
     const { networkType } = state;
 
-    if (!selectedNetwork) return;
-
-    if (networkType !== BridgeNetworkType.Sub) {
+    if (selectedNetwork && networkType !== BridgeNetworkType.Sub) {
       await ethersUtil.switchOrAddChain(selectedNetwork);
     }
   },
@@ -104,20 +91,23 @@ const actions = defineActions({
    * Restore selected by user network & network type (EVMLegacy, EVM, Sub)
    */
   async restoreSelectedNetwork(context): Promise<void> {
-    const { commit, dispatch, state, getters } = web3ActionContext(context);
+    const { dispatch, state, getters } = web3ActionContext(context);
 
     const [type, id] = [ethersUtil.getSelectedBridgeType(), ethersUtil.getSelectedNetwork()];
-    const networkData = type && id ? getters.availableNetworks[type]?.[id] : null;
 
-    if (!!networkData && !networkData.disabled) {
-      commit.setNetworkType(type as BridgeNetworkType);
-      commit.setSelectedNetwork(id as BridgeNetworkId);
-    } else {
-      commit.setNetworkType(BridgeNetworkType.EvmLegacy);
-      commit.setSelectedNetwork(state.ethBridgeEvmNetwork);
+    if (type && id) {
+      const networkData = getters.availableNetworks[type]?.[id];
+
+      if (!!networkData && !networkData.disabled) {
+        await dispatch.selectExternalNetwork({ id, type });
+        return;
+      }
     }
 
-    await dispatch.connectExternalNetwork();
+    await dispatch.selectExternalNetwork({
+      id: state.ethBridgeEvmNetwork,
+      type: BridgeNetworkType.EvmLegacy,
+    });
   },
 
   async getEvmTokenAddressByAssetId(context, soraAssetId: string): Promise<string> {

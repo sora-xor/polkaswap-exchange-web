@@ -47,7 +47,6 @@ const handleMetamaskError = (error: any): string => {
 
 @Component
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
-  @state.web3.subAddress subAddress!: string;
   @state.web3.evmAddress evmAddress!: string;
   @state.web3.networkSelected networkSelected!: BridgeNetworkId;
   @state.web3.networkType networkType!: BridgeNetworkType;
@@ -58,7 +57,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @getter.bridge.isSubBridge isSubBridge!: boolean;
 
   // update selected evm network without metamask request
-  @mutation.web3.setSelectedNetwork setSelectedNetwork!: (networkId: BridgeNetworkId) => void;
   @mutation.web3.resetProvidedEvmNetwork resetProvidedEvmNetwork!: FnWithoutArgs;
   @mutation.web3.resetEvmAddress resetEvmAddress!: FnWithoutArgs;
   @mutation.web3.setEvmAddress setEvmAddress!: (address: string) => void;

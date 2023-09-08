@@ -68,7 +68,7 @@
               />
             </div>
           </div>
-          <div slot="right" v-if="sender" class="s-flex el-buttons">
+          <div slot="right" v-if="sender || recipient" class="s-flex el-buttons">
             <s-button
               v-if="isMaxAvailable"
               class="el-button--max s-typography-button--small"
@@ -163,7 +163,7 @@
               />
             </div>
           </div>
-          <div slot="right" v-if="recipient && isAssetSelected" class="s-flex el-buttons">
+          <div slot="right" v-if="isAssetSelected" class="s-flex el-buttons">
             <token-select-button class="el-button--select-token" :token="asset" />
           </div>
           <template #bottom>
