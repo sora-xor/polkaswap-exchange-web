@@ -472,23 +472,18 @@ const actions = defineActions({
   },
 
   async updateIncomingMinLimit(context): Promise<void> {
-    const { getters, commit, state, rootState } = bridgeActionContext(context);
+    const { getters, commit, state } = bridgeActionContext(context);
 
     let minLimit = ZeroStringValue;
 
     if (getters.isSubBridge && state.assetAddress) {
-      const externalNetwork = rootState.web3.networkSelected as SubNetwork;
-      const parachainNetwork = subBridgeApi.getSoraParachain(externalNetwork);
-      const parachainAdapter = subConnector.getAdapterForNetwork(parachainNetwork);
-
       try {
-        await parachainAdapter.connect();
-
-        minLimit = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(state.assetAddress, parachainAdapter.api);
+        minLimit = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(
+          state.assetAddress,
+          subConnector.parachainAdapter.api
+        );
       } catch (error) {
         console.error(error);
-      } finally {
-        parachainAdapter.stop();
       }
     }
 

@@ -208,8 +208,9 @@ class SubConnector {
 
   public endpoints: SubNetworkApps = {};
 
-  /** Adapter for Substrate network. Used for network selected in app */
+  /** Adapters for Substrate network. Used for network selected in app */
   public networkAdapter!: SubAdapter;
+  public parachainAdapter!: SubAdapter;
 
   public getAdapterForNetwork(network: SubNetwork): SubAdapter {
     if (!(network in this.adapters)) {
@@ -227,22 +228,24 @@ class SubConnector {
   }
 
   /**
-   * Open main connection with Substrate network
+   * Open main connection with Substrate network & Sora parachain
    */
   public async open(network: SubNetwork): Promise<void> {
-    // stop current adapter connection
+    const parachainNetwork = subBridgeApi.getSoraParachain(network);
+    // stop current connections
     await this.stop();
     // set adapter for network arg
     this.networkAdapter = this.getAdapterForNetwork(network);
+    this.parachainAdapter = this.getAdapterForNetwork(parachainNetwork);
     // open adapter connection
-    await this.networkAdapter.connect();
+    await Promise.all([this.networkAdapter.connect(), this.parachainAdapter.connect()]);
   }
 
   /**
-   * Close main connection to selected Substrate network
+   * Close main connection to selected Substrate network & Sora parachain
    */
   public async stop(): Promise<void> {
-    await this.networkAdapter?.stop();
+    await Promise.all([this.networkAdapter?.stop(), this.parachainAdapter?.stop()]);
   }
 }
 
