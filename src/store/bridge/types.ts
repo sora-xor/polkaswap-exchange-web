@@ -21,7 +21,8 @@ export type BridgeState = {
   focusedField: Nullable<FocusedField>;
   externalTransferFee: CodecString;
   externalNetworkFee: CodecString;
-  balancesAndFeesFetching: boolean;
+  balancesFetching: boolean;
+  feesAndLockedFundsFetching: boolean;
   externalNativeBalance: Nullable<CodecString>;
   externalBlockNumber: number;
   // history sources (unsynced localstorage & network)

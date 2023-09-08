@@ -32,7 +32,7 @@ export default class BridgeSelectAccount extends Mixins(mixins.LoadingMixin, Tra
   @state.web3.subAddress private subAddress!: string;
   @state.web3.selectAccountDialogVisibility private selectAccountDialogVisibility!: boolean;
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
-  @action.web3.connectSubAccount private connectSubAccount!: (address: string) => Promise<void>;
+  @mutation.web3.setSubAddress private setSubAddress!: (address: string) => Promise<void>;
 
   address = '';
 
@@ -54,7 +54,7 @@ export default class BridgeSelectAccount extends Mixins(mixins.LoadingMixin, Tra
   }
 
   handleSelectAddress(): void {
-    this.connectSubAccount(this.address);
+    this.setSubAddress(this.address);
     this.visibility = false;
   }
 }

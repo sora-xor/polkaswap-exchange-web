@@ -4,9 +4,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { PageNames } from '@/consts';
 import router from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import type { NetworkData } from '@/types/bridge';
 import { getWalletAddress, formatAddress } from '@/utils';
-import { Provider } from '@/utils/ethers-util';
+import ethersUtil, { Provider } from '@/utils/ethers-util';
 
 import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
@@ -52,8 +51,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @state.web3.networkType networkType!: BridgeNetworkType;
 
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
-  @getter.web3.selectedNetwork selectedNetwork!: Nullable<NetworkData>;
-
   @getter.bridge.isSubBridge isSubBridge!: boolean;
 
   // update selected evm network without metamask request
@@ -62,7 +59,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @mutation.web3.setEvmAddress setEvmAddress!: (address: string) => void;
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
 
-  @action.web3.connectEvmAccount private connectEvmAccount!: (provider: Provider) => Promise<void>;
   @action.web3.updateNetworkProvided updateNetworkProvided!: AsyncFnWithoutArgs;
   @action.web3.connectEvmNetwork connectEvmNetwork!: (networkHex?: string) => Promise<void>;
 
@@ -84,7 +80,8 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     // For now it's only Metamask
     const provider = Provider.Metamask;
     try {
-      await this.connectEvmAccount(provider);
+      const address = await ethersUtil.onConnect({ provider });
+      this.setEvmAddress(address);
     } catch (error: any) {
       const name = this.t(getProviderName(provider));
       const key = this.te(error.message) ? error.message : handleProviderError(provider, error);

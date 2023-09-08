@@ -8,7 +8,6 @@ import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts
 import { web3ActionContext } from '@/store/web3';
 import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil from '@/utils/ethers-util';
-import type { Provider } from '@/utils/ethers-util';
 
 import type { SubNetworkApps } from './types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
@@ -29,19 +28,6 @@ const actions = defineActions({
     await subBridgeConnector.open(subNetwork.id as SubNetwork);
   },
 
-  async connectEvmAccount(context, provider: Provider): Promise<void> {
-    const { commit } = web3ActionContext(context);
-    const address = await ethersUtil.onConnect({ provider });
-    commit.setEvmAddress(address);
-  },
-
-  async connectSubAccount(context, address: string): Promise<void> {
-    const { commit, rootDispatch } = web3ActionContext(context);
-    commit.setSubAddress(address);
-
-    await rootDispatch.bridge.updateExternalBalance();
-  },
-
   async disconnectExternalNetwork(context): Promise<void> {
     await subBridgeConnector.stop();
   },
@@ -54,7 +40,7 @@ const actions = defineActions({
     commit.setNetworkType(type);
     commit.setSelectedNetwork(id);
 
-    rootDispatch.bridge.afterNetworkChange();
+    rootDispatch.assets.updateRegisteredAssets();
 
     if (type === BridgeNetworkType.Sub) {
       await dispatch.connectSubNetwork();

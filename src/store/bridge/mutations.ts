@@ -69,8 +69,12 @@ const mutations = defineMutations<BridgeState>()({
     state.focusedField = field;
   },
 
-  setBalancesAndFeesFetching(state, flag: boolean): void {
-    state.balancesAndFeesFetching = flag;
+  setBalancesFetching(state, flag: boolean): void {
+    state.balancesFetching = flag;
+  },
+
+  setFeesAndLockedFundsFetching(state, flag: boolean): void {
+    state.feesAndLockedFundsFetching = flag;
   },
 
   setExternalNetworkFee(state, fee: CodecString): void {

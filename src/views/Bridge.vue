@@ -371,7 +371,8 @@ export default class Bridge extends Mixins(
   readonly KnownSymbols = KnownSymbols;
   readonly FocusedField = FocusedField;
 
-  @state.bridge.balancesAndFeesFetching private balancesAndFeesFetching!: boolean;
+  @state.bridge.balancesFetching private balancesFetching!: boolean;
+  @state.bridge.feesAndLockedFundsFetching private feesAndLockedFundsFetching!: boolean;
   @state.bridge.amountSend amountSend!: string;
   @state.bridge.amountReceived amountReceived!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
@@ -535,7 +536,12 @@ export default class Bridge extends Mixins(
   }
 
   get isConfirmTxLoading(): boolean {
-    return this.isSelectAssetLoading || this.balancesAndFeesFetching || this.registeredAssetsFetching;
+    return (
+      this.isSelectAssetLoading ||
+      this.balancesFetching ||
+      this.feesAndLockedFundsFetching ||
+      this.registeredAssetsFetching
+    );
   }
 
   get isXorSufficientForNextOperation(): boolean {
@@ -591,7 +597,7 @@ export default class Bridge extends Mixins(
   async created(): Promise<void> {
     const { address, amount, isIncoming } = this.$route.params;
     if (address) {
-      this.setAssetAddress(address);
+      this.updateAssetAddress(address);
     }
     if (isIncoming) {
       this.setSoraToEvm(false);
@@ -653,8 +659,12 @@ export default class Bridge extends Mixins(
   async selectAsset(selectedAsset?: RegisteredAccountAsset): Promise<void> {
     if (!selectedAsset) return;
 
+    await this.updateAssetAddress(selectedAsset.address);
+  }
+
+  private async updateAssetAddress(address: string): Promise<void> {
     await this.withSelectAssetLoading(async () => {
-      await this.setAssetAddress(selectedAsset.address);
+      await this.setAssetAddress(address);
     });
   }
 

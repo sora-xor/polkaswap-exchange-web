@@ -378,6 +378,26 @@ async function updateExternalBlockNumber(context: ActionContext<any, any>): Prom
   }
 }
 
+async function updateExternalFeesAndLockedFunds(context: ActionContext<any, any>): Promise<void> {
+  const { commit } = bridgeActionContext(context);
+
+  commit.setFeesAndLockedFundsFetching(true);
+
+  await Promise.all([
+    updateExternalLockedBalance(context),
+    updateExternalNetworkFee(context),
+    updateExternalTransferFee(context),
+  ]);
+
+  commit.setFeesAndLockedFundsFetching(false);
+}
+
+async function updateBalancesAndFees(context: ActionContext<any, any>): Promise<void> {
+  const { dispatch } = bridgeActionContext(context);
+
+  await Promise.all([dispatch.updateExternalBalance(), updateExternalFeesAndLockedFunds(context)]);
+}
+
 const actions = defineActions({
   setSendedAmount(context, value?: string) {
     const { commit, state, getters } = bridgeActionContext(context);
@@ -415,30 +435,10 @@ const actions = defineActions({
     }
   },
 
-  async afterNetworkChange(context): Promise<void> {
-    const { dispatch, rootDispatch } = bridgeActionContext(context);
+  async resetBridgeForm(context): Promise<void> {
+    const { dispatch } = bridgeActionContext(context);
 
-    await Promise.all([
-      dispatch.setAssetAddress(),
-      dispatch.setSendedAmount(),
-      rootDispatch.assets.updateRegisteredAssets(),
-    ]);
-  },
-
-  async updateBalancesAndFees(context): Promise<void> {
-    const { commit, dispatch } = bridgeActionContext(context);
-    const { updateExternalBalance } = dispatch;
-
-    commit.setBalancesAndFeesFetching(true);
-
-    await Promise.all([
-      updateExternalBalance(),
-      updateExternalLockedBalance(context),
-      updateExternalNetworkFee(context),
-      updateExternalTransferFee(context),
-    ]);
-
-    commit.setBalancesAndFeesFetching(false);
+    await Promise.all([dispatch.setAssetAddress(), dispatch.setSendedAmount()]);
   },
 
   async switchDirection(context): Promise<void> {
@@ -448,7 +448,7 @@ const actions = defineActions({
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await dispatch.updateBalancesAndFees();
+    await updateBalancesAndFees(context);
 
     if (state.focusedField === FocusedField.Received) {
       await dispatch.setSendedAmount(state.amountReceived);
@@ -467,18 +467,22 @@ const actions = defineActions({
     await Promise.all([
       dispatch.updateOutgoingMaxLimit(),
       dispatch.updateIncomingMinLimit(),
-      dispatch.updateBalancesAndFees(),
+      updateBalancesAndFees(context),
     ]);
   },
 
   async updateExternalBalance(context): Promise<void> {
-    const { getters } = bridgeActionContext(context);
+    const { commit, getters } = bridgeActionContext(context);
+
+    commit.setBalancesFetching(true);
 
     if (getters.isSubBridge) {
       await updateSubBalances(context);
     } else {
       await updateEvmBalances(context);
     }
+
+    commit.setBalancesFetching(false);
   },
 
   async updateIncomingMinLimit(context): Promise<void> {
@@ -486,8 +490,10 @@ const actions = defineActions({
 
     let minLimit = ZeroStringValue;
 
-    if (getters.isSubBridge && state.assetAddress) {
+    if (getters.isSubBridge && getters.isRegisteredAsset && state.assetAddress) {
       try {
+        await subBridgeConnector.parachainAdapter.api.isReady;
+
         minLimit = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(
           state.assetAddress,
           subBridgeConnector.parachainAdapter.api
@@ -532,13 +538,13 @@ const actions = defineActions({
   },
 
   async subscribeOnBlockUpdates(context): Promise<void> {
-    const { commit, dispatch } = bridgeActionContext(context);
+    const { commit } = bridgeActionContext(context);
 
     commit.resetBlockUpdatesSubscription();
 
     const subscription = api.system.updated.subscribe(() => {
       updateExternalBlockNumber(context);
-      dispatch.updateBalancesAndFees();
+      updateBalancesAndFees(context);
     });
 
     commit.setBlockUpdatesSubscription(subscription);

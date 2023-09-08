@@ -18,7 +18,8 @@ function initialState(): BridgeState {
     focusedField: null,
     externalTransferFee: ZeroStringValue, // fee for transfer between networks (xcm message fee for substrate network)
     externalNetworkFee: ZeroStringValue, // fee for transaction execution
-    balancesAndFeesFetching: false,
+    balancesFetching: false,
+    feesAndLockedFundsFetching: false,
     externalNativeBalance: ZeroStringValue, // balance for external native token (like ETH)
     externalBlockNumber: 0,
     // history sources
