@@ -109,13 +109,13 @@ export class SubAdapter {
   }
 
   /* [Substrate 5] Runtime call transactionPaymentApi */
-  public async getNetworkFee(): Promise<CodecString> {
+  public async getNetworkFee(asset: RegisteredAsset): Promise<CodecString> {
     if (!this.connected) return ZeroStringValue;
 
     await this.api.isReady;
 
     const decimals = this.api.registry.chainDecimals[0];
-    const tx = this.getTransferExtrinsic({} as RegisteredAsset, '', ZeroStringValue);
+    const tx = this.getTransferExtrinsic(asset, '', ZeroStringValue);
     const res = await tx.paymentInfo('');
 
     return new FPNumber(res.partialFee, decimals).toCodecString();
@@ -175,9 +175,9 @@ class KusamaAdapter extends SubAdapter {
   }
 
   /* Throws error until Substrate 5 migration */
-  public async getNetworkFee(): Promise<CodecString> {
+  public async getNetworkFee(asset: RegisteredAsset): Promise<CodecString> {
     try {
-      return await super.getNetworkFee();
+      return await super.getNetworkFee(asset);
     } catch {
       // Hardcoded value for Kusama - 0.0007 KSM
       return '700000000';

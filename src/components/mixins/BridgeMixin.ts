@@ -3,7 +3,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import { getter, mutation, state } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -11,7 +11,6 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
   @state.bridge.externalNativeBalance externalNativeBalance!: CodecString;
-  @state.bridge.externalBlockNumber externalBlockNumber!: number;
   @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<CodecString>;
   @state.bridge.outgoingMaxLimit outgoingMaxLimit!: Nullable<CodecString>;
   @state.bridge.incomingMinLimit incomingMinLimit!: CodecString;
@@ -24,8 +23,6 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @getter.bridge.soraNetworkFee soraNetworkFee!: CodecString;
   @getter.bridge.externalNetworkFee externalNetworkFee!: CodecString;
   @getter.assets.xor xor!: RegisteredAccountAsset;
-
-  @mutation.web3.setSelectNetworkDialogVisibility setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
   get nativeTokenSymbol(): string {
     return this.nativeToken?.symbol ?? '';

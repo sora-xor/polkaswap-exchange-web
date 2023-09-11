@@ -220,6 +220,7 @@ export default class BridgeTransaction extends Mixins(
 ) {
   readonly KnownSymbols = KnownSymbols;
 
+  @state.bridge.externalBlockNumber private externalBlockNumber!: number;
   @state.bridge.waitingForApprove private waitingForApprove!: Record<string, boolean>;
   @state.bridge.inProgressIds private inProgressIds!: Record<string, boolean>;
   @state.router.prev private prevRoute!: Nullable<PageNames>;

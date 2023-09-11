@@ -373,10 +373,10 @@ export default class Bridge extends Mixins(
 
   @state.bridge.balancesFetching private balancesFetching!: boolean;
   @state.bridge.feesAndLockedFundsFetching private feesAndLockedFundsFetching!: boolean;
+  @state.assets.registeredAssetsFetching private registeredAssetsFetching!: boolean;
   @state.bridge.amountSend amountSend!: string;
   @state.bridge.amountReceived amountReceived!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
-  @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
 
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
   @getter.bridge.operation private operation!: Operation;
@@ -385,6 +385,7 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setSoraToEvm private setSoraToEvm!: (value: boolean) => void;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
   @mutation.bridge.setFocusedField setFocusedField!: (field: FocusedField) => void;
+  @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
   @action.bridge.setSendedAmount setSendedAmount!: (value?: string) => void;
   @action.bridge.setReceivedAmount setReceivedAmount!: (value?: string) => void;

@@ -56,10 +56,16 @@ const getAccountBridgeBalance = async (
   asset: Nullable<RegisteredAccountAsset>,
   isSora: boolean,
   isSub: boolean
-) => {
+): Promise<CodecString> => {
   if (!(asset?.address && accountAddress)) return ZeroStringValue;
 
-  return isSora ? await getSoraBalance(accountAddress, asset) : await getExternalBalance(accountAddress, asset, isSub);
+  try {
+    return isSora
+      ? await getSoraBalance(accountAddress, asset)
+      : await getExternalBalance(accountAddress, asset, isSub);
+  } catch {
+    return ZeroStringValue;
+  }
 };
 
 function getBridgeApi(context: ActionContext<any, any>) {
@@ -113,26 +119,29 @@ function bridgeDataToHistoryItem(
 }
 
 async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void> {
-  const { commit, state, rootState } = bridgeActionContext(context);
+  const { commit, getters, state, rootState } = bridgeActionContext(context);
 
   let fee = ZeroStringValue;
 
-  const address = state.assetAddress;
-  const registeredAsset = address ? rootState.assets.registeredAssets[address] : null;
+  if (getters.asset && getters.isRegisteredAsset) {
+    const bridgeRegisteredAsset = rootState.assets.registeredAssets[getters.asset.address];
 
-  if (registeredAsset) {
-    fee = await ethersUtil.getEvmNetworkFee(registeredAsset.address, registeredAsset.kind, state.isSoraToEvm);
+    fee = await ethersUtil.getEvmNetworkFee(
+      bridgeRegisteredAsset.address,
+      bridgeRegisteredAsset.kind,
+      state.isSoraToEvm
+    );
   }
 
   commit.setExternalNetworkFee(fee);
 }
 
 async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void> {
-  const { commit } = bridgeActionContext(context);
+  const { commit, getters } = bridgeActionContext(context);
   let fee = ZeroStringValue;
 
-  if (subBridgeConnector.networkAdapter) {
-    fee = await subBridgeConnector.networkAdapter.getNetworkFee();
+  if (getters.asset && getters.isRegisteredAsset) {
+    fee = await subBridgeConnector.networkAdapter.getNetworkFee(getters.asset);
   }
 
   commit.setExternalNetworkFee(fee);
@@ -160,14 +169,14 @@ async function updateExternalLockedBalance(context: ActionContext<any, any>): Pr
 
 async function updateEvmBalances(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, state } = bridgeActionContext(context);
-  const { sender, recipient, asset } = getters;
+  const { sender, recipient, asset, nativeToken } = getters;
   const { isSoraToEvm } = state;
   const spender = isSoraToEvm ? recipient : sender;
 
   const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
     getAccountBridgeBalance(sender, asset, isSoraToEvm, false),
     getAccountBridgeBalance(recipient, asset, !isSoraToEvm, false),
-    getAccountBridgeBalance(spender, asset, false, false),
+    getAccountBridgeBalance(spender, nativeToken, false, false),
   ]);
 
   commit.setAssetSenderBalance(senderBalance);
@@ -177,14 +186,14 @@ async function updateEvmBalances(context: ActionContext<any, any>): Promise<void
 
 async function updateSubBalances(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, state } = bridgeActionContext(context);
-  const { sender, recipient, asset } = getters;
+  const { sender, recipient, asset, nativeToken } = getters;
   const { isSoraToEvm } = state;
   const spender = sender;
 
   const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
     getAccountBridgeBalance(sender, asset, isSoraToEvm, true),
     getAccountBridgeBalance(recipient, asset, !isSoraToEvm, true),
-    getAccountBridgeBalance(spender, asset, false, true),
+    getAccountBridgeBalance(spender, nativeToken, false, true),
   ]);
 
   commit.setAssetSenderBalance(senderBalance);
@@ -281,14 +290,14 @@ function calculateMaxLimit(
 
 async function updateExternalBlockNumber(context: ActionContext<any, any>): Promise<void> {
   const { getters, commit } = bridgeActionContext(context);
-
   try {
     const blockNumber = getters.isSubBridge
       ? await subBridgeConnector.networkAdapter.getBlockNumber()
       : await (await ethersUtil.getEthersInstance()).getBlockNumber();
 
     commit.setExternalBlockNumber(blockNumber);
-  } catch {
+  } catch (error) {
+    console.error(error);
     commit.setExternalBlockNumber(0);
   }
 }
