@@ -58,6 +58,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
         await this.getSupportedApps();
+        await this.updateProvidedEvmNetwork();
         await this.restoreSelectedNetwork();
       });
     });
