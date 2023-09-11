@@ -39,7 +39,7 @@ const getters = defineGetters<SwapState>()({
     const allSources = [
       ...new Set(
         Object.values(state.dexQuoteData)
-          .map((data) => data.pairLiquiditySources)
+          .map((data) => data.sources.liquiditySources)
           .flat()
       ),
     ];
@@ -66,7 +66,7 @@ const getters = defineGetters<SwapState>()({
   },
   isAvailable(...args): boolean {
     const { state } = swapGetterContext(args);
-    const paths = state.dexQuoteData?.[state.selectedDexId]?.paths;
+    const paths = state.dexQuoteData?.[state.selectedDexId]?.sources?.assetPaths;
     return !isEmpty(paths) && Object.values(paths).every((paths) => !isEmpty(paths));
   },
   swapMarketAlgorithm(...args): MarketAlgorithms {
