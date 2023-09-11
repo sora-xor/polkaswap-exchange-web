@@ -16,6 +16,7 @@
             "proofAddressDesc": "Ett officiellt dokument (elräkning, kontoutdrag, regeringsutdrag eller korrespondens) som innehåller ditt fullständiga namn och adress, och som inte är äldre än 3 månader.",
             "personalTitle": "Skicka in din personliga information",
             "personalDesc": "Fyll i formuläret med ditt namn och adress",
+            "paidAttemptDisclaimer": "Du har bara {count} gratis försök att klara KYC-processen. Varje annat försök efter det kommer att kosta €{cost}. Betalda försök kommer att vara tillgängliga efter nästa uppdatering av appen.",
             "proofAddressNote": "Obs: Uttalanden från neobanker som Revolut och N26 ses för närvarande inte som ett giltigt adressbevis."
         },
         "emailPlaceholder": "E-post",
@@ -67,6 +68,8 @@
         "freeCardIssuance": "Gratis utfärdande av kort",
         "loginBtn": "Logga in eller registrera dig",
         "telegramSupport": "Telegramstöd",
+        "rejectionPriceAttemptDisclaimer": "Vartannat försök kommer att kosta dig € {0}",
+        "rejectCount": " | ",
         "cardHub": {
             "logout": "Logga ut från SORA-kortet",
             "topup": "Fyll på",
@@ -80,11 +83,11 @@
         "gettingCardForFree": "Du får kortet gratis!",
         "holdSufficientXor": "Du har 100 € i XOR på ditt SORA-konto",
         "holdNotSufficientXor": "Om du innehar, satsar eller tillhandahåller likviditet för minst 100 € i XOR på ditt SORA-konto",
-        "xorAmountNeeded": "Du behöver {xorAmount} till XOR (€ {euroAmount} )",
         "xorAmountNeededTitle": "Du behöver {value} XOR för att få ett gratiskort",
         "cardhub": {
             "accountInfo": "Kontoinformation"
         },
-        "attentionText": "Uppmärksamhet"
+        "attentionText": "Uppmärksamhet",
+        "xorAmountNeeded": "Du behöver {xor} mer XOR (€{euro})"
     }
 }

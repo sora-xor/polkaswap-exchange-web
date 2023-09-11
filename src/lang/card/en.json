@@ -16,6 +16,7 @@
             "proofAddressDesc": "An official document (utility bill, bank statement, government statement or correspondence) that contains your full name and address, and that is no older then 3 months.",
             "personalTitle": "Submit your personal info",
             "personalDesc": "Fill in the form with your name and address",
+            "paidAttemptDisclaimer": "You have only {count} free attempts to pass the KYC process. Every other attempt after that will cost €{cost}. Paid attempts will be available after the next update of the app.",
             "proofAddressNote": "Note: Statements from neobanks like Revolut and N26 are currently not seen as valid proof of address."
         },
         "emailPlaceholder": "Email",
@@ -67,6 +68,8 @@
         "freeCardIssuance": "Free card issuance",
         "loginBtn": "Log in or Sign up",
         "telegramSupport": "Telegram support",
+        "rejectionPriceAttemptDisclaimer": "Every other attempt will cost you €{0}",
+        "rejectCount": "You have 1 more free KYC attempt|You have {count} more free KYC attempts",
         "cardHub": {
             "logout": "Log out of SORA Card",
             "topup": "Top up",
@@ -80,11 +83,11 @@
         "gettingCardForFree": "You’re getting the card for free!",
         "holdSufficientXor": "You hold €100 worth of XOR in your SORA account",
         "holdNotSufficientXor": "If you hold, stake or provide liquidity for at least €100 worth of XOR in your SORA account",
-        "xorAmountNeeded": "You need {xorAmount} more XOR (€{euroAmount})",
         "xorAmountNeededTitle": "You need {value} XOR to receive a free card",
         "cardhub": {
             "accountInfo": "Account Information"
         },
-        "attentionText": "Attention"
+        "attentionText": "Attention",
+        "xorAmountNeeded": "You need {xor} more XOR (€{euro})"
     }
 }

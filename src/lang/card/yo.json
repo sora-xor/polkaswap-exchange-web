@@ -16,6 +16,7 @@
             "proofAddressDesc": "Iwe aṣẹ osise (owo-owo ohun elo, alaye banki, alaye ijọba tabi lẹta) ti o ni orukọ kikun ati adirẹsi rẹ ninu, ati pe ko dagba ju oṣu mẹta lọ.",
             "personalTitle": "Fi alaye ti ara ẹni silẹ",
             "personalDesc": "Fọwọsi fọọmu naa pẹlu orukọ ati adirẹsi rẹ",
+            "paidAttemptDisclaimer": "O ni nikan {count} igbiyanju ọfẹ lati kọja ilana KYC naa. Gbogbo igbiyanju miiran lẹhin iyẹn yoo jẹ € {cost} . Awọn igbiyanju isanwo yoo wa lẹhin imudojuiwọn atẹle ti app naa.",
             "proofAddressNote": "Akiyesi: Awọn alaye lati awọn banki neobank bi Revolut ati N26 ni a ko rii lọwọlọwọ bi ẹri adirẹsi ti o wulo."
         },
         "emailPlaceholder": "Imeeli",
@@ -67,6 +68,8 @@
         "freeCardIssuance": "Ifunni kaadi ọfẹ",
         "loginBtn": "Wọle tabi forukọsilẹ",
         "telegramSupport": "Telegram support",
+        "rejectionPriceAttemptDisclaimer": "Gbogbo igbiyanju miiran yoo jẹ fun ọ € {0}",
+        "rejectCount": "O ni {count} isẹ-ṣiṣe KYC ti o ko ni naa",
         "cardHub": {
             "logout": "Jade kuro ni kaadi SORA",
             "topup": "Top soke",
@@ -80,11 +83,11 @@
         "gettingCardForFree": "O n gba kaadi fun ọfẹ!",
         "holdSufficientXor": "O ni iye XOR €100 ninu akọọlẹ SORA rẹ",
         "holdNotSufficientXor": "Ti o ba mu, pin tabi pese oloomi fun o kere ju € 100 iye XOR ninu akọọlẹ SORA rẹ",
-        "xorAmountNeeded": "O nilo {xorAmount} XOR diẹ sii (€ {euroAmount} )",
         "xorAmountNeededTitle": "O nilo {value} XOR lati gba kaadi ọfẹ kan",
         "cardhub": {
             "accountInfo": "Alaye Account"
         },
-        "attentionText": "Ifarabalẹ"
+        "attentionText": "Ifarabalẹ",
+        "xorAmountNeeded": "O nilo {xor} diẹ sii XOR (€ {euro} )"
     }
 }

@@ -16,6 +16,7 @@
             "proofAddressDesc": "Ein offizielles Dokument (Stromrechnung, Kontoauszug, Regierungsbescheinigung oder Korrespondenz), das Ihren vollständigen Namen und Ihre Adresse enthält und nicht älter als 3 Monate ist.",
             "personalTitle": "Senden Sie Ihre persönlichen Daten",
             "personalDesc": "Füllen Sie das Formular mit Ihrem Namen und Ihrer Adresse aus",
+            "paidAttemptDisclaimer": "Sie haben nur {count} kostenlose Versuche, den KYC-Prozess zu bestehen. Jeder weitere Versuch danach kostet € {cost} . Bezahlte Versuche werden nach dem nächsten Update der App verfügbar sein.",
             "proofAddressNote": "Hinweis: Kontoauszüge von Neobanken wie Revolut und N26 gelten derzeit nicht als gültiger Adressnachweis."
         },
         "emailPlaceholder": "E-Mail",
@@ -67,6 +68,8 @@
         "freeCardIssuance": "Kostenlose Kartenausgabe",
         "loginBtn": "Anmelden oder Registrieren",
         "telegramSupport": "Telegramm-Support",
+        "rejectionPriceAttemptDisclaimer": "Jeder weitere Versuch wird Sie €{0} kosten.",
+        "rejectCount": " | ",
         "cardHub": {
             "logout": "Aus SORA Card abmelden",
             "topup": "Nachfüllen",
@@ -80,11 +83,11 @@
         "gettingCardForFree": "Sie erhalten die Karte kostenlos!",
         "holdSufficientXor": "Sie haben XOR im Wert von 100 € auf Ihrem SORA-Konto",
         "holdNotSufficientXor": "Wenn Sie XOR im Wert von mindestens 100 € auf Ihrem SORA-Konto halten, einsetzen oder Liquidität bereitstellen",
-        "xorAmountNeeded": "Sie benötigen {xorAmount} mehr XOR (€ {euroAmount} )",
         "xorAmountNeededTitle": "Sie benötigen {value} XOR, um eine kostenlose Karte zu erhalten",
         "cardhub": {
             "accountInfo": "Kontoinformationen"
         },
-        "attentionText": "Aufmerksamkeit"
+        "attentionText": "Aufmerksamkeit",
+        "xorAmountNeeded": "Sie benötigen {xor} mehr XOR (€{euro})"
     }
 }

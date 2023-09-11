@@ -16,6 +16,7 @@
             "proofAddressDesc": "Hivatalos dokumentum (közüzemi számla, bankszámlakivonat, állami kimutatás vagy levelezés), amely tartalmazza az Ön teljes nevét és címét, és nem régebbi 3 hónapnál.",
             "personalTitle": "Adja meg személyes adatait",
             "personalDesc": "Töltse ki az űrlapot nevével és címével",
+            "paidAttemptDisclaimer": "Már csak {count} ingyenes próbálkozása van a KYC folyamat átadására. Ezt követően minden további próbálkozás {cost} €-ba kerül. A fizetett próbálkozások az alkalmazás következő frissítése után lesznek elérhetők.",
             "proofAddressNote": "Megjegyzés: A neobankok, például a Revolut és az N26 kivonatai jelenleg nem tekinthetők érvényes címigazolásnak."
         },
         "emailPlaceholder": "Email",
@@ -67,6 +68,8 @@
         "freeCardIssuance": "Ingyenes kártyakibocsátás",
         "loginBtn": "Jelentkezzen be vagy Regisztráljon",
         "telegramSupport": "Telegram támogatás",
+        "rejectionPriceAttemptDisclaimer": "Minden más próbálkozás {0} €-ba kerül",
+        "rejectCount": " | ",
         "cardHub": {
             "logout": "Jelentkezzen ki a SORA kártyából",
             "topup": "Feltölt",
@@ -80,11 +83,11 @@
         "gettingCardForFree": "A kártyát ingyen kapod!",
         "holdSufficientXor": "100 € értékű XOR-t tart a SORA-számláján",
         "holdNotSufficientXor": "Ha SORA-számláján legalább 100 € értékű XOR-t tart, tesz vagy biztosít likviditást",
-        "xorAmountNeeded": "Még {xorAmount} XOR-ra van szüksége (€ {euroAmount} )",
         "xorAmountNeededTitle": "Ingyenes kártya fogadásához {value} XOR szükséges",
         "cardhub": {
             "accountInfo": "Számla információ"
         },
-        "attentionText": "Figyelem"
+        "attentionText": "Figyelem",
+        "xorAmountNeeded": "Szükséged van {xor} több XOR-ra (€{euro})"
     }
 }

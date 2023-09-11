@@ -16,6 +16,7 @@
             "proofAddressDesc": "Een officieel document (energierekening, bankafschrift, overheidsverklaring of correspondentie) met je volledige naam en adres en dat niet ouder is dan 3 maanden.",
             "personalTitle": "Voeg uw persoonlijke gegevens in",
             "personalDesc": "Vul het formulier in met uw naam en adres",
+            "paidAttemptDisclaimer": "Je hebt slechts {telling} gratis pogingen om door het KYC proces te komen. Elke volgende poging kost €{kosten}. Betaalde pogingen zullen beschikbaar zijn na de volgende update van de app.",
             "proofAddressNote": "Let op: Verklaringen van neobanken als Revolut en N26 worden momenteel niet gezien als geldig bewijs van adres."
         },
         "emailPlaceholder": "E-mail",
@@ -67,6 +68,8 @@
         "freeCardIssuance": "Gratis kaartuitgifte",
         "loginBtn": "Meld je aan of schrijf je in",
         "telegramSupport": "Telegram-ondersteuning",
+        "rejectionPriceAttemptDisclaimer": "Elke andere poging kost u € {0}",
+        "rejectCount": " | ",
         "cardHub": {
             "logout": "Uitloggen bij SORA Card",
             "topup": "Bijvullen",
@@ -80,11 +83,11 @@
         "gettingCardForFree": "Je krijgt de kaart gratis!",
         "holdSufficientXor": "U heeft € 100 aan XOR op uw SORA-account",
         "holdNotSufficientXor": "Als u XOR voor ten minste € 100 aanhoudt, inzet of liquiditeit verstrekt op uw SORA-rekening",
-        "xorAmountNeeded": "Je hebt nog {xorAmount} XOR nodig (€ {euroAmount} )",
         "xorAmountNeededTitle": "Je hebt {value} XOR nodig om een gratis kaart te ontvangen",
         "cardhub": {
             "accountInfo": "Account Informatie"
         },
-        "attentionText": "Aandacht"
+        "attentionText": "Aandacht",
+        "xorAmountNeeded": "Je hebt {xor} meer XOR (€{euro}) nodig"
     }
 }

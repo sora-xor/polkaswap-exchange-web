@@ -16,6 +16,7 @@
             "proofAddressDesc": "Un documento oficial (factura de servicios públicos, extracto bancario, estado de cuenta del gobierno o correspondencia) que contenga su nombre completo y dirección, y que no tenga más de 3 meses.",
             "personalTitle": "Enviar tu información personal",
             "personalDesc": "Rellena el formulario con tu nombre y dirección",
+            "paidAttemptDisclaimer": "Solo tienes {count} intentos gratuitos para pasar el proceso KYC. Cualquier otro intento posterior costará {cost} €. Los intentos pagos estarán disponibles después de la próxima actualización de la aplicación.",
             "proofAddressNote": "Nota: Los extractos de neobancos como Revolut y N26 actualmente no se consideran prueba de domicilio válida."
         },
         "emailPlaceholder": "Correo electrónico",
@@ -67,6 +68,8 @@
         "freeCardIssuance": "Emisión gratuita de la tarjeta",
         "loginBtn": "Iniciar sesión o Registrarse",
         "telegramSupport": "Soporte en Telegram",
+        "rejectionPriceAttemptDisclaimer": "Cualquier otro intento tendrá un coste de €{0}",
+        "rejectCount": " | ",
         "cardHub": {
             "logout": "Cerrar sesión de la Tarjeta SORA",
             "topup": "Recargar",
@@ -80,11 +83,11 @@
         "gettingCardForFree": "¡Obtendrás la tarjeta gratis!",
         "holdSufficientXor": "Tiene 100 € en XOR en su cuenta SORA",
         "holdNotSufficientXor": "Si mantiene, apuesta o proporciona liquidez por al menos 100 € en XOR en su cuenta SORA",
-        "xorAmountNeeded": "Necesitas {xorAmount} más XOR (€ {euroAmount} )",
         "xorAmountNeededTitle": "Necesitas {value} XOR para recibir una tarjeta gratis",
         "cardhub": {
             "accountInfo": "Información de la cuenta"
         },
-        "attentionText": "Atención"
+        "attentionText": "Atención",
+        "xorAmountNeeded": "Necesitas {xor} más XOR (€{euro})"
     }
 }

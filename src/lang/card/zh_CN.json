@@ -16,6 +16,7 @@
             "proofAddressDesc": "包含您的全名和地址且不超过 3 个月的正式文件（水电费账单、银行对账单、政府声明或信件）。",
             "personalTitle": "提交个人信息",
             "personalDesc": "请填写表格，包括您的姓名和地址。",
+            "paidAttemptDisclaimer": "您只有[{count}次免费尝试机会通过 KYC 流程。此后的所有其他尝试都将花费 € {cost} 。下次更新应用程序后将提供付费尝试。",
             "proofAddressNote": "注意：Revolut 和 N26 等新银行的声明目前不被视为有效的地址证明。"
         },
         "emailPlaceholder": "电子邮件",
@@ -67,6 +68,8 @@
         "freeCardIssuance": "免费发卡",
         "loginBtn": "登录或注册",
         "telegramSupport": "Telegram 支持",
+        "rejectionPriceAttemptDisclaimer": "每次其他尝试都会花费你{0}欧元。",
+        "rejectCount": "您还有{count}次免费的KYC尝试",
         "cardHub": {
             "logout": "退出 SORA 卡",
             "topup": "充值",
@@ -80,11 +83,11 @@
         "gettingCardForFree": "您将免费获得该卡！",
         "holdSufficientXor": "您在 SORA 账户中持有价值 100 欧元的 XOR",
         "holdNotSufficientXor": "如果您在 SORA 账户中持有、质押或提供至少价值 100 欧元 XOR 的流动性",
-        "xorAmountNeeded": "您还需要{xorAmount}异或 (€ {euroAmount} )",
         "xorAmountNeededTitle": "您需要{value} XOR 才能收到免费卡",
         "cardhub": {
             "accountInfo": "帐户信息"
         },
-        "attentionText": "注意力"
+        "attentionText": "注意力",
+        "xorAmountNeeded": "您需要{XOR}更多的 XOR（{欧元}）。"
     }
 }

@@ -16,6 +16,7 @@
             "proofAddressDesc": "Oficiální dokument (účet za energie, bankovní výpis, vládní prohlášení nebo korespondence), který obsahuje vaše celé jméno a adresu a není starší než 3 měsíce.",
             "personalTitle": "Odešlete své osobní údaje",
             "personalDesc": "Vyplňte formulář se svým jménem a adresou",
+            "paidAttemptDisclaimer": "Máte pouze {count} bezplatných pokusů projít procesem KYC. Každý další pokus bude stát € {cost} . Placené pokusy budou k dispozici po další aktualizaci aplikace.",
             "proofAddressNote": "Poznámka: Výpisy od neobank, jako je Revolut a N26, nejsou v současné době považovány za platný doklad o adrese."
         },
         "emailPlaceholder": "E-mailem",
@@ -67,6 +68,8 @@
         "freeCardIssuance": "Vydání karty zdarma",
         "loginBtn": "Přihlaste se nebo se zaregistrujte",
         "telegramSupport": "Podpora telegramů",
+        "rejectionPriceAttemptDisclaimer": "Každý další pokus vás bude stát {0} €",
+        "rejectCount": " | | | ",
         "cardHub": {
             "logout": "Odhlaste se z karty SORA",
             "topup": "Doplňte",
@@ -80,11 +83,11 @@
         "gettingCardForFree": "Kartu získáte zdarma!",
         "holdSufficientXor": "Na svém účtu SORA držíte XOR v hodnotě 100 €",
         "holdNotSufficientXor": "Pokud na svém účtu SORA držíte, sázíte nebo poskytujete likviditu v hodnotě alespoň 100 EUR XOR",
-        "xorAmountNeeded": "Potřebujete o {xorAmount} více XOR (€ {euroAmount} )",
         "xorAmountNeededTitle": "K získání bezplatné karty potřebujete {value} XOR",
         "cardhub": {
             "accountInfo": "Informace o účtu"
         },
-        "attentionText": "Pozornost"
+        "attentionText": "Pozornost",
+        "xorAmountNeeded": "Potřebujete {xor} více XOR (€{euro})"
     }
 }

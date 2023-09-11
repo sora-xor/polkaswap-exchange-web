@@ -3,9 +3,7 @@
     <div class="tos__disclaimer">
       <h4 class="tos__disclaimer-header">{{ t('card.attentionText') }}</h4>
       <p class="tos__disclaimer-paragraph">
-        {{
-          'You have only 2 attempts to pass the KYC process without extra wating time. To maximize your chances of success please follow these simple guidelines:'
-        }}
+        {{ t('card.guideline.paidAttemptDisclaimer', { count: total, cost: kycAttemptCost }) }}
       </p>
       <div class="tos__disclaimer-warning icon">
         <s-icon name="notifications-alert-triangle-24" size="28px" />
@@ -59,13 +57,28 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { action, state } from '@/store/decorators';
+import { AttemptCounter } from '@/types/card';
 
 @Component({
   components: {},
 })
 export default class Guidance extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  @state.soraCard.kycAttemptCost kycAttemptCost!: string;
+  @state.soraCard.attemptCounter attemptCounter!: AttemptCounter;
+
+  @action.soraCard.getUserKycAttempt private getUserKycAttempt!: AsyncFnWithoutArgs;
+
+  get total(): string {
+    return this.attemptCounter.totalFreeAttempts || '4';
+  }
+
   async handleConfirm(): Promise<void> {
     this.$emit('confirm');
+  }
+
+  mounted(): void {
+    this.getUserKycAttempt();
   }
 }
 </script>

@@ -16,6 +16,7 @@
             "proofAddressDesc": "Zvanični dokument (komunalni račun, izvod iz banke, vladin izvod ili prepiska) koji sadrži vaše puno ime i adresu, a to nije starije od 3 meseca.",
             "personalTitle": "Пошаљите своје личне податке",
             "personalDesc": "Попуните формулар својим именом и адресом",
+            "paidAttemptDisclaimer": "Имате само {count} бесплатних покушаја да прођете КИЦ процес. Сваки други покушај након тога коштаће € {cost} . Плаћени покушаји ће бити доступни након следећег ажурирања апликације.",
             "proofAddressNote": "Напомена: Изјаве необанака као што су Револут и Н26 тренутно се не сматрају валидним доказом адресе."
         },
         "emailPlaceholder": "Емаил",
@@ -67,6 +68,8 @@
         "freeCardIssuance": "Бесплатно издавање картице",
         "loginBtn": "Пријавите се или Пријавите се",
         "telegramSupport": "Телеграм подршка",
+        "rejectionPriceAttemptDisclaimer": "Сваки други покушај ће вас коштати {0} €",
+        "rejectCount": " | | ",
         "cardHub": {
             "logout": "Одјавите се са СОРА картице",
             "topup": "Надмашити",
@@ -80,11 +83,11 @@
         "gettingCardForFree": "Картицу добијате бесплатно!",
         "holdSufficientXor": "На свом СОРА налогу имате КСОР у вредности од 100 €",
         "holdNotSufficientXor": "Ако држите, уложите или обезбедите ликвидност за најмање 100 евра КСОР на свом СОРА рачуну",
-        "xorAmountNeeded": "Потребно вам је још {xorAmount} КСОР ( {euroAmount} €)",
         "xorAmountNeededTitle": "Треба вам {value} КСОР да бисте добили бесплатну картицу",
         "cardhub": {
             "accountInfo": "Информације о налогу"
         },
-        "attentionText": "Пажња"
+        "attentionText": "Пажња",
+        "xorAmountNeeded": "Треба вам још {xor} КСОР (€ {euro} )"
     }
 }

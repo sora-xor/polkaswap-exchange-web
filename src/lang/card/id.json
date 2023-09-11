@@ -16,6 +16,7 @@
             "proofAddressDesc": "Dokumen resmi (tagihan utilitas, laporan bank, laporan pemerintah atau korespondensi) yang berisi nama lengkap dan alamat Anda, dan berumur tidak lebih dari 3 bulan.",
             "personalTitle": "Kirimkan informasi pribadi Anda",
             "personalDesc": "Isi formulir dengan nama dan alamat Anda",
+            "paidAttemptDisclaimer": "Anda hanya memiliki {count} percobaan gratis untuk lulus proses KYC. Setiap upaya lain setelah itu akan dikenakan biaya € {cost} . Upaya berbayar akan tersedia setelah pembaruan aplikasi berikutnya.",
             "proofAddressNote": "Catatan: Pernyataan dari neobank seperti Revolut dan N26 saat ini tidak dianggap sebagai bukti alamat yang sah."
         },
         "emailPlaceholder": "Surel",
@@ -67,6 +68,8 @@
         "freeCardIssuance": "Penerbitan kartu gratis",
         "loginBtn": "Masuk atau mendaftar",
         "telegramSupport": "Dukungan Telegram",
+        "rejectionPriceAttemptDisclaimer": "Setiap upaya lainnya akan dikenakan biaya € {0}",
+        "rejectCount": "Anda memiliki {count} upaya KYC gratis lagi",
         "cardHub": {
             "logout": "Keluar dari Kartu SORA",
             "topup": "Isi ulang",
@@ -80,11 +83,11 @@
         "gettingCardForFree": "Anda mendapatkan kartunya secara gratis!",
         "holdSufficientXor": "Anda memiliki XOR senilai €100 di Akun SORA Anda",
         "holdNotSufficientXor": "Jika Anda memegang, mempertaruhkan, atau menyediakan likuiditas untuk XOR senilai setidaknya €100 di akun SORA Anda",
-        "xorAmountNeeded": "Anda memerlukan {xorAmount} XOR lebih banyak (€ {euroAmount} )",
         "xorAmountNeededTitle": "Anda memerlukan {value} XOR untuk menerima kartu gratis",
         "cardhub": {
             "accountInfo": "Informasi Akun"
         },
-        "attentionText": "Perhatian"
+        "attentionText": "Perhatian",
+        "xorAmountNeeded": "Anda membutuhkan {xor} lebih banyak XOR (€{euro})"
     }
 }

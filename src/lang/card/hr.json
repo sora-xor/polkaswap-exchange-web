@@ -16,6 +16,7 @@
             "proofAddressDesc": "Službeni dokument (račun za režije, bankovni izvod, državni izvod ili korespondencija) koji sadrži vaše puno ime i prezime i adresu, a koji nije stariji od 3 mjeseca.",
             "personalTitle": "Pošaljite svoje osobne podatke",
             "personalDesc": "Ispunite obrazac sa svojim imenom i adresom",
+            "paidAttemptDisclaimer": "Imate samo {count} besplatnih pokušaja da prođete KYC proces. Svaki drugi pokušaj nakon toga košta € {cost} . Plaćeni pokušaji bit će dostupni nakon sljedećeg ažuriranja aplikacije.",
             "proofAddressNote": "Napomena: Izvodi neobanki kao što su Revolut i N26 trenutno se ne smatraju važećim dokazom adrese."
         },
         "emailPlaceholder": "E-mail",
@@ -67,6 +68,8 @@
         "freeCardIssuance": "Besplatno izdavanje kartice",
         "loginBtn": "Prijavite se ili Prijavite se",
         "telegramSupport": "Telegram podrška",
+        "rejectionPriceAttemptDisclaimer": "Svaki drugi pokušaj koštat će vas € {0}",
+        "rejectCount": " | | ",
         "cardHub": {
             "logout": "Odjavite se sa SORA kartice",
             "topup": "Nadopunite",
@@ -80,11 +83,11 @@
         "gettingCardForFree": "Karticu dobivate besplatno!",
         "holdSufficientXor": "Na svom SORA računu imate XOR u vrijednosti od 100 €",
         "holdNotSufficientXor": "Ako imate, uložite ili osigurate likvidnost u iznosu od najmanje 100 € XOR-a na vašem SORA računu",
-        "xorAmountNeeded": "Trebate još {xorAmount} XOR (€ {euroAmount} )",
         "xorAmountNeededTitle": "Trebate {value} XOR da biste dobili besplatnu karticu",
         "cardhub": {
             "accountInfo": "Informacije o računu"
         },
-        "attentionText": "Pažnja"
+        "attentionText": "Pažnja",
+        "xorAmountNeeded": "Trebate još {xor} XOR (€ {euro} )"
     }
 }

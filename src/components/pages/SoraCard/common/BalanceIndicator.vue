@@ -43,7 +43,7 @@ export default class BalanceIndicator extends Mixins(TranslationMixin, mixins.Lo
     const euroBalance = FPNumber.fromNatural(this.euroBalance);
     const remaining = FPNumber.HUNDRED.sub(euroBalance);
 
-    return this.t('card.xorAmountNeeded', { xorAmount: this.xorToDeposit.format(3), euroAmount: remaining.toFixed(2) });
+    return this.t('card.xorAmountNeeded', { xor: this.xorToDeposit.format(3), euro: remaining.toFixed(2) });
   }
 
   async runProgressBarAnimation(): Promise<void> {

@@ -57,7 +57,7 @@ import { Component, Mixins, Watch, Ref } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { UserInfo, VerificationStatus, CardUIViews } from '@/types/card';
+import { UserInfo, VerificationStatus, CardUIViews, AttemptCounter } from '@/types/card';
 
 const MIN_PHONE_LENGTH_WITH_CODE = 8;
 const OTP_CODE_LENGTH = 6;
@@ -67,7 +67,7 @@ const RESEND_INTERVAL = 59;
 export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.NotificationMixin) {
   @state.soraCard.authLogin private authLogin!: any;
   @state.soraCard.userInfo userInfo!: UserInfo;
-  @state.soraCard.hasFreeAttempts private hasFreeAttempts!: boolean;
+  @state.soraCard.attemptCounter private attemptCounter!: AttemptCounter;
   @state.soraCard.wantsToPassKycAgain private wantsToPassKycAgain!: boolean;
   @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
@@ -99,6 +99,10 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
   private handleSmsCountChange(value: number): void {
     const digit = value.toString().length > 1 ? '' : '0';
     this.smsCountDown = `0:${digit}${value}`;
+  }
+
+  get hasFreeAttempts() {
+    return this.attemptCounter.hasFreeAttempts;
   }
 
   verifyCode(): void {

@@ -16,6 +16,7 @@
             "proofAddressDesc": "Un document officiel (facture de services publics, relevé bancaire, relevé gouvernemental ou correspondance) contenant votre nom complet et votre adresse et datant de moins de 3 mois.",
             "personalTitle": "Soumettez vos informations personnelles",
             "personalDesc": "Remplissez le formulaire avec votre nom et adresse",
+            "paidAttemptDisclaimer": "Vous ne disposez que de {count} tentatives gratuites pour réussir le processus KYC. Par la suite, toute autre tentative coûtera {cost} €. Les tentatives payantes seront disponibles après la prochaine mise à jour de l'application.",
             "proofAddressNote": "Remarque : les relevés de néobanques comme Revolut et N26 ne sont actuellement pas considérés comme un justificatif de domicile valide."
         },
         "emailPlaceholder": "E-mail",
@@ -67,6 +68,8 @@
         "freeCardIssuance": "Émission de carte gratuite",
         "loginBtn": "S'identifier ou s'inscrire",
         "telegramSupport": "Support Telegram",
+        "rejectionPriceAttemptDisclaimer": "Toute autre tentative coûtera {0}€",
+        "rejectCount": " | ",
         "cardHub": {
             "logout": "Se déconnecter de SORA Card",
             "topup": "Recharger",
@@ -80,11 +83,11 @@
         "gettingCardForFree": "Vous obtenez la carte gratuitement !",
         "holdSufficientXor": "Vous détenez 100 € de XOR sur votre compte SORA",
         "holdNotSufficientXor": "Si vous détenez, misez ou fournissez des liquidités pour au moins 100 € de XOR sur votre compte SORA",
-        "xorAmountNeeded": "Vous avez besoin de {xorAmount} XOR supplémentaire (€ {euroAmount} )",
         "xorAmountNeededTitle": "Vous avez besoin {value} XOR pour recevoir une carte gratuite",
         "cardhub": {
             "accountInfo": "Information sur le compte"
         },
-        "attentionText": "Attention"
+        "attentionText": "Attention",
+        "xorAmountNeeded": "Vous avez besoin de {xor} plus de XOR (€{euro})"
     }
 }

@@ -34,3 +34,9 @@ export interface Status {
 export interface UserInfo {
   iban: Nullable<string>;
 }
+
+export interface AttemptCounter {
+  hasFreeAttempts: Nullable<boolean>;
+  freeAttemptsLeft: Nullable<string>;
+  totalFreeAttempts: Nullable<string>;
+}

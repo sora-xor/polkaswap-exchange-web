@@ -4,7 +4,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode';
 import store from '@/store';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
-import { KycStatus, Status, VerificationStatus } from '../types/card';
+import { AttemptCounter, KycStatus, Status, VerificationStatus } from '../types/card';
 
 const soraCardTestBaseEndpoint = 'https://backend.dev.sora-card.tachi.soramitsu.co.jp';
 const soraCardProdBaseEndpoint = 'https://backend.sora-card.odachi.soramitsu.co.jp';
@@ -235,12 +235,12 @@ export const getUserIbanNumber = async () => {
   }
 };
 
-export const getFreeKycAttemptCount = async () => {
+export const getFreeKycAttemptCount = async (): Promise<AttemptCounter> => {
   const sessionRefreshToken = localStorage.getItem('PW-refresh-token');
   let sessionAccessToken = localStorage.getItem('PW-token');
 
   if (!(sessionAccessToken && sessionRefreshToken)) {
-    return null;
+    return emptyCounterFields();
   }
 
   if (isAccessTokenExpired(sessionAccessToken)) {
@@ -249,7 +249,7 @@ export const getFreeKycAttemptCount = async () => {
     if (accessToken) {
       sessionAccessToken = accessToken;
     } else {
-      return null;
+      return emptyCounterFields();
     }
   }
 
@@ -263,11 +263,16 @@ export const getFreeKycAttemptCount = async () => {
       },
     });
 
-    const { free_attempt: freeAttempt } = await result.json();
+    const {
+      free_attempt: hasFreeAttempts,
+      free_attempts_left: freeAttemptsLeft,
+      total_free_attempts: totalFreeAttempts,
+    } = await result.json();
 
-    return freeAttempt;
+    return { hasFreeAttempts, freeAttemptsLeft, totalFreeAttempts };
   } catch (error) {
     console.error('[SoraCard]: Error while getting KYC attempt', error);
+    return emptyCounterFields();
   }
 };
 
@@ -310,6 +315,12 @@ export const clearPayWingsKeysFromLocalStorage = (logout = false) => {
 const emptyStatusFields = (): Status => ({
   verificationStatus: undefined,
   kycStatus: undefined,
+});
+
+const emptyCounterFields = (): AttemptCounter => ({
+  hasFreeAttempts: undefined,
+  freeAttemptsLeft: undefined,
+  totalFreeAttempts: undefined,
 });
 
 export function soraCard(soraNetwork: WALLET_CONSTS.SoraNetwork) {

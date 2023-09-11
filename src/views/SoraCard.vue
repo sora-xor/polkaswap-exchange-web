@@ -21,7 +21,7 @@ import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import { Components, PageNames } from '@/consts';
 import { goTo, lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
-import { KycStatus, UserInfo, VerificationStatus } from '@/types/card';
+import { AttemptCounter, KycStatus, UserInfo, VerificationStatus } from '@/types/card';
 
 import type { NavigationGuardNext, Route } from 'vue-router';
 
@@ -43,7 +43,7 @@ enum Step {
 export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsMixin) {
   readonly Step = Step;
 
-  @state.soraCard.hasFreeAttempts private hasFreeAttempts!: boolean;
+  @state.soraCard.attemptCounter private attemptCounter!: AttemptCounter;
   @state.soraCard.wantsToPassKycAgain private wantsToPassKycAgain!: boolean;
   @state.soraCard.userInfo userInfo!: UserInfo;
 
@@ -69,6 +69,10 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
     if (value === false) {
       goTo(PageNames.Swap);
     }
+  }
+
+  get hasFreeAttempts() {
+    return this.attemptCounter.hasFreeAttempts;
   }
 
   get hasTokens(): boolean {
