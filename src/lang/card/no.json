@@ -69,7 +69,7 @@
         "loginBtn": "Logg inn eller registrer deg",
         "telegramSupport": "Telegramstøtte",
         "rejectionPriceAttemptDisclaimer": "Hvert andre forsøk vil koste deg € {0}",
-        "rejectCount": " | ",
+        "rejectCount": "Du har 1 mer gratis KYC-forsøk|Du har {count} flere gratis KYC-forsøk",
         "cardHub": {
             "logout": "Logg ut av SORA-kortet",
             "topup": "Fylle opp",

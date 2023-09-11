@@ -69,7 +69,7 @@
         "loginBtn": "Iniciar sesión o Registrarse",
         "telegramSupport": "Soporte en Telegram",
         "rejectionPriceAttemptDisclaimer": "Cualquier otro intento tendrá un coste de €{0}",
-        "rejectCount": " | ",
+        "rejectCount": "Tienes 1 intento más de KYC gratuito|Tienes {count} intentos más de KYC gratuitos",
         "cardHub": {
             "logout": "Cerrar sesión de la Tarjeta SORA",
             "topup": "Recargar",

@@ -16,8 +16,8 @@
             "proofAddressDesc": "包含您的全名和地址且不超过 3 个月的正式文件（水电费账单、银行对账单、政府声明或信件）。",
             "personalTitle": "提交个人信息",
             "personalDesc": "请填写表格，包括您的姓名和地址。",
-            "paidAttemptDisclaimer": "您只有[{count}次免费尝试机会通过 KYC 流程。此后的所有其他尝试都将花费 € {cost} 。下次更新应用程序后将提供付费尝试。",
-            "proofAddressNote": "注意：Revolut 和 N26 等新银行的声明目前不被视为有效的地址证明。"
+            "paidAttemptDisclaimer": "您只有{count}次免费尝试机会通过 KYC 流程。此后的所有其他尝试都将花费 € {cost} 。下次更新应用程序后将提供付费尝试。",
+            "proofAddressNote": "请注意：像Revolut和N26这样的新型银行的声明目前不被视为有效的地址证明。"
         },
         "emailPlaceholder": "电子邮件",
         "sendCodeBtn": "发送短信代码",
@@ -63,7 +63,7 @@
         "statusRejectReason": "拒绝原因",
         "userNotFound": "未找到手机号码，请重新检查并重试。",
         "code": "代码",
-        "getSoraCardDesc": "获取可在 SORA 钱包中访问的欧元 IBAN 帐户和借记卡",
+        "getSoraCardDesc": "在您的SORA钱包中获得一个欧元IBAN账户和可访问的借记卡",
         "reIssuanceFee": "年服务费€0",
         "freeCardIssuance": "免费发卡",
         "loginBtn": "登录或注册",
@@ -81,13 +81,13 @@
         },
         "emailSpamReminder": "电子邮件可能需要几分钟才能到达。如果 5 分钟后仍未收到电子邮件，请验证您的垃圾邮件文件夹。",
         "gettingCardForFree": "您将免费获得该卡！",
-        "holdSufficientXor": "您在 SORA 账户中持有价值 100 欧元的 XOR",
+        "holdSufficientXor": "你在SORA账户中持有价值100欧元的XOR",
         "holdNotSufficientXor": "如果您在 SORA 账户中持有、质押或提供至少价值 100 欧元 XOR 的流动性",
         "xorAmountNeededTitle": "您需要{value} XOR 才能收到免费卡",
         "cardhub": {
-            "accountInfo": "帐户信息"
+            "accountInfo": "账户信息"
         },
-        "attentionText": "注意力",
-        "xorAmountNeeded": "您需要{XOR}更多的 XOR（{欧元}）。"
+        "attentionText": "注意",
+        "xorAmountNeeded": "你还需要{xor}个XOR (€{euro})"
     }
 }

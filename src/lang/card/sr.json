@@ -69,7 +69,7 @@
         "loginBtn": "Пријавите се или Пријавите се",
         "telegramSupport": "Телеграм подршка",
         "rejectionPriceAttemptDisclaimer": "Сваки други покушај ће вас коштати {0} €",
-        "rejectCount": " | | ",
+        "rejectCount": "Imate još 1 besplatan pokušaj KYC| |Imate još {count} besplatna pokušaja KYC",
         "cardHub": {
             "logout": "Одјавите се са СОРА картице",
             "topup": "Надмашити",

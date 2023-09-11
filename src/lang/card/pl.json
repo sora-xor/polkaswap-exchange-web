@@ -69,7 +69,7 @@
         "loginBtn": "Zaloguj się albo Zarejestruj",
         "telegramSupport": "Wsparcie telegramu",
         "rejectionPriceAttemptDisclaimer": "Każda inna próba będzie kosztować € {0}",
-        "rejectCount": " | | | ",
+        "rejectCount": "Masz jeszcze 1 darmową próbę KYC| | |Masz jeszcze {count} darmowe próby KYC",
         "cardHub": {
             "logout": "Wyloguj się z karty SORA",
             "topup": "Uzupełniać",

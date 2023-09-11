@@ -69,7 +69,7 @@
         "loginBtn": "Jelentkezzen be vagy Regisztráljon",
         "telegramSupport": "Telegram támogatás",
         "rejectionPriceAttemptDisclaimer": "Minden más próbálkozás {0} €-ba kerül",
-        "rejectCount": " | ",
+        "rejectCount": "Még 1 ingyenes KYC próbálkozása van|Még {count} ingyenes KYC próbálkozása van",
         "cardHub": {
             "logout": "Jelentkezzen ki a SORA kártyából",
             "topup": "Feltölt",

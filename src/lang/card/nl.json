@@ -69,7 +69,7 @@
         "loginBtn": "Meld je aan of schrijf je in",
         "telegramSupport": "Telegram-ondersteuning",
         "rejectionPriceAttemptDisclaimer": "Elke andere poging kost u € {0}",
-        "rejectCount": " | ",
+        "rejectCount": "Je hebt nog 1 gratis KYC poging|Je hebt nog {count} gratis KYC pogingen",
         "cardHub": {
             "logout": "Uitloggen bij SORA Card",
             "topup": "Bijvullen",

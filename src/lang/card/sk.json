@@ -69,7 +69,7 @@
         "loginBtn": "Prihláste sa alebo sa zaregistrujte",
         "telegramSupport": "Podpora telegramov",
         "rejectionPriceAttemptDisclaimer": "Každý ďalší pokus vás bude stáť {0} €",
-        "rejectCount": " | | | ",
+        "rejectCount": "Máte ešte 1 bezplatný pokus o KYC| | |Máte ešte {count} bezplatné pokusy o KYC",
         "cardHub": {
             "logout": "Odhláste sa z karty SORA",
             "topup": "Doplňte",

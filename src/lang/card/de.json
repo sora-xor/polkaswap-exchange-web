@@ -69,7 +69,7 @@
         "loginBtn": "Anmelden oder Registrieren",
         "telegramSupport": "Telegramm-Support",
         "rejectionPriceAttemptDisclaimer": "Jeder weitere Versuch wird Sie €{0} kosten.",
-        "rejectCount": " | ",
+        "rejectCount": "Sie haben noch 1 kostenlosen KYC-Versuch|Sie haben noch {count} kostenlose KYC-Versuche",
         "cardHub": {
             "logout": "Aus SORA Card abmelden",
             "topup": "Nachfüllen",
