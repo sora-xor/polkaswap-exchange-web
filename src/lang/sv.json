@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Byt",
         "Transfer": "Överför",
+        "SwapTransferBatch": "{ADAR} Överför",
         "AddLiquidity": "Lägg Till Likviditet",
         "RemoveLiquidity": "Ta Bort Likviditet",
         "CreatePair": "Skapa Par",
@@ -32,6 +33,7 @@
         "andText": "och",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Bytte {amount} {symbol} för {amount2} {symbol2}",
             "AddLiquidity": "Tillhandahöll {amount} {symbol} och {amount2} {symbol2}",
             "RemoveLiquidity": "Tog bort {amount} {symbol} och {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Det gick inte att {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Det gick inte att {action} {amount} {symbol}",
             "Swap": "Misslyckades med att byta {amount} {symbol} för {amount2} {symbol2}",
             "AddLiquidity": "Misslyckades med att tillhandahålla {amount} {symbol} och {amount2} {symbol2}",
             "RemoveLiquidity": "Misslyckades med att ta bort {amount} {symbol} och {amount2} {symbol2}",
@@ -301,7 +304,8 @@
         "txId": "Transaktions-ID",
         "viewIn": "Visa i {explorer}",
         "referrer": "Referrer",
-        "referral": "Hänvisning"
+        "referral": "Hänvisning",
+        "adarTxDetailsTitle": "Transaktionsdetaljer"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Ändra nätverk i {Metamask}",
@@ -1014,7 +1018,8 @@
             "norewardsforasset": "Det finns inga belöningar för denna tillgång"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Vald likviditetskälla är inte tillåten"
+            "forbiddenfilter": "Vald likviditetskälla är inte tillåten",
+            "slippagenottolerated": "Prisförändringen har överskridit det valda värdet"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Otillräckliga medel",
@@ -1183,6 +1188,7 @@
     "acceptText": "Acceptera och dölj",
     "newAccountsText": "Nya konton",
     "dragAndDropText": "Dra och släpp eller välj filen {extension}",
+    "multipleRecipients": "Flera mottagare",
     "copyPhraseText": "Kopiera lösenfras",
     "stepText": "Steg",
     "alerts": {

@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Замените",
         "Transfer": "Пренос",
+        "SwapTransferBatch": "{ADAR} Пренос",
         "AddLiquidity": "Додати ликвидност",
         "RemoveLiquidity": "Уклони ликвидност",
         "CreatePair": "Креирате Пар",
@@ -32,6 +33,7 @@
         "andText": "и",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Замењено {amount} {symbol} за {amount2} {symbol2}",
             "AddLiquidity": "Испоручено {amount} {symbol} и {amount2} {symbol2}",
             "RemoveLiquidity": "Уклоњено {amount} {symbol} и {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Није успело {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Није успело {action} {amount} {symbol}",
             "Swap": "Замена {amount} {symbol} за {amount2} {symbol2} није успела",
             "AddLiquidity": "Достављање {amount} {symbol} и {amount2} {symbol2} није успело",
             "RemoveLiquidity": "Уклањање {amount} {symbol} и {amount2} {symbol2} није успело",
@@ -301,7 +304,8 @@
         "txId": "ИД трансакције",
         "viewIn": "Прикажите у {explorer}",
         "referrer": "Предложилтељ",
-        "referral": "Препорука"
+        "referral": "Препорука",
+        "adarTxDetailsTitle": "Detalji transakcije"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Промените мрежу у {Metamask}",
@@ -1014,7 +1018,8 @@
             "norewardsforasset": "Не постоје награде за ово средство"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Изабрани извор ликвидности није дозвољен"
+            "forbiddenfilter": "Изабрани извор ликвидности није дозвољен",
+            "slippagenottolerated": "Uticaj cene je premašio odabranu vrednost"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Недовољно средстава",
@@ -1183,6 +1188,7 @@
     "acceptText": "Прихвати и сакриј",
     "newAccountsText": "Нови налози",
     "dragAndDropText": "Превуците и отпустите или изаберите датотеку {extension}",
+    "multipleRecipients": "Višestruki primalac",
     "copyPhraseText": "Kopirajte lozinku frazu",
     "stepText": "Корак",
     "alerts": {

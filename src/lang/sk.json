@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Zameniť",
         "Transfer": "Prevod",
+        "SwapTransferBatch": "{ADAR} Prevod",
         "AddLiquidity": "Pridať likviditu",
         "RemoveLiquidity": "Odobrať likviditu",
         "CreatePair": "Vytvoriť pár",
@@ -32,6 +33,7 @@
         "andText": "a",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Zamenené {amount} {symbol} za {amount2} {symbol2}",
             "AddLiquidity": "Pridané {amount} {symbol} a {amount2} {symbol2}",
             "RemoveLiquidity": "Odobrané {amount} {symbol} a {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Nepodarilo sa {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Nepodarilo sa {action} {amount} {symbol}",
             "Swap": "Nepodarilo sa zameniť {amount} {symbol} za {amount2} {symbol2}",
             "AddLiquidity": "Nepodarilo sa pridať {amount} {symbol} a {amount2} {symbol2}",
             "RemoveLiquidity": "Nepodarilo sa odobrať {amount} {symbol} a {amount2} {symbol2}",
@@ -301,7 +304,8 @@
         "txId": "ID transakcie",
         "viewIn": "Zobraziť v {explorer}",
         "referrer": "Sprostredkovateľ",
-        "referral": "Doporučenie"
+        "referral": "Doporučenie",
+        "adarTxDetailsTitle": "Detaily transakcie"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Zmeňiť sieť v {Metamask}",
@@ -1014,7 +1018,8 @@
             "norewardsforasset": "Za toto aktívum nie sú žiadne odmeny"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Zvolený zdroj likvidity nie je povolený"
+            "forbiddenfilter": "Zvolený zdroj likvidity nie je povolený",
+            "slippagenottolerated": "Dopad na cenu prekročil vybranú hodnotu"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Nedostatok prostriedkov",
@@ -1183,6 +1188,7 @@
     "acceptText": "Prijať a skryť",
     "newAccountsText": "Nové účty",
     "dragAndDropText": "Presuňte myšou alebo vyberte súbor {extension}",
+    "multipleRecipients": "Viacerí prijímatelia",
     "copyPhraseText": "Kopírovať heslovú frázu",
     "stepText": "Krok",
     "alerts": {

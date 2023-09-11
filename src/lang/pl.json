@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Zamień",
         "Transfer": "Transfer",
+        "SwapTransferBatch": "{ADAR} Transfer",
         "AddLiquidity": "Dodaj płynność",
         "RemoveLiquidity": "Usuń płynność",
         "CreatePair": "Utwórz parę",
@@ -32,6 +33,7 @@
         "andText": "i",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Zamieniono {amount} {symbol} na {amount2} {symbol2}",
             "AddLiquidity": "Dodano {amount} {symbol} i {amount2} {symbol2}",
             "RemoveLiquidity": "Usunięto {amount} {symbol} i {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Nie udało się {action} {amount} {symbol}",
             "Swap": "Nie udało się zamienić {amount} {symbol} na {amount2} {symbol2}.",
             "AddLiquidity": "Nie udało się dodać {amount} {symbol} i {amount2} {symbol2}.",
             "RemoveLiquidity": "Nie udało się usunąć {amount} {symbol} i {amount2} {symbol2}.",
@@ -301,7 +304,8 @@
         "txId": "Identyfikator transakcji",
         "viewIn": "Pokaż w {explorer}",
         "referrer": "Osoba polecająca",
-        "referral": "Kod polecający"
+        "referral": "Kod polecający",
+        "adarTxDetailsTitle": "Szczegóły transakcji"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Zmień sieć w portfelu {Metamask}",
@@ -1014,7 +1018,8 @@
             "norewardsforasset": "Nie ma nagród za ten zasób"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Wybrane źródło płynności jest niedozwolone"
+            "forbiddenfilter": "Wybrane źródło płynności jest niedozwolone",
+            "slippagenottolerated": "Wpływ na cenę przekroczył wybraną wartość"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Niewystarczające środki",
@@ -1183,6 +1188,7 @@
     "acceptText": "Zaakceptuj i ukryj",
     "newAccountsText": "Nowe konta",
     "dragAndDropText": "Przeciągnij i upuść lub wybierz plik {extension}",
+    "multipleRecipients": "Wielu odbiorców",
     "copyPhraseText": "Skopiuj krypto frazę",
     "stepText": "Krok",
     "alerts": {

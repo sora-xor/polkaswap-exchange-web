@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Swap",
         "Transfer": "Převod",
+        "SwapTransferBatch": "{ADAR} Převod",
         "AddLiquidity": "Přidat likviditu",
         "RemoveLiquidity": "Odebrat likviditu",
         "CreatePair": "Vytvořit pár",
@@ -32,6 +33,7 @@
         "andText": "a",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Proveden swap {amount} {symbol} za {amount2} {symbol2}",
             "AddLiquidity": "Přidáno {amount} {symbol} a {amount2} {symbol2}",
             "RemoveLiquidity": "Odebráno {amount} {symbol} a {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} se nezdařilo.",
+            "SwapTransferBatch": "{action} {amount} {symbol} se nezdařilo.",
             "Swap": "Swap {amount} {symbol} za {amount2} {symbol2} se nezdařil.",
             "AddLiquidity": "Přidání {amount} {symbol} a {amount2} {symbol2} se nezdařilo.",
             "RemoveLiquidity": "Odebrání {amount} {symbol} a {amount2} {symbol2} se nezdařilo.",
@@ -301,7 +304,8 @@
         "txId": "Id transakce",
         "viewIn": "Zobrazit v {explorer}",
         "referrer": "Doporučitel",
-        "referral": "Doporučení"
+        "referral": "Doporučení",
+        "adarTxDetailsTitle": "Podrobnosti transakce"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Změnit síť v {Metamask}",
@@ -1014,7 +1018,8 @@
             "norewardsforasset": "Za toto aktivum nejsou žádné odměny"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Vybraný zdroj likvidity není povolen"
+            "forbiddenfilter": "Vybraný zdroj likvidity není povolen",
+            "slippagenottolerated": "Dopad na cenu překročil vybranou hodnotu"     
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Nedostatečné finanční prostředky",
@@ -1183,6 +1188,7 @@
     "acceptText": "Přijmout a skrýt",
     "newAccountsText": "Nové účty",
     "dragAndDropText": "Přetáhněte nebo vyberte soubor {extension}",
+    "multipleRecipients": "Více příjemců",
     "copyPhraseText": "Zkopírovat heslovou frázi",
     "stepText": "Krok",
     "alerts": {

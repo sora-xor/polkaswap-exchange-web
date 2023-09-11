@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Hoán đổi",
         "Transfer": "Chuyển",
+        "SwapTransferBatch": "{ADAR} Chuyển",
         "AddLiquidity": "Thêm thanh khoản",
         "RemoveLiquidity": "Rút thanh khoản",
         "CreatePair": "Tạo một cặp token",
@@ -32,6 +33,7 @@
         "andText": "và",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Đã hoán đổi {amount} {symbol} lấy {amount2} {symbol2}",
             "AddLiquidity": "Đã cung cấp {amount} {symbol} và {amount2} {symbol2}",
             "RemoveLiquidity": "Đã rút {amount} {symbol} và {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Không gửi được {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Không gửi được {action} {amount} {symbol}",
             "Swap": "Không hoán đổi được {amount} {symbol} lấy {amount2} {symbol2}",
             "AddLiquidity": "Không thể cung cấp được {amount} {symbol} và {amount2} {symbol2}",
             "RemoveLiquidity": "Không thể rút {amount} {symbol} và {amount2} {symbol2}",
@@ -301,7 +304,8 @@
         "txId": "ID giao dịch",
         "viewIn": "Xem trong {explorer}",
         "referrer": "Người giới thiệu",
-        "referral": "Giới thiệu"
+        "referral": "Giới thiệu",
+        "adarTxDetailsTitle": "Chi tiết giao dịch"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Thay đổi mạng trong {Metamask}",
@@ -1014,7 +1018,8 @@
             "norewardsforasset": "Không có phần thưởng nào cho tài sản này"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Nguồn thanh khoản đã chọn không được phép"
+            "forbiddenfilter": "Nguồn thanh khoản đã chọn không được phép",
+            "slippagenottolerated": "Tác động đến giá đã vượt quá giá trị được chọn"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Không đủ tiền",
@@ -1183,6 +1188,7 @@
     "acceptText": "Chấp nhận & Ẩn",
     "newAccountsText": "tài khoản mới",
     "dragAndDropText": "Kéo và thả hoặc chọn tệp {extension}",
+    "multipleRecipients": "Nhiều người nhận",
     "copyPhraseText": "Sao chép cụm mật khẩu",
     "stepText": "Bước chân",
     "alerts": {

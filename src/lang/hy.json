@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Փոխանակել",
         "Transfer": "Տեղափոխել",
+        "SwapTransferBatch": "{ADAR} Տեղափոխել",
         "AddLiquidity": "Ավելացնել իրացվելիություն",
         "RemoveLiquidity": "Հեռացնել իրացվելիությունը",
         "CreatePair": "Ստեղծել զույգ",
@@ -32,6 +33,7 @@
         "andText": "և",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2}",
             "AddLiquidity": "Մատակարարված {amount} {symbol} և {amount2} {symbol2}",
             "RemoveLiquidity": "Հեռացված {amount} {symbol} և {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Չհաջողվեց {action} {amount} {symbol}",
             "Swap": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2}",
             "AddLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} եւ {amount2} {symbol2}",
             "RemoveLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {amount2} {symbol2}",
@@ -301,7 +304,8 @@
         "txId": "Գործարքի ID",
         "viewIn": "Դիտել {explorer}- ում",
         "referrer": "Ուղղորդող",
-        "referral": "Ուղղորդում"
+        "referral": "Ուղղորդում",
+        "adarTxDetailsTitle": "գործարքի մանրամասներ"
     },
     "appName": "{AppName} (Փոլքասվափ)",
     "changeNetworkText": "Փոխել ցանցը {Metamask}- ում",
@@ -1014,7 +1018,8 @@
             "norewardsforasset": "Այս ակտիվի համար պարգևներ չկան"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Իրացվելիության ընտրված աղբյուրը չի թույլատրվում"
+            "forbiddenfilter": "Իրացվելիության ընտրված աղբյուրը չի թույլատրվում",
+            "slippagenottolerated": "Գինը ազդել է ընտրված արժեքը"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Անբավարար միջոցներ",
@@ -1183,6 +1188,7 @@
     "acceptText": "Ընդունել և թաքցնել",
     "newAccountsText": "Նոր հաշիվներ",
     "dragAndDropText": "Քաշեք և թողեք կամ ընտրեք {extension} ֆայլը",
+    "multipleRecipients": "Մի շարք ստացողներ",
     "copyPhraseText": "Պատճենել արտահայտությունը",
     "stepText": "Քայլ",
     "alerts": {

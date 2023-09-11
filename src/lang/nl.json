@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Swap",
         "Transfer": "Overdracht",
+        "SwapTransferBatch": "{ADAR} Overdracht",
         "AddLiquidity": "Liquiditeit toevoegen",
         "RemoveLiquidity": "Liquiditeit verwijderen",
         "CreatePair": "Maak Paar",
@@ -32,6 +33,7 @@
         "andText": "en",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "{amount} {symbol} geswapped voor {amount2} {symbol2}",
             "AddLiquidity": "Opgegeven {amount} {symbol} en {amount2} {symbol2}",
             "RemoveLiquidity": "{amount} {symbol} en {amount2} {symbol2} werden verwijderd",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
+            "SwapTransferBatch": "Kon {action} {amount} {symbol}",
             "Swap": "Mislukt om {amount} {symbol} te swappen voor {amount2} {symbol2}",
             "AddLiquidity": "Kon {amount} {symbol} en {amount2} {symbol2} niet toevoegen",
             "RemoveLiquidity": "Het is niet gelukt om {amount} {symbol} en {amount2} {symbol2}",
@@ -301,7 +304,8 @@
         "txId": "Transactie ID",
         "viewIn": "Bekijk in {explorer}",
         "referrer": "Verwijzer",
-        "referral": "Verwijzing"
+        "referral": "Verwijzing",
+        "adarTxDetailsTitle": "Transactiegegevens"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Netwerk wijzigen in {Metamask}",
@@ -1014,7 +1018,8 @@
             "norewardsforasset": "Er zijn geen beloningen voor dit item"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Geselecteerde liquiditeitsbron is niet toegestaan"
+            "forbiddenfilter": "Geselecteerde liquiditeitsbron is niet toegestaan",
+            "slippagenottolerated": "De prijsimpact heeft de geselecteerde waarde overschreden"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Onvoldoende middelen",
@@ -1183,6 +1188,7 @@
     "acceptText": "Accepteren & verbergen",
     "newAccountsText": "Nieuwe rekeningen",
     "dragAndDropText": "Drag & drop of kies {extension} bestand",
+    "multipleRecipients": "Meerdere ontvangers",
     "copyPhraseText": "Kopieer Passphrase",
     "stepText": "Stap",
     "alerts": {

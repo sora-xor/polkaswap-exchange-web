@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Bytte",
         "Transfer": "Overføre",
+        "SwapTransferBatch": "{ADAR} Overføre",
         "AddLiquidity": "Legg til likviditet",
         "RemoveLiquidity": "Fjern likviditet",
         "CreatePair": "Opprett par",
@@ -32,6 +33,7 @@
         "andText": "og",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Byttet {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Levert {amount} {symbol} og {amount2} {symbol2}",
             "RemoveLiquidity": "Fjernet {amount} {symbol} og {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Kunne ikke {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Kunne ikke {action} {amount} {symbol}",
             "Swap": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Kunne ikke levere {amount} {symbol} og {amount2} {symbol2}",
             "RemoveLiquidity": "Kunne ikke fjerne {amount} {symbol} og {amount2} {symbol2}",
@@ -301,7 +304,8 @@
         "txId": "Transaksjons ID",
         "viewIn": "Vis i {explorer}",
         "referrer": "Henviser",
-        "referral": "Henvisning"
+        "referral": "Henvisning",
+        "adarTxDetailsTitle": "Transaksjonsdetaljer"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Bytt nettverk i {Metamask}",
@@ -1014,7 +1018,8 @@
             "norewardsforasset": "Det er ingen belønninger for denne ressursen"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Valgt likviditetskilde er ikke tillatt"
+            "forbiddenfilter": "Valgt likviditetskilde er ikke tillatt",
+            "slippagenottolerated": "Prisimpakten har overskredet den valgte verdien"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Utilstrekkelige midler",
@@ -1183,6 +1188,7 @@
     "acceptText": "Godta og skjul",
     "newAccountsText": "Nye kontoer",
     "dragAndDropText": "Dra og slipp eller velg {extension} -fil",
+    "multipleRecipients": "Flere mottakere",
     "copyPhraseText": "Kopier passordfrasen",
     "stepText": "Steg",
     "alerts": {
