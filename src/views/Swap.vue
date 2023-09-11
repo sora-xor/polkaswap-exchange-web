@@ -183,6 +183,7 @@ import type { LPRewardsInfo, SwapQuote } from '@sora-substrate/liquidity-proxy/b
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { DexId } from '@sora-substrate/util/build/dex/consts';
+import type { SwapQuoteData } from '@sora-substrate/util/build/swap/types';
 import type { Subscription } from 'rxjs';
 
 @Component({
@@ -236,7 +237,7 @@ export default class Swap extends Mixins(
   @mutation.swap.setRewards private setRewards!: (rewards: Array<LPRewardsInfo>) => void;
   @mutation.swap.setRoute private setRoute!: (route: Array<string>) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
-  @mutation.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload: any) => void;
+  @mutation.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload: SwapQuoteData) => void;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;

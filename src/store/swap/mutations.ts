@@ -10,6 +10,7 @@ import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build
 import type { LPRewardsInfo, SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { SwapQuoteData } from '@sora-substrate/util/build/swap/types';
 
 const mutations = defineMutations<SwapState>()({
   reset(state): void {
@@ -58,14 +59,7 @@ const mutations = defineMutations<SwapState>()({
   setRoute(state, route: string[]): void {
     state.route = Object.freeze([...route]);
   },
-  setSubscriptionPayload(
-    state,
-    {
-      quote,
-      isAvailable,
-      liquiditySources,
-    }: { quote: SwapQuote; isAvailable: boolean; liquiditySources: LiquiditySourceTypes[] }
-  ): void {
+  setSubscriptionPayload(state, { quote, isAvailable, liquiditySources }: SwapQuoteData): void {
     state.swapQuote = quote;
     state.isAvailable = isAvailable;
     state.liquiditySources = liquiditySources;
