@@ -186,6 +186,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     // element-icons is not common used, but should be visible after network connection lost
     preloadFontFace('element-icons');
 
+    console.info('Production build');
+
     updateBaseUrl(router);
     AlertsApiService.baseRoute = getFullBaseUrl(router);
 
