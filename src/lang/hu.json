@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Váltás",
         "Transfer": "Átvitel",
+        "SwapTransferBatch": "{ADAR} Átvitel",
         "AddLiquidity": "Hozzáadás",
         "RemoveLiquidity": "Eltávolítás",
         "CreatePair": "Pár létrehozása",
@@ -32,6 +33,7 @@
         "andText": "és",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "{amount} {symbol} átváltva {amount2} {symbol2}-ra",
             "AddLiquidity": "{amount} {symbol} és {amount2} {symbol2} hozzáadva",
             "RemoveLiquidity": "{amount} {symbol} és {amount2} {symbol2} eltávolítva",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Nem sikerült {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Nem sikerült {action} {amount} {symbol}",
             "Swap": "Nem sikerült felváltani a {amount} {symbol} -t {amount2} {symbol2}-re",
             "AddLiquidity": "Nem sikerült hozzáadni a {amount} {symbol} és {amount2} {symbol2}",
             "RemoveLiquidity": "Nem sikerült eltávolítani a {amount} {symbol} és a {amount2} {symbol2}",
@@ -301,7 +304,8 @@
         "txId": "Tranzakció azonosítója",
         "viewIn": "Megtekintés {explorer}-ben",
         "referrer": "Ajánló",
-        "referral": "Ajánlás"
+        "referral": "Ajánlás",
+        "adarTxDetailsTitle": "Tranzakció részlete"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Hálózatváltás a {Metamask}",
@@ -1013,7 +1017,8 @@
             "norewardsforasset": "Ehhez az eszközhöz nem jár jutalom"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "A kiválasztott likviditási forrás nem engedélyezett"
+            "forbiddenfilter": "A kiválasztott likviditási forrás nem engedélyezett",
+            "slippagenottolerated": "Az árhatás meghaladta a kiválasztott értéket"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Fedezethiány",
@@ -1182,6 +1187,7 @@
     "acceptText": "Elfogadás és elrejtés",
     "newAccountsText": "Új fiókok",
     "dragAndDropText": "Fogd és vidd, vagy válasszon {extension} fájlt",
+    "multipleRecipients": "Több címzett",
     "copyPhraseText": "Jelszó másolása",
     "stepText": "Lépés",
     "alerts": {

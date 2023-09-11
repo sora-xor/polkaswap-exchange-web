@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Iŕopo",
         "Transfer": "Firanśe",
+        "SwapTransferBatch": "{ADAR} Firanśe",
         "AddLiquidity": "Fi liquidity si",
         "RemoveLiquidity": "Yọ liquidity kuro",
         "CreatePair": "Ṣẹda Pair",
@@ -32,6 +33,7 @@
         "andText": "ati",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Ti paarọ {amount} {symbol} fun {amount2} {symbol2}",
             "AddLiquidity": "Ti pese {amount} {symbol} ati {amount2} {symbol2}",
             "RemoveLiquidity": "Ti yọ {amount} {symbol} ati {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Kuna lati {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Kuna lati {action} {amount} {symbol}",
             "Swap": "Kuna lati separada {amount} {symbol} fun {amount2} {symbol2}",
             "AddLiquidity": "Kuna lati pese {amount} {symbol} ati {amount2} {symbol2}",
             "RemoveLiquidity": "Kuna lati yọ {amount} {symbol} ati {amount2} {symbol2}",
@@ -301,7 +304,8 @@
         "txId": "Id Idunadura",
         "viewIn": "Wo ni {explorer}",
         "referrer": "Atọkasi",
-        "referral": "Ifiranṣẹ"
+        "referral": "Ifiranṣẹ",
+        "adarTxDetailsTitle": "Àwọn àwọn èrò akójọ awoṣe"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Yi nẹtiwọọki pada ni {Metamask}",
@@ -1013,7 +1017,8 @@
             "norewardsforasset": "Ko si awọn ere fun dukia yii"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Ti a ti yan orisun oloomi ko gba laaye"
+            "forbiddenfilter": "Ti a ti yan orisun oloomi ko gba laaye",
+            "slippagenottolerated": "Àfikún ìlọpọ àkántọ̀ ohun ti ṣe ṣiṣe àpapọ fún ìdíje yii"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Awọn owo ti ko to",
@@ -1182,6 +1187,7 @@
     "acceptText": "Gba & Tọju",
     "newAccountsText": "Awọn iroyin titun",
     "dragAndDropText": "Fa & ju silẹ tabi yan faili {extension}",
+    "multipleRecipients": "Awọn olukọni pupọ",
     "copyPhraseText": "Daakọ Aṣẹ Iwifunni",
     "stepText": "Igbesẹ",
     "alerts": {
