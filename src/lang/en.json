@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Swap",
         "Transfer": "Transfer",
+        "SwapTransferBatch": "{ADAR} transfer",
         "AddLiquidity": "Add Liquidity",
         "RemoveLiquidity": "Remove Liquidity",
         "CreatePair": "Create Pair",
@@ -32,6 +33,7 @@
         "andText": "and",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Supplied {amount} {symbol} and {amount2} {symbol2}",
             "RemoveLiquidity": "Removed {amount} {symbol} and {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Failed to {action} {amount} {symbol}",
             "Swap": "Failed to swap {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
             "RemoveLiquidity": "Failed to remove {amount} {symbol} and {amount2} {symbol2}",
@@ -301,7 +304,8 @@
         "txId": "Transaction Id",
         "viewIn": "View in {explorer}",
         "referrer": "Referrer",
-        "referral": "Referral"
+        "referral": "Referral",
+        "adarTxDetailsTitle": "Transaction details"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Change network in {Metamask}",
@@ -1013,7 +1017,8 @@
             "norewardsforasset": "There are no rewards for this asset"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Selected liquidity source is not allowed"
+            "forbiddenfilter": "Selected liquidity source is not allowed",
+            "slippagenottolerated": "The price impact has exceeded the selected value"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Insufficient funds",
@@ -1182,6 +1187,7 @@
     "acceptText": "Accept & Hide",
     "newAccountsText": "New accounts",
     "dragAndDropText": "Drag & drop or choose {extension} file",
+    "multipleRecipients": "Multiple Recipients",
     "copyPhraseText": "Copy Passphrase",
     "stepText": "Step",
     "alerts": {

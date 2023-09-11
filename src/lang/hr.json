@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Zamijenite",
         "Transfer": "Prijenos",
+        "SwapTransferBatch": "{ADAR} Prijenos",
         "AddLiquidity": "Dodajte likvidnost",
         "RemoveLiquidity": "Uklonite likvidnost",
         "CreatePair": "Stvorite Par",
@@ -32,6 +33,7 @@
         "andText": "i",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Zamijenjeno je {amount} {symbol} za {amount2} {symbol2}",
             "AddLiquidity": "Isporučeno {amount} {symbol} i {amount2} {symbol2}",
             "RemoveLiquidity": "Uklonjeno {amount} {symbol} i {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} nije uspio",
+            "SwapTransferBatch": "{action} {amount} {symbol} nije uspio",
             "Swap": "Zamjena {amount} {symbol} za {amount2} {symbol2} nije uspjela",
             "AddLiquidity": "Opskrba {amount} {symbol} i {amount2} {symbol2} nije uspjela",
             "RemoveLiquidity": "Uklanjanje{amount} {symbol} i {amount2} {symbol2} nije uspjelo",
@@ -301,7 +304,8 @@
         "txId": "ID transakcije",
         "viewIn": "Pogledajte u {explorer}",
         "referrer": "Preporučitelj",
-        "referral": "Preporuka"
+        "referral": "Preporuka",
+        "adarTxDetailsTitle": "Detalji transakcije"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Promijenite mrežu u {Metamask}",
@@ -1013,7 +1017,8 @@
             "norewardsforasset": "Za ovu imovinu nema nagrada"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Odabrani izvor likvidnosti nije dopušten"
+            "forbiddenfilter": "Odabrani izvor likvidnosti nije dopušten",
+            "slippagenottolerated": "Utjecaj cijene premašio je odabranu vrijednost"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Nedostatna sredstva",
@@ -1182,6 +1187,7 @@
     "acceptText": "Prihvati i sakrij",
     "newAccountsText": "Novi računi",
     "dragAndDropText": "Povucite i ispustite ili odaberite {extension} datoteku",
+    "multipleRecipients": "Višestruki primatelji",
     "copyPhraseText": "Kopirajte lozinku frazu",
     "stepText": "Korak",
     "alerts": {
