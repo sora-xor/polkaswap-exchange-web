@@ -6,8 +6,7 @@ import { settingsStorage } from '@/utils/storage';
 import { initialState } from './state';
 
 import type { SwapState } from './types';
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { LPRewardsInfo, SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
+import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { SwapQuoteData } from '@sora-substrate/util/build/swap/types';
