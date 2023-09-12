@@ -52,6 +52,7 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
 
   @mutation.soraCard.setKycStatus private setKycStatus!: (kycStatus: KycStatus) => void;
   @mutation.soraCard.setVerificationStatus private setVerificationStatus!: (verStatus: VerificationStatus) => void;
+  @mutation.soraCard.setWillToPassKycAgain setWillToPassKycAgain!: (boolean) => void;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.getUserKycAttempt private getUserKycAttempt!: AsyncFnWithoutArgs;
@@ -175,6 +176,7 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
   }
 
   async beforeRouteLeave(to: Route, from: Route, next: NavigationGuardNext<Vue>): Promise<void> {
+    this.setWillToPassKycAgain(false);
     await this.unsubscribe();
     next();
   }
