@@ -17,7 +17,7 @@
     <p class="sora-card__status-info" v-html="text" />
 
     <div v-if="isRejected" class="sora-card__rejection">
-      <div class="tos__disclaimer">
+      <div v-if="freeAttemptsLeft" class="tos__disclaimer">
         <h4 class="tos__disclaimer-header">{{ tc('card.rejectCount', freeAttemptsLeft) }}</h4>
         <p class="tos__disclaimer-paragraph">
           {{ t('card.rejectionPriceAttemptDisclaimer', { 0: kycAttemptCost }) }}
@@ -174,9 +174,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   }
 
   async mounted(): Promise<void> {
-    if (!this.currentStatus) {
-      await this.getUserStatus();
-    }
+    await this.getUserStatus();
 
     if (this.currentStatus === VerificationStatus.Rejected) {
       await this.getUserKycAttempt();
