@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Обмен",
         "Transfer": "Перевод",
+        "SwapTransferBatch": "{ADAR} Перевод",
         "AddLiquidity": "Добавить ликвидность",
         "RemoveLiquidity": "Удалить ликвидность",
         "CreatePair": "Создать пару",
@@ -32,6 +33,7 @@
         "andText": "и",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Совершен обмен {amount} {symbol} на {amount2} {symbol2}",
             "AddLiquidity": "Поставлено {amount} {symbol} и {amount2} {symbol2}",
             "RemoveLiquidity": "Удалены {amount} {symbol} и {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Не удалось {action} {amount} {symbol}",
             "Swap": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2}",
             "AddLiquidity": "Не удалось добавить {amount} {symbol} и {amount2} {symbol2}",
             "RemoveLiquidity": "Не удалось вывести {amount} {symbol} и {amount2} {symbol2}",
@@ -301,7 +304,8 @@
         "txId": "ID транзакции",
         "viewIn": "Смотреть в {explorer}",
         "referrer": "Реферер",
-        "referral": "Реферал"
+        "referral": "Реферал",
+        "adarTxDetailsTitle": "Детали транзакции"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Сменить сеть в {Metamask}",
@@ -1013,7 +1017,8 @@
             "norewardsforasset": "Нет вознаграждений за этот актив"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Выбранный источник ликвидности не разрешен"
+            "forbiddenfilter": "Выбранный источник ликвидности не разрешен",
+            "slippagenottolerated": "Влияние на цену превысило выбранное значение"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Недостаточно средств",
@@ -1182,6 +1187,7 @@
     "acceptText": "Принять и скрыть",
     "newAccountsText": "Новые аккаунты",
     "dragAndDropText": "Перетащите или выберите файл {extension}",
+    "multipleRecipients": "Нескольким получателям",
     "copyPhraseText": "Скопировать парольную фразу",
     "stepText": "Шаг",
     "alerts": {
