@@ -215,13 +215,13 @@ export default class Swap extends Mixins(
   @state.swap.fromValue fromValue!: string;
   @state.swap.toValue toValue!: string;
   @state.swap.isAvailable isAvailable!: boolean;
-  @state.swap.swapQuote swapQuote!: Nullable<SwapQuote>;
+  @state.swap.swapQuote private swapQuote!: Nullable<SwapQuote>;
   @state.swap.allowLossPopup private allowLossPopup!: boolean;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.settings.chartsFlagEnabled chartsFlagEnabled!: boolean;
-  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
+  @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
   @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
@@ -463,8 +463,7 @@ export default class Swap extends Mixins(
         (this.tokenTo as Asset).address,
         value,
         this.isExchangeB,
-        [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>,
-        true
+        [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>
       );
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
