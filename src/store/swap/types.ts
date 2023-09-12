@@ -1,4 +1,5 @@
-import type { QuotePayload, LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import type { LPRewardsInfo, SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 
@@ -14,7 +15,9 @@ export type SwapState = {
   isExchangeB: boolean;
   rewards: readonly LPRewardsInfo[];
   route: readonly string[];
+  isAvailable: boolean;
+  liquiditySources: LiquiditySourceTypes[];
+  swapQuote: Nullable<SwapQuote>;
   selectedDexId: number;
-  dexQuoteData: Record<number, QuotePayload>;
   allowLossPopup: boolean;
 };

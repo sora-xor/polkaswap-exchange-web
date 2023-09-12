@@ -19,8 +19,10 @@ export function initialState(): SwapState {
     isExchangeB: false,
     rewards: [],
     route: [],
+    isAvailable: false,
+    liquiditySources: [],
+    swapQuote: null,
     selectedDexId: DexId.XOR,
-    dexQuoteData: {},
     // modals
     allowLossPopup: allowLossPopup ? Boolean(JSON.parse(allowLossPopup)) : true,
   };
