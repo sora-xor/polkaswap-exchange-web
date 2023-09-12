@@ -54,6 +54,7 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
   @mutation.soraCard.setVerificationStatus private setVerificationStatus!: (verStatus: VerificationStatus) => void;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
+  @action.soraCard.getUserKycAttempt private getUserKycAttempt!: AsyncFnWithoutArgs;
   @action.soraCard.getUserIban private getUserIban!: AsyncFnWithoutArgs;
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
   @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncFnWithoutArgs;
@@ -110,6 +111,7 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
 
   async checkKyc(): Promise<void> {
     await this.getUserStatus();
+    await this.getUserKycAttempt();
 
     if (this.currentStatus === VerificationStatus.Rejected && this.wantsToPassKycAgain && this.hasFreeAttempts) {
       this.getReadyPage = true;
