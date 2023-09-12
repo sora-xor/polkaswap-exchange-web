@@ -16,8 +16,8 @@
             "proofAddressDesc": "Een officieel document (energierekening, bankafschrift, overheidsverklaring of correspondentie) met je volledige naam en adres en dat niet ouder is dan 3 maanden.",
             "personalTitle": "Voeg uw persoonlijke gegevens in",
             "personalDesc": "Vul het formulier in met uw naam en adres",
-            "paidAttemptDisclaimer": "Je hebt slechts {telling} gratis pogingen om door het KYC proces te komen. Elke volgende poging kost €{kosten}. Betaalde pogingen zullen beschikbaar zijn na de volgende update van de app.",
-            "proofAddressNote": "Let op: Verklaringen van neobanken als Revolut en N26 worden momenteel niet gezien als geldig bewijs van adres."
+            "proofAddressNote": "Let op: Verklaringen van neobanken als Revolut en N26 worden momenteel niet gezien als geldig bewijs van adres.",
+            "paidAttemptDisclaimer": "U heeft slechts {count} gratis pogingen om het KYC-proces te doorlopen. Elke andere poging daarna kost € {cost} . Betaalde pogingen zijn beschikbaar na de volgende update van de app."
         },
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "SMS code verzenden",
@@ -51,6 +51,7 @@
         "personalNameInputDesc": "Gebruik je echte naam.",
         "infoMessageTryAgain": "Er is iets fout gegaan. Probeer het opnieuw",
         "blacklistedCountriesExcuse": "Helaas kunnen we op dit moment de volgende landen niet ondersteunen:",
+        "xorAmountNeeded": "U hebt {xor} meer XOR nodig (€{euro})",
         "statusPendingText": "U heeft uw KYC-aanvraag succesvol afgerond. De beoordeling is in behandeling en u kunt binnenkort een beslissing verwachten.<br \/><br \/>Meestal wordt de beslissing dezelfde dag genomen en in sommige gevallen kan dit tot 3 dagen duren.",
         "resendInBtn": "OPNIEUW VERZENDEN BINNEN {value}",
         "statusRejectTitle": "Aanvraag afgewezen",
@@ -69,7 +70,7 @@
         "loginBtn": "Meld je aan of schrijf je in",
         "telegramSupport": "Telegram-ondersteuning",
         "rejectionPriceAttemptDisclaimer": "Elke andere poging kost u € {0}",
-        "rejectCount": "Je hebt nog 1 gratis KYC poging|Je hebt nog {count} gratis KYC pogingen",
+        "rejectCount": "Je hebt nog {count} gratis KYC poging|Je hebt nog {count} gratis KYC pogingen",
         "cardHub": {
             "logout": "Uitloggen bij SORA Card",
             "topup": "Bijvullen",
@@ -87,7 +88,6 @@
         "cardhub": {
             "accountInfo": "Account Informatie"
         },
-        "attentionText": "Aandacht",
-        "xorAmountNeeded": "Je hebt {xor} meer XOR (€{euro}) nodig"
+        "attentionText": "Aandacht"
     }
 }

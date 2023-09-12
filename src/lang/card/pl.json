@@ -16,8 +16,8 @@
             "proofAddressDesc": "Oficjalny dokument (rachunek za media, wyciąg bankowy, oświadczenie rządowe lub korespondencja) zawierający pełne imię i nazwisko oraz adres i nie starszy niż 3 miesiące.",
             "personalTitle": "Prześlij swoje dane osobowe",
             "personalDesc": "Wypełnij formularz, podając swoje imię i nazwisko oraz adres",
-            "paidAttemptDisclaimer": "Masz tylko {count} bezpłatnych prób przejścia procesu KYC. Każda kolejna próba będzie kosztować {cost} €. Płatne próby będą dostępne po kolejnej aktualizacji aplikacji.",
-            "proofAddressNote": "Uwaga: wyciągi z neobanków, takich jak Revolut i N26, nie są obecnie postrzegane jako ważny dowód adresu."
+            "proofAddressNote": "Uwaga: wyciągi z neobanków, takich jak Revolut i N26, nie są obecnie postrzegane jako ważny dowód adresu.",
+            "paidAttemptDisclaimer": "Masz tylko {count} bezpłatnych prób, aby przejść proces KYC. Każda kolejna próba będzie kosztować €{cost}. Płatne próby będą dostępne po następnej aktualizacji aplikacji."
         },
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "Wyślij kod SMS",
@@ -51,6 +51,7 @@
         "personalNameInputDesc": "Użyj swojego prawdziwego imienia.",
         "infoMessageTryAgain": "Coś poszło nie tak. Proszę spróbuj ponownie",
         "blacklistedCountriesExcuse": "Niestety, w tej chwili nie jesteśmy w stanie obsługiwać następujących krajów:",
+        "xorAmountNeeded": "Potrzebujesz {xor} więcej XOR (€{euro})",
         "statusPendingText": "Pomyślnie ukończyłeś aplikację KYC. Przegląd jest w toku i wkrótce możesz spodziewać się decyzji. <br \/> <br \/> Zwykle decyzja jest podejmowana tego samego dnia, aw niektórych przypadkach może trwać do 3 dni.",
         "resendInBtn": "WYŚLIJ PONOWNIE W {value}",
         "statusRejectTitle": "Wniosek odrzucony",
@@ -69,7 +70,7 @@
         "loginBtn": "Zaloguj się albo Zarejestruj",
         "telegramSupport": "Wsparcie telegramu",
         "rejectionPriceAttemptDisclaimer": "Każda inna próba będzie kosztować € {0}",
-        "rejectCount": "Masz jeszcze 1 darmową próbę KYC| | |Masz jeszcze {count} darmowe próby KYC",
+        "rejectCount": "Masz jeszcze {count} darmową próbę KYC| | |Masz jeszcze {count} darmowe próby KYC",
         "cardHub": {
             "logout": "Wyloguj się z karty SORA",
             "topup": "Uzupełniać",
@@ -87,7 +88,6 @@
         "cardhub": {
             "accountInfo": "informacje o koncie"
         },
-        "attentionText": "Uwaga",
-        "xorAmountNeeded": "Potrzebujesz {xor} więcej XOR (€{euro})"
+        "attentionText": "Uwaga"
     }
 }

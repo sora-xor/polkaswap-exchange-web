@@ -16,8 +16,8 @@
             "proofAddressDesc": "Dokumen resmi (tagihan utilitas, laporan bank, laporan pemerintah atau korespondensi) yang berisi nama lengkap dan alamat Anda, dan berumur tidak lebih dari 3 bulan.",
             "personalTitle": "Kirimkan informasi pribadi Anda",
             "personalDesc": "Isi formulir dengan nama dan alamat Anda",
-            "paidAttemptDisclaimer": "Anda hanya memiliki {count} percobaan gratis untuk lulus proses KYC. Setiap upaya lain setelah itu akan dikenakan biaya € {cost} . Upaya berbayar akan tersedia setelah pembaruan aplikasi berikutnya.",
-            "proofAddressNote": "Catatan: Pernyataan dari neobank seperti Revolut dan N26 saat ini tidak dianggap sebagai bukti alamat yang sah."
+            "proofAddressNote": "Catatan: Pernyataan dari neobank seperti Revolut dan N26 saat ini tidak dianggap sebagai bukti alamat yang sah.",
+            "paidAttemptDisclaimer": "Anda hanya memiliki {count} percobaan gratis untuk melewati proses KYC. Setiap percobaan lainnya setelah itu akan dikenakan biaya €{cost}. Percobaan berbayar akan tersedia setelah pembaruan aplikasi berikutnya."
         },
         "emailPlaceholder": "Surel",
         "sendCodeBtn": "Kirim kode SMS",
@@ -51,6 +51,7 @@
         "personalNameInputDesc": "Gunakan nama asli Anda.",
         "infoMessageTryAgain": "Ada yang salah. Silakan, coba lagi",
         "blacklistedCountriesExcuse": "Sayangnya, saat ini kami tidak dapat mendukung negara-negara berikut:",
+        "xorAmountNeeded": "Anda membutuhkan {xor} lebih banyak XOR (€{euro})",
         "statusPendingText": "Anda telah berhasil menyelesaikan aplikasi KYC Anda. Peninjauan sedang berlangsung dan Anda akan segera mendapatkan keputusan.<br \/><br \/>Biasanya keputusan dibuat pada hari yang sama dan dalam beberapa kasus dapat memakan waktu hingga 3 hari.",
         "resendInBtn": "KIRIM ULANG KE {value}",
         "statusRejectTitle": "Lamaran ditolak",
@@ -87,7 +88,6 @@
         "cardhub": {
             "accountInfo": "Informasi Akun"
         },
-        "attentionText": "Perhatian",
-        "xorAmountNeeded": "Anda membutuhkan {xor} lebih banyak XOR (€{euro})"
+        "attentionText": "Perhatian"
     }
 }

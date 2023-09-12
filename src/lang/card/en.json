@@ -16,8 +16,8 @@
             "proofAddressDesc": "An official document (utility bill, bank statement, government statement or correspondence) that contains your full name and address, and that is no older then 3 months.",
             "personalTitle": "Submit your personal info",
             "personalDesc": "Fill in the form with your name and address",
-            "paidAttemptDisclaimer": "You have only {count} free attempts to pass the KYC process. Every other attempt after that will cost €{cost}. Paid attempts will be available after the next update of the app.",
-            "proofAddressNote": "Note: Statements from neobanks like Revolut and N26 are currently not seen as valid proof of address."
+            "proofAddressNote": "Note: Statements from neobanks like Revolut and N26 are currently not seen as valid proof of address.",
+            "paidAttemptDisclaimer": "You have only {count} free attempts to pass the KYC process. Every other attempt after that will cost €{cost}. Paid attempts will be available after the next update of the app."
         },
         "emailPlaceholder": "Email",
         "sendCodeBtn": "Send SMS code",
@@ -51,6 +51,7 @@
         "personalNameInputDesc": "Use your real name.",
         "infoMessageTryAgain": "Something went wrong. Please, try again",
         "blacklistedCountriesExcuse": "Unfortunately, at this moment we’re not able to support the following countries:",
+        "xorAmountNeeded": "You need {xor} more XOR (€{euro})",
         "statusPendingText": "You have successfully completed your KYC application. The review is pending and you can expect a decision shortly.<br \/><br \/>Usually the decision is made the same day and in some cases can take up to 3 days.",
         "resendInBtn": "RESEND IN {value}",
         "statusRejectTitle": "Verification rejected",
@@ -69,7 +70,7 @@
         "loginBtn": "Log in or Sign up",
         "telegramSupport": "Telegram support",
         "rejectionPriceAttemptDisclaimer": "Every other attempt will cost you €{0}",
-        "rejectCount": "You have 1 more free KYC attempt|You have {count} more free KYC attempts",
+        "rejectCount": "You have {count} more free KYC attempt|You have {count} more free KYC attempts",
         "cardHub": {
             "logout": "Log out of SORA Card",
             "topup": "Top up",
@@ -87,7 +88,6 @@
         "cardhub": {
             "accountInfo": "Account Information"
         },
-        "attentionText": "Attention",
-        "xorAmountNeeded": "You need {xor} more XOR (€{euro})"
+        "attentionText": "Attention"
     }
 }

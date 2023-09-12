@@ -16,8 +16,8 @@
             "proofAddressDesc": "包含您的全名和地址且不超过 3 个月的正式文件（水电费账单、银行对账单、政府声明或信件）。",
             "personalTitle": "提交个人信息",
             "personalDesc": "请填写表格，包括您的姓名和地址。",
-            "paidAttemptDisclaimer": "您只有{count}次免费尝试机会通过 KYC 流程。此后的所有其他尝试都将花费 € {cost} 。下次更新应用程序后将提供付费尝试。",
-            "proofAddressNote": "请注意：像Revolut和N26这样的新型银行的声明目前不被视为有效的地址证明。"
+            "proofAddressNote": "请注意：像Revolut和N26这样的新型银行的声明目前不被视为有效的地址证明。",
+            "paidAttemptDisclaimer": "您只有{count}免费尝试机会通过 KYC 流程。此后的所有其他尝试都将花费 € {cost} 。下次更新应用程序后将提供付费尝试。"
         },
         "emailPlaceholder": "电子邮件",
         "sendCodeBtn": "发送短信代码",
@@ -51,6 +51,7 @@
         "personalNameInputDesc": "使用您的真实姓名。",
         "infoMessageTryAgain": "出了些问题。请再试一次",
         "blacklistedCountriesExcuse": "很遗憾，目前我们无法支持以下国家\/地区：",
+        "xorAmountNeeded": "您需要{xor}更多 XOR (€ {euro} )",
         "statusPendingText": "您已成功完成KYC申请。审核正在进行中，您可以很快收到决定。<br \/><br \/>通常情况下，决定会在同一天做出，在某些情况下可能需要最多3天。",
         "resendInBtn": "重新发送 {value}",
         "statusRejectTitle": "验证被拒绝",
@@ -87,7 +88,6 @@
         "cardhub": {
             "accountInfo": "账户信息"
         },
-        "attentionText": "注意",
-        "xorAmountNeeded": "你还需要{xor}个XOR (€{euro})"
+        "attentionText": "注意"
     }
 }

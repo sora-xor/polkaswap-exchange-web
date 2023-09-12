@@ -16,8 +16,8 @@
             "proofAddressDesc": "Iwe aṣẹ osise (owo-owo ohun elo, alaye banki, alaye ijọba tabi lẹta) ti o ni orukọ kikun ati adirẹsi rẹ ninu, ati pe ko dagba ju oṣu mẹta lọ.",
             "personalTitle": "Fi alaye ti ara ẹni silẹ",
             "personalDesc": "Fọwọsi fọọmu naa pẹlu orukọ ati adirẹsi rẹ",
-            "paidAttemptDisclaimer": "O ni nikan {count} igbiyanju ọfẹ lati kọja ilana KYC naa. Gbogbo igbiyanju miiran lẹhin iyẹn yoo jẹ € {cost} . Awọn igbiyanju isanwo yoo wa lẹhin imudojuiwọn atẹle ti app naa.",
-            "proofAddressNote": "Akiyesi: Awọn alaye lati awọn banki neobank bi Revolut ati N26 ni a ko rii lọwọlọwọ bi ẹri adirẹsi ti o wulo."
+            "proofAddressNote": "Akiyesi: Awọn alaye lati awọn banki neobank bi Revolut ati N26 ni a ko rii lọwọlọwọ bi ẹri adirẹsi ti o wulo.",
+            "paidAttemptDisclaimer": "O ni {count} igbiyanju ọfẹ lati kọja ilana KYC naa. Gbogbo igbiyanju miiran lẹhin iyẹn yoo jẹ € {cost} . Awọn igbiyanju isanwo yoo wa lẹhin imudojuiwọn atẹle ti app naa."
         },
         "emailPlaceholder": "Imeeli",
         "sendCodeBtn": "Fi koodu SMS ranṣẹ",
@@ -51,6 +51,7 @@
         "personalNameInputDesc": "Lo orukọ gidi rẹ.",
         "infoMessageTryAgain": "Nnkan o lo daadaa. Jọwọ gbiyanju lẹẹkansi",
         "blacklistedCountriesExcuse": "Laanu, ni akoko yii a ko ni anfani lati ṣe atilẹyin awọn orilẹ-ede wọnyi:",
+        "xorAmountNeeded": "O nilo {xor} diẹ sii XOR (€ {euro} )",
         "statusPendingText": "O ti pari ohun elo KYC rẹ ni aṣeyọri. Atunwo naa wa ni isunmọtosi ati pe o le nireti ipinnu kan laipẹ. <br \/> <br \/> Nigbagbogbo ipinnu naa ni a ṣe ni ọjọ kanna ati ni awọn igba miiran le gba to ọjọ mẹta.",
         "resendInBtn": "Tun fi ranṣẹ sinu {value}",
         "statusRejectTitle": "Ohun elo kọ",
@@ -87,7 +88,6 @@
         "cardhub": {
             "accountInfo": "Alaye Account"
         },
-        "attentionText": "Ifarabalẹ",
-        "xorAmountNeeded": "O nilo {xor} diẹ sii XOR (€ {euro} )"
+        "attentionText": "Ifarabalẹ"
     }
 }

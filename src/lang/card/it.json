@@ -16,8 +16,8 @@
             "proofAddressDesc": "Un documento ufficiale (bolletta, estratto conto bancario, estratto conto o corrispondenza) che contenga il tuo nome completo e indirizzo e che non sia più vecchio di 3 mesi.",
             "personalTitle": "Invia le tue informazioni personali",
             "personalDesc": "Compila il modulo con il tuo nome e indirizzo",
-            "paidAttemptDisclaimer": "Hai solo {count} tentativi gratuiti per superare la procedura KYC. Ogni altro tentativo successivo costerà € {cost} . I tentativi a pagamento saranno disponibili dopo il prossimo aggiornamento dell'app.",
-            "proofAddressNote": "Nota: le dichiarazioni di neobanche come Revolut e N26 non sono attualmente considerate una prova di indirizzo valida."
+            "proofAddressNote": "Nota: le dichiarazioni di neobanche come Revolut e N26 non sono attualmente considerate una prova di indirizzo valida.",
+            "paidAttemptDisclaimer": "Hai solo {count} tentativi gratuiti per superare la procedura KYC. Ogni altro tentativo successivo costerà € {cost} . I tentativi a pagamento saranno disponibili dopo il prossimo aggiornamento dell'app."
         },
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "Invia codice SMS",
@@ -51,6 +51,7 @@
         "personalNameInputDesc": "Usa il tuo vero nome.",
         "infoMessageTryAgain": "Qualcosa è andato storto. Per favore riprova",
         "blacklistedCountriesExcuse": "Purtroppo, al momento non siamo in grado di supportare i seguenti Paesi:",
+        "xorAmountNeeded": "È necessario {xor} più XOR (€{euro})",
         "statusPendingText": "Avete completato con successo la vostra richiesta KYC. La revisione è in corso e la decisione è attesa a breve.<br \/><br \/>Di solito la decisione viene presa il giorno stesso e in alcuni casi può richiedere fino a 3 giorni.",
         "resendInBtn": "RINVIA IN {value}",
         "statusRejectTitle": "Domanda respinta",
@@ -69,7 +70,7 @@
         "loginBtn": "Accedi o iscriviti",
         "telegramSupport": "Supporto Telegram",
         "rejectionPriceAttemptDisclaimer": "Ogni altro tentativo ti costerà € {0}",
-        "rejectCount": "Hai ancora 1 tentativo gratuito di KYC|Hai ancora {count} tentativi gratuiti di KYC",
+        "rejectCount": "Hai ancora {count} tentativo gratuito di KYC|Hai ancora {count} tentativi gratuiti di KYC",
         "cardHub": {
             "logout": "Esci dalla Carta SORA",
             "topup": "Riempire",
@@ -87,7 +88,6 @@
         "cardhub": {
             "accountInfo": "Informazioni account"
         },
-        "attentionText": "Attenzione",
-        "xorAmountNeeded": "Hai bisogno di {xor} più XOR (€{euro})"
+        "attentionText": "Attenzione"
     }
 }

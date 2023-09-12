@@ -16,8 +16,8 @@
             "proofAddressDesc": "Un document officiel (facture de services publics, relevé bancaire, relevé gouvernemental ou correspondance) contenant votre nom complet et votre adresse et datant de moins de 3 mois.",
             "personalTitle": "Soumettez vos informations personnelles",
             "personalDesc": "Remplissez le formulaire avec votre nom et adresse",
-            "paidAttemptDisclaimer": "Vous ne disposez que de {count} tentatives gratuites pour réussir le processus KYC. Par la suite, toute autre tentative coûtera {cost} €. Les tentatives payantes seront disponibles après la prochaine mise à jour de l'application.",
-            "proofAddressNote": "Remarque : les relevés de néobanques comme Revolut et N26 ne sont actuellement pas considérés comme un justificatif de domicile valide."
+            "proofAddressNote": "Remarque : les relevés de néobanques comme Revolut et N26 ne sont actuellement pas considérés comme un justificatif de domicile valide.",
+            "paidAttemptDisclaimer": "Vous ne disposez que de {count} tentatives gratuites pour réussir le processus KYC. Par la suite, toute autre tentative coûtera {cost} €. Les tentatives payantes seront disponibles après la prochaine mise à jour de l'application."
         },
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "Envoyer le code",
@@ -51,6 +51,7 @@
         "personalNameInputDesc": "Utilisez votre vrai nom.",
         "infoMessageTryAgain": "Une erreur s'est produite. Veuillez réessayer",
         "blacklistedCountriesExcuse": "Malheureusement, pour le moment, nous ne sommes pas en mesure de prendre en charge les pays suivants:",
+        "xorAmountNeeded": "Vous avez besoin de {xor} plus XOR (€{euro})",
         "statusPendingText": "Vous avez complété avec succès votre demande KYC. L'examen est en cours et vous pouvez vous attendre à recevoir une décision sous peu.<br \/><br \/>En général, la décision est prise le jour même, mais dans certains cas, elle peut prendre jusqu'à trois jours.",
         "resendInBtn": "RENVOYER DANS {value}",
         "statusRejectTitle": "Demande rejetée",
@@ -87,7 +88,6 @@
         "cardhub": {
             "accountInfo": "Information sur le compte"
         },
-        "attentionText": "Attention",
-        "xorAmountNeeded": "Vous avez besoin de {xor} plus de XOR (€{euro})"
+        "attentionText": "Attention"
     }
 }

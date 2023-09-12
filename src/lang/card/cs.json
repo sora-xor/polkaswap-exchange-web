@@ -16,8 +16,8 @@
             "proofAddressDesc": "Oficiální dokument (účet za energie, bankovní výpis, vládní prohlášení nebo korespondence), který obsahuje vaše celé jméno a adresu a není starší než 3 měsíce.",
             "personalTitle": "Odešlete své osobní údaje",
             "personalDesc": "Vyplňte formulář se svým jménem a adresou",
-            "paidAttemptDisclaimer": "Máte pouze {count} bezplatných pokusů projít procesem KYC. Každý další pokus bude stát € {cost} . Placené pokusy budou k dispozici po další aktualizaci aplikace.",
-            "proofAddressNote": "Poznámka: Výpisy od neobank, jako je Revolut a N26, nejsou v současné době považovány za platný doklad o adrese."
+            "proofAddressNote": "Poznámka: Výpisy od neobank, jako je Revolut a N26, nejsou v současné době považovány za platný doklad o adrese.",
+            "paidAttemptDisclaimer": "Máte pouze {count} bezplatných pokusů projít procesem KYC. Každý další pokus bude stát € {cost} . Placené pokusy budou k dispozici po další aktualizaci aplikace."
         },
         "emailPlaceholder": "E-mailem",
         "sendCodeBtn": "Pošlete SMS kód",
@@ -51,6 +51,7 @@
         "personalNameInputDesc": "Použijte své skutečné jméno.",
         "infoMessageTryAgain": "Něco se pokazilo. Prosím zkuste to znovu",
         "blacklistedCountriesExcuse": "Bohužel v tuto chvíli nejsme schopni podporovat následující země:",
+        "xorAmountNeeded": "Potřebujete {xor} více XOR (€{euro}).",
         "statusPendingText": "Úspěšně jste dokončili žádost o KYC. Přezkoumání probíhá a rozhodnutí můžete očekávat v nejbližší době.<br \/><br \/>Obvykle je rozhodnutí vydáno tentýž den, v některých případech může trvat až 3 dny.",
         "resendInBtn": "ZNOVU ODESLAT V {value}",
         "statusRejectTitle": "Přihláška zamítnuta",
@@ -69,7 +70,7 @@
         "loginBtn": "Přihlaste se nebo se zaregistrujte",
         "telegramSupport": "Podpora telegramů",
         "rejectionPriceAttemptDisclaimer": "Každý další pokus vás bude stát {0} €",
-        "rejectCount": "Máte ještě 1 další bezplatný pokus o KYC| | |Máte ještě {count} další bezplatné pokusy o KYC",
+        "rejectCount": "Máte ještě {count} další bezplatný pokus o KYC| | |Máte ještě {count} další bezplatné pokusy o KYC",
         "cardHub": {
             "logout": "Odhlaste se z karty SORA",
             "topup": "Doplňte",
@@ -87,7 +88,6 @@
         "cardhub": {
             "accountInfo": "Informace o účtu"
         },
-        "attentionText": "Pozornost",
-        "xorAmountNeeded": "Potřebujete {xor} více XOR (€{euro})"
+        "attentionText": "Pozornost"
     }
 }

@@ -16,8 +16,8 @@
             "proofAddressDesc": "Et offisielt dokument (bruksregning, kontoutskrift, myndighetsutskrift eller korrespondanse) som inneholder ditt fulle navn og adresse, og som ikke er eldre enn 3 måneder.",
             "personalTitle": "Send inn din personlige informasjon",
             "personalDesc": "Fyll ut skjemaet med navn og adresse",
-            "paidAttemptDisclaimer": "Du har bare {count} gratis forsøk på å bestå KYC-prosessen. Hvert andre forsøk etter det vil koste € {cost} . Betalte forsøk vil være tilgjengelige etter neste oppdatering av appen.",
-            "proofAddressNote": "Merk: Uttalelser fra neobanker som Revolut og N26 anses foreløpig ikke som gyldig bevis på adresse."
+            "proofAddressNote": "Merk: Uttalelser fra neobanker som Revolut og N26 anses foreløpig ikke som gyldig bevis på adresse.",
+            "paidAttemptDisclaimer": "Du har bare {count} gratis forsøk på å bestå KYC-prosessen. Hvert andre forsøk etter det vil koste € {cost} . Betalte forsøk vil være tilgjengelige etter neste oppdatering av appen."
         },
         "emailPlaceholder": "E-post",
         "sendCodeBtn": "Send SMS-kode",
@@ -51,6 +51,7 @@
         "personalNameInputDesc": "Bruk ditt virkelige navn.",
         "infoMessageTryAgain": "Noe gikk galt. Vær så snill, prøv på nytt",
         "blacklistedCountriesExcuse": "Dessverre kan vi for øyeblikket ikke støtte følgende land:",
+        "xorAmountNeeded": "Du trenger {xor} mer XOR (€ {euro} )",
         "statusPendingText": "Du har fullført KYC-søknaden din. Evalueringen avventer, og du kan forvente en avgjørelse innen kort tid. <br \/> <br \/> Vanligvis tas avgjørelsen samme dag og kan i noen tilfeller ta opptil 3 dager.",
         "resendInBtn": "SEND PÅ NYTT I {value}",
         "statusRejectTitle": "Søknad avslått",
@@ -69,7 +70,7 @@
         "loginBtn": "Logg inn eller registrer deg",
         "telegramSupport": "Telegramstøtte",
         "rejectionPriceAttemptDisclaimer": "Hvert andre forsøk vil koste deg € {0}",
-        "rejectCount": "Du har 1 mer gratis KYC-forsøk|Du har {count} flere gratis KYC-forsøk",
+        "rejectCount": "Du har {count} mer gratis KYC-forsøk|Du har {count} flere gratis KYC-forsøk",
         "cardHub": {
             "logout": "Logg ut av SORA-kortet",
             "topup": "Fylle opp",
@@ -87,7 +88,6 @@
         "cardhub": {
             "accountInfo": "Kontoinformasjon"
         },
-        "attentionText": "Merk følgende",
-        "xorAmountNeeded": "Du trenger {xor} ekstra XOR (€ {euro} )"
+        "attentionText": "Merk følgende"
     }
 }

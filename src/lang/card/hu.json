@@ -16,8 +16,8 @@
             "proofAddressDesc": "Hivatalos dokumentum (közüzemi számla, bankszámlakivonat, állami kimutatás vagy levelezés), amely tartalmazza az Ön teljes nevét és címét, és nem régebbi 3 hónapnál.",
             "personalTitle": "Adja meg személyes adatait",
             "personalDesc": "Töltse ki az űrlapot nevével és címével",
-            "paidAttemptDisclaimer": "Már csak {count} ingyenes próbálkozása van a KYC folyamat átadására. Ezt követően minden további próbálkozás {cost} €-ba kerül. A fizetett próbálkozások az alkalmazás következő frissítése után lesznek elérhetők.",
-            "proofAddressNote": "Megjegyzés: A neobankok, például a Revolut és az N26 kivonatai jelenleg nem tekinthetők érvényes címigazolásnak."
+            "proofAddressNote": "Megjegyzés: A neobankok, például a Revolut és az N26 kivonatai jelenleg nem tekinthetők érvényes címigazolásnak.",
+            "paidAttemptDisclaimer": "Csak {count} ingyenes próbálkozása van a KYC folyamat átadására. Ezt követően minden további próbálkozás {cost} €-ba kerül. A fizetett próbálkozások az alkalmazás következő frissítése után lesznek elérhetők."
         },
         "emailPlaceholder": "Email",
         "sendCodeBtn": "SMS kód küldése",
@@ -51,6 +51,7 @@
         "personalNameInputDesc": "Használd az igazi nevedet.",
         "infoMessageTryAgain": "Valami elromlott. Kérlek próbáld újra",
         "blacklistedCountriesExcuse": "Sajnos jelenleg nem áll módunkban támogatni a következő országokat:",
+        "xorAmountNeeded": "{xor} több XOR (€[%s:euró]) kell",
         "statusPendingText": "Ön sikeresen kitöltötte KYC kérelmét. A felülvizsgálat folyamatban van, és hamarosan várható a döntés.<br \/><br \/>A döntés általában még aznap megszületik, de egyes esetekben akár 3 napot is igénybe vehet.",
         "resendInBtn": "ÚJRAKÜLDÉS {value}",
         "statusRejectTitle": "Jelentkezés elutasítva",
@@ -69,7 +70,7 @@
         "loginBtn": "Jelentkezzen be vagy Regisztráljon",
         "telegramSupport": "Telegram támogatás",
         "rejectionPriceAttemptDisclaimer": "Minden más próbálkozás {0} €-ba kerül",
-        "rejectCount": "Még 1 ingyenes KYC próbálkozása van|Még {count} ingyenes KYC próbálkozása van",
+        "rejectCount": "Még {count} ingyenes KYC próbálkozása van|Még {count} ingyenes KYC próbálkozása van",
         "cardHub": {
             "logout": "Jelentkezzen ki a SORA kártyából",
             "topup": "Feltölt",
@@ -87,7 +88,6 @@
         "cardhub": {
             "accountInfo": "Számla információ"
         },
-        "attentionText": "Figyelem",
-        "xorAmountNeeded": "Szükséged van {xor} több XOR-ra (€{euro})"
+        "attentionText": "Figyelem"
     }
 }

@@ -16,8 +16,8 @@
             "proofAddressDesc": "Zvanični dokument (komunalni račun, izvod iz banke, vladin izvod ili prepiska) koji sadrži vaše puno ime i adresu, a to nije starije od 3 meseca.",
             "personalTitle": "Пошаљите своје личне податке",
             "personalDesc": "Попуните формулар својим именом и адресом",
-            "paidAttemptDisclaimer": "Имате само {count} бесплатних покушаја да прођете КИЦ процес. Сваки други покушај након тога коштаће € {cost} . Плаћени покушаји ће бити доступни након следећег ажурирања апликације.",
-            "proofAddressNote": "Напомена: Изјаве необанака као што су Револут и Н26 тренутно се не сматрају валидним доказом адресе."
+            "proofAddressNote": "Напомена: Изјаве необанака као што су Револут и Н26 тренутно се не сматрају валидним доказом адресе.",
+            "paidAttemptDisclaimer": "Имате само {count} бесплатних покушаја да прођете КИЦ процес. Сваки други покушај након тога коштаће € {cost} . Плаћени покушаји ће бити доступни након следећег ажурирања апликације."
         },
         "emailPlaceholder": "Емаил",
         "sendCodeBtn": "Пошаљите СМС код",
@@ -51,6 +51,7 @@
         "personalNameInputDesc": "Користите своје право име.",
         "infoMessageTryAgain": "Нешто није у реду. Молим вас, покушајте поново",
         "blacklistedCountriesExcuse": "Нажалост, у овом тренутку нисмо у могућности да подржимо следеће земље:",
+        "xorAmountNeeded": "Треба вам још {xor} КСОР (€ {euro} )",
         "statusPendingText": "Успешно сте завршили своју КИЦ пријаву. Преглед је на чекању и ускоро можете очекивати одлуку. <br \/> <br \/>Обично се одлука доноси истог дана, ау неким случајевима може потрајати и до 3 дана.",
         "resendInBtn": "ПОНОВНО ПОШАЉИ У {value}",
         "statusRejectTitle": "Пријава је одбијена",
@@ -69,7 +70,7 @@
         "loginBtn": "Пријавите се или Пријавите се",
         "telegramSupport": "Телеграм подршка",
         "rejectionPriceAttemptDisclaimer": "Сваки други покушај ће вас коштати {0} €",
-        "rejectCount": "Imate još 1 besplatan pokušaj KYC| |Imate još {count} besplatna pokušaja KYC",
+        "rejectCount": "Imate još {count} besplatan pokušaj KYC| |Imate još {count} besplatna pokušaja KYC",
         "cardHub": {
             "logout": "Одјавите се са СОРА картице",
             "topup": "Надмашити",
@@ -87,7 +88,6 @@
         "cardhub": {
             "accountInfo": "Информације о налогу"
         },
-        "attentionText": "Пажња",
-        "xorAmountNeeded": "Треба вам још {xor} КСОР (€ {euro} )"
+        "attentionText": "Пажња"
     }
 }
