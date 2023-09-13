@@ -266,18 +266,18 @@ async function updateExternalTransferFee(context: ActionContext<any, any>): Prom
 
 function calculateMaxLimit(
   limitAsset: string,
-  quoteAsset: string,
+  referenceAsset: string,
   usdLimit: CodecString,
   quote: SwapQuote
 ): CodecString {
   const outgoingLimitUSD = FPNumber.fromCodecValue(usdLimit);
 
-  if (outgoingLimitUSD.isZero() || limitAsset === quoteAsset) return usdLimit;
+  if (outgoingLimitUSD.isZero() || limitAsset === referenceAsset) return usdLimit;
 
   try {
     const {
       result: { amount },
-    } = quote(quoteAsset, limitAsset, 1, true, [], false);
+    } = quote(limitAsset, referenceAsset, 1, false, [], false);
 
     const assetPriceUSD = FPNumber.fromCodecValue(amount);
 
@@ -443,16 +443,16 @@ const actions = defineActions({
 
     if (!hasOutgoingLimit) return;
 
-    const quoteAsset = DAI.address;
+    const referenceAsset = DAI.address;
     const sources = [LiquiditySourceTypes.XYKPool, LiquiditySourceTypes.XSTPool];
     const limitObservable = api.bridgeProxy.getCurrentTransferLimitObservable();
-    const quoteObservable = await api.swap.getSwapQuoteObservable(quoteAsset, limitAsset, sources, DexId.XOR);
+    const quoteObservable = await api.swap.getSwapQuoteObservable(referenceAsset, limitAsset, sources, DexId.XOR);
 
     let subscription!: Subscription;
 
     await new Promise<void>((resolve) => {
       subscription = combineLatest([limitObservable, quoteObservable]).subscribe(([usdLimit, { quote }]) => {
-        const outgoingMaxLimit = calculateMaxLimit(limitAsset, quoteAsset, usdLimit, quote);
+        const outgoingMaxLimit = calculateMaxLimit(limitAsset, referenceAsset, usdLimit, quote);
         commit.setOutgoingMaxLimit(outgoingMaxLimit);
         resolve();
       });
