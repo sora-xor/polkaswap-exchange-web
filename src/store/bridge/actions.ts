@@ -309,7 +309,7 @@ async function updateExternalFeesAndLockedFunds(context: ActionContext<any, any>
 
   commit.setFeesAndLockedFundsFetching(true);
 
-  await Promise.all([
+  await Promise.allSettled([
     updateExternalLockedBalance(context),
     updateExternalNetworkFee(context),
     updateExternalTransferFee(context),
@@ -321,7 +321,7 @@ async function updateExternalFeesAndLockedFunds(context: ActionContext<any, any>
 async function updateBalancesAndFees(context: ActionContext<any, any>): Promise<void> {
   const { dispatch } = bridgeActionContext(context);
 
-  await Promise.all([dispatch.updateExternalBalance(), updateExternalFeesAndLockedFunds(context)]);
+  await Promise.allSettled([dispatch.updateExternalBalance(), updateExternalFeesAndLockedFunds(context)]);
 }
 
 const actions = defineActions({
@@ -364,7 +364,7 @@ const actions = defineActions({
   async resetBridgeForm(context): Promise<void> {
     const { dispatch } = bridgeActionContext(context);
 
-    await Promise.all([dispatch.setAssetAddress(), dispatch.setSendedAmount()]);
+    await Promise.allSettled([dispatch.setAssetAddress(), dispatch.setSendedAmount()]);
   },
 
   async switchDirection(context): Promise<void> {
@@ -390,7 +390,7 @@ const actions = defineActions({
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await Promise.all([
+    await Promise.allSettled([
       dispatch.updateOutgoingMaxLimit(),
       dispatch.updateIncomingMinLimit(),
       updateBalancesAndFees(context),
