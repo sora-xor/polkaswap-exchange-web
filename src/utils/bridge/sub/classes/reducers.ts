@@ -116,7 +116,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     // transaction not signed
     await this.beforeSign(id);
     // open connections
-    await this.connector.networkAdapter.connect();
+    await this.connector.start();
     // sign transaction
     await this.connector.networkAdapter.transfer(asset, tx.to as string, tx.amount as string, id);
     // store sora parachain block number when tx was signed in external network
