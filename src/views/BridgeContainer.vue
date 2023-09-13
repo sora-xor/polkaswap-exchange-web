@@ -1,7 +1,7 @@
 <template>
   <router-view
     v-bind="{
-      parentLoading: loading,
+      parentLoading: subscriptionsDataLoading,
       ...$attrs,
     }"
     v-on="$listeners"
