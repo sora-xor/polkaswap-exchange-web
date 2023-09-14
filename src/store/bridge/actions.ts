@@ -243,6 +243,7 @@ async function updateBridgeProxyLockedBalance(context: ActionContext<any, any>):
     const data = await bridgeApi.getLockedAssets(networkSelected as never, address);
     const balance = data.toString();
     commit.setAssetLockedBalance(balance);
+    return;
   }
 
   commit.setAssetLockedBalance();

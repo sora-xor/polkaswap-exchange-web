@@ -34,20 +34,20 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
 
   get lockedBalance(): FPNumber | null {
     if (!(this.asset && this.assetLockedBalance)) return null;
-
-    return FPNumber.fromCodecValue(this.assetLockedBalance, this.asset.externalDecimals);
-  }
-
-  get incomingMinBalance(): FPNumber {
-    if (!this.asset) return FPNumber.ZERO;
-
-    return FPNumber.fromCodecValue(this.incomingMinLimit, this.asset.externalDecimals);
+    // locked on sora side - sora decimals used
+    return FPNumber.fromCodecValue(this.assetLockedBalance, this.asset.decimals);
   }
 
   get outgoingMaxBalance(): FPNumber | null {
     if (!(this.asset && this.outgoingMaxLimit)) return null;
 
     return FPNumber.fromCodecValue(this.outgoingMaxLimit, this.asset.decimals);
+  }
+
+  get incomingMinBalance(): FPNumber {
+    if (!this.asset) return FPNumber.ZERO;
+
+    return FPNumber.fromCodecValue(this.incomingMinLimit, this.asset.externalDecimals);
   }
 
   get outgoingLimitBalance(): FPNumber | null {
