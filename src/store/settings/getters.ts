@@ -21,9 +21,12 @@ const getters = defineGetters<SettingsState>()({
     const { state, getters } = settingsGetterContext(args);
     return [...state.defaultNodes, ...getters.customNodes];
   },
-  nodeIsConnecting(...args): boolean {
-    const { state } = settingsGetterContext(args);
-    return !!state.nodeAddressConnecting;
+  connectingNode(...args): Nullable<Node> {
+    const { state, getters } = settingsGetterContext(args);
+
+    if (!state.nodeAddressConnecting) return null;
+
+    return getters.nodeList.find((node) => node.address === state.nodeAddressConnecting);
   },
   nodeIsConnected(...args): boolean {
     const { state } = settingsGetterContext(args);

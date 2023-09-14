@@ -114,10 +114,14 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   }
 
   // Node connection
-  @getter.settings.nodeIsConnecting isNodeConnecting!: boolean;
+  @state.settings.node connectedNode!: Partial<Node>;
+  @getter.settings.connectingNode connectingNode!: Nullable<Node>;
   @getter.settings.nodeIsConnected isNodeConnected!: boolean;
-  @state.settings.node node!: Partial<Node>;
   @mutation.settings.setSelectNodeDialogVisibility private setSelectNodeDialogVisibility!: (flag: boolean) => void;
+
+  private get isNodeConnecting(): boolean {
+    return !!this.connectingNode;
+  }
 
   private get nodeConnectionStatusKey(): string {
     if (this.isNodeConnected) return 'connected';
@@ -127,12 +131,16 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 
   get nodeConnectionClass(): Status {
     if (this.isNodeConnected) return Status.SUCCESS;
-    if (this.isNodeConnecting) return Status.DEFAULT;
+    if (this.isNodeConnecting) return Status.INFO;
     return Status.ERROR;
   }
 
   get nodeConnectionText(): string {
     return this.t(`footer.node.title.${this.nodeConnectionStatusKey}`);
+  }
+
+  get node() {
+    return this.connectingNode ?? this.connectedNode;
   }
 
   get formattedNodeLocation() {
@@ -194,11 +202,11 @@ export default class AppFooter extends Mixins(TranslationMixin) {
       case WALLET_TYPES.ConnectionStatus.Unavailable:
         return Status.ERROR;
       case WALLET_TYPES.ConnectionStatus.Loading:
-        return Status.DEFAULT;
+        return Status.INFO;
       case WALLET_TYPES.ConnectionStatus.Available:
         return Status.SUCCESS;
       default:
-        return Status.DEFAULT;
+        return Status.INFO;
     }
   }
 
