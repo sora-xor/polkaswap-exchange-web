@@ -118,6 +118,11 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
     &-options {
       .icon {
         margin-right: 4px;
+
+        &:hover {
+          cursor: not-allowed;
+          color: unset !important;
+        }
       }
     }
     &-image {
