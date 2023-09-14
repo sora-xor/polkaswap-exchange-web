@@ -4,7 +4,6 @@
     placement="top"
     trigger="click"
     :popper-class="computedPopperClass"
-    :disabled="loading"
     :tabindex="tabindex"
     @show="handleShow"
   >
@@ -37,7 +36,7 @@
 
 <script lang="ts">
 import { Status } from '@soramitsu/soramitsu-js-ui/lib/types';
-import { Component, Prop, Vue, Ref, Watch } from 'vue-property-decorator';
+import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
 
 import { delay } from '@/utils';
 
@@ -74,7 +73,7 @@ export default class FooterPopper extends Vue {
   }
 
   get loading(): boolean {
-    return this.status === Status.DEFAULT;
+    return this.status === Status.INFO;
   }
 
   get tabindex(): number {
@@ -103,7 +102,7 @@ export default class FooterPopper extends Vue {
 
 <style lang="scss">
 $tooltip-placements: 'top'; // add another styles if needed
-$status-classes: 'error', 'warning', 'success';
+$status-classes: 'error', 'warning', 'info', 'success';
 $footer-label-line-height: 150%;
 $footer-action-color: #2a171f;
 $footer-action-background-color: #f7f3f4;
