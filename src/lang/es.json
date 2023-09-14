@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Intercambiar",
         "Transfer": "Transferir",
+        "SwapTransferBatch": "{ADAR} Transferir",
         "AddLiquidity": "Añadir Liquidez",
         "RemoveLiquidity": "Remover Liquidez",
         "CreatePair": "Crear Par",
@@ -32,6 +33,7 @@
         "andText": "y",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Se intercambió {amount} {symbol} por {amount2} {symbol2}",
             "AddLiquidity": "Se proporcionó {amount} {symbol} y {amount2} {symbol2}",
             "RemoveLiquidity": "Se eliminó {amount} {symbol} y {amount2} {symbol2}",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Fallo en {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Fallo en {action} {amount} {symbol}",
             "Swap": "Fallo al intercambiar {amount} {symbol} por {amount2} {symbol2}",
             "AddLiquidity": "Fallo al suministrar {amount} {symbol} y {amount2} {symbol2}",
             "RemoveLiquidity": "Fallo al eliminar {amount} {symbol} y {amount2} {symbol2}",
@@ -301,7 +304,8 @@
         "txId": "ID de transacción",
         "viewIn": "Ver en {explorer}",
         "referrer": "Referente",
-        "referral": "Referencia"
+        "referral": "Referencia",
+        "adarTxDetailsTitle": "Detalles de la transacción"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Cambiar de red en {Metamask}",
@@ -1013,7 +1017,8 @@
             "norewardsforasset": "No hay recompensas para este activo."
         },
         "liquidityproxy": {
-            "forbiddenfilter": "La fuente de liquidez seleccionada no está permitida"
+            "forbiddenfilter": "La fuente de liquidez seleccionada no está permitida",
+            "slippagenottolerated": "El impacto en el precio ha superado el valor seleccionado"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Fondos insuficientes",
@@ -1182,6 +1187,7 @@
     "acceptText": "Aceptar y ocultar",
     "newAccountsText": "Nuevas cuentas",
     "dragAndDropText": "Arrastrar y soltar o elegir el archivo {extension}",
+    "multipleRecipients": "Múltiples destinatarios",
     "copyPhraseText": "Copiar Frase de Contraseña",
     "stepText": "Paso",
     "alerts": {

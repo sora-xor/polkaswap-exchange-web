@@ -24,6 +24,7 @@
     "operations": {
         "Swap": "Tauschen",
         "Transfer": "Überweisen",
+        "SwapTransferBatch": "{ADAR} Überweisen",
         "AddLiquidity": "Liquidität hinzufügen",
         "RemoveLiquidity": "Liquidität entfernen",
         "CreatePair": "Ein Paar erstellen",
@@ -32,6 +33,7 @@
         "andText": "und",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "{amount} {symbol} gegen {amount2} {symbol2} getauscht",
             "AddLiquidity": "{amount} {symbol} und {amount2} {symbol2} bereitgestellt",
             "RemoveLiquidity": "{amount} {symbol} und {amount2} {symbol2} entfernt",
@@ -52,6 +54,7 @@
         },
         "error": {
             "Transfer": "Fehler bei {action} {amount} {symbol} {direction} {address}",
+            "SwapTransferBatch": "Fehler bei {action} {amount} {symbol}",
             "Swap": "Tausch von {amount} {symbol} gegen {amount2} {symbol2} fehlgeschlagen",
             "AddLiquidity": "Fehler bei der Bereitstellung von {amount} {symbol} und {amount2} {symbol2}",
             "RemoveLiquidity": "Fehler beim Entfernen von {amount} {symbol} und {amount2} {symbol2}",
@@ -301,7 +304,8 @@
         "txId": "Transaktions-ID",
         "viewIn": "Auf {explorer} ansehen",
         "referrer": "Referrer",
-        "referral": "Referral"
+        "referral": "Referral",
+        "adarTxDetailsTitle": "Transaktionsdetails"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Netzwerk in {Metamask} ändern",
@@ -1013,7 +1017,8 @@
             "norewardsforasset": "Für dieses Asset gibt es keine Belohnungen"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Ausgewählte Liquiditätsquelle ist nicht zulässig"
+            "forbiddenfilter": "Ausgewählte Liquiditätsquelle ist nicht zulässig",
+            "slippagenottolerated": "Der Preisverlust hat den ausgewählten Wert überschritten"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Unzureichende Mittel",
@@ -1182,6 +1187,7 @@
     "acceptText": "Akzeptieren & ausblenden",
     "newAccountsText": "Neue Konten",
     "dragAndDropText": "Drag & Drop oder Datei {extension} auswählen",
+    "multipleRecipients": "Mehrere Empfänger",
     "copyPhraseText": "Passphrase kopieren",
     "stepText": "Schritt",
     "alerts": {

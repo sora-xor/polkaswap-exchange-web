@@ -36,13 +36,7 @@ const getters = defineGetters<SwapState>()({
   },
   marketAlgorithms(...args): Array<MarketAlgorithms> {
     const { state } = swapGetterContext(args);
-    const allSources = [
-      ...new Set(
-        Object.values(state.dexQuoteData)
-          .map((data) => data.sources.liquiditySources)
-          .flat()
-      ),
-    ];
+    const allSources = state.liquiditySources;
     // implementation of backend hack, to show only primary market sources
     const primarySources = allSources.filter((source) => source !== LiquiditySourceTypes.XYKPool);
 
@@ -63,11 +57,6 @@ const getters = defineGetters<SwapState>()({
     if (!getters.marketAlgorithmsAvailable || !rootGetters.settings.liquiditySource) return undefined;
 
     return rootGetters.settings.liquiditySource;
-  },
-  isAvailable(...args): boolean {
-    const { state } = swapGetterContext(args);
-    const paths = state.dexQuoteData?.[state.selectedDexId]?.sources?.assetPaths;
-    return !isEmpty(paths) && Object.values(paths).every((paths) => !isEmpty(paths));
   },
   swapMarketAlgorithm(...args): MarketAlgorithms {
     const { getters } = swapGetterContext(args);
