@@ -197,6 +197,7 @@ export enum Components {
   SwapTransactionDetails = 'pages/Swap/TransactionDetails',
   SwapSettings = 'pages/Swap/Settings/Settings',
   // Order Book
+  BookWidget = 'pages/OrderBook/BookWidget',
   BookTransactionDetails = 'pages/OrderBook/TransactionDetails',
   SetLimitOrderWidget = 'pages/OrderBook/SetLimitOrderWidget',
   HistoryOrderWidget = 'pages/OrderBook/HistoryOrderWidget',
