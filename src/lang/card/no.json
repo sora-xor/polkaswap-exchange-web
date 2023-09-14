@@ -19,6 +19,7 @@
             "proofAddressNote": "Merk: Uttalelser fra neobanker som Revolut og N26 anses foreløpig ikke som gyldig bevis på adresse.",
             "paidAttemptDisclaimer": "Du har bare {count} gratis forsøk på å bestå KYC-prosessen. Hvert andre forsøk etter det vil koste € {cost} . Betalte forsøk vil være tilgjengelige etter neste oppdatering av appen."
         },
+        "okReadyText": "Ok jeg er klar",
         "emailPlaceholder": "E-post",
         "sendCodeBtn": "Send SMS-kode",
         "firstNamePlaceholder": "Fornavn",

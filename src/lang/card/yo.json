@@ -19,6 +19,7 @@
             "proofAddressNote": "Akiyesi: Awọn alaye lati awọn banki neobank bi Revolut ati N26 ni a ko rii lọwọlọwọ bi ẹri adirẹsi ti o wulo.",
             "paidAttemptDisclaimer": "O ni {count} igbiyanju ọfẹ lati kọja ilana KYC naa. Gbogbo igbiyanju miiran lẹhin iyẹn yoo jẹ € {cost} . Awọn igbiyanju isanwo yoo wa lẹhin imudojuiwọn atẹle ti app naa."
         },
+        "okReadyText": "O DARA, Mo setan",
         "emailPlaceholder": "Imeeli",
         "sendCodeBtn": "Fi koodu SMS ranṣẹ",
         "firstNamePlaceholder": "Orukọ akọkọ",

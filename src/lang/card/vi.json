@@ -19,6 +19,7 @@
             "proofAddressNote": "Lưu ý: Các báo cáo từ các neobank như Revolut và N26 hiện không được coi là bằng chứng địa chỉ hợp lệ.",
             "paidAttemptDisclaimer": "Bạn chỉ có {count} lần thử miễn phí để vượt qua quy trình KYC. Mọi lần thử khác sau đó sẽ có giá € {cost} . Các nỗ lực trả phí sẽ khả dụng sau lần cập nhật tiếp theo của ứng dụng."
         },
+        "okReadyText": "OK, tôi đã sẵn sàng",
         "emailPlaceholder": "Email",
         "sendCodeBtn": "Gửi mã SMS",
         "firstNamePlaceholder": "Họ",

@@ -19,6 +19,7 @@
             "proofAddressNote": "Poznámka: Výpisy z neobankov ako Revolut a N26 sa v súčasnosti nepovažujú za platný doklad o adrese.",
             "paidAttemptDisclaimer": "Na absolvovanie procesu KYC máte len {count} voľných pokusov. Každý ďalší pokus bude stáť {cost} €. Platené pokusy budú k dispozícii po ďalšej aktualizácii aplikácie."
         },
+        "okReadyText": "OK, som pripravený",
         "emailPlaceholder": "Email",
         "sendCodeBtn": "Pošlite SMS kód",
         "firstNamePlaceholder": "Krstné meno",

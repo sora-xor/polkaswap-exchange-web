@@ -19,6 +19,7 @@
             "proofAddressNote": "Poznámka: Výpisy od neobank, jako je Revolut a N26, nejsou v současné době považovány za platný doklad o adrese.",
             "paidAttemptDisclaimer": "Máte pouze {count} bezplatných pokusů projít procesem KYC. Každý další pokus bude stát € {cost} . Placené pokusy budou k dispozici po další aktualizaci aplikace."
         },
+        "okReadyText": "OK, jsem připraven",
         "emailPlaceholder": "E-mailem",
         "sendCodeBtn": "Pošlete SMS kód",
         "firstNamePlaceholder": "Jméno",

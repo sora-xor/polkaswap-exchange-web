@@ -18,7 +18,9 @@
 
     <div v-if="isRejected" class="sora-card__rejection">
       <div v-if="freeAttemptsLeft" class="tos__disclaimer">
-        <h4 class="tos__disclaimer-header">{{ tc('card.rejectCount', freeAttemptsLeft) }}</h4>
+        <h4 class="tos__disclaimer-header">
+          {{ tc('card.rejectCount', freeAttemptsLeft, { count: freeAttemptsLeft }) }}
+        </h4>
         <p class="tos__disclaimer-paragraph">
           {{ t('card.rejectionPriceAttemptDisclaimer', { 0: kycAttemptCost }) }}
         </p>
@@ -85,12 +87,12 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
     return this.t('card.statusRejectText');
   }
 
-  get hasFreeAttempts() {
-    return this.attemptCounter.hasFreeAttempts;
-  }
-
   get freeAttemptsLeft() {
     return Number(this.attemptCounter.freeAttemptsLeft);
+  }
+
+  get hasFreeAttempts() {
+    return this.attemptCounter.hasFreeAttempts;
   }
 
   get isRejected(): boolean {

@@ -47,7 +47,7 @@
       </div>
     </div>
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirm">
-      <span class="text">{{ 'Ok, I’m ready' }}</span>
+      <span class="text">{{ t('card.okReadyText') }}</span>
     </s-button>
   </div>
 </template>

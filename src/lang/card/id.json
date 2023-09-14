@@ -19,6 +19,7 @@
             "proofAddressNote": "Catatan: Pernyataan dari neobank seperti Revolut dan N26 saat ini tidak dianggap sebagai bukti alamat yang sah.",
             "paidAttemptDisclaimer": "Anda hanya memiliki {count} percobaan gratis untuk melewati proses KYC. Setiap percobaan lainnya setelah itu akan dikenakan biaya €{cost}. Percobaan berbayar akan tersedia setelah pembaruan aplikasi berikutnya."
         },
+        "okReadyText": "Baik saya siap",
         "emailPlaceholder": "Surel",
         "sendCodeBtn": "Kirim kode SMS",
         "firstNamePlaceholder": "Nama depan",

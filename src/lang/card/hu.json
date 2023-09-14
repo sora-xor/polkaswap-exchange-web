@@ -19,6 +19,7 @@
             "proofAddressNote": "Megjegyzés: A neobankok, például a Revolut és az N26 kivonatai jelenleg nem tekinthetők érvényes címigazolásnak.",
             "paidAttemptDisclaimer": "Csak {count} ingyenes próbálkozása van a KYC folyamat átadására. Ezt követően minden további próbálkozás {cost} €-ba kerül. A fizetett próbálkozások az alkalmazás következő frissítése után lesznek elérhetők."
         },
+        "okReadyText": "Rendben, készen állok",
         "emailPlaceholder": "Email",
         "sendCodeBtn": "SMS kód küldése",
         "firstNamePlaceholder": "Keresztnév",

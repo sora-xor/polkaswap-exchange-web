@@ -19,8 +19,8 @@
           :disabled="true"
           class="sora-card-hub-button"
         >
-          <component :is="option.icon" />
-          {{ option.text }}
+          <s-icon :name="option.icon" size="17" class="icon" />
+          {{ t(`card.cardHub.${option.type}`) }}
         </s-button>
       </div>
     </div>
@@ -50,37 +50,30 @@ import { copyToClipboard } from '@/utils';
 import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
 
 enum OptionsIcon {
-  TopUp = 'TopUpIcon',
-  Transfer = 'TransferIcon',
-  Freeze = 'FreezeIcon',
-  Exchange = 'ExchangeIcon',
+  TopUp = 'basic-download-24',
+  Transfer = 'basic-download-bold-24',
+  Freeze = 'time-time-24',
+  Exchange = 'music-repeat-24',
 }
 
 enum Option {
-  TopUp,
-  Transfer,
-  Freeze,
-  Exchange,
+  TopUp = 'topup',
+  Transfer = 'transfer',
+  Freeze = 'freeze',
+  Exchange = 'exchange',
 }
 
-type Options = { icon: OptionsIcon; text: string; type: Option };
+type Options = { icon: OptionsIcon; type: Option };
 
-@Component({
-  components: {
-    TopUpIcon: () => import('./Icons/TopUp.vue'),
-    TransferIcon: () => import('./Icons/Transfer.vue'),
-    FreezeIcon: () => import('./Icons/Freeze.vue'),
-    ExchangeIcon: () => import('./Icons/Exchange.vue'),
-  },
-})
+@Component
 export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @state.soraCard.userInfo userInfo!: UserInfo;
 
   options: Array<Options> = [
-    { icon: OptionsIcon.TopUp, text: this.t('card.cardHub.topup'), type: Option.TopUp },
-    { icon: OptionsIcon.Transfer, text: this.t('card.cardHub.transfer'), type: Option.Transfer },
-    { icon: OptionsIcon.Freeze, text: this.t('card.cardHub.freeze'), type: Option.Freeze },
-    { icon: OptionsIcon.Exchange, text: this.t('card.cardHub.exchange'), type: Option.Exchange },
+    { icon: OptionsIcon.TopUp, type: Option.TopUp },
+    { icon: OptionsIcon.Transfer, type: Option.Transfer },
+    { icon: OptionsIcon.Freeze, type: Option.Freeze },
+    { icon: OptionsIcon.Exchange, type: Option.Exchange },
   ];
 
   get iban(): Nullable<string> {
@@ -121,6 +114,11 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
   &-hub {
     &-title {
       margin-bottom: $basic-spacing;
+    }
+    &-options {
+      .icon {
+        margin-right: 4px;
+      }
     }
     &-image {
       margin-bottom: $basic-spacing;

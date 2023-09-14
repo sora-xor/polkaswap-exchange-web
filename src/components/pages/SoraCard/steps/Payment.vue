@@ -91,7 +91,7 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
 
   private bridgeTokens(): void {
     if (!this.isEuroBalanceEnough) {
-      router.push({ name: PageNames.Bridge, params: { xorToDeposit: this.xorToDeposit.toString() } });
+      router.push({ name: PageNames.Bridge, params: { amount: this.xorToDeposit.toString() } });
     }
   }
 

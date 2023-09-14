@@ -19,6 +19,7 @@
             "proofAddressNote": "Let op: Verklaringen van neobanken als Revolut en N26 worden momenteel niet gezien als geldig bewijs van adres.",
             "paidAttemptDisclaimer": "U heeft slechts {count} gratis pogingen om het KYC-proces te doorlopen. Elke andere poging daarna kost € {cost} . Betaalde pogingen zijn beschikbaar na de volgende update van de app."
         },
+        "okReadyText": "OK, ik ben klaar",
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "SMS code verzenden",
         "firstNamePlaceholder": "Voornaam",

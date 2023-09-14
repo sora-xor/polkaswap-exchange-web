@@ -19,6 +19,7 @@
             "proofAddressNote": "Hinweis: Kontoauszüge von Neobanken wie Revolut und N26 gelten derzeit nicht als gültiger Adressnachweis.",
             "paidAttemptDisclaimer": "Sie haben nur {count} freie Versuche, den KYC-Prozess zu bestehen. Jeder weitere Versuch kostet danach €{cost}. Bezahlte Versuche werden nach dem nächsten Update der App verfügbar sein."
         },
+        "okReadyText": "OK, ich bin bereit",
         "emailPlaceholder": "E-Mail",
         "sendCodeBtn": "SMS Code senden",
         "firstNamePlaceholder": "Vorname",

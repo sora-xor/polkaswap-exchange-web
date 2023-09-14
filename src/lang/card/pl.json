@@ -19,6 +19,7 @@
             "proofAddressNote": "Uwaga: wyciągi z neobanków, takich jak Revolut i N26, nie są obecnie postrzegane jako ważny dowód adresu.",
             "paidAttemptDisclaimer": "Masz tylko {count} bezpłatnych prób, aby przejść proces KYC. Każda kolejna próba będzie kosztować €{cost}. Płatne próby będą dostępne po następnej aktualizacji aplikacji."
         },
+        "okReadyText": "Ok, jestem gotowy",
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "Wyślij kod SMS",
         "firstNamePlaceholder": "Imię",

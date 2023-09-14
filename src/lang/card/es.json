@@ -19,6 +19,7 @@
             "proofAddressNote": "Nota: Los extractos de neobancos como Revolut y N26 actualmente no se consideran prueba de domicilio válida.",
             "paidAttemptDisclaimer": "Solo tienes {count} intentos gratuitos para pasar el proceso KYC. Cualquier otro intento posterior costará € {cost} . Los intentos pagos estarán disponibles después de la próxima actualización de la aplicación."
         },
+        "okReadyText": "De acuerdo, estoy listo",
         "emailPlaceholder": "Correo electrónico",
         "sendCodeBtn": "Enviar código SMS",
         "firstNamePlaceholder": "Nombre",

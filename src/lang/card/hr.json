@@ -19,6 +19,7 @@
             "proofAddressNote": "Napomena: Izvodi neobanki kao što su Revolut i N26 trenutno se ne smatraju važećim dokazom adrese.",
             "paidAttemptDisclaimer": "Imate samo {count} besplatnih pokušaja da prođete KYC proces. Svaki drugi pokušaj nakon toga koštat će € {cost} . Plaćeni pokušaji bit će dostupni nakon sljedećeg ažuriranja aplikacije."
         },
+        "okReadyText": "OK, spreman sam",
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "Pošalji SMS kod",
         "firstNamePlaceholder": "Ime",
