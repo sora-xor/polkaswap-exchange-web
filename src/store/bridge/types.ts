@@ -1,4 +1,4 @@
-import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
+import type { FPNumber, CodecString, IBridgeTransaction } from '@sora-substrate/util';
 import type { Subscription } from 'rxjs';
 
 export enum FocusedField {
@@ -11,9 +11,9 @@ export type BridgeState = {
   assetAddress: string;
   assetSenderBalance: Nullable<CodecString>;
   assetRecipientBalance: Nullable<CodecString>;
-  assetLockedBalance: Nullable<CodecString>;
-  incomingMinLimit: CodecString;
-  outgoingMaxLimit: Nullable<CodecString>;
+  assetLockedBalance: Nullable<FPNumber>;
+  incomingMinLimit: FPNumber;
+  outgoingMaxLimit: Nullable<FPNumber>;
   outgoingMaxLimitSubscription: Nullable<Subscription>;
   blockUpdatesSubscription: Nullable<Subscription>;
   amountSend: string;

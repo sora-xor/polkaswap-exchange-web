@@ -221,12 +221,17 @@ async function updateEthLockedBalance(context: ActionContext<any, any>): Promise
   const bridgeContractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other);
 
   if (address && externalAddress && bridgeContractAddress) {
-    const assetKind = rootState.assets.registeredAssets[address]?.kind;
+    const registeredAsset = rootState.assets.registeredAssets[address];
 
-    if (assetKind === BridgeRequestAssetKind.Sidechain) {
-      const value = await ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress);
-      commit.setAssetLockedBalance(value);
-      return;
+    if (registeredAsset) {
+      const { kind, decimals } = registeredAsset;
+
+      if (kind === BridgeRequestAssetKind.Sidechain) {
+        const value = await ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress);
+        const balance = FPNumber.fromCodecValue(value, decimals);
+        commit.setAssetLockedBalance(balance);
+        return;
+      }
     }
   }
 
@@ -235,13 +240,13 @@ async function updateEthLockedBalance(context: ActionContext<any, any>): Promise
 
 async function updateBridgeProxyLockedBalance(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, rootState } = bridgeActionContext(context);
-  const { address } = getters.asset || {};
+  const { address, decimals } = getters.asset || {};
   const { networkSelected, networkType } = rootState.web3;
 
   if (address && networkSelected && networkType) {
     const bridgeApi = getBridgeApi(context) as typeof evmBridgeApi | typeof subBridgeApi;
-    const data = await bridgeApi.getLockedAssets(networkSelected as never, address);
-    const balance = data.toString();
+    const value = await bridgeApi.getLockedAssets(networkSelected as never, address);
+    const balance = FPNumber.fromCodecValue(value, decimals);
     commit.setAssetLockedBalance(balance);
     return;
   }
@@ -270,10 +275,10 @@ function calculateMaxLimit(
   referenceAsset: string,
   usdLimit: CodecString,
   quote: SwapQuote
-): CodecString {
+): FPNumber {
   const outgoingLimitUSD = FPNumber.fromCodecValue(usdLimit);
 
-  if (outgoingLimitUSD.isZero() || limitAsset === referenceAsset) return usdLimit;
+  if (outgoingLimitUSD.isZero() || limitAsset === referenceAsset) return outgoingLimitUSD;
 
   try {
     const {
@@ -282,12 +287,12 @@ function calculateMaxLimit(
 
     const assetPriceUSD = FPNumber.fromCodecValue(amount);
 
-    if (!assetPriceUSD.isFinity() || assetPriceUSD.isZero()) return ZeroStringValue;
+    if (!assetPriceUSD.isFinity() || assetPriceUSD.isZero()) return FPNumber.ZERO;
 
-    return outgoingLimitUSD.div(assetPriceUSD).toCodecString();
+    return outgoingLimitUSD.div(assetPriceUSD);
   } catch (error) {
     console.error(error);
-    return ZeroStringValue;
+    return FPNumber.ZERO;
   }
 }
 
@@ -415,14 +420,15 @@ const actions = defineActions({
   async updateIncomingMinLimit(context): Promise<void> {
     const { commit, getters } = bridgeActionContext(context);
 
-    let minLimit = ZeroStringValue;
+    let minLimit = FPNumber.ZERO;
 
     if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
       try {
-        minLimit = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(
+        const value = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(
           getters.asset.address,
           subBridgeConnector.parachainAdapter.api
         );
+        minLimit = FPNumber.fromCodecValue(value, getters.asset.externalDecimals);
       } catch (error) {
         console.error(error);
       }

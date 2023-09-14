@@ -2,7 +2,7 @@ import { defineMutations } from 'direct-vuex';
 import omit from 'lodash/fp/omit';
 
 import type { BridgeState, FocusedField } from './types';
-import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
+import type { FPNumber, IBridgeTransaction, CodecString } from '@sora-substrate/util';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<BridgeState>()({
@@ -22,7 +22,7 @@ const mutations = defineMutations<BridgeState>()({
     state.assetRecipientBalance = balance;
   },
 
-  setAssetLockedBalance(state, balance: Nullable<CodecString> = null): void {
+  setAssetLockedBalance(state, balance: Nullable<FPNumber> = null): void {
     state.assetLockedBalance = balance;
   },
 
@@ -30,11 +30,11 @@ const mutations = defineMutations<BridgeState>()({
     state.externalNativeBalance = balance;
   },
 
-  setIncomingMinLimit(state, amount: CodecString): void {
+  setIncomingMinLimit(state, amount: FPNumber): void {
     state.incomingMinLimit = amount;
   },
 
-  setOutgoingMaxLimit(state, amount: Nullable<CodecString>): void {
+  setOutgoingMaxLimit(state, amount: Nullable<FPNumber>): void {
     state.outgoingMaxLimit = amount;
   },
 

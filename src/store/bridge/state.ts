@@ -1,3 +1,5 @@
+import { FPNumber } from '@sora-substrate/util';
+
 import { ZeroStringValue } from '@/consts';
 
 import type { BridgeState } from './types';
@@ -9,7 +11,7 @@ function initialState(): BridgeState {
     assetSenderBalance: null, // balance for sora
     assetRecipientBalance: null, // balance for bridge network
     assetLockedBalance: null, // asset balance locked on bridge
-    incomingMinLimit: ZeroStringValue, // incoming min limit in asset amount
+    incomingMinLimit: FPNumber.ZERO, // incoming min limit in asset amount
     outgoingMaxLimit: null, // outgoing max limit in asset amount
     outgoingMaxLimitSubscription: null,
     blockUpdatesSubscription: null,

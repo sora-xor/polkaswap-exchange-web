@@ -261,9 +261,7 @@
             v-if="!isInsufficientBalance && (isLowerThanMinAmount || isGreaterThanMaxAmount)"
             class="bridge-limit-card"
             :max="isGreaterThanMaxAmount"
-            :amount="
-              isGreaterThanMaxAmount ? outgoingLimitBalance.toLocaleString() : incomingMinBalance.toLocaleString()
-            "
+            :amount="(isGreaterThanMaxAmount ? outgoingMaxAmount : incomingMinAmount).toLocaleString()"
             :symbol="asset.symbol"
           />
 
@@ -462,8 +460,8 @@ export default class Bridge extends Mixins(
       isExternalNative: this.isNativeTokenSelected,
     });
 
-    if (this.isSoraToEvm && this.outgoingLimitBalance) {
-      if (FPNumber.gt(maxBalance, this.outgoingLimitBalance)) return this.outgoingLimitBalance.toString();
+    if (this.isSoraToEvm && this.outgoingMaxAmount) {
+      if (FPNumber.gt(maxBalance, this.outgoingMaxAmount)) return this.outgoingMaxAmount.toString();
     }
 
     return maxBalance.toString();

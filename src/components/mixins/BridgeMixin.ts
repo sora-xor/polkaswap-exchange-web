@@ -11,9 +11,9 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
   @state.bridge.externalNativeBalance externalNativeBalance!: CodecString;
-  @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<CodecString>;
-  @state.bridge.outgoingMaxLimit outgoingMaxLimit!: Nullable<CodecString>;
-  @state.bridge.incomingMinLimit incomingMinLimit!: CodecString;
+  @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<FPNumber>;
+  @state.bridge.outgoingMaxLimit outgoingMaxLimit!: Nullable<FPNumber>;
+  @state.bridge.incomingMinLimit incomingMinAmount!: FPNumber;
 
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
@@ -32,26 +32,8 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     return this.nativeToken?.externalDecimals;
   }
 
-  get lockedBalance(): FPNumber | null {
-    if (!(this.asset && this.assetLockedBalance)) return null;
-    // locked on sora side - sora decimals used
-    return FPNumber.fromCodecValue(this.assetLockedBalance, this.asset.decimals);
-  }
-
-  get outgoingMaxBalance(): FPNumber | null {
-    if (!(this.asset && this.outgoingMaxLimit)) return null;
-
-    return FPNumber.fromCodecValue(this.outgoingMaxLimit, this.asset.decimals);
-  }
-
-  get incomingMinBalance(): FPNumber {
-    if (!this.asset) return FPNumber.ZERO;
-
-    return FPNumber.fromCodecValue(this.incomingMinLimit, this.asset.externalDecimals);
-  }
-
-  get outgoingLimitBalance(): FPNumber | null {
-    const filtered = [this.lockedBalance, this.outgoingMaxBalance].filter((item) => item !== null) as FPNumber[];
+  get outgoingMaxAmount(): FPNumber | null {
+    const filtered = [this.assetLockedBalance, this.outgoingMaxLimit].filter((item) => item !== null) as FPNumber[];
 
     if (!filtered.length) return null;
 
@@ -64,11 +46,11 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     isSoraToEvm: boolean,
     isRegisteredAsset = true
   ): boolean {
-    if (!(asset && isRegisteredAsset && isSoraToEvm && this.outgoingLimitBalance)) return false;
+    if (!(asset && isRegisteredAsset && isSoraToEvm && this.outgoingMaxAmount)) return false;
 
     const fpAmount = new FPNumber(amount);
 
-    return FPNumber.gt(fpAmount, this.outgoingLimitBalance);
+    return FPNumber.gt(fpAmount, this.outgoingMaxAmount);
   }
 
   isLowerThanIncomingMinAmount(
@@ -77,10 +59,10 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     isSoraToEvm: boolean,
     isRegisteredAsset = true
   ) {
-    if (!(asset && isRegisteredAsset && !isSoraToEvm && this.incomingMinBalance)) return false;
+    if (!(asset && isRegisteredAsset && !isSoraToEvm)) return false;
 
     const fpAmount = new FPNumber(amount);
 
-    return FPNumber.lt(fpAmount, this.incomingMinBalance);
+    return FPNumber.lt(fpAmount, this.incomingMinAmount);
   }
 }
