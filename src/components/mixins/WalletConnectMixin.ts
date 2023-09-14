@@ -59,7 +59,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @mutation.web3.setEvmAddress setEvmAddress!: (address: string) => void;
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
 
-  @action.web3.updateNetworkProvided updateNetworkProvided!: AsyncFnWithoutArgs;
+  @action.web3.changeEvmNetworkProvided changeEvmNetworkProvided!: AsyncFnWithoutArgs;
   @action.web3.updateProvidedEvmNetwork updateProvidedEvmNetwork!: (networkHex?: string) => Promise<void>;
 
   getWalletAddress = getWalletAddress;

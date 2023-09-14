@@ -11,21 +11,22 @@ import ethersUtil from '@/utils/ethers-util';
 
 import type { SubNetworkApps } from './types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import type { ActionContext } from 'vuex';
+
+async function connectSubNetwork(context: ActionContext<any, any>): Promise<void> {
+  const { getters } = web3ActionContext(context);
+  const subNetwork = getters.selectedNetwork;
+
+  if (!subNetwork) return;
+
+  await subBridgeConnector.open(subNetwork.id as SubNetwork);
+}
 
 const actions = defineActions({
   async updateProvidedEvmNetwork(context, networkHex?: string): Promise<void> {
     const { commit } = web3ActionContext(context);
     const evmNetwork = networkHex ? ethersUtil.hexToNumber(networkHex) : await ethersUtil.getEvmNetworkId();
     commit.setProvidedEvmNetwork(evmNetwork);
-  },
-
-  async connectSubNetwork(context): Promise<void> {
-    const { getters } = web3ActionContext(context);
-    const subNetwork = getters.selectedNetwork;
-
-    if (!subNetwork) return;
-
-    await subBridgeConnector.open(subNetwork.id as SubNetwork);
   },
 
   async disconnectExternalNetwork(context): Promise<void> {
@@ -43,13 +44,11 @@ const actions = defineActions({
     rootDispatch.assets.updateRegisteredAssets();
 
     if (type === BridgeNetworkType.Sub) {
-      await dispatch.connectSubNetwork();
-    } else {
-      await dispatch.updateProvidedEvmNetwork();
+      await connectSubNetwork(context);
     }
   },
 
-  async updateNetworkProvided(context): Promise<void> {
+  async changeEvmNetworkProvided(context): Promise<void> {
     const { getters, state } = web3ActionContext(context);
     const { selectedNetwork } = getters;
     const { networkType } = state;

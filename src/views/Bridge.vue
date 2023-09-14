@@ -211,7 +211,7 @@
           v-if="!isValidNetwork"
           class="el-button--next s-typography-button--big"
           type="primary"
-          @click="updateNetworkProvided"
+          @click="changeEvmNetworkProvided"
         >
           {{ t('changeNetworkText') }}
         </s-button>
