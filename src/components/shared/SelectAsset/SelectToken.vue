@@ -9,6 +9,11 @@
         @clear="handleClearSearch"
         class="token-search"
       />
+      <synthetic-switcher
+        v-if="!isAddLiquidity && !isCustomTabActive"
+        v-model="isSynthsOnly"
+        class="token-synthetic-switcher"
+      />
 
       <s-tab :label="t('selectToken.assets.title')" name="assets" />
 
@@ -90,6 +95,7 @@ function getNonWhitelistDivisibleAssets<T extends Asset | AccountAsset>(
   components: {
     DialogBase: components.DialogBase,
     SelectAssetList: lazyComponent(Components.SelectAssetList),
+    SyntheticSwitcher: lazyComponent(Components.SyntheticSwitcher),
     TokenAddress: components.TokenAddress,
     SearchInput: components.SearchInput,
     AddAssetDetailsCard: components.AddAssetDetailsCard,
@@ -99,6 +105,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   readonly tokenTabs = [Tabs.Assets, Tabs.Custom];
 
   tabValue = first(this.tokenTabs);
+  isSynthsOnly = false;
 
   @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Nullable<Asset>;
@@ -135,6 +142,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   get whitelistAssetsList(): Array<AccountAsset> {
     let whiteList: Array<Asset> = [];
+
     if (this.isAddLiquidity) {
       whiteList = this.isFirstTokenSelected
         ? this.mainLPSources.filter(
@@ -150,8 +158,11 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
             return true;
           });
     } else {
-      whiteList = this.whitelistAssets;
+      whiteList = this.isSynthsOnly
+        ? this.whitelistAssets.filter((asset) => syntheticAssetRegexp.test(asset.address))
+        : this.whitelistAssets;
     }
+
     const assetsAddresses = whiteList.map((asset) => asset.address);
     const excludeAddress = this.asset?.address;
 
@@ -248,6 +259,10 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   margin-bottom: $inner-spacing-medium;
   width: calc(100% - 2 * #{$inner-spacing-big});
   @include focus-outline($withOffset: true);
+}
+
+.token-synthetic-switcher {
+  margin: 0 $inner-spacing-big $inner-spacing-medium;
 }
 
 .token-list_text {

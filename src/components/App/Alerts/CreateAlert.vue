@@ -132,7 +132,7 @@ export default class CreateAlert extends Mixins(
 
   get deltaPercentage(): string {
     const desiredPrice = FPNumber.fromNatural(this.amount);
-    let currentPrice = FPNumber.fromNatural(this.fiatAmountValue);
+    let currentPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(this.asset));
 
     // if current price is zero, set minimal value for proper calculations
     if (FPNumber.eq(currentPrice, FPNumber.ZERO)) {
