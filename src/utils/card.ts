@@ -4,7 +4,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode';
 import store from '@/store';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
-import { KycStatus, Status, VerificationStatus } from '../types/card';
+import { AttemptCounter, KycStatus, Status, VerificationStatus } from '../types/card';
 
 const soraCardTestBaseEndpoint = 'https://backend.dev.sora-card.tachi.soramitsu.co.jp';
 const soraCardProdBaseEndpoint = 'https://backend.sora-card.odachi.soramitsu.co.jp';
@@ -14,6 +14,8 @@ const SoraProxyEndpoints = {
     lastKycStatusEndpoint: `${soraCardTestBaseEndpoint}/kyc-last-status`,
     kycAttemptCountEndpoint: `${soraCardTestBaseEndpoint}/kyc-attempt-count`,
     priceOracleEndpoint: `${soraCardTestBaseEndpoint}/prices/xor_euro`,
+    ibanEndpoint: `${soraCardTestBaseEndpoint}/ibans`,
+    x1TransactionStatus: `${soraCardTestBaseEndpoint}/ws/x1-payment-status`,
     newAccessTokenEndpoint: 'https://api-auth-test.soracard.com/RequestNewAccessToken',
   },
   [WALLET_CONSTS.SoraNetwork.Prod]: {
@@ -21,6 +23,8 @@ const SoraProxyEndpoints = {
     lastKycStatusEndpoint: `${soraCardProdBaseEndpoint}/kyc-last-status`,
     kycAttemptCountEndpoint: `${soraCardProdBaseEndpoint}/kyc-attempt-count`,
     priceOracleEndpoint: `${soraCardProdBaseEndpoint}/prices/xor_euro`,
+    ibanEndpoint: `${soraCardProdBaseEndpoint}/ibans`,
+    x1TransactionStatus: `${soraCardProdBaseEndpoint}/ws/x1-payment-status`,
     newAccessTokenEndpoint: 'https://api-auth.soracard.com/RequestNewAccessToken',
   },
 };
@@ -190,7 +194,7 @@ export const getXorPerEuroRatio = async () => {
   }
 };
 
-export const getFreeKycAttemptCount = async () => {
+export const getUserIbanNumber = async () => {
   const sessionRefreshToken = localStorage.getItem('PW-refresh-token');
   let sessionAccessToken = localStorage.getItem('PW-token');
 
@@ -211,6 +215,47 @@ export const getFreeKycAttemptCount = async () => {
   const soraNetwork = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
 
   try {
+    const result = await fetch(getSoraProxyEndpoints(soraNetwork).ibanEndpoint, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${sessionAccessToken}`,
+      },
+    });
+
+    const data = await result.json();
+
+    if (data.IBANs && data.IBANs[0].StatusDescription === 'Active') {
+      const iban = data.IBANs[0].Iban;
+      return iban;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('[SoraCard]: Error while getting IBAN', error);
+  }
+};
+
+export const getFreeKycAttemptCount = async (): Promise<AttemptCounter> => {
+  const sessionRefreshToken = localStorage.getItem('PW-refresh-token');
+  let sessionAccessToken = localStorage.getItem('PW-token');
+
+  if (!(sessionAccessToken && sessionRefreshToken)) {
+    return emptyCounterFields();
+  }
+
+  if (isAccessTokenExpired(sessionAccessToken)) {
+    const accessToken = await getUpdatedJwtPair(sessionRefreshToken);
+
+    if (accessToken) {
+      sessionAccessToken = accessToken;
+    } else {
+      return emptyCounterFields();
+    }
+  }
+
+  const soraNetwork = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+
+  try {
     const result = await fetch(getSoraProxyEndpoints(soraNetwork).kycAttemptCountEndpoint, {
       method: 'GET',
       headers: {
@@ -218,11 +263,16 @@ export const getFreeKycAttemptCount = async () => {
       },
     });
 
-    const { free_attempt: freeAttempt } = await result.json();
+    const {
+      free_attempt: hasFreeAttempts,
+      free_attempts_left: freeAttemptsLeft,
+      total_free_attempts: totalFreeAttempts,
+    } = await result.json();
 
-    return freeAttempt;
+    return { hasFreeAttempts, freeAttemptsLeft, totalFreeAttempts };
   } catch (error) {
     console.error('[SoraCard]: Error while getting KYC attempt', error);
+    return emptyCounterFields();
   }
 };
 
@@ -231,7 +281,11 @@ export const clearTokensFromLocalStorage = () => {
   localStorage.removeItem('PW-refresh-token');
 };
 
-export const clearPayWingsKeysFromLocalStorage = () => {
+export const clearPayWingsKeysFromLocalStorage = (logout = false) => {
+  if (logout) {
+    localStorage.removeItem('PW-token');
+    localStorage.removeItem('PW-refresh-token');
+  }
   localStorage.removeItem('PW-ProcessID');
   localStorage.removeItem('PW-conf');
   localStorage.removeItem('PW-Country');
@@ -261,6 +315,12 @@ export const clearPayWingsKeysFromLocalStorage = () => {
 const emptyStatusFields = (): Status => ({
   verificationStatus: undefined,
   kycStatus: undefined,
+});
+
+const emptyCounterFields = (): AttemptCounter => ({
+  hasFreeAttempts: undefined,
+  freeAttemptsLeft: undefined,
+  totalFreeAttempts: undefined,
 });
 
 export function soraCard(soraNetwork: WALLET_CONSTS.SoraNetwork) {

@@ -16,7 +16,18 @@
     <div class="sora-card__header">{{ t(titleKey) }}</div>
     <p class="sora-card__status-info" v-html="text" />
 
-    <div v-if="currentStatus === VerificationStatus.Rejected" class="sora-card__rejection">
+    <div v-if="isRejected" class="sora-card__rejection">
+      <div v-if="freeAttemptsLeft" class="tos__disclaimer">
+        <h4 class="tos__disclaimer-header">
+          {{ tc('card.rejectCount', freeAttemptsLeft, { count: freeAttemptsLeft }) }}
+        </h4>
+        <p class="tos__disclaimer-paragraph">
+          {{ t('card.rejectionPriceAttemptDisclaimer', { 0: kycAttemptCost }) }}
+        </p>
+        <div class="tos__disclaimer-warning icon">
+          <s-icon name="notifications-alert-triangle-24" size="28px" />
+        </div>
+      </div>
       <s-button
         v-if="hasFreeAttempts"
         type="primary"
@@ -32,6 +43,11 @@
         </p>
       </div>
     </div>
+    <div v-if="isRejectedOrPending" class="sora-card__support">
+      <s-button class="sora-card__btn sora-card__btn-support s-typography-button--large" @click="openSupportChannel">
+        <span class="text">{{ t('card.telegramSupport') }}</span>
+      </s-button>
+    </div>
   </div>
 </template>
 
@@ -40,8 +56,9 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Links } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { VerificationStatus } from '@/types/card';
+import { AttemptCounter, VerificationStatus } from '@/types/card';
 import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
 
 const pendingTitle = 'card.statusPendingTitle';
@@ -50,11 +67,16 @@ const pendingIcon = 'time-time-24';
 
 @Component
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  @state.soraCard.hasFreeAttempts hasFreeAttempts!: boolean;
+  @state.soraCard.kycAttemptCost kycAttemptCost!: string;
+  @state.soraCard.attemptCounter attemptCounter!: AttemptCounter;
   @state.soraCard.rejectReason rejectReason!: string;
+
   @getter.soraCard.currentStatus currentStatus!: VerificationStatus;
+
   @mutation.soraCard.setWillToPassKycAgain setWillToPassKycAgain!: (boolean) => void;
+
   @action.soraCard.getUserKycAttempt getUserKycAttempt!: AsyncFnWithoutArgs;
+  @action.soraCard.getUserStatus getUserStatus!: AsyncFnWithoutArgs;
 
   VerificationStatus = VerificationStatus;
 
@@ -63,6 +85,22 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       return `${this.t('card.statusRejectReason')}: ${this.rejectReason}`;
     }
     return this.t('card.statusRejectText');
+  }
+
+  get freeAttemptsLeft() {
+    return Number(this.attemptCounter.freeAttemptsLeft);
+  }
+
+  get hasFreeAttempts() {
+    return this.attemptCounter.hasFreeAttempts;
+  }
+
+  get isRejected(): boolean {
+    return this.currentStatus === VerificationStatus.Rejected;
+  }
+
+  get isRejectedOrPending(): boolean {
+    return [VerificationStatus.Pending, VerificationStatus.Rejected].includes(this.currentStatus);
   }
 
   get titleKey(): string {
@@ -127,13 +165,23 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
     }
   }
 
+  openSupportChannel(): void {
+    window.open(Links.soraCardSupportChannel, '_blank');
+  }
+
   handleKycRetry(): void {
     this.setWillToPassKycAgain(true);
-    this.$emit('confirm-apply');
+    const openGetReadyPage = true;
+    this.$emit('confirm-apply', openGetReadyPage);
   }
 
   async mounted(): Promise<void> {
-    await this.getUserKycAttempt();
+    await this.getUserStatus();
+
+    if (this.currentStatus === VerificationStatus.Rejected) {
+      await this.getUserKycAttempt();
+    }
+
     clearPayWingsKeysFromLocalStorage();
   }
 }
@@ -161,6 +209,49 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   }
   &__rejection {
     width: 100%;
+
+    .tos__disclaimer {
+      width: 100%;
+      margin-top: $basic-spacing;
+      margin-bottom: 0;
+      background-color: var(--s-color-base-background);
+      border-radius: var(--s-border-radius-small);
+      box-shadow: var(--s-shadow-dialog);
+      padding: 20px $basic-spacing;
+      position: relative;
+      &-header {
+        font-weight: 500;
+        margin-bottom: 10px;
+      }
+      &-paragraph {
+        color: var(--s-color-base-content-secondary);
+        margin-bottom: calc(var(--s-basic-spacing) / 2);
+      }
+      &-warning.icon {
+        position: absolute;
+        background-color: #479aef;
+        border: 2.25257px solid #f7f3f4;
+        box-shadow: var(--s-shadow-element-pressed);
+        top: 20px;
+        right: 20px;
+        border-radius: 50%;
+        color: #fff;
+        width: 46px;
+        height: 46px;
+        .s-icon-notifications-alert-triangle-24 {
+          display: block;
+          color: #fff;
+          margin-top: 5px;
+          margin-left: 7px;
+        }
+      }
+      * {
+        width: 85%;
+      }
+    }
+  }
+  &__support {
+    width: 100%;
   }
   &__status-info-test {
     white-space: pre-line;
@@ -180,6 +271,14 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   }
   &__btn {
     width: 100%;
+
+    &-support {
+      margin-top: $inner-spacing-mini;
+      span.text {
+        font-variation-settings: 'wght' 700 !important;
+        font-size: var(--s-font-size-big);
+      }
+    }
   }
   &__no-more-free-kyc {
     margin-top: var(--s-size-mini);
