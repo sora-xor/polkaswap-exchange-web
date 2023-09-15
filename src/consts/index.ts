@@ -223,6 +223,7 @@ export enum Components {
   TransactionDetails = 'shared/TransactionDetails',
   PoolInfo = 'shared/PoolInfo',
   Widget = 'shared/Widget',
+  SyntheticSwitcher = 'shared/SyntheticSwitcher',
   // Shared Buttons
   SortButton = 'shared/Button/SortButton',
   SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',
