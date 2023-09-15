@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Zamijenite",
         "Transfer": "Prijenos",
-        "SwapTransferBatch": "{ADAR} Prijenos",
         "AddLiquidity": "Dodajte likvidnost",
         "RemoveLiquidity": "Uklonite likvidnost",
         "CreatePair": "Stvorite Par",
@@ -33,15 +32,14 @@
         "andText": "i",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Zamijenjeno je {amount} {symbol} za {amount2} {symbol2}",
             "AddLiquidity": "Isporučeno {amount} {symbol} i {amount2} {symbol2}",
             "RemoveLiquidity": "Uklonjeno {amount} {symbol} i {amount2} {symbol2}",
             "CreatePair": "Isporučeno {amount} {symbol} i {amount2} {symbol2}",
             "RegisterAsset": "Registrirano sredstvo {symbol}",
             "ClaimRewards": "Nagrada je uspješno prijavljena {rewards}",
-            "ReferralReserveXor": "Uspješno povezivanje XORa",
-            "ReferralUnreserveXor": "Uspješno odvajanje XORa",
+            "ReferralReserveXor": "Bonded {amount} XOR",
+            "ReferralUnreserveXor": "Nevezani {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} je uspješno postavljena",
             "SwapAndSend": "Zamijenjeno {amount} {symbol} za {amount2} {symbol2} i {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Isporučeni LP tokeni {symbol} i {symbol2} {amount}",
@@ -50,19 +48,19 @@
             "DemeterFarmingUnstakeToken": "Uklonjeno {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} uspješno potraživan",
             "EthBridgeIncoming": "Preneseno {amount} {symbol} s {Ethereum} na {Sora}",
-            "EthBridgeOutgoing": "Preneseno {amount} {symbol} s {Sora} na {Ethereum}"
+            "EthBridgeOutgoing": "Preneseno {amount} {symbol} s {Sora} na {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} nije uspio",
-            "SwapTransferBatch": "{action} {amount} {symbol} nije uspio",
             "Swap": "Zamjena {amount} {symbol} za {amount2} {symbol2} nije uspjela",
             "AddLiquidity": "Opskrba {amount} {symbol} i {amount2} {symbol2} nije uspjela",
             "RemoveLiquidity": "Uklanjanje{amount} {symbol} i {amount2} {symbol2} nije uspjelo",
             "CreatePair": "Opskrba {amount} {symbol} i {amount2} {symbol2} nije uspjela",
             "RegisterAsset": "Registracija sredstva {symbol} nije uspjela",
             "ClaimRewards": "Preuzimanje nagrada nije uspjelo {rewards}",
-            "ReferralReserveXor": "Povezivanje XORa nije uspjelo",
-            "ReferralUnreserveXor": "Odvajanje XORa nije uspjelo",
+            "ReferralReserveXor": "Nije uspjelo povezivanje {amount} XOR",
+            "ReferralUnreserveXor": "Neuspjelo odvajanje {amount} XOR",
             "ReferralSetInvitedUser": "Postavljanje {role} {address} nije uspjelo",
             "SwapAndSend": "Nije uspjela zamjena {amount} {symbol} za {amount2} {symbol2} i {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Dostava {amount} {symbol} i {symbol2} LP tokena nije uspjela",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Uklanjanje {amount} {symbol} nije uspjelo",
             "DemeterFarmingGetRewards": "Nije uspjelo potraživanje {symbol}",
             "EthBridgeIncoming": "Prijenos {amount} {symbol} iz {Ethereum} u {Sora} nije uspio",
-            "EthBridgeOutgoing": "Prijenos {amount} {symbol} iz {Sora} u {Ethereum} nije uspio"
+            "EthBridgeOutgoing": "Prijenos {amount} {symbol} iz {Sora} u {Ethereum} nije uspio",
+            "SwapTransferBatch": "{action} {amount} {symbol} nije uspio"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Zatražite nagrade",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Prijenos"
     },
     "polkadotjs": {
         "noExtensions": "Nije pronađeno proširenje {PolkadotJs}. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Bridge {Sora} mrežna naknada s:",
         "copy": "Kopiraj mrežnu adresu",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "limitMessage": "Trenutno postoji {type} {amount} {symbol} za premošćivanje kako bi se osigurala stabilnost i sigurnost {Sora} mreže. Cijenimo vaše razumijevanje."
     },
     "selectRegisteredAsset": {
         "title": "Odaberite token",
@@ -1187,7 +1188,6 @@
     "acceptText": "Prihvati i sakrij",
     "newAccountsText": "Novi računi",
     "dragAndDropText": "Povucite i ispustite ili odaberite {extension} datoteku",
-    "multipleRecipients": "Višestruki primatelji",
     "copyPhraseText": "Kopirajte lozinku frazu",
     "stepText": "Korak",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Idite na postavke",
         "btnAllow": "Dopusti pristup"
     },
-    "continueText": "Nastaviti"
+    "continueText": "Nastaviti",
+    "minAmountText": "min. iznos",
+    "maxAmountText": "max. iznos",
+    "exceededAmountText": "{amount} premašeno",
+    "multipleRecipients": "Višestruki primatelji"
 }

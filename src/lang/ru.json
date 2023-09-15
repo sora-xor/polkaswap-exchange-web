@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Обмен",
         "Transfer": "Перевод",
-        "SwapTransferBatch": "{ADAR} Перевод",
         "AddLiquidity": "Добавить ликвидность",
         "RemoveLiquidity": "Удалить ликвидность",
         "CreatePair": "Создать пару",
@@ -33,15 +32,14 @@
         "andText": "и",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Совершен обмен {amount} {symbol} на {amount2} {symbol2}",
             "AddLiquidity": "Поставлено {amount} {symbol} и {amount2} {symbol2}",
             "RemoveLiquidity": "Удалены {amount} {symbol} и {amount2} {symbol2}",
             "CreatePair": "Поставлено {amount} {symbol} и {amount2} {symbol2}",
             "RegisterAsset": "Зарегистрирован актив {symbol}",
             "ClaimRewards": "Награды получены успешно {rewards}",
-            "ReferralReserveXor": "XOR успешно зарезервированы",
-            "ReferralUnreserveXor": "XOR успешно выведены из резерва",
+            "ReferralReserveXor": "Зарезервировано {amount} XOR",
+            "ReferralUnreserveXor": "{amount} XOR успешно выведены из резерва",
             "ReferralSetInvitedUser": "{role} {address} успешно установлен",
             "SwapAndSend": "Совершен обмен {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Предоставлено {symbol} и {symbol2} {amount} LP токенов",
@@ -50,19 +48,19 @@
             "DemeterFarmingUnstakeToken": "Удалено {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} успешно получено",
             "EthBridgeIncoming": "{amount} {symbol} переведено из {Ethereum} в {Sora}",
-            "EthBridgeOutgoing": "{amount} {symbol} переведено из {Sora} в {Ethereum}"
+            "EthBridgeOutgoing": "{amount} {symbol} переведено из {Sora} в {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Не удалось {action} {amount} {symbol}",
             "Swap": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2}",
             "AddLiquidity": "Не удалось добавить {amount} {symbol} и {amount2} {symbol2}",
             "RemoveLiquidity": "Не удалось вывести {amount} {symbol} и {amount2} {symbol2}",
             "CreatePair": "Не удалось добавить {amount} {symbol} и {amount2} {symbol2}",
             "RegisterAsset": "Не удалось зарегистрировать {symbol} актив",
             "ClaimRewards": "Не удалось получить вознаграждения {rewards}",
-            "ReferralReserveXor": "Не удалось зарезервировать XOR",
-            "ReferralUnreserveXor": "Не удалось вывести XOR из резерва",
+            "ReferralReserveXor": "Не удалось зарезервировать {amount} XOR",
+            "ReferralUnreserveXor": "Не удалось вывести {amount} XOR из резерва",
             "ReferralSetInvitedUser": "Не удалось установить {role} {address}",
             "SwapAndSend": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Не удалось предоставить {amount} {symbol} и {symbol2} LP токены",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Не удалось удалить {amount} {symbol}",
             "DemeterFarmingGetRewards": "Не удалось получить {symbol}",
             "EthBridgeIncoming": "Не удалось перевести {amount} {symbol} из {Ethereum} в {Sora}",
-            "EthBridgeOutgoing": "Не удалось перевести {amount} {symbol} из {Sora} в {Ethereum}"
+            "EthBridgeOutgoing": "Не удалось перевести {amount} {symbol} из {Sora} в {Ethereum}",
+            "SwapTransferBatch": "Не удалось {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Отменить стейкинг токена",
         "DemeterFarmingGetRewards": "Получить награды",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Перевод"
     },
     "polkadotjs": {
         "noExtensions": "Расширение {PolkadotJs} не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Соединить {Sora} Сеть с:",
         "copy": "Скопировать адрес сети",
         "soraAddress": "{Sora} адрес",
-        "ethereumAddress": "{Ethereum} адрес"
+        "ethereumAddress": "{Ethereum} адрес",
+        "limitMessage": "В настоящее время существует {type} {amount} {symbol} для моста, обеспечивающая стабильность и безопасность сети {Sora}. Мы ценим ваше понимание."
     },
     "selectRegisteredAsset": {
         "title": "Выбрать токен",
@@ -1187,7 +1188,6 @@
     "acceptText": "Принять и скрыть",
     "newAccountsText": "Новые аккаунты",
     "dragAndDropText": "Перетащите или выберите файл {extension}",
-    "multipleRecipients": "Нескольким получателям",
     "copyPhraseText": "Скопировать парольную фразу",
     "stepText": "Шаг",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Перейдите в настройки",
         "btnAllow": "Разрешить доступ"
     },
-    "continueText": "Продолжать"
+    "continueText": "Продолжать",
+    "minAmountText": "мин. сумма",
+    "maxAmountText": "макс. сумма",
+    "exceededAmountText": "{amount} ограничена",
+    "multipleRecipients": "Нескольким получателям"
 }

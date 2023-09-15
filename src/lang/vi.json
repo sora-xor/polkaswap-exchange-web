@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Hoán đổi",
         "Transfer": "Chuyển",
-        "SwapTransferBatch": "{ADAR} Chuyển",
         "AddLiquidity": "Thêm thanh khoản",
         "RemoveLiquidity": "Rút thanh khoản",
         "CreatePair": "Tạo một cặp token",
@@ -33,15 +32,14 @@
         "andText": "và",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Đã hoán đổi {amount} {symbol} lấy {amount2} {symbol2}",
             "AddLiquidity": "Đã cung cấp {amount} {symbol} và {amount2} {symbol2}",
             "RemoveLiquidity": "Đã rút {amount} {symbol} và {amount2} {symbol2}",
             "CreatePair": "Đã cung cấp {amount} {symbol} và {amount2} {symbol2}",
             "RegisterAsset": "Đã đăng ký tài sản {symbol}",
             "ClaimRewards": "Đã yêu cầu thành công phần thưởng {rewards}",
-            "ReferralReserveXor": "Bonded XOR thành công",
-            "ReferralUnreserveXor": "Unbonded XOR thành công",
+            "ReferralReserveXor": "Ngoại quan {amount} XOR",
+            "ReferralUnreserveXor": "XOR {amount} không liên kết",
             "ReferralSetInvitedUser": "Thiết lập {role} {address} thành công",
             "SwapAndSend": "Đã hoán đổi {amount} {symbol} cho {amount2} {symbol2} và {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Đã cung cấp mã thông báo LP {symbol} và {symbol2} {amount}",
@@ -50,19 +48,19 @@
             "DemeterFarmingUnstakeToken": "Đã xóa {amount} {symbol}",
             "DemeterFarmingGetRewards": "Đã xác nhận quyền sở hữu {amount} {symbol} thành công",
             "EthBridgeIncoming": "Đã chuyển {amount} {symbol} từ {Ethereum} sang {Sora}",
-            "EthBridgeOutgoing": "Đã chuyển {amount} {symbol} từ {Sora} sang {Ethereum}"
+            "EthBridgeOutgoing": "Đã chuyển {amount} {symbol} từ {Sora} sang {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Không gửi được {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Không gửi được {action} {amount} {symbol}",
             "Swap": "Không hoán đổi được {amount} {symbol} lấy {amount2} {symbol2}",
             "AddLiquidity": "Không thể cung cấp được {amount} {symbol} và {amount2} {symbol2}",
             "RemoveLiquidity": "Không thể rút {amount} {symbol} và {amount2} {symbol2}",
             "CreatePair": "Không thể cung cấp được {amount} {symbol} và {amount2} {symbol2}",
             "RegisterAsset": "Không đăng ký được tài sản {symbol}",
             "ClaimRewards": "Không xác nhận được phần thưởng {rewards}",
-            "ReferralReserveXor": "Thất bại khi bond XOR",
-            "ReferralUnreserveXor": "Thất bại khi unbond XOR",
+            "ReferralReserveXor": "Không thể liên kết {amount} XOR",
+            "ReferralUnreserveXor": "Không thể hủy liên kết {amount} XOR",
             "ReferralSetInvitedUser": "Thất bại trong việc đặt {role} {address}",
             "SwapAndSend": "Thất bại trong việc hoán đổi {amount} {symbol} cho {amount2} {symbol2} và {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Thất bại trong việc cung cấp thanh khoản token {amount} {symbol} và {symbol2}",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Thất bại trong việc loại bỏ {amount} {symbol}",
             "DemeterFarmingGetRewards": "Không xác nhận được {symbol}",
             "EthBridgeIncoming": "Không chuyển được {amount} {symbol} từ {Ethereum} sang {Sora}",
-            "EthBridgeOutgoing": "Không chuyển được {amount} {symbol} từ {Sora} sang {Ethereum}"
+            "EthBridgeOutgoing": "Không chuyển được {amount} {symbol} từ {Sora} sang {Ethereum}",
+            "SwapTransferBatch": "Không gửi được {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Nhận phần thưởng",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Chuyển"
     },
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) {PolkadotJs}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Cầu nối Mạng {Sora} với:",
         "copy": "Sao chép địa chỉ mạng",
         "soraAddress": "địa chỉ {Sora}",
-        "ethereumAddress": "địa chỉ {Ethereum}"
+        "ethereumAddress": "địa chỉ {Ethereum}",
+        "limitMessage": "Hiện tại, có một {type} {amount} {symbol} để kết nối nhằm đảm bảo tính ổn định và bảo mật của Mạng {Sora} . Chúng tôi đánh giá cao sự hiểu biết của bạn."
     },
     "selectRegisteredAsset": {
         "title": "Chọn token",
@@ -1187,7 +1188,6 @@
     "acceptText": "Chấp nhận & Ẩn",
     "newAccountsText": "tài khoản mới",
     "dragAndDropText": "Kéo và thả hoặc chọn tệp {extension}",
-    "multipleRecipients": "Nhiều người nhận",
     "copyPhraseText": "Sao chép cụm mật khẩu",
     "stepText": "Bước chân",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Chuyển đến cài đặt",
         "btnAllow": "Cho phép truy cập"
     },
-    "continueText": "Tiếp tục"
+    "continueText": "Tiếp tục",
+    "minAmountText": "phút. số lượng",
+    "maxAmountText": "tối đa. số lượng",
+    "exceededAmountText": "vượt quá {amount}",
+    "multipleRecipients": "Nhiều người nhận"
 }

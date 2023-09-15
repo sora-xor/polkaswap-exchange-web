@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Swap",
         "Transfer": "Převod",
-        "SwapTransferBatch": "{ADAR} Převod",
         "AddLiquidity": "Přidat likviditu",
         "RemoveLiquidity": "Odebrat likviditu",
         "CreatePair": "Vytvořit pár",
@@ -33,15 +32,14 @@
         "andText": "a",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Proveden swap {amount} {symbol} za {amount2} {symbol2}",
             "AddLiquidity": "Přidáno {amount} {symbol} a {amount2} {symbol2}",
             "RemoveLiquidity": "Odebráno {amount} {symbol} a {amount2} {symbol2}",
             "CreatePair": "Vytvořeno {amount} {symbol} a {amount2} {symbol2}",
             "RegisterAsset": "Registrované aktivum {symbol}",
             "ClaimRewards": "Odměna byla úspěšně nárokována {rewards}.",
-            "ReferralReserveXor": "Vazba XOR byla úspěšná",
-            "ReferralUnreserveXor": "Zrušení vazby XOR bylo úspěšné",
+            "ReferralReserveXor": "Vázané {amount} XOR",
+            "ReferralUnreserveXor": "Nespojené {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} bylo úspěšně nastaveno",
             "SwapAndSend": "Vyměněno {amount} {symbol} za {amount2} {symbol2} a {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Dodáno {symbol} a {symbol2} {amount} LP tokenů",
@@ -50,19 +48,19 @@
             "DemeterFarmingUnstakeToken": "Odebráno {amount} {symbol}",
             "DemeterFarmingGetRewards": "Úspěšně nárokováno {amount} {symbol}",
             "EthBridgeIncoming": "Převedeno {amount} {symbol} z {Ethereum} do {Sora}",
-            "EthBridgeOutgoing": "Převedeno {amount} {symbol} z {Sora} do {Ethereum}"
+            "EthBridgeOutgoing": "Převedeno {amount} {symbol} z {Sora} do {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} se nezdařilo.",
-            "SwapTransferBatch": "{action} {amount} {symbol} se nezdařilo.",
             "Swap": "Swap {amount} {symbol} za {amount2} {symbol2} se nezdařil.",
             "AddLiquidity": "Přidání {amount} {symbol} a {amount2} {symbol2} se nezdařilo.",
             "RemoveLiquidity": "Odebrání {amount} {symbol} a {amount2} {symbol2} se nezdařilo.",
             "CreatePair": "Vytvoření {amount} {symbol} a {amount2} {symbol2} se nezdařilo.",
             "RegisterAsset": "Nepodařilo se zaregistrovat aktivum {symbol}",
             "ClaimRewards": "Nepodařilo se získat odměny {rewards}",
-            "ReferralReserveXor": "Vazba XOR se nezdařila",
-            "ReferralUnreserveXor": "Nepodařilo se zrušit vazbu XOR",
+            "ReferralReserveXor": "Nepodařilo se spojit {amount} XOR",
+            "ReferralUnreserveXor": "Nepodařilo se zrušit vazbu {amount} XOR",
             "ReferralSetInvitedUser": "Nepodařilo se nastavit {role} {address}",
             "SwapAndSend": "Nepodařilo se vyměnit {amount} {symbol} za {amount2} {symbol2} a {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Nepodařilo se dodat {amount} {symbol} a {symbol2} LP tokenů",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Nepodařilo se odebrat {amount} {symbol}",
             "DemeterFarmingGetRewards": "Nepodařilo se nárokovat {symbol}",
             "EthBridgeIncoming": "Nepodařilo se přenést {amount} {symbol} z {Ethereum} do {Sora}",
-            "EthBridgeOutgoing": "Nepodařilo se převést {amount} {symbol} z {Sora} do {Ethereum}"
+            "EthBridgeOutgoing": "Nepodařilo se převést {amount} {symbol} z {Sora} do {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol} se nezdařilo."
         },
         "ReferralReserveXor": "Vázat XOR",
         "ReferralUnreserveXor": "Zrušit vazbu XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Zrušit sázku",
         "DemeterFarmingGetRewards": "Nárokovat odměny",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Převod"
     },
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření {PolkadotJs}. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Přemostit {Sora} síť s:",
         "copy": "Zkopírujte síťovou adresu",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "limitMessage": "V současné době existuje {type} {amount} {symbol} pro přemostění, aby byla zajištěna stabilita a bezpečnost sítě {Sora}. Děkujeme za pochopení."
     },
     "selectRegisteredAsset": {
         "title": "Vyberte token",
@@ -1018,7 +1019,7 @@
         },
         "liquidityproxy": {
             "forbiddenfilter": "Vybraný zdroj likvidity není povolen",
-            "slippagenottolerated": "Dopad na cenu překročil vybranou hodnotu"     
+            "slippagenottolerated": "Dopad na cenu překročil vybranou hodnotu"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Nedostatečné finanční prostředky",
@@ -1187,7 +1188,6 @@
     "acceptText": "Přijmout a skrýt",
     "newAccountsText": "Nové účty",
     "dragAndDropText": "Přetáhněte nebo vyberte soubor {extension}",
-    "multipleRecipients": "Více příjemců",
     "copyPhraseText": "Zkopírovat heslovou frázi",
     "stepText": "Krok",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Jdi do nastavení",
         "btnAllow": "Povolit přístup"
     },
-    "continueText": "Pokračovat"
+    "continueText": "Pokračovat",
+    "minAmountText": "min. množství",
+    "maxAmountText": "max. množství",
+    "exceededAmountText": "{amount} překročeno",
+    "multipleRecipients": "Více příjemců"
 }
