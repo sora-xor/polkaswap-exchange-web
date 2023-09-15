@@ -52,13 +52,12 @@
 </template>
 
 <script lang="ts">
-import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Watch, Ref } from 'vue-property-decorator';
+import { Component, Mixins, Watch, Ref } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { VerificationStatus } from '@/types/card';
+import { UserInfo, VerificationStatus, CardUIViews, AttemptCounter } from '@/types/card';
 
 const MIN_PHONE_LENGTH_WITH_CODE = 8;
 const OTP_CODE_LENGTH = 6;
@@ -67,7 +66,8 @@ const RESEND_INTERVAL = 59;
 @Component
 export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.NotificationMixin) {
   @state.soraCard.authLogin private authLogin!: any;
-  @state.soraCard.hasFreeAttempts private hasFreeAttempts!: boolean;
+  @state.soraCard.userInfo userInfo!: UserInfo;
+  @state.soraCard.attemptCounter private attemptCounter!: AttemptCounter;
   @state.soraCard.wantsToPassKycAgain private wantsToPassKycAgain!: boolean;
   @state.wallet.settings.soraNetwork private soraNetwork!: WALLET_CONSTS.SoraNetwork;
 
@@ -77,10 +77,9 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
   @mutation.soraCard.setWillToPassKycAgain private setWillToPassKycAgain!: (boolean) => void;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
+  @action.soraCard.getUserIban private getUserIban!: AsyncFnWithoutArgs;
   @action.soraCard.initPayWingsAuthSdk private initPayWingsAuthSdk!: AsyncFnWithoutArgs;
   @action.soraCard.getUserKycAttempt private getUserKycAttempt!: AsyncFnWithoutArgs;
-
-  @Prop({ default: false, type: Boolean }) readonly userApplied!: boolean;
 
   @Ref('code') private readonly inputCode!: HTMLInputElement;
   @Ref('phone') private readonly inputPhone!: HTMLInputElement;
@@ -90,7 +89,6 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
   private phoneNumberInternal = '';
   private smsCountDown = '';
   private smsResendCount = RESEND_INTERVAL;
-  private notPassedKycAndNotHasXorEnough = false;
 
   verificationCode = '';
   smsSent = false;
@@ -103,13 +101,8 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
     this.smsCountDown = `0:${digit}${value}`;
   }
 
-  @Watch('isEuroBalanceEnough', { immediate: true })
-  private handleXorDeposit(isEnough: boolean): void {
-    if (isEnough) {
-      this.notPassedKycAndNotHasXorEnough = false;
-      this.verificationCode = '';
-      this.smsSent = false;
-    }
+  get hasFreeAttempts() {
+    return this.attemptCounter.hasFreeAttempts;
   }
 
   verifyCode(): void {
@@ -162,20 +155,16 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
   }
 
   get buttonDisabled() {
-    return this.verificationCode.length !== OTP_CODE_LENGTH || this.notPassedKycAndNotHasXorEnough;
+    return this.verificationCode.length !== OTP_CODE_LENGTH;
   }
 
   get otpInputDisabled(): boolean {
-    return !this.smsSent || !this.isPhoneNumberValid || this.notFoundPhoneWhenApplied;
+    return !this.smsSent || !this.isPhoneNumberValid;
   }
 
   get buttonText(): string {
     if (this.verificationCode.length !== OTP_CODE_LENGTH) {
       return this.t('card.enterCodeBtn');
-    }
-
-    if (this.notPassedKycAndNotHasXorEnough) {
-      return this.t('insufficientBalanceText', { tokenSymbol: XOR.symbol });
     }
 
     return this.t('card.confirmCodeBtn');
@@ -188,10 +177,6 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
   get sendSmsButtonText(): string {
     if (this.smsSent) return this.t('card.resendInBtn', { value: this.smsCountDown });
     return this.t('card.sendCodeBtn');
-  }
-
-  get isMainnet(): boolean {
-    return this.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod;
   }
 
   get isPhoneNumberValid(): boolean {
@@ -209,7 +194,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
 
   get phoneInputDescription(): string {
     if (this.smsSent) {
-      return this.isMainnet ? this.t('card.phoneInputAfterSendDesc') : 'Your code for testing purposes: 123456';
+      return this.t('card.phoneInputAfterSendDesc');
     }
     return this.t('card.phoneInputBeforeSendDesc');
   }
@@ -221,7 +206,6 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
       if (this.smsResendCount < 0) {
         this.smsSent = false;
         this.verificationCode = '';
-        this.notFoundPhoneWhenApplied = false;
         this.smsResendCount = RESEND_INTERVAL;
         clearInterval(interval);
       }
@@ -246,98 +230,58 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
         });
       })
       .on('MinimalRegistrationReq', () => {
+        // 1. User does not have email attached.
+        // 2. User does not have KYC passed bound to the entered phone number.
+
         this.sendOtpBtnLoading = false;
-
-        if (this.userApplied) {
-          this.showAppNotification(this.t('card.userNotFound'), 'info');
-          this.notFoundPhoneWhenApplied = true;
-          this.verificationCode = '';
-          return;
-        }
-
-        if (!this.isEuroBalanceEnough) {
-          this.notPassedKycAndNotHasXorEnough = true;
-
-          return;
-        }
-
-        const state = {
-          goToEmail: true,
-          startKyc: false,
-          showBanner: false,
-        };
-
-        this.$emit('confirm', state);
+        this.$emit('confirm', CardUIViews.Email);
         this.sendOtpBtnLoading = false;
       })
       .on('Otp-Verification-Success', async () => {
+        // 1. User has email and phone attached.
+        // 2. KYC result is unknown, needs to be checked.
+
         await this.getUserStatus();
 
         if (this.currentStatus === VerificationStatus.Rejected) {
           await this.getUserKycAttempt();
 
           if (this.wantsToPassKycAgain && this.hasFreeAttempts) {
-            const state = {
-              goToEmail: false,
-              startKyc: true,
-              showBanner: false,
-            };
-
-            this.$emit('confirm', state);
+            this.$emit('confirm', CardUIViews.Kyc);
             this.setWillToPassKycAgain(false);
             return;
           }
+
+          this.$emit('confirm', CardUIViews.KycResult);
+          return;
+        }
+
+        if (this.currentStatus === VerificationStatus.Accepted) {
+          await this.getUserIban();
+
+          if (this.userInfo.iban) {
+            this.$emit('confirm', CardUIViews.Dashboard);
+          } else {
+            this.$emit('confirm', CardUIViews.KycResult);
+          }
+        }
+
+        if (this.currentStatus === VerificationStatus.Pending) {
+          this.$emit('confirm', CardUIViews.KycResult);
+          return;
         }
 
         if (!this.currentStatus) {
-          if (this.userApplied) {
-            this.showAppNotification(this.t('card.infoMessageNoKYC'), 'info');
+          if (this.isEuroBalanceEnough) {
+            this.$emit('confirm', CardUIViews.Kyc);
+          } else {
+            this.$emit('confirm', CardUIViews.Payment);
           }
-
-          if (!this.isEuroBalanceEnough) {
-            this.notPassedKycAndNotHasXorEnough = true;
-            this.sendOtpBtnLoading = false;
-
-            return;
-          }
-
-          const state = {
-            goToEmail: false,
-            startKyc: true,
-            showBanner: false,
-          };
-
-          this.$emit('confirm', state);
-        } else {
-          const state = {
-            goToEmail: false,
-            startKyc: false,
-            showBanner: true,
-          };
-
-          this.$emit('confirm', state);
         }
       })
       .on('Verification-Email-Sent-Success', () => {
         this.sendOtpBtnLoading = false;
-
-        if (this.userApplied) {
-          this.showAppNotification(this.t('card.infoMessageNoKYC'), 'info');
-        }
-
-        if (!this.isEuroBalanceEnough) {
-          this.notPassedKycAndNotHasXorEnough = true;
-
-          return;
-        }
-
-        const state = {
-          goToEmail: true,
-          startKyc: false,
-          showBanner: false,
-        };
-
-        this.$emit('confirm', state);
+        this.$emit('confirm', CardUIViews.Email);
         this.sendOtpBtnLoading = false;
       });
   }
