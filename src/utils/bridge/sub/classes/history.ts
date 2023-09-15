@@ -290,7 +290,7 @@ class SubBridgeHistory extends SubNetworksConnector {
           history.externalBlockId = blockId;
           history.externalBlockHeight = n;
           history.to = subBridgeApi.formatAddress(extrinsic.signer.toString());
-          break;
+          return;
         } catch {
           continue;
         }

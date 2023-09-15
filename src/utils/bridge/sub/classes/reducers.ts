@@ -256,7 +256,9 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
             parachainBlockId: blockId, // parachain block hash
           })
         )
-        .finally(() => this.closeConnector());
+        .finally(() => {
+          this.closeConnector();
+        });
     }
 
     const { payload: prevPayload } = this.getTransaction(id);
@@ -480,7 +482,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             parachainBlockId: blockId, // parachain block hash
           })
         )
-        .finally(() => this.connector.parachainAdapter.stop());
+        .finally(() => {
+          this.connector.parachainAdapter.stop();
+        });
     }
 
     const payload = { ...tx.payload, messageHash };
@@ -551,7 +555,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             externalBlockId: blockId, // parachain block hash
           })
         )
-        .finally(() => this.connector.networkAdapter.stop());
+        .finally(() => {
+          this.connector.networkAdapter.stop();
+        });
     }
 
     const received = FPNumber.fromCodecValue(amount, this.asset.externalDecimals);
