@@ -42,13 +42,16 @@ import EmailValidator from 'email-validator';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
+import { CardUIViews } from '@/types/card';
 
 const RESEND_INTERVAL = 59;
 
 @Component
 export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.soraCard.authLogin private authLogin!: any;
+
+  @getter.soraCard.isEuroBalanceEnough private isEuroBalanceEnough!: boolean;
 
   private emailCountDown = '';
   private prefilledEmail = '';
@@ -189,7 +192,11 @@ export default class SmsCode extends Mixins(TranslationMixin, mixins.LoadingMixi
       })
       .on('Email-verified', () => {
         this.unconfirmedEmail = '';
-        this.$emit('confirm');
+        if (this.isEuroBalanceEnough) {
+          this.$emit('confirm', CardUIViews.Kyc);
+        } else {
+          this.$emit('confirm', CardUIViews.Payment);
+        }
       });
   }
 }

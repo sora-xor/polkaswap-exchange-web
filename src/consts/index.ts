@@ -83,6 +83,7 @@ export const Links = {
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
   releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
   demeterFarmingPlatform: 'https://farming.deotoken.io/',
+  soraCardSupportChannel: 'https://t.me/soracardofficial',
   xstArticle: 'https://medium.com/sora-xor/xst-a-platform-for-synthetic-assets-on-sora-b45ca526d8d5',
 };
 
@@ -161,16 +162,18 @@ export enum Components {
   SelectNode = 'App/Footer/Node/SelectNode',
   NodeInfo = 'App/Footer/Node/NodeInfo',
   // SORA Card
-  SoraCard = 'SoraCard',
-  SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
-  SoraCardKYC = 'SoraCard/SoraCardKYC',
-  ConfirmationInfo = 'SoraCard/ConfirmationInfo',
-  TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
-  ToSDialog = 'SoraCard/steps/ToSDialog',
-  RoadMap = 'SoraCard/steps/RoadMap',
-  Phone = 'SoraCard/steps/Phone',
-  Email = 'SoraCard/steps/Email',
-  KycView = 'SoraCard/steps/KycView',
+  Dashboard = 'pages/SoraCard/Dashboard/Dashboard',
+  BalanceIndicator = 'pages/SoraCard/common/BalanceIndicator',
+  SoraCardIntroPage = 'pages/SoraCard/SoraCardIntroPage',
+  SoraCardKYC = 'pages/SoraCard/SoraCardKYC',
+  ConfirmationInfo = 'pages/SoraCard/ConfirmationInfo',
+  TermsAndConditions = 'pages/SoraCard/steps/TermsAndConditions',
+  ToSDialog = 'pages/SoraCard/steps/ToSDialog',
+  Phone = 'pages/SoraCard/steps/Phone',
+  Email = 'pages/SoraCard/steps/Email',
+  Payment = 'pages/SoraCard/steps/Payment',
+  Guidance = 'pages/SoraCard/steps/Guidance',
+  KycView = 'pages/SoraCard/steps/KycView',
   // Paywings
   PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
   // Add Liquidity Page

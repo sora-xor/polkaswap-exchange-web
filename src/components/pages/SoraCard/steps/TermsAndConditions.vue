@@ -1,5 +1,8 @@
 <template>
   <div class="tos" v-loading="parentLoading">
+    <p class="tos__pre-disclaimer">
+      {{ t('card.termsAndConditionsPreDisclaimer') }}
+    </p>
     <div class="tos__disclaimer">
       <h4 class="tos__disclaimer-header">{{ t('disclaimerTitle') }}</h4>
       <p class="tos__disclaimer-paragraph">
@@ -25,6 +28,7 @@
         <s-icon name="arrows-circle-chevron-right-24" size="18px" class="tos__section-icon" />
       </div>
     </div>
+    <p class="tos__continue-block">{{ t('card.termsAndConditionsWarning') }}</p>
     <s-button type="primary" class="sora-card__btn s-typography-button--large" @click="handleConfirmToS">
       <span class="text">{{ t('card.acceptAndContinue') }}</span>
     </s-button>
@@ -93,48 +97,18 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
 
 <style lang="scss" scoped>
 .tos {
-  &__disclaimer {
-    width: 100%;
-    background-color: var(--s-color-base-background);
-    border-radius: var(--s-border-radius-small);
-    box-shadow: var(--s-shadow-dialog);
-    padding: 20px $basic-spacing;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &__pre-disclaimer {
+    font-size: var(--s-font-size-small);
     margin-bottom: $basic-spacing;
-    position: relative;
-
-    &-header {
-      font-weight: 500;
-      margin-bottom: 10px;
-    }
-
-    &-paragraph {
-      color: var(--s-color-base-content-secondary);
-      margin-bottom: calc(var(--s-basic-spacing) / 2);
-    }
-
-    &-warning.icon {
-      position: absolute;
-      background-color: #479aef;
-      border: 2.25257px solid #f7f3f4;
-      box-shadow: var(--s-shadow-element-pressed);
-      top: 20px;
-      right: 20px;
-      border-radius: 50%;
-      color: #fff;
-      width: 46px;
-      height: 46px;
-
-      .s-icon-notifications-alert-triangle-24 {
-        display: block;
-        color: #fff;
-        margin-top: 5px;
-        margin-left: 7px;
-      }
-    }
-
-    * {
-      width: 85%;
-    }
+    text-align: center;
+    font-weight: 300;
+    line-height: 150%;
+    letter-spacing: -0.02em;
+    width: 95%;
   }
 
   &__section {
@@ -182,6 +156,11 @@ export default class TermsAndConditions extends Mixins(TranslationMixin, mixins.
       margin-bottom: var(--s-size-mini);
       padding-right: var(--s-size-mini);
     }
+  }
+
+  &__continue-block {
+    margin: 0 20px;
+    text-align: center;
   }
 
   .sora-card__btn {
