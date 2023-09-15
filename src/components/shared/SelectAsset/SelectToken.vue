@@ -137,15 +137,10 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     let whiteList: Array<Asset> = [];
     if (this.isAddLiquidity) {
       whiteList = this.isFirstTokenSelected
-        ? this.mainLPSources.filter(
-            (asset) => !(this.asset?.address === XST.address && asset.address === XSTUSD.address)
-          ) // XSTUSD-XST isn't allowed
+        ? this.mainLPSources
         : this.whitelistAssets.filter((asset) => {
-            if (this.asset?.address === XSTUSD.address && [XOR.address, XST.address].includes(asset.address)) {
-              return false; // XSTUSD-XOR & XSTUSD-XST aren't allowed
-            }
-            if (syntheticAssetRegexp.test(asset.address)) {
-              return false; // synthetic pairs aren't allowed
+            if (this.asset?.address === XSTUSD.address && asset.address === XOR.address) {
+              return false; // XSTUSD-XOR isn't allowed
             }
             return true;
           });
