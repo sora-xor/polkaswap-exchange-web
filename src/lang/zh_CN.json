@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "兑换",
         "Transfer": "转账",
-        "SwapTransferBatch": "{ADAR} 转账",
         "AddLiquidity": "增加流动性",
         "RemoveLiquidity": "移除流动性",
         "CreatePair": "创建流动性对",
@@ -33,7 +32,6 @@
         "andText": "和",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "已把{amount} {symbol}兑换为{amount2} {symbol2}",
             "AddLiquidity": "已提供{amount} {symbol}和{amount2} {symbol2}",
             "RemoveLiquidity": "已删除{amount} {symbol}和{amount2} {symbol2}",
@@ -50,11 +48,11 @@
             "DemeterFarmingUnstakeToken": "已移除{amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol}成功申领",
             "EthBridgeIncoming": "将{amount} {symbol}从 {Ethereum} 转移到 {Sora}",
-            "EthBridgeOutgoing": "将{amount} {symbol}从 {Sora} 转移到 {Ethereum}"
+            "EthBridgeOutgoing": "将{amount} {symbol}从 {Sora} 转移到 {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
-            "SwapTransferBatch": "{action} {amount} {symbol}失败",
             "Swap": "未能将{amount} {symbol}交换为{amount2} {symbol2}",
             "AddLiquidity": "未能提供{amount} {symbol}和{amount2} {symbol2}",
             "RemoveLiquidity": "未能删除{amount} {symbol}和{amount2} {symbol2}",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "移除失败{amount} {symbol}",
             "DemeterFarmingGetRewards": "申领失败{symbol}",
             "EthBridgeIncoming": "将{amount} {symbol}从 {Ethereum} 转移到 {Sora} 失败",
-            "EthBridgeOutgoing": "将{amount} {symbol}从 {Sora} 转移到 {Ethereum} 失败"
+            "EthBridgeOutgoing": "将{amount} {symbol}从 {Sora} 转移到 {Ethereum} 失败",
+            "SwapTransferBatch": "{action} {amount} {symbol}失败"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "未质押代币",
         "DemeterFarmingGetRewards": "申领奖励",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} 转账"
     },
     "polkadotjs": {
         "noExtensions": "没有找到 {PolkadotJs} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "与 {Sora} 网络桥接：",
         "copy": "复制网络地址",
         "soraAddress": "{Sora} 地址",
-        "ethereumAddress": "{Ethereum} 地址"
+        "ethereumAddress": "{Ethereum} 地址",
+        "limitMessage": "目前，有一个{type} {amount} {symbol}用于桥接，以确保 {Sora} 网络的稳定性和安全性。我们感谢您的理解。"
     },
     "selectRegisteredAsset": {
         "title": "选择一个代币",
@@ -1187,7 +1188,6 @@
     "acceptText": "接受并隐藏",
     "newAccountsText": "新帐户",
     "dragAndDropText": "拖放或选择{extension}文件",
-    "multipleRecipients": "多个接收方",
     "copyPhraseText": "复制密码短语",
     "stepText": "步骤",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "前往设置",
         "btnAllow": "允许访问"
     },
-    "continueText": "继续"
+    "continueText": "继续",
+    "minAmountText": "分钟。数量",
+    "maxAmountText": "最大限度。数量",
+    "exceededAmountText": "超出{amount}",
+    "multipleRecipients": "多个接收方"
 }

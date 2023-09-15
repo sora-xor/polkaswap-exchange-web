@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Byt",
         "Transfer": "Överför",
-        "SwapTransferBatch": "{ADAR} Överför",
         "AddLiquidity": "Lägg Till Likviditet",
         "RemoveLiquidity": "Ta Bort Likviditet",
         "CreatePair": "Skapa Par",
@@ -33,7 +32,6 @@
         "andText": "och",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Bytte {amount} {symbol} för {amount2} {symbol2}",
             "AddLiquidity": "Tillhandahöll {amount} {symbol} och {amount2} {symbol2}",
             "RemoveLiquidity": "Tog bort {amount} {symbol} och {amount2} {symbol2}",
@@ -50,11 +48,11 @@
             "DemeterFarmingUnstakeToken": "Tog bort {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} har gjort anspråk",
             "EthBridgeIncoming": "Överförde {amount} {symbol} från {Ethereum} till {Sora}",
-            "EthBridgeOutgoing": "Överförde {amount} {symbol} från {Sora} till {Ethereum}"
+            "EthBridgeOutgoing": "Överförde {amount} {symbol} från {Sora} till {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Det gick inte att {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Det gick inte att {action} {amount} {symbol}",
             "Swap": "Misslyckades med att byta {amount} {symbol} för {amount2} {symbol2}",
             "AddLiquidity": "Misslyckades med att tillhandahålla {amount} {symbol} och {amount2} {symbol2}",
             "RemoveLiquidity": "Misslyckades med att ta bort {amount} {symbol} och {amount2} {symbol2}",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Det gick inte att ta bort {amount} {symbol}",
             "DemeterFarmingGetRewards": "Det gick inte att göra anspråk på {symbol}",
             "EthBridgeIncoming": "Det gick inte att överföra {amount} {symbol} från {Ethereum} till {Sora}",
-            "EthBridgeOutgoing": "Det gick inte att överföra {amount} {symbol} från {Sora} till {Ethereum}"
+            "EthBridgeOutgoing": "Det gick inte att överföra {amount} {symbol} från {Sora} till {Ethereum}",
+            "SwapTransferBatch": "Det gick inte att {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Gör Anspråk på Belöningar",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Överför"
     },
     "polkadotjs": {
         "noExtensions": "Inget {PolkadotJs} tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Brygga {Sora} Nätverk med:",
         "copy": "Kopiera nätverksadress",
         "soraAddress": "{Sora} adress",
-        "ethereumAddress": "{Ethereum} adress"
+        "ethereumAddress": "{Ethereum} adress",
+        "limitMessage": "För närvarande finns det en {type} {amount} {symbol} för överbryggning för att säkerställa stabiliteten och säkerheten i {Sora} -nätverket. Vi uppskattar din förståelse."
     },
     "selectRegisteredAsset": {
         "title": "Välj en token",
@@ -1187,7 +1188,6 @@
     "acceptText": "Acceptera och dölj",
     "newAccountsText": "Nya konton",
     "dragAndDropText": "Dra och släpp eller välj filen {extension}",
-    "multipleRecipients": "Flera mottagare",
     "copyPhraseText": "Kopiera lösenfras",
     "stepText": "Steg",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Gå till Inställningar",
         "btnAllow": "Tillåta åtkomst"
     },
-    "continueText": "Fortsätta"
+    "continueText": "Fortsätta",
+    "minAmountText": "min. belopp",
+    "maxAmountText": "max. belopp",
+    "exceededAmountText": "{amount} har överskridits",
+    "multipleRecipients": "Flera mottagare"
 }

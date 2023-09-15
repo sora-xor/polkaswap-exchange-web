@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Váltás",
         "Transfer": "Átvitel",
-        "SwapTransferBatch": "{ADAR} Átvitel",
         "AddLiquidity": "Hozzáadás",
         "RemoveLiquidity": "Eltávolítás",
         "CreatePair": "Pár létrehozása",
@@ -33,7 +32,6 @@
         "andText": "és",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "{amount} {symbol} átváltva {amount2} {symbol2}-ra",
             "AddLiquidity": "{amount} {symbol} és {amount2} {symbol2} hozzáadva",
             "RemoveLiquidity": "{amount} {symbol} és {amount2} {symbol2} eltávolítva",
@@ -50,11 +48,11 @@
             "DemeterFarmingUnstakeToken": "{amount} {symbol} eltávolítva",
             "DemeterFarmingGetRewards": "{amount} {symbol} sikeres követelés",
             "EthBridgeIncoming": "{amount} {symbol} áthelyezve {Ethereum} {Sora}",
-            "EthBridgeOutgoing": "{amount} {symbol} áthelyezve {Sora} {Ethereum}"
+            "EthBridgeOutgoing": "{amount} {symbol} áthelyezve {Sora} {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Nem sikerült {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Nem sikerült {action} {amount} {symbol}",
             "Swap": "Nem sikerült felváltani a {amount} {symbol} -t {amount2} {symbol2}-re",
             "AddLiquidity": "Nem sikerült hozzáadni a {amount} {symbol} és {amount2} {symbol2}",
             "RemoveLiquidity": "Nem sikerült eltávolítani a {amount} {symbol} és a {amount2} {symbol2}",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Nem sikerült eltávolítani {amount} {symbol}",
             "DemeterFarmingGetRewards": "A(z {symbol} igénylése sikertelen",
             "EthBridgeIncoming": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a {Ethereum} és a {Sora} címre",
-            "EthBridgeOutgoing": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a {Sora} és a {Ethereum} címre"
+            "EthBridgeOutgoing": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a {Sora} és a {Ethereum} címre",
+            "SwapTransferBatch": "Nem sikerült {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Jutalmak igénylése",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Átvitel"
     },
     "polkadotjs": {
         "noExtensions": "Nem találtunk {PolkadotJs} kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "{Sora} hálózati híd a következőkkel:",
         "copy": "Hálózati cím másolása",
         "soraAddress": "{Sora} cím",
-        "ethereumAddress": "{Ethereum} cím"
+        "ethereumAddress": "{Ethereum} cím",
+        "limitMessage": "Jelenleg létezik egy {type} {amount} {symbol} áthidalás, amely biztosítja a {Sora} hálózat stabilitását és biztonságát. Köszönjük megértését."
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",
@@ -1187,7 +1188,6 @@
     "acceptText": "Elfogadás és elrejtés",
     "newAccountsText": "Új fiókok",
     "dragAndDropText": "Fogd és vidd, vagy válasszon {extension} fájlt",
-    "multipleRecipients": "Több címzett",
     "copyPhraseText": "Jelszó másolása",
     "stepText": "Lépés",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Menj a beállításokhoz",
         "btnAllow": "Hozzáférést enged"
     },
-    "continueText": "Folytatni"
+    "continueText": "Folytatni",
+    "minAmountText": "min. összeg",
+    "maxAmountText": "max. összeg",
+    "exceededAmountText": "{amount} túllépve",
+    "multipleRecipients": "Több címzett"
 }

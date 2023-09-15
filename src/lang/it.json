@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Scambia",
         "Transfer": "Trasferimento",
-        "SwapTransferBatch": "{ADAR} Trasferimento",
         "AddLiquidity": "Aggiungi liquidità",
         "RemoveLiquidity": "Rimuovi liquidità",
         "CreatePair": "Crea una Pair",
@@ -33,7 +32,6 @@
         "andText": "e",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Scambiato {amount} {symbol} con {amount2} {symbol2}",
             "AddLiquidity": "Fornito {amount} {symbol} e {amount2} {symbol2}",
             "RemoveLiquidity": "Rimossi {amount} {symbol} e {amount2} {symbol2}",
@@ -50,11 +48,11 @@
             "DemeterFarmingUnstakeToken": "{amount} {symbol} rimosso",
             "DemeterFarmingGetRewards": "{amount} {symbol} rivendicato con successo",
             "EthBridgeIncoming": "Trasferito {amount} {symbol} da {Ethereum} a {Sora}",
-            "EthBridgeOutgoing": "Trasferito {amount} {symbol} da {Sora} a {Ethereum}"
+            "EthBridgeOutgoing": "Trasferito {amount} {symbol} da {Sora} a {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Impossibile {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Impossibile {action} {amount} {symbol}",
             "Swap": "Impossibile scambiare {amount} {symbol} con {amount2} {symbol2}",
             "AddLiquidity": "Impossibile fornire {amount} {symbol} e {amount2} {symbol2}",
             "RemoveLiquidity": "Impossibile rimuovere {amount} {symbol} e {amount2} {symbol2}",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Impossibile rimuovere {amount} {symbol}",
             "DemeterFarmingGetRewards": "Impossibile rivendicare {symbol}",
             "EthBridgeIncoming": "Impossibile trasferire {amount} {symbol} da {Ethereum} a {Sora}",
-            "EthBridgeOutgoing": "Impossibile trasferire {amount} {symbol} da {Sora} a {Ethereum}"
+            "EthBridgeOutgoing": "Impossibile trasferire {amount} {symbol} da {Sora} a {Ethereum}",
+            "SwapTransferBatch": "Impossibile {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Token distake",
         "DemeterFarmingGetRewards": "Richiedi ricompense",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Trasferimento"
     },
     "polkadotjs": {
         "noExtensions": "Nessuna estensione {PolkadotJs} trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Bridge {Sora} Network con:",
         "copy": "Copia l'indirizzo di rete",
         "soraAddress": "{Sora} indirizzo",
-        "ethereumAddress": "{Ethereum} indirizzo"
+        "ethereumAddress": "{Ethereum} indirizzo",
+        "limitMessage": "Attualmente, esiste un {type} {amount} {symbol} per il bridging per garantire la stabilità e la sicurezza della rete {Sora} . Apprezziamo la tua comprensione."
     },
     "selectRegisteredAsset": {
         "title": "Seleziona un token",
@@ -1187,7 +1188,6 @@
     "acceptText": "Accetta e nascondi",
     "newAccountsText": "Nuovi account",
     "dragAndDropText": "Trascina e rilascia o scegli il file {extension}",
-    "multipleRecipients": "Destinatari multipli",
     "copyPhraseText": "Copia Frase Segreta",
     "stepText": "Fare un passo",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Vai alle impostazioni",
         "btnAllow": "Consentire l'accesso"
     },
-    "continueText": "Continua"
+    "continueText": "Continua",
+    "minAmountText": "min. quantità",
+    "maxAmountText": "massimo quantità",
+    "exceededAmountText": "{amount} superato",
+    "multipleRecipients": "Destinatari multipli"
 }

@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Zameniť",
         "Transfer": "Prevod",
-        "SwapTransferBatch": "{ADAR} Prevod",
         "AddLiquidity": "Pridať likviditu",
         "RemoveLiquidity": "Odobrať likviditu",
         "CreatePair": "Vytvoriť pár",
@@ -33,7 +32,6 @@
         "andText": "a",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Zamenené {amount} {symbol} za {amount2} {symbol2}",
             "AddLiquidity": "Pridané {amount} {symbol} a {amount2} {symbol2}",
             "RemoveLiquidity": "Odobrané {amount} {symbol} a {amount2} {symbol2}",
@@ -50,11 +48,11 @@
             "DemeterFarmingUnstakeToken": "Odstránené {amount} {symbol}",
             "DemeterFarmingGetRewards": "Úspešne nárokované {amount} {symbol}",
             "EthBridgeIncoming": "Prevedené {amount} {symbol} z {Ethereum} do {Sora}",
-            "EthBridgeOutgoing": "Prevedené {amount} {symbol} z {Sora} do {Ethereum}"
+            "EthBridgeOutgoing": "Prevedené {amount} {symbol} z {Sora} do {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Nepodarilo sa {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Nepodarilo sa {action} {amount} {symbol}",
             "Swap": "Nepodarilo sa zameniť {amount} {symbol} za {amount2} {symbol2}",
             "AddLiquidity": "Nepodarilo sa pridať {amount} {symbol} a {amount2} {symbol2}",
             "RemoveLiquidity": "Nepodarilo sa odobrať {amount} {symbol} a {amount2} {symbol2}",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Nepodarilo sa odstrániť {amount} {symbol}",
             "DemeterFarmingGetRewards": "Nepodarilo sa nárokovať {symbol}",
             "EthBridgeIncoming": "Nepodarilo sa preniesť {amount} {symbol} z {Ethereum} do {Sora}",
-            "EthBridgeOutgoing": "Nepodarilo sa preniesť {amount} {symbol} z {Sora} do {Ethereum}"
+            "EthBridgeOutgoing": "Nepodarilo sa preniesť {amount} {symbol} z {Sora} do {Ethereum}",
+            "SwapTransferBatch": "Nepodarilo sa {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Zrušiť vklad",
         "DemeterFarmingGetRewards": "Nárokovať odmeny",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Prevod"
     },
     "polkadotjs": {
         "noExtensions": "Rozšírenie {PolkadotJs} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Prepojiť {Sora} sieť s:",
         "copy": "Skopírujte sieťovú adresu",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "limitMessage": "V súčasnosti existuje {type} {amount} {symbol} na premostenie na zaistenie stability a bezpečnosti siete {Sora}. Ďakujeme za pochopenie."
     },
     "selectRegisteredAsset": {
         "title": "Vybrať token",
@@ -1187,7 +1188,6 @@
     "acceptText": "Prijať a skryť",
     "newAccountsText": "Nové účty",
     "dragAndDropText": "Presuňte myšou alebo vyberte súbor {extension}",
-    "multipleRecipients": "Viacerí prijímatelia",
     "copyPhraseText": "Kopírovať heslovú frázu",
     "stepText": "Krok",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Choď do nastavení",
         "btnAllow": "Povoliť prístup"
     },
-    "continueText": "ďalej"
+    "continueText": "ďalej",
+    "minAmountText": "min. čiastka",
+    "maxAmountText": "max. čiastka",
+    "exceededAmountText": "{amount} bola prekročená",
+    "multipleRecipients": "Viacerí prijímatelia"
 }

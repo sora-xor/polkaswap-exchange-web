@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Intercambiar",
         "Transfer": "Transferir",
-        "SwapTransferBatch": "{ADAR} Transferir",
         "AddLiquidity": "Añadir Liquidez",
         "RemoveLiquidity": "Remover Liquidez",
         "CreatePair": "Crear Par",
@@ -33,7 +32,6 @@
         "andText": "y",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Se intercambió {amount} {symbol} por {amount2} {symbol2}",
             "AddLiquidity": "Se proporcionó {amount} {symbol} y {amount2} {symbol2}",
             "RemoveLiquidity": "Se eliminó {amount} {symbol} y {amount2} {symbol2}",
@@ -50,11 +48,11 @@
             "DemeterFarmingUnstakeToken": "Eliminado {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} reclamado con éxito",
             "EthBridgeIncoming": "Transferido {amount} {symbol} de {Ethereum} a {Sora}",
-            "EthBridgeOutgoing": "Transferido {amount} {symbol} de {Sora} a {Ethereum}"
+            "EthBridgeOutgoing": "Transferido {amount} {symbol} de {Sora} a {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Fallo en {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Fallo en {action} {amount} {symbol}",
             "Swap": "Fallo al intercambiar {amount} {symbol} por {amount2} {symbol2}",
             "AddLiquidity": "Fallo al suministrar {amount} {symbol} y {amount2} {symbol2}",
             "RemoveLiquidity": "Fallo al eliminar {amount} {symbol} y {amount2} {symbol2}",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Error al quitar {amount} {symbol}",
             "DemeterFarmingGetRewards": "Error al reclamar {symbol}",
             "EthBridgeIncoming": "Error al transferir {amount} {symbol} de {Ethereum} a {Sora}",
-            "EthBridgeOutgoing": "Error al transferir {amount} {symbol} de {Sora} a {Ethereum}"
+            "EthBridgeOutgoing": "Error al transferir {amount} {symbol} de {Sora} a {Ethereum}",
+            "SwapTransferBatch": "Fallo en {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Vincular XOR",
         "ReferralUnreserveXor": "Desvincular XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Remover Token",
         "DemeterFarmingGetRewards": "Reclamar Recompensas",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Transferir"
     },
     "polkadotjs": {
         "noExtensions": "No se encontró la extensión {PolkadotJs}. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Puente de la red {Sora} con:",
         "copy": "Copiar dirección de red",
         "soraAddress": "Dirección de {Sora}",
-        "ethereumAddress": "dirección {Ethereum}"
+        "ethereumAddress": "dirección {Ethereum}",
+        "limitMessage": "Actualmente, existe un {type} {amount} {symbol} para establecer puentes para garantizar la estabilidad y seguridad de la red {Sora} . apreciamos su comprensión."
     },
     "selectRegisteredAsset": {
         "title": "Seleccione un Token",
@@ -1187,7 +1188,6 @@
     "acceptText": "Aceptar y ocultar",
     "newAccountsText": "Nuevas cuentas",
     "dragAndDropText": "Arrastrar y soltar o elegir el archivo {extension}",
-    "multipleRecipients": "Múltiples destinatarios",
     "copyPhraseText": "Copiar Frase de Contraseña",
     "stepText": "Paso",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Ir a la configuración",
         "btnAllow": "Permitir el acceso"
     },
-    "continueText": "Continuar"
+    "continueText": "Continuar",
+    "minAmountText": "mín. cantidad",
+    "maxAmountText": "máx. cantidad",
+    "exceededAmountText": "{amount} superada",
+    "multipleRecipients": "Múltiples destinatarios"
 }

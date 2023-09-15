@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Zamień",
         "Transfer": "Transfer",
-        "SwapTransferBatch": "{ADAR} Transfer",
         "AddLiquidity": "Dodaj płynność",
         "RemoveLiquidity": "Usuń płynność",
         "CreatePair": "Utwórz parę",
@@ -33,7 +32,6 @@
         "andText": "i",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Zamieniono {amount} {symbol} na {amount2} {symbol2}",
             "AddLiquidity": "Dodano {amount} {symbol} i {amount2} {symbol2}",
             "RemoveLiquidity": "Usunięto {amount} {symbol} i {amount2} {symbol2}",
@@ -50,11 +48,11 @@
             "DemeterFarmingUnstakeToken": "Usunięto {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} odebrano pomyślnie",
             "EthBridgeIncoming": "Przeniesiono {amount} {symbol} z {Ethereum} do {Sora}",
-            "EthBridgeOutgoing": "Przeniesiono {amount} {symbol} z {Sora} do {Ethereum}"
+            "EthBridgeOutgoing": "Przeniesiono {amount} {symbol} z {Sora} do {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Nie udało się {action} {amount} {symbol}",
             "Swap": "Nie udało się zamienić {amount} {symbol} na {amount2} {symbol2}.",
             "AddLiquidity": "Nie udało się dodać {amount} {symbol} i {amount2} {symbol2}.",
             "RemoveLiquidity": "Nie udało się usunąć {amount} {symbol} i {amount2} {symbol2}.",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Nie udało się usunąć {amount} {symbol}",
             "DemeterFarmingGetRewards": "Nie udało się odebrać {symbol}",
             "EthBridgeIncoming": "Nie udało się przenieść {amount} {symbol} z {Ethereum} do {Sora}",
-            "EthBridgeOutgoing": "Nie udało się przenieść {amount} {symbol} z {Sora} do {Ethereum}"
+            "EthBridgeOutgoing": "Nie udało się przenieść {amount} {symbol} z {Sora} do {Ethereum}",
+            "SwapTransferBatch": "Nie udało się {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Żeton rozbicia",
         "DemeterFarmingGetRewards": "Odbierz wynagrodzenie",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Transfer"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia {PolkadotJs}. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Połącz za pomocą mostu sieć {Sora} z:",
         "copy": "Skopiuj adres sieciowy",
         "soraAddress": "{Sora} adres",
-        "ethereumAddress": "{Ethereum} adres"
+        "ethereumAddress": "{Ethereum} adres",
+        "limitMessage": "Obecnie istnieje {type} {amount} {symbol} do mostkowania, aby zapewnić stabilność i bezpieczeństwo sieci {Sora} . Doceniamy twoje zrozumienie."
     },
     "selectRegisteredAsset": {
         "title": "Wybierz token",
@@ -1187,7 +1188,6 @@
     "acceptText": "Zaakceptuj i ukryj",
     "newAccountsText": "Nowe konta",
     "dragAndDropText": "Przeciągnij i upuść lub wybierz plik {extension}",
-    "multipleRecipients": "Wielu odbiorców",
     "copyPhraseText": "Skopiuj krypto frazę",
     "stepText": "Krok",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Przejdź do ustawień",
         "btnAllow": "Umożliwić dostęp"
     },
-    "continueText": "Kontynuować"
+    "continueText": "Kontynuować",
+    "minAmountText": "min. kwota",
+    "maxAmountText": "maks. kwota",
+    "exceededAmountText": "Przekroczono {amount}",
+    "multipleRecipients": "Wielu odbiorców"
 }

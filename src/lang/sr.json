@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Замените",
         "Transfer": "Пренос",
-        "SwapTransferBatch": "{ADAR} Пренос",
         "AddLiquidity": "Додати ликвидност",
         "RemoveLiquidity": "Уклони ликвидност",
         "CreatePair": "Креирате Пар",
@@ -33,7 +32,6 @@
         "andText": "и",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Замењено {amount} {symbol} за {amount2} {symbol2}",
             "AddLiquidity": "Испоручено {amount} {symbol} и {amount2} {symbol2}",
             "RemoveLiquidity": "Уклоњено {amount} {symbol} и {amount2} {symbol2}",
@@ -50,11 +48,11 @@
             "DemeterFarmingUnstakeToken": "Уклоњено {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} је успешно положено",
             "EthBridgeIncoming": "Пренето {amount} {symbol} са {Ethereum} у {Sora}",
-            "EthBridgeOutgoing": "Пренето {amount} {symbol} са {Sora} у {Ethereum}"
+            "EthBridgeOutgoing": "Пренето {amount} {symbol} са {Sora} у {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Није успело {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Није успело {action} {amount} {symbol}",
             "Swap": "Замена {amount} {symbol} за {amount2} {symbol2} није успела",
             "AddLiquidity": "Достављање {amount} {symbol} и {amount2} {symbol2} није успело",
             "RemoveLiquidity": "Уклањање {amount} {symbol} и {amount2} {symbol2} није успело",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Уклањање {amount} {symbol} није успело",
             "DemeterFarmingGetRewards": "Захтевање за {symbol} није успело",
             "EthBridgeIncoming": "Пренос {amount} {symbol} из {Ethereum} у {Sora} није успео",
-            "EthBridgeOutgoing": "Пренос {amount} {symbol} са {Sora} на {Ethereum} није успео"
+            "EthBridgeOutgoing": "Пренос {amount} {symbol} са {Sora} на {Ethereum} није успео",
+            "SwapTransferBatch": "Није успело {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Veži XOR",
         "ReferralUnreserveXor": "Razveži XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Povuci iz ulaganja Token",
         "DemeterFarmingGetRewards": "Захтевајте награде",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Пренос"
     },
     "polkadotjs": {
         "noExtensions": "Није пронађена ниједна екстензија {PolkadotJs}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Бриџ {Sora} мрежа са:",
         "copy": "Копирајте мрежну адресу",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "limitMessage": "Тренутно постоји {type} {amount} {symbol} за премошћавање да би се обезбедила стабилност и безбедност мреже {Sora} . Ценимо ваше разумевање."
     },
     "selectRegisteredAsset": {
         "title": "Изаберите токен",
@@ -1187,7 +1188,6 @@
     "acceptText": "Прихвати и сакриј",
     "newAccountsText": "Нови налози",
     "dragAndDropText": "Превуците и отпустите или изаберите датотеку {extension}",
-    "multipleRecipients": "Višestruki primalac",
     "copyPhraseText": "Kopirajte lozinku frazu",
     "stepText": "Корак",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Идите на Подешавања",
         "btnAllow": "Дозволи приступ"
     },
-    "continueText": "Настави"
+    "continueText": "Настави",
+    "minAmountText": "мин. износ",
+    "maxAmountText": "мак. износ",
+    "exceededAmountText": "{amount} је премашен",
+    "multipleRecipients": "Višestruki primalac"
 }

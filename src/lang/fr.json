@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Échanger",
         "Transfer": "Transférer",
-        "SwapTransferBatch": "{ADAR} Transférer",
         "AddLiquidity": "Ajouter de la liquidité",
         "RemoveLiquidity": "Retirer de la liquidité",
         "CreatePair": "Créer une paire",
@@ -33,7 +32,6 @@
         "andText": "et",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "{amount} {symbol} échangés contre {amount2} {symbol2}",
             "AddLiquidity": "Dépôt de {amount} {symbol} et de {amount2} {symbol2}",
             "RemoveLiquidity": "Retrait de {amount} {symbol} et de {amount2} {symbol2}",
@@ -50,11 +48,11 @@
             "DemeterFarmingUnstakeToken": "Supprimé {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} a réclamé avec succès",
             "EthBridgeIncoming": "Transféré {amount} {symbol} de {Ethereum} à {Sora}",
-            "EthBridgeOutgoing": "Transféré {amount} {symbol} de {Sora} à {Ethereum}"
+            "EthBridgeOutgoing": "Transféré {amount} {symbol} de {Sora} à {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Échec de {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Échec de {action} {amount} {symbol}",
             "Swap": "Échec de l'échange de {amount} {symbol} contre {amount2} {symbol2}",
             "AddLiquidity": "Échec du dépôt de {amount} {symbol} et de {amount2} {symbol2}",
             "RemoveLiquidity": "Échec du retrait de {amount} {symbol} et de {amount2} {symbol2}",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Échec de la suppression de {amount} {symbol}",
             "DemeterFarmingGetRewards": "Échec de la revendication de {symbol}",
             "EthBridgeIncoming": "Échec du transfert de {amount} {symbol} de {Ethereum} vers {Sora}",
-            "EthBridgeOutgoing": "Échec du transfert de {amount} {symbol} de {Sora} à {Ethereum}"
+            "EthBridgeOutgoing": "Échec du transfert de {amount} {symbol} de {Sora} à {Ethereum}",
+            "SwapTransferBatch": "Échec de {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Jeton de désengagement",
         "DemeterFarmingGetRewards": "Réclamer mes Récompenses",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Transférer"
     },
     "polkadotjs": {
         "noExtensions": "Aucune extension {PolkadotJs} n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Pont {Sora} Réseau avec:",
         "copy": "Copier l'adresse réseau",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse"
+        "ethereumAddress": "{Ethereum} adresse",
+        "limitMessage": "Actuellement, il existe un {type} {amount} {symbol} pour le pontage afin de garantir la stabilité et la sécurité du réseau {Sora}. Nous apprécions votre compréhension."
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
@@ -1187,7 +1188,6 @@
     "acceptText": "Accepter et masquer",
     "newAccountsText": "Nouveaux comptes",
     "dragAndDropText": "Faites glisser et déposez ou choisissez le fichier {extension}",
-    "multipleRecipients": "Plusieurs destinataires",
     "copyPhraseText": "Copier la phrase secrète",
     "stepText": "Marcher",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Aller aux paramètres",
         "btnAllow": "Permettre l'accès"
     },
-    "continueText": "Continuer"
+    "continueText": "Continuer",
+    "minAmountText": "min. montant",
+    "maxAmountText": "max. montant",
+    "exceededAmountText": "{amount} dépassé",
+    "multipleRecipients": "Plusieurs destinataires"
 }

@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Swap",
         "Transfer": "Overdracht",
-        "SwapTransferBatch": "{ADAR} Overdracht",
         "AddLiquidity": "Liquiditeit toevoegen",
         "RemoveLiquidity": "Liquiditeit verwijderen",
         "CreatePair": "Maak Paar",
@@ -33,7 +32,6 @@
         "andText": "en",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "{amount} {symbol} geswapped voor {amount2} {symbol2}",
             "AddLiquidity": "Opgegeven {amount} {symbol} en {amount2} {symbol2}",
             "RemoveLiquidity": "{amount} {symbol} en {amount2} {symbol2} werden verwijderd",
@@ -50,11 +48,11 @@
             "DemeterFarmingUnstakeToken": "{amount} {symbol} verwijderd",
             "DemeterFarmingGetRewards": "{amount} {symbol} succesvol geclaimd",
             "EthBridgeIncoming": "{amount} {symbol} overgedragen van {Ethereum} naar {Sora}",
-            "EthBridgeOutgoing": "{amount} {symbol} overgedragen van {Sora} naar {Ethereum}"
+            "EthBridgeOutgoing": "{amount} {symbol} overgedragen van {Sora} naar {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
-            "SwapTransferBatch": "Kon {action} {amount} {symbol}",
             "Swap": "Mislukt om {amount} {symbol} te swappen voor {amount2} {symbol2}",
             "AddLiquidity": "Kon {amount} {symbol} en {amount2} {symbol2} niet toevoegen",
             "RemoveLiquidity": "Het is niet gelukt om {amount} {symbol} en {amount2} {symbol2}",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Kan {amount} {symbol} niet verwijderen",
             "DemeterFarmingGetRewards": "Kan {symbol} niet claimen",
             "EthBridgeIncoming": "Kan {amount} {symbol} niet overboeken van {Ethereum} naar {Sora}",
-            "EthBridgeOutgoing": "Kan {amount} {symbol} niet overboeken van {Sora} naar {Ethereum}"
+            "EthBridgeOutgoing": "Kan {amount} {symbol} niet overboeken van {Sora} naar {Ethereum}",
+            "SwapTransferBatch": "Kon {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Token ongedaan maken",
         "DemeterFarmingGetRewards": "Beloningen claimen",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Overdracht"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Bridge {Sora} Netwerk met:",
         "copy": "Netwerkadres kopiëren",
         "soraAddress": "{Sora} adres",
-        "ethereumAddress": "{Ethereum} adres"
+        "ethereumAddress": "{Ethereum} adres",
+        "limitMessage": "Momenteel is er een {type} {amount} {symbol} voor overbrugging om de stabiliteit en veiligheid van het {Sora}-netwerk te garanderen. We waarderen je begrip."
     },
     "selectRegisteredAsset": {
         "title": "Kies een token",
@@ -1187,7 +1188,6 @@
     "acceptText": "Accepteren & verbergen",
     "newAccountsText": "Nieuwe rekeningen",
     "dragAndDropText": "Drag & drop of kies {extension} bestand",
-    "multipleRecipients": "Meerdere ontvangers",
     "copyPhraseText": "Kopieer Passphrase",
     "stepText": "Stap",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Ga naar Instellingen",
         "btnAllow": "Toegang te verlenen"
     },
-    "continueText": "Doorgaan"
+    "continueText": "Doorgaan",
+    "minAmountText": "min. hoeveelheid",
+    "maxAmountText": "max. hoeveelheid",
+    "exceededAmountText": "{amount} overschreden",
+    "multipleRecipients": "Meerdere ontvangers"
 }

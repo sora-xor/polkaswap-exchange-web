@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Iŕopo",
         "Transfer": "Firanśe",
-        "SwapTransferBatch": "{ADAR} Firanśe",
         "AddLiquidity": "Fi liquidity si",
         "RemoveLiquidity": "Yọ liquidity kuro",
         "CreatePair": "Ṣẹda Pair",
@@ -33,7 +32,6 @@
         "andText": "ati",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Ti paarọ {amount} {symbol} fun {amount2} {symbol2}",
             "AddLiquidity": "Ti pese {amount} {symbol} ati {amount2} {symbol2}",
             "RemoveLiquidity": "Ti yọ {amount} {symbol} ati {amount2} {symbol2}",
@@ -50,11 +48,11 @@
             "DemeterFarmingUnstakeToken": "Yiyọ kuro {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} beere ni aṣeyọri",
             "EthBridgeIncoming": "Gbigbe {amount} {symbol} lati {Ethereum} si {Sora}",
-            "EthBridgeOutgoing": "Gbigbe {amount} {symbol} lati {Sora} si {Ethereum}"
+            "EthBridgeOutgoing": "Gbigbe {amount} {symbol} lati {Sora} si {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Kuna lati {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Kuna lati {action} {amount} {symbol}",
             "Swap": "Kuna lati separada {amount} {symbol} fun {amount2} {symbol2}",
             "AddLiquidity": "Kuna lati pese {amount} {symbol} ati {amount2} {symbol2}",
             "RemoveLiquidity": "Kuna lati yọ {amount} {symbol} ati {amount2} {symbol2}",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Kuna lati yọkuro {amount} {symbol}",
             "DemeterFarmingGetRewards": "Kuna lati beere {symbol}",
             "EthBridgeIncoming": "Kuna lati gbe {amount} {symbol} lati {Ethereum} si {Sora}",
-            "EthBridgeOutgoing": "Kuna lati gbe {amount} {symbol} lati {Sora} si {Ethereum}"
+            "EthBridgeOutgoing": "Kuna lati gbe {amount} {symbol} lati {Sora} si {Ethereum}",
+            "SwapTransferBatch": "Kuna lati {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Iwe adehun XOR",
         "ReferralUnreserveXor": "Yọ XOR kuro",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Tokini",
         "DemeterFarmingGetRewards": "Beere Awọn ere",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Firanśe"
     },
     "polkadotjs": {
         "noExtensions": "A ko rii itẹsiwaju {PolkadotJs}. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Safara {Sora} Nẹtiwọọki pẹlu:",
         "copy": "Daakọ adirẹsi nẹtiwọki",
         "soraAddress": "{Sora} adirẹsi",
-        "ethereumAddress": "{Ethereum} adirẹsi"
+        "ethereumAddress": "{Ethereum} adirẹsi",
+        "limitMessage": "Lọwọlọwọ, {type} {amount} {symbol} wa fun sisọpọ lati rii daju iduroṣinṣin ati aabo ti Nẹtiwọọki {Sora} . A dupe oye rẹ."
     },
     "selectRegisteredAsset": {
         "title": "Yan Tokini kan",
@@ -1187,7 +1188,6 @@
     "acceptText": "Gba & Tọju",
     "newAccountsText": "Awọn iroyin titun",
     "dragAndDropText": "Fa & ju silẹ tabi yan faili {extension}",
-    "multipleRecipients": "Awọn olukọni pupọ",
     "copyPhraseText": "Daakọ Aṣẹ Iwifunni",
     "stepText": "Igbesẹ",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Lọ si awọn eto",
         "btnAllow": "Gba wiwọle laaye"
     },
-    "continueText": "Tesiwaju"
+    "continueText": "Tesiwaju",
+    "minAmountText": "min. iye",
+    "maxAmountText": "o pọju. iye",
+    "exceededAmountText": "{amount} ti kọja",
+    "multipleRecipients": "Awọn olukọni pupọ"
 }

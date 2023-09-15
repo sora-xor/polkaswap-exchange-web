@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Tauschen",
         "Transfer": "Überweisen",
-        "SwapTransferBatch": "{ADAR} Überweisen",
         "AddLiquidity": "Liquidität hinzufügen",
         "RemoveLiquidity": "Liquidität entfernen",
         "CreatePair": "Ein Paar erstellen",
@@ -33,7 +32,6 @@
         "andText": "und",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "{amount} {symbol} gegen {amount2} {symbol2} getauscht",
             "AddLiquidity": "{amount} {symbol} und {amount2} {symbol2} bereitgestellt",
             "RemoveLiquidity": "{amount} {symbol} und {amount2} {symbol2} entfernt",
@@ -50,11 +48,11 @@
             "DemeterFarmingUnstakeToken": "{amount} {symbol} entfernt",
             "DemeterFarmingGetRewards": "{amount} {symbol} erfolgreich beansprucht",
             "EthBridgeIncoming": "Übertragen {amount} {symbol} von {Ethereum} nach {Sora}",
-            "EthBridgeOutgoing": "Übertragen von {amount} {symbol} von {Sora} nach {Ethereum}"
+            "EthBridgeOutgoing": "Übertragen von {amount} {symbol} von {Sora} nach {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Fehler bei {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Fehler bei {action} {amount} {symbol}",
             "Swap": "Tausch von {amount} {symbol} gegen {amount2} {symbol2} fehlgeschlagen",
             "AddLiquidity": "Fehler bei der Bereitstellung von {amount} {symbol} und {amount2} {symbol2}",
             "RemoveLiquidity": "Fehler beim Entfernen von {amount} {symbol} und {amount2} {symbol2}",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Entfernen von {amount} {symbol} fehlgeschlagen",
             "DemeterFarmingGetRewards": "Anspruch auf {symbol} fehlgeschlagen",
             "EthBridgeIncoming": "Fehler beim Übertragen von {amount} {symbol} von {Ethereum} nach {Sora}",
-            "EthBridgeOutgoing": "Fehler beim Übertragen von {amount} {symbol} von {Sora} nach {Ethereum}"
+            "EthBridgeOutgoing": "Fehler beim Übertragen von {amount} {symbol} von {Sora} nach {Ethereum}",
+            "SwapTransferBatch": "Fehler bei {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Belohnungen beanspruchen",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Überweisen"
     },
     "polkadotjs": {
         "noExtensions": "Es wurde keine {PolkadotJs} Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -544,7 +544,8 @@
         "networkInfo": "Bridge {Sora} Netzwerk mit:",
         "copy": "Netzwerkadresse kopieren",
         "soraAddress": "{Sora} Adresse",
-        "ethereumAddress": "{Ethereum} Adresse"
+        "ethereumAddress": "{Ethereum} Adresse",
+        "limitMessage": "Derzeit gibt es ein {type} {amount} {symbol} für Bridging, um die Stabilität und Sicherheit des {Sora}-Netzwerks zu gewährleisten. Vielen Dank für Ihr Verständnis."
     },
     "selectRegisteredAsset": {
         "title": "Wähle ein Token",
@@ -1187,7 +1188,6 @@
     "acceptText": "Akzeptieren & ausblenden",
     "newAccountsText": "Neue Konten",
     "dragAndDropText": "Drag & Drop oder Datei {extension} auswählen",
-    "multipleRecipients": "Mehrere Empfänger",
     "copyPhraseText": "Passphrase kopieren",
     "stepText": "Schritt",
     "alerts": {
@@ -1257,5 +1257,9 @@
         "btnGoToSettings": "Gehe zu den Einstellungen",
         "btnAllow": "Erlauben den Zugriff"
     },
-    "continueText": "Weitermachen"
+    "continueText": "Weitermachen",
+    "minAmountText": "min. menge",
+    "maxAmountText": "max. menge",
+    "exceededAmountText": "{amount} überschritten",
+    "multipleRecipients": "Mehrere Empfänger"
 }
