@@ -2,7 +2,7 @@
   <header class="header">
     <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
     <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
-    <div class="app-controls app-controls--fiat-payment s-flex">
+    <div class="app-controls app-controls--middle s-flex">
       <app-ad />
       <s-button :class="computedClassBtn" type="tertiary" size="medium" @click="goTo(PageNames.FiatDepositOptions)">
         <pair-token-logo class="app-menu-payment" :first-token="xor" :second-token="eth" size="small" />
@@ -153,15 +153,19 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
     margin-left: auto;
   }
 
-  &--fiat-payment {
+  &--middle {
     margin-left: auto;
 
     @include desktop {
       position: absolute;
       top: 50%;
-      left: 50%;
+      left: 42.5%; // Because of ad banner
       transform: translate(-50%, -50%);
       margin-right: 0;
+    }
+
+    @media (minmax(1220px, false)) {
+      left: 50%;
     }
   }
 }

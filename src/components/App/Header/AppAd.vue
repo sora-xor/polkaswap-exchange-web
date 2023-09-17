@@ -45,7 +45,7 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
 
   mounted(): void {
     this.interval = setInterval(() => {
-      // this.next();
+      this.next();
     }, 60_000);
   }
 
@@ -93,6 +93,7 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
 <style lang="scss" scoped>
 .ad {
   position: relative;
+  width: 280px;
   &-prev,
   &-next {
     position: absolute;
@@ -112,18 +113,18 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
   &-slider {
     overflow: hidden;
     position: relative;
-    height: 42px;
-    width: 328px;
-    border-radius: 32px;
+    height: var(--s-size-medium);
+    width: 100%;
+    border-radius: var(--s-border-radius-medium);
   }
   &-card {
     display: flex;
     position: absolute;
-    height: 42px;
-    width: 328px;
+    height: var(--s-size-medium);
+    width: 100%;
     padding-left: 24px;
     padding-right: 24px;
-    border-radius: 32px;
+    border-radius: var(--s-border-radius-medium);
     background-repeat: no-repeat;
     background-position: right 20px top;
     background-color: var(--s-color-theme-accent); // by default
@@ -144,6 +145,12 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
   }
   &-image {
     flex: 1;
+  }
+  @include desktop {
+    width: 280px;
+  }
+  @media (minmax(1220px, false)) {
+    width: 330px;
   }
 }
 

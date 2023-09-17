@@ -43,7 +43,7 @@ $logo-full-height: 46px;
     width: var(--s-size-medium);
     height: var(--s-size-medium);
 
-    @include tablet {
+    @include desktop {
       background-image: none;
       width: $logo-full-width;
       height: $logo-full-height;
@@ -52,7 +52,7 @@ $logo-full-height: 46px;
     .app-logo__image {
       visibility: hidden;
 
-      @include tablet {
+      @include desktop {
         visibility: visible;
       }
     }
