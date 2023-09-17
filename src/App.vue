@@ -120,6 +120,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
   @action.settings.setBlockNumber private setBlockNumber!: AsyncFnWithoutArgs;
+  @action.settings.fetchAdvArray private fetchAdvArray!: AsyncFnWithoutArgs;
   @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
   @action.wallet.account.notifyOnDeposit private notifyOnDeposit!: (info: {
     asset: WhitelistArrayItem;
@@ -220,9 +221,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // connection to node
       await this.runAppConnectionToNode();
-      updateDocumentTitle(); // For the first load
-      this.showDisclaimer();
     });
+    updateDocumentTitle(); // For the first load
+    this.showDisclaimer();
+    this.fetchAdvArray();
   }
 
   private get isSwapPageWithCharts(): boolean {

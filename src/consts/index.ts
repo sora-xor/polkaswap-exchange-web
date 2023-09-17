@@ -84,7 +84,6 @@ export const Links = {
   releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
   demeterFarmingPlatform: 'https://farming.deotoken.io/',
   soraCardSupportChannel: 'https://t.me/soracardofficial',
-  xstArticle: 'https://medium.com/sora-xor/xst-a-platform-for-synthetic-assets-on-sora-b45ca526d8d5',
 };
 
 export const ObjectInit = () => null;

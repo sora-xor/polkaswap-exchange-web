@@ -5,7 +5,7 @@ import type { Language } from '@/consts';
 import type { Node } from '@/types/nodes';
 import storage, { settingsStorage } from '@/utils/storage';
 
-import type { FeatureFlags, SettingsState } from './types';
+import type { Adv, FeatureFlags, SettingsState } from './types';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<SettingsState>()({
@@ -121,6 +121,9 @@ const mutations = defineMutations<SettingsState>()({
   },
   setInternetConnectionSpeed(state): void {
     state.internetConnectionSpeed = ((navigator as any)?.connection?.downlink as number) ?? 0;
+  },
+  setAdvArray(state, arr: Array<Adv>): void {
+    state.advArray = arr;
   },
 });
 

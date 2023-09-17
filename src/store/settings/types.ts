@@ -3,6 +3,13 @@ import type { Node } from '@/types/nodes';
 
 import type { Subscription } from 'rxjs';
 
+export type Adv = {
+  title: string;
+  img: string;
+  backgroundColor: string;
+  link: string;
+};
+
 export type FeatureFlags = {
   moonpay?: boolean;
   x1ex?: boolean;
@@ -38,6 +45,7 @@ export type SettingsState = {
   blockNumberUpdates: Nullable<Subscription>;
   internetConnection: Nullable<boolean>;
   internetConnectionSpeed: Nullable<number>;
+  advArray: Array<Adv>;
 };
 
 export type NodesHashTable = {

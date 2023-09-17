@@ -38,6 +38,7 @@ function initialState(): SettingsState {
     blockNumberUpdates: undefined,
     internetConnection: undefined,
     internetConnectionSpeed: undefined,
+    advArray: [],
   };
 }
 
