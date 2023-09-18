@@ -101,9 +101,13 @@ $max-ad-width: 330px;
     position: absolute;
     z-index: 1;
     cursor: pointer;
+    opacity: 0.3;
     > i {
       line-height: 1.75;
       color: var(--s-color-base-on-accent);
+    }
+    &:hover {
+      opacity: 1;
     }
   }
   &-prev {
