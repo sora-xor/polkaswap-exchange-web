@@ -39,7 +39,7 @@ function initialState(): SettingsState {
     internetConnection: undefined,
     internetConnectionSpeed: undefined,
     screenBreakpointClass: BreakpointClass.LargeDesktop,
-    advArray: [],
+    adsArray: [],
   };
 }
 

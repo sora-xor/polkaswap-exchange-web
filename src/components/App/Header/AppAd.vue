@@ -1,10 +1,10 @@
 <template>
-  <div v-if="advArray.length" class="ad s-flex">
+  <div v-if="adsArray.length" class="ad s-flex">
     <span class="ad-prev" @click="prev()">
       <s-icon name="arrows-chevron-left-rounded-24" />
     </span>
     <transition-group tag="div" class="ad-slider" :name="transitionName">
-      <template v-for="(ad, index) in advArray">
+      <template v-for="(ad, index) in adsArray">
         <div v-if="currentIndex === index" :key="ad.title">
           <a
             class="ad-card"
@@ -33,11 +33,11 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import { state } from '@/store/decorators';
-import type { Adv } from '@/store/settings/types';
+import type { Ad } from '@/store/settings/types';
 
 @Component
 export default class AppAd extends Mixins(mixins.TranslationMixin) {
-  @state.settings.advArray advArray!: Array<Adv>;
+  @state.settings.adsArray adsArray!: Array<Ad>;
 
   private interval: Nullable<NodeJS.Timeout> = null;
   currentIndex = 0;
@@ -62,27 +62,27 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
     return '_blank';
   }
 
-  getStyles(ad: Adv) {
+  getStyles(ad: Ad) {
     return { backgroundImage: `url(${ad.img})`, backgroundColor: ad.backgroundColor };
   }
 
   prev(): void {
-    if (!this.advArray.length) return;
+    if (!this.adsArray.length) return;
 
     this.transitionName = 'slideback';
     if (this.currentIndex <= 0) {
-      this.currentIndex = this.advArray.length - 1; // last adv
+      this.currentIndex = this.adsArray.length - 1; // last ad
     } else {
       this.currentIndex--;
     }
   }
 
   next(): void {
-    if (!this.advArray.length) return;
+    if (!this.adsArray.length) return;
 
     this.transitionName = 'slide';
-    if (this.currentIndex >= this.advArray.length - 1) {
-      this.currentIndex = 0; // first adv
+    if (this.currentIndex >= this.adsArray.length - 1) {
+      this.currentIndex = 0; // first ad
     } else {
       this.currentIndex++;
     }

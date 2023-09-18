@@ -3,7 +3,7 @@ import type { Node } from '@/types/nodes';
 
 import type { Subscription } from 'rxjs';
 
-export type Adv = {
+export type Ad = {
   title: string;
   img: string;
   backgroundColor: string;
@@ -46,7 +46,7 @@ export type SettingsState = {
   internetConnection: Nullable<boolean>;
   internetConnectionSpeed: Nullable<number>;
   screenBreakpointClass: BreakpointClass;
-  advArray: Array<Adv>;
+  adsArray: Array<Ad>;
 };
 
 export type NodesHashTable = {

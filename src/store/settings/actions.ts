@@ -215,13 +215,13 @@ const actions = defineActions({
     });
     commit.setBlockNumberUpdates(blockNumberSubscription);
   },
-  async fetchAdvArray(context): Promise<void> {
+  async fetchAdsArray(context): Promise<void> {
     const { commit } = settingsActionContext(context);
     try {
-      const { data } = await axiosInstance.get('/adv.json');
-      commit.setAdvArray(data);
+      const { data } = await axiosInstance.get('/ads.json');
+      commit.setAdsArray(data);
     } catch {
-      commit.setAdvArray([]);
+      commit.setAdsArray([]);
     }
   },
 });

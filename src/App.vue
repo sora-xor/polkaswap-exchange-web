@@ -122,7 +122,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
   @action.settings.setBlockNumber private setBlockNumber!: AsyncFnWithoutArgs;
-  @action.settings.fetchAdvArray private fetchAdvArray!: AsyncFnWithoutArgs;
+  @action.settings.fetchAdsArray private fetchAdsArray!: AsyncFnWithoutArgs;
   @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
   @action.wallet.account.notifyOnDeposit private notifyOnDeposit!: (info: {
     asset: WhitelistArrayItem;
@@ -244,7 +244,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     });
     updateDocumentTitle(); // For the first load
     this.showDisclaimer();
-    this.fetchAdvArray();
+    this.fetchAdsArray();
   }
 
   mounted(): void {

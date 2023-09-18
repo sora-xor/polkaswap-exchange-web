@@ -5,7 +5,7 @@ import type { BreakpointClass, Language } from '@/consts';
 import type { Node } from '@/types/nodes';
 import storage, { settingsStorage } from '@/utils/storage';
 
-import type { Adv, FeatureFlags, SettingsState } from './types';
+import type { Ad, FeatureFlags, SettingsState } from './types';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<SettingsState>()({
@@ -125,8 +125,8 @@ const mutations = defineMutations<SettingsState>()({
   setScreenBreakpointClass(state, breakpoint: BreakpointClass): void {
     state.screenBreakpointClass = breakpoint;
   },
-  setAdvArray(state, arr: Array<Adv>): void {
-    state.advArray = arr;
+  setAdsArray(state, arr: Array<Ad>): void {
+    state.adsArray = arr;
   },
 });
 
