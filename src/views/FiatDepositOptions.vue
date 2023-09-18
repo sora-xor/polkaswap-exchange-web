@@ -127,9 +127,6 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
 </script>
 
 <style lang="scss" scoped>
-.container {
-  min-width: 500px;
-}
 .pay-options {
   &__option {
     display: flex;
