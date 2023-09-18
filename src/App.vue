@@ -36,6 +36,7 @@
 
 <script lang="ts">
 import { api, connection, components, mixins, settingsStorage, AlertsApiService } from '@soramitsu/soraneo-wallet-web';
+import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import axiosInstance, { updateBaseUrl, getFullBaseUrl } from '@/api';
@@ -201,6 +202,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     this.setScreenBreakpointClass(this.responsiveClass);
   }
 
+  private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
+
   async created() {
     // [DESKTOP] To Enable Desktop
     // this.setIsDesktop(true);
@@ -248,7 +251,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   mounted(): void {
-    window.addEventListener('resize', this.setResponsiveClass);
+    window.addEventListener('resize', this.setResponsiveClassDebounced);
   }
 
   private get isSwapPageWithCharts(): boolean {
@@ -334,7 +337,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
-    window.removeEventListener('resize', this.setResponsiveClass);
+    window.removeEventListener('resize', this.setResponsiveClassDebounced);
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
     this.resetBlockNumberSubscription();

@@ -3,7 +3,7 @@
     <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
     <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
     <div class="app-controls app-controls--middle s-flex">
-      <app-ad v-show="!isMobile" />
+      <app-marketing v-show="!isMobile" />
       <s-button :class="fiatBtnClass" :type="fiatBtnType" size="medium" @click="goTo(PageNames.FiatDepositOptions)">
         <pair-token-logo class="payment-icon" :first-token="xor" :second-token="eth" :size="fiatBtnSize" />
         <span v-if="!isAnyMobile">{{ t('moonpay.buttons.buy') }}</span>
@@ -29,9 +29,9 @@ import { lazyComponent, goTo } from '../../../router';
 import { state, getter } from '../../../store/decorators';
 
 import AppAccountButton from './AppAccountButton.vue';
-import AppAd from './AppAd.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
 import AppLogoButton from './AppLogoButton.vue';
+import AppMarketing from './AppMarketing.vue';
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
@@ -39,7 +39,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
   components: {
     PolkaswapLogo,
     AppAccountButton,
-    AppAd,
+    AppMarketing,
     AppHeaderMenu,
     AppLogoButton,
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
@@ -174,7 +174,7 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
     @include desktop {
       position: absolute;
       top: 50%;
-      left: 42.5%; // Because of ad banner
+      left: 42.5%; // Because of marketing banner
       transform: translate(-50%, -50%);
       margin-right: 0;
     }

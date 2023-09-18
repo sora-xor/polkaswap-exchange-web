@@ -218,7 +218,7 @@ const actions = defineActions({
   async fetchAdsArray(context): Promise<void> {
     const { commit } = settingsActionContext(context);
     try {
-      const { data } = await axiosInstance.get('/ads.json');
+      const { data } = await axiosInstance.get('/marketing.json');
       commit.setAdsArray(data);
     } catch {
       commit.setAdsArray([]);
