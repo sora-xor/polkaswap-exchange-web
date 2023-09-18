@@ -91,9 +91,11 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
 </script>
 
 <style lang="scss" scoped>
+$ad-width: 280px;
+$max-ad-width: 330px;
 .ad {
   position: relative;
-  width: 280px;
+  width: $ad-width;
   &-prev,
   &-next {
     position: absolute;
@@ -147,10 +149,10 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
     flex: 1;
   }
   @include desktop {
-    width: 280px;
+    width: $ad-width;
   }
   @media (minmax(1220px, false)) {
-    width: 330px;
+    width: $max-ad-width;
   }
 }
 
