@@ -1,9 +1,25 @@
 {
     "card": {
         "termsAndConditions": "Všeobecné obchodní podmínky",
+        "termsAndConditionsPreDisclaimer": "Chceme, abyste přesně věděli, jak bude služba SORA karta fungovat, kdo potřebuje vaše údaje a proč. Prostudování těchto zásad vám pomůže používat aplikaci s klidem.",
         "disclaimerCollectData": "Aby uživatelé získali účet IBAN potřebný pro kartu SORA, musí podstoupit proces KYC u vydavatele karty. Toto je vyžadováno dodržování. Komunita SORA neshromažďuje a nebude shromažďovat žádné vaše osobní údaje.",
         "privacyPolicy": "Zásady ochrany osobních údajů",
+        "termsAndConditionsWarning": "Pokračováním potvrzujete, že jste si přečetli, porozuměli a přijali tyto zásady",
         "acceptAndContinue": "Přijmout a pokračovat",
+        "getPrepared": "Připrav se",
+        "guideline": {
+            "photoTitle": "Odešlete fotografii dokladu totožnosti",
+            "photoDesc": "Cestovní pas, řidičský průkaz, občanský průkaz nebo povolení k pobytu",
+            "selfieTitle": "Udělejte si selfie",
+            "selfieDesc": "Návod bude poskytnut během procesu",
+            "proofAddressTitle": "Předložte fotografii dokladu o adrese",
+            "proofAddressDesc": "Oficiální dokument (účet za energie, bankovní výpis, vládní prohlášení nebo korespondence), který obsahuje vaše celé jméno a adresu a není starší než 3 měsíce.",
+            "personalTitle": "Odešlete své osobní údaje",
+            "personalDesc": "Vyplňte formulář se svým jménem a adresou",
+            "proofAddressNote": "Poznámka: Výpisy od neobank, jako je Revolut a N26, nejsou v současné době považovány za platný doklad o adrese.",
+            "paidAttemptDisclaimer": "Máte pouze {count} bezplatných pokusů projít procesem KYC. Každý další pokus bude stát € {cost} . Placené pokusy budou k dispozici po další aktualizaci aplikace."
+        },
+        "okReadyText": "OK, jsem připraven",
         "emailPlaceholder": "E-mailem",
         "sendCodeBtn": "Pošlete SMS kód",
         "firstNamePlaceholder": "Jméno",
@@ -19,19 +35,10 @@
         "getSoraCardBtn": "Získejte kartu SORA zdarma",
         "bridgeTokensBtn": "Žetony mostu",
         "depositX1Btn": "Kupte si XOR",
-        "reIssuanceFee": "0 € roční poplatek za opětovné vydání",
         "freeStartDesc": "{value} XOR ve vašem účtu pro začátek zdarma",
         "completeKYC": "Kompletní KYC",
         "phoneConfirmation": "Telefonické potvrzení",
         "emailConfirmation": "potvrzení e-mailem",
-        "roadmap": {
-            "contactInfoTitle": "Ověřte kontaktní údaje",
-            "contactInfoDesc": "Email a telefonní číslo",
-            "docsTitle": "Ověřte dokumenty",
-            "docsDesc": "Selfie s dokumentem",
-            "personalDataTitle": "Odešlete osobní údaje",
-            "personalDataDesc": "Celé jméno a doklad o adrese"
-        },
         "letsStartBtn": "Začněme",
         "otpPlaceholder": "Ověřovací kód",
         "confirmCodeBtn": "Potvrďte SMS kód",
@@ -45,6 +52,7 @@
         "personalNameInputDesc": "Použijte své skutečné jméno.",
         "infoMessageTryAgain": "Něco se pokazilo. Prosím zkuste to znovu",
         "blacklistedCountriesExcuse": "Bohužel v tuto chvíli nejsme schopni podporovat následující země:",
+        "xorAmountNeeded": "Potřebujete {xor} více XOR (€{euro}).",
         "statusPendingText": "Úspěšně jste dokončili žádost o KYC. Přezkoumání probíhá a rozhodnutí můžete očekávat v nejbližší době.<br \/><br \/>Obvykle je rozhodnutí vydáno tentýž den, v některých případech může trvat až 3 dny.",
         "resendInBtn": "ZNOVU ODESLAT V {value}",
         "statusRejectTitle": "Přihláška zamítnuta",
@@ -58,6 +66,29 @@
         "userNotFound": "Nebylo nalezeno žádné číslo mobilního telefonu, zkontrolujte ho znovu a zkuste to znovu.",
         "code": "Kód",
         "getSoraCardDesc": "Získejte účet v eurech IBAN a debetní kartu dostupné ve vaší peněžence SORA",
-        "emailSpamReminder": "Doručení e-mailu může trvat několik minut. Pokud jste e-mail neobdrželi po 5 minutách, ověřte prosím svou složku se spamem."
+        "reIssuanceFee": "0 € roční poplatek za službu",
+        "freeCardIssuance": "Vydání karty zdarma",
+        "loginBtn": "Přihlaste se nebo se zaregistrujte",
+        "telegramSupport": "Podpora telegramů",
+        "rejectionPriceAttemptDisclaimer": "Každý další pokus vás bude stát {0} €",
+        "rejectCount": "Máte ještě {count} další bezplatný pokus o KYC| | |Máte ještě {count} další bezplatné pokusy o KYC",
+        "cardHub": {
+            "logout": "Odhlaste se z karty SORA",
+            "topup": "Doplňte",
+            "transfer": "Převod",
+            "exchange": "Výměna",
+            "freeze": "Zmrazit",
+            "comingSoon": "Správa karet již brzy",
+            "ibanLabel": "Podrobnosti o účtu IBAN"
+        },
+        "emailSpamReminder": "Doručení e-mailu může trvat několik minut. Pokud jste e-mail neobdrželi po 5 minutách, ověřte prosím svou složku se spamem.",
+        "gettingCardForFree": "Kartu získáte zdarma!",
+        "holdSufficientXor": "Na svém účtu SORA držíte XOR v hodnotě 100 €",
+        "holdNotSufficientXor": "Pokud na svém účtu SORA držíte, sázíte nebo poskytujete likviditu v hodnotě alespoň 100 EUR XOR",
+        "xorAmountNeededTitle": "K získání bezplatné karty potřebujete {value} XOR",
+        "cardhub": {
+            "accountInfo": "Informace o účtu"
+        },
+        "attentionText": "Pozornost"
     }
 }

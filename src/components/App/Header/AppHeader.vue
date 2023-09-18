@@ -2,84 +2,71 @@
   <header class="header">
     <s-button class="app-menu-button" type="action" primary icon="basic-more-horizontal-24" @click="toggleMenu" />
     <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
-    <div v-if="areMoonpayButtonsVisible" class="app-controls app-controls--moonpay s-flex">
-      <s-button
-        type="tertiary"
-        size="medium"
-        icon="various-atom-24"
-        class="moonpay-button moonpay-button--buy"
-        @click="openMoonpayDialog"
-      >
-        <span class="moonpay-button-text">{{ t('moonpay.buttons.buy') }}</span>
+    <div class="app-controls app-controls--middle s-flex">
+      <app-marketing v-show="!isMobile" />
+      <s-button :class="fiatBtnClass" :type="fiatBtnType" size="medium" @click="goTo(PageNames.FiatDepositOptions)">
+        <pair-token-logo class="payment-icon" :first-token="xor" :second-token="eth" :size="fiatBtnSize" />
+        <span v-if="!isAnyMobile">{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
-      <moonpay-history-button class="moonpay-button moonpay-button--history" />
-      <app-ad v-show="isDesktop" class="app-controls--adv" />
     </div>
-    <div class="app-controls s-flex" :class="{ 'without-moonpay': !areMoonpayButtonsVisible }">
+    <div class="app-controls s-flex">
       <app-account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
       <app-header-menu />
     </div>
-
     <select-language-dialog />
-
-    <template v-if="moonpayEnabled">
-      <moonpay />
-      <moonpay-notification />
-      <moonpay-confirmation />
-    </template>
   </header>
 </template>
 
 <script lang="ts">
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { XOR, ETH } from '@sora-substrate/util/build/assets/consts';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import PolkaswapLogo from '@/components/shared/Logo/Polkaswap.vue';
-import { PageNames, Components } from '@/consts';
-import { lazyComponent, goTo } from '@/router';
-import { getter, mutation } from '@/store/decorators';
+import WalletConnectMixin from '../../../components/mixins/WalletConnectMixin';
+import PolkaswapLogo from '../../../components/shared/Logo/Polkaswap.vue';
+import { PageNames, Components, BreakpointClass } from '../../../consts';
+import { lazyComponent, goTo } from '../../../router';
+import { state, getter } from '../../../store/decorators';
 
 import AppAccountButton from './AppAccountButton.vue';
-import AppAd from './AppAd.vue';
 import AppHeaderMenu from './AppHeaderMenu.vue';
 import AppLogoButton from './AppLogoButton.vue';
+import AppMarketing from './AppMarketing.vue';
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-
-const BREAKPOINT = 1024;
 
 @Component({
   components: {
     PolkaswapLogo,
     AppAccountButton,
+    AppMarketing,
     AppHeaderMenu,
     AppLogoButton,
-    AppAd,
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
-    Moonpay: lazyComponent(Components.Moonpay),
-    MoonpayNotification: lazyComponent(Components.MoonpayNotification),
-    MoonpayHistoryButton: lazyComponent(Components.MoonpayHistoryButton),
-    MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
-    TokenLogo: components.TokenLogo,
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     WalletAvatar: components.WalletAvatar,
   },
 })
 export default class AppHeader extends Mixins(WalletConnectMixin) {
   readonly PageNames = PageNames;
+  readonly xor = XOR;
+  readonly eth = ETH;
 
   @Prop({ type: Boolean, default: false }) readonly loading!: boolean;
 
-  @getter.libraryTheme libraryTheme!: Theme;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.settings.moonpayEnabled moonpayEnabled!: boolean;
+  @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
 
-  @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
+  @getter.libraryTheme libraryTheme!: Theme;
 
   goTo = goTo;
 
-  isDesktop: boolean = window.innerWidth >= BREAKPOINT;
+  get isMobile(): boolean {
+    return this.screenBreakpointClass === BreakpointClass.Mobile;
+  }
+
+  get isAnyMobile(): boolean {
+    return this.isMobile || this.screenBreakpointClass === BreakpointClass.LargeMobile;
+  }
 
   get nodeLogo() {
     return {
@@ -88,72 +75,38 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
     };
   }
 
-  get areMoonpayButtonsVisible(): boolean {
-    return this.moonpayEnabled && this.isLoggedIn;
+  get fiatBtnClass(): string[] {
+    const base = ['app-controls-fiat-btn', 'active'];
+
+    if (this.$route.name === PageNames.FiatDepositOptions) base.push('app-controls-fiat-btn--active', 's-pressed');
+
+    return base;
   }
 
-  async openMoonpayDialog(): Promise<void> {
-    if (!this.isSoraAccountConnected) {
-      return this.connectSoraWallet();
-    }
-    await this.connectEvmWallet();
-    this.setMoonpayVisibility(true);
+  get fiatBtnType(): string {
+    return this.isAnyMobile ? 'action' : 'tertiary';
+  }
+
+  get fiatBtnSize(): string {
+    return this.isAnyMobile ? 'mini' : 'small';
   }
 
   toggleMenu(): void {
     this.$emit('toggle-menu');
   }
-
-  private setIsDesktop(): void {
-    this.isDesktop = window.innerWidth >= BREAKPOINT;
-  }
-
-  mounted(): void {
-    window.addEventListener('resize', this.setIsDesktop);
-  }
-
-  beforeDestroy(): void {
-    window.removeEventListener('resize', this.setIsDesktop);
-  }
 }
 </script>
 
 <style lang="scss">
-.settings-control:hover > span > .header-menu__button i {
-  color: var(--s-color-base-content-secondary);
+.app-controls-fiat-btn.app-controls-fiat-btn--active.neumorphic.active {
+  box-shadow: var(--s-shadow-element);
+  span {
+    color: var(--s-color-theme-accent);
+  }
 }
 
-.moonpay-button {
-  &.el-button.neumorphic.s-medium {
-    padding-left: 9px;
-    padding-right: 9px;
-  }
-
-  &--buy {
-    max-width: 114px;
-  }
-
-  &--history {
-    max-width: 134px;
-  }
-
-  &-text {
-    display: none;
-    white-space: normal;
-    text-align: left;
-
-    @include large-mobile {
-      display: inline-block;
-    }
-  }
-
-  & i + &-text {
-    padding-left: 6px;
-  }
-
-  &:not(.s-action).s-i-position-left > span > i[class^='s-icon-'] {
-    margin-right: 0;
-  }
+.settings-control:hover > span > .header-menu__button i {
+  color: var(--s-color-base-content-secondary);
 }
 </style>
 
@@ -200,33 +153,34 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
     }
   }
 
+  &-fiat-btn.s-action .payment-icon {
+    margin: auto;
+    margin-top: 2px; // Only for action button
+  }
+
   .el-button {
     + .el-button {
       margin-left: 0;
     }
   }
 
-  &.without-moonpay {
-    margin-left: auto;
-  }
-
   @include desktop {
     margin-left: auto;
   }
 
-  &--adv {
-    margin-right: $inner-spacing-medium;
-  }
-
-  &--moonpay {
+  &--middle {
     margin-left: auto;
 
     @include desktop {
       position: absolute;
       top: 50%;
-      left: 50%;
+      left: 42.5%; // Because of marketing banner
       transform: translate(-50%, -50%);
       margin-right: 0;
+    }
+
+    @media (minmax(1220px, false)) {
+      left: 50%;
     }
   }
 }

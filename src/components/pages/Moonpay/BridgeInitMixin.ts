@@ -8,7 +8,7 @@ import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { state, action, mutation, getter } from '@/store/decorators';
 import type { BridgeTxData } from '@/store/moonpay/types';
-import { getMaxValue, hasInsufficientEvmNativeTokenForFee } from '@/utils';
+import { getMaxValue, hasInsufficientNativeTokenForFee } from '@/utils';
 import ethersUtil from '@/utils/ethers-util';
 import type { MoonpayTransaction } from '@/utils/moonpay';
 import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
@@ -136,15 +136,15 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         );
       }
 
-      const externalBalance = (await ethersUtil.getAccountAssetBalance(ethTransferData.to, registeredAsset.address))
-        .value;
+      const isExternalNative = ethersUtil.isNativeEvmTokenAddress(registeredAsset.address);
+      const externalBalance = await ethersUtil.getAccountAssetBalance(ethTransferData.to, registeredAsset.address);
       const evmNetworkFee: CodecString = await ethersUtil.getEvmNetworkFee(
         registeredAsset.address,
         registeredAsset.kind,
         false
       );
       const evmNativeBalance = await ethersUtil.getAccountBalance(ethTransferData.to);
-      const hasEthForFee = !hasInsufficientEvmNativeTokenForFee(evmNativeBalance, evmNetworkFee);
+      const hasEthForFee = !hasInsufficientNativeTokenForFee(evmNativeBalance, evmNetworkFee);
 
       if (!hasEthForFee) {
         throw createError('Insufficient ETH for fee', MoonpayNotifications.FeeError);
@@ -157,7 +157,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         externalAddress: registeredAsset.address,
         externalDecimals: registeredAsset.decimals,
       };
-      const maxAmount = getMaxValue(accountAsset, evmNetworkFee, true); // max balance (minus fee if eth asset)
+      const maxAmount = getMaxValue(accountAsset, evmNetworkFee, { isExternalBalance: true, isExternalNative }); // max balance (minus fee if eth asset)
       const amount = Math.min(Number(maxAmount), Number(ethTransferData.amount));
 
       if (amount <= 0) {

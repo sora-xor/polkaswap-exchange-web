@@ -4,7 +4,13 @@ import { defineActions } from 'direct-vuex';
 
 import { soraCardActionContext } from '@/store/soraCard';
 import { waitForAccountPair, waitForSoraNetworkFromEnv } from '@/utils';
-import { defineUserStatus, getXorPerEuroRatio, getFreeKycAttemptCount, soraCard } from '@/utils/card';
+import {
+  defineUserStatus,
+  getXorPerEuroRatio,
+  getFreeKycAttemptCount,
+  soraCard,
+  getUserIbanNumber,
+} from '@/utils/card';
 
 import type { Status } from '../../types/card';
 
@@ -99,9 +105,16 @@ const actions = defineActions({
 
   async getUserKycAttempt(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
-    const isFreeAttemptAvailable = await getFreeKycAttemptCount();
+    const attempts = await getFreeKycAttemptCount();
 
-    commit.setHasKycAttempts(isFreeAttemptAvailable);
+    commit.setAttempts(attempts);
+  },
+
+  async getUserIban(context): Promise<void> {
+    const { commit } = soraCardActionContext(context);
+    const iban = await getUserIbanNumber();
+
+    commit.setUserIban(iban);
   },
 });
 

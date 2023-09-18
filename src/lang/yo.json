@@ -38,8 +38,8 @@
             "CreatePair": "Ti pese {amount} {symbol} ati {amount2} {symbol2}",
             "RegisterAsset": "Dukia {symbol} Tati foruko e sile",
             "ClaimRewards": "A ti gba ere ni aseyori {rewards}",
-            "ReferralReserveXor": "XOR ti sopọ ni aṣeyọri",
-            "ReferralUnreserveXor": "XOR ti ko ni asopọ ni aṣeyọri",
+            "ReferralReserveXor": "Bonded {amount} XOR",
+            "ReferralUnreserveXor": "Ailokun {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} ti ṣeto ni aṣeyọri",
             "SwapAndSend": "Paarọ {amount} {symbol} fun {amount2} {symbol2} ati {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Pese {symbol} ati {symbol2} {amount} LP àmi",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Yiyọ kuro {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} beere ni aṣeyọri",
             "EthBridgeIncoming": "Gbigbe {amount} {symbol} lati {Ethereum} si {Sora}",
-            "EthBridgeOutgoing": "Gbigbe {amount} {symbol} lati {Sora} si {Ethereum}"
+            "EthBridgeOutgoing": "Gbigbe {amount} {symbol} lati {Sora} si {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Kuna lati {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Kuna lati pese {amount} {symbol} ati {amount2} {symbol2}",
             "RegisterAsset": "Kuna lati forukọsilẹ {symbol} dukia",
             "ClaimRewards": "Kuna lati beere awọn ere {rewards}",
-            "ReferralReserveXor": "Ti kuna lati ṣopọ mọ XOR",
-            "ReferralUnreserveXor": "O kuna lati yọkuro XOR",
+            "ReferralReserveXor": "Kuna lati so pọ {amount} XOR",
+            "ReferralUnreserveXor": "Kuna lati isodi {amount} XOR",
             "ReferralSetInvitedUser": "Kuna lati ṣeto {role} {address}",
             "SwapAndSend": "O kuna lati paarọ {amount} {symbol} fun {amount2} {symbol2} ati {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Ti kuna lati pese {amount} {symbol} ati {symbol2} LP àmi",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Kuna lati yọkuro {amount} {symbol}",
             "DemeterFarmingGetRewards": "Kuna lati beere {symbol}",
             "EthBridgeIncoming": "Kuna lati gbe {amount} {symbol} lati {Ethereum} si {Sora}",
-            "EthBridgeOutgoing": "Kuna lati gbe {amount} {symbol} lati {Sora} si {Ethereum}"
+            "EthBridgeOutgoing": "Kuna lati gbe {amount} {symbol} lati {Sora} si {Ethereum}",
+            "SwapTransferBatch": "Kuna lati {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Iwe adehun XOR",
         "ReferralUnreserveXor": "Yọ XOR kuro",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Tokini",
         "DemeterFarmingGetRewards": "Beere Awọn ere",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Firanśe"
     },
     "polkadotjs": {
         "noExtensions": "A ko rii itẹsiwaju {PolkadotJs}. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
@@ -301,7 +304,8 @@
         "txId": "Id Idunadura",
         "viewIn": "Wo ni {explorer}",
         "referrer": "Atọkasi",
-        "referral": "Ifiranṣẹ"
+        "referral": "Ifiranṣẹ",
+        "adarTxDetailsTitle": "Àwọn àwọn èrò akójọ awoṣe"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Yi nẹtiwọọki pada ni {Metamask}",
@@ -540,7 +544,8 @@
         "networkInfo": "Safara {Sora} Nẹtiwọọki pẹlu:",
         "copy": "Daakọ adirẹsi nẹtiwọki",
         "soraAddress": "{Sora} adirẹsi",
-        "ethereumAddress": "{Ethereum} adirẹsi"
+        "ethereumAddress": "{Ethereum} adirẹsi",
+        "limitMessage": "Lọwọlọwọ, {type} {amount} {symbol} wa fun sisọpọ lati rii daju iduroṣinṣin ati aabo ti Nẹtiwọọki {Sora} . A dupe oye rẹ."
     },
     "selectRegisteredAsset": {
         "title": "Yan Tokini kan",
@@ -1013,7 +1018,8 @@
             "norewardsforasset": "Ko si awọn ere fun dukia yii"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Ti a ti yan orisun oloomi ko gba laaye"
+            "forbiddenfilter": "Ti a ti yan orisun oloomi ko gba laaye",
+            "slippagenottolerated": "Àfikún ìlọpọ àkántọ̀ ohun ti ṣe ṣiṣe àpapọ fún ìdíje yii"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Awọn owo ti ko to",
@@ -1214,9 +1220,9 @@
         "moonpayTitle": "Ra ETH nipasẹ MoonPay",
         "moonpayDesc": "Ra awọn ami ETH lori Ethereum ki o gbe wọn lọ si nẹtiwọki SORA nipasẹ afara",
         "x1Title": "Ra XOR pẹlu kaadi rẹ",
-        "x1Desc": "Ra awọn ami XOR pẹlu debiti tabi kaadi kirẹditi rẹ",
         "x1Btn": "Ra XOR pẹlu kaadi",
-        "errorMessage": "Aforiji fun ohun airọrun. A n ṣiṣẹ takuntakun lati yanju eyi. Jọwọ, gbiyanju lẹẹkansi nigbamii."
+        "errorMessage": "Aforiji fun ohun airọrun. A n ṣiṣẹ takuntakun lati yanju eyi. Jọwọ, gbiyanju lẹẹkansi nigbamii.",
+        "x1Desc": "Ra awọn ami XOR taara lori nẹtiwọọki SORA pẹlu debiti tabi kaadi kirẹditi rẹ"
     },
     "acceptOnScrollText": "Yi lọ lati gba",
     "addressBook": {
@@ -1251,5 +1257,9 @@
         "btnGoToSettings": "Lọ si awọn eto",
         "btnAllow": "Gba wiwọle laaye"
     },
-    "continueText": "Tesiwaju"
+    "continueText": "Tesiwaju",
+    "minAmountText": "min. iye",
+    "maxAmountText": "o pọju. iye",
+    "exceededAmountText": "{amount} ti kọja",
+    "multipleRecipients": "Awọn olukọni pupọ"
 }

@@ -1,11 +1,11 @@
 import { defineMutations } from 'direct-vuex';
 
 import { MarketAlgorithms } from '@/consts';
-import type { Language } from '@/consts';
+import type { BreakpointClass, Language } from '@/consts';
 import type { Node } from '@/types/nodes';
 import storage, { settingsStorage } from '@/utils/storage';
 
-import type { FeatureFlags, SettingsState } from './types';
+import type { Ad, FeatureFlags, SettingsState } from './types';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<SettingsState>()({
@@ -121,6 +121,12 @@ const mutations = defineMutations<SettingsState>()({
   },
   setInternetConnectionSpeed(state): void {
     state.internetConnectionSpeed = ((navigator as any)?.connection?.downlink as number) ?? 0;
+  },
+  setScreenBreakpointClass(state, breakpoint: BreakpointClass): void {
+    state.screenBreakpointClass = breakpoint;
+  },
+  setAdsArray(state, arr: Array<Ad>): void {
+    state.adsArray = arr;
   },
 });
 

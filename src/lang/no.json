@@ -38,8 +38,8 @@
             "CreatePair": "Levert {amount} {symbol} og {amount2} {symbol2}",
             "RegisterAsset": "Registrert {symbol} aktivum",
             "ClaimRewards": "Innhenting av belønning var vellykket {rewards}",
-            "ReferralReserveXor": "Bondet XOR vellykket",
-            "ReferralUnreserveXor": "Ubundet XOR vellykket",
+            "ReferralReserveXor": "Bondet {amount} XOR",
+            "ReferralUnreserveXor": "Ubundet {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} er satt",
             "SwapAndSend": "Byttet {amount} {symbol} med {amount2} {symbol2} og {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Levert {symbol} og {symbol2} {amount} LP-tokens",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Fjernet {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} er gjort krav på",
             "EthBridgeIncoming": "Overførte {amount} {symbol} fra {Ethereum} til {Sora}",
-            "EthBridgeOutgoing": "Overførte {amount} {symbol} fra {Sora} til {Ethereum}"
+            "EthBridgeOutgoing": "Overførte {amount} {symbol} fra {Sora} til {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Kunne ikke {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Kunne ikke levere {amount} {symbol} og {amount2} {symbol2}",
             "RegisterAsset": "Kunne ikke registrere {symbol} ressurs",
             "ClaimRewards": "Kunne ikke kreve belønninger {rewards}",
-            "ReferralReserveXor": "Kunne ikke binde XOR",
-            "ReferralUnreserveXor": "Kunne ikke frigjøre XOR",
+            "ReferralReserveXor": "Kunne ikke binde {amount} XOR",
+            "ReferralUnreserveXor": "Kunne ikke frigjøre {amount} XOR",
             "ReferralSetInvitedUser": "Kunne ikke angi {role} {address}",
             "SwapAndSend": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2} og {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Kunne ikke oppgi {amount} {symbol} og {symbol2} LP-tokens",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Kunne ikke fjerne {amount} {symbol}",
             "DemeterFarmingGetRewards": "Kunne ikke gjøre krav på {symbol}",
             "EthBridgeIncoming": "Kunne ikke overføre {amount} {symbol} fra {Ethereum} til {Sora}",
-            "EthBridgeOutgoing": "Kunne ikke overføre {amount} {symbol} fra {Sora} til {Ethereum}"
+            "EthBridgeOutgoing": "Kunne ikke overføre {amount} {symbol} fra {Sora} til {Ethereum}",
+            "SwapTransferBatch": "Kunne ikke {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Gjør krav på belønninger",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Overføre"
     },
     "polkadotjs": {
         "noExtensions": "Finner ingen {PolkadotJs} utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -301,7 +304,8 @@
         "txId": "Transaksjons ID",
         "viewIn": "Vis i {explorer}",
         "referrer": "Henviser",
-        "referral": "Henvisning"
+        "referral": "Henvisning",
+        "adarTxDetailsTitle": "Transaksjonsdetaljer"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Bytt nettverk i {Metamask}",
@@ -540,7 +544,8 @@
         "networkInfo": "Bridge {Sora} Network med:",
         "copy": "Kopier nettverksadressen",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse"
+        "ethereumAddress": "{Ethereum} adresse",
+        "limitMessage": "For øyeblikket er det en {type} {amount} {symbol} for brobygging for å sikre stabiliteten og sikkerheten til {Sora} -nettverket. Vi setter pris på din forståelse."
     },
     "selectRegisteredAsset": {
         "title": "Velg token",
@@ -1013,7 +1018,8 @@
             "norewardsforasset": "Det er ingen belønninger for denne ressursen"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Valgt likviditetskilde er ikke tillatt"
+            "forbiddenfilter": "Valgt likviditetskilde er ikke tillatt",
+            "slippagenottolerated": "Prisimpakten har overskredet den valgte verdien"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Utilstrekkelige midler",
@@ -1214,9 +1220,9 @@
         "moonpayTitle": "Kjøp ETH via MoonPay",
         "moonpayDesc": "Kjøp ETH-tokens på Ethereum og overfør dem til SORA-nettverket via broen",
         "x1Title": "Kjøp XOR med kortet ditt",
-        "x1Desc": "Kjøp XOR-tokens med ditt debet- eller kredittkort",
         "x1Btn": "Kjøp XOR med kort",
-        "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere."
+        "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere.",
+        "x1Desc": "Kjøp XOR-tokens direkte på SORA-nettverket med ditt debet- eller kredittkort"
     },
     "acceptOnScrollText": "Rull for å godta",
     "addressBook": {
@@ -1251,5 +1257,9 @@
         "btnGoToSettings": "Gå til Innstillinger",
         "btnAllow": "Gi tilgang"
     },
-    "continueText": "Fortsette"
+    "continueText": "Fortsette",
+    "minAmountText": "min. beløp",
+    "maxAmountText": "maks. beløp",
+    "exceededAmountText": "{amount} overskredet",
+    "multipleRecipients": "Flere mottakere"
 }
