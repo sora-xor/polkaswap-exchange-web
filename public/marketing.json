@@ -1,19 +1,19 @@
 [
   {
     "title": "JOIN AIRDROP",
-    "img": "/ads/synths.png",
+    "img": "/marketing/synths.png",
     "backgroundColor": "var(--s-color-theme-accent)",
     "link": "https://gleam.io/zHQmD/polkaswap-34000-xst-airdrop-campaign"
   },
   {
     "title": "GET SORA CARD",
-    "img": "/ads/card.png",
+    "img": "/marketing/card.png",
     "backgroundColor": "#F8087B",
     "link": "/#/card"
   },
   {
     "title": "LEARN ABOUT SYNTHETICS",
-    "img": "/ads/synths.png",
+    "img": "/marketing/synths.png",
     "backgroundColor": "var(--s-color-theme-accent)",
     "link": "https://medium.com/polkaswap/unveiling-synthetic-assets-a-game-changer-in-the-financial-landscape-1720e5858422"
   }

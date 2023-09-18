@@ -1,28 +1,28 @@
 <template>
-  <div v-if="adsArray.length" class="ad s-flex">
-    <span class="ad-prev" @click="prev()">
+  <div v-if="adsArray.length" class="marketing s-flex">
+    <span class="marketing-prev" @click="prev()">
       <s-icon name="arrows-chevron-left-rounded-24" />
     </span>
-    <transition-group tag="div" class="ad-slider" :name="transitionName">
+    <transition-group tag="div" class="marketing-slider" :name="transitionName">
       <template v-for="(ad, index) in adsArray">
         <div v-if="currentIndex === index" :key="ad.title">
           <a
-            class="ad-card"
+            class="marketing-card"
             rel="nofollow noopener"
             :target="getTarget(ad.link)"
             :style="getStyles(ad)"
             :href="ad.link"
           >
-            <span class="ad-text">
+            <span class="marketing-text">
               {{ ad.title }}
-              <s-icon class="ad-suffix" name="arrows-arrow-top-right-24" size="16px" />
+              <s-icon class="marketing-suffix" name="arrows-arrow-top-right-24" size="16px" />
             </span>
-            <span class="ad-image" />
+            <span class="marketing-image" />
           </a>
         </div>
       </template>
     </transition-group>
-    <span class="ad-next" @click="next()">
+    <span class="marketing-next" @click="next()">
       <s-icon name="arrows-chevron-right-rounded-24" />
     </span>
   </div>
@@ -35,8 +35,9 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { state } from '@/store/decorators';
 import type { Ad } from '@/store/settings/types';
 
+// PS. Do not call this component & css classes like ad/ads -> it'll be blocked by any blocker browser extension
 @Component
-export default class AppAd extends Mixins(mixins.TranslationMixin) {
+export default class AppMarketing extends Mixins(mixins.TranslationMixin) {
   @state.settings.adsArray adsArray!: Array<Ad>;
 
   private interval: Nullable<NodeJS.Timeout> = null;
@@ -44,9 +45,7 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
   transitionName = 'slide';
 
   mounted(): void {
-    this.interval = setInterval(() => {
-      this.next();
-    }, 60_000);
+    this.interval = setInterval(this.next, 60_000);
   }
 
   beforeDestroy(): void {
@@ -71,7 +70,7 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
 
     this.transitionName = 'slideback';
     if (this.currentIndex <= 0) {
-      this.currentIndex = this.adsArray.length - 1; // last ad
+      this.currentIndex = this.adsArray.length - 1; // last item
     } else {
       this.currentIndex--;
     }
@@ -82,7 +81,7 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
 
     this.transitionName = 'slide';
     if (this.currentIndex >= this.adsArray.length - 1) {
-      this.currentIndex = 0; // first ad
+      this.currentIndex = 0; // first item
     } else {
       this.currentIndex++;
     }
@@ -93,7 +92,7 @@ export default class AppAd extends Mixins(mixins.TranslationMixin) {
 <style lang="scss" scoped>
 $ad-width: 280px;
 $max-ad-width: 330px;
-.ad {
+.marketing {
   position: relative;
   width: $ad-width;
   &-prev,
@@ -151,9 +150,6 @@ $max-ad-width: 330px;
   }
   &-image {
     flex: 1;
-  }
-  @include desktop {
-    width: $ad-width;
   }
   @media (minmax(1220px, false)) {
     width: $max-ad-width;
