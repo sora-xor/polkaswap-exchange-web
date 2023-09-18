@@ -1,8 +1,15 @@
+const path = require('path');
+
 const { defineConfig } = require('@vue/cli-service');
+const glob = require('glob');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const { PurgeCSSPlugin } = require('purgecss-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
+
+const PATHS = {
+  src: path.join(__dirname, 'src'),
+};
 
 module.exports = defineConfig({
   publicPath: './',
@@ -30,6 +37,9 @@ module.exports = defineConfig({
         new TerserWebpackPlugin(),
         new MiniCssExtractPlugin({
           filename: '[name].css',
+        }),
+        new PurgeCSSPlugin({
+          paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
         })
       );
       const buildDateTime = Date.now();
