@@ -1,5 +1,7 @@
 const { defineConfig } = require('@vue/cli-service');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const { PurgeCSSPlugin } = require('purgecss-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 
 module.exports = defineConfig({
@@ -24,7 +26,12 @@ module.exports = defineConfig({
       });
 
     if (process.env.NODE_ENV === 'production') {
-      config.plugins.push(new TerserWebpackPlugin());
+      config.plugins.push(
+        new TerserWebpackPlugin(),
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+        })
+      );
       const buildDateTime = Date.now();
       config.output.filename = `js/[name].[contenthash:8].${buildDateTime}.js`;
       config.output.chunkFilename = `js/[name].[contenthash:8].${buildDateTime}.js`;
