@@ -1,5 +1,5 @@
 <template>
-  <s-design-system-provider :value="libraryDesignSystem" id="app" class="app">
+  <s-design-system-provider :value="libraryDesignSystem" id="app" class="app" :class="responsiveClass">
     <app-header :loading="loading" @toggle-menu="toggleMenu" />
     <div :class="appClasses">
       <app-menu
@@ -44,7 +44,7 @@ import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { PageNames, Components, Language } from '@/consts';
+import { PageNames, Components, Language, BreakpointClass, Breakpoint } from '@/consts';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -83,6 +83,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showConfirmInviteUser = false;
   showMobilePopup = false;
   showNotifsDarkPage = false;
+  responsiveClass = BreakpointClass.LargeDesktop;
 
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
@@ -107,6 +108,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
+  @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (cssClass: string) => void;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
   @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => Promise<void>;
@@ -168,7 +170,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
-  async confirmInvititation(): Promise<void> {
+  private async confirmInvititation(): Promise<void> {
     await this.getReferrer();
     if (this.storageReferrer) {
       if (this.storageReferrer === this.account.address) {
@@ -181,12 +183,30 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
+  private setResponsiveClass(): void {
+    const width = window.innerWidth;
+    if (width >= Breakpoint.HugeDesktop) {
+      this.responsiveClass = BreakpointClass.HugeDesktop;
+    } else if (width >= Breakpoint.LargeDesktop) {
+      this.responsiveClass = BreakpointClass.LargeDesktop;
+    } else if (width >= Breakpoint.Desktop) {
+      this.responsiveClass = BreakpointClass.Desktop;
+    } else if (width >= Breakpoint.Tablet) {
+      this.responsiveClass = BreakpointClass.Tablet;
+    } else if (width >= Breakpoint.LargeMobile) {
+      this.responsiveClass = BreakpointClass.LargeMobile;
+    } else if (width < Breakpoint.LargeMobile) {
+      this.responsiveClass = BreakpointClass.Mobile;
+    }
+    this.setScreenBreakpointClass(this.responsiveClass);
+  }
+
   async created() {
     // [DESKTOP] To Enable Desktop
     // this.setIsDesktop(true);
     // element-icons is not common used, but should be visible after network connection lost
     preloadFontFace('element-icons');
-
+    this.setResponsiveClass();
     updateBaseUrl(router);
     AlertsApiService.baseRoute = getFullBaseUrl(router);
 
@@ -225,6 +245,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     updateDocumentTitle(); // For the first load
     this.showDisclaimer();
     this.fetchAdvArray();
+  }
+
+  mounted(): void {
+    window.addEventListener('resize', this.setResponsiveClass);
   }
 
   private get isSwapPageWithCharts(): boolean {
@@ -310,6 +334,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
+    window.removeEventListener('resize', this.setResponsiveClass);
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
     this.resetBlockNumberSubscription();

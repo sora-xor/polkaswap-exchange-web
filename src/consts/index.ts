@@ -435,3 +435,21 @@ export const AboutTopics = [
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
+
+export enum Breakpoint {
+  Mobile = 464,
+  LargeMobile = 528,
+  Tablet = 900,
+  Desktop = 1024,
+  LargeDesktop = 1440,
+  HugeDesktop = 1600,
+}
+
+export enum BreakpointClass {
+  Mobile = 'min-mobile',
+  LargeMobile = 'min-large-mobile',
+  Tablet = 'min-tablet',
+  Desktop = 'min-desktop',
+  LargeDesktop = 'min-large-desktop',
+  HugeDesktop = 'min-huge-desktop',
+}

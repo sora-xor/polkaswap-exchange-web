@@ -1,4 +1,4 @@
-import type { MarketAlgorithms } from '@/consts';
+import type { BreakpointClass, MarketAlgorithms } from '@/consts';
 import type { Node } from '@/types/nodes';
 
 import type { Subscription } from 'rxjs';
@@ -45,6 +45,7 @@ export type SettingsState = {
   blockNumberUpdates: Nullable<Subscription>;
   internetConnection: Nullable<boolean>;
   internetConnectionSpeed: Nullable<number>;
+  screenBreakpointClass: BreakpointClass;
   advArray: Array<Adv>;
 };
 
