@@ -13,17 +13,23 @@
     </div>
     <div class="order-book-widget-sell">
       <div v-for="order in sellOrders" :key="order.price" class="row">
-        <span class="order-info">{{ order.price }}</span>
+        <span class="order-info price">{{ order.price }}</span>
         <span class="order-info">{{ order.amount }}</span>
         <span class="order-info">{{ order.total }}</span>
+        <div class="bar" :style="getStyles(order.filled)" />
       </div>
     </div>
-    <div class="order-book-widget-delimiter"><span>22.386800</span> <span>$22.54</span></div>
+    <div :class="getComputedClassTrend()">
+      <span class="mark-price">22.386800</span>
+      <s-icon class="trend-icon" :name="iconTrend" size="18" />
+      <span class="last-traded-price">$22.54</span>
+    </div>
     <div class="order-book-widget-buy">
       <div v-for="order in sellOrders" :key="order.price" class="row">
-        <span class="order-info">{{ order.price }}</span>
+        <span class="order-info price">{{ order.price }}</span>
         <span class="order-info">{{ order.amount }}</span>
         <span class="order-info">{{ order.total }}</span>
+        <div class="bar" :style="getStyles(order.filled)" />
       </div>
     </div>
   </div>
@@ -35,67 +41,94 @@ import { Component, Mixins } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { delay } from '@/utils';
 
+type PriceTrend = 'up' | 'down';
+
 @Component
 export default class BookWidget extends Mixins(TranslationMixin) {
+  priceTrend: PriceTrend = 'down';
+
+  get iconTrend(): string {
+    return this.priceTrend === 'up' ? 'arrows-arrow-bold-top-24' : 'arrows-arrow-bold-bottom-24';
+  }
+
+  getComputedClassTrend(): string {
+    const base = ['order-book-widget-delimiter'];
+
+    if (this.priceTrend === 'up') {
+      base.push('order-book-widget-delimiter--up');
+    } else {
+      base.push('order-book-widget-delimiter--down');
+    }
+
+    return base.join(' ');
+  }
+
   get sellOrders() {
     return [
       {
         price: '23.178100',
         amount: '112.28100',
         total: '2,602.460246',
+        filled: 34,
       },
       {
         price: '23.178100',
         amount: '112.28100',
         total: '2,602.460246',
+        filled: 22,
       },
       {
         price: '23.178100',
         amount: '112.28100',
         total: '2,602.460246',
+        filled: 12,
       },
       {
         price: '23.178100',
         amount: '112.28100',
         total: '2,602.460246',
+        filled: 79,
       },
       {
         price: '23.178100',
         amount: '112.28100',
         total: '2,602.460246',
+        filled: 81,
       },
       {
         price: '23.178100',
         amount: '112.28100',
         total: '2,602.460246',
+        filled: 54,
       },
       {
         price: '23.178100',
         amount: '112.28100',
         total: '2,602.460246',
+        filled: 34,
       },
       {
         price: '23.178100',
         amount: '112.28100',
         total: '2,602.460246',
+        filled: 99,
       },
       {
         price: '23.178100',
         amount: '112.28100',
         total: '2,602.460246',
+        filled: 2,
       },
     ];
   }
 
-  async mounted() {}
+  getStyles(filled) {
+    return `width: ${filled}%`;
+  }
 }
 </script>
 
 <style lang="scss">
-.book {
-  --row-width: 50px;
-}
-
 .order-book-widget {
   .row {
     display: flex;
@@ -109,28 +142,71 @@ export default class BookWidget extends Mixins(TranslationMixin) {
     transform: scaleX(-1);
   }
 
-  &-sell,
-  &-buy {
+  &-buy,
+  &-sell {
     transform: scaleX(-1);
-    .row::after {
-      content: '';
-      display: inline-block;
-      transform: translateZ(-1px);
-      width: var(--row-width);
-      height: 24px;
+    .bar {
+      width: 40%;
+      height: 100%;
+      z-index: -1;
       position: absolute;
     }
   }
 
-  &-sell {
-    .row::after {
-      background: rgba(255, 216, 235, 0.8);
+  &-buy {
+    .bar {
+      background: rgba(185, 235, 219, 0.4);
+    }
+
+    .order-info.price {
+      color: var(--status-day-success, #34ad87);
     }
   }
 
-  &-buy {
-    .row::after {
-      background: rgba(185, 235, 219, 0.4);
+  &-sell {
+    .bar {
+      background: rgba(255, 216, 235, 0.8);
+    }
+
+    .order-info.price {
+      color: var(--status-day-error, #f754a3);
+    }
+  }
+
+  &-delimiter {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    line-height: 30px;
+
+    .mark-price {
+      font-size: 24px;
+      font-weight: 450;
+      padding-left: 24px;
+    }
+
+    .last-traded-price {
+      font-weight: 450;
+      font-size: 18px;
+      margin-left: 24px;
+    }
+
+    .trend-icon {
+      margin-left: 4px;
+    }
+
+    &--up {
+      .mark-price,
+      .trend-icon {
+        color: #34ad87;
+      }
+    }
+
+    &--down {
+      .mark-price,
+      .trend-icon {
+        color: #f754a3;
+      }
     }
   }
 
