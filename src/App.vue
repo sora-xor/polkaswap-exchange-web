@@ -582,7 +582,7 @@ i.icon-divider {
 
   &-content {
     flex: 1;
-    margin: $inner-spacing-big auto 0;
+    margin: $inner-spacing-big auto;
     width: 100%;
   }
 
