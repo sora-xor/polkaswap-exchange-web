@@ -38,8 +38,8 @@
             "CreatePair": "Поставлено {amount} {symbol} и {amount2} {symbol2}",
             "RegisterAsset": "Зарегистрирован актив {symbol}",
             "ClaimRewards": "Награды получены успешно {rewards}",
-            "ReferralReserveXor": "XOR успешно зарезервированы",
-            "ReferralUnreserveXor": "XOR успешно выведены из резерва",
+            "ReferralReserveXor": "Зарезервировано {amount} XOR",
+            "ReferralUnreserveXor": "{amount} XOR успешно выведены из резерва",
             "ReferralSetInvitedUser": "{role} {address} успешно установлен",
             "SwapAndSend": "Совершен обмен {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Предоставлено {symbol} и {symbol2} {amount} LP токенов",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Удалено {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} успешно получено",
             "EthBridgeIncoming": "{amount} {symbol} переведено из {Ethereum} в {Sora}",
-            "EthBridgeOutgoing": "{amount} {symbol} переведено из {Sora} в {Ethereum}"
+            "EthBridgeOutgoing": "{amount} {symbol} переведено из {Sora} в {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Не удалось добавить {amount} {symbol} и {amount2} {symbol2}",
             "RegisterAsset": "Не удалось зарегистрировать {symbol} актив",
             "ClaimRewards": "Не удалось получить вознаграждения {rewards}",
-            "ReferralReserveXor": "Не удалось зарезервировать XOR",
-            "ReferralUnreserveXor": "Не удалось вывести XOR из резерва",
+            "ReferralReserveXor": "Не удалось зарезервировать {amount} XOR",
+            "ReferralUnreserveXor": "Не удалось вывести {amount} XOR из резерва",
             "ReferralSetInvitedUser": "Не удалось установить {role} {address}",
             "SwapAndSend": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Не удалось предоставить {amount} {symbol} и {symbol2} LP токены",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Не удалось удалить {amount} {symbol}",
             "DemeterFarmingGetRewards": "Не удалось получить {symbol}",
             "EthBridgeIncoming": "Не удалось перевести {amount} {symbol} из {Ethereum} в {Sora}",
-            "EthBridgeOutgoing": "Не удалось перевести {amount} {symbol} из {Sora} в {Ethereum}"
+            "EthBridgeOutgoing": "Не удалось перевести {amount} {symbol} из {Sora} в {Ethereum}",
+            "SwapTransferBatch": "Не удалось {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Отменить стейкинг токена",
         "DemeterFarmingGetRewards": "Получить награды",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Перевод"
     },
     "polkadotjs": {
         "noExtensions": "Расширение {PolkadotJs} не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
@@ -301,7 +304,8 @@
         "txId": "ID транзакции",
         "viewIn": "Смотреть в {explorer}",
         "referrer": "Реферер",
-        "referral": "Реферал"
+        "referral": "Реферал",
+        "adarTxDetailsTitle": "Детали транзакции"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Сменить сеть в {Metamask}",
@@ -540,7 +544,8 @@
         "networkInfo": "Соединить {Sora} Сеть с:",
         "copy": "Скопировать адрес сети",
         "soraAddress": "{Sora} адрес",
-        "ethereumAddress": "{Ethereum} адрес"
+        "ethereumAddress": "{Ethereum} адрес",
+        "limitMessage": "В настоящее время существует {type} {amount} {symbol} для моста, обеспечивающая стабильность и безопасность сети {Sora}. Мы ценим ваше понимание."
     },
     "selectRegisteredAsset": {
         "title": "Выбрать токен",
@@ -1013,7 +1018,8 @@
             "norewardsforasset": "Нет вознаграждений за этот актив"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Выбранный источник ликвидности не разрешен"
+            "forbiddenfilter": "Выбранный источник ликвидности не разрешен",
+            "slippagenottolerated": "Влияние на цену превысило выбранное значение"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Недостаточно средств",
@@ -1214,9 +1220,9 @@
         "moonpayTitle": "Купить ETH через MoonPay",
         "moonpayDesc": "Приобретите токены ETH на Ethereum и переведите их в сеть SORA через мост.",
         "x1Title": "Купить XOR с вашей карты",
-        "x1Desc": "Купите токены XOR с помощью дебетовой или кредитной карты.",
         "x1Btn": "Купить XOR с картой",
-        "errorMessage": "Приносим извинения за неудобства. Мы прилагаем все усилия, чтобы решить эту проблему. Пожалуйста, повторите попытку позже."
+        "errorMessage": "Приносим извинения за неудобства. Мы прилагаем все усилия, чтобы решить эту проблему. Пожалуйста, повторите попытку позже.",
+        "x1Desc": "Приобретайте токены XOR непосредственно в сети SORA с помощью дебетовой или кредитной карты."
     },
     "acceptOnScrollText": "Прокрутите, чтобы принять",
     "addressBook": {
@@ -1251,5 +1257,9 @@
         "btnGoToSettings": "Перейдите в настройки",
         "btnAllow": "Разрешить доступ"
     },
-    "continueText": "Продолжать"
+    "continueText": "Продолжать",
+    "minAmountText": "мин. сумма",
+    "maxAmountText": "макс. сумма",
+    "exceededAmountText": "{amount} ограничена",
+    "multipleRecipients": "Нескольким получателям"
 }

@@ -38,8 +38,8 @@
             "CreatePair": "Supplied {amount} {symbol} and {amount2} {symbol2}",
             "RegisterAsset": "Registered {symbol} asset",
             "ClaimRewards": "Reward claimed successfully {rewards}",
-            "ReferralReserveXor": "Bonded XOR successfully",
-            "ReferralUnreserveXor": "Unbonded XOR successfully",
+            "ReferralReserveXor": "Bonded {amount} XOR",
+            "ReferralUnreserveXor": "Unbonded {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} is set successfully",
             "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Supplied {symbol} and {symbol2} {amount} LP tokens",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Removed {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} claimed successfully",
             "EthBridgeIncoming": "Transfered {amount} {symbol} from {Ethereum} to {Sora}",
-            "EthBridgeOutgoing": "Transfered {amount} {symbol} from {Sora} to {Ethereum}"
+            "EthBridgeOutgoing": "Transfered {amount} {symbol} from {Sora} to {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
             "RegisterAsset": "Failed to register {symbol} asset",
             "ClaimRewards": "Failed to claim rewards {rewards}",
-            "ReferralReserveXor": "Failed to bond XOR",
-            "ReferralUnreserveXor": "Failed to unbond XOR",
+            "ReferralReserveXor": "Failed to bond {amount} XOR",
+            "ReferralUnreserveXor": "Failed to unbond {amount} XOR",
             "ReferralSetInvitedUser": "Failed to set {role} {address}",
             "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Failed to supply {amount} {symbol} and {symbol2} LP tokens",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Failed to remove {amount} {symbol}",
             "DemeterFarmingGetRewards": "Failed to claim {symbol}",
             "EthBridgeIncoming": "Failed to transfer {amount} {symbol} from {Ethereum} to {Sora}",
-            "EthBridgeOutgoing": "Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}"
+            "EthBridgeOutgoing": "Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}",
+            "SwapTransferBatch": "Failed to {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Claim Rewards",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} transfer"
     },
     "polkadotjs": {
         "noExtensions": "No {PolkadotJs} extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -301,7 +304,8 @@
         "txId": "Transaction Id",
         "viewIn": "View in {explorer}",
         "referrer": "Referrer",
-        "referral": "Referral"
+        "referral": "Referral",
+        "adarTxDetailsTitle": "Transaction details"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Change network in {Metamask}",
@@ -540,7 +544,8 @@
         "networkInfo": "Bridge {Sora} Network with:",
         "copy": "Copy network address",
         "soraAddress": "{Sora} address",
-        "ethereumAddress": "{Ethereum} address"
+        "ethereumAddress": "{Ethereum} address",
+        "limitMessage": "Currently, there's a {type} {amount} {symbol} for bridging to ensure the stability and security of the {Sora} Network. We appreciate your understanding."
     },
     "selectRegisteredAsset": {
         "title": "Select a token",
@@ -1013,7 +1018,8 @@
             "norewardsforasset": "There are no rewards for this asset"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Selected liquidity source is not allowed"
+            "forbiddenfilter": "Selected liquidity source is not allowed",
+            "slippagenottolerated": "The price impact has exceeded the selected value"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Insufficient funds",
@@ -1214,9 +1220,9 @@
         "moonpayTitle": "Buy ETH via MoonPay",
         "moonpayDesc": "Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge",
         "x1Title": "Buy XOR with your card",
-        "x1Desc": "Purchase XOR tokens with your debit or credit card",
         "x1Btn": "Buy XOR with card",
-        "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later."
+        "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later.",
+        "x1Desc": "Purchase XOR tokens directly on the SORA network with your debit or credit card"
     },
     "acceptOnScrollText": "Scroll to accept",
     "addressBook": {
@@ -1251,5 +1257,9 @@
         "btnGoToSettings": "Go to settings",
         "btnAllow": "Allow access"
     },
-    "continueText": "Continue"
+    "continueText": "Continue",
+    "minAmountText": "min. amount",
+    "maxAmountText": "max. amount",
+    "exceededAmountText": "{amount} exceeded",
+    "multipleRecipients": "Multiple Recipients"
 }

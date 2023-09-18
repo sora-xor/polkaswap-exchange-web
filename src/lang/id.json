@@ -38,8 +38,8 @@
             "CreatePair": "Disuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RegisterAsset": "Aset {symbol} terdaftar",
             "ClaimRewards": "Hadiah berhasil diklaim {rewards}",
-            "ReferralReserveXor": "Terikat XOR dengan sukses",
-            "ReferralUnreserveXor": "XOR tidak terikat berhasil",
+            "ReferralReserveXor": "Berikat {amount} XOR",
+            "ReferralUnreserveXor": "XOR {amount} tidak terikat",
             "ReferralSetInvitedUser": "{role} {address} berhasil disetel",
             "SwapAndSend": "Tukar {amount} {symbol} untuk {amount2} {symbol2} dan {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Disediakan {symbol} dan {symbol2} {amount} token LP",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "{amount} {symbol} dihapus",
             "DemeterFarmingGetRewards": "{amount} {symbol} berhasil diklaim",
             "EthBridgeIncoming": "Mentransfer {amount} {symbol} dari {Ethereum} ke {Sora}",
-            "EthBridgeOutgoing": "Mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}"
+            "EthBridgeOutgoing": "Mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Gagal {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Gagal menyuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RegisterAsset": "Gagal mendaftarkan aset {symbol}",
             "ClaimRewards": "Gagal mengklaim hadiah {rewards}",
-            "ReferralReserveXor": "Gagal mengikat XOR",
-            "ReferralUnreserveXor": "Gagal melepaskan ikatan XOR",
+            "ReferralReserveXor": "Gagal mengikat {amount} XOR",
+            "ReferralUnreserveXor": "Gagal melepaskan ikatan {amount} XOR",
             "ReferralSetInvitedUser": "Gagal menyetel {role} {address}",
             "SwapAndSend": "Gagal menukar {amount} {symbol} dengan {amount2} {symbol2} dan{action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Gagal menyediakan {amount} {symbol} dan {symbol2} token LP",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Gagal menghapus {amount} {symbol}",
             "DemeterFarmingGetRewards": "Gagal mengklaim {symbol}",
             "EthBridgeIncoming": "Gagal mentransfer {amount} {symbol} dari {Ethereum} ke {Sora}",
-            "EthBridgeOutgoing": "Gagal mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}"
+            "EthBridgeOutgoing": "Gagal mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}",
+            "SwapTransferBatch": "Gagal {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Token Lepas Taruhan",
         "DemeterFarmingGetRewards": "Klaim Hadiah",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Transfer"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi {PolkadotJs} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
@@ -301,7 +304,8 @@
         "txId": "Id transaksi",
         "viewIn": "Lihat di {explorer}",
         "referrer": "Perujuk",
-        "referral": "Rujukan"
+        "referral": "Rujukan",
+        "adarTxDetailsTitle": "Rincian transaksi"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Ubah jaringan di {Metamask}",
@@ -540,7 +544,8 @@
         "networkInfo": "Bridge Jaringan {Sora} dengan:",
         "copy": "Salin alamat jaringan",
         "soraAddress": "{Sora} alamat",
-        "ethereumAddress": "{Ethereum} alamat"
+        "ethereumAddress": "{Ethereum} alamat",
+        "limitMessage": "Saat ini, ada {type} {amount} {symbol} untuk menjembatani guna memastikan stabilitas dan keamanan Jaringan {Sora} . Kami menghargai pengertian Anda."
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",
@@ -1013,7 +1018,8 @@
             "norewardsforasset": "Tidak ada imbalan untuk aset ini"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Sumber likuiditas yang dipilih tidak diperbolehkan"
+            "forbiddenfilter": "Sumber likuiditas yang dipilih tidak diperbolehkan",
+            "slippagenottolerated": "Dampak harga telah melebihi nilai yang dipilih"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Dana tidak mencukupi",
@@ -1214,9 +1220,9 @@
         "moonpayTitle": "Beli ETH melalui MoonPay",
         "moonpayDesc": "Beli token ETH di Ethereum dan transfer ke jaringan SORA melalui jembatan",
         "x1Title": "Beli XOR dengan kartu Anda",
-        "x1Desc": "Beli token XOR dengan kartu debit atau kredit Anda",
         "x1Btn": "Beli XOR dengan kartu",
-        "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti."
+        "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti.",
+        "x1Desc": "Beli token XOR langsung di jaringan SORA dengan kartu debit atau kredit Anda"
     },
     "acceptOnScrollText": "Gulir untuk menerima",
     "addressBook": {
@@ -1251,5 +1257,9 @@
         "btnGoToSettings": "Pergi ke pengaturan",
         "btnAllow": "Izinkan akses"
     },
-    "continueText": "Melanjutkan"
+    "continueText": "Melanjutkan",
+    "minAmountText": "menit. jumlah",
+    "maxAmountText": "maks. jumlah",
+    "exceededAmountText": "{amount} terlampaui",
+    "multipleRecipients": "Penerima Multipel"
 }

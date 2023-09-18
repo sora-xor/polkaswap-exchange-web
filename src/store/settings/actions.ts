@@ -1,6 +1,7 @@
 import { initWallet, waitForCore, connection, api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
+import axiosInstance from '@/api';
 import { Language, WalletPermissions } from '@/consts';
 import { getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
 import { settingsActionContext } from '@/store/settings';
@@ -213,6 +214,15 @@ const actions = defineActions({
       commit.setBlockNumber(blockNumber);
     });
     commit.setBlockNumberUpdates(blockNumberSubscription);
+  },
+  async fetchAdsArray(context): Promise<void> {
+    const { commit } = settingsActionContext(context);
+    try {
+      const { data } = await axiosInstance.get('/marketing.json');
+      commit.setAdsArray(data);
+    } catch {
+      commit.setAdsArray([]);
+    }
   },
 });
 

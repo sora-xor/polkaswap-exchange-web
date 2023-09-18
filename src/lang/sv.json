@@ -38,8 +38,8 @@
             "CreatePair": "Tillhandahöll {amount} {symbol} och {amount2} {symbol2}",
             "RegisterAsset": "Registrerade {symbol} tillgång",
             "ClaimRewards": "Belöning hävdad framgångsrikt {rewards}",
-            "ReferralReserveXor": "XOR bonded framgångsrikt",
-            "ReferralUnreserveXor": "XOR unbonded framgångsrikt",
+            "ReferralReserveXor": "Bondad {amount} XOR",
+            "ReferralUnreserveXor": "Obundet {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} tillämpades framgångsrikt",
             "SwapAndSend": "Bytte {amount} {symbol} mot {amount2} {symbol2} samt {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Medföljer {symbol} och {symbol2} {amount} LP-polletter",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Tog bort {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} har gjort anspråk",
             "EthBridgeIncoming": "Överförde {amount} {symbol} från {Ethereum} till {Sora}",
-            "EthBridgeOutgoing": "Överförde {amount} {symbol} från {Sora} till {Ethereum}"
+            "EthBridgeOutgoing": "Överförde {amount} {symbol} från {Sora} till {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Det gick inte att {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Misslyckades med att tillhandahålla {amount} {symbol} och {amount2} {symbol2}",
             "RegisterAsset": "Misslyckades med att registrera {symbol} tillgång",
             "ClaimRewards": "Misslyckades med att begära belöningar {rewards}",
-            "ReferralReserveXor": "Misslyckades med att bond XOR",
-            "ReferralUnreserveXor": "Misslyckades med att unbond XOR",
+            "ReferralReserveXor": "Det gick inte att binda {amount} XOR",
+            "ReferralUnreserveXor": "Det gick inte att frigöra {amount} XOR",
             "ReferralSetInvitedUser": "Misslyckades med att tillämpa {role} {address}",
             "SwapAndSend": "Misslyckades med att byta {amount} {symbol} mot {amount2} {symbol2} samt {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Det gick inte att ange {amount} {symbol} och {symbol2} LP-tokens",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Det gick inte att ta bort {amount} {symbol}",
             "DemeterFarmingGetRewards": "Det gick inte att göra anspråk på {symbol}",
             "EthBridgeIncoming": "Det gick inte att överföra {amount} {symbol} från {Ethereum} till {Sora}",
-            "EthBridgeOutgoing": "Det gick inte att överföra {amount} {symbol} från {Sora} till {Ethereum}"
+            "EthBridgeOutgoing": "Det gick inte att överföra {amount} {symbol} från {Sora} till {Ethereum}",
+            "SwapTransferBatch": "Det gick inte att {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Gör Anspråk på Belöningar",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Överför"
     },
     "polkadotjs": {
         "noExtensions": "Inget {PolkadotJs} tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -301,7 +304,8 @@
         "txId": "Transaktions-ID",
         "viewIn": "Visa i {explorer}",
         "referrer": "Referrer",
-        "referral": "Hänvisning"
+        "referral": "Hänvisning",
+        "adarTxDetailsTitle": "Transaktionsdetaljer"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Ändra nätverk i {Metamask}",
@@ -540,7 +544,8 @@
         "networkInfo": "Brygga {Sora} Nätverk med:",
         "copy": "Kopiera nätverksadress",
         "soraAddress": "{Sora} adress",
-        "ethereumAddress": "{Ethereum} adress"
+        "ethereumAddress": "{Ethereum} adress",
+        "limitMessage": "För närvarande finns det en {type} {amount} {symbol} för överbryggning för att säkerställa stabiliteten och säkerheten i {Sora} -nätverket. Vi uppskattar din förståelse."
     },
     "selectRegisteredAsset": {
         "title": "Välj en token",
@@ -1013,7 +1018,8 @@
             "norewardsforasset": "Det finns inga belöningar för denna tillgång"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Vald likviditetskälla är inte tillåten"
+            "forbiddenfilter": "Vald likviditetskälla är inte tillåten",
+            "slippagenottolerated": "Prisförändringen har överskridit det valda värdet"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Otillräckliga medel",
@@ -1214,9 +1220,9 @@
         "moonpayTitle": "Köp ETH via MoonPay",
         "moonpayDesc": "Köp ETH-tokens på Ethereum och överför dem till SORA-nätverket via bryggan",
         "x1Title": "Köp XOR med ditt kort",
-        "x1Desc": "Köp XOR-tokens med ditt betal- eller kreditkort",
         "x1Btn": "Köp XOR med kort",
-        "errorMessage": "Ursäkta besväret. Vi arbetar hårt för att lösa detta. Vänligen försök igen senare."
+        "errorMessage": "Ursäkta besväret. Vi arbetar hårt för att lösa detta. Vänligen försök igen senare.",
+        "x1Desc": "Köp XOR-tokens direkt på SORA-nätverket med ditt betal- eller kreditkort"
     },
     "acceptOnScrollText": "Bläddra för att acceptera",
     "addressBook": {
@@ -1251,5 +1257,9 @@
         "btnGoToSettings": "Gå till Inställningar",
         "btnAllow": "Tillåta åtkomst"
     },
-    "continueText": "Fortsätta"
+    "continueText": "Fortsätta",
+    "minAmountText": "min. belopp",
+    "maxAmountText": "max. belopp",
+    "exceededAmountText": "{amount} har överskridits",
+    "multipleRecipients": "Flera mottagare"
 }

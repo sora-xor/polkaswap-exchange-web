@@ -16,9 +16,9 @@
         </div>
       </div>
       <div class="popup-app">
-        <img src="@/assets/img/mobile/sora-app-left.png?inline" class="popup-app__left-image" />
-        <qr-code class="popup-app__qr-code" />
-        <img src="@/assets/img/mobile/sora-app-right.png?inline" class="popup-app__right-image" />
+        <img src="@/assets/img/mobile/sora-app-left.png?inline" alt="mobile-left" class="popup-app__left-image" />
+        <img src="@/assets/img/mobile/qr-code.svg?inline" alt="qr-code" class="popup-app__qr-code" />
+        <img src="@/assets/img/mobile/sora-app-right.png?inline" alt="mobile-right" class="popup-app__right-image" />
       </div>
     </div>
   </dialog-base>
@@ -28,14 +28,12 @@
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import QrCode from '@/assets/img/mobile/qr-code.svg?inline';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { StoreLinks, app } from '@/consts';
 
 @Component({
   components: {
     DialogBase: components.DialogBase,
-    QrCode,
   },
 })
 export default class AppMobilePopup extends Mixins(mixins.DialogMixin, TranslationMixin) {
@@ -112,8 +110,8 @@ export default class AppMobilePopup extends Mixins(mixins.DialogMixin, Translati
   display: flex;
   position: relative;
   &__qr-code {
-    width: 164px;
-    height: 164px;
+    width: 244px;
+    height: 244px;
     position: absolute;
     left: 20%;
     border-radius: 8%;

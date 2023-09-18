@@ -38,8 +38,8 @@
             "CreatePair": "{amount} {symbol} und {amount2} {symbol2} bereitgestellt",
             "RegisterAsset": "Registriertes {symbol} Asset",
             "ClaimRewards": "Belohnung erfolgreich beansprucht {rewards}",
-            "ReferralReserveXor": "Bonden von XOR erfolgreich",
-            "ReferralUnreserveXor": "Unbonden von XOR erfolgreich",
+            "ReferralReserveXor": "Verbundener {amount} XOR",
+            "ReferralUnreserveXor": "Ungebundener {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} wurde erfolgreich eingerichtet",
             "SwapAndSend": "{amount} {symbol} gegen {amount2} {symbol2} und {action} {direction} {address} getauscht",
             "DemeterFarmingDepositLiquidity": "{symbol} und {symbol2} {amount} LP-Token bereitgestellt",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "{amount} {symbol} entfernt",
             "DemeterFarmingGetRewards": "{amount} {symbol} erfolgreich beansprucht",
             "EthBridgeIncoming": "Übertragen {amount} {symbol} von {Ethereum} nach {Sora}",
-            "EthBridgeOutgoing": "Übertragen von {amount} {symbol} von {Sora} nach {Ethereum}"
+            "EthBridgeOutgoing": "Übertragen von {amount} {symbol} von {Sora} nach {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Fehler bei {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Fehler bei der Bereitstellung von {amount} {symbol} und {amount2} {symbol2}",
             "RegisterAsset": "Fehler beim Registrieren des {symbol} -Assets",
             "ClaimRewards": "Belohnungen konnten nicht beansprucht werden {rewards}",
-            "ReferralReserveXor": "Bonden von XOR fehlgeschlagen",
-            "ReferralUnreserveXor": "Unbonden von XOR fehlgeschlagen",
+            "ReferralReserveXor": "Die Bindung von {amount} XOR ist fehlgeschlagen",
+            "ReferralUnreserveXor": "Die Bindung von {amount} XOR konnte nicht aufgehoben werden",
             "ReferralSetInvitedUser": "Festlegen des {role} {address} fehlgeschlagen",
             "SwapAndSend": "{amount} {symbol} konnte nicht gegen {amount2} {symbol2} und {action} {direction} {address} getauscht werden",
             "DemeterFarmingDepositLiquidity": "{amount} {symbol} und {symbol2} LP-Token konnten nicht bereitgestellt werden",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Entfernen von {amount} {symbol} fehlgeschlagen",
             "DemeterFarmingGetRewards": "Anspruch auf {symbol} fehlgeschlagen",
             "EthBridgeIncoming": "Fehler beim Übertragen von {amount} {symbol} von {Ethereum} nach {Sora}",
-            "EthBridgeOutgoing": "Fehler beim Übertragen von {amount} {symbol} von {Sora} nach {Ethereum}"
+            "EthBridgeOutgoing": "Fehler beim Übertragen von {amount} {symbol} von {Sora} nach {Ethereum}",
+            "SwapTransferBatch": "Fehler bei {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Belohnungen beanspruchen",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Überweisen"
     },
     "polkadotjs": {
         "noExtensions": "Es wurde keine {PolkadotJs} Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -301,7 +304,8 @@
         "txId": "Transaktions-ID",
         "viewIn": "Auf {explorer} ansehen",
         "referrer": "Referrer",
-        "referral": "Referral"
+        "referral": "Referral",
+        "adarTxDetailsTitle": "Transaktionsdetails"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Netzwerk in {Metamask} ändern",
@@ -540,7 +544,8 @@
         "networkInfo": "Bridge {Sora} Netzwerk mit:",
         "copy": "Netzwerkadresse kopieren",
         "soraAddress": "{Sora} Adresse",
-        "ethereumAddress": "{Ethereum} Adresse"
+        "ethereumAddress": "{Ethereum} Adresse",
+        "limitMessage": "Derzeit gibt es ein {type} {amount} {symbol} für Bridging, um die Stabilität und Sicherheit des {Sora}-Netzwerks zu gewährleisten. Vielen Dank für Ihr Verständnis."
     },
     "selectRegisteredAsset": {
         "title": "Wähle ein Token",
@@ -1013,7 +1018,8 @@
             "norewardsforasset": "Für dieses Asset gibt es keine Belohnungen"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Ausgewählte Liquiditätsquelle ist nicht zulässig"
+            "forbiddenfilter": "Ausgewählte Liquiditätsquelle ist nicht zulässig",
+            "slippagenottolerated": "Der Preisverlust hat den ausgewählten Wert überschritten"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Unzureichende Mittel",
@@ -1214,9 +1220,9 @@
         "moonpayTitle": "Kaufen Sie ETH über MoonPay",
         "moonpayDesc": "Kaufen Sie ETH-Tokens auf Ethereum und übertragen Sie sie über die Bridge an das SORA-Netzwerk",
         "x1Title": "Kaufen Sie XOR mit Ihrer Karte",
-        "x1Desc": "Kaufen Sie XOR-Tokens mit Ihrer Debit- oder Kreditkarte",
         "x1Btn": "Kaufen Sie XOR mit Karte",
-        "errorMessage": "Entschuldigung für die Unannehmlichkeiten. Wir arbeiten fleißig daran, dieses Problem zu lösen. Bitte versuchen Sie es später noch einmal."
+        "errorMessage": "Entschuldigung für die Unannehmlichkeiten. Wir arbeiten fleißig daran, dieses Problem zu lösen. Bitte versuchen Sie es später noch einmal.",
+        "x1Desc": "Kaufen Sie XOR-Tokens direkt im SORA-Netzwerk mit Ihrer Debit- oder Kreditkarte"
     },
     "acceptOnScrollText": "Scrollen Sie, um zu akzeptieren",
     "addressBook": {
@@ -1251,5 +1257,9 @@
         "btnGoToSettings": "Gehe zu den Einstellungen",
         "btnAllow": "Erlauben den Zugriff"
     },
-    "continueText": "Weitermachen"
+    "continueText": "Weitermachen",
+    "minAmountText": "min. menge",
+    "maxAmountText": "max. menge",
+    "exceededAmountText": "{amount} überschritten",
+    "multipleRecipients": "Mehrere Empfänger"
 }

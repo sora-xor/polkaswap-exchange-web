@@ -120,7 +120,7 @@ import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
-import { formatAmountWithSuffix, formatDecimalPlaces, asZeroValue } from '@/utils';
+import { formatAmountWithSuffix, formatDecimalPlaces, asZeroValue, sortPools } from '@/utils';
 
 import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
@@ -156,7 +156,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
   poolReserves: Record<string, string[]> = {};
 
   get items(): TableItem[] {
-    return Object.entries(this.poolReserves).reduce<any>((buffer, [key, reserves]) => {
+    const items = Object.entries(this.poolReserves).reduce<any>((buffer, [key, reserves]) => {
       // dont show empty pools
       if (reserves.some((reserve) => asZeroValue(reserve))) return buffer;
 
@@ -210,12 +210,19 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
 
       return buffer;
     }, []);
+
+    const defaultSorted = [...items].sort((a, b) =>
+      sortPools(
+        { baseAsset: a.baseAsset, poolAsset: a.targetAsset },
+        { baseAsset: b.baseAsset, poolAsset: b.targetAsset }
+      )
+    );
+
+    return defaultSorted;
   }
 
   get preparedItems(): TableItem[] {
-    if (!this.isAccountItemsOnly) return this.items;
-
-    return this.items.filter((item) => item.isAccountItem);
+    return this.isAccountItemsOnly ? this.items.filter((item) => item.isAccountItem) : this.items;
   }
 
   get hasApyColumnData(): boolean {

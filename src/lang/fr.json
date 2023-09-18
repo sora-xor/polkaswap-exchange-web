@@ -38,8 +38,8 @@
             "CreatePair": "Dépôt de {amount} {symbol} et de {amount2} {symbol2}",
             "RegisterAsset": "Jeton {symbol} enregistré",
             "ClaimRewards": "Récompense réclamée avec succès {rewards}",
-            "ReferralReserveXor": "XOR lié avec succès",
-            "ReferralUnreserveXor": "XOR avec succès délié",
+            "ReferralReserveXor": "Cautionné {amount} XOR",
+            "ReferralUnreserveXor": "XOR {amount} non lié",
             "ReferralSetInvitedUser": "La {role} {address} est définie avec succès",
             "SwapAndSend": "Échange de {amount} {symbol} contre {amount2} {symbol2} et {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Fourni {symbol} et {symbol2} {amount} jetons LP",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Supprimé {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} a réclamé avec succès",
             "EthBridgeIncoming": "Transféré {amount} {symbol} de {Ethereum} à {Sora}",
-            "EthBridgeOutgoing": "Transféré {amount} {symbol} de {Sora} à {Ethereum}"
+            "EthBridgeOutgoing": "Transféré {amount} {symbol} de {Sora} à {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Échec de {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Échec du dépôt de {amount} {symbol} et de {amount2} {symbol2}",
             "RegisterAsset": "Échec de l'enregistrement du jeton {symbol}",
             "ClaimRewards": "Échec de la réclamation des récompenses {rewards}",
-            "ReferralReserveXor": "Échec de la liaison XOR",
-            "ReferralUnreserveXor": "Échec de la dissociation XOR",
+            "ReferralReserveXor": "Échec de la liaison {amount} XOR",
+            "ReferralUnreserveXor": "Échec du débouclage de {amount} XOR",
             "ReferralSetInvitedUser": "Échec de la définition de la {role} {address}",
             "SwapAndSend": "Échec de l'échange de {amount} {symbol} contre {amount2} {symbol2} et {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Impossible de fournir {amount} {symbol} et {symbol2} jetons LP",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Échec de la suppression de {amount} {symbol}",
             "DemeterFarmingGetRewards": "Échec de la revendication de {symbol}",
             "EthBridgeIncoming": "Échec du transfert de {amount} {symbol} de {Ethereum} vers {Sora}",
-            "EthBridgeOutgoing": "Échec du transfert de {amount} {symbol} de {Sora} à {Ethereum}"
+            "EthBridgeOutgoing": "Échec du transfert de {amount} {symbol} de {Sora} à {Ethereum}",
+            "SwapTransferBatch": "Échec de {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Jeton de désengagement",
         "DemeterFarmingGetRewards": "Réclamer mes Récompenses",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Transférer"
     },
     "polkadotjs": {
         "noExtensions": "Aucune extension {PolkadotJs} n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
@@ -301,7 +304,8 @@
         "txId": "Id de la transaction",
         "viewIn": "Visualisez dans {explorer}",
         "referrer": "Référent",
-        "referral": "Référence"
+        "referral": "Référence",
+        "adarTxDetailsTitle": "Détails de la transaction"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Changer de réseau dans {Metamask}",
@@ -540,7 +544,8 @@
         "networkInfo": "Pont {Sora} Réseau avec:",
         "copy": "Copier l'adresse réseau",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse"
+        "ethereumAddress": "{Ethereum} adresse",
+        "limitMessage": "Actuellement, il existe un {type} {amount} {symbol} pour le pontage afin de garantir la stabilité et la sécurité du réseau {Sora}. Nous apprécions votre compréhension."
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
@@ -1013,7 +1018,8 @@
             "norewardsforasset": "Il n'y a pas de récompenses pour cet actif"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "La source de liquidité sélectionnée n'est pas autorisée"
+            "forbiddenfilter": "La source de liquidité sélectionnée n'est pas autorisée",
+            "slippagenottolerated": "L'impact sur le prix a dépassé la valeur sélectionnée"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Fonds insuffisants",
@@ -1214,9 +1220,9 @@
         "moonpayTitle": "Acheter des ETH via MoonPay",
         "moonpayDesc": "Achetez des jetons ETH sur Ethereum et transférez-les sur le réseau SORA via le pont",
         "x1Title": "Achetez XOR avec votre carte",
-        "x1Desc": "Achetez des jetons XOR avec votre carte de débit ou de crédit",
         "x1Btn": "Acheter XOR avec carte",
-        "errorMessage": "Mes excuses pour le derangement. Nous travaillons avec diligence pour résoudre ce problème. Veuillez réessayer plus tard."
+        "errorMessage": "Mes excuses pour le derangement. Nous travaillons avec diligence pour résoudre ce problème. Veuillez réessayer plus tard.",
+        "x1Desc": "Achetez des jetons XOR directement sur le réseau SORA avec votre carte de débit ou de crédit"
     },
     "acceptOnScrollText": "Faites défiler pour accepter",
     "addressBook": {
@@ -1251,5 +1257,9 @@
         "btnGoToSettings": "Aller aux paramètres",
         "btnAllow": "Permettre l'accès"
     },
-    "continueText": "Continuer"
+    "continueText": "Continuer",
+    "minAmountText": "min. montant",
+    "maxAmountText": "max. montant",
+    "exceededAmountText": "{amount} dépassé",
+    "multipleRecipients": "Plusieurs destinataires"
 }

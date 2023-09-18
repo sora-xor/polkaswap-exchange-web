@@ -38,8 +38,8 @@
             "CreatePair": "{amount} {symbol} en {amount2} {symbol2} werden geleverd",
             "RegisterAsset": "Geregistreerd {symbol} asset",
             "ClaimRewards": "Beloning succesvol geclaimd {rewards}",
-            "ReferralReserveXor": "Bonded XOR met succes",
-            "ReferralUnreserveXor": "Unbonded XOR met succes",
+            "ReferralReserveXor": "Gebonden {amount} XOR",
+            "ReferralUnreserveXor": "Unbonded {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} is succesvol ingesteld",
             "SwapAndSend": "{amount} {symbol} geruild voor {amount2} {symbol2} en {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Meegeleverde {symbol} en {symbol2} {amount} LP tokens",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "{amount} {symbol} verwijderd",
             "DemeterFarmingGetRewards": "{amount} {symbol} succesvol geclaimd",
             "EthBridgeIncoming": "{amount} {symbol} overgedragen van {Ethereum} naar {Sora}",
-            "EthBridgeOutgoing": "{amount} {symbol} overgedragen van {Sora} naar {Ethereum}"
+            "EthBridgeOutgoing": "{amount} {symbol} overgedragen van {Sora} naar {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Kon {amount} {symbol} en {amount2} {symbol2} niet toevoegen",
             "RegisterAsset": "Mislukt om {symbol} asset te registreren",
             "ClaimRewards": "Kan geen beloningen claimen {rewards}",
-            "ReferralReserveXor": "Kan XOR niet binden",
-            "ReferralUnreserveXor": "Kan de obligatie niet ongedaan maken XOR",
+            "ReferralReserveXor": "Kan {amount} XOR niet binden",
+            "ReferralUnreserveXor": "Kan de binding van {amount} XOR niet ongedaan maken",
             "ReferralSetInvitedUser": "Kan {role} {address} niet instellen",
             "SwapAndSend": "Kan {amount} {symbol} niet omwisselen voor {amount2} {symbol2} en {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Kan {amount} {symbol} en {symbol2} LP-tokens niet leveren",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Kan {amount} {symbol} niet verwijderen",
             "DemeterFarmingGetRewards": "Kan {symbol} niet claimen",
             "EthBridgeIncoming": "Kan {amount} {symbol} niet overboeken van {Ethereum} naar {Sora}",
-            "EthBridgeOutgoing": "Kan {amount} {symbol} niet overboeken van {Sora} naar {Ethereum}"
+            "EthBridgeOutgoing": "Kan {amount} {symbol} niet overboeken van {Sora} naar {Ethereum}",
+            "SwapTransferBatch": "Kon {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Token ongedaan maken",
         "DemeterFarmingGetRewards": "Beloningen claimen",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Overdracht"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
@@ -301,7 +304,8 @@
         "txId": "Transactie ID",
         "viewIn": "Bekijk in {explorer}",
         "referrer": "Verwijzer",
-        "referral": "Verwijzing"
+        "referral": "Verwijzing",
+        "adarTxDetailsTitle": "Transactiegegevens"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Netwerk wijzigen in {Metamask}",
@@ -540,7 +544,8 @@
         "networkInfo": "Bridge {Sora} Netwerk met:",
         "copy": "Netwerkadres kopiëren",
         "soraAddress": "{Sora} adres",
-        "ethereumAddress": "{Ethereum} adres"
+        "ethereumAddress": "{Ethereum} adres",
+        "limitMessage": "Momenteel is er een {type} {amount} {symbol} voor overbrugging om de stabiliteit en veiligheid van het {Sora}-netwerk te garanderen. We waarderen je begrip."
     },
     "selectRegisteredAsset": {
         "title": "Kies een token",
@@ -1013,7 +1018,8 @@
             "norewardsforasset": "Er zijn geen beloningen voor dit item"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Geselecteerde liquiditeitsbron is niet toegestaan"
+            "forbiddenfilter": "Geselecteerde liquiditeitsbron is niet toegestaan",
+            "slippagenottolerated": "De prijsimpact heeft de geselecteerde waarde overschreden"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Onvoldoende middelen",
@@ -1214,9 +1220,9 @@
         "moonpayTitle": "Koop ETH via MoonPay",
         "moonpayDesc": "Koop ETH-tokens op Ethereum en verplaats ze via de bridge naar het SORA-netwerk",
         "x1Title": "Koop XOR met uw kaart",
-        "x1Desc": "Koop XOR-tokens met uw bankpas of creditcard",
         "x1Btn": "Koop XOR met kaart",
-        "errorMessage": "Excuses voor het ongemak. We werken er hard aan om dit op te lossen. Probeer het later opnieuw."
+        "errorMessage": "Excuses voor het ongemak. We werken er hard aan om dit op te lossen. Probeer het later opnieuw.",
+        "x1Desc": "Koop XOR-tokens rechtstreeks op het SORA-netwerk met uw bankpas of creditcard"
     },
     "acceptOnScrollText": "Scrol om te accepteren",
     "addressBook": {
@@ -1251,5 +1257,9 @@
         "btnGoToSettings": "Ga naar Instellingen",
         "btnAllow": "Toegang te verlenen"
     },
-    "continueText": "Doorgaan"
+    "continueText": "Doorgaan",
+    "minAmountText": "min. hoeveelheid",
+    "maxAmountText": "max. hoeveelheid",
+    "exceededAmountText": "{amount} overschreden",
+    "multipleRecipients": "Meerdere ontvangers"
 }
