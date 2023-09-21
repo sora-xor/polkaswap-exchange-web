@@ -406,11 +406,7 @@ ul ul {
 
   &-body-scrollbar {
     @include scrollbar;
-  }
-  &-body {
-    &-scrollbar {
-      flex: 1;
-    }
+    flex: 1;
   }
 }
 
