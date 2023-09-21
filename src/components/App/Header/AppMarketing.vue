@@ -106,7 +106,7 @@ $max-ad-width: 330px;
       color: var(--s-color-base-on-accent);
     }
     &:hover {
-      opacity: 1;
+      opacity: 0.7;
     }
   }
   &-prev {
