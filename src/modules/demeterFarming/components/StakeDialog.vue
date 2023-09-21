@@ -288,8 +288,6 @@ export default class StakeDialog extends Mixins(PoolCardMixin, mixins.DialogMixi
 .stake-dialog {
   @include full-width-button('action-button');
 
-  padding-bottom: $inner-spacing-medium;
-
   & > *:not(:first-child) {
     margin-top: $inner-spacing-medium;
   }
