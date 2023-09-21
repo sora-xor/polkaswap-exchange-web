@@ -4,7 +4,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode';
 import store from '@/store';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
-import { AttemptCounter, KycStatus, Status, VerificationStatus } from '../types/card';
+import { AttemptCounter, KycStatus, Status, UserInfo, VerificationStatus } from '../types/card';
 
 const soraCardTestBaseEndpoint = 'https://backend.dev.sora-card.tachi.soramitsu.co.jp';
 const soraCardProdBaseEndpoint = 'https://backend.sora-card.odachi.soramitsu.co.jp';
@@ -194,12 +194,12 @@ export const getXorPerEuroRatio = async () => {
   }
 };
 
-export const getUserIbanNumber = async () => {
+export const getUserIbanInfo = async (): Promise<UserInfo> => {
   const sessionRefreshToken = localStorage.getItem('PW-refresh-token');
   let sessionAccessToken = localStorage.getItem('PW-token');
 
   if (!(sessionAccessToken && sessionRefreshToken)) {
-    return null;
+    return emptyIbanInfo();
   }
 
   if (isAccessTokenExpired(sessionAccessToken)) {
@@ -208,7 +208,7 @@ export const getUserIbanNumber = async () => {
     if (accessToken) {
       sessionAccessToken = accessToken;
     } else {
-      return null;
+      return emptyIbanInfo();
     }
   }
 
@@ -226,12 +226,15 @@ export const getUserIbanNumber = async () => {
 
     if (data.IBANs && data.IBANs[0].StatusDescription === 'Active') {
       const iban = data.IBANs[0].Iban;
-      return iban;
+      const availableBalance = data.IBANs[0].AvailableBalance;
+
+      return { iban, availableBalance };
     } else {
-      return null;
+      return emptyIbanInfo();
     }
   } catch (error) {
     console.error('[SoraCard]: Error while getting IBAN', error);
+    return emptyIbanInfo();
   }
 };
 
@@ -315,6 +318,11 @@ export const clearPayWingsKeysFromLocalStorage = (logout = false) => {
 const emptyStatusFields = (): Status => ({
   verificationStatus: undefined,
   kycStatus: undefined,
+});
+
+const emptyIbanInfo = (): UserInfo => ({
+  iban: null,
+  availableBalance: null,
 });
 
 const emptyCounterFields = (): AttemptCounter => ({

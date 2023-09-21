@@ -31,6 +31,7 @@
         <s-input :placeholder="t('card.cardHub.ibanLabel')" :value="iban" readonly />
         <s-icon name="basic-copy-24" @click.native="handleCopyIban" />
       </div>
+      {{ balance / 100 }}
       <div class="sora-card-hub-logout" @click="logoutFromSoraCard">
         <span>{{ t('card.cardHub.logout') }}</span>
         <s-icon name="arrows-chevron-right-rounded-24" size="18" />
@@ -78,6 +79,10 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
 
   get iban(): Nullable<string> {
     return this.userInfo.iban;
+  }
+
+  get balance(): Nullable<number> {
+    return this.userInfo.availableBalance;
   }
 
   handleClick(type: Option): void {}

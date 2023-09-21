@@ -24,6 +24,7 @@ function initialState(): SoraCardState {
     rejectReason: null,
     userInfo: {
       iban: null,
+      availableBalance: null,
     },
   };
 }

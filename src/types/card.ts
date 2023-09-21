@@ -33,6 +33,7 @@ export interface Status {
 
 export interface UserInfo {
   iban: Nullable<string>;
+  availableBalance: Nullable<number>;
 }
 
 export interface AttemptCounter {
