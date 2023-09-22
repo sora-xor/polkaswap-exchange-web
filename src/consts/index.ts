@@ -139,6 +139,8 @@ export enum PageNames {
   ExploreStaking = 'Explore/Staking',
   ExplorePools = 'Explore/Pools',
   OrderBook = 'OrderBook',
+  LimitOrderBuy = 'OrderBook/LimitOrderBuy',
+  LimitOrderSell = 'OrderBook/LimitOrderSell',
   SoraCard = 'SoraCard',
 }
 
@@ -207,6 +209,7 @@ export enum Components {
   PairListPopover = 'pages/OrderBook/Popovers/PairListPopover',
   AllOrders = 'pages/OrderBook/Tables/AllOrders',
   OpenOrders = 'pages/OrderBook/Tables/OpenOrders',
+  SetLimitOrder = 'pages/OrderBook/SetLimitOrder',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
@@ -252,6 +255,11 @@ export enum Components {
 export enum LimitOrderSide {
   buy = 'buy',
   sell = 'sell',
+}
+
+export enum LimitOrderTabsItems {
+  Buy = PageNames.LimitOrderBuy,
+  Sell = PageNames.LimitOrderSell,
 }
 
 export enum RewardsTabsItems {

@@ -21,6 +21,7 @@ import { lazyComponent } from '@/router';
     SetLimitOrderWidget: lazyComponent(Components.SetLimitOrderWidget),
     HistoryOrderWidget: lazyComponent(Components.HistoryOrderWidget),
     BookChartsWidget: lazyComponent(Components.BookChartsWidget),
+    SetLimitOrder: lazyComponent(Components.SetLimitOrder),
   },
 })
 export default class OrderBook extends Mixins(TranslationMixin) {}
@@ -60,5 +61,11 @@ export default class OrderBook extends Mixins(TranslationMixin) {}
     color: var(--s-color-base-content-primary);
     border-radius: var(--s-border-radius-small);
   }
+}
+</style>
+
+<style lang="scss" scoped>
+.containerr {
+  margin: 0 auto 0;
 }
 </style>
