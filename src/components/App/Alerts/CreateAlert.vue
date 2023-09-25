@@ -79,7 +79,7 @@ import { FPNumber } from '@sora-substrate/math';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import { Components, MAX_ALERTS_NUMBER } from '@/consts';
+import { Components, MAX_ALERTS_NUMBER, ZeroStringValue } from '@/consts';
 import type { EditableAlertObject, NumberedAlert } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, mutation, state } from '@/store/decorators';
@@ -132,7 +132,8 @@ export default class CreateAlert extends Mixins(
 
   get deltaPercentage(): string {
     const desiredPrice = FPNumber.fromNatural(this.amount);
-    let currentPrice = FPNumber.fromNatural(this.fiatAmountValue);
+    const assetPrice = this.getAssetFiatPrice(this.asset) ?? ZeroStringValue;
+    let currentPrice = FPNumber.fromCodecValue(assetPrice);
 
     // if current price is zero, set minimal value for proper calculations
     if (FPNumber.eq(currentPrice, FPNumber.ZERO)) {

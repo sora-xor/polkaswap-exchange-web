@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Swap",
         "Transfer": "Transfer",
-        "SwapTransferBatch": "{ADAR} Transfer",
         "AddLiquidity": "Tambahkan Likuiditas",
         "RemoveLiquidity": "Hapus Likuiditas",
         "CreatePair": "Buat Pair",
@@ -33,15 +32,14 @@
         "andText": "dan",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Telah diswap {amount} {symbol} untuk {amount2} {symbol2}",
             "AddLiquidity": "Disuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RemoveLiquidity": "Dihapus {amount} {symbol} dan {amount2} {symbol2}",
             "CreatePair": "Disuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RegisterAsset": "Aset {symbol} terdaftar",
             "ClaimRewards": "Hadiah berhasil diklaim {rewards}",
-            "ReferralReserveXor": "Terikat XOR dengan sukses",
-            "ReferralUnreserveXor": "XOR tidak terikat berhasil",
+            "ReferralReserveXor": "Berikat {amount} XOR",
+            "ReferralUnreserveXor": "XOR {amount} tidak terikat",
             "ReferralSetInvitedUser": "{role} {address} berhasil disetel",
             "SwapAndSend": "Tukar {amount} {symbol} untuk {amount2} {symbol2} dan {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Disediakan {symbol} dan {symbol2} {amount} token LP",
@@ -50,19 +48,19 @@
             "DemeterFarmingUnstakeToken": "{amount} {symbol} dihapus",
             "DemeterFarmingGetRewards": "{amount} {symbol} berhasil diklaim",
             "EthBridgeIncoming": "Mentransfer {amount} {symbol} dari {Ethereum} ke {Sora}",
-            "EthBridgeOutgoing": "Mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}"
+            "EthBridgeOutgoing": "Mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Gagal {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Gagal {action} {amount} {symbol}",
             "Swap": "Gagal menswap {amount} {symbol} dengan {amount2} {symbol2}",
             "AddLiquidity": "Gagal menyuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RemoveLiquidity": "Gagal menghapus {amount} {symbol} dan {amount2} {symbol2}",
             "CreatePair": "Gagal menyuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RegisterAsset": "Gagal mendaftarkan aset {symbol}",
             "ClaimRewards": "Gagal mengklaim hadiah {rewards}",
-            "ReferralReserveXor": "Gagal mengikat XOR",
-            "ReferralUnreserveXor": "Gagal melepaskan ikatan XOR",
+            "ReferralReserveXor": "Gagal mengikat {amount} XOR",
+            "ReferralUnreserveXor": "Gagal melepaskan ikatan {amount} XOR",
             "ReferralSetInvitedUser": "Gagal menyetel {role} {address}",
             "SwapAndSend": "Gagal menukar {amount} {symbol} dengan {amount2} {symbol2} dan{action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Gagal menyediakan {amount} {symbol} dan {symbol2} token LP",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Gagal menghapus {amount} {symbol}",
             "DemeterFarmingGetRewards": "Gagal mengklaim {symbol}",
             "EthBridgeIncoming": "Gagal mentransfer {amount} {symbol} dari {Ethereum} ke {Sora}",
-            "EthBridgeOutgoing": "Gagal mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}"
+            "EthBridgeOutgoing": "Gagal mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}",
+            "SwapTransferBatch": "Gagal {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Token Lepas Taruhan",
         "DemeterFarmingGetRewards": "Klaim Hadiah",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Transfer"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi {PolkadotJs} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
@@ -1188,7 +1188,6 @@
     "acceptText": "Terima & Sembunyikan",
     "newAccountsText": "Akun baru",
     "dragAndDropText": "Seret & lepas atau pilih file {extension}",
-    "multipleRecipients": "Penerima Multipel",
     "copyPhraseText": "Salin Frasa Sandi",
     "stepText": "Melangkah",
     "alerts": {
@@ -1261,5 +1260,6 @@
     "continueText": "Melanjutkan",
     "minAmountText": "menit. jumlah",
     "maxAmountText": "maks. jumlah",
-    "exceededAmountText": "{amount} terlampaui"
+    "exceededAmountText": "{amount} terlampaui",
+    "multipleRecipients": "Penerima Multipel"
 }

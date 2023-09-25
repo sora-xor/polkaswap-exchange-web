@@ -179,21 +179,22 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   }
 }
 .progress-bar {
+  position: relative;
   display: block;
   width: 96%;
   height: 4px;
-  border-radius: var(--s-border-radius-base);
+  border-radius: 2px;
   margin: $inner-spacing-mini 0;
   background: #e8e1e1;
   &--complete {
     background: var(--s-color-status-success);
   }
   &--in-progress {
-    display: block;
-    border-radius: var(--s-border-radius-base);
-    background: var(--s-color-brand-day);
-    height: 4px;
-    width: 0%;
+    display: inline-block;
+    position: absolute;
+    background: var(--s-color-status-info);
+    width: 0;
+    height: 100%;
   }
 }
 </style>

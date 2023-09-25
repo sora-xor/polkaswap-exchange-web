@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Փոխանակել",
         "Transfer": "Տեղափոխել",
-        "SwapTransferBatch": "{ADAR} Տեղափոխել",
         "AddLiquidity": "Ավելացնել իրացվելիություն",
         "RemoveLiquidity": "Հեռացնել իրացվելիությունը",
         "CreatePair": "Ստեղծել զույգ",
@@ -33,15 +32,14 @@
         "andText": "և",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2}",
             "AddLiquidity": "Մատակարարված {amount} {symbol} և {amount2} {symbol2}",
             "RemoveLiquidity": "Հեռացված {amount} {symbol} և {amount2} {symbol2}",
             "CreatePair": "Մատակարարված {amount} {symbol} և {amount2} {symbol2}",
             "RegisterAsset": "Գրանցված է {symbol} ակտիվ",
             "ClaimRewards": "Պարգևատրումը հաջողությամբ հաստատված է {rewards}",
-            "ReferralReserveXor": "XOR-ը հաջողությամբ կապակցվեց",
-            "ReferralUnreserveXor": "XOR-ը հաջողությամբ ունբոնդ",
+            "ReferralReserveXor": "Խճճված {amount} XOR",
+            "ReferralUnreserveXor": "Unbonded {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} դրվում է հաջողությամբ",
             "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Տրամադրված {symbol} և {symbol2} {amount} LP ժետոններ",
@@ -50,19 +48,19 @@
             "DemeterFarmingUnstakeToken": "Հեռացվել է {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} ը հաջողությամբ ներկայացվեց",
             "EthBridgeIncoming": "Փոխանցվել է {amount} {symbol} {Ethereum} ից {Sora}",
-            "EthBridgeOutgoing": "Փոխանցվել է {amount} {symbol} {Sora} ից {Ethereum}"
+            "EthBridgeOutgoing": "Փոխանցվել է {amount} {symbol} {Sora} ից {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Չհաջողվեց {action} {amount} {symbol}",
             "Swap": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2}",
             "AddLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} եւ {amount2} {symbol2}",
             "RemoveLiquidity": "Չհաջողվեց հեռացնել {amount} {symbol} և {amount2} {symbol2}",
             "CreatePair": "Չհաջողվեց մատակարարել {amount} {symbol} եւ {amount2} {symbol2}",
             "RegisterAsset": "Չհաջողվեց գրանցել {symbol} ակտիվը",
             "ClaimRewards": "Չհաջողվեց հաստատել պարգեւատրումները {rewards}",
-            "ReferralReserveXor": "Չհաջողվեց կապել XOR-ը",
-            "ReferralUnreserveXor": "Ունբոնդ Ձախողվել է XOR-ը",
+            "ReferralReserveXor": "Ձախողվել է {amount} XOR",
+            "ReferralUnreserveXor": "Ձախողվել է չկցված {amount} XOR",
             "ReferralSetInvitedUser": "Չհաջողվեց սահմանել {role} {address}",
             "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} և {symbol2} LP նշաններ",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Չհաջողվեց հեռացնել {amount} {symbol}",
             "DemeterFarmingGetRewards": "Չհաջողվեց պահանջել {symbol}",
             "EthBridgeIncoming": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Ethereum} ից {Sora} ին",
-            "EthBridgeOutgoing": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Sora} ից {Ethereum} ին"
+            "EthBridgeOutgoing": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Sora} ից {Ethereum} ին",
+            "SwapTransferBatch": "Չհաջողվեց {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Անցկացնել նշան",
         "DemeterFarmingGetRewards": "Հաստատել Պարգևները",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Տեղափոխել"
     },
     "polkadotjs": {
         "noExtensions": "{PolkadotJs} ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
@@ -1188,7 +1188,6 @@
     "acceptText": "Ընդունել և թաքցնել",
     "newAccountsText": "Նոր հաշիվներ",
     "dragAndDropText": "Քաշեք և թողեք կամ ընտրեք {extension} ֆայլը",
-    "multipleRecipients": "Մի շարք ստացողներ",
     "copyPhraseText": "Պատճենել արտահայտությունը",
     "stepText": "Քայլ",
     "alerts": {
@@ -1261,5 +1260,6 @@
     "continueText": "Շարունակել",
     "minAmountText": "ր. գումարը",
     "maxAmountText": "առավելագույնը գումարը",
-    "exceededAmountText": "{amount} ը գերազանցվել է"
+    "exceededAmountText": "{amount} ը գերազանցվել է",
+    "multipleRecipients": "Մի շարք ստացողներ"
 }

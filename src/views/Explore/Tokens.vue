@@ -1,12 +1,6 @@
 <template>
   <div>
-    <div class="switcher">
-      <s-switch v-model="isSynthsOnly" />
-      <span>
-        {{ t('explore.showOnly') }}
-        <external-link default-class="p3" :title="t('explore.synthetics')" :href="SYNTHS_LINK" />
-      </span>
-    </div>
+    <synthetic-switcher v-model="isSynthsOnly" />
     <s-table
       ref="table"
       v-loading="loadingState"
@@ -287,7 +281,7 @@ const parse = (item: AssetData): Record<string, TokenData> => {
 
 @Component({
   components: {
-    ExternalLink: lazyComponent(Components.ExternalLink),
+    SyntheticSwitcher: lazyComponent(Components.SyntheticSwitcher),
     PriceChange: lazyComponent(Components.PriceChange),
     SortButton: lazyComponent(Components.SortButton),
     TokenAddress: components.TokenAddress,
@@ -298,8 +292,6 @@ const parse = (item: AssetData): Record<string, TokenData> => {
 })
 export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   private readonly DAY = 60 * 60 * 24;
-  readonly SYNTHS_LINK =
-    'https://medium.com/polkaswap/unveiling-synthetic-assets-a-game-changer-in-the-financial-landscape-1720e5858422';
 
   @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
 
@@ -400,15 +392,4 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
 <style lang="scss">
 @include explore-table;
-</style>
-
-<style lang="scss" scoped>
-.switcher {
-  display: flex;
-  align-items: center;
-
-  & > span {
-    margin-left: $inner-spacing-small;
-  }
-}
 </style>

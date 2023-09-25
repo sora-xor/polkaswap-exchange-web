@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Scambia",
         "Transfer": "Trasferimento",
-        "SwapTransferBatch": "{ADAR} Trasferimento",
         "AddLiquidity": "Aggiungi liquidità",
         "RemoveLiquidity": "Rimuovi liquidità",
         "CreatePair": "Crea una Pair",
@@ -33,15 +32,14 @@
         "andText": "e",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Scambiato {amount} {symbol} con {amount2} {symbol2}",
             "AddLiquidity": "Fornito {amount} {symbol} e {amount2} {symbol2}",
             "RemoveLiquidity": "Rimossi {amount} {symbol} e {amount2} {symbol2}",
             "CreatePair": "Fornito {amount} {symbol} e {amount2} {symbol2}",
             "RegisterAsset": "Asset registrato {symbol}",
             "ClaimRewards": "Ricompensa richiesta con successo {rewards}",
-            "ReferralReserveXor": "XOR legato con successo",
-            "ReferralUnreserveXor": "XOR non legato con successo",
+            "ReferralReserveXor": "XOR vincolato {amount}",
+            "ReferralUnreserveXor": "XOR {amount} non vincolato",
             "ReferralSetInvitedUser": "Il {role} {address} è impostato correttamente",
             "SwapAndSend": "Scambiato {amount} {symbol} con {amount2} {symbol2} e {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Gettoni LP forniti {symbol} e {symbol2} {amount}",
@@ -50,19 +48,19 @@
             "DemeterFarmingUnstakeToken": "{amount} {symbol} rimosso",
             "DemeterFarmingGetRewards": "{amount} {symbol} rivendicato con successo",
             "EthBridgeIncoming": "Trasferito {amount} {symbol} da {Ethereum} a {Sora}",
-            "EthBridgeOutgoing": "Trasferito {amount} {symbol} da {Sora} a {Ethereum}"
+            "EthBridgeOutgoing": "Trasferito {amount} {symbol} da {Sora} a {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Impossibile {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Impossibile {action} {amount} {symbol}",
             "Swap": "Impossibile scambiare {amount} {symbol} con {amount2} {symbol2}",
             "AddLiquidity": "Impossibile fornire {amount} {symbol} e {amount2} {symbol2}",
             "RemoveLiquidity": "Impossibile rimuovere {amount} {symbol} e {amount2} {symbol2}",
             "CreatePair": "Impossibile fornire {amount} {symbol} e {amount2} {symbol2}",
             "RegisterAsset": "Impossibile registrare la risorsa {symbol}",
             "ClaimRewards": "Impossibile richiedere i premi {rewards}",
-            "ReferralReserveXor": "Fallito il legame XOR",
-            "ReferralUnreserveXor": "Impossibile disaggregare XOR",
+            "ReferralReserveXor": "Impossibile vincolare {amount} XOR",
+            "ReferralUnreserveXor": "Impossibile svincolare {amount} XOR",
             "ReferralSetInvitedUser": "Impossibile impostare il {role} {address}",
             "SwapAndSend": "Impossibile scambiare {amount} {symbol} con {amount2} {symbol2} e {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Impossibile fornire i token LP {amount} {symbol} e {symbol2}",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Impossibile rimuovere {amount} {symbol}",
             "DemeterFarmingGetRewards": "Impossibile rivendicare {symbol}",
             "EthBridgeIncoming": "Impossibile trasferire {amount} {symbol} da {Ethereum} a {Sora}",
-            "EthBridgeOutgoing": "Impossibile trasferire {amount} {symbol} da {Sora} a {Ethereum}"
+            "EthBridgeOutgoing": "Impossibile trasferire {amount} {symbol} da {Sora} a {Ethereum}",
+            "SwapTransferBatch": "Impossibile {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Token distake",
         "DemeterFarmingGetRewards": "Richiedi ricompense",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Trasferimento"
     },
     "polkadotjs": {
         "noExtensions": "Nessuna estensione {PolkadotJs} trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1188,7 +1188,6 @@
     "acceptText": "Accetta e nascondi",
     "newAccountsText": "Nuovi account",
     "dragAndDropText": "Trascina e rilascia o scegli il file {extension}",
-    "multipleRecipients": "Destinatari multipli",
     "copyPhraseText": "Copia Frase Segreta",
     "stepText": "Fare un passo",
     "alerts": {
@@ -1261,5 +1260,6 @@
     "continueText": "Continua",
     "minAmountText": "min. quantità",
     "maxAmountText": "massimo quantità",
-    "exceededAmountText": "{amount} superato"
+    "exceededAmountText": "{amount} superato",
+    "multipleRecipients": "Destinatari multipli"
 }

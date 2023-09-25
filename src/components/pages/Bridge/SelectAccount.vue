@@ -1,7 +1,7 @@
 <template>
   <dialog-base :visible.sync="visibility" :title="t('connection.selectAccount')" custom-class="account-select-dialog">
     <div class="account-select">
-      <address-book-input v-model="address" />
+      <address-book-input v-model="address" :is-valid="validAddress" />
 
       <s-button
         class="s-typography-button--large account-select-button"

@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Zameniť",
         "Transfer": "Prevod",
-        "SwapTransferBatch": "{ADAR} Prevod",
         "AddLiquidity": "Pridať likviditu",
         "RemoveLiquidity": "Odobrať likviditu",
         "CreatePair": "Vytvoriť pár",
@@ -33,15 +32,14 @@
         "andText": "a",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Zamenené {amount} {symbol} za {amount2} {symbol2}",
             "AddLiquidity": "Pridané {amount} {symbol} a {amount2} {symbol2}",
             "RemoveLiquidity": "Odobrané {amount} {symbol} a {amount2} {symbol2}",
             "CreatePair": "Pridané {amount} {symbol} a {amount2} {symbol2}",
             "RegisterAsset": "Zaregistrované aktívum {symbol}",
             "ClaimRewards": "Odmena bola úspešne nárokovaná {rewards}",
-            "ReferralReserveXor": "Úspešne spojené XOR",
-            "ReferralUnreserveXor": "Úspešne odpojené XOR",
+            "ReferralReserveXor": "Viazané {amount} XOR",
+            "ReferralUnreserveXor": "Neviazané {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} bolo úspešne nastavené",
             "SwapAndSend": "{amount} {symbol} vymenené za {amount2} {symbol2} a {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Dodané {symbol} a {symbol2} {amount} LP tokeny",
@@ -50,19 +48,19 @@
             "DemeterFarmingUnstakeToken": "Odstránené {amount} {symbol}",
             "DemeterFarmingGetRewards": "Úspešne nárokované {amount} {symbol}",
             "EthBridgeIncoming": "Prevedené {amount} {symbol} z {Ethereum} do {Sora}",
-            "EthBridgeOutgoing": "Prevedené {amount} {symbol} z {Sora} do {Ethereum}"
+            "EthBridgeOutgoing": "Prevedené {amount} {symbol} z {Sora} do {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Nepodarilo sa {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Nepodarilo sa {action} {amount} {symbol}",
             "Swap": "Nepodarilo sa zameniť {amount} {symbol} za {amount2} {symbol2}",
             "AddLiquidity": "Nepodarilo sa pridať {amount} {symbol} a {amount2} {symbol2}",
             "RemoveLiquidity": "Nepodarilo sa odobrať {amount} {symbol} a {amount2} {symbol2}",
             "CreatePair": "Nepodarilo sa pridať {amount} {symbol} a {amount2} {symbol2}",
             "RegisterAsset": "Aktívum {symbol} sa nepodarilo zaregistrovať",
             "ClaimRewards": "Nepodarilo sa uplatniť odmeny {rewards}",
-            "ReferralReserveXor": "Spojenie XOR zlyhalo",
-            "ReferralUnreserveXor": "Nepodarilo sa odpojiť XOR",
+            "ReferralReserveXor": "Nepodarilo sa naviazať {amount} XOR",
+            "ReferralUnreserveXor": "Nepodarilo sa zrušiť viazanie {amount} XOR",
             "ReferralSetInvitedUser": "Nepodarilo sa nastaviť {role} {address}",
             "SwapAndSend": "Nepodarilo sa vymeniť {amount} {symbol} za {amount2} {symbol2} a {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Nepodarilo sa dodať {amount} {symbol} a {symbol2} LP tokenov",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Nepodarilo sa odstrániť {amount} {symbol}",
             "DemeterFarmingGetRewards": "Nepodarilo sa nárokovať {symbol}",
             "EthBridgeIncoming": "Nepodarilo sa preniesť {amount} {symbol} z {Ethereum} do {Sora}",
-            "EthBridgeOutgoing": "Nepodarilo sa preniesť {amount} {symbol} z {Sora} do {Ethereum}"
+            "EthBridgeOutgoing": "Nepodarilo sa preniesť {amount} {symbol} z {Sora} do {Ethereum}",
+            "SwapTransferBatch": "Nepodarilo sa {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Zrušiť vklad",
         "DemeterFarmingGetRewards": "Nárokovať odmeny",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Prevod"
     },
     "polkadotjs": {
         "noExtensions": "Rozšírenie {PolkadotJs} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",
@@ -1188,7 +1188,6 @@
     "acceptText": "Prijať a skryť",
     "newAccountsText": "Nové účty",
     "dragAndDropText": "Presuňte myšou alebo vyberte súbor {extension}",
-    "multipleRecipients": "Viacerí prijímatelia",
     "copyPhraseText": "Kopírovať heslovú frázu",
     "stepText": "Krok",
     "alerts": {
@@ -1261,5 +1260,6 @@
     "continueText": "ďalej",
     "minAmountText": "min. čiastka",
     "maxAmountText": "max. čiastka",
-    "exceededAmountText": "{amount} bola prekročená"
+    "exceededAmountText": "{amount} bola prekročená",
+    "multipleRecipients": "Viacerí prijímatelia"
 }

@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Swap",
         "Transfer": "Transfer",
-        "SwapTransferBatch": "{ADAR} transfer",
         "AddLiquidity": "Add Liquidity",
         "RemoveLiquidity": "Remove Liquidity",
         "CreatePair": "Create Pair",
@@ -33,15 +32,14 @@
         "andText": "and",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Supplied {amount} {symbol} and {amount2} {symbol2}",
             "RemoveLiquidity": "Removed {amount} {symbol} and {amount2} {symbol2}",
             "CreatePair": "Supplied {amount} {symbol} and {amount2} {symbol2}",
             "RegisterAsset": "Registered {symbol} asset",
             "ClaimRewards": "Reward claimed successfully {rewards}",
-            "ReferralReserveXor": "Bonded XOR successfully",
-            "ReferralUnreserveXor": "Unbonded XOR successfully",
+            "ReferralReserveXor": "Bonded {amount} XOR",
+            "ReferralUnreserveXor": "Unbonded {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} is set successfully",
             "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Supplied {symbol} and {symbol2} {amount} LP tokens",
@@ -50,19 +48,19 @@
             "DemeterFarmingUnstakeToken": "Removed {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} claimed successfully",
             "EthBridgeIncoming": "Transfered {amount} {symbol} from {Ethereum} to {Sora}",
-            "EthBridgeOutgoing": "Transfered {amount} {symbol} from {Sora} to {Ethereum}"
+            "EthBridgeOutgoing": "Transfered {amount} {symbol} from {Sora} to {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Failed to {action} {amount} {symbol}",
             "Swap": "Failed to swap {amount} {symbol} for {amount2} {symbol2}",
             "AddLiquidity": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
             "RemoveLiquidity": "Failed to remove {amount} {symbol} and {amount2} {symbol2}",
             "CreatePair": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
             "RegisterAsset": "Failed to register {symbol} asset",
             "ClaimRewards": "Failed to claim rewards {rewards}",
-            "ReferralReserveXor": "Failed to bond XOR",
-            "ReferralUnreserveXor": "Failed to unbond XOR",
+            "ReferralReserveXor": "Failed to bond {amount} XOR",
+            "ReferralUnreserveXor": "Failed to unbond {amount} XOR",
             "ReferralSetInvitedUser": "Failed to set {role} {address}",
             "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Failed to supply {amount} {symbol} and {symbol2} LP tokens",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Failed to remove {amount} {symbol}",
             "DemeterFarmingGetRewards": "Failed to claim {symbol}",
             "EthBridgeIncoming": "Failed to transfer {amount} {symbol} from {Ethereum} to {Sora}",
-            "EthBridgeOutgoing": "Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}"
+            "EthBridgeOutgoing": "Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}",
+            "SwapTransferBatch": "Failed to {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Claim Rewards",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} transfer"
     },
     "polkadotjs": {
         "noExtensions": "No {PolkadotJs} extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1188,7 +1188,6 @@
     "acceptText": "Accept & Hide",
     "newAccountsText": "New accounts",
     "dragAndDropText": "Drag & drop or choose {extension} file",
-    "multipleRecipients": "Multiple Recipients",
     "copyPhraseText": "Copy Passphrase",
     "stepText": "Step",
     "alerts": {
@@ -1261,5 +1260,6 @@
     "continueText": "Continue",
     "minAmountText": "min. amount",
     "maxAmountText": "max. amount",
-    "exceededAmountText": "{amount} exceeded"
+    "exceededAmountText": "{amount} exceeded",
+    "multipleRecipients": "Multiple Recipients"
 }

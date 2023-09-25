@@ -24,7 +24,6 @@
     "operations": {
         "Swap": "Váltás",
         "Transfer": "Átvitel",
-        "SwapTransferBatch": "{ADAR} Átvitel",
         "AddLiquidity": "Hozzáadás",
         "RemoveLiquidity": "Eltávolítás",
         "CreatePair": "Pár létrehozása",
@@ -33,15 +32,14 @@
         "andText": "és",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "{action} {amount} {symbol}",
             "Swap": "{amount} {symbol} átváltva {amount2} {symbol2}-ra",
             "AddLiquidity": "{amount} {symbol} és {amount2} {symbol2} hozzáadva",
             "RemoveLiquidity": "{amount} {symbol} és {amount2} {symbol2} eltávolítva",
             "CreatePair": "{amount} {symbol} és {amount2} {symbol2} hozzáadva",
             "RegisterAsset": "Regisztrált {symbol} eszköz",
             "ClaimRewards": "A jutalom sikeresen igényelve {rewards}",
-            "ReferralReserveXor": "Sikeresen lekötött XOR",
-            "ReferralUnreserveXor": "Sikeresen feloldott XOR",
+            "ReferralReserveXor": "Kötött {amount} XOR",
+            "ReferralUnreserveXor": "Kötetlen {amount} XOR",
             "ReferralSetInvitedUser": "Az {role} {address} sikeresen be van állítva",
             "SwapAndSend": "{amount} {symbol} kicserélve {amount2} {symbol2} -re és {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Mellékelt {symbol} és {symbol2} {amount} LP token",
@@ -50,19 +48,19 @@
             "DemeterFarmingUnstakeToken": "{amount} {symbol} eltávolítva",
             "DemeterFarmingGetRewards": "{amount} {symbol} sikeres követelés",
             "EthBridgeIncoming": "{amount} {symbol} áthelyezve {Ethereum} {Sora}",
-            "EthBridgeOutgoing": "{amount} {symbol} áthelyezve {Sora} {Ethereum}"
+            "EthBridgeOutgoing": "{amount} {symbol} áthelyezve {Sora} {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Nem sikerült {action} {amount} {symbol} {direction} {address}",
-            "SwapTransferBatch": "Nem sikerült {action} {amount} {symbol}",
             "Swap": "Nem sikerült felváltani a {amount} {symbol} -t {amount2} {symbol2}-re",
             "AddLiquidity": "Nem sikerült hozzáadni a {amount} {symbol} és {amount2} {symbol2}",
             "RemoveLiquidity": "Nem sikerült eltávolítani a {amount} {symbol} és a {amount2} {symbol2}",
             "CreatePair": "Nem sikerült hozzáadni a {amount} {symbol} és {amount2} {symbol2}",
             "RegisterAsset": "Nem sikerült regisztrálni a {symbol} eszközt",
             "ClaimRewards": "Nem sikerült igényelni a jutalmakat {rewards}",
-            "ReferralReserveXor": "Nem sikerült a XOR lekötése",
-            "ReferralUnreserveXor": "Nem sikerült feloldani az XOR-t",
+            "ReferralReserveXor": "Nem sikerült kötni {amount} XOR",
+            "ReferralUnreserveXor": "Nem sikerült a kötetlen {amount} XOR",
             "ReferralSetInvitedUser": "Nem sikerült beállítani az {role} {address}",
             "SwapAndSend": "Nem sikerült az {amount} {symbol} {amount2} {symbol2} és {action} {direction} {address} értékre",
             "DemeterFarmingDepositLiquidity": "Nem sikerült megadni az {amount} {symbol} és {symbol2} LP tokeneket",
@@ -71,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Nem sikerült eltávolítani {amount} {symbol}",
             "DemeterFarmingGetRewards": "A(z {symbol} igénylése sikertelen",
             "EthBridgeIncoming": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a {Ethereum} és a {Sora} címre",
-            "EthBridgeOutgoing": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a {Sora} és a {Ethereum} címre"
+            "EthBridgeOutgoing": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a {Sora} és a {Ethereum} címre",
+            "SwapTransferBatch": "Nem sikerült {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
@@ -83,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Jutalmak igénylése",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Átvitel"
     },
     "polkadotjs": {
         "noExtensions": "Nem találtunk {PolkadotJs} kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1188,7 +1188,6 @@
     "acceptText": "Elfogadás és elrejtés",
     "newAccountsText": "Új fiókok",
     "dragAndDropText": "Fogd és vidd, vagy válasszon {extension} fájlt",
-    "multipleRecipients": "Több címzett",
     "copyPhraseText": "Jelszó másolása",
     "stepText": "Lépés",
     "alerts": {
@@ -1261,5 +1260,6 @@
     "continueText": "Folytatni",
     "minAmountText": "min. összeg",
     "maxAmountText": "max. összeg",
-    "exceededAmountText": "{amount} túllépve"
+    "exceededAmountText": "{amount} túllépve",
+    "multipleRecipients": "Több címzett"
 }
