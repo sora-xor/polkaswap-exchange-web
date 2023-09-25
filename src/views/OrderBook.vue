@@ -4,12 +4,12 @@
     <book-charts-widget class="chart-widget" />
     <history-order-widget class="history-widget" />
     <book-widget class="book-widget" />
+    <market-trades-widget class="market-widget" />
   </div>
 </template>
 
 <script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
@@ -21,7 +21,7 @@ import { lazyComponent } from '@/router';
     SetLimitOrderWidget: lazyComponent(Components.SetLimitOrderWidget),
     HistoryOrderWidget: lazyComponent(Components.HistoryOrderWidget),
     BookChartsWidget: lazyComponent(Components.BookChartsWidget),
-    SetLimitOrder: lazyComponent(Components.SetLimitOrder),
+    MarketTradesWidget: lazyComponent(Components.MarketTradesWidget),
   },
 })
 export default class OrderBook extends Mixins(TranslationMixin) {}
@@ -35,7 +35,7 @@ export default class OrderBook extends Mixins(TranslationMixin) {}
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-areas:
       'set chart book'
-      '. history .'
+      '. history market'
       '. history .';
     margin-left: calc($sidebar-max-width + 8px);
 
@@ -50,6 +50,9 @@ export default class OrderBook extends Mixins(TranslationMixin) {}
     }
     .book-widget {
       grid-area: book;
+    }
+    .market-widget {
+      grid-area: market;
     }
   }
 

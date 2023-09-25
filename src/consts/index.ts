@@ -203,6 +203,7 @@ export enum Components {
   BookTransactionDetails = 'pages/OrderBook/TransactionDetails',
   SetLimitOrderWidget = 'pages/OrderBook/SetLimitOrderWidget',
   HistoryOrderWidget = 'pages/OrderBook/HistoryOrderWidget',
+  MarketTradesWidget = 'pages/OrderBook/MarketTradesWidget',
   BookChartsWidget = 'pages/OrderBook/BookChartsWidget',
   BuySell = 'pages/OrderBook/BuySell',
   DatePicker = 'pages/OrderBook/Popovers/DatePicker',
