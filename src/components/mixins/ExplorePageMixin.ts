@@ -6,7 +6,7 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
 
 import { getter } from '@/store/decorators';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class ExplorePageMixin extends Mixins(
@@ -19,7 +19,7 @@ export default class ExplorePageMixin extends Mixins(
 
   @Ref('table') readonly tableComponent!: any;
   @Prop({ default: '', type: String }) readonly exploreQuery!: string;
-  @Prop({ default: false, type: Boolean }) readonly isAccountItems!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isAccountItemsOnly!: boolean;
   @Watch('exploreQuery')
   private resetCurrentPage(): void {
     this.currentPage = 1;
@@ -108,7 +108,7 @@ export default class ExplorePageMixin extends Mixins(
     this.changeSort();
   }
 
-  updateExploreData(): void {
+  async updateExploreData(): Promise<void> {
     console.warn('[ExplorePageMixin]: "updateExploreData" method is not implemented');
   }
 

@@ -38,8 +38,8 @@
             "CreatePair": "{amount} {symbol} en {amount2} {symbol2} werden geleverd",
             "RegisterAsset": "Geregistreerd {symbol} asset",
             "ClaimRewards": "Beloning succesvol geclaimd {rewards}",
-            "ReferralReserveXor": "Bonded XOR met succes",
-            "ReferralUnreserveXor": "Unbonded XOR met succes",
+            "ReferralReserveXor": "Gebonden {amount} XOR",
+            "ReferralUnreserveXor": "Unbonded {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} is succesvol ingesteld",
             "SwapAndSend": "{amount} {symbol} geruild voor {amount2} {symbol2} en {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Meegeleverde {symbol} en {symbol2} {amount} LP tokens",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "{amount} {symbol} verwijderd",
             "DemeterFarmingGetRewards": "{amount} {symbol} succesvol geclaimd",
             "EthBridgeIncoming": "{amount} {symbol} overgedragen van {Ethereum} naar {Sora}",
-            "EthBridgeOutgoing": "{amount} {symbol} overgedragen van {Sora} naar {Ethereum}"
+            "EthBridgeOutgoing": "{amount} {symbol} overgedragen van {Sora} naar {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Kon {amount} {symbol} en {amount2} {symbol2} niet toevoegen",
             "RegisterAsset": "Mislukt om {symbol} asset te registreren",
             "ClaimRewards": "Kan geen beloningen claimen {rewards}",
-            "ReferralReserveXor": "Kan XOR niet binden",
-            "ReferralUnreserveXor": "Kan de obligatie niet ongedaan maken XOR",
+            "ReferralReserveXor": "Kan {amount} XOR niet binden",
+            "ReferralUnreserveXor": "Kan de binding van {amount} XOR niet ongedaan maken",
             "ReferralSetInvitedUser": "Kan {role} {address} niet instellen",
             "SwapAndSend": "Kan {amount} {symbol} niet omwisselen voor {amount2} {symbol2} en {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Kan {amount} {symbol} en {symbol2} LP-tokens niet leveren",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Kan {amount} {symbol} niet verwijderen",
             "DemeterFarmingGetRewards": "Kan {symbol} niet claimen",
             "EthBridgeIncoming": "Kan {amount} {symbol} niet overboeken van {Ethereum} naar {Sora}",
-            "EthBridgeOutgoing": "Kan {amount} {symbol} niet overboeken van {Sora} naar {Ethereum}"
+            "EthBridgeOutgoing": "Kan {amount} {symbol} niet overboeken van {Sora} naar {Ethereum}",
+            "SwapTransferBatch": "Kon {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Token ongedaan maken",
         "DemeterFarmingGetRewards": "Beloningen claimen",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Overdracht"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "{Sora} Netwerk account",
-        "text": "Extensies en Google slaan uw {Sora} Network-account veilig op. Hiermee kunt u transacties ondertekenen en activa beheren.",
+        "text": "Om activa te beheren en transacties op {Sora} te ondertekenen, moet een account zijn gekoppeld. {Sora} accounts kunnen worden gemaakt en verbonden met onze geïntegreerde portefeuilles of browserextensies.",
         "noAccounts": "Geen account gevonden in uw {extension} browser extensie. Voeg een account toe en probeer het opnieuw.",
         "selectAccount": "Selecteer account om mee te werken",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "Verbonden",
             "notConnected": "Niet verbonden"
         },
-        "internalTitle": "Maak verbinding via {wallet}",
-        "internalText": "U kunt een bestaand account aanmaken of koppelen via {wallet} . Het slaat accounts op met behulp van codering.",
+        "internalTitle": "Maak verbinding met {wallet}",
+        "internalText": "U kunt een bestaand {Sora} account maken of importeren om verbinding te maken met uw {wallet} -account. Alle gegevens die worden opgeslagen door {wallet} zijn versleuteld met ingebouwde geavanceerde versleuteling.",
         "list": {
-            "simplest": "Eenvoudigste optie",
+            "integrated": "Geïntegreerd",
             "extensions": "Extensies"
         }
     },
@@ -301,7 +304,8 @@
         "txId": "Transactie ID",
         "viewIn": "Bekijk in {explorer}",
         "referrer": "Verwijzer",
-        "referral": "Verwijzing"
+        "referral": "Verwijzing",
+        "adarTxDetailsTitle": "Transactiegegevens"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Netwerk wijzigen in {Metamask}",
@@ -483,7 +487,8 @@
         "transactionSubmitted": "Transactie ingediend",
         "transactionMessage": "{firstToken} en {secondToken}",
         "ok": "OK",
-        "confirm": "Bevestigen"
+        "confirm": "Bevestigen",
+        "lossWarning": "U verliest {value}% op uw transactie. We hebben een probleem met de liquiditeitsvoorziening ontdekt. Dit kan leiden tot aanzienlijke verliezen tijdens token-swaps. Zorg ervoor dat er voldoende liquiditeit is voor uw gewenste swappaar."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -539,7 +544,8 @@
         "networkInfo": "Bridge {Sora} Netwerk met:",
         "copy": "Netwerkadres kopiëren",
         "soraAddress": "{Sora} adres",
-        "ethereumAddress": "{Ethereum} adres"
+        "ethereumAddress": "{Ethereum} adres",
+        "limitMessage": "Momenteel is er een {type} {amount} {symbol} voor overbrugging om de stabiliteit en veiligheid van het {Sora}-netwerk te garanderen. We waarderen je begrip."
     },
     "selectRegisteredAsset": {
         "title": "Kies een token",
@@ -865,7 +871,7 @@
     },
     "confirmNextTxFailure": {
         "header": "Aandacht",
-        "info": "Uw XOR saldo zal lager zijn dan {fee} XOR na deze transactie. U zult niet in staat zijn om de netwerkvergoeding voor een andere transactie te betalen.",
+        "info": "Uw {symbol} -saldo is na deze transactie minder dan {fee} {symbol} . U kunt de netwerkkosten voor een andere transactie niet betalen.",
         "payoff": "Je zou de Bridge moeten gebruiken om XOR van andere netwerken te krijgen, XOR van een ander {Sora}-account te ontvangen, of een ander token dat al in je account staat om te wisselen naar XOR.",
         "button": "Ja, ik begrijp het risico"
     },
@@ -1012,7 +1018,8 @@
             "norewardsforasset": "Er zijn geen beloningen voor dit item"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Geselecteerde liquiditeitsbron is niet toegestaan"
+            "forbiddenfilter": "Geselecteerde liquiditeitsbron is niet toegestaan",
+            "slippagenottolerated": "De prijsimpact heeft de geselecteerde waarde overschreden"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Onvoldoende middelen",
@@ -1052,8 +1059,8 @@
             "importAccount": "Account importeren"
         },
         "heading": {
-            "seedPhraseTitle": "Zaadzin",
-            "confirmSeedTitle": "Zaadzin bevestigen",
+            "seedPhraseTitle": "Wachtwoordzin",
+            "confirmSeedTitle": "Wachtwoordzin bevestigen",
             "accountDetailsTitle": "Accountgegevens",
             "importTitle": "Importrekening"
         },
@@ -1064,12 +1071,12 @@
             "importAccount": "Importrekening"
         },
         "accountName": {
-            "placeholder": "Naam portemonnee",
-            "desc": "Dit is de naam van uw portemonnee die voor u zichtbaar zal zijn"
+            "placeholder": "Accountnaam",
+            "desc": "Dit is de naam van uw account. Het zal alleen voor jou zichtbaar zijn in {Polkaswap}."
         },
         "password": {
             "placeholder": "Wachtwoord",
-            "desc": "Zorg ervoor dat u een sterk wachtwoord gebruikt voor een goede beveiliging"
+            "desc": "Zorg ervoor dat u een sterk uniek wachtwoord gebruikt voor een goede bescherming (minimaal 8 tekens)"
         },
         "confirmPassword": {
             "placeholder": "Bevestig wachtwoord"
@@ -1077,11 +1084,11 @@
         "accountMnemonic": {
             "placeholder": "Mnemotechnische zin"
         },
-        "seedAdviceText": "Dit is een geheime seed van je account. Bewaar het op een niet-digitale drager, bijvoorbeeld papier",
-        "confirmSeedText": "Bevestig de seed-zin door op de woorden in de juiste volgorde te klikken",
-        "errorMnemonicText": "Onjuiste volgorde van zaadzinnen",
-        "exportOptionText": ".json accountbestand exporteren",
-        "exportJsonText": "Je hebt altijd toegang tot je account door dat .json bestand te importeren. Deel het met niemand!",
+        "seedAdviceText": "De wachtwoordzin van 12 woorden is een persoonlijke sleutel om weer toegang te krijgen tot uw {Sora} account voor het geval u de toegang tot uw {wallet} -account kwijtraakt. Bewaar het veilig in de exacte volgorde zoals hierboven weergegeven.",
+        "confirmSeedText": "Bevestig de wachtwoordzin door op de woorden in de juiste volgorde te klikken",
+        "errorMnemonicText": "Onjuiste volgorde van wachtwoordzin",
+        "exportOptionText": "Exporteer {JSON} -bestand voor accountherstel.",
+        "exportJsonText": "U kunt uw account altijd herstellen door dit {JSON} -bestand te importeren. Deel het met niemand! Bewaar deze veilig, bij voorkeur versleuteld.",
         "addAccount": "Een account toevoegen",
         "dialog": {
             "confirmTitle": "Bevestig met wachtwoord",
@@ -1100,16 +1107,20 @@
         "assetsAtRiskText": "Activa in gevaar!",
         "deleteAccountText": "Account kan niet worden hersteld zonder een seed-zin, een .json bestand of als het is opgeslagen in een extensie. U wordt uitgelogd.",
         "importSteps": {
-            "selectWallet": "Ga naar de portemonnee van uw gebruik",
+            "selectWallet": "Open de portemonnee met uw bestaande rekening(en)",
             "selectAccount": "Selecteer het account dat u wilt exporteren",
             "exportAccount": "Exporteer het {JSON} -bestand"
         },
-        "exportTutorialsText": "Tutorials exporteren"
+        "exportTutorialsText": "Tutorials exporteren",
+        "seedAdviceAdditionTitle": "Deel nooit uw wachtwoordzin met iemand!",
+        "seedAdviceAdditionText": "Als iemand u om uw wachtwoordzin vraagt, proberen ze u waarschijnlijk op te lichten en uw bezittingen te stelen!"
     },
     "hashiBridgeText": "{Hashi} brug",
     "disclaimerTitle": "Disclaimer",
     "explore": {
-        "showOnlyMyPositions": "Toon alleen mijn posities"
+        "showOnly": "Toon alleen {entities}",
+        "myPositions": "mijn posities",
+        "synthetics": "synthetische tokens"
     },
     "tooltips": {
         "roi": "{ROI} staat voor Return on Investment. Het wordt berekend door de winst op een investering te delen door de kosten van die investering in een procentueel equivalent.",
@@ -1177,7 +1188,7 @@
     "acceptText": "Accepteren & verbergen",
     "newAccountsText": "Nieuwe rekeningen",
     "dragAndDropText": "Drag & drop of kies {extension} bestand",
-    "copyPhraseText": "Kopieer zin",
+    "copyPhraseText": "Kopieer Passphrase",
     "stepText": "Stap",
     "alerts": {
         "drop": "Zakt onder",
@@ -1209,9 +1220,46 @@
         "moonpayTitle": "Koop ETH via MoonPay",
         "moonpayDesc": "Koop ETH-tokens op Ethereum en verplaats ze via de bridge naar het SORA-netwerk",
         "x1Title": "Koop XOR met uw kaart",
-        "x1Desc": "Koop XOR-tokens met uw bankpas of creditcard",
         "x1Btn": "Koop XOR met kaart",
-        "errorMessage": "Excuses voor het ongemak. We werken er hard aan om dit op te lossen. Probeer het later opnieuw."
+        "errorMessage": "Excuses voor het ongemak. We werken er hard aan om dit op te lossen. Probeer het later opnieuw.",
+        "x1Desc": "Koop XOR-tokens rechtstreeks op het SORA-netwerk met uw bankpas of creditcard"
     },
-    "acceptOnScrollText": "Scrol om te accepteren"
+    "acceptOnScrollText": "Scrol om te accepteren",
+    "addressBook": {
+        "myAccounts": "Mijn accounts",
+        "myBook": "Mijn boek",
+        "searchPlaceholder": "Zoek op adres, naam of identiteit",
+        "noFoundRecords": "Geen verslagen gevonden",
+        "noContacts": "Je hebt nog geen contacten toegevoegd",
+        "addContact": "Contactpersoon toevoegen",
+        "dialogTitle": "Jouw contacten",
+        "identity": "On-chain identiteit",
+        "none": "Geen",
+        "detected": "Nieuw adres gedetecteerd",
+        "save": "Opslaan als contactpersoon",
+        "tooltip": "Verzamel adresboek door naam en adres op te geven om uw contacten georganiseerd en up-to-date te houden",
+        "notSoraAddress": "Dit adres wordt opgeslagen als SORA-adres hieronder. Zorg ervoor dat de ontvanger toegang heeft tot de SORA-keten:",
+        "options": {
+            "send": "Tokens verzenden",
+            "edit": "Bewerk contact",
+            "delete": "Verwijderen"
+        },
+        "btn": {
+            "enterName": "Voer naam in",
+            "present": "Reeds aanwezig",
+            "saveChanges": "Wijzigingen opslaan"
+        }
+    },
+    "browserPermission": {
+        "title": "Cameratoegang toestaan in browserinstellingen",
+        "desc": "Om de authenticiteit van documenten te garanderen en de gebruikersidentiteit voor KYC-verificatie te valideren, is toegang tot de camera van uw apparaat vereist.",
+        "disclaimer": "Cameratoegang is vereist voor real-time documentregistratie om fraude te voorkomen.",
+        "btnGoToSettings": "Ga naar Instellingen",
+        "btnAllow": "Toegang te verlenen"
+    },
+    "continueText": "Doorgaan",
+    "minAmountText": "min. hoeveelheid",
+    "maxAmountText": "max. hoeveelheid",
+    "exceededAmountText": "{amount} overschreden",
+    "multipleRecipients": "Meerdere ontvangers"
 }

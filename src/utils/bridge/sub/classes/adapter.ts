@@ -5,17 +5,23 @@ import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
 import { ZeroStringValue } from '@/consts';
+import type { SubNetworkApps } from '@/store/web3/types';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
-import type { ApiPromise } from '@polkadot/api';
-import type { RegisteredAsset, CodecString } from '@sora-substrate/util';
+import type { ApiPromise, ApiRx } from '@polkadot/api';
+import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
+import type { ISubmittableResult } from '@polkadot/types/types';
+import type { CodecString } from '@sora-substrate/util';
+import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
-class SubAdapter {
+export class SubAdapter {
   protected endpoint!: string;
 
   public connection!: Connection;
+  public readonly subNetwork!: SubNetwork;
 
-  constructor() {
+  constructor(subNetwork: SubNetwork) {
+    this.subNetwork = subNetwork;
     this.connection = new Connection({});
   }
 
@@ -24,7 +30,7 @@ class SubAdapter {
   }
 
   get apiRx() {
-    return this.api.rx;
+    return this.api.rx as ApiRx;
   }
 
   get connected(): boolean {
@@ -47,6 +53,13 @@ class SubAdapter {
     }
   }
 
+  public getSoraParachainId(): number | undefined {
+    const soraParachain = subBridgeApi.getSoraParachain(this.subNetwork);
+    const soraParachainId = subBridgeApi.parachainIds[soraParachain];
+
+    return soraParachainId;
+  }
+
   public async getBlockNumber(): Promise<number> {
     if (!this.connected) return 0;
 
@@ -56,7 +69,7 @@ class SubAdapter {
   }
 
   protected async getAccountBalance(accountAddress: string): Promise<CodecString> {
-    if (!this.connected) return ZeroStringValue;
+    if (!(this.connected && accountAddress)) return ZeroStringValue;
 
     const accountInfo = await this.api.query.system.account(accountAddress);
     const accountBalance = formatBalance(accountInfo.data);
@@ -66,40 +79,50 @@ class SubAdapter {
   }
 
   public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
-    console.info(`[${this.constructor.name}] getTokenBalance method is not implemented`);
-    return ZeroStringValue;
+    throw new Error(`[${this.constructor.name}] "getTokenBalance" method is not implemented`);
   }
 
-  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
-    console.info(`[${this.constructor.name}] transfer method is not implemented`);
+  protected getTransferExtrinsic(
+    asset: RegisteredAsset,
+    recipient: string,
+    amount: CodecString
+  ): SubmittableExtrinsic<'promise', ISubmittableResult> {
+    throw new Error(`[${this.constructor.name}] "getTransferExtrinsic" method is not implemented`);
+  }
+
+  public async transfer(
+    asset: RegisteredAsset,
+    recipient: string,
+    amount: string | number,
+    historyId?: string
+  ): Promise<void> {
+    throw new Error(`[${this.constructor.name}] "transfer" method is not implemented`);
+  }
+
+  /* [Substrate 5] Runtime call transactionPaymentApi */
+  public async getNetworkFee(): Promise<CodecString> {
+    const decimals = this.api.registry.chainDecimals[0];
+    const tx = this.getTransferExtrinsic({} as RegisteredAsset, '', ZeroStringValue);
+    const res = await tx.paymentInfo('');
+
+    return new FPNumber(res.partialFee, decimals).toCodecString();
   }
 }
 
-class RococoAdapter extends SubAdapter {
+class KusamaAdapter extends SubAdapter {
   public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
     return await this.getAccountBalance(accountAddress);
   }
 
-  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
-    const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
-
-    const historyItem = subBridgeApi.getHistory(historyId as string) || {
-      type: Operation.SubstrateIncoming,
-      symbol: asset.symbol,
-      assetAddress: asset.address,
-      amount: `${amount}`,
-      externalNetwork: SubNetwork.Rococo,
-      externalNetworkType: BridgeNetworkType.Sub,
-    };
-
-    const extrinsic = this.api.tx.xcmPallet.reserveTransferAssets(
+  protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: CodecString) {
+    return this.api.tx.xcmPallet.reserveTransferAssets(
       // dest
       {
         V3: {
           parents: 0,
           interior: {
             X1: {
-              Parachain: 2011,
+              Parachain: this.getSoraParachainId(),
             },
           },
         },
@@ -128,7 +151,7 @@ class RococoAdapter extends SubAdapter {
               },
             },
             fun: {
-              Fungible: value,
+              Fungible: amount,
             },
           },
         ],
@@ -136,15 +159,16 @@ class RococoAdapter extends SubAdapter {
       // feeAssetItem
       0
     );
-
-    await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account.pair, historyItem);
   }
-}
 
-class RococoKaruraAdapter extends SubAdapter {
-  // [TODO] fetch balance by symbol
-  public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
-    return await this.getAccountBalance(accountAddress);
+  /* Throws error until Substrate 5 migration */
+  public async getNetworkFee(): Promise<CodecString> {
+    try {
+      return await super.getNetworkFee();
+    } catch {
+      // Hardcoded value for Kusama - 0.0007 KSM
+      return '700000000';
+    }
   }
 
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
@@ -155,38 +179,11 @@ class RococoKaruraAdapter extends SubAdapter {
       symbol: asset.symbol,
       assetAddress: asset.address,
       amount: `${amount}`,
-      externalNetwork: SubNetwork.RococoKarura,
+      externalNetwork: this.subNetwork,
       externalNetworkType: BridgeNetworkType.Sub,
     };
 
-    const extrinsic = this.api.tx.xTokens.transfer(
-      // currencyId: AcalaPrimitivesCurrencyCurrencyId
-      {
-        Token: asset.symbol,
-      },
-      // amount: u128 (Balance)
-      value,
-      // dest: XcmVersionedMultiLocation
-      {
-        V1: {
-          parents: 1,
-          interior: {
-            X2: [
-              {
-                Parachain: 2011,
-              },
-              {
-                AccountId32: {
-                  id: this.api.createType('AccountId32', recipient).toHex(),
-                },
-              },
-            ],
-          },
-        },
-      },
-      // destWeightLimit
-      'Unlimited'
-    );
+    const extrinsic = this.getTransferExtrinsic(asset, recipient, value);
 
     await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account.pair, historyItem);
   }
@@ -194,34 +191,49 @@ class RococoKaruraAdapter extends SubAdapter {
 
 class SubConnector {
   public readonly adapters = {
-    [SubNetwork.Rococo]: new RococoAdapter(),
-    [SubNetwork.RococoSora]: new SubAdapter(),
-    [SubNetwork.RococoKarura]: new RococoKaruraAdapter(),
+    [SubNetwork.Rococo]: () => new KusamaAdapter(SubNetwork.Rococo),
+    [SubNetwork.Kusama]: () => new KusamaAdapter(SubNetwork.Kusama),
+    [SubNetwork.RococoSora]: () => new SubAdapter(SubNetwork.RococoSora),
+    [SubNetwork.KusamaSora]: () => new SubAdapter(SubNetwork.KusamaSora),
   };
 
-  public adapter: SubAdapter = this.adapters[SubNetwork.Rococo];
+  public endpoints: SubNetworkApps = {};
+
+  /** Adapter for Substrate network. Used for network selected in app */
+  public networkAdapter!: SubAdapter;
 
   public getAdapterForNetwork(network: SubNetwork): SubAdapter {
-    const adapter = this.adapters[network];
-
-    if (!adapter) {
+    if (!(network in this.adapters)) {
       throw new Error(`[${this.constructor.name}] Adapter for "${network}" network not implemented`);
     }
+    if (!(network in this.endpoints)) {
+      throw new Error(`[${this.constructor.name}] Endpoint for "${network}" network is not defined`);
+    }
+    const endpoint = this.endpoints[network];
+    const adapter = this.adapters[network]();
+
+    adapter.setEndpoint(endpoint);
 
     return adapter;
   }
 
+  /**
+   * Open main connection with Substrate network
+   */
   public async open(network: SubNetwork): Promise<void> {
     // stop current adapter connection
     await this.stop();
     // set adapter for network arg
-    this.adapter = this.getAdapterForNetwork(network);
+    this.networkAdapter = this.getAdapterForNetwork(network);
     // open adapter connection
-    await this.adapter.connect();
+    await this.networkAdapter.connect();
   }
 
+  /**
+   * Close main connection to selected Substrate network
+   */
   public async stop(): Promise<void> {
-    await this.adapter?.stop();
+    await this.networkAdapter?.stop();
   }
 }
 

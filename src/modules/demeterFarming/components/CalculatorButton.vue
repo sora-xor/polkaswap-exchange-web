@@ -8,7 +8,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import CalculatorIcon from '@/assets/img/calculator/signs.svg?inline';
+import CalculatorIcon from './CalculatorIcon.vue';
 
 @Component({
   components: {
@@ -22,8 +22,8 @@ export default class CalculatorButton extends Vue {}
 .calculator-button {
   display: inline-flex;
   align-items: center;
-  color: var(--s-color-theme-accent);
   cursor: pointer;
+  color: var(--s-color-theme-accent);
   background: var(--s-color-utility-body);
   border: none;
   border-radius: calc(var(--s-border-radius-mini) / 2);
@@ -33,7 +33,7 @@ export default class CalculatorButton extends Vue {}
   padding: $inner-spacing-tiny $inner-spacing-mini;
   text-transform: uppercase;
 
-  &-icon > path {
+  &-icon {
     fill: var(--s-color-theme-accent);
   }
 

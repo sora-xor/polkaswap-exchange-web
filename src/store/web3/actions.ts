@@ -54,11 +54,7 @@ const actions = defineActions({
       await connectEvmNetwork(context, network);
     }
 
-    await Promise.all([
-      rootDispatch.assets.updateRegisteredAssets(),
-      rootDispatch.bridge.updateExternalBalance(),
-      rootDispatch.bridge.getExternalNetworkFee(),
-    ]);
+    await Promise.all([rootDispatch.assets.updateRegisteredAssets(), rootDispatch.bridge.updateBalancesAndFees()]);
   },
 
   async disconnectExternalNetwork(context): Promise<void> {
@@ -100,32 +96,29 @@ const actions = defineActions({
     // update apps in store
     commit.setSubNetworkApps(apps);
     // update endpoints in subConnector
-    Object.entries(apps).forEach(([network, endpoint]) => {
-      subConnector.adapters[network]?.setEndpoint(endpoint);
-    });
-  },
-
-  async restoreSelectedNetwork(context): Promise<void> {
-    const { commit, getters, state } = web3ActionContext(context);
-
-    if (getters.selectedNetwork) return;
-
-    const selectedNetworkId = ethersUtil.getSelectedNetwork() ?? state.ethBridgeEvmNetwork;
-
-    commit.setSelectedNetwork(selectedNetworkId);
+    subConnector.endpoints = apps;
   },
 
   /**
-   * Restore selected by user network type (Hashi, EVM, Substrate)
+   * Restore selected by user network & network type (EVMLegacy, EVM, Sub)
    */
-  async restoreNetworkType(context): Promise<void> {
-    const { commit, state } = web3ActionContext(context);
+  async restoreSelectedNetwork(context): Promise<void> {
+    const { commit, state, getters } = web3ActionContext(context);
 
-    if (state.networkType) return;
+    const [type, id] = [ethersUtil.getSelectedBridgeType(), ethersUtil.getSelectedNetwork()];
 
-    const networkType = ethersUtil.getSelectedBridgeType() ?? BridgeNetworkType.EvmLegacy;
+    if (type && id) {
+      const networkData = getters.availableNetworks[type]?.[id];
 
-    commit.setNetworkType(networkType);
+      if (!!networkData && !networkData.disabled) {
+        commit.setNetworkType(type);
+        commit.setSelectedNetwork(id);
+        return;
+      }
+    }
+
+    commit.setNetworkType(BridgeNetworkType.EvmLegacy);
+    commit.setSelectedNetwork(state.ethBridgeEvmNetwork);
   },
 
   async getEvmTokenAddressByAssetId(context, soraAssetId: string): Promise<string> {
@@ -139,8 +132,8 @@ const actions = defineActions({
       if (!contractAddress || !contractAbi) {
         throw new Error('Contract address/abi is not found');
       }
-      const ethersInstance = await ethersUtil.getEthersInstance();
-      const contractInstance = new ethers.Contract(contractAddress, contractAbi, ethersInstance.getSigner());
+      const signer = await ethersUtil.getSigner();
+      const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
       const methodArgs = [soraAssetId];
       const externalAddress = await contractInstance._sidechainTokens(...methodArgs);
       return externalAddress;

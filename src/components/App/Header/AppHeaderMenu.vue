@@ -1,7 +1,6 @@
 <template>
   <div class="app-header-menu">
     <s-button
-      v-if="!isLargeDesktop"
       type="action"
       class="settings-control s-pressed"
       :tooltip="t('headerMenu.settings')"
@@ -29,33 +28,12 @@
             {{ text }}
           </s-dropdown-item>
           <div @click="openNotificationDialog" class="notif-option el-dropdown-menu__item header-menu__item">
-            <bell-icon class="notif-option__bell notif-option__bell--dropdown"></bell-icon>
+            <bell-icon class="notif-option__bell notif-option__bell--dropdown" />
             <span class="notif-option__text">{{ t('browserNotificationDialog.title') }}</span>
           </div>
         </template>
       </s-dropdown>
     </s-button>
-    <template v-else>
-      <s-button
-        v-for="{ value, icon, text, disabled } in headerMenuItems"
-        :key="value"
-        type="action"
-        class="s-pressed"
-        :tooltip="text"
-        @click="handleSelectHeaderMenu(value)"
-        :disabled="disabled"
-      >
-        <s-icon :name="icon" :size="iconSize" />
-      </s-button>
-      <s-button
-        type="action"
-        :tooltip="t('browserNotificationDialog.button')"
-        @click="openNotificationDialog"
-        class="notif-option s-pressed el-dropdown-menu__item header-menu__item"
-      >
-        <bell-icon class="notif-option__bell notif-option__bell--large"></bell-icon>
-      </s-button>
-    </template>
   </div>
 </template>
 
@@ -64,9 +42,10 @@ import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import BellIcon from '@/assets/img/browser-notification/bell.svg?inline';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, mutation, state } from '@/store/decorators';
+
+import BellIcon from './BellIcon.vue';
 
 enum HeaderMenuType {
   HideBalances = 'hide-balances',
@@ -105,12 +84,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @mutation.settings.setAlertSettingsPopup private setAlertSettingsPopup!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
-
-  isLargeDesktop: boolean = window.innerWidth >= BREAKPOINT;
-
-  private updateLargeDesktopFlag(e: MediaQueryListEvent): void {
-    this.isLargeDesktop = e.matches;
-  }
 
   get mediaQueryList(): MediaQueryList {
     return window.matchMedia(`(min-width: ${BREAKPOINT}px)`);
@@ -185,14 +158,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
 
   get discalimerDisabled(): boolean {
     return this.disclaimerVisibility && !this.userDisclaimerApprove;
-  }
-
-  mounted(): void {
-    this.mediaQueryList.addEventListener('change', this.updateLargeDesktopFlag);
-  }
-
-  beforeDestroy(): void {
-    this.mediaQueryList.removeEventListener('change', this.updateLargeDesktopFlag);
   }
 
   openNotificationDialog(): void {
@@ -279,16 +244,18 @@ $icon-size: 28px;
     width: $icon-size;
     height: $icon-size;
     margin: auto 0;
+    fill: var(--s-color-base-content-tertiary);
+
+    &--dropdown {
+      margin-top: $inner-spacing-mini;
+      margin-right: $basic-spacing-mini;
+    }
   }
 
-  &__bell--dropdown {
-    margin-top: $inner-spacing-mini;
-    margin-right: $basic-spacing-mini;
-    color: var(--s-color-base-content-tertiary);
-  }
-
-  &:hover &__bell--dropdown {
-    color: var(--s-color-base-content-secondary);
+  &:hover {
+    .notif-option__bell {
+      fill: var(--s-color-base-content-secondary);
+    }
   }
 }
 

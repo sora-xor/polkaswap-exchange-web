@@ -122,13 +122,13 @@ export default class CalculatorDialog extends Mixins(PoolCardMixin, mixins.Dialo
   get isBaseAssetMaxButtonAvailable(): boolean {
     if (!this.baseAsset) return false;
 
-    return isMaxButtonAvailable(true, this.baseAsset, this.baseAssetValue, this.networkFee, this.xor as AccountAsset);
+    return isMaxButtonAvailable(this.baseAsset, this.baseAssetValue, this.networkFee, this.xor as AccountAsset);
   }
 
   get isPoolAssetMaxButtonAvailable(): boolean {
     if (!this.poolAsset) return false;
 
-    return isMaxButtonAvailable(true, this.poolAsset, this.poolAssetValue, this.networkFee, this.xor as AccountAsset);
+    return isMaxButtonAvailable(this.poolAsset, this.poolAssetValue, this.networkFee, this.xor as AccountAsset);
   }
 
   get userTokensDeposit(): FPNumber {
@@ -255,8 +255,6 @@ export default class CalculatorDialog extends Mixins(PoolCardMixin, mixins.Dialo
 
 <style lang="scss" scoped>
 .calculator-dialog {
-  padding-bottom: $inner-spacing-medium;
-
   & > *:not(:first-child) {
     margin-top: $inner-spacing-medium;
   }

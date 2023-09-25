@@ -1,20 +1,17 @@
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
-import { delay } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
-import { waitForSoraTransactionHash } from '@/utils/bridge/common/utils';
+import { findEventInBlock } from '@/utils/bridge/common/utils';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 
-import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { EvmHistory, EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { Subscription } from 'rxjs';
 
 type EvmBridgeReducerOptions<T extends EvmHistory> = IBridgeReducerOptions<T> & {
   removeTransactionByHash: RemoveTransactionByHash<EvmHistory>;
 };
-
-const { BLOCK_PRODUCE_TIME } = WALLET_CONSTS;
 
 export class EvmBridgeReducer extends BridgeReducer<EvmHistory> {
   protected readonly removeTransactionByHash!: RemoveTransactionByHash<EvmHistory>;
@@ -65,7 +62,7 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
             this.beforeSubmit(currentId);
             this.updateTransactionParams(currentId, { transactionState: BridgeTxStatus.Pending });
             await this.checkTxId(currentId);
-            await this.checkTxBlockId(currentId);
+            await this.waitForTransactionBlockId(currentId);
 
             currentId = await this.checkTxSoraHash(currentId);
             await this.subscribeOnTxBySoraHash(currentId);
@@ -84,40 +81,15 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
   }
 
   private async checkTxId(id: string): Promise<void> {
-    const { txId } = this.getTransaction(id);
+    const tx = this.getTransaction(id);
 
+    if (tx.txId) return;
     // transaction not signed
-    if (!txId) {
-      await this.signSora(id);
-      // update history to change tx status in ui
-      this.updateHistory();
-    }
-  }
-
-  private async checkTxBlockId(id: string): Promise<void> {
-    const { txId } = this.getTransaction(id);
-
-    if (!txId) {
-      throw new Error(`[${this.constructor.name}]: Transaction "id" is empty, first sign the transaction`);
-    }
-
-    try {
-      await Promise.race([
-        this.waitForSoraBlockId(id),
-        new Promise((resolve, reject) => setTimeout(reject, BLOCK_PRODUCE_TIME * 3)),
-      ]);
-    } catch (error) {
-      console.info(`[${this.constructor.name}]: Implement "blockId" restoration`);
-    }
-  }
-
-  private async waitForSoraBlockId(id: string): Promise<void> {
-    const { blockId } = this.getTransaction(id);
-
-    if (blockId) return Promise.resolve();
-
-    await delay(1_000);
-    await this.waitForSoraBlockId(id);
+    await this.beforeSign(id);
+    const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
+    await evmBridgeApi.transfer(asset, tx.to as string, tx.amount as string, tx.externalNetwork as EvmNetwork, id);
+    // update history to change tx status in ui
+    this.updateHistory();
   }
 
   private async checkTxSoraHash(id: string): Promise<string> {
@@ -125,11 +97,12 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
 
     if (tx.hash) return tx.hash;
 
-    const eventData = await waitForSoraTransactionHash({
+    const eventData = await findEventInBlock({
+      api: evmBridgeApi.api,
+      blockId: tx.blockId as string,
       section: 'bridgeProxy',
-      method: 'burn',
-      eventMethod: 'RequestStatusUpdate',
-    })(id, this.getTransaction);
+      method: 'RequestStatusUpdate',
+    });
 
     const hash = eventData[0].toString();
 

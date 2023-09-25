@@ -19,6 +19,9 @@ export type EthBridgeSettings = {
 export type SubNetworkApps = Partial<Record<SubNetwork, string>>;
 
 export type AvailableNetwork = {
+  /** available on networks list */
+  available: boolean;
+  /** disabled on networks list */
   disabled: boolean;
   data: NetworkData;
 };
@@ -27,7 +30,7 @@ export type Web3State = {
   evmAddress: string;
   subAddress: string;
 
-  networkType: BridgeNetworkType;
+  networkType: Nullable<BridgeNetworkType>;
   networkSelected: Nullable<BridgeNetworkId>;
   evmNetworkProvided: Nullable<BridgeNetworkId>;
 

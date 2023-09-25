@@ -21,11 +21,10 @@ import type { Subscription } from 'rxjs';
 
 @Component
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
-  @action.bridge.getExternalNetworkFee private getExternalNetworkFee!: AsyncFnWithoutArgs;
+  @action.bridge.updateBalancesAndFees private updateBalancesAndFees!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBalance private updateExternalBalance!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBlockNumber private updateExternalBlockNumber!: AsyncFnWithoutArgs;
   @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
-  @action.web3.restoreNetworkType restoreNetworkType!: AsyncFnWithoutArgs;
   @action.web3.restoreSelectedNetwork restoreSelectedNetwork!: AsyncFnWithoutArgs;
 
   private unwatchEthereum!: FnWithoutArgs;
@@ -37,7 +36,6 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
 
     await this.withParentLoading(async () => {
       await this.getSupportedApps();
-      await this.restoreNetworkType();
       await this.restoreSelectedNetwork();
       await this.connectExternalNetwork();
     });
@@ -45,10 +43,6 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
 
   beforeDestroy(): void {
     this.disconnectExternalNetwork();
-  }
-
-  private async updateBalancesAndFees(): Promise<void> {
-    await Promise.all([this.updateExternalBalance(), this.getExternalNetworkFee()]);
   }
 
   private async subscribeOnEvm(): Promise<void> {

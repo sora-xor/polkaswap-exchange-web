@@ -6,46 +6,33 @@
       </slot>
     </template>
     <slot name="content-title" />
-    <div :class="assetsClasses">
+    <div class="tokens">
       <div class="tokens-info-container">
-        <span class="token-value">{{ formattedAmount }}</span>
+        <span class="token-value">{{ formattedAmountSend }}</span>
         <div v-if="asset" class="token">
-          <i class="network-icon network-icon--sora" />
+          <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : network)}`" />
           {{ tokenSymbol }}
         </div>
       </div>
       <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <div class="tokens-info-container">
-        <span class="token-value">{{ formattedAmount }}</span>
-        <div v-if="asset" class="token token-ethereum">
-          <i :class="`network-icon network-icon--${getNetworkIcon(network)}`" />
+        <span class="token-value">{{ formattedAmountReceived }}</span>
+        <div v-if="asset" class="token">
+          <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? network : 0)}`" />
           {{ tokenSymbol }}
         </div>
       </div>
     </div>
     <s-divider class="s-divider--dialog" />
     <bridge-transaction-details
-      :evm-token-symbol="evmTokenSymbol"
-      :evm-network-fee="evmNetworkFee"
+      :native-token="nativeToken"
+      :external-network-fee="externalNetworkFee"
       :sora-network-fee="soraNetworkFee"
+      :network-name="networkName"
     />
     <template #footer>
-      <s-button
-        type="primary"
-        class="s-typography-button--large"
-        :loading="loading"
-        :disabled="isConfirmButtonDisabled"
-        @click="handleConfirm"
-      >
-        <template v-if="!isValidNetwork">
-          {{ t('changeNetworkText') }}
-        </template>
-        <template v-else-if="isInsufficientBalance">
-          {{ t('insufficientBalanceText', { tokenSymbol }) }}
-        </template>
-        <template v-else>
-          {{ confirmText }}
-        </template>
+      <s-button type="primary" class="s-typography-button--large" :loading="loading" @click="handleConfirm">
+        {{ confirmText }}
       </s-button>
     </template>
   </dialog-base>
@@ -61,7 +48,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { ZeroStringValue, Components } from '@/consts';
 import { lazyComponent } from '@/router';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 @Component({
@@ -78,49 +66,34 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
   NetworkFormatterMixin
 ) {
   @Prop({ default: 0, type: [Number, String] }) readonly network!: BridgeNetworkId;
-  @Prop({ default: ZeroStringValue, type: String }) readonly amount!: string;
-  @Prop({ default: () => undefined, type: Object }) readonly asset!: Nullable<Asset>;
-  @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
-  @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
+  @Prop({ default: 0, type: [Number, String] }) readonly networkType!: BridgeNetworkType;
+  @Prop({ default: ZeroStringValue, type: String }) readonly amountSend!: string;
+  @Prop({ default: ZeroStringValue, type: String }) readonly amountReceived!: string;
+  @Prop({ default: () => null, type: Object }) readonly asset!: Nullable<RegisteredAccountAsset>;
+  @Prop({ default: () => null, type: Object }) readonly nativeToken!: Nullable<RegisteredAccountAsset>;
+  @Prop({ default: ZeroStringValue, type: String }) readonly externalNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
-  @Prop({ default: true, type: Boolean }) readonly isValidNetwork!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
   @Prop({ default: '', type: String }) readonly confirmButtonText!: string;
 
   get confirmText(): string {
     return this.confirmButtonText || this.t('confirmText');
   }
 
-  get isConfirmButtonDisabled(): boolean {
-    return !this.isValidNetwork || this.isInsufficientBalance;
+  get formattedAmountSend(): string {
+    return this.amountSend ? this.formatStringValue(this.amountSend) : '';
   }
 
-  get assetsClasses(): Array<string> {
-    const assetsClass = 'tokens';
-    const classes = [assetsClass];
-
-    if (!this.isSoraToEvm) {
-      classes.push(`${assetsClass}--reverse`);
-    }
-
-    return classes;
-  }
-
-  get formattedAmount(): string {
-    return this.amount ? this.formatStringValue(this.amount, this.asset?.decimals) : '';
-  }
-
-  get formattedSoraNetworkFee(): string {
-    return this.formatCodecNumber(this.soraNetworkFee);
-  }
-
-  get formattedEvmNetworkFee(): string {
-    return this.formatCodecNumber(this.evmNetworkFee);
+  get formattedAmountReceived(): string {
+    return this.amountReceived ? this.formatStringValue(this.amountReceived) : '';
   }
 
   get tokenSymbol(): string {
     return this.asset?.symbol || '';
+  }
+
+  get networkName(): string {
+    return this.getNetworkName(this.networkType, this.network);
   }
 
   async handleConfirm(): Promise<void> {

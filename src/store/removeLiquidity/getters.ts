@@ -6,7 +6,7 @@ import { ZeroStringValue } from '@/consts';
 import { removeLiquidityGetterContext } from '@/store/removeLiquidity';
 
 import type { RemoveLiquidityState } from './types';
-import type { RegisteredAccountAsset } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 const getters = defineGetters<RemoveLiquidityState>()({

@@ -1,9 +1,25 @@
 {
     "card": {
         "termsAndConditions": "条款和条件",
+        "termsAndConditionsPreDisclaimer": "我们希望您了解SORA卡服务的工作原理，谁需要您的详细信息以及为什么需要。审查这些政策将有助于您安心使用该应用程序。",
         "disclaimerCollectData": "SORA社区不会收集任何个人数据，如果您想获得SORA卡和IBAN账户，您需要直接与发卡机构完成KYC流程。",
         "privacyPolicy": "隐私政策",
+        "termsAndConditionsWarning": "继续操作即表示您已阅读、理解并接受这些政策。",
         "acceptAndContinue": "接受并继续",
+        "getPrepared": "做好准备",
+        "guideline": {
+            "photoTitle": "提交您的身份证明照片",
+            "photoDesc": "护照、驾照、身份证或居住许可证",
+            "selfieTitle": "自拍",
+            "selfieDesc": "在过程中将提供指导",
+            "proofAddressTitle": "提交地址证明照片",
+            "proofAddressDesc": "包含您的全名和地址且不超过 3 个月的正式文件（水电费账单、银行对账单、政府声明或信件）。",
+            "personalTitle": "提交个人信息",
+            "personalDesc": "请填写表格，包括您的姓名和地址。",
+            "proofAddressNote": "请注意：像Revolut和N26这样的新型银行的声明目前不被视为有效的地址证明。",
+            "paidAttemptDisclaimer": "您只有{count}免费尝试机会通过 KYC 流程。此后的所有其他尝试都将花费 € {cost} 。下次更新应用程序后将提供付费尝试。"
+        },
+        "okReadyText": "好的，我准备好了",
         "emailPlaceholder": "电子邮件",
         "sendCodeBtn": "发送短信代码",
         "firstNamePlaceholder": "名",
@@ -19,19 +35,10 @@
         "getSoraCardBtn": "免费获得 SORA 卡",
         "bridgeTokensBtn": "跨链代币",
         "depositX1Btn": "购买XOR",
-        "reIssuanceFee": "€0 年重新发行费",
         "freeStartDesc": "您的账户中有{value}个XOR可供免费使用",
         "completeKYC": "完成KYC",
         "phoneConfirmation": "电话确认",
         "emailConfirmation": "邮件确认",
-        "roadmap": {
-            "contactInfoTitle": "验证联系信息",
-            "contactInfoDesc": "电子邮件和电话号码",
-            "docsTitle": "验证文件",
-            "docsDesc": "拿着文件自拍",
-            "personalDataTitle": "提交个人资料",
-            "personalDataDesc": "全名和地址证明"
-        },
         "letsStartBtn": "开始吧",
         "otpPlaceholder": "验证码",
         "confirmCodeBtn": "确认短信代码",
@@ -45,6 +52,7 @@
         "personalNameInputDesc": "使用您的真实姓名。",
         "infoMessageTryAgain": "出了些问题。请再试一次",
         "blacklistedCountriesExcuse": "很遗憾，目前我们无法支持以下国家\/地区：",
+        "xorAmountNeeded": "您需要{xor}更多 XOR (€ {euro} )",
         "statusPendingText": "您已成功完成KYC申请。审核正在进行中，您可以很快收到决定。<br \/><br \/>通常情况下，决定会在同一天做出，在某些情况下可能需要最多3天。",
         "resendInBtn": "重新发送 {value}",
         "statusRejectTitle": "验证被拒绝",
@@ -57,6 +65,30 @@
         "statusRejectReason": "拒绝原因",
         "userNotFound": "未找到手机号码，请重新检查并重试。",
         "code": "代码",
-        "getSoraCardDesc": "在您的SORA钱包中获取一个欧元IBAN账户和可访问的Mastercard借记卡"
+        "getSoraCardDesc": "在您的SORA钱包中获得一个欧元IBAN账户和可访问的借记卡",
+        "reIssuanceFee": "年服务费€0",
+        "freeCardIssuance": "免费发卡",
+        "loginBtn": "登录或注册",
+        "telegramSupport": "Telegram 支持",
+        "rejectionPriceAttemptDisclaimer": "每次其他尝试都会花费你{0}欧元。",
+        "rejectCount": "您还有{count}次免费的KYC尝试",
+        "cardHub": {
+            "logout": "退出 SORA 卡",
+            "topup": "充值",
+            "transfer": "转账",
+            "exchange": "兑换",
+            "freeze": "冻结",
+            "comingSoon": "即将推出卡片管理功能",
+            "ibanLabel": "IBAN账户详情"
+        },
+        "emailSpamReminder": "电子邮件可能需要几分钟才能到达。如果 5 分钟后仍未收到电子邮件，请验证您的垃圾邮件文件夹。",
+        "gettingCardForFree": "您将免费获得该卡！",
+        "holdSufficientXor": "你在SORA账户中持有价值100欧元的XOR",
+        "holdNotSufficientXor": "如果您在 SORA 账户中持有、质押或提供至少价值 100 欧元 XOR 的流动性",
+        "xorAmountNeededTitle": "您需要{value} XOR 才能收到免费卡",
+        "cardhub": {
+            "accountInfo": "账户信息"
+        },
+        "attentionText": "注意"
     }
 }

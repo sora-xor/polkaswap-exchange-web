@@ -1,85 +1,82 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { defineActions } from 'direct-vuex';
 
-import { ZeroStringValue } from '@/consts';
 import { assetsActionContext } from '@/store/assets';
-import type { BridgeAccountAsset } from '@/store/assets/types';
+import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import ethersUtil from '@/utils/ethers-util';
 
+import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { ActionContext } from 'vuex';
 
-async function getEthRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, BridgeAccountAsset>[]> {
+async function getEthRegisteredAssets(
+  context: ActionContext<any, any>
+): Promise<Record<string, BridgeRegisteredAsset>[]> {
   const { rootDispatch } = assetsActionContext(context);
 
   const networkAssets = await ethBridgeApi.getRegisteredAssets();
-  const registeredAssets: Record<string, BridgeAccountAsset>[] = [];
+  const registeredAssets = await Promise.all(
+    Object.entries(networkAssets).map(async ([soraAddress, assetData]) => {
+      const address = assetData.address || (await rootDispatch.web3.getEvmTokenAddressByAssetId(soraAddress));
+      const decimals = assetData.decimals ?? (await ethersUtil.getTokenDecimals(address));
 
-  for (const asset of networkAssets) {
-    const soraAddress = asset.address;
-    const address = asset.externalAddress || (await rootDispatch.web3.getEvmTokenAddressByAssetId(soraAddress));
-    const decimals = +asset.externalDecimals ?? (await ethersUtil.getAssetDecimals(address));
-
-    registeredAssets.push({
-      [soraAddress]: {
-        address,
-        balance: ZeroStringValue,
-        decimals,
-      },
-    });
-  }
+      return {
+        [soraAddress]: {
+          address,
+          decimals,
+          kind: assetData.assetKind,
+        },
+      };
+    })
+  );
 
   return registeredAssets;
 }
 
-async function getEvmRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, BridgeAccountAsset>[]> {
+async function getEvmRegisteredAssets(
+  context: ActionContext<any, any>
+): Promise<Record<string, BridgeRegisteredAsset>[]> {
   const { rootState } = assetsActionContext(context);
 
-  const evmNetworkId = rootState.web3.networkSelected;
-  const networkAssets = await evmBridgeApi.getRegisteredAssets(evmNetworkId as number);
-
+  const evmNetwork = rootState.web3.networkSelected;
+  const networkAssets = await evmBridgeApi.getRegisteredAssets(evmNetwork as EvmNetwork);
   const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
-    const accountAsset = {
-      address: assetData.address as string,
-      balance: ZeroStringValue,
-      contract: '', // map with appKinds
-      decimals: assetData.decimals,
-    };
-
     return {
-      [soraAddress]: accountAsset,
+      [soraAddress]: {
+        address: assetData.address,
+        decimals: assetData.decimals,
+        kind: assetData.appKind,
+      },
     };
   });
 
   return registeredAssets;
 }
 
-async function getSubRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, BridgeAccountAsset>[]> {
+async function getSubRegisteredAssets(
+  context: ActionContext<any, any>
+): Promise<Record<string, BridgeRegisteredAsset>[]> {
   const { rootState } = assetsActionContext(context);
 
   const subNetwork = rootState.web3.networkSelected;
-
   const networkAssets = await subBridgeApi.getRegisteredAssets(subNetwork as SubNetwork);
-
   const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
-    const accountAsset = {
-      address: '',
-      balance: ZeroStringValue,
-      decimals: assetData.decimals,
-    };
-
     return {
-      [soraAddress]: accountAsset,
+      [soraAddress]: {
+        address: '',
+        decimals: assetData.decimals,
+        kind: assetData.assetKind,
+      },
     };
   });
 
   return registeredAssets;
 }
 
-async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, BridgeAccountAsset>[]> {
+async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, BridgeRegisteredAsset>[]> {
   const { rootState } = assetsActionContext(context);
 
   switch (rootState.web3.networkType) {
@@ -92,6 +89,8 @@ async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Re
     case BridgeNetworkType.Sub: {
       return await getSubRegisteredAssets(context);
     }
+    default:
+      return [];
   }
 }
 

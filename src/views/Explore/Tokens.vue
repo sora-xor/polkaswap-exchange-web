@@ -1,5 +1,6 @@
 <template>
   <div>
+    <synthetic-switcher v-model="isSynthsOnly" />
     <s-table
       ref="table"
       v-loading="loadingState"
@@ -112,7 +113,7 @@
             </sort-button>
           </template>
           <template v-slot="{ row }">
-            <span v-if="isSynthetic(row)">—</span>
+            <span v-if="isSynthetic(row.address)">—</span>
             <formatted-amount
               v-else
               is-fiat-value
@@ -140,7 +141,7 @@
             </sort-button>
           </template>
           <template v-slot="{ row }">
-            <span v-if="isSynthetic(row)">—</span>
+            <span v-if="isSynthetic(row.address)">—</span>
             <formatted-amount
               v-else
               :font-weight-rate="FontWeightRate.MEDIUM"
@@ -166,7 +167,6 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { XSTUSD } from '@sora-substrate/util/build/assets/consts';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { components, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
 import { gql } from '@urql/core';
@@ -178,8 +178,9 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
-import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
+import { calcPriceChange, formatAmountWithSuffix, sortAssets } from '@/utils';
 import { syntheticAssetRegexp } from '@/utils/regexp';
+import storage from '@/utils/storage';
 
 import type { AmountWithSuffix } from '../../types/formats';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
@@ -222,6 +223,8 @@ type TableItem = {
   velocity: number;
   velocityFormatted: string;
 } & Asset;
+
+const storageKey = 'exploreSyntheticTokens';
 
 const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
   query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
@@ -278,6 +281,7 @@ const parse = (item: AssetData): Record<string, TokenData> => {
 
 @Component({
   components: {
+    SyntheticSwitcher: lazyComponent(Components.SyntheticSwitcher),
     PriceChange: lazyComponent(Components.PriceChange),
     SortButton: lazyComponent(Components.SortButton),
     TokenAddress: components.TokenAddress,
@@ -287,7 +291,20 @@ const parse = (item: AssetData): Record<string, TokenData> => {
   },
 })
 export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
-  @getter.assets.whitelistAssets private items!: Array<Asset>;
+  private readonly DAY = 60 * 60 * 24;
+
+  @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
+
+  private isSynths = storage.get(storageKey as any) ? JSON.parse(storage.get(storageKey as any)) : false;
+
+  get isSynthsOnly(): boolean {
+    return this.isSynths;
+  }
+
+  set isSynthsOnly(value: boolean) {
+    storage.set(storageKey as any, value); // TODO: Update StorageKey
+    this.isSynths = value;
+  }
 
   tokensData: Record<string, TokenData> = {};
   // override ExplorePageMixin
@@ -298,8 +315,8 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     return Object.keys(this.tokensData).length !== 0;
   }
 
-  get preparedItems(): TableItem[] {
-    return Object.entries(this.tokensData).reduce<TableItem[]>((buffer, [address, tokenData]) => {
+  get items(): TableItem[] {
+    const items = Object.entries(this.tokensData).reduce<TableItem[]>((buffer, [address, tokenData]) => {
       const asset = this.getAsset(address);
 
       if (!asset) return buffer;
@@ -334,10 +351,18 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
       return buffer;
     }, []);
+
+    const defaultSorted = [...items].sort((a, b) => sortAssets(a, b));
+
+    return defaultSorted;
   }
 
-  isSynthetic(row: TableItem): boolean {
-    return syntheticAssetRegexp.test(row.address) || row.address === XSTUSD.address;
+  get preparedItems(): TableItem[] {
+    return this.isSynthsOnly ? this.items.filter((item) => this.isSynthetic(item.address)) : this.items;
+  }
+
+  isSynthetic(address: string): boolean {
+    return syntheticAssetRegexp.test(address);
   }
 
   // ExplorePageMixin method implementation
@@ -350,10 +375,10 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   }
 
   private async fetchTokensData(): Promise<Record<string, TokenData>> {
-    const now = Math.floor(Date.now() / (5 * 60 * 1000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
-    const dayTimestamp = now - 60 * 60 * 24; // latest day snapshot (unix)
-    const weekTimestamp = now - 60 * 60 * 24 * 7; // latest week snapshot (unix)
-    const ids = this.items.map((item) => item.address); // only whitelisted assets
+    const now = Math.floor(Date.now() / (5 * 60_000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
+    const dayTimestamp = now - this.DAY; // latest day snapshot (unix)
+    const weekTimestamp = now - this.DAY * 7; // latest week snapshot (unix)
+    const ids = this.whitelistAssets.map((item) => item.address); // only whitelisted assets
 
     const variables = { ids, dayTimestamp, weekTimestamp };
     const items = await SubqueryExplorerService.fetchAllEntities(AssetsQuery, variables, parse);

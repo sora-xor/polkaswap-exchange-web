@@ -86,6 +86,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
 import { lazyComponent } from '@/router';
+import { sortAssets } from '@/utils';
 
 import { DemeterComponents } from '../consts';
 import PageMixin from '../mixins/PageMixin';
@@ -123,7 +124,7 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
   }
 
   get tokensData(): StakingItem[] {
-    return Object.entries(this.pools).reduce<StakingItem[]>((buffer, [address, poolsMap]) => {
+    const items = Object.entries(this.pools).reduce<StakingItem[]>((buffer, [address, poolsMap]) => {
       const asset = this.demeterAssetsData[address];
 
       if (!asset) return buffer;
@@ -140,6 +141,10 @@ export default class DemeterStaking extends Mixins(PageMixin, TranslationMixin) 
 
       return buffer;
     }, []);
+
+    const defaultSorted = [...items].sort((a, b) => sortAssets(a.asset, b.asset));
+
+    return defaultSorted;
   }
 }
 </script>
@@ -176,7 +181,7 @@ $title-height: 42px;
 
 .staking-info-badges {
   flex-flow: wrap;
-  gap: $inner-spacing-mini / 2;
+  gap: $inner-spacing-tiny;
 }
 
 .staking-info {

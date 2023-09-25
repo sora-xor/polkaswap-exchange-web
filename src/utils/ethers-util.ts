@@ -1,20 +1,19 @@
 import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
-import { FPNumber } from '@sora-substrate/util';
-import { XOR, VAL, PSWAP, ETH } from '@sora-substrate/util/build/assets/consts';
+import { FPNumber, BridgeRequestAssetKind } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers } from 'ethers';
 
 import { ZeroStringValue } from '@/consts';
-import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
+import { SmartContracts, SmartContractType } from '@/consts/evm';
 import type { NetworkData } from '@/types/bridge';
 import { settingsStorage } from '@/utils/storage';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
-type ethersProvider = ethers.providers.Web3Provider;
+type ethersProvider = ethers.BrowserProvider;
 
 let provider: any = null;
 let ethersInstance: ethersProvider | null = null;
@@ -31,38 +30,40 @@ interface ConnectOptions {
 
 // TODO [EVM]
 const gasLimit = {
-  approve: 70000,
-  sendERC20ToSidechain: 86000,
-  sendEthToSidechain: 50000,
-  mintTokensByPeers: 255000,
-  receiveByEthereumAssetAddress: 250000,
-  receiveBySidechainAssetId: 255000,
+  approve: 47000,
+  sendERC20ToSidechain: 53000,
+  sendEthToSidechain: 26093,
+  mintTokensByPeers: 211000,
+  receiveByEthereumAssetAddress: {
+    ETH: 155000,
+    OTHER: 181000,
+  },
+  receiveBySidechainAssetId: 184000,
 };
 
 /**
  * It's in gwei.
- * Zero index means ETH -> SORA
- * First index means SORA -> ETH
  */
-// TODO [EVM]
-const EthereumGasLimits = [
-  // ETH -> SORA
-  {
-    [XOR.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [VAL.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [PSWAP.address]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-    [ETH.address]: gasLimit.sendEthToSidechain,
-    [KnownEthBridgeAsset.Other]: gasLimit.approve + gasLimit.sendERC20ToSidechain,
-  },
-  // SORA -> ETH
-  {
-    [XOR.address]: gasLimit.mintTokensByPeers,
-    [VAL.address]: gasLimit.mintTokensByPeers,
-    [PSWAP.address]: gasLimit.receiveBySidechainAssetId,
-    [ETH.address]: gasLimit.receiveByEthereumAssetAddress,
-    [KnownEthBridgeAsset.Other]: gasLimit.receiveByEthereumAssetAddress,
-  },
-];
+const getEthBridgeGasLimit = (assetEvmAddress: string, kind: BridgeRequestAssetKind, isSoraToEvm: boolean) => {
+  if (isSoraToEvm) {
+    switch (kind) {
+      case BridgeRequestAssetKind.SidechainOwned:
+        return gasLimit.mintTokensByPeers;
+      case BridgeRequestAssetKind.Thischain:
+        return gasLimit.receiveBySidechainAssetId;
+      case BridgeRequestAssetKind.Sidechain:
+        return isNativeEvmTokenAddress(assetEvmAddress)
+          ? gasLimit.receiveByEthereumAssetAddress.ETH
+          : gasLimit.receiveByEthereumAssetAddress.OTHER;
+      default:
+        throw new Error(`Unknown kind "${kind}" for asset "${assetEvmAddress}"`);
+    }
+  } else {
+    return isNativeEvmTokenAddress(assetEvmAddress)
+      ? gasLimit.sendEthToSidechain
+      : gasLimit.approve + gasLimit.sendERC20ToSidechain;
+  }
+};
 
 async function onConnect(options: ConnectOptions): Promise<string> {
   if (options.provider === Provider.Metamask) {
@@ -88,89 +89,88 @@ async function onConnectWallet(url = 'https://cloudflare-eth.com'): Promise<stri
   return getAccount();
 }
 
+async function getSigner(): Promise<ethers.JsonRpcSigner> {
+  const ethersInstance = await getEthersInstance();
+  const signer = await ethersInstance.getSigner();
+
+  return signer;
+}
+
 async function getAccount(): Promise<string> {
   const ethersInstance = await getEthersInstance();
   await ethersInstance.send('eth_requestAccounts', []);
-  const account = ethersInstance.getSigner();
-  return account.getAddress();
+  const signer = await getSigner();
+  return signer.getAddress();
 }
 
-async function getAssetDecimals(assetAddress: string): Promise<number> {
-  let decimals = FPNumber.DEFAULT_PRECISION;
+async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> {
+  const signer = await getSigner();
+  const contract = new ethers.Contract(tokenAddress, SmartContracts[SmartContractType.ERC20].abi, signer);
 
-  if (isNativeEvmTokenAddress(assetAddress)) return decimals;
-
-  try {
-    const ethersInstance = await getEthersInstance();
-    const tokenInstance = new ethers.Contract(
-      assetAddress,
-      SmartContracts[SmartContractType.ERC20].abi,
-      ethersInstance.getSigner()
-    );
-    decimals = await tokenInstance.decimals();
-  } catch (error) {
-    console.error(error);
-  }
-
-  return decimals;
+  return contract;
 }
 
+/**
+ * Get account native token balance (ETH for Ethereum)
+ * @param accountAddress address of account
+ */
 async function getAccountBalance(accountAddress: string): Promise<CodecString> {
   try {
     const ethersInstance = await getEthersInstance();
     const wei = await ethersInstance.getBalance(accountAddress);
-    const balance = ethers.utils.formatEther(wei.toString());
-    return new FPNumber(balance).toCodecString();
+
+    return wei.toString();
   } catch (error) {
     console.error(error);
     return ZeroStringValue;
   }
 }
 
-async function getAccountAssetBalance(
-  accountAddress: string,
-  assetAddress: string
-): Promise<{ value: CodecString; decimals: number }> {
-  let value = ZeroStringValue;
-  let decimals = FPNumber.DEFAULT_PRECISION;
+async function getAccountTokenBalance(accountAddress: string, tokenAddress: string): Promise<CodecString> {
+  try {
+    const tokenInstance = await getTokenContract(tokenAddress);
+    const methodArgs = [accountAddress];
+    const balance: bigint = await tokenInstance.balanceOf(...methodArgs);
 
-  if (accountAddress && assetAddress) {
+    return balance.toString();
+  } catch (error) {
+    console.error(error);
+    return ZeroStringValue;
+  }
+}
+
+async function getTokenDecimals(tokenAddress: string): Promise<number> {
+  if (!isNativeEvmTokenAddress(tokenAddress)) {
     try {
-      const ethersInstance = await getEthersInstance();
-      const isNativeEvmToken = isNativeEvmTokenAddress(assetAddress);
-      if (isNativeEvmToken) {
-        value = await getAccountBalance(accountAddress);
-      } else {
-        const tokenInstance = new ethers.Contract(
-          assetAddress,
-          SmartContracts[SmartContractType.ERC20].abi,
-          ethersInstance.getSigner()
-        );
-        const methodArgs = [accountAddress];
-        const balance = await tokenInstance.balanceOf(...methodArgs);
-        decimals = await tokenInstance.decimals();
-        value = FPNumber.fromCodecValue(balance._hex, +decimals).toCodecString();
-      }
+      const contract = await getTokenContract(tokenAddress);
+      const result: bigint = await contract.decimals();
+
+      return Number(result);
     } catch (error) {
-      console.error(assetAddress);
       console.error(error);
     }
   }
 
-  return { value, decimals };
+  return FPNumber.DEFAULT_PRECISION;
+}
+
+async function getAccountAssetBalance(accountAddress: string, assetAddress: string): Promise<CodecString> {
+  if (!(accountAddress && assetAddress)) return ZeroStringValue;
+
+  return isNativeEvmTokenAddress(assetAddress)
+    ? await getAccountBalance(accountAddress)
+    : await getAccountTokenBalance(accountAddress, assetAddress);
 }
 
 async function getAllowance(accountAddress: string, contractAddress: string, assetAddress: string): Promise<string> {
-  const ethersInstance = await getEthersInstance();
-  const tokenInstance = new ethers.Contract(
-    assetAddress,
-    SmartContracts[SmartContractType.ERC20].abi,
-    ethersInstance.getSigner()
-  );
-  const methodArgs = [accountAddress, contractAddress];
-  const allowance = await tokenInstance.allowance(...methodArgs);
+  if (!(accountAddress && assetAddress && contractAddress)) return ZeroStringValue;
 
-  return FPNumber.fromCodecValue(allowance._hex).toString();
+  const methodArgs = [accountAddress, contractAddress];
+  const contract = await getTokenContract(assetAddress);
+  const decimals = await getTokenDecimals(assetAddress);
+  const allowance: bigint = await contract.allowance(...methodArgs);
+
+  return FPNumber.fromCodecValue(allowance.toString(), decimals).toString();
 }
 
 // TODO: remove this check, when MetaMask issue will be resolved
@@ -197,7 +197,7 @@ async function getEthersInstance(): Promise<ethersProvider> {
   }
   if (!ethersInstance) {
     // 'any' - because ethers throws errors after network switch
-    ethersInstance = new ethers.providers.Web3Provider(provider, 'any');
+    ethersInstance = new ethers.BrowserProvider(provider, 'any');
   }
   return ethersInstance;
 }
@@ -254,7 +254,7 @@ async function addToken(address: string, symbol: string, decimals: number, image
  */
 async function switchOrAddChain(network: NetworkData, chainName?: string): Promise<void> {
   const ethereum = (window as any).ethereum;
-  const chainId = ethers.utils.hexValue(network.id);
+  const chainId = ethers.toQuantity(network.id);
 
   try {
     await ethereum.request({
@@ -294,19 +294,22 @@ async function getEvmNetworkId(): Promise<number> {
   const ethersInstance = await getEthersInstance();
   const network = await ethersInstance.getNetwork();
 
-  return network.chainId;
+  return Number(network.chainId);
 }
 
 /**
  * Fetch EVM Network fee for passed asset address
  */
-async function getEvmNetworkFee(address: string, isSoraToEvm: boolean): Promise<CodecString> {
+async function getEvmNetworkFee(
+  assetEvmAddress: string,
+  assetKind: string,
+  isSoraToEvm: boolean
+): Promise<CodecString> {
   try {
     const ethersInstance = await getEthersInstance();
-    const gasPrice = (await ethersInstance.getGasPrice()).toNumber();
-    const gasLimits = EthereumGasLimits[+isSoraToEvm];
-    const key = address in gasLimits ? address : KnownEthBridgeAsset.Other;
-    const gasLimit = gasLimits[key];
+    const { maxFeePerGas } = await ethersInstance.getFeeData();
+    const gasPrice = maxFeePerGas ?? BigInt(0);
+    const gasLimit = BigInt(getEthBridgeGasLimit(assetEvmAddress, assetKind as BridgeRequestAssetKind, isSoraToEvm));
     const fee = calcEvmFee(gasPrice, gasLimit);
 
     return fee;
@@ -316,25 +319,25 @@ async function getEvmNetworkFee(address: string, isSoraToEvm: boolean): Promise<
   }
 }
 
-function calcEvmFee(gasPrice: number, gasAmount: number) {
-  return FPNumber.fromCodecValue(gasPrice).mul(new FPNumber(gasAmount)).toCodecString();
+function calcEvmFee(gasPrice: bigint, gasAmount: bigint) {
+  return (gasPrice * gasAmount).toString();
 }
 
-async function getEvmTransaction(hash: string): Promise<ethers.providers.TransactionResponse> {
+async function getEvmTransaction(hash: string): Promise<ethers.TransactionResponse | null> {
   const ethersInstance = await getEthersInstance();
   const tx = await ethersInstance.getTransaction(hash);
 
   return tx;
 }
 
-async function getEvmTransactionReceipt(hash: string): Promise<ethers.providers.TransactionReceipt> {
+async function getEvmTransactionReceipt(hash: string): Promise<ethers.TransactionReceipt | null> {
   const ethersInstance = await getEthersInstance();
   const tx = await ethersInstance.getTransactionReceipt(hash);
 
   return tx;
 }
 
-async function getBlock(number: number): Promise<ethers.providers.Block> {
+async function getBlock(number: number): Promise<ethers.Block | null> {
   const ethersInstance = await getEthersInstance();
   const block = await ethersInstance.getBlock(number);
 
@@ -342,7 +345,7 @@ async function getBlock(number: number): Promise<ethers.providers.Block> {
 }
 
 async function accountAddressToHex(address: string): Promise<string> {
-  return ethers.utils.hexlify(Array.from(decodeAddress(address).values()));
+  return ethers.hexlify(decodeAddress(address));
 }
 
 function hexToNumber(hex: string): number {
@@ -391,10 +394,12 @@ function storeSelectedBridgeType(bridgeType: BridgeNetworkType) {
 
 export default {
   onConnect,
+  getSigner,
   getAccount,
   getAccountBalance,
   getAccountAssetBalance,
-  getAssetDecimals,
+  getTokenContract,
+  getTokenDecimals,
   getAllowance,
   checkAccountIsConnected,
   getEthersInstance,

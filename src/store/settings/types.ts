@@ -1,10 +1,18 @@
-import type { MarketAlgorithms } from '@/consts';
+import type { BreakpointClass, MarketAlgorithms } from '@/consts';
 import type { Node } from '@/types/nodes';
 
 import type { Subscription } from 'rxjs';
 
+export type Ad = {
+  title: string;
+  img: string;
+  backgroundColor: string;
+  link: string;
+};
+
 export type FeatureFlags = {
   moonpay?: boolean;
+  x1ex?: boolean;
   charts?: boolean;
   soraCard?: boolean;
 };
@@ -13,7 +21,7 @@ export type SettingsState = {
   featureFlags: FeatureFlags;
   slippageTolerance: string;
   marketAlgorithm: MarketAlgorithms;
-  сhartsEnabled: boolean;
+  chartsEnabled: boolean;
   userDisclaimerApprove: boolean;
   transactionDeadline: number;
   node: Partial<Node>;
@@ -37,6 +45,8 @@ export type SettingsState = {
   blockNumberUpdates: Nullable<Subscription>;
   internetConnection: Nullable<boolean>;
   internetConnectionSpeed: Nullable<number>;
+  screenBreakpointClass: BreakpointClass;
+  adsArray: Array<Ad>;
 };
 
 export type NodesHashTable = {

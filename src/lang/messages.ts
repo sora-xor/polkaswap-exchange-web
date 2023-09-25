@@ -3,11 +3,10 @@ import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { en as walletEn } from '@soramitsu/soraneo-wallet-web';
 
-import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
-
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
 import { DemeterPageNames } from '../modules/demeterFarming/consts';
+import { AlertFrequencyTabs, AlertTypeTabs, FiatOptionTabs } from '../types/tabs';
 
 export default {
   // Wallet project keys
@@ -32,6 +31,7 @@ export default {
   selectNodeText: 'Select node',
   bridgeText: 'Bridge',
   acceptText: 'Accept & Hide',
+  continueText: 'Continue',
   acceptOnSctollText: 'Scroll to accept',
   comingSoonText: 'Coming Soon',
   releaseNotesText: 'Release notes',
@@ -117,6 +117,17 @@ export default {
     frequencyTooltip:
       "Select between 'once' and 'always' to determine how often you receive notifications for the chosen alert type. 'Once' will send a single notification when the condition is met, while 'always' will continue to notify you each time the price threshold is crossed.",
     noSupportMsg: "Notifications aren't supported by your browser",
+  },
+  fiatPayment: {
+    [FiatOptionTabs.moonpay]: 'MoonPay',
+    [FiatOptionTabs.x1ex]: 'x1ex',
+    historyBtn: 'My purchases',
+    historyTitle: 'Transaction History',
+    moonpayTitle: 'Buy ETH via MoonPay',
+    moonpayDesc: 'Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge',
+    x1Title: 'Buy XOR with your card',
+    x1Desc: 'Purchase XOR tokens with your debit or credit card',
+    x1Btn: 'Buy XOR with card',
   },
   headerMenu: {
     showBalances: 'Show Balances',
@@ -328,6 +339,8 @@ export default {
     transactionMessage: '{firstToken} and {secondToken}',
     confirm: 'Confirm',
     ok: 'OK',
+    lossWarning:
+      "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair.",
   },
   swap: {
     connectWallet: '@:connectWalletText',
@@ -703,7 +716,7 @@ export default {
   },
   confirmNextTxFailure: {
     header: 'Attention',
-    info: 'Your XOR balance will be less than {fee} XOR after this transaction. You won’t be able to pay for the network fee for another transaction.',
+    info: 'Your {symbol} balance will be less than {fee} {symbol} after this transaction. You won’t be able to pay for the network fee for another transaction.',
     payoff:
       'You would have to use the Bridge to get XOR from other networks, get sent XOR from another {Sora} account, or swap any other token already in your account into XOR.',
     button: 'Yes, I understand the risk',
@@ -838,4 +851,11 @@ export default {
       'Token velocity is the number of times token changes accounts during period (month) on average. It indicates the level of trading activity and liquidity.',
   },
   networkStatisticsText: 'Network statistics',
+  browserPermission: {
+    title: 'Allow camera access in browser settings',
+    desc: "To ensure the authenticity of documents and validate user identity for KYC verification, access to your device's camera is required.",
+    disclaimer: 'Camera access is required for real-time document capture to prevent fraud.',
+    btnGoToSettings: 'Go to settings',
+    btnAllow: 'Allow access',
+  },
 };

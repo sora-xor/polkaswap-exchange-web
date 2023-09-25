@@ -13,6 +13,11 @@ export enum AlertFrequencyTabs {
   Always = 'always',
 }
 
+export enum FiatOptionTabs {
+  moonpay = 'MoonpayHistory',
+  x1ex = 'X1History',
+}
+
 export interface TabItem {
   name: string;
   label: string;

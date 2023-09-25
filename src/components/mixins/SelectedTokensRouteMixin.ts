@@ -43,14 +43,8 @@ export default class SelectedTokenRouteMixin extends Vue {
         if (!(bothArePresented && api.dex.baseAssetsIds.includes(firstAddress))) {
           return false;
         }
-        if (firstAddress === XOR.address && secondAddress === XSTUSD.address) {
-          return false; // XOR-XSTUSD isn't allowed
-        }
-        if (firstAddress === XSTUSD.address && [XOR.address, XST.address].includes(secondAddress)) {
-          return false; // XSTUSD-XOR & XSTUSD-XST aren't allowed
-        }
-        if (syntheticAssetRegexp.test(secondAddress)) {
-          return false; // synthetic pairs aren't allowed
+        if (firstAddress === XSTUSD.address && secondAddress === XOR.address) {
+          return false; // XSTUSD-XOR isn't allowed
         }
         return true;
       }

@@ -8,7 +8,7 @@ if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
 
 def pipeline = new org.js.AppPipeline(steps: this,
     dockerImageName: 'polkaswap/exchange-web',
-    buildDockerImage: 'docker.soramitsu.co.jp/build-tools/node:14-ubuntu-extended',
+    buildDockerImage: 'build-tools/node:16-ubuntu',
     dockerRegistryCred: 'bot-polkaswap-rw',
     buildEnvironment: buildEnvironment,
     sonarProjectName: 'polkaswap-exchange-web',
@@ -31,6 +31,9 @@ def pipeline = new org.js.AppPipeline(steps: this,
     targetNameSpace: "sora2-${env.CHANGE_ID}-web",
     targetSecretName: "sora2-${env.CHANGE_ID}-polkaswap-exchange-pr-polkaswap-exchange-web-eso-base",
     downstreamJob: 'polkaswap/e2e-tests/hash_test',
-    noIndex: true
+    noIndex: true,
+    sonarSrcPath: 'src',
+    sonarTestsPath: 'tests',
+    dojoProductType: 'sora'
 )
 pipeline.runPipeline()
