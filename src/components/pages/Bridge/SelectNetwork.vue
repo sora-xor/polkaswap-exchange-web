@@ -69,7 +69,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
         const networks = Object.values(record) as AvailableNetwork[];
 
         return networks.reduce<NetworkItem[]>((buffer, { available, disabled, data: { id, name } }) => {
-          const networkName = type === BridgeNetworkType.EvmLegacy ? `${name} (${this.t('hashiBridgeText')})` : name;
+          const networkName = type === BridgeNetworkType.Eth ? `${name} (${this.t('hashiBridgeText')})` : name;
 
           if (available) {
             buffer.push({

@@ -1,8 +1,9 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { BridgeCurrencyType, BridgeRequestAssetKind, BridgeHistory, FPNumber } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
 import { getAssetBalance } from '@sora-substrate/util/build/assets';
 import { DAI } from '@sora-substrate/util/build/assets/consts';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { EthCurrencyType, EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
@@ -31,6 +32,7 @@ import type { SignTxResult } from './types';
 import type { SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
@@ -93,7 +95,7 @@ function bridgeDataToHistoryItem(
   const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : BridgeTxStatus.Pending;
   const externalNetwork = rootState.web3.networkSelected as BridgeNetworkId as any;
   const externalNetworkType = isEthBridge
-    ? BridgeNetworkType.EvmLegacy
+    ? BridgeNetworkType.Eth
     : isEvmBridge
     ? BridgeNetworkType.Evm
     : BridgeNetworkType.Sub;
@@ -217,18 +219,25 @@ async function updateEthHistory(context: ActionContext<any, any>, clearHistory =
 
 async function updateEthLockedBalance(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, rootGetters, rootState } = bridgeActionContext(context);
-  const { address, externalAddress } = getters.asset || {};
+  const { address, decimals, externalAddress } = getters.asset || {};
+  const { networkSelected } = rootState.web3;
   const bridgeContractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other);
 
-  if (address && externalAddress && bridgeContractAddress) {
+  if (address && networkSelected && externalAddress && bridgeContractAddress) {
     const registeredAsset = rootState.assets.registeredAssets[address];
 
     if (registeredAsset) {
-      const { kind, decimals } = registeredAsset;
+      const { kind, decimals: externalDecimals } = registeredAsset;
 
-      if (kind === BridgeRequestAssetKind.Sidechain) {
-        const value = await ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress);
-        const balance = FPNumber.fromCodecValue(value, decimals);
+      if (kind === EthAssetKind.Sidechain) {
+        const [lockedValue, bridgeValue] = await Promise.all([
+          ethBridgeApi.getLockedAssets(networkSelected as number, address),
+          ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress),
+        ]);
+        const balance = FPNumber.min(
+          FPNumber.fromCodecValue(lockedValue, decimals),
+          FPNumber.fromCodecValue(bridgeValue, externalDecimals)
+        );
         commit.setAssetLockedBalance(balance);
         return;
       }
@@ -241,10 +250,10 @@ async function updateEthLockedBalance(context: ActionContext<any, any>): Promise
 async function updateBridgeProxyLockedBalance(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, rootState } = bridgeActionContext(context);
   const { address, decimals } = getters.asset ?? {};
-  const { networkSelected, networkType } = rootState.web3;
+  const { networkSelected } = rootState.web3;
 
-  if (address && networkSelected && networkType) {
-    const bridgeApi = getBridgeApi(context) as typeof evmBridgeApi | typeof subBridgeApi;
+  if (address && networkSelected) {
+    const bridgeApi = getBridgeApi(context);
     const value = await bridgeApi.getLockedAssets(networkSelected as never, address);
     const balance = FPNumber.fromCodecValue(value, decimals);
     commit.setAssetLockedBalance(balance);
@@ -485,7 +494,7 @@ const actions = defineActions({
     const { dispatch } = bridgeActionContext(context);
     const historyData = bridgeDataToHistoryItem(context, playground);
     const bridgeApi = getBridgeApi(context);
-    const historyItem = bridgeApi.generateHistoryItem(historyData as any);
+    const historyItem = bridgeApi.generateHistoryItem(historyData as never);
 
     if (!historyItem) {
       throw new Error('[Bridge]: "generateHistoryItem" failed');
@@ -587,7 +596,7 @@ const actions = defineActions({
 
   async signEthBridgeOutgoingEvm(context, id: string): Promise<SignTxResult> {
     const { rootState, rootGetters } = bridgeActionContext(context);
-    const tx = ethBridgeApi.getHistory(id) as Nullable<BridgeHistory>;
+    const tx = ethBridgeApi.getHistory(id) as Nullable<EthHistory>;
 
     if (!tx?.hash) throw new Error('TX ID cannot be empty!');
     if (!tx.amount) throw new Error('TX amount cannot be empty!');
@@ -614,11 +623,11 @@ const actions = defineActions({
     const contractInstance = new ethers.Contract(contractAddress, contract.abi, signer);
     const method = isValOrXor
       ? 'mintTokensByPeers'
-      : request.currencyType === BridgeCurrencyType.TokenAddress
+      : request.currencyType === EthCurrencyType.TokenAddress
       ? 'receiveByEthereumAssetAddress'
       : 'receiveBySidechainAssetId';
     const methodArgs: Array<any> = [
-      isValOrXor || request.currencyType === BridgeCurrencyType.TokenAddress
+      isValOrXor || request.currencyType === EthCurrencyType.TokenAddress
         ? asset.externalAddress // address tokenAddress OR
         : asset.address, // bytes32 assetId
       new FPNumber(tx.amount, asset.externalDecimals).toCodecString(), // uint256 amount

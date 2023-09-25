@@ -73,7 +73,7 @@ const actions = defineActions({
   },
 
   /**
-   * Restore selected by user network & network type (EVMLegacy, EVM, Sub)
+   * Restore selected by user network & network type (Eth, EVM, Sub)
    */
   async restoreSelectedNetwork(context): Promise<void> {
     const { dispatch, state, getters } = web3ActionContext(context);
@@ -91,7 +91,7 @@ const actions = defineActions({
 
     await dispatch.selectExternalNetwork({
       id: state.ethBridgeEvmNetwork,
-      type: BridgeNetworkType.EvmLegacy,
+      type: BridgeNetworkType.Eth,
     });
   },
 

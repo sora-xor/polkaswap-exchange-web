@@ -490,8 +490,7 @@ export default class BridgeTransaction extends Mixins(
 
   get isEvmTxType(): boolean {
     return (
-      !!this.externalNetworkType &&
-      [BridgeNetworkType.EvmLegacy, BridgeNetworkType.Evm].includes(this.externalNetworkType)
+      !!this.externalNetworkType && [BridgeNetworkType.Eth, BridgeNetworkType.Evm].includes(this.externalNetworkType)
     );
   }
 

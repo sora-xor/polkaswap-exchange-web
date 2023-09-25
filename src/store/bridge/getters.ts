@@ -78,7 +78,7 @@ const getters = defineGetters<BridgeState>()({
   isEthBridge(...args): boolean {
     const { rootState } = bridgeGetterContext(args);
 
-    return rootState.web3.networkType === BridgeNetworkType.EvmLegacy;
+    return rootState.web3.networkType === BridgeNetworkType.Eth;
   },
   isEvmBridge(...args): boolean {
     const { rootState } = bridgeGetterContext(args);

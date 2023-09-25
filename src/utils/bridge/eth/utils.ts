@@ -1,11 +1,12 @@
-import { Operation, BridgeTxStatus } from '@sora-substrate/util';
+import { Operation } from '@sora-substrate/util';
+import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 
-import type { BridgeHistory, BridgeApprovedRequest } from '@sora-substrate/util';
+import type { EthHistory, EthApprovedRequest } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type { Subscription } from 'rxjs';
 
-export const isUnsignedFromPart = (tx: BridgeHistory): boolean => {
+export const isUnsignedFromPart = (tx: EthHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
     return !tx.blockId && !tx.txId;
   } else if (tx.type === Operation.EthBridgeIncoming) {
@@ -15,7 +16,7 @@ export const isUnsignedFromPart = (tx: BridgeHistory): boolean => {
   }
 };
 
-export const isUnsignedToPart = (tx: BridgeHistory): boolean => {
+export const isUnsignedToPart = (tx: EthHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
     return !tx.externalHash;
   } else if (tx.type === Operation.EthBridgeIncoming) {
@@ -25,12 +26,12 @@ export const isUnsignedToPart = (tx: BridgeHistory): boolean => {
   }
 };
 
-export const isUnsignedTx = (tx: BridgeHistory): boolean => {
+export const isUnsignedTx = (tx: EthHistory): boolean => {
   return isUnsignedFromPart(tx);
 };
 
-export const getTransaction = (id: string): BridgeHistory => {
-  const tx = ethBridgeApi.getHistory(id) as BridgeHistory;
+export const getTransaction = (id: string): EthHistory => {
+  const tx = ethBridgeApi.getHistory(id) as EthHistory;
 
   if (!tx) throw new Error(`[Bridge]: Transaction is not exists: ${id}`);
 
@@ -42,7 +43,7 @@ export const updateTransaction = async (id: string, params = {}) => {
   ethBridgeApi.saveHistory({ ...tx, ...params });
 };
 
-export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeApprovedRequest> => {
+export const waitForApprovedRequest = async (tx: EthHistory): Promise<EthApprovedRequest> => {
   if (!tx.hash) throw new Error(`[Bridge]: Tx hash cannot be empty`);
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} received`);
@@ -54,6 +55,7 @@ export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeA
       switch (status) {
         case BridgeTxStatus.Failed:
         case BridgeTxStatus.Frozen:
+        case BridgeTxStatus.Broken:
           reject(new Error('[Bridge]: Transaction was failed or canceled'));
           break;
         case BridgeTxStatus.Ready:
@@ -68,7 +70,7 @@ export const waitForApprovedRequest = async (tx: BridgeHistory): Promise<BridgeA
   return ethBridgeApi.getApprovedRequest(tx.hash as string);
 };
 
-export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash: string; blockId: string }> => {
+export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: string; blockId: string }> => {
   if (!tx.externalHash) throw new Error('[Bridge]: externalHash cannot be empty!');
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} received`);
@@ -81,6 +83,7 @@ export const waitForIncomingRequest = async (tx: BridgeHistory): Promise<{ hash:
         switch (request.status) {
           case BridgeTxStatus.Failed:
           case BridgeTxStatus.Frozen:
+          case BridgeTxStatus.Broken:
             reject(new Error('[Bridge]: Transaction was failed or canceled'));
             break;
           case BridgeTxStatus.Done:
