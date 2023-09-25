@@ -336,8 +336,20 @@ export default class BridgeTransaction extends Mixins(
     return this.nativeToken ? this.getFiatAmountByCodecString(this.txExternalNetworkFee, this.nativeToken) : null;
   }
 
+  get txId(): Nullable<string> {
+    return this.isSoraToEvm ? this.txSoraId : this.txExternalHash;
+  }
+
+  get txSoraId(): string {
+    return this.historyItem?.txId ?? '';
+  }
+
+  get txSoraBlockId(): string {
+    return this.historyItem?.blockId ?? '';
+  }
+
   get txSoraHash(): string {
-    return this.historyItem?.hash ?? '';
+    return this.historyItem?.hash || this.txSoraBlockId;
   }
 
   get txSoraHashFormatted(): string {
@@ -449,18 +461,6 @@ export default class BridgeTransaction extends Mixins(
     return this.copyTooltip(this.txExternalAccountPlaceholder);
   }
 
-  get txId(): Nullable<string> {
-    return this.isSoraToEvm ? this.soraTxId : this.txExternalHash;
-  }
-
-  get soraTxId(): Nullable<string> {
-    return this.historyItem?.txId;
-  }
-
-  get soraTxBlockId(): Nullable<string> {
-    return this.historyItem?.blockId;
-  }
-
   get isGreaterThanMaxAmount(): boolean {
     return this.txIsUnsigned && this.isGreaterThanOutgoingMaxAmount(this.amount, this.asset, this.isSoraToEvm);
   }
@@ -540,11 +540,11 @@ export default class BridgeTransaction extends Mixins(
       return [];
     }
     const baseLinks = getExplorerLinks(this.soraNetwork);
-    const txId = this.soraTxId || this.soraTxBlockId;
+    const txId = this.txSoraId || this.txSoraBlockId;
     if (!(baseLinks.length && txId)) {
       return [];
     }
-    if (!this.soraTxId) {
+    if (!this.txSoraId) {
       // txId is block
       return baseLinks.map(({ type, value }) => {
         const link = { type } as WALLET_CONSTS.ExplorerLink;
@@ -563,9 +563,9 @@ export default class BridgeTransaction extends Mixins(
           link.value = `${value}/transaction/${txId}`;
         } else if (type === WALLET_CONSTS.ExplorerType.Subscan) {
           link.value = `${value}/extrinsic/${txId}`;
-        } else if (this.soraTxBlockId) {
+        } else if (this.txSoraBlockId) {
           // ExplorerType.Polkadot
-          link.value = `${value}/${this.soraTxBlockId}`;
+          link.value = `${value}/${this.txSoraBlockId}`;
         }
         return link;
       })

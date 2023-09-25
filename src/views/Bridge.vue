@@ -40,7 +40,7 @@
         </generic-page-header>
         <s-float-input
           :value="amountSend"
-          :decimals="getDecimals(isSoraToEvm)"
+          :decimals="amountDecimals"
           :delimiters="delimiters"
           :max="MaxInputNumber"
           :disabled="!(areAccountsConnected && isAssetSelected)"
@@ -135,7 +135,7 @@
 
         <s-float-input
           :value="amountReceived"
-          :decimals="getDecimals(!isSoraToEvm)"
+          :decimals="amountDecimals"
           :delimiters="delimiters"
           :disabled="!(areAccountsConnected && isAssetSelected)"
           :max="MaxInputNumber"
@@ -573,8 +573,11 @@ export default class Bridge extends Mixins(
     return FPNumber.gte(fpAfterTransfer, fpFee);
   }
 
-  getDecimals(isSora = true): number | undefined {
-    return isSora ? this.asset?.decimals : this.asset?.externalDecimals;
+  get amountDecimals(): number {
+    const internal = this.asset?.decimals ?? FPNumber.DEFAULT_PRECISION;
+    const external = this.asset?.externalDecimals ?? FPNumber.DEFAULT_PRECISION;
+
+    return Math.min(internal, external);
   }
 
   private getBalance(isSora = true): Nullable<FPNumber> {
@@ -585,7 +588,7 @@ export default class Bridge extends Mixins(
     if (!balance) {
       return null;
     }
-    const decimals = this.getDecimals(isSora);
+    const decimals = isSora ? this.asset?.decimals : this.asset?.externalDecimals;
     return this.getFPNumberFromCodec(balance, decimals);
   }
 
