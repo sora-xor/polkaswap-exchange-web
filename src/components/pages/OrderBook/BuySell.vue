@@ -102,15 +102,7 @@ import { Components, LimitOrderSide } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, mutation, state } from '@/store/decorators';
 import { OrderBookTabs } from '@/types/tabs';
-import {
-  isMaxButtonAvailable,
-  getMaxValue,
-  hasInsufficientBalance,
-  hasInsufficientXorForFee,
-  asZeroValue,
-  getAssetBalance,
-  debouncedInputHandler,
-} from '@/utils';
+import { isMaxButtonAvailable, getMaxValue, getAssetBalance } from '@/utils';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
@@ -216,18 +208,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   get isMaxSwapAvailable(): boolean {
     if (!(this.baseAsset && this.quoteAsset)) return false;
 
-    return (
-      this.isLoggedIn &&
-      isMaxButtonAvailable(
-        this.areTokensSelected,
-        this.quoteAsset,
-        this.quoteValue,
-        this.networkFee,
-        this.xor,
-        false,
-        true
-      )
-    );
+    return this.isLoggedIn && isMaxButtonAvailable(this.quoteAsset, this.quoteValue, this.networkFee, this.xor, true);
   }
 
   handleTabClick(): void {}
