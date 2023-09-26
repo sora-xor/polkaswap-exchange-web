@@ -230,7 +230,7 @@ export enum Components {
   // Shared Input
   TokenInput = 'shared/Input/TokenInput',
   TokenSelectButton = 'shared/Input/TokenSelectButton',
-  TokenSelectDropdown = 'shared/Input/TokenSelectDropdown',
+  TokenSelectDropdown = 'shared/Input/TokenSelectDropdown', // Not used
   // Shared Dialogs
   ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
   NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',
