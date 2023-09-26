@@ -12,7 +12,7 @@
         <generic-page-header class="header--bridge" :title="t('bridge.title')" :tooltip="t('bridge.info')">
           <div class="bridge-header-buttons">
             <s-button
-              v-if="areNetworksConnected"
+              v-if="areAccountsConnected"
               class="el-button--history"
               type="action"
               icon="time-time-history-24"
@@ -40,10 +40,10 @@
         </generic-page-header>
         <s-float-input
           :value="amountSend"
-          :decimals="getDecimals(isSoraToEvm)"
+          :decimals="amountDecimals"
           :delimiters="delimiters"
           :max="MaxInputNumber"
-          :disabled="!areNetworksConnected || !isAssetSelected"
+          :disabled="!(areAccountsConnected && isAssetSelected)"
           class="s-input--token-value"
           data-test-name="bridgeFrom"
           has-locale-string
@@ -68,7 +68,7 @@
               />
             </div>
           </div>
-          <div slot="right" v-if="sender" class="s-flex el-buttons">
+          <div slot="right" v-if="sender || recipient" class="s-flex el-buttons">
             <s-button
               v-if="isMaxAvailable"
               class="el-button--max s-typography-button--small"
@@ -135,9 +135,9 @@
 
         <s-float-input
           :value="amountReceived"
-          :decimals="getDecimals(!isSoraToEvm)"
+          :decimals="amountDecimals"
           :delimiters="delimiters"
-          :disabled="!areNetworksConnected || !isAssetSelected"
+          :disabled="!(areAccountsConnected && isAssetSelected)"
           :max="MaxInputNumber"
           class="s-input--token-value"
           data-test-name="bridgeTo"
@@ -163,7 +163,7 @@
               />
             </div>
           </div>
-          <div slot="right" v-if="recipient && isAssetSelected" class="s-flex el-buttons">
+          <div slot="right" v-if="isAssetSelected" class="s-flex el-buttons">
             <token-select-button class="el-button--select-token" :token="asset" />
           </div>
           <template #bottom>
@@ -211,90 +211,102 @@
           v-if="!isValidNetwork"
           class="el-button--next s-typography-button--big"
           type="primary"
-          @click="updateNetworkProvided"
+          @click="changeEvmNetworkProvided"
         >
           {{ t('changeNetworkText') }}
         </s-button>
 
-        <s-button
-          v-else
-          class="el-button--next s-typography-button--large"
-          data-test-name="nextButton"
-          type="primary"
-          :disabled="isConfirmTxDisabled"
-          :loading="isConfirmTxLoading"
-          @click="handleConfirmButtonClick"
-        >
-          <template v-if="!isAssetSelected">
-            {{ t('buttons.chooseAToken') }}
-          </template>
-          <template v-else-if="!isRegisteredAsset">
-            {{ t('bridge.notRegisteredAsset', { assetSymbol }) }}
-          </template>
-          <template v-else-if="!areNetworksConnected">
-            {{ t('bridge.next') }}
-          </template>
-          <template v-else-if="isZeroAmountSend">
-            {{ t('buttons.enterAmount') }}
-          </template>
-          <template v-else-if="isZeroAmountReceived">
-            {{ t('swap.insufficientAmount', { tokenSymbol: assetSymbol }) }}
-          </template>
-          <template v-else-if="isInsufficientBalance">
-            {{ t('insufficientBalanceText', { tokenSymbol: assetSymbol }) }}
-          </template>
-          <template v-else-if="isInsufficientXorForFee">
-            {{ t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR }) }}
-          </template>
-          <template v-else-if="isInsufficientNativeTokenForFee">
-            {{ t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol }) }}
-          </template>
-          <template v-else-if="isInsufficientLiquidity">
-            {{ t('swap.insufficientLiquidity') }}
-          </template>
-          <template v-else>
-            {{ t('bridge.next') }}
-          </template>
-        </s-button>
-        <bridge-transaction-details
-          v-if="areNetworksConnected && !isZeroAmountReceived && isRegisteredAsset"
-          class="info-line-container"
-          :native-token="nativeToken"
-          :external-network-fee="formattedExternalNetworkFee"
-          :sora-network-fee="formattedSoraNetworkFee"
-          :network-name="networkName"
-        />
+        <template v-else-if="areAccountsConnected">
+          <s-button
+            class="el-button--next s-typography-button--large"
+            data-test-name="nextButton"
+            type="primary"
+            :disabled="isConfirmTxDisabled"
+            :loading="isConfirmTxLoading"
+            @click="handleConfirmButtonClick"
+          >
+            <template v-if="!isAssetSelected">
+              {{ t('buttons.chooseAToken') }}
+            </template>
+            <template v-else-if="!isRegisteredAsset">
+              {{ t('bridge.notRegisteredAsset', { assetSymbol }) }}
+            </template>
+            <template v-else-if="isZeroAmountSend">
+              {{ t('buttons.enterAmount') }}
+            </template>
+            <template v-else-if="isZeroAmountReceived">
+              {{ t('swap.insufficientAmount', { tokenSymbol: assetSymbol }) }}
+            </template>
+            <template v-else-if="isInsufficientBalance">
+              {{ t('insufficientBalanceText', { tokenSymbol: assetSymbol }) }}
+            </template>
+            <template v-else-if="isInsufficientXorForFee">
+              {{ t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR }) }}
+            </template>
+            <template v-else-if="isInsufficientNativeTokenForFee">
+              {{ t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol }) }}
+            </template>
+            <template v-else-if="isGreaterThanMaxAmount">
+              {{ t('exceededAmountText', { amount: t('maxAmountText') }) }}
+            </template>
+            <template v-else-if="isLowerThanMinAmount">
+              {{ t('exceededAmountText', { amount: t('minAmountText') }) }}
+            </template>
+            <template v-else>
+              {{ t('bridge.next') }}
+            </template>
+          </s-button>
+
+          <bridge-limit-card
+            v-if="!isInsufficientBalance && (isLowerThanMinAmount || isGreaterThanMaxAmount)"
+            class="bridge-limit-card"
+            :max="isGreaterThanMaxAmount"
+            :amount="(isGreaterThanMaxAmount ? outgoingMaxAmount : incomingMinAmount).toLocaleString()"
+            :symbol="asset.symbol"
+          />
+
+          <bridge-transaction-details
+            v-if="!isZeroAmountReceived && isRegisteredAsset"
+            class="info-line-container"
+            :native-token="nativeToken"
+            :external-network-fee="formattedExternalNetworkFee"
+            :sora-network-fee="formattedSoraNetworkFee"
+            :network-name="networkName"
+          />
+        </template>
       </s-card>
-      <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-      <bridge-select-account />
-      <bridge-select-network />
-      <confirm-bridge-transaction-dialog
-        :visible.sync="showConfirmTransactionDialog"
-        :is-sora-to-evm="isSoraToEvm"
-        :asset="asset"
-        :amount-send="amountSend"
-        :amount-received="amountReceived"
-        :network="networkSelected"
-        :network-type="networkType"
-        :native-token="nativeToken"
-        :external-network-fee="formattedExternalNetworkFee"
-        :sora-network-fee="formattedSoraNetworkFee"
-        @confirm="confirmTransaction"
-      />
-      <network-fee-warning-dialog
-        :visible.sync="showWarningFeeDialog"
-        :fee="formatStringValue(formattedSoraNetworkFee)"
-        @confirm="confirmNetworkFeeWariningDialog"
-      />
-      <network-fee-warning-dialog
-        :visible.sync="showWarningExternalFeeDialog"
-        :fee="formatStringValue(formattedExternalNetworkFee)"
-        :symbol="nativeTokenSymbol"
-        :payoff="false"
-        @confirm="confirmExternalNetworkFeeWarningDialog"
-      />
     </s-form>
-    <div v-if="!areNetworksConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
+
+    <div v-if="!areAccountsConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
+
+    <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
+    <bridge-select-account />
+    <bridge-select-network />
+    <confirm-bridge-transaction-dialog
+      :visible.sync="showConfirmTransactionDialog"
+      :is-sora-to-evm="isSoraToEvm"
+      :asset="asset"
+      :amount-send="amountSend"
+      :amount-received="amountReceived"
+      :network="networkSelected"
+      :network-type="networkType"
+      :native-token="nativeToken"
+      :external-network-fee="formattedExternalNetworkFee"
+      :sora-network-fee="formattedSoraNetworkFee"
+      @confirm="confirmTransaction"
+    />
+    <network-fee-warning-dialog
+      :visible.sync="showWarningFeeDialog"
+      :fee="formatStringValue(formattedSoraNetworkFee)"
+      @confirm="confirmNetworkFeeWariningDialog"
+    />
+    <network-fee-warning-dialog
+      :visible.sync="showWarningExternalFeeDialog"
+      :fee="formatStringValue(formattedExternalNetworkFee)"
+      :symbol="nativeTokenSymbol"
+      :payoff="false"
+      @confirm="confirmExternalNetworkFeeWarningDialog"
+    />
   </div>
 </template>
 
@@ -317,7 +329,7 @@ import {
   hasInsufficientBalance,
   hasInsufficientXorForFee,
   hasInsufficientNativeTokenForFee,
-  getMaxValue,
+  getMaxBalance,
   getAssetBalance,
   asZeroValue,
   delay,
@@ -332,6 +344,7 @@ import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/
     BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
     BridgeSelectAccount: lazyComponent(Components.BridgeSelectAccount),
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
+    BridgeLimitCard: lazyComponent(Components.BridgeLimitCard),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
@@ -356,13 +369,12 @@ export default class Bridge extends Mixins(
   readonly KnownSymbols = KnownSymbols;
   readonly FocusedField = FocusedField;
 
-  @state.bridge.externalNetworkFeeFetching private externalNetworkFeeFetching!: boolean;
-  @state.bridge.externalBalancesFetching private externalBalancesFetching!: boolean;
-  @state.bridge.assetLockedBalanceFetching private assetLockedBalanceFetching!: boolean;
+  @state.bridge.balancesFetching private balancesFetching!: boolean;
+  @state.bridge.feesAndLockedFundsFetching private feesAndLockedFundsFetching!: boolean;
+  @state.assets.registeredAssetsFetching private registeredAssetsFetching!: boolean;
   @state.bridge.amountSend amountSend!: string;
   @state.bridge.amountReceived amountReceived!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
-  @state.assets.registeredAssetsFetching registeredAssetsFetching!: boolean;
 
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
   @getter.bridge.operation private operation!: Operation;
@@ -371,6 +383,7 @@ export default class Bridge extends Mixins(
   @mutation.bridge.setSoraToEvm private setSoraToEvm!: (value: boolean) => void;
   @mutation.bridge.setHistoryId private setHistoryId!: (id?: string) => void;
   @mutation.bridge.setFocusedField setFocusedField!: (field: FocusedField) => void;
+  @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
   @action.bridge.setSendedAmount setSendedAmount!: (value?: string) => void;
   @action.bridge.setReceivedAmount setReceivedAmount!: (value?: string) => void;
@@ -400,7 +413,7 @@ export default class Bridge extends Mixins(
     return await this.waitOnExternalFeeWarningConfirmation();
   }
 
-  get areNetworksConnected(): boolean {
+  get areAccountsConnected(): boolean {
     return !!this.sender && !!this.recipient;
   }
 
@@ -442,35 +455,31 @@ export default class Bridge extends Mixins(
     if (!(this.asset && this.isRegisteredAsset)) return ZeroStringValue;
 
     const fee = this.isSoraToEvm ? this.soraNetworkFee : this.externalNetworkFee;
-    const maxBalance = getMaxValue(this.asset, fee, {
+    const maxBalance = getMaxBalance(this.asset, fee, {
       isExternalBalance: !this.isSoraToEvm,
       isExternalNative: this.isNativeTokenSelected,
     });
 
-    if (this.assetLockedBalance && this.isSoraToEvm) {
-      const fpBalance = this.getFPNumber(maxBalance, this.asset.decimals);
-      const fpLocked = this.getFPNumberFromCodec(this.assetLockedBalance, this.asset.externalDecimals);
-
-      if (FPNumber.gt(fpBalance, fpLocked)) return fpLocked.toString();
+    if (this.isSoraToEvm && this.outgoingMaxAmount) {
+      if (FPNumber.gt(maxBalance, this.outgoingMaxAmount)) return this.outgoingMaxAmount.toString();
     }
 
-    return maxBalance;
+    return maxBalance.toString();
   }
 
   get isMaxAvailable(): boolean {
-    if (!(this.asset && this.isRegisteredAsset && this.areNetworksConnected && !asZeroValue(this.maxValue)))
+    if (!(this.asset && this.isRegisteredAsset && this.areAccountsConnected && !asZeroValue(this.maxValue)))
       return false;
 
     return this.maxValue !== this.amountSend;
   }
 
-  get isInsufficientLiquidity(): boolean {
-    if (!(this.asset && this.assetLockedBalance && this.isSoraToEvm)) return false;
+  get isGreaterThanMaxAmount(): boolean {
+    return this.isGreaterThanOutgoingMaxAmount(this.amountSend, this.asset, this.isSoraToEvm, this.isRegisteredAsset);
+  }
 
-    const fpAmount = new FPNumber(this.amountSend, this.asset.decimals);
-    const fpLocked = FPNumber.fromCodecValue(this.assetLockedBalance, this.asset.externalDecimals);
-
-    return FPNumber.gt(fpAmount, fpLocked);
+  get isLowerThanMinAmount(): boolean {
+    return this.isLowerThanIncomingMinAmount(this.amountSend, this.asset, this.isSoraToEvm, this.isRegisteredAsset);
   }
 
   get isInsufficientXorForFee(): boolean {
@@ -513,24 +522,24 @@ export default class Bridge extends Mixins(
     return (
       !this.isAssetSelected ||
       !this.isRegisteredAsset ||
-      !this.areNetworksConnected ||
+      !this.areAccountsConnected ||
       !this.isValidNetwork ||
       this.isZeroAmountSend ||
       this.isZeroAmountReceived ||
       this.isInsufficientXorForFee ||
       this.isInsufficientNativeTokenForFee ||
       this.isInsufficientBalance ||
-      this.isInsufficientLiquidity
+      this.isGreaterThanMaxAmount ||
+      this.isLowerThanMinAmount
     );
   }
 
   get isConfirmTxLoading(): boolean {
     return (
       this.isSelectAssetLoading ||
-      this.externalNetworkFeeFetching ||
-      this.externalBalancesFetching ||
-      this.registeredAssetsFetching ||
-      this.assetLockedBalanceFetching
+      this.balancesFetching ||
+      this.feesAndLockedFundsFetching ||
+      this.registeredAssetsFetching
     );
   }
 
@@ -564,8 +573,11 @@ export default class Bridge extends Mixins(
     return FPNumber.gte(fpAfterTransfer, fpFee);
   }
 
-  getDecimals(isSora = true): number | undefined {
-    return isSora ? this.asset?.decimals : this.asset?.externalDecimals;
+  get amountDecimals(): number {
+    const internal = this.asset?.decimals ?? FPNumber.DEFAULT_PRECISION;
+    const external = this.asset?.externalDecimals ?? FPNumber.DEFAULT_PRECISION;
+
+    return Math.min(internal, external);
   }
 
   private getBalance(isSora = true): Nullable<FPNumber> {
@@ -576,7 +588,7 @@ export default class Bridge extends Mixins(
     if (!balance) {
       return null;
     }
-    const decimals = this.getDecimals(isSora);
+    const decimals = isSora ? this.asset?.decimals : this.asset?.externalDecimals;
     return this.getFPNumberFromCodec(balance, decimals);
   }
 
@@ -585,14 +597,16 @@ export default class Bridge extends Mixins(
   }
 
   async created(): Promise<void> {
-    const { address, amount, isIncoming } = this.$route.params;
-    if (address) {
-      this.setAssetAddress(address);
-    }
-    if (isIncoming) {
-      this.setSoraToEvm(false);
-    }
-    this.setSendedAmount(amount);
+    await this.withParentLoading(async () => {
+      const { address, amount, isIncoming } = this.$route.params;
+      this.setSendedAmount(amount);
+      if (isIncoming) {
+        this.setSoraToEvm(false);
+      }
+      if (address) {
+        this.updateAssetAddress(address);
+      }
+    });
   }
 
   getBridgeItemTitle(isSoraNetwork = false): string {
@@ -634,10 +648,6 @@ export default class Bridge extends Mixins(
     this.showConfirmTransactionDialog = true;
   }
 
-  handleViewTransactionsHistory(): void {
-    router.push({ name: PageNames.BridgeTransactionsHistory });
-  }
-
   handleChangeNetwork(): void {
     this.setSelectNetworkDialogVisibility(true);
   }
@@ -649,8 +659,12 @@ export default class Bridge extends Mixins(
   async selectAsset(selectedAsset?: RegisteredAccountAsset): Promise<void> {
     if (!selectedAsset) return;
 
+    await this.updateAssetAddress(selectedAsset.address);
+  }
+
+  private async updateAssetAddress(address: string): Promise<void> {
     await this.withSelectAssetLoading(async () => {
-      await this.setAssetAddress(selectedAsset.address);
+      await this.setAssetAddress(address);
     });
   }
 
@@ -772,6 +786,10 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     font-size: var(--s-font-size-mini);
     line-height: var(--s-line-height-big);
     color: var(--s-color-base-content-secondary);
+  }
+
+  &-limit-card {
+    margin-top: $inner-spacing-medium;
   }
 }
 </style>

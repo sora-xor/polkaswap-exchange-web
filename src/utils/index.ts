@@ -66,7 +66,7 @@ export const isMaxButtonAvailable = (
   return !FPNumber.eq(fpMaxBalance, fpAmount) && !hasInsufficientXorForFee(xorAsset, fee, isXorOutputSwap);
 };
 
-const getMaxBalance = (
+export const getMaxBalance = (
   asset: AssetWithBalance,
   fee: CodecString,
   { isExternalBalance = false, isExternalNative = false, isBondedBalance = false } = {}

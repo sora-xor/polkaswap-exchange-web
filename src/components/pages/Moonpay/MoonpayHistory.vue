@@ -84,7 +84,7 @@ import ethersUtil from '../../../utils/ethers-util';
 import { MoonpayTransactionStatus } from '../../../utils/moonpay';
 
 import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '../../../utils/moonpay';
-import type { BridgeHistory } from '@sora-substrate/util';
+import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 const HistoryView = 'history';
@@ -135,7 +135,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
           }
         },
         onNetworkChange: (networkHex: string) => {
-          this.connectExternalNetwork(networkHex);
+          this.updateProvidedEvmNetwork(networkHex);
         },
         onDisconnect: () => {
           this.resetProvidedEvmNetwork();
@@ -209,7 +209,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
     return `${this.selectedItem.returnUrl}?${query}`;
   }
 
-  get bridgeTxToSora(): Nullable<BridgeHistory> {
+  get bridgeTxToSora(): Nullable<EthHistory> {
     if (!this.selectedItem.id) return undefined;
 
     return this.getBridgeHistoryItemByMoonpayId(this.selectedItem.id);
@@ -291,7 +291,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
     if (!this.selectedItem.id) return;
 
     if (!this.isValidNetwork) {
-      this.updateNetworkProvided();
+      this.changeEvmNetworkProvided();
     } else if (this.bridgeTxToSora?.id) {
       await this.prepareEvmNetwork(); // MoonpayBridgeInitMixin
       await this.showHistory(this.bridgeTxToSora.id); // MoonpayBridgeInitMixin

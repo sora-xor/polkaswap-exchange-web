@@ -13,8 +13,9 @@ import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
 import { getTransaction, waitForApprovedRequest, waitForIncomingRequest } from '@/utils/bridge/eth/utils';
 
-import type { BridgeHistory, IBridgeTransaction } from '@sora-substrate/util';
+import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
@@ -24,12 +25,12 @@ type EthBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeReducerOptio
   signExternalIncoming: SignExternal;
 };
 
-export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
+export class EthBridgeReducer extends BridgeReducer<EthHistory> {
   protected readonly getBridgeHistoryInstance!: GetBridgeHistoryInstance<EthBridgeHistory>;
   protected readonly signExternalOutgoing!: SignExternal;
   protected readonly signExternalIncoming!: SignExternal;
 
-  constructor(options: EthBridgeReducerOptions<BridgeHistory>) {
+  constructor(options: EthBridgeReducerOptions<EthHistory>) {
     super(options);
 
     this.getBridgeHistoryInstance = options.getBridgeHistoryInstance;
@@ -53,7 +54,7 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
       );
     }
 
-    // In BridgeHistory 'blockHeight' will store evm block number
+    // In EthHistory 'blockHeight' will store evm block number
     this.updateTransactionParams(id, {
       externalNetworkFee: fee,
       externalBlockHeight: blockNumber,
@@ -97,7 +98,7 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
 }
 
 export class EthBridgeOutgoingReducer extends EthBridgeReducer {
-  async changeState(transaction: BridgeHistory): Promise<void> {
+  async changeState(transaction: EthHistory): Promise<void> {
     if (!transaction.id) throw new Error('[Bridge]: TX ID cannot be empty');
 
     switch (transaction.transactionState) {
@@ -205,7 +206,7 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
 }
 
 export class EthBridgeIncomingReducer extends EthBridgeReducer {
-  async changeState(transaction: BridgeHistory): Promise<void> {
+  async changeState(transaction: EthHistory): Promise<void> {
     if (!transaction.id) throw new Error('[Bridge]: TX ID cannot be empty');
 
     switch (transaction.transactionState) {

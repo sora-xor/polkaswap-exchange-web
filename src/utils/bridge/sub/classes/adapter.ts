@@ -34,7 +34,7 @@ export class SubAdapter {
   }
 
   get connected(): boolean {
-    return this.connection.opened;
+    return !!this.api?.isConnected;
   }
 
   public setEndpoint(endpoint: string): void {
@@ -44,6 +44,7 @@ export class SubAdapter {
   public async connect(): Promise<void> {
     if (!this.connected && this.endpoint) {
       await this.connection.open(this.endpoint);
+      await this.api.isReady;
     }
   }
 
@@ -53,8 +54,12 @@ export class SubAdapter {
     }
   }
 
+  public getSoraParachainNetwork(): SubNetwork {
+    return subBridgeApi.getSoraParachain(this.subNetwork);
+  }
+
   public getSoraParachainId(): number | undefined {
-    const soraParachain = subBridgeApi.getSoraParachain(this.subNetwork);
+    const soraParachain = this.getSoraParachainNetwork();
     const soraParachainId = subBridgeApi.parachainIds[soraParachain];
 
     return soraParachainId;
@@ -63,6 +68,8 @@ export class SubAdapter {
   public async getBlockNumber(): Promise<number> {
     if (!this.connected) return 0;
 
+    await this.api.isReady;
+
     const result = await this.api.query.system.number();
 
     return result.toNumber();
@@ -70,6 +77,8 @@ export class SubAdapter {
 
   protected async getAccountBalance(accountAddress: string): Promise<CodecString> {
     if (!(this.connected && accountAddress)) return ZeroStringValue;
+
+    await this.api.isReady;
 
     const accountInfo = await this.api.query.system.account(accountAddress);
     const accountBalance = formatBalance(accountInfo.data);
@@ -100,9 +109,13 @@ export class SubAdapter {
   }
 
   /* [Substrate 5] Runtime call transactionPaymentApi */
-  public async getNetworkFee(): Promise<CodecString> {
+  public async getNetworkFee(asset: RegisteredAsset): Promise<CodecString> {
+    if (!this.connected) return ZeroStringValue;
+
+    await this.api.isReady;
+
     const decimals = this.api.registry.chainDecimals[0];
-    const tx = this.getTransferExtrinsic({} as RegisteredAsset, '', ZeroStringValue);
+    const tx = this.getTransferExtrinsic(asset, '', ZeroStringValue);
     const res = await tx.paymentInfo('');
 
     return new FPNumber(res.partialFee, decimals).toCodecString();
@@ -162,9 +175,9 @@ class KusamaAdapter extends SubAdapter {
   }
 
   /* Throws error until Substrate 5 migration */
-  public async getNetworkFee(): Promise<CodecString> {
+  public async getNetworkFee(asset: RegisteredAsset): Promise<CodecString> {
     try {
-      return await super.getNetworkFee();
+      return await super.getNetworkFee(asset);
     } catch {
       // Hardcoded value for Kusama - 0.0007 KSM
       return '700000000';
@@ -189,7 +202,15 @@ class KusamaAdapter extends SubAdapter {
   }
 }
 
-class SubConnector {
+export class SubNetworksConnector {
+  public network!: SubNetwork;
+  public parachainNetwork!: SubNetwork;
+  public networkAdapter!: SubAdapter;
+  public parachainAdapter!: SubAdapter;
+  public parachainId!: number;
+
+  public static endpoints: SubNetworkApps = {};
+
   public readonly adapters = {
     [SubNetwork.Rococo]: () => new KusamaAdapter(SubNetwork.Rococo),
     [SubNetwork.Kusama]: () => new KusamaAdapter(SubNetwork.Kusama),
@@ -197,19 +218,14 @@ class SubConnector {
     [SubNetwork.KusamaSora]: () => new SubAdapter(SubNetwork.KusamaSora),
   };
 
-  public endpoints: SubNetworkApps = {};
-
-  /** Adapter for Substrate network. Used for network selected in app */
-  public networkAdapter!: SubAdapter;
-
   public getAdapterForNetwork(network: SubNetwork): SubAdapter {
     if (!(network in this.adapters)) {
       throw new Error(`[${this.constructor.name}] Adapter for "${network}" network not implemented`);
     }
-    if (!(network in this.endpoints)) {
+    if (!(network in SubNetworksConnector.endpoints)) {
       throw new Error(`[${this.constructor.name}] Endpoint for "${network}" network is not defined`);
     }
-    const endpoint = this.endpoints[network];
+    const endpoint = SubNetworksConnector.endpoints[network];
     const adapter = this.adapters[network]();
 
     adapter.setEndpoint(endpoint);
@@ -217,24 +233,39 @@ class SubConnector {
     return adapter;
   }
 
-  /**
-   * Open main connection with Substrate network
-   */
-  public async open(network: SubNetwork): Promise<void> {
-    // stop current adapter connection
-    await this.stop();
-    // set adapter for network arg
-    this.networkAdapter = this.getAdapterForNetwork(network);
-    // open adapter connection
-    await this.networkAdapter.connect();
+  public async init(network: SubNetwork): Promise<void> {
+    this.network = network;
+    this.networkAdapter = this.getAdapterForNetwork(this.network);
+    this.parachainNetwork = this.networkAdapter.getSoraParachainNetwork();
+    this.parachainAdapter = this.getAdapterForNetwork(this.parachainNetwork);
+    this.parachainId = this.parachainAdapter.getSoraParachainId() as number;
   }
 
   /**
-   * Close main connection to selected Substrate network
+   * Open main connection with Substrate network & Sora parachain
+   */
+  public async open(network: SubNetwork): Promise<void> {
+    // stop current connections
+    await this.stop();
+    // set adapter for network arg
+    await this.init(network);
+    // open adapters connections
+    await this.start();
+  }
+
+  /**
+   * Connect to Substrate network & Sora parachain
+   */
+  public async start(): Promise<void> {
+    await Promise.all([this.networkAdapter.connect(), this.parachainAdapter.connect()]);
+  }
+
+  /**
+   * Close connections to Substrate network & Sora parachain
    */
   public async stop(): Promise<void> {
-    await this.networkAdapter?.stop();
+    await Promise.all([this.networkAdapter?.stop(), this.parachainAdapter?.stop()]);
   }
 }
 
-export const subConnector = new SubConnector();
+export const subBridgeConnector = new SubNetworksConnector();

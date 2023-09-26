@@ -42,7 +42,7 @@ import { Components, PageNames } from '../consts';
 import { goTo, lazyComponent } from '../router';
 import { mutation, state, getter } from '../store/decorators';
 
-import type { BridgeHistory } from '@sora-substrate/util';
+import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 @Component({
@@ -58,7 +58,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
   },
 })
 export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, WalletConnectMixin) {
-  @state.moonpay.bridgeTransactionData private bridgeTransactionData!: Nullable<BridgeHistory>;
+  @state.moonpay.bridgeTransactionData private bridgeTransactionData!: Nullable<EthHistory>;
   @state.moonpay.startBridgeButtonVisibility private startBridgeButtonVisibility!: boolean;
 
   @getter.libraryTheme libraryTheme!: Theme;

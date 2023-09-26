@@ -1,4 +1,4 @@
-import { Operation, isBridgeOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/util';
+import { Operation, isEthOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/util';
 import { api as soraApi } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
@@ -8,7 +8,8 @@ import { isUnsignedTx as isUnsignedSubTx } from '@/utils/bridge/sub/utils';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { ApiPromise } from '@polkadot/api';
-import type { IBridgeTransaction, BridgeHistory } from '@sora-substrate/util';
+import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
@@ -106,7 +107,7 @@ export const isOutgoingTransaction = (transaction: Nullable<IBridgeTransaction>)
 export const isUnsignedTx = (transaction: Nullable<IBridgeTransaction>): boolean => {
   if (!transaction?.type) return true;
 
-  if (isBridgeOperation(transaction.type)) return isUnsignedEthTx(transaction as BridgeHistory);
+  if (isEthOperation(transaction.type)) return isUnsignedEthTx(transaction as EthHistory);
   if (isEvmOperation(transaction.type)) return isUnsignedEvmTx(transaction as EvmHistory);
   if (isSubstrateOperation(transaction.type)) return isUnsignedSubTx(transaction as SubHistory);
 

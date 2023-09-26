@@ -1,5 +1,5 @@
-import { BridgeTxStatus, Operation } from '@sora-substrate/util';
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { Operation } from '@sora-substrate/util';
+import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import {
   api,
   historyElementsFilter,
@@ -19,8 +19,9 @@ import { getEvmTransactionRecieptByHash, isOutgoingTransaction } from '@/utils/b
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { BridgeHistory, NetworkFeesObject } from '@sora-substrate/util';
+import type { NetworkFeesObject } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type { ActionContext } from 'vuex';
 
 export default class EtherscanHistoryProvider extends EtherscanProvider {
@@ -44,7 +45,7 @@ const BRIDGE_INTERFACE = new ethers.Interface([
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
-const isLocalHistoryItem = (item: BridgeHistory, txId: string, isOutgoing: boolean, requestHash: string) => {
+const isLocalHistoryItem = (item: EthHistory, txId: string, isOutgoing: boolean, requestHash: string) => {
   if (item.txId === txId) return true;
 
   return isOutgoing ? item.hash === requestHash : item.externalHash === requestHash;
@@ -92,7 +93,7 @@ const getTransactionState = (isOutgoing: boolean, soraPartCompleted: boolean, ex
   }
 };
 
-const hasFinishedState = (item: Nullable<BridgeHistory>) => {
+const hasFinishedState = (item: Nullable<EthHistory>) => {
   if (!item) return false;
 
   const isOutgoing = isOutgoingTransaction(item);
@@ -294,7 +295,7 @@ export class EthBridgeHistory {
 
     if (!historyElements.length) return;
 
-    const currentHistory = ethBridgeApi.historyList as BridgeHistory[];
+    const currentHistory = ethBridgeApi.historyList as EthHistory[];
 
     const { externalNetwork } = this;
 
@@ -307,7 +308,7 @@ export class EthBridgeHistory {
       const { id: txId, blockHash: blockId, blockHeight, data: historyElementData } = historyElement;
       const { requestHash, amount, assetId: assetAddress, sidechainAddress } = historyElementData as HistoryElementData;
 
-      const localHistoryItem = currentHistory.find((item: BridgeHistory) =>
+      const localHistoryItem = currentHistory.find((item: EthHistory) =>
         isLocalHistoryItem(item, txId, isOutgoing, requestHash)
       );
 
@@ -354,16 +355,16 @@ export class EthBridgeHistory {
         externalBlockId,
         externalBlockHeight,
         externalNetwork,
-        externalNetworkType: BridgeNetworkType.EvmLegacy,
+        externalNetworkType: BridgeNetworkType.Eth,
         externalNetworkFee,
         to,
       };
 
       // update or create local history item
       if (localHistoryItem) {
-        ethBridgeApi.saveHistory({ ...localHistoryItem, ...historyItemData } as BridgeHistory);
+        ethBridgeApi.saveHistory({ ...localHistoryItem, ...historyItemData } as EthHistory);
       } else {
-        ethBridgeApi.generateHistoryItem(historyItemData as BridgeHistory);
+        ethBridgeApi.generateHistoryItem(historyItemData as EthHistory);
       }
 
       await updateCallback?.();
@@ -395,7 +396,7 @@ export const updateEthBridgeHistory =
         bridge: { inProgressIds },
       } = rootState;
 
-      const networkData = rootGetters.web3.availableNetworks[BridgeNetworkType.EvmLegacy][ethBridgeEvmNetwork];
+      const networkData = rootGetters.web3.availableNetworks[BridgeNetworkType.Eth][ethBridgeEvmNetwork];
 
       if (!networkData) {
         throw new Error(
