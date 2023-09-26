@@ -12,16 +12,16 @@
     </template>
 
     <template #types>
-      <token-select-dropdown
+      <token-select-button
+        :icon="selectTokenIcon"
         :token="token"
-        :tokens="tokens"
-        :disabled="parentLoading || loading"
-        @select="changeToken"
+        :tabindex="tokenTabIndex"
+        @click.stop="handleSelectToken"
       />
     </template>
 
     <chart-skeleton
-      :loading="parentLoading || loading"
+      :loading="areActionsDisabled"
       :is-empty="data.length === 0"
       :is-error="isFetchingError"
       @retry="updateData"
@@ -32,6 +32,7 @@
       <price-change :value="priceChange" />
       <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
     </chart-skeleton>
+    <select-token disabled-custom :visible.sync="showSelectTokenDialog" :asset="token" @select="changeToken" />
   </stats-card>
 </template>
 
@@ -119,7 +120,8 @@ const parse = (node: AssetSnapshotEntity): ChartData => {
     PriceChange: lazyComponent(Components.PriceChange),
     StatsCard: lazyComponent(Components.StatsCard),
     StatsFilter: lazyComponent(Components.StatsFilter),
-    TokenSelectDropdown: lazyComponent(Components.TokenSelectDropdown),
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    SelectToken: lazyComponent(Components.SelectToken),
     FormattedAmount: components.FormattedAmount,
   },
 })
@@ -131,10 +133,23 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
 
   filter: SnapshotFilter = ASSET_SUPPLY_LINE_FILTERS[0];
   token = XOR;
+  showSelectTokenDialog = false;
 
   data: readonly ChartData[] = [];
 
   isFetchingError = false;
+
+  get areActionsDisabled(): boolean {
+    return this.parentLoading || this.loading;
+  }
+
+  get selectTokenIcon(): Nullable<string> {
+    return !this.areActionsDisabled ? 'chevron-down-rounded-16' : undefined;
+  }
+
+  get tokenTabIndex(): number {
+    return !this.areActionsDisabled ? 0 : -1;
+  }
 
   get firstValue(): FPNumber {
     return new FPNumber(first(this.data)?.value ?? 0);
@@ -273,6 +288,10 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
         selectedMode: false,
       },
     };
+  }
+
+  handleSelectToken(): void {
+    this.showSelectTokenDialog = true;
   }
 
   changeFilter(filter: SnapshotFilter): void {
