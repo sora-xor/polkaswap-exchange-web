@@ -648,10 +648,6 @@ export default class Bridge extends Mixins(
     this.showConfirmTransactionDialog = true;
   }
 
-  handleViewTransactionsHistory(): void {
-    router.push({ name: PageNames.BridgeTransactionsHistory });
-  }
-
   handleChangeNetwork(): void {
     this.setSelectNetworkDialogVisibility(true);
   }

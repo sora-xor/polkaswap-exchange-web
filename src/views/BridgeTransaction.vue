@@ -21,7 +21,7 @@
             :value="formattedAmount"
             :asset-symbol="assetSymbol"
           >
-            <i :class="firstNetworkIcon" />
+            <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : externalNetworkId)}`" />
           </formatted-amount>
           <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
           <formatted-amount
@@ -30,7 +30,7 @@
             :value="formattedAmountReceived"
             :asset-symbol="assetSymbol"
           >
-            <i :class="secondNetworkIcon" />
+            <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? externalNetworkId : 0)}`" />
           </formatted-amount>
         </h5>
       </div>
@@ -302,10 +302,6 @@ export default class BridgeTransaction extends Mixins(
     }
   }
 
-  get evmIcon(): string {
-    return this.getNetworkIcon(this.externalNetworkId);
-  }
-
   get txSoraNetworkFee(): CodecString {
     return this.historyItem?.soraNetworkFee ?? this.soraNetworkFee;
   }
@@ -349,7 +345,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txSoraHash(): string {
-    return this.historyItem?.hash || this.txSoraBlockId;
+    return this.historyItem?.hash ?? this.txSoraBlockId;
   }
 
   get txSoraHashFormatted(): string {
@@ -515,14 +511,6 @@ export default class BridgeTransaction extends Mixins(
     );
   }
 
-  get firstNetworkIcon(): string {
-    return `network-icon network-icon--${this.isSoraToEvm ? 'sora' : this.evmIcon}`;
-  }
-
-  get secondNetworkIcon(): string {
-    return `network-icon network-icon--${this.isSoraToEvm ? this.evmIcon : 'sora'}`;
-  }
-
   get hashCopyTooltip(): string {
     return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
   }
@@ -605,14 +593,6 @@ export default class BridgeTransaction extends Mixins(
       this.txExternalBlockId,
       this.EvmLinkType.Transaction
     );
-  }
-
-  handleViewTransactionsHistory(): void {
-    router.push({ name: PageNames.BridgeTransactionsHistory });
-  }
-
-  navigateToBridge(): void {
-    router.push({ name: PageNames.Bridge });
   }
 
   async created(): Promise<void> {

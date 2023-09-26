@@ -3,6 +3,8 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import { PageNames } from '@/consts';
+import router from '@/router';
 import { getter, state } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';
@@ -64,5 +66,13 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     const fpAmount = new FPNumber(amount);
 
     return FPNumber.lt(fpAmount, this.incomingMinAmount);
+  }
+
+  handleViewTransactionsHistory(): void {
+    router.push({ name: PageNames.BridgeTransactionsHistory });
+  }
+
+  navigateToBridge(): void {
+    router.push({ name: PageNames.Bridge });
   }
 }

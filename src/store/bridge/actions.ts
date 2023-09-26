@@ -108,8 +108,6 @@ function bridgeDataToHistoryItem(
     assetAddress: (params as any).assetAddress ?? getters.asset?.address,
     startTime: date,
     endTime: date,
-    status: '',
-    hash: '',
     transactionState,
     soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
     externalNetworkFee: (params as any).externalNetworkFee,
@@ -219,7 +217,7 @@ async function updateEthHistory(context: ActionContext<any, any>, clearHistory =
 
 async function updateEthLockedBalance(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, rootGetters, rootState } = bridgeActionContext(context);
-  const { address, decimals, externalAddress } = getters.asset || {};
+  const { address, decimals, externalAddress } = getters.asset ?? {};
   const { networkSelected } = rootState.web3;
   const bridgeContractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other);
 
