@@ -35,7 +35,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   }
 
   get outgoingMaxAmount(): FPNumber | null {
-    const filtered = [this.assetLockedBalance, this.outgoingMaxLimit].filter((item) => item !== null) as FPNumber[];
+    const filtered = [this.assetLockedBalance, this.outgoingMaxLimit].filter((item) => !!item) as FPNumber[];
 
     if (!filtered.length) return null;
 
