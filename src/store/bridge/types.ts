@@ -1,4 +1,5 @@
-import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
+import type { FPNumber, CodecString, IBridgeTransaction } from '@sora-substrate/util';
+import type { Subscription } from 'rxjs';
 
 export enum FocusedField {
   Sended = 'Sended',
@@ -10,16 +11,19 @@ export type BridgeState = {
   assetAddress: string;
   assetSenderBalance: Nullable<CodecString>;
   assetRecipientBalance: Nullable<CodecString>;
-  assetLockedBalance: Nullable<CodecString>;
-  assetLockedBalanceFetching: boolean;
+  assetLockedBalance: Nullable<FPNumber>;
+  incomingMinLimit: FPNumber;
+  outgoingMaxLimit: Nullable<FPNumber>;
+  outgoingMaxLimitSubscription: Nullable<Subscription>;
+  blockUpdatesSubscription: Nullable<Subscription>;
   amountSend: string;
   amountReceived: string;
   focusedField: Nullable<FocusedField>;
   externalTransferFee: CodecString;
   externalNetworkFee: CodecString;
-  externalNetworkFeeFetching: boolean;
+  balancesFetching: boolean;
+  feesAndLockedFundsFetching: boolean;
   externalNativeBalance: Nullable<CodecString>;
-  externalBalancesFetching: boolean;
   externalBlockNumber: number;
   // history sources (unsynced localstorage & network)
   historyInternal: Record<string, IBridgeTransaction>;

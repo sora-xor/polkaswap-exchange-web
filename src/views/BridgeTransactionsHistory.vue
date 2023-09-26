@@ -243,7 +243,7 @@ export default class BridgeTransactionsHistory extends Mixins(
 
   handleBack(): void {
     this.setHistoryPage(1);
-    router.push({ name: PageNames.Bridge });
+    this.navigateToBridge();
   }
 
   handleResetSearch(): void {

@@ -21,7 +21,7 @@
             :value="formattedAmount"
             :asset-symbol="assetSymbol"
           >
-            <i :class="firstNetworkIcon" />
+            <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : externalNetworkId)}`" />
           </formatted-amount>
           <span class="header-details-separator">{{ t('bridgeTransaction.for') }}</span>
           <formatted-amount
@@ -30,7 +30,7 @@
             :value="formattedAmountReceived"
             :asset-symbol="assetSymbol"
           >
-            <i :class="secondNetworkIcon" />
+            <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? externalNetworkId : 0)}`" />
           </formatted-amount>
         </h5>
       </div>
@@ -159,8 +159,11 @@
         <template v-else-if="isInsufficientEvmNativeTokenForFee">{{
           t('insufficientBalanceText', { tokenSymbol: nativeTokenSymbol })
         }}</template>
-        <template v-else-if="isInsufficientLiquidity">
-          {{ t('swap.insufficientLiquidity') }}
+        <template v-else-if="isGreaterThanMaxAmount">
+          {{ t('exceededAmountText', { amount: t('maxAmountText') }) }}
+        </template>
+        <template v-else-if="isLowerThanMinAmount">
+          {{ t('exceededAmountText', { amount: t('minAmountText') }) }}
         </template>
         <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
         <template v-else-if="isFailedState && isRetryAvailable">{{ t('retryText') }}</template>
@@ -177,7 +180,6 @@
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/util';
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { BridgeTxStatus, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
@@ -218,6 +220,7 @@ export default class BridgeTransaction extends Mixins(
 ) {
   readonly KnownSymbols = KnownSymbols;
 
+  @state.bridge.externalBlockNumber private externalBlockNumber!: number;
   @state.bridge.waitingForApprove private waitingForApprove!: Record<string, boolean>;
   @state.bridge.inProgressIds private inProgressIds!: Record<string, boolean>;
   @state.router.prev private prevRoute!: Nullable<PageNames>;
@@ -299,10 +302,6 @@ export default class BridgeTransaction extends Mixins(
     }
   }
 
-  get evmIcon(): string {
-    return this.getNetworkIcon(this.externalNetworkId);
-  }
-
   get txSoraNetworkFee(): CodecString {
     return this.historyItem?.soraNetworkFee ?? this.soraNetworkFee;
   }
@@ -333,8 +332,20 @@ export default class BridgeTransaction extends Mixins(
     return this.nativeToken ? this.getFiatAmountByCodecString(this.txExternalNetworkFee, this.nativeToken) : null;
   }
 
+  get txId(): Nullable<string> {
+    return this.isSoraToEvm ? this.txSoraId : this.txExternalHash;
+  }
+
+  get txSoraId(): string {
+    return this.historyItem?.txId ?? '';
+  }
+
+  get txSoraBlockId(): string {
+    return this.historyItem?.blockId ?? '';
+  }
+
   get txSoraHash(): string {
-    return this.historyItem?.hash ?? '';
+    return this.historyItem?.hash ?? this.txSoraBlockId;
   }
 
   get txSoraHashFormatted(): string {
@@ -446,25 +457,12 @@ export default class BridgeTransaction extends Mixins(
     return this.copyTooltip(this.txExternalAccountPlaceholder);
   }
 
-  get txId(): Nullable<string> {
-    return this.isSoraToEvm ? this.soraTxId : this.txExternalHash;
+  get isGreaterThanMaxAmount(): boolean {
+    return this.txIsUnsigned && this.isGreaterThanOutgoingMaxAmount(this.amount, this.asset, this.isSoraToEvm);
   }
 
-  get soraTxId(): Nullable<string> {
-    return this.historyItem?.txId;
-  }
-
-  get soraTxBlockId(): Nullable<string> {
-    return this.historyItem?.blockId;
-  }
-
-  get isInsufficientLiquidity(): boolean {
-    if (!(this.asset && this.assetLockedBalance && this.isSoraToEvm)) return false;
-
-    const fpAmount = new FPNumber(this.amount, this.asset.decimals);
-    const fpLocked = FPNumber.fromCodecValue(this.assetLockedBalance, this.asset.externalDecimals);
-
-    return FPNumber.gt(fpAmount, fpLocked);
+  get isLowerThanMinAmount(): boolean {
+    return this.txIsUnsigned && this.isLowerThanIncomingMinAmount(this.amount, this.asset, this.isSoraToEvm);
   }
 
   get isInsufficientBalance(): boolean {
@@ -488,8 +486,7 @@ export default class BridgeTransaction extends Mixins(
 
   get isEvmTxType(): boolean {
     return (
-      !!this.externalNetworkType &&
-      [BridgeNetworkType.EvmLegacy, BridgeNetworkType.Evm].includes(this.externalNetworkType)
+      !!this.externalNetworkType && [BridgeNetworkType.Eth, BridgeNetworkType.Evm].includes(this.externalNetworkType)
     );
   }
 
@@ -505,20 +502,13 @@ export default class BridgeTransaction extends Mixins(
     return (
       !(this.isSoraToEvm || this.isValidNetwork) ||
       this.isAnotherEvmAddress ||
-      this.isInsufficientLiquidity ||
       this.isInsufficientBalance ||
+      this.isGreaterThanMaxAmount ||
+      this.isLowerThanMinAmount ||
       this.isInsufficientXorForFee ||
       this.isInsufficientEvmNativeTokenForFee ||
       this.isTxPending
     );
-  }
-
-  get firstNetworkIcon(): string {
-    return `network-icon network-icon--${this.isSoraToEvm ? 'sora' : this.evmIcon}`;
-  }
-
-  get secondNetworkIcon(): string {
-    return `network-icon network-icon--${this.isSoraToEvm ? this.evmIcon : 'sora'}`;
   }
 
   get hashCopyTooltip(): string {
@@ -537,11 +527,11 @@ export default class BridgeTransaction extends Mixins(
       return [];
     }
     const baseLinks = getExplorerLinks(this.soraNetwork);
-    const txId = this.soraTxId || this.soraTxBlockId;
+    const txId = this.txSoraId || this.txSoraBlockId;
     if (!(baseLinks.length && txId)) {
       return [];
     }
-    if (!this.soraTxId) {
+    if (!this.txSoraId) {
       // txId is block
       return baseLinks.map(({ type, value }) => {
         const link = { type } as WALLET_CONSTS.ExplorerLink;
@@ -560,9 +550,9 @@ export default class BridgeTransaction extends Mixins(
           link.value = `${value}/transaction/${txId}`;
         } else if (type === WALLET_CONSTS.ExplorerType.Subscan) {
           link.value = `${value}/extrinsic/${txId}`;
-        } else if (this.soraTxBlockId) {
+        } else if (this.txSoraBlockId) {
           // ExplorerType.Polkadot
-          link.value = `${value}/${this.soraTxBlockId}`;
+          link.value = `${value}/${this.txSoraBlockId}`;
         }
         return link;
       })
@@ -603,14 +593,6 @@ export default class BridgeTransaction extends Mixins(
       this.txExternalBlockId,
       this.EvmLinkType.Transaction
     );
-  }
-
-  handleViewTransactionsHistory(): void {
-    router.push({ name: PageNames.BridgeTransactionsHistory });
-  }
-
-  navigateToBridge(): void {
-    router.push({ name: PageNames.Bridge });
   }
 
   async created(): Promise<void> {

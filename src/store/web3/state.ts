@@ -19,7 +19,7 @@ export function initialState(): Web3State {
     subNetworkApps: {}, // sub netowrks from app config
 
     supportedApps: {
-      [BridgeNetworkType.EvmLegacy]: {},
+      [BridgeNetworkType.Eth]: {},
       [BridgeNetworkType.Evm]: {},
       [BridgeNetworkType.Sub]: [],
     }, // supported apps from chain
