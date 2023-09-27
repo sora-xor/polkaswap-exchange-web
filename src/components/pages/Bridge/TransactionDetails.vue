@@ -16,9 +16,6 @@
       :fiat-value="getFiatAmountByString(externalNetworkFee, nativeToken)"
       is-formatted
     >
-      <template v-if="isExternalFeeNotZero" #info-line-value-prefix>
-        <span class="info-line-value-prefix">~</span>
-      </template>
     </info-line>
   </transaction-details>
 </template>
@@ -55,10 +52,6 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
 
   get formattedNetworkFeeLabel(): string {
     return `${this.networkName} ${this.t('networkFeeText')}`;
-  }
-
-  get isExternalFeeNotZero(): boolean {
-    return this.externalNetworkFee !== ZeroStringValue;
   }
 }
 </script>

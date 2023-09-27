@@ -82,9 +82,6 @@
         :asset-symbol="nativeTokenSymbol"
         :fiat-value="txExternalNetworkFeeFiatValue"
       >
-        <template v-if="txExternalNetworkFeePrefix" #info-line-value-prefix>
-          <span class="info-line-value-prefix">~</span>
-        </template>
       </info-line>
 
       <div v-if="txSoraHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
@@ -166,7 +163,7 @@
           {{ t('exceededAmountText', { amount: t('minAmountText') }) }}
         </template>
         <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
-        <template v-else-if="isFailedState && isRetryAvailable">{{ t('retryText') }}</template>
+        <template v-else-if="isTxFailed && isRetryAvailable">{{ t('retryText') }}</template>
       </s-button>
 
       <div v-if="txWaitingForApprove" class="transaction-approval-text">
@@ -320,12 +317,6 @@ export default class BridgeTransaction extends Mixins(
 
   get txExternalNetworkFeeFormatted(): string {
     return this.formatCodecNumber(this.txExternalNetworkFee, this.nativeTokenDecimals);
-  }
-
-  get txExternalNetworkFeePrefix(): boolean {
-    if (this.txExternalNetworkFeeFormatted === ZeroStringValue) return false;
-
-    return !this.historyItem?.externalNetworkFee;
   }
 
   get txExternalNetworkFeeFiatValue(): Nullable<string> {
