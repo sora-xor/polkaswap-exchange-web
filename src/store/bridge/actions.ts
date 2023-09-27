@@ -113,7 +113,7 @@ function bridgeDataToHistoryItem(
     externalNetworkFee: (params as any).externalNetworkFee,
     externalNetwork,
     externalNetworkType,
-    to: (params as any).to ?? rootGetters.web3.externalAccount,
+    to: (params as any).to ?? getters.externalAccount,
     payload,
   };
 }
