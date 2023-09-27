@@ -113,7 +113,7 @@ function bridgeDataToHistoryItem(
     externalNetworkFee: (params as any).externalNetworkFee,
     externalNetwork,
     externalNetworkType,
-    to: (params as any).to ?? getters.externalAccount,
+    to: (params as any).to ?? getters.externalAccountFormatted,
     payload,
   };
 }
