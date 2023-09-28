@@ -1,15 +1,13 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts';
 
-import { ZeroStringValue } from '@/consts';
-import ethersUtil from '@/utils/ethers-util';
-
 import type { Web3State } from './types';
 
 export function initialState(): Web3State {
   return {
     evmAddress: '', // external evm address
     subAddress: '', // external sub address
+    subSS58: 69, // external sub network ss58 prefix (sora by default)
 
     networkType: null, // network type for selected network
     networkSelected: null, // network selected by user

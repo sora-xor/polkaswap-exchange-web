@@ -20,6 +20,15 @@
         <span class="info-line-value-prefix">~</span>
       </template>
     </info-line>
+    <info-line
+      v-if="isExternalTransferFeeNotZero"
+      :label="t('bridge.externalTransferFee', { network: networkName })"
+      :label-tooltip="t('bridge.externalTransferFeeTooltip', { network: networkName })"
+      :value="formatStringValue(externalTransferFee)"
+      :asset-symbol="assetSymbol"
+      :fiat-value="getFiatAmountByString(externalTransferFee, asset)"
+      is-formatted
+    />
   </transaction-details>
 </template>
 
@@ -44,10 +53,16 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   readonly XOR = XOR;
 
+  @Prop({ default: () => null, type: Object }) readonly asset!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: () => null, type: Object }) readonly nativeToken!: Nullable<RegisteredAccountAsset>;
+  @Prop({ default: ZeroStringValue, type: String }) readonly externalTransferFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly externalNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
   @Prop({ default: '', type: String }) readonly networkName!: string;
+
+  get assetSymbol(): string {
+    return this.asset?.symbol ?? '';
+  }
 
   get nativeTokenSymbol(): string {
     return this.nativeToken?.symbol ?? '';
@@ -59,6 +74,10 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
 
   get isExternalFeeNotZero(): boolean {
     return this.externalNetworkFee !== ZeroStringValue;
+  }
+
+  get isExternalTransferFeeNotZero(): boolean {
+    return this.externalTransferFee !== ZeroStringValue;
   }
 }
 </script>

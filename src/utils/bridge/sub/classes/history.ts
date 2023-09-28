@@ -276,8 +276,9 @@ class SubBridgeHistory extends SubNetworksConnector {
           const parachainId = (dest as any).asV3.interior.asX1.asParachain.toNumber();
           const accountId = (beneficiary as any).asV3.interior.asX1.asAccountId32.id.toString();
           const receiver = subBridgeApi.formatAddress(accountId);
+          const from = subBridgeApi.formatAddress(history.from as string);
 
-          if (!(parachainId === this.parachainId && receiver === history.from)) continue;
+          if (!(parachainId === this.parachainId && receiver === from)) continue;
 
           const feeData = await findEventInBlock({
             api: this.externalApi,
