@@ -90,6 +90,8 @@ export const ObjectInit = () => null;
 
 export const ZeroStringValue = '0';
 
+export const ApproximateSign = '~';
+
 export const MetamaskCancellationCode = 4001;
 
 export const DefaultSlippageTolerance = '0.5';
@@ -230,7 +232,6 @@ export enum Components {
   // Shared Input
   TokenInput = 'shared/Input/TokenInput',
   TokenSelectButton = 'shared/Input/TokenSelectButton',
-  TokenSelectDropdown = 'shared/Input/TokenSelectDropdown', // Not used
   // Shared Dialogs
   ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
   NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',

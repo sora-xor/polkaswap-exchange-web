@@ -7,7 +7,7 @@ import { rootActionContext } from '@/store';
 import { findEventInBlock } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
-import { getMessageAcceptedNonces, isMessageDispatchedNonces } from '@/utils/bridge/sub/utils';
+import { getMessageAcceptedNonces, isMessageDispatchedNonces, formatSubAddress } from '@/utils/bridge/sub/utils';
 
 import type { ApiPromise } from '@polkadot/api';
 import type { NetworkFeesObject } from '@sora-substrate/util';
@@ -244,7 +244,7 @@ class SubBridgeHistory extends SubNetworksConnector {
         history.externalBlockId = blockId;
         history.externalBlockHeight = n;
         history.amount2 = FPNumber.fromCodecValue(received, asset?.externalDecimals).toString();
-        history.to = to;
+        history.to = formatSubAddress(tx.externalAccount, this.externalApi.registry.chainSS58 as number);
         break;
       } catch {
         continue;
@@ -280,6 +280,7 @@ class SubBridgeHistory extends SubNetworksConnector {
 
           if (!(parachainId === this.parachainId && receiver === from)) continue;
 
+          const signer = extrinsic.signer.toString();
           const feeData = await findEventInBlock({
             api: this.externalApi,
             blockId,
@@ -290,7 +291,7 @@ class SubBridgeHistory extends SubNetworksConnector {
           history.externalNetworkFee = feeData[1].toString();
           history.externalBlockId = blockId;
           history.externalBlockHeight = n;
-          history.to = subBridgeApi.formatAddress(extrinsic.signer.toString());
+          history.to = formatSubAddress(signer, this.externalApi.registry.chainSS58 as number);
           return;
         } catch {
           continue;
