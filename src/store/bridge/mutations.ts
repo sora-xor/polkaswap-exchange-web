@@ -85,6 +85,10 @@ const mutations = defineMutations<BridgeState>()({
     state.externalTransferFee = fee;
   },
 
+  setSoraNetworkFee(state, fee: CodecString) {
+    state.soraNetworkFee = fee;
+  },
+
   /**
    * Set bridge transactions from localstorage (ethBridgeApi or evmBridgeApi)
    */

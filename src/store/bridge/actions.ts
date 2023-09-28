@@ -109,7 +109,7 @@ function bridgeDataToHistoryItem(
     startTime: date,
     endTime: date,
     transactionState,
-    soraNetworkFee: (params as any).soraNetworkFee ?? getters.soraNetworkFee,
+    soraNetworkFee: (params as any).soraNetworkFee ?? state.soraNetworkFee,
     externalNetworkFee: (params as any).externalNetworkFee,
     externalNetwork,
     externalNetworkType,
@@ -317,12 +317,13 @@ async function updateExternalBlockNumber(context: ActionContext<any, any>): Prom
   }
 }
 
-async function updateExternalFeesAndLockedFunds(context: ActionContext<any, any>): Promise<void> {
+async function updateFeesAndLockedFunds(context: ActionContext<any, any>): Promise<void> {
   const { commit } = bridgeActionContext(context);
 
   commit.setFeesAndLockedFundsFetching(true);
 
   await Promise.allSettled([
+    updateSoraNetworkFee(context),
     updateExternalLockedBalance(context),
     updateExternalNetworkFee(context),
     updateExternalTransferFee(context),
@@ -331,10 +332,34 @@ async function updateExternalFeesAndLockedFunds(context: ActionContext<any, any>
   commit.setFeesAndLockedFundsFetching(false);
 }
 
+async function updateSoraNetworkFee(context: ActionContext<any, any>): Promise<void> {
+  const { commit, state, getters, rootState } = bridgeActionContext(context);
+  const { asset, operation } = getters;
+  const {
+    web3: { networkSelected },
+    wallet: {
+      settings: { networkFees },
+    },
+  } = rootState;
+
+  let fee = ZeroStringValue;
+
+  if (networkSelected && asset && state.isSoraToEvm) {
+    if (getters.isEthBridge) {
+      fee = networkFees[operation];
+    } else {
+      const bridgeApi = getBridgeApi(context) as typeof subBridgeApi | typeof evmBridgeApi;
+      fee = await bridgeApi.getNetworkFee(asset, networkSelected as never);
+    }
+  }
+
+  commit.setSoraNetworkFee(fee);
+}
+
 async function updateBalancesAndFees(context: ActionContext<any, any>): Promise<void> {
   const { dispatch } = bridgeActionContext(context);
 
-  await Promise.allSettled([dispatch.updateExternalBalance(), updateExternalFeesAndLockedFunds(context)]);
+  await Promise.allSettled([dispatch.updateExternalBalance(), updateFeesAndLockedFunds(context)]);
 }
 
 const actions = defineActions({

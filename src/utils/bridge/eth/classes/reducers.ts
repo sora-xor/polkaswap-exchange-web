@@ -7,6 +7,7 @@ import type { IBridgeReducerOptions, GetBridgeHistoryInstance, SignExternal } fr
 import {
   getEvmTransactionRecieptByHash,
   findEventInBlock,
+  getTransactionEvents,
   waitForEvmTransactionMined,
 } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
@@ -123,7 +124,7 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
             if (!tx.txId) {
               await this.beforeSign(id);
               const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
-              await ethBridgeApi.transferToEth(asset, tx.to as string, tx.amount as string, id);
+              await ethBridgeApi.transfer(asset, tx.to as string, tx.amount as string, id);
             }
 
             // signed sora transaction has to be parsed by subquery
@@ -154,18 +155,15 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
             await this.waitForTransactionStatus(id);
             await this.waitForTransactionBlockId(id);
 
-            const { blockId } = this.getTransaction(id);
+            const { blockId, txId, hash: soraHash } = this.getTransaction(id);
 
-            const eventData = await findEventInBlock({
-              api: api.api,
-              blockId: blockId as string,
-              section: 'ethBridge',
-              method: 'RequestRegistered',
-            });
+            if (!soraHash) {
+              const events = await getTransactionEvents(blockId as string, txId as string, api.api);
+              const requestEvent = events.find((e) => api.api.events.ethBridge.RequestRegistered.is(e.event));
+              const hash = requestEvent.event.data[0].toString();
 
-            const hash = eventData[0].toString();
-
-            this.updateTransactionParams(id, { hash });
+              this.updateTransactionParams(id, { hash });
+            }
 
             const tx = this.getTransaction(id);
 

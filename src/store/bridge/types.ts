@@ -19,6 +19,7 @@ export type BridgeState = {
   amountSend: string;
   amountReceived: string;
   focusedField: Nullable<FocusedField>;
+  soraNetworkFee: CodecString;
   externalTransferFee: CodecString;
   externalNetworkFee: CodecString;
   balancesFetching: boolean;

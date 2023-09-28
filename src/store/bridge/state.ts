@@ -18,6 +18,7 @@ function initialState(): BridgeState {
     amountSend: '',
     amountReceived: '',
     focusedField: null,
+    soraNetworkFee: ZeroStringValue,
     externalTransferFee: ZeroStringValue, // fee for transfer between networks (xcm message fee for substrate network)
     externalNetworkFee: ZeroStringValue, // fee for transaction execution
     balancesFetching: false,

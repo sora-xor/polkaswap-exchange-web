@@ -16,13 +16,13 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<FPNumber>;
   @state.bridge.outgoingMaxLimit outgoingMaxLimit!: Nullable<FPNumber>;
   @state.bridge.incomingMinLimit incomingMinAmount!: FPNumber;
+  @state.bridge.soraNetworkFee soraNetworkFee!: CodecString;
 
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
   @getter.bridge.asset asset!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.nativeToken nativeToken!: Nullable<RegisteredAccountAsset>;
   @getter.bridge.sender sender!: string;
   @getter.bridge.recipient recipient!: string;
-  @getter.bridge.soraNetworkFee soraNetworkFee!: CodecString;
   @getter.bridge.externalNetworkFee externalNetworkFee!: CodecString;
   @getter.assets.xor xor!: RegisteredAccountAsset;
 
