@@ -36,7 +36,6 @@ import { lazyComponent } from '@/router';
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { state, getter } from '@/store/decorators';
 import type { NetworkData } from '@/types/bridge';
-import { sortAssets } from '@/utils';
 
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -67,7 +66,7 @@ export default class BridgeSelectAsset extends Mixins(TranslationMixin, SelectAs
     const assetsAddresses = Object.keys(this.registeredAssets);
     const excludeAddress = this.asset?.address;
     const list = this.getAssetsWithBalances(assetsAddresses, excludeAddress);
-    const orderedList = [...list].sort(sortAssets).sort(this.sortByBalance);
+    const orderedList = [...list].sort(this.sortByBalance);
 
     return orderedList;
   }

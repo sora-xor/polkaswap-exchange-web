@@ -66,7 +66,6 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
-import { sortAssets } from '@/utils';
 import { syntheticAssetRegexp } from '@/utils/regexp';
 
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
@@ -157,7 +156,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
     const assetsAddresses = whiteList.map((asset) => asset.address);
     const excludeAddress = this.asset?.address;
     const list = this.getAssetsWithBalances(assetsAddresses, excludeAddress);
-    const orderedList = [...list].sort(sortAssets).sort(this.sortByBalance);
+    const orderedList = [...list].sort(this.sortByBalance);
 
     return orderedList;
   }
