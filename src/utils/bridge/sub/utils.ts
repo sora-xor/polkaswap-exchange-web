@@ -71,7 +71,7 @@ export const isAssetAddedToChannel = (
 
   const { amount, assetId, recipient } = e.event.data[0].asTransfer;
   // address check
-  if (subBridgeApi.formatAddress(recipient.toString()) !== to) return false;
+  if (subBridgeApi.formatAddress(recipient.toString()) !== subBridgeApi.formatAddress(to)) return false;
   // asset check
   if (assetId.toString() !== asset.address) return false;
   // amount check

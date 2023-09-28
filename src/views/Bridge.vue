@@ -268,7 +268,9 @@
           <bridge-transaction-details
             v-if="!isZeroAmountReceived && isRegisteredAsset"
             class="info-line-container"
+            :asset="asset"
             :native-token="nativeToken"
+            :external-transfer-fee="formattedExternalTransferFee"
             :external-network-fee="formattedExternalNetworkFee"
             :sora-network-fee="formattedSoraNetworkFee"
             :network-name="networkName"
@@ -291,6 +293,7 @@
       :network="networkSelected"
       :network-type="networkType"
       :native-token="nativeToken"
+      :external-transfer-fee="formattedExternalTransferFee"
       :external-network-fee="formattedExternalNetworkFee"
       :sora-network-fee="formattedSoraNetworkFee"
       @confirm="confirmTransaction"
@@ -335,7 +338,7 @@ import {
   delay,
 } from '@/utils';
 
-import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
@@ -369,6 +372,7 @@ export default class Bridge extends Mixins(
   readonly KnownSymbols = KnownSymbols;
   readonly FocusedField = FocusedField;
 
+  @state.bridge.externalTransferFee private externalTransferFee!: CodecString;
   @state.bridge.balancesFetching private balancesFetching!: boolean;
   @state.bridge.feesAndLockedFundsFetching private feesAndLockedFundsFetching!: boolean;
   @state.assets.registeredAssetsFetching private registeredAssetsFetching!: boolean;
@@ -516,6 +520,10 @@ export default class Bridge extends Mixins(
 
   get formattedExternalNetworkFee(): string {
     return this.getStringFromCodec(this.externalNetworkFee, this.nativeTokenDecimals);
+  }
+
+  get formattedExternalTransferFee(): string {
+    return this.getStringFromCodec(this.externalTransferFee, this.asset?.externalDecimals);
   }
 
   get isConfirmTxDisabled(): boolean {
