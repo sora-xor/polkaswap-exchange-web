@@ -1,21 +1,14 @@
-import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { Operation } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { defineGetters } from 'direct-vuex';
 
 import { ZeroStringValue } from '@/consts';
 import { bridgeGetterContext } from '@/store/bridge';
+import { formatSubAddress } from '@/utils/bridge/sub/utils';
 
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-
-// [TECH] move to js-lib
-function formatSubAddress(address: string, ss58: number): string {
-  const publicKey = decodeAddress(address, false);
-
-  return encodeAddress(publicKey, ss58);
-}
 
 const getters = defineGetters<BridgeState>()({
   asset(...args): Nullable<RegisteredAccountAsset> {

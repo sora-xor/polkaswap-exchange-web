@@ -1,3 +1,5 @@
+import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
+
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { ApiPromise } from '@polkadot/api';
@@ -79,4 +81,11 @@ export const isAssetAddedToChannel = (
   if (amount.toString() !== sended) return false;
 
   return true;
+};
+
+// [TECH] move to js-lib
+export const formatSubAddress = (address: string, ss58: number): string => {
+  const publicKey = decodeAddress(address, false);
+
+  return encodeAddress(publicKey, ss58);
 };

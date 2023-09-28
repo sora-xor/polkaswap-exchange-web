@@ -82,6 +82,9 @@
         :asset-symbol="nativeTokenSymbol"
         :fiat-value="txExternalNetworkFeeFiatValue"
       >
+        <template v-if="txExternalNetworkFeePrefix" #info-line-value-prefix>
+          <span class="info-line-value-prefix">{{ ApproximateSign }}</span>
+        </template>
       </info-line>
 
       <div v-if="txSoraHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
@@ -186,7 +189,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { Components, PageNames, ZeroStringValue } from '@/consts';
+import { Components, PageNames, ZeroStringValue, ApproximateSign } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientNativeTokenForFee } from '@/utils';
@@ -216,6 +219,7 @@ export default class BridgeTransaction extends Mixins(
   NetworkFormatterMixin
 ) {
   readonly KnownSymbols = KnownSymbols;
+  readonly ApproximateSign = ApproximateSign;
 
   @state.bridge.externalBlockNumber private externalBlockNumber!: number;
   @state.bridge.waitingForApprove private waitingForApprove!: Record<string, boolean>;
@@ -317,6 +321,12 @@ export default class BridgeTransaction extends Mixins(
 
   get txExternalNetworkFeeFormatted(): string {
     return this.formatCodecNumber(this.txExternalNetworkFee, this.nativeTokenDecimals);
+  }
+
+  get txExternalNetworkFeePrefix(): boolean {
+    if (this.txExternalNetworkFeeFormatted === ZeroStringValue) return false;
+
+    return !this.historyItem?.externalNetworkFee;
   }
 
   get txExternalNetworkFeeFiatValue(): Nullable<string> {
