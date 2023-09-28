@@ -31,7 +31,7 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   @mutation.bridge.resetBlockUpdatesSubscription private resetBlockUpdatesSubscription!: FnWithoutArgs;
   @mutation.bridge.resetOutgoingMaxLimitSubscription private resetOutgoingMaxLimitSubscription!: FnWithoutArgs;
   @getter.web3.selectedNetwork private selectedNetwork!: Nullable<NetworkData>;
-  @getter.web3.externalAccount private externalAccount!: string;
+  @getter.bridge.externalAccount private externalAccount!: string;
 
   private unwatchEthereum!: FnWithoutArgs;
 

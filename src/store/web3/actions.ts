@@ -14,12 +14,16 @@ import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/cons
 import type { ActionContext } from 'vuex';
 
 async function connectSubNetwork(context: ActionContext<any, any>): Promise<void> {
-  const { getters } = web3ActionContext(context);
+  const { getters, commit } = web3ActionContext(context);
   const subNetwork = getters.selectedNetwork;
 
   if (!subNetwork) return;
 
   await subBridgeConnector.open(subNetwork.id as SubNetwork);
+
+  const ss58 = subBridgeConnector.networkAdapter.api.registry.chainSS58;
+
+  if (ss58) commit.setSubSS58(ss58);
 }
 
 const actions = defineActions({

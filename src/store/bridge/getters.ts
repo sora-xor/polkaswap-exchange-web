@@ -1,3 +1,4 @@
+import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { Operation } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { defineGetters } from 'direct-vuex';
@@ -8,6 +9,13 @@ import { bridgeGetterContext } from '@/store/bridge';
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+
+// [TECH] move to js-lib
+function formatSubAddress(address: string, ss58: number): string {
+  const publicKey = decodeAddress(address, false);
+
+  return encodeAddress(publicKey, ss58);
+}
 
 const getters = defineGetters<BridgeState>()({
   asset(...args): Nullable<RegisteredAccountAsset> {
@@ -59,20 +67,50 @@ const getters = defineGetters<BridgeState>()({
     return !!asset?.externalAddress;
   },
 
+  externalAccount(...args): string {
+    const { getters, rootState } = bridgeGetterContext(args);
+    const { evmAddress, subAddress } = rootState.web3;
+
+    if (getters.isSubBridge) {
+      return subAddress;
+    } else {
+      return evmAddress;
+    }
+  },
+
+  externalAccountFormatted(...args): string {
+    const { getters, state, rootState } = bridgeGetterContext(args);
+    const { subSS58 } = rootState.web3;
+
+    if (getters.isSubBridge && state.isSoraToEvm && getters.externalAccount) {
+      return formatSubAddress(getters.externalAccount, subSS58);
+    } else {
+      return getters.externalAccount;
+    }
+  },
+
   sender(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
+    const { address: soraAddress } = rootState.wallet.account;
+    const { evmAddress, subSS58 } = rootState.web3;
 
-    if (getters.isSubBridge) return rootState.wallet.account.address;
+    if (getters.isSubBridge) {
+      return !state.isSoraToEvm && soraAddress ? formatSubAddress(soraAddress, subSS58) : soraAddress;
+    }
 
-    return state.isSoraToEvm ? rootState.wallet.account.address : rootState.web3.evmAddress;
+    return state.isSoraToEvm ? soraAddress : evmAddress;
   },
 
   recipient(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
+    const { address: soraAddress } = rootState.wallet.account;
+    const { evmAddress, subAddress, subSS58 } = rootState.web3;
 
-    if (getters.isSubBridge) return rootState.web3.subAddress;
+    if (getters.isSubBridge) {
+      return state.isSoraToEvm && subAddress ? formatSubAddress(subAddress, subSS58) : subAddress;
+    }
 
-    return state.isSoraToEvm ? rootState.web3.evmAddress : rootState.wallet.account.address;
+    return state.isSoraToEvm ? evmAddress : soraAddress;
   },
 
   isEthBridge(...args): boolean {

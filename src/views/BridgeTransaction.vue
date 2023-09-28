@@ -223,7 +223,7 @@ export default class BridgeTransaction extends Mixins(
   @state.router.prev private prevRoute!: Nullable<PageNames>;
 
   @getter.bridge.historyItem private historyItem!: Nullable<IBridgeTransaction>;
-  @getter.web3.externalAccount private externalAccount!: string;
+  @getter.bridge.externalAccountFormatted private externalAccountFormatted!: string;
 
   @action.bridge.removeHistory private removeHistory!: ({ tx, force }: { tx: any; force?: boolean }) => Promise<void>;
   @action.bridge.handleBridgeTransaction private handleBridgeTransaction!: (id: string) => Promise<void>;
@@ -486,7 +486,9 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isAnotherEvmAddress(): boolean {
-    return this.isSoraToEvm && this.txExternalAccount.toLowerCase() !== this.externalAccount.toLowerCase();
+    if (!(this.isEvmTxType && this.isSoraToEvm)) return false;
+
+    return this.txExternalAccount.toLowerCase() !== this.externalAccountFormatted.toLowerCase();
   }
 
   get confirmationButtonDisabled(): boolean {

@@ -395,6 +395,9 @@ export default {
     connectWallets: 'Connect wallets to view respective transaction history.',
     soraNetworkFee: '{Sora} Network Fee',
     ethereumNetworkFee: '{Ethereum} Network Fee',
+    externalTransferFee: '{network} {XCM} fee',
+    externalTransferFeeTooltip:
+      'To execute an incoming transaction, the {network} network deducts part of the funds from the transfer amount',
     tooltipValue: '@:comingSoonText',
     total: 'Total',
     viewHistory: 'View transactions history',

@@ -529,7 +529,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
                 .find(
                   (e) =>
                     this.connector.networkAdapter.api.events.balances.Deposit.is(e.event) &&
-                    subBridgeApi.formatAddress(e.event.data.who.toString()) === tx.to
+                    subBridgeApi.formatAddress(e.event.data.who.toString()) ===
+                      subBridgeApi.formatAddress(tx.to as string)
                 );
 
               if (!balancesDepositEvent)

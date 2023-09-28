@@ -20,7 +20,7 @@ import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { action, state, mutation } from '@/store/decorators';
+import { state, mutation } from '@/store/decorators';
 
 @Component({
   components: {
@@ -50,7 +50,13 @@ export default class BridgeSelectAccount extends Mixins(mixins.LoadingMixin, Tra
   }
 
   get validAddress(): boolean {
-    return !!this.address && api.validateAddress(this.address);
+    if (!(this.address && api.validateAddress(this.address))) return false;
+    try {
+      api.formatAddress(this.address);
+      return true; // if it can be formatted -> it's correct
+    } catch {
+      return false; // EVM account address
+    }
   }
 
   handleSelectAddress(): void {
