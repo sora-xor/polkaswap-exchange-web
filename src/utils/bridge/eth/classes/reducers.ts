@@ -1,12 +1,10 @@
-import { api, SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { ethers } from 'ethers';
+import { SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { IBridgeReducerOptions, GetBridgeHistoryInstance, SignExternal } from '@/utils/bridge/common/types';
 import {
   getEvmTransactionRecieptByHash,
-  findEventInBlock,
   getTransactionEvents,
   waitForEvmTransactionMined,
 } from '@/utils/bridge/common/utils';
@@ -158,8 +156,10 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
             const { blockId, txId, hash: soraHash } = this.getTransaction(id);
 
             if (!soraHash) {
-              const events = await getTransactionEvents(blockId as string, txId as string, api.api);
-              const requestEvent = events.find((e) => api.api.events.ethBridge.RequestRegistered.is(e.event));
+              const transactionEvents = await getTransactionEvents(blockId as string, txId as string, ethBridgeApi.api);
+              const requestEvent = transactionEvents.find((e) =>
+                ethBridgeApi.api.events.ethBridge.RequestRegistered.is(e.event)
+              );
               const hash = requestEvent.event.data[0].toString();
 
               this.updateTransactionParams(id, { hash });

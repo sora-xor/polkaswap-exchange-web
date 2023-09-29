@@ -536,7 +536,7 @@
         "soraNetworkFee": "{Sora} Network Fee",
         "ethereumNetworkFee": "{Ethereum} Network Fee",
         "externalTransferFee": "{network} {XCM} fee",
-        "externalTransferFeeTooltip": "To execute an incoming transaction, the {network} network deducts part of the funds from the transfer amount",
+        "externalTransferFeeTooltip": "When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are trasferring",
         "total": "Total",
         "viewHistory": "View transactions history",
         "transactionSubmitted": "Transaction submitted",

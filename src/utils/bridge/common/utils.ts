@@ -85,25 +85,6 @@ export const getTransactionEvents = async (blockHash: string, transactionHash: s
   return transactionEvents;
 };
 
-export const findEventInBlock = async ({
-  api,
-  blockId,
-  section,
-  method,
-}: {
-  api: ApiPromise;
-  blockId: string;
-  section: string;
-  method: string;
-}) => {
-  const blockEvents = await soraApi.system.getBlockEvents(blockId, api);
-  const event = blockEvents.find(({ event }) => event.section === section && event.method === method);
-
-  if (!event) throw new Error('Event not found');
-
-  return event.event.data;
-};
-
 export const isOutgoingTransaction = (transaction: Nullable<IBridgeTransaction>): boolean => {
   if (!transaction?.type) return false;
 
