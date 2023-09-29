@@ -317,17 +317,22 @@ async function updateExternalBlockNumber(context: ActionContext<any, any>): Prom
   }
 }
 
-async function updateFeesAndLockedFunds(context: ActionContext<any, any>): Promise<void> {
+async function updateFeesAndLockedFunds(context: ActionContext<any, any>, withSora = false): Promise<void> {
   const { commit } = bridgeActionContext(context);
 
   commit.setFeesAndLockedFundsFetching(true);
 
-  await Promise.allSettled([
-    updateSoraNetworkFee(context),
+  const promises = [
     updateExternalLockedBalance(context),
     updateExternalNetworkFee(context),
     updateExternalTransferFee(context),
-  ]);
+  ];
+
+  if (withSora) {
+    promises.push(updateSoraNetworkFee(context));
+  }
+
+  await Promise.allSettled(promises);
 
   commit.setFeesAndLockedFundsFetching(false);
 }
@@ -356,10 +361,10 @@ async function updateSoraNetworkFee(context: ActionContext<any, any>): Promise<v
   commit.setSoraNetworkFee(fee);
 }
 
-async function updateBalancesAndFees(context: ActionContext<any, any>): Promise<void> {
+async function updateBalancesAndFees(context: ActionContext<any, any>, withSora = false): Promise<void> {
   const { dispatch } = bridgeActionContext(context);
 
-  await Promise.allSettled([dispatch.updateExternalBalance(), updateFeesAndLockedFunds(context)]);
+  await Promise.allSettled([dispatch.updateExternalBalance(), updateFeesAndLockedFunds(context, withSora)]);
 }
 
 const actions = defineActions({
@@ -412,7 +417,7 @@ const actions = defineActions({
     commit.setAssetSenderBalance();
     commit.setAssetRecipientBalance();
 
-    await updateBalancesAndFees(context);
+    await updateBalancesAndFees(context, true);
 
     if (state.focusedField === FocusedField.Received) {
       await dispatch.setSendedAmount(state.amountReceived);
@@ -431,7 +436,7 @@ const actions = defineActions({
     await Promise.allSettled([
       dispatch.updateOutgoingMaxLimit(),
       dispatch.updateIncomingMinLimit(),
-      updateBalancesAndFees(context),
+      updateBalancesAndFees(context, true),
     ]);
   },
 
