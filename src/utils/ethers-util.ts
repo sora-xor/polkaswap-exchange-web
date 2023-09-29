@@ -340,7 +340,7 @@ async function getEvmTransactionReceipt(hash: string): Promise<ethers.Transactio
 
 async function getBlock(number: number): Promise<ethers.Block | null> {
   const ethersInstance = await getEthersInstance();
-  const block = await ethersInstance.getBlock(number);
+  const block = await ethersInstance.getBlock(Number(number));
 
   return block;
 }

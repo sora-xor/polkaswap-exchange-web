@@ -545,7 +545,9 @@
         "copy": "Copia l'indirizzo di rete",
         "soraAddress": "{Sora} indirizzo",
         "ethereumAddress": "{Ethereum} indirizzo",
-        "limitMessage": "Attualmente, esiste un {type} {amount} {symbol} per il bridging per garantire la stabilità e la sicurezza della rete {Sora} . Apprezziamo la tua comprensione."
+        "limitMessage": "Attualmente, esiste un {type} {amount} {symbol} per il bridging per garantire la stabilità e la sicurezza della rete {Sora} . Apprezziamo la tua comprensione.",
+        "externalTransferFee": "Tariffa {network} {XCM}",
+        "externalTransferFeeTooltip": "Quando invii una transazione bridge alla rete {network} , viene trattenuta una commissione minore dall'importo che stai trasferendo"
     },
     "selectRegisteredAsset": {
         "title": "Seleziona un token",

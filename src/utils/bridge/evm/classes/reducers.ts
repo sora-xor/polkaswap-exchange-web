@@ -2,7 +2,7 @@ import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { RemoveTransactionByHash, IBridgeReducerOptions } from '@/utils/bridge/common/types';
-import { findEventInBlock } from '@/utils/bridge/common/utils';
+import { getTransactionEvents } from '@/utils/bridge/common/utils';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -97,14 +97,13 @@ export class EvmBridgeOutgoingReducer extends EvmBridgeReducer {
 
     if (tx.hash) return tx.hash;
 
-    const eventData = await findEventInBlock({
-      api: evmBridgeApi.api,
-      blockId: tx.blockId as string,
-      section: 'bridgeProxy',
-      method: 'RequestStatusUpdate',
-    });
-
-    const hash = eventData[0].toString();
+    const blockHash = tx.blockId as string;
+    const transactionHash = tx.txId as string;
+    const transactionEvents = await getTransactionEvents(blockHash, transactionHash, evmBridgeApi.api);
+    const requestEvent = transactionEvents.find((e) =>
+      evmBridgeApi.api.events.bridgeProxy.RequestStatusUpdate.is(e.event)
+    );
+    const hash = requestEvent.event.data[0].toString();
 
     this.updateTransactionParams(id, { hash });
 

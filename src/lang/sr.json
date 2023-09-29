@@ -545,7 +545,9 @@
         "copy": "Копирајте мрежну адресу",
         "soraAddress": "{Sora} adresa",
         "ethereumAddress": "{Ethereum} adresa",
-        "limitMessage": "Тренутно постоји {type} {amount} {symbol} за премошћавање да би се обезбедила стабилност и безбедност мреже {Sora} . Ценимо ваше разумевање."
+        "limitMessage": "Тренутно постоји {type} {amount} {symbol} за премошћавање да би се обезбедила стабилност и безбедност мреже {Sora} . Ценимо ваше разумевање.",
+        "externalTransferFee": "{network} {XCM} накнада",
+        "externalTransferFeeTooltip": "Када пошаљете бридге трансакцију на мрежу {network} , од износа који преносите узима се мања накнада"
     },
     "selectRegisteredAsset": {
         "title": "Изаберите токен",

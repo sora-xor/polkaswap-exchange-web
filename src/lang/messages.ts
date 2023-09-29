@@ -397,7 +397,7 @@ export default {
     ethereumNetworkFee: '{Ethereum} Network Fee',
     externalTransferFee: '{network} {XCM} fee',
     externalTransferFeeTooltip:
-      'To execute an incoming transaction, the {network} network deducts part of the funds from the transfer amount',
+      'When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are trasferring',
     tooltipValue: '@:comingSoonText',
     total: 'Total',
     viewHistory: 'View transactions history',

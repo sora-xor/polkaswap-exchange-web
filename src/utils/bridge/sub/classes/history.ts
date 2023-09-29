@@ -4,7 +4,7 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 
 import { ZeroStringValue } from '@/consts';
 import { rootActionContext } from '@/store';
-import { findEventInBlock } from '@/utils/bridge/common/utils';
+import { getBlockEventsByTxIndex } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import { getMessageAcceptedNonces, isMessageDispatchedNonces, formatSubAddress } from '@/utils/bridge/sub/utils';
@@ -129,7 +129,6 @@ class SubBridgeHistory extends SubNetworksConnector {
       const asset = assetDataByAddress(tx.soraAssetAddress);
       const amount = FPNumber.fromCodecValue(tx.amount, asset?.decimals).toString();
       const type = getType(isOutgoing);
-      const soraNetworkFee = networkFees[type] ?? ZeroStringValue;
 
       const history: SubHistory = {
         id,
@@ -143,7 +142,6 @@ class SubBridgeHistory extends SubNetworksConnector {
         amount,
         assetAddress: asset?.address,
         symbol: asset?.symbol,
-        soraNetworkFee,
         from: tx.soraAccount,
       };
 
@@ -199,6 +197,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     asset: Nullable<RegisteredAccountAsset>;
     events: any[];
   }): Promise<void> {
+    const soraFeeEvent = events.find((e) => this.soraApi.events.transactionPayment.TransactionFeePaid.is(e.event));
     // sended from sora nonces
     const [soraBatchNonce, soraMessageNonce] = getMessageAcceptedNonces(events, this.soraApi);
     const parachainEvents = await api.system.getBlockEvents(parachainBlockId, this.parachainApi);
@@ -240,6 +239,7 @@ class SubBridgeHistory extends SubNetworksConnector {
           );
         const received = balancesDepositEvent.event.data.amount.toString();
 
+        history.soraNetworkFee = soraFeeEvent.event.data[1].toString();
         history.externalNetworkFee = ZeroStringValue;
         history.externalBlockId = blockId;
         history.externalBlockHeight = n;
@@ -267,7 +267,7 @@ class SubBridgeHistory extends SubNetworksConnector {
       const blockId = await api.system.getBlockHash(n, this.externalApi);
       const extrinsics = await api.system.getExtrinsicsFromBlock(blockId, this.externalApi);
 
-      for (const extrinsic of extrinsics) {
+      for (const [extrinsicIndex, extrinsic] of extrinsics.entries()) {
         try {
           if (!(extrinsic.method.section === 'xcmPallet' && extrinsic.method.method === 'reserveTransferAssets'))
             continue;
@@ -281,14 +281,13 @@ class SubBridgeHistory extends SubNetworksConnector {
           if (!(parachainId === this.parachainId && receiver === from)) continue;
 
           const signer = extrinsic.signer.toString();
-          const feeData = await findEventInBlock({
-            api: this.externalApi,
-            blockId,
-            section: 'transactionPayment',
-            method: 'TransactionFeePaid',
-          });
+          const extrinsicEvents = await getBlockEventsByTxIndex(blockId, extrinsicIndex, this.externalApi);
+          const feeEvent = extrinsicEvents.find((e) =>
+            this.externalApi.events.transactionPayment.TransactionFeePaid.is(e.event)
+          );
 
-          history.externalNetworkFee = feeData[1].toString();
+          history.soraNetworkFee = ZeroStringValue;
+          history.externalNetworkFee = feeEvent.event.data[1].toString();
           history.externalBlockId = blockId;
           history.externalBlockHeight = n;
           history.to = formatSubAddress(signer, this.externalApi.registry.chainSS58 as number);

@@ -93,10 +93,8 @@ const actions = defineActions({
         if (!decodedInput) throw new Error(`Unable to parse transaction data: "${tx.data}"`);
 
         const address = tx.to ?? ''; // asset address
-        const {
-          value, // BigNumber
-          to = '', // ethereum address
-        } = decodedInput.args;
+        const value = decodedInput.args.getValue('value'); // BigNumber
+        const to = decodedInput.args.getValue('to'); // ethereum address
         const amount = new FPNumber(value).toString(); // transferred amount
 
         return {

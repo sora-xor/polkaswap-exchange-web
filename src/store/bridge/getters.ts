@@ -131,10 +131,6 @@ const getters = defineGetters<BridgeState>()({
       return state.isSoraToEvm ? Operation.SubstrateOutgoing : Operation.SubstrateIncoming;
     }
   },
-  soraNetworkFee(...args): CodecString {
-    const { getters, rootState } = bridgeGetterContext(args);
-    return rootState.wallet.settings.networkFees[getters.operation] ?? ZeroStringValue;
-  },
   externalNetworkFee(...args): CodecString {
     const { state, getters } = bridgeGetterContext(args);
 
