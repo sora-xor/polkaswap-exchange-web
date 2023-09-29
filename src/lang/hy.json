@@ -545,7 +545,9 @@
         "copy": "Պատճենել ցանցի հասցեն",
         "soraAddress": "{Sora} հասցե",
         "ethereumAddress": "{Ethereum} հասցե",
-        "limitMessage": "Ներկայումս {Sora} ցանցի կայունությունն ու անվտանգությունն ապահովելու համար կամրջելու համար կա {type} {amount} {symbol} : Մենք գնահատում ենք ձեր ըմբռնումը:"
+        "limitMessage": "Ներկայումս {Sora} ցանցի կայունությունն ու անվտանգությունն ապահովելու համար կամրջելու համար կա {type} {amount} {symbol} : Մենք գնահատում ենք ձեր ըմբռնումը:",
+        "externalTransferFee": "{network} {XCM} վճար",
+        "externalTransferFeeTooltip": "Երբ դուք կամուրջ գործարք եք ուղարկում {network} ցանցին, ձեր փոխանցվող գումարից փոքր վճար է վերցվում"
     },
     "selectRegisteredAsset": {
         "title": "Ընտրեք տոկեն",

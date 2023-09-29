@@ -545,7 +545,9 @@
         "copy": "复制网络地址",
         "soraAddress": "{Sora} 地址",
         "ethereumAddress": "{Ethereum} 地址",
-        "limitMessage": "目前，有一个{type} {amount} {symbol}用于桥接，以确保 {Sora} 网络的稳定性和安全性。我们感谢您的理解。"
+        "limitMessage": "目前，有一个{type} {amount} {symbol}用于桥接，以确保 {Sora} 网络的稳定性和安全性。我们感谢您的理解。",
+        "externalTransferFee": "{network} {XCM}费用",
+        "externalTransferFeeTooltip": "当您向{network}网络发送桥接交易时，将从您传输的金额中收取少量费用"
     },
     "selectRegisteredAsset": {
         "title": "选择一个代币",

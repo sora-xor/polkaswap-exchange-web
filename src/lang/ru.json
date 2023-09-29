@@ -545,7 +545,9 @@
         "copy": "Скопировать адрес сети",
         "soraAddress": "{Sora} адрес",
         "ethereumAddress": "{Ethereum} адрес",
-        "limitMessage": "В настоящее время существует {type} {amount} {symbol} для моста, обеспечивающая стабильность и безопасность сети {Sora}. Мы ценим ваше понимание."
+        "limitMessage": "В настоящее время существует {type} {amount} {symbol} для моста, обеспечивающая стабильность и безопасность сети {Sora}. Мы ценим ваше понимание.",
+        "externalTransferFee": "{network} комиссия {XCM}",
+        "externalTransferFeeTooltip": "Когда вы отправляете транзакцию моста в сеть {network}, из суммы перевода взимается небольшая комиссия."
     },
     "selectRegisteredAsset": {
         "title": "Выбрать токен",

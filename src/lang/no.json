@@ -545,7 +545,9 @@
         "copy": "Kopier nettverksadressen",
         "soraAddress": "{Sora} adresse",
         "ethereumAddress": "{Ethereum} adresse",
-        "limitMessage": "For øyeblikket er det en {type} {amount} {symbol} for brobygging for å sikre stabiliteten og sikkerheten til {Sora} -nettverket. Vi setter pris på din forståelse."
+        "limitMessage": "For øyeblikket er det en {type} {amount} {symbol} for brobygging for å sikre stabiliteten og sikkerheten til {Sora} -nettverket. Vi setter pris på din forståelse.",
+        "externalTransferFee": "{network} {XCM} gebyr",
+        "externalTransferFeeTooltip": "Når du sender en brotransaksjon til {network} -nettverket, tas et mindre gebyr fra beløpet du overfører"
     },
     "selectRegisteredAsset": {
         "title": "Velg token",
