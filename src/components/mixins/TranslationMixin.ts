@@ -33,6 +33,7 @@ const TranslationConsts = {
   mbps: 'mbps',
   online: 'Online',
   offline: 'Offline',
+  XCM: 'XCM',
 } as const;
 
 @Component

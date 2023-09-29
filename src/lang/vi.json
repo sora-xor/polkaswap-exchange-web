@@ -545,7 +545,9 @@
         "copy": "Sao chép địa chỉ mạng",
         "soraAddress": "địa chỉ {Sora}",
         "ethereumAddress": "địa chỉ {Ethereum}",
-        "limitMessage": "Hiện tại, có một {type} {amount} {symbol} để kết nối nhằm đảm bảo tính ổn định và bảo mật của Mạng {Sora} . Chúng tôi đánh giá cao sự hiểu biết của bạn."
+        "limitMessage": "Hiện tại, có một {type} {amount} {symbol} để kết nối nhằm đảm bảo tính ổn định và bảo mật của Mạng {Sora} . Chúng tôi đánh giá cao sự hiểu biết của bạn.",
+        "externalTransferFee": "Phí {network} {XCM}",
+        "externalTransferFeeTooltip": "Khi bạn gửi giao dịch bắc cầu tới mạng {network} , số tiền bạn chuyển sẽ bị tính một khoản phí nhỏ"
     },
     "selectRegisteredAsset": {
         "title": "Chọn token",

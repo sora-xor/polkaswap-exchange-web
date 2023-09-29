@@ -545,7 +545,9 @@
         "copy": "Hálózati cím másolása",
         "soraAddress": "{Sora} cím",
         "ethereumAddress": "{Ethereum} cím",
-        "limitMessage": "Jelenleg létezik egy {type} {amount} {symbol} áthidalás, amely biztosítja a {Sora} hálózat stabilitását és biztonságát. Köszönjük megértését."
+        "limitMessage": "Jelenleg létezik egy {type} {amount} {symbol} áthidalás, amely biztosítja a {Sora} hálózat stabilitását és biztonságát. Köszönjük megértését.",
+        "externalTransferFee": "{network} {XCM} díj",
+        "externalTransferFeeTooltip": "Ha hídtranzakciót küld a {network} hálózatra, az átutalt összegből egy kisebb díjat számítanak fel"
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",

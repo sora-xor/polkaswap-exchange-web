@@ -545,7 +545,9 @@
         "copy": "Netzwerkadresse kopieren",
         "soraAddress": "{Sora} Adresse",
         "ethereumAddress": "{Ethereum} Adresse",
-        "limitMessage": "Derzeit gibt es ein {type} {amount} {symbol} für Bridging, um die Stabilität und Sicherheit des {Sora}-Netzwerks zu gewährleisten. Vielen Dank für Ihr Verständnis."
+        "limitMessage": "Derzeit gibt es ein {type} {amount} {symbol} für Bridging, um die Stabilität und Sicherheit des {Sora}-Netzwerks zu gewährleisten. Vielen Dank für Ihr Verständnis.",
+        "externalTransferFee": "{network} {XCM} -Gebühr",
+        "externalTransferFeeTooltip": "Wenn Sie eine Bridge-Transaktion an das Netzwerk {network} senden, wird eine geringe Gebühr von dem Betrag erhoben, den Sie überweisen"
     },
     "selectRegisteredAsset": {
         "title": "Wähle ein Token",

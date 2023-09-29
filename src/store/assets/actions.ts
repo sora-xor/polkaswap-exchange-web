@@ -80,7 +80,7 @@ async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Re
   const { rootState } = assetsActionContext(context);
 
   switch (rootState.web3.networkType) {
-    case BridgeNetworkType.EvmLegacy: {
+    case BridgeNetworkType.Eth: {
       return await getEthRegisteredAssets(context);
     }
     case BridgeNetworkType.Evm: {

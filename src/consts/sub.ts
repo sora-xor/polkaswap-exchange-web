@@ -74,4 +74,10 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
       [BridgeTxDirection.Incoming]: '0',
     },
   },
+  [SubNetwork.Kusama]: {
+    KSM: {
+      [BridgeTxDirection.Outgoing]: '10124190', // [TODO] check in real transfer
+      [BridgeTxDirection.Incoming]: '0',
+    },
+  },
 };

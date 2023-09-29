@@ -1,7 +1,7 @@
 import type { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
 import type { MoonpayApi, MoonpayCurrency, MoonpayTransaction } from '@/utils/moonpay';
 
-import type { BridgeHistory } from '@sora-substrate/util';
+import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 
 export type MoonpayState = {
   api: MoonpayApi;
@@ -12,12 +12,12 @@ export type MoonpayState = {
   pollingTimestamp: number;
   transactions: Array<MoonpayTransaction>;
   transactionsFetching: boolean;
-  bridgeTransactionData: Nullable<BridgeHistory>;
+  bridgeTransactionData: Nullable<EthHistory>;
   startBridgeButtonVisibility: boolean;
   currencies: Array<MoonpayCurrency>;
 };
 
 export type BridgeTxData = Partial<{
-  data: Nullable<BridgeHistory>;
+  data: Nullable<EthHistory>;
   startBridgeButtonVisibility: boolean;
 }>;
