@@ -90,6 +90,8 @@ export const ObjectInit = () => null;
 
 export const ZeroStringValue = '0';
 
+export const ApproximateSign = '~';
+
 export const MetamaskCancellationCode = 4001;
 
 export const DefaultSlippageTolerance = '0.5';
@@ -188,6 +190,7 @@ export enum Components {
   BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
   BridgeSelectAccount = 'pages/Bridge/SelectAccount',
   BridgeLinksDropdown = 'pages/Bridge/LinksDropdown',
+  BridgeLimitCard = 'pages/Bridge/LimitCard',
   // Moonpay Page
   Moonpay = 'pages/Moonpay/Moonpay',
   MoonpayNotification = 'pages/Moonpay/Notification',
@@ -229,7 +232,6 @@ export enum Components {
   // Shared Input
   TokenInput = 'shared/Input/TokenInput',
   TokenSelectButton = 'shared/Input/TokenSelectButton',
-  TokenSelectDropdown = 'shared/Input/TokenSelectDropdown',
   // Shared Dialogs
   ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
   NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',

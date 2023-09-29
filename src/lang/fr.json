@@ -545,7 +545,9 @@
         "copy": "Copier l'adresse réseau",
         "soraAddress": "{Sora} adresse",
         "ethereumAddress": "{Ethereum} adresse",
-        "limitMessage": "Actuellement, il existe un {type} {amount} {symbol} pour le pontage afin de garantir la stabilité et la sécurité du réseau {Sora}. Nous apprécions votre compréhension."
+        "limitMessage": "Actuellement, il existe un {type} {amount} {symbol} pour le pontage afin de garantir la stabilité et la sécurité du réseau {Sora}. Nous apprécions votre compréhension.",
+        "externalTransferFee": "Frais {network} {XCM}",
+        "externalTransferFeeTooltip": "Lorsque vous envoyez une transaction relais vers le réseau {network} , des frais mineurs sont prélevés sur le montant que vous transférez"
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",

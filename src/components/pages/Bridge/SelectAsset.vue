@@ -65,8 +65,10 @@ export default class BridgeSelectAsset extends Mixins(TranslationMixin, SelectAs
   get assetsList(): Array<RegisteredAccountAsset> {
     const assetsAddresses = Object.keys(this.registeredAssets);
     const excludeAddress = this.asset?.address;
+    const list = this.getAssetsWithBalances(assetsAddresses, excludeAddress);
+    const orderedList = [...list].sort(this.sortByBalance);
 
-    return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance);
+    return orderedList;
   }
 
   get filteredAssets(): Array<RegisteredAccountAsset> {

@@ -545,7 +545,9 @@
         "copy": "Salin alamat jaringan",
         "soraAddress": "{Sora} alamat",
         "ethereumAddress": "{Ethereum} alamat",
-        "limitMessage": "Saat ini, ada {type} {amount} {symbol} untuk menjembatani guna memastikan stabilitas dan keamanan Jaringan {Sora} . Kami menghargai pengertian Anda."
+        "limitMessage": "Saat ini, ada {type} {amount} {symbol} untuk menjembatani guna memastikan stabilitas dan keamanan Jaringan {Sora} . Kami menghargai pengertian Anda.",
+        "externalTransferFee": "biaya {network} {XCM}",
+        "externalTransferFeeTooltip": "Saat Anda mengirim transaksi jembatan ke jaringan {network} , sedikit biaya akan diambil dari jumlah yang Anda transfer"
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",
