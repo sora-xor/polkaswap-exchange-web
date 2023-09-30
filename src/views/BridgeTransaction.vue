@@ -346,7 +346,9 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txSoraHash(): string {
-    return this.historyItem?.hash ?? this.txSoraBlockId;
+    // don't use Sora blockId in incoming direction
+    const blockId = this.isSoraToEvm ? this.txSoraBlockId : '';
+    return this.historyItem?.hash ?? blockId;
   }
 
   get txSoraHashFormatted(): string {

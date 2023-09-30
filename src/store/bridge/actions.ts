@@ -90,7 +90,7 @@ function bridgeDataToHistoryItem(
   context: ActionContext<any, any>,
   { date = Date.now(), payload = {}, ...params } = {}
 ): IBridgeTransaction {
-  const { getters, state, rootState, rootGetters } = bridgeActionContext(context);
+  const { getters, state, rootState } = bridgeActionContext(context);
   const { isEthBridge, isEvmBridge } = getters;
   const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : BridgeTxStatus.Pending;
   const externalNetwork = rootState.web3.networkSelected as BridgeNetworkId as any;

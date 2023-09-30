@@ -71,7 +71,6 @@ class SubBridgeHistory extends SubNetworksConnector {
 
   public async updateAccountHistory(
     address: string,
-    networkFees: NetworkFeesObject,
     inProgressIds: Record<string, boolean>,
     assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>,
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
@@ -93,7 +92,7 @@ class SubBridgeHistory extends SubNetworksConnector {
 
         await this.start();
 
-        const historyItemData = await this.txDataToHistory(tx, networkFees, assetDataByAddress);
+        const historyItemData = await this.txDataToHistory(tx, assetDataByAddress);
 
         if (!historyItemData) continue;
 
@@ -113,7 +112,6 @@ class SubBridgeHistory extends SubNetworksConnector {
 
   private async txDataToHistory(
     tx: BridgeTransactionData,
-    networkFees: NetworkFeesObject,
     assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>
   ): Promise<Nullable<SubHistory>> {
     const id = tx.soraHash;
@@ -237,13 +235,18 @@ class SubBridgeHistory extends SubNetworksConnector {
               this.externalApi.events.balances.Deposit.is(event) &&
               subBridgeApi.formatAddress(event.data.who.toString()) === to
           );
-        const received = balancesDepositEvent.event.data.amount.toString();
+        const sended = FPNumber.fromCodecValue(tx.amount, asset?.decimals);
+        const received = FPNumber.fromCodecValue(
+          balancesDepositEvent.event.data.amount.toString(),
+          asset?.externalDecimals
+        );
 
         history.soraNetworkFee = soraFeeEvent.event.data[1].toString();
+        history.parachainNetworkFee = sended.sub(received).toCodecString();
         history.externalNetworkFee = ZeroStringValue;
         history.externalBlockId = blockId;
         history.externalBlockHeight = n;
-        history.amount2 = FPNumber.fromCodecValue(received, asset?.externalDecimals).toString();
+        history.amount2 = received.toString();
         history.to = formatSubAddress(tx.externalAccount, this.externalApi.registry.chainSS58 as number);
         break;
       } catch {
@@ -313,7 +316,6 @@ export const updateSubBridgeHistory =
       const {
         wallet: {
           account: { address },
-          settings: { networkFees },
         },
         web3: { networkSelected },
         bridge: { inProgressIds },
@@ -330,13 +332,7 @@ export const updateSubBridgeHistory =
         await subBridgeHistory.clearHistory(updateCallback);
       }
 
-      await subBridgeHistory.updateAccountHistory(
-        address,
-        networkFees,
-        inProgressIds,
-        assetDataByAddress,
-        updateCallback
-      );
+      await subBridgeHistory.updateAccountHistory(address, inProgressIds, assetDataByAddress, updateCallback);
     } catch (error) {
       console.error(error);
     }

@@ -561,12 +561,15 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         });
     }
 
+    const sended = FPNumber.fromCodecValue(tx.amount as string, this.asset.externalDecimals);
     const received = FPNumber.fromCodecValue(amount, this.asset.externalDecimals);
     const amount2 = received.toString();
+    const parachainNetworkFee = sended.sub(received).toCodecString();
 
     this.updateTransactionParams(id, {
       amount2,
       externalNetworkFee: ZeroStringValue,
+      parachainNetworkFee,
     });
   }
 }
