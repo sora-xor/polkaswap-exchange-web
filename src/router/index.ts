@@ -270,7 +270,7 @@ router.beforeEach((to, from, next) => {
     }
   }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (BridgeChildPages.includes(current) && isLoggedIn && !store.getters.web3.externalAccount) {
+    if (BridgeChildPages.includes(current) && isLoggedIn && !store.getters.bridge.externalAccount) {
       setRoute(PageNames.Bridge);
       return;
     }

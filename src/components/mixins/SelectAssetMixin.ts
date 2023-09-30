@@ -4,6 +4,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import AssetsSearchMixin from '@/components/mixins/AssetsSearchMixin';
 import { getter } from '@/store/decorators';
+import { sortAssets } from '@/utils';
 
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -25,7 +26,7 @@ export default class SelectAsset extends Mixins(mixins.DialogMixin, AssetsSearch
     const emptyABalance = isEmpty(a);
     const emptyBBalance = isEmpty(b);
 
-    if (emptyABalance === emptyBBalance) return 0;
+    if (emptyABalance === emptyBBalance) return sortAssets(a, b);
 
     return emptyABalance && !emptyBBalance ? 1 : -1;
   }

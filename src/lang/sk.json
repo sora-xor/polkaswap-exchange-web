@@ -545,7 +545,9 @@
         "copy": "Skopírujte sieťovú adresu",
         "soraAddress": "{Sora} adresa",
         "ethereumAddress": "{Ethereum} adresa",
-        "limitMessage": "V súčasnosti existuje {type} {amount} {symbol} na premostenie na zaistenie stability a bezpečnosti siete {Sora}. Ďakujeme za pochopenie."
+        "limitMessage": "V súčasnosti existuje {type} {amount} {symbol} na premostenie na zaistenie stability a bezpečnosti siete {Sora}. Ďakujeme za pochopenie.",
+        "externalTransferFee": "{network} poplatok {XCM}",
+        "externalTransferFeeTooltip": "Keď odošlete preklenovaciu transakciu do siete {network} , zo sumy, ktorú prenášate, sa účtuje malý poplatok"
     },
     "selectRegisteredAsset": {
         "title": "Vybrať token",

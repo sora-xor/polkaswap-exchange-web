@@ -9,13 +9,13 @@ import { EthBridgeOutgoingReducer, EthBridgeIncomingReducer } from '@/utils/brid
 import type { EthBridgeReducer } from '@/utils/bridge/eth/classes/reducers';
 import { getTransaction, updateTransaction } from '@/utils/bridge/eth/utils';
 
-import type { BridgeHistory } from '@sora-substrate/util';
+import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 
-interface EthBridgeConstructorOptions extends IBridgeConstructorOptions<BridgeHistory, EthBridgeReducer> {
+interface EthBridgeConstructorOptions extends IBridgeConstructorOptions<EthHistory, EthBridgeReducer> {
   getBridgeHistoryInstance: GetBridgeHistoryInstance<EthBridgeHistory>;
 }
 
-type EthBridge = Bridge<BridgeHistory, EthBridgeReducer, EthBridgeConstructorOptions>;
+type EthBridge = Bridge<EthHistory, EthBridgeReducer, EthBridgeConstructorOptions>;
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
@@ -41,11 +41,11 @@ const ethBridge: EthBridge = new Bridge({
   getTransaction,
   updateTransaction,
   // ui integration
-  showNotification: (tx: BridgeHistory) => store.commit.bridge.setNotificationData(tx as any),
+  showNotification: (tx: EthHistory) => store.commit.bridge.setNotificationData(tx as any),
   addTransactionToProgress: (id: string) => store.commit.bridge.addTxIdInProgress(id),
   removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
   updateHistory: () => store.dispatch.bridge.updateInternalHistory(),
-  getActiveTransaction: () => store.getters.bridge.historyItem as BridgeHistory,
+  getActiveTransaction: () => store.getters.bridge.historyItem as EthHistory,
   // transaction signing
   beforeTransactionSign: () => store.dispatch.wallet.transactions.beforeTransactionSign(),
   // custom
