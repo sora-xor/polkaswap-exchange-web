@@ -9,7 +9,7 @@
         draggable="false"
         class="unselectable sora-card-hub-image"
       />
-      <p class="sora-card-hub-text">{{ t('card.cardHub.comingSoon') }}</p>
+      <formatted-amount class="sora-card-hub-balance" is-fiat-value :value="balance" value-can-be-hidden />
       <div class="sora-card-hub-options">
         <s-button
           v-for="option in options"
@@ -31,7 +31,6 @@
         <s-input :placeholder="t('card.cardHub.ibanLabel')" :value="iban" readonly />
         <s-icon name="basic-copy-24" @click.native="handleCopyIban" />
       </div>
-      {{ balance / 100 }}
       <div class="sora-card-hub-logout" @click="logoutFromSoraCard">
         <span>{{ t('card.cardHub.logout') }}</span>
         <s-icon name="arrows-chevron-right-rounded-24" size="18" />
@@ -41,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -66,7 +65,11 @@ enum Option {
 
 type Options = { icon: OptionsIcon; type: Option };
 
-@Component
+@Component({
+  components: {
+    FormattedAmount: components.FormattedAmount,
+  },
+})
 export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @state.soraCard.userInfo userInfo!: UserInfo;
 
@@ -81,8 +84,9 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
     return this.userInfo.iban;
   }
 
-  get balance(): Nullable<number> {
-    return this.userInfo.availableBalance;
+  get balance(): string {
+    const balance = this.userInfo.availableBalance;
+    return balance ? `${balance / 100}` : '';
   }
 
   handleClick(type: Option): void {}
@@ -120,6 +124,14 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
     &-title {
       margin-bottom: $basic-spacing;
     }
+    &-balance {
+      color: var(--s-color-base-content-primary);
+      font-size: 28px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      letter-spacing: -0.56px;
+    }
     &-options {
       .icon {
         margin-right: 4px;
@@ -131,14 +143,6 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
       }
     }
     &-image {
-      margin-bottom: $basic-spacing;
-    }
-    &-text {
-      color: var(--s-color-base-content-secondary);
-      text-align: center;
-      font-size: var(--s-font-size-big);
-      font-weight: 500;
-      letter-spacing: -0.3px;
       margin-bottom: $basic-spacing;
     }
     &-button {

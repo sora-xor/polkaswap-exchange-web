@@ -57,6 +57,7 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.getUserKycAttempt private getUserKycAttempt!: AsyncFnWithoutArgs;
   @action.soraCard.getUserIban private getUserIban!: AsyncFnWithoutArgs;
+  @action.soraCard.getFees private getFees!: AsyncFnWithoutArgs;
   @action.soraCard.subscribeToTotalXorBalance private subscribeToTotalXorBalance!: AsyncFnWithoutArgs;
   @action.soraCard.unsubscribeFromTotalXorBalance private unsubscribeFromTotalXorBalance!: AsyncFnWithoutArgs;
   @action.pool.subscribeOnAccountLiquidityList private subscribeOnList!: AsyncFnWithoutArgs;
@@ -190,8 +191,9 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
     await this.unsubscribeFromTotalXorBalance();
   }
 
-  mounted(): void {
+  async mounted(): Promise<void> {
     this.checkKyc();
+    await this.getFees();
   }
 }
 </script>

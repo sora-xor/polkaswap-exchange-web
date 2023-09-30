@@ -1,6 +1,6 @@
 import { defineMutations } from 'direct-vuex';
 
-import { AttemptCounter, KycStatus, VerificationStatus } from '@/types/card';
+import { AttemptCounter, KycStatus, VerificationStatus, Fees } from '@/types/card';
 
 import type { SoraCardState } from './types';
 
@@ -37,6 +37,10 @@ const mutations = defineMutations<SoraCardState>()({
     state.attemptCounter.hasFreeAttempts = attemptCounter.hasFreeAttempts;
     state.attemptCounter.freeAttemptsLeft = attemptCounter.freeAttemptsLeft;
     state.attemptCounter.totalFreeAttempts = attemptCounter.totalFreeAttempts;
+  },
+  setFees(state, fees: Fees) {
+    state.fees.application = fees.application;
+    state.fees.retry = fees.retry;
   },
   setWillToPassKycAgain(state, will: boolean) {
     state.wantsToPassKycAgain = will;

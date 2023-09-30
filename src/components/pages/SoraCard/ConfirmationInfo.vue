@@ -22,7 +22,7 @@
           {{ tc('card.rejectCount', freeAttemptsLeft, { count: freeAttemptsLeft }) }}
         </h4>
         <p class="tos__disclaimer-paragraph">
-          {{ t('card.rejectionPriceAttemptDisclaimer', { 0: kycAttemptCost }) }}
+          {{ t('card.rejectionPriceAttemptDisclaimer', { 0: retryFee }) }}
         </p>
         <div class="tos__disclaimer-warning icon">
           <s-icon name="notifications-alert-triangle-24" size="28px" />
@@ -58,7 +58,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Links } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { AttemptCounter, VerificationStatus } from '@/types/card';
+import { AttemptCounter, Fees, VerificationStatus } from '@/types/card';
 import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
 
 const pendingTitle = 'card.statusPendingTitle';
@@ -67,7 +67,7 @@ const pendingIcon = 'time-time-24';
 
 @Component
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  @state.soraCard.kycAttemptCost kycAttemptCost!: string;
+  @state.soraCard.fees fees!: Fees;
   @state.soraCard.attemptCounter attemptCounter!: AttemptCounter;
   @state.soraCard.rejectReason rejectReason!: string;
 
@@ -85,6 +85,10 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
       return `${this.t('card.statusRejectReason')}: ${this.rejectReason}`;
     }
     return this.t('card.statusRejectText');
+  }
+
+  get retryFee(): Nullable<string> {
+    return this.fees.retry;
   }
 
   get freeAttemptsLeft() {

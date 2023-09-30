@@ -1,11 +1,10 @@
 import { FPNumber } from '@sora-substrate/util';
 
-import { KycStatus, VerificationStatus, UserInfo, AttemptCounter } from '@/types/card';
+import { KycStatus, VerificationStatus, UserInfo, AttemptCounter, Fees } from '@/types/card';
 
 import type { Subscription } from 'rxjs';
 
 export type SoraCardState = {
-  kycAttemptCost: string;
   kycStatus: Nullable<KycStatus>;
   verificationStatus: Nullable<VerificationStatus>;
   euroBalance: string;
@@ -18,4 +17,5 @@ export type SoraCardState = {
   rejectReason: Nullable<string>;
   userInfo: UserInfo;
   attemptCounter: AttemptCounter;
+  fees: Fees;
 };

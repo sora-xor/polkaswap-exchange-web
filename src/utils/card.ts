@@ -1,10 +1,11 @@
+import { FPNumber } from '@sora-substrate/math';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 
 import store from '@/store';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
-import { AttemptCounter, KycStatus, Status, UserInfo, VerificationStatus } from '../types/card';
+import { AttemptCounter, Fees, KycStatus, Status, UserInfo, VerificationStatus } from '../types/card';
 
 const soraCardTestBaseEndpoint = 'https://backend.dev.sora-card.tachi.soramitsu.co.jp';
 const soraCardProdBaseEndpoint = 'https://backend.sora-card.odachi.soramitsu.co.jp';
@@ -15,6 +16,7 @@ const SoraProxyEndpoints = {
     kycAttemptCountEndpoint: `${soraCardTestBaseEndpoint}/kyc-attempt-count`,
     priceOracleEndpoint: `${soraCardTestBaseEndpoint}/prices/xor_euro`,
     ibanEndpoint: `${soraCardTestBaseEndpoint}/ibans`,
+    fees: `${soraCardTestBaseEndpoint}/fees`,
     x1TransactionStatus: `${soraCardTestBaseEndpoint}/ws/x1-payment-status`,
     newAccessTokenEndpoint: 'https://api-auth-test.soracard.com/RequestNewAccessToken',
   },
@@ -24,6 +26,7 @@ const SoraProxyEndpoints = {
     kycAttemptCountEndpoint: `${soraCardProdBaseEndpoint}/kyc-attempt-count`,
     priceOracleEndpoint: `${soraCardProdBaseEndpoint}/prices/xor_euro`,
     ibanEndpoint: `${soraCardProdBaseEndpoint}/ibans`,
+    fees: `${soraCardProdBaseEndpoint}/fees`,
     x1TransactionStatus: `${soraCardProdBaseEndpoint}/ws/x1-payment-status`,
     newAccessTokenEndpoint: 'https://api-auth.soracard.com/RequestNewAccessToken',
   },
@@ -152,7 +155,11 @@ async function getUserStatus(accessToken: string): Promise<Status> {
 
     const verificationStatus: VerificationStatus = lastRecord.verification_status;
     const kycStatus: KycStatus = lastRecord.kyc_status;
-    const rejectReason: string = lastRecord.additional_description;
+    const rejectReasons = lastRecord.rejection_reasons.map((reason) => reason.Description);
+
+    console.log('rejectReasons', rejectReasons);
+
+    console.log('lastRecord', lastRecord);
 
     if (Object.keys(VerificationStatus).includes(verificationStatus) && Object.keys(KycStatus).includes(kycStatus)) {
       return { verificationStatus, kycStatus, rejectReason };
@@ -191,6 +198,25 @@ export const getXorPerEuroRatio = async () => {
     return parsedData.price;
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const getFees = async (): Promise<Fees> => {
+  const soraNetwork = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+
+  try {
+    const data = await fetch(getSoraProxyEndpoints(soraNetwork).fees);
+    const fees = await data.json();
+
+    const value = new FPNumber(fees.retry_fee);
+
+    console.log('value.toLocaleString(', value.toLocaleString());
+    console.log('value.toLocaleString(', value.dp(3).toLocaleString());
+
+    return { application: fees.application_fee, retry: fees.retry_fee };
+  } catch (error) {
+    console.error(error);
+    return { application: null, retry: null };
   }
 };
 

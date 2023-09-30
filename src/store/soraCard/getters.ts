@@ -17,31 +17,46 @@ const getters = defineGetters<SoraCardState>()({
     return euroBalance >= 95;
   },
   currentStatus(...args): Nullable<VerificationStatus> {
-    // CHECKME: carefully check what each status defines. // TODO: [CARD] move this logic to backend
     const { state } = soraCardGetterContext(args);
     const { kycStatus, verificationStatus } = state;
 
-    if ([kycStatus, verificationStatus].includes(VerificationStatus.Rejected)) {
-      return VerificationStatus.Rejected;
-    }
-
-    if (!kycStatus) return null;
-    if (!verificationStatus) return null;
-    if (kycStatus === KycStatus.Started) return null;
-
-    if (
-      [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
-      verificationStatus === VerificationStatus.Pending
-    ) {
-      return VerificationStatus.Pending;
-    }
-
-    if (
-      [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
-      verificationStatus === VerificationStatus.Accepted
-    ) {
+    if (verificationStatus === VerificationStatus.Accepted) {
       return VerificationStatus.Accepted;
+    } else if (kycStatus === KycStatus.Completed) {
+      return VerificationStatus.Pending;
+    } else if (kycStatus === KycStatus.Retry) {
+      return VerificationStatus.Rejected;
+    } else if (kycStatus === KycStatus.Rejected) {
+      return VerificationStatus.Rejected;
+    } else if (kycStatus === KycStatus.Started) {
+      return null;
+    } else if (kycStatus === KycStatus.Failed) {
+      return null;
+    } else {
+      return null;
     }
+
+    // if ([kycStatus, verificationStatus].includes(VerificationStatus.Rejected)) {
+    //   return VerificationStatus.Rejected;
+    // }
+
+    // if (!kycStatus) return null;
+    // if (!verificationStatus) return null;
+    // if (kycStatus === KycStatus.Started) return null;
+
+    // if (
+    //   [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
+    //   verificationStatus === VerificationStatus.Pending
+    // ) {
+    //   return VerificationStatus.Pending;
+    // }
+
+    // if (
+    //   [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
+    //   verificationStatus === VerificationStatus.Accepted
+    // ) {
+    //   return VerificationStatus.Accepted;
+    // }
   },
 });
 
