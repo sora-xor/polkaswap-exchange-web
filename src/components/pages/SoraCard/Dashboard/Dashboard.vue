@@ -9,7 +9,7 @@
         draggable="false"
         class="unselectable sora-card-hub-image"
       />
-      <formatted-amount class="sora-card-hub-balance" is-fiat-value :value="balance" value-can-be-hidden />
+      <formatted-amount class="sora-card-hub-balance" :value="balance" fiatSign="€" value-can-be-hidden is-fiat-value />
       <div class="sora-card-hub-options">
         <s-button
           v-for="option in options"
@@ -72,6 +72,7 @@ type Options = { icon: OptionsIcon; type: Option };
 })
 export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @state.soraCard.userInfo userInfo!: UserInfo;
+  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
 
   options: Array<Options> = [
     { icon: OptionsIcon.TopUp, type: Option.TopUp },
@@ -81,7 +82,8 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
   ];
 
   get iban(): Nullable<string> {
-    return this.userInfo.iban;
+    const { iban } = this.userInfo;
+    return this.shouldBalanceBeHidden ? `${iban?.substring(0, 4)} ···· ${iban?.slice(-11)}` : this.userInfo.iban;
   }
 
   get balance(): string {
@@ -108,10 +110,28 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
 }
 
 .sora-card {
-  &-hub-info {
-    &-iban {
-      .el-input__inner {
-        font-weight: 500;
+  &-hub {
+    &-balance {
+      .formatted-amount {
+        font-size: 28px;
+        letter-spacing: -0.56px;
+
+        &__value {
+          color: var(--s-color-base-content-primary);
+          font-size: 28px;
+          font-weight: 700;
+
+          .formatted-amount__prefix {
+            padding-right: 0;
+          }
+        }
+      }
+    }
+    &-info {
+      &-iban {
+        .el-input__inner {
+          font-weight: 500;
+        }
       }
     }
   }
@@ -124,14 +144,7 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
     &-title {
       margin-bottom: $basic-spacing;
     }
-    &-balance {
-      color: var(--s-color-base-content-primary);
-      font-size: 28px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: normal;
-      letter-spacing: -0.56px;
-    }
+
     &-options {
       .icon {
         margin-right: 4px;

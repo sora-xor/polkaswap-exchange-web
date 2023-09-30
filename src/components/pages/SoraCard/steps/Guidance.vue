@@ -74,6 +74,7 @@ export default class Guidance extends Mixins(TranslationMixin, mixins.LoadingMix
   }
 
   get retryFee(): Nullable<string> {
+    // TODO: translate based on locale
     return this.fees.retry;
   }
 

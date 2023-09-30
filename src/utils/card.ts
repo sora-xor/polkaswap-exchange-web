@@ -157,7 +157,7 @@ async function getUserStatus(accessToken: string): Promise<Status> {
     const kycStatus: KycStatus = lastRecord.kyc_status;
     let rejectReasons = [];
 
-    if (lastRecord.rejection_reasons.length) {
+    if (lastRecord.rejection_reasons && lastRecord.rejection_reasons.length) {
       rejectReasons = lastRecord.rejection_reasons.map((reason) => reason.Description);
     }
 
@@ -207,11 +207,6 @@ export const getFees = async (): Promise<Fees> => {
   try {
     const data = await fetch(getSoraProxyEndpoints(soraNetwork).fees);
     const fees = await data.json();
-
-    const value = new FPNumber(fees.retry_fee);
-
-    console.log('value.toLocaleString(', value.toLocaleString());
-    console.log('value.toLocaleString(', value.dp(3).toLocaleString());
 
     return { application: fees.application_fee, retry: fees.retry_fee };
   } catch (error) {

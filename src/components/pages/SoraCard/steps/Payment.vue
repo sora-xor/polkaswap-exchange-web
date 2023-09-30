@@ -17,6 +17,12 @@
         <span class="text">{{ t(item.text) }}</span>
       </s-button>
     </div>
+    <div>or</div>
+    <div class="sora-card__application-fee-disclaimer">
+      <p>{{ applicationFeeText }}</p>
+      <p>One-time fee to issue a card</p>
+      <p>Note: paid card issuance will be available at a later stage.</p>
+    </div>
     <x1-dialog :visible.sync="showX1Dialog" />
   </div>
 </template>
@@ -29,6 +35,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
+import { Fees } from '@/types/card';
 
 import type { FPNumber } from '@sora-substrate/math';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -52,6 +59,7 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
   @state.soraCard.euroBalance private euroBalance!: string;
   @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
   @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
+  @state.soraCard.fees fees!: Fees;
 
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
@@ -83,6 +91,15 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
       return this.loading;
     }
     return this.loading || !this.wasEuroBalanceLoaded;
+  }
+
+  get applicationFee(): Nullable<string> {
+    return this.fees.application;
+  }
+
+  get applicationFeeText(): string {
+    // TODO: add localise
+    return `€${this.applicationFee} Issuance fee`;
   }
 
   private openX1(): void {
@@ -126,6 +143,27 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
       margin: 0 80px;
       text-align: center;
       margin-bottom: $inner-spacing-big;
+    }
+  }
+  &__application-fee-disclaimer {
+    background-color: var(--s-color-base-border-primary);
+    padding: 16px;
+    margin-top: var(--s-basic-spacing);
+    border-radius: calc(var(--s-border-radius-mini) / 2);
+    width: 100%;
+
+    p:nth-child(1) {
+      font-size: var(--s-font-size-big);
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+    p:nth-child(2) {
+      font-size: var(--s-font-size-small);
+      margin-bottom: 4px;
+    }
+    p:nth-child(3) {
+      font-size: var(--s-font-size-small);
+      color: #efac47;
     }
   }
   &__btn {
