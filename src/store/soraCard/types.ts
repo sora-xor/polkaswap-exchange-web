@@ -14,7 +14,7 @@ export type SoraCardState = {
   totalXorBalanceUpdates: Nullable<Subscription>;
   authLogin: any;
   wantsToPassKycAgain: boolean;
-  rejectReason: Nullable<string>;
+  rejectReasons: Array<string>;
   userInfo: UserInfo;
   attemptCounter: AttemptCounter;
   fees: Fees;

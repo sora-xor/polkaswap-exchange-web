@@ -29,7 +29,7 @@ export enum CardUIViews {
 export interface Status {
   verificationStatus: Nullable<VerificationStatus>;
   kycStatus: Nullable<KycStatus>;
-  rejectReason?: Nullable<string>;
+  rejectReasons?: Array<string>;
 }
 
 export interface UserInfo {

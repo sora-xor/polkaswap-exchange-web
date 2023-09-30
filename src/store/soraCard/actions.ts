@@ -71,12 +71,12 @@ const actions = defineActions({
   async getUserStatus(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
 
-    const { kycStatus, verificationStatus, rejectReason }: Status = await defineUserStatus();
+    const { kycStatus, verificationStatus, rejectReasons }: Status = await defineUserStatus();
 
     commit.setKycStatus(kycStatus);
     commit.setVerificationStatus(verificationStatus);
 
-    if (rejectReason) commit.setRejectReason(rejectReason);
+    if (rejectReasons) commit.setRejectReason(rejectReasons);
   },
 
   async initPayWingsAuthSdk(context): Promise<void> {

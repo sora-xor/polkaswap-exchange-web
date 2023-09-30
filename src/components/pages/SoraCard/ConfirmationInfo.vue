@@ -69,7 +69,7 @@ const pendingIcon = 'time-time-24';
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @state.soraCard.fees fees!: Fees;
   @state.soraCard.attemptCounter attemptCounter!: AttemptCounter;
-  @state.soraCard.rejectReason rejectReason!: string;
+  @state.soraCard.rejectReasons rejectReasons!: Array<string>;
 
   @getter.soraCard.currentStatus currentStatus!: VerificationStatus;
 
@@ -81,8 +81,9 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   VerificationStatus = VerificationStatus;
 
   private get rejectedText(): string {
-    if (this.currentStatus === VerificationStatus.Rejected && this.rejectReason) {
-      return `${this.t('card.statusRejectReason')}: ${this.rejectReason}`;
+    if (this.currentStatus === VerificationStatus.Rejected && this.rejectReasons.length) {
+      // TODO: list rejection reasons
+      return `${this.t('card.statusRejectReason')}: ${this.rejectReasons.map((reason) => reason)}`;
     }
     return this.t('card.statusRejectText');
   }

@@ -102,9 +102,9 @@ export async function defineUserStatus(): Promise<Status> {
     }
   }
 
-  const { kycStatus, verificationStatus, rejectReason } = await getUserStatus(sessionAccessToken);
+  const { kycStatus, verificationStatus, rejectReasons } = await getUserStatus(sessionAccessToken);
 
-  return { kycStatus, verificationStatus, rejectReason };
+  return { kycStatus, verificationStatus, rejectReasons };
 }
 
 export async function getUpdatedJwtPair(refreshToken: string): Promise<string | null> {
@@ -155,14 +155,14 @@ async function getUserStatus(accessToken: string): Promise<Status> {
 
     const verificationStatus: VerificationStatus = lastRecord.verification_status;
     const kycStatus: KycStatus = lastRecord.kyc_status;
-    const rejectReasons = lastRecord.rejection_reasons.map((reason) => reason.Description);
+    let rejectReasons = [];
 
-    console.log('rejectReasons', rejectReasons);
-
-    console.log('lastRecord', lastRecord);
+    if (lastRecord.rejection_reasons.length) {
+      rejectReasons = lastRecord.rejection_reasons.map((reason) => reason.Description);
+    }
 
     if (Object.keys(VerificationStatus).includes(verificationStatus) && Object.keys(KycStatus).includes(kycStatus)) {
-      return { verificationStatus, kycStatus, rejectReason };
+      return { verificationStatus, kycStatus, rejectReasons };
     }
 
     return emptyStatusFields();

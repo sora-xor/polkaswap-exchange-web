@@ -45,8 +45,8 @@ const mutations = defineMutations<SoraCardState>()({
   setWillToPassKycAgain(state, will: boolean) {
     state.wantsToPassKycAgain = will;
   },
-  setRejectReason(state, rejectReason: string) {
-    state.rejectReason = rejectReason;
+  setRejectReason(state, rejectReasons: Array<string>) {
+    state.rejectReasons = rejectReasons;
   },
   setUserIban(state, iban: Nullable<string>) {
     state.userInfo.iban = iban;
