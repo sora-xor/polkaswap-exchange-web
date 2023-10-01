@@ -43,7 +43,9 @@ export class SubAdapter {
 
   public async connect(): Promise<void> {
     if (!this.connected && !this.connection.loading && this.endpoint) {
+      console.info(`[${this.subNetwork}] Connection request to node: ${this.endpoint}`);
       await this.connection.open(this.endpoint);
+      console.info(`[${this.subNetwork}] Connected to node: ${this.endpoint}`);
     }
     await this.api.isReady;
   }
@@ -51,6 +53,7 @@ export class SubAdapter {
   public async stop(): Promise<void> {
     if (this.connected) {
       await this.connection.close();
+      console.info(`[${this.subNetwork}] Disconnected from node: ${this.endpoint}`);
     }
   }
 
@@ -66,7 +69,9 @@ export class SubAdapter {
   }
 
   public async getBlockNumber(): Promise<number> {
-    await this.connect();
+    if (!this.connected) return 0;
+
+    await this.api.isReady;
 
     const result = await this.api.query.system.number();
 
@@ -74,9 +79,9 @@ export class SubAdapter {
   }
 
   protected async getAccountBalance(accountAddress: string): Promise<CodecString> {
-    if (!accountAddress) return ZeroStringValue;
+    if (!(this.connected && accountAddress)) return ZeroStringValue;
 
-    await this.connect();
+    await this.api.isReady;
 
     const accountInfo = await this.api.query.system.account(accountAddress);
     const accountBalance = formatBalance(accountInfo.data);
@@ -108,7 +113,9 @@ export class SubAdapter {
 
   /* [Substrate 5] Runtime call transactionPaymentApi */
   public async getNetworkFee(asset: RegisteredAsset): Promise<CodecString> {
-    await this.connect();
+    if (!this.connected) return ZeroStringValue;
+
+    await this.api.isReady;
 
     const decimals = this.api.registry.chainDecimals[0];
     const tx = this.getTransferExtrinsic(asset, '', ZeroStringValue);

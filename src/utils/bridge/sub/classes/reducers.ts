@@ -68,6 +68,17 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
 
     return bridgeProxyEvent.event.data[0].toString();
   }
+
+  async saveParachainBlock(id: string): Promise<void> {
+    // get current sora parachain block number
+    const parachainStartBlock = (await this.connector.parachainAdapter.api.query.system.number()).toNumber();
+    // update history data
+    this.updateTransactionParams(id, {
+      payload: {
+        parachainStartBlock,
+      },
+    });
+  }
 }
 
 export class SubBridgeIncomingReducer extends SubBridgeReducer {
@@ -119,14 +130,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     await this.connector.start();
     // sign transaction
     await this.connector.networkAdapter.transfer(asset, tx.to as string, tx.amount as string, id);
-    // store sora parachain block number when tx was signed in external network
-    const parachainStartBlock = (await this.connector.parachainAdapter.api.query.system.number()).toNumber();
-    // update history to change tx status in ui
-    this.updateTransactionParams(id, {
-      payload: {
-        parachainStartBlock,
-      },
-    });
+    // store sora parachain block number when tx was signed
+    await this.saveParachainBlock(id);
   }
 
   private async updateTxSigningData(id: string): Promise<void> {
@@ -391,11 +396,12 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     this.asset = { ...asset };
 
     if (tx.txId) return;
-    // transaction not signed
-    await this.beforeSign(id);
+    // open connections
+    await this.connector.start();
+    // sign transaction
     await subBridgeApi.transfer(asset, tx.to as string, tx.amount as string, tx.externalNetwork as SubNetwork, id);
-    // update history to change tx status in ui
-    this.updateHistory();
+    // store sora parachain block number when tx was signed
+    await this.saveParachainBlock(id);
   }
 
   private async waitForSoraHashAndNonces(id: string): Promise<void> {
