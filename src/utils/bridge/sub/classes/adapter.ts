@@ -66,8 +66,6 @@ export class SubAdapter {
   }
 
   public async getBlockNumber(): Promise<number> {
-    if (!this.connected) return 0;
-
     await this.connect();
 
     const result = await this.api.query.system.number();
@@ -76,7 +74,7 @@ export class SubAdapter {
   }
 
   protected async getAccountBalance(accountAddress: string): Promise<CodecString> {
-    if (!(this.connected && accountAddress)) return ZeroStringValue;
+    if (!accountAddress) return ZeroStringValue;
 
     await this.connect();
 
@@ -110,8 +108,6 @@ export class SubAdapter {
 
   /* [Substrate 5] Runtime call transactionPaymentApi */
   public async getNetworkFee(asset: RegisteredAsset): Promise<CodecString> {
-    if (!this.connected) return ZeroStringValue;
-
     await this.connect();
 
     const decimals = this.api.registry.chainDecimals[0];
@@ -124,8 +120,6 @@ export class SubAdapter {
 
 class SoraParachainAdapter extends SubAdapter {
   public async getAssetMinimumAmount(assetAddress: string): Promise<CodecString> {
-    if (!this.connected) return ZeroStringValue;
-
     await this.connect();
 
     const value = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(assetAddress, this.api);
