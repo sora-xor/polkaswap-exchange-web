@@ -42,10 +42,10 @@ export class SubAdapter {
   }
 
   public async connect(): Promise<void> {
-    if (!this.connected && this.endpoint) {
+    if (!this.connected && !this.connection.loading && this.endpoint) {
       await this.connection.open(this.endpoint);
-      await this.api.isReady;
     }
+    await this.api.isReady;
   }
 
   public async stop(): Promise<void> {
@@ -68,7 +68,7 @@ export class SubAdapter {
   public async getBlockNumber(): Promise<number> {
     if (!this.connected) return 0;
 
-    await this.api.isReady;
+    await this.connect();
 
     const result = await this.api.query.system.number();
 
@@ -78,7 +78,7 @@ export class SubAdapter {
   protected async getAccountBalance(accountAddress: string): Promise<CodecString> {
     if (!(this.connected && accountAddress)) return ZeroStringValue;
 
-    await this.api.isReady;
+    await this.connect();
 
     const accountInfo = await this.api.query.system.account(accountAddress);
     const accountBalance = formatBalance(accountInfo.data);
@@ -112,7 +112,7 @@ export class SubAdapter {
   public async getNetworkFee(asset: RegisteredAsset): Promise<CodecString> {
     if (!this.connected) return ZeroStringValue;
 
-    await this.api.isReady;
+    await this.connect();
 
     const decimals = this.api.registry.chainDecimals[0];
     const tx = this.getTransferExtrinsic(asset, '', ZeroStringValue);

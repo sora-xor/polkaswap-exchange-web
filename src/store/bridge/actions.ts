@@ -461,6 +461,7 @@ const actions = defineActions({
 
     if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
       try {
+        await subBridgeConnector.parachainAdapter.connect();
         const value = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(
           getters.asset.address,
           subBridgeConnector.parachainAdapter.api
