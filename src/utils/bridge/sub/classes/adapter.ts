@@ -122,6 +122,18 @@ export class SubAdapter {
   }
 }
 
+class SoraParachainAdapter extends SubAdapter {
+  public async getAssetMinimumAmount(assetAddress: string): Promise<CodecString> {
+    if (!this.connected) return ZeroStringValue;
+
+    await this.connect();
+
+    const value = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(assetAddress, this.api);
+
+    return value;
+  }
+}
+
 class KusamaAdapter extends SubAdapter {
   public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
     return await this.getAccountBalance(accountAddress);
@@ -179,8 +191,13 @@ class KusamaAdapter extends SubAdapter {
     try {
       return await super.getNetworkFee(asset);
     } catch {
-      // Hardcoded value for Kusama - 0.0007 KSM
-      return '700000000';
+      switch (this.subNetwork) {
+        case SubNetwork.Rococo:
+          return '125810197';
+        default:
+          // Hardcoded value for Kusama - 0.0007 KSM
+          return '700000000';
+      }
     }
   }
 
@@ -206,7 +223,7 @@ export class SubNetworksConnector {
   public network!: SubNetwork;
   public parachainNetwork!: SubNetwork;
   public networkAdapter!: SubAdapter;
-  public parachainAdapter!: SubAdapter;
+  public parachainAdapter!: SoraParachainAdapter;
   public parachainId!: number;
 
   public static endpoints: SubNetworkApps = {};
@@ -214,11 +231,11 @@ export class SubNetworksConnector {
   public readonly adapters = {
     [SubNetwork.Rococo]: () => new KusamaAdapter(SubNetwork.Rococo),
     [SubNetwork.Kusama]: () => new KusamaAdapter(SubNetwork.Kusama),
-    [SubNetwork.RococoSora]: () => new SubAdapter(SubNetwork.RococoSora),
-    [SubNetwork.KusamaSora]: () => new SubAdapter(SubNetwork.KusamaSora),
+    [SubNetwork.RococoSora]: () => new SoraParachainAdapter(SubNetwork.RococoSora),
+    [SubNetwork.KusamaSora]: () => new SoraParachainAdapter(SubNetwork.KusamaSora),
   };
 
-  public getAdapterForNetwork(network: SubNetwork): SubAdapter {
+  public getAdapterForNetwork<T>(network: SubNetwork): T {
     if (!(network in this.adapters)) {
       throw new Error(`[${this.constructor.name}] Adapter for "${network}" network not implemented`);
     }

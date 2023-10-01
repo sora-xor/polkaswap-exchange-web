@@ -240,9 +240,13 @@ class SubBridgeHistory extends SubNetworksConnector {
           balancesDepositEvent.event.data.amount.toString(),
           asset?.externalDecimals
         );
+        const parachainNetworkFee = new FPNumber(
+          sended.sub(received).toString(),
+          asset?.externalDecimals
+        ).toCodecString();
 
         history.soraNetworkFee = soraFeeEvent.event.data[1].toString();
-        history.parachainNetworkFee = sended.sub(received).toCodecString();
+        history.parachainNetworkFee = parachainNetworkFee;
         history.externalNetworkFee = ZeroStringValue;
         history.externalBlockId = blockId;
         history.externalBlockHeight = n;
@@ -293,7 +297,7 @@ class SubBridgeHistory extends SubNetworksConnector {
           history.externalNetworkFee = feeEvent.event.data[1].toString();
           history.externalBlockId = blockId;
           history.externalBlockHeight = n;
-          history.to = formatSubAddress(signer, this.externalApi.registry.chainSS58 as number);
+          history.to = formatSubAddress(signer, this.soraApi.registry.chainSS58 as number);
           return;
         } catch {
           continue;

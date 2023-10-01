@@ -100,7 +100,7 @@ function bridgeDataToHistoryItem(
     ? BridgeNetworkType.Evm
     : BridgeNetworkType.Sub;
 
-  return {
+  const data = {
     type: (params as any).type ?? getters.operation,
     amount: (params as any).amount ?? state.amountSend,
     amount2: (params as any).amount2 ?? state.amountReceived,
@@ -110,12 +110,15 @@ function bridgeDataToHistoryItem(
     endTime: date,
     transactionState,
     soraNetworkFee: (params as any).soraNetworkFee ?? state.soraNetworkFee,
+    parachainNetworkFee: (params as any).parachainNetworkFee ?? state.externalTransferFee,
     externalNetworkFee: (params as any).externalNetworkFee,
     externalNetwork,
     externalNetworkType,
     to: (params as any).to ?? getters.externalAccountFormatted,
     payload,
   };
+
+  return data;
 }
 
 async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void> {
@@ -461,11 +464,7 @@ const actions = defineActions({
 
     if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
       try {
-        await subBridgeConnector.parachainAdapter.connect();
-        const value = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(
-          getters.asset.address,
-          subBridgeConnector.parachainAdapter.api
-        );
+        const value = await subBridgeConnector.parachainAdapter.getAssetMinimumAmount(getters.asset.address);
         minLimit = FPNumber.fromCodecValue(value, getters.asset.externalDecimals);
       } catch (error) {
         console.error(error);
