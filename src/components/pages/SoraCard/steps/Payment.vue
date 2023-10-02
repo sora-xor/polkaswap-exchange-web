@@ -17,7 +17,7 @@
         <span class="text">{{ t(item.text) }}</span>
       </s-button>
     </div>
-    <div>or</div>
+    <div class="delimiter">or</div>
     <div class="sora-card__application-fee-disclaimer">
       <p>{{ applicationFeeText }}</p>
       <p>One-time fee to issue a card</p>
@@ -125,7 +125,7 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
 }
 </script>
 
-<style lang="scss" scope>
+<style lang="scss">
 .sora-card {
   &__threshold {
     display: flex;
@@ -173,6 +173,15 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
       .text {
         font-size: var(--s-heading4-font-size);
       }
+    }
+  }
+
+  &-payment {
+    .delimiter::after {
+      content: '';
+      width: 100%;
+      height: 1px;
+      background-color: aqua;
     }
   }
 }
