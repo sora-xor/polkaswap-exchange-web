@@ -552,7 +552,9 @@
         "copy": "Copy network address",
         "soraAddress": "{Sora} address",
         "ethereumAddress": "{Ethereum} address",
-        "limitMessage": "Currently, there's a {type} {amount} {symbol} for bridging to ensure the stability and security of the {Sora} Network. We appreciate your understanding."
+        "limitMessage": "Currently, there's a {type} {amount} {symbol} for bridging to ensure the stability and security of the {Sora} Network. We appreciate your understanding.",
+        "externalTransferFee": "{network} {XCM} fee",
+        "externalTransferFeeTooltip": "When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are transferring"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",

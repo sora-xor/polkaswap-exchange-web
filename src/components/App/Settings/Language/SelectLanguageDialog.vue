@@ -10,7 +10,7 @@
           size="medium"
           class="select-language-list__item s-flex"
         >
-          <div class="select-language-item s-flex">
+          <div :ref="lang.key === selectedLang ? 'selectedEl' : undefined" class="select-language-item s-flex">
             <div class="select-language-item__value">
               {{ lang.value }}
             </div>
@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Language, Languages } from '@/consts';
@@ -40,6 +40,8 @@ import { state, action, mutation } from '@/store/decorators';
 export default class SelectLanguageDialog extends Mixins(TranslationMixin) {
   readonly languages = Languages;
 
+  @Ref('selectedEl') selectedEl!: Nullable<[HTMLDivElement]>;
+
   @state.settings.selectLanguageDialogVisibility private selectLanguageDialogVisibility!: boolean;
 
   @mutation.settings.setSelectLanguageDialogVisibility private setDialogVisibility!: (flag: boolean) => void;
@@ -51,6 +53,11 @@ export default class SelectLanguageDialog extends Mixins(TranslationMixin) {
 
   set visibility(flag: boolean) {
     this.setDialogVisibility(flag);
+    if (flag) {
+      this.$nextTick(() => {
+        this.selectedEl?.[0]?.scrollIntoView?.({ behavior: 'smooth' });
+      });
+    }
   }
 
   get selectedLang(): Language {

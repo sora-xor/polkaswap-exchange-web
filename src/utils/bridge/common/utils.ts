@@ -1,4 +1,4 @@
-import { Operation, isBridgeOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/util';
+import { Operation, isEthOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/util';
 import { api as soraApi } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
@@ -8,7 +8,8 @@ import { isUnsignedTx as isUnsignedSubTx } from '@/utils/bridge/sub/utils';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { ApiPromise } from '@polkadot/api';
-import type { IBridgeTransaction, BridgeHistory } from '@sora-substrate/util';
+import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
@@ -64,37 +65,24 @@ export const getEvmTransactionRecieptByHash = async (
   }
 };
 
+export const getBlockEventsByTxIndex = async (blockHash: string, index: number, api: ApiPromise) => {
+  const blockEvents = await soraApi.system.getBlockEvents(blockHash, api);
+  const transactionEvents = blockEvents.filter(
+    ({ phase }) => phase.isApplyExtrinsic && phase.asApplyExtrinsic.toNumber() === index
+  );
+
+  return transactionEvents;
+};
+
 export const getTransactionEvents = async (blockHash: string, transactionHash: string, api: ApiPromise) => {
   const extrinsics = await soraApi.system.getExtrinsicsFromBlock(blockHash, api);
   const extrinsicIndex = extrinsics.findIndex((ext) => ext.hash.toString() === transactionHash);
 
   if (extrinsicIndex === -1) throw new Error(`Unable to find extrinsic "${transactionHash}" in block "${blockHash}"`);
 
-  const blockEvents = await soraApi.system.getBlockEvents(blockHash, api);
-  const transactionEvents = blockEvents.filter(
-    ({ phase }) => phase.isApplyExtrinsic && phase.asApplyExtrinsic.toNumber() === extrinsicIndex
-  );
+  const transactionEvents = await getBlockEventsByTxIndex(blockHash, extrinsicIndex, api);
 
   return transactionEvents;
-};
-
-export const findEventInBlock = async ({
-  api,
-  blockId,
-  section,
-  method,
-}: {
-  api: ApiPromise;
-  blockId: string;
-  section: string;
-  method: string;
-}) => {
-  const blockEvents = await soraApi.system.getBlockEvents(blockId, api);
-  const event = blockEvents.find(({ event }) => event.section === section && event.method === method);
-
-  if (!event) throw new Error('Event not found');
-
-  return event.event.data;
 };
 
 export const isOutgoingTransaction = (transaction: Nullable<IBridgeTransaction>): boolean => {
@@ -106,7 +94,7 @@ export const isOutgoingTransaction = (transaction: Nullable<IBridgeTransaction>)
 export const isUnsignedTx = (transaction: Nullable<IBridgeTransaction>): boolean => {
   if (!transaction?.type) return true;
 
-  if (isBridgeOperation(transaction.type)) return isUnsignedEthTx(transaction as BridgeHistory);
+  if (isEthOperation(transaction.type)) return isUnsignedEthTx(transaction as EthHistory);
   if (isEvmOperation(transaction.type)) return isUnsignedEvmTx(transaction as EvmHistory);
   if (isSubstrateOperation(transaction.type)) return isUnsignedSubTx(transaction as SubHistory);
 

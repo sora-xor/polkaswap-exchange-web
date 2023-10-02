@@ -545,7 +545,9 @@
         "copy": "Kopiera nätverksadress",
         "soraAddress": "{Sora} adress",
         "ethereumAddress": "{Ethereum} adress",
-        "limitMessage": "För närvarande finns det en {type} {amount} {symbol} för överbryggning för att säkerställa stabiliteten och säkerheten i {Sora} -nätverket. Vi uppskattar din förståelse."
+        "limitMessage": "För närvarande finns det en {type} {amount} {symbol} för överbryggning för att säkerställa stabiliteten och säkerheten i {Sora} -nätverket. Vi uppskattar din förståelse.",
+        "externalTransferFee": "{network} {XCM} avgift",
+        "externalTransferFeeTooltip": "När du skickar en bryggtransaktion till {network} -nätverket tas en mindre avgift från beloppet du överför"
     },
     "selectRegisteredAsset": {
         "title": "Välj en token",

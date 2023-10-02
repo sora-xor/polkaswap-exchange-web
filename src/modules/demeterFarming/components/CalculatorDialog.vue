@@ -160,7 +160,7 @@ export default class CalculatorDialog extends Mixins(PoolCardMixin, mixins.Dialo
   }
 
   get calculatedRewardsFormatted(): string {
-    return '~' + this.calculatedRewards.toLocaleString();
+    return this.calculatedRewards.toLocaleString();
   }
 
   get calculatedRewardsFiat(): Nullable<string> {

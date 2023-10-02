@@ -545,7 +545,9 @@
         "copy": "Netwerkadres kopiëren",
         "soraAddress": "{Sora} adres",
         "ethereumAddress": "{Ethereum} adres",
-        "limitMessage": "Momenteel is er een {type} {amount} {symbol} voor overbrugging om de stabiliteit en veiligheid van het {Sora}-netwerk te garanderen. We waarderen je begrip."
+        "limitMessage": "Momenteel is er een {type} {amount} {symbol} voor overbrugging om de stabiliteit en veiligheid van het {Sora}-netwerk te garanderen. We waarderen je begrip.",
+        "externalTransferFee": "{network} {XCM} kosten",
+        "externalTransferFeeTooltip": "Wanneer u een overbruggingstransactie naar het {network} -netwerk verzendt, wordt er een kleine vergoeding in rekening gebracht op het bedrag dat u overdraagt"
     },
     "selectRegisteredAsset": {
         "title": "Kies een token",

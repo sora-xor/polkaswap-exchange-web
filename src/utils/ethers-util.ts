@@ -1,7 +1,8 @@
 import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
-import { FPNumber, BridgeRequestAssetKind } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { ethers } from 'ethers';
 
@@ -44,14 +45,14 @@ const gasLimit = {
 /**
  * It's in gwei.
  */
-const getEthBridgeGasLimit = (assetEvmAddress: string, kind: BridgeRequestAssetKind, isSoraToEvm: boolean) => {
+const getEthBridgeGasLimit = (assetEvmAddress: string, kind: EthAssetKind, isSoraToEvm: boolean) => {
   if (isSoraToEvm) {
     switch (kind) {
-      case BridgeRequestAssetKind.SidechainOwned:
+      case EthAssetKind.SidechainOwned:
         return gasLimit.mintTokensByPeers;
-      case BridgeRequestAssetKind.Thischain:
+      case EthAssetKind.Thischain:
         return gasLimit.receiveBySidechainAssetId;
-      case BridgeRequestAssetKind.Sidechain:
+      case EthAssetKind.Sidechain:
         return isNativeEvmTokenAddress(assetEvmAddress)
           ? gasLimit.receiveByEthereumAssetAddress.ETH
           : gasLimit.receiveByEthereumAssetAddress.OTHER;
@@ -309,7 +310,7 @@ async function getEvmNetworkFee(
     const ethersInstance = await getEthersInstance();
     const { maxFeePerGas } = await ethersInstance.getFeeData();
     const gasPrice = maxFeePerGas ?? BigInt(0);
-    const gasLimit = BigInt(getEthBridgeGasLimit(assetEvmAddress, assetKind as BridgeRequestAssetKind, isSoraToEvm));
+    const gasLimit = BigInt(getEthBridgeGasLimit(assetEvmAddress, assetKind as EthAssetKind, isSoraToEvm));
     const fee = calcEvmFee(gasPrice, gasLimit);
 
     return fee;
@@ -339,7 +340,7 @@ async function getEvmTransactionReceipt(hash: string): Promise<ethers.Transactio
 
 async function getBlock(number: number): Promise<ethers.Block | null> {
   const ethersInstance = await getEthersInstance();
-  const block = await ethersInstance.getBlock(number);
+  const block = await ethersInstance.getBlock(Number(number));
 
   return block;
 }

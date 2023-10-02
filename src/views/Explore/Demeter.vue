@@ -102,18 +102,13 @@
         </template>
         <template v-slot="{ row }">
           <div class="explore-table-item-tokens">
-            <div
-              v-for="({ asset, balance, balancePrefix }, index) in row.accountTokens"
-              :key="index"
-              class="explore-table-cell"
-            >
+            <div v-for="({ asset, balance }, index) in row.accountTokens" :key="index" class="explore-table-cell">
               <formatted-amount
                 value-can-be-hidden
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-price explore-table-item-amount"
               >
-                <template #prefix>{{ balancePrefix }}</template>
               </formatted-amount>
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
             </div>
@@ -199,7 +194,7 @@ type TableItem = {
   apr: number;
   aprFormatted: string;
   isAccountItem: boolean;
-  accountTokens: { asset: Asset; balance: string; balancePrefix: string }[];
+  accountTokens: { asset: Asset; balance: string }[];
   liquidity: Nullable<AccountLiquidity>;
 };
 
@@ -303,7 +298,6 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
       ).map((item) => ({
         ...item,
         balance: formatDecimalPlaces(item.balance),
-        balancePrefix: !item.balance.isZero() ? '~' : '',
       }));
 
       return {
