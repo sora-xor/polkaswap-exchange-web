@@ -8,7 +8,7 @@ import { ZeroStringValue } from '@/consts';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import { getTransactionEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
-import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
+import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
 import { getMessageAcceptedNonces, isMessageDispatchedNonces, isAssetAddedToChannel } from '@/utils/bridge/sub/utils';
 
 import type { ApiPromise, ApiRx } from '@polkadot/api';
@@ -26,7 +26,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     if (!externalNetwork) throw new Error(`[${this.constructor.name}]: Transaction "externalNetwork" is not defined`);
 
     this.connector = new SubNetworksConnector();
-    this.connector.init(externalNetwork);
+    this.connector.init(externalNetwork, subBridgeConnector);
   }
 
   async closeConnector(): Promise<void> {

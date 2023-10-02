@@ -41,11 +41,16 @@ export class SubAdapter {
     this.endpoint = endpoint;
   }
 
+  public setApi(api: ApiPromise): void {
+    console.info(`[${this.subNetwork}] Api injected`);
+    this.connection.api = api;
+  }
+
   public async connect(): Promise<void> {
-    if (!this.connected && !this.connection.loading && this.endpoint) {
-      console.info(`[${this.subNetwork}] Connection request to node: ${this.endpoint}`);
+    if (!this.connected && !this.api && !this.connection.loading && this.endpoint) {
+      console.info(`[${this.subNetwork}] Connection request to node:`, this.endpoint);
       await this.connection.open(this.endpoint);
-      console.info(`[${this.subNetwork}] Connected to node: ${this.endpoint}`);
+      console.info(`[${this.subNetwork}] Connected to node:`, this.endpoint);
     }
     await this.api.isReady;
   }
@@ -53,7 +58,7 @@ export class SubAdapter {
   public async stop(): Promise<void> {
     if (this.connected) {
       await this.connection.close();
-      console.info(`[${this.subNetwork}] Disconnected from node: ${this.endpoint}`);
+      console.info(`[${this.subNetwork}] Disconnected from node:`, this.endpoint);
     }
   }
 
@@ -192,13 +197,12 @@ class KusamaAdapter extends SubAdapter {
     try {
       return await super.getNetworkFee(asset);
     } catch {
-      switch (this.subNetwork) {
-        case SubNetwork.Rococo:
-          return '125810197';
-        default:
-          // Hardcoded value for Kusama - 0.0007 KSM
-          return '700000000';
+      // Hardcoded value for Rococo - 0.000125 ROC
+      if (this.subNetwork === SubNetwork.Rococo) {
+        return '125810197';
       }
+      // Hardcoded value for Kusama - 0.0007 KSM
+      return '700000000';
     }
   }
 
@@ -251,12 +255,27 @@ export class SubNetworksConnector {
     return adapter;
   }
 
-  public async init(network: SubNetwork): Promise<void> {
+  /**
+   * Initialize params for substrate networks connector
+   * @param network External substrate network
+   * @param connector Existing bridge connector. Api connections will be reused, if networks matches
+   */
+  public async init(network: SubNetwork, connector?: SubNetworksConnector): Promise<void> {
+    // Initialize options & adapters
     this.network = network;
     this.networkAdapter = this.getAdapterForNetwork(this.network);
     this.parachainNetwork = this.networkAdapter.getSoraParachainNetwork();
     this.parachainAdapter = this.getAdapterForNetwork(this.parachainNetwork);
     this.parachainId = this.parachainAdapter.getSoraParachainId() as number;
+    // Clone api instances, if networks matches
+    if (connector) {
+      if (connector.networkAdapter.subNetwork === this.networkAdapter.subNetwork) {
+        this.networkAdapter.setApi(connector.networkAdapter.api.clone());
+      }
+      if (connector.parachainAdapter.subNetwork === this.parachainAdapter.subNetwork) {
+        this.parachainAdapter.setApi(connector.parachainAdapter.api.clone());
+      }
+    }
   }
 
   /**

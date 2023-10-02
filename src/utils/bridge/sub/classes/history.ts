@@ -6,7 +6,7 @@ import { ZeroStringValue } from '@/consts';
 import { rootActionContext } from '@/store';
 import { getBlockEventsByTxIndex } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
-import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
+import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
 import { getMessageAcceptedNonces, isMessageDispatchedNonces, formatSubAddress } from '@/utils/bridge/sub/utils';
 
 import type { ApiPromise } from '@polkadot/api';
@@ -334,7 +334,7 @@ export const updateSubBridgeHistory =
       const assetDataByAddress = rootGetters.assets.assetDataByAddress;
       const subBridgeHistory = new SubBridgeHistory();
 
-      await subBridgeHistory.init(networkSelected as SubNetwork);
+      await subBridgeHistory.init(networkSelected as SubNetwork, subBridgeConnector);
 
       if (clearHistory) {
         await subBridgeHistory.clearHistory(inProgressIds, updateCallback);
