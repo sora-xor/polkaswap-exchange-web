@@ -267,14 +267,14 @@ export class SubNetworksConnector {
     this.parachainNetwork = this.networkAdapter.getSoraParachainNetwork();
     this.parachainAdapter = this.getAdapterForNetwork(this.parachainNetwork);
     this.parachainId = this.parachainAdapter.getSoraParachainId() as number;
+
+    if (!connector) return;
     // Clone api instances, if networks matches
-    if (connector) {
-      if (connector.networkAdapter.subNetwork === this.networkAdapter.subNetwork) {
-        this.networkAdapter.setApi(connector.networkAdapter.api.clone());
-      }
-      if (connector.parachainAdapter.subNetwork === this.parachainAdapter.subNetwork) {
-        this.parachainAdapter.setApi(connector.parachainAdapter.api.clone());
-      }
+    if (connector.networkAdapter.api && connector.networkAdapter.subNetwork === this.networkAdapter.subNetwork) {
+      this.networkAdapter.setApi(connector.networkAdapter.api.clone());
+    }
+    if (connector.parachainAdapter.api && connector.parachainAdapter.subNetwork === this.parachainAdapter.subNetwork) {
+      this.parachainAdapter.setApi(connector.parachainAdapter.api.clone());
     }
   }
 
