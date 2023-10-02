@@ -45,6 +45,7 @@
           :max="MaxInputNumber"
           :disabled="!(areAccountsConnected && isAssetSelected)"
           class="s-input--token-value"
+          id="bridgeFrom"
           data-test-name="bridgeFrom"
           has-locale-string
           size="medium"
@@ -141,6 +142,7 @@
           :max="MaxInputNumber"
           class="s-input--token-value"
           data-test-name="bridgeTo"
+          id="bridgeTo"
           has-locale-string
           size="medium"
           @input="setReceivedAmount"
