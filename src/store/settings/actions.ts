@@ -31,7 +31,7 @@ async function closeConnectionWithInfo() {
 
   if (currentEndpoint && opened) {
     await connection.close();
-    console.info('Disconnected from node', currentEndpoint);
+    console.info('[SORA] Disconnected from node', currentEndpoint);
   }
 }
 
@@ -123,7 +123,7 @@ const actions = defineActions({
       }
       commit.setNodeRequest({ node, isReconnection });
 
-      console.info('Connection request to node', endpoint);
+      console.info('[SORA] Connection request to node', endpoint);
 
       await closeConnectionWithInfo();
 
@@ -134,7 +134,7 @@ const actions = defineActions({
 
       if (connectingNodeChanged()) return;
 
-      console.info('Connected to node', connection.endpoint);
+      console.info('[SORA] Connected to node', connection.endpoint);
 
       const nodeChainGenesisHash = connection.api?.genesisHash.toHex();
       // if connected node is custom node, we should check genesis hash
