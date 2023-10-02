@@ -268,11 +268,14 @@ const calcVolume = (nodes: AssetSnapshotEntity[]): FPNumber => {
 };
 
 const parse = (item: AssetData): Record<string, TokenData> => {
+  const startPriceDay = last(item.hourSnapshots.nodes)?.priceUSD?.open;
+  const startPriceWeek = last(item.daySnapshots.nodes)?.priceUSD?.open;
+  const liquidity = item.liquidity;
   return {
     [item.id]: {
-      reserves: FPNumber.fromCodecValue(item.liquidity ?? 0),
-      startPriceDay: new FPNumber(last(item.hourSnapshots.nodes)?.priceUSD?.open ?? 0),
-      startPriceWeek: new FPNumber(last(item.daySnapshots.nodes)?.priceUSD?.open ?? 0),
+      reserves: liquidity ? FPNumber.fromCodecValue(liquidity) : FPNumber.ZERO,
+      startPriceDay: startPriceDay ? new FPNumber(startPriceDay) : FPNumber.ZERO,
+      startPriceWeek: startPriceWeek ? new FPNumber(startPriceWeek) : FPNumber.ZERO,
       volumeDay: calcVolume(item.hourSnapshots.nodes),
       volumeWeek: calcVolume(item.daySnapshots.nodes),
     },
