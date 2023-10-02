@@ -41,16 +41,24 @@ export class SubAdapter {
     this.endpoint = endpoint;
   }
 
+  public setApi(api: ApiPromise): void {
+    console.info(`[${this.subNetwork}] Api injected`);
+    this.connection.api = api;
+  }
+
   public async connect(): Promise<void> {
-    if (!this.connected && this.endpoint) {
+    if (!this.connected && !this.api && !this.connection.loading && this.endpoint) {
+      console.info(`[${this.subNetwork}] Connection request to node:`, this.endpoint);
       await this.connection.open(this.endpoint);
-      await this.api.isReady;
+      console.info(`[${this.subNetwork}] Connected to node:`, this.endpoint);
     }
+    await this.api.isReady;
   }
 
   public async stop(): Promise<void> {
     if (this.connected) {
       await this.connection.close();
+      console.info(`[${this.subNetwork}] Disconnected from node:`, this.endpoint);
     }
   }
 
@@ -122,6 +130,16 @@ export class SubAdapter {
   }
 }
 
+class SoraParachainAdapter extends SubAdapter {
+  public async getAssetMinimumAmount(assetAddress: string): Promise<CodecString> {
+    await this.connect();
+
+    const value = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(assetAddress, this.api);
+
+    return value;
+  }
+}
+
 class KusamaAdapter extends SubAdapter {
   public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
     return await this.getAccountBalance(accountAddress);
@@ -179,6 +197,10 @@ class KusamaAdapter extends SubAdapter {
     try {
       return await super.getNetworkFee(asset);
     } catch {
+      // Hardcoded value for Rococo - 0.000125 ROC
+      if (this.subNetwork === SubNetwork.Rococo) {
+        return '125810197';
+      }
       // Hardcoded value for Kusama - 0.0007 KSM
       return '700000000';
     }
@@ -206,7 +228,7 @@ export class SubNetworksConnector {
   public network!: SubNetwork;
   public parachainNetwork!: SubNetwork;
   public networkAdapter!: SubAdapter;
-  public parachainAdapter!: SubAdapter;
+  public parachainAdapter!: SoraParachainAdapter;
   public parachainId!: number;
 
   public static endpoints: SubNetworkApps = {};
@@ -214,11 +236,11 @@ export class SubNetworksConnector {
   public readonly adapters = {
     [SubNetwork.Rococo]: () => new KusamaAdapter(SubNetwork.Rococo),
     [SubNetwork.Kusama]: () => new KusamaAdapter(SubNetwork.Kusama),
-    [SubNetwork.RococoSora]: () => new SubAdapter(SubNetwork.RococoSora),
-    [SubNetwork.KusamaSora]: () => new SubAdapter(SubNetwork.KusamaSora),
+    [SubNetwork.RococoSora]: () => new SoraParachainAdapter(SubNetwork.RococoSora),
+    [SubNetwork.KusamaSora]: () => new SoraParachainAdapter(SubNetwork.KusamaSora),
   };
 
-  public getAdapterForNetwork(network: SubNetwork): SubAdapter {
+  public getAdapterForNetwork<T>(network: SubNetwork): T {
     if (!(network in this.adapters)) {
       throw new Error(`[${this.constructor.name}] Adapter for "${network}" network not implemented`);
     }
@@ -233,12 +255,27 @@ export class SubNetworksConnector {
     return adapter;
   }
 
-  public async init(network: SubNetwork): Promise<void> {
+  /**
+   * Initialize params for substrate networks connector
+   * @param network External substrate network
+   * @param connector Existing bridge connector. Api connections will be reused, if networks matches
+   */
+  public async init(network: SubNetwork, connector?: SubNetworksConnector): Promise<void> {
+    // Initialize options & adapters
     this.network = network;
     this.networkAdapter = this.getAdapterForNetwork(this.network);
     this.parachainNetwork = this.networkAdapter.getSoraParachainNetwork();
     this.parachainAdapter = this.getAdapterForNetwork(this.parachainNetwork);
     this.parachainId = this.parachainAdapter.getSoraParachainId() as number;
+
+    if (!connector) return;
+    // Clone api instances, if networks matches
+    if (connector.networkAdapter.api && connector.networkAdapter.subNetwork === this.networkAdapter.subNetwork) {
+      this.networkAdapter.setApi(connector.networkAdapter.api.clone());
+    }
+    if (connector.parachainAdapter.api && connector.parachainAdapter.subNetwork === this.parachainAdapter.subNetwork) {
+      this.parachainAdapter.setApi(connector.parachainAdapter.api.clone());
+    }
   }
 
   /**
