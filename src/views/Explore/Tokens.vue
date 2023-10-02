@@ -281,7 +281,7 @@ const parse = (item: AssetData): Record<string, TokenData> => {
 
 @Component({
   components: {
-    SyntheticSwitcher: lazyComponent(Components.SyntheticSwitcher),
+    SyntheticSwitcher: components.SyntheticSwitcher,
     PriceChange: lazyComponent(Components.PriceChange),
     SortButton: lazyComponent(Components.SortButton),
     TokenAddress: components.TokenAddress,
