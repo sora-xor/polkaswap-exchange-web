@@ -1,15 +1,14 @@
 [
   {
-    "title": "JOIN AIRDROP",
-    "img": "/marketing/synths.png",
-    "backgroundColor": "var(--s-color-theme-accent)",
-    "link": "https://gleam.io/zHQmD/polkaswap-34000-xst-airdrop-campaign"
-  },
-  {
     "title": "GET SORA CARD",
     "img": "/marketing/card.png",
-    "backgroundColor": "#F8087B",
+    "backgroundColor": "var(--s-color-theme-accent)",
     "link": "/#/card"
+  },
+  {
+    "title": "CONNECT WITH GOOGLE",
+    "backgroundColor": "var(--s-color-theme-accent)",
+    "link": "https://medium.com/polkaswap/how-to-use-connect-with-google-on-polkawap-a4f9ea2cd2f2"
   },
   {
     "title": "LEARN ABOUT SYNTHETICS",
