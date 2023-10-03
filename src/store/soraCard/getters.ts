@@ -35,28 +35,6 @@ const getters = defineGetters<SoraCardState>()({
     } else {
       return null;
     }
-
-    // if ([kycStatus, verificationStatus].includes(VerificationStatus.Rejected)) {
-    //   return VerificationStatus.Rejected;
-    // }
-
-    // if (!kycStatus) return null;
-    // if (!verificationStatus) return null;
-    // if (kycStatus === KycStatus.Started) return null;
-
-    // if (
-    //   [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
-    //   verificationStatus === VerificationStatus.Pending
-    // ) {
-    //   return VerificationStatus.Pending;
-    // }
-
-    // if (
-    //   [KycStatus.Completed, KycStatus.Successful].includes(kycStatus) &&
-    //   verificationStatus === VerificationStatus.Accepted
-    // ) {
-    //   return VerificationStatus.Accepted;
-    // }
   },
 });
 

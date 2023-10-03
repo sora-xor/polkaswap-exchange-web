@@ -69,6 +69,7 @@
         "reIssuanceFee": "0 € éves szolgáltatási díj",
         "freeCardIssuance": "Ingyenes kártyakibocsátás",
         "loginBtn": "Jelentkezzen be vagy Regisztráljon",
+        "applicationFee": "{0} € kibocsátási díj",
         "telegramSupport": "Telegram támogatás",
         "rejectionPriceAttemptDisclaimer": "Minden más próbálkozás {0} €-ba kerül",
         "rejectCount": "Még {count} ingyenes KYC próbálkozása van|Még {count} ingyenes KYC próbálkozása van",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "Számla információ"
         },
-        "attentionText": "Figyelem"
+        "attentionText": "Figyelem",
+        "or": "vagy",
+        "oneTimeApplicationFee": "A kártya kiállításának egyszeri díja",
+        "applicationFeeNote": "Megjegyzés: a fizetős kártya kibocsátása egy későbbi szakaszban lesz elérhető.",
+        "statusRejectReasonMultiple": "Jelentkezését több okból is elutasították:"
     }
 }

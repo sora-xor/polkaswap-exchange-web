@@ -69,6 +69,7 @@
         "reIssuanceFee": "0 € godišnja naknada za uslugu",
         "freeCardIssuance": "Besplatno izdavanje kartice",
         "loginBtn": "Prijavite se ili Prijavite se",
+        "applicationFee": "€ {0} naknada za izdavanje",
         "telegramSupport": "Telegram podrška",
         "rejectionPriceAttemptDisclaimer": "Svaki drugi pokušaj koštat će vas € {0}",
         "rejectCount": "Imate još {count} besplatni pokušaj KYC| |Imate još {count} besplatnih pokušaja KYC",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "Informacije o računu"
         },
-        "attentionText": "Pažnja"
+        "attentionText": "Pažnja",
+        "or": "ili",
+        "oneTimeApplicationFee": "Jednokratna naknada za izdavanje kartice",
+        "applicationFeeNote": "Napomena: izdavanje plaćene kartice bit će dostupno naknadno.",
+        "statusRejectReasonMultiple": "Vaša prijava je odbijena iz više razloga:"
     }
 }

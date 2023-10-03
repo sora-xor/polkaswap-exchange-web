@@ -69,6 +69,7 @@
         "reIssuanceFee": "Roczna opłata za usługę 0 €",
         "freeCardIssuance": "Bezpłatne wydanie karty",
         "loginBtn": "Zaloguj się albo Zarejestruj",
+        "applicationFee": "€ {0} opłata za wydanie",
         "telegramSupport": "Wsparcie telegramu",
         "rejectionPriceAttemptDisclaimer": "Każda inna próba będzie kosztować € {0}",
         "rejectCount": "Masz jeszcze {count} darmową próbę KYC| | |Masz jeszcze {count} darmowe próby KYC",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "informacje o koncie"
         },
-        "attentionText": "Uwaga"
+        "attentionText": "Uwaga",
+        "or": "Lub",
+        "oneTimeApplicationFee": "Opłata jednorazowa za wydanie karty",
+        "applicationFeeNote": "Uwaga: wydawanie kart płatnych będzie możliwe w późniejszym terminie.",
+        "statusRejectReasonMultiple": "Twój wniosek został odrzucony z wielu powodów:"
     }
 }

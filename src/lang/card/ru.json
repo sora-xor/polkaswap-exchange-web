@@ -69,6 +69,7 @@
         "reIssuanceFee": "€0 годовая плата за обслуживание",
         "freeCardIssuance": "Бесплатный выпуск карты",
         "loginBtn": "Войдите или зарегистрируйтесь",
+        "applicationFee": "€{0} комиссия за выпуск",
         "telegramSupport": "Поддержка в Telegram",
         "rejectionPriceAttemptDisclaimer": "Любая другая попытка будет стоить вам €{0}",
         "rejectCount": "У вас осталась {count} бесплатная попытка|У вас осталось {count} бесплатные попытки|У вас осталось {count} бесплатных попыток|У вас осталось {count} бесплатные попытки",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "Информация Об Учетной Записи"
         },
-        "attentionText": "Внимание"
+        "attentionText": "Внимание",
+        "or": "или",
+        "oneTimeApplicationFee": "Единоразовая плата за выпуск карты",
+        "applicationFeeNote": "Примечание: выпуск платной карты будет доступен позднее.",
+        "statusRejectReasonMultiple": "Ваша заявка была отклонена по нескольким причинам:"
     }
 }

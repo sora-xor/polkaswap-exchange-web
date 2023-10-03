@@ -17,11 +17,11 @@
         <span class="text">{{ t(item.text) }}</span>
       </s-button>
     </div>
-    <div class="delimiter">or</div>
+    <div class="delimiter">{{ t('card.or') }}</div>
     <div class="sora-card__application-fee-disclaimer">
       <p>{{ applicationFeeText }}</p>
-      <p>One-time fee to issue a card</p>
-      <p>Note: paid card issuance will be available at a later stage.</p>
+      <p>{{ t('card.oneTimeApplicationFee') }}</p>
+      <p>{{ t('card.applicationFeeNote') }}</p>
     </div>
     <x1-dialog :visible.sync="showX1Dialog" />
   </div>
@@ -99,7 +99,8 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
 
   get applicationFeeText(): string {
     // TODO: add localise
-    return `€${this.applicationFee} Issuance fee`;
+    return this.t('card.applicationFee', { 0: this.applicationFee });
+    // return `€${this.applicationFee} Issuance fee`;
   }
 
   private openX1(): void {
@@ -177,11 +178,26 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   &-payment {
+    .delimiter {
+      display: flex;
+      flex-direction: row;
+      color: var(--s-color-base-content-secondary);
+      text-transform: uppercase;
+      margin-top: $basic-spacing;
+      margin-bottom: $basic-spacing;
+    }
+    .delimiter::before,
     .delimiter::after {
       content: '';
-      width: 100%;
-      height: 1px;
-      background-color: aqua;
+      flex: 1 1;
+      border-bottom: 2px solid var(--s-color-base-border-primary);
+      margin: auto;
+    }
+    .delimiter :before {
+      margin-right: $basic-spacing;
+    }
+    .delimiter :after {
+      margin-left: $basic-spacing;
     }
   }
 }

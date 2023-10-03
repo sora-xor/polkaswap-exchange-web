@@ -69,6 +69,7 @@
         "reIssuanceFee": "0 € jährliche Servicegebühr",
         "freeCardIssuance": "Kostenlose Kartenausgabe",
         "loginBtn": "Anmelden oder Registrieren",
+        "applicationFee": "€{0} Ausstellungsgebühr",
         "telegramSupport": "Telegramm-Support",
         "rejectionPriceAttemptDisclaimer": "Jeder weitere Versuch wird Sie €{0} kosten.",
         "rejectCount": "Sie haben noch {count} kostenlosen KYC-Versuch|Sie haben noch {count} kostenlose KYC-Versuche",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "Kontoinformationen"
         },
-        "attentionText": "Aufmerksamkeit"
+        "attentionText": "Aufmerksamkeit",
+        "or": "oder",
+        "oneTimeApplicationFee": "Einmalige Gebühr für die Ausstellung einer Karte",
+        "applicationFeeNote": "Hinweis: Die Ausstellung einer kostenpflichtigen Karte wird zu einem späteren Zeitpunkt verfügbar sein.",
+        "statusRejectReasonMultiple": "Ihr Antrag wurde aus mehreren Gründen abgelehnt:"
     }
 }
