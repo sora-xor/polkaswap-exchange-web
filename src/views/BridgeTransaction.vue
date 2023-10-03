@@ -86,6 +86,14 @@
           <span class="info-line-value-prefix">{{ ApproximateSign }}</span>
         </template>
       </info-line>
+      <info-line
+        v-if="txExternalTransferFeeNotZero"
+        is-formatted
+        :label="t('bridge.externalTransferFee', { network: externalNetworkName })"
+        :value="txExternalTransferFeeFormatted"
+        :asset-symbol="assetSymbol"
+        :fiat-value="txExternalTransferFeeFiatValue"
+      />
 
       <div v-if="txSoraHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
         <s-input
@@ -333,6 +341,22 @@ export default class BridgeTransaction extends Mixins(
     return this.nativeToken ? this.getFiatAmountByCodecString(this.txExternalNetworkFee, this.nativeToken) : null;
   }
 
+  get txExternalTransferFee(): CodecString {
+    return (this.historyItem as SubHistory)?.parachainNetworkFee ?? ZeroStringValue;
+  }
+
+  get txExternalTransferFeeFormatted(): string {
+    return this.formatCodecNumber(this.txExternalTransferFee, this.asset?.externalDecimals);
+  }
+
+  get txExternalTransferFeeNotZero(): boolean {
+    return this.txExternalTransferFee !== ZeroStringValue;
+  }
+
+  get txExternalTransferFeeFiatValue(): Nullable<string> {
+    return this.asset ? this.getFiatAmountByCodecString(this.txExternalTransferFee, this.asset) : null;
+  }
+
   get txId(): Nullable<string> {
     return this.isSoraToEvm ? this.txSoraId : this.txExternalHash;
   }
@@ -346,7 +370,9 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txSoraHash(): string {
-    return this.historyItem?.hash ?? this.txSoraBlockId;
+    // don't use Sora blockId in incoming direction
+    const blockId = this.isSoraToEvm ? this.txSoraBlockId : '';
+    return this.historyItem?.hash ?? blockId;
   }
 
   get txSoraHashFormatted(): string {
@@ -516,6 +542,12 @@ export default class BridgeTransaction extends Mixins(
 
   get hashCopyTooltip(): string {
     return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
+  }
+
+  get externalNetworkName(): string {
+    return this.externalNetworkType && this.externalNetworkId
+      ? this.getNetworkName(this.externalNetworkType, this.externalNetworkId)
+      : '';
   }
 
   getNetworkText(key: string, networkId?: Nullable<BridgeNetworkId>): string {
