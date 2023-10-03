@@ -35,6 +35,8 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { state } from '@/store/decorators';
 import type { Ad } from '@/store/settings/types';
 
+import type { CSSProperties } from 'vue/types/jsx';
+
 // PS. Do not call this component & css classes like ad/ads -> it'll be blocked by any blocker browser extension
 @Component
 export default class AppMarketing extends Mixins(mixins.TranslationMixin) {
@@ -62,7 +64,11 @@ export default class AppMarketing extends Mixins(mixins.TranslationMixin) {
   }
 
   getStyles(ad: Ad) {
-    return { backgroundImage: `url(${ad.img})`, backgroundColor: ad.backgroundColor };
+    const styles: CSSProperties = { backgroundImage: `url(${ad.img})` };
+    if (ad.backgroundColor) {
+      styles.backgroundColor = ad.backgroundColor;
+    }
+    return styles;
   }
 
   prev(): void {
