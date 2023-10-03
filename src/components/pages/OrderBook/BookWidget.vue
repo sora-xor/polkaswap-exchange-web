@@ -1,5 +1,5 @@
 <template>
-  <div class="order-book-widget book">
+  <div class="order-book-widget stock-book book">
     <h4>
       Orderbook
       <s-tooltip slot="suffix" border-radius="mini" :content="t('alerts.typeTooltip')" placement="top" tabindex="-1">
@@ -11,7 +11,7 @@
       <div>amount</div>
       <div>price</div>
     </div>
-    <div class="order-book-widget-sell">
+    <div class="stock-book-sell">
       <div v-for="order in sellOrders" :key="order.price" class="row">
         <span class="order-info price">{{ order.price }}</span>
         <span class="order-info">{{ order.amount }}</span>
@@ -24,7 +24,7 @@
       <s-icon class="trend-icon" :name="iconTrend" size="18" />
       <span class="last-traded-price">$22.54</span>
     </div>
-    <div class="order-book-widget-buy">
+    <div class="stock-book-buy">
       <div v-for="order in sellOrders" :key="order.price" class="row">
         <span class="order-info price">{{ order.price }}</span>
         <span class="order-info">{{ order.amount }}</span>
@@ -52,12 +52,12 @@ export default class BookWidget extends Mixins(TranslationMixin) {
   }
 
   getComputedClassTrend(): string {
-    const base = ['order-book-widget-delimiter'];
+    const base = ['stock-book-delimiter'];
 
     if (this.priceTrend === 'up') {
-      base.push('order-book-widget-delimiter--up');
+      base.push('stock-book-delimiter--up');
     } else {
-      base.push('order-book-widget-delimiter--down');
+      base.push('stock-book-delimiter--down');
     }
 
     return base.join(' ');
@@ -129,7 +129,7 @@ export default class BookWidget extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
-.order-book-widget {
+.stock-book {
   .row {
     display: flex;
     justify-content: space-between;
