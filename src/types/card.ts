@@ -30,6 +30,7 @@ export interface Status {
   verificationStatus: Nullable<VerificationStatus>;
   kycStatus: Nullable<KycStatus>;
   rejectReasons?: Array<string>;
+  referenceNumber?: Nullable<string>;
 }
 
 export interface UserInfo {

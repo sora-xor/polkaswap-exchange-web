@@ -153,16 +153,21 @@ async function getUserStatus(accessToken: string): Promise<Status> {
 
     if (!lastRecord) return emptyStatusFields();
 
+    let rejectReasons = [];
+    let referenceNumber = null;
     const verificationStatus: VerificationStatus = lastRecord.verification_status;
     const kycStatus: KycStatus = lastRecord.kyc_status;
-    let rejectReasons = [];
+
+    if ([KycStatus.Started, KycStatus.Failed, KycStatus.Retry].includes(lastRecord.kyc_status)) {
+      referenceNumber = lastRecord.user_reference_number;
+    }
 
     if (lastRecord.rejection_reasons && lastRecord.rejection_reasons.length) {
       rejectReasons = lastRecord.rejection_reasons.map((reason) => reason.Description);
     }
 
     if (Object.keys(VerificationStatus).includes(verificationStatus) && Object.keys(KycStatus).includes(kycStatus)) {
-      return { verificationStatus, kycStatus, rejectReasons };
+      return { verificationStatus, kycStatus, rejectReasons, referenceNumber };
     }
 
     return emptyStatusFields();
