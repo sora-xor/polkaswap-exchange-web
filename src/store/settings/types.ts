@@ -6,7 +6,7 @@ import type { Subscription } from 'rxjs';
 export type Ad = {
   title: string;
   img: string;
-  backgroundColor: string;
+  backgroundColor?: string;
   link: string;
 };
 
