@@ -280,9 +280,14 @@ export class EthBridgeHistory {
     return history;
   }
 
-  public async clearHistory(updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs): Promise<void> {
+  public async clearHistory(
+    inProgressIds: Record<string, boolean>,
+    updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
+  ): Promise<void> {
+    // don't remove history, what in progress
+    const ids = Object.keys(ethBridgeApi.history).filter((id) => !(id in inProgressIds));
+    ethBridgeApi.removeHistory(...ids);
     this.historySyncTimestamp = 0;
-    ethBridgeApi.clearHistory();
     await updateCallback?.();
   }
 
@@ -420,7 +425,7 @@ export const updateEthBridgeHistory =
       await ethBridgeHistory.init(ethBridgeContractAddress);
 
       if (clearHistory) {
-        await ethBridgeHistory.clearHistory(updateCallback);
+        await ethBridgeHistory.clearHistory(inProgressIds, updateCallback);
       }
 
       await ethBridgeHistory.updateAccountHistory(

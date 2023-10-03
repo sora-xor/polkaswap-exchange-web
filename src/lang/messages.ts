@@ -573,7 +573,9 @@ export default {
     assetId: 'Asset ID',
   },
   explore: {
-    showOnlyMyPositions: 'Show only my positions',
+    showOnly: 'Show only {entities}',
+    myPositions: 'my positions',
+    synthetics: 'synthetic tokens',
   },
   dexSettings: {
     title: 'Transaction settings',
