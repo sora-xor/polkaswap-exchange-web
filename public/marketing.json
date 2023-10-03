@@ -2,18 +2,16 @@
   {
     "title": "GET SORA CARD",
     "img": "/marketing/card.png",
-    "backgroundColor": "var(--s-color-theme-accent)",
     "link": "/#/card"
   },
   {
     "title": "CONNECT WITH GOOGLE",
-    "backgroundColor": "var(--s-color-theme-accent)",
+    "img": "/marketing/google.png",
     "link": "https://medium.com/polkaswap/how-to-use-connect-with-google-on-polkawap-a4f9ea2cd2f2"
   },
   {
     "title": "LEARN ABOUT SYNTHETICS",
     "img": "/marketing/synths.png",
-    "backgroundColor": "var(--s-color-theme-accent)",
     "link": "https://medium.com/polkaswap/unveiling-synthetic-assets-a-game-changer-in-the-financial-landscape-1720e5858422"
   }
 ]
