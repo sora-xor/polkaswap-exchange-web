@@ -98,9 +98,7 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   get applicationFeeText(): string {
-    // TODO: add localise
     return this.t('card.applicationFee', { 0: this.applicationFee });
-    // return `€${this.applicationFee} Issuance fee`;
   }
 
   private openX1(): void {
