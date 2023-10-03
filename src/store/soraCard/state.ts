@@ -13,6 +13,7 @@ function initialState(): SoraCardState {
     totalXorBalance: FPNumber.ZERO,
     xorToDeposit: FPNumber.ZERO,
     totalXorBalanceUpdates: null,
+    referenceNumber: null,
     authLogin: null,
     attemptCounter: {
       hasFreeAttempts: null,

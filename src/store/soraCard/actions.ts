@@ -71,10 +71,11 @@ const actions = defineActions({
   async getUserStatus(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
 
-    const { kycStatus, verificationStatus, rejectReasons }: Status = await defineUserStatus();
+    const { kycStatus, verificationStatus, rejectReasons, referenceNumber }: Status = await defineUserStatus();
 
     commit.setKycStatus(kycStatus);
     commit.setVerificationStatus(verificationStatus);
+    commit.setReferenceNumber(referenceNumber);
 
     if (rejectReasons) commit.setRejectReason(rejectReasons);
   },

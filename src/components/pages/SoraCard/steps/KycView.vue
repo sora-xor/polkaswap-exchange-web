@@ -54,6 +54,7 @@ import { soraCard, getUpdatedJwtPair } from '@/utils/card';
 export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin, mixins.CameraPermissionMixin) {
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.wallet.account.source private source!: WALLET_CONSTS.AppWallet;
+  @state.soraCard.referenceNumber private referenceNumber!: Nullable<string>;
 
   @Prop({ default: '', type: String }) readonly accessToken!: string;
 
@@ -143,7 +144,9 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
     this.updateJwtPairByInterval();
     const { kycService, soraProxy } = soraCard(soraNetwork);
 
-    const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
+    const referenceNumber = this.referenceNumber
+      ? this.referenceNumber
+      : await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
 
     await ScriptLoader.unload(kycService.sdkURL, false).catch(() => {});
 

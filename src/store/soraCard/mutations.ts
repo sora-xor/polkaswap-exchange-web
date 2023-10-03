@@ -54,6 +54,9 @@ const mutations = defineMutations<SoraCardState>()({
   setUserBalance(state, balance: Nullable<number>) {
     state.userInfo.availableBalance = balance;
   },
+  setReferenceNumber(state, referenceNumber: Nullable<string>) {
+    state.referenceNumber = referenceNumber;
+  },
 });
 
 export default mutations;
