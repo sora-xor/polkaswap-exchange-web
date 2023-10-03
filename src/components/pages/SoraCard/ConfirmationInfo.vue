@@ -82,12 +82,12 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
 
   private get rejectedText(): string {
     if (this.currentStatus === VerificationStatus.Rejected && this.rejectReasons.length) {
-      console.log('this.rejectReasons', this.rejectReasons);
       if (this.isMultipleReasons) {
-        return `${this.t('card.statusRejectReasonMultiple')} ${this.rejectReasons.map((reason) => {
-          console.log('reason', reason);
+        const rejectionList = this.rejectReasons.map((reason) => {
           return `<li>${reason}</li>`;
-        })}`;
+        });
+
+        return `${this.t('card.statusRejectReasonMultiple')} ${rejectionList.join('')}`;
       }
 
       return `${this.t('card.statusRejectReason')}: ${this.rejectReasons[0]}`;
