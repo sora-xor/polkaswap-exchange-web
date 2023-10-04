@@ -88,6 +88,9 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
 
   get balance(): string {
     const balance = this.userInfo.availableBalance;
+
+    if (balance === 0) return '0';
+
     return balance ? `${balance / 100}` : '';
   }
 
