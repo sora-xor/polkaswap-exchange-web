@@ -1,16 +1,10 @@
 import { FPNumber } from '@sora-substrate/math';
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
-import {
-  SubsquidConnectionQueryResponse,
-  SubsquidNetworkSnapshotEntity,
-} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
+import { SubsquidConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
 import { gql } from '@urql/core';
 
-import type {
-  SubqueryNetworkSnapshotEntity,
-  SubqueryConnectionQueryResponse,
-} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
+import type { SubqueryConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
 import type { SnapshotTypes, NetworkSnapshotEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const { IndexerType } = WALLET_CONSTS;
@@ -26,7 +20,7 @@ export type NetworkSnapshotData = NetworkSnapshot & {
   timestamp: number;
 };
 
-const SubqueryStatsQuery = gql<SubqueryConnectionQueryResponse<SubqueryNetworkSnapshotEntity>>`
+const SubqueryStatsQuery = gql<SubqueryConnectionQueryResponse<NetworkSnapshotEntity>>`
   query StatsQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
     entities: networkSnapshots(
       after: $after
@@ -56,7 +50,7 @@ const SubqueryStatsQuery = gql<SubqueryConnectionQueryResponse<SubqueryNetworkSn
   }
 `;
 
-const SubsquidStatsQuery = gql<SubsquidConnectionQueryResponse<SubsquidNetworkSnapshotEntity>>`
+const SubsquidStatsQuery = gql<SubsquidConnectionQueryResponse<NetworkSnapshotEntity>>`
   query StatsQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
     entities: networkSnapshotsConnection(
       after: $after

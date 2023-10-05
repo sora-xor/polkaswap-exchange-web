@@ -1,15 +1,9 @@
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
-import {
-  SubsquidConnectionQueryResponse,
-  SubsquidNetworkSnapshotEntity,
-} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
+import { SubsquidConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
 import { gql } from '@urql/core';
 
-import type {
-  SubqueryNetworkSnapshotEntity,
-  SubqueryConnectionQueryResponse,
-} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
+import type { SubqueryConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
 import type { SnapshotTypes, NetworkSnapshotEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const { IndexerType } = WALLET_CONSTS;
@@ -19,7 +13,7 @@ export type ChartData = {
   value: number;
 };
 
-const SubqueryNetworkTvlQuery = gql<SubqueryConnectionQueryResponse<SubqueryNetworkSnapshotEntity>>`
+const SubqueryNetworkTvlQuery = gql<SubqueryConnectionQueryResponse<NetworkSnapshotEntity>>`
   query NetworkTvlQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
     data: networkSnapshots(
       after: $after
@@ -47,7 +41,7 @@ const SubqueryNetworkTvlQuery = gql<SubqueryConnectionQueryResponse<SubqueryNetw
   }
 `;
 
-const SubsquidNetworkTvlQuery = gql<SubsquidConnectionQueryResponse<SubsquidNetworkSnapshotEntity>>`
+const SubsquidNetworkTvlQuery = gql<SubsquidConnectionQueryResponse<NetworkSnapshotEntity>>`
   query NetworkTvlQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
     data: networkSnapshotsConnection(
       after: $after
