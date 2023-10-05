@@ -17,15 +17,12 @@ export function initialState(): SwapState {
     amountWithoutImpact: '',
     liquidityProviderFee: '',
     isExchangeB: false,
-    enabledAssets: {
-      tbc: [],
-      xst: {},
-      lockedSources: [],
-    },
     rewards: [],
     route: [],
+    isAvailable: false,
+    liquiditySources: [],
+    swapQuote: null,
     selectedDexId: DexId.XOR,
-    dexQuoteData: {},
     // modals
     allowLossPopup: allowLossPopup ? Boolean(JSON.parse(allowLossPopup)) : true,
   };

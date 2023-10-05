@@ -1,6 +1,7 @@
 import { initWallet, waitForCore, connection, api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
+import axiosInstance from '@/api';
 import { Language, WalletPermissions } from '@/consts';
 import { getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
 import { settingsActionContext } from '@/store/settings';
@@ -31,7 +32,7 @@ async function closeConnectionWithInfo() {
 
   if (currentEndpoint && opened) {
     await connection.close();
-    console.info('Disconnected from node', currentEndpoint);
+    console.info('[SORA] Disconnected from node', currentEndpoint);
   }
 }
 
@@ -123,7 +124,7 @@ const actions = defineActions({
       }
       commit.setNodeRequest({ node, isReconnection });
 
-      console.info('Connection request to node', endpoint);
+      console.info('[SORA] Connection request to node', endpoint);
 
       await closeConnectionWithInfo();
 
@@ -134,7 +135,7 @@ const actions = defineActions({
 
       if (connectingNodeChanged()) return;
 
-      console.info('Connected to node', connection.endpoint);
+      console.info('[SORA] Connected to node', connection.endpoint);
 
       const nodeChainGenesisHash = connection.api?.genesisHash.toHex();
       // if connected node is custom node, we should check genesis hash
@@ -214,6 +215,15 @@ const actions = defineActions({
       commit.setBlockNumber(blockNumber);
     });
     commit.setBlockNumberUpdates(blockNumberSubscription);
+  },
+  async fetchAdsArray(context): Promise<void> {
+    const { commit } = settingsActionContext(context);
+    try {
+      const { data } = await axiosInstance.get('/marketing.json');
+      commit.setAdsArray(data);
+    } catch {
+      commit.setAdsArray([]);
+    }
   },
 });
 

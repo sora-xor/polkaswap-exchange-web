@@ -38,8 +38,8 @@
             "CreatePair": "Isporučeno {amount} {symbol} i {amount2} {symbol2}",
             "RegisterAsset": "Registrirano sredstvo {symbol}",
             "ClaimRewards": "Nagrada je uspješno prijavljena {rewards}",
-            "ReferralReserveXor": "Uspješno povezivanje XORa",
-            "ReferralUnreserveXor": "Uspješno odvajanje XORa",
+            "ReferralReserveXor": "Bonded {amount} XOR",
+            "ReferralUnreserveXor": "Nevezani {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} je uspješno postavljena",
             "SwapAndSend": "Zamijenjeno {amount} {symbol} za {amount2} {symbol2} i {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Isporučeni LP tokeni {symbol} i {symbol2} {amount}",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Uklonjeno {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} uspješno potraživan",
             "EthBridgeIncoming": "Preneseno {amount} {symbol} s {Ethereum} na {Sora}",
-            "EthBridgeOutgoing": "Preneseno {amount} {symbol} s {Sora} na {Ethereum}"
+            "EthBridgeOutgoing": "Preneseno {amount} {symbol} s {Sora} na {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} nije uspio",
@@ -58,8 +59,8 @@
             "CreatePair": "Opskrba {amount} {symbol} i {amount2} {symbol2} nije uspjela",
             "RegisterAsset": "Registracija sredstva {symbol} nije uspjela",
             "ClaimRewards": "Preuzimanje nagrada nije uspjelo {rewards}",
-            "ReferralReserveXor": "Povezivanje XORa nije uspjelo",
-            "ReferralUnreserveXor": "Odvajanje XORa nije uspjelo",
+            "ReferralReserveXor": "Nije uspjelo povezivanje {amount} XOR",
+            "ReferralUnreserveXor": "Neuspjelo odvajanje {amount} XOR",
             "ReferralSetInvitedUser": "Postavljanje {role} {address} nije uspjelo",
             "SwapAndSend": "Nije uspjela zamjena {amount} {symbol} za {amount2} {symbol2} i {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Dostava {amount} {symbol} i {symbol2} LP tokena nije uspjela",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Uklanjanje {amount} {symbol} nije uspjelo",
             "DemeterFarmingGetRewards": "Nije uspjelo potraživanje {symbol}",
             "EthBridgeIncoming": "Prijenos {amount} {symbol} iz {Ethereum} u {Sora} nije uspio",
-            "EthBridgeOutgoing": "Prijenos {amount} {symbol} iz {Sora} u {Ethereum} nije uspio"
+            "EthBridgeOutgoing": "Prijenos {amount} {symbol} iz {Sora} u {Ethereum} nije uspio",
+            "SwapTransferBatch": "{action} {amount} {symbol} nije uspio"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Zatražite nagrade",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Prijenos"
     },
     "polkadotjs": {
         "noExtensions": "Nije pronađeno proširenje {PolkadotJs}. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "Račun mreže {Sora}",
-        "text": "Proširenja i Google sigurno pohranjuju vaš račun mreže {Sora} . Omogućuju vam potpisivanje transakcija i upravljanje imovinom.",
+        "text": "Za upravljanje imovinom i potpisivanje transakcija na {Sora} mora biti povezan račun. {Sora} računi mogu se kreirati i povezati pomoću naših integriranih novčanika ili proširenja preglednika.",
         "noAccounts": "U proširenju preglednika {extension} nije pronađen račun. Dodajte račun i pokušajte ponovno.",
         "selectAccount": "Odaberite račun za rad",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "Povezan",
             "notConnected": "Nije povezano"
         },
-        "internalTitle": "Povežite se putem {wallet}",
-        "internalText": "Možete stvoriti ili povezati postojeći račun putem {wallet} . Pohranjuje račune pomoću enkripcije.",
+        "internalTitle": "Povežite se s {wallet}",
+        "internalText": "Možete stvoriti ili uvesti postojeći {Sora} račun za povezivanje sa svojim {wallet} računom. Svi podaci koje pohranjuje {wallet} šifrirani su pomoću ugrađene napredne enkripcije.",
         "list": {
-            "simplest": "Najjednostavnija opcija",
+            "integrated": "Integriran",
             "extensions": "Ekstenzije"
         }
     },
@@ -301,7 +304,8 @@
         "txId": "ID transakcije",
         "viewIn": "Pogledajte u {explorer}",
         "referrer": "Preporučitelj",
-        "referral": "Preporuka"
+        "referral": "Preporuka",
+        "adarTxDetailsTitle": "Detalji transakcije"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Promijenite mrežu u {Metamask}",
@@ -540,7 +544,10 @@
         "networkInfo": "Bridge {Sora} mrežna naknada s:",
         "copy": "Kopiraj mrežnu adresu",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "limitMessage": "Trenutno postoji {type} {amount} {symbol} za premošćivanje kako bi se osigurala stabilnost i sigurnost {Sora} mreže. Cijenimo vaše razumijevanje.",
+        "externalTransferFee": "{network} {XCM} naknada",
+        "externalTransferFeeTooltip": "Kada pošaljete premosnu transakciju na mrežu {network} , od iznosa koji prenosite uzima se manja naknada"
     },
     "selectRegisteredAsset": {
         "title": "Odaberite token",
@@ -1013,7 +1020,8 @@
             "norewardsforasset": "Za ovu imovinu nema nagrada"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Odabrani izvor likvidnosti nije dopušten"
+            "forbiddenfilter": "Odabrani izvor likvidnosti nije dopušten",
+            "slippagenottolerated": "Utjecaj cijene premašio je odabranu vrijednost"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Nedostatna sredstva",
@@ -1053,8 +1061,8 @@
             "importAccount": "Uvezi račun"
         },
         "heading": {
-            "seedPhraseTitle": "Izraz sjemena",
-            "confirmSeedTitle": "Potvrdite početni izraz",
+            "seedPhraseTitle": "Pristupni izraz",
+            "confirmSeedTitle": "Potvrda pristupnog izraza",
             "accountDetailsTitle": "Detalji Računa",
             "importTitle": "Uvezi račun"
         },
@@ -1065,12 +1073,12 @@
             "importAccount": "Uvezi račun"
         },
         "accountName": {
-            "placeholder": "Naziv novčanika",
-            "desc": "Ovo je naziv vašeg novčanika koji će vam biti vidljiv"
+            "placeholder": "Korisničko ime",
+            "desc": "Ovo je naziv vašeg računa. Bit će vidljiv samo vama u {Polkaswap}."
         },
         "password": {
             "placeholder": "Zaporka",
-            "desc": "Uvjerite se da koristite jaku lozinku za pravilnu zaštitu"
+            "desc": "Provjerite koristite li jaku jedinstvenu lozinku za pravilnu zaštitu (najmanje 8 znakova)"
         },
         "confirmPassword": {
             "placeholder": "Potvrdi lozinku"
@@ -1078,11 +1086,11 @@
         "accountMnemonic": {
             "placeholder": "Mnemotehnička fraza"
         },
-        "seedAdviceText": "Ovo je tajno sjeme vašeg računa. Pazite da ga pohranite na nedigitalni nosač, na primjer - papir",
-        "confirmSeedText": "Potvrdite početni izraz klikom na riječi u ispravnom redoslijedu",
-        "errorMnemonicText": "Neispravan redoslijed početnih fraza",
-        "exportOptionText": "Izvoz .json datoteke računa",
-        "exportJsonText": "Uvijek ćete moći pristupiti svom računu uvozom te .json datoteke. Ne dijelite to ni s kim!",
+        "seedAdviceText": "Zaporka od 12 riječi privatni je ključ za ponovni pristup vašem {Sora} računu u slučaju da izgubite pristup svom {wallet} računu. Pohranite ga na sigurno točnim redoslijedom kako je gore prikazan.",
+        "confirmSeedText": "Potvrdite zaporku klikom na riječi u ispravnom redoslijedu",
+        "errorMnemonicText": "Neispravan redoslijed šifre",
+        "exportOptionText": "Izvezite {JSON} datoteku za vraćanje računa",
+        "exportJsonText": "Uvijek ćete moći vratiti svoj račun uvozom ove {JSON} datoteke. Ne dijelite to ni s kim! Pohranite ga na sigurno, po mogućnosti šifriranog.",
         "addAccount": "Dodajte račun",
         "dialog": {
             "confirmTitle": "Potvrda lozinkom",
@@ -1101,16 +1109,20 @@
         "assetsAtRiskText": "Imovina u opasnosti!",
         "deleteAccountText": "Račun se ne može oporaviti bez početne fraze, .json datoteke ili ako je pohranjena u nekoj ekstenziji. Bit ćete odjavljeni.",
         "importSteps": {
-            "selectWallet": "Idite na novčanik koji koristite",
+            "selectWallet": "Otvorite novčanik sa svojim postojećim računom(ima)",
             "selectAccount": "Odaberite račun koji želite izvesti",
             "exportAccount": "Izvezite datoteku {JSON}"
         },
-        "exportTutorialsText": "Upute za izvoz"
+        "exportTutorialsText": "Upute za izvoz",
+        "seedAdviceAdditionTitle": "Nikada ni s kim ne dijelite svoju šifru!",
+        "seedAdviceAdditionText": "Ako vas netko pita za lozinku, najvjerojatnije vas pokušava prevariti i ukrasti vašu imovinu!"
     },
     "hashiBridgeText": "{Hashi} most",
     "disclaimerTitle": "Disclaimer:",
     "explore": {
-        "showOnlyMyPositions": "Pokaži samo moje pozicije"
+        "showOnly": "Pokaži samo {entities}",
+        "myPositions": "moje pozicije",
+        "synthetics": "sintetički tokeni"
     },
     "tooltips": {
         "roi": "{ROI} je kratica za povrat ulaganja. Izračunava se dijeljenjem dobiti ostvarene ulaganjem troškom tog ulaganja u postotnom ekvivalentu.",
@@ -1178,7 +1190,7 @@
     "acceptText": "Prihvati i sakrij",
     "newAccountsText": "Novi računi",
     "dragAndDropText": "Povucite i ispustite ili odaberite {extension} datoteku",
-    "copyPhraseText": "Kopiraj frazu",
+    "copyPhraseText": "Kopirajte lozinku frazu",
     "stepText": "Korak",
     "alerts": {
         "drop": "Kapi ispod",
@@ -1210,13 +1222,13 @@
         "moonpayTitle": "Kupite ETH putem MoonPaya",
         "moonpayDesc": "Kupite ETH tokene na Ethereumu i prenesite ih na SORA mrežu putem mosta",
         "x1Title": "Kupite XOR svojom karticom",
-        "x1Desc": "Kupite XOR tokene svojom debitnom ili kreditnom karticom",
         "x1Btn": "Kupite XOR karticom",
-        "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije."
+        "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije.",
+        "x1Desc": "Kupite XOR tokene izravno na SORA mreži svojom debitnom ili kreditnom karticom"
     },
     "acceptOnScrollText": "Pomaknite se za prihvaćanje",
     "addressBook": {
-        "myExtAccounts": "Moji računi proširenja",
+        "myAccounts": "Moji računi",
         "myBook": "Moja knjiga",
         "searchPlaceholder": "Pretraživanje po adresi, imenu ili identitetu",
         "noFoundRecords": "Nema pronađenih zapisa",
@@ -1247,5 +1259,9 @@
         "btnGoToSettings": "Idite na postavke",
         "btnAllow": "Dopusti pristup"
     },
-    "continueText": "Nastaviti"
+    "continueText": "Nastaviti",
+    "minAmountText": "min. iznos",
+    "maxAmountText": "max. iznos",
+    "exceededAmountText": "{amount} premašeno",
+    "multipleRecipients": "Višestruki primatelji"
 }

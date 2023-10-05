@@ -4,7 +4,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import type { DemeterAsset } from '@/modules/demeterFarming/types';
-import { getAssetBalance } from '@/utils';
+import { getAssetBalance, getLiquidityBalance } from '@/utils';
 
 import type { DemeterPool, DemeterAccountPool } from '@sora-substrate/util/build/demeterFarming/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
@@ -43,7 +43,7 @@ export default class PoolStatusMixin extends Mixins(mixins.FormattedAmountMixin,
   }
 
   get lpBalance(): FPNumber {
-    return FPNumber.fromCodecValue(getAssetBalance(this.liquidity, { parseAsLiquidity: true }) ?? 0);
+    return FPNumber.fromCodecValue(getLiquidityBalance(this.liquidity) ?? 0);
   }
 
   get funds(): FPNumber {

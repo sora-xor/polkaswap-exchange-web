@@ -1,5 +1,6 @@
 import { api, getCurrentIndexer } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
+import { firstValueFrom } from 'rxjs';
 
 import { poolActionContext } from '@/store/pool';
 import { waitForAccountPair } from '@/utils';
@@ -15,7 +16,9 @@ const actions = defineActions({
       const userPoolsSubscription = api.poolXyk.getUserPoolsSubscription();
       commit.setAccountLiquidityList(userPoolsSubscription);
       // waiting until all liquidities loaded
-      await api.poolXyk.accountLiquidityLoaded.toPromise();
+      if (api.poolXyk.accountLiquidityLoaded) {
+        await firstValueFrom(api.poolXyk.accountLiquidityLoaded);
+      }
     });
   },
   async subscribeOnAccountLiquidityUpdates(context): Promise<void> {

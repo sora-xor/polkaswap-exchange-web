@@ -38,8 +38,8 @@
             "CreatePair": "Levert {amount} {symbol} og {amount2} {symbol2}",
             "RegisterAsset": "Registrert {symbol} aktivum",
             "ClaimRewards": "Innhenting av belønning var vellykket {rewards}",
-            "ReferralReserveXor": "Bondet XOR vellykket",
-            "ReferralUnreserveXor": "Ubundet XOR vellykket",
+            "ReferralReserveXor": "Bondet {amount} XOR",
+            "ReferralUnreserveXor": "Ubundet {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} er satt",
             "SwapAndSend": "Byttet {amount} {symbol} med {amount2} {symbol2} og {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Levert {symbol} og {symbol2} {amount} LP-tokens",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Fjernet {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} er gjort krav på",
             "EthBridgeIncoming": "Overførte {amount} {symbol} fra {Ethereum} til {Sora}",
-            "EthBridgeOutgoing": "Overførte {amount} {symbol} fra {Sora} til {Ethereum}"
+            "EthBridgeOutgoing": "Overførte {amount} {symbol} fra {Sora} til {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Kunne ikke {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Kunne ikke levere {amount} {symbol} og {amount2} {symbol2}",
             "RegisterAsset": "Kunne ikke registrere {symbol} ressurs",
             "ClaimRewards": "Kunne ikke kreve belønninger {rewards}",
-            "ReferralReserveXor": "Kunne ikke binde XOR",
-            "ReferralUnreserveXor": "Kunne ikke frigjøre XOR",
+            "ReferralReserveXor": "Kunne ikke binde {amount} XOR",
+            "ReferralUnreserveXor": "Kunne ikke frigjøre {amount} XOR",
             "ReferralSetInvitedUser": "Kunne ikke angi {role} {address}",
             "SwapAndSend": "Kunne ikke bytte {amount} {symbol} for {amount2} {symbol2} og {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Kunne ikke oppgi {amount} {symbol} og {symbol2} LP-tokens",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Kunne ikke fjerne {amount} {symbol}",
             "DemeterFarmingGetRewards": "Kunne ikke gjøre krav på {symbol}",
             "EthBridgeIncoming": "Kunne ikke overføre {amount} {symbol} fra {Ethereum} til {Sora}",
-            "EthBridgeOutgoing": "Kunne ikke overføre {amount} {symbol} fra {Sora} til {Ethereum}"
+            "EthBridgeOutgoing": "Kunne ikke overføre {amount} {symbol} fra {Sora} til {Ethereum}",
+            "SwapTransferBatch": "Kunne ikke {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Gjør krav på belønninger",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Overføre"
     },
     "polkadotjs": {
         "noExtensions": "Finner ingen {PolkadotJs} utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "{Sora} Nettverkskonto",
-        "text": "Utvidelser og Google lagrer {Sora} Network-kontoen din sikkert. De lar deg signere transaksjoner og administrere eiendeler.",
+        "text": "For å administrere eiendeler og signere transaksjoner på {Sora} , må en konto være tilkoblet. {Sora} -kontoer kan opprettes og kobles til ved hjelp av våre integrerte lommebøker eller nettleserutvidelser.",
         "noAccounts": "Finner ingen konto i nettleserutvidelsen {extension}. Legg til en konto, og prøv på nytt.",
         "selectAccount": "Velg kontoen du vil arbeide med",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "Tilkoblet",
             "notConnected": "Ikke tilkoblet"
         },
-        "internalTitle": "Koble til via {wallet}",
-        "internalText": "Du kan opprette eller koble til en eksisterende konto via {wallet} . Den lagrer kontoer ved hjelp av kryptering.",
+        "internalTitle": "Koble til {wallet}",
+        "internalText": "Du kan opprette eller importere en eksisterende {Sora} -konto for å koble til {wallet} -kontoen din. Alle data som er lagret av {wallet} er kryptert med innebygd avansert kryptering.",
         "list": {
-            "simplest": "Det enkleste alternativet",
+            "integrated": "Integrert",
             "extensions": "Utvidelser"
         }
     },
@@ -301,7 +304,8 @@
         "txId": "Transaksjons ID",
         "viewIn": "Vis i {explorer}",
         "referrer": "Henviser",
-        "referral": "Henvisning"
+        "referral": "Henvisning",
+        "adarTxDetailsTitle": "Transaksjonsdetaljer"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Bytt nettverk i {Metamask}",
@@ -540,7 +544,10 @@
         "networkInfo": "Bridge {Sora} Network med:",
         "copy": "Kopier nettverksadressen",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse"
+        "ethereumAddress": "{Ethereum} adresse",
+        "limitMessage": "For øyeblikket er det en {type} {amount} {symbol} for brobygging for å sikre stabiliteten og sikkerheten til {Sora} -nettverket. Vi setter pris på din forståelse.",
+        "externalTransferFee": "{network} {XCM} gebyr",
+        "externalTransferFeeTooltip": "Når du sender en brotransaksjon til {network} -nettverket, tas et mindre gebyr fra beløpet du overfører"
     },
     "selectRegisteredAsset": {
         "title": "Velg token",
@@ -1013,7 +1020,8 @@
             "norewardsforasset": "Det er ingen belønninger for denne ressursen"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Valgt likviditetskilde er ikke tillatt"
+            "forbiddenfilter": "Valgt likviditetskilde er ikke tillatt",
+            "slippagenottolerated": "Prisimpakten har overskredet den valgte verdien"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Utilstrekkelige midler",
@@ -1053,8 +1061,8 @@
             "importAccount": "Importer konto"
         },
         "heading": {
-            "seedPhraseTitle": "Frøsetning",
-            "confirmSeedTitle": "Bekreft frøsetningen",
+            "seedPhraseTitle": "Passordfrase",
+            "confirmSeedTitle": "Bekreft passordfrase",
             "accountDetailsTitle": "kontodetaljer",
             "importTitle": "Importer konto"
         },
@@ -1065,12 +1073,12 @@
             "importAccount": "Importer konto"
         },
         "accountName": {
-            "placeholder": "Lommeboknavn",
-            "desc": "Dette er navnet på lommeboken din som vil være synlig for deg"
+            "placeholder": "Brukernavn",
+            "desc": "Dette er navnet på kontoen din. Den vil bare være synlig for deg i {Polkaswap}."
         },
         "password": {
             "placeholder": "Passord",
-            "desc": "Sørg for at du bruker et sterkt passord for riktig beskyttelse"
+            "desc": "Sørg for at du bruker et sterkt unikt passord for riktig beskyttelse (minimum 8 tegn)"
         },
         "confirmPassword": {
             "placeholder": "Bekreft passord"
@@ -1078,11 +1086,11 @@
         "accountMnemonic": {
             "placeholder": "Mnemonisk setning"
         },
-        "seedAdviceText": "Dette er et hemmelig frø til kontoen din. Sørg for å lagre den på en ikke-digital bærer, for eksempel - papir",
-        "confirmSeedText": "Bekreft frøsetningen ved å klikke på ordene i riktig rekkefølge",
-        "errorMnemonicText": "Feil rekkefølge på frøfrasen",
-        "exportOptionText": "Eksporter .json-kontofil",
-        "exportJsonText": "Du vil alltid kunne få tilgang til kontoen din ved å importere den .json-filen. Ikke del det med noen!",
+        "seedAdviceText": "Passordet på 12 ord er en privat nøkkel for å få tilbake tilgang til {Sora} -kontoen din i tilfelle du mister tilgangen til {wallet} -kontoen din. Oppbevar den trygt i nøyaktig rekkefølgen den vises ovenfor.",
+        "confirmSeedText": "Bekreft passordfrasen ved å klikke ordene i riktig rekkefølge",
+        "errorMnemonicText": "Feil rekkefølge for passordfrase",
+        "exportOptionText": "Eksporter {JSON} -fil for kontogjenoppretting",
+        "exportJsonText": "Du vil alltid kunne gjenopprette kontoen din ved å importere denne {JSON} -filen. Ikke del det med noen! Oppbevar den trygt, helst kryptert.",
         "addAccount": "Legg til en konto",
         "dialog": {
             "confirmTitle": "Bekreft med passord",
@@ -1101,16 +1109,20 @@
         "assetsAtRiskText": "Eiendeler i fare!",
         "deleteAccountText": "Kontoen kan ikke gjenopprettes uten en frøfrase, .json-fil eller hvis den er lagret i en filtype. Du vil bli logget ut.",
         "importSteps": {
-            "selectWallet": "Gå til lommeboken du bruker",
+            "selectWallet": "Åpne lommeboken med eksisterende konto(er)",
             "selectAccount": "Velg kontoen du vil eksportere",
             "exportAccount": "Eksporter {JSON} -filen"
         },
-        "exportTutorialsText": "Eksporter opplæringsprogrammer"
+        "exportTutorialsText": "Eksporter opplæringsprogrammer",
+        "seedAdviceAdditionTitle": "Del aldri passordfrasen din med noen!",
+        "seedAdviceAdditionText": "Hvis noen ber deg om passordfrasen din, prøver de mest sannsynlig å lure deg og stjele eiendelene dine!"
     },
     "hashiBridgeText": "{Hashi} bro",
     "disclaimerTitle": "Ansvarsfraskrivelse",
     "explore": {
-        "showOnlyMyPositions": "Vis bare mine posisjoner"
+        "showOnly": "Vis bare {entities}",
+        "myPositions": "mine posisjoner",
+        "synthetics": "syntetiske tokens"
     },
     "tooltips": {
         "roi": "{ROI} står for Return on Investment. Den beregnes ved å dele fortjenesten opptjent på en investering med kostnaden for den investeringen i en prosentekvivalent.",
@@ -1178,7 +1190,7 @@
     "acceptText": "Godta og skjul",
     "newAccountsText": "Nye kontoer",
     "dragAndDropText": "Dra og slipp eller velg {extension} -fil",
-    "copyPhraseText": "Kopier frase",
+    "copyPhraseText": "Kopier passordfrasen",
     "stepText": "Steg",
     "alerts": {
         "drop": "Faller under",
@@ -1210,13 +1222,13 @@
         "moonpayTitle": "Kjøp ETH via MoonPay",
         "moonpayDesc": "Kjøp ETH-tokens på Ethereum og overfør dem til SORA-nettverket via broen",
         "x1Title": "Kjøp XOR med kortet ditt",
-        "x1Desc": "Kjøp XOR-tokens med ditt debet- eller kredittkort",
         "x1Btn": "Kjøp XOR med kort",
-        "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere."
+        "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere.",
+        "x1Desc": "Kjøp XOR-tokens direkte på SORA-nettverket med ditt debet- eller kredittkort"
     },
     "acceptOnScrollText": "Rull for å godta",
     "addressBook": {
-        "myExtAccounts": "Mine utvidelseskontoer",
+        "myAccounts": "Mine kontoer",
         "myBook": "Min bok",
         "searchPlaceholder": "Søk på adresse, navn eller identitet",
         "noFoundRecords": "Ingen opptak funnet",
@@ -1247,5 +1259,9 @@
         "btnGoToSettings": "Gå til Innstillinger",
         "btnAllow": "Gi tilgang"
     },
-    "continueText": "Fortsette"
+    "continueText": "Fortsette",
+    "minAmountText": "min. beløp",
+    "maxAmountText": "maks. beløp",
+    "exceededAmountText": "{amount} overskredet",
+    "multipleRecipients": "Flere mottakere"
 }

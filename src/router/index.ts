@@ -220,10 +220,17 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/moonpay-history',
-    name: PageNames.MoonpayHistory,
-    component: lazyView(PageNames.MoonpayHistory),
-    meta: { requiresAuth: true },
+    path: '/fiat-deposit',
+    name: PageNames.FiatDepositOptions,
+    component: lazyView(PageNames.FiatDepositOptions),
+  },
+  {
+    path: '/fiat-deposit/history',
+    name: PageNames.FiatTxHistory,
+    component: lazyView(PageNames.FiatTxHistory),
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/stats',
@@ -263,7 +270,7 @@ router.beforeEach((to, from, next) => {
     }
   }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (BridgeChildPages.includes(current) && isLoggedIn && !store.getters.web3.externalAccount) {
+    if (BridgeChildPages.includes(current) && isLoggedIn && !store.getters.bridge.externalAccount) {
       setRoute(PageNames.Bridge);
       return;
     }

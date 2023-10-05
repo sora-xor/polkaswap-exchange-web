@@ -38,8 +38,8 @@
             "CreatePair": "Pridané {amount} {symbol} a {amount2} {symbol2}",
             "RegisterAsset": "Zaregistrované aktívum {symbol}",
             "ClaimRewards": "Odmena bola úspešne nárokovaná {rewards}",
-            "ReferralReserveXor": "Úspešne spojené XOR",
-            "ReferralUnreserveXor": "Úspešne odpojené XOR",
+            "ReferralReserveXor": "Viazané {amount} XOR",
+            "ReferralUnreserveXor": "Neviazané {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} bolo úspešne nastavené",
             "SwapAndSend": "{amount} {symbol} vymenené za {amount2} {symbol2} a {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Dodané {symbol} a {symbol2} {amount} LP tokeny",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Odstránené {amount} {symbol}",
             "DemeterFarmingGetRewards": "Úspešne nárokované {amount} {symbol}",
             "EthBridgeIncoming": "Prevedené {amount} {symbol} z {Ethereum} do {Sora}",
-            "EthBridgeOutgoing": "Prevedené {amount} {symbol} z {Sora} do {Ethereum}"
+            "EthBridgeOutgoing": "Prevedené {amount} {symbol} z {Sora} do {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Nepodarilo sa {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Nepodarilo sa pridať {amount} {symbol} a {amount2} {symbol2}",
             "RegisterAsset": "Aktívum {symbol} sa nepodarilo zaregistrovať",
             "ClaimRewards": "Nepodarilo sa uplatniť odmeny {rewards}",
-            "ReferralReserveXor": "Spojenie XOR zlyhalo",
-            "ReferralUnreserveXor": "Nepodarilo sa odpojiť XOR",
+            "ReferralReserveXor": "Nepodarilo sa naviazať {amount} XOR",
+            "ReferralUnreserveXor": "Nepodarilo sa zrušiť viazanie {amount} XOR",
             "ReferralSetInvitedUser": "Nepodarilo sa nastaviť {role} {address}",
             "SwapAndSend": "Nepodarilo sa vymeniť {amount} {symbol} za {amount2} {symbol2} a {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Nepodarilo sa dodať {amount} {symbol} a {symbol2} LP tokenov",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Nepodarilo sa odstrániť {amount} {symbol}",
             "DemeterFarmingGetRewards": "Nepodarilo sa nárokovať {symbol}",
             "EthBridgeIncoming": "Nepodarilo sa preniesť {amount} {symbol} z {Ethereum} do {Sora}",
-            "EthBridgeOutgoing": "Nepodarilo sa preniesť {amount} {symbol} z {Sora} do {Ethereum}"
+            "EthBridgeOutgoing": "Nepodarilo sa preniesť {amount} {symbol} z {Sora} do {Ethereum}",
+            "SwapTransferBatch": "Nepodarilo sa {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Zrušiť vklad",
         "DemeterFarmingGetRewards": "Nárokovať odmeny",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Prevod"
     },
     "polkadotjs": {
         "noExtensions": "Rozšírenie {PolkadotJs} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "Sieťový účet {Sora}",
-        "text": "Rozšírenia a Google bezpečne ukladajú váš účet siete {Sora} . Umožňujú vám podpisovať transakcie a spravovať aktíva.",
+        "text": "Ak chcete spravovať aktíva a podpisovať transakcie na {Sora}, musí byť pripojený účet. Účty {Sora} je možné vytvoriť a prepojiť pomocou našich integrovaných peňaženiek alebo rozšírení prehliadača.",
         "noAccounts": "Vo vašom rozšírení prehliadača {extension} nebol nájdený žiadny účet. Pridajte účet a skúste to znova.",
         "selectAccount": "Vyberte účet, s ktorým chcete pracovať",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "Pripojené",
             "notConnected": "Nepripojený"
         },
-        "internalTitle": "Pripojiť cez {wallet}",
-        "internalText": "Existujúci účet môžete vytvoriť alebo prepojiť prostredníctvom služby {wallet} . Ukladá účty pomocou šifrovania.",
+        "internalTitle": "Spojte sa s {wallet}",
+        "internalText": "Môžete si vytvoriť alebo importovať existujúci účet {Sora} a spojiť sa so svojím účtom {wallet}. Všetky údaje uložené v službe {wallet} sú šifrované pomocou vstavaného pokročilého šifrovania.",
         "list": {
-            "simplest": "Najjednoduchšia možnosť",
+            "integrated": "Integrovaný",
             "extensions": "Rozšírenia"
         }
     },
@@ -301,7 +304,8 @@
         "txId": "ID transakcie",
         "viewIn": "Zobraziť v {explorer}",
         "referrer": "Sprostredkovateľ",
-        "referral": "Doporučenie"
+        "referral": "Doporučenie",
+        "adarTxDetailsTitle": "Detaily transakcie"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Zmeňiť sieť v {Metamask}",
@@ -540,7 +544,10 @@
         "networkInfo": "Prepojiť {Sora} sieť s:",
         "copy": "Skopírujte sieťovú adresu",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "limitMessage": "V súčasnosti existuje {type} {amount} {symbol} na premostenie na zaistenie stability a bezpečnosti siete {Sora}. Ďakujeme za pochopenie.",
+        "externalTransferFee": "{network} poplatok {XCM}",
+        "externalTransferFeeTooltip": "Keď odošlete preklenovaciu transakciu do siete {network} , zo sumy, ktorú prenášate, sa účtuje malý poplatok"
     },
     "selectRegisteredAsset": {
         "title": "Vybrať token",
@@ -1013,7 +1020,8 @@
             "norewardsforasset": "Za toto aktívum nie sú žiadne odmeny"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Zvolený zdroj likvidity nie je povolený"
+            "forbiddenfilter": "Zvolený zdroj likvidity nie je povolený",
+            "slippagenottolerated": "Dopad na cenu prekročil vybranú hodnotu"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Nedostatok prostriedkov",
@@ -1053,8 +1061,8 @@
             "importAccount": "Importovať účet"
         },
         "heading": {
-            "seedPhraseTitle": "Semená fráza",
-            "confirmSeedTitle": "Potvrďte počiatočnú frázu",
+            "seedPhraseTitle": "Prístupová fráza",
+            "confirmSeedTitle": "Potvrďte prístupovú frázu",
             "accountDetailsTitle": "Podrobnosti o účte",
             "importTitle": "Importovať účet"
         },
@@ -1065,12 +1073,12 @@
             "importAccount": "Importovať účet"
         },
         "accountName": {
-            "placeholder": "Názov peňaženky",
-            "desc": "Toto je názov vašej peňaženky, ktorý sa vám zobrazí"
+            "placeholder": "Názov účtu",
+            "desc": "Toto je názov vášho účtu. Bude viditeľný iba pre vás v {Polkaswap}."
         },
         "password": {
             "placeholder": "Heslo",
-            "desc": "Pre správnu ochranu sa uistite, že používate silné heslo"
+            "desc": "Uistite sa, že používate silné jedinečné heslo na správnu ochranu (minimálne 8 znakov)"
         },
         "confirmPassword": {
             "placeholder": "Potvrďte heslo"
@@ -1078,11 +1086,11 @@
         "accountMnemonic": {
             "placeholder": "Mnemotechnická fráza"
         },
-        "seedAdviceText": "Toto je tajný základ vášho účtu. Uistite sa, že ste ho uložili na iný ako digitálny nosič, napríklad na papier",
-        "confirmSeedText": "Heslo potvrďte výberom slov v správnom poradí",
-        "errorMnemonicText": "Nesprávne poradie počiatočných fráz",
-        "exportOptionText": "Exportujte súbor účtu .json",
-        "exportJsonText": "Vždy budete mať prístup k svojmu účtu importovaním tohto súboru .json. Nezdieľajte to s nikým!",
+        "seedAdviceText": "12-slovná prístupová fráza je súkromný kľúč na opätovné získanie prístupu k vášmu účtu {Sora} v prípade, že stratíte prístup k účtu {wallet}. Uložte ho bezpečne v presnom poradí, v akom je uvedené vyššie.",
+        "confirmSeedText": "Potvrďte prístupovú frázu kliknutím na slová v správnom poradí",
+        "errorMnemonicText": "Nesprávne poradie prístupovej frázy",
+        "exportOptionText": "Exportujte súbor {JSON} na obnovenie účtu",
+        "exportJsonText": "Vždy budete môcť obnoviť svoj účet importovaním tohto súboru {JSON}. Nezdieľajte to s nikým! Uložte ho bezpečne, najlepšie zašifrovaný.",
         "addAccount": "Pridajte účet",
         "dialog": {
             "confirmTitle": "Potvrďte heslom",
@@ -1101,16 +1109,20 @@
         "assetsAtRiskText": "Majetok v ohrození!",
         "deleteAccountText": "Účet nie je možné obnoviť bez počiatočnej frázy, súboru .json alebo ak je uložený v nejakej prípone. Budete odhlásení.",
         "importSteps": {
-            "selectWallet": "Prejdite do peňaženky, ktorú používate",
+            "selectWallet": "Otvorte peňaženku s existujúcim účtom (účtami)",
             "selectAccount": "Vyberte účet, ktorý chcete exportovať",
             "exportAccount": "Exportujte súbor {JSON}"
         },
-        "exportTutorialsText": "Exportujte návody"
+        "exportTutorialsText": "Exportujte návody",
+        "seedAdviceAdditionTitle": "Nikdy s nikým nezdieľajte svoju prístupovú frázu!",
+        "seedAdviceAdditionText": "Ak vás niekto požiada o vašu prístupovú frázu, s najväčšou pravdepodobnosťou sa vás pokúša oklamať a ukradnúť váš majetok!"
     },
     "hashiBridgeText": "Most {Hashi}",
     "disclaimerTitle": "Vylúčenie zodpovednosti",
     "explore": {
-        "showOnlyMyPositions": "Zobraziť iba moje pozície"
+        "showOnly": "Zobraziť iba {entities}",
+        "myPositions": "moje pozície",
+        "synthetics": "syntetické žetóny"
     },
     "tooltips": {
         "roi": "{ROI} znamená návratnosť investícií. Vypočítava sa vydelením zisku získaného z investície nákladmi na túto investíciu v percentuálnom ekvivalente.",
@@ -1178,7 +1190,7 @@
     "acceptText": "Prijať a skryť",
     "newAccountsText": "Nové účty",
     "dragAndDropText": "Presuňte myšou alebo vyberte súbor {extension}",
-    "copyPhraseText": "Kopírovať frázu",
+    "copyPhraseText": "Kopírovať heslovú frázu",
     "stepText": "Krok",
     "alerts": {
         "drop": "Kvapky nižšie",
@@ -1210,13 +1222,13 @@
         "moonpayTitle": "Kúpte si ETH cez MoonPay",
         "moonpayDesc": "Kúpte si ETH tokeny na Ethereu a preneste ich do siete SORA cez most",
         "x1Title": "Kúpte si XOR kartou",
-        "x1Desc": "Kúpte si tokeny XOR pomocou svojej debetnej alebo kreditnej karty",
         "x1Btn": "Kúpte si XOR kartou",
-        "errorMessage": "Ospravedlňujeme sa za nepríjemnosti. Na vyriešení tohto problému usilovne pracujeme. Skúste neskôr prosím."
+        "errorMessage": "Ospravedlňujeme sa za nepríjemnosti. Na vyriešení tohto problému usilovne pracujeme. Skúste neskôr prosím.",
+        "x1Desc": "Kúpte si tokeny XOR priamo v sieti SORA pomocou svojej debetnej alebo kreditnej karty"
     },
     "acceptOnScrollText": "Posuňte sa na prijatie",
     "addressBook": {
-        "myExtAccounts": "Moje účty rozšírenia",
+        "myAccounts": "Moje účty",
         "myBook": "Moja kniha",
         "searchPlaceholder": "Hľadajte podľa adresy, mena alebo identity",
         "noFoundRecords": "Nenašli sa žiadne záznamy",
@@ -1247,5 +1259,9 @@
         "btnGoToSettings": "Choď do nastavení",
         "btnAllow": "Povoliť prístup"
     },
-    "continueText": "ďalej"
+    "continueText": "ďalej",
+    "minAmountText": "min. čiastka",
+    "maxAmountText": "max. čiastka",
+    "exceededAmountText": "{amount} bola prekročená",
+    "multipleRecipients": "Viacerí prijímatelia"
 }

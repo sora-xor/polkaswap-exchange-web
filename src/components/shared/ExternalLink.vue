@@ -1,5 +1,5 @@
 <template>
-  <a class="external-link p4" :href="href" target="_blank" rel="nofollow noopener">
+  <a class="external-link" :class="defaultClass" :href="href" target="_blank" rel="nofollow noopener">
     <span>{{ title }}</span>
   </a>
 </template>
@@ -11,6 +11,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 export default class ExternalLink extends Vue {
   @Prop({ default: '', type: String }) title!: string;
   @Prop({ default: '', type: String }) href!: string;
+  @Prop({ default: 'p4', type: String }) defaultClass!: string;
 }
 </script>
 

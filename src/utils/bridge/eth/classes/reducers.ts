@@ -1,21 +1,20 @@
-import { api, SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { ethers } from 'ethers';
+import { SUBQUERY_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { IBridgeReducerOptions, GetBridgeHistoryInstance, SignExternal } from '@/utils/bridge/common/types';
-import { getEvmTransactionRecieptByHash, findEventInBlock } from '@/utils/bridge/common/utils';
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import type { EthBridgeHistory } from '@/utils/bridge/eth/history';
 import {
-  getTransaction,
-  waitForApprovedRequest,
-  waitForIncomingRequest,
-  waitForEvmTransaction,
-} from '@/utils/bridge/eth/utils';
+  getEvmTransactionRecieptByHash,
+  getTransactionEvents,
+  waitForEvmTransactionMined,
+} from '@/utils/bridge/common/utils';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
+import { getTransaction, waitForApprovedRequest, waitForIncomingRequest } from '@/utils/bridge/eth/utils';
 
-import type { BridgeHistory, IBridgeTransaction } from '@sora-substrate/util';
+import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 
 const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 
@@ -25,12 +24,12 @@ type EthBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeReducerOptio
   signExternalIncoming: SignExternal;
 };
 
-export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
+export class EthBridgeReducer extends BridgeReducer<EthHistory> {
   protected readonly getBridgeHistoryInstance!: GetBridgeHistoryInstance<EthBridgeHistory>;
   protected readonly signExternalOutgoing!: SignExternal;
   protected readonly signExternalIncoming!: SignExternal;
 
-  constructor(options: EthBridgeReducerOptions<BridgeHistory>) {
+  constructor(options: EthBridgeReducerOptions<EthHistory>) {
     super(options);
 
     this.getBridgeHistoryInstance = options.getBridgeHistoryInstance;
@@ -39,10 +38,13 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
   }
 
   async onEvmPending(id: string): Promise<void> {
-    await waitForEvmTransaction(id);
-
     const tx = this.getTransaction(id);
-    const { fee, blockNumber, blockHash } = (await getEvmTransactionRecieptByHash(tx.externalHash as string)) || {};
+    const updatedCallback = (externalHash: string) => this.updateTransactionParams(id, { externalHash });
+
+    await waitForEvmTransactionMined(tx.externalHash, updatedCallback);
+
+    const { fee, blockNumber, blockHash } =
+      (await getEvmTransactionRecieptByHash(this.getTransaction(id).externalHash as string)) || {};
 
     if (!(fee && blockNumber && blockHash)) {
       this.updateTransactionParams(id, { externalHash: undefined, externalNetworkFee: undefined });
@@ -51,7 +53,7 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
       );
     }
 
-    // In BridgeHistory 'blockHeight' will store evm block number
+    // In EthHistory 'blockHeight' will store evm block number
     this.updateTransactionParams(id, {
       externalNetworkFee: fee,
       externalBlockHeight: blockNumber,
@@ -74,7 +76,7 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
         });
       } catch (error: any) {
         // maybe transaction already completed, try to restore ethereum transaction hash
-        if (error.code === ethers.errors.UNPREDICTABLE_GAS_LIMIT) {
+        if (error.code === 'UNPREDICTABLE_GAS_LIMIT') {
           const { to, hash, startTime } = tx;
           const bridgeHistory = await this.getBridgeHistoryInstance();
           const transaction = await bridgeHistory.findEthTxBySoraHash(
@@ -95,7 +97,7 @@ export class EthBridgeReducer extends BridgeReducer<BridgeHistory> {
 }
 
 export class EthBridgeOutgoingReducer extends EthBridgeReducer {
-  async changeState(transaction: BridgeHistory): Promise<void> {
+  async changeState(transaction: EthHistory): Promise<void> {
     if (!transaction.id) throw new Error('[Bridge]: TX ID cannot be empty');
 
     switch (transaction.transactionState) {
@@ -120,7 +122,7 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
             if (!tx.txId) {
               await this.beforeSign(id);
               const asset = this.getAssetByAddress(tx.assetAddress as string) as RegisteredAccountAsset;
-              await ethBridgeApi.transferToEth(asset, tx.to as string, tx.amount as string, id);
+              await ethBridgeApi.transfer(asset, tx.to as string, tx.amount as string, id);
             }
 
             // signed sora transaction has to be parsed by subquery
@@ -151,18 +153,17 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
             await this.waitForTransactionStatus(id);
             await this.waitForTransactionBlockId(id);
 
-            const { blockId } = this.getTransaction(id);
+            const { blockId, txId, hash: soraHash } = this.getTransaction(id);
 
-            const eventData = await findEventInBlock({
-              api: api.api,
-              blockId: blockId as string,
-              section: 'ethBridge',
-              method: 'RequestRegistered',
-            });
+            if (!soraHash) {
+              const transactionEvents = await getTransactionEvents(blockId as string, txId as string, ethBridgeApi.api);
+              const requestEvent = transactionEvents.find((e) =>
+                ethBridgeApi.api.events.ethBridge.RequestRegistered.is(e.event)
+              );
+              const hash = requestEvent.event.data[0].toString();
 
-            const hash = eventData[0].toString();
-
-            this.updateTransactionParams(id, { hash });
+              this.updateTransactionParams(id, { hash });
+            }
 
             const tx = this.getTransaction(id);
 
@@ -203,7 +204,7 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
 }
 
 export class EthBridgeIncomingReducer extends EthBridgeReducer {
-  async changeState(transaction: BridgeHistory): Promise<void> {
+  async changeState(transaction: EthHistory): Promise<void> {
     if (!transaction.id) throw new Error('[Bridge]: TX ID cannot be empty');
 
     switch (transaction.transactionState) {

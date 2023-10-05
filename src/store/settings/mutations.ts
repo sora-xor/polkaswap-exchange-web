@@ -1,11 +1,11 @@
 import { defineMutations } from 'direct-vuex';
 
 import { MarketAlgorithms } from '@/consts';
-import type { Language } from '@/consts';
+import type { BreakpointClass, Language } from '@/consts';
 import type { Node } from '@/types/nodes';
 import storage, { settingsStorage } from '@/utils/storage';
 
-import type { FeatureFlags, SettingsState } from './types';
+import type { Ad, FeatureFlags, SettingsState } from './types';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<SettingsState>()({
@@ -53,8 +53,8 @@ const mutations = defineMutations<SettingsState>()({
     storage.set('marketAlgorithm', value);
   },
   setChartsEnabled(state, value: boolean): void {
-    state.сhartsEnabled = value;
-    storage.set('сhartsEnabled', value);
+    state.chartsEnabled = value;
+    storage.set('сhartsEnabled', value); // TODO: replace Cyrillic character
   },
   setTransactionDeadline(state, value: number): void {
     state.transactionDeadline = value;
@@ -124,6 +124,12 @@ const mutations = defineMutations<SettingsState>()({
   },
   setInternetConnectionSpeed(state): void {
     state.internetConnectionSpeed = ((navigator as any)?.connection?.downlink as number) ?? 0;
+  },
+  setScreenBreakpointClass(state, breakpoint: BreakpointClass): void {
+    state.screenBreakpointClass = breakpoint;
+  },
+  setAdsArray(state, arr: Array<Ad>): void {
+    state.adsArray = arr;
   },
 });
 

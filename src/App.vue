@@ -1,5 +1,5 @@
 <template>
-  <s-design-system-provider :value="libraryDesignSystem" id="app" class="app">
+  <s-design-system-provider :value="libraryDesignSystem" id="app" class="app" :class="responsiveClass">
     <app-header :loading="loading" @toggle-menu="toggleMenu" />
     <div :class="appClasses">
       <app-menu
@@ -17,14 +17,6 @@
             <router-view :parent-loading="loading || !nodeIsConnected" />
             <app-disclaimer v-if="disclaimerVisibility" />
           </div>
-          <footer class="app-footer">
-            <div class="sora-logo">
-              <span class="sora-logo__title">{{ t('poweredBy') }}</span>
-              <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
-                <sora-logo :theme="libraryTheme" />
-              </a>
-            </div>
-          </footer>
         </s-scrollbar>
       </div>
     </div>
@@ -51,8 +43,9 @@ import {
   settingsStorage,
   WALLET_CONSTS,
   WALLET_TYPES,
-  AlertsApiService
+  AlertsApiService,
 } from '@soramitsu/soraneo-wallet-web';
+import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import axiosInstance, { updateBaseUrl, getFullBaseUrl } from '@/api';
@@ -61,7 +54,7 @@ import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { PageNames, Components, Language } from '@/consts';
+import { PageNames, Components, Language, BreakpointClass, Breakpoint } from '@/consts';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -99,6 +92,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showConfirmInviteUser = false;
   showMobilePopup = false;
   showNotifsDarkPage = false;
+  responsiveClass = BreakpointClass.LargeDesktop;
 
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
@@ -124,6 +118,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
+  @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (cssClass: string) => void;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
   @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => Promise<void>;
@@ -137,6 +132,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
   @action.settings.setBlockNumber private setBlockNumber!: AsyncFnWithoutArgs;
+  @action.settings.fetchAdsArray private fetchAdsArray!: AsyncFnWithoutArgs;
   @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
   @action.wallet.account.notifyOnDeposit private notifyOnDeposit!: (info: {
     asset: WhitelistArrayItem;
@@ -184,7 +180,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
-  async confirmInvititation(): Promise<void> {
+  private async confirmInvititation(): Promise<void> {
     await this.getReferrer();
     if (this.storageReferrer) {
       if (this.storageReferrer === this.account.address) {
@@ -197,12 +193,32 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
+  private setResponsiveClass(): void {
+    const width = window.innerWidth;
+    if (width >= Breakpoint.HugeDesktop) {
+      this.responsiveClass = BreakpointClass.HugeDesktop;
+    } else if (width >= Breakpoint.LargeDesktop) {
+      this.responsiveClass = BreakpointClass.LargeDesktop;
+    } else if (width >= Breakpoint.Desktop) {
+      this.responsiveClass = BreakpointClass.Desktop;
+    } else if (width >= Breakpoint.Tablet) {
+      this.responsiveClass = BreakpointClass.Tablet;
+    } else if (width >= Breakpoint.LargeMobile) {
+      this.responsiveClass = BreakpointClass.LargeMobile;
+    } else if (width < Breakpoint.LargeMobile) {
+      this.responsiveClass = BreakpointClass.Mobile;
+    }
+    this.setScreenBreakpointClass(this.responsiveClass);
+  }
+
+  private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
+
   async created() {
     // [DESKTOP] To Enable Desktop
     // this.setIsDesktop(true);
     // element-icons is not common used, but should be visible after network connection lost
     preloadFontFace('element-icons');
-
+    this.setResponsiveClass();
     updateBaseUrl(router);
     AlertsApiService.baseRoute = getFullBaseUrl(router);
 
@@ -245,9 +261,14 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // connection to node
       await this.runAppConnectionToNode();
-      updateDocumentTitle(); // For the first load
-      this.showDisclaimer();
     });
+    updateDocumentTitle(); // For the first load
+    this.showDisclaimer();
+    this.fetchAdsArray();
+  }
+
+  mounted(): void {
+    window.addEventListener('resize', this.setResponsiveClassDebounced);
   }
 
   private get isSwapPageWithCharts(): boolean {
@@ -333,6 +354,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
+    window.removeEventListener('resize', this.setResponsiveClassDebounced);
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
     this.resetBlockNumberSubscription();
@@ -401,11 +423,7 @@ ul ul {
 
   &-body-scrollbar {
     @include scrollbar;
-  }
-  &-body {
-    &-scrollbar {
-      flex: 1;
-    }
+    flex: 1;
   }
 }
 
@@ -536,12 +554,6 @@ i.icon-divider {
   @include icon-styles;
 }
 
-@include tablet {
-  .app-footer {
-    flex-direction: row;
-  }
-}
-
 @include desktop {
   .app-main {
     &.app-main--swap.app-main--has-charts {
@@ -561,9 +573,6 @@ i.icon-divider {
 </style>
 
 <style lang="scss" scoped>
-$sora-logo-height: 36px;
-$sora-logo-width: 173.7px;
-
 .app {
   &-main {
     display: flex;
@@ -581,15 +590,12 @@ $sora-logo-width: 173.7px;
     max-width: 100%;
     &__about {
       overflow: hidden;
-      .app-footer {
-        justify-content: center;
-      }
     }
   }
 
   &-content {
     flex: 1;
-    margin: $inner-spacing-big auto 0;
+    margin: $inner-spacing-big auto;
     width: 100%;
   }
 
@@ -606,28 +612,6 @@ $sora-logo-width: 173.7px;
 
   @include large-mobile {
     display: none;
-  }
-}
-
-.sora-logo {
-  display: flex;
-  align-items: center;
-  align-self: flex-end;
-
-  &__title {
-    text-transform: uppercase;
-    font-weight: 200;
-    color: var(--s-color-base-content-secondary);
-    font-size: 15px;
-    line-height: 16px;
-    margin-right: $basic-spacing;
-    white-space: nowrap;
-  }
-
-  &__image {
-    width: $sora-logo-width;
-    height: $sora-logo-height;
-    @include focus-outline;
   }
 }
 </style>

@@ -23,6 +23,7 @@
 </template>
 
 <script lang="ts">
+import { ETH } from '@sora-substrate/util/build/assets/consts';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import MoonpayBridgeInitMixin from '@/components/pages/Moonpay/BridgeInitMixin';
@@ -62,6 +63,7 @@ export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) 
       amount: this.bridgeTransactionData.amount,
       amount2: this.bridgeTransactionData.amount2,
       asset: this.getAsset[this.bridgeTransactionData.assetAddress as string],
+      nativeAsset: this.getAsset[ETH.address],
       network: this.bridgeTransactionData.externalNetwork,
       networkType: this.bridgeTransactionData.externalNetworkType,
       externalNetworkFee: this.bridgeTransactionData.externalNetworkFee,

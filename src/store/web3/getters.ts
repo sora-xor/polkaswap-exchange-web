@@ -13,16 +13,6 @@ import type { Web3State, AvailableNetwork } from './types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const getters = defineGetters<Web3State>()({
-  externalAccount(...args): string {
-    const { state } = web3GetterContext(args);
-
-    if (state.networkType === BridgeNetworkType.Sub) {
-      return state.subAddress;
-    } else {
-      return state.evmAddress;
-    }
-  },
-
   availableNetworks(...args): Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>> {
     const { state } = web3GetterContext(args);
 
@@ -75,7 +65,7 @@ const getters = defineGetters<Web3State>()({
     }, {});
 
     return {
-      [BridgeNetworkType.EvmLegacy]: hashi,
+      [BridgeNetworkType.Eth]: hashi,
       [BridgeNetworkType.Evm]: evm,
       [BridgeNetworkType.Sub]: sub,
     };

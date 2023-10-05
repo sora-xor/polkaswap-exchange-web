@@ -1,9 +1,25 @@
 {
     "card": {
         "termsAndConditions": "Syarat & Ketentuan",
+        "termsAndConditionsPreDisclaimer": "Kami ingin Anda mengetahui secara pasti cara kerja layanan kartu SORA, siapa yang memerlukan data Anda dan alasannya. Meninjau kebijakan ini akan membantu Anda menggunakan aplikasi dengan tenang.",
         "disclaimerCollectData": "Untuk mendapatkan akun IBAN yang diperlukan untuk SORA Card, pengguna diharuskan menjalani proses KYC dengan penerbit kartu. Ini diperlukan kepatuhan. Komunitas SORA tidak dan tidak akan mengumpulkan data pribadi Anda.",
         "privacyPolicy": "Kebijakan pribadi",
+        "termsAndConditionsWarning": "Dengan melanjutkan, Anda mengonfirmasi bahwa Anda telah membaca, memahami, dan menerima kebijakan ini",
         "acceptAndContinue": "Terima & Lanjutkan",
+        "getPrepared": "Bersiap",
+        "guideline": {
+            "photoTitle": "Kirimkan foto dokumen identitas Anda",
+            "photoDesc": "Paspor, Surat Izin Mengemudi, KTP atau Izin Tinggal",
+            "selfieTitle": "Ambil selfie",
+            "selfieDesc": "Bimbingan akan diberikan selama proses tersebut",
+            "proofAddressTitle": "Kirimkan foto bukti alamat",
+            "proofAddressDesc": "Dokumen resmi (tagihan utilitas, laporan bank, laporan pemerintah atau korespondensi) yang berisi nama lengkap dan alamat Anda, dan berumur tidak lebih dari 3 bulan.",
+            "personalTitle": "Kirimkan informasi pribadi Anda",
+            "personalDesc": "Isi formulir dengan nama dan alamat Anda",
+            "proofAddressNote": "Catatan: Pernyataan dari neobank seperti Revolut dan N26 saat ini tidak dianggap sebagai bukti alamat yang sah.",
+            "paidAttemptDisclaimer": "Anda hanya memiliki {count} percobaan gratis untuk melewati proses KYC. Setiap percobaan lainnya setelah itu akan dikenakan biaya €{cost}. Percobaan berbayar akan tersedia setelah pembaruan aplikasi berikutnya."
+        },
+        "okReadyText": "Baik saya siap",
         "emailPlaceholder": "Surel",
         "sendCodeBtn": "Kirim kode SMS",
         "firstNamePlaceholder": "Nama depan",
@@ -19,19 +35,10 @@
         "getSoraCardBtn": "Dapatkan Kartu SORA secara gratis",
         "bridgeTokensBtn": "Token jembatan",
         "depositX1Btn": "Beli XOR",
-        "reIssuanceFee": "€0 biaya penerbitan ulang tahunan",
         "freeStartDesc": "{value} XOR di akun Anda untuk awal gratis",
         "completeKYC": "KYC lengkap",
         "phoneConfirmation": "Konfirmasi Telepon",
         "emailConfirmation": "konfirmasi email",
-        "roadmap": {
-            "contactInfoTitle": "Verifikasi info kontak",
-            "contactInfoDesc": "Email dan nomor telepon",
-            "docsTitle": "Verifikasi dokumen",
-            "docsDesc": "Selfie dengan dokumen",
-            "personalDataTitle": "Kirim data pribadi",
-            "personalDataDesc": "Nama lengkap & bukti alamat"
-        },
         "letsStartBtn": "Ayo mulai",
         "otpPlaceholder": "Kode verifikasi",
         "confirmCodeBtn": "Konfirmasi kode SMS",
@@ -45,6 +52,7 @@
         "personalNameInputDesc": "Gunakan nama asli Anda.",
         "infoMessageTryAgain": "Ada yang salah. Silakan, coba lagi",
         "blacklistedCountriesExcuse": "Sayangnya, saat ini kami tidak dapat mendukung negara-negara berikut:",
+        "xorAmountNeeded": "Anda membutuhkan {xor} lebih banyak XOR (€{euro})",
         "statusPendingText": "Anda telah berhasil menyelesaikan aplikasi KYC Anda. Peninjauan sedang berlangsung dan Anda akan segera mendapatkan keputusan.<br \/><br \/>Biasanya keputusan dibuat pada hari yang sama dan dalam beberapa kasus dapat memakan waktu hingga 3 hari.",
         "resendInBtn": "KIRIM ULANG KE {value}",
         "statusRejectTitle": "Lamaran ditolak",
@@ -57,7 +65,30 @@
         "statusRejectReason": "Alasan penolakan",
         "userNotFound": "Nomor ponsel tidak ditemukan, harap periksa kembali dan coba lagi.",
         "code": "Kode",
-        "getSoraCardDesc": "Dapatkan akun Euro IBAN dan Kartu Debit Mastercard yang dapat diakses di dalam SORA Wallet Anda",
-        "emailSpamReminder": "Email mungkin membutuhkan waktu beberapa menit untuk sampai. Harap verifikasi folder spam Anda jika Anda belum menerima email setelah 5 menit."
+        "getSoraCardDesc": "Dapatkan akun Euro IBAN dan kartu debit yang dapat diakses di dalam SORA Wallet Anda",
+        "reIssuanceFee": "€0 biaya layanan tahunan",
+        "freeCardIssuance": "Penerbitan kartu gratis",
+        "loginBtn": "Masuk atau mendaftar",
+        "telegramSupport": "Dukungan Telegram",
+        "rejectionPriceAttemptDisclaimer": "Setiap upaya lainnya akan dikenakan biaya € {0}",
+        "rejectCount": "Anda memiliki {count} upaya KYC gratis lagi",
+        "cardHub": {
+            "logout": "Keluar dari Kartu SORA",
+            "topup": "Isi ulang",
+            "transfer": "Transfer",
+            "exchange": "Menukarkan",
+            "freeze": "Membekukan",
+            "comingSoon": "Pengelolaan kartu akan segera hadir",
+            "ibanLabel": "Detail akun IBAN"
+        },
+        "emailSpamReminder": "Email mungkin membutuhkan waktu beberapa menit untuk sampai. Harap verifikasi folder spam Anda jika Anda belum menerima email setelah 5 menit.",
+        "gettingCardForFree": "Anda mendapatkan kartunya secara gratis!",
+        "holdSufficientXor": "Anda memiliki XOR senilai €100 di Akun SORA Anda",
+        "holdNotSufficientXor": "Jika Anda memegang, mempertaruhkan, atau menyediakan likuiditas untuk XOR senilai setidaknya €100 di akun SORA Anda",
+        "xorAmountNeededTitle": "Anda memerlukan {value} XOR untuk menerima kartu gratis",
+        "cardhub": {
+            "accountInfo": "Informasi Akun"
+        },
+        "attentionText": "Perhatian"
     }
 }
