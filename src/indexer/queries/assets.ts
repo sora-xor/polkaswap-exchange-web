@@ -19,6 +19,8 @@ import type { AssetEntity, AssetSnapshotEntity } from '@soramitsu/soraneo-wallet
 
 const { IndexerType } = WALLET_CONSTS;
 
+const DAY = 60 * 60 * 24;
+
 export type TokenData = {
   reserves: FPNumber;
   startPriceDay: FPNumber;
@@ -146,11 +148,11 @@ const parse = (item: SubqueryAssetData | SubsquidAssetData): Record<string, Toke
   };
 };
 
-export async function fetchTokensData(assets: Asset[]): Promise<Record<string, TokenData>> {
-  const now = Math.floor(Date.now() / (5 * 60 * 1000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
-  const dayTimestamp = now - 60 * 60 * 24; // latest day snapshot (unix)
-  const weekTimestamp = now - 60 * 60 * 24 * 7; // latest week snapshot (unix)
-  const ids = assets.map((item) => item.address); // only whitelisted assets
+export async function fetchTokensData(whitelistAssets: Asset[]): Promise<Record<string, TokenData>> {
+  const now = Math.floor(Date.now() / (5 * 60_000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
+  const dayTimestamp = now - DAY; // latest day snapshot (unix)
+  const weekTimestamp = now - DAY * 7; // latest week snapshot (unix)
+  const ids = whitelistAssets.map((item) => item.address); // only whitelisted assets
 
   const variables = { ids, dayTimestamp, weekTimestamp };
   const indexer = getCurrentIndexer();

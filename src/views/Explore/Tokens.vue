@@ -211,62 +211,6 @@ type TableItem = {
 
 const storageKey = 'exploreSyntheticTokens';
 
-const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
-  query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-    entities: assets(after: $after, filter: { and: [{ id: { in: $ids } }] }) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      nodes {
-        id
-        liquidity
-        hourSnapshots: data(
-          filter: { and: [{ timestamp: { greaterThanOrEqualTo: $dayTimestamp } }, { type: { equalTo: HOUR } }] }
-          orderBy: [TIMESTAMP_DESC]
-        ) {
-          nodes {
-            priceUSD
-            volume
-          }
-        }
-        daySnapshots: data(
-          filter: { and: [{ timestamp: { greaterThanOrEqualTo: $weekTimestamp } }, { type: { equalTo: DAY } }] }
-          orderBy: [TIMESTAMP_DESC]
-        ) {
-          nodes {
-            priceUSD
-            volume
-          }
-        }
-      }
-    }
-  }
-`;
-
-const calcVolume = (nodes: AssetSnapshotEntity[]): FPNumber => {
-  return nodes.reduce((buffer, snapshot) => {
-    const snapshotVolume = new FPNumber(snapshot.volume.amountUSD);
-
-    return buffer.add(snapshotVolume);
-  }, FPNumber.ZERO);
-};
-
-const parse = (item: AssetData): Record<string, TokenData> => {
-  const startPriceDay = last(item.hourSnapshots.nodes)?.priceUSD?.open;
-  const startPriceWeek = last(item.daySnapshots.nodes)?.priceUSD?.open;
-  const liquidity = item.liquidity;
-  return {
-    [item.id]: {
-      reserves: liquidity ? FPNumber.fromCodecValue(liquidity) : FPNumber.ZERO,
-      startPriceDay: startPriceDay ? new FPNumber(startPriceDay) : FPNumber.ZERO,
-      startPriceWeek: startPriceWeek ? new FPNumber(startPriceWeek) : FPNumber.ZERO,
-      volumeDay: calcVolume(item.hourSnapshots.nodes),
-      volumeWeek: calcVolume(item.daySnapshots.nodes),
-    },
-  };
-};
-
 @Component({
   components: {
     SyntheticSwitcher: lazyComponent(Components.SyntheticSwitcher),

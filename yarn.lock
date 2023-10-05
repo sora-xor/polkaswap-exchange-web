@@ -2258,10 +2258,10 @@
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
 
-"@soramitsu/soraneo-wallet-web@1.22.2":
-  version "1.22.2"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.22.2.tgz#ab4556cc57d331c274faf89cbf7434dceb315c99"
-  integrity sha512-QzdBHLYg3sEr3AjLMgp8Owh4edsJCHQdZUGvTtiXglgoXri4GxLdgx+/YBAc7DMZwVOcLw6GsnNhszylMU8wZg==
+"@soramitsu/soraneo-wallet-web@1.23.0-beta1":
+  version "1.23.0-beta1"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.23.0-beta1.tgz#ba93886ef64581c2b86463d6f41e717d7db77650"
+  integrity sha512-dEq0yPZSW1DGPLk3qI7tuRdAEfhKnUWmmyoI0JuKxQBVJ+scce3ORfw5pQrazrU857rxIpD5L6goPq/w5E0Mpg==
   dependencies:
     "@polkadot/vue-identicon" "2.12.1"
     "@sora-substrate/util" "1.22.9"
@@ -2278,6 +2278,7 @@
     direct-vuex "^0.12.1"
     file-saver "^2.0.5"
     graphql "^16.8.0"
+    graphql-ws "^5.13.1"
     is-electron "^2.2.2"
     lodash "^4.17.21"
     maska "^1.5.1"
@@ -7873,6 +7874,11 @@ graphemer@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
+
+graphql-ws@^5.13.1:
+  version "5.14.1"
+  resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.14.1.tgz#d05dba9c2cbf1582c990a2dfec4b8f6a55d99da4"
+  integrity sha512-aqkls1espsygP1PfkAuuLIV96IbztQ6EaADse97pw8wRIMT3+AL/OYfS8V2iCRkc0gzckitoDRGCQEdnySggiA==
 
 graphql@^16.8.0:
   version "16.8.0"
