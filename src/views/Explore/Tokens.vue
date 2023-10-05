@@ -30,7 +30,7 @@
           <token-logo class="explore-table-item-logo" :token-symbol="row.symbol" />
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.symbol }}</div>
-            <div class="explore-table__secondary">{{ row.name }}</div>
+            <div class="explore-table__secondary explore-table__token-name">{{ row.name }}</div>
             <div class="explore-table-item-address">
               <token-address
                 class="explore-table-item-address__value"
@@ -268,11 +268,14 @@ const calcVolume = (nodes: AssetSnapshotEntity[]): FPNumber => {
 };
 
 const parse = (item: AssetData): Record<string, TokenData> => {
+  const startPriceDay = last(item.hourSnapshots.nodes)?.priceUSD?.open;
+  const startPriceWeek = last(item.daySnapshots.nodes)?.priceUSD?.open;
+  const liquidity = item.liquidity;
   return {
     [item.id]: {
-      reserves: FPNumber.fromCodecValue(item.liquidity ?? 0),
-      startPriceDay: new FPNumber(last(item.hourSnapshots.nodes)?.priceUSD?.open ?? 0),
-      startPriceWeek: new FPNumber(last(item.daySnapshots.nodes)?.priceUSD?.open ?? 0),
+      reserves: liquidity ? FPNumber.fromCodecValue(liquidity) : FPNumber.ZERO,
+      startPriceDay: startPriceDay ? new FPNumber(startPriceDay) : FPNumber.ZERO,
+      startPriceWeek: startPriceWeek ? new FPNumber(startPriceWeek) : FPNumber.ZERO,
       volumeDay: calcVolume(item.hourSnapshots.nodes),
       volumeWeek: calcVolume(item.daySnapshots.nodes),
     },
@@ -392,4 +395,13 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
 <style lang="scss">
 @include explore-table;
+</style>
+
+<style lang="scss" scoped>
+.explore-table__token-name {
+  max-width: 155px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 </style>
