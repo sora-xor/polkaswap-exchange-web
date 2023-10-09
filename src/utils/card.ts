@@ -102,9 +102,9 @@ export async function defineUserStatus(): Promise<Status> {
     }
   }
 
-  const { kycStatus, verificationStatus, rejectReasons } = await getUserStatus(sessionAccessToken);
+  const { kycStatus, verificationStatus, rejectReasons, referenceNumber } = await getUserStatus(sessionAccessToken);
 
-  return { kycStatus, verificationStatus, rejectReasons };
+  return { kycStatus, verificationStatus, rejectReasons, referenceNumber };
 }
 
 export async function getUpdatedJwtPair(refreshToken: string): Promise<string | null> {
