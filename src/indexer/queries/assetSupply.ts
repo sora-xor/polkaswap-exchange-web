@@ -50,7 +50,7 @@ const SubqueryAssetSupplyQuery = gql<SubqueryConnectionQueryResponse<SubqueryAss
 `;
 
 const SubsquidAssetSupplyQuery = gql<SubqueryConnectionQueryResponse<SubsquidAssetSnapshotEntity>>`
-  query AssetSupplyQuery($after: Cursor, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
+  query AssetSupplyQuery($after: String, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
     data: assetSnapshotsConnection(
       after: $after
       orderBy: timestamp_DESC

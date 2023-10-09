@@ -92,7 +92,7 @@ const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetDat
 `;
 
 const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetData>>`
-  query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
+  query AssetsQuery($after: String, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
     data: assets(after: $after, filter: { AND: [{ id_in: $ids }, { liquidity_gt: "1" }] }) {
       pageInfo {
         hasNextPage

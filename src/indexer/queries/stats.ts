@@ -22,7 +22,7 @@ export type NetworkSnapshotData = NetworkSnapshot & {
 
 const SubqueryStatsQuery = gql<SubqueryConnectionQueryResponse<NetworkSnapshotEntity>>`
   query StatsQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
-    entities: networkSnapshots(
+    data: networkSnapshots(
       after: $after
       orderBy: TIMESTAMP_DESC
       filter: {
@@ -51,8 +51,8 @@ const SubqueryStatsQuery = gql<SubqueryConnectionQueryResponse<NetworkSnapshotEn
 `;
 
 const SubsquidStatsQuery = gql<SubsquidConnectionQueryResponse<NetworkSnapshotEntity>>`
-  query StatsQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
-    entities: networkSnapshotsConnection(
+  query StatsQuery($after: String, $type: SnapshotType, $from: Int, $to: Int) {
+    data: networkSnapshotsConnection(
       after: $after
       orderBy: timestamp_DESC
       where: { AND: [{ type_eq: $type }, { timestamp_lte: $from }, { timestamp_gte: $to }] }
@@ -90,11 +90,7 @@ export async function fetchData(from: number, to: number, type: SnapshotTypes): 
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
       const subqueryIndexer = indexer as SubqueryIndexer;
-      const data = await subqueryIndexer.services.explorer.fetchAllEntities(
-        SubqueryStatsQuery,
-        { from, to, type },
-        parse
-      );
+      data = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryStatsQuery, { from, to, type }, parse);
       break;
     }
     case IndexerType.SUBSQUID: {

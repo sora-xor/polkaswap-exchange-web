@@ -42,7 +42,7 @@ const SubqueryNetworkTvlQuery = gql<SubqueryConnectionQueryResponse<NetworkSnaps
 `;
 
 const SubsquidNetworkTvlQuery = gql<SubsquidConnectionQueryResponse<NetworkSnapshotEntity>>`
-  query NetworkTvlQuery($after: Cursor, $type: SnapshotType, $from: Int, $to: Int) {
+  query NetworkTvlQuery($after: String, $type: SnapshotType, $from: Int, $to: Int) {
     data: networkSnapshotsConnection(
       after: $after
       orderBy: timestamp_DESC

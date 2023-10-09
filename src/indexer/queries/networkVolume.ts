@@ -16,7 +16,7 @@ type ChartData = {
 
 const SubqueryNetworkVolumeQuery = gql<SubqueryConnectionQueryResponse<NetworkSnapshotEntity>>`
   query NetworkVolumeQuery($after: Cursor, $fees: Boolean!, $type: SnapshotType, $from: Int, $to: Int) {
-    entities: networkSnapshots(
+    data: networkSnapshots(
       after: $after
       orderBy: TIMESTAMP_DESC
       filter: {
@@ -43,8 +43,8 @@ const SubqueryNetworkVolumeQuery = gql<SubqueryConnectionQueryResponse<NetworkSn
 `;
 
 const SubsquidNetworkVolumeQuery = gql<SubsquidConnectionQueryResponse<NetworkSnapshotEntity>>`
-  query NetworkVolumeQuery($after: Cursor, $fees: Boolean!, $type: SnapshotType, $from: Int, $to: Int) {
-    entities: networkSnapshotsConnection(
+  query NetworkVolumeQuery($after: String, $fees: Boolean!, $type: SnapshotType, $from: Int, $to: Int) {
+    data: networkSnapshotsConnection(
       after: $after
       orderBy: timestamp_DESC
       where: { AND: [{ type_eq: $type }, { timestamp_lte: $from }, { timestamp_gte: $to }] }
