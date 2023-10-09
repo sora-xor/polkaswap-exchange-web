@@ -15,11 +15,13 @@
 </template>
 
 <script lang="ts">
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
+import { action, state } from '@/store/decorators';
 
 @Component({
   components: {
@@ -30,7 +32,9 @@ import { lazyComponent } from '@/router';
     MarketTradesWidget: lazyComponent(Components.MarketTradesWidget),
   },
 })
-export default class OrderBook extends Mixins(TranslationMixin) {}
+export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  @state.orderBook.orderBooks orderBooks!: any;
+}
 </script>
 
 <style lang="scss">

@@ -12,7 +12,7 @@
       <div>price</div>
     </div>
     <div class="stock-book-sell">
-      <div v-for="order in sellOrders" :key="order.price" class="row">
+      <div v-for="order in getSellOrders()" :key="order.price" class="row">
         <span class="order-info price">{{ order.price }}</span>
         <span class="order-info">{{ order.amount }}</span>
         <span class="order-info">{{ order.total }}</span>
@@ -25,7 +25,7 @@
       <span class="last-traded-price">$22.54</span>
     </div>
     <div class="stock-book-buy">
-      <div v-for="order in sellOrders" :key="order.price" class="row">
+      <div v-for="order in getBuyOrders()" :key="order.price" class="row">
         <span class="order-info price">{{ order.price }}</span>
         <span class="order-info">{{ order.amount }}</span>
         <span class="order-info">{{ order.total }}</span>
@@ -36,16 +36,39 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { FPNumber } from '@sora-substrate/util';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { state, action, mutation } from '@/store/decorators';
 import { delay } from '@/utils';
 
 type PriceTrend = 'up' | 'down';
 
+interface LimitOrderForm {
+  price: number;
+  amount: number;
+  total: number;
+  filled?: number;
+}
+
 @Component
-export default class BookWidget extends Mixins(TranslationMixin) {
+export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  @state.orderBook.asks asks!: any;
+  @state.orderBook.bids bids!: any;
+  @state.orderBook.baseAssetAddress baseAssetAddress!: string;
+
+  @mutation.orderBook.resetAsks resetAsks!: () => void;
+  @mutation.orderBook.resetBids resetBids!: () => void;
+
+  @action.orderBook.subscribeToOrderBook private subscribeToOrderBook!: ({ base }) => Promise<void>;
+
   priceTrend: PriceTrend = 'down';
+  maxRowsNumber = 9;
+
+  asksFormatted: Array<LimitOrderForm> = [];
+  bidsFormatted: Array<LimitOrderForm> = [];
 
   get iconTrend(): string {
     return this.priceTrend === 'up' ? 'arrows-arrow-bold-top-24' : 'arrows-arrow-bold-bottom-24';
@@ -63,72 +86,74 @@ export default class BookWidget extends Mixins(TranslationMixin) {
     return base.join(' ');
   }
 
-  get sellOrders() {
-    return [
-      {
-        price: '23.178100',
-        amount: '112.28100',
-        total: '2,602.460246',
-        filled: 34,
-      },
-      {
-        price: '23.178100',
-        amount: '112.28100',
-        total: '2,602.460246',
-        filled: 22,
-      },
-      {
-        price: '23.178100',
-        amount: '112.28100',
-        total: '2,602.460246',
-        filled: 12,
-      },
-      {
-        price: '23.178100',
-        amount: '112.28100',
-        total: '2,602.460246',
-        filled: 79,
-      },
-      {
-        price: '23.178100',
-        amount: '112.28100',
-        total: '2,602.460246',
-        filled: 81,
-      },
-      {
-        price: '23.178100',
-        amount: '112.28100',
-        total: '2,602.460246',
-        filled: 54,
-      },
-      {
-        price: '23.178100',
-        amount: '112.28100',
-        total: '2,602.460246',
-        filled: 34,
-      },
-      {
-        price: '23.178100',
-        amount: '112.28100',
-        total: '2,602.460246',
-        filled: 99,
-      },
-      {
-        price: '23.178100',
-        amount: '112.28100',
-        total: '2,602.460246',
-        filled: 2,
-      },
-    ];
+  getSellOrders() {
+    return this.asksFormatted.slice(0, this.maxRowsNumber);
+  }
+
+  getBuyOrders() {
+    return this.bidsFormatted.slice(0, this.maxRowsNumber);
   }
 
   getStyles(filled) {
     return `width: ${filled}%`;
   }
+
+  async prepareLimitOrders(): Promise<void> {
+    if (this.asks.length) {
+      this.asks.forEach((row: [FPNumber, FPNumber]) => {
+        const price = row[0].toNumber();
+        const amount = row[1].toNumber();
+        const total = row[0].mul(row[1]).toNumber();
+
+        this.asksFormatted.push({ price, amount, total });
+      });
+    }
+
+    if (this.bids.length) {
+      this.bids.forEach((row: [FPNumber, FPNumber]) => {
+        const price = row[0].toNumber();
+        const amount = row[1].toNumber();
+        const total = row[0].mul(row[1]).toNumber();
+
+        this.bidsFormatted.push({ price, amount, total });
+      });
+    }
+  }
+
+  async withLimitOrdersSet<T = void>(func: FnWithoutArgs<T>): Promise<T> {
+    const nonEmptyStock = this.asks.length || this.bids.length;
+
+    if (!nonEmptyStock) {
+      await delay();
+      return await this.withLimitOrdersSet(func);
+    } else {
+      return func();
+    }
+  }
+
+  @Watch('baseAssetAddress')
+  private async subscribeToLimitOrderUpdates(baseAssetAddress: Nullable<string>): Promise<void> {
+    if (baseAssetAddress) {
+      await this.withLoading(async () => {
+        // wait for node connection & wallet init (App.vue)
+        await this.withParentLoading(async () => {
+          this.asksFormatted = [];
+          this.bidsFormatted = [];
+
+          await this.subscribeToOrderBook({ base: baseAssetAddress });
+          await this.withLimitOrdersSet(async () => {
+            this.prepareLimitOrders();
+          });
+        });
+      });
+    }
+  }
 }
 </script>
 
 <style lang="scss">
+$row-height: 24px;
+
 .stock-book {
   .row {
     display: flex;
@@ -144,6 +169,7 @@ export default class BookWidget extends Mixins(TranslationMixin) {
 
   &-buy,
   &-sell {
+    height: $row-height * 9;
     transform: scaleX(-1);
     .bar {
       width: 40%;

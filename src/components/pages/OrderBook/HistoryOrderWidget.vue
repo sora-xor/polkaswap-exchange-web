@@ -28,13 +28,15 @@
 </template>
 
 <script lang="ts">
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, LimitOrderSide } from '@/consts';
 import { lazyComponent } from '@/router';
-import { mutation, getter } from '@/store/decorators';
+import { state, mutation, getter, action } from '@/store/decorators';
 import { Filter, Cancel } from '@/types/orderBook';
+import { delay } from '@/utils';
 
 @Component({
   components: {
@@ -42,10 +44,16 @@ import { Filter, Cancel } from '@/types/orderBook';
     OpenOrders: lazyComponent(Components.OpenOrders),
   },
 })
-export default class OrderHistoryWidget extends Mixins(TranslationMixin) {
+export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  @state.orderBook.baseAssetAddress baseAssetAddress!: string;
+  @state.orderBook.userLimitOrders userLimitOrders!: Array<any>;
+
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
+  @action.orderBook.subscribeToUserLimitOrders subscribeToOpenOrders!: ({ base }) => void;
+
   currentFilter = Filter.open;
+  openLimitOrders: Array<any> = [];
 
   Filter = Filter;
   Cancel = Cancel;

@@ -82,48 +82,57 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { getter, state, action } from '@/store/decorators';
+import { delay } from '@/utils';
 
 @Component
 export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  get openOrders(): any {
-    return [
-      {
-        date: { date: '8/26', time: '14:12:25' },
-        pair: 'XOR-ETH',
-        side: 'buy',
-        price: '103.39',
-        amount: '5',
-        filled: '100',
-        expired: 'a week',
-        total: '13,3423.77',
-      },
-      {
-        date: { date: '8/26', time: '16:19:11' },
-        pair: 'XOR-ETH',
-        side: 'buy',
-        price: '103.39',
-        amount: '5',
-        filled: '100',
-        expired: 'a week',
-        total: '13,3423.77',
-      },
-      {
-        date: { date: '8/25', time: '11:15:45' },
-        pair: 'XOR-ETH',
-        side: 'buy',
-        price: '103.39',
-        amount: '5',
-        filled: '100',
-        expired: 'a week',
-        total: '13,3423.77',
-      },
-    ];
+  @state.orderBook.baseAssetAddress baseAssetAddress!: string;
+  @state.orderBook.userLimitOrders userLimitOrders!: Array<any>;
 
-    // return [];
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+
+  @action.orderBook.subscribeToUserLimitOrders subscribeToOpenOrders!: ({ base }) => void;
+
+  openLimitOrders: Array<any> = [];
+
+  get openOrders(): any {
+    return this.openLimitOrders;
+  }
+
+  prepareOrderLimits(): void {
+    console.log('userLimitOrders', this.userLimitOrders);
+
+    this.userLimitOrders.forEach((limitOrder) => {
+      const row = {
+        id: limitOrder.id,
+        amount: limitOrder.amount,
+        price: limitOrder.price,
+        side: limitOrder.side,
+        filled: '100',
+        expired: 'a week',
+        total: '13,3423.77',
+        date: { date: '8/25', time: '11:15:45' },
+      };
+
+      this.openLimitOrders.push(row);
+    });
+
+    console.log(this.openLimitOrders);
   }
 
   handleSelectionChange(rows): void {
     console.log('rows', rows);
+  }
+
+  async created(): Promise<void> {
+    this.withApi(async () => {
+      await delay(500);
+      this.subscribeToOpenOrders({ base: this.baseAssetAddress });
+      await delay(500);
+
+      this.prepareOrderLimits();
+    });
   }
 }
 </script>

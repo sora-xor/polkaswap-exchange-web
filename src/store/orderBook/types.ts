@@ -7,7 +7,11 @@ export type OrderBookState = {
   currentOrderBook: any;
   baseAssetAddress: Nullable<string>;
   quoteAssetAddress: Nullable<string>;
+  asks: [];
+  bids: [];
+  userLimitOrders: [];
   baseValue: string;
   quoteValue: string;
   side: LimitOrderSide;
+  limitOrderUpdates: Array<Nullable<Subscription>>;
 };

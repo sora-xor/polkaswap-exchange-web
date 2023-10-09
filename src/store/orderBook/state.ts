@@ -8,11 +8,15 @@ function initialState(): OrderBookState {
   return {
     orderBooks: null,
     currentOrderBook: null,
-    baseAssetAddress: ETH.address,
-    quoteAssetAddress: XOR.address,
+    baseAssetAddress: null,
+    quoteAssetAddress: null,
     baseValue: '',
     quoteValue: '',
+    asks: [],
+    bids: [],
+    userLimitOrders: [],
     side: LimitOrderSide.buy,
+    limitOrderUpdates: [],
   };
 }
 

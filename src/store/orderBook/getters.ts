@@ -20,6 +20,14 @@ const getters = defineGetters<OrderBookState>()({
 
     return rootGetters.assets.xor;
   },
+  accountAddress(...args): string {
+    const { rootState } = orderBookGetterContext(args);
+    return rootState.wallet.account.address;
+  },
+
+  // currentPrice(...args): string {},
+  // currentVolume(...args): string {},
+  // currenDailyChange(...args): string {},
 });
 
 export default getters;
