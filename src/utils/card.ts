@@ -1,4 +1,3 @@
-import { FPNumber } from '@sora-substrate/math';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 
@@ -162,7 +161,7 @@ async function getUserStatus(accessToken: string): Promise<Status> {
       referenceNumber = lastRecord.user_reference_number;
     }
 
-    if (lastRecord.rejection_reasons && lastRecord.rejection_reasons.length) {
+    if (lastRecord.rejection_reasons?.length) {
       rejectReasons = lastRecord.rejection_reasons.map((reason) => reason.Description);
     }
 

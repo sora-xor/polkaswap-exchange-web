@@ -48,7 +48,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { mutation, state } from '@/store/decorators';
 import { CardUIViews } from '@/types/card';
 import { waitForSoraNetworkFromEnv } from '@/utils';
-import { soraCard, getUpdatedJwtPair, clearPayWingsKeysFromLocalStorage } from '@/utils/card';
+import { soraCard, getUpdatedJwtPair } from '@/utils/card';
 
 @Component
 export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin, mixins.CameraPermissionMixin) {

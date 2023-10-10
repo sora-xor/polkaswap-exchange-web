@@ -56,7 +56,6 @@ type BuyButton = { type: BuyButtonType; text: string; button: 'primary' | 'secon
   },
 })
 export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @state.soraCard.euroBalance private euroBalance!: string;
   @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
   @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
   @state.soraCard.fees fees!: Fees;

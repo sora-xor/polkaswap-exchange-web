@@ -53,6 +53,7 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -74,8 +75,13 @@ export default class Guidance extends Mixins(TranslationMixin, mixins.LoadingMix
   }
 
   get retryFee(): Nullable<string> {
-    // TODO: translate based on locale
-    return this.fees.retry;
+    const delimiter = FPNumber.DELIMITERS_CONFIG.decimal;
+    if (this.fees.retry) {
+      const [integer, decimal] = this.fees.retry.split('.');
+      return `${integer}${delimiter}${decimal}`;
+    } else {
+      return `3${delimiter}80`;
+    }
   }
 
   async handleConfirm(): Promise<void> {

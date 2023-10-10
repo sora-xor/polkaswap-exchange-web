@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -82,8 +82,7 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
   ];
 
   get iban(): Nullable<string> {
-    const { iban } = this.userInfo;
-    return this.shouldBalanceBeHidden ? `${iban?.substring(0, 4)} ···· ${iban?.slice(-11)}` : this.userInfo.iban;
+    return this.shouldBalanceBeHidden ? WALLET_CONSTS.HiddenValue : this.userInfo.iban;
   }
 
   get balance(): string {
