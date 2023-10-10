@@ -6,7 +6,7 @@
         <s-icon name="info-16" size="14px" />
       </s-tooltip>
     </div>
-    <s-table :data="tableItems" :highlight-current-row="false" @cell-click="chooseBook">
+    <s-table class="limit-order-table" :data="tableItems" :highlight-current-row="false" @cell-click="chooseBook">
       <s-table-column>
         <template #header>
           <span>Token pair</span>

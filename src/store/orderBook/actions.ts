@@ -10,15 +10,27 @@ function deserializeKey(key: string) {
 
 const actions = defineActions({
   async getOrderBooksInfo(context): Promise<void> {
-    const { commit } = orderBookActionContext(context);
+    const { commit, rootGetters } = orderBookActionContext(context);
 
     const orderBooks = await api.orderBook.getOrderBooks();
 
-    const [orderBookId] = Object.keys(orderBooks);
+    // TODO: move to lib
+    const whitelistAddresses = Object.keys(rootGetters.wallet.account.whitelist);
+
+    const whitelistOrderBook = Object.keys(orderBooks)
+      .filter((key) => {
+        const { base } = deserializeKey(key);
+        return whitelistAddresses.includes(base);
+      })
+      .reduce((current, key) => {
+        return Object.assign(current, { [key]: orderBooks[key] });
+      }, {});
+
+    const [orderBookId] = Object.keys(whitelistOrderBook);
     const { base } = deserializeKey(orderBookId);
 
     commit.setBaseAssetAddress(base);
-    commit.setOrderBooks(orderBooks);
+    commit.setOrderBooks(whitelistOrderBook);
   },
 
   async subscribeToOrderBook(context, { base, quote }): Promise<void> {
@@ -60,6 +72,7 @@ const actions = defineActions({
     const userLimitOrders: Array<any> = [];
 
     const subscription = api.orderBook.subscribeOnUserLimitOrdersIds(base, quote, address).subscribe((ids) => {
+      console.log('ids', ids);
       ids.forEach(async (id) => {
         const order = await api.orderBook.getLimitOrder(base, quote, id);
         userLimitOrders.push(order);
