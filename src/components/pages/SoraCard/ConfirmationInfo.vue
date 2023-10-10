@@ -84,7 +84,7 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
     if (this.currentStatus === VerificationStatus.Rejected && this.rejectReasons.length) {
       if (this.isMultipleReasons) {
         const rejectionList = this.rejectReasons.map((reason) => {
-          return `<li>${reason}</li>`;
+          return `<li>${reason.toString()}</li>`;
         });
 
         return `${this.t('card.statusRejectReasonMultiple')} ${rejectionList.join('')}`;
