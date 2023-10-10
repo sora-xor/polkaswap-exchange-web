@@ -69,6 +69,7 @@
         "reIssuanceFee": "€0 տարեկան սպասարկման վճար",
         "freeCardIssuance": "Անվճար քարտի թողարկում",
         "loginBtn": "Մուտք գործեք կամ գրանցվեք",
+        "applicationFee": "€ {0} թողարկման վճար",
         "telegramSupport": "Telegram-ի աջակցություն",
         "rejectionPriceAttemptDisclaimer": "Յուրաքանչյուր այլ փորձ կարժենա ձեզ € {0}",
         "rejectCount": "Դուք ունեք {count} ավելի անվճար KYC փորձ|Դուք ունեք {count} ավելի անվճար KYC փորձեր",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "Հաշվի տեղեկատվություն"
         },
-        "attentionText": "Ուշադրություն"
+        "attentionText": "Ուշադրություն",
+        "or": "կամ",
+        "oneTimeApplicationFee": "Քարտի թողարկման միանվագ վճար",
+        "applicationFeeNote": "Նշում. վճարովի քարտի թողարկումը հասանելի կլինի ավելի ուշ:",
+        "statusRejectReasonMultiple": "Ձեր դիմումը մերժվել է մի քանի պատճառներով."
     }
 }

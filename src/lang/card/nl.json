@@ -69,6 +69,7 @@
         "reIssuanceFee": "€0 jaarlijkse service kosten",
         "freeCardIssuance": "Gratis kaartuitgifte",
         "loginBtn": "Meld je aan of schrijf je in",
+        "applicationFee": "€{0} uitgiftekosten",
         "telegramSupport": "Telegram-ondersteuning",
         "rejectionPriceAttemptDisclaimer": "Elke andere poging kost u € {0}",
         "rejectCount": "Je hebt nog {count} gratis KYC poging|Je hebt nog {count} gratis KYC pogingen",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "Account Informatie"
         },
-        "attentionText": "Aandacht"
+        "attentionText": "Aandacht",
+        "or": "of",
+        "oneTimeApplicationFee": "Eenmalige kosten voor het uitgeven van een kaart",
+        "applicationFeeNote": "Let op: de uitgifte van betaalde kaarten zal in een later stadium beschikbaar zijn.",
+        "statusRejectReasonMultiple": "Uw aanvraag is om meerdere redenen afgewezen:"
     }
 }

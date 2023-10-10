@@ -9,7 +9,7 @@
         draggable="false"
         class="unselectable sora-card-hub-image"
       />
-      <p class="sora-card-hub-text">{{ t('card.cardHub.comingSoon') }}</p>
+      <formatted-amount class="sora-card-hub-balance" :value="balance" fiatSign="€" value-can-be-hidden is-fiat-value />
       <div class="sora-card-hub-options">
         <s-button
           v-for="option in options"
@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -65,9 +65,14 @@ enum Option {
 
 type Options = { icon: OptionsIcon; type: Option };
 
-@Component
+@Component({
+  components: {
+    FormattedAmount: components.FormattedAmount,
+  },
+})
 export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @state.soraCard.userInfo userInfo!: UserInfo;
+  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
 
   options: Array<Options> = [
     { icon: OptionsIcon.TopUp, type: Option.TopUp },
@@ -77,7 +82,15 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
   ];
 
   get iban(): Nullable<string> {
-    return this.userInfo.iban;
+    return this.shouldBalanceBeHidden ? WALLET_CONSTS.HiddenValue : this.userInfo.iban;
+  }
+
+  get balance(): string {
+    const balance = this.userInfo.availableBalance;
+
+    if (balance === 0) return '0';
+
+    return balance ? `${balance / 100}` : '';
   }
 
   handleClick(type: Option): void {}
@@ -99,10 +112,28 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
 }
 
 .sora-card {
-  &-hub-info {
-    &-iban {
-      .el-input__inner {
-        font-weight: 500;
+  &-hub {
+    &-balance {
+      .formatted-amount {
+        font-size: 28px;
+        letter-spacing: -0.56px;
+
+        &__value {
+          color: var(--s-color-base-content-primary);
+          font-size: 28px;
+          font-weight: 700;
+
+          .formatted-amount__prefix {
+            padding-right: 0;
+          }
+        }
+      }
+    }
+    &-info {
+      &-iban {
+        .el-input__inner {
+          font-weight: 500;
+        }
       }
     }
   }
@@ -115,6 +146,7 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
     &-title {
       margin-bottom: $basic-spacing;
     }
+
     &-options {
       .icon {
         margin-right: 4px;
@@ -126,14 +158,6 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
       }
     }
     &-image {
-      margin-bottom: $basic-spacing;
-    }
-    &-text {
-      color: var(--s-color-base-content-secondary);
-      text-align: center;
-      font-size: var(--s-font-size-big);
-      font-weight: 500;
-      letter-spacing: -0.3px;
       margin-bottom: $basic-spacing;
     }
     &-button {

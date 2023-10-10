@@ -22,7 +22,7 @@
           {{ tc('card.rejectCount', freeAttemptsLeft, { count: freeAttemptsLeft }) }}
         </h4>
         <p class="tos__disclaimer-paragraph">
-          {{ t('card.rejectionPriceAttemptDisclaimer', { 0: kycAttemptCost }) }}
+          {{ t('card.rejectionPriceAttemptDisclaimer', { 0: retryFee }) }}
         </p>
         <div class="tos__disclaimer-warning icon">
           <s-icon name="notifications-alert-triangle-24" size="28px" />
@@ -58,7 +58,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Links } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { AttemptCounter, VerificationStatus } from '@/types/card';
+import { AttemptCounter, Fees, VerificationStatus } from '@/types/card';
 import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
 
 const pendingTitle = 'card.statusPendingTitle';
@@ -67,9 +67,9 @@ const pendingIcon = 'time-time-24';
 
 @Component
 export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  @state.soraCard.kycAttemptCost kycAttemptCost!: string;
+  @state.soraCard.fees fees!: Fees;
   @state.soraCard.attemptCounter attemptCounter!: AttemptCounter;
-  @state.soraCard.rejectReason rejectReason!: string;
+  @state.soraCard.rejectReasons rejectReasons!: Array<string>;
 
   @getter.soraCard.currentStatus currentStatus!: VerificationStatus;
 
@@ -81,10 +81,26 @@ export default class ConfirmationInfo extends Mixins(mixins.LoadingMixin, Transl
   VerificationStatus = VerificationStatus;
 
   private get rejectedText(): string {
-    if (this.currentStatus === VerificationStatus.Rejected && this.rejectReason) {
-      return `${this.t('card.statusRejectReason')}: ${this.rejectReason}`;
+    if (this.currentStatus === VerificationStatus.Rejected && this.rejectReasons.length) {
+      if (this.isMultipleReasons) {
+        const rejectionList = this.rejectReasons.map((reason) => {
+          return `<li>${reason.toString()}</li>`;
+        });
+
+        return `${this.t('card.statusRejectReasonMultiple')} ${rejectionList.join('')}`;
+      }
+
+      return `${this.t('card.statusRejectReason')}: ${this.rejectReasons[0]}`;
     }
     return this.t('card.statusRejectText');
+  }
+
+  get isMultipleReasons(): boolean {
+    return this.rejectReasons.length > 1;
+  }
+
+  get retryFee(): Nullable<string> {
+    return this.fees.retry;
   }
 
   get freeAttemptsLeft() {
