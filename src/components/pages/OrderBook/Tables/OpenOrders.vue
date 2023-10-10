@@ -1,6 +1,11 @@
 <template>
   <div>
-    <s-table :data="openOrders" :highlight-current-row="false" @selection-change="handleSelectionChange">
+    <s-table
+      class="limit-order-table"
+      :data="openOrders"
+      :highlight-current-row="false"
+      @selection-change="handleSelectionChange"
+    >
       <s-table-column type="selection" />
       <s-table-column>
         <template #header>
@@ -79,7 +84,7 @@
 
 <script lang="ts">
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, state, action } from '@/store/decorators';
@@ -125,14 +130,25 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     console.log('rows', rows);
   }
 
-  async created(): Promise<void> {
-    this.withApi(async () => {
-      await delay(500);
-      this.subscribeToOpenOrders({ base: this.baseAssetAddress });
-      await delay(500);
+  @Watch('baseAssetAddress')
+  private async subscribeToLimitOrderUpdates(baseAssetAddress: Nullable<string>): Promise<void> {
+    if (baseAssetAddress) {
+      await this.withLoading(async () => {
+        // wait for node connection & wallet init (App.vue)
+        await this.withParentLoading(async () => {
+          this.openLimitOrders = [];
+          this.subscribeToOpenOrders({ base: this.baseAssetAddress });
 
-      this.prepareOrderLimits();
-    });
+          await delay(500);
+
+          this.prepareOrderLimits();
+        });
+      });
+    }
   }
 }
 </script>
+
+<style lang="scss">
+@include limit-order-table;
+</style>

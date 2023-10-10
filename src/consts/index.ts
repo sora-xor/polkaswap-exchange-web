@@ -266,8 +266,8 @@ export enum Components {
 }
 
 export enum LimitOrderSide {
-  buy = 'buy',
-  sell = 'sell',
+  Buy = 'Buy',
+  Sell = 'Sell',
 }
 
 export enum LimitOrderTabsItems {

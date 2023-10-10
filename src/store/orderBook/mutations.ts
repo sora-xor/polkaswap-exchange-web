@@ -42,19 +42,24 @@ const mutations = defineMutations<OrderBookState>()({
     state.userLimitOrders = [];
   },
   setOrderBookUpdates(state, subscriptions): void {
-    state.limitOrderUpdates = subscriptions;
+    state.orderBookUpdates = subscriptions;
   },
   resetOrderBookUpdates(state): void {
-    if (state.limitOrderUpdates.length) {
-      state.limitOrderUpdates.forEach((limitOrderUpdate) => {
+    if (state.orderBookUpdates.length) {
+      state.orderBookUpdates.forEach((limitOrderUpdate) => {
         limitOrderUpdate?.unsubscribe();
       });
     }
 
-    state.limitOrderUpdates = [];
+    state.orderBookUpdates = [];
   },
-  setUserLimitOrderUpdates(state, subscription): void {},
-  resetUserLimitOrderUpdates(state): void {},
+  setUserLimitOrderUpdates(state, subscription): void {
+    state.userLimitOrderUpdates = subscription;
+  },
+  resetUserLimitOrderUpdates(state): void {
+    state.userLimitOrderUpdates?.unsubscribe();
+    state.userLimitOrderUpdates = null;
+  },
 });
 
 export default mutations;

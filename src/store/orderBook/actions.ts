@@ -49,6 +49,8 @@ const actions = defineActions({
   subscribeToUserLimitOrders(context, { base, quote }): void {
     const { commit, getters, dispatch } = orderBookActionContext(context);
 
+    commit.resetUserLimitOrderUpdates();
+
     const address = getters.accountAddress;
 
     if (!address) return;
@@ -57,14 +59,13 @@ const actions = defineActions({
 
     const userLimitOrders: Array<any> = [];
 
-    console.log('called');
-
-    api.orderBook.subscribeOnUserLimitOrdersIds(base, quote, address).subscribe((ids) => {
+    const subscription = api.orderBook.subscribeOnUserLimitOrdersIds(base, quote, address).subscribe((ids) => {
       ids.forEach(async (id) => {
         const order = await api.orderBook.getLimitOrder(base, quote, id);
         userLimitOrders.push(order);
       });
 
+      commit.setUserLimitOrderUpdates(subscription);
       commit.setUserLimitOrders(userLimitOrders);
     });
   },

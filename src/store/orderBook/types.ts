@@ -13,5 +13,6 @@ export type OrderBookState = {
   baseValue: string;
   quoteValue: string;
   side: LimitOrderSide;
-  limitOrderUpdates: Array<Nullable<Subscription>>;
+  orderBookUpdates: Array<Nullable<Subscription>>;
+  userLimitOrderUpdates: Nullable<Subscription>;
 };

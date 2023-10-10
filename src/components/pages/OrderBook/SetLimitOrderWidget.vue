@@ -38,7 +38,7 @@ export default class SetLimitOrderWidget extends Mixins(TranslationMixin, mixins
 
   readonly LimitOrderTabsItems = LimitOrderSide;
 
-  currentTab = LimitOrderSide.buy;
+  currentTab = LimitOrderSide.Buy;
 
   get loadingState(): boolean {
     return this.parentLoading || this.loading || !this.baseAsset || !this.quoteAsset;

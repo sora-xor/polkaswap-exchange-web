@@ -1,6 +1,6 @@
 <template>
   <div>
-    <s-table :data="getAllOrders()" :highlight-current-row="false">
+    <s-table class="limit-order-table" :data="getAllOrders()" :highlight-current-row="false">
       <s-table-column>
         <template #header>
           <span>Time</span>
@@ -127,3 +127,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
   }
 }
 </script>
+
+<style lang="scss">
+@include limit-order-table;
+</style>

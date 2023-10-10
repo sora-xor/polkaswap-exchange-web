@@ -85,7 +85,7 @@
       </div>
     </div>
 
-    <s-button type="primary" class="buy-btn s-typography-button--medium" @click="handleConfirm">
+    <s-button type="primary" class="buy-btn s-typography-button--medium" @click="placeLimitOrder">
       <span> {{ t(buttonText) }}</span>
     </s-button>
     <book-transaction-details :info-only="false" class="info-line-container" />
@@ -94,7 +94,7 @@
 
 <script lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/util';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -143,7 +143,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       return 'connectWalletText';
     }
 
-    if (this.side === LimitOrderSide.buy) return `Buy XOR`;
+    if (this.side === LimitOrderSide.Buy) return `Buy XOR`;
     else return 'Sell XOR';
   }
 
@@ -195,6 +195,25 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.setQuoteValue(value);
   }
 
+  placeLimitOrder(): void {
+    console.log('placeLimitOrder');
+    console.log(
+      this.baseAsset.address,
+      this.quoteAsset.address,
+      new FPNumber(this.baseValue, FPNumber.DEFAULT_PRECISION).toCodecString(),
+      new FPNumber(this.quoteValue, FPNumber.DEFAULT_PRECISION).toCodecString(),
+      this.side
+    );
+
+    api.orderBook.placeLimitOrder(
+      this.baseAsset.address,
+      this.quoteAsset.address,
+      new FPNumber(this.baseValue, FPNumber.DEFAULT_PRECISION).toCodecString(),
+      new FPNumber(this.quoteValue, FPNumber.DEFAULT_PRECISION).toCodecString(),
+      this.side
+    );
+  }
+
   handleMaxValue(): void {
     const max = getMaxValue(this.quoteAsset, this.networkFee);
 
@@ -212,8 +231,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   handleTabClick(): void {}
-
-  handleConfirm(): void {}
 }
 </script>
 

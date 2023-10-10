@@ -15,8 +15,9 @@ function initialState(): OrderBookState {
     asks: [],
     bids: [],
     userLimitOrders: [],
-    side: LimitOrderSide.buy,
-    limitOrderUpdates: [],
+    side: LimitOrderSide.Buy,
+    orderBookUpdates: [],
+    userLimitOrderUpdates: null,
   };
 }
 

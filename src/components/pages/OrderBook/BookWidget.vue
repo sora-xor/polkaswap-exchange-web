@@ -132,7 +132,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   @Watch('baseAssetAddress')
-  private async subscribeToLimitOrderUpdates(baseAssetAddress: Nullable<string>): Promise<void> {
+  private async subscribeToOrderBookUpdates(baseAssetAddress: Nullable<string>): Promise<void> {
     if (baseAssetAddress) {
       await this.withLoading(async () => {
         // wait for node connection & wallet init (App.vue)
