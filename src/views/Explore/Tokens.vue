@@ -168,36 +168,21 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
-import { components, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
-import { gql } from '@urql/core';
-import last from 'lodash/fp/last';
+import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import { fetchTokensData } from '@/indexer/queries/assets';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
+import type { AmountWithSuffix } from '@/types/formats';
 import { calcPriceChange, formatAmountWithSuffix, sortAssets } from '@/utils';
 import { syntheticAssetRegexp } from '@/utils/regexp';
 import storage from '@/utils/storage';
 
-import type { AmountWithSuffix } from '../../types/formats';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type {
-  AssetEntity,
-  AssetSnapshotEntity,
-  EntitiesQueryResponse,
-} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
-
-type AssetData = AssetEntity & {
-  hourSnapshots: {
-    nodes: AssetSnapshotEntity[];
-  };
-  daySnapshots: {
-    nodes: AssetSnapshotEntity[];
-  };
-};
 
 type TokenData = {
   reserves: FPNumber;
@@ -225,62 +210,6 @@ type TableItem = {
 } & Asset;
 
 const storageKey = 'exploreSyntheticTokens';
-
-const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
-  query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-    entities: assets(after: $after, filter: { and: [{ id: { in: $ids } }] }) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      nodes {
-        id
-        liquidity
-        hourSnapshots: data(
-          filter: { and: [{ timestamp: { greaterThanOrEqualTo: $dayTimestamp } }, { type: { equalTo: HOUR } }] }
-          orderBy: [TIMESTAMP_DESC]
-        ) {
-          nodes {
-            priceUSD
-            volume
-          }
-        }
-        daySnapshots: data(
-          filter: { and: [{ timestamp: { greaterThanOrEqualTo: $weekTimestamp } }, { type: { equalTo: DAY } }] }
-          orderBy: [TIMESTAMP_DESC]
-        ) {
-          nodes {
-            priceUSD
-            volume
-          }
-        }
-      }
-    }
-  }
-`;
-
-const calcVolume = (nodes: AssetSnapshotEntity[]): FPNumber => {
-  return nodes.reduce((buffer, snapshot) => {
-    const snapshotVolume = new FPNumber(snapshot.volume.amountUSD);
-
-    return buffer.add(snapshotVolume);
-  }, FPNumber.ZERO);
-};
-
-const parse = (item: AssetData): Record<string, TokenData> => {
-  const startPriceDay = last(item.hourSnapshots.nodes)?.priceUSD?.open;
-  const startPriceWeek = last(item.daySnapshots.nodes)?.priceUSD?.open;
-  const liquidity = item.liquidity;
-  return {
-    [item.id]: {
-      reserves: liquidity ? FPNumber.fromCodecValue(liquidity) : FPNumber.ZERO,
-      startPriceDay: startPriceDay ? new FPNumber(startPriceDay) : FPNumber.ZERO,
-      startPriceWeek: startPriceWeek ? new FPNumber(startPriceWeek) : FPNumber.ZERO,
-      volumeDay: calcVolume(item.hourSnapshots.nodes),
-      volumeWeek: calcVolume(item.daySnapshots.nodes),
-    },
-  };
-};
 
 @Component({
   components: {
@@ -372,23 +301,9 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   async updateExploreData(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.tokensData = Object.freeze(await this.fetchTokensData());
+        this.tokensData = Object.freeze(await fetchTokensData(this.whitelistAssets));
       });
     });
-  }
-
-  private async fetchTokensData(): Promise<Record<string, TokenData>> {
-    const now = Math.floor(Date.now() / (5 * 60_000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
-    const dayTimestamp = now - this.DAY; // latest day snapshot (unix)
-    const weekTimestamp = now - this.DAY * 7; // latest week snapshot (unix)
-    const ids = this.whitelistAssets.map((item) => item.address); // only whitelisted assets
-
-    const variables = { ids, dayTimestamp, weekTimestamp };
-    const items = await SubqueryExplorerService.fetchAllEntities(AssetsQuery, variables, parse);
-
-    if (!items) return {};
-
-    return items.reduce((acc, item) => ({ ...acc, ...item }), {});
   }
 }
 </script>

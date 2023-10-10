@@ -31,8 +31,7 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { gql } from '@urql/core';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
@@ -40,47 +39,16 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
+import { fetchData } from '@/indexer/queries/networkVolume';
 import { lazyComponent } from '@/router';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
-import type {
-  SnapshotTypes,
-  EntitiesQueryResponse,
-  NetworkSnapshotEntity,
-} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
-
 type ChartData = {
   timestamp: number;
   value: FPNumber;
 };
-
-const NetworkVolumeQuery = gql<EntitiesQueryResponse<NetworkSnapshotEntity>>`
-  query NetworkVolumeQuery($after: Cursor, $fees: Boolean!, $type: SnapshotType, $from: Int, $to: Int) {
-    entities: networkSnapshots(
-      after: $after
-      orderBy: TIMESTAMP_DESC
-      filter: {
-        and: [
-          { type: { equalTo: $type } }
-          { timestamp: { lessThanOrEqualTo: $from } }
-          { timestamp: { greaterThanOrEqualTo: $to } }
-        ]
-      }
-    ) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      nodes {
-        timestamp
-        volumeUSD @skip(if: $fees)
-        fees @include(if: $fees)
-      }
-    }
-  }
-`;
 
 const getTotalValue = (data: readonly ChartData[]): FPNumber => {
   return data.reduce((acc, item) => acc.add(item.value), FPNumber.ZERO);
@@ -105,17 +73,6 @@ const normalizeTo = (sample: ChartData[], difference: number, from: number, to: 
 
   sample.push(...buffer);
 };
-
-const parse =
-  (fees: boolean) =>
-  (node: NetworkSnapshotEntity): ChartData => {
-    const value = fees ? FPNumber.fromCodecValue(node.fees) : new FPNumber(node.volumeUSD);
-
-    return {
-      timestamp: +node.timestamp * 1000,
-      value: value.isFinity() ? value : FPNumber.ZERO,
-    };
-  };
 
 @Component({
   components: {
@@ -232,7 +189,7 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
     return sample;
   }
 
-  private async updateData(): Promise<void> {
+  async updateData(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
         try {
@@ -244,8 +201,8 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
           const bTime = aTime - seconds * count;
 
           const [curr, prev] = await Promise.all([
-            this.fetchData(fees, now, aTime, type),
-            this.fetchData(fees, aTime, bTime, type),
+            fetchData(fees, now, aTime, type),
+            fetchData(fees, aTime, bTime, type),
           ]);
 
           this.data = Object.freeze(this.normalizeData(curr, seconds * 1000, now * 1000, aTime * 1000));
@@ -258,16 +215,6 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
         }
       });
     });
-  }
-
-  private async fetchData(fees: boolean, from: number, to: number, type: SnapshotTypes): Promise<ChartData[]> {
-    const data = await SubqueryExplorerService.fetchAllEntities(
-      NetworkVolumeQuery,
-      { fees, from, to, type },
-      parse(fees)
-    );
-
-    return data ?? [];
   }
 }
 </script>

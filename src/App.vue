@@ -35,7 +35,16 @@
 </template>
 
 <script lang="ts">
-import { api, connection, components, mixins, settingsStorage, AlertsApiService } from '@soramitsu/soraneo-wallet-web';
+import {
+  api,
+  connection,
+  components,
+  mixins,
+  settingsStorage,
+  WALLET_CONSTS,
+  WALLET_TYPES,
+  AlertsApiService,
+} from '@soramitsu/soraneo-wallet-web';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -59,7 +68,6 @@ import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 @Component({
   components: {
@@ -101,6 +109,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @mutation.wallet.settings.setSoraNetwork private setSoraNetwork!: (network: WALLET_CONSTS.SoraNetwork) => void;
   @mutation.wallet.settings.setSubqueryEndpoint private setSubqueryEndpoint!: (endpoint: string) => void;
+  @mutation.wallet.settings.setSubsquidEndpoint private setSubsquidEndpoint!: (endpoint: string) => void;
   @mutation.settings.setDefaultNodes private setDefaultNodes!: (nodes: Array<Node>) => void;
   @mutation.settings.setNetworkChainGenesisHash private setNetworkChainGenesisHash!: (hash?: string) => void;
   @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
@@ -226,7 +235,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       await this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
       this.setSoraNetwork(data.NETWORK_TYPE);
-      this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
       this.setDefaultNodes(data?.DEFAULT_NETWORKS);
       this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
       this.setSubNetworkApps(data.SUB_NETWORKS);
@@ -234,6 +242,15 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       if (data.PARACHAIN_IDS) {
         api.bridgeProxy.sub.parachainIds = data.PARACHAIN_IDS;
       }
+
+      if (!data.SUBQUERY_ENDPOINT) {
+        throw new Error('SUBQUERY_ENDPOINT is not set');
+      }
+      if (!data.SUBSQUID_ENDPOINT) {
+        throw new Error('SUBSQUID_ENDPOINT is not set');
+      }
+      this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
+      this.setSubsquidEndpoint(data.SUBSQUID_ENDPOINT);
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);
