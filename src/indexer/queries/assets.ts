@@ -15,7 +15,7 @@ import type {
   SubsquidAssetSnapshotEntity,
   SubsquidConnectionQueryResponse,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
-import type { AssetEntity, AssetSnapshotEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { AssetSnapshotEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const { IndexerType } = WALLET_CONSTS;
 
@@ -44,15 +44,6 @@ type SubsquidAssetData = SubsquidAssetEntity & {
   };
   daySnapshots: {
     nodes: SubsquidAssetSnapshotEntity[];
-  };
-};
-
-type AssetData = AssetEntity & {
-  hourSnapshots: {
-    nodes: AssetSnapshotEntity[];
-  };
-  daySnapshots: {
-    nodes: AssetSnapshotEntity[];
   };
 };
 
@@ -110,7 +101,7 @@ const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetDat
             volume
           }
           daySnapshots: data(
-            where: { AND: [{ timestamp_gte: $weekTimestamp }, { type_eq: DAY } }] }
+            where: { AND: [{ timestamp_gte: $weekTimestamp }, { type_eq: DAY }] }
             orderBy: [timestamp_DESC]
           ) {
             priceUSD
@@ -131,19 +122,13 @@ const calcVolume = (nodes: AssetSnapshotEntity[]): FPNumber => {
 };
 
 const parse = (item: SubqueryAssetData | SubsquidAssetData): Record<string, TokenData> => {
-  function transformNode(node: SubqueryAssetSnapshotEntity | SubsquidAssetSnapshotEntity): AssetSnapshotEntity {
-    return {
-      ...node,
-      assetId: node.asset.id,
-    };
-  }
   return {
     [item.id]: {
       reserves: FPNumber.fromCodecValue(item.liquidity ?? 0),
       startPriceDay: new FPNumber(last(item.hourSnapshots.nodes)?.priceUSD?.open ?? 0),
       startPriceWeek: new FPNumber(last(item.daySnapshots.nodes)?.priceUSD?.open ?? 0),
-      volumeDay: calcVolume(item.hourSnapshots.nodes.map((node) => transformNode(node))),
-      volumeWeek: calcVolume(item.daySnapshots.nodes.map((node) => transformNode(node))),
+      volumeDay: calcVolume(item.hourSnapshots.nodes),
+      volumeWeek: calcVolume(item.daySnapshots.nodes),
     },
   };
 };
