@@ -190,12 +190,6 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
       border-bottom: 2px solid var(--s-color-base-border-primary);
       margin: auto;
     }
-    .delimiter :before {
-      margin-right: $basic-spacing;
-    }
-    .delimiter :after {
-      margin-left: $basic-spacing;
-    }
   }
 }
 </style>

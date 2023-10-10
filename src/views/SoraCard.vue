@@ -191,9 +191,9 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
     await this.unsubscribeFromTotalXorBalance();
   }
 
-  async mounted(): Promise<void> {
+  mounted(): void {
     this.checkKyc();
-    await this.getFees();
+    this.getFees();
   }
 }
 </script>

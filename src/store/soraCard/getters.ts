@@ -22,18 +22,21 @@ const getters = defineGetters<SoraCardState>()({
 
     if (verificationStatus === VerificationStatus.Accepted) {
       return VerificationStatus.Accepted;
-    } else if (kycStatus === KycStatus.Completed) {
-      return VerificationStatus.Pending;
-    } else if (kycStatus === KycStatus.Retry) {
-      return VerificationStatus.Rejected;
-    } else if (kycStatus === KycStatus.Rejected) {
-      return VerificationStatus.Rejected;
-    } else if (kycStatus === KycStatus.Started) {
-      return null;
-    } else if (kycStatus === KycStatus.Failed) {
-      return null;
-    } else {
-      return null;
+    }
+
+    switch (kycStatus) {
+      case KycStatus.Completed:
+        return VerificationStatus.Pending;
+      case KycStatus.Retry:
+        return VerificationStatus.Rejected;
+      case KycStatus.Rejected:
+        return VerificationStatus.Rejected;
+      case KycStatus.Started:
+        return null;
+      case KycStatus.Failed:
+        return null;
+      default:
+        return null;
     }
   },
 });

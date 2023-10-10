@@ -74,14 +74,13 @@ export default class Guidance extends Mixins(TranslationMixin, mixins.LoadingMix
     return this.attemptCounter.totalFreeAttempts || '4';
   }
 
-  get retryFee(): Nullable<string> {
+  get retryFee(): string {
     const delimiter = FPNumber.DELIMITERS_CONFIG.decimal;
     if (this.fees.retry) {
       const [integer, decimal] = this.fees.retry.split('.');
       return `${integer}${delimiter}${decimal}`;
-    } else {
-      return `3${delimiter}80`;
     }
+    return '';
   }
 
   async handleConfirm(): Promise<void> {
