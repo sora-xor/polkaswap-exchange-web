@@ -5,7 +5,6 @@ import axiosInstance from '@/api';
 import { Language, WalletPermissions } from '@/consts';
 import { getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
 import { settingsActionContext } from '@/store/settings';
-import type { Indexer } from '@/types/indexers';
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
 import { updateDocumentTitle, updateFpNumberLocale } from '@/utils';
 import { AppHandledError } from '@/utils/error';
