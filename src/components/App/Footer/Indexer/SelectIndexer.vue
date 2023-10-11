@@ -9,13 +9,14 @@
             :key="indexer.type"
             :label="indexer.type"
             :value="indexer.type"
+            :disabled="!indexer.endpoint"
             size="medium"
             class="statistics-dialog__item s-flex"
           >
             <div class="service-item s-flex">
               <div class="service-item__label s-flex">
                 <div class="service-item__name">{{ indexer.name }}</div>
-                <div class="service-item__endpoint">{{ indexer.endpoint }}</div>
+                <div v-if="indexer.endpoint" class="service-item__endpoint">{{ indexer.endpoint }}</div>
               </div>
               <div class="service-item__status" :class="indexer.online ? 'success' : 'error'">
                 {{ indexer.online ? TranslationConsts.online : TranslationConsts.offline }}
@@ -27,7 +28,7 @@
         <div class="statistics-dialog__group">
           <div class="statistics-dialog__item">
             <div class="switcher">
-              <s-switch :value="false" />
+              <s-switch disabled :value="false" />
               <span>{{ t('footer.statistics.dialog.useCeres') }}</span>
             </div>
           </div>
