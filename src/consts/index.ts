@@ -100,6 +100,8 @@ export enum MarketAlgorithms {
   SMART = 'SMART',
   TBC = 'TBC',
   XYK = 'XYK',
+  XST = 'XST',
+  ORB = 'Order Book',
 }
 
 export const DefaultMarketAlgorithm = MarketAlgorithms.SMART;

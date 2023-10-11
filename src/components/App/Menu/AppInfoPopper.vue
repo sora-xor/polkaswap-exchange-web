@@ -96,12 +96,7 @@ export default class AppInfoPopper extends Mixins(TranslationMixin, mixins.Loadi
 $popper-mix-width: 170px;
 
 .app-info-popper.el-popover.el-popper {
-  background: var(--s-color-utility-body);
-  border-color: var(--s-color-base-border-secondary);
-  border-radius: var(--s-border-radius-mini);
-  box-shadow: var(--s-shadow-dialog);
-  color: var(--s-color-base-content-primary);
-  padding: $inner-spacing-medium;
+  @include popper-content;
   min-width: $popper-mix-width;
 }
 

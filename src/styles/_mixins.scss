@@ -873,3 +873,12 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     }
   }
 }
+
+@mixin popper-content {
+  background: var(--s-color-utility-body);
+  border-color: var(--s-color-base-border-secondary);
+  border-radius: var(--s-border-radius-mini);
+  box-shadow: var(--s-shadow-dialog);
+  color: var(--s-color-base-content-primary);
+  padding: $inner-spacing-medium;
+}

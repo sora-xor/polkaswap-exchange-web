@@ -1,34 +1,21 @@
 <template>
-  <el-popover :visible-arrow="false" placement="top-start" popper-class="swap-distribution" trigger="click">
-    <ol class="distribution">
-      <li v-for="({ input, output, income, outcome, sources }, index) in swapPaths" :key="index">
-        <p>{{ income }} {{ input }} -> {{ outcome }} {{ output }}</p>
-        <ul>
-          <li v-for="{ source, income, outcome, fee } in sources" :key="source">
-            <table>
-              <tr>
-                <td colspan="3">{{ source }}</td>
-              </tr>
-              <tr>
-                <td>I:</td>
-                <td>{{ income }}</td>
-                <td>{{ input }}</td>
-              </tr>
-              <tr>
-                <td>O:</td>
-                <td>{{ outcome }}</td>
-                <td>{{ output }}</td>
-              </tr>
-              <tr>
-                <td>Fee:</td>
-                <td>{{ fee }}</td>
-                <td>XOR</td>
-              </tr>
-            </table>
-          </li>
-        </ul>
+  <el-popover :visible-arrow="false" placement="top" popper-class="swap-distribution-popper" trigger="click">
+    <ul class="distribution">
+      <li v-for="{ asset, amount, sources } in swapPaths" :key="asset.address" class="distribution-step">
+        <token-logo :token="asset" size="small" />
+        <div class="distribution-asset">
+          <table v-if="sources.length" class="distribution-sources">
+            <tr v-for="{ source, input, output, income, outcome } in sources" :key="source">
+              <td>{{ source }}:</td>
+              <td>{{ income }} {{ input }}</td>
+              <td>&rarr;</td>
+              <td>{{ outcome }} {{ output }}</td>
+            </tr>
+          </table>
+          <span class="distribution-amount">{{ amount }} {{ asset.symbol }}</span>
+        </div>
       </li>
-    </ol>
+    </ul>
     <template #reference>
       <slot />
     </template>
@@ -36,9 +23,12 @@
 </template>
 
 <script lang="ts">
+import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber } from '@sora-substrate/util';
+import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Vue } from 'vue-property-decorator';
 
+import { MarketAlgorithms } from '@/consts';
 import { getter, state } from '@/store/decorators';
 
 import type { Distribution } from '@sora-substrate/liquidity-proxy/build/types';
@@ -46,53 +36,107 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 type SwapSource = {
   source: string;
+  input: string;
+  output: string;
   income: string;
   outcome: string;
   fee: string;
 };
 
 type SwapPath = {
-  input: string;
-  output: string;
-  income: string;
-  outcome: string;
+  asset: AccountAsset;
+  amount: string;
   sources: SwapSource[];
 };
 
-@Component
+const MARKETS = {
+  [LiquiditySourceTypes.XYKPool]: 'XYK Pool',
+  [LiquiditySourceTypes.MulticollateralBondingCurvePool]: 'TBC Pool',
+  [LiquiditySourceTypes.XSTPool]: 'XST Pool',
+  [LiquiditySourceTypes.OrderBook]: 'Order Book',
+};
+
+@Component({
+  components: {
+    TokenLogo: components.TokenLogo,
+  },
+})
 export default class SwapDistribution extends Vue {
   @state.swap.distribution private distribution!: Distribution[][];
 
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   get swapPaths(): SwapPath[] {
-    return this.distribution.map((step) => {
-      let stepIncome = FPNumber.ZERO;
-      let stepOutcome = FPNumber.ZERO;
+    const paths: SwapPath[] = [];
 
-      const input = this.getAsset(step[0].input)?.symbol ?? '?';
-      const output = this.getAsset(step[0].output)?.symbol ?? '?';
+    this.distribution.forEach((step, index) => {
+      const sources: SwapSource[] = [];
 
-      const sources = step.map((path) => {
-        stepIncome = stepIncome.add(path.income);
-        stepOutcome = stepOutcome.add(path.outcome);
+      let income = FPNumber.ZERO;
+      let outcome = FPNumber.ZERO;
 
-        return {
-          source: path.market,
+      const input = this.getAsset(step[0].input) as AccountAsset;
+      const output = this.getAsset(step[0].output) as AccountAsset;
+
+      step.forEach((path) => {
+        income = income.add(path.income);
+        outcome = outcome.add(path.outcome);
+
+        sources.push({
+          source: MARKETS[path.market],
+          input: input.symbol,
+          output: output.symbol,
           income: path.income.toLocaleString(),
           outcome: path.outcome.toLocaleString(),
           fee: path.fee.toLocaleString(),
-        };
+        });
       });
 
-      return {
-        input,
-        output,
-        income: stepIncome.toLocaleString(),
-        outcome: stepOutcome.toLocaleString(),
-        sources,
-      };
+      if (index === 0) {
+        paths.push({ asset: input, amount: income.toLocaleString(), sources: [] });
+      }
+
+      paths.push({ asset: output, amount: outcome.toLocaleString(), sources });
     });
+
+    return paths;
   }
 }
 </script>
+
+<style lang="scss">
+.swap-distribution-popper {
+  @include popper-content;
+}
+</style>
+
+<style lang="scss" scoped>
+.distribution {
+  display: flex;
+  flex-flow: column nowrap;
+  list-style-type: none;
+  padding-left: 0;
+
+  &-step {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: $inner-spacing-mini;
+    align-items: flex-end;
+  }
+
+  &-asset {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+  }
+
+  &-amount {
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  &-sources {
+    font-size: var(--s-font-size-extra-mini);
+  }
+}
+</style>

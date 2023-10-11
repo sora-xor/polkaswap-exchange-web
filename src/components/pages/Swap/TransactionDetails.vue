@@ -17,14 +17,17 @@
         </value-status-wrapper>
       </info-line>
       <info-line :label="t('swap.route')">
-        <div class="swap-route s-flex">
-          <div v-for="(token, index) in swapRoute" class="swap-route-value" :key="token">
-            <span>{{ token }}</span>
-            <s-icon v-if="index !== swapRoute.length - 1" name="el-icon el-icon-arrow-right swap-route-icon" />
-          </div>
+        <div class="swap-route">
           <swap-distribution>
-            <s-icon name="info-16" size="14px" />
+            <s-icon class="el-tooltip" name="info-16" size="14px" />
           </swap-distribution>
+
+          <div class="swap-route-paths s-flex">
+            <div v-for="(token, index) in swapRoute" class="swap-route-value" :key="token">
+              <span>{{ token }}</span>
+              <s-icon v-if="index !== swapRoute.length - 1" name="el-icon el-icon-arrow-right swap-route-icon" />
+            </div>
+          </div>
         </div>
       </info-line>
       <info-line
@@ -191,6 +194,10 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
 
 <style lang="scss" scoped>
 .swap-route {
+  display: flex;
+  align-items: center;
+  gap: $inner-spacing-mini;
+
   &-value {
     font-weight: 600;
   }
