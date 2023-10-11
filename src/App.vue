@@ -243,12 +243,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         api.bridgeProxy.sub.parachainIds = data.PARACHAIN_IDS;
       }
 
-      if (!data.SUBQUERY_ENDPOINT) {
-        throw new Error('SUBQUERY_ENDPOINT is not set');
-      }
-      if (!data.SUBSQUID_ENDPOINT) {
-        throw new Error('SUBSQUID_ENDPOINT is not set');
-      }
       this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
       this.setSubsquidEndpoint(data.SUBSQUID_ENDPOINT);
 
