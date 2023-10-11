@@ -17,10 +17,14 @@
         </value-status-wrapper>
       </info-line>
       <info-line :label="t('swap.route')">
-        <div v-for="token in swapRoute" class="liquidity-route swap-value" :key="token">
-          <span>{{ token }}</span>
-          <s-icon name="el-icon el-icon-arrow-right route-icon" />
-        </div>
+        <swap-distribution>
+          <div class="swap-route s-flex">
+            <div v-for="(token, index) in swapRoute" class="swap-route-value" :key="token">
+              <span>{{ token }}</span>
+              <s-icon v-if="index !== swapRoute.length - 1" name="el-icon el-icon-arrow-right swap-route-icon" />
+            </div>
+          </div>
+        </swap-distribution>
       </info-line>
       <info-line
         :label="t('swap.liquidityProviderFee')"
@@ -73,6 +77,7 @@ type RewardValue = {
   components: {
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     TransactionDetails: lazyComponent(Components.TransactionDetails),
+    SwapDistribution: lazyComponent(Components.SwapDistribution),
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
   },
@@ -83,7 +88,6 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   @state.swap.rewards private rewards!: Array<LPRewardsInfo>;
   @state.swap.route private route!: Array<string>;
   @state.swap.isExchangeB isExchangeB!: boolean;
-  @state.swap.selectedDexId private selectedDexId!: number;
 
   @getter.swap.price private price!: string;
   @getter.swap.priceReversed private priceReversed!: string;
@@ -182,17 +186,18 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
     color: inherit;
   }
 }
-.swap-value {
-  font-weight: 600;
-}
+</style>
 
-.route-icon {
-  color: var(--s-color-base-content-primary) !important;
-  font-size: 12px !important;
-  margin: 0 !important;
-}
+<style lang="scss" scoped>
+.swap-route {
+  &-value {
+    font-weight: 600;
+  }
 
-.liquidity-route:last-child .el-icon {
-  display: none !important;
+  &-icon {
+    color: var(--s-color-base-content-primary) !important;
+    font-size: 12px !important;
+    margin: 0 !important;
+  }
 }
 </style>

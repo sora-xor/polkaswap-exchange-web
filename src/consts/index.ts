@@ -208,6 +208,7 @@ export enum Components {
   SwapTransactionDetails = 'pages/Swap/TransactionDetails',
   SwapSettings = 'pages/Swap/Settings/Settings',
   SwapLossWarningDialog = 'pages/Swap/LossWarningDialog',
+  SwapDistribution = 'pages/Swap/Distribution',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
