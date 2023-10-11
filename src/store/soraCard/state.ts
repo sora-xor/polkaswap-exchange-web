@@ -6,7 +6,6 @@ import type { SoraCardState } from './types';
 
 function initialState(): SoraCardState {
   return {
-    kycAttemptCost: '3.80',
     kycStatus: undefined,
     verificationStatus: undefined,
     euroBalance: ZeroStringValue,
@@ -14,6 +13,7 @@ function initialState(): SoraCardState {
     totalXorBalance: FPNumber.ZERO,
     xorToDeposit: FPNumber.ZERO,
     totalXorBalanceUpdates: null,
+    referenceNumber: null,
     authLogin: null,
     attemptCounter: {
       hasFreeAttempts: null,
@@ -21,9 +21,14 @@ function initialState(): SoraCardState {
       totalFreeAttempts: null,
     },
     wantsToPassKycAgain: false,
-    rejectReason: null,
+    rejectReasons: [],
     userInfo: {
       iban: null,
+      availableBalance: null,
+    },
+    fees: {
+      application: null,
+      retry: null,
     },
   };
 }

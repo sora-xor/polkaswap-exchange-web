@@ -45,7 +45,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state } from '@/store/decorators';
+import { mutation, state } from '@/store/decorators';
 import { CardUIViews } from '@/types/card';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 import { soraCard, getUpdatedJwtPair } from '@/utils/card';
@@ -54,6 +54,9 @@ import { soraCard, getUpdatedJwtPair } from '@/utils/card';
 export default class KycView extends Mixins(TranslationMixin, mixins.NotificationMixin, mixins.CameraPermissionMixin) {
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.wallet.account.source private source!: WALLET_CONSTS.AppWallet;
+  @state.soraCard.referenceNumber private referenceNumber!: Nullable<string>;
+
+  @mutation.soraCard.setReferenceNumber setReferenceNumber!: (refNumber: Nullable<string>) => void;
 
   @Prop({ default: '', type: String }) readonly accessToken!: string;
 
@@ -143,7 +146,11 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
     this.updateJwtPairByInterval();
     const { kycService, soraProxy } = soraCard(soraNetwork);
 
-    const referenceNumber = await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
+    const referenceNumber = this.referenceNumber
+      ? this.referenceNumber
+      : await this.getReferenceNumber(soraProxy.referenceNumberEndpoint);
+
+    if (referenceNumber) this.setReferenceNumber(referenceNumber);
 
     await ScriptLoader.unload(kycService.sdkURL, false).catch(() => {});
 

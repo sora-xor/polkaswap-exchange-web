@@ -3,7 +3,7 @@
     <div class="tos__disclaimer">
       <h4 class="tos__disclaimer-header">{{ t('card.attentionText') }}</h4>
       <p class="tos__disclaimer-paragraph">
-        {{ t('card.guideline.paidAttemptDisclaimer', { count: total, cost: kycAttemptCost }) }}
+        {{ t('card.guideline.paidAttemptDisclaimer', { count: total, cost: retryFee }) }}
       </p>
       <div class="tos__disclaimer-warning icon">
         <s-icon name="notifications-alert-triangle-24" size="28px" />
@@ -53,24 +53,34 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, state } from '@/store/decorators';
-import { AttemptCounter } from '@/types/card';
+import { AttemptCounter, Fees } from '@/types/card';
 
 @Component({
   components: {},
 })
 export default class Guidance extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @state.soraCard.kycAttemptCost kycAttemptCost!: string;
+  @state.soraCard.fees fees!: Fees;
   @state.soraCard.attemptCounter attemptCounter!: AttemptCounter;
 
   @action.soraCard.getUserKycAttempt private getUserKycAttempt!: AsyncFnWithoutArgs;
 
   get total(): string {
     return this.attemptCounter.totalFreeAttempts || '4';
+  }
+
+  get retryFee(): string {
+    const delimiter = FPNumber.DELIMITERS_CONFIG.decimal;
+    if (this.fees.retry) {
+      const [integer, decimal] = this.fees.retry.split('.');
+      return `${integer}${delimiter}${decimal}`;
+    }
+    return '';
   }
 
   async handleConfirm(): Promise<void> {

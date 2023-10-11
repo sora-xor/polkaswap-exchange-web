@@ -69,6 +69,7 @@
         "reIssuanceFee": "Costo del servizio annuo pari a 0€",
         "freeCardIssuance": "Emissione carta gratuita",
         "loginBtn": "Accedi o iscriviti",
+        "applicationFee": "€ {0} commissione di emissione",
         "telegramSupport": "Supporto Telegram",
         "rejectionPriceAttemptDisclaimer": "Ogni altro tentativo ti costerà € {0}",
         "rejectCount": "Hai ancora {count} tentativo gratuito di KYC|Hai ancora {count} tentativi gratuiti di KYC",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "Informazioni account"
         },
-        "attentionText": "Attenzione"
+        "attentionText": "Attenzione",
+        "or": "O",
+        "oneTimeApplicationFee": "Tariffa una tantum per l'emissione di una carta",
+        "applicationFeeNote": "Nota: l'emissione delle carte a pagamento sarà disponibile in una fase successiva.",
+        "statusRejectReasonMultiple": "La tua richiesta è stata respinta per molteplici motivi:"
     }
 }

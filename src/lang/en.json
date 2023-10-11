@@ -315,6 +315,7 @@
     "connectedText": "Connected",
     "connectWalletTextTooltip": "Connect to {Sora} Network with {PolkadotJs}",
     "selectNodeText": "Select Network Node",
+    "selectIndexerText": "Select indexer",
     "bridgeText": "Bridge",
     "disclaimer": "{disclaimerPrefix} This website is maintained by the {Sora} community. Before continuing to use this website, please review the {polkaswapFaqLink} and documentation, which includes a detailed explanation on how {AppName} works, as well as the {memorandumLink}, and {privacyLink}. These documents are crucial to a secure and positive user experience. By using {AppName}, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of {AppName} in your legal jurisdiction; 2) your understanding that the current version of {AppName} is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using {AppName}, including, but not limited to, the risk of losing tokens. Please do not continue without reading the {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "poweredBy": "Powered by",
@@ -425,6 +426,17 @@
         },
         "updateNode": "Update node"
     },
+    "selectIndexerDialog": {
+        "title": "{Sora} Network indexer selection",
+        "addIndexer": "Add custom indexer",
+        "updateIndexer": "Update indexer",
+        "customIndexer": "Custom indexer",
+        "howToSetupOwnIndexer": "How to setup your own {Sora} indexer",
+        "select": "Select",
+        "connected": "Connected",
+        "selectIndexerForEnvironment": "Select a indexer for {environment} environment:",
+        "indexerTitle": "{chain} hosted by {name}"
+      },
     "buttons": {
         "max": "MAX",
         "chooseToken": "Choose token",
@@ -1181,8 +1193,8 @@
             "action": "Select services",
             "dialog": {
                 "title": "{Sora} Network service selection",
-                "fiat": "Fiat values",
-                "chartsAndActivity": "Charts & Activity"
+                "indexer": "Indexer",
+                "useCeres": "Use Ceres for fiat values"
             }
         }
     },

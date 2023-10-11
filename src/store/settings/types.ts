@@ -6,7 +6,7 @@ import type { Subscription } from 'rxjs';
 export type Ad = {
   title: string;
   img: string;
-  backgroundColor: string;
+  backgroundColor?: string;
   link: string;
 };
 
@@ -34,6 +34,7 @@ export type SettingsState = {
   chainGenesisHash: string;
   faucetUrl: string;
   selectNodeDialogVisibility: boolean;
+  selectIndexerDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
   disclaimerVisibility: boolean;
   alertSettingsVisibility: boolean;

@@ -29,6 +29,7 @@ function initialState(): SettingsState {
     chainGenesisHash: '',
     faucetUrl: '',
     selectNodeDialogVisibility: false,
+    selectIndexerDialogVisibility: false,
     selectLanguageDialogVisibility: false,
     disclaimerVisibility: false,
     alertSettingsVisibility: false,
