@@ -1250,7 +1250,9 @@
             "enterName": "Írja be a nevet",
             "present": "Már jelen van",
             "saveChanges": "Változtatások mentése"
-        }
+        },
+        "input": "Írja be a címet vagy válassza ki a kapcsolatot",
+        "selectContact": "Válasszon névjegyet"
     },
     "browserPermission": {
         "title": "A kamera hozzáférésének engedélyezése a böngésző beállításaiban",

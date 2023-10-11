@@ -1250,7 +1250,9 @@
             "enterName": "Ingrese su nombre",
             "present": "Ya presente",
             "saveChanges": "Guardar cambios"
-        }
+        },
+        "input": "Introduzca la dirección o seleccione el contacto",
+        "selectContact": "Seleccione un contacto"
     },
     "browserPermission": {
         "title": "Permitir el acceso a la cámara en la configuración del navegador",

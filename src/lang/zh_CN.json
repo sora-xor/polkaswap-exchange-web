@@ -1250,7 +1250,9 @@
             "enterName": "输入名字",
             "present": "已经存在",
             "saveChanges": "保存更改"
-        }
+        },
+        "input": "输入地址或选择联系人",
+        "selectContact": "选择联系人"
     },
     "browserPermission": {
         "title": "在浏览器设置中允许相机访问",

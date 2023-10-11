@@ -1250,7 +1250,9 @@
             "enterName": "Voer naam in",
             "present": "Reeds aanwezig",
             "saveChanges": "Wijzigingen opslaan"
-        }
+        },
+        "input": "Voer adres in of selecteer contact",
+        "selectContact": "Selecteer contactpersoon"
     },
     "browserPermission": {
         "title": "Cameratoegang toestaan in browserinstellingen",

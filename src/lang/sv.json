@@ -1250,7 +1250,9 @@
             "enterName": "Skriv namn",
             "present": "Redan närvarande",
             "saveChanges": "Spara ändringar"
-        }
+        },
+        "input": "Ange adress eller välj kontakt",
+        "selectContact": "Välj kontakt"
     },
     "browserPermission": {
         "title": "Tillåt kameraåtkomst i webbläsarinställningarna",

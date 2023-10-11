@@ -1250,7 +1250,9 @@
             "enterName": "Nhập tên",
             "present": "Đã có mặt",
             "saveChanges": "Lưu thay đổi"
-        }
+        },
+        "input": "Nhập địa chỉ hoặc chọn liên hệ",
+        "selectContact": "Chọn liên hệ"
     },
     "browserPermission": {
         "title": "Cho phép truy cập máy ảnh trong cài đặt trình duyệt",

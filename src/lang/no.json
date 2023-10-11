@@ -1250,7 +1250,9 @@
             "enterName": "Skriv inn navn",
             "present": "Allerede til stede",
             "saveChanges": "Lagre endringer"
-        }
+        },
+        "input": "Skriv inn adresse eller velg kontakt",
+        "selectContact": "Velg kontakt"
     },
     "browserPermission": {
         "title": "Tillat kameratilgang i nettleserinnstillingene",

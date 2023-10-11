@@ -1220,11 +1220,11 @@
         "historyBtn": "My purchases",
         "historyTitle": "Transaction History",
         "moonpayTitle": "Buy ETH via MoonPay",
-        "moonpayDesc": "Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge",
+        "moonpayDesc": "Purchase ETH tokens on Ethereum and transfer them to {SORA} network via the bridge",
         "x1Title": "Buy XOR with your card",
         "x1Btn": "Buy XOR with card",
         "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later.",
-        "x1Desc": "Purchase XOR tokens directly on the SORA network with your debit or credit card"
+        "x1Desc": "Purchase XOR tokens directly on the {SORA} network with your debit or credit card"
     },
     "acceptOnScrollText": "Scroll to accept",
     "addressBook": {
@@ -1240,7 +1240,7 @@
         "detected": "New address detected",
         "save": "Save as contact",
         "tooltip": "Collect address book by providing name and address to keep your contacts organized and up-to-date",
-        "notSoraAddress": "This address will be saved as SORA address below. Make sure the recipient can access the SORA chain:",
+        "notSoraAddress": "This address will be saved as {SORA} address below. Make sure the recipient can access the {SORA} chain:",
         "options": {
             "send": "Send tokens",
             "edit": "Edit contact",
@@ -1250,7 +1250,9 @@
             "enterName": "Enter name",
             "present": "Already present",
             "saveChanges": "Save changes"
-        }
+        },
+        "input": "Input address or select contact",
+        "selectContact": "Select contact"
     },
     "browserPermission": {
         "title": "Allow camera access in browser settings",

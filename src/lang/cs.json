@@ -1250,7 +1250,9 @@
             "enterName": "Napište jméno",
             "present": "Již přítomný",
             "saveChanges": "Uložit změny"
-        }
+        },
+        "input": "Zadejte adresu nebo vyberte kontakt",
+        "selectContact": "Vyberte kontakt"
     },
     "browserPermission": {
         "title": "Povolit přístup k fotoaparátu v nastavení prohlížeče",

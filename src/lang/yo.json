@@ -1250,7 +1250,9 @@
             "enterName": "Tẹ orukọ sii",
             "present": "Ti wa tẹlẹ",
             "saveChanges": "Fi awọn ayipada pamọ"
-        }
+        },
+        "input": "Tẹ adirẹsi sii tabi yan olubasọrọ",
+        "selectContact": "Yan olubasọrọ"
     },
     "browserPermission": {
         "title": "Gba wiwọle kamẹra laaye ni awọn eto ẹrọ aṣawakiri",

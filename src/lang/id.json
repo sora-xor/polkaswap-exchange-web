@@ -1250,7 +1250,9 @@
             "enterName": "Masukkan nama",
             "present": "Sudah hadir",
             "saveChanges": "Simpan perubahan"
-        }
+        },
+        "input": "Masukkan alamat atau pilih kontak",
+        "selectContact": "Pilih kontak"
     },
     "browserPermission": {
         "title": "Izinkan akses kamera di setelan browser",
