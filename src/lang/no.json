@@ -1181,8 +1181,8 @@
             "action": "Velg tjenester",
             "dialog": {
                 "title": "{Sora} Valg av nettverkstjeneste",
-                "fiat": "Fiat-verdier",
-                "chartsAndActivity": "Diagrammer og aktivitet"
+                "indexer": "Indekser",
+                "useCeres": "Bruk {Ceres} for fiat-verdier"
             }
         }
     },

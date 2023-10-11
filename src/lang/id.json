@@ -1181,8 +1181,8 @@
             "action": "Pilih layanan",
             "dialog": {
                 "title": "{Sora} Pemilihan layanan jaringan",
-                "fiat": "Nilai Fiat",
-                "chartsAndActivity": "Bagan & Aktivitas"
+                "indexer": "Pengindeks",
+                "useCeres": "Gunakan {Ceres} untuk nilai fiat"
             }
         }
     },

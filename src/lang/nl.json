@@ -1181,8 +1181,8 @@
             "action": "Selecteer diensten",
             "dialog": {
                 "title": "{Sora} Netwerkserviceselectie",
-                "fiat": "Fiat-waarden",
-                "chartsAndActivity": "Grafieken & Activiteit"
+                "indexer": "Indexeerder",
+                "useCeres": "Gebruik {Ceres} voor fiatwaarden"
             }
         }
     },

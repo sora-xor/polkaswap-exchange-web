@@ -1181,8 +1181,8 @@
             "action": "Wybierz usługi",
             "dialog": {
                 "title": "{Sora} Wybór usługi sieciowej",
-                "fiat": "wartości Fiata",
-                "chartsAndActivity": "Wykresy i aktywność"
+                "indexer": "Indeksator",
+                "useCeres": "Użyj {Ceres} dla wartości fiat"
             }
         }
     },

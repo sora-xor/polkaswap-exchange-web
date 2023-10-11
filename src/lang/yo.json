@@ -1181,8 +1181,8 @@
             "action": "Yan awọn iṣẹ",
             "dialog": {
                 "title": "Aṣayan iṣẹ nẹtiwọki {Sora}",
-                "fiat": "Awọn iye Fiat",
-                "chartsAndActivity": "Awọn aworan atọka & Iṣẹ-ṣiṣe"
+                "indexer": "Atọka",
+                "useCeres": "Lo {Ceres} fun awọn iye fiat"
             }
         }
     },

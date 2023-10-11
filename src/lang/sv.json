@@ -1181,8 +1181,8 @@
             "action": "Välj tjänster",
             "dialog": {
                 "title": "{Sora} Val av nätverkstjänst",
-                "fiat": "Fiat värden",
-                "chartsAndActivity": "Diagram och aktivitet"
+                "indexer": "Indexerare",
+                "useCeres": "Använd {Ceres} för fiat-värden"
             }
         }
     },

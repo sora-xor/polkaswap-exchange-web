@@ -1181,8 +1181,8 @@
             "action": "Seleccionar servicios",
             "dialog": {
                 "title": "{Sora} Selección de servicio de red",
-                "fiat": "Valores fiduciarios",
-                "chartsAndActivity": "Gráficos y actividad"
+                "indexer": "indexador",
+                "useCeres": "Utilice {Ceres} para valores fiduciarios"
             }
         }
     },

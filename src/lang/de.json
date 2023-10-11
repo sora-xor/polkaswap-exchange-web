@@ -1181,8 +1181,8 @@
             "action": "Dienste auswählen",
             "dialog": {
                 "title": "{Sora} Netzwerkdienstauswahl",
-                "fiat": "Fiat-Werte",
-                "chartsAndActivity": "Diagramme & Aktivität"
+                "indexer": "Indexer",
+                "useCeres": "Verwenden Sie {Ceres} für Fiat-Werte"
             }
         }
     },

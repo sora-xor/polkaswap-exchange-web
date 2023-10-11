@@ -1181,8 +1181,8 @@
             "action": "Odaberite usluge",
             "dialog": {
                 "title": "{Sora} Odabir mrežne usluge",
-                "fiat": "Fiat vrijednosti",
-                "chartsAndActivity": "Grafikoni i aktivnosti"
+                "indexer": "Indeksator",
+                "useCeres": "Koristite {Ceres} za fiksne vrijednosti"
             }
         }
     },

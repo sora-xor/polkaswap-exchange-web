@@ -1181,8 +1181,8 @@
             "action": "Válassza ki a szolgáltatásokat",
             "dialog": {
                 "title": "{Sora} Hálózati szolgáltatás kiválasztása",
-                "fiat": "Fiat értékek",
-                "chartsAndActivity": "Diagramok és tevékenység"
+                "indexer": "Indexelő",
+                "useCeres": "Fiat értékekhez használja {Ceres} értéket"
             }
         }
     },

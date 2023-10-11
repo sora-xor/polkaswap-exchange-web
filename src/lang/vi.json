@@ -1181,8 +1181,8 @@
             "action": "Chọn dịch vụ",
             "dialog": {
                 "title": "{Sora} Lựa chọn dịch vụ mạng",
-                "fiat": "Giá trị Fiat",
-                "chartsAndActivity": "Biểu đồ & Hoạt động"
+                "indexer": "Người lập chỉ mục",
+                "useCeres": "Sử dụng {Ceres} cho các giá trị tiền pháp định"
             }
         }
     },
