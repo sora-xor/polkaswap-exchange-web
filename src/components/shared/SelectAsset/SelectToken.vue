@@ -92,7 +92,7 @@ function getNonWhitelistDivisibleAssets<T extends Asset | AccountAsset>(
   components: {
     DialogBase: components.DialogBase,
     SelectAssetList: lazyComponent(Components.SelectAssetList),
-    SyntheticSwitcher: lazyComponent(Components.SyntheticSwitcher),
+    SyntheticSwitcher: components.SyntheticSwitcher,
     TokenAddress: components.TokenAddress,
     SearchInput: components.SearchInput,
     AddAssetDetailsCard: components.AddAssetDetailsCard,

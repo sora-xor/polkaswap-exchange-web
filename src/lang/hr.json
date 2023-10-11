@@ -1181,8 +1181,8 @@
             "action": "Odaberite usluge",
             "dialog": {
                 "title": "{Sora} Odabir mrežne usluge",
-                "fiat": "Fiat vrijednosti",
-                "chartsAndActivity": "Grafikoni i aktivnosti"
+                "indexer": "Indeksator",
+                "useCeres": "Koristite {Ceres} za fiksne vrijednosti"
             }
         }
     },
@@ -1250,7 +1250,9 @@
             "enterName": "Unesite ime",
             "present": "Već prisutan",
             "saveChanges": "Spremi promjene"
-        }
+        },
+        "input": "Unesite adresu ili odaberite kontakt",
+        "selectContact": "Odaberite kontakt"
     },
     "browserPermission": {
         "title": "Dopustite pristup kameri u postavkama preglednika",

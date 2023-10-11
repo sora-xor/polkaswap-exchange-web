@@ -219,7 +219,6 @@ export enum Components {
   WalletAboutNetworkDialog = 'pages/Wallet/AboutNetworkDialog',
   // Shared
   GenericPageHeader = 'shared/GenericPageHeader',
-  ExternalLink = 'shared/ExternalLink',
   TokensRow = 'shared/TokensRow',
   PairTokenLogo = 'shared/PairTokenLogo',
   PriceChange = 'shared/PriceChange',
@@ -227,7 +226,6 @@ export enum Components {
   TransactionDetails = 'shared/TransactionDetails',
   PoolInfo = 'shared/PoolInfo',
   Widget = 'shared/Widget',
-  SyntheticSwitcher = 'shared/SyntheticSwitcher',
   // Shared Buttons
   SortButton = 'shared/Button/SortButton',
   SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',

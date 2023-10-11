@@ -213,7 +213,7 @@ const storageKey = 'exploreSyntheticTokens';
 
 @Component({
   components: {
-    SyntheticSwitcher: lazyComponent(Components.SyntheticSwitcher),
+    SyntheticSwitcher: components.SyntheticSwitcher,
     PriceChange: lazyComponent(Components.PriceChange),
     SortButton: lazyComponent(Components.SortButton),
     TokenAddress: components.TokenAddress,
