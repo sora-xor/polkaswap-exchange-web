@@ -1,11 +1,30 @@
 <template>
   <el-popover :visible-arrow="false" placement="top-start" popper-class="swap-distribution" trigger="click">
     <ol class="distribution">
-      <li v-for="(step, index) in paths" :key="index">
+      <li v-for="({ input, output, income, outcome, sources }, index) in swapPaths" :key="index">
+        <p>{{ income }} {{ input }} -> {{ outcome }} {{ output }}</p>
         <ul>
-          <li v-for="{ input, output, income, outcome, market } in step" :key="market">
-            <p>{{ market }}</p>
-            <p>{{ income }} {{ input }} -> {{ outcome }} {{ output }}</p>
+          <li v-for="{ source, income, outcome, fee } in sources" :key="source">
+            <table>
+              <tr>
+                <td colspan="3">{{ source }}</td>
+              </tr>
+              <tr>
+                <td>I:</td>
+                <td>{{ income }}</td>
+                <td>{{ input }}</td>
+              </tr>
+              <tr>
+                <td>O:</td>
+                <td>{{ outcome }}</td>
+                <td>{{ output }}</td>
+              </tr>
+              <tr>
+                <td>Fee:</td>
+                <td>{{ fee }}</td>
+                <td>XOR</td>
+              </tr>
+            </table>
           </li>
         </ul>
       </li>
@@ -17,6 +36,7 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/util';
 import { Component, Vue } from 'vue-property-decorator';
 
 import { getter, state } from '@/store/decorators';
@@ -24,13 +44,19 @@ import { getter, state } from '@/store/decorators';
 import type { Distribution } from '@sora-substrate/liquidity-proxy/build/types';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
-type Path = {
+type SwapSource = {
   source: string;
+  income: string;
+  outcome: string;
+  fee: string;
+};
+
+type SwapPath = {
   input: string;
   output: string;
   income: string;
   outcome: string;
-  fee: string;
+  sources: SwapSource[];
 };
 
 @Component
@@ -39,24 +65,33 @@ export default class SwapDistribution extends Vue {
 
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
-  get paths(): Path[][] {
+  get swapPaths(): SwapPath[] {
     return this.distribution.map((step) => {
-      return step.map((path) => {
-        const input = this.getAsset(path.input)?.symbol ?? '?';
-        const output = this.getAsset(path.output)?.symbol ?? '?';
-        const income = path.income.toLocaleString();
-        const outcome = path.outcome.toLocaleString();
-        const fee = path.fee.toLocaleString();
+      let stepIncome = FPNumber.ZERO;
+      let stepOutcome = FPNumber.ZERO;
+
+      const input = this.getAsset(step[0].input)?.symbol ?? '?';
+      const output = this.getAsset(step[0].output)?.symbol ?? '?';
+
+      const sources = step.map((path) => {
+        stepIncome = stepIncome.add(path.income);
+        stepOutcome = stepOutcome.add(path.outcome);
 
         return {
           source: path.market,
-          input,
-          output,
-          income,
-          outcome,
-          fee,
+          income: path.income.toLocaleString(),
+          outcome: path.outcome.toLocaleString(),
+          fee: path.fee.toLocaleString(),
         };
       });
+
+      return {
+        input,
+        output,
+        income: stepIncome.toLocaleString(),
+        outcome: stepOutcome.toLocaleString(),
+        sources,
+      };
     });
   }
 }
