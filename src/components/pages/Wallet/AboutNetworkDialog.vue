@@ -13,13 +13,12 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, Links } from '@/consts';
-import { lazyComponent } from '@/router';
+import { Links } from '@/consts';
 
 @Component({
   components: {
     DialogBase: components.DialogBase,
-    ExternalLink: lazyComponent(Components.ExternalLink),
+    ExternalLink: components.ExternalLink,
   },
 })
 export default class AboutNetworkDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {

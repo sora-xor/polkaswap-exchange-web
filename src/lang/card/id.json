@@ -69,6 +69,7 @@
         "reIssuanceFee": "€0 biaya layanan tahunan",
         "freeCardIssuance": "Penerbitan kartu gratis",
         "loginBtn": "Masuk atau mendaftar",
+        "applicationFee": "€ {0} biaya penerbitan",
         "telegramSupport": "Dukungan Telegram",
         "rejectionPriceAttemptDisclaimer": "Setiap upaya lainnya akan dikenakan biaya € {0}",
         "rejectCount": "Anda memiliki {count} upaya KYC gratis lagi",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "Informasi Akun"
         },
-        "attentionText": "Perhatian"
+        "attentionText": "Perhatian",
+        "or": "atau",
+        "oneTimeApplicationFee": "Biaya satu kali untuk menerbitkan kartu",
+        "applicationFeeNote": "Catatan: Penerbitan kartu berbayar akan tersedia pada tahap selanjutnya.",
+        "statusRejectReasonMultiple": "Permohonan Anda telah ditolak karena beberapa alasan:"
     }
 }

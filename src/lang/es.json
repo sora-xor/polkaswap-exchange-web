@@ -1181,8 +1181,8 @@
             "action": "Seleccionar servicios",
             "dialog": {
                 "title": "{Sora} Selección de servicio de red",
-                "fiat": "Valores fiduciarios",
-                "chartsAndActivity": "Gráficos y actividad"
+                "indexer": "indexador",
+                "useCeres": "Utilice {Ceres} para valores fiduciarios"
             }
         }
     },
@@ -1250,7 +1250,9 @@
             "enterName": "Ingrese su nombre",
             "present": "Ya presente",
             "saveChanges": "Guardar cambios"
-        }
+        },
+        "input": "Introduzca la dirección o seleccione el contacto",
+        "selectContact": "Seleccione un contacto"
     },
     "browserPermission": {
         "title": "Permitir el acceso a la cámara en la configuración del navegador",

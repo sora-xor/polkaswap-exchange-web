@@ -24,6 +24,7 @@ const TranslationConsts = {
   // extending consts
   ...WALLET_CONSTS.TranslationConsts,
   AppName: app.name,
+  Ceres: 'Ceres',
   APR: 'APR', // Annual percentage rate
   TVL: 'TVL',
   EVM: 'EVM',
