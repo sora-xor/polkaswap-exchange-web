@@ -196,7 +196,9 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
 .swap-route {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: $inner-spacing-mini;
+  width: 100%;
 
   &-value {
     font-weight: 600;

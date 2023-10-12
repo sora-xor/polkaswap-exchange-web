@@ -1,5 +1,5 @@
 <template>
-  <el-popover :visible-arrow="false" placement="top" popper-class="swap-distribution-popper" trigger="click">
+  <el-popover :visible-arrow="false" placement="right-end" popper-class="swap-distribution-popper" trigger="hover">
     <ul class="distribution">
       <li v-for="{ asset, amount, sources } in swapPaths" :key="asset.address" class="distribution-step">
         <div class="distribution-path">
@@ -134,7 +134,7 @@ export default class SwapDistribution extends Vue {
     &-line {
       display: flex;
       flex-grow: 1;
-      border: 1px dotted var(--s-color-base-content-primary);
+      border: 1px dashed var(--s-color-base-content-primary);
     }
   }
 
