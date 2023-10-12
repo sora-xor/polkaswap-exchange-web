@@ -2,7 +2,10 @@
   <el-popover :visible-arrow="false" placement="top" popper-class="swap-distribution-popper" trigger="click">
     <ul class="distribution">
       <li v-for="{ asset, amount, sources } in swapPaths" :key="asset.address" class="distribution-step">
-        <token-logo :token="asset" size="small" />
+        <div class="distribution-path">
+          <span v-if="sources.length" class="distribution-path-line"></span>
+          <token-logo :token="asset" size="small" />
+        </div>
         <div class="distribution-asset">
           <table v-if="sources.length" class="distribution-sources">
             <tr v-for="{ source, input, output, income, outcome } in sources" :key="source">
@@ -121,7 +124,18 @@ export default class SwapDistribution extends Vue {
     display: flex;
     flex-flow: row nowrap;
     gap: $inner-spacing-mini;
-    align-items: flex-end;
+  }
+
+  &-path {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+
+    &-line {
+      display: flex;
+      flex-grow: 1;
+      border: 1px dotted var(--s-color-base-content-primary);
+    }
   }
 
   &-asset {
