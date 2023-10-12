@@ -1181,8 +1181,8 @@
             "action": "Välj tjänster",
             "dialog": {
                 "title": "{Sora} Val av nätverkstjänst",
-                "fiat": "Fiat värden",
-                "chartsAndActivity": "Diagram och aktivitet"
+                "indexer": "Indexerare",
+                "useCeres": "Använd {Ceres} för fiat-värden"
             }
         }
     },
@@ -1250,7 +1250,9 @@
             "enterName": "Skriv namn",
             "present": "Redan närvarande",
             "saveChanges": "Spara ändringar"
-        }
+        },
+        "input": "Ange adress eller välj kontakt",
+        "selectContact": "Välj kontakt"
     },
     "browserPermission": {
         "title": "Tillåt kameraåtkomst i webbläsarinställningarna",

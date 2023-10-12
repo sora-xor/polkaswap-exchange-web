@@ -17,6 +17,12 @@
         <span class="text">{{ t(item.text) }}</span>
       </s-button>
     </div>
+    <div class="delimiter">{{ t('card.or') }}</div>
+    <div class="sora-card__application-fee-disclaimer">
+      <p>{{ applicationFeeText }}</p>
+      <p>{{ t('card.oneTimeApplicationFee') }}</p>
+      <p>{{ t('card.applicationFeeNote') }}</p>
+    </div>
     <x1-dialog :visible.sync="showX1Dialog" />
   </div>
 </template>
@@ -29,6 +35,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
+import { Fees } from '@/types/card';
 
 import type { FPNumber } from '@sora-substrate/math';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -49,9 +56,9 @@ type BuyButton = { type: BuyButtonType; text: string; button: 'primary' | 'secon
   },
 })
 export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @state.soraCard.euroBalance private euroBalance!: string;
   @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
   @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
+  @state.soraCard.fees fees!: Fees;
 
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
@@ -85,6 +92,14 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
     return this.loading || !this.wasEuroBalanceLoaded;
   }
 
+  get applicationFee(): Nullable<string> {
+    return this.fees.application;
+  }
+
+  get applicationFeeText(): string {
+    return this.t('card.applicationFee', { 0: this.applicationFee });
+  }
+
   private openX1(): void {
     this.showX1Dialog = true;
   }
@@ -108,7 +123,7 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
 }
 </script>
 
-<style lang="scss" scope>
+<style lang="scss">
 .sora-card {
   &__threshold {
     display: flex;
@@ -128,6 +143,27 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
       margin-bottom: $inner-spacing-big;
     }
   }
+  &__application-fee-disclaimer {
+    background-color: var(--s-color-base-border-primary);
+    padding: 16px;
+    margin-top: var(--s-basic-spacing);
+    border-radius: calc(var(--s-border-radius-mini) / 2);
+    width: 100%;
+
+    p:nth-child(1) {
+      font-size: var(--s-font-size-big);
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+    p:nth-child(2) {
+      font-size: var(--s-font-size-small);
+      margin-bottom: 4px;
+    }
+    p:nth-child(3) {
+      font-size: var(--s-font-size-small);
+      color: #efac47;
+    }
+  }
   &__btn {
     width: 100%;
     &--buy {
@@ -135,6 +171,24 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
       .text {
         font-size: var(--s-heading4-font-size);
       }
+    }
+  }
+
+  &-payment {
+    .delimiter {
+      display: flex;
+      flex-direction: row;
+      color: var(--s-color-base-content-secondary);
+      text-transform: uppercase;
+      margin-top: $basic-spacing;
+      margin-bottom: $basic-spacing;
+    }
+    .delimiter::before,
+    .delimiter::after {
+      content: '';
+      flex: 1 1;
+      border-bottom: 2px solid var(--s-color-base-border-primary);
+      margin: auto;
     }
   }
 }

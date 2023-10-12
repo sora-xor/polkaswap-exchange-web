@@ -69,6 +69,7 @@
         "reIssuanceFee": "€0 årlig serviceavgift",
         "freeCardIssuance": "Gratis utstedelse av kort",
         "loginBtn": "Logg inn eller registrer deg",
+        "applicationFee": "€ {0} utstedelsesgebyr",
         "telegramSupport": "Telegramstøtte",
         "rejectionPriceAttemptDisclaimer": "Hvert andre forsøk vil koste deg € {0}",
         "rejectCount": "Du har {count} mer gratis KYC-forsøk|Du har {count} flere gratis KYC-forsøk",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "Kontoinformasjon"
         },
-        "attentionText": "Merk følgende"
+        "attentionText": "Merk følgende",
+        "or": "eller",
+        "oneTimeApplicationFee": "Engangsavgift for å utstede et kort",
+        "applicationFeeNote": "Merk: utstedelse av betalingskort vil være tilgjengelig på et senere tidspunkt.",
+        "statusRejectReasonMultiple": "Søknaden din har blitt avvist av flere årsaker:"
     }
 }

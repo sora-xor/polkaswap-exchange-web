@@ -75,6 +75,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
   @getter.soraCard.isEuroBalanceEnough private isEuroBalanceEnough!: boolean;
 
   @mutation.soraCard.setWillToPassKycAgain private setWillToPassKycAgain!: (boolean) => void;
+  @mutation.soraCard.setReferenceNumber setReferenceNumber!: (refNumber: Nullable<string>) => void;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.getUserIban private getUserIban!: AsyncFnWithoutArgs;
@@ -233,6 +234,7 @@ export default class Phone extends Mixins(TranslationMixin, mixins.LoadingMixin,
         // 1. User does not have email attached.
         // 2. User does not have KYC passed bound to the entered phone number.
 
+        this.setReferenceNumber(null);
         this.sendOtpBtnLoading = false;
         this.$emit('confirm', CardUIViews.Email);
         this.sendOtpBtnLoading = false;

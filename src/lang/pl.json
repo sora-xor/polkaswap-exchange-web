@@ -1181,8 +1181,8 @@
             "action": "Wybierz usługi",
             "dialog": {
                 "title": "{Sora} Wybór usługi sieciowej",
-                "fiat": "wartości Fiata",
-                "chartsAndActivity": "Wykresy i aktywność"
+                "indexer": "Indeksator",
+                "useCeres": "Użyj {Ceres} dla wartości fiat"
             }
         }
     },
@@ -1250,7 +1250,9 @@
             "enterName": "Wprowadź imię",
             "present": "Już obecny",
             "saveChanges": "Zapisz zmiany"
-        }
+        },
+        "input": "Wprowadź adres lub wybierz kontakt",
+        "selectContact": "Wybierz kontakt"
     },
     "browserPermission": {
         "title": "Zezwól na dostęp do aparatu w ustawieniach przeglądarki",

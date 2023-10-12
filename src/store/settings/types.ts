@@ -34,6 +34,7 @@ export type SettingsState = {
   chainGenesisHash: string;
   faucetUrl: string;
   selectNodeDialogVisibility: boolean;
+  selectIndexerDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
   disclaimerVisibility: boolean;
   alertSettingsVisibility: boolean;

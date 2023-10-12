@@ -1181,8 +1181,8 @@
             "action": "Velg tjenester",
             "dialog": {
                 "title": "{Sora} Valg av nettverkstjeneste",
-                "fiat": "Fiat-verdier",
-                "chartsAndActivity": "Diagrammer og aktivitet"
+                "indexer": "Indekser",
+                "useCeres": "Bruk {Ceres} for fiat-verdier"
             }
         }
     },
@@ -1250,7 +1250,9 @@
             "enterName": "Skriv inn navn",
             "present": "Allerede til stede",
             "saveChanges": "Lagre endringer"
-        }
+        },
+        "input": "Skriv inn adresse eller velg kontakt",
+        "selectContact": "Velg kontakt"
     },
     "browserPermission": {
         "title": "Tillat kameratilgang i nettleserinnstillingene",

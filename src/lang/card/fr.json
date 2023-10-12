@@ -69,6 +69,7 @@
         "reIssuanceFee": "Frais de service annuels de 0€",
         "freeCardIssuance": "Émission de carte gratuite",
         "loginBtn": "S'identifier ou s'inscrire",
+        "applicationFee": "Frais d'émission de {0}€",
         "telegramSupport": "Support Telegram",
         "rejectionPriceAttemptDisclaimer": "Toute autre tentative coûtera {0}€",
         "rejectCount": "Vous avez {count} autre tentative de KYC gratuite|Vous avez {count} autres tentatives de KYC gratuites",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "Information sur le compte"
         },
-        "attentionText": "Attention"
+        "attentionText": "Attention",
+        "or": "ou",
+        "oneTimeApplicationFee": "Frais uniques pour émettre une carte",
+        "applicationFeeNote": "Remarque : l'émission de cartes payantes sera disponible ultérieurement.",
+        "statusRejectReasonMultiple": "Votre candidature a été rejetée pour plusieurs raisons :"
     }
 }

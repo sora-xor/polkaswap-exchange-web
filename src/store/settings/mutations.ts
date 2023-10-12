@@ -66,6 +66,9 @@ const mutations = defineMutations<SettingsState>()({
   setSelectNodeDialogVisibility(state, value: boolean): void {
     state.selectNodeDialogVisibility = value;
   },
+  setSelectIndexerDialogVisibility(state, value: boolean): void {
+    state.selectIndexerDialogVisibility = value;
+  },
   setSelectLanguageDialogVisibility(state, value: boolean): void {
     state.selectLanguageDialogVisibility = value;
   },

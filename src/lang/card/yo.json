@@ -69,6 +69,7 @@
         "reIssuanceFee": "€0 lododun iṣẹ ọya",
         "freeCardIssuance": "Ifunni kaadi ọfẹ",
         "loginBtn": "Wọle tabi forukọsilẹ",
+        "applicationFee": "€ {0} ọya ipinfunni",
         "telegramSupport": "Telegram support",
         "rejectionPriceAttemptDisclaimer": "Gbogbo igbiyanju miiran yoo jẹ fun ọ € {0}",
         "rejectCount": "O ni {count} isẹ-ṣiṣe KYC ti o ko ni naa",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "Alaye Account"
         },
-        "attentionText": "Ifarabalẹ"
+        "attentionText": "Ifarabalẹ",
+        "or": "tabi",
+        "oneTimeApplicationFee": "Owo-akoko kan lati fun kaadi kan",
+        "applicationFeeNote": "Akiyesi: ipinfunni kaadi sisan yoo wa ni ipele nigbamii.",
+        "statusRejectReasonMultiple": "Ohun elo rẹ ti kọ fun awọn idi pupọ:"
     }
 }
