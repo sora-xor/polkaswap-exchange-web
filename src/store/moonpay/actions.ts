@@ -58,7 +58,7 @@ const actions = defineActions({
     try {
       const confirmations = 1;
       const timeout = 0;
-      const ethersInstance = await ethersUtil.getEthersInstance();
+      const ethersInstance = ethersUtil.getEthersInstance();
 
       console.info(`Moonpay: found latest moonpay transaction.\nChecking ethereum transaction by hash:\n${hash}`);
 

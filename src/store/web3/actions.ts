@@ -53,14 +53,20 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
 
 const actions = defineActions({
   async selectEvmProvider(context: ActionContext<any, any>, provider = Provider.Metamask): Promise<void> {
-    const { commit } = web3ActionContext(context);
-    const address = await ethersUtil.onConnect(provider);
-    const evmNetwork = await ethersUtil.getEvmNetworkId();
+    const { commit, state } = web3ActionContext(context);
+    const address = await ethersUtil.connectEthereumProvider(provider, {
+      chains: [state.ethBridgeEvmNetwork],
+      optionalChains: [...state.evmNetworkApps],
+    });
+    // if we have address - we are connected
+    if (address) {
+      const evmNetwork = await ethersUtil.getEvmNetworkId();
 
-    commit.setEvmAddress(address);
-    commit.setProvidedEvmNetwork(evmNetwork);
+      commit.setEvmAddress(address);
+      commit.setProvidedEvmNetwork(evmNetwork);
 
-    await subscribeOnEvm(context);
+      await subscribeOnEvm(context);
+    }
   },
 
   async disconnectExternalNetwork(context): Promise<void> {

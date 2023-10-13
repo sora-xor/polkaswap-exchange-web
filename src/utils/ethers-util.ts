@@ -3,18 +3,17 @@ import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
-import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts';
 import { EthereumProvider } from '@walletconnect/ethereum-provider';
 import { ethers } from 'ethers';
 
 import { ZeroStringValue } from '@/consts';
 import { SmartContracts, SmartContractType } from '@/consts/evm';
-import store from '@/store';
 import type { NetworkData } from '@/types/bridge';
 import { settingsStorage } from '@/utils/storage';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { ChainsProps } from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
 
 type ethersProvider = ethers.BrowserProvider;
 
@@ -22,8 +21,8 @@ let ethereumProvider: any = null;
 let ethersInstance: ethersProvider | null = null;
 
 export enum Provider {
-  Metamask,
-  WalletConnect,
+  Metamask = 'Metamask',
+  WalletConnect = 'WalletConnect',
 }
 
 // TODO [EVM]
@@ -63,69 +62,65 @@ const getEthBridgeGasLimit = (assetEvmAddress: string, kind: EthAssetKind, isSor
   }
 };
 
-async function onConnect(provider: Provider): Promise<string> {
+async function connectEthereumProvider(provider: Provider, chains: ChainsProps): Promise<string> {
   if (provider === Provider.Metamask) {
-    await useMetamaskProvider();
+    ethereumProvider = await detectEthereumProvider({ timeout: 0 });
+
+    if (!ethereumProvider) {
+      throw new Error('provider.messages.installExtension');
+    }
   } else {
-    await useWalletConnectProvider();
+    await useWalletConnectProvider(chains);
   }
 
-  return getAccount();
-}
+  if (ethereumProvider) {
+    // 'any' - because ethers throws errors after network switch
+    ethersInstance = new ethers.BrowserProvider(ethereumProvider, 'any');
 
-async function useMetamaskProvider(): Promise<void> {
-  ethereumProvider = await detectEthereumProvider({ timeout: 0 });
-
-  if (!ethereumProvider) {
-    throw new Error('provider.messages.installExtension');
+    return getAccount();
+  } else {
+    return '';
   }
-
-  createEthersInstance(ethereumProvider);
 }
 
-async function useWalletConnectProvider(): Promise<void> {
-  const chainId = store.state.web3.ethBridgeEvmNetwork;
-  const optionalChains = Object.values(EvmNetworkId).map((id) => Number(id));
-  // .filter((id) => id !== chainId);
-
-  ethereumProvider = await EthereumProvider.init({
-    projectId: 'feeab08b50e0d407f4eb875d69e162e8',
-    chains: [1],
-    optionalChains,
-    showQrModal: true,
-  });
-
-  await ethereumProvider.enable(); // deprecated??
-
-  createEthersInstance(ethereumProvider);
+async function useWalletConnectProvider(chains: ChainsProps): Promise<void> {
+  try {
+    ethereumProvider = await EthereumProvider.init({
+      projectId: 'feeab08b50e0d407f4eb875d69e162e8', // [TODO]
+      showQrModal: true,
+      ...chains,
+    });
+    // show qr modal
+    await ethereumProvider.enable();
+  } catch (error: any) {
+    ethereumProvider = null;
+    // user cancelled qr modal
+    if (error.message === 'Connection request reset. Please try again.') {
+      return;
+    }
+    throw error;
+  }
 }
 
-function createEthersInstance(ethereumProvider: any): ethersProvider {
-  // 'any' - because ethers throws errors after network switch
-  ethersInstance = new ethers.BrowserProvider(ethereumProvider, 'any');
-
-  return ethersInstance;
-}
-
-async function getEthersInstance(): Promise<ethersProvider> {
+function getEthersInstance(): ethersProvider {
   if (!ethereumProvider) {
     throw new Error('No ethereum provider instance!');
   }
   if (!ethersInstance) {
-    ethersInstance = createEthersInstance(ethereumProvider);
+    throw new Error('No ethers instance!');
   }
   return ethersInstance;
 }
 
 async function getSigner(): Promise<ethers.JsonRpcSigner> {
-  const ethersInstance = await getEthersInstance();
+  const ethersInstance = getEthersInstance();
   const signer = await ethersInstance.getSigner();
 
   return signer;
 }
 
 async function getAccount(): Promise<string> {
-  const ethersInstance = await getEthersInstance();
+  const ethersInstance = getEthersInstance();
   await ethersInstance.send('eth_requestAccounts', []);
   const signer = await getSigner();
   return signer.getAddress();
@@ -144,7 +139,7 @@ async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> 
  */
 async function getAccountBalance(accountAddress: string): Promise<CodecString> {
   try {
-    const ethersInstance = await getEthersInstance();
+    const ethersInstance = getEthersInstance();
     const wei = await ethersInstance.getBalance(accountAddress);
 
     return wei.toString();
@@ -298,7 +293,7 @@ async function switchOrAddChain(network: NetworkData, chainName?: string): Promi
 }
 
 async function getEvmNetworkId(): Promise<number> {
-  const ethersInstance = await getEthersInstance();
+  const ethersInstance = getEthersInstance();
   const network = await ethersInstance.getNetwork();
 
   return Number(network.chainId);
@@ -313,7 +308,7 @@ async function getEvmNetworkFee(
   isSoraToEvm: boolean
 ): Promise<CodecString> {
   try {
-    const ethersInstance = await getEthersInstance();
+    const ethersInstance = getEthersInstance();
     const { maxFeePerGas } = await ethersInstance.getFeeData();
     const gasPrice = maxFeePerGas ?? BigInt(0);
     const gasLimit = BigInt(getEthBridgeGasLimit(assetEvmAddress, assetKind as EthAssetKind, isSoraToEvm));
@@ -331,14 +326,14 @@ function calcEvmFee(gasPrice: bigint, gasAmount: bigint) {
 }
 
 async function getEvmTransaction(hash: string): Promise<ethers.TransactionResponse | null> {
-  const ethersInstance = await getEthersInstance();
+  const ethersInstance = getEthersInstance();
   const tx = await ethersInstance.getTransaction(hash);
 
   return tx;
 }
 
 async function getEvmTransactionReceipt(hash: string): Promise<ethers.TransactionReceipt | null> {
-  const ethersInstance = await getEthersInstance();
+  const ethersInstance = getEthersInstance();
   const tx = await ethersInstance.getTransactionReceipt(hash);
 
   return tx;
@@ -346,7 +341,7 @@ async function getEvmTransactionReceipt(hash: string): Promise<ethers.Transactio
 
 async function getBlock(number: number): Promise<ethers.Block | null> {
   try {
-    const ethersInstance = await getEthersInstance();
+    const ethersInstance = getEthersInstance();
     const block = await ethersInstance.getBlock(Number(number));
 
     return block;
@@ -357,7 +352,7 @@ async function getBlock(number: number): Promise<ethers.Block | null> {
 
 async function getBlockNumber(): Promise<number> {
   try {
-    const ethersInstance = await getEthersInstance();
+    const ethersInstance = getEthersInstance();
     const blockNumber = await ethersInstance.getBlockNumber();
 
     return blockNumber;
@@ -415,7 +410,7 @@ function storeSelectedBridgeType(bridgeType: BridgeNetworkType) {
 }
 
 export default {
-  onConnect,
+  connectEthereumProvider,
   getSigner,
   getAccount,
   getAccountBalance,

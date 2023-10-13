@@ -162,7 +162,7 @@ export class EthBridgeHistory {
   }
 
   public async init(contracts: EthBridgeContractsAddresses): Promise<void> {
-    const ethersInstance = await ethersUtil.getEthersInstance();
+    const ethersInstance = ethersUtil.getEthersInstance();
     const network = await ethersInstance.getNetwork();
 
     this.etherscanInstance = new EtherscanHistoryProvider(network, this.etherscanApiKey);

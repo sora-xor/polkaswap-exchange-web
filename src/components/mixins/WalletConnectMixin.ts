@@ -5,7 +5,7 @@ import { PageNames } from '@/consts';
 import router from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getWalletAddress, formatAddress } from '@/utils';
-import ethersUtil, { Provider } from '@/utils/ethers-util';
+import { Provider } from '@/utils/ethers-util';
 
 import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
@@ -79,7 +79,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   async connectEvmWallet(): Promise<void> {
     this.isExternalWalletConnecting = true;
     // For now it's only Metamask
-    const provider = Provider.Metamask;
+    const provider = Provider.WalletConnect;
     try {
       await this.selectEvmProvider(provider);
     } catch (error: any) {
