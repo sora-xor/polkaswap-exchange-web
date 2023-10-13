@@ -3,11 +3,13 @@ import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
-import WalletConnectProvider from '@walletconnect/web3-provider';
+import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts';
+import { EthereumProvider } from '@walletconnect/ethereum-provider';
 import { ethers } from 'ethers';
 
 import { ZeroStringValue } from '@/consts';
 import { SmartContracts, SmartContractType } from '@/consts/evm';
+import store from '@/store';
 import type { NetworkData } from '@/types/bridge';
 import { settingsStorage } from '@/utils/storage';
 
@@ -16,17 +18,12 @@ import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/typ
 
 type ethersProvider = ethers.BrowserProvider;
 
-let provider: any = null;
+let ethereumProvider: any = null;
 let ethersInstance: ethersProvider | null = null;
 
 export enum Provider {
   Metamask,
   WalletConnect,
-}
-
-interface ConnectOptions {
-  provider: Provider;
-  url?: string;
 }
 
 // TODO [EVM]
@@ -66,28 +63,58 @@ const getEthBridgeGasLimit = (assetEvmAddress: string, kind: EthAssetKind, isSor
   }
 };
 
-async function onConnect(options: ConnectOptions): Promise<string> {
-  if (options.provider === Provider.Metamask) {
-    return onConnectMetamask();
+async function onConnect(provider: Provider): Promise<string> {
+  if (provider === Provider.Metamask) {
+    await useMetamaskProvider();
   } else {
-    return onConnectWallet(options.url);
+    await useWalletConnectProvider();
   }
+
+  return getAccount();
 }
 
-async function onConnectMetamask(): Promise<string> {
-  provider = (await detectEthereumProvider({ timeout: 0 })) as any;
-  if (!provider) {
+async function useMetamaskProvider(): Promise<void> {
+  ethereumProvider = await detectEthereumProvider({ timeout: 0 });
+
+  if (!ethereumProvider) {
     throw new Error('provider.messages.installExtension');
   }
-  return getAccount();
+
+  createEthersInstance(ethereumProvider);
 }
 
-async function onConnectWallet(url = 'https://cloudflare-eth.com'): Promise<string> {
-  provider = new WalletConnectProvider({
-    rpc: { 1: url },
+async function useWalletConnectProvider(): Promise<void> {
+  const chainId = store.state.web3.ethBridgeEvmNetwork;
+  const optionalChains = Object.values(EvmNetworkId).map((id) => Number(id));
+  // .filter((id) => id !== chainId);
+
+  ethereumProvider = await EthereumProvider.init({
+    projectId: 'feeab08b50e0d407f4eb875d69e162e8',
+    chains: [1],
+    optionalChains,
+    showQrModal: true,
   });
-  await provider.enable();
-  return getAccount();
+
+  await ethereumProvider.enable(); // deprecated??
+
+  createEthersInstance(ethereumProvider);
+}
+
+function createEthersInstance(ethereumProvider: any): ethersProvider {
+  // 'any' - because ethers throws errors after network switch
+  ethersInstance = new ethers.BrowserProvider(ethereumProvider, 'any');
+
+  return ethersInstance;
+}
+
+async function getEthersInstance(): Promise<ethersProvider> {
+  if (!ethereumProvider) {
+    throw new Error('No ethereum provider instance!');
+  }
+  if (!ethersInstance) {
+    ethersInstance = createEthersInstance(ethereumProvider);
+  }
+  return ethersInstance;
 }
 
 async function getSigner(): Promise<ethers.JsonRpcSigner> {
@@ -189,49 +216,29 @@ function addressesAreEqual(a: string, b: string): boolean {
   return !!a && !!b && a.toLowerCase() === b.toLowerCase();
 }
 
-async function getEthersInstance(): Promise<ethersProvider> {
-  if (!provider) {
-    provider = (await detectEthereumProvider({ timeout: 0 })) as any;
-  }
-  if (!provider) {
-    throw new Error('No ethereum provider instance!');
-  }
-  if (!ethersInstance) {
-    // 'any' - because ethers throws errors after network switch
-    ethersInstance = new ethers.BrowserProvider(provider, 'any');
-  }
-  return ethersInstance;
-}
-
 async function watchEthereum(cb: {
   onAccountChange: (addressList: string[]) => void;
   onNetworkChange: (networkId: string) => void;
   onDisconnect: FnWithoutArgs;
 }): Promise<FnWithoutArgs> {
-  await getEthersInstance();
-
-  const ethereum = (window as any).ethereum;
-
-  if (ethereum) {
-    ethereum.on('accountsChanged', cb.onAccountChange);
-    ethereum.on('chainChanged', cb.onNetworkChange);
-    ethereum.on('disconnect', cb.onDisconnect);
+  if (ethereumProvider) {
+    ethereumProvider.on('accountsChanged', cb.onAccountChange);
+    ethereumProvider.on('chainChanged', cb.onNetworkChange);
+    ethereumProvider.on('disconnect', cb.onDisconnect);
   }
 
   return function disconnect() {
-    if (ethereum) {
-      ethereum.removeListener('accountsChanged', cb.onAccountChange);
-      ethereum.removeListener('chainChanged', cb.onNetworkChange);
-      ethereum.removeListener('disconnect', cb.onDisconnect);
+    if (ethereumProvider) {
+      ethereumProvider.removeListener('accountsChanged', cb.onAccountChange);
+      ethereumProvider.removeListener('chainChanged', cb.onNetworkChange);
+      ethereumProvider.removeListener('disconnect', cb.onDisconnect);
     }
   };
 }
 
 async function addToken(address: string, symbol: string, decimals: number, image?: string): Promise<void> {
-  const ethereum = (window as any).ethereum;
-
   try {
-    await ethereum.request({
+    await ethereumProvider.request({
       method: 'wallet_watchAsset',
       params: {
         type: 'ERC20', // Initially only supports ERC20, but eventually more!
@@ -254,11 +261,10 @@ async function addToken(address: string, symbol: string, decimals: number, image
  * @param chainName translated chain name
  */
 async function switchOrAddChain(network: NetworkData, chainName?: string): Promise<void> {
-  const ethereum = (window as any).ethereum;
   const chainId = ethers.toQuantity(network.id);
 
   try {
-    await ethereum.request({
+    await ethereumProvider.request({
       method: 'wallet_switchEthereumChain',
       params: [
         {
@@ -272,7 +278,7 @@ async function switchOrAddChain(network: NetworkData, chainName?: string): Promi
     // "Unrecognized chain ID. Try adding the chain using wallet_addEthereumChain first."
     if (switchError.code === 4902) {
       try {
-        await ethereum.request({
+        await ethereumProvider.request({
           method: 'wallet_addEthereumChain',
           params: [
             {
@@ -339,10 +345,25 @@ async function getEvmTransactionReceipt(hash: string): Promise<ethers.Transactio
 }
 
 async function getBlock(number: number): Promise<ethers.Block | null> {
-  const ethersInstance = await getEthersInstance();
-  const block = await ethersInstance.getBlock(Number(number));
+  try {
+    const ethersInstance = await getEthersInstance();
+    const block = await ethersInstance.getBlock(Number(number));
 
-  return block;
+    return block;
+  } catch {
+    return null;
+  }
+}
+
+async function getBlockNumber(): Promise<number> {
+  try {
+    const ethersInstance = await getEthersInstance();
+    const blockNumber = await ethersInstance.getBlockNumber();
+
+    return blockNumber;
+  } catch {
+    return 0;
+  }
 }
 
 async function accountAddressToHex(address: string): Promise<string> {
@@ -414,6 +435,7 @@ export default {
   getEvmTransaction,
   getEvmTransactionReceipt,
   getBlock,
+  getBlockNumber,
   addToken,
   switchOrAddChain,
   isNativeEvmTokenAddress,

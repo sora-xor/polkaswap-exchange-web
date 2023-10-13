@@ -7,7 +7,7 @@ import { ethers } from 'ethers';
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
 import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
-import ethersUtil from '@/utils/ethers-util';
+import ethersUtil, { Provider } from '@/utils/ethers-util';
 
 import type { SubNetworkApps } from './types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
@@ -26,15 +26,49 @@ async function connectSubNetwork(context: ActionContext<any, any>): Promise<void
   if (ss58) commit.setSubSS58(ss58);
 }
 
+async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
+  const { commit } = web3ActionContext(context);
+
+  commit.resetEvmProviderSubscription();
+
+  const subscription = await ethersUtil.watchEthereum({
+    onAccountChange: (addressList: string[]) => {
+      if (addressList.length) {
+        commit.setEvmAddress(addressList[0]);
+      } else {
+        commit.resetEvmAddress();
+      }
+    },
+    onNetworkChange: async (networkHex: string) => {
+      const evmNetwork = ethersUtil.hexToNumber(networkHex);
+      commit.setProvidedEvmNetwork(evmNetwork);
+    },
+    onDisconnect: () => {
+      commit.resetProvidedEvmNetwork();
+    },
+  });
+
+  commit.setEvmProviderSubscription(subscription);
+}
+
 const actions = defineActions({
-  async updateProvidedEvmNetwork(context, networkHex?: string): Promise<void> {
+  async selectEvmProvider(context: ActionContext<any, any>, provider = Provider.Metamask): Promise<void> {
     const { commit } = web3ActionContext(context);
-    const evmNetwork = networkHex ? ethersUtil.hexToNumber(networkHex) : await ethersUtil.getEvmNetworkId();
+    const address = await ethersUtil.onConnect(provider);
+    const evmNetwork = await ethersUtil.getEvmNetworkId();
+
+    commit.setEvmAddress(address);
     commit.setProvidedEvmNetwork(evmNetwork);
+
+    await subscribeOnEvm(context);
   },
 
   async disconnectExternalNetwork(context): Promise<void> {
+    const { commit } = web3ActionContext(context);
+    // SUB
     await subBridgeConnector.stop();
+    // EVM, ETH
+    commit.resetEvmProviderSubscription();
   },
 
   async selectExternalNetwork(context, { id, type }: { id: BridgeNetworkId; type: BridgeNetworkType }): Promise<void> {

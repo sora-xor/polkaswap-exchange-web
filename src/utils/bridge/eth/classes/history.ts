@@ -416,7 +416,7 @@ export const updateEthBridgeHistory =
 
       if ((await ethersUtil.getEvmNetworkId()) !== ethBridgeEvmNetwork) {
         throw new Error(
-          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.evmNetworkProvided}" is connected, "${ethBridgeEvmNetwork}" expected`
+          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.evmProviderNetwork}" is connected, "${ethBridgeEvmNetwork}" expected`
         );
       }
 

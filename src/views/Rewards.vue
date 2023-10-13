@@ -51,12 +51,7 @@
                     <span>{{ formatAddress(evmAddress, 8) }}</span>
                     <span>{{ t('rewards.connected') }}</span>
                   </div>
-                  <s-button
-                    v-else
-                    class="rewards-connect-button"
-                    type="tertiary"
-                    @click="connectExternalAccountProcess"
-                  >
+                  <s-button v-else class="rewards-connect-button" type="tertiary" @click="connectEvmWallet">
                     {{ t('rewards.action.connectExternalWallet') }}
                   </s-button>
                   <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
@@ -99,7 +94,7 @@ import { CodecString, FPNumber } from '@sora-substrate/util';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { RewardType } from '@sora-substrate/util/build/rewards/consts';
 import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
@@ -167,27 +162,14 @@ export default class Rewards extends Mixins(
   @action.rewards.subscribeOnRewards private subscribeOnRewards!: AsyncFnWithoutArgs;
   @action.rewards.unsubscribeFromRewards private unsubscribeFromRewards!: AsyncFnWithoutArgs;
 
-  private unwatchEthereum!: FnWithoutArgs;
-
-  destroyed(): void {
-    this.reset();
+  @Watch('evmAddress')
+  private checkRewardsAfterAccountChange(): void {
+    this.checkExternalRewards();
   }
 
   async created(): Promise<void> {
     this.setStartSubscriptions([this.subscribeOnRewards]);
     this.setResetSubscriptions([this.unsubscribeFromRewards]);
-
-    this.unwatchEthereum = await ethersUtil.watchEthereum({
-      onAccountChange: (addressList: string[]) => {
-        if (addressList.length) {
-          this.changeExternalAccountProcess(addressList[0]);
-        } else {
-          this.disconnectExternalAccountProcess();
-        }
-      },
-      onNetworkChange: () => {},
-      onDisconnect: () => {},
-    });
   }
 
   mounted(): void {
@@ -197,9 +179,11 @@ export default class Rewards extends Mixins(
   }
 
   beforeDestroy(): void {
-    if (typeof this.unwatchEthereum === 'function') {
-      this.unwatchEthereum();
-    }
+    this.disconnectExternalNetwork();
+  }
+
+  destroyed(): void {
+    this.reset();
   }
 
   get transactionStepsCount(): number {
@@ -410,21 +394,6 @@ export default class Rewards extends Mixins(
     if (!this.rewardsAvailable && showNotification) {
       this.showAppNotification(this.t('rewards.notification.empty'));
     }
-  }
-
-  async connectExternalAccountProcess(): Promise<void> {
-    await this.connectEvmWallet();
-    await this.checkExternalRewards();
-  }
-
-  private async disconnectExternalAccountProcess(): Promise<void> {
-    this.resetEvmAddress();
-    await this.checkExternalRewards();
-  }
-
-  private async changeExternalAccountProcess(address: string): Promise<void> {
-    await this.setEvmAddress(address);
-    await this.checkExternalRewards();
   }
 
   private async claimRewardsProcess(): Promise<void> {

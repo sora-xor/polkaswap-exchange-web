@@ -311,7 +311,7 @@ async function updateExternalBlockNumber(context: ActionContext<any, any>): Prom
   try {
     const blockNumber = getters.isSubBridge
       ? await subBridgeConnector.networkAdapter.getBlockNumber()
-      : await (await ethersUtil.getEthersInstance()).getBlockNumber();
+      : await ethersUtil.getBlockNumber();
 
     commit.setExternalBlockNumber(blockNumber);
   } catch (error) {

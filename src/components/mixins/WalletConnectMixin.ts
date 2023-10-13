@@ -60,7 +60,8 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
 
   @action.web3.changeEvmNetworkProvided changeEvmNetworkProvided!: AsyncFnWithoutArgs;
-  @action.web3.updateProvidedEvmNetwork updateProvidedEvmNetwork!: (networkHex?: string) => Promise<void>;
+  @action.web3.selectEvmProvider selectEvmProvider!: (provider: Provider) => Promise<void>;
+  @action.web3.disconnectExternalNetwork disconnectExternalNetwork!: AsyncFnWithoutArgs;
 
   getWalletAddress = getWalletAddress;
   formatAddress = formatAddress;
@@ -80,8 +81,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     // For now it's only Metamask
     const provider = Provider.Metamask;
     try {
-      const address = await ethersUtil.onConnect({ provider });
-      this.setEvmAddress(address);
+      await this.selectEvmProvider(provider);
     } catch (error: any) {
       const name = this.t(getProviderName(provider));
       const key = this.te(error.message) ? error.message : handleProviderError(provider, error);

@@ -112,8 +112,6 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   @action.moonpay.getTransactions private getTransactions!: AsyncFnWithoutArgs;
   @action.moonpay.getCurrencies private getCurrencies!: AsyncFnWithoutArgs;
 
-  private unwatchEthereum!: FnWithoutArgs;
-
   pageAmount = 5; // override PaginationSearchMixin
   currentView = HistoryView;
   selectedItem: any = {};
@@ -121,33 +119,9 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   created(): void {
     this.withApi(async () => {
       this.initMoonpayApi(); // MoonpayBridgeInitMixin
-
       await this.prepareEvmNetwork();
-
       await Promise.all([this.getTransactions(), this.getCurrencies()]);
-
-      this.unwatchEthereum = await ethersUtil.watchEthereum({
-        onAccountChange: (addressList: string[]) => {
-          if (addressList.length) {
-            this.setEvmAddress(addressList[0]);
-          } else {
-            this.resetEvmAddress();
-          }
-        },
-        onNetworkChange: (networkHex: string) => {
-          this.updateProvidedEvmNetwork(networkHex);
-        },
-        onDisconnect: () => {
-          this.resetProvidedEvmNetwork();
-        },
-      });
     });
-  }
-
-  beforeDestroy(): void {
-    if (typeof this.unwatchEthereum === 'function') {
-      this.unwatchEthereum();
-    }
   }
 
   get currenciesById(): MoonpayCurrenciesById {

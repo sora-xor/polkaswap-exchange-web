@@ -119,6 +119,7 @@
               class="el-button--connect s-typography-button--large"
               data-test-name="connectPolkadot"
               type="primary"
+              :loading="!isSoraToEvm && isExternalWalletConnecting"
               @click="connectSenderWallet"
             >
               {{ t('connectWalletText') }}
@@ -200,8 +201,9 @@
             <s-button
               v-else
               class="el-button--connect s-typography-button--large"
-              data-test-name="connectMetamask"
+              data-test-name="useMetamaskProvider"
               type="primary"
+              :loading="isSoraToEvm && isExternalWalletConnecting"
               @click="connectRecipientWallet"
             >
               {{ t('connectWalletText') }}
@@ -210,7 +212,7 @@
         </s-float-input>
 
         <s-button
-          v-if="!isValidNetwork"
+          v-if="!isValidNetwork && areAccountsConnected"
           class="el-button--next s-typography-button--big"
           type="primary"
           @click="changeEvmNetworkProvided"

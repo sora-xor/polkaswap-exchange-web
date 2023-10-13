@@ -108,10 +108,6 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
   }
 
   async openMoonpayDialog(): Promise<void> {
-    if (!this.isSoraAccountConnected) {
-      return this.connectSoraWallet();
-    }
-
     if (!this.moonpayEnabled) {
       return this.showErrorMessage();
     }
@@ -120,8 +116,15 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
       return this.connectSoraWallet();
     }
 
-    await this.connectEvmWallet();
+    if (!this.evmAddress) {
+      await this.connectEvmWallet();
+    }
+
     this.setMoonpayVisibility(true);
+  }
+
+  beforeDestroy(): void {
+    this.disconnectExternalNetwork();
   }
 }
 </script>

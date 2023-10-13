@@ -36,11 +36,18 @@ const mutations = defineMutations<Web3State>()({
     state.supportedApps = supportedApps;
   },
   // by provider
-  setProvidedEvmNetwork(state, networkId: BridgeNetworkId): void {
-    state.evmNetworkProvided = networkId;
+  setProvidedEvmNetwork(state, networkId: BridgeNetworkId | null): void {
+    state.evmProviderNetwork = networkId;
   },
   resetProvidedEvmNetwork(state): void {
-    state.evmNetworkProvided = null;
+    state.evmProviderNetwork = null;
+  },
+  setEvmProviderSubscription(state, subscription: FnWithoutArgs): void {
+    state.evmProviderSubscription = subscription;
+  },
+  resetEvmProviderSubscription(state): void {
+    state.evmProviderSubscription?.();
+    state.evmProviderSubscription = null;
   },
   // by user
   setSelectedNetwork(state, networkId: BridgeNetworkId): void {
