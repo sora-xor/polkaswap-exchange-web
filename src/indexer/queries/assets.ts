@@ -39,12 +39,8 @@ type SubqueryAssetData = SubqueryAssetEntity & {
 };
 
 type SubsquidAssetData = SubsquidAssetEntity & {
-  hourSnapshots: {
-    nodes: SubsquidAssetSnapshotEntity[];
-  };
-  daySnapshots: {
-    nodes: SubsquidAssetSnapshotEntity[];
-  };
+  hourSnapshots: SubsquidAssetSnapshotEntity[];
+  daySnapshots: SubsquidAssetSnapshotEntity[];
 };
 
 const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetData>>`
@@ -138,13 +134,15 @@ const calcVolume = (nodes: AssetSnapshotEntity[]): FPNumber => {
 };
 
 const parse = (item: SubqueryAssetData | SubsquidAssetData): Record<string, TokenData> => {
+  const hourSnapshots = 'nodes' in item.hourSnapshots ? item.hourSnapshots.nodes : item.hourSnapshots;
+  const daySnapshots = 'nodes' in item.daySnapshots ? item.daySnapshots.nodes : item.daySnapshots;
   return {
     [item.id]: {
       reserves: FPNumber.fromCodecValue(item.liquidity ?? 0),
-      startPriceDay: new FPNumber(last(item.hourSnapshots.nodes)?.priceUSD?.open ?? 0),
-      startPriceWeek: new FPNumber(last(item.daySnapshots.nodes)?.priceUSD?.open ?? 0),
-      volumeDay: calcVolume(item.hourSnapshots.nodes),
-      volumeWeek: calcVolume(item.daySnapshots.nodes),
+      startPriceDay: new FPNumber(last(hourSnapshots)?.priceUSD?.open ?? 0),
+      startPriceWeek: new FPNumber(last(daySnapshots)?.priceUSD?.open ?? 0),
+      volumeDay: calcVolume(hourSnapshots),
+      volumeWeek: calcVolume(daySnapshots),
     },
   };
 };
