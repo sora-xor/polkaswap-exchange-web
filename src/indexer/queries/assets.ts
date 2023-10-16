@@ -49,7 +49,7 @@ type SubsquidAssetData = SubsquidAssetEntity & {
 
 const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetData>>`
   query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-    data: assets(after: $after, filter: { and: [{ id: { in: $ids } }] }) {
+    data: assets(orderBy: ID_ASC, after: $after, filter: { and: [{ id: { in: $ids } }] }) {
       pageInfo {
         hasNextPage
         endCursor
@@ -83,8 +83,8 @@ const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetDat
 `;
 
 const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetData>>`
-  query AssetsQuery($after: String, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-    data: assets(after: $after, filter: { AND: [{ id_in: $ids }] }) {
+  query AssetsConnectionQuery($after: String, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
+    data: assetsConnection(orderBy: id_ASC, after: $after, where: { AND: [{ id_in: $ids }] }) {
       pageInfo {
         hasNextPage
         endCursor
@@ -95,17 +95,33 @@ const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetDat
           liquidity
           hourSnapshots: data(
             where: { AND: [{ timestamp_gte: $dayTimestamp }, { type_eq: HOUR }] }
-            orderBy: [timestamp_DESC]
+            orderBy: timestamp_DESC
           ) {
-            priceUSD
-            volume
+            priceUSD {
+              low
+              high
+              open
+              close
+            }
+            volume {
+              amount
+              amountUSD
+            }
           }
           daySnapshots: data(
             where: { AND: [{ timestamp_gte: $weekTimestamp }, { type_eq: DAY }] }
-            orderBy: [timestamp_DESC]
+            orderBy: timestamp_DESC
           ) {
-            priceUSD
-            volume
+            priceUSD {
+              low
+              high
+              open
+              close
+            }
+            volume {
+              amount
+              amountUSD
+            }
           }
         }
       }
