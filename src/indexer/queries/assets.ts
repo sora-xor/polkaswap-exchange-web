@@ -49,7 +49,7 @@ type SubsquidAssetData = SubsquidAssetEntity & {
 
 const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetData>>`
   query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-    data: assets(after: $after, filter: { and: [{ id: { in: $ids } }, { liquidity: { greaterThan: "1" } }] }) {
+    data: assets(after: $after, filter: { and: [{ id: { in: $ids } }] }) {
       pageInfo {
         hasNextPage
         endCursor
@@ -84,7 +84,7 @@ const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetDat
 
 const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetData>>`
   query AssetsQuery($after: String, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-    data: assets(after: $after, filter: { AND: [{ id_in: $ids }, { liquidity_gt: "1" }] }) {
+    data: assets(after: $after, filter: { AND: [{ id_in: $ids }] }) {
       pageInfo {
         hasNextPage
         endCursor
