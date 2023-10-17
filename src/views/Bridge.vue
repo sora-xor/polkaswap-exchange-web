@@ -288,6 +288,7 @@
     <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
     <bridge-select-account />
     <bridge-select-network />
+    <bridge-select-provider />
     <confirm-bridge-transaction-dialog
       :visible.sync="showConfirmTransactionDialog"
       :is-sora-to-evm="isSoraToEvm"
@@ -350,6 +351,7 @@ import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/
     BridgeSelectAsset: lazyComponent(Components.BridgeSelectAsset),
     BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
     BridgeSelectAccount: lazyComponent(Components.BridgeSelectAccount),
+    BridgeSelectProvider: lazyComponent(Components.BridgeSelectProvider),
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     BridgeLimitCard: lazyComponent(Components.BridgeLimitCard),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),

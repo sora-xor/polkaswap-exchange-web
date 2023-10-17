@@ -64,6 +64,7 @@ const actions = defineActions({
 
       commit.setEvmAddress(address);
       commit.setProvidedEvmNetwork(evmNetwork);
+      commit.setSelectedEvmProvider(provider);
 
       await subscribeOnEvm(context);
     }

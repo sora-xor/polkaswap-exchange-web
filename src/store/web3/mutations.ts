@@ -2,6 +2,7 @@ import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts
 import { defineMutations } from 'direct-vuex';
 
 import ethersUtil from '@/utils/ethers-util';
+import type { Provider } from '@/utils/ethers-util';
 
 import type { Web3State, EthBridgeSettings, SubNetworkApps } from './types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
@@ -35,6 +36,9 @@ const mutations = defineMutations<Web3State>()({
   setSupportedApps(state, supportedApps: SupportedApps): void {
     state.supportedApps = supportedApps;
   },
+  setSelectedEvmProvider(state, provider: Provider) {
+    state.evmProviderSelected = provider;
+  },
   // by provider
   setProvidedEvmNetwork(state, networkId: BridgeNetworkId | null): void {
     state.evmProviderNetwork = networkId;
@@ -66,6 +70,10 @@ const mutations = defineMutations<Web3State>()({
 
   setSelectAccountDialogVisibility(state, flag: boolean): void {
     state.selectAccountDialogVisibility = flag;
+  },
+
+  setSelectProviderDialogVisibility(state, flag: boolean): void {
+    state.selectProviderDialogVisibility = flag;
   },
 
   // for hashi bridge

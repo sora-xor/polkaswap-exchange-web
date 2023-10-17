@@ -12,6 +12,7 @@ export function initialState(): Web3State {
     networkType: null, // network type for selected network
     networkSelected: null, // network selected by user
 
+    evmProviderSelected: null,
     evmProviderNetwork: null, // evm network in provider
     evmProviderSubscription: null, // provider event listeners
 
@@ -35,6 +36,7 @@ export function initialState(): Web3State {
     // dialogs
     selectNetworkDialogVisibility: false,
     selectAccountDialogVisibility: false,
+    selectProviderDialogVisibility: false,
   };
 }
 
