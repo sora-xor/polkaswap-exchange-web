@@ -1261,6 +1261,10 @@
       "btnGoToSettings": "Go to settings",
       "btnAllow": "Allow access"
   },
+  "orderBook": {
+    "Buy": "Buy",
+    "Sell": "Sell"
+  },
   "continueText": "Continue",
   "minAmountText": "min. amount",
   "maxAmountText": "max. amount",

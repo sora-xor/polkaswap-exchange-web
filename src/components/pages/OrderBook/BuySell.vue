@@ -191,6 +191,7 @@ export default class BuySellWidget extends Mixins(
     if (this.isOutOfAmountBounds) return 'out of constraints';
     if (this.isPriceTooHigh) return 'price too high';
     if (this.isPriceTooLow) return 'price too low';
+    if (!this.isPriceBeyondPrecision) return 'price too exact';
 
     if (this.side === PriceVariant.Buy) return `Buy ${this.baseAsset.symbol}`;
     else return `Sell ${this.baseAsset.symbol}`;
@@ -204,6 +205,8 @@ export default class BuySellWidget extends Mixins(
     if (this.isPriceTooHigh) return true;
 
     if (this.isPriceTooLow) return true;
+
+    if (!this.isPriceBeyondPrecision) return true;
 
     return this.isOutOfAmountBounds;
   }
@@ -236,15 +239,24 @@ export default class BuySellWidget extends Mixins(
     return false;
   }
 
-  get isOutOfAmountBounds(): boolean {
+  get isPriceBeyondPrecision(): boolean {
     if (!this.currentOrderBook) return false;
     const book: any = Object.values(this.currentOrderBook)[0];
     const tickSize = book.tickSize;
+    const price = new FPNumber(this.quoteValue, 18);
+
+    return price.isZeroMod(tickSize);
+  }
+
+  get isOutOfAmountBounds(): boolean {
+    if (!this.currentOrderBook) return false;
+    const book: any = Object.values(this.currentOrderBook)[0];
+    const stepLotSize = book.stepLotSize;
     const maxLotSize = book.maxLotSize;
     const minLotSize = book.minLotSize;
     const amount = new FPNumber(this.baseValue, 18);
 
-    return !(FPNumber.lte(amount, maxLotSize) && FPNumber.gte(amount, minLotSize) && amount.isZeroMod(tickSize));
+    return !(FPNumber.lte(amount, maxLotSize) && FPNumber.gte(amount, minLotSize) && amount.isZeroMod(stepLotSize));
   }
 
   get computedBtnClass(): string {
