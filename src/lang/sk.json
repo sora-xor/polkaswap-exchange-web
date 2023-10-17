@@ -1181,8 +1181,8 @@
             "action": "Vyberte služby",
             "dialog": {
                 "title": "{Sora} Výber sieťovej služby",
-                "fiat": "Hodnoty Fiat",
-                "chartsAndActivity": "Grafy a aktivita"
+                "indexer": "Indexer",
+                "useCeres": "Pre hodnoty fiat použite {Ceres}"
             }
         }
     },
@@ -1250,7 +1250,9 @@
             "enterName": "Zadaj meno",
             "present": "Už prítomný",
             "saveChanges": "Uložiť zmeny"
-        }
+        },
+        "input": "Zadajte adresu alebo vyberte kontakt",
+        "selectContact": "Vyberte kontakt"
     },
     "browserPermission": {
         "title": "Povoliť prístup k fotoaparátu v nastaveniach prehliadača",

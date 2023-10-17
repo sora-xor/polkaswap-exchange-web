@@ -1181,8 +1181,8 @@
             "action": "选择服务",
             "dialog": {
                 "title": "{Sora}网络服务选择",
-                "fiat": "法定价值",
-                "chartsAndActivity": "图表和活动"
+                "indexer": "索引器",
+                "useCeres": "使用{Ceres}作为法定值"
             }
         }
     },
@@ -1250,7 +1250,9 @@
             "enterName": "输入名字",
             "present": "已经存在",
             "saveChanges": "保存更改"
-        }
+        },
+        "input": "输入地址或选择联系人",
+        "selectContact": "选择联系人"
     },
     "browserPermission": {
         "title": "在浏览器设置中允许相机访问",

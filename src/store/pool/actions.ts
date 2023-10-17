@@ -1,4 +1,4 @@
-import { api, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
+import { api, getCurrentIndexer } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { firstValueFrom } from 'rxjs';
 
@@ -62,7 +62,8 @@ const actions = defineActions({
   async getPoolApyObject(context): Promise<void> {
     const { commit } = poolActionContext(context);
 
-    const data = await SubqueryExplorerService.pool.getPoolsApyObject();
+    const indexer = getCurrentIndexer();
+    const data = await indexer.services.explorer.pool.getPoolsApyObject();
 
     if (data) {
       commit.setPoolApyObject(data);
@@ -74,7 +75,8 @@ const actions = defineActions({
 
     await dispatch.getPoolApyObject();
 
-    const subscription = SubqueryExplorerService.pool.createPoolsApySubscription(
+    const indexer = getCurrentIndexer();
+    const subscription = indexer.services.explorer.pool.createPoolsApySubscription(
       (apy) => {
         commit.updatePoolApyObject(apy);
       },

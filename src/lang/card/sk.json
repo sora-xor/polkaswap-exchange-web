@@ -69,6 +69,7 @@
         "reIssuanceFee": "0 € ročný servisný poplatok",
         "freeCardIssuance": "Bezplatné vydanie karty",
         "loginBtn": "Prihláste sa alebo sa zaregistrujte",
+        "applicationFee": "Poplatok za vydanie {0} €",
         "telegramSupport": "Podpora telegramov",
         "rejectionPriceAttemptDisclaimer": "Každý ďalší pokus vás bude stáť {0} €",
         "rejectCount": "Máte ešte {count} bezplatný pokus o KYC| | |Máte ešte {count} bezplatné pokusy o KYC",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "Informácie o účte"
         },
-        "attentionText": "Pozornosť"
+        "attentionText": "Pozornosť",
+        "or": "alebo",
+        "oneTimeApplicationFee": "Jednorazový poplatok za vydanie karty",
+        "applicationFeeNote": "Poznámka: Vydanie platenej karty bude k dispozícii neskôr.",
+        "statusRejectReasonMultiple": "Vaša žiadosť bola zamietnutá z viacerých dôvodov:"
     }
 }

@@ -2,6 +2,7 @@ export enum KycStatus {
   Started = 'Started',
   Completed = 'Completed',
   Failed = 'Failed',
+  Retry = 'Retry',
   Rejected = 'Rejected',
   Successful = 'Successful',
 }
@@ -28,11 +29,18 @@ export enum CardUIViews {
 export interface Status {
   verificationStatus: Nullable<VerificationStatus>;
   kycStatus: Nullable<KycStatus>;
-  rejectReason?: Nullable<string>;
+  rejectReasons?: Array<string>;
+  referenceNumber?: Nullable<string>;
 }
 
 export interface UserInfo {
   iban: Nullable<string>;
+  availableBalance: Nullable<number>;
+}
+
+export interface Fees {
+  application: Nullable<string>;
+  retry: Nullable<string>;
 }
 
 export interface AttemptCounter {

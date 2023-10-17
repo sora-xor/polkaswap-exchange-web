@@ -44,7 +44,7 @@
       :panel-text="statisticsConnectionText"
       :status="statisticsConnectionClass"
       :action-text="t('footer.statistics.action')"
-      @action="openStatisticsDialog"
+      @action="openIndexerSelectionDialog"
     >
       <template #label>
         <span>{{ t('footer.statistics.label') }}</span>
@@ -58,15 +58,15 @@
       </a>
     </div>
     <select-node-dialog />
+    <statistics-dialog />
     <no-internet-dialog />
-    <statistics-dialog :visible.sync="showStatisticsDialog" />
   </div>
 </template>
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { Status } from '@soramitsu/soramitsu-js-ui/lib/types';
-import { getExplorerLinks, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -81,7 +81,6 @@ import { formatLocation } from './Node/utils';
 import NoInternetDialog from './NoInternetDialog.vue';
 
 import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 /** Max limit provided by navigator.connection.downlink */
 const MAX_INTERNET_CONNECTION_LIMIT = 10;
@@ -91,13 +90,14 @@ const MAX_INTERNET_CONNECTION_LIMIT = 10;
     SoraLogo,
     FooterPopper,
     NoInternetDialog,
-    StatisticsDialog: lazyComponent(Components.StatisticsDialog),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
+    StatisticsDialog: lazyComponent(Components.StatisticsDialog),
   },
 })
 export default class AppFooter extends Mixins(TranslationMixin) {
   // Block explorer
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
+  @state.wallet.settings.indexerType private indexerType!: WALLET_CONSTS.IndexerType;
   @state.settings.blockNumber blockNumber!: number;
   @getter.libraryTheme libraryTheme!: Theme;
 
@@ -118,6 +118,9 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   @getter.settings.connectingNode connectingNode!: Nullable<Node>;
   @getter.settings.nodeIsConnected isNodeConnected!: boolean;
   @mutation.settings.setSelectNodeDialogVisibility private setSelectNodeDialogVisibility!: (flag: boolean) => void;
+  @mutation.settings.setSelectIndexerDialogVisibility private setSelectIndexerDialogVisibility!: (
+    flag: boolean
+  ) => void;
 
   private get isNodeConnecting(): boolean {
     return !!this.connectingNode;
@@ -152,6 +155,10 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 
   openNodeSelectionDialog(): void {
     this.setSelectNodeDialogVisibility(true);
+  }
+
+  openIndexerSelectionDialog(): void {
+    this.setSelectIndexerDialogVisibility(true);
   }
 
   // Internet connection
@@ -194,11 +201,20 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 
   // Statistics connection
   @state.wallet.settings.subqueryStatus private subqueryStatus!: WALLET_TYPES.ConnectionStatus;
+  @state.wallet.settings.subsquidStatus private subsquidStatus!: WALLET_TYPES.ConnectionStatus;
 
   showStatisticsDialog = false;
 
+  get indexerStatus(): WALLET_TYPES.ConnectionStatus {
+    if (this.indexerType === WALLET_CONSTS.IndexerType.SUBQUERY) {
+      return this.subqueryStatus;
+    } else {
+      return this.subsquidStatus;
+    }
+  }
+
   get statisticsConnectionClass(): Status {
-    switch (this.subqueryStatus) {
+    switch (this.indexerStatus) {
       case WALLET_TYPES.ConnectionStatus.Unavailable:
         return Status.ERROR;
       case WALLET_TYPES.ConnectionStatus.Loading:

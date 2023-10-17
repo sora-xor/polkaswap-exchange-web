@@ -1181,8 +1181,8 @@
             "action": "Seleziona i servizi",
             "dialog": {
                 "title": "{Sora} Selezione del servizio di rete",
-                "fiat": "Valori Fiat",
-                "chartsAndActivity": "Grafici e attività"
+                "indexer": "Indicizzatore",
+                "useCeres": "Usa {Ceres} per i valori fiat"
             }
         }
     },
@@ -1250,7 +1250,9 @@
             "enterName": "Inserisci il nome",
             "present": "Già presente",
             "saveChanges": "Salvare le modifiche"
-        }
+        },
+        "input": "Inserisci l'indirizzo o seleziona il contatto",
+        "selectContact": "Seleziona contatto"
     },
     "browserPermission": {
         "title": "Consenti l'accesso alla fotocamera nelle impostazioni del browser",

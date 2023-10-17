@@ -1181,8 +1181,8 @@
             "action": "Dienste auswählen",
             "dialog": {
                 "title": "{Sora} Netzwerkdienstauswahl",
-                "fiat": "Fiat-Werte",
-                "chartsAndActivity": "Diagramme & Aktivität"
+                "indexer": "Indexer",
+                "useCeres": "Verwenden Sie {Ceres} für Fiat-Werte"
             }
         }
     },
@@ -1250,7 +1250,9 @@
             "enterName": "Name eingeben",
             "present": "Bereits anwesend",
             "saveChanges": "Änderungen speichern"
-        }
+        },
+        "input": "Adresse eingeben oder Kontakt auswählen",
+        "selectContact": "Kontakt auswählen"
     },
     "browserPermission": {
         "title": "Erlauben Sie den Kamerazugriff in den Browsereinstellungen",

@@ -69,6 +69,7 @@
         "reIssuanceFee": "€0 phí dịch vụ hàng năm",
         "freeCardIssuance": "Miễn phí phát hành thẻ",
         "loginBtn": "Đăng nhập hoặc đăng ký",
+        "applicationFee": "€{0} phí phát hành",
         "telegramSupport": "Hỗ trợ Telegram",
         "rejectionPriceAttemptDisclaimer": "Mọi nỗ lực khác sẽ khiến bạn mất €{0}",
         "rejectCount": "Bạn còn {count} lần thử KYC miễn phí nữa",
@@ -89,6 +90,10 @@
         "cardhub": {
             "accountInfo": "thông tin tài khoản"
         },
-        "attentionText": "Chú ý"
+        "attentionText": "Chú ý",
+        "or": "hoặc",
+        "oneTimeApplicationFee": "Phí phát hành thẻ một lần",
+        "applicationFeeNote": "Lưu ý: việc phát hành thẻ trả phí sẽ được thực hiện ở giai đoạn sau.",
+        "statusRejectReasonMultiple": "Đơn đăng ký của bạn đã bị từ chối vì nhiều lý do:"
     }
 }
