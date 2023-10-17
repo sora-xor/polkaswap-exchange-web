@@ -162,6 +162,7 @@ import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
+import SwapQuoteMixin from '@/components/mixins/SwapQuoteMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, MarketAlgorithms, PageNames, ZeroStringValue } from '@/consts';
@@ -183,8 +184,8 @@ import type { LPRewardsInfo, SwapQuote } from '@sora-substrate/liquidity-proxy/b
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { DexId } from '@sora-substrate/util/build/dex/consts';
-import type { SwapQuoteData } from '@sora-substrate/util/build/swap/types';
-import type { Subscription } from 'rxjs';
+// import type { SwapQuoteData } from '@sora-substrate/util/build/swap/types';
+// import type { Subscription } from 'rxjs';
 
 @Component({
   components: {
@@ -208,7 +209,8 @@ export default class Swap extends Mixins(
   mixins.LoadingMixin,
   TranslationMixin,
   TokenSelectMixin,
-  SelectedTokenRouteMixin
+  SelectedTokenRouteMixin,
+  SwapQuoteMixin
 ) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.swap.isExchangeB isExchangeB!: boolean;
@@ -224,8 +226,8 @@ export default class Swap extends Mixins(
   @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
   @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
-  @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
+  // @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
+  // @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
 
   @mutation.settings.setChartsEnabled private setChartsEnabled!: (value: boolean) => void;
@@ -237,7 +239,7 @@ export default class Swap extends Mixins(
   @mutation.swap.setRewards private setRewards!: (rewards: Array<LPRewardsInfo>) => void;
   @mutation.swap.setRoute private setRoute!: (route: Array<string>) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
-  @mutation.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload: SwapQuoteData) => void;
+  // @mutation.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload: SwapQuoteData) => void;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
@@ -268,16 +270,16 @@ export default class Swap extends Mixins(
   showSelectTokenDialog = false;
   confirmVisibility = false;
   lossWarningVisibility = false;
-  quoteSubscription: Nullable<Subscription> = null;
+  // quoteSubscription: Nullable<Subscription> = null; // delete
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
   get tokenFromSymbol(): string {
     return this.tokenFrom?.symbol ?? '';
   }
 
-  get areTokensSelected(): boolean {
-    return !!(this.tokenFrom && this.tokenTo);
-  }
+  // get areTokensSelected(): boolean {
+  //   return !!(this.tokenFrom && this.tokenTo);
+  // }
 
   get isZeroFromAmount(): boolean {
     return asZeroValue(this.fromValue);
@@ -465,6 +467,11 @@ export default class Swap extends Mixins(
         this.isExchangeB,
         [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>
       );
+      console.log('SWAP ###');
+      console.log('amount', amount);
+      console.log('amountWithoutImpact', amountWithoutImpact);
+      console.log('rewards', rewards);
+      console.log('fee', fee);
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact as string);
@@ -478,29 +485,33 @@ export default class Swap extends Mixins(
     }
   }
 
-  private resetQuoteSubscription(): void {
-    this.quoteSubscription?.unsubscribe();
-    this.quoteSubscription = null;
+  // private resetQuoteSubscription(): void {
+  //   this.quoteSubscription?.unsubscribe();
+  //   this.quoteSubscription = null;
+  // }
+
+  private subscribeOnQuoteValues(): void {
+    this.subscribeOnQuote(this.recountSwapValues);
   }
 
-  private async subscribeOnQuote(): Promise<void> {
-    this.resetQuoteSubscription();
+  // private async subscribeOnQuote(): Promise<void> {
+  //   this.resetQuoteSubscription();
 
-    if (!this.areTokensSelected) return;
+  //   if (!this.areTokensSelected) return;
 
-    this.loading = true;
+  //   this.loading = true;
 
-    const observableQuote = await api.swap.getDexesSwapQuoteObservable(
-      (this.tokenFrom as AccountAsset).address,
-      (this.tokenTo as AccountAsset).address
-    );
+  //   const observableQuote = await api.swap.getDexesSwapQuoteObservable(
+  //     (this.tokenFrom as AccountAsset).address,
+  //     (this.tokenTo as AccountAsset).address
+  //   );
 
-    this.quoteSubscription = observableQuote.subscribe((quoteData) => {
-      this.setSubscriptionPayload(quoteData);
-      this.runRecountSwapValues();
-      this.loading = false;
-    });
-  }
+  //   this.quoteSubscription = observableQuote.subscribe((quoteData) => {
+  //     this.setSubscriptionPayload(quoteData);
+  //     this.runRecountSwapValues();
+  //     this.loading = false;
+  //   });
+  // }
 
   handleFocusField(isExchangeB = false): void {
     const isZeroValue = isExchangeB ? this.isZeroToAmount : this.isZeroFromAmount;
@@ -550,7 +561,7 @@ export default class Swap extends Mixins(
   async setData(params: { firstAddress: string; secondAddress: string }): Promise<void> {
     await this.setTokenFromAddress(params.firstAddress);
     await this.setTokenToAddress(params.secondAddress);
-    this.subscribeOnQuote();
+    this.subscribeOnQuoteValues();
   }
 
   async handleSelectToken(token: AccountAsset): Promise<void> {
@@ -561,7 +572,7 @@ export default class Swap extends Mixins(
         } else {
           await this.setTokenToAddress(token.address);
         }
-        this.subscribeOnQuote();
+        this.subscribeOnQuoteValues();
       });
     }
     this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
@@ -597,7 +608,7 @@ export default class Swap extends Mixins(
 
   private enableSwapSubscriptions(): void {
     this.updateBalanceSubscriptions();
-    this.subscribeOnQuote();
+    this.subscribeOnQuoteValues();
   }
 
   private resetSwapSubscriptions(): void {

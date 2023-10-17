@@ -1,37 +1,41 @@
 <template>
   <div class="order-book-widget stock-book book">
-    <h4>
-      Orderbook
+    <div class="stock-book__title">
+      <span>Orderbook</span>
       <s-tooltip slot="suffix" border-radius="mini" :content="t('alerts.typeTooltip')" placement="top" tabindex="-1">
         <s-icon name="info-16" size="14px" />
       </s-tooltip>
-    </h4>
+    </div>
     <div class="book-columns">
-      <div>total</div>
-      <div>amount</div>
       <div>price</div>
+      <div>amount</div>
+      <div>total</div>
     </div>
-    <div class="stock-book-sell">
+    <div v-if="asksFormatted.length" class="stock-book-sell">
       <div v-for="order in getSellOrders()" :key="order.price" class="row">
-        <span class="order-info price">{{ order.price }}</span>
-        <span class="order-info">{{ order.amount }}</span>
         <span class="order-info">{{ order.total }}</span>
+        <span class="order-info">{{ order.amount }}</span>
+        <span class="order-info price">{{ order.price }}</span>
         <div class="bar" :style="getStyles(order.filled)" />
       </div>
     </div>
+    <div v-else class="stock-book-sell--no-asks">No opened asks</div>
     <div :class="getComputedClassTrend()">
-      <span class="mark-price">22.386800</span>
-      <s-icon class="trend-icon" :name="iconTrend" size="18" />
-      <span class="last-traded-price">$22.54</span>
+      <div v-if="noOpenAsksOrBids">
+        <span class="mark-price">22.386800</span>
+        <s-icon class="trend-icon" :name="iconTrend" size="18" />
+        <span class="last-traded-price">$22.54</span>
+      </div>
     </div>
-    <div class="stock-book-buy">
+    <div v-if="bidsFormatted.length" class="stock-book-buy">
       <div v-for="order in getBuyOrders()" :key="order.price" class="row">
-        <span class="order-info price">{{ order.price }}</span>
-        <span class="order-info">{{ order.amount }}</span>
         <span class="order-info">{{ order.total }}</span>
+        <span class="order-info">{{ order.amount }}</span>
+        <span class="order-info price">{{ order.price }}</span>
         <div class="bar" :style="getStyles(order.filled)" />
       </div>
     </div>
+    <div v-else class="stock-book-buy--no-bids">No opened bids</div>
   </div>
 </template>
 
@@ -86,6 +90,10 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return base.join(' ');
   }
 
+  get noOpenAsksOrBids(): boolean {
+    return !!(this.asksFormatted.length && this.bidsFormatted.length);
+  }
+
   getSellOrders() {
     return this.asksFormatted.slice(0, this.maxRowsNumber);
   }
@@ -98,7 +106,12 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return `width: ${filled}%`;
   }
 
+  @Watch('asks')
+  @Watch('bids')
   async prepareLimitOrders(): Promise<void> {
+    this.asksFormatted = [];
+    this.bidsFormatted = [];
+
     if (this.asks.length) {
       this.asks.forEach((row: [FPNumber, FPNumber]) => {
         const price = row[0].toNumber();
@@ -137,9 +150,6 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
       await this.withLoading(async () => {
         // wait for node connection & wallet init (App.vue)
         await this.withParentLoading(async () => {
-          this.asksFormatted = [];
-          this.bidsFormatted = [];
-
           await this.subscribeToOrderBook({ base: baseAssetAddress });
           await this.withLimitOrdersSet(async () => {
             this.prepareLimitOrders();
@@ -160,6 +170,18 @@ $row-height: 24px;
     justify-content: space-between;
     margin: 2px;
     transform-style: preserve-3d;
+  }
+
+  &__title {
+    height: 40px;
+    line-height: 40px;
+    font-weight: 500;
+    font-size: 17px;
+    margin-left: 16px;
+
+    .el-tooltip {
+      margin-left: 8px;
+    }
   }
 
   .order-info {
@@ -204,6 +226,7 @@ $row-height: 24px;
     align-items: center;
     height: 30px;
     line-height: 30px;
+    background-color: rgba($color: #e7dadd, $alpha: 0.2);
 
     .mark-price {
       font-size: 24px;
@@ -257,5 +280,15 @@ $row-height: 24px;
     margin: 16px 0 10px 16px;
     font-weight: 500;
   }
+}
+
+.stock-book-sell--no-asks,
+.stock-book-buy--no-bids {
+  margin-top: 16px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--s-color-base-content-tertiary);
+  text-align: center;
+  height: $row-height * 9;
 }
 </style>

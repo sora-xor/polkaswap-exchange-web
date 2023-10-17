@@ -91,6 +91,15 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
       this.$emit('confirm');
     } else {
       try {
+        console.log('this.tokenFrom', this.tokenFrom);
+        console.log('this.tokenTo', this.tokenTo);
+        console.log(' this.fromValue', this.fromValue);
+        console.log(' this.toValue', this.toValue);
+        console.log('this.slippageTolerance', this.slippageTolerance);
+        console.log(' this.isExchangeB', this.isExchangeB);
+        console.log('this.liquiditySource', this.liquiditySource);
+        console.log(' this.selectedDexId', this.selectedDexId);
+
         await this.withNotifications(
           async () =>
             await api.swap.execute(

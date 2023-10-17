@@ -9,7 +9,7 @@
     </div>
     <div class="column-3">
       <book-widget class="book-widget" />
-      <market-trades-widget class="market-widget" />
+      <!-- <market-trades-widget class="market-widget" /> -->
     </div>
   </div>
 </template>
@@ -21,7 +21,9 @@ import { Component, Mixins } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { action, state } from '@/store/decorators';
+import { action, mutation, state } from '@/store/decorators';
+
+import type { NavigationGuardNext, Route } from 'vue-router';
 
 @Component({
   components: {
@@ -34,6 +36,22 @@ import { action, state } from '@/store/decorators';
 })
 export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.orderBook.orderBooks orderBooks!: any;
+  @state.orderBook.orderBookUpdates orderBookUpdates!: any;
+  @state.orderBook.baseAssetAddress baseAssetAddress!: string;
+
+  @action.orderBook.subscribeToOrderBook subscribeToOrderBook!: any;
+  @action.orderBook.unsubscribeFromOrderBook unsubscribeFromOrderBook!: AsyncFnWithoutArgs;
+
+  async beforeRouteLeave(to: Route, from: Route, next: NavigationGuardNext<Vue>): Promise<void> {
+    this.unsubscribeFromOrderBook();
+    next();
+  }
+
+  async mounted(): Promise<void> {
+    if (!this.orderBookUpdates.length && this.baseAssetAddress) {
+      await this.subscribeToOrderBook({ base: this.baseAssetAddress });
+    }
+  }
 }
 </script>
 

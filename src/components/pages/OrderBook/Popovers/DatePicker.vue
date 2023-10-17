@@ -14,8 +14,6 @@ import { mutation } from '@/store/decorators';
   components: {},
 })
 export default class DatePicker extends Mixins(TranslationMixin) {
-  handleChange(values): void {
-    console.log(values);
-  }
+  handleChange(values): void {}
 }
 </script>

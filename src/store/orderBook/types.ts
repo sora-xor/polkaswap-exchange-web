@@ -1,4 +1,4 @@
-import type { LimitOrderSide } from '@/consts';
+import type { LimitOrderSide, LimitOrderConstraint } from '@/consts';
 
 import type { Subscription } from 'rxjs';
 
@@ -15,4 +15,5 @@ export type OrderBookState = {
   side: LimitOrderSide;
   orderBookUpdates: Array<Nullable<Subscription>>;
   userLimitOrderUpdates: Nullable<Subscription>;
+  limitOrderConstraints: LimitOrderConstraint;
 };

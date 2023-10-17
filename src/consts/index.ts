@@ -221,7 +221,6 @@ export enum Components {
   PairListPopover = 'pages/OrderBook/Popovers/PairListPopover',
   AllOrders = 'pages/OrderBook/Tables/AllOrders',
   OpenOrders = 'pages/OrderBook/Tables/OpenOrders',
-  SetLimitOrder = 'pages/OrderBook/SetLimitOrder',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
@@ -270,9 +269,20 @@ export enum LimitOrderSide {
   Sell = 'Sell',
 }
 
+export enum LimitOrderType {
+  limit = 'limit',
+  market = 'market',
+}
+
 export enum LimitOrderTabsItems {
   Buy = PageNames.LimitOrderBuy,
   Sell = PageNames.LimitOrderSell,
+}
+
+export interface LimitOrderConstraint {
+  tickSize: Nullable<number>;
+  maxLotSize: Nullable<number>;
+  minLotSize: Nullable<number>;
 }
 
 export enum RewardsTabsItems {

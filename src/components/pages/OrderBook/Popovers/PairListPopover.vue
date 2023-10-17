@@ -1,62 +1,70 @@
 <template>
   <div class="order-book-popover">
-    <div>
+    <div class="order-book-popover__title">
       <span>Choose orderbook</span>
       <s-tooltip slot="suffix" border-radius="mini" :content="t('alerts.typeTooltip')" placement="top" tabindex="-1">
         <s-icon name="info-16" size="14px" />
       </s-tooltip>
     </div>
-    <s-table class="limit-order-table" :data="tableItems" :highlight-current-row="false" @cell-click="chooseBook">
-      <s-table-column>
-        <template #header>
-          <span>Token pair</span>
-        </template>
-        <template v-slot="{ row }">
-          <pair-token-logo :first-token="row.baseAsset" :second-token="row.targetAsset" size="small" />
-          <div>
-            <div>{{ row.pair }}</div>
-          </div>
-        </template>
-      </s-table-column>
-      <s-table-column>
-        <template #header>
-          <span>Price</span>
-        </template>
-        <template v-slot="{ row }">
-          <span>{{ row.price }}</span>
-        </template>
-      </s-table-column>
-      <s-table-column>
-        <template #header>
-          <span>Volume</span>
-        </template>
-        <template v-slot="{ row }">
-          <span>{{ row.volume }}</span>
-        </template>
-      </s-table-column>
-      <s-table-column>
-        <template #header>
-          <span>Daily change</span>
-        </template>
-        <template v-slot="{ row }">
-          <span>{{ row.dailyChange }}</span>
-        </template>
-      </s-table-column>
-      <s-table-column>
-        <template #header>
-          <span>Status</span>
-        </template>
-        <template v-slot="{ row }">
-          <span>{{ row.status }}</span>
-        </template>
-      </s-table-column>
-    </s-table>
+    <s-scrollbar class="orderbook-whitelist__scrollbar">
+      <s-table
+        class="orderbook-whitelist-table"
+        :data="tableItems"
+        :highlight-current-row="false"
+        @cell-click="chooseBook"
+      >
+        <s-table-column>
+          <template #header>
+            <span>Token pair</span>
+          </template>
+          <template v-slot="{ row }">
+            <pair-token-logo :first-token="row.baseAsset" :second-token="row.targetAsset" size="small" />
+            <div class="book-pair">
+              <div>{{ row.pair }}</div>
+            </div>
+          </template>
+        </s-table-column>
+        <s-table-column>
+          <template #header>
+            <span>Price</span>
+          </template>
+          <template v-slot="{ row }">
+            <span class="price">{{ row.price }}</span>
+          </template>
+        </s-table-column>
+        <s-table-column>
+          <template #header>
+            <span>Volume</span>
+          </template>
+          <template v-slot="{ row }">
+            <span>{{ row.volume }}</span>
+          </template>
+        </s-table-column>
+        <!-- <s-table-column>
+          <template #header>
+            <span>Daily change</span>
+          </template>
+          <template v-slot="{ row }">
+            <span>{{ row.dailyChange }}</span>
+          </template>
+        </s-table-column> -->
+        <s-table-column>
+          <template #header>
+            <span>Status</span>
+          </template>
+          <template v-slot="{ row }">
+            <span :class="calculateColor(row.status)">{{ mapBookStatus(row.status) }}</span>
+          </template>
+        </s-table-column>
+      </s-table>
+    </s-scrollbar>
   </div>
 </template>
 
 <script lang="ts">
+import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/util';
-import { OrderBookStatus } from '@sora-substrate/util/build/orderBook/types';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -65,17 +73,8 @@ import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter, action, mutation } from '@/store/decorators';
 
+import type { OrderBook, PriceVariant } from '@sora-substrate/liquidity-proxy';
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
-
-interface OrderBook {
-  readonly orderBookId: any;
-  readonly status: OrderBookStatus;
-  readonly lastOrderId: number;
-  readonly tickSize: FPNumber;
-  readonly stepLotSize: FPNumber;
-  readonly minLotSize: FPNumber;
-  readonly maxLotSize: FPNumber;
-}
 
 interface BookFields {
   pair: string;
@@ -97,7 +96,7 @@ interface BookFields {
 export default class PairListPopover extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.orderBook.orderBooks orderBooks!: Record<string, OrderBook>;
 
-  @mutation.orderBook.setBaseAssetAddress setBaseAssetAddress!: (address: string) => void;
+  @mutation.orderBook.setCurrentOrderBook setCurrentOrderBook!: (orderBookId: string) => void;
   @mutation.orderBook.resetAsks resetAsks!: () => void;
   @mutation.orderBook.resetBids resetBids!: () => void;
 
@@ -116,21 +115,24 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
     return { base, quote };
   }
 
+  serializedKey(base: string, quote: string): string {
+    if (!(base && quote)) return '';
+    return `${base},${quote}`;
+  }
+
   chooseBook(row): void {
-    this.setBaseAssetAddress(row.baseAsset.address);
+    this.setCurrentOrderBook(this.serializedKey(row.baseAsset.address, XOR.address));
   }
 
   prepareOrderBooks() {
     Object.entries(this.orderBooks).forEach(([orderBookId, value]) => {
       if (!orderBookId) return null;
-
       const { base, quote } = this.deserializeKey(orderBookId);
-
       const row = {
         baseAsset: this.getAsset(base),
         targetAsset: this.getAsset(quote),
         pair: `${this.getAsset(base)?.symbol}-${this.getAsset(quote)?.symbol}`,
-        status: this.mapBookStatus(value.status),
+        status: value.status,
         price: '50.34',
         dailyChange: '+34.30%',
         volume: '3343242000',
@@ -138,6 +140,11 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
 
       this.orderBooksFormatted.push(row);
     });
+  }
+
+  calculateColor(status: OrderBookStatus): string | undefined {
+    if ([OrderBookStatus.Trade, OrderBookStatus.PlaceAndCancel].includes(status)) return 'status-live';
+    if ([OrderBookStatus.OnlyCancel, OrderBookStatus.Stop].includes(status)) return 'status-stop';
   }
 
   mapBookStatus(status: OrderBookStatus): string {
@@ -160,13 +167,95 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
       await this.getOrderBooksInfo();
     });
 
-    this.prepareOrderBooks();
+    if (this.orderBooks && Object.keys(this.orderBooks).length) {
+      this.prepareOrderBooks();
+    }
   }
 }
 </script>
 
 <style lang="scss">
+.orderbook-whitelist {
+  &-table {
+    width: 750px;
+
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1;
+
+    // overwrite table styles
+    .el-table__body-wrapper {
+      height: 400px;
+      background-color: rgba(42, 23, 31, 0.07);
+      background-color: var(--s-color-utility-body);
+    }
+
+    .el-table__header-wrapper {
+      .el-table__header thead th {
+        background-color: rgba(42, 23, 31, 0.07);
+        color: var(--s-color-base-content-secondary);
+        .cell {
+          font-weight: 400 !important;
+        }
+      }
+    }
+
+    tr.el-table__row {
+      background-color: var(--s-color-utility-body);
+    }
+  }
+
+  &__scrollbar {
+    @include scrollbar;
+  }
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
+  background-color: rgba(42, 23, 31, 0.06);
+  cursor: pointer;
+}
+
 .order-book-popover {
-  width: 600px;
+  width: 750px;
+  background: #f4f0f1;
+  border: #f4f0f1;
+
+  .cell {
+    display: flex;
+    align-items: center;
+
+    .book-pair {
+      display: inline-block;
+      font-weight: 500;
+    }
+  }
+
+  .price {
+    color: var(--s-color-status-info);
+  }
+
+  &__title {
+    height: 40px;
+    line-height: 40px;
+    font-weight: 500;
+    font-size: 17px;
+    margin-left: 16px;
+
+    .el-tooltip {
+      margin-left: 8px;
+    }
+  }
+
+  .status-live {
+    color: var(--status-day-success, #34ad87);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .status-stop {
+    color: var(--status-day-error, #f754a3);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
 }
 </style>

@@ -27,10 +27,11 @@ const actions = defineActions({
       }, {});
 
     const [orderBookId] = Object.keys(whitelistOrderBook);
-    const { base } = deserializeKey(orderBookId);
 
-    commit.setBaseAssetAddress(base);
+    if (!orderBookId) return;
+
     commit.setOrderBooks(whitelistOrderBook);
+    commit.setCurrentOrderBook(orderBookId);
   },
 
   async subscribeToOrderBook(context, { base, quote }): Promise<void> {
@@ -38,28 +39,23 @@ const actions = defineActions({
 
     commit.resetAsks();
     commit.resetBids();
-    dispatch.unsubscribeFromLimitOrders();
+    commit.resetOrderBookUpdates();
 
     if (!quote) quote = getters.quoteAsset?.address;
 
     const asksSubscription = api.orderBook.subscribeOnAggregatedAsks(base, quote).subscribe((asks) => {
-      commit.setAsks(asks);
+      commit.setAsks(asks.reverse());
     });
 
     const bidsSubscription = api.orderBook.subscribeOnAggregatedBids(base, quote).subscribe((bids) => {
-      commit.setBids(bids);
+      commit.setBids(bids.reverse());
     });
 
     commit.setOrderBookUpdates([asksSubscription, bidsSubscription]);
   },
 
-  async unsubscribeFromLimitOrders(context): Promise<void> {
-    const { commit } = orderBookActionContext(context);
-    commit.resetOrderBookUpdates();
-  },
-
   subscribeToUserLimitOrders(context, { base, quote }): void {
-    const { commit, getters, dispatch } = orderBookActionContext(context);
+    const { commit, getters } = orderBookActionContext(context);
 
     commit.resetUserLimitOrderUpdates();
 
@@ -69,18 +65,29 @@ const actions = defineActions({
 
     if (!quote) quote = getters.quoteAsset?.address;
 
-    const userLimitOrders: Array<any> = [];
+    let userLimitOrders: Array<any> = [];
 
     const subscription = api.orderBook.subscribeOnUserLimitOrdersIds(base, quote, address).subscribe((ids) => {
-      console.log('ids', ids);
+      userLimitOrders = [];
+
       ids.forEach(async (id) => {
         const order = await api.orderBook.getLimitOrder(base, quote, id);
         userLimitOrders.push(order);
       });
 
-      commit.setUserLimitOrderUpdates(subscription);
       commit.setUserLimitOrders(userLimitOrders);
     });
+
+    commit.setUserLimitOrderUpdates(subscription);
+  },
+
+  async unsubscribeFromOrderBook(context): Promise<void> {
+    const { commit } = orderBookActionContext(context);
+    commit.resetAsks();
+    commit.resetBids();
+    commit.resetUserLimitOrderUpdates();
+    commit.resetUserLimitOrders();
+    commit.resetOrderBookUpdates();
   },
 });
 

@@ -4,12 +4,21 @@ import type { LimitOrderSide } from '@/consts';
 
 import type { OrderBookState } from './types';
 
+function deserializeKey(key: string) {
+  const [base, quote] = key.split(',');
+  return { base, quote };
+}
+
 const mutations = defineMutations<OrderBookState>()({
   setOrderBooks(state, orderBooks): void {
     state.orderBooks = orderBooks;
   },
-  setCurrentOrderBook(state, book: any): void {
-    state.currentOrderBook = book;
+  setCurrentOrderBook(state, orderBookId: string): void {
+    const { base } = deserializeKey(orderBookId);
+    const [orderBook] = Object.values(state.orderBooks);
+
+    state.currentOrderBook = { [orderBookId]: orderBook };
+    state.baseAssetAddress = base;
   },
   setBaseAssetAddress(state, address: string): void {
     state.baseAssetAddress = address;

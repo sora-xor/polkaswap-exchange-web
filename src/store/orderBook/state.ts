@@ -18,6 +18,11 @@ function initialState(): OrderBookState {
     side: LimitOrderSide.Buy,
     orderBookUpdates: [],
     userLimitOrderUpdates: null,
+    limitOrderConstraints: {
+      tickSize: null,
+      maxLotSize: null,
+      minLotSize: null,
+    },
   };
 }
 

@@ -128,6 +128,4 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 }
 </script>
 
-<style lang="scss">
-@include limit-order-table;
-</style>
+<style lang="scss"></style>
