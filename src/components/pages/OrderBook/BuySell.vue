@@ -364,30 +364,28 @@ export default class BuySellWidget extends Mixins(
   }
 
   prepareValuesForSwap() {
-    if (!this.areTokensSelected || asZeroValue(fromValue) || !this.swapQuote) return;
-
-    try {
-      const {
-        dexId,
-        result: { amount, amountWithoutImpact, fee, rewards, route },
-      } = this.swapQuote(
-        (this.tokenFrom as Asset).address,
-        (this.tokenTo as Asset).address,
-        fromValue,
-        this.isBuySide,
-        [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>
-      );
-
-      this.setFromValue(this.getStringFromCodec(fromValue));
-      this.setToValue(this.quoteValue);
-      this.setAmountWithoutImpact(amountWithoutImpact as string);
-      this.setLiquidityProviderFee(fee);
-      this.setRewards(rewards);
-      this.setRoute(route as string[]);
-      this.selectDexId(dexId);
-    } catch (error: any) {
-      console.error(error);
-    }
+    // if (!this.areTokensSelected || asZeroValue(fromValue) || !this.swapQuote) return;
+    // try {
+    //   const {
+    //     dexId,
+    //     result: { amount, amountWithoutImpact, fee, rewards, route },
+    //   } = this.swapQuote(
+    //     (this.tokenFrom as Asset).address,
+    //     (this.tokenTo as Asset).address,
+    //     fromValue,
+    //     this.isBuySide,
+    //     [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>
+    //   );
+    //   this.setFromValue(this.getStringFromCodec(fromValue));
+    //   this.setToValue(this.quoteValue);
+    //   this.setAmountWithoutImpact(amountWithoutImpact as string);
+    //   this.setLiquidityProviderFee(fee);
+    //   this.setRewards(rewards);
+    //   this.setRoute(route as string[]);
+    //   this.selectDexId(dexId);
+    // } catch (error: any) {
+    //   console.error(error);
+    // }
   }
 
   resetValues() {
