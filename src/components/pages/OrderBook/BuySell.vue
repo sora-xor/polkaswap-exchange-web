@@ -364,13 +364,6 @@ export default class BuySellWidget extends Mixins(
   }
 
   prepareValuesForSwap() {
-    // VAL/XOR
-    console.log('quoteValue', this.quoteValue);
-    const xorMarketPrice = this.getQuoteValue(1);
-    console.log('xorMarketPrice', xorMarketPrice);
-    const fromValue = this.getQuoteValue(this.quoteValue);
-    console.log('value to submit for SWAP!!! based on xor amount', fromValue);
-
     if (!this.areTokensSelected || asZeroValue(fromValue) || !this.swapQuote) return;
 
     try {

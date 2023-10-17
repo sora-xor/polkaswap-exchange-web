@@ -467,11 +467,6 @@ export default class Swap extends Mixins(
         this.isExchangeB,
         [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>
       );
-      console.log('SWAP ###');
-      console.log('amount', amount);
-      console.log('amountWithoutImpact', amountWithoutImpact);
-      console.log('rewards', rewards);
-      console.log('fee', fee);
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact as string);
