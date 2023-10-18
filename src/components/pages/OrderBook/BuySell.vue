@@ -219,6 +219,7 @@ export default class BuySellWidget extends Mixins(
     if (!this.asks.length) return false;
 
     if (this.side === PriceVariant.Sell) {
+      if (!this.asks[this.asks.length - 1]) return false;
       const bestAsk: FPNumber = this.asks[this.asks.length - 1][0];
       const fiftyPercentDelta = bestAsk.mul(new FPNumber(1.5));
       const price = new FPNumber(this.quoteValue, 18);
@@ -233,6 +234,7 @@ export default class BuySellWidget extends Mixins(
     if (!this.asks.length) return false;
 
     if (this.side === PriceVariant.Buy) {
+      if (!this.bids[0]) return false;
       const bestBid: FPNumber = this.bids[0][0];
       const fiftyPercentDelta = bestBid.div(FPNumber.TWO);
       const price = new FPNumber(this.quoteValue, 18);
@@ -352,7 +354,7 @@ export default class BuySellWidget extends Mixins(
     } else if (this.activeTab === LimitOrderType.market) {
       // this.prepareValuesForSwap();
 
-      this.subscribeOnQuoteValues();
+      // this.subscribeOnQuoteValues();
 
       this.showConfirmMarketSwapDialog();
     }
