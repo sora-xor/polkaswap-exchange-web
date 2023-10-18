@@ -48,7 +48,7 @@ const WalletProviders = [
   },
 })
 export default class BridgeSelectProvider extends Mixins(WalletConnectMixin) {
-  @state.web3.evmProviderSelected evmProviderSelected!: Nullable<Provider>;
+  @state.web3.evmProvider evmProvider!: Nullable<Provider>;
   @state.web3.selectProviderDialogVisibility private selectProviderDialogVisibility!: boolean;
 
   get visibility(): boolean {
@@ -62,7 +62,7 @@ export default class BridgeSelectProvider extends Mixins(WalletConnectMixin) {
   get providers(): WalletProvider[] {
     return WalletProviders.map((provider) => ({
       ...provider,
-      selected: provider.value === this.evmProviderSelected,
+      selected: provider.value === this.evmProvider,
     }));
   }
 

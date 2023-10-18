@@ -35,8 +35,6 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
     onAccountChange: (addressList: string[]) => {
       if (addressList.length) {
         commit.setEvmAddress(addressList[0]);
-      } else {
-        commit.resetEvmAddress();
       }
     },
     onNetworkChange: async (networkHex: string) => {
@@ -44,7 +42,10 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
       commit.setProvidedEvmNetwork(evmNetwork);
     },
     onDisconnect: () => {
-      commit.resetProvidedEvmNetwork();
+      commit.resetEvmAddress();
+      commit.resetEvmProvider();
+      commit.resetEvmProviderNetwork();
+      commit.resetEvmProviderSubscription();
     },
   });
 
@@ -54,7 +55,7 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
 const actions = defineActions({
   async selectEvmProvider(context: ActionContext<any, any>, provider = Provider.Metamask): Promise<void> {
     const { commit, state } = web3ActionContext(context);
-    const address = await ethersUtil.connectEthereumProvider(provider, {
+    const address = await ethersUtil.connectEvmProvider(provider, {
       chains: [state.ethBridgeEvmNetwork],
       optionalChains: [...state.evmNetworkApps],
     });
@@ -64,7 +65,7 @@ const actions = defineActions({
 
       commit.setEvmAddress(address);
       commit.setProvidedEvmNetwork(evmNetwork);
-      commit.setSelectedEvmProvider(provider);
+      commit.setEvmProvider(provider);
 
       await subscribeOnEvm(context);
     }

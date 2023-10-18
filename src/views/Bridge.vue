@@ -112,7 +112,10 @@
                   {{ formatAddress(sender, 8) }}
                 </span>
               </s-tooltip>
-              <span>{{ t('connectedText') }}</span>
+              <span v-if="!isSubBridge && !isSoraToEvm" class="bridge-network-address" @click="connectExternalWallet">
+                {{ t('changeAccountText') }}
+              </span>
+              <span v-else>{{ t('connectedText') }}</span>
             </div>
             <s-button
               v-else
@@ -193,7 +196,7 @@
                   {{ formatAddress(recipient, 8) }}
                 </span>
               </s-tooltip>
-              <span v-if="isSubBridge" class="bridge-network-address" @click="connectExternalWallet">
+              <span v-if="isSubBridge || isSoraToEvm" class="bridge-network-address" @click="connectExternalWallet">
                 {{ t('changeAccountText') }}
               </span>
               <span v-else>{{ t('connectedText') }}</span>

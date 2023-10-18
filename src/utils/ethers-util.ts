@@ -62,25 +62,36 @@ const getEthBridgeGasLimit = (assetEvmAddress: string, kind: EthAssetKind, isSor
   }
 };
 
-async function connectEthereumProvider(provider: Provider, chains: ChainsProps): Promise<string> {
+async function connectEvmProvider(provider: Provider, chains: ChainsProps): Promise<string> {
   if (provider === Provider.Metamask) {
-    ethereumProvider = await detectEthereumProvider({ timeout: 0 });
-
-    if (!ethereumProvider) {
-      throw new Error('provider.messages.installExtension');
-    }
+    await useMetamaskExtensionProvider();
   } else {
     await useWalletConnectProvider(chains);
   }
 
-  if (ethereumProvider) {
-    // 'any' - because ethers throws errors after network switch
-    ethersInstance = new ethers.BrowserProvider(ethereumProvider, 'any');
+  return getAccount();
+}
 
-    return getAccount();
-  } else {
-    return '';
+function disconnectEvmProvider(): void {
+  if (ethereumProvider) {
+    // only for WalletConnect
+    ethereumProvider.disconnect?.();
   }
+}
+
+function createWeb3Instance(ethereumProvider: any) {
+  // 'any' - because ethers throws errors after network switch
+  ethersInstance = new ethers.BrowserProvider(ethereumProvider, 'any');
+}
+
+async function useMetamaskExtensionProvider(): Promise<void> {
+  ethereumProvider = await detectEthereumProvider({ timeout: 0 });
+
+  if (!ethereumProvider) {
+    throw new Error('provider.messages.installExtension');
+  }
+
+  createWeb3Instance(ethereumProvider);
 }
 
 async function useWalletConnectProvider(chains: ChainsProps): Promise<void> {
@@ -92,8 +103,9 @@ async function useWalletConnectProvider(chains: ChainsProps): Promise<void> {
     });
     // show qr modal
     await ethereumProvider.enable();
+
+    createWeb3Instance(ethereumProvider);
   } catch (error: any) {
-    ethereumProvider = null;
     // user cancelled qr modal
     if (error.message === 'Connection request reset. Please try again.') {
       return;
@@ -120,10 +132,14 @@ async function getSigner(): Promise<ethers.JsonRpcSigner> {
 }
 
 async function getAccount(): Promise<string> {
-  const ethersInstance = getEthersInstance();
-  await ethersInstance.send('eth_requestAccounts', []);
-  const signer = await getSigner();
-  return signer.getAddress();
+  try {
+    const ethersInstance = getEthersInstance();
+    await ethersInstance.send('eth_requestAccounts', []);
+    const signer = await getSigner();
+    return signer.getAddress();
+  } catch {
+    return '';
+  }
 }
 
 async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> {
@@ -410,7 +426,8 @@ function storeSelectedBridgeType(bridgeType: BridgeNetworkType) {
 }
 
 export default {
-  connectEthereumProvider,
+  connectEvmProvider,
+  disconnectEvmProvider,
   getSigner,
   getAccount,
   getAccountBalance,

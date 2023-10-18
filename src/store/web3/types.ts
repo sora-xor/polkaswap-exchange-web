@@ -35,7 +35,7 @@ export type Web3State = {
   networkType: Nullable<BridgeNetworkType>;
   networkSelected: Nullable<BridgeNetworkId>;
 
-  evmProviderSelected: Nullable<Provider>;
+  evmProvider: Nullable<Provider>;
   evmProviderNetwork: Nullable<BridgeNetworkId>;
   evmProviderSubscription: Nullable<FnWithoutArgs>;
 

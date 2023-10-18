@@ -53,10 +53,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.bridge.isSubBridge isSubBridge!: boolean;
 
-  // update selected evm network without metamask request
-  @mutation.web3.resetProvidedEvmNetwork resetProvidedEvmNetwork!: FnWithoutArgs;
-  @mutation.web3.resetEvmAddress resetEvmAddress!: FnWithoutArgs;
-  @mutation.web3.setEvmAddress setEvmAddress!: (address: string) => void;
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
   @mutation.web3.setSelectProviderDialogVisibility setSelectProviderDialogVisibility!: (flag: boolean) => void;
 
