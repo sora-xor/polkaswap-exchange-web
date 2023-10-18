@@ -39,17 +39,13 @@ type SubqueryAssetData = SubqueryAssetEntity & {
 };
 
 type SubsquidAssetData = SubsquidAssetEntity & {
-  hourSnapshots: {
-    nodes: SubsquidAssetSnapshotEntity[];
-  };
-  daySnapshots: {
-    nodes: SubsquidAssetSnapshotEntity[];
-  };
+  hourSnapshots: SubsquidAssetSnapshotEntity[];
+  daySnapshots: SubsquidAssetSnapshotEntity[];
 };
 
 const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetData>>`
   query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-    data: assets(after: $after, filter: { and: [{ id: { in: $ids } }, { liquidity: { greaterThan: "1" } }] }) {
+    data: assets(orderBy: ID_ASC, after: $after, filter: { and: [{ id: { in: $ids } }] }) {
       pageInfo {
         hasNextPage
         endCursor
@@ -83,8 +79,8 @@ const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetDat
 `;
 
 const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetData>>`
-  query AssetsQuery($after: String, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-    data: assets(after: $after, filter: { AND: [{ id_in: $ids }, { liquidity_gt: "1" }] }) {
+  query AssetsConnectionQuery($after: String, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
+    data: assetsConnection(orderBy: id_ASC, after: $after, where: { AND: [{ id_in: $ids }] }) {
       pageInfo {
         hasNextPage
         endCursor
@@ -95,17 +91,33 @@ const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetDat
           liquidity
           hourSnapshots: data(
             where: { AND: [{ timestamp_gte: $dayTimestamp }, { type_eq: HOUR }] }
-            orderBy: [timestamp_DESC]
+            orderBy: timestamp_DESC
           ) {
-            priceUSD
-            volume
+            priceUSD {
+              low
+              high
+              open
+              close
+            }
+            volume {
+              amount
+              amountUSD
+            }
           }
           daySnapshots: data(
             where: { AND: [{ timestamp_gte: $weekTimestamp }, { type_eq: DAY }] }
-            orderBy: [timestamp_DESC]
+            orderBy: timestamp_DESC
           ) {
-            priceUSD
-            volume
+            priceUSD {
+              low
+              high
+              open
+              close
+            }
+            volume {
+              amount
+              amountUSD
+            }
           }
         }
       }
@@ -122,13 +134,15 @@ const calcVolume = (nodes: AssetSnapshotEntity[]): FPNumber => {
 };
 
 const parse = (item: SubqueryAssetData | SubsquidAssetData): Record<string, TokenData> => {
+  const hourSnapshots = 'nodes' in item.hourSnapshots ? item.hourSnapshots.nodes : item.hourSnapshots;
+  const daySnapshots = 'nodes' in item.daySnapshots ? item.daySnapshots.nodes : item.daySnapshots;
   return {
     [item.id]: {
       reserves: FPNumber.fromCodecValue(item.liquidity ?? 0),
-      startPriceDay: new FPNumber(last(item.hourSnapshots.nodes)?.priceUSD?.open ?? 0),
-      startPriceWeek: new FPNumber(last(item.daySnapshots.nodes)?.priceUSD?.open ?? 0),
-      volumeDay: calcVolume(item.hourSnapshots.nodes),
-      volumeWeek: calcVolume(item.daySnapshots.nodes),
+      startPriceDay: new FPNumber(last(hourSnapshots)?.priceUSD?.open ?? 0),
+      startPriceWeek: new FPNumber(last(daySnapshots)?.priceUSD?.open ?? 0),
+      volumeDay: calcVolume(hourSnapshots),
+      volumeWeek: calcVolume(daySnapshots),
     },
   };
 };
