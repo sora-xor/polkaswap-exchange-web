@@ -349,7 +349,7 @@ const AccountMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'grid-block-distribute-vertically-24',
     title: PageNames.OrderBook,
-    href: '/#/book',
+    href: '/#/trade',
   },
   {
     icon: 'basic-circle-star-24',

@@ -16,7 +16,7 @@ const i18n = new VueI18n({
   messages: {
     [Language.EN]: { ...en, ...enCard },
   },
-  silentTranslationWarn: process.env.NODE_ENV === 'production',
+  silentTranslationWarn: true,
 });
 
 const loadedLanguages: Array<string> = [Language.EN];

@@ -1,3 +1,4 @@
+import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -20,7 +21,7 @@ export default class SwapQuoteMixin extends Mixins(mixins.LoadingMixin) {
     return !!(this.tokenFrom && this.tokenTo);
   }
 
-  public async subscribeOnQuote(func: any): Promise<void> {
+  public async subscribeOnQuote(func: any, liquiditySources: LiquiditySourceTypes[] = []): Promise<void> {
     this.resetQuoteSubscription();
 
     if (!this.areTokensSelected) return;
@@ -29,7 +30,8 @@ export default class SwapQuoteMixin extends Mixins(mixins.LoadingMixin) {
 
     const observableQuote = await api.swap.getDexesSwapQuoteObservable(
       (this.tokenFrom as AccountAsset).address,
-      (this.tokenTo as AccountAsset).address
+      (this.tokenTo as AccountAsset).address,
+      liquiditySources
     );
 
     this.quoteSubscription = observableQuote.subscribe((quoteData) => {

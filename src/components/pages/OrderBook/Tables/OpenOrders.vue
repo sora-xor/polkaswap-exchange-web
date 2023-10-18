@@ -83,6 +83,7 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -119,10 +120,12 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     this.openLimitOrders = [];
 
     this.userLimitOrders.forEach((limitOrder) => {
-      const { amount, price, side, id, orderBookId, time } = limitOrder;
+      const { amount, price, side, id, orderBookId, time, originalAmount } = limitOrder;
 
       const pair = `${this.getAsset(orderBookId.base)?.symbol}-${this.getAsset(orderBookId.quote)?.symbol}`;
       const date = new Date(time);
+
+      const filled = amount.div(originalAmount).mul(FPNumber.HUNDRED).toFixed(2).toString();
 
       const row = {
         limitOrderId: id,
@@ -131,9 +134,9 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
         pair,
         price,
         side,
-        filled: '100',
+        filled: `${filled}%`,
         expired: 'month',
-        total: amount.mul(price),
+        total: amount.mul(price).toFixed(5),
         date: { date: `${date.getUTCMonth() + 1}/${date.getUTCDate()}`, time: date.toLocaleTimeString() },
       };
 

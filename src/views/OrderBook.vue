@@ -59,7 +59,7 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
 .order-book {
   &-widgets {
     display: flex;
-
+    flex-wrap: nowrap;
     margin-left: calc($sidebar-max-width + 8px);
 
     .set-widget {
@@ -72,8 +72,7 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
       min-height: 500px;
     }
     .book-widget {
-      max-height: 600px;
-      min-height: 580px;
+      min-height: 630px;
     }
     .market-widget {
       min-height: 400px;

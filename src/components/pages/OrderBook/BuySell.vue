@@ -103,7 +103,8 @@
 </template>
 
 <script lang="ts">
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
+import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
+import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
@@ -116,7 +117,6 @@ import { action, getter, mutation, state } from '@/store/decorators';
 import { OrderBookTabs } from '@/types/tabs';
 import { isMaxButtonAvailable, getMaxValue, getAssetBalance, asZeroValue, hasInsufficientBalance } from '@/utils';
 
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { LPRewardsInfo, SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
@@ -160,6 +160,7 @@ export default class BuySellWidget extends Mixins(
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
   @mutation.swap.setLiquidityProviderFee private setLiquidityProviderFee!: (value: CodecString) => void;
   @mutation.swap.setRewards private setRewards!: (rewards: Array<LPRewardsInfo>) => void;
+  @mutation.swap.setLiquiditySource setLiquiditySource!: (liquiditySource: string) => void;
   @mutation.swap.setRoute private setRoute!: (route: Array<string>) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
 
@@ -186,8 +187,9 @@ export default class BuySellWidget extends Mixins(
       return 'connectWalletText';
     }
 
-    if (!this.baseValue) return 'set price';
-    if (!this.quoteValue) return 'enter amount';
+    if (this.isNotAllowedToPlace()) return 'book stopped';
+    if (!this.quoteValue) return 'set price';
+    if (!this.baseValue) return 'enter amount';
     if (this.isOutOfAmountBounds) return 'out of constraints';
     if (this.isPriceTooHigh) return 'price too high';
     if (this.isPriceTooLow) return 'price too low';
@@ -198,6 +200,8 @@ export default class BuySellWidget extends Mixins(
   }
 
   get buttonDisabled(): boolean {
+    if (this.isNotAllowedToPlace()) return true;
+
     if (!this.isLoggedIn) return false;
 
     if (!this.baseValue || !this.quoteValue) return true;
@@ -347,8 +351,17 @@ export default class BuySellWidget extends Mixins(
       this.resetValues();
     } else if (this.activeTab === LimitOrderType.market) {
       // this.prepareValuesForSwap();
+
+      this.subscribeOnQuoteValues();
+
       this.showConfirmMarketSwapDialog();
     }
+  }
+
+  isNotAllowedToPlace(): boolean {
+    if (!this.currentOrderBook) return false;
+    const book: any = Object.values(this.currentOrderBook)[0];
+    return ![OrderBookStatus.Trade, OrderBookStatus.PlaceAndCancel].includes(book.status);
   }
 
   get isBuySide(): boolean {
@@ -356,48 +369,33 @@ export default class BuySellWidget extends Mixins(
   }
 
   private subscribeOnQuoteValues(): void {
-    this.subscribeOnQuote(this.prepareValuesForSwap);
-  }
-
-  getQuoteValue(value): any {
-    if (!this.swapQuote) return;
-
-    const {
-      result: { amount },
-    } = this.swapQuote(
-      (this.tokenFrom as Asset).address,
-      (this.tokenTo as Asset).address,
-      value,
-      this.isBuySide,
-      [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>
-    );
-
-    return amount;
+    this.subscribeOnQuote(this.prepareValuesForSwap, [LiquiditySourceTypes.OrderBook]);
   }
 
   prepareValuesForSwap() {
-    // if (!this.areTokensSelected || asZeroValue(fromValue) || !this.swapQuote) return;
-    // try {
-    //   const {
-    //     dexId,
-    //     result: { amount, amountWithoutImpact, fee, rewards, route },
-    //   } = this.swapQuote(
-    //     (this.tokenFrom as Asset).address,
-    //     (this.tokenTo as Asset).address,
-    //     fromValue,
-    //     this.isBuySide,
-    //     [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>
-    //   );
-    //   this.setFromValue(this.getStringFromCodec(fromValue));
-    //   this.setToValue(this.quoteValue);
-    //   this.setAmountWithoutImpact(amountWithoutImpact as string);
-    //   this.setLiquidityProviderFee(fee);
-    //   this.setRewards(rewards);
-    //   this.setRoute(route as string[]);
-    //   this.selectDexId(dexId);
-    // } catch (error: any) {
-    //   console.error(error);
-    // }
+    this.setLiquiditySource('OrderBook');
+
+    if (!this.areTokensSelected || asZeroValue(this.baseValue) || !this.swapQuote) return;
+    try {
+      const {
+        dexId,
+        result: { amount, amountWithoutImpact, fee, rewards, route },
+      } = this.swapQuote(
+        (this.tokenFrom as Asset).address,
+        (this.tokenTo as Asset).address,
+        this.baseValue,
+        this.isBuySide,
+        [this.liquiditySource].filter(Boolean) as Array<LiquiditySourceTypes>
+      );
+
+      this.setFromValue(this.getStringFromCodec(this.baseValue));
+      this.setToValue(this.quoteValue);
+      this.setAmountWithoutImpact(amountWithoutImpact as string);
+      this.setLiquidityProviderFee(fee);
+      this.selectDexId(dexId);
+    } catch (error: any) {
+      console.error(error);
+    }
   }
 
   resetValues() {
@@ -434,17 +432,21 @@ export default class BuySellWidget extends Mixins(
   }
 
   handleTabClick(value: LimitOrderType): void {
-    // if (value === LimitOrderType.limit) this.setBaseValue('');
-    // if (value === LimitOrderType.market) {
-    //   if (this.side === PriceVariant.Buy) {
-    //     this.setTokenFromAddress(this.baseAsset.address);
-    //     this.setTokenToAddress(this.quoteAsset.address);
-    //   } else if (this.side === PriceVariant.Sell) {
-    //     this.setTokenFromAddress(this.quoteAsset.address);
-    //     this.setTokenToAddress(this.baseAsset.address);
-    //   } else return;
-    //   this.subscribeOnQuoteValues();
-    // }
+    if (value === LimitOrderType.limit) {
+      this.setBaseValue('');
+    }
+
+    if (value === LimitOrderType.market) {
+      if (this.side === PriceVariant.Buy) {
+        this.setTokenFromAddress(this.baseAsset.address);
+        this.setTokenToAddress(this.quoteAsset.address);
+      } else if (this.side === PriceVariant.Sell) {
+        this.setTokenFromAddress(this.quoteAsset.address);
+        this.setTokenToAddress(this.baseAsset.address);
+      } else return;
+
+      this.subscribeOnQuoteValues();
+    }
   }
 }
 </script>

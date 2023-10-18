@@ -22,9 +22,9 @@
     <div v-else class="stock-book-sell--no-asks">No opened asks</div>
     <div :class="getComputedClassTrend()">
       <div v-if="noOpenAsksOrBids">
-        <span class="mark-price">22.386800</span>
+        <span class="mark-price">{{ asksFormatted[asksFormatted.length - 1].price }}</span>
         <s-icon class="trend-icon" :name="iconTrend" size="18" />
-        <span class="last-traded-price">$22.54</span>
+        <span class="last-traded-price">{{ fiatValue }}</span>
       </div>
     </div>
     <div v-if="bidsFormatted.length" class="stock-book-buy">
@@ -45,8 +45,10 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state, action, mutation } from '@/store/decorators';
+import { state, action, mutation, getter } from '@/store/decorators';
 import { delay } from '@/utils';
+
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 type PriceTrend = 'up' | 'down';
 
@@ -58,24 +60,36 @@ interface LimitOrderForm {
 }
 
 @Component
-export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
   @state.orderBook.asks asks!: any;
   @state.orderBook.bids bids!: any;
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
+
+  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   @mutation.orderBook.resetAsks resetAsks!: () => void;
   @mutation.orderBook.resetBids resetBids!: () => void;
 
   @action.orderBook.subscribeToOrderBook private subscribeToOrderBook!: ({ base }) => Promise<void>;
 
-  priceTrend: PriceTrend = 'down';
-  maxRowsNumber = 9;
+  priceTrend: PriceTrend = 'up';
+  maxRowsNumber = 10;
 
   asksFormatted: Array<LimitOrderForm> = [];
   bidsFormatted: Array<LimitOrderForm> = [];
 
   get iconTrend(): string {
     return this.priceTrend === 'up' ? 'arrows-arrow-bold-top-24' : 'arrows-arrow-bold-bottom-24';
+  }
+
+  get fiatValue(): string {
+    const fiat =
+      this.getFiatAmount(
+        this.asksFormatted[this.asksFormatted.length - 1].price.toString(),
+        this.getAsset(this.baseAssetAddress) as AccountAsset
+      ) || '';
+
+    return fiat ? `$${fiat}` : '';
   }
 
   getComputedClassTrend(): string {
@@ -95,7 +109,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   getSellOrders() {
-    return this.asksFormatted.slice(0, this.maxRowsNumber);
+    return this.asksFormatted.slice(-this.maxRowsNumber);
   }
 
   getBuyOrders() {
@@ -106,30 +120,116 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return `width: ${filled}%`;
   }
 
+  calculateStepsDistribution(orders): any {
+    if (!orders.length) return;
+
+    const maxPrice = FPNumber.max(...orders.map(([price]) => price)) as FPNumber;
+    const minPrice = FPNumber.min(...orders.map(([price]) => price)) as FPNumber;
+
+    const difference = maxPrice.sub(minPrice);
+    const step = difference.div(FPNumber.TEN);
+
+    // debug info:
+    // let currentPrice = maxPrice;
+
+    // while (FPNumber.gt(currentPrice, minPrice)) {
+    //   aggregatedPrices.push(currentPrice);
+
+    //   currentPrice = currentPrice.sub(step);
+    // }
+
+    const aggregatedOrders = [] as any;
+
+    let accumulatedAmount = FPNumber.ZERO;
+    let accumulatedTotal = FPNumber.ONE;
+    let edge = maxPrice;
+
+    orders.forEach(([price, amount]) => {
+      if (FPNumber.gt(price, edge.sub(step))) {
+        accumulatedAmount = accumulatedAmount.add(amount);
+        accumulatedTotal = price.mul(amount);
+      } else {
+        aggregatedOrders.push([edge, accumulatedAmount, accumulatedTotal]);
+        edge = edge.sub(step);
+        accumulatedAmount = amount;
+        accumulatedTotal = FPNumber.ONE;
+      }
+    });
+
+    return aggregatedOrders;
+
+    // step 0.004999
+    // ['0.09999', '0.09997', '0.092', '0.091', '0.09', '0.06', '0.059', '0.057', '0.056', '0.055', '0.051', '0.05']
+    // ['0.09999', '0.094991', '0.089992', '0.084993', '0.079994', '0.074995', '0.069996', '0.064997', '0.059998', '0.054999']
+  }
+
+  getAmountProportion(currentAmount: FPNumber, maxAmount: FPNumber): number {
+    return currentAmount.div(maxAmount).mul(FPNumber.HUNDRED).toNumber();
+  }
+
   @Watch('asks')
   @Watch('bids')
   async prepareLimitOrders(): Promise<void> {
     this.asksFormatted = [];
     this.bidsFormatted = [];
 
-    if (this.asks.length) {
-      this.asks.forEach((row: [FPNumber, FPNumber]) => {
-        const price = row[0].toNumber();
-        const amount = row[1].toNumber();
-        const total = row[0].mul(row[1]).toNumber();
+    if (this.asks.length < this.maxRowsNumber || this.bids.length < this.maxRowsNumber) {
+      if (this.asks.length) {
+        const maxAskAmount = FPNumber.max(...this.asks.map((order) => order[1])) as FPNumber;
 
-        this.asksFormatted.push({ price, amount, total });
-      });
-    }
+        this.asks.forEach((row: [FPNumber, FPNumber]) => {
+          const price = row[0].toNumber();
+          const amount = row[1].toNumber();
+          const total = row[0].mul(row[1]).toNumber();
 
-    if (this.bids.length) {
-      this.bids.forEach((row: [FPNumber, FPNumber]) => {
-        const price = row[0].toNumber();
-        const amount = row[1].toNumber();
-        const total = row[0].mul(row[1]).toNumber();
+          this.asksFormatted.push({ price, amount, total, filled: this.getAmountProportion(row[1], maxAskAmount) });
+        });
+      }
 
-        this.bidsFormatted.push({ price, amount, total });
-      });
+      if (this.bids.length) {
+        const maxBidAmount = FPNumber.max(...this.bids.map((order) => order[1])) as FPNumber;
+
+        this.bids.forEach((row: [FPNumber, FPNumber]) => {
+          const price = row[0].toNumber();
+          const amount = row[1].toNumber();
+          const total = row[0].mul(row[1]).toNumber();
+
+          this.bidsFormatted.push({ price, amount, total, filled: this.getAmountProportion(row[1], maxBidAmount) });
+        });
+      }
+    } else {
+      const aggregatedAsks = this.calculateStepsDistribution(this.asks);
+      const aggregatedBids = this.calculateStepsDistribution(this.bids);
+
+      if (aggregatedAsks.length) {
+        const maxAskAmount = FPNumber.max(...aggregatedAsks.map((order) => order[1])) as FPNumber;
+
+        aggregatedAsks.forEach((row: [FPNumber, FPNumber, FPNumber]) => {
+          // ignore void amount record, do not push
+          if (row[1].isZero()) return;
+
+          const price = row[0].toNumber();
+          const amount = row[1].toNumber();
+          const total = row[2].toNumber();
+
+          this.asksFormatted.push({ price, amount, total, filled: this.getAmountProportion(row[1], maxAskAmount) });
+        });
+      }
+
+      if (aggregatedBids.length) {
+        const maxBidAmount = FPNumber.max(...aggregatedBids.map((order) => order[1])) as FPNumber;
+
+        aggregatedBids.forEach((row: [FPNumber, FPNumber, FPNumber]) => {
+          // ignore void amount record, do not push
+          if (row[1].isZero()) return;
+
+          const price = row[0].toNumber();
+          const amount = row[1].toNumber();
+          const total = row[2].toNumber();
+
+          this.bidsFormatted.push({ price, amount, total, filled: this.getAmountProportion(row[1], maxBidAmount) });
+        });
+      }
     }
   }
 
@@ -191,7 +291,7 @@ $row-height: 24px;
 
   &-buy,
   &-sell {
-    height: $row-height * 9;
+    height: $row-height * 11;
     transform: scaleX(-1);
     .bar {
       width: 40%;
