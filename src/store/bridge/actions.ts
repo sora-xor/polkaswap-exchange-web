@@ -490,7 +490,9 @@ const actions = defineActions({
     const referenceAsset = DAI.address;
     const sources = [LiquiditySourceTypes.XYKPool, LiquiditySourceTypes.XSTPool];
     const limitObservable = api.bridgeProxy.getCurrentTransferLimitObservable();
-    const quoteObservable = await api.swap.getSwapQuoteObservable(referenceAsset, limitAsset, sources, DexId.XOR);
+    const quoteObservable = api.swap.getSwapQuoteObservable(referenceAsset, limitAsset, sources, DexId.XOR);
+
+    if (!quoteObservable) return;
 
     let subscription!: Subscription;
 

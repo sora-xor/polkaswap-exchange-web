@@ -1,12 +1,6 @@
 import { Operation } from '@sora-substrate/util';
 import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
-import {
-  api,
-  historyElementsFilter,
-  SUBQUERY_TYPES,
-  WALLET_CONSTS,
-  getCurrentIndexer,
-} from '@soramitsu/soraneo-wallet-web';
+import { api, SUBQUERY_TYPES, WALLET_CONSTS, getCurrentIndexer } from '@soramitsu/soraneo-wallet-web';
 import { ethers, EtherscanProvider, BlockTag } from 'ethers';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
@@ -259,8 +253,9 @@ export class EthBridgeHistory {
   }
 
   public async fetchHistoryElements(address: string, timestamp = 0, ids?: string[]): Promise<HistoryElement[]> {
+    const indexer = getCurrentIndexer();
     const operations = [Operation.EthBridgeOutgoing, Operation.EthBridgeIncoming];
-    const filter = historyElementsFilter({ address, operations, timestamp, ids });
+    const filter = indexer.historyElementsFilter({ address, operations, timestamp, ids });
     const history: HistoryElement[] = [];
 
     let hasNext = true;
@@ -268,7 +263,6 @@ export class EthBridgeHistory {
 
     do {
       const variables = { after, filter, first: 100 };
-      const indexer = getCurrentIndexer();
       const response = await indexer.services.explorer.account.getHistoryPaged(variables);
 
       if (!response) return history;
