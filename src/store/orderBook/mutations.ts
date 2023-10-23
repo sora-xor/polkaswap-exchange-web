@@ -44,6 +44,9 @@ const mutations = defineMutations<OrderBookState>()({
   resetBids(state): void {
     state.bids = [];
   },
+  setVolume(state, volume: string): void {
+    state.volume = volume;
+  },
   setUserLimitOrders(state, limitOrders): void {
     state.userLimitOrders = limitOrders;
   },

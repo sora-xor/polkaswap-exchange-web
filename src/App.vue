@@ -548,6 +548,13 @@ i.icon-divider {
   @include icon-styles;
 }
 
+.app-main--orderbook {
+  .app-menu {
+    position: absolute;
+    right: initial;
+  }
+}
+
 @include desktop {
   .app-main {
     &.app-main--swap.app-main--has-charts {

@@ -1,5 +1,5 @@
 <template>
-  <div class="order-book-widget">
+  <div>
     <swap-chart :token-from="quoteAsset" :token-to="baseAsset" :is-available="isAvailable" class="swap-chart" />
   </div>
 </template>

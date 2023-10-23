@@ -12,6 +12,7 @@
       <div>total</div>
     </div>
     <div v-if="asksFormatted.length" class="stock-book-sell">
+      <div class="margin" :style="getHeight()" />
       <div v-for="order in getSellOrders()" :key="order.price" class="row">
         <span class="order-info">{{ order.total }}</span>
         <span class="order-info">{{ order.amount }}</span>
@@ -66,12 +67,16 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
 
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
+  @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
 
   @mutation.orderBook.resetAsks resetAsks!: () => void;
   @mutation.orderBook.resetBids resetBids!: () => void;
+  @mutation.orderBook.setVolume setVolume!: (volume: string) => void;
 
   @action.orderBook.subscribeToOrderBook private subscribeToOrderBook!: ({ base }) => Promise<void>;
 
+  volumeAsks = FPNumber.ZERO;
+  volumeBids = FPNumber.ZERO;
   priceTrend: PriceTrend = 'up';
   maxRowsNumber = 10;
 
@@ -83,11 +88,10 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   get fiatValue(): string {
-    const fiat =
-      this.getFiatAmount(
-        this.asksFormatted[this.asksFormatted.length - 1].price.toString(),
-        this.getAsset(this.baseAssetAddress) as AccountAsset
-      ) || '';
+    const fiat = this.getFiatAmount(
+      this.asksFormatted[this.asksFormatted.length - 1].price.toString(),
+      this.quoteAsset
+    );
 
     return fiat ? `$${fiat}` : '';
   }
@@ -116,6 +120,15 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return this.bidsFormatted.slice(0, this.maxRowsNumber);
   }
 
+  getHeight() {
+    if (this.asks.length < 10) {
+      const margin = this.maxRowsNumber - this.asks.length;
+      return `height: ${24 * margin}px`;
+    }
+
+    return `height: 0px`;
+  }
+
   getStyles(filled) {
     return `width: ${filled}%`;
   }
@@ -131,9 +144,10 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
     // debug info:
     // let currentPrice = maxPrice;
+    // const setPrices = [] as any;
 
     // while (FPNumber.gt(currentPrice, minPrice)) {
-    //   aggregatedPrices.push(currentPrice);
+    //   setPrices.push(currentPrice.toString());
 
     //   currentPrice = currentPrice.sub(step);
     // }
@@ -141,26 +155,26 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     const aggregatedOrders = [] as any;
 
     let accumulatedAmount = FPNumber.ZERO;
-    let accumulatedTotal = FPNumber.ONE;
+    let accumulatedTotal = FPNumber.ZERO;
     let edge = maxPrice;
 
-    orders.forEach(([price, amount]) => {
-      if (FPNumber.gt(price, edge.sub(step))) {
+    for (let index = 0; index < orders.length; index++) {
+      const [price, amount] = orders[index];
+
+      if (FPNumber.lte(edge, minPrice)) break;
+      if (FPNumber.lte(price, edge) && FPNumber.gt(price, edge.sub(step))) {
         accumulatedAmount = accumulatedAmount.add(amount);
-        accumulatedTotal = price.mul(amount);
+        accumulatedTotal = price.mul(amount).add(accumulatedTotal);
       } else {
         aggregatedOrders.push([edge, accumulatedAmount, accumulatedTotal]);
         edge = edge.sub(step);
-        accumulatedAmount = amount;
-        accumulatedTotal = FPNumber.ONE;
+        accumulatedAmount = FPNumber.ZERO;
+        accumulatedTotal = FPNumber.ZERO;
+        index -= 1;
       }
-    });
+    }
 
     return aggregatedOrders;
-
-    // step 0.004999
-    // ['0.09999', '0.09997', '0.092', '0.091', '0.09', '0.06', '0.059', '0.057', '0.056', '0.055', '0.051', '0.05']
-    // ['0.09999', '0.094991', '0.089992', '0.084993', '0.079994', '0.074995', '0.069996', '0.064997', '0.059998', '0.054999']
   }
 
   getAmountProportion(currentAmount: FPNumber, maxAmount: FPNumber): number {
@@ -172,17 +186,26 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   async prepareLimitOrders(): Promise<void> {
     this.asksFormatted = [];
     this.bidsFormatted = [];
+    this.volumeAsks = FPNumber.ZERO;
+    this.volumeBids = FPNumber.ZERO;
 
-    if (this.asks.length < this.maxRowsNumber || this.bids.length < this.maxRowsNumber) {
+    if (this.asks.length > this.maxRowsNumber || this.bids.length < this.maxRowsNumber) {
       if (this.asks.length) {
         const maxAskAmount = FPNumber.max(...this.asks.map((order) => order[1])) as FPNumber;
 
         this.asks.forEach((row: [FPNumber, FPNumber]) => {
           const price = row[0].toNumber();
           const amount = row[1].toNumber();
-          const total = row[0].mul(row[1]).toNumber();
+          const total = row[0].mul(row[1]);
 
-          this.asksFormatted.push({ price, amount, total, filled: this.getAmountProportion(row[1], maxAskAmount) });
+          this.volumeAsks = this.volumeAsks.add(total);
+
+          this.asksFormatted.push({
+            price,
+            amount,
+            total: total.toNumber(),
+            filled: this.getAmountProportion(row[1], maxAskAmount),
+          });
         });
       }
 
@@ -192,9 +215,16 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
         this.bids.forEach((row: [FPNumber, FPNumber]) => {
           const price = row[0].toNumber();
           const amount = row[1].toNumber();
-          const total = row[0].mul(row[1]).toNumber();
+          const total = row[0].mul(row[1]);
 
-          this.bidsFormatted.push({ price, amount, total, filled: this.getAmountProportion(row[1], maxBidAmount) });
+          this.volumeBids = this.volumeBids.add(total);
+
+          this.bidsFormatted.push({
+            price,
+            amount,
+            total: total.toNumber(),
+            filled: this.getAmountProportion(row[1], maxBidAmount),
+          });
         });
       }
     } else {
@@ -210,9 +240,16 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
           const price = row[0].toNumber();
           const amount = row[1].toNumber();
-          const total = row[2].toNumber();
+          const total = row[2];
 
-          this.asksFormatted.push({ price, amount, total, filled: this.getAmountProportion(row[1], maxAskAmount) });
+          this.volumeAsks = this.volumeAsks.add(total);
+
+          this.asksFormatted.push({
+            price,
+            amount,
+            total: total.toNumber(),
+            filled: this.getAmountProportion(row[1], maxAskAmount),
+          });
         });
       }
 
@@ -225,12 +262,21 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
           const price = row[0].toNumber();
           const amount = row[1].toNumber();
-          const total = row[2].toNumber();
+          const total = row[2];
 
-          this.bidsFormatted.push({ price, amount, total, filled: this.getAmountProportion(row[1], maxBidAmount) });
+          this.volumeBids = this.volumeBids.add(total);
+
+          this.bidsFormatted.push({
+            price,
+            amount,
+            total: total.toNumber(),
+            filled: this.getAmountProportion(row[1], maxBidAmount),
+          });
         });
       }
     }
+
+    this.setVolume(this.volumeAsks.add(this.volumeBids).toFixed(4).toString());
   }
 
   async withLimitOrdersSet<T = void>(func: FnWithoutArgs<T>): Promise<T> {

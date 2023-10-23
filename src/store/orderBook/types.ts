@@ -9,6 +9,7 @@ export type OrderBookState = {
   quoteAssetAddress: Nullable<string>;
   asks: [];
   bids: [];
+  volume: string;
   userLimitOrders: [];
   baseValue: string;
   quoteValue: string;

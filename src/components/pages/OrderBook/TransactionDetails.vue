@@ -1,24 +1,33 @@
 <template>
   <transaction-details :info-only="infoOnly">
     <info-line
-      :label="t('bridge.soraNetworkFee')"
-      :label-tooltip="t('networkFeeTooltipText')"
-      :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
-      :asset-symbol="XOR_SYMBOL"
-      :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
+      :label="'limit price'"
+      :label-tooltip="'order limit price'"
+      :asset-symbol="quoteSymbol"
+      :value="quoteValue || toValue || '0'"
       is-formatted
     />
     <info-line
-      :label="formattedNetworkFeeLabel"
-      :label-tooltip="t('ethNetworkFeeTooltipText', { network: networkName })"
-      :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
-      :asset-symbol="evmTokenSymbol"
+      :label="'amount'"
+      :label-tooltip="'amount'"
+      :asset-symbol="baseSymbol"
+      :value="baseValue || '0'"
+      is-formatted
+    />
+    <info-line :label="'expiry date'" :label-tooltip="'lifespan'" :value="limitOrderExpiryDate" />
+    <info-line
+      :label="t('swap.networkFee')"
+      :label-tooltip="t('networkFeeTooltipText')"
+      :value="formattedNetworkFee"
+      :asset-symbol="quoteSymbol"
+      :fiat-value="getFiatAmountByCodecString(networkFee)"
       is-formatted
     />
   </transaction-details>
 </template>
 
 <script lang="ts">
+import { Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
@@ -26,9 +35,10 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import type { NetworkData } from '@/types/bridge';
+import { getter, state } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -37,29 +47,42 @@ import type { CodecString } from '@sora-substrate/util';
   },
 })
 export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  readonly XOR_SYMBOL = XOR.symbol;
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.orderBook.baseValue baseValue!: string;
+  @state.orderBook.quoteValue quoteValue!: string;
+  @state.orderBook.baseAssetAddress baseAssetAddress!: string;
+  @state.swap.toValue toValue!: string;
 
-  @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
+  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
+
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
-  @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
-  @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
-  @Prop({ default: () => null, type: Object }) readonly network!: NetworkData;
 
-  get networkName(): string {
-    return this.network?.shortName ?? '';
+  get baseSymbol(): string | undefined {
+    return this.getAsset(this.baseAssetAddress)?.symbol;
   }
 
-  get formattedNetworkFeeLabel(): string {
-    return `${this.networkName} ${this.t('networkFeeText')}`;
+  get quoteSymbol(): string {
+    return XOR.symbol;
+  }
+
+  get limitOrderExpiryDate(): Nullable<string> {
+    const now = new Date();
+    const oneMonthAhead = now.setMonth(now.getMonth() + 1);
+    return this.formatDate(oneMonthAhead, 'LL');
+  }
+
+  get networkFee(): CodecString {
+    // TODO: PlaceOrder
+    return this.networkFees[Operation.Swap];
+  }
+
+  get formattedNetworkFee(): string {
+    return this.formatCodecNumber(this.networkFee);
   }
 
   get formattedSoraNetworkFee(): string {
     return this.formatCodecNumber(this.soraNetworkFee);
-  }
-
-  get formattedEvmNetworkFee(): string {
-    return this.formatCodecNumber(this.evmNetworkFee);
   }
 
   formatFee(fee: string, formattedFee: string): string {

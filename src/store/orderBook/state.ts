@@ -14,6 +14,7 @@ function initialState(): OrderBookState {
     quoteValue: '',
     asks: [],
     bids: [],
+    volume: '',
     userLimitOrders: [],
     side: LimitOrderSide.Buy,
     orderBookUpdates: [],

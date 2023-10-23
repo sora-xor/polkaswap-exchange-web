@@ -7,7 +7,7 @@
       @selection-change="handleSelectionChange"
     >
       <s-table-column type="selection" />
-      <s-table-column>
+      <s-table-column :width="'70'">
         <template #header>
           <span>TIME</span>
         </template>
@@ -18,51 +18,53 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column>
+      <s-table-column :width="'126'">
         <template #header>
           <span>PAIR</span>
         </template>
         <template v-slot="{ row }">
-          <div class="limit-order-table__pair">
-            <span>{{ row.pair }}</span>
-          </div>
+          <span class="limit-order-table__pair">{{ row.pair }}</span>
         </template>
       </s-table-column>
-      <s-table-column>
+      <s-table-column :width="'65'">
         <template #header>
           <span>SIDE</span>
         </template>
         <template v-slot="{ row }">
-          <div class="limit-order-table__side">
-            <span>{{ row.side }}</span>
-          </div>
+          <span class="limit-order-table__side">{{ row.side }}</span>
         </template>
       </s-table-column>
-      <s-table-column>
+      <s-table-column :width="'126'">
         <template #header>
           <span>PRICE</span>
         </template>
         <template v-slot="{ row }">
-          <span>{{ row.price }}</span>
+          <div class="limit-order-table__price">
+            <span class="price">{{ row.price }}</span>
+            <span>{{ ` ${quoteAsset.symbol}` }}</span>
+          </div>
         </template>
       </s-table-column>
-      <s-table-column>
+      <s-table-column :width="'164'">
         <template #header>
           <span>AMOUNT</span>
         </template>
         <template v-slot="{ row }">
-          <span>{{ row.amount }}</span>
+          <div class="limit-order-table__amount">
+            <span class="amount">{{ row.amount }}</span>
+            <span>{{ ` ${baseAsset.symbol}` }}</span>
+          </div>
         </template>
       </s-table-column>
-      <s-table-column>
+      <s-table-column :width="'98'">
         <template #header>
-          <span>FILLED</span>
+          <span>% FILLED</span>
         </template>
         <template v-slot="{ row }">
           <span>{{ row.filled }}</span>
         </template>
       </s-table-column>
-      <s-table-column>
+      <s-table-column :width="'94'">
         <template #header>
           <span>LIFETIME</span>
         </template>
@@ -75,7 +77,7 @@
           <span>TOTAL</span>
         </template>
         <template v-slot="{ row }">
-          <span>{{ row.total }}</span>
+          <span class="limit-order-table__total">{{ fiatAmount(row.total) }}</span>
         </template>
       </s-table-column>
     </s-table>
@@ -84,7 +86,7 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -94,12 +96,14 @@ import { delay } from '@/utils';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
-export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.currentOrderBook currentOrderBook!: any;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<any>;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.orderBook.baseAsset baseAsset!: AccountAsset;
+  @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   @action.orderBook.subscribeToUserLimitOrders subscribeToOpenOrders!: ({ base }) => void;
@@ -108,6 +112,12 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 
   get openOrders(): any {
     return this.openLimitOrders;
+  }
+
+  fiatAmount(amount: string): string {
+    const fiat = this.getFiatAmount(amount, this.baseAsset);
+
+    return `$${FPNumber.fromNatural(fiat || '0').toString()}`;
   }
 
   deserializeKey(key: string) {
@@ -186,28 +196,49 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
       background-color: var(--s-color-utility-surface);
     }
 
-    .el-checkbox__inner::after {
-      left: 5px;
-    }
-
     .el-checkbox__inner {
       border-radius: unset;
     }
   }
 
-  .limit-order-table__date {
-    color: var(--s-color-base-content-secondary);
-    font-size: 14px;
+  .limit-order-table {
+    &__date {
+      color: var(--s-color-base-content-secondary);
+      font-size: 12.5px;
+    }
+
+    &__pair {
+      font-weight: 500;
+    }
+
+    &__side {
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    &__price {
+      .price {
+        font-weight: 500;
+      }
+    }
+
+    &__amount {
+      .amount {
+        font-weight: 500;
+      }
+    }
+
+    &__total {
+      color: var(--s-color-fiat-value);
+      font-family: var(--s-font-family-default);
+      font-weight: 400;
+      line-height: var(--s-line-height-medium);
+      letter-spacing: var(--s-letter-spacing-small);
+    }
   }
 
-  .limit-order-table__pair {
-    font-weight: 500;
+  .el-table__body-wrapper {
+    height: 380px;
   }
-
-  .limit-order-table__side {
-    text-transform: uppercase;
-  }
-
-  height: 430px !important;
 }
 </style>

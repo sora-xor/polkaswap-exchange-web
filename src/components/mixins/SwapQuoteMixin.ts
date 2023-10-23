@@ -28,10 +28,11 @@ export default class SwapQuoteMixin extends Mixins(mixins.LoadingMixin) {
 
     this.loading = true;
 
-    const observableQuote = await api.swap.getDexesSwapQuoteObservable(
+    const observableQuote = await api.swap.getSwapQuoteObservable(
       (this.tokenFrom as AccountAsset).address,
       (this.tokenTo as AccountAsset).address,
-      liquiditySources
+      liquiditySources,
+      0
     );
 
     this.quoteSubscription = observableQuote.subscribe((quoteData) => {

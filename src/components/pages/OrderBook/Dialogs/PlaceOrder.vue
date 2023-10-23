@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('swap.confirmSwap')" custom-class="dialog--confirm-swap">
+  <dialog-base :visible.sync="isVisible" :title="'Place limit order'" custom-class="dialog--confirm-swap">
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
@@ -17,17 +17,8 @@
         </div>
       </div>
     </div>
-    <p
-      class="transaction-message"
-      :class="{ 'transaction-message--min-received': !isExchangeB }"
-      v-html="
-        t(`swap.swap${isExchangeB ? 'Input' : 'Output'}Message`, {
-          transactionValue: `<span class='transaction-number'>${formattedMinMaxReceived}</span>`,
-        })
-      "
-    />
     <s-divider />
-    <swap-transaction-details />
+    <place-transaction-details />
     <template #footer>
       <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmSwap">
         {{ t('exchange.confirm') }}
@@ -37,6 +28,7 @@
 </template>
 
 <script lang="ts">
+import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
@@ -51,14 +43,13 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
   components: {
     DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
-    SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
+    PlaceTransactionDetails: lazyComponent(Components.PlaceTransactionDetails),
   },
 })
-export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
+export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
   @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.swap.fromValue private fromValue!: string;
   @state.swap.toValue private toValue!: string;
-  @state.swap.isExchangeB isExchangeB!: boolean;
   @state.swap.selectedDexId private selectedDexId!: number;
 
   @getter.swap.minMaxReceived private minMaxReceived!: CodecString;
@@ -76,12 +67,8 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
     return this.formatStringValue(this.toValue, this.tokenTo?.decimals);
   }
 
-  get formattedMinMaxReceived(): string {
-    const decimals = (this.isExchangeB ? this.tokenFrom : this.tokenTo)?.decimals;
-    return this.formatCodecNumber(this.minMaxReceived, decimals);
-  }
-
   async handleConfirmSwap(): Promise<void> {
+    // TODO eith
     if (this.isInsufficientBalance) {
       this.$alert(
         this.t('exchange.insufficientBalance', { tokenSymbol: this.tokenFrom ? this.tokenFrom.symbol : '' }),
@@ -89,6 +76,12 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
       );
       this.$emit('confirm');
     } else {
+      console.log('tokenFrom', this.tokenFrom);
+      console.log('tokenTo', this.tokenTo);
+      console.log('fromValue', this.fromValue);
+      console.log('toValue', this.toValue);
+      console.log('liquiditySource', this.liquiditySource);
+
       try {
         await this.withNotifications(
           async () =>
@@ -98,8 +91,8 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
               this.fromValue,
               this.toValue,
               this.slippageTolerance,
-              this.isExchangeB,
-              this.liquiditySource,
+              false,
+              LiquiditySourceTypes.OrderBook,
               this.selectedDexId
             )
         );
