@@ -4,10 +4,11 @@ import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/
 import { gql } from '@urql/core';
 import last from 'lodash/fp/last';
 
+import { calcPriceChange } from '@/utils';
+
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type {
   SubqueryAssetEntity,
-  SubqueryAssetSnapshotEntity,
   SubqueryConnectionQueryResponse,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
 import type {
@@ -22,20 +23,22 @@ const { IndexerType } = WALLET_CONSTS;
 const DAY = 60 * 60 * 24;
 
 export type TokenData = {
-  reserves: FPNumber;
-  startPriceDay: FPNumber;
-  startPriceWeek: FPNumber;
-  volumeDay: FPNumber;
-  volumeWeek: FPNumber;
+  priceUSD: FPNumber;
+  priceChangeDay: FPNumber;
+  priceChangeWeek: FPNumber;
+  volumeDayUSD: FPNumber;
+  volumeWeekUSD: FPNumber;
+  tvlUSD: FPNumber;
+  velocity: FPNumber;
 };
 
 type SubqueryAssetData = SubqueryAssetEntity & {
-  hourSnapshots: {
-    nodes: SubqueryAssetSnapshotEntity[];
-  };
-  daySnapshots: {
-    nodes: SubqueryAssetSnapshotEntity[];
-  };
+  liquidityUSD?: number;
+  priceChangeDay?: number;
+  priceChangeWeek?: number;
+  volumeDayUSD?: number;
+  volumeWeekUSD?: number;
+  velocity?: number;
 };
 
 type SubsquidAssetData = SubsquidAssetEntity & {
@@ -44,8 +47,8 @@ type SubsquidAssetData = SubsquidAssetEntity & {
 };
 
 const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetData>>`
-  query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-    data: assets(orderBy: ID_ASC, after: $after, filter: { and: [{ id: { in: $ids } }] }) {
+  query AssetsQuery($after: Cursor, $ids: [String!]) {
+    data: assets(orderBy: ID_ASC, after: $after, filter: { id: { in: $ids } }) {
       pageInfo {
         hasNextPage
         endCursor
@@ -53,25 +56,13 @@ const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetDat
       edges {
         node {
           id
-          liquidity
-          hourSnapshots: data(
-            filter: { and: [{ timestamp: { greaterThanOrEqualTo: $dayTimestamp } }, { type: { equalTo: HOUR } }] }
-            orderBy: [TIMESTAMP_DESC]
-          ) {
-            nodes {
-              priceUSD
-              volume
-            }
-          }
-          daySnapshots: data(
-            filter: { and: [{ timestamp: { greaterThanOrEqualTo: $weekTimestamp } }, { type: { equalTo: DAY } }] }
-            orderBy: [TIMESTAMP_DESC]
-          ) {
-            nodes {
-              priceUSD
-              volume
-            }
-          }
+          priceUSD
+          priceChangeDay
+          priceChangeWeek
+          volumeDayUSD
+          volumeWeekUSD
+          liquidityUSD
+          velocity
         }
       }
     }
@@ -88,6 +79,7 @@ const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetDat
       edges {
         node {
           id
+          priceUSD
           liquidity
           hourSnapshots: data(
             where: { AND: [{ timestamp_gte: $dayTimestamp }, { type_eq: HOUR }] }
@@ -133,16 +125,43 @@ const calcVolume = (nodes: AssetSnapshotEntity[]): FPNumber => {
   }, FPNumber.ZERO);
 };
 
-const parse = (item: SubqueryAssetData | SubsquidAssetData): Record<string, TokenData> => {
-  const hourSnapshots = 'nodes' in item.hourSnapshots ? item.hourSnapshots.nodes : item.hourSnapshots;
-  const daySnapshots = 'nodes' in item.daySnapshots ? item.daySnapshots.nodes : item.daySnapshots;
+const parseSubquery = (item: SubqueryAssetData): Record<string, TokenData> => {
   return {
     [item.id]: {
-      reserves: FPNumber.fromCodecValue(item.liquidity ?? 0),
-      startPriceDay: new FPNumber(last(hourSnapshots)?.priceUSD?.open ?? 0),
-      startPriceWeek: new FPNumber(last(daySnapshots)?.priceUSD?.open ?? 0),
-      volumeDay: calcVolume(hourSnapshots),
-      volumeWeek: calcVolume(daySnapshots),
+      priceUSD: new FPNumber(item.priceUSD ?? 0),
+      priceChangeDay: new FPNumber(item.priceChangeDay ?? 0),
+      priceChangeWeek: new FPNumber(item.priceChangeDay ?? 0),
+      volumeDayUSD: new FPNumber(item.volumeDayUSD ?? 0),
+      volumeWeekUSD: new FPNumber(item.volumeWeekUSD ?? 0),
+      tvlUSD: new FPNumber(item.liquidityUSD ?? 0),
+      velocity: new FPNumber(item.velocity ?? 0),
+    },
+  };
+};
+
+const parseSubsquid = (item: SubsquidAssetData): Record<string, TokenData> => {
+  const hourSnapshots = item.hourSnapshots;
+  const daySnapshots = item.daySnapshots;
+  const priceUSD = new FPNumber(item.priceUSD ?? 0);
+  const startPriceDay = new FPNumber(last(hourSnapshots)?.priceUSD?.open ?? 0);
+  const startPriceWeek = new FPNumber(last(daySnapshots)?.priceUSD?.open ?? 0);
+  const priceChangeDay = calcPriceChange(priceUSD, startPriceDay);
+  const priceChangeWeek = calcPriceChange(priceUSD, startPriceWeek);
+  const volumeDayUSD = calcVolume(hourSnapshots);
+  const volumeWeekUSD = calcVolume(daySnapshots);
+  const reserves = FPNumber.fromCodecValue(item.liquidity ?? 0);
+  const tvlUSD = reserves.mul(priceUSD);
+  const velocity = tvlUSD.isZero() ? FPNumber.ZERO : volumeWeekUSD.div(tvlUSD);
+
+  return {
+    [item.id]: {
+      priceUSD,
+      priceChangeDay,
+      priceChangeWeek,
+      volumeDayUSD,
+      volumeWeekUSD,
+      tvlUSD,
+      velocity,
     },
   };
 };
@@ -159,12 +178,16 @@ export async function fetchTokensData(whitelistAssets: Asset[]): Promise<Record<
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
       const subqueryIndexer = indexer as SubqueryIndexer;
-      items = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryAssetsQuery, variables, parse);
+      items = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryAssetsQuery, variables, parseSubquery);
       break;
     }
     case IndexerType.SUBSQUID: {
       const subsquidIndexer = indexer as SubsquidIndexer;
-      items = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(SubsquidAssetsQuery, variables, parse);
+      items = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
+        SubsquidAssetsQuery,
+        variables,
+        parseSubsquid
+      );
       break;
     }
   }
