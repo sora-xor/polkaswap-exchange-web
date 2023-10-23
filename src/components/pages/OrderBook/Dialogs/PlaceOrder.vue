@@ -76,12 +76,6 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
       );
       this.$emit('confirm');
     } else {
-      console.log('tokenFrom', this.tokenFrom);
-      console.log('tokenTo', this.tokenTo);
-      console.log('fromValue', this.fromValue);
-      console.log('toValue', this.toValue);
-      console.log('liquiditySource', this.liquiditySource);
-
       try {
         await this.withNotifications(
           async () =>

@@ -96,8 +96,7 @@
     "@polkadot/util": "^10.4.2",
     "ipfs-unixfs": "6.0.6",
     "ipfs-unixfs-exporter": "7.0.6",
-    "ipfs-unixfs-importer": "9.0.6",
-    "@sora-substrate/util": "1.23.8"
+    "ipfs-unixfs-importer": "9.0.6"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

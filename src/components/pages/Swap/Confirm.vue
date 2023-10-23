@@ -44,6 +44,7 @@ import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
 
+import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 

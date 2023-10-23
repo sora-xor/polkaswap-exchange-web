@@ -35,11 +35,11 @@ export default class SwapQuoteMixin extends Mixins(mixins.LoadingMixin) {
       0
     );
 
-    this.quoteSubscription = observableQuote.subscribe((quoteData) => {
-      this.setSubscriptionPayload(quoteData);
-      func();
-      this.loading = false;
-    });
+    // this.quoteSubscription = observableQuote.subscribe((quoteData) => {
+    //   this.setSubscriptionPayload(quoteData);
+    //   func();
+    //   this.loading = false;
+    // });
   }
 
   public resetQuoteSubscription(): void {
