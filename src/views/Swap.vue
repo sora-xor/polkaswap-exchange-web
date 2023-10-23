@@ -237,7 +237,7 @@ export default class Swap extends Mixins(
   @mutation.swap.setRewards private setRewards!: (rewards: Array<LPRewardsInfo>) => void;
   @mutation.swap.setRoute private setRoute!: (route: Array<string>) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
-  @mutation.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload: SwapQuoteData) => void;
+  @mutation.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload?: SwapQuoteData) => void;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
@@ -406,6 +406,8 @@ export default class Swap extends Mixins(
         await this.setTokenFromAddress(XOR.address);
         await this.setTokenToAddress();
       }
+      // to update tbc & xst enabled assets
+      await api.swap.update();
 
       this.enableSwapSubscriptions();
     });
@@ -490,16 +492,20 @@ export default class Swap extends Mixins(
 
     this.loading = true;
 
-    const observableQuote = await api.swap.getDexesSwapQuoteObservable(
+    const observableQuote = api.swap.getDexesSwapQuoteObservable(
       (this.tokenFrom as AccountAsset).address,
       (this.tokenTo as AccountAsset).address
     );
 
-    this.quoteSubscription = observableQuote.subscribe((quoteData) => {
-      this.setSubscriptionPayload(quoteData);
-      this.runRecountSwapValues();
-      this.loading = false;
-    });
+    if (observableQuote) {
+      this.quoteSubscription = observableQuote.subscribe((quoteData) => {
+        this.setSubscriptionPayload(quoteData);
+        this.runRecountSwapValues();
+        this.loading = false;
+      });
+    } else {
+      this.setSubscriptionPayload();
+    }
   }
 
   handleFocusField(isExchangeB = false): void {
