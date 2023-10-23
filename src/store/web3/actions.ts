@@ -91,7 +91,7 @@ const actions = defineActions({
     commit.setNetworkType(type);
     commit.setSelectedNetwork(id);
 
-    rootDispatch.assets.updateRegisteredAssets();
+    rootDispatch.assets.getRegisteredAssets();
 
     if (type === BridgeNetworkType.Sub) {
       await connectSubNetwork(context);
