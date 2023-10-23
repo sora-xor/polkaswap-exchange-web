@@ -38,8 +38,8 @@
             "CreatePair": "Dodano {amount} {symbol} i {amount2} {symbol2}",
             "RegisterAsset": "Zarejestrowana waluta {symbol}",
             "ClaimRewards": "Wynagrodzenie odebrano z powodzeniem {rewards}",
-            "ReferralReserveXor": "Rezerwy w walucie XOR utworzono z powodzeniem",
-            "ReferralUnreserveXor": "Rezerwy w walucie XOR uwolniono z powodzeniem",
+            "ReferralReserveXor": "Bonded {amount} XOR",
+            "ReferralUnreserveXor": "Niepowiązany {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} został utworzony z powodzeniem",
             "SwapAndSend": "Zamieniono {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Dostarczone {symbol} i {symbol2} {amount} tokeny LP",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Usunięto {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} odebrano pomyślnie",
             "EthBridgeIncoming": "Przeniesiono {amount} {symbol} z {Ethereum} do {Sora}",
-            "EthBridgeOutgoing": "Przeniesiono {amount} {symbol} z {Sora} do {Ethereum}"
+            "EthBridgeOutgoing": "Przeniesiono {amount} {symbol} z {Sora} do {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Nie udało się dodać {amount} {symbol} i {amount2} {symbol2}.",
             "RegisterAsset": "Nie udało się zarejestrować waluty {symbol}.",
             "ClaimRewards": "Nie udało się odebrać wynagrodzenia {rewards}.",
-            "ReferralReserveXor": "Nie udało się utworzyć rezerw w walucie XOR",
-            "ReferralUnreserveXor": "Nie udało się uwolnić rezerw w walucie XOR",
+            "ReferralReserveXor": "Nie udało się połączyć {amount} XOR",
+            "ReferralUnreserveXor": "Nie udało się odłączyć {amount} XOR",
             "ReferralSetInvitedUser": "Nie udało się utworzyć {role} {address}",
             "SwapAndSend": "Nie udało się zamienić {amount} {symbol} na {amount2} {symbol2} i {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Nie udało się dostarczyć {amount} {symbol} i {symbol2} LP tokenów",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Nie udało się usunąć {amount} {symbol}",
             "DemeterFarmingGetRewards": "Nie udało się odebrać {symbol}",
             "EthBridgeIncoming": "Nie udało się przenieść {amount} {symbol} z {Ethereum} do {Sora}",
-            "EthBridgeOutgoing": "Nie udało się przenieść {amount} {symbol} z {Sora} do {Ethereum}"
+            "EthBridgeOutgoing": "Nie udało się przenieść {amount} {symbol} z {Sora} do {Ethereum}",
+            "SwapTransferBatch": "Nie udało się {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Żeton rozbicia",
         "DemeterFarmingGetRewards": "Odbierz wynagrodzenie",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Transfer"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia {PolkadotJs}. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "Konto sieci {Sora}",
-        "text": "Rozszerzenia i Google bezpiecznie przechowują Twoje konto w sieci {Sora} . Pozwalają podpisywać transakcje i zarządzać aktywami.",
+        "text": "Aby zarządzać aktywami i podpisywać transakcje na {Sora}, konto musi być połączone. Konta {Sora} można tworzyć i łączyć za pomocą naszych zintegrowanych portfeli lub rozszerzeń przeglądarki.",
         "noAccounts": "W Twoim rozszerzeniu przeglądarki {extension} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "Połączony",
             "notConnected": "Nie połączony"
         },
-        "internalTitle": "Połącz przez {wallet}",
-        "internalText": "Możesz utworzyć lub połączyć istniejące konto za pośrednictwem {wallet} . Przechowuje konta przy użyciu szyfrowania.",
+        "internalTitle": "Połącz się z {wallet}",
+        "internalText": "Możesz utworzyć lub zaimportować istniejące konto {Sora}, aby połączyć je z kontem {wallet}. Wszystkie dane przechowywane przez {wallet} są szyfrowane przy użyciu wbudowanego zaawansowanego szyfrowania.",
         "list": {
-            "simplest": "Najprostsza opcja",
+            "integrated": "Zintegrowany",
             "extensions": "Rozszerzenia"
         }
     },
@@ -301,7 +304,8 @@
         "txId": "Identyfikator transakcji",
         "viewIn": "Pokaż w {explorer}",
         "referrer": "Osoba polecająca",
-        "referral": "Kod polecający"
+        "referral": "Kod polecający",
+        "adarTxDetailsTitle": "Szczegóły transakcji"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Zmień sieć w portfelu {Metamask}",
@@ -483,7 +487,8 @@
         "transactionSubmitted": "Transakcja została złożona.",
         "transactionMessage": "{firstToken} i {secondToken}",
         "ok": "OK",
-        "confirm": "Potwierdź"
+        "confirm": "Potwierdź",
+        "lossWarning": "Stracisz {value}% na swojej transakcji. Wykryliśmy problem z zapewnieniem płynności. Może to prowadzić do znacznych strat podczas wymiany tokenów. Upewnij się, że dostępna jest odpowiednia płynność dla wybranej pary swapowej."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -539,7 +544,10 @@
         "networkInfo": "Połącz za pomocą mostu sieć {Sora} z:",
         "copy": "Skopiuj adres sieciowy",
         "soraAddress": "{Sora} adres",
-        "ethereumAddress": "{Ethereum} adres"
+        "ethereumAddress": "{Ethereum} adres",
+        "limitMessage": "Obecnie istnieje {type} {amount} {symbol} do mostkowania, aby zapewnić stabilność i bezpieczeństwo sieci {Sora} . Doceniamy twoje zrozumienie.",
+        "externalTransferFee": "Opłata {network} {XCM}",
+        "externalTransferFeeTooltip": "Kiedy wysyłasz transakcję pomostową do sieci {network} , od kwoty przelewu pobierana jest niewielka opłata"
     },
     "selectRegisteredAsset": {
         "title": "Wybierz token",
@@ -1012,7 +1020,8 @@
             "norewardsforasset": "Nie ma nagród za ten zasób"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Wybrane źródło płynności jest niedozwolone"
+            "forbiddenfilter": "Wybrane źródło płynności jest niedozwolone",
+            "slippagenottolerated": "Wpływ na cenę przekroczył wybraną wartość"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Niewystarczające środki",
@@ -1052,8 +1061,8 @@
             "importAccount": "Importuj konto"
         },
         "heading": {
-            "seedPhraseTitle": "Nasiona frazy",
-            "confirmSeedTitle": "Potwierdź źródłową frazę",
+            "seedPhraseTitle": "Hasło",
+            "confirmSeedTitle": "Potwierdź hasło",
             "accountDetailsTitle": "Szczegóły Konta",
             "importTitle": "Importuj konto"
         },
@@ -1064,12 +1073,12 @@
             "importAccount": "Importuj konto"
         },
         "accountName": {
-            "placeholder": "Nazwa portfela",
-            "desc": "To nazwa Twojego portfela, która będzie dla Ciebie widoczna"
+            "placeholder": "Nazwa konta",
+            "desc": "To jest nazwa twojego konta. Będzie widoczny tylko dla Ciebie w {Polkaswap}."
         },
         "password": {
             "placeholder": "Hasło",
-            "desc": "Upewnij się, że używasz silnego hasła dla właściwej ochrony."
+            "desc": "Upewnij się, że używasz silnego, unikatowego hasła zapewniającego odpowiednią ochronę (minimum 8 znaków)"
         },
         "confirmPassword": {
             "placeholder": "Potwierdź hasło"
@@ -1077,11 +1086,11 @@
         "accountMnemonic": {
             "placeholder": "Fraza mnemoniczna"
         },
-        "seedAdviceText": "To jest tajne ziarno Twojego konta. Upewnij się, że przechowujesz go na nośniku innym niż cyfrowy, na przykład - papierowym",
-        "confirmSeedText": "Potwierdź wyrażenie wyjściowe klikając na słowa w odpowiedniej kolejności",
-        "errorMnemonicText": "Nieprawidłowa kolejność wyrażeń ziarnistych",
-        "exportOptionText": "Eksportuj plik konta .json",
-        "exportJsonText": "Zawsze będziesz mieć dostęp do swojego konta, importując ten plik .json. Nie udostępniaj go nikomu!",
+        "seedAdviceText": "12-wyrazowe hasło to klucz prywatny umożliwiający odzyskanie dostępu do konta {Sora} w przypadku utraty dostępu do konta {wallet}. Przechowuj go bezpiecznie w dokładnie takiej kolejności, w jakiej występuje powyżej.",
+        "confirmSeedText": "Potwierdź hasło, klikając słowa we właściwej kolejności",
+        "errorMnemonicText": "Nieprawidłowa kolejność haseł",
+        "exportOptionText": "Wyeksportuj plik {JSON} w celu przywrócenia konta",
+        "exportJsonText": "Zawsze będziesz mógł przywrócić swoje konto, importując ten plik {JSON}. Nie udostępniaj go nikomu! Przechowuj je bezpiecznie, najlepiej w postaci zaszyfrowanej.",
         "addAccount": "Dodaj konto",
         "dialog": {
             "confirmTitle": "Potwierdź hasłem",
@@ -1100,16 +1109,20 @@
         "assetsAtRiskText": "Aktywa zagrożone!",
         "deleteAccountText": "Konta nie można odzyskać bez frazy początkowej, pliku .json lub jeśli jest on przechowywany w jakimś rozszerzeniu. Zostaniesz wylogowany.",
         "importSteps": {
-            "selectWallet": "Przejdź do używanego portfela",
+            "selectWallet": "Otwórz portfel z istniejącymi kontami",
             "selectAccount": "Wybierz konto, które chcesz wyeksportować",
             "exportAccount": "Wyeksportuj plik {JSON}"
         },
-        "exportTutorialsText": "Eksportuj samouczki"
+        "exportTutorialsText": "Eksportuj samouczki",
+        "seedAdviceAdditionTitle": "Nigdy nie udostępniaj nikomu swojego hasła!",
+        "seedAdviceAdditionText": "Jeśli ktoś poprosi Cię o podanie hasła, najprawdopodobniej próbuje Cię oszukać i ukraść Twoje aktywa!"
     },
     "hashiBridgeText": "Most {Hashi}",
     "disclaimerTitle": "Zastrzeżenie",
     "explore": {
-        "showOnlyMyPositions": "Pokaż tylko moje pozycje"
+        "showOnly": "Pokaż tylko {entities}",
+        "myPositions": "moje pozycje",
+        "synthetics": "tokeny syntetyczne"
     },
     "tooltips": {
         "roi": "{ROI} oznacza zwrot z inwestycji. Oblicza się go, dzieląc zysk uzyskany z inwestycji przez koszt tej inwestycji w ekwiwalencie procentowym.",
@@ -1168,8 +1181,8 @@
             "action": "Wybierz usługi",
             "dialog": {
                 "title": "{Sora} Wybór usługi sieciowej",
-                "fiat": "wartości Fiata",
-                "chartsAndActivity": "Wykresy i aktywność"
+                "indexer": "Indeksator",
+                "useCeres": "Użyj {Ceres} dla wartości fiat"
             }
         }
     },
@@ -1177,7 +1190,7 @@
     "acceptText": "Zaakceptuj i ukryj",
     "newAccountsText": "Nowe konta",
     "dragAndDropText": "Przeciągnij i upuść lub wybierz plik {extension}",
-    "copyPhraseText": "Skopiuj frazę",
+    "copyPhraseText": "Skopiuj krypto frazę",
     "stepText": "Krok",
     "alerts": {
         "drop": "Krople poniżej",
@@ -1209,9 +1222,48 @@
         "moonpayTitle": "Kup ETH przez MoonPay",
         "moonpayDesc": "Kup tokeny ETH na Ethereum i przenieś je do sieci SORA przez most",
         "x1Title": "Kup XOR za pomocą swojej karty",
-        "x1Desc": "Kup tokeny XOR za pomocą karty debetowej lub kredytowej",
         "x1Btn": "Kup XOR z kartą",
-        "errorMessage": "Przepraszam za utrudnienia. Intensywnie pracujemy nad rozwiązaniem tego problemu. Spróbuj ponownie później."
+        "errorMessage": "Przepraszam za utrudnienia. Intensywnie pracujemy nad rozwiązaniem tego problemu. Spróbuj ponownie później.",
+        "x1Desc": "Kup tokeny XOR bezpośrednio w sieci SORA za pomocą karty debetowej lub kredytowej"
     },
-    "acceptOnScrollText": "Przewiń, aby zaakceptować"
+    "acceptOnScrollText": "Przewiń, aby zaakceptować",
+    "addressBook": {
+        "myAccounts": "Moje konta",
+        "myBook": "Moja książka",
+        "searchPlaceholder": "Szukaj według adresu, nazwiska lub tożsamości",
+        "noFoundRecords": "Nic nie znaleziono",
+        "noContacts": "Nie masz jeszcze dodanych żadnych kontaktów",
+        "addContact": "Dodaj kontakt",
+        "dialogTitle": "Twoje kontakty",
+        "identity": "Tożsamość w łańcuchu",
+        "none": "Nic",
+        "detected": "Wykryto nowy adres",
+        "save": "Zapisz jako kontakt",
+        "tooltip": "Zbierz książkę adresową, podając imię i nazwisko oraz adres, aby uporządkować i aktualizować kontakty",
+        "notSoraAddress": "Ten adres zostanie zapisany jako adres SORA poniżej. Upewnij się, że odbiorca ma dostęp do łańcucha SORA:",
+        "options": {
+            "send": "Wyślij tokeny",
+            "edit": "Edytuj kontakt",
+            "delete": "Usuwać"
+        },
+        "btn": {
+            "enterName": "Wprowadź imię",
+            "present": "Już obecny",
+            "saveChanges": "Zapisz zmiany"
+        },
+        "input": "Wprowadź adres lub wybierz kontakt",
+        "selectContact": "Wybierz kontakt"
+    },
+    "browserPermission": {
+        "title": "Zezwól na dostęp do aparatu w ustawieniach przeglądarki",
+        "desc": "Aby zapewnić autentyczność dokumentów i zweryfikować tożsamość użytkownika na potrzeby weryfikacji KYC, wymagany jest dostęp do aparatu urządzenia.",
+        "disclaimer": "Dostęp do aparatu jest wymagany do przechwytywania dokumentów w czasie rzeczywistym w celu zapobiegania oszustwom.",
+        "btnGoToSettings": "Przejdź do ustawień",
+        "btnAllow": "Umożliwić dostęp"
+    },
+    "continueText": "Kontynuować",
+    "minAmountText": "min. kwota",
+    "maxAmountText": "maks. kwota",
+    "exceededAmountText": "Przekroczono {amount}",
+    "multipleRecipients": "Wielu odbiorców"
 }

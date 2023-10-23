@@ -12,16 +12,16 @@
     </template>
 
     <template #types>
-      <token-select-dropdown
+      <token-select-button
+        :icon="selectTokenIcon"
         :token="token"
-        :tokens="tokens"
-        :disabled="parentLoading || loading"
-        @select="changeToken"
+        :tabindex="tokenTabIndex"
+        @click.stop="handleSelectToken"
       />
     </template>
 
     <chart-skeleton
-      :loading="parentLoading || loading"
+      :loading="areActionsDisabled"
       :is-empty="data.length === 0"
       :is-error="isFetchingError"
       @retry="updateData"
@@ -32,14 +32,14 @@
       <price-change :value="priceChange" />
       <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
     </chart-skeleton>
+    <select-token disabled-custom :visible.sync="showSelectTokenDialog" :asset="token" @select="changeToken" />
   </stats-card>
 </template>
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
 import { XOR, VAL, PSWAP, XSTUSD, XST, TBCD } from '@sora-substrate/util/build/assets/consts';
-import { components, mixins, SubqueryExplorerService, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { gql } from '@urql/core';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
 import { Component, Mixins } from 'vue-property-decorator';
@@ -47,17 +47,13 @@ import { Component, Mixins } from 'vue-property-decorator';
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, ASSET_SUPPLY_LINE_FILTERS } from '@/consts/snapshots';
+import { fetchData } from '@/indexer/queries/assetSupply';
 import { lazyComponent } from '@/router';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type {
-  SnapshotTypes,
-  EntitiesQueryResponse,
-  AssetSnapshotEntity,
-} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
 
 type ChartData = {
   timestamp: number;
@@ -66,51 +62,8 @@ type ChartData = {
   burn: number;
 };
 
-const AssetSupplyQuery = gql<EntitiesQueryResponse<AssetSnapshotEntity>>`
-  query AssetSupplyQuery($after: Cursor, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
-    entities: assetSnapshots(
-      after: $after
-      orderBy: TIMESTAMP_DESC
-      filter: {
-        and: [
-          { type: { equalTo: $type } }
-          { assetId: { equalTo: $id } }
-          { timestamp: { lessThanOrEqualTo: $from } }
-          { timestamp: { greaterThanOrEqualTo: $to } }
-        ]
-      }
-    ) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      nodes {
-        timestamp
-        supply
-        mint
-        burn
-      }
-    }
-  }
-`;
-
-const toNumber = (value: string): number => {
-  const fp = FPNumber.fromCodecValue(value);
-
-  return fp.isFinity() ? fp.toNumber() : 0;
-};
-
 const getExtremum = (data: readonly ChartData[], prop: string, min = false) => {
   return data.reduce((acc, item) => Math[min ? 'min' : 'max'](acc, item[prop]), min ? Infinity : 0);
-};
-
-const parse = (node: AssetSnapshotEntity): ChartData => {
-  return {
-    timestamp: +node.timestamp * 1000,
-    value: toNumber(node.supply),
-    mint: toNumber(node.mint),
-    burn: toNumber(node.burn),
-  };
 };
 
 @Component({
@@ -119,7 +72,8 @@ const parse = (node: AssetSnapshotEntity): ChartData => {
     PriceChange: lazyComponent(Components.PriceChange),
     StatsCard: lazyComponent(Components.StatsCard),
     StatsFilter: lazyComponent(Components.StatsFilter),
-    TokenSelectDropdown: lazyComponent(Components.TokenSelectDropdown),
+    TokenSelectButton: lazyComponent(Components.TokenSelectButton),
+    SelectToken: lazyComponent(Components.SelectToken),
     FormattedAmount: components.FormattedAmount,
   },
 })
@@ -131,10 +85,23 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
 
   filter: SnapshotFilter = ASSET_SUPPLY_LINE_FILTERS[0];
   token = XOR;
+  showSelectTokenDialog = false;
 
   data: readonly ChartData[] = [];
 
   isFetchingError = false;
+
+  get areActionsDisabled(): boolean {
+    return this.parentLoading || this.loading;
+  }
+
+  get selectTokenIcon(): Nullable<string> {
+    return !this.areActionsDisabled ? 'chevron-down-rounded-16' : undefined;
+  }
+
+  get tokenTabIndex(): number {
+    return !this.areActionsDisabled ? 0 : -1;
+  }
 
   get firstValue(): FPNumber {
     return new FPNumber(first(this.data)?.value ?? 0);
@@ -275,6 +242,10 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
     };
   }
 
+  handleSelectToken(): void {
+    this.showSelectTokenDialog = true;
+  }
+
   changeFilter(filter: SnapshotFilter): void {
     this.filter = filter;
     this.updateData();
@@ -287,7 +258,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
     this.updateData();
   }
 
-  private async updateData(): Promise<void> {
+  async updateData(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
         try {
@@ -297,7 +268,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
           const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type
           const aTime = now - seconds * count;
 
-          this.data = Object.freeze(await this.fetchData(id, now, aTime, type));
+          this.data = Object.freeze(await fetchData(id, now, aTime, type));
           this.isFetchingError = false;
         } catch (error) {
           console.error(error);
@@ -305,12 +276,6 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
         }
       });
     });
-  }
-
-  private async fetchData(id: string, from: number, to: number, type: SnapshotTypes): Promise<ChartData[]> {
-    const data = await SubqueryExplorerService.fetchAllEntities(AssetSupplyQuery, { id, from, to, type }, parse);
-
-    return data ?? [];
   }
 }
 </script>

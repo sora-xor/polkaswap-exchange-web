@@ -38,8 +38,8 @@
             "CreatePair": "Disuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RegisterAsset": "Aset {symbol} terdaftar",
             "ClaimRewards": "Hadiah berhasil diklaim {rewards}",
-            "ReferralReserveXor": "Terikat XOR dengan sukses",
-            "ReferralUnreserveXor": "XOR tidak terikat berhasil",
+            "ReferralReserveXor": "Berikat {amount} XOR",
+            "ReferralUnreserveXor": "XOR {amount} tidak terikat",
             "ReferralSetInvitedUser": "{role} {address} berhasil disetel",
             "SwapAndSend": "Tukar {amount} {symbol} untuk {amount2} {symbol2} dan {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Disediakan {symbol} dan {symbol2} {amount} token LP",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "{amount} {symbol} dihapus",
             "DemeterFarmingGetRewards": "{amount} {symbol} berhasil diklaim",
             "EthBridgeIncoming": "Mentransfer {amount} {symbol} dari {Ethereum} ke {Sora}",
-            "EthBridgeOutgoing": "Mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}"
+            "EthBridgeOutgoing": "Mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Gagal {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Gagal menyuplai {amount} {symbol} dan {amount2} {symbol2}",
             "RegisterAsset": "Gagal mendaftarkan aset {symbol}",
             "ClaimRewards": "Gagal mengklaim hadiah {rewards}",
-            "ReferralReserveXor": "Gagal mengikat XOR",
-            "ReferralUnreserveXor": "Gagal melepaskan ikatan XOR",
+            "ReferralReserveXor": "Gagal mengikat {amount} XOR",
+            "ReferralUnreserveXor": "Gagal melepaskan ikatan {amount} XOR",
             "ReferralSetInvitedUser": "Gagal menyetel {role} {address}",
             "SwapAndSend": "Gagal menukar {amount} {symbol} dengan {amount2} {symbol2} dan{action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Gagal menyediakan {amount} {symbol} dan {symbol2} token LP",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Gagal menghapus {amount} {symbol}",
             "DemeterFarmingGetRewards": "Gagal mengklaim {symbol}",
             "EthBridgeIncoming": "Gagal mentransfer {amount} {symbol} dari {Ethereum} ke {Sora}",
-            "EthBridgeOutgoing": "Gagal mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}"
+            "EthBridgeOutgoing": "Gagal mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}",
+            "SwapTransferBatch": "Gagal {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Token Lepas Taruhan",
         "DemeterFarmingGetRewards": "Klaim Hadiah",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Transfer"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi {PolkadotJs} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "Akun Jaringan {Sora}",
-        "text": "Ekstensi & Google menyimpan akun Jaringan {Sora} Anda dengan aman. Mereka memungkinkan Anda untuk menandatangani transaksi & mengelola aset.",
+        "text": "Untuk mengelola aset dan menandatangani transaksi di {Sora} , akun harus terhubung. Akun {Sora} dapat dibuat dan dihubungkan menggunakan dompet terintegrasi atau ekstensi browser kami.",
         "noAccounts": "Tidak ada akun yang ditemukan di ekstensi browser {extension} anda. Silakan tambahkan akun, lalu coba kembali.",
         "selectAccount": "Pilih akun untuk dikerjakan",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "Terhubung",
             "notConnected": "Tidak terhubung"
         },
-        "internalTitle": "Terhubung melalui {wallet}",
-        "internalText": "Anda dapat membuat atau menautkan akun yang sudah ada melalui {wallet} . Ini menyimpan akun menggunakan enkripsi.",
+        "internalTitle": "Terhubung dengan {wallet}",
+        "internalText": "Anda dapat membuat atau mengimpor akun {Sora} yang sudah ada untuk terhubung dengan akun {wallet} Anda. Semua data yang disimpan oleh {wallet} dienkripsi menggunakan enkripsi lanjutan bawaan.",
         "list": {
-            "simplest": "Opsi paling sederhana",
+            "integrated": "Terintegrasi",
             "extensions": "Ekstensi"
         }
     },
@@ -301,7 +304,8 @@
         "txId": "Id transaksi",
         "viewIn": "Lihat di {explorer}",
         "referrer": "Perujuk",
-        "referral": "Rujukan"
+        "referral": "Rujukan",
+        "adarTxDetailsTitle": "Rincian transaksi"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Ubah jaringan di {Metamask}",
@@ -483,7 +487,8 @@
         "transactionSubmitted": "Transaksi dikirim",
         "transactionMessage": "{firstToken} dan {secondToken}",
         "ok": "Oke",
-        "confirm": "Konfirmasi"
+        "confirm": "Konfirmasi",
+        "lossWarning": "Anda akan kehilangan {value}% pada perdagangan Anda. Kami mendeteksi masalah penyediaan likuiditas. Ini dapat menyebabkan kerugian yang signifikan selama pertukaran token. Pastikan ada likuiditas yang memadai untuk pasangan swap yang Anda inginkan."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -539,7 +544,10 @@
         "networkInfo": "Bridge Jaringan {Sora} dengan:",
         "copy": "Salin alamat jaringan",
         "soraAddress": "{Sora} alamat",
-        "ethereumAddress": "{Ethereum} alamat"
+        "ethereumAddress": "{Ethereum} alamat",
+        "limitMessage": "Saat ini, ada {type} {amount} {symbol} untuk menjembatani guna memastikan stabilitas dan keamanan Jaringan {Sora} . Kami menghargai pengertian Anda.",
+        "externalTransferFee": "biaya {network} {XCM}",
+        "externalTransferFeeTooltip": "Saat Anda mengirim transaksi jembatan ke jaringan {network} , sedikit biaya akan diambil dari jumlah yang Anda transfer"
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",
@@ -1012,7 +1020,8 @@
             "norewardsforasset": "Tidak ada imbalan untuk aset ini"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Sumber likuiditas yang dipilih tidak diperbolehkan"
+            "forbiddenfilter": "Sumber likuiditas yang dipilih tidak diperbolehkan",
+            "slippagenottolerated": "Dampak harga telah melebihi nilai yang dipilih"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Dana tidak mencukupi",
@@ -1052,8 +1061,8 @@
             "importAccount": "Impor Akun"
         },
         "heading": {
-            "seedPhraseTitle": "Frase benih",
-            "confirmSeedTitle": "Konfirmasikan frasa benih",
+            "seedPhraseTitle": "Frasa sandi",
+            "confirmSeedTitle": "Konfirmasi frasa sandi",
             "accountDetailsTitle": "Detail akun",
             "importTitle": "Impor akun"
         },
@@ -1064,12 +1073,12 @@
             "importAccount": "Impor akun"
         },
         "accountName": {
-            "placeholder": "Nama dompet",
-            "desc": "Ini adalah nama dompet Anda yang akan terlihat oleh Anda"
+            "placeholder": "Nama akun",
+            "desc": "Ini adalah nama akun Anda. Ini hanya akan terlihat oleh Anda di {Polkaswap}."
         },
         "password": {
             "placeholder": "Kata sandi",
-            "desc": "Pastikan Anda menggunakan kata sandi yang kuat untuk perlindungan yang tepat"
+            "desc": "Pastikan Anda menggunakan kata sandi unik yang kuat untuk perlindungan yang tepat (minimal 8 karakter)"
         },
         "confirmPassword": {
             "placeholder": "Konfirmasi sandi"
@@ -1077,11 +1086,11 @@
         "accountMnemonic": {
             "placeholder": "Frasa mnemonik"
         },
-        "seedAdviceText": "Ini adalah benih rahasia akun Anda. Pastikan untuk menyimpannya di pembawa non-digital, misalnya - kertas",
-        "confirmSeedText": "Konfirmasikan frasa benih dengan mengklik kata-kata dalam urutan yang benar",
-        "errorMnemonicText": "Urutan frase seed salah",
-        "exportOptionText": "Ekspor file akun .json",
-        "exportJsonText": "Anda akan selalu dapat mengakses akun Anda dengan mengimpor file .json itu. Jangan berbagi dengan siapa pun!",
+        "seedAdviceText": "Frasa sandi 12 kata adalah kunci pribadi untuk mendapatkan kembali akses ke akun {Sora} Anda jika Anda kehilangan akses ke akun {wallet} Anda. Simpan dengan aman sesuai urutan yang ditampilkan di atas.",
+        "confirmSeedText": "Konfirmasikan frasa sandi dengan mengeklik kata dalam urutan yang benar",
+        "errorMnemonicText": "Urutan frasa sandi salah",
+        "exportOptionText": "Ekspor file {JSON} untuk pemulihan akun",
+        "exportJsonText": "Anda akan selalu dapat memulihkan akun dengan mengimpor file {JSON} ini. Jangan berbagi dengan siapa pun! Simpan dengan aman, sebaiknya dienkripsi.",
         "addAccount": "Tambahkan akun",
         "dialog": {
             "confirmTitle": "Konfirmasi dengan kata sandi",
@@ -1100,16 +1109,20 @@
         "assetsAtRiskText": "Aset berisiko!",
         "deleteAccountText": "Akun tidak dapat dipulihkan tanpa seed frase, file .json atau jika disimpan dalam beberapa ekstensi. Anda akan keluar.",
         "importSteps": {
-            "selectWallet": "Buka dompet yang Anda gunakan",
+            "selectWallet": "Buka dompet dengan akun Anda yang ada",
             "selectAccount": "Pilih akun yang ingin Anda ekspor",
             "exportAccount": "Ekspor file {JSON}"
         },
-        "exportTutorialsText": "Ekspor tutorial"
+        "exportTutorialsText": "Ekspor tutorial",
+        "seedAdviceAdditionTitle": "Jangan pernah membagikan frasa sandi Anda dengan siapa pun!",
+        "seedAdviceAdditionText": "Jika seseorang menanyakan frasa sandi Anda, kemungkinan besar mereka mencoba menipu Anda dan mencuri aset Anda!"
     },
     "hashiBridgeText": "Jembatan {Hashi}",
     "disclaimerTitle": "Penafian",
     "explore": {
-        "showOnlyMyPositions": "Hanya tampilkan posisi saya"
+        "showOnly": "Hanya tampilkan {entities}",
+        "myPositions": "posisi saya",
+        "synthetics": "token sintetis"
     },
     "tooltips": {
         "roi": "{ROI} adalah singkatan dari Pengembalian Investasi. Ini dihitung dengan membagi laba yang diperoleh dari investasi dengan biaya investasi itu dalam persentase yang setara.",
@@ -1168,8 +1181,8 @@
             "action": "Pilih layanan",
             "dialog": {
                 "title": "{Sora} Pemilihan layanan jaringan",
-                "fiat": "Nilai Fiat",
-                "chartsAndActivity": "Bagan & Aktivitas"
+                "indexer": "Pengindeks",
+                "useCeres": "Gunakan {Ceres} untuk nilai fiat"
             }
         }
     },
@@ -1177,7 +1190,7 @@
     "acceptText": "Terima & Sembunyikan",
     "newAccountsText": "Akun baru",
     "dragAndDropText": "Seret & lepas atau pilih file {extension}",
-    "copyPhraseText": "Salin Frasa",
+    "copyPhraseText": "Salin Frasa Sandi",
     "stepText": "Melangkah",
     "alerts": {
         "drop": "Jatuh di bawah",
@@ -1209,9 +1222,48 @@
         "moonpayTitle": "Beli ETH melalui MoonPay",
         "moonpayDesc": "Beli token ETH di Ethereum dan transfer ke jaringan SORA melalui jembatan",
         "x1Title": "Beli XOR dengan kartu Anda",
-        "x1Desc": "Beli token XOR dengan kartu debit atau kredit Anda",
         "x1Btn": "Beli XOR dengan kartu",
-        "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti."
+        "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti.",
+        "x1Desc": "Beli token XOR langsung di jaringan SORA dengan kartu debit atau kredit Anda"
     },
-    "acceptOnScrollText": "Gulir untuk menerima"
+    "acceptOnScrollText": "Gulir untuk menerima",
+    "addressBook": {
+        "myAccounts": "Akun saya",
+        "myBook": "Buku saya",
+        "searchPlaceholder": "Cari berdasarkan alamat, nama atau identitas",
+        "noFoundRecords": "Tidak ada catatan yang ditemukan",
+        "noContacts": "Anda belum menambahkan kontak apa pun",
+        "addContact": "Tambah kontak",
+        "dialogTitle": "Kontak Anda",
+        "identity": "Identitas dalam rantai",
+        "none": "Tidak ada",
+        "detected": "Alamat baru terdeteksi",
+        "save": "Simpan sebagai kontak",
+        "tooltip": "Kumpulkan buku alamat dengan memberikan nama dan alamat agar kontak Anda tetap teratur dan terkini",
+        "notSoraAddress": "Alamat ini akan disimpan sebagai alamat SORA di bawah ini. Pastikan penerima dapat mengakses rantai SORA:",
+        "options": {
+            "send": "Kirim token",
+            "edit": "Mengedit kontak",
+            "delete": "Menghapus"
+        },
+        "btn": {
+            "enterName": "Masukkan nama",
+            "present": "Sudah hadir",
+            "saveChanges": "Simpan perubahan"
+        },
+        "input": "Masukkan alamat atau pilih kontak",
+        "selectContact": "Pilih kontak"
+    },
+    "browserPermission": {
+        "title": "Izinkan akses kamera di setelan browser",
+        "desc": "Untuk memastikan keaslian dokumen dan memvalidasi identitas pengguna untuk verifikasi KYC, diperlukan akses ke kamera perangkat Anda.",
+        "disclaimer": "Akses kamera diperlukan untuk pengambilan dokumen secara real-time untuk mencegah penipuan.",
+        "btnGoToSettings": "Pergi ke pengaturan",
+        "btnAllow": "Izinkan akses"
+    },
+    "continueText": "Melanjutkan",
+    "minAmountText": "menit. jumlah",
+    "maxAmountText": "maks. jumlah",
+    "exceededAmountText": "{amount} terlampaui",
+    "multipleRecipients": "Penerima Multipel"
 }

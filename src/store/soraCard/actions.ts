@@ -1,12 +1,19 @@
 import { FPNumber } from '@sora-substrate/util';
-import { api, WALLET_CONSTS, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
+import { api, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
-import { Status } from '@/types/card';
-import { waitForAccountPair } from '@/utils';
-import { defineUserStatus, getXorPerEuroRatio, getFreeKycAttemptCount, soraCard } from '@/utils/card';
+import { soraCardActionContext } from '@/store/soraCard';
+import { waitForAccountPair, waitForSoraNetworkFromEnv } from '@/utils';
+import {
+  defineUserStatus,
+  getXorPerEuroRatio,
+  getFreeKycAttemptCount,
+  soraCard,
+  getUserIbanInfo,
+  getFees,
+} from '@/utils/card';
 
-import { soraCardActionContext } from './../soraCard';
+import type { Status } from '../../types/card';
 
 const actions = defineActions({
   calculateXorRestPrice(context, xorPerEuro: FPNumber): void {
@@ -64,23 +71,27 @@ const actions = defineActions({
   async getUserStatus(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
 
-    const { kycStatus, verificationStatus, rejectReason }: Status = await defineUserStatus();
+    const { kycStatus, verificationStatus, rejectReasons, referenceNumber }: Status = await defineUserStatus();
 
     commit.setKycStatus(kycStatus);
     commit.setVerificationStatus(verificationStatus);
+    commit.setReferenceNumber(referenceNumber);
 
-    if (rejectReason) commit.setRejectReason(rejectReason);
+    if (rejectReasons) commit.setRejectReason(rejectReasons);
   },
 
   async initPayWingsAuthSdk(context): Promise<void> {
     const { commit, rootState } = soraCardActionContext(context);
-    const soraNetwork = rootState.wallet.settings.soraNetwork || WALLET_CONSTS.SoraNetwork.Test;
+    let soraNetwork = rootState.wallet.settings.soraNetwork;
+    if (!soraNetwork) {
+      soraNetwork = await waitForSoraNetworkFromEnv();
+    }
     const { authService } = soraCard(soraNetwork);
 
-    await ScriptLoader.unload(authService.sdkURL, true).catch(() => {});
-    await ScriptLoader.load(authService.sdkURL, true).catch(() => {});
+    await ScriptLoader.unload(authService.sdkURL, false).catch(() => {});
+    await ScriptLoader.load(authService.sdkURL, false).catch(() => {});
 
-    // TODO: annotate via TS main calls
+    // TODO: [CARD] annotate via TS main calls
     // @ts-expect-error no undefined
     const login = Paywings.WebSDK.create({
       Domain: 'soracard.com',
@@ -96,9 +107,24 @@ const actions = defineActions({
 
   async getUserKycAttempt(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
-    const isFreeAttemptAvailable = await getFreeKycAttemptCount();
+    const attempts = await getFreeKycAttemptCount();
 
-    commit.setHasKycAttempts(isFreeAttemptAvailable);
+    commit.setAttempts(attempts);
+  },
+
+  async getUserIban(context): Promise<void> {
+    const { commit } = soraCardActionContext(context);
+    const { iban, availableBalance } = await getUserIbanInfo();
+
+    commit.setUserIban(iban);
+    commit.setUserBalance(availableBalance);
+  },
+
+  async getFees(context): Promise<void> {
+    const { commit } = soraCardActionContext(context);
+    const { application, retry } = await getFees();
+
+    commit.setFees({ application, retry });
   },
 });
 

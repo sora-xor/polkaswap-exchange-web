@@ -38,8 +38,8 @@
             "CreatePair": "Supplied {amount} {symbol} and {amount2} {symbol2}",
             "RegisterAsset": "Registered {symbol} asset",
             "ClaimRewards": "Reward claimed successfully {rewards}",
-            "ReferralReserveXor": "Bonded XOR successfully",
-            "ReferralUnreserveXor": "Unbonded XOR successfully",
+            "ReferralReserveXor": "Bonded {amount} XOR",
+            "ReferralUnreserveXor": "Unbonded {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} is set successfully",
             "SwapAndSend": "Swapped {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Supplied {symbol} and {symbol2} {amount} LP tokens",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Removed {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} claimed successfully",
             "EthBridgeIncoming": "Transfered {amount} {symbol} from {Ethereum} to {Sora}",
-            "EthBridgeOutgoing": "Transfered {amount} {symbol} from {Sora} to {Ethereum}"
+            "EthBridgeOutgoing": "Transfered {amount} {symbol} from {Sora} to {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Failed to supply {amount} {symbol} and {amount2} {symbol2}",
             "RegisterAsset": "Failed to register {symbol} asset",
             "ClaimRewards": "Failed to claim rewards {rewards}",
-            "ReferralReserveXor": "Failed to bond XOR",
-            "ReferralUnreserveXor": "Failed to unbond XOR",
+            "ReferralReserveXor": "Failed to bond {amount} XOR",
+            "ReferralUnreserveXor": "Failed to unbond {amount} XOR",
             "ReferralSetInvitedUser": "Failed to set {role} {address}",
             "SwapAndSend": "Failed to swap {amount} {symbol} for {amount2} {symbol2} and {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Failed to supply {amount} {symbol} and {symbol2} LP tokens",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Failed to remove {amount} {symbol}",
             "DemeterFarmingGetRewards": "Failed to claim {symbol}",
             "EthBridgeIncoming": "Failed to transfer {amount} {symbol} from {Ethereum} to {Sora}",
-            "EthBridgeOutgoing": "Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}"
+            "EthBridgeOutgoing": "Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}",
+            "SwapTransferBatch": "Failed to {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Claim Rewards",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} transfer"
     },
     "polkadotjs": {
         "noExtensions": "No {PolkadotJs} extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "{Sora} Network account",
-        "text": "Extensions & Google store your {Sora} Network account securely. They allow you to sign transactions & manage assets.",
+        "text": "In order to manage assets and sign transactions on {Sora}, an account must be connected. {Sora} accounts can be created and connected using our integrated wallets or browser extensions.",
         "noAccounts": "No account found in your {extension} browser extension. Please add an account and try again.",
         "selectAccount": "Select account to work with",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "Connected",
             "notConnected": "Not connected"
         },
-        "internalTitle": "Connect via {wallet}",
-        "internalText": "You can create or link an existing account via {wallet}. It stores accounts using encryption.",
+        "internalTitle": "Connect with {wallet}",
+        "internalText": "You can create or import an existing {Sora} account to connect with your {wallet} account. All data that is stored by {wallet} is encrypted using built-in advanced encryption.",
         "list": {
-            "simplest": "Simplest option",
+            "integrated": "Integrated",
             "extensions": "Extensions"
         }
     },
@@ -301,7 +304,8 @@
         "txId": "Transaction Id",
         "viewIn": "View in {explorer}",
         "referrer": "Referrer",
-        "referral": "Referral"
+        "referral": "Referral",
+        "adarTxDetailsTitle": "Transaction details"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Change network in {Metamask}",
@@ -483,7 +487,8 @@
         "transactionSubmitted": "Transaction submitted",
         "transactionMessage": "{firstToken} and {secondToken}",
         "ok": "OK",
-        "confirm": "Confirm"
+        "confirm": "Confirm",
+        "lossWarning": "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -539,7 +544,10 @@
         "networkInfo": "Bridge {Sora} Network with:",
         "copy": "Copy network address",
         "soraAddress": "{Sora} address",
-        "ethereumAddress": "{Ethereum} address"
+        "ethereumAddress": "{Ethereum} address",
+        "limitMessage": "Currently, there's a {type} {amount} {symbol} for bridging to ensure the stability and security of the {Sora} Network. We appreciate your understanding.",
+        "externalTransferFee": "{network} {XCM} fee",
+        "externalTransferFeeTooltip": "When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are transferring"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",
@@ -1012,7 +1020,8 @@
             "norewardsforasset": "There are no rewards for this asset"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Selected liquidity source is not allowed"
+            "forbiddenfilter": "Selected liquidity source is not allowed",
+            "slippagenottolerated": "The price impact has exceeded the selected value"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Insufficient funds",
@@ -1052,8 +1061,8 @@
             "importAccount": "Import Account"
         },
         "heading": {
-            "seedPhraseTitle": "Seed phrase",
-            "confirmSeedTitle": "Confirm seed phrase",
+            "seedPhraseTitle": "Passphrase",
+            "confirmSeedTitle": "Confirm passphrase",
             "accountDetailsTitle": "Account Details",
             "importTitle": "Import account"
         },
@@ -1064,12 +1073,12 @@
             "importAccount": "Import account"
         },
         "accountName": {
-            "placeholder": "Wallet name",
-            "desc": "This is the name of your wallet which will be visible to you"
+            "placeholder": "Account name",
+            "desc": "This is the name of your account. It will be visible only to you in {Polkaswap}."
         },
         "password": {
             "placeholder": "Password",
-            "desc": "Ensure you are using a strong password for proper protection"
+            "desc": "Ensure you are using a strong unique password for proper protection (8 characters minimum)"
         },
         "confirmPassword": {
             "placeholder": "Confirm password"
@@ -1077,11 +1086,11 @@
         "accountMnemonic": {
             "placeholder": "Mnemonic phrase"
         },
-        "seedAdviceText": "This is a secret seed of your account. Make sure to store it on a non-digital carrier, for example - paper",
-        "confirmSeedText": "Confirm the seed phrase by clicking words in the correct order",
-        "errorMnemonicText": "Incorrect seed phrase order",
-        "exportOptionText": "Export .json account file",
-        "exportJsonText": "You will always be able to access your account by importing that .json file. Do not share it with anyone!",
+        "seedAdviceText": "The 12-word passphrase is a private key to regain access to your {Sora} account in case you lose access to your {wallet} account. Store it safely in the exact order it appears above.",
+        "confirmSeedText": "Confirm the passphrase by clicking the words in the correct order",
+        "errorMnemonicText": "Incorrect passphrase order",
+        "exportOptionText": "Export {JSON} file for account restoration",
+        "exportJsonText": "You will always be able to restore your account by importing this {JSON} file. Do not share it with anyone! Store it safely, preferably encrypted.",
         "addAccount": "Add an account",
         "dialog": {
             "confirmTitle": "Confirm with password",
@@ -1100,16 +1109,20 @@
         "assetsAtRiskText": "Assets at risk!",
         "deleteAccountText": "Account can’t be recovered without a seed phrase, .json file or if it’s stored in some extension. You will be logged out.",
         "importSteps": {
-            "selectWallet": "Go to the wallet of your use",
+            "selectWallet": "Open the wallet with your existing account(s)",
             "selectAccount": "Select the account you want to export",
             "exportAccount": "Export the {JSON} file"
         },
-        "exportTutorialsText": "Export tutorials"
+        "exportTutorialsText": "Export tutorials",
+        "seedAdviceAdditionTitle": "Never share your passphrase with anyone!",
+        "seedAdviceAdditionText": "If someone asks you for your passphrase they are most likely trying to scam you and steal your assets!"
     },
     "hashiBridgeText": "{Hashi} bridge",
     "disclaimerTitle": "Disclaimer",
     "explore": {
-        "showOnlyMyPositions": "Show only my positions"
+        "showOnly": "Show only {entities}",
+        "myPositions": "my positions",
+        "synthetics": "synthetic tokens"
     },
     "tooltips": {
         "roi": "{ROI} stands for Return on Investment. It is calculated by dividing the profit earned on an investment by the cost of that investment in a percentage equivalent.",
@@ -1168,8 +1181,8 @@
             "action": "Select services",
             "dialog": {
                 "title": "{Sora} Network service selection",
-                "fiat": "Fiat values",
-                "chartsAndActivity": "Charts & Activity"
+                "indexer": "Indexer",
+                "useCeres": "Use {Ceres} for fiat values"
             }
         }
     },
@@ -1177,7 +1190,7 @@
     "acceptText": "Accept & Hide",
     "newAccountsText": "New accounts",
     "dragAndDropText": "Drag & drop or choose {extension} file",
-    "copyPhraseText": "Copy Phrase",
+    "copyPhraseText": "Copy Passphrase",
     "stepText": "Step",
     "alerts": {
         "drop": "Drops below",
@@ -1207,11 +1220,50 @@
         "historyBtn": "My purchases",
         "historyTitle": "Transaction History",
         "moonpayTitle": "Buy ETH via MoonPay",
-        "moonpayDesc": "Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge",
+        "moonpayDesc": "Purchase ETH tokens on Ethereum and transfer them to {SORA} network via the bridge",
         "x1Title": "Buy XOR with your card",
-        "x1Desc": "Purchase XOR tokens with your debit or credit card",
         "x1Btn": "Buy XOR with card",
-        "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later."
+        "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later.",
+        "x1Desc": "Purchase XOR tokens directly on the {SORA} network with your debit or credit card"
     },
-    "acceptOnScrollText": "Scroll to accept"
+    "acceptOnScrollText": "Scroll to accept",
+    "addressBook": {
+        "myAccounts": "My accounts",
+        "myBook": "My Book",
+        "searchPlaceholder": "Search by address, name or identity",
+        "noFoundRecords": "No records found",
+        "noContacts": "You don’t have any contacts added yet",
+        "addContact": "Add contact",
+        "dialogTitle": "Your contacts",
+        "identity": "On-chain identity",
+        "none": "None",
+        "detected": "New address detected",
+        "save": "Save as contact",
+        "tooltip": "Collect address book by providing name and address to keep your contacts organized and up-to-date",
+        "notSoraAddress": "This address will be saved as {SORA} address below. Make sure the recipient can access the {SORA} chain:",
+        "options": {
+            "send": "Send tokens",
+            "edit": "Edit contact",
+            "delete": "Delete"
+        },
+        "btn": {
+            "enterName": "Enter name",
+            "present": "Already present",
+            "saveChanges": "Save changes"
+        },
+        "input": "Input address or select contact",
+        "selectContact": "Select contact"
+    },
+    "browserPermission": {
+        "title": "Allow camera access in browser settings",
+        "desc": "To ensure the authenticity of documents and validate user identity for KYC verification, access to your device's camera is required.",
+        "disclaimer": "Camera access is required for real-time document capture to prevent fraud.",
+        "btnGoToSettings": "Go to settings",
+        "btnAllow": "Allow access"
+    },
+    "continueText": "Continue",
+    "minAmountText": "min. amount",
+    "maxAmountText": "max. amount",
+    "exceededAmountText": "{amount} exceeded",
+    "multipleRecipients": "Multiple Recipients"
 }

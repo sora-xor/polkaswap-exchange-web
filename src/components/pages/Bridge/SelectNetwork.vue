@@ -22,9 +22,10 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { action, getter, mutation, state } from '@/store/decorators';
+import { action, mutation, state } from '@/store/decorators';
 import type { AvailableNetwork } from '@/store/web3/types';
 
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 type NetworkItem = {
@@ -47,10 +48,12 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
   @state.web3.networkSelected private networkSelected!: Nullable<BridgeNetworkId>;
   @state.web3.selectNetworkDialogVisibility private selectNetworkDialogVisibility!: boolean;
 
-  @mutation.web3.setNetworkType private setNetworkType!: (networkType: BridgeNetworkType) => void;
   @mutation.web3.setSelectNetworkDialogVisibility private setSelectNetworkDialogVisibility!: (flag: boolean) => void;
 
-  @action.web3.selectExternalNetwork selectExternalNetwork!: (networkId: BridgeNetworkId) => void;
+  @action.web3.selectExternalNetwork selectExternalNetwork!: (network: {
+    id: BridgeNetworkId;
+    type: BridgeNetworkType;
+  }) => void;
 
   get visibility(): boolean {
     return this.selectNetworkDialogVisibility;
@@ -65,16 +68,20 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
       .map(([type, record]) => {
         const networks = Object.values(record) as AvailableNetwork[];
 
-        return networks.map(({ disabled, data: { id, name } }) => {
-          const networkName = type === BridgeNetworkType.EvmLegacy ? `${name} (${this.t('hashiBridgeText')})` : name;
+        return networks.reduce<NetworkItem[]>((buffer, { available, disabled, data: { id, name } }) => {
+          const networkName = type === BridgeNetworkType.Eth ? `${name} (${this.t('hashiBridgeText')})` : name;
 
-          return {
-            id,
-            value: `${type}-${id}`,
-            name: networkName,
-            disabled,
-          };
-        });
+          if (available) {
+            buffer.push({
+              id,
+              value: `${type}-${id}`,
+              name: networkName,
+              disabled,
+            });
+          }
+
+          return buffer;
+        }, []);
       })
       .flat(1)
       .sort((a, b) => {
@@ -88,10 +95,12 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
 
   set selectedNetworkTuple(value: string) {
     const [networkType, networkSelected] = value.split(DELIMETER);
-    const networkFormatted =
-      networkType === BridgeNetworkType.Sub ? (networkSelected as BridgeNetworkId) : Number(networkSelected);
-    this.setNetworkType(networkType as BridgeNetworkType);
-    this.selectExternalNetwork(networkFormatted);
+
+    const type = networkType as BridgeNetworkType;
+    const id = type === BridgeNetworkType.Sub ? (networkSelected as SubNetwork) : Number(networkSelected);
+
+    this.selectExternalNetwork({ id, type });
+    this.visibility = false;
   }
 }
 </script>

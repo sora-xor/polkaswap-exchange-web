@@ -58,6 +58,8 @@ export default class TransactionDetails extends Mixins(TranslationMixin) {
     margin-bottom: 15px;
 
     .el-icon-arrow-right {
+      position: relative;
+
       &:hover {
         cursor: pointer;
       }

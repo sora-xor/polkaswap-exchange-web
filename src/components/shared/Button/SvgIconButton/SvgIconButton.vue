@@ -1,6 +1,6 @@
 <template>
   <s-button :class="['svg-icon-button', { 's-pressed': active }]" type="action" v-bind="$attrs" v-on="$listeners">
-    <component :is="icon" :class="{ active }" />
+    <component :is="icon" />
   </s-button>
 </template>
 
@@ -10,8 +10,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { SvgIcons } from './icons';
 
 const components = {
-  [SvgIcons.LineIcon]: () => import('@/assets/img/charts/line.svg?inline'),
-  [SvgIcons.CandleIcon]: () => import('@/assets/img/charts/candle.svg?inline'),
+  [SvgIcons.LineIcon]: () => import('./Icons/Line.vue'),
+  [SvgIcons.CandleIcon]: () => import('./Icons/Candle.vue'),
 };
 
 @Component({
@@ -29,8 +29,19 @@ export default class SvgIconButton extends Vue {
     & > path {
       fill: var(--s-color-base-content-tertiary);
     }
+  }
 
-    &.active {
+  &:hover,
+  &:focus {
+    svg {
+      & > path {
+        fill: var(--s-color-base-content-secondary);
+      }
+    }
+  }
+
+  &.s-pressed {
+    svg {
       & > path {
         fill: var(--s-color-theme-accent);
       }

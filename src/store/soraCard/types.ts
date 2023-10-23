@@ -1,6 +1,6 @@
 import { FPNumber } from '@sora-substrate/util';
 
-import { KycStatus, VerificationStatus } from '@/types/card';
+import { KycStatus, VerificationStatus, UserInfo, AttemptCounter, Fees } from '@/types/card';
 
 import type { Subscription } from 'rxjs';
 
@@ -11,9 +11,12 @@ export type SoraCardState = {
   wasEuroBalanceLoaded: boolean;
   totalXorBalance: FPNumber;
   xorToDeposit: FPNumber;
+  referenceNumber: Nullable<string>;
   totalXorBalanceUpdates: Nullable<Subscription>;
   authLogin: any;
-  hasFreeAttempts: Nullable<boolean>;
   wantsToPassKycAgain: boolean;
-  rejectReason: Nullable<string>;
+  rejectReasons: Array<string>;
+  userInfo: UserInfo;
+  attemptCounter: AttemptCounter;
+  fees: Fees;
 };

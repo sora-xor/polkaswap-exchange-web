@@ -1,5 +1,5 @@
-import { Operation, isBridgeOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/util';
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { Operation, isEthOperation, isEvmOperation, isSubstrateOperation } from '@sora-substrate/util';
+import { api as soraApi } from '@soramitsu/soraneo-wallet-web';
 import { ethers } from 'ethers';
 
 import { isUnsignedTx as isUnsignedEthTx } from '@/utils/bridge/eth/utils';
@@ -8,45 +8,32 @@ import { isUnsignedTx as isUnsignedSubTx } from '@/utils/bridge/sub/utils';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { ApiPromise } from '@polkadot/api';
-import type { IBridgeTransaction, BridgeHistory } from '@sora-substrate/util';
+import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
-export const waitForEvmTransactionStatus = async (
+const waitForEvmTransactionStatus = async (
   hash: string,
   replaceCallback: (hash: string) => any,
   cancelCallback: (hash: string) => any
 ) => {
-  const ethersInstance = await ethersUtil.getEthersInstance();
   try {
-    // the confirmations value was reduced from 5 to 1
-    // since after the block release, we can be sure that the transaction is completed
-    const confirmations = 1;
-    const timeout = 0;
-    const currentBlock = await ethersInstance.getBlockNumber();
-    const blockOffset = currentBlock - 20;
-    const { data, from, nonce, to, value } = await ethersInstance.getTransaction(hash);
-    await ethersInstance._waitForTransaction(hash, confirmations, timeout, {
-      data,
-      from,
-      nonce,
-      to: to ?? '',
-      value,
-      startBlock: blockOffset,
-    });
+    const ethersInstance = await ethersUtil.getEthersInstance();
+    await ethersInstance.waitForTransaction(hash);
   } catch (error: any) {
-    if (error.code === ethers.errors.TRANSACTION_REPLACED) {
-      if (error.reason === 'repriced' || error.reason === 'replaced') {
-        replaceCallback(error.replacement.hash);
-      } else if (error.reason === 'canceled') {
+    if (ethers.isError(error, 'TRANSACTION_REPLACED')) {
+      if (error.reason === 'cancelled') {
         cancelCallback(error.replacement.hash);
+      } else {
+        replaceCallback(error.replacement.hash);
       }
     }
   }
 };
 
 export const waitForEvmTransactionMined = async (hash?: string, updatedCallback?: (hash: string) => void) => {
-  if (!hash) throw new Error('[Bridge]: evm hash cannot be empty!');
+  if (!hash) throw new Error('[waitForEvmTransactionMined]: hash cannot be empty!');
 
   await waitForEvmTransactionStatus(
     hash,
@@ -55,7 +42,7 @@ export const waitForEvmTransactionMined = async (hash?: string, updatedCallback?
       await waitForEvmTransactionMined(replaceHash, updatedCallback);
     },
     (cancelHash) => {
-      throw new Error(`[Bridge]: The transaction was canceled by the user [${cancelHash}]`);
+      throw new Error(`[waitForEvmTransactionMined]: The transaction was canceled by the user [${cancelHash}]`);
     }
   );
 };
@@ -64,11 +51,13 @@ export const getEvmTransactionRecieptByHash = async (
   transactionHash: string
 ): Promise<{ fee: string; blockHash: string; blockNumber: number; from: string } | null> => {
   try {
-    const { from, effectiveGasPrice, gasUsed, blockNumber, blockHash } = await ethersUtil.getEvmTransactionReceipt(
-      transactionHash
-    );
+    const receipt = await ethersUtil.getEvmTransactionReceipt(transactionHash);
 
-    const fee = ethersUtil.calcEvmFee(effectiveGasPrice.toNumber(), gasUsed.toNumber());
+    if (!receipt) throw new Error(`Transaction receipt "${transactionHash}" not found`);
+
+    const { from, gasPrice, gasUsed, blockNumber, blockHash } = receipt;
+
+    const fee = ethersUtil.calcEvmFee(gasPrice, gasUsed);
 
     return { fee, blockHash, blockNumber, from };
   } catch (error) {
@@ -76,50 +65,24 @@ export const getEvmTransactionRecieptByHash = async (
   }
 };
 
-export const findUserTxIdInBlock = async (
-  blockHash: string,
-  soraHash: string,
-  eventMethod: string,
-  eventSection: string
-): Promise<string | undefined> => {
-  const blockEvents = await api.system.getBlockEvents(blockHash);
-
-  const event = blockEvents.find(
-    ({ phase, event }) =>
-      phase.isApplyExtrinsic &&
-      event.section === eventSection &&
-      event.method === eventMethod &&
-      event.data?.[0]?.toString() === soraHash
+export const getBlockEventsByTxIndex = async (blockHash: string, index: number, api: ApiPromise) => {
+  const blockEvents = await soraApi.system.getBlockEvents(blockHash, api);
+  const transactionEvents = blockEvents.filter(
+    ({ phase }) => phase.isApplyExtrinsic && phase.asApplyExtrinsic.toNumber() === index
   );
 
-  if (!event) return undefined;
-
-  const index = event.phase.asApplyExtrinsic.toNumber();
-  const extrinsics = await api.system.getExtrinsicsFromBlock(blockHash);
-  const userExtrinsic = extrinsics[index];
-
-  return userExtrinsic.hash.toString();
+  return transactionEvents;
 };
 
-export const findEventInBlock = async ({
-  api,
-  blockId,
-  section,
-  method,
-}: {
-  api: ApiPromise;
-  blockId: string;
-  section: string;
-  method: string;
-}) => {
-  const apiInstanceAtBlock = await api.at(blockId);
-  const blockEvents = (await apiInstanceAtBlock.query.system.events()).toArray();
+export const getTransactionEvents = async (blockHash: string, transactionHash: string, api: ApiPromise) => {
+  const extrinsics = await soraApi.system.getExtrinsicsFromBlock(blockHash, api);
+  const extrinsicIndex = extrinsics.findIndex((ext) => ext.hash.toString() === transactionHash);
 
-  const event = blockEvents.find(({ event }) => event.section === section && event.method === method);
+  if (extrinsicIndex === -1) throw new Error(`Unable to find extrinsic "${transactionHash}" in block "${blockHash}"`);
 
-  if (!event) throw new Error('Event not found');
+  const transactionEvents = await getBlockEventsByTxIndex(blockHash, extrinsicIndex, api);
 
-  return event.event.data;
+  return transactionEvents;
 };
 
 export const isOutgoingTransaction = (transaction: Nullable<IBridgeTransaction>): boolean => {
@@ -131,7 +94,7 @@ export const isOutgoingTransaction = (transaction: Nullable<IBridgeTransaction>)
 export const isUnsignedTx = (transaction: Nullable<IBridgeTransaction>): boolean => {
   if (!transaction?.type) return true;
 
-  if (isBridgeOperation(transaction.type)) return isUnsignedEthTx(transaction as BridgeHistory);
+  if (isEthOperation(transaction.type)) return isUnsignedEthTx(transaction as EthHistory);
   if (isEvmOperation(transaction.type)) return isUnsignedEvmTx(transaction as EvmHistory);
   if (isSubstrateOperation(transaction.type)) return isUnsignedSubTx(transaction as SubHistory);
 

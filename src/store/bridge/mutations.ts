@@ -1,10 +1,9 @@
 import { defineMutations } from 'direct-vuex';
 import omit from 'lodash/fp/omit';
 
-import { ZeroStringValue } from '@/consts';
-
-import type { BridgeState } from './types';
-import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
+import type { BridgeState, FocusedField } from './types';
+import type { FPNumber, IBridgeTransaction, CodecString } from '@sora-substrate/util';
+import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<BridgeState>()({
   setSoraToEvm(state, isSoraToEvm: boolean): void {
@@ -23,30 +22,71 @@ const mutations = defineMutations<BridgeState>()({
     state.assetRecipientBalance = balance;
   },
 
-  setAssetLockedBalance(state, balance: Nullable<CodecString> = null): void {
+  setAssetLockedBalance(state, balance: Nullable<FPNumber> = null): void {
     state.assetLockedBalance = balance;
-  },
-  setAssetLockedBalanceFetching(state, flag: boolean): void {
-    state.assetLockedBalanceFetching = flag;
   },
 
   setExternalBalance(state, balance: Nullable<CodecString> = null): void {
     state.externalNativeBalance = balance;
   },
-  setExternalBalancesFetching(state, flag: boolean): void {
-    state.externalBalancesFetching = flag;
+
+  setIncomingMinLimit(state, amount: FPNumber): void {
+    state.incomingMinLimit = amount;
   },
 
-  setAmount(state, value?: string): void {
-    state.amount = value || '';
+  setOutgoingMaxLimit(state, amount: Nullable<FPNumber>): void {
+    state.outgoingMaxLimit = amount;
   },
 
-  setExternalNetworkFeeFetching(state, flag: boolean): void {
-    state.externalNetworkFeeFetching = flag;
+  setOutgoingMaxLimitSubscription(state, subscription: Subscription): void {
+    state.outgoingMaxLimitSubscription = subscription;
+  },
+
+  resetOutgoingMaxLimitSubscription(state): void {
+    state.outgoingMaxLimitSubscription?.unsubscribe();
+    state.outgoingMaxLimitSubscription = null;
+    state.outgoingMaxLimit = null;
+  },
+
+  setBlockUpdatesSubscription(state, subscription: Subscription): void {
+    state.blockUpdatesSubscription = subscription;
+  },
+
+  resetBlockUpdatesSubscription(state): void {
+    state.blockUpdatesSubscription?.unsubscribe();
+    state.blockUpdatesSubscription = null;
+  },
+
+  setAmountSend(state, value?: string): void {
+    state.amountSend = value || '';
+  },
+
+  setAmountReceived(state, value?: string): void {
+    state.amountReceived = value || '';
+  },
+
+  setFocusedField(state, field: FocusedField): void {
+    state.focusedField = field;
+  },
+
+  setBalancesFetching(state, flag: boolean): void {
+    state.balancesFetching = flag;
+  },
+
+  setFeesAndLockedFundsFetching(state, flag: boolean): void {
+    state.feesAndLockedFundsFetching = flag;
   },
 
   setExternalNetworkFee(state, fee: CodecString): void {
     state.externalNetworkFee = fee;
+  },
+
+  setExternalTransferFee(state, fee: CodecString): void {
+    state.externalTransferFee = fee;
+  },
+
+  setSoraNetworkFee(state, fee: CodecString) {
+    state.soraNetworkFee = fee;
   },
 
   /**

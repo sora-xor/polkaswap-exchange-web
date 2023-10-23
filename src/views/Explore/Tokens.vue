@@ -1,18 +1,6 @@
 <template>
   <div>
-    <div class="switcher" v-if="false /* TODO: [SYNTHS] */">
-      <s-switch v-model="showOnlySynths" />
-      <span>{{ 'Show only synthetic tokens' }}</span>
-      <s-tooltip
-        class="switcher-tooltip"
-        popper-class="info-tooltip"
-        border-radius="mini"
-        :content="'Here will be content'"
-        tabindex="-1"
-      >
-        <s-icon name="info-16" size="18px" />
-      </s-tooltip>
-    </div>
+    <synthetic-switcher v-model="isSynthsOnly" />
     <s-table
       ref="table"
       v-loading="loadingState"
@@ -42,7 +30,7 @@
           <token-logo class="explore-table-item-logo" :token-symbol="row.symbol" />
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.symbol }}</div>
-            <div class="explore-table__secondary">{{ row.name }}</div>
+            <div class="explore-table__secondary explore-table__token-name">{{ row.name }}</div>
             <div class="explore-table-item-address">
               <token-address
                 class="explore-table-item-address__value"
@@ -180,35 +168,21 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
-import { components, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
-import { gql } from '@urql/core';
-import last from 'lodash/fp/last';
+import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import { fetchTokensData } from '@/indexer/queries/assets';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
-import { calcPriceChange, formatAmountWithSuffix } from '@/utils';
+import type { AmountWithSuffix } from '@/types/formats';
+import { calcPriceChange, formatAmountWithSuffix, sortAssets } from '@/utils';
 import { syntheticAssetRegexp } from '@/utils/regexp';
+import storage from '@/utils/storage';
 
-import type { AmountWithSuffix } from '../../types/formats';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type {
-  AssetEntity,
-  AssetSnapshotEntity,
-  EntitiesQueryResponse,
-} from '@soramitsu/soraneo-wallet-web/lib/services/subquery/types';
-
-type AssetData = AssetEntity & {
-  hourSnapshots: {
-    nodes: AssetSnapshotEntity[];
-  };
-  daySnapshots: {
-    nodes: AssetSnapshotEntity[];
-  };
-};
 
 type TokenData = {
   reserves: FPNumber;
@@ -235,61 +209,11 @@ type TableItem = {
   velocityFormatted: string;
 } & Asset;
 
-const AssetsQuery = gql<EntitiesQueryResponse<AssetData>>`
-  query AssetsQuery($after: Cursor, $ids: [String!], $dayTimestamp: Int, $weekTimestamp: Int) {
-    entities: assets(after: $after, filter: { and: [{ id: { in: $ids } }] }) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      nodes {
-        id
-        liquidity
-        hourSnapshots: data(
-          filter: { and: [{ timestamp: { greaterThanOrEqualTo: $dayTimestamp } }, { type: { equalTo: HOUR } }] }
-          orderBy: [TIMESTAMP_DESC]
-        ) {
-          nodes {
-            priceUSD
-            volume
-          }
-        }
-        daySnapshots: data(
-          filter: { and: [{ timestamp: { greaterThanOrEqualTo: $weekTimestamp } }, { type: { equalTo: DAY } }] }
-          orderBy: [TIMESTAMP_DESC]
-        ) {
-          nodes {
-            priceUSD
-            volume
-          }
-        }
-      }
-    }
-  }
-`;
-
-const calcVolume = (nodes: AssetSnapshotEntity[]): FPNumber => {
-  return nodes.reduce((buffer, snapshot) => {
-    const snapshotVolume = new FPNumber(snapshot.volume.amountUSD);
-
-    return buffer.add(snapshotVolume);
-  }, FPNumber.ZERO);
-};
-
-const parse = (item: AssetData): Record<string, TokenData> => {
-  return {
-    [item.id]: {
-      reserves: FPNumber.fromCodecValue(item.liquidity ?? 0),
-      startPriceDay: new FPNumber(last(item.hourSnapshots.nodes)?.priceUSD?.open ?? 0),
-      startPriceWeek: new FPNumber(last(item.daySnapshots.nodes)?.priceUSD?.open ?? 0),
-      volumeDay: calcVolume(item.hourSnapshots.nodes),
-      volumeWeek: calcVolume(item.daySnapshots.nodes),
-    },
-  };
-};
+const storageKey = 'exploreSyntheticTokens';
 
 @Component({
   components: {
+    SyntheticSwitcher: components.SyntheticSwitcher,
     PriceChange: lazyComponent(Components.PriceChange),
     SortButton: lazyComponent(Components.SortButton),
     TokenAddress: components.TokenAddress,
@@ -299,11 +223,21 @@ const parse = (item: AssetData): Record<string, TokenData> => {
   },
 })
 export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
-  readonly DAY = 60 * 60 * 24;
+  private readonly DAY = 60 * 60 * 24;
 
-  @getter.assets.whitelistAssets private items!: Array<Asset>;
+  @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
 
-  showOnlySynths = false;
+  private isSynths = storage.get(storageKey as any) ? JSON.parse(storage.get(storageKey as any)) : false;
+
+  get isSynthsOnly(): boolean {
+    return this.isSynths;
+  }
+
+  set isSynthsOnly(value: boolean) {
+    storage.set(storageKey as any, value); // TODO: Update StorageKey
+    this.isSynths = value;
+  }
+
   tokensData: Record<string, TokenData> = {};
   // override ExplorePageMixin
   order = SortDirection.DESC;
@@ -313,45 +247,50 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     return Object.keys(this.tokensData).length !== 0;
   }
 
+  get items(): TableItem[] {
+    const items = Object.entries(this.tokensData).reduce<TableItem[]>((buffer, [address, tokenData]) => {
+      const asset = this.getAsset(address);
+
+      if (!asset) return buffer;
+
+      const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? 0);
+      const fpPriceDay = tokenData?.startPriceDay ?? FPNumber.ZERO;
+      const fpPriceWeek = tokenData?.startPriceWeek ?? FPNumber.ZERO;
+      const fpVolumeDay = tokenData?.volumeDay ?? FPNumber.ZERO;
+      const fpVolumeWeek = tokenData?.volumeWeek ?? FPNumber.ZERO;
+      const fpPriceChangeDay = calcPriceChange(fpPrice, fpPriceDay);
+      const fpPriceChangeWeek = calcPriceChange(fpPrice, fpPriceWeek);
+
+      const reserves = tokenData?.reserves ?? FPNumber.ZERO;
+      const tvl = reserves.mul(fpPrice);
+      const velocity = tvl.isZero() ? FPNumber.ZERO : fpVolumeWeek.div(tvl);
+
+      buffer.push({
+        ...asset,
+        price: fpPrice.toNumber(),
+        priceFormatted: new FPNumber(fpPrice.toFixed(7)).toLocaleString(),
+        priceChangeDay: fpPriceChangeDay.toNumber(),
+        priceChangeDayFP: fpPriceChangeDay,
+        priceChangeWeek: fpPriceChangeWeek.toNumber(),
+        priceChangeWeekFP: fpPriceChangeWeek,
+        volumeDay: fpVolumeDay.toNumber(),
+        volumeDayFormatted: formatAmountWithSuffix(fpVolumeDay),
+        tvl: tvl.toNumber(),
+        tvlFormatted: formatAmountWithSuffix(tvl),
+        velocity: velocity.toNumber(),
+        velocityFormatted: String(velocity.toNumber(2)),
+      });
+
+      return buffer;
+    }, []);
+
+    const defaultSorted = [...items].sort((a, b) => sortAssets(a, b));
+
+    return defaultSorted;
+  }
+
   get preparedItems(): TableItem[] {
-    return this.items // TODO: [PW-1166] map fn is used here cuz whitelistAssets has default sorting
-      .map<[string, TokenData]>(({ address }) => [address, this.tokensData[address]])
-      .reduce<TableItem[]>((buffer, [address, tokenData]) => {
-        const asset = this.getAsset(address);
-
-        if (!asset) return buffer;
-        if (this.showOnlySynths && !this.isSynthetic(asset.address)) return buffer;
-
-        const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? 0);
-        const fpPriceDay = tokenData?.startPriceDay ?? FPNumber.ZERO;
-        const fpPriceWeek = tokenData?.startPriceWeek ?? FPNumber.ZERO;
-        const fpVolumeDay = tokenData?.volumeDay ?? FPNumber.ZERO;
-        const fpVolumeWeek = tokenData?.volumeWeek ?? FPNumber.ZERO;
-        const fpPriceChangeDay = calcPriceChange(fpPrice, fpPriceDay);
-        const fpPriceChangeWeek = calcPriceChange(fpPrice, fpPriceWeek);
-
-        const reserves = tokenData?.reserves ?? FPNumber.ZERO;
-        const tvl = reserves.mul(fpPrice);
-        const velocity = tvl.isZero() ? FPNumber.ZERO : fpVolumeWeek.div(tvl);
-
-        buffer.push({
-          ...asset,
-          price: fpPrice.toNumber(),
-          priceFormatted: new FPNumber(fpPrice.toFixed(7)).toLocaleString(),
-          priceChangeDay: fpPriceChangeDay.toNumber(),
-          priceChangeDayFP: fpPriceChangeDay,
-          priceChangeWeek: fpPriceChangeWeek.toNumber(),
-          priceChangeWeekFP: fpPriceChangeWeek,
-          volumeDay: fpVolumeDay.toNumber(),
-          volumeDayFormatted: formatAmountWithSuffix(fpVolumeDay),
-          tvl: tvl.toNumber(),
-          tvlFormatted: formatAmountWithSuffix(tvl),
-          velocity: velocity.toNumber(),
-          velocityFormatted: String(velocity.toNumber(2)),
-        });
-
-        return buffer;
-      }, []);
+    return this.isSynthsOnly ? this.items.filter((item) => this.isSynthetic(item.address)) : this.items;
   }
 
   isSynthetic(address: string): boolean {
@@ -362,23 +301,9 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   async updateExploreData(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.tokensData = Object.freeze(await this.fetchTokensData());
+        this.tokensData = Object.freeze(await fetchTokensData(this.whitelistAssets));
       });
     });
-  }
-
-  private async fetchTokensData(): Promise<Record<string, TokenData>> {
-    const now = Math.floor(Date.now() / (5 * 60_000)) * (5 * 60); // rounded to latest 5min snapshot (unix)
-    const dayTimestamp = now - this.DAY; // latest day snapshot (unix)
-    const weekTimestamp = now - this.DAY * 7; // latest week snapshot (unix)
-    const ids = this.items.map((item) => item.address); // only whitelisted assets
-
-    const variables = { ids, dayTimestamp, weekTimestamp };
-    const items = await SubqueryExplorerService.fetchAllEntities(AssetsQuery, variables, parse);
-
-    if (!items) return {};
-
-    return items.reduce((acc, item) => ({ ...acc, ...item }), {});
   }
 }
 </script>
@@ -388,12 +313,10 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 </style>
 
 <style lang="scss" scoped>
-.switcher {
-  display: flex;
-  align-items: center;
-
-  & > span {
-    margin-left: $inner-spacing-small;
-  }
+.explore-table__token-name {
+  max-width: 155px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

@@ -3,11 +3,10 @@ import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
 import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { en as walletEn } from '@soramitsu/soraneo-wallet-web';
 
-import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
-
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
-import { DemeterPageNames } from '../modules/staking/consts';
+import { DemeterPageNames } from '../modules/demeterFarming/consts';
+import { AlertFrequencyTabs, AlertTypeTabs, FiatOptionTabs } from '../types/tabs';
 
 export default {
   // Wallet project keys
@@ -30,8 +29,10 @@ export default {
   selectNodeConnected: 'Connected to: {chain}',
   connectWalletTextTooltip: 'Connect to {Sora} Network with {PolkadotJs}',
   selectNodeText: 'Select node',
+  selectIndexerText: 'Select indexer',
   bridgeText: 'Bridge',
   acceptText: 'Accept & Hide',
+  continueText: 'Continue',
   acceptOnSctollText: 'Scroll to accept',
   comingSoonText: 'Coming Soon',
   releaseNotesText: 'Release notes',
@@ -118,6 +119,17 @@ export default {
       "Select between 'once' and 'always' to determine how often you receive notifications for the chosen alert type. 'Once' will send a single notification when the condition is met, while 'always' will continue to notify you each time the price threshold is crossed.",
     noSupportMsg: "Notifications aren't supported by your browser",
   },
+  fiatPayment: {
+    [FiatOptionTabs.moonpay]: 'MoonPay',
+    [FiatOptionTabs.x1ex]: 'x1ex',
+    historyBtn: 'My purchases',
+    historyTitle: 'Transaction History',
+    moonpayTitle: 'Buy ETH via MoonPay',
+    moonpayDesc: 'Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge',
+    x1Title: 'Buy XOR with your card',
+    x1Desc: 'Purchase XOR tokens with your debit or credit card',
+    x1Btn: 'Buy XOR with card',
+  },
   headerMenu: {
     showBalances: 'Show Balances',
     hideBalances: 'Hide Balances',
@@ -193,6 +205,17 @@ export default {
       incorrectProtocol: 'Address should starts from ws:// or wss://',
       incorrectAddress: 'Incorrect address',
     },
+  },
+  selectIndexerDialog: {
+    title: '{Sora} Network indexer selection',
+    addIndexer: 'Add custom indexer',
+    updateIndexer: 'Update indexer',
+    customIndexer: 'Custom indexer',
+    howToSetupOwnIndexer: 'How to setup your own {Sora} indexer',
+    select: 'Select',
+    connected: 'Connected',
+    selectIndexerForEnvironment: 'Select a indexer for {environment} environment:',
+    indexerTitle: '{chain} hosted by {name}',
   },
   selectLanguageDialog: {
     title: 'Language',
@@ -328,6 +351,8 @@ export default {
     transactionMessage: '{firstToken} and {secondToken}',
     confirm: 'Confirm',
     ok: 'OK',
+    lossWarning:
+      "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair.",
   },
   swap: {
     connectWallet: '@:connectWalletText',
@@ -382,6 +407,9 @@ export default {
     connectWallets: 'Connect wallets to view respective transaction history.',
     soraNetworkFee: '{Sora} Network Fee',
     ethereumNetworkFee: '{Ethereum} Network Fee',
+    externalTransferFee: '{network} {XCM} fee',
+    externalTransferFeeTooltip:
+      'When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are trasferring',
     tooltipValue: '@:comingSoonText',
     total: 'Total',
     viewHistory: 'View transactions history',
@@ -393,6 +421,8 @@ export default {
     copy: 'Copy network address',
     soraAddress: '{Sora} address',
     ethereumAddress: '{Ethereum} address',
+    limitMessage:
+      "Currently, there's a {type} {amount} {symbol} for bridging to ensure the stability and security of the {Sora} Network. We appreciate your understanding.",
   },
   selectRegisteredAsset: {
     title: 'Select a token',
@@ -555,7 +585,9 @@ export default {
     assetId: 'Asset ID',
   },
   explore: {
-    showOnlyMyPositions: 'Show only my positions',
+    showOnly: 'Show only {entities}',
+    myPositions: 'my positions',
+    synthetics: 'synthetic tokens',
   },
   dexSettings: {
     title: 'Transaction settings',
@@ -838,4 +870,14 @@ export default {
       'Token velocity is the number of times token changes accounts during period (month) on average. It indicates the level of trading activity and liquidity.',
   },
   networkStatisticsText: 'Network statistics',
+  browserPermission: {
+    title: 'Allow camera access in browser settings',
+    desc: "To ensure the authenticity of documents and validate user identity for KYC verification, access to your device's camera is required.",
+    disclaimer: 'Camera access is required for real-time document capture to prevent fraud.',
+    btnGoToSettings: 'Go to settings',
+    btnAllow: 'Allow access',
+  },
+  minAmountText: 'min. amount',
+  maxAmountText: 'max. amount',
+  exceededAmountText: '{amount} exceeded',
 };

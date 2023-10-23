@@ -1,4 +1,5 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { defineGetters } from 'direct-vuex';
 
 import { EVM_NETWORKS } from '@/consts/evm';
@@ -6,22 +7,12 @@ import type { KnownEthBridgeAsset } from '@/consts/evm';
 import { SUB_NETWORKS } from '@/consts/sub';
 import { web3GetterContext } from '@/store/web3';
 import type { NetworkData } from '@/types/bridge';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { Web3State, AvailableNetwork } from './types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const getters = defineGetters<Web3State>()({
-  externalAccount(...args): string {
-    const { state } = web3GetterContext(args);
-
-    if (state.networkType === BridgeNetworkType.Sub) {
-      return state.subAddress;
-    } else {
-      return state.evmAddress;
-    }
-  },
-
   availableNetworks(...args): Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>> {
     const { state } = web3GetterContext(args);
 
@@ -30,6 +21,7 @@ const getters = defineGetters<Web3State>()({
 
       if (data) {
         buffer[id] = {
+          available: true,
           disabled: false,
           data: EVM_NETWORKS[id],
         };
@@ -43,6 +35,7 @@ const getters = defineGetters<Web3State>()({
 
       if (data) {
         buffer[id] = {
+          available: true,
           disabled: !state.supportedApps?.[BridgeNetworkType.Evm]?.[id],
           data: EVM_NETWORKS[id],
         };
@@ -59,7 +52,10 @@ const getters = defineGetters<Web3State>()({
         data.endpointUrls.push(address);
         data.blockExplorerUrls.push(address);
 
+        const available = !subBridgeApi.isSoraParachain(id as SubNetwork);
+
         buffer[id] = {
+          available,
           disabled: !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork),
           data,
         };
@@ -69,7 +65,7 @@ const getters = defineGetters<Web3State>()({
     }, {});
 
     return {
-      [BridgeNetworkType.EvmLegacy]: hashi,
+      [BridgeNetworkType.Eth]: hashi,
       [BridgeNetworkType.Evm]: evm,
       [BridgeNetworkType.Sub]: sub,
     };

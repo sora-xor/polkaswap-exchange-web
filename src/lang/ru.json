@@ -38,8 +38,8 @@
             "CreatePair": "Поставлено {amount} {symbol} и {amount2} {symbol2}",
             "RegisterAsset": "Зарегистрирован актив {symbol}",
             "ClaimRewards": "Награды получены успешно {rewards}",
-            "ReferralReserveXor": "XOR успешно зарезервированы",
-            "ReferralUnreserveXor": "XOR успешно выведены из резерва",
+            "ReferralReserveXor": "Зарезервировано {amount} XOR",
+            "ReferralUnreserveXor": "{amount} XOR успешно выведены из резерва",
             "ReferralSetInvitedUser": "{role} {address} успешно установлен",
             "SwapAndSend": "Совершен обмен {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Предоставлено {symbol} и {symbol2} {amount} LP токенов",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Удалено {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} успешно получено",
             "EthBridgeIncoming": "{amount} {symbol} переведено из {Ethereum} в {Sora}",
-            "EthBridgeOutgoing": "{amount} {symbol} переведено из {Sora} в {Ethereum}"
+            "EthBridgeOutgoing": "{amount} {symbol} переведено из {Sora} в {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Не удалось добавить {amount} {symbol} и {amount2} {symbol2}",
             "RegisterAsset": "Не удалось зарегистрировать {symbol} актив",
             "ClaimRewards": "Не удалось получить вознаграждения {rewards}",
-            "ReferralReserveXor": "Не удалось зарезервировать XOR",
-            "ReferralUnreserveXor": "Не удалось вывести XOR из резерва",
+            "ReferralReserveXor": "Не удалось зарезервировать {amount} XOR",
+            "ReferralUnreserveXor": "Не удалось вывести {amount} XOR из резерва",
             "ReferralSetInvitedUser": "Не удалось установить {role} {address}",
             "SwapAndSend": "Не удалось обменять {amount} {symbol} на {amount2} {symbol2} и {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Не удалось предоставить {amount} {symbol} и {symbol2} LP токены",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Не удалось удалить {amount} {symbol}",
             "DemeterFarmingGetRewards": "Не удалось получить {symbol}",
             "EthBridgeIncoming": "Не удалось перевести {amount} {symbol} из {Ethereum} в {Sora}",
-            "EthBridgeOutgoing": "Не удалось перевести {amount} {symbol} из {Sora} в {Ethereum}"
+            "EthBridgeOutgoing": "Не удалось перевести {amount} {symbol} из {Sora} в {Ethereum}",
+            "SwapTransferBatch": "Не удалось {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Отменить стейкинг токена",
         "DemeterFarmingGetRewards": "Получить награды",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Перевод"
     },
     "polkadotjs": {
         "noExtensions": "Расширение {PolkadotJs} не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "Аккаунт сети {Sora}",
-        "text": "Расширения и Google надежно хранят ваш сетевой аккаунт {Sora} . Они позволяют подписывать транзакции и управлять активами.",
+        "text": "Чтобы управлять активами и подписывать транзакции на {Sora}, необходимо подключить учетную запись. Учетные записи {Sora} можно создавать и подключать с помощью наших встроенных кошельков или расширений браузера.",
         "noAccounts": "Не найдено аккаунтов в вашем {extension} браузерном расширении. Пожалуйста, добавьте аккаунт и повторите попытку.",
         "selectAccount": "Выберите аккаунт для работы",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "Подключено",
             "notConnected": "Не подключен"
         },
-        "internalTitle": "Войти через {wallet}",
-        "internalText": "Вы можете создать или связать существующую учетную запись через {wallet} . Он хранит учетные записи с использованием шифрования.",
+        "internalTitle": "Подключиться с {wallet}",
+        "internalText": "Вы можете создать или импортировать существующую учетную запись {Sora} для подключения к своей учетной записи {wallet}. Все данные, хранящиеся в {wallet}, шифруются с помощью встроенного расширенного шифрования.",
         "list": {
-            "simplest": "Самый простой вариант",
+            "integrated": "Интегрированные",
             "extensions": "Расширения"
         }
     },
@@ -301,7 +304,8 @@
         "txId": "ID транзакции",
         "viewIn": "Смотреть в {explorer}",
         "referrer": "Реферер",
-        "referral": "Реферал"
+        "referral": "Реферал",
+        "adarTxDetailsTitle": "Детали транзакции"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Сменить сеть в {Metamask}",
@@ -483,7 +487,8 @@
         "transactionSubmitted": "Транзакция отправлена",
         "transactionMessage": "{firstToken} и {secondToken}",
         "ok": "OK",
-        "confirm": "Подтвердить"
+        "confirm": "Подтвердить",
+        "lossWarning": "Вы потеряете {value}% на своей сделке. Мы обнаружили проблему с обеспечением ликвидности. Это может привести к значительным потерям при обмене токенов. Пожалуйста, убедитесь, что для желаемой пары достаточно ликвидности."
     },
     "swap": {
         "connectWallet": "@:connectWalletText",
@@ -539,7 +544,10 @@
         "networkInfo": "Соединить {Sora} Сеть с:",
         "copy": "Скопировать адрес сети",
         "soraAddress": "{Sora} адрес",
-        "ethereumAddress": "{Ethereum} адрес"
+        "ethereumAddress": "{Ethereum} адрес",
+        "limitMessage": "В настоящее время существует {type} {amount} {symbol} для моста, обеспечивающая стабильность и безопасность сети {Sora}. Мы ценим ваше понимание.",
+        "externalTransferFee": "{network} комиссия {XCM}",
+        "externalTransferFeeTooltip": "Когда вы отправляете транзакцию моста в сеть {network}, из суммы перевода взимается небольшая комиссия."
     },
     "selectRegisteredAsset": {
         "title": "Выбрать токен",
@@ -1012,7 +1020,8 @@
             "norewardsforasset": "Нет вознаграждений за этот актив"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Выбранный источник ликвидности не разрешен"
+            "forbiddenfilter": "Выбранный источник ликвидности не разрешен",
+            "slippagenottolerated": "Влияние на цену превысило выбранное значение"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Недостаточно средств",
@@ -1052,8 +1061,8 @@
             "importAccount": "Импорт аккаунта"
         },
         "heading": {
-            "seedPhraseTitle": "Исходная фраза",
-            "confirmSeedTitle": "Подтвердить исходную фразу",
+            "seedPhraseTitle": "Парольная фраза",
+            "confirmSeedTitle": "Подтвердите парольную фразу",
             "accountDetailsTitle": "Детали учетной записи",
             "importTitle": "Импорт аккаунта"
         },
@@ -1064,12 +1073,12 @@
             "importAccount": "Импорт аккаунта"
         },
         "accountName": {
-            "placeholder": "Название кошелька",
-            "desc": "Это имя вашего кошелька, которое будет вам видно."
+            "placeholder": "Имя аккаунта",
+            "desc": "Это имя вашего аккаунта. Оно будет видно только Вам в {Polkaswap}."
         },
         "password": {
             "placeholder": "Пароль",
-            "desc": "Убедитесь, что вы используете надежный пароль для надлежащей защиты"
+            "desc": "Убедитесь, что Вы используете надежный уникальный пароль для надлежащей защиты (минимум 8 символов)."
         },
         "confirmPassword": {
             "placeholder": "Подтвердить Пароль"
@@ -1077,11 +1086,11 @@
         "accountMnemonic": {
             "placeholder": "Мнемоническая фраза"
         },
-        "seedAdviceText": "Это секретная фраза вашего аккаунта. Обязательно храните ее на нецифровом носителе, например, на бумаге.",
-        "confirmSeedText": "Подтвердите начальную фразу, щелкнув слова в правильном порядке",
-        "errorMnemonicText": "Неправильный порядок исходной фразы",
-        "exportOptionText": "Экспорт файла учетной записи .json",
-        "exportJsonText": "Вы всегда сможете получить доступ к своей учетной записи, импортировав этот файл .json. Не передавайте его никому!",
+        "seedAdviceText": "Парольная фраза из 12 слов — это закрытый ключ для восстановления доступа к вашей учетной записи {Sora} в случае, если вы потеряете доступ к своей учетной записи {wallet}. Храните его в безопасном месте в том порядке, в котором он указан выше.",
+        "confirmSeedText": "Подтвердите парольную фразу, выбрав слова в правильном порядке.",
+        "errorMnemonicText": "Неправильный порядок парольной фразы",
+        "exportOptionText": "Экспорт файла {JSON} для восстановления аккаунта",
+        "exportJsonText": "Вы всегда сможете восстановить свою учетную запись, импортировав этот файл {JSON}. Не делитесь им ни с кем! Храните его в безопасном месте, желательно в зашифрованном виде.",
         "addAccount": "Добавить аккаунт",
         "dialog": {
             "confirmTitle": "Подтвердите паролем",
@@ -1100,16 +1109,20 @@
         "assetsAtRiskText": "Активы под угрозой!",
         "deleteAccountText": "Аккаунт не может быть восстановлен без исходной фразы, файла .json или если он хранится в каком-либо расширении. Вы выйдете из системы.",
         "importSteps": {
-            "selectWallet": "Перейдите к используемому кошельку",
+            "selectWallet": "Откройте кошелек с Вашим существующим аккаунтом(ами)",
             "selectAccount": "Выберите учетную запись, которую вы хотите экспортировать",
             "exportAccount": "Экспортируйте файл {JSON}"
         },
-        "exportTutorialsText": "Инструкции по экспорту"
+        "exportTutorialsText": "Инструкции по экспорту",
+        "seedAdviceAdditionTitle": "Никогда и никому не сообщайте Вашу парольную фразу!",
+        "seedAdviceAdditionText": "Если кто-то спросит у Вас парольную фразу, скорее всего, он попытается Вас обмануть и украсть Ваши активы!"
     },
     "hashiBridgeText": "Мост {Hashi}",
     "disclaimerTitle": "Отказ от ответственности",
     "explore": {
-        "showOnlyMyPositions": "Показать только мои позиции"
+        "showOnly": "Показать только {entities}",
+        "myPositions": "мои позиции",
+        "synthetics": "синтетические токены"
     },
     "tooltips": {
         "roi": "{ROI} означает рентабельность инвестиций. Она рассчитывается путем деления прибыли, полученной от инвестиции, на стоимость этой инвестиции в процентном эквиваленте.",
@@ -1168,8 +1181,8 @@
             "action": "Выберите сервисы",
             "dialog": {
                 "title": "Выбор сервисов {Sora} сети",
-                "fiat": "Фиатные значения",
-                "chartsAndActivity": "Графики и активность"
+                "indexer": "Индексатор",
+                "useCeres": "Использовать {Ceres} для получения фиатных значений"
             }
         }
     },
@@ -1177,7 +1190,7 @@
     "acceptText": "Принять и скрыть",
     "newAccountsText": "Новые аккаунты",
     "dragAndDropText": "Перетащите или выберите файл {extension}",
-    "copyPhraseText": "Копировать фразу",
+    "copyPhraseText": "Скопировать парольную фразу",
     "stepText": "Шаг",
     "alerts": {
         "drop": "Снижение",
@@ -1209,9 +1222,48 @@
         "moonpayTitle": "Купить ETH через MoonPay",
         "moonpayDesc": "Приобретите токены ETH на Ethereum и переведите их в сеть SORA через мост.",
         "x1Title": "Купить XOR с вашей карты",
-        "x1Desc": "Купите токены XOR с помощью дебетовой или кредитной карты.",
         "x1Btn": "Купить XOR с картой",
-        "errorMessage": "Приносим извинения за неудобства. Мы прилагаем все усилия, чтобы решить эту проблему. Пожалуйста, повторите попытку позже."
+        "errorMessage": "Приносим извинения за неудобства. Мы прилагаем все усилия, чтобы решить эту проблему. Пожалуйста, повторите попытку позже.",
+        "x1Desc": "Приобретайте токены XOR непосредственно в сети SORA с помощью дебетовой или кредитной карты."
     },
-    "acceptOnScrollText": "Прокрутите, чтобы принять"
+    "acceptOnScrollText": "Прокрутите, чтобы принять",
+    "addressBook": {
+        "myAccounts": "Мои аккаунты",
+        "myBook": "Моя книга",
+        "searchPlaceholder": "Поиск по адресу, имени или личности",
+        "noFoundRecords": "записей не найдено",
+        "noContacts": "У вас еще нет контактов.",
+        "addContact": "Добавить контакт",
+        "dialogTitle": "Ваши контакты",
+        "identity": "Идентификация в сети",
+        "none": "Никто",
+        "detected": "Обнаружен новый адрес",
+        "save": "Сохранить как контакт",
+        "tooltip": "Соберите адресную книгу, указав имя и адрес, чтобы ваши контакты были упорядоченными и актуальными.",
+        "notSoraAddress": "Этот адрес будет сохранен как адрес SORA ниже. Убедитесь, что получатель может получить доступ к цепочке SORA:",
+        "options": {
+            "send": "Отправить токены",
+            "edit": "Изменить контакт",
+            "delete": "Удалить"
+        },
+        "btn": {
+            "enterName": "Введите имя",
+            "present": "Уже присутствует",
+            "saveChanges": "Сохранить изменения"
+        },
+        "input": "Введите адрес или выберите контакт",
+        "selectContact": "Выберите контакт"
+    },
+    "browserPermission": {
+        "title": "Разрешите доступ к камере в настройках браузера",
+        "desc": "Чтобы убедиться в подлинности документов и подтвердить личность пользователя для проверки KYC, требуется доступ к камере вашего устройства.",
+        "disclaimer": "Доступ к камере необходим для захвата документов в режиме реального времени, чтобы предотвратить мошенничество.",
+        "btnGoToSettings": "Перейдите в настройки",
+        "btnAllow": "Разрешить доступ"
+    },
+    "continueText": "Продолжать",
+    "minAmountText": "мин. сумма",
+    "maxAmountText": "макс. сумма",
+    "exceededAmountText": "{amount} ограничена",
+    "multipleRecipients": "Нескольким получателям"
 }

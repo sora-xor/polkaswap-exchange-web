@@ -1,18 +1,32 @@
 <template>
-  <transaction-details :info-only="infoOnly">
+  <transaction-details>
     <info-line
       :label="t('bridge.soraNetworkFee')"
       :label-tooltip="t('networkFeeTooltipText')"
-      :value="formatFee(soraNetworkFee, formattedSoraNetworkFee)"
-      :asset-symbol="XOR_SYMBOL"
-      :fiat-value="getFiatAmountByCodecString(soraNetworkFee)"
+      :value="formatStringValue(soraNetworkFee)"
+      :asset-symbol="XOR.symbol"
+      :fiat-value="getFiatAmountByString(soraNetworkFee, XOR)"
       is-formatted
     />
     <info-line
       :label="formattedNetworkFeeLabel"
       :label-tooltip="t('ethNetworkFeeTooltipText', { network: networkName })"
-      :value="formatFee(evmNetworkFee, formattedEvmNetworkFee)"
-      :asset-symbol="evmTokenSymbol"
+      :value="formatStringValue(externalNetworkFee)"
+      :asset-symbol="nativeTokenSymbol"
+      :fiat-value="getFiatAmountByString(externalNetworkFee, nativeToken)"
+      is-formatted
+    >
+      <template v-if="isExternalFeeNotZero" #info-line-value-prefix>
+        <span class="info-line-value-prefix">{{ ApproximateSign }}</span>
+      </template>
+    </info-line>
+    <info-line
+      v-if="isExternalTransferFeeNotZero"
+      :label="t('bridge.externalTransferFee', { network: networkName })"
+      :label-tooltip="t('bridge.externalTransferFeeTooltip', { network: networkName })"
+      :value="formatStringValue(externalTransferFee)"
+      :asset-symbol="assetSymbol"
+      :fiat-value="getFiatAmountByString(externalTransferFee, asset)"
       is-formatted
     />
   </transaction-details>
@@ -24,11 +38,11 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, ZeroStringValue } from '@/consts';
+import { Components, ZeroStringValue, ApproximateSign } from '@/consts';
 import { lazyComponent } from '@/router';
-import type { NetworkData } from '@/types/bridge';
 
 import type { CodecString } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -37,33 +51,34 @@ import type { CodecString } from '@sora-substrate/util';
   },
 })
 export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  readonly XOR_SYMBOL = XOR.symbol;
+  readonly XOR = XOR;
+  readonly ApproximateSign = ApproximateSign;
 
-  @Prop({ default: true, type: Boolean }) readonly isSoraToEvm!: boolean;
-  @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
-  @Prop({ default: '', type: String }) readonly evmTokenSymbol!: string;
-  @Prop({ default: ZeroStringValue, type: String }) readonly evmNetworkFee!: CodecString;
+  @Prop({ default: () => null, type: Object }) readonly asset!: Nullable<RegisteredAccountAsset>;
+  @Prop({ default: () => null, type: Object }) readonly nativeToken!: Nullable<RegisteredAccountAsset>;
+  @Prop({ default: ZeroStringValue, type: String }) readonly externalTransferFee!: CodecString;
+  @Prop({ default: ZeroStringValue, type: String }) readonly externalNetworkFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
-  @Prop({ default: () => null, type: Object }) readonly network!: NetworkData;
+  @Prop({ default: '', type: String }) readonly networkName!: string;
 
-  get networkName(): string {
-    return this.network?.shortName ?? '';
+  get assetSymbol(): string {
+    return this.asset?.symbol ?? '';
+  }
+
+  get nativeTokenSymbol(): string {
+    return this.nativeToken?.symbol ?? '';
   }
 
   get formattedNetworkFeeLabel(): string {
     return `${this.networkName} ${this.t('networkFeeText')}`;
   }
 
-  get formattedSoraNetworkFee(): string {
-    return this.formatCodecNumber(this.soraNetworkFee);
+  get isExternalFeeNotZero(): boolean {
+    return this.externalNetworkFee !== ZeroStringValue;
   }
 
-  get formattedEvmNetworkFee(): string {
-    return this.formatCodecNumber(this.evmNetworkFee);
-  }
-
-  formatFee(fee: string, formattedFee: string): string {
-    return fee !== ZeroStringValue ? formattedFee : ZeroStringValue;
+  get isExternalTransferFeeNotZero(): boolean {
+    return this.externalTransferFee !== ZeroStringValue;
   }
 }
 </script>
