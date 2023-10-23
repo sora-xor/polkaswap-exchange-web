@@ -406,6 +406,8 @@ export default class Swap extends Mixins(
         await this.setTokenFromAddress(XOR.address);
         await this.setTokenToAddress();
       }
+      // to update tbc & xst enabled assets
+      await api.swap.update();
 
       this.enableSwapSubscriptions();
     });
