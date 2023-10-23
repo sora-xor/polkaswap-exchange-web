@@ -186,7 +186,7 @@ async function getTokenDecimals(tokenAddress: string): Promise<number> {
 
       return Number(result);
     } catch (error) {
-      console.error(error);
+      console.error(tokenAddress, error);
     }
   }
 
@@ -230,7 +230,7 @@ function addressesAreEqual(a: string, b: string): boolean {
 async function watchEthereum(cb: {
   onAccountChange: (addressList: string[]) => void;
   onNetworkChange: (networkId: string) => void;
-  onDisconnect: FnWithoutArgs;
+  onDisconnect: (error: any) => void;
 }): Promise<FnWithoutArgs> {
   if (ethereumProvider) {
     ethereumProvider.on('accountsChanged', cb.onAccountChange);

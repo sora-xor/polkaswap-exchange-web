@@ -26,6 +26,15 @@ async function connectSubNetwork(context: ActionContext<any, any>): Promise<void
   if (ss58) commit.setSubSS58(ss58);
 }
 
+async function updateProvidedEvmNetwork(context: ActionContext<any, any>, evmNetworkId?: number): Promise<void> {
+  const { commit, rootDispatch } = web3ActionContext(context);
+  const evmNetwork = evmNetworkId ?? (await ethersUtil.getEvmNetworkId());
+
+  commit.setProvidedEvmNetwork(evmNetwork);
+
+  await rootDispatch.assets.updateRegisteredAssets();
+}
+
 async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
   const { commit } = web3ActionContext(context);
 
@@ -37,9 +46,9 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
         commit.setEvmAddress(addressList[0]);
       }
     },
-    onNetworkChange: async (networkHex: string) => {
+    onNetworkChange: (networkHex: string) => {
       const evmNetwork = ethersUtil.hexToNumber(networkHex);
-      commit.setProvidedEvmNetwork(evmNetwork);
+      updateProvidedEvmNetwork(context, evmNetwork);
     },
     onDisconnect: () => {
       commit.resetEvmAddress();
@@ -61,22 +70,17 @@ const actions = defineActions({
     });
     // if we have address - we are connected
     if (address) {
-      const evmNetwork = await ethersUtil.getEvmNetworkId();
-
       commit.setEvmAddress(address);
-      commit.setProvidedEvmNetwork(evmNetwork);
       commit.setEvmProvider(provider);
 
+      await updateProvidedEvmNetwork(context);
       await subscribeOnEvm(context);
     }
   },
 
   async disconnectExternalNetwork(context): Promise<void> {
-    const { commit } = web3ActionContext(context);
     // SUB
     await subBridgeConnector.stop();
-    // EVM, ETH
-    commit.resetEvmProviderSubscription();
   },
 
   async selectExternalNetwork(context, { id, type }: { id: BridgeNetworkId; type: BridgeNetworkType }): Promise<void> {
@@ -158,7 +162,7 @@ const actions = defineActions({
       const externalAddress = await contractInstance._sidechainTokens(...methodArgs);
       return externalAddress;
     } catch (error) {
-      console.error(error);
+      console.error(soraAssetId, error);
       return '';
     }
   },

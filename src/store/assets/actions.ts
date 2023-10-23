@@ -15,18 +15,27 @@ import type { ActionContext } from 'vuex';
 async function getEthRegisteredAssets(
   context: ActionContext<any, any>
 ): Promise<Record<string, BridgeRegisteredAsset>[]> {
-  const { rootDispatch } = assetsActionContext(context);
+  const { rootDispatch, rootGetters } = assetsActionContext(context);
 
+  const { isValidNetwork } = rootGetters.web3;
   const networkAssets = await ethBridgeApi.getRegisteredAssets();
   const registeredAssets = await Promise.all(
     Object.entries(networkAssets).map(async ([soraAddress, assetData]) => {
-      const address = assetData.address || (await rootDispatch.web3.getEvmTokenAddressByAssetId(soraAddress));
-      const decimals = assetData.decimals ?? (await ethersUtil.getTokenDecimals(address));
+      let { address, decimals } = assetData;
+
+      if (isValidNetwork) {
+        if (!address) {
+          address = await rootDispatch.web3.getEvmTokenAddressByAssetId(soraAddress);
+        }
+        if (!Number.isFinite(decimals)) {
+          decimals = await ethersUtil.getTokenDecimals(address);
+        }
+      }
 
       return {
         [soraAddress]: {
           address,
-          decimals,
+          decimals: decimals ?? 18,
           kind: assetData.assetKind,
         },
       };
