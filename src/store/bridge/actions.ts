@@ -122,12 +122,14 @@ function bridgeDataToHistoryItem(
 }
 
 async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void> {
-  const { commit, getters, state, rootState } = bridgeActionContext(context);
+  const { commit, getters, state, rootState, rootGetters } = bridgeActionContext(context);
+  const { asset, isRegisteredAsset } = getters;
+  const { isValidNetwork } = rootGetters.web3;
 
   let fee = ZeroStringValue;
 
-  if (getters.asset && getters.isRegisteredAsset) {
-    const bridgeRegisteredAsset = rootState.assets.registeredAssets[getters.asset.address];
+  if (asset && isRegisteredAsset && isValidNetwork) {
+    const bridgeRegisteredAsset = rootState.assets.registeredAssets[asset.address];
 
     fee = await ethersUtil.getEvmNetworkFee(
       bridgeRegisteredAsset.address,
@@ -222,9 +224,10 @@ async function updateEthLockedBalance(context: ActionContext<any, any>): Promise
   const { commit, getters, rootGetters, rootState } = bridgeActionContext(context);
   const { address, decimals, externalAddress } = getters.asset ?? {};
   const { networkSelected } = rootState.web3;
-  const bridgeContractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other);
+  const { isValidNetwork, contractAddress } = rootGetters.web3;
+  const bridgeContractAddress = contractAddress(KnownEthBridgeAsset.Other);
 
-  if (address && networkSelected && externalAddress && bridgeContractAddress) {
+  if (address && networkSelected && isValidNetwork && externalAddress && bridgeContractAddress) {
     const registeredAsset = rootState.assets.registeredAssets[address];
 
     if (registeredAsset) {
