@@ -308,7 +308,7 @@
         "adarTxDetailsTitle": "Transaction details"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Change network in {Metamask}",
+    "changeNetworkText": "Change network in wallet",
     "transactionText": "transaction | transactions",
     "connectWalletText": "Connect account",
     "changeAccountText": "Change account",
@@ -318,7 +318,7 @@
     "bridgeText": "Bridge",
     "disclaimer": "{disclaimerPrefix} This website is maintained by the {Sora} community. Before continuing to use this website, please review the {polkaswapFaqLink} and documentation, which includes a detailed explanation on how {AppName} works, as well as the {memorandumLink}, and {privacyLink}. These documents are crucial to a secure and positive user experience. By using {AppName}, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of {AppName} in your legal jurisdiction; 2) your understanding that the current version of {AppName} is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using {AppName}, including, but not limited to, the risk of losing tokens. Please do not continue without reading the {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "poweredBy": "Powered by",
-    "confirmTransactionText": "Confirm transaction in {direction}",
+    "confirmTransactionText": "Confirm transaction",
     "retryText": "Retry",
     "networkFeeText": "Network Fee",
     "networkFeeTooltipText": "Network fee is used to ensure {Sora} system's growth and stable performance.",
@@ -435,10 +435,6 @@
     "transfers": {
         "from": "From",
         "to": "To"
-    },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
     },
     "about": {
         "title": "The DEX for the Interoperable Future.",
@@ -608,12 +604,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaction pending...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Create new transaction",
-        "changeAccount": "@:changeAccountText in {Metamask}",
         "title": "Bridge Transaction",
-        "expectedMetaMaskAddress": "Expected address in {Metamask}:",
         "allowToken": "Allow {AppName} to use your {tokenSymbol}",
         "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.",
         "blocksLeft": "{count} blocks left..."
@@ -783,8 +775,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} provider",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{name} extension is busy, please check it",
             "extensionLogin": "Please login to your {name} extension",
@@ -944,7 +934,7 @@
         "allowanceRequest": "Press “Allow” to access camera"
     },
     "bridgeTransferNotification": {
-        "addToken": "Add {symbol} to {Metamask}",
+        "addToken": "Add {symbol} to wallet",
         "title": "Bridge transaction successful"
     },
     "mobilePopup": {

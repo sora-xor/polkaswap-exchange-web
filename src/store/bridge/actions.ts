@@ -82,7 +82,7 @@ function getBridgeApi(context: ActionContext<any, any>) {
 function checkEvmNetwork(context: ActionContext<any, any>): void {
   const { rootGetters } = bridgeActionContext(context);
   if (!rootGetters.web3.isValidNetwork) {
-    throw new Error('Change evm network in Metamask');
+    throw new Error('Change evm network in wallet');
   }
 }
 
@@ -640,7 +640,7 @@ const actions = defineActions({
     const evmAccount = rootState.web3.evmAddress;
 
     if (!ethersUtil.addressesAreEqual(evmAccount, request.to)) {
-      throw new Error(`Change account in MetaMask to ${request.to}`);
+      throw new Error(`Change account in ethereum wallet to ${request.to}`);
     }
 
     const signer = await ethersUtil.getSigner();
@@ -703,7 +703,7 @@ const actions = defineActions({
 
     const evmAccount = rootState.web3.evmAddress;
     const isEvmAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
-    if (!isEvmAccountConnected) throw new Error('Connect account in Metamask');
+    if (!isEvmAccountConnected) throw new Error('Connect account in ethereum wallet');
     const contractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other) as string;
     const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
     // don't check allowance for native EVM token

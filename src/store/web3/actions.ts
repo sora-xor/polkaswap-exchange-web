@@ -59,7 +59,7 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
 }
 
 const actions = defineActions({
-  async selectEvmProvider(context: ActionContext<any, any>, provider = Provider.Metamask): Promise<void> {
+  async selectEvmProvider(context, provider: Provider): Promise<void> {
     const { commit, state } = web3ActionContext(context);
     const address = await ethersUtil.connectEvmProvider(provider, {
       chains: [state.ethBridgeEvmNetwork],

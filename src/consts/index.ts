@@ -92,8 +92,6 @@ export const ZeroStringValue = '0';
 
 export const ApproximateSign = '~';
 
-export const MetamaskCancellationCode = 4001;
-
 export const DefaultSlippageTolerance = '0.5';
 
 export enum MarketAlgorithms {

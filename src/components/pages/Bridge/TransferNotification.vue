@@ -11,7 +11,6 @@
         <span>{{ t('bridgeTransferNotification.addToken', { symbol: assetSymbol }) }}</span>
         <div class="token-icons">
           <token-logo :token="asset" />
-          <token-logo class="metamask-icon" />
         </div>
       </s-button>
     </simple-notification>
@@ -89,36 +88,11 @@ export default class BridgeTransferNotification extends Mixins(TranslationMixin)
 }
 </script>
 
-<style lang="scss">
-.dialog-wrapper.bridge-transfer-notification {
-  $metamask-icon-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.8);
-  $metamask-icon-filter: drop-shadow(-5px -5px 10px #ffffff) drop-shadow(1px 1px 10px rgba(0, 0, 0, 0.1));
-
-  .el-dialog .el-dialog__body {
-    .metamask-icon > .asset-logo {
-      background-color: var(--s-color-base-content-secondary);
-      // [TODO] fix
-      // background-image: url('/wallet/Metamask.svg');
-      box-shadow: $metamask-icon-shadow;
-      filter: $metamask-icon-filter;
-
-      &:before {
-        content: '';
-      }
-    }
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .add-token-btn {
   .token-icons {
     display: flex;
     margin-left: $inner-spacing-mini;
-
-    .metamask-icon {
-      margin-left: -$inner-spacing-tiny;
-    }
   }
 }
 </style>

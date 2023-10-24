@@ -276,6 +276,7 @@ async function switchOrAddChain(network: NetworkData, chainName?: string): Promi
 
   try {
     await ethereumProvider.request({
+      // https://eips.ethereum.org/EIPS/eip-3326
       method: 'wallet_switchEthereumChain',
       params: [
         {
@@ -290,6 +291,7 @@ async function switchOrAddChain(network: NetworkData, chainName?: string): Promi
     if (switchError.code === 4902) {
       try {
         await ethereumProvider.request({
+          // https://eips.ethereum.org/EIPS/eip-3085
           method: 'wallet_addEthereumChain',
           params: [
             {

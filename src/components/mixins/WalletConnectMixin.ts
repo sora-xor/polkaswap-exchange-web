@@ -13,15 +13,6 @@ import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/typ
 const checkExtensionKey = 'provider.messages.checkExtension';
 const installExtensionKey = 'provider.messages.installExtension';
 
-const getProviderName = (provider: Provider) => {
-  switch (provider) {
-    case Provider.Metamask:
-      return 'provider.metamask';
-    default:
-      return 'provider.default';
-  }
-};
-
 const handleProviderError = (provider: Provider, error: any): string => {
   switch (provider) {
     case Provider.Metamask:
@@ -82,10 +73,9 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     try {
       await this.selectEvmProvider(provider);
     } catch (error: any) {
-      const name = this.t(getProviderName(provider));
       const key = this.te(error.message) ? error.message : handleProviderError(provider, error);
 
-      const message = this.t(key, { name });
+      const message = this.t(key, { name: provider });
       const showCancelButton = key === installExtensionKey;
 
       this.$alert(message, {

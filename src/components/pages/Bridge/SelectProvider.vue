@@ -31,18 +31,11 @@ type WalletProvider = {
   selected: boolean;
 };
 
-const WalletProviders = [
-  {
-    name: 'Metamask',
-    value: Provider.Metamask,
-    icon: '/wallet/Metamask.svg',
-  },
-  {
-    name: 'WalletConnect',
-    value: Provider.WalletConnect,
-    icon: '/wallet/WalletConnect.svg',
-  },
-];
+const WalletProviders = [Provider.Metamask, Provider.WalletConnect].map((provider) => ({
+  value: provider,
+  name: provider,
+  icon: `/wallet/${provider}.svg`,
+}));
 
 @Component({
   components: {

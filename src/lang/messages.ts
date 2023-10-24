@@ -15,7 +15,7 @@ export default {
   appName: '{AppName}',
   hashiBridgeText: '{Hashi} bridge',
   moonpayText: 'MoonPay',
-  changeNetworkText: 'Change network in {Metamask}',
+  changeNetworkText: 'Change network in wallet',
   accountText: 'account | accounts',
   newAccountsText: 'New accounts',
   transactionText: 'transaction | transactions',
