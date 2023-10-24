@@ -135,7 +135,8 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
       const pair = `${this.getAsset(orderBookId.base)?.symbol}-${this.getAsset(orderBookId.quote)?.symbol}`;
       const date = new Date(time);
 
-      const filled = amount.div(originalAmount).mul(FPNumber.HUNDRED).toFixed(2).toString();
+      const proportion = amount.div(originalAmount).mul(FPNumber.HUNDRED);
+      const filled = FPNumber.HUNDRED.sub(proportion).toFixed(2).toString();
 
       const row = {
         limitOrderId: id,
