@@ -74,9 +74,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   connectEvmWallet(): void {
-    this.connectEvmProvider(Provider.Metamask);
-    // [TODO] for more than 1 provider
-    // this.setSelectProviderDialogVisibility(true);
+    this.setSelectProviderDialogVisibility(true);
   }
 
   async connectEvmProvider(provider: Provider): Promise<void> {

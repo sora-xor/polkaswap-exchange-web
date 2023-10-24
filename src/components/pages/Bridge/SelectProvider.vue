@@ -11,6 +11,8 @@
         <span class="provider-name">{{ provider.name }}</span>
       </li>
     </ul>
+
+    <s-button v-if="evmAddress" @click="resetEvmProvider">logout wallet</s-button>
   </dialog-base>
 </template>
 
@@ -19,7 +21,7 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import { state } from '@/store/decorators';
+import { action, state } from '@/store/decorators';
 import { Provider } from '@/utils/ethers-util';
 
 type WalletProvider = {
@@ -50,6 +52,8 @@ const WalletProviders = [
 export default class BridgeSelectProvider extends Mixins(WalletConnectMixin) {
   @state.web3.evmProvider evmProvider!: Nullable<Provider>;
   @state.web3.selectProviderDialogVisibility private selectProviderDialogVisibility!: boolean;
+
+  @action.web3.resetEvmProvider resetEvmProvider!: FnWithoutArgs;
 
   get visibility(): boolean {
     return this.selectProviderDialogVisibility;

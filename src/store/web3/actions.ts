@@ -36,7 +36,7 @@ async function updateProvidedEvmNetwork(context: ActionContext<any, any>, evmNet
 }
 
 async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
-  const { commit } = web3ActionContext(context);
+  const { commit, dispatch } = web3ActionContext(context);
 
   commit.resetEvmProviderSubscription();
 
@@ -51,10 +51,7 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
       updateProvidedEvmNetwork(context, evmNetwork);
     },
     onDisconnect: () => {
-      commit.resetEvmAddress();
-      commit.resetEvmProvider();
-      commit.resetEvmProviderNetwork();
-      commit.resetEvmProviderSubscription();
+      dispatch.resetEvmProvider();
     },
   });
 
@@ -76,6 +73,17 @@ const actions = defineActions({
       await updateProvidedEvmNetwork(context);
       await subscribeOnEvm(context);
     }
+  },
+
+  resetEvmProvider(context): void {
+    const { commit } = web3ActionContext(context);
+    // reset store
+    commit.resetEvmAddress();
+    commit.resetEvmProvider();
+    commit.resetEvmProviderNetwork();
+    commit.resetEvmProviderSubscription();
+    // reset connection
+    ethersUtil.disconnectEvmProvider();
   },
 
   async disconnectExternalNetwork(context): Promise<void> {
