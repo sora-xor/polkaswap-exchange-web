@@ -79,6 +79,7 @@
       :token="baseAsset"
       :value="baseValue"
       @input="handleInputFieldBase"
+      @change="changeInputBase"
       @max="handleMaxValue"
       class="order-book-input"
     />
@@ -176,7 +177,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   confirmPlaceOrderVisibility = false;
   confirmCancelOrderVisibility = false;
   quoteSubscription: Nullable<Subscription> = null;
-  marketQuoteAmount = '0';
+  marketQuotePrice = '0';
 
   @Watch('side')
   @Watch('baseAsset')
@@ -226,6 +227,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     } else {
       if (!this.baseValue) return 'enter amount';
       if (this.isOutOfAmountBounds) return 'out of constraints';
+      if (!this.marketQuotePrice) return 'Insufficient liquidity';
       if (this.side === PriceVariant.Buy) return `Buy ${this.baseAsset.symbol}`;
       else return `Sell ${this.baseAsset.symbol}`;
     }
@@ -266,6 +268,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       return this.isOutOfAmountBounds;
     } else {
       if (!this.baseValue) return true;
+      if (!this.marketQuotePrice) return true;
       return this.isOutOfAmountBounds;
     }
   }
@@ -373,11 +376,19 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.setQuoteValue(value);
   }
 
+  changeInputBase(): void {}
+
   handleInputFieldBase(value: string): void {
-    if (this.limitOrderType === LimitOrderType.market) {
+    this.setBaseValue(value);
+
+    if (!value) {
+      this.setQuoteValue('');
+      this.resetQuoteSubscription();
+    }
+
+    if (this.limitOrderType === LimitOrderType.market && value) {
       this.subscribeOnBookQuote();
     }
-    this.setBaseValue(value);
   }
 
   get preparedForSwap(): boolean {
@@ -441,6 +452,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   private subscribeOnBookQuote(): void {
+    if (!this.baseValue) return;
     this.resetQuoteSubscription();
 
     if (!this.areTokensSelected) return;
@@ -455,17 +467,28 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     this.quoteSubscription = observableQuote.subscribe(async (quoteData) => {
       const { amount } = await quoteData;
-      this.marketQuoteAmount = this.getStringFromCodec(amount);
-      this.prepareValuesForSwap();
+
+      if (FPNumber.fromCodecValue(amount).isZero()) {
+        this.setQuoteValue('');
+        this.setToValue('');
+        this.marketQuotePrice = '';
+        return;
+      }
+
+      this.marketQuotePrice = this.isBuySide
+        ? FPNumber.fromNatural(this.baseValue).div(FPNumber.fromCodecValue(amount)).toString()
+        : FPNumber.fromCodecValue(amount).div(FPNumber.fromNatural(this.baseValue)).toString();
+
+      this.prepareValuesForSwap(amount);
     });
   }
 
-  prepareValuesForSwap() {
+  prepareValuesForSwap(amount) {
     if (!this.areTokensSelected || asZeroValue(this.baseValue)) return;
 
     this.setFromValue(this.baseValue);
-    this.setQuoteValue(this.marketQuoteAmount);
-    this.setToValue(this.marketQuoteAmount);
+    this.setQuoteValue(this.marketQuotePrice);
+    this.setToValue(this.getStringFromCodec(amount));
     this.setLiquiditySource('OrderBook');
     this.selectDexId(0);
   }
@@ -520,7 +543,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (limitOrderType === LimitOrderType.market) {
       this.setQuoteValue('');
-      this.subscribeOnBookQuote();
+      if (this.baseValue) this.subscribeOnBookQuote();
     }
   }
 }

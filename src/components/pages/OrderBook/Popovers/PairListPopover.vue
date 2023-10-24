@@ -40,14 +40,14 @@
             <span>{{ row.volume }}</span>
           </template>
         </s-table-column>
-        <!-- <s-table-column>
+        <s-table-column>
           <template #header>
             <span>Daily change</span>
           </template>
           <template v-slot="{ row }">
             <span>{{ row.dailyChange }}</span>
           </template>
-        </s-table-column> -->
+        </s-table-column>
         <s-table-column>
           <template #header>
             <span>Status</span>
@@ -178,7 +178,7 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
 .orderbook-whitelist {
   &-table {
     width: 750px;
-
+    border-radius: 20px;
     display: flex;
     flex-flow: column nowrap;
     flex: 1;

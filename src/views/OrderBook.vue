@@ -1,16 +1,21 @@
 <template>
   <div class="order-book-widgets">
-    <div class="column-1">
-      <set-limit-order-widget class="set-widget" />
-    </div>
-    <div class="column-2">
-      <book-charts-widget class="chart-widget" />
+    <s-row>
+      <s-col>
+        <book-charts-widget class="chart-widget" />
+      </s-col>
+    </s-row>
+    <s-row :gutter="5">
+      <s-col :xs="6" :sm="6" :md="6" :lg="6">
+        <set-limit-order-widget class="set-widget" />
+      </s-col>
+      <s-col :xs="6" :sm="6" :md="6" :lg="6">
+        <book-widget class="book-widget" />
+      </s-col>
+    </s-row>
+    <s-row>
       <history-order-widget class="history-widget" />
-    </div>
-    <div class="column-3">
-      <book-widget class="book-widget" />
-      <!-- <market-trades-widget class="market-widget" /> -->
-    </div>
+    </s-row>
   </div>
 </template>
 
@@ -58,39 +63,19 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
 <style lang="scss">
 .order-book {
   &-widgets {
-    display: flex;
-    flex-wrap: nowrap;
+    width: 900px;
+
     margin-left: calc($sidebar-max-width + 8px);
 
     .set-widget {
     }
     .chart-widget {
-      max-height: 600px;
-      min-height: 500px;
     }
     .history-widget {
-      min-height: 500px;
     }
     .book-widget {
-      min-height: 630px;
     }
     .market-widget {
-      min-height: 400px;
-      max-height: 400px;
-    }
-
-    .column-1 {
-      min-width: 400px;
-      max-width: 500px;
-    }
-
-    .column-2 {
-      min-width: 1000px;
-    }
-
-    .column-3 {
-      min-width: 480px;
-      max-width: 490px;
     }
   }
 

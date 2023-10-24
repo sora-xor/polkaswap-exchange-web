@@ -45,7 +45,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column :width="'164'">
+      <s-table-column :width="'140'">
         <template #header>
           <span>AMOUNT</span>
         </template>
@@ -182,6 +182,9 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 
 <style lang="scss">
 .limit-order-table {
+  border-radius: 20px;
+  font-size: 12px;
+
   .el-table__header-wrapper {
     background-color: rgba(42, 23, 31, 0.04);
     th {
