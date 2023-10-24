@@ -289,10 +289,6 @@ export default {
       [Operation.EthBridgeOutgoing]: 'Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}',
     },
   },
-  metamask: '{Metamask}',
-  providers: {
-    metamask: '{Metamask}',
-  },
   about: {
     title: 'The DEX for the Interoperable Future.',
     description:
@@ -453,7 +449,6 @@ export default {
   bridgeTransaction: {
     title: 'Bridge Transaction',
     details: '{from} for {to}',
-    expectedMetaMaskAddress: 'Expected address in {Metamask}:',
     for: ' for ',
     steps: {
       step: '{step} of 2',
@@ -491,13 +486,9 @@ export default {
     ethereum: '{Ethereum}',
     sora: '{Sora}',
     retry: '@:retryText',
-    metamask: '{Metamask}',
     confirm: '@:confirmTransactionText',
     newTransaction: 'Create new transaction',
     changeNetwork: '@:changeNetworkText',
-    connectWallet: '@:connectWalletText',
-    changeAccount: '@:changeAccountText in {Metamask}',
-    expectedAddress: 'Expected address in {Metamask}',
     allowToken: 'Allow {AppName} to use your {tokenSymbol}',
     approveToken:
       'Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.',
@@ -741,8 +732,6 @@ export default {
     button: 'Yes, I understand the risk',
   },
   provider: {
-    default: '{Ethereum} provider',
-    metamask: '{Metamask}',
     messages: {
       checkExtension: '{name} extension is busy, please check it',
       extensionLogin: 'Please login to your {name} extension',
