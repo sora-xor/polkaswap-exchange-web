@@ -189,7 +189,6 @@ export enum Components {
   BridgeSelectAsset = 'pages/Bridge/SelectAsset',
   BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
   BridgeSelectAccount = 'pages/Bridge/SelectAccount',
-  BridgeSelectProvider = 'pages/Bridge/SelectProvider',
   BridgeLinksDropdown = 'pages/Bridge/LinksDropdown',
   BridgeLimitCard = 'pages/Bridge/LimitCard',
   // Moonpay Page
@@ -235,6 +234,7 @@ export enum Components {
   ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
   NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',
   PaymentErrorDialog = 'shared/Dialog/PaymentError',
+  SelectProviderDialog = 'shared/Dialog/SelectProvider',
   // Shared Asset selection
   SelectAssetList = 'shared/SelectAsset/List',
   SelectToken = 'shared/SelectAsset/SelectToken',

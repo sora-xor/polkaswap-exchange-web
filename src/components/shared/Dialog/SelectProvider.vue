@@ -42,7 +42,7 @@ const WalletProviders = [Provider.Metamask, Provider.WalletConnect].map((provide
     DialogBase: components.DialogBase,
   },
 })
-export default class BridgeSelectProvider extends Mixins(WalletConnectMixin) {
+export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
   @state.web3.evmProvider evmProvider!: Nullable<Provider>;
   @state.web3.selectProviderDialogVisibility private selectProviderDialogVisibility!: boolean;
 

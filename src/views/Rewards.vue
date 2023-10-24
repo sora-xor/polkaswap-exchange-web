@@ -86,6 +86,7 @@
         {{ actionButtonText }}
       </s-button>
     </div>
+    <select-provider-dialog />
   </div>
 </template>
 
@@ -117,6 +118,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
     RewardsAmountTable: lazyComponent(Components.RewardsAmountTable),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokensRow: lazyComponent(Components.TokensRow),
+    SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
     InfoLine: components.InfoLine,
   },
 })

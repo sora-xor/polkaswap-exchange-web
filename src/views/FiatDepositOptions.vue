@@ -26,6 +26,7 @@
       <moonpay />
       <moonpay-notification />
       <moonpay-confirmation />
+      <select-provider-dialog />
     </template>
     <payment-error :visible.sync="showErrorInfoBanner" />
   </div>
@@ -53,6 +54,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
     PaymentError: lazyComponent(Components.PaymentErrorDialog),
+    SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
     MoonpayLogo,
     X1exLogo,
   },
@@ -107,7 +109,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
     this.showErrorInfoBanner = true;
   }
 
-  async openMoonpayDialog(): Promise<void> {
+  openMoonpayDialog(): void {
     if (!this.moonpayEnabled) {
       return this.showErrorMessage();
     }
@@ -117,7 +119,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
     }
 
     if (!this.evmAddress) {
-      await this.connectEvmWallet();
+      return this.connectEvmWallet();
     }
 
     this.setMoonpayVisibility(true);
