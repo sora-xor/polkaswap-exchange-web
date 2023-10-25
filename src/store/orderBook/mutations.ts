@@ -15,9 +15,7 @@ const mutations = defineMutations<OrderBookState>()({
   },
   setCurrentOrderBook(state, orderBookId: string): void {
     const { base } = deserializeKey(orderBookId);
-    const [orderBook] = Object.values(state.orderBooks);
-
-    state.currentOrderBook = { [orderBookId]: orderBook };
+    state.currentOrderBook = { [orderBookId]: state.orderBooks[orderBookId] };
     state.baseAssetAddress = base;
   },
   setBaseAssetAddress(state, address: string): void {
