@@ -1,5 +1,6 @@
 <template>
   <transaction-details :info-only="infoOnly">
+    <info-line :label="'order type'" :label-tooltip="'type'" :value="'SELL'" />
     <info-line
       :label="'limit price'"
       :label-tooltip="'order limit price'"

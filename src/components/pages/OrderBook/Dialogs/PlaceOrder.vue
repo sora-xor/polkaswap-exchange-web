@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <s-divider />
+
     <place-transaction-details />
     <template #footer>
       <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmSwap">
