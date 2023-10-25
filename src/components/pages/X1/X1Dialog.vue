@@ -6,10 +6,12 @@
         :id="widgetId"
         data-from-currency="EUR"
         data-locale="en"
+        :data-to-blockchain="blockchainSymbol"
         :data-address="accountAddress"
         :data-from-amount="restEuroToDeposit"
         :data-hide-buy-more-button="true"
         :data-hide-try-again-button="false"
+        :data-disable-to-blockchain="true"
       />
       <div v-else class="x1-error-info-banner">
         <s-icon class="x1-error-info-banner__icon" name="basic-clear-X-24" size="64px" />
@@ -75,6 +77,11 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
 
   get widgetId(): string {
     return this.X1Widget.widgetId;
+  }
+
+  get blockchainSymbol(): string {
+    if (this.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) return 'XOR';
+    return 'TXOR';
   }
 
   async loadX1(): Promise<void> {
