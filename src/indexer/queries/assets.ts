@@ -25,7 +25,8 @@ export type TokenData = {
   velocity: FPNumber;
 };
 
-type SubqueryAssetData = SubqueryAssetEntity & {
+// [TODO] extend SubqueryAssetEntity & SubsquidAssetEntity in wallet
+type AssetEntityStats = {
   liquidityUSD?: number;
   priceChangeDay?: number;
   priceChangeWeek?: number;
@@ -34,14 +35,9 @@ type SubqueryAssetData = SubqueryAssetEntity & {
   velocity?: number;
 };
 
-type SubsquidAssetData = SubsquidAssetEntity & {
-  liquidityUSD?: number;
-  priceChangeDay?: number;
-  priceChangeWeek?: number;
-  volumeDayUSD?: number;
-  volumeWeekUSD?: number;
-  velocity?: number;
-};
+type SubqueryAssetData = SubqueryAssetEntity & AssetEntityStats;
+
+type SubsquidAssetData = SubsquidAssetEntity & AssetEntityStats;
 
 const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetData>>`
   query AssetsQuery($after: Cursor, $ids: [String!]) {
