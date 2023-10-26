@@ -11,10 +11,10 @@
       <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
     </template>
 
-    <template #types>
+    <template v-if="!predefinedToken" #types>
       <token-select-button
         :icon="selectTokenIcon"
-        :token="token"
+        :token="selectedToken"
         :tabindex="tokenTabIndex"
         @click.stop="handleSelectToken"
       />
@@ -32,7 +32,13 @@
       <price-change :value="priceChange" />
       <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
     </chart-skeleton>
-    <select-token disabled-custom :visible.sync="showSelectTokenDialog" :asset="token" @select="changeToken" />
+    <select-token
+      v-if="!predefinedToken"
+      disabled-custom
+      :visible.sync="showSelectTokenDialog"
+      :asset="selectedToken"
+      @select="changeToken"
+    />
   </stats-card>
 </template>
 
@@ -42,7 +48,7 @@ import { XOR, VAL, PSWAP, XSTUSD, XST, TBCD } from '@sora-substrate/util/build/a
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import last from 'lodash/fp/last';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 import { Components } from '@/consts';
@@ -83,13 +89,17 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
   readonly filters = ASSET_SUPPLY_LINE_FILTERS;
   readonly tokens = [XOR, VAL, PSWAP, XSTUSD, XST, TBCD];
 
-  filter: SnapshotFilter = ASSET_SUPPLY_LINE_FILTERS[0];
-  token = XOR;
-  showSelectTokenDialog = false;
+  @Prop({ type: Object }) predefinedToken!: Nullable<Asset>;
 
+  private token = XOR;
+  filter: SnapshotFilter = ASSET_SUPPLY_LINE_FILTERS[0];
+  showSelectTokenDialog = false;
+  isFetchingError = false;
   data: readonly ChartData[] = [];
 
-  isFetchingError = false;
+  get selectedToken(): Asset {
+    return this.predefinedToken || this.token;
+  }
 
   get areActionsDisabled(): boolean {
     return this.parentLoading || this.loading;
@@ -252,7 +262,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
   }
 
   changeToken(token: Asset): void {
-    if (this.token.address === token.address) return;
+    if (this.selectedToken.address === token.address) return;
 
     this.token = token;
     this.updateData();
@@ -262,7 +272,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
         try {
-          const id = this.token.address;
+          const id = this.selectedToken.address;
           const { type, count } = this.filter;
           const seconds = SECONDS_IN_TYPE[type];
           const now = Math.floor(Date.now() / (seconds * 1000)) * seconds; // rounded to latest snapshot type

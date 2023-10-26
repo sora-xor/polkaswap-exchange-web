@@ -45,7 +45,7 @@ import { X1Api, X1Widget } from '@/utils/x1';
 export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingMixin, mixins.TranslationMixin) {
   @state.soraCard.euroBalance private euroBalance!: string;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @getter.soraCard.accountAddress accountAddress!: string;
+  @state.wallet.account.address accountAddress!: string;
 
   X1Widget: X1Widget = { sdkUrl: '', widgetId: '' };
   showErrorInfoBanner = false;

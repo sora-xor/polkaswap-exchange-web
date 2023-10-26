@@ -6,6 +6,7 @@ import Vuex from 'vuex';
 import addLiquidity from './addLiquidity';
 import assets from './assets';
 import bridge from './bridge';
+import dashboard from './dashboard';
 import demeterFarming from './demeterFarming';
 import moonpay from './moonpay';
 import pool from './pool';
@@ -38,6 +39,7 @@ const modules = {
   rewards,
   demeterFarming,
   soraCard,
+  dashboard,
 };
 
 const { store, rootGetterContext, rootActionContext } = createDirectStore({

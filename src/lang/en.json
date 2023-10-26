@@ -343,7 +343,9 @@
         "Explore\/Pools": "Pools",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
-        "Staking": "Staking"
+        "Staking": "Staking",
+        "SoraCard": "{Sora} Card",
+        "AssetOwner": "Asset owner"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -357,7 +359,8 @@
         "CreatePair": "Create Pair",
         "StakingContainer": "Staking",
         "Explore\/Container": "Explore",
-        "SoraCard": "{Sora} Card"
+        "SoraCard": "{Sora} Card",
+        "AssetOwner": "Asset owner"
     },
     "social": {
         "twitter": "Twitter",

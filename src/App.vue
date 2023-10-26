@@ -56,6 +56,7 @@ import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
 import { PageNames, Components, Language, BreakpointClass, Breakpoint } from '@/consts';
 import { getLocale } from '@/lang';
+import { isDashboardPage } from '@/modules/dashboard/router';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { preloadFontFace, updateDocumentTitle } from '@/utils';
@@ -265,16 +266,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     window.addEventListener('resize', this.setResponsiveClassDebounced);
   }
 
-  private get isSwapPageWithCharts(): boolean {
-    return this.$route.name === PageNames.Swap && this.chartsEnabled;
+  private get isAppContentWithoutMenu(): boolean {
+    return isDashboardPage(this.$route.name) || (this.$route.name === PageNames.Swap && this.chartsEnabled);
   }
 
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
-  }
-
-  get isCurrentPageTooWide(): boolean {
-    return this.isAboutPage || this.isSwapPageWithCharts || this.$route.name === PageNames.Tokens;
   }
 
   get appClasses(): Array<string> {
@@ -283,8 +280,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     if (this.$route.name) {
       cssClasses.push(`${baseClass}--${this.$route.name.toLowerCase()}`);
     }
-    if (this.isSwapPageWithCharts) {
-      cssClasses.push(`${baseClass}--has-charts`);
+    if (this.isAppContentWithoutMenu) {
+      cssClasses.push(`${baseClass}--without-menu`);
     }
     return cssClasses;
   }
@@ -550,13 +547,10 @@ i.icon-divider {
 
 @include desktop {
   .app-main {
-    &.app-main--swap.app-main--has-charts {
+    &.app-main--without-menu {
       .app-menu {
         position: relative;
       }
-    }
-
-    &.app-main--has-charts {
       .app-content {
         width: 100%;
         padding-left: $basic-spacing * 2;

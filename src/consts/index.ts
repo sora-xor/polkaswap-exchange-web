@@ -142,7 +142,10 @@ export enum PageNames {
   ExploreFarming = 'Explore/Farming',
   ExploreStaking = 'Explore/Staking',
   ExplorePools = 'Explore/Pools',
+  //
   SoraCard = 'SoraCard',
+  AssetOwner = 'AssetOwner',
+  AssetOwnerDetails = 'AssetOwnerDetails',
 }
 
 export enum Components {
@@ -314,6 +317,11 @@ const AccountMenu: Array<SidebarMenuItemLink> = [
     icon: 'basic-circle-star-24',
     title: PageNames.Rewards,
     href: '/#/rewards',
+  },
+  {
+    icon: 'various-rocket-24',
+    title: PageNames.AssetOwner,
+    href: '/#/dashboard/owner',
   },
 ];
 

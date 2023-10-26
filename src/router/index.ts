@@ -233,6 +233,23 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/dashboard/owner',
+    name: PageNames.AssetOwner,
+    component: lazyView(PageNames.AssetOwner),
+  },
+  {
+    path: '/dashboard/owner/:asset',
+    name: PageNames.AssetOwnerDetails,
+    component: lazyView(PageNames.AssetOwnerDetails),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/dashboard',
+    redirect: '/wallet',
+  },
+  {
     path: '/stats',
     name: PageNames.Stats,
     component: lazyView(PageNames.Stats),

@@ -622,7 +622,7 @@ export default class Swap extends Mixins(
 </script>
 
 <style lang="scss">
-.app-main--has-charts {
+.app-main--without-menu {
   .swap-chart {
     flex-grow: 1;
     max-width: $inner-window-width;
