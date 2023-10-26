@@ -10,7 +10,9 @@
         class="token-search"
       />
 
-      <s-tab :label="t('selectToken.assets.title')" name="assets" />
+      <s-tab :label="t('selectToken.assets.title')" name="assets">
+        <synthetic-switcher v-model="isSynthsOnly" class="token-synthetic-switcher" />
+      </s-tab>
 
       <s-tab :disabled="disabledCustom" :label="t('selectToken.custom.title')" name="custom" class="asset-select__info">
         <template v-if="customAsset">
@@ -54,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { XOR, XSTUSD, XST } from '@sora-substrate/util/build/assets/consts';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { api, mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import first from 'lodash/fp/first';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
@@ -90,6 +92,7 @@ function getNonWhitelistDivisibleAssets<T extends Asset | AccountAsset>(
   components: {
     DialogBase: components.DialogBase,
     SelectAssetList: lazyComponent(Components.SelectAssetList),
+    SyntheticSwitcher: components.SyntheticSwitcher,
     TokenAddress: components.TokenAddress,
     SearchInput: components.SearchInput,
     AddAssetDetailsCard: components.AddAssetDetailsCard,
@@ -99,6 +102,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   readonly tokenTabs = [Tabs.Assets, Tabs.Custom];
 
   tabValue = first(this.tokenTabs);
+  isSynthsOnly = false;
 
   @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
   @Prop({ default: ObjectInit, type: Object }) readonly asset!: Nullable<Asset>;
@@ -135,27 +139,26 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
 
   get whitelistAssetsList(): Array<AccountAsset> {
     let whiteList: Array<Asset> = [];
+
     if (this.isAddLiquidity) {
       whiteList = this.isFirstTokenSelected
-        ? this.mainLPSources.filter(
-            (asset) => !(this.asset?.address === XST.address && asset.address === XSTUSD.address)
-          ) // XSTUSD-XST isn't allowed
-        : this.whitelistAssets.filter((asset) => {
-            if (this.asset?.address === XSTUSD.address && [XOR.address, XST.address].includes(asset.address)) {
-              return false; // XSTUSD-XOR & XSTUSD-XST aren't allowed
-            }
-            if (syntheticAssetRegexp.test(asset.address)) {
-              return false; // synthetic pairs aren't allowed
-            }
-            return true;
-          });
+        ? this.mainLPSources
+        : // XOR could be only as base asset
+          this.whitelistAssets.filter((asset) => asset.address !== XOR.address);
     } else {
       whiteList = this.whitelistAssets;
     }
+
+    if (this.isSynthsOnly) {
+      whiteList = whiteList.filter((asset) => syntheticAssetRegexp.test(asset.address));
+    }
+
     const assetsAddresses = whiteList.map((asset) => asset.address);
     const excludeAddress = this.asset?.address;
+    const list = this.getAssetsWithBalances(assetsAddresses, excludeAddress);
+    const orderedList = [...list].sort(this.sortByBalance);
 
-    return this.getAssetsWithBalances(assetsAddresses, excludeAddress).sort(this.sortByBalance);
+    return orderedList;
   }
 
   get filteredWhitelistTokens(): Array<AccountAsset> {
@@ -201,7 +204,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   private get mainLPSources(): Array<Asset> {
-    const mainSourceAddresses = [XOR.address, XSTUSD.address];
+    const mainSourceAddresses = api.dex.poolBaseAssetsIds;
 
     return this.whitelistAssets.filter((asset) => mainSourceAddresses.includes(asset.address));
   }
@@ -248,6 +251,10 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   margin-bottom: $inner-spacing-medium;
   width: calc(100% - 2 * #{$inner-spacing-big});
   @include focus-outline($withOffset: true);
+}
+
+.token-synthetic-switcher {
+  margin: 0 $inner-spacing-big $inner-spacing-medium;
 }
 
 .token-list_text {

@@ -30,11 +30,11 @@
     />
     <path
       d="M24.4838 18.806C24.4838 25.5861 19.0029 31.0823 12.2419 31.0823C5.4809 31.0823 0 25.5861 0 18.806C0 12.0261 5.4809 6.52984 12.2419 6.52984C19.0029 6.52984 24.4838 12.0261 24.4838 18.806Z"
-      :fill="textColor"
+      :fill="iconColor"
     />
     <path
       d="M31.829 5.30221C31.829 7.72362 29.8716 9.68656 27.4568 9.68656C25.0422 9.68656 23.0847 7.72362 23.0847 5.30221C23.0847 2.88079 25.0422 0.917847 27.4568 0.917847C29.8716 0.917847 31.829 2.88079 31.829 5.30221Z"
-      :fill="textColor"
+      :fill="iconColor"
     />
   </svg>
 </template>
@@ -49,7 +49,12 @@ export default class SoraLogo extends Vue {
 
   get textColor(): string {
     if (this.theme === Theme.DARK) return 'var(--s-color-base-content-primary)';
-    return '#111111';
+    return '#111';
+  }
+
+  get iconColor(): string {
+    if (this.theme === Theme.DARK) return 'var(--s-color-base-content-primary)';
+    return '#7D00FF';
   }
 }
 </script>

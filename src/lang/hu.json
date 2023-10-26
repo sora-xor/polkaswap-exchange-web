@@ -38,8 +38,8 @@
             "CreatePair": "{amount} {symbol} és {amount2} {symbol2} hozzáadva",
             "RegisterAsset": "Regisztrált {symbol} eszköz",
             "ClaimRewards": "A jutalom sikeresen igényelve {rewards}",
-            "ReferralReserveXor": "Sikeresen lekötött XOR",
-            "ReferralUnreserveXor": "Sikeresen feloldott XOR",
+            "ReferralReserveXor": "Kötött {amount} XOR",
+            "ReferralUnreserveXor": "Kötetlen {amount} XOR",
             "ReferralSetInvitedUser": "Az {role} {address} sikeresen be van állítva",
             "SwapAndSend": "{amount} {symbol} kicserélve {amount2} {symbol2} -re és {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Mellékelt {symbol} és {symbol2} {amount} LP token",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "{amount} {symbol} eltávolítva",
             "DemeterFarmingGetRewards": "{amount} {symbol} sikeres követelés",
             "EthBridgeIncoming": "{amount} {symbol} áthelyezve {Ethereum} {Sora}",
-            "EthBridgeOutgoing": "{amount} {symbol} áthelyezve {Sora} {Ethereum}"
+            "EthBridgeOutgoing": "{amount} {symbol} áthelyezve {Sora} {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Nem sikerült {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Nem sikerült hozzáadni a {amount} {symbol} és {amount2} {symbol2}",
             "RegisterAsset": "Nem sikerült regisztrálni a {symbol} eszközt",
             "ClaimRewards": "Nem sikerült igényelni a jutalmakat {rewards}",
-            "ReferralReserveXor": "Nem sikerült a XOR lekötése",
-            "ReferralUnreserveXor": "Nem sikerült feloldani az XOR-t",
+            "ReferralReserveXor": "Nem sikerült kötni {amount} XOR",
+            "ReferralUnreserveXor": "Nem sikerült a kötetlen {amount} XOR",
             "ReferralSetInvitedUser": "Nem sikerült beállítani az {role} {address}",
             "SwapAndSend": "Nem sikerült az {amount} {symbol} {amount2} {symbol2} és {action} {direction} {address} értékre",
             "DemeterFarmingDepositLiquidity": "Nem sikerült megadni az {amount} {symbol} és {symbol2} LP tokeneket",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Nem sikerült eltávolítani {amount} {symbol}",
             "DemeterFarmingGetRewards": "A(z {symbol} igénylése sikertelen",
             "EthBridgeIncoming": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a {Ethereum} és a {Sora} címre",
-            "EthBridgeOutgoing": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a {Sora} és a {Ethereum} címre"
+            "EthBridgeOutgoing": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a {Sora} és a {Ethereum} címre",
+            "SwapTransferBatch": "Nem sikerült {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Jutalmak igénylése",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Átvitel"
     },
     "polkadotjs": {
         "noExtensions": "Nem találtunk {PolkadotJs} kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "{Sora} hálózati fiók",
-        "text": "A bővítmények és a Google biztonságosan tárolja {Sora} Network-fiókját. Lehetővé teszik a tranzakciók aláírását és az eszközök kezelését.",
+        "text": "Az eszközök kezeléséhez és a tranzakciók aláírásához a {Sora} webhelyen fiókot kell csatlakoztatni. {Sora} fiókok hozhatók létre és kapcsolhatók össze integrált pénztárcánkkal vagy böngészőbővítményeinkkel.",
         "noAccounts": "Nincs fiók a {extension} böngészőbővítményben. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "selectAccount": "Válaszd ki a használni kívánt fiókot",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "csatlakoztatva",
             "notConnected": "Nem kapcsolódik"
         },
-        "internalTitle": "Csatlakozás a következőn keresztül {wallet}",
-        "internalText": "Létrehozhat vagy összekapcsolhat meglévő fiókot {wallet} segítségével. Titkosítással tárolja a fiókokat.",
+        "internalTitle": "Csatlakozás a következővel {wallet}",
+        "internalText": "Létrehozhat vagy importálhat egy meglévő {Sora} -fiókot, hogy összekapcsolódjon {wallet} -fiókjával. A {wallet} által tárolt összes adat a beépített fejlett titkosítással titkosítva van.",
         "list": {
-            "simplest": "A legegyszerűbb lehetőség",
+            "integrated": "Integrált",
             "extensions": "Kiterjesztések"
         }
     },
@@ -301,7 +304,9 @@
         "txId": "Tranzakció azonosítója",
         "viewIn": "Megtekintés {explorer}-ben",
         "referrer": "Ajánló",
-        "referral": "Ajánlás"
+        "referral": "Ajánlás",
+        "adarTxDetailsTitle": "Tranzakció részlete",
+        "comment": "Megjegyzés"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Hálózatváltás a {Metamask}",
@@ -540,7 +545,10 @@
         "networkInfo": "{Sora} hálózati híd a következőkkel:",
         "copy": "Hálózati cím másolása",
         "soraAddress": "{Sora} cím",
-        "ethereumAddress": "{Ethereum} cím"
+        "ethereumAddress": "{Ethereum} cím",
+        "limitMessage": "Jelenleg létezik egy {type} {amount} {symbol} áthidalás, amely biztosítja a {Sora} hálózat stabilitását és biztonságát. Köszönjük megértését.",
+        "externalTransferFee": "{network} {XCM} díj",
+        "externalTransferFeeTooltip": "Ha hídtranzakciót küld a {network} hálózatra, az átutalt összegből egy kisebb díjat számítanak fel"
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",
@@ -1013,7 +1021,8 @@
             "norewardsforasset": "Ehhez az eszközhöz nem jár jutalom"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "A kiválasztott likviditási forrás nem engedélyezett"
+            "forbiddenfilter": "A kiválasztott likviditási forrás nem engedélyezett",
+            "slippagenottolerated": "Az árhatás meghaladta a kiválasztott értéket"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Fedezethiány",
@@ -1053,8 +1062,8 @@
             "importAccount": "Fiók importálása"
         },
         "heading": {
-            "seedPhraseTitle": "Mag kifejezés",
-            "confirmSeedTitle": "Erősítse meg a mag kifejezést",
+            "seedPhraseTitle": "Jelszó",
+            "confirmSeedTitle": "Erősítse meg a jelszót",
             "accountDetailsTitle": "Számlaadatok",
             "importTitle": "Fiók importálása"
         },
@@ -1065,12 +1074,12 @@
             "importAccount": "Fiók importálása"
         },
         "accountName": {
-            "placeholder": "Pénztárca neve",
-            "desc": "Ez a pénztárcája neve, amely látható lesz az Ön számára"
+            "placeholder": "Felhasználónév",
+            "desc": "Ez a fiók neve. Csak te láthatod {Polkaswap} szolgáltatásban."
         },
         "password": {
             "placeholder": "Jelszó",
-            "desc": "Győződjön meg róla, hogy erős jelszót használ a megfelelő védelem érdekében"
+            "desc": "Győződjön meg róla, hogy erős egyedi jelszót használ a megfelelő védelem érdekében (legalább 8 karakter)."
         },
         "confirmPassword": {
             "placeholder": "Jelszó megerősítése"
@@ -1078,11 +1087,11 @@
         "accountMnemonic": {
             "placeholder": "Emlékeztető kifejezés"
         },
-        "seedAdviceText": "Ez a fiókod titkos magja. Ügyeljen arra, hogy nem digitális hordozón, például papíron tárolja",
-        "confirmSeedText": "A megfelelő sorrendben lévő szavakra kattintva erősítse meg a magmondatot.",
-        "errorMnemonicText": "Helytelen magkifejezés-sorrend",
-        "exportOptionText": ".json-fiókfájl exportálása",
-        "exportJsonText": "A .json fájl importálásával mindig hozzáférhet fiókjához. Ne oszd meg senkivel!",
+        "seedAdviceText": "A 12 szavas jelszó egy privát kulcs, amellyel visszaszerezheti a hozzáférést {Sora} -fiókjához, ha elveszítené a hozzáférést {wallet} -fiókjához. Tárolja biztonságosan a fent látható sorrendben.",
+        "confirmSeedText": "Erősítse meg a jelszót a szavakra kattintva a megfelelő sorrendben",
+        "errorMnemonicText": "Helytelen jelmondatok sorrendje",
+        "exportOptionText": "Exportáljon {JSON} fájlt a fiók visszaállításához",
+        "exportJsonText": "Fiókját bármikor visszaállíthatja a(z {JSON} fájl importálásával. Ne oszd meg senkivel! Tárolja biztonságosan, lehetőleg titkosítva.",
         "addAccount": "Fiók hozzáadása",
         "dialog": {
             "confirmTitle": "Erősítse meg jelszóval",
@@ -1101,16 +1110,20 @@
         "assetsAtRiskText": "Veszélyben lévő eszközök!",
         "deleteAccountText": "A fiókot nem lehet visszaállítani kezdő kifejezés, .json fájl nélkül, vagy ha azt valamilyen kiterjesztéssel tárolják. Ön ki lesz jelentkezve.",
         "importSteps": {
-            "selectWallet": "Menjen a használt pénztárcához",
+            "selectWallet": "Nyissa meg a pénztárcát meglévő fiókjával\/fiókjaival",
             "selectAccount": "Válassza ki az exportálni kívánt fiókot",
             "exportAccount": "Exportálja a {JSON} fájlt"
         },
-        "exportTutorialsText": "Oktatóanyagok exportálása"
+        "exportTutorialsText": "Oktatóanyagok exportálása",
+        "seedAdviceAdditionTitle": "Soha ne ossza meg jelszavát senkivel!",
+        "seedAdviceAdditionText": "Ha valaki megkéri a jelszavát, akkor valószínűleg átverni próbálja és ellopni a vagyonát!"
     },
     "hashiBridgeText": "{Hashi} híd",
     "disclaimerTitle": "Jogi nyilatkozat",
     "explore": {
-        "showOnlyMyPositions": "Csak az én pozíciómat mutasd"
+        "showOnly": "Csak {entities} megjelenítése",
+        "myPositions": "saját pozícióim",
+        "synthetics": "szintetikus tokenek"
     },
     "tooltips": {
         "roi": "A {ROI} a befektetés megtérülését jelenti. Kiszámítása úgy történik, hogy a befektetésen megszerzett nyereséget elosztjuk a befektetés százalékban kifejezett költségével.",
@@ -1169,8 +1182,8 @@
             "action": "Válassza ki a szolgáltatásokat",
             "dialog": {
                 "title": "{Sora} Hálózati szolgáltatás kiválasztása",
-                "fiat": "Fiat értékek",
-                "chartsAndActivity": "Diagramok és tevékenység"
+                "indexer": "Indexelő",
+                "useCeres": "Fiat értékekhez használja {Ceres} értéket"
             }
         }
     },
@@ -1178,7 +1191,7 @@
     "acceptText": "Elfogadás és elrejtés",
     "newAccountsText": "Új fiókok",
     "dragAndDropText": "Fogd és vidd, vagy válasszon {extension} fájlt",
-    "copyPhraseText": "Kifejezés másolása",
+    "copyPhraseText": "Jelszó másolása",
     "stepText": "Lépés",
     "alerts": {
         "drop": "Alul leesik",
@@ -1210,13 +1223,13 @@
         "moonpayTitle": "Vásároljon ETH-t a MoonPay-en keresztül",
         "moonpayDesc": "Vásároljon ETH tokeneket az Ethereumon, és vigye át őket a hídon keresztül a SORA hálózatba",
         "x1Title": "Vásároljon XOR-t a kártyájával",
-        "x1Desc": "Vásároljon XOR tokeneket bankkártyájával vagy hitelkártyájával",
         "x1Btn": "Vásároljon XOR-t kártyával",
-        "errorMessage": "Elnézést a kellemetlenségért. Szorgalmasan dolgozunk ennek megoldásán. Kérlek, próbáld újra később."
+        "errorMessage": "Elnézést a kellemetlenségért. Szorgalmasan dolgozunk ennek megoldásán. Kérlek, próbáld újra később.",
+        "x1Desc": "Vásároljon XOR tokeneket közvetlenül a SORA hálózaton bankkártyájával vagy hitelkártyájával"
     },
     "acceptOnScrollText": "Görgessen az elfogadáshoz",
     "addressBook": {
-        "myExtAccounts": "Kiterjesztési fiókjaim",
+        "myAccounts": "Saját számláim",
         "myBook": "Könyvem",
         "searchPlaceholder": "Keresés cím, név vagy személyazonosság alapján",
         "noFoundRecords": "Nincs találat",
@@ -1238,7 +1251,9 @@
             "enterName": "Írja be a nevet",
             "present": "Már jelen van",
             "saveChanges": "Változtatások mentése"
-        }
+        },
+        "input": "Írja be a címet vagy válassza ki a kapcsolatot",
+        "selectContact": "Válasszon névjegyet"
     },
     "browserPermission": {
         "title": "A kamera hozzáférésének engedélyezése a böngésző beállításaiban",
@@ -1247,5 +1262,9 @@
         "btnGoToSettings": "Menj a beállításokhoz",
         "btnAllow": "Hozzáférést enged"
     },
-    "continueText": "Folytatni"
+    "continueText": "Folytatni",
+    "minAmountText": "min. összeg",
+    "maxAmountText": "max. összeg",
+    "exceededAmountText": "{amount} túllépve",
+    "multipleRecipients": "Több címzett"
 }

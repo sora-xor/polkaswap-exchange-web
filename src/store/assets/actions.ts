@@ -21,7 +21,7 @@ async function getEthRegisteredAssets(
   const registeredAssets = await Promise.all(
     Object.entries(networkAssets).map(async ([soraAddress, assetData]) => {
       const address = assetData.address || (await rootDispatch.web3.getEvmTokenAddressByAssetId(soraAddress));
-      const decimals = assetData.decimals ?? (await ethersUtil.getAssetDecimals(address));
+      const decimals = assetData.decimals ?? (await ethersUtil.getTokenDecimals(address));
 
       return {
         [soraAddress]: {
@@ -80,7 +80,7 @@ async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Re
   const { rootState } = assetsActionContext(context);
 
   switch (rootState.web3.networkType) {
-    case BridgeNetworkType.EvmLegacy: {
+    case BridgeNetworkType.Eth: {
       return await getEthRegisteredAssets(context);
     }
     case BridgeNetworkType.Evm: {

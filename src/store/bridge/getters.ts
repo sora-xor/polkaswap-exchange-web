@@ -4,9 +4,7 @@ import { defineGetters } from 'direct-vuex';
 
 import { ZeroStringValue } from '@/consts';
 import { bridgeGetterContext } from '@/store/bridge';
-import { ethBridgeApi } from '@/utils/bridge/eth/api';
-import { evmBridgeApi } from '@/utils/bridge/evm/api';
-import { subBridgeApi } from '@/utils/bridge/sub/api';
+import { formatSubAddress } from '@/utils/bridge/sub/utils';
 
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
@@ -30,6 +28,23 @@ const getters = defineGetters<BridgeState>()({
     return asset;
   },
 
+  nativeToken(...args): Nullable<RegisteredAccountAsset> {
+    const { rootGetters } = bridgeGetterContext(args);
+    const {
+      web3: { selectedNetwork },
+      assets: { whitelistAssets, assetDataByAddress },
+    } = rootGetters;
+
+    if (!selectedNetwork) return null;
+    // find sora asset in whitelist by symbol (we know only external native token symbol)
+    const { symbol } = selectedNetwork.nativeCurrency;
+    const soraAsset = whitelistAssets.find((asset) => asset.symbol === symbol);
+
+    if (!soraAsset) return null;
+
+    return assetDataByAddress(soraAsset.address);
+  },
+
   isRegisteredAsset(...args): boolean {
     const { getters, rootState } = bridgeGetterContext(args);
 
@@ -39,32 +54,62 @@ const getters = defineGetters<BridgeState>()({
     if (!asset) return false;
     if (!(asset.address in registeredAssets)) return false;
 
-    // [TODO]: We don't have external address for substrate bridge yet
+    // We don't have asset external address for substrate bridge
     if (isSubBridge) return true;
 
     return !!asset?.externalAddress;
   },
 
+  externalAccount(...args): string {
+    const { getters, rootState } = bridgeGetterContext(args);
+    const { evmAddress, subAddress } = rootState.web3;
+
+    if (getters.isSubBridge) {
+      return subAddress;
+    } else {
+      return evmAddress;
+    }
+  },
+
+  externalAccountFormatted(...args): string {
+    const { getters, state, rootState } = bridgeGetterContext(args);
+    const { subSS58 } = rootState.web3;
+
+    if (getters.isSubBridge && state.isSoraToEvm && getters.externalAccount) {
+      return formatSubAddress(getters.externalAccount, subSS58);
+    } else {
+      return getters.externalAccount;
+    }
+  },
+
   sender(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
+    const { address: soraAddress } = rootState.wallet.account;
+    const { evmAddress, subSS58 } = rootState.web3;
 
-    if (getters.isSubBridge) return rootState.wallet.account.address;
+    if (getters.isSubBridge) {
+      return !state.isSoraToEvm && soraAddress ? formatSubAddress(soraAddress, subSS58) : soraAddress;
+    }
 
-    return state.isSoraToEvm ? rootState.wallet.account.address : rootState.web3.evmAddress;
+    return state.isSoraToEvm ? soraAddress : evmAddress;
   },
 
   recipient(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
+    const { address: soraAddress } = rootState.wallet.account;
+    const { evmAddress, subAddress, subSS58 } = rootState.web3;
 
-    if (getters.isSubBridge) return rootState.web3.subAddress;
+    if (getters.isSubBridge) {
+      return state.isSoraToEvm && subAddress ? formatSubAddress(subAddress, subSS58) : subAddress;
+    }
 
-    return state.isSoraToEvm ? rootState.web3.evmAddress : rootState.wallet.account.address;
+    return state.isSoraToEvm ? evmAddress : soraAddress;
   },
 
   isEthBridge(...args): boolean {
     const { rootState } = bridgeGetterContext(args);
 
-    return rootState.web3.networkType === BridgeNetworkType.EvmLegacy;
+    return rootState.web3.networkType === BridgeNetworkType.Eth;
   },
   isEvmBridge(...args): boolean {
     const { rootState } = bridgeGetterContext(args);
@@ -78,7 +123,6 @@ const getters = defineGetters<BridgeState>()({
   },
   operation(...args): Operation {
     const { state, getters } = bridgeGetterContext(args);
-    // [TODO]: add SUB network operations
     if (getters.isEthBridge) {
       return state.isSoraToEvm ? Operation.EthBridgeOutgoing : Operation.EthBridgeIncoming;
     } else if (getters.isEvmBridge) {
@@ -87,18 +131,12 @@ const getters = defineGetters<BridgeState>()({
       return state.isSoraToEvm ? Operation.SubstrateOutgoing : Operation.SubstrateIncoming;
     }
   },
-  soraNetworkFee(...args): CodecString {
-    const { getters, rootState } = bridgeGetterContext(args);
-    return rootState.wallet.settings.networkFees[getters.operation] ?? ZeroStringValue;
-  },
-  // fee for transaction execution
   externalNetworkFee(...args): CodecString {
     const { state, getters } = bridgeGetterContext(args);
 
     if (getters.isEthBridge) {
       return state.externalNetworkFee;
     } else {
-      // In direction SORA -> EVM evm network fee is 0
       return !state.isSoraToEvm ? state.externalNetworkFee : ZeroStringValue;
     }
   },
@@ -120,14 +158,6 @@ const getters = defineGetters<BridgeState>()({
     if (!state.historyId) return null;
 
     return getters.history[state.historyId] ?? null;
-  },
-
-  bridgeApi(...args): typeof ethBridgeApi | typeof evmBridgeApi | typeof subBridgeApi {
-    const { getters } = bridgeGetterContext(args);
-
-    if (getters.isSubBridge) return subBridgeApi;
-
-    return getters.isEthBridge ? ethBridgeApi : evmBridgeApi;
   },
 });
 

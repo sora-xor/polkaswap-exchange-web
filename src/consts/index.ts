@@ -83,11 +83,14 @@ export const Links = {
   privacy: 'https://wiki.sora.org/polkaswap/privacy',
   releaseNotes: pkg.repository.url.replace('.git', '/releases/latest'),
   demeterFarmingPlatform: 'https://farming.deotoken.io/',
+  soraCardSupportChannel: 'https://t.me/soracardofficial',
 };
 
 export const ObjectInit = () => null;
 
 export const ZeroStringValue = '0';
+
+export const ApproximateSign = '~';
 
 export const MetamaskCancellationCode = 4001;
 
@@ -129,7 +132,8 @@ export enum PageNames {
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
-  MoonpayHistory = 'MoonpayHistory',
+  FiatDepositOptions = 'FiatDepositOptions',
+  FiatTxHistory = 'FiatTxHistory',
   StakingContainer = 'StakingContainer',
   // just for router name & different titles
   ExploreContainer = 'Explore/Container',
@@ -154,23 +158,26 @@ export enum Components {
   SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
   AppFooter = 'App/Footer/AppFooter',
   AppDisclaimer = 'App/Header/AppDisclaimer',
+  SelectIndexer = 'App/Footer/Indexer/SelectIndexer',
   StatisticsDialog = 'App/Footer/StatisticsDialog',
   SelectNodeDialog = 'App/Footer/SelectNodeDialog',
   SelectNode = 'App/Footer/Node/SelectNode',
   NodeInfo = 'App/Footer/Node/NodeInfo',
+  IndexerInfo = 'App/Footer/Indexer/IndexerInfo',
   // SORA Card
-  SoraCard = 'SoraCard',
-  SoraCardIntroPage = 'SoraCard/SoraCardIntroPage',
-  SoraCardKYC = 'SoraCard/SoraCardKYC',
-  ConfirmationInfo = 'SoraCard/ConfirmationInfo',
-  TermsAndConditions = 'SoraCard/steps/TermsAndConditions',
-  ToSDialog = 'SoraCard/steps/ToSDialog',
-  RoadMap = 'SoraCard/steps/RoadMap',
-  Phone = 'SoraCard/steps/Phone',
-  Email = 'SoraCard/steps/Email',
-  KycView = 'SoraCard/steps/KycView',
+  Dashboard = 'pages/SoraCard/Dashboard/Dashboard',
+  BalanceIndicator = 'pages/SoraCard/common/BalanceIndicator',
+  SoraCardIntroPage = 'pages/SoraCard/SoraCardIntroPage',
+  SoraCardKYC = 'pages/SoraCard/SoraCardKYC',
+  ConfirmationInfo = 'pages/SoraCard/ConfirmationInfo',
+  TermsAndConditions = 'pages/SoraCard/steps/TermsAndConditions',
+  ToSDialog = 'pages/SoraCard/steps/ToSDialog',
+  Phone = 'pages/SoraCard/steps/Phone',
+  Email = 'pages/SoraCard/steps/Email',
+  Payment = 'pages/SoraCard/steps/Payment',
+  Guidance = 'pages/SoraCard/steps/Guidance',
+  KycView = 'pages/SoraCard/steps/KycView',
   // Paywings
-  X1Dialog = 'X1/X1Dialog',
   PaywingsDialog = 'SoraCard/Paywings/PaywingsDialog',
   // Add Liquidity Page
   AddLiquidityConfirm = 'pages/AddLiquidity/Confirm',
@@ -185,11 +192,15 @@ export enum Components {
   BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
   BridgeSelectAccount = 'pages/Bridge/SelectAccount',
   BridgeLinksDropdown = 'pages/Bridge/LinksDropdown',
+  BridgeLimitCard = 'pages/Bridge/LimitCard',
   // Moonpay Page
   Moonpay = 'pages/Moonpay/Moonpay',
   MoonpayNotification = 'pages/Moonpay/Notification',
   MoonpayConfirmation = 'pages/Moonpay/Confirmation',
-  MoonpayHistoryButton = 'pages/Moonpay/HistoryButton',
+  MoonpayHistory = 'pages/Moonpay/MoonpayHistory',
+  // X1 Page
+  X1Dialog = 'pages/X1/X1Dialog',
+  X1History = 'pages/X1/X1History',
   // Swap Page
   SwapConfirm = 'pages/Swap/Confirm',
   SwapChart = 'pages/Swap/Chart',
@@ -208,7 +219,6 @@ export enum Components {
   WalletAboutNetworkDialog = 'pages/Wallet/AboutNetworkDialog',
   // Shared
   GenericPageHeader = 'shared/GenericPageHeader',
-  ExternalLink = 'shared/ExternalLink',
   TokensRow = 'shared/TokensRow',
   PairTokenLogo = 'shared/PairTokenLogo',
   PriceChange = 'shared/PriceChange',
@@ -222,10 +232,10 @@ export enum Components {
   // Shared Input
   TokenInput = 'shared/Input/TokenInput',
   TokenSelectButton = 'shared/Input/TokenSelectButton',
-  TokenSelectDropdown = 'shared/Input/TokenSelectDropdown',
   // Shared Dialogs
   ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
   NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',
+  PaymentErrorDialog = 'shared/Dialog/PaymentError',
   // Shared Asset selection
   SelectAssetList = 'shared/SelectAsset/List',
   SelectToken = 'shared/SelectAsset/SelectToken',
@@ -427,3 +437,21 @@ export const AboutTopics = [
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
+
+export enum Breakpoint {
+  Mobile = 464,
+  LargeMobile = 528,
+  Tablet = 900,
+  Desktop = 1024,
+  LargeDesktop = 1440,
+  HugeDesktop = 1600,
+}
+
+export enum BreakpointClass {
+  Mobile = 'min-mobile',
+  LargeMobile = 'min-large-mobile',
+  Tablet = 'min-tablet',
+  Desktop = 'min-desktop',
+  LargeDesktop = 'min-large-desktop',
+  HugeDesktop = 'min-huge-desktop',
+}

@@ -44,26 +44,33 @@
       :panel-text="statisticsConnectionText"
       :status="statisticsConnectionClass"
       :action-text="t('footer.statistics.action')"
-      @action="openStatisticsDialog"
+      @action="openIndexerSelectionDialog"
     >
       <template #label>
         <span>{{ t('footer.statistics.label') }}</span>
         <span>{{ statisticsConnectionDesc }}</span>
       </template>
     </footer-popper>
+    <div class="sora-logo">
+      <span class="sora-logo__title">{{ t('poweredBy') }}</span>
+      <a class="sora-logo__image" href="https://sora.org" title="Sora" target="_blank" rel="nofollow noopener">
+        <sora-logo :theme="libraryTheme" />
+      </a>
+    </div>
     <select-node-dialog />
+    <statistics-dialog />
     <no-internet-dialog />
-    <statistics-dialog :visible.sync="showStatisticsDialog" />
   </div>
 </template>
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { Status } from '@soramitsu/soramitsu-js-ui/lib/types';
-import { getExplorerLinks, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import SoraLogo from '@/components/shared/Logo/Sora.vue';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter, mutation } from '@/store/decorators';
@@ -73,23 +80,26 @@ import FooterPopper from './FooterPopper.vue';
 import { formatLocation } from './Node/utils';
 import NoInternetDialog from './NoInternetDialog.vue';
 
-import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 
 /** Max limit provided by navigator.connection.downlink */
 const MAX_INTERNET_CONNECTION_LIMIT = 10;
 
 @Component({
   components: {
+    SoraLogo,
     FooterPopper,
     NoInternetDialog,
-    StatisticsDialog: lazyComponent(Components.StatisticsDialog),
     SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
+    StatisticsDialog: lazyComponent(Components.StatisticsDialog),
   },
 })
 export default class AppFooter extends Mixins(TranslationMixin) {
   // Block explorer
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
+  @state.wallet.settings.indexerType private indexerType!: WALLET_CONSTS.IndexerType;
   @state.settings.blockNumber blockNumber!: number;
+  @getter.libraryTheme libraryTheme!: Theme;
 
   get blockExplorerLink(): Nullable<string> {
     const links = getExplorerLinks(this.soraNetwork);
@@ -104,10 +114,17 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   }
 
   // Node connection
-  @getter.settings.nodeIsConnecting isNodeConnecting!: boolean;
+  @state.settings.node connectedNode!: Partial<Node>;
+  @getter.settings.connectingNode connectingNode!: Nullable<Node>;
   @getter.settings.nodeIsConnected isNodeConnected!: boolean;
-  @state.settings.node node!: Partial<Node>;
   @mutation.settings.setSelectNodeDialogVisibility private setSelectNodeDialogVisibility!: (flag: boolean) => void;
+  @mutation.settings.setSelectIndexerDialogVisibility private setSelectIndexerDialogVisibility!: (
+    flag: boolean
+  ) => void;
+
+  private get isNodeConnecting(): boolean {
+    return !!this.connectingNode;
+  }
 
   private get nodeConnectionStatusKey(): string {
     if (this.isNodeConnected) return 'connected';
@@ -117,12 +134,16 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 
   get nodeConnectionClass(): Status {
     if (this.isNodeConnected) return Status.SUCCESS;
-    if (this.isNodeConnecting) return Status.DEFAULT;
+    if (this.isNodeConnecting) return Status.INFO;
     return Status.ERROR;
   }
 
   get nodeConnectionText(): string {
     return this.t(`footer.node.title.${this.nodeConnectionStatusKey}`);
+  }
+
+  get node() {
+    return this.connectingNode ?? this.connectedNode;
   }
 
   get formattedNodeLocation() {
@@ -134,6 +155,10 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 
   openNodeSelectionDialog(): void {
     this.setSelectNodeDialogVisibility(true);
+  }
+
+  openIndexerSelectionDialog(): void {
+    this.setSelectIndexerDialogVisibility(true);
   }
 
   // Internet connection
@@ -176,19 +201,28 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 
   // Statistics connection
   @state.wallet.settings.subqueryStatus private subqueryStatus!: WALLET_TYPES.ConnectionStatus;
+  @state.wallet.settings.subsquidStatus private subsquidStatus!: WALLET_TYPES.ConnectionStatus;
 
   showStatisticsDialog = false;
 
+  get indexerStatus(): WALLET_TYPES.ConnectionStatus {
+    if (this.indexerType === WALLET_CONSTS.IndexerType.SUBQUERY) {
+      return this.subqueryStatus;
+    } else {
+      return this.subsquidStatus;
+    }
+  }
+
   get statisticsConnectionClass(): Status {
-    switch (this.subqueryStatus) {
+    switch (this.indexerStatus) {
       case WALLET_TYPES.ConnectionStatus.Unavailable:
         return Status.ERROR;
       case WALLET_TYPES.ConnectionStatus.Loading:
-        return Status.DEFAULT;
+        return Status.INFO;
       case WALLET_TYPES.ConnectionStatus.Available:
         return Status.SUCCESS;
       default:
-        return Status.DEFAULT;
+        return Status.INFO;
     }
   }
 
@@ -233,6 +267,8 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 
 <style lang="scss" scoped>
 $block-icon-size: 7px;
+$sora-logo-height: 36px;
+$sora-logo-width: 115px;
 
 .app-status {
   font-size: var(--s-font-size-extra-mini);
@@ -254,6 +290,37 @@ $block-icon-size: 7px;
     height: $block-icon-size;
     width: $block-icon-size;
     margin-right: 2px;
+  }
+}
+
+.sora-logo {
+  display: flex;
+  align-items: center;
+  align-self: flex-end;
+  position: absolute;
+  right: 0;
+
+  &__title {
+    text-transform: uppercase;
+    font-weight: 200;
+    color: var(--s-color-base-content-secondary);
+    font-size: 12px;
+    line-height: 12px;
+    margin-right: $basic-spacing / 2;
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+
+  &__image {
+    width: $sora-logo-width;
+    height: $sora-logo-height;
+    @include focus-outline;
+  }
+}
+
+@include desktop(true) {
+  .sora-logo {
+    display: none;
   }
 }
 </style>

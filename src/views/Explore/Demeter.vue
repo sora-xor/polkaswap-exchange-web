@@ -102,18 +102,13 @@
         </template>
         <template v-slot="{ row }">
           <div class="explore-table-item-tokens">
-            <div
-              v-for="({ asset, balance, balancePrefix }, index) in row.accountTokens"
-              :key="index"
-              class="explore-table-cell"
-            >
+            <div v-for="({ asset, balance }, index) in row.accountTokens" :key="index" class="explore-table-cell">
               <formatted-amount
                 value-can-be-hidden
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-price explore-table-item-amount"
               >
-                <template #prefix>{{ balancePrefix }}</template>
               </formatted-amount>
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
             </div>
@@ -172,7 +167,7 @@ import { demeterLazyComponent } from '@/modules/demeterFarming/router';
 import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
 import { lazyComponent } from '@/router';
 import type { AmountWithSuffix } from '@/types/formats';
-import { formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
+import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { DemeterPool } from '@sora-substrate/util/build/demeterFarming/types';
@@ -199,7 +194,7 @@ type TableItem = {
   apr: number;
   aprFormatted: string;
   isAccountItem: boolean;
-  accountTokens: { asset: Asset; balance: string; balancePrefix: string }[];
+  accountTokens: { asset: Asset; balance: string }[];
   liquidity: Nullable<AccountLiquidity>;
 };
 
@@ -244,7 +239,7 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
   }
 
   get items(): TableItem[] {
-    return this.list.map((pool) => {
+    const items = this.list.map((pool) => {
       const baseAsset = this.demeterAssetsData[pool.baseAsset] as Asset;
       const poolAsset = this.demeterAssetsData[pool.poolAsset] as Asset;
       const rewardAsset = this.demeterAssetsData[pool.rewardAsset] as Asset;
@@ -303,7 +298,6 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
       ).map((item) => ({
         ...item,
         balance: formatDecimalPlaces(item.balance),
-        balancePrefix: !item.balance.isZero() ? '~' : '',
       }));
 
       return {
@@ -325,12 +319,19 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
         liquidity,
       };
     });
+
+    const defaultSorted = [...items].sort((a, b) =>
+      sortPools(
+        { baseAsset: a.poolAsset, poolAsset: a.rewardAsset },
+        { baseAsset: b.poolAsset, poolAsset: b.rewardAsset }
+      )
+    );
+
+    return defaultSorted;
   }
 
   get preparedItems(): TableItem[] {
-    if (!this.isAccountItems) return this.items;
-
-    return this.items.filter((item) => item.isAccountItem);
+    return this.isAccountItemsOnly ? this.items.filter((item) => item.isAccountItem) : this.items;
   }
 
   // ExplorePageMixin method implementation

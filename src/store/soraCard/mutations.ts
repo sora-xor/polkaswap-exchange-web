@@ -1,6 +1,6 @@
 import { defineMutations } from 'direct-vuex';
 
-import { KycStatus, VerificationStatus } from '@/types/card';
+import { AttemptCounter, KycStatus, VerificationStatus, Fees } from '@/types/card';
 
 import type { SoraCardState } from './types';
 
@@ -33,14 +33,29 @@ const mutations = defineMutations<SoraCardState>()({
   setPayWingsAuthSdk(state, authLogin: any): void {
     state.authLogin = authLogin;
   },
-  setHasKycAttempts(state, hasAttempt: boolean) {
-    state.hasFreeAttempts = hasAttempt;
+  setAttempts(state, attemptCounter: AttemptCounter) {
+    state.attemptCounter.hasFreeAttempts = attemptCounter.hasFreeAttempts;
+    state.attemptCounter.freeAttemptsLeft = attemptCounter.freeAttemptsLeft;
+    state.attemptCounter.totalFreeAttempts = attemptCounter.totalFreeAttempts;
+  },
+  setFees(state, fees: Fees) {
+    state.fees.application = fees.application;
+    state.fees.retry = fees.retry;
   },
   setWillToPassKycAgain(state, will: boolean) {
     state.wantsToPassKycAgain = will;
   },
-  setRejectReason(state, rejectReason: string) {
-    state.rejectReason = rejectReason;
+  setRejectReason(state, rejectReasons: Array<string>) {
+    state.rejectReasons = rejectReasons;
+  },
+  setUserIban(state, iban: Nullable<string>) {
+    state.userInfo.iban = iban;
+  },
+  setUserBalance(state, balance: Nullable<number>) {
+    state.userInfo.availableBalance = balance;
+  },
+  setReferenceNumber(state, referenceNumber: Nullable<string>) {
+    state.referenceNumber = referenceNumber;
   },
 });
 

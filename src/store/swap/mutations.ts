@@ -6,15 +6,10 @@ import { settingsStorage } from '@/utils/storage';
 import { initialState } from './state';
 
 import type { SwapState } from './types';
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type {
-  QuotePaths,
-  PrimaryMarketsEnabledAssets,
-  QuotePayload,
-  LPRewardsInfo,
-} from '@sora-substrate/liquidity-proxy/build/types';
+import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { SwapQuoteData } from '@sora-substrate/util/build/swap/types';
 
 const mutations = defineMutations<SwapState>()({
   reset(state): void {
@@ -57,32 +52,17 @@ const mutations = defineMutations<SwapState>()({
   setLiquidityProviderFee(state, value: CodecString): void {
     state.liquidityProviderFee = value;
   },
-  setPrimaryMarketsEnabledAssets(state, assets: PrimaryMarketsEnabledAssets): void {
-    state.enabledAssets = Object.freeze({ ...assets });
-  },
   setRewards(state, rewards: Array<LPRewardsInfo>): void {
     state.rewards = Object.freeze([...rewards]);
   },
   setRoute(state, route: string[]): void {
     state.route = Object.freeze([...route]);
   },
-  setSubscriptionPayload(
-    state,
-    {
-      dexId,
-      payload,
-      paths,
-      liquiditySources,
-    }: { payload: QuotePayload; dexId: number; paths: QuotePaths; liquiditySources: Array<LiquiditySourceTypes> }
-  ): void {
-    state.dexQuoteData = {
-      ...state.dexQuoteData,
-      [dexId]: Object.freeze({
-        payload,
-        paths,
-        pairLiquiditySources: liquiditySources,
-      }),
-    };
+  setSubscriptionPayload(state, payload?: SwapQuoteData): void {
+    const { quote = null, isAvailable = false, liquiditySources = [] } = payload ?? {};
+    state.swapQuote = quote;
+    state.isAvailable = isAvailable;
+    state.liquiditySources = liquiditySources;
   },
   selectDexId(state, dexId: number) {
     state.selectedDexId = dexId;

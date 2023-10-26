@@ -38,8 +38,8 @@
             "CreatePair": "Dépôt de {amount} {symbol} et de {amount2} {symbol2}",
             "RegisterAsset": "Jeton {symbol} enregistré",
             "ClaimRewards": "Récompense réclamée avec succès {rewards}",
-            "ReferralReserveXor": "XOR lié avec succès",
-            "ReferralUnreserveXor": "XOR avec succès délié",
+            "ReferralReserveXor": "Cautionné {amount} XOR",
+            "ReferralUnreserveXor": "XOR {amount} non lié",
             "ReferralSetInvitedUser": "La {role} {address} est définie avec succès",
             "SwapAndSend": "Échange de {amount} {symbol} contre {amount2} {symbol2} et {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Fourni {symbol} et {symbol2} {amount} jetons LP",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Supprimé {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} a réclamé avec succès",
             "EthBridgeIncoming": "Transféré {amount} {symbol} de {Ethereum} à {Sora}",
-            "EthBridgeOutgoing": "Transféré {amount} {symbol} de {Sora} à {Ethereum}"
+            "EthBridgeOutgoing": "Transféré {amount} {symbol} de {Sora} à {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Échec de {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Échec du dépôt de {amount} {symbol} et de {amount2} {symbol2}",
             "RegisterAsset": "Échec de l'enregistrement du jeton {symbol}",
             "ClaimRewards": "Échec de la réclamation des récompenses {rewards}",
-            "ReferralReserveXor": "Échec de la liaison XOR",
-            "ReferralUnreserveXor": "Échec de la dissociation XOR",
+            "ReferralReserveXor": "Échec de la liaison {amount} XOR",
+            "ReferralUnreserveXor": "Échec du débouclage de {amount} XOR",
             "ReferralSetInvitedUser": "Échec de la définition de la {role} {address}",
             "SwapAndSend": "Échec de l'échange de {amount} {symbol} contre {amount2} {symbol2} et {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Impossible de fournir {amount} {symbol} et {symbol2} jetons LP",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Échec de la suppression de {amount} {symbol}",
             "DemeterFarmingGetRewards": "Échec de la revendication de {symbol}",
             "EthBridgeIncoming": "Échec du transfert de {amount} {symbol} de {Ethereum} vers {Sora}",
-            "EthBridgeOutgoing": "Échec du transfert de {amount} {symbol} de {Sora} à {Ethereum}"
+            "EthBridgeOutgoing": "Échec du transfert de {amount} {symbol} de {Sora} à {Ethereum}",
+            "SwapTransferBatch": "Échec de {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Jeton de désengagement",
         "DemeterFarmingGetRewards": "Réclamer mes Récompenses",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Transférer"
     },
     "polkadotjs": {
         "noExtensions": "Aucune extension {PolkadotJs} n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "Compte réseau {Sora}",
-        "text": "Les extensions et Google stockent votre compte réseau {Sora} en toute sécurité. Ils vous permettent de signer des transactions et de gérer des actifs.",
+        "text": "Afin de gérer des actifs et de signer des transactions sur {Sora}, un compte doit être connecté. Les comptes {Sora} peuvent être créés et connectés à l'aide de nos portefeuilles intégrés ou extensions de navigateur.",
         "noAccounts": "Aucun compte n'a été trouvé dans votre extension de navigateur {extension} Veuillez ajouter un compte et réessayer.",
         "selectAccount": "Sélectionnez le compte approprié",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "Connecté",
             "notConnected": "Pas connecté"
         },
-        "internalTitle": "Connectez-vous via {wallet}",
-        "internalText": "Vous pouvez créer ou lier un compte existant via {wallet} . Il stocke les comptes en utilisant le cryptage.",
+        "internalTitle": "Connectez-vous avec {wallet}",
+        "internalText": "Vous pouvez créer ou importer un compte {Sora} existant pour vous connecter à votre compte {wallet}. Toutes les données stockées par {wallet} sont cryptées à l'aide du cryptage avancé intégré.",
         "list": {
-            "simplest": "Option la plus simple",
+            "integrated": "Intégré",
             "extensions": "Rallonges"
         }
     },
@@ -301,7 +304,9 @@
         "txId": "Id de la transaction",
         "viewIn": "Visualisez dans {explorer}",
         "referrer": "Référent",
-        "referral": "Référence"
+        "referral": "Référence",
+        "adarTxDetailsTitle": "Détails de la transaction",
+        "comment": "Commentaire"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Changer de réseau dans {Metamask}",
@@ -540,7 +545,10 @@
         "networkInfo": "Pont {Sora} Réseau avec:",
         "copy": "Copier l'adresse réseau",
         "soraAddress": "{Sora} adresse",
-        "ethereumAddress": "{Ethereum} adresse"
+        "ethereumAddress": "{Ethereum} adresse",
+        "limitMessage": "Actuellement, il existe un {type} {amount} {symbol} pour le pontage afin de garantir la stabilité et la sécurité du réseau {Sora}. Nous apprécions votre compréhension.",
+        "externalTransferFee": "Frais {network} {XCM}",
+        "externalTransferFeeTooltip": "Lorsque vous envoyez une transaction relais vers le réseau {network} , des frais mineurs sont prélevés sur le montant que vous transférez"
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
@@ -1013,7 +1021,8 @@
             "norewardsforasset": "Il n'y a pas de récompenses pour cet actif"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "La source de liquidité sélectionnée n'est pas autorisée"
+            "forbiddenfilter": "La source de liquidité sélectionnée n'est pas autorisée",
+            "slippagenottolerated": "L'impact sur le prix a dépassé la valeur sélectionnée"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Fonds insuffisants",
@@ -1053,8 +1062,8 @@
             "importAccount": "Compte d'importation"
         },
         "heading": {
-            "seedPhraseTitle": "Phrase de départ",
-            "confirmSeedTitle": "Confirmer la phrase de départ",
+            "seedPhraseTitle": "Mot de passe",
+            "confirmSeedTitle": "Confirmer la phrase secrète",
             "accountDetailsTitle": "Détails du compte",
             "importTitle": "Importer un compte"
         },
@@ -1065,12 +1074,12 @@
             "importAccount": "Importer un compte"
         },
         "accountName": {
-            "placeholder": "Nom du portefeuille",
-            "desc": "C'est le nom de votre wallet qui vous sera visible"
+            "placeholder": "Nom du compte",
+            "desc": "C'est le nom de votre compte. Il ne sera visible que par vous dans {Polkaswap}."
         },
         "password": {
             "placeholder": "Mot de passe",
-            "desc": "Assurez-vous que vous utilisez un mot de passe fort pour une protection adéquate."
+            "desc": "Assurez-vous d'utiliser un mot de passe unique fort pour une protection adéquate (8 caractères minimum)"
         },
         "confirmPassword": {
             "placeholder": "Confirmez le mot de passe"
@@ -1078,11 +1087,11 @@
         "accountMnemonic": {
             "placeholder": "Phrase mnémonique"
         },
-        "seedAdviceText": "Il s'agit d'une graine secrète de votre compte. Veillez à la stocker sur un support non numérique, par exemple du papier.",
-        "confirmSeedText": "Confirmez la phrase de départ en cliquant sur les mots dans le bon ordre",
-        "errorMnemonicText": "Ordre incorrect des phrases de départ",
-        "exportOptionText": "Exporter le fichier de compte .json",
-        "exportJsonText": "Vous pourrez toujours accéder à votre compte en important ce fichier .json. Ne le partagez pas avec qui que ce soit !",
+        "seedAdviceText": "La phrase secrète de 12 mots est une clé privée pour retrouver l'accès à votre compte {Sora} au cas où vous perdriez l'accès à votre compte {wallet}. Rangez-le en toute sécurité dans l'ordre exact dans lequel il apparaît ci-dessus.",
+        "confirmSeedText": "Confirmez la phrase secrète en cliquant sur les mots dans le bon ordre",
+        "errorMnemonicText": "Ordre de phrase de passe incorrect",
+        "exportOptionText": "Exporter le fichier {JSON} pour la restauration du compte",
+        "exportJsonText": "Vous pourrez toujours restaurer votre compte en important ce fichier {JSON}. Ne le partagez avec personne ! Stockez-le en toute sécurité, de préférence crypté.",
         "addAccount": "Ajouter un compte",
         "dialog": {
             "confirmTitle": "Confirmer avec mot de passe",
@@ -1101,16 +1110,20 @@
         "assetsAtRiskText": "Actifs en péril !",
         "deleteAccountText": "Le compte ne peut pas être récupéré sans une phrase de départ, un fichier .json ou s'il est stocké dans une extension. Vous serez déconnecté.",
         "importSteps": {
-            "selectWallet": "Accédez au portefeuille de votre utilisation",
+            "selectWallet": "Ouvrez le portefeuille avec votre (vos) compte(s) existant(s)",
             "selectAccount": "Sélectionnez le compte que vous souhaitez exporter",
             "exportAccount": "Exportez le fichier {JSON}"
         },
-        "exportTutorialsText": "Exporter des tutoriels"
+        "exportTutorialsText": "Exporter des tutoriels",
+        "seedAdviceAdditionTitle": "Ne partagez jamais votre phrase secrète avec qui que ce soit !",
+        "seedAdviceAdditionText": "Si quelqu'un vous demande votre mot de passe, il essaie probablement de vous arnaquer et de voler vos actifs!"
     },
     "hashiBridgeText": "Pont {Hashi}",
     "disclaimerTitle": "Avertissement",
     "explore": {
-        "showOnlyMyPositions": "Afficher uniquement mes positions"
+        "showOnly": "Afficher uniquement {entities}",
+        "myPositions": "mes postes",
+        "synthetics": "jetons synthétiques"
     },
     "tooltips": {
         "roi": "{ROI} signifie retour sur investissement. Il est calculé en divisant le bénéfice réalisé sur un investissement par le coût de cet investissement en pourcentage équivalent.",
@@ -1169,8 +1182,8 @@
             "action": "Sélectionnez les services",
             "dialog": {
                 "title": "{Sora} Sélection du service réseau",
-                "fiat": "Valeurs Fiat",
-                "chartsAndActivity": "Graphiques et activité"
+                "indexer": "Indexeur",
+                "useCeres": "Utilisez {Ceres} pour les valeurs fiduciaires"
             }
         }
     },
@@ -1178,7 +1191,7 @@
     "acceptText": "Accepter et masquer",
     "newAccountsText": "Nouveaux comptes",
     "dragAndDropText": "Faites glisser et déposez ou choisissez le fichier {extension}",
-    "copyPhraseText": "Copier la phrase",
+    "copyPhraseText": "Copier la phrase secrète",
     "stepText": "Marcher",
     "alerts": {
         "drop": "Tombe au-dessous",
@@ -1210,13 +1223,13 @@
         "moonpayTitle": "Acheter des ETH via MoonPay",
         "moonpayDesc": "Achetez des jetons ETH sur Ethereum et transférez-les sur le réseau SORA via le pont",
         "x1Title": "Achetez XOR avec votre carte",
-        "x1Desc": "Achetez des jetons XOR avec votre carte de débit ou de crédit",
         "x1Btn": "Acheter XOR avec carte",
-        "errorMessage": "Mes excuses pour le derangement. Nous travaillons avec diligence pour résoudre ce problème. Veuillez réessayer plus tard."
+        "errorMessage": "Mes excuses pour le derangement. Nous travaillons avec diligence pour résoudre ce problème. Veuillez réessayer plus tard.",
+        "x1Desc": "Achetez des jetons XOR directement sur le réseau SORA avec votre carte de débit ou de crédit"
     },
     "acceptOnScrollText": "Faites défiler pour accepter",
     "addressBook": {
-        "myExtAccounts": "Mes comptes d'extension",
+        "myAccounts": "Mes comptes",
         "myBook": "Mon livre",
         "searchPlaceholder": "Recherche par adresse, nom ou identité",
         "noFoundRecords": "Aucun enregistrement trouvé",
@@ -1238,7 +1251,9 @@
             "enterName": "Entrez le nom",
             "present": "Déjà présent",
             "saveChanges": "Sauvegarder les modifications"
-        }
+        },
+        "input": "Saisissez l'adresse ou sélectionnez le contact",
+        "selectContact": "Sélectionnez un contact"
     },
     "browserPermission": {
         "title": "Autoriser l'accès à la caméra dans les paramètres du navigateur",
@@ -1247,5 +1262,9 @@
         "btnGoToSettings": "Aller aux paramètres",
         "btnAllow": "Permettre l'accès"
     },
-    "continueText": "Continuer"
+    "continueText": "Continuer",
+    "minAmountText": "min. montant",
+    "maxAmountText": "max. montant",
+    "exceededAmountText": "{amount} dépassé",
+    "multipleRecipients": "Plusieurs destinataires"
 }

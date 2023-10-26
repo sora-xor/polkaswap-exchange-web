@@ -38,8 +38,8 @@
             "CreatePair": "Tillhandahöll {amount} {symbol} och {amount2} {symbol2}",
             "RegisterAsset": "Registrerade {symbol} tillgång",
             "ClaimRewards": "Belöning hävdad framgångsrikt {rewards}",
-            "ReferralReserveXor": "XOR bonded framgångsrikt",
-            "ReferralUnreserveXor": "XOR unbonded framgångsrikt",
+            "ReferralReserveXor": "Bondad {amount} XOR",
+            "ReferralUnreserveXor": "Obundet {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} tillämpades framgångsrikt",
             "SwapAndSend": "Bytte {amount} {symbol} mot {amount2} {symbol2} samt {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Medföljer {symbol} och {symbol2} {amount} LP-polletter",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Tog bort {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} har gjort anspråk",
             "EthBridgeIncoming": "Överförde {amount} {symbol} från {Ethereum} till {Sora}",
-            "EthBridgeOutgoing": "Överförde {amount} {symbol} från {Sora} till {Ethereum}"
+            "EthBridgeOutgoing": "Överförde {amount} {symbol} från {Sora} till {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Det gick inte att {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Misslyckades med att tillhandahålla {amount} {symbol} och {amount2} {symbol2}",
             "RegisterAsset": "Misslyckades med att registrera {symbol} tillgång",
             "ClaimRewards": "Misslyckades med att begära belöningar {rewards}",
-            "ReferralReserveXor": "Misslyckades med att bond XOR",
-            "ReferralUnreserveXor": "Misslyckades med att unbond XOR",
+            "ReferralReserveXor": "Det gick inte att binda {amount} XOR",
+            "ReferralUnreserveXor": "Det gick inte att frigöra {amount} XOR",
             "ReferralSetInvitedUser": "Misslyckades med att tillämpa {role} {address}",
             "SwapAndSend": "Misslyckades med att byta {amount} {symbol} mot {amount2} {symbol2} samt {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Det gick inte att ange {amount} {symbol} och {symbol2} LP-tokens",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Det gick inte att ta bort {amount} {symbol}",
             "DemeterFarmingGetRewards": "Det gick inte att göra anspråk på {symbol}",
             "EthBridgeIncoming": "Det gick inte att överföra {amount} {symbol} från {Ethereum} till {Sora}",
-            "EthBridgeOutgoing": "Det gick inte att överföra {amount} {symbol} från {Sora} till {Ethereum}"
+            "EthBridgeOutgoing": "Det gick inte att överföra {amount} {symbol} från {Sora} till {Ethereum}",
+            "SwapTransferBatch": "Det gick inte att {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Unstake Token",
         "DemeterFarmingGetRewards": "Gör Anspråk på Belöningar",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Överför"
     },
     "polkadotjs": {
         "noExtensions": "Inget {PolkadotJs} tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "{Sora}-Nätverkskonto",
-        "text": "Tillägg och Google lagrar ditt {Sora} Network-konto säkert. De låter dig signera transaktioner och hantera tillgångar.",
+        "text": "För att hantera tillgångar och signera transaktioner på {Sora} måste ett konto vara anslutet. {Sora} -konton kan skapas och anslutas med hjälp av våra integrerade plånböcker eller webbläsartillägg.",
         "noAccounts": "Inget konto hittades i ditt {extension} webbläsartillägg. Vänligen lägg till ett konto och försök igen.",
         "selectAccount": "Välj konto att arbeta med",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "Ansluten",
             "notConnected": "Ej ansluten"
         },
-        "internalTitle": "Anslut via {wallet}",
-        "internalText": "Du kan skapa eller länka ett befintligt konto via {wallet} . Den lagrar konton med kryptering.",
+        "internalTitle": "Anslut med {wallet}",
+        "internalText": "Du kan skapa eller importera ett befintligt {Sora} -konto för att ansluta till ditt {wallet} -konto. All data som lagras av {wallet} krypteras med inbyggd avancerad kryptering.",
         "list": {
-            "simplest": "Enklaste alternativet",
+            "integrated": "Integrerad",
             "extensions": "Tillägg"
         }
     },
@@ -301,7 +304,9 @@
         "txId": "Transaktions-ID",
         "viewIn": "Visa i {explorer}",
         "referrer": "Referrer",
-        "referral": "Hänvisning"
+        "referral": "Hänvisning",
+        "adarTxDetailsTitle": "Transaktionsdetaljer",
+        "comment": "Kommentar"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Ändra nätverk i {Metamask}",
@@ -540,7 +545,10 @@
         "networkInfo": "Brygga {Sora} Nätverk med:",
         "copy": "Kopiera nätverksadress",
         "soraAddress": "{Sora} adress",
-        "ethereumAddress": "{Ethereum} adress"
+        "ethereumAddress": "{Ethereum} adress",
+        "limitMessage": "För närvarande finns det en {type} {amount} {symbol} för överbryggning för att säkerställa stabiliteten och säkerheten i {Sora} -nätverket. Vi uppskattar din förståelse.",
+        "externalTransferFee": "{network} {XCM} avgift",
+        "externalTransferFeeTooltip": "När du skickar en bryggtransaktion till {network} -nätverket tas en mindre avgift från beloppet du överför"
     },
     "selectRegisteredAsset": {
         "title": "Välj en token",
@@ -1013,7 +1021,8 @@
             "norewardsforasset": "Det finns inga belöningar för denna tillgång"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Vald likviditetskälla är inte tillåten"
+            "forbiddenfilter": "Vald likviditetskälla är inte tillåten",
+            "slippagenottolerated": "Prisförändringen har överskridit det valda värdet"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Otillräckliga medel",
@@ -1053,8 +1062,8 @@
             "importAccount": "Importera konto"
         },
         "heading": {
-            "seedPhraseTitle": "Seed phrase",
-            "confirmSeedTitle": "Bekräfta seed phrase",
+            "seedPhraseTitle": "Lösenfras",
+            "confirmSeedTitle": "Bekräfta lösenordsfras",
             "accountDetailsTitle": "Kontouppgifter",
             "importTitle": "Importera konto"
         },
@@ -1065,12 +1074,12 @@
             "importAccount": "Importera konto"
         },
         "accountName": {
-            "placeholder": "Plånbokens namn",
-            "desc": "Detta är namnet på din plånbok som kommer att vara synlig för dig"
+            "placeholder": "Kontonamn",
+            "desc": "Detta är namnet på ditt konto. Den kommer endast att vara synlig för dig i {Polkaswap}."
         },
         "password": {
             "placeholder": "Lösenord",
-            "desc": "Se till att du använder ett starkt lösenord för korrekt skydd"
+            "desc": "Se till att du använder ett starkt unikt lösenord för korrekt skydd (minst 8 tecken)"
         },
         "confirmPassword": {
             "placeholder": "Bekräfta lösenord"
@@ -1078,11 +1087,11 @@
         "accountMnemonic": {
             "placeholder": "Mnemonic phrase"
         },
-        "seedAdviceText": "Detta är en hemlig seed för ditt konto. Se till att du lagrar den på en icke-digital bärare, till exempel papper.",
-        "confirmSeedText": "Bekräfta seed phrase genom att klicka på orden i den korrekta ordningen",
-        "errorMnemonicText": "Felaktig ordning på seed phrase",
-        "exportOptionText": "Exportera .json-kontofil",
-        "exportJsonText": "Du kommer alltid att kunna komma åt ditt konto genom att importera den .json-filen. Dela den inte med någon!",
+        "seedAdviceText": "Lösenfrasen på 12 ord är en privat nyckel för att återfå åtkomst till ditt {Sora} -konto om du förlorar åtkomsten till ditt {wallet} -konto. Förvara den säkert i exakt den ordning som den visas ovan.",
+        "confirmSeedText": "Bekräfta lösenfrasen genom att klicka på orden i rätt ordning",
+        "errorMnemonicText": "Felaktig lösenfrasordning",
+        "exportOptionText": "Exportera {JSON} -fil för kontoåterställning",
+        "exportJsonText": "Du kommer alltid att kunna återställa ditt konto genom att importera denna {JSON} -fil. Dela det inte med någon! Förvara det säkert, helst krypterat.",
         "addAccount": "Lägg till ett konto",
         "dialog": {
             "confirmTitle": "Bekräfta med lösenord",
@@ -1101,16 +1110,20 @@
         "assetsAtRiskText": "Tillgångar i riskzonen!",
         "deleteAccountText": "Kontot kan inte återställas utan en fröfras, .json-fil eller om det är lagrat i något tillägg. Du kommer att loggas ut.",
         "importSteps": {
-            "selectWallet": "Gå till plånboken för din användning",
+            "selectWallet": "Öppna plånboken med dina befintliga konton",
             "selectAccount": "Välj det konto du vill exportera",
             "exportAccount": "Exportera {JSON} -filen"
         },
-        "exportTutorialsText": "Exportera självstudier"
+        "exportTutorialsText": "Exportera självstudier",
+        "seedAdviceAdditionTitle": "Dela aldrig din lösenfras med någon!",
+        "seedAdviceAdditionText": "Om någon ber dig om din lösenfras försöker de troligen lura dig och stjäla dina tillgångar!"
     },
     "hashiBridgeText": "{Hashi} bro",
     "disclaimerTitle": "Ansvarsfriskrivning",
     "explore": {
-        "showOnlyMyPositions": "Visa bara mina positioner"
+        "showOnly": "Visa endast {entities}",
+        "myPositions": "mina positioner",
+        "synthetics": "syntetiska tokens"
     },
     "tooltips": {
         "roi": "{ROI} står för Return on Investment. Den beräknas genom att dividera den vinst som tjänats in på en investering med kostnaden för den investeringen i en motsvarande procentsats.",
@@ -1169,8 +1182,8 @@
             "action": "Välj tjänster",
             "dialog": {
                 "title": "{Sora} Val av nätverkstjänst",
-                "fiat": "Fiat värden",
-                "chartsAndActivity": "Diagram och aktivitet"
+                "indexer": "Indexerare",
+                "useCeres": "Använd {Ceres} för fiat-värden"
             }
         }
     },
@@ -1178,7 +1191,7 @@
     "acceptText": "Acceptera och dölj",
     "newAccountsText": "Nya konton",
     "dragAndDropText": "Dra och släpp eller välj filen {extension}",
-    "copyPhraseText": "Kopiera fras",
+    "copyPhraseText": "Kopiera lösenfras",
     "stepText": "Steg",
     "alerts": {
         "drop": "Faller under",
@@ -1210,13 +1223,13 @@
         "moonpayTitle": "Köp ETH via MoonPay",
         "moonpayDesc": "Köp ETH-tokens på Ethereum och överför dem till SORA-nätverket via bryggan",
         "x1Title": "Köp XOR med ditt kort",
-        "x1Desc": "Köp XOR-tokens med ditt betal- eller kreditkort",
         "x1Btn": "Köp XOR med kort",
-        "errorMessage": "Ursäkta besväret. Vi arbetar hårt för att lösa detta. Vänligen försök igen senare."
+        "errorMessage": "Ursäkta besväret. Vi arbetar hårt för att lösa detta. Vänligen försök igen senare.",
+        "x1Desc": "Köp XOR-tokens direkt på SORA-nätverket med ditt betal- eller kreditkort"
     },
     "acceptOnScrollText": "Bläddra för att acceptera",
     "addressBook": {
-        "myExtAccounts": "Mina förlängningskonton",
+        "myAccounts": "Mina konton",
         "myBook": "Min bok",
         "searchPlaceholder": "Sök på adress, namn eller identitet",
         "noFoundRecords": "Inga uppgifter funna",
@@ -1238,7 +1251,9 @@
             "enterName": "Skriv namn",
             "present": "Redan närvarande",
             "saveChanges": "Spara ändringar"
-        }
+        },
+        "input": "Ange adress eller välj kontakt",
+        "selectContact": "Välj kontakt"
     },
     "browserPermission": {
         "title": "Tillåt kameraåtkomst i webbläsarinställningarna",
@@ -1247,5 +1262,9 @@
         "btnGoToSettings": "Gå till Inställningar",
         "btnAllow": "Tillåta åtkomst"
     },
-    "continueText": "Fortsätta"
+    "continueText": "Fortsätta",
+    "minAmountText": "min. belopp",
+    "maxAmountText": "max. belopp",
+    "exceededAmountText": "{amount} har överskridits",
+    "multipleRecipients": "Flera mottagare"
 }

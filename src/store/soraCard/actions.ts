@@ -4,7 +4,14 @@ import { defineActions } from 'direct-vuex';
 
 import { soraCardActionContext } from '@/store/soraCard';
 import { waitForAccountPair, waitForSoraNetworkFromEnv } from '@/utils';
-import { defineUserStatus, getXorPerEuroRatio, getFreeKycAttemptCount, soraCard } from '@/utils/card';
+import {
+  defineUserStatus,
+  getXorPerEuroRatio,
+  getFreeKycAttemptCount,
+  soraCard,
+  getUserIbanInfo,
+  getFees,
+} from '@/utils/card';
 
 import type { Status } from '../../types/card';
 
@@ -64,12 +71,13 @@ const actions = defineActions({
   async getUserStatus(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
 
-    const { kycStatus, verificationStatus, rejectReason }: Status = await defineUserStatus();
+    const { kycStatus, verificationStatus, rejectReasons, referenceNumber }: Status = await defineUserStatus();
 
     commit.setKycStatus(kycStatus);
     commit.setVerificationStatus(verificationStatus);
+    commit.setReferenceNumber(referenceNumber);
 
-    if (rejectReason) commit.setRejectReason(rejectReason);
+    if (rejectReasons) commit.setRejectReason(rejectReasons);
   },
 
   async initPayWingsAuthSdk(context): Promise<void> {
@@ -99,9 +107,24 @@ const actions = defineActions({
 
   async getUserKycAttempt(context): Promise<void> {
     const { commit } = soraCardActionContext(context);
-    const isFreeAttemptAvailable = await getFreeKycAttemptCount();
+    const attempts = await getFreeKycAttemptCount();
 
-    commit.setHasKycAttempts(isFreeAttemptAvailable);
+    commit.setAttempts(attempts);
+  },
+
+  async getUserIban(context): Promise<void> {
+    const { commit } = soraCardActionContext(context);
+    const { iban, availableBalance } = await getUserIbanInfo();
+
+    commit.setUserIban(iban);
+    commit.setUserBalance(availableBalance);
+  },
+
+  async getFees(context): Promise<void> {
+    const { commit } = soraCardActionContext(context);
+    const { application, retry } = await getFees();
+
+    commit.setFees({ application, retry });
   },
 });
 

@@ -68,13 +68,16 @@ const actions = defineActions({
 
       const tx = await ethersInstance.getTransaction(hash);
 
+      if (!tx) throw new Error(`Transaction "${hash}" not found`);
+
       console.info('Moonpay: ethereum transaction data received:', tx);
 
       if (tx.data === '0x') {
         // Parse ETH transfer
-        const { to = '', value } = tx;
+        const { to: receiver, value } = tx;
         const amount = new FPNumber(value as any).toString(); // transferred amount
         const address = EthAddress;
+        const to = receiver ?? '';
 
         return {
           amount,
@@ -84,13 +87,14 @@ const actions = defineActions({
       } else {
         // Parse ERC-20 transfer
         const abi = SmartContracts[SmartContractType.ERC20].abi;
-        const inter = new ethers.utils.Interface(abi);
+        const inter = new ethers.Interface(abi);
         const decodedInput = inter.parseTransaction({ data: tx.data });
+
+        if (!decodedInput) throw new Error(`Unable to parse transaction data: "${tx.data}"`);
+
         const address = tx.to ?? ''; // asset address
-        const {
-          value, // BigNumber
-          to = '', // ethereum address
-        } = decodedInput.args;
+        const value = decodedInput.args.getValue('value'); // BigNumber
+        const to = decodedInput.args.getValue('to'); // ethereum address
         const amount = new FPNumber(value).toString(); // transferred amount
 
         return {

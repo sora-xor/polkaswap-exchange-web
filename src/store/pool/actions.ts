@@ -1,5 +1,6 @@
-import { api, SubqueryExplorerService } from '@soramitsu/soraneo-wallet-web';
+import { api, getCurrentIndexer } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
+import { firstValueFrom } from 'rxjs';
 
 import { poolActionContext } from '@/store/pool';
 import { waitForAccountPair } from '@/utils';
@@ -15,7 +16,9 @@ const actions = defineActions({
       const userPoolsSubscription = api.poolXyk.getUserPoolsSubscription();
       commit.setAccountLiquidityList(userPoolsSubscription);
       // waiting until all liquidities loaded
-      await api.poolXyk.accountLiquidityLoaded.toPromise();
+      if (api.poolXyk.accountLiquidityLoaded) {
+        await firstValueFrom(api.poolXyk.accountLiquidityLoaded);
+      }
     });
   },
   async subscribeOnAccountLiquidityUpdates(context): Promise<void> {
@@ -59,7 +62,8 @@ const actions = defineActions({
   async getPoolApyObject(context): Promise<void> {
     const { commit } = poolActionContext(context);
 
-    const data = await SubqueryExplorerService.pool.getPoolsApyObject();
+    const indexer = getCurrentIndexer();
+    const data = await indexer.services.explorer.pool.getPoolsApyObject();
 
     if (data) {
       commit.setPoolApyObject(data);
@@ -71,7 +75,8 @@ const actions = defineActions({
 
     await dispatch.getPoolApyObject();
 
-    const subscription = SubqueryExplorerService.pool.createPoolsApySubscription(
+    const indexer = getCurrentIndexer();
+    const subscription = indexer.services.explorer.pool.createPoolsApySubscription(
       (apy) => {
         commit.updatePoolApyObject(apy);
       },

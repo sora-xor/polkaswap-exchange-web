@@ -1,9 +1,25 @@
 {
     "card": {
         "termsAndConditions": "Uvjeti korištenja",
+        "termsAndConditionsPreDisclaimer": "Želimo da točno znate kako će funkcionirati usluga SORA kartice, kome su potrebni vaši podaci i zašto. Pregled ovih pravila pomoći će vam da koristite aplikaciju bezbrižno.",
         "disclaimerCollectData": "Kako bi dobili IBAN račun potreban za SORA karticu, korisnici moraju proći KYC proces kod izdavatelja kartice. Ovo je potrebna usklađenost. Zajednica SORA ne prikuplja niti će prikupljati vaše osobne podatke.",
         "privacyPolicy": "Politika privatnosti",
+        "termsAndConditionsWarning": "Nastavkom potvrđujete da ste pročitali, razumjeli i prihvatili ova pravila",
         "acceptAndContinue": "Prihvati i nastavi",
+        "getPrepared": "Pripremite se",
+        "guideline": {
+            "photoTitle": "Pošaljite fotografiju osobnog dokumenta",
+            "photoDesc": "Putovnica, vozačka dozvola, osobna iskaznica ili boravišna dozvola",
+            "selfieTitle": "Slikaj selfie",
+            "selfieDesc": "Smjernice će biti pružene tijekom procesa",
+            "proofAddressTitle": "Pošaljite fotografiju kao dokaz adrese",
+            "proofAddressDesc": "Službeni dokument (račun za režije, bankovni izvod, državni izvod ili korespondencija) koji sadrži vaše puno ime i prezime i adresu, a koji nije stariji od 3 mjeseca.",
+            "personalTitle": "Pošaljite svoje osobne podatke",
+            "personalDesc": "Ispunite obrazac sa svojim imenom i adresom",
+            "proofAddressNote": "Napomena: Izvodi neobanki kao što su Revolut i N26 trenutno se ne smatraju važećim dokazom adrese.",
+            "paidAttemptDisclaimer": "Imate samo {count} besplatnih pokušaja da prođete KYC proces. Svaki drugi pokušaj nakon toga koštat će € {cost} . Plaćeni pokušaji bit će dostupni nakon sljedećeg ažuriranja aplikacije."
+        },
+        "okReadyText": "OK, spreman sam",
         "emailPlaceholder": "E-mail",
         "sendCodeBtn": "Pošalji SMS kod",
         "firstNamePlaceholder": "Ime",
@@ -19,19 +35,10 @@
         "getSoraCardBtn": "Dobijte SORA karticu besplatno",
         "bridgeTokensBtn": "Žetoni mosta",
         "depositX1Btn": "Kupi XOR",
-        "reIssuanceFee": "€0 godišnja naknada za ponovno izdavanje",
         "freeStartDesc": "{value} XOR na vašem računu za besplatan početak",
         "completeKYC": "Dovršite KYC",
         "phoneConfirmation": "Telefonska potvrda",
         "emailConfirmation": "Potvrda e-pošte",
-        "roadmap": {
-            "contactInfoTitle": "Potvrdite podatke za kontakt",
-            "contactInfoDesc": "Email i broj telefona",
-            "docsTitle": "Ovjerite dokumente",
-            "docsDesc": "Selfie s dokumentom",
-            "personalDataTitle": "Dostavite osobne podatke",
-            "personalDataDesc": "Puno ime i dokaz o adresi"
-        },
         "letsStartBtn": "Počnimo",
         "otpPlaceholder": "Kontrolni kod",
         "confirmCodeBtn": "Potvrdite SMS kod",
@@ -45,6 +52,7 @@
         "personalNameInputDesc": "Koristite svoje pravo ime.",
         "infoMessageTryAgain": "Nešto je pošlo po zlu. Molim te pokušaj ponovno",
         "blacklistedCountriesExcuse": "Nažalost, u ovom trenutku nismo u mogućnosti podržati sljedeće zemlje:",
+        "xorAmountNeeded": "Trebate {xor} više XOR (€ {euro} )",
         "statusPendingText": "Uspješno ste završili svoju KYC prijavu. Pregled je u tijeku i odluku možete očekivati uskoro. <br \/> <br \/> Obično se odluka donosi isti dan, au nekim slučajevima može potrajati i do 3 dana.",
         "resendInBtn": "PONOVO POŠALJI ZA {value}",
         "statusRejectTitle": "Prijava odbijena",
@@ -58,6 +66,34 @@
         "userNotFound": "Broj mobitela nije pronađen, provjerite ga i pokušajte ponovno.",
         "code": "Kodirati",
         "getSoraCardDesc": "Nabavite IBAN račun u eurima i debitnu karticu dostupne u svom SORA novčaniku",
-        "emailSpamReminder": "E-pošta može potrajati nekoliko minuta da stigne. Provjerite svoju spam mapu ako ne primite e-poštu nakon 5 minuta."
+        "reIssuanceFee": "0 € godišnja naknada za uslugu",
+        "freeCardIssuance": "Besplatno izdavanje kartice",
+        "loginBtn": "Prijavite se ili Prijavite se",
+        "applicationFee": "€ {0} naknada za izdavanje",
+        "telegramSupport": "Telegram podrška",
+        "rejectionPriceAttemptDisclaimer": "Svaki drugi pokušaj koštat će vas € {0}",
+        "rejectCount": "Imate još {count} besplatni pokušaj KYC| |Imate još {count} besplatnih pokušaja KYC",
+        "cardHub": {
+            "logout": "Odjavite se sa SORA kartice",
+            "topup": "Nadopunite",
+            "transfer": "Prijenos",
+            "exchange": "Razmjena",
+            "freeze": "Zamrznuti",
+            "comingSoon": "Upravljanje karticama stiže uskoro",
+            "ibanLabel": "Podaci o IBAN računu"
+        },
+        "emailSpamReminder": "E-pošta može potrajati nekoliko minuta da stigne. Provjerite svoju spam mapu ako ne primite e-poštu nakon 5 minuta.",
+        "gettingCardForFree": "Karticu dobivate besplatno!",
+        "holdSufficientXor": "Na svom SORA računu imate XOR u vrijednosti od 100 €",
+        "holdNotSufficientXor": "Ako imate, uložite ili osigurate likvidnost u iznosu od najmanje 100 € XOR-a na vašem SORA računu",
+        "xorAmountNeededTitle": "Trebate {value} XOR da biste dobili besplatnu karticu",
+        "cardhub": {
+            "accountInfo": "Informacije o računu"
+        },
+        "attentionText": "Pažnja",
+        "or": "ili",
+        "oneTimeApplicationFee": "Jednokratna naknada za izdavanje kartice",
+        "applicationFeeNote": "Napomena: izdavanje plaćene kartice bit će dostupno naknadno.",
+        "statusRejectReasonMultiple": "Vaša prijava je odbijena iz više razloga:"
     }
 }

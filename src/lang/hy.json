@@ -38,8 +38,8 @@
             "CreatePair": "Մատակարարված {amount} {symbol} և {amount2} {symbol2}",
             "RegisterAsset": "Գրանցված է {symbol} ակտիվ",
             "ClaimRewards": "Պարգևատրումը հաջողությամբ հաստատված է {rewards}",
-            "ReferralReserveXor": "XOR-ը հաջողությամբ կապակցվեց",
-            "ReferralUnreserveXor": "XOR-ը հաջողությամբ ունբոնդ",
+            "ReferralReserveXor": "Խճճված {amount} XOR",
+            "ReferralUnreserveXor": "Unbonded {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} դրվում է հաջողությամբ",
             "SwapAndSend": "Փոխանակված {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Տրամադրված {symbol} և {symbol2} {amount} LP ժետոններ",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Հեռացվել է {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} ը հաջողությամբ ներկայացվեց",
             "EthBridgeIncoming": "Փոխանցվել է {amount} {symbol} {Ethereum} ից {Sora}",
-            "EthBridgeOutgoing": "Փոխանցվել է {amount} {symbol} {Sora} ից {Ethereum}"
+            "EthBridgeOutgoing": "Փոխանցվել է {amount} {symbol} {Sora} ից {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Չհաջողվեց մատակարարել {amount} {symbol} եւ {amount2} {symbol2}",
             "RegisterAsset": "Չհաջողվեց գրանցել {symbol} ակտիվը",
             "ClaimRewards": "Չհաջողվեց հաստատել պարգեւատրումները {rewards}",
-            "ReferralReserveXor": "Չհաջողվեց կապել XOR-ը",
-            "ReferralUnreserveXor": "Ունբոնդ Ձախողվել է XOR-ը",
+            "ReferralReserveXor": "Ձախողվել է {amount} XOR",
+            "ReferralUnreserveXor": "Ձախողվել է չկցված {amount} XOR",
             "ReferralSetInvitedUser": "Չհաջողվեց սահմանել {role} {address}",
             "SwapAndSend": "Չհաջողվեց փոխանակել {amount} {symbol} համար {amount2} {symbol2} և {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Չհաջողվեց մատակարարել {amount} {symbol} և {symbol2} LP նշաններ",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Չհաջողվեց հեռացնել {amount} {symbol}",
             "DemeterFarmingGetRewards": "Չհաջողվեց պահանջել {symbol}",
             "EthBridgeIncoming": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Ethereum} ից {Sora} ին",
-            "EthBridgeOutgoing": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Sora} ից {Ethereum} ին"
+            "EthBridgeOutgoing": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Sora} ից {Ethereum} ին",
+            "SwapTransferBatch": "Չհաջողվեց {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Անցկացնել նշան",
         "DemeterFarmingGetRewards": "Հաստատել Պարգևները",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Տեղափոխել"
     },
     "polkadotjs": {
         "noExtensions": "{PolkadotJs} ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "{Sora} ցանցի հաշիվ",
-        "text": "Ընդլայնումները և Google-ը ապահով կերպով պահում են ձեր {Sora} ցանցի հաշիվը: Նրանք թույլ են տալիս ստորագրել գործարքներ և կառավարել ակտիվները:",
+        "text": "Ակտիվները կառավարելու և {Sora} -ում գործարքներ կնքելու համար անհրաժեշտ է միացնել հաշիվ: {Sora} հաշիվները կարող են ստեղծվել և միանալ մեր ինտեգրված դրամապանակների կամ դիտարկիչի ընդլայնումների միջոցով:",
         "noAccounts": "{extension} բրաուզերի ընդլայնման մեջ հաշիվ չի գտնվել: Խնդրում ենք ավելացնել հաշիվ և կրկին փորձել:",
         "selectAccount": "Ընտրել հաշիվ աշխատելու համար",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "Միացված է",
             "notConnected": "Միացված չէ"
         },
-        "internalTitle": "Միացեք {wallet} ի միջոցով",
-        "internalText": "Դուք կարող եք ստեղծել կամ կապել գոյություն ունեցող հաշիվ {wallet} ի միջոցով: Այն պահպանում է հաշիվները՝ օգտագործելով կոդավորումը:",
+        "internalTitle": "Միացեք {wallet} ին",
+        "internalText": "Դուք կարող եք ստեղծել կամ ներմուծել գոյություն ունեցող {Sora} հաշիվ` ձեր {wallet} հաշվի հետ կապվելու համար: Բոլոր տվյալները, որոնք պահվում են {wallet} ի կողմից, կոդավորված են ներկառուցված առաջադեմ գաղտնագրման միջոցով:",
         "list": {
-            "simplest": "Ամենապարզ տարբերակը",
+            "integrated": "Ինտեգրված",
             "extensions": "Ընդլայնումներ"
         }
     },
@@ -301,7 +304,9 @@
         "txId": "Գործարքի ID",
         "viewIn": "Դիտել {explorer}- ում",
         "referrer": "Ուղղորդող",
-        "referral": "Ուղղորդում"
+        "referral": "Ուղղորդում",
+        "adarTxDetailsTitle": "գործարքի մանրամասներ",
+        "comment": "Մեկնաբանություն"
     },
     "appName": "{AppName} (Փոլքասվափ)",
     "changeNetworkText": "Փոխել ցանցը {Metamask}- ում",
@@ -540,7 +545,10 @@
         "networkInfo": "Միացեք {Sora} Ցանցով.",
         "copy": "Պատճենել ցանցի հասցեն",
         "soraAddress": "{Sora} հասցե",
-        "ethereumAddress": "{Ethereum} հասցե"
+        "ethereumAddress": "{Ethereum} հասցե",
+        "limitMessage": "Ներկայումս {Sora} ցանցի կայունությունն ու անվտանգությունն ապահովելու համար կամրջելու համար կա {type} {amount} {symbol} : Մենք գնահատում ենք ձեր ըմբռնումը:",
+        "externalTransferFee": "{network} {XCM} վճար",
+        "externalTransferFeeTooltip": "Երբ դուք կամուրջ գործարք եք ուղարկում {network} ցանցին, ձեր փոխանցվող գումարից փոքր վճար է վերցվում"
     },
     "selectRegisteredAsset": {
         "title": "Ընտրեք տոկեն",
@@ -1013,7 +1021,8 @@
             "norewardsforasset": "Այս ակտիվի համար պարգևներ չկան"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Իրացվելիության ընտրված աղբյուրը չի թույլատրվում"
+            "forbiddenfilter": "Իրացվելիության ընտրված աղբյուրը չի թույլատրվում",
+            "slippagenottolerated": "Գինը ազդել է ընտրված արժեքը"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Անբավարար միջոցներ",
@@ -1053,8 +1062,8 @@
             "importAccount": "Ներմուծել հաշիվ"
         },
         "heading": {
-            "seedPhraseTitle": "Սերմի արտահայտություն",
-            "confirmSeedTitle": "Հաստատեք սերմերի արտահայտությունը",
+            "seedPhraseTitle": "Անցաբառ",
+            "confirmSeedTitle": "Հաստատեք անցաբառը",
             "accountDetailsTitle": "հաշվի մանրամասներ",
             "importTitle": "Ներմուծել հաշիվ"
         },
@@ -1065,12 +1074,12 @@
             "importAccount": "Ներմուծել հաշիվ"
         },
         "accountName": {
-            "placeholder": "Դրամապանակի անվանումը",
-            "desc": "Սա ձեր դրամապանակի անունն է, որը տեսանելի կլինի ձեզ"
+            "placeholder": "Հաշվեհամար",
+            "desc": "Սա ձեր հաշվի անունն է: Այն տեսանելի կլինի միայն ձեզ {Polkaswap} -ում:"
         },
         "password": {
             "placeholder": "Գաղտնաբառ",
-            "desc": "Համոզվեք, որ դուք օգտագործում եք ուժեղ գաղտնաբառ՝ պատշաճ պաշտպանության համար"
+            "desc": "Համոզվեք, որ դուք օգտագործում եք ամուր եզակի գաղտնաբառ պատշաճ պաշտպանության համար (առնվազն 8 նիշ)"
         },
         "confirmPassword": {
             "placeholder": "Հաստատել գաղտնաբառը"
@@ -1078,11 +1087,11 @@
         "accountMnemonic": {
             "placeholder": "Մնեմոնիկ արտահայտություն"
         },
-        "seedAdviceText": "Սա ձեր հաշվի գաղտնի սերմն է: Համոզվեք, որ այն պահեք ոչ թվային կրիչի վրա, օրինակ՝ թղթի վրա",
-        "confirmSeedText": "Հաստատեք հիմնական արտահայտությունը՝ սեղմելով բառերը ճիշտ հերթականությամբ",
-        "errorMnemonicText": "Սերմերի արտահայտությունների սխալ կարգը",
-        "exportOptionText": "Արտահանել .json հաշվի ֆայլը",
-        "exportJsonText": "Դուք միշտ կկարողանաք մուտք գործել ձեր հաշիվ՝ ներմուծելով այդ .json ֆայլը: Մի կիսվեք այն որևէ մեկի հետ:",
+        "seedAdviceText": "12 բառից բաղկացած անցաբառը անձնական բանալի է՝ ձեր {Sora} հաշիվը վերականգնելու համար, եթե կորցնեք մուտքը դեպի ձեր {wallet} հաշիվ: Պահպանեք այն ապահով կերպով, ճիշտ այնպես, ինչպես նշված է վերևում:",
+        "confirmSeedText": "Հաստատեք անցաբառը` սեղմելով բառերը ճիշտ հերթականությամբ",
+        "errorMnemonicText": "Անցաբառի սխալ կարգը",
+        "exportOptionText": "Արտահանեք {JSON} ֆայլը հաշվի վերականգնման համար",
+        "exportJsonText": "Դուք միշտ կկարողանաք վերականգնել ձեր հաշիվը՝ ներմուծելով այս {JSON} ֆայլը: Մի կիսվեք այն որևէ մեկի հետ: Պահպանեք այն ապահով, ցանկալի է կոդավորված:",
         "addAccount": "Ավելացնել հաշիվ",
         "dialog": {
             "confirmTitle": "Հաստատեք գաղտնաբառով",
@@ -1101,16 +1110,20 @@
         "assetsAtRiskText": "Ռիսկի տակ գտնվող ակտիվներ!",
         "deleteAccountText": "Հաշիվը չի կարող վերականգնվել առանց հիմնական արտահայտության, .json ֆայլի կամ եթե այն պահվում է որևէ ընդլայնման մեջ: Դուք դուրս կգրվեք:",
         "importSteps": {
-            "selectWallet": "Գնացեք ձեր օգտագործման դրամապանակին",
+            "selectWallet": "Բացեք դրամապանակը ձեր գոյություն ունեցող հաշիվ(ներով)",
             "selectAccount": "Ընտրեք այն հաշիվը, որը ցանկանում եք արտահանել",
             "exportAccount": "Արտահանել {JSON} ֆայլը"
         },
-        "exportTutorialsText": "Արտահանման ձեռնարկներ"
+        "exportTutorialsText": "Արտահանման ձեռնարկներ",
+        "seedAdviceAdditionTitle": "Երբեք մի կիսվեք ձեր անցաբառը որևէ մեկի հետ:",
+        "seedAdviceAdditionText": "Եթե ինչ-որ մեկը ձեզանից խնդրում է ձեր անցաբառը, նա, ամենայն հավանականությամբ, փորձում է խաբել ձեզ և գողանալ ձեր ակտիվները:"
     },
     "hashiBridgeText": "{Hashi} կամուրջ",
     "disclaimerTitle": "Հրաժարում պատասխանատվությունից",
     "explore": {
-        "showOnlyMyPositions": "Ցույց տալ միայն իմ դիրքերը"
+        "showOnly": "Ցուցադրել միայն {entities}",
+        "myPositions": "իմ դիրքերը",
+        "synthetics": "արհեստական թոքեններ"
     },
     "tooltips": {
         "roi": "{ROI} նշանակում է ներդրումների վերադարձ: Այն հաշվարկվում է ներդրումներից ստացված շահույթը բաժանելով այդ ներդրման արժեքին` տոկոսային համարժեքով:",
@@ -1169,8 +1182,8 @@
             "action": "Ընտրեք ծառայություններ",
             "dialog": {
                 "title": "{Sora} Ցանցային ծառայության ընտրություն",
-                "fiat": "Fiat արժեքները",
-                "chartsAndActivity": "Գծապատկերներ և գործունեություն"
+                "indexer": "Ինդեքսավորող",
+                "useCeres": "Ֆիատ արժեքների համար օգտագործեք {Ceres}"
             }
         }
     },
@@ -1210,13 +1223,13 @@
         "moonpayTitle": "Գնեք ETH MoonPay-ի միջոցով",
         "moonpayDesc": "Գնեք ETH նշաններ Ethereum-ում և կամրջի միջոցով փոխանցեք դրանք SORA ցանցին",
         "x1Title": "Գնեք XOR ձեր քարտով",
-        "x1Desc": "Գնեք XOR նշաններ ձեր դեբետային կամ կրեդիտ քարտով",
         "x1Btn": "Գնե՛ք XOR քարտով",
-        "errorMessage": "Ներողություն ենք խնդրում անհարմարության համար։ Մենք ջանասիրաբար աշխատում ենք այս խնդիրը լուծելու համար: Խնդրում եմ փորձեք մի փոքր ուշ."
+        "errorMessage": "Ներողություն ենք խնդրում անհարմարության համար։ Մենք ջանասիրաբար աշխատում ենք այս խնդիրը լուծելու համար: Խնդրում եմ փորձեք մի փոքր ուշ.",
+        "x1Desc": "Գնեք XOR նշանները անմիջապես SORA ցանցում ձեր դեբետային կամ կրեդիտ քարտով"
     },
     "acceptOnScrollText": "Ոլորեք՝ ընդունելու համար",
     "addressBook": {
-        "myExtAccounts": "Իմ ընդլայնման հաշիվները",
+        "myAccounts": "Իմ հաշիվները",
         "myBook": "Իմ գիրքը",
         "searchPlaceholder": "Որոնել ըստ հասցեի, անունով կամ ինքնության",
         "noFoundRecords": "Գրառումներ չեն գտնվել",
@@ -1238,7 +1251,9 @@
             "enterName": "Մուտքագրեք անունը",
             "present": "Արդեն ներկա",
             "saveChanges": "Պահպանել փոփոխությունները"
-        }
+        },
+        "input": "Մուտքագրեք հասցեն կամ ընտրեք կոնտակտ",
+        "selectContact": "Ընտրեք կոնտակտ"
     },
     "browserPermission": {
         "title": "Թույլատրել տեսախցիկի մուտքը դիտարկիչի կարգավորումներում",
@@ -1247,5 +1262,9 @@
         "btnGoToSettings": "Գնացեք կարգավորումներ",
         "btnAllow": "Թույլ են տալիս մուտք գործել"
     },
-    "continueText": "Շարունակել"
+    "continueText": "Շարունակել",
+    "minAmountText": "ր. գումարը",
+    "maxAmountText": "առավելագույնը գումարը",
+    "exceededAmountText": "{amount} ը գերազանցվել է",
+    "multipleRecipients": "Մի շարք ստացողներ"
 }

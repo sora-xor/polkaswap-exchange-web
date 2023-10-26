@@ -13,10 +13,23 @@ function initialState(): SoraCardState {
     totalXorBalance: FPNumber.ZERO,
     xorToDeposit: FPNumber.ZERO,
     totalXorBalanceUpdates: null,
+    referenceNumber: null,
     authLogin: null,
-    hasFreeAttempts: null,
+    attemptCounter: {
+      hasFreeAttempts: null,
+      freeAttemptsLeft: null,
+      totalFreeAttempts: null,
+    },
     wantsToPassKycAgain: false,
-    rejectReason: null,
+    rejectReasons: [],
+    userInfo: {
+      iban: null,
+      availableBalance: null,
+    },
+    fees: {
+      application: null,
+      retry: null,
+    },
   };
 }
 

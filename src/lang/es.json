@@ -38,8 +38,8 @@
             "CreatePair": "Se proporcionó {amount} {symbol} y {amount2} {symbol2}",
             "RegisterAsset": "Activo {symbol} registrado",
             "ClaimRewards": "{rewards} Recompensa reclamada correctamente",
-            "ReferralReserveXor": "XOR viculado con éxito",
-            "ReferralUnreserveXor": "XOR desvinculado con éxito",
+            "ReferralReserveXor": "Bonded {amount} XOR",
+            "ReferralUnreserveXor": "{amount} XOR no vinculada",
             "ReferralSetInvitedUser": "La {role} {address} se estableció correctamente",
             "SwapAndSend": "Se cambió {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Suministrado {symbol} y {symbol2} {amount} tokens LP",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Eliminado {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} reclamado con éxito",
             "EthBridgeIncoming": "Transferido {amount} {symbol} de {Ethereum} a {Sora}",
-            "EthBridgeOutgoing": "Transferido {amount} {symbol} de {Sora} a {Ethereum}"
+            "EthBridgeOutgoing": "Transferido {amount} {symbol} de {Sora} a {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Fallo en {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Fallo al suministrar {amount} {symbol} y {amount2} {symbol2}",
             "RegisterAsset": "Fallo al registrar el Activo {symbol}",
             "ClaimRewards": "Fallo al reclamar Recompensas {rewards}",
-            "ReferralReserveXor": "Error al vincular XOR",
-            "ReferralUnreserveXor": "Error al desvincular XOR",
+            "ReferralReserveXor": "Error al vincular {amount} XOR",
+            "ReferralUnreserveXor": "Error al desvincular {amount} XOR",
             "ReferralSetInvitedUser": "No se pudo establecer la {role} {address}",
             "SwapAndSend": "Error al cambiar {amount} {symbol} por {amount2} {symbol2} y {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Error al proporcionar {amount} {symbol} y {symbol2} tokens LP",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Error al quitar {amount} {symbol}",
             "DemeterFarmingGetRewards": "Error al reclamar {symbol}",
             "EthBridgeIncoming": "Error al transferir {amount} {symbol} de {Ethereum} a {Sora}",
-            "EthBridgeOutgoing": "Error al transferir {amount} {symbol} de {Sora} a {Ethereum}"
+            "EthBridgeOutgoing": "Error al transferir {amount} {symbol} de {Sora} a {Ethereum}",
+            "SwapTransferBatch": "Fallo en {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Vincular XOR",
         "ReferralUnreserveXor": "Desvincular XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Remover Token",
         "DemeterFarmingGetRewards": "Reclamar Recompensas",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Transferir"
     },
     "polkadotjs": {
         "noExtensions": "No se encontró la extensión {PolkadotJs}. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "Cuenta de la Red {Sora}",
-        "text": "Extensions y Google almacenan su cuenta de {Sora} Network de forma segura. Le permiten firmar transacciones y administrar activos.",
+        "text": "Para administrar activos y firmar transacciones en {Sora}, se debe conectar una cuenta. Las cuentas {Sora} se pueden crear y conectar utilizando nuestras carteras integradas o extensiones de navegador.",
         "noAccounts": "No se ha encontrado ninguna cuenta en su extensión de navegador {extension}. Por favor añade una cuenta e inténtalo de nuevo.",
         "selectAccount": "Seleccione la cuenta con la que desea trabajar",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "Conectado",
             "notConnected": "No conectado"
         },
-        "internalTitle": "Conéctese a través de {wallet}",
-        "internalText": "Puede crear o vincular una cuenta existente a través de {wallet} . Almacena cuentas usando encriptación.",
+        "internalTitle": "Conectar con {wallet}",
+        "internalText": "Puede crear o importar una cuenta {Sora} existente para conectarse con su cuenta {wallet}. Todos los datos almacenados por {wallet} se cifran mediante el cifrado avanzado incorporado.",
         "list": {
-            "simplest": "opción más simple",
+            "integrated": "Integrado",
             "extensions": "Extensiones"
         }
     },
@@ -301,7 +304,9 @@
         "txId": "ID de transacción",
         "viewIn": "Ver en {explorer}",
         "referrer": "Referente",
-        "referral": "Referencia"
+        "referral": "Referencia",
+        "adarTxDetailsTitle": "Detalles de la transacción",
+        "comment": "Comentario"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Cambiar de red en {Metamask}",
@@ -540,7 +545,10 @@
         "networkInfo": "Puente de la red {Sora} con:",
         "copy": "Copiar dirección de red",
         "soraAddress": "Dirección de {Sora}",
-        "ethereumAddress": "dirección {Ethereum}"
+        "ethereumAddress": "dirección {Ethereum}",
+        "limitMessage": "Actualmente, existe un {type} {amount} {symbol} para establecer puentes para garantizar la estabilidad y seguridad de la red {Sora} . apreciamos su comprensión.",
+        "externalTransferFee": "tarifa de {network} {XCM}",
+        "externalTransferFeeTooltip": "Cuando envía una transacción puente a la red {network} , se deduce una tarifa menor del monto que está transfiriendo"
     },
     "selectRegisteredAsset": {
         "title": "Seleccione un Token",
@@ -1013,7 +1021,8 @@
             "norewardsforasset": "No hay recompensas para este activo."
         },
         "liquidityproxy": {
-            "forbiddenfilter": "La fuente de liquidez seleccionada no está permitida"
+            "forbiddenfilter": "La fuente de liquidez seleccionada no está permitida",
+            "slippagenottolerated": "El impacto en el precio ha superado el valor seleccionado"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Fondos insuficientes",
@@ -1053,8 +1062,8 @@
             "importAccount": "Importar Cuenta"
         },
         "heading": {
-            "seedPhraseTitle": "Frase semilla",
-            "confirmSeedTitle": "Confirmar frase inicial",
+            "seedPhraseTitle": "Frase de contraseña",
+            "confirmSeedTitle": "Confirmar frase de contraseña",
             "accountDetailsTitle": "Detalles de la cuenta",
             "importTitle": "Importar cuenta"
         },
@@ -1065,12 +1074,12 @@
             "importAccount": "Importar cuenta"
         },
         "accountName": {
-            "placeholder": "Nombre de la billetera",
-            "desc": "Este es el nombre de su billetera que será visible para usted"
+            "placeholder": "Nombre de la cuenta",
+            "desc": "Este es el nombre de su cuenta. Solo será visible para ti en {Polkaswap}."
         },
         "password": {
             "placeholder": "Contraseña",
-            "desc": "Asegúrese de utilizar una contraseña segura para una protección adecuada"
+            "desc": "Asegúrese de utilizar una contraseña única y segura para una protección adecuada (8 caracteres como mínimo)"
         },
         "confirmPassword": {
             "placeholder": "Confirmar contraseña"
@@ -1078,11 +1087,11 @@
         "accountMnemonic": {
             "placeholder": "Frase mnemónica"
         },
-        "seedAdviceText": "Esta es una semilla secreta de su cuenta. Asegúrese de almacenarla en un soporte no digital, por ejemplo - papel",
-        "confirmSeedText": "Confirme la frase semilla haciendo clic en las palabras en el orden correcto",
-        "errorMnemonicText": "Orden incorrecto de la frase semilla",
-        "exportOptionText": "Exportar archivo de cuenta .json",
-        "exportJsonText": "Siempre podrá acceder a su cuenta importando ese archivo .json. ¡No lo comparta con nadie!",
+        "seedAdviceText": "La frase de contraseña de 12 palabras es una clave privada para recuperar el acceso a su cuenta de {Sora} en caso de que pierda el acceso a su cuenta {wallet}. Guárdelo de forma segura en el orden exacto en que aparece arriba.",
+        "confirmSeedText": "Confirme la frase de contraseña haciendo clic en las palabras en el orden correcto",
+        "errorMnemonicText": "Orden de frase de contraseña incorrecto",
+        "exportOptionText": "Exportar archivo {JSON} para restaurar la cuenta",
+        "exportJsonText": "Siempre podrá restaurar su cuenta importando este archivo {JSON}. ¡No lo compartas con nadie! Guárdelo de forma segura, preferiblemente encriptada.",
         "addAccount": "Agregar una cuenta",
         "dialog": {
             "confirmTitle": "Confirmar con contraseña",
@@ -1101,16 +1110,20 @@
         "assetsAtRiskText": "¡Activos en riesgo!",
         "deleteAccountText": "La cuenta no se puede recuperar sin una frase inicial, un archivo .json o si está almacenada en alguna extensión. Serás desconectado.",
         "importSteps": {
-            "selectWallet": "Ir a la billetera de su uso",
+            "selectWallet": "Abra la billetera con su(s) cuenta(s) existente(s)",
             "selectAccount": "Seleccione la cuenta que desea exportar",
             "exportAccount": "Exportar el archivo {JSON}"
         },
-        "exportTutorialsText": "Tutoriales de exportación"
+        "exportTutorialsText": "Tutoriales de exportación",
+        "seedAdviceAdditionTitle": "¡Nunca comparta su contraseña con nadie!",
+        "seedAdviceAdditionText": "Si alguien le pide su frase de contraseña, lo más probable es que esté tratando de estafarlo y robar sus activos."
     },
     "hashiBridgeText": "Puente {Hashi}",
     "disclaimerTitle": "Aviso legal",
     "explore": {
-        "showOnlyMyPositions": "Mostrar solo mis posiciones"
+        "showOnly": "Mostrar solo {entities}",
+        "myPositions": "mis posiciones",
+        "synthetics": "tokens sintéticos"
     },
     "tooltips": {
         "roi": "{ROI} significa Retorno de la Inversión. Se calcula dividiendo la ganancia obtenida en una inversión por el costo de esa inversión en un porcentaje equivalente.",
@@ -1169,8 +1182,8 @@
             "action": "Seleccionar servicios",
             "dialog": {
                 "title": "{Sora} Selección de servicio de red",
-                "fiat": "Valores fiduciarios",
-                "chartsAndActivity": "Gráficos y actividad"
+                "indexer": "indexador",
+                "useCeres": "Utilice {Ceres} para valores fiduciarios"
             }
         }
     },
@@ -1178,7 +1191,7 @@
     "acceptText": "Aceptar y ocultar",
     "newAccountsText": "Nuevas cuentas",
     "dragAndDropText": "Arrastrar y soltar o elegir el archivo {extension}",
-    "copyPhraseText": "Copiar frase",
+    "copyPhraseText": "Copiar Frase de Contraseña",
     "stepText": "Paso",
     "alerts": {
         "drop": "Cae por debajo",
@@ -1210,13 +1223,13 @@
         "moonpayTitle": "Compre ETH a través de MoonPay",
         "moonpayDesc": "Compre tokens ETH en Ethereum y transfiéralos a la red SORA a través del puente",
         "x1Title": "Compra XOR con tu tarjeta",
-        "x1Desc": "Compra tokens XOR con tu tarjeta de débito o crédito",
         "x1Btn": "Comprar XOR con tarjeta",
-        "errorMessage": "Disculpas por los inconvenientes. Estamos trabajando diligentemente para resolver esto. Por favor, inténtelo de nuevo más tarde."
+        "errorMessage": "Disculpas por los inconvenientes. Estamos trabajando diligentemente para resolver esto. Por favor, inténtelo de nuevo más tarde.",
+        "x1Desc": "Compra tokens XOR directamente en la red SORA con tu tarjeta de débito o crédito"
     },
     "acceptOnScrollText": "Desplácese para aceptar",
     "addressBook": {
-        "myExtAccounts": "Mis cuentas de extensión",
+        "myAccounts": "Mis cuentas",
         "myBook": "Mi libro",
         "searchPlaceholder": "Buscar por dirección, nombre o identidad",
         "noFoundRecords": "No se encontraron registros",
@@ -1238,7 +1251,9 @@
             "enterName": "Ingrese su nombre",
             "present": "Ya presente",
             "saveChanges": "Guardar cambios"
-        }
+        },
+        "input": "Introduzca la dirección o seleccione el contacto",
+        "selectContact": "Seleccione un contacto"
     },
     "browserPermission": {
         "title": "Permitir el acceso a la cámara en la configuración del navegador",
@@ -1247,5 +1262,9 @@
         "btnGoToSettings": "Ir a la configuración",
         "btnAllow": "Permitir el acceso"
     },
-    "continueText": "Continuar"
+    "continueText": "Continuar",
+    "minAmountText": "mín. cantidad",
+    "maxAmountText": "máx. cantidad",
+    "exceededAmountText": "{amount} superada",
+    "multipleRecipients": "Múltiples destinatarios"
 }

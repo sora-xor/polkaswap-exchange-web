@@ -38,8 +38,8 @@
             "CreatePair": "Испоручено {amount} {symbol} и {amount2} {symbol2}",
             "RegisterAsset": "Регистровано {symbol} средство",
             "ClaimRewards": "Награда је успешно преузета {rewards}",
-            "ReferralReserveXor": "Успешно повезивање КСОРа",
-            "ReferralUnreserveXor": "Одвајање XOR је успешно",
+            "ReferralReserveXor": "Bonded {amount} XOR",
+            "ReferralUnreserveXor": "Neobonženi {amount} XOR",
             "ReferralSetInvitedUser": "{role} {address} је успешно постављена",
             "SwapAndSend": "Замењено {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address}",
             "DemeterFarmingDepositLiquidity": "Испоручени {symbol} и {symbol2} {amount} ЛП токени",
@@ -48,7 +48,8 @@
             "DemeterFarmingUnstakeToken": "Уклоњено {amount} {symbol}",
             "DemeterFarmingGetRewards": "{amount} {symbol} је успешно положено",
             "EthBridgeIncoming": "Пренето {amount} {symbol} са {Ethereum} у {Sora}",
-            "EthBridgeOutgoing": "Пренето {amount} {symbol} са {Sora} у {Ethereum}"
+            "EthBridgeOutgoing": "Пренето {amount} {symbol} са {Sora} у {Ethereum}",
+            "SwapTransferBatch": "{action} {amount} {symbol}"
         },
         "error": {
             "Transfer": "Није успело {action} {amount} {symbol} {direction} {address}",
@@ -58,8 +59,8 @@
             "CreatePair": "Достављање {amount} {symbol} и {amount2} {symbol2} није успело",
             "RegisterAsset": "Регистровање {symbol} средства није успело",
             "ClaimRewards": "Преузимање награда {rewards} није успело",
-            "ReferralReserveXor": "Повезивање XOR није успело",
-            "ReferralUnreserveXor": "Одвајање XOR није успело",
+            "ReferralReserveXor": "Povezivanje {amount} XOR nije uspelo",
+            "ReferralUnreserveXor": "Povezivanje {amount} XOR nije uspelo",
             "ReferralSetInvitedUser": "Постављање {role} {address} није успело",
             "SwapAndSend": "Замена {amount} {symbol} за {amount2} {symbol2} и {action} {direction} {address} није успела",
             "DemeterFarmingDepositLiquidity": "Достављање {amount} {symbol} и {symbol2} ЛП токена није успело",
@@ -68,7 +69,8 @@
             "DemeterFarmingUnstakeToken": "Уклањање {amount} {symbol} није успело",
             "DemeterFarmingGetRewards": "Захтевање за {symbol} није успело",
             "EthBridgeIncoming": "Пренос {amount} {symbol} из {Ethereum} у {Sora} није успео",
-            "EthBridgeOutgoing": "Пренос {amount} {symbol} са {Sora} на {Ethereum} није успео"
+            "EthBridgeOutgoing": "Пренос {amount} {symbol} са {Sora} на {Ethereum} није успео",
+            "SwapTransferBatch": "Није успело {action} {amount} {symbol}"
         },
         "ReferralReserveXor": "Veži XOR",
         "ReferralUnreserveXor": "Razveži XOR",
@@ -80,7 +82,8 @@
         "DemeterFarmingUnstakeToken": "Povuci iz ulaganja Token",
         "DemeterFarmingGetRewards": "Захтевајте награде",
         "EthBridgeIncoming": "@:hashiBridgeText",
-        "EthBridgeOutgoing": "@:hashiBridgeText"
+        "EthBridgeOutgoing": "@:hashiBridgeText",
+        "SwapTransferBatch": "{ADAR} Пренос"
     },
     "polkadotjs": {
         "noExtensions": "Није пронађена ниједна екстензија {PolkadotJs}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -92,7 +95,7 @@
     },
     "connection": {
         "title": "Рачун мреже {Sora}",
-        "text": "Додаци и Google безбедно чувају ваш налог мреже {Sora} . Они вам омогућавају да потписујете трансакције и управљате имовином.",
+        "text": "Da biste upravljali sredstvima i potpisali transakcije na {Sora}, nalog mora biti povezan. {Sora} nalozi se mogu kreirati i povezati pomoću naših integrisanih novčanika ili proširenja pregledača.",
         "noAccounts": "Није пронађен ниједан рачун у екстензију прегледача {extension} . Додајте рачун и покушајте поново.",
         "selectAccount": "Изаберите рачун са којим ћете радити",
         "action": {
@@ -107,10 +110,10 @@
             "connected": "Повезан",
             "notConnected": "Није повезан"
         },
-        "internalTitle": "Повежите се преко {wallet}",
-        "internalText": "Можете да направите или повежете постојећи налог преко {wallet} . Чува налоге користећи шифровање.",
+        "internalTitle": "Повежите се са {wallet}",
+        "internalText": "Можете да креирате или увезете постојећи {Sora} налог да бисте се повезали са својим {wallet} налогом. Сви подаци које чува {wallet} су шифровани помоћу уграђене напредне енкрипције.",
         "list": {
-            "simplest": "Најједноставнија опција",
+            "integrated": "Integrisano",
             "extensions": "Екстензије"
         }
     },
@@ -301,7 +304,9 @@
         "txId": "ИД трансакције",
         "viewIn": "Прикажите у {explorer}",
         "referrer": "Предложилтељ",
-        "referral": "Препорука"
+        "referral": "Препорука",
+        "adarTxDetailsTitle": "Detalji transakcije",
+        "comment": "Коментар"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Промените мрежу у {Metamask}",
@@ -540,7 +545,10 @@
         "networkInfo": "Бриџ {Sora} мрежа са:",
         "copy": "Копирајте мрежну адресу",
         "soraAddress": "{Sora} adresa",
-        "ethereumAddress": "{Ethereum} adresa"
+        "ethereumAddress": "{Ethereum} adresa",
+        "limitMessage": "Тренутно постоји {type} {amount} {symbol} за премошћавање да би се обезбедила стабилност и безбедност мреже {Sora} . Ценимо ваше разумевање.",
+        "externalTransferFee": "{network} {XCM} накнада",
+        "externalTransferFeeTooltip": "Када пошаљете бридге трансакцију на мрежу {network} , од износа који преносите узима се мања накнада"
     },
     "selectRegisteredAsset": {
         "title": "Изаберите токен",
@@ -1013,7 +1021,8 @@
             "norewardsforasset": "Не постоје награде за ово средство"
         },
         "liquidityproxy": {
-            "forbiddenfilter": "Изабрани извор ликвидности није дозвољен"
+            "forbiddenfilter": "Изабрани извор ликвидности није дозвољен",
+            "slippagenottolerated": "Uticaj cene je premašio odabranu vrednost"
         },
         "demeterfarmingplatform": {
             "insufficientfunds": "Недовољно средстава",
@@ -1053,8 +1062,8 @@
             "importAccount": "Увези налог"
         },
         "heading": {
-            "seedPhraseTitle": "Семе фраза",
-            "confirmSeedTitle": "Потврдите почетну фразу",
+            "seedPhraseTitle": "Pristupna fraza",
+            "confirmSeedTitle": "Potvrda fraze za prolaz",
             "accountDetailsTitle": "детаљи о рачуну",
             "importTitle": "Увези налог"
         },
@@ -1065,12 +1074,12 @@
             "importAccount": "Увези налог"
         },
         "accountName": {
-            "placeholder": "Ime новчаника",
-            "desc": "Ово је назив вашег новчаника који ће вам бити видљив"
+            "placeholder": "Ime naloga",
+            "desc": "Ovo je ime vašeg naloga. Biće vidljiv samo vama u {Polkaswap}."
         },
         "password": {
             "placeholder": "Лозинка",
-            "desc": "Уверите се да користите јаку лозинку за одговарајућу заштиту"
+            "desc": "Uverite se da koristite jaku jedinstvenu lozinku za pravilnu zaštitu (minimum 8 znakova)"
         },
         "confirmPassword": {
             "placeholder": "Потврди лозинку"
@@ -1078,11 +1087,11 @@
         "accountMnemonic": {
             "placeholder": "Мнемоничка фраза"
         },
-        "seedAdviceText": "Ово је тајно семе вашег налога. Обавезно га чувајте на недигиталном носачу, на пример - папиру",
-        "confirmSeedText": "Потврдите seed фразу кликом на речи у исправном редоследу",
-        "errorMnemonicText": "Netačan redosled seed fraze",
-        "exportOptionText": "Извезите .јсон датотеку налога",
-        "exportJsonText": "Увек ћете моћи да приступите свом налогу тако што ћете увести ту .јсон датотеку. Не делите то ни са ким!",
+        "seedAdviceText": "Fraza za prolaz od 12 reči je privatni ključ za vraćanje pristupa nalogu {Sora} u slučaju da izgubite pristup {wallet} nalogu. Bezbedno ga uskladištite tačnim redosledom kojim se pojavljuje iznad.",
+        "confirmSeedText": "Potvrdite frazu za prolaz tako što ćete kliknuti na reči ispravnim redosledom",
+        "errorMnemonicText": "Netačan redosled fraza za prolaz",
+        "exportOptionText": "Izvezi {JSON} datoteku za obnavljanje naloga",
+        "exportJsonText": "Uvek ćete moći da vratite nalog u prethodno stanje uvozom ove {JSON} datoteke. Ne deli to ni sa kim! Uskladištite ga bezbedno, po mogućstvu šifrovano.",
         "addAccount": "Додајте налог",
         "dialog": {
             "confirmTitle": "Потврдите лозинком",
@@ -1101,16 +1110,20 @@
         "assetsAtRiskText": "Имовина у опасности!",
         "deleteAccountText": "Налог се не може опоравити без почетне фразе, .јсон датотеке или ако је сачуван у некој екстензији. Бићете одјављени.",
         "importSteps": {
-            "selectWallet": "Идите на новчаник који користите",
+            "selectWallet": "Otvaranje novčanika pomoću postojećih naloga",
             "selectAccount": "Изаберите налог који желите да извезете",
             "exportAccount": "Извезите {JSON} датотеку"
         },
-        "exportTutorialsText": "Извоз туторијала"
+        "exportTutorialsText": "Извоз туторијала",
+        "seedAdviceAdditionTitle": "Nikada ne delite svoju frazu za prolaz ni sa kim!",
+        "seedAdviceAdditionText": "Ako vam neko zatraži frazu za prolaz, najverovatnije pokušava da vas prevari i ukrade vam imovinu!"
     },
     "hashiBridgeText": "{Hashi} most",
     "disclaimerTitle": "Одрицање одговорности",
     "explore": {
-        "showOnlyMyPositions": "Prikaži samo moje pozicije"
+        "showOnly": "Prikaži samo {entities}",
+        "myPositions": "moje pozicije",
+        "synthetics": "sintetički tokeni"
     },
     "tooltips": {
         "roi": "{ROI} označava povraćaj investicije. Obračunava se deljenjem dobiti ostvarene na investiciji po trošku te investicije u procentualno ekvivalentnom iznosu.",
@@ -1169,8 +1182,8 @@
             "action": "Изаберите услуге",
             "dialog": {
                 "title": "{Sora} Избор мрежне услуге",
-                "fiat": "Фиат вредности",
-                "chartsAndActivity": "Графикони и активности"
+                "indexer": "Индексер",
+                "useCeres": "Користите {Ceres} за фиат вредности"
             }
         }
     },
@@ -1178,7 +1191,7 @@
     "acceptText": "Прихвати и сакриј",
     "newAccountsText": "Нови налози",
     "dragAndDropText": "Превуците и отпустите или изаберите датотеку {extension}",
-    "copyPhraseText": "Копирај фразу",
+    "copyPhraseText": "Kopirajte lozinku frazu",
     "stepText": "Корак",
     "alerts": {
         "drop": "Пада испод",
@@ -1210,13 +1223,13 @@
         "moonpayTitle": "Купите ЕТХ преко МоонПаи-а",
         "moonpayDesc": "Купите ЕТХ токене на Етхереум-у и пренесите их на СОРА мрежу преко моста",
         "x1Title": "Купите КСОР са својом картицом",
-        "x1Desc": "Купите КСОР токене са дебитном или кредитном картицом",
         "x1Btn": "Купите КСОР са картицом",
-        "errorMessage": "Извињења због непогодности. Радимо марљиво на решавању овог проблема. Покушајте поново касније."
+        "errorMessage": "Извињења због непогодности. Радимо марљиво на решавању овог проблема. Покушајте поново касније.",
+        "x1Desc": "Купите КСОР токене директно на СОРА мрежи помоћу своје дебитне или кредитне картице"
     },
     "acceptOnScrollText": "Листајте да бисте прихватили",
     "addressBook": {
-        "myExtAccounts": "Моји налози за проширење",
+        "myAccounts": "Moji računi",
         "myBook": "Моја књига",
         "searchPlaceholder": "Претражујте по адреси, имену или идентитету",
         "noFoundRecords": "Није пронађен ниједан запис",
@@ -1238,7 +1251,9 @@
             "enterName": "Унесите име",
             "present": "Већ присутан",
             "saveChanges": "Сачувај измене"
-        }
+        },
+        "input": "Унесите адресу или изаберите контакт",
+        "selectContact": "Изаберите контакт"
     },
     "browserPermission": {
         "title": "Дозволите приступ камери у подешавањима претраживача",
@@ -1247,5 +1262,9 @@
         "btnGoToSettings": "Идите на Подешавања",
         "btnAllow": "Дозволи приступ"
     },
-    "continueText": "Настави"
+    "continueText": "Настави",
+    "minAmountText": "мин. износ",
+    "maxAmountText": "мак. износ",
+    "exceededAmountText": "{amount} је премашен",
+    "multipleRecipients": "Višestruki primalac"
 }
