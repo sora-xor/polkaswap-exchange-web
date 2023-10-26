@@ -1,4 +1,4 @@
-@Library('jenkins-library@feature/SNE-245/DefectDojo-SNE-341') _
+@Library('jenkins-library@fix/fix-dependensy-check') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
