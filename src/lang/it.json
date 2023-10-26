@@ -305,7 +305,8 @@
         "viewIn": "Visualizza in {explorer}",
         "referrer": "Referente",
         "referral": "Referral",
-        "adarTxDetailsTitle": "Dettagli della transazione"
+        "adarTxDetailsTitle": "Dettagli della transazione",
+        "comment": "Commento"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Cambia rete in {Metamask}",
