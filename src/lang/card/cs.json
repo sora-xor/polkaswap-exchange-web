@@ -94,6 +94,7 @@
         "or": "nebo",
         "oneTimeApplicationFee": "Jednorázový poplatek za vydání karty",
         "applicationFeeNote": "Poznámka: Vydání placené karty bude k dispozici později.",
-        "statusRejectReasonMultiple": "Vaše přihláška byla zamítnuta z několika důvodů:"
+        "statusRejectReasonMultiple": "Vaše přihláška byla zamítnuta z několika důvodů:",
+        "ibanPendingDesc": "Vaše vydání IBAN čeká na vyřízení.\n V případě, že čekáte déle než 72 hodin, kontaktujte nás prostřednictvím {email}"
     }
 }

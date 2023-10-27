@@ -94,6 +94,7 @@
         "or": "alebo",
         "oneTimeApplicationFee": "Jednorazový poplatok za vydanie karty",
         "applicationFeeNote": "Poznámka: Vydanie platenej karty bude k dispozícii neskôr.",
-        "statusRejectReasonMultiple": "Vaša žiadosť bola zamietnutá z viacerých dôvodov:"
+        "statusRejectReasonMultiple": "Vaša žiadosť bola zamietnutá z viacerých dôvodov:",
+        "ibanPendingDesc": "Čaká sa na vydanie vášho čísla IBAN.\n V prípade čakania dlhšieho ako 72 hodín nás kontaktujte na {email}"
     }
 }

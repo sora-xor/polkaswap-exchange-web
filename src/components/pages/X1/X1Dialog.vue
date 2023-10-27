@@ -80,8 +80,7 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
   }
 
   get blockchainSymbol(): string {
-    if (this.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) return 'XOR';
-    return 'TXOR';
+    return this.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod ? 'XOR' : 'TXOR';
   }
 
   async loadX1(): Promise<void> {

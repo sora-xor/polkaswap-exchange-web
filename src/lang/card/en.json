@@ -94,6 +94,7 @@
         "or": "or",
         "oneTimeApplicationFee": "One-time fee to issue a card",
         "applicationFeeNote": "Note: paid card issuance will be available at a later stage.",
-        "statusRejectReasonMultiple": "Your application has been rejected for multiple reasons:"
+        "statusRejectReasonMultiple": "Your application has been rejected for multiple reasons:",
+        "ibanPendingDesc": "Your IBAN issuance is pending.<br />In case the wait longer than 72h contact us via {email}"
     }
 }

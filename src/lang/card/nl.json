@@ -94,6 +94,7 @@
         "or": "of",
         "oneTimeApplicationFee": "Eenmalige kosten voor het uitgeven van een kaart",
         "applicationFeeNote": "Let op: de uitgifte van betaalde kaarten zal in een later stadium beschikbaar zijn.",
-        "statusRejectReasonMultiple": "Uw aanvraag is om meerdere redenen afgewezen:"
+        "statusRejectReasonMultiple": "Uw aanvraag is om meerdere redenen afgewezen:",
+        "ibanPendingDesc": "Uw IBAN-uitgifte is in behandeling.\n Neem contact met ons op via {email} als de wachttijd langer dan 72 uur is"
     }
 }

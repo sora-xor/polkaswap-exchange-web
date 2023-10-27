@@ -94,6 +94,7 @@
         "or": "atau",
         "oneTimeApplicationFee": "Biaya satu kali untuk menerbitkan kartu",
         "applicationFeeNote": "Catatan: Penerbitan kartu berbayar akan tersedia pada tahap selanjutnya.",
-        "statusRejectReasonMultiple": "Permohonan Anda telah ditolak karena beberapa alasan:"
+        "statusRejectReasonMultiple": "Permohonan Anda telah ditolak karena beberapa alasan:",
+        "ibanPendingDesc": "Penerbitan IBAN Anda tertunda.\n Jika menunggu lebih dari 72 jam, hubungi kami melalui {email}"
     }
 }

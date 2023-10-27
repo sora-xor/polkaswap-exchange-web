@@ -94,6 +94,7 @@
         "or": "hoặc",
         "oneTimeApplicationFee": "Phí phát hành thẻ một lần",
         "applicationFeeNote": "Lưu ý: việc phát hành thẻ trả phí sẽ được thực hiện ở giai đoạn sau.",
-        "statusRejectReasonMultiple": "Đơn đăng ký của bạn đã bị từ chối vì nhiều lý do:"
+        "statusRejectReasonMultiple": "Đơn đăng ký của bạn đã bị từ chối vì nhiều lý do:",
+        "ibanPendingDesc": "Việc cấp IBAN của bạn đang chờ xử lý.\n Trong trường hợp chờ đợi lâu hơn 72h, hãy liên hệ với chúng tôi qua {email}"
     }
 }

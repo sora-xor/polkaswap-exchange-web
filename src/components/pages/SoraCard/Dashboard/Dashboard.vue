@@ -27,9 +27,13 @@
 
     <div class="sora-card container sora-card-hub-info" v-loading="loading">
       <h4 class="sora-card-hub-info-title">{{ t('card.cardhub.accountInfo') }}</h4>
-      <div v-if="userInfo.iban" class="sora-card-hub-info-iban">
+      <div v-if="!userInfo.iban" class="sora-card-hub-info-iban">
         <s-input :placeholder="t('card.cardHub.ibanLabel')" :value="iban" readonly />
         <s-icon name="basic-copy-24" @click.native="handleCopyIban" />
+      </div>
+      <div v-else class="sora-card-hub-info-iban-missing">
+        <p class="label">{{ t('card.cardHub.ibanLabel') }}</p>
+        <p v-html="t('card.ibanPendingDesc', { email: emailLink })" />
       </div>
       <div class="sora-card-hub-logout" @click="logoutFromSoraCard">
         <span>{{ t('card.cardHub.logout') }}</span>
@@ -74,6 +78,12 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
   @state.soraCard.userInfo userInfo!: UserInfo;
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
 
+  email = 'techsupport@soracard.com';
+
+  get emailLink(): string {
+    return `<a href='mailto: ${this.email}'>${this.email}</a>`;
+  }
+
   options: Array<Options> = [
     { icon: OptionsIcon.TopUp, type: Option.TopUp },
     { icon: OptionsIcon.Transfer, type: Option.Transfer },
@@ -88,9 +98,9 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
   get balance(): string {
     const balance = this.userInfo.availableBalance;
 
-    if (balance === 0) return '0';
+    if (!balance) return '0';
 
-    return balance ? `${balance / 100}` : '';
+    return `${balance / 100}`;
   }
 
   handleClick(type: Option): void {}
@@ -167,24 +177,43 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
         margin-right: $inner-spacing-mini;
       }
     }
+
     &-logout {
       margin-top: $inner-spacing-mini;
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: var(--s-color-utility-body);
-      font-size: var(--s-font-size-big);
+      font-size: var(--s-font-size-medium);
       font-weight: 500;
       border-radius: var(--s-border-radius-small);
       padding: 18px $basic-spacing;
       color: var(--s-color-theme-accent-hover);
 
-      i {
-        color: var(--s-color-base-content-tertiary);
-      }
       &:hover {
         cursor: pointer;
       }
+    }
+
+    &-info {
+      &-iban-missing {
+        margin-top: $inner-spacing-mini;
+        background: var(--s-color-utility-body);
+        font-size: var(--s-font-size-medium);
+        font-weight: 400;
+        border-radius: var(--s-border-radius-small);
+        padding: 18px $basic-spacing;
+
+        .label {
+          color: var(--s-color-base-content-secondary);
+          margin-bottom: 4px;
+        }
+      }
+
+      i {
+        color: var(--s-color-base-content-tertiary);
+      }
+
       &:hover i {
         color: var(--s-color-base-content-secondary);
       }
@@ -212,6 +241,14 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
         }
       }
     }
+  }
+}
+</style>
+
+<style lang="scss">
+.sora-card-hub-info-iban-missing {
+  a {
+    color: var(--s-color-base-content-primary);
   }
 }
 </style>
