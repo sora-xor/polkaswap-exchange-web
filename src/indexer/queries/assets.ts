@@ -7,12 +7,10 @@ import last from 'lodash/fp/last';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type {
   SubqueryAssetEntity,
-  SubqueryAssetSnapshotEntity,
   SubqueryConnectionQueryResponse,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
 import type {
   SubsquidAssetEntity,
-  SubsquidAssetSnapshotEntity,
   SubsquidConnectionQueryResponse,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
 import type { AssetSnapshotEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
@@ -31,16 +29,16 @@ export type TokenData = {
 
 type SubqueryAssetData = SubqueryAssetEntity & {
   hourSnapshots: {
-    nodes: SubqueryAssetSnapshotEntity[];
+    nodes: AssetSnapshotEntity[];
   };
   daySnapshots: {
-    nodes: SubqueryAssetSnapshotEntity[];
+    nodes: AssetSnapshotEntity[];
   };
 };
 
 type SubsquidAssetData = SubsquidAssetEntity & {
-  hourSnapshots: SubsquidAssetSnapshotEntity[];
-  daySnapshots: SubsquidAssetSnapshotEntity[];
+  hourSnapshots: AssetSnapshotEntity[];
+  daySnapshots: AssetSnapshotEntity[];
 };
 
 const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetData>>`
