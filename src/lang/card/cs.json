@@ -98,6 +98,7 @@
         "applicationFeeNote": "Poznámka: Vydání placené karty bude k dispozici později.",
         "statusRejectReasonMultiple": "Vaše přihláška byla zamítnuta z několika důvodů:",
         "selectCountryText": "Vyberte vaší zemi",
+        "filterCountries": "Filtrovat podle země nebo volacího kódu",
         "ibanPendingDesc": "Vaše vydání IBAN čeká na vyřízení.\n V případě, že čekáte déle než 72 hodin, kontaktujte nás prostřednictvím {email}"
     }
 }

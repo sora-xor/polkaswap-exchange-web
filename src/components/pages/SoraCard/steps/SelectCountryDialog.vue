@@ -5,7 +5,7 @@
       v-model="query"
       class="select-country__search"
       autofocus
-      placeholder="Filter by Country or Dial code"
+      :placeholder="t('card.filterCountries')"
       @clear="handleClearSearch"
     />
     <s-scrollbar class="select-country__scrollbar">

@@ -98,6 +98,7 @@
         "applicationFeeNote": "Nota: l'emissione delle carte a pagamento sarà disponibile in una fase successiva.",
         "statusRejectReasonMultiple": "La tua richiesta è stata respinta per molteplici motivi:",
         "selectCountryText": "Seleziona il tuo paese",
+        "filterCountries": "Filtra per Paese o Codice di chiamata",
         "ibanPendingDesc": "L'emissione del tuo IBAN è in sospeso.\n Nel caso in cui l'attesa superi le 72 ore contattaci tramite {email}"
     }
 }

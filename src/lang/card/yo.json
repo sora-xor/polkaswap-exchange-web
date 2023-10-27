@@ -98,6 +98,7 @@
         "applicationFeeNote": "Akiyesi: ipinfunni kaadi sisan yoo wa ni ipele nigbamii.",
         "statusRejectReasonMultiple": "Ohun elo rẹ ti kọ fun awọn idi pupọ:",
         "selectCountryText": "Yan orilẹ-ede rẹ",
+        "filterCountries": "Sàngan lori orilẹ́-èdè tabi koodu orọ",
         "ibanPendingDesc": "Ipinfunni IBAN rẹ ti wa ni isunmọtosi.\n Ti idaduro to gun ju wakati 72 lọ kan si wa nipasẹ {email}"
     }
 }

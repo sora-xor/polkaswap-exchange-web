@@ -98,6 +98,7 @@
         "applicationFeeNote": "Nota: la emisión de tarjetas pagas estará disponible en una etapa posterior.",
         "statusRejectReasonMultiple": "Su solicitud ha sido rechazada por múltiples motivos:",
         "selectCountryText": "Selecciona tu pais",
+        "filterCountries": "Filtrar por país o código de marcación",
         "ibanPendingDesc": "Tu emisión de IBAN está pendiente.\n En caso de que la espera supere las 72h contáctenos vía {email}"
     }
 }

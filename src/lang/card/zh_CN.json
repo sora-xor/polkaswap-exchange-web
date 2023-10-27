@@ -98,6 +98,7 @@
         "applicationFeeNote": "注：付费卡发行将在稍后阶段提供。",
         "statusRejectReasonMultiple": "您的申请因多种原因被拒绝：",
         "selectCountryText": "选择您所在的国家\/地区",
+        "filterCountries": "按国家或拨号码筛选",
         "ibanPendingDesc": "您的 IBAN 正在等待签发。\n如果等待时间超过 72 小时，请通过{email}联系我们"
     }
 }

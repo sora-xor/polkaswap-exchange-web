@@ -98,6 +98,7 @@
         "applicationFeeNote": "Napomena: izdavanje plaćene kartice bit će dostupno naknadno.",
         "statusRejectReasonMultiple": "Vaša prijava je odbijena iz više razloga:",
         "selectCountryText": "Izaberite svoju zemlju",
+        "filterCountries": "Filtrirajte po zemlji ili pozivnom broju",
         "ibanPendingDesc": "Vaše izdavanje IBAN-a je na čekanju.\n U slučaju čekanja dužeg od 72h kontaktirajte nas putem {email}"
     }
 }

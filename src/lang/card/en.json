@@ -98,6 +98,7 @@
         "applicationFeeNote": "Note: paid card issuance will be available at a later stage.",
         "statusRejectReasonMultiple": "Your application has been rejected for multiple reasons:",
         "selectCountryText": "Select your country",
+        "filterCountries": "Filter by Country or Dial code",
         "ibanPendingDesc": "Your IBAN issuance is pending.<br/>In case the wait longer than 72h contact us via {email}"
     }
 }
