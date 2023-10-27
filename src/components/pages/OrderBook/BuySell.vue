@@ -143,7 +143,6 @@ import type { Subscription } from 'rxjs';
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     PairListPopover: lazyComponent(Components.PairListPopover),
     PlaceConfirm: lazyComponent(Components.PlaceOrder),
-    CancelConfirm: lazyComponent(Components.CancelOrder),
     FormattedAmount: components.FormattedAmount,
   },
 })

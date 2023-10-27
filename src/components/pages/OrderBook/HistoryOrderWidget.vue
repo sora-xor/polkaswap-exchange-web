@@ -20,7 +20,7 @@
         <span :class="getComputedCancelClasses(Cancel.multiple)" @click="handleCancel(Cancel.multiple)">{{
           cancelText
         }}</span>
-        <span :class="getComputedCancelClasses(Cancel.all)" @click="handleCancel(Cancel.all)">{{ cancelAllText }}</span>
+        <span :class="getComputedCancelClasses(Cancel.all)" @click="openConfirmCancelDialog">{{ cancelAllText }}</span>
       </div>
     </div>
     <div class="delimiter" />
@@ -32,6 +32,7 @@
       <h4>Connect an account to start trading</h4>
       <s-button type="primary" @click="connectAccount">Connect account</s-button>
     </div>
+    <cancel-confirm :visible.sync="confirmCancelOrderVisibility" @confirm="handleCancel" />
   </div>
 </template>
 
@@ -50,6 +51,7 @@ import { delay } from '@/utils';
   components: {
     AllOrders: lazyComponent(Components.AllOrders),
     OpenOrders: lazyComponent(Components.OpenOrders),
+    CancelConfirm: lazyComponent(Components.CancelOrders),
   },
 })
 export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.LoadingMixin) {
@@ -60,6 +62,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
   @action.orderBook.subscribeToUserLimitOrders subscribeToOpenOrders!: ({ base }) => void;
 
+  confirmCancelOrderVisibility = false;
   currentFilter = Filter.open;
   openLimitOrders: Array<any> = [];
   ordersToBeCancelled = [];
@@ -121,6 +124,10 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
   connectAccount(): void {
     router.push({ name: PageNames.Wallet });
+  }
+
+  openConfirmCancelDialog(): void {
+    this.confirmCancelOrderVisibility = true;
   }
 
   deserializeKey(key: string) {
