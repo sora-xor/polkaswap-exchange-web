@@ -21,9 +21,11 @@
         },
         "okReadyText": "Ок ја сам спреман",
         "emailPlaceholder": "Емаил",
+        "noSpamText": "Нема нежељене поште! Само да бисте заштитили свој налог",
         "sendCodeBtn": "Пошаљите СМС код",
         "firstNamePlaceholder": "Име",
         "lastNamePlaceholder": "Презиме",
+        "verificationCodeText": "Добићете \\n верификациони код путем СМС-а",
         "phonePlaceholder": "Број телефона",
         "statusPendingTitle": "Верификација је у току",
         "sendEmailLinkBtn": "Пошаљи линк",
@@ -95,6 +97,7 @@
         "oneTimeApplicationFee": "Једнократна накнада за издавање картице",
         "applicationFeeNote": "Напомена: издавање плаћене картице биће доступно касније.",
         "statusRejectReasonMultiple": "Ваша пријава је одбијена из више разлога:",
+        "selectCountryText": "Изаберите своју земљу",
         "ibanPendingDesc": "Ваше ИБАН издавање је на чекању.\n У случају да чекате дуже од 72х контактирајте нас путем {email}"
     }
 }
