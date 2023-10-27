@@ -305,7 +305,8 @@
         "viewIn": "View in {explorer}",
         "referrer": "Referrer",
         "referral": "Referral",
-        "adarTxDetailsTitle": "Transaction details"
+        "adarTxDetailsTitle": "Transaction details",
+        "comment": "Comment"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Change network in {Metamask}",

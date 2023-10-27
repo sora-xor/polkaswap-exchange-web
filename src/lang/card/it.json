@@ -21,9 +21,11 @@
         },
         "okReadyText": "Ok sono pronto",
         "emailPlaceholder": "E-mail",
+        "noSpamText": "Niente spam! Solo per proteggere il tuo account",
         "sendCodeBtn": "Invia codice SMS",
         "firstNamePlaceholder": "Nome di battesimo",
         "lastNamePlaceholder": "Cognome",
+        "verificationCodeText": "Riceverai \\n un codice di verifica via SMS",
         "phonePlaceholder": "Numero di telefono",
         "statusPendingTitle": "Verifica in corso",
         "sendEmailLinkBtn": "Invia il link",
@@ -94,6 +96,8 @@
         "or": "O",
         "oneTimeApplicationFee": "Tariffa una tantum per l'emissione di una carta",
         "applicationFeeNote": "Nota: l'emissione delle carte a pagamento sarà disponibile in una fase successiva.",
-        "statusRejectReasonMultiple": "La tua richiesta è stata respinta per molteplici motivi:"
+        "statusRejectReasonMultiple": "La tua richiesta è stata respinta per molteplici motivi:",
+        "selectCountryText": "Seleziona il tuo paese",
+        "ibanPendingDesc": "L'emissione del tuo IBAN è in sospeso.\n Nel caso in cui l'attesa superi le 72 ore contattaci tramite {email}"
     }
 }

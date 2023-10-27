@@ -305,7 +305,8 @@
         "viewIn": "Vis i {explorer}",
         "referrer": "Henviser",
         "referral": "Henvisning",
-        "adarTxDetailsTitle": "Transaksjonsdetaljer"
+        "adarTxDetailsTitle": "Transaksjonsdetaljer",
+        "comment": "Kommentar"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Bytt nettverk i {Metamask}",

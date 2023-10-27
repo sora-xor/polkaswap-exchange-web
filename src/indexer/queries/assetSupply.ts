@@ -1,14 +1,10 @@
 import { FPNumber } from '@sora-substrate/math';
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
-import { SubsquidAssetSnapshotEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
 import { gql } from '@urql/core';
 
-import type {
-  SubqueryAssetSnapshotEntity,
-  SubqueryConnectionQueryResponse,
-} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
-import type { SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { SubqueryConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
+import type { SnapshotTypes, AssetSnapshotEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const { IndexerType } = WALLET_CONSTS;
 
@@ -19,7 +15,7 @@ export type ChartData = {
   burn: number;
 };
 
-const SubqueryAssetSupplyQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetSnapshotEntity>>`
+const SubqueryAssetSupplyQuery = gql<SubqueryConnectionQueryResponse<AssetSnapshotEntity>>`
   query AssetSupplyQuery($after: Cursor, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
     data: assetSnapshots(
       after: $after
@@ -49,7 +45,7 @@ const SubqueryAssetSupplyQuery = gql<SubqueryConnectionQueryResponse<SubqueryAss
   }
 `;
 
-const SubsquidAssetSupplyQuery = gql<SubqueryConnectionQueryResponse<SubsquidAssetSnapshotEntity>>`
+const SubsquidAssetSupplyQuery = gql<SubqueryConnectionQueryResponse<AssetSnapshotEntity>>`
   query AssetSupplyQuery($after: String, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
     data: assetSnapshotsConnection(
       after: $after
@@ -78,7 +74,7 @@ const toNumber = (value: string): number => {
   return fp.isFinity() ? fp.toNumber() : 0;
 };
 
-const parse = (node: SubqueryAssetSnapshotEntity | SubsquidAssetSnapshotEntity): ChartData => {
+const parse = (node: AssetSnapshotEntity): ChartData => {
   return {
     timestamp: +node.timestamp * 1000,
     value: toNumber(node.supply),

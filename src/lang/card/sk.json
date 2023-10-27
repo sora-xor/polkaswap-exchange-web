@@ -21,9 +21,11 @@
         },
         "okReadyText": "OK, som pripravený",
         "emailPlaceholder": "Email",
+        "noSpamText": "Žiadny spam! Iba na zabezpečenie vášho účtu",
         "sendCodeBtn": "Pošlite SMS kód",
         "firstNamePlaceholder": "Krstné meno",
         "lastNamePlaceholder": "Priezvisko",
+        "verificationCodeText": "Dostanete \\n overovací kód prostredníctvom SMS",
         "phonePlaceholder": "Telefónne číslo",
         "statusPendingTitle": "Prebieha overovanie",
         "sendEmailLinkBtn": "Odoslať odkaz",
@@ -94,6 +96,8 @@
         "or": "alebo",
         "oneTimeApplicationFee": "Jednorazový poplatok za vydanie karty",
         "applicationFeeNote": "Poznámka: Vydanie platenej karty bude k dispozícii neskôr.",
-        "statusRejectReasonMultiple": "Vaša žiadosť bola zamietnutá z viacerých dôvodov:"
+        "statusRejectReasonMultiple": "Vaša žiadosť bola zamietnutá z viacerých dôvodov:",
+        "selectCountryText": "Vyber svoju krajinu",
+        "ibanPendingDesc": "Čaká sa na vydanie vášho čísla IBAN.\n V prípade čakania dlhšieho ako 72 hodín nás kontaktujte na {email}"
     }
 }
