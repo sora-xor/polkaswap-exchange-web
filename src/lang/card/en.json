@@ -21,9 +21,11 @@
         },
         "okReadyText": "OK, I’m ready",
         "emailPlaceholder": "Email",
+        "noSpamText": "No spam! Only to secure your account",
         "sendCodeBtn": "Send SMS code",
         "firstNamePlaceholder": "First name",
         "lastNamePlaceholder": "Last name",
+        "verificationCodeText": "You will receive\\na verification code via SMS",
         "phonePlaceholder": "Phone Number",
         "statusPendingTitle": "Verification in progress",
         "sendEmailLinkBtn": "Send link",
@@ -95,6 +97,7 @@
         "oneTimeApplicationFee": "One-time fee to issue a card",
         "applicationFeeNote": "Note: paid card issuance will be available at a later stage.",
         "statusRejectReasonMultiple": "Your application has been rejected for multiple reasons:",
-        "ibanPendingDesc": "Your IBAN issuance is pending.<br />In case the wait longer than 72h contact us via {email}"
+        "selectCountryText": "Select your country",
+        "ibanPendingDesc": "Your IBAN issuance is pending.<br/>In case the wait longer than 72h contact us via {email}"
     }
 }

@@ -21,9 +21,11 @@
         },
         "okReadyText": "OK, ich bin bereit",
         "emailPlaceholder": "E-Mail",
+        "noSpamText": "Kein Spam! Nur um Ihr Konto zu sichern",
         "sendCodeBtn": "SMS Code senden",
         "firstNamePlaceholder": "Vorname",
         "lastNamePlaceholder": "Familienname, Nachname",
+        "verificationCodeText": "Sie erhalten einen Verifizierungscode per SMS",
         "phonePlaceholder": "Telefonnummer",
         "statusPendingTitle": "Überprüfung läuft",
         "sendEmailLinkBtn": "Link senden",
@@ -95,6 +97,7 @@
         "oneTimeApplicationFee": "Einmalige Gebühr für die Ausstellung einer Karte",
         "applicationFeeNote": "Hinweis: Die Ausstellung einer kostenpflichtigen Karte wird zu einem späteren Zeitpunkt verfügbar sein.",
         "statusRejectReasonMultiple": "Ihr Antrag wurde aus mehreren Gründen abgelehnt:",
+        "selectCountryText": "Wähle dein Land",
         "ibanPendingDesc": "Die Ausstellung Ihrer IBAN steht noch aus.\n Falls die Wartezeit länger als 72 Stunden dauert, kontaktieren Sie uns per {email}"
     }
 }

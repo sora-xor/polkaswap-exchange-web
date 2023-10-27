@@ -21,9 +21,11 @@
         },
         "okReadyText": "Ok, jestem gotowy",
         "emailPlaceholder": "E-mail",
+        "noSpamText": "Bez spamu! Tylko w celu zabezpieczenia Twojego konta",
         "sendCodeBtn": "Wyślij kod SMS",
         "firstNamePlaceholder": "Imię",
         "lastNamePlaceholder": "Nazwisko",
+        "verificationCodeText": "Otrzymasz \\n kod weryfikacyjny SMS-em",
         "phonePlaceholder": "Numer telefonu",
         "statusPendingTitle": "Trwa weryfikacja",
         "sendEmailLinkBtn": "Wyślij link",
@@ -95,6 +97,7 @@
         "oneTimeApplicationFee": "Opłata jednorazowa za wydanie karty",
         "applicationFeeNote": "Uwaga: wydawanie kart płatnych będzie możliwe w późniejszym terminie.",
         "statusRejectReasonMultiple": "Twój wniosek został odrzucony z wielu powodów:",
+        "selectCountryText": "Wybierz swój kraj",
         "ibanPendingDesc": "Wydanie Twojego numeru IBAN oczekuje na realizację.\n W przypadku, gdy czas oczekiwania będzie dłuższy niż 72 godziny, skontaktuj się z nami za pośrednictwem {email}"
     }
 }
