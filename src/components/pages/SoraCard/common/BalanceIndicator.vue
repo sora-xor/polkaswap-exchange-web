@@ -25,14 +25,12 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state } from '@/store/decorators';
 import { delay } from '@/utils';
 
-const hundred = 100;
-
 @Component
 export default class BalanceIndicator extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
   @state.soraCard.euroBalance private euroBalance!: string;
 
-  @Ref('progress') private readonly progressBar!: HTMLInputElement;
+  @Ref('progress') private readonly progressBar!: Nullable<HTMLInputElement>;
 
   @Watch('euroBalance')
   private handleEuroBalanceChange() {
@@ -47,17 +45,19 @@ export default class BalanceIndicator extends Mixins(TranslationMixin, mixins.Lo
   }
 
   async runProgressBarAnimation(): Promise<void> {
-    if (this.progressBar) {
-      const balanceInteger = Math.round(Number(this.euroBalance));
-      for (let i = 0; i < balanceInteger; i = i + 0.12) {
-        await delay(1);
-        this.progressBar.style.setProperty('width', `${i}%`);
-      }
+    if (!this.progressBar) return;
+
+    const balanceInteger = Math.round(Number(this.euroBalance));
+    for (let i = 0; i < balanceInteger; i = i + 0.12) {
+      await delay(1);
+      this.progressBar?.style?.setProperty?.('width', `${i}%`);
     }
   }
 
   mounted(): void {
-    setTimeout(this.runProgressBarAnimation, 2500);
+    this.$nextTick().then(() => {
+      setTimeout(this.runProgressBarAnimation, 2_500);
+    });
   }
 }
 </script>
