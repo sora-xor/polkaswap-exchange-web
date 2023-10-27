@@ -81,7 +81,7 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
   email = 'techsupport@soracard.com';
 
   get emailLink(): string {
-    return `<a href='mailto: ${this.email}'>${this.email}</a>`;
+    return `<a href='mailto: ${this.email} rel="nofollow noopener"'>${this.email}</a>`;
   }
 
   options: Array<Options> = [
@@ -203,10 +203,11 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
         font-weight: 400;
         border-radius: var(--s-border-radius-small);
         padding: 18px $basic-spacing;
+        line-height: 140%;
 
         .label {
           color: var(--s-color-base-content-secondary);
-          margin-bottom: 4px;
+          margin-bottom: 5px;
         }
       }
 
@@ -249,6 +250,8 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
 .sora-card-hub-info-iban-missing {
   a {
     color: var(--s-color-base-content-primary);
+
+    @include focus-outline;
   }
 }
 </style>
