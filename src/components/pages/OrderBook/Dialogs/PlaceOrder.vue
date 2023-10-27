@@ -1,24 +1,17 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="'Place limit order'" custom-class="dialog--confirm-swap">
+  <dialog-base :visible.sync="isVisible" :title="title" custom-class="dialog--confirm-swap">
     <div class="tokens">
       <div class="tokens-info-container">
-        <span class="token-value">{{ formattedFromValue }}</span>
-        <div v-if="tokenFrom" class="token">
-          <token-logo class="token-logo" :token="tokenFrom" />
-          {{ tokenFrom.symbol }}
-        </div>
+        <span class="token-value">{{ upperText }}</span>
+        <token-logo class="token-logo" :token="baseAsset" />
       </div>
-      <s-icon class="icon-divider" name="arrows-arrow-bottom-24" />
       <div class="tokens-info-container">
-        <span class="token-value">{{ formattedToValue }}</span>
-        <div v-if="tokenTo" class="token">
-          <token-logo class="token-logo" :token="tokenTo" />
-          {{ tokenTo.symbol }}
-        </div>
+        <span class="token-value">{{ lowerText }}</span>
+        <token-logo class="token-logo" :token="quoteAsset" />
       </div>
     </div>
 
-    <place-transaction-details />
+    <place-transaction-details class="transaction-details" />
     <template #footer>
       <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmSwap">
         {{ t('exchange.confirm') }}
@@ -28,11 +21,13 @@
 </template>
 
 <script lang="ts">
+import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { FPNumber } from '@sora-substrate/util';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import { Components } from '@/consts';
+import { Components, LimitOrderType } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
 
@@ -47,6 +42,9 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
+  @state.orderBook.baseValue baseValue!: string;
+  @state.orderBook.quoteValue quoteValue!: string;
+  @state.orderBook.side side!: PriceVariant;
   @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.swap.fromValue private fromValue!: string;
   @state.swap.toValue private toValue!: string;
@@ -57,18 +55,63 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
   @getter.swap.tokenTo tokenTo!: AccountAsset;
 
+  @getter.orderBook.baseAsset baseAsset!: AccountAsset;
+  @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
+
+  @Prop({ default: LimitOrderType.limit, type: String }) readonly type!: LimitOrderType;
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
+  @Prop({ default: true, type: Boolean }) readonly isBuySide!: boolean;
 
   get formattedFromValue(): string {
     return this.formatStringValue(this.fromValue, this.tokenFrom?.decimals);
+  }
+
+  get title(): string {
+    return this.type === LimitOrderType.limit ? 'Place limit order' : 'Place market order';
+  }
+
+  get upperText(): string {
+    const amount = this.type === LimitOrderType.limit ? this.baseValue : this.fromValue;
+    const symbol = this.type === LimitOrderType.limit ? this.baseAsset?.symbol : this.tokenFrom?.symbol;
+
+    return this.isBuySide ? `Buy ${amount} ${symbol}` : `Sell ${amount} ${symbol}`;
+  }
+
+  get lowerText(): string {
+    const price = this.quoteValue;
+    const symbol = this.type === LimitOrderType.limit ? this.quoteAsset?.symbol : this.tokenTo?.symbol;
+
+    return `at ${price} ${symbol}`;
   }
 
   get formattedToValue(): string {
     return this.formatStringValue(this.toValue, this.tokenTo?.decimals);
   }
 
+  async limitOrder() {
+    return await api.orderBook.placeLimitOrder(
+      this.baseAsset.address,
+      this.quoteAsset.address,
+      new FPNumber(this.quoteValue, FPNumber.DEFAULT_PRECISION).toCodecString(),
+      new FPNumber(this.baseValue, FPNumber.DEFAULT_PRECISION).toCodecString(),
+      this.side
+    );
+  }
+
+  async marketOrder() {
+    return await api.swap.execute(
+      this.tokenFrom,
+      this.tokenTo,
+      this.fromValue,
+      this.toValue,
+      this.slippageTolerance,
+      false,
+      LiquiditySourceTypes.OrderBook,
+      this.selectedDexId
+    );
+  }
+
   async handleConfirmSwap(): Promise<void> {
-    // TODO eith
     if (this.isInsufficientBalance) {
       this.$alert(
         this.t('exchange.insufficientBalance', { tokenSymbol: this.tokenFrom ? this.tokenFrom.symbol : '' }),
@@ -76,20 +119,10 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
       );
       this.$emit('confirm');
     } else {
+      const orderExtrinsic = this.type === LimitOrderType.limit ? this.limitOrder : this.marketOrder;
+
       try {
-        await this.withNotifications(
-          async () =>
-            await api.swap.execute(
-              this.tokenFrom,
-              this.tokenTo,
-              this.fromValue,
-              this.toValue,
-              this.slippageTolerance,
-              false,
-              LiquiditySourceTypes.OrderBook,
-              this.selectedDexId
-            )
-        );
+        await this.withNotifications(orderExtrinsic);
         this.$emit('confirm', true);
       } catch (error) {
         this.$emit('confirm');
@@ -108,9 +141,25 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
     word-break: break-all;
   }
 }
+
+.limit-order-type--buy {
+  .info-line-value {
+    color: #34ad87;
+  }
+}
+
+.limit-order-type--sell {
+  .info-line-value {
+    color: #f754a3;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
+.transaction-details {
+  margin-top: 16px;
+}
+
 .tokens {
   display: flex;
   flex-direction: column;
@@ -118,30 +167,12 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   line-height: var(--s-line-height-small);
   &-info-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     font-weight: 800;
   }
-}
-.token {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  white-space: nowrap;
-  &-value {
-    margin-right: $inner-spacing-medium;
-  }
-  &-logo {
-    display: block;
-    margin-right: $inner-spacing-medium;
-    flex-shrink: 0;
+
+  .token-logo {
+    margin-left: 16px;
   }
 }
-.transaction-message {
-  margin-top: $inner-spacing-mini;
-  color: var(--s-color-base-content-primary);
-  line-height: var(--s-line-height-big);
-}
-@include vertical-divider;
-@include vertical-divider('el-divider');
 </style>

@@ -2,7 +2,7 @@
   <div class="order-book-popover">
     <div class="order-book-popover__title">
       <span>Choose orderbook</span>
-      <s-tooltip slot="suffix" border-radius="mini" :content="t('alerts.typeTooltip')" placement="top" tabindex="-1">
+      <s-tooltip slot="suffix" border-radius="mini" :content="chooseOrderbookTooltip" placement="top" tabindex="-1">
         <s-icon name="info-16" size="14px" />
       </s-tooltip>
     </div>
@@ -13,7 +13,7 @@
         :highlight-current-row="false"
         @cell-click="chooseBook"
       >
-        <s-table-column>
+        <s-table-column :width="'170'">
           <template #header>
             <span>Token pair</span>
           </template>
@@ -24,7 +24,7 @@
             </div>
           </template>
         </s-table-column>
-        <s-table-column>
+        <s-table-column width="85">
           <template #header>
             <span>Price</span>
           </template>
@@ -54,6 +54,16 @@
           </template>
           <template v-slot="{ row }">
             <span :class="calculateColor(row.status)">{{ mapBookStatus(row.status) }}</span>
+            <s-tooltip
+              slot="suffix"
+              border-radius="mini"
+              :content="getTooltipText(row.status)"
+              placement="top"
+              tabindex="-1"
+              class="status-tooltip"
+            >
+              <s-icon name="info-16" size="14px" />
+            </s-tooltip>
           </template>
         </s-table-column>
       </s-table>
@@ -108,6 +118,25 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
 
   get tableItems() {
     return this.orderBooksFormatted;
+  }
+
+  get chooseOrderbookTooltip(): string {
+    return 'A real-time list showing current buy and sell orders for a cryptocurrency. It helps you understand the demand, potential price direction, and trade volume on the SORA Network and Polkaswap DEX';
+  }
+
+  getTooltipText(status: OrderBookStatus): string {
+    switch (status) {
+      case OrderBookStatus.Trade:
+        return 'Full trading functionality enabled. You can place new orders or cancel existing ones.';
+      case OrderBookStatus.PlaceAndCancel:
+        return 'Limited functionality. You can place new orders and cancel existing ones, but some features may be unavailable.';
+      case OrderBookStatus.OnlyCancel:
+        return 'You can only cancel existing orders. New order placement is currently disabled.';
+      case OrderBookStatus.Stop:
+        return 'All trading activities are currently halted. No orders can be placed or canceled at this time.';
+      default:
+        return 'Unknown';
+    }
   }
 
   deserializeKey(key: string) {
@@ -232,6 +261,11 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
 
   .price {
     color: var(--s-color-status-info);
+  }
+
+  .status-tooltip {
+    margin-left: 8px;
+    margin-bottom: 3px;
   }
 
   &__title {

@@ -1,6 +1,6 @@
 <template>
   <transaction-details :info-only="infoOnly">
-    <info-line :label="'order type'" :label-tooltip="'type'" :value="'SELL'" />
+    <info-line :label="'order type'" :label-tooltip="'type'" :value="side.toUpperCase()" :class="getComputedClass()" />
     <info-line
       :label="'limit price'"
       :label-tooltip="'order limit price'"
@@ -28,6 +28,7 @@
 </template>
 
 <script lang="ts">
+import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
@@ -53,6 +54,7 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
   @state.orderBook.quoteValue quoteValue!: string;
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.swap.toValue toValue!: string;
+  @state.orderBook.side side!: PriceVariant;
 
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
@@ -61,6 +63,12 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
 
   get baseSymbol(): string | undefined {
     return this.getAsset(this.baseAssetAddress)?.symbol;
+  }
+
+  getComputedClass(): string | undefined {
+    if (this.infoOnly) {
+      return this.side === PriceVariant.Buy ? 'limit-order-type--buy' : 'limit-order-type--sell';
+    }
   }
 
   get quoteSymbol(): string {
