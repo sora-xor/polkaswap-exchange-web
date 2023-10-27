@@ -21,9 +21,11 @@
         },
         "okReadyText": "Rendben, készen állok",
         "emailPlaceholder": "Email",
+        "noSpamText": "Nincs spam! Csak a fiók biztonsága érdekében",
         "sendCodeBtn": "SMS kód küldése",
         "firstNamePlaceholder": "Keresztnév",
         "lastNamePlaceholder": "Vezetéknév",
+        "verificationCodeText": "SMS-ben \\n fog kapni egy ellenőrző kódot",
         "phonePlaceholder": "Telefonszám",
         "statusPendingTitle": "Ellenőrzés folyamatban",
         "sendEmailLinkBtn": "Link elküldése",
@@ -94,6 +96,8 @@
         "or": "vagy",
         "oneTimeApplicationFee": "A kártya kiállításának egyszeri díja",
         "applicationFeeNote": "Megjegyzés: a fizetős kártya kibocsátása egy későbbi szakaszban lesz elérhető.",
-        "statusRejectReasonMultiple": "Jelentkezését több okból is elutasították:"
+        "statusRejectReasonMultiple": "Jelentkezését több okból is elutasították:",
+        "selectCountryText": "Válaszd ki az országod",
+        "ibanPendingDesc": "Az Ön IBAN-kibocsátása függőben van.\n 72 óránál hosszabb várakozás esetén vegye fel velünk a kapcsolatot a következő címen {email}"
     }
 }

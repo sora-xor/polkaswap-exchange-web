@@ -21,9 +21,11 @@
         },
         "okReadyText": "好的，我准备好了",
         "emailPlaceholder": "电子邮件",
+        "noSpamText": "不要垃圾邮件！只是为了保护您的账户",
         "sendCodeBtn": "发送短信代码",
         "firstNamePlaceholder": "名",
         "lastNamePlaceholder": "姓",
+        "verificationCodeText": "您将通过短信收到\\n验证码",
         "phonePlaceholder": "电话号码",
         "statusPendingTitle": "正在进行验证",
         "sendEmailLinkBtn": "发送链接",
@@ -94,6 +96,8 @@
         "or": "或者",
         "oneTimeApplicationFee": "一次性发卡费用",
         "applicationFeeNote": "注：付费卡发行将在稍后阶段提供。",
-        "statusRejectReasonMultiple": "您的申请因多种原因被拒绝："
+        "statusRejectReasonMultiple": "您的申请因多种原因被拒绝：",
+        "selectCountryText": "选择您所在的国家\/地区",
+        "ibanPendingDesc": "您的 IBAN 正在等待签发。\n如果等待时间超过 72 小时，请通过{email}联系我们"
     }
 }
