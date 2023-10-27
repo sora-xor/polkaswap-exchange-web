@@ -94,6 +94,7 @@
         "or": "vagy",
         "oneTimeApplicationFee": "A kártya kiállításának egyszeri díja",
         "applicationFeeNote": "Megjegyzés: a fizetős kártya kibocsátása egy későbbi szakaszban lesz elérhető.",
-        "statusRejectReasonMultiple": "Jelentkezését több okból is elutasították:"
+        "statusRejectReasonMultiple": "Jelentkezését több okból is elutasították:",
+        "ibanPendingDesc": "Az Ön IBAN-kibocsátása függőben van.\n 72 óránál hosszabb várakozás esetén vegye fel velünk a kapcsolatot a következő címen {email}"
     }
 }

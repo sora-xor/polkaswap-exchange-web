@@ -94,6 +94,7 @@
         "or": "或者",
         "oneTimeApplicationFee": "一次性发卡费用",
         "applicationFeeNote": "注：付费卡发行将在稍后阶段提供。",
-        "statusRejectReasonMultiple": "您的申请因多种原因被拒绝："
+        "statusRejectReasonMultiple": "您的申请因多种原因被拒绝：",
+        "ibanPendingDesc": "您的 IBAN 正在等待签发。\n如果等待时间超过 72 小时，请通过{email}联系我们"
     }
 }

@@ -94,6 +94,7 @@
         "or": "o",
         "oneTimeApplicationFee": "Tarifa única para emitir una tarjeta",
         "applicationFeeNote": "Nota: la emisión de tarjetas pagas estará disponible en una etapa posterior.",
-        "statusRejectReasonMultiple": "Su solicitud ha sido rechazada por múltiples motivos:"
+        "statusRejectReasonMultiple": "Su solicitud ha sido rechazada por múltiples motivos:",
+        "ibanPendingDesc": "Tu emisión de IBAN está pendiente.\n En caso de que la espera supere las 72h contáctenos vía {email}"
     }
 }

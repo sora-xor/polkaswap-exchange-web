@@ -94,6 +94,7 @@
         "or": "oder",
         "oneTimeApplicationFee": "Einmalige Gebühr für die Ausstellung einer Karte",
         "applicationFeeNote": "Hinweis: Die Ausstellung einer kostenpflichtigen Karte wird zu einem späteren Zeitpunkt verfügbar sein.",
-        "statusRejectReasonMultiple": "Ihr Antrag wurde aus mehreren Gründen abgelehnt:"
+        "statusRejectReasonMultiple": "Ihr Antrag wurde aus mehreren Gründen abgelehnt:",
+        "ibanPendingDesc": "Die Ausstellung Ihrer IBAN steht noch aus.\n Falls die Wartezeit länger als 72 Stunden dauert, kontaktieren Sie uns per {email}"
     }
 }

@@ -94,6 +94,7 @@
         "or": "tabi",
         "oneTimeApplicationFee": "Owo-akoko kan lati fun kaadi kan",
         "applicationFeeNote": "Akiyesi: ipinfunni kaadi sisan yoo wa ni ipele nigbamii.",
-        "statusRejectReasonMultiple": "Ohun elo rẹ ti kọ fun awọn idi pupọ:"
+        "statusRejectReasonMultiple": "Ohun elo rẹ ti kọ fun awọn idi pupọ:",
+        "ibanPendingDesc": "Ipinfunni IBAN rẹ ti wa ni isunmọtosi.\n Ti idaduro to gun ju wakati 72 lọ kan si wa nipasẹ {email}"
     }
 }
