@@ -27,7 +27,7 @@
 
     <div class="sora-card container sora-card-hub-info" v-loading="loading">
       <h4 class="sora-card-hub-info-title">{{ t('card.cardhub.accountInfo') }}</h4>
-      <div v-if="!userInfo.iban" class="sora-card-hub-info-iban">
+      <div v-if="userInfo.iban" class="sora-card-hub-info-iban">
         <s-input :placeholder="t('card.cardHub.ibanLabel')" :value="iban" readonly />
         <s-icon name="basic-copy-24" @click.native="handleCopyIban" />
       </div>
