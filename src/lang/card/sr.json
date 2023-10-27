@@ -25,7 +25,7 @@
         "sendCodeBtn": "Пошаљите СМС код",
         "firstNamePlaceholder": "Име",
         "lastNamePlaceholder": "Презиме",
-        "verificationCodeText": "Добићете \\n верификациони код путем СМС-а",
+        "verificationCodeText": "Добићете верификациони код путем СМС-а",
         "phonePlaceholder": "Број телефона",
         "statusPendingTitle": "Верификација је у току",
         "sendEmailLinkBtn": "Пошаљи линк",

@@ -25,7 +25,7 @@
         "sendCodeBtn": "Wyślij kod SMS",
         "firstNamePlaceholder": "Imię",
         "lastNamePlaceholder": "Nazwisko",
-        "verificationCodeText": "Otrzymasz \\n kod weryfikacyjny SMS-em",
+        "verificationCodeText": "Otrzymasz kod weryfikacyjny SMS-em",
         "phonePlaceholder": "Numer telefonu",
         "statusPendingTitle": "Trwa weryfikacja",
         "sendEmailLinkBtn": "Wyślij link",

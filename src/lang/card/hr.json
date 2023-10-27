@@ -25,7 +25,7 @@
         "sendCodeBtn": "Pošalji SMS kod",
         "firstNamePlaceholder": "Ime",
         "lastNamePlaceholder": "Prezime",
-        "verificationCodeText": "Primit ćete \\n kontrolni kod putem SMS-a",
+        "verificationCodeText": "Primit ćete kontrolni kod putem SMS-a",
         "phonePlaceholder": "Broj telefona",
         "statusPendingTitle": "Provjera u tijeku",
         "sendEmailLinkBtn": "Pošalji link",

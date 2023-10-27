@@ -25,7 +25,7 @@
         "sendCodeBtn": "Отправить SMS-код",
         "firstNamePlaceholder": "Имя",
         "lastNamePlaceholder": "Фамилия",
-        "verificationCodeText": "Вы получите\\nкод подтверждения по SMS",
+        "verificationCodeText": "Вы получите код подтверждения по SMS",
         "phonePlaceholder": "Номер телефона",
         "statusPendingTitle": "Выполняется проверка",
         "sendEmailLinkBtn": "Отправить ссылку",

@@ -25,7 +25,7 @@
         "sendCodeBtn": "Skicka SMS-kod",
         "firstNamePlaceholder": "Förnamn",
         "lastNamePlaceholder": "Efternamn",
-        "verificationCodeText": "Du kommer att få \\n en verifieringskod via SMS",
+        "verificationCodeText": "Du kommer att få en verifieringskod via SMS",
         "phonePlaceholder": "Telefonnummer",
         "statusPendingTitle": "Verifiering pågår",
         "sendEmailLinkBtn": "Skicka länk",

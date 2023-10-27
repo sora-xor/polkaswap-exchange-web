@@ -25,7 +25,7 @@
         "sendCodeBtn": "Kirim kode SMS",
         "firstNamePlaceholder": "Nama depan",
         "lastNamePlaceholder": "nama keluarga",
-        "verificationCodeText": "Anda akan menerima \\n kode verifikasi melalui SMS",
+        "verificationCodeText": "Anda akan menerima kode verifikasi melalui SMS",
         "phonePlaceholder": "Nomor telepon",
         "statusPendingTitle": "Verifikasi sedang berlangsung",
         "sendEmailLinkBtn": "Kirim tautan",

@@ -25,7 +25,7 @@
         "sendCodeBtn": "发送短信代码",
         "firstNamePlaceholder": "名",
         "lastNamePlaceholder": "姓",
-        "verificationCodeText": "您将通过短信收到\\n验证码",
+        "verificationCodeText": "您将通过短信收到验证码",
         "phonePlaceholder": "电话号码",
         "statusPendingTitle": "正在进行验证",
         "sendEmailLinkBtn": "发送链接",

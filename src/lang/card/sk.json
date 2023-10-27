@@ -25,7 +25,7 @@
         "sendCodeBtn": "Pošlite SMS kód",
         "firstNamePlaceholder": "Krstné meno",
         "lastNamePlaceholder": "Priezvisko",
-        "verificationCodeText": "Dostanete \\n overovací kód prostredníctvom SMS",
+        "verificationCodeText": "Dostanete overovací kód prostredníctvom SMS",
         "phonePlaceholder": "Telefónne číslo",
         "statusPendingTitle": "Prebieha overovanie",
         "sendEmailLinkBtn": "Odoslať odkaz",

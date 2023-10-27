@@ -25,7 +25,7 @@
         "sendCodeBtn": "Send SMS code",
         "firstNamePlaceholder": "First name",
         "lastNamePlaceholder": "Last name",
-        "verificationCodeText": "You will receive\\na verification code via SMS",
+        "verificationCodeText": "You will receive a verification code via SMS",
         "phonePlaceholder": "Phone Number",
         "statusPendingTitle": "Verification in progress",
         "sendEmailLinkBtn": "Send link",

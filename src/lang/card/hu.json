@@ -25,7 +25,7 @@
         "sendCodeBtn": "SMS kód küldése",
         "firstNamePlaceholder": "Keresztnév",
         "lastNamePlaceholder": "Vezetéknév",
-        "verificationCodeText": "SMS-ben \\n fog kapni egy ellenőrző kódot",
+        "verificationCodeText": "SMS-ben fog kapni egy ellenőrző kódot",
         "phonePlaceholder": "Telefonszám",
         "statusPendingTitle": "Ellenőrzés folyamatban",
         "sendEmailLinkBtn": "Link elküldése",

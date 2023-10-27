@@ -25,7 +25,7 @@
         "sendCodeBtn": "Pošlete SMS kód",
         "firstNamePlaceholder": "Jméno",
         "lastNamePlaceholder": "Příjmení",
-        "verificationCodeText": "Obdržíte \\n ověřovací kód prostřednictvím SMS",
+        "verificationCodeText": "Obdržíte ověřovací kód prostřednictvím SMS",
         "phonePlaceholder": "Telefonní číslo",
         "statusPendingTitle": "Probíhá ověřování",
         "sendEmailLinkBtn": "Poslat odkaz",

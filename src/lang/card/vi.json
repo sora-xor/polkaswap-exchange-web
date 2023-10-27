@@ -25,7 +25,7 @@
         "sendCodeBtn": "Gửi mã SMS",
         "firstNamePlaceholder": "Họ",
         "lastNamePlaceholder": "Tên",
-        "verificationCodeText": "Bạn sẽ nhận được\\nmã xác minh qua SMS",
+        "verificationCodeText": "Bạn sẽ nhận được mã xác minh qua SMS",
         "phonePlaceholder": "Số điện thoại",
         "statusPendingTitle": "Đang xác minh",
         "sendEmailLinkBtn": "Gửi link",
