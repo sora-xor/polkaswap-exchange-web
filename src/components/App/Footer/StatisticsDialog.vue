@@ -1,8 +1,8 @@
 <template>
   <dialog-base :visible.sync="visibility" :title="t('footer.statistics.dialog.title')" class="select-indexer-dialog">
     <select-indexer
-      v-model="selectedIndexerType"
-      :ceres-api="useCeresApi"
+      :indexer.sync="selectedIndexerType"
+      :ceres.sync="useCeresApi"
       :indexers="indexers"
       :environment="soraNetwork"
     />
@@ -13,10 +13,11 @@
 import { components, mixins, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
+import { getIndexerName } from '@/components/App/Footer/Indexer/utils';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state, mutation } from '@/store/decorators';
+import { action, state, mutation } from '@/store/decorators';
 import { Indexer } from '@/types/indexers';
 
 const IndexerListView = 'IndexerListView';
@@ -32,40 +33,25 @@ const IndexerInfoView = 'IndexerInfoView';
 export default class SelectIndexerDialog extends Mixins(TranslationMixin, mixins.NotificationMixin) {
   @state.settings.selectIndexerDialogVisibility private selectIndexerDialogVisibility!: boolean;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @state.wallet.settings.subqueryEndpoint subqueryEndpoint!: Indexer['endpoint'];
-  @state.wallet.settings.subsquidEndpoint subsquidEndpoint!: Indexer['endpoint'];
-  @state.wallet.settings.subqueryStatus private subqueryStatus!: WALLET_TYPES.ConnectionStatus;
-  @state.wallet.settings.subsquidStatus private subsquidStatus!: WALLET_TYPES.ConnectionStatus;
+  @state.wallet.settings.indexers private indexersData!: any;
   @state.wallet.settings.indexerType indexerType!: Indexer['type'];
+  @state.wallet.account.ceresFiatValuesUsage private ceresFiatValuesUsage!: any;
 
   @mutation.settings.setSelectIndexerDialogVisibility setSelectIndexerDialogVisibility!: (flag: boolean) => void;
-  @mutation.wallet.settings.setIndexerType setIndexerType!: (type: WALLET_CONSTS.IndexerType) => void;
+  @action.wallet.settings.selectIndexer private selectIndexer!: (type: WALLET_CONSTS.IndexerType) => Promise<void>;
+  @action.wallet.account.useCeresApiForFiatValues private useCeresApiForFiatValues!: (flag: boolean) => Promise<void>;
 
   currentView = IndexerListView;
 
-  get isSubqueryOnline(): boolean {
-    return this.subqueryStatus === WALLET_TYPES.ConnectionStatus.Available;
-  }
-
-  get isSubsquidOnline(): boolean {
-    return this.subsquidStatus === WALLET_TYPES.ConnectionStatus.Available;
-  }
-
   get indexers(): Indexer[] {
-    return [
-      {
-        name: 'Subquery',
-        type: WALLET_CONSTS.IndexerType.SUBQUERY,
-        endpoint: this.subqueryEndpoint,
-        online: this.isSubqueryOnline,
-      },
-      {
-        name: 'Subsquid',
-        type: WALLET_CONSTS.IndexerType.SUBSQUID,
-        endpoint: this.subsquidEndpoint,
-        online: this.isSubsquidOnline,
-      },
-    ];
+    return [WALLET_CONSTS.IndexerType.SUBQUERY, WALLET_CONSTS.IndexerType.SUBSQUID].map((type) => {
+      return {
+        name: getIndexerName(type),
+        type,
+        endpoint: this.indexersData[type].endpoint,
+        online: this.indexersData[type].status === WALLET_TYPES.ConnectionStatus.Available,
+      };
+    });
   }
 
   get indexer(): Indexer {
@@ -86,7 +72,11 @@ export default class SelectIndexerDialog extends Mixins(TranslationMixin, mixins
   }
 
   get useCeresApi(): boolean {
-    return true;
+    return this.ceresFiatValuesUsage;
+  }
+
+  set useCeresApi(flag: boolean) {
+    this.useCeresApiForFiatValues(flag);
   }
 
   get selectedIndexerType(): WALLET_CONSTS.IndexerType {
@@ -101,8 +91,8 @@ export default class SelectIndexerDialog extends Mixins(TranslationMixin, mixins
     this.handleIndexer(indexer);
   }
 
-  handleIndexer(indexer: Indexer): void {
-    this.setIndexerType(indexer.type);
+  async handleIndexer(indexer: Indexer): Promise<void> {
+    await this.selectIndexer(indexer.type);
 
     if (this.indexer.type === indexer.type && this.currentView === IndexerInfoView) {
       this.handleBack();
