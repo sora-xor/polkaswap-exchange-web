@@ -212,6 +212,10 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
       &:hover {
         cursor: pointer;
       }
+
+      &:hover i {
+        color: var(--s-color-base-content-secondary);
+      }
     }
 
     &-info {
@@ -228,14 +232,14 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
           color: var(--s-color-base-content-secondary);
           margin-bottom: 5px;
         }
+
+        &:hover i {
+          color: var(--s-color-base-content-secondary);
+        }
       }
 
       i {
         color: var(--s-color-base-content-tertiary);
-      }
-
-      &:hover i {
-        color: var(--s-color-base-content-secondary);
       }
     }
   }
