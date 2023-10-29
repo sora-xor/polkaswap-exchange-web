@@ -609,7 +609,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 }
 
 .order-book-whitelist.el-popover {
-  border-radius: 20px;
+  border-radius: var(--s-border-radius-small);
   padding: 0;
 }
 .setup-price-alert {
@@ -641,7 +641,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   &-choose-pair {
     width: 100%;
     background: var(--base-day-background, #f4f0f1);
-    border-radius: 20px;
+    border-radius: var(--s-border-radius-small);
     margin-bottom: 8px;
     padding: 10px 16px;
   }
@@ -745,6 +745,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       line-height: var(--s-line-height-small);
       font-weight: 700;
     }
+  }
+}
+
+[design-system-theme='dark'] {
+  .order-book-choose-pair {
+    background: var(--s-color-base-background);
   }
 }
 </style>

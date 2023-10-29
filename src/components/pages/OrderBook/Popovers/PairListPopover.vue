@@ -207,7 +207,8 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
 .orderbook-whitelist {
   &-table {
     width: 750px;
-    border-radius: 20px;
+    border-bottom-left-radius: var(--s-border-radius-small);
+    border-bottom-right-radius: var(--s-border-radius-small);
     display: flex;
     flex-flow: column nowrap;
     flex: 1;
@@ -215,14 +216,12 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
     // overwrite table styles
     .el-table__body-wrapper {
       height: 400px;
-      background-color: rgba(42, 23, 31, 0.07);
       background-color: var(--s-color-utility-body);
     }
 
     .el-table__header-wrapper {
       .el-table__header thead th {
         background-color: rgba(42, 23, 31, 0.07);
-        color: var(--s-color-base-content-secondary);
         .cell {
           font-weight: 400 !important;
         }
@@ -246,8 +245,8 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
 
 .order-book-popover {
   width: 750px;
-  background: #f4f0f1;
-  border: #f4f0f1;
+  background-color: var(--s-color-utility-body);
+  border-radius: var(--s-border-radius-small);
 
   .cell {
     display: flex;
@@ -274,6 +273,7 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
     font-weight: 500;
     font-size: 17px;
     margin-left: 16px;
+    color: var(--s-color-base-content-primary);
 
     .el-tooltip {
       margin-left: 8px;
@@ -290,6 +290,18 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
     color: var(--status-day-error, #f754a3);
     font-weight: 600;
     text-transform: uppercase;
+  }
+}
+
+[design-system-theme='dark'] {
+  .orderbook-whitelist {
+    &-table {
+      .el-table__header-wrapper {
+        .el-table__header thead th {
+          background-color: var(--s-color-utility-body);
+        }
+      }
+    }
   }
 }
 </style>

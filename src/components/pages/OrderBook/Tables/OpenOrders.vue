@@ -183,7 +183,8 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 
 <style lang="scss">
 .limit-order-table {
-  border-radius: 20px;
+  border-bottom-left-radius: var(--s-border-radius-small);
+  border-bottom-right-radius: var(--s-border-radius-small);
   font-size: 12px;
 
   .el-table__header-wrapper {

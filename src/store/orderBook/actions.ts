@@ -81,7 +81,7 @@ const actions = defineActions({
     commit.setUserLimitOrderUpdates(subscription);
   },
 
-  async unsubscribeFromOrderBook(context): Promise<void> {
+  unsubscribeFromOrderBook(context): void {
     const { commit } = orderBookActionContext(context);
     commit.resetAsks();
     commit.resetBids();

@@ -45,7 +45,7 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
 
   @action.orderBook.subscribeToOrderBook subscribeToOrderBook!: any;
-  @action.orderBook.unsubscribeFromOrderBook unsubscribeFromOrderBook!: AsyncFnWithoutArgs;
+  @action.orderBook.unsubscribeFromOrderBook unsubscribeFromOrderBook!: FnWithoutArgs;
 
   async beforeRouteLeave(to: Route, from: Route, next: NavigationGuardNext<Vue>): Promise<void> {
     this.unsubscribeFromOrderBook();
