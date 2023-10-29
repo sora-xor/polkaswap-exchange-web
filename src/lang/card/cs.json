@@ -21,9 +21,11 @@
         },
         "okReadyText": "OK, jsem připraven",
         "emailPlaceholder": "E-mailem",
+        "noSpamText": "Žádný spam! Pouze pro zabezpečení vašeho účtu",
         "sendCodeBtn": "Pošlete SMS kód",
         "firstNamePlaceholder": "Jméno",
         "lastNamePlaceholder": "Příjmení",
+        "verificationCodeText": "Obdržíte \\n ověřovací kód prostřednictvím SMS",
         "phonePlaceholder": "Telefonní číslo",
         "statusPendingTitle": "Probíhá ověřování",
         "sendEmailLinkBtn": "Poslat odkaz",
@@ -94,6 +96,8 @@
         "or": "nebo",
         "oneTimeApplicationFee": "Jednorázový poplatek za vydání karty",
         "applicationFeeNote": "Poznámka: Vydání placené karty bude k dispozici později.",
-        "statusRejectReasonMultiple": "Vaše přihláška byla zamítnuta z několika důvodů:"
+        "statusRejectReasonMultiple": "Vaše přihláška byla zamítnuta z několika důvodů:",
+        "selectCountryText": "Vyberte vaší zemi",
+        "ibanPendingDesc": "Vaše vydání IBAN čeká na vyřízení.\n V případě, že čekáte déle než 72 hodin, kontaktujte nás prostřednictvím {email}"
     }
 }

@@ -124,13 +124,8 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
     if (this.currentStatus === VerificationStatus.Accepted) {
       await this.getUserIban();
 
-      if (this.userInfo.iban) {
-        this.step = Step.Dashboard;
-        return;
-      } else {
-        this.step = Step.ConfirmationInfo;
-        return;
-      }
+      this.step = Step.Dashboard;
+      return;
     }
 
     if ([VerificationStatus.Pending, VerificationStatus.Rejected].includes(this.currentStatus)) {

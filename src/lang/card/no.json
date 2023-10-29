@@ -21,9 +21,11 @@
         },
         "okReadyText": "Ok jeg er klar",
         "emailPlaceholder": "E-post",
+        "noSpamText": "Ingen spam! Kun for å sikre kontoen din",
         "sendCodeBtn": "Send SMS-kode",
         "firstNamePlaceholder": "Fornavn",
         "lastNamePlaceholder": "Etternavn",
+        "verificationCodeText": "Du vil motta \\n en bekreftelseskode via SMS",
         "phonePlaceholder": "Telefonnummer",
         "statusPendingTitle": "Verifisering pågår",
         "sendEmailLinkBtn": "Send lenke",
@@ -94,6 +96,8 @@
         "or": "eller",
         "oneTimeApplicationFee": "Engangsavgift for å utstede et kort",
         "applicationFeeNote": "Merk: utstedelse av betalingskort vil være tilgjengelig på et senere tidspunkt.",
-        "statusRejectReasonMultiple": "Søknaden din har blitt avvist av flere årsaker:"
+        "statusRejectReasonMultiple": "Søknaden din har blitt avvist av flere årsaker:",
+        "selectCountryText": "Velg ditt land",
+        "ibanPendingDesc": "Din IBAN-utstedelse venter.\n Hvis ventetiden er lengre enn 72 timer, kontakt oss via {email}"
     }
 }
