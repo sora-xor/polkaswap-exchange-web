@@ -21,9 +21,11 @@
         },
         "okReadyText": "OK, je suis prêt(e)",
         "emailPlaceholder": "E-mail",
+        "noSpamText": "Pas de spam. Seulement pour sécuriser votre compte",
         "sendCodeBtn": "Envoyer le code",
         "firstNamePlaceholder": "Prénom",
         "lastNamePlaceholder": "Nom de famille",
+        "verificationCodeText": "Vous allez recevoir un code de vérification par SMS",
         "phonePlaceholder": "Numéro de téléphone",
         "statusPendingTitle": "Vérification en cours",
         "sendEmailLinkBtn": "Envoyer le lien",
@@ -94,6 +96,8 @@
         "or": "ou",
         "oneTimeApplicationFee": "Frais uniques pour émettre une carte",
         "applicationFeeNote": "Remarque : l'émission de cartes payantes sera disponible ultérieurement.",
-        "statusRejectReasonMultiple": "Votre candidature a été rejetée pour plusieurs raisons :"
+        "statusRejectReasonMultiple": "Votre candidature a été rejetée pour plusieurs raisons :",
+        "selectCountryText": "Sélectionnez votre pays",
+        "ibanPendingDesc": "Votre émission d'IBAN est en attente.\n En cas d'attente supérieure à 72 heures, contactez-nous via {email}"
     }
 }
