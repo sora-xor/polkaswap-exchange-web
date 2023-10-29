@@ -9,7 +9,17 @@
         draggable="false"
         class="unselectable sora-card-hub-image"
       />
-      <formatted-amount class="sora-card-hub-balance" :value="balance" fiatSign="€" value-can-be-hidden is-fiat-value />
+      <formatted-amount
+        v-if="userInfo.iban"
+        class="sora-card-hub-balance"
+        :value="balance"
+        fiatSign="€"
+        value-can-be-hidden
+        is-fiat-value
+      />
+      <p class="sora-card-hub-management-coming">
+        {{ t('card.cardHub.comingSoon') }}
+      </p>
       <div class="sora-card-hub-options">
         <s-button
           v-for="option in options"
@@ -124,6 +134,7 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
 .sora-card {
   &-hub {
     &-balance {
+      margin-bottom: $basic-spacing;
       .formatted-amount {
         font-size: 28px;
         letter-spacing: -0.56px;
@@ -176,6 +187,14 @@ export default class Dashboard extends Mixins(mixins.LoadingMixin, TranslationMi
       svg {
         margin-right: $inner-spacing-mini;
       }
+    }
+
+    &-management-coming {
+      text-align: center;
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-medium);
+      margin-bottom: $basic-spacing-mini;
+      font-weight: 500;
     }
 
     &-logout {
