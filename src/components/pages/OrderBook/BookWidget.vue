@@ -309,6 +309,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
 <style lang="scss">
 $row-height: 24px;
+$background-column-color: #e7dadd;
 
 .stock-book {
   .row {
@@ -372,7 +373,7 @@ $row-height: 24px;
     align-items: center;
     height: 30px;
     line-height: 30px;
-    background-color: rgba($color: #e7dadd, $alpha: 0.2);
+    background-color: rgba($color: $background-column-color, $alpha: 0.2);
 
     .mark-price {
       font-size: 24px;
@@ -407,7 +408,7 @@ $row-height: 24px;
 
   .book-columns {
     opacity: 0.3;
-    background: #e7dadd;
+    background-color: $background-column-color;
     display: flex;
     width: 100%;
     color: var(--s-color-base-content-primary);
@@ -436,5 +437,11 @@ $row-height: 24px;
   color: var(--s-color-base-content-tertiary);
   text-align: center;
   height: $row-height * 9;
+}
+
+[design-system-theme='dark'] {
+  .book-columns {
+    background-color: var(--s-color-base-background);
+  }
 }
 </style>

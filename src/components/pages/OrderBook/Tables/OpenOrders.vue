@@ -246,4 +246,13 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     height: 380px;
   }
 }
+
+[design-system-theme='dark'] {
+  .el-table__header-wrapper {
+    background-color: var(--s-color-utility-surface);
+    th {
+      background-color: var(--s-color-utility-surface);
+    }
+  }
+}
 </style>
