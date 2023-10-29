@@ -217,6 +217,11 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
     .el-table__body-wrapper {
       height: 400px;
       background-color: var(--s-color-utility-body);
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
 
     .el-table__header-wrapper {

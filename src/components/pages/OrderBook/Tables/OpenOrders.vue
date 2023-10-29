@@ -195,6 +195,11 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     }
   }
   .el-table__body-wrapper {
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
     background-color: var(--s-color-utility-surface);
 
     .el-table__row {
