@@ -25,7 +25,7 @@
         "sendCodeBtn": "Skicka SMS-kod",
         "firstNamePlaceholder": "Förnamn",
         "lastNamePlaceholder": "Efternamn",
-        "verificationCodeText": "Du kommer att få \\n en verifieringskod via SMS",
+        "verificationCodeText": "Du kommer att få en verifieringskod via SMS",
         "phonePlaceholder": "Telefonnummer",
         "statusPendingTitle": "Verifiering pågår",
         "sendEmailLinkBtn": "Skicka länk",
@@ -98,6 +98,7 @@
         "applicationFeeNote": "Obs! Utfärdande av betalkort kommer att vara tillgängligt i ett senare skede.",
         "statusRejectReasonMultiple": "Din ansökan har avvisats av flera skäl:",
         "selectCountryText": "Välj ditt land",
+        "filterCountries": "Filtrera efter land eller riktnummer",
         "ibanPendingDesc": "Ditt IBAN-utfärdande väntar.\n Om väntan är längre än 72 timmar kontakta oss via {email}"
     }
 }

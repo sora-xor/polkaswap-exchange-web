@@ -172,6 +172,7 @@ export enum Components {
   ConfirmationInfo = 'pages/SoraCard/ConfirmationInfo',
   TermsAndConditions = 'pages/SoraCard/steps/TermsAndConditions',
   ToSDialog = 'pages/SoraCard/steps/ToSDialog',
+  SelectCountryDialog = 'pages/SoraCard/steps/SelectCountryDialog',
   Phone = 'pages/SoraCard/steps/Phone',
   Email = 'pages/SoraCard/steps/Email',
   Payment = 'pages/SoraCard/steps/Payment',

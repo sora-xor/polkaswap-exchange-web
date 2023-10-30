@@ -98,6 +98,7 @@
         "applicationFeeNote": "Remarque : l'émission de cartes payantes sera disponible ultérieurement.",
         "statusRejectReasonMultiple": "Votre candidature a été rejetée pour plusieurs raisons :",
         "selectCountryText": "Sélectionnez votre pays",
+        "filterCountries": "Filtrer par pays ou code d'appel",
         "ibanPendingDesc": "Votre émission d'IBAN est en attente.\n En cas d'attente supérieure à 72 heures, contactez-nous via {email}"
     }
 }
