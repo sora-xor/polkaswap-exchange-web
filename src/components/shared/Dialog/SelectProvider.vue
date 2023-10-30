@@ -1,16 +1,24 @@
 <template>
   <dialog-base :visible.sync="visibility" :title="t('createPair.connect')">
-    <ul class="providers-list">
-      <li
+    <connection-items :size="providers.length">
+      <account-card
+        v-button
         v-for="provider in providers"
         :key="provider.name"
-        class="providers-list-item provider"
-        @click="handleProviderClick(provider.name)"
+        tabindex="0"
+        @click.native="handleProviderClick(provider.name)"
       >
-        <img :src="provider.icon" class="provider-logo" />
-        <span class="provider-name">{{ provider.name }}</span>
-      </li>
-    </ul>
+        <template #avatar>
+          <img :src="provider.icon" :alt="provider.name" class="provider-logo" />
+        </template>
+        <template #name>{{ provider.name }}</template>
+        <template #default>
+          <s-button v-if="provider.connected" size="small" disabled>
+            {{ t('connection.wallet.connected') }}
+          </s-button>
+        </template>
+      </account-card>
+    </connection-items>
   </dialog-base>
 </template>
 
@@ -19,17 +27,19 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
-import { action, state } from '@/store/decorators';
+import { state } from '@/store/decorators';
 import { Provider } from '@/utils/ethers-util';
 
 type WalletProvider = {
   name: Provider;
   icon: any;
-  selected: boolean;
+  connected: boolean;
 };
 
 @Component({
   components: {
+    AccountCard: components.AccountCard,
+    ConnectionItems: components.ConnectionItems,
     DialogBase: components.DialogBase,
   },
 })
@@ -51,7 +61,7 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
       return {
         name: provider,
         icon: this.getEvmProviderIcon(provider),
-        selected: provider === this.evmProvider,
+        connected: provider === this.evmProvider,
       };
     });
   }
@@ -64,20 +74,7 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
 </script>
 
 <style lang="scss" scoped>
-.providers-list {
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  flex-flow: column nowrap;
-  gap: $inner-spacing-medium;
-}
-
 .provider {
-  display: flex;
-  align-items: center;
-  flex-flow: row nowrap;
-  gap: $inner-spacing-medium;
-
   &-logo {
     height: var(--s-size-medium);
     width: var(--s-size-medium);
