@@ -331,7 +331,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     href: '/#/stats',
   },
   {
-    icon: 'sora-card',
+    icon: 'el-icon-bank-card',
     title: PageNames.SoraCard,
     href: '/#/card',
   },
