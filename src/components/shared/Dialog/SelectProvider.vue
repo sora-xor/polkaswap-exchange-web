@@ -3,9 +3,9 @@
     <ul class="providers-list">
       <li
         v-for="provider in providers"
-        :key="provider.value"
+        :key="provider.name"
         class="providers-list-item provider"
-        @click="handleProviderClick(provider.value)"
+        @click="handleProviderClick(provider.name)"
       >
         <img :src="provider.icon" class="provider-logo" />
         <span class="provider-name">{{ provider.name }}</span>
@@ -25,17 +25,10 @@ import { action, state } from '@/store/decorators';
 import { Provider } from '@/utils/ethers-util';
 
 type WalletProvider = {
-  name: string;
-  value: Provider;
+  name: Provider;
   icon: any;
   selected: boolean;
 };
-
-const WalletProviders = [Provider.Metamask, Provider.WalletConnect].map((provider) => ({
-  value: provider,
-  name: provider,
-  icon: `/wallet/${provider}.svg`,
-}));
 
 @Component({
   components: {
@@ -43,7 +36,6 @@ const WalletProviders = [Provider.Metamask, Provider.WalletConnect].map((provide
   },
 })
 export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
-  @state.web3.evmProvider evmProvider!: Nullable<Provider>;
   @state.web3.selectProviderDialogVisibility private selectProviderDialogVisibility!: boolean;
 
   @action.web3.resetEvmProvider resetEvmProvider!: FnWithoutArgs;
@@ -57,10 +49,15 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
   }
 
   get providers(): WalletProvider[] {
-    return WalletProviders.map((provider) => ({
-      ...provider,
-      selected: provider.value === this.evmProvider,
-    }));
+    return Object.keys(Provider).map((key) => {
+      const provider = Provider[key];
+
+      return {
+        name: provider,
+        icon: this.getEvmProviderIcon(provider),
+        selected: provider === this.evmProvider,
+      };
+    });
   }
 
   handleProviderClick(provider: Provider): void {

@@ -100,19 +100,26 @@
                 />
               </template>
             </div>
-            <div v-if="sender" class="bridge-item-footer">
+            <div v-if="sender" class="connect-wallet-panel">
               <s-divider type="tertiary" />
-              <s-tooltip
-                :content="getCopyTooltip(isSoraToEvm)"
-                border-radius="mini"
-                placement="bottom-end"
-                tabindex="-1"
-              >
-                <span class="bridge-network-address" @click="handleCopyAddress(sender, $event)">
-                  {{ formatAddress(sender, 8) }}
-                </span>
-              </s-tooltip>
-              <span v-if="!isSubBridge && !isSoraToEvm" class="bridge-network-address" @click="connectExternalWallet">
+              <div class="connect-wallet-provider">
+                <img
+                  v-if="!isSubBridge && !isSoraToEvm && evmProvider"
+                  :src="getEvmProviderIcon(evmProvider)"
+                  class="connect-wallet-provider-logo"
+                />
+                <s-tooltip
+                  :content="getCopyTooltip(isSoraToEvm)"
+                  border-radius="mini"
+                  placement="bottom-end"
+                  tabindex="-1"
+                >
+                  <span class="connect-wallet-address" @click="handleCopyAddress(sender, $event)">
+                    {{ formatAddress(sender, 8) }}
+                  </span>
+                </s-tooltip>
+              </div>
+              <span v-if="!isSubBridge && !isSoraToEvm" class="connect-wallet-address" @click="connectExternalWallet">
                 {{ t('changeAccountText') }}
               </span>
               <span v-else>{{ t('connectedText') }}</span>
@@ -184,19 +191,26 @@
                 />
               </template>
             </div>
-            <div v-if="recipient" class="bridge-item-footer">
+            <div v-if="recipient" class="connect-wallet-panel">
               <s-divider type="tertiary" />
-              <s-tooltip
-                :content="getCopyTooltip(!isSoraToEvm)"
-                border-radius="mini"
-                placement="bottom-end"
-                tabindex="-1"
-              >
-                <span class="bridge-network-address" @click="handleCopyAddress(recipient, $event)">
-                  {{ formatAddress(recipient, 8) }}
-                </span>
-              </s-tooltip>
-              <span v-if="isSubBridge || isSoraToEvm" class="bridge-network-address" @click="connectExternalWallet">
+              <div class="connect-wallet-provider">
+                <img
+                  v-if="!isSubBridge && isSoraToEvm && evmProvider"
+                  :src="getEvmProviderIcon(evmProvider)"
+                  class="connect-wallet-provider-logo"
+                />
+                <s-tooltip
+                  :content="getCopyTooltip(!isSoraToEvm)"
+                  border-radius="mini"
+                  placement="bottom-end"
+                  tabindex="-1"
+                >
+                  <span class="connect-wallet-address" @click="handleCopyAddress(recipient, $event)">
+                    {{ formatAddress(recipient, 8) }}
+                  </span>
+                </s-tooltip>
+              </div>
+              <span v-if="isSubBridge || isSoraToEvm" class="connect-wallet-address" @click="connectExternalWallet">
                 {{ t('changeAccountText') }}
               </span>
               <span v-else>{{ t('connectedText') }}</span>
@@ -753,6 +767,31 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
 </style>
 
 <style lang="scss" scoped>
+.connect-wallet {
+  &-panel {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-medium);
+    color: var(--s-color-base-content-primary);
+  }
+
+  &-address {
+    @include copy-address;
+  }
+
+  &-provider {
+    display: flex;
+    gap: $inner-spacing-mini;
+
+    &-logo {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
 .bridge {
   flex-direction: column;
   align-items: center;
@@ -781,19 +820,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     align-items: center;
     gap: $inner-spacing-mini;
     margin-left: auto;
-  }
-
-  &-item-footer {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    font-size: var(--s-font-size-mini);
-    line-height: var(--s-line-height-medium);
-    color: var(--s-color-base-content-primary);
-  }
-
-  &-network-address {
-    @include copy-address;
   }
 
   &-footer {
