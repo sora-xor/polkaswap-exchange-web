@@ -5,8 +5,8 @@
         <book-charts-widget class="chart-widget" />
       </s-col>
     </s-row>
-    <s-row :gutter="5">
-      <s-col :xs="6" :sm="6" :md="6" :lg="6">
+    <s-row flex justify="center" :gutter="5">
+      <s-col center :xs="6" :sm="6" :md="6" :lg="6">
         <set-limit-order-widget class="set-widget" />
       </s-col>
       <s-col :xs="6" :sm="6" :md="6" :lg="6">
@@ -14,7 +14,9 @@
       </s-col>
     </s-row>
     <s-row>
-      <history-order-widget class="history-widget" />
+      <s-col>
+        <history-order-widget class="history-widget" />
+      </s-col>
     </s-row>
   </div>
 </template>
@@ -68,7 +70,12 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
 
     @include desktop(true) {
       width: 770px;
-      margin-left: 42px;
+      margin-left: 100px;
+    }
+
+    @include tablet(true) {
+      width: 700px;
+      margin-left: 30px;
     }
 
     .set-widget {
