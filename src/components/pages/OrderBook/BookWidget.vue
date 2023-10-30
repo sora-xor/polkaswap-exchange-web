@@ -2,7 +2,7 @@
   <div class="order-book-widget stock-book book">
     <div class="stock-book__title">
       <span>Orderbook</span>
-      <s-tooltip slot="suffix" border-radius="mini" :content="t('alerts.typeTooltip')" placement="top" tabindex="-1">
+      <s-tooltip slot="suffix" border-radius="mini" :content="orderBookTooltip" placement="top" tabindex="-1">
         <s-icon name="info-16" size="14px" />
       </s-tooltip>
     </div>
@@ -94,6 +94,10 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     );
 
     return fiat ? `$${fiat}` : '';
+  }
+
+  get orderBookTooltip() {
+    return 'A live, constantly updating record of buy (bid) and sell (ask) orders for a specific asset, organized by price level. The order book displays the depth of the market, including the quantities of assets being offered at various prices. Traders utilize this detailed view to gauge market sentiment, identify potential resistance and support levels, and anticipate price movements based on existing demand and supply';
   }
 
   getComputedClassTrend(): string {
@@ -309,7 +313,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
 <style lang="scss">
 $row-height: 24px;
-$background-column-color: #e7dadd;
+$background-column-color-light: #e7dadd;
+$background-column-color-dark: #693d81;
 
 .stock-book {
   .row {
@@ -373,7 +378,7 @@ $background-column-color: #e7dadd;
     align-items: center;
     height: 30px;
     line-height: 30px;
-    background-color: rgba($color: $background-column-color, $alpha: 0.2);
+    background-color: rgba($color: $background-column-color-light, $alpha: 0.2);
 
     .mark-price {
       font-size: 24px;
@@ -408,7 +413,7 @@ $background-column-color: #e7dadd;
 
   .book-columns {
     opacity: 0.3;
-    background-color: $background-column-color;
+    background-color: $background-column-color-light;
     display: flex;
     width: 100%;
     color: var(--s-color-base-content-primary);
@@ -441,7 +446,23 @@ $background-column-color: #e7dadd;
 
 [design-system-theme='dark'] {
   .book-columns {
-    background-color: var(--s-color-base-background);
+    background-color: #693d81;
+  }
+
+  .stock-book {
+    &-sell {
+      .bar {
+        background-color: rgba(255, 0, 124, 0.3);
+      }
+    }
+    &-buy {
+      .bar {
+        background-color: rgba(1, 202, 139, 0.2);
+      }
+    }
+    &-delimiter {
+      background-color: $background-column-color-dark;
+    }
   }
 }
 </style>

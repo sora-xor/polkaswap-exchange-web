@@ -1,9 +1,9 @@
 <template>
   <div class="order-book order-books">
-    <el-popover popper-class="order-book-whitelist" trigger="click" :visible-arrow="false">
-      <pair-list-popover />
+    <el-popover popper-class="order-book-whitelist" trigger="click" v-model="visibleBookList" :visible-arrow="false">
+      <pair-list-popover @close="toggleBookList" />
       <div slot="reference">
-        <div class="order-book-choose-pair" @click="openSelectPair">
+        <div class="order-book-choose-pair">
           <div>TOKEN PAIR</div>
           <div class="order-book-choose-btn">
             <div class="order-book-pair-name">
@@ -34,13 +34,7 @@
       <s-tab label="limit" name="limit">
         <span slot="label">
           <span>{{ 'Limit' }}</span>
-          <s-tooltip
-            slot="suffix"
-            border-radius="mini"
-            :content="t('alerts.typeTooltip')"
-            placement="top"
-            tabindex="-1"
-          >
+          <s-tooltip slot="suffix" border-radius="mini" :content="limitTooltip" placement="top" tabindex="-1">
             <s-icon name="info-16" size="14px" />
           </s-tooltip>
         </span>
@@ -48,13 +42,7 @@
       <s-tab label="market" name="market" :disabled="marketOptionDisabled">
         <span slot="label">
           <span>{{ 'Market' }}</span>
-          <s-tooltip
-            slot="suffix"
-            border-radius="mini"
-            :content="t('alerts.typeTooltip')"
-            placement="top"
-            tabindex="-1"
-          >
+          <s-tooltip slot="suffix" border-radius="mini" :content="marketTooltip" placement="top" tabindex="-1">
             <s-icon name="info-16" size="14px" />
           </s-tooltip>
         </span>
@@ -175,6 +163,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
 
+  visibleBookList = false;
   confirmPlaceOrderVisibility = false;
   confirmCancelOrderVisibility = false;
   quoteSubscription: Nullable<Subscription> = null;
@@ -199,8 +188,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       this.setTokenToAddress(this.quoteAsset.address);
     }
   }
-
-  isSelectPairOpen = false;
 
   limitOrderType: LimitOrderType = LimitOrderType.limit;
 
@@ -373,7 +360,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get icon(): string {
-    return this.isSelectPairOpen ? 'arrows-circle-chevron-top-24' : 'arrows-circle-chevron-bottom-24';
+    return this.visibleBookList ? 'arrows-circle-chevron-top-24' : 'arrows-circle-chevron-bottom-24';
   }
 
   get baseSymbol(): string {
@@ -410,6 +397,18 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     const fiat = this.getFiatAmount(this.calculatedAssetBaseTotal.toString(), this.baseAsset);
 
     return FPNumber.fromNatural(fiat || '0').toFixed(2);
+  }
+
+  get limitTooltip(): string {
+    return "A 'Limit' order lets you specify the exact price at which you want to buy or sell an asset. A 'Limit Buy' order will only be executed at the specified price or lower, while a 'Limit Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.";
+  }
+
+  get marketTooltip(): string {
+    return "A 'Market Order' is an order to immediately buy or sell at the best available current price. It doesn't require setting a price, ensuring a fast execution but with the trade-off of less control over the price received or paid. This type of order is used when certainty of execution is a priority over price control.";
+  }
+
+  toggleBookList(): void {
+    this.visibleBookList = !this.visibleBookList;
   }
 
   handleInputFieldQuote(value: string): void {
@@ -555,10 +554,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     } else {
       this.handleInputFieldBase(maxLotSize.toString());
     }
-  }
-
-  openSelectPair(): void {
-    this.isSelectPairOpen = !this.isSelectPairOpen;
   }
 
   get isMaxSwapAvailable(): boolean {

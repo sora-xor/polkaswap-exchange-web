@@ -1,21 +1,26 @@
 <template>
   <transaction-details :info-only="infoOnly">
-    <info-line :label="'order type'" :label-tooltip="'type'" :value="side.toUpperCase()" :class="getComputedClass()" />
+    <info-line
+      :label="'order type'"
+      :label-tooltip="orderType"
+      :value="side.toUpperCase()"
+      :class="getComputedClass()"
+    />
     <info-line
       :label="'limit price'"
-      :label-tooltip="'order limit price'"
+      :label-tooltip="limitTooltip"
       :asset-symbol="quoteSymbol"
       :value="quoteValue || toValue || '0'"
       is-formatted
     />
     <info-line
       :label="'amount'"
-      :label-tooltip="'amount'"
+      :label-tooltip="amountTooltip"
       :asset-symbol="baseSymbol"
       :value="baseValue || '0'"
       is-formatted
     />
-    <info-line :label="'expiry date'" :label-tooltip="'lifespan'" :value="limitOrderExpiryDate" />
+    <info-line :label="'expiry date'" :label-tooltip="expiryTooltip" :value="limitOrderExpiryDate" />
     <info-line
       :label="t('swap.networkFee')"
       :label-tooltip="t('networkFeeTooltipText')"
@@ -69,6 +74,22 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
     if (this.infoOnly) {
       return this.side === PriceVariant.Buy ? 'limit-order-type--buy' : 'limit-order-type--sell';
     }
+  }
+
+  get expiryTooltip() {
+    return "The 'Expiry Date' is the deadline for your order to be executed. If the market doesn't reach your specified price before this date, the order is automatically cancelled. You're not bound to a perpetual wait if market conditions don't align with your trading preferences.";
+  }
+
+  get amountTooltip() {
+    return "The 'Amount' refers to the total number of assets you want to buy or sell in your order. It's important to specify, as it determines the size of your transaction, impacting the total cost for buy orders or revenue for sell orders.";
+  }
+
+  get limitTooltip() {
+    return "The 'Limit Price' is the precise price you set for a limit order. The trade will only execute when the asset's market price meets your limit price, ensuring you don't purchase above or sell below this specified value.";
+  }
+
+  get orderType() {
+    return "A 'Limit' order lets you specify the exact price at which you want to buy or sell an asset. A 'Buy' order will only be executed at the specified price or lower, while a 'Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.";
   }
 
   get quoteSymbol(): string {

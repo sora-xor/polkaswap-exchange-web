@@ -4,6 +4,7 @@
       class="limit-order-table"
       :data="openOrders"
       :highlight-current-row="false"
+      empty-text="No open orders"
       @selection-change="handleSelectionChange"
     >
       <s-table-column type="selection" />
@@ -208,6 +209,11 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 
     .el-checkbox__inner {
       border-radius: unset;
+    }
+
+    .el-table__empty-text {
+      color: var(--s-color-base-content-secondary);
+      font-size: 20px;
     }
   }
 

@@ -6,68 +6,66 @@
         <s-icon name="info-16" size="14px" />
       </s-tooltip>
     </div>
-    <s-scrollbar class="orderbook-whitelist__scrollbar">
-      <s-table
-        class="orderbook-whitelist-table"
-        :data="tableItems"
-        :highlight-current-row="false"
-        @cell-click="chooseBook"
-      >
-        <s-table-column :width="'170'">
-          <template #header>
-            <span>Token pair</span>
-          </template>
-          <template v-slot="{ row }">
-            <pair-token-logo :first-token="row.baseAsset" :second-token="row.targetAsset" size="small" />
-            <div class="book-pair">
-              <div>{{ row.pair }}</div>
-            </div>
-          </template>
-        </s-table-column>
-        <s-table-column width="85">
-          <template #header>
-            <span>Price</span>
-          </template>
-          <template v-slot="{ row }">
-            <span class="price">{{ row.price }}</span>
-          </template>
-        </s-table-column>
-        <s-table-column>
-          <template #header>
-            <span>Volume</span>
-          </template>
-          <template v-slot="{ row }">
-            <span>{{ row.volume }}</span>
-          </template>
-        </s-table-column>
-        <s-table-column>
-          <template #header>
-            <span>Daily change</span>
-          </template>
-          <template v-slot="{ row }">
-            <span>{{ row.dailyChange }}</span>
-          </template>
-        </s-table-column>
-        <s-table-column>
-          <template #header>
-            <span>Status</span>
-          </template>
-          <template v-slot="{ row }">
-            <span :class="calculateColor(row.status)">{{ mapBookStatus(row.status) }}</span>
-            <s-tooltip
-              slot="suffix"
-              border-radius="mini"
-              :content="getTooltipText(row.status)"
-              placement="top"
-              tabindex="-1"
-              class="status-tooltip"
-            >
-              <s-icon name="info-16" size="14px" />
-            </s-tooltip>
-          </template>
-        </s-table-column>
-      </s-table>
-    </s-scrollbar>
+    <s-table
+      class="orderbook-whitelist-table"
+      :data="tableItems"
+      :highlight-current-row="false"
+      @cell-click="chooseBook"
+    >
+      <s-table-column :width="'170'">
+        <template #header>
+          <span>Token pair</span>
+        </template>
+        <template v-slot="{ row }">
+          <pair-token-logo :first-token="row.baseAsset" :second-token="row.targetAsset" size="small" />
+          <div class="book-pair">
+            <div>{{ row.pair }}</div>
+          </div>
+        </template>
+      </s-table-column>
+      <s-table-column width="85">
+        <template #header>
+          <span>Price</span>
+        </template>
+        <template v-slot="{ row }">
+          <span class="price">{{ row.price }}</span>
+        </template>
+      </s-table-column>
+      <s-table-column>
+        <template #header>
+          <span>Volume</span>
+        </template>
+        <template v-slot="{ row }">
+          <span>{{ row.volume }}</span>
+        </template>
+      </s-table-column>
+      <s-table-column>
+        <template #header>
+          <span>Daily change</span>
+        </template>
+        <template v-slot="{ row }">
+          <span>{{ row.dailyChange }}</span>
+        </template>
+      </s-table-column>
+      <s-table-column>
+        <template #header>
+          <span>Status</span>
+        </template>
+        <template v-slot="{ row }">
+          <span :class="calculateColor(row.status)">{{ mapBookStatus(row.status) }}</span>
+          <s-tooltip
+            slot="suffix"
+            border-radius="mini"
+            :content="getTooltipText(row.status)"
+            placement="top"
+            tabindex="-1"
+            class="status-tooltip"
+          >
+            <s-icon name="info-16" size="14px" />
+          </s-tooltip>
+        </template>
+      </s-table-column>
+    </s-table>
   </div>
 </template>
 
@@ -151,6 +149,7 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
 
   chooseBook(row): void {
     this.setCurrentOrderBook(this.serializedKey(row.baseAsset.address, XOR.address));
+    this.$emit('close');
   }
 
   prepareOrderBooks() {
@@ -237,10 +236,6 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
       background-color: var(--s-color-utility-body);
     }
   }
-
-  &__scrollbar {
-    @include scrollbar;
-  }
 }
 
 .el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
@@ -303,7 +298,7 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
     &-table {
       .el-table__header-wrapper {
         .el-table__header thead th {
-          background-color: var(--s-color-utility-body);
+          background-color: #693d81;
         }
       }
     }

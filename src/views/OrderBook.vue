@@ -67,6 +67,10 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
 
     margin-left: calc($sidebar-max-width + 8px);
 
+    // @include large-mobile {
+    //   width: 900px;
+    // }
+
     .set-widget {
     }
     .chart-widget {
