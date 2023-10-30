@@ -21,9 +21,11 @@
         },
         "okReadyText": "Baik saya siap",
         "emailPlaceholder": "Surel",
+        "noSpamText": "Tidak ada email spam! Hanya untuk mengamankan akun Anda",
         "sendCodeBtn": "Kirim kode SMS",
         "firstNamePlaceholder": "Nama depan",
         "lastNamePlaceholder": "nama keluarga",
+        "verificationCodeText": "Anda akan menerima \\n kode verifikasi melalui SMS",
         "phonePlaceholder": "Nomor telepon",
         "statusPendingTitle": "Verifikasi sedang berlangsung",
         "sendEmailLinkBtn": "Kirim tautan",
@@ -94,6 +96,8 @@
         "or": "atau",
         "oneTimeApplicationFee": "Biaya satu kali untuk menerbitkan kartu",
         "applicationFeeNote": "Catatan: Penerbitan kartu berbayar akan tersedia pada tahap selanjutnya.",
-        "statusRejectReasonMultiple": "Permohonan Anda telah ditolak karena beberapa alasan:"
+        "statusRejectReasonMultiple": "Permohonan Anda telah ditolak karena beberapa alasan:",
+        "selectCountryText": "Pilih negaramu",
+        "ibanPendingDesc": "Penerbitan IBAN Anda tertunda.\n Jika menunggu lebih dari 72 jam, hubungi kami melalui {email}"
     }
 }

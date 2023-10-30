@@ -21,9 +21,11 @@
         },
         "okReadyText": "OK, spreman sam",
         "emailPlaceholder": "E-mail",
+        "noSpamText": "Bez spama! Samo da osigurate svoj račun",
         "sendCodeBtn": "Pošalji SMS kod",
         "firstNamePlaceholder": "Ime",
         "lastNamePlaceholder": "Prezime",
+        "verificationCodeText": "Primit ćete \\n kontrolni kod putem SMS-a",
         "phonePlaceholder": "Broj telefona",
         "statusPendingTitle": "Provjera u tijeku",
         "sendEmailLinkBtn": "Pošalji link",
@@ -94,6 +96,8 @@
         "or": "ili",
         "oneTimeApplicationFee": "Jednokratna naknada za izdavanje kartice",
         "applicationFeeNote": "Napomena: izdavanje plaćene kartice bit će dostupno naknadno.",
-        "statusRejectReasonMultiple": "Vaša prijava je odbijena iz više razloga:"
+        "statusRejectReasonMultiple": "Vaša prijava je odbijena iz više razloga:",
+        "selectCountryText": "Izaberite svoju zemlju",
+        "ibanPendingDesc": "Vaše izdavanje IBAN-a je na čekanju.\n U slučaju čekanja dužeg od 72h kontaktirajte nas putem {email}"
     }
 }
