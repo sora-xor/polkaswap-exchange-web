@@ -23,6 +23,7 @@ export default {
   unknownErrorText: 'ERROR Something went wrong...',
   unknownAssetText: 'Unknown asset',
   connectWalletText: 'Connect account',
+  disconnectWalletText: 'Disconnect',
   changeAccountText: 'Change account',
   connectedText: 'Connected',
   connectedAccount: 'Connected account',

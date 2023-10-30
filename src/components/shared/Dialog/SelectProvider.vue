@@ -11,8 +11,6 @@
         <span class="provider-name">{{ provider.name }}</span>
       </li>
     </ul>
-
-    <s-button v-if="evmAddress" @click="resetEvmProvider">logout wallet</s-button>
   </dialog-base>
 </template>
 
@@ -37,8 +35,6 @@ type WalletProvider = {
 })
 export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
   @state.web3.selectProviderDialogVisibility private selectProviderDialogVisibility!: boolean;
-
-  @action.web3.resetEvmProvider resetEvmProvider!: FnWithoutArgs;
 
   get visibility(): boolean {
     return this.selectProviderDialogVisibility;

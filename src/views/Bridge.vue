@@ -102,11 +102,11 @@
             </div>
             <div v-if="sender" class="connect-wallet-panel">
               <s-divider type="tertiary" />
-              <div class="connect-wallet-provider">
+              <div class="connect-wallet-group">
                 <img
                   v-if="!isSubBridge && !isSoraToEvm && evmProvider"
                   :src="getEvmProviderIcon(evmProvider)"
-                  class="connect-wallet-provider-logo"
+                  class="connect-wallet-logo"
                 />
                 <s-tooltip
                   :content="getCopyTooltip(isSoraToEvm)"
@@ -114,15 +114,22 @@
                   placement="bottom-end"
                   tabindex="-1"
                 >
-                  <span class="connect-wallet-address" @click="handleCopyAddress(sender, $event)">
+                  <span class="connect-wallet-btn" @click="handleCopyAddress(sender, $event)">
                     {{ formatAddress(sender, 8) }}
                   </span>
                 </s-tooltip>
               </div>
-              <span v-if="!isSubBridge && !isSoraToEvm" class="connect-wallet-address" @click="connectExternalWallet">
-                {{ t('changeAccountText') }}
-              </span>
-              <span v-else>{{ t('connectedText') }}</span>
+              <div class="connect-wallet-group">
+                <span v-if="!isSubBridge && !isSoraToEvm" class="connect-wallet-btn" @click="connectExternalWallet">
+                  {{ t('changeAccountText') }}
+                </span>
+                <span v-else>{{ t('connectedText') }}</span>
+                <span
+                  v-if="!isSubBridge && !isSoraToEvm && evmProvider"
+                  class="connect-wallet-btn disconnect"
+                  @click="resetEvmProvider"
+                >{{ t('disconnectWalletText') }}</span>
+              </div>
             </div>
             <s-button
               v-else
@@ -193,11 +200,11 @@
             </div>
             <div v-if="recipient" class="connect-wallet-panel">
               <s-divider type="tertiary" />
-              <div class="connect-wallet-provider">
+              <div class="connect-wallet-group">
                 <img
                   v-if="!isSubBridge && isSoraToEvm && evmProvider"
                   :src="getEvmProviderIcon(evmProvider)"
-                  class="connect-wallet-provider-logo"
+                  class="connect-wallet-logo"
                 />
                 <s-tooltip
                   :content="getCopyTooltip(!isSoraToEvm)"
@@ -205,15 +212,22 @@
                   placement="bottom-end"
                   tabindex="-1"
                 >
-                  <span class="connect-wallet-address" @click="handleCopyAddress(recipient, $event)">
+                  <span class="connect-wallet-btn" @click="handleCopyAddress(recipient, $event)">
                     {{ formatAddress(recipient, 8) }}
                   </span>
                 </s-tooltip>
               </div>
-              <span v-if="isSubBridge || isSoraToEvm" class="connect-wallet-address" @click="connectExternalWallet">
-                {{ t('changeAccountText') }}
-              </span>
-              <span v-else>{{ t('connectedText') }}</span>
+              <div class="connect-wallet-group">
+                <span v-if="isSubBridge || isSoraToEvm" class="connect-wallet-btn" @click="connectExternalWallet">
+                  {{ t('changeAccountText') }}
+                </span>
+                <span v-else>{{ t('connectedText') }}</span>
+                <span
+                  v-if="!isSubBridge && isSoraToEvm && evmProvider"
+                  class="connect-wallet-btn disconnect"
+                  @click="resetEvmProvider"
+                >{{ t('disconnectWalletText') }}</span>
+              </div>
             </div>
             <s-button
               v-else
@@ -418,6 +432,7 @@ export default class Bridge extends Mixins(
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<IBridgeTransaction>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
+  @action.web3.resetEvmProvider resetEvmProvider!: FnWithoutArgs;
 
   showSelectTokenDialog = false;
   showConfirmTransactionDialog = false;
@@ -777,17 +792,21 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     color: var(--s-color-base-content-primary);
   }
 
-  &-address {
-    @include copy-address;
+  &-logo {
+    width: 16px;
+    height: 16px;
   }
 
-  &-provider {
+  &-group {
     display: flex;
     gap: $inner-spacing-mini;
+  }
 
-    &-logo {
-      width: 16px;
-      height: 16px;
+  &-btn {
+    @include copy-address;
+
+    &.disconnect {
+      color: var(--s-color-status-error);
     }
   }
 }

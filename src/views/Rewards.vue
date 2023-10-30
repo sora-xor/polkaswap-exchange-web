@@ -49,7 +49,7 @@
                   <s-divider />
                   <div v-if="evmAddress" class="rewards-account">
                     <span>{{ formatAddress(evmAddress, 8) }}</span>
-                    <span>{{ t('rewards.connected') }}</span>
+                    <span>{{ t('connectedText') }}</span>
                   </div>
                   <s-button v-else class="rewards-connect-button" type="tertiary" @click="connectEvmWallet">
                     {{ t('rewards.action.connectExternalWallet') }}
@@ -307,7 +307,7 @@ export default class Rewards extends Mixins(
 
   get feeInfo(): object {
     return {
-      label: this.t('rewards.networkFee'),
+      label: this.t('networkFeeText'),
       labelTooltip: this.t('networkFeeTooltipText'),
       value: this.formatCodecNumber(this.fee),
       assetSymbol: KnownSymbols.XOR,

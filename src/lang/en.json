@@ -312,6 +312,7 @@
     "changeNetworkText": "Change network in wallet",
     "transactionText": "transaction | transactions",
     "connectWalletText": "Connect account",
+    "disconnectWalletText": "Disconnect",
     "changeAccountText": "Change account",
     "connectedText": "Connected",
     "connectWalletTextTooltip": "Connect to {Sora} Network with {PolkadotJs}",
@@ -718,9 +719,6 @@
     },
     "rewards": {
         "title": "Claim Rewards",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "and",
         "claiming": {
             "pending": "Claiming...",
