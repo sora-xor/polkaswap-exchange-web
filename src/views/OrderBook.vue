@@ -64,12 +64,12 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
 .order-book {
   &-widgets {
     width: 900px;
-
     margin-left: calc($sidebar-max-width + 8px);
 
-    // @include large-mobile {
-    //   width: 900px;
-    // }
+    @include desktop(true) {
+      width: 770px;
+      margin-left: 42px;
+    }
 
     .set-widget {
     }
