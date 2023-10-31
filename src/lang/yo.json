@@ -309,7 +309,7 @@
         "comment": "Ọrọìwòye"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Yi nẹtiwọọki pada ni {Metamask}",
+    "changeNetworkText": "Yi nẹtiwọki pada ni apamọwọ",
     "transactionText": "awon isowo | awon isowo",
     "connectWalletText": "So ifowisi pọ",
     "changeAccountText": "Yi Ifowosi pada",
@@ -910,7 +910,7 @@
         "allowanceRequest": "Tẹ \"Gba laaye\" wiwọle si kamẹra"
     },
     "bridgeTransferNotification": {
-        "addToken": "Ṣafikun {symbol} si {Metamask}",
+        "addToken": "Fi {symbol} sinu apamọwọ",
         "title": "Idunadura Bridge aseyori"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "Awọn rira mi",
         "historyTitle": "Itan iṣowo",
         "moonpayTitle": "Ra ETH nipasẹ MoonPay",
-        "moonpayDesc": "Ra awọn ami ETH lori Ethereum ki o gbe wọn lọ si nẹtiwọki SORA nipasẹ afara",
+        "moonpayDesc": "Ra awọn ami ETH lori {Ethereum} ki o gbe wọn lọ si nẹtiwọki {SORA} nipasẹ afara",
         "x1Title": "Ra XOR pẹlu kaadi rẹ",
         "x1Btn": "Ra XOR pẹlu kaadi",
         "errorMessage": "Aforiji fun ohun airọrun. A n ṣiṣẹ takuntakun lati yanju eyi. Jọwọ, gbiyanju lẹẹkansi nigbamii.",
-        "x1Desc": "Ra awọn ami XOR taara lori nẹtiwọọki SORA pẹlu debiti tabi kaadi kirẹditi rẹ"
+        "x1Desc": "Ra awọn ami XOR taara lori nẹtiwọọki {SORA} pẹlu debiti tabi kaadi kirẹditi rẹ"
     },
     "acceptOnScrollText": "Yi lọ lati gba",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "Adirẹsi titun ti ri",
         "save": "Fipamọ bi olubasọrọ",
         "tooltip": "Gba iwe adirẹsi nipa pipese orukọ ati adirẹsi lati jẹ ki awọn olubasọrọ rẹ ṣeto ati imudojuiwọn",
-        "notSoraAddress": "Adirẹsi yii yoo wa ni ipamọ bi adirẹsi SORA ni isalẹ. Rii daju pe olugba le wọle si ẹwọn SORA:",
+        "notSoraAddress": "Adirẹsi yii yoo wa ni ipamọ bi adirẹsi {SORA} ni isalẹ. Rii daju pe olugba le wọle si ẹwọn {SORA}:",
         "options": {
             "send": "Firanṣẹ awọn ami",
             "edit": "Ṣatunkọ olubasọrọ",

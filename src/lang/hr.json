@@ -309,7 +309,7 @@
         "comment": "Komentar"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Promijenite mrežu u {Metamask}",
+    "changeNetworkText": "Promijenite mrežu u novčaniku",
     "transactionText": "transakcija | transakcije",
     "connectWalletText": "Povežite račun",
     "changeAccountText": "Promjenite račun",
@@ -910,7 +910,7 @@
         "allowanceRequest": "Pritisnite \"Dopusti\" pristup kameri"
     },
     "bridgeTransferNotification": {
-        "addToken": "Dodajte {symbol} u {Metamask}",
+        "addToken": "Dodaj {symbol} u novčanik",
         "title": "Most transakcija uspjela"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "Moje kupovine",
         "historyTitle": "Povijest transakcija",
         "moonpayTitle": "Kupite ETH putem MoonPaya",
-        "moonpayDesc": "Kupite ETH tokene na Ethereumu i prenesite ih na SORA mrežu putem mosta",
+        "moonpayDesc": "Kupite ETH tokene na {Ethereum} i prenesite ih na {SORA} mrežu putem mosta",
         "x1Title": "Kupite XOR svojom karticom",
         "x1Btn": "Kupite XOR karticom",
         "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije.",
-        "x1Desc": "Kupite XOR tokene izravno na SORA mreži svojom debitnom ili kreditnom karticom"
+        "x1Desc": "Kupite XOR tokene izravno na {SORA} mreži svojom debitnom ili kreditnom karticom"
     },
     "acceptOnScrollText": "Pomaknite se za prihvaćanje",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "Nova adresa otkrivena",
         "save": "Spremi kao kontakt",
         "tooltip": "Prikupite adresar unosom imena i adrese kako bi vaši kontakti bili organizirani i ažurni",
-        "notSoraAddress": "Ova adresa će biti spremljena kao SORA adresa ispod. Provjerite može li primatelj pristupiti SORA lancu:",
+        "notSoraAddress": "Ova adresa će biti spremljena kao {SORA} adresa ispod. Provjerite može li primatelj pristupiti {SORA} lancu:",
         "options": {
             "send": "Pošaljite tokene",
             "edit": "Uredi kontakt",

@@ -309,7 +309,7 @@
         "comment": "Bình luận"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Thay đổi mạng trong {Metamask}",
+    "changeNetworkText": "Thay đổi mạng trong ví",
     "transactionText": "giao dịch | những giao dịch",
     "connectWalletText": "Kết nối tài khoản",
     "changeAccountText": "Thay đổi tài khoản",
@@ -910,7 +910,7 @@
         "allowanceRequest": "Nhấn “Cho phép” để sử dụng máy ảnh"
     },
     "bridgeTransferNotification": {
-        "addToken": "Thêm {symbol} vào {Metamask}",
+        "addToken": "Thêm {symbol} vào ví",
         "title": "Giao dịch cầu nối thành công"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "Sự thanh toán của tôi",
         "historyTitle": "Lịch sử giao dịch",
         "moonpayTitle": "Mua ETH qua MoonPay",
-        "moonpayDesc": "Mua mã thông báo ETH trên Ethereum và chuyển chúng sang mạng SORA qua cầu nối",
+        "moonpayDesc": "Mua mã thông báo ETH trên {Ethereum} và chuyển chúng sang mạng {SORA} qua cầu nối",
         "x1Title": "Mua XOR bằng thẻ của bạn",
         "x1Btn": "Mua XOR bằng thẻ",
         "errorMessage": "Xin lỗi vì sự bất tiện. Chúng tôi đang nỗ lực làm việc để giải quyết vấn đề này. Vui lòng thử lại sau.",
-        "x1Desc": "Mua mã thông báo XOR trực tiếp trên mạng SORA bằng thẻ ghi nợ hoặc thẻ tín dụng của bạn"
+        "x1Desc": "Mua mã thông báo XOR trực tiếp trên mạng {SORA} bằng thẻ ghi nợ hoặc thẻ tín dụng của bạn"
     },
     "acceptOnScrollText": "Cuộn để chấp nhận",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "Đã phát hiện địa chỉ mới",
         "save": "Lưu dưới dạng liên hệ",
         "tooltip": "Thu thập sổ địa chỉ bằng cách cung cấp tên và địa chỉ để giữ cho danh bạ của bạn được sắp xếp và cập nhật",
-        "notSoraAddress": "Địa chỉ này sẽ được lưu dưới dạng địa chỉ SORA bên dưới. Đảm bảo người nhận có thể truy cập chuỗi SORA:",
+        "notSoraAddress": "Địa chỉ này sẽ được lưu dưới dạng địa chỉ {SORA} bên dưới. Đảm bảo người nhận có thể truy cập chuỗi {SORA}:",
         "options": {
             "send": "Gửi mã thông báo",
             "edit": "Chỉnh sửa liên hệ",

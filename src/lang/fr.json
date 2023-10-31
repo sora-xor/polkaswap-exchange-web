@@ -309,7 +309,7 @@
         "comment": "Commentaire"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Changer de réseau dans {Metamask}",
+    "changeNetworkText": "Changer de réseau dans le portefeuille",
     "transactionText": "transaction | transactions",
     "connectWalletText": "Connecter le compte",
     "changeAccountText": "Changer de compte",
@@ -910,7 +910,7 @@
         "allowanceRequest": "Appuyez sur \"Autoriser\" l'accès à la caméra"
     },
     "bridgeTransferNotification": {
-        "addToken": "Ajouter {symbol} à {Metamask}",
+        "addToken": "Ajouter {symbol} au portefeuille",
         "title": "Transaction relais réussie"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "Mes achats",
         "historyTitle": "Historique des transactions",
         "moonpayTitle": "Acheter des ETH via MoonPay",
-        "moonpayDesc": "Achetez des jetons ETH sur Ethereum et transférez-les sur le réseau SORA via le pont",
+        "moonpayDesc": "Achetez des jetons ETH sur {Ethereum} et transférez-les sur le réseau {SORA} via le pont",
         "x1Title": "Achetez XOR avec votre carte",
         "x1Btn": "Acheter XOR avec carte",
         "errorMessage": "Mes excuses pour le derangement. Nous travaillons avec diligence pour résoudre ce problème. Veuillez réessayer plus tard.",
-        "x1Desc": "Achetez des jetons XOR directement sur le réseau SORA avec votre carte de débit ou de crédit"
+        "x1Desc": "Achetez des jetons XOR directement sur le réseau {SORA} avec votre carte de débit ou de crédit"
     },
     "acceptOnScrollText": "Faites défiler pour accepter",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "Nouvelle adresse détectée",
         "save": "Enregistrer comme contact",
         "tooltip": "Collectez le carnet d'adresses en fournissant le nom et l'adresse pour garder vos contacts organisés et à jour",
-        "notSoraAddress": "Cette adresse sera enregistrée en tant qu'adresse SORA ci-dessous. Assurez-vous que le destinataire peut accéder à la chaîne SORA :",
+        "notSoraAddress": "Cette adresse sera enregistrée en tant qu'adresse {SORA} ci-dessous. Assurez-vous que le destinataire peut accéder à la chaîne {SORA}",
         "options": {
             "send": "Envoyer des jetons",
             "edit": "Modifier le contact",

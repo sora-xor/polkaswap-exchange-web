@@ -309,7 +309,7 @@
         "comment": "Kommentar"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Netzwerk in {Metamask} ändern",
+    "changeNetworkText": "Netzwerk im Wallet ändern",
     "transactionText": "Transaktion | Transaktionen",
     "connectWalletText": "Konto verbinden",
     "changeAccountText": "Konto wechseln",
@@ -910,7 +910,7 @@
         "allowanceRequest": "Drücken Sie „Zugriff auf die Kamera zulassen“."
     },
     "bridgeTransferNotification": {
-        "addToken": "Füge {symbol} zu {Metamask} hinzu",
+        "addToken": "Fügen Sie {symbol} zur Brieftasche hinzu",
         "title": "Bridge-Transaktion erfolgreich"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "Meine Einkäufe",
         "historyTitle": "Verlauf der Transaktionen",
         "moonpayTitle": "Kaufen Sie ETH über MoonPay",
-        "moonpayDesc": "Kaufen Sie ETH-Tokens auf Ethereum und übertragen Sie sie über die Bridge an das SORA-Netzwerk",
+        "moonpayDesc": "Kaufen Sie ETH-Tokens auf {Ethereum} und übertragen Sie sie über die Bridge an das {SORA}-Netzwerk",
         "x1Title": "Kaufen Sie XOR mit Ihrer Karte",
         "x1Btn": "Kaufen Sie XOR mit Karte",
         "errorMessage": "Entschuldigung für die Unannehmlichkeiten. Wir arbeiten fleißig daran, dieses Problem zu lösen. Bitte versuchen Sie es später noch einmal.",
-        "x1Desc": "Kaufen Sie XOR-Tokens direkt im SORA-Netzwerk mit Ihrer Debit- oder Kreditkarte"
+        "x1Desc": "Kaufen Sie XOR-Tokens direkt im {SORA}-Netzwerk mit Ihrer Debit- oder Kreditkarte"
     },
     "acceptOnScrollText": "Scrollen Sie, um zu akzeptieren",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "Neue Adresse erkannt",
         "save": "Als Kontakt speichern",
         "tooltip": "Sammeln Sie Ihr Adressbuch, indem Sie Namen und Adresse angeben, um Ihre Kontakte organisiert und auf dem neuesten Stand zu halten",
-        "notSoraAddress": "Diese Adresse wird unten als SORA-Adresse gespeichert. Stellen Sie sicher, dass der Empfänger auf die SORA-Kette zugreifen kann:",
+        "notSoraAddress": "Diese Adresse wird unten als {SORA}-Adresse gespeichert. Stellen Sie sicher, dass der Empfänger auf die {SORA}-Kette zugreifen kann:",
         "options": {
             "send": "Senden Sie Token",
             "edit": "Kontakt bearbeiten",

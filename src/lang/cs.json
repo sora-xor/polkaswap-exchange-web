@@ -309,7 +309,7 @@
         "comment": "Komentář"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Změnit síť v {Metamask}",
+    "changeNetworkText": "Změňte síť v peněžence",
     "transactionText": "transakce",
     "connectWalletText": "Připojit účet",
     "changeAccountText": "Změnit účet",
@@ -910,7 +910,7 @@
         "allowanceRequest": "Stiskněte „Povolit“ přístup ke kameře"
     },
     "bridgeTransferNotification": {
-        "addToken": "Přidejte {symbol} do {Metamask}",
+        "addToken": "Přidejte {symbol} do peněženky",
         "title": "Transakce mostu úspěšná"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "Moje nákupy",
         "historyTitle": "historie transakcí",
         "moonpayTitle": "Kupte si ETH přes MoonPay",
-        "moonpayDesc": "Kupte si ETH tokeny na Ethereu a přeneste je do sítě SORA přes most",
+        "moonpayDesc": "Kupte si ETH tokeny na {Ethereum} a přeneste je do sítě {SORA} přes most",
         "x1Title": "Kupte si XOR svou kartou",
         "x1Btn": "Koupit XOR s kartou",
         "errorMessage": "Omlouváme se za nepříjemnosti. Na vyřešení tohoto problému usilovně pracujeme. Prosím zkuste to znovu později.",
-        "x1Desc": "Kupte si tokeny XOR přímo v síti SORA svou debetní nebo kreditní kartou"
+        "x1Desc": "Kupte si tokeny XOR přímo v síti {SORA} svou debetní nebo kreditní kartou"
     },
     "acceptOnScrollText": "Přejděte k přijetí",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "Byla zjištěna nová adresa",
         "save": "Uložit jako kontakt",
         "tooltip": "Sbírejte adresář zadáním jména a adresy, abyste měli své kontakty organizované a aktuální",
-        "notSoraAddress": "Tato adresa bude níže uložena jako adresa SORA. Ujistěte se, že příjemce má přístup k řetězci SORA:",
+        "notSoraAddress": "Tato adresa bude níže uložena jako adresa {SORA}. Ujistěte se, že příjemce má přístup k řetězci {SORA}:",
         "options": {
             "send": "Pošlete tokeny",
             "edit": "Upravit kontakt",

@@ -309,7 +309,7 @@
         "comment": "Komentarz"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Zmień sieć w portfelu {Metamask}",
+    "changeNetworkText": "Zmień sieć w portfelu",
     "transactionText": "transakcja | transakcje",
     "connectWalletText": "Połącz z kontem",
     "changeAccountText": "Zmień konto",
@@ -910,7 +910,7 @@
         "allowanceRequest": "Naciśnij „Zezwól” na dostęp do kamery"
     },
     "bridgeTransferNotification": {
-        "addToken": "Dodaj {symbol} do {Metamask}",
+        "addToken": "Dodaj {symbol} do portfela",
         "title": "Transakcja pomostowa powiodła się"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "Moje zakupy",
         "historyTitle": "Historia transakcji",
         "moonpayTitle": "Kup ETH przez MoonPay",
-        "moonpayDesc": "Kup tokeny ETH na Ethereum i przenieś je do sieci SORA przez most",
+        "moonpayDesc": "Kup tokeny ETH na {Ethereum} i przenieś je do sieci {SORA} przez most",
         "x1Title": "Kup XOR za pomocą swojej karty",
         "x1Btn": "Kup XOR z kartą",
         "errorMessage": "Przepraszam za utrudnienia. Intensywnie pracujemy nad rozwiązaniem tego problemu. Spróbuj ponownie później.",
-        "x1Desc": "Kup tokeny XOR bezpośrednio w sieci SORA za pomocą karty debetowej lub kredytowej"
+        "x1Desc": "Kup tokeny XOR bezpośrednio w sieci {SORA} za pomocą karty debetowej lub kredytowej"
     },
     "acceptOnScrollText": "Przewiń, aby zaakceptować",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "Wykryto nowy adres",
         "save": "Zapisz jako kontakt",
         "tooltip": "Zbierz książkę adresową, podając imię i nazwisko oraz adres, aby uporządkować i aktualizować kontakty",
-        "notSoraAddress": "Ten adres zostanie zapisany jako adres SORA poniżej. Upewnij się, że odbiorca ma dostęp do łańcucha SORA:",
+        "notSoraAddress": "Ten adres zostanie zapisany jako adres {SORA} poniżej. Upewnij się, że odbiorca ma dostęp do łańcucha {SORA}:",
         "options": {
             "send": "Wyślij tokeny",
             "edit": "Edytuj kontakt",

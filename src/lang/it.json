@@ -309,7 +309,7 @@
         "comment": "Commento"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Cambia rete in {Metamask}",
+    "changeNetworkText": "Cambia rete nel portafoglio",
     "transactionText": "transazione | transazioni",
     "connectWalletText": "Connetti account",
     "changeAccountText": "Cambia account",
@@ -910,7 +910,7 @@
         "allowanceRequest": "Premi \"Consenti\" l'accesso alla fotocamera"
     },
     "bridgeTransferNotification": {
-        "addToken": "Aggiungi {symbol} a {Metamask}",
+        "addToken": "Aggiungi {symbol} al portafoglio",
         "title": "Transazione ponte riuscita"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "I miei acquisti",
         "historyTitle": "Cronologia delle transazioni",
         "moonpayTitle": "Acquista ETH tramite MoonPay",
-        "moonpayDesc": "Acquista token ETH su Ethereum e trasferiscili alla rete SORA tramite il bridge",
+        "moonpayDesc": "Acquista token ETH su {Ethereum} e trasferiscili alla rete {SORA} tramite il bridge",
         "x1Title": "Acquista XOR con la tua carta",
         "x1Btn": "Acquista XOR con carta",
         "errorMessage": "Scuse per l'inconveniente. Stiamo lavorando diligentemente per risolvere questo problema. Per favore riprova più tardi.",
-        "x1Desc": "Acquista i token XOR direttamente sulla rete SORA con la tua carta di debito o credito"
+        "x1Desc": "Acquista i token XOR direttamente sulla rete {SORA} con la tua carta di debito o credito"
     },
     "acceptOnScrollText": "Scorri per accettare",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "Nuovo indirizzo rilevato",
         "save": "Salva come contatto",
         "tooltip": "Raccogli la rubrica fornendo nome e indirizzo per mantenere i tuoi contatti organizzati e aggiornati",
-        "notSoraAddress": "Questo indirizzo verrà salvato come indirizzo SORA di seguito. Assicurati che il destinatario possa accedere alla catena SORA:",
+        "notSoraAddress": "Questo indirizzo verrà salvato come indirizzo {SORA} di seguito. Assicurati che il destinatario possa accedere alla catena {SORA}:",
         "options": {
             "send": "Invia token",
             "edit": "Modifica il contatto",

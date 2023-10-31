@@ -1186,7 +1186,7 @@
         "historyBtn": "My purchases",
         "historyTitle": "Transaction History",
         "moonpayTitle": "Buy ETH via MoonPay",
-        "moonpayDesc": "Purchase ETH tokens on Ethereum and transfer them to {SORA} network via the bridge",
+        "moonpayDesc": "Purchase ETH tokens on {Ethereum} and transfer them to {SORA} network via the bridge",
         "x1Title": "Buy XOR with your card",
         "x1Btn": "Buy XOR with card",
         "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later.",

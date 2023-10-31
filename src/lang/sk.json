@@ -309,7 +309,7 @@
         "comment": "Komentujte"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Zmeňiť sieť v {Metamask}",
+    "changeNetworkText": "Zmeňte sieť v peňaženke",
     "transactionText": "transakcia | transakcie",
     "connectWalletText": "Pripojiť účet",
     "changeAccountText": "Zmeniť účet",
@@ -910,7 +910,7 @@
         "allowanceRequest": "Stlačte „Povoliť“ prístup k fotoaparátu"
     },
     "bridgeTransferNotification": {
-        "addToken": "Pridajte {symbol} do {Metamask}",
+        "addToken": "Pridajte {symbol} do peňaženky",
         "title": "Most transakcia úspešná"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "Moje nákupy",
         "historyTitle": "história transakcií",
         "moonpayTitle": "Kúpte si ETH cez MoonPay",
-        "moonpayDesc": "Kúpte si ETH tokeny na Ethereu a preneste ich do siete SORA cez most",
+        "moonpayDesc": "Kúpte si ETH tokeny na {Ethereum} a preneste ich do siete {SORA} cez most",
         "x1Title": "Kúpte si XOR kartou",
         "x1Btn": "Kúpte si XOR kartou",
         "errorMessage": "Ospravedlňujeme sa za nepríjemnosti. Na vyriešení tohto problému usilovne pracujeme. Skúste neskôr prosím.",
-        "x1Desc": "Kúpte si tokeny XOR priamo v sieti SORA pomocou svojej debetnej alebo kreditnej karty"
+        "x1Desc": "Kúpte si tokeny XOR priamo v sieti {SORA} pomocou svojej debetnej alebo kreditnej karty"
     },
     "acceptOnScrollText": "Posuňte sa na prijatie",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "Bola zistená nová adresa",
         "save": "Uložiť ako kontakt",
         "tooltip": "Zhromažďujte adresár zadaním mena a adresy, aby boli vaše kontakty organizované a aktuálne",
-        "notSoraAddress": "Táto adresa bude uložená ako adresa SORA nižšie. Uistite sa, že príjemca má prístup k reťazcu SORA:",
+        "notSoraAddress": "Táto adresa bude uložená ako adresa {SORA} nižšie. Uistite sa, že príjemca má prístup k reťazcu {SORA}:",
         "options": {
             "send": "Odoslať tokeny",
             "edit": "Upraviť kontakt",

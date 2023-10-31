@@ -309,7 +309,7 @@
         "comment": "评论"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "在 {Metamask} 中更改网络",
+    "changeNetworkText": "更改钱包中的网络",
     "transactionText": "交易 | 交易",
     "connectWalletText": "连接账户",
     "changeAccountText": "更改账户",
@@ -910,7 +910,7 @@
         "allowanceRequest": "按“允许”访问相机"
     },
     "bridgeTransferNotification": {
-        "addToken": "将{symbol}添加到 {Metamask}",
+        "addToken": "将{symbol}添加到钱包",
         "title": "转接桥交易成功"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "我的购买",
         "historyTitle": "交易记录",
         "moonpayTitle": "通过 MoonPay 购买 ETH",
-        "moonpayDesc": "在以太坊上购买 ETH 代币并通过网桥将其转移到 SORA 网络",
+        "moonpayDesc": "在{Ethereum}上购买ETH代币并通过网桥将其转移到{SORA}网络",
         "x1Title": "用您的卡购买 XOR",
         "x1Btn": "用卡买XOR",
         "errorMessage": "不便之处敬请原谅。我们正在努力解决这个问题。请稍后再试。",
-        "x1Desc": "使用借记卡或信用卡直接在 SORA 网络上购买 XOR 代币"
+        "x1Desc": "使用借记卡或信用卡直接在 {SORA} 网络上购买 XOR 代币"
     },
     "acceptOnScrollText": "滚动接受",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "检测到新地址",
         "save": "另存为联系人",
         "tooltip": "通过提供姓名和地址来收集地址簿，使您的联系人井井有条并保持最新状态",
-        "notSoraAddress": "该地址将在下面保存为 SORA 地址。确保接收者可以访问 SORA 链：",
+        "notSoraAddress": "该地址将在下面保存为 {SORA} 地址。确保接收者可以访问 {SORA} 链：",
         "options": {
             "send": "发送代币",
             "edit": "更改联系资料",

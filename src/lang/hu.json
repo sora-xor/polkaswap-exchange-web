@@ -309,7 +309,7 @@
         "comment": "Megjegyzés"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Hálózatváltás a {Metamask}",
+    "changeNetworkText": "Hálózat módosítása a pénztárcában",
     "transactionText": "tranzakció | tranzakciók",
     "connectWalletText": "Fiók csatlakoztatása",
     "changeAccountText": "Másik fiók",
@@ -910,7 +910,7 @@
         "allowanceRequest": "Nyomja meg az „Engedélyezés” gombot a kamera eléréséhez"
     },
     "bridgeTransferNotification": {
-        "addToken": "Adja hozzá a {symbol} -ot a {Metamask} -hoz",
+        "addToken": "Adja hozzá {symbol} elemet a pénztárcához",
         "title": "A hídtranzakció sikeres"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "Vásárlásaim",
         "historyTitle": "Tranzakciós előzmények",
         "moonpayTitle": "Vásároljon ETH-t a MoonPay-en keresztül",
-        "moonpayDesc": "Vásároljon ETH tokeneket az Ethereumon, és vigye át őket a hídon keresztül a SORA hálózatba",
+        "moonpayDesc": "Vásároljon ETH tokeneket az {Ethereum}, és vigye át őket a hídon keresztül a {SORA} hálózatba",
         "x1Title": "Vásároljon XOR-t a kártyájával",
         "x1Btn": "Vásároljon XOR-t kártyával",
         "errorMessage": "Elnézést a kellemetlenségért. Szorgalmasan dolgozunk ennek megoldásán. Kérlek, próbáld újra később.",
-        "x1Desc": "Vásároljon XOR tokeneket közvetlenül a SORA hálózaton bankkártyájával vagy hitelkártyájával"
+        "x1Desc": "Vásároljon XOR tokeneket közvetlenül a {SORA} hálózaton bankkártyájával vagy hitelkártyájával"
     },
     "acceptOnScrollText": "Görgessen az elfogadáshoz",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "Új cím észlelve",
         "save": "Mentés névjegyként",
         "tooltip": "Név és cím megadásával gyűjtse össze a címjegyzéket, hogy névjegyeit rendszerezve és naprakészen tartsa",
-        "notSoraAddress": "Ezt a címet a rendszer SORA-címként menti alább. Győződjön meg arról, hogy a címzett hozzáfér a SORA-lánchoz:",
+        "notSoraAddress": "Ezt a címet a rendszer {SORA}-címként menti alább. Győződjön meg arról, hogy a címzett hozzáfér a {SORA}-lánchoz:",
         "options": {
             "send": "Tokeneket küldeni",
             "edit": "Kapcsolat szerkesztése",

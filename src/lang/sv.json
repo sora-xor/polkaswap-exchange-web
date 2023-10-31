@@ -309,7 +309,7 @@
         "comment": "Kommentar"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Ändra nätverk i {Metamask}",
+    "changeNetworkText": "Byt nätverk i plånboken",
     "transactionText": "transaktion | transaktioner",
     "connectWalletText": "Anslut konto",
     "changeAccountText": "Byt konto",
@@ -910,7 +910,7 @@
         "allowanceRequest": "Tryck på \"Tillåt\" åtkomst till kameran"
     },
     "bridgeTransferNotification": {
-        "addToken": "Lägg till {symbol} i {Metamask}",
+        "addToken": "Lägg till {symbol} i plånboken",
         "title": "Bryggtransaktion lyckad"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "Mina inköp",
         "historyTitle": "Transaktionshistorik",
         "moonpayTitle": "Köp ETH via MoonPay",
-        "moonpayDesc": "Köp ETH-tokens på Ethereum och överför dem till SORA-nätverket via bryggan",
+        "moonpayDesc": "Köp ETH-tokens på {Ethereum} och överför dem till {SORA}-nätverket via bryggan",
         "x1Title": "Köp XOR med ditt kort",
         "x1Btn": "Köp XOR med kort",
         "errorMessage": "Ursäkta besväret. Vi arbetar hårt för att lösa detta. Vänligen försök igen senare.",
-        "x1Desc": "Köp XOR-tokens direkt på SORA-nätverket med ditt betal- eller kreditkort"
+        "x1Desc": "Köp XOR-tokens direkt på {SORA}-nätverket med ditt betal- eller kreditkort"
     },
     "acceptOnScrollText": "Bläddra för att acceptera",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "Ny adress upptäckt",
         "save": "Spara som kontakt",
         "tooltip": "Samla in adressboken genom att ange namn och adress för att hålla dina kontakter organiserade och uppdaterade",
-        "notSoraAddress": "Denna adress kommer att sparas som SORA-adress nedan. Se till att mottagaren kan komma åt SORA-kedjan:",
+        "notSoraAddress": "Denna adress kommer att sparas som {SORA}-adress nedan. Se till att mottagaren kan komma åt {SORA}-kedjan:",
         "options": {
             "send": "Skicka tokens",
             "edit": "Redigera kontakt",

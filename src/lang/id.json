@@ -309,7 +309,7 @@
         "comment": "Komentar"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Ubah jaringan di {Metamask}",
+    "changeNetworkText": "Ubah jaringan di dompet",
     "transactionText": "Transaksi | Tansaksi Lainny",
     "connectWalletText": "Hubungkan akun",
     "changeAccountText": "Ganti akun",
@@ -910,7 +910,7 @@
         "allowanceRequest": "Tekan \"Izinkan\" akses ke kamera"
     },
     "bridgeTransferNotification": {
-        "addToken": "Tambahkan {symbol} ke {Metamask}",
+        "addToken": "Tambahkan {symbol} ke dompet",
         "title": "Transaksi jembatan berhasil"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "pembelian saya",
         "historyTitle": "sejarah transaksi",
         "moonpayTitle": "Beli ETH melalui MoonPay",
-        "moonpayDesc": "Beli token ETH di Ethereum dan transfer ke jaringan SORA melalui jembatan",
+        "moonpayDesc": "Beli token ETH di {Ethereum} dan transfer ke jaringan {SORA} melalui jembatan",
         "x1Title": "Beli XOR dengan kartu Anda",
         "x1Btn": "Beli XOR dengan kartu",
         "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti.",
-        "x1Desc": "Beli token XOR langsung di jaringan SORA dengan kartu debit atau kredit Anda"
+        "x1Desc": "Beli token XOR langsung di jaringan {SORA} dengan kartu debit atau kredit Anda"
     },
     "acceptOnScrollText": "Gulir untuk menerima",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "Alamat baru terdeteksi",
         "save": "Simpan sebagai kontak",
         "tooltip": "Kumpulkan buku alamat dengan memberikan nama dan alamat agar kontak Anda tetap teratur dan terkini",
-        "notSoraAddress": "Alamat ini akan disimpan sebagai alamat SORA di bawah ini. Pastikan penerima dapat mengakses rantai SORA:",
+        "notSoraAddress": "Alamat ini akan disimpan sebagai alamat {SORA} di bawah ini. Pastikan penerima dapat mengakses rantai {SORA}:",
         "options": {
             "send": "Kirim token",
             "edit": "Mengedit kontak",

@@ -309,7 +309,7 @@
         "comment": "Kommentar"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Bytt nettverk i {Metamask}",
+    "changeNetworkText": "Bytt nettverk i lommeboken",
     "transactionText": "transaksjon | transaksjoner",
     "connectWalletText": "Koble til konto",
     "changeAccountText": "Bytt konto",
@@ -910,7 +910,7 @@
         "allowanceRequest": "Trykk på \"Tillat\" tilgang til kameraet"
     },
     "bridgeTransferNotification": {
-        "addToken": "Legg til {symbol} til {Metamask}",
+        "addToken": "Legg til {symbol} i lommeboken",
         "title": "Brotransaksjonen ble vellykket"
     },
     "mobilePopup": {
@@ -1186,11 +1186,11 @@
         "historyBtn": "Innkjøpene mine",
         "historyTitle": "betalingshistorie",
         "moonpayTitle": "Kjøp ETH via MoonPay",
-        "moonpayDesc": "Kjøp ETH-tokens på Ethereum og overfør dem til SORA-nettverket via broen",
+        "moonpayDesc": "Kjøp ETH-tokens på {Ethereum} og overfør dem til {SORA}-nettverket via broen",
         "x1Title": "Kjøp XOR med kortet ditt",
         "x1Btn": "Kjøp XOR med kort",
         "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere.",
-        "x1Desc": "Kjøp XOR-tokens direkte på SORA-nettverket med ditt debet- eller kredittkort"
+        "x1Desc": "Kjøp XOR-tokens direkte på {SORA}-nettverket med ditt debet- eller kredittkort"
     },
     "acceptOnScrollText": "Rull for å godta",
     "addressBook": {
@@ -1206,7 +1206,7 @@
         "detected": "Ny adresse oppdaget",
         "save": "Lagre som kontakt",
         "tooltip": "Samle adressebok ved å oppgi navn og adresse for å holde kontaktene dine organiserte og oppdaterte",
-        "notSoraAddress": "Denne adressen vil bli lagret som SORA-adresse nedenfor. Sørg for at mottakeren har tilgang til SORA-kjeden:",
+        "notSoraAddress": "Denne adressen vil bli lagret som {SORA}-adresse nedenfor. Sørg for at mottakeren har tilgang til {SORA}-kjeden:",
         "options": {
             "send": "Send tokens",
             "edit": "Rediger kontakt",
