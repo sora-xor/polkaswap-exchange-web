@@ -65,13 +65,14 @@ const getEthBridgeGasLimit = (assetEvmAddress: string, kind: EthAssetKind, isSor
 };
 
 async function connectEvmProvider(provider: Provider, chains: ChainsProps): Promise<string> {
-  if (provider === Provider.Metamask) {
-    await useMetamaskExtensionProvider();
-  } else {
-    await useWalletConnectProvider(chains);
+  switch (provider) {
+    case Provider.Metamask:
+      return await useMetamaskExtensionProvider();
+    case Provider.WalletConnect:
+      return await useWalletConnectProvider(chains);
+    default:
+      throw new Error('Unknown provider');
   }
-
-  return getAccount();
 }
 
 function disconnectEvmProvider(): void {
@@ -86,7 +87,7 @@ function createWeb3Instance(ethereumProvider: any) {
   ethersInstance = new ethers.BrowserProvider(ethereumProvider, 'any');
 }
 
-async function useMetamaskExtensionProvider(): Promise<void> {
+async function useMetamaskExtensionProvider(): Promise<string> {
   ethereumProvider = await detectEthereumProvider({ timeout: 0 });
 
   if (!ethereumProvider) {
@@ -94,26 +95,30 @@ async function useMetamaskExtensionProvider(): Promise<void> {
   }
 
   createWeb3Instance(ethereumProvider);
+
+  return await getAccount();
 }
 
-async function useWalletConnectProvider(chains: ChainsProps): Promise<void> {
+async function useWalletConnectProvider(chains: ChainsProps): Promise<string> {
   try {
     ethereumProvider = await EthereumProvider.init({
       projectId: WALLET_CONNECT_PROJECT_ID,
       showQrModal: true,
-      qrModalOptions: {
-        enableExplorer: false, // [TODO] localhost cors error
-      },
+      // qrModalOptions: {
+      //   enableExplorer: false,
+      // },
       ...chains,
     });
     // show qr modal
     await ethereumProvider.enable();
 
     createWeb3Instance(ethereumProvider);
+
+    return await getAccount();
   } catch (error: any) {
     // user cancelled qr modal
     if (error.message === 'Connection request reset. Please try again.') {
-      return;
+      return '';
     }
     throw error;
   }
