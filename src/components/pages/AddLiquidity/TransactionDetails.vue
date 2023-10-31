@@ -13,7 +13,7 @@
       <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
       <info-line
         is-formatted
-        :label="t('createPair.networkFee')"
+        :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
         :value="formattedFee"
         :asset-symbol="XOR_SYMBOL"

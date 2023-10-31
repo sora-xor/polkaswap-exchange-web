@@ -367,8 +367,7 @@ export default class Rewards extends Mixins(
     if (this.actionButtonLoading) return '';
     if (!this.isSoraAccountConnected) return this.t('rewards.action.connectWallet');
     if (this.transactionError) return this.t('rewards.action.retry');
-    if (this.isInsufficientBalance)
-      return this.t('rewards.action.insufficientBalance', { tokenSymbol: KnownSymbols.XOR });
+    if (this.isInsufficientBalance) return this.t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR });
     if (!this.rewardsClaiming) return this.t('rewards.action.signAndClaim');
     if (this.externalRewardsAvailable && this.transactionStep === 1) return this.t('rewards.action.pendingExternal');
     if (!this.externalRewardsAvailable || this.transactionStep === 2) return this.t('rewards.action.pendingInternal');

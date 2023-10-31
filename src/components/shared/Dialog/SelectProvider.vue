@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="visibility" :title="t('createPair.connect')">
+  <dialog-base :visible.sync="visibility" :title="t('connectEthereumWalletText')">
     <connection-items :size="providers.length">
       <account-card
         v-button

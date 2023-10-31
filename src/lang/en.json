@@ -480,7 +480,6 @@
         "Swap": "Swap",
         "Pool": "Pool",
         "balance": "Balance",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Price",
         "transactionSubmitted": "Transaction submitted",
         "transactionMessage": "{firstToken} and {secondToken}",
@@ -499,7 +498,6 @@
         "priceImpactTooltip": "The difference between the market price and estimated price due to trade size.",
         "liquidityProviderFee": "Liquidity Provider Fee",
         "liquidityProviderFeeTooltip": "A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.",
-        "networkFee": "@:networkFeeText",
         "pairIsNotCreated": "@:pairIsNotCreated",
         "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Insufficient {tokenSymbol} amount",
@@ -654,7 +652,6 @@
         "remove": "remove",
         "add": "ADD",
         "ok": "OK",
-        "networkFee": "@:networkFeeText",
         "alreadyCreated": "Token pair is already created",
         "firstLiquidityProvider": "You are the first liquidity provider",
         "firstLiquidityProviderInfo": "The ratio of tokens you add will set the price of this pool.<br\/>Once you are happy with the rate click supply to review."
@@ -746,8 +743,7 @@
             "pendingInternal": "{Sora} transaction pending...",
             "pendingExternal": "{Ethereum} transaction pending...",
             "retry": "@:retryText",
-            "checkRewards": "Check",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Check"
         },
         "notification": {
             "empty": "No available claims for this account"
@@ -876,8 +872,6 @@
         "preview": "Invite new users and get 10% from their transaction fees.<br\/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Balance",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Insufficient bonded balance",
         "action": {
             "connectWallet": "@:connectWalletText",
@@ -1254,5 +1248,6 @@
     "minAmountText": "min. amount",
     "maxAmountText": "max. amount",
     "exceededAmountText": "{amount} exceeded",
-    "multipleRecipients": "Multiple Recipients"
+    "multipleRecipients": "Multiple Recipients",
+    "connectEthereumWalletText": "Connect {Ethereum} wallet"
 }

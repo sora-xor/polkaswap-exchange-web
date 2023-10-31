@@ -26,7 +26,7 @@
           {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientXorForFee">
-          {{ t('referralProgram.insufficientBalance', { tokenSymbol: xorSymbol }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
         </template>
         <template v-else-if="isBondedBalance && isInsufficientBondedXor">
           {{ t('referralProgram.insufficientBondedBalance') }}
@@ -36,7 +36,7 @@
         </template>
       </s-button>
       <info-line
-        :label="t('referralProgram.networkFee')"
+        :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
         :value="formattedNetworkFee"
         :asset-symbol="xorSymbol"

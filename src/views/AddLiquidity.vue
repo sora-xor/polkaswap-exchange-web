@@ -53,7 +53,7 @@
           {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('exchange.insufficientBalance', { tokenSymbol: insufficientBalanceTokenSymbol }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol: insufficientBalanceTokenSymbol }) }}
         </template>
         <template v-else>
           {{ t('createPair.supply') }}

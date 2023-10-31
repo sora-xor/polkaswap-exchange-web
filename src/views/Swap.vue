@@ -107,10 +107,10 @@
           {{ t('swap.insufficientLiquidity') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('exchange.insufficientBalance', { tokenSymbol: tokenFromSymbol }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol: tokenFromSymbol }) }}
         </template>
         <template v-else-if="isInsufficientXorForFee">
-          {{ t('exchange.insufficientBalance', { tokenSymbol: KnownSymbols.XOR }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR }) }}
         </template>
         <template v-else>
           <s-icon

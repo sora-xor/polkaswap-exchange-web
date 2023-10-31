@@ -870,4 +870,5 @@ export default {
   minAmountText: 'min. amount',
   maxAmountText: 'max. amount',
   exceededAmountText: '{amount} exceeded',
+  connectEthereumWalletText: 'Connect {Ethereum} wallet',
 };

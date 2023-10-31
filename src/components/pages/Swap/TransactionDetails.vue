@@ -31,7 +31,7 @@
       />
       <info-line
         v-if="isLoggedIn"
-        :label="t('swap.networkFee')"
+        :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
         :value="formattedNetworkFee"
         :asset-symbol="xorSymbol"
