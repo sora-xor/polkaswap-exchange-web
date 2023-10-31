@@ -48,3 +48,17 @@ export interface AttemptCounter {
   freeAttemptsLeft: Nullable<string>;
   totalFreeAttempts: Nullable<string>;
 }
+
+export interface PhoneCode {
+  name: string;
+  // eslint-disable-next-line camelcase
+  dial_code: string;
+}
+
+export type CountryInfo = {
+  name: string;
+  translatedName: string;
+  key: string;
+  flag: string;
+  dialCode: string;
+};

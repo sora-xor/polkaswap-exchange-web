@@ -305,7 +305,8 @@
         "viewIn": "Դիտել {explorer}- ում",
         "referrer": "Ուղղորդող",
         "referral": "Ուղղորդում",
-        "adarTxDetailsTitle": "գործարքի մանրամասներ"
+        "adarTxDetailsTitle": "գործարքի մանրամասներ",
+        "comment": "Մեկնաբանություն"
     },
     "appName": "{AppName} (Փոլքասվափ)",
     "changeNetworkText": "Փոխել ցանցը {Metamask}- ում",
