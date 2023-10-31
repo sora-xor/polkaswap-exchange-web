@@ -385,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "Om",
-        "learnMore": "@:learnMoreText",
         "network": {
             "title": "Vad är {Sora}?",
             "description": "{AppName} är byggt ovanpå {Sora} -nätverket och {Sora} -token (XOR) används för bränsle\/avgifter och likviditets-tillhandahållning på {AppName}. {Sora} Nätverk möjliggör minskade avgifter, snabbare transaktioner och enklare konsensusslutgiltighet, och är inriktat på att leverera interoperabilitet mellan andra blockkedje-ekosystem som {Ethereum}."
@@ -437,10 +436,6 @@
         "from": "Från",
         "to": "Till"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "DEX:en för den Interoperabla Framtiden",
         "description": "Cross-chain byte av tillgångar, enkelt skapande samt listning av nya tillgångar och de enklaste bytena någonsin. {Polkadot} interoperabla framtid är här och vi ligger i dess framkant!",
@@ -483,7 +478,6 @@
         "Swap": "Byt",
         "Pool": "Pool",
         "balance": "Saldo",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Pris",
         "transactionSubmitted": "Transaktion inskickad",
         "transactionMessage": "{firstToken} och {secondToken}",
@@ -492,7 +486,6 @@
         "lossWarning": "Du kommer att förlora {value}% på din handel. Vi har upptäckt ett likviditetsproblem. Detta kan leda till betydande förluster under tokenswappar. Se till att det finns tillräcklig likviditet för ditt önskade swappar."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "uppskattad",
         "slippageTolerance": "Prisförskjutnings Tolerans",
         "minReceived": "Minimum Mottaget",
@@ -502,9 +495,6 @@
         "priceImpactTooltip": "Skillnaden mellan marknadspris och uppskattat pris på grund av handelsstorleken.",
         "liquidityProviderFee": "Avgift för Tillhandahållare av Likviditet",
         "liquidityProviderFeeTooltip": "En del av varje handel ({liquidityProviderFee}%) går till likviditets-tillhandahållare som ett protokollsincitament.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Otillräckligt {tokenSymbol} belopp",
         "insufficientLiquidity": "Otillräcklig likviditet",
         "confirmSwap": "Bekräfta byte",
@@ -515,7 +505,6 @@
         "errorFetching": "Fel vid hämtning av data"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Anslut ett konto för att se din likviditet.",
         "liquidityNotFound": "Ingen likviditet hittades.",
         "addLiquidity": "Lägg till likviditet",
@@ -524,7 +513,6 @@
         "pooledToken": "{tokenSymbol} \"Pooled\"",
         "pairTokens": "{pair} Pool-Tokens",
         "poolShare": "Din andel av poolen",
-        "unknownAsset": "Okänd tillgång",
         "description": "När du lägger till likviditet får du pool-tokens som representerar din position. Dessa tokens tjänar automatiskt avgifter i proportion till din andel av poolen och kan lösas in när som helst.",
         "strategicBonusApy": "Strategisk Bonus APY"
     },
@@ -569,9 +557,6 @@
             "alreadyAttached": "Token var redan bifogad"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Bekräfta transaktion"
-    },
     "bridgeTransaction": {
         "details": "{from} för {to}",
         "for": " för ",
@@ -609,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaktion väntande...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Skapa ny transaktion",
-        "changeAccount": "@:changeAccountText i {Metamask}",
         "title": "Transaktion över Brygga",
-        "expectedMetaMaskAddress": "Förväntad adress i {Metamask}:",
         "allowToken": "Tillåt {AppName} att använda din {tokenSymbol}",
         "approveToken": "Vänligen observera att tokens endast behöver godkännas en gång. Om ditt tillägg har flera begäranden, godkänn endast den sista begäran och avvisa de resterande .",
         "blocksLeft": "{count} block kvar..."
@@ -651,7 +632,6 @@
         "balance": "Saldo",
         "pricePool": "Priser och avgifter",
         "shareOfPool": "Andel av poolen",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Pool",
         "connect": "Anslut plånbok",
         "supply": "Tillgång",
@@ -661,7 +641,6 @@
         "remove": "ta bort",
         "add": "LÄGG TILL",
         "ok": "OK",
-        "networkFee": "@:networkFeeText",
         "alreadyCreated": "Token-paret har redan skapats",
         "firstLiquidityProvider": "Du är den första likviditetsleverantören",
         "firstLiquidityProviderInfo": "Förhållandet mellan tokens du lägger till kommer att ange priset för denna pool. <br\/>Klicka på \"Lägg till\" när du är nöjd med kursen för att granska."
@@ -673,9 +652,7 @@
         "price": "Pris"
     },
     "addLiquidity": {
-        "title": "Lägg till likviditet",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Lägg till likviditet"
     },
     "removeLiquidity": {
         "title": "Ta bort likviditet",
@@ -726,9 +703,6 @@
     },
     "rewards": {
         "title": "Gör Anspråk på Belöningar",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "och",
         "claiming": {
             "pending": "Hävdar...",
@@ -750,14 +724,11 @@
             "howToClaimRewards": "För att göra anspråk på dina {symbols} belöningar så måste du signera {count} {transactions} i {destination}. Belöningar kommer att sättas in på ditt {Sora} -konto."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Anslut {Ethereum} -konto",
             "signAndClaim": "Signera och gör anspråk",
             "pendingInternal": "{Sora} transaktion pågående...",
             "pendingExternal": "{Ethereum} transaktion pågående...",
-            "retry": "@:retryText",
-            "checkRewards": "Kontrollera",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Kontrollera"
         },
         "notification": {
             "empty": "Inga tillgängliga anspråk för det här kontot"
@@ -784,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} tillhandahållare",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{name} tillägg är upptaget, vänligen kontrollera det",
             "extensionLogin": "Vänligen logga in på ditt {name}-tillägg",
@@ -858,7 +827,6 @@
         "settings": "Inställningar",
         "switchTheme": "Byt till {theme} Läge",
         "switchLanguage": "Välj Språk",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Visa ansvarsfriskrivning",
         "hideDisclaimer": "Dölj ansvarsfriskrivning"
     },
@@ -888,11 +856,8 @@
         "preview": "Bjud in nya användare och få 10 % av deras transaktionsavgifter. <br\/> För att börja, bond valfritt belopp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Lär dig mer <\/a>",
         "deposit": "Insättning",
         "balance": "Saldo",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Otillräcklig bonded saldo",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Ange belopp för {tokenSymbol}",
             "startInviting": "Bond {tokenSymbol} för att börja bjuda in",
             "bondMore": "Bond Mera",
@@ -1266,5 +1231,7 @@
     "minAmountText": "min. belopp",
     "maxAmountText": "max. belopp",
     "exceededAmountText": "{amount} har överskridits",
-    "multipleRecipients": "Flera mottagare"
+    "multipleRecipients": "Flera mottagare",
+    "disconnectWalletText": "Koppla ifrån",
+    "connectEthereumWalletText": "Anslut {Ethereum} plånbok"
 }

@@ -385,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "Om",
-        "learnMore": "Lær mer",
         "network": {
             "title": "Hva er {Sora}?",
             "description": "{AppName} er bygget på toppen av {Sora} Network, og {Sora} token (XOR) brukes til gass \/ avgifter og likviditetsbestemmelse på {AppName}. {Sora} Network gir mulighet for reduserte avgifter, raskere transaksjoner og enklere konsensus-sluttføring og er fokusert på å levere interoperabilitet på tvers av andre blokkjedeøkosystemer som {Ethereum}."
@@ -437,10 +436,6 @@
         "from": "Fra",
         "to": "Til"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "DEX for den interoperable fremtiden.",
         "description": "Utveksling på tvers av kjeder av aktiva, enkel opprettelse og notering av nye aktiva, og de enkleste byttene noensinne. {Polkadot} interoperable fremtid er her, og vi er i forkant!",
@@ -483,7 +478,6 @@
         "Swap": "Bytte",
         "Pool": "Pool",
         "balance": "Balanse",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Pris",
         "transactionSubmitted": "Transaksjon sendt",
         "transactionMessage": "{firstToken} og {secondToken}",
@@ -492,7 +486,6 @@
         "lossWarning": "Du kommer til å miste {value}% på handelen din. Vi har oppdaget et problem med likviditetsavsetning. Dette kan føre til betydelige tap under token-bytte. Sørg for at det er tilstrekkelig likviditet for ønsket byttepar."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "estimert",
         "slippageTolerance": "Sklitoleranse",
         "minReceived": "Minimum mottatt",
@@ -502,9 +495,6 @@
         "priceImpactTooltip": "Forskjell mellom markedspris og estimert pris på grunn av handelsstørrelse.",
         "liquidityProviderFee": "Gebyr for likviditetsleverandør",
         "liquidityProviderFeeTooltip": "En del av hver handel ({liquidityProviderFee}%) går til likviditetsleverandører som et protokollinsentiv.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Utilstrekkelig {tokenSymbol} saldo",
         "insufficientLiquidity": "Utilstrekkelig likviditet",
         "confirmSwap": "Bekreft bytte",
@@ -515,7 +505,6 @@
         "errorFetching": "Feil under henting av data"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Koble til en konto for å se din likviditet.",
         "liquidityNotFound": "Ingen likviditet funnet.",
         "addLiquidity": "Tilfør likviditet",
@@ -524,7 +513,6 @@
         "pooledToken": "{tokenSymbol} Pooled",
         "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Din pool andel",
-        "unknownAsset": "Ukjent aktivum",
         "description": "Når du legger til likviditet, får du pool -tokens som representerer posisjonen din. Disse symbolene tjener automatisk gebyrer som er proporsjonale med din andel av bassenget, og kan innløses når som helst.",
         "strategicBonusApy": "Strategisk bonus APY"
     },
@@ -569,9 +557,6 @@
             "alreadyAttached": "Token er allerede vedlagt"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Bekreft transaksjon"
-    },
     "bridgeTransaction": {
         "details": "{from} for {to}",
         "for": " for ",
@@ -609,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaksjon pågår...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Opprett ny transaksjon",
-        "changeAccount": "@:changeAccountText i {Metamask}",
         "title": "Bro Transaksjon",
-        "expectedMetaMaskAddress": "Forventet adresse i {Metamask}:",
         "allowToken": "Tillat {AppName} å bruke {tokenSymbol}",
         "approveToken": "Vær oppmerksom på at det bare er nødvendig å godkjenne tokenet én gang. Hvis utvidelsen din har flere forespørsler om godkjenning av token, må du bare bekrefte den siste mens du avviser resten.",
         "blocksLeft": "{count} blokker igjen..."
@@ -651,7 +632,6 @@
         "balance": "Balanse",
         "pricePool": "Priser og gebyrer",
         "shareOfPool": "Andel av pool",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Pool",
         "connect": "Koble til lommebok",
         "supply": "Forsyning",
@@ -661,7 +641,6 @@
         "remove": "ta bort",
         "add": "LEGG TIL",
         "ok": "OK",
-        "networkFee": "@:networkFeeText",
         "alreadyCreated": "Tokenpar er allerede opprettet",
         "firstLiquidityProvider": "Du er den første likviditetsleverandøren",
         "firstLiquidityProviderInfo": "Forholdet mellom tokener du legger til, angir prisen på denne pool.<br\/> Når du er fornøyd med prisen klikk forsyning for å gjennomgå."
@@ -673,9 +652,7 @@
         "price": "Pris"
     },
     "addLiquidity": {
-        "title": "Tilfør likviditet",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Tilfør likviditet"
     },
     "removeLiquidity": {
         "title": "Fjern likviditet",
@@ -726,9 +703,6 @@
     },
     "rewards": {
         "title": "Gjør krav på belønninger",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "og",
         "claiming": {
             "pending": "Henter...",
@@ -750,14 +724,11 @@
             "howToClaimRewards": "Hvis du vil gjøre krav på {symbols}-belønningene dine, må du signere {count} {transactions} i {destination}. Belønninger vil bli satt inn på din {Sora} -konto."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Koble til {Ethereum} -konto",
             "signAndClaim": "Signer og hev belønning",
             "pendingInternal": "{Sora} -transaksjon pågår...",
             "pendingExternal": "{Ethereum} transaksjon pågår...",
-            "retry": "@:retryText",
-            "checkRewards": "Sjekk",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Sjekk"
         },
         "notification": {
             "empty": "Denne kontoen har ingen opptjent belønning"
@@ -784,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} leverandør",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{name} er opptatt. vennligst sjekk",
             "extensionLogin": "Logg på utvidelsen {name}",
@@ -858,7 +827,6 @@
         "settings": "Innstillinger",
         "switchTheme": "Bytt til {theme} -modus",
         "switchLanguage": "Velg språk",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Vis ansvarsfraskrivelse",
         "hideDisclaimer": "Skjul ansvarsfraskrivelse"
     },
@@ -888,11 +856,8 @@
         "preview": "Inviter nye brukere og få 10% fra deres transaksjonsgebyrer.<br\/>For å starte, obligasjon et hvilket som helst beløp av XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Lær mer<\/a>",
         "deposit": "Innskudd",
         "balance": "Balanse",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Utilstrekkelig bundet balanse",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Angi mengden {tokenSymbol}",
             "startInviting": "Bond {tokenSymbol} for å begynne å invitere",
             "bondMore": "Bond mer",
@@ -1266,5 +1231,7 @@
     "minAmountText": "min. beløp",
     "maxAmountText": "maks. beløp",
     "exceededAmountText": "{amount} overskredet",
-    "multipleRecipients": "Flere mottakere"
+    "multipleRecipients": "Flere mottakere",
+    "disconnectWalletText": "Koble fra",
+    "connectEthereumWalletText": "Koble til {Ethereum} -lommeboken"
 }

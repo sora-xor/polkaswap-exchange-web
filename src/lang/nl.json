@@ -385,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "Over",
-        "learnMore": "Kom meer te weten",
         "network": {
             "title": "Wat is {Sora}?",
             "description": "{AppName} is gebouwd bovenop het {Sora} Netwerk, en het {Sora} token (XOR) wordt gebruikt voor gas\/vergoedingen en liquiditeitsverschaffing op {AppName}. {Sora} Network maakt lagere vergoedingen, snellere transacties en eenvoudigere consensus finalisatie mogelijk en is gericht op het leveren van interoperabiliteit over andere blockchain ecosystemen zoals {Ethereum}."
@@ -437,10 +436,6 @@
         "from": "Van",
         "to": "Naar"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "De DEX voor de interoperabele toekomst.",
         "description": "Cross-chain uitwisseling van assets, eenvoudige creatie en notering van nieuwe assets en de gemakkelijkste swaps beschikbaar. De interoperabele toekomst van {Polkadot} is hier en wij lopen voorop!",
@@ -483,7 +478,6 @@
         "Swap": "Swap",
         "Pool": "pool",
         "balance": "Balans",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Prijs",
         "transactionSubmitted": "Transactie ingediend",
         "transactionMessage": "{firstToken} en {secondToken}",
@@ -492,7 +486,6 @@
         "lossWarning": "U verliest {value}% op uw transactie. We hebben een probleem met de liquiditeitsvoorziening ontdekt. Dit kan leiden tot aanzienlijke verliezen tijdens token-swaps. Zorg ervoor dat er voldoende liquiditeit is voor uw gewenste swappaar."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "geschat",
         "slippageTolerance": "Slip tolerantie",
         "minReceived": "Minimum ontvangen",
@@ -502,9 +495,6 @@
         "priceImpactTooltip": "Het verschil tussen de marktprijs en de geschatte prijs als gevolg van de handelsomvang.",
         "liquidityProviderFee": "Vergoeding voor liquiditeitsverschaffer",
         "liquidityProviderFeeTooltip": "Een deel van elke transactie ({liquidityProviderFee}%) gaat naar liquiditeitsverschaffers als protocolaanmoediging.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Onvoldoende {tokenSymbol} hoeveelheid",
         "insufficientLiquidity": "Onvoldoende liquiditeit",
         "confirmSwap": "Swap bevestigen",
@@ -515,7 +505,6 @@
         "errorFetching": "Fout bij het ophalen van de gegevens"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Maak verbinding met een wallet om uw liquiditeit toe te voegen en te bekijken.",
         "liquidityNotFound": "Geen liquiditeit gevonden.",
         "addLiquidity": "Toevoegen",
@@ -524,7 +513,6 @@
         "pooledToken": "{tokenSymbol} gepoold",
         "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Uw aandeel in de pool",
-        "unknownAsset": "Onbekend asset",
         "description": "Wanneer u liquiditeit toevoegt, krijgt u pooltokens die uw positie vertegenwoordigen. Deze tokens verdienen automatisch vergoedingen die evenredig zijn aan uw aandeel in de pool en kunnen op elk moment worden ingewisseld.",
         "strategicBonusApy": "Strategische Bonus APY"
     },
@@ -569,9 +557,6 @@
             "alreadyAttached": "Token was al gekoppeld"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Bevestig transactie"
-    },
     "bridgeTransaction": {
         "details": "{from} voor {to}",
         "for": " voor ",
@@ -609,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transactie in behandeling...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Nieuwe transactie aanmaken",
-        "changeAccount": "@:changeAccountText in {Metamask}",
         "title": "Bridge-transactie",
-        "expectedMetaMaskAddress": "Verwacht adres in {Metamask}:",
         "allowToken": "Sta {AppName} toe om je {tokenSymbol}",
         "approveToken": "Houd er rekening mee dat het slechts één keer nodig is om het token goed te keuren. Als uw extensie meerdere goedkeuringsverzoeken voor tokens heeft, moet u ervoor zorgen dat u alleen de laatste bevestigt en de rest afwijst.",
         "blocksLeft": "{count} blokken over..."
@@ -651,7 +632,6 @@
         "balance": "Saldo",
         "pricePool": "Prijzen en vergoedingen",
         "shareOfPool": "Aandeel van de pool",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{eerste}-{tweede} Pool tokens",
         "connect": "Wallet verbinden",
         "supply": "Toevoegen",
@@ -661,7 +641,6 @@
         "remove": "Verwijder",
         "add": "Voeg Toe",
         "ok": "OK",
-        "networkFee": "Netwerkvergoeding",
         "alreadyCreated": "Token paar is al aangemaakt",
         "firstLiquidityProvider": "U bent de eerste liquiditeitsverschaffer",
         "firstLiquidityProviderInfo": "De verhouding van de tokens die u toevoegt zal de prijs van deze pool bepalen.<br\/>Zodra u tevreden bent met de koers klikt u op leveren om te herzien."
@@ -673,9 +652,7 @@
         "price": "Prijs"
     },
     "addLiquidity": {
-        "title": "Liquiditeit toevoegen",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Liquiditeit toevoegen"
     },
     "removeLiquidity": {
         "title": "Liquiditeit verwijderen",
@@ -726,9 +703,6 @@
     },
     "rewards": {
         "title": "Beloningen claimen",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "en",
         "claiming": {
             "pending": "Aan het claimen...",
@@ -750,14 +724,11 @@
             "howToClaimRewards": "Om uw {symbols} -beloningen te claimen, moet u {count} {transactions} in {destination} ondertekenen. Beloningen worden gestort op je {Sora} -account."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Verbind {Ethereum} account",
             "signAndClaim": "Onderteken en claim",
             "pendingInternal": "{Sora} transactie in behandeling...",
             "pendingExternal": "{Ethereum} transactie in behandeling...",
-            "retry": "@:retryText",
-            "checkRewards": "Controleren",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Controleren"
         },
         "notification": {
             "empty": "Geen beschikbare claims voor dit account"
@@ -784,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} provider",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{name} extensie is bezet, gelieve ze te controleren",
             "extensionLogin": "Gelieve in te loggen op uw {name} extensie",
@@ -858,7 +827,6 @@
         "settings": "Instellingen",
         "switchTheme": "Overschakelen naar {theme} -modus",
         "switchLanguage": "Kies een taal",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Disclaimer tonen",
         "hideDisclaimer": "Disclaimer verbergen"
     },
@@ -888,11 +856,8 @@
         "preview": "Nodig nieuwe gebruikers uit en ontvang 10% van hun transactiekosten.<br\/>Om te beginnen, borg elk bedrag van XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Meer informatie<\/a>",
         "deposit": "Storting",
         "balance": "Saldo",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Onvoldoende gebonden saldo",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Voer het bedrag van {tokenSymbol}",
             "startInviting": "Bond {tokenSymbol} om te beginnen met uitnodigen",
             "bondMore": "Bond Meer",
@@ -1266,5 +1231,7 @@
     "minAmountText": "min. hoeveelheid",
     "maxAmountText": "max. hoeveelheid",
     "exceededAmountText": "{amount} overschreden",
-    "multipleRecipients": "Meerdere ontvangers"
+    "multipleRecipients": "Meerdere ontvangers",
+    "disconnectWalletText": "Loskoppelen",
+    "connectEthereumWalletText": "Sluit de {Ethereum} -portemonnee aan"
 }

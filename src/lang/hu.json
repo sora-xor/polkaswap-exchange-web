@@ -385,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "Leírás",
-        "learnMore": "@:learnMoreText",
         "network": {
             "title": "Mi az a {Sora}?",
             "description": "A {AppName} a {Sora} hálózatra épül, és a {Sora} tokent (XOR) használják a {AppName} a gáz\/díjak és a likviditás biztosításához. A {Sora} Network lehetővé teszi a csökkentett díjakat, a gyorsabb tranzakciókat és az egyszerűbb konszenzus véglegesítést, és arra összpontosít, hogy más blokklánc ökoszisztémák, például az {Ethereum} közötti átjárhatóságot biztosítsa."
@@ -437,10 +436,6 @@
         "from": "-tól",
         "to": "Számára"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "A DEX az átjárható jövőért.",
         "description": "Blokkláncok közötti eszközcsere, új eszközök egyszerű létrehozása és listázása, valamint a valaha volt legegyszerűbb token váltás. {Polkadot} átjárható jövője itt van, és mi az élvonalban vagyunk!",
@@ -483,7 +478,6 @@
         "Swap": "Váltás",
         "Pool": "Pool",
         "balance": "Egyenleg",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Ár",
         "transactionSubmitted": "Tranzakció elküldve",
         "transactionMessage": "{firstToken} és {secondToken}",
@@ -492,7 +486,6 @@
         "lossWarning": "{value}%-ot fog veszíteni a kereskedésében. Likviditásellátási problémát észleltünk. Ez jelentős veszteségekhez vezethet a token-csere során. Kérjük, gondoskodjon megfelelő likviditásról a kívánt swappárhoz."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "becsült",
         "slippageTolerance": "Csúszási tolerancia",
         "minReceived": "Minimálisan kapott",
@@ -502,9 +495,6 @@
         "priceImpactTooltip": "A piaci ár és a becsült ár közötti különbség van a kereskedés méretéből adódóan.",
         "liquidityProviderFee": "Likviditásszolgáltató díja",
         "liquidityProviderFeeTooltip": "Minden egyes kereskedés egy része ({liquidityProviderFee}%) a likviditás szolgáltatókhoz kerül, mint protokoll-ösztönző.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Nem elegendő {tokenSymbol} összeg",
         "insufficientLiquidity": "Nincs elég likviditás",
         "confirmSwap": "Váltás megerősítése",
@@ -515,7 +505,6 @@
         "errorFetching": "Hiba történt az adatok lekérésekor"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Csatlakoztass egy fiókot a likviditásod megtekintéséhez.",
         "liquidityNotFound": "Nem található likviditás.",
         "addLiquidity": "Poolhoz hozzáadás",
@@ -524,7 +513,6 @@
         "pooledToken": "{tokenSymbol} Poolban lévő",
         "pairTokens": "{pair} Pool tokenek",
         "poolShare": "A pool részesedésed",
-        "unknownAsset": "Ismeretlen eszköz",
         "description": "Ha likviditást adsz hozzá, a pozíciódat reprezentáló pool tokeneket kapsz. Ezek a tokenek automatikusan a pool részesedésével arányos díjakat termelnek, és bármikor beválthatók.",
         "strategicBonusApy": "Stratégiai bónusz APY"
     },
@@ -569,9 +557,6 @@
             "alreadyAttached": "Tokent már csatolták"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Tranzakció megerősítése"
-    },
     "bridgeTransaction": {
         "details": "{from} - {to}",
         "for": " számára ",
@@ -609,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} tranzakció folyamatban...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Új tranzakció létrehozása",
-        "changeAccount": "@:changeAccountText a {Metamask}-ban",
         "title": "Híd tranzakció",
-        "expectedMetaMaskAddress": "Várható cím a {Metamask}:",
         "allowToken": "Engedélyezd, hogy a {AppName} használhassa a {tokenSymbol}",
         "approveToken": "Felhívjuk figyelmedet, hogy a tokent csak egyszer kell jóváhagyni. Ha a kiterjesztésnek több token jóváhagyási kérelmed van, győződj meg róla, hogy csak az utolsót erősíted meg, míg a többit elutasítod.",
         "blocksLeft": "{count} blokk maradt..."
@@ -651,7 +632,6 @@
         "balance": "Egyenleg",
         "pricePool": "Árak és díjak",
         "shareOfPool": "A pool részesedése",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Pool",
         "connect": "Pénztárca csatlakoztatása",
         "supply": "Kínálat",
@@ -661,7 +641,6 @@
         "remove": "eltávolítás",
         "add": "HOZZÁAD",
         "ok": "Rendben",
-        "networkFee": "@:networkFeeText",
         "alreadyCreated": "Token pár már létre lett hozva",
         "firstLiquidityProvider": "Te vagy az első likviditás szolgáltató",
         "firstLiquidityProviderInfo": "A hozzáadott tokenek aránya határozza meg a pool árát.<br\/>Ha elégedett vagy az árral, kattints a felülvizsgálathoz a supply gombra."
@@ -673,9 +652,7 @@
         "price": "Ár"
     },
     "addLiquidity": {
-        "title": "Hozzáadás",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Hozzáadás"
     },
     "removeLiquidity": {
         "title": "Eltávolítás",
@@ -726,9 +703,6 @@
     },
     "rewards": {
         "title": "Jutalmak igénylése",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "és",
         "claiming": {
             "pending": "Igénylés...",
@@ -750,14 +724,11 @@
             "howToClaimRewards": "A {symbols} jutalmak igénybevételéhez alá kell írnod {count} {transactions} a {destination}-ben. A jutalmak a {Sora} számládra kerülnek befizetésre."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Csatlakozás {Ethereum} fiókhoz",
             "signAndClaim": "Aláírás és igénylés",
             "pendingInternal": "{Sora} tranzakció folyamatban...",
             "pendingExternal": "{Ethereum} tranzakció folyamatban...",
-            "retry": "@:retryText",
-            "checkRewards": "Ellenőrzés",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Ellenőrzés"
         },
         "notification": {
             "empty": "Ehhez a fiókhoz nincs elérhető jutalom"
@@ -784,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} szolgáltató",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{name} bővítmény le van terhelve, kérjük ellenőrizd",
             "extensionLogin": "Kérjük, jelentkezz be a {name} kiterjesztésébe",
@@ -858,7 +827,6 @@
         "settings": "Beállítások",
         "switchTheme": "Váltás {theme} módra",
         "switchLanguage": "Nyelv kiválasztása",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Felelősségi nyilatkozat megjelenítése",
         "hideDisclaimer": "Felelősségi nyilatkozat elrejtése"
     },
@@ -888,11 +856,8 @@
         "preview": "Hívj meg új felhasználókat, és 10%-ot kapsz a tranzakciós díjaikból.<br\/> Kezdetben köss le bármilyen összegű XOR-t <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Tudjon meg többet<\/a>",
         "deposit": "Befizetés",
         "balance": "Egyenleg",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Elégtelen lekötött egyenleg",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Adja meg a {tokenSymbol} mennyiségét",
             "startInviting": " {tokenSymbol} lekötés a meghíváshoz",
             "bondMore": "Több lekötése",
@@ -1266,5 +1231,7 @@
     "minAmountText": "min. összeg",
     "maxAmountText": "max. összeg",
     "exceededAmountText": "{amount} túllépve",
-    "multipleRecipients": "Több címzett"
+    "multipleRecipients": "Több címzett",
+    "disconnectWalletText": "Leválasztás",
+    "connectEthereumWalletText": "Csatlakoztassa az {Ethereum} pénztárcát"
 }

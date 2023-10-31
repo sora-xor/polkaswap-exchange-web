@@ -385,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "Più informazioni",
-        "learnMore": "Per saperne di più",
         "network": {
             "title": "Cos'è {Sora}?",
             "description": "{AppName} è costruito sulla rete {Sora} e il token {Sora} (XOR) viene utilizzato per gas\/fees e per la fornitura di liquidità su {AppName}. {Sora} Network consente commissioni ridotte, transazioni più veloci e più semplice finalizzazione del consenso. Si concentra sulla produzione di interoperabilità tra altri ecosistemi blockchain come {Ethereum}."
@@ -437,10 +436,6 @@
         "from": "Da",
         "to": "A"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "Il DEX per il Futuro Interoperabile.",
         "description": "Scambio cross-chain di assets, semplice creazione e listing di nuovi asset e gli swap più facili di sempre. Il futuro interoperabile di {Polkadot} è qui e noi siamo in prima linea!",
@@ -483,7 +478,6 @@
         "Swap": "Scambia",
         "Pool": "Pool",
         "balance": "Saldo",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Prezzo",
         "transactionSubmitted": "Transazione inviata",
         "transactionMessage": "{firstToken} e {secondToken}",
@@ -492,7 +486,6 @@
         "lossWarning": "Perderai {value}% sulla tua operazione. Abbiamo rilevato un problema di fornitura di liquidità. Ciò può portare a perdite significative durante gli scambi di token. Assicurati che ci sia liquidità adeguata per la coppia di swap desiderata."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "stimato",
         "slippageTolerance": "Tolleranza di Slippage",
         "minReceived": "Minimo ricevuto",
@@ -502,9 +495,6 @@
         "priceImpactTooltip": "La differenza tra il prezzo di mercato e il prezzo stimato a causa delle dimensioni dell'operazione.",
         "liquidityProviderFee": "Commissione del Liquidity Provider",
         "liquidityProviderFeeTooltip": "Una parte di ogni operazione ({liquidityProviderFee}%) va ai liquidity providers come incentivo.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Quantità insufficiente di {tokenSymbol}",
         "insufficientLiquidity": "Liquidità insufficiente",
         "confirmSwap": "Conferma lo scambio",
@@ -515,7 +505,6 @@
         "errorFetching": "Errore durante il recupero dei dati"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Collegati a un wallet per aggiungere e visualizzare la tua liquidità.",
         "liquidityNotFound": "Nessuna liquidità trovata.",
         "addLiquidity": "Aggiungi liquidità",
@@ -524,7 +513,6 @@
         "pooledToken": "{tokenSymbol} in pool",
         "pairTokens": "{pair} pool Tokens",
         "poolShare": "La tua share della pool",
-        "unknownAsset": "Asset sconosciuto",
         "description": "Quando aggiungi liquidità, ti vengono dati dei token pool che rappresentano la tua posizione. Questi token guadagnano automaticamente commissioni proporzionali alla tua quota del pool e possono essere riscattati in qualsiasi momento.",
         "strategicBonusApy": "Bonus Strategico APY"
     },
@@ -569,9 +557,6 @@
             "alreadyAttached": "Il token era già stato aggiunto"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Conferma la transazione"
-    },
     "bridgeTransaction": {
         "details": "{from} per {to}",
         "for": " per ",
@@ -609,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transazione in coda...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Crea una nuova transazione",
-        "changeAccount": "@:changeAccountText in {Metamask}",
         "title": "Transazione sul Bridge",
-        "expectedMetaMaskAddress": "Indirizzo previsto in {Metamask}",
         "allowToken": "Consenti a {AppName} di utilizzare il tuo {tokenSymbol}",
         "approveToken": "Tieni presente che è necessario approvare il token solo una volta. Se la tua estensione ha più richieste di approvazione di token, assicurati di confermare solo l'ultima mentre rifiuti le altre.",
         "blocksLeft": "{count} blocchi rimasti..."
@@ -651,7 +632,6 @@
         "balance": "Saldo",
         "pricePool": "Prezzi e fees",
         "shareOfPool": "Quota della pool",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Pool",
         "connect": "Connetti wallet",
         "supply": "Fornisci",
@@ -661,7 +641,6 @@
         "remove": "rimuovi",
         "add": "INSERISCI",
         "ok": "OK",
-        "networkFee": "Fee del network",
         "alreadyCreated": "La token pair è già stata creata",
         "firstLiquidityProvider": "Sei il primo liquidity provider",
         "firstLiquidityProviderInfo": "Il rapporto tra i token che aggiungi determinerà il prezzo di questa pool. <br\/> Una volta che sei soddisfatto della rapport, fai clic su aggiungi per esaminarla."
@@ -673,9 +652,7 @@
         "price": "Prezzo"
     },
     "addLiquidity": {
-        "title": "Aggiungi liquidità",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Aggiungi liquidità"
     },
     "removeLiquidity": {
         "title": "Rimuovi liquidità",
@@ -726,9 +703,6 @@
     },
     "rewards": {
         "title": "Richiedi ricompense",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "e",
         "claiming": {
             "pending": "Claiming...",
@@ -750,14 +724,11 @@
             "howToClaimRewards": "Per richiedere i tuoi {symbols} devi firmare la {count} {transactions} nell' {destination}. I premi verranno depositati sul tuo account {Sora}."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Connetti {Ethereum} account",
             "signAndClaim": "Firma e reclama",
             "pendingInternal": "{Sora} transazione in attesa...",
             "pendingExternal": "{Ethereum} transazione in attesa...",
-            "retry": "@:retryText",
-            "checkRewards": "Controlla",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Controlla"
         },
         "notification": {
             "empty": "Nessuna ricompensa disponibile per questo account"
@@ -784,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} provider",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "L'estensione {name} non è stata trovata. Si prega di controllarla",
             "extensionLogin": "Per favore accedi all' estensione {name}",
@@ -858,7 +827,6 @@
         "settings": "Impostazioni",
         "switchTheme": "Passa alla modalità {theme}",
         "switchLanguage": "Scegli la lingua",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Mostra esclusione di responsabilità",
         "hideDisclaimer": "Nascondi Dichiarazione di non responsabilità"
     },
@@ -888,11 +856,8 @@
         "preview": "Invita nuovi utenti e ottieni il 10% dalle loro commissioni di transazione.<br\/>Per iniziare, lega qualsiasi quantità di XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Per saperne di più<\/a>",
         "deposit": "Deposita",
         "balance": "Bilancia",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Equilibrio vincolato insufficiente",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Inserisci l'importo di {tokenSymbol}",
             "startInviting": "Prenota {tokenSymbol} per iniziare a invitare",
             "bondMore": "Legare di più",
@@ -1266,5 +1231,7 @@
     "minAmountText": "min. quantità",
     "maxAmountText": "massimo quantità",
     "exceededAmountText": "{amount} superato",
-    "multipleRecipients": "Destinatari multipli"
+    "multipleRecipients": "Destinatari multipli",
+    "disconnectWalletText": "Disconnetti",
+    "connectEthereumWalletText": "Connetti il portafoglio {Ethereum}"
 }

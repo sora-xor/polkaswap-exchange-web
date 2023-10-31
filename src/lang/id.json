@@ -385,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "Tentang",
-        "learnMore": "Pelajari lebih lanjut",
         "network": {
             "title": "Apa it {Sora}?",
             "description": "{AppName} dibangun di atas Jaringan {Sora}, dan token {Sora} (XOR) digunakan untuk penyediaan gas \/biaya dan likuiditas pada {AppName}. {Sora} Network memungkinkan pengurangan biaya, transaksi yang lebih cepat, dan finalisasi konsensus yang lebih sederhana dan berfokus pada memberikan interoperabilitas di seluruh ekosistem blockchain lainnya seperti {Ethereum}."
@@ -437,10 +436,6 @@
         "from": "Dari",
         "to": "Untuk"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "DEX untuk Masa Depan Interoperabilitas.",
         "description": "Pertukaran aset lintas rantai, pembuatan sederhana dan pencatatan aset baru, dan swap termudah yang pernah ada. Masa depan {Polkadot} yang dapat dioperasikan ada di sini dan kami berada di garis depan!",
@@ -483,7 +478,6 @@
         "Swap": "Swap",
         "Pool": "Pool",
         "balance": "Saldo",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Harga",
         "transactionSubmitted": "Transaksi dikirim",
         "transactionMessage": "{firstToken} dan {secondToken}",
@@ -492,7 +486,6 @@
         "lossWarning": "Anda akan kehilangan {value}% pada perdagangan Anda. Kami mendeteksi masalah penyediaan likuiditas. Ini dapat menyebabkan kerugian yang signifikan selama pertukaran token. Pastikan ada likuiditas yang memadai untuk pasangan swap yang Anda inginkan."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "estimasi",
         "slippageTolerance": "Toleransi Slippage",
         "minReceived": "Minimum Diterima",
@@ -502,9 +495,6 @@
         "priceImpactTooltip": "Selisih antara harga pasar dan perkiraan harga disebabkan oleh ukuran perdagangan.",
         "liquidityProviderFee": "Biaya Penyedia Likuiditas",
         "liquidityProviderFeeTooltip": "Sebagian dari setiap perdagangan ({liquidityProviderFee}%) diberikan kepada penyedia likuiditas sebagai insentif protokol.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Jumlah {tokenSymbol} tidak mencukupi",
         "insufficientLiquidity": "Likuiditas tidak mencukupi",
         "confirmSwap": "Konfirmasi swap",
@@ -515,7 +505,6 @@
         "errorFetching": "Kesalahan pengambilan data"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Hubungkan dompet untuk menambah dan melihat likuiditas Anda.",
         "liquidityNotFound": "Tidak ada likuiditas yang ditemukan.",
         "addLiquidity": "Tambahkan",
@@ -524,7 +513,6 @@
         "pooledToken": "{tokenSymbol} Masuk Pool",
         "pairTokens": "{pair} Token Pool",
         "poolShare": "bagian pool Anda",
-        "unknownAsset": "Aset tidak diketahui",
         "description": "Ketika Anda menambahkan likuiditas, Anda diberikan token pool yang mewakili posisi Anda. Token ini secara otomatis memperoleh keuntungan sebanding dengan bagian Anda dari pool, dan dapat ditukarkan kapan saja.",
         "strategicBonusApy": "Bonus Strategis APY"
     },
@@ -569,9 +557,6 @@
             "alreadyAttached": "Token sudah terlampir"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Konfirmasi transaksi"
-    },
     "bridgeTransaction": {
         "details": "{from} untuk {to}",
         "for": " untuk ",
@@ -609,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaksi tertunda...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Buat transaksi baru",
-        "changeAccount": "@:changeAccountText di {Metamask}",
         "title": "Jembatan Transaksi",
-        "expectedMetaMaskAddress": "Alamat yang diharapkan di {Metamask}",
         "allowToken": "Izinkan {AppName} untuk menggunakan {tokenSymbol}",
         "approveToken": "Harap dicatat bahwa itu hanya diperlukan untuk menyetujui token sekali. Jika ekstensi Anda memiliki beberapa permintaan persetujuan token, pastikan untuk hanya mengonfirmasi yang terakhir sambil menolak sisanya.",
         "blocksLeft": "{count} blok kiri..."
@@ -651,7 +632,6 @@
         "balance": "Saldo",
         "pricePool": "Harga dan bagian pool",
         "shareOfPool": "Bagian dari Pool",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Token Pool",
         "connect": "Hubungkan dompet",
         "supply": "Suplai",
@@ -661,7 +641,6 @@
         "remove": "Menghapus",
         "add": "MENAMBAHKAN",
         "ok": "Oke",
-        "networkFee": "Biaya jaringan",
         "alreadyCreated": "Pair token sudah dibuat",
         "firstLiquidityProvider": "Anda adalah penyedia likuiditas pertama",
         "firstLiquidityProviderInfo": "Rasio token yang Anda tambahkan akan menentukan nilai pool ini. <br\/> Setelah Anda puas dengan tarif, klik suplai untuk meninjau."
@@ -673,9 +652,7 @@
         "price": "Harga"
     },
     "addLiquidity": {
-        "title": "Tambahkan likuiditas",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Tambahkan likuiditas"
     },
     "removeLiquidity": {
         "title": "Hapus likuiditas",
@@ -726,9 +703,6 @@
     },
     "rewards": {
         "title": "Klaim Hadiah",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "dan",
         "claiming": {
             "pending": "Sedang Mengklaim...",
@@ -750,14 +724,11 @@
             "howToClaimRewards": "Untuk mengklaim {symbols} Anda harus menandatangani {count} {transactions} di {destination}. Hasil akan disetorkan ke akun {Sora} Anda."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Hubungkan akun {Ethereum}",
             "signAndClaim": "Tanda tangani dan klaim",
             "pendingInternal": "{Sora} transaksi tertunda...",
             "pendingExternal": "{Ethereum} transaksi tertunda...",
-            "retry": "@:retryText",
-            "checkRewards": "Periksa",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Periksa"
         },
         "notification": {
             "empty": "Tidak ada klaim yang tersedia untuk akun ini"
@@ -784,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} penyedia",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{name} ekstensi sedang sibuk, harap periksa",
             "extensionLogin": "Silakan masuk ke ekstensi {name} Anda",
@@ -858,7 +827,6 @@
         "settings": "Pengaturan",
         "switchTheme": "Beralih ke Mode {theme}",
         "switchLanguage": "Pilih bahasa",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Tampilkan Penafian",
         "hideDisclaimer": "Sembunyikan Penafian"
     },
@@ -888,11 +856,8 @@
         "preview": "Undang pengguna baru dan dapatkan 10% dari biaya transaksi mereka.<br\/>Untuk mulai, beri obligasi dalam jumlah XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Saldo",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Saldo terikat tidak mencukupi",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Masukkan jumlah {tokenSymbol}",
             "startInviting": "Ikatan {tokenSymbol} untuk mulai mengundang",
             "bondMore": "Bond More",
@@ -1266,5 +1231,7 @@
     "minAmountText": "menit. jumlah",
     "maxAmountText": "maks. jumlah",
     "exceededAmountText": "{amount} terlampaui",
-    "multipleRecipients": "Penerima Multipel"
+    "multipleRecipients": "Penerima Multipel",
+    "disconnectWalletText": "Memutuskan",
+    "connectEthereumWalletText": "Hubungkan dompet {Ethereum}"
 }

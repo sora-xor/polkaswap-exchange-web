@@ -385,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "О",
-        "learnMore": "@:learnMoreText",
         "network": {
             "title": "Шта је {Sora}?",
             "description": "{AppName} је изграђен на {Sora} мрежи, а {Sora} токен (XOR) се користи за обезбеђивање гаса\/накнаде и ликвидности на {AppName}. {Sora} мрежа омогућава смањене накнаде, брже трансакције и једноставнију финализацију консензуса и фокусирана је на испоруку интероперабилности у другим блокчеин екосистемима као што је {Ethereum}."
@@ -437,10 +436,6 @@
         "from": "Од",
         "to": "До"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "DEX за интероперабилну будућност.",
         "description": "Унакрсна размена средстава, једноставно креирање и листање нових средстава, и најлакше размене икада. Интероперабилна будућност {Polkadot} је ту и ми смо на челу!",
@@ -483,7 +478,6 @@
         "Swap": "Замените",
         "Pool": "Пул",
         "balance": "Balans",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Цена",
         "transactionSubmitted": "Трансакција је послата",
         "transactionMessage": "{firstToken} и {secondToken}",
@@ -492,7 +486,6 @@
         "lossWarning": "Изгубићете {value}% у својој трговини. Открили смо проблем са обезбеђивањем ликвидности. Ово може довести до значајних губитака током размене токена. Уверите се да постоји одговарајућа ликвидност за ваш жељени своп пар."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "процењено",
         "slippageTolerance": "Толеранција клизања",
         "minReceived": "Примљено минимално",
@@ -502,9 +495,6 @@
         "priceImpactTooltip": "Разлика између тржишне цене и процењене цене je због величине трговине.",
         "liquidityProviderFee": "Накнада добављача ликвидности",
         "liquidityProviderFeeTooltip": "Део сваке трговине ({liquidityProviderFee}%) иде добављачима ликвидности као протоколарни подстицај.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Недовољна количина {tokenSymbol}",
         "insufficientLiquidity": "Недовољна ликвидност",
         "confirmSwap": "Потврдите замену",
@@ -515,7 +505,6 @@
         "errorFetching": "Greška pri prenošenju podataka"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Повежите рачун да бисте видели своју ликвидност.",
         "liquidityNotFound": "Није пронађена ликвидност.",
         "addLiquidity": "Додати ликвидност",
@@ -524,7 +513,6 @@
         "pooledToken": "{tokenSymbol}",
         "pairTokens": "{pair} Токени пула",
         "poolShare": "Ваш удео у пулу",
-        "unknownAsset": "@:unknownAssetText",
         "description": "Када додате ликвидност, дају вам се токени пула који представљају вашу позицију. Ови токени аутоматски зарађују накнаде пропорционалне вашем уделу у пулу и могу се искористити у било ком тренутку.",
         "strategicBonusApy": "Стратешки бонус APY"
     },
@@ -569,9 +557,6 @@
             "alreadyAttached": "Токен је већ био прикачен"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Потврдите трансакцију"
-    },
     "bridgeTransaction": {
         "details": "{from} за {to}",
         "for": " за ",
@@ -609,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} трансакција на чекању...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Правите нову трансакцију",
-        "changeAccount": "@:changeAccountText у {Metamask}",
         "title": "Бриџ трансакције",
-        "expectedMetaMaskAddress": "Очекивана адреса у {Metamask}:",
         "allowToken": "Дозволите {AppName} да користи ваш {tokenSymbol}",
         "approveToken": "Имаjте на уму да је потребно само једном одобрити токен. Ако ваш додатак има више захтева за одобрење токена, обавезно потврдите само последњи док одбацујете остале.",
         "blocksLeft": "Преостало је {count} блокова..."
@@ -651,7 +632,6 @@
         "balance": "Салдо",
         "pricePool": "Цене и накнаде",
         "shareOfPool": "Удео у пулу",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Пул",
         "connect": "Повежите новчаник",
         "supply": "Снабдевање",
@@ -661,7 +641,6 @@
         "remove": "уклоните",
         "add": "ДОДАJТЕ",
         "ok": "У реду",
-        "networkFee": "@:networkFeeText",
         "alreadyCreated": "Пар токена је већ креиран",
         "firstLiquidityProvider": "Ви сте први пружалац ликвидности",
         "firstLiquidityProviderInfo": "Однос токена које додате ће одредити цену овог пула. <br\/> Када будете задовољни са стопом, кликните на понуду за преглед."
@@ -673,9 +652,7 @@
         "price": "Цена"
     },
     "addLiquidity": {
-        "title": "Додати ликвидност",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Додати ликвидност"
     },
     "removeLiquidity": {
         "title": "Уклони ликвидност",
@@ -726,9 +703,6 @@
     },
     "rewards": {
         "title": "Захтевајте награде",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "и",
         "claiming": {
             "pending": "Prisvajanje...",
@@ -750,14 +724,11 @@
             "howToClaimRewards": "Да бисте преузели своје {symbols} награде, потребно је да потпишете {count} {transactions} у {destination} . Награде ће бити депоноване на ваш {Sora} рачун."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Повежите {Ethereum} рачун",
             "signAndClaim": "Потпишите и затражите",
             "pendingInternal": "{Sora} трансакција на чекању...",
             "pendingExternal": "{Ethereum} трансакција на чекању...",
-            "retry": "@:retryText",
-            "checkRewards": "Proveri",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Proveri"
         },
         "notification": {
             "empty": "Нема доступних захтева за овај рачун"
@@ -784,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} provajder",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{name} екстензија је заузета, molimo proverite",
             "extensionLogin": "Пријавите се на своју екстензију {name}",
@@ -858,7 +827,6 @@
         "settings": "Подешавања",
         "switchTheme": "Пребаците се на {theme} mод",
         "switchLanguage": "Изаберите језик",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Схов Дисцлаимер",
         "hideDisclaimer": "Сакриј одрицање одговорности"
     },
@@ -888,11 +856,8 @@
         "preview": "Позовите нове кориснике и добијте 10% од њихових накнада за трансакције. <br\/> За почетак, повежите било коју количину XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Сазнајте више <\/a>",
         "deposit": "Депозит",
         "balance": "Салдо",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insuficienteBalanceText",
         "insufficientBondedBalance": "Недовољно везано стање",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Унесите износ {tokenSymbol}",
             "startInviting": "Veži {tokenSymbol} да бисте почели да позивате",
             "bondMore": "Veži više",
@@ -1266,5 +1231,7 @@
     "minAmountText": "мин. износ",
     "maxAmountText": "мак. износ",
     "exceededAmountText": "{amount} је премашен",
-    "multipleRecipients": "Višestruki primalac"
+    "multipleRecipients": "Višestruki primalac",
+    "disconnectWalletText": "Прекини везу",
+    "connectEthereumWalletText": "Повежите {Ethereum} новчаник"
 }
