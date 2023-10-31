@@ -3,11 +3,11 @@
     <div v-if="!emptyAssets" class="info-line-container">
       <p class="info-line-container__title">{{ t('createPair.pricePool') }}</p>
       <info-line
-        :label="t('addLiquidity.firstPerSecond', { first: firstTokenSymbol, second: secondTokenSymbol })"
+        :label="t('firstPerSecond', { first: firstTokenSymbol, second: secondTokenSymbol })"
         :value="formattedPrice"
       />
       <info-line
-        :label="t('addLiquidity.firstPerSecond', { first: secondTokenSymbol, second: firstTokenSymbol })"
+        :label="t('firstPerSecond', { first: secondTokenSymbol, second: firstTokenSymbol })"
         :value="formattedPriceReversed"
       />
       <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />

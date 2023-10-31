@@ -137,7 +137,6 @@ export default {
     settings: 'Settings',
     switchTheme: 'Switch to {theme} Mode',
     switchLanguage: 'Choose Language',
-    selectNode: '@:selectNodeText',
     showDisclaimer: 'Show Disclaimer',
     hideDisclaimer: 'Hide Disclaimer',
   },
@@ -164,7 +163,6 @@ export default {
   },
   aboutNetworkDialog: {
     title: 'About',
-    learnMore: '@:learnMoreText',
     network: {
       title: 'What is {Sora}?',
       description:
@@ -342,7 +340,6 @@ export default {
     [PageNames.Swap]: 'Swap',
     [PageNames.Pool]: 'Pool',
     balance: 'Balance',
-    insufficientBalance: '@:insufficientBalanceText',
     price: 'Price',
     transactionSubmitted: 'Transaction submitted',
     transactionMessage: '{firstToken} and {secondToken}',
@@ -352,7 +349,6 @@ export default {
       "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair.",
   },
   swap: {
-    connectWallet: '@:connectWalletText',
     estimated: 'estimated',
     slippageTolerance: 'Slippage Tolerance',
     minReceived: 'Minimum Received',
@@ -364,9 +360,6 @@ export default {
     liquidityProviderFee: 'Liquidity Provider Fee',
     liquidityProviderFeeTooltip:
       'A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.',
-    networkFee: '@:networkFeeText',
-    pairIsNotCreated: '@:pairIsNotCreated',
-    firstPerSecond: '@:firstPerSecond',
     insufficientAmount: 'Insufficient {tokenSymbol} amount',
     insufficientLiquidity: 'Insufficient liquidity',
     confirmSwap: 'Confirm swap',
@@ -378,7 +371,6 @@ export default {
     errorFetching: 'Error fetching the data',
   },
   pool: {
-    connectWallet: '@:connectWalletText',
     connectToWallet: 'Connect an account to view your liquidity.',
     liquidityNotFound: 'No liquidity found.',
     addLiquidity: 'Add liquidity',
@@ -387,7 +379,6 @@ export default {
     pooledToken: '{tokenSymbol} Pooled',
     pairTokens: '{pair} Pool Tokens',
     poolShare: 'Your pool share',
-    unknownAsset: '@:unknownAssetText',
     description:
       'When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.',
     strategicBonusApy: 'Strategic Bonus APY',
@@ -396,10 +387,6 @@ export default {
     title: '{Hashi} Bridge',
     info: 'Convert tokens between the {Sora} and {Ethereum} networks.',
     balance: 'Balance',
-    connectWallet: '@:connectWalletText',
-    connected: '@:connectedText',
-    changeAccount: '@:changeAccountText',
-    changeNetwork: '@:changeNetworkText',
     next: 'Next',
     connectWallets: 'Connect wallets to view respective transaction history.',
     soraNetworkFee: '{Sora} Network Fee',
@@ -407,7 +394,6 @@ export default {
     externalTransferFee: '{network} {XCM} fee',
     externalTransferFeeTooltip:
       'When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are trasferring',
-    tooltipValue: '@:comingSoonText',
     total: 'Total',
     viewHistory: 'View transactions history',
     transactionSubmitted: 'Transaction submitted',
@@ -439,13 +425,6 @@ export default {
       empty: 'No tokens found',
       alreadyAttached: 'Token was already attached',
     },
-  },
-  confirmBridgeTransactionDialog: {
-    confirmTransaction: 'Confirm transaction',
-    insufficientBalance: '@:insufficientBalanceText',
-    changeNetwork: '@:changeNetworkText',
-    confirm: '@:confirmTransactionText',
-    buttonConfirm: '@:confirmText',
   },
   bridgeTransaction: {
     title: 'Bridge Transaction',
@@ -486,10 +465,7 @@ export default {
     pending: '{network} transaction pending...',
     ethereum: '{Ethereum}',
     sora: '{Sora}',
-    retry: '@:retryText',
-    confirm: '@:confirmTransactionText',
     newTransaction: 'Create new transaction',
-    changeNetwork: '@:changeNetworkText',
     allowToken: 'Allow {AppName} to use your {tokenSymbol}',
     approveToken:
       'Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.',
@@ -527,7 +503,6 @@ export default {
     balance: 'Balance',
     pricePool: 'Prices and fees',
     shareOfPool: 'Share of pool',
-    firstPerSecond: '@:firstPerSecond',
     firstSecondPoolTokens: '{first}-{second} Pool',
     connect: 'Connect wallet',
     supply: 'Supply',
@@ -552,8 +527,6 @@ export default {
   },
   addLiquidity: {
     title: 'Add liquidity',
-    pairIsNotCreated: '@:pairIsNotCreated',
-    firstPerSecond: '@:firstPerSecond',
   },
   removeLiquidity: {
     title: 'Remove liquidity',
@@ -616,9 +589,6 @@ export default {
   rewards: {
     [RewardsTabsItems.Rewards]: 'Rewards',
     [RewardsTabsItems.ReferralProgram]: '@:referralProgram.title',
-    changeAccount: '@:changeAccountText',
-    connected: '@:connectedText',
-    networkFee: '@:networkFeeText',
     andText: 'and',
     forText: 'for',
     totalVested: 'Total rewards',
@@ -645,14 +615,11 @@ export default {
         'To claim your {symbols} rewards you need to sign {count} {transactions} in {destination}. Rewards will be deposited to your {Sora} account.',
     },
     action: {
-      connectWallet: '@:connectWalletText',
       connectExternalWallet: 'Connect {Ethereum} account',
       signAndClaim: 'Sign and claim',
       pendingInternal: '{Sora} transaction pending...',
       pendingExternal: '{Ethereum} transaction pending...',
-      retry: '@:retryText',
       checkRewards: 'Check',
-      insufficientBalance: '@:insufficientBalanceText',
     },
     notification: {
       empty: 'No available claims for this account',
@@ -750,11 +717,8 @@ export default {
     insufficientBondedAmount: 'To invite more referrals, bond at least {inviteUserFee} XOR',
     deposit: 'Deposit',
     balance: 'Balance',
-    networkFee: '@:networkFeeText',
-    insufficientBalance: '@:insufficientBalanceText',
     insufficientBondedBalance: 'Insufficient bonded balance',
     action: {
-      connectWallet: '@:connectWalletText',
       empty: 'Enter amount of {tokenSymbol}',
       startInviting: 'Bond {tokenSymbol} to start inviting',
       bondMore: 'Bond More',
@@ -769,7 +733,6 @@ export default {
     bondTitle: 'Bond XOR',
     unbondTitle: 'Unbond XOR',
     confirm: {
-      text: '@:confirmText',
       bond: 'Confirm bond',
       unbond: 'Confirm unbond',
       inviteTitle: 'You have been invited to {AppName}',

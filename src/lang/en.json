@@ -386,7 +386,6 @@
     },
     "aboutNetworkDialog": {
         "title": "About",
-        "learnMore": "@:learnMoreText",
         "network": {
             "title": "What is {Sora}?",
             "description": "{AppName} is built on top of the {Sora} Network, and the {Sora} token (XOR) is used for gas\/fees and liquidity provision on {AppName}. {Sora} Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like {Ethereum}."
@@ -488,7 +487,6 @@
         "lossWarning": "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "estimated",
         "slippageTolerance": "Slippage Tolerance",
         "minReceived": "Minimum Received",
@@ -498,8 +496,6 @@
         "priceImpactTooltip": "The difference between the market price and estimated price due to trade size.",
         "liquidityProviderFee": "Liquidity Provider Fee",
         "liquidityProviderFeeTooltip": "A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Insufficient {tokenSymbol} amount",
         "insufficientLiquidity": "Insufficient liquidity",
         "confirmSwap": "Confirm swap",
@@ -510,7 +506,6 @@
         "errorFetching": "Error fetching the data"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Connect an account to view your liquidity.",
         "liquidityNotFound": "No liquidity found.",
         "addLiquidity": "Add liquidity",
@@ -519,7 +514,6 @@
         "pooledToken": "{tokenSymbol} Pooled",
         "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Your pool share",
-        "unknownAsset": "@:unknownAssetText",
         "description": "When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.",
         "strategicBonusApy": "Strategic Bonus APY"
     },
@@ -563,9 +557,6 @@
             "empty": "No tokens found",
             "alreadyAttached": "Token was already attached"
         }
-    },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Confirm transaction"
     },
     "bridgeTransaction": {
         "details": "{from} for {to}",
@@ -642,7 +633,6 @@
         "balance": "Balance",
         "pricePool": "Prices and fees",
         "shareOfPool": "Share of pool",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Pool",
         "connect": "Connect wallet",
         "supply": "Supply",
@@ -663,9 +653,7 @@
         "price": "Price"
     },
     "addLiquidity": {
-        "title": "Add liquidity",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Add liquidity"
     },
     "removeLiquidity": {
         "title": "Remove liquidity",
@@ -737,12 +725,10 @@
             "howToClaimRewards": "To claim your {symbols} rewards you need to sign {count} {transactions} in {destination}. Rewards will be deposited to your {Sora} account."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Connect {Ethereum} account",
             "signAndClaim": "Sign and claim",
             "pendingInternal": "{Sora} transaction pending...",
             "pendingExternal": "{Ethereum} transaction pending...",
-            "retry": "@:retryText",
             "checkRewards": "Check"
         },
         "notification": {
@@ -842,7 +828,6 @@
         "settings": "Settings",
         "switchTheme": "Switch to {theme} Mode",
         "switchLanguage": "Choose Language",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Show Disclaimer",
         "hideDisclaimer": "Hide Disclaimer"
     },
@@ -874,7 +859,6 @@
         "balance": "Balance",
         "insufficientBondedBalance": "Insufficient bonded balance",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Enter amount of {tokenSymbol}",
             "startInviting": "Bond {tokenSymbol} to start inviting",
             "bondMore": "Bond More",

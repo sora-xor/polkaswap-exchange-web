@@ -3,7 +3,7 @@
     <div v-for="({ title, description, link }, index) in aboutBlocks" :key="index" class="about-network-block">
       <h4>{{ title }}</h4>
       <p class="p4">{{ description }}</p>
-      <external-link :title="t('aboutNetworkDialog.learnMore')" :href="link" />
+      <external-link :title="t('learnMoreText')" :href="link" />
     </div>
   </dialog-base>
 </template>

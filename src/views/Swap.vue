@@ -83,7 +83,7 @@
         class="action-button s-typography-button--large"
         @click="handleConnectWallet"
       >
-        {{ t('swap.connectWallet') }}
+        {{ t('connectWalletText') }}
       </s-button>
       <s-button
         v-else
@@ -98,7 +98,7 @@
           {{ t('buttons.chooseTokens') }}
         </template>
         <template v-else-if="!isAvailable">
-          {{ t('swap.pairIsNotCreated') }}
+          {{ t('pairIsNotCreated') }}
         </template>
         <template v-else-if="areZeroAmounts">
           {{ t('buttons.enterAmount') }}
