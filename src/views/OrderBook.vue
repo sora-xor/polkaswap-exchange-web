@@ -1,15 +1,29 @@
 <template>
-  <div class="order-book-widgets">
-    <div class="column-1">
-      <book-charts-widget class="chart-widget" />
+  <div>
+    <div class="order-book-widgets">
+      <div class="column-1">
+        <book-charts-widget class="chart-widget" />
+      </div>
+      <div class="column-2">
+        <set-limit-order-widget class="set-widget" />
+        <book-widget class="book-widget" />
+      </div>
+      <div class="column-3">
+        <history-order-widget class="history-widget" />
+      </div>
     </div>
-    <div class="column-2">
-      <set-limit-order-widget class="set-widget" />
-      <book-widget class="book-widget" />
-    </div>
-    <div class="column-3">
-      <history-order-widget class="history-widget" />
-    </div>
+    <!-- <div class="order-book-widgetss">
+      <div class="column-1">
+        <set-limit-order-widget class="set-widget" />
+      </div>
+      <div class="column-2">
+        <book-charts-widget class="chart-widget" />
+        <history-order-widget class="history-widget" />
+      </div>
+      <div class="column-3">
+        <book-widget class="book-widget" />
+      </div>
+    </div> -->
   </div>
 </template>
 
@@ -40,6 +54,8 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
 
   @action.orderBook.subscribeToOrderBook subscribeToOrderBook!: any;
   @action.orderBook.unsubscribeFromOrderBook unsubscribeFromOrderBook!: FnWithoutArgs;
+
+  largeDesktop = true;
 
   async beforeRouteLeave(to: Route, from: Route, next: NavigationGuardNext<Vue>): Promise<void> {
     this.unsubscribeFromOrderBook();
@@ -122,15 +138,6 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
         }
       }
     }
-
-    .chart-widget {
-    }
-    .book-widget {
-    }
-    .history-widget {
-    }
-    .market-widget {
-    }
   }
 
   &-widget {
@@ -139,6 +146,28 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
     box-shadow: var(--s-shadow-dialog);
     color: var(--s-color-base-content-primary);
     border-radius: var(--s-border-radius-small);
+  }
+}
+
+.min-huge-desktop {
+  .order-book-widgetss {
+    display: flex;
+
+    .column-1 {
+      width: 440px;
+      margin-right: 8px;
+    }
+
+    .column-2 {
+      .history-widget {
+        margin-top: 8px;
+      }
+    }
+
+    .column-3 {
+      width: 440px;
+      margin-left: 8px;
+    }
   }
 }
 </style>

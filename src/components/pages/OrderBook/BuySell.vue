@@ -7,8 +7,8 @@
           <div>TOKEN PAIR</div>
           <div class="order-book-choose-btn">
             <div class="order-book-pair-name">
-              <pair-token-logo :first-token="quoteAsset" :second-token="baseAsset" />
-              <span>{{ `${quoteSymbol}-${baseSymbol}` }}</span>
+              <pair-token-logo :first-token="baseAsset" :second-token="quoteAsset" />
+              <span>{{ `${baseSymbol}-${quoteSymbol}` }}</span>
               <s-icon name="arrows-swap-90-24" class="order-book-swap-icon" />
             </div>
             <s-icon :name="icon" class="order-book-choose-btn-icon" />
@@ -524,6 +524,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (!this.areTokensSelected) return;
 
+    console.info('tokenFrom', this.tokenFrom);
+    console.info('tokenTo', this.tokenTo);
+    console.info('base amount', this.baseValue);
+
     const observableQuote = api.swap.subscribeOnResultRpc(
       (this.tokenFrom as AccountAsset).address,
       (this.tokenTo as AccountAsset).address,
@@ -535,11 +539,9 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.quoteSubscription = observableQuote.subscribe(async (quoteData) => {
       const { amount } = await quoteData;
 
-      if (
-        FPNumber.fromCodecValue(amount).isZero() ||
-        this.isOutOfAmountBounds(FPNumber.fromCodecValue(amount).toString()) ||
-        this.limitOrderType === LimitOrderType.limit
-      ) {
+      console.info('quote amount', FPNumber.fromCodecValue(amount).toString());
+
+      if (FPNumber.fromCodecValue(amount).isZero() || this.limitOrderType === LimitOrderType.limit) {
         this.resetQuoteSubscription();
         this.setQuoteValue('');
         this.setToValue('');
