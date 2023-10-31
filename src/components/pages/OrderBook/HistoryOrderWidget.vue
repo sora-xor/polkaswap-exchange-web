@@ -29,8 +29,12 @@
       <all-orders v-else :filter="currentFilter" />
     </div>
     <div v-else class="order-history-connect-account">
-      <h4>Connect an account to start trading</h4>
-      <s-button type="primary" @click="connectAccount">Connect account</s-button>
+      <div class="order-history-connect-account-button">
+        <h4>Connect an account to start trading</h4>
+        <s-button type="primary" class="btn s-typography-button--medium" @click="connectAccount">
+          Connect account
+        </s-button>
+      </div>
     </div>
     <cancel-confirm :visible.sync="confirmCancelOrderVisibility" @confirm="handleCancel" />
   </div>
@@ -239,16 +243,23 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 400px;
 
     h4 {
       font-size: 24px;
       text-align: center;
-      margin-top: 18%;
     }
 
-    .el-button {
-      width: 30%;
-      margin-top: 8px;
+    &-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .el-button {
+        width: 70%;
+        margin-top: 8px;
+      }
     }
   }
 }

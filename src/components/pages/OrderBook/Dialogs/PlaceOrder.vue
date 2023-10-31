@@ -72,14 +72,14 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
 
   get upperText(): string {
     const amount = this.type === LimitOrderType.limit ? this.baseValue : this.fromValue;
-    const symbol = this.type === LimitOrderType.limit ? this.baseAsset?.symbol : this.tokenFrom?.symbol;
+    const symbol = this.baseAsset?.symbol;
 
     return this.isBuySide ? `Buy ${amount} ${symbol}` : `Sell ${amount} ${symbol}`;
   }
 
   get lowerText(): string {
     const price = this.quoteValue;
-    const symbol = this.type === LimitOrderType.limit ? this.quoteAsset?.symbol : this.tokenTo?.symbol;
+    const symbol = this.quoteAsset?.symbol;
 
     return `at ${price} ${symbol}`;
   }

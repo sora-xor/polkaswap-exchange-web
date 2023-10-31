@@ -75,8 +75,7 @@
     <div class="order-book-total">
       <span class="order-book-total-title">TOTAL</span>
       <div class="order-book-total-value">
-        <span class="order-book-total-value-amount">{{ `${calculatedAssetBaseTotal} ${baseSymbol}` }}</span>
-        <span class="order-book-total-value-fiat"><span class="dollar-sign">$</span>{{ `${fiatAmount}` }}</span>
+        <span class="order-book-total-value-amount">{{ amountAtPrice }}</span>
       </div>
     </div>
 
@@ -192,6 +191,13 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   limitOrderType: LimitOrderType = LimitOrderType.limit;
 
   readonly OrderBookTabs = OrderBookTabs;
+
+  get amountAtPrice(): string {
+    if (this.buttonDisabled()) return '';
+    if (!this.baseValue) return '';
+    if (!this.quoteValue && !this.marketQuotePrice) return '';
+    return `${this.baseValue} ${this.baseSymbol} AT ${this.quoteValue || this.marketQuotePrice} ${this.quoteSymbol}`;
+  }
 
   get buttonText(): string {
     if (!this.isLoggedIn) {
@@ -384,20 +390,20 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return !!(this.baseAsset && this.quoteAsset);
   }
 
-  get calculatedAssetBaseTotal(): FPNumber {
-    const baseValue = FPNumber.fromNatural(this.baseValue);
-    const quoteValue = FPNumber.fromNatural(this.quoteValue);
+  // get calculatedAssetBaseTotal(): FPNumber {
+  //   const baseValue = FPNumber.fromNatural(this.baseValue);
+  //   const quoteValue = FPNumber.fromNatural(this.quoteValue);
 
-    return baseValue.mul(quoteValue);
-  }
+  //   return baseValue.mul(quoteValue);
+  // }
 
-  get fiatAmount(): string {
-    if (!this.areTokensSelected) return '0.00';
+  // get fiatAmount(): string {
+  //   if (!this.areTokensSelected) return '0.00';
 
-    const fiat = this.getFiatAmount(this.calculatedAssetBaseTotal.toString(), this.baseAsset);
+  //   const fiat = this.getFiatAmount(this.calculatedAssetBaseTotal.toString(), this.baseAsset);
 
-    return FPNumber.fromNatural(fiat || '0').toFixed(2);
-  }
+  //   return FPNumber.fromNatural(fiat || '0').toFixed(2);
+  // }
 
   get limitTooltip(): string {
     return "A 'Limit' order lets you specify the exact price at which you want to buy or sell an asset. A 'Limit Buy' order will only be executed at the specified price or lower, while a 'Limit Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.";
@@ -486,6 +492,32 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.quoteSubscription = null;
   }
 
+  /**
+   * Returns formatted value in most suitable form
+   * @param value
+   *
+   * 0.152345 -> 0.15
+   * 0.000043 -> 0.000043
+   */
+  showMostFittingValue(value, precisionForLowCostAsset = 18) {
+    const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
+
+    if (parseInt(integer) > 0) {
+      return this.getFormattedValue(value, 2);
+    }
+
+    if (decimal && parseInt(decimal.substring(0, 2)) > 0) {
+      return this.getFormattedValue(value, 2);
+    }
+
+    return this.getFormattedValue(value, precisionForLowCostAsset);
+  }
+
+  getFormattedValue(value: string, precision = 18): string {
+    const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
+    return `${integer}.${decimal.substring(0, precision)}`;
+  }
+
   private subscribeOnBookQuote(): void {
     if (!this.baseValue) return;
     this.resetQuoteSubscription();
@@ -515,10 +547,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         return;
       }
 
-      this.marketQuotePrice = this.isBuySide
+      const unformattedMarketQuotePrice = this.isBuySide
         ? FPNumber.fromNatural(this.baseValue).div(FPNumber.fromCodecValue(amount)).toFixed(5).toString()
         : FPNumber.fromCodecValue(amount).div(FPNumber.fromNatural(this.baseValue)).toFixed(5).toString();
 
+      this.marketQuotePrice = this.showMostFittingValue(unformattedMarketQuotePrice);
       this.prepareValuesForSwap(amount);
     });
   }
@@ -627,6 +660,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 .buy-btn.is-disabled {
   background-color: unset !important;
 }
+
+.set-widget {
+  .el-loading-mask {
+    border-radius: 20px;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -692,7 +731,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     &-total {
       display: flex;
       justify-content: space-between;
-      margin: 8px 0 16px 0;
+      margin: 12px 0 16px 0;
 
       &-value {
         &-amount {
