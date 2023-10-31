@@ -50,6 +50,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
 
   @action.web3.changeEvmNetworkProvided changeEvmNetworkProvided!: AsyncFnWithoutArgs;
   @action.web3.selectEvmProvider selectEvmProvider!: (provider: Provider) => Promise<void>;
+  @action.web3.resetEvmProvider resetEvmProvider!: FnWithoutArgs;
   @action.web3.disconnectExternalNetwork disconnectExternalNetwork!: AsyncFnWithoutArgs;
 
   getWalletAddress = getWalletAddress;

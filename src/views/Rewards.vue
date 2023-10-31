@@ -48,8 +48,18 @@
                 <div class="rewards-footer">
                   <s-divider />
                   <div v-if="evmAddress" class="rewards-account">
-                    <span>{{ formatAddress(evmAddress, 8) }}</span>
-                    <span>{{ t('connectedText') }}</span>
+                    <div class="rewards-account-group">
+                      <img v-if="evmProvider" :src="getEvmProviderIcon(evmProvider)" class="rewards-account-logo" />
+                      <span>{{ formatAddress(evmAddress, 8) }}</span>
+                    </div>
+                    <div class="rewards-account-group">
+                      <span class="rewards-account-btn" @click="connectEvmWallet">
+                        {{ t('changeAccountText') }}
+                      </span>
+                      <span v-if="evmProvider" class="rewards-account-btn disconnect" @click="resetEvmProvider">{{
+                        t('disconnectWalletText')
+                      }}</span>
+                    </div>
                   </div>
                   <s-button v-else class="rewards-connect-button" type="tertiary" @click="connectEvmWallet">
                     {{ t('rewards.action.connectExternalWallet') }}
@@ -508,6 +518,25 @@ export default class Rewards extends Mixins(
     line-height: var(--s-line-height-big);
     margin-top: $inner-spacing-small;
     padding: 0 $inner-spacing-tiny;
+
+    &-group {
+      display: flex;
+      align-items: center;
+      gap: $inner-spacing-mini;
+    }
+
+    &-logo {
+      width: 16px;
+      height: 16px;
+    }
+
+    &-btn {
+      @include copy-address;
+
+      &.disconnect {
+        color: var(--s-color-status-error);
+      }
+    }
   }
 
   &-fee {

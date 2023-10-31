@@ -432,7 +432,6 @@ export default class Bridge extends Mixins(
   @action.bridge.setAssetAddress private setAssetAddress!: (value?: string) => Promise<void>;
   @action.bridge.generateHistoryItem private generateHistoryItem!: (history?: any) => Promise<IBridgeTransaction>;
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
-  @action.web3.resetEvmProvider resetEvmProvider!: FnWithoutArgs;
 
   showSelectTokenDialog = false;
   showConfirmTransactionDialog = false;
