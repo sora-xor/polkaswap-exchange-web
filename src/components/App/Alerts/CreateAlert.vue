@@ -45,14 +45,7 @@
           <span class="slash">/</span>
           <span :class="activeSignClass('-')"> - </span> {{ deltaPercentage }}%
         </span>
-        <div class="asset-highlight">
-          {{ asset.name || asset.symbol }}
-          <s-tooltip :content="copyValueAssetId" tabindex="-1">
-            <span class="asset-id" @click="handleCopyAddress(asset.address, $event)">
-              ({{ getFormattedAddress(asset) }})
-            </span>
-          </s-tooltip>
-        </div>
+        <token-address v-bind="asset" />
       </div>
     </s-float-input>
     <span class="setup-price-alert__title">{{ t('alerts.alertFrequencyTitle') }}</span>
@@ -84,7 +77,7 @@ import type { EditableAlertObject, NumberedAlert } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, mutation, state } from '@/store/decorators';
 import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
-import { formatAddress, getDeltaPercent } from '@/utils';
+import { getDeltaPercent } from '@/utils';
 
 import type { AccountAsset, Asset, WhitelistIdsBySymbol } from '@sora-substrate/util/build/assets/types';
 import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
@@ -94,6 +87,7 @@ import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
+    TokenAddress: components.TokenAddress,
     AlertsSelectAsset: lazyComponent(Components.SelectToken),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
   },
@@ -197,10 +191,6 @@ export default class CreateAlert extends Mixins(
     return this.getFiatAmount('1', this.asset) || '';
   }
 
-  get copyValueAssetId(): string {
-    return this.copyTooltip(this.t('assets.assetId'));
-  }
-
   get btnDisabled(): boolean {
     return !this.amount;
   }
@@ -261,11 +251,6 @@ export default class CreateAlert extends Mixins(
   selectAsset(selectedAsset?: AccountAsset): void {
     if (!selectedAsset) return;
     this.asset = selectedAsset;
-  }
-
-  getFormattedAddress(asset: AccountAsset): string | undefined {
-    if (!asset.address) return;
-    return formatAddress(asset.address, 10);
   }
 
   mounted(): void {
@@ -375,6 +360,7 @@ export default class CreateAlert extends Mixins(
 .info {
   display: flex;
   align-items: baseline;
+  justify-content: space-between;
 
   .delta-percent {
     margin-right: calc(var(--s-basic-spacing) / 2);
@@ -390,16 +376,6 @@ export default class CreateAlert extends Mixins(
     &--not-active {
       opacity: 40%;
     }
-  }
-
-  .asset-highlight {
-    margin-left: auto;
-    color: var(--s-color-base-content-secondary);
-    font-size: var(--s-font-size-extra-mini);
-    font-weight: 300;
-    line-height: var(--s-line-height-medium);
-    letter-spacing: var(--s-letter-spacing-small);
-    text-align: right;
   }
 }
 </style>
