@@ -38,6 +38,7 @@ const handleMetamaskError = (error: any): string => {
 @Component
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @state.web3.evmProvider evmProvider!: Nullable<Provider>;
+  @state.web3.evmProviderLoading evmProviderLoading!: boolean;
   @state.web3.evmAddress evmAddress!: string;
   @state.web3.networkSelected networkSelected!: BridgeNetworkId;
   @state.web3.networkType networkType!: BridgeNetworkType;
@@ -56,8 +57,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   getWalletAddress = getWalletAddress;
   formatAddress = formatAddress;
 
-  isExternalWalletConnecting = false;
-
   connectSoraWallet(): void {
     router.push({ name: PageNames.Wallet });
   }
@@ -75,7 +74,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   async connectEvmProvider(provider: Provider): Promise<void> {
-    this.isExternalWalletConnecting = true;
     try {
       await this.selectEvmProvider(provider);
     } catch (error: any) {
@@ -93,8 +91,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
           }
         },
       });
-    } finally {
-      this.isExternalWalletConnecting = false;
     }
   }
 }

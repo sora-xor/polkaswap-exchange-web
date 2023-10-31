@@ -61,17 +61,22 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
 const actions = defineActions({
   async selectEvmProvider(context, provider: Provider): Promise<void> {
     const { commit, state } = web3ActionContext(context);
-    const address = await ethersUtil.connectEvmProvider(provider, {
-      chains: [state.ethBridgeEvmNetwork],
-      optionalChains: [...state.evmNetworkApps],
-    });
-    // if we have address - we are connected
-    if (address) {
-      commit.setEvmAddress(address);
-      commit.setEvmProvider(provider);
+    try {
+      commit.setEvmProviderLoading(true);
+      const address = await ethersUtil.connectEvmProvider(provider, {
+        chains: [state.ethBridgeEvmNetwork],
+        optionalChains: [...state.evmNetworkApps],
+      });
+      // if we have address - we are connected
+      if (address) {
+        commit.setEvmAddress(address);
+        commit.setEvmProvider(provider);
 
-      await updateProvidedEvmNetwork(context);
-      await subscribeOnEvm(context);
+        await updateProvidedEvmNetwork(context);
+        await subscribeOnEvm(context);
+      }
+    } finally {
+      commit.setEvmProviderLoading(false);
     }
   },
 

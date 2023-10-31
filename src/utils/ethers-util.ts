@@ -38,6 +38,8 @@ const gasLimit = {
   receiveBySidechainAssetId: 184000,
 };
 
+const WALLET_CONNECT_PROJECT_ID = 'feeab08b50e0d407f4eb875d69e162e8';
+
 /**
  * It's in gwei.
  */
@@ -97,8 +99,11 @@ async function useMetamaskExtensionProvider(): Promise<void> {
 async function useWalletConnectProvider(chains: ChainsProps): Promise<void> {
   try {
     ethereumProvider = await EthereumProvider.init({
-      projectId: 'feeab08b50e0d407f4eb875d69e162e8', // [TODO]
+      projectId: WALLET_CONNECT_PROJECT_ID,
       showQrModal: true,
+      qrModalOptions: {
+        enableExplorer: false, // [TODO] localhost cors error
+      },
       ...chains,
     });
     // show qr modal
