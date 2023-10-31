@@ -12,7 +12,7 @@
       :highlight-current-row="false"
       @cell-click="chooseBook"
     >
-      <s-table-column :width="'170'">
+      <s-table-column :width="'172'">
         <template #header>
           <span>Token pair</span>
         </template>

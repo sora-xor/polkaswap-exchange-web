@@ -532,7 +532,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       (this.tokenFrom as AccountAsset).address,
       (this.tokenTo as AccountAsset).address,
       this.baseValue,
-      false,
+      this.isBuySide,
       LiquiditySourceTypes.OrderBook
     );
 
@@ -549,11 +549,17 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         return;
       }
 
-      const unformattedMarketQuotePrice = this.isBuySide
-        ? FPNumber.fromNatural(this.baseValue).div(FPNumber.fromCodecValue(amount)).toFixed(5).toString()
-        : FPNumber.fromCodecValue(amount).div(FPNumber.fromNatural(this.baseValue)).toFixed(5).toString();
+      // To be removed ?
+      // const unformattedMarketQuotePrice = this.isBuySide
+      //   ? FPNumber.fromNatural(this.baseValue).div(FPNumber.fromCodecValue(amount)).toFixed(5).toString()
+      //   : FPNumber.fromCodecValue(amount).div(FPNumber.fromNatural(this.baseValue)).toFixed(5).toString();
 
-      this.marketQuotePrice = this.showMostFittingValue(unformattedMarketQuotePrice);
+      const unformattedMarketQuotePrice = FPNumber.fromCodecValue(amount)
+        .div(FPNumber.fromNatural(this.baseValue))
+        .toString();
+
+      // this.marketQuotePrice = this.showMostFittingValue(unformattedMarketQuotePrice);
+      this.marketQuotePrice = unformattedMarketQuotePrice;
       this.prepareValuesForSwap(amount);
     });
   }

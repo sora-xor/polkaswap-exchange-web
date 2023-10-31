@@ -351,7 +351,7 @@ const AccountMenu: Array<SidebarMenuItemLink> = [
     href: '/#/wallet',
   },
   {
-    icon: 'grid-block-distribute-vertically-24',
+    icon: 'el-icon-tickets',
     title: PageNames.OrderBook,
     href: '/#/trade',
   },
