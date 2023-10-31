@@ -25,7 +25,7 @@
         "sendCodeBtn": "SMS kód küldése",
         "firstNamePlaceholder": "Keresztnév",
         "lastNamePlaceholder": "Vezetéknév",
-        "verificationCodeText": "SMS-ben \\n fog kapni egy ellenőrző kódot",
+        "verificationCodeText": "SMS-ben fog kapni egy ellenőrző kódot",
         "phonePlaceholder": "Telefonszám",
         "statusPendingTitle": "Ellenőrzés folyamatban",
         "sendEmailLinkBtn": "Link elküldése",
@@ -98,6 +98,7 @@
         "applicationFeeNote": "Megjegyzés: a fizetős kártya kibocsátása egy későbbi szakaszban lesz elérhető.",
         "statusRejectReasonMultiple": "Jelentkezését több okból is elutasították:",
         "selectCountryText": "Válaszd ki az országod",
+        "filterCountries": "Szűrés ország vagy hívószám szerint",
         "ibanPendingDesc": "Az Ön IBAN-kibocsátása függőben van.\n 72 óránál hosszabb várakozás esetén vegye fel velünk a kapcsolatot a következő címen {email}"
     }
 }

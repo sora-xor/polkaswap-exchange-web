@@ -25,7 +25,7 @@
         "sendCodeBtn": "Gửi mã SMS",
         "firstNamePlaceholder": "Họ",
         "lastNamePlaceholder": "Tên",
-        "verificationCodeText": "Bạn sẽ nhận được\\nmã xác minh qua SMS",
+        "verificationCodeText": "Bạn sẽ nhận được mã xác minh qua SMS",
         "phonePlaceholder": "Số điện thoại",
         "statusPendingTitle": "Đang xác minh",
         "sendEmailLinkBtn": "Gửi link",
@@ -98,6 +98,7 @@
         "applicationFeeNote": "Lưu ý: việc phát hành thẻ trả phí sẽ được thực hiện ở giai đoạn sau.",
         "statusRejectReasonMultiple": "Đơn đăng ký của bạn đã bị từ chối vì nhiều lý do:",
         "selectCountryText": "Chọn đất nước của bạn",
+        "filterCountries": "Lọc theo Quốc gia hoặc Mã quay số",
         "ibanPendingDesc": "Việc cấp IBAN của bạn đang chờ xử lý.\n Trong trường hợp chờ đợi lâu hơn 72h, hãy liên hệ với chúng tôi qua {email}"
     }
 }

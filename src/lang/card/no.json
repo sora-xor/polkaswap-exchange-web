@@ -25,7 +25,7 @@
         "sendCodeBtn": "Send SMS-kode",
         "firstNamePlaceholder": "Fornavn",
         "lastNamePlaceholder": "Etternavn",
-        "verificationCodeText": "Du vil motta \\n en bekreftelseskode via SMS",
+        "verificationCodeText": "Du vil motta en bekreftelseskode via SMS",
         "phonePlaceholder": "Telefonnummer",
         "statusPendingTitle": "Verifisering pågår",
         "sendEmailLinkBtn": "Send lenke",
@@ -98,6 +98,7 @@
         "applicationFeeNote": "Merk: utstedelse av betalingskort vil være tilgjengelig på et senere tidspunkt.",
         "statusRejectReasonMultiple": "Søknaden din har blitt avvist av flere årsaker:",
         "selectCountryText": "Velg ditt land",
+        "filterCountries": "Filtrer etter land eller kodenr.",
         "ibanPendingDesc": "Din IBAN-utstedelse venter.\n Hvis ventetiden er lengre enn 72 timer, kontakt oss via {email}"
     }
 }
