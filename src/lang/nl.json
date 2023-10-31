@@ -305,7 +305,8 @@
         "viewIn": "Bekijk in {explorer}",
         "referrer": "Verwijzer",
         "referral": "Verwijzing",
-        "adarTxDetailsTitle": "Transactiegegevens"
+        "adarTxDetailsTitle": "Transactiegegevens",
+        "comment": "Opmerking"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Netwerk wijzigen in {Metamask}",
