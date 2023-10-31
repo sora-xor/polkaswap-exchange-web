@@ -1,23 +1,15 @@
 <template>
   <div class="order-book-widgets">
-    <s-row>
-      <s-col>
-        <book-charts-widget class="chart-widget" />
-      </s-col>
-    </s-row>
-    <s-row flex justify="center" :gutter="5">
-      <s-col center :xs="6" :sm="6" :md="6" :lg="6">
-        <set-limit-order-widget class="set-widget" />
-      </s-col>
-      <s-col :xs="6" :sm="6" :md="6" :lg="6">
-        <book-widget class="book-widget" />
-      </s-col>
-    </s-row>
-    <s-row>
-      <s-col>
-        <history-order-widget class="history-widget" />
-      </s-col>
-    </s-row>
+    <div class="column-1">
+      <book-charts-widget class="chart-widget" />
+    </div>
+    <div class="column-2">
+      <set-limit-order-widget class="set-widget" />
+      <book-widget class="book-widget" />
+    </div>
+    <div class="column-3">
+      <history-order-widget class="history-widget" />
+    </div>
   </div>
 </template>
 
@@ -66,43 +58,87 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
 .order-book {
   &-widgets {
     width: 900px;
-    margin-left: calc($sidebar-max-width + 8px);
 
-    @include desktop(true) {
-      width: 770px;
-      margin-left: 100px;
+    .column-2 {
+      margin-top: 8px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      .set-widget {
+        flex-basis: 49%;
+      }
+
+      .book-widget {
+        flex-basis: 49.5%;
+      }
+    }
+
+    @include large-desktop(true) {
+      max-width: 740px;
     }
 
     @include tablet(true) {
-      width: 700px;
-      margin-left: 30px;
+      max-width: 420px;
+
+      .column-2 {
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        .book-widget {
+          min-width: 420px;
+        }
+
+        .set-widget {
+          max-width: 420px;
+          margin-bottom: 8px;
+        }
+      }
+
+      .column-3 {
+        .order-history-header-filter-buttons {
+          display: flex;
+          flex-direction: column;
+        }
+      }
     }
 
-    .set-widget {
+    @include mobile(true) {
+      max-width: 364px;
+
+      .column-2 {
+        .book-widget {
+          width: 360px;
+          min-width: unset;
+        }
+      }
+
+      .column-3 {
+        .order-history-header-cancel-buttons {
+          display: flex;
+          flex-direction: column;
+        }
+      }
     }
+
     .chart-widget {
     }
-    .history-widget {
-    }
     .book-widget {
+    }
+    .history-widget {
     }
     .market-widget {
     }
   }
 
   &-widget {
-    margin: 8px;
     padding: unset;
     background-color: var(--s-color-utility-surface);
     box-shadow: var(--s-shadow-dialog);
     color: var(--s-color-base-content-primary);
     border-radius: var(--s-border-radius-small);
   }
-}
-</style>
-
-<style lang="scss" scoped>
-.containerr {
-  margin: 0 auto 0;
 }
 </style>
