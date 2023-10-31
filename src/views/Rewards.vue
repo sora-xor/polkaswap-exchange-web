@@ -49,7 +49,12 @@
                   <s-divider />
                   <div v-if="evmAddress" class="rewards-account">
                     <div class="rewards-account-group">
-                      <img v-if="evmProvider" :src="getEvmProviderIcon(evmProvider)" class="rewards-account-logo" />
+                      <img
+                        v-if="evmProvider"
+                        :src="getEvmProviderIcon(evmProvider)"
+                        :alt="evmProvider"
+                        class="rewards-account-logo"
+                      />
                       <span>{{ formatAddress(evmAddress, 8) }}</span>
                     </div>
                     <div class="rewards-account-group">

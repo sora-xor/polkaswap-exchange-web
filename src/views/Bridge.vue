@@ -106,6 +106,7 @@
                 <img
                   v-if="!isSubBridge && !isSoraToEvm && evmProvider"
                   :src="getEvmProviderIcon(evmProvider)"
+                  :alt="evmProvider"
                   class="connect-wallet-logo"
                 />
                 <s-tooltip
@@ -204,6 +205,7 @@
                 <img
                   v-if="!isSubBridge && isSoraToEvm && evmProvider"
                   :src="getEvmProviderIcon(evmProvider)"
+                  :alt="evmProvider"
                   class="connect-wallet-logo"
                 />
                 <s-tooltip
