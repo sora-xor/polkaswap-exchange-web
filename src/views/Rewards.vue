@@ -61,9 +61,11 @@
                       <span class="rewards-account-btn" @click="connectEvmWallet">
                         {{ t('changeAccountText') }}
                       </span>
-                      <span v-if="evmProvider" class="rewards-account-btn disconnect" @click="resetEvmProvider">{{
-                        t('disconnectWalletText')
-                      }}</span>
+                      <span
+                        v-if="evmProvider"
+                        class="rewards-account-btn disconnect"
+                        @click="resetEvmProviderConnection"
+                      >{{ t('disconnectWalletText') }}</span>
                     </div>
                   </div>
                   <s-button v-else class="rewards-connect-button" type="tertiary" @click="connectEvmWallet">

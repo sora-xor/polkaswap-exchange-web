@@ -128,7 +128,7 @@
                 <span
                   v-if="!isSubBridge && !isSoraToEvm && evmProvider"
                   class="connect-wallet-btn disconnect"
-                  @click="resetEvmProvider"
+                  @click="resetEvmProviderConnection"
                 >{{ t('disconnectWalletText') }}</span>
               </div>
             </div>
@@ -227,7 +227,7 @@
                 <span
                   v-if="!isSubBridge && isSoraToEvm && evmProvider"
                   class="connect-wallet-btn disconnect"
-                  @click="resetEvmProvider"
+                  @click="resetEvmProviderConnection"
                 >{{ t('disconnectWalletText') }}</span>
               </div>
             </div>

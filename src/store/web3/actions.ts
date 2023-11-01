@@ -51,7 +51,7 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
       updateProvidedEvmNetwork(context, evmNetwork);
     },
     onDisconnect: () => {
-      dispatch.resetEvmProvider();
+      dispatch.resetEvmProviderConnection();
     },
   });
 
@@ -60,7 +60,7 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
 
 const actions = defineActions({
   async selectEvmProvider(context, provider: Provider): Promise<void> {
-    const { commit, state } = web3ActionContext(context);
+    const { commit, dispatch, state } = web3ActionContext(context);
     try {
       commit.setEvmProviderLoading(true);
       const address = await ethersUtil.connectEvmProvider(provider, {
@@ -69,9 +69,11 @@ const actions = defineActions({
       });
       // if we have address - we are connected
       if (address) {
+        // reset prev provider connection
+        dispatch.resetEvmProviderConnection();
+        // set new provider data
         commit.setEvmAddress(address);
         commit.setEvmProvider(provider);
-
         await updateProvidedEvmNetwork(context);
         await subscribeOnEvm(context);
       }
@@ -80,7 +82,7 @@ const actions = defineActions({
     }
   },
 
-  resetEvmProvider(context): void {
+  resetEvmProviderConnection(context): void {
     const { commit } = web3ActionContext(context);
     // reset store
     commit.resetEvmAddress();
