@@ -27,7 +27,7 @@
     "@soramitsu/soraneo-wallet-web": "1.23.4",
     "@walletconnect/ethereum-provider": "^2.10.4",
     "@walletconnect/modal": "^2.6.2",
-    "core-js": "^3.26.0",
+    "core-js": "^3.33.2",
     "country-code-emoji": "^2.3.0",
     "country-flag-emoji-polyfill": "^0.1.4",
     "direct-vuex": "^0.12.1",
