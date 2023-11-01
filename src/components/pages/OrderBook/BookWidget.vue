@@ -193,8 +193,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     this.volumeAsks = FPNumber.ZERO;
     this.volumeBids = FPNumber.ZERO;
 
-    if (this.asks.length > this.maxRowsNumber || this.bids.length < this.maxRowsNumber) {
-      if (this.asks.length) {
+    if (this.asks?.length > this.maxRowsNumber || this.bids?.length < this.maxRowsNumber) {
+      if (this.asks?.length) {
         const maxAskAmount = FPNumber.max(...this.asks.map((order) => order[1])) as FPNumber;
 
         this.asks.forEach((row: [FPNumber, FPNumber]) => {
@@ -213,7 +213,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
         });
       }
 
-      if (this.bids.length) {
+      if (this.bids?.length) {
         const maxBidAmount = FPNumber.max(...this.bids.map((order) => order[1])) as FPNumber;
 
         this.bids.forEach((row: [FPNumber, FPNumber]) => {
@@ -235,7 +235,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
       const aggregatedAsks = this.calculateStepsDistribution(this.asks);
       const aggregatedBids = this.calculateStepsDistribution(this.bids);
 
-      if (aggregatedAsks.length) {
+      if (aggregatedAsks?.length) {
         const maxAskAmount = FPNumber.max(...aggregatedAsks.map((order) => order[1])) as FPNumber;
 
         aggregatedAsks.forEach((row: [FPNumber, FPNumber, FPNumber]) => {
@@ -257,7 +257,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
         });
       }
 
-      if (aggregatedBids.length) {
+      if (aggregatedBids?.length) {
         const maxBidAmount = FPNumber.max(...aggregatedBids.map((order) => order[1])) as FPNumber;
 
         aggregatedBids.forEach((row: [FPNumber, FPNumber, FPNumber]) => {
@@ -284,7 +284,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   async withLimitOrdersSet<T = void>(func: FnWithoutArgs<T>): Promise<T> {
-    const nonEmptyStock = this.asks.length || this.bids.length;
+    const nonEmptyStock = this.asks?.length || this.bids?.length;
 
     if (!nonEmptyStock) {
       await delay();
