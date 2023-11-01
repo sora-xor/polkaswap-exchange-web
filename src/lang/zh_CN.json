@@ -319,7 +319,7 @@
     "bridgeText": "转接桥",
     "disclaimer": "{disclaimerPrefix} 本网站由{Sora} 社区维护。在继续使用本网站之前，请查看{polkaswapFaqLink} 和文档，其中包括有关 {AppName} 工作原理的详细说明，以及 {memorandumLink} 和 {privacyLink}。这些文档对于安全和积极的用户体验至关重要。通过使用 {AppName}，您承认您已阅读并理解这些文件。您还承认以下内容：1) 您全权负责遵守在您的法律管辖范围内可能适用于您对 {AppName} 的特定使用的所有法律； 2）您对{AppName}当前版本为alpha版本的理解：尚未经过全面测试，部分功能可能无法按设计执行； 3) 您理解并自愿接受使用 {AppName} 所涉及的风险，包括但不限于丢失代币的风险。再一次提醒，在没有阅读{polkaswapFaqLink}、{memorandumLink} 和{privacyLink}之前，请不要继续！",
     "poweredBy": "启动于",
-    "confirmTransactionText": "确认在{direction}的交易",
+    "confirmTransactionText": "确认交易",
     "retryText": "重试",
     "networkFeeText": "网络费用",
     "networkFeeTooltipText": "网络费是用来保证{Sora}系统的增长和稳定的性能。",

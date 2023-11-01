@@ -319,7 +319,7 @@
     "bridgeText": "Afara",
     "disclaimer": "{disclaimerPrefix} Oju opo wẹẹbu yii ni itọju nipasẹ agbegbe {Sora}. Ṣaaju ki o to tẹsiwaju lati lo oju opo wẹẹbu yii, jọwọ ṣe atunyẹwo {polkaswapFaqLink} ati iwe, eyiti o ni alaye alaye lori bi {AppName} ṣe n ṣiṣẹ, ati pẹlu {memorandumLink}, ati {privacyLink}. Awọn iwe aṣẹ wọnyi jẹ pataki si aabo olumulo ati aabo olumulo. Nipa lilo {AppName}, o gba pe o ti ka ati loye awọn iwe wọnyi. O tun gba eleyi: Ikini) ojuṣe rẹ nikan fun ibamu pẹlu gbogbo awọn ofin ti o le kan si lilo rẹ pato ti {AppName} ni aṣẹ ofin rẹ; Ikeji) oye rẹ pe ẹya lọwọlọwọ ti {AppName} jẹ ẹya alpha: ko ti ni idanwo ni kikun, ati pe awọn iṣẹ kan le ma ṣe bi a ti ṣe apẹrẹ; ati Iketa) oye rẹ ati gbigba iyọọda ti awọn eewu ti o wa ninu lilo {AppName}, pẹlu, ṣugbọn kii ṣe opin si, eewu ti awọn ami tokini padanu. Lẹẹkan si, jọwọ maṣe tẹsiwaju laisi kika {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "poweredBy": "Itileyin lati",
-    "confirmTransactionText": "Jẹrisi iṣowo ni {direction}",
+    "confirmTransactionText": "Jẹrisi idunadura",
     "retryText": "Tun gbiyanju",
     "networkFeeText": "Owo ọya Nẹtiwọọki",
     "networkFeeTooltipText": "A lo owo ọya nẹtiwọọki lati rii daju idagbasoke eto {Sora} ati iṣẹ iduroṣinṣin.",

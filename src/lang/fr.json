@@ -319,7 +319,7 @@
     "bridgeText": "Pont",
     "disclaimer": "{disclaimerPrefix} ce site Web est maintenu par la communauté {Sora}. Avant de continuer à utiliser ce site Web, veuillez consulter le {polkaswapFaqLink} et la documentation, qui comprend une explication détaillée du fonctionnement de {AppName}, ainsi que le {memorandumLink} et le {privacyLink}. Ces documents sont cruciaux pour une expérience utilisateur sécurisée et positive. En utilisant {AppName}, vous reconnaissez avoir lu et compris ces documents. Vous reconnaissez également ce qui suit: 1) votre seule responsabilité de vous conformer à toutes les lois qui peuvent s'appliquer à votre utilisation particulière de {AppName} dans votre juridiction légale; 2) votre compréhension que la version actuelle de {AppName} est une version alpha: elle n'a pas été entièrement testée et certaines fonctions peuvent ne pas fonctionner comme prévu; et 3) votre compréhension et votre acceptation volontaire des risques liés à l'utilisation de {AppName}, y compris, mais sans s'y limiter, le risque de perdre des jetons. Encore une fois, veuillez ne pas continuer sans lire les {polkaswapFaqLink}, {memorandumLink} et {privacyLink}!",
     "poweredBy": "Alimenté par",
-    "confirmTransactionText": "Confirmez la transaction dans {direction}",
+    "confirmTransactionText": "Confirmer la transaction",
     "retryText": "Réessayer",
     "networkFeeText": "Frais de réseau",
     "networkFeeTooltipText": "Les frais de réseau sont utilisés pour assurer la croissance et les performances stables du système {Sora}.",

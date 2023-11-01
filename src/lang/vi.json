@@ -319,7 +319,7 @@
     "bridgeText": "Cầu nối",
     "disclaimer": "{disclaimerPrefix} Trang web này được duy trì bởi cộng đồng {Sora}. Trước khi tiếp tục sử dụng trang web này, vui lòng xem lại {polkaswapFaqLink} và tài liệu, bao gồm một lời giải thích chi tiết về cách {AppName} hoạt động, cũng như {memorandumLink} và {privacyLink}. Những tài liệu này rất quan trọng đối với trải nghiệm người dùng an toàn và tích cực. Bằng cách sử dụng {AppName}, bạn thừa nhận rằng bạn đã đọc và hiểu những tài liệu này. Bạn cũng thừa nhận những điều sau đây: 1) trách nhiệm duy nhất của bạn về việc tuân thủ tất cả các luật có thể áp dụng cho việc sử dụng {AppName} cụ thể của bạn trong thẩm quyền pháp lý của bạn; 2) sự hiểu biết của bạn rằng phiên bản hiện tại của {AppName} là một phiên bản alpha: nó chưa được thử nghiệm đầy đủ và một số chức năng có thể không hoạt động như thiết kế; và 3) sự hiểu biết của bạn và tự nguyện chấp nhận các rủi ro liên quan đến việc sử dụng {AppName}, bao gồm, nhưng không giới hạn, nguy cơ mất token. Vui lòng không tiếp tục mà không đọc {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "poweredBy": "Được cung cấp bởi",
-    "confirmTransactionText": "Xác nhận giao dịch {direction}",
+    "confirmTransactionText": "Xác nhận giao dịch",
     "retryText": "Thử lại",
     "networkFeeText": "Phí Mạng",
     "networkFeeTooltipText": "Phí mạng được sử dụng để đảm bảo hệ thống {Sora} phát triển và hoạt động ổn định.",

@@ -319,7 +319,7 @@
     "bridgeText": "Bridge",
     "disclaimer": "{disclaimerPrefix} Situs web ini dikelola oleh komunitas {Sora}. Sebelum melanjutkan menggunakan situs web ini, harap tinjau {polkaswapFaqLink} dan dokumentasinya, yang berisi penjelasan rinci tentang cara kerja {AppName}, serta {memorandumLink}, dan {privacyLink}. Dokumen-dokumen ini sangat penting untuk pengalaman pengguna yang aman dan positif. Dengan menggunakan {AppName}, Anda menyatakan bahwa Anda telah membaca dan memahami dokumen-dokumen ini. Anda juga mengakui hal-hal berikut: 1) satu-satunya tanggung jawab Anda untuk mematuhi semua undang-undang yang mungkin berlaku untuk penggunaan khusus Anda atas {AppName} di yurisdiksi hukum Anda; 2) pemahaman Anda bahwa versi {AppName} saat ini adalah versi alfa: belum sepenuhnya diuji, dan beberapa fungsi mungkin tidak berfungsi seperti yang dirancang; dan 3) pemahaman dan penerimaan sukarela Anda atas risiko yang terkait dengan penggunaan {AppName}, termasuk, namun tidak terbatas pada, risiko kehilangan token. Sekali lagi, mohon jangan melanjutkan tanpa membaca FAQ {polkaswapFaqLink}, {memorandumLink}, dan {privacyLink}!",
     "poweredBy": "Didukung oleh",
-    "confirmTransactionText": "Konfirmasi transaksi untuk {direction}",
+    "confirmTransactionText": "Konfirmasikan transaksi",
     "retryText": "Coba lagi",
     "networkFeeText": "Biaya Jaringan",
     "networkFeeTooltipText": "Biaya jaringan digunakan untuk memastikan pertumbuhan sistem {Sora} dan kinerja yang stabil.",

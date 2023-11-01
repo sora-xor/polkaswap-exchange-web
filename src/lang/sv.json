@@ -319,7 +319,7 @@
     "bridgeText": "Brygga",
     "disclaimer": "{disclaimerPrefix} Den här webbplatsen underhålls av {Sora} -communityn. Innan du fortsätter att använda denna webbplatsen, vänligen läs igenom {polkaswapFaqLink} och dokumentation som innehåller en detaljerad förklaring av hur {AppName} fungerar, samt {memorandumLink} och {privacyLink}. Dessa dokument är avgörande för en säker och positiv användarupplevelse. Genom att använda {AppName} bekräftar du att du har läst och förstått dessa dokument. Du medger även följande: 1) ditt enskilda ansvar att efterfölja alla lagar som kan gälla för din särskilda användning av {AppName} i din juridiska jurisdiktion;\n 2) din förståelse för att den nuvarande versionen av {AppName} är en alpha-version: den har inte testats fullständigt och vissa funktioner kanske inte fungerar som designat; och\n 3) din förståelse och frivilliga acceptans av riskerna med att använda {AppName}, inklusive men inte begränsat till risken att förlora tokens. Återigen, fortsätt inte utan att läsa {polkaswapFaqLink}, {memorandumLink} och {privacyLink}!",
     "poweredBy": "Drivs av",
-    "confirmTransactionText": "Bekräfta transaktion i {direction}",
+    "confirmTransactionText": "Bekräfta transaktionen",
     "retryText": "Försök igen",
     "networkFeeText": "Nätverksavgift",
     "networkFeeTooltipText": "Nätverksavgiften används för att säkerställa {Sora} systemets tillväxt och stabila prestanda.",

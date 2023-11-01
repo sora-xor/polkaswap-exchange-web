@@ -319,7 +319,7 @@
     "bridgeText": "Most",
     "disclaimer": "{disclaimerPrefix} Niniejsza strona internetowa jest prowadzona przez społeczność sieci {Sora}. Zanim zaczniesz korzystać z tej witryny, zapoznaj się z {polkaswapFaqLink} i dokumentacją, która zawiera szczegółowe wyjaśnienia dotyczące działania giełdy {AppName}. Przeczytaj także {memorandumLink} oraz tekst {privacyLink}. Dokumenty te mają kluczowe znaczenie dla bezpiecznego i komfortowego użytkowania. Korzystając z {AppName}, potwierdzasz, że przeczytałeś(-łaś) i rozumiesz przedstawione dokumenty. Potwierdzasz również, co następuje: 1) ponosisz wyłączną odpowiedzialność związaną z przestrzeganiem wszystkich przepisów, które mogą mieć zastosowanie do korzystania z {AppName} w Twojej jurysdykcji; 2) rozumiesz, że aktualna wersja {AppName} jest wersją alfa: nie została w pełni przetestowana, a niektóre jej funkcje mogą nie działać zgodnie z przeznaczeniem; oraz że 3) rozumiesz i dobrowolnie akceptujesz ryzyko związane z korzystaniem z {AppName}, w tym między innymi ryzyko utraty tokenów. Przypominamy raz jeszcze: zanim zaczniesz korzystać z witryny, przeczytaj {polkaswapFaqLink}, {memorandumLink}, a także tekst {privacyLink}!",
     "poweredBy": "Technologia:",
-    "confirmTransactionText": "Potwierdź transakcję w {direction}",
+    "confirmTransactionText": "Potwierdź transakcję",
     "retryText": "Spróbuj ponownie",
     "networkFeeText": "Opłata sieciowa",
     "networkFeeTooltipText": "Opłata sieciowa służy zapewnieniu rozwoju i stabilności systemu {Sora}.",

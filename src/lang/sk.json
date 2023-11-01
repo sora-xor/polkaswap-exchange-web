@@ -319,7 +319,7 @@
     "bridgeText": "Most",
     "disclaimer": "{disclaimerPrefix} Táto webová stránka je spravovaná komunitou {Sora}. Pred pokračovaním v používaní tejto webovej stránky si preštudujte {polkaswapFaqLink} a dokumentáciu, ktorá obsahuje podrobné vysvetlenie fungovania aplikácie {AppName}, ako aj {memorandumLink} a {privacyLink}. Tieto dokumenty sú nevyhnutné pre bezpečnú a pozitívnu používateľskú skúsenosť. Používaním aplikácie {AppName} beriete na vedomie, že ste si tieto dokumenty prečítali a porozumeli im. Ďalej beriete na vedomie nasledovné: 1) vašu výlučnú zodpovednosť za dodržiavanie všetkých zákonov, ktoré sa môžu vzťahovať na vaše konkrétne používanie programu {AppName} vo vašej právnej jurisdikcii; 2) chápete, že súčasná verzia programu {AppName} je verzia alfa: nebola úplne testovaná a niektoré funkcie nemusia fungovať tak, ako boli navrhnuté; 3) vaše porozumenie a dobrovoľné prijatie rizík spojených s používaním programu {AppName}, vrátane, ale nie výlučne, rizika straty tokenov. Ešte raz si, prosím, prečítajte {polkaswapFaqLink}, {memorandumLink}, a {privacyLink}!",
     "poweredBy": "Používa technológiu",
-    "confirmTransactionText": "Potvrdiť transakciu v {direction}",
+    "confirmTransactionText": "Potvrďte transakciu",
     "retryText": "Opakovať",
     "networkFeeText": "Sieťový poplatok",
     "networkFeeTooltipText": "Sieťový poplatok slúži na zabezpečenie rastu a stabilného výkonu systému {Sora}.",

@@ -319,7 +319,7 @@
     "bridgeText": "Híd",
     "disclaimer": "{disclaimerPrefix} Ezt a weboldalt a {Sora} közösség tartja fenn. Mielőtt folytatnád a weboldal használatát, kérjük, olvasd el a {polkaswapFaqLink} -et és a dokumentációt, amely részletes magyarázatot tartalmaz a {AppName} működéséről, valamint a {memorandumLink} -et és a {privacyLink} -et. Ezek a dokumentumok elengedhetetlenek a biztonságos és pozitív felhasználói élményhez. A {AppName} használatával elismered, hogy elolvastad és megértetted ezeket a dokumentumokat. Továbbá elismered a következőket: 1) a Te kizárólagos felelősséged a {AppName} adott használatára vonatkozó összes törvény betartása, amelyek az országod joghatósága alatt érvényesek lehetnek; 2) megértetted, hogy a {AppName} jelenlegi verziója egy alfa verzió: nem lett teljes körűen tesztelve, és egyes funkciók nem feltétlenül működnek a tervezett módon; és 3) megértetted és önkéntesen elfogadod a {AppName} használatával járó kockázatokat, beleértve, de nem kizárólagosan, a tokenek elvesztésének kockázatát. Még egyszer, kérjük, ne folytasd a {polkaswapFaqLink}, {memorandumLink} és {privacyLink} elolvasása nélkül!",
     "poweredBy": "Üzemelteti a ",
-    "confirmTransactionText": "Tranzakció megerősítése {direction}",
+    "confirmTransactionText": "Erősítse meg a tranzakciót",
     "retryText": "Próbáld újra",
     "networkFeeText": "Hálózati díj",
     "networkFeeTooltipText": "A hálózati díjat a {Sora} rendszer növekedésének és stabil teljesítményének biztosítására használják.",

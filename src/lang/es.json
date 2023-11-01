@@ -319,7 +319,7 @@
     "bridgeText": "Puente",
     "disclaimer": "{disclaimerPrefix} Este sitio web es mantenido por la comunidad {Sora}. Antes de continuar utilizando este sitio web, por favor revise las {polkaswapFaqLink} y la documentación, que incluye una explicación detallada sobre el funcionamiento de {AppName}, así como el {memorandumLink}, y la {privacyLink}. Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar {AppName}, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de {AppName} en su jurisdicción legal; 2) su comprensión de que la versión actual de {AppName} es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de {AppName}, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡por favor no continúe sin leer el {polkaswapFaqLink}, las {memorandumLink} y la {privacyLink}!",
     "poweredBy": "Desarrollado por",
-    "confirmTransactionText": "Confirmar transacción en {direction}",
+    "confirmTransactionText": "Confirmar transacción",
     "retryText": "Reintentar",
     "networkFeeText": "Tarifa de red",
     "networkFeeTooltipText": "La comisión de la red se utiliza para garantizar el crecimiento y el rendimiento estable del sistema {Sora}.",

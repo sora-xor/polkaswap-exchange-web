@@ -319,7 +319,7 @@
     "bridgeText": "Bro",
     "disclaimer": "{disclaimerPrefix} Dette nettstedet vedlikeholdes av {Sora} -fellesskapet. Før du fortsetter å bruke dette nettstedet, må du lese {polkaswapFaqLink} og dokumentasjonen, som inkluderer en detaljert forklaring på hvordan {AppName} fungerer, samt {memorandumLink} og {privacyLink}. Disse dokumentene er avgjørende for en sikker og positiv brukeropplevelse. Ved å bruke {AppName} erkjenner du at du har lest og forstått disse dokumentene. Du erkjenner også følgende: 1) ditt eget ansvar for å overholde alle lover som kan gjelde for din spesielle bruk av {AppName} i din juridiske jurisdiksjon; 2) din forståelse av at den nåværende versjonen av {AppName} er en alfaversjon: den er ikke fullstendig testet, og noen funksjoner fungerer kanskje ikke som designet; og 3) din forståelse og frivillig aksept av risikoen ved bruk av {AppName}, inkludert, men ikke begrenset til, risikoen for å miste tokens. Igjen, ikke fortsett uten å lese {polkaswapFaqLink}, {memorandumLink} og {privacyLink}!",
     "poweredBy": "Drevet av",
-    "confirmTransactionText": "Bekreft transaksjonen i {direction}",
+    "confirmTransactionText": "Bekreft transaksjon",
     "retryText": "Prøv igjen",
     "networkFeeText": "Nettverksgebyr",
     "networkFeeTooltipText": "Nettverksavgift brukes til å sikre {Sora} -systemets vekst og stabile ytelse.",

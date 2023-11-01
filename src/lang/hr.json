@@ -319,7 +319,7 @@
     "bridgeText": "Most",
     "disclaimer": "{disclaimerPrefix} Ova web stranica održava zajednica {Sora}. Prije nego što nastavite koristiti ovu web stranicu, pregledajte {polkaswapFaqLink} i dokumentaciju, koja uključuje detaljno objašnjenje o tome kako {AppName} radi, kao i {memorandumLink} i {privacyLink}. Ti su dokumenti ključni za sigurno i pozitivno korisničko iskustvo. Koristeći {AppName}, potvrđujete da ste pročitali i razumjeli ove dokumente. Također potvrđujete sljedeće: 1) svoju isključivu odgovornost za poštivanje svih zakona koji se mogu primjenjivati na vašu posebnu upotrebu {AppName} u vašoj pravnoj nadležnosti; 2) vaše razumijevanje da je trenutna verzija {AppName} alfa verzija: nije u potpunosti testirana, a neke funkcije možda neće funkcionirati kako je dizajnirano; i 3) vaše razumijevanje i dobrovoljno prihvaćanje rizika povezanih s korištenjem {AppName}, uključujući, ali ne ograničavajući se na, rizik od gubitka tokena. Još jednom, nemojte nastaviti bez čitanja {polkaswapFaqLink}, {memorandumLink} i {privacyLink}!",
     "poweredBy": "Podržano od strane",
-    "confirmTransactionText": "Potvrdite transakciju u {direction}",
+    "confirmTransactionText": "Potvrdite transakciju",
     "retryText": "Pokušajte ponovo",
     "networkFeeText": "Mrežna naknada",
     "networkFeeTooltipText": "Naknada za mrežu koristi se kako bi se osigurao rast i stabilne performanse sustava {Sora}.",
