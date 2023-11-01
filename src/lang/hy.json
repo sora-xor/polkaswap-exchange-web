@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Փոխանցելի",
             "frozen": "Սառեցված է",
-            "locked": "- կողպված է",
-            "reserved": "- վերապահված է",
+            "locked": "կողպված է",
+            "reserved": "վերապահված է",
             "total": "Ընդհանուր",
-            "bonded": "- Խճճված"
+            "bonded": "Խճճված"
         },
         "totalAssetsValue": "Ձեր ակտիվների ընդհանուր արժեքը.",
         "details": "Մանրամասներ",

@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Ó śe fi ran se",
             "frozen": "Fisi itimole",
-            "locked": "- Ti tiipa",
-            "reserved": "- Ni ipamọ",
+            "locked": "Ti tiipa",
+            "reserved": "Ni ipamọ",
             "total": "Lapapọ",
-            "bonded": "- Ti so pọ"
+            "bonded": "Ti so pọ"
         },
         "totalAssetsValue": "Iye awọn ohun -ini rẹ lapapọ:",
         "details": "Awọn alaye",

@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Átruházható",
             "frozen": "Fagyasztva",
-            "locked": "- Zárolva",
-            "reserved": "- Fenntartva",
+            "locked": "Zárolva",
+            "reserved": "Fenntartva",
             "total": "Összesen",
-            "bonded": "- lekötve"
+            "bonded": "lekötve"
         },
         "totalAssetsValue": "Az összes eszköz értéke:",
         "details": "Részletek",

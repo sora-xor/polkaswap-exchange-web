@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Có thể chuyển nhượng",
             "frozen": "Đóng băng",
-            "locked": "- Đã khóa",
-            "reserved": "- Để dành",
+            "locked": "Đã khóa",
+            "reserved": "Để dành",
             "total": "Tổng",
-            "bonded": "- Bonded"
+            "bonded": "Bonded"
         },
         "totalAssetsValue": "Tổng giá trị tài sản:",
         "details": "Chi tiết",
