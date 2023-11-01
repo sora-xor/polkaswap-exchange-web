@@ -305,7 +305,8 @@
         "viewIn": "Visa i {explorer}",
         "referrer": "Referrer",
         "referral": "Hänvisning",
-        "adarTxDetailsTitle": "Transaktionsdetaljer"
+        "adarTxDetailsTitle": "Transaktionsdetaljer",
+        "comment": "Kommentar"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Ändra nätverk i {Metamask}",

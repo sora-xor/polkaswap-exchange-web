@@ -41,7 +41,7 @@ import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/type
 export default class TokenSelectButton extends Mixins(TranslationMixin) {
   @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset;
   @Prop({ type: Array, default: () => [] }) readonly tokens!: Array<AccountAsset | Asset>;
-  @Prop({ type: String, default: '' }) readonly icon!: boolean;
+  @Prop({ type: String, default: '' }) readonly icon!: string;
   @Prop({ type: [Number, String], default: 0 }) readonly tabindex!: number | string;
 
   get hasToken(): boolean {

@@ -305,7 +305,8 @@
         "viewIn": "Xem trong {explorer}",
         "referrer": "Người giới thiệu",
         "referral": "Giới thiệu",
-        "adarTxDetailsTitle": "Chi tiết giao dịch"
+        "adarTxDetailsTitle": "Chi tiết giao dịch",
+        "comment": "Bình luận"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Thay đổi mạng trong {Metamask}",

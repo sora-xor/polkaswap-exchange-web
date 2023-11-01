@@ -305,7 +305,8 @@
         "viewIn": "Zobrazit v {explorer}",
         "referrer": "Doporučitel",
         "referral": "Doporučení",
-        "adarTxDetailsTitle": "Podrobnosti transakce"
+        "adarTxDetailsTitle": "Podrobnosti transakce",
+        "comment": "Komentář"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Změnit síť v {Metamask}",

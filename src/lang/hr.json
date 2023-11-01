@@ -305,7 +305,8 @@
         "viewIn": "Pogledajte u {explorer}",
         "referrer": "Preporučitelj",
         "referral": "Preporuka",
-        "adarTxDetailsTitle": "Detalji transakcije"
+        "adarTxDetailsTitle": "Detalji transakcije",
+        "comment": "Komentar"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Promijenite mrežu u {Metamask}",

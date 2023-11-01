@@ -305,7 +305,8 @@
         "viewIn": "Lihat di {explorer}",
         "referrer": "Perujuk",
         "referral": "Rujukan",
-        "adarTxDetailsTitle": "Rincian transaksi"
+        "adarTxDetailsTitle": "Rincian transaksi",
+        "comment": "Komentar"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Ubah jaringan di {Metamask}",

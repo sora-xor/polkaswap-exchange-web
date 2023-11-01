@@ -21,9 +21,11 @@
         },
         "okReadyText": "OK, ik ben klaar",
         "emailPlaceholder": "E-mail",
+        "noSpamText": "Geen spam! Alleen om uw account te beveiligen",
         "sendCodeBtn": "SMS code verzenden",
         "firstNamePlaceholder": "Voornaam",
         "lastNamePlaceholder": "Achternaam",
+        "verificationCodeText": "U ontvangt een verificatiecode via SMS.",
         "phonePlaceholder": "Telefoonnummer",
         "statusPendingTitle": "Verificatie is gaande",
         "sendEmailLinkBtn": "Link nogmaals versturen",
@@ -94,6 +96,9 @@
         "or": "of",
         "oneTimeApplicationFee": "Eenmalige kosten voor het uitgeven van een kaart",
         "applicationFeeNote": "Let op: de uitgifte van betaalde kaarten zal in een later stadium beschikbaar zijn.",
-        "statusRejectReasonMultiple": "Uw aanvraag is om meerdere redenen afgewezen:"
+        "statusRejectReasonMultiple": "Uw aanvraag is om meerdere redenen afgewezen:",
+        "selectCountryText": "Kies je land",
+        "filterCountries": "Filteren op land of netnummer",
+        "ibanPendingDesc": "Uw IBAN-uitgifte is in behandeling.\n Neem contact met ons op via {email} als de wachttijd langer dan 72 uur is"
     }
 }

@@ -305,7 +305,8 @@
         "viewIn": "Megtekintés {explorer}-ben",
         "referrer": "Ajánló",
         "referral": "Ajánlás",
-        "adarTxDetailsTitle": "Tranzakció részlete"
+        "adarTxDetailsTitle": "Tranzakció részlete",
+        "comment": "Megjegyzés"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Hálózatváltás a {Metamask}",

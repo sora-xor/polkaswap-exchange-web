@@ -305,7 +305,8 @@
         "viewIn": "Zobraziť v {explorer}",
         "referrer": "Sprostredkovateľ",
         "referral": "Doporučenie",
-        "adarTxDetailsTitle": "Detaily transakcie"
+        "adarTxDetailsTitle": "Detaily transakcie",
+        "comment": "Komentujte"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Zmeňiť sieť v {Metamask}",
