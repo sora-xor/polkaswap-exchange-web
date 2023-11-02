@@ -200,7 +200,7 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   }
 
   // Statistics connection
-  @state.wallet.settings.indexers private indexersData!: any;
+  @state.wallet.settings.indexers private indexersData!: Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState>;
 
   showStatisticsDialog = false;
 

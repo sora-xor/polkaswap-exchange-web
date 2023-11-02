@@ -33,9 +33,9 @@ const IndexerInfoView = 'IndexerInfoView';
 export default class SelectIndexerDialog extends Mixins(TranslationMixin, mixins.NotificationMixin) {
   @state.settings.selectIndexerDialogVisibility private selectIndexerDialogVisibility!: boolean;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @state.wallet.settings.indexers private indexersData!: any;
+  @state.wallet.settings.indexers private indexersData!: Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState>;
   @state.wallet.settings.indexerType indexerType!: Indexer['type'];
-  @state.wallet.account.ceresFiatValuesUsage private ceresFiatValuesUsage!: any;
+  @state.wallet.account.ceresFiatValuesUsage private ceresFiatValuesUsage!: boolean;
 
   @mutation.settings.setSelectIndexerDialogVisibility setSelectIndexerDialogVisibility!: (flag: boolean) => void;
   @action.wallet.settings.selectIndexer private selectIndexer!: (type: WALLET_CONSTS.IndexerType) => Promise<void>;
@@ -44,7 +44,8 @@ export default class SelectIndexerDialog extends Mixins(TranslationMixin, mixins
   currentView = IndexerListView;
 
   get indexers(): Indexer[] {
-    return [WALLET_CONSTS.IndexerType.SUBQUERY, WALLET_CONSTS.IndexerType.SUBSQUID].map((type) => {
+    return Object.keys(WALLET_CONSTS.IndexerType).map((key) => {
+      const type = WALLET_CONSTS.IndexerType[key];
       return {
         name: getIndexerName(type),
         type,
