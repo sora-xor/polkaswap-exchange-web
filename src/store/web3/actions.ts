@@ -63,14 +63,15 @@ const actions = defineActions({
     const { commit, dispatch, state } = web3ActionContext(context);
     try {
       commit.setEvmProviderLoading(true);
+      // reset prev connection
+      dispatch.resetEvmProviderConnection();
+      // create new connection
       const address = await ethersUtil.connectEvmProvider(provider, {
         chains: [state.ethBridgeEvmNetwork],
         optionalChains: [...state.evmNetworkApps],
       });
       // if we have address - we are connected
       if (address) {
-        // reset prev provider connection
-        dispatch.resetEvmProviderConnection();
         // set new provider data
         commit.setEvmAddress(address);
         commit.setEvmProvider(provider);

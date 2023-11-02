@@ -76,10 +76,14 @@ async function connectEvmProvider(provider: Provider, chains: ChainsProps): Prom
 }
 
 function disconnectEvmProvider(): void {
-  if (ethereumProvider) {
-    // only for WalletConnect
-    ethereumProvider.disconnect?.();
+  ethereumProvider?.disconnect?.();
+  // clear walletconnect localstorage
+  for (const key in localStorage) {
+    if (key.startsWith('wc@2')) {
+      localStorage.removeItem(key);
+    }
   }
+  localStorage.removeItem('WCM_VERSION');
 }
 
 function createWeb3Instance(ethereumProvider: any) {
@@ -96,7 +100,9 @@ async function useMetamaskExtensionProvider(): Promise<string> {
 
   createWeb3Instance(ethereumProvider);
 
-  return await getAccount();
+  const account = await getAccount();
+
+  return account;
 }
 
 async function useWalletConnectProvider(chains: ChainsProps): Promise<string> {
@@ -104,9 +110,6 @@ async function useWalletConnectProvider(chains: ChainsProps): Promise<string> {
     ethereumProvider = await EthereumProvider.init({
       projectId: WALLET_CONNECT_PROJECT_ID,
       showQrModal: true,
-      // qrModalOptions: {
-      //   enableExplorer: false,
-      // },
       ...chains,
     });
     // show qr modal
@@ -114,8 +117,13 @@ async function useWalletConnectProvider(chains: ChainsProps): Promise<string> {
 
     createWeb3Instance(ethereumProvider);
 
-    return await getAccount();
+    const account = await getAccount();
+
+    // await delay(6000);
+
+    return account;
   } catch (error: any) {
+    console.info(error);
     // user cancelled qr modal
     if (error.message === 'Connection request reset. Please try again.') {
       return '';
@@ -246,6 +254,8 @@ async function watchEthereum(cb: {
     ethereumProvider.on('accountsChanged', cb.onAccountChange);
     ethereumProvider.on('chainChanged', cb.onNetworkChange);
     ethereumProvider.on('disconnect', cb.onDisconnect);
+
+    ethereumProvider.on('session_event', console.log);
   }
 
   return function disconnect() {
@@ -253,6 +263,8 @@ async function watchEthereum(cb: {
       ethereumProvider.removeListener('accountsChanged', cb.onAccountChange);
       ethereumProvider.removeListener('chainChanged', cb.onNetworkChange);
       ethereumProvider.removeListener('disconnect', cb.onDisconnect);
+
+      ethereumProvider.removeListener('session_event', console.log);
     }
   };
 }
