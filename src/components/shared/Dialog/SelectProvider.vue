@@ -7,6 +7,7 @@
         :key="provider.name"
         tabindex="0"
         @click.native="handleProviderClick(provider.name)"
+        class="provider-card"
       >
         <template #avatar>
           <img :src="provider.icon" :alt="provider.name" class="provider-logo" />
@@ -72,6 +73,12 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
   }
 }
 </script>
+
+<style lang="scss">
+.provider-card .account > .account-avatar {
+  border-radius: unset;
+}
+</style>
 
 <style lang="scss" scoped>
 .provider {
