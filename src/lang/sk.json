@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Prevoditeľné",
             "frozen": "Zmrazené",
-            "locked": "- Uzamknuté",
-            "reserved": "- Rezervované",
+            "locked": "Uzamknuté",
+            "reserved": "Rezervované",
             "total": "Celkom",
-            "bonded": "- Spojený"
+            "bonded": "Spojený"
         },
         "totalAssetsValue": "Celková hodnota vašich aktív:",
         "details": "Podrobnosti",

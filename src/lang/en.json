@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Transferable",
             "frozen": "Frozen",
-            "locked": "- Locked",
-            "reserved": "- Reserved",
+            "locked": "Locked",
+            "reserved": "Reserved",
             "total": "Total",
-            "bonded": "- Bonded"
+            "bonded": "Bonded"
         },
         "totalAssetsValue": "Total assets value:",
         "details": "Details",

@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Dapat ditransfer",
             "frozen": "Dibekukan",
-            "locked": "- Terkunci",
-            "reserved": "- Dicadangkan",
+            "locked": "Terkunci",
+            "reserved": "Dicadangkan",
             "total": "Total",
-            "bonded": "- Berikat"
+            "bonded": "Berikat"
         },
         "totalAssetsValue": "Nilai total aset Anda:",
         "details": "Rincian",

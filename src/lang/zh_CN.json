@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "可转让",
             "frozen": "已被冻结",
-            "locked": "- 已锁定",
-            "reserved": "- 保留",
+            "locked": "已锁定",
+            "reserved": "保留",
             "total": "总共",
-            "bonded": "- 绑定的"
+            "bonded": "绑定的"
         },
         "totalAssetsValue": "您的总资产价值：",
         "details": "细节",

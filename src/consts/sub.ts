@@ -40,21 +40,21 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     blockExplorerUrls: [],
     shortName: 'Rococo',
   },
-  [SubNetwork.KusamaKarura]: {
-    id: SubNetwork.KusamaKarura,
-    name: 'Karura',
+  // SORA Parachains
+  [SubNetwork.RococoSora]: {
+    id: SubNetwork.RococoSora,
+    name: 'SORA Parachain',
     nativeCurrency: {
-      name: 'KAR',
-      symbol: 'KAR',
+      name: 'XOR',
+      symbol: 'XOR',
       decimals: 12,
     },
     endpointUrls: [],
     blockExplorerUrls: [],
-    shortName: 'Karura',
+    shortName: 'SORA Parachain',
   },
-  // SORA Parachains
-  [SubNetwork.RococoSora]: {
-    id: SubNetwork.RococoSora,
+  [SubNetwork.KusamaSora]: {
+    id: SubNetwork.KusamaSora,
     name: 'SORA Parachain',
     nativeCurrency: {
       name: 'XOR',
@@ -76,7 +76,7 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
   },
   [SubNetwork.Kusama]: {
     KSM: {
-      [BridgeTxDirection.Outgoing]: '10124190', // [TODO] check in real transfer
+      [BridgeTxDirection.Outgoing]: '92003956',
       [BridgeTxDirection.Incoming]: '0',
     },
   },
