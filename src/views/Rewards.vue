@@ -48,7 +48,7 @@
                 <div class="rewards-footer">
                   <s-divider />
                   <div v-if="evmAddress" class="rewards-account">
-                    <span>{{ formatAddress(evmAddress, 8) }}</span>
+                    <formatted-address :value="evmAddress" :symbols="8" />
                     <span>{{ t('rewards.connected') }}</span>
                   </div>
                   <s-button
@@ -123,6 +123,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokensRow: lazyComponent(Components.TokensRow),
     InfoLine: components.InfoLine,
+    FormattedAddress: components.FormattedAddress,
   },
 })
 export default class Rewards extends Mixins(
