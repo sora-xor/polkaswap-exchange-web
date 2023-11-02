@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Transferowalne",
             "frozen": "Zamrożono",
-            "locked": "- Zablokowano",
-            "reserved": "- Zarezerwowano",
+            "locked": "Zablokowano",
+            "reserved": "Zarezerwowano",
             "total": "Łącznie",
-            "bonded": "- Objęte rezerwami"
+            "bonded": "Objęte rezerwami"
         },
         "totalAssetsValue": "Twoja łączna wartość walut:",
         "details": "Szczegóły",

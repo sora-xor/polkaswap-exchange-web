@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Převoditelné",
             "frozen": "Zmrazené",
-            "locked": "- Zamčeno",
-            "reserved": "- Rezervováno",
+            "locked": "Zamčeno",
+            "reserved": "Rezervováno",
             "total": "Celkem",
-            "bonded": "- Lepené"
+            "bonded": "Lepené"
         },
         "totalAssetsValue": "Celková hodnota vašich aktiv:",
         "details": "Podrobnosti",

@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Übertragbar",
             "frozen": "Eingefroren",
-            "locked": "- Gesperrt",
-            "reserved": "- Reserviert",
+            "locked": "Gesperrt",
+            "reserved": "Reserviert",
             "total": "Gesamt",
-            "bonded": "- Gebonded"
+            "bonded": "Gebonded"
         },
         "totalAssetsValue": "Gesamtwert deiner Assets:",
         "details": "Details",
