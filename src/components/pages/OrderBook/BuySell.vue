@@ -567,9 +567,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   prepareValuesForSwap(amount) {
     if (!this.areTokensSelected || asZeroValue(this.baseValue)) return;
 
-    this.setFromValue(this.baseValue);
+    const fromValue = this.isBuySide ? this.getStringFromCodec(amount) : this.baseValue;
+    const toValue = this.isBuySide ? this.baseValue : this.getStringFromCodec(amount);
+
+    this.setFromValue(fromValue);
+    this.setToValue(toValue);
     this.setQuoteValue(this.marketQuotePrice);
-    this.setToValue(this.getStringFromCodec(amount));
     this.setLiquiditySource('OrderBook');
     this.selectDexId(0);
   }

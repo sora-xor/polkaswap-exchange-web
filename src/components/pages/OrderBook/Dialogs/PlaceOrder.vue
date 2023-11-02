@@ -71,10 +71,16 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   }
 
   get upperText(): string {
-    const amount = this.type === LimitOrderType.limit ? this.baseValue : this.fromValue;
+    let amount;
     const symbol = this.baseAsset?.symbol;
 
-    return this.isBuySide ? `Buy ${amount} ${symbol}` : `Sell ${amount} ${symbol}`;
+    if (this.type === LimitOrderType.limit) {
+      amount = this.baseValue;
+      return this.isBuySide ? `Buy ${this.baseValue} ${symbol}` : `Sell ${this.baseValue} ${symbol}`;
+    } else {
+      amount = this.isBuySide ? this.toValue : this.baseValue;
+      return this.isBuySide ? `Buy ${amount} ${symbol}` : `Sell ${amount} ${symbol}`;
+    }
   }
 
   get lowerText(): string {
@@ -99,13 +105,20 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   }
 
   async marketOrder() {
+    console.info('Market order swap params***');
+    console.info('this.tokenFrom', this.tokenFrom);
+    console.info('this.tokenTo', this.tokenTo);
+    console.info('this.fromValue', this.fromValue);
+    console.info('this.toValue', this.toValue);
+    console.info('this.isBuySide', this.isBuySide);
+
     return await api.swap.execute(
       this.tokenFrom,
       this.tokenTo,
       this.fromValue,
       this.toValue,
       this.slippageTolerance,
-      false,
+      this.isBuySide,
       LiquiditySourceTypes.OrderBook,
       this.selectedDexId
     );
