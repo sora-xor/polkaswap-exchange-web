@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Transferowalne",
             "frozen": "Zamrożono",
-            "locked": "- Zablokowano",
-            "reserved": "- Zarezerwowano",
+            "locked": "Zablokowano",
+            "reserved": "Zarezerwowano",
             "total": "Łącznie",
-            "bonded": "- Objęte rezerwami"
+            "bonded": "Objęte rezerwami"
         },
         "totalAssetsValue": "Twoja łączna wartość walut:",
         "details": "Szczegóły",
@@ -305,7 +305,8 @@
         "viewIn": "Pokaż w {explorer}",
         "referrer": "Osoba polecająca",
         "referral": "Kod polecający",
-        "adarTxDetailsTitle": "Szczegóły transakcji"
+        "adarTxDetailsTitle": "Szczegóły transakcji",
+        "comment": "Komentarz"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Zmień sieć w portfelu {Metamask}",

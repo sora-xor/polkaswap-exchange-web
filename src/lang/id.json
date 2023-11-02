@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Dapat ditransfer",
             "frozen": "Dibekukan",
-            "locked": "- Terkunci",
-            "reserved": "- Dicadangkan",
+            "locked": "Terkunci",
+            "reserved": "Dicadangkan",
             "total": "Total",
-            "bonded": "- Berikat"
+            "bonded": "Berikat"
         },
         "totalAssetsValue": "Nilai total aset Anda:",
         "details": "Rincian",
@@ -305,7 +305,8 @@
         "viewIn": "Lihat di {explorer}",
         "referrer": "Perujuk",
         "referral": "Rujukan",
-        "adarTxDetailsTitle": "Rincian transaksi"
+        "adarTxDetailsTitle": "Rincian transaksi",
+        "comment": "Komentar"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Ubah jaringan di {Metamask}",

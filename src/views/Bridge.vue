@@ -102,16 +102,7 @@
             </div>
             <div v-if="sender" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <s-tooltip
-                :content="getCopyTooltip(isSoraToEvm)"
-                border-radius="mini"
-                placement="bottom-end"
-                tabindex="-1"
-              >
-                <span class="bridge-network-address" @click="handleCopyAddress(sender, $event)">
-                  {{ formatAddress(sender, 8) }}
-                </span>
-              </s-tooltip>
+              <formatted-address :value="sender" :symbols="8" :tooltip-text="getCopyTooltip(isSoraToEvm)" />
               <span>{{ t('connectedText') }}</span>
             </div>
             <s-button
@@ -182,16 +173,7 @@
             </div>
             <div v-if="recipient" class="bridge-item-footer">
               <s-divider type="tertiary" />
-              <s-tooltip
-                :content="getCopyTooltip(!isSoraToEvm)"
-                border-radius="mini"
-                placement="bottom-end"
-                tabindex="-1"
-              >
-                <span class="bridge-network-address" @click="handleCopyAddress(recipient, $event)">
-                  {{ formatAddress(recipient, 8) }}
-                </span>
-              </s-tooltip>
+              <formatted-address :value="recipient" :symbols="8" :tooltip-text="getCopyTooltip(!isSoraToEvm)" />
               <span v-if="isSubBridge" class="bridge-network-address" @click="connectExternalWallet">
                 {{ t('changeAccountText') }}
               </span>
@@ -359,6 +341,7 @@ import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
     TokenAddress: components.TokenAddress,
+    FormattedAddress: components.FormattedAddress,
   },
 })
 export default class Bridge extends Mixins(
@@ -625,9 +608,7 @@ export default class Bridge extends Mixins(
 
   getCopyTooltip(isSoraNetwork = false): string {
     const networkName = this.formatNetworkShortName(isSoraNetwork);
-    const text = `${networkName} ${this.t('addressText')}`;
-
-    return this.copyTooltip(text);
+    return `${networkName} ${this.t('addressText')}`;
   }
 
   handleMaxValue(): void {

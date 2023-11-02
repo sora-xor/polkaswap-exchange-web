@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Overdraagbaar",
             "frozen": "Bevroren",
-            "locked": "- Vergrendeld",
-            "reserved": "- Gereserveerd",
+            "locked": "Vergrendeld",
+            "reserved": "Gereserveerd",
             "total": "Totaal",
-            "bonded": "- Gebonden"
+            "bonded": "Gebonden"
         },
         "totalAssetsValue": "Totale waarde van bezittingen:",
         "details": "Details",
@@ -305,7 +305,8 @@
         "viewIn": "Bekijk in {explorer}",
         "referrer": "Verwijzer",
         "referral": "Verwijzing",
-        "adarTxDetailsTitle": "Transactiegegevens"
+        "adarTxDetailsTitle": "Transactiegegevens",
+        "comment": "Opmerking"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Netwerk wijzigen in {Metamask}",

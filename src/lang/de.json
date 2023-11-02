@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Übertragbar",
             "frozen": "Eingefroren",
-            "locked": "- Gesperrt",
-            "reserved": "- Reserviert",
+            "locked": "Gesperrt",
+            "reserved": "Reserviert",
             "total": "Gesamt",
-            "bonded": "- Gebonded"
+            "bonded": "Gebonded"
         },
         "totalAssetsValue": "Gesamtwert deiner Assets:",
         "details": "Details",
@@ -305,7 +305,8 @@
         "viewIn": "Auf {explorer} ansehen",
         "referrer": "Referrer",
         "referral": "Referral",
-        "adarTxDetailsTitle": "Transaktionsdetails"
+        "adarTxDetailsTitle": "Transaktionsdetails",
+        "comment": "Kommentar"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Netzwerk in {Metamask} ändern",

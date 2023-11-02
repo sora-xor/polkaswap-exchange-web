@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Överförbar",
             "frozen": "Frusen",
-            "locked": "- Låst",
-            "reserved": "- Reserverad",
+            "locked": "Låst",
+            "reserved": "Reserverad",
             "total": "Totalsumma",
-            "bonded": "- Bonded"
+            "bonded": "Bonded"
         },
         "totalAssetsValue": "Dina tillgångars sammanlagda värde: ",
         "details": "Detaljer",
@@ -305,7 +305,8 @@
         "viewIn": "Visa i {explorer}",
         "referrer": "Referrer",
         "referral": "Hänvisning",
-        "adarTxDetailsTitle": "Transaktionsdetaljer"
+        "adarTxDetailsTitle": "Transaktionsdetaljer",
+        "comment": "Kommentar"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Ändra nätverk i {Metamask}",

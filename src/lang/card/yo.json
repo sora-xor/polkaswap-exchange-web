@@ -21,9 +21,11 @@
         },
         "okReadyText": "O DARA, Mo setan",
         "emailPlaceholder": "Imeeli",
+        "noSpamText": "Ko si àwúrúju! Nikan lati ni aabo akọọlẹ rẹ",
         "sendCodeBtn": "Fi koodu SMS ranṣẹ",
         "firstNamePlaceholder": "Orukọ akọkọ",
         "lastNamePlaceholder": "Oruko idile",
+        "verificationCodeText": "Iwọ yoo gba koodu idaniloju nipasẹ SMS",
         "phonePlaceholder": "Nomba fonu",
         "statusPendingTitle": "Ijerisi ni ilọsiwaju",
         "sendEmailLinkBtn": "Fi ọna asopọ ranṣẹ",
@@ -94,6 +96,9 @@
         "or": "tabi",
         "oneTimeApplicationFee": "Owo-akoko kan lati fun kaadi kan",
         "applicationFeeNote": "Akiyesi: ipinfunni kaadi sisan yoo wa ni ipele nigbamii.",
-        "statusRejectReasonMultiple": "Ohun elo rẹ ti kọ fun awọn idi pupọ:"
+        "statusRejectReasonMultiple": "Ohun elo rẹ ti kọ fun awọn idi pupọ:",
+        "selectCountryText": "Yan orilẹ-ede rẹ",
+        "filterCountries": "Sàngan lori orilẹ́-èdè tabi koodu orọ",
+        "ibanPendingDesc": "Ipinfunni IBAN rẹ ti wa ni isunmọtosi.\n Ti idaduro to gun ju wakati 72 lọ kan si wa nipasẹ {email}"
     }
 }

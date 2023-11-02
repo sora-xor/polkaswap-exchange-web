@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Преносиво",
             "frozen": "Zamrznuto",
-            "locked": "- Закључано",
-            "reserved": "- Резервисано",
+            "locked": "Закључано",
+            "reserved": "Резервисано",
             "total": "Укупно",
-            "bonded": "- Везанo"
+            "bonded": "Везанo"
         },
         "totalAssetsValue": "Укупна вредност средства:",
         "details": "Детаљи",
@@ -305,7 +305,8 @@
         "viewIn": "Прикажите у {explorer}",
         "referrer": "Предложилтељ",
         "referral": "Препорука",
-        "adarTxDetailsTitle": "Detalji transakcije"
+        "adarTxDetailsTitle": "Detalji transakcije",
+        "comment": "Коментар"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Промените мрежу у {Metamask}",

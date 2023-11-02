@@ -25,21 +25,7 @@ export type TokenData = {
   velocity: FPNumber;
 };
 
-// [TODO] extend SubqueryAssetEntity & SubsquidAssetEntity in wallet
-type AssetEntityStats = {
-  liquidityUSD?: number;
-  priceChangeDay?: number;
-  priceChangeWeek?: number;
-  volumeDayUSD?: number;
-  volumeWeekUSD?: number;
-  velocity?: number;
-};
-
-type SubqueryAssetData = SubqueryAssetEntity & AssetEntityStats;
-
-type SubsquidAssetData = SubsquidAssetEntity & AssetEntityStats;
-
-const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetData>>`
+const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetEntity>>`
   query AssetsQuery($after: Cursor, $ids: [String!]) {
     data: assets(orderBy: ID_ASC, after: $after, filter: { id: { in: $ids } }) {
       pageInfo {
@@ -62,7 +48,7 @@ const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetDat
   }
 `;
 
-const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetData>>`
+const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetEntity>>`
   query AssetsConnectionQuery($after: String, $ids: [String!]) {
     data: assetsConnection(orderBy: id_ASC, after: $after, where: { AND: [{ id_in: $ids }] }) {
       pageInfo {
@@ -85,7 +71,7 @@ const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetDat
   }
 `;
 
-const parse = (item: SubqueryAssetData | SubsquidAssetData): Record<string, TokenData> => {
+const parse = (item: SubqueryAssetEntity | SubsquidAssetEntity): Record<string, TokenData> => {
   return {
     [item.id]: {
       priceUSD: new FPNumber(item.priceUSD ?? 0),

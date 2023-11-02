@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Převoditelné",
             "frozen": "Zmrazené",
-            "locked": "- Zamčeno",
-            "reserved": "- Rezervováno",
+            "locked": "Zamčeno",
+            "reserved": "Rezervováno",
             "total": "Celkem",
-            "bonded": "- Lepené"
+            "bonded": "Lepené"
         },
         "totalAssetsValue": "Celková hodnota vašich aktiv:",
         "details": "Podrobnosti",
@@ -305,7 +305,8 @@
         "viewIn": "Zobrazit v {explorer}",
         "referrer": "Doporučitel",
         "referral": "Doporučení",
-        "adarTxDetailsTitle": "Podrobnosti transakce"
+        "adarTxDetailsTitle": "Podrobnosti transakce",
+        "comment": "Komentář"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Změnit síť v {Metamask}",

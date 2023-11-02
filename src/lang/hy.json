@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Փոխանցելի",
             "frozen": "Սառեցված է",
-            "locked": "- կողպված է",
-            "reserved": "- վերապահված է",
+            "locked": "կողպված է",
+            "reserved": "վերապահված է",
             "total": "Ընդհանուր",
-            "bonded": "- Խճճված"
+            "bonded": "Խճճված"
         },
         "totalAssetsValue": "Ձեր ակտիվների ընդհանուր արժեքը.",
         "details": "Մանրամասներ",
@@ -305,7 +305,8 @@
         "viewIn": "Դիտել {explorer}- ում",
         "referrer": "Ուղղորդող",
         "referral": "Ուղղորդում",
-        "adarTxDetailsTitle": "գործարքի մանրամասներ"
+        "adarTxDetailsTitle": "գործարքի մանրամասներ",
+        "comment": "Մեկնաբանություն"
     },
     "appName": "{AppName} (Փոլքասվափ)",
     "changeNetworkText": "Փոխել ցանցը {Metamask}- ում",

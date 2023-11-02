@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Overførbar",
             "frozen": "Fryst",
-            "locked": "- Låst",
-            "reserved": "- Reservert",
+            "locked": "Låst",
+            "reserved": "Reservert",
             "total": "Totalt",
-            "bonded": "- Bundet"
+            "bonded": "Bundet"
         },
         "totalAssetsValue": "Totalverdi aktiva:",
         "details": "Detaljer",
@@ -305,7 +305,8 @@
         "viewIn": "Vis i {explorer}",
         "referrer": "Henviser",
         "referral": "Henvisning",
-        "adarTxDetailsTitle": "Transaksjonsdetaljer"
+        "adarTxDetailsTitle": "Transaksjonsdetaljer",
+        "comment": "Kommentar"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Bytt nettverk i {Metamask}",
