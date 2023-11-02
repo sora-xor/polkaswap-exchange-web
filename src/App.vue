@@ -108,8 +108,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @getter.libraryDesignSystem libraryDesignSystem!: DesignSystem;
 
   @mutation.wallet.settings.setSoraNetwork private setSoraNetwork!: (network: WALLET_CONSTS.SoraNetwork) => void;
-  @mutation.wallet.settings.setSubqueryEndpoint private setSubqueryEndpoint!: (endpoint: string) => void;
-  @mutation.wallet.settings.setSubsquidEndpoint private setSubsquidEndpoint!: (endpoint: string) => void;
+  @mutation.wallet.settings.setIndexerEndpoint private setIndexerEndpoint!: (options: {
+    indexer: WALLET_CONSTS.IndexerType;
+    endpoint: string;
+  }) => void;
+
   @mutation.settings.setDefaultNodes private setDefaultNodes!: (nodes: Array<Node>) => void;
   @mutation.settings.setNetworkChainGenesisHash private setNetworkChainGenesisHash!: (hash?: string) => void;
   @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
@@ -243,8 +246,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         api.bridgeProxy.sub.parachainIds = data.PARACHAIN_IDS;
       }
 
-      this.setSubqueryEndpoint(data.SUBQUERY_ENDPOINT);
-      this.setSubsquidEndpoint(data.SUBSQUID_ENDPOINT);
+      this.setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBQUERY, endpoint: data.SUBQUERY_ENDPOINT });
+      this.setIndexerEndpoint({ indexer: WALLET_CONSTS.IndexerType.SUBSQUID, endpoint: data.SUBSQUID_ENDPOINT });
 
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);

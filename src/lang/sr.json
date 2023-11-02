@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Преносиво",
             "frozen": "Zamrznuto",
-            "locked": "- Закључано",
-            "reserved": "- Резервисано",
+            "locked": "Закључано",
+            "reserved": "Резервисано",
             "total": "Укупно",
-            "bonded": "- Везанo"
+            "bonded": "Везанo"
         },
         "totalAssetsValue": "Укупна вредност средства:",
         "details": "Детаљи",

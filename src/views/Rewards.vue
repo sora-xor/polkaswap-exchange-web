@@ -55,7 +55,7 @@
                         :alt="evmProvider"
                         class="rewards-account-logo"
                       />
-                      <span>{{ formatAddress(evmAddress, 8) }}</span>
+                      <formatted-address :value="evmAddress" :symbols="8" />
                     </div>
                     <div class="rewards-account-group">
                       <span class="rewards-account-btn" @click="connectEvmWallet">
@@ -65,7 +65,9 @@
                         v-if="evmProvider"
                         class="rewards-account-btn disconnect"
                         @click="resetEvmProviderConnection"
-                      >{{ t('disconnectWalletText') }}</span>
+                      >
+                        {{ t('disconnectWalletText') }}
+                      </span>
                     </div>
                   </div>
                   <s-button v-else class="rewards-connect-button" type="tertiary" @click="connectEvmWallet">
@@ -137,6 +139,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
     TokensRow: lazyComponent(Components.TokensRow),
     SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
     InfoLine: components.InfoLine,
+    FormattedAddress: components.FormattedAddress,
   },
 })
 export default class Rewards extends Mixins(

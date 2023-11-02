@@ -200,17 +200,12 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   }
 
   // Statistics connection
-  @state.wallet.settings.subqueryStatus private subqueryStatus!: WALLET_TYPES.ConnectionStatus;
-  @state.wallet.settings.subsquidStatus private subsquidStatus!: WALLET_TYPES.ConnectionStatus;
+  @state.wallet.settings.indexers private indexersData!: Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState>;
 
   showStatisticsDialog = false;
 
   get indexerStatus(): WALLET_TYPES.ConnectionStatus {
-    if (this.indexerType === WALLET_CONSTS.IndexerType.SUBQUERY) {
-      return this.subqueryStatus;
-    } else {
-      return this.subsquidStatus;
-    }
+    return this.indexersData[this.indexerType].status;
   }
 
   get statisticsConnectionClass(): Status {
@@ -226,25 +221,12 @@ export default class AppFooter extends Mixins(TranslationMixin) {
     }
   }
 
-  private get statisticsStatusKey(): string {
-    switch (this.subqueryStatus) {
-      case WALLET_TYPES.ConnectionStatus.Unavailable:
-        return 'unavailable';
-      case WALLET_TYPES.ConnectionStatus.Loading:
-        return 'loading';
-      case WALLET_TYPES.ConnectionStatus.Available:
-        return 'available';
-      default:
-        return 'loading';
-    }
-  }
-
   get statisticsConnectionText(): string {
-    return this.t(`footer.statistics.title.${this.statisticsStatusKey}`);
+    return this.t(`footer.statistics.title.${this.indexerStatus}`);
   }
 
   get statisticsConnectionDesc(): string {
-    return this.t(`footer.statistics.desc.${this.statisticsStatusKey}`);
+    return this.t(`footer.statistics.desc.${this.indexerStatus}`);
   }
 
   openStatisticsDialog(): void {

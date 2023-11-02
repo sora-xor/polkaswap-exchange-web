@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Overførbar",
             "frozen": "Fryst",
-            "locked": "- Låst",
-            "reserved": "- Reservert",
+            "locked": "Låst",
+            "reserved": "Reservert",
             "total": "Totalt",
-            "bonded": "- Bundet"
+            "bonded": "Bundet"
         },
         "totalAssetsValue": "Totalverdi aktiva:",
         "details": "Detaljer",
