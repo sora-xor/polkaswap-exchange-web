@@ -118,12 +118,28 @@ async function useTrustWalletExtensionProvider(): Promise<string> {
   return await getAccount();
 }
 
-async function useWalletConnectProvider(chains: ChainsProps): Promise<string> {
+const checkWalletConnectAvailability = async (chainProps: ChainsProps): Promise<void> => {
   try {
+    const chainIdCheck = chainProps.chains?.[0] ?? 1;
+    const url = `https://rpc.walletconnect.com/v1/?chainId=eip155:${chainIdCheck}&projectId=${WALLET_CONNECT_PROJECT_ID}`;
+
+    await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({ id: 1, jsonrpc: '2.0', method: 'test', params: [] }),
+    });
+  } catch {
+    throw new Error('provider.messages.notAvailable');
+  }
+};
+
+async function useWalletConnectProvider(chainProps: ChainsProps): Promise<string> {
+  try {
+    await checkWalletConnectAvailability(chainProps);
+
     ethereumProvider = await EthereumProvider.init({
       projectId: WALLET_CONNECT_PROJECT_ID,
       showQrModal: true,
-      ...chains,
+      ...chainProps,
     });
     // show qr modal
     await ethereumProvider.enable();
