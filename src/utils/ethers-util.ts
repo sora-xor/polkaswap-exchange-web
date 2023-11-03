@@ -41,6 +41,16 @@ const gasLimit = {
 
 const WALLET_CONNECT_PROJECT_ID = 'feeab08b50e0d407f4eb875d69e162e8';
 
+export enum METAMASK_ERROR {
+  // 1013: Disconnected from chain. Attempting to connect
+  DisconnectedFromChain = 1013,
+  // 4001: User rejected the request
+  UserRejectedRequest = 4001,
+  // -32002: Already processing eth_requestAccounts. Please wait
+  // -32002: Request of type 'wallet_requestPermissions' already pending for origin. Please wait
+  AlreadyProcessing = -32002,
+}
+
 /**
  * It's in gwei.
  */

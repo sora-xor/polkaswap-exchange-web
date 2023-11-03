@@ -7,7 +7,7 @@ import { ethers } from 'ethers';
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
 import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
-import ethersUtil, { Provider } from '@/utils/ethers-util';
+import ethersUtil, { Provider, METAMASK_ERROR } from '@/utils/ethers-util';
 
 import type { SubNetworkApps } from './types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
@@ -44,13 +44,20 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
     onAccountChange: (addressList: string[]) => {
       if (addressList.length) {
         commit.setEvmAddress(addressList[0]);
+      } else {
+        dispatch.resetEvmProviderConnection();
       }
     },
     onNetworkChange: (networkHex: string) => {
       const evmNetwork = ethersUtil.hexToNumber(networkHex);
       updateProvidedEvmNetwork(context, evmNetwork);
     },
-    onDisconnect: () => {
+    onDisconnect: (error) => {
+      console.log(error.code, error.message);
+      // this is just chain switch, it's ok
+      if (error?.code === METAMASK_ERROR.DisconnectedFromChain) {
+        return;
+      }
       dispatch.resetEvmProviderConnection();
     },
   });

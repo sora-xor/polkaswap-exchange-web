@@ -5,7 +5,7 @@ import { PageNames } from '@/consts';
 import router from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getWalletAddress, formatAddress } from '@/utils';
-import { Provider } from '@/utils/ethers-util';
+import { Provider, METAMASK_ERROR } from '@/utils/ethers-util';
 
 import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
@@ -24,11 +24,8 @@ const handleProviderError = (provider: Provider, error: any): string => {
 
 const handleMetamaskError = (error: any): string => {
   switch (error.code) {
-    // 4001: User rejected the request
-    // -32002: Already processing eth_requestAccounts. Please wait
-    // -32002: Request of type 'wallet_requestPermissions' already pending for origin. Please wait
-    case -32002:
-    case 4001:
+    case METAMASK_ERROR.AlreadyProcessing:
+    case METAMASK_ERROR.UserRejectedRequest:
       return 'provider.messages.extensionLogin';
     default:
       return checkExtensionKey;
