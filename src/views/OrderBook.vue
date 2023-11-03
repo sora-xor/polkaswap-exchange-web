@@ -1,6 +1,18 @@
 <template>
   <div>
-    <div class="order-book-widgets">
+    <div v-if="isScreenHuge()" class="order-book-widgets--huge">
+      <div class="column-1">
+        <set-limit-order-widget class="set-widget" />
+      </div>
+      <div class="column-2">
+        <book-charts-widget class="chart-widget" />
+        <history-order-widget class="history-widget" />
+      </div>
+      <div class="column-3">
+        <book-widget class="book-widget" />
+      </div>
+    </div>
+    <div v-else class="order-book-widgets">
       <div class="column-1">
         <book-charts-widget class="chart-widget" />
       </div>
@@ -12,18 +24,6 @@
         <history-order-widget class="history-widget" />
       </div>
     </div>
-    <!-- <div class="order-book-widgetss">
-      <div class="column-1">
-        <set-limit-order-widget class="set-widget" />
-      </div>
-      <div class="column-2">
-        <book-charts-widget class="chart-widget" />
-        <history-order-widget class="history-widget" />
-      </div>
-      <div class="column-3">
-        <book-widget class="book-widget" />
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -32,7 +32,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components } from '@/consts';
+import { BreakpointClass, Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, mutation, state } from '@/store/decorators';
 
@@ -51,11 +51,16 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
   @state.orderBook.orderBooks orderBooks!: any;
   @state.orderBook.orderBookUpdates orderBookUpdates!: any;
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
+  @state.settings.screenBreakpointClass responsiveClass!: BreakpointClass;
 
   @action.orderBook.subscribeToOrderBook subscribeToOrderBook!: any;
   @action.orderBook.unsubscribeFromOrderBook unsubscribeFromOrderBook!: FnWithoutArgs;
 
   largeDesktop = true;
+
+  isScreenHuge(): boolean {
+    return this.responsiveClass === BreakpointClass.HugeDesktop;
+  }
 
   async beforeRouteLeave(to: Route, from: Route, next: NavigationGuardNext<Vue>): Promise<void> {
     this.unsubscribeFromOrderBook();
@@ -150,7 +155,8 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
 }
 
 .min-huge-desktop {
-  .order-book-widgetss {
+  .order-book-widgets--huge {
+    margin-left: 170px;
     display: flex;
 
     .column-1 {
@@ -159,6 +165,7 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
     }
 
     .column-2 {
+      width: 900px;
       .history-widget {
         margin-top: 8px;
       }
