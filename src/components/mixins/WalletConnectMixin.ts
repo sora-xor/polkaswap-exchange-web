@@ -78,7 +78,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
       await this.selectEvmProvider(provider);
     } catch (error: any) {
       const key = this.te(error.message) ? error.message : handleProviderError(provider, error);
-      console.log(key, this.te(error.message));
       const message = this.t(key, { name: provider });
       const showCancelButton = key === installExtensionKey;
 

@@ -67,14 +67,10 @@ const getEthBridgeGasLimit = (assetEvmAddress: string, kind: EthAssetKind, isSor
 
 async function connectEvmProvider(provider: Provider, chains: ChainsProps): Promise<string> {
   switch (provider) {
-    case Provider.Metamask:
-      return await useMetamaskExtensionProvider();
-    case Provider.TrustWallet:
-      return await useTrustWalletExtensionProvider();
     case Provider.WalletConnect:
       return await useWalletConnectProvider(chains);
     default:
-      throw new Error('Unknown provider');
+      return await useExtensionProvider(provider);
   }
 }
 
@@ -94,20 +90,17 @@ function createWeb3Instance(ethereumProvider: any) {
   ethersInstance = new ethers.BrowserProvider(ethereumProvider, 'any');
 }
 
-async function useMetamaskExtensionProvider(): Promise<string> {
-  ethereumProvider = await detectEthereumProvider({ timeout: 0 });
-
-  if (!ethereumProvider) {
-    throw new Error('provider.messages.installExtension');
+async function useExtensionProvider(provider: Provider): Promise<string> {
+  switch (provider) {
+    case Provider.Metamask:
+      ethereumProvider = await detectEthereumProvider({ timeout: 0 });
+      break;
+    case Provider.TrustWallet:
+      ethereumProvider = (window as any).trustwallet;
+      break;
+    default:
+      throw new Error('Unknown provider');
   }
-
-  createWeb3Instance(ethereumProvider);
-
-  return await getAccount();
-}
-
-async function useTrustWalletExtensionProvider(): Promise<string> {
-  ethereumProvider = (window as any).trustwallet;
 
   if (!ethereumProvider) {
     throw new Error('provider.messages.installExtension');
