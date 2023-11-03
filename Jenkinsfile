@@ -35,6 +35,6 @@ def pipeline = new org.js.AppPipeline(steps: this,
     sonarSrcPath: 'src',
     sonarTestsPath: 'tests',
     dojoProductType: 'sora',
-    movingFiles: [ "*":"./", ".well-known":"./"]
+    movingFiles: [ "*":"./", ".well-known/":"./"]
 )
 pipeline.runPipeline()
