@@ -21,7 +21,7 @@
                 <formatted-amount class="sora-card-hub-balance" :value="bookPrice" fiatSign="" is-fiat-value />
               </span>
             </div>
-            <div class="order-book-pair-data-item"><span>Change</span><span class="change">+12.90%</span></div>
+            <div class="order-book-pair-data-item"><span>Change</span><span class="change">n/a</span></div>
             <div class="order-book-pair-data-item">
               <span>Volume</span><span class="volume">{{ volume }}</span>
             </div>
@@ -549,7 +549,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         return;
       }
 
-      // To be removed ?
+      // TODO: To be removed ?
       // const unformattedMarketQuotePrice = this.isBuySide
       //   ? FPNumber.fromNatural(this.baseValue).div(FPNumber.fromCodecValue(amount)).toFixed(5).toString()
       //   : FPNumber.fromCodecValue(amount).div(FPNumber.fromNatural(this.baseValue)).toFixed(5).toString();

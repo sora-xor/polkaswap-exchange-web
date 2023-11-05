@@ -101,7 +101,11 @@ interface BookFields {
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class PairListPopover extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+export default class PairListPopover extends Mixins(
+  TranslationMixin,
+  mixins.LoadingMixin,
+  mixins.FormattedAmountMixin
+) {
   @state.orderBook.orderBooks orderBooks!: Record<string, OrderBook>;
 
   @mutation.orderBook.setCurrentOrderBook setCurrentOrderBook!: (orderBookId: string) => void;
@@ -161,13 +165,21 @@ export default class PairListPopover extends Mixins(TranslationMixin, mixins.Loa
         targetAsset: this.getAsset(quote),
         pair: `${this.getAsset(base)?.symbol}-${this.getAsset(quote)?.symbol}`,
         status: value.status,
-        price: '50.34',
-        dailyChange: '+34.30%',
-        volume: '3343242000',
+        price: this.fiatAmount('1', this.getAsset(base)),
+        dailyChange: 'n/a',
+        volume: 'n/a',
       };
 
       this.orderBooksFormatted.push(row);
     });
+  }
+
+  fiatAmount(amount: string, baseAsset: any): string {
+    const fiat = this.getFiatAmount(amount, baseAsset);
+
+    return `$${FPNumber.fromNatural(fiat || '0')
+      .toFixed(2)
+      .toString()}`;
   }
 
   calculateColor(status: OrderBookStatus): string | undefined {

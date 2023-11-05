@@ -148,7 +148,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
         side,
         filled: `${filled}%`,
         expired: 'month',
-        total: amount.mul(price).toFixed(5),
+        total: amount.toFixed(5),
         date: { date: `${date.getUTCMonth() + 1}/${date.getUTCDate()}`, time: date.toLocaleTimeString() },
       };
 
