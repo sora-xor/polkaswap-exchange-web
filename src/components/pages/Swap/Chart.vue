@@ -17,7 +17,7 @@
     </template>
 
     <template #filters>
-      <stats-filter :filters="filters" :value="selectedFilter" @input="changeFilter" />
+      <stats-filter :filters="filters" :value="selectedFilter" :disabled="chartIsLoading" @input="changeFilter" />
     </template>
 
     <template #types>
@@ -26,14 +26,14 @@
         :key="type"
         :icon="icon"
         :active="active"
-        :disabled="parentLoading || loading"
+        :disabled="chartIsLoading"
         size="small"
         @click="selectChartType(type)"
       />
     </template>
 
     <chart-skeleton
-      :loading="parentLoading || loading"
+      :loading="chartIsLoading"
       :is-empty="chartData.length === 0"
       :is-error="isFetchingError"
       @retry="updatePrices"
@@ -366,6 +366,10 @@ export default class SwapChart extends Mixins(
 
   get filters(): SnapshotFilter[] {
     return this.isLineChart ? LINE_CHART_FILTERS : CANDLE_CHART_FILTERS;
+  }
+
+  get chartIsLoading(): boolean {
+    return this.parentLoading || this.loading;
   }
 
   get symbol(): string {
