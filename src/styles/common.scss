@@ -37,6 +37,11 @@ $networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polyg
   }
 }
 
+// [TODO] fix in wallet FormattedAddress component
+.formatted-address {
+  white-space: nowrap;
+}
+
 /*________________________________________COMMON LAYOUT________________________________________*/
 h3 {
   text-transform: capitalize;
