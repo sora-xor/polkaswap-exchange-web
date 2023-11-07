@@ -53,7 +53,6 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
       updateProvidedEvmNetwork(context, evmNetwork);
     },
     onDisconnect: (error) => {
-      console.log(error.code, error.message);
       // this is just chain switch, it's ok
       if (error?.code === METAMASK_ERROR.DisconnectedFromChain) {
         return;
