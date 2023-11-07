@@ -116,7 +116,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   fiatAmount(amount: string): string {
-    const fiat = this.getFiatAmount(amount, this.baseAsset);
+    const fiat = this.getFiatAmount(amount, this.quoteAsset);
 
     return `$${FPNumber.fromNatural(fiat || '0').toString()}`;
   }
@@ -148,7 +148,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
         side,
         filled: `${filled}%`,
         expired: 'month',
-        total: amount.toFixed(5),
+        total: amount.mul(price),
         date: { date: `${date.getUTCMonth() + 1}/${date.getUTCDate()}`, time: date.toLocaleTimeString() },
       };
 
