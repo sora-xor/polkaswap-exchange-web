@@ -50,7 +50,7 @@
                   <div v-if="evmAddress" class="rewards-account">
                     <div class="rewards-account-group">
                       <img
-                        v-if="evmProvider"
+                        v-if="changeWalletEvm"
                         :src="getEvmProviderIcon(evmProvider)"
                         :alt="evmProvider"
                         class="rewards-account-logo"
@@ -58,11 +58,12 @@
                       <formatted-address :value="evmAddress" :symbols="8" />
                     </div>
                     <div class="rewards-account-group">
-                      <span class="rewards-account-btn" @click="connectEvmWallet">
+                      <span v-if="changeWalletEvm" class="rewards-account-btn" @click="connectEvmWallet">
                         {{ t('changeAccountText') }}
                       </span>
+                      <span v-else>{{ t('connectedText') }}</span>
                       <span
-                        v-if="evmProvider"
+                        v-if="changeWalletEvm"
                         class="rewards-account-btn disconnect"
                         @click="resetEvmProviderConnection"
                       >
@@ -392,6 +393,13 @@ export default class Rewards extends Mixins(
     return (
       this.rewardsClaiming || (this.isSoraAccountConnected && (!this.rewardsAvailable || this.isInsufficientBalance))
     );
+  }
+
+  get changeWalletEvm(): boolean {
+    // [TODO: WalletConnect] Remove
+    return false;
+    // [TODO: WalletConnect] Enable
+    // return !!this.evmProvider;
   }
 
   async handleAction(): Promise<void> {
