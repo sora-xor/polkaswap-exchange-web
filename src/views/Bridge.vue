@@ -100,16 +100,35 @@
                 />
               </template>
             </div>
-            <div v-if="sender" class="bridge-item-footer">
+            <div v-if="sender" class="connect-wallet-panel">
               <s-divider type="tertiary" />
-              <formatted-address :value="sender" :symbols="8" :tooltip-text="getCopyTooltip(isSoraToEvm)" />
-              <span>{{ t('connectedText') }}</span>
+              <div class="connect-wallet-group">
+                <img
+                  v-if="changeSenderWalletEvm"
+                  :src="getEvmProviderIcon(evmProvider)"
+                  :alt="evmProvider"
+                  class="connect-wallet-logo"
+                />
+                <formatted-address :value="sender" :symbols="8" :tooltip-text="getCopyTooltip(isSoraToEvm)" />
+              </div>
+              <div class="connect-wallet-group">
+                <span v-if="changeSenderWalletEvm" class="connect-wallet-btn" @click="connectExternalWallet">
+                  {{ t('changeAccountText') }}
+                </span>
+                <span v-else>{{ t('connectedText') }}</span>
+                <span
+                  v-if="changeSenderWalletEvm"
+                  class="connect-wallet-btn disconnect"
+                  @click="resetEvmProviderConnection"
+                >{{ t('disconnectWalletText') }}</span>
+              </div>
             </div>
             <s-button
               v-else
               class="el-button--connect s-typography-button--large"
               data-test-name="connectPolkadot"
               type="primary"
+              :loading="!isSoraToEvm && evmProviderLoading"
               @click="connectSenderWallet"
             >
               {{ t('connectWalletText') }}
@@ -171,19 +190,39 @@
                 />
               </template>
             </div>
-            <div v-if="recipient" class="bridge-item-footer">
+            <div v-if="recipient" class="connect-wallet-panel">
               <s-divider type="tertiary" />
-              <formatted-address :value="recipient" :symbols="8" :tooltip-text="getCopyTooltip(!isSoraToEvm)" />
-              <span v-if="isSubBridge" class="bridge-network-address" @click="connectExternalWallet">
-                {{ t('changeAccountText') }}
-              </span>
-              <span v-else>{{ t('connectedText') }}</span>
+              <div class="connect-wallet-group">
+                <img
+                  v-if="changeRecipientWalletEvm"
+                  :src="getEvmProviderIcon(evmProvider)"
+                  :alt="evmProvider"
+                  class="connect-wallet-logo"
+                />
+                <formatted-address :value="recipient" :symbols="8" :tooltip-text="getCopyTooltip(!isSoraToEvm)" />
+              </div>
+              <div class="connect-wallet-group">
+                <span
+                  v-if="isSubBridge || changeRecipientWalletEvm"
+                  class="connect-wallet-btn"
+                  @click="connectExternalWallet"
+                >
+                  {{ t('changeAccountText') }}
+                </span>
+                <span v-else>{{ t('connectedText') }}</span>
+                <span
+                  v-if="changeRecipientWalletEvm"
+                  class="connect-wallet-btn disconnect"
+                  @click="resetEvmProviderConnection"
+                >{{ t('disconnectWalletText') }}</span>
+              </div>
             </div>
             <s-button
               v-else
               class="el-button--connect s-typography-button--large"
-              data-test-name="connectMetamask"
+              data-test-name="useMetamaskProvider"
               type="primary"
+              :loading="isSoraToEvm && evmProviderLoading"
               @click="connectRecipientWallet"
             >
               {{ t('connectWalletText') }}
@@ -192,7 +231,7 @@
         </s-float-input>
 
         <s-button
-          v-if="!isValidNetwork"
+          v-if="!isValidNetwork && areAccountsConnected"
           class="el-button--next s-typography-button--big"
           type="primary"
           @click="changeEvmNetworkProvided"
@@ -268,6 +307,7 @@
     <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
     <bridge-select-account />
     <bridge-select-network />
+    <select-provider-dialog />
     <confirm-bridge-transaction-dialog
       :visible.sync="showConfirmTransactionDialog"
       :is-sora-to-evm="isSoraToEvm"
@@ -332,6 +372,7 @@ import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/
     BridgeSelectAccount: lazyComponent(Components.BridgeSelectAccount),
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     BridgeLimitCard: lazyComponent(Components.BridgeLimitCard),
+    SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
@@ -573,6 +614,20 @@ export default class Bridge extends Mixins(
     return Math.min(internal, external);
   }
 
+  get changeSenderWalletEvm(): boolean {
+    // [TODO: WalletConnect] Remove
+    return false;
+    // [TODO: WalletConnect] Enable
+    // return !this.isSubBridge && !!this.evmProvider && !this.isSoraToEvm;
+  }
+
+  get changeRecipientWalletEvm(): boolean {
+    // [TODO: WalletConnect] Remove
+    return false;
+    // [TODO: WalletConnect] Enable
+    // return !this.isSubBridge && !!this.evmProvider && this.isSoraToEvm;
+  }
+
   private getBalance(isSora = true): Nullable<FPNumber> {
     if (!(this.asset && (this.isRegisteredAsset || isSora))) {
       return null;
@@ -727,6 +782,35 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
 </style>
 
 <style lang="scss" scoped>
+.connect-wallet {
+  &-panel {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    font-size: var(--s-font-size-mini);
+    line-height: var(--s-line-height-medium);
+    color: var(--s-color-base-content-primary);
+  }
+
+  &-logo {
+    width: 16px;
+    height: 16px;
+  }
+
+  &-group {
+    display: flex;
+    gap: $inner-spacing-mini;
+  }
+
+  &-btn {
+    @include copy-address;
+
+    &.disconnect {
+      color: var(--s-color-status-error);
+    }
+  }
+}
+
 .bridge {
   flex-direction: column;
   align-items: center;
@@ -755,19 +839,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
     align-items: center;
     gap: $inner-spacing-mini;
     margin-left: auto;
-  }
-
-  &-item-footer {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    font-size: var(--s-font-size-mini);
-    line-height: var(--s-line-height-medium);
-    color: var(--s-color-base-content-primary);
-  }
-
-  &-network-address {
-    @include copy-address;
   }
 
   &-footer {

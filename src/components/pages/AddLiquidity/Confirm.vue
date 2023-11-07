@@ -45,7 +45,7 @@
         @click="handleConfirm"
       >
         <template v-if="insufficientBalanceTokenSymbol">
-          {{ t('exchange.insufficientBalance', { tokenSymbol: insufficientBalanceTokenSymbol }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol: insufficientBalanceTokenSymbol }) }}
         </template>
         <template v-else>
           {{ t('exchange.confirm') }}

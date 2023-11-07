@@ -29,7 +29,6 @@ const TranslationConsts = {
   TVL: 'TVL',
   EVM: 'EVM',
   Kusama: 'Kusama',
-  Metamask: 'MetaMask',
   ROI: 'ROI', // Return of investment
   mbps: 'mbps',
   online: 'Online',

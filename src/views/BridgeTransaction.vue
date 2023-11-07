@@ -173,7 +173,7 @@
         <template v-else-if="isLowerThanMinAmount">
           {{ t('exceededAmountText', { amount: t('minAmountText') }) }}
         </template>
-        <template v-else-if="isTxWaiting">{{ t('bridgeTransaction.confirm', { direction: 'metamask' }) }}</template>
+        <template v-else-if="isTxWaiting">{{ t('confirmTransactionText') }}</template>
         <template v-else-if="isTxFailed && isRetryAvailable">{{ t('retryText') }}</template>
       </s-button>
 
