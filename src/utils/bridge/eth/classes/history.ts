@@ -156,7 +156,7 @@ export class EthBridgeHistory {
   }
 
   public async init(contracts: EthBridgeContractsAddresses): Promise<void> {
-    const ethersInstance = await ethersUtil.getEthersInstance();
+    const ethersInstance = ethersUtil.getEthersInstance();
     const network = await ethersInstance.getNetwork();
 
     this.etherscanInstance = new EtherscanHistoryProvider(network, this.etherscanApiKey);
@@ -410,7 +410,7 @@ export const updateEthBridgeHistory =
 
       if ((await ethersUtil.getEvmNetworkId()) !== ethBridgeEvmNetwork) {
         throw new Error(
-          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.evmNetworkProvided}" is connected, "${ethBridgeEvmNetwork}" expected`
+          `[HASHI Bridge History]: Restoration canceled. Network "${rootState.web3.evmProviderNetwork}" is connected, "${ethBridgeEvmNetwork}" expected`
         );
       }
 

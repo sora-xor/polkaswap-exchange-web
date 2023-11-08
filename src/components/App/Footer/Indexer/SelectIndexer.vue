@@ -28,7 +28,7 @@
         <div class="statistics-dialog__group">
           <div class="statistics-dialog__item">
             <div class="switcher">
-              <s-switch disabled :value="false" />
+              <s-switch v-model="useCeres" />
               <span>{{ t('footer.statistics.dialog.useCeres') }}</span>
             </div>
           </div>
@@ -49,7 +49,8 @@ import type { Indexer } from '@/types/indexers';
 export default class SelectIndexer extends Mixins(TranslationMixin) {
   @Prop({ default: () => [], type: Array }) indexers!: Array<Indexer>;
 
-  @ModelSync('value', 'input', { type: String }) readonly indexerType!: IndexerType;
+  @ModelSync('indexer', 'update:indexer', { type: String }) readonly indexerType!: IndexerType;
+  @ModelSync('ceres', 'update:ceres', { type: Boolean }) readonly useCeres!: boolean;
 }
 </script>
 

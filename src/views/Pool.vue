@@ -89,7 +89,7 @@
       {{ t('pool.addLiquidity') }}
     </s-button>
     <s-button v-else type="primary" class="s-typography-button--large" @click="handleConnectWallet">
-      {{ t('pool.connectWallet') }}
+      {{ t('connectWalletText') }}
     </s-button>
   </div>
 </template>
@@ -211,7 +211,7 @@ export default class Pool extends Mixins(
   }
 
   private getAssetSymbol(asset: Nullable<AccountAsset>): string {
-    return asset?.symbol ?? this.t('pool.unknownAsset');
+    return asset?.symbol ?? this.t('unknownAssetText');
   }
 
   private getPairTitle(firstTokenSymbol?: string, secondTokenSymbol?: string): string {
