@@ -5,22 +5,13 @@ import { PageNames } from '@/consts';
 import router from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getWalletAddress, formatAddress } from '@/utils';
-import ethersUtil, { Provider } from '@/utils/ethers-util';
+import { Provider, METAMASK_ERROR } from '@/utils/ethers-util';
 
 import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const checkExtensionKey = 'provider.messages.checkExtension';
 const installExtensionKey = 'provider.messages.installExtension';
-
-const getProviderName = (provider: Provider) => {
-  switch (provider) {
-    case Provider.Metamask:
-      return 'provider.metamask';
-    default:
-      return 'provider.default';
-  }
-};
 
 const handleProviderError = (provider: Provider, error: any): string => {
   switch (provider) {
@@ -33,11 +24,8 @@ const handleProviderError = (provider: Provider, error: any): string => {
 
 const handleMetamaskError = (error: any): string => {
   switch (error.code) {
-    // 4001: User rejected the request
-    // -32002: Already processing eth_requestAccounts. Please wait
-    // -32002: Request of type 'wallet_requestPermissions' already pending for origin. Please wait
-    case -32002:
-    case 4001:
+    case METAMASK_ERROR.AlreadyProcessing:
+    case METAMASK_ERROR.UserRejectedRequest:
       return 'provider.messages.extensionLogin';
     default:
       return checkExtensionKey;
@@ -46,6 +34,8 @@ const handleMetamaskError = (error: any): string => {
 
 @Component
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
+  @state.web3.evmProvider evmProvider!: Nullable<Provider>;
+  @state.web3.evmProviderLoading evmProviderLoading!: boolean;
   @state.web3.evmAddress evmAddress!: string;
   @state.web3.networkSelected networkSelected!: BridgeNetworkId;
   @state.web3.networkType networkType!: BridgeNetworkType;
@@ -53,19 +43,16 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.bridge.isSubBridge isSubBridge!: boolean;
 
-  // update selected evm network without metamask request
-  @mutation.web3.resetProvidedEvmNetwork resetProvidedEvmNetwork!: FnWithoutArgs;
-  @mutation.web3.resetEvmAddress resetEvmAddress!: FnWithoutArgs;
-  @mutation.web3.setEvmAddress setEvmAddress!: (address: string) => void;
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
+  @mutation.web3.setSelectProviderDialogVisibility setSelectProviderDialogVisibility!: (flag: boolean) => void;
 
   @action.web3.changeEvmNetworkProvided changeEvmNetworkProvided!: AsyncFnWithoutArgs;
-  @action.web3.updateProvidedEvmNetwork updateProvidedEvmNetwork!: (networkHex?: string) => Promise<void>;
+  @action.web3.selectEvmProvider selectEvmProvider!: (provider: Provider) => Promise<void>;
+  @action.web3.resetEvmProviderConnection resetEvmProviderConnection!: FnWithoutArgs;
+  @action.web3.disconnectExternalNetwork disconnectExternalNetwork!: AsyncFnWithoutArgs;
 
   getWalletAddress = getWalletAddress;
   formatAddress = formatAddress;
-
-  isExternalWalletConnecting = false;
 
   connectSoraWallet(): void {
     router.push({ name: PageNames.Wallet });
@@ -75,18 +62,23 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     this.setSelectAccountDialogVisibility(true);
   }
 
-  async connectEvmWallet(): Promise<void> {
-    this.isExternalWalletConnecting = true;
-    // For now it's only Metamask
-    const provider = Provider.Metamask;
-    try {
-      const address = await ethersUtil.onConnect({ provider });
-      this.setEvmAddress(address);
-    } catch (error: any) {
-      const name = this.t(getProviderName(provider));
-      const key = this.te(error.message) ? error.message : handleProviderError(provider, error);
+  connectEvmWallet(): void {
+    // [TODO: WalletConnect] Remove
+    this.connectEvmProvider(Provider.Metamask);
+    // [TODO: WalletConnect] Enable
+    // this.setSelectProviderDialogVisibility(true);
+  }
 
-      const message = this.t(key, { name });
+  getEvmProviderIcon(provider: Provider): string {
+    return provider ? `/wallet/${provider}.svg` : '';
+  }
+
+  async connectEvmProvider(provider: Provider): Promise<void> {
+    try {
+      await this.selectEvmProvider(provider);
+    } catch (error: any) {
+      const key = this.te(error.message) ? error.message : handleProviderError(provider, error);
+      const message = this.t(key, { name: provider });
       const showCancelButton = key === installExtensionKey;
 
       this.$alert(message, {
@@ -98,8 +90,6 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
           }
         },
       });
-    } finally {
-      this.isExternalWalletConnecting = false;
     }
   }
 }

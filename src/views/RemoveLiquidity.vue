@@ -90,10 +90,10 @@
           {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('exchange.insufficientBalance', { tokenSymbol: t('removeLiquidity.liquidity') }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol: t('removeLiquidity.liquidity') }) }}
         </template>
         <template v-else-if="isInsufficientXorForFee">
-          {{ t('exchange.insufficientBalance', { tokenSymbol: XOR_SYMBOL }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol: XOR_SYMBOL }) }}
         </template>
         <template v-else>
           {{ t('removeLiquidity.remove') }}

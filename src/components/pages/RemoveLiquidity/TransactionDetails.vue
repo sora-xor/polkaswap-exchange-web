@@ -17,7 +17,7 @@
     </template>
     <info-line
       v-if="networkFee"
-      :label="t('createPair.networkFee')"
+      :label="t('networkFeeText')"
       :label-tooltip="t('networkFeeTooltipText')"
       :value="formattedFee"
       :asset-symbol="XOR_SYMBOL"

@@ -19,7 +19,7 @@ const waitForEvmTransactionStatus = async (
   cancelCallback: (hash: string) => any
 ) => {
   try {
-    const ethersInstance = await ethersUtil.getEthersInstance();
+    const ethersInstance = ethersUtil.getEthersInstance();
     await ethersInstance.waitForTransaction(hash);
   } catch (error: any) {
     if (ethers.isError(error, 'TRANSACTION_REPLACED')) {

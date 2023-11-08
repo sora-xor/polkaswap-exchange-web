@@ -227,14 +227,14 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
   @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
 
-  private isSynths = storage.get(storageKey as any) ? JSON.parse(storage.get(storageKey as any)) : false;
+  private isSynths = storage.get(storageKey) ? JSON.parse(storage.get(storageKey)) : false;
 
   get isSynthsOnly(): boolean {
     return this.isSynths;
   }
 
   set isSynthsOnly(value: boolean) {
-    storage.set(storageKey as any, value); // TODO: Update StorageKey
+    storage.set(storageKey, value);
     this.isSynths = value;
   }
 
