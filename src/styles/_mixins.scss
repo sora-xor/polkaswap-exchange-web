@@ -875,7 +875,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 }
 
 @mixin popper-content {
-  background: var(--s-color-utility-body);
+  background: var(--s-color-utility-surface);
   border-color: var(--s-color-base-border-secondary);
   border-radius: var(--s-border-radius-mini);
   box-shadow: var(--s-shadow-dialog);

@@ -176,7 +176,7 @@ import {
   getAssetBalance,
   debouncedInputHandler,
 } from '@/utils';
-import { DifferenceStatus, getDifferenceStatus } from '@/utils/swap';
+import { DifferenceStatus, getDifferenceStatus, calcFiatDifference } from '@/utils/swap';
 
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { LPRewardsInfo, SwapQuote, Distribution } from '@sora-substrate/liquidity-proxy/build/types';
@@ -296,31 +296,18 @@ export default class Swap extends Mixins(
     return this.isZeroFromAmount && this.isZeroToAmount;
   }
 
-  get fromFiatAmount(): string {
-    if (!(this.tokenFrom && this.fromValue)) return ZeroStringValue;
-    return this.getFiatAmountByString(this.fromValue, this.tokenFrom) || ZeroStringValue;
+  get fromFiatAmount(): FPNumber {
+    if (!(this.tokenFrom && this.fromValue)) return FPNumber.ZERO;
+    return this.getFPNumberFiatAmountByFPNumber(new FPNumber(this.fromValue), this.tokenFrom) ?? FPNumber.ZERO;
   }
 
-  get toFiatAmount(): string {
-    if (!(this.tokenTo && this.toValue)) return ZeroStringValue;
-    return this.getFiatAmountByString(this.toValue, this.tokenTo) || ZeroStringValue;
+  get toFiatAmount(): FPNumber {
+    if (!(this.tokenTo && this.toValue)) return FPNumber.ZERO;
+    return this.getFPNumberFiatAmountByFPNumber(new FPNumber(this.toValue), this.tokenTo) ?? FPNumber.ZERO;
   }
 
   get fiatDifference(): string {
-    const thousandRegExp = new RegExp(`\\${FPNumber.DELIMITERS_CONFIG.thousand}`, 'g');
-    const decimalsRegExp = new RegExp(`\\${FPNumber.DELIMITERS_CONFIG.decimal}`, 'g');
-    const toNumberString = (value: string) => value.replace(thousandRegExp, '').replace(decimalsRegExp, '.');
-
-    const a = toNumberString(this.fromFiatAmount);
-    const b = toNumberString(this.toFiatAmount);
-
-    if (asZeroValue(a) || asZeroValue(b)) return '0';
-
-    const from = new FPNumber(a);
-    const to = new FPNumber(b);
-    const difference = to.sub(from).div(from).mul(this.Hundred).toFixed(2);
-
-    return difference;
+    return calcFiatDifference(this.fromFiatAmount, this.toFiatAmount).toFixed(2);
   }
 
   get fiatDifferenceFormatted(): string {
