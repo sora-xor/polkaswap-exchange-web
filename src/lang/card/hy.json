@@ -21,9 +21,11 @@
         },
         "okReadyText": "Լավ, ես պատրաստ եմ",
         "emailPlaceholder": "Էլ",
+        "noSpamText": "Ոչ մի սպամ: Միայն ձեր հաշիվը պաշտպանելու համար",
         "sendCodeBtn": "Ուղարկեք SMS կոդը",
         "firstNamePlaceholder": "Անուն",
         "lastNamePlaceholder": "Ազգանուն",
+        "verificationCodeText": "Դուք կստանաք հաստատման կոդ SMS-ի միջոցով",
         "phonePlaceholder": "Հեռախոսահամար",
         "statusPendingTitle": "Ստուգումն ընթացքի մեջ է",
         "sendEmailLinkBtn": "Ուղարկել հղումը",
@@ -94,6 +96,9 @@
         "or": "կամ",
         "oneTimeApplicationFee": "Քարտի թողարկման միանվագ վճար",
         "applicationFeeNote": "Նշում. վճարովի քարտի թողարկումը հասանելի կլինի ավելի ուշ:",
-        "statusRejectReasonMultiple": "Ձեր դիմումը մերժվել է մի քանի պատճառներով."
+        "statusRejectReasonMultiple": "Ձեր դիմումը մերժվել է մի քանի պատճառներով.",
+        "selectCountryText": "Ընտրեք ձեր երկիրը",
+        "filterCountries": "Բնորոշել ըստ երկիրի կամ զանգացման կոդի",
+        "ibanPendingDesc": "Ձեր IBAN-ի թողարկումը սպասվում է:\n 72 ժամից ավելի սպասելու դեպքում կապվեք մեզ հետ {email} ի միջոցով"
     }
 }

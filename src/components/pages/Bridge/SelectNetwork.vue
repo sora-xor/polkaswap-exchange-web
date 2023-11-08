@@ -3,13 +3,19 @@
     <p class="networks-info">{{ t('bridge.networkInfo') }}</p>
     <s-radio-group v-model="selectedNetworkTuple">
       <s-radio
-        v-for="{ id, value, name, disabled } in networks"
+        v-for="{ id, value, name, disabled, info } in networks"
         :key="value"
         :label="value"
         :disabled="disabled"
         class="network"
       >
-        <span class="network-name">{{ name }}</span>
+        <div class="network-name">
+          <span>{{ name }}</span>
+          <div v-if="info" class="network-name-info">
+            <external-link v-if="info.link" :title="info.content" :href="info.content" />
+            <span v-else>{{ info.content }}</span>
+          </div>
+        </div>
         <i :class="['network-icon', `network-icon--${getNetworkIcon(id)}`]" />
       </s-radio>
     </s-radio-group>
@@ -18,6 +24,7 @@
 
 <script lang="ts">
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -25,7 +32,6 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { action, mutation, state } from '@/store/decorators';
 import type { AvailableNetwork } from '@/store/web3/types';
 
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 type NetworkItem = {
@@ -33,6 +39,10 @@ type NetworkItem = {
   value: string;
   name: string;
   disabled: boolean;
+  info: {
+    content: string;
+    link: boolean;
+  };
 };
 
 const DELIMETER = '-';
@@ -41,6 +51,7 @@ const DELIMETER = '-';
   components: {
     DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
+    ExternalLink: components.ExternalLink,
   },
 })
 export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
@@ -69,14 +80,28 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
         const networks = Object.values(record) as AvailableNetwork[];
 
         return networks.reduce<NetworkItem[]>((buffer, { available, disabled, data: { id, name } }) => {
-          const networkName = type === BridgeNetworkType.Eth ? `${name} (${this.t('hashiBridgeText')})` : name;
+          let content = '';
+          let link = false;
+
+          if (type === BridgeNetworkType.Eth) {
+            content = this.t('hashiBridgeText');
+          } else if (id === SubNetwork.Polkadot) {
+            content = 'https://parachains.info/details/sora_polkadot';
+            link = true;
+          } else if (disabled) {
+            content = `${this.t('comingSoonText')} (2024)`;
+          }
 
           if (available) {
             buffer.push({
               id,
               value: `${type}-${id}`,
-              name: networkName,
+              name,
               disabled,
+              info: {
+                content,
+                link,
+              },
             });
           }
 
@@ -150,11 +175,18 @@ $network-logo-font-size: 24px;
     height: auto;
     padding: $inner-spacing-small 0;
     &-name {
+      display: flex;
+      flex-flow: column nowrap;
       @include radio-title;
+
+      &-info {
+        font-size: var(--s-font-size-mini);
+      }
     }
     &-icon {
       height: $network-logo-size;
       width: $network-logo-size;
+      margin-left: $inner-spacing-small;
     }
   }
 }

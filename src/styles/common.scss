@@ -23,6 +23,7 @@ $networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polyg
 /* Networks Icons */
 .network-icon {
   display: inline-block;
+  flex-shrink: 0;
   width: 24px;
   height: 24px;
   background-size: contain;

@@ -61,7 +61,8 @@ const mutations = defineMutations<SwapState>()({
   setDistribution(state, distribution: Distribution[][]): void {
     state.distribution = Object.freeze([...distribution]);
   },
-  setSubscriptionPayload(state, { quote, isAvailable, liquiditySources }: SwapQuoteData): void {
+  setSubscriptionPayload(state, payload?: SwapQuoteData): void {
+    const { quote = null, isAvailable = false, liquiditySources = [] } = payload ?? {};
     state.swapQuote = quote;
     state.isAvailable = isAvailable;
     state.liquiditySources = liquiditySources;

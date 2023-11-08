@@ -4,7 +4,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode';
 import store from '@/store';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
-import { AttemptCounter, Fees, KycStatus, Status, UserInfo, VerificationStatus } from '../types/card';
+import { AttemptCounter, Fees, KycStatus, PhoneCode, Status, UserInfo, VerificationStatus } from '../types/card';
 
 const soraCardTestBaseEndpoint = 'https://backend.dev.sora-card.tachi.soramitsu.co.jp';
 const soraCardProdBaseEndpoint = 'https://backend.sora-card.odachi.soramitsu.co.jp';
@@ -16,6 +16,7 @@ const SoraProxyEndpoints = {
     priceOracleEndpoint: `${soraCardTestBaseEndpoint}/prices/xor_euro`,
     ibanEndpoint: `${soraCardTestBaseEndpoint}/ibans`,
     fees: `${soraCardTestBaseEndpoint}/fees`,
+    countries: `${soraCardTestBaseEndpoint}/country-codes`,
     x1TransactionStatus: `${soraCardTestBaseEndpoint}/ws/x1-payment-status`,
     newAccessTokenEndpoint: 'https://api-auth-test.soracard.com/RequestNewAccessToken',
   },
@@ -26,6 +27,7 @@ const SoraProxyEndpoints = {
     priceOracleEndpoint: `${soraCardProdBaseEndpoint}/prices/xor_euro`,
     ibanEndpoint: `${soraCardProdBaseEndpoint}/ibans`,
     fees: `${soraCardProdBaseEndpoint}/fees`,
+    countries: `${soraCardProdBaseEndpoint}/country-codes`,
     x1TransactionStatus: `${soraCardProdBaseEndpoint}/ws/x1-payment-status`,
     newAccessTokenEndpoint: 'https://api-auth.soracard.com/RequestNewAccessToken',
   },
@@ -216,6 +218,18 @@ export const getFees = async (): Promise<Fees> => {
   } catch (error) {
     console.error(error);
     return { application: null, retry: null };
+  }
+};
+
+export const getPhoneCodes = async (): Promise<Record<string, PhoneCode>> => {
+  const soraNetwork = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+
+  try {
+    const data = await fetch(getSoraProxyEndpoints(soraNetwork).countries);
+    return await data.json();
+  } catch (error) {
+    console.error(error);
+    return {};
   }
 };
 

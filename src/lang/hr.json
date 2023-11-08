@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Prenosivo",
             "frozen": "Zamrznuto",
-            "locked": "- Zaključano",
-            "reserved": "- Rezervirano",
+            "locked": "Zaključano",
+            "reserved": "Rezervirano",
             "total": "Ukupno",
-            "bonded": "- Vezano"
+            "bonded": "Vezano"
         },
         "totalAssetsValue": "Ukupna vrijednost vaše sredstvo:",
         "details": "Pojedinosti",
@@ -305,10 +305,11 @@
         "viewIn": "Pogledajte u {explorer}",
         "referrer": "Preporučitelj",
         "referral": "Preporuka",
-        "adarTxDetailsTitle": "Detalji transakcije"
+        "adarTxDetailsTitle": "Detalji transakcije",
+        "comment": "Komentar"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Promijenite mrežu u {Metamask}",
+    "changeNetworkText": "Promijenite mrežu u novčaniku",
     "transactionText": "transakcija | transakcije",
     "connectWalletText": "Povežite račun",
     "changeAccountText": "Promjenite račun",
@@ -318,7 +319,7 @@
     "bridgeText": "Most",
     "disclaimer": "{disclaimerPrefix} Ova web stranica održava zajednica {Sora}. Prije nego što nastavite koristiti ovu web stranicu, pregledajte {polkaswapFaqLink} i dokumentaciju, koja uključuje detaljno objašnjenje o tome kako {AppName} radi, kao i {memorandumLink} i {privacyLink}. Ti su dokumenti ključni za sigurno i pozitivno korisničko iskustvo. Koristeći {AppName}, potvrđujete da ste pročitali i razumjeli ove dokumente. Također potvrđujete sljedeće: 1) svoju isključivu odgovornost za poštivanje svih zakona koji se mogu primjenjivati na vašu posebnu upotrebu {AppName} u vašoj pravnoj nadležnosti; 2) vaše razumijevanje da je trenutna verzija {AppName} alfa verzija: nije u potpunosti testirana, a neke funkcije možda neće funkcionirati kako je dizajnirano; i 3) vaše razumijevanje i dobrovoljno prihvaćanje rizika povezanih s korištenjem {AppName}, uključujući, ali ne ograničavajući se na, rizik od gubitka tokena. Još jednom, nemojte nastaviti bez čitanja {polkaswapFaqLink}, {memorandumLink} i {privacyLink}!",
     "poweredBy": "Podržano od strane",
-    "confirmTransactionText": "Potvrdite transakciju u {direction}",
+    "confirmTransactionText": "Potvrdite transakciju",
     "retryText": "Pokušajte ponovo",
     "networkFeeText": "Mrežna naknada",
     "networkFeeTooltipText": "Naknada za mrežu koristi se kako bi se osigurao rast i stabilne performanse sustava {Sora}.",
@@ -384,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "O",
-        "learnMore": "@:learnMoreText",
         "network": {
             "title": "Što je {Sora}?",
             "description": "{AppName} je izgrađen na {Sora} Network, a token {Sora} (XOR) koristi se za opskrbu gasom\/naknadama i likvidnošću na {AppName}. {Sora} Network omogućuje smanjene naknade, brže transakcije i jednostavniju finalizaciju konsenzusa i usmjerena je na isporuku interoperabilnosti u drugim blockchain ekosustavima kao što je {Ethereum}."
@@ -436,10 +436,6 @@
         "from": "Od",
         "to": "Do"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "DEX za interoperabilnu budućnost.",
         "description": "Međulančana razmjena sredstava, jednostavno stvaranje i popisivanje novih sredstava i najlakše zamjene ikad. Interoperabilna budućnost {Polkadot} je ovdje, a mi smo na čelu!",
@@ -482,7 +478,6 @@
         "Swap": "Zamijenite",
         "Pool": "Pul",
         "balance": "Stanje",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Cijena",
         "transactionSubmitted": "Transakcija je poslana",
         "transactionMessage": "{firstToken} i {secondToken}",
@@ -491,7 +486,6 @@
         "lossWarning": "Izgubit ćete {value}% na svojoj trgovini. Otkrili smo problem s pružanjem likvidnosti. To može dovesti do značajnih gubitaka tijekom zamjene tokena. Provjerite postoji li odgovarajuća likvidnost za vaš željeni swap par."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "procijenjeno",
         "slippageTolerance": "Tolerancija klizanja",
         "minReceived": "Minimalno primljeno",
@@ -501,9 +495,6 @@
         "priceImpactTooltip": "Razlika između tržišne cijene i procijenjene cijene zbog veličine trgovine.",
         "liquidityProviderFee": "Naknada za pružatelja likvidnosti",
         "liquidityProviderFeeTooltip": "Dio svake trgovine ({liquidityProviderFee}%) ide pružateljima likvidnosti kao protokolarni poticaj.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Nedovoljna količina {tokenSymbol}",
         "insufficientLiquidity": "Nedovoljna likvidnost",
         "confirmSwap": "Potvrdite zamjenu",
@@ -514,7 +505,6 @@
         "errorFetching": "Pogreška pri dohvaćanju podataka"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Povežite račun da biste vidjeli svoju likvidnost.",
         "liquidityNotFound": "Nije pronađena likvidnost.",
         "addLiquidity": "Dodajte likvidnost",
@@ -523,7 +513,6 @@
         "pooledToken": "{tokenSymbol} udruženi u pool",
         "pairTokens": "{pair} Pul tokeni",
         "poolShare": "Vaš udio u pulu",
-        "unknownAsset": "Nepoznato sredstvo",
         "description": "Kada dodate likvidnost, dobivate tokene pula koji predstavljaju vašu poziciju. Ti tokeni automatski zarađuju naknade proporcionalne vašem udjelu u pulu i mogu se iskoristiti u bilo kojem trenutku.",
         "strategicBonusApy": "Strateški bonus APY"
     },
@@ -568,9 +557,6 @@
             "alreadyAttached": "Token je već bio priložen"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Potvrdite transakciju"
-    },
     "bridgeTransaction": {
         "details": "{from} za {to}",
         "for": " za ",
@@ -608,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transakcija na čekanju...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Izradite novu transakciju",
-        "changeAccount": "@:changeAccountText u {Metamask}",
         "title": "Bridge transakcije",
-        "expectedMetaMaskAddress": "Očekivana adresa u {Metamask}:",
         "allowToken": "Dopustite {AppName} da koristi vaš {tokenSymbol}",
         "approveToken": "Napominjemo da je token potrebno odobriti samo jednom. Ako vaše proširenje ima više zahtjeva za odobrenje tokena, svakako potvrdite samo posljednji, odbijajući ostale.",
         "blocksLeft": "{count} preostalo blokova..."
@@ -650,7 +632,6 @@
         "balance": "Stanje",
         "pricePool": "Cijene i naknade",
         "shareOfPool": "Udio u pulu",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Pul",
         "connect": "Spojite novčanik",
         "supply": "Opskrba",
@@ -660,7 +641,6 @@
         "remove": "uklonite",
         "add": "DODAJTE",
         "ok": "U redu",
-        "networkFee": "@:networkFeeText",
         "alreadyCreated": "Par tokena već je stvoren",
         "firstLiquidityProvider": "Vi ste prvi davatelj likvidnosti",
         "firstLiquidityProviderInfo": "Omjer tokena koje dodate postavit će cijenu ovog pula.<br\/> Nakon što ste zadovoljni s cijenom kliknite opskrbu za pregled."
@@ -672,9 +652,7 @@
         "price": "Cijena"
     },
     "addLiquidity": {
-        "title": "Dodajte likvidnost",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Dodajte likvidnost"
     },
     "removeLiquidity": {
         "title": "Uklonite likvidnost",
@@ -725,9 +703,6 @@
     },
     "rewards": {
         "title": "Zatražite nagrade",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "i",
         "claiming": {
             "pending": "Preuzimanje",
@@ -749,14 +724,11 @@
             "howToClaimRewards": "Da biste zatražili nagrade za {symbols}, morate potpisati {count} {transactions} u {destination}. Nagrade će biti uplaćene na vaš {Sora} račun."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Povežite {Ethereum} račun",
             "signAndClaim": "Potpišite i zatražite",
             "pendingInternal": "{Sora} transakcija na čekanju...",
             "pendingExternal": "{Ethereum} transakcija na čekanju ...",
-            "retry": "@:retryText",
-            "checkRewards": "Provjerite",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Provjerite"
         },
         "notification": {
             "empty": "Nema dostupnih potraživanja za ovaj račun"
@@ -783,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} provider",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "Proširenje {name} je zauzeto, provjerite ga",
             "extensionLogin": "Prijavite se u proširenju {name}",
@@ -857,7 +827,6 @@
         "settings": "Postavke",
         "switchTheme": "Prijeđite na {theme} modus",
         "switchLanguage": "Odaberite jezik",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Prikaži Odricanje od odgovornosti",
         "hideDisclaimer": "Sakrij izjavu o odricanju odgovornosti"
     },
@@ -887,11 +856,8 @@
         "preview": "Pozovite nove korisnike i ostvarite 10% od njihovih transakcijskih naknada. <br\/> Za početak povežite bilo koju količinu XORa. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Saznajte više <\/a>",
         "deposit": "Polog",
         "balance": "Stanje",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Nedovoljno vezano saldo",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Unesite iznos {tokenSymbol}",
             "startInviting": "Bond {tokenSymbol} da biste počeli pozivati",
             "bondMore": "Bond više",
@@ -944,7 +910,7 @@
         "allowanceRequest": "Pritisnite \"Dopusti\" pristup kameri"
     },
     "bridgeTransferNotification": {
-        "addToken": "Dodajte {symbol} u {Metamask}",
+        "addToken": "Dodaj {symbol} u novčanik",
         "title": "Most transakcija uspjela"
     },
     "mobilePopup": {
@@ -1220,11 +1186,11 @@
         "historyBtn": "Moje kupovine",
         "historyTitle": "Povijest transakcija",
         "moonpayTitle": "Kupite ETH putem MoonPaya",
-        "moonpayDesc": "Kupite ETH tokene na Ethereumu i prenesite ih na SORA mrežu putem mosta",
+        "moonpayDesc": "Kupite ETH tokene na {Ethereum} i prenesite ih na {SORA} mrežu putem mosta",
         "x1Title": "Kupite XOR svojom karticom",
         "x1Btn": "Kupite XOR karticom",
         "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije.",
-        "x1Desc": "Kupite XOR tokene izravno na SORA mreži svojom debitnom ili kreditnom karticom"
+        "x1Desc": "Kupite XOR tokene izravno na {SORA} mreži svojom debitnom ili kreditnom karticom"
     },
     "acceptOnScrollText": "Pomaknite se za prihvaćanje",
     "addressBook": {
@@ -1240,7 +1206,7 @@
         "detected": "Nova adresa otkrivena",
         "save": "Spremi kao kontakt",
         "tooltip": "Prikupite adresar unosom imena i adrese kako bi vaši kontakti bili organizirani i ažurni",
-        "notSoraAddress": "Ova adresa će biti spremljena kao SORA adresa ispod. Provjerite može li primatelj pristupiti SORA lancu:",
+        "notSoraAddress": "Ova adresa će biti spremljena kao {SORA} adresa ispod. Provjerite može li primatelj pristupiti {SORA} lancu:",
         "options": {
             "send": "Pošaljite tokene",
             "edit": "Uredi kontakt",
@@ -1265,5 +1231,7 @@
     "minAmountText": "min. iznos",
     "maxAmountText": "max. iznos",
     "exceededAmountText": "{amount} premašeno",
-    "multipleRecipients": "Višestruki primatelji"
+    "multipleRecipients": "Višestruki primatelji",
+    "disconnectWalletText": "Prekini vezu",
+    "connectEthereumWalletText": "Povežite {Ethereum} novčanik"
 }

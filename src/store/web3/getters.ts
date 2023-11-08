@@ -85,7 +85,7 @@ const getters = defineGetters<Web3State>()({
 
     if (state.networkType === BridgeNetworkType.Sub) return true;
 
-    return state.evmNetworkProvided === state.networkSelected;
+    return state.evmProviderNetwork === state.networkSelected;
   },
 
   contractAddress(...args): (asset: KnownEthBridgeAsset) => Nullable<string> {

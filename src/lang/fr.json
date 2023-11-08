@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Transférable",
             "frozen": "Gelé",
-            "locked": "- Verrouillé",
-            "reserved": "- Réservé",
+            "locked": "Verrouillé",
+            "reserved": "Réservé",
             "total": "Total",
-            "bonded": "- Lié"
+            "bonded": "Lié"
         },
         "totalAssetsValue": "Valeur total de vos actifs:",
         "details": "Détails",
@@ -305,10 +305,11 @@
         "viewIn": "Visualisez dans {explorer}",
         "referrer": "Référent",
         "referral": "Référence",
-        "adarTxDetailsTitle": "Détails de la transaction"
+        "adarTxDetailsTitle": "Détails de la transaction",
+        "comment": "Commentaire"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Changer de réseau dans {Metamask}",
+    "changeNetworkText": "Changer de réseau dans le portefeuille",
     "transactionText": "transaction | transactions",
     "connectWalletText": "Connecter le compte",
     "changeAccountText": "Changer de compte",
@@ -318,7 +319,7 @@
     "bridgeText": "Pont",
     "disclaimer": "{disclaimerPrefix} ce site Web est maintenu par la communauté {Sora}. Avant de continuer à utiliser ce site Web, veuillez consulter le {polkaswapFaqLink} et la documentation, qui comprend une explication détaillée du fonctionnement de {AppName}, ainsi que le {memorandumLink} et le {privacyLink}. Ces documents sont cruciaux pour une expérience utilisateur sécurisée et positive. En utilisant {AppName}, vous reconnaissez avoir lu et compris ces documents. Vous reconnaissez également ce qui suit: 1) votre seule responsabilité de vous conformer à toutes les lois qui peuvent s'appliquer à votre utilisation particulière de {AppName} dans votre juridiction légale; 2) votre compréhension que la version actuelle de {AppName} est une version alpha: elle n'a pas été entièrement testée et certaines fonctions peuvent ne pas fonctionner comme prévu; et 3) votre compréhension et votre acceptation volontaire des risques liés à l'utilisation de {AppName}, y compris, mais sans s'y limiter, le risque de perdre des jetons. Encore une fois, veuillez ne pas continuer sans lire les {polkaswapFaqLink}, {memorandumLink} et {privacyLink}!",
     "poweredBy": "Alimenté par",
-    "confirmTransactionText": "Confirmez la transaction dans {direction}",
+    "confirmTransactionText": "Confirmer la transaction",
     "retryText": "Réessayer",
     "networkFeeText": "Frais de réseau",
     "networkFeeTooltipText": "Les frais de réseau sont utilisés pour assurer la croissance et les performances stables du système {Sora}.",
@@ -384,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "À propos",
-        "learnMore": "Pour en savoir plus",
         "network": {
             "title": "Qu'est-ce que {Sora}?",
             "description": "{AppName} est construit sur le réseau {Sora} et le jeton {Sora} (XOR) est utilisé pour le gaz\/les frais et la fourniture de liquidités sur {AppName}. {Sora} Network permet des frais réduits, des transactions plus rapides et une finalisation de consensus plus simple et se concentre sur l'interopérabilité entre d'autres écosystèmes de blockchain comme {Ethereum}."
@@ -436,10 +436,6 @@
         "from": "De",
         "to": "À"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "Le DEX pour l'avenir interopérable.",
         "description": "Échange inter-chaînes d'actifs, création et listing simples de nouveaux actifs, et les échanges les plus simples jamais réalisés. L'avenir interopérable de {Polkadot} est là et nous sommes aux avant-postes !",
@@ -482,7 +478,6 @@
         "Swap": "Échanger",
         "Pool": "Pool",
         "balance": "Solde",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Prix",
         "transactionSubmitted": "Transaction soumise",
         "transactionMessage": "{firstToken} et {secondToken}",
@@ -491,7 +486,6 @@
         "lossWarning": "Vous allez perdre {value}% sur votre échange. Nous avons détecté un problème de provision de liquidités. Cela peut entraîner des pertes importantes lors des échanges de jetons. Veuillez vous assurer qu'il y a une liquidité suffisante pour la paire de swap souhaitée."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "estimé",
         "slippageTolerance": "Tolérance pour la différence de prix",
         "minReceived": "Minimum reçu",
@@ -501,9 +495,6 @@
         "priceImpactTooltip": "La différence entre le prix du marché et le prix estimé en raison de la taille de la transaction.",
         "liquidityProviderFee": "Frais pour le fournisseur de liquidités",
         "liquidityProviderFeeTooltip": "Une partie de chaque transaction ({liquidityProviderFee}%) va aux fournisseurs de liquidités à titre d'incitation au protocole.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Solde {tokenSymbol} insuffisant",
         "insufficientLiquidity": "Liquidité insuffisante",
         "confirmSwap": "Confirmer l'échange",
@@ -514,7 +505,6 @@
         "errorFetching": "Erreur lors de la récupération des données"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Connectez un compte pour voir vos liquidités.",
         "liquidityNotFound": "Aucune liquidité trouvée.",
         "addLiquidity": "Ajouter",
@@ -523,7 +513,6 @@
         "pooledToken": "{tokenSymbol} en Pool",
         "pairTokens": "{pair} jetons de pool",
         "poolShare": "Votre part du pool",
-        "unknownAsset": "Actif inconnu",
         "description": "Lorsque vous ajoutez de la liquidité, vous recevez des jetons de pool représentant votre position. Ces jetons rapportent automatiquement des frais proportionnels à votre part du pool et peuvent être réclamés à tout moment.",
         "strategicBonusApy": "Bonus stratégique APY"
     },
@@ -568,9 +557,6 @@
             "alreadyAttached": "Le jeton était déjà attaché"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Confirmez la transaction"
-    },
     "bridgeTransaction": {
         "details": "{from} pour {to}",
         "for": " pour ",
@@ -608,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaction en attente...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Créer une nouvelle transaction",
-        "changeAccount": "@:changeAccountText dans {Metamask}",
         "title": "Transaction de pont",
-        "expectedMetaMaskAddress": "Adresse attendue dans {Metamask}:",
         "allowToken": "Autoriser {AppName} à utiliser votre {tokenSymbol}",
         "approveToken": "Veuillez noter qu'il n'est nécessaire d'approuver le jeton qu'une seule fois. Si votre extension a plusieurs demandes d'approbation de jetons, assurez-vous de ne confirmer que la dernière tout en rejetant le reste.",
         "blocksLeft": "{count} blocs restants..."
@@ -650,7 +632,6 @@
         "balance": "Solde",
         "pricePool": "Prix et frais",
         "shareOfPool": "Part du pool",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Pool",
         "connect": "Connecter le portefeuille",
         "supply": "Fournir",
@@ -660,7 +641,6 @@
         "remove": "Retirer",
         "add": "AJOUTER",
         "ok": "OK",
-        "networkFee": "@:networkFeeText",
         "alreadyCreated": "La paire de jetons est déjà créée",
         "firstLiquidityProvider": "Vous êtes le premier fournisseur de liquidité",
         "firstLiquidityProviderInfo": "Le ratio de jetons que vous ajoutez déterminera le prix de ce pool. <br\/> Une fois que vous êtes satisfait du taux, cliquez sur l'offre pour l'examiner."
@@ -672,9 +652,7 @@
         "price": "Prix"
     },
     "addLiquidity": {
-        "title": "Ajouter de la liquidité",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Ajouter de la liquidité"
     },
     "removeLiquidity": {
         "title": "Retirer de la liquidité",
@@ -725,9 +703,6 @@
     },
     "rewards": {
         "title": "Réclamer mes Récompenses",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "et",
         "claiming": {
             "pending": "Demande...",
@@ -749,14 +724,11 @@
             "howToClaimRewards": "Pour réclamer vos récompenses en {symbols} vous devez signer {count} {transactions} dans {destination}. Les récompenses seront déposées sur votre compte {Sora}."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Connecter le compte {Ethereum}",
             "signAndClaim": "Signez et réclamez",
             "pendingInternal": "{Sora} transaction en attente...",
             "pendingExternal": "{Ethereum} transaction en attente...",
-            "retry": "@:retryText",
-            "checkRewards": "Vérifiez",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Vérifiez"
         },
         "notification": {
             "empty": "Aucune réclamation disponible pour ce compte"
@@ -783,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} provider",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "L'extension {name} est occupée, veuillez la vérifier",
             "extensionLogin": "Veuillez vous connecter à votre extension {name}",
@@ -857,7 +827,6 @@
         "settings": "Paramètres",
         "switchTheme": "Passer en mode {theme}",
         "switchLanguage": "Choisissez la langue",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Afficher la clause de non-responsabilité",
         "hideDisclaimer": "Masquer la clause de non-responsabilité"
     },
@@ -887,11 +856,8 @@
         "preview": "Invitez de nouveaux utilisateurs et obtenez 10% de leurs frais de transaction. <br\/> Pour commencer, collez n'importe quel montant de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> En savoir plus <\/a>",
         "deposit": "Déposer",
         "balance": "Solde",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Solde obligataire insuffisant",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Entrez le montant de {tokenSymbol}",
             "startInviting": "Bond {tokenSymbol} pour commencer à inviter",
             "bondMore": "Lier Plus",
@@ -944,7 +910,7 @@
         "allowanceRequest": "Appuyez sur \"Autoriser\" l'accès à la caméra"
     },
     "bridgeTransferNotification": {
-        "addToken": "Ajouter {symbol} à {Metamask}",
+        "addToken": "Ajouter {symbol} au portefeuille",
         "title": "Transaction relais réussie"
     },
     "mobilePopup": {
@@ -1220,11 +1186,11 @@
         "historyBtn": "Mes achats",
         "historyTitle": "Historique des transactions",
         "moonpayTitle": "Acheter des ETH via MoonPay",
-        "moonpayDesc": "Achetez des jetons ETH sur Ethereum et transférez-les sur le réseau SORA via le pont",
+        "moonpayDesc": "Achetez des jetons ETH sur {Ethereum} et transférez-les sur le réseau {SORA} via le pont",
         "x1Title": "Achetez XOR avec votre carte",
         "x1Btn": "Acheter XOR avec carte",
         "errorMessage": "Mes excuses pour le derangement. Nous travaillons avec diligence pour résoudre ce problème. Veuillez réessayer plus tard.",
-        "x1Desc": "Achetez des jetons XOR directement sur le réseau SORA avec votre carte de débit ou de crédit"
+        "x1Desc": "Achetez des jetons XOR directement sur le réseau {SORA} avec votre carte de débit ou de crédit"
     },
     "acceptOnScrollText": "Faites défiler pour accepter",
     "addressBook": {
@@ -1240,7 +1206,7 @@
         "detected": "Nouvelle adresse détectée",
         "save": "Enregistrer comme contact",
         "tooltip": "Collectez le carnet d'adresses en fournissant le nom et l'adresse pour garder vos contacts organisés et à jour",
-        "notSoraAddress": "Cette adresse sera enregistrée en tant qu'adresse SORA ci-dessous. Assurez-vous que le destinataire peut accéder à la chaîne SORA :",
+        "notSoraAddress": "Cette adresse sera enregistrée en tant qu'adresse {SORA} ci-dessous. Assurez-vous que le destinataire peut accéder à la chaîne {SORA}",
         "options": {
             "send": "Envoyer des jetons",
             "edit": "Modifier le contact",
@@ -1265,5 +1231,7 @@
     "minAmountText": "min. montant",
     "maxAmountText": "max. montant",
     "exceededAmountText": "{amount} dépassé",
-    "multipleRecipients": "Plusieurs destinataires"
+    "multipleRecipients": "Plusieurs destinataires",
+    "disconnectWalletText": "Déconnecter",
+    "connectEthereumWalletText": "Connectez le portefeuille {Ethereum}"
 }

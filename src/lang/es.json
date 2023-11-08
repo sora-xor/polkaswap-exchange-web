@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Transferible",
             "frozen": "Congelado",
-            "locked": "- Bloqueado",
-            "reserved": "- Reservado",
+            "locked": "Bloqueado",
+            "reserved": "Reservado",
             "total": "Total",
-            "bonded": "- Vinculado"
+            "bonded": "Vinculado"
         },
         "totalAssetsValue": "El valor total de sus activos:",
         "details": "Detalles",
@@ -305,10 +305,11 @@
         "viewIn": "Ver en {explorer}",
         "referrer": "Referente",
         "referral": "Referencia",
-        "adarTxDetailsTitle": "Detalles de la transacción"
+        "adarTxDetailsTitle": "Detalles de la transacción",
+        "comment": "Comentario"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Cambiar de red en {Metamask}",
+    "changeNetworkText": "Cambiar red en billetera",
     "transactionText": "transacción | transacciones",
     "connectWalletText": "Conectar cuenta",
     "changeAccountText": "Cambiar cuenta",
@@ -318,7 +319,7 @@
     "bridgeText": "Puente",
     "disclaimer": "{disclaimerPrefix} Este sitio web es mantenido por la comunidad {Sora}. Antes de continuar utilizando este sitio web, por favor revise las {polkaswapFaqLink} y la documentación, que incluye una explicación detallada sobre el funcionamiento de {AppName}, así como el {memorandumLink}, y la {privacyLink}. Estos documentos son cruciales para una experiencia de usuario segura y positiva. Al utilizar {AppName}, usted reconoce que ha leído y comprendido estos documentos. También reconoce lo siguiente 1) su única responsabilidad por el cumplimiento de todas las leyes que puedan aplicarse a su uso particular de {AppName} en su jurisdicción legal; 2) su comprensión de que la versión actual de {AppName} es una versión alfa: no ha sido completamente probada, y algunas funciones pueden no funcionar como se ha diseñado; y 3) su comprensión y aceptación voluntaria de los riesgos que implica el uso de {AppName}, incluyendo, pero no limitado a, el riesgo de perder tokens. Una vez más, ¡por favor no continúe sin leer el {polkaswapFaqLink}, las {memorandumLink} y la {privacyLink}!",
     "poweredBy": "Desarrollado por",
-    "confirmTransactionText": "Confirmar transacción en {direction}",
+    "confirmTransactionText": "Confirmar transacción",
     "retryText": "Reintentar",
     "networkFeeText": "Tarifa de red",
     "networkFeeTooltipText": "La comisión de la red se utiliza para garantizar el crecimiento y el rendimiento estable del sistema {Sora}.",
@@ -384,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "Acerca de",
-        "learnMore": "@:learnMoreText",
         "network": {
             "title": "¿Qué es {Sora}?",
             "description": "{AppName} está construido sobre la Red {Sora}, y el token {Sora} (XOR) se utiliza para la provisión de gas\/comisiones y liquidez en {AppName}. La red {Sora} permite reducir las tarifas, agilizar las transacciones y simplificar la finalización del consenso, y se centra en ofrecer interoperabilidad en otros ecosistemas de blockchain como {Ethereum}."
@@ -436,10 +436,6 @@
         "from": "Desde",
         "to": "A"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "El DEX para el futuro interoperable.",
         "description": "Intercambio de Activos a través de Cadena cruzada, creación y listado sencillo de nuevos Activos y los intercambios más fáciles de la historia. ¡El futuro interoperable de {Polkadot} está aquí y nosotros estamos a la vanguardia!",
@@ -482,7 +478,6 @@
         "Swap": "Intercambio",
         "Pool": "Fondo común",
         "balance": "Balance",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Precio",
         "transactionSubmitted": "Transacción enviada",
         "transactionMessage": "{firstToken} y {secondToken}",
@@ -491,7 +486,6 @@
         "lossWarning": "Perderá {value}% en su operación. Hemos detectado un problema de provisión de liquidez. Esto puede generar pérdidas significativas durante los intercambios de tokens. Asegúrese de que haya liquidez adecuada para el par de intercambio deseado."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "estimado",
         "slippageTolerance": "Tolerancia de deslizamiento",
         "minReceived": "Mínimo recibido",
@@ -501,9 +495,6 @@
         "priceImpactTooltip": "La diferencia entre el precio de mercado y el precio estimado debido al tamaño de la operación.",
         "liquidityProviderFee": "Comisión del proveedor de Liquidez",
         "liquidityProviderFeeTooltip": "Una parte de cada operación ({liquidityProviderFee}%) se destina a los proveedores de liquidez como incentivo del protocolo.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Cantidad insuficiente de {tokenSymbol}",
         "insufficientLiquidity": "Liquidez insuficiente",
         "confirmSwap": "Confirmar el intercambio",
@@ -514,7 +505,6 @@
         "errorFetching": "Error en la obtención de los datos"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Conecte una cuenta para ver su liquidez.",
         "liquidityNotFound": "No se ha encontrado Liquidez.",
         "addLiquidity": "Añadir Liquidez",
@@ -523,7 +513,6 @@
         "pooledToken": "{tokenSymbol} Agrupado",
         "pairTokens": "{pair} Tokens del Fondo común",
         "poolShare": "Su Participación en el Fondo común",
-        "unknownAsset": "@:unknownAssetText",
         "description": "Cuando añades Liquidez, recibes Tokens del Fondo común que representan tu posición. Estos Tokens ganan automáticamente comisiones proporcionales a su participación en el fondo común y pueden ser redimidos en cualquier momento.",
         "strategicBonusApy": "Bonificación estratégica APY"
     },
@@ -568,9 +557,6 @@
             "alreadyAttached": "El Token ya estaba adjunto"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Confirmar transacción"
-    },
     "bridgeTransaction": {
         "details": "{from} para {to}",
         "for": " por ",
@@ -608,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transacción pendiente...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Crear nueva transacción",
-        "changeAccount": "@:changeAccountText en {Metamask}",
         "title": "Transacción puente",
-        "expectedMetaMaskAddress": "Dirección esperada en {Metamask}",
         "allowToken": "Permitir que {AppName} utilice su {tokenSymbol}",
         "approveToken": "Tenga en cuenta que sólo es necesario aprobar el token una vez. Si su extensión tiene varias solicitudes de aprobación de tokens, asegúrese de confirmar solo la última y rechazar el resto.",
         "blocksLeft": "{count} bloques faltantes"
@@ -650,7 +632,6 @@
         "balance": "Balance",
         "pricePool": "Precios y tarifas",
         "shareOfPool": "Participación del Fondo común",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Fondo común",
         "connect": "Conectar cartera",
         "supply": "Suministro",
@@ -660,7 +641,6 @@
         "remove": "Eliminar",
         "add": "AGREGAR",
         "ok": "OK",
-        "networkFee": "@:networkFeeText",
         "alreadyCreated": "El par de tokens ya fue creado",
         "firstLiquidityProvider": "Eres el primer proveedor de liquidez",
         "firstLiquidityProviderInfo": "La proporción de Tokens que añadas fijará el precio de este Fondo común.<br\/>Una vez que estés satisfecho con la tarifa, haz clic en el suministro para revisar."
@@ -672,9 +652,7 @@
         "price": "Precio"
     },
     "addLiquidity": {
-        "title": "Añadir Liquidez",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Añadir Liquidez"
     },
     "removeLiquidity": {
         "title": "Remover Liquidez",
@@ -725,9 +703,6 @@
     },
     "rewards": {
         "title": "Reclamar Recompensas",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "y",
         "claiming": {
             "pending": "Reclamando...",
@@ -749,14 +724,11 @@
             "howToClaimRewards": "Para reclamar tus Recompensas de {symbols} necesitas firmar {count} {transactions} en {destination}. Las Recompensas se depositarán en tu cuenta {Sora}."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Conectar la cuenta {Ethereum}",
             "signAndClaim": "Firmar y reclamar",
             "pendingInternal": "{Sora} transacción pendiente...",
             "pendingExternal": "{Ethereum} transacción pendiente...",
-            "retry": "@:retryText",
-            "checkRewards": "Compruebe",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Compruebe"
         },
         "notification": {
             "empty": "No hay reclamaciones disponibles para esta cuenta"
@@ -783,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} proveedor",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "La extensión {name} está ocupada, por favor compruébelo",
             "extensionLogin": "Por favor, inicie sesión en su extensión de {name}",
@@ -857,7 +827,6 @@
         "settings": "Ajustes",
         "switchTheme": "Cambiar al modo {theme}",
         "switchLanguage": "Elige lenguaje",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Mostrar descargo de responsabilidad",
         "hideDisclaimer": "Ocultar descargo de responsabilidad"
     },
@@ -887,11 +856,8 @@
         "preview": "Invite a nuevos usuarios y obtenga el 10% de sus tarifas de transacción.<br\/>Para comenzar, vincule cualquier cantidad de XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Más información<\/a>",
         "deposit": "Depositar",
         "balance": "balance",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "balance vinculado insuficiente",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Ingrese la cantidad de {tokenSymbol}",
             "startInviting": "Vincula {tokenSymbol} para comenzar a invitar",
             "bondMore": "Vincular más",
@@ -944,7 +910,7 @@
         "allowanceRequest": "Presiona “Permitir” acceso a la cámara"
     },
     "bridgeTransferNotification": {
-        "addToken": "Añadir {symbol} a {Metamask}",
+        "addToken": "Agregar {symbol} a la billetera",
         "title": "Transacción puente exitosa"
     },
     "mobilePopup": {
@@ -1220,11 +1186,11 @@
         "historyBtn": "Mis compras",
         "historyTitle": "Historial de transacciones",
         "moonpayTitle": "Compre ETH a través de MoonPay",
-        "moonpayDesc": "Compre tokens ETH en Ethereum y transfiéralos a la red SORA a través del puente",
+        "moonpayDesc": "Compre tokens ETH en {Ethereum} y transfiéralos a la red {SORA} a través del puente",
         "x1Title": "Compra XOR con tu tarjeta",
         "x1Btn": "Comprar XOR con tarjeta",
         "errorMessage": "Disculpas por los inconvenientes. Estamos trabajando diligentemente para resolver esto. Por favor, inténtelo de nuevo más tarde.",
-        "x1Desc": "Compra tokens XOR directamente en la red SORA con tu tarjeta de débito o crédito"
+        "x1Desc": "Compra tokens XOR directamente en la red {SORA} con tu tarjeta de débito o crédito"
     },
     "acceptOnScrollText": "Desplácese para aceptar",
     "addressBook": {
@@ -1240,7 +1206,7 @@
         "detected": "Nueva dirección detectada",
         "save": "Guardar como contacto",
         "tooltip": "Recopile la libreta de direcciones proporcionando el nombre y la dirección para mantener sus contactos organizados y actualizados",
-        "notSoraAddress": "Esta dirección se guardará como dirección SORA a continuación. Asegúrese de que el destinatario pueda acceder a la cadena SORA:",
+        "notSoraAddress": "Esta dirección se guardará como dirección {SORA} a continuación. Asegúrese de que el destinatario pueda acceder a la cadena {SORA}:",
         "options": {
             "send": "Enviar fichas",
             "edit": "Editar contacto",
@@ -1265,5 +1231,7 @@
     "minAmountText": "mín. cantidad",
     "maxAmountText": "máx. cantidad",
     "exceededAmountText": "{amount} superada",
-    "multipleRecipients": "Múltiples destinatarios"
+    "multipleRecipients": "Múltiples destinatarios",
+    "disconnectWalletText": "Desconectar",
+    "connectEthereumWalletText": "Conecte la billetera {Ethereum}"
 }
