@@ -309,7 +309,7 @@
         "comment": "Comment"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Change network in {Metamask}",
+    "changeNetworkText": "Change network in wallet",
     "transactionText": "transaction | transactions",
     "connectWalletText": "Connect account",
     "changeAccountText": "Change account",
@@ -319,7 +319,7 @@
     "bridgeText": "Bridge",
     "disclaimer": "{disclaimerPrefix} This website is maintained by the {Sora} community. Before continuing to use this website, please review the {polkaswapFaqLink} and documentation, which includes a detailed explanation on how {AppName} works, as well as the {memorandumLink}, and {privacyLink}. These documents are crucial to a secure and positive user experience. By using {AppName}, you acknowledge that you have read and understand these documents. You also acknowledge the following: 1) your sole responsibility for compliance with all laws that may apply to your particular use of {AppName} in your legal jurisdiction; 2) your understanding that the current version of {AppName} is an alpha version: it has not been fully tested, and some functions may not perform as designed; and 3) your understanding and voluntary acceptance of the risks involved in using {AppName}, including, but not limited to, the risk of losing tokens. Please do not continue without reading the {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "poweredBy": "Powered by",
-    "confirmTransactionText": "Confirm transaction in {direction}",
+    "confirmTransactionText": "Confirm transaction",
     "retryText": "Retry",
     "networkFeeText": "Network Fee",
     "networkFeeTooltipText": "Network fee is used to ensure {Sora} system's growth and stable performance.",
@@ -387,7 +387,6 @@
     },
     "aboutNetworkDialog": {
         "title": "About",
-        "learnMore": "@:learnMoreText",
         "network": {
             "title": "What is {Sora}?",
             "description": "{AppName} is built on top of the {Sora} Network, and the {Sora} token (XOR) is used for gas\/fees and liquidity provision on {AppName}. {Sora} Network allows for reduced fees, faster transactions and simpler consensus finalization and is focused on delivering interoperability across other blockchain ecosystems like {Ethereum}."
@@ -439,10 +438,6 @@
         "from": "From",
         "to": "To"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "The DEX for the Interoperable Future.",
         "description": "Cross-chain exchange of assets, simple creation and listing of new assets, and the easiest swaps ever. The interoperable future of {Polkadot} is here and we are at the forefront!",
@@ -485,7 +480,6 @@
         "Swap": "Swap",
         "Pool": "Pool",
         "balance": "Balance",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Price",
         "transactionSubmitted": "Transaction submitted",
         "transactionMessage": "{firstToken} and {secondToken}",
@@ -494,7 +488,6 @@
         "lossWarning": "You are going to lose {value}% on your trade. We've detected a liquidity provision issue. This may lead to significant losses during token swaps. Please ensure there is adequate liquidity for your desired swap pair."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "estimated",
         "slippageTolerance": "Slippage Tolerance",
         "minReceived": "Minimum Received",
@@ -504,9 +497,6 @@
         "priceImpactTooltip": "The difference between the market price and estimated price due to trade size.",
         "liquidityProviderFee": "Liquidity Provider Fee",
         "liquidityProviderFeeTooltip": "A portion of each trade ({liquidityProviderFee}%) goes to liquidity providers as a protocol incentive.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Insufficient {tokenSymbol} amount",
         "insufficientLiquidity": "Insufficient liquidity",
         "confirmSwap": "Confirm swap",
@@ -517,7 +507,6 @@
         "errorFetching": "Error fetching the data"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Connect an account to view your liquidity.",
         "liquidityNotFound": "No liquidity found.",
         "addLiquidity": "Add liquidity",
@@ -526,7 +515,6 @@
         "pooledToken": "{tokenSymbol} Pooled",
         "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Your pool share",
-        "unknownAsset": "@:unknownAssetText",
         "description": "When you add liquidity, you are given pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.",
         "strategicBonusApy": "Strategic Bonus APY"
     },
@@ -571,9 +559,6 @@
             "alreadyAttached": "Token was already attached"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Confirm transaction"
-    },
     "bridgeTransaction": {
         "details": "{from} for {to}",
         "for": " for ",
@@ -611,12 +596,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transaction pending...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Create new transaction",
-        "changeAccount": "@:changeAccountText in {Metamask}",
         "title": "Bridge Transaction",
-        "expectedMetaMaskAddress": "Expected address in {Metamask}:",
         "allowToken": "Allow {AppName} to use your {tokenSymbol}",
         "approveToken": "Please note that it is only needed to approve the token once. If your extension has multiple token approval requests, make sure to only confirm the last one while rejecting the rest.",
         "blocksLeft": "{count} blocks left..."
@@ -653,7 +634,6 @@
         "balance": "Balance",
         "pricePool": "Prices and fees",
         "shareOfPool": "Share of pool",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Pool",
         "connect": "Connect wallet",
         "supply": "Supply",
@@ -663,7 +643,6 @@
         "remove": "remove",
         "add": "ADD",
         "ok": "OK",
-        "networkFee": "@:networkFeeText",
         "alreadyCreated": "Token pair is already created",
         "firstLiquidityProvider": "You are the first liquidity provider",
         "firstLiquidityProviderInfo": "The ratio of tokens you add will set the price of this pool.<br\/>Once you are happy with the rate click supply to review."
@@ -675,9 +654,7 @@
         "price": "Price"
     },
     "addLiquidity": {
-        "title": "Add liquidity",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Add liquidity"
     },
     "removeLiquidity": {
         "title": "Remove liquidity",
@@ -728,9 +705,6 @@
     },
     "rewards": {
         "title": "Claim Rewards",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "and",
         "claiming": {
             "pending": "Claiming...",
@@ -752,14 +726,11 @@
             "howToClaimRewards": "To claim your {symbols} rewards you need to sign {count} {transactions} in {destination}. Rewards will be deposited to your {Sora} account."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Connect {Ethereum} account",
             "signAndClaim": "Sign and claim",
             "pendingInternal": "{Sora} transaction pending...",
             "pendingExternal": "{Ethereum} transaction pending...",
-            "retry": "@:retryText",
-            "checkRewards": "Check",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Check"
         },
         "notification": {
             "empty": "No available claims for this account"
@@ -786,13 +757,12 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} provider",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{name} extension is busy, please check it",
             "extensionLogin": "Please login to your {name} extension",
             "installExtension": "{name} extension is not found. Please install it!\n\nAlready installed extension? Please reload the page",
-            "reloadPage": "Reload page"
+            "reloadPage": "Reload page",
+            "notAvailable": "{name} is not available."
         }
     },
     "selectLanguageDialog": {
@@ -860,7 +830,6 @@
         "settings": "Settings",
         "switchTheme": "Switch to {theme} Mode",
         "switchLanguage": "Choose Language",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Show Disclaimer",
         "hideDisclaimer": "Hide Disclaimer"
     },
@@ -890,11 +859,8 @@
         "preview": "Invite new users and get 10% from their transaction fees.<br\/>To start, bond any amount of XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Learn more<\/a>",
         "deposit": "Deposit",
         "balance": "Balance",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Insufficient bonded balance",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Enter amount of {tokenSymbol}",
             "startInviting": "Bond {tokenSymbol} to start inviting",
             "bondMore": "Bond More",
@@ -947,7 +913,7 @@
         "allowanceRequest": "Press “Allow” to access camera"
     },
     "bridgeTransferNotification": {
-        "addToken": "Add {symbol} to {Metamask}",
+        "addToken": "Add {symbol} to wallet",
         "title": "Bridge transaction successful"
     },
     "mobilePopup": {
@@ -1223,7 +1189,7 @@
         "historyBtn": "My purchases",
         "historyTitle": "Transaction History",
         "moonpayTitle": "Buy ETH via MoonPay",
-        "moonpayDesc": "Purchase ETH tokens on Ethereum and transfer them to {SORA} network via the bridge",
+        "moonpayDesc": "Purchase ETH tokens on {Ethereum} and transfer them to {SORA} network via the bridge",
         "x1Title": "Buy XOR with your card",
         "x1Btn": "Buy XOR with card",
         "errorMessage": "Apologies for the inconvenience. We're working diligently to resolve this. Please, try again later.",
@@ -1272,5 +1238,7 @@
     "minAmountText": "min. amount",
     "maxAmountText": "max. amount",
     "exceededAmountText": "{amount} exceeded",
-    "multipleRecipients": "Multiple Recipients"
+    "multipleRecipients": "Multiple Recipients",
+    "disconnectWalletText": "Disconnect",
+    "connectEthereumWalletText": "Connect {Ethereum} wallet"
 }

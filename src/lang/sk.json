@@ -309,7 +309,7 @@
         "comment": "Komentujte"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Zmeňiť sieť v {Metamask}",
+    "changeNetworkText": "Zmeňte sieť v peňaženke",
     "transactionText": "transakcia | transakcie",
     "connectWalletText": "Pripojiť účet",
     "changeAccountText": "Zmeniť účet",
@@ -319,7 +319,7 @@
     "bridgeText": "Most",
     "disclaimer": "{disclaimerPrefix} Táto webová stránka je spravovaná komunitou {Sora}. Pred pokračovaním v používaní tejto webovej stránky si preštudujte {polkaswapFaqLink} a dokumentáciu, ktorá obsahuje podrobné vysvetlenie fungovania aplikácie {AppName}, ako aj {memorandumLink} a {privacyLink}. Tieto dokumenty sú nevyhnutné pre bezpečnú a pozitívnu používateľskú skúsenosť. Používaním aplikácie {AppName} beriete na vedomie, že ste si tieto dokumenty prečítali a porozumeli im. Ďalej beriete na vedomie nasledovné: 1) vašu výlučnú zodpovednosť za dodržiavanie všetkých zákonov, ktoré sa môžu vzťahovať na vaše konkrétne používanie programu {AppName} vo vašej právnej jurisdikcii; 2) chápete, že súčasná verzia programu {AppName} je verzia alfa: nebola úplne testovaná a niektoré funkcie nemusia fungovať tak, ako boli navrhnuté; 3) vaše porozumenie a dobrovoľné prijatie rizík spojených s používaním programu {AppName}, vrátane, ale nie výlučne, rizika straty tokenov. Ešte raz si, prosím, prečítajte {polkaswapFaqLink}, {memorandumLink}, a {privacyLink}!",
     "poweredBy": "Používa technológiu",
-    "confirmTransactionText": "Potvrdiť transakciu v {direction}",
+    "confirmTransactionText": "Potvrďte transakciu",
     "retryText": "Opakovať",
     "networkFeeText": "Sieťový poplatok",
     "networkFeeTooltipText": "Sieťový poplatok slúži na zabezpečenie rastu a stabilného výkonu systému {Sora}.",
@@ -385,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "O aplikácii",
-        "learnMore": "Dozvedieť sa viac",
         "network": {
             "title": "Čo je {Sora}?",
             "description": "{AppName} je postavený na sieti {Sora} a {Sora} (XOR) token sa používa na platenie plynu\/poplatkov a na poskytovanie likvidity na {AppName}. Sieť {Sora} umožňuje nižšie poplatky, rýchlejšie transakcie a jednoduchšiu finalizáciu konsenzu a zameriava sa na zabezpečenie interoperability s inými ekosystémami blockchainu, ako je {Ethereum}."
@@ -437,10 +436,6 @@
         "from": "Od",
         "to": "Komu"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "DEX pre interoperabilnú budúcnosť.",
         "description": "Cross-chain obchodovanie aktív, jednoduché vytváranie a zavádzanie nových aktív a tie najjednoduchšie swapy vôbec. Interoperabilná budúcnosť {Polkadot} je tu a my sme na jej čele!",
@@ -483,7 +478,6 @@
         "Swap": "Výmena",
         "Pool": "Fond",
         "balance": "Zostatok",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Cena",
         "transactionSubmitted": "Transakcia bola odoslaná",
         "transactionMessage": "{firstToken} a {secondToken}",
@@ -492,7 +486,6 @@
         "lossWarning": "Pri svojom obchode stratíte {value}%. Zistili sme problém s poskytovaním likvidity. To môže viesť k významným stratám počas výmeny tokenov. Uistite sa, že máte dostatočnú likviditu pre požadovaný swapový pár."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "približne",
         "slippageTolerance": "Tolerancia sklzu",
         "minReceived": "Obdržané minimum",
@@ -502,9 +495,6 @@
         "priceImpactTooltip": "Rozdiel medzi trhovou a odhadovanou cenou vzhľadom na veľkosť transakcie.",
         "liquidityProviderFee": "Poplatok poskytovateľom likvidity",
         "liquidityProviderFeeTooltip": "Časť z každej transakcie ({liquidityProviderFee}%) je odoslaná poskytovateľom likvidity ako stimul v rámci protokolu.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Nedostatočné množstvo {tokenSymbol}",
         "insufficientLiquidity": "Nedostatočná likvidita",
         "confirmSwap": "Potvrdiť výmenu",
@@ -515,7 +505,6 @@
         "errorFetching": "Chyba pri načítaní údajov"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Pre zobrazenie likvidity pripojte váš účet.",
         "liquidityNotFound": "Nenašla sa žiadna likvidita.",
         "addLiquidity": "Pridať likviditu",
@@ -524,7 +513,6 @@
         "pooledToken": "{tokenSymbol} vložené do fondu",
         "pairTokens": "{pair} tokeny fondu",
         "poolShare": "Váš podiel vo fonde",
-        "unknownAsset": "Neznáme aktívum",
         "description": "Keď pridáte likviditu, obdržíte tokeny fondu reprezentujúce vašu pozíciu. Tieto tokeny automaticky zarábajú poplatky úmerne vášmu podielu vo fonde a možno ich kedykoľvek vymeniť späť za zodpovedajúcu likviditu.",
         "strategicBonusApy": "Strategický bonus APY"
     },
@@ -569,9 +557,6 @@
             "alreadyAttached": "Token už bol pridaný"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Potvrdiť transakciu"
-    },
     "bridgeTransaction": {
         "details": "{from} pre {to}",
         "for": " pre ",
@@ -609,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} transakcia vo fáze spracovania…",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Vytvoriť novú transakciu",
-        "changeAccount": "@:changeAccountText v {Metamask}",
         "title": "Preklenovacia transakcia",
-        "expectedMetaMaskAddress": "Očakávaná adresa v {Metamask}:",
         "allowToken": "Povoliť {AppName} použitie vášho {tokenSymbol}",
         "approveToken": "Upozorňujeme, že token je potrebné schváliť iba raz. Ak má vaše rozšírenie viacero žiadostí o schválenie tokenu, uistite sa, že ste potvrdili iba tú poslednú, zatiaľ čo ostatné odmietnite.",
         "blocksLeft": "Zostáva {count} blokov…"
@@ -651,7 +632,6 @@
         "balance": "Zostatok",
         "pricePool": "Ceny a poplatky",
         "shareOfPool": "Podiel vo fonde",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} fond",
         "connect": "Pripojiť peňaženku",
         "supply": "Poskytnúť",
@@ -661,7 +641,6 @@
         "remove": "odstrániť",
         "add": "PRIDAŤ",
         "ok": "OK",
-        "networkFee": "@:networkFeeText",
         "alreadyCreated": "Tokenový pár je už vytvorený",
         "firstLiquidityProvider": "Ste prvým poskytovateľom likvidity",
         "firstLiquidityProviderInfo": "Pomer tokenov, ktoré pridáte, určí cenu tohto fondu.<br\/>Upravte pomer podľa vlastného uváženia a akciu potvrďte kliknutím na položku Poskytnúť."
@@ -673,9 +652,7 @@
         "price": "Cena"
     },
     "addLiquidity": {
-        "title": "Pridať likviditu",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Pridať likviditu"
     },
     "removeLiquidity": {
         "title": "Odobrať likviditu",
@@ -726,9 +703,6 @@
     },
     "rewards": {
         "title": "Nárokovať odmeny",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "a",
         "claiming": {
             "pending": "Prebieha nárokovanie…",
@@ -750,14 +724,11 @@
             "howToClaimRewards": "Pre uplatnenie nároku na {symbols} odmeny, musíte podpísať {count} {transactions} v {destination}. Odmeny budú pripísané na váš účet {Sora}."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Pripojiť {Ethereum} účet",
             "signAndClaim": "Podpísať a uplatniť nárok",
             "pendingInternal": "{Sora} transakcia čaká na spracovanie…",
             "pendingExternal": "{Ethereum} transakcia čaká na spracovanie…",
-            "retry": "@:retryText",
-            "checkRewards": "Skontrolovať",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Skontrolovať"
         },
         "notification": {
             "empty": "Pre tento účet nie sú k dispozícii žiadne pohľadávky"
@@ -784,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} poskytovateľ",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "Rozšírenie {name} je zaneprázdnené, skontrolujte ho",
             "extensionLogin": "Prihláste sa do vášho rozšírenia {name}",
@@ -858,7 +827,6 @@
         "settings": "Nastavenia",
         "switchTheme": "Prepnite do režimu {theme}",
         "switchLanguage": "Vyberte Jazyk",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Zobraziť vylúčenie zodpovednosti",
         "hideDisclaimer": "Skryť vylúčenie zodpovednosti"
     },
@@ -888,11 +856,8 @@
         "preview": "Pozvite nových používateľov a získajte 10 % z ich transakčných poplatkov. <br\/> Na začiatok prilepte ľubovoľné množstvo XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Ďalšie informácie <\/a>",
         "deposit": "Záloha",
         "balance": "Zostatok",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Nedostatočný viazaný zostatok",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Zadajte sumu {tokenSymbol}",
             "startInviting": "Bond {tokenSymbol} začnite pozývať",
             "bondMore": "Bond viac",
@@ -945,7 +910,7 @@
         "allowanceRequest": "Stlačte „Povoliť“ prístup k fotoaparátu"
     },
     "bridgeTransferNotification": {
-        "addToken": "Pridajte {symbol} do {Metamask}",
+        "addToken": "Pridajte {symbol} do peňaženky",
         "title": "Most transakcia úspešná"
     },
     "mobilePopup": {
@@ -1221,11 +1186,11 @@
         "historyBtn": "Moje nákupy",
         "historyTitle": "história transakcií",
         "moonpayTitle": "Kúpte si ETH cez MoonPay",
-        "moonpayDesc": "Kúpte si ETH tokeny na Ethereu a preneste ich do siete SORA cez most",
+        "moonpayDesc": "Kúpte si ETH tokeny na {Ethereum} a preneste ich do siete {SORA} cez most",
         "x1Title": "Kúpte si XOR kartou",
         "x1Btn": "Kúpte si XOR kartou",
         "errorMessage": "Ospravedlňujeme sa za nepríjemnosti. Na vyriešení tohto problému usilovne pracujeme. Skúste neskôr prosím.",
-        "x1Desc": "Kúpte si tokeny XOR priamo v sieti SORA pomocou svojej debetnej alebo kreditnej karty"
+        "x1Desc": "Kúpte si tokeny XOR priamo v sieti {SORA} pomocou svojej debetnej alebo kreditnej karty"
     },
     "acceptOnScrollText": "Posuňte sa na prijatie",
     "addressBook": {
@@ -1241,7 +1206,7 @@
         "detected": "Bola zistená nová adresa",
         "save": "Uložiť ako kontakt",
         "tooltip": "Zhromažďujte adresár zadaním mena a adresy, aby boli vaše kontakty organizované a aktuálne",
-        "notSoraAddress": "Táto adresa bude uložená ako adresa SORA nižšie. Uistite sa, že príjemca má prístup k reťazcu SORA:",
+        "notSoraAddress": "Táto adresa bude uložená ako adresa {SORA} nižšie. Uistite sa, že príjemca má prístup k reťazcu {SORA}:",
         "options": {
             "send": "Odoslať tokeny",
             "edit": "Upraviť kontakt",
@@ -1266,5 +1231,7 @@
     "minAmountText": "min. čiastka",
     "maxAmountText": "max. čiastka",
     "exceededAmountText": "{amount} bola prekročená",
-    "multipleRecipients": "Viacerí prijímatelia"
+    "multipleRecipients": "Viacerí prijímatelia",
+    "disconnectWalletText": "Odpojiť",
+    "connectEthereumWalletText": "Pripojte peňaženku {Ethereum}"
 }

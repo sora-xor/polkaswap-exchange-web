@@ -92,8 +92,6 @@ export const ZeroStringValue = '0';
 
 export const ApproximateSign = '~';
 
-export const MetamaskCancellationCode = 4001;
-
 export const DefaultSlippageTolerance = '0.5';
 
 export enum MarketAlgorithms {
@@ -255,6 +253,7 @@ export enum Components {
   ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
   NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',
   PaymentErrorDialog = 'shared/Dialog/PaymentError',
+  SelectProviderDialog = 'shared/Dialog/SelectProvider',
   // Shared Asset selection
   SelectAssetList = 'shared/SelectAsset/List',
   SelectToken = 'shared/SelectAsset/SelectToken',

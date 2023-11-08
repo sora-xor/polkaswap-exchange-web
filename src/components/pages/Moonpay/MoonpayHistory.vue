@@ -112,8 +112,6 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   @action.moonpay.getTransactions private getTransactions!: AsyncFnWithoutArgs;
   @action.moonpay.getCurrencies private getCurrencies!: AsyncFnWithoutArgs;
 
-  private unwatchEthereum!: FnWithoutArgs;
-
   pageAmount = 5; // override PaginationSearchMixin
   currentView = HistoryView;
   selectedItem: any = {};
@@ -121,33 +119,9 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
   created(): void {
     this.withApi(async () => {
       this.initMoonpayApi(); // MoonpayBridgeInitMixin
-
       await this.prepareEvmNetwork();
-
       await Promise.all([this.getTransactions(), this.getCurrencies()]);
-
-      this.unwatchEthereum = await ethersUtil.watchEthereum({
-        onAccountChange: (addressList: string[]) => {
-          if (addressList.length) {
-            this.setEvmAddress(addressList[0]);
-          } else {
-            this.resetEvmAddress();
-          }
-        },
-        onNetworkChange: (networkHex: string) => {
-          this.updateProvidedEvmNetwork(networkHex);
-        },
-        onDisconnect: () => {
-          this.resetProvidedEvmNetwork();
-        },
-      });
     });
-  }
-
-  beforeDestroy(): void {
-    if (typeof this.unwatchEthereum === 'function') {
-      this.unwatchEthereum();
-    }
   }
 
   get currenciesById(): MoonpayCurrenciesById {
@@ -235,7 +209,7 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
     if (!this.evmAddress) return this.t('connectWalletText');
 
     if (this.bridgeTxToSora) return this.t('moonpay.buttons.view');
-    if (!this.externalAccountIsMoonpayRecipient) return this.t('bridgeTransaction.changeAccount');
+    if (!this.externalAccountIsMoonpayRecipient) return this.t('changeAccountText');
     if (!this.isValidNetwork) return this.t('changeNetworkText');
 
     return this.t('moonpay.buttons.transfer');

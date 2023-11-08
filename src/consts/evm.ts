@@ -227,8 +227,8 @@ export const EVM_NETWORKS: Record<EvmNetwork, NetworkData> = {
     blockExplorerUrls: ['https://testnet.snowtrace.io'],
     shortName: 'FUJI',
   },
-  42161: {
-    id: 42161,
+  [EvmNetworkId.ArbitrumMainnet]: {
+    id: EvmNetworkId.ArbitrumMainnet,
     name: 'Arbitrum One Mainnet',
     nativeCurrency: {
       name: 'ETH',
@@ -239,8 +239,8 @@ export const EVM_NETWORKS: Record<EvmNetwork, NetworkData> = {
     blockExplorerUrls: ['https://arbiscan.io'],
     shortName: 'Arbitrum',
   },
-  421613: {
-    id: 421613,
+  [EvmNetworkId.ArbitrumGoerliTestnet]: {
+    id: EvmNetworkId.ArbitrumGoerliTestnet,
     name: 'Arbitrum Goerli Testnet',
     nativeCurrency: {
       name: 'ETH',
@@ -251,8 +251,8 @@ export const EVM_NETWORKS: Record<EvmNetwork, NetworkData> = {
     blockExplorerUrls: ['https://goerli.arbiscan.io'],
     shortName: 'Goerli',
   },
-  250: {
-    id: 250,
+  [EvmNetworkId.FantomMainnet]: {
+    id: EvmNetworkId.FantomMainnet,
     name: 'Fantom Opera',
     nativeCurrency: {
       name: 'Fantom',
@@ -263,8 +263,8 @@ export const EVM_NETWORKS: Record<EvmNetwork, NetworkData> = {
     blockExplorerUrls: ['https://ftmscan.com'],
     shortName: 'Opera',
   },
-  4002: {
-    id: 4002,
+  [EvmNetworkId.FantomTestnet]: {
+    id: EvmNetworkId.FantomTestnet,
     name: 'Fantom Testnet',
     nativeCurrency: {
       name: 'Fantom',

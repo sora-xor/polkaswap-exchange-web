@@ -7,7 +7,7 @@ import { ethers } from 'ethers';
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
 import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
-import ethersUtil from '@/utils/ethers-util';
+import ethersUtil, { Provider, METAMASK_ERROR } from '@/utils/ethers-util';
 
 import type { SubNetworkApps } from './types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
@@ -26,14 +26,82 @@ async function connectSubNetwork(context: ActionContext<any, any>): Promise<void
   if (ss58) commit.setSubSS58(ss58);
 }
 
+async function updateProvidedEvmNetwork(context: ActionContext<any, any>, evmNetworkId?: number): Promise<void> {
+  const { commit, rootDispatch } = web3ActionContext(context);
+  const evmNetwork = evmNetworkId ?? (await ethersUtil.getEvmNetworkId());
+
+  commit.setProvidedEvmNetwork(evmNetwork);
+
+  await rootDispatch.assets.updateRegisteredAssets();
+}
+
+async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
+  const { commit, dispatch } = web3ActionContext(context);
+
+  commit.resetEvmProviderSubscription();
+
+  const subscription = await ethersUtil.watchEthereum({
+    onAccountChange: (addressList: string[]) => {
+      if (addressList.length) {
+        commit.setEvmAddress(addressList[0]);
+      } else {
+        dispatch.resetEvmProviderConnection();
+      }
+    },
+    onNetworkChange: (networkHex: string) => {
+      const evmNetwork = ethersUtil.hexToNumber(networkHex);
+      updateProvidedEvmNetwork(context, evmNetwork);
+    },
+    onDisconnect: (error) => {
+      // this is just chain switch, it's ok
+      if (error?.code === METAMASK_ERROR.DisconnectedFromChain) {
+        return;
+      }
+      dispatch.resetEvmProviderConnection();
+    },
+  });
+
+  commit.setEvmProviderSubscription(subscription);
+}
+
 const actions = defineActions({
-  async updateProvidedEvmNetwork(context, networkHex?: string): Promise<void> {
+  async selectEvmProvider(context, provider: Provider): Promise<void> {
+    const { commit, dispatch, state } = web3ActionContext(context);
+    try {
+      commit.setEvmProviderLoading(true);
+      // reset prev connection
+      dispatch.resetEvmProviderConnection();
+      // create new connection
+      const address = await ethersUtil.connectEvmProvider(provider, {
+        chains: [state.ethBridgeEvmNetwork],
+        optionalChains: [...state.evmNetworkApps],
+      });
+      // if we have address - we are connected
+      if (address) {
+        // set new provider data
+        commit.setEvmAddress(address);
+        commit.setEvmProvider(provider);
+        await updateProvidedEvmNetwork(context);
+        await subscribeOnEvm(context);
+      }
+    } finally {
+      commit.setEvmProviderLoading(false);
+    }
+  },
+
+  resetEvmProviderConnection(context): void {
     const { commit } = web3ActionContext(context);
-    const evmNetwork = networkHex ? ethersUtil.hexToNumber(networkHex) : await ethersUtil.getEvmNetworkId();
-    commit.setProvidedEvmNetwork(evmNetwork);
+    // reset store
+    commit.resetEvmAddress();
+    commit.resetEvmProvider();
+    commit.resetEvmProviderNetwork();
+    commit.resetEvmProviderSubscription();
+    // reset connection
+    ethersUtil.disconnectEvmProvider();
   },
 
   async disconnectExternalNetwork(context): Promise<void> {
+    // SUB
     await subBridgeConnector.stop();
   },
 
@@ -45,7 +113,7 @@ const actions = defineActions({
     commit.setNetworkType(type);
     commit.setSelectedNetwork(id);
 
-    rootDispatch.assets.updateRegisteredAssets();
+    rootDispatch.assets.getRegisteredAssets();
 
     if (type === BridgeNetworkType.Sub) {
       await connectSubNetwork(context);
@@ -116,7 +184,7 @@ const actions = defineActions({
       const externalAddress = await contractInstance._sidechainTokens(...methodArgs);
       return externalAddress;
     } catch (error) {
-      console.error(error);
+      console.error(soraAssetId, error);
       return '';
     }
   },

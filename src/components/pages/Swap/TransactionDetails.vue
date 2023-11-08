@@ -31,7 +31,7 @@
       />
       <info-line
         v-if="isLoggedIn"
-        :label="t('swap.networkFee')"
+        :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
         :value="formattedNetworkFee"
         :asset-symbol="xorSymbol"
@@ -112,12 +112,12 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
     return [
       {
         id: 'from',
-        label: this.t('swap.firstPerSecond', { first: fromSymbol, second: toSymbol }),
+        label: this.t('firstPerSecond', { first: fromSymbol, second: toSymbol }),
         value: this.formatStringValue(this.price),
       },
       {
         id: 'to',
-        label: this.t('swap.firstPerSecond', { first: toSymbol, second: fromSymbol }),
+        label: this.t('firstPerSecond', { first: toSymbol, second: fromSymbol }),
         value: this.formatStringValue(this.priceReversed),
       },
     ];
