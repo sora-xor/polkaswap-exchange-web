@@ -60,10 +60,10 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
   @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
   @state.soraCard.fees fees!: Fees;
 
+  @getter.settings.x1Enabled private x1Enabled!: boolean;
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
-  @getter.settings.x1Enabled x1Enabled!: boolean;
 
   showX1Dialog = false;
   showPaywingsDialog = false;
