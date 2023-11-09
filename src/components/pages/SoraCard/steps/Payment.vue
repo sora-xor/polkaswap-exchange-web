@@ -77,8 +77,8 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   readonly buyOptions: Array<BuyButton> = [
-    { type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' },
-    { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: 'secondary' },
+    // { type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' },
+    { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: 'primary' },
   ];
 
   get title(): string {
