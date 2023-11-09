@@ -3,7 +3,7 @@ import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
-import WalletConnectProvider from '@walletconnect/web3-provider';
+import { EthereumProvider } from '@walletconnect/ethereum-provider';
 import { ethers } from 'ethers';
 
 import { ZeroStringValue } from '@/consts';
@@ -13,20 +13,17 @@ import { settingsStorage } from '@/utils/storage';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+import type { ChainsProps } from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
 
 type ethersProvider = ethers.BrowserProvider;
 
-let provider: any = null;
+let ethereumProvider: any = null;
 let ethersInstance: ethersProvider | null = null;
 
 export enum Provider {
-  Metamask,
-  WalletConnect,
-}
-
-interface ConnectOptions {
-  provider: Provider;
-  url?: string;
+  Metamask = 'Metamask',
+  TrustWallet = 'TrustWallet',
+  WalletConnect = 'WalletConnect',
 }
 
 // TODO [EVM]
@@ -41,6 +38,18 @@ const gasLimit = {
   },
   receiveBySidechainAssetId: 184000,
 };
+
+const WALLET_CONNECT_PROJECT_ID = 'feeab08b50e0d407f4eb875d69e162e8';
+
+export enum METAMASK_ERROR {
+  // 1013: Disconnected from chain. Attempting to connect
+  DisconnectedFromChain = 1013,
+  // 4001: User rejected the request
+  UserRejectedRequest = 4001,
+  // -32002: Already processing eth_requestAccounts. Please wait
+  // -32002: Request of type 'wallet_requestPermissions' already pending for origin. Please wait
+  AlreadyProcessing = -32002,
+}
 
 /**
  * It's in gwei.
@@ -66,42 +75,116 @@ const getEthBridgeGasLimit = (assetEvmAddress: string, kind: EthAssetKind, isSor
   }
 };
 
-async function onConnect(options: ConnectOptions): Promise<string> {
-  if (options.provider === Provider.Metamask) {
-    return onConnectMetamask();
-  } else {
-    return onConnectWallet(options.url);
+async function connectEvmProvider(provider: Provider, chains: ChainsProps): Promise<string> {
+  switch (provider) {
+    case Provider.WalletConnect:
+      return await useWalletConnectProvider(chains);
+    default:
+      return await useExtensionProvider(provider);
   }
 }
 
-async function onConnectMetamask(): Promise<string> {
-  provider = (await detectEthereumProvider({ timeout: 0 })) as any;
-  if (!provider) {
+function disconnectEvmProvider(): void {
+  ethereumProvider?.disconnect?.();
+  // clear walletconnect localstorage
+  for (const key in localStorage) {
+    if (key.startsWith('wc@2')) {
+      localStorage.removeItem(key);
+    }
+  }
+  localStorage.removeItem('WCM_VERSION');
+}
+
+function createWeb3Instance(ethereumProvider: any) {
+  // 'any' - because ethers throws errors after network switch
+  ethersInstance = new ethers.BrowserProvider(ethereumProvider, 'any');
+}
+
+async function useExtensionProvider(provider: Provider): Promise<string> {
+  switch (provider) {
+    case Provider.Metamask:
+      ethereumProvider = await detectEthereumProvider({ timeout: 0 });
+      break;
+    case Provider.TrustWallet:
+      ethereumProvider = (window as any).trustwallet;
+      break;
+    default:
+      throw new Error('Unknown provider');
+  }
+
+  if (!ethereumProvider) {
     throw new Error('provider.messages.installExtension');
   }
-  return getAccount();
+
+  createWeb3Instance(ethereumProvider);
+
+  return await getAccount();
 }
 
-async function onConnectWallet(url = 'https://cloudflare-eth.com'): Promise<string> {
-  provider = new WalletConnectProvider({
-    rpc: { 1: url },
-  });
-  await provider.enable();
-  return getAccount();
+const checkWalletConnectAvailability = async (chainProps: ChainsProps): Promise<void> => {
+  try {
+    const chainIdCheck = chainProps.chains?.[0] ?? 1;
+    const url = `https://rpc.walletconnect.com/v1/?chainId=eip155:${chainIdCheck}&projectId=${WALLET_CONNECT_PROJECT_ID}`;
+
+    await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({ id: 1, jsonrpc: '2.0', method: 'test', params: [] }),
+    });
+  } catch {
+    throw new Error('provider.messages.notAvailable');
+  }
+};
+
+async function useWalletConnectProvider(chainProps: ChainsProps): Promise<string> {
+  try {
+    await checkWalletConnectAvailability(chainProps);
+
+    ethereumProvider = await EthereumProvider.init({
+      projectId: WALLET_CONNECT_PROJECT_ID,
+      showQrModal: true,
+      ...chainProps,
+    });
+    // show qr modal
+    await ethereumProvider.enable();
+
+    createWeb3Instance(ethereumProvider);
+
+    return await getAccount();
+  } catch (error: any) {
+    // user cancelled qr modal
+    if (error.message === 'Connection request reset. Please try again.') {
+      return '';
+    }
+    throw error;
+  }
+}
+
+function getEthersInstance(): ethersProvider {
+  if (!ethereumProvider) {
+    throw new Error('No ethereum provider instance!');
+  }
+  if (!ethersInstance) {
+    throw new Error('No ethers instance!');
+  }
+  return ethersInstance;
 }
 
 async function getSigner(): Promise<ethers.JsonRpcSigner> {
-  const ethersInstance = await getEthersInstance();
+  const ethersInstance = getEthersInstance();
   const signer = await ethersInstance.getSigner();
 
   return signer;
 }
 
 async function getAccount(): Promise<string> {
-  const ethersInstance = await getEthersInstance();
-  await ethersInstance.send('eth_requestAccounts', []);
-  const signer = await getSigner();
-  return signer.getAddress();
+  try {
+    const ethersInstance = getEthersInstance();
+    await ethersInstance.send('eth_requestAccounts', []);
+    const signer = await getSigner();
+    return signer.getAddress();
+  } catch {
+    return '';
+  }
 }
 
 async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> {
@@ -117,7 +200,7 @@ async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> 
  */
 async function getAccountBalance(accountAddress: string): Promise<CodecString> {
   try {
-    const ethersInstance = await getEthersInstance();
+    const ethersInstance = getEthersInstance();
     const wei = await ethersInstance.getBalance(accountAddress);
 
     return wei.toString();
@@ -148,7 +231,7 @@ async function getTokenDecimals(tokenAddress: string): Promise<number> {
 
       return Number(result);
     } catch (error) {
-      console.error(error);
+      console.error(tokenAddress, error);
     }
   }
 
@@ -189,49 +272,29 @@ function addressesAreEqual(a: string, b: string): boolean {
   return !!a && !!b && a.toLowerCase() === b.toLowerCase();
 }
 
-async function getEthersInstance(): Promise<ethersProvider> {
-  if (!provider) {
-    provider = (await detectEthereumProvider({ timeout: 0 })) as any;
-  }
-  if (!provider) {
-    throw new Error('No ethereum provider instance!');
-  }
-  if (!ethersInstance) {
-    // 'any' - because ethers throws errors after network switch
-    ethersInstance = new ethers.BrowserProvider(provider, 'any');
-  }
-  return ethersInstance;
-}
-
 async function watchEthereum(cb: {
   onAccountChange: (addressList: string[]) => void;
   onNetworkChange: (networkId: string) => void;
-  onDisconnect: FnWithoutArgs;
+  onDisconnect: (error: any) => void;
 }): Promise<FnWithoutArgs> {
-  await getEthersInstance();
-
-  const ethereum = (window as any).ethereum;
-
-  if (ethereum) {
-    ethereum.on('accountsChanged', cb.onAccountChange);
-    ethereum.on('chainChanged', cb.onNetworkChange);
-    ethereum.on('disconnect', cb.onDisconnect);
+  if (ethereumProvider) {
+    ethereumProvider.on('accountsChanged', cb.onAccountChange);
+    ethereumProvider.on('chainChanged', cb.onNetworkChange);
+    ethereumProvider.on('disconnect', cb.onDisconnect);
   }
 
   return function disconnect() {
-    if (ethereum) {
-      ethereum.removeListener('accountsChanged', cb.onAccountChange);
-      ethereum.removeListener('chainChanged', cb.onNetworkChange);
-      ethereum.removeListener('disconnect', cb.onDisconnect);
+    if (ethereumProvider) {
+      ethereumProvider.off('accountsChanged', cb.onAccountChange);
+      ethereumProvider.off('chainChanged', cb.onNetworkChange);
+      ethereumProvider.off('disconnect', cb.onDisconnect);
     }
   };
 }
 
 async function addToken(address: string, symbol: string, decimals: number, image?: string): Promise<void> {
-  const ethereum = (window as any).ethereum;
-
   try {
-    await ethereum.request({
+    await ethereumProvider.request({
       method: 'wallet_watchAsset',
       params: {
         type: 'ERC20', // Initially only supports ERC20, but eventually more!
@@ -254,11 +317,11 @@ async function addToken(address: string, symbol: string, decimals: number, image
  * @param chainName translated chain name
  */
 async function switchOrAddChain(network: NetworkData, chainName?: string): Promise<void> {
-  const ethereum = (window as any).ethereum;
   const chainId = ethers.toQuantity(network.id);
 
   try {
-    await ethereum.request({
+    await ethereumProvider.request({
+      // https://eips.ethereum.org/EIPS/eip-3326
       method: 'wallet_switchEthereumChain',
       params: [
         {
@@ -272,7 +335,8 @@ async function switchOrAddChain(network: NetworkData, chainName?: string): Promi
     // "Unrecognized chain ID. Try adding the chain using wallet_addEthereumChain first."
     if (switchError.code === 4902) {
       try {
-        await ethereum.request({
+        await ethereumProvider.request({
+          // https://eips.ethereum.org/EIPS/eip-3085
           method: 'wallet_addEthereumChain',
           params: [
             {
@@ -292,7 +356,7 @@ async function switchOrAddChain(network: NetworkData, chainName?: string): Promi
 }
 
 async function getEvmNetworkId(): Promise<number> {
-  const ethersInstance = await getEthersInstance();
+  const ethersInstance = getEthersInstance();
   const network = await ethersInstance.getNetwork();
 
   return Number(network.chainId);
@@ -307,7 +371,7 @@ async function getEvmNetworkFee(
   isSoraToEvm: boolean
 ): Promise<CodecString> {
   try {
-    const ethersInstance = await getEthersInstance();
+    const ethersInstance = getEthersInstance();
     const { maxFeePerGas } = await ethersInstance.getFeeData();
     const gasPrice = maxFeePerGas ?? BigInt(0);
     const gasLimit = BigInt(getEthBridgeGasLimit(assetEvmAddress, assetKind as EthAssetKind, isSoraToEvm));
@@ -325,24 +389,39 @@ function calcEvmFee(gasPrice: bigint, gasAmount: bigint) {
 }
 
 async function getEvmTransaction(hash: string): Promise<ethers.TransactionResponse | null> {
-  const ethersInstance = await getEthersInstance();
+  const ethersInstance = getEthersInstance();
   const tx = await ethersInstance.getTransaction(hash);
 
   return tx;
 }
 
 async function getEvmTransactionReceipt(hash: string): Promise<ethers.TransactionReceipt | null> {
-  const ethersInstance = await getEthersInstance();
+  const ethersInstance = getEthersInstance();
   const tx = await ethersInstance.getTransactionReceipt(hash);
 
   return tx;
 }
 
 async function getBlock(number: number): Promise<ethers.Block | null> {
-  const ethersInstance = await getEthersInstance();
-  const block = await ethersInstance.getBlock(Number(number));
+  try {
+    const ethersInstance = getEthersInstance();
+    const block = await ethersInstance.getBlock(Number(number));
 
-  return block;
+    return block;
+  } catch {
+    return null;
+  }
+}
+
+async function getBlockNumber(): Promise<number> {
+  try {
+    const ethersInstance = getEthersInstance();
+    const blockNumber = await ethersInstance.getBlockNumber();
+
+    return blockNumber;
+  } catch {
+    return 0;
+  }
 }
 
 async function accountAddressToHex(address: string): Promise<string> {
@@ -394,7 +473,8 @@ function storeSelectedBridgeType(bridgeType: BridgeNetworkType) {
 }
 
 export default {
-  onConnect,
+  connectEvmProvider,
+  disconnectEvmProvider,
   getSigner,
   getAccount,
   getAccountBalance,
@@ -414,6 +494,7 @@ export default {
   getEvmTransaction,
   getEvmTransactionReceipt,
   getBlock,
+  getBlockNumber,
   addToken,
   switchOrAddChain,
   isNativeEvmTokenAddress,

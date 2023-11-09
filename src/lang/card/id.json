@@ -25,7 +25,7 @@
         "sendCodeBtn": "Kirim kode SMS",
         "firstNamePlaceholder": "Nama depan",
         "lastNamePlaceholder": "nama keluarga",
-        "verificationCodeText": "Anda akan menerima \\n kode verifikasi melalui SMS",
+        "verificationCodeText": "Anda akan menerima kode verifikasi melalui SMS",
         "phonePlaceholder": "Nomor telepon",
         "statusPendingTitle": "Verifikasi sedang berlangsung",
         "sendEmailLinkBtn": "Kirim tautan",
@@ -98,6 +98,7 @@
         "applicationFeeNote": "Catatan: Penerbitan kartu berbayar akan tersedia pada tahap selanjutnya.",
         "statusRejectReasonMultiple": "Permohonan Anda telah ditolak karena beberapa alasan:",
         "selectCountryText": "Pilih negaramu",
+        "filterCountries": "Filter berdasarkan Negara atau Kode Panggilan",
         "ibanPendingDesc": "Penerbitan IBAN Anda tertunda.\n Jika menunggu lebih dari 72 jam, hubungi kami melalui {email}"
     }
 }

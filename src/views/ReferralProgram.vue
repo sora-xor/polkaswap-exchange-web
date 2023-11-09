@@ -95,11 +95,7 @@
                 is-formatted
               >
                 <template #info-line-prefix>
-                  <s-tooltip :content="copyTooltip(t('transaction.referral'))" tabindex="-1">
-                    <span class="info-line-address" @click="handleCopyAddress(invitedUser, $event)">
-                      {{ formatReferralAddress(invitedUser) }}
-                    </span>
-                  </s-tooltip>
+                  <formatted-address :value="invitedUser" :tooltip-text="t('transaction.referral')" />
                 </template>
               </info-line>
             </div>
@@ -165,7 +161,7 @@
         type="primary"
         @click="handleConnect"
       >
-        {{ t('referralProgram.action.connectWallet') }}
+        {{ t('connectWalletText') }}
       </s-button>
     </template>
   </div>
@@ -191,6 +187,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 @Component({
   components: {
     FormattedAmount: components.FormattedAmount,
+    FormattedAddress: components.FormattedAddress,
     InfoLine: components.InfoLine,
     ReferralBonding: lazyView(PageNames.ReferralBonding),
     WalletAvatar: components.WalletAvatar,
@@ -393,10 +390,6 @@ export default class ReferralProgram extends Mixins(
         await this.subscribeOnReferrer();
       }
     });
-  }
-
-  formatReferralAddress(invitedUser: string): string {
-    return this.formatAddress(invitedUser, 12);
   }
 
   getLinkLabel(address: string): string {

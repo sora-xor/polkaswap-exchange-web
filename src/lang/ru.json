@@ -174,10 +174,10 @@
         "balance": {
             "transferable": "Доступны к отправке",
             "frozen": "Заморожено",
-            "locked": "- Заблокировано",
-            "reserved": "- Зарезервировано",
+            "locked": "Заблокировано",
+            "reserved": "Зарезервировано",
             "total": "Всего",
-            "bonded": "- В обеспечении"
+            "bonded": "В обеспечении"
         },
         "totalAssetsValue": "Общая стоимость ваших активов:",
         "details": "Детали",
@@ -309,7 +309,7 @@
         "comment": "Комментарий"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Сменить сеть в {Metamask}",
+    "changeNetworkText": "Сменить сеть в кошельке",
     "transactionText": "транзакцию | транзакции",
     "connectWalletText": "Подключить аккаунт",
     "changeAccountText": "Сменить аккаунт",
@@ -319,7 +319,7 @@
     "bridgeText": "Мост",
     "disclaimer": "{disclaimerPrefix} этот веб-сайт поддерживается {Sora} сообществом. Прежде чем продолжить использование этого веб-сайта, просмотрите {polkaswapFaqLink} и документацию, которая включает подробное объяснение принципов работы {AppName}, а также {memorandumLink} и {privacyLink}. Эти документы важны для обеспечения безопасности и положительного пользовательского опыта. Используя {AppName}, вы подтверждаете, что прочитали и поняли эти документы. Вы также соглашаетесь со следующим: 1) Вы несете исключительную ответственность за соблюдение всех законов, которые могут применяться к использованию вами {AppName} в Вашей правовой юрисдикции; 2) Вы понимаете, что текущая версия {AppName} является альфа-версией: она не была полностью протестирована, и некоторые функции могут работать не так, как задумано; и 3) Вы понимаете и добровольно принимаете риски, связанные с использованием {AppName}, включая, помимо прочего, риск потери токенов. Еще раз подчеркиваем - пожалуйста, не используйте сервис, не прочитав {polkaswapFaqLink}, {memorandumLink} и {privacyLink}!",
     "poweredBy": "Работает на",
-    "confirmTransactionText": "Подтвердите транзакцию в {direction}",
+    "confirmTransactionText": "Подтвердите транзакцию",
     "retryText": "Повторить",
     "networkFeeText": "Комиссия сети",
     "networkFeeTooltipText": "Комиссия сети используется для обеспечения роста и стабильной работы системы {Sora}.",
@@ -385,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "О приложении",
-        "learnMore": "Узнать больше",
         "network": {
             "title": "Что такое {Sora}?",
             "description": "{AppName} построен поверх сети {Sora}, а токен {Sora} (XOR) используется для газа\/комиссий и предоставления ликвидности в {AppName}. {Sora} Network позволяет снизить комиссию, ускорить транзакции, упростить достижение консенсуса сети, и ориентирована на обеспечение взаимодействия с другими экосистемами блокчейнов, такими как {Ethereum}."
@@ -437,10 +436,6 @@
         "from": "Из",
         "to": "На"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "DEX для функционально совместимого будущего.",
         "description": "Межсетевой обмен активами, упрощенное создание и листинг новых активов, а также самый простой обмен. Будущее высокой совместимости {Polkadot} уже здесь, и мы в нем первые!",
@@ -483,7 +478,6 @@
         "Swap": "Обмен",
         "Pool": "Пул",
         "balance": "Баланс",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Цена",
         "transactionSubmitted": "Транзакция отправлена",
         "transactionMessage": "{firstToken} и {secondToken}",
@@ -492,7 +486,6 @@
         "lossWarning": "Вы потеряете {value}% на своей сделке. Мы обнаружили проблему с обеспечением ликвидности. Это может привести к значительным потерям при обмене токенов. Пожалуйста, убедитесь, что для желаемой пары достаточно ликвидности."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "приблизительно",
         "slippageTolerance": "Допустимое проскальзывание",
         "minReceived": "Минимум получено",
@@ -502,9 +495,6 @@
         "priceImpactTooltip": "Разница между рыночной ценой и оценочной ценой из-за размера сделки.",
         "liquidityProviderFee": "Комиссия поставщика ликвидности",
         "liquidityProviderFeeTooltip": "Часть каждой сделки ({liquidityProviderFee}%) направляется поставщикам ликвидности в качестве вознаграждения протокола.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Недостаточный {tokenSymbol} баланс",
         "insufficientLiquidity": "Недостаточная ликвидность",
         "confirmSwap": "Подтвердить обмен",
@@ -515,7 +505,6 @@
         "errorFetching": "Ошибка при получении данных"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Подключитесь к кошельку, чтобы добавить и посмотреть Вашу ликвидность.",
         "liquidityNotFound": "Ликвидность не найдена",
         "addLiquidity": "Добавить",
@@ -524,7 +513,6 @@
         "pooledToken": "{tokenSymbol} в пуле",
         "pairTokens": "{pair} Токены Пула",
         "poolShare": "Ваша доля в пуле",
-        "unknownAsset": "Неизвестный актив",
         "description": "Когда вы добавляете ликвидность, вам выдаются токены пула, представляющие вашу позицию. Эти токены автоматически зарабатывают на комиссиях пула пропорционально вашей доле. Вы можете изъять ликвидность в любое время.",
         "strategicBonusApy": "Стратегический бонус APY"
     },
@@ -569,9 +557,6 @@
             "alreadyAttached": "Этот токен уже был добавлен"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Подтвердить транзакцию"
-    },
     "bridgeTransaction": {
         "details": "{from} для {to}",
         "for": " для ",
@@ -609,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} транзакция в процессе...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Создать новую транзакцию",
-        "changeAccount": "@:changeAccountText в {Metamask}",
         "title": "Транзакция Моста",
-        "expectedMetaMaskAddress": "Ожидаемый адрес в {Metamask}",
         "allowToken": "Разрешить {AppName} использовать ваши {tokenSymbol}",
         "approveToken": "Обратите внимание, что подтверждать токен нужно только один раз. Если ваше расширение имеет несколько запросов на утверждение токена, убедитесь, что вы подтвердили только последний из них, а остальные отклонили.",
         "blocksLeft": "{count} блоков осталось..."
@@ -651,7 +632,6 @@
         "balance": "Баланс",
         "pricePool": "Цены и доля пула",
         "shareOfPool": "Доля пула",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "{first}-{second} Токены пула",
         "connect": "Подключить кошелек",
         "supply": "Добавить",
@@ -661,7 +641,6 @@
         "remove": "Удалить",
         "add": "Добавить",
         "ok": "OK",
-        "networkFee": "Комиссия сети",
         "alreadyCreated": "Пара токенов уже создана",
         "firstLiquidityProvider": "Вы первый провайдер ликвидности",
         "firstLiquidityProviderInfo": "Соотношение добавляемых токенов будет определять цену этого пула.<br\/> Настройте соотношение на ваше усмотрение и нажмите \"добавить\" для подтверждения действия."
@@ -673,9 +652,7 @@
         "price": "Цена"
     },
     "addLiquidity": {
-        "title": "Добавить ликвидность",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Добавить ликвидность"
     },
     "removeLiquidity": {
         "title": "Забрать ликвидность",
@@ -726,9 +703,6 @@
     },
     "rewards": {
         "title": "Получить награды",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "и",
         "claiming": {
             "pending": "Получение...",
@@ -750,14 +724,11 @@
             "howToClaimRewards": "Чтобы получить Ваши {symbols} вознаграждения, Вы должны подписать {count} {transactions} в {destination}. Вознаграждения будут перечислены на ваш счет {Sora}."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Подключите {Ethereum} аккаунт",
             "signAndClaim": "Войти и получить",
             "pendingInternal": "{Sora} транзакция в ожидании...",
             "pendingExternal": "{Ethereum} транзакция в ожидании...",
-            "retry": "@:retryText",
-            "checkRewards": "Проверить",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Проверить"
         },
         "notification": {
             "empty": "Нет доступных наград для этого аккаунта"
@@ -784,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "{Ethereum} провайдер",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "{name} расширение занято, пожалуйста, проверьте его",
             "extensionLogin": "Пожалуйста, войдите в Ваше {name} расширение",
@@ -858,7 +827,6 @@
         "settings": "Настройки",
         "switchTheme": "Перейти в {theme} режим",
         "switchLanguage": "Изменить язык",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Показать дисклеймер",
         "hideDisclaimer": "Скрыть дисклеймер"
     },
@@ -888,11 +856,8 @@
         "preview": "Приглашайте новых пользователей и получайте 10% от их транзакционных сборов.<br\/>Чтобы начать, зарезервируйте любую сумму XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Узнать больше<\/a>",
         "deposit": "Пополнить",
         "balance": "Баланс",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Недостаточный зарезервированный баланс",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Введите сумму {tokenSymbol}",
             "startInviting": "Зарезервируйте {tokenSymbol}, чтобы начать приглашать",
             "bondMore": "Внести еще",
@@ -945,7 +910,7 @@
         "allowanceRequest": "Нажмите «Разрешить», чтобы дать доступ к камере"
     },
     "bridgeTransferNotification": {
-        "addToken": "Добавить {symbol} в {Metamask}",
+        "addToken": "Добавить {symbol} в кошелек",
         "title": "Транзакция моста прошла успешно"
     },
     "mobilePopup": {
@@ -1221,11 +1186,11 @@
         "historyBtn": "Мои покупки",
         "historyTitle": "История транзакций",
         "moonpayTitle": "Купить ETH через MoonPay",
-        "moonpayDesc": "Приобретите токены ETH на Ethereum и переведите их в сеть SORA через мост.",
+        "moonpayDesc": "Приобретите токены ETH на {Ethereum} и переведите их в сеть {SORA} через мост.",
         "x1Title": "Купить XOR с вашей карты",
         "x1Btn": "Купить XOR с картой",
         "errorMessage": "Приносим извинения за неудобства. Мы прилагаем все усилия, чтобы решить эту проблему. Пожалуйста, повторите попытку позже.",
-        "x1Desc": "Приобретайте токены XOR непосредственно в сети SORA с помощью дебетовой или кредитной карты."
+        "x1Desc": "Приобретайте токены XOR непосредственно в сети {SORA} с помощью дебетовой или кредитной карты."
     },
     "acceptOnScrollText": "Прокрутите, чтобы принять",
     "addressBook": {
@@ -1241,7 +1206,7 @@
         "detected": "Обнаружен новый адрес",
         "save": "Сохранить как контакт",
         "tooltip": "Соберите адресную книгу, указав имя и адрес, чтобы ваши контакты были упорядоченными и актуальными.",
-        "notSoraAddress": "Этот адрес будет сохранен как адрес SORA ниже. Убедитесь, что получатель может получить доступ к цепочке SORA:",
+        "notSoraAddress": "Этот адрес будет сохранен как адрес {SORA} ниже. Убедитесь, что получатель может получить доступ к цепочке {SORA}:",
         "options": {
             "send": "Отправить токены",
             "edit": "Изменить контакт",
@@ -1266,5 +1231,7 @@
     "minAmountText": "мин. сумма",
     "maxAmountText": "макс. сумма",
     "exceededAmountText": "{amount} ограничена",
-    "multipleRecipients": "Нескольким получателям"
+    "multipleRecipients": "Нескольким получателям",
+    "disconnectWalletText": "Отключиться",
+    "connectEthereumWalletText": "Подключите кошелек {Ethereum}"
 }

@@ -89,7 +89,6 @@ export default class SelectAssetList extends Mixins(TranslationMixin, mixins.For
 
     &__balance-container {
       text-align: right;
-      min-width: 40%;
 
       .formatted-amount__container {
         flex-direction: column;

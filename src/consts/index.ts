@@ -92,8 +92,6 @@ export const ZeroStringValue = '0';
 
 export const ApproximateSign = '~';
 
-export const MetamaskCancellationCode = 4001;
-
 export const DefaultSlippageTolerance = '0.5';
 
 export enum MarketAlgorithms {
@@ -175,6 +173,7 @@ export enum Components {
   ConfirmationInfo = 'pages/SoraCard/ConfirmationInfo',
   TermsAndConditions = 'pages/SoraCard/steps/TermsAndConditions',
   ToSDialog = 'pages/SoraCard/steps/ToSDialog',
+  SelectCountryDialog = 'pages/SoraCard/steps/SelectCountryDialog',
   Phone = 'pages/SoraCard/steps/Phone',
   Email = 'pages/SoraCard/steps/Email',
   Payment = 'pages/SoraCard/steps/Payment',
@@ -239,6 +238,7 @@ export enum Components {
   ConfirmBridgeTransactionDialog = 'shared/Dialog/ConfirmBridgeTransaction',
   NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',
   PaymentErrorDialog = 'shared/Dialog/PaymentError',
+  SelectProviderDialog = 'shared/Dialog/SelectProvider',
   // Shared Asset selection
   SelectAssetList = 'shared/SelectAsset/List',
   SelectToken = 'shared/SelectAsset/SelectToken',
@@ -338,7 +338,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     href: '/#/stats',
   },
   {
-    icon: 'sora-card',
+    icon: 'el-icon-bank-card',
     title: PageNames.SoraCard,
     href: '/#/card',
   },

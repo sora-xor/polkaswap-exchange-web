@@ -60,6 +60,7 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
   @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
   @state.soraCard.fees fees!: Fees;
 
+  @getter.settings.x1Enabled private x1Enabled!: boolean;
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
@@ -76,10 +77,15 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
     }
   }
 
-  readonly buyOptions: Array<BuyButton> = [
-    { type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' },
-    { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: 'secondary' },
-  ];
+  get buyOptions(): Array<BuyButton> {
+    const options: Array<BuyButton> = [
+      { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: !this.x1Enabled ? 'primary' : 'secondary' },
+    ];
+    if (this.x1Enabled) {
+      options.push({ type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' });
+    }
+    return options;
+  }
 
   get title(): string {
     return this.t('card.xorAmountNeededTitle', { value: this.xorToDeposit.format(3) });

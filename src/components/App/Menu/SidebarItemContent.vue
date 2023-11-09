@@ -1,10 +1,6 @@
 <template>
   <component :is="tag" :class="classes" :tabindex="tabindex">
-    <!-- TODO: [TECH] move from fonts provided values -->
-    <div v-if="icon === 'sora-card'" class="icon-container">
-      <sora-card-icon class="sora-card-sidebar-icon" />
-    </div>
-    <div v-else-if="icon" class="icon-container">
+    <div if="icon" class="icon-container">
       <s-icon :name="icon" size="28" />
     </div>
     <span>{{ title }}</span>
@@ -16,13 +12,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
-import SoraCardIcon from './SoraCardIcon.vue';
-
-@Component({
-  components: {
-    SoraCardIcon,
-  },
-})
+@Component
 export default class AppSidebarItemContent extends Mixins(TranslationMixin) {
   @Prop({ default: '', type: String }) readonly icon!: string;
   @Prop({ default: '', type: String }) readonly title!: string;
@@ -92,14 +82,5 @@ $icon-size: 42px;
     background-color: transparent;
     box-shadow: none;
   }
-}
-.sora-card-sidebar-icon {
-  display: block;
-  margin: auto;
-  background-repeat: no-repeat;
-  background-position: center center;
-}
-.el-menu-item:not(.is-active):not(.is-disabled):focus .sora-card-sidebar-icon path {
-  fill: var(--s-color-base-content-secondary) !important; // focus state of sora card item
 }
 </style>

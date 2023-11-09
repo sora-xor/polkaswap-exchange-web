@@ -25,7 +25,7 @@
         "sendCodeBtn": "Pošlite SMS kód",
         "firstNamePlaceholder": "Krstné meno",
         "lastNamePlaceholder": "Priezvisko",
-        "verificationCodeText": "Dostanete \\n overovací kód prostredníctvom SMS",
+        "verificationCodeText": "Dostanete overovací kód prostredníctvom SMS",
         "phonePlaceholder": "Telefónne číslo",
         "statusPendingTitle": "Prebieha overovanie",
         "sendEmailLinkBtn": "Odoslať odkaz",
@@ -98,6 +98,7 @@
         "applicationFeeNote": "Poznámka: Vydanie platenej karty bude k dispozícii neskôr.",
         "statusRejectReasonMultiple": "Vaša žiadosť bola zamietnutá z viacerých dôvodov:",
         "selectCountryText": "Vyber svoju krajinu",
+        "filterCountries": "Filtrovať podľa krajiny alebo kódového čísla",
         "ibanPendingDesc": "Čaká sa na vydanie vášho čísla IBAN.\n V prípade čakania dlhšieho ako 72 hodín nás kontaktujte na {email}"
     }
 }

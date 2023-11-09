@@ -48,15 +48,30 @@
                 <div class="rewards-footer">
                   <s-divider />
                   <div v-if="evmAddress" class="rewards-account">
-                    <span>{{ formatAddress(evmAddress, 8) }}</span>
-                    <span>{{ t('rewards.connected') }}</span>
+                    <div class="rewards-account-group">
+                      <img
+                        v-if="changeWalletEvm"
+                        :src="getEvmProviderIcon(evmProvider)"
+                        :alt="evmProvider"
+                        class="rewards-account-logo"
+                      />
+                      <formatted-address :value="evmAddress" :symbols="8" />
+                    </div>
+                    <div class="rewards-account-group">
+                      <span v-if="changeWalletEvm" class="rewards-account-btn" @click="connectEvmWallet">
+                        {{ t('changeAccountText') }}
+                      </span>
+                      <span v-else>{{ t('connectedText') }}</span>
+                      <span
+                        v-if="changeWalletEvm"
+                        class="rewards-account-btn disconnect"
+                        @click="resetEvmProviderConnection"
+                      >
+                        {{ t('disconnectWalletText') }}
+                      </span>
+                    </div>
                   </div>
-                  <s-button
-                    v-else
-                    class="rewards-connect-button"
-                    type="tertiary"
-                    @click="connectExternalAccountProcess"
-                  >
+                  <s-button v-else class="rewards-connect-button" type="tertiary" @click="connectEvmWallet">
                     {{ t('rewards.action.connectExternalWallet') }}
                   </s-button>
                   <div v-if="externalRewardsHintText" class="rewards-footer-hint">{{ externalRewardsHintText }}</div>
@@ -91,6 +106,7 @@
         {{ actionButtonText }}
       </s-button>
     </div>
+    <select-provider-dialog />
   </div>
 </template>
 
@@ -99,7 +115,7 @@ import { CodecString, FPNumber } from '@sora-substrate/util';
 import { KnownAssets, KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { RewardType } from '@sora-substrate/util/build/rewards/consts';
 import { components, mixins, groupRewardsByAssetsList } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
@@ -122,7 +138,9 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
     RewardsAmountTable: lazyComponent(Components.RewardsAmountTable),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     TokensRow: lazyComponent(Components.TokensRow),
+    SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
     InfoLine: components.InfoLine,
+    FormattedAddress: components.FormattedAddress,
   },
 })
 export default class Rewards extends Mixins(
@@ -167,27 +185,14 @@ export default class Rewards extends Mixins(
   @action.rewards.subscribeOnRewards private subscribeOnRewards!: AsyncFnWithoutArgs;
   @action.rewards.unsubscribeFromRewards private unsubscribeFromRewards!: AsyncFnWithoutArgs;
 
-  private unwatchEthereum!: FnWithoutArgs;
-
-  destroyed(): void {
-    this.reset();
+  @Watch('evmAddress')
+  private checkRewardsAfterAccountChange(): void {
+    this.checkExternalRewards();
   }
 
   async created(): Promise<void> {
     this.setStartSubscriptions([this.subscribeOnRewards]);
     this.setResetSubscriptions([this.unsubscribeFromRewards]);
-
-    this.unwatchEthereum = await ethersUtil.watchEthereum({
-      onAccountChange: (addressList: string[]) => {
-        if (addressList.length) {
-          this.changeExternalAccountProcess(addressList[0]);
-        } else {
-          this.disconnectExternalAccountProcess();
-        }
-      },
-      onNetworkChange: () => {},
-      onDisconnect: () => {},
-    });
   }
 
   mounted(): void {
@@ -197,9 +202,11 @@ export default class Rewards extends Mixins(
   }
 
   beforeDestroy(): void {
-    if (typeof this.unwatchEthereum === 'function') {
-      this.unwatchEthereum();
-    }
+    this.disconnectExternalNetwork();
+  }
+
+  destroyed(): void {
+    this.reset();
   }
 
   get transactionStepsCount(): number {
@@ -321,7 +328,7 @@ export default class Rewards extends Mixins(
 
   get feeInfo(): object {
     return {
-      label: this.t('rewards.networkFee'),
+      label: this.t('networkFeeText'),
       labelTooltip: this.t('networkFeeTooltipText'),
       value: this.formatCodecNumber(this.fee),
       assetSymbol: KnownSymbols.XOR,
@@ -369,10 +376,9 @@ export default class Rewards extends Mixins(
 
   get actionButtonText(): string {
     if (this.actionButtonLoading) return '';
-    if (!this.isSoraAccountConnected) return this.t('rewards.action.connectWallet');
-    if (this.transactionError) return this.t('rewards.action.retry');
-    if (this.isInsufficientBalance)
-      return this.t('rewards.action.insufficientBalance', { tokenSymbol: KnownSymbols.XOR });
+    if (!this.isSoraAccountConnected) return this.t('connectWalletText');
+    if (this.transactionError) return this.t('retryText');
+    if (this.isInsufficientBalance) return this.t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR });
     if (!this.rewardsClaiming) return this.t('rewards.action.signAndClaim');
     if (this.externalRewardsAvailable && this.transactionStep === 1) return this.t('rewards.action.pendingExternal');
     if (!this.externalRewardsAvailable || this.transactionStep === 2) return this.t('rewards.action.pendingInternal');
@@ -387,6 +393,13 @@ export default class Rewards extends Mixins(
     return (
       this.rewardsClaiming || (this.isSoraAccountConnected && (!this.rewardsAvailable || this.isInsufficientBalance))
     );
+  }
+
+  get changeWalletEvm(): boolean {
+    // [TODO: WalletConnect] Remove
+    return false;
+    // [TODO: WalletConnect] Enable
+    // return !!this.evmProvider;
   }
 
   async handleAction(): Promise<void> {
@@ -410,21 +423,6 @@ export default class Rewards extends Mixins(
     if (!this.rewardsAvailable && showNotification) {
       this.showAppNotification(this.t('rewards.notification.empty'));
     }
-  }
-
-  async connectExternalAccountProcess(): Promise<void> {
-    await this.connectEvmWallet();
-    await this.checkExternalRewards();
-  }
-
-  private async disconnectExternalAccountProcess(): Promise<void> {
-    this.resetEvmAddress();
-    await this.checkExternalRewards();
-  }
-
-  private async changeExternalAccountProcess(address: string): Promise<void> {
-    await this.setEvmAddress(address);
-    await this.checkExternalRewards();
   }
 
   private async claimRewardsProcess(): Promise<void> {
@@ -537,6 +535,25 @@ export default class Rewards extends Mixins(
     line-height: var(--s-line-height-big);
     margin-top: $inner-spacing-small;
     padding: 0 $inner-spacing-tiny;
+
+    &-group {
+      display: flex;
+      align-items: center;
+      gap: $inner-spacing-mini;
+    }
+
+    &-logo {
+      width: 16px;
+      height: 16px;
+    }
+
+    &-btn {
+      @include copy-address;
+
+      &.disconnect {
+        color: var(--s-color-status-error);
+      }
+    }
   }
 
   &-fee {
