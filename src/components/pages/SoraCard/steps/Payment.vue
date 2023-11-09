@@ -77,9 +77,15 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
     }
   }
 
-  readonly buyOptions: Array<BuyButton> = [
-    { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: !this.x1Enabled ? 'primary' : 'secondary' },
-  ];
+  get buyOptions(): Array<BuyButton> {
+    const options: Array<BuyButton> = [
+      { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: !this.x1Enabled ? 'primary' : 'secondary' },
+    ];
+    if (this.x1Enabled) {
+      options.push({ type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' });
+    }
+    return options;
+  }
 
   get title(): string {
     return this.t('card.xorAmountNeededTitle', { value: this.xorToDeposit.format(3) });
@@ -118,12 +124,6 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
       case BuyButtonType.Bridge:
         this.bridgeTokens();
         break;
-    }
-  }
-
-  mounted(): void {
-    if (this.x1Enabled) {
-      this.buyOptions.push({ type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' });
     }
   }
 }
