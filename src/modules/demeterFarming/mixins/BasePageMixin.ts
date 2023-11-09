@@ -80,9 +80,9 @@ export default class BasePageMixin extends Mixins(AprMixin) {
   }
 
   get selectedPool(): Nullable<DemeterPool> {
-    if (!(this.baseAsset && this.poolAsset && this.pools?.[this.baseAsset]?.[this.poolAsset])) return null;
+    if (!(this.baseAsset && this.poolAsset && this.pools[this.baseAsset]?.[this.poolAsset])) return null;
 
-    return this.pools?.[this.baseAsset]?.[this.poolAsset]?.find?.((pool) => pool.rewardAsset === this.rewardAsset);
+    return this.pools[this.baseAsset]?.[this.poolAsset]?.find((pool) => pool.rewardAsset === this.rewardAsset);
   }
 
   get selectedAccountPool(): Nullable<DemeterAccountPool> {
