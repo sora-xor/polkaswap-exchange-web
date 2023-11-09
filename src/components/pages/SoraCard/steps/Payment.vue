@@ -63,6 +63,7 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
+  @getter.settings.x1Enabled x1Enabled!: boolean;
 
   showX1Dialog = false;
   showPaywingsDialog = false;
@@ -77,8 +78,7 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   readonly buyOptions: Array<BuyButton> = [
-    // { type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' },
-    { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: 'primary' },
+    { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: this.x1Enabled ? 'primary' : 'secondary' },
   ];
 
   get title(): string {
@@ -118,6 +118,12 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
       case BuyButtonType.Bridge:
         this.bridgeTokens();
         break;
+    }
+  }
+
+  mounted(): void {
+    if (this.x1Enabled) {
+      this.buyOptions.push({ type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' });
     }
   }
 }
