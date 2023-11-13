@@ -61,6 +61,7 @@ import { delay } from '@/utils';
 export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.TransactionMixin) {
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<any>;
+  @state.orderBook.currentOrderBook currentOrderBook!: any;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
@@ -113,6 +114,11 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     const base = ['order-history-cancel'];
     let inactive = true;
 
+    if (this.isBookStopped) {
+      base.push('order-history-cancel--inactive');
+      return base;
+    }
+
     if (cancel === Cancel.all && this.userLimitOrders.length) {
       inactive = false;
     }
@@ -126,11 +132,26 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     return base;
   }
 
+  get isBookStopped(): boolean {
+    if (this.currentOrderBook) {
+      const [book]: any = Object.values(this.currentOrderBook);
+
+      if (book.status === 'Stop') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   connectAccount(): void {
     router.push({ name: PageNames.Wallet });
   }
 
   openConfirmCancelDialog(): void {
+    if (this.isBookStopped) return;
     this.confirmCancelOrderVisibility = true;
   }
 
@@ -140,6 +161,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   }
 
   async handleCancel(cancel: Cancel): Promise<void> {
+    if (this.isBookStopped) return;
     if (!this.userLimitOrders.length) return;
 
     if (cancel === Cancel.multiple) {

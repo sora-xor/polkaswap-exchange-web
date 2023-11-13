@@ -7,7 +7,7 @@
       empty-text="No open orders"
       @selection-change="handleSelectionChange"
     >
-      <s-table-column type="selection" />
+      <s-table-column type="selection" :selectable="isSelectionAllowed" />
       <s-table-column :width="'70'">
         <template #header>
           <span>TIME</span>
@@ -158,6 +158,12 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 
   handleSelectionChange(rows): void {
     this.$emit('cancelled-orders', rows);
+  }
+
+  isSelectionAllowed(): boolean {
+    const [book]: any = Object.values(this.currentOrderBook);
+
+    return !(book.status === 'Stop');
   }
 
   @Watch('baseAssetAddress')
