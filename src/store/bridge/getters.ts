@@ -94,6 +94,14 @@ const getters = defineGetters<BridgeState>()({
     return state.isSoraToEvm ? soraAddress : evmAddress;
   },
 
+  senderName(...args): string {
+    const { state, rootState, getters } = bridgeGetterContext(args);
+    if (getters.isSubBridge) {
+      return rootState.wallet.account.name;
+    }
+    return state.isSoraToEvm ? rootState.wallet.account.name : '';
+  },
+
   recipient(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
     const { address: soraAddress } = rootState.wallet.account;
@@ -104,6 +112,14 @@ const getters = defineGetters<BridgeState>()({
     }
 
     return state.isSoraToEvm ? evmAddress : soraAddress;
+  },
+
+  recipientName(...args): string {
+    const { state, rootState, getters } = bridgeGetterContext(args);
+    if (getters.isSubBridge) {
+      return rootState.web3.subAddressName;
+    }
+    return state.isSoraToEvm ? '' : rootState.wallet.account.name;
   },
 
   isEthBridge(...args): boolean {

@@ -109,7 +109,13 @@
                   :alt="evmProvider"
                   class="connect-wallet-logo"
                 />
-                <formatted-address :value="sender" :symbols="8" :tooltip-text="getCopyTooltip(isSoraToEvm)" />
+                <div v-if="senderName" class="connect-wallet-group">
+                  <wallet-avatar :address="sender" :size="18" class="account-gravatar" />
+                  <s-tooltip :content="copyTooltip(getCopyTooltip(isSoraToEvm))" tabindex="-1">
+                    <span class="connect-wallet-btn">{{ senderName }}</span>
+                  </s-tooltip>
+                </div>
+                <formatted-address v-else :value="sender" :symbols="14" :tooltip-text="getCopyTooltip(isSoraToEvm)" />
               </div>
               <div class="connect-wallet-group">
                 <span v-if="changeSenderWalletEvm" class="connect-wallet-btn" @click="connectExternalWallet">
@@ -199,7 +205,18 @@
                   :alt="evmProvider"
                   class="connect-wallet-logo"
                 />
-                <formatted-address :value="recipient" :symbols="8" :tooltip-text="getCopyTooltip(!isSoraToEvm)" />
+                <div v-if="recipientName" class="connect-wallet-group">
+                  <wallet-avatar :address="recipient" :size="18" class="account-gravatar" />
+                  <s-tooltip :content="copyTooltip(getCopyTooltip(!isSoraToEvm))" tabindex="-1">
+                    <span class="connect-wallet-btn">{{ recipientName }}</span>
+                  </s-tooltip>
+                </div>
+                <formatted-address
+                  v-else
+                  :value="recipient"
+                  :symbols="14"
+                  :tooltip-text="getCopyTooltip(!isSoraToEvm)"
+                />
               </div>
               <div class="connect-wallet-group">
                 <span
@@ -383,6 +400,7 @@ import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/
     InfoLine: components.InfoLine,
     TokenAddress: components.TokenAddress,
     FormattedAddress: components.FormattedAddress,
+    WalletAvatar: components.WalletAvatar,
   },
 })
 export default class Bridge extends Mixins(
@@ -406,6 +424,8 @@ export default class Bridge extends Mixins(
   @state.bridge.amountReceived amountReceived!: string;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
 
+  @getter.bridge.senderName senderName!: string;
+  @getter.bridge.recipientName recipientName!: string;
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
   @getter.bridge.operation private operation!: Operation;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
@@ -778,6 +798,15 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   &-form {
     @include bridge-container;
   }
+
+  .account-gravatar {
+    border: none;
+    border-radius: 50%;
+
+    & > circle:first-child {
+      fill: var(--s-color-utility-surface);
+    }
+  }
 }
 </style>
 
@@ -799,6 +828,7 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
 
   &-group {
     display: flex;
+    align-items: center;
     gap: $inner-spacing-mini;
   }
 

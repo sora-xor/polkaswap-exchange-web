@@ -19,8 +19,9 @@ const mutations = defineMutations<Web3State>()({
     ethersUtil.removeEvmUserAddress();
   },
 
-  setSubAddress(state, address: string): void {
+  setSubAddress(state, { address, name }: { address: string; name: string }): void {
     state.subAddress = address;
+    state.subAddressName = name;
   },
 
   setSubSS58(state, prefix: number) {
