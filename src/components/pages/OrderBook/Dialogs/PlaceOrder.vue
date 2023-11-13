@@ -98,8 +98,8 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
     return await api.orderBook.placeLimitOrder(
       this.baseAsset.address,
       this.quoteAsset.address,
-      new FPNumber(this.quoteValue, FPNumber.DEFAULT_PRECISION).toCodecString(),
-      new FPNumber(this.baseValue, FPNumber.DEFAULT_PRECISION).toCodecString(),
+      this.quoteValue,
+      this.baseValue,
       this.side
     );
   }

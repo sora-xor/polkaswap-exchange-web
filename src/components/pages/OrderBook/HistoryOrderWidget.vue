@@ -58,7 +58,7 @@ import { delay } from '@/utils';
     CancelConfirm: lazyComponent(Components.CancelOrders),
   },
 })
-export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.TransactionMixin) {
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<any>;
 
@@ -139,7 +139,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     return { base, quote };
   }
 
-  handleCancel(cancel: Cancel): void {
+  async handleCancel(cancel: Cancel): Promise<void> {
     if (!this.userLimitOrders.length) return;
 
     if (cancel === Cancel.multiple) {
@@ -148,21 +148,26 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
         const { orderBookId } = this.ordersToBeCancelled[0];
         const { base, quote } = orderBookId;
 
-        api.orderBook.cancelLimitOrderBatch(base, quote, limitOrderIds);
+        await this.withNotifications(async () => {
+          api.orderBook.cancelLimitOrderBatch(base, quote, limitOrderIds);
+        });
       }
 
       if (this.ordersToBeCancelled.length === 1) {
         const { limitOrderId, orderBookId } = this.ordersToBeCancelled[0];
         const { base, quote } = orderBookId;
 
-        api.orderBook.cancelLimitOrder(base, quote, limitOrderId);
+        await this.withNotifications(async () => {
+          await api.orderBook.cancelLimitOrder(base, quote, limitOrderId);
+        });
       }
     } else {
       const { orderBookId } = this.userLimitOrders[0];
       const { base, quote } = orderBookId;
       const limitOrderIds = this.userLimitOrders.map((limitOrder: any) => limitOrder.id);
-
-      api.orderBook.cancelLimitOrderBatch(base, quote, limitOrderIds);
+      await this.withNotifications(async () => {
+        api.orderBook.cancelLimitOrderBatch(base, quote, limitOrderIds);
+      });
     }
   }
 

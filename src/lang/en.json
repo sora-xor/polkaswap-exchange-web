@@ -53,8 +53,8 @@
             "EthBridgeIncoming": "Transfered {amount} {symbol} from {Ethereum} to {Sora}",
             "EthBridgeOutgoing": "Transfered {amount} {symbol} from {Sora} to {Ethereum}",
             "SwapTransferBatch": "{action} {amount} {symbol}",
-            "OrderBookPlaceLimitOrder": "Limit order of {amount} {symbol} at {price} {symbol2} placed",
-            "OrderBookCancelLimitOrder": "Limit order of {amount} {symbol} at {price} {symbol2} cancelled",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} at {price} {symbol2} placed",
+            "OrderBookCancelLimitOrder": "Limit order cancelled",
             "OrderBookCancelLimitOrders": "Limit orders cancelled"
         },
         "error": {
@@ -299,6 +299,8 @@
         "startTime": "Date",
         "amount": "@:amountText",
         "amount2": "@:amountText 2",
+        "price": "Price",
+        "side": "Side",
         "fee": "Transaction Fee",
         "total": "Total",
         "from": "From",
