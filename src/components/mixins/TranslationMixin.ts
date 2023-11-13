@@ -28,6 +28,7 @@ const TranslationConsts = {
   APR: 'APR', // Annual percentage rate
   TVL: 'TVL',
   EVM: 'EVM',
+  Substrate: 'Substrate',
   Kusama: 'Kusama',
   ROI: 'ROI', // Return of investment
   mbps: 'mbps',

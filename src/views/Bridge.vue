@@ -109,13 +109,7 @@
                   :alt="evmProvider"
                   class="connect-wallet-logo"
                 />
-                <div v-if="senderName" class="connect-wallet-group">
-                  <wallet-avatar :address="sender" :size="18" class="account-gravatar" />
-                  <s-tooltip :content="copyTooltip(getCopyTooltip(isSoraToEvm))" tabindex="-1">
-                    <span class="connect-wallet-btn">{{ senderName }}</span>
-                  </s-tooltip>
-                </div>
-                <formatted-address v-else :value="sender" :symbols="14" :tooltip-text="getCopyTooltip(isSoraToEvm)" />
+                <bridge-account-panel :address="sender" :name="senderName" :tooltip="getCopyTooltip(isSoraToEvm)" />
               </div>
               <div class="connect-wallet-group">
                 <span v-if="changeSenderWalletEvm" class="connect-wallet-btn" @click="connectExternalWallet">
@@ -205,17 +199,10 @@
                   :alt="evmProvider"
                   class="connect-wallet-logo"
                 />
-                <div v-if="recipientName" class="connect-wallet-group">
-                  <wallet-avatar :address="recipient" :size="18" class="account-gravatar" />
-                  <s-tooltip :content="copyTooltip(getCopyTooltip(!isSoraToEvm))" tabindex="-1">
-                    <span class="connect-wallet-btn">{{ recipientName }}</span>
-                  </s-tooltip>
-                </div>
-                <formatted-address
-                  v-else
-                  :value="recipient"
-                  :symbols="14"
-                  :tooltip-text="getCopyTooltip(!isSoraToEvm)"
+                <bridge-account-panel
+                  :address="recipient"
+                  :name="recipientName"
+                  :tooltip="getCopyTooltip(!isSoraToEvm)"
                 />
               </div>
               <div class="connect-wallet-group">
@@ -387,6 +374,7 @@ import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/
     BridgeSelectAsset: lazyComponent(Components.BridgeSelectAsset),
     BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
     BridgeSelectAccount: lazyComponent(Components.BridgeSelectAccount),
+    BridgeAccountPanel: lazyComponent(Components.BridgeAccountPanel),
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     BridgeLimitCard: lazyComponent(Components.BridgeLimitCard),
     SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
@@ -399,14 +387,11 @@ import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
     TokenAddress: components.TokenAddress,
-    FormattedAddress: components.FormattedAddress,
-    WalletAvatar: components.WalletAvatar,
   },
 })
 export default class Bridge extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.NetworkFeeWarningMixin,
-  mixins.CopyAddressMixin,
   BridgeMixin,
   NetworkFormatterMixin,
   NetworkFeeDialogMixin,
@@ -797,15 +782,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
 
   &-form {
     @include bridge-container;
-  }
-
-  .account-gravatar {
-    border: none;
-    border-radius: 50%;
-
-    & > circle:first-child {
-      fill: var(--s-color-utility-surface);
-    }
   }
 }
 </style>
