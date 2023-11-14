@@ -1,13 +1,11 @@
 <template>
-  <div v-if="name" class="account-panel">
+  <div class="account-panel">
     <wallet-avatar :address="address" :size="18" class="account-gravatar" />
-    <s-tooltip :content="copyTooltip(tooltip)" tabindex="-1">
-      <span class="account-panel-name" @click="handleCopyAddress(address, $event)">
-        {{ name }}
-      </span>
-    </s-tooltip>
+    <span v-if="name" class="account-panel-name">
+      {{ name }}
+    </span>
+    <formatted-address :value="address" :symbols="14" :tooltip-text="tooltip" />
   </div>
-  <formatted-address v-else :value="address" :symbols="14" :tooltip-text="tooltip" />
 </template>
 
 <script lang="ts">
@@ -47,9 +45,5 @@ export default class BridgeAccountPanel extends Mixins(mixins.CopyAddressMixin, 
   display: flex;
   align-items: center;
   gap: $inner-spacing-mini;
-
-  &-name {
-    @include copy-address;
-  }
 }
 </style>
