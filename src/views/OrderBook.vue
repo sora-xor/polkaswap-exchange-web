@@ -54,6 +54,7 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
   @state.settings.screenBreakpointClass responsiveClass!: BreakpointClass;
 
   @action.orderBook.subscribeToOrderBook subscribeToOrderBook!: any;
+  @action.orderBook.getPlaceOrderNetworkFee getPlaceOrderFee!: AsyncFnWithoutArgs;
   @action.orderBook.unsubscribeFromOrderBook unsubscribeFromOrderBook!: FnWithoutArgs;
 
   largeDesktop = true;
@@ -71,6 +72,10 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
     if (!this.orderBookUpdates.length && this.baseAssetAddress) {
       await this.subscribeToOrderBook({ base: this.baseAssetAddress });
     }
+
+    await this.withApi(async () => {
+      await this.getPlaceOrderFee();
+    });
   }
 }
 </script>

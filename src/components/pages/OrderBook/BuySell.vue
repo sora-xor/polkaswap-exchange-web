@@ -107,6 +107,7 @@
 import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber, Operation } from '@sora-substrate/util';
+import { MAX_TIMESTAMP } from '@sora-substrate/util/build/orderBook/consts';
 import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -142,6 +143,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @state.orderBook.asks asks!: any;
   @state.orderBook.bids bids!: any;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.orderBook.placeOrderNetworkFee networkFee!: CodecString;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
@@ -166,6 +168,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   confirmPlaceOrderVisibility = false;
   confirmCancelOrderVisibility = false;
   quoteSubscription: Nullable<Subscription> = null;
+  timestamp = MAX_TIMESTAMP;
   marketQuotePrice = '';
 
   @Watch('side')
@@ -379,11 +382,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   getTokenBalance(token: AccountAsset): CodecString {
     return getAssetBalance(token);
-  }
-
-  get networkFee(): CodecString {
-    // TODO: change to Operation.OrderBook(Buy/Sell)
-    return this.networkFees[Operation.Swap];
   }
 
   get areTokensSelected(): boolean {

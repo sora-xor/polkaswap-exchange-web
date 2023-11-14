@@ -1,3 +1,4 @@
+import { MAX_TIMESTAMP } from '@sora-substrate/util/build/orderBook/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
@@ -32,6 +33,13 @@ const actions = defineActions({
 
     commit.setOrderBooks(whitelistOrderBook);
     commit.setCurrentOrderBook(orderBookId);
+  },
+
+  async getPlaceOrderNetworkFee(context, timestamp = MAX_TIMESTAMP): Promise<void> {
+    const { commit } = orderBookActionContext(context);
+    const codecFee = await api.orderBook.getPlaceOrderNetworkFee(timestamp);
+
+    commit.setPlaceOrderNetworkFee(codecFee);
   },
 
   async subscribeToOrderBook(context, { base, quote }): Promise<void> {

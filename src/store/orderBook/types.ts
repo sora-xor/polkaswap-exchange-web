@@ -1,5 +1,6 @@
 import type { LimitOrderSide, LimitOrderConstraint } from '@/consts';
 
+import type { FPNumber } from '@sora-substrate/util';
 import type { Subscription } from 'rxjs';
 
 export type OrderBookState = {
@@ -17,4 +18,5 @@ export type OrderBookState = {
   orderBookUpdates: Array<Nullable<Subscription>>;
   userLimitOrderUpdates: Nullable<Subscription>;
   limitOrderConstraints: LimitOrderConstraint;
+  placeOrderNetworkFee: FPNumber;
 };

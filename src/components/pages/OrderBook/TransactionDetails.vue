@@ -22,7 +22,7 @@
     />
     <info-line :label="'expiry date'" :label-tooltip="expiryTooltip" :value="limitOrderExpiryDate" />
     <info-line
-      :label="t('swap.networkFee')"
+      :label="t('networkFeeText')"
       :label-tooltip="t('networkFeeTooltipText')"
       :value="formattedNetworkFee"
       :asset-symbol="quoteSymbol"
@@ -60,6 +60,7 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.swap.toValue toValue!: string;
   @state.orderBook.side side!: PriceVariant;
+  @state.orderBook.placeOrderNetworkFee networkFee!: CodecString;
 
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
@@ -102,17 +103,8 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
     return this.formatDate(oneMonthAhead, 'LL');
   }
 
-  get networkFee(): CodecString {
-    // TODO: PlaceOrder
-    return this.networkFees[Operation.Swap];
-  }
-
   get formattedNetworkFee(): string {
     return this.formatCodecNumber(this.networkFee);
-  }
-
-  get formattedSoraNetworkFee(): string {
-    return this.formatCodecNumber(this.soraNetworkFee);
   }
 
   formatFee(fee: string, formattedFee: string): string {

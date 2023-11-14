@@ -1,6 +1,6 @@
-import { XOR, ETH } from '@sora-substrate/util/build/assets/consts';
+import { FPNumber } from '@sora-substrate/util';
 
-import { LimitOrderSide } from '@/consts';
+import { LimitOrderSide, ZeroStringValue } from '@/consts';
 
 import type { OrderBookState } from './types';
 
@@ -24,6 +24,7 @@ function initialState(): OrderBookState {
       maxLotSize: null,
       minLotSize: null,
     },
+    placeOrderNetworkFee: FPNumber.ZERO,
   };
 }
 
