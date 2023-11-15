@@ -167,7 +167,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
           },
           KycSettings: {
             AppReferenceID: uuidv4(),
-            Language: this.language?.slice(0, 2) || 'en', // supported languages 'en'
+            Language: this.ISOLanguageName || 'en', // supported languages 'en'
             ReferenceNumber: referenceNumber,
             ElementId: '#kyc', // id of element in which web kyc will be injected
             Logo: '',
