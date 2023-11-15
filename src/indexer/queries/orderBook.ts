@@ -1,6 +1,6 @@
 import { FPNumber } from '@sora-substrate/util';
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
+import { SubqueryIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import type {
@@ -81,11 +81,14 @@ export async function fetchOrderBooks(): Promise<Nullable<OrderBookData[]>> {
   return null;
 }
 
-type OrderData = {
+type OrderBookDealData = {
   timestamp: number;
   isBuy: boolean;
   price: FPNumber;
   amount: FPNumber;
+};
+
+type OrderData = OrderBookDealData & {
   amountFilled: FPNumber;
   orderId: number | undefined;
   lifetime: number;
@@ -208,7 +211,7 @@ type OrderBookEntityMutation = {
 };
 /* eslint-enable camelcase */
 
-type OrderBookEntityData = {
+type OrderBookEntityResponse = {
   data: OrderBookEntity;
 };
 
@@ -216,10 +219,19 @@ type OrderBookUpdateData = {
   price: FPNumber;
   priceChangeDay: FPNumber;
   volumeDayUSD: FPNumber;
-  lastDeals: OrderBookDeal[];
+  lastDeals: OrderBookDealData[];
 };
 
-const SubqueryOrderBookDataQuery = gql<OrderBookEntityData>`
+const parseDeals = (deals: OrderBookDeal[]): OrderBookDealData[] => {
+  return deals.map((deal) => ({
+    price: new FPNumber(deal.price ?? 0),
+    amount: new FPNumber(deal.amount ?? 0),
+    isBuy: deal.isBuy,
+    timestamp: deal.timestamp * 1000,
+  }));
+};
+
+const SubqueryOrderBookDataQuery = gql<OrderBookEntityResponse>`
   query OrderBookData($id: ID!) {
     data: orderBook(id: $id:) {
       price
@@ -230,19 +242,19 @@ const SubqueryOrderBookDataQuery = gql<OrderBookEntityData>`
   }
 `;
 
-const parseOrderBookData = (item: OrderBookEntityData): OrderBookUpdateData => {
+const parseOrderBookResponse = (item: OrderBookEntityResponse): OrderBookUpdateData => {
   const { price, priceChangeDay, volumeDayUSD, lastDeals } = item.data;
-
+  const deals = lastDeals ? JSON.parse(lastDeals) : ([] as OrderBookDeal[]);
   return {
     price: new FPNumber(price ?? 0),
     priceChangeDay: new FPNumber(priceChangeDay ?? 0),
     volumeDayUSD: new FPNumber(volumeDayUSD ?? 0),
-    lastDeals: lastDeals ? JSON.parse(lastDeals) : ([] as OrderBookDeal[]),
+    lastDeals: parseDeals(deals),
   };
 };
 
-const SubqueryOrderBookSubscription = gql<SubquerySubscriptionPayload<OrderBookEntityMutation>>`
-  subscription SubqueryOrderBookSubscription($id: ID!) {
+const SubqueryOrderBookDataSubscription = gql<SubquerySubscriptionPayload<OrderBookEntityMutation>>`
+  subscription OrderBookDataSubscription($id: ID!) {
     payload: orderBook(id: $id, mutation: [UPDATE]) {
       id
       mutation_type
@@ -254,13 +266,13 @@ const SubqueryOrderBookSubscription = gql<SubquerySubscriptionPayload<OrderBookE
 /* eslint-disable camelcase */
 const parseOrderBookMutation = (item: OrderBookEntityMutation): OrderBookUpdateData => {
   const { price, price_change_day, volume_day_usd, last_deals } = item;
-  const lastDeals = last_deals ? JSON.parse(last_deals) : ([] as OrderBookDeal[]);
+  const deals = last_deals ? JSON.parse(last_deals) : ([] as OrderBookDeal[]);
 
   return {
     price: new FPNumber(price ?? 0),
     priceChangeDay: new FPNumber(price_change_day ?? 0),
     volumeDayUSD: new FPNumber(volume_day_usd ?? 0),
-    lastDeals,
+    lastDeals: parseDeals(deals),
   };
 };
 /* eslint-enable camelcase */
@@ -279,14 +291,14 @@ export async function subscribeOnOrderBook(
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
       const subqueryIndexer = indexer as SubqueryIndexer;
-      const initialState = await subqueryIndexer.services.explorer.request(SubqueryOrderBookDataQuery, variables);
+      const response = await subqueryIndexer.services.explorer.request(SubqueryOrderBookDataQuery, variables);
 
-      if (!initialState) return null;
+      if (!response) return null;
 
-      handler(parseOrderBookData(initialState));
+      handler(parseOrderBookResponse(response));
 
       const subscription = subqueryIndexer.services.explorer.createEntitySubscription(
-        SubqueryOrderBookSubscription,
+        SubqueryOrderBookDataSubscription,
         variables,
         parseOrderBookMutation,
         handler,
