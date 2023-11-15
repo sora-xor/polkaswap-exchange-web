@@ -10,6 +10,7 @@
       </div>
       <div class="column-3">
         <book-widget class="book-widget" />
+        <!-- <market-trades-widget class="trades-widget" /> -->
       </div>
     </div>
     <div v-else class="order-book-widgets">
@@ -22,6 +23,7 @@
       </div>
       <div class="column-3">
         <history-order-widget class="history-widget" />
+        <!-- <market-trades-widget class="trades-widget" /> -->
       </div>
     </div>
   </div>
@@ -181,5 +183,9 @@ export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMi
       margin-left: 8px;
     }
   }
+}
+
+.trades-widget {
+  margin-top: 8px;
 }
 </style>
