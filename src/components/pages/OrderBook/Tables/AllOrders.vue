@@ -93,12 +93,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
       this.orders = [];
     } else {
       await this.withLoading(async () => {
-        this.orders = await fetchOrderBookAccountOrders(
-          0,
-          this.baseAsset.address,
-          this.quoteAsset.address,
-          this.accountAddress
-        );
+        this.orders = await fetchOrderBookAccountOrders(this.accountAddress);
       });
     }
   }

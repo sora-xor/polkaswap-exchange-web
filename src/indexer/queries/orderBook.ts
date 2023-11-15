@@ -6,6 +6,7 @@ import { gql } from '@urql/core';
 
 import type { OrderBookDealData, OrderBookWithStats, OrderBookUpdateData, OrderData } from '@/types/orderBook';
 
+import type { OrderBookId } from '@sora-substrate/liquidity-proxy';
 import type {
   SubqueryConnectionQueryResponse,
   SubquerySubscriptionPayload,
@@ -110,12 +111,8 @@ export async function fetchOrderBooks(): Promise<Nullable<OrderBookWithStats[]>>
 }
 
 const SubqueryAccountMarketOrdersQuery = gql<SubqueryConnectionQueryResponse<OrderBookMarketOrderEntity>>`
-  query AccountMarketOrdersQuery($after: Cursor, $orderBookId: String, $accountId: String) {
-    data: orderBookMarketOrders(
-      orderBy: TIMESTAMP_DESC
-      after: $after
-      filter: { and: [{ orderBookId: { equalTo: $orderBookId } }, { accountId: { equalTo: $accountId } }] }
-    ) {
+  query AccountMarketOrdersQuery($after: Cursor, $filter: OrderBookMarketOrderFilter) {
+    data: orderBookMarketOrders(orderBy: TIMESTAMP_DESC, after: $after, filter: $filter) {
       pageInfo {
         hasNextPage
         endCursor
@@ -123,6 +120,7 @@ const SubqueryAccountMarketOrdersQuery = gql<SubqueryConnectionQueryResponse<Ord
       totalCount
       edges {
         node {
+          orderBookId
           timestamp
           isBuy
           price
@@ -134,18 +132,8 @@ const SubqueryAccountMarketOrdersQuery = gql<SubqueryConnectionQueryResponse<Ord
 `;
 
 const SubqueryAccountLimitOrdersQuery = gql<SubqueryConnectionQueryResponse<OrderBookLimitOrderEntity>>`
-  query AccountLimitOrdersQuery($after: Cursor, $orderBookId: String, $accountId: String) {
-    data: orderBookLimitOrders(
-      orderBy: TIMESTAMP_DESC
-      after: $after
-      filter: {
-        and: [
-          { orderBookId: { equalTo: $orderBookId } }
-          { accountId: { equalTo: $accountId } }
-          { status: { notEqualTo: Active } }
-        ]
-      }
-    ) {
+  query AccountLimitOrdersQuery($after: Cursor, $filter: OrderBookLimitOrderFilter) {
+    data: orderBookLimitOrders(orderBy: TIMESTAMP_DESC, after: $after, filter: $filter) {
       pageInfo {
         hasNextPage
         endCursor
@@ -153,6 +141,7 @@ const SubqueryAccountLimitOrdersQuery = gql<SubqueryConnectionQueryResponse<Orde
       totalCount
       edges {
         node {
+          orderBookId
           timestamp
           isBuy
           price
@@ -169,11 +158,13 @@ const SubqueryAccountLimitOrdersQuery = gql<SubqueryConnectionQueryResponse<Orde
 `;
 
 const parseOrderEntity =
-  (dexId: number, base: string, quote: string, owner: string) =>
+  (owner: string) =>
   (item: OrderBookMarketOrderEntity | OrderBookLimitOrderEntity): OrderData => {
+    const [dexId, base, quote] = item.orderBookId.split('-');
+
     return {
       orderBookId: {
-        dexId,
+        dexId: Number(dexId),
         base,
         quote,
       },
@@ -191,22 +182,30 @@ const parseOrderEntity =
   };
 
 export async function fetchOrderBookAccountOrders(
-  dexId: number,
-  baseAssetId: string,
-  quoteAssetId: string,
-  accountAddress: string
+  accountAddress: string,
+  id?: OrderBookId
 ): Promise<Nullable<OrderData[]>> {
-  const orderBookId = [dexId, baseAssetId, quoteAssetId].join('-');
-  const variables = { orderBookId, accountId: accountAddress };
+  const filter: any = {
+    and: [{ accountId: { equalTo: accountAddress } }],
+  };
+
+  if (id) {
+    const orderBookId = [id.dexId, id.base, id.quote].join('-');
+
+    filter.and.push({
+      orderBookId: { equalTo: orderBookId },
+    });
+  }
+
   const indexer = getCurrentIndexer();
-  const parse = parseOrderEntity(dexId, baseAssetId, quoteAssetId, accountAddress);
+  const parse = parseOrderEntity(accountAddress);
 
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
       const subqueryIndexer = indexer as SubqueryIndexer;
       const [limitOrders, marketOrders] = await Promise.all([
-        subqueryIndexer.services.explorer.fetchAllEntities(SubqueryAccountLimitOrdersQuery, variables, parse),
-        subqueryIndexer.services.explorer.fetchAllEntities(SubqueryAccountMarketOrdersQuery, variables, parse),
+        subqueryIndexer.services.explorer.fetchAllEntities(SubqueryAccountLimitOrdersQuery, { filter }, parse),
+        subqueryIndexer.services.explorer.fetchAllEntities(SubqueryAccountMarketOrdersQuery, { filter }, parse),
       ]);
 
       return [...(limitOrders || []), ...(marketOrders || [])].sort((a, b) => +b.time - +a.time);
