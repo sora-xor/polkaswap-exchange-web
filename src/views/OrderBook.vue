@@ -10,6 +10,7 @@
       </div>
       <div class="column-3">
         <book-widget class="book-widget" />
+        <market-trades-widget class="trades-widget" />
       </div>
     </div>
     <div v-else class="order-book-widgets">
