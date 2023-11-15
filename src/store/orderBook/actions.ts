@@ -3,13 +3,11 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
 import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook';
+import { serializeKey, deserializeKey } from '@/utils/orderBook';
 
 import { orderBookActionContext } from '.';
 
-function deserializeKey(key: string) {
-  const [base, quote] = key.split(',');
-  return { base, quote };
-}
+import type { Subscription } from 'rxjs';
 
 const actions = defineActions({
   async getOrderBooksInfo(context): Promise<void> {
@@ -61,9 +59,30 @@ const actions = defineActions({
       commit.setBids(bids.reverse());
     });
 
-    // const statsAndDealsSubscription = await subscribeOnOrderBookUpdates(0, base, quote, console.log, console.error);
+    const subscriptions: Array<Subscription | VoidFunction> = [asksSubscription, bidsSubscription];
 
-    commit.setOrderBookUpdates([asksSubscription, bidsSubscription]);
+    const statsAndDealsSubscription = await subscribeOnOrderBookUpdates(
+      0,
+      base,
+      quote,
+      (data) => {
+        const {
+          id: { base, quote },
+          stats,
+          deals,
+        } = data;
+        const key = serializeKey(base, quote);
+        commit.setDeals(deals);
+        commit.setStats({ [key]: stats });
+      },
+      console.error
+    );
+
+    if (statsAndDealsSubscription) {
+      subscriptions.push(statsAndDealsSubscription);
+    }
+
+    commit.setOrderBookUpdates(subscriptions);
   },
 
   subscribeToUserLimitOrders(context, { base, quote }): void {

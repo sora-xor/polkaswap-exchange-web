@@ -121,11 +121,6 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     return `$${FPNumber.fromNatural(fiat || '0').toString()}`;
   }
 
-  deserializeKey(key: string) {
-    const [base, quote] = key.split(',');
-    return { base, quote };
-  }
-
   @Watch('userLimitOrders')
   prepareOrderLimits(): void {
     this.openLimitOrders = [];

@@ -5,14 +5,8 @@
         <span @click="switchFilter(Filter.open)" :class="getComputedFilterClasses(Filter.open)">{{
           `Open orders ${openOrdersCount}`
         }}</span>
-        <span @click="switchFilter(Filter.all)" :class="getComputedFilterClasses(Filter.all)" class="inactive-tab">
-          Order history
-        </span>
-        <span
-          @click="switchFilter(Filter.executed)"
-          :class="getComputedFilterClasses(Filter.executed)"
-          class="inactive-tab"
-        >
+        <span @click="switchFilter(Filter.all)" :class="getComputedFilterClasses(Filter.all)"> Order history </span>
+        <span @click="switchFilter(Filter.executed)" :class="getComputedFilterClasses(Filter.executed)">
           Trade history
         </span>
       </div>
@@ -155,11 +149,6 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     this.confirmCancelOrderVisibility = true;
   }
 
-  deserializeKey(key: string) {
-    const [base, quote] = key.split(',');
-    return { base, quote };
-  }
-
   async handleCancel(cancel: Cancel): Promise<void> {
     if (this.isBookStopped) return;
     if (!this.userLimitOrders.length) return;
@@ -194,7 +183,6 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   }
 
   switchFilter(filter: Filter): void {
-    if (filter === Filter.all || filter === Filter.executed) return;
     this.currentFilter = filter;
   }
 }

@@ -1,5 +1,6 @@
 import type { OrderBookId, PriceVariant } from '@sora-substrate/liquidity-proxy';
 import type { FPNumber } from '@sora-substrate/util';
+import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 
 export enum Filter {
   open = 'open',
@@ -33,4 +34,8 @@ export type OrderBookWithStats = {
 
 export type OrderBookUpdateData = OrderBookWithStats & {
   deals: OrderBookDealData[];
+};
+
+export type OrderData = LimitOrder & {
+  status: string;
 };

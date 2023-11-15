@@ -1,15 +1,12 @@
 <template>
   <div>
-    <s-table class="limit-order-table" :data="getAllOrders()" :highlight-current-row="false">
+    <s-table v-loading="loading" class="limit-order-table" :data="filtered" :highlight-current-row="false">
       <s-table-column>
         <template #header>
           <span>Time</span>
         </template>
         <template v-slot="{ row }">
-          <div>
-            <div>{{ row.date.date }}</div>
-            <div>{{ row.date.time }}</div>
-          </div>
+          <div>{{ row.date }}</div>
         </template>
       </s-table-column>
       <s-table-column>
@@ -64,66 +61,69 @@
           <span>{{ row.status }}</span>
         </template>
       </s-table-column>
-      <s-table-column>
-        <template #header>
-          <span>Total</span>
-        </template>
-        <template v-slot="{ row }">
-          <span>{{ row.total }}</span>
-        </template>
-      </s-table-column>
     </s-table>
   </div>
 </template>
 
 <script lang="ts">
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import dayjs from 'dayjs';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { fetchOrderBookAccountOrders } from '@/indexer/queries/orderBook';
+import { getter } from '@/store/decorators';
 import { Filter } from '@/types/orderBook';
+import type { OrderData } from '@/types/orderBook';
+
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @Prop({ default: '', type: String }) filter!: string;
 
-  getAllOrders(): any {
-    const allOrders = [
-      {
-        date: { date: '8/26', time: '14:12:25' },
-        pair: 'XOR-ETH',
-        side: 'buy',
-        price: '103.39',
-        amount: '5',
-        filled: '100',
-        status: 'Cancelled',
-        total: '13,3423.77',
-      },
-      {
-        date: { date: '8/26', time: '16:19:11' },
-        pair: 'XOR-ETH',
-        side: 'buy',
-        price: '103.39',
-        amount: '5',
-        filled: '100',
-        status: 'Executed',
-        total: '13,3423.77',
-      },
-      {
-        date: { date: '8/25', time: '11:15:45' },
-        pair: 'XOR-ETH',
-        side: 'buy',
-        price: '103.39',
-        amount: '5',
-        filled: '100',
-        status: 'Expired',
-        total: '13,3423.77',
-      },
-    ];
+  @getter.orderBook.baseAsset baseAsset!: AccountAsset;
+  @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
+  @getter.orderBook.accountAddress accountAddress!: string;
 
-    if (this.filter === Filter.executed) return allOrders.filter((row) => row.status === 'Executed');
+  public orders: OrderData[] = [];
 
-    return allOrders;
+  async mounted(): Promise<void> {
+    if (!(this.baseAsset && this.quoteAsset && this.accountAddress)) {
+      this.orders = [];
+    } else {
+      await this.withLoading(async () => {
+        this.orders = await fetchOrderBookAccountOrders(
+          0,
+          this.baseAsset.address,
+          this.quoteAsset.address,
+          this.accountAddress
+        );
+      });
+    }
+  }
+
+  get items() {
+    return this.orders.map((order) => {
+      const date = dayjs(order.time);
+      const { baseAsset, quoteAsset } = this;
+
+      return {
+        date: date.format('M/DD HH:mm:ss'),
+        pair: `${baseAsset.symbol}-${quoteAsset.symbol}`,
+        side: order.side,
+        price: order.price.toLocaleString(),
+        amount: order.originalAmount.toLocaleString(),
+        filled: order.amount.toLocaleString(),
+        status: order.status,
+      };
+    });
+  }
+
+  get filtered() {
+    if (this.filter !== Filter.executed) return this.items;
+
+    return this.items.filter((item) => item.status === 'Filled');
   }
 }
 </script>

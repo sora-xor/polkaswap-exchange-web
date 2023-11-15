@@ -4,9 +4,8 @@ import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 import { SubqueryIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
 
-import type { OrderBookDealData, OrderBookWithStats, OrderBookUpdateData } from '@/types/orderBook';
+import type { OrderBookDealData, OrderBookWithStats, OrderBookUpdateData, OrderData } from '@/types/orderBook';
 
-import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type {
   SubqueryConnectionQueryResponse,
   SubquerySubscriptionPayload,
@@ -17,10 +16,6 @@ import type {
   OrderBookMarketOrderEntity,
   OrderBookDeal,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
-
-type OrderData = LimitOrder & {
-  status: string;
-};
 
 /* eslint-disable camelcase */
 type OrderBookEntityMutation = {

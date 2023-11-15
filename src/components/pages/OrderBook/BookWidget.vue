@@ -71,7 +71,6 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
   @mutation.orderBook.resetAsks resetAsks!: () => void;
   @mutation.orderBook.resetBids resetBids!: () => void;
-  @mutation.orderBook.setVolume setVolume!: (volume: string) => void;
 
   @action.orderBook.subscribeToOrderBook private subscribeToOrderBook!: ({ base }) => Promise<void>;
 
@@ -280,7 +279,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
       }
     }
 
-    this.setVolume(this.volumeAsks.add(this.volumeBids).toFixed(4).toString());
+    // this.setVolume(this.volumeAsks.add(this.volumeBids).toFixed(4).toString());
   }
 
   async withLimitOrdersSet<T = void>(func: FnWithoutArgs<T>): Promise<T> {

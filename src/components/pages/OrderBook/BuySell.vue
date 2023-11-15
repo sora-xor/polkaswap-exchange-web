@@ -16,14 +16,22 @@
           <div class="delimiter" />
           <div class="order-book-pair-data">
             <div class="order-book-pair-data-item">
-              <span>Price </span>
-              <span class="price">
-                <formatted-amount class="sora-card-hub-balance" :value="bookPrice" fiatSign="" is-fiat-value />
+              <span>Price</span>
+              <span class="order-book-pair-data-item__value">
+                <formatted-amount :value="orderBookPrice.toLocaleString()" fiatSign="" is-fiat-value />
               </span>
             </div>
-            <div class="order-book-pair-data-item"><span>Change</span><span class="change">n/a</span></div>
             <div class="order-book-pair-data-item">
-              <span>Volume</span><span class="volume">{{ volume }}</span>
+              <span>Change</span>
+              <span class="order-book-pair-data-item__value">
+                <price-change :value="orderBookPriceChange" />
+              </span>
+            </div>
+            <div class="order-book-pair-data-item">
+              <span>Volume</span>
+              <span class="order-book-pair-data-item__value">
+                <formatted-amount :value="orderBookVolume.toLocaleString()" is-fiat-value />
+              </span>
             </div>
           </div>
         </div>
@@ -106,7 +114,7 @@
 <script lang="ts">
 import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
 import { MAX_TIMESTAMP } from '@sora-substrate/util/build/orderBook/consts';
 import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
@@ -131,6 +139,7 @@ import type { Subscription } from 'rxjs';
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     PairListPopover: lazyComponent(Components.PairListPopover),
     PlaceConfirm: lazyComponent(Components.PlaceOrder),
+    PriceChange: lazyComponent(Components.PriceChange),
     FormattedAmount: components.FormattedAmount,
   },
 })
@@ -138,7 +147,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @state.orderBook.baseValue baseValue!: string;
   @state.orderBook.quoteValue quoteValue!: string;
   @state.orderBook.currentOrderBook currentOrderBook!: any;
-  @state.orderBook.volume volume!: string;
   @state.orderBook.side side!: PriceVariant;
   @state.orderBook.asks asks!: any;
   @state.orderBook.bids bids!: any;
@@ -148,6 +156,9 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @getter.assets.xor private xor!: AccountAsset;
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
+  @getter.orderBook.orderBookPrice orderBookPrice!: FPNumber;
+  @getter.orderBook.orderBookPriceChange orderBookPriceChange!: FPNumber;
+  @getter.orderBook.orderBookVolume orderBookVolume!: FPNumber;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
@@ -279,14 +290,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     }
 
     return false;
-  }
-
-  get bookPrice(): string {
-    if (this.asks?.length) {
-      return this.asks[this.asks.length - 1][0].toString();
-    } else if (this.bids?.length) {
-      return this.bids[0][0].toString();
-    } else return '';
   }
 
   get marketOptionDisabled(): boolean {
@@ -721,12 +724,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       flex-direction: column;
       margin-right: 42px;
 
-      .price {
-        color: var(--s-color-status-info);
-      }
-
-      .volume {
-        color: var(--s-color-base-content-primary);
+      &__value {
+        font-size: var(--s-font-size-small);
       }
     }
   }

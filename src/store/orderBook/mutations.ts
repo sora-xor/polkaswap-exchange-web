@@ -1,13 +1,11 @@
 import { defineMutations } from 'direct-vuex';
 
 import type { LimitOrderSide } from '@/consts';
+import type { OrderBookDealData, OrderBookStats } from '@/types/orderBook';
+import { deserializeKey } from '@/utils/orderBook';
 
 import type { OrderBookState } from './types';
-
-function deserializeKey(key: string) {
-  const [base, quote] = key.split(',');
-  return { base, quote };
-}
+import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<OrderBookState>()({
   setOrderBooks(state, orderBooks): void {
@@ -42,8 +40,11 @@ const mutations = defineMutations<OrderBookState>()({
   resetBids(state): void {
     state.bids = [];
   },
-  setVolume(state, volume: string): void {
-    state.volume = volume;
+  setDeals(state, deals: OrderBookDealData[]): void {
+    state.deals = Object.freeze([...deals]);
+  },
+  setStats(state, stats: Record<string, OrderBookStats>): void {
+    state.orderBooksStats = { ...state.orderBooksStats, ...stats };
   },
   setUserLimitOrders(state, limitOrders): void {
     state.userLimitOrders = limitOrders;
@@ -51,19 +52,23 @@ const mutations = defineMutations<OrderBookState>()({
   resetUserLimitOrders(state): void {
     state.userLimitOrders = [];
   },
-  setOrderBookUpdates(state, subscriptions): void {
+  setOrderBookUpdates(state, subscriptions: Array<Subscription | VoidFunction>): void {
     state.orderBookUpdates = subscriptions;
   },
   resetOrderBookUpdates(state): void {
     if (state.orderBookUpdates.length) {
-      state.orderBookUpdates.forEach((limitOrderUpdate) => {
-        limitOrderUpdate?.unsubscribe();
+      state.orderBookUpdates.forEach((subscription) => {
+        if (typeof subscription === 'function') {
+          subscription?.();
+        } else {
+          subscription?.unsubscribe();
+        }
       });
     }
 
     state.orderBookUpdates = [];
   },
-  setUserLimitOrderUpdates(state, subscription): void {
+  setUserLimitOrderUpdates(state, subscription: Subscription): void {
     state.userLimitOrderUpdates = subscription;
   },
   resetUserLimitOrderUpdates(state): void {

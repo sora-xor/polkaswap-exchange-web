@@ -80,6 +80,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter, action, mutation } from '@/store/decorators';
+import { serializeKey, deserializeKey } from '@/utils/orderBook';
 
 import type { OrderBook, PriceVariant } from '@sora-substrate/liquidity-proxy';
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
@@ -141,25 +142,15 @@ export default class PairListPopover extends Mixins(
     }
   }
 
-  deserializeKey(key: string) {
-    const [base, quote] = key.split(',');
-    return { base, quote };
-  }
-
-  serializedKey(base: string, quote: string): string {
-    if (!(base && quote)) return '';
-    return `${base},${quote}`;
-  }
-
   chooseBook(row): void {
-    this.setCurrentOrderBook(this.serializedKey(row.baseAsset.address, XOR.address));
+    this.setCurrentOrderBook(serializeKey(row.baseAsset.address, XOR.address));
     this.$emit('close');
   }
 
   prepareOrderBooks() {
     Object.entries(this.orderBooks).forEach(([orderBookId, value]) => {
       if (!orderBookId) return null;
-      const { base, quote } = this.deserializeKey(orderBookId);
+      const { base, quote } = deserializeKey(orderBookId);
       const row = {
         baseAsset: this.getAsset(base),
         targetAsset: this.getAsset(quote),
