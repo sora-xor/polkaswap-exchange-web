@@ -1,7 +1,7 @@
 <template>
   <div class="order-book-widget market-trades">
-    <h4>
-      Market trades
+    <h4 class="market-trades__title">
+      <span>Market trades</span>
       <s-tooltip slot="suffix" border-radius="mini" :content="tooltipContent" placement="top" tabindex="-1">
         <s-icon name="info-16" size="14px" />
       </s-tooltip>
@@ -39,8 +39,6 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
       { time: '8/26 17:59:26', amount: '934.40 ETH', price: '9.99 XOR' },
       { time: '8/26 18:11:26', amount: '921.40 ETH', price: '12.56 XOR' },
       { time: '8/26 19:12:26', amount: '920.40 ETH', price: '3.50 XOR' },
-      { time: '8/26 19:12:26', amount: '920.40 ETH', price: '3.50 XOR' },
-      { time: '8/26 19:12:26', amount: '920.40 ETH', price: '3.50 XOR' },
     ];
   }
 }
@@ -48,17 +46,29 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .market-trades {
+  min-height: 310px;
+
+  &__title {
+    height: 40px;
+    line-height: 40px;
+    font-weight: 500;
+    font-size: 17px;
+    margin-left: 16px;
+
+    .el-tooltip {
+      margin-left: 8px;
+    }
+  }
+
   .row {
     display: flex;
     justify-content: space-between;
     margin: 2px;
-    padding: 4px 8px 4px 8px;
+    padding: 8px 16px 8px 16px;
   }
 
   .order-info {
-    padding: 4px 16px 4px 16px;
-
-    .time {
+    &.time {
       color: var(--s-color-base-content-secondary);
     }
   }
@@ -78,11 +88,6 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
     line-height: 150%;
     letter-spacing: -0.26px;
     text-transform: uppercase;
-  }
-
-  h4 {
-    margin: 16px 0 10px 16px;
-    font-weight: 500;
   }
 }
 
