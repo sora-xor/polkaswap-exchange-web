@@ -208,7 +208,40 @@ type OrderBookEntityMutation = {
 };
 /* eslint-enable camelcase */
 
-const OrderBookSubscription = gql<SubquerySubscriptionPayload<OrderBookEntityMutation>>`
+type OrderBookEntityData = {
+  data: OrderBookEntity;
+};
+
+type OrderBookUpdateData = {
+  price: FPNumber;
+  priceChangeDay: FPNumber;
+  volumeDayUSD: FPNumber;
+  lastDeals: OrderBookDeal[];
+};
+
+const SubqueryOrderBookDataQuery = gql<OrderBookEntityData>`
+  query OrderBookData($id: ID!) {
+    data: orderBook(id: $id:) {
+      price
+      priceChangeDay
+      volumeDayUSD
+      lastDeals
+    }
+  }
+`;
+
+const parseOrderBookData = (item: OrderBookEntityData): OrderBookUpdateData => {
+  const { price, priceChangeDay, volumeDayUSD, lastDeals } = item.data;
+
+  return {
+    price: new FPNumber(price ?? 0),
+    priceChangeDay: new FPNumber(priceChangeDay ?? 0),
+    volumeDayUSD: new FPNumber(volumeDayUSD ?? 0),
+    lastDeals: lastDeals ? JSON.parse(lastDeals) : ([] as OrderBookDeal[]),
+  };
+};
+
+const SubqueryOrderBookSubscription = gql<SubquerySubscriptionPayload<OrderBookEntityMutation>>`
   subscription SubqueryOrderBookSubscription($id: ID!) {
     payload: orderBook(id: $id, mutation: [UPDATE]) {
       id
@@ -217,3 +250,52 @@ const OrderBookSubscription = gql<SubquerySubscriptionPayload<OrderBookEntityMut
     }
   }
 `;
+
+/* eslint-disable camelcase */
+const parseOrderBookMutation = (item: OrderBookEntityMutation): OrderBookUpdateData => {
+  const { price, price_change_day, volume_day_usd, last_deals } = item;
+  const lastDeals = last_deals ? JSON.parse(last_deals) : ([] as OrderBookDeal[]);
+
+  return {
+    price: new FPNumber(price ?? 0),
+    priceChangeDay: new FPNumber(price_change_day ?? 0),
+    volumeDayUSD: new FPNumber(volume_day_usd ?? 0),
+    lastDeals,
+  };
+};
+/* eslint-enable camelcase */
+
+export async function subscribeOnOrderBook(
+  dexId: number,
+  baseAssetId: string,
+  quoteAssetId: string,
+  handler: (entity: OrderBookUpdateData) => void,
+  errorHandler: () => void
+): Promise<Nullable<VoidFunction>> {
+  const orderBookId = [dexId, baseAssetId, quoteAssetId].join('-');
+  const variables = { id: orderBookId };
+  const indexer = getCurrentIndexer();
+
+  switch (indexer.type) {
+    case IndexerType.SUBQUERY: {
+      const subqueryIndexer = indexer as SubqueryIndexer;
+      const initialState = await subqueryIndexer.services.explorer.request(SubqueryOrderBookDataQuery, variables);
+
+      if (!initialState) return null;
+
+      handler(parseOrderBookData(initialState));
+
+      const subscription = subqueryIndexer.services.explorer.createEntitySubscription(
+        SubqueryOrderBookSubscription,
+        variables,
+        parseOrderBookMutation,
+        handler,
+        errorHandler
+      );
+
+      return subscription;
+    }
+  }
+
+  return null;
+}
