@@ -78,7 +78,7 @@
           <span>TOTAL</span>
         </template>
         <template v-slot="{ row }">
-          <span class="limit-order-table__total">{{ fiatAmount(row.total) }}</span>
+          <span class="limit-order-table__total">${{ row.total }}</span>
         </template>
       </s-table-column>
     </s-table>
@@ -115,12 +115,6 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     return this.openLimitOrders;
   }
 
-  fiatAmount(amount: string): string {
-    const fiat = this.getFiatAmount(amount, this.quoteAsset);
-
-    return `$${FPNumber.fromNatural(fiat || '0').toString()}`;
-  }
-
   @Watch('userLimitOrders')
   prepareOrderLimits(): void {
     this.openLimitOrders = [];
@@ -128,11 +122,14 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     this.userLimitOrders.forEach((limitOrder) => {
       const { amount, price, side, id, orderBookId, time, originalAmount } = limitOrder;
 
-      const pair = `${this.getAsset(orderBookId.base)?.symbol}-${this.getAsset(orderBookId.quote)?.symbol}`;
+      const baseAsset = this.getAsset(orderBookId.base) as AccountAsset;
+      const quoteAsset = this.getAsset(orderBookId.quote) as AccountAsset;
+      const pair = `${baseAsset?.symbol}-${quoteAsset?.symbol}`;
       const date = new Date(time);
 
       const proportion = amount.div(originalAmount).mul(FPNumber.HUNDRED);
-      const filled = FPNumber.HUNDRED.sub(proportion).toFixed(2).toString();
+      const filled = FPNumber.HUNDRED.sub(proportion).toFixed(2);
+      const total = this.getFPNumberFiatAmountByFPNumber(amount.mul(price), this.quoteAsset) ?? FPNumber.ZERO;
 
       const row = {
         limitOrderId: id,
@@ -143,7 +140,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
         side,
         filled: `${filled}%`,
         expired: 'month',
-        total: amount.mul(price),
+        total: total.toFixed(4),
         date: { date: `${date.getUTCMonth() + 1}/${date.getUTCDate()}`, time: date.toLocaleTimeString() },
       };
 

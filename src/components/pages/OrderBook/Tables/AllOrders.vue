@@ -34,7 +34,8 @@
           <span>Price</span>
         </template>
         <template v-slot="{ row }">
-          <span>{{ row.price }}</span>
+          <span>{{ row.price }}</span>&nbsp;
+          <span>{{ row.quoteAssetSymbol }}</span>
         </template>
       </s-table-column>
       <s-table-column>
@@ -42,7 +43,8 @@
           <span>Amount</span>
         </template>
         <template v-slot="{ row }">
-          <span>{{ row.amount }}</span>
+          <span>{{ row.amount }}</span>&nbsp;
+          <span>{{ row.baseAssetSymbol }}</span>
         </template>
       </s-table-column>
       <s-table-column>
@@ -61,11 +63,20 @@
           <span>{{ row.status }}</span>
         </template>
       </s-table-column>
+      <s-table-column>
+        <template #header>
+          <span>Total</span>
+        </template>
+        <template v-slot="{ row }">
+          <span>${{ row.total }}</span>
+        </template>
+      </s-table-column>
     </s-table>
   </div>
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import dayjs from 'dayjs';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
@@ -76,41 +87,51 @@ import { getter } from '@/store/decorators';
 import { Filter } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
-export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
   @Prop({ default: '', type: String }) filter!: string;
+  @Prop({ default: false, type: Boolean }) currentBook!: boolean;
 
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.accountAddress accountAddress!: string;
+  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   public orders: OrderData[] = [];
 
-  async mounted(): Promise<void> {
-    if (!(this.baseAsset && this.quoteAsset && this.accountAddress)) {
-      this.orders = [];
-    } else {
-      await this.withLoading(async () => {
-        this.orders = await fetchOrderBookAccountOrders(this.accountAddress);
-      });
-    }
+  mounted(): void {
+    this.fetchData();
   }
 
   get items() {
     return this.orders.map((order) => {
-      const date = dayjs(order.time);
-      const { baseAsset, quoteAsset } = this;
+      const { amount, price, side, orderBookId, time, originalAmount, status } = order;
+
+      const { base, quote } = orderBookId;
+      const baseAsset = this.getAsset(base) as RegisteredAccountAsset;
+      const quoteAsset = this.getAsset(quote) as RegisteredAccountAsset;
+      const baseAssetSymbol = baseAsset.symbol;
+      const quoteAssetSymbol = quoteAsset.symbol;
+      const pair = `${baseAssetSymbol}-${quoteAssetSymbol}`;
+      const date = dayjs(time);
+
+      const proportion = amount.div(originalAmount).mul(FPNumber.HUNDRED);
+      const filled = proportion.toFixed(2);
+      const total = this.getFPNumberFiatAmountByFPNumber(amount.mul(price), quoteAsset) ?? FPNumber.ZERO;
 
       return {
         date: date.format('M/DD HH:mm:ss'),
-        pair: `${baseAsset.symbol}-${quoteAsset.symbol}`,
-        side: order.side,
-        price: order.price.toLocaleString(),
-        amount: order.originalAmount.toLocaleString(),
-        filled: order.amount.toLocaleString(),
-        status: order.status,
+        baseAssetSymbol,
+        quoteAssetSymbol,
+        pair,
+        side,
+        price: price.toLocaleString(),
+        amount: originalAmount.toLocaleString(),
+        filled,
+        status,
+        total: total.toFixed(4),
       };
     });
   }
@@ -119,6 +140,20 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     if (this.filter !== Filter.executed) return this.items;
 
     return this.items.filter((item) => item.status === 'Filled');
+  }
+
+  private async fetchData(): Promise<void> {
+    if (!this.accountAddress) return;
+
+    const id =
+      this.currentBook && this.baseAsset && this.quoteAsset
+        ? { dexId: 0, base: this.baseAsset.address, quote: this.quoteAsset.address }
+        : undefined;
+
+    await this.withLoading(async () => {
+      const data = await fetchOrderBookAccountOrders(this.accountAddress, id);
+      this.orders = data ?? [];
+    });
   }
 }
 </script>
