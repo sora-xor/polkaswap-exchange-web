@@ -2,6 +2,8 @@ import { MAX_TIMESTAMP } from '@sora-substrate/util/build/orderBook/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
+import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook';
+
 import { orderBookActionContext } from '.';
 
 function deserializeKey(key: string) {
@@ -58,6 +60,8 @@ const actions = defineActions({
     const bidsSubscription = api.orderBook.subscribeOnAggregatedBids(base, quote).subscribe((bids) => {
       commit.setBids(bids.reverse());
     });
+
+    // const statsAndDealsSubscription = await subscribeOnOrderBookUpdates(0, base, quote, console.log, console.error);
 
     commit.setOrderBookUpdates([asksSubscription, bidsSubscription]);
   },
