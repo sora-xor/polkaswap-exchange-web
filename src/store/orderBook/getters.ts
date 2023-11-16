@@ -1,10 +1,9 @@
+import { OrderBook } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/util';
 import { defineGetters } from 'direct-vuex';
 
 import type { OrderBookStats } from '@/types/orderBook';
 import { serializeKey } from '@/utils/orderBook';
-
-import { assetsGetterContext } from '../assets';
 
 import { OrderBookState } from './types';
 
@@ -15,14 +14,13 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 const getters = defineGetters<OrderBookState>()({
   baseAsset(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = orderBookGetterContext(args);
-    const token = rootGetters.assets.assetDataByAddress(state.baseAssetAddress);
-
-    return token || null;
+    if (!state.baseAssetAddress) return null;
+    return rootGetters.assets.assetDataByAddress(state.baseAssetAddress);
   },
   quoteAsset(...args): Nullable<RegisteredAccountAsset> {
-    const { rootGetters } = assetsGetterContext(args);
-
-    return rootGetters.assets.xor;
+    const { state, rootGetters } = orderBookGetterContext(args);
+    if (!state.quoteAssetAddress) return null;
+    return rootGetters.assets.assetDataByAddress(state.quoteAssetAddress);
   },
   orderBookId(...args): string {
     const { getters } = orderBookGetterContext(args);
@@ -32,11 +30,13 @@ const getters = defineGetters<OrderBookState>()({
 
     return serializeKey(baseAsset.address, quoteAsset.address);
   },
-  accountAddress(...args): string {
-    const { rootState } = orderBookGetterContext(args);
-    return rootState.wallet.account.address;
-  },
+  currentOrderBook(...args): Nullable<OrderBook> {
+    const { getters, state } = orderBookGetterContext(args);
 
+    if (!getters.orderBookId) return null;
+
+    return state.orderBooks[getters.orderBookId];
+  },
   orderBookStats(...args): Nullable<OrderBookStats> {
     const { getters, state } = orderBookGetterContext(args);
 
@@ -44,23 +44,24 @@ const getters = defineGetters<OrderBookState>()({
 
     return state.orderBooksStats[getters.orderBookId];
   },
-
   orderBookPrice(...args): FPNumber {
     const { getters } = orderBookGetterContext(args);
 
     return getters.orderBookStats?.price ?? FPNumber.ZERO;
   },
-
   orderBookPriceChange(...args): FPNumber {
     const { getters } = orderBookGetterContext(args);
 
     return getters.orderBookStats?.priceChange ?? FPNumber.ZERO;
   },
-
   orderBookVolume(...args): FPNumber {
     const { getters } = orderBookGetterContext(args);
 
     return getters.orderBookStats?.volume ?? FPNumber.ZERO;
+  },
+  accountAddress(...args): string {
+    const { rootState } = orderBookGetterContext(args);
+    return rootState.wallet.account.address;
   },
 });
 

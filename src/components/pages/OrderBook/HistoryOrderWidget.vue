@@ -35,15 +35,17 @@
 </template>
 
 <script lang="ts">
+import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, LimitOrderSide, PageNames } from '@/consts';
+import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
-import { state, mutation, getter, action } from '@/store/decorators';
+import { state, getter } from '@/store/decorators';
 import { Filter, Cancel } from '@/types/orderBook';
-import { delay } from '@/utils';
+
+import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 
 @Component({
   components: {
@@ -53,13 +55,10 @@ import { delay } from '@/utils';
   },
 })
 export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.TransactionMixin) {
-  @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<any>;
-  @state.orderBook.currentOrderBook currentOrderBook!: any;
 
+  @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-
-  @action.orderBook.subscribeToUserLimitOrders subscribeToOpenOrders!: ({ base }) => void;
 
   confirmCancelOrderVisibility = false;
   currentFilter = Filter.open;
@@ -127,17 +126,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   }
 
   get isBookStopped(): boolean {
-    if (this.currentOrderBook) {
-      const [book]: any = Object.values(this.currentOrderBook);
-
-      if (book.status === 'Stop') {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    return true;
+    return !this.currentOrderBook || this.currentOrderBook.status === OrderBookStatus.Stop;
   }
 
   connectAccount(): void {

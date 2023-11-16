@@ -17,11 +17,12 @@
 </template>
 
 <script lang="ts">
+import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, LimitOrderSide } from '@/consts';
+import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, mutation, state } from '@/store/decorators';
 
@@ -34,17 +35,17 @@ export default class SetLimitOrderWidget extends Mixins(TranslationMixin, mixins
   @getter.orderBook.baseAsset baseAsset!: any;
   @getter.orderBook.baseAsset quoteAsset!: any;
 
-  @mutation.orderBook.setSide setSide!: (side: LimitOrderSide) => void;
+  @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
 
-  readonly LimitOrderTabsItems = LimitOrderSide;
+  readonly LimitOrderTabsItems = PriceVariant;
 
-  currentTab = LimitOrderSide.Buy;
+  currentTab = PriceVariant.Buy;
 
   get loadingState(): boolean {
     return this.parentLoading || this.loading || !this.baseAsset || !this.quoteAsset;
   }
 
-  handleChangeTab(side: LimitOrderSide): void {
+  handleChangeTab(side: PriceVariant): void {
     this.currentTab = side;
     this.setSide(side);
   }

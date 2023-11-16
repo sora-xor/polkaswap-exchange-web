@@ -1,13 +1,13 @@
+import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/util';
-
-import { LimitOrderSide, ZeroStringValue } from '@/consts';
+import { DexId } from '@sora-substrate/util/build/dex/consts';
 
 import type { OrderBookState } from './types';
 
 function initialState(): OrderBookState {
   return {
-    orderBooks: null,
-    currentOrderBook: null,
+    orderBooks: {},
+    dexId: DexId.XOR,
     baseAssetAddress: null,
     quoteAssetAddress: null,
     baseValue: '',
@@ -17,8 +17,9 @@ function initialState(): OrderBookState {
     asks: [],
     bids: [],
     userLimitOrders: [],
-    side: LimitOrderSide.Buy,
+    side: PriceVariant.Buy,
     orderBookUpdates: [],
+    orderBookStatsUpdates: null,
     userLimitOrderUpdates: null,
     limitOrderConstraints: {
       tickSize: null,

@@ -46,8 +46,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state, action, mutation, getter } from '@/store/decorators';
-import { delay } from '@/utils';
+import { action, getter, state } from '@/store/decorators';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -64,15 +63,8 @@ interface LimitOrderForm {
 export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
   @state.orderBook.asks asks!: any;
   @state.orderBook.bids bids!: any;
-  @state.orderBook.baseAssetAddress baseAssetAddress!: string;
 
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
-
-  @mutation.orderBook.resetAsks resetAsks!: () => void;
-  @mutation.orderBook.resetBids resetBids!: () => void;
-
-  @action.orderBook.subscribeToOrderBook private subscribeToOrderBook!: ({ base }) => Promise<void>;
 
   volumeAsks = FPNumber.ZERO;
   volumeBids = FPNumber.ZERO;
@@ -81,6 +73,28 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
   asksFormatted: Array<LimitOrderForm> = [];
   bidsFormatted: Array<LimitOrderForm> = [];
+
+  // Widget subscription data
+  @getter.orderBook.orderBookId private orderBookId!: string;
+  @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
+  @action.orderBook.subscribeToBidsAndAsks private subscribeToBidsAndAsks!: AsyncFnWithoutArgs;
+  @action.orderBook.unsubscribeFromBidsAndAsks private unsubscribeFromBidsAndAsks!: FnWithoutArgs;
+
+  // Widget subscription creation
+  @Watch('orderBookId', { immediate: true })
+  @Watch('nodeIsConnected')
+  private async updateSubscription(): Promise<void> {
+    await this.withLoading(async () => {
+      await this.withParentLoading(async () => {
+        await this.subscribeToBidsAndAsks();
+      });
+    });
+  }
+
+  // Widget subscription close
+  beforeDestroy(): void {
+    this.unsubscribeFromBidsAndAsks();
+  }
 
   get iconTrend(): string {
     return this.priceTrend === 'up' ? 'arrows-arrow-bold-top-24' : 'arrows-arrow-bold-bottom-24';
@@ -280,32 +294,6 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     }
 
     // this.setVolume(this.volumeAsks.add(this.volumeBids).toFixed(4).toString());
-  }
-
-  async withLimitOrdersSet<T = void>(func: FnWithoutArgs<T>): Promise<T> {
-    const nonEmptyStock = this.asks?.length || this.bids?.length;
-
-    if (!nonEmptyStock) {
-      await delay();
-      return await this.withLimitOrdersSet(func);
-    } else {
-      return func();
-    }
-  }
-
-  @Watch('baseAssetAddress')
-  private async subscribeToOrderBookUpdates(baseAssetAddress: Nullable<string>): Promise<void> {
-    if (baseAssetAddress) {
-      await this.withLoading(async () => {
-        // wait for node connection & wallet init (App.vue)
-        await this.withParentLoading(async () => {
-          await this.subscribeToOrderBook({ base: baseAssetAddress });
-          await this.withLimitOrdersSet(async () => {
-            this.prepareLimitOrders();
-          });
-        });
-      });
-    }
   }
 }
 </script>

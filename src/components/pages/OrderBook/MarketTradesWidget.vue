@@ -116,7 +116,8 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
   &.el-table {
     background: transparent;
 
-    tr {
+    tr,
+    th {
       background: transparent;
     }
 

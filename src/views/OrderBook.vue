@@ -31,13 +31,14 @@
 
 <script lang="ts">
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { BreakpointClass, Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { action, mutation, state } from '@/store/decorators';
+import { action, getter, mutation, state } from '@/store/decorators';
 
+import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
 import type { NavigationGuardNext, Route } from 'vue-router';
 
 @Component({
@@ -49,35 +50,45 @@ import type { NavigationGuardNext, Route } from 'vue-router';
     MarketTradesWidget: lazyComponent(Components.MarketTradesWidget),
   },
 })
-export default class OrderBook extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @state.orderBook.orderBooks orderBooks!: any;
-  @state.orderBook.orderBookUpdates orderBookUpdates!: any;
-  @state.orderBook.baseAssetAddress baseAssetAddress!: string;
+export default class OrderBookView extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  @state.orderBook.orderBooks orderBooks!: Record<string, OrderBook>;
   @state.settings.screenBreakpointClass responsiveClass!: BreakpointClass;
 
-  @action.orderBook.subscribeToOrderBook subscribeToOrderBook!: any;
-  @action.orderBook.getPlaceOrderNetworkFee getPlaceOrderFee!: AsyncFnWithoutArgs;
-  @action.orderBook.unsubscribeFromOrderBook unsubscribeFromOrderBook!: FnWithoutArgs;
+  @action.orderBook.getPlaceOrderNetworkFee private getPlaceOrderFee!: AsyncFnWithoutArgs;
+  @action.orderBook.getOrderBooksInfo private getOrderBooksInfo!: AsyncFnWithoutArgs;
+  @mutation.orderBook.setCurrentOrderBook setCurrentOrderBook!: (orderBookId: OrderBookId) => void;
+
+  @getter.orderBook.orderBookId private orderBookId!: string;
+  @action.orderBook.subscribeToOrderBookStats private subscribeToOrderBookStats!: AsyncFnWithoutArgs;
+  @action.orderBook.unsubscribeFromOrderBookStats private unsubscribeFromOrderBookStats!: FnWithoutArgs;
+
+  @Watch('orderBookId', { immediate: true })
+  private updateSubscription() {
+    this.subscribeToOrderBookStats();
+  }
+
+  beforeDestroy(): void {
+    this.unsubscribeFromOrderBookStats();
+  }
 
   largeDesktop = true;
 
+  async mounted(): Promise<void> {
+    await this.withApi(async () => {
+      await Promise.all([this.getOrderBooksInfo(), this.getPlaceOrderFee()]);
+
+      if (!this.orderBookId) {
+        const book = Object.values(this.orderBooks)[0];
+
+        if (book) {
+          this.setCurrentOrderBook(book.orderBookId);
+        }
+      }
+    });
+  }
+
   isScreenHuge(): boolean {
     return this.responsiveClass === BreakpointClass.HugeDesktop;
-  }
-
-  async beforeRouteLeave(to: Route, from: Route, next: NavigationGuardNext<Vue>): Promise<void> {
-    this.unsubscribeFromOrderBook();
-    next();
-  }
-
-  async mounted(): Promise<void> {
-    if (!this.orderBookUpdates.length && this.baseAssetAddress) {
-      await this.subscribeToOrderBook({ base: this.baseAssetAddress });
-    }
-
-    await this.withApi(async () => {
-      await this.getPlaceOrderFee();
-    });
   }
 }
 </script>

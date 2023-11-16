@@ -44,7 +44,7 @@
         <template v-slot="{ row }">
           <div class="limit-order-table__price">
             <span class="price">{{ row.price }}</span>
-            <span>{{ ` ${quoteAsset.symbol}` }}</span>
+            <span>{{ row.quoteAssetSymbol }}</span>
           </div>
         </template>
       </s-table-column>
@@ -54,8 +54,8 @@
         </template>
         <template v-slot="{ row }">
           <div class="limit-order-table__amount">
-            <span class="amount">{{ row.amount }}</span>
-            <span>{{ ` ${baseAsset.symbol}` }}</span>
+            <span class="amount">{{ row.amount }}</span>&nbsp;
+            <span>{{ row.baseAssetSymbol }}</span>
           </div>
         </template>
       </s-table-column>
@@ -88,55 +88,69 @@
 </template>
 
 <script lang="ts">
+import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/util';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, state, action } from '@/store/decorators';
-import { delay } from '@/utils';
 
+import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
-  @state.orderBook.baseAssetAddress baseAssetAddress!: string;
-  @state.orderBook.currentOrderBook currentOrderBook!: any;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<any>;
 
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.orderBook.baseAsset baseAsset!: AccountAsset;
-  @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
+  @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
-  @action.orderBook.subscribeToUserLimitOrders subscribeToOpenOrders!: ({ base }) => void;
+  // Widget subscription data
+  @getter.orderBook.accountAddress private accountAddress!: string;
+  @getter.orderBook.orderBookId private orderBookId!: string;
+  @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
+  @action.orderBook.subscribeToUserLimitOrders subscribeToUserLimitOrders!: AsyncFnWithoutArgs;
+  @action.orderBook.unsubscribeFromUserLimitOrders unsubscribeFromUserLimitOrders!: FnWithoutArgs;
 
-  openLimitOrders: Array<any> = [];
-
-  get openOrders(): any {
-    return this.openLimitOrders;
+  // Widget subscription creation
+  @Watch('orderBookId', { immediate: true })
+  @Watch('accountAddress')
+  @Watch('nodeIsConnected')
+  private async updateSubscription(): Promise<void> {
+    await this.withLoading(async () => {
+      await this.withParentLoading(async () => {
+        await this.subscribeToUserLimitOrders();
+      });
+    });
   }
 
-  @Watch('userLimitOrders')
-  prepareOrderLimits(): void {
-    this.openLimitOrders = [];
+  // Widget subscription close
+  beforeDestroy(): void {
+    this.unsubscribeFromUserLimitOrders();
+  }
 
-    this.userLimitOrders.forEach((limitOrder) => {
+  get openOrders(): any {
+    return this.userLimitOrders.map((limitOrder) => {
       const { amount, price, side, id, orderBookId, time, originalAmount } = limitOrder;
 
       const baseAsset = this.getAsset(orderBookId.base) as AccountAsset;
       const quoteAsset = this.getAsset(orderBookId.quote) as AccountAsset;
-      const pair = `${baseAsset?.symbol}-${quoteAsset?.symbol}`;
+      const baseAssetSymbol = baseAsset.symbol;
+      const quoteAssetSymbol = quoteAsset.symbol;
+      const pair = `${baseAssetSymbol}-${quoteAssetSymbol}`;
       const date = new Date(time);
 
       const proportion = amount.div(originalAmount).mul(FPNumber.HUNDRED);
       const filled = FPNumber.HUNDRED.sub(proportion).toFixed(2);
-      const total = this.getFPNumberFiatAmountByFPNumber(amount.mul(price), this.quoteAsset) ?? FPNumber.ZERO;
+      const total = this.getFPNumberFiatAmountByFPNumber(amount.mul(price), quoteAsset) ?? FPNumber.ZERO;
 
       const row = {
         limitOrderId: id,
         orderBookId,
         amount,
+        baseAssetSymbol,
+        quoteAssetSymbol,
         pair,
         price,
         side,
@@ -146,7 +160,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
         date: { date: `${date.getUTCMonth() + 1}/${date.getUTCDate()}`, time: date.toLocaleTimeString() },
       };
 
-      this.openLimitOrders.push(row);
+      return row;
     });
   }
 
@@ -161,29 +175,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   isSelectionAllowed(): boolean {
-    const [book]: any = Object.values(this.currentOrderBook);
-
-    return !(book.status === 'Stop');
-  }
-
-  @Watch('baseAssetAddress')
-  private async subscribeToLimitOrderUpdates(baseAssetAddress: Nullable<string>): Promise<void> {
-    if (baseAssetAddress) {
-      await this.withLoading(async () => {
-        // wait for node connection & wallet init (App.vue)
-        await this.withParentLoading(async () => {
-          this.subscribeToOpenOrders({ base: this.baseAssetAddress });
-
-          await delay(500);
-
-          this.prepareOrderLimits();
-        });
-      });
-    }
-  }
-
-  async mounted(): Promise<void> {
-    await this.subscribeToLimitOrderUpdates(this.baseAssetAddress);
+    return !!this.currentOrderBook && this.currentOrderBook.status !== OrderBookStatus.Stop;
   }
 }
 </script>
