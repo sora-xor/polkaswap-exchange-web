@@ -42,13 +42,6 @@ export default class TranslationMixin extends Mixins(mixins.TranslationMixin) {
 
   readonly TranslationConsts = TranslationConsts;
 
-  get ISOLanguageName(): string {
-    // return ISO 639-1 code format
-    if (this.language === 'zh-CN') return 'zh';
-
-    return this.language;
-  }
-
   tOrdinal(n) {
     return OrdinalRules[this.$i18n.locale]?.(n) ?? n;
   }

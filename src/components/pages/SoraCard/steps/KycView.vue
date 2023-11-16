@@ -131,6 +131,13 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
     return this.cameraPermission === 'granted';
   }
 
+  get ISOLanguageName(): string {
+    // return ISO 639-1 code format
+    if (this.language === 'zh-CN') return 'zh';
+
+    return this.language;
+  }
+
   get forbiddenByBrowser(): boolean {
     return this.cameraPermission === 'denied';
   }
