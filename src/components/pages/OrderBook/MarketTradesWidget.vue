@@ -50,7 +50,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 export default class MarketTradesWidget extends Mixins(TranslationMixin) {
   @state.orderBook.deals deals!: OrderBookDealData[];
 
-  @getter.orderBook.quoteAsset baseAsset!: AccountAsset;
+  @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
 
   get tooltipContent(): string {
