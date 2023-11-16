@@ -4,6 +4,7 @@ import type { OrderBookStats, OrderBookDealData } from '@/types/orderBook';
 import type { PriceVariant, OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { FPNumber } from '@sora-substrate/util';
 import type { DexId } from '@sora-substrate/util/build/dex/consts';
+import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { Subscription } from 'rxjs';
 
 export type OrderBookState = {
@@ -15,7 +16,7 @@ export type OrderBookState = {
   deals: readonly OrderBookDealData[];
   asks: readonly OrderBookPriceVolume[];
   bids: readonly OrderBookPriceVolume[];
-  userLimitOrders: [];
+  userLimitOrders: readonly LimitOrder[];
   baseValue: string;
   quoteValue: string;
   side: PriceVariant;

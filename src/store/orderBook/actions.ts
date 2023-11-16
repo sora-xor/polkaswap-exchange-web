@@ -7,7 +7,7 @@ import { serializeKey } from '@/utils/orderBook';
 
 import { orderBookActionContext } from '.';
 
-import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
+import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { Subscription } from 'rxjs';
 
 const actions = defineActions({
@@ -101,8 +101,6 @@ const actions = defineActions({
 
     if (!(baseAsset && quoteAsset)) return;
 
-    console.log('subscribeToOrderBookStats');
-
     const subscription = await subscribeOnOrderBookUpdates(
       dexId,
       baseAsset.address,
@@ -162,7 +160,7 @@ const actions = defineActions({
   unsubscribeFromUserLimitOrders(context): void {
     const { commit } = orderBookActionContext(context);
 
-    commit.resetUserLimitOrders();
+    commit.setUserLimitOrders();
     commit.resetUserLimitOrderUpdates();
   },
 });

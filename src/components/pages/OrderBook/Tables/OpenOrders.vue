@@ -1,6 +1,7 @@
 <template>
   <div>
     <s-table
+      v-loading="loading"
       class="limit-order-table"
       empty-text="No open orders"
       ref="multipleOrdersTable"
@@ -98,10 +99,11 @@ import { getter, state, action } from '@/store/decorators';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 
 @Component
 export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
-  @state.orderBook.userLimitOrders userLimitOrders!: Array<any>;
+  @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
 
   @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;

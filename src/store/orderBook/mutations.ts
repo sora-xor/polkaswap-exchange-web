@@ -5,6 +5,7 @@ import type { OrderBookDealData, OrderBookStats } from '@/types/orderBook';
 
 import type { OrderBookState } from './types';
 import type { OrderBookId, OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<OrderBookState>()({
@@ -37,11 +38,8 @@ const mutations = defineMutations<OrderBookState>()({
   setStats(state, stats: Record<string, OrderBookStats>): void {
     state.orderBooksStats = Object.freeze({ ...state.orderBooksStats, ...stats });
   },
-  setUserLimitOrders(state, limitOrders): void {
-    state.userLimitOrders = limitOrders;
-  },
-  resetUserLimitOrders(state): void {
-    state.userLimitOrders = [];
+  setUserLimitOrders(state, limitOrders: readonly LimitOrder[] = []): void {
+    state.userLimitOrders = Object.freeze([...limitOrders]);
   },
   setOrderBookUpdates(state, subscriptions: Array<Subscription>): void {
     state.orderBookUpdates = subscriptions;

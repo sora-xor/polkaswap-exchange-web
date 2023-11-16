@@ -1,5 +1,5 @@
 <template>
-  <div class="order-book-widget stock-book book">
+  <div v-loading="loading" class="order-book-widget stock-book book">
     <div class="stock-book__title">
       <span>Orderbook</span>
       <s-tooltip slot="suffix" border-radius="mini" :content="orderBookTooltip" placement="top" tabindex="-1">

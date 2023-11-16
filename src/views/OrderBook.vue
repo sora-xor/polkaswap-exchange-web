@@ -39,7 +39,6 @@ import { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
-import type { NavigationGuardNext, Route } from 'vue-router';
 
 @Component({
   components: {
@@ -71,20 +70,21 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
     this.unsubscribeFromOrderBookStats();
   }
 
-  largeDesktop = true;
-
   async mounted(): Promise<void> {
     await this.withApi(async () => {
       await Promise.all([this.getOrderBooksInfo(), this.getPlaceOrderFee()]);
-
-      if (!this.orderBookId) {
-        const book = Object.values(this.orderBooks)[0];
-
-        if (book) {
-          this.setCurrentOrderBook(book.orderBookId);
-        }
-      }
+      this.checkCurrentOrderBook();
     });
+  }
+
+  private checkCurrentOrderBook(): void {
+    if (!this.orderBookId) {
+      const book = Object.values(this.orderBooks)[0];
+
+      if (book) {
+        this.setCurrentOrderBook(book.orderBookId);
+      }
+    }
   }
 
   isScreenHuge(): boolean {
