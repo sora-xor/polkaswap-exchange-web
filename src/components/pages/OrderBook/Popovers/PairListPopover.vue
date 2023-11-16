@@ -148,9 +148,9 @@ export default class PairListPopover extends Mixins(
     return Object.entries(this.orderBooks).reduce<BookFields[]>((buffer, [orderBookId, value]) => {
       if (!orderBookId) return buffer;
       const { base, quote } = deserializeKey(orderBookId);
-      const price = this.orderBooksStats[orderBookId].price ?? FPNumber.ZERO;
-      const priceChange = this.orderBooksStats[orderBookId].priceChange ?? FPNumber.ZERO;
-      const volume = this.orderBooksStats[orderBookId].volume ?? FPNumber.ZERO;
+      const price = this.orderBooksStats[orderBookId]?.price ?? FPNumber.ZERO;
+      const priceChange = this.orderBooksStats[orderBookId]?.priceChange ?? FPNumber.ZERO;
+      const volume = this.orderBooksStats[orderBookId]?.volume ?? FPNumber.ZERO;
       const row = {
         baseAsset: this.getAsset(base),
         targetAsset: this.getAsset(quote),

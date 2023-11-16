@@ -12,17 +12,8 @@ import type { Subscription } from 'rxjs';
 const actions = defineActions({
   async getOrderBooksInfo(context): Promise<void> {
     const { commit, rootGetters } = orderBookActionContext(context);
-    const [orderBooks, orderBooksWithStats] = await Promise.all([api.orderBook.getOrderBooks(), fetchOrderBooks()]);
 
-    const orderBooksStats = (orderBooksWithStats ?? []).reduce((buffer, item) => {
-      const {
-        id: { base, quote },
-        stats,
-      } = item;
-      const key = serializeKey(base, quote);
-      buffer[key] = stats;
-      return buffer;
-    }, {});
+    const orderBooks = await api.orderBook.getOrderBooks();
 
     // TODO: move to lib
     const whitelistAddresses = Object.keys(rootGetters.wallet.account.whitelist);
@@ -41,8 +32,24 @@ const actions = defineActions({
     if (!orderBookId) return;
 
     commit.setOrderBooks(whitelistOrderBook);
-    commit.setStats(orderBooksStats);
     commit.setCurrentOrderBook(orderBookId);
+  },
+
+  async updateOrderBooksStats(context): Promise<void> {
+    const { commit } = orderBookActionContext(context);
+
+    const orderBooksWithStats = await fetchOrderBooks();
+    const orderBooksStats = (orderBooksWithStats ?? []).reduce((buffer, item) => {
+      const {
+        id: { base, quote },
+        stats,
+      } = item;
+      const key = serializeKey(base, quote);
+      buffer[key] = stats;
+      return buffer;
+    }, {});
+
+    commit.setStats(orderBooksStats);
   },
 
   async getPlaceOrderNetworkFee(context, timestamp = MAX_TIMESTAMP): Promise<void> {

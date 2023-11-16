@@ -175,6 +175,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
 
+  @action.orderBook.updateOrderBooksStats private updateOrderBooksStats!: AsyncFnWithoutArgs;
+
   visibleBookList = false;
   confirmPlaceOrderVisibility = false;
   confirmCancelOrderVisibility = false;
@@ -199,6 +201,13 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     } else if (this.side === PriceVariant.Sell) {
       this.setTokenFromAddress(this.baseAsset.address);
       this.setTokenToAddress(this.quoteAsset.address);
+    }
+  }
+
+  @Watch('visibleBookList')
+  private updateStats(): void {
+    if (this.visibleBookList) {
+      this.updateOrderBooksStats();
     }
   }
 
