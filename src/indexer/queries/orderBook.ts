@@ -52,7 +52,7 @@ const parseDeals = (lastDeals?: string): OrderBookDealData[] => {
 };
 
 const SubqueryOrderBooksQuery = gql<SubqueryConnectionQueryResponse<OrderBookEntity>>`
-  query OrderBookQuery($after: Cursor) {
+  query OrderBooksQuery($after: Cursor) {
     data: orderBooks(after: $after) {
       pageInfo {
         hasNextPage
@@ -121,6 +121,7 @@ const SubqueryAccountMarketOrdersQuery = gql<SubqueryConnectionQueryResponse<Ord
       edges {
         node {
           orderBookId
+          accountId
           timestamp
           isBuy
           price
@@ -142,6 +143,7 @@ const SubqueryAccountLimitOrdersQuery = gql<SubqueryConnectionQueryResponse<Orde
       edges {
         node {
           orderBookId
+          accountId
           timestamp
           isBuy
           price
@@ -157,29 +159,27 @@ const SubqueryAccountLimitOrdersQuery = gql<SubqueryConnectionQueryResponse<Orde
   }
 `;
 
-const parseOrderEntity =
-  (owner: string) =>
-  (item: OrderBookMarketOrderEntity | OrderBookLimitOrderEntity): OrderData => {
-    const [dexId, base, quote] = item.orderBookId.split('-');
+const parseOrderEntity = (item: OrderBookMarketOrderEntity | OrderBookLimitOrderEntity): OrderData => {
+  const [dexId, base, quote] = item.orderBookId.split('-');
 
-    return {
-      orderBookId: {
-        dexId: Number(dexId),
-        base,
-        quote,
-      },
-      owner,
-      time: parseTimestamp(item.timestamp),
-      side: parseSide(item.isBuy),
-      price: new FPNumber(item.price),
-      originalAmount: new FPNumber(item.amount),
-      amount: new FPNumber('amountFilled' in item ? item.amountFilled : item.amount),
-      id: 'orderId' in item ? item.orderId : 0,
-      lifespan: parseTimestamp('lifetime' in item ? item.lifetime : 0),
-      expiresAt: parseTimestamp('expiresAt' in item ? item.expiresAt : item.timestamp),
-      status: 'status' in item ? item.status : 'Filled',
-    };
+  return {
+    orderBookId: {
+      dexId: Number(dexId),
+      base,
+      quote,
+    },
+    owner: item.accountId,
+    time: parseTimestamp(item.timestamp),
+    side: parseSide(item.isBuy),
+    price: new FPNumber(item.price),
+    originalAmount: new FPNumber(item.amount),
+    amount: new FPNumber('amountFilled' in item ? item.amountFilled : item.amount),
+    id: 'orderId' in item ? item.orderId : 0,
+    lifespan: parseTimestamp('lifetime' in item ? item.lifetime : 0),
+    expiresAt: parseTimestamp('expiresAt' in item ? item.expiresAt : item.timestamp),
+    status: 'status' in item ? item.status : 'Filled',
   };
+};
 
 export async function fetchOrderBookAccountOrders(
   accountAddress: string,
@@ -198,14 +198,21 @@ export async function fetchOrderBookAccountOrders(
   }
 
   const indexer = getCurrentIndexer();
-  const parse = parseOrderEntity(accountAddress);
 
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
       const subqueryIndexer = indexer as SubqueryIndexer;
       const [limitOrders, marketOrders] = await Promise.all([
-        subqueryIndexer.services.explorer.fetchAllEntities(SubqueryAccountLimitOrdersQuery, { filter }, parse),
-        subqueryIndexer.services.explorer.fetchAllEntities(SubqueryAccountMarketOrdersQuery, { filter }, parse),
+        subqueryIndexer.services.explorer.fetchAllEntities(
+          SubqueryAccountLimitOrdersQuery,
+          { filter },
+          parseOrderEntity
+        ),
+        subqueryIndexer.services.explorer.fetchAllEntities(
+          SubqueryAccountMarketOrdersQuery,
+          { filter },
+          parseOrderEntity
+        ),
       ]);
 
       return [...(limitOrders || []), ...(marketOrders || [])].sort((a, b) => +b.time - +a.time);
@@ -216,7 +223,7 @@ export async function fetchOrderBookAccountOrders(
 }
 
 const SubqueryOrderBookDataQuery = gql<OrderBookEntityResponse>`
-  query OrderBookData($id: String!) {
+  query OrderBookDataQuery($id: String!) {
     data: orderBook(id: $id) {
       price
       priceChangeDay

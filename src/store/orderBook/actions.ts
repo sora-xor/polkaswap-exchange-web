@@ -2,7 +2,7 @@ import { MAX_TIMESTAMP } from '@sora-substrate/util/build/orderBook/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
-import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook';
+import { subscribeOnOrderBookUpdates, fetchOrderBooks } from '@/indexer/queries/orderBook';
 import { serializeKey, deserializeKey } from '@/utils/orderBook';
 
 import { orderBookActionContext } from '.';
@@ -12,8 +12,17 @@ import type { Subscription } from 'rxjs';
 const actions = defineActions({
   async getOrderBooksInfo(context): Promise<void> {
     const { commit, rootGetters } = orderBookActionContext(context);
+    const [orderBooks, orderBooksWithStats] = await Promise.all([api.orderBook.getOrderBooks(), fetchOrderBooks()]);
 
-    const orderBooks = await api.orderBook.getOrderBooks();
+    const orderBooksStats = (orderBooksWithStats ?? []).reduce((buffer, item) => {
+      const {
+        id: { base, quote },
+        stats,
+      } = item;
+      const key = serializeKey(base, quote);
+      buffer[key] = stats;
+      return buffer;
+    }, {});
 
     // TODO: move to lib
     const whitelistAddresses = Object.keys(rootGetters.wallet.account.whitelist);
@@ -32,6 +41,7 @@ const actions = defineActions({
     if (!orderBookId) return;
 
     commit.setOrderBooks(whitelistOrderBook);
+    commit.setStats(orderBooksStats);
     commit.setCurrentOrderBook(orderBookId);
   },
 
