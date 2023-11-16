@@ -214,7 +214,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     }
 
     .el-checkbox__inner {
-      border-radius: unset;
+      border-radius: 4px;
     }
 
     .el-table__empty-text {

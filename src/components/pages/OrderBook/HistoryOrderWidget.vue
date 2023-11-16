@@ -216,7 +216,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     opacity: 0.4;
 
     &:hover {
-      cursor: default;
+      cursor: not-allowed;
       color: var(--s-color-base-content-secondary);
     }
   }
@@ -260,7 +260,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
       opacity: 0.5;
 
       &:hover {
-        cursor: default;
+        cursor: not-allowed;
       }
     }
   }

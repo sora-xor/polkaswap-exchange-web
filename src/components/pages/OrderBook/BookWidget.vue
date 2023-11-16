@@ -441,7 +441,7 @@ $background-column-color-dark: #693d81;
   font-weight: 600;
   color: var(--s-color-base-content-tertiary);
   text-align: center;
-  height: $row-height * 9;
+  height: $row-height * 9.8;
 }
 
 [design-system-theme='dark'] {
