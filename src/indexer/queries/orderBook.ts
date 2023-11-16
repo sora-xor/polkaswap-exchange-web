@@ -15,7 +15,7 @@ import type {
   OrderBookEntity,
   OrderBookLimitOrderEntity,
   OrderBookMarketOrderEntity,
-  OrderBookDeal,
+  OrderBookDealEntity,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 /* eslint-disable camelcase */
@@ -41,7 +41,7 @@ const parseTimestamp = (unixTimestamp: number) => {
   return unixTimestamp * 1000;
 };
 const parseDeals = (lastDeals?: string): OrderBookDealData[] => {
-  const deals = (lastDeals ? JSON.parse(lastDeals) : []) as OrderBookDeal[];
+  const deals = (lastDeals ? JSON.parse(lastDeals) : []) as OrderBookDealEntity[];
 
   return deals.map((deal) => ({
     price: new FPNumber(deal.price ?? 0),

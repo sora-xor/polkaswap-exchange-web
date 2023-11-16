@@ -145,6 +145,8 @@ export default class PairListPopover extends Mixins(
   }
 
   get tableItems(): Array<BookFields> {
+    if (!this.orderBooks) return [];
+
     return Object.entries(this.orderBooks).reduce<BookFields[]>((buffer, [orderBookId, value]) => {
       if (!orderBookId) return buffer;
       const { base, quote } = deserializeKey(orderBookId);

@@ -23,7 +23,7 @@
       </div>
       <div class="column-3">
         <history-order-widget class="history-widget" />
-        <!-- <market-trades-widget class="trades-widget" /> -->
+        <market-trades-widget class="trades-widget" />
       </div>
     </div>
   </div>
