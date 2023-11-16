@@ -22,8 +22,8 @@
     </div>
     <div v-else class="stock-book-sell--no-asks">No opened asks</div>
     <div :class="getComputedClassTrend()">
-      <div v-if="noOpenAsksOrBids">
-        <span class="mark-price">{{ asksFormatted[asksFormatted.length - 1].price }}</span>
+      <div>
+        <span class="mark-price">{{ lastPriceFormatted }}</span>
         <s-icon class="trend-icon" :name="iconTrend" size="18" />
         <span class="last-traded-price">{{ fiatValue }}</span>
       </div>
@@ -41,16 +41,16 @@
 </template>
 
 <script lang="ts">
+import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { action, getter, state } from '@/store/decorators';
+import type { OrderBookDealData } from '@/types/orderBook';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-
-type PriceTrend = 'up' | 'down';
 
 interface LimitOrderForm {
   price: number;
@@ -65,10 +65,11 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   @state.orderBook.bids bids!: any;
 
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
+  @getter.orderBook.orderBookLastDeal orderBookLastDeal!: Nullable<OrderBookDealData>;
 
   volumeAsks = FPNumber.ZERO;
   volumeBids = FPNumber.ZERO;
-  priceTrend: PriceTrend = 'up';
+
   maxRowsNumber = 10;
 
   asksFormatted: Array<LimitOrderForm> = [];
@@ -96,15 +97,24 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     this.unsubscribeFromBidsAndAsks();
   }
 
+  get lastDealTrendsUp(): boolean {
+    return this.orderBookLastDeal?.side === PriceVariant.Buy;
+  }
+
   get iconTrend(): string {
-    return this.priceTrend === 'up' ? 'arrows-arrow-bold-top-24' : 'arrows-arrow-bold-bottom-24';
+    return this.lastDealTrendsUp ? 'arrows-arrow-bold-top-24' : 'arrows-arrow-bold-bottom-24';
+  }
+
+  get lastDealPrice(): FPNumber {
+    return this.orderBookLastDeal?.price ?? FPNumber.ZERO;
+  }
+
+  get lastPriceFormatted(): string {
+    return this.lastDealPrice.toLocaleString();
   }
 
   get fiatValue(): string {
-    const fiat = this.getFiatAmount(
-      this.asksFormatted[this.asksFormatted.length - 1].price.toString(),
-      this.quoteAsset
-    );
+    const fiat = this.getFiatAmount(this.lastDealPrice.toString(), this.quoteAsset);
 
     return fiat ? `$${fiat}` : '';
   }
@@ -116,17 +126,13 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   getComputedClassTrend(): string {
     const base = ['stock-book-delimiter'];
 
-    if (this.priceTrend === 'up') {
+    if (this.lastDealTrendsUp) {
       base.push('stock-book-delimiter--up');
     } else {
       base.push('stock-book-delimiter--down');
     }
 
     return base.join(' ');
-  }
-
-  get noOpenAsksOrBids(): boolean {
-    return !!(this.asksFormatted.length && this.bidsFormatted.length);
   }
 
   getSellOrders() {
@@ -138,12 +144,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   getHeight() {
-    if (this.asks.length < 10) {
-      const margin = this.maxRowsNumber - this.asks.length;
-      return `height: ${24 * margin}px`;
-    }
-
-    return `height: 0px`;
+    const margin = this.asks.length < 10 ? this.maxRowsNumber - this.asks.length : 0;
+    return `height: ${24 * margin}px`;
   }
 
   getStyles(filled) {

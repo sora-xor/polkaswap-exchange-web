@@ -42,7 +42,7 @@ export default class SetLimitOrderWidget extends Mixins(TranslationMixin, mixins
   currentTab = PriceVariant.Buy;
 
   get loadingState(): boolean {
-    return this.parentLoading || this.loading || !this.baseAsset || !this.quoteAsset;
+    return this.parentLoading || this.loading;
   }
 
   handleChangeTab(side: PriceVariant): void {

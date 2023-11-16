@@ -2,7 +2,7 @@ import { OrderBook } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/util';
 import { defineGetters } from 'direct-vuex';
 
-import type { OrderBookStats } from '@/types/orderBook';
+import type { OrderBookStats, OrderBookDealData } from '@/types/orderBook';
 import { serializeKey } from '@/utils/orderBook';
 
 import { OrderBookState } from './types';
@@ -58,6 +58,11 @@ const getters = defineGetters<OrderBookState>()({
     const { getters } = orderBookGetterContext(args);
 
     return getters.orderBookStats?.volume ?? FPNumber.ZERO;
+  },
+  orderBookLastDeal(...args): Nullable<OrderBookDealData> {
+    const { state } = orderBookGetterContext(args);
+
+    return state.deals[0] ?? null;
   },
   accountAddress(...args): string {
     const { rootState } = orderBookGetterContext(args);

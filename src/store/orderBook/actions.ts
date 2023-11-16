@@ -16,15 +16,17 @@ const actions = defineActions({
     const { whitelist } = rootGetters.wallet.account;
     const orderBooks = await api.orderBook.getOrderBooks();
 
-    const orderBooksAllowed = Object.entries(orderBooks).reduce<Record<string, OrderBook>>((buffer, [key, book]) => {
-      const { base, quote } = book.orderBookId;
-      if ([base, quote].every((address) => address in whitelist)) {
-        buffer[key] = book;
-      }
-      return buffer;
-    }, {});
+    // const orderBooksAllowed = Object.entries(orderBooks).reduce<Record<string, OrderBook>>((buffer, [key, book]) => {
+    //   const { base, quote } = book.orderBookId;
+    //   if ([base, quote].every((address) => address in whitelist)) {
+    //     buffer[key] = book;
+    //   }
+    //   return buffer;
+    // }, {});
 
-    commit.setOrderBooks(orderBooksAllowed);
+    // commit.setOrderBooks(orderBooksAllowed);
+
+    commit.setOrderBooks(orderBooks);
   },
 
   async updateOrderBooksStats(context): Promise<void> {
