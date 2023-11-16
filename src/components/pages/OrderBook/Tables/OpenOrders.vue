@@ -2,9 +2,11 @@
   <div>
     <s-table
       class="limit-order-table"
+      empty-text="No open orders"
+      ref="multipleOrdersTable"
       :data="openOrders"
       :highlight-current-row="false"
-      empty-text="No open orders"
+      @cell-click="handleSelectRow"
       @selection-change="handleSelectionChange"
     >
       <s-table-column type="selection" :selectable="isSelectionAllowed" />
@@ -154,6 +156,12 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 
       this.openLimitOrders.push(row);
     });
+  }
+
+  handleSelectRow(row): void {
+    if (this.$refs.multipleOrdersTable) {
+      (this.$refs.multipleOrdersTable as any).toggleRowSelection(row);
+    }
   }
 
   handleSelectionChange(rows): void {
