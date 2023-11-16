@@ -84,12 +84,23 @@
         </template>
       </s-table-column>
     </s-table>
+    <div class="limit-order-table__pagination">
+      <history-pagination
+        v-if="openLimitOrders.length"
+        :current-page="currentPage"
+        :page-amount="pageAmount"
+        :total="total"
+        :last-page="lastPage"
+        :loading="loadingState"
+        @pagination-click="handlePaginationClick"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -98,8 +109,17 @@ import { delay } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
-@Component
-export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
+@Component({
+  components: {
+    HistoryPagination: components.HistoryPagination,
+  },
+})
+export default class OpenOrders extends Mixins(
+  TranslationMixin,
+  mixins.LoadingMixin,
+  mixins.FormattedAmountMixin,
+  mixins.PaginationSearchMixin
+) {
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.currentOrderBook currentOrderBook!: any;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<any>;
@@ -113,8 +133,14 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 
   openLimitOrders: Array<any> = [];
 
+  pageAmount = 6;
+
   get openOrders(): any {
-    return this.openLimitOrders;
+    return this.getPageItems(this.openLimitOrders);
+  }
+
+  get total(): number {
+    return this.openLimitOrders.length;
   }
 
   fiatAmount(amount: string): string {
@@ -158,6 +184,30 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     });
   }
 
+  handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
+    let current = 1;
+
+    switch (button) {
+      case WALLET_CONSTS.PaginationButton.Prev:
+        current = this.currentPage - 1;
+        break;
+      case WALLET_CONSTS.PaginationButton.Next:
+        current = this.currentPage + 1;
+        break;
+      case WALLET_CONSTS.PaginationButton.First:
+        current = 1;
+        break;
+      case WALLET_CONSTS.PaginationButton.Last:
+        current = this.lastPage;
+    }
+
+    this.currentPage = current;
+  }
+
+  get loadingState(): boolean {
+    return this.parentLoading || this.loading;
+  }
+
   handleSelectRow(row): void {
     if (this.$refs.multipleOrdersTable) {
       (this.$refs.multipleOrdersTable as any).toggleRowSelection(row);
@@ -198,8 +248,9 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 
 <style lang="scss">
 .limit-order-table {
-  border-bottom-left-radius: var(--s-border-radius-small);
-  border-bottom-right-radius: var(--s-border-radius-small);
+  // border-bottom-left-radius: var(--s-border-radius-small);
+  // border-bottom-right-radius: var(--s-border-radius-small);
+
   font-size: 12px;
 
   .el-table__header-wrapper {
@@ -268,7 +319,12 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   .el-table__body-wrapper {
-    height: 380px;
+    height: 400px;
+  }
+
+  &__pagination {
+    margin: 0 16px;
+    padding-bottom: 16px;
   }
 }
 
