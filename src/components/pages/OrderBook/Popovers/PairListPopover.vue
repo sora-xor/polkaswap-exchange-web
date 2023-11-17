@@ -28,7 +28,7 @@
           <span>Price</span>
         </template>
         <template v-slot="{ row }">
-          <formatted-amount :value="row.price" fiatSign="" is-fiat-value />
+          <formatted-amount :value="row.price" fiatSign="" />
         </template>
       </s-table-column>
       <s-table-column>
@@ -80,7 +80,7 @@ import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter, mutation } from '@/store/decorators';
 import type { OrderBookStats } from '@/types/orderBook';
-import { deserializeKey } from '@/utils/orderBook';
+import { getBookDecimals } from '@/utils/orderBook';
 
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -145,6 +145,7 @@ export default class PairListPopover extends Mixins(
     return Object.entries(this.orderBooks).reduce<BookFields[]>((buffer, [orderBookId, value]) => {
       if (!orderBookId) return buffer;
       const { base, quote } = value.orderBookId;
+      const decimals = getBookDecimals(value);
       const price = this.orderBooksStats[orderBookId]?.price ?? FPNumber.ZERO;
       const priceChange = this.orderBooksStats[orderBookId]?.priceChange ?? FPNumber.ZERO;
       const volume = this.orderBooksStats[orderBookId]?.volume ?? FPNumber.ZERO;
@@ -154,7 +155,7 @@ export default class PairListPopover extends Mixins(
         targetAsset: this.getAsset(quote),
         pair: `${this.getAsset(base)?.symbol}-${this.getAsset(quote)?.symbol}`,
         status: value.status,
-        price: price.toLocaleString(),
+        price: price.dp(decimals).toLocaleString(),
         priceChange,
         volume: volume.toLocaleString(),
       };

@@ -1,4 +1,3 @@
-import type { LimitOrderConstraint } from '@/consts';
 import type { OrderBookStats, OrderBookDealData } from '@/types/orderBook';
 
 import type { PriceVariant, OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-proxy';
@@ -23,6 +22,5 @@ export type OrderBookState = {
   orderBookUpdates: Array<Subscription>;
   orderBookStatsUpdates: Nullable<VoidFunction>;
   userLimitOrderUpdates: Nullable<Subscription>;
-  limitOrderConstraints: LimitOrderConstraint;
   placeOrderNetworkFee: FPNumber;
 };

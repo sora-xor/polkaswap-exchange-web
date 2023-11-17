@@ -21,11 +21,6 @@ function initialState(): OrderBookState {
     orderBookUpdates: [],
     orderBookStatsUpdates: null,
     userLimitOrderUpdates: null,
-    limitOrderConstraints: {
-      tickSize: null,
-      maxLotSize: null,
-      minLotSize: null,
-    },
     placeOrderNetworkFee: FPNumber.ZERO,
   };
 }

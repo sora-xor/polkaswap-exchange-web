@@ -277,12 +277,6 @@ export enum LimitOrderTabsItems {
   Sell = PageNames.LimitOrderSell,
 }
 
-export interface LimitOrderConstraint {
-  tickSize: Nullable<number>;
-  maxLotSize: Nullable<number>;
-  minLotSize: Nullable<number>;
-}
-
 export enum RewardsTabsItems {
   Rewards = PageNames.Rewards,
   ReferralProgram = PageNames.ReferralProgram,

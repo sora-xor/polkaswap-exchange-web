@@ -47,6 +47,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { ZeroStringValue } from '@/consts';
 import { action, getter, state } from '@/store/decorators';
 import type { OrderBookDealData } from '@/types/orderBook';
 
@@ -114,6 +115,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   get fiatValue(): string {
+    if (!this.quoteAsset) return ZeroStringValue;
+
     const fiat = this.getFiatAmount(this.lastDealPrice.toString(), this.quoteAsset);
 
     return fiat ? `$${fiat}` : '';

@@ -17,8 +17,8 @@
           <div class="order-book-pair-data">
             <div class="order-book-pair-data-item">
               <span>Price</span>
-              <span class="order-book-pair-data-item__value">
-                <formatted-amount :value="orderBookPrice.toLocaleString()" fiatSign="" is-fiat-value />
+              <span class="order-book-pair-data-item__value order-book-fiat">
+                <formatted-amount :value="orderBookPrice" />
               </span>
             </div>
             <div class="order-book-pair-data-item">
@@ -30,7 +30,7 @@
             <div class="order-book-pair-data-item">
               <span>Volume</span>
               <span class="order-book-pair-data-item__value">
-                <formatted-amount :value="orderBookVolume.toLocaleString()" is-fiat-value />
+                <formatted-amount :value="orderBookVolume" is-fiat-value />
               </span>
             </div>
           </div>
@@ -123,8 +123,10 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, LimitOrderType, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
+import type { OrderBookStats } from '@/types/orderBook';
 import { OrderBookTabs } from '@/types/tabs';
 import { isMaxButtonAvailable, getMaxValue, getAssetBalance, asZeroValue, hasInsufficientBalance } from '@/utils';
+import { getBookDecimals } from '@/utils/orderBook';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
@@ -157,9 +159,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
-  @getter.orderBook.orderBookPrice orderBookPrice!: FPNumber;
-  @getter.orderBook.orderBookPriceChange orderBookPriceChange!: FPNumber;
-  @getter.orderBook.orderBookVolume orderBookVolume!: FPNumber;
+  @getter.orderBook.orderBookStats orderBookStats!: Nullable<OrderBookStats>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
@@ -300,6 +300,21 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     }
 
     return false;
+  }
+
+  get orderBookPrice(): string {
+    const price = this.orderBookStats?.price ?? FPNumber.ZERO;
+    const decimals = getBookDecimals(this.currentOrderBook);
+    return price.dp(decimals).toLocaleString();
+  }
+
+  get orderBookPriceChange(): FPNumber {
+    return this.orderBookStats?.priceChange ?? FPNumber.ZERO;
+  }
+
+  get orderBookVolume(): string {
+    const volume = this.orderBookStats?.volume ?? FPNumber.ZERO;
+    return volume.toLocaleString();
   }
 
   get marketOptionDisabled(): boolean {
@@ -738,6 +753,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   &-swap-icon {
     color: var(--s-color-base-content-secondary);
     margin-left: 8px;
+  }
+
+  &-fiat {
+    color: var(--s-color-fiat-value);
+    line-height: var(--s-line-height-medium);
+    letter-spacing: var(--s-letter-spacing-small);
   }
 
   .order-book {

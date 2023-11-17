@@ -1,9 +1,8 @@
 import { OrderBook } from '@sora-substrate/liquidity-proxy';
-import { FPNumber } from '@sora-substrate/util';
 import { defineGetters } from 'direct-vuex';
 
 import type { OrderBookStats, OrderBookDealData } from '@/types/orderBook';
-import { serializeKey } from '@/utils/orderBook';
+import { serializeKey, getBookDecimals } from '@/utils/orderBook';
 
 import { OrderBookState } from './types';
 
@@ -44,20 +43,10 @@ const getters = defineGetters<OrderBookState>()({
 
     return state.orderBooksStats[getters.orderBookId];
   },
-  orderBookPrice(...args): FPNumber {
+  orderBookDecimals(...args): number {
     const { getters } = orderBookGetterContext(args);
 
-    return getters.orderBookStats?.price ?? FPNumber.ZERO;
-  },
-  orderBookPriceChange(...args): FPNumber {
-    const { getters } = orderBookGetterContext(args);
-
-    return getters.orderBookStats?.priceChange ?? FPNumber.ZERO;
-  },
-  orderBookVolume(...args): FPNumber {
-    const { getters } = orderBookGetterContext(args);
-
-    return getters.orderBookStats?.volume ?? FPNumber.ZERO;
+    return getBookDecimals(getters.currentOrderBook);
   },
   orderBookLastDeal(...args): Nullable<OrderBookDealData> {
     const { state } = orderBookGetterContext(args);
