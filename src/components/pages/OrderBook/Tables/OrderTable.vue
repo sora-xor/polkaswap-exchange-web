@@ -1,28 +1,28 @@
 <template>
   <div>
     <s-table
-      v-loading="parentLoading"
+      v-loading="loadingState"
       class="order-table"
       empty-text="No orders"
-      ref="multipleOrdersTable"
-      :data="items"
+      ref="table"
+      :data="tableItems"
       :highlight-current-row="false"
       @cell-click="handleSelectRow"
       @selection-change="handleSelectionChange"
     >
       <s-table-column v-if="selectable" type="selection" :selectable="isSelectable" />
-      <s-table-column :width="'70'">
+      <s-table-column width="94">
         <template #header>
           <span>TIME</span>
         </template>
         <template v-slot="{ row }">
           <div class="order-table__date">
-            <div>{{ row.date.date }}</div>
-            <div>{{ row.date.time }}</div>
+            <div>{{ row.created.date }}</div>
+            <div>{{ row.created.time }}</div>
           </div>
         </template>
       </s-table-column>
-      <s-table-column :width="'126'">
+      <s-table-column width="126">
         <template #header>
           <span>PAIR</span>
         </template>
@@ -30,7 +30,7 @@
           <span class="order-table__pair">{{ row.pair }}</span>
         </template>
       </s-table-column>
-      <s-table-column :width="'65'">
+      <s-table-column width="65">
         <template #header>
           <span>SIDE</span>
         </template>
@@ -38,7 +38,7 @@
           <span class="order-table__side">{{ row.side }}</span>
         </template>
       </s-table-column>
-      <s-table-column :width="'126'">
+      <s-table-column width="126">
         <template #header>
           <span>PRICE</span>
         </template>
@@ -49,7 +49,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column :width="'140'">
+      <s-table-column width="140">
         <template #header>
           <span>AMOUNT</span>
         </template>
@@ -60,18 +60,21 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column :width="'98'">
+      <s-table-column width="98">
         <template #header>
           <span>% FILLED</span>
         </template>
         <template v-slot="{ row }"> {{ row.filled }}% </template>
       </s-table-column>
-      <s-table-column :width="'94'">
+      <s-table-column width="94">
         <template #header>
           <span>LIFETIME</span>
         </template>
         <template v-slot="{ row }">
-          <span>{{ row.expired }}</span>
+          <div class="order-table__date">
+            <div>{{ row.expires.date }}</div>
+            <div>{{ row.expires.time }}</div>
+          </div>
         </template>
       </s-table-column>
       <s-table-column>
@@ -98,7 +101,7 @@
         :page-amount="pageAmount"
         :total="total"
         :last-page="lastPage"
-        :loading="parentLoading"
+        :loading="loadingState"
         @pagination-click="handlePaginationClick"
       />
     </div>
@@ -107,12 +110,12 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { WALLET_CONSTS, components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@soramitsu/soraneo-wallet-web';
 import dayjs from 'dayjs';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
+import ScrollableTableMixin from '@/components/mixins/ScrollableTableMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { getter } from '@/store/decorators';
 import { OrderStatus } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';
 
@@ -123,33 +126,23 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class OpenOrders extends Mixins(
-  TranslationMixin,
-  mixins.LoadingMixin,
-  mixins.FormattedAmountMixin,
-  mixins.PaginationSearchMixin
-) {
+export default class OpenOrders extends Mixins(TranslationMixin, ScrollableTableMixin) {
   @Prop({ default: () => [], type: Array }) readonly orders!: OrderData[];
   @Prop({ default: false, type: Boolean }) readonly selectable!: boolean;
 
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
-
   pageAmount = 6;
 
-  get total(): number {
-    return this.items.length;
-  }
-
-  get items(): any {
+  get preparedItems(): any {
     return this.orders.map((order) => {
-      const { originalAmount, amount, price, side, id, orderBookId, time, status } = order;
+      const { originalAmount, amount, price, side, id, orderBookId, time, status, expiresAt } = order;
       const { base, quote } = orderBookId;
       const baseAsset = this.getAsset(base) as AccountAsset;
       const quoteAsset = this.getAsset(quote) as AccountAsset;
       const baseAssetSymbol = baseAsset.symbol;
       const quoteAssetSymbol = quoteAsset.symbol;
       const pair = `${baseAssetSymbol}-${quoteAssetSymbol}`;
-      const date = dayjs(time);
+      const created = dayjs(time);
+      const expires = dayjs(expiresAt);
 
       const proportion = amount.div(originalAmount).mul(FPNumber.HUNDRED);
       const filled = FPNumber.HUNDRED.sub(proportion).toFixed(2);
@@ -166,33 +159,13 @@ export default class OpenOrders extends Mixins(
         price: price.toLocaleString(),
         total: total.toLocaleString(),
         side,
-        expired: 'month',
         status: status ?? OrderStatus.Active,
-        date: { date: date.format('M/DD'), time: date.format('HH:mm:ss') },
+        created: { date: created.format('M/DD'), time: created.format('HH:mm:ss') },
+        expires: { date: expires.format('M/DD'), time: expires.format('HH:mm:ss') },
       };
 
       return row;
     });
-  }
-
-  handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
-    let current = 1;
-
-    switch (button) {
-      case WALLET_CONSTS.PaginationButton.Prev:
-        current = this.currentPage - 1;
-        break;
-      case WALLET_CONSTS.PaginationButton.Next:
-        current = this.currentPage + 1;
-        break;
-      case WALLET_CONSTS.PaginationButton.First:
-        current = 1;
-        break;
-      case WALLET_CONSTS.PaginationButton.Last:
-        current = this.lastPage;
-    }
-
-    this.currentPage = current;
   }
 
   isSelectable(): boolean {
@@ -202,9 +175,7 @@ export default class OpenOrders extends Mixins(
   handleSelectRow(row): void {
     if (!this.selectable) return;
 
-    if (this.$refs.multipleOrdersTable) {
-      (this.$refs.multipleOrdersTable as any).toggleRowSelection(row);
-    }
+    this.tableComponent?.toggleRowSelection(row);
   }
 
   handleSelectionChange(rows): void {
@@ -288,7 +259,7 @@ export default class OpenOrders extends Mixins(
   }
 
   .el-table__body-wrapper {
-    height: 400px;
+    height: auto !important;
   }
 
   &__pagination {
