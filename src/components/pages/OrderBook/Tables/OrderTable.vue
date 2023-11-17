@@ -152,7 +152,7 @@ export default class OpenOrders extends Mixins(
       const date = dayjs(time);
 
       const proportion = amount.div(originalAmount).mul(FPNumber.HUNDRED);
-      const filled = proportion.toFixed(2);
+      const filled = FPNumber.HUNDRED.sub(proportion).toFixed(2);
       const total = this.getFPNumberFiatAmountByFPNumber(originalAmount.mul(price), quoteAsset) ?? FPNumber.ZERO;
 
       const row = {

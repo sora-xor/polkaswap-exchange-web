@@ -162,6 +162,9 @@ const SubqueryAccountLimitOrdersQuery = gql<SubqueryConnectionQueryResponse<Orde
 
 const parseOrderEntity = (item: OrderBookMarketOrderEntity | OrderBookLimitOrderEntity): OrderData => {
   const [dexId, base, quote] = item.orderBookId.split('-');
+  const originalAmount = new FPNumber(item.amount);
+  const filledAmount = new FPNumber('amountFilled' in item ? item.amountFilled : item.amount);
+  const amount = originalAmount.sub(filledAmount);
 
   return {
     orderBookId: {
@@ -173,8 +176,8 @@ const parseOrderEntity = (item: OrderBookMarketOrderEntity | OrderBookLimitOrder
     time: parseTimestamp(item.timestamp),
     side: parseSide(item.isBuy),
     price: new FPNumber(item.price),
-    originalAmount: new FPNumber(item.amount),
-    amount: new FPNumber('amountFilled' in item ? item.amountFilled : item.amount),
+    originalAmount,
+    amount,
     id: 'orderId' in item ? item.orderId : 0,
     lifespan: parseTimestamp('lifetime' in item ? item.lifetime : 0),
     expiresAt: parseTimestamp('expiresAt' in item ? item.expiresAt : item.timestamp),
