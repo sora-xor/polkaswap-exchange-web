@@ -1,10 +1,29 @@
 <template>
   <div class="order-book-widget stock-book book">
     <div class="stock-book__title">
-      <span>Orderbook</span>
-      <s-tooltip slot="suffix" border-radius="mini" :content="orderBookTooltip" placement="top" tabindex="-1">
-        <s-icon name="info-16" size="14px" />
-      </s-tooltip>
+      <div>
+        <span>Orderbook</span>
+        <s-tooltip slot="suffix" border-radius="mini" :content="orderBookTooltip" placement="top" tabindex="-1">
+          <s-icon name="info-16" size="14px" />
+        </s-tooltip>
+      </div>
+      <s-dropdown
+        v-if="false"
+        class="stock-book__switcher"
+        trigger="click"
+        :size="18"
+        popper-class="stock-book-switcher"
+      >
+        {{ '0.001' }}
+        <template slot="menu">
+          <s-dropdown-item>1</s-dropdown-item>
+          <s-dropdown-item>0.1</s-dropdown-item>
+          <s-dropdown-item>0.01</s-dropdown-item>
+          <s-dropdown-item>0.001</s-dropdown-item>
+          <s-dropdown-item>0.0001</s-dropdown-item>
+          <s-dropdown-item>0.00001</s-dropdown-item>
+        </template>
+      </s-dropdown>
     </div>
     <div class="book-columns">
       <div>price</div>
@@ -80,8 +99,14 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   priceTrend: PriceTrend = 'up';
   maxRowsNumber = 10;
 
+  scalerOpen = false;
+
   asksFormatted: Array<LimitOrderForm> = [];
   bidsFormatted: Array<LimitOrderForm> = [];
+
+  get iconDirection(): string {
+    return this.scalerOpen ? 'arrows-chevron-top-24' : 'arrows-chevron-bottom-24';
+  }
 
   get iconTrend(): string {
     return this.priceTrend === 'up' ? 'arrows-arrow-bold-top-24' : 'arrows-arrow-bold-bottom-24';
@@ -316,6 +341,10 @@ $row-height: 24px;
 $background-column-color-light: #e7dadd;
 $background-column-color-dark: #693d81;
 
+.stock-book-switcher {
+  background-color: var(--s-color-base-disabled) !important;
+}
+
 .stock-book {
   .row {
     display: flex;
@@ -325,6 +354,9 @@ $background-column-color-dark: #693d81;
   }
 
   &__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     height: 40px;
     line-height: 40px;
     font-weight: 500;
@@ -333,6 +365,29 @@ $background-column-color-dark: #693d81;
 
     .el-tooltip {
       margin-left: 8px;
+    }
+  }
+
+  &__switcher {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 12px;
+
+    &:hover {
+      cursor: pointer;
+
+      .el-icon-arrow-down {
+        color: var(--s-color-base-content-secondary);
+      }
+    }
+
+    .el-icon-arrow-down {
+      color: var(--s-color-base-content-tertiary);
+      // font-size: 20px;
+      font-weight: 800;
+      margin-left: 4px;
+      margin-bottom: 1px;
     }
   }
 
