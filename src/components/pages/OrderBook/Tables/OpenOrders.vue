@@ -44,7 +44,7 @@
         </template>
         <template v-slot="{ row }">
           <div class="limit-order-table__price">
-            <span class="price">{{ row.price }}</span>
+            <span class="price">{{ row.price }}</span>&nbsp;
             <span>{{ row.quoteAssetSymbol }}</span>
           </div>
         </template>
@@ -55,7 +55,7 @@
         </template>
         <template v-slot="{ row }">
           <div class="limit-order-table__amount">
-            <span class="amount">{{ row.amount }}</span>&nbsp;
+            <span class="amount">{{ row.amount }}/{{ row.originalAmount }}</span>&nbsp;
             <span>{{ row.baseAssetSymbol }}</span>
           </div>
         </template>
@@ -64,9 +64,7 @@
         <template #header>
           <span>% FILLED</span>
         </template>
-        <template v-slot="{ row }">
-          <span>{{ row.filled }}</span>
-        </template>
+        <template v-slot="{ row }"> {{ row.filled }}% </template>
       </s-table-column>
       <s-table-column :width="'94'">
         <template #header>
@@ -176,15 +174,16 @@ export default class OpenOrders extends Mixins(
       const row = {
         limitOrderId: id,
         orderBookId,
-        amount,
+        originalAmount: originalAmount.toLocaleString(),
+        amount: originalAmount.sub(amount).toLocaleString(),
+        filled: Number(filled),
         baseAssetSymbol,
         quoteAssetSymbol,
         pair,
         price,
         side,
-        filled: `${filled}%`,
         expired: 'month',
-        total: total.toFixed(4),
+        total: total.toLocaleString(),
         date: { date: `${date.getUTCMonth() + 1}/${date.getUTCDate()}`, time: date.toLocaleTimeString() },
       };
 

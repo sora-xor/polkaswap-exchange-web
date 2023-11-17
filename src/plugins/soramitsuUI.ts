@@ -41,12 +41,14 @@ import { setDesignSystem, setTheme } from '@soramitsu/soramitsu-js-ui/lib/utils'
 import ElCheckbox from 'element-ui/lib/checkbox';
 import ElCheckboxGroup from 'element-ui/lib/checkbox-group';
 import ElPopover from 'element-ui/lib/popover';
+// import ElProgress from 'element-ui/lib/progress';
 import Vue from 'vue';
 
 import store from '@/store';
 
 Vue.use(ElementUIPlugin);
 Vue.use(SoramitsuUIStorePlugin, { store: store.original });
+// Vue.use(ElProgress);
 Vue.use(ElPopover);
 Vue.use(ElCheckbox);
 Vue.use(ElCheckboxGroup);
