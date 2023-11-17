@@ -2,37 +2,48 @@ import { MAX_TIMESTAMP } from '@sora-substrate/util/build/orderBook/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
+import { subscribeOnOrderBookUpdates, fetchOrderBooks } from '@/indexer/queries/orderBook';
+import { serializeKey } from '@/utils/orderBook';
+
 import { orderBookActionContext } from '.';
 
-function deserializeKey(key: string) {
-  const [base, quote] = key.split(',');
-  return { base, quote };
-}
+import type { OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { Subscription } from 'rxjs';
 
 const actions = defineActions({
   async getOrderBooksInfo(context): Promise<void> {
     const { commit, rootGetters } = orderBookActionContext(context);
-
+    const { whitelist } = rootGetters.wallet.account;
     const orderBooks = await api.orderBook.getOrderBooks();
 
-    // TODO: move to lib
-    const whitelistAddresses = Object.keys(rootGetters.wallet.account.whitelist);
+    // const orderBooksAllowed = Object.entries(orderBooks).reduce<Record<string, OrderBook>>((buffer, [key, book]) => {
+    //   const { base, quote } = book.orderBookId;
+    //   if ([base, quote].every((address) => address in whitelist)) {
+    //     buffer[key] = book;
+    //   }
+    //   return buffer;
+    // }, {});
 
-    const whitelistOrderBook = Object.keys(orderBooks)
-      .filter((key) => {
-        const { base } = deserializeKey(key);
-        return whitelistAddresses.includes(base);
-      })
-      .reduce((current, key) => {
-        return Object.assign(current, { [key]: orderBooks[key] });
-      }, {});
+    // commit.setOrderBooks(orderBooksAllowed);
 
-    const [orderBookId] = Object.keys(whitelistOrderBook);
+    commit.setOrderBooks(orderBooks);
+  },
 
-    if (!orderBookId) return;
+  async updateOrderBooksStats(context): Promise<void> {
+    const { commit } = orderBookActionContext(context);
 
-    commit.setOrderBooks(whitelistOrderBook);
-    commit.setCurrentOrderBook(orderBookId);
+    const orderBooksWithStats = await fetchOrderBooks();
+    const orderBooksStats = (orderBooksWithStats ?? []).reduce((buffer, item) => {
+      const {
+        id: { base, quote },
+        stats,
+      } = item;
+      const key = serializeKey(base, quote);
+      buffer[key] = stats;
+      return buffer;
+    }, {});
+
+    commit.setStats(orderBooksStats);
   },
 
   async getPlaceOrderNetworkFee(context, timestamp = MAX_TIMESTAMP): Promise<void> {
@@ -42,60 +53,117 @@ const actions = defineActions({
     commit.setPlaceOrderNetworkFee(codecFee);
   },
 
-  async subscribeToOrderBook(context, { base, quote }): Promise<void> {
-    const { commit, getters, dispatch } = orderBookActionContext(context);
+  async subscribeToBidsAndAsks(context): Promise<void> {
+    const { commit, dispatch, getters } = orderBookActionContext(context);
+    const { baseAsset, quoteAsset } = getters;
 
-    commit.resetAsks();
-    commit.resetBids();
-    commit.resetOrderBookUpdates();
+    dispatch.unsubscribeFromBidsAndAsks();
 
-    if (!quote) quote = getters.quoteAsset?.address;
+    if (!(baseAsset && quoteAsset)) return;
 
-    const asksSubscription = api.orderBook.subscribeOnAggregatedAsks(base, quote).subscribe((asks) => {
-      commit.setAsks(asks.reverse());
-    });
+    let asksSubscription!: Subscription;
+    let bidsSubscription!: Subscription;
 
-    const bidsSubscription = api.orderBook.subscribeOnAggregatedBids(base, quote).subscribe((bids) => {
-      commit.setBids(bids.reverse());
-    });
+    await Promise.all([
+      new Promise<void>((resolve) => {
+        asksSubscription = api.orderBook
+          .subscribeOnAggregatedAsks(baseAsset.address, quoteAsset.address)
+          .subscribe((asks) => {
+            commit.setAsks(asks.reverse());
+            resolve();
+          });
+      }),
+      new Promise<void>((resolve) => {
+        bidsSubscription = api.orderBook
+          .subscribeOnAggregatedBids(baseAsset.address, quoteAsset.address)
+          .subscribe((bids) => {
+            commit.setBids(bids.reverse());
+            resolve();
+          });
+      }),
+    ]);
 
     commit.setOrderBookUpdates([asksSubscription, bidsSubscription]);
   },
 
-  subscribeToUserLimitOrders(context, { base, quote }): void {
-    const { commit, getters } = orderBookActionContext(context);
+  unsubscribeFromBidsAndAsks(context): void {
+    const { commit } = orderBookActionContext(context);
 
-    commit.resetUserLimitOrderUpdates();
+    commit.setAsks();
+    commit.setBids();
+    commit.resetOrderBookUpdates();
+  },
 
-    const address = getters.accountAddress;
+  async subscribeToOrderBookStats(context): Promise<void> {
+    const { commit, dispatch, getters, state } = orderBookActionContext(context);
+    const { dexId } = state;
+    const { baseAsset, quoteAsset } = getters;
 
-    if (!address) return;
+    dispatch.unsubscribeFromOrderBookStats();
 
-    if (!quote) quote = getters.quoteAsset?.address;
+    if (!(baseAsset && quoteAsset)) return;
 
-    let userLimitOrders: Array<any> = [];
+    const subscription = await subscribeOnOrderBookUpdates(
+      dexId,
+      baseAsset.address,
+      quoteAsset.address,
+      (data) => {
+        const {
+          id: { base, quote },
+          stats,
+          deals,
+        } = data;
+        const key = serializeKey(base, quote);
+        commit.setDeals(deals);
+        commit.setStats({ [key]: stats });
+      },
+      console.error
+    );
 
-    const subscription = api.orderBook.subscribeOnUserLimitOrdersIds(base, quote, address).subscribe((ids) => {
-      userLimitOrders = [];
+    if (!subscription) return;
 
-      ids.forEach(async (id) => {
-        const order = await api.orderBook.getLimitOrder(base, quote, id);
-        userLimitOrders.push(order);
-      });
+    commit.setOrderBookStatsUpdates(subscription);
+  },
 
-      commit.setUserLimitOrders(userLimitOrders);
+  unsubscribeFromOrderBookStats(context): void {
+    const { commit } = orderBookActionContext(context);
+
+    commit.setDeals();
+    commit.resetOrderBookStatsUpdates();
+  },
+
+  async subscribeToUserLimitOrders(context): Promise<void> {
+    const { commit, dispatch, getters } = orderBookActionContext(context);
+    const { baseAsset, quoteAsset, accountAddress } = getters;
+
+    dispatch.unsubscribeFromUserLimitOrders();
+
+    if (!(accountAddress && baseAsset && quoteAsset)) return;
+
+    let subscription!: Subscription;
+
+    await new Promise<void>((resolve) => {
+      subscription = api.orderBook
+        .subscribeOnUserLimitOrdersIds(baseAsset.address, quoteAsset.address, accountAddress)
+        .subscribe(async (ids) => {
+          const userLimitOrders = await Promise.all(
+            ids.map((id) => api.orderBook.getLimitOrder(baseAsset.address, quoteAsset.address, id))
+          );
+
+          commit.setUserLimitOrders(userLimitOrders);
+
+          resolve();
+        });
     });
 
     commit.setUserLimitOrderUpdates(subscription);
   },
 
-  unsubscribeFromOrderBook(context): void {
+  unsubscribeFromUserLimitOrders(context): void {
     const { commit } = orderBookActionContext(context);
-    commit.resetAsks();
-    commit.resetBids();
+
+    commit.setUserLimitOrders();
     commit.resetUserLimitOrderUpdates();
-    commit.resetUserLimitOrders();
-    commit.resetOrderBookUpdates();
   },
 });
 

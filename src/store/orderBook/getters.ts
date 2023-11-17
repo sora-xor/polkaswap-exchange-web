@@ -1,6 +1,8 @@
+import { OrderBook } from '@sora-substrate/liquidity-proxy';
 import { defineGetters } from 'direct-vuex';
 
-import { assetsGetterContext } from '../assets';
+import type { OrderBookStats, OrderBookDealData } from '@/types/orderBook';
+import { serializeKey, getBookDecimals } from '@/utils/orderBook';
 
 import { OrderBookState } from './types';
 
@@ -11,23 +13,50 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 const getters = defineGetters<OrderBookState>()({
   baseAsset(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = orderBookGetterContext(args);
-    const token = rootGetters.assets.assetDataByAddress(state.baseAssetAddress);
-
-    return token || null;
+    if (!state.baseAssetAddress) return null;
+    return rootGetters.assets.assetDataByAddress(state.baseAssetAddress);
   },
   quoteAsset(...args): Nullable<RegisteredAccountAsset> {
-    const { rootGetters } = assetsGetterContext(args);
+    const { state, rootGetters } = orderBookGetterContext(args);
+    if (!state.quoteAssetAddress) return null;
+    return rootGetters.assets.assetDataByAddress(state.quoteAssetAddress);
+  },
+  orderBookId(...args): string {
+    const { getters } = orderBookGetterContext(args);
+    const { baseAsset, quoteAsset } = getters;
 
-    return rootGetters.assets.xor;
+    if (!(baseAsset && quoteAsset)) return '';
+
+    return serializeKey(baseAsset.address, quoteAsset.address);
+  },
+  currentOrderBook(...args): Nullable<OrderBook> {
+    const { getters, state } = orderBookGetterContext(args);
+
+    if (!getters.orderBookId) return null;
+
+    return state.orderBooks[getters.orderBookId];
+  },
+  orderBookStats(...args): Nullable<OrderBookStats> {
+    const { getters, state } = orderBookGetterContext(args);
+
+    if (!getters.orderBookId) return null;
+
+    return state.orderBooksStats[getters.orderBookId];
+  },
+  orderBookDecimals(...args): number {
+    const { getters } = orderBookGetterContext(args);
+
+    return getBookDecimals(getters.currentOrderBook);
+  },
+  orderBookLastDeal(...args): Nullable<OrderBookDealData> {
+    const { state } = orderBookGetterContext(args);
+
+    return state.deals[0] ?? null;
   },
   accountAddress(...args): string {
     const { rootState } = orderBookGetterContext(args);
     return rootState.wallet.account.address;
   },
-
-  // currentPrice(...args): string {},
-  // currentVolume(...args): string {},
-  // currenDailyChange(...args): string {},
 });
 
 export default getters;
