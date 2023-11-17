@@ -1,3 +1,5 @@
+import { INDEXER_TYPES } from '@soramitsu/soraneo-wallet-web';
+
 import type { OrderBookId, PriceVariant } from '@sora-substrate/liquidity-proxy';
 import type { FPNumber } from '@sora-substrate/util';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
@@ -12,6 +14,8 @@ export enum Cancel {
   multiple = 'multiple',
   all = 'all',
 }
+
+export const OrderStatus = INDEXER_TYPES.OrderStatus;
 
 export type OrderBookDealData = {
   timestamp: number;

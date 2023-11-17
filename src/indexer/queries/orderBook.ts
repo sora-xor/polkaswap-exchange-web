@@ -4,6 +4,7 @@ import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 import { SubqueryIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
 
+import { OrderStatus } from '@/types/orderBook';
 import type { OrderBookDealData, OrderBookWithStats, OrderBookUpdateData, OrderData } from '@/types/orderBook';
 
 import type { OrderBookId } from '@sora-substrate/liquidity-proxy';
@@ -177,7 +178,7 @@ const parseOrderEntity = (item: OrderBookMarketOrderEntity | OrderBookLimitOrder
     id: 'orderId' in item ? item.orderId : 0,
     lifespan: parseTimestamp('lifetime' in item ? item.lifetime : 0),
     expiresAt: parseTimestamp('expiresAt' in item ? item.expiresAt : item.timestamp),
-    status: 'status' in item ? item.status : 'Filled',
+    status: 'status' in item ? item.status : OrderStatus.Filled,
   };
 };
 
