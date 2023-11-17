@@ -16,14 +16,22 @@
           <div class="delimiter" />
           <div class="order-book-pair-data">
             <div class="order-book-pair-data-item">
-              <span>Price </span>
-              <span class="price">
-                <formatted-amount class="sora-card-hub-balance" :value="bookPrice" fiatSign="" is-fiat-value />
+              <span>Price</span>
+              <span class="order-book-pair-data-item__value order-book-fiat">
+                <formatted-amount :value="orderBookPrice" />
               </span>
             </div>
-            <div class="order-book-pair-data-item"><span>Change</span><span class="change">n/a</span></div>
             <div class="order-book-pair-data-item">
-              <span>Volume</span><span class="volume">{{ volume }}</span>
+              <span>Change</span>
+              <span class="order-book-pair-data-item__value">
+                <price-change :value="orderBookPriceChange" />
+              </span>
+            </div>
+            <div class="order-book-pair-data-item">
+              <span>Volume</span>
+              <span class="order-book-pair-data-item__value">
+                <formatted-amount :value="orderBookVolume" is-fiat-value />
+              </span>
             </div>
           </div>
         </div>
@@ -106,7 +114,7 @@
 <script lang="ts">
 import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
 import { MAX_TIMESTAMP } from '@sora-substrate/util/build/orderBook/consts';
 import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
@@ -115,9 +123,12 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, LimitOrderType, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
+import type { OrderBookStats } from '@/types/orderBook';
 import { OrderBookTabs } from '@/types/tabs';
 import { isMaxButtonAvailable, getMaxValue, getAssetBalance, asZeroValue, hasInsufficientBalance } from '@/utils';
+import { getBookDecimals } from '@/utils/orderBook';
 
+import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { DexId } from '@sora-substrate/util/build/dex/consts';
@@ -131,14 +142,13 @@ import type { Subscription } from 'rxjs';
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     PairListPopover: lazyComponent(Components.PairListPopover),
     PlaceConfirm: lazyComponent(Components.PlaceOrder),
+    PriceChange: lazyComponent(Components.PriceChange),
     FormattedAmount: components.FormattedAmount,
   },
 })
 export default class BuySellWidget extends Mixins(TranslationMixin, mixins.FormattedAmountMixin, mixins.LoadingMixin) {
   @state.orderBook.baseValue baseValue!: string;
   @state.orderBook.quoteValue quoteValue!: string;
-  @state.orderBook.currentOrderBook currentOrderBook!: any;
-  @state.orderBook.volume volume!: string;
   @state.orderBook.side side!: PriceVariant;
   @state.orderBook.asks asks!: any;
   @state.orderBook.bids bids!: any;
@@ -148,6 +158,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @getter.assets.xor private xor!: AccountAsset;
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
+  @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
+  @getter.orderBook.orderBookStats orderBookStats!: Nullable<OrderBookStats>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
@@ -163,6 +175,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
+
+  @action.orderBook.updateOrderBooksStats private updateOrderBooksStats!: AsyncFnWithoutArgs;
 
   visibleBookList = false;
   confirmPlaceOrderVisibility = false;
@@ -188,6 +202,13 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     } else if (this.side === PriceVariant.Sell) {
       this.setTokenFromAddress(this.baseAsset.address);
       this.setTokenToAddress(this.quoteAsset.address);
+    }
+  }
+
+  @Watch('visibleBookList')
+  private updateStats(): void {
+    if (this.visibleBookList) {
+      this.updateOrderBooksStats();
     }
   }
 
@@ -218,7 +239,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       if (this.isPriceTooLow) return 'price too low';
       if (!this.isPriceBeyondPrecision) return 'price too exact';
 
-      if (this.getOrderBookStatus() === OrderBookStatus.PlaceAndCancel) {
+      if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel) {
         if (this.priceExceedsSpread()) return 'price exceeded';
       }
 
@@ -249,7 +270,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       if (this.isPriceTooLow) return true;
       if (!this.isPriceBeyondPrecision) return true;
 
-      if (this.getOrderBookStatus() === OrderBookStatus.PlaceAndCancel) {
+      if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel) {
         if (this.priceExceedsSpread()) return true;
       }
 
@@ -281,16 +302,23 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return false;
   }
 
-  get bookPrice(): string {
-    if (this.asks?.length) {
-      return this.asks[this.asks.length - 1][0].toString();
-    } else if (this.bids?.length) {
-      return this.bids[0][0].toString();
-    } else return '';
+  get orderBookPrice(): string {
+    const price = this.orderBookStats?.price ?? FPNumber.ZERO;
+    const decimals = getBookDecimals(this.currentOrderBook);
+    return price.dp(decimals).toLocaleString();
+  }
+
+  get orderBookPriceChange(): FPNumber {
+    return this.orderBookStats?.priceChange ?? FPNumber.ZERO;
+  }
+
+  get orderBookVolume(): string {
+    const volume = this.orderBookStats?.volume ?? FPNumber.ZERO;
+    return volume.toLocaleString();
   }
 
   get marketOptionDisabled(): boolean {
-    return this.getOrderBookStatus() === OrderBookStatus.PlaceAndCancel;
+    return this.orderBookStatus === OrderBookStatus.PlaceAndCancel;
   }
 
   get isZeroFromAmount(): boolean {
@@ -337,8 +365,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   get isPriceBeyondPrecision(): boolean {
     if (!this.currentOrderBook) return false;
-    const book: any = Object.values(this.currentOrderBook)[0];
-    const tickSize = book.tickSize;
+
+    const tickSize = this.currentOrderBook.tickSize;
     const price = new FPNumber(this.quoteValue, 18);
 
     return price.isZeroMod(tickSize);
@@ -346,10 +374,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   isOutOfAmountBounds(amount: string): boolean {
     if (!this.currentOrderBook) return false;
-    const book: any = Object.values(this.currentOrderBook)[0];
-    const stepLotSize = book.stepLotSize;
-    const maxLotSize = book.maxLotSize;
-    const minLotSize = book.minLotSize;
+
+    const { maxLotSize, minLotSize, stepLotSize } = this.currentOrderBook;
     const amountFP = new FPNumber(amount, 18);
 
     return !(
@@ -469,16 +495,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     }
   }
 
-  getOrderBookStatus(): string {
-    if (!this.currentOrderBook) return '';
-    const book: any = Object.values(this.currentOrderBook)[0];
-    return book.status;
+  get orderBookStatus(): OrderBookStatus {
+    return this.currentOrderBook?.status ?? OrderBookStatus.Stop;
   }
 
   isNotAllowedToPlace(): boolean {
-    if (!this.currentOrderBook) return false;
-    const book: any = Object.values(this.currentOrderBook)[0];
-    return ![OrderBookStatus.Trade, OrderBookStatus.PlaceAndCancel].includes(book.status);
+    return ![OrderBookStatus.Trade, OrderBookStatus.PlaceAndCancel].includes(this.orderBookStatus);
   }
 
   get isBuySide(): boolean {
@@ -586,9 +608,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   handleMaxValue(): void {
+    if (!this.currentOrderBook) return;
+
     const maxCodec = getMaxValue(this.baseAsset, this.networkFee);
-    const book: any = Object.values(this.currentOrderBook)[0];
-    const maxLotSize: FPNumber = book.maxLotSize;
+    const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
     const maxPossible = FPNumber.fromCodecValue(maxCodec);
 
     if (FPNumber.lte(maxPossible, maxLotSize)) {
@@ -721,12 +744,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       flex-direction: column;
       margin-right: 42px;
 
-      .price {
-        color: var(--s-color-status-info);
-      }
-
-      .volume {
-        color: var(--s-color-base-content-primary);
+      &__value {
+        font-size: var(--s-font-size-small);
       }
     }
   }
@@ -734,6 +753,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   &-swap-icon {
     color: var(--s-color-base-content-secondary);
     margin-left: 8px;
+  }
+
+  &-fiat {
+    color: var(--s-color-fiat-value);
+    line-height: var(--s-line-height-medium);
+    letter-spacing: var(--s-letter-spacing-small);
   }
 
   .order-book {

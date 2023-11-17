@@ -267,11 +267,6 @@ export enum Components {
   ChartSkeleton = 'shared/Chart/ChartSkeleton',
 }
 
-export enum LimitOrderSide {
-  Buy = 'Buy',
-  Sell = 'Sell',
-}
-
 export enum LimitOrderType {
   limit = 'limit',
   market = 'market',
@@ -280,12 +275,6 @@ export enum LimitOrderType {
 export enum LimitOrderTabsItems {
   Buy = PageNames.LimitOrderBuy,
   Sell = PageNames.LimitOrderSell,
-}
-
-export interface LimitOrderConstraint {
-  tickSize: Nullable<number>;
-  maxLotSize: Nullable<number>;
-  minLotSize: Nullable<number>;
 }
 
 export enum RewardsTabsItems {

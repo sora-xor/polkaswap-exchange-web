@@ -1,25 +1,21 @@
+import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { defineMutations } from 'direct-vuex';
 
-import type { LimitOrderSide } from '@/consts';
+import type { OrderBookDealData, OrderBookStats } from '@/types/orderBook';
 
 import type { OrderBookState } from './types';
-
-function deserializeKey(key: string) {
-  const [base, quote] = key.split(',');
-  return { base, quote };
-}
+import type { OrderBookId, OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
+import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<OrderBookState>()({
-  setOrderBooks(state, orderBooks): void {
+  setOrderBooks(state, orderBooks: Record<string, OrderBook>): void {
     state.orderBooks = orderBooks;
   },
-  setCurrentOrderBook(state, orderBookId: string): void {
-    const { base } = deserializeKey(orderBookId);
-    state.currentOrderBook = { [orderBookId]: state.orderBooks[orderBookId] };
+  setCurrentOrderBook(state, { dexId, base, quote }: OrderBookId): void {
+    state.dexId = dexId;
     state.baseAssetAddress = base;
-  },
-  setBaseAssetAddress(state, address: string): void {
-    state.baseAssetAddress = address;
+    state.quoteAssetAddress = quote;
   },
   setBaseValue(state, value: string): void {
     state.baseValue = value;
@@ -27,43 +23,39 @@ const mutations = defineMutations<OrderBookState>()({
   setQuoteValue(state, value: string): void {
     state.quoteValue = value;
   },
-  setSide(state, side: LimitOrderSide): void {
+  setSide(state, side: PriceVariant): void {
     state.side = side;
   },
-  setAsks(state, asks): void {
-    state.asks = asks;
+  setAsks(state, asks: readonly OrderBookPriceVolume[] = []): void {
+    state.asks = Object.freeze([...asks]);
   },
-  resetAsks(state): void {
-    state.asks = [];
+  setBids(state, bids: readonly OrderBookPriceVolume[] = []): void {
+    state.bids = Object.freeze([...bids]);
   },
-  setBids(state, bids): void {
-    state.bids = bids;
+  setDeals(state, deals: readonly OrderBookDealData[] = []): void {
+    state.deals = Object.freeze([...deals]);
   },
-  resetBids(state): void {
-    state.bids = [];
+  setStats(state, stats: Record<string, OrderBookStats>): void {
+    state.orderBooksStats = Object.freeze({ ...state.orderBooksStats, ...stats });
   },
-  setVolume(state, volume: string): void {
-    state.volume = volume;
+  setUserLimitOrders(state, limitOrders: readonly LimitOrder[] = []): void {
+    state.userLimitOrders = Object.freeze([...limitOrders]);
   },
-  setUserLimitOrders(state, limitOrders): void {
-    state.userLimitOrders = limitOrders;
-  },
-  resetUserLimitOrders(state): void {
-    state.userLimitOrders = [];
-  },
-  setOrderBookUpdates(state, subscriptions): void {
+  setOrderBookUpdates(state, subscriptions: Array<Subscription>): void {
     state.orderBookUpdates = subscriptions;
   },
   resetOrderBookUpdates(state): void {
-    if (state.orderBookUpdates.length) {
-      state.orderBookUpdates.forEach((limitOrderUpdate) => {
-        limitOrderUpdate?.unsubscribe();
-      });
-    }
-
+    state.orderBookUpdates?.forEach((subscription) => subscription?.unsubscribe());
     state.orderBookUpdates = [];
   },
-  setUserLimitOrderUpdates(state, subscription): void {
+  setOrderBookStatsUpdates(state, subscription: VoidFunction): void {
+    state.orderBookStatsUpdates = subscription;
+  },
+  resetOrderBookStatsUpdates(state): void {
+    state.orderBookStatsUpdates?.();
+    state.orderBookStatsUpdates = null;
+  },
+  setUserLimitOrderUpdates(state, subscription: Subscription): void {
     state.userLimitOrderUpdates = subscription;
   },
   resetUserLimitOrderUpdates(state): void {

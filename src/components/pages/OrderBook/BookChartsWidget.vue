@@ -8,11 +8,11 @@
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, LimitOrderSide } from '@/consts';
+import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { mutation, getter } from '@/store/decorators';
+import { getter } from '@/store/decorators';
 
-import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {

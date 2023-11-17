@@ -6,7 +6,7 @@
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, LimitOrderSide } from '@/consts';
+import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { mutation } from '@/store/decorators';
 

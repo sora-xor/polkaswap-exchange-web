@@ -289,7 +289,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     return defaultSorted;
   }
 
-  get preparedItems(): TableItem[] {
+  get prefilteredItems(): TableItem[] {
     return this.isSynthsOnly ? this.items.filter((item) => this.isSynthetic(item.address)) : this.items;
   }
 

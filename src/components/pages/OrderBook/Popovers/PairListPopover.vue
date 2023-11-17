@@ -10,7 +10,7 @@
       class="orderbook-whitelist-table"
       :data="tableItems"
       :highlight-current-row="false"
-      @cell-click="chooseBook"
+      @row-click="chooseBook"
     >
       <s-table-column :width="'172'">
         <template #header>
@@ -28,7 +28,7 @@
           <span>Price</span>
         </template>
         <template v-slot="{ row }">
-          <span class="price">{{ row.price }}</span>
+          <formatted-amount :value="row.price" fiatSign="" />
         </template>
       </s-table-column>
       <s-table-column>
@@ -36,7 +36,7 @@
           <span>Volume</span>
         </template>
         <template v-slot="{ row }">
-          <span>{{ row.volume }}</span>
+          <formatted-amount :value="row.volume" is-fiat-value />
         </template>
       </s-table-column>
       <s-table-column>
@@ -44,7 +44,7 @@
           <span>Daily change</span>
         </template>
         <template v-slot="{ row }">
-          <span>{{ row.dailyChange }}</span>
+          <price-change :value="row.priceChange" />
         </template>
       </s-table-column>
       <s-table-column>
@@ -72,24 +72,25 @@
 <script lang="ts">
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state, getter, action, mutation } from '@/store/decorators';
+import { state, getter, mutation } from '@/store/decorators';
+import type { OrderBookStats } from '@/types/orderBook';
+import { getBookDecimals } from '@/utils/orderBook';
 
-import type { OrderBook, PriceVariant } from '@sora-substrate/liquidity-proxy';
-import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
+import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
+import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 interface BookFields {
   pair: string;
   baseAsset?: Nullable<AccountAsset>;
   targetAsset?: Nullable<AccountAsset>;
   price?: string;
-  dailyChange?: string;
+  priceChange?: FPNumber;
   volume?: string;
   status: string;
 }
@@ -97,6 +98,7 @@ interface BookFields {
 @Component({
   components: {
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    PriceChange: lazyComponent(Components.PriceChange),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
   },
@@ -107,20 +109,11 @@ export default class PairListPopover extends Mixins(
   mixins.FormattedAmountMixin
 ) {
   @state.orderBook.orderBooks orderBooks!: Record<string, OrderBook>;
+  @state.orderBook.orderBooksStats orderBooksStats!: Record<string, OrderBookStats>;
 
-  @mutation.orderBook.setCurrentOrderBook setCurrentOrderBook!: (orderBookId: string) => void;
-  @mutation.orderBook.resetAsks resetAsks!: () => void;
-  @mutation.orderBook.resetBids resetBids!: () => void;
+  @mutation.orderBook.setCurrentOrderBook setCurrentOrderBook!: (orderBookId: OrderBookId) => void;
 
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
-
-  @action.orderBook.getOrderBooksInfo getOrderBooksInfo!: AsyncFnWithoutArgs;
-
-  orderBooksFormatted: Array<BookFields> = [];
-
-  get tableItems() {
-    return this.orderBooksFormatted;
-  }
 
   get chooseOrderbookTooltip(): string {
     return 'A real-time list showing current buy and sell orders for a cryptocurrency. It helps you understand the demand, potential price direction, and trade volume on the SORA Network and Polkaswap DEX';
@@ -141,45 +134,34 @@ export default class PairListPopover extends Mixins(
     }
   }
 
-  deserializeKey(key: string) {
-    const [base, quote] = key.split(',');
-    return { base, quote };
-  }
-
-  serializedKey(base: string, quote: string): string {
-    if (!(base && quote)) return '';
-    return `${base},${quote}`;
-  }
-
   chooseBook(row): void {
-    this.setCurrentOrderBook(this.serializedKey(row.baseAsset.address, XOR.address));
+    this.setCurrentOrderBook(row.orderBookId);
     this.$emit('close');
   }
 
-  prepareOrderBooks() {
-    Object.entries(this.orderBooks).forEach(([orderBookId, value]) => {
-      if (!orderBookId) return null;
-      const { base, quote } = this.deserializeKey(orderBookId);
+  get tableItems(): Array<BookFields> {
+    if (!this.orderBooks) return [];
+
+    return Object.entries(this.orderBooks).reduce<BookFields[]>((buffer, [orderBookId, value]) => {
+      if (!orderBookId) return buffer;
+      const { base, quote } = value.orderBookId;
+      const decimals = getBookDecimals(value);
+      const price = this.orderBooksStats[orderBookId]?.price ?? FPNumber.ZERO;
+      const priceChange = this.orderBooksStats[orderBookId]?.priceChange ?? FPNumber.ZERO;
+      const volume = this.orderBooksStats[orderBookId]?.volume ?? FPNumber.ZERO;
       const row = {
+        orderBookId: value.orderBookId,
         baseAsset: this.getAsset(base),
         targetAsset: this.getAsset(quote),
         pair: `${this.getAsset(base)?.symbol}-${this.getAsset(quote)?.symbol}`,
         status: value.status,
-        price: this.fiatAmount('1', this.getAsset(base)),
-        dailyChange: 'n/a',
-        volume: 'n/a',
+        price: price.dp(decimals).toLocaleString(),
+        priceChange,
+        volume: volume.toLocaleString(),
       };
-
-      this.orderBooksFormatted.push(row);
-    });
-  }
-
-  fiatAmount(amount: string, baseAsset: any): string {
-    const fiat = this.getFiatAmount(amount, baseAsset);
-
-    return `$${FPNumber.fromNatural(fiat || '0')
-      .toFixed(2)
-      .toString()}`;
+      buffer.push(row);
+      return buffer;
+    }, []);
   }
 
   calculateColor(status: OrderBookStatus): string | undefined {
@@ -199,16 +181,6 @@ export default class PairListPopover extends Mixins(
         return 'Inactive';
       default:
         return 'Unknown';
-    }
-  }
-
-  async mounted(): Promise<void> {
-    await this.withApi(async () => {
-      await this.getOrderBooksInfo();
-    });
-
-    if (this.orderBooks && Object.keys(this.orderBooks).length) {
-      this.prepareOrderBooks();
     }
   }
 }

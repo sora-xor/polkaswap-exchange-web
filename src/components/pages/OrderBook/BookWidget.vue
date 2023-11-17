@@ -1,5 +1,5 @@
 <template>
-  <div class="order-book-widget stock-book book">
+  <div v-loading="loading" class="order-book-widget stock-book book">
     <div class="stock-book__title">
       <div>
         <span>Orderbook</span>
@@ -41,8 +41,8 @@
     </div>
     <div v-else class="stock-book-sell--no-asks">No opened asks</div>
     <div :class="getComputedClassTrend()">
-      <div v-if="noOpenAsksOrBids">
-        <span class="mark-price">{{ asksFormatted[asksFormatted.length - 1].price }}</span>
+      <div>
+        <span class="mark-price">{{ lastPriceFormatted }}</span>
         <s-icon class="trend-icon" :name="iconTrend" size="18" />
         <span class="last-traded-price">{{ fiatValue }}</span>
       </div>
@@ -60,17 +60,17 @@
 </template>
 
 <script lang="ts">
+import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state, action, mutation, getter } from '@/store/decorators';
-import { delay } from '@/utils';
+import { ZeroStringValue } from '@/consts';
+import { action, getter, state } from '@/store/decorators';
+import type { OrderBookDealData } from '@/types/orderBook';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-
-type PriceTrend = 'up' | 'down';
 
 interface LimitOrderForm {
   price: number;
@@ -83,20 +83,13 @@ interface LimitOrderForm {
 export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
   @state.orderBook.asks asks!: any;
   @state.orderBook.bids bids!: any;
-  @state.orderBook.baseAssetAddress baseAssetAddress!: string;
 
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
-
-  @mutation.orderBook.resetAsks resetAsks!: () => void;
-  @mutation.orderBook.resetBids resetBids!: () => void;
-  @mutation.orderBook.setVolume setVolume!: (volume: string) => void;
-
-  @action.orderBook.subscribeToOrderBook private subscribeToOrderBook!: ({ base }) => Promise<void>;
+  @getter.orderBook.orderBookLastDeal orderBookLastDeal!: Nullable<OrderBookDealData>;
 
   volumeAsks = FPNumber.ZERO;
   volumeBids = FPNumber.ZERO;
-  priceTrend: PriceTrend = 'up';
+
   maxRowsNumber = 10;
 
   scalerOpen = false;
@@ -104,19 +97,48 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   asksFormatted: Array<LimitOrderForm> = [];
   bidsFormatted: Array<LimitOrderForm> = [];
 
-  get iconDirection(): string {
-    return this.scalerOpen ? 'arrows-chevron-top-24' : 'arrows-chevron-bottom-24';
+  // Widget subscription data
+  @getter.orderBook.orderBookId private orderBookId!: string;
+  @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
+  @action.orderBook.subscribeToBidsAndAsks private subscribeToBidsAndAsks!: AsyncFnWithoutArgs;
+  @action.orderBook.unsubscribeFromBidsAndAsks private unsubscribeFromBidsAndAsks!: FnWithoutArgs;
+
+  // Widget subscription creation
+  @Watch('orderBookId', { immediate: true })
+  @Watch('nodeIsConnected')
+  private async updateSubscription(): Promise<void> {
+    await this.withLoading(async () => {
+      await this.withParentLoading(async () => {
+        await this.subscribeToBidsAndAsks();
+      });
+    });
+  }
+
+  // Widget subscription close
+  beforeDestroy(): void {
+    this.unsubscribeFromBidsAndAsks();
+  }
+
+  get lastDealTrendsUp(): boolean {
+    return this.orderBookLastDeal?.side === PriceVariant.Buy;
   }
 
   get iconTrend(): string {
-    return this.priceTrend === 'up' ? 'arrows-arrow-bold-top-24' : 'arrows-arrow-bold-bottom-24';
+    return this.lastDealTrendsUp ? 'arrows-arrow-bold-top-24' : 'arrows-arrow-bold-bottom-24';
+  }
+
+  get lastDealPrice(): FPNumber {
+    return this.orderBookLastDeal?.price ?? FPNumber.ZERO;
+  }
+
+  get lastPriceFormatted(): string {
+    return this.lastDealPrice.toLocaleString();
   }
 
   get fiatValue(): string {
-    const fiat = this.getFiatAmount(
-      this.asksFormatted[this.asksFormatted.length - 1].price.toString(),
-      this.quoteAsset
-    );
+    if (!this.quoteAsset) return ZeroStringValue;
+
+    const fiat = this.getFiatAmount(this.lastDealPrice.toString(), this.quoteAsset);
 
     return fiat ? `$${fiat}` : '';
   }
@@ -128,17 +150,13 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   getComputedClassTrend(): string {
     const base = ['stock-book-delimiter'];
 
-    if (this.priceTrend === 'up') {
+    if (this.lastDealTrendsUp) {
       base.push('stock-book-delimiter--up');
     } else {
       base.push('stock-book-delimiter--down');
     }
 
     return base.join(' ');
-  }
-
-  get noOpenAsksOrBids(): boolean {
-    return !!(this.asksFormatted.length && this.bidsFormatted.length);
   }
 
   getSellOrders() {
@@ -150,12 +168,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   getHeight() {
-    if (this.asks.length < 10) {
-      const margin = this.maxRowsNumber - this.asks.length;
-      return `height: ${24 * margin}px`;
-    }
-
-    return `height: 0px`;
+    const margin = this.asks.length < 10 ? this.maxRowsNumber - this.asks.length : 0;
+    return `height: ${24 * margin}px`;
   }
 
   getStyles(filled) {
@@ -305,33 +319,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
       }
     }
 
-    this.setVolume(this.volumeAsks.add(this.volumeBids).toFixed(4).toString());
-  }
-
-  async withLimitOrdersSet<T = void>(func: FnWithoutArgs<T>): Promise<T> {
-    const nonEmptyStock = this.asks?.length || this.bids?.length;
-
-    if (!nonEmptyStock) {
-      await delay();
-      return await this.withLimitOrdersSet(func);
-    } else {
-      return func();
-    }
-  }
-
-  @Watch('baseAssetAddress')
-  private async subscribeToOrderBookUpdates(baseAssetAddress: Nullable<string>): Promise<void> {
-    if (baseAssetAddress) {
-      await this.withLoading(async () => {
-        // wait for node connection & wallet init (App.vue)
-        await this.withParentLoading(async () => {
-          await this.subscribeToOrderBook({ base: baseAssetAddress });
-          await this.withLimitOrdersSet(async () => {
-            this.prepareLimitOrders();
-          });
-        });
-      });
-    }
+    // this.setVolume(this.volumeAsks.add(this.volumeBids).toFixed(4).toString());
   }
 }
 </script>
