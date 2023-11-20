@@ -125,7 +125,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class OpenOrders extends Mixins(TranslationMixin, ScrollableTableMixin) {
+export default class OrderTable extends Mixins(TranslationMixin, ScrollableTableMixin) {
   @Prop({ default: () => [], type: Array }) readonly orders!: OrderData[];
   @Prop({ default: false, type: Boolean }) readonly selectable!: boolean;
 
@@ -149,6 +149,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, ScrollableTable
 
       const row = {
         id,
+        orderBookId,
         originalAmount: originalAmount.toLocaleString(),
         amount: originalAmount.sub(amount).toLocaleString(),
         filled: Number(filled),

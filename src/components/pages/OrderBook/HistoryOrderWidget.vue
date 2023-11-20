@@ -144,7 +144,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
     if (cancel === Cancel.multiple) {
       if (this.ordersToBeCancelled.length > 1) {
-        const limitOrderIds = this.ordersToBeCancelled.map((limitOrder: any) => limitOrder.limitOrderId);
+        const limitOrderIds = this.ordersToBeCancelled.map((limitOrder: any) => limitOrder.id);
         const { orderBookId } = this.ordersToBeCancelled[0];
         const { base, quote } = orderBookId;
 
@@ -154,11 +154,11 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
       }
 
       if (this.ordersToBeCancelled.length === 1) {
-        const { limitOrderId, orderBookId } = this.ordersToBeCancelled[0];
+        const { id, orderBookId } = this.ordersToBeCancelled[0];
         const { base, quote } = orderBookId;
 
         await this.withNotifications(async () => {
-          await api.orderBook.cancelLimitOrder(base, quote, limitOrderId);
+          await api.orderBook.cancelLimitOrder(base, quote, id);
         });
       }
     } else {

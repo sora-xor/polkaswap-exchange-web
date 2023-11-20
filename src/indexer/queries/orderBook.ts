@@ -14,8 +14,7 @@ import type {
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
 import type {
   OrderBookEntity,
-  OrderBookLimitOrderEntity,
-  OrderBookMarketOrderEntity,
+  OrderBookOrderEntity,
   OrderBookDealEntity,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
@@ -111,9 +110,9 @@ export async function fetchOrderBooks(): Promise<Nullable<OrderBookWithStats[]>>
   return null;
 }
 
-const SubqueryAccountMarketOrdersQuery = gql<SubqueryConnectionQueryResponse<OrderBookMarketOrderEntity>>`
-  query AccountMarketOrdersQuery($after: Cursor, $filter: OrderBookMarketOrderFilter) {
-    data: orderBookMarketOrders(orderBy: TIMESTAMP_DESC, after: $after, filter: $filter) {
+const SubqueryAccountOrdersQuery = gql<SubqueryConnectionQueryResponse<OrderBookOrderEntity>>`
+  query AccountOrdersQuery($after: Cursor, $filter: OrderBookOrderFilter) {
+    data: orderBookOrders(orderBy: TIMESTAMP_DESC, after: $after, filter: $filter) {
       pageInfo {
         hasNextPage
         endCursor
@@ -121,28 +120,8 @@ const SubqueryAccountMarketOrdersQuery = gql<SubqueryConnectionQueryResponse<Ord
       totalCount
       edges {
         node {
-          orderBookId
-          accountId
-          timestamp
-          isBuy
-          price
-          amount
-        }
-      }
-    }
-  }
-`;
-
-const SubqueryAccountLimitOrdersQuery = gql<SubqueryConnectionQueryResponse<OrderBookLimitOrderEntity>>`
-  query AccountLimitOrdersQuery($after: Cursor, $filter: OrderBookLimitOrderFilter) {
-    data: orderBookLimitOrders(orderBy: TIMESTAMP_DESC, after: $after, filter: $filter) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      totalCount
-      edges {
-        node {
+          type
+          orderId
           orderBookId
           accountId
           timestamp
@@ -150,7 +129,6 @@ const SubqueryAccountLimitOrdersQuery = gql<SubqueryConnectionQueryResponse<Orde
           price
           amount
           amountFilled
-          orderId
           lifetime
           expiresAt
           status
@@ -160,10 +138,10 @@ const SubqueryAccountLimitOrdersQuery = gql<SubqueryConnectionQueryResponse<Orde
   }
 `;
 
-const parseOrderEntity = (item: OrderBookMarketOrderEntity | OrderBookLimitOrderEntity): OrderData => {
+const parseOrderEntity = (item: OrderBookOrderEntity): OrderData => {
   const [dexId, base, quote] = item.orderBookId.split('-');
   const originalAmount = new FPNumber(item.amount);
-  const filledAmount = new FPNumber('amountFilled' in item ? item.amountFilled : item.amount);
+  const filledAmount = new FPNumber(item.amountFilled);
   const amount = originalAmount.sub(filledAmount);
 
   return {
@@ -178,10 +156,10 @@ const parseOrderEntity = (item: OrderBookMarketOrderEntity | OrderBookLimitOrder
     price: new FPNumber(item.price),
     originalAmount,
     amount,
-    id: 'orderId' in item ? item.orderId : 0,
-    lifespan: parseTimestamp('lifetime' in item ? item.lifetime : 0),
-    expiresAt: parseTimestamp('expiresAt' in item ? item.expiresAt : item.timestamp),
-    status: 'status' in item ? item.status : OrderStatus.Filled,
+    id: item.orderId ?? 0,
+    lifespan: parseTimestamp(item.lifetime),
+    expiresAt: parseTimestamp(item.expiresAt),
+    status: item.status,
   };
 };
 
@@ -190,7 +168,7 @@ export async function fetchOrderBookAccountOrders(
   id?: OrderBookId
 ): Promise<Nullable<OrderData[]>> {
   const filter: any = {
-    and: [{ accountId: { equalTo: accountAddress } }],
+    and: [{ accountId: { equalTo: accountAddress } }, { status: { notEqualTo: OrderStatus.Active } }],
   };
 
   if (id) {
@@ -206,20 +184,13 @@ export async function fetchOrderBookAccountOrders(
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
       const subqueryIndexer = indexer as SubqueryIndexer;
-      const [limitOrders, marketOrders] = await Promise.all([
-        subqueryIndexer.services.explorer.fetchAllEntities(
-          SubqueryAccountLimitOrdersQuery,
-          { filter },
-          parseOrderEntity
-        ),
-        subqueryIndexer.services.explorer.fetchAllEntities(
-          SubqueryAccountMarketOrdersQuery,
-          { filter },
-          parseOrderEntity
-        ),
-      ]);
+      const orders = await subqueryIndexer.services.explorer.fetchAllEntities(
+        SubqueryAccountOrdersQuery,
+        { filter },
+        parseOrderEntity
+      );
 
-      return [...(limitOrders || []), ...(marketOrders || [])].sort((a, b) => +b.time - +a.time);
+      return [...(orders || [])].sort((a, b) => +b.time - +a.time);
     }
   }
 
