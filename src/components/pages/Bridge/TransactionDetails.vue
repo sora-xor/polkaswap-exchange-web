@@ -65,7 +65,7 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
   }
 
   get formattedNetworkFeeLabel(): string {
-    return `${this.t('buttons.max')}. ${this.networkName} ${this.t('networkFeeText')}`;
+    return `${this.TranslationConsts.Max} ${this.networkName} ${this.t('networkFeeText')}`;
   }
 
   get isExternalTransferFeeNotZero(): boolean {

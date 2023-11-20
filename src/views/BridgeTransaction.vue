@@ -554,7 +554,7 @@ export default class BridgeTransaction extends Mixins(
   getNetworkText(key: string, networkId?: Nullable<BridgeNetworkId>, approximate = false): string {
     const text = this.t(key);
     const network = networkId ? this.getNetworkName(this.externalNetworkType, networkId) : this.TranslationConsts.Sora;
-    const approx = approximate ? `${this.t('buttons.max')}.` : '';
+    const approx = approximate ? this.TranslationConsts.Max : '';
 
     return [approx, network, text].filter((item) => !!item).join(' ');
   }
