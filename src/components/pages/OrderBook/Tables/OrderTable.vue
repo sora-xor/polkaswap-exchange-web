@@ -150,6 +150,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, ScrollableTable
 
       const row = {
         id,
+        orderBookId,
         originalAmount: originalAmount.toLocaleString(),
         amount: originalAmount.sub(amount).toLocaleString(),
         filled: Number(filled),
