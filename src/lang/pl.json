@@ -309,7 +309,7 @@
         "comment": "Komentarz"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Zmień sieć w portfelu {Metamask}",
+    "changeNetworkText": "Zmień sieć w portfelu",
     "transactionText": "transakcja | transakcje",
     "connectWalletText": "Połącz z kontem",
     "changeAccountText": "Zmień konto",
@@ -319,7 +319,7 @@
     "bridgeText": "Most",
     "disclaimer": "{disclaimerPrefix} Niniejsza strona internetowa jest prowadzona przez społeczność sieci {Sora}. Zanim zaczniesz korzystać z tej witryny, zapoznaj się z {polkaswapFaqLink} i dokumentacją, która zawiera szczegółowe wyjaśnienia dotyczące działania giełdy {AppName}. Przeczytaj także {memorandumLink} oraz tekst {privacyLink}. Dokumenty te mają kluczowe znaczenie dla bezpiecznego i komfortowego użytkowania. Korzystając z {AppName}, potwierdzasz, że przeczytałeś(-łaś) i rozumiesz przedstawione dokumenty. Potwierdzasz również, co następuje: 1) ponosisz wyłączną odpowiedzialność związaną z przestrzeganiem wszystkich przepisów, które mogą mieć zastosowanie do korzystania z {AppName} w Twojej jurysdykcji; 2) rozumiesz, że aktualna wersja {AppName} jest wersją alfa: nie została w pełni przetestowana, a niektóre jej funkcje mogą nie działać zgodnie z przeznaczeniem; oraz że 3) rozumiesz i dobrowolnie akceptujesz ryzyko związane z korzystaniem z {AppName}, w tym między innymi ryzyko utraty tokenów. Przypominamy raz jeszcze: zanim zaczniesz korzystać z witryny, przeczytaj {polkaswapFaqLink}, {memorandumLink}, a także tekst {privacyLink}!",
     "poweredBy": "Technologia:",
-    "confirmTransactionText": "Potwierdź transakcję w {direction}",
+    "confirmTransactionText": "Potwierdź transakcję",
     "retryText": "Spróbuj ponownie",
     "networkFeeText": "Opłata sieciowa",
     "networkFeeTooltipText": "Opłata sieciowa służy zapewnieniu rozwoju i stabilności systemu {Sora}.",
@@ -385,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "O giełdzie",
-        "learnMore": "@:learnMoreText",
         "network": {
             "title": "Czym jest {Sora}?",
             "description": "{AppName} jest zbudowany na bazie sieci {Sora} , a token {Sora} (XOR) jest używany do dostarczania gazu\/opłat i płynności w {AppName}. Sieć {Sora} pozwala na obniżenie opłat, szybsze transakcje i prostsze finalizowanie konsensusu i koncentruje się na zapewnieniu interoperacyjności w innych ekosystemach blockchain, takich jak {Ethereum}."
@@ -437,10 +436,6 @@
         "from": "Z",
         "to": "Na"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "DEX dla Interoperacyjnej Przyszłości",
         "description": "Międzyłańcuchowa wymiana walut, proste tworzenie i wprowadzanie nowych walut oraz łatwa ich wymiana, jakiej jeszcze nie było. Interoperacyjna przyszłość sieci {Polkadot} już się rozpoczęła, a my znajdujemy się w czołówce!",
@@ -483,7 +478,6 @@
         "Swap": "Zamień",
         "Pool": "Pula",
         "balance": "Saldo",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Cena",
         "transactionSubmitted": "Transakcja została złożona.",
         "transactionMessage": "{firstToken} i {secondToken}",
@@ -492,7 +486,6 @@
         "lossWarning": "Stracisz {value}% na swojej transakcji. Wykryliśmy problem z zapewnieniem płynności. Może to prowadzić do znacznych strat podczas wymiany tokenów. Upewnij się, że dostępna jest odpowiednia płynność dla wybranej pary swapowej."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "według szacunku",
         "slippageTolerance": "Tolerancja poślizgu",
         "minReceived": "Otrzymane minimum",
@@ -502,9 +495,6 @@
         "priceImpactTooltip": "Różnica między ceną rynkową a ceną szacunkową wynikająca z wielkości transakcji.",
         "liquidityProviderFee": "Opłata dla dostarczyciela płynności",
         "liquidityProviderFeeTooltip": "Część każdej transakcji ({liquidityProviderFee}%) trafia do dostarczycieli płynności jako wynagrodzenie wynikające z protokołu.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Niewystarczająca kwota w walucie {tokenSymbol}",
         "insufficientLiquidity": "Niewystarczająca płynność",
         "confirmSwap": "Potwierdź zamianę",
@@ -515,7 +505,6 @@
         "errorFetching": "Błąd podczas pobierania danych"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Połącz z portfelem, aby zobaczyć swoją płynność.",
         "liquidityNotFound": "Nie znaleziono płynności.",
         "addLiquidity": "Dodaj płynność",
@@ -524,7 +513,6 @@
         "pooledToken": "{tokenSymbol} w puli",
         "pairTokens": "Tokeny puli {pair}",
         "poolShare": "Twój udział w puli",
-        "unknownAsset": "Nieznana waluta",
         "description": "Po dodaniu płynności otrzymasz tokeny puli reprezentujące Twoją pozycję. Tokeny te automatycznie zarabiają na opłatach proporcjonalne do Twojego udziału w puli i mogą zostać wypłacone w dowolnym momencie.",
         "strategicBonusApy": "Procentowa roczna stopa dochodu bonusu strategicznego"
     },
@@ -569,9 +557,6 @@
             "alreadyAttached": "Ten token został już dodany."
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Potwierdź transakcję"
-    },
     "bridgeTransaction": {
         "details": "{from} do {to}",
         "for": " do ",
@@ -609,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "Transakcja {network} w toku...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Utwórz nową transakcję",
-        "changeAccount": "@:changeAccountText w portfelu {Metamask}",
         "title": "Transakcja mostowa",
-        "expectedMetaMaskAddress": "Spodziewany adres w portfelu {Metamask}:",
         "allowToken": "Zezwól {AppName} na użycie Twojego {tokenSymbol}",
         "approveToken": "Pamiętaj, że wystarczy raz zatwierdzić token. Jeśli Twoje rozszerzenie otrzymuje wiele żądań o zatwierdzenie tokena, pamiętaj, by potwierdzić tylko ostatnią, a pozostałe odrzucić.",
         "blocksLeft": "pozostało {count} bloków..."
@@ -651,7 +632,6 @@
         "balance": "Saldo",
         "pricePool": "Ceny i opłaty",
         "shareOfPool": "Udział w puli",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "Pula {first}-{second}",
         "connect": "Połącz z portfelem",
         "supply": "Dodaj",
@@ -661,7 +641,6 @@
         "remove": "Usuń",
         "add": "DODAJ",
         "ok": "OK",
-        "networkFee": "@:networkFeeText",
         "alreadyCreated": "Para tokenów została już utworzona.",
         "firstLiquidityProvider": "Jesteś pierwszym dostarczycielem płynności.",
         "firstLiquidityProviderInfo": "Proporcja dodanych tokenów określi cenę tej puli. <br\/> Dostosuj proporcje według własnego uznania i kliknij przycisk „dodaj”, aby dokonać podglądu."
@@ -673,9 +652,7 @@
         "price": "Cena"
     },
     "addLiquidity": {
-        "title": "Dodawanie płynności",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Dodawanie płynności"
     },
     "removeLiquidity": {
         "title": "Usuwanie płynności",
@@ -726,9 +703,6 @@
     },
     "rewards": {
         "title": "Odbierz wynagrodzenie",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "i",
         "claiming": {
             "pending": "Odbieranie...",
@@ -750,14 +724,11 @@
             "howToClaimRewards": "Aby odebrać swoje wynagrodzenie w walucie {symbols}, musisz podpisać {count} {transactions} dotyczące {destination}. Wynagrodzenie zostanie wypłacone na Twoje konto sieci {Sora}."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Połącz z kontem sieci {Ethereum}",
             "signAndClaim": "Podpisz i odbierz",
             "pendingInternal": "Transakcja sieci {Sora} w toku...",
             "pendingExternal": "Transakcja sieci {Ethereum} w toku...",
-            "retry": "@:retryText",
-            "checkRewards": "Sprawdź",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Sprawdź"
         },
         "notification": {
             "empty": "Brak przysługującego wynagrodzenia dostępnego do wypłaty dla tego konta."
@@ -784,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "Dostawca usług sieci {Ethereum}",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "Rozszerzenie {name} jest zajęte, sprawdź je.",
             "extensionLogin": "Zaloguj się do swojego rozszerzenia {name}.",
@@ -858,7 +827,6 @@
         "settings": "Ustawienia",
         "switchTheme": "Przełącz na tryb {theme}",
         "switchLanguage": "Wybierz język",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Pokaż zastrzeżenie",
         "hideDisclaimer": "Ukryj wyłączenie odpowiedzialności"
     },
@@ -888,11 +856,8 @@
         "preview": "Zaproś nowych użytkowników, by otrzymać 10% z ich opłat transakcyjnych.<br\/>Aby rozpocząć, utwórz rezerwy w dowolnej kwocie waluty XOR. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\">Dowiedz się więcej.<\/a>",
         "deposit": "Deponuj",
         "balance": "Saldo",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Niewystarczające rezerwy",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Wprowadź kwotę {tokenSymbol}",
             "startInviting": "Utwórz rezerwy w walucie {tokenSymbol}, aby rozpocząć zapraszanie.",
             "bondMore": "Więcej rezerw",
@@ -945,7 +910,7 @@
         "allowanceRequest": "Naciśnij „Zezwól” na dostęp do kamery"
     },
     "bridgeTransferNotification": {
-        "addToken": "Dodaj {symbol} do {Metamask}",
+        "addToken": "Dodaj {symbol} do portfela",
         "title": "Transakcja pomostowa powiodła się"
     },
     "mobilePopup": {
@@ -1221,11 +1186,11 @@
         "historyBtn": "Moje zakupy",
         "historyTitle": "Historia transakcji",
         "moonpayTitle": "Kup ETH przez MoonPay",
-        "moonpayDesc": "Kup tokeny ETH na Ethereum i przenieś je do sieci SORA przez most",
+        "moonpayDesc": "Kup tokeny ETH na {Ethereum} i przenieś je do sieci {SORA} przez most",
         "x1Title": "Kup XOR za pomocą swojej karty",
         "x1Btn": "Kup XOR z kartą",
         "errorMessage": "Przepraszam za utrudnienia. Intensywnie pracujemy nad rozwiązaniem tego problemu. Spróbuj ponownie później.",
-        "x1Desc": "Kup tokeny XOR bezpośrednio w sieci SORA za pomocą karty debetowej lub kredytowej"
+        "x1Desc": "Kup tokeny XOR bezpośrednio w sieci {SORA} za pomocą karty debetowej lub kredytowej"
     },
     "acceptOnScrollText": "Przewiń, aby zaakceptować",
     "addressBook": {
@@ -1241,7 +1206,7 @@
         "detected": "Wykryto nowy adres",
         "save": "Zapisz jako kontakt",
         "tooltip": "Zbierz książkę adresową, podając imię i nazwisko oraz adres, aby uporządkować i aktualizować kontakty",
-        "notSoraAddress": "Ten adres zostanie zapisany jako adres SORA poniżej. Upewnij się, że odbiorca ma dostęp do łańcucha SORA:",
+        "notSoraAddress": "Ten adres zostanie zapisany jako adres {SORA} poniżej. Upewnij się, że odbiorca ma dostęp do łańcucha {SORA}:",
         "options": {
             "send": "Wyślij tokeny",
             "edit": "Edytuj kontakt",
@@ -1266,5 +1231,7 @@
     "minAmountText": "min. kwota",
     "maxAmountText": "maks. kwota",
     "exceededAmountText": "Przekroczono {amount}",
-    "multipleRecipients": "Wielu odbiorców"
+    "multipleRecipients": "Wielu odbiorców",
+    "disconnectWalletText": "Rozłączyć się",
+    "connectEthereumWalletText": "Podłącz portfel {Ethereum}"
 }

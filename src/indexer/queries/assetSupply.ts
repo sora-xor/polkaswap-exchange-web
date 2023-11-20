@@ -1,12 +1,21 @@
 import { FPNumber } from '@sora-substrate/math';
+import { VAL, PSWAP } from '@sora-substrate/util/build/assets/consts';
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
+
+import store from '@/store';
+import { waitForSoraNetworkFromEnv } from '@/utils';
 
 import type { SubqueryConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
 import type { SnapshotTypes, AssetSnapshotEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const { IndexerType } = WALLET_CONSTS;
+
+const CIRCULATING_DIFF = {
+  [VAL.address]: 33449609.3779,
+  [PSWAP.address]: 6345014420.6195,
+};
 
 export type ChartData = {
   timestamp: number;
@@ -107,5 +116,15 @@ export async function fetchData(id: string, from: number, to: number, type: Snap
     }
   }
 
-  return data ?? [];
+  const chartData = data ?? [];
+
+  if (![VAL.address, PSWAP.address].includes(id)) {
+    return chartData;
+  }
+  // VAL & PSWAP have huge difference between circulating & total supply on prod env
+  const env = store.state.wallet.settings.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+  if (env !== WALLET_CONSTS.SoraNetwork.Prod) return chartData;
+
+  const diff = CIRCULATING_DIFF[id];
+  return chartData.map((item) => ({ ...item, value: item.value - diff }));
 }

@@ -161,7 +161,7 @@
         type="primary"
         @click="handleConnect"
       >
-        {{ t('referralProgram.action.connectWallet') }}
+        {{ t('connectWalletText') }}
       </s-button>
     </template>
   </div>

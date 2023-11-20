@@ -17,13 +17,11 @@ import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { action, mutation, getter } from '@/store/decorators';
 import type { NetworkData } from '@/types/bridge';
-import ethersUtil from '@/utils/ethers-util';
 
 @Component
 export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletConnectMixin, SubscriptionsMixin) {
   @action.web3.getSupportedApps private getSupportedApps!: AsyncFnWithoutArgs;
   @action.web3.restoreSelectedNetwork private restoreSelectedNetwork!: AsyncFnWithoutArgs;
-  @action.web3.disconnectExternalNetwork disconnectExternalNetwork!: AsyncFnWithoutArgs;
   @action.bridge.updateExternalBalance private updateExternalBalance!: AsyncFnWithoutArgs;
   @action.bridge.subscribeOnBlockUpdates private subscribeOnBlockUpdates!: AsyncFnWithoutArgs;
   @action.bridge.updateOutgoingMaxLimit private updateOutgoingMaxLimit!: AsyncFnWithoutArgs;
@@ -33,61 +31,30 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   @getter.web3.selectedNetwork private selectedNetwork!: Nullable<NetworkData>;
   @getter.bridge.externalAccount private externalAccount!: string;
 
-  private unwatchEthereum!: FnWithoutArgs;
-
   @Watch('selectedNetwork')
-  private onSelectedNetworkChange(curr: Nullable<NetworkData>, prev: Nullable<NetworkData>) {
+  private onSelectedNetworkChange(curr: Nullable<NetworkData>, prev: Nullable<NetworkData>): void {
     if (curr && prev && !isEqual(curr)(prev)) {
       this.resetBridgeForm();
     }
   }
 
   @Watch('externalAccount')
-  private onExternalAccountChange(address: string) {
+  private onExternalAccountChange(): void {
     this.updateExternalBalance();
   }
 
   async created(): Promise<void> {
-    this.setStartSubscriptions([this.subscribeOnEvm, this.subscribeOnBlockUpdates, this.updateOutgoingMaxLimit]);
-    this.setResetSubscriptions([
-      this.unsubscribeFromEvm,
-      this.resetBlockUpdatesSubscription,
-      this.resetOutgoingMaxLimitSubscription,
-    ]);
+    this.setStartSubscriptions([this.subscribeOnBlockUpdates, this.updateOutgoingMaxLimit]);
+    this.setResetSubscriptions([this.resetBlockUpdatesSubscription, this.resetOutgoingMaxLimitSubscription]);
 
     await this.withParentLoading(async () => {
       await this.getSupportedApps();
-      await this.updateProvidedEvmNetwork();
       await this.restoreSelectedNetwork();
     });
   }
 
   beforeDestroy(): void {
     this.disconnectExternalNetwork();
-  }
-
-  private async subscribeOnEvm(): Promise<void> {
-    this.unwatchEthereum = await ethersUtil.watchEthereum({
-      onAccountChange: (addressList: string[]) => {
-        if (addressList.length) {
-          this.setEvmAddress(addressList[0]);
-        } else {
-          this.resetEvmAddress();
-        }
-      },
-      onNetworkChange: (networkHex: string) => {
-        this.updateProvidedEvmNetwork(networkHex);
-      },
-      onDisconnect: () => {
-        this.resetProvidedEvmNetwork();
-      },
-    });
-  }
-
-  private async unsubscribeFromEvm(): Promise<void> {
-    if (typeof this.unwatchEthereum === 'function') {
-      this.unwatchEthereum();
-    }
   }
 }
 </script>

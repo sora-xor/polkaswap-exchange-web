@@ -309,7 +309,7 @@
         "comment": "Bình luận"
     },
     "appName": "{AppName}",
-    "changeNetworkText": "Thay đổi mạng trong {Metamask}",
+    "changeNetworkText": "Thay đổi mạng trong ví",
     "transactionText": "giao dịch | những giao dịch",
     "connectWalletText": "Kết nối tài khoản",
     "changeAccountText": "Thay đổi tài khoản",
@@ -319,7 +319,7 @@
     "bridgeText": "Cầu nối",
     "disclaimer": "{disclaimerPrefix} Trang web này được duy trì bởi cộng đồng {Sora}. Trước khi tiếp tục sử dụng trang web này, vui lòng xem lại {polkaswapFaqLink} và tài liệu, bao gồm một lời giải thích chi tiết về cách {AppName} hoạt động, cũng như {memorandumLink} và {privacyLink}. Những tài liệu này rất quan trọng đối với trải nghiệm người dùng an toàn và tích cực. Bằng cách sử dụng {AppName}, bạn thừa nhận rằng bạn đã đọc và hiểu những tài liệu này. Bạn cũng thừa nhận những điều sau đây: 1) trách nhiệm duy nhất của bạn về việc tuân thủ tất cả các luật có thể áp dụng cho việc sử dụng {AppName} cụ thể của bạn trong thẩm quyền pháp lý của bạn; 2) sự hiểu biết của bạn rằng phiên bản hiện tại của {AppName} là một phiên bản alpha: nó chưa được thử nghiệm đầy đủ và một số chức năng có thể không hoạt động như thiết kế; và 3) sự hiểu biết của bạn và tự nguyện chấp nhận các rủi ro liên quan đến việc sử dụng {AppName}, bao gồm, nhưng không giới hạn, nguy cơ mất token. Vui lòng không tiếp tục mà không đọc {polkaswapFaqLink}, {memorandumLink}, {privacyLink}!",
     "poweredBy": "Được cung cấp bởi",
-    "confirmTransactionText": "Xác nhận giao dịch {direction}",
+    "confirmTransactionText": "Xác nhận giao dịch",
     "retryText": "Thử lại",
     "networkFeeText": "Phí Mạng",
     "networkFeeTooltipText": "Phí mạng được sử dụng để đảm bảo hệ thống {Sora} phát triển và hoạt động ổn định.",
@@ -385,7 +385,6 @@
     },
     "aboutNetworkDialog": {
         "title": "Giới thiệu",
-        "learnMore": "@:learnMoreText",
         "network": {
             "title": "{Sora} là gì?",
             "description": "{AppName} được xây dựng trên {Sora} Network, và tokens {Sora} (XOR) được sử dụng làm phí gas và cung cấp thanh khoản trên {AppName}. Mạng {Sora} cho phép giảm phí gas, giao dịch nhanh hơn, hoàn thiện đồng thuận đơn giản hơn và tập trung vào việc cung cấp khả năng tương tác với các hệ sinh thái blockchain khác như {Ethereum}."
@@ -437,10 +436,6 @@
         "from": "Từ",
         "to": "Đến"
     },
-    "metamask": "{Metamask}",
-    "providers": {
-        "metamask": "{Metamask}"
-    },
     "about": {
         "title": "Sàn DEX của Tương lai thích ứng linh hoạt.",
         "description": "Giao dịch tài sản xuyên chuỗi, dễ dàng tạo và niêm yết tài sản mới, và hoán đổi dễ dàng hơn bao giờ hết. Tương lai thích ứng linh hoạt của {Polkadot} là đây và chúng tôi đang mở lối tiên phong!",
@@ -483,7 +478,6 @@
         "Swap": "Hoán đổi",
         "Pool": "Pool",
         "balance": "Số dư",
-        "insufficientBalance": "@:insufficientBalanceText",
         "price": "Giá",
         "transactionSubmitted": "Giao dịch đã được gửi đi",
         "transactionMessage": "{firstToken} và {secondToken}",
@@ -492,7 +486,6 @@
         "lossWarning": "Bạn sẽ mất {value}% cho giao dịch của mình. Chúng tôi đã phát hiện một vấn đề cung cấp thanh khoản. Điều này có thể dẫn đến tổn thất đáng kể trong quá trình hoán đổi mã thông báo. Vui lòng đảm bảo có đủ thanh khoản cho cặp hoán đổi mong muốn của bạn."
     },
     "swap": {
-        "connectWallet": "@:connectWalletText",
         "estimated": "ước lượng",
         "slippageTolerance": "Mức trượt giá",
         "minReceived": "Nhận tối thiểu",
@@ -502,9 +495,6 @@
         "priceImpactTooltip": "Sự khác biệt giữa giá thị trường và giá ước tính do quy mô giao dịch.",
         "liquidityProviderFee": "Phí cho nhà cung cấp thanh khoản",
         "liquidityProviderFeeTooltip": "Một khoản phí giao dịch ({liquidityProviderFee}%) được chuyển đến các nhà cung cấp thanh khoản, một biện pháp khuyến khích.",
-        "networkFee": "@:networkFeeText",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond",
         "insufficientAmount": "Số lượng {tokenSymbol} không đủ",
         "insufficientLiquidity": "Thanh khoản không đủ",
         "confirmSwap": "Xác nhận hoán đổi",
@@ -515,7 +505,6 @@
         "errorFetching": "Lỗi khi tìm nạp dữ liệu"
     },
     "pool": {
-        "connectWallet": "@:connectWalletText",
         "connectToWallet": "Kết nối tài khoản để xem thanh khoản của bạn.",
         "liquidityNotFound": "Không có thanh khoản",
         "addLiquidity": "Thêm thanh khoản",
@@ -524,7 +513,6 @@
         "pooledToken": "{tokenSymbol} Pool đã đóng góp",
         "pairTokens": "{pair} Pool Tokens",
         "poolShare": "Những pool bạn tham gia",
-        "unknownAsset": "@:unknownAssetText",
         "description": "Khi bạn đóng góp thanh khoản, bạn cho phép pool sử dụng những token này. Bạn sẽ được hưởng % phí giao dịch theo tỉ lệ đóng góp trong pool. Và bạn có thể yêu cầu khoản lợi tức này bất kỳ khi nào.",
         "strategicBonusApy": "Tiền thưởng chiến lược APY"
     },
@@ -569,9 +557,6 @@
             "alreadyAttached": "Token này đã được thêm vào"
         }
     },
-    "confirmBridgeTransactionDialog": {
-        "confirmTransaction": "Xác nhận giao dịch"
-    },
     "bridgeTransaction": {
         "details": "{from} tới {to}",
         "for": " cho ",
@@ -609,12 +594,8 @@
         "ethereum": "{Ethereum}",
         "sora": "{Sora}",
         "pending": "{network} giao dịch đang chờ xử lý...",
-        "metamask": "{Metamask}",
-        "confirm": "@:confirmTransactionText",
         "newTransaction": "Tạo giao dịch mới",
-        "changeAccount": "@:changeAccountText trong {Metamask}",
         "title": "Giao dịch cầu nối",
-        "expectedMetaMaskAddress": "Địa chỉ dự kiến trên {Metamask}:",
         "allowToken": "Cho phép {AppName} được dùng {tokenSymbol} của bạn",
         "approveToken": "Xin lưu ý rằng chỉ cần phê duyệt token một lần. Nếu tiện ích mở rộng của bạn có nhiều yêu cầu phê duyệt token, hãy đảm bảo chỉ xác nhận yêu cầu cuối cùng trong khi từ chối phần còn lại.",
         "blocksLeft": "{count} block còn lại..."
@@ -651,7 +632,6 @@
         "balance": "Số dư",
         "pricePool": "Giá cả và phí",
         "shareOfPool": "Cổ phần trong pool",
-        "firstPerSecond": "@:firstPerSecond",
         "firstSecondPoolTokens": "Pool {first}-{second}",
         "connect": "Kết nối ví",
         "supply": "Cung cấp",
@@ -661,7 +641,6 @@
         "remove": "rút",
         "add": "THÊM",
         "ok": "OK",
-        "networkFee": "@:networkFeeText",
         "alreadyCreated": "Cặp token này đã được tạo rồi",
         "firstLiquidityProvider": "Bạn là nhà cung cấp thanh khoản đầu tiên",
         "firstLiquidityProviderInfo": "Tỉ lệ token của bạn thêm vào sẽ định lại giá của pool. <br\/> Nếu bạn hài lòng với tỉ lệ này, nhấn Cung cấp để xem trước."
@@ -673,9 +652,7 @@
         "price": "Giá"
     },
     "addLiquidity": {
-        "title": "Thêm thanh khoản",
-        "pairIsNotCreated": "@:pairIsNotCreated",
-        "firstPerSecond": "@:firstPerSecond"
+        "title": "Thêm thanh khoản"
     },
     "removeLiquidity": {
         "title": "Rút thanh khoản",
@@ -726,9 +703,6 @@
     },
     "rewards": {
         "title": "Nhận phần thưởng",
-        "changeAccount": "@:changeAccountText",
-        "connected": "@:connectedText",
-        "networkFee": "@:networkFeeText",
         "andText": "và",
         "claiming": {
             "pending": "Đang yêu cầu...",
@@ -750,14 +724,11 @@
             "howToClaimRewards": "Để yêu cầu phần thưởng {symbols} bạn cần ký tên {count} {transactions} tại {destination}. Phần thưởng sẽ được chuyển đến tài khoản {Sora} của bạn."
         },
         "action": {
-            "connectWallet": "@:connectWalletText",
             "connectExternalWallet": "Kết nối tài khoản {Ethereum}",
             "signAndClaim": "Ký và nhận phần thưởng",
             "pendingInternal": "Giao dịch {Sora} đang chờ xử lý...",
             "pendingExternal": "Giao dịch {Ethereum} đang chờ xử lý...",
-            "retry": "@:retryText",
-            "checkRewards": "Kiểm tra",
-            "insufficientBalance": "@:insufficientBalanceText"
+            "checkRewards": "Kiểm tra"
         },
         "notification": {
             "empty": "Không có yêu cầu nào cho tài khoản này"
@@ -784,8 +755,6 @@
         "ReferralProgram": "@:referralProgram.title"
     },
     "provider": {
-        "default": "Cung cấp {Ethereum}",
-        "metamask": "{Metamask}",
         "messages": {
             "checkExtension": "Phần mở rộng (extension) {name} đang gặp vấn đề, vui lòng kiểm tra nó.",
             "extensionLogin": "Vui lòng đăng nhập vào tiện ích (extension) {name}",
@@ -858,7 +827,6 @@
         "settings": "Cài đặt",
         "switchTheme": "Chuyển sang chế độ {theme}",
         "switchLanguage": "Chọn ngôn ngữ",
-        "selectNode": "@:selectNodeText",
         "showDisclaimer": "Hiển thị tuyên bố miễn trừ trách nhiệm",
         "hideDisclaimer": "Ẩn tuyên bố từ chối trách nhiệm"
     },
@@ -888,11 +856,8 @@
         "preview": "Mời người dùng mới và nhận 10% từ phí giao dịch của họ. <br\/> Để bắt đầu, hãy bond số lượng XOR bất kỳ. <a href=\"#\" target=\"_blank\" rel=\"nofollow noopener\" class=\"link\"> Tìm hiểu thêm <\/a>",
         "deposit": "Gửi vào",
         "balance": "Số dư",
-        "networkFee": "@:networkFeeText",
-        "insufficientBalance": "@:insufficientBalanceText",
         "insufficientBondedBalance": "Số dư bonded không đủ",
         "action": {
-            "connectWallet": "@:connectWalletText",
             "empty": "Nhập số lượng {tokenSymbol}",
             "startInviting": "Bond {tokenSymbol} để bắt đầu mời",
             "bondMore": "Bond Thêm",
@@ -945,7 +910,7 @@
         "allowanceRequest": "Nhấn “Cho phép” để sử dụng máy ảnh"
     },
     "bridgeTransferNotification": {
-        "addToken": "Thêm {symbol} vào {Metamask}",
+        "addToken": "Thêm {symbol} vào ví",
         "title": "Giao dịch cầu nối thành công"
     },
     "mobilePopup": {
@@ -1221,11 +1186,11 @@
         "historyBtn": "Sự thanh toán của tôi",
         "historyTitle": "Lịch sử giao dịch",
         "moonpayTitle": "Mua ETH qua MoonPay",
-        "moonpayDesc": "Mua mã thông báo ETH trên Ethereum và chuyển chúng sang mạng SORA qua cầu nối",
+        "moonpayDesc": "Mua mã thông báo ETH trên {Ethereum} và chuyển chúng sang mạng {SORA} qua cầu nối",
         "x1Title": "Mua XOR bằng thẻ của bạn",
         "x1Btn": "Mua XOR bằng thẻ",
         "errorMessage": "Xin lỗi vì sự bất tiện. Chúng tôi đang nỗ lực làm việc để giải quyết vấn đề này. Vui lòng thử lại sau.",
-        "x1Desc": "Mua mã thông báo XOR trực tiếp trên mạng SORA bằng thẻ ghi nợ hoặc thẻ tín dụng của bạn"
+        "x1Desc": "Mua mã thông báo XOR trực tiếp trên mạng {SORA} bằng thẻ ghi nợ hoặc thẻ tín dụng của bạn"
     },
     "acceptOnScrollText": "Cuộn để chấp nhận",
     "addressBook": {
@@ -1241,7 +1206,7 @@
         "detected": "Đã phát hiện địa chỉ mới",
         "save": "Lưu dưới dạng liên hệ",
         "tooltip": "Thu thập sổ địa chỉ bằng cách cung cấp tên và địa chỉ để giữ cho danh bạ của bạn được sắp xếp và cập nhật",
-        "notSoraAddress": "Địa chỉ này sẽ được lưu dưới dạng địa chỉ SORA bên dưới. Đảm bảo người nhận có thể truy cập chuỗi SORA:",
+        "notSoraAddress": "Địa chỉ này sẽ được lưu dưới dạng địa chỉ {SORA} bên dưới. Đảm bảo người nhận có thể truy cập chuỗi {SORA}:",
         "options": {
             "send": "Gửi mã thông báo",
             "edit": "Chỉnh sửa liên hệ",
@@ -1266,5 +1231,7 @@
     "minAmountText": "phút. số lượng",
     "maxAmountText": "tối đa. số lượng",
     "exceededAmountText": "vượt quá {amount}",
-    "multipleRecipients": "Nhiều người nhận"
+    "multipleRecipients": "Nhiều người nhận",
+    "disconnectWalletText": "Ngắt kết nối",
+    "connectEthereumWalletText": "Kết nối ví {Ethereum}"
 }

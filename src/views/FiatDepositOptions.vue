@@ -7,7 +7,7 @@
         <span>{{ t('fiatPayment.moonpayDesc') }}</span>
         <s-button type="primary" @click="openMoonpayDialog">{{ moonpayTextBtn }}</s-button>
       </div>
-      <div v-if="isX1Enabled" class="pay-options__option pay-options-x1">
+      <div v-if="x1Enabled" class="pay-options__option pay-options-x1">
         <x1ex-logo :theme="libraryTheme" />
         <h4>{{ t('fiatPayment.x1Title') }}</h4>
         <span>{{ t('fiatPayment.x1Desc') }}</span>
@@ -26,6 +26,7 @@
       <moonpay />
       <moonpay-notification />
       <moonpay-confirmation />
+      <select-provider-dialog />
     </template>
     <payment-error :visible.sync="showErrorInfoBanner" />
   </div>
@@ -53,6 +54,7 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
     PaymentError: lazyComponent(Components.PaymentErrorDialog),
+    SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
     MoonpayLogo,
     X1exLogo,
   },
@@ -70,11 +72,6 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
 
   showX1Dialog = false;
   showErrorInfoBanner = false;
-
-  /** **FALSE** because we've decided to hide it **ONLY** here */
-  get isX1Enabled(): boolean {
-    return false;
-  }
 
   get hasPendingTx(): boolean {
     // TODO: add localStorage savings in case user closes tab and returns
@@ -112,11 +109,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
     this.showErrorInfoBanner = true;
   }
 
-  async openMoonpayDialog(): Promise<void> {
-    if (!this.isSoraAccountConnected) {
-      return this.connectSoraWallet();
-    }
-
+  openMoonpayDialog(): void {
     if (!this.moonpayEnabled) {
       return this.showErrorMessage();
     }
@@ -125,8 +118,15 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
       return this.connectSoraWallet();
     }
 
-    await this.connectEvmWallet();
+    if (!this.evmAddress) {
+      return this.connectEvmWallet();
+    }
+
     this.setMoonpayVisibility(true);
+  }
+
+  beforeDestroy(): void {
+    this.disconnectExternalNetwork();
   }
 }
 </script>
