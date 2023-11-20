@@ -15,11 +15,7 @@
       :asset-symbol="nativeTokenSymbol"
       :fiat-value="getFiatAmountByString(externalNetworkFee, nativeToken)"
       is-formatted
-    >
-      <template v-if="isExternalFeeNotZero" #info-line-value-prefix>
-        <span class="info-line-value-prefix">{{ ApproximateSign }}</span>
-      </template>
-    </info-line>
+    />
     <info-line
       v-if="isExternalTransferFeeNotZero"
       :label="t('bridge.externalTransferFee', { network: networkName })"
@@ -38,7 +34,7 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, ZeroStringValue, ApproximateSign } from '@/consts';
+import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
 
 import type { CodecString } from '@sora-substrate/util';
@@ -52,7 +48,6 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 })
 export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   readonly XOR = XOR;
-  readonly ApproximateSign = ApproximateSign;
 
   @Prop({ default: () => null, type: Object }) readonly asset!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: () => null, type: Object }) readonly nativeToken!: Nullable<RegisteredAccountAsset>;
@@ -70,11 +65,7 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
   }
 
   get formattedNetworkFeeLabel(): string {
-    return `${this.networkName} ${this.t('networkFeeText')}`;
-  }
-
-  get isExternalFeeNotZero(): boolean {
-    return this.externalNetworkFee !== ZeroStringValue;
+    return `${this.TranslationConsts.Max} ${this.networkName} ${this.t('networkFeeText')}`;
   }
 
   get isExternalTransferFeeNotZero(): boolean {

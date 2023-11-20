@@ -77,15 +77,17 @@
       />
       <info-line
         is-formatted
-        :label="getNetworkText('bridgeTransaction.networkInfo.transactionFee', externalNetworkId)"
+        :label="
+          getNetworkText(
+            'bridgeTransaction.networkInfo.transactionFee',
+            externalNetworkId,
+            txExternalNetworkFeeApproximation
+          )
+        "
         :value="txExternalNetworkFeeFormatted"
         :asset-symbol="nativeTokenSymbol"
         :fiat-value="txExternalNetworkFeeFiatValue"
-      >
-        <template v-if="txExternalNetworkFeePrefix" #info-line-value-prefix>
-          <span class="info-line-value-prefix">{{ ApproximateSign }}</span>
-        </template>
-      </info-line>
+      />
       <info-line
         v-if="txExternalTransferFeeNotZero"
         is-formatted
@@ -197,7 +199,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
 import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { Components, PageNames, ZeroStringValue, ApproximateSign } from '@/consts';
+import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
 import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientNativeTokenForFee } from '@/utils';
@@ -227,7 +229,6 @@ export default class BridgeTransaction extends Mixins(
   NetworkFormatterMixin
 ) {
   readonly KnownSymbols = KnownSymbols;
-  readonly ApproximateSign = ApproximateSign;
 
   @state.bridge.externalBlockNumber private externalBlockNumber!: number;
   @state.bridge.waitingForApprove private waitingForApprove!: Record<string, boolean>;
@@ -331,7 +332,7 @@ export default class BridgeTransaction extends Mixins(
     return this.formatCodecNumber(this.txExternalNetworkFee, this.nativeTokenDecimals);
   }
 
-  get txExternalNetworkFeePrefix(): boolean {
+  get txExternalNetworkFeeApproximation(): boolean {
     if (this.txExternalNetworkFeeFormatted === ZeroStringValue) return false;
 
     return !this.historyItem?.externalNetworkFee;
@@ -550,11 +551,12 @@ export default class BridgeTransaction extends Mixins(
       : '';
   }
 
-  getNetworkText(key: string, networkId?: Nullable<BridgeNetworkId>): string {
+  getNetworkText(key: string, networkId?: Nullable<BridgeNetworkId>, approximate = false): string {
     const text = this.t(key);
     const network = networkId ? this.getNetworkName(this.externalNetworkType, networkId) : this.TranslationConsts.Sora;
+    const approx = approximate ? this.TranslationConsts.Max : '';
 
-    return `${network} ${text}`;
+    return [approx, network, text].filter((item) => !!item).join(' ');
   }
 
   get soraExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
