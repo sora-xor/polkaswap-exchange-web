@@ -8,7 +8,7 @@
           <div class="order-book-choose-btn">
             <div class="order-book-pair-name">
               <pair-token-logo :first-token="baseAsset" :second-token="quoteAsset" />
-              <span>{{ `${baseSymbol}-${quoteSymbol}` }}</span>
+              <span v-if="baseAsset && quoteAsset">{{ `${baseSymbol}-${quoteSymbol}` }}</span>
               <s-icon name="arrows-swap-90-24" class="order-book-swap-icon" />
             </div>
             <s-icon :name="icon" class="order-book-choose-btn-icon" />

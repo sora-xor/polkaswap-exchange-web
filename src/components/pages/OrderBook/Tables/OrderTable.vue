@@ -11,7 +11,7 @@
       @selection-change="handleSelectionChange"
     >
       <s-table-column v-if="selectable" type="selection" :selectable="isSelectable" />
-      <s-table-column width="94">
+      <s-table-column width="68">
         <template #header>
           <span>TIME</span>
         </template>
@@ -30,7 +30,7 @@
           <span class="order-table__pair">{{ row.pair }}</span>
         </template>
       </s-table-column>
-      <s-table-column width="65">
+      <s-table-column width="62">
         <template #header>
           <span>SIDE</span>
         </template>
@@ -44,23 +44,23 @@
         </template>
         <template v-slot="{ row }">
           <div class="order-table__price">
-            <span class="price">{{ row.price }}</span>&nbsp;
+            <span class="price">{{ row.price }}</span>
             <span>{{ row.quoteAssetSymbol }}</span>
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="140">
+      <s-table-column width="180">
         <template #header>
           <span>AMOUNT</span>
         </template>
         <template v-slot="{ row }">
           <div class="order-table__amount">
-            <span class="amount">{{ row.amount }}/{{ row.originalAmount }}</span>&nbsp;
+            <span class="amount">{{ row.amount }}/{{ row.originalAmount }}</span>
             <span>{{ row.baseAssetSymbol }}</span>
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="98">
+      <s-table-column width="84">
         <template #header>
           <span>% FILLED</span>
         </template>
@@ -72,17 +72,16 @@
         </template>
         <template v-slot="{ row }">
           <div class="order-table__date">
-            <div>{{ row.expires.date }}</div>
-            <div>{{ row.expires.time }}</div>
+            <div>{{ row.expires }}</div>
           </div>
         </template>
       </s-table-column>
-      <s-table-column>
+      <s-table-column width="75">
         <template #header>
           <span>Status</span>
         </template>
         <template v-slot="{ row }">
-          <span>{{ row.status }}</span>
+          <span class="order-table__status">{{ row.status }}</span>
         </template>
       </s-table-column>
       <s-table-column>
@@ -161,7 +160,8 @@ export default class OpenOrders extends Mixins(TranslationMixin, ScrollableTable
         side,
         status: status ?? OrderStatus.Active,
         created: { date: created.format('M/DD'), time: created.format('HH:mm:ss') },
-        expires: { date: expires.format('M/DD'), time: expires.format('HH:mm:ss') },
+        // expires: { date: expires.format('M/DD'), time: expires.format('HH:mm:ss') },
+        expires: 'month',
       };
 
       return row;
@@ -188,9 +188,6 @@ export default class OpenOrders extends Mixins(TranslationMixin, ScrollableTable
 
 <style lang="scss">
 .order-table {
-  // border-bottom-left-radius: var(--s-border-radius-small);
-  // border-bottom-right-radius: var(--s-border-radius-small);
-
   font-size: 12px;
 
   .el-table__header-wrapper {
@@ -239,14 +236,21 @@ export default class OpenOrders extends Mixins(TranslationMixin, ScrollableTable
 
     &__price {
       .price {
-        font-weight: 500;
+        font-weight: 550;
+        margin-right: 2px;
       }
     }
 
     &__amount {
       .amount {
-        font-weight: 500;
+        font-weight: 550;
+        margin-right: 2px;
       }
+    }
+
+    &__status {
+      text-transform: uppercase;
+      font-size: 11px;
     }
 
     &__total {
@@ -259,7 +263,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, ScrollableTable
   }
 
   .el-table__body-wrapper {
-    height: auto !important;
+    height: 400px;
   }
 
   &__pagination {

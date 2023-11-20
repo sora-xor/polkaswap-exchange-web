@@ -185,6 +185,8 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 }
 
 .order-book-widget.history {
+  min-height: 570px;
+
   .el-table-column--selection.is-leaf {
     visibility: hidden;
   }

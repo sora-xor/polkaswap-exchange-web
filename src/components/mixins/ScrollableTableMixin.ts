@@ -35,7 +35,7 @@ export default class ExplorePageMixin extends Mixins(
   }
 
   get tableItems() {
-    return this.getPageItems(this.preparedItems);
+    return this.getPageItems(this.preparedItems.reverse());
   }
 
   async mounted(): Promise<void> {

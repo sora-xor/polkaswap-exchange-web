@@ -12,7 +12,7 @@
       :highlight-current-row="false"
       @row-click="chooseBook"
     >
-      <s-table-column :width="'172'">
+      <s-table-column width="178">
         <template #header>
           <span>Token pair</span>
         </template>
@@ -23,7 +23,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="85">
+      <s-table-column width="90">
         <template #header>
           <span>Price</span>
         </template>
@@ -31,7 +31,7 @@
           <formatted-amount :value="row.price" fiatSign="" />
         </template>
       </s-table-column>
-      <s-table-column>
+      <s-table-column width="110">
         <template #header>
           <span>Volume</span>
         </template>
@@ -39,7 +39,7 @@
           <formatted-amount :value="row.volume" is-fiat-value />
         </template>
       </s-table-column>
-      <s-table-column>
+      <s-table-column width="140">
         <template #header>
           <span>Daily change</span>
         </template>
@@ -189,7 +189,7 @@ export default class PairListPopover extends Mixins(
 <style lang="scss">
 .orderbook-whitelist {
   &-table {
-    width: 750px;
+    width: 700px;
     border-bottom-left-radius: var(--s-border-radius-small);
     border-bottom-right-radius: var(--s-border-radius-small);
     display: flex;
@@ -228,7 +228,7 @@ export default class PairListPopover extends Mixins(
 }
 
 .order-book-popover {
-  width: 750px;
+  width: 700px;
   background-color: var(--s-color-utility-body);
   border-radius: var(--s-border-radius-small);
 

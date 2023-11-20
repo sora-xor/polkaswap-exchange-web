@@ -96,21 +96,21 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 <style lang="scss">
 .order-book {
   &-widgets {
-    width: 900px;
+    width: 1010px;
 
     .column-2 {
       margin-top: 8px;
       margin-bottom: 8px;
       display: flex;
       align-items: flex-start;
-      justify-content: space-between;
+      justify-content: space-evenly;
 
       .set-widget {
-        flex-basis: 49%;
+        flex-basis: 45%;
       }
 
       .book-widget {
-        flex-basis: 49.5%;
+        flex-basis: 45%;
       }
     }
 

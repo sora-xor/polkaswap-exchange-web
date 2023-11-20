@@ -73,7 +73,7 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .market-trades {
-  min-height: 310px;
+  min-height: 327px;
 
   &__title {
     height: 40px;
@@ -122,7 +122,7 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
     }
 
     .el-table__body-wrapper {
-      min-height: 360px;
+      min-height: 327px;
     }
   }
 }
