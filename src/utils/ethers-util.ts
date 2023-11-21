@@ -22,6 +22,7 @@ let ethersInstance: ethersProvider | null = null;
 
 export enum Provider {
   Metamask = 'Metamask',
+  SubWallet = 'SubWallet',
   TrustWallet = 'TrustWallet',
   WalletConnect = 'WalletConnect',
 }
@@ -105,6 +106,9 @@ async function useExtensionProvider(provider: Provider): Promise<string> {
     case Provider.Metamask:
       ethereumProvider = await detectEthereumProvider({ timeout: 0 });
       break;
+    case Provider.SubWallet:
+      ethereumProvider = (window as any).SubWallet;
+      break;
     case Provider.TrustWallet:
       ethereumProvider = (window as any).trustwallet;
       break;
@@ -182,7 +186,8 @@ async function getAccount(): Promise<string> {
     await ethersInstance.send('eth_requestAccounts', []);
     const signer = await getSigner();
     return signer.getAddress();
-  } catch {
+  } catch (error) {
+    console.error(error);
     return '';
   }
 }
