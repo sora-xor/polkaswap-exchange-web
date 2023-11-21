@@ -190,7 +190,7 @@ export async function fetchOrderBookAccountOrders(
         parseOrderEntity
       );
 
-      return [...(orders || [])].sort((a, b) => +b.time - +a.time);
+      return [...(orders || [])].sort((a, b) => +a.time - +b.time);
     }
   }
 
