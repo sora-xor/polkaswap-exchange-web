@@ -152,7 +152,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @state.orderBook.side side!: PriceVariant;
   @state.orderBook.asks asks!: any;
   @state.orderBook.bids bids!: any;
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.placeOrderNetworkFee networkFee!: CodecString;
 
   @getter.assets.xor private xor!: AccountAsset;
@@ -186,7 +186,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   marketQuotePrice = '';
 
   @Watch('side')
-  @Watch('baseAsset')
+  @Watch('baseAssetAddress')
   private handleSideChange(): void {
     this.handleTabClick(this.limitOrderType);
   }
