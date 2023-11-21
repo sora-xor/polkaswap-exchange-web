@@ -232,6 +232,14 @@ export default class PairListPopover extends Mixins(
   background-color: var(--s-color-utility-body);
   border-radius: var(--s-border-radius-small);
 
+  @include tablet(true) {
+    width: 624px;
+  }
+
+  @include mobile(true) {
+    width: 370px;
+  }
+
   .cell {
     display: flex;
     align-items: center;
