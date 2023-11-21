@@ -8,25 +8,25 @@
         </div>
         <div v-if="sources.length" class="distribution-path">
           <span class="distribution-path-line"></span>
-          <table class="distribution-path-sources">
-            <tr v-for="{ source, income, outcome, fiatDifference } in sources" :key="source">
-              <td>{{ source }}:</td>
-              <td>
+          <div class="distribution-path-sources">
+            <div
+              v-for="{ source, income, outcome, fiatDifference } in sources"
+              :key="source"
+              class="distribution-path-source"
+            >
+              <div class="flex-cell">
+                <span>{{ source }}:</span>
                 <value-status-wrapper :value="fiatDifference">
                   <formatted-amount :value="formatStringValue(fiatDifference)">%</formatted-amount>
                 </value-status-wrapper>
-              </td>
-              <td>
-                <token-logo :token="input" size="mini" />
-              </td>
-              <td>{{ income }}</td>
-              <td>&rarr;</td>
-              <td>
-                <token-logo :token="output" size="mini" />
-              </td>
-              <td>{{ outcome }}</td>
-            </tr>
-          </table>
+              </div>
+              <div class="flex-cell">
+                <token-logo :token="input" size="mini" />{{ income }}
+                &rarr;
+                <token-logo :token="output" size="mini" />{{ outcome }}
+              </div>
+            </div>
+          </div>
         </div>
       </li>
     </ul>
@@ -136,6 +136,12 @@ export default class SwapDistribution extends Mixins(mixins.FormattedAmountMixin
 <style lang="scss" scoped>
 $path-color: var(--s-color-base-content-tertiary);
 
+.flex-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: $inner-spacing-tiny;
+}
+
 .distribution {
   list-style-type: none;
   padding-left: 0;
@@ -162,7 +168,39 @@ $path-color: var(--s-color-base-content-tertiary);
     margin-left: $inner-spacing-mini * 2.5;
 
     &-line {
-      border: 1px dashed $path-color;
+      border-right: 1px dashed $path-color;
+    }
+
+    &-sources {
+      display: flex;
+      flex-grow: 1;
+      padding: $inner-spacing-medium;
+      gap: $inner-spacing-medium;
+    }
+
+    &-source {
+      display: flex;
+      flex-grow: 1;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      gap: $inner-spacing-mini;
+
+      &::before {
+        content: '';
+        display: block;
+        width: $inner-spacing-medium;
+        height: 1px;
+        border-color: $path-color;
+        border-style: dashed;
+        border-width: 1px 0 0 0;
+
+        position: absolute;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+        left: -#{$inner-spacing-medium};
+      }
     }
   }
 }
