@@ -131,6 +131,13 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
     return this.cameraPermission === 'granted';
   }
 
+  get ISOLanguageName(): string {
+    // return ISO 639-1 code format
+    if (this.language === 'zh-CN') return 'zh';
+
+    return this.language;
+  }
+
   get forbiddenByBrowser(): boolean {
     return this.cameraPermission === 'denied';
   }
@@ -167,7 +174,7 @@ export default class KycView extends Mixins(TranslationMixin, mixins.Notificatio
           },
           KycSettings: {
             AppReferenceID: uuidv4(),
-            Language: 'en', // supported languages 'en'
+            Language: this.ISOLanguageName || 'en', // supported languages 'en'
             ReferenceNumber: referenceNumber,
             ElementId: '#kyc', // id of element in which web kyc will be injected
             Logo: '',

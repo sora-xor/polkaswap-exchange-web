@@ -5,32 +5,10 @@ import { PageNames } from '@/consts';
 import router from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getWalletAddress, formatAddress } from '@/utils';
-import { Provider, METAMASK_ERROR } from '@/utils/ethers-util';
+import { Provider, installExtensionKey, handleRpcProviderError } from '@/utils/ethers-util';
 
 import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-
-const checkExtensionKey = 'provider.messages.checkExtension';
-const installExtensionKey = 'provider.messages.installExtension';
-
-const handleProviderError = (provider: Provider, error: any): string => {
-  switch (provider) {
-    case Provider.Metamask:
-      return handleMetamaskError(error);
-    default:
-      return checkExtensionKey;
-  }
-};
-
-const handleMetamaskError = (error: any): string => {
-  switch (error.code) {
-    case METAMASK_ERROR.AlreadyProcessing:
-    case METAMASK_ERROR.UserRejectedRequest:
-      return 'provider.messages.extensionLogin';
-    default:
-      return checkExtensionKey;
-  }
-};
 
 @Component
 export default class WalletConnectMixin extends Mixins(TranslationMixin) {
@@ -63,10 +41,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   connectEvmWallet(): void {
-    // [TODO: WalletConnect] Remove
-    this.connectEvmProvider(Provider.Metamask);
-    // [TODO: WalletConnect] Enable
-    // this.setSelectProviderDialogVisibility(true);
+    this.setSelectProviderDialogVisibility(true);
   }
 
   getEvmProviderIcon(provider: Provider): string {
@@ -77,7 +52,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
     try {
       await this.selectEvmProvider(provider);
     } catch (error: any) {
-      const key = this.te(error.message) ? error.message : handleProviderError(provider, error);
+      const key = this.te(error.message) ? error.message : handleRpcProviderError(error);
       const message = this.t(key, { name: provider });
       const showCancelButton = key === installExtensionKey;
 

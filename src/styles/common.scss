@@ -29,6 +29,7 @@ $networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polyg
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  border-radius: 50%;
 
   @each $network in $networks {
     &--#{$network} {
@@ -38,6 +39,11 @@ $networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polyg
 }
 
 /*________________________________________COMMON LAYOUT________________________________________*/
+// [TODO] fix in wallet: overflow-wrap: anywhere
+.formatted-amount {
+  overflow-wrap: break-word !important;
+}
+
 h3 {
   text-transform: capitalize;
 }

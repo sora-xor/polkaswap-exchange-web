@@ -90,8 +90,6 @@ export const ObjectInit = () => null;
 
 export const ZeroStringValue = '0';
 
-export const ApproximateSign = '~';
-
 export const DefaultSlippageTolerance = '0.5';
 
 export enum MarketAlgorithms {
@@ -194,6 +192,7 @@ export enum Components {
   BridgeSelectAccount = 'pages/Bridge/SelectAccount',
   BridgeLinksDropdown = 'pages/Bridge/LinksDropdown',
   BridgeLimitCard = 'pages/Bridge/LimitCard',
+  BridgeAccountPanel = 'pages/Bridge/AccountPanel',
   // Moonpay Page
   Moonpay = 'pages/Moonpay/Moonpay',
   MoonpayNotification = 'pages/Moonpay/Notification',
