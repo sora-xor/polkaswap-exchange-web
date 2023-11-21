@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="visibility" :title="t('connectEthereumWalletText')">
+  <dialog-base :visible.sync="visibility" :title="t('connectEthereumWalletText')" append-to-body>
     <connection-items :size="providers.length">
       <account-card
         v-button
@@ -17,6 +17,7 @@
           <s-button v-if="provider.connected" size="small" disabled>
             {{ t('connection.wallet.connected') }}
           </s-button>
+          <s-icon v-else-if="provider.loading" name="el-icon-loading" size="16" class="provider-loading-icon" />
         </template>
       </account-card>
     </connection-items>
@@ -35,6 +36,7 @@ type WalletProvider = {
   name: Provider;
   icon: any;
   connected: boolean;
+  loading: boolean;
 };
 
 @Component({
@@ -46,6 +48,8 @@ type WalletProvider = {
 })
 export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
   @state.web3.selectProviderDialogVisibility private selectProviderDialogVisibility!: boolean;
+  @state.web3.evmProvider private evmProvider!: Nullable<Provider>;
+  @state.web3.evmProviderLoading private evmProviderLoading!: Nullable<Provider>;
 
   get visibility(): boolean {
     return this.selectProviderDialogVisibility;
@@ -63,13 +67,14 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
         name: provider,
         icon: this.getEvmProviderIcon(provider),
         connected: provider === this.evmProvider,
+        loading: provider === this.evmProviderLoading,
       };
     });
   }
 
   handleProviderClick(provider: Provider): void {
-    this.visibility = false;
     this.connectEvmProvider(provider);
+    this.visibility = false;
   }
 }
 </script>

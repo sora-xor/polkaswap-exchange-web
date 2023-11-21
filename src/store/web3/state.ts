@@ -14,8 +14,8 @@ export function initialState(): Web3State {
     networkSelected: null, // network selected by user
 
     evmProvider: null,
+    evmProviderLoading: null,
     evmProviderNetwork: null, // evm network in provider
-    evmProviderLoading: false,
     evmProviderSubscription: null, // provider event listeners
 
     evmNetworkApps: [], // evm networks from app config

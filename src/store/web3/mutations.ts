@@ -43,8 +43,8 @@ const mutations = defineMutations<Web3State>()({
   resetEvmProvider(state): void {
     state.evmProvider = null;
   },
-  setEvmProviderLoading(state, flag: boolean): void {
-    state.evmProviderLoading = flag;
+  setEvmProviderLoading(state, provider: Nullable<Provider> = null): void {
+    state.evmProviderLoading = provider;
   },
   // by provider
   setProvidedEvmNetwork(state, networkId: BridgeNetworkId | null): void {
