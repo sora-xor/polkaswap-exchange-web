@@ -42,7 +42,7 @@ const gasLimit = {
 
 const WALLET_CONNECT_PROJECT_ID = 'feeab08b50e0d407f4eb875d69e162e8';
 
-export enum METAMASK_ERROR {
+export enum PROVIDER_ERROR {
   // 1013: Disconnected from chain. Attempting to connect
   DisconnectedFromChain = 1013,
   // 4001: User rejected the request
@@ -51,6 +51,37 @@ export enum METAMASK_ERROR {
   // -32002: Request of type 'wallet_requestPermissions' already pending for origin. Please wait
   AlreadyProcessing = -32002,
 }
+
+export const installExtensionKey = 'provider.messages.installExtension';
+
+const handleErrorCode = (code: number, message?: string): string => {
+  if (message) console.error(message);
+
+  switch (code) {
+    case PROVIDER_ERROR.AlreadyProcessing:
+    case PROVIDER_ERROR.UserRejectedRequest:
+      return 'provider.messages.extensionLogin';
+    default:
+      return 'provider.messages.checkExtension';
+  }
+};
+
+export const handleRpcProviderError = (error: any): string => {
+  let code = 0;
+  let message!: string;
+
+  // Metamask, TrustWallet
+  if ('info' in error) {
+    code = error.info.error.code;
+    message = error.info.error.message;
+    // SubWallet
+  } else if ('error' in error) {
+    code = error.error.data;
+    message = error.error.message;
+  }
+
+  return handleErrorCode(code, message);
+};
 
 /**
  * It's in gwei.
@@ -117,7 +148,7 @@ async function useExtensionProvider(provider: Provider): Promise<string> {
   }
 
   if (!ethereumProvider) {
-    throw new Error('provider.messages.installExtension');
+    throw new Error(installExtensionKey);
   }
 
   createWeb3Instance(ethereumProvider);
@@ -181,15 +212,10 @@ async function getSigner(): Promise<ethers.JsonRpcSigner> {
 }
 
 async function getAccount(): Promise<string> {
-  try {
-    const ethersInstance = getEthersInstance();
-    await ethersInstance.send('eth_requestAccounts', []);
-    const signer = await getSigner();
-    return signer.getAddress();
-  } catch (error) {
-    console.error(error);
-    return '';
-  }
+  const ethersInstance = getEthersInstance();
+  await ethersInstance.send('eth_requestAccounts', []);
+  const signer = await getSigner();
+  return signer.getAddress();
 }
 
 async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> {
