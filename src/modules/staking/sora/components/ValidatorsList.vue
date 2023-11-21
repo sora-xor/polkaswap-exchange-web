@@ -1,0 +1,348 @@
+<template>
+  <div class="validators">
+    <div v-if="mode !== ValidatorsListMode.RECOMMENDED" class="search-container">
+      <s-input
+        type="text"
+        v-model="search"
+        :placeholder="t('soraStaking.validatorsList.search')"
+        prefix="s-icon-basic-search-24"
+      />
+      <s-button class="filters" type="outline" size="tiny" @click="openFilters">
+        <span>{{ t('soraStaking.validatorsList.filters') }}</span>
+        <s-icon name="basic-settings-24" />
+      </s-button>
+    </div>
+    <div class="table-header">
+      <div class="table-header-avatar table-header-item"><s-icon name="various-bone-24" /></div>
+      <div class="table-header-name table-header-item">{{ t('soraStaking.validatorsList.name') }}</div>
+      <div class="table-header-return table-header-item">
+        <span>{{ t('soraStaking.validatorsList.return') }}</span>
+        <s-tooltip border-radius="mini" :content="''">
+          <s-icon name="info-16" size="14px" />
+        </s-tooltip>
+      </div>
+    </div>
+    <s-scrollbar class="validators-list-scrollbar">
+      <ul class="list">
+        <li v-for="validator in filteredValidators" :key="validator.address" class="validator">
+          <validator-avatar class="avatar" :validator="validator">
+            <div v-if="isSelected(validator)" class="check" slot="icon">
+              <s-icon name="basic-check-mark-24" size="12px" />
+            </div>
+          </validator-avatar>
+          <div class="name">
+            {{ formatName(validator) }}
+          </div>
+          <div class="return">
+            <span>{{ validator.apy }}%</span>
+            <s-tooltip border-radius="mini" :content="''">
+              <s-icon name="info-16" size="14px" />
+            </s-tooltip>
+          </div>
+          <div
+            v-if="mode === ValidatorsListMode.SELECT"
+            class="select-area"
+            @click="toggleSelectValidator(validator)"
+          />
+        </li>
+      </ul>
+    </s-scrollbar>
+    <div class="blackout" />
+    <filter-dialog
+      :visible.sync="showFilterDialog"
+      :parent-loading="parentLoading || loading"
+      :filter="filter"
+      @save="handleChangeFilter"
+    />
+  </div>
+</template>
+
+<script lang="ts">
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
+
+import { soraStakingLazyComponent } from '../../router';
+import {
+  emptyValidatorsFilter,
+  recommendedValidatorsFilter,
+  SoraStakingComponents,
+  ValidatorsListMode,
+} from '../consts';
+import StakingMixin from '../mixins/StakingMixin';
+import { ValidatorsFilter } from '../types';
+
+import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types';
+
+function filterValidators(validators: ValidatorInfoFull[], filter: ValidatorsFilter, search = '') {
+  return validators.filter((validator) => {
+    if (filter.hasIdentity && (!validator.identity || !Object.keys(validator.identity.info).length)) {
+      return false;
+    }
+    if (filter.notSlashed && validator.blocked) {
+      return false;
+    }
+    if (filter.notOversubscribed && validator.isOversubscribed) {
+      return false;
+    }
+    if (filter.twoValidatorsPerIdentity && validator.isOversubscribed) {
+      const validatorsWithSameIdentity = validators.filter(
+        (v) => v.identity?.info.display === validator.identity?.info.display
+      );
+      if (validatorsWithSameIdentity.length > 2) {
+        return false;
+      }
+    }
+    const name = validator.identity?.info.display ? validator.identity?.info.display : validator.address;
+    return name.toLowerCase().includes(search.toLowerCase());
+  });
+}
+
+@Component({
+  components: {
+    TokenInput: lazyComponent(Components.TokenInput),
+    InfoLine: components.InfoLine,
+    StakingHeader: soraStakingLazyComponent(SoraStakingComponents.StakingHeader),
+    FilterDialog: soraStakingLazyComponent(SoraStakingComponents.ValidatorsFilterDialog),
+  },
+})
+export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingMixin) {
+  @Prop({ required: true, type: String }) readonly mode!: ValidatorsListMode;
+
+  ValidatorsListMode = ValidatorsListMode;
+
+  showFilterDialog = false;
+  filter: ValidatorsFilter = { ...emptyValidatorsFilter };
+  search = '';
+
+  get filteredValidators() {
+    const filtered = filterValidators(this.validators, this.filter, this.search);
+    switch (this.mode) {
+      case ValidatorsListMode.RECOMMENDED:
+        return filterValidators(this.validators, recommendedValidatorsFilter, '').slice(0, this.maxNominations);
+      case ValidatorsListMode.USER:
+        return filtered.filter((v) => this.stakingInfo?.myValidators.includes(v.address));
+      default:
+        return filtered;
+    }
+  }
+
+  handleChangeFilter(filter: ValidatorsFilter): void {
+    this.showFilterDialog = false;
+    this.filter = { ...filter };
+  }
+
+  toggleSelectValidator(validator: ValidatorInfoFull) {
+    if (this.mode === ValidatorsListMode.RECOMMENDED) {
+      return;
+    }
+    const index = this.selectedValidators.findIndex((v) => v.address === validator.address);
+    const selected = [...this.selectedValidators];
+    if (index > -1) {
+      selected.splice(index, 1);
+    } else {
+      selected.push(validator);
+    }
+    this.$emit('update:selected', selected);
+  }
+
+  isSelected(validator: ValidatorInfoFull) {
+    return this.selectedValidators.some((v) => v.address === validator.address);
+  }
+
+  getValidatorAvatar(validator: ValidatorInfoFull) {
+    return validator.identity?.info.image ? validator.identity?.info.image : '/staking/validator-avatar.svg';
+  }
+
+  formatName(validator: ValidatorInfoFull) {
+    const maxLength = 20;
+    const name = validator.identity?.info.display ? validator.identity?.info.display : validator.address;
+    return name.length > maxLength ? name.slice(0, maxLength) + '...' : name;
+  }
+
+  @Watch('validators', { immediate: true })
+  onValidatorsChange() {
+    this.$emit('update:selected', this.mode === ValidatorsListMode.RECOMMENDED ? this.filteredValidators : []);
+  }
+
+  openFilters() {
+    this.showFilterDialog = true;
+  }
+}
+</script>
+
+<style lang="scss">
+.validators-list-scrollbar {
+  .el-scrollbar__wrap {
+    overflow-x: hidden;
+  }
+  .el-scrollbar__bar.is-horizontal {
+    display: none;
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+.validators {
+  position: relative;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.filters {
+  position: absolute;
+  right: 13px;
+  display: flex;
+  width: 78px;
+  height: 24px;
+  padding: 2px 4px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  border-radius: 8px;
+
+  span {
+    font-weight: 400;
+    letter-spacing: -0.24px;
+  }
+}
+
+.blackout {
+  position: absolute;
+  width: 100%;
+  height: 112px;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(253, 247, 251, 0) 0%, #fdf7fb 100%);
+}
+
+.table-header {
+  display: flex;
+  align-content: center;
+  height: 36px;
+  margin-top: 16px;
+  border-bottom: 1px solid #eaeaea;
+
+  &-item {
+    display: flex;
+    align-items: center;
+    color: var(--base-day-content-secondary, #a19a9d);
+    font-feature-settings: 'clig' off, 'liga' off;
+
+    /* NEU extra-bold 14 */
+    font-family: Sora;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    letter-spacing: -0.28px;
+  }
+  &-avatar {
+    display: flex;
+    justify-content: center;
+    width: 38px;
+  }
+  &-name {
+    flex: 1;
+    margin-left: 8px;
+  }
+  &-return {
+    width: 110px;
+
+    span {
+      margin-right: 8px;
+    }
+  }
+}
+
+.validators-list-scrollbar {
+  @include scrollbar;
+  height: 380px !important;
+  margin: 0 -24px !important;
+
+  ul {
+    list-style-type: none;
+    padding: 0 24px;
+    padding-bottom: 64px;
+
+    li {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+      padding: 10px 0;
+      border-bottom: 1px solid #eaeaea;
+    }
+  }
+}
+
+.avatar,
+.name {
+  height: 100%;
+}
+
+.avatar {
+  margin-right: 10px;
+
+  .check {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: var(--s-color-theme-accent);
+
+    i {
+      color: white;
+    }
+  }
+}
+
+.name {
+  flex: 1;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.return {
+  color: var(--status-day-warning, #479aef);
+  text-align: right;
+  font-feature-settings: 'case' on, 'clig' off, 'liga' off;
+  font-family: Sora;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%; /* 24px */
+  letter-spacing: -0.32px;
+
+  span {
+    margin-right: 8px;
+  }
+}
+
+.selected-icon {
+  color: green;
+  font-size: 1.5em;
+  margin-left: 10px;
+}
+
+.select-area {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 20px);
+  height: 100%;
+  cursor: pointer;
+}
+</style>

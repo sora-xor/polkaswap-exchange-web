@@ -957,9 +957,24 @@
         "results": "Results",
         "rewards": "{symbol} rewards"
     },
+    
     "staking": {
         "title": "Staking"
     },
+    "soraStaking": {
+        "title": "Staking",
+        "dropdownMenu": {
+          "pendingRewards": "Pending rewards",
+          "validators": "Validators",
+          "controllerAccount": "Controller account"
+        },
+        "validators": {
+          "tabs": {
+            "user": "Your validators",
+            "all": "All validators"
+          }
+        }
+      },
     "historyErrorMessages": {
         "generalError": "Something went wrong",
         "balances": {

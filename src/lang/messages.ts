@@ -5,7 +5,8 @@ import { en as walletEn } from '@soramitsu/soraneo-wallet-web';
 
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
-import { DemeterPageNames } from '../modules/demeterFarming/consts';
+import { StakingPageNames } from '../modules/staking/consts';
+import { ValidatorsFilterType, ValidatorsListMode } from '../modules/staking/sora/consts';
 import { AlertFrequencyTabs, AlertTypeTabs, FiatOptionTabs } from '../types/tabs';
 
 export default {
@@ -34,7 +35,7 @@ export default {
   bridgeText: 'Bridge',
   acceptText: 'Accept & Hide',
   continueText: 'Continue',
-  acceptOnSctollText: 'Scroll to accept',
+  acceptOnScrollText: 'Scroll to accept',
   comingSoonText: 'Coming Soon',
   releaseNotesText: 'Release notes',
   memorandum: '{AppName} Memorandum and Terms of Services',
@@ -82,7 +83,7 @@ export default {
     [PageNames.ExploreFarming]: 'Farming',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
-    [DemeterPageNames.Staking]: 'Staking',
+    [StakingPageNames.Staking]: 'Staking',
   },
   mainMenu: {
     [PageNames.Swap]: 'Swap',
@@ -112,7 +113,7 @@ export default {
     finishBtn: 'Finish alert setup',
     enableSwitch: 'Enable asset deposit notifications',
     currentPrice: 'current price',
-    alertTyptTitle: 'Alert type',
+    alertTypeTitle: 'Alert type',
     typeTooltip:
       "Choose either 'drops below' or 'raises above' option to specify the alert condition for tracking important price movements. These options allow you receive timely notifications when the value of your asset either falls below or rises above your designated threshold.",
     alertFrequencyTitle: 'Alert frequency',
@@ -782,7 +783,67 @@ export default {
     rewards: '{symbol} rewards',
   },
   staking: {
+    staking: 'Staking',
+  },
+  soraStaking: {
     title: 'Staking',
+    dropdownMenu: {
+      pendingRewards: 'Pending rewards',
+      validators: 'Validators',
+      controllerAccount: 'Controller account',
+    },
+    validatorsList: {
+      search: 'Search...',
+      filters: 'Filters',
+      name: 'Name',
+      return: 'Return',
+    },
+    validatorsFilterDialog: {
+      title: 'Filters',
+      save: 'Save filter',
+      reset: 'Reset all',
+      filters: {
+        [ValidatorsFilterType.HAS_IDENTITY]: {
+          name: 'On-chain identity',
+          description: 'At least one identity contact connected to the account',
+        },
+        [ValidatorsFilterType.NOT_SLASHED]: {
+          name: 'Not slashed',
+          description:
+            'Not experienced any penalties or reductions in their staked funds due to misconduct or protocol violations.',
+        },
+        [ValidatorsFilterType.NOT_OVERSUBSCRIBED]: {
+          name: 'Not oversubscribed',
+          description: 'Account within allocation limit, avoids oversubscription penalties on Polkadot staking.',
+        },
+        [ValidatorsFilterType.TWO_VALIDATORS_PER_IDENTITY]: {
+          name: 'Limit of 2 validators per identity',
+          description:
+            'A maximum of two validators per identity to promote decentralization and prevent concentration of power.',
+        },
+      },
+    },
+    validatorsDialog: {
+      title: {
+        default: 'Validators',
+        edit: 'Edit My Validators',
+      },
+      tabs: {
+        [ValidatorsListMode.USER]: 'Your validators',
+        [ValidatorsListMode.ALL]: 'All validators',
+      },
+      changeValidators: 'Change validators',
+      saveChanges: 'Save changes',
+      selected: '{selected}/{total} selected',
+    },
+    validatorsAttentionDialog: {
+      description: [
+        'Algorithmic validator suggestions do not constitute financial consultation or advice. Staking is a high-risk activity, and algorithmic validator suggestions do not necessarily mitigate this risk.',
+        'A validator suggested by the algorithm could still be slashed. A validator suggested by the algorithm could also change their parameters (e.g.,commission rates, etc.) at any time after having been suggested and/or selected.',
+        'You could lose tokens or rewards for these or other reasons. Only stake tokens and use validator suggestions at your own discretion, after conducting due diligence and carefully considering the risks involved.',
+      ],
+      confirm: 'Yes, I understand the risk',
+    },
   },
   code: {
     download: 'Download QR Code',

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
+  <rect x="1.5" y="1.85529" width="34" height="34" rx="17" fill="white"/>
+  <ellipse cx="18.4996" cy="7.65529" rx="2.4" ry="2.4" fill="#3431DF"/>
+  <circle cx="13.6998" cy="10.0553" r="2.4" fill="#9A1892"/>
+  <ellipse cx="23.3004" cy="10.0553" rx="2.4" ry="2.4" fill="#3431DF"/>
+  <ellipse cx="18.4996" cy="13.2553" rx="2.4" ry="2.4" fill="#0A2342"/>
+  <ellipse cx="28.1002" cy="13.2553" rx="2.4" ry="2.4" fill="#45DC2D"/>
+  <circle cx="8.9" cy="13.2553" r="2.4" fill="#45DC2D"/>
+  <circle cx="13.6998" cy="15.6553" r="2.4" fill="#EB90EB"/>
+  <ellipse cx="23.3004" cy="15.6553" rx="2.4" ry="2.4" fill="#EB90EB"/>
+  <circle cx="18.4996" cy="24.4553" r="2.4" fill="#EB90EB"/>
+  <circle cx="28.1002" cy="24.4553" r="2.4" fill="#3431DF"/>
+  <ellipse cx="8.9" cy="24.4553" rx="2.4" ry="2.4" fill="#3431DF"/>
+  <ellipse cx="13.6998" cy="26.8553" rx="2.4" ry="2.4" fill="#9A1892"/>
+  <ellipse cx="23.3004" cy="26.8552" rx="2.4" ry="2.4" fill="#3431DF"/>
+  <ellipse cx="18.4996" cy="30.0553" rx="2.4" ry="2.4" fill="#45DC2D"/>
+  <circle cx="18.4996" cy="18.8552" r="2.4" fill="#433F10"/>
+  <circle cx="28.1002" cy="18.8553" r="2.4" fill="#9A1892"/>
+  <ellipse cx="8.9" cy="18.8553" rx="2.4" ry="2.4" fill="#3431DF"/>
+  <ellipse cx="13.6998" cy="21.2553" rx="2.4" ry="2.4" fill="#0A2342"/>
+  <ellipse cx="23.3004" cy="21.2553" rx="2.4" ry="2.4" fill="#0A2342"/>
+  <rect x="1.5" y="1.85529" width="34" height="34" rx="17" stroke="#EDE4E7" stroke-width="2"/>
+</svg>

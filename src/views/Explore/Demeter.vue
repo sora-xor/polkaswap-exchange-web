@@ -161,10 +161,10 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
-import { DemeterComponents } from '@/modules/demeterFarming/consts';
-import DemeterBasePageMixin from '@/modules/demeterFarming/mixins/BasePageMixin';
-import { demeterLazyComponent } from '@/modules/demeterFarming/router';
-import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+import { DemeterStakingComponents } from '@/modules/staking/demeter/consts';
+import DemeterBasePageMixin from '@/modules/staking/demeter/mixins/BasePageMixin';
+import type { DemeterPoolDerivedData } from '@/modules/staking/demeter/types';
+import { demeterStakingLazyComponent } from '@/modules/staking/router';
 import { lazyComponent } from '@/router';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils';
@@ -204,8 +204,8 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
 
 @Component({
   components: {
-    CalculatorButton: demeterLazyComponent(DemeterComponents.CalculatorButton),
-    CalculatorDialog: demeterLazyComponent(DemeterComponents.CalculatorDialog),
+    CalculatorButton: demeterStakingLazyComponent(DemeterStakingComponents.CalculatorButton),
+    CalculatorDialog: demeterStakingLazyComponent(DemeterStakingComponents.CalculatorDialog),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SortButton: lazyComponent(Components.SortButton),
     TokenLogo: components.TokenLogo,
@@ -395,3 +395,4 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
 <style lang="scss">
 @include explore-table;
 </style>
+@/modules/staking/demeter/consts@/modules/staking/demeter/types
