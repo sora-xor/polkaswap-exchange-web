@@ -63,10 +63,7 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   }
 
   connectEvmWallet(): void {
-    // [TODO: WalletConnect] Remove
-    this.connectEvmProvider(Provider.Metamask);
-    // [TODO: WalletConnect] Enable
-    // this.setSelectProviderDialogVisibility(true);
+    this.setSelectProviderDialogVisibility(true);
   }
 
   getEvmProviderIcon(provider: Provider): string {
