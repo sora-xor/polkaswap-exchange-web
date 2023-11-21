@@ -102,15 +102,11 @@
             </div>
             <div v-if="sender" class="connect-wallet-panel">
               <s-divider type="tertiary" />
-              <div class="connect-wallet-group">
-                <img
-                  v-if="changeSenderWalletEvm"
-                  :src="getEvmProviderIcon(evmProvider)"
-                  :alt="evmProvider"
-                  class="connect-wallet-logo"
-                />
-                <bridge-account-panel :address="sender" :name="senderName" :tooltip="getCopyTooltip(isSoraToEvm)" />
-              </div>
+              <bridge-account-panel :address="sender" :name="senderName" :tooltip="getCopyTooltip(isSoraToEvm)">
+                <template #icon v-if="changeSenderWalletEvm">
+                  <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
+                </template>
+              </bridge-account-panel>
               <div class="connect-wallet-group">
                 <span v-if="changeSenderWalletEvm" class="connect-wallet-btn" @click="connectExternalWallet">
                   {{ t('changeAccountText') }}
@@ -192,19 +188,11 @@
             </div>
             <div v-if="recipient" class="connect-wallet-panel">
               <s-divider type="tertiary" />
-              <div class="connect-wallet-group">
-                <img
-                  v-if="changeRecipientWalletEvm"
-                  :src="getEvmProviderIcon(evmProvider)"
-                  :alt="evmProvider"
-                  class="connect-wallet-logo"
-                />
-                <bridge-account-panel
-                  :address="recipient"
-                  :name="recipientName"
-                  :tooltip="getCopyTooltip(!isSoraToEvm)"
-                />
-              </div>
+              <bridge-account-panel :address="recipient" :name="recipientName" :tooltip="getCopyTooltip(!isSoraToEvm)">
+                <template #icon v-if="changeRecipientWalletEvm">
+                  <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
+                </template>
+              </bridge-account-panel>
               <div class="connect-wallet-group">
                 <span
                   v-if="isSubBridge || changeRecipientWalletEvm"

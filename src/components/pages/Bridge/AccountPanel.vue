@@ -1,10 +1,12 @@
 <template>
   <div class="account-panel">
-    <wallet-avatar :address="address" :size="18" class="account-gravatar" />
+    <slot name="icon">
+      <wallet-avatar :address="address" :size="18" class="account-gravatar" />
+    </slot>
     <span v-if="name" class="account-panel-name">
       {{ name }}
     </span>
-    <formatted-address :value="address" :symbols="14" :tooltip-text="tooltip" />
+    <formatted-address :value="address" :symbols="12" :tooltip-text="tooltip" />
   </div>
 </template>
 
@@ -45,5 +47,12 @@ export default class BridgeAccountPanel extends Mixins(mixins.CopyAddressMixin, 
   display: flex;
   align-items: center;
   gap: $inner-spacing-mini;
+
+  &-name {
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 </style>
