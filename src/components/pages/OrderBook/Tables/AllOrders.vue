@@ -51,5 +51,3 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
   }
 }
 </script>
-
-<style lang="scss"></style>

@@ -11,7 +11,7 @@
       @selection-change="handleSelectionChange"
     >
       <s-table-column v-if="selectable" type="selection" :selectable="isSelectable" />
-      <s-table-column width="68">
+      <s-table-column width="83">
         <template #header>
           <span>TIME</span>
         </template>
