@@ -124,7 +124,6 @@
               class="el-button--connect s-typography-button--large"
               data-test-name="connectPolkadot"
               type="primary"
-              :loading="!isSoraToEvm && evmProviderLoading"
               @click="connectSenderWallet"
             >
               {{ t('connectWalletText') }}
@@ -214,7 +213,6 @@
               class="el-button--connect s-typography-button--large"
               data-test-name="useMetamaskProvider"
               type="primary"
-              :loading="isSoraToEvm && evmProviderLoading"
               @click="connectRecipientWallet"
             >
               {{ t('connectWalletText') }}
@@ -780,8 +778,8 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
   }
 
   &-logo {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
   }
 
   &-group {
