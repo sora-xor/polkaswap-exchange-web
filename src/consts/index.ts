@@ -90,8 +90,6 @@ export const ObjectInit = () => null;
 
 export const ZeroStringValue = '0';
 
-export const ApproximateSign = '~';
-
 export const DefaultSlippageTolerance = '0.5';
 
 export enum MarketAlgorithms {

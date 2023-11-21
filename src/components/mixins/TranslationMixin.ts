@@ -35,6 +35,7 @@ const TranslationConsts = {
   online: 'Online',
   offline: 'Offline',
   XCM: 'XCM',
+  Max: 'Max.',
 } as const;
 
 @Component
