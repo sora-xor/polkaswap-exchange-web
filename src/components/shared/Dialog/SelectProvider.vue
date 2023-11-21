@@ -48,8 +48,6 @@ type WalletProvider = {
 })
 export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
   @state.web3.selectProviderDialogVisibility private selectProviderDialogVisibility!: boolean;
-  @state.web3.evmProvider private evmProvider!: Nullable<Provider>;
-  @state.web3.evmProviderLoading private evmProviderLoading!: Nullable<Provider>;
 
   get visibility(): boolean {
     return this.selectProviderDialogVisibility;
