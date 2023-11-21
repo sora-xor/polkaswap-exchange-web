@@ -620,17 +620,11 @@ export default class Bridge extends Mixins(
   }
 
   get changeSenderWalletEvm(): boolean {
-    // [TODO: WalletConnect] Remove
-    return false;
-    // [TODO: WalletConnect] Enable
-    // return !this.isSubBridge && !!this.evmProvider && !this.isSoraToEvm;
+    return !this.isSubBridge && !!this.evmProvider && !this.isSoraToEvm;
   }
 
   get changeRecipientWalletEvm(): boolean {
-    // [TODO: WalletConnect] Remove
-    return false;
-    // [TODO: WalletConnect] Enable
-    // return !this.isSubBridge && !!this.evmProvider && this.isSoraToEvm;
+    return !this.isSubBridge && !!this.evmProvider && this.isSoraToEvm;
   }
 
   private getBalance(isSora = true): Nullable<FPNumber> {

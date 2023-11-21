@@ -396,10 +396,7 @@ export default class Rewards extends Mixins(
   }
 
   get changeWalletEvm(): boolean {
-    // [TODO: WalletConnect] Remove
-    return false;
-    // [TODO: WalletConnect] Enable
-    // return !!this.evmProvider;
+    return !!this.evmProvider;
   }
 
   async handleAction(): Promise<void> {
