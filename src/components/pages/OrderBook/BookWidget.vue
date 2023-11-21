@@ -16,12 +16,7 @@
       >
         {{ '0.001' }}
         <template slot="menu">
-          <s-dropdown-item>1</s-dropdown-item>
-          <s-dropdown-item>0.1</s-dropdown-item>
-          <s-dropdown-item>0.01</s-dropdown-item>
-          <s-dropdown-item>0.001</s-dropdown-item>
-          <s-dropdown-item>0.0001</s-dropdown-item>
-          <s-dropdown-item>0.00001</s-dropdown-item>
+          <s-dropdown-item v-for="value in steps" :key="value">{{ value }}</s-dropdown-item>
         </template>
       </s-dropdown>
     </div>
@@ -94,10 +89,14 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
   scalerOpen = false;
 
+  steps: Array<string> = [];
+
   asksFormatted: Array<LimitOrderForm> = [];
   bidsFormatted: Array<LimitOrderForm> = [];
 
   // Widget subscription data
+  @getter.orderBook.currentOrderBook currentOrderBook!: any;
+
   @getter.orderBook.orderBookId private orderBookId!: string;
   @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
   @action.orderBook.subscribeToBidsAndAsks private subscribeToBidsAndAsks!: AsyncFnWithoutArgs;
@@ -112,6 +111,33 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
         await this.subscribeToBidsAndAsks();
       });
     });
+  }
+
+  calculateScalerStep(): void {
+    const min = this.currentOrderBook?.tickSize;
+
+    if (this.bids.length) {
+      const averagePrice: FPNumber = this.bids[0][0];
+      this.steps = [];
+
+      if (averagePrice.isLessThan(FPNumber.ONE)) {
+        let max = new FPNumber(0.1);
+        let result = averagePrice;
+
+        while (result.isLessThan(FPNumber.ONE)) {
+          result = averagePrice.div(max);
+          if (result.isGreaterThan(FPNumber.ONE)) break;
+          max = max.mul(max);
+        }
+
+        for (let inBetweenStep = max; inBetweenStep.isGreaterThanOrEqualTo(min); ) {
+          this.steps.push(inBetweenStep.toString());
+          inBetweenStep = inBetweenStep.div(FPNumber.TEN);
+        }
+
+        this.steps.map((value) => console.log(value.toString()));
+      }
+    }
   }
 
   // Widget subscription close
@@ -227,6 +253,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   @Watch('asks')
   @Watch('bids')
   async prepareLimitOrders(): Promise<void> {
+    // this.calculateScalerStep();
+
     this.asksFormatted = [];
     this.bidsFormatted = [];
     this.volumeAsks = FPNumber.ZERO;
@@ -318,8 +346,6 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
         });
       }
     }
-
-    // this.setVolume(this.volumeAsks.add(this.volumeBids).toFixed(4).toString());
   }
 }
 </script>
