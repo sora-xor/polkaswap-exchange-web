@@ -190,6 +190,7 @@ export enum Components {
   BridgeSelectAccount = 'pages/Bridge/SelectAccount',
   BridgeLinksDropdown = 'pages/Bridge/LinksDropdown',
   BridgeLimitCard = 'pages/Bridge/LimitCard',
+  BridgeAccountPanel = 'pages/Bridge/AccountPanel',
   // Moonpay Page
   Moonpay = 'pages/Moonpay/Moonpay',
   MoonpayNotification = 'pages/Moonpay/Notification',

@@ -29,6 +29,7 @@ $networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polyg
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  border-radius: 50%;
 
   @each $network in $networks {
     &--#{$network} {

@@ -68,7 +68,7 @@ const actions = defineActions({
   async selectEvmProvider(context, provider: Provider): Promise<void> {
     const { commit, dispatch, state } = web3ActionContext(context);
     try {
-      commit.setEvmProviderLoading(true);
+      commit.setEvmProviderLoading(provider);
       // reset prev connection
       dispatch.resetEvmProviderConnection();
       // create new connection
@@ -77,7 +77,8 @@ const actions = defineActions({
         optionalChains: [...state.evmNetworkApps],
       });
       // if we have address - we are connected
-      if (address) {
+      // if provider not changed - continue
+      if (address && provider === state.evmProviderLoading) {
         // set new provider data
         commit.setEvmAddress(address);
         commit.setEvmProvider(provider);
@@ -85,7 +86,7 @@ const actions = defineActions({
         await subscribeOnEvm(context);
       }
     } finally {
-      commit.setEvmProviderLoading(false);
+      commit.setEvmProviderLoading();
     }
   },
 
