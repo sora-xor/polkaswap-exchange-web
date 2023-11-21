@@ -1,31 +1,6 @@
 <template>
   <div>
     <div class="alerts-list">
-      <account-card v-for="(alert, index) in alerts" :key="index" class="alerts-list__item" v-button>
-        <template #avatar>
-          <token-logo :tokenSymbol="alert.token" />
-        </template>
-        <template #name>
-          <span class="condition">{{ getDescription(alert) }}</span>
-        </template>
-        <template #description>
-          <span class="current-price">{{ getInfo(alert) }}</span>
-        </template>
-        <div class="alerts-list__type">{{ getType(alert) }}</div>
-        <el-popover popper-class="settings-alert-popover" trigger="click" :visible-arrow="false">
-          <div class="settings-alert-option" @click="handleEditAlert(alert, index)">
-            <s-icon name="el-icon-edit" />
-            <span>{{ t('alerts.edit') }}</span>
-          </div>
-          <div class="settings-alert-option" @click="handleDeleteAlert(index)">
-            <s-icon name="el-icon-delete" />
-            <span>{{ t('alerts.delete') }}</span>
-          </div>
-          <div slot="reference">
-            <s-icon class="options-icon" name="basic-more-vertical-24" />
-          </div>
-        </el-popover>
-      </account-card>
       <div v-if="alerts.length" class="line" />
     </div>
     <div v-if="showCreateAlertBtn" class="settings-alert-section">
@@ -53,7 +28,7 @@ import type { Alert, WhitelistIdsBySymbol } from '@soramitsu/soraneo-wallet-web/
 
 @Component({
   components: {
-    AccountCard: components.AccountCard,
+    WalletAccount: components.WalletAccount,
     TokenLogo: components.TokenLogo,
   },
 })

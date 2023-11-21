@@ -9,7 +9,7 @@
       is-formatted
     />
     <info-line
-      :label="formattedNetworkFeeLabel"
+      :label="networkFeeFormattedLabel"
       :label-tooltip="t('ethNetworkFeeTooltipText', { network: networkName })"
       :value="formatStringValue(externalNetworkFee)"
       :asset-symbol="nativeTokenSymbol"
@@ -69,7 +69,7 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
     return this.nativeToken?.symbol ?? '';
   }
 
-  get formattedNetworkFeeLabel(): string {
+  get networkFeeFormattedLabel(): string {
     return `${this.networkName} ${this.t('networkFeeText')}`;
   }
 
