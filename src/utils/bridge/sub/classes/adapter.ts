@@ -68,7 +68,7 @@ export class SubAdapter {
 
   public getSoraParachainId(): number | undefined {
     const soraParachain = this.getSoraParachainNetwork();
-    const soraParachainId = subBridgeApi.parachainIds[soraParachain];
+    const soraParachainId = subBridgeApi.getParachainId(soraParachain);
 
     return soraParachainId;
   }
@@ -95,25 +95,19 @@ export class SubAdapter {
     return balance;
   }
 
-  public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
-    throw new Error(`[${this.constructor.name}] "getTokenBalance" method is not implemented`);
-  }
+  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
+    const historyItem = subBridgeApi.getHistory(historyId as string) || {
+      type: Operation.SubstrateIncoming,
+      symbol: asset.symbol,
+      assetAddress: asset.address,
+      amount: `${amount}`,
+      externalNetwork: this.subNetwork,
+      externalNetworkType: BridgeNetworkType.Sub,
+    };
 
-  protected getTransferExtrinsic(
-    asset: RegisteredAsset,
-    recipient: string,
-    amount: CodecString
-  ): SubmittableExtrinsic<'promise', ISubmittableResult> {
-    throw new Error(`[${this.constructor.name}] "getTransferExtrinsic" method is not implemented`);
-  }
+    const extrinsic = this.getTransferExtrinsic(asset, recipient, amount);
 
-  public async transfer(
-    asset: RegisteredAsset,
-    recipient: string,
-    amount: string | number,
-    historyId?: string
-  ): Promise<void> {
-    throw new Error(`[${this.constructor.name}] "transfer" method is not implemented`);
+    await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account.pair, historyItem);
   }
 
   /* [Substrate 5] Runtime call transactionPaymentApi */
@@ -128,9 +122,25 @@ export class SubAdapter {
 
     return new FPNumber(res.partialFee, decimals).toCodecString();
   }
+
+  public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
+    throw new Error(`[${this.constructor.name}] "getTokenBalance" method is not implemented`);
+  }
+
+  protected getTransferExtrinsic(
+    asset: RegisteredAsset,
+    recipient: string,
+    amount: string | number
+  ): SubmittableExtrinsic<'promise', ISubmittableResult> {
+    throw new Error(`[${this.constructor.name}] "getTransferExtrinsic" method is not implemented`);
+  }
 }
 
 class SoraParachainAdapter extends SubAdapter {
+  protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: CodecString) {
+    return subBridgeApi.soraParachainApi.getTransferExtrinsic(asset, recipient, amount, this.api);
+  }
+
   public async getAssetMinimumAmount(assetAddress: string): Promise<CodecString> {
     await this.connect();
 
@@ -145,7 +155,9 @@ class KusamaAdapter extends SubAdapter {
     return await this.getAccountBalance(accountAddress);
   }
 
-  protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: CodecString) {
+  protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+    const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
+
     return this.api.tx.xcmPallet.reserveTransferAssets(
       // dest
       {
@@ -182,7 +194,7 @@ class KusamaAdapter extends SubAdapter {
               },
             },
             fun: {
-              Fungible: amount,
+              Fungible: value,
             },
           },
         ],
@@ -205,31 +217,30 @@ class KusamaAdapter extends SubAdapter {
       return '700000000';
     }
   }
-
-  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
-    const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
-
-    const historyItem = subBridgeApi.getHistory(historyId as string) || {
-      type: Operation.SubstrateIncoming,
-      symbol: asset.symbol,
-      assetAddress: asset.address,
-      amount: `${amount}`,
-      externalNetwork: this.subNetwork,
-      externalNetworkType: BridgeNetworkType.Sub,
-    };
-
-    const extrinsic = this.getTransferExtrinsic(asset, recipient, value);
-
-    await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account.pair, historyItem);
-  }
 }
 
+type SubNetworkConnection<Adapter extends SubAdapter> = {
+  adapter: Adapter;
+  network: SubNetwork;
+  /** If network is parachain in relaychain */
+  id?: number;
+};
+
 export class SubNetworksConnector {
+  // public soraParachain?: SubNetworkConnection<SoraParachainAdapter>;
+  // public relaychain?: SubNetworkConnection<SubAdapter>;
+  // public parachain?: SubNetworkConnection<SubAdapter>;
+
   public network!: SubNetwork;
-  public parachainNetwork!: SubNetwork;
   public networkAdapter!: SubAdapter;
-  public parachainAdapter!: SoraParachainAdapter;
-  public parachainId!: number;
+  public networkId?: number;
+
+  public soraParachainNetwork!: SubNetwork;
+  public soraParachainAdapter!: SoraParachainAdapter;
+  public soraParachainId!: number;
+
+  public relaychainNetwork?: SubNetwork;
+  public relaychainAdapter?: SubAdapter;
 
   public static endpoints: SubNetworkApps = {};
 
@@ -257,24 +268,27 @@ export class SubNetworksConnector {
 
   /**
    * Initialize params for substrate networks connector
-   * @param network External substrate network
+   * @param network Substrate network destination
    * @param connector Existing bridge connector. Api connections will be reused, if networks matches
    */
   public async init(network: SubNetwork, connector?: SubNetworksConnector): Promise<void> {
     // Initialize options & adapters
     this.network = network;
     this.networkAdapter = this.getAdapterForNetwork(this.network);
-    this.parachainNetwork = this.networkAdapter.getSoraParachainNetwork();
-    this.parachainAdapter = this.getAdapterForNetwork(this.parachainNetwork);
-    this.parachainId = this.parachainAdapter.getSoraParachainId() as number;
+    this.soraParachainNetwork = this.networkAdapter.getSoraParachainNetwork();
+    this.soraParachainAdapter = this.getAdapterForNetwork(this.soraParachainNetwork);
+    this.soraParachainId = this.soraParachainAdapter.getSoraParachainId() as number;
 
     if (!connector) return;
     // Clone api instances, if networks matches
     if (connector.networkAdapter.api && connector.networkAdapter.subNetwork === this.networkAdapter.subNetwork) {
       this.networkAdapter.setApi(connector.networkAdapter.api.clone());
     }
-    if (connector.parachainAdapter.api && connector.parachainAdapter.subNetwork === this.parachainAdapter.subNetwork) {
-      this.parachainAdapter.setApi(connector.parachainAdapter.api.clone());
+    if (
+      connector.soraParachainAdapter.api &&
+      connector.soraParachainAdapter.subNetwork === this.soraParachainAdapter.subNetwork
+    ) {
+      this.soraParachainAdapter.setApi(connector.soraParachainAdapter.api.clone());
     }
   }
 
@@ -294,14 +308,14 @@ export class SubNetworksConnector {
    * Connect to Substrate network & Sora parachain
    */
   public async start(): Promise<void> {
-    await Promise.all([this.networkAdapter.connect(), this.parachainAdapter.connect()]);
+    await Promise.all([this.networkAdapter?.connect(), this.soraParachainAdapter?.connect()]);
   }
 
   /**
    * Close connections to Substrate network & Sora parachain
    */
   public async stop(): Promise<void> {
-    await Promise.all([this.networkAdapter?.stop(), this.parachainAdapter?.stop()]);
+    await Promise.all([this.networkAdapter?.stop(), this.soraParachainAdapter?.stop()]);
   }
 }
 

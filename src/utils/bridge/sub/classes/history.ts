@@ -56,7 +56,7 @@ class SubBridgeHistory extends SubNetworksConnector {
   }
 
   get parachainApi(): ApiPromise {
-    return this.parachainAdapter.api;
+    return this.soraParachainAdapter.api;
   }
 
   get externalApi(): ApiPromise {
@@ -289,7 +289,7 @@ class SubBridgeHistory extends SubNetworksConnector {
           const receiver = subBridgeApi.formatAddress(accountId);
           const from = subBridgeApi.formatAddress(history.from as string);
 
-          if (!(parachainId === this.parachainId && receiver === from)) continue;
+          if (!(parachainId === this.soraParachainId && receiver === from)) continue;
 
           const signer = extrinsic.signer.toString();
           const extrinsicEvents = await getBlockEventsByTxIndex(blockId, extrinsicIndex, this.externalApi);
