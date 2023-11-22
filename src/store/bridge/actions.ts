@@ -467,7 +467,7 @@ const actions = defineActions({
 
     if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
       try {
-        const value = await subBridgeConnector.parachainAdapter.getAssetMinimumAmount(getters.asset.address);
+        const value = await subBridgeConnector.soraParachainAdapter.getAssetMinimumAmount(getters.asset.address);
         minLimit = FPNumber.fromCodecValue(value, getters.asset.externalDecimals);
       } catch (error) {
         console.error(error);
