@@ -113,6 +113,14 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
 }
 
 .market-trades-table {
+  .el-table__body-wrapper {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
   &.el-table {
     background: transparent;
 
