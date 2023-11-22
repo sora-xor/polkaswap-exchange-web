@@ -3,10 +3,6 @@ import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import Vue from 'vue';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
 
-import { getter } from '@/store/decorators';
-
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-
 @Component
 export default class ExplorePageMixin extends Mixins(
   mixins.LoadingMixin,
@@ -17,8 +13,6 @@ export default class ExplorePageMixin extends Mixins(
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   @Ref('table') readonly tableComponent!: any;
-
-  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   get loadingState(): boolean {
     return this.parentLoading || this.loading;

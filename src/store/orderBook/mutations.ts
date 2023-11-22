@@ -65,6 +65,9 @@ const mutations = defineMutations<OrderBookState>()({
   setPlaceOrderNetworkFee(state, networkFee): void {
     state.placeOrderNetworkFee = networkFee;
   },
+  setOrdersToBeCancelled(state, orders): void {
+    state.ordersToBeCancelled = orders;
+  },
 });
 
 export default mutations;

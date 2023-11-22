@@ -22,6 +22,7 @@ function initialState(): OrderBookState {
     orderBookStatsUpdates: null,
     userLimitOrderUpdates: null,
     placeOrderNetworkFee: FPNumber.ZERO,
+    ordersToBeCancelled: [],
   };
 }
 

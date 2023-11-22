@@ -1,10 +1,5 @@
 <template>
-  <order-table
-    :orders="userLimitOrders"
-    :selectable="isSelectionAllowed"
-    :parent-loading="loadingState"
-    @cancelled-orders="handleSelectionChange"
-  />
+  <order-table :orders="userLimitOrders" :selectable="isSelectionAllowed" :parent-loading="loadingState" />
 </template>
 
 <script lang="ts">
@@ -60,10 +55,6 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 
   get isSelectionAllowed(): boolean {
     return !!this.currentOrderBook && this.currentOrderBook.status !== OrderBookStatus.Stop;
-  }
-
-  handleSelectionChange($event: any): void {
-    this.$emit('cancelled-orders', $event);
   }
 }
 </script>

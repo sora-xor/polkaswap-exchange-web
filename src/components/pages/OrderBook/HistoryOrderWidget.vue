@@ -19,7 +19,7 @@
     </div>
     <div class="delimiter" />
     <div v-if="isLoggedIn">
-      <open-orders v-if="currentFilter === Filter.open" @cancelled-orders="handleCancelledOrders" />
+      <open-orders v-if="currentFilter === Filter.open" />
       <all-orders v-else :filter="currentFilter" />
     </div>
     <div v-else class="order-history-connect-account">
@@ -56,6 +56,7 @@ import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 })
 export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.TransactionMixin) {
   @state.orderBook.userLimitOrders userLimitOrders!: Array<any>;
+  @state.orderBook.ordersToBeCancelled ordersToBeCancelled!: any;
 
   @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
@@ -63,7 +64,6 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   confirmCancelOrderVisibility = false;
   currentFilter = Filter.open;
   openLimitOrders: Array<any> = [];
-  ordersToBeCancelled = [];
 
   Filter = Filter;
   Cancel = Cancel;
@@ -77,10 +77,6 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
   get cancelAllText(): string {
     return 'Cancel all';
-  }
-
-  handleCancelledOrders(cancelledOrders): void {
-    this.ordersToBeCancelled = cancelledOrders;
   }
 
   get hasSelected(): boolean {

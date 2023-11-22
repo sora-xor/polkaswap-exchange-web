@@ -115,6 +115,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import ScrollableTableMixin from '@/components/mixins/ScrollableTableMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { getter, mutation } from '@/store/decorators';
 import { OrderStatus } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';
 
@@ -126,6 +127,10 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class OrderTable extends Mixins(TranslationMixin, ScrollableTableMixin) {
+  @mutation.orderBook.setOrdersToBeCancelled setOrdersToBeCancelled!: any;
+
+  @getter.assets.assetsDataTable assetsDataTable!: any;
+
   @Prop({ default: () => [], type: Array }) readonly orders!: OrderData[];
   @Prop({ default: false, type: Boolean }) readonly selectable!: boolean;
 
@@ -135,10 +140,10 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
     return this.orders.map((order) => {
       const { originalAmount, amount, price, side, id, orderBookId, time, status, expiresAt } = order;
       const { base, quote } = orderBookId;
-      const baseAsset = this.getAsset(base) as AccountAsset;
-      const quoteAsset = this.getAsset(quote) as AccountAsset;
-      const baseAssetSymbol = baseAsset.symbol;
-      const quoteAssetSymbol = quoteAsset.symbol;
+      const baseAsset = this.assetsDataTable[base] || {};
+      const quoteAsset = this.assetsDataTable[quote] || {};
+      const baseAssetSymbol = baseAsset?.symbol;
+      const quoteAssetSymbol = quoteAsset?.symbol;
       const pair = `${baseAssetSymbol}-${quoteAssetSymbol}`;
       const created = dayjs(time);
       const expires = dayjs(expiresAt);
@@ -182,7 +187,7 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
   handleSelectionChange(rows): void {
     if (!this.selectable) return;
 
-    this.$emit('cancelled-orders', rows);
+    this.setOrdersToBeCancelled(rows);
   }
 }
 </script>
