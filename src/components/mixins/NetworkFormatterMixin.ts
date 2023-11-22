@@ -77,8 +77,10 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
         return 'kusama';
       case SubNetwork.Rococo:
         return 'rococo';
-      case SubNetwork.KusamaKarura:
-        return 'karura';
+      // [TODO: Parachain]
+      case SubNetwork.RococoSora:
+      case SubNetwork.KusamaSora:
+        return 'sora';
       default:
         return 'ethereum';
     }

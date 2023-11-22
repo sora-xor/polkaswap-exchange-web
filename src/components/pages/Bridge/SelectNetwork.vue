@@ -79,7 +79,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
       .map(([type, record]) => {
         const networks = Object.values(record) as AvailableNetwork[];
 
-        return networks.reduce<NetworkItem[]>((buffer, { available, disabled, data: { id, name } }) => {
+        return networks.reduce<NetworkItem[]>((buffer, { disabled, data: { id, name } }) => {
           let content = '';
           let link = false;
 
@@ -90,18 +90,16 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
             content = this.t('comingSoonText');
           }
 
-          if (available) {
-            buffer.push({
-              id,
-              value: `${type}-${id}`,
-              name,
-              disabled,
-              info: {
-                content,
-                link,
-              },
-            });
-          }
+          buffer.push({
+            id,
+            value: `${type}-${id}`,
+            name,
+            disabled,
+            info: {
+              content,
+              link,
+            },
+          });
 
           return buffer;
         }, []);
