@@ -83,13 +83,11 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
           let content = '';
           let link = false;
 
-          if (type === BridgeNetworkType.Eth) {
-            content = this.t('hashiBridgeText');
-          } else if (id === SubNetwork.Polkadot) {
+          if (id === SubNetwork.Polkadot) {
             content = 'https://parachains.info/details/sora_polkadot';
             link = true;
           } else if (disabled) {
-            content = `${this.t('comingSoonText')} (2024)`;
+            content = this.t('comingSoonText');
           }
 
           if (available) {

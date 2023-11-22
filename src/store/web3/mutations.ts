@@ -19,8 +19,9 @@ const mutations = defineMutations<Web3State>()({
     ethersUtil.removeEvmUserAddress();
   },
 
-  setSubAddress(state, address: string): void {
+  setSubAddress(state, { address, name }: { address: string; name: string }): void {
     state.subAddress = address;
+    state.subAddressName = name;
   },
 
   setSubSS58(state, prefix: number) {
@@ -42,8 +43,8 @@ const mutations = defineMutations<Web3State>()({
   resetEvmProvider(state): void {
     state.evmProvider = null;
   },
-  setEvmProviderLoading(state, flag: boolean): void {
-    state.evmProviderLoading = flag;
+  setEvmProviderLoading(state, provider: Nullable<Provider> = null): void {
+    state.evmProviderLoading = provider;
   },
   // by provider
   setProvidedEvmNetwork(state, networkId: BridgeNetworkId | null): void {

@@ -30,14 +30,15 @@ export type AvailableNetwork = {
 export type Web3State = {
   evmAddress: string;
   subAddress: string;
+  subAddressName: string;
   subSS58: number;
 
   networkType: Nullable<BridgeNetworkType>;
   networkSelected: Nullable<BridgeNetworkId>;
 
   evmProvider: Nullable<Provider>;
+  evmProviderLoading: Nullable<Provider>;
   evmProviderNetwork: Nullable<BridgeNetworkId>;
-  evmProviderLoading: boolean;
   evmProviderSubscription: Nullable<FnWithoutArgs>;
 
   evmNetworkApps: EvmNetwork[];
