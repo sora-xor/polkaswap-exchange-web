@@ -103,14 +103,38 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
       margin-bottom: 8px;
       display: flex;
       align-items: flex-start;
-      justify-content: space-evenly;
+      justify-content: space-between;
 
       .set-widget {
-        flex-basis: 45%;
+        flex-basis: 49.5%;
       }
 
       .book-widget {
-        flex-basis: 45%;
+        flex-basis: 49.5%;
+      }
+    }
+
+    .column-2 {
+      @include large-desktop {
+        justify-content: space-evenly;
+
+        .set-widget {
+          flex-basis: 46%;
+        }
+
+        .book-widget {
+          flex-basis: 46%;
+        }
+      }
+    }
+
+    .column-3 {
+      @include large-desktop {
+        .trades-widget {
+          width: 95%;
+          margin-left: auto;
+          margin-right: auto;
+        }
       }
     }
 
@@ -192,6 +216,26 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
     .column-3 {
       width: 440px;
       margin-left: 8px;
+    }
+  }
+}
+
+.app-main--orderbook {
+  .icon-container {
+    & + span {
+      @include desktop(true) {
+        display: none;
+      }
+    }
+  }
+
+  .order-book-widgets {
+    @include desktop {
+      margin-left: 64px;
+    }
+
+    @include large-desktop {
+      margin-left: 0;
     }
   }
 }

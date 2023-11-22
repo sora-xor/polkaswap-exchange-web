@@ -130,6 +130,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   }
 
   openConfirmCancelDialog(): void {
+    if (!this.userLimitOrders.length) return;
     if (this.isBookStopped) return;
     this.confirmCancelOrderVisibility = true;
   }

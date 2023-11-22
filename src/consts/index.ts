@@ -476,7 +476,7 @@ export enum Breakpoint {
   Tablet = 900,
   Desktop = 1024,
   LargeDesktop = 1440,
-  HugeDesktop = 2048,
+  HugeDesktop = 2092,
 }
 
 export enum BreakpointClass {
