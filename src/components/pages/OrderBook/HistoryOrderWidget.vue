@@ -142,6 +142,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
       if (this.ordersToBeCancelled.length > 1) {
         const limitOrderIds = this.ordersToBeCancelled.map((limitOrder: any) => limitOrder.id);
         const { orderBookId } = this.ordersToBeCancelled[0];
+        if (!orderBookId && limitOrderIds.length) return;
         const { base, quote } = orderBookId;
 
         await this.withNotifications(async () => {
@@ -151,6 +152,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
       if (this.ordersToBeCancelled.length === 1) {
         const { id, orderBookId } = this.ordersToBeCancelled[0];
+        if (!orderBookId && id) return;
         const { base, quote } = orderBookId;
 
         await this.withNotifications(async () => {
@@ -158,9 +160,10 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
         });
       }
     } else {
-      const { orderBookId } = this.userLimitOrders[0];
-      const { base, quote } = orderBookId;
       const limitOrderIds = this.userLimitOrders.map((limitOrder: any) => limitOrder.id);
+      const { orderBookId } = this.userLimitOrders[0];
+      if (!orderBookId && limitOrderIds.length) return;
+      const { base, quote } = orderBookId;
       await this.withNotifications(async () => {
         api.orderBook.cancelLimitOrderBatch(base, quote, limitOrderIds);
       });
