@@ -135,7 +135,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
           inBetweenStep = inBetweenStep.div(FPNumber.TEN);
         }
 
-        this.steps.map((value) => console.log(value.toString()));
+        // this.steps.map((value) => console.log(value.toString()));
       }
     }
   }
