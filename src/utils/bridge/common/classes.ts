@@ -198,7 +198,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     try {
       await Promise.race([
         this.checkTransactionBlockId(id),
-        new Promise((resolve, reject) => setTimeout(reject, BLOCK_PRODUCE_TIME * 3)),
+        new Promise((resolve, reject) => setTimeout(reject, BLOCK_PRODUCE_TIME * 6)), // 30s
       ]);
     } catch (error) {
       console.info(`[${this.constructor.name}]: Implement "blockId" restoration by "txId"`);

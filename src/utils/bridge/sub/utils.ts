@@ -25,6 +25,16 @@ export const updateTransaction = (id: string, params = {}): void => {
   subBridgeApi.saveHistory(data);
 };
 
+export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string => {
+  const bridgeProxyEvent = events.find((e) => api.events.bridgeProxy.RequestStatusUpdate.is(e.event));
+
+  if (!bridgeProxyEvent) {
+    throw new Error(`Unable to find "bridgeProxy.RequestStatusUpdate" event`);
+  }
+
+  return bridgeProxyEvent.event.data[0].toString();
+};
+
 export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): string => {
   // Native token for network
   const balancesDepositEvent = events.find(

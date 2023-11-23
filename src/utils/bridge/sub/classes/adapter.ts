@@ -117,8 +117,9 @@ export class SubAdapter {
     return new FPNumber(res.partialFee, decimals).toCodecString();
   }
 
-  public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
-    throw new Error(`[${this.constructor.name}] "getTokenBalance" method is not implemented`);
+  public async getTokenBalance(accountAddress: string, tokenSymbol?: string): Promise<CodecString> {
+    if (tokenSymbol && this.api.registry.chainTokens[0] !== tokenSymbol) return ZeroStringValue;
+    return await this.getAccountBalance(accountAddress);
   }
 
   protected getTransferExtrinsic(
@@ -131,10 +132,6 @@ export class SubAdapter {
 }
 
 class SoraParachainAdapter extends SubAdapter {
-  public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
-    return await this.getAccountBalance(accountAddress);
-  }
-
   protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: CodecString) {
     return subBridgeApi.soraParachainApi.getTransferExtrinsic(asset, recipient, amount, this.api);
   }
@@ -149,10 +146,6 @@ class SoraParachainAdapter extends SubAdapter {
 }
 
 class KusamaAdapter extends SubAdapter {
-  public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
-    return await this.getAccountBalance(accountAddress);
-  }
-
   protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
 
