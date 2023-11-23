@@ -314,6 +314,11 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     href: '/#/swap',
   },
   {
+    icon: 'el-icon-tickets',
+    title: PageNames.OrderBook,
+    href: '/#/trade',
+  },
+  {
     icon: 'basic-drop-24',
     title: PageNames.Pool,
     href: '/#/pool',
@@ -336,11 +341,6 @@ const AccountMenu: Array<SidebarMenuItemLink> = [
     icon: 'finance-wallet-24',
     title: PageNames.Wallet,
     href: '/#/wallet',
-  },
-  {
-    icon: 'el-icon-tickets',
-    title: PageNames.OrderBook,
-    href: '/#/trade',
   },
   {
     icon: 'basic-circle-star-24',
