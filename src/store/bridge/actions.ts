@@ -110,7 +110,7 @@ function bridgeDataToHistoryItem(
     endTime: date,
     transactionState,
     soraNetworkFee: (params as any).soraNetworkFee ?? state.soraNetworkFee,
-    parachainNetworkFee: (params as any).parachainNetworkFee ?? state.externalTransferFee,
+    externalTransferFee: (params as any).externalTransferFee ?? state.externalTransferFee,
     externalNetworkFee: (params as any).externalNetworkFee,
     externalNetwork,
     externalNetworkType,

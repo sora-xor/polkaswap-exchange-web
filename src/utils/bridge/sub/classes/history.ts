@@ -244,13 +244,13 @@ class SubBridgeHistory extends SubNetworksConnector {
           balancesDepositEvent.event.data.amount.toString(),
           asset?.externalDecimals
         );
-        const parachainNetworkFee = new FPNumber(
+        const externalTransferFee = new FPNumber(
           sended.sub(received).toString(),
           asset?.externalDecimals
         ).toCodecString();
 
         history.soraNetworkFee = soraFeeEvent.event.data[1].toString();
-        history.parachainNetworkFee = parachainNetworkFee;
+        history.externalTransferFee = externalTransferFee;
         history.externalNetworkFee = ZeroStringValue;
         history.externalBlockId = blockId;
         history.externalBlockHeight = n;

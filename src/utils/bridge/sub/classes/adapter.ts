@@ -230,33 +230,36 @@ export class SubNetworksConnector {
     [SubNetwork.KusamaSora]: () => new SoraParachainAdapter(SubNetwork.KusamaSora),
   };
 
+  protected getChains(network: SubNetwork): SubNetwork[] {
+    const soraParachain = subBridgeApi.getSoraParachain(network);
+    const path: SubNetwork[] = [soraParachain];
+
+    if (subBridgeApi.isSoraParachain(network)) return path;
+
+    if (subBridgeApi.isRelayChain(network)) {
+      path.push(network);
+    } else {
+      const relaychain = subBridgeApi.getRelayChain(network);
+      path.push(relaychain, network);
+    }
+
+    return path;
+  }
+
   protected getConnection<Adapter extends SubAdapter>(network: SubNetwork): SubNetworkConnection<Adapter> {
+    if (!network) throw new Error(`[${this.constructor.name}] network is not defined`);
     return {
       adapter: this.getAdapterForNetwork(network),
       id: subBridgeApi.isRelayChain(network) ? undefined : subBridgeApi.getParachainId(network),
     };
   }
 
-  protected getPath(subNetwork: SubNetwork): SubNetwork[] {
-    const path: SubNetwork[] = [subNetwork];
+  protected cloneApi(adapter?: SubAdapter, connectorAdapter?: SubAdapter): void {
+    if (!(adapter && connectorAdapter)) return;
+    if (adapter.api || !connectorAdapter.api) return;
 
-    if (subBridgeApi.isRelayChain(subNetwork)) {
-      path.unshift(subBridgeApi.getSoraParachain(subNetwork));
-    }
-
-    return path;
-  }
-
-  protected cloneApi(path: string, connector?: SubNetworksConnector): void {
-    if (!connector) return;
-
-    const current = this[path].adapter as SubAdapter;
-    const parent = connector[path].adapter as SubAdapter;
-
-    if (current.api || !parent.api) return;
-
-    if (parent.subNetwork === current.subNetwork) {
-      current.setApi(parent.api.clone());
+    if (connectorAdapter.subNetwork === adapter.subNetwork) {
+      adapter.setApi(connectorAdapter.api.clone());
     }
   }
 
@@ -277,19 +280,28 @@ export class SubNetworksConnector {
 
   /**
    * Initialize params for substrate networks connector
-   * @param destination Substrate network destination
+   * @param destination Destination network
    * @param connector Existing bridge connector. Api connections will be reused, if networks matches
    */
   public async init(destination: SubNetwork, connector?: SubNetworksConnector): Promise<void> {
-    const [soraParachain, relaychain, network] = this.getPath(destination);
-    // Create adapters or link to previous network in path
+    const [soraParachain, relaychain, parachain] = this.getChains(destination);
+    // Create SORA parachain adapter
     this.soraParachain = this.getConnection(soraParachain);
-    this.relaychain = relaychain ? this.getConnection(relaychain) : this.soraParachain;
-    this.network = network ? this.getConnection(network) : this.relaychain;
+    // Create adapters and link destination network
+    if (parachain) {
+      this.relaychain = this.getConnection(relaychain);
+      this.network = this.getConnection(parachain);
+    } else if (relaychain) {
+      this.network = this.getConnection(relaychain);
+    } else {
+      this.network = this.soraParachain;
+    }
     // Clone api instances, if networks matches
-    this.cloneApi('soraParachain', connector);
-    this.cloneApi('relaychain', connector);
-    this.cloneApi('network', connector);
+    if (connector) {
+      this.cloneApi(this.soraParachain?.adapter, connector.soraParachain?.adapter);
+      this.cloneApi(this.relaychain?.adapter, connector.relaychain?.adapter);
+      this.cloneApi(this.network?.adapter, connector.network?.adapter);
+    }
   }
 
   /**
