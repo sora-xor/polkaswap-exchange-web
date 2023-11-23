@@ -71,7 +71,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
 
   async saveParachainBlock(id: string): Promise<void> {
     // get current sora parachain block number
-    const parachainStartBlock = (await this.connector.soraParachainAdapter.api.query.system.number()).toNumber();
+    const parachainStartBlock = (await this.connector.soraParachain.adapter.api.query.system.number()).toNumber();
     // update history data
     this.updateTransactionParams(id, {
       payload: {
@@ -98,6 +98,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
               await this.checkTxId(id);
               await Promise.all([this.updateTxIncomingData(id), this.waitForSoraParachainNonce(id)]);
+
               await this.waitForSoraInboundMessageNonce(id);
               await this.waitSoraBlockByHash(id);
               await this.onComplete(id);
@@ -129,7 +130,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     // open connections
     await this.connector.start();
     // sign transaction
-    await this.connector.networkAdapter.transfer(asset, tx.to as string, tx.amount as string, id);
+    await this.connector.network.adapter.transfer(asset, tx.to as string, tx.amount as string, id);
     // store sora parachain block number when tx was signed
     await this.saveParachainBlock(id);
   }
@@ -148,12 +149,12 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
   private async updateTxExternalData(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
-    await this.connector.networkAdapter.connect();
+    await this.connector.network.adapter.connect();
 
     if (!tx.externalBlockHeight) {
       const externalBlockHeight = await api.system.getBlockNumber(
         tx.externalBlockId as string,
-        this.connector.networkAdapter.api
+        this.connector.network.adapter.api
       );
 
       this.updateTransactionParams(id, {
@@ -163,13 +164,17 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     const blockHash = tx.externalBlockId as string;
     const transactionHash = tx.externalHash as string;
-    const transactionEvents = await getTransactionEvents(blockHash, transactionHash, this.connector.networkAdapter.api);
+    const transactionEvents = await getTransactionEvents(
+      blockHash,
+      transactionHash,
+      this.connector.network.adapter.api
+    );
 
     const feeEvent = transactionEvents.find((e) =>
-      this.connector.networkAdapter.api.events.transactionPayment.TransactionFeePaid.is(e.event)
+      this.connector.network.adapter.api.events.transactionPayment.TransactionFeePaid.is(e.event)
     );
     const xcmEvent = transactionEvents.find((e) =>
-      this.connector.networkAdapter.api.events.xcmPallet.Attempted.is(e.event)
+      this.connector.network.adapter.api.events.xcmPallet.Attempted.is(e.event)
     );
 
     if (feeEvent) {
@@ -206,11 +211,11 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     let blockNumber!: number;
 
     try {
-      await this.connector.soraParachainAdapter.connect();
+      await this.connector.soraParachain.adapter.connect();
 
       await new Promise<void>((resolve, reject) => {
-        const eventsObservable = api.system.getEventsObservable(this.connector.soraParachainAdapter.apiRx);
-        const blockNumberObservable = api.system.getBlockNumberObservable(this.connector.soraParachainAdapter.apiRx);
+        const eventsObservable = api.system.getEventsObservable(this.connector.soraParachain.adapter.apiRx);
+        const blockNumberObservable = api.system.getBlockNumberObservable(this.connector.soraParachain.adapter.apiRx);
 
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(
           ([eventsVec, blockHeight]) => {
@@ -223,13 +228,13 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
               const events = [...eventsVec.toArray()].reverse();
               const downwardMessagesProcessedEvent = events.find((e) =>
-                this.connector.soraParachainAdapter.api.events.parachainSystem.DownwardMessagesProcessed.is(e.event)
+                this.connector.soraParachain.adapter.api.events.parachainSystem.DownwardMessagesProcessed.is(e.event)
               );
 
               if (!downwardMessagesProcessedEvent) return;
 
               const assetAddedToChannelEventIndex = events.findIndex((e) =>
-                isAssetAddedToChannel(e, this.asset, to, sended, this.connector.soraParachainAdapter.api)
+                isAssetAddedToChannel(e, this.asset, to, sended, this.connector.soraParachain.adapter.api)
               );
 
               if (assetAddedToChannelEventIndex === -1) {
@@ -240,7 +245,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
               blockNumber = blockHeight;
               [batchNonce, messageNonce] = getMessageAcceptedNonces(
                 events.slice(assetAddedToChannelEventIndex),
-                this.connector.soraParachainAdapter.api
+                this.connector.soraParachain.adapter.api
               );
 
               resolve();
@@ -254,7 +259,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       subscription.unsubscribe();
 
       // run non blocking process promise
-      this.getHashesByBlockNumber(blockNumber, this.connector.soraParachainAdapter.apiRx)
+      this.getHashesByBlockNumber(blockNumber, this.connector.soraParachain.adapter.apiRx)
         .then(({ blockHeight, blockId }) =>
           this.updateTransactionParams(id, {
             parachainBlockHeight: blockHeight, // parachain block number
@@ -370,8 +375,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
               await this.waitForTransactionStatus(id);
               await this.waitForTransactionBlockId(id);
               await this.waitForSoraHashAndNonces(id);
-              await this.waitForSoraParachainMessageHash(id);
-              await this.waitForDestinationMessageHash(id);
+
+              await Promise.all([this.waitForSoraParachainMessageHash(id), this.waitForDestinationMessageHash(id)]);
+
               await this.onComplete(id);
             } finally {
               this.closeConnector();
@@ -437,11 +443,11 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     let blockNumber!: number;
 
     try {
-      await this.connector.soraParachainAdapter.connect();
+      await this.connector.soraParachain.adapter.connect();
 
       await new Promise<void>((resolve, reject) => {
-        const eventsObservable = api.system.getEventsObservable(this.connector.soraParachainAdapter.apiRx);
-        const blockNumberObservable = api.system.getBlockNumberObservable(this.connector.soraParachainAdapter.apiRx);
+        const eventsObservable = api.system.getEventsObservable(this.connector.soraParachain.adapter.apiRx);
+        const blockNumberObservable = api.system.getBlockNumberObservable(this.connector.soraParachain.adapter.apiRx);
 
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(
           ([eventsVec, blockHeight]) => {
@@ -452,7 +458,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
                   tx.payload.batchNonce,
                   tx.payload.messageNonce,
                   e,
-                  this.connector.soraParachainAdapter.api
+                  this.connector.soraParachain.adapter.api
                 )
               );
 
@@ -463,7 +469,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
               const parachainSystemEvent = events
                 .slice(substrateDispatchEventIndex)
                 .find((e) =>
-                  this.connector.soraParachainAdapter.api.events.parachainSystem.UpwardMessageSent.is(e.event)
+                  this.connector.soraParachain.adapter.api.events.parachainSystem.UpwardMessageSent.is(e.event)
                 );
 
               if (!parachainSystemEvent) {
@@ -483,7 +489,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       subscription.unsubscribe();
 
       // run non blocking proccess promise
-      this.getHashesByBlockNumber(blockNumber, this.connector.soraParachainAdapter.apiRx)
+      this.getHashesByBlockNumber(blockNumber, this.connector.soraParachain.adapter.apiRx)
         .then(({ blockHeight, blockId }) =>
           this.updateTransactionParams(id, {
             parachainBlockHeight: blockHeight, // parachain block number
@@ -491,7 +497,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           })
         )
         .finally(() => {
-          this.connector.soraParachainAdapter.stop();
+          this.connector.soraParachain.adapter.stop();
         });
     }
 
@@ -511,11 +517,11 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     let amount!: string;
 
     try {
-      await this.connector.networkAdapter.connect();
+      await this.connector.network.adapter.connect();
 
       await new Promise<void>((resolve, reject) => {
-        const eventsObservable = api.system.getEventsObservable(this.connector.networkAdapter.apiRx);
-        const blockNumberObservable = api.system.getBlockNumberObservable(this.connector.networkAdapter.apiRx);
+        const eventsObservable = api.system.getEventsObservable(this.connector.network.adapter.apiRx);
+        const blockNumberObservable = api.system.getBlockNumberObservable(this.connector.network.adapter.apiRx);
 
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(
           ([eventsVec, blockHeight]) => {
@@ -523,7 +529,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
               const events = [...eventsVec.toArray()].reverse();
               const messageQueueProcessedEventIndex = events.findIndex(
                 (e) =>
-                  this.connector.networkAdapter.api.events.messageQueue.Processed.is(e.event) &&
+                  this.connector.network.adapter.api.events.messageQueue.Processed.is(e.event) &&
                   e.event.data[0].toString() === messageHash
               );
 
@@ -536,7 +542,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
                 .slice(messageQueueProcessedEventIndex)
                 .find(
                   (e) =>
-                    this.connector.networkAdapter.api.events.balances.Deposit.is(e.event) &&
+                    this.connector.network.adapter.api.events.balances.Deposit.is(e.event) &&
                     subBridgeApi.formatAddress(e.event.data.who.toString()) ===
                       subBridgeApi.formatAddress(tx.to as string)
                 );
@@ -557,7 +563,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       subscription.unsubscribe();
 
       // run blocking process promise
-      await this.getHashesByBlockNumber(blockNumber, this.connector.networkAdapter.apiRx)
+      await this.getHashesByBlockNumber(blockNumber, this.connector.network.adapter.apiRx)
         .then(({ blockHeight, blockId }) =>
           this.updateTransactionParams(id, {
             externalBlockHeight: blockHeight, // parachain block number
@@ -565,7 +571,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           })
         )
         .finally(() => {
-          this.connector.networkAdapter.stop();
+          this.connector.network.adapter.stop();
         });
     }
 

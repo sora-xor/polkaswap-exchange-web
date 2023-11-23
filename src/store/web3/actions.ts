@@ -21,7 +21,7 @@ async function connectSubNetwork(context: ActionContext<any, any>): Promise<void
 
   await subBridgeConnector.open(subNetwork.id as SubNetwork);
 
-  const ss58 = subBridgeConnector.networkAdapter.api.registry.chainSS58;
+  const ss58 = subBridgeConnector.network.adapter.api.registry.chainSS58;
 
   if (ss58) commit.setSubSS58(ss58);
 }
