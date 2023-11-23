@@ -149,6 +149,14 @@ export async function delay(ms = 50): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+export async function conditionalAwait(func: AsyncFnWithoutArgs, wait: boolean): Promise<void> {
+  if (wait) {
+    await func();
+  } else {
+    func();
+  }
+}
+
 export const asZeroValue = (value: any): boolean => {
   return !Number.isFinite(+value) || +value === 0;
 };

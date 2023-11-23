@@ -5,6 +5,7 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { combineLatest } from 'rxjs';
 
 import { ZeroStringValue } from '@/consts';
+import { conditionalAwait } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import { getTransactionEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
@@ -25,6 +26,10 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
   protected asset!: RegisteredAccountAsset;
   protected connector!: SubNetworksConnector;
 
+  protected isSoraParachain!: boolean;
+  protected isRelaychain!: boolean;
+  protected isParachain!: boolean;
+
   initConnector(id: string): void {
     const { externalNetwork } = this.getTransaction(id);
 
@@ -36,6 +41,16 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
 
   async closeConnector(): Promise<void> {
     await this.connector.stop();
+  }
+
+  determineDestination(id: string) {
+    const { externalNetwork } = this.getTransaction(id);
+
+    if (!externalNetwork) throw new Error(`[${this.constructor.name}]: Transaction "externalNetwork" is not defined`);
+
+    this.isSoraParachain = subBridgeApi.isSoraParachain(externalNetwork);
+    this.isRelaychain = subBridgeApi.isRelayChain(externalNetwork);
+    this.isParachain = !(this.isSoraParachain || this.isRelaychain);
   }
 
   async getHashesByBlockNumber(blockHeight: number, apiRx: ApiRx) {
@@ -99,6 +114,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
             try {
               this.beforeSubmit(id);
               this.initConnector(id);
+              this.determineDestination(id);
               this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
 
               await this.checkTxId(id);
@@ -178,9 +194,6 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     const feeEvent = transactionEvents.find((e) =>
       this.connector.network.adapter.api.events.transactionPayment.TransactionFeePaid.is(e.event)
     );
-    const xcmEvent = transactionEvents.find((e) =>
-      this.connector.network.adapter.api.events.xcmPallet.Attempted.is(e.event)
-    );
 
     if (feeEvent) {
       const externalNetworkFee = feeEvent.event.data[1].toString();
@@ -188,8 +201,14 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       this.updateTransactionParams(id, { externalNetworkFee });
     }
 
-    if (!xcmEvent?.event?.data?.[0]?.isComplete) {
-      throw new Error(`[${this.constructor.name}]: Transaction is not completed`);
+    if (this.isRelaychain) {
+      const xcmEvent = transactionEvents.find((e) =>
+        this.connector.network.adapter.api.events.xcmPallet.Attempted.is(e.event)
+      );
+
+      if (!xcmEvent?.event?.data?.[0]?.isComplete) {
+        throw new Error(`[${this.constructor.name}]: Transaction is not completed`);
+      }
     }
   }
 
@@ -374,6 +393,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             try {
               this.beforeSubmit(id);
               this.initConnector(id);
+              this.determineDestination(id);
               this.updateTransactionParams(id, { transactionState: BridgeTxStatus.Pending });
 
               await this.checkTxId(id);
@@ -456,8 +476,6 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     if (!Number.isFinite(tx.payload?.messageNonce))
       throw new Error(`[${this.constructor.name}]: Transaction messageNonce is incorrect`);
 
-    const isSoraParachainDestination = subBridgeApi.isSoraParachain(tx.externalNetwork as SubNetwork);
-
     let subscription!: Subscription;
     let messageHash!: string;
     let blockNumber!: number;
@@ -487,7 +505,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
               blockNumber = blockHeight;
 
-              if (isSoraParachainDestination) {
+              if (this.isSoraParachain) {
                 amount = getDepositedBalance(
                   events.slice(substrateDispatchEventIndex),
                   tx.to as string,
@@ -518,20 +536,22 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     } finally {
       subscription.unsubscribe();
 
-      // run non blocking proccess promise
-      this.getHashesByBlockNumber(blockNumber, this.connector.soraParachain.adapter.apiRx)
-        .then(({ blockHeight, blockId }) =>
-          this.updateTransactionParams(id, {
-            parachainBlockHeight: blockHeight, // parachain block number
-            parachainBlockId: blockId, // parachain block hash
-          })
-        )
-        .finally(() => {
-          this.connector.soraParachain.adapter.stop();
-        });
+      const updateBlocks = () =>
+        this.getHashesByBlockNumber(blockNumber, this.connector.soraParachain.adapter.apiRx)
+          .then(({ blockHeight, blockId }) =>
+            this.updateTransactionParams(id, {
+              parachainBlockHeight: blockHeight, // parachain block number
+              parachainBlockId: blockId, // parachain block hash
+            })
+          )
+          .finally(() => {
+            this.connector.soraParachain.adapter.stop();
+          });
+
+      await conditionalAwait(updateBlocks, this.isSoraParachain);
     }
 
-    if (isSoraParachainDestination) {
+    if (this.isSoraParachain) {
       this.updateReceivedAmount(id, amount);
     } else {
       const payload = { ...tx.payload, messageHash };
@@ -540,10 +560,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
   }
 
   private async waitForRelaychainMessageHash(id: string): Promise<void> {
+    if (this.isSoraParachain) return;
+
     const tx = this.getTransaction(id);
-
-    if (!subBridgeApi.isRelayChain(tx.externalNetwork as SubNetwork)) return;
-
     const messageHash = tx.payload.messageHash as string;
 
     if (!messageHash) throw new Error(`[${this.constructor.name}]: Transaction payload messageHash cannot be empty`);

@@ -145,8 +145,8 @@ async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void>
   const { commit, getters } = bridgeActionContext(context);
   let fee = ZeroStringValue;
 
-  if (getters.asset && getters.isRegisteredAsset) {
-    fee = await subBridgeConnector.network.adapter.getNetworkFee(getters.asset);
+  if (getters.asset && getters.isRegisteredAsset && getters.sender && getters.recipient) {
+    fee = await subBridgeConnector.network.adapter.getNetworkFee(getters.asset, getters.sender, getters.recipient);
   }
 
   commit.setExternalNetworkFee(fee);
