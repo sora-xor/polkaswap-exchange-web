@@ -49,9 +49,7 @@ const getters = defineGetters<Web3State>()({
         data.endpointUrls.push(address);
         data.blockExplorerUrls.push(address);
 
-        // [TODO: Parachain]
-        // const disabled = !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork);
-        const disabled = false;
+        const disabled = !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork);
 
         buffer[id] = {
           disabled,

@@ -343,7 +343,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txExternalTransferFee(): CodecString {
-    return (this.historyItem as SubHistory)?.parachainNetworkFee ?? ZeroStringValue;
+    return (this.historyItem as SubHistory)?.externalTransferFee ?? ZeroStringValue;
   }
 
   get txExternalTransferFeeFormatted(): string {
