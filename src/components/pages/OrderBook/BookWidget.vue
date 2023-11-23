@@ -260,91 +260,91 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     this.volumeAsks = FPNumber.ZERO;
     this.volumeBids = FPNumber.ZERO;
 
-    if (this.asks?.length > this.maxRowsNumber || this.bids?.length < this.maxRowsNumber) {
-      if (this.asks?.length) {
-        const maxAskAmount = FPNumber.max(...this.asks.map((order) => order[1])) as FPNumber;
+    // if (this.asks?.length > this.maxRowsNumber || this.bids?.length < this.maxRowsNumber) {
+    if (this.asks?.length) {
+      const maxAskAmount = FPNumber.max(...this.asks.map((order) => order[1])) as FPNumber;
 
-        this.asks.forEach((row: [FPNumber, FPNumber]) => {
-          const price = row[0].toNumber();
-          const amount = row[1].toNumber();
-          const total = row[0].mul(row[1]);
+      this.asks.forEach((row: [FPNumber, FPNumber]) => {
+        const price = row[0].toNumber();
+        const amount = row[1].toNumber();
+        const total = row[0].mul(row[1]);
 
-          this.volumeAsks = this.volumeAsks.add(total);
+        this.volumeAsks = this.volumeAsks.add(total);
 
-          this.asksFormatted.push({
-            price,
-            amount,
-            total: total.toNumber(),
-            filled: this.getAmountProportion(row[1], maxAskAmount),
-          });
+        this.asksFormatted.push({
+          price,
+          amount,
+          total: total.toNumber(),
+          filled: this.getAmountProportion(row[1], maxAskAmount),
         });
-      }
+      });
+    }
 
-      if (this.bids?.length) {
-        const maxBidAmount = FPNumber.max(...this.bids.map((order) => order[1])) as FPNumber;
+    if (this.bids?.length) {
+      const maxBidAmount = FPNumber.max(...this.bids.map((order) => order[1])) as FPNumber;
 
-        this.bids.forEach((row: [FPNumber, FPNumber]) => {
-          const price = row[0].toNumber();
-          const amount = row[1].toNumber();
-          const total = row[0].mul(row[1]);
+      this.bids.forEach((row: [FPNumber, FPNumber]) => {
+        const price = row[0].toNumber();
+        const amount = row[1].toNumber();
+        const total = row[0].mul(row[1]);
 
-          this.volumeBids = this.volumeBids.add(total);
+        this.volumeBids = this.volumeBids.add(total);
 
-          this.bidsFormatted.push({
-            price,
-            amount,
-            total: total.toNumber(),
-            filled: this.getAmountProportion(row[1], maxBidAmount),
-          });
+        this.bidsFormatted.push({
+          price,
+          amount,
+          total: total.toNumber(),
+          filled: this.getAmountProportion(row[1], maxBidAmount),
         });
-      }
-    } else {
-      const aggregatedAsks = this.calculateStepsDistribution(this.asks);
-      const aggregatedBids = this.calculateStepsDistribution(this.bids);
+      });
+      // }
+      // } else {
+      //   const aggregatedAsks = this.calculateStepsDistribution(this.asks);
+      //   const aggregatedBids = this.calculateStepsDistribution(this.bids);
 
-      if (aggregatedAsks?.length) {
-        const maxAskAmount = FPNumber.max(...aggregatedAsks.map((order) => order[1])) as FPNumber;
+      //   if (aggregatedAsks?.length) {
+      //     const maxAskAmount = FPNumber.max(...aggregatedAsks.map((order) => order[1])) as FPNumber;
 
-        aggregatedAsks.forEach((row: [FPNumber, FPNumber, FPNumber]) => {
-          // ignore void amount record, do not push
-          if (row[1].isZero()) return;
+      //     aggregatedAsks.forEach((row: [FPNumber, FPNumber, FPNumber]) => {
+      //       // ignore void amount record, do not push
+      //       if (row[1].isZero()) return;
 
-          const price = row[0].toNumber();
-          const amount = row[1].toNumber();
-          const total = row[2];
+      //       const price = row[0].toNumber();
+      //       const amount = row[1].toNumber();
+      //       const total = row[2];
 
-          this.volumeAsks = this.volumeAsks.add(total);
+      //       this.volumeAsks = this.volumeAsks.add(total);
 
-          this.asksFormatted.push({
-            price,
-            amount,
-            total: total.toNumber(),
-            filled: this.getAmountProportion(row[1], maxAskAmount),
-          });
-        });
-      }
+      //       this.asksFormatted.push({
+      //         price,
+      //         amount,
+      //         total: total.toNumber(),
+      //         filled: this.getAmountProportion(row[1], maxAskAmount),
+      //       });
+      //     });
+      //   }
 
-      if (aggregatedBids?.length) {
-        const maxBidAmount = FPNumber.max(...aggregatedBids.map((order) => order[1])) as FPNumber;
+      //   if (aggregatedBids?.length) {
+      //     const maxBidAmount = FPNumber.max(...aggregatedBids.map((order) => order[1])) as FPNumber;
 
-        aggregatedBids.forEach((row: [FPNumber, FPNumber, FPNumber]) => {
-          // ignore void amount record, do not push
-          if (row[1].isZero()) return;
+      //     aggregatedBids.forEach((row: [FPNumber, FPNumber, FPNumber]) => {
+      //       // ignore void amount record, do not push
+      //       if (row[1].isZero()) return;
 
-          const price = row[0].toNumber();
-          const amount = row[1].toNumber();
-          const total = row[2];
+      //       const price = row[0].toNumber();
+      //       const amount = row[1].toNumber();
+      //       const total = row[2];
 
-          this.volumeBids = this.volumeBids.add(total);
+      //       this.volumeBids = this.volumeBids.add(total);
 
-          this.bidsFormatted.push({
-            price,
-            amount,
-            total: total.toNumber(),
-            filled: this.getAmountProportion(row[1], maxBidAmount),
-          });
-        });
-      }
+      //       this.bidsFormatted.push({
+      //         price,
+      //         amount,
+      //         total: total.toNumber(),
+      //         filled: this.getAmountProportion(row[1], maxBidAmount),
+      //       });
+      //     });
+      //   }
     }
   }
 }
