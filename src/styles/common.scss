@@ -19,7 +19,7 @@ $country-emoji-font: 'Twemoji Country Flags';
 }
 
 $networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polygon', 'binance-smart-chain', 'rococo', 'karura', 'polkadot', 'kusama';
-
+$sora-parachains: 'sora' 'rococo', 'sora' 'kusama';
 /* Networks Icons */
 .network-icon {
   display: inline-block;
@@ -30,10 +30,26 @@ $networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polyg
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 50%;
+  overflow: hidden;
 
   @each $network in $networks {
     &--#{$network} {
       background-image: url('~@/assets/img/networks/#{$network}.svg')
+    }
+  }
+
+  @each $sora, $parachain in $sora-parachains {
+    &--#{$sora}-#{$parachain} {
+      background-image: url('~@/assets/img/networks/#{$sora}.svg');
+
+      &::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 100%;
+        transform: translateX(40%);
+        background-image: url('~@/assets/img/networks/#{$parachain}.svg');
+      }
     }
   }
 }
