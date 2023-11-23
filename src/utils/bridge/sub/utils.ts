@@ -25,6 +25,19 @@ export const updateTransaction = (id: string, params = {}): void => {
   subBridgeApi.saveHistory(data);
 };
 
+export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): string => {
+  // Native token for network
+  const balancesDepositEvent = events.find(
+    (e) =>
+      api.events.balances.Deposit.is(e.event) &&
+      subBridgeApi.formatAddress(e.event.data.who.toString()) === subBridgeApi.formatAddress(to as string)
+  );
+
+  if (!balancesDepositEvent) throw new Error(`Unable to find "balances.Deposit" event`);
+
+  return balancesDepositEvent.event.data.amount.toString();
+};
+
 export const getMessageAcceptedNonces = (events: Array<any>, api: ApiPromise): [number, number] => {
   const messageAcceptedEvent = events.find((e) =>
     api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)

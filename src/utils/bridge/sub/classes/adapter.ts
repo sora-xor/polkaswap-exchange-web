@@ -133,6 +133,10 @@ export class SubAdapter {
 }
 
 class SoraParachainAdapter extends SubAdapter {
+  public async getTokenBalance(accountAddress: string, tokenAddress?: string): Promise<CodecString> {
+    return await this.getAccountBalance(accountAddress);
+  }
+
   protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: CodecString) {
     return subBridgeApi.soraParachainApi.getTransferExtrinsic(asset, recipient, amount, this.api);
   }
