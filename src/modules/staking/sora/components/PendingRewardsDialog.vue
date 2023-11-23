@@ -2,23 +2,24 @@
   <dialog-base :visible.sync="isVisible" :title="title">
     <div class="pending-rewards-dialog">
       <s-scrollbar class="pending-rewards-scrollbar">
-        <s-card class="information">
-          <div class="information-text">
-            {{ t('soraStaking.pendingRewards.information') }}
-          </div>
-          <div class="information-icon">
-            <s-icon name="notifications-alert-triangle-24" size="24px" />
+        <s-card class="information" shadow="always" primary>
+          <div class="information-content">
+            <div class="information-text">
+              {{ t('soraStaking.pendingRewardsDialog.information') }}
+            </div>
+            <div class="information-icon">
+              <s-icon name="notifications-alert-triangle-24" size="20px" />
+            </div>
           </div>
         </s-card>
 
         <s-card
           v-for="reward in rewards"
           :key="reward.id"
-          primary
           class="reward"
           border-radius="medium"
           shadow="always"
-          size="big"
+          size="mini"
         >
           <div class="reward-content">
             <validator-avatar class="avatar" :validator="reward.validator">
@@ -65,8 +66,8 @@
         <template v-if="isInsufficientXorForFee">
           {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset?.symbol }) }}
         </template>
-        <template v-else-if="noReward"> There are no pending rewards </template>
-        <template v-else> Payout all </template>
+        <template v-else-if="noReward">{{ t('soraStaking.pendingRewardsDialog.noPendingRewards') }}</template>
+        <template v-else>{{ t('soraStaking.pendingRewardsDialog.payoutAll') }}</template>
       </s-button>
     </div>
   </dialog-base>
@@ -80,6 +81,8 @@ import { Component, Mixins } from 'vue-property-decorator';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 
+import { soraStakingLazyComponent } from '../../router';
+import { SoraStakingComponents } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
 
 import type { CodecString } from '@sora-substrate/util';
@@ -87,8 +90,10 @@ import type { CodecString } from '@sora-substrate/util';
 @Component({
   components: {
     TokenInput: lazyComponent(Components.TokenInput),
+    ValidatorAvatar: soraStakingLazyComponent(SoraStakingComponents.ValidatorAvatar),
     DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
+    FormattedAmount: components.FormattedAmount,
   },
 })
 export default class PendingRewardsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
@@ -186,14 +191,37 @@ export default class PendingRewardsDialog extends Mixins(StakingMixin, mixins.Di
   @include buttons;
 }
 
-.information-icon {
-  margin-top: 8px;
-  background: var(--s-color-status-info);
-  box-shadow: 20px 20px 60px 0px rgba(0, 0, 0, 0.1), 1px 1px 10px 0px #fff inset,
-    -10px -10px 30px 0px rgba(255, 255, 255, 0.9);
+.information {
+  margin: 12px 24px 24px;
 
-  i {
-    color: white;
+  &-content {
+    display: flex;
+    gap: 38px;
+  }
+
+  &-text {
+    font-size: 15px;
+    line-height: 150%;
+  }
+
+  &-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 42px;
+    width: 42px;
+    margin-top: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--s-color-status-info);
+    border: 2px solid #f7f3f4;
+    box-shadow: 20px 20px 60px 0px rgba(0, 0, 0, 0.1), 1px 1px 10px 0px #fff inset,
+      -10px -10px 30px 0px rgba(255, 255, 255, 0.9);
+
+    i {
+      margin-bottom: 2px;
+      color: white;
+    }
   }
 }
 
@@ -202,7 +230,6 @@ export default class PendingRewardsDialog extends Mixins(StakingMixin, mixins.Di
   align-items: center;
   justify-content: space-between;
   margin-top: 12px;
-  box-shadow: var(--s-shadow-element) !important;
   margin: 12px 24px;
 }
 

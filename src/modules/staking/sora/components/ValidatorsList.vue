@@ -7,13 +7,17 @@
         :placeholder="t('soraStaking.validatorsList.search')"
         prefix="s-icon-basic-search-24"
       />
-      <s-button class="filters" type="outline" size="tiny" @click="openFilters">
-        <span>{{ t('soraStaking.validatorsList.filters') }}</span>
-        <s-icon name="basic-settings-24" />
+      <s-button class="filters-button" type="outline" size="mini" @click="openFilters">
+        <div class="filters-button-content">
+          <span>{{ t('soraStaking.validatorsList.filters') }}</span>
+          <s-icon name="basic-settings-24" size="14px" />
+        </div>
       </s-button>
     </div>
     <div class="table-header">
-      <div class="table-header-avatar table-header-item"><s-icon name="various-bone-24" /></div>
+      <div class="table-header-avatar table-header-item">
+        <s-icon name="various-bone-24" size="14px" />
+      </div>
       <div class="table-header-name table-header-item">{{ t('soraStaking.validatorsList.name') }}</div>
       <div class="table-header-return table-header-item">
         <span>{{ t('soraStaking.validatorsList.return') }}</span>
@@ -106,6 +110,7 @@ function filterValidators(validators: ValidatorInfoFull[], filter: ValidatorsFil
     InfoLine: components.InfoLine,
     StakingHeader: soraStakingLazyComponent(SoraStakingComponents.StakingHeader),
     FilterDialog: soraStakingLazyComponent(SoraStakingComponents.ValidatorsFilterDialog),
+    ValidatorAvatar: soraStakingLazyComponent(SoraStakingComponents.ValidatorAvatar),
   },
 })
 export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingMixin) {
@@ -196,22 +201,23 @@ export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingM
   margin-top: 16px;
 }
 
-.filters {
+.filters-button {
   position: absolute;
   right: 13px;
-  display: flex;
-  width: 78px;
-  height: 24px;
-  padding: 2px 4px;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
   border-radius: 8px;
 
-  span {
-    font-weight: 400;
-    letter-spacing: -0.24px;
+  &-content {
+    display: flex;
+    gap: 6px;
+
+    span {
+      font-weight: 400;
+      letter-spacing: -0.24px;
+    }
+
+    i {
+      color: var(--s-color-base-content-tertiary);
+    }
   }
 }
 
@@ -235,7 +241,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingM
   &-item {
     display: flex;
     align-items: center;
-    color: var(--base-day-content-secondary, #a19a9d);
+    color: var(--s-color-brand-day);
     font-feature-settings: 'clig' off, 'liga' off;
 
     /* NEU extra-bold 14 */
@@ -250,6 +256,10 @@ export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingM
     display: flex;
     justify-content: center;
     width: 38px;
+
+    i {
+      color: var(--s-color-base-content-tertiary);
+    }
   }
   &-name {
     flex: 1;

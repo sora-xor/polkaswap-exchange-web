@@ -75,4 +75,3 @@ export default class SoraStakingContainer extends Mixins(StakingMixin, Subscript
   }
 }
 </style>
-../../demeter/consts

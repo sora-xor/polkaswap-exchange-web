@@ -2,9 +2,9 @@
   <dialog-base :visible.sync="isVisible">
     <div class="content">
       <s-icon class="icon" name="notifications-alert-triangle-24" size="64px" />
-      <h1 class="title">Attention</h1>
+      <h1 class="title">{{ t('soraStaking.validatorsAttentionDialog.title') }}</h1>
       <div class="description">
-        <template v-for="item in t('soraStaking.validatorsAttentionDialog.description')">
+        <template v-for="item in description">
           <p :key="item">
             {{ item }}
           </p>
@@ -43,6 +43,10 @@ export default class ValidatorsAttentionDialog extends Mixins(StakingMixin, mixi
     if (this.isRecommended) {
       router.push({ name: SoraStakingPageNames.SelectValidators });
     }
+  }
+
+  get description() {
+    return this.t('soraStaking.validatorsAttentionDialog.description') as unknown as Array<string>;
   }
 }
 </script>
@@ -91,4 +95,3 @@ export default class ValidatorsAttentionDialog extends Mixins(StakingMixin, mixi
   width: 100%;
 }
 </style>
-../../demeter/consts

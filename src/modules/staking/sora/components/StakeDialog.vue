@@ -1,7 +1,6 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="title">
     <div class="stake-dialog">
-      <account-card class="alerts-list__item" v-button> dsfsdfdsf </account-card>
       <s-form class="el-form--actions" :show-message="false">
         <token-input
           key="stake-input"
@@ -18,11 +17,19 @@
       <div class="info">
         <info-line
           v-if="mode === StakeDialogMode.NEW"
-          label="SELECTED VALIDATORS"
+          :label="t('soraStaking.info.selectedValidators')"
           :value="selectedValidatorsFormatted"
         />
-        <info-line v-if="mode === StakeDialogMode.NEW" label="REWARD TOKEN" :value="rewardAsset?.symbol" />
-        <info-line v-if="mode === StakeDialogMode.REMOVE" label="UNSTAKING PERIOD" :value="unbondPeriodFormatted" />
+        <info-line
+          v-if="mode === StakeDialogMode.NEW"
+          :label="t('soraStaking.info.rewardToken')"
+          :value="rewardAsset?.symbol"
+        />
+        <info-line
+          v-if="mode === StakeDialogMode.REMOVE"
+          :label="t('soraStaking.info.unstakingPeriod')"
+          :value="unbondPeriodFormatted"
+        />
         <info-line
           :label="t('networkFeeText')"
           :label-tooltip="t('networkFeeTooltipText')"
@@ -72,7 +79,7 @@ import type { CodecString } from '@sora-substrate/util';
     TokenInput: lazyComponent(Components.TokenInput),
     DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
-    WalletAccount: components.WalletAccount,
+    AccountCard: components.AccountCard,
   },
 })
 export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {

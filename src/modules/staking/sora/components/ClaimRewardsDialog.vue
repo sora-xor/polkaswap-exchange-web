@@ -19,7 +19,7 @@
       <div class="info">
         <info-line
           v-if="hasStake"
-          label="REDEEMABLE"
+          :label="t('soraStaking.info.redeemable')"
           :value="redeemableFundsFormatted"
           :asset-symbol="rewardAsset?.symbol"
           :fiat-value="redeemableFundsFiat"

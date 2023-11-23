@@ -48,14 +48,17 @@ export default class SelectValidators extends Mixins(StakingMixin, mixins.Loadin
 
   get title(): string {
     return this.newStakeValidatorsMode === ValidatorsListMode.RECOMMENDED
-      ? 'Recommended validators'
-      : 'Select validators';
+      ? this.t('soraStaking.validators.recommended')
+      : this.t('soraStaking.validators.select');
   }
 
   get confirmText(): string {
     return this.newStakeValidatorsMode === ValidatorsListMode.RECOMMENDED
       ? 'NEXT'
-      : `${this.selectedValidators.length}/${this.validators.length} SELECTED`;
+      : this.t('soraStaking.validators.selected', {
+          selected: this.selectedValidators.length,
+          total: this.validators.length,
+        });
   }
 
   get confirmDisabled(): boolean {

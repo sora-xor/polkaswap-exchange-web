@@ -36,67 +36,71 @@
         <token-logo :token="rewardAsset" size="medium" class="reward-token-logo" />
       </div>
     </div>
-    <h1>SORA Staking</h1>
+    <h1>{{ t('soraStaking.overview.title') }}</h1>
     <p v-if="!hasStake">
-      Stake XOR tokens on SORA Network as a nominator to validate transactions and earn VAL token rewards.
+      {{ t('soraStaking.overview.description') }}
     </p>
     <template v-if="isLoggedIn">
       <div class="additional-buttons">
         <s-button v-if="hasStake" class="additional-button s-typography-button--medium" @click="claimRewards">
-          Claim rewards
+          {{ t('soraStaking.actions.claim') }}
         </s-button>
         <s-button v-if="hasStake" class="additional-button s-typography-button--medium" @click="removeStake">
-          Remove stake
+          {{ t('soraStaking.actions.remove') }}
         </s-button>
       </div>
       <s-button v-if="!hasStake" class="stake-button s-typography-button--medium" type="primary" @click="stakeNew">
-        START STAKING
+        {{ t('soraStaking.actions.start') }}
       </s-button>
       <s-button v-if="hasStake" class="stake-button s-typography-button--medium" type="primary" @click="stakeMore">
-        STAKE MORE
+        {{ t('soraStaking.actions.more') }}
       </s-button>
       <div class="info">
         <info-line
           v-if="hasStake"
-          label="STAKING BALANCE"
+          :label="t('soraStaking.info.stakingBalance')"
           :value="lockedFundsFormatted"
           :asset-symbol="stakingAsset?.symbol"
           :fiat-value="lockedFundsFiat"
         />
         <info-line
           v-if="hasStake"
-          label="REWARDED"
+          :label="t('soraStaking.info.rewarded')"
           :value="rewardedFundsFormatted"
           :asset-symbol="rewardAsset?.symbol"
           :fiat-value="rewardedFundsFiat"
         />
         <info-line
           v-if="hasStake"
-          label="UNSTAKING"
+          :label="t('soraStaking.info.unstaking')"
           :value="unlockingFundsFormatted"
           :asset-symbol="stakingAsset?.symbol"
           :fiat-value="unlockingFundsFiat"
         />
         <info-line
           v-if="hasStake"
-          label="REDEEMABLE"
+          :label="t('soraStaking.info.redeemable')"
           :value="redeemableFundsFormatted"
           :asset-symbol="rewardAsset?.symbol"
           :fiat-value="redeemableFundsFiat"
         />
-        <info-line v-if="!hasStake" label="TOTAL LIQUIDITY STAKED" :value="totalStakedFormatted" />
-        <info-line v-if="!hasStake" label="APY" :value="maxApy + '%'" />
-        <info-line label="REWARD TOKEN" :value="rewardAsset?.symbol" />
-        <info-line v-if="unbondPeriod" label="UNSTAKING PERIOD" :value="unbondPeriodFormatted" />
+        <info-line v-if="!hasStake" :label="t('soraStaking.info.totalLiquidityStaked')" :value="totalStakedFormatted" />
+        <info-line v-if="!hasStake" :label="t('soraStaking.info.apy')" :value="maxApy + '%'" />
+        <info-line :label="t('soraStaking.info.rewardToken')" :value="rewardAsset?.symbol" />
+        <info-line v-if="unbondPeriod" :label="t('soraStaking.info.unstakingPeriod')" :value="unbondPeriodFormatted" />
         <info-line
           v-if="!hasStake"
-          label="MINIMUM STAKE"
+          :label="t('soraStaking.info.minimumStake')"
           :value="minNominatorBondFormatted"
           :asset-symbol="stakingAsset?.symbol"
           is-formatted
         />
-        <info-line v-if="totalNominators !== null" label="NOMINATORS" :value="`${totalNominators}`" />
-        <info-line v-if="validators.length" label="VALIDATORS" :value="`${validators.length}`" />
+        <info-line
+          v-if="totalNominators !== null"
+          :label="t('soraStaking.info.nominators')"
+          :value="`${totalNominators}`"
+        />
+        <info-line v-if="validators.length" :label="t('soraStaking.info.validators')" :value="`${validators.length}`" />
       </div>
     </template>
     <stake-dialog

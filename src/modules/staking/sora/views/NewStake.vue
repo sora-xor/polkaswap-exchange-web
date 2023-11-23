@@ -1,6 +1,8 @@
 <template>
   <div class="container" v-loading="parentLoading">
-    <staking-header :previous-page="SoraStakingPageNames.Overview">Start staking</staking-header>
+    <staking-header :previous-page="SoraStakingPageNames.Overview">
+      {{ t('soraStaking.newStake.title') }}
+    </staking-header>
     <s-form class="el-form--actions" :show-message="false">
       <token-input
         key="stake-input"
@@ -17,7 +19,9 @@
     <div class="min-stake-warning">
       <s-icon name="info-16" />
       <span>
-        The minimum stake to receive the reward is {{ minNominatorBondFormatted }} {{ stakingAsset?.symbol }}
+        {{
+          t('soraStaking.newStake.minStakeWarning', { min: minNominatorBondFormatted, symbol: stakingAsset?.symbol })
+        }}
       </span>
     </div>
 

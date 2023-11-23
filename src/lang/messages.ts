@@ -792,11 +792,48 @@ export default {
       validators: 'Validators',
       controllerAccount: 'Controller account',
     },
+    actions: {
+      claim: 'Claim rewards',
+      remove: 'Remove stake',
+      start: 'Start staking',
+      more: 'Stake more',
+      payoutAll: 'Payout all',
+    },
+    overview: {
+      title: 'SORA Staking',
+      description:
+        'Stake XOR tokens on SORA Network as a nominator to validate transactions and earn VAL token rewards.',
+    },
+    newStake: {
+      title: 'Start staking',
+      minStakeWarning: 'The minimum stake to receive the reward is {min} {symbol}',
+    },
+    validators: {
+      save: 'Save changes',
+      selected: '{selected}/{total} selected',
+      recommended: 'Recommended validators',
+      change: 'Change validators',
+      select: 'Select validators',
+    },
     validatorsList: {
       search: 'Search...',
       filters: 'Filters',
       name: 'Name',
       return: 'Return',
+    },
+    info: {
+      redeemable: 'Redeemable',
+      unstaking: 'Unstaking',
+      stakingBalance: 'Staking balance',
+      rewarded: 'Rewarded',
+      totalLiquidityStaked: 'Total liquidity staked',
+      apy: 'APY',
+      rewardToken: 'Reward token',
+      unstakingPeriod: 'Unstaking period',
+      minimumStake: 'Minimum stake',
+      nominators: 'Nominators',
+      validators: 'Validators',
+      selectedValidators: 'Selected validators',
     },
     validatorsFilterDialog: {
       title: 'Filters',
@@ -832,17 +869,35 @@ export default {
         [ValidatorsListMode.USER]: 'Your validators',
         [ValidatorsListMode.ALL]: 'All validators',
       },
-      changeValidators: 'Change validators',
-      saveChanges: 'Save changes',
-      selected: '{selected}/{total} selected',
     },
     validatorsAttentionDialog: {
+      title: 'Attention',
       description: [
         'Algorithmic validator suggestions do not constitute financial consultation or advice. Staking is a high-risk activity, and algorithmic validator suggestions do not necessarily mitigate this risk.',
         'A validator suggested by the algorithm could still be slashed. A validator suggested by the algorithm could also change their parameters (e.g.,commission rates, etc.) at any time after having been suggested and/or selected.',
         'You could lose tokens or rewards for these or other reasons. Only stake tokens and use validator suggestions at your own discretion, after conducting due diligence and carefully considering the risks involved.',
       ],
       confirm: 'Yes, I understand the risk',
+    },
+    pendingRewardsDialog: {
+      noPendingRewards: 'There are no pending rewards',
+      information:
+        'Validators payout the rewards every 2-5 days. However, you can payout them by yourself, especially if rewards are close to expiring, but you will pay the fee.',
+    },
+    selectValidatorsMode: {
+      title: 'Stake with validators suggested by the algorithm',
+      description: 'SORA Network algorithm has selected a list of recommended validators based on the criteria:',
+      criteria: [
+        'Most profitable',
+        'Not oversubscribed',
+        'Having onchain identity',
+        'Not slashed',
+        'Limit of 2 validators per identity',
+      ],
+      confirm: {
+        suggested: 'Stake with suggested',
+        manual: 'I`ll pick the validators myself',
+      },
     },
   },
   code: {

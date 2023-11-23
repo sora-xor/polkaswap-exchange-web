@@ -85,11 +85,11 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
   get confirmText(): string {
     switch (this.mode) {
       case ValidatorsListMode.USER:
-        return this.t('soraStaking.validatorsDialog.changeValidators');
+        return this.t('soraStaking.validators.change');
       case ValidatorsListMode.RECOMMENDED:
-        return this.t('soraStaking.validatorsDialog.saveChanges');
+        return this.t('soraStaking.validators.save');
       case ValidatorsListMode.SELECT:
-        return this.t('soraStaking.validatorsDialog.selected', {
+        return this.t('soraStaking.validators.selected', {
           selected: this.selectedValidators.length,
           total: this.validators.length,
         });

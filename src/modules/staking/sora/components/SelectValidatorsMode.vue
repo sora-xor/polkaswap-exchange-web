@@ -2,17 +2,21 @@
   <div v-loading="parentLoading">
     <div class="content">
       <div class="card">
-        <h4>Stake with validators suggested by the algorithm</h4>
-        <p>SORA Network algorithm has selected a list of recommended validators based on the criteria:</p>
+        <h4>{{ t('soraStaking.selectValidatorsMode.title') }}</h4>
+        <p>{{ t('soraStaking.selectValidatorsMode.description') }}</p>
         <ul class="criteria">
           <li v-for="criterion in criteria" :key="criterion">
             <s-icon name="basic-check-mark-24" size="16px" />
             <span>{{ criterion }}</span>
           </li>
         </ul>
-        <s-button type="primary" @click="stakeWithSuggested">STAKE WITH SUGGESTED</s-button>
+        <s-button type="primary" @click="stakeWithSuggested">{{
+          t('soraStaking.selectValidatorsMode.confirm.suggested')
+        }}</s-button>
       </div>
-      <div class="manual-select" @click="stakeWithSelected">I’LL PICK THE VALIDATORS MYSELF</div>
+      <div class="manual-select" @click="stakeWithSelected">
+        {{ t('soraStaking.selectValidatorsMode.confirm.manual') }}
+      </div>
     </div>
   </div>
 </template>
@@ -41,13 +45,7 @@ export default class SelectValidatorsMode extends Mixins(StakingMixin, mixins.Lo
   showValidatorsAttentionDialog = false;
 
   get criteria() {
-    return [
-      'Most profitable',
-      'Not oversubscribed',
-      'Having onchain identity',
-      'Not slashed',
-      'Limit of 2 validators per identity',
-    ];
+    return this.t('soraStaking.selectValidatorsMode.criteria');
   }
 
   stakeWithSuggested(): void {

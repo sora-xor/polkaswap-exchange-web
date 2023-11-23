@@ -16,6 +16,7 @@ export enum SoraStakingComponents {
   StatusBadge = 'StatusBadge',
   ValidatorsList = 'ValidatorsList',
   SelectValidatorsMode = 'SelectValidatorsMode',
+  ValidatorAvatar = 'ValidatorAvatar',
   ValidatorsAttentionDialog = 'ValidatorsAttentionDialog',
   ValidatorsFilterDialog = 'ValidatorsFilterDialog',
   StakeDialog = 'StakeDialog',
