@@ -56,11 +56,11 @@ class SubBridgeHistory extends SubNetworksConnector {
   }
 
   get parachainApi(): ApiPromise {
-    return this.soraParachainAdapter.api;
+    return this.soraParachain.adapter.api;
   }
 
   get externalApi(): ApiPromise {
-    return this.networkAdapter.api;
+    return this.network.adapter.api;
   }
 
   public async clearHistory(
@@ -80,7 +80,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
     try {
-      const transactions = await subBridgeApi.getUserTransactions(address, this.network);
+      const transactions = await subBridgeApi.getUserTransactions(address, this.network.adapter.subNetwork);
 
       if (!transactions.length) return;
 
@@ -139,7 +139,7 @@ class SubBridgeHistory extends SubNetworksConnector {
         hash: id,
         transactionState: tx.status,
         parachainBlockHeight,
-        externalNetwork: this.network,
+        externalNetwork: this.network.adapter.subNetwork,
         externalNetworkType: BridgeNetworkType.Sub,
         amount,
         assetAddress: asset?.address,
@@ -289,7 +289,7 @@ class SubBridgeHistory extends SubNetworksConnector {
           const receiver = subBridgeApi.formatAddress(accountId);
           const from = subBridgeApi.formatAddress(history.from as string);
 
-          if (!(parachainId === this.soraParachainId && receiver === from)) continue;
+          if (!(parachainId === this.soraParachain.id && receiver === from)) continue;
 
           const signer = extrinsic.signer.toString();
           const extrinsicEvents = await getBlockEventsByTxIndex(blockId, extrinsicIndex, this.externalApi);
