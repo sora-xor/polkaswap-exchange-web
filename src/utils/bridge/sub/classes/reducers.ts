@@ -19,6 +19,7 @@ import {
   isAssetAddedToChannel,
   determineTransferType,
   getReceivedAmount,
+  getParachainSystemMessageHash,
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiRx } from '@polkadot/api';
@@ -476,18 +477,10 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
                   this.connector.soraParachain.adapter.api
                 );
               } else {
-                const parachainSystemEvent = events
-                  .slice(substrateDispatchEventIndex)
-                  .find((e) =>
-                    this.connector.soraParachain.adapter.api.events.parachainSystem.UpwardMessageSent.is(e.event)
-                  );
-
-                if (!parachainSystemEvent) {
-                  throw new Error(
-                    `[${this.constructor.name}]: Unable to find "parachainSystem.UpwardMessageSent" event`
-                  );
-                }
-                messageHash = parachainSystemEvent.event.data.messageHash.toString();
+                messageHash = getParachainSystemMessageHash(
+                  events.slice(substrateDispatchEventIndex),
+                  this.connector.soraParachain.adapter.api
+                );
               }
 
               resolve();
