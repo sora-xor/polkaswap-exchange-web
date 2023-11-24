@@ -94,7 +94,7 @@ export class SubAdapter {
   }
 
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
-    const historyItem = subBridgeApi.getHistory(historyId as string) || {
+    const historyItem = subBridgeApi.getHistory(historyId as string) ?? {
       type: Operation.SubstrateIncoming,
       symbol: asset.symbol,
       assetAddress: asset.address,

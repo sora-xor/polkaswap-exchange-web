@@ -308,7 +308,7 @@ class SubBridgeHistory extends SubNetworksConnector {
       const receiver = subBridgeApi.formatAddress(accountId.toString());
       const from = subBridgeApi.formatAddress(history.from as string);
 
-      if (!(receiver === from)) continue;
+      if (receiver !== from) continue;
 
       const signer = extrinsic.signer.toString();
       const extrinsicEvents = await getBlockEventsByTxIndex(parachainBlockId, extrinsicIndex, this.parachainApi);

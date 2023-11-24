@@ -53,7 +53,7 @@ export const getDepositedBalance = (events: Array<any>, to: string, api: ApiProm
   const balancesDepositEvent = events.find(
     (e) =>
       api.events.balances.Deposit.is(e.event) &&
-      subBridgeApi.formatAddress(e.event.data.who.toString()) === subBridgeApi.formatAddress(to as string)
+      subBridgeApi.formatAddress(e.event.data.who.toString()) === subBridgeApi.formatAddress(to)
   );
 
   if (!balancesDepositEvent) throw new Error(`Unable to find "balances.Deposit" event`);
@@ -68,6 +68,16 @@ export const getReceivedAmount = (sendedAmount: string, receivedAmount: CodecStr
   const transferFee = sended.sub(received).toCodecString();
 
   return { amount: amount2, transferFee };
+};
+
+export const getParachainSystemMessageHash = (events: Array<any>, api: ApiPromise) => {
+  const parachainSystemEvent = events.find((e) => api.events.parachainSystem.UpwardMessageSent.is(e.event));
+
+  if (!parachainSystemEvent) {
+    throw new Error(`Unable to find "parachainSystem.UpwardMessageSent" event`);
+  }
+
+  return parachainSystemEvent.event.data.messageHash.toString();
 };
 
 export const getMessageAcceptedNonces = (events: Array<any>, api: ApiPromise): [number, number] => {
