@@ -160,9 +160,8 @@ const getters = defineGetters<BridgeState>()({
     const { state } = bridgeGetterContext(args);
 
     const internalHistory = Object.values(state.historyInternal);
-    const externalHistory = Object.values(state.historyExternal);
 
-    return [...internalHistory, ...externalHistory].reduce((buffer, item) => {
+    return [...internalHistory].reduce((buffer, item) => {
       if (!item.id) return buffer;
 
       return { ...buffer, [item.id]: item };

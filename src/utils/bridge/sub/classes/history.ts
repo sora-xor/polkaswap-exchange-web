@@ -18,6 +18,8 @@ import {
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiPromise } from '@polkadot/api';
+import type { GenericExtrinsic } from '@polkadot/types';
+import type { AnyTuple } from '@polkadot/types-codec/types';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
@@ -286,22 +288,28 @@ class SubBridgeHistory extends SubNetworksConnector {
 
   private async processIncomingTxExternalData(history: SubHistory): Promise<Nullable<SubHistory>> {
     const transferType = determineTransferType(history.externalNetwork as SubNetwork);
+    const soraParachainExtrinsics = await api.system.getExtrinsicsFromBlock(
+      history.parachainBlockId!,
+      this.parachainApi
+    );
 
     switch (transferType) {
       case SubTransferType.SoraParachain:
-        return this.processIncomingFromSoraParachain(history);
+        return this.processIncomingFromSoraParachain(history, soraParachainExtrinsics);
       case SubTransferType.Relaychain:
-        return this.processIncomingFromRelaychain(history);
+        return this.processIncomingFromRelaychain(history, soraParachainExtrinsics);
       default:
         throw new Error(`No handler for incoming "${transferType}" transfer type`);
     }
   }
 
-  private async processIncomingFromSoraParachain(history: SubHistory): Promise<Nullable<SubHistory>> {
+  private async processIncomingFromSoraParachain(
+    history: SubHistory,
+    soraParachainExtrinsics: GenericExtrinsic<AnyTuple>[]
+  ): Promise<Nullable<SubHistory>> {
     const parachainBlockId = history.parachainBlockId as string;
-    const extrinsics = await api.system.getExtrinsicsFromBlock(parachainBlockId, this.parachainApi);
 
-    for (const [extrinsicIndex, extrinsic] of extrinsics.entries()) {
+    for (const [extrinsicIndex, extrinsic] of soraParachainExtrinsics.entries()) {
       if (!(extrinsic.method.section === 'xcmApp' && extrinsic.method.method === 'sendXorToMainnet')) continue;
 
       const [accountId] = extrinsic.args;
@@ -327,7 +335,19 @@ class SubBridgeHistory extends SubNetworksConnector {
     return null;
   }
 
-  private async processIncomingFromRelaychain(history: SubHistory): Promise<SubHistory> {
+  private async processIncomingFromRelaychain(
+    history: SubHistory,
+    soraParachainExtrinsics: GenericExtrinsic<AnyTuple>[]
+  ): Promise<Nullable<SubHistory>> {
+    const parachainSystemSetValidationData = soraParachainExtrinsics.find(
+      (extrinsic) => extrinsic.method.section === 'parachainSystem' && extrinsic.method.method === 'setValidationData'
+    );
+
+    // this could be SORA Parachain transfer, not incoming transfer from Relaychain
+    if (!parachainSystemSetValidationData) {
+      return null;
+    }
+
     const relayChainBlockNumber = await subBridgeApi.soraParachainApi.getRelayChainBlockNumber(
       history.parachainBlockId as string,
       this.parachainApi

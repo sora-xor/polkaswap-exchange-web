@@ -95,12 +95,6 @@ const mutations = defineMutations<BridgeState>()({
   setInternalHistory(state, history: Record<string, IBridgeTransaction>): void {
     state.historyInternal = { ...history };
   },
-  /**
-   * Set bridge transactions from external sources (f.e. network or etherscan)
-   */
-  setExternalHistory(state, history: Record<string, IBridgeTransaction>): void {
-    state.historyExternal = { ...history };
-  },
 
   setHistoryPage(state, historyPage?: number): void {
     state.historyPage = historyPage || 1;
