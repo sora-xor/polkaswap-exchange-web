@@ -51,7 +51,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     },
     endpointUrls: [],
     blockExplorerUrls: [],
-    shortName: 'SORA Rococo',
+    shortName: 'SORA ROC',
   },
   [SubNetwork.KusamaSora]: {
     id: SubNetwork.KusamaSora,
@@ -63,7 +63,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     },
     endpointUrls: [],
     blockExplorerUrls: [],
-    shortName: 'SORA Kusama',
+    shortName: 'SORA KSM',
   },
 };
 
