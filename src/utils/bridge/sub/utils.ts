@@ -1,10 +1,13 @@
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
+import { FPNumber } from '@sora-substrate/util';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
+import { SubTransferType } from '@/utils/bridge/sub/types';
 
 import type { ApiPromise } from '@polkadot/api';
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 export const isUnsignedTx = (tx: SubHistory): boolean => {
@@ -23,6 +26,16 @@ export const updateTransaction = (id: string, params = {}): void => {
   const tx = getTransaction(id);
   const data = { ...tx, ...params };
   subBridgeApi.saveHistory(data);
+};
+
+export const determineTransferType = (network: SubNetwork) => {
+  if (subBridgeApi.isSoraParachain(network)) {
+    return SubTransferType.SoraParachain;
+  } else if (subBridgeApi.isRelayChain(network)) {
+    return SubTransferType.Relaychain;
+  } else {
+    return SubTransferType.Parachain;
+  }
 };
 
 export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string => {
@@ -46,6 +59,15 @@ export const getDepositedBalance = (events: Array<any>, to: string, api: ApiProm
   if (!balancesDepositEvent) throw new Error(`Unable to find "balances.Deposit" event`);
 
   return balancesDepositEvent.event.data.amount.toString();
+};
+
+export const getReceivedAmount = (sendedAmount: string, receivedAmount: CodecString, decimals?: number) => {
+  const sended = new FPNumber(sendedAmount, decimals);
+  const received = FPNumber.fromCodecValue(receivedAmount, decimals);
+  const amount2 = received.toString();
+  const transferFee = sended.sub(received).toCodecString();
+
+  return { amount: amount2, transferFee };
 };
 
 export const getMessageAcceptedNonces = (events: Array<any>, api: ApiPromise): [number, number] => {

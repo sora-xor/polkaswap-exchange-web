@@ -7,6 +7,8 @@ import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { ZeroStringValue } from '@/consts';
 import type { SubNetworkApps } from '@/store/web3/types';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
+import { SubTransferType } from '@/utils/bridge/sub/types';
+import { determineTransferType } from '@/utils/bridge/sub/utils';
 
 import type { ApiPromise, ApiRx } from '@polkadot/api';
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
@@ -231,12 +233,13 @@ export class SubNetworksConnector {
   };
 
   protected getChains(network: SubNetwork): SubNetwork[] {
+    const type = determineTransferType(network);
     const soraParachain = subBridgeApi.getSoraParachain(network);
     const path: SubNetwork[] = [soraParachain];
 
-    if (subBridgeApi.isSoraParachain(network)) return path;
+    if (type === SubTransferType.SoraParachain) return path;
 
-    if (subBridgeApi.isRelayChain(network)) {
+    if (type === SubTransferType.Relaychain) {
       path.push(network);
     } else {
       const relaychain = subBridgeApi.getRelayChain(network);

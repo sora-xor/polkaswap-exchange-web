@@ -10,12 +10,15 @@ import { BridgeReducer } from '@/utils/bridge/common/classes';
 import { getTransactionEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
+import { SubTransferType } from '@/utils/bridge/sub/types';
 import {
   getBridgeProxyHash,
   getDepositedBalance,
   getMessageAcceptedNonces,
   isMessageDispatchedNonces,
   isAssetAddedToChannel,
+  determineTransferType,
+  getReceivedAmount,
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiRx } from '@polkadot/api';
@@ -26,24 +29,14 @@ import type { Subscription } from 'rxjs';
 export class SubBridgeReducer extends BridgeReducer<SubHistory> {
   protected asset!: RegisteredAccountAsset;
   protected connector!: SubNetworksConnector;
-  protected transferType = {
-    isRelaychain: false,
-    isSoraParachain: false,
-    isParachain: false,
-  };
-
-  protected determineType(network: SubNetwork) {
-    this.transferType.isSoraParachain = subBridgeApi.isSoraParachain(network);
-    this.transferType.isRelaychain = subBridgeApi.isRelayChain(network);
-    this.transferType.isParachain = !(this.transferType.isSoraParachain || this.transferType.isRelaychain);
-  }
+  protected transferType!: SubTransferType;
 
   initConnector(id: string): void {
     const { externalNetwork } = this.getTransaction(id);
 
     if (!externalNetwork) throw new Error(`[${this.constructor.name}]: Transaction "externalNetwork" is not defined`);
 
-    this.determineType(externalNetwork);
+    this.transferType = determineTransferType(externalNetwork);
 
     this.connector = new SubNetworksConnector();
     this.connector.init(externalNetwork, subBridgeConnector);
@@ -179,7 +172,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       this.updateTransactionParams(id, { externalNetworkFee });
     }
 
-    if (!this.transferType.isSoraParachain) {
+    if (this.transferType !== SubTransferType.SoraParachain) {
       const xcmEvent = transactionEvents.find((e) =>
         this.connector.network.adapter.api.events.xcmPallet.Attempted.is(e.event)
       );
@@ -255,7 +248,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     } finally {
       subscription.unsubscribe();
 
-      if (!this.transferType.isSoraParachain) {
+      if (this.transferType !== SubTransferType.SoraParachain) {
         // run non blocking process promise
         this.getHashesByBlockNumber(blockNumber, this.connector.soraParachain.adapter.apiRx)
           .then(({ blockHeight, blockId }) =>
@@ -393,17 +386,14 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     }
   }
 
-  protected updateReceivedAmount(id: string, amount: string): void {
+  protected updateReceivedAmount(id: string, receivedAmount: string): void {
     const tx = this.getTransaction(id);
-    const sended = new FPNumber(tx.amount as string, this.asset.externalDecimals);
-    const received = FPNumber.fromCodecValue(amount, this.asset.externalDecimals);
-    const amount2 = received.toString();
-    const externalTransferFee = sended.sub(received).toCodecString();
+    const { amount, transferFee } = getReceivedAmount(tx.amount as string, receivedAmount, this.asset.externalDecimals);
 
     this.updateTransactionParams(id, {
-      amount2,
+      amount2: amount,
       externalNetworkFee: ZeroStringValue,
-      externalTransferFee,
+      externalTransferFee: transferFee,
     });
   }
 
@@ -479,7 +469,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
               blockNumber = blockHeight;
 
-              if (this.transferType.isSoraParachain) {
+              if (this.transferType === SubTransferType.SoraParachain) {
                 amount = getDepositedBalance(
                   events.slice(substrateDispatchEventIndex),
                   tx.to as string,
@@ -510,12 +500,13 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     } finally {
       subscription.unsubscribe();
 
-      const updateBlocks = () =>
+      const updateBlockData = () =>
         this.getHashesByBlockNumber(blockNumber, this.connector.soraParachain.adapter.apiRx)
           .then(({ blockHeight, blockId }) => {
-            const [blockHeightAttr, blockIdAttr] = this.transferType.isSoraParachain
-              ? ['externalBlockHeight', 'externalBlockId']
-              : ['parachainBlockHeight', 'parachainBlockId'];
+            const [blockHeightAttr, blockIdAttr] =
+              this.transferType === SubTransferType.SoraParachain
+                ? ['externalBlockHeight', 'externalBlockId']
+                : ['parachainBlockHeight', 'parachainBlockId'];
 
             this.updateTransactionParams(id, {
               [blockHeightAttr]: blockHeight,
@@ -526,10 +517,10 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             this.connector.soraParachain.adapter.stop();
           });
 
-      await conditionalAwait(updateBlocks, this.transferType.isSoraParachain);
+      await conditionalAwait(updateBlockData, this.transferType === SubTransferType.SoraParachain);
     }
 
-    if (this.transferType.isSoraParachain) {
+    if (this.transferType === SubTransferType.SoraParachain) {
       this.updateReceivedAmount(id, amount);
     } else {
       const payload = { ...tx.payload, messageHash };
@@ -538,7 +529,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
   }
 
   private async waitForRelaychainMessageHash(id: string): Promise<void> {
-    if (this.transferType.isSoraParachain) return;
+    if (this.transferType === SubTransferType.SoraParachain) return;
 
     const tx = this.getTransaction(id);
     const messageHash = tx.payload.messageHash as string;
