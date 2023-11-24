@@ -29,7 +29,7 @@
       <div class="margin" :style="getHeight()" />
       <div v-for="order in getSellOrders()" :key="order.price" class="row">
         <span class="order-info">{{ order.total }}</span>
-        <span class="order-info">{{ order.amount }}</span>
+        <span class="order-info amount">{{ order.amount }}</span>
         <span class="order-info price">{{ order.price }}</span>
         <div class="bar" :style="getStyles(order.filled)" />
       </div>
@@ -45,7 +45,7 @@
     <div v-if="bidsFormatted.length" class="stock-book-buy">
       <div v-for="order in getBuyOrders()" :key="order.price" class="row">
         <span class="order-info">{{ order.total }}</span>
-        <span class="order-info">{{ order.amount }}</span>
+        <span class="order-info amount">{{ order.amount }}</span>
         <span class="order-info price">{{ order.price }}</span>
         <div class="bar" :style="getStyles(order.filled)" />
       </div>
@@ -250,8 +250,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return currentAmount.div(maxAmount).mul(FPNumber.HUNDRED).toNumber();
   }
 
-  @Watch('asks')
-  @Watch('bids')
+  @Watch('asks', { immediate: true })
+  @Watch('bids', { immediate: true })
   async prepareLimitOrders(): Promise<void> {
     // this.calculateScalerStep();
 
