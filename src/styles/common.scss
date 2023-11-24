@@ -40,15 +40,15 @@ $sora-parachains: 'sora' 'rococo', 'sora' 'kusama';
 
   @each $sora, $parachain in $sora-parachains {
     &--#{$sora}-#{$parachain} {
-      background-image: url('~@/assets/img/networks/#{$sora}.svg');
+      background-image: url('~@/assets/img/networks/#{$parachain}.svg');
 
       &::after {
         content: '';
         display: block;
-        width: 100%;
-        height: 100%;
-        transform: translateX(40%);
-        background-image: url('~@/assets/img/networks/#{$parachain}.svg');
+        width: 50%;
+        height: 50%;
+        filter: drop-shadow(2px 4px 6px black);
+        background-image: url('~@/assets/img/networks/#{$sora}.svg');
       }
     }
   }

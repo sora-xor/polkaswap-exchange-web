@@ -109,7 +109,7 @@ const actions = defineActions({
   async selectExternalNetwork(context, { id, type }: { id: BridgeNetworkId; type: BridgeNetworkType }): Promise<void> {
     const { commit, dispatch, rootDispatch } = web3ActionContext(context);
 
-    dispatch.disconnectExternalNetwork();
+    await dispatch.disconnectExternalNetwork();
 
     commit.setNetworkType(type);
     commit.setSelectedNetwork(id);
