@@ -539,10 +539,18 @@ const actions = defineActions({
   },
 
   updateInternalHistory(context): void {
-    const { commit } = bridgeActionContext(context);
+    const { commit, rootState } = bridgeActionContext(context);
+    const { networkSelected } = rootState.web3;
     const bridgeApi = getBridgeApi(context);
     const history = bridgeApi.history;
-    commit.setInternalHistory(history as Record<string, IBridgeTransaction>);
+    const historyNetwork = Object.entries(history).reduce((acc, [id, item]) => {
+      const { externalNetwork } = item as IBridgeTransaction;
+      if (externalNetwork === networkSelected) {
+        acc[id] = item;
+      }
+      return acc;
+    }, {});
+    commit.setInternalHistory(historyNetwork as Record<string, IBridgeTransaction>);
   },
 
   async updateExternalHistory(context, clearHistory = false): Promise<void> {

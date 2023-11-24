@@ -26,9 +26,7 @@ export type BridgeState = {
   feesAndLockedFundsFetching: boolean;
   externalNativeBalance: Nullable<CodecString>;
   externalBlockNumber: number;
-  // history sources (unsynced localstorage & network)
   historyInternal: Record<string, IBridgeTransaction>;
-  historyExternal: Record<string, IBridgeTransaction>;
   historyPage: number;
   historyId: string;
   historyLoading: boolean;
