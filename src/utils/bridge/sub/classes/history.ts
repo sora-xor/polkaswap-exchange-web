@@ -29,7 +29,7 @@ import type { ActionContext } from 'vuex';
 const hasFinishedState = (item: Nullable<SubHistory>) => {
   if (!item) return false;
 
-  return item.transactionState === BridgeTxStatus.Done;
+  return [BridgeTxStatus.Done, BridgeTxStatus.Failed].includes(item.transactionState!);
 };
 
 const getType = (isOutgoing: boolean) => {
@@ -214,19 +214,26 @@ class SubBridgeHistory extends SubNetworksConnector {
     );
 
     if (transferType === SubTransferType.SoraParachain) {
-      const receivedAmount = getDepositedBalance(
-        parachainEventsReversed.slice(parachainMessageDispatchedIndex),
-        history.to as string,
-        this.parachainApi
-      );
-      const { amount, transferFee } = getReceivedAmount(
-        history.amount as string,
-        receivedAmount,
-        asset?.externalDecimals
-      );
+      try {
+        const receivedAmount = getDepositedBalance(
+          parachainEventsReversed.slice(parachainMessageDispatchedIndex),
+          history.to as string,
+          this.parachainApi
+        );
 
-      history.amount2 = amount;
-      history.externalTransferFee = transferFee;
+        const { amount, transferFee } = getReceivedAmount(
+          history.amount as string,
+          receivedAmount,
+          asset?.externalDecimals
+        );
+
+        history.amount2 = amount;
+        history.externalTransferFee = transferFee;
+      } catch {
+        // refunded
+        history.transactionState = BridgeTxStatus.Failed;
+      }
+
       history.externalBlockId = history.parachainBlockId;
       history.to = formatSubAddress(history.to as string, this.parachainApi.registry.chainSS58 as number);
       history.parachainBlockId = undefined; // parachain is external network
