@@ -11,6 +11,7 @@ import { SubTransferType } from '@/utils/bridge/sub/types';
 import {
   getDepositedBalance,
   getMessageAcceptedNonces,
+  getMessageDispatchedNonces,
   isMessageDispatchedNonces,
   formatSubAddress,
   determineTransferType,
@@ -40,6 +41,10 @@ const getBlockHeights = (isOutgoing: boolean, tx: BridgeTransactionData) => {
   return isOutgoing ? [tx.startBlock, tx.endBlock] : [tx.endBlock, tx.startBlock];
 };
 
+const getTxEvents = (blockEvents: any[], txIndex: number) => {
+  return blockEvents.filter(({ phase }) => phase.isApplyExtrinsic && phase.asApplyExtrinsic.toNumber() === txIndex);
+};
+
 const findTxInBlock = async (blockHash: string, soraHash: string) => {
   const blockEvents = await api.system.getBlockEvents(blockHash);
 
@@ -50,9 +55,7 @@ const findTxInBlock = async (blockHash: string, soraHash: string) => {
   if (!event) throw new Error('Unable to find "bridgeProxy.RequestStatusUpdate" event');
 
   const txIndex = event.phase.asApplyExtrinsic.toNumber();
-  const txEvents = blockEvents.filter(
-    ({ phase }) => phase.isApplyExtrinsic && phase.asApplyExtrinsic.toNumber() === txIndex
-  );
+  const txEvents = getTxEvents(blockEvents, txIndex);
   const extrinsics = await api.system.getExtrinsicsFromBlock(blockHash);
   const tx = extrinsics[txIndex];
   const txHash = tx.hash.toString();
@@ -183,7 +186,7 @@ class SubBridgeHistory extends SubNetworksConnector {
           events,
         });
       } else {
-        return await this.processIncomingTxExternalData(history);
+        return await this.processIncomingTxExternalData({ history, events });
       }
     } catch (error) {
       console.error(`[${id}]`, error);
@@ -293,28 +296,28 @@ class SubBridgeHistory extends SubNetworksConnector {
     throw new Error(`Relaychain transaction for SORA Parachain block ${history.parachainBlockId} not found`);
   }
 
-  private async processIncomingTxExternalData(history: SubHistory): Promise<Nullable<SubHistory>> {
+  private async processIncomingTxExternalData({
+    history,
+    events,
+  }: {
+    history: SubHistory;
+    events: any[];
+  }): Promise<Nullable<SubHistory>> {
     const transferType = determineTransferType(history.externalNetwork as SubNetwork);
-    const soraParachainExtrinsics = await api.system.getExtrinsicsFromBlock(
-      history.parachainBlockId!,
-      this.parachainApi
-    );
 
     switch (transferType) {
       case SubTransferType.SoraParachain:
-        return this.processIncomingFromSoraParachain(history, soraParachainExtrinsics);
+        return this.processIncomingFromSoraParachain(history);
       case SubTransferType.Relaychain:
-        return this.processIncomingFromRelaychain(history, soraParachainExtrinsics);
+        return this.processIncomingFromRelaychain(history, events);
       default:
         throw new Error(`No handler for incoming "${transferType}" transfer type`);
     }
   }
 
-  private async processIncomingFromSoraParachain(
-    history: SubHistory,
-    soraParachainExtrinsics: GenericExtrinsic<AnyTuple>[]
-  ): Promise<Nullable<SubHistory>> {
+  private async processIncomingFromSoraParachain(history: SubHistory): Promise<Nullable<SubHistory>> {
     const parachainBlockId = history.parachainBlockId as string;
+    const soraParachainExtrinsics = await api.system.getExtrinsicsFromBlock(parachainBlockId, this.parachainApi);
 
     for (const [extrinsicIndex, extrinsic] of soraParachainExtrinsics.entries()) {
       if (!(extrinsic.method.section === 'xcmApp' && extrinsic.method.method === 'sendXorToMainnet')) continue;
@@ -342,18 +345,38 @@ class SubBridgeHistory extends SubNetworksConnector {
     return null;
   }
 
-  private async processIncomingFromRelaychain(
-    history: SubHistory,
-    soraParachainExtrinsics: GenericExtrinsic<AnyTuple>[]
-  ): Promise<Nullable<SubHistory>> {
-    const parachainSystemSetValidationData = soraParachainExtrinsics.find(
-      (extrinsic) => extrinsic.method.section === 'parachainSystem' && extrinsic.method.method === 'setValidationData'
-    );
+  private async processIncomingFromRelaychain(history: SubHistory, events: any[]): Promise<Nullable<SubHistory>> {
+    const [soraBatchNonce, soraMessageNonce] = getMessageDispatchedNonces(events, this.soraApi);
+    const soraParachainBlockId = history.parachainBlockId as string;
 
-    // this could be SORA Parachain transfer, not incoming transfer from Relaychain
-    if (!parachainSystemSetValidationData) {
-      return null;
+    const [soraParachainExtrinsics, soraParachainEvents] = await Promise.all([
+      api.system.getExtrinsicsFromBlock(soraParachainBlockId, this.parachainApi),
+      api.system.getBlockEvents(soraParachainBlockId, this.parachainApi),
+    ]);
+
+    let soraParachainTxFound = false;
+
+    for (const [index, extrinsic] of soraParachainExtrinsics.entries()) {
+      if (!(extrinsic.method.section === 'parachainSystem' && extrinsic.method.method === 'setValidationData'))
+        continue;
+
+      const extrinsicEvents = getTxEvents(soraParachainEvents, index);
+
+      try {
+        const [parachainBatchNonce, parachainMessageNonce] = getMessageAcceptedNonces(
+          extrinsicEvents,
+          this.parachainApi
+        );
+        if (soraBatchNonce === parachainBatchNonce && soraMessageNonce === parachainMessageNonce) {
+          soraParachainTxFound = true;
+          break;
+        }
+      } catch {
+        continue;
+      }
     }
+
+    if (!soraParachainTxFound) return null;
 
     const relayChainBlockNumber = await subBridgeApi.soraParachainApi.getRelayChainBlockNumber(
       history.parachainBlockId as string,

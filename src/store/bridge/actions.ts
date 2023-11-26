@@ -554,11 +554,12 @@ const actions = defineActions({
   },
 
   async updateExternalHistory(context, clearHistory = false): Promise<void> {
-    const { commit, getters, state } = bridgeActionContext(context);
+    const { commit, getters, state, rootState } = bridgeActionContext(context);
+    const { networkSelected } = rootState.web3;
 
-    if (state.historyLoading) return;
+    if (!networkSelected || getters.networkHistoryLoading) return;
 
-    commit.setHistoryLoading(true);
+    commit.setNetworkHistoryLoading(networkSelected);
 
     if (getters.isEthBridge) {
       await updateEthHistory(context, clearHistory);
@@ -570,7 +571,7 @@ const actions = defineActions({
       console.info('Evm history not implemented');
     }
 
-    commit.setHistoryLoading(false);
+    commit.resetNetworkHistoryLoading(networkSelected);
   },
 
   removeHistory(context, { tx, force = false }: { tx: Partial<IBridgeTransaction>; force: boolean }): void {

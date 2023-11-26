@@ -29,7 +29,7 @@ function initialState(): BridgeState {
     historyInternal: {}, // localstorage history
     historyPage: 1,
     historyId: '',
-    historyLoading: false,
+    historyLoading: {},
     waitingForApprove: {},
     inProgressIds: {},
     notificationData: null,

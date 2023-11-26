@@ -95,6 +95,20 @@ export const getMessageAcceptedNonces = (events: Array<any>, api: ApiPromise): [
   return [batchNonce, messageNonce];
 };
 
+export const getMessageDispatchedNonces = (events: Array<any>, api: ApiPromise): [number, number] => {
+  const messageDispatchedEvent = events.find((e) => api.events.substrateDispatch.MessageDispatched.is(e.event));
+
+  if (!messageDispatchedEvent) {
+    throw new Error('Unable to find "substrateDispatch.MessageDispatched" event');
+  }
+
+  const { batchNonce, messageNonce } = messageDispatchedEvent.event.data[0];
+  const eventBatchNonce = batchNonce.unwrap().toNumber();
+  const eventMessageNonce = messageNonce.toNumber();
+
+  return [eventBatchNonce, eventMessageNonce];
+};
+
 export const isMessageDispatchedNonces = (
   sendedBatchNonce: number,
   sendedMessageNonce: number,

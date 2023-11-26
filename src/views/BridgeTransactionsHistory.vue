@@ -5,7 +5,7 @@
         <s-button
           type="action"
           icon="arrows-swap-90-24"
-          :disabled="historyLoading"
+          :disabled="networkHistoryLoading"
           :tooltip="t('bridgeHistory.restoreHistory')"
           @click="updateExternalHistory(true)"
         />
