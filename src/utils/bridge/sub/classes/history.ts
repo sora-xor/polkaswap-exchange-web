@@ -351,7 +351,10 @@ class SubBridgeHistory extends SubNetworksConnector {
     return null;
   }
 
-  private async processIncomingFromRelaychain(history: SubHistory, events: any[]): Promise<Nullable<SubHistory>> {
+  private async findIncomingTxOnSoraParachain(
+    history: SubHistory,
+    events: any[]
+  ): Promise<Nullable<GenericExtrinsic<AnyTuple>>> {
     const [soraBatchNonce, soraMessageNonce] = getMessageDispatchedNonces(events, this.soraApi);
     const soraParachainBlockId = history.parachainBlockId as string;
 
@@ -360,29 +363,37 @@ class SubBridgeHistory extends SubNetworksConnector {
       api.system.getBlockEvents(soraParachainBlockId, this.parachainApi),
     ]);
 
-    let soraParachainTxFound = false;
-
     for (const [index, extrinsic] of soraParachainExtrinsics.entries()) {
       if (!(extrinsic.method.section === 'parachainSystem' && extrinsic.method.method === 'setValidationData'))
         continue;
 
       const extrinsicEvents = getTxEvents(soraParachainEvents, index);
+      const messageAcceptedEvents = extrinsicEvents.filter((e) =>
+        this.parachainApi.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
+      );
 
-      try {
-        const [parachainBatchNonce, parachainMessageNonce] = getMessageAcceptedNonces(
-          extrinsicEvents,
-          this.parachainApi
-        );
-        if (soraBatchNonce === parachainBatchNonce && soraMessageNonce === parachainMessageNonce) {
-          soraParachainTxFound = true;
-          break;
+      for (const messageAcceptedEvent of messageAcceptedEvents) {
+        try {
+          const [parachainBatchNonce, parachainMessageNonce] = getMessageAcceptedNonces(
+            [messageAcceptedEvent],
+            this.parachainApi
+          );
+          if (soraBatchNonce === parachainBatchNonce && soraMessageNonce === parachainMessageNonce) {
+            return extrinsic;
+          }
+        } catch {
+          continue;
         }
-      } catch {
-        continue;
       }
     }
 
-    if (!soraParachainTxFound) return null;
+    return null;
+  }
+
+  private async processIncomingFromRelaychain(history: SubHistory, events: any[]): Promise<Nullable<SubHistory>> {
+    const soraParachainIncomingTx = await this.findIncomingTxOnSoraParachain(history, events);
+
+    if (!soraParachainIncomingTx) return null;
 
     const relayChainBlockNumber = await subBridgeApi.soraParachainApi.getRelayChainBlockNumber(
       history.parachainBlockId as string,
