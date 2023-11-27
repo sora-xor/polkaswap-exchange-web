@@ -82,14 +82,13 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.orderBookLastDeal orderBookLastDeal!: Nullable<OrderBookDealData>;
 
-  volumeAsks = FPNumber.ZERO;
-  volumeBids = FPNumber.ZERO;
-
   maxRowsNumber = 10;
 
   scalerOpen = false;
 
   steps: Array<string> = [];
+
+  currentPrecision = 5;
 
   asksFormatted: Array<LimitOrderForm> = [];
   bidsFormatted: Array<LimitOrderForm> = [];
@@ -257,24 +256,20 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
     this.asksFormatted = [];
     this.bidsFormatted = [];
-    this.volumeAsks = FPNumber.ZERO;
-    this.volumeBids = FPNumber.ZERO;
 
     // if (this.asks?.length > this.maxRowsNumber || this.bids?.length < this.maxRowsNumber) {
     if (this.asks?.length) {
       const maxAskAmount = FPNumber.max(...this.asks.map((order) => order[1])) as FPNumber;
 
       this.asks.forEach((row: [FPNumber, FPNumber]) => {
-        const price = row[0].toNumber();
-        const amount = row[1].toNumber();
-        const total = row[0].mul(row[1]);
-
-        this.volumeAsks = this.volumeAsks.add(total);
+        const price = row[0].toNumber().toFixed(this.currentPrecision);
+        const amount = row[1].toNumber().toFixed(this.currentPrecision);
+        const total = row[0].mul(row[1]).toNumber().toFixed(this.currentPrecision);
 
         this.asksFormatted.push({
           price,
           amount,
-          total: total.toNumber(),
+          total,
           filled: this.getAmountProportion(row[1], maxAskAmount),
         });
       });
@@ -284,16 +279,14 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
       const maxBidAmount = FPNumber.max(...this.bids.map((order) => order[1])) as FPNumber;
 
       this.bids.forEach((row: [FPNumber, FPNumber]) => {
-        const price = row[0].toNumber();
-        const amount = row[1].toNumber();
-        const total = row[0].mul(row[1]);
-
-        this.volumeBids = this.volumeBids.add(total);
+        const price = row[0].toNumber().toFixed(this.currentPrecision);
+        const amount = row[1].toNumber().toFixed(this.currentPrecision);
+        const total = row[0].mul(row[1]).toNumber().toFixed(this.currentPrecision);
 
         this.bidsFormatted.push({
           price,
           amount,
-          total: total.toNumber(),
+          total,
           filled: this.getAmountProportion(row[1], maxBidAmount),
         });
       });
@@ -407,7 +400,7 @@ $background-column-color-dark: #693d81;
   }
 
   .order-info {
-    width: 100px;
+    width: 130px;
     padding: 4px 16px 4px 16px;
     transform: scaleX(-1);
 
