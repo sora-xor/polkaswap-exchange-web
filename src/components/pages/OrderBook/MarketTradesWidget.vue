@@ -73,6 +73,7 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .market-trades {
+  overflow: hidden;
   min-height: 327px;
 
   &__title {

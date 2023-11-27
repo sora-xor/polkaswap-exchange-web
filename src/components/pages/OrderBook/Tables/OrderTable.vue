@@ -78,7 +78,7 @@
       </s-table-column>
       <s-table-column width="93">
         <template #header>
-          <span>Status</span>
+          <span>STATUS</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-table__status">{{ row.status }}</span>

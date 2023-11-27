@@ -365,6 +365,7 @@ $background-column-color-dark: #693d81;
     justify-content: space-between;
     margin: 2px;
     transform-style: preserve-3d;
+    font-family: 'JetBrains Mono';
   }
 
   &__title {

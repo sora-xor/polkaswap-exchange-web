@@ -544,10 +544,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (!this.areTokensSelected) return;
 
-    console.info('tokenFrom', this.tokenFrom);
-    console.info('tokenTo', this.tokenTo);
-    console.info('base amount', this.baseValue);
-
     const observableQuote = api.swap.subscribeOnResultRpc(
       (this.tokenFrom as AccountAsset).address,
       (this.tokenTo as AccountAsset).address,
@@ -558,8 +554,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     this.quoteSubscription = observableQuote.subscribe(async (quoteData) => {
       const { amount } = await quoteData;
-
-      console.info('quote amount', FPNumber.fromCodecValue(amount).toString());
 
       if (FPNumber.fromCodecValue(amount).isZero() || this.limitOrderType === LimitOrderType.limit) {
         this.resetQuoteSubscription();
@@ -812,6 +806,19 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       font-size: var(--s-font-size-large);
       line-height: var(--s-line-height-small);
       font-weight: 700;
+    }
+
+    // overwrite select-button styles
+    button.el-button.neumorphic.s-tertiary:focus:not(:active) {
+      outline: none;
+    }
+    button.el-button.el-button--select-token.token-select-button--token {
+      &:hover,
+      &:focus {
+        box-shadow: unset;
+        cursor: initial;
+        outline: none;
+      }
     }
   }
 }

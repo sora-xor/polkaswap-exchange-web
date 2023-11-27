@@ -1,7 +1,7 @@
 <template>
   <div class="order-book-popover">
     <div class="order-book-popover__title">
-      <span>Choose orderbook</span>
+      <span>Choose trading pair</span>
       <s-tooltip slot="suffix" border-radius="mini" :content="chooseOrderbookTooltip" placement="top" tabindex="-1">
         <s-icon name="info-16" size="14px" />
       </s-tooltip>
