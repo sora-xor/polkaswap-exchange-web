@@ -28,7 +28,7 @@
     <div v-if="asksFormatted.length" class="stock-book-sell">
       <div class="margin" :style="getHeight()" />
       <div v-for="order in getSellOrders()" :key="order.price" class="row">
-        <span class="order-info">{{ order.total }}</span>
+        <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
         <span class="order-info price">{{ order.price }}</span>
         <div class="bar" :style="getStyles(order.filled)" />
@@ -44,7 +44,7 @@
     </div>
     <div v-if="bidsFormatted.length" class="stock-book-buy">
       <div v-for="order in getBuyOrders()" :key="order.price" class="row">
-        <span class="order-info">{{ order.total }}</span>
+        <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
         <span class="order-info price">{{ order.price }}</span>
         <div class="bar" :style="getStyles(order.filled)" />
@@ -407,8 +407,14 @@ $background-column-color-dark: #693d81;
   }
 
   .order-info {
+    width: 100px;
     padding: 4px 16px 4px 16px;
     transform: scaleX(-1);
+
+    &.amount,
+    &.total {
+      text-align: end;
+    }
   }
 
   &-buy,
