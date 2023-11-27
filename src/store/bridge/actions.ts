@@ -554,7 +554,7 @@ const actions = defineActions({
   },
 
   async updateExternalHistory(context, clearHistory = false): Promise<void> {
-    const { commit, getters, state, rootState } = bridgeActionContext(context);
+    const { commit, getters, rootState } = bridgeActionContext(context);
     const { networkSelected } = rootState.web3;
 
     if (!networkSelected || getters.networkHistoryLoading) return;
