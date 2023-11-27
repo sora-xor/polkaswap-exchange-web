@@ -77,11 +77,17 @@ class SubBridgeHistory extends SubNetworksConnector {
   }
 
   public async clearHistory(
+    network: SubNetwork,
     inProgressIds: Record<string, boolean>,
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
-    // don't remove history, what in progress
-    const ids = Object.keys(subBridgeApi.history).filter((id) => !(id in inProgressIds));
+    // don't remove history, what in progress and from another network
+    const ids = Object.entries(subBridgeApi.history).reduce<string[]>((acc, [id, item]) => {
+      if (!(id in inProgressIds) && (item as SubHistory).externalNetwork === network) {
+        acc.push(id);
+      }
+      return acc;
+    }, []);
     subBridgeApi.removeHistory(...ids);
     await updateCallback?.();
   }
@@ -450,7 +456,7 @@ export const updateSubBridgeHistory =
       await subBridgeHistory.init(networkSelected as SubNetwork, subBridgeConnector);
 
       if (clearHistory) {
-        await subBridgeHistory.clearHistory(inProgressIds, updateCallback);
+        await subBridgeHistory.clearHistory(networkSelected as SubNetwork, inProgressIds, updateCallback);
       }
 
       await subBridgeHistory.updateAccountHistory(address, inProgressIds, assetDataByAddress, updateCallback);

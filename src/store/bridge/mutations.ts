@@ -123,10 +123,10 @@ const mutations = defineMutations<BridgeState>()({
   },
 
   setNetworkHistoryLoading(state, networkId: BridgeNetworkId): void {
-    state.historyLoading[networkId] = true;
+    state.historyLoading = { ...state.historyLoading, [networkId]: true };
   },
   resetNetworkHistoryLoading(state, networkId: BridgeNetworkId): void {
-    state.historyLoading[networkId] = false;
+    state.historyLoading = omit([networkId], state.historyLoading);
   },
 
   setNotificationData(state, tx: Nullable<IBridgeTransaction> = null) {
