@@ -37,7 +37,6 @@ def pipeline = new org.js.AppPipeline(steps: this,
     dojoProductType: 'sora',
     movingFiles: [ "*":"./", ".well-known/":"./"],
     trufflehogScanner: 'docker.soramitsu.co.jp/build-tools/trufflehog:dev',
-    deepSecretScannerJSON: 'docker.soramitsu.co.jp/build-tools/deepsecrets:v1.1.2-mod',
-    deepSecretScannerHTML: 'docker.soramitsu.co.jp/build-tools/deepsecrets:v1.1.2-mod'
+    deepSecretScannerJSON: 'docker.soramitsu.co.jp/build-tools/deepsecrets:v1.1.2-mod'
 )
 pipeline.runPipeline()
