@@ -644,8 +644,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (limitOrderType === LimitOrderType.limit) {
       this.resetQuoteSubscription();
-      this.setBaseValue('');
-      this.setQuoteValue('');
     }
 
     if (limitOrderType === LimitOrderType.market) {
