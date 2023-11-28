@@ -174,12 +174,13 @@ $path-color: var(--s-color-base-content-tertiary);
     &-sources {
       display: flex;
       flex-grow: 1;
-      padding: $inner-spacing-medium;
+      padding: $inner-spacing-medium 0 $inner-spacing-medium $inner-spacing-medium;
       gap: $inner-spacing-medium;
     }
 
     &-source {
       display: flex;
+      flex-flow: row wrap;
       flex-grow: 1;
       align-items: center;
       justify-content: space-between;
