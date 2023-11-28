@@ -12,10 +12,10 @@ import type { IBridgeTransaction } from '@sora-substrate/util';
 @Component
 export default class BridgeHistoryMixin<T extends IBridgeTransaction> extends Mixins(mixins.LoadingMixin) {
   @getter.bridge.history history!: Record<string, T>;
+  @getter.bridge.networkHistoryLoading networkHistoryLoading!: boolean;
 
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
   @state.router.prev prevRoute!: Nullable<PageNames>;
-  @state.bridge.historyLoading historyLoading!: boolean;
 
   @mutation.bridge.setSoraToEvm setSoraToEvm!: (value: boolean) => void;
   @mutation.bridge.setHistoryPage setHistoryPage!: (historyPage?: number) => void;

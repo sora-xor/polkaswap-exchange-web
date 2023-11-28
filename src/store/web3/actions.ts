@@ -21,7 +21,7 @@ async function connectSubNetwork(context: ActionContext<any, any>): Promise<void
 
   await subBridgeConnector.open(subNetwork.id as SubNetwork);
 
-  const ss58 = subBridgeConnector.networkAdapter.api.registry.chainSS58;
+  const ss58 = subBridgeConnector.network.adapter.api.registry.chainSS58;
 
   if (ss58) commit.setSubSS58(ss58);
 }
@@ -109,7 +109,7 @@ const actions = defineActions({
   async selectExternalNetwork(context, { id, type }: { id: BridgeNetworkId; type: BridgeNetworkType }): Promise<void> {
     const { commit, dispatch, rootDispatch } = web3ActionContext(context);
 
-    dispatch.disconnectExternalNetwork();
+    await dispatch.disconnectExternalNetwork();
 
     commit.setNetworkType(type);
     commit.setSelectedNetwork(id);
