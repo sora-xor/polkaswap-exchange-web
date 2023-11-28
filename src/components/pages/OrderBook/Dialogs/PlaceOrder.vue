@@ -105,13 +105,6 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   }
 
   async marketOrder() {
-    console.info('Market order swap params***');
-    console.info('this.tokenFrom', this.tokenFrom);
-    console.info('this.tokenTo', this.tokenTo);
-    console.info('this.fromValue', this.fromValue);
-    console.info('this.toValue', this.toValue);
-    console.info('this.isBuySide', this.isBuySide);
-
     return await api.swap.execute(
       this.tokenFrom,
       this.tokenTo,

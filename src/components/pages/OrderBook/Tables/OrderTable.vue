@@ -162,7 +162,7 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
         quoteAssetSymbol,
         pair,
         price: price.toLocaleString(),
-        total: total.toLocaleString(),
+        total: total.dp(4).toLocaleString(),
         side,
         status: status ?? OrderStatus.Active,
         created: { date: created.format('M/DD'), time: created.format('HH:mm:ss') },

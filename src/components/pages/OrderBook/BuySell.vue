@@ -97,7 +97,7 @@
       <span> {{ t(buttonText) }}</span>
     </s-button>
     <book-transaction-details
-      v-if="areTokensSelected && !hasZeroAmount && !buttonDisabled()"
+      v-if="areTokensSelected && !hasZeroAmount"
       class="info-line-container"
       :info-only="false"
     />
@@ -115,6 +115,7 @@
 import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber } from '@sora-substrate/util';
+import { DexId } from '@sora-substrate/util/build/dex/consts';
 import { MAX_TIMESTAMP } from '@sora-substrate/util/build/orderBook/consts';
 import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
@@ -131,7 +132,6 @@ import { getBookDecimals } from '@/utils/orderBook';
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { DexId } from '@sora-substrate/util/build/dex/consts';
 import type { Subscription } from 'rxjs';
 
 @Component({
@@ -587,8 +587,20 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.setFromValue(fromValue);
     this.setToValue(toValue);
     this.setQuoteValue(this.marketQuotePrice);
-    this.setLiquiditySource('OrderBook');
-    this.selectDexId(0);
+    this.setLiquiditySource(LiquiditySourceTypes.OrderBook);
+    this.selectDexId(DexId.XOR); // make it changeable if other dexes are allowed
+  }
+
+  beforeDestroy(): void {
+    this.resetQuoteSubscription();
+    this.setTokenFromAddress(this.xor.address);
+    this.setFromValue('');
+    this.setTokenToAddress();
+    this.setToValue('');
+    this.setQuoteValue('');
+    this.setBaseValue('');
+    this.setLiquiditySource(LiquiditySourceTypes.Default);
+    this.selectDexId(DexId.XOR);
   }
 
   resetValues() {
