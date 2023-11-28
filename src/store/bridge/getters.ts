@@ -178,7 +178,7 @@ const getters = defineGetters<BridgeState>()({
     const { state, rootState } = bridgeGetterContext(args);
     const { networkSelected } = rootState.web3;
 
-    return !!networkSelected && !!state.historyLoading[networkSelected];
+    return !!(networkSelected && state.historyLoading[networkSelected]);
   },
 });
 

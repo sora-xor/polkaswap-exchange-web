@@ -145,8 +145,8 @@ export const getWalletAddress = (): string => {
   return storage.get('address');
 };
 
-export async function delay(ms = 50): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, ms));
+export async function delay(ms = 50, success = true): Promise<void> {
+  return await new Promise((resolve, reject) => setTimeout(success ? resolve : reject, ms));
 }
 
 export async function conditionalAwait(func: AsyncFnWithoutArgs, wait: boolean): Promise<void> {
