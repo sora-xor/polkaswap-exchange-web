@@ -5,10 +5,10 @@
       <h1 class="title">{{ t('soraStaking.validatorsAttentionDialog.title') }}</h1>
       <div class="description">
         <template v-for="item in description">
-          <p :key="item">
+          <p :key="'p_' + item">
             {{ item }}
           </p>
-          <br :key="item" />
+          <br :key="'br_' + item" />
         </template>
       </div>
 
