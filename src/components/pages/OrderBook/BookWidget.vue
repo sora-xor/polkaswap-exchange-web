@@ -353,6 +353,8 @@ $background-column-color-dark: #693d81;
 }
 
 .stock-book {
+  overflow: hidden;
+
   .row {
     display: flex;
     justify-content: space-between;
