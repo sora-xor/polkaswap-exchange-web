@@ -68,9 +68,9 @@ import type { OrderBookDealData } from '@/types/orderBook';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 interface LimitOrderForm {
-  price: number;
-  amount: number;
-  total: number;
+  price: string;
+  amount: string;
+  total: string;
   filled?: number;
 }
 
