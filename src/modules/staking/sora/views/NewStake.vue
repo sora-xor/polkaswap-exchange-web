@@ -87,9 +87,7 @@ export default class SoraStakingForm extends Mixins(StakingMixin, mixins.Loading
   showValidatorsAttentionDialog = false;
 
   get networkFee(): CodecString {
-    return FPNumber.fromCodecValue(this.networkFees[Operation.StakingNominate])
-      .add(FPNumber.fromCodecValue(this.networkFees[Operation.StakingBond]))
-      .toCodecString();
+    return this.networkFees[Operation.StakingBondAndNominate];
   }
 
   get inputTitle(): string {

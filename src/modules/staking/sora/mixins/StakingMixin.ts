@@ -49,6 +49,7 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
 
   @action.staking.bond bond!: AsyncFnWithoutArgs;
   @action.staking.nominate nominate!: AsyncFnWithoutArgs;
+  @action.staking.bondAndNominate bondAndNominate!: AsyncFnWithoutArgs;
   @action.staking.bondExtra bondExtra!: AsyncFnWithoutArgs;
   @action.staking.unbond unbond!: AsyncFnWithoutArgs;
   @action.staking.withdraw withdraw!: (value: number) => Promise<void>;

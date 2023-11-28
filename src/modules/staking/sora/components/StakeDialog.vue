@@ -99,9 +99,7 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
   get networkFee(): CodecString {
     switch (this.mode) {
       case StakeDialogMode.NEW:
-        return FPNumber.fromCodecValue(this.networkFees[Operation.StakingBond])
-          .add(FPNumber.fromCodecValue(this.networkFees[Operation.StakingNominate]))
-          .toCodecString();
+        return this.networkFees[Operation.StakingBondAndNominate];
       case StakeDialogMode.ADD:
         return this.networkFees[Operation.StakingBondExtra];
       default:
@@ -188,8 +186,7 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
     this.setStakeAmount(this.value);
 
     if (this.mode === StakeDialogMode.NEW) {
-      await this.bond();
-      await this.nominate();
+      await this.bondAndNominate();
     } else if (this.mode === StakeDialogMode.ADD) {
       await this.bondExtra();
     } else {

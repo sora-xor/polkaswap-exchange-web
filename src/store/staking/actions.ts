@@ -17,10 +17,25 @@ const actions = defineActions({
     await api.staking.bond({ controller, value: state.stakeAmount, payee: state.payee });
   },
 
-  async nominate(context, validators: ValidatorInfo[]): Promise<void> {
+  async nominate(context): Promise<void> {
     const { state } = stakingActionContext(context);
 
     await api.staking.nominate({ validators: state.selectedValidators.map((v) => v.address) });
+  },
+
+  async bondAndNominate(context): Promise<void> {
+    const { state, getters } = stakingActionContext(context);
+
+    const controller = state.controller || getters.stash;
+
+    if (!state.payee) throw new Error('Payee is not set');
+
+    await api.staking.bondAndNominate({
+      controller,
+      value: state.stakeAmount,
+      payee: state.payee,
+      validators: state.selectedValidators.map((v) => v.address),
+    });
   },
 
   async bondExtra(context): Promise<void> {
