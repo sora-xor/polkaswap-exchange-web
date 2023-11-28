@@ -1,6 +1,7 @@
 import { defineMutations } from 'direct-vuex';
 
 import { ValidatorsListMode } from '@/modules/staking/sora/consts';
+import { ValidatorsFilter } from '@/modules/staking/sora/types';
 
 import type { StakingState } from './types';
 import type {
@@ -16,6 +17,13 @@ import type { Subscription } from 'rxjs';
 const mutations = defineMutations<StakingState>()({
   setStakeAmount(state, amount: string): void {
     state.stakeAmount = amount;
+  },
+
+  setValidatorsFilter(state, filter: ValidatorsFilter) {
+    state.validatorsFilter = { ...filter };
+  },
+  setShowValidatorsFilterDialog(state, show) {
+    state.showValidatorsFilterDialog = show;
   },
 
   setValidatorsType(state, validatorsType: ValidatorsListMode.RECOMMENDED | ValidatorsListMode.SELECT): void {
@@ -82,6 +90,10 @@ const mutations = defineMutations<StakingState>()({
 
   setMaxNominations(state, count: number): void {
     state.maxNominations = count;
+  },
+
+  setHistoryDepth(state, historyDepth: number): void {
+    state.historyDepth = historyDepth;
   },
 
   setStakingInfo(state, info: MyStakingInfo): void {

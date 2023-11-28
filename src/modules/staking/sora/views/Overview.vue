@@ -3,6 +3,7 @@
     <div class="header">
       <back-button :page="StakingPageNames.Staking" />
       <s-button
+        v-if="stakingInitialized"
         type="action"
         class="dropdown-menu-button"
         :tooltip="t('headerMenu.settings')"
@@ -37,59 +38,73 @@
       </div>
     </div>
     <h1>{{ t('soraStaking.overview.title') }}</h1>
-    <p v-if="!hasStake">
+    <p v-if="!stakingInitialized">
       {{ t('soraStaking.overview.description') }}
     </p>
     <template v-if="isLoggedIn">
       <div class="additional-buttons">
-        <s-button v-if="hasStake" class="additional-button s-typography-button--medium" @click="claimRewards">
+        <s-button v-if="stakingInitialized" class="additional-button s-typography-button--medium" @click="claimRewards">
           {{ t('soraStaking.actions.claim') }}
         </s-button>
-        <s-button v-if="hasStake" class="additional-button s-typography-button--medium" @click="removeStake">
+        <s-button v-if="stakingInitialized" class="additional-button s-typography-button--medium" @click="removeStake">
           {{ t('soraStaking.actions.remove') }}
         </s-button>
       </div>
-      <s-button v-if="!hasStake" class="stake-button s-typography-button--medium" type="primary" @click="stakeNew">
+      <s-button
+        v-if="!stakingInitialized"
+        class="stake-button s-typography-button--medium"
+        type="primary"
+        @click="stakeNew"
+      >
         {{ t('soraStaking.actions.start') }}
       </s-button>
-      <s-button v-if="hasStake" class="stake-button s-typography-button--medium" type="primary" @click="stakeMore">
+      <s-button
+        v-if="stakingInitialized"
+        class="stake-button s-typography-button--medium"
+        type="primary"
+        @click="stakeMore"
+      >
         {{ t('soraStaking.actions.more') }}
       </s-button>
       <div class="info">
         <info-line
-          v-if="hasStake"
+          v-if="stakingInitialized"
           :label="t('soraStaking.info.stakingBalance')"
           :value="lockedFundsFormatted"
           :asset-symbol="stakingAsset?.symbol"
           :fiat-value="lockedFundsFiat"
         />
         <info-line
-          v-if="hasStake"
+          v-if="stakingInitialized"
           :label="t('soraStaking.info.rewarded')"
           :value="rewardedFundsFormatted"
           :asset-symbol="rewardAsset?.symbol"
           :fiat-value="rewardedFundsFiat"
         />
         <info-line
-          v-if="hasStake"
+          v-if="stakingInitialized"
           :label="t('soraStaking.info.unstaking')"
           :value="unlockingFundsFormatted"
           :asset-symbol="stakingAsset?.symbol"
           :fiat-value="unlockingFundsFiat"
         />
         <info-line
-          v-if="hasStake"
+          v-if="stakingInitialized"
           :label="t('soraStaking.info.redeemable')"
           :value="redeemableFundsFormatted"
           :asset-symbol="rewardAsset?.symbol"
           :fiat-value="redeemableFundsFiat"
         />
-        <info-line v-if="!hasStake" :label="t('soraStaking.info.totalLiquidityStaked')" :value="totalStakedFormatted" />
-        <info-line v-if="!hasStake" :label="t('soraStaking.info.apy')" :value="maxApy + '%'" />
+        <info-line
+          v-if="!stakingInitialized"
+          :label="t('soraStaking.info.totalLiquidityStaked')"
+          :value="totalStakedFormatted"
+        />
+        <info-line v-if="!stakingInitialized" :label="t('soraStaking.info.apy')" :value="maxApy + '%'" />
         <info-line :label="t('soraStaking.info.rewardToken')" :value="rewardAsset?.symbol" />
         <info-line v-if="unbondPeriod" :label="t('soraStaking.info.unstakingPeriod')" :value="unbondPeriodFormatted" />
         <info-line
-          v-if="!hasStake"
+          v-if="!stakingInitialized"
           :label="t('soraStaking.info.minimumStake')"
           :value="minNominatorBondFormatted"
           :asset-symbol="stakingAsset?.symbol"
@@ -158,7 +173,7 @@ type MenuItem = {
     ValidatorsDialog: soraStakingLazyComponent(SoraStakingComponents.ValidatorsDialog),
   },
 })
-export default class SoraStaking extends Mixins(StakingMixin, mixins.LoadingMixin, TranslationMixin) {
+export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, TranslationMixin) {
   @mutation.staking.setTotalNominators setTotalNominators!: (value: number) => void;
 
   @state.staking.totalNominators totalNominators!: number;
@@ -340,7 +355,7 @@ h1 {
 }
 
 p {
-  color: var(--base-day-content-secondary, #a19a9d);
+  color: var(--s-color-base-content-secondary);
   text-align: center;
   font-feature-settings: 'case' on, 'clig' off, 'liga' off;
   font-family: Sora;

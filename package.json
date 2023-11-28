@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
-    "@soramitsu/soraneo-wallet-web": "1.26.1",
+    "@soramitsu/soraneo-wallet-web": "1.26.3",
     "@walletconnect/ethereum-provider": "^2.10.4",
     "@walletconnect/modal": "^2.6.2",
     "core-js": "^3.33.2",
@@ -97,7 +97,8 @@
     "@polkadot/util": "^10.4.2",
     "ipfs-unixfs": "6.0.6",
     "ipfs-unixfs-exporter": "7.0.6",
-    "ipfs-unixfs-importer": "9.0.6"
+    "ipfs-unixfs-importer": "9.0.6",
+		"@sora-substrate/util": "1.26.3"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

@@ -5,7 +5,7 @@
     </staking-header>
     <div v-if="!isSelectingEditingMode" class="content">
       <s-tabs v-if="hasTabs" class="tabs" v-model="mode" type="rounded">
-        <s-tab v-for="tab in tabs" :key="tab" :label="t(`soraStaking.validators.tabs.${tab}`)" :name="tab" />
+        <s-tab v-for="tab in tabs" :key="tab" :label="t(`soraStaking.validatorsDialog.tabs.${tab}`)" :name="tab" />
       </s-tabs>
       <validators-list
         :mode="mode"

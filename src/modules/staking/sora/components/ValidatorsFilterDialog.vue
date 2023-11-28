@@ -109,7 +109,7 @@ export default class ValidatorsFilterDialog extends Mixins(StakingMixin, mixins.
   padding: 20px 0;
 
   &:not(:last-child) {
-    border-bottom: 1px solid #e1e1e1;
+    border-bottom: 1px solid var(--s-color-base-border-secondary);
   }
 
   &-header {

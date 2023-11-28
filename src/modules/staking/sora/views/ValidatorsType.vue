@@ -1,13 +1,9 @@
 <template>
   <div class="container">
     <staking-header :previous-page="SoraStakingPageNames.NewStake">
-      {{ t('staking.validatorsType.title') }}
+      {{ t('soraStaking.validatorsType.title') }}
     </staking-header>
-    <select-validators-mode
-      :title="t('staking.validatorsType.title')"
-      @recommended="stakeWithSuggested"
-      @selected="stakeWithSelected"
-    />
+    <select-validators-mode @recommended="stakeWithSuggested" @selected="stakeWithSelected" />
     <validators-attention-dialog
       :visible.sync="showValidatorsAttentionDialog"
       :parent-loading="parentLoading || loading"
@@ -76,7 +72,7 @@ h4 {
   gap: 18px;
   padding: 18px;
   border-radius: 24px;
-  background: var(--base-day-border-primary, #f7f3f4);
+  background: var(--s-color-base-border-primary);
   box-shadow: 1px 1px 2px 0px rgba(255, 255, 255, 0.8) inset, 1px 1px 10px 0px rgba(0, 0, 0, 0.1),
     -5px -5px 10px 0px #fff;
 }
@@ -101,7 +97,7 @@ h4 {
 }
 
 .manual-select {
-  color: var(--theme-day-accent, #f8087b);
+  color: var(--s-color-theme-accent);
   text-align: center;
   font-size: 14px;
   font-style: normal;

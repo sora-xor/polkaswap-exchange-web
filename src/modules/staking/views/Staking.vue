@@ -260,14 +260,14 @@ $title-height: 42px;
     display: block;
     width: 100%;
     height: 1px;
-    background: #ede4e7;
+    background: var(--s-color-base-border-secondary);
     margin-bottom: $inner-spacing-medium;
   }
 }
 
 .staking-info {
   &-subtitle {
-    color: var(--theme-day-accent, #f8087b);
+    color: var(--s-color-theme-accent);
     font-feature-settings: 'clig' off, 'liga' off;
     font-family: Sora;
     font-size: 11px;

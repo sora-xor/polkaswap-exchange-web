@@ -52,12 +52,6 @@
       </ul>
     </s-scrollbar>
     <div class="blackout" />
-    <filter-dialog
-      :visible.sync="showFilterDialog"
-      :parent-loading="parentLoading || loading"
-      :filter="filter"
-      @save="handleChangeFilter"
-    />
   </div>
 </template>
 
@@ -76,6 +70,7 @@ import {
   ValidatorsListMode,
 } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
+import ValidatorsMixin from '../mixins/ValidatorsMixin';
 import { ValidatorsFilter } from '../types';
 
 import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types';
@@ -109,21 +104,18 @@ function filterValidators(validators: ValidatorInfoFull[], filter: ValidatorsFil
     TokenInput: lazyComponent(Components.TokenInput),
     InfoLine: components.InfoLine,
     StakingHeader: soraStakingLazyComponent(SoraStakingComponents.StakingHeader),
-    FilterDialog: soraStakingLazyComponent(SoraStakingComponents.ValidatorsFilterDialog),
     ValidatorAvatar: soraStakingLazyComponent(SoraStakingComponents.ValidatorAvatar),
   },
 })
-export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingMixin) {
+export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin, mixins.LoadingMixin) {
   @Prop({ required: true, type: String }) readonly mode!: ValidatorsListMode;
 
   ValidatorsListMode = ValidatorsListMode;
 
-  showFilterDialog = false;
-  filter: ValidatorsFilter = { ...emptyValidatorsFilter };
   search = '';
 
   get filteredValidators() {
-    const filtered = filterValidators(this.validators, this.filter, this.search);
+    const filtered = filterValidators(this.validators, this.validatorsFilter, this.search);
     switch (this.mode) {
       case ValidatorsListMode.RECOMMENDED:
         return filterValidators(this.validators, recommendedValidatorsFilter, '').slice(0, this.maxNominations);
@@ -132,11 +124,6 @@ export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingM
       default:
         return filtered;
     }
-  }
-
-  handleChangeFilter(filter: ValidatorsFilter): void {
-    this.showFilterDialog = false;
-    this.filter = { ...filter };
   }
 
   toggleSelectValidator(validator: ValidatorInfoFull) {
@@ -161,19 +148,17 @@ export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingM
     return validator.identity?.info.image ? validator.identity?.info.image : '/staking/validator-avatar.svg';
   }
 
-  formatName(validator: ValidatorInfoFull) {
-    const maxLength = 20;
-    const name = validator.identity?.info.display ? validator.identity?.info.display : validator.address;
-    return name.length > maxLength ? name.slice(0, maxLength) + '...' : name;
-  }
-
   @Watch('validators', { immediate: true })
   onValidatorsChange() {
     this.$emit('update:selected', this.mode === ValidatorsListMode.RECOMMENDED ? this.filteredValidators : []);
   }
 
   openFilters() {
-    this.showFilterDialog = true;
+    this.setShowValidatorsFilterDialog(true);
+  }
+
+  created() {
+    this.setValidatorsFilter(emptyValidatorsFilter);
   }
 }
 </script>
@@ -228,7 +213,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingM
   bottom: 0;
   left: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(253, 247, 251, 0) 0%, #fdf7fb 100%);
+  background: linear-gradient(180deg, var(--s-color-utility-surface) 0%, var(--s-color-utility-surface) 100%);
 }
 
 .table-header {
@@ -236,7 +221,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingM
   align-content: center;
   height: 36px;
   margin-top: 16px;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid var(--s-color-base-border-secondary);
 
   &-item {
     display: flex;
@@ -291,7 +276,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingM
       align-items: center;
       height: 100%;
       padding: 10px 0;
-      border-bottom: 1px solid #eaeaea;
+      border-bottom: 1px solid var(--s-color-base-border-secondary);
     }
   }
 }
@@ -326,7 +311,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingM
 }
 
 .return {
-  color: var(--status-day-warning, #479aef);
+  color: var(--s-color-status-info);
   text-align: right;
   font-feature-settings: 'case' on, 'clig' off, 'liga' off;
   font-family: Sora;
@@ -339,12 +324,6 @@ export default class ValidatorsList extends Mixins(StakingMixin, mixins.LoadingM
   span {
     margin-right: 8px;
   }
-}
-
-.selected-icon {
-  color: green;
-  font-size: 1.5em;
-  margin-left: 10px;
 }
 
 .select-area {

@@ -1,4 +1,5 @@
 import { ValidatorsListMode } from '@/modules/staking/sora/consts';
+import { ValidatorsFilter } from '@/modules/staking/sora/types';
 
 import type { FPNumber } from '@sora-substrate/math';
 import type {
@@ -25,6 +26,9 @@ export type StakingState = {
   stakeAmount: string;
   newStakeValidatorsMode: Nullable<ValidatorsListMode.RECOMMENDED | ValidatorsListMode.SELECT>;
 
+  validatorsFilter: ValidatorsFilter;
+  showValidatorsFilterDialog: boolean;
+
   wannabeValidators: readonly ValidatorInfo[];
   validatorsInfo: readonly ValidatorInfo[];
   selectedValidators: readonly ValidatorInfo[];
@@ -34,6 +38,7 @@ export type StakingState = {
   minNominatorBond: Nullable<number>;
   unbondPeriod: Nullable<number>;
   maxNominations: Nullable<number>;
+  historyDepth: Nullable<number>;
 
   totalNominators: Nullable<number>;
 

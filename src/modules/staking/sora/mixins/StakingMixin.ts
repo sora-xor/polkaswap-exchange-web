@@ -9,6 +9,7 @@ import { getAssetBalance, hasInsufficientXorForFee, formatDecimalPlaces } from '
 
 import { StakingPageNames } from '../../consts';
 import { SoraStakingPageNames, ValidatorsListMode, rewardAsset } from '../consts';
+import { ValidatorsFilter } from '../types';
 
 import type { NetworkFeesObject, CodecString } from '@sora-substrate/util';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -34,6 +35,8 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   @state.staking.maxNominations maxNominations!: number;
   @state.staking.accountLedger accountLedger!: Nullable<AccountStakingLedger>;
   @state.staking.pendingRewards pendingRewards!: Nullable<NominatorReward>;
+  @state.staking.validatorsFilter validatorsFilter!: ValidatorsFilter;
+  @state.staking.showValidatorsFilterDialog showValidatorsFilterDialog!: boolean;
 
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
 
@@ -41,11 +44,14 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   @mutation.staking.setStakeAmount setStakeAmount!: (value: string) => void;
+  @mutation.staking.setValidatorsFilter setValidatorsFilter!: (value: ValidatorsFilter) => void;
+  @mutation.staking.setShowValidatorsFilterDialog setShowValidatorsFilterDialog!: (value: boolean) => void;
 
   @action.staking.bond bond!: AsyncFnWithoutArgs;
   @action.staking.nominate nominate!: AsyncFnWithoutArgs;
   @action.staking.bondExtra bondExtra!: AsyncFnWithoutArgs;
   @action.staking.unbond unbond!: AsyncFnWithoutArgs;
+  @action.staking.withdraw withdraw!: (value: number) => Promise<void>;
   @action.staking.payoutAll payoutAll!: AsyncFnWithoutArgs;
 
   StakingPageNames = StakingPageNames;
@@ -138,8 +144,8 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
     return this.rewardAsset ? this.getFiatAmountByFPNumber(this.rewardedFunds, this.rewardAsset) : null;
   }
 
-  get hasStake(): boolean {
-    return !this.lockedFunds.isZero();
+  get stakingInitialized(): boolean {
+    return this.stakingInfo?.totalStake !== '0';
   }
 
   get stakingAssetBalance(): FPNumber {

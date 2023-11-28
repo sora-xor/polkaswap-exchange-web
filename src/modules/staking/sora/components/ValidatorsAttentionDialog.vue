@@ -78,7 +78,7 @@ export default class ValidatorsAttentionDialog extends Mixins(StakingMixin, mixi
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
-  color: var(--base-day-content-primary, #2a171f);
+  color: var(--s-color-base-content-primary);
   text-align: center;
   font-feature-settings: 'case' on, 'clig' off, 'liga' off;
 

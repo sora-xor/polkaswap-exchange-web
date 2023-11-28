@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-loading="parentLoading || !validators.length">
-    <staking-header :previous-page="SoraStakingPageNames.NewStake">{{ title }}</staking-header>
+    <staking-header :previous-page="SoraStakingPageNames.ValidatorsType">{{ title }}</staking-header>
     <validators-list
       :mode="newStakeValidatorsMode"
       :validators="validators"

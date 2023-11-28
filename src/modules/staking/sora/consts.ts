@@ -2,6 +2,8 @@ import { ValidatorsFilter } from './types';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
+export const ERA_HOURS = 6;
+
 export enum SoraStakingPageNames {
   Overview = 'Overview',
   NewStake = 'NewStake',

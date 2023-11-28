@@ -18,7 +18,7 @@
 
       <div class="info">
         <info-line
-          v-if="hasStake"
+          v-if="stakingInitialized"
           :label="t('soraStaking.info.redeemable')"
           :value="redeemableFundsFormatted"
           :asset-symbol="rewardAsset?.symbol"
@@ -156,9 +156,7 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   }
 
   async handleConfirm(): Promise<void> {
-    this.setStakeAmount(this.value);
-
-    // await this.claimRewards();
+    await this.withdraw(Number(this.value));
   }
 
   checkPendingRewards(): void {
@@ -191,7 +189,7 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
 }
 
 .check-pending-rewards {
-  color: var(--theme-day-accent, #f8087b);
+  color: var(--s-color-theme-accent);
   text-align: center;
   font-size: 14px;
   line-height: 20px;

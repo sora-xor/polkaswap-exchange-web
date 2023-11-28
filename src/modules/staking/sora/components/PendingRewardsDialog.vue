@@ -23,7 +23,13 @@
         >
           <div class="reward-content">
             <validator-avatar class="avatar" :validator="reward.validator">
-              <s-icon v-if="reward.daysLeft < 5" icon="notifications-alert-triangle-24" size="12px" slot="icon" />
+              <s-icon
+                class="alert-icon"
+                v-if="reward.alert"
+                name="notifications-alert-triangle-24"
+                size="16px"
+                slot="icon"
+              />
             </validator-avatar>
             <div class="reward-lines">
               <div class="reward-line">
@@ -31,12 +37,12 @@
                   {{ reward.name }}
                 </div>
                 <div class="value">
-                  {{ reward.value }}
+                  {{ reward.valueFormatted }}
                 </div>
               </div>
               <div class="reward-line">
-                <div class="days-left">
-                  {{ reward.daysLeft }}
+                <div :class="computedClassDaysLeft(reward.alert)">
+                  {{ reward.daysLeftFormatted }}
                 </div>
                 <formatted-amount class="value-fiat" is-fiat-value with-left-shift :value="reward.valueFiat" />
               </div>
@@ -80,10 +86,12 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
+import { formatDecimalPlaces } from '@/utils';
 
 import { soraStakingLazyComponent } from '../../router';
-import { SoraStakingComponents } from '../consts';
+import { ERA_HOURS, SoraStakingComponents } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
+import ValidatorsMixin from '../mixins/ValidatorsMixin';
 
 import type { CodecString } from '@sora-substrate/util';
 
@@ -96,7 +104,12 @@ import type { CodecString } from '@sora-substrate/util';
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class PendingRewardsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
+export default class PendingRewardsDialog extends Mixins(
+  StakingMixin,
+  ValidatorsMixin,
+  mixins.DialogMixin,
+  mixins.LoadingMixin
+) {
   get networkFee(): CodecString {
     return this.networkFees[Operation.StakingPayout];
   }
@@ -112,10 +125,17 @@ export default class PendingRewardsDialog extends Mixins(StakingMixin, mixins.Di
       .map((element) => {
         return element.validators.map((validator) => {
           const validatorInfo = this.validators.find((v) => v.address === validator.address);
-          const validatorIdentity = validatorInfo?.identity;
-          const name = validatorIdentity?.info.display ? validatorIdentity?.info.display : validator.address;
-          const daysLeft = 0;
+          if (!validatorInfo) {
+            throw new Error(`There is no validator "${validator.address}" in the list`);
+          }
+          const name = this.formatName(validatorInfo);
+          const hoursLeft = ((this.historyDepth ?? 0) - (this.currentEra - Number(element.era))) * ERA_HOURS;
+          const daysLeft = Math.floor(hoursLeft / 24);
+          const daysLeftFormatted = daysLeft < 1 ? 'less then 1 day left' : daysLeft + ' days left';
+          const alert = daysLeft < 5;
           const value = validator.value;
+          const valueFormatted =
+            formatDecimalPlaces(new FPNumber(value, this.rewardAsset?.decimals)) + ' ' + this.rewardAsset?.symbol;
           const valueFiat = this.getFiatAmountByFPNumber(
             new FPNumber(value, this.rewardAsset?.decimals),
             this.rewardAsset ?? undefined
@@ -125,7 +145,10 @@ export default class PendingRewardsDialog extends Mixins(StakingMixin, mixins.Di
             id: `${validator.address}-${element.era}`,
             name,
             daysLeft,
+            daysLeftFormatted,
+            alert,
             value,
+            valueFormatted,
             valueFiat,
             validator: validatorInfo,
           };
@@ -133,6 +156,14 @@ export default class PendingRewardsDialog extends Mixins(StakingMixin, mixins.Di
       })
       .flat();
     return rewards;
+  }
+
+  computedClassDaysLeft(alert: boolean): string {
+    const base = ['days-left'];
+
+    if (alert) base.push('days-left--alert');
+
+    return base.join(' ');
   }
 
   get noReward(): boolean {
@@ -182,7 +213,7 @@ export default class PendingRewardsDialog extends Mixins(StakingMixin, mixins.Di
       align-items: center;
       height: 100%;
       padding: 10px 0;
-      border-bottom: 1px solid #eaeaea;
+      border-bottom: 1px solid var(--s-color-base-border-secondary);
     }
   }
 }
@@ -214,9 +245,9 @@ export default class PendingRewardsDialog extends Mixins(StakingMixin, mixins.Di
     border-radius: 50%;
     flex-shrink: 0;
     background: var(--s-color-status-info);
-    border: 2px solid #f7f3f4;
-    box-shadow: 20px 20px 60px 0px rgba(0, 0, 0, 0.1), 1px 1px 10px 0px #fff inset,
-      -10px -10px 30px 0px rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--s-color-base-border-primary);
+    // box-shadow: 20px 20px 60px 0px rgba(0, 0, 0, 0.1), 1px 1px 10px 0px #fff inset,
+    //   -10px -10px 30px 0px rgba(255, 255, 255, 0.9);
 
     i {
       margin-bottom: 2px;
@@ -226,20 +257,21 @@ export default class PendingRewardsDialog extends Mixins(StakingMixin, mixins.Di
 }
 
 .reward {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin-top: 12px;
   margin: 12px 24px;
 }
 
 .reward-content {
   display: flex;
+  align-items: center;
+  width: 100%;
   gap: 12px;
-  padding: 8px 12px;
+  padding: 8px 18px 8px 12px;
+  margin: 0;
 }
 
 .reward-lines {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
@@ -247,18 +279,18 @@ export default class PendingRewardsDialog extends Mixins(StakingMixin, mixins.Di
 .reward-line {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  height: 21px;
 }
 
-.icon {
-  background-color: #e0e0e0; /* Placeholder for the icon background */
-  border-radius: 50%;
-  padding: 10px;
-  margin-right: 10px;
+.avatar {
+  flex-shrink: 0;
 }
 
 /* Warning icon style */
-.warning-icon {
-  color: #ff9800; /* Orange color for warning icon */
+.alert-icon {
+  margin-bottom: 3px;
+  color: var(--s-color-status-warning);
 }
 
 /* Item details */
@@ -268,12 +300,15 @@ export default class PendingRewardsDialog extends Mixins(StakingMixin, mixins.Di
 }
 
 .days-left {
-  color: #757575; /* Grey color for secondary info */
+  color: var(--s-color-base-content-secondary);
   font-size: 0.9em;
+
+  &--alert {
+    color: var(--s-color-status-warning);
+  }
 }
 
 .value {
   font-weight: bold;
-  color: #4caf50; /* Green color for value */
 }
 </style>

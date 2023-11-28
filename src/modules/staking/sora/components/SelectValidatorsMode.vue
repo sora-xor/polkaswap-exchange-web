@@ -38,7 +38,6 @@ import StakingMixin from '../mixins/StakingMixin';
 })
 export default class SelectValidatorsMode extends Mixins(StakingMixin, mixins.LoadingMixin) {
   @Prop({ type: String }) previousPage?: string;
-  @Prop({ type: String }) title!: string;
 
   @mutation.staking.setValidatorsType private setValidatorsType!: (type: ValidatorsListMode) => void;
 
@@ -77,9 +76,8 @@ h4 {
   gap: 18px;
   padding: 18px;
   border-radius: 24px;
-  background: var(--base-day-border-primary, #f7f3f4);
-  box-shadow: 1px 1px 2px 0px rgba(255, 255, 255, 0.8) inset, 1px 1px 10px 0px rgba(0, 0, 0, 0.1),
-    -5px -5px 10px 0px #fff;
+  background: var(--s-color-base-border-primary);
+  box-shadow: var(--s-shadow-dialog);
 }
 
 .criteria {
@@ -102,7 +100,7 @@ h4 {
 }
 
 .manual-select {
-  color: var(--theme-day-accent, #f8087b);
+  color: var(--s-color-theme-accent);
   text-align: center;
   font-size: 14px;
   font-style: normal;

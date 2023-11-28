@@ -1,5 +1,10 @@
 <template>
-  <status-badge-shared :active="hasStake" :stopped="false" :apr="soraStakingAPYFormatted" :reward-asset="rewardAsset" />
+  <status-badge-shared
+    :active="stakingInitialized"
+    :stopped="false"
+    :apr="soraStakingAPYFormatted"
+    :reward-asset="rewardAsset"
+  />
 </template>
 
 <script lang="ts">

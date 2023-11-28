@@ -19,7 +19,7 @@ import { SoraStakingComponents } from '../consts';
 })
 export default class SoraStaking extends Mixins() {
   @Prop({ type: String }) readonly previousPage?: StakingPageNames;
-  @Prop({ type: Boolean }) readonly hasBackButton?: boolean;
+  @Prop({ type: Boolean, default: true }) readonly hasBackButton!: boolean;
 }
 </script>
 

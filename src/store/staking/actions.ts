@@ -109,6 +109,14 @@ const actions = defineActions({
     commit.setMaxNominations(maxNominations);
   },
 
+  async getHistoryDepth(context): Promise<void> {
+    const { commit } = stakingActionContext(context);
+
+    const historyDepth = await api.staking.getHistoryDepth();
+
+    commit.setHistoryDepth(historyDepth);
+  },
+
   async subscribeOnActiveEra(context): Promise<void> {
     const { commit } = stakingActionContext(context);
 

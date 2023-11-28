@@ -808,6 +808,9 @@ export default {
       title: 'Start staking',
       minStakeWarning: 'The minimum stake to receive the reward is {min} {symbol}',
     },
+    validatorsType: {
+      title: 'Validators',
+    },
     validators: {
       save: 'Save changes',
       selected: '{selected}/{total} selected',
