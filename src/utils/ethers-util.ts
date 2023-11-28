@@ -135,7 +135,7 @@ function createWeb3Instance(ethereumProvider: any) {
 async function useExtensionProvider(provider: Provider): Promise<string> {
   switch (provider) {
     case Provider.Metamask:
-      ethereumProvider = await detectEthereumProvider({ timeout: 0 });
+      ethereumProvider = await detectEthereumProvider({ mustBeMetaMask: true, timeout: 0 });
       break;
     case Provider.SubWallet:
       ethereumProvider = (window as any).SubWallet;

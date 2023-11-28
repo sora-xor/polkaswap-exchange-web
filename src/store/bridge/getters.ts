@@ -160,9 +160,8 @@ const getters = defineGetters<BridgeState>()({
     const { state } = bridgeGetterContext(args);
 
     const internalHistory = Object.values(state.historyInternal);
-    const externalHistory = Object.values(state.historyExternal);
 
-    return [...internalHistory, ...externalHistory].reduce((buffer, item) => {
+    return [...internalHistory].reduce((buffer, item) => {
       if (!item.id) return buffer;
 
       return { ...buffer, [item.id]: item };
@@ -174,6 +173,12 @@ const getters = defineGetters<BridgeState>()({
     if (!state.historyId) return null;
 
     return getters.history[state.historyId] ?? null;
+  },
+  networkHistoryLoading(...args): boolean {
+    const { state, rootState } = bridgeGetterContext(args);
+    const { networkSelected } = rootState.web3;
+
+    return !!(networkSelected && state.historyLoading[networkSelected]);
   },
 });
 
