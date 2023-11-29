@@ -252,7 +252,7 @@ async function updateEthLockedBalance(context: ActionContext<any, any>): Promise
 }
 
 async function updateBridgeProxyLockedBalance(context: ActionContext<any, any>): Promise<void> {
-  const { commit, getters, rootState } = bridgeActionContext(context);
+  const { commit, getters, state, rootState } = bridgeActionContext(context);
   const { address, decimals } = getters.asset ?? {};
   const { networkSelected } = rootState.web3;
 
