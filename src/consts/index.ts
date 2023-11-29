@@ -96,6 +96,8 @@ export enum MarketAlgorithms {
   SMART = 'SMART',
   TBC = 'TBC',
   XYK = 'XYK',
+  XST = 'XST',
+  ORB = 'Order Book',
 }
 
 export const DefaultMarketAlgorithm = MarketAlgorithms.SMART;
@@ -209,6 +211,7 @@ export enum Components {
   SwapTransactionDetails = 'pages/Swap/TransactionDetails',
   SwapSettings = 'pages/Swap/Settings/Settings',
   SwapLossWarningDialog = 'pages/Swap/LossWarningDialog',
+  SwapDistribution = 'pages/Swap/Distribution',
   // Order Book
   BookWidget = 'pages/OrderBook/BookWidget',
   BookTransactionDetails = 'pages/OrderBook/TransactionDetails',

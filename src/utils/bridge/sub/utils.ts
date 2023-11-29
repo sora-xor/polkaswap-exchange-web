@@ -1,10 +1,13 @@
 import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
+import { FPNumber } from '@sora-substrate/util';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
+import { SubTransferType } from '@/utils/bridge/sub/types';
 
 import type { ApiPromise } from '@polkadot/api';
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 export const isUnsignedTx = (tx: SubHistory): boolean => {
@@ -25,6 +28,58 @@ export const updateTransaction = (id: string, params = {}): void => {
   subBridgeApi.saveHistory(data);
 };
 
+export const determineTransferType = (network: SubNetwork) => {
+  if (subBridgeApi.isSoraParachain(network)) {
+    return SubTransferType.SoraParachain;
+  } else if (subBridgeApi.isRelayChain(network)) {
+    return SubTransferType.Relaychain;
+  } else {
+    return SubTransferType.Parachain;
+  }
+};
+
+export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string => {
+  const bridgeProxyEvent = events.find((e) => api.events.bridgeProxy.RequestStatusUpdate.is(e.event));
+
+  if (!bridgeProxyEvent) {
+    throw new Error(`Unable to find "bridgeProxy.RequestStatusUpdate" event`);
+  }
+
+  return bridgeProxyEvent.event.data[0].toString();
+};
+
+export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): string => {
+  // Native token for network
+  const balancesDepositEvent = events.find(
+    (e) =>
+      api.events.balances.Deposit.is(e.event) &&
+      subBridgeApi.formatAddress(e.event.data.who.toString()) === subBridgeApi.formatAddress(to)
+  );
+
+  if (!balancesDepositEvent) throw new Error(`Unable to find "balances.Deposit" event`);
+
+  return balancesDepositEvent.event.data.amount.toString();
+};
+
+export const getReceivedAmount = (sendedAmount: string, receivedAmount: CodecString, decimals?: number) => {
+  const sended = new FPNumber(sendedAmount, decimals);
+  const received = FPNumber.fromCodecValue(receivedAmount, decimals);
+  const amount2 = received.toString();
+  const transferFee = sended.sub(received).toCodecString();
+
+  return { amount: amount2, transferFee };
+};
+
+export const getParachainSystemMessageHash = (events: Array<any>, api: ApiPromise) => {
+  const parachainSystemEvent = events.find((e) => api.events.parachainSystem.UpwardMessageSent.is(e.event));
+
+  if (!parachainSystemEvent) {
+    throw new Error(`Unable to find "parachainSystem.UpwardMessageSent" event`);
+  }
+
+  return parachainSystemEvent.event.data.messageHash.toString();
+};
+
 export const getMessageAcceptedNonces = (events: Array<any>, api: ApiPromise): [number, number] => {
   const messageAcceptedEvent = events.find((e) =>
     api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
@@ -38,6 +93,20 @@ export const getMessageAcceptedNonces = (events: Array<any>, api: ApiPromise): [
   const messageNonce = messageAcceptedEvent.event.data[2].toNumber();
 
   return [batchNonce, messageNonce];
+};
+
+export const getMessageDispatchedNonces = (events: Array<any>, api: ApiPromise): [number, number] => {
+  const messageDispatchedEvent = events.find((e) => api.events.substrateDispatch.MessageDispatched.is(e.event));
+
+  if (!messageDispatchedEvent) {
+    throw new Error('Unable to find "substrateDispatch.MessageDispatched" event');
+  }
+
+  const { batchNonce, messageNonce } = messageDispatchedEvent.event.data[0];
+  const eventBatchNonce = batchNonce.unwrap().toNumber();
+  const eventMessageNonce = messageNonce.toNumber();
+
+  return [eventBatchNonce, eventMessageNonce];
 };
 
 export const isMessageDispatchedNonces = (

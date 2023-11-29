@@ -19,6 +19,7 @@ export function initialState(): SwapState {
     isExchangeB: false,
     rewards: [],
     route: [],
+    distribution: [],
     isAvailable: false,
     liquiditySources: [],
     swapQuote: null,

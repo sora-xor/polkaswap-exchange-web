@@ -1,24 +1,26 @@
 <template>
   <dialog-base :visible.sync="visibility" :title="t('bridge.selectNetwork')" class="networks">
     <p class="networks-info">{{ t('bridge.networkInfo') }}</p>
-    <s-radio-group v-model="selectedNetworkTuple">
-      <s-radio
-        v-for="{ id, value, name, disabled, info } in networks"
-        :key="value"
-        :label="value"
-        :disabled="disabled"
-        class="network"
-      >
-        <div class="network-name">
-          <span>{{ name }}</span>
-          <div v-if="info" class="network-name-info">
-            <external-link v-if="info.link" :title="info.content" :href="info.content" />
-            <span v-else>{{ info.content }}</span>
+    <s-scrollbar class="networks-scrollbar">
+      <s-radio-group v-model="selectedNetworkTuple" class="networks-list">
+        <s-radio
+          v-for="{ id, value, name, disabled, info } in networks"
+          :key="value"
+          :label="value"
+          :disabled="disabled"
+          class="network"
+        >
+          <div class="network-name">
+            <span>{{ name }}</span>
+            <div v-if="info" class="network-name-info">
+              <external-link v-if="info.link" :title="info.content" :href="info.content" />
+              <span v-else>{{ info.content }}</span>
+            </div>
           </div>
-        </div>
-        <i :class="['network-icon', `network-icon--${getNetworkIcon(id)}`]" />
-      </s-radio>
-    </s-radio-group>
+          <i :class="['network-icon', `network-icon--${getNetworkIcon(id)}`]" />
+        </s-radio>
+      </s-radio-group>
+    </s-scrollbar>
   </dialog-base>
 </template>
 
@@ -79,7 +81,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
       .map(([type, record]) => {
         const networks = Object.values(record) as AvailableNetwork[];
 
-        return networks.reduce<NetworkItem[]>((buffer, { available, disabled, data: { id, name } }) => {
+        return networks.reduce<NetworkItem[]>((buffer, { disabled, data: { id, name } }) => {
           let content = '';
           let link = false;
 
@@ -90,18 +92,16 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
             content = this.t('comingSoonText');
           }
 
-          if (available) {
-            buffer.push({
-              id,
-              value: `${type}-${id}`,
-              name,
-              disabled,
-              info: {
-                content,
-                link,
-              },
-            });
-          }
+          buffer.push({
+            id,
+            value: `${type}-${id}`,
+            name,
+            disabled,
+            info: {
+              content,
+              link,
+            },
+          });
 
           return buffer;
         }, []);
@@ -147,11 +147,17 @@ $radio-checked-size: 18px;
     width: 100%;
   }
 }
+
+.networks-scrollbar {
+  @include scrollbar(-$inner-spacing-big);
+}
 </style>
 
 <style lang="scss" scoped>
 $network-logo-size: 48px;
 $network-logo-font-size: 24px;
+$item-height: 72px;
+$list-items: 7;
 
 .networks-info,
 .network-name {
@@ -159,6 +165,9 @@ $network-logo-font-size: 24px;
 }
 
 .networks {
+  &-list {
+    max-height: calc(#{$item-height} * #{$list-items});
+  }
   &-info {
     margin-bottom: $inner-spacing-medium;
     color: var(--s-color-base-content-secondary);
@@ -169,9 +178,8 @@ $network-logo-font-size: 24px;
   }
   .network {
     margin-right: 0;
-    width: 100%;
     height: auto;
-    padding: $inner-spacing-small 0;
+    padding: $inner-spacing-small $inner-spacing-big;
     &-name {
       display: flex;
       flex-flow: column nowrap;

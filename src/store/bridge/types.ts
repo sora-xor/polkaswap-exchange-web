@@ -1,4 +1,5 @@
 import type { FPNumber, CodecString, IBridgeTransaction } from '@sora-substrate/util';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
 
 export enum FocusedField {
@@ -26,12 +27,10 @@ export type BridgeState = {
   feesAndLockedFundsFetching: boolean;
   externalNativeBalance: Nullable<CodecString>;
   externalBlockNumber: number;
-  // history sources (unsynced localstorage & network)
   historyInternal: Record<string, IBridgeTransaction>;
-  historyExternal: Record<string, IBridgeTransaction>;
   historyPage: number;
   historyId: string;
-  historyLoading: boolean;
+  historyLoading: Partial<Record<BridgeNetworkId, boolean>>;
   waitingForApprove: Record<string, boolean>;
   inProgressIds: Record<string, boolean>;
   notificationData: Nullable<IBridgeTransaction>;
