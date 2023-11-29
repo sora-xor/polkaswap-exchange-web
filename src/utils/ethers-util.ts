@@ -3,7 +3,7 @@ import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
-import { EthereumProvider } from '@walletconnect/ethereum-provider';
+import { EthereumProvider as WalletConnectEthereumProvider } from '@walletconnect/ethereum-provider';
 import { ethers } from 'ethers';
 
 import { ZeroStringValue } from '@/consts';
@@ -17,7 +17,7 @@ import type { ChainsProps } from '@walletconnect/ethereum-provider/dist/types/Et
 
 type ethersProvider = ethers.BrowserProvider;
 
-let ethereumProvider: any = null;
+let ethereumProvider!: any;
 let ethersInstance: ethersProvider | null = null;
 
 export enum Provider {
@@ -126,17 +126,23 @@ function clearWalletConnectSession(): void {
   localStorage.removeItem('WCM_VERSION');
 }
 
-function disconnectEvmProvider(): void {
+function disconnectEvmProvider(provider?: Nullable<Provider>): void {
   ethereumProvider?.disconnect?.();
-  clearWalletConnectSession();
+
+  if (provider === Provider.WalletConnect) {
+    clearWalletConnectSession();
+  }
 }
 
-function createWeb3Instance(ethereumProvider: any) {
+function createWeb3Instance(provider: any) {
+  ethereumProvider = provider;
   // 'any' - because ethers throws errors after network switch
   ethersInstance = new ethers.BrowserProvider(ethereumProvider, 'any');
 }
 
 async function useExtensionProvider(provider: Provider): Promise<string> {
+  let ethereumProvider!: any;
+
   switch (provider) {
     case Provider.Metamask:
       ethereumProvider = await detectEthereumProvider({ mustBeMetaMask: true, timeout: 0 });
@@ -178,7 +184,7 @@ async function useWalletConnectProvider(chainProps: ChainsProps): Promise<string
   try {
     await checkWalletConnectAvailability(chainProps);
 
-    ethereumProvider = await EthereumProvider.init({
+    const ethereumProvider = await WalletConnectEthereumProvider.init({
       projectId: WALLET_CONNECT_PROJECT_ID,
       showQrModal: true,
       ...chainProps,
@@ -312,17 +318,19 @@ async function watchEthereum(cb: {
   onNetworkChange: (networkId: string) => void;
   onDisconnect: (error: any) => void;
 }): Promise<FnWithoutArgs> {
-  if (ethereumProvider) {
-    ethereumProvider.on('accountsChanged', cb.onAccountChange);
-    ethereumProvider.on('chainChanged', cb.onNetworkChange);
-    ethereumProvider.on('disconnect', cb.onDisconnect);
+  const provider = ethereumProvider;
+
+  if (provider) {
+    provider.on('accountsChanged', cb.onAccountChange);
+    provider.on('chainChanged', cb.onNetworkChange);
+    provider.on('disconnect', cb.onDisconnect);
   }
 
   return function disconnect() {
-    if (ethereumProvider) {
-      ethereumProvider.off('accountsChanged', cb.onAccountChange);
-      ethereumProvider.off('chainChanged', cb.onNetworkChange);
-      ethereumProvider.off('disconnect', cb.onDisconnect);
+    if (provider) {
+      provider.off('accountsChanged', cb.onAccountChange);
+      provider.off('chainChanged', cb.onNetworkChange);
+      provider.off('disconnect', cb.onDisconnect);
     }
   };
 }
