@@ -523,7 +523,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get isAnotherEvmAddress(): boolean {
-    if (!(this.isEvmTxType && this.isOutgoing)) return false;
+    if (!this.isEvmTxType) return false;
 
     return this.txExternalAccount.toLowerCase() !== this.externalAccountFormatted.toLowerCase();
   }
