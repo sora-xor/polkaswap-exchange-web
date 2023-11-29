@@ -9,7 +9,6 @@
             <div class="order-book-pair-name">
               <pair-token-logo :first-token="baseAsset" :second-token="quoteAsset" />
               <span v-if="baseAsset && quoteAsset">{{ `${baseSymbol}-${quoteSymbol}` }}</span>
-              <s-icon name="arrows-swap-90-24" class="order-book-swap-icon" />
             </div>
             <s-icon :name="icon" class="order-book-choose-btn-icon" />
           </div>
@@ -28,7 +27,7 @@
               </span>
             </div>
             <div class="order-book-pair-data-item">
-              <span>Volume</span>
+              <span>1D Volume</span>
               <span class="order-book-pair-data-item__value">
                 <formatted-amount :value="orderBookVolume" is-fiat-value />
               </span>
@@ -714,6 +713,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     border-radius: var(--s-border-radius-small);
     margin-bottom: 8px;
     padding: 10px 16px;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &-choose-btn {
@@ -752,11 +755,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         font-size: var(--s-font-size-small);
       }
     }
-  }
-
-  &-swap-icon {
-    color: var(--s-color-base-content-secondary);
-    margin-left: 8px;
   }
 
   &-fiat {
