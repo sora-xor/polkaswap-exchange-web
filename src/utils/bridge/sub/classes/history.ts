@@ -414,8 +414,6 @@ class SubBridgeHistory extends SubNetworksConnector {
           const from = subBridgeApi.formatAddress(history.from as string);
 
           if (!(parachainId === this.soraParachain.parachainId && receiver === from)) {
-            console.log(parachainId, this.soraParachain.parachainId);
-            console.log(receiver, from);
             continue;
           }
 
