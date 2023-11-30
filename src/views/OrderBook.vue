@@ -136,6 +136,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
         .trades-widget {
           margin-left: auto;
           margin-right: auto;
+          margin-top: 24px;
         }
       }
     }
