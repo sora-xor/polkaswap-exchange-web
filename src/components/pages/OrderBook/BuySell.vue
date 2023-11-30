@@ -823,7 +823,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     button.el-button.el-button--select-token.token-select-button--token {
       &:hover,
       &:focus {
-        box-shadow: unset;
+        box-shadow: var(--neu-button-tertiary-box-shadow);
         cursor: initial;
         outline: none;
       }

@@ -116,14 +116,14 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
     .column-2 {
       @include large-desktop {
-        justify-content: space-evenly;
+        justify-content: space-between;
 
         .set-widget {
-          flex-basis: 46%;
+          flex-basis: 48%;
         }
 
         .book-widget {
-          flex-basis: 46%;
+          flex-basis: 48%;
         }
       }
     }
@@ -131,7 +131,6 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
     .column-3 {
       @include large-desktop {
         .trades-widget {
-          width: 95%;
           margin-left: auto;
           margin-right: auto;
         }
