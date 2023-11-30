@@ -120,7 +120,6 @@ export class SubAdapter {
   }
 
   public async getTokenBalance(accountAddress: string, tokenSymbol?: string): Promise<CodecString> {
-    if (tokenSymbol && this.api.registry.chainTokens[0] !== tokenSymbol) return ZeroStringValue;
     return await this.getAccountBalance(accountAddress);
   }
 

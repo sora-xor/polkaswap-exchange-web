@@ -274,7 +274,7 @@
             v-if="!isInsufficientBalance && (isLowerThanMinAmount || isGreaterThanMaxAmount)"
             class="bridge-limit-card"
             :max="isGreaterThanMaxAmount"
-            :amount="(isGreaterThanMaxAmount ? outgoingMaxAmount : incomingMinAmount).toLocaleString()"
+            :amount="(isGreaterThanMaxAmount ? transferMaxAmount : transferMinAmount).toLocaleString()"
             :symbol="asset.symbol"
           />
 
@@ -393,7 +393,6 @@ export default class Bridge extends Mixins(
   @state.assets.registeredAssetsFetching private registeredAssetsFetching!: boolean;
   @state.bridge.amountSend amountSend!: string;
   @state.bridge.amountReceived amountReceived!: string;
-  @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
 
   @getter.bridge.senderName senderName!: string;
   @getter.bridge.recipientName recipientName!: string;
@@ -472,6 +471,14 @@ export default class Bridge extends Mixins(
     return asZeroValue(this.amountReceived);
   }
 
+  get transferMaxAmount(): FPNumber | null {
+    return this.getTransferMaxAmount(this.isSoraToEvm);
+  }
+
+  get transferMinAmount(): FPNumber | null {
+    return this.getTransferMinAmount(this.isSoraToEvm);
+  }
+
   get maxValue(): string {
     if (!(this.asset && this.isRegisteredAsset)) return ZeroStringValue;
 
@@ -481,8 +488,8 @@ export default class Bridge extends Mixins(
       isExternalNative: this.isNativeTokenSelected,
     });
 
-    if (this.isSoraToEvm && this.outgoingMaxAmount) {
-      if (FPNumber.gt(maxBalance, this.outgoingMaxAmount)) return this.outgoingMaxAmount.toString();
+    if (this.transferMaxAmount) {
+      if (FPNumber.gt(maxBalance, this.transferMaxAmount)) return this.transferMaxAmount.toString();
     }
 
     return maxBalance.toString();
@@ -496,11 +503,11 @@ export default class Bridge extends Mixins(
   }
 
   get isGreaterThanMaxAmount(): boolean {
-    return this.isGreaterThanOutgoingMaxAmount(this.amountSend, this.asset, this.isSoraToEvm, this.isRegisteredAsset);
+    return this.isGreaterThanTransferMaxAmount(this.amountSend, this.asset, this.isSoraToEvm, this.isRegisteredAsset);
   }
 
   get isLowerThanMinAmount(): boolean {
-    return this.isLowerThanIncomingMinAmount(this.amountSend, this.asset, this.isSoraToEvm, this.isRegisteredAsset);
+    return this.isLowerThanTransferMinAmount(this.amountSend, this.asset, this.isSoraToEvm, this.isRegisteredAsset);
   }
 
   get isInsufficientXorForFee(): boolean {
