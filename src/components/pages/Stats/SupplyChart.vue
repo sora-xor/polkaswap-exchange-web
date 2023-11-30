@@ -32,7 +32,7 @@
       <price-change :value="priceChange" />
       <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
     </chart-skeleton>
-    <select-token disabled-custom :visible.sync="showSelectTokenDialog" :asset="token" @select="changeToken" />
+    <select-token :visible.sync="showSelectTokenDialog" :asset="token" @select="changeToken" />
   </stats-card>
 </template>
 

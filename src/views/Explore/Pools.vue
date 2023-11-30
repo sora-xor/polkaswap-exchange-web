@@ -68,7 +68,7 @@
         </template>
       </s-table-column>
       <!-- TVL -->
-      <s-table-column v-if="pricesAvailable" key="tvl" width="104" header-align="right" align="right">
+      <s-table-column key="tvl" width="104" header-align="right" align="right">
         <template #header>
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
@@ -78,14 +78,16 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <formatted-amount
-            is-fiat-value
-            :font-weight-rate="FontWeightRate.MEDIUM"
-            :value="row.tvlFormatted.amount"
-            class="explore-table-item-price explore-table-item-amount"
-          >
-            {{ row.tvlFormatted.suffix }}
-          </formatted-amount>
+          <data-row-skeleton :loading="!pricesAvailable" rect>
+            <formatted-amount
+              is-fiat-value
+              :font-weight-rate="FontWeightRate.MEDIUM"
+              :value="row.tvlFormatted.amount"
+              class="explore-table-item-price explore-table-item-amount"
+            >
+              {{ row.tvlFormatted.suffix }}
+            </formatted-amount>
+          </data-row-skeleton>
         </template>
       </s-table-column>
     </s-table>
@@ -106,6 +108,7 @@
 import { FPNumber } from '@sora-substrate/util';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { api, components } from '@soramitsu/soraneo-wallet-web';
+import isEmpty from 'lodash/fp/isEmpty';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
@@ -135,6 +138,7 @@ type TableItem = {
   components: {
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SortButton: lazyComponent(Components.SortButton),
+    DataRowSkeleton: lazyComponent(Components.DataRowSkeleton),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
@@ -152,17 +156,18 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
   poolReserves: Record<string, string[]> = {};
 
   get items(): TableItem[] {
+    const whitelistIsAvailable = !isEmpty(this.whitelist);
     const items = Object.entries(this.poolReserves).reduce<any>((buffer, [key, reserves]) => {
       // dont show empty pools
       if (reserves.some((reserve) => asZeroValue(reserve))) return buffer;
 
-      const matches = key.match(/0x\w{64}/g);
+      const [baseAddress, targetAddress] = key.match(/0x\w{64}/g) ?? [];
 
-      if (!matches || !matches[0] || !matches[1] || !this.whitelist[matches[0]] || !this.whitelist[matches[1]])
-        return buffer;
+      if (!(baseAddress && targetAddress)) return buffer;
+      if (whitelistIsAvailable && !(this.whitelist[baseAddress] && this.whitelist[targetAddress])) return buffer;
 
-      const baseAsset = this.getAsset(matches[0]);
-      const targetAsset = this.getAsset(matches[1]);
+      const baseAsset = this.getAsset(baseAddress);
+      const targetAsset = this.getAsset(targetAddress);
 
       if (!(baseAsset && targetAsset)) return buffer;
 

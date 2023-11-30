@@ -206,7 +206,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   private get mainLPSources(): Array<Asset> {
     const mainSourceAddresses = api.dex.poolBaseAssetsIds;
 
-    return this.whitelistAssets.filter((asset) => mainSourceAddresses.includes(asset.address));
+    return this.assets.filter((asset) => mainSourceAddresses.includes(asset.address));
   }
 
   async handleAddAsset(): Promise<void> {
