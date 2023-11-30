@@ -14,11 +14,11 @@ import type { MoonpayTransaction } from '@/utils/moonpay';
 import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { Asset, AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import type { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 const createError = (text: string, notification: MoonpayNotifications) => {
   const error = new Error(text);
@@ -35,7 +35,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeRegisteredAsset>;
 
   @getter.settings.moonpayApiKey moonpayApiKey!: string;
-  @getter.assets.assetsDataTable assetsDataTable!: Record<string, Asset>;
+  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => AccountAsset;
 
   @mutation.moonpay.setConfirmationVisibility setConfirmationVisibility!: (flag: boolean) => void;
   @mutation.moonpay.setNotificationVisibility setNotificationVisibility!: (flag: boolean) => void;
@@ -161,7 +161,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
       }
 
       const accountAsset = {
-        ...this.assetsDataTable[soraAddress],
+        ...this.getAsset(soraAddress),
         balance: {} as AccountBalance,
         externalBalance,
         externalAddress: registeredAsset.address,

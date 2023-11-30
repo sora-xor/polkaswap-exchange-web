@@ -101,7 +101,6 @@ export default class CreateAlert extends Mixins(
 ) {
   @state.wallet.settings.alerts alerts!: Array<Alert>;
 
-  @getter.assets.whitelistAssets assets!: Array<Asset>;
   @getter.assets.xor private xor!: AccountAsset;
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WhitelistIdsBySymbol;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => AccountAsset;

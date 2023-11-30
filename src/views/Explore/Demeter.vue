@@ -71,17 +71,25 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <span class="explore-table__accent">{{ row.aprFormatted }}</span>
-          <calculator-button
-            @click.native="
-              showPoolCalculator({
-                baseAsset: row.baseAsset.address,
-                poolAsset: row.poolAsset.address,
-                rewardAsset: row.rewardAsset.address,
-                liquidity: row.liquidity,
-              })
-            "
-          />
+          <s-skeleton :loading="!hasAprColumnData" animated>
+            <template #template>
+              <div class="column-data-skeleton">
+                <s-skeleton-item element="rect" />
+                <s-skeleton-item element="circle" />
+              </div>
+            </template>
+            <span class="explore-table__accent">{{ row.aprFormatted }}</span>
+            <calculator-button
+              @click.native="
+                showPoolCalculator({
+                  baseAsset: row.baseAsset.address,
+                  poolAsset: row.poolAsset.address,
+                  rewardAsset: row.rewardAsset.address,
+                  liquidity: row.liquidity,
+                })
+              "
+            />
+          </s-skeleton>
         </template>
       </s-table-column>
       <!-- Fee -->
@@ -126,14 +134,21 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <formatted-amount
-            is-fiat-value
-            :font-weight-rate="FontWeightRate.MEDIUM"
-            :value="row.tvlFormatted.amount"
-            class="explore-table-item-price explore-table-item-amount"
-          >
-            {{ row.tvlFormatted.suffix }}
-          </formatted-amount>
+          <s-skeleton :loading="!hasTvlColumnData" animated>
+            <template #template>
+              <div class="column-data-skeleton">
+                <s-skeleton-item element="rect" />
+              </div>
+            </template>
+            <formatted-amount
+              is-fiat-value
+              :font-weight-rate="FontWeightRate.MEDIUM"
+              :value="row.tvlFormatted.amount"
+              class="explore-table-item-price explore-table-item-amount"
+            >
+              {{ row.tvlFormatted.suffix }}
+            </formatted-amount>
+          </s-skeleton>
         </template>
       </s-table-column>
     </s-table>
@@ -154,6 +169,7 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
+import { SSkeleton, SSkeletonItem } from '@soramitsu/soramitsu-js-ui/lib/components/Skeleton';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { api, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
@@ -174,7 +190,7 @@ import type { DemeterPool } from '@sora-substrate/util/build/demeterFarming/type
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 type PoolData = {
-  price: FPNumber;
+  priceCoefficient: FPNumber;
   supply?: FPNumber;
   reserves?: FPNumber[];
   address?: string;
@@ -211,6 +227,8 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
+    SSkeleton,
+    SSkeletonItem,
   },
 })
 export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBasePageMixin, ExplorePageMixin) {
@@ -251,7 +269,9 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
       const accountPool = this.getAccountPool(pool);
       const isAccountItem = !!accountPool && this.isActiveAccountPool(accountPool);
       const poolData = this.poolsData[lpKey(pool.baseAsset, pool.poolAsset)];
-      const poolTokenPrice = poolData?.price ?? FPNumber.ZERO;
+      const poolTokenPriceCoefficient = poolData?.priceCoefficient ?? FPNumber.ZERO;
+      const poolAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(poolAsset) ?? 0);
+      const poolTokenPrice = poolAssetPrice.mul(poolTokenPriceCoefficient);
       const poolBaseReserves = poolData?.reserves?.[0] ?? FPNumber.ZERO;
       const poolTargetReserves = poolData?.reserves?.[1] ?? FPNumber.ZERO;
       const poolSupply = poolData?.supply ?? FPNumber.ZERO;
@@ -334,6 +354,14 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
     return this.isAccountItemsOnly ? this.items.filter((item) => item.isAccountItem) : this.items;
   }
 
+  get hasAprColumnData(): boolean {
+    return this.items.some((item) => item.apr !== 0);
+  }
+
+  get hasTvlColumnData(): boolean {
+    return this.items.some((item) => item.tvl !== 0);
+  }
+
   // ExplorePageMixin method implementation
   async updateExploreData(): Promise<void> {
     // return if method is already called by "watch" or "mounted"
@@ -366,8 +394,6 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
   private async getPoolData(key: string, isFarm: boolean): Promise<Nullable<PoolData>> {
     const [baseAsset, poolAsset] = key.split(';');
 
-    const poolAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice({ address: poolAsset } as Asset) ?? 0);
-
     if (isFarm) {
       const poolInfo = api.poolXyk.getInfo(baseAsset, poolAsset);
 
@@ -380,13 +406,11 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
         FPNumber.fromCodecValue(reserve)
       );
       const poolAssetReserves = reserves[1];
-      const poolTokenPrice = supply.isZero()
-        ? FPNumber.ZERO
-        : poolAssetReserves.mul(poolAssetPrice).mul(new FPNumber(2)).div(supply);
+      const priceCoefficient = supply.isZero() ? FPNumber.ZERO : poolAssetReserves.mul(new FPNumber(2)).div(supply);
 
-      return { price: poolTokenPrice, supply, reserves, address };
+      return { priceCoefficient, supply, reserves, address };
     } else {
-      return { price: poolAssetPrice };
+      return { priceCoefficient: FPNumber.ONE };
     }
   }
 }
@@ -394,4 +418,26 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
 
 <style lang="scss">
 @include explore-table;
+
+$size: 20px;
+
+.column-data-skeleton {
+  display: flex;
+  align-items: center;
+  gap: $inner-spacing-tiny;
+
+  & > .el-skeleton__item {
+    &:not(:last-child) {
+      margin: 0;
+    }
+    &.el-skeleton__rect {
+      height: $size;
+    }
+    &.el-skeleton__circle {
+      flex-shrink: 0;
+      height: $size;
+      width: $size;
+    }
+  }
+}
 </style>

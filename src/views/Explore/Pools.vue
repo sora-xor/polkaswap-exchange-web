@@ -106,6 +106,7 @@
 import { FPNumber } from '@sora-substrate/util';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { api, components } from '@soramitsu/soraneo-wallet-web';
+import isEmpty from 'lodash/fp/isEmpty';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
@@ -151,17 +152,18 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
   poolReserves: Record<string, string[]> = {};
 
   get items(): TableItem[] {
+    const whitelistIsAvailable = !isEmpty(this.whitelist);
     const items = Object.entries(this.poolReserves).reduce<any>((buffer, [key, reserves]) => {
       // dont show empty pools
       if (reserves.some((reserve) => asZeroValue(reserve))) return buffer;
 
-      const matches = key.match(/0x\w{64}/g);
+      const [baseAddress, targetAddress] = key.match(/0x\w{64}/g) ?? [];
 
-      if (!matches || !matches[0] || !matches[1] || !this.whitelist[matches[0]] || !this.whitelist[matches[1]])
-        return buffer;
+      if (!(baseAddress && targetAddress)) return buffer;
+      if (whitelistIsAvailable && !(this.whitelist[baseAddress] && this.whitelist[targetAddress])) return buffer;
 
-      const baseAsset = this.getAsset(matches[0]);
-      const targetAsset = this.getAsset(matches[1]);
+      const baseAsset = this.getAsset(baseAddress);
+      const targetAsset = this.getAsset(targetAddress);
 
       if (!(baseAsset && targetAsset)) return buffer;
 

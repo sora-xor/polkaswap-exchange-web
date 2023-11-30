@@ -26,8 +26,8 @@ export type TokenData = {
 };
 
 const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetEntity>>`
-  query AssetsQuery($after: Cursor, $ids: [String!]) {
-    data: assets(orderBy: ID_ASC, after: $after, filter: { id: { in: $ids } }) {
+  query AssetsQuery($after: Cursor, $filter: AssetFilter) {
+    data: assets(orderBy: ID_ASC, after: $after, filter: $filter) {
       pageInfo {
         hasNextPage
         endCursor
@@ -49,8 +49,8 @@ const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetEnt
 `;
 
 const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetEntity>>`
-  query AssetsConnectionQuery($after: String, $ids: [String!]) {
-    data: assetsConnection(orderBy: id_ASC, after: $after, where: { AND: [{ id_in: $ids }] }) {
+  query AssetsConnectionQuery($after: String, $where: AssetWhereInput) {
+    data: assetsConnection(orderBy: id_ASC, after: $after, where: $where) {
       pageInfo {
         hasNextPage
         endCursor
@@ -85,18 +85,21 @@ const parse = (item: SubqueryAssetEntity | SubsquidAssetEntity): Record<string, 
   };
 };
 
-export async function fetchTokensData(whitelistAssets: Asset[]): Promise<Record<string, TokenData>> {
-  const ids = whitelistAssets.map((item) => item.address); // only whitelisted assets
-  const variables = { ids };
+export async function fetchTokensData(assets: Asset[]): Promise<Record<string, TokenData>> {
+  const ids = assets.map((item) => item.address);
   const indexer = getCurrentIndexer();
   let items: Nullable<Record<string, TokenData>[]>;
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
+      const filter = ids.length ? { id: { in: ids } } : undefined;
+      const variables = { filter };
       const subqueryIndexer = indexer as SubqueryIndexer;
       items = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryAssetsQuery, variables, parse);
       break;
     }
     case IndexerType.SUBSQUID: {
+      const where = ids.length ? { AND: [{ id_in: ids }] } : undefined;
+      const variables = { where };
       const subsquidIndexer = indexer as SubsquidIndexer;
       items = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(SubsquidAssetsQuery, variables, parse);
       break;
