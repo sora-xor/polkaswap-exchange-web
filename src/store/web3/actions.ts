@@ -69,8 +69,6 @@ const actions = defineActions({
     const { commit, dispatch, state } = web3ActionContext(context);
     try {
       commit.setEvmProviderLoading(provider);
-      // reset prev connection
-      dispatch.resetEvmProviderConnection();
       // create new connection
       const address = await ethersUtil.connectEvmProvider(provider, {
         chains: [state.ethBridgeEvmNetwork],
@@ -91,14 +89,15 @@ const actions = defineActions({
   },
 
   resetEvmProviderConnection(context): void {
-    const { commit } = web3ActionContext(context);
+    const { commit, state } = web3ActionContext(context);
+    const provider = state.evmProvider;
     // reset store
     commit.resetEvmAddress();
     commit.resetEvmProvider();
     commit.resetEvmProviderNetwork();
     commit.resetEvmProviderSubscription();
     // reset connection
-    ethersUtil.disconnectEvmProvider();
+    ethersUtil.disconnectEvmProvider(provider);
   },
 
   async disconnectExternalNetwork(context): Promise<void> {

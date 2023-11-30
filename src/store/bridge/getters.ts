@@ -4,11 +4,14 @@ import { defineGetters } from 'direct-vuex';
 
 import { ZeroStringValue } from '@/consts';
 import { bridgeGetterContext } from '@/store/bridge';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { formatSubAddress } from '@/utils/bridge/sub/utils';
 
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const getters = defineGetters<BridgeState>()({
   asset(...args): Nullable<RegisteredAccountAsset> {
@@ -181,11 +184,19 @@ const getters = defineGetters<BridgeState>()({
 
     return getters.history[state.historyId] ?? null;
   },
-  networkHistoryLoading(...args): boolean {
-    const { state, rootState } = bridgeGetterContext(args);
+  networkHistoryId(...args): Nullable<BridgeNetworkId> {
+    const { getters, rootState } = bridgeGetterContext(args);
     const { networkSelected } = rootState.web3;
 
-    return !!(networkSelected && state.historyLoading[networkSelected]);
+    if (!networkSelected) return null;
+
+    return getters.isSubBridge ? subBridgeApi.getRelayChain(networkSelected as SubNetwork) : networkSelected;
+  },
+  networkHistoryLoading(...args): boolean {
+    const { getters, state } = bridgeGetterContext(args);
+    const { networkHistoryId } = getters;
+
+    return !!(networkHistoryId && state.historyLoading[networkHistoryId]);
   },
 });
 
