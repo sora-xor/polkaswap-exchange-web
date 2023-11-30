@@ -249,6 +249,7 @@ export enum Components {
   StatsFilter = 'shared/Stats/StatsFilter',
   // Shared Chart
   ChartSkeleton = 'shared/Chart/ChartSkeleton',
+  DataRowSkeleton = 'shared/Skeleton/DataRow',
 }
 
 export enum RewardsTabsItems {

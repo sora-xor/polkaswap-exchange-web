@@ -71,13 +71,7 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <s-skeleton :loading="!hasAprColumnData" animated>
-            <template #template>
-              <div class="column-data-skeleton">
-                <s-skeleton-item element="rect" />
-                <s-skeleton-item element="circle" />
-              </div>
-            </template>
+          <data-row-skeleton :loading="!hasAprColumnData" rect circle>
             <span class="explore-table__accent">{{ row.aprFormatted }}</span>
             <calculator-button
               @click.native="
@@ -89,7 +83,7 @@
                 })
               "
             />
-          </s-skeleton>
+          </data-row-skeleton>
         </template>
       </s-table-column>
       <!-- Fee -->
@@ -134,12 +128,7 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <s-skeleton :loading="!hasTvlColumnData" animated>
-            <template #template>
-              <div class="column-data-skeleton">
-                <s-skeleton-item element="rect" />
-              </div>
-            </template>
+          <data-row-skeleton :loading="!pricesAvailable" rect>
             <formatted-amount
               is-fiat-value
               :font-weight-rate="FontWeightRate.MEDIUM"
@@ -148,7 +137,7 @@
             >
               {{ row.tvlFormatted.suffix }}
             </formatted-amount>
-          </s-skeleton>
+          </data-row-skeleton>
         </template>
       </s-table-column>
     </s-table>
@@ -169,7 +158,6 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { SSkeleton, SSkeletonItem } from '@soramitsu/soramitsu-js-ui/lib/components/Skeleton';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { api, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
@@ -224,11 +212,10 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
     CalculatorDialog: demeterLazyComponent(DemeterComponents.CalculatorDialog),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SortButton: lazyComponent(Components.SortButton),
+    DataRowSkeleton: lazyComponent(Components.DataRowSkeleton),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
-    SSkeleton,
-    SSkeletonItem,
   },
 })
 export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBasePageMixin, ExplorePageMixin) {
@@ -358,10 +345,6 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
     return this.items.some((item) => item.apr !== 0);
   }
 
-  get hasTvlColumnData(): boolean {
-    return this.items.some((item) => item.tvl !== 0);
-  }
-
   // ExplorePageMixin method implementation
   async updateExploreData(): Promise<void> {
     // return if method is already called by "watch" or "mounted"
@@ -418,26 +401,4 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
 
 <style lang="scss">
 @include explore-table;
-
-$size: 20px;
-
-.column-data-skeleton {
-  display: flex;
-  align-items: center;
-  gap: $inner-spacing-tiny;
-
-  & > .el-skeleton__item {
-    &:not(:last-child) {
-      margin: 0;
-    }
-    &.el-skeleton__rect {
-      height: $size;
-    }
-    &.el-skeleton__circle {
-      flex-shrink: 0;
-      height: $size;
-      width: $size;
-    }
-  }
-}
 </style>
