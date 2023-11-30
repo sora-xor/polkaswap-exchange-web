@@ -118,6 +118,9 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
       @include large-desktop {
         justify-content: space-between;
 
+        margin-top: 24px;
+        margin-bottom: 24px;
+
         .set-widget {
           flex-basis: 48%;
         }
