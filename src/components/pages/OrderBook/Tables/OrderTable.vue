@@ -196,8 +196,9 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
 .order-table {
   font-size: 12px;
 
-  .el-scrollbar {
-    min-height: 400px;
+  .scrollable-table {
+    height: 100%;
+    @include scrollbar();
   }
 
   .el-table__header-wrapper {
@@ -208,11 +209,6 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
     }
   }
   .el-table__body-wrapper {
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
     background-color: var(--s-color-utility-surface);
 
     .el-table__row {

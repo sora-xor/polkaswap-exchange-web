@@ -68,9 +68,11 @@ export default class ExplorePageMixin extends Mixins(
     const elTableBodyWrapper = elTable.$refs.bodyWrapper;
     const elTableHeaderWrapper = elTable.$refs.headerWrapper;
     const elTableNativeTable = elTableBodyWrapper.getElementsByTagName('table')[0];
+    const scrollbarContainer = scrollbar.$el;
     const scrollbarWrap = scrollbar.$el.getElementsByClassName('el-scrollbar__wrap')[0];
     const scrollbarView = scrollbar.$el.getElementsByClassName('el-scrollbar__view')[0];
 
+    scrollbarContainer.classList.add('scrollable-table');
     elTableBodyWrapper.appendChild(scrollbar.$el);
     scrollbarView.appendChild(elTableNativeTable);
 
