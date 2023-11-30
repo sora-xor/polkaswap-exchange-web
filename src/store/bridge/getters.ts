@@ -32,20 +32,27 @@ const getters = defineGetters<BridgeState>()({
   },
 
   nativeToken(...args): Nullable<RegisteredAccountAsset> {
-    const { rootGetters } = bridgeGetterContext(args);
+    const { rootGetters, rootState } = bridgeGetterContext(args);
+    const {
+      wallet: {
+        account: { assets },
+      },
+      assets: { registeredAssets },
+    } = rootState;
     const {
       web3: { selectedNetwork },
-      assets: { whitelistAssets, assetDataByAddress },
+      assets: { assetDataByAddress },
     } = rootGetters;
 
     if (!selectedNetwork) return null;
-    // find sora asset in whitelist by symbol (we know only external native token symbol)
+
     const { symbol } = selectedNetwork.nativeCurrency;
-    const soraAsset = whitelistAssets.find((asset) => asset.symbol === symbol);
+    const filteredBySymbol = assets.filter((asset) => asset.symbol === symbol);
+    const registered = filteredBySymbol.find((asset) => asset.address in registeredAssets);
 
-    if (!soraAsset) return null;
+    if (!registered) return null;
 
-    return assetDataByAddress(soraAsset.address);
+    return assetDataByAddress(registered.address);
   },
 
   isRegisteredAsset(...args): boolean {

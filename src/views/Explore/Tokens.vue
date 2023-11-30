@@ -44,7 +44,7 @@
         </template>
       </s-table-column>
       <!-- Price -->
-      <s-table-column v-if="pricesAvailable" key="price" width="130" header-align="left" align="left">
+      <s-table-column key="price" width="130" header-align="left" align="left">
         <template #header>
           <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">Price</span>

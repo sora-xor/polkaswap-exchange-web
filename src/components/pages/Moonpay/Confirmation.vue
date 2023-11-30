@@ -45,7 +45,6 @@ export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) 
   @state.moonpay.confirmationVisibility private confirmationVisibility!: boolean;
 
   @getter.libraryTheme libraryTheme!: Theme;
-  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   get visibility(): boolean {
     return this.confirmationVisibility;
