@@ -44,9 +44,9 @@ import { FPNumber } from '@sora-substrate/math';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import { MAX_ALERTS_NUMBER } from '@/consts';
+import { MAX_ALERTS_NUMBER, ZeroStringValue } from '@/consts';
 import { getter, mutation, state } from '@/store/decorators';
-import { getDeltaPercent } from '@/utils';
+import { calcPriceChange, showMostFittingValue } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Alert, WhitelistIdsBySymbol } from '@soramitsu/soraneo-wallet-web/lib/types/common';
@@ -106,68 +106,18 @@ export default class AlertList extends Mixins(
   }
 
   getInfo(alert: Alert): string | undefined {
-    const desiredPrice = alert.price;
+    const desiredPrice = new FPNumber(alert.price);
     const asset = this.getAsset(this.whitelistIdsBySymbol[alert.token]);
-    const currentPrice = this.getFiatAmount('1', asset);
+    const currentPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? ZeroStringValue);
+    const priceChange = calcPriceChange(desiredPrice, currentPrice);
+    const priceChangeFormatted = priceChange.dp(2).toString();
+    const currentPriceFormatted = showMostFittingValue(currentPrice);
 
-    if (!currentPrice) return;
-
-    let deltaPercent = this.getDeltaPercentage(currentPrice, desiredPrice);
-    if (deltaPercent.includes('-')) {
-      deltaPercent = deltaPercent.replace('-', '- ');
-    } else {
-      deltaPercent = deltaPercent.replace('', '+ ');
-    }
-
-    return `${deltaPercent}% · ${this.t('alerts.currentPrice')}: $${this.showMostFittingValue(currentPrice)}`;
-  }
-
-  /**
-   * Returns formatted value in most suitable form
-   * @param value
-   *
-   * 0.152345 -> 0.15
-   * 0.000043 -> 0.000043
-   */
-  showMostFittingValue(value, precisionForLowCostAsset = 18) {
-    const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
-
-    if (parseInt(integer) > 0) {
-      return this.getFormattedValue(value, 2);
-    }
-
-    if (decimal && parseInt(decimal.substring(0, 2)) > 0) {
-      return this.getFormattedValue(value, 2);
-    }
-
-    return this.getFormattedValue(value, precisionForLowCostAsset);
-  }
-
-  getFormattedValue(value: string, precision = 18): string {
-    const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
-    return `${integer}.${decimal.substring(0, precision)}`;
+    return `${priceChangeFormatted}% · ${this.t('alerts.currentPrice')}: $${currentPriceFormatted}`;
   }
 
   getType(alert: Alert) {
     return alert.once ? this.t('alerts.once') : this.t('alerts.always');
-  }
-
-  getDeltaPercentage(current: string, desired: string): string {
-    const desiredPrice = FPNumber.fromNatural(desired);
-    let currentPrice = FPNumber.fromNatural(current);
-
-    // if current price is zero, set minimal value for proper calculations
-    if (FPNumber.eq(currentPrice, FPNumber.ZERO)) {
-      currentPrice = FPNumber.fromNatural('0.0000001');
-    }
-
-    if (FPNumber.eq(desiredPrice, currentPrice)) {
-      return '0.00';
-    }
-
-    const percent = getDeltaPercent(desiredPrice, currentPrice);
-
-    return this.showMostFittingValue(percent.toLocaleString());
   }
 
   handleCreateAlert(): void {

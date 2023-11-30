@@ -71,17 +71,19 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <span class="explore-table__accent">{{ row.aprFormatted }}</span>
-          <calculator-button
-            @click.native="
-              showPoolCalculator({
-                baseAsset: row.baseAsset.address,
-                poolAsset: row.poolAsset.address,
-                rewardAsset: row.rewardAsset.address,
-                liquidity: row.liquidity,
-              })
-            "
-          />
+          <data-row-skeleton :loading="!hasAprColumnData" rect circle>
+            <span class="explore-table__accent">{{ row.aprFormatted }}</span>
+            <calculator-button
+              @click.native="
+                showPoolCalculator({
+                  baseAsset: row.baseAsset.address,
+                  poolAsset: row.poolAsset.address,
+                  rewardAsset: row.rewardAsset.address,
+                  liquidity: row.liquidity,
+                })
+              "
+            />
+          </data-row-skeleton>
         </template>
       </s-table-column>
       <!-- Fee -->
@@ -126,14 +128,16 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <formatted-amount
-            is-fiat-value
-            :font-weight-rate="FontWeightRate.MEDIUM"
-            :value="row.tvlFormatted.amount"
-            class="explore-table-item-price explore-table-item-amount"
-          >
-            {{ row.tvlFormatted.suffix }}
-          </formatted-amount>
+          <data-row-skeleton :loading="!pricesAvailable" rect>
+            <formatted-amount
+              is-fiat-value
+              :font-weight-rate="FontWeightRate.MEDIUM"
+              :value="row.tvlFormatted.amount"
+              class="explore-table-item-price explore-table-item-amount"
+            >
+              {{ row.tvlFormatted.suffix }}
+            </formatted-amount>
+          </data-row-skeleton>
         </template>
       </s-table-column>
     </s-table>
@@ -174,7 +178,7 @@ import type { DemeterPool } from '@sora-substrate/util/build/demeterFarming/type
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 type PoolData = {
-  price: FPNumber;
+  priceCoefficient: FPNumber;
   supply?: FPNumber;
   reserves?: FPNumber[];
   address?: string;
@@ -208,6 +212,7 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
     CalculatorDialog: demeterStakingLazyComponent(DemeterStakingComponents.CalculatorDialog),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SortButton: lazyComponent(Components.SortButton),
+    DataRowSkeleton: lazyComponent(Components.DataRowSkeleton),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
@@ -251,7 +256,9 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
       const accountPool = this.getAccountPool(pool);
       const isAccountItem = !!accountPool && this.isActiveAccountPool(accountPool);
       const poolData = this.poolsData[lpKey(pool.baseAsset, pool.poolAsset)];
-      const poolTokenPrice = poolData?.price ?? FPNumber.ZERO;
+      const poolTokenPriceCoefficient = poolData?.priceCoefficient ?? FPNumber.ZERO;
+      const poolAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(poolAsset) ?? 0);
+      const poolTokenPrice = poolAssetPrice.mul(poolTokenPriceCoefficient);
       const poolBaseReserves = poolData?.reserves?.[0] ?? FPNumber.ZERO;
       const poolTargetReserves = poolData?.reserves?.[1] ?? FPNumber.ZERO;
       const poolSupply = poolData?.supply ?? FPNumber.ZERO;
@@ -334,6 +341,10 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
     return this.isAccountItemsOnly ? this.items.filter((item) => item.isAccountItem) : this.items;
   }
 
+  get hasAprColumnData(): boolean {
+    return this.items.some((item) => item.apr !== 0);
+  }
+
   // ExplorePageMixin method implementation
   async updateExploreData(): Promise<void> {
     // return if method is already called by "watch" or "mounted"
@@ -366,8 +377,6 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
   private async getPoolData(key: string, isFarm: boolean): Promise<Nullable<PoolData>> {
     const [baseAsset, poolAsset] = key.split(';');
 
-    const poolAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice({ address: poolAsset } as Asset) ?? 0);
-
     if (isFarm) {
       const poolInfo = api.poolXyk.getInfo(baseAsset, poolAsset);
 
@@ -380,13 +389,11 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
         FPNumber.fromCodecValue(reserve)
       );
       const poolAssetReserves = reserves[1];
-      const poolTokenPrice = supply.isZero()
-        ? FPNumber.ZERO
-        : poolAssetReserves.mul(poolAssetPrice).mul(new FPNumber(2)).div(supply);
+      const priceCoefficient = supply.isZero() ? FPNumber.ZERO : poolAssetReserves.mul(new FPNumber(2)).div(supply);
 
-      return { price: poolTokenPrice, supply, reserves, address };
+      return { priceCoefficient, supply, reserves, address };
     } else {
-      return { price: poolAssetPrice };
+      return { priceCoefficient: FPNumber.ONE };
     }
   }
 }

@@ -98,9 +98,21 @@ export const getMaxValue = (
   return getMaxBalance(asset, fee, { isExternalBalance, isExternalNative, isBondedBalance }).toString();
 };
 
-export const getDeltaPercent = (desiredPrice: FPNumber, currentPrice: FPNumber): FPNumber => {
-  const delta = desiredPrice.sub(currentPrice);
-  return delta.div(currentPrice).mul(FPNumber.HUNDRED);
+/**
+ * Returns formatted value in most suitable form
+ * @param value
+ *
+ * 0.152345 -> 0.15
+ * 0.000043 -> 0.000043
+ */
+export const showMostFittingValue = (
+  value: FPNumber,
+  precisionForLowCostAsset = FPNumber.DEFAULT_PRECISION
+): string => {
+  const [integer, decimal = '00'] = value.toString().split('.');
+  const precision = parseInt(integer) > 0 ? 2 : Math.min(decimal.search(/[1-9]/) + 2, precisionForLowCostAsset);
+
+  return value.dp(precision).toLocaleString();
 };
 
 export const hasInsufficientBalance = (
