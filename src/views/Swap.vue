@@ -147,8 +147,8 @@
     </s-form>
     <swap-chart
       v-if="chartsEnabled"
-      :token-from="tokenFrom"
-      :token-to="tokenTo"
+      :quote-asset="tokenFrom"
+      :base-asset="tokenTo"
       :is-available="isAvailable"
       class="swap-chart"
     />
