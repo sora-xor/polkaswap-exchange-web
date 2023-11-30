@@ -119,7 +119,7 @@ import { getter, mutation } from '@/store/decorators';
 import { OrderStatus } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';
 
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 @Component({
   components: {
@@ -129,7 +129,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 export default class OrderTable extends Mixins(TranslationMixin, ScrollableTableMixin) {
   @mutation.orderBook.setOrdersToBeCancelled setOrdersToBeCancelled!: any;
 
-  @getter.assets.assetsDataTable assetsDataTable!: any;
+  @getter.wallet.account.assetsDataTable assetsDataTable!: WALLET_TYPES.AssetsTable;
 
   @Prop({ default: () => [], type: Array }) readonly orders!: OrderData[];
   @Prop({ default: false, type: Boolean }) readonly selectable!: boolean;
