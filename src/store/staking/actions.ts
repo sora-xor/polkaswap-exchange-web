@@ -3,7 +3,6 @@ import { defineActions } from 'direct-vuex';
 
 import { stakingActionContext } from '@/store/staking';
 
-import type { ValidatorInfo } from '@sora-substrate/util/build/staking/types';
 import type { Subscription } from 'rxjs';
 
 const actions = defineActions({
@@ -24,17 +23,32 @@ const actions = defineActions({
   },
 
   async bondAndNominate(context): Promise<void> {
-    const { state, getters } = stakingActionContext(context);
+    const { state, getters, commit } = stakingActionContext(context);
 
     const controller = state.controller || getters.stash;
 
     if (!state.payee) throw new Error('Payee is not set');
 
+    const selectedValidators = state.selectedValidators.map((v) => v.address);
+
     await api.staking.bondAndNominate({
       controller,
       value: state.stakeAmount,
       payee: state.payee,
-      validators: state.selectedValidators.map((v) => v.address),
+      validators: selectedValidators,
+    });
+
+    commit.setStakingInfo({
+      myValidators: selectedValidators,
+      payee: state.payee,
+      controller,
+      redeemAmount: '0',
+      activeStake: state.stakeAmount,
+      totalStake: state.stakeAmount,
+      unbond: {
+        unlocking: [],
+        sum: '0',
+      },
     });
   },
 

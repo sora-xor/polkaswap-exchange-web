@@ -52,7 +52,7 @@
       </div>
       <s-button
         v-if="!stakingInitialized"
-        class="stake-button s-typography-button--medium"
+        class="action-button s-typography-button--medium"
         type="primary"
         @click="stakeNew"
       >
@@ -60,7 +60,7 @@
       </s-button>
       <s-button
         v-if="stakingInitialized"
-        class="stake-button s-typography-button--medium"
+        class="action-button s-typography-button--medium"
         type="primary"
         @click="stakeMore"
       >
@@ -118,6 +118,15 @@
         <info-line v-if="validators.length" :label="t('soraStaking.info.validators')" :value="`${validators.length}`" />
       </div>
     </template>
+    <s-button
+      v-else
+      type="primary"
+      key="disconnected"
+      class="action-wallet s-typography-button--large action-button"
+      @click="handleConnectWallet"
+    >
+      {{ t('connectWalletText') }}
+    </s-button>
     <stake-dialog
       :mode="stakeDialogMode"
       :visible.sync="showStakeDialog"
@@ -143,6 +152,7 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { PageNames } from '@/consts';
 import { fetchData } from '@/indexer/queries/stakingNominators';
 import router from '@/router';
 import { getter, state, mutation } from '@/store/decorators';
@@ -272,6 +282,10 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
     this.showValidatorsDialog = false;
   }
 
+  handleConnectWallet(): void {
+    router.push({ name: PageNames.Wallet });
+  }
+
   @Watch('currentEra')
   async fetchNominatorsCount() {
     if (!this.activeEra) {
@@ -313,6 +327,9 @@ body {
 
 .container {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
   width: 100%;
   max-width: 464px;
   margin: 50px auto;
@@ -375,7 +392,7 @@ p {
   flex: 1;
 }
 
-.stake-button {
+.action-button {
   width: 100%;
   margin-top: 12px;
 }
