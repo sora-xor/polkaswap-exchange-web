@@ -1,4 +1,5 @@
-@Library('jenkins-library@feature/DOPS-2587-add-deepsecrets') _
+//@Library('jenkins-library@feature/DOPS-2587-add-deepsecrets') _
+@Library('jenkins-library@feature/change-dep-confusion-scaner') _
 
 if (env.BRANCH_NAME == "master" || env.BRANCH_NAME == "develop") {
     buildEnvironment = ['VUE_CLI_KEEP_TEST_ATTRS': true]
