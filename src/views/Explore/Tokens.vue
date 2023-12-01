@@ -44,7 +44,7 @@
         </template>
       </s-table-column>
       <!-- Price -->
-      <s-table-column v-if="pricesAvailable" key="price" width="130" header-align="left" align="left">
+      <s-table-column key="price" width="130" header-align="left" align="left">
         <template #header>
           <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">Price</span>
@@ -113,9 +113,7 @@
             </sort-button>
           </template>
           <template v-slot="{ row }">
-            <span v-if="isSynthetic(row.address)">—</span>
             <formatted-amount
-              v-else
               is-fiat-value
               :font-weight-rate="FontWeightRate.MEDIUM"
               :value="row.tvlFormatted.amount"
@@ -141,9 +139,7 @@
             </sort-button>
           </template>
           <template v-slot="{ row }">
-            <span v-if="isSynthetic(row.address)">—</span>
             <formatted-amount
-              v-else
               :font-weight-rate="FontWeightRate.MEDIUM"
               :value="row.velocityFormatted"
               class="explore-table-item-price explore-table-item-amount"
@@ -175,22 +171,15 @@ import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { fetchTokensData } from '@/indexer/queries/assets';
+import type { TokenData } from '@/indexer/queries/assets';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
-import { calcPriceChange, formatAmountWithSuffix, sortAssets } from '@/utils';
+import { formatAmountWithSuffix, sortAssets } from '@/utils';
 import { syntheticAssetRegexp } from '@/utils/regexp';
 import storage from '@/utils/storage';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-
-type TokenData = {
-  reserves: FPNumber;
-  startPriceDay: FPNumber;
-  startPriceWeek: FPNumber;
-  volumeDay: FPNumber;
-  volumeWeek: FPNumber;
-};
 
 type TableItem = {
   price: number;
@@ -223,8 +212,6 @@ const storageKey = 'exploreSyntheticTokens';
   },
 })
 export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
-  private readonly DAY = 60 * 60 * 24;
-
   @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
 
   private isSynths = storage.get(storageKey) ? JSON.parse(storage.get(storageKey)) : false;
@@ -253,32 +240,20 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
       if (!asset) return buffer;
 
-      const fpPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? 0);
-      const fpPriceDay = tokenData?.startPriceDay ?? FPNumber.ZERO;
-      const fpPriceWeek = tokenData?.startPriceWeek ?? FPNumber.ZERO;
-      const fpVolumeDay = tokenData?.volumeDay ?? FPNumber.ZERO;
-      const fpVolumeWeek = tokenData?.volumeWeek ?? FPNumber.ZERO;
-      const fpPriceChangeDay = calcPriceChange(fpPrice, fpPriceDay);
-      const fpPriceChangeWeek = calcPriceChange(fpPrice, fpPriceWeek);
-
-      const reserves = tokenData?.reserves ?? FPNumber.ZERO;
-      const tvl = reserves.mul(fpPrice);
-      const velocity = tvl.isZero() ? FPNumber.ZERO : fpVolumeWeek.div(tvl);
-
       buffer.push({
         ...asset,
-        price: fpPrice.toNumber(),
-        priceFormatted: new FPNumber(fpPrice.toFixed(7)).toLocaleString(),
-        priceChangeDay: fpPriceChangeDay.toNumber(),
-        priceChangeDayFP: fpPriceChangeDay,
-        priceChangeWeek: fpPriceChangeWeek.toNumber(),
-        priceChangeWeekFP: fpPriceChangeWeek,
-        volumeDay: fpVolumeDay.toNumber(),
-        volumeDayFormatted: formatAmountWithSuffix(fpVolumeDay),
-        tvl: tvl.toNumber(),
-        tvlFormatted: formatAmountWithSuffix(tvl),
-        velocity: velocity.toNumber(),
-        velocityFormatted: String(velocity.toNumber(2)),
+        price: tokenData.priceUSD.toNumber(),
+        priceFormatted: new FPNumber(tokenData.priceUSD.toFixed(7)).toLocaleString(),
+        priceChangeDay: tokenData.priceChangeDay.toNumber(),
+        priceChangeDayFP: tokenData.priceChangeDay,
+        priceChangeWeek: tokenData.priceChangeWeek.toNumber(),
+        priceChangeWeekFP: tokenData.priceChangeWeek,
+        volumeDay: tokenData.volumeDayUSD.toNumber(),
+        volumeDayFormatted: formatAmountWithSuffix(tokenData.volumeDayUSD),
+        tvl: tokenData.tvlUSD.toNumber(),
+        tvlFormatted: formatAmountWithSuffix(tokenData.tvlUSD),
+        velocity: tokenData.velocity.toNumber(),
+        velocityFormatted: String(tokenData.velocity.toNumber(2)),
       });
 
       return buffer;

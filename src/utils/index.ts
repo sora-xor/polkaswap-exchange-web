@@ -98,9 +98,21 @@ export const getMaxValue = (
   return getMaxBalance(asset, fee, { isExternalBalance, isExternalNative, isBondedBalance }).toString();
 };
 
-export const getDeltaPercent = (desiredPrice: FPNumber, currentPrice: FPNumber): FPNumber => {
-  const delta = desiredPrice.sub(currentPrice);
-  return delta.div(currentPrice).mul(FPNumber.HUNDRED);
+/**
+ * Returns formatted value in most suitable form
+ * @param value
+ *
+ * 0.152345 -> 0.15
+ * 0.000043 -> 0.000043
+ */
+export const showMostFittingValue = (
+  value: FPNumber,
+  precisionForLowCostAsset = FPNumber.DEFAULT_PRECISION
+): string => {
+  const [integer, decimal = '00'] = value.toString().split('.');
+  const precision = parseInt(integer) > 0 ? 2 : Math.min(decimal.search(/[1-9]/) + 2, precisionForLowCostAsset);
+
+  return value.dp(precision).toLocaleString();
 };
 
 export const hasInsufficientBalance = (
@@ -145,8 +157,16 @@ export const getWalletAddress = (): string => {
   return storage.get('address');
 };
 
-export async function delay(ms = 50): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, ms));
+export async function delay(ms = 50, success = true): Promise<void> {
+  return await new Promise((resolve, reject) => setTimeout(success ? resolve : reject, ms));
+}
+
+export async function conditionalAwait(func: AsyncFnWithoutArgs, wait: boolean): Promise<void> {
+  if (wait) {
+    await func();
+  } else {
+    func();
+  }
 }
 
 export const asZeroValue = (value: any): boolean => {

@@ -7,7 +7,7 @@ import { ethers } from 'ethers';
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
 import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
-import ethersUtil, { Provider, METAMASK_ERROR } from '@/utils/ethers-util';
+import ethersUtil, { Provider, PROVIDER_ERROR } from '@/utils/ethers-util';
 
 import type { SubNetworkApps } from './types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
@@ -21,7 +21,7 @@ async function connectSubNetwork(context: ActionContext<any, any>): Promise<void
 
   await subBridgeConnector.open(subNetwork.id as SubNetwork);
 
-  const ss58 = subBridgeConnector.networkAdapter.api.registry.chainSS58;
+  const ss58 = subBridgeConnector.network.adapter.api.registry.chainSS58;
 
   if (ss58) commit.setSubSS58(ss58);
 }
@@ -54,7 +54,7 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
     },
     onDisconnect: (error) => {
       // this is just chain switch, it's ok
-      if (error?.code === METAMASK_ERROR.DisconnectedFromChain) {
+      if (error?.code === PROVIDER_ERROR.DisconnectedFromChain) {
         return;
       }
       dispatch.resetEvmProviderConnection();
@@ -68,16 +68,15 @@ const actions = defineActions({
   async selectEvmProvider(context, provider: Provider): Promise<void> {
     const { commit, dispatch, state } = web3ActionContext(context);
     try {
-      commit.setEvmProviderLoading(true);
-      // reset prev connection
-      dispatch.resetEvmProviderConnection();
+      commit.setEvmProviderLoading(provider);
       // create new connection
       const address = await ethersUtil.connectEvmProvider(provider, {
         chains: [state.ethBridgeEvmNetwork],
         optionalChains: [...state.evmNetworkApps],
       });
       // if we have address - we are connected
-      if (address) {
+      // if provider not changed - continue
+      if (address && provider === state.evmProviderLoading) {
         // set new provider data
         commit.setEvmAddress(address);
         commit.setEvmProvider(provider);
@@ -85,19 +84,20 @@ const actions = defineActions({
         await subscribeOnEvm(context);
       }
     } finally {
-      commit.setEvmProviderLoading(false);
+      commit.setEvmProviderLoading();
     }
   },
 
   resetEvmProviderConnection(context): void {
-    const { commit } = web3ActionContext(context);
+    const { commit, state } = web3ActionContext(context);
+    const provider = state.evmProvider;
     // reset store
     commit.resetEvmAddress();
     commit.resetEvmProvider();
     commit.resetEvmProviderNetwork();
     commit.resetEvmProviderSubscription();
     // reset connection
-    ethersUtil.disconnectEvmProvider();
+    ethersUtil.disconnectEvmProvider(provider);
   },
 
   async disconnectExternalNetwork(context): Promise<void> {
@@ -108,7 +108,7 @@ const actions = defineActions({
   async selectExternalNetwork(context, { id, type }: { id: BridgeNetworkId; type: BridgeNetworkType }): Promise<void> {
     const { commit, dispatch, rootDispatch } = web3ActionContext(context);
 
-    dispatch.disconnectExternalNetwork();
+    await dispatch.disconnectExternalNetwork();
 
     commit.setNetworkType(type);
     commit.setSelectedNetwork(id);

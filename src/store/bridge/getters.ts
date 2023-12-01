@@ -4,11 +4,14 @@ import { defineGetters } from 'direct-vuex';
 
 import { ZeroStringValue } from '@/consts';
 import { bridgeGetterContext } from '@/store/bridge';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { formatSubAddress } from '@/utils/bridge/sub/utils';
 
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const getters = defineGetters<BridgeState>()({
   asset(...args): Nullable<RegisteredAccountAsset> {
@@ -29,20 +32,27 @@ const getters = defineGetters<BridgeState>()({
   },
 
   nativeToken(...args): Nullable<RegisteredAccountAsset> {
-    const { rootGetters } = bridgeGetterContext(args);
+    const { rootGetters, rootState } = bridgeGetterContext(args);
+    const {
+      wallet: {
+        account: { assets },
+      },
+      assets: { registeredAssets },
+    } = rootState;
     const {
       web3: { selectedNetwork },
-      assets: { whitelistAssets, assetDataByAddress },
+      assets: { assetDataByAddress },
     } = rootGetters;
 
     if (!selectedNetwork) return null;
-    // find sora asset in whitelist by symbol (we know only external native token symbol)
+
     const { symbol } = selectedNetwork.nativeCurrency;
-    const soraAsset = whitelistAssets.find((asset) => asset.symbol === symbol);
+    const filteredBySymbol = assets.filter((asset) => asset.symbol === symbol);
+    const registered = filteredBySymbol.find((asset) => asset.address in registeredAssets);
 
-    if (!soraAsset) return null;
+    if (!registered) return null;
 
-    return assetDataByAddress(soraAsset.address);
+    return assetDataByAddress(registered.address);
   },
 
   isRegisteredAsset(...args): boolean {
@@ -94,6 +104,14 @@ const getters = defineGetters<BridgeState>()({
     return state.isSoraToEvm ? soraAddress : evmAddress;
   },
 
+  senderName(...args): string {
+    const { state, rootState, getters } = bridgeGetterContext(args);
+    if (getters.isSubBridge) {
+      return rootState.wallet.account.name;
+    }
+    return state.isSoraToEvm ? rootState.wallet.account.name : '';
+  },
+
   recipient(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
     const { address: soraAddress } = rootState.wallet.account;
@@ -104,6 +122,14 @@ const getters = defineGetters<BridgeState>()({
     }
 
     return state.isSoraToEvm ? evmAddress : soraAddress;
+  },
+
+  recipientName(...args): string {
+    const { state, rootState, getters } = bridgeGetterContext(args);
+    if (getters.isSubBridge) {
+      return rootState.web3.subAddressName;
+    }
+    return state.isSoraToEvm ? '' : rootState.wallet.account.name;
   },
 
   isEthBridge(...args): boolean {
@@ -144,9 +170,8 @@ const getters = defineGetters<BridgeState>()({
     const { state } = bridgeGetterContext(args);
 
     const internalHistory = Object.values(state.historyInternal);
-    const externalHistory = Object.values(state.historyExternal);
 
-    return [...internalHistory, ...externalHistory].reduce((buffer, item) => {
+    return [...internalHistory].reduce((buffer, item) => {
       if (!item.id) return buffer;
 
       return { ...buffer, [item.id]: item };
@@ -158,6 +183,20 @@ const getters = defineGetters<BridgeState>()({
     if (!state.historyId) return null;
 
     return getters.history[state.historyId] ?? null;
+  },
+  networkHistoryId(...args): Nullable<BridgeNetworkId> {
+    const { getters, rootState } = bridgeGetterContext(args);
+    const { networkSelected } = rootState.web3;
+
+    if (!networkSelected) return null;
+
+    return getters.isSubBridge ? subBridgeApi.getRelayChain(networkSelected as SubNetwork) : networkSelected;
+  },
+  networkHistoryLoading(...args): boolean {
+    const { getters, state } = bridgeGetterContext(args);
+    const { networkHistoryId } = getters;
+
+    return !!(networkHistoryId && state.historyLoading[networkHistoryId]);
   },
 });
 
