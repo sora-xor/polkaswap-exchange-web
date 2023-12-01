@@ -72,6 +72,7 @@ import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
 import { SvgIcons } from '@/components/shared/Button/SvgIconButton/icons';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
+import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook';
 import { fetchAssetData } from '@/indexer/queries/price/asset';
 import { fetchOrderBookData } from '@/indexer/queries/price/orderBook';
 import { lazyComponent } from '@/router';
@@ -665,6 +666,7 @@ export default class SwapChart extends Mixins(
     });
   }
 
+  // common
   private unsubscribeFromPriceUpdates(): void {
     if (this.priceUpdateWatcher) {
       this.priceUpdateWatcher();
@@ -676,7 +678,7 @@ export default class SwapChart extends Mixins(
     this.priceUpdateTimestampSync = null;
   }
 
-  private subscribeToPriceUpdates(): void {
+  private subscribeToAssetsPriceUpdates(): void {
     this.unsubscribeFromPriceUpdates();
 
     const addresses = [...this.tokensAddresses];
@@ -691,6 +693,22 @@ export default class SwapChart extends Mixins(
     );
 
     this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(addresses), SYNC_INTERVAL);
+  }
+
+  private async subscribeToOrderBookPriceUpdates(): Promise<void> {
+    this.unsubscribeFromPriceUpdates();
+
+    if (!(this.baseAsset && this.quoteAsset)) return;
+
+    this.priceUpdateWatcher = await subscribeOnOrderBookUpdates(
+      this.dexId,
+      this.baseAsset.address,
+      this.quoteAsset.address,
+      console.info,
+      console.error
+    );
+
+    // this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(addresses), SYNC_INTERVAL);
   }
 
   private getCurrentSnapshotTimestamp(): number {
@@ -780,9 +798,10 @@ export default class SwapChart extends Mixins(
   private async resetAndUpdatePrices(saveReversedState = false): Promise<void> {
     this.clearData(saveReversedState);
     await this.updatePrices();
-    // [TODO] price update for order book chart
-    if (!this.isOrderBook) {
-      this.subscribeToPriceUpdates();
+    if (this.isOrderBook) {
+      this.subscribeToOrderBookPriceUpdates();
+    } else {
+      this.subscribeToAssetsPriceUpdates();
     }
   }
 

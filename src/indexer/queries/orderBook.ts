@@ -269,7 +269,7 @@ export async function subscribeOnOrderBookUpdates(
   quoteAssetId: string,
   handler: (entity: OrderBookUpdateData) => void,
   errorHandler: () => void
-): Promise<Nullable<VoidFunction>> {
+): Promise<Nullable<FnWithoutArgs>> {
   const orderBookId = [dexId, baseAssetId, quoteAssetId].join('-');
   const variables = { id: orderBookId };
   const indexer = getCurrentIndexer();
