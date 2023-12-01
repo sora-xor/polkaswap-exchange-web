@@ -7,7 +7,7 @@
         <span v-if="tokenB">/{{ tokenB.symbol }}</span>
       </div>
       <s-button
-        v-if="isTokensPair"
+        v-if="isTokensPair && !isOrderBook"
         :class="{ 's-pressed': isReversedChart }"
         type="action"
         alternative
@@ -40,7 +40,7 @@
     >
       <formatted-amount
         class="charts-price"
-        :value="fiatPriceFormatted"
+        :value="currentPriceFormatted"
         :font-weight-rate="FontWeightRate.MEDIUM"
         :font-size-rate="FontWeightRate.MEDIUM"
         :asset-symbol="symbol"
@@ -73,6 +73,7 @@ import { SvgIcons } from '@/components/shared/Button/SvgIconButton/icons';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
 import { fetchAssetData } from '@/indexer/queries/price/asset';
+import { fetchOrderBookData } from '@/indexer/queries/price/orderBook';
 import { lazyComponent } from '@/router';
 import type { OCLH, SnapshotItem } from '@/types/chart';
 import { Timeframes } from '@/types/filters';
@@ -264,8 +265,8 @@ export default class SwapChart extends Mixins(
   mixins.FormattedAmountMixin
 ) {
   @Prop({ default: DexId.XOR, type: Number }) readonly dexId!: DexId;
-  @Prop({ default: () => null, type: Object }) readonly quoteAsset!: Nullable<AccountAsset>;
   @Prop({ default: () => null, type: Object }) readonly baseAsset!: Nullable<AccountAsset>;
+  @Prop({ default: () => null, type: Object }) readonly quoteAsset!: Nullable<AccountAsset>;
   @Prop({ default: false, type: Boolean }) readonly isAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isOrderBook!: boolean;
 
@@ -312,17 +313,17 @@ export default class SwapChart extends Mixins(
   }
 
   get inputTokensAddresses(): string[] {
-    const filtered = [this.quoteAsset, this.baseAsset].filter((token) => !!token) as AccountAsset[];
+    const filtered = [this.baseAsset, this.quoteAsset].filter((token) => !!token) as AccountAsset[];
 
     return filtered.map((token) => token.address);
   }
 
   get tokenA() {
-    return this.isReversedChart ? this.baseAsset : this.quoteAsset;
+    return this.isReversedChart ? this.quoteAsset : this.baseAsset;
   }
 
   get tokenB() {
-    return this.isReversedChart ? this.quoteAsset : this.baseAsset;
+    return this.isReversedChart ? this.baseAsset : this.quoteAsset;
   }
 
   get tokens(): AccountAsset[] {
@@ -335,6 +336,18 @@ export default class SwapChart extends Mixins(
 
   get isTokensPair(): boolean {
     return this.tokensAddresses.length === 2;
+  }
+
+  get orderBookId(): Nullable<string> {
+    if (!(this.baseAsset && this.quoteAsset)) return null;
+    return [this.dexId, this.baseAsset.address, this.quoteAsset.address].join('-');
+  }
+
+  get entities(): string[] {
+    if (this.isOrderBook) {
+      return this.orderBookId ? [this.orderBookId] : [];
+    }
+    return this.tokensAddresses;
   }
 
   get chartTypeButtons(): { type: CHART_TYPES; icon: any; active: boolean }[] {
@@ -357,22 +370,6 @@ export default class SwapChart extends Mixins(
     return this.tokenB?.symbol ?? 'USD';
   }
 
-  get fromFiatPrice(): FPNumber {
-    return this.tokenA ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenA) ?? 0) : FPNumber.ZERO;
-  }
-
-  get toFiatPrice(): FPNumber {
-    return this.tokenB ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenB) ?? 0) : FPNumber.ZERO;
-  }
-
-  get fiatPrice(): FPNumber {
-    return this.toFiatPrice.isZero() ? this.fromFiatPrice : this.fromFiatPrice.div(this.toFiatPrice);
-  }
-
-  get fiatPriceFormatted(): string {
-    return this.fiatPrice.toLocaleString();
-  }
-
   get isAllHistoricalPricesFetched(): boolean {
     return Object.entries(this.pageInfos).some(([address, pageInfo]) => {
       return !pageInfo.hasNextPage && !this.samplesBuffer[address]?.length;
@@ -389,6 +386,14 @@ export default class SwapChart extends Mixins(
     const endIndex = Math.ceil((itemsCount * this.zoomEnd) / 100) - 1;
 
     return [startIndex, endIndex];
+  }
+
+  get currentPrice(): FPNumber {
+    return new FPNumber(this.prices[0]?.price[2] ?? 0); // "close" price
+  }
+
+  get currentPriceFormatted(): string {
+    return this.currentPrice.toLocaleString();
   }
 
   /**
@@ -546,10 +551,11 @@ export default class SwapChart extends Mixins(
   }
 
   // ordered ty timestamp DESC
-  private async fetchData(address: string) {
+  private async fetchData(entityId: string) {
+    const handler = this.isOrderBook ? fetchOrderBookData : fetchAssetData;
     const { type, count } = this.selectedFilter;
-    const pageInfo = this.pageInfos[address];
-    const buffer = this.samplesBuffer[address] ?? [];
+    const pageInfo = this.pageInfos[entityId];
+    const buffer = this.samplesBuffer[entityId] ?? [];
     const nodes: SnapshotItem[] = [];
 
     let hasNextPage = pageInfo?.hasNextPage ?? true;
@@ -568,7 +574,7 @@ export default class SwapChart extends Mixins(
     do {
       const first = Math.min(fetchCount, 100); // how many items should be fetched by request
 
-      const response = await fetchAssetData(address, type, first, endCursor);
+      const response = await handler(entityId, type, first, endCursor);
 
       if (!response) throw new Error('Chart data fetch error');
 
@@ -593,7 +599,7 @@ export default class SwapChart extends Mixins(
     // prevent fetching if tokens pair not available
     if (this.isTokensPair && !this.isAvailable) return;
 
-    const addresses = [...this.tokensAddresses];
+    const addresses = [...this.entities];
     const requestId = Date.now();
     const lastTimestamp = last(this.prices)?.timestamp ?? Date.now();
 
@@ -604,8 +610,7 @@ export default class SwapChart extends Mixins(
         const snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
 
         // if no response, or tokens were changed, return
-        if (!(snapshots && isEqual(addresses)(this.tokensAddresses) && isEqual(requestId)(this.priceUpdateRequestId)))
-          return;
+        if (!(snapshots && isEqual(addresses)(this.entities) && isEqual(requestId)(this.priceUpdateRequestId))) return;
 
         const pageInfos: Record<string, Partial<PageInfo>> = {};
         const prices: SnapshotItem[] = [];
@@ -775,7 +780,10 @@ export default class SwapChart extends Mixins(
   private async resetAndUpdatePrices(saveReversedState = false): Promise<void> {
     this.clearData(saveReversedState);
     await this.updatePrices();
-    this.subscribeToPriceUpdates();
+    // [TODO] price update for order book chart
+    if (!this.isOrderBook) {
+      this.subscribeToPriceUpdates();
+    }
   }
 
   selectChartType(type: CHART_TYPES): void {

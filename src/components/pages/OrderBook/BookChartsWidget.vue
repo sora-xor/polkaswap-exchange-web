@@ -1,9 +1,10 @@
 <template>
   <swap-chart
     :dex-id="dexId"
-    :quote-asset="quoteAsset"
     :base-asset="baseAsset"
-    :is-available="isAvailable"
+    :quote-asset="quoteAsset"
+    is-available
+    is-order-book
     class="order-book-chart"
   />
 </template>
@@ -28,9 +29,5 @@ export default class BookChartsWidget extends Mixins(TranslationMixin) {
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @state.orderBook.dexId dexId!: DexId;
-
-  get isAvailable() {
-    return true;
-  }
 }
 </script>

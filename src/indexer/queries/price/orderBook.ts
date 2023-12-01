@@ -1,141 +1,99 @@
-// import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-// import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
-// import { SubsquidConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
-// import { gql } from '@urql/core';
+import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
+import { SubsquidConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
+import { gql } from '@urql/core';
 
-// import type { OCLH, SnapshotItem } from '@/types/chart';
+import type { OCLH, SnapshotItem } from '@/types/chart';
 
-// import type { SubqueryConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
-// import type { AssetSnapshotEntity, ConnectionQueryResponseData, SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { SubqueryConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
+import type {
+  OrderBookSnapshotEntity,
+  ConnectionQueryResponseData,
+  SnapshotTypes,
+} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
-// const { IndexerType } = WALLET_CONSTS;
+const { IndexerType } = WALLET_CONSTS;
 
-// const preparePriceData = (item: AssetSnapshotEntity): OCLH => {
-//   const { open, close, low, high } = item.priceUSD;
+const preparePriceData = (item: OrderBookSnapshotEntity): OCLH => {
+  const { open, close, low, high } = item.price;
 
-//   return [+open, +close, +low, +high];
-// };
+  return [+open, +close, +low, +high];
+};
 
-// const transformSnapshot = (item: AssetSnapshotEntity): SnapshotItem => {
-//   const timestamp = +item.timestamp * 1000;
-//   const price = preparePriceData(item);
-//   return { timestamp, price };
-// };
+const transformSnapshot = (item: OrderBookSnapshotEntity): SnapshotItem => {
+  const timestamp = +item.timestamp * 1000;
+  const price = preparePriceData(item);
+  return { timestamp, price };
+};
 
-// const subqueryAssetPriceFilter = (assetAddress: string, type: SnapshotTypes) => {
-//   return {
-//     and: [
-//       {
-//         assetId: {
-//           equalTo: assetAddress,
-//         },
-//       },
-//       {
-//         type: {
-//           equalTo: type,
-//         },
-//       },
-//     ],
-//   };
-// };
+const subqueryOrderBookPriceFilter = (orderBookId: string, type: SnapshotTypes) => {
+  return {
+    and: [
+      {
+        orderBookId: {
+          equalTo: orderBookId,
+        },
+      },
+      {
+        type: {
+          equalTo: type,
+        },
+      },
+    ],
+  };
+};
 
-// const SubqueryAssetPriceQuery = gql<SubqueryConnectionQueryResponse<AssetSnapshotEntity>>`
-//   query SubqueryAssetPriceQuery($after: Cursor = "", $filter: AssetSnapshotFilter, $first: Int = null) {
-//     data: assetSnapshots(after: $after, first: $first, filter: $filter, orderBy: [TIMESTAMP_DESC]) {
-//       pageInfo {
-//         hasNextPage
-//         hasPreviousPage
-//         startCursor
-//         endCursor
-//       }
-//       edges {
-//         node {
-//           priceUSD
-//           timestamp
-//         }
-//       }
-//     }
-//   }
-// `;
+const SubqueryOrderBookPriceQuery = gql<SubqueryConnectionQueryResponse<OrderBookSnapshotEntity>>`
+  query SubqueryOrderBookPriceQuery($after: Cursor = "", $filter: OrderBookSnapshotFilter, $first: Int = null) {
+    data: orderBookSnapshots(after: $after, first: $first, filter: $filter, orderBy: [TIMESTAMP_DESC]) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          price
+          timestamp
+        }
+      }
+    }
+  }
+`;
 
-// const subsquidAssetPriceFilter = (assetAddress: string, type: SnapshotTypes) => {
-//   return {
-//     AND: [
-//       {
-//         asset: { id_eq: assetAddress },
-//       },
-//       {
-//         type_eq: type,
-//       },
-//     ],
-//   };
-// };
+export async function fetchOrderBookData(
+  orderBookId: string,
+  type: SnapshotTypes,
+  first?: number,
+  after?: string | null
+): Promise<Nullable<ConnectionQueryResponseData<SnapshotItem>>> {
+  const indexer = getCurrentIndexer();
 
-// const SubsquidAssetPriceQuery = gql<SubsquidConnectionQueryResponse<AssetSnapshotEntity>>`
-//   query SubsquidAssetPriceQuery($after: String = null, $filter: AssetSnapshotWhereInput, $first: Int = null) {
-//     data: assetSnapshotsConnection(after: $after, first: $first, where: $filter, orderBy: [timestamp_DESC]) {
-//       pageInfo {
-//         hasNextPage
-//         hasPreviousPage
-//         startCursor
-//         endCursor
-//       }
-//       edges {
-//         node {
-//           priceUSD {
-//             close
-//             high
-//             low
-//             open
-//           }
-//           timestamp
-//         }
-//       }
-//     }
-//   }
-// `;
+  let data!: Nullable<ConnectionQueryResponseData<OrderBookSnapshotEntity>>;
 
-// export async function fetchAssetData(
-//   assetId: string,
-//   type: SnapshotTypes,
-//   first?: number,
-//   after?: string | null
-// ): Promise<Nullable<ConnectionQueryResponseData<SnapshotItem>>> {
-//   const indexer = getCurrentIndexer();
+  switch (indexer.type) {
+    case IndexerType.SUBQUERY: {
+      const subqueryIndexer = indexer as SubqueryIndexer;
+      const filter = subqueryOrderBookPriceFilter(orderBookId, type);
+      const variables = { filter, first, after };
+      data = await subqueryIndexer.services.explorer.fetchEntities(SubqueryOrderBookPriceQuery, variables);
+      break;
+    }
+    case IndexerType.SUBSQUID: {
+      return null;
+    }
+  }
 
-//   let data!: Nullable<ConnectionQueryResponseData<AssetSnapshotEntity>>;
+  if (!data) return null;
 
-//   switch (indexer.type) {
-//     case IndexerType.SUBQUERY: {
-//       const subqueryIndexer = indexer as SubqueryIndexer;
-//       const filter = subqueryAssetPriceFilter(assetId, type);
-//       const variables = { filter, first, after };
-//       data = await subqueryIndexer.services.explorer.fetchEntities(SubqueryAssetPriceQuery, variables);
-//       break;
-//     }
-//     case IndexerType.SUBSQUID: {
-//       const subsquidIndexer = indexer as SubsquidIndexer;
-
-//       if (after === '') {
-//         after = null;
-//       }
-
-//       const filter = subsquidAssetPriceFilter(assetId, type);
-//       const variables = { filter, first, after };
-//       data = await subsquidIndexer.services.explorer.fetchEntitiesConnection(SubsquidAssetPriceQuery, variables);
-//       break;
-//     }
-//   }
-
-//   if (!data) return null;
-
-//   return {
-//     ...data,
-//     edges: data.edges.map((edge) => {
-//       return {
-//         ...edge,
-//         node: transformSnapshot(edge.node)
-//       }
-//     })
-//   };
-// }
+  return {
+    ...data,
+    edges: data.edges.map((edge) => {
+      return {
+        ...edge,
+        node: transformSnapshot(edge.node),
+      };
+    }),
+  };
+}
