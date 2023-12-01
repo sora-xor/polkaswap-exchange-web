@@ -1,10 +1,9 @@
-import { XSTUSD, XOR, XST } from '@sora-substrate/util/build/assets/consts';
+import { XSTUSD, XOR } from '@sora-substrate/util/build/assets/consts';
 import { WALLET_TYPES, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Vue } from 'vue-property-decorator';
 
 import { PageNames } from '@/consts';
 import { getter } from '@/store/decorators';
-import { syntheticAssetRegexp } from '@/utils/regexp';
 
 import type { AccountAsset, Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
 import type { NavigationGuardNext, Route } from 'vue-router';
@@ -15,7 +14,7 @@ const MAX_SYMBOL_LENGTH = 7;
 export default class SelectedTokenRouteMixin extends Vue {
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
-  @getter.assets.assetsDataTable private assetsDataTable!: Record<string, Asset>;
+  @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
 
   private wasRedirected = false;
 

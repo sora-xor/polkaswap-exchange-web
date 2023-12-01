@@ -3,7 +3,7 @@ import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
-import { EthereumProvider } from '@walletconnect/ethereum-provider';
+import { EthereumProvider as WalletConnectEthereumProvider } from '@walletconnect/ethereum-provider';
 import { ethers } from 'ethers';
 
 import { ZeroStringValue } from '@/consts';
@@ -17,11 +17,12 @@ import type { ChainsProps } from '@walletconnect/ethereum-provider/dist/types/Et
 
 type ethersProvider = ethers.BrowserProvider;
 
-let ethereumProvider: any = null;
+let ethereumProvider!: any;
 let ethersInstance: ethersProvider | null = null;
 
 export enum Provider {
   Metamask = 'Metamask',
+  SubWallet = 'SubWallet',
   TrustWallet = 'TrustWallet',
   WalletConnect = 'WalletConnect',
 }
@@ -41,7 +42,7 @@ const gasLimit = {
 
 const WALLET_CONNECT_PROJECT_ID = 'feeab08b50e0d407f4eb875d69e162e8';
 
-export enum METAMASK_ERROR {
+export enum PROVIDER_ERROR {
   // 1013: Disconnected from chain. Attempting to connect
   DisconnectedFromChain = 1013,
   // 4001: User rejected the request
@@ -50,6 +51,37 @@ export enum METAMASK_ERROR {
   // -32002: Request of type 'wallet_requestPermissions' already pending for origin. Please wait
   AlreadyProcessing = -32002,
 }
+
+export const installExtensionKey = 'provider.messages.installExtension';
+
+const handleErrorCode = (code: number, message?: string): string => {
+  if (message) console.error(message);
+
+  switch (code) {
+    case PROVIDER_ERROR.AlreadyProcessing:
+    case PROVIDER_ERROR.UserRejectedRequest:
+      return 'provider.messages.extensionLogin';
+    default:
+      return 'provider.messages.checkExtension';
+  }
+};
+
+export const handleRpcProviderError = (error: any): string => {
+  let code = 0;
+  let message!: string;
+
+  // Metamask, TrustWallet
+  if ('info' in error) {
+    code = error.info.error.code;
+    message = error.info.error.message;
+    // SubWallet
+  } else if ('error' in error) {
+    code = error.error.data;
+    message = error.error.message;
+  }
+
+  return handleErrorCode(code, message);
+};
 
 /**
  * It's in gwei.
@@ -84,8 +116,7 @@ async function connectEvmProvider(provider: Provider, chains: ChainsProps): Prom
   }
 }
 
-function disconnectEvmProvider(): void {
-  ethereumProvider?.disconnect?.();
+function clearWalletConnectSession(): void {
   // clear walletconnect localstorage
   for (const key in localStorage) {
     if (key.startsWith('wc@2')) {
@@ -95,15 +126,29 @@ function disconnectEvmProvider(): void {
   localStorage.removeItem('WCM_VERSION');
 }
 
-function createWeb3Instance(ethereumProvider: any) {
+function disconnectEvmProvider(provider?: Nullable<Provider>): void {
+  ethereumProvider?.disconnect?.();
+
+  if (provider === Provider.WalletConnect) {
+    clearWalletConnectSession();
+  }
+}
+
+function createWeb3Instance(provider: any) {
+  ethereumProvider = provider;
   // 'any' - because ethers throws errors after network switch
   ethersInstance = new ethers.BrowserProvider(ethereumProvider, 'any');
 }
 
 async function useExtensionProvider(provider: Provider): Promise<string> {
+  let ethereumProvider!: any;
+
   switch (provider) {
     case Provider.Metamask:
-      ethereumProvider = await detectEthereumProvider({ timeout: 0 });
+      ethereumProvider = await detectEthereumProvider({ mustBeMetaMask: true, timeout: 0 });
+      break;
+    case Provider.SubWallet:
+      ethereumProvider = (window as any).SubWallet;
       break;
     case Provider.TrustWallet:
       ethereumProvider = (window as any).trustwallet;
@@ -113,7 +158,7 @@ async function useExtensionProvider(provider: Provider): Promise<string> {
   }
 
   if (!ethereumProvider) {
-    throw new Error('provider.messages.installExtension');
+    throw new Error(installExtensionKey);
   }
 
   createWeb3Instance(ethereumProvider);
@@ -139,7 +184,7 @@ async function useWalletConnectProvider(chainProps: ChainsProps): Promise<string
   try {
     await checkWalletConnectAvailability(chainProps);
 
-    ethereumProvider = await EthereumProvider.init({
+    const ethereumProvider = await WalletConnectEthereumProvider.init({
       projectId: WALLET_CONNECT_PROJECT_ID,
       showQrModal: true,
       ...chainProps,
@@ -177,14 +222,10 @@ async function getSigner(): Promise<ethers.JsonRpcSigner> {
 }
 
 async function getAccount(): Promise<string> {
-  try {
-    const ethersInstance = getEthersInstance();
-    await ethersInstance.send('eth_requestAccounts', []);
-    const signer = await getSigner();
-    return signer.getAddress();
-  } catch {
-    return '';
-  }
+  const ethersInstance = getEthersInstance();
+  await ethersInstance.send('eth_requestAccounts', []);
+  const signer = await getSigner();
+  return signer.getAddress();
 }
 
 async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> {
@@ -277,17 +318,19 @@ async function watchEthereum(cb: {
   onNetworkChange: (networkId: string) => void;
   onDisconnect: (error: any) => void;
 }): Promise<FnWithoutArgs> {
-  if (ethereumProvider) {
-    ethereumProvider.on('accountsChanged', cb.onAccountChange);
-    ethereumProvider.on('chainChanged', cb.onNetworkChange);
-    ethereumProvider.on('disconnect', cb.onDisconnect);
+  const provider = ethereumProvider;
+
+  if (provider) {
+    provider.on('accountsChanged', cb.onAccountChange);
+    provider.on('chainChanged', cb.onNetworkChange);
+    provider.on('disconnect', cb.onDisconnect);
   }
 
   return function disconnect() {
-    if (ethereumProvider) {
-      ethereumProvider.off('accountsChanged', cb.onAccountChange);
-      ethereumProvider.off('chainChanged', cb.onNetworkChange);
-      ethereumProvider.off('disconnect', cb.onDisconnect);
+    if (provider) {
+      provider.off('accountsChanged', cb.onAccountChange);
+      provider.off('chainChanged', cb.onNetworkChange);
+      provider.off('disconnect', cb.onDisconnect);
     }
   };
 }

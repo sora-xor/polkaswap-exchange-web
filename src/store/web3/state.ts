@@ -7,14 +7,15 @@ export function initialState(): Web3State {
   return {
     evmAddress: '', // external evm address
     subAddress: '', // external sub address
+    subAddressName: '',
     subSS58: 69, // external sub network ss58 prefix (sora by default)
 
     networkType: null, // network type for selected network
     networkSelected: null, // network selected by user
 
     evmProvider: null,
+    evmProviderLoading: null,
     evmProviderNetwork: null, // evm network in provider
-    evmProviderLoading: false,
     evmProviderSubscription: null, // provider event listeners
 
     evmNetworkApps: [], // evm networks from app config

@@ -49,7 +49,7 @@ const getExternalBalance = async (
   isSub: boolean
 ): Promise<CodecString> => {
   return isSub
-    ? await subBridgeConnector.networkAdapter.getTokenBalance(accountAddress, asset?.externalAddress)
+    ? await subBridgeConnector.network.adapter.getTokenBalance(accountAddress, asset?.symbol)
     : await ethersUtil.getAccountAssetBalance(accountAddress, asset?.externalAddress);
 };
 
@@ -110,7 +110,7 @@ function bridgeDataToHistoryItem(
     endTime: date,
     transactionState,
     soraNetworkFee: (params as any).soraNetworkFee ?? state.soraNetworkFee,
-    parachainNetworkFee: (params as any).parachainNetworkFee ?? state.externalTransferFee,
+    externalTransferFee: (params as any).externalTransferFee ?? state.externalTransferFee,
     externalNetworkFee: (params as any).externalNetworkFee,
     externalNetwork,
     externalNetworkType,
@@ -145,8 +145,8 @@ async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void>
   const { commit, getters } = bridgeActionContext(context);
   let fee = ZeroStringValue;
 
-  if (getters.asset && getters.isRegisteredAsset) {
-    fee = await subBridgeConnector.networkAdapter.getNetworkFee(getters.asset);
+  if (getters.asset && getters.isRegisteredAsset && getters.sender && getters.recipient) {
+    fee = await subBridgeConnector.network.adapter.getNetworkFee(getters.asset, getters.sender, getters.recipient);
   }
 
   commit.setExternalNetworkFee(fee);
@@ -313,7 +313,7 @@ async function updateExternalBlockNumber(context: ActionContext<any, any>): Prom
   const { getters, commit } = bridgeActionContext(context);
   try {
     const blockNumber = getters.isSubBridge
-      ? await subBridgeConnector.networkAdapter.getBlockNumber()
+      ? await subBridgeConnector.network.adapter.getBlockNumber()
       : await ethersUtil.getBlockNumber();
 
     commit.setExternalBlockNumber(blockNumber);
@@ -467,7 +467,7 @@ const actions = defineActions({
 
     if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
       try {
-        const value = await subBridgeConnector.parachainAdapter.getAssetMinimumAmount(getters.asset.address);
+        const value = await subBridgeConnector.soraParachain.adapter.getAssetMinimumAmount(getters.asset.address);
         minLimit = FPNumber.fromCodecValue(value, getters.asset.externalDecimals);
       } catch (error) {
         console.error(error);
@@ -539,18 +539,27 @@ const actions = defineActions({
   },
 
   updateInternalHistory(context): void {
-    const { commit } = bridgeActionContext(context);
+    const { commit, rootState } = bridgeActionContext(context);
+    const { networkSelected } = rootState.web3;
     const bridgeApi = getBridgeApi(context);
     const history = bridgeApi.history;
-    commit.setInternalHistory(history as Record<string, IBridgeTransaction>);
+    const historyNetwork = Object.entries(history).reduce((acc, [id, item]) => {
+      const { externalNetwork } = item as IBridgeTransaction;
+      if (externalNetwork === networkSelected) {
+        acc[id] = item;
+      }
+      return acc;
+    }, {});
+    commit.setInternalHistory(historyNetwork as Record<string, IBridgeTransaction>);
   },
 
   async updateExternalHistory(context, clearHistory = false): Promise<void> {
-    const { commit, getters, state } = bridgeActionContext(context);
+    const { commit, getters } = bridgeActionContext(context);
+    const { networkHistoryId } = getters;
 
-    if (state.historyLoading) return;
+    if (!networkHistoryId || getters.networkHistoryLoading) return;
 
-    commit.setHistoryLoading(true);
+    commit.setNetworkHistoryLoading(networkHistoryId);
 
     if (getters.isEthBridge) {
       await updateEthHistory(context, clearHistory);
@@ -562,7 +571,7 @@ const actions = defineActions({
       console.info('Evm history not implemented');
     }
 
-    commit.setHistoryLoading(false);
+    commit.resetNetworkHistoryLoading(networkHistoryId);
   },
 
   removeHistory(context, { tx, force = false }: { tx: Partial<IBridgeTransaction>; force: boolean }): void {

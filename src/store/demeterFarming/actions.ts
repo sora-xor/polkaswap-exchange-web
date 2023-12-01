@@ -86,7 +86,7 @@ const actions = defineActions({
 
   async deposit(context, params: DemeterLiquidityParams): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
-    const { assetsDataTable: table } = rootGetters.assets;
+    const { assetsDataTable: table } = rootGetters.wallet.account;
 
     const {
       baseAsset: baseAssetAddress,
@@ -109,7 +109,7 @@ const actions = defineActions({
 
   async withdraw(context, params: DemeterLiquidityParams): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
-    const { assetsDataTable: table } = rootGetters.assets;
+    const { assetsDataTable: table } = rootGetters.wallet.account;
 
     const {
       baseAsset: baseAssetAddress,
@@ -132,7 +132,7 @@ const actions = defineActions({
 
   async claimRewards(context, pool: DemeterAccountPool): Promise<void> {
     const { rootGetters } = demeterFarmingActionContext(context);
-    const { assetsDataTable: table } = rootGetters.assets;
+    const { assetsDataTable: table } = rootGetters.wallet.account;
 
     const {
       baseAsset: baseAssetAddress,

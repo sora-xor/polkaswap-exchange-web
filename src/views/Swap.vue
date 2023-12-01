@@ -176,10 +176,10 @@ import {
   getAssetBalance,
   debouncedInputHandler,
 } from '@/utils';
-import { DifferenceStatus, getDifferenceStatus } from '@/utils/swap';
+import { DifferenceStatus, getDifferenceStatus, calcFiatDifference } from '@/utils/swap';
 
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { LPRewardsInfo, SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
+import type { LPRewardsInfo, SwapQuote, Distribution } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { DexId } from '@sora-substrate/util/build/dex/consts';
@@ -236,6 +236,7 @@ export default class Swap extends Mixins(
   @mutation.swap.setLiquidityProviderFee private setLiquidityProviderFee!: (value: CodecString) => void;
   @mutation.swap.setRewards private setRewards!: (rewards: Array<LPRewardsInfo>) => void;
   @mutation.swap.setRoute private setRoute!: (route: Array<string>) => void;
+  @mutation.swap.setDistribution private setDistribution!: (distribution: Distribution[][]) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
   @mutation.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload?: SwapQuoteData) => void;
 
@@ -295,31 +296,18 @@ export default class Swap extends Mixins(
     return this.isZeroFromAmount && this.isZeroToAmount;
   }
 
-  get fromFiatAmount(): string {
-    if (!(this.tokenFrom && this.fromValue)) return ZeroStringValue;
-    return this.getFiatAmountByString(this.fromValue, this.tokenFrom) || ZeroStringValue;
+  get fromFiatAmount(): FPNumber {
+    if (!(this.tokenFrom && this.fromValue)) return FPNumber.ZERO;
+    return this.getFPNumberFiatAmountByFPNumber(new FPNumber(this.fromValue), this.tokenFrom) ?? FPNumber.ZERO;
   }
 
-  get toFiatAmount(): string {
-    if (!(this.tokenTo && this.toValue)) return ZeroStringValue;
-    return this.getFiatAmountByString(this.toValue, this.tokenTo) || ZeroStringValue;
+  get toFiatAmount(): FPNumber {
+    if (!(this.tokenTo && this.toValue)) return FPNumber.ZERO;
+    return this.getFPNumberFiatAmountByFPNumber(new FPNumber(this.toValue), this.tokenTo) ?? FPNumber.ZERO;
   }
 
   get fiatDifference(): string {
-    const thousandRegExp = new RegExp(`\\${FPNumber.DELIMITERS_CONFIG.thousand}`, 'g');
-    const decimalsRegExp = new RegExp(`\\${FPNumber.DELIMITERS_CONFIG.decimal}`, 'g');
-    const toNumberString = (value: string) => value.replace(thousandRegExp, '').replace(decimalsRegExp, '.');
-
-    const a = toNumberString(this.fromFiatAmount);
-    const b = toNumberString(this.toFiatAmount);
-
-    if (asZeroValue(a) || asZeroValue(b)) return '0';
-
-    const from = new FPNumber(a);
-    const to = new FPNumber(b);
-    const difference = to.sub(from).div(from).mul(this.Hundred).toFixed(2);
-
-    return difference;
+    return calcFiatDifference(this.fromFiatAmount, this.toFiatAmount).toFixed(2);
   }
 
   get fiatDifferenceFormatted(): string {
@@ -459,7 +447,7 @@ export default class Swap extends Mixins(
     try {
       const {
         dexId,
-        result: { amount, amountWithoutImpact, fee, rewards, route },
+        result: { amount, amountWithoutImpact, fee, rewards, route, distribution },
       } = this.swapQuote(
         (this.tokenFrom as Asset).address,
         (this.tokenTo as Asset).address,
@@ -473,6 +461,7 @@ export default class Swap extends Mixins(
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
       this.setRoute(route as string[]);
+      this.setDistribution(distribution as Distribution[][]);
       this.selectDexId(dexId);
     } catch (error: any) {
       console.error(error);

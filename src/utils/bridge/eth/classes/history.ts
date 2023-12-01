@@ -230,7 +230,7 @@ export class EthBridgeHistory {
         const data = (tx as any).input; // 'data' is named as 'input'
         const decodedInput = BRIDGE_INTERFACE.parseTransaction({ data });
 
-        if (decodedInput?.args.getValue('txHash').toLowerCase() === hash.toLowerCase()) {
+        if (decodedInput?.args.getValue('txHash')?.toLowerCase() === hash.toLowerCase()) {
           return tx;
         }
       } catch (err) {
