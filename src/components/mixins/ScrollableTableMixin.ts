@@ -4,7 +4,7 @@ import Vue from 'vue';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 @Component
-export default class ExplorePageMixin extends Mixins(
+export default class ScrollableTableMixin extends Mixins(
   mixins.LoadingMixin,
   mixins.PaginationSearchMixin,
   mixins.FormattedAmountMixin
@@ -29,7 +29,7 @@ export default class ExplorePageMixin extends Mixins(
   }
 
   get tableItems() {
-    return this.getPageItems(this.preparedItems.reverse());
+    return this.getPageItems(this.preparedItems);
   }
 
   async mounted(): Promise<void> {
