@@ -6,7 +6,7 @@
     class="node-info s-flex"
     @submit.native.prevent="submitForm"
   >
-    <generic-page-header has-button-back :title="title" @back.stop="handleBack">
+    <generic-page-header class="node-info-title" has-button-back :title="title" @back.stop="handleBack">
       <template v-if="existing && removable">
         <s-button type="action" icon="basic-trash-24" @click="removeNode(nodeModel)" />
       </template>
@@ -63,8 +63,8 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, Links } from '@/consts';
-import { lazyComponent } from '@/router';
+import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
+import { Links } from '@/consts';
 import type { Node, NodeItem } from '@/types/nodes';
 import { wsRegexp, dnsPathRegexp, ipv4Regexp } from '@/utils/regexp';
 
@@ -97,7 +97,7 @@ const stripEndingSlash = (str: string): string => (str.charAt(str.length - 1) ==
 
 @Component({
   components: {
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    GenericPageHeader,
   },
 })
 export default class NodeInfo extends Mixins(TranslationMixin) {
@@ -127,6 +127,13 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
       }),
       {}
     );
+  }
+
+  async mounted(): Promise<void> {
+    // Re-center dialog programmatically (need to simplify it). Components lazy loading might break it
+    await this.$nextTick();
+    const sDialog: any = this.$parent?.$parent;
+    sDialog?.computeTop?.();
   }
 
   /** Will be shown only for default nodes */
@@ -228,6 +235,10 @@ $min-s-input-height: 58px;
 .node-info {
   flex-direction: column;
   align-items: center;
+
+  &-title {
+    padding-top: calc(var(--s-basic-spacing) * 2);
+  }
 
   & > *:not(:last-child) {
     margin-bottom: $inner-spacing-medium;

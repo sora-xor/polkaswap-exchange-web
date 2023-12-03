@@ -227,7 +227,7 @@ export default class CreateAlert extends Mixins(
   }
 
   async mounted(): Promise<void> {
-    // Re-center dialog manually (need to simplify it)
+    // Re-center dialog programmatically (need to simplify it). Components lazy loading might break it
     await this.$nextTick();
     const sDialog: any = this.$parent?.$parent;
     sDialog?.computeTop?.();

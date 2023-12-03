@@ -47,7 +47,7 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Ref } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import { ZeroStringValue } from '@/consts';
 import { getter, mutation, state } from '@/store/decorators';
@@ -121,7 +121,7 @@ export default class AlertList extends Mixins(
     return `${priceChangeFormatted}% · ${this.t('alerts.currentPrice')}: $${currentPriceFormatted}`;
   }
 
-  /** Re-center dialog programmatically (need to simplify it) */
+  /** Re-center dialog programmatically (need to simplify it). Components lazy loading might break it */
   private async recenterDialog(): Promise<void> {
     await this.$nextTick();
     const sDialog: any = this.$parent?.$parent;
