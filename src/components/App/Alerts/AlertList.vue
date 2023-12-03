@@ -12,7 +12,12 @@
           <span class="current-price">{{ getInfo(alert) }}</span>
         </template>
         <div class="alerts-list__type">{{ getType(alert) }}</div>
-        <el-popover popper-class="settings-alert-popover" trigger="click" :visible-arrow="false">
+        <el-popover
+          :ref="'alertMenu' + index"
+          popper-class="settings-alert-popover"
+          trigger="click"
+          :visible-arrow="false"
+        >
           <div class="settings-alert-option" @click="handleEditAlert(alert, index)">
             <s-icon name="el-icon-edit" />
             <span>{{ t('alerts.edit') }}</span>
@@ -41,10 +46,10 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Ref } from 'vue-property-decorator';
 
-import { MAX_ALERTS_NUMBER, ZeroStringValue } from '@/consts';
+import { ZeroStringValue } from '@/consts';
 import { getter, mutation, state } from '@/store/decorators';
 import { calcPriceChange, showMostFittingValue } from '@/utils';
 
@@ -78,7 +83,7 @@ export default class AlertList extends Mixins(
   topUpNotifs: Nullable<boolean> = null;
 
   get showCreateAlertBtn(): boolean {
-    return this.alerts.length < MAX_ALERTS_NUMBER;
+    return this.alerts.length < WALLET_CONSTS.MAX_ALERTS_NUMBER;
   }
 
   isNotificationsEnabledByUser(): boolean {
@@ -116,6 +121,18 @@ export default class AlertList extends Mixins(
     return `${priceChangeFormatted}% · ${this.t('alerts.currentPrice')}: $${currentPriceFormatted}`;
   }
 
+  /** Re-center dialog programmatically (need to simplify it) */
+  private async recenterDialog(): Promise<void> {
+    await this.$nextTick();
+    const sDialog: any = this.$parent?.$parent;
+    sDialog?.computeTop?.();
+  }
+
+  /** Force close menu if it wasn't closed */
+  private forceCloseAlertMenu(index: number): void {
+    this.$refs['alertMenu' + index]?.[0]?.doClose?.();
+  }
+
   getType(alert: Alert) {
     return alert.once ? this.t('alerts.once') : this.t('alerts.always');
   }
@@ -127,10 +144,13 @@ export default class AlertList extends Mixins(
 
   handleDeleteAlert(position: number): void {
     this.removePriceAlert(position);
+    this.forceCloseAlertMenu(position);
+    this.recenterDialog();
   }
 
   handleEditAlert(alert: Alert, position: number): void {
     this.$emit('edit-alert', { ...alert, position });
+    this.forceCloseAlertMenu(position);
   }
 
   handleTopUpNotifs(value: boolean): void {
@@ -139,6 +159,8 @@ export default class AlertList extends Mixins(
   }
 
   mounted(): void {
+    this.recenterDialog();
+
     if (Notification.permission !== 'granted') {
       this.setDepositNotifications(false);
     }
