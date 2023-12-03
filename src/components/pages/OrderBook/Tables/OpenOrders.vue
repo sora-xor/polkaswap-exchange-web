@@ -1,5 +1,5 @@
 <template>
-  <order-table :orders="userLimitOrders" :selectable="isSelectionAllowed" :parent-loading="loadingState" />
+  <order-table :orders="sortedUserLimitOrders" :selectable="isSelectionAllowed" :parent-loading="loadingState" />
 </template>
 
 <script lang="ts">
@@ -55,6 +55,10 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 
   get isSelectionAllowed(): boolean {
     return !!this.currentOrderBook && this.currentOrderBook.status !== OrderBookStatus.Stop;
+  }
+
+  get sortedUserLimitOrders() {
+    return [...this.userLimitOrders].sort((a, b) => b.time - a.time);
   }
 }
 </script>

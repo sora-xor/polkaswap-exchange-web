@@ -111,7 +111,7 @@ export async function fetchOrderBooks(): Promise<Nullable<OrderBookWithStats[]>>
 }
 
 const SubqueryAccountOrdersQuery = gql<SubqueryConnectionQueryResponse<OrderBookOrderEntity>>`
-  query AccountOrdersQuery($after: Cursor, $filter: OrderBookOrderFilter) {
+  query AccountAccountOrdersQuery($after: Cursor, $filter: OrderBookOrderFilter) {
     data: orderBookOrders(orderBy: TIMESTAMP_DESC, after: $after, filter: $filter) {
       pageInfo {
         hasNextPage
@@ -190,7 +190,7 @@ export async function fetchOrderBookAccountOrders(
         parseOrderEntity
       );
 
-      return [...(orders || [])].sort((a, b) => +a.time - +b.time);
+      return orders;
     }
   }
 
