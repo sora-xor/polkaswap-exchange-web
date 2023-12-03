@@ -424,6 +424,11 @@ ul ul {
   }
 }
 
+// .el-scrollbar__bar,
+// .asset-list .scrollbar {
+//   opacity: 0.5 !important; // Fix iOS double tap - need to detect iOS based devices (mobile, ipad, VR)
+// }
+
 .el-notification.sora {
   background: var(--s-color-brand-day);
   box-shadow: var(--s-shadow-tooltip);
