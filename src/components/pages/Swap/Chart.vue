@@ -302,7 +302,7 @@ export default class SwapChart extends Mixins(
   updatePrices = debouncedInputHandler(this.getHistoricalPrices, 250, { leading: false });
   private forceUpdatePrices = debouncedInputHandler(this.resetAndUpdatePrices, 250, { leading: false });
   private priceUpdateRequestId = 0;
-  private priceUpdateWatcher: Nullable<FnWithoutArgs> = null;
+  private priceUpdateSubscription: Nullable<FnWithoutArgs> = null;
   private priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
@@ -668,47 +668,55 @@ export default class SwapChart extends Mixins(
 
   // common
   private unsubscribeFromPriceUpdates(): void {
-    if (this.priceUpdateWatcher) {
-      this.priceUpdateWatcher();
+    if (this.priceUpdateSubscription) {
+      this.priceUpdateSubscription();
     }
     if (this.priceUpdateTimestampSync) {
       clearInterval(this.priceUpdateTimestampSync as number);
     }
-    this.priceUpdateWatcher = null;
+    this.priceUpdateSubscription = null;
     this.priceUpdateTimestampSync = null;
   }
 
   private subscribeToAssetsPriceUpdates(): void {
     this.unsubscribeFromPriceUpdates();
 
-    const addresses = [...this.tokensAddresses];
+    const entities = [...this.entities];
 
-    this.priceUpdateWatcher = this.$watch(
+    this.priceUpdateSubscription = this.$watch(
       () => this.fiatPriceObject,
       (updated, prev) => {
-        if (updated && (!prev || addresses.some((addr) => updated[addr] !== prev[addr]))) {
-          this.handlePriceUpdates(addresses, updated);
+        if (updated && (!prev || entities.some((addr) => updated[addr] !== prev[addr]))) {
+          this.handlePriceUpdates(entities, updated);
         }
       }
     );
 
-    this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(addresses), SYNC_INTERVAL);
+    this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(entities), SYNC_INTERVAL);
   }
 
   private async subscribeToOrderBookPriceUpdates(): Promise<void> {
     this.unsubscribeFromPriceUpdates();
 
-    if (!(this.baseAsset && this.quoteAsset)) return;
+    if (!(this.orderBookId && this.baseAsset && this.quoteAsset)) return;
 
-    this.priceUpdateWatcher = await subscribeOnOrderBookUpdates(
+    const entities = [...this.entities];
+
+    this.priceUpdateSubscription = await subscribeOnOrderBookUpdates(
       this.dexId,
       this.baseAsset.address,
       this.quoteAsset.address,
-      console.info,
+      (data) => {
+        const {
+          stats: { price },
+        } = data;
+        const updated = { [this.orderBookId as string]: price.toCodecString() };
+        this.handlePriceUpdates(entities, updated);
+      },
       console.error
     );
 
-    // this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(addresses), SYNC_INTERVAL);
+    this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(entities), SYNC_INTERVAL);
   }
 
   private getCurrentSnapshotTimestamp(): number {
@@ -723,8 +731,8 @@ export default class SwapChart extends Mixins(
   /**
    * Creates new price item snapshot
    */
-  private handlePriceTimestampSync(addresses: string[]): void {
-    if (!isEqual(addresses)(this.tokensAddresses)) return;
+  private handlePriceTimestampSync(entities: string[]): void {
+    if (!isEqual(entities)(this.entities)) return;
 
     const timestamp = this.getCurrentSnapshotTimestamp();
     const lastItem = this.prices[0];
@@ -738,13 +746,13 @@ export default class SwapChart extends Mixins(
     this.updatePricesCollection([item, ...this.prices]);
   }
 
-  private handlePriceUpdates(addresses: string[], fiatPriceObject: FiatPriceObject): void {
-    if (!isEqual(addresses)(this.tokensAddresses)) return;
+  private handlePriceUpdates(entities: string[], fiatPriceObject: FiatPriceObject): void {
+    if (!isEqual(entities)(this.entities)) return;
 
     const timestamp = this.getCurrentSnapshotTimestamp();
     const lastItem = this.prices[0];
 
-    const [priceA, priceB] = this.tokensAddresses.map((address) =>
+    const [priceA, priceB] = entities.map((address) =>
       FPNumber.fromCodecValue(fiatPriceObject[address] ?? 0).toNumber()
     );
     const price = Number.isFinite(priceB) ? dividePrice(priceA, priceB) : priceA;
