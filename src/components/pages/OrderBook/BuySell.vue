@@ -615,12 +615,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   handleMaxValue(): void {
     if (!this.currentOrderBook) return;
 
-    const maxCodec = getMaxValue(this.baseAsset, this.networkFee);
+    const max = getMaxValue(this.baseAsset, this.networkFee);
     const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
-    const maxPossible = FPNumber.fromCodecValue(maxCodec);
+    const maxPossible = FPNumber.fromNatural(max, this.currentOrderBook?.tickSize.toString().split(/[,.]/)[1].length);
 
     if (FPNumber.lte(maxPossible, maxLotSize)) {
-      this.handleInputFieldBase(maxCodec);
+      this.handleInputFieldBase(maxPossible.toString());
     } else {
       this.handleInputFieldBase(maxLotSize.toString());
     }
