@@ -13,6 +13,7 @@
     </generic-page-header>
     <s-form-item prop="name">
       <s-input
+        ref="nodeNameInput"
         class="node-info-input s-typography-input-field"
         :placeholder="t('nameText')"
         v-model="nodeModel.name"
@@ -60,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { Component, Mixins, Prop, Ref } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
@@ -110,6 +111,8 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) removable!: boolean;
   @Prop({ default: false, type: Boolean }) connected!: boolean;
 
+  @Ref('nodeNameInput') private readonly nodeNameInput!: HTMLInputElement;
+
   readonly tutorialLink = Links.nodes.tutorial;
 
   readonly validationRules = {
@@ -134,6 +137,10 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     await this.$nextTick();
     const sDialog: any = this.$parent?.$parent;
     sDialog?.computeTop?.();
+    // Focus first element if inputs are editable
+    if (!this.inputDisabled) {
+      this.nodeNameInput?.focus?.();
+    }
   }
 
   /** Will be shown only for default nodes */
