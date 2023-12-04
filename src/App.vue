@@ -1,5 +1,5 @@
 <template>
-  <s-design-system-provider :value="libraryDesignSystem" id="app" class="app" :class="responsiveClass">
+  <s-design-system-provider :value="libraryDesignSystem" id="app" class="app" :class="dsProviderClasses">
     <app-header :loading="loading" @toggle-menu="toggleMenu" />
     <div :class="appClasses">
       <app-menu
@@ -58,7 +58,7 @@ import { PageNames, Components, Language, BreakpointClass, Breakpoint } from '@/
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { preloadFontFace, updateDocumentTitle } from '@/utils';
+import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
@@ -272,12 +272,20 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     return this.$route.name === PageNames.Swap && this.chartsEnabled;
   }
 
+  private get mobileCssClasses(): string[] | undefined {
+    return getMobileCssClasses();
+  }
+
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
   }
 
   get isCurrentPageTooWide(): boolean {
     return this.isAboutPage || this.isSwapPageWithCharts || this.$route.name === PageNames.Tokens;
+  }
+
+  get dsProviderClasses(): string[] | BreakpointClass {
+    return this.mobileCssClasses?.length ? [...this.mobileCssClasses, this.responsiveClass] : this.responsiveClass;
   }
 
   get appClasses(): Array<string> {
@@ -424,10 +432,12 @@ ul ul {
   }
 }
 
-// .el-scrollbar__bar,
-// .asset-list .scrollbar {
-//   opacity: 0.5 !important; // Fix iOS double tap - need to detect iOS based devices (mobile, ipad, VR)
-// }
+.mobile.ios {
+  .el-scrollbar__bar,
+  .asset-list .scrollbar {
+    opacity: 0.01 !important; // Fix iOS double tap issues
+  }
+}
 
 .el-notification.sora {
   background: var(--s-color-brand-day);
