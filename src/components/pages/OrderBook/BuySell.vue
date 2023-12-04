@@ -450,7 +450,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.setBaseValue(value);
 
     if (!value) {
-      this.setQuoteValue('');
       this.resetQuoteSubscription();
     }
 
