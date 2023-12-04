@@ -1,38 +1,40 @@
 <template>
   <div>
-    <div class="alerts-list">
-      <account-card v-for="(alert, index) in alerts" :key="index" class="alerts-list__item" v-button>
-        <template #avatar>
-          <token-logo :tokenSymbol="alert.token" />
-        </template>
-        <template #name>
-          <span class="condition">{{ getDescription(alert) }}</span>
-        </template>
-        <template #description>
-          <span class="current-price">{{ getInfo(alert) }}</span>
-        </template>
-        <div class="alerts-list__type">{{ getType(alert) }}</div>
-        <el-popover
-          :ref="'alertMenu' + index"
-          popper-class="settings-alert-popover"
-          trigger="click"
-          :visible-arrow="false"
-        >
-          <div class="settings-alert-option" @click="handleEditAlert(alert, index)">
-            <s-icon name="el-icon-edit" />
-            <span>{{ t('alerts.edit') }}</span>
-          </div>
-          <div class="settings-alert-option" @click="handleDeleteAlert(index)">
-            <s-icon name="el-icon-delete" />
-            <span>{{ t('alerts.delete') }}</span>
-          </div>
-          <div slot="reference">
-            <s-icon class="options-icon" name="basic-more-vertical-24" />
-          </div>
-        </el-popover>
-      </account-card>
-      <div v-if="alerts.length" class="line" />
-    </div>
+    <s-scrollbar class="alerts-list-scrollbar">
+      <div class="alerts-list">
+        <account-card v-for="(alert, index) in alerts" :key="index" class="alerts-list__item" v-button>
+          <template #avatar>
+            <token-logo :tokenSymbol="alert.token" />
+          </template>
+          <template #name>
+            <span class="condition">{{ getDescription(alert) }}</span>
+          </template>
+          <template #description>
+            <span class="current-price">{{ getInfo(alert) }}</span>
+          </template>
+          <div class="alerts-list__type">{{ getType(alert) }}</div>
+          <el-popover
+            :ref="'alertMenu' + index"
+            popper-class="settings-alert-popover"
+            trigger="click"
+            :visible-arrow="false"
+          >
+            <div class="settings-alert-option" @click="handleEditAlert(alert, index)">
+              <s-icon name="el-icon-edit" />
+              <span>{{ t('alerts.edit') }}</span>
+            </div>
+            <div class="settings-alert-option" @click="handleDeleteAlert(index)">
+              <s-icon name="el-icon-delete" />
+              <span>{{ t('alerts.delete') }}</span>
+            </div>
+            <div slot="reference">
+              <s-icon class="options-icon" name="basic-more-vertical-24" />
+            </div>
+          </el-popover>
+        </account-card>
+      </div>
+    </s-scrollbar>
+    <s-divider v-if="alerts.length" />
     <div v-if="showCreateAlertBtn" class="settings-alert-section">
       <s-button class="el-dialog__close" type="action" icon="plus-16" @click="handleCreateAlert" :disabled="loading" />
       <span class="create">{{ t('alerts.createBtn') }}</span>
@@ -179,12 +181,19 @@ export default class AlertList extends Mixins(
   padding: $basic-spacing $inner-spacing-mini $basic-spacing $basic-spacing;
   font-size: var(--s-font-size-small);
 }
+.alerts-list-scrollbar {
+  @include scrollbar(-$inner-spacing-big);
+}
 </style>
 
 <style lang="scss" scoped>
+$item-height: 66px;
+$list-items: 5;
 .alerts-list {
+  max-height: calc(#{$item-height} * #{$list-items} + 16px);
+
   &__item {
-    margin-bottom: $inner-spacing-mini;
+    margin: 0 $inner-spacing-big $inner-spacing-mini;
   }
 
   &__type {
@@ -235,7 +244,7 @@ export default class AlertList extends Mixins(
 
   &-option {
     font-weight: 300;
-    font-size: $basic-spacing;
+    font-size: var(--s-font-size-medium);
     line-height: 150%;
     letter-spacing: -0.02em;
 
@@ -256,12 +265,5 @@ export default class AlertList extends Mixins(
       color: var(--s-color-base-content-secondary);
     }
   }
-}
-
-.line {
-  width: 100%;
-  height: 1px;
-  margin: $basic-spacing 0;
-  background-color: var(--s-color-base-content-tertiary);
 }
 </style>
