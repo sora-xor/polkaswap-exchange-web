@@ -6,13 +6,14 @@
     class="node-info s-flex"
     @submit.native.prevent="submitForm"
   >
-    <generic-page-header has-button-back :title="title" @back.stop="handleBack">
+    <generic-page-header class="node-info-title" has-button-back :title="title" @back.stop="handleBack">
       <template v-if="existing && removable">
         <s-button type="action" icon="basic-trash-24" @click="removeNode(nodeModel)" />
       </template>
     </generic-page-header>
     <s-form-item prop="name">
       <s-input
+        ref="nodeNameInput"
         class="node-info-input s-typography-input-field"
         :placeholder="t('nameText')"
         v-model="nodeModel.name"
@@ -60,11 +61,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { Component, Mixins, Prop, Ref } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, Links } from '@/consts';
-import { lazyComponent } from '@/router';
+import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
+import { Links } from '@/consts';
 import type { Node, NodeItem } from '@/types/nodes';
 import { wsRegexp, dnsPathRegexp, ipv4Regexp } from '@/utils/regexp';
 
@@ -97,7 +98,7 @@ const stripEndingSlash = (str: string): string => (str.charAt(str.length - 1) ==
 
 @Component({
   components: {
-    GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    GenericPageHeader,
   },
 })
 export default class NodeInfo extends Mixins(TranslationMixin) {
@@ -109,6 +110,8 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) loading!: boolean;
   @Prop({ default: false, type: Boolean }) removable!: boolean;
   @Prop({ default: false, type: Boolean }) connected!: boolean;
+
+  @Ref('nodeNameInput') private readonly nodeNameInput!: HTMLInputElement;
 
   readonly tutorialLink = Links.nodes.tutorial;
 
@@ -127,6 +130,17 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
       }),
       {}
     );
+  }
+
+  async mounted(): Promise<void> {
+    // Re-center dialog programmatically (need to simplify it). Components lazy loading might break it
+    await this.$nextTick();
+    const sDialog: any = this.$parent?.$parent;
+    sDialog?.computeTop?.();
+    // Focus first element if inputs are editable
+    if (!this.inputDisabled) {
+      this.nodeNameInput?.focus?.();
+    }
   }
 
   /** Will be shown only for default nodes */
@@ -228,6 +242,10 @@ $min-s-input-height: 58px;
 .node-info {
   flex-direction: column;
   align-items: center;
+
+  &-title {
+    padding-top: calc(var(--s-basic-spacing) * 2);
+  }
 
   & > *:not(:last-child) {
     margin-bottom: $inner-spacing-medium;

@@ -8,6 +8,7 @@
       <s-tab v-for="tab in AlertTypeTabs" :key="tab" :label="t(`alerts.${tab}`)" :name="tab" />
     </s-tabs>
     <s-float-input
+      ref="floatInput"
       v-model="amount"
       class="price-input"
       size="medium"
@@ -67,10 +68,10 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop, Watch, Ref } from 'vue-property-decorator';
 
-import { Components, MAX_ALERTS_NUMBER, ZeroStringValue } from '@/consts';
+import { Components, ZeroStringValue } from '@/consts';
 import type { EditableAlertObject, NumberedAlert } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, mutation, state } from '@/store/decorators';
@@ -107,6 +108,7 @@ export default class CreateAlert extends Mixins(
   @mutation.wallet.settings.editPriceAlert editPriceAlert!: (alert: EditableAlertObject) => void;
 
   @Prop({ default: null, type: Object }) readonly alertToEdit!: NumberedAlert;
+  @Ref('floatInput') private floatInput!: any;
 
   @Watch('negativeDelta')
   private updateChoise(value: boolean): void {
@@ -201,7 +203,7 @@ export default class CreateAlert extends Mixins(
       return;
     }
 
-    if (this.alerts.length > MAX_ALERTS_NUMBER) return;
+    if (this.alerts.length > WALLET_CONSTS.MAX_ALERTS_NUMBER) return;
 
     this.addPriceAlert({
       token: this.asset.symbol,
@@ -222,7 +224,12 @@ export default class CreateAlert extends Mixins(
     this.asset = selectedAsset;
   }
 
-  mounted(): void {
+  async mounted(): Promise<void> {
+    // Re-center dialog programmatically (need to simplify it). Components lazy loading might break it
+    await this.$nextTick();
+    const sDialog: any = this.$parent?.$parent;
+    sDialog?.computeTop?.();
+
     if (this.isEditMode) {
       this.amount = this.alertToEdit.price;
       this.currentTypeTab = this.alertToEdit.type === 'drop' ? AlertTypeTabs.Drop : AlertTypeTabs.Raise;
@@ -234,6 +241,8 @@ export default class CreateAlert extends Mixins(
       this.currentFrequencyTab = AlertFrequencyTabs.Once;
       this.selectAsset(this.xor);
     }
+
+    this.floatInput?.$children?.[0]?.focus?.(); // price input autofocus
 
     this.$root.$on('selectAlertAsset', (selectedAsset: AccountAsset) => {
       this.selectAsset(selectedAsset);
