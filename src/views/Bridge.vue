@@ -82,7 +82,6 @@
               {{ t('buttons.max') }}
             </s-button>
             <token-select-button
-              class="el-button--select-token"
               icon="chevron-down-rounded-16"
               :disabled="!!autoselectedAssetAddress"
               :token="asset"

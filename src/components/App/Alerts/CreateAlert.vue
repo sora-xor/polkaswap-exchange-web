@@ -33,7 +33,6 @@
       </div>
       <token-select-button
         slot="right"
-        class="el-button--select-token"
         icon="chevron-down-rounded-16"
         :token="asset"
         @click.stop="openSelectAssetDialog"
