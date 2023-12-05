@@ -205,8 +205,9 @@ const formatChange = (value: FPNumber): string => {
   return `${sign}${priceChange}`;
 };
 
-const formatPrice = (value: number, symbol: string) => {
-  return `${new FPNumber(value).toLocaleString()} ${symbol}`;
+const formatPrice = (value: number, precision: number, symbol: string) => {
+  const val = new FPNumber(value).toFixed(precision);
+  return `${val} ${symbol}`;
 };
 
 const preparePriceData = (item: AssetSnapshotEntity): OCLH => {
@@ -389,7 +390,7 @@ export default class SwapChart extends Mixins(
   }
 
   get fiatPriceFormatted(): string {
-    return this.fiatPrice.toLocaleString();
+    return this.fiatPrice.toFixed(this.precision);
   }
 
   get isAllHistoricalPricesFetched(): boolean {
@@ -498,7 +499,7 @@ export default class SwapChart extends Mixins(
         formatter: (params) => {
           const { data, seriesType } = params[0];
           const [timestamp, open, close, low, high] = data;
-          if (seriesType === CHART_TYPES.LINE) return formatPrice(close, this.symbol);
+          if (seriesType === CHART_TYPES.LINE) return formatPrice(close, this.precision, this.symbol);
 
           if (seriesType === CHART_TYPES.CANDLE) {
             const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
@@ -509,10 +510,10 @@ export default class SwapChart extends Mixins(
             );
 
             const rows = [
-              { title: 'Open', data: formatPrice(open, this.symbol) },
-              { title: 'High', data: formatPrice(high, this.symbol) },
-              { title: 'Low', data: formatPrice(low, this.symbol) },
-              { title: 'Close', data: formatPrice(close, this.symbol) },
+              { title: 'Open', data: formatPrice(open, this.precision, this.symbol) },
+              { title: 'High', data: formatPrice(high, this.precision, this.symbol) },
+              { title: 'Low', data: formatPrice(low, this.precision, this.symbol) },
+              { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
               { title: 'Change', data: formatChange(change), color: changeColor },
             ];
 
