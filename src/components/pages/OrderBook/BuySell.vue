@@ -568,6 +568,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
       const unformattedMarketQuotePrice = FPNumber.fromCodecValue(amount)
         .div(FPNumber.fromNatural(this.baseValue))
+        .dp(3)
         .toString();
 
       // this.marketQuotePrice = this.showMostFittingValue(unformattedMarketQuotePrice);
@@ -616,7 +617,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     const max = getMaxValue(this.baseAsset, this.networkFee);
     const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
-    const maxPossible = FPNumber.fromNatural(max, this.currentOrderBook?.tickSize.toString().split(/[,.]/)[1].length);
+    const precision =
+      this.currentOrderBook?.tickSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length || 2;
+
+    const maxPossible = FPNumber.fromNatural(max, precision);
 
     if (FPNumber.lte(maxPossible, maxLotSize)) {
       this.handleInputFieldBase(maxPossible.toString());
