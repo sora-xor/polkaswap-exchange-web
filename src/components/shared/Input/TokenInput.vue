@@ -46,10 +46,9 @@
         {{ t('buttons.max') }}
       </s-button>
       <token-select-button
-        class="el-button--select-token"
-        :icon="selectTokenIcon"
+        icon="chevron-down-rounded-16"
+        :disabled="!isSelectAvailable"
         :token="token"
-        :tabindex="tokenTabIndex"
         @click.stop="handleSelectToken"
       />
     </div>
@@ -123,14 +122,6 @@ export default class TokenInput extends Mixins(
 
   get max(): string {
     return this.MaxInputNumber;
-  }
-
-  get selectTokenIcon(): Nullable<string> {
-    return this.isSelectAvailable ? 'chevron-down-rounded-16' : undefined;
-  }
-
-  get tokenTabIndex(): number {
-    return this.isSelectAvailable ? 0 : -1;
   }
 
   get fpBalance(): FPNumber {

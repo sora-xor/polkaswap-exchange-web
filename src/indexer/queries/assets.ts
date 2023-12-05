@@ -76,7 +76,7 @@ const parse = (item: SubqueryAssetEntity | SubsquidAssetEntity): Record<string, 
     [item.id]: {
       priceUSD: new FPNumber(item.priceUSD ?? 0),
       priceChangeDay: new FPNumber(item.priceChangeDay ?? 0),
-      priceChangeWeek: new FPNumber(item.priceChangeDay ?? 0),
+      priceChangeWeek: new FPNumber(item.priceChangeWeek ?? 0),
       volumeDayUSD: new FPNumber(item.volumeDayUSD ?? 0),
       volumeWeekUSD: new FPNumber(item.volumeWeekUSD ?? 0),
       tvlUSD: new FPNumber(item.liquidityUSD ?? 0),

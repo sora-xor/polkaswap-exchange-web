@@ -39,7 +39,7 @@ export type Web3State = {
   evmProviderNetwork: Nullable<BridgeNetworkId>;
   evmProviderSubscription: Nullable<FnWithoutArgs>;
 
-  evmNetworkApps: EvmNetwork[];
+  evmNetworkApps: readonly EvmNetwork[];
   subNetworkApps: SubNetworkApps;
   supportedApps: SupportedApps;
 
