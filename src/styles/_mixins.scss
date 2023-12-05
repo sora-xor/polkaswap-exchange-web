@@ -143,34 +143,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         box-shadow: $button-custom-shadow;
       }
     }
-
-    &--select-token {
-      &.token-select-button--token {
-        &,
-        &:hover,
-        &:active,
-        &:focus,
-        &.focusing,
-        &.s-pressed {
-          background-color: var(--s-color-utility-surface);
-        }
-        &:hover,
-        &:active,
-        &:focus,
-        &.focusing,
-        &.s-pressed {
-          box-shadow: 1px 1px 5px rgba(255, 255, 255, 0.7), -1px -1px 5px #ffffff, 0px 0px 20px rgba(247, 84, 163, 0.5);
-        }
-      }
-      &,
-      &:hover,
-      &:active,
-      &:focus,
-      &.focusing,
-      &.s-pressed {
-        box-shadow: $button-custom-shadow;
-      }
-    }
   }
 }
 

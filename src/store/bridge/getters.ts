@@ -70,6 +70,15 @@ const getters = defineGetters<BridgeState>()({
     return !!asset?.externalAddress;
   },
 
+  autoselectedAssetAddress(...args): Nullable<string> {
+    const { rootState } = bridgeGetterContext(args);
+    const assetIds = Object.keys(rootState.assets.registeredAssets);
+
+    if (assetIds.length !== 1) return null;
+
+    return assetIds[0];
+  },
+
   externalAccount(...args): string {
     const { getters, rootState } = bridgeGetterContext(args);
     const { evmAddress, subAddress } = rootState.web3;
