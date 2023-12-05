@@ -72,6 +72,7 @@
           <div slot="right" v-if="sender || recipient" class="s-flex el-buttons">
             <s-button
               v-if="isMaxAvailable"
+              :loading="isConfirmTxLoading"
               class="el-button--max s-typography-button--small"
               type="primary"
               alternative

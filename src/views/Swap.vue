@@ -164,7 +164,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, MarketAlgorithms, PageNames, ZeroStringValue } from '@/consts';
+import { Components, MarketAlgorithms, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import {
