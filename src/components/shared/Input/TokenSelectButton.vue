@@ -2,7 +2,8 @@
   <s-button
     :type="buttonType"
     :class="computedClasses"
-    :tabindex="tabindex"
+    :tabindex="buttonTabindex"
+    :disabled="disabled"
     size="small"
     border-radius="mini"
     v-on="$listeners"
@@ -17,7 +18,7 @@
       class="token-select-button__logo"
     />
     <span class="token-select-button__text">{{ buttonText }}</span>
-    <s-icon v-if="icon" class="token-select-button__icon" :name="icon" size="18" />
+    <s-icon v-if="icon && !disabled" class="token-select-button__icon" :name="icon" size="18" />
     <slot />
   </s-button>
 </template>
@@ -43,6 +44,7 @@ export default class TokenSelectButton extends Mixins(TranslationMixin) {
   @Prop({ type: Array, default: () => [] }) readonly tokens!: Array<AccountAsset | Asset>;
   @Prop({ type: String, default: '' }) readonly icon!: string;
   @Prop({ type: [Number, String], default: 0 }) readonly tabindex!: number | string;
+  @Prop({ type: Boolean, default: false }) readonly disabled!: boolean;
 
   get hasToken(): boolean {
     return this.tokens.length !== 0 || !!this.token;
@@ -55,6 +57,11 @@ export default class TokenSelectButton extends Mixins(TranslationMixin) {
       classes.push(`${baseClass}--token`);
     }
     return classes;
+  }
+
+  get buttonTabindex(): number | string {
+    if (this.disabled) return -1;
+    return this.tabindex;
   }
 
   get tokenLogoComponent(): string {
@@ -81,6 +88,40 @@ export default class TokenSelectButton extends Mixins(TranslationMixin) {
 }
 </script>
 
+<style lang="scss">
+$baseClass: '.token-select-button';
+
+button.el-button.neumorphic#{$baseClass} {
+  &:hover,
+  &:active,
+  &:focus,
+  &.focusing,
+  &.s-pressed {
+    box-shadow: $button-custom-shadow;
+
+    #{$baseClass}__icon {
+      color: var(--s-color-base-content-secondary) !important;
+    }
+  }
+
+  &--token {
+    &:hover,
+    &:active,
+    &:focus,
+    &.focusing,
+    &.s-pressed {
+      background-color: var(--s-color-utility-surface);
+      box-shadow: 1px 1px 5px rgba(255, 255, 255, 0.7), -1px -1px 5px #ffffff, 0px 0px 20px rgba(247, 84, 163, 0.5);
+
+      #{$baseClass}__icon {
+        background-color: var(--s-color-base-content-secondary);
+        color: var(--s-color-utility-surface) !important;
+      }
+    }
+  }
+}
+</style>
+
 <style lang="scss" scoped>
 $baseClass: '.token-select-button';
 
@@ -101,24 +142,7 @@ $baseClass: '.token-select-button';
     border-radius: var(--s-border-radius-medium);
   }
 
-  &:hover,
-  &:active,
-  &.focusing {
-    #{$baseClass}__icon {
-      color: var(--s-color-base-content-secondary) !important;
-    }
-  }
-
   &--token {
-    &:hover,
-    &:active,
-    &.focusing {
-      #{$baseClass}__icon {
-        background-color: var(--s-color-base-content-secondary);
-        color: var(--s-color-utility-surface) !important;
-      }
-    }
-
     #{$baseClass}__icon {
       background-color: var(--s-color-base-content-tertiary);
       color: var(--s-color-utility-surface) !important;

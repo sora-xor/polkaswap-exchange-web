@@ -228,6 +228,29 @@ export const updateFpNumberLocale = (locale: string): void => {
   FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(locale).substring(1, 2);
 };
 
+/** It's used to set css classes for mobile. `[mobile, android | windows | ios]` or `undefined` */
+export const getMobileCssClasses = () => {
+  const win: typeof window & Record<string, any> = window;
+  const userAgent = navigator.userAgent || navigator.vendor || win.opera;
+  const mobileClass = 'mobile';
+  // Windows Phone must come first because its UA also contains "Android"
+  if (/windows phone/i.test(userAgent)) {
+    return [mobileClass, 'windows'];
+  }
+  if (/android/i.test(userAgent)) {
+    return [mobileClass, 'android'];
+  }
+  // iOS detection from: http://stackoverflow.com/a/9039885/177710
+  if (/iPad|iPhone|iPod/.test(userAgent) && !win.MSStream) {
+    return [mobileClass, 'ios'];
+  }
+  // The only difference between iPadPro and the other macos platforms is that iPadPro is touch enabled.
+  if (navigator?.maxTouchPoints > 2 && /Mac/.test(userAgent)) {
+    return [mobileClass, 'ios'];
+  }
+  return undefined;
+};
+
 export const updateDocumentTitle = (to?: Route) => {
   const page = to ?? router.currentRoute;
   const pageName = page?.name;
