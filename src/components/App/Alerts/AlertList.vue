@@ -1,6 +1,6 @@
 <template>
   <div>
-    <s-scrollbar class="alerts-list-scrollbar">
+    <s-scrollbar class="alerts-list-scrollbar" :key="scrollKey">
       <div class="alerts-list">
         <account-card v-for="(alert, index) in alerts" :key="index" class="alerts-list__item" v-button>
           <template #avatar>
@@ -81,7 +81,8 @@ export default class AlertList extends Mixins(
   @mutation.wallet.settings.setDepositNotifications private setDepositNotifications!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopupEnabled!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
-
+  /** This key is needed for force re-rendering of the scrollbar component while getting rid of alerts */
+  scrollKey = 0;
   topUpNotifs: Nullable<boolean> = null;
 
   get showCreateAlertBtn(): boolean {
@@ -144,10 +145,15 @@ export default class AlertList extends Mixins(
     this.$emit('create');
   }
 
+  private scrollForceUpdate(): void {
+    this.scrollKey++;
+  }
+
   handleDeleteAlert(position: number): void {
     this.removePriceAlert(position);
     this.forceCloseAlertMenu(position);
     this.recenterDialog();
+    this.scrollForceUpdate();
   }
 
   handleEditAlert(alert: Alert, position: number): void {
