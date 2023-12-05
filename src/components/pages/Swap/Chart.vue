@@ -40,7 +40,7 @@
     >
       <formatted-amount
         class="charts-price"
-        :value="fiatPriceFormatted"
+        :value="currentPriceFormatted"
         :font-weight-rate="FontWeightRate.MEDIUM"
         :font-size-rate="FontWeightRate.MEDIUM"
         :asset-symbol="symbol"
@@ -377,20 +377,12 @@ export default class SwapChart extends Mixins(
     return this.tokenB?.symbol ?? 'USD';
   }
 
-  get fromFiatPrice(): FPNumber {
-    return this.tokenA ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenA) ?? 0) : FPNumber.ZERO;
+  get currentPrice(): FPNumber {
+    return new FPNumber(this.prices[0]?.price[2] ?? 0); // "close" price
   }
 
-  get toFiatPrice(): FPNumber {
-    return this.tokenB ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenB) ?? 0) : FPNumber.ZERO;
-  }
-
-  get fiatPrice(): FPNumber {
-    return this.toFiatPrice.isZero() ? this.fromFiatPrice : this.fromFiatPrice.div(this.toFiatPrice);
-  }
-
-  get fiatPriceFormatted(): string {
-    return this.fiatPrice.toFixed(this.precision);
+  get currentPriceFormatted(): string {
+    return this.currentPrice.toFixed(this.precision);
   }
 
   get isAllHistoricalPricesFetched(): boolean {
@@ -482,6 +474,8 @@ export default class SwapChart extends Mixins(
             precision: this.precision,
           },
         },
+        min: this.limits.min,
+        max: this.limits.max,
       }),
       dataZoom: [
         {
