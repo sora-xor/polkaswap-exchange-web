@@ -43,16 +43,14 @@ enum AlertPages {
   },
 })
 export default class Alerts extends Mixins(mixins.TransactionMixin) {
-  @state.settings.alertSettingsVisibility private alertSettingsVisibility!: boolean;
+  readonly AlertPages = AlertPages;
 
+  @state.settings.alertSettingsVisibility private alertSettingsVisibility!: boolean;
   @mutation.settings.setAlertSettingsPopup private setAlertSettingsPopup!: (flag: boolean) => void;
 
   alertToEdit: Nullable<NumberedAlert> = null;
   showAlertSelectTokenDialog = false;
-
   step = AlertPages.AlertList;
-
-  readonly AlertPages = AlertPages;
 
   get showAlertsPopup(): boolean {
     return this.alertSettingsVisibility;
