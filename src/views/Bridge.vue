@@ -84,7 +84,7 @@
             <token-select-button
               class="el-button--select-token"
               icon="chevron-down-rounded-16"
-              :disabled="!!assetAddressAutoselect"
+              :disabled="!!autoselectedAssetAddress"
               :token="asset"
               @click="openSelectAssetDialog"
             />
@@ -399,7 +399,7 @@ export default class Bridge extends Mixins(
   @getter.bridge.recipientName recipientName!: string;
   @getter.bridge.isRegisteredAsset isRegisteredAsset!: boolean;
   @getter.bridge.operation private operation!: Operation;
-  @getter.bridge.assetAddressAutoselect assetAddressAutoselect!: Nullable<string>;
+  @getter.bridge.autoselectedAssetAddress autoselectedAssetAddress!: Nullable<string>;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @mutation.bridge.setSoraToEvm private setSoraToEvm!: (value: boolean) => void;

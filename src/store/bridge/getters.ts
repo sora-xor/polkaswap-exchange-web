@@ -70,7 +70,7 @@ const getters = defineGetters<BridgeState>()({
     return !!asset?.externalAddress;
   },
 
-  assetAddressAutoselect(...args): Nullable<string> {
+  autoselectedAssetAddress(...args): Nullable<string> {
     const { rootState } = bridgeGetterContext(args);
     const assetIds = Object.keys(rootState.assets.registeredAssets);
 
