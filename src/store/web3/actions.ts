@@ -64,6 +64,18 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
   commit.setEvmProviderSubscription(subscription);
 }
 
+async function getRegisteredAssets(context: ActionContext<any, any>): Promise<void> {
+  const { rootGetters, rootDispatch } = web3ActionContext(context);
+
+  await rootDispatch.assets.getRegisteredAssets();
+
+  const assetAddress = rootGetters.bridge.assetAddressAutoselect;
+
+  if (assetAddress) {
+    await rootDispatch.bridge.setAssetAddress(assetAddress);
+  }
+}
+
 const actions = defineActions({
   async selectEvmProvider(context, provider: Provider): Promise<void> {
     const { commit, dispatch, state } = web3ActionContext(context);
@@ -113,7 +125,7 @@ const actions = defineActions({
     commit.setNetworkType(type);
     commit.setSelectedNetwork(id);
 
-    rootDispatch.assets.getRegisteredAssets();
+    getRegisteredAssets(context);
 
     if (type === BridgeNetworkType.Sub) {
       await connectSubNetwork(context);

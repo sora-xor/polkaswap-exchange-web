@@ -36,7 +36,6 @@
         class="el-button--select-token"
         icon="chevron-down-rounded-16"
         :token="asset"
-        :tabindex="0"
         @click.stop="openSelectAssetDialog"
       />
       <div class="info" slot="bottom">
