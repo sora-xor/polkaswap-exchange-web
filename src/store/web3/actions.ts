@@ -64,9 +64,36 @@ async function subscribeOnEvm(context: ActionContext<any, any>): Promise<void> {
   commit.setEvmProviderSubscription(subscription);
 }
 
+async function autoselectBridgeAsset(context: ActionContext<any, any>): Promise<void> {
+  const { rootGetters, rootDispatch } = web3ActionContext(context);
+
+  const assetAddress = rootGetters.bridge.autoselectedAssetAddress;
+
+  if (assetAddress) {
+    await rootDispatch.bridge.setAssetAddress(assetAddress);
+  }
+}
+
+async function autoselectSubAddress(context: ActionContext<any, any>): Promise<void> {
+  const { commit, rootState, state } = web3ActionContext(context);
+  const { address, name } = rootState.wallet.account;
+  const { networkType, subAddress } = state;
+
+  if (networkType === BridgeNetworkType.Sub && !subAddress && address) {
+    commit.setSubAddress({ address, name });
+  }
+}
+
+async function getRegisteredAssets(context: ActionContext<any, any>): Promise<void> {
+  const { rootDispatch } = web3ActionContext(context);
+
+  await rootDispatch.assets.getRegisteredAssets();
+  await autoselectBridgeAsset(context);
+}
+
 const actions = defineActions({
   async selectEvmProvider(context, provider: Provider): Promise<void> {
-    const { commit, dispatch, state } = web3ActionContext(context);
+    const { commit, state } = web3ActionContext(context);
     try {
       commit.setEvmProviderLoading(provider);
       // create new connection
@@ -100,20 +127,21 @@ const actions = defineActions({
     ethersUtil.disconnectEvmProvider(provider);
   },
 
-  async disconnectExternalNetwork(context): Promise<void> {
+  async disconnectExternalNetwork(_context): Promise<void> {
     // SUB
     await subBridgeConnector.stop();
   },
 
   async selectExternalNetwork(context, { id, type }: { id: BridgeNetworkId; type: BridgeNetworkType }): Promise<void> {
-    const { commit, dispatch, rootDispatch } = web3ActionContext(context);
+    const { commit, dispatch } = web3ActionContext(context);
 
     await dispatch.disconnectExternalNetwork();
 
     commit.setNetworkType(type);
     commit.setSelectedNetwork(id);
 
-    rootDispatch.assets.getRegisteredAssets();
+    getRegisteredAssets(context);
+    autoselectSubAddress(context);
 
     if (type === BridgeNetworkType.Sub) {
       await connectSubNetwork(context);

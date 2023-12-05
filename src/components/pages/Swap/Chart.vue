@@ -601,7 +601,8 @@ export default class SwapChart extends Mixins(
   }
 
   private getUpdatedPrecision(min: number, max: number): number {
-    return Math.max(getPrecision(min), getPrecision(max));
+    const boundaries = [max, min, max - min].map((v) => getPrecision(v));
+    return Math.max(...boundaries);
   }
 
   private async getHistoricalPrices(): Promise<void> {
