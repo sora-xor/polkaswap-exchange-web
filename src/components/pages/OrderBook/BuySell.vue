@@ -125,7 +125,14 @@ import router, { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { OrderBookStats } from '@/types/orderBook';
 import { OrderBookTabs } from '@/types/tabs';
-import { isMaxButtonAvailable, getMaxValue, getAssetBalance, asZeroValue, hasInsufficientBalance } from '@/utils';
+import {
+  isMaxButtonAvailable,
+  getMaxValue,
+  getAssetBalance,
+  asZeroValue,
+  hasInsufficientBalance,
+  showMostFittingValue,
+} from '@/utils';
 import { getBookDecimals } from '@/utils/orderBook';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
@@ -362,6 +369,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return false;
   }
 
+  get bookPrecision(): number {
+    return this.currentOrderBook?.tickSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length || 2;
+  }
+
   get isPriceBeyondPrecision(): boolean {
     if (!this.currentOrderBook) return false;
 
@@ -510,28 +521,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.quoteSubscription = null;
   }
 
-  /**
-   * Returns formatted value in most suitable form
-   * @param value
-   *
-   * 0.152345 -> 0.15
-   * 0.000043 -> 0.000043
-   */
-  showMostFittingValue(value, precisionForLowCostAsset = 18) {
-    const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
-
-    if (parseInt(integer) > 0) {
-      return this.getFormattedValue(value, 2);
-    }
-
-    if (decimal && parseInt(decimal.substring(0, 2)) > 0) {
-      return this.getFormattedValue(value, 2);
-    }
-
-    return this.getFormattedValue(value, precisionForLowCostAsset);
-  }
-
-  getFormattedValue(value: string, precision = 18): string {
+  getFormattedValue(value: string, precision = 7): string {
     const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
     return `${integer}.${decimal.substring(0, precision)}`;
   }
@@ -561,18 +551,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         return;
       }
 
-      // TODO: To be removed ?
-      // const unformattedMarketQuotePrice = this.isBuySide
-      //   ? FPNumber.fromNatural(this.baseValue).div(FPNumber.fromCodecValue(amount)).toFixed(5).toString()
-      //   : FPNumber.fromCodecValue(amount).div(FPNumber.fromNatural(this.baseValue)).toFixed(5).toString();
-
       const unformattedMarketQuotePrice = FPNumber.fromCodecValue(amount)
         .div(FPNumber.fromNatural(this.baseValue))
-        .dp(3)
-        .toString();
+        .toLocaleString();
 
-      // this.marketQuotePrice = this.showMostFittingValue(unformattedMarketQuotePrice);
-      this.marketQuotePrice = unformattedMarketQuotePrice;
+      this.marketQuotePrice = this.getFormattedValue(unformattedMarketQuotePrice, this.bookPrecision);
       this.prepareValuesForSwap(amount);
     });
   }
@@ -617,10 +600,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     const max = getMaxValue(this.baseAsset, this.networkFee);
     const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
-    const precision =
-      this.currentOrderBook?.tickSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length || 2;
 
-    const maxPossible = FPNumber.fromNatural(max, precision);
+    const maxPossible = FPNumber.fromNatural(max, this.bookPrecision);
 
     if (FPNumber.lte(maxPossible, maxLotSize)) {
       this.handleInputFieldBase(maxPossible.toString());
