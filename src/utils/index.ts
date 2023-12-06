@@ -98,6 +98,11 @@ export const getMaxValue = (
   return getMaxBalance(asset, fee, { isExternalBalance, isExternalNative, isBondedBalance }).toString();
 };
 
+/** Change FPNumber precision (`FPNumber.dp()` has issues) */
+export const toPrecision = (value: FPNumber, precision: number): FPNumber => {
+  return new FPNumber(value.toFixed(precision), precision);
+};
+
 /**
  * Returns formatted value in most suitable form
  * @param value
@@ -112,7 +117,7 @@ export const showMostFittingValue = (
   const [integer, decimal = '00'] = value.toString().split('.');
   const precision = parseInt(integer) > 0 ? 2 : Math.min(decimal.search(/[1-9]/) + 2, precisionForLowCostAsset);
 
-  return value.dp(precision).toLocaleString();
+  return toPrecision(value, precision).toLocaleString();
 };
 
 export const hasInsufficientBalance = (
