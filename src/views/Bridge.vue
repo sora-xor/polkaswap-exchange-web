@@ -491,6 +491,11 @@ export default class Bridge extends Mixins(
       isExternalNative: this.isNativeTokenSelected,
     });
 
+    if (this.isNativeTokenSelected) {
+      const transferFee = this.getFPNumberFromCodec(this.externalTransferFee, this.asset?.externalDecimals);
+      maxBalance = maxBalance.sub(transferFee).max(FPNumber.ZERO);
+    }
+
     if (this.transferMaxAmount && FPNumber.gt(maxBalance, this.transferMaxAmount)) {
       maxBalance = this.transferMaxAmount;
     }
