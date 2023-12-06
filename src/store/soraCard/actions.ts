@@ -3,7 +3,7 @@ import { api, ScriptLoader } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
 import { soraCardActionContext } from '@/store/soraCard';
-import { waitForAccountPair, waitForSoraNetworkFromEnv } from '@/utils';
+import { waitForAccountPair, waitForSoraNetworkFromEnv, toPrecision } from '@/utils';
 import {
   defineUserStatus,
   getXorPerEuroRatio,
@@ -22,7 +22,7 @@ const actions = defineActions({
     const euroToPay = FPNumber.HUNDRED.add(FPNumber.ONE).sub(totalXorBalance.mul(xorPerEuro));
     const euroToPayInXor = euroToPay.div(xorPerEuro);
 
-    commit.setXorPriceToDeposit(euroToPayInXor.dp(3)); // TODO: round up number
+    commit.setXorPriceToDeposit(toPrecision(euroToPayInXor, 3)); // TODO: round up number
   },
 
   async calculateXorBalanceInEuros(context, { xorPerEuro, xorTotalBalance }): Promise<void> {
