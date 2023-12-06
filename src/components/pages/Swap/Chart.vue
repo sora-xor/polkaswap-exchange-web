@@ -372,6 +372,14 @@ export default class SwapChart extends Mixins(
     return this.tokenB?.symbol ?? 'USD';
   }
 
+  get currentPrice(): FPNumber {
+    return new FPNumber(this.prices[0]?.price[2] ?? 0); // "close" price
+  }
+
+  get currentPriceFormatted(): string {
+    return this.currentPrice.toFixed(this.precision);
+  }
+
   get isAllHistoricalPricesFetched(): boolean {
     return Object.entries(this.pageInfos).some(([address, pageInfo]) => {
       return !pageInfo.hasNextPage && !this.samplesBuffer[address]?.length;
@@ -388,14 +396,6 @@ export default class SwapChart extends Mixins(
     const endIndex = Math.ceil((itemsCount * this.zoomEnd) / 100) - 1;
 
     return [startIndex, endIndex];
-  }
-
-  get currentPrice(): FPNumber {
-    return new FPNumber(this.prices[0]?.price[2] ?? 0); // "close" price
-  }
-
-  get currentPriceFormatted(): string {
-    return this.currentPrice.toLocaleString();
   }
 
   /**
@@ -469,6 +469,8 @@ export default class SwapChart extends Mixins(
             precision: this.precision,
           },
         },
+        min: this.limits.min,
+        max: this.limits.max,
       }),
       dataZoom: [
         {
@@ -590,7 +592,8 @@ export default class SwapChart extends Mixins(
   }
 
   private getUpdatedPrecision(min: number, max: number): number {
-    return Math.max(getPrecision(min), getPrecision(max));
+    const boundaries = [max, min, max - min].map((v) => getPrecision(v));
+    return Math.max(...boundaries);
   }
 
   private async getHistoricalPrices(): Promise<void> {

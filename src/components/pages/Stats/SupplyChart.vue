@@ -13,9 +13,9 @@
 
     <template #types>
       <token-select-button
-        :icon="selectTokenIcon"
+        icon="chevron-down-rounded-16"
+        :disabled="areActionsDisabled"
         :token="token"
-        :tabindex="tokenTabIndex"
         @click.stop="handleSelectToken"
       />
     </template>
@@ -93,14 +93,6 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
 
   get areActionsDisabled(): boolean {
     return this.parentLoading || this.loading;
-  }
-
-  get selectTokenIcon(): Nullable<string> {
-    return !this.areActionsDisabled ? 'chevron-down-rounded-16' : undefined;
-  }
-
-  get tokenTabIndex(): number {
-    return !this.areActionsDisabled ? 0 : -1;
   }
 
   get firstValue(): FPNumber {

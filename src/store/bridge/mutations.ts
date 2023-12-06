@@ -94,7 +94,7 @@ const mutations = defineMutations<BridgeState>()({
    * Set bridge transactions from localstorage (ethBridgeApi or evmBridgeApi)
    */
   setInternalHistory(state, history: Record<string, IBridgeTransaction>): void {
-    state.historyInternal = { ...history };
+    state.historyInternal = Object.freeze({ ...history });
   },
 
   setHistoryPage(state, historyPage?: number): void {

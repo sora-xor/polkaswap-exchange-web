@@ -208,7 +208,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     this.currentView = view;
   }
 
-  private findInList(list, address: string): any {
+  private findInList(list: NodeItem[], address: string): any {
     return list.find((item) => item.address === address);
   }
 
