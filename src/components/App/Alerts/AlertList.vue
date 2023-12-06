@@ -53,7 +53,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import { ZeroStringValue } from '@/consts';
 import { getter, mutation, state } from '@/store/decorators';
-import { calcPriceChange, showMostFittingValue } from '@/utils';
+import { calcPriceChange, showMostFittingValue, toPrecision } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Alert, WhitelistIdsBySymbol } from '@soramitsu/soraneo-wallet-web/lib/types/common';
@@ -118,7 +118,7 @@ export default class AlertList extends Mixins(
     const asset = this.getAsset(this.whitelistIdsBySymbol[alert.token]);
     const currentPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? ZeroStringValue);
     const priceChange = calcPriceChange(desiredPrice, currentPrice);
-    const priceChangeFormatted = priceChange.dp(2).toString();
+    const priceChangeFormatted = toPrecision(priceChange, 2).toString();
     const currentPriceFormatted = showMostFittingValue(currentPrice);
 
     return `${priceChangeFormatted}% · ${this.t('alerts.currentPrice')}: $${currentPriceFormatted}`;
