@@ -94,6 +94,7 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
       scale: true,
       axisLabel: {
         ...AXIS_LABEL_CSS,
+        hideOverlap: true,
         margin: 0,
         padding: LABEL_PADDING - 1,
       },

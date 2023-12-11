@@ -23,7 +23,7 @@
               <template v-if="isError">{{ t('swap.errorFetching') }}</template>
               <template v-else>{{ t('noDataText') }}</template>
             </p>
-            <s-button v-if="isError" class="el-button--select-token" type="secondary" size="small" @click="handleRetry">
+            <s-button v-if="isError" type="secondary" size="small" @click="handleRetry">
               {{ t('retryText') }}
             </s-button>
           </div>

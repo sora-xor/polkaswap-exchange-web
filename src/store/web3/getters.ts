@@ -1,5 +1,4 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { defineGetters } from 'direct-vuex';
 
 import { EVM_NETWORKS } from '@/consts/evm';
@@ -9,6 +8,7 @@ import { web3GetterContext } from '@/store/web3';
 import type { NetworkData } from '@/types/bridge';
 
 import type { Web3State, AvailableNetwork } from './types';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const getters = defineGetters<Web3State>()({

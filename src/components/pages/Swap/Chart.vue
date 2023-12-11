@@ -40,7 +40,7 @@
     >
       <formatted-amount
         class="charts-price"
-        :value="fiatPriceFormatted"
+        :value="currentPriceFormatted"
         :font-weight-rate="FontWeightRate.MEDIUM"
         :font-size-rate="FontWeightRate.MEDIUM"
         :asset-symbol="symbol"
@@ -205,8 +205,9 @@ const formatChange = (value: FPNumber): string => {
   return `${sign}${priceChange}`;
 };
 
-const formatPrice = (value: number, symbol: string) => {
-  return `${new FPNumber(value).toLocaleString()} ${symbol}`;
+const formatPrice = (value: number, precision: number, symbol: string) => {
+  const val = new FPNumber(value).toFixed(precision);
+  return `${val} ${symbol}`;
 };
 
 const preparePriceData = (item: AssetSnapshotEntity): OCLH => {
@@ -376,20 +377,12 @@ export default class SwapChart extends Mixins(
     return this.tokenB?.symbol ?? 'USD';
   }
 
-  get fromFiatPrice(): FPNumber {
-    return this.tokenA ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenA) ?? 0) : FPNumber.ZERO;
+  get currentPrice(): FPNumber {
+    return new FPNumber(this.prices[0]?.price[2] ?? 0); // "close" price
   }
 
-  get toFiatPrice(): FPNumber {
-    return this.tokenB ? FPNumber.fromCodecValue(this.getAssetFiatPrice(this.tokenB) ?? 0) : FPNumber.ZERO;
-  }
-
-  get fiatPrice(): FPNumber {
-    return this.toFiatPrice.isZero() ? this.fromFiatPrice : this.fromFiatPrice.div(this.toFiatPrice);
-  }
-
-  get fiatPriceFormatted(): string {
-    return this.fiatPrice.toLocaleString();
+  get currentPriceFormatted(): string {
+    return this.currentPrice.toFixed(this.precision);
   }
 
   get isAllHistoricalPricesFetched(): boolean {
@@ -481,6 +474,8 @@ export default class SwapChart extends Mixins(
             precision: this.precision,
           },
         },
+        min: this.limits.min,
+        max: this.limits.max,
       }),
       dataZoom: [
         {
@@ -498,7 +493,7 @@ export default class SwapChart extends Mixins(
         formatter: (params) => {
           const { data, seriesType } = params[0];
           const [timestamp, open, close, low, high] = data;
-          if (seriesType === CHART_TYPES.LINE) return formatPrice(close, this.symbol);
+          if (seriesType === CHART_TYPES.LINE) return formatPrice(close, this.precision, this.symbol);
 
           if (seriesType === CHART_TYPES.CANDLE) {
             const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
@@ -509,10 +504,10 @@ export default class SwapChart extends Mixins(
             );
 
             const rows = [
-              { title: 'Open', data: formatPrice(open, this.symbol) },
-              { title: 'High', data: formatPrice(high, this.symbol) },
-              { title: 'Low', data: formatPrice(low, this.symbol) },
-              { title: 'Close', data: formatPrice(close, this.symbol) },
+              { title: 'Open', data: formatPrice(open, this.precision, this.symbol) },
+              { title: 'High', data: formatPrice(high, this.precision, this.symbol) },
+              { title: 'Low', data: formatPrice(low, this.precision, this.symbol) },
+              { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
               { title: 'Change', data: formatChange(change), color: changeColor },
             ];
 
@@ -606,7 +601,8 @@ export default class SwapChart extends Mixins(
   }
 
   private getUpdatedPrecision(min: number, max: number): number {
-    return Math.max(getPrecision(min), getPrecision(max));
+    const boundaries = [max, min, max - min].map((v) => getPrecision(v));
+    return Math.max(...boundaries);
   }
 
   private async getHistoricalPrices(): Promise<void> {
@@ -664,8 +660,8 @@ export default class SwapChart extends Mixins(
 
           prices.push({ timestamp, price });
 
-          min = Math.min(min, ...price);
-          max = Math.max(max, ...price);
+          min = this.isLineChart ? Math.min(min, price[1]) : Math.min(min, ...price);
+          max = this.isLineChart ? Math.max(max, price[1]) : Math.max(max, ...price);
         }
 
         addresses.forEach((address, index) => {
