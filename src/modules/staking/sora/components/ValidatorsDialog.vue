@@ -138,7 +138,7 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
     }
   }
 
-  async handleConfirm(): void {
+  async handleConfirm(): Promise<void> {
     if (this.mode === ValidatorsListMode.USER) {
       this.isSelectingEditingMode = true;
     } else {
