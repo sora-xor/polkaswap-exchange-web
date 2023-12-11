@@ -660,8 +660,8 @@ export default class SwapChart extends Mixins(
 
           prices.push({ timestamp, price });
 
-          min = Math.min(min, ...price);
-          max = Math.max(max, ...price);
+          min = this.isLineChart ? Math.min(min, price[1]) : Math.min(min, ...price);
+          max = this.isLineChart ? Math.max(max, price[1]) : Math.max(max, ...price);
         }
 
         addresses.forEach((address, index) => {

@@ -10,7 +10,7 @@ import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
