@@ -17,9 +17,11 @@ const actions = defineActions({
   },
 
   async nominate(context): Promise<void> {
-    const { state } = stakingActionContext(context);
+    const { state, dispatch } = stakingActionContext(context);
 
     await api.staking.nominate({ validators: state.selectedValidators.map((v) => v.address) });
+
+    await dispatch.getStakingInfo();
   },
 
   async bondAndNominate(context): Promise<void> {

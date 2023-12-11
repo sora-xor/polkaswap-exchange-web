@@ -172,7 +172,7 @@ const routes: Array<RouteConfig> = [
     children: [
       {
         path: 'demeter',
-        component: stakingLazyView(DemeterStakingPageNames.DataContainer),
+        component: demeterStakingLazyView(DemeterStakingPageNames.DataContainer),
         children: [
           {
             path: 'staking',

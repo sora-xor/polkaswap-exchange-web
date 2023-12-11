@@ -66,7 +66,7 @@
             "StakingBondExtra": "Bonded extra {amount} {symbol}",
             "StakingUnbond": "Unbonded {amount} {symbol}",
             "StakingRebond": "Rebonded {amount} {symbol}",
-            "StakingNominate": "Nominated {validators}",
+            "StakingNominate": "Nominated validators",
             "StakingWithdrawUnbonded": "Withdrew {amount} {symbol}",
             "StakingPayout": "Payout rewards",
             "StakingChill": "Chill",
@@ -92,7 +92,18 @@
             "DemeterFarmingGetRewards": "Failed to claim {symbol}",
             "EthBridgeIncoming": "Failed to transfer {amount} {symbol} from {Ethereum} to {Sora}",
             "EthBridgeOutgoing": "Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}",
-            "SwapTransferBatch": "Failed to {action} {amount} {symbol}"
+            "SwapTransferBatch": "Failed to {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Failed to bond {amount} {symbol}",
+            "StakingBond": "Failed to bond {amount} {symbol}",
+            "StakingBondExtra": "Failed to bond extra {amount} {symbol}",
+            "StakingUnbond": "Failed to unbond {amount} {symbol}",
+            "StakingRebond": "Failed to rebond {amount} {symbol}",
+            "StakingNominate": "Failed to nominate validators",
+            "StakingWithdrawUnbonded": "Failed to withdraw {amount} {symbol}",
+            "StakingPayout": "Failed to payout rewards",
+            "StakingChill": "Failed to chill",
+            "StakingSetController": "Failed to set controller {address}",
+            "StakingSetPayee": "Failed to set payee {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -1012,7 +1023,8 @@
             "selected": "{selected}/{total} selected",
             "recommended": "Recommended validators",
             "change": "Change validators",
-            "select": "Select validators"
+            "select": "Select validators",
+            "alreadyNominated": "Selected validators already nominated"
         },
         "validatorsList": {
             "search": "Search...",

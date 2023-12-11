@@ -144,6 +144,11 @@
       :parent-loading="parentLoading || loading"
       @confirm="handleNominate"
     />
+    <controller-dialog
+      :visible.sync="showControllerDialog"
+      :parent-loading="parentLoading || loading"
+      @confirm="handleChangeController"
+    />
   </div>
 </template>
 
@@ -181,6 +186,7 @@ type MenuItem = {
     ClaimRewardsDialog: soraStakingLazyComponent(SoraStakingComponents.ClaimRewardsDialog),
     PendingRewardsDialog: soraStakingLazyComponent(SoraStakingComponents.PendingRewardsDialog),
     ValidatorsDialog: soraStakingLazyComponent(SoraStakingComponents.ValidatorsDialog),
+    ControllerDialog: soraStakingLazyComponent(SoraStakingComponents.ControllerDialog),
   },
 })
 export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, TranslationMixin) {
@@ -196,7 +202,7 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
   showClaimRewardsDialog = false;
   showPendingRewardsDialog = false;
   showValidatorsDialog = false;
-  showControllerAccountDialog = false;
+  showControllerDialog = false;
 
   get lockedFundsFormatted(): string {
     return this.lockedFunds.toLocaleString();
@@ -214,15 +220,15 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
     return [
       {
         value: DropdownMenuItemType.PendingRewards,
-        text: 'Pending rewards', // this.t('soraStaking.dropdownMenu.pendingRewards'),
+        text: this.t('soraStaking.dropdownMenu.pendingRewards'),
       },
       {
         value: DropdownMenuItemType.Validators,
-        text: 'Validators', // this.t('soraStaking.dropdownMenu.validators'),
+        text: this.t('soraStaking.dropdownMenu.validators'),
       },
       // {
       //   value: DropdownMenuItemType.ControllerAccount,
-      //   text: 'ControllerAccount', // this.t('soraStaking.dropdownMenu.controllerAccount'),
+      //   text: this.t('soraStaking.dropdownMenu.controllerAccount'),
       // },
     ];
   }
@@ -246,7 +252,7 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
         this.showValidatorsDialog = true;
         break;
       case DropdownMenuItemType.ControllerAccount:
-        this.showControllerAccountDialog = true;
+        this.showControllerDialog = true;
         break;
     }
   }
@@ -280,6 +286,10 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
 
   handleNominate() {
     this.showValidatorsDialog = false;
+  }
+
+  handleChangeController() {
+    this.showControllerDialog = false;
   }
 
   handleConnectWallet(): void {
@@ -350,6 +360,7 @@ body {
   display: flex;
   justify-content: center;
   margin-top: -23px;
+  pointer-events: none;
 }
 .staking-logo {
   position: relative;

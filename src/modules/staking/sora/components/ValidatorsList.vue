@@ -190,10 +190,16 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
   position: absolute;
   right: 13px;
   border-radius: 8px;
+  background: var(--s-color-base-on-accent);
+
+  &:not(:hover) {
+    border-color: var(--s-color-base-border-secondary);
+  }
 
   &-content {
     display: flex;
     gap: 6px;
+    color: var(--s-color-base-content-primary);
 
     span {
       font-weight: 400;

@@ -23,20 +23,15 @@
         {{ confirmText }}
       </s-button>
     </div>
-    <select-validators-mode
-      v-else
-      title="Edit my validators"
-      @recommended="handleRecommendedMode"
-      @selected="handleSelectedMode"
-    />
+    <select-validators-mode v-else @recommended="handleRecommendedMode" @selected="handleSelectedMode" />
   </dialog-base>
 </template>
 
 <script lang="ts">
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import { mutation } from '@/store/decorators';
+import { mutation, action } from '@/store/decorators';
 
 import { soraStakingLazyComponent } from '../../router';
 import { SoraStakingComponents, ValidatorsListMode } from '../consts';
@@ -55,10 +50,17 @@ import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types
 export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
   @mutation.staking.selectValidators selectValidators!: (validators: ValidatorInfoFull[]) => void;
 
+  @action.staking.getValidatorsInfo getValidatorsInfo!: AsyncFnWithoutArgs;
+
   ValidatorsListMode = ValidatorsListMode;
 
   mode: ValidatorsListMode = ValidatorsListMode.USER;
   isSelectingEditingMode = false;
+
+  @Watch('visible')
+  private resetMode() {
+    this.mode = ValidatorsListMode.USER;
+  }
 
   get title(): string {
     return this.mode === ValidatorsListMode.USER || this.mode === ValidatorsListMode.ALL
@@ -82,17 +84,33 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
     return [ValidatorsListMode.USER, ValidatorsListMode.ALL];
   }
 
+  get hasChanges(): boolean {
+    const selectedValidators = this.selectedValidators.map((validator) => validator.address);
+    const userValidators = this.stakingInfo?.myValidators;
+    if (!userValidators) {
+      return false;
+    }
+    return !(
+      selectedValidators.every((address) => userValidators.includes(address)) &&
+      selectedValidators.length === userValidators.length
+    );
+  }
+
   get confirmText(): string {
     switch (this.mode) {
       case ValidatorsListMode.USER:
         return this.t('soraStaking.validators.change');
       case ValidatorsListMode.RECOMMENDED:
-        return this.t('soraStaking.validators.save');
+        return this.hasChanges
+          ? this.t('soraStaking.validators.save')
+          : this.t('soraStaking.validators.alreadyNominated');
       case ValidatorsListMode.SELECT:
-        return this.t('soraStaking.validators.selected', {
-          selected: this.selectedValidators.length,
-          total: this.validators.length,
-        });
+        return this.hasChanges
+          ? this.t('soraStaking.validators.selected', {
+              selected: this.selectedValidators.length,
+              total: this.validators.length,
+            })
+          : this.t('soraStaking.validators.alreadyNominated');
       default:
         return '';
     }
@@ -103,8 +121,10 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
   }
 
   get confirmDisabled(): boolean {
-    if (this.mode === ValidatorsListMode.SELECT) {
-      return this.selectedValidators.length === 0;
+    if (this.mode === ValidatorsListMode.RECOMMENDED) {
+      return !this.hasChanges;
+    } else if (this.mode === ValidatorsListMode.SELECT) {
+      return this.selectedValidators.length === 0 || !this.hasChanges;
     }
     return false;
   }
@@ -118,11 +138,13 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
     }
   }
 
-  handleConfirm(): void {
+  async handleConfirm(): void {
     if (this.mode === ValidatorsListMode.USER) {
       this.isSelectingEditingMode = true;
     } else {
-      this.nominate();
+      await this.nominate();
+      await this.getValidatorsInfo();
+      this.mode = ValidatorsListMode.USER;
     }
   }
 
@@ -139,8 +161,12 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
 </script>
 
 <style lang="scss">
-.validators-dialog .el-dialog__header {
-  position: absolute;
+.validators-dialog {
+  @include custom-tabs;
+
+  .el-dialog__header {
+    position: absolute;
+  }
 }
 </style>
 

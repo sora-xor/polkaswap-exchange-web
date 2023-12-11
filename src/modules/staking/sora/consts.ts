@@ -25,6 +25,7 @@ export enum SoraStakingComponents {
   ClaimRewardsDialog = 'ClaimRewardsDialog',
   PendingRewardsDialog = 'PendingRewardsDialog',
   ValidatorsDialog = 'ValidatorsDialog',
+  ControllerDialog = 'ControllerDialog',
 }
 
 export const soraStaking = {
