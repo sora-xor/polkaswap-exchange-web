@@ -163,13 +163,14 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
+import { KnownAssets } from '@sora-substrate/util/build/assets/consts';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components } from '@/consts';
+import { Components, ZeroStringValue } from '@/consts';
 import { fetchTokensData } from '@/indexer/queries/assets';
 import type { TokenData } from '@/indexer/queries/assets';
 import { lazyComponent } from '@/router';
@@ -184,18 +185,18 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
 type TableItem = {
   price: number;
   priceFormatted: string;
-  priceChangeDay: number;
-  priceChangeDayFP: FPNumber;
-  priceChangeWeek: number;
-  priceChangeWeekFP: FPNumber;
-  volumeDay: number;
-  volumeDayFormatted: AmountWithSuffix;
-  tvl: number;
-  tvlFormatted: AmountWithSuffix;
+  priceChangeDay?: number;
+  priceChangeDayFP?: FPNumber;
+  priceChangeWeek?: number;
+  priceChangeWeekFP?: FPNumber;
+  volumeDay?: number;
+  volumeDayFormatted?: AmountWithSuffix;
+  tvl?: number;
+  tvlFormatted?: AmountWithSuffix;
   // mcap: number;
   // mcapFormatted: AmountWithSuffix;
-  velocity: number;
-  velocityFormatted: string;
+  velocity?: number;
+  velocityFormatted?: string;
 } & Asset;
 
 const storageKey = 'exploreSyntheticTokens';
@@ -230,12 +231,32 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   order = SortDirection.DESC;
   property = 'tvl';
 
+  get allowedAssets(): Array<Asset> {
+    // if whitelist is not available, use KnownAssets
+    if (!this.whitelistAssets.length) {
+      return [...KnownAssets];
+    }
+    return this.whitelistAssets;
+  }
+
   get hasTokensData(): boolean {
     return Object.keys(this.tokensData).length !== 0;
   }
 
   get items(): TableItem[] {
-    const items = Object.entries(this.tokensData).reduce<TableItem[]>((buffer, [address, tokenData]) => {
+    if (!this.hasTokensData) {
+      return this.allowedAssets.map((asset) => {
+        const price = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? ZeroStringValue);
+
+        return {
+          ...asset,
+          price: price.toNumber(),
+          priceFormatted: new FPNumber(price.toFixed(7)).toLocaleString(),
+        };
+      });
+    }
+
+    return Object.entries(this.tokensData).reduce<TableItem[]>((buffer, [address, tokenData]) => {
       const asset = this.getAsset(address);
 
       if (!asset) return buffer;
@@ -258,14 +279,14 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
       return buffer;
     }, []);
+  }
 
-    const defaultSorted = [...items].sort((a, b) => sortAssets(a, b));
-
-    return defaultSorted;
+  get defaultSorted(): TableItem[] {
+    return [...this.items].sort((a, b) => sortAssets(a, b));
   }
 
   get preparedItems(): TableItem[] {
-    return this.isSynthsOnly ? this.items.filter((item) => this.isSynthetic(item.address)) : this.items;
+    return this.isSynthsOnly ? this.defaultSorted.filter((item) => this.isSynthetic(item.address)) : this.defaultSorted;
   }
 
   isSynthetic(address: string): boolean {
@@ -276,7 +297,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   async updateExploreData(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.tokensData = Object.freeze(await fetchTokensData(this.whitelistAssets));
+        this.tokensData = Object.freeze(await fetchTokensData(this.allowedAssets));
       });
     });
   }

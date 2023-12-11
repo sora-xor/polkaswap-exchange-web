@@ -29,13 +29,13 @@ const mutations = defineMutations<Web3State>()({
   },
 
   setEvmNetworksApp(state, networksIds: EvmNetwork[]): void {
-    state.evmNetworkApps = networksIds;
+    state.evmNetworkApps = Object.freeze([...networksIds]);
   },
   setSubNetworkApps(state, apps: SubNetworkApps): void {
-    state.subNetworkApps = apps;
+    state.subNetworkApps = Object.freeze({ ...apps });
   },
   setSupportedApps(state, supportedApps: SupportedApps): void {
-    state.supportedApps = supportedApps;
+    state.supportedApps = Object.freeze({ ...supportedApps });
   },
   setEvmProvider(state, provider: Provider): void {
     state.evmProvider = provider;
@@ -86,11 +86,11 @@ const mutations = defineMutations<Web3State>()({
   // for hashi bridge
   setEthBridgeSettings(state, { evmNetwork, address }: EthBridgeSettings): void {
     state.ethBridgeEvmNetwork = evmNetwork;
-    state.ethBridgeContractAddress = {
+    state.ethBridgeContractAddress = Object.freeze({
       XOR: address.XOR,
       VAL: address.VAL,
       OTHER: address.OTHER,
-    };
+    });
   },
 });
 

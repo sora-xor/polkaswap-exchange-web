@@ -20,7 +20,7 @@ export default class SwapStatusActionBadge extends Vue {}
 </style>
 
 <style lang="scss" scoped>
-$max-width: 150px;
+$max-width: 158px;
 $base-class: '.status-action-badge';
 
 .s-card#{$base-class} {

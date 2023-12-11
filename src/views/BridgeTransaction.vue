@@ -192,7 +192,6 @@
 <script lang="ts">
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { BridgeTxStatus, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -207,7 +206,7 @@ import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/common/utils
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
-import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const FORMATTED_HASH_LENGTH = 24;

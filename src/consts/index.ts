@@ -14,8 +14,6 @@ export const app = {
   title: 'Polkaswap — The DEX for the Interoperable Future.',
 };
 
-export const MAX_ALERTS_NUMBER = 5;
-
 export const WalletPermissions = {
   sendAssets: true, // enable 'send' button in assets list
   swapAssets: true, // enable 'swap' button in assets list

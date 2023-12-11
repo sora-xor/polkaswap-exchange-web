@@ -18,8 +18,7 @@ import {
 
 import type { ApiPromise } from '@polkadot/api';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
-import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { BridgeTransactionData } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { ActionContext } from 'vuex';
 
