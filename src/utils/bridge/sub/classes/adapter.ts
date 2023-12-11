@@ -2,7 +2,7 @@ import { Connection } from '@sora-substrate/connection';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { formatBalance } from '@sora-substrate/util/build/assets';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
 import { ZeroStringValue } from '@/consts';
 import type { SubNetworkApps } from '@/store/web3/types';
@@ -15,6 +15,7 @@ import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
 import type { ISubmittableResult } from '@polkadot/types/types';
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 export class SubAdapter {
   protected endpoint!: string;
@@ -202,7 +203,7 @@ class KusamaAdapter extends SubAdapter {
       return await super.getNetworkFee(asset, sender, recipient);
     } catch {
       // Hardcoded value for Rococo - 0.000125 ROC
-      if (this.subNetwork === SubNetwork.Rococo) {
+      if (this.subNetwork === SubNetworkId.Rococo) {
         return '125810197';
       }
       // Hardcoded value for Kusama - 0.0007 KSM
@@ -227,10 +228,10 @@ export class SubNetworksConnector {
   public static endpoints: SubNetworkApps = {};
 
   public readonly adapters = {
-    [SubNetwork.Rococo]: () => new KusamaAdapter(SubNetwork.Rococo),
-    [SubNetwork.Kusama]: () => new KusamaAdapter(SubNetwork.Kusama),
-    [SubNetwork.RococoSora]: () => new SoraParachainAdapter(SubNetwork.RococoSora),
-    [SubNetwork.KusamaSora]: () => new SoraParachainAdapter(SubNetwork.KusamaSora),
+    [SubNetworkId.Rococo]: () => new KusamaAdapter(SubNetworkId.Rococo),
+    [SubNetworkId.Kusama]: () => new KusamaAdapter(SubNetworkId.Kusama),
+    [SubNetworkId.RococoSora]: () => new SoraParachainAdapter(SubNetworkId.RococoSora),
+    [SubNetworkId.KusamaSora]: () => new SoraParachainAdapter(SubNetworkId.KusamaSora),
   };
 
   get uniqueConnections(): SubNetworkConnection<SubAdapter>[] {
