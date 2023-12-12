@@ -101,11 +101,15 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
       case ValidatorsListMode.USER:
         return this.t('soraStaking.validators.change');
       case ValidatorsListMode.RECOMMENDED:
-        return this.hasChanges
+        return this.isInsufficientXorForFee
+          ? this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol })
+          : this.hasChanges
           ? this.t('soraStaking.validators.save')
           : this.t('soraStaking.validators.alreadyNominated');
       case ValidatorsListMode.SELECT:
-        return this.hasChanges
+        return this.isInsufficientXorForFee
+          ? this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol })
+          : this.hasChanges
           ? this.t('soraStaking.validators.selected', {
               selected: this.selectedValidators.length,
               total: this.validators.length,
@@ -121,6 +125,9 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
   }
 
   get confirmDisabled(): boolean {
+    if (this.isInsufficientXorForFee) {
+      return false;
+    }
     if (this.mode === ValidatorsListMode.RECOMMENDED) {
       return !this.hasChanges;
     } else if (this.mode === ValidatorsListMode.SELECT) {
