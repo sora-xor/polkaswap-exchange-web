@@ -186,7 +186,7 @@ type MenuItem = {
     ClaimRewardsDialog: soraStakingLazyComponent(SoraStakingComponents.ClaimRewardsDialog),
     PendingRewardsDialog: soraStakingLazyComponent(SoraStakingComponents.PendingRewardsDialog),
     ValidatorsDialog: soraStakingLazyComponent(SoraStakingComponents.ValidatorsDialog),
-    ControllerDialog: soraStakingLazyComponent(SoraStakingComponents.ControllerDialog),
+    // ControllerDialog: soraStakingLazyComponent(SoraStakingComponents.ControllerDialog),
   },
 })
 export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, TranslationMixin) {
@@ -238,8 +238,9 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
   }
 
   handleClickDropdownMenu(): void {
-    if (!this.$refs.dropdownMenu) return;
-    const dropdown = (this.$refs.dropdownMenu as any).dropdown;
+    const dropdownMenu = this.$refs['dropdown-menu'];
+    if (!dropdownMenu) return;
+    const dropdown = (dropdownMenu as any).dropdown;
     dropdown.visible ? dropdown.hide() : dropdown.show();
   }
 
