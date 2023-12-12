@@ -29,7 +29,12 @@
     </div>
     <div v-if="asksFormatted.length" class="stock-book-sell">
       <div class="margin" :style="getHeight()" />
-      <div v-for="order in getSellOrders()" :key="order.price" class="row">
+      <div
+        v-for="order in getSellOrders()"
+        :key="order.price"
+        class="row"
+        @click="fillPrice(order.price, PriceVariant.Sell)"
+      >
         <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
         <span class="order-info price">{{ order.price }}</span>
@@ -45,7 +50,12 @@
       </div>
     </div>
     <div v-if="bidsFormatted.length" class="stock-book-buy">
-      <div v-for="order in getBuyOrders()" :key="order.price" class="row">
+      <div
+        v-for="order in getBuyOrders()"
+        :key="order.price"
+        class="row"
+        @click="fillPrice(order.price, PriceVariant.Buy)"
+      >
         <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
         <span class="order-info price">{{ order.price }}</span>
@@ -64,7 +74,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { ZeroStringValue } from '@/consts';
-import { action, getter, state } from '@/store/decorators';
+import { action, getter, mutation, state } from '@/store/decorators';
 import type { OrderBookDealData } from '@/types/orderBook';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -84,6 +94,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.orderBookLastDeal orderBookLastDeal!: Nullable<OrderBookDealData>;
 
+  readonly PriceVariant = PriceVariant;
+
   maxRowsNumber = 10;
   selectedStep = '10';
 
@@ -101,9 +113,12 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
   // Widget subscription data
   @getter.orderBook.currentOrderBook currentOrderBook!: any;
-
   @getter.orderBook.orderBookId private orderBookId!: string;
   @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
+
+  @mutation.orderBook.setQuoteValue setQuoteValue!: (value: string) => void;
+  @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
+
   @action.orderBook.subscribeToBidsAndAsks private subscribeToBidsAndAsks!: AsyncFnWithoutArgs;
   @action.orderBook.unsubscribeFromBidsAndAsks private unsubscribeFromBidsAndAsks!: FnWithoutArgs;
 
@@ -116,6 +131,11 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
         await this.subscribeToBidsAndAsks();
       });
     });
+  }
+
+  fillPrice(price: string, side: PriceVariant): void {
+    this.setSide(side);
+    this.setQuoteValue(Number(price).toString());
   }
 
   getPrecision(price: FPNumber): any {
@@ -381,6 +401,9 @@ $background-column-color-dark: #693d81;
     margin: 2px;
     transform-style: preserve-3d;
     font-family: 'JetBrains Mono';
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &__title {

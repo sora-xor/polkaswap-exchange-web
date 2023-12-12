@@ -19,7 +19,7 @@
 <script lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
@@ -32,6 +32,8 @@ import { getter, mutation, state } from '@/store/decorators';
   },
 })
 export default class SetLimitOrderWidget extends Mixins(TranslationMixin, mixins.LoadingMixin) {
+  @state.orderBook.side side!: PriceVariant;
+
   @getter.orderBook.baseAsset baseAsset!: any;
   @getter.orderBook.baseAsset quoteAsset!: any;
 
@@ -40,6 +42,11 @@ export default class SetLimitOrderWidget extends Mixins(TranslationMixin, mixins
   readonly LimitOrderTabsItems = PriceVariant;
 
   currentTab = PriceVariant.Buy;
+
+  @Watch('side')
+  private handleSideChange(side: PriceVariant): void {
+    this.handleChangeTab(side);
+  }
 
   get loadingState(): boolean {
     return this.parentLoading || this.loading;
