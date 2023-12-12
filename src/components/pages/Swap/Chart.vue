@@ -86,8 +86,8 @@ import type { PageInfo, FiatPriceObject } from '@soramitsu/soraneo-wallet-web/li
 
 const { SnapshotTypes } = SUBQUERY_TYPES;
 
-/** "timestamp", "open", "close", "low", "high" data */
-type ChartDataItem = [number, ...OCLH];
+/** "timestamp", "open", "close", "low", "high", "volume" data */
+type ChartDataItem = [number, ...OCLH, number];
 
 enum CHART_TYPES {
   LINE = 'line',
@@ -224,6 +224,7 @@ const normalizeSnapshots = (collection: SnapshotItem[], difference: number, last
       buffer.push({
         timestamp: currentTimestamp,
         price: [item.price[1], item.price[1], item.price[1], item.price[1]],
+        volume: 0,
       });
     }
 
@@ -291,7 +292,7 @@ export default class SwapChart extends Mixins(
   // ordered by timestamp DESC
   private samplesBuffer: Record<string, readonly SnapshotItem[]> = {};
   private pageInfos: Record<string, Partial<PageInfo>> = {};
-  private prices: readonly SnapshotItem[] = [];
+  private dataset: readonly SnapshotItem[] = [];
   private zoomStart = 0; // percentage of zoom start position
   private zoomEnd = 100; // percentage of zoom end position
   private precision = 2;
@@ -373,7 +374,7 @@ export default class SwapChart extends Mixins(
   }
 
   get currentPrice(): FPNumber {
-    return new FPNumber(this.prices[0]?.price[2] ?? 0); // "close" price
+    return new FPNumber(this.dataset[0]?.price[2] ?? 0); // "close" price
   }
 
   get currentPriceFormatted(): string {
@@ -423,15 +424,15 @@ export default class SwapChart extends Mixins(
   get chartData(): readonly ChartDataItem[] {
     const groups: ChartDataItem[] = [];
     const {
-      prices,
+      dataset,
       selectedFilter: { group },
     } = this;
     // ordered by timestamp ASC
-    const ordered = prices.slice().reverse();
+    const ordered = dataset.slice().reverse();
 
     for (let i = 0; i < ordered.length; i++) {
       if (!group || i % group === 0) {
-        groups.push([ordered[i].timestamp, ...ordered[i].price]);
+        groups.push([ordered[i].timestamp, ...ordered[i].price, ordered[i].volume]);
       } else {
         const lastGroup = last(groups);
 
@@ -439,6 +440,7 @@ export default class SwapChart extends Mixins(
           lastGroup[2] = ordered[i].price[1]; // close
           lastGroup[3] = Math.min(lastGroup[3], ordered[i].price[2]); // low
           lastGroup[4] = Math.max(lastGroup[4], ordered[i].price[3]); // high
+          lastGroup[5] = lastGroup[5] + (ordered[i].volume ?? 0); // volume
         }
       }
     }
@@ -447,7 +449,7 @@ export default class SwapChart extends Mixins(
   }
 
   get chartSpec() {
-    return {
+    const spec = {
       dataset: {
         source: this.chartData,
         dimensions: ['timestamp', 'open', 'close', 'low', 'high'],
@@ -544,6 +546,8 @@ export default class SwapChart extends Mixins(
           : this.candlestickSeriesSpec(),
       ],
     };
+
+    return spec;
   }
 
   created(): void {
@@ -606,7 +610,7 @@ export default class SwapChart extends Mixins(
 
     const addresses = [...this.entities];
     const requestId = Date.now();
-    const lastTimestamp = last(this.prices)?.timestamp ?? Date.now();
+    const lastTimestamp = last(this.dataset)?.timestamp ?? Date.now();
 
     this.priceUpdateRequestId = requestId;
 
@@ -618,7 +622,7 @@ export default class SwapChart extends Mixins(
         if (!(snapshots && isEqual(addresses)(this.entities) && isEqual(requestId)(this.priceUpdateRequestId))) return;
 
         const pageInfos: Record<string, Partial<PageInfo>> = {};
-        const prices: SnapshotItem[] = [];
+        const dataset: SnapshotItem[] = [];
         const groups: SnapshotItem[][] = [];
         const timestamp =
           lastTimestamp ??
@@ -642,12 +646,13 @@ export default class SwapChart extends Mixins(
 
           const timestamp = (a?.timestamp ?? b?.timestamp) as number;
           const price = b?.price && a?.price ? dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0];
+          const volume = b?.volume && a?.volume ? Math.min(b.volume, a.volume) : a?.volume ?? 0;
           // skip item, if one of the prices is incorrect
           if (price.some((part) => !Number.isFinite(part))) continue;
           // if "open" & "close" prices are zero, we are going to time, where pool is not created
           if (price[0] === 0 && price[1] === 0) break;
 
-          prices.push({ timestamp, price });
+          dataset.push({ timestamp, price, volume });
 
           min = this.isLineChart ? Math.min(min, price[1]) : Math.min(min, ...price);
           max = this.isLineChart ? Math.max(max, price[1]) : Math.max(max, ...price);
@@ -660,7 +665,7 @@ export default class SwapChart extends Mixins(
         this.limits = { min, max };
         this.pageInfos = pageInfos;
         this.precision = this.getUpdatedPrecision(min, max);
-        this.updatePricesCollection([...this.prices, ...prices]);
+        this.updateDataset([...this.dataset, ...dataset]);
 
         this.isFetchingError = false;
       } catch (error) {
@@ -739,22 +744,23 @@ export default class SwapChart extends Mixins(
     if (!isEqual(entities)(this.entities)) return;
 
     const timestamp = this.getCurrentSnapshotTimestamp();
-    const lastItem = this.prices[0];
+    const lastItem = this.dataset[0];
 
     if (!lastItem || timestamp === lastItem.timestamp) return;
 
     const close = lastItem.price[1];
     const price: OCLH = [close, close, close, close];
-    const item: SnapshotItem = { timestamp, price };
+    const volume = 0; // we don't know volume
+    const item: SnapshotItem = { timestamp, price, volume };
 
-    this.updatePricesCollection([item, ...this.prices]);
+    this.updateDataset([item, ...this.dataset]);
   }
 
   private handlePriceUpdates(entities: string[], fiatPriceObject: FiatPriceObject): void {
     if (!isEqual(entities)(this.entities)) return;
 
     const timestamp = this.getCurrentSnapshotTimestamp();
-    const lastItem = this.prices[0];
+    const lastItem = this.dataset[0];
 
     const [priceA, priceB] = entities.map((address) =>
       FPNumber.fromCodecValue(fiatPriceObject[address] ?? 0).toNumber()
@@ -770,21 +776,21 @@ export default class SwapChart extends Mixins(
     const isCurrentTimeframe = lastItem?.timestamp === timestamp;
 
     const priceData: OCLH = [isCurrentTimeframe ? open : price, price, Math.min(low, price), Math.max(high, price)];
-    const item = { timestamp, price: priceData };
-    const prices = [...this.prices];
+    const item = { timestamp, price: priceData, volume: 0 };
+    const dataset = [...this.dataset];
     if (isCurrentTimeframe) {
-      prices.shift();
+      dataset.shift();
     }
-    prices.unshift(item);
+    dataset.unshift(item);
     this.precision = this.getUpdatedPrecision(min, max);
     this.limits = { min, max };
-    this.updatePricesCollection(prices);
+    this.updateDataset(dataset);
   }
 
   private clearData(saveReversedState = false): void {
     this.samplesBuffer = {};
     this.pageInfos = {};
-    this.prices = [];
+    this.dataset = [];
     this.zoomStart = 0;
     this.zoomEnd = 100;
     this.limits = {
@@ -798,8 +804,8 @@ export default class SwapChart extends Mixins(
     }
   }
 
-  private updatePricesCollection(items: SnapshotItem[]): void {
-    this.prices = Object.freeze(items);
+  private updateDataset(items: SnapshotItem[]): void {
+    this.dataset = Object.freeze(items);
   }
 
   changeFilter(filter: SnapshotFilter): void {

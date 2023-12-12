@@ -23,7 +23,8 @@ const preparePriceData = (item: OrderBookSnapshotEntity): OCLH => {
 const transformSnapshot = (item: OrderBookSnapshotEntity): SnapshotItem => {
   const timestamp = +item.timestamp * 1000;
   const price = preparePriceData(item);
-  return { timestamp, price };
+  const volume = +item.volumeUSD;
+  return { timestamp, price, volume };
 };
 
 const subqueryOrderBookPriceFilter = (orderBookId: string, type: SnapshotTypes) => {
@@ -56,6 +57,7 @@ const SubqueryOrderBookPriceQuery = gql<SubqueryConnectionQueryResponse<OrderBoo
         node {
           price
           timestamp
+          volumeUSD
         }
       }
     }
