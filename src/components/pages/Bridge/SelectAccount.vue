@@ -50,13 +50,7 @@ export default class BridgeSelectAccount extends Mixins(mixins.LoadingMixin, Tra
   }
 
   get validAddress(): boolean {
-    if (!(this.address && api.validateAddress(this.address))) return false;
-    try {
-      api.formatAddress(this.address);
-      return true; // if it can be formatted -> it's correct
-    } catch {
-      return false; // EVM account address
-    }
+    return api.validateAddress(this.address);
   }
 
   handleSelectAddress(): void {

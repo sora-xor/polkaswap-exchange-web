@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -34,6 +34,7 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { action, mutation, state } from '@/store/decorators';
 import type { AvailableNetwork } from '@/store/web3/types';
 
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 type NetworkItem = {
@@ -85,7 +86,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
           let content = '';
           let link = false;
 
-          if (id === SubNetwork.Polkadot) {
+          if (id === SubNetworkId.Polkadot) {
             content = 'https://parachains.info/details/sora_polkadot';
             link = true;
           } else if (disabled) {

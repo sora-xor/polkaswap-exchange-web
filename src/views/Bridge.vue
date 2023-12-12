@@ -137,6 +137,7 @@
           data-test-name="switchToken"
           type="action"
           icon="arrows-swap-90-24"
+          :disabled="isConfirmTxLoading"
           @click="switchDirection"
         />
 
