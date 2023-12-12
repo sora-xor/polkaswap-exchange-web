@@ -86,7 +86,34 @@
       </div>
     </div>
 
-    <s-button
+    <el-popover popper-class="book-validation__popover" trigger="hover" :visible-arrow="false">
+      <div v-if="reason && reading" class="book-validation">
+        <div class="book-validation__disclaimer">
+          <h4 class="book-validation__disclaimer-header">
+            {{ reason }}
+          </h4>
+          <p class="book-validation__disclaimer-paragraph">
+            {{ reading }}
+          </p>
+          <div class="book-validation__disclaimer-warning icon">
+            <s-icon name="notifications-alert-triangle-24" size="28px" />
+          </div>
+        </div>
+      </div>
+      <s-button
+        slot="reference"
+        type="primary"
+        class="btn s-typography-button--medium"
+        :class="computedBtnClass"
+        @click="placeLimitOrder"
+        :disabled="buttonDisabled()"
+      >
+        <span> {{ t(buttonText) }}</span>
+        <s-icon v-if="reason && reading" name="info-16" class="book-inform-icon-btn" />
+      </s-button>
+    </el-popover>
+
+    <!-- <s-button
       type="primary"
       class="btn s-typography-button--medium"
       :class="computedBtnClass"
@@ -94,12 +121,25 @@
       :disabled="buttonDisabled()"
     >
       <span> {{ t(buttonText) }}</span>
-    </s-button>
+    </s-button> -->
     <book-transaction-details
       v-if="areTokensSelected && !hasZeroAmount"
       class="info-line-container"
       :info-only="false"
     />
+    <!-- <div v-if="reason && reading" class="book-validation">
+      <div class="book-validation__disclaimer">
+        <h4 class="book-validation__disclaimer-header">
+          {{ reason }}
+        </h4>
+        <p class="book-validation__disclaimer-paragraph">
+          {{ reading }}
+        </p>
+        <div class="book-validation__disclaimer-warning icon">
+          <s-icon name="notifications-alert-triangle-24" size="28px" />
+        </div>
+      </div>
+    </div> -->
     <place-confirm
       :visible.sync="confirmPlaceOrderVisibility"
       :isInsufficientBalance="isInsufficientBalance"
@@ -132,6 +172,7 @@ import {
   asZeroValue,
   hasInsufficientBalance,
   showMostFittingValue,
+  delay,
 } from '@/utils';
 import { getBookDecimals } from '@/utils/orderBook';
 
@@ -190,11 +231,18 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   quoteSubscription: Nullable<Subscription> = null;
   timestamp = MAX_TIMESTAMP;
   marketQuotePrice = '';
+  reason = '';
+  reading = '';
 
   @Watch('side')
   @Watch('baseAssetAddress')
   private handleSideChange(): void {
     this.handleTabClick(this.limitOrderType);
+  }
+
+  setError({ reason, reading }): void {
+    this.reason = reason;
+    this.reading = reading;
   }
 
   @Watch('baseAsset')
@@ -213,9 +261,15 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   @Watch('visibleBookList')
   private updateStats(): void {
+    this.resetValues();
     if (this.visibleBookList) {
       this.updateOrderBooksStats();
     }
+  }
+
+  @Watch('marketQuotePrice')
+  private checkValidation(): void {
+    this.checkInputValidation();
   }
 
   limitOrderType: LimitOrderType = LimitOrderType.limit;
@@ -241,22 +295,23 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     if (this.limitOrderType === LimitOrderType.limit) {
       if (!this.quoteValue) return 'set price';
       if (!this.baseValue) return 'enter amount';
-      if (this.isPriceTooHigh) return 'price too high';
-      if (this.isPriceTooLow) return 'price too low';
-      if (!this.isPriceBeyondPrecision) return 'price too exact';
 
-      if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel) {
-        if (this.priceExceedsSpread()) return 'price exceeded';
+      if (this.isPriceTooHigh || this.isPriceTooLow || !this.isPriceBeyondPrecision) {
+        return "can't place order";
       }
 
-      if (this.isOutOfAmountBounds(this.baseValue)) return 'out of base constraints';
+      if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel) {
+        if (this.priceExceedsSpread()) return "can't place order";
+      }
+
+      if (this.isOutOfAmountBounds(this.baseValue)) return "can't place order";
 
       if (this.side === PriceVariant.Buy) return `Buy ${this.baseAsset.symbol}`;
       else return `Sell ${this.baseAsset.symbol}`;
     } else {
       if (!this.baseValue) return 'enter amount';
-      if (!this.marketQuotePrice) return 'out of quote constraints';
-      if (this.isOutOfAmountBounds(this.baseValue)) return 'out of base constraints';
+      if (!this.marketQuotePrice) return "can't place order";
+      if (this.isOutOfAmountBounds(this.baseValue)) return "can't place order";
 
       if (this.side === PriceVariant.Buy) return `Buy ${this.baseAsset.symbol}`;
       else return `Sell ${this.baseAsset.symbol}`;
@@ -272,9 +327,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.limitOrderType === LimitOrderType.limit) {
       if (!this.baseValue || !this.quoteValue) return true;
-      if (this.isPriceTooHigh) return true;
-      if (this.isPriceTooLow) return true;
-      if (!this.isPriceBeyondPrecision) return true;
+      if (this.isPriceTooHigh || this.isPriceTooLow || !this.isPriceBeyondPrecision) return true;
 
       if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel) {
         if (this.priceExceedsSpread()) return true;
@@ -286,6 +339,56 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       if (!this.marketQuotePrice) return true;
       return this.isOutOfAmountBounds(this.baseValue);
     }
+  }
+
+  async checkInputValidation(): Promise<void> {
+    this.setError({ reason: '', reading: '' });
+
+    if (this.isPriceTooHigh && this.baseValue)
+      return this.setError({
+        reason: 'Price is too far above/below the market price.',
+        reading:
+          'Price range alert: Your price is more than 50% above or below the current market price. Please enter a more closely aligned market price',
+      });
+
+    if (this.isPriceTooLow && this.baseValue)
+      return this.setError({
+        reason: 'Price is too far above/below the market price.',
+        reading:
+          'Price range alert: Your price is more than 50% above or below the current market price. Please enter a more closely aligned market price',
+      });
+
+    if (!this.isPriceBeyondPrecision && this.baseValue)
+      return this.setError({
+        reason: 'Entered price is too precise to calculate',
+        reading:
+          'Precision exceeded: The amount/price entered has too many decimal places. Please input a value with fewer decimal places',
+      });
+
+    if (this.limitOrderType === LimitOrderType.market) {
+      // wait until any market quote being set to avoid error appearance
+      await delay(300);
+
+      if (!this.marketQuotePrice) {
+        return this.setError({
+          reason: 'Not enough orders available to fullfill this order',
+          reading:
+            'Market order limitation: There are not enough orders available to fulfill this market limit order. Please adjust your order size or wait for more orders to be placed',
+        });
+      }
+    }
+
+    if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel && this.priceExceedsSpread())
+      return this.setError({
+        reason: 'Price exceeded spread',
+        reading: "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
+      });
+
+    if (this.baseValue && this.isOutOfAmountBounds(this.baseValue) && this.quoteValue)
+      return this.setError({
+        reason: 'Price exceeds the blockchain range',
+        reading: "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range",
+      });
   }
 
   priceExceedsSpread(): boolean {
@@ -424,21 +527,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return !!(this.baseAsset && this.quoteAsset);
   }
 
-  // get calculatedAssetBaseTotal(): FPNumber {
-  //   const baseValue = FPNumber.fromNatural(this.baseValue);
-  //   const quoteValue = FPNumber.fromNatural(this.quoteValue);
-
-  //   return baseValue.mul(quoteValue);
-  // }
-
-  // get fiatAmount(): string {
-  //   if (!this.areTokensSelected) return '0.00';
-
-  //   const fiat = this.getFiatAmount(this.calculatedAssetBaseTotal.toString(), this.baseAsset);
-
-  //   return FPNumber.fromNatural(fiat || '0').toFixed(2);
-  // }
-
   get limitTooltip(): string {
     return "A 'Limit' order lets you specify the exact price at which you want to buy or sell an asset. A 'Limit Buy' order will only be executed at the specified price or lower, while a 'Limit Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.";
   }
@@ -453,12 +541,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   handleInputFieldQuote(value: string): void {
     this.setQuoteValue(value);
+    this.checkInputValidation();
   }
 
   changeInputBase(): void {}
 
   handleInputFieldBase(value: string): void {
     this.setBaseValue(value);
+    this.checkInputValidation();
 
     if (!value) {
       this.resetQuoteSubscription();
@@ -466,6 +556,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.limitOrderType === LimitOrderType.market && value) {
       this.subscribeOnBookQuote();
+    }
+
+    if (this.limitOrderType === LimitOrderType.market && !value) {
+      this.setQuoteValue('');
     }
   }
 
@@ -571,6 +665,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.setQuoteValue(this.marketQuotePrice);
     this.setLiquiditySource(LiquiditySourceTypes.OrderBook);
     this.selectDexId(DexId.XOR); // make it changeable if other dexes are allowed
+    this.checkInputValidation();
   }
 
   beforeDestroy(): void {
@@ -608,6 +703,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     } else {
       this.handleInputFieldBase(maxLotSize.toString());
     }
+
+    this.checkInputValidation();
   }
 
   get isMaxSwapAvailable(): boolean {
@@ -633,11 +730,60 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       this.setQuoteValue('');
       if (this.baseValue) this.subscribeOnBookQuote();
     }
+
+    this.checkInputValidation();
   }
 }
 </script>
 
 <style lang="scss">
+.book-validation__popover {
+  width: 450px;
+  background-color: var(--s-color-utility-body);
+  border-radius: $basic-spacing;
+  color: var(--s-color-base-content-primary);
+  border: none;
+  padding: 0 !important;
+  font-size: var(--s-font-size-small);
+  word-break: normal !important;
+}
+
+.book-validation__disclaimer {
+  width: 100%;
+  background-color: var(--s-color-base-background);
+  border-radius: var(--s-border-radius-small);
+  box-shadow: var(--s-shadow-dialog);
+  padding: 20px $basic-spacing;
+  position: relative;
+  &-header {
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  &-paragraph {
+    color: var(--s-color-base-content-secondary);
+    width: 75%;
+    text-align: left;
+  }
+  &-warning.icon {
+    position: absolute;
+    background-color: #479aef;
+    border: 2.25257px solid #f7f3f4;
+    box-shadow: var(--s-shadow-element-pressed);
+    top: 20px;
+    right: 20px;
+    border-radius: 50%;
+    color: #fff;
+    width: 46px;
+    height: 46px;
+    .s-icon-notifications-alert-triangle-24 {
+      display: block;
+      color: #fff;
+      margin-top: 5px;
+      margin-left: 7px;
+    }
+  }
+}
+
 .order-book {
   @include custom-tabs;
 
@@ -772,6 +918,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         }
       }
     }
+  }
+
+  .book-inform-icon-btn {
+    margin-left: 6px;
   }
 
   .delimiter {

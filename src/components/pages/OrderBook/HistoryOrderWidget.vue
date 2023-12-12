@@ -70,13 +70,13 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
   get cancelText(): string {
     if (this.hasSelected) {
-      return `CANCEL ORDER (${this.ordersToBeCancelled.length})`;
+      return `Cancel order (${this.ordersToBeCancelled.length})`;
     }
-    return 'CANCEL ORDER';
+    return 'Cancel order';
   }
 
   get cancelAllText(): string {
-    return 'CANCEL ALL';
+    return 'Cancel order';
   }
 
   get hasSelected(): boolean {
