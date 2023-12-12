@@ -344,6 +344,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   async checkInputValidation(): Promise<void> {
     this.setError({ reason: '', reading: '' });
 
+    if (this.orderBookStatus === OrderBookStatus.Stop) return;
+
     if (this.isPriceTooHigh && this.baseValue)
       return this.setError({
         reason: 'Price is too far above/below the market price.',
