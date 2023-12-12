@@ -351,6 +351,7 @@ import {
   getAssetBalance,
   asZeroValue,
   delay,
+  toPrecision,
 } from '@/utils';
 
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
@@ -485,16 +486,21 @@ export default class Bridge extends Mixins(
     if (!(this.asset && this.isRegisteredAsset)) return ZeroStringValue;
 
     const fee = this.isSoraToEvm ? this.soraNetworkFee : this.externalNetworkFee;
-    const maxBalance = getMaxBalance(this.asset, fee, {
+    let maxBalance = getMaxBalance(this.asset, fee, {
       isExternalBalance: !this.isSoraToEvm,
       isExternalNative: this.isNativeTokenSelected,
     });
 
-    if (this.transferMaxAmount) {
-      if (FPNumber.gt(maxBalance, this.transferMaxAmount)) return this.transferMaxAmount.toString();
+    if (this.isNativeTokenSelected) {
+      const transferFee = this.getFPNumberFromCodec(this.externalTransferFee, this.asset?.externalDecimals);
+      maxBalance = maxBalance.sub(transferFee).max(FPNumber.ZERO);
     }
 
-    return maxBalance.toString();
+    if (this.transferMaxAmount && FPNumber.gt(maxBalance, this.transferMaxAmount)) {
+      maxBalance = this.transferMaxAmount;
+    }
+
+    return toPrecision(maxBalance, this.amountDecimals).toString();
   }
 
   get isMaxAvailable(): boolean {
