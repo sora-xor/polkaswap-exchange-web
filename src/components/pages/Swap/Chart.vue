@@ -462,13 +462,11 @@ export default class SwapChart extends Mixins(
         dimensions: ['timestamp', 'open', 'close', 'low', 'high', 'volume'],
       },
       grid: [
-        // price
         this.gridSpec({
           top: 20,
           left: this.gridLeftOffset,
           bottom: 120,
         }),
-        // volume
         this.gridSpec({
           height: 92,
           left: this.gridLeftOffset,
@@ -488,7 +486,7 @@ export default class SwapChart extends Mixins(
             show: false,
           },
           axisLine: {
-            show: true,
+            show: false,
           },
           axisPointer: {
             label: {
@@ -501,6 +499,9 @@ export default class SwapChart extends Mixins(
           boundaryGap: false,
           axisLabel: {
             show: true,
+          },
+          axisPointer: {
+            type: 'none',
           },
         }),
       ],
@@ -614,7 +615,10 @@ export default class SwapChart extends Mixins(
           xAxisIndex: 1,
           yAxisIndex: 1,
           itemStyle: {
-            color: this.theme.color.status.info,
+            color: ({ data }) => {
+              const [_timestamp, open, close] = data;
+              return open > close ? this.theme.color.status.error : this.theme.color.status.success;
+            },
           },
           encode: { y: 'volume' },
         },

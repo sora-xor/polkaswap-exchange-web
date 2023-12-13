@@ -28,7 +28,7 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
     return merge({
       type: 'time',
       axisTick: {
-        show: true,
+        show: false,
       },
       axisLine: {
         show: false,
