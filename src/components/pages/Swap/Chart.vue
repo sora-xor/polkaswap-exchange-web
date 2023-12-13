@@ -461,22 +461,166 @@ export default class SwapChart extends Mixins(
   }
 
   get chartSpec() {
-    const spec = {
-      dataset: {
-        source: this.chartData,
-        dimensions: ['timestamp', 'open', 'close', 'low', 'high', 'volume'],
+    // [TODO]: until we haven't two tokens volume
+    const withVolume = this.isOrderBook || (!!this.tokenA && !this.tokenB);
+
+    const priceGrid = this.gridSpec({
+      top: 20,
+      left: this.gridLeftOffset,
+    });
+
+    const volumeGrid = this.gridSpec({
+      height: 92,
+      left: this.gridLeftOffset,
+    });
+
+    const priceXAxis = this.xAxisSpec({
+      boundaryGap: this.isLineChart ? false : [0.005, 0.005],
+      axisLabel: {
+        show: true,
       },
-      grid: [
-        this.gridSpec({
-          top: 20,
-          left: this.gridLeftOffset,
-          bottom: 120,
-        }),
-        this.gridSpec({
-          height: 92,
-          left: this.gridLeftOffset,
-        }),
-      ],
+      axisLine: {
+        show: false,
+      },
+      axisPointer: {
+        label: {
+          show: true,
+        },
+      },
+    });
+
+    const volumeXAxis = this.xAxisSpec({
+      gridIndex: 1,
+      boundaryGap: false,
+      axisLabel: {
+        show: true,
+      },
+      axisPointer: {
+        type: 'none',
+      },
+    });
+
+    const priceYAxis = this.yAxisSpec({
+      axisLabel: {
+        formatter: (value) => {
+          return formatAmount(value, this.precision);
+        },
+        showMinLabel: false,
+      },
+      axisPointer: {
+        label: {
+          precision: this.precision,
+          formatter: ({ value }) => {
+            return formatAmount(value, this.precision);
+          },
+        },
+      },
+      min: this.limits.min,
+      max: this.limits.max,
+    });
+
+    const volumeYAxis = this.yAxisSpec({
+      gridIndex: 1,
+      splitNumber: 2,
+      axisLabel: {
+        formatter: (value) => {
+          const val = new FPNumber(value);
+          const { amount, suffix } = formatAmountWithSuffix(val);
+          return `${amount} ${suffix}`;
+        },
+        showMaxLabel: false,
+      },
+    });
+
+    const dataZoom = {
+      type: 'inside',
+      xAxisIndex: [0, 1],
+      start: 0,
+      end: 100,
+      minValueSpan: this.timeDifference * 11, // minimum 11 elements like on skeleton
+    };
+
+    const tooltip = this.tooltipSpec({
+      axisPointer: {
+        type: 'cross',
+      },
+      formatter: (params) => {
+        const { data, seriesType } = params[0];
+        const [timestamp, open, close, low, high, volume] = data;
+        const rows: any[] = [];
+
+        if (seriesType === CHART_TYPES.BAR) {
+          rows.push({ title: 'Volume', data: formatPrice(volume, 2, USD_SYMBOL) });
+        } else if (seriesType === CHART_TYPES.LINE) {
+          rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
+        } else {
+          const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
+          const changeColor = signific(change)(
+            this.theme.color.status.success,
+            this.theme.color.status.error,
+            this.theme.color.base.content.primary
+          );
+
+          rows.push(
+            { title: 'Open', data: formatPrice(open, this.precision, this.symbol) },
+            { title: 'High', data: formatPrice(high, this.precision, this.symbol) },
+            { title: 'Low', data: formatPrice(low, this.precision, this.symbol) },
+            { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
+            { title: 'Change', data: formatChange(change), color: changeColor }
+          );
+        }
+
+        return `
+          <table>
+            ${rows
+              .map(
+                (row) => `
+              <tr>
+                <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
+                <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
+              </tr>
+            `
+              )
+              .join('')}
+          </table>
+        `;
+      },
+    });
+
+    const priceSeria = this.isLineChart
+      ? this.lineSeriesSpec({
+          encode: { y: 'close' },
+          areaStyle: {
+            opacity: 0.8,
+            color: new graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgba(248, 8, 123, 0.25)',
+              },
+              {
+                offset: 1,
+                color: 'rgba(255, 49, 148, 0.03)',
+              },
+            ]),
+          },
+        })
+      : this.candlestickSeriesSpec();
+
+    const volumeSeria = {
+      type: 'bar',
+      barMaxWidth: 10,
+      xAxisIndex: 1,
+      yAxisIndex: 1,
+      itemStyle: {
+        color: ({ data }) => {
+          const [_timestamp, open, close] = data;
+          return open > close ? this.theme.color.status.error : this.theme.color.status.success;
+        },
+      },
+      encode: { y: 'volume' },
+    };
+
+    const spec = {
       axisPointer: {
         link: [
           {
@@ -484,155 +628,29 @@ export default class SwapChart extends Mixins(
           },
         ],
       },
-      xAxis: [
-        this.xAxisSpec({
-          boundaryGap: this.isLineChart ? false : [0.005, 0.005],
-          axisLabel: {
-            show: false,
-          },
-          axisLine: {
-            show: false,
-          },
-          axisPointer: {
-            label: {
-              show: false,
-            },
-          },
-        }),
-        this.xAxisSpec({
-          gridIndex: 1,
-          boundaryGap: false,
-          axisLabel: {
-            show: true,
-          },
-          axisPointer: {
-            type: 'none',
-          },
-        }),
-      ],
-      yAxis: [
-        this.yAxisSpec({
-          axisLabel: {
-            formatter: (value) => {
-              return formatAmount(value, this.precision);
-            },
-            showMinLabel: false,
-          },
-          axisPointer: {
-            label: {
-              precision: this.precision,
-              formatter: ({ value }) => {
-                return formatAmount(value, this.precision);
-              },
-            },
-          },
-          min: this.limits.min,
-          max: this.limits.max,
-        }),
-        this.yAxisSpec({
-          gridIndex: 1,
-          splitNumber: 2,
-          axisLabel: {
-            formatter: (value) => {
-              const val = new FPNumber(value);
-              const { amount, suffix } = formatAmountWithSuffix(val);
-              return `${amount} ${suffix}`;
-            },
-            showMaxLabel: false,
-          },
-        }),
-      ],
-      dataZoom: [
-        {
-          type: 'inside',
-          xAxisIndex: [0, 1],
-          start: 0,
-          end: 100,
-          minValueSpan: this.timeDifference * 11, // minimum 11 elements like on skeleton
-        },
-      ],
       color: [this.theme.color.theme.accent, this.theme.color.status.success],
-      tooltip: this.tooltipSpec({
-        axisPointer: {
-          type: 'cross',
-        },
-        formatter: (params) => {
-          const { data, seriesType } = params[0];
-          const [timestamp, open, close, low, high, volume] = data;
-          const rows: any[] = [];
-
-          if (seriesType === CHART_TYPES.BAR) {
-            rows.push({ title: 'Volume', data: formatPrice(volume, 2, USD_SYMBOL) });
-          } else if (seriesType === CHART_TYPES.LINE) {
-            rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
-          } else {
-            const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
-            const changeColor = signific(change)(
-              this.theme.color.status.success,
-              this.theme.color.status.error,
-              this.theme.color.base.content.primary
-            );
-
-            rows.push(
-              { title: 'Open', data: formatPrice(open, this.precision, this.symbol) },
-              { title: 'High', data: formatPrice(high, this.precision, this.symbol) },
-              { title: 'Low', data: formatPrice(low, this.precision, this.symbol) },
-              { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
-              { title: 'Change', data: formatChange(change), color: changeColor }
-            );
-          }
-
-          return `
-            <table>
-              ${rows
-                .map(
-                  (row) => `
-                <tr>
-                  <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
-                  <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
-                </tr>
-              `
-                )
-                .join('')}
-            </table>
-          `;
-        },
-      }),
-      series: [
-        this.isLineChart
-          ? this.lineSeriesSpec({
-              encode: { y: 'close' },
-              areaStyle: {
-                opacity: 0.8,
-                color: new graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 0,
-                    color: 'rgba(248, 8, 123, 0.25)',
-                  },
-                  {
-                    offset: 1,
-                    color: 'rgba(255, 49, 148, 0.03)',
-                  },
-                ]),
-              },
-            })
-          : this.candlestickSeriesSpec(),
-        {
-          name: 'Volume',
-          type: 'bar',
-          barMaxWidth: 10,
-          xAxisIndex: 1,
-          yAxisIndex: 1,
-          itemStyle: {
-            color: ({ data }) => {
-              const [_timestamp, open, close] = data;
-              return open > close ? this.theme.color.status.error : this.theme.color.status.success;
-            },
-          },
-          encode: { y: 'volume' },
-        },
-      ],
+      dataset: {
+        source: this.chartData,
+        dimensions: ['timestamp', 'open', 'close', 'low', 'high', 'volume'],
+      },
+      dataZoom: [dataZoom],
+      grid: [priceGrid],
+      xAxis: [priceXAxis],
+      yAxis: [priceYAxis],
+      tooltip,
+      series: [priceSeria],
     };
+
+    if (withVolume) {
+      priceGrid.bottom = 120;
+      priceXAxis.axisLabel.show = false;
+      priceXAxis.axisPointer.label.show = false;
+
+      spec.grid.push(volumeGrid);
+      spec.xAxis.push(volumeXAxis);
+      spec.yAxis.push(volumeYAxis);
+      spec.series.push(volumeSeria);
+    }
 
     return spec;
   }
