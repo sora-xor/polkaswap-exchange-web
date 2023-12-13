@@ -92,6 +92,8 @@ import type { PageInfo, FiatPriceObject } from '@soramitsu/soraneo-wallet-web/li
 
 const { SnapshotTypes } = SUBQUERY_TYPES;
 
+const USD_SYMBOL = 'USD';
+
 /** "timestamp", "open", "close", "low", "high", "volume" data */
 type ChartDataItem = [number, ...OCLH, number];
 
@@ -205,9 +207,12 @@ const formatChange = (value: FPNumber): string => {
   return `${sign}${priceChange}`;
 };
 
+const formatAmount = (value: number, precision: number) => {
+  return new FPNumber(value).toLocaleString(precision);
+};
+
 const formatPrice = (value: number, precision: number, symbol: string) => {
-  const val = new FPNumber(value).toFixed(precision);
-  return `${val} ${symbol}`;
+  return `${formatAmount(value, precision)} ${symbol}`;
 };
 
 const dividePrice = (priceA: number, priceB: number): number => {
@@ -377,7 +382,7 @@ export default class SwapChart extends Mixins(
   }
 
   get symbol(): string {
-    return this.tokenB?.symbol ?? 'USD';
+    return this.tokenB?.symbol ?? USD_SYMBOL;
   }
 
   get currentPrice(): FPNumber {
@@ -385,7 +390,7 @@ export default class SwapChart extends Mixins(
   }
 
   get currentPriceFormatted(): string {
-    return this.currentPrice.toFixed(this.precision);
+    return this.currentPrice.toLocaleString(this.precision);
   }
 
   get isAllHistoricalPricesFetched(): boolean {
@@ -420,7 +425,7 @@ export default class SwapChart extends Mixins(
   get gridLeftOffset(): number {
     const maxLabel = this.limits.max * 10;
     const axisLabelWidth = getTextWidth(
-      String(maxLabel.toFixed(this.precision)),
+      formatAmount(maxLabel, this.precision),
       AXIS_LABEL_CSS.fontFamily,
       AXIS_LABEL_CSS.fontSize
     );
@@ -509,13 +514,16 @@ export default class SwapChart extends Mixins(
         this.yAxisSpec({
           axisLabel: {
             formatter: (value) => {
-              return value.toFixed(this.precision);
+              return formatAmount(value, this.precision);
             },
             showMinLabel: false,
           },
           axisPointer: {
             label: {
               precision: this.precision,
+              formatter: ({ value }) => {
+                return formatAmount(value, this.precision);
+              },
             },
           },
           min: this.limits.min,
@@ -551,12 +559,13 @@ export default class SwapChart extends Mixins(
         formatter: (params) => {
           const { data, seriesType } = params[0];
           const [timestamp, open, close, low, high, volume] = data;
+          const rows: any[] = [];
 
-          if (seriesType === CHART_TYPES.BAR) return formatPrice(volume, 2, 'USD');
-
-          if (seriesType === CHART_TYPES.LINE) return formatPrice(close, this.precision, this.symbol);
-
-          if (seriesType === CHART_TYPES.CANDLE) {
+          if (seriesType === CHART_TYPES.BAR) {
+            rows.push({ title: 'Volume', data: formatPrice(volume, 2, USD_SYMBOL) });
+          } else if (seriesType === CHART_TYPES.LINE) {
+            rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
+          } else {
             const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
             const changeColor = signific(change)(
               this.theme.color.status.success,
@@ -564,29 +573,29 @@ export default class SwapChart extends Mixins(
               this.theme.color.base.content.primary
             );
 
-            const rows = [
+            rows.push(
               { title: 'Open', data: formatPrice(open, this.precision, this.symbol) },
               { title: 'High', data: formatPrice(high, this.precision, this.symbol) },
               { title: 'Low', data: formatPrice(low, this.precision, this.symbol) },
               { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
-              { title: 'Change', data: formatChange(change), color: changeColor },
-            ];
-
-            return `
-              <table>
-                ${rows
-                  .map(
-                    (row) => `
-                  <tr>
-                    <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
-                    <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
-                  </tr>
-                `
-                  )
-                  .join('')}
-              </table>
-            `;
+              { title: 'Change', data: formatChange(change), color: changeColor }
+            );
           }
+
+          return `
+            <table>
+              ${rows
+                .map(
+                  (row) => `
+                <tr>
+                  <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
+                  <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
+                </tr>
+              `
+                )
+                .join('')}
+            </table>
+          `;
         },
       }),
       series: [
