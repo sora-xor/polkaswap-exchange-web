@@ -65,8 +65,8 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   currentFilter = Filter.open;
   openLimitOrders: Array<any> = [];
 
-  Filter = Filter;
-  Cancel = Cancel;
+  readonly Filter = Filter;
+  readonly Cancel = Cancel;
 
   get cancelText(): string {
     if (this.hasSelected) {
@@ -147,7 +147,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
         const { base, quote } = orderBookId;
 
         await this.withNotifications(async () => {
-          api.orderBook.cancelLimitOrderBatch(base, quote, limitOrderIds);
+          await api.orderBook.cancelLimitOrderBatch(base, quote, limitOrderIds);
         });
       }
 
@@ -165,8 +165,9 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
       const { orderBookId } = this.userLimitOrders[0];
       if (!orderBookId && limitOrderIds.length) return;
       const { base, quote } = orderBookId;
+
       await this.withNotifications(async () => {
-        api.orderBook.cancelLimitOrderBatch(base, quote, limitOrderIds);
+        await api.orderBook.cancelLimitOrderBatch(base, quote, limitOrderIds);
       });
     }
   }
@@ -207,14 +208,14 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   &-header {
     display: flex;
     justify-content: space-between;
-    font-size: 16px;
-    font-weight: 500;
+    padding: $basic-spacing $basic-spacing $inner-spacing-mini $basic-spacing;
     color: var(--s-color-base-content-secondary);
-    padding: 16px 16px 8px 16px;
+    font-size: $basic-spacing;
+    font-weight: 500;
   }
 
   &-filter {
-    margin-right: 16px;
+    margin-right: $basic-spacing;
 
     &:hover {
       cursor: pointer;
@@ -228,7 +229,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
   &-cancel {
     color: var(--s-color-theme-accent);
-    margin-left: 16px;
+    margin-left: $basic-spacing;
 
     &:hover {
       cursor: pointer;
@@ -252,7 +253,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     min-height: 400px;
 
     h4 {
-      font-size: 24px;
+      font-size: var(--s-font-size-large);
       text-align: center;
     }
 
@@ -264,7 +265,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
       .el-button {
         width: 70%;
-        margin-top: 8px;
+        margin-top: $inner-spacing-mini;
       }
     }
   }
@@ -272,7 +273,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
 .delimiter {
   background: var(--s-color-base-border-secondary);
-  margin: 8px 0;
+  margin: $inner-spacing-mini 0;
   height: 1px;
   width: 100%;
 }

@@ -111,9 +111,9 @@ export default class PairListPopover extends Mixins(
   @state.orderBook.orderBooks orderBooks!: Record<string, OrderBook>;
   @state.orderBook.orderBooksStats orderBooksStats!: Record<string, OrderBookStats>;
 
-  @mutation.orderBook.setCurrentOrderBook setCurrentOrderBook!: (orderBookId: OrderBookId) => void;
-
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
+
+  @mutation.orderBook.setCurrentOrderBook setCurrentOrderBook!: (orderBookId: OrderBookId) => void;
 
   get chooseOrderbookTooltip(): string {
     return 'A real-time list showing current buy and sell orders for a cryptocurrency. It helps you understand the demand, potential price direction, and trade volume on the SORA Network and Polkaswap DEX';
@@ -255,7 +255,7 @@ export default class PairListPopover extends Mixins(
   }
 
   .status-tooltip {
-    margin-left: 8px;
+    margin-left: $inner-spacing-mini;
     margin-bottom: 3px;
   }
 
@@ -264,24 +264,24 @@ export default class PairListPopover extends Mixins(
     line-height: 40px;
     font-weight: 500;
     font-size: 17px;
-    margin-left: 16px;
+    margin-left: $basic-spacing;
     color: var(--s-color-base-content-primary);
 
     .el-tooltip {
-      margin-left: 8px;
+      margin-left: $inner-spacing-mini;
     }
   }
 
   .status-live {
     color: var(--status-day-success, #34ad87);
-    font-weight: 600;
     text-transform: uppercase;
+    font-weight: 600;
   }
 
   .status-stop {
     color: var(--status-day-error, #f754a3);
-    font-weight: 600;
     text-transform: uppercase;
+    font-weight: 600;
   }
 }
 

@@ -16,6 +16,7 @@ const actions = defineActions({
     const { whitelist } = rootGetters.wallet.account;
     const orderBooks = await api.orderBook.getOrderBooks();
 
+    // TODO: [OrderBook] move to lib
     const orderBooksWhitelist = Object.entries(orderBooks).reduce<Record<string, OrderBook>>((buffer, [key, book]) => {
       const { base, quote } = book.orderBookId;
       if ([base, quote].every((address) => address in whitelist)) {
@@ -25,8 +26,6 @@ const actions = defineActions({
     }, {});
 
     commit.setOrderBooks(orderBooksWhitelist);
-
-    // commit.setOrderBooks(orderBooks);
   },
 
   async updateOrderBooksStats(context): Promise<void> {

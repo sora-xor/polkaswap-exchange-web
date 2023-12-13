@@ -39,7 +39,6 @@
 
 <script lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { Operation, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
@@ -59,7 +58,6 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.orderBook.baseValue baseValue!: string;
   @state.orderBook.quoteValue quoteValue!: string;
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;

@@ -194,7 +194,7 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
 
 <style lang="scss">
 .order-table {
-  font-size: 12px;
+  font-size: var(--s-font-size-mini);
 
   .scrollable-table {
     height: 100%;
@@ -256,15 +256,15 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
 
     &__status {
       text-transform: uppercase;
-      font-size: 11px;
+      font-size: var(--s-font-size-extra-mini);
     }
 
     &__total {
       color: var(--s-color-fiat-value);
       font-family: var(--s-font-family-default);
-      font-weight: 400;
       line-height: var(--s-line-height-medium);
       letter-spacing: var(--s-letter-spacing-small);
+      font-weight: 400;
     }
   }
 
@@ -273,8 +273,8 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
   }
 
   &__pagination {
-    margin: 0 16px;
-    padding-bottom: 16px;
+    margin: 0 $basic-spacing;
+    padding-bottom: $basic-spacing;
   }
 }
 

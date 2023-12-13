@@ -81,10 +81,10 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
     line-height: 40px;
     font-weight: 500;
     font-size: 17px;
-    margin-left: 16px;
+    margin-left: $basic-spacing;
 
     .el-tooltip {
-      margin-left: 8px;
+      margin-left: $inner-spacing-mini;
     }
   }
 
@@ -103,8 +103,7 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
   &__header {
     opacity: 0.3;
     color: var(--s-color-base-content-primary);
-    font-family: Sora;
-    font-size: 14px;
+    font-size: var(--s-font-size-small);
     font-style: normal;
     font-weight: 550;
     line-height: 150%;

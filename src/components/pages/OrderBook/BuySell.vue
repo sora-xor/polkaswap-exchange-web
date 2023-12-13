@@ -37,7 +37,7 @@
       </div>
     </el-popover>
 
-    <s-tabs class="order-book__tab" v-model="limitOrderType" type="rounded" @click="handleTabClick(limitOrderType)">
+    <s-tabs class="order-book__tab" v-model="limitOrderType" type="rounded" @click="handleTabClick()">
       <s-tab label="limit" name="limit">
         <span slot="label">
           <span>{{ 'Limit' }}</span>
@@ -151,26 +151,25 @@ import {
   getAssetBalance,
   asZeroValue,
   hasInsufficientBalance,
-  showMostFittingValue,
   delay,
 } from '@/utils';
 import { getBookDecimals } from '@/utils/orderBook';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
+import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Subscription } from 'rxjs';
 
 @Component({
   components: {
-    DatePicker: lazyComponent(Components.DatePicker),
     BookTransactionDetails: lazyComponent(Components.BookTransactionDetails),
+    DatePicker: lazyComponent(Components.DatePicker),
+    FormattedAmount: components.FormattedAmount,
     TokenInput: lazyComponent(Components.TokenInput),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     PairListPopover: lazyComponent(Components.PairListPopover),
     PlaceConfirm: lazyComponent(Components.PlaceOrder),
     PriceChange: lazyComponent(Components.PriceChange),
-    FormattedAmount: components.FormattedAmount,
   },
 })
 export default class BuySellWidget extends Mixins(TranslationMixin, mixins.FormattedAmountMixin, mixins.LoadingMixin) {
@@ -194,7 +193,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   @mutation.orderBook.setBaseValue setBaseValue!: (value: string) => void;
   @mutation.orderBook.setQuoteValue setQuoteValue!: (value: string) => void;
-
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
   @mutation.swap.setLiquiditySource setLiquiditySource!: (liquiditySource: string) => void;
@@ -208,25 +206,19 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   visibleBookList = false;
   confirmPlaceOrderVisibility = false;
   confirmCancelOrderVisibility = false;
+  limitOrderType: LimitOrderType = LimitOrderType.limit;
   quoteSubscription: Nullable<Subscription> = null;
   timestamp = MAX_TIMESTAMP;
   marketQuotePrice = '';
   reason = '';
   reading = '';
 
+  readonly OrderBookTabs = OrderBookTabs;
+
   @Watch('side')
   @Watch('baseAssetAddress')
   private handleSideChange(): void {
-    this.handleTabClick(this.limitOrderType);
-  }
-
-  get hasExplainableError(): boolean {
-    return !!this.reason && !!this.reading;
-  }
-
-  setError({ reason, reading }): void {
-    this.reason = reason;
-    this.reading = reading;
+    this.handleTabClick();
   }
 
   @Watch('baseAsset')
@@ -256,12 +248,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.checkInputValidation();
   }
 
-  limitOrderType: LimitOrderType = LimitOrderType.limit;
-
-  readonly OrderBookTabs = OrderBookTabs;
-
   get isMarketType(): boolean {
     return this.limitOrderType === LimitOrderType.market;
+  }
+
+  get hasExplainableError(): boolean {
+    return !!this.reason && !!this.reading;
   }
 
   get amountAtPrice(): string {
@@ -304,6 +296,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       if (this.side === PriceVariant.Buy) return `Buy ${this.baseAsset.symbol}`;
       else return `Sell ${this.baseAsset.symbol}`;
     }
+  }
+
+  setError({ reason, reading }): void {
+    this.reason = reason;
+    this.reading = reading;
   }
 
   buttonDisabled(): boolean {
@@ -560,7 +557,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     let fromValue;
 
-    // TODO: add market order validation
     if (this.isBuySide) {
       const quoteFP = new FPNumber(this.quoteValue);
       const baseFP = new FPNumber(this.baseValue);
@@ -702,7 +698,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return this.isLoggedIn && isMaxButtonAvailable(this.baseAsset, this.baseValue, this.networkFee, this.xor, true);
   }
 
-  handleTabClick(limitOrderType: LimitOrderType): void {
+  handleTabClick(): void {
     if (this.side === PriceVariant.Buy) {
       this.setTokenFromAddress(this.quoteAsset.address);
       this.setTokenToAddress(this.baseAsset.address);
@@ -726,51 +722,54 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 </script>
 
 <style lang="scss">
-.book-validation__popover {
-  width: 450px;
-  background-color: var(--s-color-utility-body);
-  border-radius: $basic-spacing;
-  color: var(--s-color-base-content-primary);
-  border: none;
-  padding: 0 !important;
-  font-size: var(--s-font-size-small);
-  word-break: normal !important;
-}
+.book-validation {
+  // override popover styles
+  &__popover {
+    width: 450px;
+    background-color: var(--s-color-utility-body);
+    border-radius: $basic-spacing;
+    color: var(--s-color-base-content-primary);
+    border: none;
+    padding: 0 !important;
+    word-break: normal !important;
+    font-size: var(--s-font-size-small);
+  }
 
-.book-validation__disclaimer {
-  width: 100%;
-  background-color: var(--s-color-base-background);
-  border-radius: var(--s-border-radius-small);
-  box-shadow: var(--s-shadow-dialog);
-  padding: 20px $basic-spacing;
-  position: relative;
-  &-header {
-    font-weight: 500;
-    margin-bottom: 10px;
-    width: 75%;
-    text-align: left;
-  }
-  &-paragraph {
-    color: var(--s-color-base-content-secondary);
-    width: 75%;
-    text-align: left;
-  }
-  &-warning.icon {
-    position: absolute;
-    background-color: #479aef;
-    border: 2.25257px solid #f7f3f4;
-    box-shadow: var(--s-shadow-element-pressed);
-    top: 20px;
-    right: 20px;
-    border-radius: 50%;
-    color: #fff;
-    width: 46px;
-    height: 46px;
-    .s-icon-notifications-alert-triangle-24 {
-      display: block;
+  &__disclaimer {
+    width: 100%;
+    background-color: var(--s-color-base-background);
+    border-radius: var(--s-border-radius-small);
+    box-shadow: var(--s-shadow-dialog);
+    padding: 20px $basic-spacing;
+    position: relative;
+    &-header {
+      font-weight: 500;
+      margin-bottom: 10px;
+      width: 75%;
+      text-align: left;
+    }
+    &-paragraph {
+      color: var(--s-color-base-content-secondary);
+      width: 75%;
+      text-align: left;
+    }
+    &-warning.icon {
+      position: absolute;
+      background-color: #479aef;
+      border: 2.25257px solid #f7f3f4;
+      box-shadow: var(--s-shadow-element-pressed);
+      top: 20px;
+      right: 20px;
+      border-radius: 50%;
       color: #fff;
-      margin-top: 5px;
-      margin-left: 7px;
+      width: 46px;
+      height: 46px;
+      .s-icon-notifications-alert-triangle-24 {
+        display: block;
+        color: #fff;
+        margin-top: 5px;
+        margin-left: 7px;
+      }
     }
   }
 }
@@ -790,31 +789,48 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       cursor: not-allowed;
     }
   }
+
+  &-input {
+    margin-bottom: $inner-spacing-mini;
+
+    .el-input__inner {
+      font-size: var(--s-font-size-large);
+      line-height: var(--s-line-height-small);
+      font-weight: 700;
+    }
+
+    // overwrite select-button styles
+    button.el-button.neumorphic.s-tertiary:focus:not(:active) {
+      outline: none;
+    }
+
+    button.el-button.el-button--select-token.token-select-button--token {
+      &:hover,
+      &:focus {
+        box-shadow: var(--neu-button-tertiary-box-shadow);
+        cursor: initial;
+        outline: none;
+      }
+    }
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .buy-btn {
+    width: 100%;
+    background-color: #34ad87 !important;
+  }
+
+  .buy-btn.is-disabled {
+    background-color: unset !important;
+  }
 }
 
 .order-book-whitelist.el-popover {
   border-radius: var(--s-border-radius-small);
   padding: 0;
-}
-.setup-price-alert {
-  @include custom-tabs;
-
-  &__tab {
-    margin-bottom: #{$basic-spacing-medium};
-  }
-}
-
-.btn {
-  width: 100%;
-}
-
-.buy-btn {
-  width: 100%;
-  background-color: #34ad87 !important;
-}
-
-.buy-btn.is-disabled {
-  background-color: unset !important;
 }
 
 .set-widget {
@@ -822,18 +838,24 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     border-radius: 20px;
   }
 }
+
+[design-system-theme='dark'] {
+  .order-book-choose-pair {
+    background: var(--s-color-base-background);
+  }
+}
 </style>
 
 <style lang="scss" scoped>
 .order-book {
-  padding: 4px 16px 32px;
+  padding: 4px $basic-spacing var(--s-size-small);
 
   &-choose-pair {
     width: 100%;
     background: var(--base-day-background, #f4f0f1);
     border-radius: var(--s-border-radius-small);
-    margin-bottom: 8px;
-    padding: 10px 16px;
+    margin-bottom: $inner-spacing-mini;
+    padding: 10px $basic-spacing;
 
     &:hover {
       cursor: pointer;
@@ -888,7 +910,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     &-total {
       display: flex;
       justify-content: space-between;
-      margin: 12px 0 16px 0;
+      margin: 12px 0 $basic-spacing 0;
 
       &-value {
         &-amount {
@@ -912,12 +934,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   .book-inform-icon-btn {
-    margin-left: 6px;
+    margin-left: $inner-spacing-mini;
   }
 
   .delimiter {
     background: var(--s-color-base-border-secondary);
-    margin: 8px 0;
+    margin: $inner-spacing-mini 0;
     height: 1px;
     width: 100%;
   }
@@ -926,39 +948,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 .s-tabs.order-book__tab.el-tabs {
   i.s-icon-info-16 {
     margin-left: 6px;
-  }
-}
-</style>
-
-<style lang="scss">
-.order-book {
-  &-input {
-    margin-bottom: 8px;
-
-    .el-input__inner {
-      font-size: var(--s-font-size-large);
-      line-height: var(--s-line-height-small);
-      font-weight: 700;
-    }
-
-    // overwrite select-button styles
-    button.el-button.neumorphic.s-tertiary:focus:not(:active) {
-      outline: none;
-    }
-    button.el-button.el-button--select-token.token-select-button--token {
-      &:hover,
-      &:focus {
-        box-shadow: var(--neu-button-tertiary-box-shadow);
-        cursor: initial;
-        outline: none;
-      }
-    }
-  }
-}
-
-[design-system-theme='dark'] {
-  .order-book-choose-pair {
-    background: var(--s-color-base-background);
   }
 }
 </style>

@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Cancel } from '@/types/orderBook';
@@ -48,16 +48,16 @@ export default class CancelOrders extends Mixins(mixins.DialogMixin, Translation
   }
 
   h4 {
-    font-size: 24px;
-    font-weight: 300;
+    font-size: var(--s-font-size-large);
+    margin-bottom: $basic-spacing;
     line-height: 130%;
+    font-weight: 300;
     text-align: center;
-    margin-bottom: 16px;
     width: 85%;
   }
 
   .btn {
-    margin: 0 0 16px 0;
+    margin: 0 0 $basic-spacing 0;
   }
 }
 </style>

@@ -108,8 +108,8 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
     width: 1010px;
 
     .column-2 {
-      margin-top: 8px;
-      margin-bottom: 8px;
+      margin-top: $inner-spacing-mini;
+      margin-bottom: $inner-spacing-mini;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
@@ -127,8 +127,8 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
       @include large-desktop {
         justify-content: space-between;
 
-        margin-top: 24px;
-        margin-bottom: 24px;
+        margin-top: var(--s-size-mini);
+        margin-bottom: var(--s-size-mini);
 
         .set-widget {
           flex-basis: 48%;
@@ -145,7 +145,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
         .trades-widget {
           margin-left: auto;
           margin-right: auto;
-          margin-top: 24px;
+          margin-top: var(--s-size-mini);
         }
       }
     }
@@ -168,7 +168,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
         .set-widget {
           max-width: 420px;
-          margin-bottom: 8px;
+          margin-bottom: $inner-spacing-mini;
         }
       }
 
@@ -215,19 +215,19 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
     .column-1 {
       width: 440px;
-      margin-right: 8px;
+      margin-right: $inner-spacing-mini;
     }
 
     .column-2 {
       width: 1010px;
       .history-widget {
-        margin-top: 8px;
+        margin-top: $inner-spacing-mini;
       }
     }
 
     .column-3 {
       width: 440px;
-      margin-left: 8px;
+      margin-left: $inner-spacing-mini;
     }
   }
 }
@@ -253,6 +253,6 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 }
 
 .trades-widget {
-  margin-top: 8px;
+  margin-top: $inner-spacing-mini;
 }
 </style>

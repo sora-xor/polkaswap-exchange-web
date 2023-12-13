@@ -23,11 +23,10 @@
 <script lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber } from '@sora-substrate/util';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import { Components, LimitOrderType } from '@/consts';
+import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
 
@@ -58,7 +57,6 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
 
-  @Prop({ default: LimitOrderType.limit, type: String }) readonly type!: LimitOrderType;
   @Prop({ default: false, type: Boolean }) readonly isMarketType!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isBuySide!: boolean;
@@ -68,19 +66,19 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   }
 
   get title(): string {
-    return this.type === LimitOrderType.limit ? 'Place limit order' : 'Place market order';
+    return this.isMarketType ? 'Place market order' : 'Place limit order';
   }
 
   get upperText(): string {
     let amount;
     const symbol = this.baseAsset?.symbol;
 
-    if (this.type === LimitOrderType.limit) {
-      amount = this.baseValue;
-      return this.isBuySide ? `Buy ${this.baseValue} ${symbol}` : `Sell ${this.baseValue} ${symbol}`;
-    } else {
+    if (this.isMarketType) {
       amount = this.isBuySide ? this.toValue : this.baseValue;
       return this.isBuySide ? `Buy ${amount} ${symbol}` : `Sell ${amount} ${symbol}`;
+    } else {
+      amount = this.baseValue;
+      return this.isBuySide ? `Buy ${this.baseValue} ${symbol}` : `Sell ${this.baseValue} ${symbol}`;
     }
   }
 
@@ -126,7 +124,7 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
       );
       this.$emit('confirm');
     } else {
-      const orderExtrinsic = this.type === LimitOrderType.limit ? this.limitOrder : this.marketOrder;
+      const orderExtrinsic = this.isMarketType ? this.marketOrder : this.limitOrder;
 
       try {
         await this.withNotifications(orderExtrinsic);
@@ -164,7 +162,7 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
 
 <style lang="scss" scoped>
 .transaction-details {
-  margin-top: 16px;
+  margin-top: $basic-spacing;
 }
 
 .tokens {
@@ -179,7 +177,7 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   }
 
   .token-logo {
-    margin-left: 16px;
+    margin-left: $basic-spacing;
   }
 }
 </style>
