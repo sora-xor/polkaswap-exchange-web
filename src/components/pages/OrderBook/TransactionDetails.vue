@@ -20,7 +20,12 @@
       :value="baseValue || '0'"
       is-formatted
     />
-    <info-line :label="'expiry date'" :label-tooltip="expiryTooltip" :value="limitOrderExpiryDate" />
+    <info-line
+      v-if="!isMarketType"
+      :label="'expiry date'"
+      :label-tooltip="expiryTooltip"
+      :value="limitOrderExpiryDate"
+    />
     <info-line
       :label="t('networkFeeText')"
       :label-tooltip="t('networkFeeTooltipText')"
@@ -65,6 +70,7 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isMarketType!: boolean;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
 
   get baseSymbol(): string | undefined {

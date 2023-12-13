@@ -74,7 +74,6 @@
       :token="baseAsset"
       :value="baseValue"
       @input="handleInputFieldBase"
-      @change="changeInputBase"
       @max="handleMaxValue"
       class="order-book-input"
     />
@@ -87,7 +86,7 @@
     </div>
 
     <el-popover popper-class="book-validation__popover" trigger="hover" :visible-arrow="false">
-      <div v-if="reason && reading" class="book-validation">
+      <div v-if="hasExplainableError" class="book-validation">
         <div class="book-validation__disclaimer">
           <h4 class="book-validation__disclaimer-header">
             {{ reason }}
@@ -109,37 +108,17 @@
         :disabled="buttonDisabled()"
       >
         <span> {{ t(buttonText) }}</span>
-        <s-icon v-if="reason && reading" name="info-16" class="book-inform-icon-btn" />
+        <s-icon v-if="hasExplainableError" name="info-16" class="book-inform-icon-btn" />
       </s-button>
     </el-popover>
 
-    <!-- <s-button
-      type="primary"
-      class="btn s-typography-button--medium"
-      :class="computedBtnClass"
-      @click="placeLimitOrder"
-      :disabled="buttonDisabled()"
-    >
-      <span> {{ t(buttonText) }}</span>
-    </s-button> -->
     <book-transaction-details
-      v-if="areTokensSelected && !hasZeroAmount"
+      v-if="areTokensSelected && !hasZeroAmount && !hasExplainableError"
       class="info-line-container"
       :info-only="false"
+      :is-market-type="isMarketType"
     />
-    <!-- <div v-if="reason && reading" class="book-validation">
-      <div class="book-validation__disclaimer">
-        <h4 class="book-validation__disclaimer-header">
-          {{ reason }}
-        </h4>
-        <p class="book-validation__disclaimer-paragraph">
-          {{ reading }}
-        </p>
-        <div class="book-validation__disclaimer-warning icon">
-          <s-icon name="notifications-alert-triangle-24" size="28px" />
-        </div>
-      </div>
-    </div> -->
+
     <place-confirm
       :visible.sync="confirmPlaceOrderVisibility"
       :isInsufficientBalance="isInsufficientBalance"
@@ -240,6 +219,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.handleTabClick(this.limitOrderType);
   }
 
+  get hasExplainableError(): boolean {
+    return !!this.reason && !!this.reading;
+  }
+
   setError({ reason, reading }): void {
     this.reason = reason;
     this.reading = reading;
@@ -276,6 +259,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   readonly OrderBookTabs = OrderBookTabs;
 
+  get isMarketType(): boolean {
+    return this.limitOrderType === LimitOrderType.market;
+  }
+
   get amountAtPrice(): string {
     if (this.buttonDisabled()) return '';
     if (!this.baseValue) return '';
@@ -309,7 +296,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       if (this.side === PriceVariant.Buy) return `Buy ${this.baseAsset.symbol}`;
       else return `Sell ${this.baseAsset.symbol}`;
     } else {
-      if (!this.baseValue) return 'enter amount';
+      if (this.isZeroAmount) return 'enter amount';
       if (!this.marketQuotePrice) return "can't place order";
       if (this.isOutOfAmountBounds(this.baseValue)) return "can't place order";
 
@@ -346,14 +333,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.orderBookStatus === OrderBookStatus.Stop) return;
 
-    if (this.isPriceTooHigh && this.baseValue)
+    if (this.isPriceTooHigh && this.quoteValue && this.baseValue)
       return this.setError({
         reason: 'Price is too far above/below the market price.',
         reading:
           'Price range alert: Your price is more than 50% above or below the current market price. Please enter a more closely aligned market price',
       });
 
-    if (this.isPriceTooLow && this.baseValue)
+    if (this.isPriceTooLow && this.quoteValue && this.baseValue)
       return this.setError({
         reason: 'Price is too far above/below the market price.',
         reading:
@@ -367,11 +354,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
           'Precision exceeded: The amount/price entered has too many decimal places. Please input a value with fewer decimal places',
       });
 
-    if (this.limitOrderType === LimitOrderType.market) {
+    if (this.isMarketType) {
       // wait until any market quote being set to avoid error appearance
       await delay(300);
 
-      if (!this.marketQuotePrice) {
+      if (!this.marketQuotePrice && !this.isZeroAmount) {
         return this.setError({
           reason: 'Not enough orders available to fullfill this order',
           reading:
@@ -432,16 +419,16 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return this.orderBookStatus === OrderBookStatus.PlaceAndCancel;
   }
 
-  get isZeroFromAmount(): boolean {
+  get isZeroAmount(): boolean {
     return asZeroValue(this.baseValue);
   }
 
-  get isZeroToAmount(): boolean {
+  get isZeroPrice(): boolean {
     return asZeroValue(this.quoteValue);
   }
 
   get hasZeroAmount(): boolean {
-    return this.isZeroFromAmount || this.isZeroToAmount;
+    return this.isZeroAmount || this.isZeroPrice;
   }
 
   get isPriceTooHigh(): boolean {
@@ -506,7 +493,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get isPriceInputDisabled(): boolean {
-    return this.limitOrderType === LimitOrderType.market;
+    return this.isMarketType;
   }
 
   get icon(): string {
@@ -546,8 +533,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.checkInputValidation();
   }
 
-  changeInputBase(): void {}
-
   handleInputFieldBase(value: string): void {
     this.setBaseValue(value);
     this.checkInputValidation();
@@ -556,11 +541,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       this.resetQuoteSubscription();
     }
 
-    if (this.limitOrderType === LimitOrderType.market && value) {
+    if (this.isMarketType && value) {
       this.subscribeOnBookQuote();
     }
 
-    if (this.limitOrderType === LimitOrderType.market && !value) {
+    if (this.isMarketType && !value) {
       this.setQuoteValue('');
     }
   }
@@ -592,9 +577,9 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       return;
     }
 
-    if (this.limitOrderType === LimitOrderType.limit) {
+    if (!this.isMarketType) {
       this.showPlaceOrderDialog();
-    } else if (this.limitOrderType === LimitOrderType.market) {
+    } else {
       this.subscribeOnBookQuote();
       this.showPlaceOrderDialog();
     }
@@ -649,9 +634,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
       const unformattedMarketQuotePrice = FPNumber.fromCodecValue(amount)
         .div(FPNumber.fromNatural(this.baseValue))
-        .toLocaleString();
+        .toString();
 
       this.marketQuotePrice = this.getFormattedValue(unformattedMarketQuotePrice, this.bookPrecision);
+
       this.prepareValuesForSwap(amount);
     });
   }
@@ -724,11 +710,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       this.setTokenToAddress(this.quoteAsset.address);
     }
 
-    if (limitOrderType === LimitOrderType.limit) {
+    if (!this.isMarketType) {
       this.resetQuoteSubscription();
     }
 
-    if (limitOrderType === LimitOrderType.market) {
+    if (this.isMarketType) {
       this.setQuoteValue('');
       if (this.baseValue) this.subscribeOnBookQuote();
     }
@@ -760,6 +746,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   &-header {
     font-weight: 500;
     margin-bottom: 10px;
+    width: 75%;
+    text-align: left;
   }
   &-paragraph {
     color: var(--s-color-base-content-secondary);
