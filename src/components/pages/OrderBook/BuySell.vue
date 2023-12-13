@@ -124,6 +124,7 @@
       :isInsufficientBalance="isInsufficientBalance"
       :isBuySide="isBuySide"
       :type="limitOrderType"
+      :is-market-type="isMarketType"
       @confirm="resetValues"
     />
   </div>

@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <place-transaction-details class="transaction-details" />
+    <place-transaction-details class="transaction-details" :is-market-type="isMarketType" />
     <template #footer>
       <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmSwap">
         {{ t('exchange.confirm') }}
@@ -59,6 +59,7 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
 
   @Prop({ default: LimitOrderType.limit, type: String }) readonly type!: LimitOrderType;
+  @Prop({ default: false, type: Boolean }) readonly isMarketType!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isBuySide!: boolean;
 
