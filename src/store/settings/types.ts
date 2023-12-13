@@ -15,6 +15,7 @@ export type FeatureFlags = {
   x1ex?: boolean;
   charts?: boolean;
   soraCard?: boolean;
+  orderBook?: boolean;
 };
 
 export type SettingsState = {

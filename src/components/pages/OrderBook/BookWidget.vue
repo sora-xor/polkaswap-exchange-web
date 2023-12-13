@@ -93,25 +93,6 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.orderBookLastDeal orderBookLastDeal!: Nullable<OrderBookDealData>;
-
-  readonly PriceVariant = PriceVariant;
-
-  maxRowsNumber = 10;
-  selectedStep = '10';
-
-  scalerOpen = false;
-
-  steps: Array<string> = [];
-
-  handleSelectStep(value): void {
-    this.selectedStep = value;
-    this.prepareLimitOrders();
-  }
-
-  asksFormatted: Array<LimitOrderForm> = [];
-  bidsFormatted: Array<LimitOrderForm> = [];
-
-  // Widget subscription data
   @getter.orderBook.currentOrderBook currentOrderBook!: any;
   @getter.orderBook.orderBookId private orderBookId!: string;
   @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
@@ -121,6 +102,16 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
   @action.orderBook.subscribeToBidsAndAsks private subscribeToBidsAndAsks!: AsyncFnWithoutArgs;
   @action.orderBook.unsubscribeFromBidsAndAsks private unsubscribeFromBidsAndAsks!: FnWithoutArgs;
+
+  readonly PriceVariant = PriceVariant;
+
+  maxRowsNumber = 10;
+  selectedStep = '10';
+  scalerOpen = false;
+  steps: Array<string> = [];
+
+  asksFormatted: Array<LimitOrderForm> = [];
+  bidsFormatted: Array<LimitOrderForm> = [];
 
   // Widget subscription creation
   @Watch('orderBookId', { immediate: true })
@@ -133,12 +124,17 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     });
   }
 
+  handleSelectStep(value: string): void {
+    this.selectedStep = value;
+    this.prepareLimitOrders();
+  }
+
   fillPrice(price: string, side: PriceVariant): void {
     this.setSide(side);
     this.setQuoteValue(Number(price).toString());
   }
 
-  getPrecision(price: FPNumber): any {
+  getPrecision(price: FPNumber): number | undefined {
     if (!price) return;
 
     let result = price;
@@ -168,7 +164,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     }
   }
 
-  getAveragePrice(): any {
+  getAveragePrice(): FPNumber | undefined {
     if (this.asks?.length) {
       return this.asks[0][0];
     }
@@ -192,17 +188,12 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
     const precision = this.getPrecision(averagePrice);
 
-    const max = new FPNumber(precision);
+    const max = new FPNumber(precision || 1);
 
     for (let inBetweenStep = max; inBetweenStep.isGreaterThanOrEqualTo(min); ) {
       this.steps.push(inBetweenStep.toString());
       inBetweenStep = inBetweenStep.div(FPNumber.TEN);
     }
-  }
-
-  // Widget subscription close
-  beforeDestroy(): void {
-    this.unsubscribeFromBidsAndAsks();
   }
 
   get lastDealTrendsUp(): boolean {
@@ -258,15 +249,15 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return `height: ${24 * margin}px`;
   }
 
-  getStyles(filled) {
+  getStyles(filled): string {
     return `width: ${filled}%`;
   }
 
-  isBookPrecisionEqaul(precision: string) {
+  isBookPrecisionEqaul(precision: string): boolean {
     return precision === this.currentOrderBook?.tickSize?.toString();
   }
 
-  calculateStepsDistributionEnhanced(orders, precision = 10): any {
+  calculateStepsDistribution(orders, precision = 10): any {
     if (!orders.length) return;
 
     if (this.isBookPrecisionEqaul(precision.toString())) return orders;
@@ -327,7 +318,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     this.bidsFormatted = [];
 
     if (this.asks?.length) {
-      // const asks = this.calculateStepsDistributionEnhanced(this.asks, Number(this.selectedStep));
+      // const asks = this.calculateStepsDistribution(this.asks, Number(this.selectedStep));
       const maxAskAmount = FPNumber.max(...this.asks.map((order) => order[1])) as FPNumber;
 
       this.asks.forEach((row: [FPNumber, FPNumber, FPNumber]) => {
@@ -353,7 +344,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     }
 
     if (this.bids?.length) {
-      // const bids = this.calculateStepsDistributionEnhanced(this.bids);
+      // const bids = this.calculateStepsDistribution(this.bids);
       const maxBidAmount = FPNumber.max(...this.bids.map((order) => order[1])) as FPNumber;
 
       this.bids.forEach((row: [FPNumber, FPNumber, FPNumber]) => {
@@ -380,6 +371,11 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
       });
     }
   }
+
+  // Widget subscription close
+  beforeDestroy(): void {
+    this.unsubscribeFromBidsAndAsks();
+  }
 }
 </script>
 
@@ -388,19 +384,15 @@ $row-height: 24px;
 $background-column-color-light: #e7dadd;
 $background-column-color-dark: #693d81;
 
-.stock-book-switcher {
-  background-color: var(--s-color-base-disabled) !important;
-}
-
 .stock-book {
   overflow: hidden;
 
   .row {
     display: flex;
     justify-content: space-between;
-    margin: 2px;
     transform-style: preserve-3d;
     font-family: 'JetBrains Mono';
+    margin: 2px;
     &:hover {
       cursor: pointer;
     }
@@ -414,10 +406,10 @@ $background-column-color-dark: #693d81;
     line-height: 40px;
     font-weight: 500;
     font-size: 17px;
-    margin-left: 16px;
+    margin-left: $basic-spacing;
 
     .el-tooltip {
-      margin-left: 8px;
+      margin-left: $inner-spacing-mini;
     }
   }
 
@@ -437,16 +429,19 @@ $background-column-color-dark: #693d81;
 
     .el-icon-arrow-down {
       color: var(--s-color-base-content-tertiary);
-      // font-size: 20px;
       font-weight: 800;
       margin-left: 4px;
       margin-bottom: 1px;
     }
   }
 
+  &-switcher {
+    background-color: var(--s-color-base-disabled) !important;
+  }
+
   .order-info {
     width: 130px;
-    padding: 4px 16px 4px 16px;
+    padding: 4px $basic-spacing 4px $basic-spacing;
     transform: scaleX(-1);
 
     &.amount,
@@ -495,15 +490,15 @@ $background-column-color-dark: #693d81;
     background-color: rgba($color: $background-column-color-light, $alpha: 0.2);
 
     .mark-price {
-      font-size: 24px;
+      font-size: var(--s-font-size-large);
+      padding-left: $inner-spacing-big;
       font-weight: 450;
-      padding-left: 24px;
     }
 
     .last-traded-price {
+      margin-left: $inner-spacing-big;
+      font-size: var(--s-font-size-big);
       font-weight: 450;
-      font-size: 18px;
-      margin-left: 24px;
     }
 
     .trend-icon {
@@ -533,7 +528,6 @@ $background-column-color-dark: #693d81;
     color: var(--s-color-base-content-primary);
     padding: 4px 16px 4px 16px;
     justify-content: space-between;
-    font-family: Sora;
     font-size: 14px;
     font-style: normal;
     font-weight: 550;
@@ -543,19 +537,19 @@ $background-column-color-dark: #693d81;
   }
 
   h4 {
-    margin: 16px 0 10px 16px;
+    margin: $basic-spacing 0 10px $basic-spacing;
     font-weight: 500;
   }
 }
 
 .stock-book-sell--no-asks,
 .stock-book-buy--no-bids {
-  margin-top: 16px;
+  margin-top: $basic-spacing;
+  color: var(--s-color-base-content-tertiary);
+  height: $row-height * 9.8;
   font-size: 17px;
   font-weight: 600;
-  color: var(--s-color-base-content-tertiary);
   text-align: center;
-  height: $row-height * 9.8;
 }
 
 [design-system-theme='dark'] {

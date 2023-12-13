@@ -34,8 +34,8 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { BreakpointClass, Components } from '@/consts';
-import { lazyComponent } from '@/router';
+import { BreakpointClass, Components, PageNames } from '@/consts';
+import { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
@@ -53,11 +53,13 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
   @state.orderBook.orderBooks orderBooks!: Record<string, OrderBook>;
   @state.settings.screenBreakpointClass responsiveClass!: BreakpointClass;
 
-  @action.orderBook.getPlaceOrderNetworkFee private getPlaceOrderFee!: AsyncFnWithoutArgs;
-  @action.orderBook.getOrderBooksInfo private getOrderBooksInfo!: AsyncFnWithoutArgs;
+  @getter.settings.orderBookEnabled orderBookEnabled!: Nullable<boolean>;
+  @getter.orderBook.orderBookId private orderBookId!: string;
+
   @mutation.orderBook.setCurrentOrderBook setCurrentOrderBook!: (orderBookId: OrderBookId) => void;
 
-  @getter.orderBook.orderBookId private orderBookId!: string;
+  @action.orderBook.getPlaceOrderNetworkFee private getPlaceOrderFee!: AsyncFnWithoutArgs;
+  @action.orderBook.getOrderBooksInfo private getOrderBooksInfo!: AsyncFnWithoutArgs;
   @action.orderBook.subscribeToOrderBookStats private subscribeToOrderBookStats!: AsyncFnWithoutArgs;
   @action.orderBook.unsubscribeFromOrderBookStats private unsubscribeFromOrderBookStats!: FnWithoutArgs;
 
@@ -66,15 +68,11 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
     this.subscribeToOrderBookStats();
   }
 
-  beforeDestroy(): void {
-    this.unsubscribeFromOrderBookStats();
-  }
-
-  async mounted(): Promise<void> {
-    await this.withApi(async () => {
-      await Promise.all([this.getOrderBooksInfo(), this.getPlaceOrderFee()]);
-      this.checkCurrentOrderBook();
-    });
+  @Watch('orderBookEnabled', { immediate: true })
+  private checkAvailability(value: Nullable<boolean>): void {
+    if (value === false) {
+      goTo(PageNames.Swap);
+    }
   }
 
   private checkCurrentOrderBook(): void {
@@ -89,6 +87,17 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
   isScreenHuge(): boolean {
     return this.responsiveClass === BreakpointClass.HugeDesktop;
+  }
+
+  async mounted(): Promise<void> {
+    await this.withApi(async () => {
+      await Promise.all([this.getOrderBooksInfo(), this.getPlaceOrderFee()]);
+      this.checkCurrentOrderBook();
+    });
+  }
+
+  beforeDestroy(): void {
+    this.unsubscribeFromOrderBookStats();
   }
 }
 </script>

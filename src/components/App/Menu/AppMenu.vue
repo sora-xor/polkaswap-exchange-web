@@ -128,6 +128,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @state.settings.faucetUrl faucetUrl!: string;
   @state.router.loading pageLoading!: boolean;
   @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
+  @getter.settings.orderBookEnabled private orderBookEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
   readonly SidebarMenuGroups = SidebarMenuGroups;
@@ -138,8 +139,11 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   get sidebarMenuItems(): Array<SidebarMenuItemLink> {
-    if (this.soraCardEnabled) return SidebarMenuGroups;
-    return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.SoraCard);
+    return SidebarMenuGroups.filter((menuItem) => {
+      if (!this.soraCardEnabled && menuItem.title === PageNames.SoraCard) return false;
+      if (!this.orderBookEnabled && menuItem.title === PageNames.OrderBook) return false;
+      return true;
+    });
   }
 
   get currentPath(): string {
