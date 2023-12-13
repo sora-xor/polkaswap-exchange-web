@@ -79,7 +79,13 @@ import { lazyComponent } from '@/router';
 import type { OCLH, SnapshotItem } from '@/types/chart';
 import { Timeframes } from '@/types/filters';
 import type { SnapshotFilter } from '@/types/filters';
-import { debouncedInputHandler, getTextWidth, calcPriceChange, formatDecimalPlaces } from '@/utils';
+import {
+  debouncedInputHandler,
+  getTextWidth,
+  calcPriceChange,
+  formatDecimalPlaces,
+  formatAmountWithSuffix,
+} from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { PageInfo, FiatPriceObject } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
@@ -92,6 +98,7 @@ type ChartDataItem = [number, ...OCLH, number];
 enum CHART_TYPES {
   LINE = 'line',
   CANDLE = 'candlestick',
+  BAR = 'bar',
 }
 
 const CHART_TYPE_ICONS = {
@@ -354,7 +361,7 @@ export default class SwapChart extends Mixins(
   }
 
   get chartTypeButtons(): { type: CHART_TYPES; icon: any; active: boolean }[] {
-    return Object.values(CHART_TYPES).map((type) => ({
+    return [CHART_TYPES.LINE, CHART_TYPES.CANDLE].map((type) => ({
       type,
       icon: CHART_TYPE_ICONS[type],
       active: this.chartType === type,
@@ -452,31 +459,84 @@ export default class SwapChart extends Mixins(
     const spec = {
       dataset: {
         source: this.chartData,
-        dimensions: ['timestamp', 'open', 'close', 'low', 'high'],
+        dimensions: ['timestamp', 'open', 'close', 'low', 'high', 'volume'],
       },
-      grid: this.gridSpec({
-        left: this.gridLeftOffset,
-      }),
-      xAxis: this.xAxisSpec({
-        boundaryGap: this.isLineChart ? false : [0.005, 0.005],
-      }),
-      yAxis: this.yAxisSpec({
-        axisLabel: {
-          formatter: (value) => {
-            return value.toFixed(this.precision);
+      grid: [
+        // price
+        this.gridSpec({
+          top: 20,
+          left: this.gridLeftOffset,
+          bottom: 120,
+        }),
+        // volume
+        this.gridSpec({
+          height: 92,
+          left: this.gridLeftOffset,
+        }),
+      ],
+      axisPointer: {
+        link: [
+          {
+            xAxisIndex: 'all',
           },
-        },
-        axisPointer: {
-          label: {
-            precision: this.precision,
+        ],
+      },
+      xAxis: [
+        this.xAxisSpec({
+          boundaryGap: this.isLineChart ? false : [0.005, 0.005],
+          axisLabel: {
+            show: false,
           },
-        },
-        min: this.limits.min,
-        max: this.limits.max,
-      }),
+          axisLine: {
+            show: true,
+          },
+          axisPointer: {
+            label: {
+              show: false,
+            },
+          },
+        }),
+        this.xAxisSpec({
+          gridIndex: 1,
+          boundaryGap: false,
+          axisLabel: {
+            show: true,
+          },
+        }),
+      ],
+      yAxis: [
+        this.yAxisSpec({
+          axisLabel: {
+            formatter: (value) => {
+              return value.toFixed(this.precision);
+            },
+            showMinLabel: false,
+          },
+          axisPointer: {
+            label: {
+              precision: this.precision,
+            },
+          },
+          min: this.limits.min,
+          max: this.limits.max,
+        }),
+        this.yAxisSpec({
+          gridIndex: 1,
+          splitNumber: 2,
+          axisLabel: {
+            formatter: (value) => {
+              const val = new FPNumber(value);
+              const { amount, suffix } = formatAmountWithSuffix(val);
+              return `${amount} ${suffix}`;
+            },
+            showMaxLabel: false,
+          },
+        }),
+      ],
       dataZoom: [
         {
           type: 'inside',
+          xAxisIndex: [0, 1],
           start: 0,
           end: 100,
           minValueSpan: this.timeDifference * 11, // minimum 11 elements like on skeleton
@@ -489,7 +549,10 @@ export default class SwapChart extends Mixins(
         },
         formatter: (params) => {
           const { data, seriesType } = params[0];
-          const [timestamp, open, close, low, high] = data;
+          const [timestamp, open, close, low, high, volume] = data;
+
+          if (seriesType === CHART_TYPES.BAR) return formatPrice(volume, 2, 'USD');
+
           if (seriesType === CHART_TYPES.LINE) return formatPrice(close, this.precision, this.symbol);
 
           if (seriesType === CHART_TYPES.CANDLE) {
@@ -544,6 +607,17 @@ export default class SwapChart extends Mixins(
               },
             })
           : this.candlestickSeriesSpec(),
+        {
+          name: 'Volume',
+          type: 'bar',
+          barMaxWidth: 10,
+          xAxisIndex: 1,
+          yAxisIndex: 1,
+          itemStyle: {
+            color: this.theme.color.status.info,
+          },
+          encode: { y: 'volume' },
+        },
       ],
     };
 
