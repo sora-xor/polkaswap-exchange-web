@@ -112,7 +112,7 @@
       </s-button>
     </el-popover>
 
-    <book-transaction-details
+    <place-transaction-details
       v-if="areTokensSelected && !hasZeroAmount && !hasExplainableError"
       class="info-line-container"
       :info-only="false"
@@ -162,13 +162,13 @@ import type { Subscription } from 'rxjs';
 
 @Component({
   components: {
-    BookTransactionDetails: lazyComponent(Components.BookTransactionDetails),
     DatePicker: lazyComponent(Components.DatePicker),
     FormattedAmount: components.FormattedAmount,
     TokenInput: lazyComponent(Components.TokenInput),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     PairListPopover: lazyComponent(Components.PairListPopover),
     PlaceConfirm: lazyComponent(Components.PlaceOrder),
+    PlaceTransactionDetails: lazyComponent(Components.PlaceTransactionDetails),
     PriceChange: lazyComponent(Components.PriceChange),
   },
 })
@@ -839,6 +839,18 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 }
 
+.order-book-choose-pair {
+  width: 100%;
+  background: var(--base-day-background, #f4f0f1);
+  border-radius: var(--s-border-radius-small);
+  margin-bottom: $inner-spacing-mini;
+  padding: 10px $basic-spacing;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 [design-system-theme='dark'] {
   .order-book-choose-pair {
     background: var(--s-color-base-background);
@@ -849,18 +861,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 <style lang="scss" scoped>
 .order-book {
   padding: 4px $basic-spacing var(--s-size-small);
-
-  &-choose-pair {
-    width: 100%;
-    background: var(--base-day-background, #f4f0f1);
-    border-radius: var(--s-border-radius-small);
-    margin-bottom: $inner-spacing-mini;
-    padding: 10px $basic-spacing;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
 
   &-choose-btn {
     display: flex;

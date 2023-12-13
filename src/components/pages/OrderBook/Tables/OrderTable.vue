@@ -210,6 +210,7 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
   }
   .el-table__body-wrapper {
     background-color: var(--s-color-utility-surface);
+    height: 400px;
 
     .el-table__row {
       background-color: var(--s-color-utility-surface);
@@ -266,10 +267,6 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
       letter-spacing: var(--s-letter-spacing-small);
       font-weight: 400;
     }
-  }
-
-  .el-table__body-wrapper {
-    height: 400px;
   }
 
   &__pagination {

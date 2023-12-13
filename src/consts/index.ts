@@ -212,7 +212,6 @@ export enum Components {
   SwapDistribution = 'pages/Swap/Distribution',
   // Order Book
   BookWidget = 'pages/OrderBook/BookWidget',
-  BookTransactionDetails = 'pages/OrderBook/TransactionDetails',
   SetLimitOrderWidget = 'pages/OrderBook/SetLimitOrderWidget',
   HistoryOrderWidget = 'pages/OrderBook/HistoryOrderWidget',
   MarketTradesWidget = 'pages/OrderBook/MarketTradesWidget',

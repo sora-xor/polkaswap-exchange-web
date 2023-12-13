@@ -70,14 +70,12 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   }
 
   get upperText(): string {
-    let amount;
     const symbol = this.baseAsset?.symbol;
 
     if (this.isMarketType) {
-      amount = this.isBuySide ? this.toValue : this.baseValue;
+      const amount = this.isBuySide ? this.toValue : this.baseValue;
       return this.isBuySide ? `Buy ${amount} ${symbol}` : `Sell ${amount} ${symbol}`;
     } else {
-      amount = this.baseValue;
       return this.isBuySide ? `Buy ${this.baseValue} ${symbol}` : `Sell ${this.baseValue} ${symbol}`;
     }
   }
