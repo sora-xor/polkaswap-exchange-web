@@ -374,7 +374,8 @@ export default class SwapChart extends Mixins(
   }
 
   get filters(): SnapshotFilter[] {
-    return this.isLineChart ? LINE_CHART_FILTERS : CANDLE_CHART_FILTERS;
+    // return this.isLineChart ? LINE_CHART_FILTERS : CANDLE_CHART_FILTERS;
+    return LINE_CHART_FILTERS;
   }
 
   get chartIsLoading(): boolean {
@@ -759,8 +760,10 @@ export default class SwapChart extends Mixins(
 
           dataset.push({ timestamp, price, volume });
 
-          min = this.isLineChart ? Math.min(min, price[1]) : Math.min(min, ...price);
-          max = this.isLineChart ? Math.max(max, price[1]) : Math.max(max, ...price);
+          // min = this.isLineChart ? Math.min(min, price[1]) : Math.min(min, ...price);
+          // max = this.isLineChart ? Math.max(max, price[1]) : Math.max(max, ...price);
+          min = Math.min(min, ...price);
+          max = Math.max(max, ...price);
         }
 
         addresses.forEach((address, index) => {
@@ -930,7 +933,7 @@ export default class SwapChart extends Mixins(
 
   selectChartType(type: CHART_TYPES): void {
     this.chartType = type;
-    this.changeFilter(this.filters[0]);
+    // this.changeFilter(this.filters[0]);
   }
 
   handleZoom(event: any): void {
