@@ -122,6 +122,8 @@ import type { OrderData } from '@/types/orderBook';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
+type OrderDataUI = Omit<OrderData, 'owner' | 'lifespan' | 'time' | 'expiresAt'>[];
+
 @Component({
   components: {
     HistoryPagination: components.HistoryPagination,
@@ -137,8 +139,8 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
 
   pageAmount = 6;
 
-  get preparedItems(): OrderData[] {
-    return this.orders.map((order) => {
+  get preparedItems(): OrderDataUI {
+    return this.orders.map((order: OrderData) => {
       const { originalAmount, amount, price, side, id, orderBookId, time, status, expiresAt } = order;
       const { base, quote } = orderBookId;
       const baseAsset = this.assetsDataTable[base] || {};
