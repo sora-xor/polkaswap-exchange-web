@@ -1,7 +1,9 @@
 <template>
   <component :is="tag" :class="classes" :tabindex="tabindex">
-    <div if="icon" class="icon-container">
-      <s-icon :name="icon" size="28" />
+    <div class="icon-container">
+      <s-tooltip border-radius="mini" :content="title">
+        <s-icon :name="icon" :tooltip-text="title" size="28" />
+      </s-tooltip>
     </div>
     <span>{{ title }}</span>
   </component>
