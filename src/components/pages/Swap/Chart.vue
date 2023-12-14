@@ -141,48 +141,6 @@ const LINE_CHART_FILTERS: SnapshotFilter[] = [
   },
 ];
 
-const CANDLE_CHART_FILTERS = [
-  {
-    name: Timeframes.FIVE_MINUTES,
-    label: '5m',
-    type: SnapshotTypes.DEFAULT,
-    count: 48, // 5 mins in 4 hours
-  },
-  {
-    name: Timeframes.FIFTEEN_MINUTES,
-    label: '15m',
-    type: SnapshotTypes.DEFAULT,
-    count: 48 * 3, // 5 mins in 12 hours,
-    group: 3, // 5 min in 15 min
-  },
-  {
-    name: Timeframes.THIRTY_MINUTES,
-    label: '30m',
-    type: SnapshotTypes.DEFAULT,
-    count: 48 * 3 * 2, // 5 mins in 24 hours,
-    group: 6, // 5 min in 30 min
-  },
-  {
-    name: Timeframes.HOUR,
-    label: '1h',
-    type: SnapshotTypes.HOUR,
-    count: 24, // hours in day
-  },
-  {
-    name: Timeframes.FOUR_HOURS,
-    label: '4h',
-    type: SnapshotTypes.HOUR,
-    count: 24 * 4, // hours in 4 days,
-    group: 4, // 1 hour in 4 hours
-  },
-  {
-    name: Timeframes.DAY,
-    label: '1D',
-    type: SnapshotTypes.DAY,
-    count: 90, // days in 3 months
-  },
-];
-
 const LABEL_PADDING = 4;
 const AXIS_OFFSET = 8;
 const AXIS_LABEL_CSS = {
@@ -374,7 +332,6 @@ export default class SwapChart extends Mixins(
   }
 
   get filters(): SnapshotFilter[] {
-    // return this.isLineChart ? LINE_CHART_FILTERS : CANDLE_CHART_FILTERS;
     return LINE_CHART_FILTERS;
   }
 
@@ -506,6 +463,7 @@ export default class SwapChart extends Mixins(
         formatter: (value) => {
           return formatAmount(value, this.precision);
         },
+        showMaxLabel: false,
         showMinLabel: false,
       },
       axisPointer: {
@@ -760,8 +718,6 @@ export default class SwapChart extends Mixins(
 
           dataset.push({ timestamp, price, volume });
 
-          // min = this.isLineChart ? Math.min(min, price[1]) : Math.min(min, ...price);
-          // max = this.isLineChart ? Math.max(max, price[1]) : Math.max(max, ...price);
           min = Math.min(min, ...price);
           max = Math.max(max, ...price);
         }
