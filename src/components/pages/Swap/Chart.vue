@@ -79,19 +79,28 @@ import { lazyComponent } from '@/router';
 import type { OCLH, SnapshotItem } from '@/types/chart';
 import { Timeframes } from '@/types/filters';
 import type { SnapshotFilter } from '@/types/filters';
-import { debouncedInputHandler, getTextWidth, calcPriceChange, formatDecimalPlaces } from '@/utils';
+import {
+  debouncedInputHandler,
+  getTextWidth,
+  calcPriceChange,
+  formatDecimalPlaces,
+  formatAmountWithSuffix,
+} from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { PageInfo, FiatPriceObject } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const { SnapshotTypes } = SUBQUERY_TYPES;
 
-/** "timestamp", "open", "close", "low", "high" data */
-type ChartDataItem = [number, ...OCLH];
+const USD_SYMBOL = 'USD';
+
+/** "timestamp", "open", "close", "low", "high", "volume" data */
+type ChartDataItem = [number, ...OCLH, number];
 
 enum CHART_TYPES {
   LINE = 'line',
   CANDLE = 'candlestick',
+  BAR = 'bar',
 }
 
 const CHART_TYPE_ICONS = {
@@ -132,48 +141,6 @@ const LINE_CHART_FILTERS: SnapshotFilter[] = [
   },
 ];
 
-const CANDLE_CHART_FILTERS = [
-  {
-    name: Timeframes.FIVE_MINUTES,
-    label: '5m',
-    type: SnapshotTypes.DEFAULT,
-    count: 48, // 5 mins in 4 hours
-  },
-  {
-    name: Timeframes.FIFTEEN_MINUTES,
-    label: '15m',
-    type: SnapshotTypes.DEFAULT,
-    count: 48 * 3, // 5 mins in 12 hours,
-    group: 3, // 5 min in 15 min
-  },
-  {
-    name: Timeframes.THIRTY_MINUTES,
-    label: '30m',
-    type: SnapshotTypes.DEFAULT,
-    count: 48 * 3 * 2, // 5 mins in 24 hours,
-    group: 6, // 5 min in 30 min
-  },
-  {
-    name: Timeframes.HOUR,
-    label: '1h',
-    type: SnapshotTypes.HOUR,
-    count: 24, // hours in day
-  },
-  {
-    name: Timeframes.FOUR_HOURS,
-    label: '4h',
-    type: SnapshotTypes.HOUR,
-    count: 24 * 4, // hours in 4 days,
-    group: 4, // 1 hour in 4 hours
-  },
-  {
-    name: Timeframes.DAY,
-    label: '1D',
-    type: SnapshotTypes.DAY,
-    count: 90, // days in 3 months
-  },
-];
-
 const LABEL_PADDING = 4;
 const AXIS_OFFSET = 8;
 const AXIS_LABEL_CSS = {
@@ -198,9 +165,12 @@ const formatChange = (value: FPNumber): string => {
   return `${sign}${priceChange}`;
 };
 
+const formatAmount = (value: number, precision: number) => {
+  return new FPNumber(value).toLocaleString(precision);
+};
+
 const formatPrice = (value: number, precision: number, symbol: string) => {
-  const val = new FPNumber(value).toFixed(precision);
-  return `${val} ${symbol}`;
+  return `${formatAmount(value, precision)} ${symbol}`;
 };
 
 const dividePrice = (priceA: number, priceB: number): number => {
@@ -224,6 +194,7 @@ const normalizeSnapshots = (collection: SnapshotItem[], difference: number, last
       buffer.push({
         timestamp: currentTimestamp,
         price: [item.price[1], item.price[1], item.price[1], item.price[1]],
+        volume: 0,
       });
     }
 
@@ -291,7 +262,7 @@ export default class SwapChart extends Mixins(
   // ordered by timestamp DESC
   private samplesBuffer: Record<string, readonly SnapshotItem[]> = {};
   private pageInfos: Record<string, Partial<PageInfo>> = {};
-  private prices: readonly SnapshotItem[] = [];
+  private dataset: readonly SnapshotItem[] = [];
   private zoomStart = 0; // percentage of zoom start position
   private zoomEnd = 100; // percentage of zoom end position
   private precision = 2;
@@ -353,7 +324,7 @@ export default class SwapChart extends Mixins(
   }
 
   get chartTypeButtons(): { type: CHART_TYPES; icon: any; active: boolean }[] {
-    return Object.values(CHART_TYPES).map((type) => ({
+    return [CHART_TYPES.LINE, CHART_TYPES.CANDLE].map((type) => ({
       type,
       icon: CHART_TYPE_ICONS[type],
       active: this.chartType === type,
@@ -361,7 +332,7 @@ export default class SwapChart extends Mixins(
   }
 
   get filters(): SnapshotFilter[] {
-    return this.isLineChart ? LINE_CHART_FILTERS : CANDLE_CHART_FILTERS;
+    return LINE_CHART_FILTERS;
   }
 
   get chartIsLoading(): boolean {
@@ -369,15 +340,15 @@ export default class SwapChart extends Mixins(
   }
 
   get symbol(): string {
-    return this.tokenB?.symbol ?? 'USD';
+    return this.tokenB?.symbol ?? USD_SYMBOL;
   }
 
   get currentPrice(): FPNumber {
-    return new FPNumber(this.prices[0]?.price[2] ?? 0); // "close" price
+    return new FPNumber(this.dataset[0]?.price[2] ?? 0); // "close" price
   }
 
   get currentPriceFormatted(): string {
-    return this.currentPrice.toFixed(this.precision);
+    return this.currentPrice.toLocaleString(this.precision);
   }
 
   get isAllHistoricalPricesFetched(): boolean {
@@ -412,7 +383,7 @@ export default class SwapChart extends Mixins(
   get gridLeftOffset(): number {
     const maxLabel = this.limits.max * 10;
     const axisLabelWidth = getTextWidth(
-      String(maxLabel.toFixed(this.precision)),
+      formatAmount(maxLabel, this.precision),
       AXIS_LABEL_CSS.fontFamily,
       AXIS_LABEL_CSS.fontSize
     );
@@ -423,15 +394,15 @@ export default class SwapChart extends Mixins(
   get chartData(): readonly ChartDataItem[] {
     const groups: ChartDataItem[] = [];
     const {
-      prices,
+      dataset,
       selectedFilter: { group },
     } = this;
     // ordered by timestamp ASC
-    const ordered = prices.slice().reverse();
+    const ordered = dataset.slice().reverse();
 
     for (let i = 0; i < ordered.length; i++) {
       if (!group || i % group === 0) {
-        groups.push([ordered[i].timestamp, ...ordered[i].price]);
+        groups.push([ordered[i].timestamp, ...ordered[i].price, ordered[i].volume]);
       } else {
         const lastGroup = last(groups);
 
@@ -439,6 +410,7 @@ export default class SwapChart extends Mixins(
           lastGroup[2] = ordered[i].price[1]; // close
           lastGroup[3] = Math.min(lastGroup[3], ordered[i].price[2]); // low
           lastGroup[4] = Math.max(lastGroup[4], ordered[i].price[3]); // high
+          lastGroup[5] = lastGroup[5] + (ordered[i].volume ?? 0); // volume
         }
       }
     }
@@ -447,103 +419,199 @@ export default class SwapChart extends Mixins(
   }
 
   get chartSpec() {
-    return {
+    // [TODO]: until we haven't two tokens volume
+    const withVolume = this.isOrderBook || (!!this.tokenA && !this.tokenB);
+
+    const priceGrid = this.gridSpec({
+      top: 20,
+      left: this.gridLeftOffset,
+    });
+
+    const volumeGrid = this.gridSpec({
+      height: 92,
+      left: this.gridLeftOffset,
+    });
+
+    const priceXAxis = this.xAxisSpec({
+      boundaryGap: this.isLineChart ? false : [0.005, 0.005],
+      axisLabel: {
+        show: true,
+      },
+      axisLine: {
+        show: false,
+      },
+      axisPointer: {
+        label: {
+          show: true,
+        },
+      },
+    });
+
+    const volumeXAxis = this.xAxisSpec({
+      gridIndex: 1,
+      boundaryGap: false,
+      axisLabel: {
+        show: true,
+      },
+      axisPointer: {
+        type: 'none',
+      },
+    });
+
+    const priceYAxis = this.yAxisSpec({
+      axisLabel: {
+        formatter: (value) => {
+          return formatAmount(value, this.precision);
+        },
+        showMaxLabel: false,
+        showMinLabel: false,
+      },
+      axisPointer: {
+        label: {
+          precision: this.precision,
+          formatter: ({ value }) => {
+            return formatAmount(value, this.precision);
+          },
+        },
+      },
+      min: this.limits.min,
+      max: this.limits.max,
+    });
+
+    const volumeYAxis = this.yAxisSpec({
+      gridIndex: 1,
+      splitNumber: 2,
+      axisLabel: {
+        formatter: (value) => {
+          const val = new FPNumber(value);
+          const { amount, suffix } = formatAmountWithSuffix(val);
+          return `${amount} ${suffix}`;
+        },
+        showMaxLabel: false,
+      },
+    });
+
+    const dataZoom = {
+      type: 'inside',
+      xAxisIndex: [0, 1],
+      start: 0,
+      end: 100,
+      minValueSpan: this.timeDifference * 11, // minimum 11 elements like on skeleton
+    };
+
+    const tooltip = this.tooltipSpec({
+      axisPointer: {
+        type: 'cross',
+      },
+      formatter: (params) => {
+        const { data, seriesType } = params[0];
+        const [timestamp, open, close, low, high, volume] = data;
+        const rows: any[] = [];
+
+        if (seriesType === CHART_TYPES.BAR) {
+          rows.push({ title: 'Volume', data: formatPrice(volume, 2, USD_SYMBOL) });
+        } else if (seriesType === CHART_TYPES.LINE) {
+          rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
+        } else {
+          const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
+          const changeColor = signific(change)(
+            this.theme.color.status.success,
+            this.theme.color.status.error,
+            this.theme.color.base.content.primary
+          );
+
+          rows.push(
+            { title: 'Open', data: formatPrice(open, this.precision, this.symbol) },
+            { title: 'High', data: formatPrice(high, this.precision, this.symbol) },
+            { title: 'Low', data: formatPrice(low, this.precision, this.symbol) },
+            { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
+            { title: 'Change', data: formatChange(change), color: changeColor }
+          );
+        }
+
+        return `
+          <table>
+            ${rows
+              .map(
+                (row) => `
+              <tr>
+                <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
+                <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
+              </tr>
+            `
+              )
+              .join('')}
+          </table>
+        `;
+      },
+    });
+
+    const priceSeria = this.isLineChart
+      ? this.lineSeriesSpec({
+          encode: { y: 'close' },
+          areaStyle: {
+            opacity: 0.8,
+            color: new graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgba(248, 8, 123, 0.25)',
+              },
+              {
+                offset: 1,
+                color: 'rgba(255, 49, 148, 0.03)',
+              },
+            ]),
+          },
+        })
+      : this.candlestickSeriesSpec();
+
+    const volumeSeria = {
+      type: 'bar',
+      barMaxWidth: 10,
+      xAxisIndex: 1,
+      yAxisIndex: 1,
+      itemStyle: {
+        color: ({ data }) => {
+          const [_timestamp, open, close] = data;
+          return open > close ? this.theme.color.status.error : this.theme.color.status.success;
+        },
+      },
+      encode: { y: 'volume' },
+    };
+
+    const spec = {
+      axisPointer: {
+        link: [
+          {
+            xAxisIndex: 'all',
+          },
+        ],
+      },
+      color: [this.theme.color.theme.accent, this.theme.color.status.success],
       dataset: {
         source: this.chartData,
-        dimensions: ['timestamp', 'open', 'close', 'low', 'high'],
+        dimensions: ['timestamp', 'open', 'close', 'low', 'high', 'volume'],
       },
-      grid: this.gridSpec({
-        left: this.gridLeftOffset,
-      }),
-      xAxis: this.xAxisSpec({
-        boundaryGap: this.isLineChart ? false : [0.005, 0.005],
-      }),
-      yAxis: this.yAxisSpec({
-        axisLabel: {
-          formatter: (value) => {
-            return value.toFixed(this.precision);
-          },
-        },
-        axisPointer: {
-          label: {
-            precision: this.precision,
-          },
-        },
-        min: this.limits.min,
-        max: this.limits.max,
-      }),
-      dataZoom: [
-        {
-          type: 'inside',
-          start: 0,
-          end: 100,
-          minValueSpan: this.timeDifference * 11, // minimum 11 elements like on skeleton
-        },
-      ],
-      color: [this.theme.color.theme.accent, this.theme.color.status.success],
-      tooltip: this.tooltipSpec({
-        axisPointer: {
-          type: 'cross',
-        },
-        formatter: (params) => {
-          const { data, seriesType } = params[0];
-          const [timestamp, open, close, low, high] = data;
-          if (seriesType === CHART_TYPES.LINE) return formatPrice(close, this.precision, this.symbol);
-
-          if (seriesType === CHART_TYPES.CANDLE) {
-            const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
-            const changeColor = signific(change)(
-              this.theme.color.status.success,
-              this.theme.color.status.error,
-              this.theme.color.base.content.primary
-            );
-
-            const rows = [
-              { title: 'Open', data: formatPrice(open, this.precision, this.symbol) },
-              { title: 'High', data: formatPrice(high, this.precision, this.symbol) },
-              { title: 'Low', data: formatPrice(low, this.precision, this.symbol) },
-              { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
-              { title: 'Change', data: formatChange(change), color: changeColor },
-            ];
-
-            return `
-              <table>
-                ${rows
-                  .map(
-                    (row) => `
-                  <tr>
-                    <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
-                    <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
-                  </tr>
-                `
-                  )
-                  .join('')}
-              </table>
-            `;
-          }
-        },
-      }),
-      series: [
-        this.isLineChart
-          ? this.lineSeriesSpec({
-              encode: { y: 'close' },
-              areaStyle: {
-                opacity: 0.8,
-                color: new graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 0,
-                    color: 'rgba(248, 8, 123, 0.25)',
-                  },
-                  {
-                    offset: 1,
-                    color: 'rgba(255, 49, 148, 0.03)',
-                  },
-                ]),
-              },
-            })
-          : this.candlestickSeriesSpec(),
-      ],
+      dataZoom: [dataZoom],
+      grid: [priceGrid],
+      xAxis: [priceXAxis],
+      yAxis: [priceYAxis],
+      tooltip,
+      series: [priceSeria],
     };
+
+    if (withVolume) {
+      priceGrid.bottom = 120;
+      priceXAxis.axisLabel.show = false;
+      priceXAxis.axisPointer.label.show = false;
+
+      spec.grid.push(volumeGrid);
+      spec.xAxis.push(volumeXAxis);
+      spec.yAxis.push(volumeYAxis);
+      spec.series.push(volumeSeria);
+    }
+
+    return spec;
   }
 
   created(): void {
@@ -606,7 +674,7 @@ export default class SwapChart extends Mixins(
 
     const addresses = [...this.entities];
     const requestId = Date.now();
-    const lastTimestamp = last(this.prices)?.timestamp ?? Date.now();
+    const lastTimestamp = last(this.dataset)?.timestamp ?? Date.now();
 
     this.priceUpdateRequestId = requestId;
 
@@ -618,7 +686,7 @@ export default class SwapChart extends Mixins(
         if (!(snapshots && isEqual(addresses)(this.entities) && isEqual(requestId)(this.priceUpdateRequestId))) return;
 
         const pageInfos: Record<string, Partial<PageInfo>> = {};
-        const prices: SnapshotItem[] = [];
+        const dataset: SnapshotItem[] = [];
         const groups: SnapshotItem[][] = [];
         const timestamp =
           lastTimestamp ??
@@ -642,15 +710,16 @@ export default class SwapChart extends Mixins(
 
           const timestamp = (a?.timestamp ?? b?.timestamp) as number;
           const price = b?.price && a?.price ? dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0];
+          const volume = b?.volume && a?.volume ? Math.min(b.volume, a.volume) : a?.volume ?? 0;
           // skip item, if one of the prices is incorrect
           if (price.some((part) => !Number.isFinite(part))) continue;
           // if "open" & "close" prices are zero, we are going to time, where pool is not created
           if (price[0] === 0 && price[1] === 0) break;
 
-          prices.push({ timestamp, price });
+          dataset.push({ timestamp, price, volume });
 
-          min = this.isLineChart ? Math.min(min, price[1]) : Math.min(min, ...price);
-          max = this.isLineChart ? Math.max(max, price[1]) : Math.max(max, ...price);
+          min = Math.min(min, ...price);
+          max = Math.max(max, ...price);
         }
 
         addresses.forEach((address, index) => {
@@ -660,7 +729,7 @@ export default class SwapChart extends Mixins(
         this.limits = { min, max };
         this.pageInfos = pageInfos;
         this.precision = this.getUpdatedPrecision(min, max);
-        this.updatePricesCollection([...this.prices, ...prices]);
+        this.updateDataset([...this.dataset, ...dataset]);
 
         this.isFetchingError = false;
       } catch (error) {
@@ -739,22 +808,23 @@ export default class SwapChart extends Mixins(
     if (!isEqual(entities)(this.entities)) return;
 
     const timestamp = this.getCurrentSnapshotTimestamp();
-    const lastItem = this.prices[0];
+    const lastItem = this.dataset[0];
 
     if (!lastItem || timestamp === lastItem.timestamp) return;
 
     const close = lastItem.price[1];
     const price: OCLH = [close, close, close, close];
-    const item: SnapshotItem = { timestamp, price };
+    const volume = 0; // we don't know volume
+    const item: SnapshotItem = { timestamp, price, volume };
 
-    this.updatePricesCollection([item, ...this.prices]);
+    this.updateDataset([item, ...this.dataset]);
   }
 
   private handlePriceUpdates(entities: string[], fiatPriceObject: FiatPriceObject): void {
     if (!isEqual(entities)(this.entities)) return;
 
     const timestamp = this.getCurrentSnapshotTimestamp();
-    const lastItem = this.prices[0];
+    const lastItem = this.dataset[0];
 
     const [priceA, priceB] = entities.map((address) =>
       FPNumber.fromCodecValue(fiatPriceObject[address] ?? 0).toNumber()
@@ -770,21 +840,21 @@ export default class SwapChart extends Mixins(
     const isCurrentTimeframe = lastItem?.timestamp === timestamp;
 
     const priceData: OCLH = [isCurrentTimeframe ? open : price, price, Math.min(low, price), Math.max(high, price)];
-    const item = { timestamp, price: priceData };
-    const prices = [...this.prices];
+    const item = { timestamp, price: priceData, volume: 0 };
+    const dataset = [...this.dataset];
     if (isCurrentTimeframe) {
-      prices.shift();
+      dataset.shift();
     }
-    prices.unshift(item);
+    dataset.unshift(item);
     this.precision = this.getUpdatedPrecision(min, max);
     this.limits = { min, max };
-    this.updatePricesCollection(prices);
+    this.updateDataset(dataset);
   }
 
   private clearData(saveReversedState = false): void {
     this.samplesBuffer = {};
     this.pageInfos = {};
-    this.prices = [];
+    this.dataset = [];
     this.zoomStart = 0;
     this.zoomEnd = 100;
     this.limits = {
@@ -798,8 +868,8 @@ export default class SwapChart extends Mixins(
     }
   }
 
-  private updatePricesCollection(items: SnapshotItem[]): void {
-    this.prices = Object.freeze(items);
+  private updateDataset(items: SnapshotItem[]): void {
+    this.dataset = Object.freeze(items);
   }
 
   changeFilter(filter: SnapshotFilter): void {
@@ -819,7 +889,7 @@ export default class SwapChart extends Mixins(
 
   selectChartType(type: CHART_TYPES): void {
     this.chartType = type;
-    this.changeFilter(this.filters[0]);
+    // this.changeFilter(this.filters[0]);
   }
 
   handleZoom(event: any): void {
