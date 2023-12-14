@@ -42,11 +42,4 @@ export type OrderBookUpdateData = OrderBookWithStats & {
 
 export type OrderData = LimitOrder & {
   status: string;
-  filled?: number;
-  baseAssetSymbol?: string;
-  quoteAssetSymbol?: string;
-  pair?: string;
-  total?: string;
-  created: { date: string; time: string };
-  expires: string;
 };
