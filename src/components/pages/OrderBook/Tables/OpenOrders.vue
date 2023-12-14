@@ -44,11 +44,6 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     });
   }
 
-  // Widget subscription close
-  beforeDestroy(): void {
-    this.unsubscribeFromUserLimitOrders();
-  }
-
   get loadingState(): boolean {
     return this.parentLoading || this.loading;
   }
@@ -57,8 +52,13 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     return !!this.currentOrderBook && this.currentOrderBook.status !== OrderBookStatus.Stop;
   }
 
-  get sortedUserLimitOrders() {
+  get sortedUserLimitOrders(): LimitOrder[] {
     return [...this.userLimitOrders].sort((a, b) => b.time - a.time);
+  }
+
+  // Widget subscription close
+  beforeDestroy(): void {
+    this.unsubscribeFromUserLimitOrders();
   }
 }
 </script>

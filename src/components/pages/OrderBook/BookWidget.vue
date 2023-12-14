@@ -77,6 +77,7 @@ import { ZeroStringValue } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { OrderBookDealData } from '@/types/orderBook';
 
+import type { OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 interface LimitOrderForm {
@@ -86,14 +87,16 @@ interface LimitOrderForm {
   filled?: number;
 }
 
+type OrderBookPriceVolumeAggregated = [FPNumber, FPNumber, FPNumber];
+
 @Component
 export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
-  @state.orderBook.asks asks!: any;
-  @state.orderBook.bids bids!: any;
+  @state.orderBook.asks asks!: OrderBookPriceVolume[];
+  @state.orderBook.bids bids!: OrderBookPriceVolume[];
 
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.orderBookLastDeal orderBookLastDeal!: Nullable<OrderBookDealData>;
-  @getter.orderBook.currentOrderBook currentOrderBook!: any;
+  @getter.orderBook.currentOrderBook currentOrderBook!: OrderBook;
   @getter.orderBook.orderBookId private orderBookId!: string;
   @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
 
@@ -257,7 +260,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return precision === this.currentOrderBook?.tickSize?.toString();
   }
 
-  calculateStepsDistribution(orders, precision = 10): any {
+  calculateStepsDistribution(orders, precision = 10): OrderBookPriceVolumeAggregated | undefined {
     if (!orders.length) return;
 
     if (this.isBookPrecisionEqaul(precision.toString())) return orders;
@@ -267,7 +270,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     const step = new FPNumber(precision);
     let edge = new FPNumber(0);
 
-    const aggregatedOrders = [] as Array<any>;
+    let aggregatedOrders;
     let accumulatedAmount = FPNumber.ZERO;
     let accumulatedTotal = FPNumber.ZERO;
 
@@ -321,13 +324,14 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
       // const asks = this.calculateStepsDistribution(this.asks, Number(this.selectedStep));
       const maxAskAmount = FPNumber.max(...this.asks.map((order) => order[1])) as FPNumber;
 
-      this.asks.forEach((row: [FPNumber, FPNumber, FPNumber]) => {
+      this.asks.forEach((row: [FPNumber, FPNumber]) => {
         if (row[1].isZero()) return;
 
         const price = row[0].toNumber().toFixed(this.bookPrecision);
         const amount = row[1].toNumber().toFixed(this.bookPrecision);
         const total = row[0].mul(row[1]).toNumber().toFixed(this.bookPrecision);
 
+        // Uncomment when logic is ready
         // if (this.isBookPrecisionEqaul(this.selectedStep)) {
         //   total = row[0].mul(row[1]).toNumber().toFixed(this.bookPrecision);
         // } else {
@@ -347,7 +351,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
       // const bids = this.calculateStepsDistribution(this.bids);
       const maxBidAmount = FPNumber.max(...this.bids.map((order) => order[1])) as FPNumber;
 
-      this.bids.forEach((row: [FPNumber, FPNumber, FPNumber]) => {
+      this.bids.forEach((row: [FPNumber, FPNumber]) => {
         if (row[1].isZero()) return;
 
         // let total;

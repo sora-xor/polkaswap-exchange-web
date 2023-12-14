@@ -43,7 +43,7 @@ export default class CancelOrders extends Mixins(mixins.DialogMixin, Translation
 
   .s-icon-notifications-alert-triangle-24 {
     color: var(--s-color-status-error);
-    margin-bottom: 24px;
+    margin-bottom: var(--s-size-mini);
     margin-top: -42px;
   }
 

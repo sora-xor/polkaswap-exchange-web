@@ -24,7 +24,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, mutation, state } from '@/store/decorators';
+import { mutation, state } from '@/store/decorators';
 
 @Component({
   components: {
@@ -33,9 +33,6 @@ import { getter, mutation, state } from '@/store/decorators';
 })
 export default class SetLimitOrderWidget extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   @state.orderBook.side side!: PriceVariant;
-
-  @getter.orderBook.baseAsset baseAsset!: any;
-  @getter.orderBook.baseAsset quoteAsset!: any;
 
   @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
 

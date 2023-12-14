@@ -35,7 +35,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     this.fetchData();
   }
 
-  get filtered() {
+  get filtered(): OrderData[] {
     if (this.filter !== Filter.executed) return this.orders;
 
     return this.orders.filter((item) => item.status === OrderStatus.Filled);

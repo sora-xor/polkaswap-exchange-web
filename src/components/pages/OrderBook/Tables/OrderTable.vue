@@ -44,7 +44,7 @@
         </template>
         <template v-slot="{ row }">
           <div class="order-table__price">
-            <span class="price">{{ row.price }}</span>
+            <span class="price">{{ getString(row.price) }}</span>
             <span>{{ row.quoteAssetSymbol }}</span>
           </div>
         </template>
@@ -55,7 +55,7 @@
         </template>
         <template v-slot="{ row }">
           <div class="order-table__amount">
-            <span class="amount">{{ row.amount }}/{{ row.originalAmount }}</span>
+            <span class="amount">{{ getString(row.amount) }}/{{ getString(row.originalAmount) }}</span>
             <span>{{ row.baseAssetSymbol }}</span>
           </div>
         </template>
@@ -119,6 +119,7 @@ import { getter, mutation } from '@/store/decorators';
 import { OrderStatus } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';
 
+import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 @Component({
@@ -127,7 +128,7 @@ import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
   },
 })
 export default class OrderTable extends Mixins(TranslationMixin, ScrollableTableMixin) {
-  @mutation.orderBook.setOrdersToBeCancelled setOrdersToBeCancelled!: any;
+  @mutation.orderBook.setOrdersToBeCancelled setOrdersToBeCancelled!: (orders: LimitOrder[]) => void;
 
   @getter.wallet.account.assetsDataTable assetsDataTable!: WALLET_TYPES.AssetsTable;
 
@@ -136,7 +137,7 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
 
   pageAmount = 6;
 
-  get preparedItems(): any {
+  get preparedItems(): OrderData[] {
     return this.orders.map((order) => {
       const { originalAmount, amount, price, side, id, orderBookId, time, status, expiresAt } = order;
       const { base, quote } = orderBookId;
@@ -155,13 +156,13 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
       const row = {
         id,
         orderBookId,
-        originalAmount: originalAmount.toLocaleString(),
-        amount: originalAmount.sub(amount).toLocaleString(),
+        originalAmount: originalAmount,
+        amount: originalAmount.sub(amount),
         filled: Number(filled),
         baseAssetSymbol,
         quoteAssetSymbol,
         pair,
-        price: price.toLocaleString(),
+        price: price,
         total: total.dp(4).toLocaleString(),
         side,
         status: status ?? OrderStatus.Active,
@@ -174,6 +175,10 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
     });
   }
 
+  getString(value: FPNumber): string {
+    return value.toLocaleString();
+  }
+
   isSelectable(): boolean {
     return this.selectable;
   }
@@ -184,7 +189,7 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
     this.tableComponent?.toggleRowSelection(row);
   }
 
-  handleSelectionChange(rows): void {
+  handleSelectionChange(rows: LimitOrder[]): void {
     if (!this.selectable) return;
 
     this.setOrdersToBeCancelled(rows);

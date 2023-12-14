@@ -46,6 +46,7 @@ import { state, getter } from '@/store/decorators';
 import { Filter, Cancel } from '@/types/orderBook';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 
 @Component({
   components: {
@@ -55,15 +56,15 @@ import type { OrderBook } from '@sora-substrate/liquidity-proxy';
   },
 })
 export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.TransactionMixin) {
-  @state.orderBook.userLimitOrders userLimitOrders!: Array<any>;
-  @state.orderBook.ordersToBeCancelled ordersToBeCancelled!: any;
+  @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
+  @state.orderBook.ordersToBeCancelled ordersToBeCancelled!: Array<LimitOrder>;
 
   @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   confirmCancelOrderVisibility = false;
   currentFilter = Filter.open;
-  openLimitOrders: Array<any> = [];
+  openLimitOrders: Array<LimitOrder> = [];
 
   readonly Filter = Filter;
   readonly Cancel = Cancel;
@@ -81,6 +82,10 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
   get hasSelected(): boolean {
     return this.ordersToBeCancelled.length > 0;
+  }
+
+  get isBookStopped(): boolean {
+    return !this.currentOrderBook || this.currentOrderBook.status === OrderBookStatus.Stop;
   }
 
   get openOrdersCount(): string {
@@ -121,12 +126,12 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     return base;
   }
 
-  get isBookStopped(): boolean {
-    return !this.currentOrderBook || this.currentOrderBook.status === OrderBookStatus.Stop;
-  }
-
   connectAccount(): void {
     router.push({ name: PageNames.Wallet });
+  }
+
+  switchFilter(filter: Filter): void {
+    this.currentFilter = filter;
   }
 
   openConfirmCancelDialog(): void {
@@ -141,7 +146,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
     if (cancel === Cancel.multiple) {
       if (this.ordersToBeCancelled.length > 1) {
-        const limitOrderIds = this.ordersToBeCancelled.map((limitOrder: any) => limitOrder.id);
+        const limitOrderIds = this.ordersToBeCancelled.map((limitOrder: LimitOrder) => limitOrder.id);
         const { orderBookId } = this.ordersToBeCancelled[0];
         if (!orderBookId && limitOrderIds.length) return;
         const { base, quote } = orderBookId;
@@ -161,7 +166,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
         });
       }
     } else {
-      const limitOrderIds = this.userLimitOrders.map((limitOrder: any) => limitOrder.id);
+      const limitOrderIds = this.userLimitOrders.map((limitOrder: LimitOrder) => limitOrder.id);
       const { orderBookId } = this.userLimitOrders[0];
       if (!orderBookId && limitOrderIds.length) return;
       const { base, quote } = orderBookId;
@@ -170,10 +175,6 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
         await api.orderBook.cancelLimitOrderBatch(base, quote, limitOrderIds);
       });
     }
-  }
-
-  switchFilter(filter: Filter): void {
-    this.currentFilter = filter;
   }
 }
 </script>

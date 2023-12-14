@@ -155,7 +155,7 @@ import {
 } from '@/utils';
 import { getBookDecimals } from '@/utils/orderBook';
 
-import type { OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Subscription } from 'rxjs';
@@ -176,8 +176,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @state.orderBook.baseValue baseValue!: string;
   @state.orderBook.quoteValue quoteValue!: string;
   @state.orderBook.side side!: PriceVariant;
-  @state.orderBook.asks asks!: any;
-  @state.orderBook.bids bids!: any;
+  @state.orderBook.asks asks!: OrderBookPriceVolume;
+  @state.orderBook.bids bids!: OrderBookPriceVolume;
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.placeOrderNetworkFee networkFee!: CodecString;
 
