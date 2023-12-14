@@ -23,7 +23,8 @@ const preparePriceData = (item: AssetSnapshotEntity): OCLH => {
 const transformSnapshot = (item: AssetSnapshotEntity): SnapshotItem => {
   const timestamp = +item.timestamp * 1000;
   const price = preparePriceData(item);
-  return { timestamp, price };
+  const volume = +item.volume.amountUSD;
+  return { timestamp, price, volume };
 };
 
 const subqueryAssetPriceFilter = (assetAddress: string, type: SnapshotTypes) => {
@@ -56,6 +57,7 @@ const SubqueryAssetPriceQuery = gql<SubqueryConnectionQueryResponse<AssetSnapsho
         node {
           priceUSD
           timestamp
+          volume
         }
       }
     }
@@ -91,6 +93,9 @@ const SubsquidAssetPriceQuery = gql<SubsquidConnectionQueryResponse<AssetSnapsho
             high
             low
             open
+          }
+          volume {
+            amountUSD
           }
           timestamp
         }
