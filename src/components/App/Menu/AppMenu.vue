@@ -1,95 +1,108 @@
 <template>
-  <s-scrollbar
-    class="app-menu app-sidebar-scrollbar"
-    :class="{ visible, 'app-menu__about': isAboutPageOpened, 'app-menu__loading': pageLoading }"
-  >
-    <aside class="app-sidebar">
-      <slot name="head"></slot>
-      <div class="app-sidebar-menu">
-        <s-menu
-          class="menu"
-          mode="vertical"
-          background-color="transparent"
-          box-shadow="none"
-          text-color="var(--s-color-base-content-primary)"
-          :active-text-color="mainMenuActiveColor"
-          active-hover-color="transparent"
-          :default-active="currentPath"
-          @select="onSelect"
-        >
-          <s-menu-item-group v-for="item in sidebarMenuItems" :key="item.index || item.title">
-            <s-menu-item
-              v-button
-              :key="item.title"
-              :index="item.index || item.title"
-              :disabled="item.disabled"
-              tabindex="0"
-              class="menu-item"
-            >
-              <app-sidebar-item-content
-                tag="a"
-                rel="nofollow noopener"
-                tabindex="-1"
-                :href="item.href"
-                :icon="item.icon"
-                :title="t(`mainMenu.${item.title}`)"
-                @click.native="preventAnchorNavigation"
-              />
-            </s-menu-item>
-          </s-menu-item-group>
-        </s-menu>
+  <div :class="['app-menu', { visible, 'app-menu__about': isAboutPageOpened, 'app-menu__loading': pageLoading }]">
+    <s-button
+      :class="['app-menu__collapse-button', { collapsed }]"
+      type="action"
+      primary
+      size="small"
+      :icon="collapseIcon"
+      :tooltip="collapseTooltip"
+      @click="collapseMenu"
+    />
+    <s-scrollbar class="app-sidebar-scrollbar">
+      <aside class="app-sidebar">
+        <slot name="head"></slot>
+        <div class="app-sidebar-menu">
+          <s-menu
+            class="menu"
+            mode="vertical"
+            background-color="transparent"
+            box-shadow="none"
+            text-color="var(--s-color-base-content-primary)"
+            :active-text-color="mainMenuActiveColor"
+            active-hover-color="transparent"
+            :default-active="currentPath"
+            @select="onSelect"
+          >
+            <s-menu-item-group v-for="item in sidebarMenuItems" :key="item.index || item.title">
+              <s-menu-item
+                v-button
+                :key="item.title"
+                :index="item.index || item.title"
+                :disabled="item.disabled"
+                tabindex="0"
+                class="menu-item"
+              >
+                <app-sidebar-item-content
+                  tag="a"
+                  rel="nofollow noopener"
+                  tabindex="-1"
+                  :href="item.href"
+                  :icon="item.icon"
+                  :title="t(`mainMenu.${item.title}`)"
+                  :small="collapsed"
+                  @click.native="preventAnchorNavigation"
+                />
+              </s-menu-item>
+            </s-menu-item-group>
+          </s-menu>
 
-        <s-menu
-          class="menu"
-          mode="vertical"
-          background-color="transparent"
-          box-shadow="none"
-          text-color="var(--s-color-base-content-tertiary)"
-          active-text-color="var(--s-color-base-content-tertiary)"
-          active-hover-color="transparent"
-        >
-          <app-sidebar-item-content
-            v-if="false"
-            v-button
-            icon="star-16"
-            title="Vote on Survey!"
-            href="https://soramitsu.typeform.com/Polkaswap"
-            tag="a"
-            target="_blank"
-            rel="nofollow noopener"
-            class="el-menu-item menu-item--small marketing"
-          />
-          <app-sidebar-item-content
-            v-button
-            icon="symbols-24"
-            :title="t('mobilePopup.sideMenu')"
-            class="el-menu-item menu-item--small"
-            tabindex="0"
-            @click.native="openSoraDownloadDialog"
-          />
-          <app-info-popper>
+          <s-menu
+            class="menu"
+            mode="vertical"
+            background-color="transparent"
+            box-shadow="none"
+            text-color="var(--s-color-base-content-tertiary)"
+            active-text-color="var(--s-color-base-content-tertiary)"
+            active-hover-color="transparent"
+          >
+            <app-sidebar-item-content
+              v-if="false"
+              v-button
+              :small="collapsed"
+              icon="star-16"
+              title="Vote on Survey!"
+              href="https://soramitsu.typeform.com/Polkaswap"
+              tag="a"
+              target="_blank"
+              rel="nofollow noopener"
+              class="el-menu-item menu-item--small marketing"
+            />
             <app-sidebar-item-content
               v-button
-              icon="info-16"
-              :title="t('footerMenu.info')"
+              :small="collapsed"
+              icon="symbols-24"
+              :title="t('mobilePopup.sideMenu')"
               class="el-menu-item menu-item--small"
               tabindex="0"
+              @click.native="openSoraDownloadDialog"
             />
-          </app-info-popper>
-          <app-sidebar-item-content
-            v-if="faucetUrl"
-            :icon="FaucetLink.icon"
-            :title="t(`footerMenu.${FaucetLink.title}`)"
-            :href="faucetUrl"
-            tag="a"
-            target="_blank"
-            rel="nofollow noopener"
-            class="el-menu-item menu-item--small"
-          />
-        </s-menu>
-      </div>
-    </aside>
-  </s-scrollbar>
+            <app-info-popper>
+              <app-sidebar-item-content
+                v-button
+                :small="collapsed"
+                icon="info-16"
+                :title="t('footerMenu.info')"
+                class="el-menu-item menu-item--small"
+                tabindex="0"
+              />
+            </app-info-popper>
+            <app-sidebar-item-content
+              v-if="faucetUrl"
+              :icon="FaucetLink.icon"
+              :title="t(`footerMenu.${FaucetLink.title}`)"
+              :href="faucetUrl"
+              :small="collapsed"
+              tag="a"
+              target="_blank"
+              rel="nofollow noopener"
+              class="el-menu-item menu-item--small"
+            />
+          </s-menu>
+        </div>
+      </aside>
+    </s-scrollbar>
+  </div>
 </template>
 
 <script lang="ts">
@@ -133,6 +146,16 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   readonly SidebarMenuGroups = SidebarMenuGroups;
   readonly FaucetLink = FaucetLink;
 
+  collapsed = false;
+
+  get collapseIcon(): string {
+    return this.collapsed ? 'arrows-chevron-right-24' : 'arrows-chevron-left-24';
+  }
+
+  get collapseTooltip(): string {
+    return this.collapsed ? 'Expand' : 'Collapse';
+  }
+
   get mainMenuActiveColor(): string {
     return this.libraryTheme === Theme.LIGHT ? 'var(--s-color-theme-accent)' : 'var(--s-color-theme-accent-focused)';
   }
@@ -169,6 +192,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   /** To ignore left click */
   preventAnchorNavigation(e?: Event): void {
     e?.preventDefault();
+  }
+
+  collapseMenu() {
+    this.collapsed = !this.collapsed;
   }
 }
 </script>
@@ -256,15 +283,47 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
 <style lang="scss" scoped>
 .app {
+  &-sidebar-scrollbar {
+    height: 100%;
+  }
   &-menu {
+    &__collapse-button {
+      position: absolute;
+      top: 50%;
+      left: calc(100% - var(--s-size-small) / 2);
+      bottom: 0;
+      margin: auto;
+      transition-duration: 0.2s;
+      z-index: #{$app-sidebar-layer} + 1;
+
+      opacity: 0;
+
+      @include tablet {
+        &:not(.collapsed) {
+          opacity: 0;
+        }
+      }
+    }
+
+    @include tablet {
+      &:hover,
+      &:focus,
+      &:focus-within,
+      &:active {
+        .app-menu__collapse-button {
+          opacity: 1;
+        }
+      }
+    }
+
     flex-shrink: 0;
-    visibility: hidden;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: $app-sidebar-layer;
+    visibility: hidden;
 
     @include large-mobile(true) {
       position: fixed;
@@ -370,8 +429,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
 
       @include tablet {
-        padding-left: $inner-spacing-mini * 2.5 !important;
-        padding-right: $inner-spacing-mini * 2.5;
+        padding-left: $inner-spacing-mini * 2 !important;
+        padding-right: $inner-spacing-mini * 2;
       }
     }
 
@@ -383,7 +442,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       color: var(--s-color-base-content-secondary);
 
       @include large-mobile {
-        padding: 0 $inner-spacing-mini * 1.25;
+        padding: 0 $inner-spacing-mini;
       }
       @include tablet {
         padding: 0 $inner-spacing-small;
