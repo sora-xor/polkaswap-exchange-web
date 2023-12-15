@@ -1,6 +1,6 @@
 <template>
   <div class="bridge s-flex">
-    <s-form class="bridge-form el-form--actions" :show-message="false">
+    <s-form class="bridge-form" :show-message="false">
       <s-card
         v-loading="parentLoading"
         class="bridge-content"
@@ -44,7 +44,6 @@
           data-test-name="bridgeFrom"
           :balance="firstBalance ? firstBalance.toCodecString() : null"
           :decimals="amountDecimals"
-          :delimiters="delimiters"
           :disabled="!(areAccountsConnected && isAssetSelected)"
           :external="!isSoraToEvm"
           :is-max-available="isMaxAvailable"
@@ -107,7 +106,6 @@
           data-test-name="bridgeTo"
           :balance="secondBalance ? secondBalance.toCodecString() : null"
           :decimals="amountDecimals"
-          :delimiters="delimiters"
           :disabled="!(areAccountsConnected && isAssetSelected)"
           :external="isSoraToEvm"
           :loading="isConfirmTxLoading"
@@ -322,7 +320,6 @@ export default class Bridge extends Mixins(
   NetworkFeeDialogMixin,
   TokenSelectMixin
 ) {
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
   readonly KnownSymbols = KnownSymbols;
   readonly FocusedField = FocusedField;
 

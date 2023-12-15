@@ -1,13 +1,14 @@
 <template>
   <s-float-input
-    class="s-input--token-value"
+    class="token-input"
     size="medium"
     has-locale-string
+    :disabled="disabled"
+    :value="value"
     v-bind="{
       decimals,
       delimiters,
       max,
-      value,
       ...$attrs,
     }"
     v-on="$listeners"
@@ -26,7 +27,7 @@
               with-left-shift
               value-class="input-value--primary"
               :value="formattedBalance"
-              :has-fiat-value="!!tokenPrice"
+              :has-fiat-value="hasFiatValue"
               :fiat-value="formattedFiatBalance"
             />
           </template>
@@ -42,11 +43,13 @@
         size="mini"
         border-radius="mini"
         :loading="loading"
+        :disabled="disabled"
         @click.stop="handleMax"
       >
         {{ t('buttons.max') }}
       </s-button>
       <token-select-button
+        v-if="token || isSelectAvailable"
         icon="chevron-down-rounded-16"
         :disabled="!isSelectAvailable"
         :token="token"
@@ -55,14 +58,30 @@
     </div>
 
     <template #bottom>
-      <div class="input-line input-line--footer">
-        <div v-if="!!tokenPrice" class="s-flex">
-          <formatted-amount is-fiat-value :value="fiatAmount" />
-          <slot name="fiat-amount-append" />
-        </div>
+      <slot name="bottom">
+        <div class="input-line input-line--footer">
+          <div v-if="hasFiatValue" class="s-flex">
+            <s-float-input
+              class="token-input--fiat"
+              size="mini"
+              :decimals="2"
+              :delimiters="$attrs.delimiters"
+              :disabled="disabled"
+              :readonly="!isFiatEditable"
+              :value="fiatValue"
+              @input="setFiatValue"
+              @focus="setFiatFocus(true)"
+              @blur="setFiatFocus(false)"
+            >
+              <span slot="left" class="input-prefix">$</span>
+            </s-float-input>
 
-        <token-address v-if="address" v-bind="token" :external="external" class="input-value" />
-      </div>
+            <slot name="fiat-amount-append" />
+          </div>
+
+          <token-address v-if="address" v-bind="token" :external="external" class="input-value" />
+        </div>
+      </slot>
 
       <slot />
     </template>
@@ -72,7 +91,7 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, ModelSync, Prop } from 'vue-property-decorator';
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
@@ -94,18 +113,45 @@ export default class TokenInput extends Mixins(
   mixins.FormattedAmountMixin,
   TranslationMixin
 ) {
+  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
+
+  @Prop({ type: String }) readonly value!: string;
   @Prop({ default: () => null, type: Object }) readonly token!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: () => null, type: String }) readonly balance!: Nullable<CodecString>;
-  @Prop({ default: false, type: Boolean }) readonly external!: boolean;
   @Prop({ default: '', type: String }) readonly title!: string;
+  @Prop({ default: false, type: Boolean }) readonly external!: boolean;
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMaxAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isSelectAvailable!: boolean;
+  @Prop({ default: true, type: Boolean }) readonly isFiatEditable!: boolean;
 
-  @ModelSync('value', 'input', { type: String })
-  readonly amount!: string;
+  fiatValue = '';
+  fiatFocus = false;
 
-  readonly delimiters = FPNumber.DELIMITERS_CONFIG;
+  @Watch('value')
+  @Watch('token')
+  private updateFiatValue(value: string): void {
+    if (this.fiatFocus) return;
+
+    this.fiatValue = value ? this.fiatAmount : '';
+  }
+
+  setFiatValue(fiatValue: string): void {
+    this.fiatValue = fiatValue;
+    this.recalcValue();
+  }
+
+  setFiatFocus(flag: boolean): void {
+    this.fiatFocus = flag;
+  }
+
+  recalcValue(): void {
+    const result =
+      this.hasFiatValue && this.fiatValue ? new FPNumber(this.fiatValue).div(this.tokenPrice).toString() : '';
+
+    this.$emit('input', result);
+  }
 
   get isBalanceAvailable(): boolean {
     return !!this.balance && !!this.token;
@@ -126,10 +172,17 @@ export default class TokenInput extends Mixins(
     return this.MaxInputNumber;
   }
 
-  get fpBalance(): FPNumber {
-    if (!this.token || !this.balance) return FPNumber.ZERO;
+  get tokenPrice(): FPNumber {
+    const price = this.token ? this.getAssetFiatPrice(this.token) : null;
+    return FPNumber.fromCodecValue(price ?? ZeroStringValue);
+  }
 
-    return FPNumber.fromCodecValue(this.balance, this.decimals);
+  get hasFiatValue(): boolean {
+    return !this.tokenPrice.isZero();
+  }
+
+  get fpBalance(): FPNumber {
+    return FPNumber.fromCodecValue(this.balance ?? ZeroStringValue, this.decimals);
   }
 
   get formattedBalance(): string {
@@ -137,23 +190,14 @@ export default class TokenInput extends Mixins(
   }
 
   get formattedFiatBalance(): string {
-    if (!this.token || !this.balance) return ZeroStringValue;
-
-    const fpTokenPrice = FPNumber.fromCodecValue(this.tokenPrice ?? 0, this.decimals);
-
-    return this.fpBalance.mul(fpTokenPrice).toLocaleString();
+    return this.fpBalance.mul(this.tokenPrice).toLocaleString();
   }
 
-  get tokenPrice(): Nullable<CodecString> {
-    if (!this.token) return null;
+  get fiatAmount(): string {
+    const fpValue = new FPNumber(this.value || ZeroStringValue);
+    const fpAmount = fpValue.mul(this.tokenPrice).dp(2);
 
-    return this.getAssetFiatPrice(this.token);
-  }
-
-  get fiatAmount(): Nullable<string> {
-    if (!this.token) return null;
-
-    return this.getFiatAmount(this.amount, this.token);
+    return fpAmount.toString();
   }
 
   handleMax(): void {
@@ -167,16 +211,16 @@ export default class TokenInput extends Mixins(
 </script>
 
 <style lang="scss">
-$swap-input-class: '.el-input';
+$el-input-class: '.el-input';
 
-.s-input--token-value {
+.s-input.token-input {
   & > .s-input__content {
-    #{$swap-input-class} {
-      #{$swap-input-class}__inner {
+    #{$el-input-class} {
+      #{$el-input-class}__inner {
         padding-top: 0;
       }
     }
-    #{$swap-input-class}__inner {
+    #{$el-input-class}__inner {
       @include text-ellipsis;
       height: var(--s-size-small);
       padding-right: 0;
@@ -191,11 +235,40 @@ $swap-input-class: '.el-input';
       display: none;
     }
   }
+
+  &--fiat {
+    padding: 0;
+    min-height: initial;
+    box-shadow: none !important;
+    border-radius: 0;
+
+    & > .s-input__content {
+      color: var(--s-color-fiat-value);
+      line-height: var(--s-line-height-medium);
+      letter-spacing: var(--s-letter-spacing-small);
+      font-size: var(--s-font-size-small);
+      font-weight: 400;
+
+      .input-prefix {
+        padding-right: calc(var(--s-basic-spacing) / 4);
+      }
+
+      #{$el-input-class}__inner {
+        color: inherit;
+        letter-spacing: inherit;
+      }
+    }
+
+    &:focus,
+    &:focus-within {
+      outline: none;
+    }
+  }
 }
 </style>
 
 <style lang="scss" scoped>
-.s-input--token-value {
+.token-input {
   @include buttons;
 }
 </style>
