@@ -5,10 +5,10 @@
     has-locale-string
     :disabled="disabled"
     :value="value"
+    :max="maxValue"
     v-bind="{
       decimals,
       delimiters,
-      max,
       ...$attrs,
     }"
     v-on="$listeners"
@@ -64,14 +64,14 @@
             <s-float-input
               class="token-input--fiat"
               size="mini"
-              :decimals="2"
               :delimiters="$attrs.delimiters"
               :disabled="disabled"
+              :max="maxFiatValue"
               :readonly="!isFiatEditable"
               :value="fiatValue"
               @input="setFiatValue"
-              @focus="setFiatFocus(true)"
-              @blur="setFiatFocus(false)"
+              @focus="handleFiatFocus"
+              @blur="handleFiatBlur"
             >
               <span slot="left" class="input-prefix">$</span>
             </s-float-input>
@@ -116,6 +116,7 @@ export default class TokenInput extends Mixins(
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   @Prop({ type: String }) readonly value!: string;
+  @Prop({ type: [String, Number] }) readonly max!: string | number;
   @Prop({ default: () => null, type: Object }) readonly token!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: () => null, type: String }) readonly balance!: Nullable<CodecString>;
   @Prop({ default: '', type: String }) readonly title!: string;
@@ -129,12 +130,11 @@ export default class TokenInput extends Mixins(
   fiatValue = '';
   fiatFocus = false;
 
-  @Watch('value')
-  @Watch('token')
-  private updateFiatValue(value: string): void {
+  @Watch('fiatAmount')
+  private updateFiatValue(): void {
     if (this.fiatFocus) return;
 
-    this.fiatValue = value ? this.fiatAmount : '';
+    this.fiatValue = this.fiatAmount.isZero() ? '' : this.fiatAmount.toFixed(2);
   }
 
   setFiatValue(fiatValue: string): void {
@@ -142,8 +142,13 @@ export default class TokenInput extends Mixins(
     this.recalcValue();
   }
 
-  setFiatFocus(flag: boolean): void {
-    this.fiatFocus = flag;
+  handleFiatFocus(): void {
+    this.fiatFocus = true;
+    this.$emit('focus');
+  }
+
+  handleFiatBlur(): void {
+    this.fiatFocus = false;
   }
 
   recalcValue(): void {
@@ -168,13 +173,9 @@ export default class TokenInput extends Mixins(
     return tokenDecimals ?? FPNumber.DEFAULT_PRECISION;
   }
 
-  get max(): string {
-    return this.MaxInputNumber;
-  }
-
   get tokenPrice(): FPNumber {
-    const price = this.token ? this.getAssetFiatPrice(this.token) : null;
-    return FPNumber.fromCodecValue(price ?? ZeroStringValue);
+    if (!this.token) return FPNumber.ZERO;
+    return FPNumber.fromCodecValue(this.getAssetFiatPrice(this.token) ?? ZeroStringValue);
   }
 
   get hasFiatValue(): boolean {
@@ -193,11 +194,21 @@ export default class TokenInput extends Mixins(
     return this.fpBalance.mul(this.tokenPrice).toLocaleString();
   }
 
-  get fiatAmount(): string {
-    const fpValue = new FPNumber(this.value || ZeroStringValue);
-    const fpAmount = fpValue.mul(this.tokenPrice).dp(2);
+  get fiatAmount(): FPNumber {
+    return this.calcFiatAmount(this.value);
+  }
 
-    return fpAmount.toString();
+  get maxValue(): string | number {
+    return this.max || this.MaxInputNumber;
+  }
+
+  get maxFiatValue(): string {
+    return this.calcFiatAmount(this.maxValue).toString();
+  }
+
+  calcFiatAmount(value: string | number): FPNumber {
+    if (!value) return FPNumber.ZERO;
+    return new FPNumber(value).mul(this.tokenPrice);
   }
 
   handleMax(): void {
