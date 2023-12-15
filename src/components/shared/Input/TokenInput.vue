@@ -41,6 +41,7 @@
         alternative
         size="mini"
         border-radius="mini"
+        :loading="loading"
         @click.stop="handleMax"
       >
         {{ t('buttons.max') }}
@@ -52,20 +53,19 @@
         @click.stop="handleSelectToken"
       />
     </div>
-    <div slot="bottom" class="input-line input-line--footer">
-      <div class="s-flex">
-        <formatted-amount v-if="!!tokenPrice" is-fiat-value :value="fiatAmount" />
-        <slot name="fiat-amount-append" />
+
+    <template #bottom>
+      <div class="input-line input-line--footer">
+        <div v-if="!!tokenPrice" class="s-flex">
+          <formatted-amount is-fiat-value :value="fiatAmount" />
+          <slot name="fiat-amount-append" />
+        </div>
+
+        <token-address v-if="address" v-bind="token" :external="external" class="input-value" />
       </div>
 
-      <token-address
-        v-if="token"
-        :name="token.name"
-        :symbol="token.symbol"
-        :address="token.address"
-        class="input-value"
-      />
-    </div>
+      <slot />
+    </template>
   </s-float-input>
 </template>
 
@@ -77,10 +77,9 @@ import { Component, Mixins, ModelSync, Prop } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -95,9 +94,11 @@ export default class TokenInput extends Mixins(
   mixins.FormattedAmountMixin,
   TranslationMixin
 ) {
-  @Prop({ default: () => null, type: Object }) readonly token!: Nullable<AccountAsset>;
+  @Prop({ default: () => null, type: Object }) readonly token!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: () => null, type: String }) readonly balance!: Nullable<CodecString>;
+  @Prop({ default: false, type: Boolean }) readonly external!: boolean;
   @Prop({ default: '', type: String }) readonly title!: string;
+  @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMaxAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isSelectAvailable!: boolean;
 
@@ -106,18 +107,19 @@ export default class TokenInput extends Mixins(
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
-  @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
-
   get isBalanceAvailable(): boolean {
-    return this.isLoggedIn && !!this.token;
+    return !!this.balance && !!this.token;
   }
 
   get address(): string {
-    return this.token?.address ?? '';
+    const address = this.external ? this.token?.externalAddress : this.token?.address;
+    return address ?? '';
   }
 
   get decimals(): number {
-    return this.token?.decimals ?? FPNumber.DEFAULT_PRECISION;
+    const tokenDecimals = this.external ? this.token?.externalDecimals : this.token?.decimals;
+
+    return tokenDecimals ?? FPNumber.DEFAULT_PRECISION;
   }
 
   get max(): string {
@@ -165,8 +167,30 @@ export default class TokenInput extends Mixins(
 </script>
 
 <style lang="scss">
-.s-input--token-value .el-input .el-input__inner {
-  @include text-ellipsis;
+$swap-input-class: '.el-input';
+
+.s-input--token-value {
+  & > .s-input__content {
+    #{$swap-input-class} {
+      #{$swap-input-class}__inner {
+        padding-top: 0;
+      }
+    }
+    #{$swap-input-class}__inner {
+      @include text-ellipsis;
+      height: var(--s-size-small);
+      padding-right: 0;
+      padding-left: 0;
+      border-radius: 0 !important;
+      color: var(--s-color-base-content-primary);
+      font-size: var(--s-font-size-large);
+      line-height: var(--s-line-height-small);
+      font-weight: 800;
+    }
+    .s-placeholder {
+      display: none;
+    }
+  }
 }
 </style>
 

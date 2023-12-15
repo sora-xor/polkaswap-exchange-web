@@ -503,34 +503,11 @@ ul ul {
     animation: none;
   }
 }
+
 .el-form--actions {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  $swap-input-class: '.el-input';
-  .s-input--token-value,
-  .s-input-amount {
-    #{$swap-input-class} {
-      #{$swap-input-class}__inner {
-        padding-top: 0;
-      }
-    }
-    #{$swap-input-class}__inner {
-      @include text-ellipsis;
-      height: var(--s-size-small);
-      padding-right: 0;
-      padding-left: 0;
-      border-radius: 0 !important;
-      color: var(--s-color-base-content-primary);
-      font-size: var(--s-font-size-large);
-      line-height: var(--s-line-height-small);
-      font-weight: 800;
-    }
-    .s-placeholder {
-      display: none;
-    }
-  }
 }
 
 .el-message-box {

@@ -38,99 +38,60 @@
             </swap-status-action-badge>
           </div>
         </generic-page-header>
-        <s-float-input
-          :value="amountSend"
-          :decimals="amountDecimals"
-          :delimiters="delimiters"
-          :max="MaxInputNumber"
-          :disabled="!(areAccountsConnected && isAssetSelected)"
-          class="s-input--token-value"
+
+        <token-input
           id="bridgeFrom"
           data-test-name="bridgeFrom"
-          has-locale-string
-          size="medium"
+          :balance="firstBalance ? firstBalance.toCodecString() : null"
+          :decimals="amountDecimals"
+          :delimiters="delimiters"
+          :disabled="!(areAccountsConnected && isAssetSelected)"
+          :external="!isSoraToEvm"
+          :is-max-available="isMaxAvailable"
+          :is-select-available="!autoselectedAssetAddress"
+          :loading="isConfirmTxLoading"
+          :value="amountSend"
+          :title="t('transfers.from')"
+          :token="asset"
           @input="setSendedAmount"
           @focus="setFocusedField(FocusedField.Sended)"
+          @max="handleMaxValue"
+          @select="openSelectAssetDialog"
         >
-          <div slot="top" class="input-line">
-            <div class="input-title">
-              <span class="input-title--uppercase input-title--primary">{{ t('transfers.from') }}</span>
-              <span class="input-title--network">{{ getBridgeItemTitle(isSoraToEvm) }}</span>
-              <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : networkSelected)}`" />
-            </div>
-            <div v-if="sender && isAssetSelected" class="input-value">
-              <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
-              <formatted-amount-with-fiat-value
-                value-can-be-hidden
-                with-left-shift
-                value-class="input-value--primary"
-                :value="formatBalance(firstBalance)"
-                :fiat-value="firstFieldFiatBalance"
-              />
-            </div>
-          </div>
-          <div slot="right" v-if="sender || recipient" class="s-flex el-buttons">
-            <s-button
-              v-if="isMaxAvailable"
-              :loading="isConfirmTxLoading"
-              class="el-button--max s-typography-button--small"
-              type="primary"
-              alternative
-              size="mini"
-              border-radius="mini"
-              @click="handleMaxValue"
-            >
-              {{ t('buttons.max') }}
-            </s-button>
-            <token-select-button
-              icon="chevron-down-rounded-16"
-              :disabled="!!autoselectedAssetAddress"
-              :token="asset"
-              @click="openSelectAssetDialog"
-            />
-          </div>
-          <template #bottom>
-            <div class="input-line input-line--footer">
-              <template v-if="isAssetSelected">
-                <formatted-amount is-fiat-value :value="getFiatAmountByString(amountSend, asset)" />
-                <token-address
-                  v-if="isSoraToEvm || asset.externalAddress"
-                  v-bind="asset"
-                  :external="!isSoraToEvm"
-                  class="input-value"
-                />
-              </template>
-            </div>
-            <div v-if="sender" class="connect-wallet-panel">
-              <s-divider type="tertiary" />
-              <bridge-account-panel :address="sender" :name="senderName" :tooltip="getCopyTooltip(isSoraToEvm)">
-                <template #icon v-if="changeSenderWalletEvm">
-                  <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
-                </template>
-              </bridge-account-panel>
-              <div class="connect-wallet-group">
-                <span v-if="changeSenderWalletEvm" class="connect-wallet-btn" @click="connectExternalWallet">
-                  {{ t('changeAccountText') }}
-                </span>
-                <span v-else>{{ t('connectedText') }}</span>
-                <span
-                  v-if="changeSenderWalletEvm"
-                  class="connect-wallet-btn disconnect"
-                  @click="resetEvmProviderConnection"
-                >{{ t('disconnectWalletText') }}</span>
-              </div>
-            </div>
-            <s-button
-              v-else
-              class="el-button--connect s-typography-button--large"
-              data-test-name="connectPolkadot"
-              type="primary"
-              @click="connectSenderWallet"
-            >
-              {{ t('connectWalletText') }}
-            </s-button>
+          <template #title-append>
+            <span class="input-title--network">{{ formatSelectedNetwork(isSoraToEvm) }}</span>
+            <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : networkSelected)}`" />
           </template>
-        </s-float-input>
+
+          <div v-if="sender" class="connect-wallet-panel">
+            <s-divider type="tertiary" />
+            <bridge-account-panel :address="sender" :name="senderName" :tooltip="getCopyTooltip(isSoraToEvm)">
+              <template #icon v-if="changeSenderWalletEvm">
+                <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
+              </template>
+            </bridge-account-panel>
+            <div class="connect-wallet-group">
+              <span v-if="changeSenderWalletEvm" class="connect-wallet-btn" @click="connectExternalWallet">
+                {{ t('changeAccountText') }}
+              </span>
+              <span v-else>{{ t('connectedText') }}</span>
+              <span
+                v-if="changeSenderWalletEvm"
+                class="connect-wallet-btn disconnect"
+                @click="resetEvmProviderConnection"
+              >{{ t('disconnectWalletText') }}</span>
+            </div>
+          </div>
+          <s-button
+            v-else
+            class="el-button--connect s-typography-button--large"
+            data-test-name="connectPolkadot"
+            type="primary"
+            @click="connectSenderWallet"
+          >
+            {{ t('connectWalletText') }}
+          </s-button>
+        </token-input>
 
         <s-button
           class="s-button--switch"
@@ -141,86 +102,60 @@
           @click="switchDirection"
         />
 
-        <s-float-input
-          :value="amountReceived"
+        <token-input
+          id="bridgeTo"
+          data-test-name="bridgeTo"
+          :balance="secondBalance ? secondBalance.toCodecString() : null"
           :decimals="amountDecimals"
           :delimiters="delimiters"
           :disabled="!(areAccountsConnected && isAssetSelected)"
-          :max="MaxInputNumber"
-          class="s-input--token-value"
-          data-test-name="bridgeTo"
-          id="bridgeTo"
-          has-locale-string
-          size="medium"
+          :external="isSoraToEvm"
+          :loading="isConfirmTxLoading"
+          :value="amountReceived"
+          :title="t('transfers.to')"
+          :token="asset"
           @input="setReceivedAmount"
           @focus="setFocusedField(FocusedField.Received)"
+          @select="openSelectAssetDialog"
         >
-          <div slot="top" class="input-line">
-            <div class="input-title">
-              <span class="input-title--uppercase input-title--primary">{{ t('transfers.to') }}</span>
-              <span class="input-title--network">{{ getBridgeItemTitle(!isSoraToEvm) }}</span>
-              <i :class="`network-icon network-icon--${getNetworkIcon(!isSoraToEvm ? 0 : networkSelected)}`" />
-            </div>
-            <div v-if="recipient && isAssetSelected" class="input-value">
-              <span class="input-value--uppercase">{{ t('bridge.balance') }}</span>
-              <formatted-amount-with-fiat-value
-                value-can-be-hidden
-                with-left-shift
-                value-class="input-value--primary"
-                :value="formatBalance(secondBalance)"
-                :fiat-value="secondFieldFiatBalance"
-              />
-            </div>
-          </div>
-          <div slot="right" v-if="isAssetSelected" class="s-flex el-buttons">
-            <token-select-button disabled :token="asset" />
-          </div>
-          <template #bottom>
-            <div class="input-line input-line--footer">
-              <template v-if="isAssetSelected">
-                <formatted-amount is-fiat-value :value="getFiatAmountByString(amountReceived, asset)" />
-                <token-address
-                  v-if="!isSoraToEvm || asset.externalAddress"
-                  v-bind="asset"
-                  :external="isSoraToEvm"
-                  class="input-value"
-                />
-              </template>
-            </div>
-            <div v-if="recipient" class="connect-wallet-panel">
-              <s-divider type="tertiary" />
-              <bridge-account-panel :address="recipient" :name="recipientName" :tooltip="getCopyTooltip(!isSoraToEvm)">
-                <template #icon v-if="changeRecipientWalletEvm">
-                  <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
-                </template>
-              </bridge-account-panel>
-              <div class="connect-wallet-group">
-                <span
-                  v-if="isSubBridge || changeRecipientWalletEvm"
-                  class="connect-wallet-btn"
-                  @click="connectExternalWallet"
-                >
-                  {{ t('changeAccountText') }}
-                </span>
-                <span v-else>{{ t('connectedText') }}</span>
-                <span
-                  v-if="changeRecipientWalletEvm"
-                  class="connect-wallet-btn disconnect"
-                  @click="resetEvmProviderConnection"
-                >{{ t('disconnectWalletText') }}</span>
-              </div>
-            </div>
-            <s-button
-              v-else
-              class="el-button--connect s-typography-button--large"
-              data-test-name="useMetamaskProvider"
-              type="primary"
-              @click="connectRecipientWallet"
-            >
-              {{ t('connectWalletText') }}
-            </s-button>
+          <template #title-append>
+            <span class="input-title--network">{{ formatSelectedNetwork(!isSoraToEvm) }}</span>
+            <i :class="`network-icon network-icon--${getNetworkIcon(!isSoraToEvm ? 0 : networkSelected)}`" />
           </template>
-        </s-float-input>
+
+          <div v-if="recipient" class="connect-wallet-panel">
+            <s-divider type="tertiary" />
+            <bridge-account-panel :address="recipient" :name="recipientName" :tooltip="getCopyTooltip(!isSoraToEvm)">
+              <template #icon v-if="changeRecipientWalletEvm">
+                <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
+              </template>
+            </bridge-account-panel>
+            <div class="connect-wallet-group">
+              <span
+                v-if="isSubBridge || changeRecipientWalletEvm"
+                class="connect-wallet-btn"
+                @click="connectExternalWallet"
+              >
+                {{ t('changeAccountText') }}
+              </span>
+              <span v-else>{{ t('connectedText') }}</span>
+              <span
+                v-if="changeRecipientWalletEvm"
+                class="connect-wallet-btn disconnect"
+                @click="resetEvmProviderConnection"
+              >{{ t('disconnectWalletText') }}</span>
+            </div>
+          </div>
+          <s-button
+            v-else
+            class="el-button--connect s-typography-button--large"
+            data-test-name="useMetamaskProvider"
+            type="primary"
+            @click="connectRecipientWallet"
+          >
+            {{ t('connectWalletText') }}
+          </s-button>
+        </token-input>
 
         <s-button
           v-if="!isValidNetwork && areAccountsConnected"
@@ -372,6 +307,7 @@ import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
+    TokenInput: lazyComponent(Components.TokenInput),
     FormattedAmount: components.FormattedAmount,
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
     InfoLine: components.InfoLine,
@@ -445,26 +381,12 @@ export default class Bridge extends Mixins(
     return this.formatNetworkShortName(false);
   }
 
-  get assetAddress(): string {
-    return this.asset?.address ?? '';
-  }
-
   get firstBalance(): Nullable<FPNumber> {
-    return this.getBalance(this.isSoraToEvm);
+    return this.sender ? this.getBalance(this.isSoraToEvm) : null;
   }
 
   get secondBalance(): Nullable<FPNumber> {
-    return this.getBalance(!this.isSoraToEvm);
-  }
-
-  get firstFieldFiatBalance(): Nullable<string> {
-    return this.firstBalance ? this.getFiatAmountByFPNumber(this.firstBalance, this.asset as AccountAsset) : undefined;
-  }
-
-  get secondFieldFiatBalance(): Nullable<string> {
-    return this.secondBalance
-      ? this.getFiatAmountByFPNumber(this.secondBalance, this.asset as AccountAsset)
-      : undefined;
+    return this.recipient ? this.getBalance(!this.isSoraToEvm) : null;
   }
 
   get isZeroAmountSend(): boolean {
@@ -641,10 +563,6 @@ export default class Bridge extends Mixins(
     return this.getFPNumberFromCodec(balance, decimals);
   }
 
-  formatBalance(balance: Nullable<FPNumber>): string {
-    return balance ? balance.toLocaleString() : '-';
-  }
-
   async created(): Promise<void> {
     await this.withParentLoading(async () => {
       const { address, amount, isIncoming } = this.$route.params;
@@ -656,10 +574,6 @@ export default class Bridge extends Mixins(
         this.updateAssetAddress(address);
       }
     });
-  }
-
-  getBridgeItemTitle(isSoraNetwork = false): string {
-    return this.formatSelectedNetwork(isSoraNetwork);
   }
 
   getCopyTooltip(isSoraNetwork = false): string {
@@ -766,9 +680,6 @@ export default class Bridge extends Mixins(
 </script>
 
 <style lang="scss">
-$bridge-input-class: '.el-input';
-$bridge-input-color: var(--s-color-base-content-tertiary);
-
 .bridge {
   &-content > .el-card__body {
     display: flex;
@@ -819,7 +730,6 @@ $bridge-input-color: var(--s-color-base-content-tertiary);
 
   &-content {
     @include bridge-content;
-    @include token-styles;
     @include vertical-divider('s-button--switch', $inner-spacing-medium);
     @include vertical-divider('s-divider-tertiary');
     @include buttons;
