@@ -64,9 +64,11 @@
             <s-float-input
               class="token-input--fiat"
               size="mini"
+              has-locale-string
+              :decimals="2"
               :delimiters="$attrs.delimiters"
               :disabled="disabled"
-              :max="maxFiatValue"
+              :max="maxFiatValueFormatted"
               :readonly="!isFiatEditable"
               :value="fiatValue"
               @input="setFiatValue"
@@ -126,6 +128,7 @@ export default class TokenInput extends Mixins(
   @Prop({ default: false, type: Boolean }) readonly isMaxAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isSelectAvailable!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isFiatEditable!: boolean;
+  @Prop({ default: 2, type: Number }) readonly fiatDecimals!: number;
 
   fiatValue = '';
   fiatFocus = false;
@@ -134,12 +137,21 @@ export default class TokenInput extends Mixins(
   private updateFiatValue(): void {
     if (this.fiatFocus) return;
 
-    this.fiatValue = this.fiatAmount.isZero() ? '' : this.fiatAmount.toFixed(2);
+    this.fiatValue = this.fiatAmount.isZero() ? '' : this.fiatAmount.toFixed(this.fiatDecimals);
+  }
+
+  recalcValue(fiatValue: string): void {
+    const result =
+      !this.tokenPrice.isZero() && fiatValue ? new FPNumber(fiatValue).div(this.tokenPrice).toString() : '';
+
+    this.$emit('input', result);
   }
 
   setFiatValue(fiatValue: string): void {
-    this.fiatValue = fiatValue;
-    this.recalcValue();
+    this.fiatValue =
+      fiatValue === this.maxFiatValueFormatted ? this.maxFiatValue.toFixed(this.fiatDecimals) : fiatValue;
+
+    this.recalcValue(fiatValue);
   }
 
   handleFiatFocus(): void {
@@ -149,13 +161,6 @@ export default class TokenInput extends Mixins(
 
   handleFiatBlur(): void {
     this.fiatFocus = false;
-  }
-
-  recalcValue(): void {
-    const result =
-      this.hasFiatValue && this.fiatValue ? new FPNumber(this.fiatValue).div(this.tokenPrice).toString() : '';
-
-    this.$emit('input', result);
   }
 
   get isBalanceAvailable(): boolean {
@@ -202,8 +207,12 @@ export default class TokenInput extends Mixins(
     return this.max || this.MaxInputNumber;
   }
 
-  get maxFiatValue(): string {
-    return this.calcFiatAmount(this.maxValue).toString();
+  get maxFiatValue(): FPNumber {
+    return this.calcFiatAmount(this.maxValue);
+  }
+
+  get maxFiatValueFormatted(): string {
+    return this.maxFiatValue.toString();
   }
 
   calcFiatAmount(value: string | number): FPNumber {
