@@ -1,9 +1,14 @@
 <template>
-  <div :class="['app-menu', { visible, 'app-menu__about': isAboutPageOpened, 'app-menu__loading': pageLoading }]">
+  <div
+    :class="[
+      'app-menu',
+      { visible, collapsed, 'app-menu__about': isAboutPageOpened, 'app-menu__loading': pageLoading },
+    ]"
+  >
     <s-button
-      :class="['app-menu__collapse-button', { collapsed }]"
+      class="collapse-button"
+      id="collapse-button"
       type="action"
-      primary
       size="small"
       :icon="collapseIcon"
       :tooltip="collapseTooltip"
@@ -40,7 +45,6 @@
                   :href="item.href"
                   :icon="item.icon"
                   :title="t(`mainMenu.${item.title}`)"
-                  :small="collapsed"
                   @click.native="preventAnchorNavigation"
                 />
               </s-menu-item>
@@ -59,7 +63,6 @@
             <app-sidebar-item-content
               v-if="false"
               v-button
-              :small="collapsed"
               icon="star-16"
               title="Vote on Survey!"
               href="https://soramitsu.typeform.com/Polkaswap"
@@ -70,7 +73,6 @@
             />
             <app-sidebar-item-content
               v-button
-              :small="collapsed"
               icon="symbols-24"
               :title="t('mobilePopup.sideMenu')"
               class="el-menu-item menu-item--small"
@@ -80,7 +82,6 @@
             <app-info-popper>
               <app-sidebar-item-content
                 v-button
-                :small="collapsed"
                 icon="info-16"
                 :title="t('footerMenu.info')"
                 class="el-menu-item menu-item--small"
@@ -92,7 +93,6 @@
               :icon="FaucetLink.icon"
               :title="t(`footerMenu.${FaucetLink.title}`)"
               :href="faucetUrl"
-              :small="collapsed"
               tag="a"
               target="_blank"
               rel="nofollow noopener"
@@ -136,7 +136,7 @@ import AppSidebarItemContent from './SidebarItemContent.vue';
 export default class AppMenu extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) readonly visible!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isAboutPageOpened!: boolean;
-  @Prop({ default: () => {}, type: Function }) readonly onSelect!: FnWithoutArgs;
+  @Prop({ default: () => {}, type: Function }) readonly onSelect!: (item: any) => void;
 
   @state.settings.faucetUrl faucetUrl!: string;
   @state.router.loading pageLoading!: boolean;
@@ -194,7 +194,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     e?.preventDefault();
   }
 
-  collapseMenu() {
+  collapseMenu(e?: PointerEvent) {
+    ((e?.target as HTMLElement).closest('#collapse-button') as HTMLElement).blur();
     this.collapsed = !this.collapsed;
   }
 }
@@ -202,7 +203,28 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .app-sidebar-scrollbar {
-  @include scrollbar;
+  @include scrollbar(0, 0);
+}
+
+.app-menu.collapsed {
+  @include tablet {
+    background: var(--s-color-utility-body);
+
+    .sidebar-item-content {
+      & > .icon-container + span {
+        display: none;
+      }
+    }
+
+    &:hover,
+    &:focus {
+      .sidebar-item-content {
+        & > .icon-container + span {
+          display: initial;
+        }
+      }
+    }
+  }
 }
 
 .menu.el-menu {
@@ -282,20 +304,29 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 </style>
 
 <style lang="scss" scoped>
+.collapse-button {
+  position: absolute;
+  top: 50%;
+  left: calc(100% - var(--s-size-small) / 2);
+  bottom: 0;
+  margin: auto;
+  transition-duration: 0.2s;
+  z-index: #{$app-sidebar-layer} + 1;
+
+  &:hover,
+  &:focus,
+  &.focusing {
+    background: var(--s-color-theme-accent-hover) !important;
+    border-color: var(--s-color-utility-surface) !important;
+    color: var(--s-color-base-on-accent) !important;
+  }
+}
 .app {
   &-sidebar-scrollbar {
     height: 100%;
   }
   &-menu {
-    &__collapse-button {
-      position: absolute;
-      top: 50%;
-      left: calc(100% - var(--s-size-small) / 2);
-      bottom: 0;
-      margin: auto;
-      transition-duration: 0.2s;
-      z-index: #{$app-sidebar-layer} + 1;
-
+    .collapse-button {
       opacity: 0;
 
       @include tablet {
@@ -308,9 +339,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     @include tablet {
       &:hover,
       &:focus,
-      &:focus-within,
-      &:active {
-        .app-menu__collapse-button {
+      &:focus-within {
+        .collapse-button {
           opacity: 1;
         }
       }
@@ -321,7 +351,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     top: 0;
     bottom: 0;
     left: 0;
-    right: 0;
     z-index: $app-sidebar-layer;
     visibility: hidden;
 
@@ -349,23 +378,26 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
     }
 
+    @include large-mobile(true) {
+      right: 0;
+    }
+
     @include large-mobile {
       visibility: visible;
       position: relative;
+    }
 
-      .app-sidebar {
-        max-width: initial;
+    @include desktop {
+      position: absolute;
+
+      &:not(.collapsed) {
+        position: relative;
       }
     }
 
     @include large-desktop {
-      position: absolute;
-      right: initial;
-    }
-
-    &__about {
-      @include tablet {
-        position: relative;
+      &:not(.collapsed) {
+        position: absolute;
       }
     }
 
@@ -379,7 +411,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
-    padding: $inner-spacing-small 0;
+    padding: $inner-spacing-mini 0;
     border-right: none;
 
     &-menu {

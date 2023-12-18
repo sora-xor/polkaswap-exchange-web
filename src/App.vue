@@ -406,6 +406,8 @@ ul ul {
 .app {
   .el-loading-mask {
     background-color: var(--s-color-utility-body);
+    z-index: $app-loader-layer;
+
     .el-loading-spinner {
       background-image: url('~@/assets/img/pswap-loader.svg');
       height: var(--s-size-medium);
@@ -570,14 +572,15 @@ i.icon-divider {
   .app-main {
     &.app-main--swap.app-main--has-charts {
       .app-menu {
-        position: relative;
-      }
-    }
+        &:not(.collapsed) {
+          position: relative;
+        }
 
-    &.app-main--has-charts {
-      .app-content {
-        width: 100%;
-        padding-left: $basic-spacing * 2;
+        &.collapsed {
+          & + .app-body {
+            margin-left: 74px;
+          }
+        }
       }
     }
   }
@@ -607,8 +610,7 @@ i.icon-divider {
 
   &-content {
     flex: 1;
-    margin: $inner-spacing-big auto;
-    width: 100%;
+    padding: $inner-spacing-medium;
   }
 
   &-footer {

@@ -1,9 +1,7 @@
 <template>
   <component :is="tag" :class="classes" :tabindex="tabindex">
     <div class="icon-container">
-      <s-tooltip border-radius="mini" :content="title">
-        <s-icon :name="icon" :tooltip-text="title" size="28" />
-      </s-tooltip>
+      <s-icon :name="icon" :tooltip-text="title" size="28" />
     </div>
     <span>{{ title }}</span>
   </component>
@@ -19,7 +17,6 @@ export default class AppSidebarItemContent extends Mixins(TranslationMixin) {
   @Prop({ default: '', type: String }) readonly icon!: string;
   @Prop({ default: '', type: String }) readonly title!: string;
   @Prop({ default: 'div', type: String }) readonly tag!: string;
-  @Prop({ default: false, type: Boolean }) readonly small!: boolean;
   @Prop() readonly tabindex!: string | number;
 
   get classes(): Array<string> {
@@ -28,10 +25,6 @@ export default class AppSidebarItemContent extends Mixins(TranslationMixin) {
 
     if (this.tag === 'a') {
       classes.push(`${base}--link`);
-    }
-
-    if (this.small) {
-      classes.push(`${base}--small`);
     }
 
     return classes;
@@ -53,12 +46,6 @@ $icon-size: 42px;
     &:visited {
       text-decoration: none;
       color: inherit;
-    }
-  }
-
-  &--small {
-    .icon-container + span {
-      display: none !important;
     }
   }
 }
