@@ -60,6 +60,7 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
   @Watch('visible')
   private resetMode() {
     this.mode = ValidatorsListMode.USER;
+    this.isSelectingEditingMode = false;
   }
 
   get title(): string {

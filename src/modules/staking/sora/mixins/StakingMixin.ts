@@ -18,6 +18,7 @@ import type {
   AccountStakingLedger,
   MyStakingInfo,
   NominatorReward,
+  Payouts,
 } from '@sora-substrate/util/build/staking/types';
 
 @Component
@@ -53,7 +54,11 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   @action.staking.bondExtra bondExtra!: AsyncFnWithoutArgs;
   @action.staking.unbond unbond!: AsyncFnWithoutArgs;
   @action.staking.withdraw withdraw!: (value: number) => Promise<void>;
-  @action.staking.payoutAll payoutAll!: AsyncFnWithoutArgs;
+  @action.staking.payout payout!: (args: { payouts: Payouts; payee?: string }) => Promise<string>;
+  @action.staking.getPayoutNetworkFee getPayoutNetworkFee!: (args: {
+    payouts: Payouts;
+    payee?: string;
+  }) => Promise<string>;
 
   StakingPageNames = StakingPageNames;
   SoraStakingPageNames = SoraStakingPageNames;
@@ -143,6 +148,10 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
 
   get rewardedFundsFiat(): Nullable<string> {
     return this.rewardAsset ? this.getFiatAmountByFPNumber(this.rewardedFunds, this.rewardAsset) : null;
+  }
+
+  get rewardedFundsFormatted(): string {
+    return this.rewardedFunds.toLocaleString();
   }
 
   get stakingInitialized(): boolean {

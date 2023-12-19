@@ -3,6 +3,7 @@ import { defineActions } from 'direct-vuex';
 
 import { stakingActionContext } from '@/store/staking';
 
+import type { Payouts } from '@sora-substrate/util/build/staking/types';
 import type { Subscription } from 'rxjs';
 
 const actions = defineActions({
@@ -70,13 +71,17 @@ const actions = defineActions({
     await api.staking.withdrawUnbonded({ value: amount });
   },
 
-  async payoutAll(context): Promise<void> {
-    const { state } = stakingActionContext(context);
+  async payout(context, { payouts, payee }: { payouts: Payouts; payee: string }): Promise<void> {
+    return await api.staking.payout({
+      payouts,
+      payee,
+    });
+  },
 
-    if (!state.pendingRewards) throw new Error('Pending rewards are not set');
-
-    await api.staking.payout({
-      payouts: state.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) })),
+  async getPayoutNetworkFee(context, { payouts, payee }: { payouts: Payouts; payee: string }): Promise<string> {
+    return await api.staking.getPayoutNetworkFee({
+      payouts,
+      payee,
     });
   },
 

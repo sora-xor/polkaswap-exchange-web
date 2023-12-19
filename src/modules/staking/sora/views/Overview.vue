@@ -144,11 +144,11 @@
       :parent-loading="parentLoading || loading"
       @confirm="handleNominate"
     />
-    <controller-dialog
+    <!-- <controller-dialog
       :visible.sync="showControllerDialog"
       :parent-loading="parentLoading || loading"
       @confirm="handleChangeController"
-    />
+    /> -->
   </div>
 </template>
 

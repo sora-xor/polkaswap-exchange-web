@@ -80,20 +80,19 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
+import { action } from '@/store/decorators';
 import { formatDecimalPlaces } from '@/utils';
 
 import { soraStakingLazyComponent } from '../../router';
 import { ERA_HOURS, SoraStakingComponents } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
 import ValidatorsMixin from '../mixins/ValidatorsMixin';
-
-import type { CodecString } from '@sora-substrate/util';
 
 @Component({
   components: {
@@ -110,8 +109,19 @@ export default class PendingRewardsDialog extends Mixins(
   mixins.DialogMixin,
   mixins.LoadingMixin
 ) {
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.StakingPayout];
+  payoutNetworkFee: string | null = null;
+
+  @Watch('pendingRewards')
+  async handlePendingRewardsChange() {
+    this.payoutNetworkFee = await this.getPayoutNetworkFee({
+      payouts: this.pendingRewards
+        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
+        : [],
+    });
+  }
+
+  get networkFee() {
+    return this.payoutNetworkFee || '0';
   }
 
   get title(): string {
@@ -171,7 +181,12 @@ export default class PendingRewardsDialog extends Mixins(
   }
 
   async handleConfirm(): Promise<void> {
-    await this.payoutAll();
+    await this.payout({
+      payouts: this.pendingRewards
+        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
+        : [],
+      payee: this.payee,
+    });
   }
 }
 </script>

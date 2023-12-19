@@ -19,10 +19,10 @@
       <div class="info">
         <info-line
           v-if="stakingInitialized"
-          :label="t('soraStaking.info.redeemable')"
-          :value="redeemableFundsFormatted"
+          :label="t('soraStaking.info.claimable')"
+          :value="rewardedFundsFormatted"
           :asset-symbol="rewardAsset?.symbol"
-          :fiat-value="redeemableFundsFiat"
+          :fiat-value="rewardedFundsFiat"
         />
         <info-line
           :label="t('networkFeeText')"
@@ -51,7 +51,9 @@
           {{ t('confirmText') }}
         </template>
       </s-button>
-      <div class="check-pending-rewards" @click="checkPendingRewards">Check pending rewards</div>
+      <div class="check-pending-rewards" @click="checkPendingRewards">
+        Check rewards per era and validator ({{ pendingRewards?.length ?? 0 }})
+      </div>
     </div>
   </dialog-base>
 </template>
@@ -85,6 +87,16 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
 
   value = '';
   payeeAddress = '';
+  payoutNetworkFee: string | null = null;
+
+  @Watch('pendingRewards')
+  async handlePendingRewardsChange() {
+    this.payoutNetworkFee = await this.getPayoutNetworkFee({
+      payouts: this.pendingRewards
+        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
+        : [],
+    });
+  }
 
   get networkFee(): CodecString {
     return this.networkFees[Operation.StakingPayout];
