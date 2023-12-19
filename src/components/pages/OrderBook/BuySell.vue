@@ -282,7 +282,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       if (!this.quoteValue) return 'set price';
       if (!this.baseValue) return 'enter amount';
 
-      if (this.isPriceTooHigh || this.isPriceTooLow || !this.isPriceBeyondPrecision) {
+      // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
+      // if (this.isPriceTooHigh || this.isPriceTooLow || !this.isPriceBeyondPrecision) {
+      //   return "can't place order";
+      // }
+
+      if (!this.isPriceBeyondPrecision) {
         return "can't place order";
       }
 
@@ -318,7 +323,9 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.limitOrderType === LimitOrderType.limit) {
       if (!this.baseValue || !this.quoteValue) return true;
-      if (this.isPriceTooHigh || this.isPriceTooLow || !this.isPriceBeyondPrecision) return true;
+      // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
+      // if (this.isPriceTooHigh || this.isPriceTooLow || !this.isPriceBeyondPrecision) return true;
+      if (!this.isPriceBeyondPrecision) return true;
 
       if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel) {
         if (this.priceExceedsSpread()) return true;
@@ -337,19 +344,19 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.orderBookStatus === OrderBookStatus.Stop) return;
 
-    if (this.isPriceTooHigh && this.quoteValue && this.baseValue)
-      return this.setError({
-        reason: 'Price is too far above/below the market price.',
-        reading:
-          'Price range alert: Your price is more than 50% above or below the current market price. Please enter a more closely aligned market price',
-      });
-
-    if (this.isPriceTooLow && this.quoteValue && this.baseValue)
-      return this.setError({
-        reason: 'Price is too far above/below the market price.',
-        reading:
-          'Price range alert: Your price is more than 50% above or below the current market price. Please enter a more closely aligned market price',
-      });
+    // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
+    // if (this.isPriceTooHigh && this.quoteValue && this.baseValue)
+    //   return this.setError({
+    //     reason: 'Price is too far above/below the market price.',
+    //     reading:
+    //       'Price range alert: Your price is more than 50% above or below the current market price. Please enter a more closely aligned market price',
+    //   });
+    // if (this.isPriceTooLow && this.quoteValue && this.baseValue)
+    //   return this.setError({
+    //     reason: 'Price is too far above/below the market price.',
+    //     reading:
+    //       'Price range alert: Your price is more than 50% above or below the current market price. Please enter a more closely aligned market price',
+    //   });
 
     if (!this.isPriceBeyondPrecision && this.baseValue)
       return this.setError({
@@ -465,14 +472,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return false;
   }
 
-  get bookPrecision(): number {
-    return this.currentOrderBook?.tickSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length || 2;
-  }
-
-  get amountPrecision(): number {
-    return this.currentOrderBook?.stepLotSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length || 2;
-  }
-
   get isPriceBeyondPrecision(): boolean {
     if (!this.currentOrderBook) return false;
 
@@ -480,6 +479,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     const price = new FPNumber(this.quoteValue, 18);
 
     return price.isZeroMod(tickSize);
+  }
+
+  get bookPrecision(): number {
+    return this.currentOrderBook?.tickSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length || 2;
+  }
+
+  get amountPrecision(): number {
+    return this.currentOrderBook?.stepLotSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length || 2;
   }
 
   isOutOfAmountBounds(amount: string): boolean {
