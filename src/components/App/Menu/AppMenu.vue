@@ -49,25 +49,16 @@
           active-hover-color="transparent"
         >
           <app-sidebar-item-content
-            v-if="false"
             v-button
             icon="star-16"
             title="Vote on Survey!"
-            href="https://soramitsu.typeform.com/Polkaswap"
+            href="https://form.typeform.com/to/Mb6p2Kpy"
             tag="a"
             target="_blank"
             rel="nofollow noopener"
             class="el-menu-item menu-item--small marketing"
           />
-          <app-sidebar-item-content
-            v-button
-            icon="symbols-24"
-            :title="t('mobilePopup.sideMenu')"
-            class="el-menu-item menu-item--small"
-            tabindex="0"
-            @click.native="openSoraDownloadDialog"
-          />
-          <app-info-popper>
+          <app-info-popper @open-product-dialog="openProductDialog">
             <app-sidebar-item-content
               v-button
               icon="info-16"
@@ -166,8 +157,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     return currentName as string;
   }
 
-  openSoraDownloadDialog(): void {
-    this.$emit('open-download-dialog');
+  openProductDialog(product: string): void {
+    this.$emit('open-product-dialog', product);
   }
 
   /** To ignore left click */
@@ -328,7 +319,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
-    padding: $inner-spacing-small 0;
+    padding-top: $inner-spacing-small;
     border-right: none;
 
     &-menu {
