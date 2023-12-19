@@ -108,7 +108,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
   readonly PriceVariant = PriceVariant;
 
-  maxRowsNumber = 10;
+  maxRowsNumber = 11;
   selectedStep = '10';
   scalerOpen = false;
   steps: Array<string> = [];
@@ -248,7 +248,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   getHeight() {
-    const margin = this.asksFormatted.length < 10 ? this.maxRowsNumber - this.asksFormatted.length : 0;
+    const margin = this.asksFormatted.length < this.maxRowsNumber ? this.maxRowsNumber - this.asksFormatted.length : 0;
     return `height: ${24 * margin}px`;
   }
 
@@ -456,7 +456,7 @@ $background-column-color-dark: #693d81;
 
   &-buy,
   &-sell {
-    height: $row-height * 11;
+    height: $row-height * 12;
     transform: scaleX(-1);
     .bar {
       width: 40%;

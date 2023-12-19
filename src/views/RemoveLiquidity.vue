@@ -10,7 +10,7 @@
       <s-float-input
         ref="removePart"
         size="medium"
-        :class="['s-input--token-value', 's-input--remove-part', removePartCharClass]"
+        :class="['s-input--token-value', 's-input--with-slider', removePartCharClass]"
         :value="removePart"
         :decimals="0"
         :disabled="liquidityLocked"
@@ -128,6 +128,7 @@ import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
+import InputSliderMixin from '@/components/mixins/InputSliderMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
 import { Components, PageNames } from '@/consts';
@@ -157,7 +158,8 @@ export default class RemoveLiquidity extends Mixins(
   mixins.TransactionMixin,
   ConfirmDialogMixin,
   NetworkFeeDialogMixin,
-  SelectedTokenRouteMixin
+  SelectedTokenRouteMixin,
+  InputSliderMixin
 ) {
   readonly XOR_SYMBOL = XOR.symbol;
   readonly MAX_PART = 100;
@@ -184,7 +186,6 @@ export default class RemoveLiquidity extends Mixins(
   @getter.removeLiquidity.priceReversed priceReversed!: string;
 
   @mutation.removeLiquidity.setAddresses private setAddresses!: (params: LiquidityParams) => void;
-  @mutation.removeLiquidity.setFocusedField setFocusedField!: (field: FocusedField) => void;
   @mutation.removeLiquidity.resetFocusedField resetFocusedField!: FnWithoutArgs;
 
   @action.removeLiquidity.setRemovePart private setRemovePart!: (removePart: string) => Promise<void>;
@@ -216,21 +217,16 @@ export default class RemoveLiquidity extends Mixins(
     }
   }
 
-  sliderInput: any;
-  sliderDragButton: any;
-
   async mounted(): Promise<void> {
     await this.withParentLoading(async () => {
       this.setData({
         firstAddress: this.firstRouteAddress,
         secondAddress: this.secondRouteAddress,
       });
-      this.addListenerToSliderDragButton();
     });
   }
 
   beforeDestroy(): void {
-    this.removeListenerFromSliderDragButton();
     this.resetData();
   }
 
@@ -335,13 +331,6 @@ export default class RemoveLiquidity extends Mixins(
     }
   }
 
-  focusSliderInput(): void {
-    this.setFocusedField(FocusedField.Percent);
-    if (this.sliderInput) {
-      this.sliderInput.focus();
-    }
-  }
-
   getTokenMaxAmount(tokenBalance: FPNumber): string {
     return tokenBalance.toString();
   }
@@ -380,21 +369,6 @@ export default class RemoveLiquidity extends Mixins(
     }
     this.openConfirmDialog();
   }
-
-  private addListenerToSliderDragButton(): void {
-    this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button');
-    this.sliderInput = this.$el.querySelector('.s-input--remove-part .el-input__inner');
-
-    if (this.sliderDragButton) {
-      this.sliderDragButton.addEventListener('mousedown', this.focusSliderInput);
-    }
-  }
-
-  private removeListenerFromSliderDragButton(): void {
-    if (this.sliderDragButton) {
-      this.$el.removeEventListener('mousedown', this.sliderDragButton);
-    }
-  }
 }
 </script>
 
@@ -423,7 +397,7 @@ export default class RemoveLiquidity extends Mixins(
 </style>
 
 <style lang="scss">
-.s-input.s-input--remove-part.s-input--token-value {
+.s-input.s-input--with-slider.s-input--token-value {
   @include input-slider;
 }
 </style>

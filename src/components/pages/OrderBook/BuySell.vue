@@ -69,13 +69,15 @@
 
     <token-input
       :balance="getTokenBalance(baseAsset)"
-      :is-max-available="isMaxSwapAvailable"
+      :is-max-available="isMaxAmountAvailable"
+      :with-slider="isSliderAvailable"
       :title="'Amount'"
       :token="baseAsset"
       :value="baseValue"
+      @slide="handleSlideInputChange"
       @input="handleInputFieldBase"
       @max="handleMaxValue"
-      class="order-book-input"
+      class="order-book-input s-input--with-slider"
     />
 
     <div class="order-book-total">
@@ -246,6 +248,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @Watch('marketQuotePrice')
   private checkValidation(): void {
     this.checkInputValidation();
+  }
+
+  get isSliderAvailable(): boolean {
+    return this.isMaxAmountAvailable;
   }
 
   get isMarketType(): boolean {
@@ -463,6 +469,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return this.currentOrderBook?.tickSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length || 2;
   }
 
+  get amountPrecision(): number {
+    return this.currentOrderBook?.stepLotSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length || 2;
+  }
+
   get isPriceBeyondPrecision(): boolean {
     if (!this.currentOrderBook) return false;
 
@@ -524,6 +534,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   toggleBookList(): void {
     this.visibleBookList = !this.visibleBookList;
+  }
+
+  handleSlideInputChange(percent: string): void {
+    const maxAmount = this.getMaxPossibleAmount();
+
+    const value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(maxAmount).dp(this.amountPrecision);
+
+    if (value) this.setBaseValue(value.toString());
   }
 
   handleInputFieldQuote(value: string): void {
@@ -675,24 +693,24 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.confirmPlaceOrderVisibility = true;
   }
 
-  handleMaxValue(): void {
-    if (!this.currentOrderBook) return;
-
+  getMaxPossibleAmount(): FPNumber {
+    if (!this.currentOrderBook) return FPNumber.ZERO;
     const max = getMaxValue(this.baseAsset, this.networkFee);
     const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
 
     const maxPossible = FPNumber.fromNatural(max, this.bookPrecision);
 
-    if (FPNumber.lte(maxPossible, maxLotSize)) {
-      this.handleInputFieldBase(maxPossible.toString());
-    } else {
-      this.handleInputFieldBase(maxLotSize.toString());
-    }
+    return FPNumber.lte(maxPossible, maxLotSize) ? maxPossible : maxLotSize;
+  }
+
+  handleMaxValue(): void {
+    const maxAmount = this.getMaxPossibleAmount();
+    this.handleInputFieldBase(maxAmount.toString());
 
     this.checkInputValidation();
   }
 
-  get isMaxSwapAvailable(): boolean {
+  get isMaxAmountAvailable(): boolean {
     if (!(this.baseAsset && this.quoteAsset)) return false;
 
     return this.isLoggedIn && isMaxButtonAvailable(this.baseAsset, this.baseValue, this.networkFee, this.xor, true);

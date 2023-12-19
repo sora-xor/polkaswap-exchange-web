@@ -53,18 +53,30 @@
       />
     </div>
     <div slot="bottom" class="input-line input-line--footer">
-      <div class="s-flex">
-        <formatted-amount v-if="!!tokenPrice" is-fiat-value :value="fiatAmount" />
-        <slot name="fiat-amount-append" />
+      <div class="asset-info">
+        <div class="s-flex">
+          <formatted-amount v-if="!!tokenPrice" is-fiat-value :value="fiatAmount" />
+          <slot name="fiat-amount-append" />
+        </div>
+        <token-address
+          v-if="token"
+          :name="token.name"
+          :symbol="token.symbol"
+          :address="token.address"
+          class="input-value"
+        />
       </div>
-
-      <token-address
-        v-if="token"
-        :name="token.name"
-        :symbol="token.symbol"
-        :address="token.address"
-        class="input-value"
-      />
+      <div v-if="withSlider">
+        <div class="delimiter" />
+        <s-slider
+          class="slider-container"
+          :value="sliderValue"
+          :disabled="!withSlider"
+          :show-tooltip="false"
+          :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
+          @input="handleSlideInputChange"
+        />
+      </div>
     </div>
   </s-float-input>
 </template>
@@ -74,6 +86,7 @@ import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, ModelSync, Prop } from 'vue-property-decorator';
 
+import InputSliderMixin from '@/components/mixins/InputSliderMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
@@ -93,6 +106,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 export default class TokenInput extends Mixins(
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin,
+  InputSliderMixin,
   TranslationMixin
 ) {
   @Prop({ default: () => null, type: Object }) readonly token!: Nullable<AccountAsset>;
@@ -100,6 +114,7 @@ export default class TokenInput extends Mixins(
   @Prop({ default: '', type: String }) readonly title!: string;
   @Prop({ default: false, type: Boolean }) readonly isMaxAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isSelectAvailable!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly withSlider!: boolean;
 
   @ModelSync('value', 'input', { type: String })
   readonly amount!: string;
@@ -107,6 +122,8 @@ export default class TokenInput extends Mixins(
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
+
+  sliderValue = 45;
 
   get isBalanceAvailable(): boolean {
     return this.isLoggedIn && !!this.token;
@@ -161,12 +178,49 @@ export default class TokenInput extends Mixins(
   handleSelectToken(): void {
     this.$emit('select');
   }
+
+  handleSlideInputChange(value: string): void {
+    this.sliderValue = Number(value);
+    this.$emit('slide', value);
+  }
 }
 </script>
 
 <style lang="scss">
 .s-input--token-value .el-input .el-input__inner {
   @include text-ellipsis;
+}
+
+.input-line.input-line--footer {
+  @include input-slider;
+
+  .el-slider__button {
+    background-color: #fff;
+    border-radius: 4px;
+    transform: rotate(-45deg);
+  }
+
+  .el-slider__stop {
+    height: 10px;
+    width: 10px;
+    border-radius: 2px;
+    top: -1.8px;
+    border: 1.3px solid var(--s-color-base-content-tertiary);
+    transform: translateX(-50%) rotate(-45deg);
+  }
+
+  .asset-info {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .delimiter {
+    background-color: var(--s-color-base-border-secondary);
+    width: 100%;
+    height: 1px;
+    margin: 14px 0 4px 0;
+  }
 }
 </style>
 
