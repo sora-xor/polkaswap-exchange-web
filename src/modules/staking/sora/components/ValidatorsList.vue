@@ -19,8 +19,8 @@
         <s-icon name="various-bone-24" size="14px" />
       </div>
       <div class="table-header-name table-header-item">{{ t('soraStaking.validatorsList.name') }}</div>
-      <div class="table-header-return table-header-item">
-        <span>{{ t('soraStaking.validatorsList.return') }}</span>
+      <div class="table-header-commission table-header-item">
+        <span>{{ t('soraStaking.validatorsList.commission') }}</span>
         <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.commissionTooltip')">
           <s-icon name="info-16" size="14px" />
         </s-tooltip>
@@ -37,8 +37,8 @@
           <div class="name">
             {{ formatName(validator) }}
           </div>
-          <div class="return">
-            <span>{{ validator.apy }}%</span>
+          <div class="commission">
+            <span>{{ validator.commission }}%</span>
             <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.commissionTooltip')">
               <s-icon name="info-16" size="14px" />
             </s-tooltip>
@@ -256,7 +256,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     flex: 1;
     margin-left: 8px;
   }
-  &-return {
+  &-commission {
     width: 120px;
 
     span {
@@ -316,7 +316,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
   margin-right: 10px;
 }
 
-.return {
+.commission {
   color: var(--s-color-status-info);
   text-align: right;
   font-feature-settings: 'case' on, 'clig' off, 'liga' off;
