@@ -70,7 +70,7 @@
         <div class="delimiter" />
         <s-slider
           class="slider-container"
-          :value="sliderValue"
+          :value="slideValue"
           :disabled="!withSlider"
           :show-tooltip="false"
           :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
@@ -90,7 +90,7 @@ import InputSliderMixin from '@/components/mixins/InputSliderMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter } from '@/store/decorators';
+import { getter, mutation } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -109,8 +109,11 @@ export default class TokenInput extends Mixins(
   InputSliderMixin,
   TranslationMixin
 ) {
+  @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
+
   @Prop({ default: () => null, type: Object }) readonly token!: Nullable<AccountAsset>;
   @Prop({ default: () => null, type: String }) readonly balance!: Nullable<CodecString>;
+  @Prop({ default: 0, type: Number }) readonly sliderValue!: number;
   @Prop({ default: '', type: String }) readonly title!: string;
   @Prop({ default: false, type: Boolean }) readonly isMaxAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isSelectAvailable!: boolean;
@@ -123,7 +126,13 @@ export default class TokenInput extends Mixins(
 
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
 
-  sliderValue = 45;
+  get slideValue(): number {
+    return this.sliderValue;
+  }
+
+  set slideValue(value: string) {
+    this.setAmountSliderValue(Number(value));
+  }
 
   get isBalanceAvailable(): boolean {
     return this.isLoggedIn && !!this.token;
@@ -180,8 +189,12 @@ export default class TokenInput extends Mixins(
   }
 
   handleSlideInputChange(value: string): void {
-    this.sliderValue = Number(value);
     this.$emit('slide', value);
+  }
+
+  async mounted(): Promise<void> {
+    await this.$nextTick();
+    this.addListenerToSliderDragButton();
   }
 }
 </script>

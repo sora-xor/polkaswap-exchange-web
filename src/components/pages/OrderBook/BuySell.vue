@@ -74,6 +74,7 @@
       :title="'Amount'"
       :token="baseAsset"
       :value="baseValue"
+      :slider-value="sliderValue"
       @slide="handleSlideInputChange"
       @input="handleInputFieldBase"
       @max="handleMaxValue"
@@ -182,6 +183,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @state.orderBook.bids bids!: OrderBookPriceVolume;
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.placeOrderNetworkFee networkFee!: CodecString;
+  @state.orderBook.amountSliderValue sliderValue!: number;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
@@ -195,6 +197,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   @mutation.orderBook.setBaseValue setBaseValue!: (value: string) => void;
   @mutation.orderBook.setQuoteValue setQuoteValue!: (value: string) => void;
+  @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
   @mutation.swap.setLiquiditySource setLiquiditySource!: (liquiditySource: string) => void;
@@ -251,7 +254,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get isSliderAvailable(): boolean {
-    return this.isMaxAmountAvailable;
+    const availableBalance = getMaxValue(this.baseAsset, this.networkFee);
+    return new FPNumber(availableBalance).gt(FPNumber.ZERO);
   }
 
   get isMarketType(): boolean {
@@ -384,11 +388,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         reading: "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
       });
 
-    if (this.baseValue && this.isOutOfAmountBounds(this.baseValue) && this.quoteValue)
-      return this.setError({
-        reason: 'Price exceeds the blockchain range',
-        reading: "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range",
-      });
+    // if (this.baseValue && this.isOutOfAmountBounds(this.baseValue) && this.quoteValue)
+    //   return this.setError({
+    //     reason: 'Amount exceeds the blockchain range',
+    //     reading: "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range",
+    //   });
   }
 
   priceExceedsSpread(): boolean {
@@ -543,9 +547,18 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.visibleBookList = !this.visibleBookList;
   }
 
-  handleSlideInputChange(percent: string): void {
+  getPercent(value: string): number {
+    if (!value) return 0;
+
     const maxAmount = this.getMaxPossibleAmount();
 
+    return new FPNumber(value).div(maxAmount).mul(FPNumber.HUNDRED).toNumber();
+  }
+
+  handleSlideInputChange(percent: string): void {
+    this.setAmountSliderValue(Number(percent));
+
+    const maxAmount = this.getMaxPossibleAmount();
     const value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(maxAmount).dp(this.amountPrecision);
 
     if (value) this.setBaseValue(value.toString());
@@ -558,6 +571,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   handleInputFieldBase(value: string): void {
     this.setBaseValue(value);
+    this.setAmountSliderValue(this.getPercent(value));
     this.checkInputValidation();
 
     if (!value) {

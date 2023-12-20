@@ -223,6 +223,8 @@ export default class RemoveLiquidity extends Mixins(
         firstAddress: this.firstRouteAddress,
         secondAddress: this.secondRouteAddress,
       });
+
+      this.addListenerToSliderDragButton();
     });
   }
 

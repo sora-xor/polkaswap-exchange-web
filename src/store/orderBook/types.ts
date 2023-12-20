@@ -24,4 +24,5 @@ export type OrderBookState = {
   userLimitOrderUpdates: Nullable<Subscription>;
   placeOrderNetworkFee: FPNumber;
   ordersToBeCancelled: Array<LimitOrder>;
+  amountSliderValue: number;
 };

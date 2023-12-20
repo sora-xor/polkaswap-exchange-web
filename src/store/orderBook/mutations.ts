@@ -68,6 +68,9 @@ const mutations = defineMutations<OrderBookState>()({
   setOrdersToBeCancelled(state, orders): void {
     state.ordersToBeCancelled = orders;
   },
+  setAmountSliderValue(state, percent: number) {
+    state.amountSliderValue = percent;
+  },
 });
 
 export default mutations;

@@ -12,12 +12,13 @@ export default class InputSliderMixin extends Vue {
 
   focusSliderInput(): void {
     this.setFocusedField(FocusedField.Percent);
+
     if (this.sliderInput) {
       this.sliderInput.focus();
     }
   }
 
-  private addListenerToSliderDragButton(): void {
+  addListenerToSliderDragButton(): void {
     this.sliderDragButton = this.$el.querySelector('.slider-container .el-slider__button');
     this.sliderInput = this.$el.querySelector('.s-input--with-slider .el-input__inner');
 
@@ -30,10 +31,6 @@ export default class InputSliderMixin extends Vue {
     if (this.sliderDragButton) {
       this.$el.removeEventListener('mousedown', this.sliderDragButton);
     }
-  }
-
-  mounted(): void {
-    this.addListenerToSliderDragButton();
   }
 
   beforeDestroy(): void {
