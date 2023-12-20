@@ -561,7 +561,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     const maxAmount = this.getMaxPossibleAmount();
     const value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(maxAmount).dp(this.amountPrecision);
 
-    if (value) this.setBaseValue(value.toString());
+    if (value) this.handleInputFieldBase(value.toString());
   }
 
   handleInputFieldQuote(value: string): void {
@@ -578,12 +578,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       this.resetQuoteSubscription();
     }
 
-    if (this.isMarketType && value) {
-      this.subscribeOnBookQuote();
-    }
-
-    if (this.isMarketType && !value) {
-      this.setQuoteValue('');
+    if (this.isMarketType) {
+      value ? this.subscribeOnBookQuote() : this.setQuoteValue('');
     }
   }
 
