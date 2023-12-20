@@ -21,7 +21,7 @@
       <div class="table-header-name table-header-item">{{ t('soraStaking.validatorsList.name') }}</div>
       <div class="table-header-return table-header-item">
         <span>{{ t('soraStaking.validatorsList.return') }}</span>
-        <s-tooltip border-radius="mini" :content="''">
+        <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.commissionTooltip')">
           <s-icon name="info-16" size="14px" />
         </s-tooltip>
       </div>
@@ -39,7 +39,7 @@
           </div>
           <div class="return">
             <span>{{ validator.apy }}%</span>
-            <s-tooltip border-radius="mini" :content="''">
+            <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.commissionTooltip')">
               <s-icon name="info-16" size="14px" />
             </s-tooltip>
           </div>
@@ -257,7 +257,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     margin-left: 8px;
   }
   &-return {
-    width: 110px;
+    width: 120px;
 
     span {
       margin-right: 8px;

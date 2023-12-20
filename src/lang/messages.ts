@@ -830,7 +830,7 @@ export default {
       remove: 'Remove stake',
       start: 'Start staking',
       more: 'Stake more',
-      payoutAll: 'Payout all',
+      payout: 'Payout',
     },
     overview: {
       title: 'SORA Staking',
@@ -856,7 +856,9 @@ export default {
       search: 'Search...',
       filters: 'Filters',
       name: 'Name',
-      return: 'Return',
+      return: 'Commission',
+      commissionTooltip:
+        "Commission refers to the fee charged by validators for their services in the staking process. This fee, expressed as a percentage, is deducted from the staking rewards earned by nominators before distribution. It's important to note that validators can adjust their commission rates at any time",
     },
     info: {
       redeemable: 'Redeemable',
@@ -871,6 +873,7 @@ export default {
       nominators: 'Nominators',
       validators: 'Validators',
       selectedValidators: 'Selected validators',
+      allRewards: 'All rewards',
     },
     validatorsFilterDialog: {
       title: 'Filters',
@@ -918,6 +921,8 @@ export default {
     },
     pendingRewardsDialog: {
       noPendingRewards: 'There are no pending rewards',
+      noSelectedRewards: 'Select rewards',
+      payout: 'Payout',
       information:
         'Validators payout the rewards every 2-5 days. However, you can payout them by yourself, especially if rewards are close to expiring, but you will pay the fee.',
     },

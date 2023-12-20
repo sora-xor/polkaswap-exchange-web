@@ -20,6 +20,7 @@
           border-radius="medium"
           shadow="always"
           size="mini"
+          @click.native="toggleRewardSelection(reward)"
         >
           <div class="reward-content">
             <validator-avatar class="avatar" :validator="reward.validator">
@@ -47,6 +48,9 @@
                 <formatted-amount class="value-fiat" is-fiat-value with-left-shift :value="reward.valueFiat" />
               </div>
             </div>
+            <div :class="{ ['reward-check']: true, ['reward-check--selected']: isRewardSelected(reward) }">
+              <s-icon name="basic-check-mark-24" size="18px" />
+            </div>
           </div>
         </s-card>
       </s-scrollbar>
@@ -66,14 +70,15 @@
         type="primary"
         class="s-typography-button--large action-button"
         :loading="parentLoading"
-        :disabled="isInsufficientXorForFee || noReward"
+        :disabled="isInsufficientXorForFee || noReward || noSelectedRewards"
         @click="handleConfirm"
       >
         <template v-if="isInsufficientXorForFee">
           {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset?.symbol }) }}
         </template>
         <template v-else-if="noReward">{{ t('soraStaking.pendingRewardsDialog.noPendingRewards') }}</template>
-        <template v-else>{{ t('soraStaking.pendingRewardsDialog.payoutAll') }}</template>
+        <template v-else-if="noSelectedRewards">{{ t('soraStaking.pendingRewardsDialog.noSelectedRewards') }}</template>
+        <template v-else>{{ t('soraStaking.pendingRewardsDialog.payout') }} ({{ selectedRewards.length }})</template>
       </s-button>
     </div>
   </dialog-base>
@@ -86,13 +91,31 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { action } from '@/store/decorators';
 import { formatDecimalPlaces } from '@/utils';
 
 import { soraStakingLazyComponent } from '../../router';
 import { ERA_HOURS, SoraStakingComponents } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
 import ValidatorsMixin from '../mixins/ValidatorsMixin';
+
+import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types';
+
+type Reward = {
+  id: string;
+  era: string;
+  validators: {
+    address: string;
+    value: string;
+  }[];
+  name: string;
+  daysLeft: number;
+  daysLeftFormatted: string;
+  alert: boolean;
+  value: string;
+  valueFormatted: string;
+  valueFiat: Nullable<string>;
+  validator: ValidatorInfoFull;
+};
 
 @Component({
   components: {
@@ -110,13 +133,17 @@ export default class PendingRewardsDialog extends Mixins(
   mixins.LoadingMixin
 ) {
   payoutNetworkFee: string | null = null;
+  selectedRewards: Reward[] = [];
 
-  @Watch('pendingRewards')
+  // @Watch('visible', { immediate: true })
+  // private resetValue() {
+  //   this.selectedRewards = this.rewards;
+  // }
+
+  @Watch('selectedRewards')
   async handlePendingRewardsChange() {
     this.payoutNetworkFee = await this.getPayoutNetworkFee({
-      payouts: this.pendingRewards
-        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
-        : [],
+      payouts: this.selectedRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) })),
     });
   }
 
@@ -128,7 +155,7 @@ export default class PendingRewardsDialog extends Mixins(
     return 'Pending rewards';
   }
 
-  get rewards() {
+  get rewards(): Reward[] {
     if (!this.pendingRewards || !this.rewardAsset) return [];
 
     const rewards = this.pendingRewards
@@ -153,6 +180,8 @@ export default class PendingRewardsDialog extends Mixins(
 
           return {
             id: `${validator.address}-${element.era}`,
+            era: element.era,
+            validators: element.validators,
             name,
             daysLeft,
             daysLeftFormatted,
@@ -168,6 +197,21 @@ export default class PendingRewardsDialog extends Mixins(
     return rewards;
   }
 
+  isRewardSelected(reward: Reward) {
+    return this.selectedRewards.some((r) => r.id === reward.id);
+  }
+
+  toggleRewardSelection(reward: Reward) {
+    const index = this.selectedRewards.findIndex((r) => r.id === reward.id);
+    const selected = [...this.selectedRewards];
+    if (index > -1) {
+      selected.splice(index, 1);
+    } else {
+      selected.push(reward);
+    }
+    this.selectedRewards = selected;
+  }
+
   computedClassDaysLeft(alert: boolean): string {
     const base = ['days-left'];
 
@@ -180,12 +224,13 @@ export default class PendingRewardsDialog extends Mixins(
     return !this.rewards.length;
   }
 
+  get noSelectedRewards(): boolean {
+    return !this.selectedRewards.length;
+  }
+
   async handleConfirm(): Promise<void> {
     await this.payout({
-      payouts: this.pendingRewards
-        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
-        : [],
-      payee: this.payee,
+      payouts: this.selectedRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) })),
     });
   }
 }
@@ -274,6 +319,7 @@ export default class PendingRewardsDialog extends Mixins(
 .reward {
   margin-top: 12px;
   margin: 12px 24px;
+  cursor: pointer;
 }
 
 .reward-content {
@@ -296,6 +342,21 @@ export default class PendingRewardsDialog extends Mixins(
   justify-content: space-between;
   align-items: center;
   height: 21px;
+}
+
+.reward-check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  margin-right: -6px;
+  background: var(--s-color-base-content-tertiary);
+  border-radius: 50%;
+
+  &--selected {
+    background: var(--s-color-theme-accent);
+  }
 }
 
 .avatar {

@@ -4,12 +4,12 @@
       <s-form class="el-form--actions" :show-message="false">
         <token-input
           key="stake-input"
-          :balance="redeemableFundsCodec"
-          :is-max-available="isMaxButtonAvailable"
+          :balance="rewardedFundsCodec"
           :title="inputTitle"
           :token="rewardAsset"
           :value="value"
           @input="handleValue"
+          :disabled="true"
           @max="handleMaxValue"
         />
       </s-form>
@@ -19,7 +19,7 @@
       <div class="info">
         <info-line
           v-if="stakingInitialized"
-          :label="t('soraStaking.info.claimable')"
+          :label="t('soraStaking.info.allRewards')"
           :value="rewardedFundsFormatted"
           :asset-symbol="rewardAsset?.symbol"
           :fiat-value="rewardedFundsFiat"
@@ -42,7 +42,12 @@
         @click="handleConfirm"
       >
         <template v-if="isInsufficientXorForFee || isInsufficientBalance">
-          {{ t('insufficientBalanceText', { tokenSymbol: rewardAsset?.symbol }) }}
+          <template v-if="isInsufficientBalance">
+            {{ t('insufficientBalanceText', { tokenSymbol: rewardAsset?.symbol }) }}
+          </template>
+          <template v-if="isInsufficientXorForFee">
+            {{ t('insufficientBalanceText', { tokenSymbol: xor?.symbol }) }}
+          </template>
         </template>
         <template v-else-if="valueFundsEmpty">
           {{ t('buttons.enterAmount') }}
@@ -59,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
@@ -80,9 +85,9 @@ import type { CodecString } from '@sora-substrate/util';
 export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
   @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
 
-  @Watch('visible')
+  @Watch('visible', { immediate: true })
   private resetValue() {
-    this.value = this.redeemableFunds.toString();
+    this.value = this.rewardedFunds.toString();
   }
 
   value = '';
@@ -98,8 +103,8 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
     });
   }
 
-  get networkFee(): CodecString {
-    return this.networkFees[Operation.StakingPayout];
+  get networkFee() {
+    return this.payoutNetworkFee || '0';
   }
 
   get title(): string {
@@ -110,8 +115,8 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
     return this.title;
   }
 
-  get redeemableFundsCodec(): CodecString {
-    return this.redeemableFunds.toCodecString();
+  get rewardedFundsCodec(): CodecString {
+    return this.rewardedFunds.toCodecString();
   }
 
   get valuePartCharClass(): string {
@@ -144,15 +149,8 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
     return this.stakingBalance.toCodecString();
   }
 
-  get isMaxButtonAvailable(): boolean {
-    const fee = FPNumber.fromCodecValue(this.networkFee);
-    const amount = this.redeemableFunds.sub(fee);
-
-    return !FPNumber.eq(this.valueFunds, amount);
-  }
-
   get isInsufficientBalance(): boolean {
-    return FPNumber.lt(this.redeemableFunds, this.valueFunds);
+    return FPNumber.lt(this.rewardedFunds, this.valueFunds);
   }
 
   get selectedValidatorsFormatted(): string {
@@ -164,11 +162,16 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   }
 
   handleMaxValue(): void {
-    this.handleValue(this.redeemableFunds.toString());
+    this.handleValue(this.rewardedFunds.toString());
   }
 
   async handleConfirm(): Promise<void> {
-    await this.withdraw(Number(this.value));
+    await this.payout({
+      payouts: this.pendingRewards
+        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
+        : [],
+      payee: this.payeeAddress,
+    });
   }
 
   checkPendingRewards(): void {
