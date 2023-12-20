@@ -10,7 +10,7 @@
       <s-float-input
         ref="removePart"
         size="medium"
-        :class="['s-input--token-value', 's-input--remove-part', removePartCharClass]"
+        :class="['s-input--remove-part', removePartCharClass]"
         :value="removePart"
         :decimals="0"
         :disabled="liquidityLocked"
@@ -19,7 +19,7 @@
         @focus="setFocusedField(FocusedField.Percent)"
         @blur="resetFocusedField"
       >
-        <div slot="top" class="amount">{{ t('removeLiquidity.amount') }}</div>
+        <div slot="top" class="input-title">{{ t('removeLiquidity.amount') }}</div>
         <div slot="right" class="el-buttons el-buttons--between">
           <span class="percent">%</span>
           <s-button
@@ -406,11 +406,6 @@ export default class RemoveLiquidity extends Mixins(
 
 @include vertical-divider('icon-divider', $inner-spacing-medium);
 
-.amount {
-  line-height: var(--s-line-height-big);
-  font-weight: 600;
-}
-
 .locked-part {
   color: var(--s-color-base-content-secondary);
   text-transform: uppercase;
@@ -423,7 +418,7 @@ export default class RemoveLiquidity extends Mixins(
 </style>
 
 <style lang="scss">
-.s-input.s-input--remove-part.s-input--token-value {
+.s-input.s-input--remove-part {
   @include input-slider;
 }
 </style>

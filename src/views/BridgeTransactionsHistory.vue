@@ -312,7 +312,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   }
   &-empty {
     text-align: center;
-    @include empty-search;
+    color: var(--s-color-base-content-tertiary);
   }
 }
 
