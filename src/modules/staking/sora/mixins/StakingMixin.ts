@@ -60,6 +60,8 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
     payee?: string;
   }) => Promise<string>;
 
+  @action.staking.getPendingRewards getPendingRewards!: AsyncFnWithoutArgs;
+
   StakingPageNames = StakingPageNames;
   SoraStakingPageNames = SoraStakingPageNames;
 

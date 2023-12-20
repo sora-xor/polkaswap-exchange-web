@@ -172,6 +172,10 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
         : [],
       payee: this.payeeAddress,
     });
+
+    await this.getPendingRewards();
+
+    this.closeDialog();
   }
 
   checkPendingRewards(): void {

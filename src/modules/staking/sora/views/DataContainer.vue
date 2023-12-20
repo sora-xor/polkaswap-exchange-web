@@ -41,7 +41,6 @@ export default class SoraStakingContainer extends Mixins(StakingMixin, Subscript
   @action.staking.getUnbondPeriod getUnbondPeriod!: AsyncFnWithoutArgs;
   @action.staking.getMaxNominations getMaxNominations!: AsyncFnWithoutArgs;
   @action.staking.getHistoryDepth getHistoryDepth!: AsyncFnWithoutArgs;
-  @action.staking.getPendingRewards getPendingRewards!: AsyncFnWithoutArgs;
   @action.staking.subscribeOnActiveEra subscribeOnActiveEra!: AsyncFnWithoutArgs;
   @action.staking.subscribeOnCurrentEra subscribeOnCurrentEra!: AsyncFnWithoutArgs;
   @action.staking.subscribeOnCurrentEraTotalStake subscribeOnCurrentEraTotalStake!: AsyncFnWithoutArgs;

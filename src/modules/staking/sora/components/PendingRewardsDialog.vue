@@ -232,6 +232,10 @@ export default class PendingRewardsDialog extends Mixins(
     await this.payout({
       payouts: this.selectedRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) })),
     });
+
+    await this.getPendingRewards();
+
+    this.closeDialog();
   }
 }
 </script>
