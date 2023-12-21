@@ -305,7 +305,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     background-color: var(--s-color-theme-accent);
 
     i {
-      color: white;
+      color: var(--s-color-base-on-accent);
     }
   }
 }

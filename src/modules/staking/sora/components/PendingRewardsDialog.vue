@@ -135,10 +135,12 @@ export default class PendingRewardsDialog extends Mixins(
   payoutNetworkFee: string | null = null;
   selectedRewards: Reward[] = [];
 
-  // @Watch('visible', { immediate: true })
-  // private resetValue() {
-  //   this.selectedRewards = this.rewards;
-  // }
+  @Watch('visible', { immediate: true })
+  private resetValue() {
+    if (this.visible) {
+      this.selectedRewards = [];
+    }
+  }
 
   @Watch('selectedRewards')
   async handlePendingRewardsChange() {
@@ -262,7 +264,7 @@ export default class PendingRewardsDialog extends Mixins(
 
 .pending-rewards-scrollbar {
   @include scrollbar;
-  height: 380px !important;
+  height: 410px !important;
   margin: 0 -24px !important;
 
   ul {
@@ -360,6 +362,10 @@ export default class PendingRewardsDialog extends Mixins(
 
   &--selected {
     background: var(--s-color-theme-accent);
+  }
+
+  i {
+    color: var(--s-color-base-on-accent);
   }
 }
 
