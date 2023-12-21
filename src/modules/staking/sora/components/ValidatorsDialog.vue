@@ -13,15 +13,27 @@
         :selected-validators="selectedValidators"
         @update:selected="selectValidators"
       />
-      <s-button
-        v-if="showConfirmButton"
-        class="confirm"
-        type="primary"
-        :disabled="confirmDisabled"
-        @click="handleConfirm"
-      >
-        {{ confirmText }}
-      </s-button>
+      <div class="bottom">
+        <div class="info" v-if="mode === ValidatorsListMode.RECOMMENDED || mode === ValidatorsListMode.SELECT">
+          <info-line
+            :label="t('networkFeeText')"
+            :label-tooltip="t('networkFeeTooltipText')"
+            :value="networkFeeFormatted"
+            :asset-symbol="xor?.symbol"
+            :fiat-value="getFiatAmountByCodecString(networkFee)"
+            is-formatted
+          />
+        </div>
+        <s-button
+          v-if="showConfirmButton"
+          class="confirm"
+          type="primary"
+          :disabled="confirmDisabled"
+          @click="handleConfirm"
+        >
+          {{ confirmText }}
+        </s-button>
+      </div>
     </div>
     <select-validators-mode v-else @recommended="handleRecommendedMode" @selected="handleSelectedMode" />
   </dialog-base>
@@ -45,12 +57,13 @@ import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types
     StakingHeader: soraStakingLazyComponent(SoraStakingComponents.StakingHeader),
     ValidatorsList: soraStakingLazyComponent(SoraStakingComponents.ValidatorsList),
     SelectValidatorsMode: soraStakingLazyComponent(SoraStakingComponents.SelectValidatorsMode),
+    InfoLine: components.InfoLine,
   },
 })
 export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
   @mutation.staking.selectValidators selectValidators!: (validators: ValidatorInfoFull[]) => void;
 
-  @action.staking.getValidatorsInfo getValidatorsInfo!: AsyncFnWithoutArgs;
+  @action.staking.getStakingInfo getStakingInfo!: AsyncFnWithoutArgs;
 
   ValidatorsListMode = ValidatorsListMode;
 
@@ -127,7 +140,7 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
 
   get confirmDisabled(): boolean {
     if (this.isInsufficientXorForFee) {
-      return false;
+      return true;
     }
     if (this.mode === ValidatorsListMode.RECOMMENDED) {
       return !this.hasChanges;
@@ -151,7 +164,7 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
       this.isSelectingEditingMode = true;
     } else {
       await this.nominate();
-      await this.getValidatorsInfo();
+      await this.getStakingInfo();
       this.mode = ValidatorsListMode.USER;
     }
   }
@@ -183,9 +196,14 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
   margin: 16px 0;
 }
 
-.confirm {
+.bottom {
   position: absolute;
   width: calc(100% - 48px);
   bottom: 24px;
+}
+
+.confirm {
+  width: 100%;
+  margin-top: 12px;
 }
 </style>
