@@ -180,18 +180,6 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
 }
 </script>
 
-<style lang="scss">
-@include info-line;
-.swap-info {
-  &-value.el-button {
-    margin-right: 0;
-    height: var(--s-font-size-small);
-    padding: 0;
-    color: inherit;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .swap-route {
   display: flex;
