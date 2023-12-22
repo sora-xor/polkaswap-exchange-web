@@ -25,6 +25,14 @@ const actions = defineActions({
     await dispatch.getStakingInfo();
   },
 
+  async getNominateNetworkFee(context): Promise<string> {
+    const { state } = stakingActionContext(context);
+
+    return await api.staking.getNominateNetworkFee({
+      validators: state.selectedValidators.map((v) => v.address),
+    });
+  },
+
   async bondAndNominate(context): Promise<void> {
     const { state, getters, commit } = stakingActionContext(context);
 
@@ -52,6 +60,19 @@ const actions = defineActions({
         unlocking: [],
         sum: '0',
       },
+    });
+  },
+
+  async getBondAndNominateNetworkFee(context): Promise<string> {
+    const { state, getters } = stakingActionContext(context);
+
+    const controller = state.controller || getters.stash;
+
+    return await api.staking.getBondAndNominateNetworkFee({
+      controller,
+      value: state.stakeAmount,
+      payee: state.payee || getters.stash,
+      validators: state.selectedValidators.map((v) => v.address),
     });
   },
 

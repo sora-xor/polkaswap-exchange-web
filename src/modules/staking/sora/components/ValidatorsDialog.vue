@@ -49,7 +49,7 @@ import { soraStakingLazyComponent } from '../../router';
 import { SoraStakingComponents, ValidatorsListMode } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
 
-import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types';
+import type { ValidatorInfoFull, MyStakingInfo } from '@sora-substrate/util/build/staking/types';
 
 @Component({
   components: {
@@ -62,18 +62,30 @@ import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types
 })
 export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
   @mutation.staking.selectValidators selectValidators!: (validators: ValidatorInfoFull[]) => void;
+  @mutation.staking.setStakingInfo setStakingInfo!: (stakingInfo: MyStakingInfo) => void;
 
   @action.staking.getStakingInfo getStakingInfo!: AsyncFnWithoutArgs;
+  @action.staking.getNominateNetworkFee getNominateNetworkFee!: () => Promise<string>;
 
   ValidatorsListMode = ValidatorsListMode;
 
   mode: ValidatorsListMode = ValidatorsListMode.USER;
   isSelectingEditingMode = false;
+  nominateNetworkFee: string | null = null;
+
+  @Watch('selectedValidators')
+  async handleSelectedValidatorsChange() {
+    this.nominateNetworkFee = await this.getNominateNetworkFee();
+  }
 
   @Watch('visible')
   private resetMode() {
     this.mode = ValidatorsListMode.USER;
     this.isSelectingEditingMode = false;
+  }
+
+  get networkFee() {
+    return this.nominateNetworkFee || '0';
   }
 
   get title(): string {
@@ -164,7 +176,14 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
       this.isSelectingEditingMode = true;
     } else {
       await this.nominate();
-      await this.getStakingInfo();
+
+      if (!this.stakingInfo) throw new Error('There is no staking info');
+
+      this.setStakingInfo({
+        ...this.stakingInfo,
+        myValidators: this.selectedValidators.map((v) => v.address),
+      });
+
       this.mode = ValidatorsListMode.USER;
     }
   }

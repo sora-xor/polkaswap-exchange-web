@@ -59,9 +59,9 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import { Components, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
@@ -85,9 +85,15 @@ export default class SoraStakingForm extends Mixins(StakingMixin, mixins.Loading
   StakingPageNames = StakingPageNames;
   value = '';
   showValidatorsAttentionDialog = false;
+  bondAndNominateNetworkFee: string | null = null;
+
+  @Watch('selectedValidators', { immediate: true })
+  async handleSelectedValidatorsChange() {
+    this.bondAndNominateNetworkFee = await this.getBondAndNominateNetworkFee();
+  }
 
   get networkFee(): CodecString {
-    return this.networkFees[Operation.StakingBondAndNominate];
+    return this.bondAndNominateNetworkFee || '0';
   }
 
   get inputTitle(): string {

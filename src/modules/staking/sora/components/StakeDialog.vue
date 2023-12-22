@@ -93,13 +93,18 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
   }
 
   StakeDialogMode = StakeDialogMode;
-
   value = '';
+  bondAndNominateNetworkFee: string | null = null;
+
+  @Watch('selectedValidators', { immediate: true })
+  async handleSelectedValidatorsChange() {
+    this.bondAndNominateNetworkFee = await this.getBondAndNominateNetworkFee();
+  }
 
   get networkFee(): CodecString {
     switch (this.mode) {
       case StakeDialogMode.NEW:
-        return this.networkFees[Operation.StakingBondAndNominate];
+        return this.bondAndNominateNetworkFee || '0';
       case StakeDialogMode.ADD:
         return this.networkFees[Operation.StakingBondExtra];
       default:
