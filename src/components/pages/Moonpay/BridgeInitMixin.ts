@@ -5,6 +5,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
+import { KnownEthBridgeAsset } from '@/consts/evm';
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { state, action, mutation, getter } from '@/store/decorators';
 import type { BridgeTxData } from '@/store/moonpay/types';
@@ -18,7 +19,7 @@ import type { AccountAsset, AccountBalance } from '@sora-substrate/util/build/as
 import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-import type { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 const createError = (text: string, notification: MoonpayNotifications) => {
   const error = new Error(text);
@@ -36,6 +37,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
 
   @getter.settings.moonpayApiKey moonpayApiKey!: string;
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => AccountAsset;
+  @getter.web3.contractAddress contractAddress!: (asset: KnownEthBridgeAsset) => string;
 
   @mutation.moonpay.setConfirmationVisibility setConfirmationVisibility!: (flag: boolean) => void;
   @mutation.moonpay.setNotificationVisibility setNotificationVisibility!: (flag: boolean) => void;
@@ -148,9 +150,13 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
 
       const isExternalNative = ethersUtil.isNativeEvmTokenAddress(registeredAsset.address);
       const externalBalance = await ethersUtil.getAccountAssetBalance(ethTransferData.to, registeredAsset.address);
+      const bridgeContractAddress = this.contractAddress(KnownEthBridgeAsset.Other);
       const evmNetworkFee: CodecString = await ethersUtil.getEvmNetworkFee(
+        bridgeContractAddress,
+        ethTransferData.to,
         registeredAsset.address,
         registeredAsset.kind,
+        ethTransferData.amount,
         false
       );
       const evmNativeBalance = await ethersUtil.getAccountBalance(ethTransferData.to);

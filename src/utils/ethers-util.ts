@@ -86,9 +86,16 @@ export const handleRpcProviderError = (error: any): string => {
 /**
  * It's in gwei.
  */
-const getEthBridgeGasLimit = (assetEvmAddress: string, kind: EthAssetKind, isSoraToEvm: boolean) => {
+const getEthBridgeGasLimit = async (
+  bridgeContractAddress: string,
+  accountEvmAddress: string,
+  assetEvmAddress: string,
+  assetKind: EthAssetKind,
+  amount: number | string,
+  isSoraToEvm: boolean
+) => {
   if (isSoraToEvm) {
-    switch (kind) {
+    switch (assetKind) {
       case EthAssetKind.SidechainOwned:
         return gasLimit.mintTokensByPeers;
       case EthAssetKind.Thischain:
@@ -98,12 +105,15 @@ const getEthBridgeGasLimit = (assetEvmAddress: string, kind: EthAssetKind, isSor
           ? gasLimit.receiveByEthereumAssetAddress.ETH
           : gasLimit.receiveByEthereumAssetAddress.OTHER;
       default:
-        throw new Error(`Unknown kind "${kind}" for asset "${assetEvmAddress}"`);
+        throw new Error(`Unknown kind "${assetKind}" for asset "${assetEvmAddress}"`);
     }
   } else {
-    return isNativeEvmTokenAddress(assetEvmAddress)
-      ? gasLimit.sendEthToSidechain
-      : gasLimit.approve + gasLimit.sendERC20ToSidechain;
+    if (isNativeEvmTokenAddress(assetEvmAddress)) return gasLimit.sendEthToSidechain;
+
+    const allowance = await getAllowance(accountEvmAddress, bridgeContractAddress, assetEvmAddress);
+    const approveCost = Number(allowance) < Number(amount) ? gasLimit.approve : 0;
+
+    return approveCost + gasLimit.sendERC20ToSidechain;
   }
 };
 
@@ -409,15 +419,27 @@ async function getEvmNetworkId(): Promise<number> {
  * Fetch EVM Network fee for passed asset address
  */
 async function getEvmNetworkFee(
+  bridgeContractAddress: string,
+  accountEvmAddress: string,
   assetEvmAddress: string,
   assetKind: string,
+  amount: string,
   isSoraToEvm: boolean
 ): Promise<CodecString> {
   try {
     const ethersInstance = getEthersInstance();
     const { maxFeePerGas } = await ethersInstance.getFeeData();
     const gasPrice = maxFeePerGas ?? BigInt(0);
-    const gasLimit = BigInt(getEthBridgeGasLimit(assetEvmAddress, assetKind as EthAssetKind, isSoraToEvm));
+    const gasLimit = BigInt(
+      await getEthBridgeGasLimit(
+        bridgeContractAddress,
+        accountEvmAddress,
+        assetEvmAddress,
+        assetKind as EthAssetKind,
+        amount,
+        isSoraToEvm
+      )
+    );
     const fee = calcEvmFee(gasPrice, gasLimit);
 
     return fee;

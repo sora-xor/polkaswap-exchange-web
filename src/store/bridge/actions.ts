@@ -32,7 +32,7 @@ import type { SignTxResult } from './types';
 import type { SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
+import type { EthHistory, EthApprovedRequest } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
@@ -124,16 +124,21 @@ function bridgeDataToHistoryItem(
 async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, state, rootState, rootGetters } = bridgeActionContext(context);
   const { asset, isRegisteredAsset } = getters;
-  const { isValidNetwork } = rootGetters.web3;
+  const { isValidNetwork, contractAddress } = rootGetters.web3;
+  const evmAccount = rootState.web3.evmAddress;
 
   let fee = ZeroStringValue;
 
-  if (asset && isRegisteredAsset && isValidNetwork) {
+  if (asset && isRegisteredAsset && isValidNetwork && evmAccount) {
     const bridgeRegisteredAsset = rootState.assets.registeredAssets[asset.address];
+    const bridgeContractAddress = contractAddress(KnownEthBridgeAsset.Other) as string;
 
     fee = await ethersUtil.getEvmNetworkFee(
+      bridgeContractAddress,
+      evmAccount,
       bridgeRegisteredAsset.address,
       bridgeRegisteredAsset.kind,
+      state.amountSend,
       state.isSoraToEvm
     );
   }
@@ -368,6 +373,104 @@ async function updateBalancesAndFees(context: ActionContext<any, any>): Promise<
   const { dispatch } = bridgeActionContext(context);
 
   await Promise.allSettled([dispatch.updateExternalBalance(), updateFeesAndLockedFunds(context)]);
+}
+
+async function prepareOutgoingEvmTransactionData(
+  context: ActionContext<any, any>,
+  {
+    address,
+    value,
+    to,
+    request,
+  }: {
+    address: string;
+    value: string;
+    to: string;
+    request: EthApprovedRequest;
+  }
+) {
+  const { rootGetters } = bridgeActionContext(context);
+
+  const asset = rootGetters.assets.assetDataByAddress(address)!;
+  const signer = await ethersUtil.getSigner();
+
+  const symbol = asset.symbol as KnownEthBridgeAsset;
+  const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
+  const bridgeAsset: KnownEthBridgeAsset = isValOrXor ? symbol : KnownEthBridgeAsset.Other;
+  const contract = SmartContracts[SmartContractType.EthBridge][bridgeAsset];
+  const contractAddress = rootGetters.web3.contractAddress(bridgeAsset) as string;
+  const contractInstance = new ethers.Contract(contractAddress, contract.abi, signer);
+  const method = isValOrXor
+    ? 'mintTokensByPeers'
+    : request.currencyType === EthCurrencyType.TokenAddress
+    ? 'receiveByEthereumAssetAddress'
+    : 'receiveBySidechainAssetId';
+  const methodArgs: Array<any> = [
+    isValOrXor || request.currencyType === EthCurrencyType.TokenAddress
+      ? asset.externalAddress // address tokenAddress OR
+      : asset.address, // bytes32 assetId
+    new FPNumber(value, asset.externalDecimals).toCodecString(), // uint256 amount
+    to, // address beneficiary
+  ];
+  methodArgs.push(
+    ...(isValOrXor
+      ? [
+          request.hash, // bytes32 txHash
+          request.v, // uint8[] memory v
+          request.r, // bytes32[] memory r
+          request.s, // bytes32[] memory s
+          request.from, // address from
+        ]
+      : [
+          request.from, // address from
+          request.hash, // bytes32 txHash
+          request.v, // uint8[] memory v
+          request.r, // bytes32[] memory r
+          request.s, // bytes32[] memory s
+        ])
+  );
+
+  return {
+    contract: contractInstance,
+    method,
+    args: methodArgs,
+  };
+}
+
+async function prepareIncomingEvmTransactionData(context: ActionContext<any, any>, { address, value, to }) {
+  const { rootGetters } = bridgeActionContext(context);
+
+  const asset = rootGetters.assets.assetDataByAddress(address)!;
+  const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
+  const contractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other) as string;
+
+  const [signer, accountId] = await Promise.all([ethersUtil.getSigner(), ethersUtil.accountAddressToHex(to)]);
+
+  const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
+
+  const contract = new ethers.Contract(
+    contractAddress,
+    SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi,
+    signer
+  );
+
+  const method = isNativeEvmToken ? 'sendEthToSidechain' : 'sendERC20ToSidechain';
+  const methodArgs = isNativeEvmToken
+    ? [
+        accountId, // bytes32 to
+      ]
+    : [
+        accountId, // bytes32 to
+        amount, // uint256 amount
+        asset.externalAddress, // address tokenAddress
+      ];
+  const overrides = isNativeEvmToken ? { value: amount } : {};
+
+  return {
+    contract,
+    method,
+    args: [...methodArgs, overrides],
+  };
 }
 
 const actions = defineActions({
@@ -640,58 +743,28 @@ const actions = defineActions({
     if (!tx?.hash) throw new Error('TX ID cannot be empty!');
     if (!tx.amount) throw new Error('TX amount cannot be empty!');
     if (!tx.assetAddress) throw new Error('TX assetAddress cannot be empty!');
+    if (!tx.to) throw new Error('TX to cannot be empty!');
 
     const asset = rootGetters.assets.assetDataByAddress(tx.assetAddress);
 
     if (!asset?.externalAddress) throw new Error(`Asset not registered: ${tx.assetAddress}`);
 
     const request = await waitForApprovedRequest(tx); // If it causes an error, then -> catch -> SORA_REJECTED
-    const evmAccount = rootState.web3.evmAddress;
 
-    if (!ethersUtil.addressesAreEqual(evmAccount, request.to)) {
+    if (!ethersUtil.addressesAreEqual(rootState.web3.evmAddress, request.to)) {
       throw new Error(`Change account in ethereum wallet to ${request.to}`);
     }
 
-    const signer = await ethersUtil.getSigner();
-
-    const symbol = asset.symbol as KnownEthBridgeAsset;
-    const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
-    const bridgeAsset: KnownEthBridgeAsset = isValOrXor ? symbol : KnownEthBridgeAsset.Other;
-    const contract = SmartContracts[SmartContractType.EthBridge][bridgeAsset];
-    const contractAddress = rootGetters.web3.contractAddress(bridgeAsset) as string;
-    const contractInstance = new ethers.Contract(contractAddress, contract.abi, signer);
-    const method = isValOrXor
-      ? 'mintTokensByPeers'
-      : request.currencyType === EthCurrencyType.TokenAddress
-      ? 'receiveByEthereumAssetAddress'
-      : 'receiveBySidechainAssetId';
-    const methodArgs: Array<any> = [
-      isValOrXor || request.currencyType === EthCurrencyType.TokenAddress
-        ? asset.externalAddress // address tokenAddress OR
-        : asset.address, // bytes32 assetId
-      new FPNumber(tx.amount, asset.externalDecimals).toCodecString(), // uint256 amount
-      evmAccount, // address beneficiary
-    ];
-    methodArgs.push(
-      ...(isValOrXor
-        ? [
-            tx.hash, // bytes32 txHash
-            request.v, // uint8[] memory v
-            request.r, // bytes32[] memory r
-            request.s, // bytes32[] memory s
-            request.from, // address from
-          ]
-        : [
-            request.from, // address from
-            tx.hash, // bytes32 txHash
-            request.v, // uint8[] memory v
-            request.r, // bytes32[] memory r
-            request.s, // bytes32[] memory s
-          ])
-    );
-
     checkEvmNetwork(context);
-    const transaction: ethers.TransactionResponse = await contractInstance[method](...methodArgs);
+
+    const { contract, method, args } = await prepareOutgoingEvmTransactionData(context, {
+      address: tx.assetAddress,
+      value: tx.amount,
+      to: tx.to,
+      request,
+    });
+
+    const transaction: ethers.TransactionResponse = await contract[method](...args);
 
     const fee = transaction.gasPrice ? ethersUtil.calcEvmFee(transaction.gasPrice, transaction.gasLimit) : undefined;
 
@@ -712,11 +785,13 @@ const actions = defineActions({
 
     const evmAccount = rootState.web3.evmAddress;
     const isEvmAccountConnected = await ethersUtil.checkAccountIsConnected(evmAccount);
+
     if (!isEvmAccountConnected) throw new Error('Connect account in ethereum wallet');
-    const contractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other) as string;
+
     const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
     // don't check allowance for native EVM token
     if (!isNativeEvmToken) {
+      const contractAddress = rootGetters.web3.contractAddress(KnownEthBridgeAsset.Other) as string;
       const allowance = await ethersUtil.getAllowance(evmAccount, contractAddress, asset.externalAddress);
       if (FPNumber.isLessThan(new FPNumber(allowance), new FPNumber(tx.amount))) {
         commit.addTxIdInApprove(tx.id);
@@ -736,30 +811,16 @@ const actions = defineActions({
         await waitForEvmTransactionMined(transaction.hash); // wait for 1 confirm block
       }
     }
-    const soraAccountAddress = rootState.wallet.account.address;
-    const accountId = await ethersUtil.accountAddressToHex(soraAccountAddress);
-    const signer = await ethersUtil.getSigner();
-    const contractInstance = new ethers.Contract(
-      contractAddress,
-      SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi,
-      signer
-    );
-    const decimals = await ethersUtil.getTokenDecimals(asset.externalAddress);
-    const amount = new FPNumber(tx.amount, decimals).toCodecString();
-    const method = isNativeEvmToken ? 'sendEthToSidechain' : 'sendERC20ToSidechain';
-    const methodArgs = isNativeEvmToken
-      ? [
-          accountId, // bytes32 to
-        ]
-      : [
-          accountId, // bytes32 to
-          amount, // uint256 amount
-          asset.externalAddress, // address tokenAddress
-        ];
-    const overrides = isNativeEvmToken ? { value: amount } : {};
+
+    const { contract, method, args } = await prepareIncomingEvmTransactionData(context, {
+      address: tx.assetAddress,
+      value: tx.amount,
+      to: rootState.wallet.account.address,
+    });
 
     checkEvmNetwork(context);
-    const transaction: ethers.TransactionResponse = await contractInstance[method](...methodArgs, overrides);
+
+    const transaction: ethers.TransactionResponse = await contract[method](...args);
     const fee = transaction.gasPrice ? ethersUtil.calcEvmFee(transaction.gasPrice, transaction.gasLimit) : undefined;
     return {
       hash: transaction.hash,
