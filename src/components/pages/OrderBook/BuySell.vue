@@ -156,7 +156,7 @@ import {
   hasInsufficientBalance,
   delay,
 } from '@/utils';
-import { getBookDecimals } from '@/utils/orderBook';
+import { getBookDecimals, MAX_ORDERS_PER_SIDE } from '@/utils/orderBook';
 
 import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
 import type { CodecString } from '@sora-substrate/util';
@@ -388,11 +388,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         reading: "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
       });
 
-    // if (this.baseValue && this.isOutOfAmountBounds(this.baseValue) && this.quoteValue)
-    //   return this.setError({
-    //     reason: 'Amount exceeds the blockchain range',
-    //     reading: "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range",
-    //   });
+    if (this.baseValue && this.isOutOfAmountBounds(this.baseValue) && this.quoteValue)
+      return this.setError({
+        reason: 'Amount exceeds the blockchain range',
+        reading: "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range",
+      });
   }
 
   priceExceedsSpread(): boolean {
@@ -622,7 +622,21 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   isNotAllowedToPlace(): boolean {
-    return ![OrderBookStatus.Trade, OrderBookStatus.PlaceAndCancel].includes(this.orderBookStatus);
+    // trading activity is off
+    const bookStopped = ![OrderBookStatus.Trade, OrderBookStatus.PlaceAndCancel].includes(this.orderBookStatus);
+    if (bookStopped) return bookStopped;
+
+    // book being reached limit of 1024 per one side (buy/sell)
+    const userReachedSpotLimit = (this.side === PriceVariant.Sell ? this.asks : this.bids).length > MAX_ORDERS_PER_SIDE;
+    if (userReachedSpotLimit) return userReachedSpotLimit;
+
+    // user has more than 1024 orders being active
+    const userReachedOwnLimit = true;
+
+    // for this exact price there's more than 1024 orders
+    const tooMuchOrdersForPrice = true;
+
+    return bookStopped;
   }
 
   get isBuySide(): boolean {
