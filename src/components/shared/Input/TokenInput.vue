@@ -147,7 +147,6 @@ export default class TokenInput extends Mixins(
 ) {
   @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
 
-  @Prop({ default: () => null, type: Object }) readonly token!: Nullable<AccountAsset>;
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   @Prop({ type: String }) readonly value!: string;
