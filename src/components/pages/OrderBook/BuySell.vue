@@ -180,8 +180,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @state.orderBook.baseValue baseValue!: string;
   @state.orderBook.quoteValue quoteValue!: string;
   @state.orderBook.side side!: PriceVariant;
-  @state.orderBook.asks asks!: OrderBookPriceVolume;
-  @state.orderBook.bids bids!: OrderBookPriceVolume;
+  @state.orderBook.asks asks!: OrderBookPriceVolume[];
+  @state.orderBook.bids bids!: OrderBookPriceVolume[];
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.placeOrderNetworkFee networkFee!: CodecString;
   @state.orderBook.amountSliderValue sliderValue!: number;
@@ -649,7 +649,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get userReachedSpotLimit(): boolean {
-    return (this.side === PriceVariant.Sell ? this.asks : this.bids).length > MAX_ORDERS_PER_SIDE;
+    return (this.side === PriceVariant.Sell ? this.asks : this.bids).length >= MAX_ORDERS_PER_SIDE;
   }
 
   get userReachedOwnLimit(): boolean {

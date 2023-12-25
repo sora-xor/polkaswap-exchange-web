@@ -77,7 +77,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   }
 
   get cancelAllText(): string {
-    return 'Cancel order';
+    return 'Cancel all';
   }
 
   get hasSelected(): boolean {
