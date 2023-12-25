@@ -284,7 +284,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.limitOrderType === LimitOrderType.limit) {
       if (!this.quoteValue) return 'set price';
-      if (!this.baseValue) return 'enter amount';
+      if (!this.baseValue || this.isZeroAmount) return 'enter amount';
 
       // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
       // if (this.isPriceTooHigh || this.isPriceTooLow || !this.isPriceBeyondPrecision) {
@@ -390,7 +390,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         reading: "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
       });
 
-    if (this.baseValue && this.isOutOfAmountBounds(this.baseValue) && this.quoteValue)
+    if (!this.isZeroAmount && this.isOutOfAmountBounds(this.baseValue) && this.quoteValue)
       return this.setError({
         reason: 'Amount exceeds the blockchain range',
         reading: "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range",
