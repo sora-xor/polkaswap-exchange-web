@@ -57,33 +57,6 @@
       />
     </div>
 
-    <!-- <div slot="bottom" class="input-line input-line--footer">
-      <div class="asset-info">
-        <div class="s-flex">
-          <formatted-amount v-if="!!tokenPrice" is-fiat-value :value="fiatAmount" />
-          <slot name="fiat-amount-append" />
-        </div>
-        <token-address
-          v-if="token"
-          :name="token.name"
-          :symbol="token.symbol"
-          :address="token.address"
-          class="input-value"
-        />
-      </div>
-      <div v-if="withSlider">
-        <div class="delimiter" />
-        <s-slider
-          class="slider-container"
-          :value="slideValue"
-          :disabled="!withSlider"
-          :show-tooltip="false"
-          :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
-          @input="handleSlideInputChange"
-        />
-      </div>
-    </div> -->
-
     <template #bottom>
       <slot name="bottom">
         <div class="input-line input-line--footer">
@@ -122,11 +95,9 @@ import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
-import InputSliderMixin from '@/components/mixins/InputSliderMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, mutation } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -142,25 +113,20 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 export default class TokenInput extends Mixins(
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin,
-  InputSliderMixin,
   TranslationMixin
 ) {
-  @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
-
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   @Prop({ type: String }) readonly value!: string;
   @Prop({ type: [String, Number] }) readonly max!: string | number;
   @Prop({ default: () => null, type: Object }) readonly token!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: () => null, type: String }) readonly balance!: Nullable<CodecString>;
-  @Prop({ default: 0, type: Number }) readonly sliderValue!: number;
   @Prop({ default: '', type: String }) readonly title!: string;
   @Prop({ default: false, type: Boolean }) readonly external!: boolean;
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
   @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMaxAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isSelectAvailable!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly withSlider!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isFiatEditable!: boolean;
   @Prop({ default: 2, type: Number }) readonly fiatDecimals!: number;
 
@@ -195,14 +161,6 @@ export default class TokenInput extends Mixins(
 
   handleFiatBlur(): void {
     this.fiatFocus = false;
-  }
-
-  get slideValue(): number {
-    return this.sliderValue;
-  }
-
-  set slideValue(value: string) {
-    this.setAmountSliderValue(Number(value));
   }
 
   get isBalanceAvailable(): boolean {
@@ -269,15 +227,6 @@ export default class TokenInput extends Mixins(
   handleSelectToken(): void {
     this.$emit('select');
   }
-
-  handleSlideInputChange(value: string): void {
-    this.$emit('slide', value);
-  }
-
-  async mounted(): Promise<void> {
-    await this.$nextTick();
-    this.addListenerToSliderDragButton();
-  }
 }
 </script>
 
@@ -334,38 +283,6 @@ $el-input-class: '.el-input';
     &:focus-within {
       outline: none;
     }
-  }
-}
-
-.input-line.input-line--footer {
-  @include input-slider;
-
-  .el-slider__button {
-    background-color: #fff;
-    border-radius: 4px;
-    transform: rotate(-45deg);
-  }
-
-  .el-slider__stop {
-    height: 10px;
-    width: 10px;
-    border-radius: 2px;
-    top: -1.8px;
-    border: 1.3px solid var(--s-color-base-content-tertiary);
-    transform: translateX(-50%) rotate(-45deg);
-  }
-
-  .asset-info {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .delimiter {
-    background-color: var(--s-color-base-border-secondary);
-    width: 100%;
-    height: 1px;
-    margin: 14px 0 4px 0;
   }
 }
 </style>
