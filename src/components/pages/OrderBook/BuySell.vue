@@ -156,11 +156,12 @@ import {
   hasInsufficientBalance,
   delay,
 } from '@/utils';
-import { getBookDecimals, MAX_ORDERS_PER_SIDE } from '@/utils/orderBook';
+import { getBookDecimals, MAX_ORDERS_PER_SIDE, MAX_ORDERS_PER_USER } from '@/utils/orderBook';
 
 import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { Subscription } from 'rxjs';
 
 @Component({
@@ -184,6 +185,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.placeOrderNetworkFee networkFee!: CodecString;
   @state.orderBook.amountSliderValue sliderValue!: number;
+  @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
@@ -249,6 +251,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   @Watch('marketQuotePrice')
+  @Watch('userLimitOrders')
   private checkValidation(): void {
     this.checkInputValidation();
   }
@@ -278,7 +281,9 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       return 'connectWalletText';
     }
 
-    if (this.isNotAllowedToPlace()) return 'book stopped';
+    if (this.bookStopped) return 'book stopped';
+
+    if (this.userReachedSpotLimit || this.userReachedOwnLimit) return "can't place order";
 
     if (this.isInsufficientBalance) return `Insufficient ${this.tokenFrom?.symbol} balance`;
 
@@ -319,7 +324,9 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   buttonDisabled(): boolean {
-    if (this.isNotAllowedToPlace()) return true;
+    if (this.bookStopped) return true;
+
+    if (this.userReachedSpotLimit || this.userReachedOwnLimit) return true;
 
     if (!this.isLoggedIn) return false;
 
@@ -347,6 +354,20 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.setError({ reason: '', reading: '' });
 
     if (this.orderBookStatus === OrderBookStatus.Stop) return;
+
+    if (this.userReachedSpotLimit)
+      return this.setError({
+        reason: 'Trading side has been filled',
+        reading:
+          'Price range cap: Each order book side is limited to 1024 unique price points. Please select a price within the existing range or wait for space to become available',
+      });
+
+    if (this.userReachedOwnLimit)
+      return this.setError({
+        reason: 'Too many orders is ongoing',
+        reading:
+          'Limit reached: Each account is confined to 1024 limit orders. Please wait until some of your orders fulfill',
+      });
 
     if (this.isInsufficientBalance) return;
 
@@ -623,22 +644,16 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return this.currentOrderBook?.status ?? OrderBookStatus.Stop;
   }
 
-  isNotAllowedToPlace(): boolean {
-    // trading activity is off
-    const bookStopped = ![OrderBookStatus.Trade, OrderBookStatus.PlaceAndCancel].includes(this.orderBookStatus);
-    if (bookStopped) return bookStopped;
+  get bookStopped(): boolean {
+    return ![OrderBookStatus.Trade, OrderBookStatus.PlaceAndCancel].includes(this.orderBookStatus);
+  }
 
-    // book being reached limit of 1024 per one side (buy/sell)
-    const userReachedSpotLimit = (this.side === PriceVariant.Sell ? this.asks : this.bids).length > MAX_ORDERS_PER_SIDE;
-    if (userReachedSpotLimit) return userReachedSpotLimit;
+  get userReachedSpotLimit(): boolean {
+    return (this.side === PriceVariant.Sell ? this.asks : this.bids).length > MAX_ORDERS_PER_SIDE;
+  }
 
-    // user has more than 1024 orders being active
-    const userReachedOwnLimit = true;
-
-    // for this exact price there's more than 1024 orders
-    const tooMuchOrdersForPrice = true;
-
-    return bookStopped;
+  get userReachedOwnLimit(): boolean {
+    return this.userLimitOrders?.length === MAX_ORDERS_PER_USER;
   }
 
   get isBuySide(): boolean {
