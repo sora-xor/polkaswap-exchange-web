@@ -151,14 +151,14 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
       const isExternalNative = ethersUtil.isNativeEvmTokenAddress(registeredAsset.address);
       const externalBalance = await ethersUtil.getAccountAssetBalance(ethTransferData.to, registeredAsset.address);
       const bridgeContractAddress = this.contractAddress(KnownEthBridgeAsset.Other);
-      const evmNetworkFee: CodecString = await ethersUtil.getEvmNetworkFee(
-        bridgeContractAddress,
-        ethTransferData.to,
-        registeredAsset.address,
-        registeredAsset.kind,
-        ethTransferData.amount,
-        false
-      );
+      // const evmNetworkFee: CodecString = await ethersUtil.getEvmNetworkFee(
+      //   bridgeContractAddress,
+      //   ethTransferData.to,
+      //   registeredAsset.address,
+      //   ethTransferData.amount,
+      //   false
+      // );
+      const evmNetworkFee = '0'; // [TODO]: remove
       const evmNativeBalance = await ethersUtil.getAccountBalance(ethTransferData.to);
       const hasEthForFee = !hasInsufficientNativeTokenForFee(evmNativeBalance, evmNetworkFee);
 

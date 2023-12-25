@@ -86,14 +86,7 @@ export const handleRpcProviderError = (error: any): string => {
 /**
  * It's in gwei.
  */
-const getEthBridgeGasLimit = async (
-  bridgeContractAddress: string,
-  accountEvmAddress: string,
-  assetEvmAddress: string,
-  assetKind: EthAssetKind,
-  amount: number | string,
-  isSoraToEvm: boolean
-) => {
+export const getEthBridgeGasLimit = (assetEvmAddress: string, assetKind: EthAssetKind, isSoraToEvm: boolean) => {
   if (isSoraToEvm) {
     switch (assetKind) {
       case EthAssetKind.SidechainOwned:
@@ -108,12 +101,7 @@ const getEthBridgeGasLimit = async (
         throw new Error(`Unknown kind "${assetKind}" for asset "${assetEvmAddress}"`);
     }
   } else {
-    if (isNativeEvmTokenAddress(assetEvmAddress)) return gasLimit.sendEthToSidechain;
-
-    const allowance = await getAllowance(accountEvmAddress, bridgeContractAddress, assetEvmAddress);
-    const approveCost = Number(allowance) < Number(amount) ? gasLimit.approve : 0;
-
-    return approveCost + gasLimit.sendERC20ToSidechain;
+    return isNativeEvmTokenAddress(assetEvmAddress) ? gasLimit.sendEthToSidechain : gasLimit.sendERC20ToSidechain;
   }
 };
 
@@ -297,8 +285,12 @@ async function getAccountAssetBalance(accountAddress: string, assetAddress: stri
     : await getAccountTokenBalance(accountAddress, assetAddress);
 }
 
-async function getAllowance(accountAddress: string, contractAddress: string, assetAddress: string): Promise<string> {
-  if (!(accountAddress && assetAddress && contractAddress)) return ZeroStringValue;
+async function getAllowance(
+  accountAddress: string,
+  contractAddress: string,
+  assetAddress: string
+): Promise<string | null> {
+  if (!(accountAddress && assetAddress && contractAddress && !isNativeEvmTokenAddress(assetAddress))) return null;
 
   const methodArgs = [accountAddress, contractAddress];
   const contract = await getTokenContract(assetAddress);
@@ -415,6 +407,18 @@ async function getEvmNetworkId(): Promise<number> {
   return Number(network.chainId);
 }
 
+export async function getEvmGasPrice(): Promise<bigint> {
+  const toBN = (value: bigint | null) => value ?? BigInt(0);
+  const ethersInstance = getEthersInstance();
+  const { maxFeePerGas, maxPriorityFeePerGas } = await ethersInstance.getFeeData();
+  const priorityFeePerGas = toBN(maxPriorityFeePerGas);
+  const feePerGas = toBN(maxFeePerGas);
+  const baseFeePerGas = (feePerGas - priorityFeePerGas) / BigInt(2);
+  const gasPrice = baseFeePerGas + priorityFeePerGas;
+
+  return gasPrice;
+}
+
 /**
  * Fetch EVM Network fee for passed asset address
  */
@@ -422,25 +426,13 @@ async function getEvmNetworkFee(
   bridgeContractAddress: string,
   accountEvmAddress: string,
   assetEvmAddress: string,
-  assetKind: string,
   amount: string,
-  isSoraToEvm: boolean
+  isSoraToEvm: boolean,
+  txGasLimit: bigint
 ): Promise<CodecString> {
   try {
-    const ethersInstance = getEthersInstance();
-    const { maxFeePerGas } = await ethersInstance.getFeeData();
-    const gasPrice = maxFeePerGas ?? BigInt(0);
-    const gasLimit = BigInt(
-      await getEthBridgeGasLimit(
-        bridgeContractAddress,
-        accountEvmAddress,
-        assetEvmAddress,
-        assetKind as EthAssetKind,
-        amount,
-        isSoraToEvm
-      )
-    );
-    const fee = calcEvmFee(gasPrice, gasLimit);
+    const gasPrice = await getEvmGasPrice();
+    const fee = calcEvmFee(gasPrice, txGasLimit);
 
     return fee;
   } catch (error) {

@@ -1,10 +1,23 @@
-import { Operation } from '@sora-substrate/util';
+import { Operation, FPNumber } from '@sora-substrate/util';
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { EthCurrencyType } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
+import { ethers } from 'ethers';
 
+import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
+import ethersUtil from '@/utils/ethers-util';
 
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { EthHistory, EthApprovedRequest } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type { Subscription } from 'rxjs';
+
+type EthTxParams = {
+  asset: RegisteredAccountAsset;
+  value: string;
+  recipient: string;
+  getContractAddress: (symbol: KnownEthBridgeAsset) => Nullable<string>;
+  request?: EthApprovedRequest;
+};
 
 export const isUnsignedFromPart = (tx: EthHistory): boolean => {
   if (tx.type === Operation.EthBridgeOutgoing) {
@@ -101,3 +114,91 @@ export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: st
 
   return { hash: soraHash, blockId: soraBlockHash };
 };
+
+export async function getIncomingEvmTransactionData({ asset, value, recipient, getContractAddress }: EthTxParams) {
+  const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
+
+  const [signer, accountId] = await Promise.all([ethersUtil.getSigner(), ethersUtil.accountAddressToHex(recipient)]);
+
+  const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
+
+  const contractAddress = getContractAddress(KnownEthBridgeAsset.Other)!;
+  const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi;
+  const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+
+  const method = isNativeEvmToken ? 'sendEthToSidechain' : 'sendERC20ToSidechain';
+  const methodArgs = isNativeEvmToken
+    ? [
+        accountId, // bytes32 to
+      ]
+    : [
+        accountId, // bytes32 to
+        amount, // uint256 amount
+        asset.externalAddress, // address tokenAddress
+      ];
+  const overrides = isNativeEvmToken ? { value: amount } : {};
+  const args = [...methodArgs, overrides];
+
+  return {
+    contract,
+    method,
+    args,
+  };
+}
+
+export async function getOutgoingEvmTransactionData({
+  asset,
+  value,
+  recipient,
+  getContractAddress,
+  request,
+}: EthTxParams) {
+  if (!request) throw new Error('request is required!');
+
+  const signer = await ethersUtil.getSigner();
+  const symbol = asset.symbol as KnownEthBridgeAsset;
+  const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
+  const bridgeAsset: KnownEthBridgeAsset = isValOrXor ? symbol : KnownEthBridgeAsset.Other;
+  const contractAddress = getContractAddress(bridgeAsset)!;
+  const contractAbi = SmartContracts[SmartContractType.EthBridge][bridgeAsset].abi;
+
+  const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+  const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
+
+  const method = isValOrXor
+    ? 'mintTokensByPeers'
+    : request.currencyType === EthCurrencyType.TokenAddress
+    ? 'receiveByEthereumAssetAddress'
+    : 'receiveBySidechainAssetId';
+
+  const args: Array<any> = [
+    isValOrXor || request.currencyType === EthCurrencyType.TokenAddress
+      ? asset.externalAddress // address tokenAddress OR
+      : asset.address, // bytes32 assetId
+    amount, // uint256 amount
+    recipient, // address beneficiary
+  ];
+  args.push(
+    ...(isValOrXor
+      ? [
+          request.hash, // bytes32 txHash
+          request.v, // uint8[] memory v
+          request.r, // bytes32[] memory r
+          request.s, // bytes32[] memory s
+          request.from, // address from
+        ]
+      : [
+          request.from, // address from
+          request.hash, // bytes32 txHash
+          request.v, // uint8[] memory v
+          request.r, // bytes32[] memory r
+          request.s, // bytes32[] memory s
+        ])
+  );
+
+  return {
+    contract,
+    method,
+    args,
+  };
+}
