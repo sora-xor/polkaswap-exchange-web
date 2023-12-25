@@ -20,6 +20,7 @@ import ethBridge from '@/utils/bridge/eth';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import { EthBridgeHistory, updateEthBridgeHistory } from '@/utils/bridge/eth/classes/history';
 import {
+  getEthNetworkFee,
   getOutgoingEvmTransactionData,
   getIncomingEvmTransactionData,
   waitForApprovedRequest,
@@ -30,7 +31,7 @@ import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
 import { updateSubBridgeHistory } from '@/utils/bridge/sub/classes/history';
-import ethersUtil, { getEthBridgeGasLimit, getEvmGasPrice } from '@/utils/ethers-util';
+import ethersUtil from '@/utils/ethers-util';
 
 import type { SignTxResult } from './types';
 import type { SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
@@ -128,46 +129,25 @@ function bridgeDataToHistoryItem(
 async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, state, rootState, rootGetters } = bridgeActionContext(context);
   const { asset, isRegisteredAsset } = getters;
-  const { isValidNetwork, contractAddress } = rootGetters.web3;
+  const { isValidNetwork } = rootGetters.web3;
   const evmAccount = rootState.web3.evmAddress;
+  const soraAccount = rootState.wallet.account.address;
 
   let fee = ZeroStringValue;
 
-  if (asset && isRegisteredAsset && isValidNetwork && evmAccount) {
+  if (asset && isRegisteredAsset && isValidNetwork && evmAccount && soraAccount) {
     const bridgeRegisteredAsset = rootState.assets.registeredAssets[asset.address];
-    const bridgeContractAddress = contractAddress(KnownEthBridgeAsset.Other) as string;
     const value = state.amountSend;
 
-    let gasLimit!: bigint;
-
-    if (state.isSoraToEvm) {
-      gasLimit = BigInt(
-        getEthBridgeGasLimit(
-          bridgeRegisteredAsset.address,
-          bridgeRegisteredAsset.kind as EthAssetKind,
-          state.isSoraToEvm
-        )
-      );
-    } else {
-      const allowance = await ethersUtil.getAllowance(evmAccount, bridgeContractAddress, bridgeRegisteredAsset.address);
-      const approveGasLimit = !!allowance && Number(allowance) < Number(value) ? BigInt(45_000) : BigInt(0);
-
-      const params = {
-        asset,
-        value,
-        recipient: getters.recipient,
-        getContractAddress: rootGetters.web3.contractAddress,
-      };
-
-      const { contract, method, args } = await getIncomingEvmTransactionData(params);
-      const signer = contract.runner!;
-      const tx = await contract[method].populateTransaction(...args);
-      gasLimit = (await signer.estimateGas!(tx)) + approveGasLimit;
-    }
-
-    const gasPrice = await getEvmGasPrice();
-
-    fee = ethersUtil.calcEvmFee(gasPrice, gasLimit);
+    fee = await getEthNetworkFee(
+      asset,
+      bridgeRegisteredAsset.kind as EthAssetKind,
+      rootGetters.web3.contractAddress,
+      value,
+      state.isSoraToEvm,
+      soraAccount,
+      evmAccount
+    );
   }
 
   commit.setExternalNetworkFee(fee);

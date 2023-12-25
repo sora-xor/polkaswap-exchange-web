@@ -27,19 +27,6 @@ export enum Provider {
   WalletConnect = 'WalletConnect',
 }
 
-// TODO [EVM]
-const gasLimit = {
-  approve: 47000,
-  sendERC20ToSidechain: 53000,
-  sendEthToSidechain: 26093,
-  mintTokensByPeers: 211000,
-  receiveByEthereumAssetAddress: {
-    ETH: 155000,
-    OTHER: 181000,
-  },
-  receiveBySidechainAssetId: 184000,
-};
-
 const WALLET_CONNECT_PROJECT_ID = 'feeab08b50e0d407f4eb875d69e162e8';
 
 export enum PROVIDER_ERROR {
@@ -81,28 +68,6 @@ export const handleRpcProviderError = (error: any): string => {
   }
 
   return handleErrorCode(code, message);
-};
-
-/**
- * It's in gwei.
- */
-export const getEthBridgeGasLimit = (assetEvmAddress: string, assetKind: EthAssetKind, isSoraToEvm: boolean) => {
-  if (isSoraToEvm) {
-    switch (assetKind) {
-      case EthAssetKind.SidechainOwned:
-        return gasLimit.mintTokensByPeers;
-      case EthAssetKind.Thischain:
-        return gasLimit.receiveBySidechainAssetId;
-      case EthAssetKind.Sidechain:
-        return isNativeEvmTokenAddress(assetEvmAddress)
-          ? gasLimit.receiveByEthereumAssetAddress.ETH
-          : gasLimit.receiveByEthereumAssetAddress.OTHER;
-      default:
-        throw new Error(`Unknown kind "${assetKind}" for asset "${assetEvmAddress}"`);
-    }
-  } else {
-    return isNativeEvmTokenAddress(assetEvmAddress) ? gasLimit.sendEthToSidechain : gasLimit.sendERC20ToSidechain;
-  }
 };
 
 async function connectEvmProvider(provider: Provider, chains: ChainsProps): Promise<string> {
@@ -407,7 +372,7 @@ async function getEvmNetworkId(): Promise<number> {
   return Number(network.chainId);
 }
 
-export async function getEvmGasPrice(): Promise<bigint> {
+async function getEvmGasPrice(): Promise<bigint> {
   const toBN = (value: bigint | null) => value ?? BigInt(0);
   const ethersInstance = getEthersInstance();
   const { maxFeePerGas, maxPriorityFeePerGas } = await ethersInstance.getFeeData();
@@ -417,28 +382,6 @@ export async function getEvmGasPrice(): Promise<bigint> {
   const gasPrice = baseFeePerGas + priorityFeePerGas;
 
   return gasPrice;
-}
-
-/**
- * Fetch EVM Network fee for passed asset address
- */
-async function getEvmNetworkFee(
-  bridgeContractAddress: string,
-  accountEvmAddress: string,
-  assetEvmAddress: string,
-  amount: string,
-  isSoraToEvm: boolean,
-  txGasLimit: bigint
-): Promise<CodecString> {
-  try {
-    const gasPrice = await getEvmGasPrice();
-    const fee = calcEvmFee(gasPrice, txGasLimit);
-
-    return fee;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
 }
 
 function calcEvmFee(gasPrice: bigint, gasAmount: bigint) {
@@ -546,7 +489,7 @@ export default {
   addressesAreEqual,
   calcEvmFee,
   hexToNumber,
-  getEvmNetworkFee,
+  getEvmGasPrice,
   getEvmNetworkId,
   getEvmTransaction,
   getEvmTransactionReceipt,

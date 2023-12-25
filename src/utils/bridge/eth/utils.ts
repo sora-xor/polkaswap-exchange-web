@@ -1,9 +1,10 @@
 import { Operation, FPNumber } from '@sora-substrate/util';
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { EthCurrencyType } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
+import { EthCurrencyType, EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
 import { ethers } from 'ethers';
 
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
+import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import ethersUtil from '@/utils/ethers-util';
 
@@ -201,4 +202,72 @@ export async function getOutgoingEvmTransactionData({
     method,
     args,
   };
+}
+
+const gasLimit = {
+  approve: 47000,
+  sendERC20ToSidechain: 53000,
+  sendEthToSidechain: 26093,
+  mintTokensByPeers: 211000,
+  receiveByEthereumAssetAddress: {
+    ETH: 155000,
+    OTHER: 181000,
+  },
+  receiveBySidechainAssetId: 184000,
+};
+
+/**
+ * It's in gwei.
+ */
+const getEthBridgeOutgoingGasLimit = (assetEvmAddress: string, assetKind: EthAssetKind) => {
+  switch (assetKind) {
+    case EthAssetKind.SidechainOwned:
+      return gasLimit.mintTokensByPeers;
+    case EthAssetKind.Thischain:
+      return gasLimit.receiveBySidechainAssetId;
+    case EthAssetKind.Sidechain:
+      return ethersUtil.isNativeEvmTokenAddress(assetEvmAddress)
+        ? gasLimit.receiveByEthereumAssetAddress.ETH
+        : gasLimit.receiveByEthereumAssetAddress.OTHER;
+    default:
+      throw new Error(`Unknown kind "${assetKind}" for asset "${assetEvmAddress}"`);
+  }
+};
+
+export async function getEthNetworkFee(
+  asset: RegisteredAccountAsset,
+  assetKind: EthAssetKind,
+  getContractAddress: (symbol: KnownEthBridgeAsset) => Nullable<string>,
+  value: string,
+  isOutgoing: boolean,
+  soraAccount: string,
+  evmAccount: string
+) {
+  let gasLimit!: bigint;
+
+  if (isOutgoing) {
+    gasLimit = BigInt(getEthBridgeOutgoingGasLimit(asset.externalAddress, assetKind));
+  } else {
+    const bridgeContractAddress = getContractAddress(KnownEthBridgeAsset.Other) as string;
+    const allowance = await ethersUtil.getAllowance(evmAccount, bridgeContractAddress, asset.externalAddress);
+    const approveGasLimit = !!allowance && Number(allowance) < Number(value) ? BigInt(45_000) : BigInt(0);
+
+    const params = {
+      asset,
+      value,
+      recipient: soraAccount,
+      getContractAddress,
+    };
+
+    const { contract, method, args } = await getIncomingEvmTransactionData(params);
+    const signer = contract.runner!;
+    const tx = await contract[method].populateTransaction(...args);
+    const txGasLimit = await signer.estimateGas!(tx);
+
+    gasLimit = txGasLimit + approveGasLimit;
+  }
+
+  const gasPrice = await ethersUtil.getEvmGasPrice();
+
+  return ethersUtil.calcEvmFee(gasPrice, gasLimit);
 }
