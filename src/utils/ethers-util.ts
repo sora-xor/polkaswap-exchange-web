@@ -2,7 +2,6 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
 import { EthereumProvider as WalletConnectEthereumProvider } from '@walletconnect/ethereum-provider';
 import { ethers } from 'ethers';
 
