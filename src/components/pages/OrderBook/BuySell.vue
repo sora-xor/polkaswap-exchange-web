@@ -284,7 +284,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.limitOrderType === LimitOrderType.limit) {
       if (!this.quoteValue) return 'set price';
-      if (!this.baseValue) return 'enter amount';
+      if (!this.baseValue || this.isZeroAmount) return 'enter amount';
 
       // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
       // if (this.isPriceTooHigh || this.isPriceTooLow || !this.isPriceBeyondPrecision) {
@@ -348,6 +348,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.orderBookStatus === OrderBookStatus.Stop) return;
 
+    if (this.isInsufficientBalance) return;
+
     // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
     // if (this.isPriceTooHigh && this.quoteValue && this.baseValue)
     //   return this.setError({
@@ -388,7 +390,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         reading: "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
       });
 
-    if (this.baseValue && this.isOutOfAmountBounds(this.baseValue) && this.quoteValue)
+    if (!this.isZeroAmount && this.isOutOfAmountBounds(this.baseValue) && this.quoteValue)
       return this.setError({
         reason: 'Amount exceeds the blockchain range',
         reading: "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range",
@@ -841,12 +843,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   &-input {
     margin-bottom: $inner-spacing-mini;
-
-    .el-input__inner {
-      font-size: var(--s-font-size-large);
-      line-height: var(--s-line-height-small);
-      font-weight: 700;
-    }
 
     // overwrite select-button styles
     button.el-button.neumorphic.s-tertiary:focus:not(:active) {

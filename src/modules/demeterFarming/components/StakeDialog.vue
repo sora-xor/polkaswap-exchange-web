@@ -16,13 +16,13 @@
           v-if="isFarm"
           key="farm-input"
           size="medium"
-          :class="['s-input--stake-part', 's-input--token-value', valuePartCharClass]"
+          :class="['s-input--stake-part', valuePartCharClass]"
           :value="value"
           :decimals="0"
           :max="100"
           @input="handleValue"
         >
-          <div slot="top" class="amount">{{ inputTitle }}</div>
+          <div slot="top" class="input-title">{{ inputTitle }}</div>
           <div slot="right" class="el-buttons el-buttons--between">
             <span class="percent">%</span>
             <s-button
