@@ -22,7 +22,7 @@
     />
     <info-line
       :label="t(`assets.balance.locked`)"
-      :label-tooltip="t('demeterFarming.info.totalLiquidityLocked')"
+      :label-tooltip="lockedTooltip"
       :value="locked"
       :asset-symbol="lockedAssetSymbol"
       :fiat-value="getFiatAmountByCodecString(lockedCodec, lockedAsset)"
@@ -108,6 +108,10 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
     if (this.infoOnly) {
       return this.side === PriceVariant.Buy ? 'limit-order-type--buy' : 'limit-order-type--sell';
     }
+  }
+
+  get lockedTooltip(): string {
+    return "The 'Locked' shows the amount of asset to be held while order is ongoing.";
   }
 
   get expiryTooltip() {
