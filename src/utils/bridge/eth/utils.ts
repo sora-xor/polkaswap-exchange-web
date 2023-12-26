@@ -205,21 +205,21 @@ export async function getOutgoingEvmTransactionData({
 }
 
 const gasLimit = {
-  approve: 47000,
-  sendERC20ToSidechain: 53000,
-  sendEthToSidechain: 26093,
-  mintTokensByPeers: 211000,
+  approve: BigInt(45000),
+  sendERC20ToSidechain: BigInt(53000),
+  sendEthToSidechain: BigInt(26093),
+  mintTokensByPeers: BigInt(211000),
   receiveByEthereumAssetAddress: {
-    ETH: 155000,
-    OTHER: 181000,
+    ETH: BigInt(155000),
+    OTHER: BigInt(181000),
   },
-  receiveBySidechainAssetId: 184000,
+  receiveBySidechainAssetId: BigInt(184000),
 };
 
 /**
  * It's in gwei.
  */
-const getEthBridgeOutgoingGasLimit = (assetEvmAddress: string, assetKind: EthAssetKind) => {
+const getEthBridgeOutgoingGasLimit = (assetEvmAddress: string, assetKind: EthAssetKind): bigint => {
   switch (assetKind) {
     case EthAssetKind.SidechainOwned:
       return gasLimit.mintTokensByPeers;
@@ -234,6 +234,12 @@ const getEthBridgeOutgoingGasLimit = (assetEvmAddress: string, assetKind: EthAss
   }
 };
 
+const getEthBridgeIncomingGasLimit = (assetEvmAddress: string): bigint => {
+  return ethersUtil.isNativeEvmTokenAddress(assetEvmAddress)
+    ? gasLimit.sendEthToSidechain
+    : gasLimit.sendERC20ToSidechain;
+};
+
 export async function getEthNetworkFee(
   asset: RegisteredAccountAsset,
   assetKind: EthAssetKind,
@@ -243,31 +249,38 @@ export async function getEthNetworkFee(
   soraAccount: string,
   evmAccount: string
 ) {
-  let gasLimit!: bigint;
+  let gasLimitTotal!: bigint;
 
   if (isOutgoing) {
-    gasLimit = BigInt(getEthBridgeOutgoingGasLimit(asset.externalAddress, assetKind));
+    gasLimitTotal = getEthBridgeOutgoingGasLimit(asset.externalAddress, assetKind);
   } else {
     const bridgeContractAddress = getContractAddress(KnownEthBridgeAsset.Other) as string;
     const allowance = await ethersUtil.getAllowance(evmAccount, bridgeContractAddress, asset.externalAddress);
-    const approveGasLimit = !!allowance && Number(allowance) < Number(value) ? BigInt(45_000) : BigInt(0);
+    const approveGasLimit = !!allowance && Number(allowance) < Number(value) ? gasLimit.approve : BigInt(0);
 
-    const params = {
+    const txParams = {
       asset,
       value,
       recipient: soraAccount,
       getContractAddress,
     };
 
-    const { contract, method, args } = await getIncomingEvmTransactionData(params);
-    const signer = contract.runner!;
-    const tx = await contract[method].populateTransaction(...args);
-    const txGasLimit = await signer.estimateGas!(tx);
+    let txGasLimit!: bigint;
 
-    gasLimit = txGasLimit + approveGasLimit;
+    try {
+      const { contract, method, args } = await getIncomingEvmTransactionData(txParams);
+      const signer = contract.runner!;
+      const tx = await contract[method].populateTransaction(...args);
+
+      txGasLimit = await signer.estimateGas!(tx);
+    } catch {
+      txGasLimit = getEthBridgeIncomingGasLimit(asset.externalAddress);
+    }
+
+    gasLimitTotal = txGasLimit + approveGasLimit;
   }
 
   const gasPrice = await ethersUtil.getEvmGasPrice();
 
-  return ethersUtil.calcEvmFee(gasPrice, gasLimit);
+  return ethersUtil.calcEvmFee(gasPrice, gasLimitTotal);
 }
