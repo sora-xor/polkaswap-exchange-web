@@ -12,7 +12,11 @@
         />
       </s-form>
 
-      <s-input v-model="payeeAddress" placeholder="Rewards destination" suffix="s-icon-basic-user-24"></s-input>
+      <s-input
+        v-model="rewardsDestination"
+        placeholder="Rewards destination address"
+        suffix="s-icon-basic-user-24"
+      ></s-input>
 
       <div class="info">
         <info-line
@@ -55,7 +59,7 @@
         </template>
       </s-button>
       <div class="check-pending-rewards" @click="checkPendingRewards">
-        Check rewards per era and validator ({{ pendingRewards?.length ?? 0 }})
+        {{ t('soraStaking.claimRewardsDialog.checkRewards') }} ({{ pendingRewards?.length ?? 0 }})
       </div>
     </div>
   </dialog-base>
@@ -84,20 +88,22 @@ import type { NominatorReward } from '@sora-substrate/util/build/staking/types';
 export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
   @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
 
-  payeeAddress = '';
+  rewardsDestination = '';
   payoutNetworkFee: string | null = null;
 
-  @Watch('payee', { immediate: true })
-  async handlePayeeChange() {
+  @Watch('payeeAddress', { immediate: true })
+  handlePayeeAddressChange() {
+    this.rewardsDestination = this.payeeAddress;
+  }
+
+  get payeeAddress() {
     switch (this.payee) {
-      case 'stash':
-        this.payeeAddress = this.stash;
-        break;
-      case 'controller':
-        this.payeeAddress = this.controller;
-        break;
+      case 'Stash':
+        return this.stash;
+      case 'Controller':
+        return this.controller;
       default:
-        break;
+        return '';
     }
   }
 
@@ -159,8 +165,10 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
 
   async handleConfirm(): Promise<void> {
     await this.payout({
-      payouts: this.payouts,
-      payee: this.payeeAddress,
+      payouts: this.pendingRewards
+        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
+        : [],
+      payee: this.rewardsDestination !== this.payeeAddress ? this.rewardsDestination : undefined,
     });
 
     await this.getPendingRewards();

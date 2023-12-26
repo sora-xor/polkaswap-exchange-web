@@ -90,7 +90,7 @@ h4 {
   li {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: $inner-spacing-mini;
     width: 100%;
   }
 

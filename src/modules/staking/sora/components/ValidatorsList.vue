@@ -1,6 +1,6 @@
 <template>
   <div class="validators">
-    <div v-if="mode !== ValidatorsListMode.RECOMMENDED" class="search-container">
+    <div v-if="!isValidatorModeRecommended" class="search-container">
       <s-input
         type="text"
         v-model="search"
@@ -29,11 +29,12 @@
     <s-scrollbar class="validators-list-scrollbar">
       <ul class="list">
         <li v-for="validator in filteredValidators" :key="validator.address" class="validator">
-          <validator-avatar class="avatar" :validator="validator">
+          <!-- <validator-avatar class="avatar" :validator="validator">
             <div v-if="isSelected(validator)" class="check" slot="icon">
               <s-icon name="basic-check-mark-24" size="12px" />
             </div>
-          </validator-avatar>
+          </validator-avatar> -->
+          <wallet-avatar :address="validator.address" :size="14" class="account-gravatar" />
           <div class="name">
             {{ formatName(validator) }}
           </div>
@@ -111,6 +112,10 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 
   search = '';
 
+  get isValidatorModeRecommended() {
+    return this.mode === ValidatorsListMode.RECOMMENDED;
+  }
+
   get filteredValidators() {
     const filtered = filterValidators(this.validators, this.validatorsFilter, this.search);
     switch (this.mode) {
@@ -124,7 +129,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
   }
 
   toggleSelectValidator(validator: ValidatorInfoFull) {
-    if (this.mode === ValidatorsListMode.RECOMMENDED) {
+    if (this.isValidatorModeRecommended) {
       return;
     }
     const index = this.selectedValidators.findIndex((v) => v.address === validator.address);
@@ -147,7 +152,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 
   @Watch('validators', { immediate: true })
   onValidatorsChange() {
-    this.$emit('update:selected', this.mode === ValidatorsListMode.RECOMMENDED ? this.filteredValidators : []);
+    this.$emit('update:selected', this.isValidatorModeRecommended ? this.filteredValidators : []);
   }
 
   openFilters() {

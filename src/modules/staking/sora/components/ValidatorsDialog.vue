@@ -218,7 +218,7 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
 .bottom {
   position: absolute;
   width: calc(100% - 48px);
-  bottom: 24px;
+  bottom: var(--s-size-mini);
 }
 
 .confirm {
