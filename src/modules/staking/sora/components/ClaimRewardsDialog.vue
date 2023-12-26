@@ -7,10 +7,8 @@
           :balance="rewardedFundsCodec"
           :title="inputTitle"
           :token="rewardAsset"
-          :value="value"
-          @input="handleValue"
+          :value="rewardedFundsFormatted"
           :disabled="true"
-          @max="handleMaxValue"
         />
       </s-form>
 
@@ -85,16 +83,24 @@ import type { CodecString } from '@sora-substrate/util';
 export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
   @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
 
-  @Watch('visible', { immediate: true })
-  private resetValue() {
-    this.value = this.rewardedFunds.toString();
-  }
-
-  value = '';
   payeeAddress = '';
   payoutNetworkFee: string | null = null;
 
-  @Watch('pendingRewards')
+  @Watch('payee', { immediate: true })
+  async handlePayeeChange() {
+    switch (this.payee) {
+      case 'stash':
+        this.payeeAddress = this.stash;
+        break;
+      case 'controller':
+        this.payeeAddress = this.controller;
+        break;
+      default:
+        break;
+    }
+  }
+
+  @Watch('pendingRewards', { immediate: true })
   async handlePendingRewardsChange() {
     this.payoutNetworkFee = await this.getPayoutNetworkFee({
       payouts: this.pendingRewards
@@ -119,26 +125,12 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
     return this.rewardedFunds.toCodecString();
   }
 
-  get valuePartCharClass(): string {
-    const charClassName =
-      {
-        3: 'three',
-        2: 'two',
-      }[this.value.toString().length] ?? 'one';
-
-    return `${charClassName}-char`;
-  }
-
   get part(): FPNumber {
-    return new FPNumber(this.value).div(FPNumber.HUNDRED);
-  }
-
-  get valueFunds(): FPNumber {
-    return new FPNumber(this.value);
+    return this.rewardedFunds.div(FPNumber.HUNDRED);
   }
 
   get valueFundsEmpty(): boolean {
-    return this.valueFunds.isZero();
+    return this.rewardedFunds.isZero();
   }
 
   get stakingBalance(): FPNumber {
@@ -150,19 +142,11 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   }
 
   get isInsufficientBalance(): boolean {
-    return FPNumber.lt(this.rewardedFunds, this.valueFunds);
+    return FPNumber.lt(this.rewardedFunds, this.rewardedFunds);
   }
 
   get selectedValidatorsFormatted(): string {
     return `${this.selectedValidators.length} (MAX: ${this.validators.length})`;
-  }
-
-  handleValue(value: string | number): void {
-    this.value = String(value);
-  }
-
-  handleMaxValue(): void {
-    this.handleValue(this.rewardedFunds.toString());
   }
 
   async handleConfirm(): Promise<void> {

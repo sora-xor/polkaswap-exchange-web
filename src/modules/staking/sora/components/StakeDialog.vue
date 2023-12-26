@@ -88,7 +88,11 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
   @Watch('visible')
   private resetValue() {
     if (this.visible) {
-      this.value = this.stakeAmount;
+      if (this.mode === StakeDialogMode.NEW) {
+        this.value = this.stakeAmount;
+      } else {
+        this.value = '';
+      }
     }
   }
 

@@ -39,9 +39,6 @@
           </div>
           <div class="commission">
             <span>{{ validator.commission }}%</span>
-            <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.commissionTooltip')">
-              <s-icon name="info-16" size="14px" />
-            </s-tooltip>
           </div>
           <div
             v-if="mode === ValidatorsListMode.SELECT"

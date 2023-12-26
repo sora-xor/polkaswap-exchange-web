@@ -46,7 +46,12 @@
         <s-button v-if="stakingInitialized" class="additional-button s-typography-button--medium" @click="claimRewards">
           {{ t('soraStaking.actions.claim') }}
         </s-button>
-        <s-button v-if="stakingInitialized" class="additional-button s-typography-button--medium" @click="removeStake">
+        <s-button
+          v-if="stakingInitialized"
+          class="additional-button s-typography-button--medium"
+          :disabled="lockedFunds.isZero()"
+          @click="removeStake"
+        >
           {{ t('soraStaking.actions.remove') }}
         </s-button>
       </div>

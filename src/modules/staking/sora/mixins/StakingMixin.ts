@@ -38,8 +38,12 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   @state.staking.pendingRewards pendingRewards!: Nullable<NominatorReward>;
   @state.staking.validatorsFilter validatorsFilter!: ValidatorsFilter;
   @state.staking.showValidatorsFilterDialog showValidatorsFilterDialog!: boolean;
+  @state.staking.payee payee!: string;
+  @state.staking.controller controller!: string;
 
   @state.wallet.settings.networkFees networkFees!: NetworkFeesObject;
+
+  @getter.staking.stash stash!: string;
 
   @getter.assets.xor xor!: Nullable<AccountAsset>;
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
