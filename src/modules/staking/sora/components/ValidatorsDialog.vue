@@ -49,7 +49,7 @@ import { soraStakingLazyComponent } from '../../router';
 import { SoraStakingComponents, ValidatorsListMode } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
 
-import type { ValidatorInfoFull, MyStakingInfo } from '@sora-substrate/util/build/staking/types';
+import type { MyStakingInfo } from '@sora-substrate/util/build/staking/types';
 
 @Component({
   components: {
@@ -61,7 +61,6 @@ import type { ValidatorInfoFull, MyStakingInfo } from '@sora-substrate/util/buil
   },
 })
 export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
-  @mutation.staking.selectValidators selectValidators!: (validators: ValidatorInfoFull[]) => void;
   @mutation.staking.setStakingInfo setStakingInfo!: (stakingInfo: MyStakingInfo) => void;
 
   @action.staking.getStakingInfo getStakingInfo!: AsyncFnWithoutArgs;

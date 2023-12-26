@@ -40,8 +40,6 @@ import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types
   },
 })
 export default class SelectValidators extends Mixins(StakingMixin, mixins.LoadingMixin) {
-  @mutation.staking.selectValidators selectValidators!: (validators: ValidatorInfoFull[]) => void;
-
   StakeDialogMode = StakeDialogMode;
 
   showStakeDialog = false;

@@ -51,6 +51,7 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   @mutation.staking.setStakeAmount setStakeAmount!: (value: string) => void;
   @mutation.staking.setValidatorsFilter setValidatorsFilter!: (value: ValidatorsFilter) => void;
   @mutation.staking.setShowValidatorsFilterDialog setShowValidatorsFilterDialog!: (value: boolean) => void;
+  @mutation.staking.selectValidators selectValidators!: (validators: ValidatorInfoFull[]) => void;
 
   @action.staking.bond bond!: AsyncFnWithoutArgs;
   @action.staking.nominate nominate!: AsyncFnWithoutArgs;
