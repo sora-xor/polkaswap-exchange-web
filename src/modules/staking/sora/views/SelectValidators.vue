@@ -24,13 +24,10 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import router from '@/router';
-import { mutation } from '@/store/decorators';
 
 import { soraStakingLazyComponent } from '../../router';
 import { SoraStakingComponents, SoraStakingPageNames, StakeDialogMode, ValidatorsListMode } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
-
-import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types';
 
 @Component({
   components: {
