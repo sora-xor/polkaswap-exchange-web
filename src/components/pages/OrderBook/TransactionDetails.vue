@@ -21,6 +21,14 @@
       is-formatted
     />
     <info-line
+      :label="t(`assets.balance.locked`)"
+      :label-tooltip="t('demeterFarming.info.totalLiquidityLocked')"
+      :value="locked"
+      :asset-symbol="lockedAssetSymbol"
+      :fiat-value="getFiatAmountByCodecString(lockedCodec, lockedAsset)"
+      is-formatted
+    />
+    <info-line
       v-if="!isMarketType"
       :label="'expiry date'"
       :label-tooltip="expiryTooltip"
@@ -48,7 +56,7 @@ import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString, FPNumber } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
@@ -61,18 +69,39 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
   @state.orderBook.baseValue baseValue!: string;
   @state.orderBook.quoteValue quoteValue!: string;
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
+  @state.orderBook.quoteAssetAddress quoteAssetAddress!: string;
   @state.swap.toValue toValue!: string;
   @state.orderBook.side side!: PriceVariant;
   @state.orderBook.placeOrderNetworkFee networkFee!: CodecString;
 
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
+  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => AccountAsset;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMarketType!: boolean;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
 
-  get baseSymbol(): string | undefined {
-    return this.getAsset(this.baseAssetAddress)?.symbol;
+  get locked(): string {
+    return this.isBuy ? this.total.toString() : this.baseValue;
+  }
+
+  get lockedCodec(): string {
+    return this.isBuy ? this.total.toCodecString() : this.getFPNumber(this.baseValue).toCodecString();
+  }
+
+  get lockedAsset(): AccountAsset {
+    return this.isBuy ? this.getAsset(this.quoteAssetAddress) : this.getAsset(this.baseAssetAddress);
+  }
+
+  get lockedAssetSymbol(): string | undefined {
+    return this.isBuy ? this.quoteSymbol : this.baseSymbol;
+  }
+
+  get total(): FPNumber {
+    return this.getFPNumber(this.baseValue).mul(this.getFPNumber(this.quoteValue));
+  }
+
+  get isBuy(): boolean {
+    return this.side === PriceVariant.Buy;
   }
 
   getComputedClass(): string | undefined {
@@ -95,6 +124,10 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
 
   get orderType() {
     return "A 'Limit' order lets you specify the exact price at which you want to buy or sell an asset. A 'Buy' order will only be executed at the specified price or lower, while a 'Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.";
+  }
+
+  get baseSymbol(): string | undefined {
+    return this.getAsset(this.baseAssetAddress)?.symbol;
   }
 
   get quoteSymbol(): string {
