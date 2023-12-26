@@ -129,7 +129,7 @@ function bridgeDataToHistoryItem(
 async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, state, rootState, rootGetters } = bridgeActionContext(context);
   const { asset, isRegisteredAsset } = getters;
-  const { isValidNetwork } = rootGetters.web3;
+  const { isValidNetwork, contractAddress } = rootGetters.web3;
   const evmAccount = rootState.web3.evmAddress;
   const soraAccount = rootState.wallet.account.address;
 
@@ -137,12 +137,14 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
 
   if (asset && isRegisteredAsset && isValidNetwork && evmAccount && soraAccount) {
     const bridgeRegisteredAsset = rootState.assets.registeredAssets[asset.address];
-    const value = state.amountSend;
+    const decimals = state.isSoraToEvm ? asset.decimals : asset.externalDecimals;
+    // using max balance to not overflow contract calculation
+    const value = FPNumber.fromCodecValue(state.assetSenderBalance!, decimals).toString();
 
     fee = await getEthNetworkFee(
       asset,
       bridgeRegisteredAsset.kind as EthAssetKind,
-      rootGetters.web3.contractAddress,
+      contractAddress,
       value,
       state.isSoraToEvm,
       soraAccount,
