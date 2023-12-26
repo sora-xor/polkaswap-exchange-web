@@ -7,11 +7,6 @@ import type { SubqueryConnectionQueryResponse } from '@soramitsu/soraneo-wallet-
 
 const { IndexerType } = WALLET_CONSTS;
 
-export type ChartData = {
-  timestamp: number;
-  value: number;
-};
-
 const SubqueryNominatorsCountQuery = gql<SubqueryConnectionQueryResponse<number>>`
   query NominatorsCountQuery($era: Int) {
     data: stakingEraNominators(orderBy: ID_DESC, filter: { era: { index: { equalTo: $era } } }) {

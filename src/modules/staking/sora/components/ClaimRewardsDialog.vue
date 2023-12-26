@@ -72,6 +72,7 @@ import { lazyComponent } from '@/router';
 import StakingMixin from '../mixins/StakingMixin';
 
 import type { CodecString } from '@sora-substrate/util';
+import type { NominatorReward } from '@sora-substrate/util/build/staking/types';
 
 @Component({
   components: {
@@ -103,9 +104,7 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   @Watch('pendingRewards', { immediate: true })
   async handlePendingRewardsChange() {
     this.payoutNetworkFee = await this.getPayoutNetworkFee({
-      payouts: this.pendingRewards
-        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
-        : [],
+      payouts: this.payouts,
     });
   }
 
@@ -149,11 +148,18 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
     return `${this.selectedValidators.length} (MAX: ${this.validators.length})`;
   }
 
+  get payouts() {
+    if (!this.pendingRewards) return [];
+
+    return (this.pendingRewards as NominatorReward).map((r) => ({
+      era: r.era,
+      validators: r.validators.map((v) => v.address),
+    }));
+  }
+
   async handleConfirm(): Promise<void> {
     await this.payout({
-      payouts: this.pendingRewards
-        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
-        : [],
+      payouts: this.payouts,
       payee: this.payeeAddress,
     });
 

@@ -14,7 +14,7 @@
         @update:selected="selectValidators"
       />
       <div class="bottom">
-        <div class="info" v-if="mode === ValidatorsListMode.RECOMMENDED || mode === ValidatorsListMode.SELECT">
+        <div class="info" v-if="isEditMode">
           <info-line
             :label="t('networkFeeText')"
             :label-tooltip="t('networkFeeTooltipText')"
@@ -79,8 +79,7 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
 
   @Watch('visible')
   private resetMode() {
-    this.mode = ValidatorsListMode.USER;
-    this.isSelectingEditingMode = false;
+    this.setMode(ValidatorsListMode.USER);
   }
 
   get networkFee() {
@@ -88,21 +87,21 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
   }
 
   get title(): string {
-    return this.mode === ValidatorsListMode.USER || this.mode === ValidatorsListMode.ALL
+    return this.hasTabs
       ? this.t('soraStaking.validatorsDialog.title.default')
       : this.t('soraStaking.validatorsDialog.title.edit');
   }
 
   get hasBackButton(): boolean {
-    return (
-      this.mode === ValidatorsListMode.RECOMMENDED ||
-      this.mode === ValidatorsListMode.SELECT ||
-      this.isSelectingEditingMode
-    );
+    return this.isEditMode || this.isSelectingEditingMode;
+  }
+
+  get isEditMode(): boolean {
+    return [ValidatorsListMode.RECOMMENDED, ValidatorsListMode.SELECT].includes(this.mode);
   }
 
   get hasTabs(): boolean {
-    return this.mode === ValidatorsListMode.USER || this.mode === ValidatorsListMode.ALL;
+    return this.tabs.includes(this.mode);
   }
 
   get tabs() {
@@ -163,8 +162,7 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
 
   handleBack(): void {
     if (this.isSelectingEditingMode) {
-      this.mode = ValidatorsListMode.USER;
-      this.isSelectingEditingMode = false;
+      this.setMode(ValidatorsListMode.USER);
     } else {
       this.isSelectingEditingMode = true;
     }
@@ -187,14 +185,17 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
     }
   }
 
-  handleRecommendedMode(): void {
-    this.mode = ValidatorsListMode.RECOMMENDED;
+  private setMode(mode: ValidatorsListMode): void {
+    this.mode = mode;
     this.isSelectingEditingMode = false;
   }
 
+  handleRecommendedMode(): void {
+    this.setMode(ValidatorsListMode.RECOMMENDED);
+  }
+
   handleSelectedMode(): void {
-    this.mode = ValidatorsListMode.SELECT;
-    this.isSelectingEditingMode = false;
+    this.setMode(ValidatorsListMode.SELECT);
   }
 }
 </script>

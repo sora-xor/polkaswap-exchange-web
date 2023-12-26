@@ -12,7 +12,7 @@ import router from '@/router';
 import { StakingPageNames } from '../../consts';
 
 @Component
-export default class SoraStaking extends Mixins() {
+export default class BackButton extends Mixins() {
   @Prop({ type: String }) readonly page?: StakingPageNames;
 
   back() {

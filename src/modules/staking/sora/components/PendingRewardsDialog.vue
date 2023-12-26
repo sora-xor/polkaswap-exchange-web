@@ -145,7 +145,7 @@ export default class PendingRewardsDialog extends Mixins(
   @Watch('selectedRewards')
   async handlePendingRewardsChange() {
     this.payoutNetworkFee = await this.getPayoutNetworkFee({
-      payouts: this.selectedRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) })),
+      payouts: this.payouts,
     });
   }
 
@@ -230,9 +230,13 @@ export default class PendingRewardsDialog extends Mixins(
     return !this.selectedRewards.length;
   }
 
+  get payouts() {
+    return this.selectedRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }));
+  }
+
   async handleConfirm(): Promise<void> {
     await this.payout({
-      payouts: this.selectedRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) })),
+      payouts: this.payouts,
     });
 
     await this.getPendingRewards();
