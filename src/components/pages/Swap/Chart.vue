@@ -344,7 +344,7 @@ export default class SwapChart extends Mixins(
   }
 
   get currentPrice(): FPNumber {
-    return new FPNumber(this.dataset[0]?.price[2] ?? 0); // "close" price
+    return new FPNumber(this.dataset[0]?.price[1] ?? 0); // "close" price
   }
 
   get currentPriceFormatted(): string {
@@ -474,8 +474,8 @@ export default class SwapChart extends Mixins(
           },
         },
       },
-      min: this.limits.min,
-      max: this.limits.max,
+      min: 'dataMin',
+      max: 'dataMax',
     });
 
     const volumeYAxis = this.yAxisSpec({
