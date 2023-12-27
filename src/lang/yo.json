@@ -759,7 +759,8 @@
             "checkExtension": "{name}extension nsise, jọwọ ṣayẹwo",
             "extensionLogin": "Jọwọ buwolu wọle si itẹsiwaju {name}",
             "installExtension": "A ko ri itẹsiwaju {name} . Jọwọ fi sii! \n\n Ti fi sori ẹrọ itẹsiwaju tẹlẹ? Jọwọ tun gbee si oju-iwe naa",
-            "reloadPage": "Ṣe atunkọ oju -iwe"
+            "reloadPage": "Ṣe atunkọ oju -iwe",
+            "notAvailable": "{name} ko si."
         }
     },
     "selectLanguageDialog": {
@@ -1233,5 +1234,118 @@
     "exceededAmountText": "{amount} ti kọja",
     "multipleRecipients": "Awọn olukọni pupọ",
     "disconnectWalletText": "Ge asopọ",
-    "connectEthereumWalletText": "So {Ethereum} apamọwọ"
+    "connectEthereumWalletText": "So {Ethereum} apamọwọ",
+    "soraStaking": {
+        "title": "Staking",
+        "dropdownMenu": {
+            "pendingRewards": "Awọn ere ni isunmọtosi",
+            "validators": "Awọn olufọwọsi",
+            "controllerAccount": "Iroyin oludari"
+        },
+        "actions": {
+            "claim": "Awọn ere ẹtọ",
+            "remove": "Yọ igi kuro",
+            "start": "Bẹrẹ staking",
+            "more": "Gbero diẹ sii"
+        },
+        "overview": {
+            "title": "SORA Staking",
+            "description": "Ṣe awọn ami XOR lori Nẹtiwọọki SORA gẹgẹbi oludiyan lati fọwọsi awọn iṣowo ati jo'gun awọn ere ami ami VAL."
+        },
+        "newStake": {
+            "title": "Bẹrẹ staking",
+            "minStakeWarning": "Idiyele to kere julọ lati gba ẹsan naa jẹ {min} {symbol}"
+        },
+        "validators": {
+            "save": "Fi awọn ayipada pamọ",
+            "selected": "{selected} \/ {total} ti yan",
+            "recommended": "Niyanju afọwọsi",
+            "change": "Yi awọn afọwọsi",
+            "select": "Yan awọn olufọwọsi"
+        },
+        "validatorsList": {
+            "search": "Wa...",
+            "filters": "Ajọ",
+            "name": "Oruko",
+            "return": "Pada"
+        },
+        "info": {
+            "redeemable": "O le rapada",
+            "unstaking": "Unstaking",
+            "stakingBalance": "Staking iwontunwonsi",
+            "rewarded": "Esan",
+            "totalLiquidityStaked": "Lapapọ oloomi staked",
+            "apy": "APY",
+            "rewardToken": "Aami ere",
+            "unstakingPeriod": "Àkókò tí a kọ sílẹ̀",
+            "minimumStake": "Iwọn to kere julọ",
+            "nominators": "Awọn oludibo",
+            "validators": "Awọn olufọwọsi",
+            "selectedValidators": "Awọn olufọwọsi ti a yan"
+        },
+        "validatorsFilterDialog": {
+            "title": "Ajọ",
+            "save": "Fi àlẹmọ pamọ",
+            "reset": "Tun gbogbo rẹ to",
+            "filters": {
+                "hasIdentity": {
+                    "name": "On-pq idanimo",
+                    "description": "O kere ju olubasọrọ idanimọ kan ti a ti sopọ si akọọlẹ naa"
+                },
+                "notSlashed": {
+                    "name": "Ko dinku",
+                    "description": "Ko ni iriri eyikeyi awọn ijiya tabi awọn idinku ninu awọn owo ti wọn ṣowo nitori aiṣedeede tabi irufin ilana."
+                },
+                "notOversubscribed": {
+                    "name": "Ko ṣe alabapin pupọ",
+                    "description": "Iroyin laarin opin ipin, yago fun awọn ifiyaje ṣiṣe alabapin lori Polkadot staking."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Ifilelẹ ti 2 validators fun idanimo",
+                    "description": "O pọju awọn olufọwọsi meji fun idanimọ lati ṣe agbega decentralization ati ṣe idiwọ ifọkansi ti agbara."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "default": "Awọn olufọwọsi",
+                "edit": "Ṣatunkọ Mi Validators"
+            },
+            "tabs": {
+                "userValidators": "Awọn olufọwọsi rẹ",
+                "allValidators": "Gbogbo validators"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Ifarabalẹ",
+            "description": [
+                "Awọn didaba olufọwọsi Algorithmic ko jẹ ijumọsọrọ owo tabi imọran. Staking jẹ iṣẹ ṣiṣe ti o ni eewu giga, ati awọn didaba afọwọsi algorithmic ko ni dandan dinku eewu yii.",
+                "Olufọwọsi ti a daba nipasẹ algoridimu le tun jẹ idinku. Olufọwọsi ti a daba nipasẹ algoridimu tun le yi awọn ayewọn wọn pada (fun apẹẹrẹ, awọn oṣuwọn igbimọ, ati bẹbẹ lọ) nigbakugba lẹhin ti o ti daba ati\/tabi yiyan.",
+                "O le padanu awọn ami tabi awọn ere fun iwọnyi tabi awọn idi miiran. Ṣe awọn ami-ipin nikan ki o lo awọn didaba afọwọsi ni lakaye tirẹ, lẹhin ṣiṣe aisimi to tọ ati farabalẹ ṣe akiyesi awọn ewu ti o kan."
+            ],
+            "confirm": "Bẹẹni, Mo loye ewu naa"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Ko si ere ni isunmọtosi",
+            "payoutAll": "Payout gbogbo",
+            "information": "Validators san awọn ere gbogbo 2-5 ọjọ. Sibẹsibẹ, o le san wọn funrararẹ, paapaa ti awọn ere ba sunmọ ipari, ṣugbọn iwọ yoo san owo naa."
+        },
+        "selectValidatorsMode": {
+            "title": "Iṣere pẹlu awọn olufọwọsi daba nipasẹ algoridimu",
+            "description": "Alugoridimu Nẹtiwọọki SORA ti yan atokọ ti awọn afọwọsi ti a ṣeduro ti o da lori awọn ibeere:",
+            "criteria": [
+                "Julọ ni ere",
+                "Ko ṣe alabapin pupọ",
+                "Nini onchain idanimo",
+                "Ko dinku",
+                "Ifilelẹ ti 2 validators fun idanimo"
+            ],
+            "confirm": {
+                "suggested": "Iṣere pẹlu daba",
+                "manual": "Emi yoo yan awọn olufọwọsi funrararẹ"
+            }
+        }
+    },
+    "collapseText": "Subu",
+    "expandText": "Faagun"
 }

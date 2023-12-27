@@ -759,7 +759,8 @@
             "checkExtension": "{name} bővítmény le van terhelve, kérjük ellenőrizd",
             "extensionLogin": "Kérjük, jelentkezz be a {name} kiterjesztésébe",
             "installExtension": "{name} kiterjesztés nem található. Kérjük, telepítsd!\n\nMár telepítetted a bővítményt? Kérjük, töltsd újra az oldalt",
-            "reloadPage": "Oldal újratöltése"
+            "reloadPage": "Oldal újratöltése",
+            "notAvailable": "{name} nem érhető el."
         }
     },
     "selectLanguageDialog": {
@@ -1233,5 +1234,118 @@
     "exceededAmountText": "{amount} túllépve",
     "multipleRecipients": "Több címzett",
     "disconnectWalletText": "Leválasztás",
-    "connectEthereumWalletText": "Csatlakoztassa az {Ethereum} pénztárcát"
+    "connectEthereumWalletText": "Csatlakoztassa az {Ethereum} pénztárcát",
+    "soraStaking": {
+        "title": "Staking",
+        "dropdownMenu": {
+            "pendingRewards": "Függőben lévő jutalmak",
+            "validators": "Validátorok",
+            "controllerAccount": "Ellenőrző fiók"
+        },
+        "actions": {
+            "claim": "Kérjen jutalmakat",
+            "remove": "Távolítsa el a tétet",
+            "start": "Kezdje el a tétet",
+            "more": "Tételj többet"
+        },
+        "overview": {
+            "title": "SORA Staking",
+            "description": "Tételjen XOR tokeneket a SORA hálózaton jelölőként a tranzakciók érvényesítéséhez és a VAL token jutalmak megszerzéséhez."
+        },
+        "newStake": {
+            "title": "Kezdje el a tétet",
+            "minStakeWarning": "A minimális tét a jutalom elnyeréséhez {min} {symbol}"
+        },
+        "validators": {
+            "save": "Változtatások mentése",
+            "selected": "{selected} \/ {total} kiválasztva",
+            "recommended": "Ajánlott érvényesítők",
+            "change": "Változtassa meg az érvényesítőket",
+            "select": "Válasszon érvényesítőket"
+        },
+        "validatorsList": {
+            "search": "Keresés...",
+            "filters": "Szűrők",
+            "name": "Név",
+            "return": "Visszatérés"
+        },
+        "info": {
+            "redeemable": "Beváltható",
+            "unstaking": "Unstaking",
+            "stakingBalance": "Egyensúly kockáztatása",
+            "rewarded": "Jutalmazott",
+            "totalLiquidityStaked": "Teljes téttel rendelkező likviditás",
+            "apy": "APY",
+            "rewardToken": "Jutalom token",
+            "unstakingPeriod": "Felszabadító időszak",
+            "minimumStake": "Minimális tét",
+            "nominators": "Jelölők",
+            "validators": "Validátorok",
+            "selectedValidators": "Kiválasztott érvényesítők"
+        },
+        "validatorsFilterDialog": {
+            "title": "Szűrők",
+            "save": "Szűrő mentése",
+            "reset": "Összes visszaállítása",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Láncon belüli identitás",
+                    "description": "Legalább egy személyazonossági kapcsolattartó kapcsolódik a fiókhoz"
+                },
+                "notSlashed": {
+                    "name": "Nem vágott",
+                    "description": "Nem tapasztaltak semmilyen büntetést vagy tétcsökkentést nem megfelelő magatartás vagy protokoll megsértése miatt."
+                },
+                "notOversubscribed": {
+                    "name": "Nincs túljelentkezés",
+                    "description": "A fiók a kiosztási korláton belül van, így elkerülhető a Polkadot-kockázat túljelentkezési büntetése."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Identitásonként legfeljebb 2 érvényesítő használható",
+                    "description": "Identitásonként legfeljebb két érvényesítő a decentralizáció elősegítése és a hatalomkoncentráció megakadályozása érdekében."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "default": "Validátorok",
+                "edit": "Szerkessze az Ellenőrzőket"
+            },
+            "tabs": {
+                "userValidators": "Az Ön érvényesítői",
+                "allValidators": "Minden érvényesítő"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Figyelem",
+            "description": [
+                "Az algoritmikus érvényesítő javaslatai nem minősülnek pénzügyi tanácsadásnak vagy tanácsadásnak. A kockáztatás magas kockázatú tevékenység, és az algoritmikus érvényesítő javaslatok nem feltétlenül csökkentik ezt a kockázatot.",
+                "Az algoritmus által javasolt érvényesítőt még mindig le lehet vágni. Az algoritmus által javasolt érvényesítő a javaslatot és\/vagy kiválasztást követően bármikor megváltoztathatja a paramétereiket (pl. jutalékdíjakat stb.).",
+                "Ilyen vagy más okok miatt elveszíthet tokeneket vagy jutalmakat. Csak saját belátása szerint tét jelöljön meg tokeneket és használja az érvényesítő javaslatait, miután elvégezte a kellő körültekintést és gondosan mérlegelte az ezzel járó kockázatokat."
+            ],
+            "confirm": "Igen, megértem a kockázatot"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Nincsenek függőben lévő jutalmak",
+            "payoutAll": "Az összes kifizetése",
+            "information": "Az érvényesítők 2-5 naponta fizetik ki a jutalmakat. Azonban saját maga is kifizetheti őket, különösen, ha a jutalmak lejártához közelednek, de a díjat Önnek kell fizetnie."
+        },
+        "selectValidatorsMode": {
+            "title": "Tét az algoritmus által javasolt érvényesítőkkel",
+            "description": "A SORA Network algoritmus a következő kritériumok alapján kiválasztotta az ajánlott érvényesítők listáját:",
+            "criteria": [
+                "Legjövedelmezőbb",
+                "Nincs túljelentkezés",
+                "Onchain identitás birtokában",
+                "Nem vágott",
+                "Identitásonként legfeljebb 2 érvényesítő használható"
+            ],
+            "confirm": {
+                "suggested": "Tét javasolt",
+                "manual": "Az érvényesítőket magam választom ki"
+            }
+        }
+    },
+    "collapseText": "Összeomlás",
+    "expandText": "Kiterjed"
 }
