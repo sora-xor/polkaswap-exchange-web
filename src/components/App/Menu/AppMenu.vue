@@ -194,7 +194,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .app-sidebar-scrollbar {
-  @include scrollbar(0, 0);
+  @include scrollbar(0, 100%, true);
 }
 
 .app-menu.collapsed {
@@ -209,6 +209,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
     &:hover,
     &:focus {
+      box-shadow: 20px 20px 60px 0px #0000001a;
+
       .sidebar-item-content {
         & > .icon-container + span {
           display: initial;
@@ -297,7 +299,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 <style lang="scss" scoped>
 .collapse-button {
   position: absolute;
-  top: 50%;
+  top: 100%;
   left: calc(100% - var(--s-size-small) / 2);
   bottom: 0;
   margin: auto;
