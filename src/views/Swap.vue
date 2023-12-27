@@ -617,7 +617,7 @@ export default class Swap extends Mixins(
     max-width: $inner-window-width;
 
     @include desktop {
-      max-width: calc(#{$inner-window-width} * 2);
+      max-width: initial;
     }
   }
 }

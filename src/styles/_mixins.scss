@@ -311,7 +311,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   font-weight: 600;
 }
 
-@mixin scrollbar($marginOffset: 0, $verticalRight: 2px) {
+@mixin scrollbar($marginOffset: 0, $verticalRight: 2px, $isLeft: false) {
   &.el-scrollbar {
     margin-left: $marginOffset;
     margin-right: $marginOffset;
@@ -331,6 +331,10 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     & > .el-scrollbar__bar {
       &.is-vertical {
         right: $verticalRight;
+
+        @if $isLeft == true {
+          left: 0;
+        }
       }
     }
   }

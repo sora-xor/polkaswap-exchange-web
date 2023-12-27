@@ -759,7 +759,8 @@
             "checkExtension": "{name} ekstensi sedang sibuk, harap periksa",
             "extensionLogin": "Silakan masuk ke ekstensi {name} Anda",
             "installExtension": "ekstensi {name} tidak ditemukan. Silakan instal! \n\n Sudah memasang ekstensi? Silakan muat ulang halaman",
-            "reloadPage": "Muat ulang halaman"
+            "reloadPage": "Muat ulang halaman",
+            "notAvailable": "{name} tidak tersedia."
         }
     },
     "selectLanguageDialog": {
@@ -1233,5 +1234,118 @@
     "exceededAmountText": "{amount} terlampaui",
     "multipleRecipients": "Penerima Multipel",
     "disconnectWalletText": "Memutuskan",
-    "connectEthereumWalletText": "Hubungkan dompet {Ethereum}"
+    "connectEthereumWalletText": "Hubungkan dompet {Ethereum}",
+    "soraStaking": {
+        "title": "Mempertaruhkan",
+        "dropdownMenu": {
+            "pendingRewards": "Hadiah yang tertunda",
+            "validators": "Validator",
+            "controllerAccount": "akun pengontrol"
+        },
+        "actions": {
+            "claim": "Klaim hadiah",
+            "remove": "Hapus taruhan",
+            "start": "Mulailah mempertaruhkan",
+            "more": "Taruhan lebih banyak"
+        },
+        "overview": {
+            "title": "Taruhan SORA",
+            "description": "Pertaruhkan token XOR di Jaringan SORA sebagai nominator untuk memvalidasi transaksi dan mendapatkan hadiah token VAL."
+        },
+        "newStake": {
+            "title": "Mulailah mempertaruhkan",
+            "minStakeWarning": "Taruhan minimum untuk menerima hadiah adalah {min} {symbol}"
+        },
+        "validators": {
+            "save": "Simpan perubahan",
+            "selected": "{selected} \/ {total} dipilih",
+            "recommended": "Validator yang direkomendasikan",
+            "change": "Ubah validator",
+            "select": "Pilih validator"
+        },
+        "validatorsList": {
+            "search": "Mencari...",
+            "filters": "Filter",
+            "name": "Nama",
+            "return": "Kembali"
+        },
+        "info": {
+            "redeemable": "Dapat ditukarkan",
+            "unstaking": "Tidak mempertaruhkan",
+            "stakingBalance": "Saldo taruhan",
+            "rewarded": "Dihargai",
+            "totalLiquidityStaked": "Total likuiditas yang dipertaruhkan",
+            "apy": "APY",
+            "rewardToken": "Token hadiah",
+            "unstakingPeriod": "Periode yang tidak dipertaruhkan",
+            "minimumStake": "Taruhan minimal",
+            "nominators": "Nominator",
+            "validators": "Validator",
+            "selectedValidators": "Validator terpilih"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filter",
+            "save": "Simpan penyaring",
+            "reset": "Setel ulang semua",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identitas on-chain",
+                    "description": "Setidaknya satu kontak identitas terhubung ke akun"
+                },
+                "notSlashed": {
+                    "name": "Tidak disayat",
+                    "description": "Tidak mengalami penalti atau pengurangan dana yang dipertaruhkan karena kesalahan atau pelanggaran protokol."
+                },
+                "notOversubscribed": {
+                    "name": "Tidak kelebihan permintaan",
+                    "description": "Akun dalam batas alokasi, menghindari penalti kelebihan permintaan pada staking Polkadot."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Batas 2 validator per identitas",
+                    "description": "Maksimal dua validator per identitas untuk mendorong desentralisasi dan mencegah pemusatan kekuasaan."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "default": "Validator",
+                "edit": "Edit Validator Saya"
+            },
+            "tabs": {
+                "userValidators": "Validator Anda",
+                "allValidators": "Semua validator"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Perhatian",
+            "description": [
+                "Saran validator algoritmik bukan merupakan konsultasi atau saran keuangan. Staking adalah aktivitas berisiko tinggi, dan saran validator algoritmik tidak serta merta memitigasi risiko ini.",
+                "Validator yang disarankan oleh algoritme masih dapat dikurangi. Validator yang disarankan oleh algoritme juga dapat mengubah parameternya (misalnya, tarif komisi, dll.) kapan saja setelah disarankan dan\/atau dipilih.",
+                "Anda bisa kehilangan token atau hadiah karena alasan ini atau lainnya. Hanya pertaruhkan token dan gunakan saran validator sesuai kebijaksanaan Anda sendiri, setelah melakukan uji tuntas dan mempertimbangkan risiko yang ada dengan cermat."
+            ],
+            "confirm": "Ya, saya memahami risikonya"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Tidak ada imbalan yang tertunda",
+            "payoutAll": "Pembayaran semua",
+            "information": "Validator membayar hadiahnya setiap 2-5 hari. Namun, Anda dapat membayarnya sendiri, terutama jika hadiahnya hampir habis masa berlakunya, namun Anda akan membayar biayanya."
+        },
+        "selectValidatorsMode": {
+            "title": "Taruhan dengan validator yang disarankan oleh algoritma",
+            "description": "Algoritma SORA Network telah memilih daftar validator yang direkomendasikan berdasarkan kriteria:",
+            "criteria": [
+                "Paling menguntungkan",
+                "Tidak kelebihan permintaan",
+                "Memiliki identitas onchain",
+                "Tidak disayat",
+                "Batas 2 validator per identitas"
+            ],
+            "confirm": {
+                "suggested": "Taruhan dengan yang disarankan",
+                "manual": "Saya akan memilih sendiri validatornya"
+            }
+        }
+    },
+    "collapseText": "Runtuh",
+    "expandText": "Memperluas"
 }
