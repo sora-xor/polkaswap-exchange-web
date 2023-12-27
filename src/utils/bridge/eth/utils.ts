@@ -4,7 +4,6 @@ import { EthCurrencyType, EthAssetKind } from '@sora-substrate/util/build/bridge
 import { ethers } from 'ethers';
 
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
-import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import ethersUtil from '@/utils/ethers-util';
 
@@ -166,14 +165,13 @@ export async function getOutgoingEvmTransactionData({
   const contract = new ethers.Contract(contractAddress, contractAbi, signer);
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
 
-  const method = isValOrXor
-    ? 'mintTokensByPeers'
-    : request.currencyType === EthCurrencyType.TokenAddress
-    ? 'receiveByEthereumAssetAddress'
-    : 'receiveBySidechainAssetId';
+  const isEthereumCurrency = request.currencyType === EthCurrencyType.TokenAddress;
+  const bridgeContractMethod = isEthereumCurrency ? 'receiveByEthereumAssetAddress' : 'receiveBySidechainAssetId';
+
+  const method = isValOrXor ? 'mintTokensByPeers' : bridgeContractMethod;
 
   const args: Array<any> = [
-    isValOrXor || request.currencyType === EthCurrencyType.TokenAddress
+    isValOrXor || isEthereumCurrency
       ? asset.externalAddress // address tokenAddress OR
       : asset.address, // bytes32 assetId
     amount, // uint256 amount
