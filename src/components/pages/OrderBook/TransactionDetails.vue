@@ -39,6 +39,7 @@
 
 <script lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
+import { Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
@@ -48,7 +49,7 @@ import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
@@ -57,19 +58,22 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
     InfoLine: components.InfoLine,
   },
 })
-export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
+export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   @state.orderBook.baseValue baseValue!: string;
   @state.orderBook.quoteValue quoteValue!: string;
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
-  @state.swap.toValue toValue!: string;
   @state.orderBook.side side!: PriceVariant;
-  @state.orderBook.placeOrderNetworkFee networkFee!: CodecString;
+  @state.swap.toValue toValue!: string;
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
 
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMarketType!: boolean;
-  @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
+
+  get networkFee(): CodecString {
+    return this.networkFees[Operation.OrderBookPlaceLimitOrder];
+  }
 
   get baseSymbol(): string | undefined {
     return this.getAsset(this.baseAssetAddress)?.symbol;

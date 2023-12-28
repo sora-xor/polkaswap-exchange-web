@@ -58,7 +58,6 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
   @mutation.orderBook.setCurrentOrderBook setCurrentOrderBook!: (orderBookId: OrderBookId) => void;
 
-  @action.orderBook.getPlaceOrderNetworkFee private getPlaceOrderFee!: AsyncFnWithoutArgs;
   @action.orderBook.getOrderBooksInfo private getOrderBooksInfo!: AsyncFnWithoutArgs;
   @action.orderBook.subscribeToOrderBookStats private subscribeToOrderBookStats!: AsyncFnWithoutArgs;
   @action.orderBook.unsubscribeFromOrderBookStats private unsubscribeFromOrderBookStats!: FnWithoutArgs;
@@ -91,7 +90,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
   async mounted(): Promise<void> {
     await this.withApi(async () => {
-      await Promise.all([this.getOrderBooksInfo(), this.getPlaceOrderFee()]);
+      await this.getOrderBooksInfo();
       this.checkCurrentOrderBook();
     });
   }

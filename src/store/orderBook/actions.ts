@@ -45,13 +45,6 @@ const actions = defineActions({
     commit.setStats(orderBooksStats);
   },
 
-  async getPlaceOrderNetworkFee(context, timestamp = MAX_TIMESTAMP): Promise<void> {
-    const { commit } = orderBookActionContext(context);
-    const codecFee = await api.orderBook.getPlaceOrderNetworkFee(timestamp);
-
-    commit.setPlaceOrderNetworkFee(codecFee);
-  },
-
   async subscribeToBidsAndAsks(context): Promise<void> {
     const { commit, dispatch, getters } = orderBookActionContext(context);
     const { baseAsset, quoteAsset } = getters;
