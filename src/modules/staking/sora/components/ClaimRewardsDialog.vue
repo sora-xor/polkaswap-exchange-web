@@ -98,7 +98,7 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
 
   @Watch('visible', { immediate: true })
   @Watch('payeeAddress', { immediate: true })
-  handlePayeeAddressChange() {
+  setRewardsDestination() {
     if (this.visible) {
       this.rewardsDestination = this.payeeAddress;
     }
