@@ -3,9 +3,6 @@
     <div class="filter-container">
       <h1 class="title">
         {{ t('soraStaking.validatorsFilterDialog.title') }}
-        <s-tooltip border-radius="mini" :content="''">
-          <s-icon class="title-tooltip" name="info-16" size="18px" />
-        </s-tooltip>
       </h1>
       <div class="filter">
         <div v-for="(item, key) in filterData" :key="item.name" class="filter-item">
