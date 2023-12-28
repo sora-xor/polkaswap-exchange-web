@@ -192,9 +192,17 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
 }
 
 .claim-rewards-dialog {
-  .reward .formatted-amount--fiat-value {
-    font-size: 14px !important;
-    font-weight: 600;
+  .reward {
+    .formatted-amount {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .formatted-amount--fiat-value {
+      font-size: 14px !important;
+      font-weight: 600;
+    }
   }
 }
 </style>
@@ -215,8 +223,11 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   font-weight: 700;
 
   &-amount {
-    display: flex;
+    flex: 1;
     flex-direction: column;
+    align-items: flex-start !important;
+    text-align: left !important;
+    overflow: hidden;
   }
 
   &-logo {
