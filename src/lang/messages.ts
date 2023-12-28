@@ -848,6 +848,7 @@ export default {
       save: 'Save changes',
       selected: '{selected}/{total} selected',
       recommended: 'Recommended validators',
+      next: 'Next',
       change: 'Change validators',
       select: 'Select validators',
       alreadyNominated: 'Selected validators already nominated',
