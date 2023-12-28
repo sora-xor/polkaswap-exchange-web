@@ -4,8 +4,10 @@ import { Component } from 'vue-property-decorator';
 import VueRouter, { RouteConfig } from 'vue-router';
 
 import { PageNames, BridgeChildPages } from '@/consts';
-import { DemeterPageNames } from '@/modules/demeterFarming/consts';
-import { demeterLazyView } from '@/modules/demeterFarming/router';
+import { StakingPageNames } from '@/modules/staking/consts';
+import { DemeterStakingPageNames } from '@/modules/staking/demeter/consts';
+import { demeterStakingLazyView, soraStakingLazyView, stakingLazyView } from '@/modules/staking/router';
+import { SoraStakingPageNames } from '@/modules/staking/sora/consts';
 import store from '@/store';
 import { updateDocumentTitle } from '@/utils';
 
@@ -94,7 +96,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '',
-    component: demeterLazyView(DemeterPageNames.DataContainer),
+    component: demeterStakingLazyView(DemeterStakingPageNames.DataContainer),
     children: [
       {
         path: '/pool',
@@ -102,8 +104,8 @@ const routes: Array<RouteConfig> = [
         children: [
           {
             path: '',
-            name: DemeterPageNames.Pool,
-            component: demeterLazyView(DemeterPageNames.Pool),
+            name: DemeterStakingPageNames.Pool,
+            component: demeterStakingLazyView(DemeterStakingPageNames.Pool),
             props: { isFarmingPage: true },
           },
           {
@@ -124,15 +126,41 @@ const routes: Array<RouteConfig> = [
         path: '/staking',
         name: PageNames.StakingContainer,
         component: lazyView(PageNames.StakingContainer),
-        redirect: { name: DemeterPageNames.Staking },
+        redirect: { name: StakingPageNames.Staking },
         children: [
           {
-            path: 'demeter',
-            name: DemeterPageNames.Staking,
-            component: demeterLazyView(DemeterPageNames.Staking),
+            path: 'list',
+            name: StakingPageNames.Staking,
+            component: stakingLazyView(StakingPageNames.Staking),
             props: { isFarmingPage: false },
           },
         ],
+      },
+    ],
+  },
+  {
+    path: '',
+    component: soraStakingLazyView(SoraStakingPageNames.DataContainer),
+    children: [
+      {
+        path: '/staking/sora',
+        name: SoraStakingPageNames.Overview,
+        component: soraStakingLazyView(SoraStakingPageNames.Overview),
+      },
+      {
+        path: '/staking/sora/new',
+        name: SoraStakingPageNames.NewStake,
+        component: soraStakingLazyView(SoraStakingPageNames.NewStake),
+      },
+      {
+        path: '/staking/sora/validators/type',
+        name: SoraStakingPageNames.ValidatorsType,
+        component: soraStakingLazyView(SoraStakingPageNames.ValidatorsType),
+      },
+      {
+        path: '/staking/sora/validators/select',
+        name: SoraStakingPageNames.SelectValidators,
+        component: soraStakingLazyView(SoraStakingPageNames.SelectValidators),
       },
     ],
   },
@@ -144,7 +172,7 @@ const routes: Array<RouteConfig> = [
     children: [
       {
         path: 'demeter',
-        component: demeterLazyView(DemeterPageNames.DataContainer),
+        component: demeterStakingLazyView(DemeterStakingPageNames.DataContainer),
         children: [
           {
             path: 'staking',

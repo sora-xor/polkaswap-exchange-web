@@ -112,7 +112,7 @@ import {
   SidebarMenuItemLink,
   FaucetLink,
 } from '@/consts';
-import { DemeterPageNames } from '@/modules/demeterFarming/consts';
+import { StakingPageNames } from '@/modules/staking/consts';
 import { getter, state } from '@/store/decorators';
 
 import AppInfoPopper from './AppInfoPopper.vue';
@@ -168,7 +168,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       return PageNames.Rewards;
     }
     if (StakingChildPages.includes(currentName)) {
-      return DemeterPageNames.Staking;
+      return StakingPageNames.Staking;
     }
     if (ExploreChildPages.includes(currentName)) {
       return PageNames.ExploreFarming;
@@ -483,3 +483,4 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 }
 </style>
+@/modules/staking/demeter/consts
