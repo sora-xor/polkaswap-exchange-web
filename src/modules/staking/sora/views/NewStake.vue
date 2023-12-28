@@ -183,7 +183,7 @@ export default class SoraStakingForm extends Mixins(StakingMixin, mixins.Loading
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: $basic-spacing;
 }
 
 .min-stake-warning {

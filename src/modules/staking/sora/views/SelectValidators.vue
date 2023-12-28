@@ -79,6 +79,6 @@ export default class SelectValidators extends Mixins(StakingMixin, mixins.Loadin
 .confirm {
   position: absolute;
   width: calc(100% - 48px);
-  bottom: 24px;
+  bottom: var(--s-size-mini);
 }
 </style>

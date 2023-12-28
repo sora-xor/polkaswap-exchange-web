@@ -19,7 +19,7 @@
 
       <s-input
         v-model="rewardsDestination"
-        placeholder="Rewards destination address"
+        :placeholder="t('soraStaking.claimRewardsDialog.rewardsDestination')"
         suffix="s-icon-basic-user-24"
         :disabled="true"
       ></s-input>

@@ -59,7 +59,7 @@ export default class ValidatorsType extends Mixins(StakingMixin, mixins.LoadingM
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: $basic-spacing;
 }
 
 h4 {

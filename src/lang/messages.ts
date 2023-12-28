@@ -921,8 +921,11 @@ export default {
     },
     claimRewardsDialog: {
       title: 'Claim rewards',
+      checkRewards: 'Check rewards per era and validator',
+      rewardsDestination: 'Rewards destination address',
     },
     pendingRewardsDialog: {
+      title: 'Pending rewards',
       noPendingRewards: 'There are no pending rewards',
       noSelectedRewards: 'Select rewards',
       payout: 'Payout',

@@ -154,7 +154,7 @@ export default class PendingRewardsDialog extends Mixins(
   }
 
   get title(): string {
-    return 'Pending rewards';
+    return this.t('soraStaking.pendingRewardsDialog.title');
   }
 
   get rewards(): Reward[] {

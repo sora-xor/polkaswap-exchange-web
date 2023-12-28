@@ -56,7 +56,7 @@ export default class ValidatorsAttentionDialog extends Mixins(StakingMixin, mixi
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: $basic-spacing;
   margin-top: -50px;
 }
 
