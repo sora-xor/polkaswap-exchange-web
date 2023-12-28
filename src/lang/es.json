@@ -341,7 +341,7 @@
         "RemoveLiquidity": "Remover Liquidez",
         "Rewards": "Recompensas",
         "Explore\/Tokens": "Tokens",
-        "Explore\/Pools": "Quinielas",
+        "Explore\/Pools": "Liquidez",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Agricultura",
         "Staking": "Staking"
@@ -759,7 +759,8 @@
             "checkExtension": "La extensión {name} está ocupada, por favor compruébelo",
             "extensionLogin": "Por favor, inicie sesión en su extensión de {name}",
             "installExtension": "La extensión {name} no se encuentra. Por favor, instálela.\n\n¿Ya ha instalado la extensión? Por favor, recargue la página",
-            "reloadPage": "Recargar página"
+            "reloadPage": "Recargar página",
+            "notAvailable": "{name} no está disponible."
         }
     },
     "selectLanguageDialog": {
@@ -1233,5 +1234,118 @@
     "exceededAmountText": "{amount} superada",
     "multipleRecipients": "Múltiples destinatarios",
     "disconnectWalletText": "Desconectar",
-    "connectEthereumWalletText": "Conecte la billetera {Ethereum}"
+    "connectEthereumWalletText": "Conecte la billetera {Ethereum}",
+    "soraStaking": {
+        "title": "Replanteo",
+        "dropdownMenu": {
+            "pendingRewards": "Recompensas pendientes",
+            "validators": "Validadores",
+            "controllerAccount": "Cuenta del controlador"
+        },
+        "actions": {
+            "claim": "Reclamar premios",
+            "remove": "Quitar estaca",
+            "start": "Empezar a apostar",
+            "more": "Apuesta más"
+        },
+        "overview": {
+            "title": "Replanteo SORA",
+            "description": "Apueste tokens XOR en SORA Network como nominador para validar transacciones y ganar recompensas de tokens VAL."
+        },
+        "newStake": {
+            "title": "Empezar a apostar",
+            "minStakeWarning": "La apuesta mínima para recibir la recompensa es {min} {symbol}"
+        },
+        "validators": {
+            "save": "Guardar cambios",
+            "selected": "{selected} \/ {total} seleccionados",
+            "recommended": "Validadores recomendados",
+            "change": "Cambiar validadores",
+            "select": "Seleccionar validadores"
+        },
+        "validatorsList": {
+            "search": "Buscar...",
+            "filters": "Filtros",
+            "name": "Nombre",
+            "return": "Devolver"
+        },
+        "info": {
+            "redeemable": "Redimible",
+            "unstaking": "Desestacar",
+            "stakingBalance": "Equilibrio de apuesta",
+            "rewarded": "Recompensado",
+            "totalLiquidityStaked": "Liquidez total apostada",
+            "apy": "APY",
+            "rewardToken": "ficha de recompensa",
+            "unstakingPeriod": "Período de desestamado",
+            "minimumStake": "Apuesta mínima",
+            "nominators": "Nominadores",
+            "validators": "Validadores",
+            "selectedValidators": "Validadores seleccionados"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filtros",
+            "save": "Guardar filtro",
+            "reset": "Resetear todo",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identidad en cadena",
+                    "description": "Al menos un contacto de identidad conectado a la cuenta"
+                },
+                "notSlashed": {
+                    "name": "no cortado",
+                    "description": "No experimentó ninguna penalización o reducción en sus fondos apostados debido a mala conducta o violaciones del protocolo."
+                },
+                "notOversubscribed": {
+                    "name": "No sobresuscrito",
+                    "description": "La cuenta dentro del límite de asignación evita sanciones por exceso de suscripción al apostar en Polkadot."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Límite de 2 validadores por identidad",
+                    "description": "Un máximo de dos validadores por identidad para promover la descentralización y evitar la concentración de poder."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "default": "Validadores",
+                "edit": "Editar mis validadores"
+            },
+            "tabs": {
+                "userValidators": "Tus validadores",
+                "allValidators": "Todos los validadores"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Atención",
+            "description": [
+                "Las sugerencias del validador algorítmico no constituyen consultas ni consejos financieros. Apostar es una actividad de alto riesgo y las sugerencias del validador algorítmico no necesariamente mitigan este riesgo.",
+                "Un validador sugerido por el algoritmo aún podría ser eliminado. Un validador sugerido por el algoritmo también podría cambiar sus parámetros (por ejemplo, tasas de comisión, etc.) en cualquier momento después de haber sido sugerido y\/o seleccionado.",
+                "Podrías perder tokens o recompensas por estos u otros motivos. Solo apueste tokens y utilice sugerencias de validadores a su propia discreción, después de realizar la debida diligencia y considerar cuidadosamente los riesgos involucrados."
+            ],
+            "confirm": "Sí, entiendo el riesgo."
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "No hay recompensas pendientes",
+            "payoutAll": "Pagar todo",
+            "information": "Los validadores pagan las recompensas cada 2 a 5 días. Sin embargo, puede pagarlas usted mismo, especialmente si las recompensas están a punto de expirar, pero pagará la tarifa."
+        },
+        "selectValidatorsMode": {
+            "title": "Stake con validadores sugeridos por el algoritmo",
+            "description": "El algoritmo de SORA Network ha seleccionado una lista de validadores recomendados según los criterios:",
+            "criteria": [
+                "Más rentable",
+                "No sobresuscrito",
+                "Tener identidad en cadena",
+                "no cortado",
+                "Límite de 2 validadores por identidad"
+            ],
+            "confirm": {
+                "suggested": "Apuesta con sugerencia",
+                "manual": "Yo mismo elegiré los validadores."
+            }
+        }
+    },
+    "collapseText": "Colapso",
+    "expandText": "Expandir"
 }

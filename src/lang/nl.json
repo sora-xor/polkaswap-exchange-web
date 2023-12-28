@@ -759,7 +759,8 @@
             "checkExtension": "{name} extensie is bezet, gelieve ze te controleren",
             "extensionLogin": "Gelieve in te loggen op uw {name} extensie",
             "installExtension": "{name} extensie is niet gevonden. Installeer het alstublieft! \n\n Extensie al geïnstalleerd? Herlaad alstublieft de pagina",
-            "reloadPage": "Herlaad pagina"
+            "reloadPage": "Herlaad pagina",
+            "notAvailable": "{name} is niet beschikbaar."
         }
     },
     "selectLanguageDialog": {
@@ -1233,5 +1234,118 @@
     "exceededAmountText": "{amount} overschreden",
     "multipleRecipients": "Meerdere ontvangers",
     "disconnectWalletText": "Loskoppelen",
-    "connectEthereumWalletText": "Sluit de {Ethereum} -portemonnee aan"
+    "connectEthereumWalletText": "Sluit de {Ethereum} -portemonnee aan",
+    "soraStaking": {
+        "title": "Uitzetten",
+        "dropdownMenu": {
+            "pendingRewards": "Beloningen in behandeling",
+            "validators": "Validatoren",
+            "controllerAccount": "Controller-account"
+        },
+        "actions": {
+            "claim": "Claim beloningen",
+            "remove": "Staak verwijderen",
+            "start": "Begin met uitzetten",
+            "more": "Zet meer in"
+        },
+        "overview": {
+            "title": "SORA Uitzetten",
+            "description": "Zet XOR-tokens in op SORA Network als nominator om transacties te valideren en VAL-tokenbeloningen te verdienen."
+        },
+        "newStake": {
+            "title": "Begin met uitzetten",
+            "minStakeWarning": "De minimale inzet om de beloning te ontvangen is {min} {symbol}"
+        },
+        "validators": {
+            "save": "Wijzigingen opslaan",
+            "selected": "{selected} \/ {total} geselecteerd",
+            "recommended": "Aanbevolen validatoren",
+            "change": "Validatoren wijzigen",
+            "select": "Selecteer validatoren"
+        },
+        "validatorsList": {
+            "search": "Zoekopdracht...",
+            "filters": "Filters",
+            "name": "Naam",
+            "return": "Opbrengst"
+        },
+        "info": {
+            "redeemable": "Inwisselbaar",
+            "unstaking": "Niet uitzetten",
+            "stakingBalance": "Balans uitzetten",
+            "rewarded": "Beloond",
+            "totalLiquidityStaked": "Totale liquiditeitsinzet",
+            "apy": "API",
+            "rewardToken": "Beloningstoken",
+            "unstakingPeriod": "Onverzettelijke periode",
+            "minimumStake": "Minimale inzet",
+            "nominators": "Nominatoren",
+            "validators": "Validatoren",
+            "selectedValidators": "Geselecteerde validatoren"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filters",
+            "save": "Filter opslaan",
+            "reset": "Alles resetten",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identiteit in de keten",
+                    "description": "Er is ten minste één identiteitscontact verbonden aan het account"
+                },
+                "notSlashed": {
+                    "name": "Niet gesneden",
+                    "description": "Geen enkele boete of verlaging van hun ingezette fondsen ervaren als gevolg van wangedrag of protocolschendingen."
+                },
+                "notOversubscribed": {
+                    "name": "Niet overtekend",
+                    "description": "Account binnen de toewijzingslimiet, vermijdt boetes voor overinschrijving bij Polkadot-staking."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Limiet van 2 validators per identiteit",
+                    "description": "Maximaal twee validators per identiteit om decentralisatie te bevorderen en machtsconcentratie te voorkomen."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "default": "Validatoren",
+                "edit": "Bewerk mijn validators"
+            },
+            "tabs": {
+                "userValidators": "Uw validatoren",
+                "allValidators": "Alle validatoren"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Aandacht",
+            "description": [
+                "Suggesties voor algoritmische validatoren vormen geen financieel overleg of advies. Uitzetten is een activiteit met een hoog risico, en suggesties voor algoritmische validatoren beperken dit risico niet noodzakelijkerwijs.",
+                "Een door het algoritme voorgestelde validator kan nog steeds worden verwijderd. Een door het algoritme voorgestelde validator kan ook zijn parameters (bijvoorbeeld commissietarieven, enz.) op elk moment wijzigen nadat hij is voorgesteld en\/of geselecteerd.",
+                "Om deze of andere redenen kunt u tokens of beloningen verliezen. Zet alleen tokens in en gebruik validatorsuggesties naar eigen goeddunken, nadat u een due diligence-onderzoek heeft uitgevoerd en zorgvuldig de risico's heeft overwogen."
+            ],
+            "confirm": "Ja, ik begrijp het risico"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Er zijn geen lopende beloningen",
+            "payoutAll": "Alles uitbetalen",
+            "information": "Validators betalen de beloningen elke 2-5 dagen uit. U kunt ze echter zelf uitbetalen, vooral als de beloningen bijna verlopen, maar u betaalt wel de kosten."
+        },
+        "selectValidatorsMode": {
+            "title": "Zet in op validators die door het algoritme worden voorgesteld",
+            "description": "Het SORA-netwerkalgoritme heeft een lijst met aanbevolen validators geselecteerd op basis van de criteria:",
+            "criteria": [
+                "Meest winstgevend",
+                "Niet overtekend",
+                "Een onchain-identiteit hebben",
+                "Niet gesneden",
+                "Limiet van 2 validators per identiteit"
+            ],
+            "confirm": {
+                "suggested": "Inzetten met voorgesteld",
+                "manual": "Ik kies zelf de validators"
+            }
+        }
+    },
+    "collapseText": "Instorten",
+    "expandText": "Uitbreiden"
 }
