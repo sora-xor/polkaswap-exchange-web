@@ -29,12 +29,11 @@
     <s-scrollbar class="validators-list-scrollbar">
       <ul class="list">
         <li v-for="validator in filteredValidators" :key="validator.address" class="validator">
-          <!-- <validator-avatar class="avatar" :validator="validator">
+          <validator-avatar class="avatar" :validator="validator">
             <div v-if="isSelected(validator)" class="check" slot="icon">
               <s-icon name="basic-check-mark-24" size="12px" />
             </div>
-          </validator-avatar> -->
-          <wallet-avatar :address="validator.address" :size="14" class="account-gravatar" />
+          </validator-avatar>
           <div class="name">
             {{ formatName(validator) }}
           </div>

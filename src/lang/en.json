@@ -1091,7 +1091,8 @@
             "confirm": "Yes, I understand the risk"
         },
         "claimRewardsDialog": {
-          "title": "Claim rewards"
+          "title": "Claim rewards",
+          "checkRewards": "Check rewards per era and validator"
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "There are no pending rewards",

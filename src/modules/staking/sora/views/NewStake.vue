@@ -89,7 +89,9 @@ export default class SoraStakingForm extends Mixins(StakingMixin, mixins.Loading
 
   @Watch('selectedValidators', { immediate: true })
   async handleSelectedValidatorsChange() {
-    this.bondAndNominateNetworkFee = await this.getBondAndNominateNetworkFee();
+    this.withApi(async () => {
+      this.bondAndNominateNetworkFee = await this.getBondAndNominateNetworkFee();
+    });
   }
 
   mounted() {

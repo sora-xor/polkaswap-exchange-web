@@ -197,6 +197,13 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
 .s-input.s-input--stake-part {
   @include input-slider;
 }
+
+.claim-rewards-dialog {
+  .reward .formatted-amount--fiat-value {
+    font-size: 14px !important;
+    font-weight: 600;
+  }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -205,11 +212,6 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
 
   & > *:not(:first-child) {
     margin-top: $inner-spacing-medium;
-  }
-
-  .reward .formatted-amount--fiat-value {
-    font-size: 14px !important;
-    font-weight: 600;
   }
 }
 

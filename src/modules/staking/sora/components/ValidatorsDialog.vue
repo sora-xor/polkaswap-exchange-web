@@ -74,7 +74,9 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
 
   @Watch('selectedValidators')
   async handleSelectedValidatorsChange() {
-    this.nominateNetworkFee = await this.getNominateNetworkFee();
+    this.withApi(async () => {
+      this.nominateNetworkFee = await this.getNominateNetworkFee();
+    });
   }
 
   @Watch('visible')
