@@ -1,21 +1,27 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="title">
     <div class="claim-rewards-dialog">
-      <s-form class="el-form--actions" :show-message="false">
-        <token-input
-          key="stake-input"
-          :balance="rewardedFundsCodec"
-          :title="inputTitle"
-          :token="rewardAsset"
-          :value="rewardedFundsFormatted"
-          :disabled="true"
+      <div class="reward">
+        <formatted-amount-with-fiat-value
+          class="reward-amount"
+          symbol-as-decimal
+          value-can-be-hidden
+          :value="rewardedFundsCodec"
+          :fiat-value="rewardedFundsFiat"
         />
-      </s-form>
+        <template v-if="rewardAsset">
+          <token-logo class="reward-logo" :tokenSymbol="rewardAsset.symbol" />
+          <span class="reward-symbol">
+            {{ rewardAsset.symbol }}
+          </span>
+        </template>
+      </div>
 
       <s-input
         v-model="rewardsDestination"
         placeholder="Rewards destination address"
         suffix="s-icon-basic-user-24"
+        :disabled="true"
       ></s-input>
 
       <div class="info">
@@ -70,9 +76,6 @@ import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
-import { Components } from '@/consts';
-import { lazyComponent } from '@/router';
-
 import StakingMixin from '../mixins/StakingMixin';
 
 import type { CodecString } from '@sora-substrate/util';
@@ -80,9 +83,11 @@ import type { NominatorReward } from '@sora-substrate/util/build/staking/types';
 
 @Component({
   components: {
-    TokenInput: lazyComponent(Components.TokenInput),
+    FormattedAmount: components.FormattedAmount,
     DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
+    TokenLogo: components.TokenLogo,
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
 export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
@@ -91,9 +96,12 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   rewardsDestination = '';
   payoutNetworkFee: string | null = null;
 
+  @Watch('visible', { immediate: true })
   @Watch('payeeAddress', { immediate: true })
   handlePayeeAddressChange() {
-    this.rewardsDestination = this.payeeAddress;
+    if (this.visible) {
+      this.rewardsDestination = this.payeeAddress;
+    }
   }
 
   get payeeAddress() {
@@ -103,14 +111,17 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
       case 'Controller':
         return this.controller;
       default:
-        return '';
+        return this.payee;
     }
   }
 
   @Watch('pendingRewards', { immediate: true })
   async handlePendingRewardsChange() {
     this.payoutNetworkFee = await this.getPayoutNetworkFee({
-      payouts: this.payouts,
+      payouts: this.pendingRewards
+        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
+        : [],
+      payee: this.rewardsDestination !== this.payeeAddress ? this.rewardsDestination : undefined,
     });
   }
 
@@ -119,7 +130,7 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   }
 
   get title(): string {
-    return 'Claim rewards';
+    return this.t('soraStaking.claimRewardsDialog.title');
   }
 
   get inputTitle(): string {
@@ -194,6 +205,31 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
 
   & > *:not(:first-child) {
     margin-top: $inner-spacing-medium;
+  }
+
+  .reward .formatted-amount--fiat-value {
+    font-size: 14px !important;
+    font-weight: 600;
+  }
+}
+
+.reward {
+  display: flex;
+  width: 100%;
+  font-size: 32px;
+  font-weight: 700;
+
+  &-amount {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-logo {
+    margin-left: auto;
+  }
+
+  &-symbol {
+    margin-left: 15px;
   }
 }
 

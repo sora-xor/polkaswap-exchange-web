@@ -919,6 +919,9 @@ export default {
       ],
       confirm: 'Yes, I understand the risk',
     },
+    claimRewardsDialog: {
+      title: 'Claim rewards',
+    },
     pendingRewardsDialog: {
       noPendingRewards: 'There are no pending rewards',
       noSelectedRewards: 'Select rewards',

@@ -8,8 +8,8 @@ import type { SubqueryConnectionQueryResponse } from '@soramitsu/soraneo-wallet-
 const { IndexerType } = WALLET_CONSTS;
 
 const SubqueryNominatorsCountQuery = gql<SubqueryConnectionQueryResponse<number>>`
-  query NominatorsCountQuery($era: Int) {
-    data: stakingEraNominators(orderBy: ID_DESC, filter: { era: { index: { equalTo: $era } } }) {
+  query NominatorsCountQuery($era: String) {
+    data: stakingEraNominators(orderBy: ID_DESC, filter: { eraId: { equalTo: $era } }) {
       totalCount
     }
   }
@@ -29,7 +29,9 @@ export async function fetchData(era: number): Promise<Nullable<number>> {
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
       const subqueryIndexer = indexer as SubqueryIndexer;
-      data = (await subqueryIndexer.services.explorer.fetchEntities(SubqueryNominatorsCountQuery, { era }))?.totalCount;
+      data = (
+        await subqueryIndexer.services.explorer.fetchEntities(SubqueryNominatorsCountQuery, { era: era.toString() })
+      )?.totalCount;
       break;
     }
     case IndexerType.SUBSQUID: {
