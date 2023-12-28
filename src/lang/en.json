@@ -1046,8 +1046,7 @@
             "minimumStake": "Minimum stake",
             "nominators": "Nominators",
             "validators": "Validators",
-            "selectedValidators": "Selected validators",
-            "allRewards": "All rewards"
+            "selectedValidators": "Selected validators"
         },
         "validatorsFilterDialog": {
             "title": "Filters",

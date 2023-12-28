@@ -6,7 +6,7 @@
           class="reward-amount"
           symbol-as-decimal
           value-can-be-hidden
-          :value="rewardedFundsCodec"
+          :value="rewardedFundsFormatted"
           :fiat-value="rewardedFundsFiat"
         />
         <template v-if="rewardAsset">
@@ -25,13 +25,6 @@
       ></s-input>
 
       <div class="info">
-        <info-line
-          v-if="stakingInitialized"
-          :label="t('soraStaking.info.allRewards')"
-          :value="rewardedFundsFormatted"
-          :asset-symbol="rewardAsset?.symbol"
-          :fiat-value="rewardedFundsFiat"
-        />
         <info-line
           :label="t('networkFeeText')"
           :label-tooltip="t('networkFeeTooltipText')"

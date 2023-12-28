@@ -874,7 +874,6 @@ export default {
       nominators: 'Nominators',
       validators: 'Validators',
       selectedValidators: 'Selected validators',
-      allRewards: 'All rewards',
     },
     validatorsFilterDialog: {
       title: 'Filters',
