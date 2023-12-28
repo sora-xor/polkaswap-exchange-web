@@ -759,7 +759,8 @@
             "checkExtension": "L'estensione {name} non è stata trovata. Si prega di controllarla",
             "extensionLogin": "Per favore accedi all' estensione {name}",
             "installExtension": "L'estensione {name} non è stata trovata. Si prega di installarlo! \n\n Estensione già installata? Si prega di ricaricare la pagina",
-            "reloadPage": "Ricarica la pagina"
+            "reloadPage": "Ricarica la pagina",
+            "notAvailable": "{name} non è disponibile."
         }
     },
     "selectLanguageDialog": {
@@ -1233,5 +1234,118 @@
     "exceededAmountText": "{amount} superato",
     "multipleRecipients": "Destinatari multipli",
     "disconnectWalletText": "Disconnetti",
-    "connectEthereumWalletText": "Connetti il portafoglio {Ethereum}"
+    "connectEthereumWalletText": "Connetti il portafoglio {Ethereum}",
+    "soraStaking": {
+        "title": "Puntata",
+        "dropdownMenu": {
+            "pendingRewards": "Premi in sospeso",
+            "validators": "Validatori",
+            "controllerAccount": "Conto controllore"
+        },
+        "actions": {
+            "claim": "Richiedi premi",
+            "remove": "Rimuovi il paletto",
+            "start": "Inizia a scommettere",
+            "more": "Punta di più"
+        },
+        "overview": {
+            "title": "Puntata SORA",
+            "description": "Punta i token XOR sulla rete SORA come nominatore per convalidare le transazioni e guadagnare premi in token VAL."
+        },
+        "newStake": {
+            "title": "Inizia a scommettere",
+            "minStakeWarning": "La puntata minima per ricevere il premio è {min} {symbol}"
+        },
+        "validators": {
+            "save": "Salvare le modifiche",
+            "selected": "{selected} \/ {total} selezionato",
+            "recommended": "Validatori consigliati",
+            "change": "Validatori di modifiche",
+            "select": "Seleziona validatori"
+        },
+        "validatorsList": {
+            "search": "Ricerca...",
+            "filters": "Filtri",
+            "name": "Nome",
+            "return": "Ritorno"
+        },
+        "info": {
+            "redeemable": "Riscattabile",
+            "unstaking": "Instabile",
+            "stakingBalance": "Saldo della puntata",
+            "rewarded": "Premiato",
+            "totalLiquidityStaked": "Liquidità totale investita",
+            "apy": "APY",
+            "rewardToken": "Gettone ricompensa",
+            "unstakingPeriod": "Periodo non impegnativo",
+            "minimumStake": "Puntata minima",
+            "nominators": "Nominatori",
+            "validators": "Validatori",
+            "selectedValidators": "Validatori selezionati"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filtri",
+            "save": "Salva filtro",
+            "reset": "Resetta tutto",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identità on-chain",
+                    "description": "Almeno un contatto di identità collegato all'account"
+                },
+                "notSlashed": {
+                    "name": "Non tagliato",
+                    "description": "Non hanno subito sanzioni o riduzioni dei fondi investiti a causa di cattiva condotta o violazioni del protocollo."
+                },
+                "notOversubscribed": {
+                    "name": "Non iscritti in eccesso",
+                    "description": "Conto entro il limite di allocazione, evita penalità per sottoscrizione eccessiva sullo staking di Polkadot."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Limite di 2 validatori per identità",
+                    "description": "Un massimo di due validatori per identità per promuovere la decentralizzazione e prevenire la concentrazione del potere."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "default": "Validatori",
+                "edit": "Modifica i miei validatori"
+            },
+            "tabs": {
+                "userValidators": "I tuoi validatori",
+                "allValidators": "Tutti i validatori"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Attenzione",
+            "description": [
+                "I suggerimenti del validatore algoritmico non costituiscono consulenza o consulenza finanziaria. Lo staking è un’attività ad alto rischio e i suggerimenti dei validatori algoritmici non mitigano necessariamente questo rischio.",
+                "Un validatore suggerito dall'algoritmo potrebbe comunque essere tagliato. Un validatore suggerito dall'algoritmo potrebbe anche modificare i propri parametri (es. tassi di commissione, ecc.) in qualsiasi momento dopo essere stato suggerito e\/o selezionato.",
+                "Potresti perdere gettoni o premi per questi o altri motivi. Punta i token e utilizza i suggerimenti del validatore solo a tua discrezione, dopo aver condotto la dovuta diligenza e considerato attentamente i rischi connessi."
+            ],
+            "confirm": "Sì, capisco il rischio"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Non ci sono premi in sospeso",
+            "payoutAll": "Pagamento tutto",
+            "information": "I validatori pagano i premi ogni 2-5 giorni. Puoi comunque pagarli tu stesso, soprattutto se i premi sono prossimi alla scadenza, ma pagherai la commissione."
+        },
+        "selectValidatorsMode": {
+            "title": "Stake con validatori suggeriti dall'algoritmo",
+            "description": "L'algoritmo di SORA Network ha selezionato un elenco di validatori consigliati in base ai criteri:",
+            "criteria": [
+                "Il più redditizio",
+                "Non iscritti in eccesso",
+                "Avere identità onchain",
+                "Non tagliato",
+                "Limite di 2 validatori per identità"
+            ],
+            "confirm": {
+                "suggested": "Punta con suggerito",
+                "manual": "Sceglierò io stesso i validatori"
+            }
+        }
+    },
+    "collapseText": "Crollo",
+    "expandText": "Espandere"
 }

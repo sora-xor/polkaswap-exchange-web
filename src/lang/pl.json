@@ -759,7 +759,8 @@
             "checkExtension": "Rozszerzenie {name} jest zajęte, sprawdź je.",
             "extensionLogin": "Zaloguj się do swojego rozszerzenia {name}.",
             "installExtension": "Rozszerzenie {name} nie zostało znalezione. Zainstaluj je!\n\nCzy masz już zainstalowane rozszerzenie? Odśwież stronę.",
-            "reloadPage": "Odśwież stronę"
+            "reloadPage": "Odśwież stronę",
+            "notAvailable": "{name} jest niedostępne."
         }
     },
     "selectLanguageDialog": {
@@ -1233,5 +1234,118 @@
     "exceededAmountText": "Przekroczono {amount}",
     "multipleRecipients": "Wielu odbiorców",
     "disconnectWalletText": "Rozłączyć się",
-    "connectEthereumWalletText": "Podłącz portfel {Ethereum}"
+    "connectEthereumWalletText": "Podłącz portfel {Ethereum}",
+    "soraStaking": {
+        "title": "Stawianie",
+        "dropdownMenu": {
+            "pendingRewards": "Oczekujące nagrody",
+            "validators": "Walidatory",
+            "controllerAccount": "Konto kontrolera"
+        },
+        "actions": {
+            "claim": "Odbieraj nagrody",
+            "remove": "Usuń stawkę",
+            "start": "Zacznij obstawiać",
+            "more": "Stawiaj więcej"
+        },
+        "overview": {
+            "title": "Stakowanie SORA",
+            "description": "Stawiaj tokeny XOR w sieci SORA jako nominator, aby weryfikować transakcje i zdobywać nagrody w postaci tokenów VAL."
+        },
+        "newStake": {
+            "title": "Zacznij obstawiać",
+            "minStakeWarning": "Minimalna stawka umożliwiająca otrzymanie nagrody to {min} {symbol}"
+        },
+        "validators": {
+            "save": "Zapisz zmiany",
+            "selected": "Wybrano {selected} \/ {total}",
+            "recommended": "Polecane walidatory",
+            "change": "Zmień walidatory",
+            "select": "Wybierz walidatory"
+        },
+        "validatorsList": {
+            "search": "Szukaj...",
+            "filters": "Filtry",
+            "name": "Nazwa",
+            "return": "Powrót"
+        },
+        "info": {
+            "redeemable": "Odkupny",
+            "unstaking": "Odstawienie",
+            "stakingBalance": "Bilans stawek",
+            "rewarded": "Wynagrodzony",
+            "totalLiquidityStaked": "Całkowita postawiona płynność",
+            "apy": "RRSO",
+            "rewardToken": "Żeton nagrody",
+            "unstakingPeriod": "Okres odstawiania",
+            "minimumStake": "Minimalna stawka",
+            "nominators": "Nominatorzy",
+            "validators": "Walidatory",
+            "selectedValidators": "Wybrane walidatory"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filtry",
+            "save": "Zapisz filtr",
+            "reset": "Zresetować wszystko",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Tożsamość w łańcuchu",
+                    "description": "Co najmniej jeden kontakt tożsamości jest podłączony do konta"
+                },
+                "notSlashed": {
+                    "name": "Nie przecięty",
+                    "description": "Nie doświadczył żadnych kar ani obniżek postawionych środków z powodu niewłaściwego postępowania lub naruszeń protokołu."
+                },
+                "notOversubscribed": {
+                    "name": "Nie ma nadsubskrypcji",
+                    "description": "Konto w ramach limitu alokacji, pozwala uniknąć kar za przekroczenie subskrypcji przy stakingu Polkadot."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Limit 2 walidatorów na tożsamość",
+                    "description": "Maksymalnie dwóch walidatorów na tożsamość w celu promowania decentralizacji i zapobiegania koncentracji władzy."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "default": "Walidatory",
+                "edit": "Edytuj Moje walidatory"
+            },
+            "tabs": {
+                "userValidators": "Twoje walidatory",
+                "allValidators": "Wszystkie walidatory"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Uwaga",
+            "description": [
+                "Sugestie walidatora algorytmicznego nie stanowią konsultacji ani porady finansowej. Stakowanie jest działalnością obarczoną wysokim ryzykiem i sugestie walidatorów algorytmicznych niekoniecznie ograniczają to ryzyko.",
+                "Walidator sugerowany przez algorytm nadal może zostać obciążony. Walidator sugerowany przez algorytm może także zmieniać ich parametry (np. stawki prowizji itp.) w dowolnym momencie po tym, jak zostanie zasugerowany i\/lub wybrany.",
+                "Możesz stracić tokeny lub nagrody z tych lub innych powodów. Stawiaj tylko tokeny i korzystaj z sugestii walidatora według własnego uznania, po przeprowadzeniu należytej staranności i dokładnym rozważeniu związanego z tym ryzyka."
+            ],
+            "confirm": "Tak, rozumiem ryzyko"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Brak oczekujących nagród",
+            "payoutAll": "Wypłata całości",
+            "information": "Walidatorzy wypłacają nagrody co 2-5 dni. Możesz jednak wypłacić je samodzielnie, zwłaszcza jeśli nagrody wkrótce wygasną, ale zapłacisz opłatę."
+        },
+        "selectValidatorsMode": {
+            "title": "Stawkę z walidatorami sugerowanymi przez algorytm",
+            "description": "Algorytm SORA Network wybrał listę rekomendowanych walidatorów w oparciu o kryteria:",
+            "criteria": [
+                "Najbardziej dochodowy",
+                "Nie ma nadsubskrypcji",
+                "Posiadanie tożsamości onchain",
+                "Nie przecięty",
+                "Limit 2 walidatorów na tożsamość"
+            ],
+            "confirm": {
+                "suggested": "Stawka z sugerowanymi",
+                "manual": "Sam wybiorę walidatorów"
+            }
+        }
+    },
+    "collapseText": "Zawalić się",
+    "expandText": "Zwiększać"
 }

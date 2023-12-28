@@ -998,4 +998,6 @@ export default {
   maxAmountText: 'max. amount',
   exceededAmountText: '{amount} exceeded',
   connectEthereumWalletText: 'Connect {Ethereum} wallet',
+  collapseText: 'Collapse',
+  expandText: 'Expand',
 };

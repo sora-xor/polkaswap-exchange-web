@@ -2,7 +2,6 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
 import { EthereumProvider as WalletConnectEthereumProvider } from '@walletconnect/ethereum-provider';
 import { ethers } from 'ethers';
 
@@ -26,19 +25,6 @@ export enum Provider {
   TrustWallet = 'TrustWallet',
   WalletConnect = 'WalletConnect',
 }
-
-// TODO [EVM]
-const gasLimit = {
-  approve: 47000,
-  sendERC20ToSidechain: 53000,
-  sendEthToSidechain: 26093,
-  mintTokensByPeers: 211000,
-  receiveByEthereumAssetAddress: {
-    ETH: 155000,
-    OTHER: 181000,
-  },
-  receiveBySidechainAssetId: 184000,
-};
 
 const WALLET_CONNECT_PROJECT_ID = 'feeab08b50e0d407f4eb875d69e162e8';
 
@@ -81,30 +67,6 @@ export const handleRpcProviderError = (error: any): string => {
   }
 
   return handleErrorCode(code, message);
-};
-
-/**
- * It's in gwei.
- */
-const getEthBridgeGasLimit = (assetEvmAddress: string, kind: EthAssetKind, isSoraToEvm: boolean) => {
-  if (isSoraToEvm) {
-    switch (kind) {
-      case EthAssetKind.SidechainOwned:
-        return gasLimit.mintTokensByPeers;
-      case EthAssetKind.Thischain:
-        return gasLimit.receiveBySidechainAssetId;
-      case EthAssetKind.Sidechain:
-        return isNativeEvmTokenAddress(assetEvmAddress)
-          ? gasLimit.receiveByEthereumAssetAddress.ETH
-          : gasLimit.receiveByEthereumAssetAddress.OTHER;
-      default:
-        throw new Error(`Unknown kind "${kind}" for asset "${assetEvmAddress}"`);
-    }
-  } else {
-    return isNativeEvmTokenAddress(assetEvmAddress)
-      ? gasLimit.sendEthToSidechain
-      : gasLimit.approve + gasLimit.sendERC20ToSidechain;
-  }
 };
 
 async function connectEvmProvider(provider: Provider, chains: ChainsProps): Promise<string> {
@@ -287,8 +249,12 @@ async function getAccountAssetBalance(accountAddress: string, assetAddress: stri
     : await getAccountTokenBalance(accountAddress, assetAddress);
 }
 
-async function getAllowance(accountAddress: string, contractAddress: string, assetAddress: string): Promise<string> {
-  if (!(accountAddress && assetAddress && contractAddress)) return ZeroStringValue;
+async function getAllowance(
+  accountAddress: string,
+  contractAddress: string,
+  assetAddress: string
+): Promise<string | null> {
+  if (!(accountAddress && assetAddress && contractAddress && !isNativeEvmTokenAddress(assetAddress))) return null;
 
   const methodArgs = [accountAddress, contractAddress];
   const contract = await getTokenContract(assetAddress);
@@ -405,26 +371,17 @@ async function getEvmNetworkId(): Promise<number> {
   return Number(network.chainId);
 }
 
-/**
- * Fetch EVM Network fee for passed asset address
- */
-async function getEvmNetworkFee(
-  assetEvmAddress: string,
-  assetKind: string,
-  isSoraToEvm: boolean
-): Promise<CodecString> {
-  try {
-    const ethersInstance = getEthersInstance();
-    const { maxFeePerGas } = await ethersInstance.getFeeData();
-    const gasPrice = maxFeePerGas ?? BigInt(0);
-    const gasLimit = BigInt(getEthBridgeGasLimit(assetEvmAddress, assetKind as EthAssetKind, isSoraToEvm));
-    const fee = calcEvmFee(gasPrice, gasLimit);
+async function getEvmGasPrice(): Promise<bigint> {
+  const toBN = (value: bigint | null) => value ?? BigInt(0);
+  const ethersInstance = getEthersInstance();
+  const { maxFeePerGas, maxPriorityFeePerGas } = await ethersInstance.getFeeData();
+  const priorityFee = BigInt('1500000000'); // 1.5 GWEI
+  const maxFee = toBN(maxFeePerGas);
+  const baseFee = (maxFee - toBN(maxPriorityFeePerGas)) / BigInt(2);
+  const baseFeeMarket = (baseFee * BigInt(1355)) / BigInt(1000); // market rate like in Metamask
+  const gasPrice = baseFeeMarket + priorityFee;
 
-    return fee;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  return gasPrice;
 }
 
 function calcEvmFee(gasPrice: bigint, gasAmount: bigint) {
@@ -532,7 +489,7 @@ export default {
   addressesAreEqual,
   calcEvmFee,
   hexToNumber,
-  getEvmNetworkFee,
+  getEvmGasPrice,
   getEvmNetworkId,
   getEvmTransaction,
   getEvmTransactionReceipt,

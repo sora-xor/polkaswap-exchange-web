@@ -759,7 +759,8 @@
             "checkExtension": "{name} Erweiterung wird ausgeführt, bitte überprüfen",
             "extensionLogin": "Bitte, bei der {name} Erweiterung anmelden",
             "installExtension": "{name} Erweiterung nicht gefunden. Bitte, installiere sie!\n\nErweiterung schon installiert? Bitte, die Seite neu laden",
-            "reloadPage": "Seite neu laden"
+            "reloadPage": "Seite neu laden",
+            "notAvailable": "{name} ist nicht verfügbar."
         }
     },
     "selectLanguageDialog": {
@@ -1233,5 +1234,118 @@
     "exceededAmountText": "{amount} überschritten",
     "multipleRecipients": "Mehrere Empfänger",
     "disconnectWalletText": "Trennen",
-    "connectEthereumWalletText": "{Ethereum} -Wallet verbinden"
+    "connectEthereumWalletText": "{Ethereum} -Wallet verbinden",
+    "soraStaking": {
+        "title": "Abstecken",
+        "dropdownMenu": {
+            "pendingRewards": "Ausstehende Belohnungen",
+            "validators": "Validatoren",
+            "controllerAccount": "Controller-Konto"
+        },
+        "actions": {
+            "claim": "Belohnung entgegennehmen",
+            "remove": "Pfahl entfernen",
+            "start": "Beginnen Sie mit dem Abstecken",
+            "more": "Setzen Sie mehr ein"
+        },
+        "overview": {
+            "title": "SORA-Einsatz",
+            "description": "Setzen Sie XOR-Tokens im SORA-Netzwerk als Nominator ein, um Transaktionen zu validieren und VAL-Token-Belohnungen zu verdienen."
+        },
+        "newStake": {
+            "title": "Beginnen Sie mit dem Abstecken",
+            "minStakeWarning": "Der Mindesteinsatz für den Erhalt der Belohnung beträgt {min} {symbol}"
+        },
+        "validators": {
+            "save": "Änderungen speichern",
+            "selected": "{selected} \/ {total} ausgewählt",
+            "recommended": "Empfohlene Validatoren",
+            "change": "Validatoren ändern",
+            "select": "Wählen Sie Validatoren aus"
+        },
+        "validatorsList": {
+            "search": "Suchen...",
+            "filters": "Filter",
+            "name": "Name",
+            "return": "Zurückkehren"
+        },
+        "info": {
+            "redeemable": "Einlösbar",
+            "unstaking": "Abstecken",
+            "stakingBalance": "Absteckguthaben",
+            "rewarded": "Belohnt",
+            "totalLiquidityStaked": "Gesamte eingesetzte Liquidität",
+            "apy": "APY",
+            "rewardToken": "Belohnungs-Token",
+            "unstakingPeriod": "Unstaking-Zeitraum",
+            "minimumStake": "Mindesteinsatz",
+            "nominators": "Nominatoren",
+            "validators": "Validatoren",
+            "selectedValidators": "Ausgewählte Validatoren"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filter",
+            "save": "Filter speichern",
+            "reset": "Alles zurücksetzen",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identität in der Kette",
+                    "description": "Mindestens ein Identitätskontakt, der mit dem Konto verbunden ist"
+                },
+                "notSlashed": {
+                    "name": "Nicht aufgeschlitzt",
+                    "description": "Es gab keine Strafen oder Kürzungen der eingesetzten Gelder aufgrund von Fehlverhalten oder Protokollverstößen."
+                },
+                "notOversubscribed": {
+                    "name": "Nicht überzeichnet",
+                    "description": "Konto innerhalb der Zuteilungsgrenze, vermeidet Überzeichnungsstrafen beim Polkadot-Einsatz."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Beschränkung auf 2 Validatoren pro Identität",
+                    "description": "Maximal zwei Validatoren pro Identität, um die Dezentralisierung zu fördern und Machtkonzentration zu verhindern."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "default": "Validatoren",
+                "edit": "Bearbeiten Sie meine Validatoren"
+            },
+            "tabs": {
+                "userValidators": "Ihre Validatoren",
+                "allValidators": "Alle Validatoren"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Aufmerksamkeit",
+            "description": [
+                "Vorschläge für algorithmische Validatoren stellen keine finanzielle Beratung oder Beratung dar. Das Abstecken ist eine Aktivität mit hohem Risiko, und Vorschläge zur algorithmischen Validierung mindern dieses Risiko nicht unbedingt.",
+                "Ein vom Algorithmus vorgeschlagener Validator könnte dennoch gekürzt werden. Ein vom Algorithmus vorgeschlagener Validator könnte seine Parameter (z. B. Provisionssätze usw.) auch jederzeit ändern, nachdem er vorgeschlagen und\/oder ausgewählt wurde.",
+                "Aus diesen oder anderen Gründen könnten Sie Token oder Belohnungen verlieren. Setzen Sie Token nur ein und verwenden Sie Validator-Vorschläge nach eigenem Ermessen, nachdem Sie die gebotene Sorgfalt durchgeführt und die damit verbundenen Risiken sorgfältig abgewogen haben."
+            ],
+            "confirm": "Ja, ich verstehe das Risiko"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Es sind keine Belohnungen ausstehend",
+            "payoutAll": "Alles auszahlen",
+            "information": "Validatoren zahlen die Belohnungen alle 2–5 Tage aus. Sie können die Prämien jedoch auch selbst auszahlen, insbesondere wenn die Prämien bald ablaufen, aber Sie zahlen die Gebühr."
+        },
+        "selectValidatorsMode": {
+            "title": "Einsatz mit vom Algorithmus vorgeschlagenen Validatoren",
+            "description": "Der SORA-Netzwerkalgorithmus hat eine Liste empfohlener Validatoren basierend auf den folgenden Kriterien ausgewählt:",
+            "criteria": [
+                "Am meisten gewinnbringend",
+                "Nicht überzeichnet",
+                "On-Chain-Identität haben",
+                "Nicht aufgeschlitzt",
+                "Beschränkung auf 2 Validatoren pro Identität"
+            ],
+            "confirm": {
+                "suggested": "Einsatz mit vorgeschlagen",
+                "manual": "Die Validatoren wähle ich selbst aus"
+            }
+        }
+    },
+    "collapseText": "Zusammenbruch",
+    "expandText": "Expandieren"
 }

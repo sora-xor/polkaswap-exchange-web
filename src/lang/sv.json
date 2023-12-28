@@ -759,7 +759,8 @@
             "checkExtension": "{name} tillägg är upptaget, vänligen kontrollera det",
             "extensionLogin": "Vänligen logga in på ditt {name}-tillägg",
             "installExtension": "{name} tillägg hittades inte. Vänligen installera det!\n\nHar du redan installerat tillägget? Vänligen ladda om sidan",
-            "reloadPage": "Ladda om sidan"
+            "reloadPage": "Ladda om sidan",
+            "notAvailable": "{name} är inte tillgänglig."
         }
     },
     "selectLanguageDialog": {
@@ -1233,5 +1234,118 @@
     "exceededAmountText": "{amount} har överskridits",
     "multipleRecipients": "Flera mottagare",
     "disconnectWalletText": "Koppla ifrån",
-    "connectEthereumWalletText": "Anslut {Ethereum} plånbok"
+    "connectEthereumWalletText": "Anslut {Ethereum} plånbok",
+    "soraStaking": {
+        "title": "Utsättning",
+        "dropdownMenu": {
+            "pendingRewards": "Väntande belöningar",
+            "validators": "Validatorer",
+            "controllerAccount": "Controllerkonto"
+        },
+        "actions": {
+            "claim": "Gör anspråk på belöningar",
+            "remove": "Ta bort insatsen",
+            "start": "Börja staka",
+            "more": "Satsa mer"
+        },
+        "overview": {
+            "title": "SORA Staking",
+            "description": "Satsa XOR-tokens på SORA Network som en nominator för att validera transaktioner och tjäna VAL-tokenbelöningar."
+        },
+        "newStake": {
+            "title": "Börja staka",
+            "minStakeWarning": "Minsta insats för att få belöningen är {min} {symbol}"
+        },
+        "validators": {
+            "save": "Spara ändringar",
+            "selected": "{selected} \/ {total} markerade",
+            "recommended": "Rekommenderade validatorer",
+            "change": "Byt validatorer",
+            "select": "Välj validerare"
+        },
+        "validatorsList": {
+            "search": "Sök...",
+            "filters": "Filter",
+            "name": "namn",
+            "return": "Lämna tillbaka"
+        },
+        "info": {
+            "redeemable": "Inlösbar",
+            "unstaking": "Unstaking",
+            "stakingBalance": "Satsa balans",
+            "rewarded": "Belönad",
+            "totalLiquidityStaked": "Totalt insatt likviditet",
+            "apy": "APY",
+            "rewardToken": "Belöningstoken",
+            "unstakingPeriod": "Obetydlig period",
+            "minimumStake": "Minsta insats",
+            "nominators": "Nominatorer",
+            "validators": "Validatorer",
+            "selectedValidators": "Valda validerare"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filter",
+            "save": "Spara filter",
+            "reset": "Återställ allt",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identitet på kedjan",
+                    "description": "Minst en identitetskontakt kopplad till kontot"
+                },
+                "notSlashed": {
+                    "name": "Inte skuren",
+                    "description": "Inte upplevt några påföljder eller minskningar av sina insatta medel på grund av tjänstefel eller protokollöverträdelser."
+                },
+                "notOversubscribed": {
+                    "name": "Inte övertecknat",
+                    "description": "Konto inom tilldelningsgränsen, undviker överteckningsstraff på Polkadot-insats."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Begränsning av 2 validerare per identitet",
+                    "description": "Max två validerare per identitet för att främja decentralisering och förhindra maktkoncentration."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "default": "Validatorer",
+                "edit": "Redigera mina validerare"
+            },
+            "tabs": {
+                "userValidators": "Dina validerare",
+                "allValidators": "Alla validerare"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Uppmärksamhet",
+            "description": [
+                "Algoritmiska valideringsförslag utgör inte ekonomisk konsultation eller rådgivning. Satsning är en högriskaktivitet, och algoritmiska valideringsförslag minskar inte nödvändigtvis denna risk.",
+                "En validator som föreslagits av algoritmen kan fortfarande skäras ned. En validator som föreslås av algoritmen kan också ändra sina parametrar (t.ex. provisionssatser, etc.) när som helst efter att ha föreslagits och\/eller valts.",
+                "Du kan förlora tokens eller belöningar av dessa eller andra skäl. Satsa endast in polletter och använd valideringsförslag efter eget gottfinnande, efter due diligence och noggrant övervägt riskerna."
+            ],
+            "confirm": "Ja, jag förstår risken"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Det finns inga väntande belöningar",
+            "payoutAll": "Utbetalning allt",
+            "information": "Validatorer betalar ut belöningarna var 2-5 dag. Du kan dock betala ut dem själv, särskilt om belöningar är nära att löpa ut, men du kommer att betala avgiften."
+        },
+        "selectValidatorsMode": {
+            "title": "Insats med validatorer som föreslagits av algoritmen",
+            "description": "SORA Network-algoritmen har valt en lista med rekommenderade validatorer baserat på kriterierna:",
+            "criteria": [
+                "Mest lönsamt",
+                "Inte övertecknat",
+                "Att ha onchain-identitet",
+                "Inte skuren",
+                "Begränsning av 2 validerare per identitet"
+            ],
+            "confirm": {
+                "suggested": "Insats med föreslagna",
+                "manual": "Jag väljer validatorerna själv"
+            }
+        }
+    },
+    "collapseText": "Kollaps",
+    "expandText": "Bygga ut"
 }

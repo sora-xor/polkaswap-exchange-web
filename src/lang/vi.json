@@ -759,7 +759,8 @@
             "checkExtension": "Phần mở rộng (extension) {name} đang gặp vấn đề, vui lòng kiểm tra nó.",
             "extensionLogin": "Vui lòng đăng nhập vào tiện ích (extension) {name}",
             "installExtension": "không tìm thấy phần mở rộng (extension) {name}. Vui lòng cài đặt trước.\nNếu đã cài phần mở rộng (extension) rồi, vui lòng tải lại trang này.",
-            "reloadPage": "Tải lại trang"
+            "reloadPage": "Tải lại trang",
+            "notAvailable": "{name} không có sẵn."
         }
     },
     "selectLanguageDialog": {
@@ -1233,5 +1234,118 @@
     "exceededAmountText": "vượt quá {amount}",
     "multipleRecipients": "Nhiều người nhận",
     "disconnectWalletText": "Ngắt kết nối",
-    "connectEthereumWalletText": "Kết nối ví {Ethereum}"
+    "connectEthereumWalletText": "Kết nối ví {Ethereum}",
+    "soraStaking": {
+        "title": "đặt cược",
+        "dropdownMenu": {
+            "pendingRewards": "Phần thưởng đang chờ xử lý",
+            "validators": "Trình xác nhận",
+            "controllerAccount": "Tài khoản điều khiển"
+        },
+        "actions": {
+            "claim": "Yêu cầu phần thưởng",
+            "remove": "Xóa cổ phần",
+            "start": "Bắt đầu đặt cược",
+            "more": "Đặt cược nhiều hơn"
+        },
+        "overview": {
+            "title": "Đặt cược SORA",
+            "description": "Đặt cược mã thông báo XOR trên Mạng SORA với tư cách là người đề cử để xác thực các giao dịch và kiếm phần thưởng mã thông báo VAL."
+        },
+        "newStake": {
+            "title": "Bắt đầu đặt cược",
+            "minStakeWarning": "Số tiền đặt cược tối thiểu để nhận phần thưởng là {min} {symbol}"
+        },
+        "validators": {
+            "save": "Lưu thay đổi",
+            "selected": "{selected} \/ {total} đã chọn",
+            "recommended": "Trình xác thực được đề xuất",
+            "change": "Thay đổi trình xác thực",
+            "select": "Chọn người xác nhận"
+        },
+        "validatorsList": {
+            "search": "Tìm kiếm...",
+            "filters": "Bộ lọc",
+            "name": "Tên",
+            "return": "Trở lại"
+        },
+        "info": {
+            "redeemable": "Có thể đổi được",
+            "unstaking": "Hủy đặt cược",
+            "stakingBalance": "Số dư đặt cược",
+            "rewarded": "Được khen thưởng",
+            "totalLiquidityStaked": "Tổng thanh khoản đặt cược",
+            "apy": "APY",
+            "rewardToken": "Mã thông báo phần thưởng",
+            "unstakingPeriod": "Khoảng thời gian không đặt cược",
+            "minimumStake": "cổ phần tối thiểu",
+            "nominators": "Người đề cử",
+            "validators": "Trình xác nhận",
+            "selectedValidators": "Trình xác thực đã chọn"
+        },
+        "validatorsFilterDialog": {
+            "title": "Bộ lọc",
+            "save": "Lưu bộ lọc",
+            "reset": "Đặt lại tất cả",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Nhận dạng trên chuỗi",
+                    "description": "Ít nhất một liên hệ nhận dạng được kết nối với tài khoản"
+                },
+                "notSlashed": {
+                    "name": "Không bị chém",
+                    "description": "Chưa trải qua bất kỳ hình phạt hoặc giảm số tiền đặt cọc nào do hành vi sai trái hoặc vi phạm giao thức."
+                },
+                "notOversubscribed": {
+                    "name": "Không đăng ký vượt mức",
+                    "description": "Tài khoản nằm trong giới hạn phân bổ, tránh bị phạt đăng ký quá mức khi đặt cược Polkadot."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Giới hạn 2 trình xác thực cho mỗi danh tính",
+                    "description": "Tối đa hai trình xác nhận cho mỗi danh tính để thúc đẩy phân cấp và ngăn chặn sự tập trung quyền lực."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "default": "Trình xác nhận",
+                "edit": "Chỉnh sửa Trình xác thực của tôi"
+            },
+            "tabs": {
+                "userValidators": "Trình xác thực của bạn",
+                "allValidators": "Tất cả người xác thực"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Chú ý",
+            "description": [
+                "Đề xuất của trình xác thực thuật toán không cấu thành tư vấn hoặc tư vấn tài chính. Đặt cược là một hoạt động có rủi ro cao và các đề xuất của trình xác thực thuật toán không nhất thiết phải giảm thiểu rủi ro này.",
+                "Trình xác thực được thuật toán đề xuất vẫn có thể bị cắt bỏ. Trình xác thực được thuật toán đề xuất cũng có thể thay đổi các tham số của họ (ví dụ: tỷ lệ hoa hồng, v.v.) bất kỳ lúc nào sau khi được đề xuất và\/hoặc chọn.",
+                "Bạn có thể mất token hoặc phần thưởng vì lý do này hoặc lý do khác. Chỉ đặt cọc mã thông báo và sử dụng các đề xuất của trình xác thực theo quyết định riêng của bạn sau khi tiến hành thẩm định và xem xét cẩn thận các rủi ro liên quan."
+            ],
+            "confirm": "Vâng, tôi hiểu rủi ro"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Không có phần thưởng đang chờ xử lý",
+            "payoutAll": "Xuất chi tất cả",
+            "information": "Người xác nhận thanh toán phần thưởng cứ sau 2-5 ngày. Tuy nhiên, bạn có thể tự mình chi trả, đặc biệt nếu phần thưởng sắp hết hạn nhưng bạn sẽ phải trả phí."
+        },
+        "selectValidatorsMode": {
+            "title": "Cổ phần với các trình xác nhận được đề xuất bởi thuật toán",
+            "description": "Thuật toán Mạng SORA đã chọn danh sách các trình xác thực được đề xuất dựa trên các tiêu chí:",
+            "criteria": [
+                "Có lợi nhất",
+                "Không đăng ký vượt mức",
+                "Có danh tính trên chuỗi",
+                "Không bị chém",
+                "Giới hạn 2 trình xác thực cho mỗi danh tính"
+            ],
+            "confirm": {
+                "suggested": "Đặt cược với đề xuất",
+                "manual": "Tôi sẽ tự mình chọn người xác thực"
+            }
+        }
+    },
+    "collapseText": "Sụp đổ",
+    "expandText": "Mở rộng"
 }

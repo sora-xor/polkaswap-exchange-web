@@ -759,7 +759,8 @@
             "checkExtension": "Rozšírenie {name} je zaneprázdnené, skontrolujte ho",
             "extensionLogin": "Prihláste sa do vášho rozšírenia {name}",
             "installExtension": "Rozšírenie {name} sa nenašlo. Nainštalujte ho, prosím!\n\nRozšírenie je už nainštalované? Načítajte túto stránku znova",
-            "reloadPage": "Znovu načítať stránku"
+            "reloadPage": "Znovu načítať stránku",
+            "notAvailable": "{name} nie je k dispozícii."
         }
     },
     "selectLanguageDialog": {
@@ -1233,5 +1234,118 @@
     "exceededAmountText": "{amount} bola prekročená",
     "multipleRecipients": "Viacerí prijímatelia",
     "disconnectWalletText": "Odpojiť",
-    "connectEthereumWalletText": "Pripojte peňaženku {Ethereum}"
+    "connectEthereumWalletText": "Pripojte peňaženku {Ethereum}",
+    "soraStaking": {
+        "title": "Staking",
+        "dropdownMenu": {
+            "pendingRewards": "Čakajúce odmeny",
+            "validators": "Validátori",
+            "controllerAccount": "Účet správcu"
+        },
+        "actions": {
+            "claim": "Nárokujte si odmeny",
+            "remove": "Odstráňte kolík",
+            "start": "Začnite stávkovať",
+            "more": "Stavte viac"
+        },
+        "overview": {
+            "title": "Vytyčovanie SORA",
+            "description": "Vkladajte žetóny XOR v sieti SORA ako nominátor na overovanie transakcií a získavajte odmeny za tokeny VAL."
+        },
+        "newStake": {
+            "title": "Začnite stávkovať",
+            "minStakeWarning": "Minimálny vklad na získanie odmeny je {min} {symbol}"
+        },
+        "validators": {
+            "save": "Uložiť zmeny",
+            "selected": "Vybraté {selected} \/ {total}",
+            "recommended": "Odporúčané validátory",
+            "change": "Zmeniť validátory",
+            "select": "Vyberte validátory"
+        },
+        "validatorsList": {
+            "search": "Vyhľadávanie...",
+            "filters": "Filtre",
+            "name": "názov",
+            "return": "Návrat"
+        },
+        "info": {
+            "redeemable": "Splatný",
+            "unstaking": "Neurčenie",
+            "stakingBalance": "Stavať rovnováhu",
+            "rewarded": "Odmenený",
+            "totalLiquidityStaked": "Celková vkladaná likvidita",
+            "apy": "APY",
+            "rewardToken": "Token odmeny",
+            "unstakingPeriod": "Neobmedzujúce obdobie",
+            "minimumStake": "Minimálny vklad",
+            "nominators": "Nominátori",
+            "validators": "Validátori",
+            "selectedValidators": "Vybrané validátory"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filtre",
+            "save": "Uložiť filter",
+            "reset": "Resetovať všetko",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identita na reťazci",
+                    "description": "K účtu je pripojený aspoň jeden kontakt identity"
+                },
+                "notSlashed": {
+                    "name": "Nie skosené",
+                    "description": "Nezaznamenali žiadne sankcie alebo zníženia svojich vložených prostriedkov v dôsledku nesprávneho konania alebo porušenia protokolu."
+                },
+                "notOversubscribed": {
+                    "name": "Nie je nadmerne prihlásený",
+                    "description": "Účet v rámci limitu pridelenia sa vyhýba pokutám za nadmerné upisovanie pri stávkach Polkadot."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Limit 2 overovateľov na identitu",
+                    "description": "Maximálne dvaja overovatelia na identitu na podporu decentralizácie a zabránenie koncentrácii moci."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "default": "Validátori",
+                "edit": "Upraviť moje validátory"
+            },
+            "tabs": {
+                "userValidators": "Vaši validátori",
+                "allValidators": "Všetky validátory"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Pozornosť",
+            "description": [
+                "Návrhy algoritmického validátora nepredstavujú finančnú konzultáciu ani poradenstvo. Staking je vysoko riziková činnosť a návrhy algoritmických validátorov nemusia nevyhnutne zmierniť toto riziko.",
+                "Validátor navrhnutý algoritmom môže byť stále skrátený. Validátor navrhnutý algoritmom by tiež mohol zmeniť ich parametre (napr. sadzby provízií atď.) kedykoľvek po tom, čo bol navrhnutý a\/alebo vybraný.",
+                "Z týchto alebo iných dôvodov môžete stratiť žetóny alebo odmeny. Vkladové žetóny a návrhy validátora používajte len podľa vlastného uváženia, po vykonaní náležitej starostlivosti a starostlivom zvážení súvisiacich rizík."
+            ],
+            "confirm": "Áno, chápem riziko"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Neexistujú žiadne čakajúce odmeny",
+            "payoutAll": "Vyplatiť všetko",
+            "information": "Validátori vyplácajú odmeny každých 2-5 dní. Môžete si ich však vyplatiť sami, najmä ak sa odmeny blížia ku koncu platnosti, ale poplatok zaplatíte."
+        },
+        "selectValidatorsMode": {
+            "title": "Vklad s validátormi navrhnutými algoritmom",
+            "description": "Algoritmus SORA Network vybral zoznam odporúčaných validátorov na základe kritérií:",
+            "criteria": [
+                "Najziskovejšie",
+                "Nie je nadmerne prihlásený",
+                "Mať onchain identitu",
+                "Neprerezané",
+                "Limit 2 overovateľov na identitu"
+            ],
+            "confirm": {
+                "suggested": "Vsaďte s navrhovaným",
+                "manual": "Validátory si vyberiem sám"
+            }
+        }
+    },
+    "collapseText": "Kolaps",
+    "expandText": "Rozbaliť"
 }

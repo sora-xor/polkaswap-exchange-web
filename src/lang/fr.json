@@ -759,7 +759,8 @@
             "checkExtension": "L'extension {name} est occupée, veuillez la vérifier",
             "extensionLogin": "Veuillez vous connecter à votre extension {name}",
             "installExtension": "L'extension {name} est introuvable. Veuillez l'installer! \n\nExtension déjà installée? Veuillez recharger la page",
-            "reloadPage": "Recharger la page"
+            "reloadPage": "Recharger la page",
+            "notAvailable": "{name} n'est pas disponible."
         }
     },
     "selectLanguageDialog": {
@@ -1233,5 +1234,118 @@
     "exceededAmountText": "{amount} dépassé",
     "multipleRecipients": "Plusieurs destinataires",
     "disconnectWalletText": "Déconnecter",
-    "connectEthereumWalletText": "Connectez le portefeuille {Ethereum}"
+    "connectEthereumWalletText": "Connectez le portefeuille {Ethereum}",
+    "soraStaking": {
+        "title": "Jalonnement",
+        "dropdownMenu": {
+            "pendingRewards": "Récompenses en attente",
+            "validators": "Validateurs",
+            "controllerAccount": "Compte contrôleur"
+        },
+        "actions": {
+            "claim": "Réclamez des récompenses",
+            "remove": "Supprimer la mise",
+            "start": "Commencer à jalonner",
+            "more": "Miser davantage"
+        },
+        "overview": {
+            "title": "Jalonnement SORA",
+            "description": "Misez des jetons XOR sur le réseau SORA en tant que nominateur pour valider les transactions et gagner des récompenses en jetons VAL."
+        },
+        "newStake": {
+            "title": "Commencer à jalonner",
+            "minStakeWarning": "La mise minimale pour recevoir la récompense est {min} {symbol}"
+        },
+        "validators": {
+            "save": "Sauvegarder les modifications",
+            "selected": "{selected} \/ {total} sélectionné",
+            "recommended": "Validateurs recommandés",
+            "change": "Changer les validateurs",
+            "select": "Sélectionnez les validateurs"
+        },
+        "validatorsList": {
+            "search": "Recherche...",
+            "filters": "Filtres",
+            "name": "Nom",
+            "return": "Retour"
+        },
+        "info": {
+            "redeemable": "Rachetable",
+            "unstaking": "Détachement",
+            "stakingBalance": "Solde de jalonnement",
+            "rewarded": "Récompensé",
+            "totalLiquidityStaked": "Liquidité totale mise en jeu",
+            "apy": "APY",
+            "rewardToken": "Jeton de récompense",
+            "unstakingPeriod": "Période sans mise en jeu",
+            "minimumStake": "Mise minimale",
+            "nominators": "Présentateurs",
+            "validators": "Validateurs",
+            "selectedValidators": "Validateurs sélectionnés"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filtres",
+            "save": "Enregistrer le filtre",
+            "reset": "Effacer tout",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identité en chaîne",
+                    "description": "Au moins un contact d'identité connecté au compte"
+                },
+                "notSlashed": {
+                    "name": "Pas coupé",
+                    "description": "N’a subi aucune pénalité ou réduction de ses fonds mis en jeu en raison d’une mauvaise conduite ou de violations du protocole."
+                },
+                "notOversubscribed": {
+                    "name": "Pas sursouscrit",
+                    "description": "Compte dans la limite d'allocation, évite les pénalités de sursouscription sur le jalonnement Polkadot."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Limite de 2 validateurs par identité",
+                    "description": "Un maximum de deux validateurs par identité pour promouvoir la décentralisation et empêcher la concentration du pouvoir."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "default": "Validateurs",
+                "edit": "Modifier mes validateurs"
+            },
+            "tabs": {
+                "userValidators": "Vos validateurs",
+                "allValidators": "Tous les validateurs"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Attention",
+            "description": [
+                "Les suggestions du validateur algorithmique ne constituent pas une consultation ou un conseil financier. Le jalonnement est une activité à haut risque, et les suggestions algorithmiques des validateurs n'atténuent pas nécessairement ce risque.",
+                "Un validateur suggéré par l'algorithme pourrait toujours être réduit. Un validateur suggéré par l'algorithme pourrait également modifier ses paramètres (par exemple, les taux de commission, etc.) à tout moment après avoir été suggéré et\/ou sélectionné.",
+                "Vous pourriez perdre des jetons ou des récompenses pour ces raisons ou pour d’autres. Misez uniquement des jetons et utilisez les suggestions du validateur à votre propre discrétion, après avoir fait preuve de diligence raisonnable et soigneusement examiné les risques encourus."
+            ],
+            "confirm": "Oui, je comprends le risque"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Il n'y a aucune récompense en attente",
+            "payoutAll": "Tout payer",
+            "information": "Les validateurs versent les récompenses tous les 2 à 5 jours. Cependant, vous pouvez les payer vous-même, surtout si les récompenses sont sur le point d'expirer, mais vous paierez les frais."
+        },
+        "selectValidatorsMode": {
+            "title": "Stake avec les validateurs suggérés par l’algorithme",
+            "description": "L'algorithme SORA Network a sélectionné une liste de validateurs recommandés sur la base des critères :",
+            "criteria": [
+                "La plus rentable",
+                "Pas sursouscrit",
+                "Avoir une identité en chaîne",
+                "Pas coupé",
+                "Limite de 2 validateurs par identité"
+            ],
+            "confirm": {
+                "suggested": "Mise avec suggéré",
+                "manual": "Je choisirai moi-même les validateurs"
+            }
+        }
+    },
+    "collapseText": "Réduire",
+    "expandText": "Agrandir"
 }
