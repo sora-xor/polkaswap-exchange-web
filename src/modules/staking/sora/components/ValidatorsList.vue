@@ -41,7 +41,7 @@
             {{ formatName(validator) }}
           </div>
           <div class="commission">
-            <span>{{ validator.commission }}%</span>
+            <span>{{ formatCommission(validator.commission) }}%</span>
           </div>
           <div
             v-if="mode === ValidatorsListMode.SELECT"
@@ -75,30 +75,6 @@ import { ValidatorsFilter } from '../types';
 
 import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types';
 
-function filterValidators(validators: ValidatorInfoFull[], filter: ValidatorsFilter, search = '') {
-  return validators.filter((validator) => {
-    if (filter.hasIdentity && (!validator.identity || !Object.keys(validator.identity.info).length)) {
-      return false;
-    }
-    if (filter.notSlashed && validator.blocked) {
-      return false;
-    }
-    if (filter.notOversubscribed && validator.isOversubscribed) {
-      return false;
-    }
-    if (filter.twoValidatorsPerIdentity && validator.isOversubscribed) {
-      const validatorsWithSameIdentity = validators.filter(
-        (v) => v.identity?.info.display === validator.identity?.info.display
-      );
-      if (validatorsWithSameIdentity.length > 2) {
-        return false;
-      }
-    }
-    const name = validator.identity?.info.display ? validator.identity?.info.display : validator.address;
-    return name.toLowerCase().includes(search.toLowerCase());
-  });
-}
-
 @Component({
   components: {
     TokenInput: lazyComponent(Components.TokenInput),
@@ -119,15 +95,39 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
   }
 
   get filteredValidators() {
-    const filtered = filterValidators(this.validators, this.validatorsFilter, this.search);
+    const filtered = this.filterValidators(this.validators, this.validatorsFilter, this.search);
     switch (this.mode) {
       case ValidatorsListMode.RECOMMENDED:
-        return filterValidators(this.validators, recommendedValidatorsFilter, '').slice(0, this.maxNominations);
+        return this.filterValidators(this.validators, recommendedValidatorsFilter, '').slice(0, this.maxNominations);
       case ValidatorsListMode.USER:
         return filtered.filter((v) => this.stakingInfo?.myValidators.includes(v.address));
       default:
         return filtered;
     }
+  }
+
+  filterValidators(validators: ValidatorInfoFull[], filter: ValidatorsFilter, search = '') {
+    return validators.filter((validator) => {
+      if (filter.hasIdentity && (!validator.identity || !Object.keys(validator.identity.info).length)) {
+        return false;
+      }
+      if (filter.notSlashed && validator.blocked) {
+        return false;
+      }
+      if (filter.notOversubscribed && validator.isOversubscribed) {
+        return false;
+      }
+      if (filter.twoValidatorsPerIdentity && validator.isOversubscribed) {
+        const validatorsWithSameIdentity = validators.filter(
+          (v) => v.identity?.info.display === validator.identity?.info.display
+        );
+        if (validatorsWithSameIdentity.length > 2) {
+          return false;
+        }
+      }
+      const name = this.decodeName(validator);
+      return name.toLowerCase().includes(search.toLowerCase());
+    });
   }
 
   toggleSelectValidator(validator: ValidatorInfoFull) {
