@@ -151,7 +151,7 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
   }
 
   get confirmDisabled(): boolean {
-    if (this.isInsufficientXorForFee) {
+    if (this.isInsufficientXorForFee && this.mode !== ValidatorsListMode.USER) {
       return true;
     }
     if (this.mode === ValidatorsListMode.RECOMMENDED) {
