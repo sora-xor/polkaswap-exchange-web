@@ -6,13 +6,16 @@
         v-model="search"
         :placeholder="t('soraStaking.validatorsList.search')"
         prefix="s-icon-basic-search-24"
-      />
-      <s-button class="filters-button" type="outline" size="mini" @click="openFilters">
-        <div class="filters-button-content">
-          <span>{{ t('soraStaking.validatorsList.filters') }}</span>
-          <s-icon name="basic-settings-24" size="14px" />
-        </div>
-      </s-button>
+      >
+        <template #right>
+          <s-button class="filters-button" type="outline" size="mini" @click="openFilters">
+            <div class="filters-button-content">
+              <span>{{ t('soraStaking.validatorsList.filters') }}</span>
+              <s-icon name="basic-settings-24" size="14px" />
+            </div>
+          </s-button>
+        </template>
+      </s-input>
     </div>
     <div class="table-header">
       <div class="table-header-avatar table-header-item">
@@ -188,8 +191,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 }
 
 .filters-button {
-  position: absolute;
-  right: 13px;
+  margin-left: 8px;
   border-radius: 8px;
   background: var(--s-color-base-on-accent);
 
