@@ -65,9 +65,9 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import { Components, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
+import { state } from '@/store/decorators';
 import { getMaxValue } from '@/utils';
 
-import { StakingPageNames } from '../../consts';
 import { soraStakingLazyComponent } from '../../router';
 import { SoraStakingComponents, SoraStakingPageNames } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
@@ -82,7 +82,8 @@ import type { CodecString } from '@sora-substrate/util';
   },
 })
 export default class SoraStakingForm extends Mixins(StakingMixin, mixins.LoadingMixin) {
-  StakingPageNames = StakingPageNames;
+  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
+
   value = '';
   showValidatorsAttentionDialog = false;
   bondAndNominateNetworkFee: string | null = null;
@@ -137,6 +138,9 @@ export default class SoraStakingForm extends Mixins(StakingMixin, mixins.Loading
   }
 
   get isMaxButtonAvailable(): boolean {
+    if (this.shouldBalanceBeHidden) {
+      return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
+    }
     if (!this.stakingAsset) return false;
 
     const fee = FPNumber.fromCodecValue(this.networkFee);

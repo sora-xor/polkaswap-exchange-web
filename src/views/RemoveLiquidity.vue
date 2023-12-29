@@ -314,6 +314,9 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   get isMaxButtonAvailable(): boolean {
+    if (this.shouldBalanceBeHidden) {
+      return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
+    }
     return !this.liquidityLocked && Number(this.removePart) !== this.MAX_PART;
   }
 
