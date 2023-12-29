@@ -29,28 +29,34 @@
         </s-tooltip>
       </div>
     </div>
-    <s-scrollbar class="validators-list-scrollbar">
-      <ul class="list">
-        <li v-for="validator in filteredValidators" :key="validator.address" class="validator">
-          <validator-avatar class="avatar" :validator="validator">
-            <div v-if="isSelected(validator)" class="check" slot="icon">
-              <s-icon name="basic-check-mark-24" size="12px" />
+    <div class="list">
+      <s-scrollbar class="validators-list-scrollbar">
+        <ul class="list">
+          <li v-for="validator in filteredValidators" :key="validator.address" class="validator">
+            <validator-avatar class="avatar" :validator="validator">
+              <div v-if="isSelected(validator)" class="check" slot="icon">
+                <s-icon name="basic-check-mark-24" size="12px" />
+              </div>
+            </validator-avatar>
+            <div class="name">
+              {{ formatName(validator) }}
             </div>
-          </validator-avatar>
-          <div class="name">
-            {{ formatName(validator) }}
-          </div>
-          <div class="commission">
-            <span>{{ formatCommission(validator.commission) }}%</span>
-          </div>
-          <div
-            v-if="mode === ValidatorsListMode.SELECT"
-            class="select-area"
-            @click="toggleSelectValidator(validator)"
-          />
-        </li>
-      </ul>
-    </s-scrollbar>
+            <div class="commission">
+              <span>{{ formatCommission(validator.commission) }}%</span>
+            </div>
+            <div
+              v-if="mode === ValidatorsListMode.SELECT"
+              class="select-area"
+              @click="toggleSelectValidator(validator)"
+            />
+          </li>
+        </ul>
+      </s-scrollbar>
+
+      <div v-if="!filteredValidators.length" class="empty">
+        {{ emptyText }}
+      </div>
+    </div>
     <div class="blackout" />
   </div>
 </template>
@@ -104,6 +110,13 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
       default:
         return filtered;
     }
+  }
+
+  get emptyText() {
+    if (this.mode === ValidatorsListMode.USER && this.stakingInfo?.myValidators.length === 0) {
+      return this.t('soraStaking.validatorsList.noNominatedValidators');
+    }
+    return this.t('soraStaking.validatorsList.noValidators');
   }
 
   filterValidators(validators: ValidatorInfoFull[], filter: ValidatorsFilter, search = '') {
@@ -337,5 +350,18 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
   width: calc(100% - 20px);
   height: 100%;
   cursor: pointer;
+}
+
+.empty {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  color: var(--s-color-brand-day);
+  font-size: 16px;
 }
 </style>

@@ -70,7 +70,10 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
 
   @Watch('visible')
   private resetMode() {
-    this.setMode(ValidatorsListMode.USER);
+    if (this.visible) {
+      this.setMode(ValidatorsListMode.USER);
+      this.selectValidators([]);
+    }
   }
 
   get networkFee() {

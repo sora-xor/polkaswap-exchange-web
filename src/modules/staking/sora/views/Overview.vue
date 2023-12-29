@@ -308,7 +308,7 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
       return;
     }
 
-    const nominatorsCount = await fetchData(this.activeEra - 1);
+    const nominatorsCount = await fetchData();
 
     if (nominatorsCount === undefined || nominatorsCount === null) {
       return;
