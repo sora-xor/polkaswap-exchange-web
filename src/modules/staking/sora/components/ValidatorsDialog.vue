@@ -85,7 +85,7 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
   }
 
   get networkFee() {
-    return this.nominateNetworkFee || '0';
+    return this.nominateNetworkFee ?? '0';
   }
 
   get title(): string {
