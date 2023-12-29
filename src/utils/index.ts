@@ -60,6 +60,10 @@ export const isMaxButtonAvailable = (
     return false;
   }
 
+  if (store.state.wallet.settings.shouldBalanceBeHidden) {
+    return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
+  }
+
   const fpAmount = new FPNumber(amount, asset.decimals);
   const fpMaxBalance = getMaxBalance(asset, fee);
 
