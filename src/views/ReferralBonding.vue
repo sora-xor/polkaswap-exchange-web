@@ -38,7 +38,7 @@
       <info-line
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
-        :value="formattedNetworkFee"
+        :value="networkFeeFormatted"
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
@@ -151,7 +151,7 @@ export default class ReferralBonding extends Mixins(
     return this.getFPNumberFromCodec(this.networkFee);
   }
 
-  get formattedNetworkFee(): string {
+  get networkFeeFormatted(): string {
     return this.formatCodecNumber(this.networkFee);
   }
 
