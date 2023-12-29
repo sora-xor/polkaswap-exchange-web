@@ -222,7 +222,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
   bottom: 0;
   left: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, var(--s-color-utility-surface) 0%, var(--s-color-utility-surface) 100%);
+  background: linear-gradient(180deg, transparent 0%, var(--s-color-utility-surface) 100%);
 }
 
 .table-header {
