@@ -9,7 +9,7 @@ const { IndexerType } = WALLET_CONSTS;
 
 const SubqueryNominatorsCountQuery = gql<SubqueryConnectionQueryResponse<number>>`
   query NominatorsCountQuery {
-    data: stakingEraNominators(orderBy: ID_DESC) {
+    data: stakingStakers(orderBy: ID_DESC) {
       totalCount
     }
   }
@@ -17,7 +17,7 @@ const SubqueryNominatorsCountQuery = gql<SubqueryConnectionQueryResponse<number>
 
 const SubsquidNominatorsCountQuery = gql<SubsquidConnectionQueryResponse<number>>`
   query NominatorsCountQuery {
-    data: stakingEraNominatorsConnection(orderBy: id_DESC) {
+    data: stakingStakersConnection(orderBy: id_DESC) {
       totalCount
     }
   }
