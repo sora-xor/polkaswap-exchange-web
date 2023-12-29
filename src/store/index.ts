@@ -16,6 +16,7 @@ import rewards from './rewards';
 import router from './router';
 import settings from './settings';
 import soraCard from './soraCard';
+import staking from './staking';
 import swap from './swap';
 import web3 from './web3';
 
@@ -37,6 +38,7 @@ const modules = {
   addLiquidity,
   removeLiquidity,
   rewards,
+  staking,
   demeterFarming,
   soraCard,
   orderBook,

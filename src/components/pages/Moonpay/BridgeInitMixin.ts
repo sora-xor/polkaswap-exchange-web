@@ -5,20 +5,23 @@ import { Component, Mixins } from 'vue-property-decorator';
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { MoonpayNotifications } from '@/components/pages/Moonpay/consts';
+import { KnownEthBridgeAsset } from '@/consts/evm';
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { state, action, mutation, getter } from '@/store/decorators';
 import type { BridgeTxData } from '@/store/moonpay/types';
 import { getMaxValue, hasInsufficientNativeTokenForFee } from '@/utils';
+import { getEthNetworkFee } from '@/utils/bridge/eth/utils';
 import ethersUtil from '@/utils/ethers-util';
 import type { MoonpayTransaction } from '@/utils/moonpay';
 import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { AccountAsset, AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset, AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
 import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-import type { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import type { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 const createError = (text: string, notification: MoonpayNotifications) => {
   const error = new Error(text);
@@ -32,10 +35,12 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<EthHistory>;
   @state.web3.ethBridgeEvmNetwork ethBridgeEvmNetwork!: EvmNetwork;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
+  @state.wallet.account.address soraAccountAddress!: string;
   @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeRegisteredAsset>;
 
   @getter.settings.moonpayApiKey moonpayApiKey!: string;
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => AccountAsset;
+  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => RegisteredAccountAsset;
+  @getter.web3.contractAddress contractAddress!: (asset: KnownEthBridgeAsset) => string;
 
   @mutation.moonpay.setConfirmationVisibility setConfirmationVisibility!: (flag: boolean) => void;
   @mutation.moonpay.setNotificationVisibility setNotificationVisibility!: (flag: boolean) => void;
@@ -148,11 +153,18 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
 
       const isExternalNative = ethersUtil.isNativeEvmTokenAddress(registeredAsset.address);
       const externalBalance = await ethersUtil.getAccountAssetBalance(ethTransferData.to, registeredAsset.address);
-      const evmNetworkFee: CodecString = await ethersUtil.getEvmNetworkFee(
-        registeredAsset.address,
-        registeredAsset.kind,
-        false
+      const asset = this.getAsset(soraAddress);
+
+      const evmNetworkFee: CodecString = await getEthNetworkFee(
+        asset,
+        registeredAsset.kind as EthAssetKind,
+        this.contractAddress,
+        ethTransferData.amount,
+        false,
+        this.soraAccountAddress,
+        ethTransferData.to
       );
+
       const evmNativeBalance = await ethersUtil.getAccountBalance(ethTransferData.to);
       const hasEthForFee = !hasInsufficientNativeTokenForFee(evmNativeBalance, evmNetworkFee);
 
@@ -161,11 +173,9 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
       }
 
       const accountAsset = {
-        ...this.getAsset(soraAddress),
+        ...asset,
         balance: {} as AccountBalance,
         externalBalance,
-        externalAddress: registeredAsset.address,
-        externalDecimals: registeredAsset.decimals,
       };
       const maxAmount = getMaxValue(accountAsset, evmNetworkFee, { isExternalBalance: true, isExternalNative }); // max balance (minus fee if eth asset)
       const amount = Math.min(Number(maxAmount), Number(ethTransferData.amount));

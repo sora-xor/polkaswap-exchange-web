@@ -136,7 +136,7 @@
 <script lang="ts">
 import { PriceVariant, OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber, Operation } from '@sora-substrate/util';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 import { MAX_TIMESTAMP } from '@sora-substrate/util/build/orderBook/consts';
 import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
@@ -159,7 +159,7 @@ import {
 import { getBookDecimals, MAX_ORDERS_PER_SIDE, MAX_ORDERS_PER_USER } from '@/utils/orderBook';
 
 import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { Subscription } from 'rxjs';
@@ -183,9 +183,9 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @state.orderBook.asks asks!: OrderBookPriceVolume[];
   @state.orderBook.bids bids!: OrderBookPriceVolume[];
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
-  @state.orderBook.placeOrderNetworkFee networkFee!: CodecString;
   @state.orderBook.amountSliderValue sliderValue!: number;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
@@ -254,6 +254,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @Watch('userLimitOrders')
   private checkValidation(): void {
     this.checkInputValidation();
+  }
+
+  get networkFee(): CodecString {
+    return this.networkFees[Operation.OrderBookPlaceLimitOrder];
   }
 
   get isSliderAvailable(): boolean {

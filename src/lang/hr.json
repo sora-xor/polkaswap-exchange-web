@@ -759,7 +759,8 @@
             "checkExtension": "Proširenje {name} je zauzeto, provjerite ga",
             "extensionLogin": "Prijavite se u proširenju {name}",
             "installExtension": "Proširenje {name} nije pronađeno. Molim vas, instalirajte ga!\n\nVeć instalirano proširenje? Ponovno učitajte stranicu",
-            "reloadPage": "Ponovno učitajte stranicu"
+            "reloadPage": "Ponovno učitajte stranicu",
+            "notAvailable": "{name} nije dostupan."
         }
     },
     "selectLanguageDialog": {
@@ -1233,5 +1234,118 @@
     "exceededAmountText": "{amount} premašeno",
     "multipleRecipients": "Višestruki primatelji",
     "disconnectWalletText": "Prekini vezu",
-    "connectEthereumWalletText": "Povežite {Ethereum} novčanik"
+    "connectEthereumWalletText": "Povežite {Ethereum} novčanik",
+    "soraStaking": {
+        "title": "Staking",
+        "dropdownMenu": {
+            "pendingRewards": "Nagrade na čekanju",
+            "validators": "Validatori",
+            "controllerAccount": "Račun kontrolora"
+        },
+        "actions": {
+            "claim": "Zatražite nagrade",
+            "remove": "Uklonite ulog",
+            "start": "Počnite ulagati",
+            "more": "Uložite više"
+        },
+        "overview": {
+            "title": "SORA Staking",
+            "description": "Uložite XOR tokene na SORA mrežu kao nominator za potvrdu transakcija i zaradite nagrade VAL tokena."
+        },
+        "newStake": {
+            "title": "Počnite ulagati",
+            "minStakeWarning": "Minimalni ulog za dobivanje nagrade je {min} {symbol}"
+        },
+        "validators": {
+            "save": "Spremi promjene",
+            "selected": "{selected} \/ {total} odabrano",
+            "recommended": "Preporučeni validatori",
+            "change": "Promjena validatora",
+            "select": "Odaberite validatore"
+        },
+        "validatorsList": {
+            "search": "Traži...",
+            "filters": "Filteri",
+            "name": "Ime",
+            "return": "Povratak"
+        },
+        "info": {
+            "redeemable": "Iskupivo",
+            "unstaking": "Unstaking",
+            "stakingBalance": "Staking bilanca",
+            "rewarded": "Nagrađeni",
+            "totalLiquidityStaked": "Uložena ukupna likvidnost",
+            "apy": "APY",
+            "rewardToken": "Token nagrade",
+            "unstakingPeriod": "Razdoblje nepolaganja",
+            "minimumStake": "Minimalni ulog",
+            "nominators": "Nominatori",
+            "validators": "Validatori",
+            "selectedValidators": "Odabrani validatori"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filteri",
+            "save": "Spremi filter",
+            "reset": "Resetiraj sve",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identitet na lancu",
+                    "description": "Najmanje jedan identitetski kontakt povezan s računom"
+                },
+                "notSlashed": {
+                    "name": "Nije zarezano",
+                    "description": "Nisu iskusili nikakve kazne ili smanjenja svojih uloženih sredstava zbog lošeg ponašanja ili kršenja protokola."
+                },
+                "notOversubscribed": {
+                    "name": "Nije pretplaćen",
+                    "description": "Račun unutar ograničenja dodjele, izbjegava kazne za prekomjernu pretplatu na Polkadot staking."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Ograničenje od 2 validatora po identitetu",
+                    "description": "Najviše dva validatora po identitetu za promicanje decentralizacije i sprječavanje koncentracije moći."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "default": "Validatori",
+                "edit": "Uredi moje validatore"
+            },
+            "tabs": {
+                "userValidators": "Vaši validatori",
+                "allValidators": "Svi validatori"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Pažnja",
+            "description": [
+                "Prijedlozi algoritamskog validatora ne predstavljaju financijsku konzultaciju ili savjet. Staking je visokorizična aktivnost, a prijedlozi algoritamskih validatora ne moraju nužno umanjiti ovaj rizik.",
+                "Validator koji je predložio algoritam i dalje bi se mogao smanjiti. Validator kojeg predlaže algoritam također može promijeniti svoje parametre (npr. stope provizije, itd.) u bilo kojem trenutku nakon što je predložen i\/ili odabran.",
+                "Mogli biste izgubiti žetone ili nagrade iz ovih ili drugih razloga. Uložite samo tokene i koristite prijedloge validatora prema vlastitom nahođenju, nakon provođenja dužne pažnje i pažljivog razmatranja uključenih rizika."
+            ],
+            "confirm": "Da, razumijem rizik"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Nema nagrada na čekanju",
+            "payoutAll": "Isplata svega",
+            "information": "Validatori isplaćuju nagrade svakih 2-5 dana. Međutim, možete ih sami isplatiti, posebno ako su nagrade blizu isteka, ali ćete platiti naknadu."
+        },
+        "selectValidatorsMode": {
+            "title": "Ulog s validatorima koje predlaže algoritam",
+            "description": "Algoritam mreže SORA odabrao je popis preporučenih validatora na temelju kriterija:",
+            "criteria": [
+                "Najisplativije",
+                "Nije pretplaćen",
+                "Imati onchain identitet",
+                "Nije zarezano",
+                "Ograničenje od 2 validatora po identitetu"
+            ],
+            "confirm": {
+                "suggested": "Ulog s predloženim",
+                "manual": "Sam ću odabrati validatore"
+            }
+        }
+    },
+    "collapseText": "Kolaps",
+    "expandText": "Proširiti"
 }

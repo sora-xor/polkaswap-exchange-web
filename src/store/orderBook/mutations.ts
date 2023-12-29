@@ -62,9 +62,6 @@ const mutations = defineMutations<OrderBookState>()({
     state.userLimitOrderUpdates?.unsubscribe();
     state.userLimitOrderUpdates = null;
   },
-  setPlaceOrderNetworkFee(state, networkFee): void {
-    state.placeOrderNetworkFee = networkFee;
-  },
   setOrdersToBeCancelled(state, orders): void {
     state.ordersToBeCancelled = orders;
   },
