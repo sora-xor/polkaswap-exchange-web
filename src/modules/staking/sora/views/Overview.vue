@@ -335,12 +335,6 @@ $logo-size: 64px;
 <style lang="scss" scoped>
 $logo-size: 64px;
 
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
 .container {
   position: relative;
   display: flex;
@@ -391,12 +385,10 @@ h1 {
 p {
   color: var(--s-color-base-content-secondary);
   text-align: center;
-  font-feature-settings: 'case' on, 'clig' off, 'liga' off;
-  font-family: Sora;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 150%; /* 24px */
+  line-height: 150%;
   letter-spacing: -0.32px;
 }
 

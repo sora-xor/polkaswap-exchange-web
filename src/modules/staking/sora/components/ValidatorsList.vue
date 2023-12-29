@@ -234,10 +234,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     display: flex;
     align-items: center;
     color: var(--s-color-brand-day);
-    font-feature-settings: 'clig' off, 'liga' off;
 
-    /* NEU extra-bold 14 */
-    font-family: Sora;
     font-size: 14px;
     font-style: normal;
     font-weight: 800;
@@ -320,12 +317,10 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 .commission {
   color: var(--s-color-status-info);
   text-align: right;
-  font-feature-settings: 'case' on, 'clig' off, 'liga' off;
-  font-family: Sora;
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
-  line-height: 150%; /* 24px */
+  line-height: 150%;
   letter-spacing: -0.32px;
 
   span {
