@@ -218,7 +218,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 .blackout {
   position: absolute;
   width: 100%;
-  height: 112px;
+  height: 132px;
   bottom: 0;
   left: 0;
   pointer-events: none;
