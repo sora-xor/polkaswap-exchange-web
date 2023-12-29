@@ -294,4 +294,3 @@ $title-height: 42px;
   }
 }
 </style>
-../router@/modules/staking/demeter/types../demeter/consts
