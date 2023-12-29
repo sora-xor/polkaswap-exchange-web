@@ -574,7 +574,7 @@ i.icon-divider {
   &-main {
     display: flex;
     align-items: stretch;
-    height: calc(100vh - #{$header-height} - #{$footer-height});
+    height: calc(100vh - #{$header-height});
     position: relative;
   }
 
@@ -584,6 +584,8 @@ i.icon-divider {
     flex: 1;
     flex-flow: column nowrap;
     max-width: 100%;
+    padding-bottom: $footer-height;
+
     &__about {
       overflow: hidden;
     }

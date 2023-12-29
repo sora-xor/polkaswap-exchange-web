@@ -253,6 +253,11 @@ $sora-logo-height: 36px;
 $sora-logo-width: 115px;
 
 .app-status {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
   font-size: var(--s-font-size-extra-mini);
   font-weight: 300;
   height: $footer-height;

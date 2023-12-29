@@ -199,8 +199,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
 .app-menu.collapsed {
   @include tablet {
-    background: var(--s-color-utility-body);
-
     .sidebar-item-content {
       & > .icon-container + span {
         display: none;
@@ -209,8 +207,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
     &:hover,
     &:focus {
-      box-shadow: 20px 20px 60px 0px #0000001a;
-
       .sidebar-item-content {
         & > .icon-container + span {
           display: initial;
@@ -299,9 +295,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 <style lang="scss" scoped>
 .collapse-button {
   position: absolute;
-  top: 100%;
   left: calc(100% - var(--s-size-small) / 2);
-  bottom: 0;
+  bottom: calc(var(--s-size-small) / 2);
   margin: auto;
   transition-duration: 0.2s;
   z-index: #{$app-sidebar-layer} + 1;
@@ -338,6 +333,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
         }
       }
     }
+
+    background: var(--s-color-utility-body);
+    box-shadow: 20px 20px 60px 0px #0000001a;
 
     flex-shrink: 0;
     position: absolute;
