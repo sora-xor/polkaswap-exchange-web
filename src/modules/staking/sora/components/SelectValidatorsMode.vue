@@ -25,10 +25,8 @@
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import { mutation } from '@/store/decorators';
-
 import { soraStakingLazyComponent } from '../../router';
-import { SoraStakingComponents, ValidatorsListMode } from '../consts';
+import { SoraStakingComponents } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
 
 @Component({
@@ -38,8 +36,6 @@ import StakingMixin from '../mixins/StakingMixin';
 })
 export default class SelectValidatorsMode extends Mixins(StakingMixin, mixins.LoadingMixin) {
   @Prop({ type: String }) previousPage?: string;
-
-  @mutation.staking.setValidatorsType private setValidatorsType!: (type: ValidatorsListMode) => void;
 
   showValidatorsAttentionDialog = false;
 

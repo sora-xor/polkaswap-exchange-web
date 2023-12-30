@@ -10,7 +10,7 @@
         <template #right>
           <s-button class="filters-button" type="outline" size="mini" @click="openFilters">
             <div class="filters-button-content">
-              <span>{{ t('soraStaking.validatorsList.filters') }}</span>
+              <span>{{ t('soraStaking.validatorsFilterDialog.title') }}</span>
               <s-icon name="basic-settings-24" size="14px" />
             </div>
           </s-button>

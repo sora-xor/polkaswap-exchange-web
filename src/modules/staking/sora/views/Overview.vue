@@ -61,7 +61,7 @@
         type="primary"
         @click="stakeNew"
       >
-        {{ t('soraStaking.actions.start') }}
+        {{ t('soraStaking.newStake.title') }}
       </s-button>
       <s-button
         v-if="stakingInitialized"
@@ -105,7 +105,7 @@
           :label="t('soraStaking.info.totalLiquidityStaked')"
           :value="totalStakedFormatted"
         />
-        <info-line v-if="!stakingInitialized" :label="t('soraStaking.info.apy')" :value="maxApy + '%'" />
+        <info-line v-if="!stakingInitialized" :label="TranslationConsts.APY" :value="maxApy + '%'" />
         <info-line :label="t('soraStaking.info.rewardToken')" :value="rewardAsset?.symbol" />
         <info-line v-if="unbondPeriod" :label="t('soraStaking.info.unstakingPeriod')" :value="unbondPeriodFormatted" />
         <info-line
@@ -221,15 +221,15 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
     return this.rewardedFunds.toLocaleString();
   }
 
-  private getDropdownMenuItems(isDropdown = false): Array<MenuItem> {
+  private getDropdownMenuItems(): Array<MenuItem> {
     return [
       {
         value: DropdownMenuItemType.PendingRewards,
-        text: this.t('soraStaking.dropdownMenu.pendingRewards'),
+        text: this.t('soraStaking.pendingRewardsDialog.title'),
       },
       {
         value: DropdownMenuItemType.Validators,
-        text: this.t('soraStaking.dropdownMenu.validators'),
+        text: this.t('soraStaking.info.validators'),
       },
       // {
       //   value: DropdownMenuItemType.ControllerAccount,

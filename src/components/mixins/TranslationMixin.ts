@@ -26,6 +26,7 @@ const TranslationConsts = {
   AppName: app.name,
   Ceres: 'Ceres',
   APR: 'APR', // Annual percentage rate
+  APY: 'APY',
   TVL: 'TVL',
   EVM: 'EVM',
   Substrate: 'Substrate',
@@ -36,6 +37,8 @@ const TranslationConsts = {
   offline: 'Offline',
   XCM: 'XCM',
   Max: 'Max.',
+  XOR: 'XOR',
+  VAL: 'VAL',
 } as const;
 
 @Component

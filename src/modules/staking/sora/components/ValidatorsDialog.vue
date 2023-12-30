@@ -81,9 +81,7 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
   }
 
   get title(): string {
-    return this.hasTabs
-      ? this.t('soraStaking.validatorsDialog.title.default')
-      : this.t('soraStaking.validatorsDialog.title.edit');
+    return this.hasTabs ? this.t('soraStaking.info.validators') : this.t('soraStaking.validatorsDialog.title.edit');
   }
 
   get hasBackButton(): boolean {
