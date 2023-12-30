@@ -818,28 +818,22 @@ export default {
   soraStaking: {
     title: 'Staking',
     dropdownMenu: {
-      pendingRewards: 'Pending rewards',
-      validators: 'Validators',
       controllerAccount: 'Controller account',
     },
     actions: {
       claim: 'Claim rewards',
       remove: 'Remove stake',
-      start: 'Start staking',
       more: 'Stake more',
       payout: 'Payout',
     },
     overview: {
-      title: 'SORA Staking',
+      title: '{Sora} Staking',
       description:
-        'Stake XOR tokens on SORA Network as a nominator to validate transactions and earn VAL token rewards.',
+        'Stake {XOR} tokens on {Sora} Network as a nominator to validate transactions and earn {VAL} token rewards.',
     },
     newStake: {
       title: 'Start staking',
       minStakeWarning: 'The minimum stake to receive the reward is {min} {symbol}',
-    },
-    validatorsType: {
-      title: 'Validators',
     },
     validators: {
       save: 'Save changes',
@@ -852,7 +846,6 @@ export default {
     },
     validatorsList: {
       search: 'Search...',
-      filters: 'Filters',
       name: 'Name',
       commission: 'Commission',
       commissionTooltip:
@@ -866,7 +859,6 @@ export default {
       stakingBalance: 'Staking balance',
       rewarded: 'Rewarded',
       totalLiquidityStaked: 'Total liquidity staked',
-      apy: 'APY',
       rewardToken: 'Reward token',
       unstakingPeriod: 'Unstaking period',
       minimumStake: 'Minimum stake',
@@ -901,7 +893,6 @@ export default {
     },
     validatorsDialog: {
       title: {
-        default: 'Validators',
         edit: 'Edit My Validators',
       },
       tabs: {
