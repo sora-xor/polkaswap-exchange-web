@@ -10,7 +10,7 @@ import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/cla
 import ethersUtil, { Provider, PROVIDER_ERROR } from '@/utils/ethers-util';
 
 import type { SubNetworkApps } from './types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { ActionContext } from 'vuex';
 
 async function connectSubNetwork(context: ActionContext<any, any>): Promise<void> {

@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} a réclamé avec succès",
             "EthBridgeIncoming": "Transféré {amount} {symbol} de {Ethereum} à {Sora}",
             "EthBridgeOutgoing": "Transféré {amount} {symbol} de {Sora} à {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Cautionné {amount} {symbol}",
+            "StakingBond": "Cautionné {amount} {symbol}",
+            "StakingBondExtra": "Supplément cautionné {amount} {symbol}",
+            "StakingUnbond": "Non lié {amount} {symbol}",
+            "StakingRebond": "Rebondi {amount} {symbol}",
+            "StakingNominate": "Validateurs nommés",
+            "StakingWithdrawUnbonded": "Retiré {amount} {symbol}",
+            "StakingPayout": "Récompenses de paiement",
+            "StakingChill": "Froideur",
+            "StakingSetController": "Définir le contrôleur {address}",
+            "StakingSetPayee": "Définir le bénéficiaire {address}"
         },
         "error": {
             "Transfer": "Échec de {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Échec de la revendication de {symbol}",
             "EthBridgeIncoming": "Échec du transfert de {amount} {symbol} de {Ethereum} vers {Sora}",
             "EthBridgeOutgoing": "Échec du transfert de {amount} {symbol} de {Sora} à {Ethereum}",
-            "SwapTransferBatch": "Échec de {action} {amount} {symbol}"
+            "SwapTransferBatch": "Échec de {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Échec de la liaison {amount} {symbol}",
+            "StakingBond": "Échec de la liaison {amount} {symbol}",
+            "StakingBondExtra": "Échec de la liaison supplémentaire {amount} {symbol}",
+            "StakingUnbond": "Échec de la dissociation {amount} {symbol}",
+            "StakingRebond": "Échec du réapprovisionnement {amount} {symbol}",
+            "StakingNominate": "Échec de la nomination des validateurs",
+            "StakingWithdrawUnbonded": "Échec du retrait {amount} {symbol}",
+            "StakingPayout": "Échec du paiement des récompenses",
+            "StakingChill": "Impossible de se détendre",
+            "StakingSetController": "Échec de la définition du contrôleur {address}",
+            "StakingSetPayee": "Échec de la définition du bénéficiaire {address}"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Réclamer mes Récompenses",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Transférer"
+        "SwapTransferBatch": "{ADAR} Transférer",
+        "StakingBondAndNominate": "Lier et nommer",
+        "StakingBond": "Réserver",
+        "StakingBondExtra": "Bond supplémentaire",
+        "StakingUnbond": "Délier",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "Désigner",
+        "StakingWithdrawUnbonded": "Retirer sans caution",
+        "StakingPayout": "Récompenses de paiement",
+        "StakingChill": "Froideur",
+        "StakingSetController": "Définir le contrôleur",
+        "StakingSetPayee": "Définir le bénéficiaire"
     },
     "polkadotjs": {
         "noExtensions": "Aucune extension {PolkadotJs} n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
@@ -759,7 +792,8 @@
             "checkExtension": "L'extension {name} est occupée, veuillez la vérifier",
             "extensionLogin": "Veuillez vous connecter à votre extension {name}",
             "installExtension": "L'extension {name} est introuvable. Veuillez l'installer! \n\nExtension déjà installée? Veuillez recharger la page",
-            "reloadPage": "Recharger la page"
+            "reloadPage": "Recharger la page",
+            "notAvailable": "{name} n'est pas disponible."
         }
     },
     "selectLanguageDialog": {
@@ -955,9 +989,6 @@
         "calculator": "Calculatrice",
         "results": "Résultats",
         "rewards": "{symbol} récompenses"
-    },
-    "staking": {
-        "title": "Staking"
     },
     "historyErrorMessages": {
         "generalError": "Quelque chose s'est mal passé",
@@ -1233,5 +1264,124 @@
     "exceededAmountText": "{amount} dépassé",
     "multipleRecipients": "Plusieurs destinataires",
     "disconnectWalletText": "Déconnecter",
-    "connectEthereumWalletText": "Connectez le portefeuille {Ethereum}"
+    "connectEthereumWalletText": "Connectez le portefeuille {Ethereum}",
+    "soraStaking": {
+        "dropdownMenu": {
+            "pendingRewards": "Récompenses en attente",
+            "controllerAccount": "Compte contrôleur"
+        },
+        "actions": {
+            "claim": "Réclamez des récompenses",
+            "remove": "Supprimer la mise",
+            "more": "Miser davantage"
+        },
+        "overview": {
+            "title": "{Sora} Jalonnement",
+            "description": "Mettez en jeu des tokens {XOR} sur le réseau {Sora} en tant que nominateur pour valider les transactions et gagner des récompenses en tokens {VAL}."
+        },
+        "newStake": {
+            "title": "Commencer à jalonner",
+            "minStakeWarning": "La mise minimale pour recevoir la récompense est {min} {symbol}"
+        },
+        "validators": {
+            "save": "Sauvegarder les modifications",
+            "selected": "{selected} \/ {total} sélectionné",
+            "recommended": "Validateurs recommandés",
+            "change": "Changer les validateurs",
+            "select": "Sélectionnez les validateurs",
+            "next": "Suivant",
+            "alreadyNominated": "Validateurs sélectionnés déjà nominés"
+        },
+        "validatorsList": {
+            "search": "Recherche...",
+            "name": "Nom",
+            "noNominatedValidators": "Vous n'avez aucun validateur nommé",
+            "noValidators": "Il n'y a aucun validateur satisfaisant au filtre spécifié",
+            "commission": "Commission",
+            "commissionTooltip": "La commission fait référence aux frais facturés par les validateurs pour leurs services dans le processus de jalonnement. Ces frais, exprimés en pourcentage, sont déduits des récompenses de mise gagnées par les proposants avant distribution. Il est important de noter que les validateurs peuvent ajuster leurs taux de commission à tout moment."
+        },
+        "info": {
+            "redeemable": "Rachetable",
+            "unstaking": "Détachement",
+            "stakingBalance": "Solde de jalonnement",
+            "rewarded": "Récompensé",
+            "totalLiquidityStaked": "Liquidité totale mise en jeu",
+            "rewardToken": "Jeton de récompense",
+            "unstakingPeriod": "Période sans mise en jeu",
+            "minimumStake": "Mise minimale",
+            "nominators": "Présentateurs",
+            "validators": "Validateurs",
+            "selectedValidators": "Validateurs sélectionnés"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filtres",
+            "save": "Enregistrer le filtre",
+            "reset": "Effacer tout",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identité en chaîne",
+                    "description": "Au moins un contact d'identité connecté au compte"
+                },
+                "notSlashed": {
+                    "name": "Pas coupé",
+                    "description": "N’a subi aucune pénalité ou réduction de ses fonds mis en jeu en raison d’une mauvaise conduite ou de violations du protocole."
+                },
+                "notOversubscribed": {
+                    "name": "Pas sursouscrit",
+                    "description": "Compte dans la limite d’allocation, évite les pénalités de sursouscription sur le staking {Polkadot}."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Limite de 2 validateurs par identité",
+                    "description": "Un maximum de deux validateurs par identité pour promouvoir la décentralisation et empêcher la concentration du pouvoir."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "edit": "Modifier mes validateurs"
+            },
+            "tabs": {
+                "user": "Vos validateurs",
+                "all": "Tous les validateurs"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Attention",
+            "description": [
+                "Les suggestions du validateur algorithmique ne constituent pas une consultation ou un conseil financier. Le jalonnement est une activité à haut risque, et les suggestions algorithmiques des validateurs n'atténuent pas nécessairement ce risque.",
+                "Un validateur suggéré par l'algorithme pourrait toujours être réduit. Un validateur suggéré par l'algorithme pourrait également modifier ses paramètres (par exemple, les taux de commission, etc.) à tout moment après avoir été suggéré et\/ou sélectionné.",
+                "Vous pourriez perdre des jetons ou des récompenses pour ces raisons ou pour d’autres. Misez uniquement des jetons et utilisez les suggestions du validateur à votre propre discrétion, après avoir fait preuve de diligence raisonnable et soigneusement examiné les risques encourus."
+            ],
+            "confirm": "Oui, je comprends le risque"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Il n'y a aucune récompense en attente",
+            "information": "Les validateurs versent les récompenses tous les 2 à 5 jours. Cependant, vous pouvez les payer vous-même, surtout si les récompenses sont sur le point d'expirer, mais vous paierez les frais.",
+            "title": "Récompenses en attente",
+            "noSelectedRewards": "Sélectionnez les récompenses",
+            "payout": "Paiement"
+        },
+        "selectValidatorsMode": {
+            "title": "Stake avec les validateurs suggérés par l’algorithme",
+            "description": "L'algorithme du réseau {Sora} a sélectionné une liste de validateurs recommandés sur la base des critères :",
+            "criteria": [
+                "La plus rentable",
+                "Pas sursouscrit",
+                "Avoir une identité en chaîne",
+                "Pas coupé",
+                "Limite de 2 validateurs par identité"
+            ],
+            "confirm": {
+                "suggested": "Mise avec suggéré",
+                "manual": "Je choisirai moi-même les validateurs"
+            }
+        },
+        "claimRewardsDialog": {
+            "title": "Réclamez des récompenses",
+            "checkRewards": "Vérifiez les récompenses par époque et validateur",
+            "rewardsDestination": "Adresse de destination des récompenses"
+        }
+    },
+    "collapseText": "Réduire",
+    "expandText": "Agrandir"
 }
