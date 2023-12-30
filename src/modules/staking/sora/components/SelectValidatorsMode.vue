@@ -5,9 +5,9 @@
         <h4>{{ t('soraStaking.selectValidatorsMode.title') }}</h4>
         <p>{{ t('soraStaking.selectValidatorsMode.description') }}</p>
         <ul class="criteria">
-          <li v-for="criterion in criteria" :key="criterion">
+          <li v-for="item in criteria" :key="item">
             <s-icon name="basic-check-mark-24" size="16px" />
-            <span>{{ criterion }}</span>
+            <span>{{ item }}</span>
           </li>
         </ul>
         <s-button type="primary" @click="stakeWithSuggested">{{
@@ -40,7 +40,7 @@ export default class SelectValidatorsMode extends Mixins(StakingMixin, mixins.Lo
   showValidatorsAttentionDialog = false;
 
   get criteria() {
-    return this.t('soraStaking.selectValidatorsMode.criteria');
+    return this.t('soraStaking.selectValidatorsMode.criteria'); // iterable keys
   }
 
   stakeWithSuggested(): void {
