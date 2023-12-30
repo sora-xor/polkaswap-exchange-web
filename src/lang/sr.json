@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} је успешно положено",
             "EthBridgeIncoming": "Пренето {amount} {symbol} са {Ethereum} у {Sora}",
             "EthBridgeOutgoing": "Пренето {amount} {symbol} са {Sora} у {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Везано {amount} {symbol}",
+            "StakingBond": "Везано {amount} {symbol}",
+            "StakingBondExtra": "Додатни обвезници {amount} {symbol}",
+            "StakingUnbond": "Невезано {amount} {symbol}",
+            "StakingRebond": "Поново везано {amount} {symbol}",
+            "StakingNominate": "Номиновани валидатори",
+            "StakingWithdrawUnbonded": "Повукао {amount} {symbol}",
+            "StakingPayout": "Награде за исплату",
+            "StakingChill": "Охлади се",
+            "StakingSetController": "Подесите контролер {address}",
+            "StakingSetPayee": "Подесите примаоца уплате {address}"
         },
         "error": {
             "Transfer": "Није успело {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Захтевање за {symbol} није успело",
             "EthBridgeIncoming": "Пренос {amount} {symbol} из {Ethereum} у {Sora} није успео",
             "EthBridgeOutgoing": "Пренос {amount} {symbol} са {Sora} на {Ethereum} није успео",
-            "SwapTransferBatch": "Није успело {action} {amount} {symbol}"
+            "SwapTransferBatch": "Није успело {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Повезивање {amount} {symbol} није успело",
+            "StakingBond": "Повезивање {amount} {symbol} није успело",
+            "StakingBondExtra": "Повезивање додатног {amount} {symbol} није успело",
+            "StakingUnbond": "Отклањање {amount} {symbol} није успело",
+            "StakingRebond": "Није успело поновно повезивање {amount} {symbol}",
+            "StakingNominate": "Именовање валидатора није успело",
+            "StakingWithdrawUnbonded": "Повлачење {amount} {symbol} није успело",
+            "StakingPayout": "Исплата награда није успела",
+            "StakingChill": "Није успело да се охлади",
+            "StakingSetController": "Подешавање контролера {address} није успело",
+            "StakingSetPayee": "Подешавање примаоца уплате {address} није успело"
         },
         "ReferralReserveXor": "Veži XOR",
         "ReferralUnreserveXor": "Razveži XOR",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Захтевајте награде",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Пренос"
+        "SwapTransferBatch": "{ADAR} Пренос",
+        "StakingBondAndNominate": "Бонд и номинујте",
+        "StakingBond": "Veži",
+        "StakingBondExtra": "Бонд Ектра",
+        "StakingUnbond": "Одвезати",
+        "StakingRebond": "Ребонд",
+        "StakingNominate": "Номинирај",
+        "StakingWithdrawUnbonded": "Повући Унбондед",
+        "StakingPayout": "Награде за исплату",
+        "StakingChill": "Охлади се",
+        "StakingSetController": "Сет Цонтроллер",
+        "StakingSetPayee": "Подесите примаоца уплате"
     },
     "polkadotjs": {
         "noExtensions": "Није пронађена ниједна екстензија {PolkadotJs}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -759,7 +792,8 @@
             "checkExtension": "{name} екстензија је заузета, molimo proverite",
             "extensionLogin": "Пријавите се на своју екстензију {name}",
             "installExtension": "{name} екстензија није пронађена. Молимо вас да га инсталирате! \n\nVeć ste instalirali ekstenziju? Molimo Vas učitajtestranicu ponovo",
-            "reloadPage": "Поново учитаjте страницу"
+            "reloadPage": "Поново учитаjте страницу",
+            "notAvailable": "{name} није доступно."
         }
     },
     "selectLanguageDialog": {
@@ -955,9 +989,6 @@
         "calculator": "Калкулатор",
         "results": "Резултати",
         "rewards": "{symbol} награде"
-    },
-    "staking": {
-        "title": "Стeкинг"
     },
     "historyErrorMessages": {
         "generalError": "Nešto je pošlo naopako",
@@ -1233,5 +1264,124 @@
     "exceededAmountText": "{amount} је премашен",
     "multipleRecipients": "Višestruki primalac",
     "disconnectWalletText": "Прекини везу",
-    "connectEthereumWalletText": "Повежите {Ethereum} новчаник"
+    "connectEthereumWalletText": "Повежите {Ethereum} новчаник",
+    "soraStaking": {
+        "dropdownMenu": {
+            "pendingRewards": "Награде на чекању",
+            "controllerAccount": "Налог контролора"
+        },
+        "actions": {
+            "claim": "Захтевајте награде",
+            "remove": "Уклоните улог",
+            "more": "Уложите више"
+        },
+        "overview": {
+            "title": "{Sora} Staking",
+            "description": "Уложите {XOR} токена на {Sora} мрежу као предлагач да бисте потврдили трансакције и зарадили {VAL} награде за токене."
+        },
+        "newStake": {
+            "title": "Почните са залагањем",
+            "minStakeWarning": "Минимални улог за примање награде је {min} {symbol}"
+        },
+        "validators": {
+            "save": "Сачувај измене",
+            "selected": "Изабрано {selected} \/ {total}",
+            "recommended": "Препоручени валидатори",
+            "change": "Промените валидаторе",
+            "select": "Изаберите валидаторе",
+            "next": "Следећи",
+            "alreadyNominated": "Одабрани валидатори су већ номиновани"
+        },
+        "validatorsList": {
+            "search": "Претрага...",
+            "name": "Име",
+            "noNominatedValidators": "Nemaš nominovane validatore",
+            "noValidators": "Nema validatora koji zadovoljavaju navedeni filter",
+            "commission": "Комисија",
+            "commissionTooltip": "Провизија се односи на накнаду коју наплаћују валидатори за своје услуге у процесу стекинга. Ова накнада, изражена у процентима, одбија се од награда за улагање које су номинатори зарадили пре дистрибуције. Важно је напоменути да валидатори могу прилагодити своје стопе провизије у било ком тренутку"
+        },
+        "info": {
+            "redeemable": "Откупљив",
+            "unstaking": "Унстакинг",
+            "stakingBalance": "Стакинг баланце",
+            "rewarded": "Награђени",
+            "totalLiquidityStaked": "Укупна уложена ликвидност",
+            "rewardToken": "Токен за награду",
+            "unstakingPeriod": "Унстакинг период",
+            "minimumStake": "Минимални улог",
+            "nominators": "Номинатори",
+            "validators": "Validatori",
+            "selectedValidators": "Изабрани валидатори"
+        },
+        "validatorsFilterDialog": {
+            "title": "Филтери",
+            "save": "Сачувај филтер",
+            "reset": "Ресетуј све",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Идентитет на ланцу",
+                    "description": "Најмање један контакт идентитета повезан са налогом"
+                },
+                "notSlashed": {
+                    "name": "Није исечено",
+                    "description": "Нису доживели никакве казне или смањење уложених средстава због недоличног понашања или кршења протокола."
+                },
+                "notOversubscribed": {
+                    "name": "Није претплаћено",
+                    "description": "Nalog u okviru ograničenja dodele, izbegava kazne za prepisivanje na {Polkadot} stakingu."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Ограничење од 2 валидатора по идентитету",
+                    "description": "Максимално два валидатора по идентитету за промовисање децентрализације и спречавање концентрације моћи."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "edit": "Уредите моје валидаторе"
+            },
+            "tabs": {
+                "user": "Vaši validatori",
+                "all": "Svi validatori"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Пажња",
+            "description": [
+                "Предлози алгоритамског валидатора не представљају финансијске консултације или савете. Улагање је активност високог ризика, а предлози алгоритамског валидатора не морају нужно да ублаже овај ризик.",
+                "Валидатор који је предложио алгоритам и даље може бити исечен. Валидатор који предлаже алгоритам такође може да промени своје параметре (нпр. стопе провизије, итд.) у било ком тренутку након што је предложен и\/или изабран.",
+                "Можете изгубити жетоне или награде из ових или других разлога. Уложите токене и користите предлоге валидатора само по сопственом нахођењу, након спровођења дужне пажње и пажљивог разматрања ризика."
+            ],
+            "confirm": "Да, разумем ризик"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Нема награда на чекању",
+            "information": "Валидатори исплаћују награде сваких 2-5 дана. Међутим, можете их исплатити сами, посебно ако су награде близу истека, али ћете платити накнаду.",
+            "title": "Neobrađene nagrade",
+            "noSelectedRewards": "Izbor nagrada",
+            "payout": "Isplata"
+        },
+        "selectValidatorsMode": {
+            "title": "Улог са валидаторима које предлаже алгоритам",
+            "description": "{Sora} mrežni algoritam je izabrao listu preporučenih validatora na osnovu kriterijuma:",
+            "criteria": [
+                "Најпрофитабилнији",
+                "Није претплаћено",
+                "Имати онцхаин идентитет",
+                "Није исечено",
+                "Ограничење од 2 валидатора по идентитету"
+            ],
+            "confirm": {
+                "suggested": "Стек са предложеним",
+                "manual": "Ја ћу сам изабрати валидаторе"
+            }
+        },
+        "claimRewardsDialog": {
+            "title": "Захтевајте награде",
+            "checkRewards": "Proverite nagrade po eri i validatoru",
+            "rewardsDestination": "Nagradna odredišna adresa"
+        }
+    },
+    "collapseText": "Skupi",
+    "expandText": "Proširi"
 }

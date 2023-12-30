@@ -411,6 +411,8 @@ ul ul {
 .app {
   .el-loading-mask {
     background-color: var(--s-color-utility-body);
+    z-index: $app-loader-layer;
+
     .el-loading-spinner {
       background-image: url('~@/assets/img/pswap-loader.svg');
       height: var(--s-size-medium);
@@ -508,34 +510,11 @@ ul ul {
     animation: none;
   }
 }
+
 .el-form--actions {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  $swap-input-class: '.el-input';
-  .s-input--token-value,
-  .s-input-amount {
-    #{$swap-input-class} {
-      #{$swap-input-class}__inner {
-        padding-top: 0;
-      }
-    }
-    #{$swap-input-class}__inner {
-      @include text-ellipsis;
-      height: var(--s-size-small);
-      padding-right: 0;
-      padding-left: 0;
-      border-radius: 0 !important;
-      color: var(--s-color-base-content-primary);
-      font-size: var(--s-font-size-large);
-      line-height: var(--s-line-height-small);
-      font-weight: 800;
-    }
-    .s-placeholder {
-      display: none;
-    }
-  }
 }
 
 .el-message-box {
@@ -575,14 +554,15 @@ i.icon-divider {
   .app-main {
     &.app-main--swap.app-main--has-charts {
       .app-menu {
-        position: relative;
-      }
-    }
+        &:not(.collapsed) {
+          position: relative;
+        }
 
-    &.app-main--has-charts {
-      .app-content {
-        width: 100%;
-        padding-left: $basic-spacing * 2;
+        &.collapsed {
+          & + .app-body {
+            margin-left: 74px;
+          }
+        }
       }
     }
   }
@@ -594,7 +574,6 @@ i.icon-divider {
   &-main {
     display: flex;
     align-items: stretch;
-    overflow: hidden;
     height: calc(100vh - #{$header-height} - #{$footer-height});
     position: relative;
   }
@@ -612,8 +591,7 @@ i.icon-divider {
 
   &-content {
     flex: 1;
-    margin: $inner-spacing-big auto;
-    width: 100%;
+    padding: $inner-spacing-medium;
   }
 
   &-footer {

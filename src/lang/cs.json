@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "Úspěšně nárokováno {amount} {symbol}",
             "EthBridgeIncoming": "Převedeno {amount} {symbol} z {Ethereum} do {Sora}",
             "EthBridgeOutgoing": "Převedeno {amount} {symbol} z {Sora} do {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Vázané {amount} {symbol}",
+            "StakingBond": "Vázané {amount} {symbol}",
+            "StakingBondExtra": "Vázané navíc {amount} {symbol}",
+            "StakingUnbond": "Odpojeno {amount} {symbol}",
+            "StakingRebond": "Znovu navázáno {amount} {symbol}",
+            "StakingNominate": "Nominovaní validátoři",
+            "StakingWithdrawUnbonded": "Vybráno {amount} {symbol}",
+            "StakingPayout": "Výplatní odměny",
+            "StakingChill": "Chlad",
+            "StakingSetController": "Nastavit ovladač {address}",
+            "StakingSetPayee": "Nastavit příjemce platby {address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} se nezdařilo.",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Nepodařilo se nárokovat {symbol}",
             "EthBridgeIncoming": "Nepodařilo se přenést {amount} {symbol} z {Ethereum} do {Sora}",
             "EthBridgeOutgoing": "Nepodařilo se převést {amount} {symbol} z {Sora} do {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol} se nezdařilo."
+            "SwapTransferBatch": "{action} {amount} {symbol} se nezdařilo.",
+            "StakingBondAndNominate": "Nepodařilo se spojit {amount} {symbol}",
+            "StakingBond": "Nepodařilo se spojit {amount} {symbol}",
+            "StakingBondExtra": "Nepodařilo se spojit další {amount} {symbol}",
+            "StakingUnbond": "Nepodařilo se odpojit {amount} {symbol}",
+            "StakingRebond": "Rebondování {amount} {symbol} se nezdařilo",
+            "StakingNominate": "Nepodařilo se nominovat validátory",
+            "StakingWithdrawUnbonded": "Nepodařilo se vybrat {amount} {symbol}",
+            "StakingPayout": "Nepodařilo se vyplatit odměny",
+            "StakingChill": "Ochladit se nepodařilo",
+            "StakingSetController": "Nepodařilo se nastavit ovladač {address}",
+            "StakingSetPayee": "Nepodařilo se nastavit příjemce platby {address}"
         },
         "ReferralReserveXor": "Vázat XOR",
         "ReferralUnreserveXor": "Zrušit vazbu XOR",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Nárokovat odměny",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Převod"
+        "SwapTransferBatch": "{ADAR} Převod",
+        "StakingBondAndNominate": "Bond a Nominovat",
+        "StakingBond": "Vázat",
+        "StakingBondExtra": "Bond Extra",
+        "StakingUnbond": "Uvolnit",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "Nominovat",
+        "StakingWithdrawUnbonded": "Vytáhněte Nespojené",
+        "StakingPayout": "Výplatní odměny",
+        "StakingChill": "Chlad",
+        "StakingSetController": "Nastavit ovladač",
+        "StakingSetPayee": "Nastavit příjemce platby"
     },
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření {PolkadotJs}. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
@@ -759,7 +792,8 @@
             "checkExtension": "{name} rozšíření je zaneprázdněné, zkontrolujte ho prosím",
             "extensionLogin": "Přihlašte se prosím do svého {name} rozšíření",
             "installExtension": "{name} rozšíření nebylo nalezeno. Nainstalujte ho prosím!\n\nRozšíření je již nainstalováno? Načtěte znovu stránku prosím",
-            "reloadPage": "Znovu načíst stránku"
+            "reloadPage": "Znovu načíst stránku",
+            "notAvailable": "{name} není k dispozici."
         }
     },
     "selectLanguageDialog": {
@@ -955,9 +989,6 @@
         "calculator": "Kalkulačka",
         "results": "Výsledek",
         "rewards": "{symbol} odměny"
-    },
-    "staking": {
-        "title": "Stakování"
     },
     "historyErrorMessages": {
         "generalError": "Něco se pokazilo",
@@ -1233,5 +1264,124 @@
     "exceededAmountText": "{amount} překročeno",
     "multipleRecipients": "Více příjemců",
     "disconnectWalletText": "Odpojit",
-    "connectEthereumWalletText": "Připojte peněženku {Ethereum}"
+    "connectEthereumWalletText": "Připojte peněženku {Ethereum}",
+    "soraStaking": {
+        "dropdownMenu": {
+            "pendingRewards": "Čekající odměny",
+            "controllerAccount": "Účet správce"
+        },
+        "actions": {
+            "claim": "Nárokujte si odměny",
+            "remove": "Odstraňte sázku",
+            "more": "Vsaďte více"
+        },
+        "overview": {
+            "title": "{Sora} Staking",
+            "description": "Vsaďte tokeny {XOR} v síti {Sora} jako nominátor, abyste mohli ověřovat transakce a získávat odměny v tokenech {VAL}."
+        },
+        "newStake": {
+            "title": "Začněte sázet",
+            "minStakeWarning": "Minimální vklad pro získání odměny je {min} {symbol}"
+        },
+        "validators": {
+            "save": "Uložit změny",
+            "selected": "Vybráno {selected} \/ {total}",
+            "recommended": "Doporučené validátory",
+            "change": "Změnit validátory",
+            "select": "Vyberte validátory",
+            "next": "Další",
+            "alreadyNominated": "Vybraní validátoři již byli nominováni"
+        },
+        "validatorsList": {
+            "search": "Vyhledávání...",
+            "name": "Název",
+            "noNominatedValidators": "Nemáte žádné nominované validátory",
+            "noValidators": "Neexistují žádné validátory splňující zadaný filtr",
+            "commission": "Komise",
+            "commissionTooltip": "Provize odkazuje na poplatek, který si validátoři účtují za své služby v procesu sázek. Tento poplatek, vyjádřený v procentech, se odečítá z odměn za sázky, které nominátoři získali před rozdělením. Je důležité si uvědomit, že validátoři mohou své provize kdykoli upravit"
+        },
+        "info": {
+            "redeemable": "Splatný",
+            "unstaking": "Nestanovení",
+            "stakingBalance": "Vyrovnání rovnováhy",
+            "rewarded": "Odměněno",
+            "totalLiquidityStaked": "Celková vsazená likvidita",
+            "rewardToken": "Žeton odměny",
+            "unstakingPeriod": "Nesázkové období",
+            "minimumStake": "Minimální vklad",
+            "nominators": "Nominátoři",
+            "validators": "Validátory",
+            "selectedValidators": "Vybrané validátory"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filtry",
+            "save": "Uložit filtr",
+            "reset": "Resetovat vše",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identita na řetězu",
+                    "description": "K účtu je připojen alespoň jeden identifikační kontakt"
+                },
+                "notSlashed": {
+                    "name": "Není seříznutý",
+                    "description": "Nezaznamenali žádné sankce nebo snížení svých vložených prostředků z důvodu nesprávného chování nebo porušení protokolu."
+                },
+                "notOversubscribed": {
+                    "name": "Není přepsáno",
+                    "description": "Účet v rámci alokačního limitu, vyhýbá se sankcím za překročení počtu upisoven při sázení {Polkadot}."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Limit 2 validátorů na identitu",
+                    "description": "Maximálně dva validátoři na identitu pro podporu decentralizace a zabránění koncentraci moci."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "edit": "Upravit mé validátory"
+            },
+            "tabs": {
+                "user": "Vaši validátoři",
+                "all": "Všechny validátory"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Pozornost",
+            "description": [
+                "Návrhy algoritmického validátoru nepředstavují finanční konzultace nebo poradenství. Vytyčování je vysoce riziková činnost a návrhy algoritmických validátorů toto riziko nutně nezmírňují.",
+                "Validátor navržený algoritmem může být stále seříznut. Validátor navržený algoritmem by také mohl změnit jejich parametry (např. sazby provize atd.) kdykoli poté, co byl navržen a\/nebo vybrán.",
+                "Z těchto nebo jiných důvodů můžete ztratit žetony nebo odměny. Sázkové žetony a návrhy validátorů používejte pouze podle vlastního uvážení, po provedení náležité péče a pečlivém zvážení souvisejících rizik."
+            ],
+            "confirm": "Ano, chápu riziko"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Nejsou zde žádné čekající odměny",
+            "information": "Validátoři vyplácejí odměny každých 2-5 dní. Můžete si je však vyplatit sami, zvláště pokud se blíží konec platnosti odměn, ale budete platit poplatek.",
+            "title": "Čekající odměny",
+            "noSelectedRewards": "Vyberte odměny",
+            "payout": "Výplata"
+        },
+        "selectValidatorsMode": {
+            "title": "Sázka s validátory navrženými algoritmem",
+            "description": "Síťový algoritmus {Sora} vybral seznam doporučených validátorů na základě kritérií:",
+            "criteria": [
+                "Nejvýnosnější",
+                "Není přepsáno",
+                "Mít onchain identitu",
+                "Není seříznutý",
+                "Limit 2 validátorů na identitu"
+            ],
+            "confirm": {
+                "suggested": "Vsadit s navrhovaným",
+                "manual": "Validátory si vyberu sám"
+            }
+        },
+        "claimRewardsDialog": {
+            "title": "Nárokujte si odměny",
+            "checkRewards": "Zkontrolujte odměny za éru a validátor",
+            "rewardsDestination": "Cílová adresa odměn"
+        }
+    },
+    "collapseText": "Skrýt",
+    "expandText": "Rozbalit"
 }

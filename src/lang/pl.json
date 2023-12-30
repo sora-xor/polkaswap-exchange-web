@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} odebrano pomyślnie",
             "EthBridgeIncoming": "Przeniesiono {amount} {symbol} z {Ethereum} do {Sora}",
             "EthBridgeOutgoing": "Przeniesiono {amount} {symbol} z {Sora} do {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Bonded {amount} {symbol}",
+            "StakingBond": "Bonded {amount} {symbol}",
+            "StakingBondExtra": "Dodatkowa opłata {amount} {symbol}",
+            "StakingUnbond": "Niepowiązany {amount} {symbol}",
+            "StakingRebond": "Ponowne wiązanie {amount} {symbol}",
+            "StakingNominate": "Nominowani walidatorzy",
+            "StakingWithdrawUnbonded": "Wypłacił {amount} {symbol}",
+            "StakingPayout": "Nagrody za wypłatę",
+            "StakingChill": "Chłod",
+            "StakingSetController": "Ustaw kontroler {address}",
+            "StakingSetPayee": "Ustaw odbiorcę płatności {address}"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Nie udało się odebrać {symbol}",
             "EthBridgeIncoming": "Nie udało się przenieść {amount} {symbol} z {Ethereum} do {Sora}",
             "EthBridgeOutgoing": "Nie udało się przenieść {amount} {symbol} z {Sora} do {Ethereum}",
-            "SwapTransferBatch": "Nie udało się {action} {amount} {symbol}"
+            "SwapTransferBatch": "Nie udało się {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Nie udało się połączyć {amount} {symbol}",
+            "StakingBond": "Nie udało się połączyć {amount} {symbol}",
+            "StakingBondExtra": "Nie udało się zaciągnąć dodatkowej {amount} {symbol}",
+            "StakingUnbond": "Nie udało się odłączyć {amount} {symbol}",
+            "StakingRebond": "Nie udało się ponownie połączyć {amount} {symbol}",
+            "StakingNominate": "Nie udało się wyznaczyć walidatorów",
+            "StakingWithdrawUnbonded": "Nie udało się wypłacić {amount} {symbol}",
+            "StakingPayout": "Nie udało się wypłacić nagród",
+            "StakingChill": "Nie udało się ochłodzić",
+            "StakingSetController": "Nie udało się ustawić kontrolera {address}",
+            "StakingSetPayee": "Nie udało się ustawić odbiorcy płatności {address}"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Odbierz wynagrodzenie",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Transfer"
+        "SwapTransferBatch": "{ADAR} Transfer",
+        "StakingBondAndNominate": "Bond i Nominuj",
+        "StakingBond": "Utwórz rezerwy",
+        "StakingBondExtra": "Bond ekstra",
+        "StakingUnbond": "Uwolnij rezerwy",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "Mianować",
+        "StakingWithdrawUnbonded": "Wycofaj się bez połączenia",
+        "StakingPayout": "Nagrody za wypłatę",
+        "StakingChill": "Chłod",
+        "StakingSetController": "Ustaw kontroler",
+        "StakingSetPayee": "Ustaw odbiorcę"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia {PolkadotJs}. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -759,7 +792,8 @@
             "checkExtension": "Rozszerzenie {name} jest zajęte, sprawdź je.",
             "extensionLogin": "Zaloguj się do swojego rozszerzenia {name}.",
             "installExtension": "Rozszerzenie {name} nie zostało znalezione. Zainstaluj je!\n\nCzy masz już zainstalowane rozszerzenie? Odśwież stronę.",
-            "reloadPage": "Odśwież stronę"
+            "reloadPage": "Odśwież stronę",
+            "notAvailable": "{name} jest niedostępne."
         }
     },
     "selectLanguageDialog": {
@@ -955,9 +989,6 @@
         "calculator": "Kalkulator",
         "results": "Wyniki",
         "rewards": "{symbol} nagrody"
-    },
-    "staking": {
-        "title": "Staking"
     },
     "historyErrorMessages": {
         "generalError": "Coś poszło nie tak",
@@ -1233,5 +1264,124 @@
     "exceededAmountText": "Przekroczono {amount}",
     "multipleRecipients": "Wielu odbiorców",
     "disconnectWalletText": "Rozłączyć się",
-    "connectEthereumWalletText": "Podłącz portfel {Ethereum}"
+    "connectEthereumWalletText": "Podłącz portfel {Ethereum}",
+    "soraStaking": {
+        "dropdownMenu": {
+            "pendingRewards": "Oczekujące nagrody",
+            "controllerAccount": "Konto kontrolera"
+        },
+        "actions": {
+            "claim": "Odbieraj nagrody",
+            "remove": "Usuń stawkę",
+            "more": "Stawiaj więcej"
+        },
+        "overview": {
+            "title": "{Sora} Wytyczania",
+            "description": "Stakuj tokeny {XOR} w sieci {Sora} jako mianownik, aby zatwierdzać transakcje i zdobywać nagrody w postaci tokenów {VAL}."
+        },
+        "newStake": {
+            "title": "Zacznij obstawiać",
+            "minStakeWarning": "Minimalna stawka umożliwiająca otrzymanie nagrody to {min} {symbol}"
+        },
+        "validators": {
+            "save": "Zapisz zmiany",
+            "selected": "Wybrano {selected} \/ {total}",
+            "recommended": "Polecane walidatory",
+            "change": "Zmień walidatory",
+            "select": "Wybierz walidatory",
+            "next": "Dalej",
+            "alreadyNominated": "Wybrani walidatorzy już nominowani"
+        },
+        "validatorsList": {
+            "search": "Szukaj...",
+            "name": "Nazwa",
+            "noNominatedValidators": "Nie masz żadnych wyznaczonych walidatorów",
+            "noValidators": "Brak walidatorów spełniających określony filtr",
+            "commission": "Zamawiać",
+            "commissionTooltip": "Prowizja odnosi się do opłaty pobieranej przez walidatorów za ich usługi w procesie obstawiania. Opłata ta, wyrażona procentowo, jest odejmowana od nagród za obstawianie zdobytych przez nominatorów przed dystrybucją. Należy pamiętać, że walidatorzy mogą w dowolnym momencie dostosować stawki prowizji"
+        },
+        "info": {
+            "redeemable": "Odkupny",
+            "unstaking": "Odstawienie",
+            "stakingBalance": "Bilans stawek",
+            "rewarded": "Wynagrodzony",
+            "totalLiquidityStaked": "Całkowita postawiona płynność",
+            "rewardToken": "Żeton nagrody",
+            "unstakingPeriod": "Okres odstawiania",
+            "minimumStake": "Minimalna stawka",
+            "nominators": "Nominatorzy",
+            "validators": "Walidatory",
+            "selectedValidators": "Wybrane walidatory"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filtry",
+            "save": "Zapisz filtr",
+            "reset": "Zresetować wszystko",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Tożsamość w łańcuchu",
+                    "description": "Co najmniej jeden kontakt tożsamości jest podłączony do konta"
+                },
+                "notSlashed": {
+                    "name": "Nie przecięty",
+                    "description": "Nie doświadczył żadnych kar ani obniżek postawionych środków z powodu niewłaściwego postępowania lub naruszeń protokołu."
+                },
+                "notOversubscribed": {
+                    "name": "Nie ma nadsubskrypcji",
+                    "description": "Konto w ramach limitu alokacji, pozwala uniknąć kar za nadsubskrypcję na stakingu {Polkadot}."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Limit 2 walidatorów na tożsamość",
+                    "description": "Maksymalnie dwóch walidatorów na tożsamość w celu promowania decentralizacji i zapobiegania koncentracji władzy."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "edit": "Edytuj Moje walidatory"
+            },
+            "tabs": {
+                "user": "Twoje walidatory",
+                "all": "Wszystkie walidatory"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Uwaga",
+            "description": [
+                "Sugestie walidatora algorytmicznego nie stanowią konsultacji ani porady finansowej. Stakowanie jest działalnością obarczoną wysokim ryzykiem i sugestie walidatorów algorytmicznych niekoniecznie ograniczają to ryzyko.",
+                "Walidator sugerowany przez algorytm nadal może zostać obciążony. Walidator sugerowany przez algorytm może także zmieniać ich parametry (np. stawki prowizji itp.) w dowolnym momencie po tym, jak zostanie zasugerowany i\/lub wybrany.",
+                "Możesz stracić tokeny lub nagrody z tych lub innych powodów. Stawiaj tylko tokeny i korzystaj z sugestii walidatora według własnego uznania, po przeprowadzeniu należytej staranności i dokładnym rozważeniu związanego z tym ryzyka."
+            ],
+            "confirm": "Tak, rozumiem ryzyko"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Brak oczekujących nagród",
+            "information": "Walidatorzy wypłacają nagrody co 2-5 dni. Możesz jednak wypłacić je samodzielnie, zwłaszcza jeśli nagrody wkrótce wygasną, ale zapłacisz opłatę.",
+            "title": "Wypłacanie wynagrodzenia w toku...",
+            "noSelectedRewards": "Wybierz nagrody",
+            "payout": "Wypłaty"
+        },
+        "selectValidatorsMode": {
+            "title": "Stawkę z walidatorami sugerowanymi przez algorytm",
+            "description": "Algorytm sieci {Sora} wybrał listę rekomendowanych walidatorów na podstawie kryteriów:",
+            "criteria": [
+                "Najbardziej dochodowy",
+                "Nie ma nadsubskrypcji",
+                "Posiadanie tożsamości onchain",
+                "Nie przecięty",
+                "Limit 2 walidatorów na tożsamość"
+            ],
+            "confirm": {
+                "suggested": "Stawka z sugerowanymi",
+                "manual": "Sam wybiorę walidatorów"
+            }
+        },
+        "claimRewardsDialog": {
+            "title": "Odbieraj nagrody",
+            "checkRewards": "Sprawdź nagrody według epoki i walidatora",
+            "rewardsDestination": "Adres docelowy nagród"
+        }
+    },
+    "collapseText": "Zawalić się",
+    "expandText": "Zwiększać"
 }
