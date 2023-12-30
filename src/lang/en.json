@@ -30,17 +30,6 @@
         "RegisterAsset": "Register Asset",
         "ClaimRewards": "Claim Rewards",
         "andText": "and",
-        "StakingBondAndNominate": "Bond and Nominate",
-        "StakingBond": "Bond",
-        "StakingBondExtra": "Bond Extra",
-        "StakingUnbond": "Unbond",
-        "StakingRebond": "Rebond",
-        "StakingNominate": "Nominate",
-        "StakingWithdrawUnbonded": "Withdraw Unbonded",
-        "StakingPayout": "Payout Rewards",
-        "StakingChill": "Chill",
-        "StakingSetController": "Set Controller",
-        "StakingSetPayee": "Set Payee",
         "finalized": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}",
             "Swap": "Swapped {amount} {symbol} for {amount2} {symbol2}",
@@ -116,7 +105,18 @@
         "DemeterFarmingGetRewards": "Claim Rewards",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} transfer"
+        "SwapTransferBatch": "{ADAR} transfer",
+        "StakingBondAndNominate": "Bond and Nominate",
+        "StakingBond": "Bond",
+        "StakingBondExtra": "Bond Extra",
+        "StakingUnbond": "Unbond",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "Nominate",
+        "StakingWithdrawUnbonded": "Withdraw Unbonded",
+        "StakingPayout": "Payout Rewards",
+        "StakingChill": "Chill",
+        "StakingSetController": "Set Controller",
+        "StakingSetPayee": "Set Payee"
     },
     "polkadotjs": {
         "noExtensions": "No {PolkadotJs} extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -990,135 +990,6 @@
         "results": "Results",
         "rewards": "{symbol} rewards"
     },
-
-    "staking": {
-        "title": "Staking"
-    },
-    "soraStaking": {
-        "title": "Staking",
-        "dropdownMenu": {
-            "pendingRewards": "Pending rewards",
-            "validators": "Validators",
-            "controllerAccount": "Controller account"
-        },
-        "actions": {
-            "claim": "Claim rewards",
-            "remove": "Remove stake",
-            "start": "Start staking",
-            "more": "Stake more"
-        },
-        "overview": {
-            "title": "SORA Staking",
-            "description": "Stake XOR tokens on SORA Network as a nominator to validate transactions and earn VAL token rewards."
-        },
-        "newStake": {
-            "title": "Start staking",
-            "minStakeWarning": "The minimum stake to receive the reward is {min} {symbol}"
-        },
-        "validatorsType": {
-            "title": "Validators"
-        },
-        "validators": {
-            "save": "Save changes",
-            "selected": "{selected}/{total} selected",
-            "recommended": "Recommended validators",
-            "next": "Next",
-            "change": "Change validators",
-            "select": "Select validators",
-            "alreadyNominated": "Selected validators already nominated"
-        },
-        "validatorsList": {
-            "search": "Search...",
-            "filters": "Filters",
-            "name": "Name",
-            "commission": "Commission",
-            "commissionTooltip": "Commission refers to the fee charged by validators for their services in the staking process. This fee, expressed as a percentage, is deducted from the staking rewards earned by nominators before distribution. It's important to note that validators can adjust their commission rates at any time"
-        },
-        "info": {
-            "redeemable": "Redeemable",
-            "unstaking": "Unstaking",
-            "stakingBalance": "Staking balance",
-            "rewarded": "Rewarded",
-            "totalLiquidityStaked": "Total liquidity staked",
-            "apy": "APY",
-            "rewardToken": "Reward token",
-            "unstakingPeriod": "Unstaking period",
-            "minimumStake": "Minimum stake",
-            "nominators": "Nominators",
-            "validators": "Validators",
-            "selectedValidators": "Selected validators"
-        },
-        "validatorsFilterDialog": {
-            "title": "Filters",
-            "save": "Save filter",
-            "reset": "Reset all",
-            "filters": {
-            "hasIdentity": {
-                "name": "On-chain identity",
-                "description": "At least one identity contact connected to the account"
-            },
-            "notSlashed": {
-                "name": "Not slashed",
-                "description": "Not experienced any penalties or reductions in their staked funds due to misconduct or protocol violations."
-            },
-            "notOversubscribed": {
-                "name": "Not oversubscribed",
-                "description": "Account within allocation limit, avoids oversubscription penalties on Polkadot staking."
-            },
-            "twoValidatorsPerIdentity": {
-                "name": "Limit of 2 validators per identity",
-                "description": "A maximum of two validators per identity to promote decentralization and prevent concentration of power."
-            }
-            }
-        },
-        "validatorsDialog": {
-            "title": {
-                "default": "Validators",
-                "edit": "Edit My Validators"
-            },
-            "tabs": {
-                "user": "Your validators",
-                "all": "All validators"
-            }
-        },
-        "validatorsAttentionDialog": {
-            "title": "Attention",
-            "description": [
-                "Algorithmic validator suggestions do not constitute financial consultation or advice. Staking is a high-risk activity, and algorithmic validator suggestions do not necessarily mitigate this risk.",
-                "A validator suggested by the algorithm could still be slashed. A validator suggested by the algorithm could also change their parameters (e.g.,commission rates, etc.) at any time after having been suggested and/or selected.",
-                "You could lose tokens or rewards for these or other reasons. Only stake tokens and use validator suggestions at your own discretion, after conducting due diligence and carefully considering the risks involved."
-            ],
-            "confirm": "Yes, I understand the risk"
-        },
-        "claimRewardsDialog": {
-          "title": "Claim rewards",
-          "checkRewards": "Check rewards per era and validator",
-          "rewardsDestination": "Rewards destination address"
-        },
-        "pendingRewardsDialog": {
-            "title": "Pending rewards",
-            "noPendingRewards": "There are no pending rewards",
-            "noSelectedRewards": "Select rewards",
-            "payout": "Payout",
-            "information":
-              "Validators payout the rewards every 2-5 days. However, you can payout them by yourself, especially if rewards are close to expiring, but you will pay the fee."
-        },
-        "selectValidatorsMode": {
-            "title": "Stake with validators suggested by the algorithm",
-            "description": "SORA Network algorithm has selected a list of recommended validators based on the criteria:",
-            "criteria": [
-                "Most profitable",
-                "Not oversubscribed",
-                "Having onchain identity",
-                "Not slashed",
-                "Limit of 2 validators per identity"
-            ],
-            "confirm": {
-                "suggested": "Stake with suggested",
-                "manual": "I`ll pick the validators myself"
-            }
-        }
-    },
     "historyErrorMessages": {
         "generalError": "Something went wrong",
         "balances": {
@@ -1394,6 +1265,123 @@
     "multipleRecipients": "Multiple Recipients",
     "disconnectWalletText": "Disconnect",
     "connectEthereumWalletText": "Connect {Ethereum} wallet",
+    "soraStaking": {
+        "dropdownMenu": {
+            "pendingRewards": "Pending rewards",
+            "controllerAccount": "Controller account"
+        },
+        "actions": {
+            "claim": "Claim rewards",
+            "remove": "Remove stake",
+            "more": "Stake more"
+        },
+        "overview": {
+            "title": "{Sora} Staking",
+            "description": "Stake {XOR} tokens on {Sora} Network as a nominator to validate transactions and earn {VAL} token rewards."
+        },
+        "newStake": {
+            "title": "Start staking",
+            "minStakeWarning": "The minimum stake to receive the reward is {min} {symbol}"
+        },
+        "validators": {
+            "save": "Save changes",
+            "selected": "{selected}\/{total} selected",
+            "recommended": "Recommended validators",
+            "change": "Change validators",
+            "select": "Select validators",
+            "next": "Next",
+            "alreadyNominated": "Selected validators already nominated"
+        },
+        "validatorsList": {
+            "search": "Search...",
+            "name": "Name",
+            "noNominatedValidators": "You don't have any nominated validators",
+            "noValidators": "There are no validators satisfying the specified filter",
+            "commission": "Commission",
+            "commissionTooltip": "Commission refers to the fee charged by validators for their services in the staking process. This fee, expressed as a percentage, is deducted from the staking rewards earned by nominators before distribution. It's important to note that validators can adjust their commission rates at any time"
+        },
+        "info": {
+            "redeemable": "Redeemable",
+            "unstaking": "Unstaking",
+            "stakingBalance": "Staking balance",
+            "rewarded": "Rewarded",
+            "totalLiquidityStaked": "Total liquidity staked",
+            "rewardToken": "Reward token",
+            "unstakingPeriod": "Unstaking period",
+            "minimumStake": "Minimum stake",
+            "nominators": "Nominators",
+            "validators": "Validators",
+            "selectedValidators": "Selected validators"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filters",
+            "save": "Save filter",
+            "reset": "Reset all",
+            "filters": {
+                "hasIdentity": {
+                    "name": "On-chain identity",
+                    "description": "At least one identity contact connected to the account"
+                },
+                "notSlashed": {
+                    "name": "Not slashed",
+                    "description": "Not experienced any penalties or reductions in their staked funds due to misconduct or protocol violations."
+                },
+                "notOversubscribed": {
+                    "name": "Not oversubscribed",
+                    "description": "Account within allocation limit, avoids oversubscription penalties on {Polkadot} staking."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Limit of 2 validators per identity",
+                    "description": "A maximum of two validators per identity to promote decentralization and prevent concentration of power."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "edit": "Edit My Validators"
+            },
+            "tabs": {
+                "user": "Your validators",
+                "all": "All validators"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Attention",
+            "description": [
+                "Algorithmic validator suggestions do not constitute financial consultation or advice. Staking is a high-risk activity, and algorithmic validator suggestions do not necessarily mitigate this risk.",
+                "A validator suggested by the algorithm could still be slashed. A validator suggested by the algorithm could also change their parameters (e.g.,commission rates, etc.) at any time after having been suggested and\/or selected.",
+                "You could lose tokens or rewards for these or other reasons. Only stake tokens and use validator suggestions at your own discretion, after conducting due diligence and carefully considering the risks involved."
+            ],
+            "confirm": "Yes, I understand the risk"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "There are no pending rewards",
+            "information": "Validators payout the rewards every 2-5 days. However, you can payout them by yourself, especially if rewards are close to expiring, but you will pay the fee.",
+            "title": "Pending rewards",
+            "noSelectedRewards": "Select rewards",
+            "payout": "Payout"
+        },
+        "selectValidatorsMode": {
+            "title": "Stake with validators suggested by the algorithm",
+            "description": "{Sora} network algorithm has selected a list of recommended validators based on the criteria:",
+            "criteria": [
+                "Most profitable",
+                "Not oversubscribed",
+                "Having onchain identity",
+                "Not slashed",
+                "Limit of 2 validators per identity"
+            ],
+            "confirm": {
+                "suggested": "Stake with suggested",
+                "manual": "I`ll pick the validators myself"
+            }
+        },
+        "claimRewardsDialog": {
+            "title": "Claim rewards",
+            "checkRewards": "Check rewards per era and validator",
+            "rewardsDestination": "Rewards destination address"
+        }
+    },
     "collapseText": "Collapse",
     "expandText": "Expand"
 }

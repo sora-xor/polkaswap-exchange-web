@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} ը հաջողությամբ ներկայացվեց",
             "EthBridgeIncoming": "Փոխանցվել է {amount} {symbol} {Ethereum} ից {Sora}",
             "EthBridgeOutgoing": "Փոխանցվել է {amount} {symbol} {Sora} ից {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Խճճված {amount} {symbol}",
+            "StakingBond": "Խճճված {amount} {symbol}",
+            "StakingBondExtra": "Խճճված լրացուցիչ {amount} {symbol}",
+            "StakingUnbond": "Չպարտադրված {amount} {symbol}",
+            "StakingRebond": "Վերադարձված {amount} {symbol}",
+            "StakingNominate": "Առաջադրված վավերացնողներ",
+            "StakingWithdrawUnbonded": "Հանվել է {amount} {symbol}",
+            "StakingPayout": "Վճարման պարգևներ",
+            "StakingChill": "Հանգստացեք",
+            "StakingSetController": "Կարգավորել {address}",
+            "StakingSetPayee": "Սահմանել վճարողի {address}"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Չհաջողվեց պահանջել {symbol}",
             "EthBridgeIncoming": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Ethereum} ից {Sora} ին",
             "EthBridgeOutgoing": "Չհաջողվեց փոխանցել {amount} {symbol} -ը {Sora} ից {Ethereum} ին",
-            "SwapTransferBatch": "Չհաջողվեց {action} {amount} {symbol}"
+            "SwapTransferBatch": "Չհաջողվեց {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Չհաջողվեց կապել {amount} {symbol}",
+            "StakingBond": "Չհաջողվեց կապել {amount} {symbol}",
+            "StakingBondExtra": "Չհաջողվեց կապել լրացուցիչ {amount} {symbol}",
+            "StakingUnbond": "Չհաջողվեց ապակապել {amount} {symbol}",
+            "StakingRebond": "Չհաջողվեց նորից կապակցել {amount} {symbol}",
+            "StakingNominate": "Չհաջողվեց առաջադրել վավերացնողներ",
+            "StakingWithdrawUnbonded": "Չհաջողվեց հանել {amount} {symbol}",
+            "StakingPayout": "Չհաջողվեց վճարել պարգևները",
+            "StakingChill": "Չհաջողվեց սառեցնել",
+            "StakingSetController": "Չհաջողվեց կարգավորել {address} կարգավորիչը",
+            "StakingSetPayee": "Չհաջողվեց սահմանել վճարողի {address}"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Հաստատել Պարգևները",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Տեղափոխել"
+        "SwapTransferBatch": "{ADAR} Տեղափոխել",
+        "StakingBondAndNominate": "Պարտատոմսեր և առաջադրել",
+        "StakingBond": "Բոնդ",
+        "StakingBondExtra": "Bond Extra",
+        "StakingUnbond": "Ունբոնդ",
+        "StakingRebond": "Ռեբոնդ",
+        "StakingNominate": "Առաջադրել",
+        "StakingWithdrawUnbonded": "Հանել Unbonded",
+        "StakingPayout": "Վճարման պարգևներ",
+        "StakingChill": "Հանգստացեք",
+        "StakingSetController": "Կարգավորիչի կարգավորում",
+        "StakingSetPayee": "Սահմանել վճարողին"
     },
     "polkadotjs": {
         "noExtensions": "{PolkadotJs} ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
@@ -957,9 +990,6 @@
         "results": "Արդյունքներ",
         "rewards": "{symbol} պարգևներ"
     },
-    "staking": {
-        "title": "Ցուցադրում"
-    },
     "historyErrorMessages": {
         "generalError": "Ինչ որ բան այնպես չգնաց",
         "balances": {
@@ -1236,21 +1266,18 @@
     "disconnectWalletText": "Անջատել",
     "connectEthereumWalletText": "Միացրեք {Ethereum} դրամապանակը",
     "soraStaking": {
-        "title": "Ցուցադրում",
         "dropdownMenu": {
             "pendingRewards": "Սպասվող պարգևներ",
-            "validators": "Վավերացնողներ",
             "controllerAccount": "Վերահսկիչ հաշիվ"
         },
         "actions": {
             "claim": "Պահանջեք պարգևներ",
             "remove": "Հեռացնել ցցը",
-            "start": "Սկսեք խաղադրույք կատարել",
             "more": "Ավելի շատ խաղադրույք կատարեք"
         },
         "overview": {
-            "title": "SORA Staking",
-            "description": "Խաղադրույք կատարեք XOR նշանները SORA ցանցում որպես առաջադրող՝ գործարքները վավերացնելու և VAL նշանային պարգևներ ստանալու համար:"
+            "title": "{Sora} Սաթ",
+            "description": "Stake {XOR} tokens on {Sora} Network- ը որպես նոմինատոր գործարքների վավերացման եւ {VAL} token վարձատրության համար:"
         },
         "newStake": {
             "title": "Սկսեք խաղադրույք կատարել",
@@ -1261,13 +1288,17 @@
             "selected": "{selected} \/ ընտրված է {total}",
             "recommended": "Առաջարկվող վավերացնողներ",
             "change": "Փոխել վավերացնողները",
-            "select": "Ընտրեք վավերացնողներ"
+            "select": "Ընտրեք վավերացնողներ",
+            "next": "Հաջորդը",
+            "alreadyNominated": "Ընտրված վավերացնողներն արդեն առաջադրված են"
         },
         "validatorsList": {
             "search": "Որոնել...",
-            "filters": "Զտիչներ",
             "name": "Անուն",
-            "return": "Վերադարձ"
+            "noNominatedValidators": "Դուք առաջադրված վավերացնողներ չունեք",
+            "noValidators": "Նշված ֆիլտրը բավարարող վավերացնողներ չկան",
+            "commission": "հանձնաժողով",
+            "commissionTooltip": "Հանձնաժողովը վերաբերում է այն վճարին, որը գանձվում է վավերացնողների կողմից խաղադրույքի գործընթացում իրենց ծառայությունների համար: Այս վճարը, արտահայտված որպես տոկոս, հանվում է խաղադրույքի պարգևներից, որոնք վաստակել են առաջադրողները մինչև բաշխումը: Կարևոր է նշել, որ վավերացնողները ցանկացած պահի կարող են հարմարեցնել իրենց միջնորդավճարները"
         },
         "info": {
             "redeemable": "Հետգնելի",
@@ -1275,7 +1306,6 @@
             "stakingBalance": "Խաղադրույքի մնացորդը",
             "rewarded": "Պարգևատրվել է",
             "totalLiquidityStaked": "Ընդհանուր իրացվելիությունը խաղադրույքով",
-            "apy": "APY",
             "rewardToken": "Պարգևատրման նշան",
             "unstakingPeriod": "Բացասական շրջան",
             "minimumStake": "Նվազագույն խաղադրույքը",
@@ -1298,7 +1328,7 @@
                 },
                 "notOversubscribed": {
                     "name": "Չի գերազանցում բաժանորդագրությունը",
-                    "description": "Հաշիվը տեղաբաշխման սահմանաչափի մեջ, խուսափում է գերբաժանորդագրման տույժերից Polkadot խաղադրույքի վրա:"
+                    "description": "Հաշիվը տեղաբաշխման սահմանաչափի սահմաններում, խուսափում է {Polkadot} staking-ի նկատմամբ գերսուբսիդացիայի տույժերից:"
                 },
                 "twoValidatorsPerIdentity": {
                     "name": "Յուրաքանչյուր ինքնության համար 2 վավերացնողի սահմանաչափ",
@@ -1308,12 +1338,11 @@
         },
         "validatorsDialog": {
             "title": {
-                "default": "Վավերացնողներ",
                 "edit": "Խմբագրել Իմ վավերացնողները"
             },
             "tabs": {
-                "userValidators": "Ձեր վավերացնողները",
-                "allValidators": "Բոլոր վավերացնողները"
+                "user": "Ձեր վավերացնողները",
+                "all": "Բոլոր վավերացնողները"
             }
         },
         "validatorsAttentionDialog": {
@@ -1327,12 +1356,14 @@
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Սպասվող պարգևներ չկան",
-            "payoutAll": "Վճարում բոլորը",
-            "information": "Վավերացնողները պարգևները վճարում են 2-5 օրը մեկ: Այնուամենայնիվ, դուք կարող եք դրանք վճարել ինքներդ, հատկապես, եթե պարգևների ժամկետը մոտ է ավարտին, բայց դուք վճարելու եք վճարը:"
+            "information": "Վավերացնողները պարգևները վճարում են 2-5 օրը մեկ: Այնուամենայնիվ, դուք կարող եք դրանք վճարել ինքներդ, հատկապես, եթե պարգևների ժամկետը մոտ է ավարտին, բայց դուք վճարելու եք վճարը:",
+            "title": "Սպասվող պարգևներ",
+            "noSelectedRewards": "Ընտրեք պարգեւատրումները",
+            "payout": "Վճարել"
         },
         "selectValidatorsMode": {
             "title": "Խաղադրույքը վավերացնողների հետ, որոնք առաջարկվում են ալգորիթմի կողմից",
-            "description": "SORA ցանցի ալգորիթմը ընտրել է առաջարկվող վավերացնողների ցանկը՝ հիմնվելով չափանիշների վրա.",
+            "description": "{Sora} ցանցային ալգորիթմը ընտրել է առաջարկվող վավերականների ցանկը՝ հիմնվելով չափանիշների վրա.",
             "criteria": [
                 "Առավել շահավետ",
                 "Չի գերազանցում բաժանորդագրությունը",
@@ -1344,6 +1375,11 @@
                 "suggested": "Ցուցադրել առաջարկվող հետ",
                 "manual": "Ես ինքս կընտրեմ վավերացնողներին"
             }
+        },
+        "claimRewardsDialog": {
+            "title": "Պահանջեք պարգևներ",
+            "checkRewards": "Ստուգեք պարգեւատրումը մեկ դարաշրջանում եւ վավերական",
+            "rewardsDestination": "Պարգևատրման նպատակակետ հասցե"
         }
     },
     "collapseText": "Փլուզվել",

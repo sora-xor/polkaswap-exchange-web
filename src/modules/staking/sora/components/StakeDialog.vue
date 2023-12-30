@@ -113,7 +113,7 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
   get networkFee(): CodecString {
     switch (this.mode) {
       case StakeDialogMode.NEW:
-        return this.bondAndNominateNetworkFee || '0';
+        return this.bondAndNominateNetworkFee ?? '0';
       case StakeDialogMode.ADD:
         return this.networkFees[Operation.StakingBondExtra];
       default:

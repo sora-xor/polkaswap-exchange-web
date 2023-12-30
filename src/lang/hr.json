@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} uspješno potraživan",
             "EthBridgeIncoming": "Preneseno {amount} {symbol} s {Ethereum} na {Sora}",
             "EthBridgeOutgoing": "Preneseno {amount} {symbol} s {Sora} na {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Povezano {amount} {symbol}",
+            "StakingBond": "Povezano {amount} {symbol}",
+            "StakingBondExtra": "Povezani dodatni {amount} {symbol}",
+            "StakingUnbond": "Bez obveznice {amount} {symbol}",
+            "StakingRebond": "Vraćeno {amount} {symbol}",
+            "StakingNominate": "Nominirani validatori",
+            "StakingWithdrawUnbonded": "Povučeno {amount} {symbol}",
+            "StakingPayout": "Nagrade za isplatu",
+            "StakingChill": "Ohladite se",
+            "StakingSetController": "Postavi kontroler {address}",
+            "StakingSetPayee": "Postavi primatelja {address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} nije uspio",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Nije uspjelo potraživanje {symbol}",
             "EthBridgeIncoming": "Prijenos {amount} {symbol} iz {Ethereum} u {Sora} nije uspio",
             "EthBridgeOutgoing": "Prijenos {amount} {symbol} iz {Sora} u {Ethereum} nije uspio",
-            "SwapTransferBatch": "{action} {amount} {symbol} nije uspio"
+            "SwapTransferBatch": "{action} {amount} {symbol} nije uspio",
+            "StakingBondAndNominate": "Povezati {amount} {symbol} nije uspjelo",
+            "StakingBond": "Povezati {amount} {symbol} nije uspjelo",
+            "StakingBondExtra": "Nije uspjelo uplatiti dodatnih {amount} {symbol}",
+            "StakingUnbond": "Nije uspjelo razdvojiti {amount} {symbol}",
+            "StakingRebond": "Nije uspjelo vraćanje {amount} {symbol}",
+            "StakingNominate": "Nije uspjelo imenovanje validatora",
+            "StakingWithdrawUnbonded": "Nije uspjelo podizanje {amount} {symbol}",
+            "StakingPayout": "Isplata nagrada nije uspjela",
+            "StakingChill": "Hlađenje nije uspjelo",
+            "StakingSetController": "Nije uspjelo postavljanje kontrolera {address}",
+            "StakingSetPayee": "Nije uspjelo postavljanje primatelja {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Zatražite nagrade",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Prijenos"
+        "SwapTransferBatch": "{ADAR} Prijenos",
+        "StakingBondAndNominate": "Poveži i nominiraj",
+        "StakingBond": "Bond",
+        "StakingBondExtra": "Bond Extra",
+        "StakingUnbond": "Unbond",
+        "StakingRebond": "Ponovno povezivanje",
+        "StakingNominate": "nominirati",
+        "StakingWithdrawUnbonded": "Povući bez obveznica",
+        "StakingPayout": "Nagrade za isplatu",
+        "StakingChill": "Ohladite se",
+        "StakingSetController": "Postavite kontroler",
+        "StakingSetPayee": "Postavite primatelja uplate"
     },
     "polkadotjs": {
         "noExtensions": "Nije pronađeno proširenje {PolkadotJs}. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -957,9 +990,6 @@
         "results": "Rezultati",
         "rewards": "{symbol} nagrada"
     },
-    "staking": {
-        "title": "Ulaganje"
-    },
     "historyErrorMessages": {
         "generalError": "Nešto je pošlo po zlu",
         "balances": {
@@ -1236,21 +1266,18 @@
     "disconnectWalletText": "Prekini vezu",
     "connectEthereumWalletText": "Povežite {Ethereum} novčanik",
     "soraStaking": {
-        "title": "Staking",
         "dropdownMenu": {
             "pendingRewards": "Nagrade na čekanju",
-            "validators": "Validatori",
             "controllerAccount": "Račun kontrolora"
         },
         "actions": {
             "claim": "Zatražite nagrade",
             "remove": "Uklonite ulog",
-            "start": "Počnite ulagati",
             "more": "Uložite više"
         },
         "overview": {
-            "title": "SORA Staking",
-            "description": "Uložite XOR tokene na SORA mrežu kao nominator za potvrdu transakcija i zaradite nagrade VAL tokena."
+            "title": "{Sora} Staking",
+            "description": "Ulog {XOR} tokeni na mreži {Sora} kao nominator za provjeru valjanosti transakcija i zarađivanje nagrada za tokene {VAL}."
         },
         "newStake": {
             "title": "Počnite ulagati",
@@ -1261,13 +1288,17 @@
             "selected": "{selected} \/ {total} odabrano",
             "recommended": "Preporučeni validatori",
             "change": "Promjena validatora",
-            "select": "Odaberite validatore"
+            "select": "Odaberite validatore",
+            "next": "Sljedeći",
+            "alreadyNominated": "Odabrani validatori već su imenovani"
         },
         "validatorsList": {
             "search": "Traži...",
-            "filters": "Filteri",
             "name": "Ime",
-            "return": "Povratak"
+            "noNominatedValidators": "Nemate nijednog imenovanog validatora",
+            "noValidators": "Nema validatora koji zadovoljavaju navedeni filter",
+            "commission": "Komisija",
+            "commissionTooltip": "Provizija se odnosi na naknadu koju naplaćuju validatori za svoje usluge u procesu isplate. Ova naknada, izražena kao postotak, oduzima se od nagrada za ulog koje zarade nominatori prije distribucije. Važno je napomenuti da validatori mogu prilagoditi svoje stope provizije u bilo kojem trenutku"
         },
         "info": {
             "redeemable": "Iskupivo",
@@ -1275,7 +1306,6 @@
             "stakingBalance": "Staking bilanca",
             "rewarded": "Nagrađeni",
             "totalLiquidityStaked": "Uložena ukupna likvidnost",
-            "apy": "APY",
             "rewardToken": "Token nagrade",
             "unstakingPeriod": "Razdoblje nepolaganja",
             "minimumStake": "Minimalni ulog",
@@ -1298,7 +1328,7 @@
                 },
                 "notOversubscribed": {
                     "name": "Nije pretplaćen",
-                    "description": "Račun unutar ograničenja dodjele, izbjegava kazne za prekomjernu pretplatu na Polkadot staking."
+                    "description": "Račun unutar ograničenja dodjele, izbjegava kazne za prekomjernu pretplatu na {Polkadot} ulaganje."
                 },
                 "twoValidatorsPerIdentity": {
                     "name": "Ograničenje od 2 validatora po identitetu",
@@ -1308,12 +1338,11 @@
         },
         "validatorsDialog": {
             "title": {
-                "default": "Validatori",
                 "edit": "Uredi moje validatore"
             },
             "tabs": {
-                "userValidators": "Vaši validatori",
-                "allValidators": "Svi validatori"
+                "user": "Vaši validatori",
+                "all": "Svi validatori"
             }
         },
         "validatorsAttentionDialog": {
@@ -1327,12 +1356,14 @@
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Nema nagrada na čekanju",
-            "payoutAll": "Isplata svega",
-            "information": "Validatori isplaćuju nagrade svakih 2-5 dana. Međutim, možete ih sami isplatiti, posebno ako su nagrade blizu isteka, ali ćete platiti naknadu."
+            "information": "Validatori isplaćuju nagrade svakih 2-5 dana. Međutim, možete ih sami isplatiti, posebno ako su nagrade blizu isteka, ali ćete platiti naknadu.",
+            "title": "Nagrade na čekanju",
+            "noSelectedRewards": "Odaberite nagrade",
+            "payout": "Isplata"
         },
         "selectValidatorsMode": {
             "title": "Ulog s validatorima koje predlaže algoritam",
-            "description": "Algoritam mreže SORA odabrao je popis preporučenih validatora na temelju kriterija:",
+            "description": "{Sora} mrežni algoritam odabrao je popis preporučenih validatora na temelju kriterija:",
             "criteria": [
                 "Najisplativije",
                 "Nije pretplaćen",
@@ -1344,6 +1375,11 @@
                 "suggested": "Ulog s predloženim",
                 "manual": "Sam ću odabrati validatore"
             }
+        },
+        "claimRewardsDialog": {
+            "title": "Zatražite nagrade",
+            "checkRewards": "Provjerite nagrade po razdoblju i validatoru",
+            "rewardsDestination": "Odredišna adresa nagrada"
         }
     },
     "collapseText": "Kolaps",

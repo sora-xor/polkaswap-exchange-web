@@ -8,35 +8,33 @@ import type { SubqueryConnectionQueryResponse } from '@soramitsu/soraneo-wallet-
 const { IndexerType } = WALLET_CONSTS;
 
 const SubqueryNominatorsCountQuery = gql<SubqueryConnectionQueryResponse<number>>`
-  query NominatorsCountQuery($era: String) {
-    data: stakingEraNominators(orderBy: ID_DESC, filter: { eraId: { equalTo: $era } }) {
+  query NominatorsCountQuery {
+    data: stakingStakers(orderBy: ID_DESC) {
       totalCount
     }
   }
 `;
 
 const SubsquidNominatorsCountQuery = gql<SubsquidConnectionQueryResponse<number>>`
-  query NominatorsCountQuery($era: Int) {
-    data: stakingEraNominatorsConnection(orderBy: id_DESC, where: { era: { index_eq: $era } }) {
+  query NominatorsCountQuery {
+    data: stakingStakersConnection(orderBy: id_DESC) {
       totalCount
     }
   }
 `;
 
-export async function fetchData(era: number): Promise<Nullable<number>> {
+export async function fetchData(): Promise<Nullable<number>> {
   const indexer = getCurrentIndexer();
   let data: Nullable<number>;
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
       const subqueryIndexer = indexer as SubqueryIndexer;
-      data = (
-        await subqueryIndexer.services.explorer.fetchEntities(SubqueryNominatorsCountQuery, { era: era.toString() })
-      )?.totalCount;
+      data = (await subqueryIndexer.services.explorer.fetchEntities(SubqueryNominatorsCountQuery))?.totalCount;
       break;
     }
     case IndexerType.SUBSQUID: {
       const subsquidIndexer = indexer as SubsquidIndexer;
-      data = (await subsquidIndexer.services.explorer.fetchEntitiesConnection(SubsquidNominatorsCountQuery, { era }))
+      data = (await subsquidIndexer.services.explorer.fetchEntitiesConnection(SubsquidNominatorsCountQuery))
         ?.totalCount;
       break;
     }

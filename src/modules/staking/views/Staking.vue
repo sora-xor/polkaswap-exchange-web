@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-loading="parentLoading">
-    <generic-page-header :title="t('staking.title')" />
+    <generic-page-header :title="t('pageTitle.Staking')" />
 
     <s-card v-if="!tokensData.length && !soraStaking" shadow="always" size="big" primary class="staking-empty-card">
       {{ t('demeterFarming.staking.stopped') }}
