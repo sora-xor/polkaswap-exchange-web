@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} odebrano pomyślnie",
             "EthBridgeIncoming": "Przeniesiono {amount} {symbol} z {Ethereum} do {Sora}",
             "EthBridgeOutgoing": "Przeniesiono {amount} {symbol} z {Sora} do {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Bonded {amount} {symbol}",
+            "StakingBond": "Bonded {amount} {symbol}",
+            "StakingBondExtra": "Dodatkowa opłata {amount} {symbol}",
+            "StakingUnbond": "Niepowiązany {amount} {symbol}",
+            "StakingRebond": "Ponowne wiązanie {amount} {symbol}",
+            "StakingNominate": "Nominowani walidatorzy",
+            "StakingWithdrawUnbonded": "Wypłacił {amount} {symbol}",
+            "StakingPayout": "Nagrody za wypłatę",
+            "StakingChill": "Chłod",
+            "StakingSetController": "Ustaw kontroler {address}",
+            "StakingSetPayee": "Ustaw odbiorcę płatności {address}"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Nie udało się odebrać {symbol}",
             "EthBridgeIncoming": "Nie udało się przenieść {amount} {symbol} z {Ethereum} do {Sora}",
             "EthBridgeOutgoing": "Nie udało się przenieść {amount} {symbol} z {Sora} do {Ethereum}",
-            "SwapTransferBatch": "Nie udało się {action} {amount} {symbol}"
+            "SwapTransferBatch": "Nie udało się {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Nie udało się połączyć {amount} {symbol}",
+            "StakingBond": "Nie udało się połączyć {amount} {symbol}",
+            "StakingBondExtra": "Nie udało się zaciągnąć dodatkowej {amount} {symbol}",
+            "StakingUnbond": "Nie udało się odłączyć {amount} {symbol}",
+            "StakingRebond": "Nie udało się ponownie połączyć {amount} {symbol}",
+            "StakingNominate": "Nie udało się wyznaczyć walidatorów",
+            "StakingWithdrawUnbonded": "Nie udało się wypłacić {amount} {symbol}",
+            "StakingPayout": "Nie udało się wypłacić nagród",
+            "StakingChill": "Nie udało się ochłodzić",
+            "StakingSetController": "Nie udało się ustawić kontrolera {address}",
+            "StakingSetPayee": "Nie udało się ustawić odbiorcy płatności {address}"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Odbierz wynagrodzenie",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Transfer"
+        "SwapTransferBatch": "{ADAR} Transfer",
+        "StakingBondAndNominate": "Bond i Nominuj",
+        "StakingBond": "Utwórz rezerwy",
+        "StakingBondExtra": "Bond ekstra",
+        "StakingUnbond": "Uwolnij rezerwy",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "Mianować",
+        "StakingWithdrawUnbonded": "Wycofaj się bez połączenia",
+        "StakingPayout": "Nagrody za wypłatę",
+        "StakingChill": "Chłod",
+        "StakingSetController": "Ustaw kontroler",
+        "StakingSetPayee": "Ustaw odbiorcę"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia {PolkadotJs}. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -957,9 +990,6 @@
         "results": "Wyniki",
         "rewards": "{symbol} nagrody"
     },
-    "staking": {
-        "title": "Staking"
-    },
     "historyErrorMessages": {
         "generalError": "Coś poszło nie tak",
         "balances": {
@@ -1236,21 +1266,18 @@
     "disconnectWalletText": "Rozłączyć się",
     "connectEthereumWalletText": "Podłącz portfel {Ethereum}",
     "soraStaking": {
-        "title": "Stawianie",
         "dropdownMenu": {
             "pendingRewards": "Oczekujące nagrody",
-            "validators": "Walidatory",
             "controllerAccount": "Konto kontrolera"
         },
         "actions": {
             "claim": "Odbieraj nagrody",
             "remove": "Usuń stawkę",
-            "start": "Zacznij obstawiać",
             "more": "Stawiaj więcej"
         },
         "overview": {
-            "title": "Stakowanie SORA",
-            "description": "Stawiaj tokeny XOR w sieci SORA jako nominator, aby weryfikować transakcje i zdobywać nagrody w postaci tokenów VAL."
+            "title": "{Sora} Wytyczania",
+            "description": "Stakuj tokeny {XOR} w sieci {Sora} jako mianownik, aby zatwierdzać transakcje i zdobywać nagrody w postaci tokenów {VAL}."
         },
         "newStake": {
             "title": "Zacznij obstawiać",
@@ -1261,13 +1288,17 @@
             "selected": "Wybrano {selected} \/ {total}",
             "recommended": "Polecane walidatory",
             "change": "Zmień walidatory",
-            "select": "Wybierz walidatory"
+            "select": "Wybierz walidatory",
+            "next": "Dalej",
+            "alreadyNominated": "Wybrani walidatorzy już nominowani"
         },
         "validatorsList": {
             "search": "Szukaj...",
-            "filters": "Filtry",
             "name": "Nazwa",
-            "return": "Powrót"
+            "noNominatedValidators": "Nie masz żadnych wyznaczonych walidatorów",
+            "noValidators": "Brak walidatorów spełniających określony filtr",
+            "commission": "Zamawiać",
+            "commissionTooltip": "Prowizja odnosi się do opłaty pobieranej przez walidatorów za ich usługi w procesie obstawiania. Opłata ta, wyrażona procentowo, jest odejmowana od nagród za obstawianie zdobytych przez nominatorów przed dystrybucją. Należy pamiętać, że walidatorzy mogą w dowolnym momencie dostosować stawki prowizji"
         },
         "info": {
             "redeemable": "Odkupny",
@@ -1275,7 +1306,6 @@
             "stakingBalance": "Bilans stawek",
             "rewarded": "Wynagrodzony",
             "totalLiquidityStaked": "Całkowita postawiona płynność",
-            "apy": "RRSO",
             "rewardToken": "Żeton nagrody",
             "unstakingPeriod": "Okres odstawiania",
             "minimumStake": "Minimalna stawka",
@@ -1298,7 +1328,7 @@
                 },
                 "notOversubscribed": {
                     "name": "Nie ma nadsubskrypcji",
-                    "description": "Konto w ramach limitu alokacji, pozwala uniknąć kar za przekroczenie subskrypcji przy stakingu Polkadot."
+                    "description": "Konto w ramach limitu alokacji, pozwala uniknąć kar za nadsubskrypcję na stakingu {Polkadot}."
                 },
                 "twoValidatorsPerIdentity": {
                     "name": "Limit 2 walidatorów na tożsamość",
@@ -1308,12 +1338,11 @@
         },
         "validatorsDialog": {
             "title": {
-                "default": "Walidatory",
                 "edit": "Edytuj Moje walidatory"
             },
             "tabs": {
-                "userValidators": "Twoje walidatory",
-                "allValidators": "Wszystkie walidatory"
+                "user": "Twoje walidatory",
+                "all": "Wszystkie walidatory"
             }
         },
         "validatorsAttentionDialog": {
@@ -1327,12 +1356,14 @@
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Brak oczekujących nagród",
-            "payoutAll": "Wypłata całości",
-            "information": "Walidatorzy wypłacają nagrody co 2-5 dni. Możesz jednak wypłacić je samodzielnie, zwłaszcza jeśli nagrody wkrótce wygasną, ale zapłacisz opłatę."
+            "information": "Walidatorzy wypłacają nagrody co 2-5 dni. Możesz jednak wypłacić je samodzielnie, zwłaszcza jeśli nagrody wkrótce wygasną, ale zapłacisz opłatę.",
+            "title": "Wypłacanie wynagrodzenia w toku...",
+            "noSelectedRewards": "Wybierz nagrody",
+            "payout": "Wypłaty"
         },
         "selectValidatorsMode": {
             "title": "Stawkę z walidatorami sugerowanymi przez algorytm",
-            "description": "Algorytm SORA Network wybrał listę rekomendowanych walidatorów w oparciu o kryteria:",
+            "description": "Algorytm sieci {Sora} wybrał listę rekomendowanych walidatorów na podstawie kryteriów:",
             "criteria": [
                 "Najbardziej dochodowy",
                 "Nie ma nadsubskrypcji",
@@ -1344,6 +1375,11 @@
                 "suggested": "Stawka z sugerowanymi",
                 "manual": "Sam wybiorę walidatorów"
             }
+        },
+        "claimRewardsDialog": {
+            "title": "Odbieraj nagrody",
+            "checkRewards": "Sprawdź nagrody według epoki i walidatora",
+            "rewardsDestination": "Adres docelowy nagród"
         }
     },
     "collapseText": "Zawalić się",

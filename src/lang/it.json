@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} rivendicato con successo",
             "EthBridgeIncoming": "Trasferito {amount} {symbol} da {Ethereum} a {Sora}",
             "EthBridgeOutgoing": "Trasferito {amount} {symbol} da {Sora} a {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Vincolato {amount} {symbol}",
+            "StakingBond": "Vincolato {amount} {symbol}",
+            "StakingBondExtra": "Extra vincolato {amount} {symbol}",
+            "StakingUnbond": "{amount} {symbol} non vincolato",
+            "StakingRebond": "Rimborsato {amount} {symbol}",
+            "StakingNominate": "Validatori nominati",
+            "StakingWithdrawUnbonded": "Prelevato {amount} {symbol}",
+            "StakingPayout": "Premi di pagamento",
+            "StakingChill": "Freddo",
+            "StakingSetController": "Imposta il controller {address}",
+            "StakingSetPayee": "Imposta beneficiario {address}"
         },
         "error": {
             "Transfer": "Impossibile {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Impossibile rivendicare {symbol}",
             "EthBridgeIncoming": "Impossibile trasferire {amount} {symbol} da {Ethereum} a {Sora}",
             "EthBridgeOutgoing": "Impossibile trasferire {amount} {symbol} da {Sora} a {Ethereum}",
-            "SwapTransferBatch": "Impossibile {action} {amount} {symbol}"
+            "SwapTransferBatch": "Impossibile {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Impossibile vincolare {amount} {symbol}",
+            "StakingBond": "Impossibile vincolare {amount} {symbol}",
+            "StakingBondExtra": "Impossibile vincolare {amount} {symbol} extra",
+            "StakingUnbond": "Impossibile svincolare {amount} {symbol}",
+            "StakingRebond": "Impossibile ribonificare {amount} {symbol}",
+            "StakingNominate": "Impossibile nominare i validatori",
+            "StakingWithdrawUnbonded": "Impossibile prelevare {amount} {symbol}",
+            "StakingPayout": "Impossibile pagare i premi",
+            "StakingChill": "Impossibile rilassarsi",
+            "StakingSetController": "Impossibile impostare il controller {address}",
+            "StakingSetPayee": "Impossibile impostare il beneficiario {address}"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Richiedi ricompense",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Trasferimento"
+        "SwapTransferBatch": "{ADAR} Trasferimento",
+        "StakingBondAndNominate": "Vincolo e nomina",
+        "StakingBond": "Riserva",
+        "StakingBondExtra": "Obbligazione extra",
+        "StakingUnbond": "Separare",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "Nominare",
+        "StakingWithdrawUnbonded": "Ritiro non vincolato",
+        "StakingPayout": "Premi di pagamento",
+        "StakingChill": "Freddo",
+        "StakingSetController": "Imposta il controller",
+        "StakingSetPayee": "Imposta beneficiario"
     },
     "polkadotjs": {
         "noExtensions": "Nessuna estensione {PolkadotJs} trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -957,9 +990,6 @@
         "results": "Risultati",
         "rewards": "{symbol} ricompense"
     },
-    "staking": {
-        "title": "Staking"
-    },
     "historyErrorMessages": {
         "generalError": "Qualcosa è andato storto",
         "balances": {
@@ -1236,21 +1266,18 @@
     "disconnectWalletText": "Disconnetti",
     "connectEthereumWalletText": "Connetti il portafoglio {Ethereum}",
     "soraStaking": {
-        "title": "Puntata",
         "dropdownMenu": {
             "pendingRewards": "Premi in sospeso",
-            "validators": "Validatori",
             "controllerAccount": "Conto controllore"
         },
         "actions": {
             "claim": "Richiedi premi",
             "remove": "Rimuovi il paletto",
-            "start": "Inizia a scommettere",
             "more": "Punta di più"
         },
         "overview": {
-            "title": "Puntata SORA",
-            "description": "Punta i token XOR sulla rete SORA come nominatore per convalidare le transazioni e guadagnare premi in token VAL."
+            "title": "{Sora} Picchettamento",
+            "description": "Metti in staking i token {XOR} su {Sora} Network come nominatore per convalidare le transazioni e guadagnare ricompense in token {VAL}."
         },
         "newStake": {
             "title": "Inizia a scommettere",
@@ -1261,13 +1288,17 @@
             "selected": "{selected} \/ {total} selezionato",
             "recommended": "Validatori consigliati",
             "change": "Validatori di modifiche",
-            "select": "Seleziona validatori"
+            "select": "Seleziona validatori",
+            "next": "Il prossimo",
+            "alreadyNominated": "Validatori selezionati già nominati"
         },
         "validatorsList": {
             "search": "Ricerca...",
-            "filters": "Filtri",
             "name": "Nome",
-            "return": "Ritorno"
+            "noNominatedValidators": "Non hai validatori nominati",
+            "noValidators": "Non sono presenti validatori che soddisfano il filtro specificato",
+            "commission": "Commissione",
+            "commissionTooltip": "La commissione si riferisce alla commissione addebitata dai validatori per i loro servizi nel processo di staking. Questa commissione, espressa in percentuale, viene detratta dai premi di staking guadagnati dai nominatori prima della distribuzione. È importante notare che i validatori possono modificare le loro tariffe di commissione in qualsiasi momento"
         },
         "info": {
             "redeemable": "Riscattabile",
@@ -1275,7 +1306,6 @@
             "stakingBalance": "Saldo della puntata",
             "rewarded": "Premiato",
             "totalLiquidityStaked": "Liquidità totale investita",
-            "apy": "APY",
             "rewardToken": "Gettone ricompensa",
             "unstakingPeriod": "Periodo non impegnativo",
             "minimumStake": "Puntata minima",
@@ -1298,7 +1328,7 @@
                 },
                 "notOversubscribed": {
                     "name": "Non iscritti in eccesso",
-                    "description": "Conto entro il limite di allocazione, evita penalità per sottoscrizione eccessiva sullo staking di Polkadot."
+                    "description": "Account entro il limite di allocazione, evita penalità per oversubscription sullo staking di {Polkadot}."
                 },
                 "twoValidatorsPerIdentity": {
                     "name": "Limite di 2 validatori per identità",
@@ -1308,12 +1338,11 @@
         },
         "validatorsDialog": {
             "title": {
-                "default": "Validatori",
                 "edit": "Modifica i miei validatori"
             },
             "tabs": {
-                "userValidators": "I tuoi validatori",
-                "allValidators": "Tutti i validatori"
+                "user": "I tuoi validatori",
+                "all": "Tutti i validatori"
             }
         },
         "validatorsAttentionDialog": {
@@ -1327,12 +1356,14 @@
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Non ci sono premi in sospeso",
-            "payoutAll": "Pagamento tutto",
-            "information": "I validatori pagano i premi ogni 2-5 giorni. Puoi comunque pagarli tu stesso, soprattutto se i premi sono prossimi alla scadenza, ma pagherai la commissione."
+            "information": "I validatori pagano i premi ogni 2-5 giorni. Puoi comunque pagarli tu stesso, soprattutto se i premi sono prossimi alla scadenza, ma pagherai la commissione.",
+            "title": "Premi in sospeso",
+            "noSelectedRewards": "Seleziona i premi",
+            "payout": "Payout"
         },
         "selectValidatorsMode": {
             "title": "Stake con validatori suggeriti dall'algoritmo",
-            "description": "L'algoritmo di SORA Network ha selezionato un elenco di validatori consigliati in base ai criteri:",
+            "description": "L'algoritmo di rete {Sora} ha selezionato un elenco di validatori consigliati in base ai criteri:",
             "criteria": [
                 "Il più redditizio",
                 "Non iscritti in eccesso",
@@ -1344,6 +1375,11 @@
                 "suggested": "Punta con suggerito",
                 "manual": "Sceglierò io stesso i validatori"
             }
+        },
+        "claimRewardsDialog": {
+            "title": "Richiedi premi",
+            "checkRewards": "Controlla i premi per epoca e validatore",
+            "rewardsDestination": "Indirizzo di destinazione del premio"
         }
     },
     "collapseText": "Crollo",

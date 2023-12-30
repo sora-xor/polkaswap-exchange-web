@@ -815,9 +815,6 @@ export default {
     results: 'Results',
     rewards: '{symbol} rewards',
   },
-  staking: {
-    staking: 'Staking',
-  },
   soraStaking: {
     title: 'Staking',
     dropdownMenu: {
