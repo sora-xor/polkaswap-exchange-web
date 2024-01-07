@@ -69,10 +69,10 @@ $skeleton-label-width: 34px;
 
 .charts-container {
   .chart {
-    height: 283px;
+    height: 293px;
 
-    @include large-desktop {
-      height: 323px;
+    @include tablet {
+      height: 336px;
     }
 
     &-price {

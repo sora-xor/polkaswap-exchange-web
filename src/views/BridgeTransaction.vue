@@ -97,10 +97,10 @@
         :fiat-value="txExternalTransferFeeFiatValue"
       />
 
-      <div v-if="txSoraHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
+      <div v-if="txInternalHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
         <s-input
           :placeholder="getNetworkText('bridgeTransaction.transactionHash')"
-          :value="txSoraHashFormatted"
+          :value="txInternalHashFormatted"
           readonly
         />
         <s-button
@@ -109,7 +109,7 @@
           alternative
           icon="basic-copy-24"
           :tooltip="hashCopyTooltip"
-          @click="handleCopyAddress(txSoraHash, $event)"
+          @click="handleCopyAddress(txInternalHash, $event)"
         />
         <bridge-links-dropdown v-if="soraExplorerLinks.length" :links="soraExplorerLinks" />
       </div>
@@ -176,7 +176,7 @@
           {{ t('exceededAmountText', { amount: t('minAmountText') }) }}
         </template>
         <template v-else-if="isTxWaiting">{{ t('confirmTransactionText') }}</template>
-        <template v-else-if="isTxFailed && isRetryAvailable">{{ t('retryText') }}</template>
+        <template v-else-if="isTxFailed && txIsUnsigned">{{ t('retryText') }}</template>
       </s-button>
 
       <div v-if="txWaitingForApprove" class="transaction-approval-text">
@@ -192,7 +192,6 @@
 <script lang="ts">
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
 import { BridgeTxStatus, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { components, mixins, getExplorerLinks, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -207,7 +206,7 @@ import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/common/utils
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { CodecString, IBridgeTransaction } from '@sora-substrate/util';
-import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const FORMATTED_HASH_LENGTH = 24;
@@ -371,13 +370,15 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txSoraHash(): string {
-    // don't use Sora blockId in incoming direction
-    const blockId = this.isOutgoing ? this.txSoraBlockId : '';
-    return this.historyItem?.hash ?? blockId;
+    return this.historyItem?.hash ?? '';
   }
 
-  get txSoraHashFormatted(): string {
-    return this.formatAddress(this.txSoraHash, FORMATTED_HASH_LENGTH);
+  get txInternalHash(): string {
+    return this.txSoraHash || this.txSoraBlockId || this.txSoraId;
+  }
+
+  get txInternalHashFormatted(): string {
+    return this.formatAddress(this.txInternalHash, FORMATTED_HASH_LENGTH);
   }
 
   get txExternalBlockId(): string {
@@ -431,7 +432,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txIsFinilized(): boolean {
-    return this.isTxCompleted || (this.isTxFailed && !this.isRetryAvailable);
+    return !this.isTxPending && !this.isTxWaiting && !this.txIsUnsigned;
   }
 
   get headerIconClasses(): string {
@@ -452,7 +453,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get transactionStatus(): string {
-    if (this.isTxWaiting) {
+    if (this.txIsUnsigned || this.isTxWaiting) {
       return this.t('bridgeTransaction.statuses.waitingForConfirmation');
     }
     if (this.isTxFailed) {
@@ -460,9 +461,6 @@ export default class BridgeTransaction extends Mixins(
     }
     if (this.isTxCompleted) {
       return this.t('bridgeTransaction.statuses.done');
-    }
-    if (!this.txId) {
-      return this.t('bridgeTransaction.statuses.waitingForConfirmation');
     }
 
     return this.t('bridgeTransaction.statuses.pending') + '...';
@@ -516,10 +514,6 @@ export default class BridgeTransaction extends Mixins(
     return (
       !!this.externalNetworkType && [BridgeNetworkType.Eth, BridgeNetworkType.Evm].includes(this.externalNetworkType)
     );
-  }
-
-  get isRetryAvailable(): boolean {
-    return this.txIsUnsigned || this.isEvmTxType;
   }
 
   get isAnotherEvmAddress(): boolean {

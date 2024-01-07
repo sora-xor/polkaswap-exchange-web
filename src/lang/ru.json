@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} успешно получено",
             "EthBridgeIncoming": "{amount} {symbol} переведено из {Ethereum} в {Sora}",
             "EthBridgeOutgoing": "{amount} {symbol} переведено из {Sora} в {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Облигация {amount} {symbol}",
+            "StakingBond": "Облигация {amount} {symbol}",
+            "StakingBondExtra": "Бонусная дополнительная {amount} {symbol}",
+            "StakingUnbond": "Несвязанные {amount} {symbol}",
+            "StakingRebond": "Возобновлено {amount} {symbol}",
+            "StakingNominate": "Номинированные валидаторы",
+            "StakingWithdrawUnbonded": "Вывели {amount} {symbol}",
+            "StakingPayout": "Выплата вознаграждений",
+            "StakingChill": "Охлаждение",
+            "StakingSetController": "Установить контроллер {address}",
+            "StakingSetPayee": "Установить получателя платежа {address}"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Не удалось получить {symbol}",
             "EthBridgeIncoming": "Не удалось перевести {amount} {symbol} из {Ethereum} в {Sora}",
             "EthBridgeOutgoing": "Не удалось перевести {amount} {symbol} из {Sora} в {Ethereum}",
-            "SwapTransferBatch": "Не удалось {action} {amount} {symbol}"
+            "SwapTransferBatch": "Не удалось {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Не удалось внести залог {amount} {symbol}",
+            "StakingBond": "Не удалось внести залог {amount} {symbol}",
+            "StakingBondExtra": "Не удалось внести дополнительный залог {amount} {symbol}",
+            "StakingUnbond": "Не удалось отменить связь {amount} {symbol}",
+            "StakingRebond": "Не удалось повторно связать {amount} {symbol}",
+            "StakingNominate": "Не удалось назначить валидаторов.",
+            "StakingWithdrawUnbonded": "Не удалось вывести {amount} {symbol}",
+            "StakingPayout": "Не удалось выплатить вознаграждение",
+            "StakingChill": "Не удалось охладить",
+            "StakingSetController": "Не удалось установить контроллер {address}",
+            "StakingSetPayee": "Не удалось установить получателя платежа {address}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Получить награды",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Перевод"
+        "SwapTransferBatch": "{ADAR} Перевод",
+        "StakingBondAndNominate": "Бонд и номинация",
+        "StakingBond": "Внести",
+        "StakingBondExtra": "Бонд Экстра",
+        "StakingUnbond": "Вывести",
+        "StakingRebond": "Вернуть в стейк",
+        "StakingNominate": "Номинировать",
+        "StakingWithdrawUnbonded": "Вывод без обязательств",
+        "StakingPayout": "Выплаты вознаграждений",
+        "StakingChill": "Охлаждение",
+        "StakingSetController": "Установить контроллер",
+        "StakingSetPayee": "Установить получателя платежа"
     },
     "polkadotjs": {
         "noExtensions": "Расширение {PolkadotJs} не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
@@ -356,7 +389,7 @@
         "About": "О приложении",
         "Stats": "Статистика",
         "CreatePair": "Создать пару",
-        "StakingContainer": "Стекинг",
+        "StakingContainer": "Стейкинг",
         "Explore\/Container": "Исследовать",
         "SoraCard": "{Sora} карта"
     },
@@ -759,7 +792,8 @@
             "checkExtension": "{name} расширение занято, пожалуйста, проверьте его",
             "extensionLogin": "Пожалуйста, войдите в Ваше {name} расширение",
             "installExtension": "Расширение {name} не найдено. Пожалуйста, установите его! \n\n Расширение уже установлено? Пожалуйста, перезагрузите страницу",
-            "reloadPage": "Перезагрузить страницу"
+            "reloadPage": "Перезагрузить страницу",
+            "notAvailable": "{name} недоступен."
         }
     },
     "selectLanguageDialog": {
@@ -955,9 +989,6 @@
         "calculator": "Калькулятор",
         "results": "Результаты",
         "rewards": "{symbol} награды"
-    },
-    "staking": {
-        "title": "Стекинг"
     },
     "historyErrorMessages": {
         "generalError": "Что-то пошло не так",
@@ -1233,5 +1264,124 @@
     "exceededAmountText": "{amount} ограничена",
     "multipleRecipients": "Нескольким получателям",
     "disconnectWalletText": "Отключиться",
-    "connectEthereumWalletText": "Подключите кошелек {Ethereum}"
+    "connectEthereumWalletText": "Подключите кошелек {Ethereum}",
+    "soraStaking": {
+        "dropdownMenu": {
+            "pendingRewards": "Ожидаемые награды",
+            "controllerAccount": "Аккаунт контроллера"
+        },
+        "actions": {
+            "claim": "Получите награды",
+            "remove": "Удалить стейкинг",
+            "more": "Застейкать ещё"
+        },
+        "overview": {
+            "title": "{Sora} Стейкинг",
+            "description": "Застейкайте токены {XOR} в сети {Sora} в качестве номинатора, чтобы подтверждать транзакции, и получать вознаграждение в токенах {VAL}."
+        },
+        "newStake": {
+            "title": "Начать стейкинг",
+            "minStakeWarning": "Минимальный стейк для получения вознаграждения — {min} {symbol}"
+        },
+        "validators": {
+            "save": "Сохранить изменения",
+            "selected": "{selected} \/ {total} выбрано",
+            "recommended": "Рекомендуемые валидаторы",
+            "change": "Сменить валидаторов",
+            "select": "Выберите валидаторов",
+            "next": "Далее",
+            "alreadyNominated": "Выбранные валидаторы уже номинированы"
+        },
+        "validatorsList": {
+            "search": "Поиск...",
+            "name": "Имя",
+            "noNominatedValidators": "У вас нет номинированных валидаторов",
+            "noValidators": "Нет валидаторов, удовлетворяющих указанному фильтру",
+            "commission": "Комиссия",
+            "commissionTooltip": "Комиссия — это плата, взимаемая валидаторами за свои услуги в процессе размещения стейкинга. Эта комиссия, выраженная в процентах, вычитается из вознаграждений за стейкинг, полученных номинаторами перед распределением. Важно отметить, что валидаторы могут корректировать стейкинг комиссии в любое время."
+        },
+        "info": {
+            "redeemable": "Можно забрать",
+            "unstaking": "В процессе вывода",
+            "stakingBalance": "Баланс стейкинга",
+            "rewarded": "Заработано",
+            "totalLiquidityStaked": "Общая ликвидность в стейкинге",
+            "rewardToken": "Наградной токен",
+            "unstakingPeriod": "Период анстейкинга",
+            "minimumStake": "Минимальный стейк",
+            "nominators": "Номинаторы",
+            "validators": "Валидаторы",
+            "selectedValidators": "Выбранные валидаторы"
+        },
+        "validatorsFilterDialog": {
+            "title": "Фильтры",
+            "save": "Сохранить фильтр",
+            "reset": "Сбросить все",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Идентификация в сети",
+                    "description": "К учетной записи подключен хотя бы один контакт с идентификацией."
+                },
+                "notSlashed": {
+                    "name": "Нет штрафов",
+                    "description": "Не было никаких штрафов или сокращения средств стейкинга из-за неправомерного поведения или нарушений протокола."
+                },
+                "notOversubscribed": {
+                    "name": "Не превышено количество подписчиков",
+                    "description": "Учетная запись в пределах лимита распределения, позволяет избежать штрафов за превышение подписки на стейкинг {Polkadot}."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Ограничение 2 валидаторов на одну личность",
+                    "description": "Не более двух валидаторов на одну личность для обеспечения децентрализации и предотвращения захвата власти."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "edit": "Редактировать моих валидаторов"
+            },
+            "tabs": {
+                "user": "Ваши валидаторы",
+                "all": "Все валидаторы"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Внимание",
+            "description": [
+                "Предложения валидаторов с помощью алгоритма не являются финансовой консультацией или советом. Стейкинг — это деятельность с высоким риском, и предложенные с помощью алгоритма валидаторы не обязательно снижают этот риск.",
+                "Валидатор, предложенный алгоритмом, все равно может быть оштрафован. Валидатор, предложенный алгоритмом, также может изменить свои параметры (например, размер комиссии и т. д.) в любое время после того, как он был предложен и\/или выбран.",
+                "Вы можете потерять токены или награды по тем или иным причинам. Стейкайте токены и используйте предложенных валидаторов только по своему усмотрению, после проведения комплексной проверки и тщательного рассмотрения связанных с этим рисков."
+            ],
+            "confirm": "Да, я понимаю риск"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Ожидаемых наград нет",
+            "information": "Валидаторы выплачивают вознаграждения каждые 2-5 дней. Однако вы можете выплачивать их самостоятельно, особенно если срок действия вознаграждений близок, но при этом вы заплатите комиссию.",
+            "title": "Ожидаемые награды",
+            "noSelectedRewards": "Выберите награды",
+            "payout": "Выплатить"
+        },
+        "selectValidatorsMode": {
+            "title": "Стейкинг с валидаторами, предложенными алгоритмом",
+            "description": "Алгоритм сети {Sora} отобрал список рекомендуемых валидаторов на основе критериев:",
+            "criteria": [
+                "Самый прибыльный",
+                "Не превышено количество подписчиков",
+                "Наличие ончейн-идентификации",
+                "Нет штрафов",
+                "Не более 2 валидаторов на одну личность"
+            ],
+            "confirm": {
+                "suggested": "Застейкать с предложенными",
+                "manual": "Я сам выберу валидаторов"
+            }
+        },
+        "claimRewardsDialog": {
+            "title": "Получите награды",
+            "checkRewards": "Проверьте награды за эпоху и валидаторов",
+            "rewardsDestination": "Адрес для получения наград"
+        }
+    },
+    "collapseText": "Свернуть",
+    "expandText": "Развернуть"
 }

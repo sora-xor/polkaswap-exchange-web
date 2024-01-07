@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "Đã xác nhận quyền sở hữu {amount} {symbol} thành công",
             "EthBridgeIncoming": "Đã chuyển {amount} {symbol} từ {Ethereum} sang {Sora}",
             "EthBridgeOutgoing": "Đã chuyển {amount} {symbol} từ {Sora} sang {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Ngoại quan {amount} {symbol}",
+            "StakingBond": "Ngoại quan {amount} {symbol}",
+            "StakingBondExtra": "Khoản ngoại quan bổ sung {amount} {symbol}",
+            "StakingUnbond": "Chưa liên kết {amount} {symbol}",
+            "StakingRebond": "Đã hoàn lại {amount} {symbol}",
+            "StakingNominate": "Người xác nhận được đề cử",
+            "StakingWithdrawUnbonded": "Đã rút {amount} {symbol}",
+            "StakingPayout": "Phần thưởng thanh toán",
+            "StakingChill": "Sự ớn lạnh",
+            "StakingSetController": "Đặt bộ điều khiển {address}",
+            "StakingSetPayee": "Đặt người nhận thanh toán {address}"
         },
         "error": {
             "Transfer": "Không gửi được {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Không xác nhận được {symbol}",
             "EthBridgeIncoming": "Không chuyển được {amount} {symbol} từ {Ethereum} sang {Sora}",
             "EthBridgeOutgoing": "Không chuyển được {amount} {symbol} từ {Sora} sang {Ethereum}",
-            "SwapTransferBatch": "Không gửi được {action} {amount} {symbol}"
+            "SwapTransferBatch": "Không gửi được {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Không thể liên kết {amount} {symbol}",
+            "StakingBond": "Không thể liên kết {amount} {symbol}",
+            "StakingBondExtra": "Không thể liên kết thêm {amount} {symbol}",
+            "StakingUnbond": "Không hủy liên kết được {amount} {symbol}",
+            "StakingRebond": "Không thể liên kết lại {amount} {symbol}",
+            "StakingNominate": "Không thể chỉ định người xác thực",
+            "StakingWithdrawUnbonded": "Không rút được {amount} {symbol}",
+            "StakingPayout": "Không thể thanh toán phần thưởng",
+            "StakingChill": "Không thể thư giãn",
+            "StakingSetController": "Không thể đặt bộ điều khiển {address}",
+            "StakingSetPayee": "Không thể đặt người nhận thanh toán {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Nhận phần thưởng",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Chuyển"
+        "SwapTransferBatch": "{ADAR} Chuyển",
+        "StakingBondAndNominate": "Trái phiếu và đề cử",
+        "StakingBond": "Bond",
+        "StakingBondExtra": "Trái phiếu bổ sung",
+        "StakingUnbond": "Unbond",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "đề cử",
+        "StakingWithdrawUnbonded": "Rút tiền không ngoại quan",
+        "StakingPayout": "Phần thưởng thanh toán",
+        "StakingChill": "Sự ớn lạnh",
+        "StakingSetController": "Đặt bộ điều khiển",
+        "StakingSetPayee": "Đặt người nhận thanh toán"
     },
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) {PolkadotJs}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -759,7 +792,8 @@
             "checkExtension": "Phần mở rộng (extension) {name} đang gặp vấn đề, vui lòng kiểm tra nó.",
             "extensionLogin": "Vui lòng đăng nhập vào tiện ích (extension) {name}",
             "installExtension": "không tìm thấy phần mở rộng (extension) {name}. Vui lòng cài đặt trước.\nNếu đã cài phần mở rộng (extension) rồi, vui lòng tải lại trang này.",
-            "reloadPage": "Tải lại trang"
+            "reloadPage": "Tải lại trang",
+            "notAvailable": "{name} không có sẵn."
         }
     },
     "selectLanguageDialog": {
@@ -955,9 +989,6 @@
         "calculator": "Máy tính",
         "results": "Kết quả",
         "rewards": "phần thưởng {symbol}"
-    },
-    "staking": {
-        "title": "Staking"
     },
     "historyErrorMessages": {
         "generalError": "Đã xảy ra sự cố",
@@ -1233,5 +1264,124 @@
     "exceededAmountText": "vượt quá {amount}",
     "multipleRecipients": "Nhiều người nhận",
     "disconnectWalletText": "Ngắt kết nối",
-    "connectEthereumWalletText": "Kết nối ví {Ethereum}"
+    "connectEthereumWalletText": "Kết nối ví {Ethereum}",
+    "soraStaking": {
+        "dropdownMenu": {
+            "pendingRewards": "Phần thưởng đang chờ xử lý",
+            "controllerAccount": "Tài khoản điều khiển"
+        },
+        "actions": {
+            "claim": "Yêu cầu phần thưởng",
+            "remove": "Xóa cổ phần",
+            "more": "Đặt cược nhiều hơn"
+        },
+        "overview": {
+            "title": "{Sora} Staking",
+            "description": "Stake {XOR} token trên {Sora} Network với tư cách là người đề cử để xác thực giao dịch và kiếm phần thưởng token {VAL}."
+        },
+        "newStake": {
+            "title": "Bắt đầu đặt cược",
+            "minStakeWarning": "Số tiền đặt cược tối thiểu để nhận phần thưởng là {min} {symbol}"
+        },
+        "validators": {
+            "save": "Lưu thay đổi",
+            "selected": "{selected} \/ {total} đã chọn",
+            "recommended": "Trình xác thực được đề xuất",
+            "change": "Thay đổi trình xác thực",
+            "select": "Chọn người xác nhận",
+            "next": "Kế tiếp",
+            "alreadyNominated": "Người xác thực được chọn đã được đề cử"
+        },
+        "validatorsList": {
+            "search": "Tìm kiếm...",
+            "name": "Tên",
+            "noNominatedValidators": "Bạn không có bất kỳ người xác thực nào được chỉ định",
+            "noValidators": "Không có trình xác thực nào đáp ứng bộ lọc được chỉ định",
+            "commission": "Nhiệm vụ",
+            "commissionTooltip": "Hoa hồng đề cập đến khoản phí mà người xác nhận tính cho các dịch vụ của họ trong quá trình đặt cược. Khoản phí này, được biểu thị bằng phần trăm, được khấu trừ từ phần thưởng đặt cược mà người đề cử kiếm được trước khi phân phối. Điều quan trọng cần lưu ý là người xác thực có thể điều chỉnh tỷ lệ hoa hồng của họ bất cứ lúc nào"
+        },
+        "info": {
+            "redeemable": "Có thể đổi được",
+            "unstaking": "Hủy đặt cược",
+            "stakingBalance": "Số dư đặt cược",
+            "rewarded": "Được khen thưởng",
+            "totalLiquidityStaked": "Tổng thanh khoản đặt cược",
+            "rewardToken": "Mã thông báo phần thưởng",
+            "unstakingPeriod": "Khoảng thời gian không đặt cược",
+            "minimumStake": "cổ phần tối thiểu",
+            "nominators": "Người đề cử",
+            "validators": "Trình xác nhận",
+            "selectedValidators": "Trình xác thực đã chọn"
+        },
+        "validatorsFilterDialog": {
+            "title": "Bộ lọc",
+            "save": "Lưu bộ lọc",
+            "reset": "Đặt lại tất cả",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Nhận dạng trên chuỗi",
+                    "description": "Ít nhất một liên hệ nhận dạng được kết nối với tài khoản"
+                },
+                "notSlashed": {
+                    "name": "Không bị chém",
+                    "description": "Chưa trải qua bất kỳ hình phạt hoặc giảm số tiền đặt cọc nào do hành vi sai trái hoặc vi phạm giao thức."
+                },
+                "notOversubscribed": {
+                    "name": "Không đăng ký vượt mức",
+                    "description": "Tài khoản trong giới hạn phân bổ, tránh bị phạt đăng ký quá mức khi đặt cọc {Polkadot}."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Giới hạn 2 trình xác thực cho mỗi danh tính",
+                    "description": "Tối đa hai trình xác nhận cho mỗi danh tính để thúc đẩy phân cấp và ngăn chặn sự tập trung quyền lực."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "edit": "Chỉnh sửa Trình xác thực của tôi"
+            },
+            "tabs": {
+                "user": "Validator của bạn",
+                "all": "Tất cả người xác thực"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Chú ý",
+            "description": [
+                "Đề xuất của trình xác thực thuật toán không cấu thành tư vấn hoặc tư vấn tài chính. Đặt cược là một hoạt động có rủi ro cao và các đề xuất của trình xác thực thuật toán không nhất thiết phải giảm thiểu rủi ro này.",
+                "Trình xác thực được thuật toán đề xuất vẫn có thể bị cắt bỏ. Trình xác thực được thuật toán đề xuất cũng có thể thay đổi các tham số của họ (ví dụ: tỷ lệ hoa hồng, v.v.) bất kỳ lúc nào sau khi được đề xuất và\/hoặc chọn.",
+                "Bạn có thể mất token hoặc phần thưởng vì lý do này hoặc lý do khác. Chỉ đặt cọc mã thông báo và sử dụng các đề xuất của trình xác thực theo quyết định riêng của bạn sau khi tiến hành thẩm định và xem xét cẩn thận các rủi ro liên quan."
+            ],
+            "confirm": "Vâng, tôi hiểu rủi ro"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Không có phần thưởng đang chờ xử lý",
+            "information": "Người xác nhận thanh toán phần thưởng cứ sau 2-5 ngày. Tuy nhiên, bạn có thể tự mình chi trả, đặc biệt nếu phần thưởng sắp hết hạn nhưng bạn sẽ phải trả phí.",
+            "title": "Phần thưởng đang chờ",
+            "noSelectedRewards": "Chọn phần thưởng",
+            "payout": "Thanh toán"
+        },
+        "selectValidatorsMode": {
+            "title": "Cổ phần với các trình xác nhận được đề xuất bởi thuật toán",
+            "description": "Thuật toán mạng {Sora} đã chọn một danh sách các trình xác thực được đề xuất dựa trên các tiêu chí:",
+            "criteria": [
+                "Có lợi nhất",
+                "Không đăng ký vượt mức",
+                "Có danh tính trên chuỗi",
+                "Không bị chém",
+                "Giới hạn 2 trình xác thực cho mỗi danh tính"
+            ],
+            "confirm": {
+                "suggested": "Đặt cược với đề xuất",
+                "manual": "Tôi sẽ tự mình chọn người xác thực"
+            }
+        },
+        "claimRewardsDialog": {
+            "title": "Yêu cầu phần thưởng",
+            "checkRewards": "Kiểm tra phần thưởng theo thời đại và trình xác nhận",
+            "rewardsDestination": "Địa chỉ đích thưởng"
+        }
+    },
+    "collapseText": "Sụp đổ",
+    "expandText": "Mở rộng"
 }

@@ -41,7 +41,7 @@
         v-if="isLoggedIn"
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
-        :value="formattedNetworkFee"
+        :value="networkFeeFormatted"
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
@@ -153,7 +153,7 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
     return this.networkFees[Operation.Swap];
   }
 
-  get formattedNetworkFee(): string {
+  get networkFeeFormatted(): string {
     return this.formatCodecNumber(this.networkFee);
   }
 
@@ -179,18 +179,6 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   }
 }
 </script>
-
-<style lang="scss">
-@include info-line;
-.swap-info {
-  &-value.el-button {
-    margin-right: 0;
-    height: var(--s-font-size-small);
-    padding: 0;
-    color: inherit;
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 .swap-route {
