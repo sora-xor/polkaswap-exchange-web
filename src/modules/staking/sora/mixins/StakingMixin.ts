@@ -1,3 +1,5 @@
+import assert from 'assert';
+
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
@@ -109,11 +111,12 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   }
 
   get lockedFunds(): FPNumber {
-    const activeStake = this.accountLedger?.active || this.stakingInfo?.activeStake;
-
-    if (!activeStake) return FPNumber.ZERO;
-
-    return FPNumber.fromCodecValue(activeStake, this.stakingAsset?.decimals);
+    if (this.accountLedger) {
+      return FPNumber.fromCodecValue(this.accountLedger?.active, this.stakingAsset?.decimals);
+    } else if (this.stakingInfo) {
+      return new FPNumber(this.stakingInfo?.activeStake, this.stakingAsset?.decimals);
+    }
+    return FPNumber.ZERO;
   }
 
   get lockedFundsFiat(): Nullable<string> {
