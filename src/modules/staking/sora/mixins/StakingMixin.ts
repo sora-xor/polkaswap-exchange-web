@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
