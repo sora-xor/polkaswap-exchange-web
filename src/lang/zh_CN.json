@@ -2,7 +2,7 @@
     "closeText": "关闭",
     "backText": "返回",
     "createWalletText": "创建钱包",
-    "nameText": "名字",
+    "nameText": "名称",
     "nextText": "下一个",
     "importText": "导入",
     "settingsText": "设置",
@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "{amount} {symbol}成功申领",
             "EthBridgeIncoming": "将{amount} {symbol}从 {Ethereum} 转移到 {Sora}",
             "EthBridgeOutgoing": "将{amount} {symbol}从 {Sora} 转移到 {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "保税{amount} {symbol}",
+            "StakingBond": "保税{amount} {symbol}",
+            "StakingBondExtra": "保税额外{amount} {symbol}",
+            "StakingUnbond": "非保税{amount} {symbol}",
+            "StakingRebond": "重新粘合{amount} {symbol}",
+            "StakingNominate": "指定验证人",
+            "StakingWithdrawUnbonded": "提款{amount} {symbol}",
+            "StakingPayout": "支付奖励",
+            "StakingChill": "寒意",
+            "StakingSetController": "设置控制器{address}",
+            "StakingSetPayee": "设置收款人{address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "申领失败{symbol}",
             "EthBridgeIncoming": "将{amount} {symbol}从 {Ethereum} 转移到 {Sora} 失败",
             "EthBridgeOutgoing": "将{amount} {symbol}从 {Sora} 转移到 {Ethereum} 失败",
-            "SwapTransferBatch": "{action} {amount} {symbol}失败"
+            "SwapTransferBatch": "{action} {amount} {symbol}失败",
+            "StakingBondAndNominate": "绑定{amount} {symbol}失败",
+            "StakingBond": "绑定{amount} {symbol}失败",
+            "StakingBondExtra": "无法绑定额外的{amount} {symbol}",
+            "StakingUnbond": "无法解除绑定{amount} {symbol}",
+            "StakingRebond": "重新绑定{amount} {symbol}失败",
+            "StakingNominate": "未能提名验证人",
+            "StakingWithdrawUnbonded": "提现{amount} {symbol}失败",
+            "StakingPayout": "奖励发放失败",
+            "StakingChill": "未能冷却",
+            "StakingSetController": "无法设置控制器{address}",
+            "StakingSetPayee": "无法设置收款人{address}"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "申领奖励",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} 转账"
+        "SwapTransferBatch": "{ADAR} 转账",
+        "StakingBondAndNominate": "债券和提名",
+        "StakingBond": "绑定",
+        "StakingBondExtra": "邦德额外",
+        "StakingUnbond": "解绑",
+        "StakingRebond": "重新结合",
+        "StakingNominate": "提名",
+        "StakingWithdrawUnbonded": "非保税提款",
+        "StakingPayout": "支付奖励",
+        "StakingChill": "寒意",
+        "StakingSetController": "设置控制器",
+        "StakingSetPayee": "设置收款人"
     },
     "polkadotjs": {
         "noExtensions": "没有找到 {PolkadotJs} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -534,7 +567,7 @@
         "copy": "复制网络地址",
         "soraAddress": "{Sora} 地址",
         "ethereumAddress": "{Ethereum} 地址",
-        "limitMessage": "目前，有一个{type} {amount} {symbol}用于桥接，以确保 {Sora} 网络的稳定性和安全性。我们感谢您的理解。",
+        "limitMessage": "目前，为了确保{Sora}网络的稳定性和安全性，跨链桥转账的{type}金额为{amount} {symbol}。感谢您的理解。",
         "externalTransferFee": "{network} {XCM}费用",
         "externalTransferFeeTooltip": "当您向{network}网络发送桥接交易时，将从您传输的金额中收取少量费用"
     },
@@ -957,9 +990,6 @@
         "results": "结果",
         "rewards": "{symbol}奖励"
     },
-    "staking": {
-        "title": "质押"
-    },
     "historyErrorMessages": {
         "generalError": "出问题了",
         "balances": {
@@ -1094,10 +1124,10 @@
     "tooltips": {
         "roi": "{ROI}代表投资回报率。它的计算方法是将投资赚取的利润除以该投资的成本（以等值百分比表示）。",
         "tvl": "{TVL}代表总锁定价值。它表示以美元等值计算的在池中锁定的代币。",
-        "volume": "交易量是指在特定时间段内在网络上交易或交换的资产总量。交易量是衡量网络流动性和整体活动的重要指标。",
+        "volume": "成交量是指在特定时间段内在网络上交易或兑换的资产总量。成交量是衡量网络流动性和整体活动的重要指标。",
         "fees": "{Sora}区块链上的费用是指在网络上执行交易所产生的费用。这些费用以{Sora}网络的原生加密货币 XOR 支付。费用金额取决于正在执行的交易的复杂性和规模",
         "supply": "代币供应量是指已创建并在网络上流通的代币总数。代币供应量可能会根据网络上质押、销毁或转移的代币数量而波动。",
-        "transactions": "交易是指在网络上发送或接收数字资产的过程，包括流动性操作，以及掉期。",
+        "transactions": "交易是指在网络上发送或接收数字资产的过程，包括流动性操作和兑换。",
         "accounts": "帐户是在网络上保存用户资产的数字地址。每个帐户都与一个唯一的公共地址和一个私钥相关联，允许用户访问和管理他们的资产。",
         "bridgeTransactions": "{from} to {to} bridge 是指使用网桥在{from}和{to}网络之间转移资产的过程。该桥允许两个网络的互操作性，使用户能够在它们之间无缝移动资产。",
         "velocity": "Token velocity 是代币在一个时期（月）内平均更换账户的次数。它表明交易活动和流动性的水平。"
@@ -1236,21 +1266,18 @@
     "disconnectWalletText": "断开连接",
     "connectEthereumWalletText": "连接{Ethereum}钱包",
     "soraStaking": {
-        "title": "质押",
         "dropdownMenu": {
             "pendingRewards": "待奖励",
-            "validators": "验证者",
             "controllerAccount": "控制者账户"
         },
         "actions": {
             "claim": "领取奖励",
             "remove": "移除桩",
-            "start": "开始质押",
             "more": "质押更多"
         },
         "overview": {
-            "title": "SORA 质押",
-            "description": "作为提名人在 SORA 网络上质押 XOR 代币以验证交易并赚取 VAL 代币奖励。"
+            "title": "{Sora}质押",
+            "description": "在 {Sora} 网络上质押 {XOR} 代币作为提名人，以验证交易并获得 {VAL} 代币奖励。"
         },
         "newStake": {
             "title": "开始质押",
@@ -1261,13 +1288,17 @@
             "selected": "{selected} \/ {total}个已选",
             "recommended": "推荐验证器",
             "change": "更改验证器",
-            "select": "选择验证器"
+            "select": "选择验证器",
+            "next": "下一个",
+            "alreadyNominated": "选定的验证者已被提名"
         },
         "validatorsList": {
             "search": "搜索...",
-            "filters": "过滤器",
-            "name": "姓名",
-            "return": "返回"
+            "name": "名称",
+            "noNominatedValidators": "您没有任何指定的验证人",
+            "noValidators": "没有满足指定过滤器的验证器",
+            "commission": "委员会",
+            "commissionTooltip": "佣金是指验证者在质押过程中为其提供的服务收取的费用。该费用以百分比表示，在分配前从提名人获得的质押奖励中扣除。需要注意的是，验证者可以随时调整佣金率"
         },
         "info": {
             "redeemable": "可赎回",
@@ -1275,7 +1306,6 @@
             "stakingBalance": "质押余额",
             "rewarded": "奖励",
             "totalLiquidityStaked": "质押的总流动性",
-            "apy": "平均年产量",
             "rewardToken": "奖励代币",
             "unstakingPeriod": "质押期限",
             "minimumStake": "最低投注额",
@@ -1290,7 +1320,7 @@
             "filters": {
                 "hasIdentity": {
                     "name": "链上身份",
-                    "description": "至少一名身份联系人与该帐户相关联"
+                    "description": "至少一名身份联系人与该账户相关联"
                 },
                 "notSlashed": {
                     "name": "没有被砍掉",
@@ -1298,7 +1328,7 @@
                 },
                 "notOversubscribed": {
                     "name": "未超额认购",
-                    "description": "账户在分配限额内，避免 Polkadot 质押的超额认购处罚。"
+                    "description": "账户在分配限额内，避免了 {Polkadot} 质押的超额认购处罚。"
                 },
                 "twoValidatorsPerIdentity": {
                     "name": "每个身份最多有 2 个验证者",
@@ -1308,12 +1338,11 @@
         },
         "validatorsDialog": {
             "title": {
-                "default": "验证者",
                 "edit": "编辑我的验证器"
             },
             "tabs": {
-                "userValidators": "您的验证者",
-                "allValidators": "所有验证者"
+                "user": "您的验证者",
+                "all": "所有验证者"
             }
         },
         "validatorsAttentionDialog": {
@@ -1327,12 +1356,14 @@
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "没有待处理的奖励",
-            "payoutAll": "全部支付",
-            "information": "验证者每 2-5 天支付一次奖励。但是，您可以自行支付，特别是当奖励即将到期时，但您需要支付费用。"
+            "information": "验证者每 2-5 天支付一次奖励。但是，您可以自行支付，特别是当奖励即将到期时，但您需要支付费用。",
+            "title": "待定奖励",
+            "noSelectedRewards": "选择奖励",
+            "payout": "支付"
         },
         "selectValidatorsMode": {
             "title": "与算法建议的验证者进行质押",
-            "description": "SORA 网络算法根据以下标准选择了推荐验证者列表：",
+            "description": "{Sora} 网络算法根据以下标准选择了推荐的验证者列表：",
             "criteria": [
                 "最赚钱",
                 "未超额认购",
@@ -1342,8 +1373,13 @@
             ],
             "confirm": {
                 "suggested": "与建议的股份",
-                "manual": "我会自己挑选验证者"
+                "manual": "我会自己选择验证者"
             }
+        },
+        "claimRewardsDialog": {
+            "title": "领取奖励",
+            "checkRewards": "检查每个时代和验证者的奖励",
+            "rewardsDestination": "奖励目标地址"
         }
     },
     "collapseText": "崩溃",

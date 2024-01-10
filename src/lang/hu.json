@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} sikeres követelés",
             "EthBridgeIncoming": "{amount} {symbol} áthelyezve {Ethereum} {Sora}",
             "EthBridgeOutgoing": "{amount} {symbol} áthelyezve {Sora} {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Kötött {amount} {symbol}",
+            "StakingBond": "Kötött {amount} {symbol}",
+            "StakingBondExtra": "Kötött extra {amount} {symbol}",
+            "StakingUnbond": "Kötetlen {amount} {symbol}",
+            "StakingRebond": "Újrakötve {amount} {symbol}",
+            "StakingNominate": "Jelölt érvényesítők",
+            "StakingWithdrawUnbonded": "Visszavonva: {amount} {symbol}",
+            "StakingPayout": "Kifizetési jutalmak",
+            "StakingChill": "Hideg",
+            "StakingSetController": "A {address} vezérlő beállítása",
+            "StakingSetPayee": "Kedvezményezett {address} beállítása"
         },
         "error": {
             "Transfer": "Nem sikerült {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "A(z {symbol} igénylése sikertelen",
             "EthBridgeIncoming": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a {Ethereum} és a {Sora} címre",
             "EthBridgeOutgoing": "Nem sikerült átvinni a(z) {amount} {symbol} fájlt a {Sora} és a {Ethereum} címre",
-            "SwapTransferBatch": "Nem sikerült {action} {amount} {symbol}"
+            "SwapTransferBatch": "Nem sikerült {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Nem sikerült lekötni {amount} {symbol}",
+            "StakingBond": "Nem sikerült lekötni {amount} {symbol}",
+            "StakingBondExtra": "Nem sikerült a plusz {amount} {symbol} lekötése",
+            "StakingUnbond": "Nem sikerült leválasztani {amount} {symbol}",
+            "StakingRebond": "Nem sikerült újrakötni {amount} {symbol}",
+            "StakingNominate": "Nem sikerült kijelölni az érvényesítőket",
+            "StakingWithdrawUnbonded": "Nem sikerült visszavonni {amount} {symbol}",
+            "StakingPayout": "Nem sikerült a jutalmak kifizetése",
+            "StakingChill": "Nem sikerült lehűteni",
+            "StakingSetController": "Nem sikerült beállítani a( {address} vezérlőt",
+            "StakingSetPayee": "Nem sikerült beállítani a kedvezményezettet {address}"
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Jutalmak igénylése",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Átvitel"
+        "SwapTransferBatch": "{ADAR} Átvitel",
+        "StakingBondAndNominate": "Kötvény és jelölés",
+        "StakingBond": "Lekötés",
+        "StakingBondExtra": "Bond Extra",
+        "StakingUnbond": "Kötés nélküli",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "Jelölj",
+        "StakingWithdrawUnbonded": "Visszavonás Unbonded",
+        "StakingPayout": "Kifizetési jutalmak",
+        "StakingChill": "Hideg",
+        "StakingSetController": "Állítsa be a vezérlőt",
+        "StakingSetPayee": "Kedvezményezett beállítása"
     },
     "polkadotjs": {
         "noExtensions": "Nem találtunk {PolkadotJs} kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -957,9 +990,6 @@
         "results": "Eredmények",
         "rewards": "{symbol} jutalom"
     },
-    "staking": {
-        "title": "Letét"
-    },
     "historyErrorMessages": {
         "generalError": "Valami elromlott",
         "balances": {
@@ -1236,21 +1266,18 @@
     "disconnectWalletText": "Leválasztás",
     "connectEthereumWalletText": "Csatlakoztassa az {Ethereum} pénztárcát",
     "soraStaking": {
-        "title": "Staking",
         "dropdownMenu": {
             "pendingRewards": "Függőben lévő jutalmak",
-            "validators": "Validátorok",
             "controllerAccount": "Ellenőrző fiók"
         },
         "actions": {
             "claim": "Kérjen jutalmakat",
             "remove": "Távolítsa el a tétet",
-            "start": "Kezdje el a tétet",
             "more": "Tételj többet"
         },
         "overview": {
-            "title": "SORA Staking",
-            "description": "Tételjen XOR tokeneket a SORA hálózaton jelölőként a tranzakciók érvényesítéséhez és a VAL token jutalmak megszerzéséhez."
+            "title": "{Sora} Staking",
+            "description": "Tegyen {XOR} tokeneket a {Sora} hálózaton jelölőként, hogy érvényesítse a tranzakciókat és {VAL} tokenjutalmakat szerezzen."
         },
         "newStake": {
             "title": "Kezdje el a tétet",
@@ -1261,13 +1288,17 @@
             "selected": "{selected} \/ {total} kiválasztva",
             "recommended": "Ajánlott érvényesítők",
             "change": "Változtassa meg az érvényesítőket",
-            "select": "Válasszon érvényesítőket"
+            "select": "Válasszon érvényesítőket",
+            "next": "Következő",
+            "alreadyNominated": "A kiválasztott érvényesítőket már jelölték"
         },
         "validatorsList": {
             "search": "Keresés...",
-            "filters": "Szűrők",
             "name": "Név",
-            "return": "Visszatérés"
+            "noNominatedValidators": "Nincsenek kijelölt érvényesítői",
+            "noValidators": "Nincsenek a megadott szűrőt kielégítő érvényesítők",
+            "commission": "jutalék",
+            "commissionTooltip": "A jutalék arra a díjra vonatkozik, amelyet az érvényesítők felszámítanak a licitálási folyamat során nyújtott szolgáltatásaikért. Ezt a százalékban kifejezett díjat levonják a jelölők által a kiosztás előtt szerzett tét jutalmakból. Fontos megjegyezni, hogy az érvényesítők bármikor módosíthatják a jutalék mértékét"
         },
         "info": {
             "redeemable": "Beváltható",
@@ -1275,7 +1306,6 @@
             "stakingBalance": "Egyensúly kockáztatása",
             "rewarded": "Jutalmazott",
             "totalLiquidityStaked": "Teljes téttel rendelkező likviditás",
-            "apy": "APY",
             "rewardToken": "Jutalom token",
             "unstakingPeriod": "Felszabadító időszak",
             "minimumStake": "Minimális tét",
@@ -1298,7 +1328,7 @@
                 },
                 "notOversubscribed": {
                     "name": "Nincs túljelentkezés",
-                    "description": "A fiók a kiosztási korláton belül van, így elkerülhető a Polkadot-kockázat túljelentkezési büntetése."
+                    "description": "A foglalási korláton belüli fiók elkerüli a {Polkadot} stakingre vonatkozó túljegyzési büntetéseket."
                 },
                 "twoValidatorsPerIdentity": {
                     "name": "Identitásonként legfeljebb 2 érvényesítő használható",
@@ -1308,12 +1338,11 @@
         },
         "validatorsDialog": {
             "title": {
-                "default": "Validátorok",
                 "edit": "Szerkessze az Ellenőrzőket"
             },
             "tabs": {
-                "userValidators": "Az Ön érvényesítői",
-                "allValidators": "Minden érvényesítő"
+                "user": "A te validátoraid",
+                "all": "Minden érvényesítő"
             }
         },
         "validatorsAttentionDialog": {
@@ -1327,12 +1356,14 @@
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Nincsenek függőben lévő jutalmak",
-            "payoutAll": "Az összes kifizetése",
-            "information": "Az érvényesítők 2-5 naponta fizetik ki a jutalmakat. Azonban saját maga is kifizetheti őket, különösen, ha a jutalmak lejártához közelednek, de a díjat Önnek kell fizetnie."
+            "information": "Az érvényesítők 2-5 naponta fizetik ki a jutalmakat. Azonban saját maga is kifizetheti őket, különösen, ha a jutalmak lejártához közelednek, de a díjat Önnek kell fizetnie.",
+            "title": "Függőben lévő jutalmak",
+            "noSelectedRewards": "Válassza ki a jutalmakat",
+            "payout": "Kifizetés"
         },
         "selectValidatorsMode": {
             "title": "Tét az algoritmus által javasolt érvényesítőkkel",
-            "description": "A SORA Network algoritmus a következő kritériumok alapján kiválasztotta az ajánlott érvényesítők listáját:",
+            "description": "A {Sora} hálózati algoritmus a kritériumok alapján választotta ki az ajánlott validátorok listáját:",
             "criteria": [
                 "Legjövedelmezőbb",
                 "Nincs túljelentkezés",
@@ -1344,6 +1375,11 @@
                 "suggested": "Tét javasolt",
                 "manual": "Az érvényesítőket magam választom ki"
             }
+        },
+        "claimRewardsDialog": {
+            "title": "Kérjen jutalmakat",
+            "checkRewards": "Ellenőrizze a jutalmakat korszakonként és érvényesítőnként",
+            "rewardsDestination": "Jutalmak célcíme"
         }
     },
     "collapseText": "Összeomlás",

@@ -7,13 +7,11 @@
       <s-tabs v-if="hasTabs" class="tabs" v-model="mode" type="rounded">
         <s-tab v-for="tab in tabs" :key="tab" :label="t(`soraStaking.validatorsDialog.tabs.${tab}`)" :name="tab" />
       </s-tabs>
-      <validators-list
-        :mode="mode"
-        :validators="validators"
-        :selected-validators="selectedValidators"
-        @update:selected="selectValidators"
-      />
-      <div class="bottom">
+      <validators-list :mode="mode" @update:selected="selectValidators" />
+      <div v-if="showConfirmButton" class="bottom">
+        <s-button class="confirm" type="primary" :disabled="confirmDisabled" @click="handleConfirm">
+          {{ confirmText }}
+        </s-button>
         <div class="info" v-if="isEditMode">
           <info-line
             :label="t('networkFeeText')"
@@ -24,15 +22,6 @@
             is-formatted
           />
         </div>
-        <s-button
-          v-if="showConfirmButton"
-          class="confirm"
-          type="primary"
-          :disabled="confirmDisabled"
-          @click="handleConfirm"
-        >
-          {{ confirmText }}
-        </s-button>
       </div>
     </div>
     <select-validators-mode v-else @recommended="handleRecommendedMode" @selected="handleSelectedMode" />
@@ -81,17 +70,18 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
 
   @Watch('visible')
   private resetMode() {
-    this.setMode(ValidatorsListMode.USER);
+    if (this.visible) {
+      this.setMode(ValidatorsListMode.USER);
+      this.selectValidators([]);
+    }
   }
 
   get networkFee() {
-    return this.nominateNetworkFee || '0';
+    return this.nominateNetworkFee ?? '0';
   }
 
   get title(): string {
-    return this.hasTabs
-      ? this.t('soraStaking.validatorsDialog.title.default')
-      : this.t('soraStaking.validatorsDialog.title.edit');
+    return this.hasTabs ? this.t('soraStaking.info.validators') : this.t('soraStaking.validatorsDialog.title.edit');
   }
 
   get hasBackButton(): boolean {
@@ -151,7 +141,7 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
   }
 
   get confirmDisabled(): boolean {
-    if (this.isInsufficientXorForFee) {
+    if (this.isInsufficientXorForFee && this.mode !== ValidatorsListMode.USER) {
       return true;
     }
     if (this.mode === ValidatorsListMode.RECOMMENDED) {
@@ -218,13 +208,18 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
 }
 
 .bottom {
-  position: absolute;
-  width: calc(100% - 48px);
+  position: relative;
+  width: 100%;
   bottom: var(--s-size-mini);
+  margin-top: -16px;
+  margin-bottom: -28px;
 }
 
 .confirm {
   width: 100%;
+}
+
+.info {
   margin-top: 12px;
 }
 </style>

@@ -4,7 +4,7 @@
     :stopped="!activeStatus"
     :apr="apr"
     :reward-asset="rewardAsset"
-    @click="handleBadgeClick"
+    @click.native="handleBadgeClick"
   />
 </template>
 

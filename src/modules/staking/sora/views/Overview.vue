@@ -61,7 +61,7 @@
         type="primary"
         @click="stakeNew"
       >
-        {{ t('soraStaking.actions.start') }}
+        {{ t('soraStaking.newStake.title') }}
       </s-button>
       <s-button
         v-if="stakingInitialized"
@@ -105,7 +105,7 @@
           :label="t('soraStaking.info.totalLiquidityStaked')"
           :value="totalStakedFormatted"
         />
-        <info-line v-if="!stakingInitialized" :label="t('soraStaking.info.apy')" :value="maxApy + '%'" />
+        <info-line v-if="!stakingInitialized" :label="TranslationConsts.APY" :value="maxApy + '%'" />
         <info-line :label="t('soraStaking.info.rewardToken')" :value="rewardAsset?.symbol" />
         <info-line v-if="unbondPeriod" :label="t('soraStaking.info.unstakingPeriod')" :value="unbondPeriodFormatted" />
         <info-line
@@ -221,15 +221,15 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
     return this.rewardedFunds.toLocaleString();
   }
 
-  private getDropdownMenuItems(isDropdown = false): Array<MenuItem> {
+  private getDropdownMenuItems(): Array<MenuItem> {
     return [
       {
         value: DropdownMenuItemType.PendingRewards,
-        text: this.t('soraStaking.dropdownMenu.pendingRewards'),
+        text: this.t('soraStaking.pendingRewardsDialog.title'),
       },
       {
         value: DropdownMenuItemType.Validators,
-        text: this.t('soraStaking.dropdownMenu.validators'),
+        text: this.t('soraStaking.info.validators'),
       },
       // {
       //   value: DropdownMenuItemType.ControllerAccount,
@@ -308,7 +308,7 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
       return;
     }
 
-    const nominatorsCount = await fetchData(this.activeEra - 1);
+    const nominatorsCount = await fetchData();
 
     if (nominatorsCount === undefined || nominatorsCount === null) {
       return;
@@ -334,12 +334,6 @@ $logo-size: 64px;
 
 <style lang="scss" scoped>
 $logo-size: 64px;
-
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
 
 .container {
   position: relative;
@@ -391,12 +385,10 @@ h1 {
 p {
   color: var(--s-color-base-content-secondary);
   text-align: center;
-  font-feature-settings: 'case' on, 'clig' off, 'liga' off;
-  font-family: Sora;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 150%; /* 24px */
+  line-height: 150%;
   letter-spacing: -0.32px;
 }
 

@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} har gjort anspråk",
             "EthBridgeIncoming": "Överförde {amount} {symbol} från {Ethereum} till {Sora}",
             "EthBridgeOutgoing": "Överförde {amount} {symbol} från {Sora} till {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Bondad {amount} {symbol}",
+            "StakingBond": "Bondad {amount} {symbol}",
+            "StakingBondExtra": "Bondad extra {amount} {symbol}",
+            "StakingUnbond": "Obundet {amount} {symbol}",
+            "StakingRebond": "Återbundet {amount} {symbol}",
+            "StakingNominate": "Nominerade validatorer",
+            "StakingWithdrawUnbonded": "Tog ut {amount} {symbol}",
+            "StakingPayout": "Utbetalningsbelöningar",
+            "StakingChill": "Kyla",
+            "StakingSetController": "Ställ in kontroller {address}",
+            "StakingSetPayee": "Ange betalningsmottagare {address}"
         },
         "error": {
             "Transfer": "Det gick inte att {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Det gick inte att göra anspråk på {symbol}",
             "EthBridgeIncoming": "Det gick inte att överföra {amount} {symbol} från {Ethereum} till {Sora}",
             "EthBridgeOutgoing": "Det gick inte att överföra {amount} {symbol} från {Sora} till {Ethereum}",
-            "SwapTransferBatch": "Det gick inte att {action} {amount} {symbol}"
+            "SwapTransferBatch": "Det gick inte att {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Det gick inte att binda {amount} {symbol}",
+            "StakingBond": "Det gick inte att binda {amount} {symbol}",
+            "StakingBondExtra": "Det gick inte att binda extra {amount} {symbol}",
+            "StakingUnbond": "Det gick inte att frigöra bindningen {amount} {symbol}",
+            "StakingRebond": "Det gick inte att återbinda {amount} {symbol}",
+            "StakingNominate": "Det gick inte att nominera validerare",
+            "StakingWithdrawUnbonded": "Det gick inte att ta ut {amount} {symbol}",
+            "StakingPayout": "Det gick inte att betala ut belöningar",
+            "StakingChill": "Det gick inte att kyla",
+            "StakingSetController": "Det gick inte att ställa in controller {address}",
+            "StakingSetPayee": "Det gick inte att ange betalningsmottagaren {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Gör Anspråk på Belöningar",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Överför"
+        "SwapTransferBatch": "{ADAR} Överför",
+        "StakingBondAndNominate": "Bond och nominera",
+        "StakingBond": "Bond",
+        "StakingBondExtra": "Bond Extra",
+        "StakingUnbond": "Unbond",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "Nominera",
+        "StakingWithdrawUnbonded": "Dra tillbaka Obundet",
+        "StakingPayout": "Utbetalningsbelöningar",
+        "StakingChill": "Kyla",
+        "StakingSetController": "Ställ in styrenhet",
+        "StakingSetPayee": "Ange betalningsmottagare"
     },
     "polkadotjs": {
         "noExtensions": "Inget {PolkadotJs} tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -957,9 +990,6 @@
         "results": "Resultat",
         "rewards": "{symbol} belöningar"
     },
-    "staking": {
-        "title": "Utsättning"
-    },
     "historyErrorMessages": {
         "generalError": "Något gick fel",
         "balances": {
@@ -1236,21 +1266,18 @@
     "disconnectWalletText": "Koppla ifrån",
     "connectEthereumWalletText": "Anslut {Ethereum} plånbok",
     "soraStaking": {
-        "title": "Utsättning",
         "dropdownMenu": {
             "pendingRewards": "Väntande belöningar",
-            "validators": "Validatorer",
             "controllerAccount": "Controllerkonto"
         },
         "actions": {
             "claim": "Gör anspråk på belöningar",
             "remove": "Ta bort insatsen",
-            "start": "Börja staka",
             "more": "Satsa mer"
         },
         "overview": {
-            "title": "SORA Staking",
-            "description": "Satsa XOR-tokens på SORA Network som en nominator för att validera transaktioner och tjäna VAL-tokenbelöningar."
+            "title": "{Sora} Staking",
+            "description": "Satsa {XOR}-tokens på {Sora} Network som nominator för att validera transaktioner och tjäna {VAL}-tokenbelöningar."
         },
         "newStake": {
             "title": "Börja staka",
@@ -1261,13 +1288,17 @@
             "selected": "{selected} \/ {total} markerade",
             "recommended": "Rekommenderade validatorer",
             "change": "Byt validatorer",
-            "select": "Välj validerare"
+            "select": "Välj validerare",
+            "next": "Nästa",
+            "alreadyNominated": "Utvalda validerare redan nominerade"
         },
         "validatorsList": {
             "search": "Sök...",
-            "filters": "Filter",
-            "name": "namn",
-            "return": "Lämna tillbaka"
+            "name": "Namn",
+            "noNominatedValidators": "Du har inga nominerade validerare",
+            "noValidators": "Det finns inga validerare som uppfyller det angivna filtret",
+            "commission": "Provision",
+            "commissionTooltip": "Kommissionen hänvisar till den avgift som tas ut av validerare för sina tjänster i insatsprocessen. Denna avgift, uttryckt i procent, dras av från insatsbelöningarna som intjänats av nominatorer före utdelning. Det är viktigt att notera att validerare kan justera sina provisionssatser när som helst"
         },
         "info": {
             "redeemable": "Inlösbar",
@@ -1275,7 +1306,6 @@
             "stakingBalance": "Satsa balans",
             "rewarded": "Belönad",
             "totalLiquidityStaked": "Totalt insatt likviditet",
-            "apy": "APY",
             "rewardToken": "Belöningstoken",
             "unstakingPeriod": "Obetydlig period",
             "minimumStake": "Minsta insats",
@@ -1298,7 +1328,7 @@
                 },
                 "notOversubscribed": {
                     "name": "Inte övertecknat",
-                    "description": "Konto inom tilldelningsgränsen, undviker överteckningsstraff på Polkadot-insats."
+                    "description": "Konto inom allokeringsgränsen, undviker överteckningsavgifter på {Polkadot} staking."
                 },
                 "twoValidatorsPerIdentity": {
                     "name": "Begränsning av 2 validerare per identitet",
@@ -1308,12 +1338,11 @@
         },
         "validatorsDialog": {
             "title": {
-                "default": "Validatorer",
                 "edit": "Redigera mina validerare"
             },
             "tabs": {
-                "userValidators": "Dina validerare",
-                "allValidators": "Alla validerare"
+                "user": "Dina validerare",
+                "all": "Alla validerare"
             }
         },
         "validatorsAttentionDialog": {
@@ -1327,12 +1356,14 @@
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Det finns inga väntande belöningar",
-            "payoutAll": "Utbetalning allt",
-            "information": "Validatorer betalar ut belöningarna var 2-5 dag. Du kan dock betala ut dem själv, särskilt om belöningar är nära att löpa ut, men du kommer att betala avgiften."
+            "information": "Validatorer betalar ut belöningarna var 2-5 dag. Du kan dock betala ut dem själv, särskilt om belöningar är nära att löpa ut, men du kommer att betala avgiften.",
+            "title": "Väntande belöningar",
+            "noSelectedRewards": "Välj belöningar",
+            "payout": "Utbetalning"
         },
         "selectValidatorsMode": {
             "title": "Insats med validatorer som föreslagits av algoritmen",
-            "description": "SORA Network-algoritmen har valt en lista med rekommenderade validatorer baserat på kriterierna:",
+            "description": "{Sora} nätverksalgoritm har valt en lista över rekommenderade validerare baserat på kriterierna:",
             "criteria": [
                 "Mest lönsamt",
                 "Inte övertecknat",
@@ -1344,6 +1375,11 @@
                 "suggested": "Insats med föreslagna",
                 "manual": "Jag väljer validatorerna själv"
             }
+        },
+        "claimRewardsDialog": {
+            "title": "Gör anspråk på belöningar",
+            "checkRewards": "Kontrollera belöningar per era och validator",
+            "rewardsDestination": "Destinationsadress för belöningar"
         }
     },
     "collapseText": "Kollaps",

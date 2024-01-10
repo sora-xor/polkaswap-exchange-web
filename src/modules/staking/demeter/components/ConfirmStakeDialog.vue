@@ -118,6 +118,7 @@ import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
+import { state } from '@/store/decorators';
 import type { DemeterLiquidityParams } from '@/store/demeterFarming/types';
 import { getMaxValue, isXorAccountAsset } from '@/utils';
 
@@ -138,6 +139,8 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 })
 export default class StakeDialog extends Mixins(PoolCardMixin, mixins.DialogMixin, mixins.LoadingMixin) {
   @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
+
+  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
 
   @Watch('visible')
   private resetValue() {
@@ -239,6 +242,9 @@ export default class StakeDialog extends Mixins(PoolCardMixin, mixins.DialogMixi
   }
 
   get isMaxButtonAvailable(): boolean {
+    if (this.shouldBalanceBeHidden) {
+      return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
+    }
     if (!this.poolAsset) return false;
 
     const fee = FPNumber.fromCodecValue(this.networkFee);

@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} beere ni aṣeyọri",
             "EthBridgeIncoming": "Gbigbe {amount} {symbol} lati {Ethereum} si {Sora}",
             "EthBridgeOutgoing": "Gbigbe {amount} {symbol} lati {Sora} si {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Ti di {amount} {symbol}",
+            "StakingBond": "Ti di {amount} {symbol}",
+            "StakingBondExtra": "Idekun afikun {amount} {symbol}",
+            "StakingUnbond": "Ailokun {amount} {symbol}",
+            "StakingRebond": "Atunpo {amount} {symbol}",
+            "StakingNominate": "Awọn olufọwọsi ti a yan",
+            "StakingWithdrawUnbonded": "Ti yọkuro {amount} {symbol}",
+            "StakingPayout": "Payout ere",
+            "StakingChill": "Bami",
+            "StakingSetController": "Ṣeto oludari {address}",
+            "StakingSetPayee": "Ṣeto payee {address}"
         },
         "error": {
             "Transfer": "Kuna lati {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Kuna lati beere {symbol}",
             "EthBridgeIncoming": "Kuna lati gbe {amount} {symbol} lati {Ethereum} si {Sora}",
             "EthBridgeOutgoing": "Kuna lati gbe {amount} {symbol} lati {Sora} si {Ethereum}",
-            "SwapTransferBatch": "Kuna lati {action} {amount} {symbol}"
+            "SwapTransferBatch": "Kuna lati {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Kuna lati so pọ {amount} {symbol}",
+            "StakingBond": "Kuna lati so pọ {amount} {symbol}",
+            "StakingBondExtra": "Kuna lati so afikun {amount} {symbol}",
+            "StakingUnbond": "Kuna lati yọkuro {amount} {symbol}",
+            "StakingRebond": "O kuna lati tun so pọ {amount} {symbol}",
+            "StakingNominate": "Kuna lati yan awọn afọwọsi",
+            "StakingWithdrawUnbonded": "Kuna lati yọkuro {amount} {symbol}",
+            "StakingPayout": "Kuna lati san awọn ere",
+            "StakingChill": "Kuna lati biba",
+            "StakingSetController": "Kuna lati ṣeto oludari {address}",
+            "StakingSetPayee": "Kuna lati ṣeto payee {address}"
         },
         "ReferralReserveXor": "Iwe adehun XOR",
         "ReferralUnreserveXor": "Yọ XOR kuro",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Beere Awọn ere",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Firanśe"
+        "SwapTransferBatch": "{ADAR} Firanśe",
+        "StakingBondAndNominate": "Bond ati Nominate",
+        "StakingBond": "Dipọ",
+        "StakingBondExtra": "Bond Afikun",
+        "StakingUnbond": "Yọọ",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "Yan",
+        "StakingWithdrawUnbonded": "Yiyọ kuro Unbonded",
+        "StakingPayout": "Payout Awọn ere",
+        "StakingChill": "Bami",
+        "StakingSetController": "Ṣeto Adarí",
+        "StakingSetPayee": "Ṣeto Payee"
     },
     "polkadotjs": {
         "noExtensions": "A ko rii itẹsiwaju {PolkadotJs}. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
@@ -957,9 +990,6 @@
         "results": "Esi",
         "rewards": "{symbol} ere"
     },
-    "staking": {
-        "title": "Staking"
-    },
     "historyErrorMessages": {
         "generalError": "Nnkan o lo daadaa",
         "balances": {
@@ -1236,21 +1266,18 @@
     "disconnectWalletText": "Ge asopọ",
     "connectEthereumWalletText": "So {Ethereum} apamọwọ",
     "soraStaking": {
-        "title": "Staking",
         "dropdownMenu": {
             "pendingRewards": "Awọn ere ni isunmọtosi",
-            "validators": "Awọn olufọwọsi",
             "controllerAccount": "Iroyin oludari"
         },
         "actions": {
             "claim": "Awọn ere ẹtọ",
             "remove": "Yọ igi kuro",
-            "start": "Bẹrẹ staking",
             "more": "Gbero diẹ sii"
         },
         "overview": {
-            "title": "SORA Staking",
-            "description": "Ṣe awọn ami XOR lori Nẹtiwọọki SORA gẹgẹbi oludiyan lati fọwọsi awọn iṣowo ati jo'gun awọn ere ami ami VAL."
+            "title": "{Sora} Staking",
+            "description": "Fi àmì {XOR} sí orí Nẹ́tíwọ́ọ̀kì {Sora} gẹ́gẹ́ bí olùyàn láti fọwọ́ sí ìdúnàádúrà àti láti jèrè àwọn èrè àmì {VAL}."
         },
         "newStake": {
             "title": "Bẹrẹ staking",
@@ -1261,13 +1288,17 @@
             "selected": "{selected} \/ {total} ti yan",
             "recommended": "Niyanju afọwọsi",
             "change": "Yi awọn afọwọsi",
-            "select": "Yan awọn olufọwọsi"
+            "select": "Yan awọn olufọwọsi",
+            "next": "Itele",
+            "alreadyNominated": "Awọn olufọwọsi ti a ti yan tẹlẹ ti yan tẹlẹ"
         },
         "validatorsList": {
             "search": "Wa...",
-            "filters": "Ajọ",
             "name": "Oruko",
-            "return": "Pada"
+            "noNominatedValidators": "O ko ni eyikeyi ti yan afọwọsi",
+            "noValidators": "Ko si awọn olufọwọsi ti o ni itẹlọrun àlẹmọ pàtó kan",
+            "commission": "Igbimọ",
+            "commissionTooltip": "Igbimọ tọka si ọya ti o gba agbara nipasẹ awọn afọwọsi fun awọn iṣẹ wọn ni ilana isamisi. Ọya yii, ti a ṣalaye bi ipin kan, ni a yọkuro lati awọn ere isinmọ ti o jẹ nipasẹ awọn yiyan ṣaaju pinpin. O ṣe pataki lati ṣe akiyesi pe awọn olufọwọsi le ṣatunṣe awọn oṣuwọn igbimọ wọn nigbakugba"
         },
         "info": {
             "redeemable": "O le rapada",
@@ -1275,7 +1306,6 @@
             "stakingBalance": "Staking iwontunwonsi",
             "rewarded": "Esan",
             "totalLiquidityStaked": "Lapapọ oloomi staked",
-            "apy": "APY",
             "rewardToken": "Aami ere",
             "unstakingPeriod": "Àkókò tí a kọ sílẹ̀",
             "minimumStake": "Iwọn to kere julọ",
@@ -1298,7 +1328,7 @@
                 },
                 "notOversubscribed": {
                     "name": "Ko ṣe alabapin pupọ",
-                    "description": "Iroyin laarin opin ipin, yago fun awọn ifiyaje ṣiṣe alabapin lori Polkadot staking."
+                    "description": "Àkọsílẹ̀ láàárín òpin ìpín, yẹra fún ìjìyà àṣejù lórí {Polkadot} dúró."
                 },
                 "twoValidatorsPerIdentity": {
                     "name": "Ifilelẹ ti 2 validators fun idanimo",
@@ -1308,12 +1338,11 @@
         },
         "validatorsDialog": {
             "title": {
-                "default": "Awọn olufọwọsi",
                 "edit": "Ṣatunkọ Mi Validators"
             },
             "tabs": {
-                "userValidators": "Awọn olufọwọsi rẹ",
-                "allValidators": "Gbogbo validators"
+                "user": "Awọn olufọwọsi rẹ",
+                "all": "Gbogbo validators"
             }
         },
         "validatorsAttentionDialog": {
@@ -1327,12 +1356,14 @@
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Ko si ere ni isunmọtosi",
-            "payoutAll": "Payout gbogbo",
-            "information": "Validators san awọn ere gbogbo 2-5 ọjọ. Sibẹsibẹ, o le san wọn funrararẹ, paapaa ti awọn ere ba sunmọ ipari, ṣugbọn iwọ yoo san owo naa."
+            "information": "Validators san awọn ere gbogbo 2-5 ọjọ. Sibẹsibẹ, o le san wọn funrararẹ, paapaa ti awọn ere ba sunmọ ipari, ṣugbọn iwọ yoo san owo naa.",
+            "title": "Awọn ere ni isunmọtosi",
+            "noSelectedRewards": "Yan awọn ere",
+            "payout": "Owó ìsanwó"
         },
         "selectValidatorsMode": {
             "title": "Iṣere pẹlu awọn olufọwọsi daba nipasẹ algoridimu",
-            "description": "Alugoridimu Nẹtiwọọki SORA ti yan atokọ ti awọn afọwọsi ti a ṣeduro ti o da lori awọn ibeere:",
+            "description": "{Sora} algorithm nẹtiwọọki ti yan akojọ kan ti awọn validators ti a ṣe iṣeduro ti o da lori awọn ilana:",
             "criteria": [
                 "Julọ ni ere",
                 "Ko ṣe alabapin pupọ",
@@ -1344,6 +1375,11 @@
                 "suggested": "Iṣere pẹlu daba",
                 "manual": "Emi yoo yan awọn olufọwọsi funrararẹ"
             }
+        },
+        "claimRewardsDialog": {
+            "title": "Awọn ere ẹtọ",
+            "checkRewards": "Ṣayẹwo awọn ere fun akoko ati afọwọsi",
+            "rewardsDestination": "Èrè àdírẹ́sì ibi tí wọ́n ń lọ"
         }
     },
     "collapseText": "Subu",

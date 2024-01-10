@@ -80,14 +80,11 @@ export default class ValidatorsAttentionDialog extends Mixins(StakingMixin, mixi
   align-self: stretch;
   color: var(--s-color-base-content-primary);
   text-align: center;
-  font-feature-settings: 'case' on, 'clig' off, 'liga' off;
 
-  /* NEU light 14 */
-  font-family: Sora;
   font-size: 14px;
   font-style: normal;
   font-weight: 300;
-  line-height: 150%; /* 21px */
+  line-height: 150%;
   letter-spacing: -0.28px;
 }
 

@@ -72,7 +72,6 @@ import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 import StakingMixin from '../mixins/StakingMixin';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { NominatorReward } from '@sora-substrate/util/build/staking/types';
 
 @Component({
   components: {
@@ -119,7 +118,7 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   }
 
   get networkFee() {
-    return this.payoutNetworkFee || '0';
+    return this.payoutNetworkFee ?? '0';
   }
 
   get title(): string {
@@ -161,7 +160,7 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   get payouts() {
     if (!this.pendingRewards) return [];
 
-    return (this.pendingRewards as NominatorReward).map((r) => ({
+    return this.pendingRewards.map((r) => ({
       era: r.era,
       validators: r.validators.map((v) => v.address),
     }));

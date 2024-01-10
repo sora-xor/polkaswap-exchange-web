@@ -5,9 +5,9 @@
         <h4>{{ t('soraStaking.selectValidatorsMode.title') }}</h4>
         <p>{{ t('soraStaking.selectValidatorsMode.description') }}</p>
         <ul class="criteria">
-          <li v-for="criterion in criteria" :key="criterion">
+          <li v-for="item in criteria" :key="item">
             <s-icon name="basic-check-mark-24" size="16px" />
-            <span>{{ criterion }}</span>
+            <span>{{ item }}</span>
           </li>
         </ul>
         <s-button type="primary" @click="stakeWithSuggested">{{
@@ -25,10 +25,8 @@
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import { mutation } from '@/store/decorators';
-
 import { soraStakingLazyComponent } from '../../router';
-import { SoraStakingComponents, ValidatorsListMode } from '../consts';
+import { SoraStakingComponents } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
 
 @Component({
@@ -39,12 +37,10 @@ import StakingMixin from '../mixins/StakingMixin';
 export default class SelectValidatorsMode extends Mixins(StakingMixin, mixins.LoadingMixin) {
   @Prop({ type: String }) previousPage?: string;
 
-  @mutation.staking.setValidatorsType private setValidatorsType!: (type: ValidatorsListMode) => void;
-
   showValidatorsAttentionDialog = false;
 
   get criteria() {
-    return this.t('soraStaking.selectValidatorsMode.criteria');
+    return this.t('soraStaking.selectValidatorsMode.criteria'); // iterable keys
   }
 
   stakeWithSuggested(): void {

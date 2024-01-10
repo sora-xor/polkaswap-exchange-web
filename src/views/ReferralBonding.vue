@@ -76,6 +76,7 @@ export default class ReferralBonding extends Mixins(
   TranslationMixin,
   mixins.LoadingMixin
 ) {
+  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.referrals.amount amount!: string;
 
@@ -116,6 +117,9 @@ export default class ReferralBonding extends Mixins(
   }
 
   get isMaxButtonAvailable(): boolean {
+    if (this.shouldBalanceBeHidden) {
+      return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
+    }
     const balance = this.getFPNumberFromCodec(this.xorBalance?.transferable ?? ZeroStringValue, this.xorDecimals);
     const amount = this.getFPNumber(this.amount, this.xorDecimals);
     if (this.fpNumberNetworkFee.isZero()) {
