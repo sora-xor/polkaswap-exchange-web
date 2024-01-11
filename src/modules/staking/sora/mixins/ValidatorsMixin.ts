@@ -23,7 +23,11 @@ export default class ValidatorsMixin extends Vue {
     return name.length > maxLength ? name.slice(0, maxLength) + '...' : name;
   }
 
-  formatCommission(commission: string) {
-    return FPNumber.fromCodecValue(commission, 7).toString();
+  formatCommission(value: string) {
+    return FPNumber.fromCodecValue(value, 7).toString();
+  }
+
+  formatReturn(value: string) {
+    return FPNumber.fromCodecValue(value, 7).toString();
   }
 }

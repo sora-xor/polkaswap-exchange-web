@@ -850,6 +850,7 @@ export default {
       commission: 'Commission',
       commissionTooltip:
         "Commission refers to the fee charged by validators for their services in the staking process. This fee, expressed as a percentage, is deducted from the staking rewards earned by nominators before distribution. It's important to note that validators can adjust their commission rates at any time",
+      return: 'Return',
       noNominatedValidators: "You don't have any nominated validators",
       noValidators: 'There are no validators satisfying the specified filter',
     },

@@ -22,11 +22,13 @@
         <s-icon name="various-bone-24" size="14px" />
       </div>
       <div class="table-header-name table-header-item">{{ t('soraStaking.validatorsList.name') }}</div>
-      <div class="table-header-commission table-header-item">
+      <div class="table-header-info table-header-item">
         <span>{{ t('soraStaking.validatorsList.commission') }}</span>
         <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.commissionTooltip')">
           <s-icon name="info-16" size="14px" />
         </s-tooltip>
+        /
+        <span>{{ t('soraStaking.validatorsList.return') }}</span>
       </div>
     </div>
     <div class="list">
@@ -41,8 +43,10 @@
             <div class="name">
               {{ formatName(validator) }}
             </div>
-            <div class="commission">
+            <div class="info">
               <span>{{ formatCommission(validator.commission) }}%</span>
+              <br />
+              <span>{{ formatReturn(validator.apy) }}%</span>
             </div>
             <div
               v-if="mode === ValidatorsListMode.SELECT"
@@ -100,11 +104,18 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     return this.mode === ValidatorsListMode.RECOMMENDED;
   }
 
+  get sortedValidators() {
+    return [...this.validators].sort((a, b) => Number(a.commission) - Number(b.commission));
+  }
+
   get filteredValidators() {
-    const filtered = this.filterValidators(this.validators, this.validatorsFilter, this.search);
+    const filtered = this.filterValidators(this.sortedValidators, this.validatorsFilter, this.search);
     switch (this.mode) {
       case ValidatorsListMode.RECOMMENDED:
-        return this.filterValidators(this.validators, recommendedValidatorsFilter, '').slice(0, this.maxNominations);
+        return this.filterValidators(this.sortedValidators, recommendedValidatorsFilter, '').slice(
+          0,
+          this.maxNominations
+        );
       case ValidatorsListMode.USER:
         return filtered.filter((v) => this.stakingInfo?.myValidators.includes(v.address));
       default:
@@ -269,7 +280,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     flex: 1;
     margin-left: 8px;
   }
-  &-commission {
+  &-info {
     width: 120px;
 
     span {
@@ -329,7 +340,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
   margin-right: 10px;
 }
 
-.commission {
+.info {
   color: var(--s-color-status-info);
   text-align: right;
   font-size: 16px;

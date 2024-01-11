@@ -69,7 +69,7 @@
         type="primary"
         @click="stakeMore"
       >
-        {{ t('soraStaking.actions.more') }}
+        {{ stakeMoreText }}
       </s-button>
       <div class="info">
         <info-line
@@ -240,6 +240,10 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
 
   get dropdownMenuItems(): Array<MenuItem> {
     return this.getDropdownMenuItems();
+  }
+
+  get stakeMoreText(): string {
+    return this.lockedFunds.isZero() ? this.t('soraStaking.newStake.title') : this.t('soraStaking.actions.more');
   }
 
   handleClickDropdownMenu(): void {
