@@ -28,6 +28,6 @@ export default class ValidatorsMixin extends Vue {
   }
 
   formatReturn(value: string) {
-    return FPNumber.fromCodecValue(value, 7).toString();
+    return value;
   }
 }

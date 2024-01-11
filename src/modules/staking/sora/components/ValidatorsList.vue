@@ -27,7 +27,7 @@
         <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.commissionTooltip')">
           <s-icon name="info-16" size="14px" />
         </s-tooltip>
-        /
+        <span class="table-header-info-dash"> / </span>
         <span>{{ t('soraStaking.validatorsList.return') }}</span>
       </div>
     </div>
@@ -281,8 +281,9 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     margin-left: 8px;
   }
   &-info {
-    width: 120px;
-
+    &-dash {
+      margin: 0 8px;
+    }
     span {
       margin-right: 8px;
     }
