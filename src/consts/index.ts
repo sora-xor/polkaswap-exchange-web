@@ -221,6 +221,7 @@ export enum Components {
   PairListPopover = 'pages/OrderBook/Popovers/PairListPopover',
   AllOrders = 'pages/OrderBook/Tables/AllOrders',
   OpenOrders = 'pages/OrderBook/Tables/OpenOrders',
+  CustomisePage = 'pages/OrderBook/Dialogs/CustomisePage',
   PlaceOrder = 'pages/OrderBook/Dialogs/PlaceOrder',
   CancelOrders = 'pages/OrderBook/Dialogs/CancelOrders',
   PlaceTransactionDetails = 'pages/OrderBook/TransactionDetails',
