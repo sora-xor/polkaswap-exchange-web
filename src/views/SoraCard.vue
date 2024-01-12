@@ -1,7 +1,7 @@
 <template>
   <div class="sora-card-wrapper">
     <confirmation-info v-if="step === Step.ConfirmationInfo" v-loading="loading" @confirm-apply="openKycPage" />
-    <sora-card-intro v-else-if="step === Step.StartPage" @confirm-apply="openKycPage" />
+    <sora-card-intro v-else-if="showIntro" :maintenance="isUnderMaintenance" @confirm-apply="openKycPage" />
     <sora-card-kyc
       v-else-if="step === Step.KYC"
       :getReadyPage="getReadyPage"
@@ -15,13 +15,14 @@
 
 <script lang="ts">
 import { api, mixins, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import { Components, PageNames } from '@/consts';
-import { goTo, lazyComponent } from '@/router';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
-import { AttemptCounter, KycStatus, UserInfo, VerificationStatus } from '@/types/card';
+import { AttemptCounter, UserInfo, VerificationStatus } from '@/types/card';
+import { waitForSoraNetworkFromEnv } from '@/utils';
 
 import type { NavigationGuardNext, Route } from 'vue-router';
 
@@ -30,6 +31,7 @@ enum Step {
   KYC = 'KYC',
   ConfirmationInfo = 'ConfirmationInfo',
   Dashboard = 'Dashboard',
+  Maintenance = 'Maintenance',
 }
 
 @Component({
@@ -45,14 +47,11 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
 
   @state.soraCard.attemptCounter private attemptCounter!: AttemptCounter;
   @state.soraCard.wantsToPassKycAgain private wantsToPassKycAgain!: boolean;
-  @state.soraCard.userInfo userInfo!: UserInfo;
 
   @getter.soraCard.currentStatus private currentStatus!: VerificationStatus;
-  @getter.settings.soraCardEnabled soraCardEnabled!: Nullable<boolean>;
+  @getter.settings.soraCardEnabled private soraCardEnabled!: Nullable<boolean>;
 
-  @mutation.soraCard.setKycStatus private setKycStatus!: (kycStatus: KycStatus) => void;
-  @mutation.soraCard.setVerificationStatus private setVerificationStatus!: (verStatus: VerificationStatus) => void;
-  @mutation.soraCard.setWillToPassKycAgain setWillToPassKycAgain!: (boolean) => void;
+  @mutation.soraCard.setWillToPassKycAgain private setWillToPassKycAgain!: (will: boolean) => void;
 
   @action.soraCard.getUserStatus private getUserStatus!: AsyncFnWithoutArgs;
   @action.soraCard.getUserKycAttempt private getUserKycAttempt!: AsyncFnWithoutArgs;
@@ -70,11 +69,12 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
   getReadyPage = false;
   isRedirectFromFearless = true;
 
-  @Watch('soraCardEnabled', { immediate: true })
-  private checkAvailability(value: Nullable<boolean>): void {
-    if (value === false) {
-      goTo(PageNames.Swap);
-    }
+  get isUnderMaintenance(): boolean {
+    return this.step === Step.Maintenance;
+  }
+
+  get showIntro(): boolean {
+    return [Step.StartPage, Step.Maintenance].includes(this.step as Step);
   }
 
   get hasFreeAttempts() {
@@ -112,6 +112,15 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
   }
 
   async checkKyc(): Promise<void> {
+    // wait for the config to be loaded (for soraCardEnabled)
+    if (this.soraCardEnabled === undefined || this.soraCardEnabled === null) {
+      await waitForSoraNetworkFromEnv();
+    }
+    if (!this.soraCardEnabled) {
+      this.step = Step.Maintenance;
+      return;
+    }
+
     await this.getUserStatus();
     await this.getUserKycAttempt();
 
@@ -186,7 +195,8 @@ export default class SoraCard extends Mixins(mixins.LoadingMixin, SubscriptionsM
     await this.unsubscribeFromTotalXorBalance();
   }
 
-  mounted(): void {
+  async mounted(): Promise<void> {
+    await this.$nextTick();
     this.checkKyc();
     this.getFees();
   }
