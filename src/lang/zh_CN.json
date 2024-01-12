@@ -9,7 +9,7 @@
     "addAssetText": "添加资产",
     "successText": "成功",
     "warningText": "警告",
-    "swapText": "交换",
+    "swapText": "兑换",
     "searchText": "搜索",
     "cancelText": "取消",
     "saveText": "保存",
@@ -200,7 +200,7 @@
         "send": "@:sendText",
         "receive": "@:account.copy",
         "liquidity": "增加流动性",
-        "bridge": "转接桥",
+        "bridge": "桥",
         "copy": "复制资产 ID",
         "successCopy": "{symbol}资产 ID 被复制到剪贴板",
         "copied": "已复制！",
@@ -349,7 +349,7 @@
     "connectedText": "已连接",
     "connectWalletTextTooltip": "用{PolkadotJs}连接到{Sora}网络",
     "selectNodeText": "选择网络节点",
-    "bridgeText": "转接桥",
+    "bridgeText": "桥",
     "disclaimer": "{disclaimerPrefix} 本网站由{Sora} 社区维护。在继续使用本网站之前，请查看{polkaswapFaqLink} 和文档，其中包括有关 {AppName} 工作原理的详细说明，以及 {memorandumLink} 和 {privacyLink}。这些文档对于安全和积极的用户体验至关重要。通过使用 {AppName}，您承认您已阅读并理解这些文件。您还承认以下内容：1) 您全权负责遵守在您的法律管辖范围内可能适用于您对 {AppName} 的特定使用的所有法律； 2）您对{AppName}当前版本为alpha版本的理解：尚未经过全面测试，部分功能可能无法按设计执行； 3) 您理解并自愿接受使用 {AppName} 所涉及的风险，包括但不限于丢失代币的风险。再一次提醒，在没有阅读{polkaswapFaqLink}、{memorandumLink} 和{privacyLink}之前，请不要继续！",
     "poweredBy": "启动于",
     "confirmTransactionText": "确认交易",
@@ -380,7 +380,7 @@
         "Staking": "质押"
     },
     "mainMenu": {
-        "Swap": "交换",
+        "Swap": "兑换",
         "Pool": "流动池",
         "Bridge": "@:bridgeText",
         "Farming": "农耕",
@@ -520,7 +520,7 @@
     },
     "swap": {
         "estimated": "估计的",
-        "slippageTolerance": "滑点公差",
+        "slippageTolerance": "滑点容忍度",
         "minReceived": "最低可接收数量",
         "maxSold": "最大可卖数量",
         "minReceivedTooltip": "如果在确认之前有一个较大而不利的价格变动，您的交易将被取消。",
@@ -550,7 +550,7 @@
         "strategicBonusApy": "战略奖励年化收益率"
     },
     "bridge": {
-        "title": "转接桥",
+        "title": "桥",
         "info": "在{Sora}和{Ethereum}网络之间转换代币。",
         "balance": "余额",
         "next": "下一个",
@@ -708,7 +708,7 @@
         "marketAlgorithmTooltip": {
             "main": " - 在一级市场 (TBC)、二级市场 (XYK) 或组合智能算法之间进行选择，以保证任何给定交易的最佳价格。"
         },
-        "slippageTolerance": "滑点公差",
+        "slippageTolerance": "滑点容忍度",
         "slippageToleranceHint": "如果价格的不利变化超过此百分比，您的交易将被取消。",
         "slippageToleranceValidation": {
             "warning": "您的交易可能会失败",
