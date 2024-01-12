@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <staking-header :previous-page="SoraStakingPageNames.NewStake">
-      {{ t('soraStaking.validatorsType.title') }}
+      {{ t('soraStaking.info.validators') }}
     </staking-header>
     <select-validators-mode @recommended="stakeWithSuggested" @selected="stakeWithSelected" />
     <validators-attention-dialog

@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-loading="parentLoading">
-    <generic-page-header :title="t('staking.title')" />
+    <generic-page-header :title="t('pageTitle.Staking')" />
 
     <s-card v-if="!tokensData.length && !soraStaking" shadow="always" size="big" primary class="staking-empty-card">
       {{ t('demeterFarming.staking.stopped') }}
@@ -268,12 +268,10 @@ $title-height: 42px;
 .staking-info {
   &-subtitle {
     color: var(--s-color-theme-accent);
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-family: Sora;
     font-size: 11px;
     font-style: normal;
     font-weight: 700;
-    line-height: 11px; /* 100% */
+    line-height: 11px;
     text-transform: uppercase;
     margin: 0;
     margin-bottom: -6px;
@@ -294,4 +292,3 @@ $title-height: 42px;
   }
 }
 </style>
-../router@/modules/staking/demeter/types../demeter/consts

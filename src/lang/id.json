@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} berhasil diklaim",
             "EthBridgeIncoming": "Mentransfer {amount} {symbol} dari {Ethereum} ke {Sora}",
             "EthBridgeOutgoing": "Mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Berikat {amount} {symbol}",
+            "StakingBond": "Berikat {amount} {symbol}",
+            "StakingBondExtra": "Ekstra terikat {amount} {symbol}",
+            "StakingUnbond": "Tidak terikat {amount} {symbol}",
+            "StakingRebond": "Direbon ulang {amount} {symbol}",
+            "StakingNominate": "Validator yang dinominasikan",
+            "StakingWithdrawUnbonded": "Penarikan {amount} {symbol}",
+            "StakingPayout": "Hadiah pembayaran",
+            "StakingChill": "Santai",
+            "StakingSetController": "Setel pengontrol {address}",
+            "StakingSetPayee": "Tetapkan penerima pembayaran {address}"
         },
         "error": {
             "Transfer": "Gagal {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Gagal mengklaim {symbol}",
             "EthBridgeIncoming": "Gagal mentransfer {amount} {symbol} dari {Ethereum} ke {Sora}",
             "EthBridgeOutgoing": "Gagal mentransfer {amount} {symbol} dari {Sora} ke {Ethereum}",
-            "SwapTransferBatch": "Gagal {action} {amount} {symbol}"
+            "SwapTransferBatch": "Gagal {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Gagal mengikat {amount} {symbol}",
+            "StakingBond": "Gagal mengikat {amount} {symbol}",
+            "StakingBondExtra": "Gagal mengikat tambahan {amount} {symbol}",
+            "StakingUnbond": "Gagal melepaskan ikatan {amount} {symbol}",
+            "StakingRebond": "Gagal melakukan rebond {amount} {symbol}",
+            "StakingNominate": "Gagal menominasikan validator",
+            "StakingWithdrawUnbonded": "Gagal menarik {amount} {symbol}",
+            "StakingPayout": "Gagal membayar imbalan",
+            "StakingChill": "Gagal mendinginkan",
+            "StakingSetController": "Gagal menyetel pengontrol {address}",
+            "StakingSetPayee": "Gagal menetapkan penerima pembayaran {address}"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Klaim Hadiah",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Transfer"
+        "SwapTransferBatch": "{ADAR} Transfer",
+        "StakingBondAndNominate": "Obligasi dan Nominasi",
+        "StakingBond": "Ikatan",
+        "StakingBondExtra": "Obligasi Ekstra",
+        "StakingUnbond": "Tidak terikat",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "Mencalonkan",
+        "StakingWithdrawUnbonded": "Penarikan Tanpa Ikatan",
+        "StakingPayout": "Hadiah Pembayaran",
+        "StakingChill": "Santai",
+        "StakingSetController": "Atur Pengontrol",
+        "StakingSetPayee": "Tetapkan Penerima Pembayaran"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi {PolkadotJs} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
@@ -957,9 +990,6 @@
         "results": "Hasil",
         "rewards": "{symbol} hadiah"
     },
-    "staking": {
-        "title": "Staking"
-    },
     "historyErrorMessages": {
         "generalError": "Ada yang salah",
         "balances": {
@@ -1236,21 +1266,18 @@
     "disconnectWalletText": "Memutuskan",
     "connectEthereumWalletText": "Hubungkan dompet {Ethereum}",
     "soraStaking": {
-        "title": "Mempertaruhkan",
         "dropdownMenu": {
             "pendingRewards": "Hadiah yang tertunda",
-            "validators": "Validator",
             "controllerAccount": "akun pengontrol"
         },
         "actions": {
             "claim": "Klaim hadiah",
             "remove": "Hapus taruhan",
-            "start": "Mulailah mempertaruhkan",
             "more": "Taruhan lebih banyak"
         },
         "overview": {
-            "title": "Taruhan SORA",
-            "description": "Pertaruhkan token XOR di Jaringan SORA sebagai nominator untuk memvalidasi transaksi dan mendapatkan hadiah token VAL."
+            "title": "{Sora} Mempertaruhkan",
+            "description": "Stake token {XOR} di {Sora} Network sebagai nominator untuk memvalidasi transaksi dan mendapatkan reward token {VAL}."
         },
         "newStake": {
             "title": "Mulailah mempertaruhkan",
@@ -1261,13 +1288,17 @@
             "selected": "{selected} \/ {total} dipilih",
             "recommended": "Validator yang direkomendasikan",
             "change": "Ubah validator",
-            "select": "Pilih validator"
+            "select": "Pilih validator",
+            "next": "Berikutnya",
+            "alreadyNominated": "Validator terpilih sudah dinominasikan"
         },
         "validatorsList": {
             "search": "Mencari...",
-            "filters": "Filter",
             "name": "Nama",
-            "return": "Kembali"
+            "noNominatedValidators": "Anda tidak memiliki validator yang dinominasikan",
+            "noValidators": "Tidak ada validator yang memenuhi filter yang ditentukan",
+            "commission": "Komisi",
+            "commissionTooltip": "Komisi mengacu pada biaya yang dibebankan oleh validator atas layanan mereka dalam proses staking. Biaya ini, yang dinyatakan dalam persentase, dipotong dari imbalan staking yang diperoleh nominator sebelum didistribusikan. Penting untuk diperhatikan bahwa validator dapat menyesuaikan tarif komisinya kapan saja"
         },
         "info": {
             "redeemable": "Dapat ditukarkan",
@@ -1275,7 +1306,6 @@
             "stakingBalance": "Saldo taruhan",
             "rewarded": "Dihargai",
             "totalLiquidityStaked": "Total likuiditas yang dipertaruhkan",
-            "apy": "APY",
             "rewardToken": "Token hadiah",
             "unstakingPeriod": "Periode yang tidak dipertaruhkan",
             "minimumStake": "Taruhan minimal",
@@ -1298,7 +1328,7 @@
                 },
                 "notOversubscribed": {
                     "name": "Tidak kelebihan permintaan",
-                    "description": "Akun dalam batas alokasi, menghindari penalti kelebihan permintaan pada staking Polkadot."
+                    "description": "Akun dalam batas alokasi, menghindari penalti kelebihan langganan pada staking {Polkadot}."
                 },
                 "twoValidatorsPerIdentity": {
                     "name": "Batas 2 validator per identitas",
@@ -1308,12 +1338,11 @@
         },
         "validatorsDialog": {
             "title": {
-                "default": "Validator",
                 "edit": "Edit Validator Saya"
             },
             "tabs": {
-                "userValidators": "Validator Anda",
-                "allValidators": "Semua validator"
+                "user": "Validator Anda",
+                "all": "Semua validator"
             }
         },
         "validatorsAttentionDialog": {
@@ -1327,12 +1356,14 @@
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Tidak ada imbalan yang tertunda",
-            "payoutAll": "Pembayaran semua",
-            "information": "Validator membayar hadiahnya setiap 2-5 hari. Namun, Anda dapat membayarnya sendiri, terutama jika hadiahnya hampir habis masa berlakunya, namun Anda akan membayar biayanya."
+            "information": "Validator membayar hadiahnya setiap 2-5 hari. Namun, Anda dapat membayarnya sendiri, terutama jika hadiahnya hampir habis masa berlakunya, namun Anda akan membayar biayanya.",
+            "title": "Hadiah yang tertunda",
+            "noSelectedRewards": "Pilih hadiah",
+            "payout": "Pembayaran"
         },
         "selectValidatorsMode": {
             "title": "Taruhan dengan validator yang disarankan oleh algoritma",
-            "description": "Algoritma SORA Network telah memilih daftar validator yang direkomendasikan berdasarkan kriteria:",
+            "description": "Algoritma jaringan {Sora} telah memilih daftar validator yang direkomendasikan berdasarkan kriteria:",
             "criteria": [
                 "Paling menguntungkan",
                 "Tidak kelebihan permintaan",
@@ -1344,6 +1375,11 @@
                 "suggested": "Taruhan dengan yang disarankan",
                 "manual": "Saya akan memilih sendiri validatornya"
             }
+        },
+        "claimRewardsDialog": {
+            "title": "Klaim hadiah",
+            "checkRewards": "Periksa hadiah per era dan validator",
+            "rewardsDestination": "Alamat tujuan hadiah"
         }
     },
     "collapseText": "Runtuh",

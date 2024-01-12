@@ -1,6 +1,6 @@
 <template>
   <div class="validator-avatar">
-    <img v-if="avatar" :src="avatar" />
+    <img v-if="avatar" alt="avatar" :src="avatar" />
     <wallet-avatar v-else :address="validator.address" :size="14" class="account-gravatar" />
     <div class="icon">
       <slot name="icon" />

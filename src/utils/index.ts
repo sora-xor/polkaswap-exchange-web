@@ -56,6 +56,10 @@ export const isMaxButtonAvailable = (
   xorAsset: AccountAsset | RegisteredAccountAsset,
   isXorOutputSwap = false
 ): boolean => {
+  if (store.state.wallet.settings.shouldBalanceBeHidden) {
+    return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
+  }
+
   if (!asset || !xorAsset || asZeroValue(getAssetBalance(asset))) {
     return false;
   }

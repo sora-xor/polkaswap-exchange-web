@@ -49,7 +49,18 @@
             "DemeterFarmingGetRewards": "Úspešne nárokované {amount} {symbol}",
             "EthBridgeIncoming": "Prevedené {amount} {symbol} z {Ethereum} do {Sora}",
             "EthBridgeOutgoing": "Prevedené {amount} {symbol} z {Sora} do {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Viazané {amount} {symbol}",
+            "StakingBond": "Viazané {amount} {symbol}",
+            "StakingBondExtra": "Viazané navyše {amount} {symbol}",
+            "StakingUnbond": "Neviazané {amount} {symbol}",
+            "StakingRebond": "Opätovne viazané {amount} {symbol}",
+            "StakingNominate": "Nominovaní validátori",
+            "StakingWithdrawUnbonded": "Vybral som {amount} {symbol}",
+            "StakingPayout": "Výplatné odmeny",
+            "StakingChill": "Kľud",
+            "StakingSetController": "Nastaviť ovládač {address}",
+            "StakingSetPayee": "Nastaviť príjemcu platby {address}"
         },
         "error": {
             "Transfer": "Nepodarilo sa {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +81,18 @@
             "DemeterFarmingGetRewards": "Nepodarilo sa nárokovať {symbol}",
             "EthBridgeIncoming": "Nepodarilo sa preniesť {amount} {symbol} z {Ethereum} do {Sora}",
             "EthBridgeOutgoing": "Nepodarilo sa preniesť {amount} {symbol} z {Sora} do {Ethereum}",
-            "SwapTransferBatch": "Nepodarilo sa {action} {amount} {symbol}"
+            "SwapTransferBatch": "Nepodarilo sa {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Nepodarilo sa zviazať {amount} {symbol}",
+            "StakingBond": "Nepodarilo sa zviazať {amount} {symbol}",
+            "StakingBondExtra": "Nepodarilo sa zviazať dodatočnú sumu {amount} {symbol}",
+            "StakingUnbond": "Zrušenie väzby {amount} {symbol} zlyhalo",
+            "StakingRebond": "Nepodarilo sa prepojiť {amount} {symbol}",
+            "StakingNominate": "Nepodarilo sa nominovať overovateľov",
+            "StakingWithdrawUnbonded": "Nepodarilo sa vybrať {amount} {symbol}",
+            "StakingPayout": "Nepodarilo sa vyplatiť odmeny",
+            "StakingChill": "Ochladiť sa nepodarilo",
+            "StakingSetController": "Nepodarilo sa nastaviť ovládač {address}",
+            "StakingSetPayee": "Nepodarilo sa nastaviť príjemcu platby {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -83,7 +105,18 @@
         "DemeterFarmingGetRewards": "Nárokovať odmeny",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Prevod"
+        "SwapTransferBatch": "{ADAR} Prevod",
+        "StakingBondAndNominate": "Bond a Nominovať",
+        "StakingBond": "Bond",
+        "StakingBondExtra": "Bond Extra",
+        "StakingUnbond": "Neviazaný",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "Nominovať",
+        "StakingWithdrawUnbonded": "Vybrať Neviazané",
+        "StakingPayout": "Výplatné odmeny",
+        "StakingChill": "Kľud",
+        "StakingSetController": "Nastaviť ovládač",
+        "StakingSetPayee": "Nastaviť príjemcu platby"
     },
     "polkadotjs": {
         "noExtensions": "Rozšírenie {PolkadotJs} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",
@@ -957,9 +990,6 @@
         "results": "Výsledky",
         "rewards": "{symbol} odmeny"
     },
-    "staking": {
-        "title": "Stakovanie"
-    },
     "historyErrorMessages": {
         "generalError": "Niečo sa pokazilo",
         "balances": {
@@ -1236,21 +1266,18 @@
     "disconnectWalletText": "Odpojiť",
     "connectEthereumWalletText": "Pripojte peňaženku {Ethereum}",
     "soraStaking": {
-        "title": "Staking",
         "dropdownMenu": {
             "pendingRewards": "Čakajúce odmeny",
-            "validators": "Validátori",
             "controllerAccount": "Účet správcu"
         },
         "actions": {
             "claim": "Nárokujte si odmeny",
             "remove": "Odstráňte kolík",
-            "start": "Začnite stávkovať",
             "more": "Stavte viac"
         },
         "overview": {
-            "title": "Vytyčovanie SORA",
-            "description": "Vkladajte žetóny XOR v sieti SORA ako nominátor na overovanie transakcií a získavajte odmeny za tokeny VAL."
+            "title": "{Sora} Staking",
+            "description": "Vložte tokeny {XOR} do siete {Sora} ako nominátor na overenie transakcií a získanie tokenových odmien {VAL}."
         },
         "newStake": {
             "title": "Začnite stávkovať",
@@ -1261,13 +1288,17 @@
             "selected": "Vybraté {selected} \/ {total}",
             "recommended": "Odporúčané validátory",
             "change": "Zmeniť validátory",
-            "select": "Vyberte validátory"
+            "select": "Vyberte validátory",
+            "next": "Nasledujúci",
+            "alreadyNominated": "Vybraní validátori sú už nominovaní"
         },
         "validatorsList": {
             "search": "Vyhľadávanie...",
-            "filters": "Filtre",
-            "name": "názov",
-            "return": "Návrat"
+            "name": "Názov",
+            "noNominatedValidators": "Nemáte žiadnych nominovaných overovateľov",
+            "noValidators": "Neexistujú žiadne validátory, ktoré by vyhovovali zadanému filtru",
+            "commission": "Komisia",
+            "commissionTooltip": "Provízia sa vzťahuje na poplatok, ktorý účtujú validátori za svoje služby v procese stávkovania. Tento poplatok, vyjadrený v percentách, sa odpočítava od odmien za stávky, ktoré získali nominanti pred distribúciou. Je dôležité poznamenať, že overovatelia môžu svoje sadzby provízií kedykoľvek upraviť"
         },
         "info": {
             "redeemable": "Splatný",
@@ -1275,7 +1306,6 @@
             "stakingBalance": "Stavať rovnováhu",
             "rewarded": "Odmenený",
             "totalLiquidityStaked": "Celková vkladaná likvidita",
-            "apy": "APY",
             "rewardToken": "Token odmeny",
             "unstakingPeriod": "Neobmedzujúce obdobie",
             "minimumStake": "Minimálny vklad",
@@ -1298,7 +1328,7 @@
                 },
                 "notOversubscribed": {
                     "name": "Nie je nadmerne prihlásený",
-                    "description": "Účet v rámci limitu pridelenia sa vyhýba pokutám za nadmerné upisovanie pri stávkach Polkadot."
+                    "description": "Účet v rámci limitu pridelenia sa vyhnete pokutám za nadmerné predplatné pri stávkovaní {Polkadot}."
                 },
                 "twoValidatorsPerIdentity": {
                     "name": "Limit 2 overovateľov na identitu",
@@ -1308,12 +1338,11 @@
         },
         "validatorsDialog": {
             "title": {
-                "default": "Validátori",
                 "edit": "Upraviť moje validátory"
             },
             "tabs": {
-                "userValidators": "Vaši validátori",
-                "allValidators": "Všetky validátory"
+                "user": "Vaši validátori",
+                "all": "Všetky validátory"
             }
         },
         "validatorsAttentionDialog": {
@@ -1327,12 +1356,14 @@
         },
         "pendingRewardsDialog": {
             "noPendingRewards": "Neexistujú žiadne čakajúce odmeny",
-            "payoutAll": "Vyplatiť všetko",
-            "information": "Validátori vyplácajú odmeny každých 2-5 dní. Môžete si ich však vyplatiť sami, najmä ak sa odmeny blížia ku koncu platnosti, ale poplatok zaplatíte."
+            "information": "Validátori vyplácajú odmeny každých 2-5 dní. Môžete si ich však vyplatiť sami, najmä ak sa odmeny blížia ku koncu platnosti, ale poplatok zaplatíte.",
+            "title": "Čakajúce odmeny",
+            "noSelectedRewards": "Vyberte odmeny",
+            "payout": "Výplata"
         },
         "selectValidatorsMode": {
             "title": "Vklad s validátormi navrhnutými algoritmom",
-            "description": "Algoritmus SORA Network vybral zoznam odporúčaných validátorov na základe kritérií:",
+            "description": "Sieťový algoritmus {Sora} vybral zoznam odporúčaných validátorov na základe kritérií:",
             "criteria": [
                 "Najziskovejšie",
                 "Nie je nadmerne prihlásený",
@@ -1344,6 +1375,11 @@
                 "suggested": "Vsaďte s navrhovaným",
                 "manual": "Validátory si vyberiem sám"
             }
+        },
+        "claimRewardsDialog": {
+            "title": "Nárokujte si odmeny",
+            "checkRewards": "Skontrolujte odmeny za éru a validátor",
+            "rewardsDestination": "Cieľová adresa odmien"
         }
     },
     "collapseText": "Kolaps",

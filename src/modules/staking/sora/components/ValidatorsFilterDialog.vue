@@ -93,7 +93,6 @@ export default class ValidatorsFilterDialog extends Mixins(StakingMixin, mixins.
 .title {
   text-align: center;
   font-size: var(--s-font-size-large);
-  margin-bottom: 20px;
   line-height: 42px;
   margin-bottom: 2px;
 

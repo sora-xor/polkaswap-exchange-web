@@ -141,4 +141,3 @@ export default class DemeterPools extends Mixins(PageMixin, mixins.TransactionMi
   margin-top: $inner-spacing-medium;
 }
 </style>
-../../router@/modules/staking/demeter/types../consts
