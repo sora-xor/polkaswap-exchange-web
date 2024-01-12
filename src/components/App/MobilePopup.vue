@@ -81,30 +81,7 @@ export default class AppMobilePopup extends Mixins(mixins.DialogMixin, Translati
   align-items: flex-start;
 }
 
-.logo {
-  font-size: 12px;
-
-  &__app-store {
-    background: url('@/assets/img/mobile/app-store-logo.svg') no-repeat !important;
-    background-position: 10% center !important;
-    background-size: 12px !important;
-    color: var(--s-color-base-content-secondary) !important;
-    width: 110px;
-    height: var(--s-size-small) !important;
-    margin-right: $inner-spacing-mini;
-    padding-left: 30px !important;
-  }
-
-  &__google-play {
-    background: url('@/assets/img/mobile/google-play-logo.svg') no-repeat !important;
-    background-position: 10% center !important;
-    background-size: 12px !important;
-    color: var(--s-color-base-content-secondary) !important;
-    width: 128px;
-    padding-left: 30px !important;
-    height: var(--s-size-small) !important;
-  }
-}
+@include mobile-app-logos;
 
 .popup-app {
   display: flex;
