@@ -61,6 +61,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
   @action.orderBook.getOrderBooksInfo private getOrderBooksInfo!: AsyncFnWithoutArgs;
   @action.orderBook.subscribeToOrderBookStats private subscribeToOrderBookStats!: AsyncFnWithoutArgs;
   @action.orderBook.unsubscribeFromOrderBookStats private unsubscribeFromOrderBookStats!: FnWithoutArgs;
+  @action.orderBook.unsubscribeFromBidsAndAsks private unsubscribeFromBidsAndAsks!: FnWithoutArgs;
 
   @Watch('orderBookId', { immediate: true })
   private updateSubscription() {
@@ -97,6 +98,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
   beforeDestroy(): void {
     this.unsubscribeFromOrderBookStats();
+    this.unsubscribeFromBidsAndAsks();
   }
 }
 </script>

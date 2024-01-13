@@ -73,7 +73,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { ZeroStringValue } from '@/consts';
+import { BreakpointClass, ZeroStringValue } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { OrderBookDealData } from '@/types/orderBook';
 
@@ -93,6 +93,7 @@ type OrderBookPriceVolumeAggregated = [FPNumber, FPNumber, FPNumber];
 export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
   @state.orderBook.asks asks!: OrderBookPriceVolume[];
   @state.orderBook.bids bids!: OrderBookPriceVolume[];
+  @state.settings.screenBreakpointClass responsiveClass!: BreakpointClass;
 
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.orderBookLastDeal orderBookLastDeal!: Nullable<OrderBookDealData>;
@@ -117,6 +118,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   bidsFormatted: Array<LimitOrderForm> = [];
 
   // Widget subscription creation
+  @Watch('responsiveClass', { immediate: true })
   @Watch('orderBookId', { immediate: true })
   @Watch('nodeIsConnected')
   private async updateSubscription(): Promise<void> {
@@ -374,11 +376,6 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
         });
       });
     }
-  }
-
-  // Widget subscription close
-  beforeDestroy(): void {
-    this.unsubscribeFromBidsAndAsks();
   }
 }
 </script>
