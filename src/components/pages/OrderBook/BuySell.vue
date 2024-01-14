@@ -213,6 +213,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   visibleBookList = false;
   confirmPlaceOrderVisibility = false;
   confirmCancelOrderVisibility = false;
+  limitForSinglePriceReached = false;
   limitOrderType: LimitOrderType = LimitOrderType.limit;
   quoteSubscription: Nullable<Subscription> = null;
   timestamp = MAX_TIMESTAMP;
@@ -308,6 +309,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         if (this.priceExceedsSpread()) return "can't place order";
       }
 
+      if (this.limitForSinglePriceReached) return "can't place order";
+
       if (this.isOutOfAmountBounds(this.baseValue)) return "can't place order";
 
       if (this.side === PriceVariant.Buy) return `Buy ${this.baseAsset.symbol}`;
@@ -330,7 +333,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   buttonDisabled(): boolean {
     if (this.bookStopped) return true;
 
-    if (this.userReachedSpotLimit || this.userReachedOwnLimit) return true;
+    if (this.userReachedSpotLimit || this.userReachedOwnLimit || this.limitForSinglePriceReached) return true;
 
     if (!this.isLoggedIn) return false;
 
@@ -415,11 +418,29 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         reading: "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
       });
 
+    if ((await this.singlePriceReachedLimit()) && this.quoteValue)
+      return this.setError({
+        reason: 'Too many orders is ongoing for this price',
+        reading: 'Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill',
+      });
+
     if (!this.isZeroAmount && this.isOutOfAmountBounds(this.baseValue) && this.quoteValue)
       return this.setError({
         reason: 'Amount exceeds the blockchain range',
         reading: "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range",
       });
+  }
+
+  async singlePriceReachedLimit(): Promise<boolean> {
+    const limitReached = !(await api.orderBook.isOrderPlaceable(
+      this.baseAsset.address,
+      this.quoteAsset.address,
+      this.side,
+      this.quoteValue
+    ));
+
+    this.limitForSinglePriceReached = limitReached;
+    return limitReached;
   }
 
   priceExceedsSpread(): boolean {
