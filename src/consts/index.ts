@@ -2,6 +2,7 @@ import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/cons
 import invert from 'lodash/fp/invert';
 
 import { StakingPageNames } from '@/modules/staking/consts';
+import { SoraStakingPageNames } from '@/modules/staking/sora/consts';
 
 import pkg from '../../package.json';
 
@@ -447,8 +448,13 @@ export const RewardsChildPages = [
   PageNames.ReferralBonding,
   PageNames.ReferralUnbonding,
 ];
-
-export const StakingChildPages = [StakingPageNames.Staking];
+export const StakingChildPages = [
+  StakingPageNames.Staking,
+  SoraStakingPageNames.Overview,
+  SoraStakingPageNames.NewStake,
+  SoraStakingPageNames.ValidatorsType,
+  SoraStakingPageNames.SelectValidators,
+];
 export const ExploreChildPages = [
   PageNames.ExploreFarming, // By default
   PageNames.ExploreStaking,

@@ -68,6 +68,7 @@ import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
+import { state } from '@/store/decorators';
 
 import { StakeDialogMode } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
@@ -84,6 +85,8 @@ import type { CodecString } from '@sora-substrate/util';
 })
 export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
   @Prop({ required: true, type: String }) readonly mode!: StakeDialogMode;
+
+  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
 
   @Watch('visible')
   private resetValue() {
@@ -110,7 +113,7 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
   get networkFee(): CodecString {
     switch (this.mode) {
       case StakeDialogMode.NEW:
-        return this.bondAndNominateNetworkFee || '0';
+        return this.bondAndNominateNetworkFee ?? '0';
       case StakeDialogMode.ADD:
         return this.networkFees[Operation.StakingBondExtra];
       default:
@@ -172,6 +175,9 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
   }
 
   get isMaxButtonAvailable(): boolean {
+    if (this.shouldBalanceBeHidden) {
+      return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
+    }
     return !FPNumber.eq(this.valueFunds, this.maxStake) && !FPNumber.lte(this.maxStake, FPNumber.ZERO);
   }
 

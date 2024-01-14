@@ -150,7 +150,7 @@ export default class PendingRewardsDialog extends Mixins(
   }
 
   get networkFee() {
-    return this.payoutNetworkFee || '0';
+    return this.payoutNetworkFee ?? '0';
   }
 
   get title(): string {
@@ -327,7 +327,6 @@ export default class PendingRewardsDialog extends Mixins(
 }
 
 .reward {
-  margin-top: 12px;
   margin: 12px 24px;
   cursor: pointer;
 }

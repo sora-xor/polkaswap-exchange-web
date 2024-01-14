@@ -375,11 +375,6 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
       });
     }
   }
-
-  // Widget subscription close
-  beforeDestroy(): void {
-    this.unsubscribeFromBidsAndAsks();
-  }
 }
 </script>
 
