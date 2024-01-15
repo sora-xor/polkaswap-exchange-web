@@ -290,7 +290,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.userReachedSpotLimit || this.userReachedOwnLimit) return "can't place order";
 
-    if (this.isInsufficientBalance) return `Insufficient ${this.tokenFrom?.symbol} balance`;
+    if (this.isInsufficientBalance) return this.t('insufficientBalanceText', { tokenSymbol: this.tokenFrom?.symbol });
 
     if (this.limitOrderType === LimitOrderType.limit) {
       if (!this.quoteValue) return 'set price';
@@ -534,11 +534,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get bookPrecision(): number {
-    return this.currentOrderBook?.tickSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length || 2;
+    return this.currentOrderBook?.tickSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length ?? 2;
   }
 
   get amountPrecision(): number {
-    return this.currentOrderBook?.stepLotSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length || 2;
+    return this.currentOrderBook?.stepLotSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length ?? 2;
   }
 
   isOutOfAmountBounds(amount: string): boolean {

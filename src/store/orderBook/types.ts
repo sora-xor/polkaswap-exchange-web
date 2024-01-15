@@ -1,7 +1,6 @@
 import type { OrderBookStats, OrderBookDealData } from '@/types/orderBook';
 
 import type { PriceVariant, OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-proxy';
-import type { FPNumber } from '@sora-substrate/util';
 import type { DexId } from '@sora-substrate/util/build/dex/consts';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { Subscription } from 'rxjs';

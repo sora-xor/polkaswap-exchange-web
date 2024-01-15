@@ -275,11 +275,6 @@ export enum LimitOrderType {
   market = 'market',
 }
 
-export enum LimitOrderTabsItems {
-  Buy = PageNames.LimitOrderBuy,
-  Sell = PageNames.LimitOrderSell,
-}
-
 export enum RewardsTabsItems {
   Rewards = PageNames.Rewards,
   ReferralProgram = PageNames.ReferralProgram,

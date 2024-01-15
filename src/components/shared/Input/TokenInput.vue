@@ -2,6 +2,7 @@
   <s-float-input
     class="token-input"
     size="medium"
+    ref="floatInput"
     has-locale-string
     :disabled="disabled"
     :value="value"
@@ -84,7 +85,7 @@
           <token-address v-if="address" v-bind="token" :external="external" class="input-value" />
         </div>
 
-        <div v-if="withSlider" class="input-line--footer-with-slider">
+        <div v-if="withSlider" class="input-line--footer-with-slider" @click="handleSliderFocus">
           <div class="delimiter" />
           <s-slider
             class="slider-container"
@@ -105,9 +106,8 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
 
-import InputSliderMixin from '@/components/mixins/InputSliderMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
@@ -127,7 +127,6 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 export default class TokenInput extends Mixins(
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin,
-  InputSliderMixin,
   TranslationMixin
 ) {
   @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
@@ -148,6 +147,8 @@ export default class TokenInput extends Mixins(
   @Prop({ default: true, type: Boolean }) readonly isFiatEditable!: boolean;
   @Prop({ default: 0, type: Number }) readonly sliderValue!: number;
   @Prop({ default: 2, type: Number }) readonly fiatDecimals!: number;
+
+  @Ref('floatInput') private floatInput!: any;
 
   fiatValue = '';
   fiatFocus = false;
@@ -175,6 +176,11 @@ export default class TokenInput extends Mixins(
 
   handleFiatFocus(): void {
     this.fiatFocus = true;
+    this.$emit('focus');
+  }
+
+  handleSliderFocus(): void {
+    this.floatInput?.$children?.[0]?.focus?.();
     this.$emit('focus');
   }
 
@@ -261,7 +267,6 @@ export default class TokenInput extends Mixins(
 
   async mounted(): Promise<void> {
     await this.$nextTick();
-    this.addListenerToSliderDragButton();
   }
 }
 </script>
