@@ -69,12 +69,16 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
   }
 
   get tabs(): Array<{ name: string; label: string }> {
-    return [PageNames.ExploreFarming, PageNames.ExplorePools, PageNames.ExploreStaking, PageNames.ExploreTokens].map(
-      (name) => ({
-        name,
-        label: this.t(`pageTitle.${name}`),
-      })
-    );
+    return [
+      PageNames.ExploreFarming,
+      PageNames.ExplorePools,
+      PageNames.ExploreStaking,
+      PageNames.ExploreTokens,
+      PageNames.ExploreBooks,
+    ].map((name) => ({
+      name,
+      label: this.t(`pageTitle.${name}`),
+    }));
   }
 
   get pageName(): string {
@@ -87,7 +91,9 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 
   /** Shown only for logged in users and for any tab on page except Tokens */
   get switcherAvailable(): boolean {
-    return this.pageName !== PageNames.ExploreTokens && this.isLoggedIn;
+    if (!this.isLoggedIn) return false;
+
+    return [PageNames.ExploreFarming, PageNames.ExplorePools, PageNames.ExploreStaking].includes(this.pageName);
   }
 
   handleTabChange(name: string): void {

@@ -139,6 +139,7 @@ export enum PageNames {
   ExploreFarming = 'Explore/Farming',
   ExploreStaking = 'Explore/Staking',
   ExplorePools = 'Explore/Pools',
+  ExploreBooks = 'Explore/Books',
   SoraCard = 'SoraCard',
 }
 

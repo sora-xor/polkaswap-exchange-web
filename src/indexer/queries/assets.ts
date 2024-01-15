@@ -40,7 +40,8 @@ const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetEnt
           priceChangeWeek
           volumeDayUSD
           volumeWeekUSD
-          liquidityUSD
+          liquidity
+          liquidityBooks
           velocity
         }
       }
@@ -63,7 +64,8 @@ const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetEnt
           priceChangeWeek
           volumeDayUSD
           volumeWeekUSD
-          liquidityUSD
+          liquidity
+          liquidityBooks
           velocity
         }
       }
@@ -72,14 +74,20 @@ const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetEnt
 `;
 
 const parse = (item: SubqueryAssetEntity | SubsquidAssetEntity): Record<string, TokenData> => {
+  const priceUSD = new FPNumber(item.priceUSD ?? 0);
+  const liquidityPools = FPNumber.fromCodecValue(item.liquidity ?? 0);
+  const liquidityBooks = FPNumber.fromCodecValue((item as any).liquidityBooks ?? 0);
+  const liquidity = liquidityPools.add(liquidityBooks);
+  const tvlUSD = liquidity.mul(priceUSD);
+
   return {
     [item.id]: {
-      priceUSD: new FPNumber(item.priceUSD ?? 0),
+      priceUSD,
       priceChangeDay: new FPNumber(item.priceChangeDay ?? 0),
       priceChangeWeek: new FPNumber(item.priceChangeWeek ?? 0),
       volumeDayUSD: new FPNumber(item.volumeDayUSD ?? 0),
       volumeWeekUSD: new FPNumber(item.volumeWeekUSD ?? 0),
-      tvlUSD: new FPNumber(item.liquidityUSD ?? 0),
+      tvlUSD,
       velocity: new FPNumber(item.velocity ?? 0),
     },
   };
