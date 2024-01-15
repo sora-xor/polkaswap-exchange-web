@@ -825,6 +825,7 @@ export default {
       remove: 'Remove stake',
       more: 'Stake more',
       payout: 'Payout',
+      confirm: 'Confirm Staking',
     },
     overview: {
       title: '{Sora} Staking',

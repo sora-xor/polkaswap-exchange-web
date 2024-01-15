@@ -126,9 +126,13 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
       case StakeDialogMode.NEW:
         return 'Confirm Staking';
       case StakeDialogMode.ADD:
-        return 'Stake More';
+        if (this.lockedFunds.isZero()) {
+          return this.t('soraStaking.newStake.title');
+        } else {
+          return this.t('soraStaking.actions.more');
+        }
       default:
-        return 'Remove Stake';
+        return this.t('soraStaking.actions.remove');
     }
   }
 
