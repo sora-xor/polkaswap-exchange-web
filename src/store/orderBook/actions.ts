@@ -59,7 +59,7 @@ const actions = defineActions({
         asksSubscription = api.orderBook
           .subscribeOnAggregatedAsks(baseAsset.address, quoteAsset.address)
           .subscribe((asks) => {
-            commit.setAsks(asks.reverse());
+            commit.setAsks(asks.toReversed());
             resolve();
           });
       }),
@@ -67,7 +67,7 @@ const actions = defineActions({
         bidsSubscription = api.orderBook
           .subscribeOnAggregatedBids(baseAsset.address, quoteAsset.address)
           .subscribe((bids) => {
-            commit.setBids(bids.reverse());
+            commit.setBids(bids.toReversed());
             resolve();
           });
       }),

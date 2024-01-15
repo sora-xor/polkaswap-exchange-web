@@ -149,7 +149,6 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
       const quoteAssetSymbol = quoteAsset?.symbol;
       const pair = `${baseAssetSymbol}-${quoteAssetSymbol}`;
       const created = dayjs(time);
-      const expires = dayjs(expiresAt);
 
       const proportion = amount.div(originalAmount).mul(FPNumber.HUNDRED);
       const filled = FPNumber.HUNDRED.sub(proportion).toFixed(2);
@@ -169,7 +168,6 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
         side,
         status: status ?? OrderStatus.Active,
         created: { date: created.format('M/DD'), time: created.format('HH:mm:ss') },
-        // expires: { date: expires.format('M/DD'), time: expires.format('HH:mm:ss') },
         expires: 'month',
       };
 
