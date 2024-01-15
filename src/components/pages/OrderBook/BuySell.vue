@@ -284,7 +284,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.isNotAllowedToPlace()) return 'book stopped';
 
-    if (this.isInsufficientBalance) return `Insufficient ${this.tokenFrom?.symbol} balance`;
+    if (this.isInsufficientBalance) return this.t('insufficientBalanceText', { tokenSymbol: this.tokenFrom?.symbol });
 
     if (this.limitOrderType === LimitOrderType.limit) {
       if (!this.quoteValue) return 'set price';

@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <!-- <s-date-picker @change="handleChange" /> -->
-  </div>
+  <div />
 </template>
 
 <script lang="ts">

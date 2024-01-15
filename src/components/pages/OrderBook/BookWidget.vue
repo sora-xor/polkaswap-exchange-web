@@ -266,7 +266,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     if (this.isBookPrecisionEqaul(precision.toString())) return orders;
 
     const maxPrice = FPNumber.max(...orders.map(([price]) => price)) as FPNumber;
-    const minPrice = FPNumber.min(...orders.map(([price]) => price)) as FPNumber;
+    // const minPrice = FPNumber.min(...orders.map(([price]) => price)) as FPNumber;
     const step = new FPNumber(precision);
     let edge = new FPNumber(0);
 
