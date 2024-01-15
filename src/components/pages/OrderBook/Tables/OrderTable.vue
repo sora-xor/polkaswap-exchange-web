@@ -141,7 +141,7 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
 
   get preparedItems(): OrderDataUI {
     return this.orders.map((order: OrderData) => {
-      const { originalAmount, amount, price, side, id, orderBookId, time, status, expiresAt } = order;
+      const { originalAmount, amount, price, side, id, orderBookId, time, status } = order;
       const { base, quote } = orderBookId;
       const baseAsset = this.assetsDataTable[base] || {};
       const quoteAsset = this.assetsDataTable[quote] || {};

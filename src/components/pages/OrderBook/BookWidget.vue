@@ -191,7 +191,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
     const precision = this.getPrecision(averagePrice);
 
-    const max = new FPNumber(precision || 1);
+    const max = new FPNumber(precision ?? 1);
 
     for (let inBetweenStep = max; inBetweenStep.isGreaterThanOrEqualTo(min); ) {
       this.steps.push(inBetweenStep.toString());
@@ -266,15 +266,13 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     if (this.isBookPrecisionEqaul(precision.toString())) return orders;
 
     const maxPrice = FPNumber.max(...orders.map(([price]) => price)) as FPNumber;
-    // const minPrice = FPNumber.min(...orders.map(([price]) => price)) as FPNumber;
+
     const step = new FPNumber(precision);
-    let edge = new FPNumber(0);
 
     let aggregatedOrders;
     let accumulatedAmount = FPNumber.ZERO;
     let accumulatedTotal = FPNumber.ZERO;
-
-    edge = maxPrice.add(step);
+    let edge = maxPrice.add(step);
 
     if (!edge.isZeroMod(step)) edge = edge.sub(edge.mod(step));
 
