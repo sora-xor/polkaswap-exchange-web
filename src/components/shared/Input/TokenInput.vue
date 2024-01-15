@@ -107,7 +107,6 @@ import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
-import InputSliderMixin from '@/components/mixins/InputSliderMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
@@ -127,7 +126,6 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 export default class TokenInput extends Mixins(
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin,
-  InputSliderMixin,
   TranslationMixin
 ) {
   @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
@@ -261,7 +259,6 @@ export default class TokenInput extends Mixins(
 
   async mounted(): Promise<void> {
     await this.$nextTick();
-    this.addListenerToSliderDragButton();
   }
 }
 </script>

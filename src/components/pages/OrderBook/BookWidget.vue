@@ -30,7 +30,7 @@
     <div v-if="asksFormatted.length" class="stock-book-sell">
       <div class="margin" :style="getHeight()" />
       <div
-        v-for="order in getSellOrders()"
+        v-for="order in sellOrders"
         :key="order.price"
         class="row"
         @click="fillPrice(order.price, PriceVariant.Sell)"
@@ -50,12 +50,7 @@
       </div>
     </div>
     <div v-if="bidsFormatted.length" class="stock-book-buy">
-      <div
-        v-for="order in getBuyOrders()"
-        :key="order.price"
-        class="row"
-        @click="fillPrice(order.price, PriceVariant.Buy)"
-      >
+      <div v-for="order in buyOrders" :key="order.price" class="row" @click="fillPrice(order.price, PriceVariant.Buy)">
         <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
         <span class="order-info price">{{ order.price }}</span>
@@ -239,11 +234,11 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return base.join(' ');
   }
 
-  getSellOrders() {
+  get sellOrders() {
     return this.asksFormatted.slice(-this.maxRowsNumber);
   }
 
-  getBuyOrders() {
+  get buyOrders() {
     return this.bidsFormatted.slice(0, this.maxRowsNumber);
   }
 
