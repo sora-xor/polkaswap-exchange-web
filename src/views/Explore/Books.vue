@@ -27,13 +27,13 @@
         <template v-slot="{ $index, row }">
           <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
           <pair-token-logo
-            :first-token="row.quoteAsset"
-            :second-token="row.baseAsset"
+            :first-token="row.baseAsset"
+            :second-token="row.quoteAsset"
             size="small"
             class="explore-table-item-logo"
           />
           <div class="explore-table-item-info explore-table-item-info--body">
-            <div class="explore-table-item-name">{{ row.quoteAsset.symbol }}-{{ row.baseAsset.symbol }}</div>
+            <div class="explore-table-item-name">{{ row.baseAsset.symbol }}-{{ row.quoteAsset.symbol }}</div>
           </div>
         </template>
       </s-table-column>
@@ -53,59 +53,56 @@
           />
         </template>
       </s-table-column>
-
-      <template v-if="hasTokensData">
-        <!-- 1D Price Change -->
-        <s-table-column width="104" header-align="right" align="right">
-          <template #header>
-            <sort-button name="priceChangeDay" :sort="{ order, property }" @change-sort="changeSort">
-              <span class="explore-table__primary">1D %</span>
-            </sort-button>
-          </template>
-          <template v-slot="{ row }">
-            <price-change :value="row.priceChangeDayFP" />
-          </template>
-        </s-table-column>
-        <!-- 1D Volume -->
-        <s-table-column width="104" header-align="right" align="right">
-          <template #header>
-            <sort-button name="volumeDay" :sort="{ order, property }" @change-sort="changeSort">
-              <span class="explore-table__primary">1D Vol.</span>
-            </sort-button>
-          </template>
-          <template v-slot="{ row }">
-            <formatted-amount
-              is-fiat-value
-              :font-weight-rate="FontWeightRate.MEDIUM"
-              :value="row.volumeDayFormatted.amount"
-              class="explore-table-item-price explore-table-item-amount"
-            >
-              {{ row.volumeDayFormatted.suffix }}
-            </formatted-amount>
-          </template>
-        </s-table-column>
-        <!-- TVL -->
-        <s-table-column width="104" header-align="right" align="right">
-          <template #header>
-            <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
-              <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
-              <s-tooltip border-radius="mini" :content="t('tooltips.tvl')">
-                <s-icon name="info-16" size="14px" />
-              </s-tooltip>
-            </sort-button>
-          </template>
-          <template v-slot="{ row }">
-            <formatted-amount
-              is-fiat-value
-              :font-weight-rate="FontWeightRate.MEDIUM"
-              :value="row.tvlFormatted.amount"
-              class="explore-table-item-price explore-table-item-amount"
-            >
-              {{ row.tvlFormatted.suffix }}
-            </formatted-amount>
-          </template>
-        </s-table-column>
-      </template>
+      <!-- 1D Price Change -->
+      <s-table-column width="104" header-align="right" align="right">
+        <template #header>
+          <sort-button name="priceChangeDay" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="explore-table__primary">1D %</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <price-change :value="row.priceChangeDayFP" />
+        </template>
+      </s-table-column>
+      <!-- 1D Volume -->
+      <s-table-column width="104" header-align="right" align="right">
+        <template #header>
+          <sort-button name="volumeDay" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="explore-table__primary">1D Vol.</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <formatted-amount
+            is-fiat-value
+            :font-weight-rate="FontWeightRate.MEDIUM"
+            :value="row.volumeDayFormatted.amount"
+            class="explore-table-item-price explore-table-item-amount"
+          >
+            {{ row.volumeDayFormatted.suffix }}
+          </formatted-amount>
+        </template>
+      </s-table-column>
+      <!-- TVL -->
+      <s-table-column width="104" header-align="right" align="right">
+        <template #header>
+          <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
+            <s-tooltip border-radius="mini" :content="t('tooltips.tvl')">
+              <s-icon name="info-16" size="14px" />
+            </s-tooltip>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <formatted-amount
+            is-fiat-value
+            :font-weight-rate="FontWeightRate.MEDIUM"
+            :value="row.tvlFormatted.amount"
+            class="explore-table-item-price explore-table-item-amount"
+          >
+            {{ row.tvlFormatted.suffix }}
+          </formatted-amount>
+        </template>
+      </s-table-column>
     </s-table>
 
     <history-pagination
@@ -122,7 +119,6 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { KnownAssets } from '@sora-substrate/util/build/assets/consts';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import isEmpty from 'lodash/fp/isEmpty';
@@ -130,15 +126,15 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, ZeroStringValue } from '@/consts';
+import { Components } from '@/consts';
 import { fetchOrderBooks } from '@/indexer/queries/orderBook';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
+import type { OrderBookWithStats } from '@/types/orderBook';
 import { formatAmountWithSuffix, sortPools } from '@/utils';
 
 import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
-import type { OrderBookWithStats } from '@types/orderBook';
 
 type TableItem = {
   name: string;
@@ -167,7 +163,7 @@ type TableItem = {
 export default class ExploreBooks extends Mixins(ExplorePageMixin, TranslationMixin) {
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
 
-  orderBooks: OrderBookWithStats[] = [];
+  orderBooks: readonly OrderBookWithStats[] = [];
   // override ExplorePageMixin
   order = SortDirection.DESC;
   property = 'tvl';
@@ -188,12 +184,12 @@ export default class ExploreBooks extends Mixins(ExplorePageMixin, TranslationMi
 
       if (!(baseAsset && quoteAsset)) return buffer;
 
-      const name = `${quoteAsset.symbol}-${baseAsset.symbol}`; // For search
+      const name = `${baseAsset.symbol}-${quoteAsset.symbol}`; // For search
 
       const fpBaseAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(baseAsset) ?? 0);
       const fpQuoteAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(quoteAsset) ?? 0);
-      const fpBaseAssetReserves = FPNumber.fromCodecValue(baseAssetReserves, baseAsset.decimals);
-      const fpQuoteAssetReserves = FPNumber.fromCodecValue(quoteAssetReserves, quoteAsset.decimals);
+      const fpBaseAssetReserves = FPNumber.fromCodecValue(baseAssetReserves ?? 0, baseAsset.decimals);
+      const fpQuoteAssetReserves = FPNumber.fromCodecValue(quoteAssetReserves ?? 0, quoteAsset.decimals);
       const fpBaseAssetTvl = fpBaseAssetPrice.mul(fpBaseAssetReserves);
       const fpQuoteAssetTvl = fpQuoteAssetPrice.mul(fpQuoteAssetReserves);
       const fpTvl = fpBaseAssetTvl.add(fpQuoteAssetTvl);
@@ -206,7 +202,7 @@ export default class ExploreBooks extends Mixins(ExplorePageMixin, TranslationMi
         priceFormatted: price.toLocaleString(),
         priceChangeDay: priceChange.toNumber(),
         priceChangeDayFP: priceChange,
-        volumeDay: volume.toNumber,
+        volumeDay: volume.toNumber(),
         volumeDayFormatted: formatAmountWithSuffix(volume),
         tvl: fpTvl.toNumber(),
         tvlFormatted: formatAmountWithSuffix(fpTvl),

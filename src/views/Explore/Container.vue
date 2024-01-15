@@ -93,7 +93,9 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
   get switcherAvailable(): boolean {
     if (!this.isLoggedIn) return false;
 
-    return [PageNames.ExploreFarming, PageNames.ExplorePools, PageNames.ExploreStaking].includes(this.pageName);
+    return [PageNames.ExploreFarming, PageNames.ExplorePools, PageNames.ExploreStaking].includes(
+      this.pageName as PageNames
+    );
   }
 
   handleTabChange(name: string): void {

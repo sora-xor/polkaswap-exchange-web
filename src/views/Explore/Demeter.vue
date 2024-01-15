@@ -402,4 +402,3 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
 <style lang="scss">
 @include explore-table;
 </style>
-@/modules/staking/demeter/consts@/modules/staking/demeter/types
