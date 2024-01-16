@@ -9,7 +9,7 @@
       class="explore-table"
     >
       <!-- Index -->
-      <s-table-column width="280" label="#" fixed-position="left">
+      <s-table-column width="240" label="#" fixed-position="left">
         <template #header>
           <div class="explore-table-item-index">
             <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
@@ -21,7 +21,6 @@
           </div>
           <div class="explore-table-item-info explore-table-item-info--head">
             <span class="explore-table__primary">{{ t('nameText') }}</span>
-            <span class="explore-table__secondary">({{ t('tokens.assetId') }})</span>
           </div>
         </template>
         <template v-slot="{ $index, row }">
@@ -38,7 +37,7 @@
         </template>
       </s-table-column>
       <!-- Price -->
-      <s-table-column key="price" width="130" header-align="left" align="left">
+      <s-table-column key="price" width="130" header-align="right" align="right">
         <template #header>
           <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">Price</span>
@@ -49,6 +48,14 @@
             fiat-default-rounding
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.priceFormatted"
+            :asset-symbol="row.quoteAsset.symbol"
+            class="explore-table-item-price"
+          />
+          <formatted-amount
+            is-fiat-value
+            fiat-default-rounding
+            :font-weight-rate="FontWeightRate.MEDIUM"
+            :value="row.priceUSDFormatted"
             class="explore-table-item-price"
           />
         </template>
@@ -142,6 +149,7 @@ type TableItem = {
   quoteAsset: Asset;
   price: number;
   priceFormatted: string;
+  priceUSDFormatted: string;
   priceChangeDay: number;
   priceChangeDayFP: FPNumber;
   volumeDay: number;
@@ -193,6 +201,7 @@ export default class ExploreBooks extends Mixins(ExplorePageMixin, TranslationMi
       const fpBaseAssetTvl = fpBaseAssetPrice.mul(fpBaseAssetReserves);
       const fpQuoteAssetTvl = fpQuoteAssetPrice.mul(fpQuoteAssetReserves);
       const fpTvl = fpBaseAssetTvl.add(fpQuoteAssetTvl);
+      const fpPriceUSD = price.mul(fpQuoteAssetPrice);
 
       buffer.push({
         name,
@@ -200,6 +209,7 @@ export default class ExploreBooks extends Mixins(ExplorePageMixin, TranslationMi
         quoteAsset,
         price: price.toNumber(),
         priceFormatted: price.toLocaleString(),
+        priceUSDFormatted: fpPriceUSD.toLocaleString(),
         priceChangeDay: priceChange.toNumber(),
         priceChangeDayFP: priceChange,
         volumeDay: volume.toNumber(),
