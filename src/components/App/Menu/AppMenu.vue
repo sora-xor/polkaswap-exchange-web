@@ -113,7 +113,7 @@ import {
   FaucetLink,
 } from '@/consts';
 import { StakingPageNames } from '@/modules/staking/consts';
-import { getter, state } from '@/store/decorators';
+import { getter, mutation, state } from '@/store/decorators';
 
 import AppInfoPopper from './AppInfoPopper.vue';
 import AppSidebarItemContent from './SidebarItemContent.vue';
@@ -131,12 +131,14 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   @state.settings.faucetUrl faucetUrl!: string;
   @state.router.loading pageLoading!: boolean;
+  @state.settings.menuCollapsed collapsed!: boolean;
+
   @getter.settings.orderBookEnabled private orderBookEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
-  readonly FaucetLink = FaucetLink;
+  @mutation.settings.setMenuCollapsed setMenuCollapsed!: (collapsed: boolean) => void;
 
-  collapsed = false;
+  readonly FaucetLink = FaucetLink;
 
   get collapseIcon(): string {
     return this.collapsed ? 'arrows-chevron-right-24' : 'arrows-chevron-left-24';
@@ -188,7 +190,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   collapseMenu(e?: PointerEvent) {
     ((e?.target as HTMLElement).closest('#collapse-button') as HTMLElement).blur();
-    this.collapsed = !this.collapsed;
+    this.setMenuCollapsed(!this.collapsed);
   }
 }
 </script>
