@@ -108,7 +108,6 @@
 import { FPNumber } from '@sora-substrate/util';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { api, components } from '@soramitsu/soraneo-wallet-web';
-import isEmpty from 'lodash/fp/isEmpty';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
@@ -116,11 +115,11 @@ import PoolApyMixin from '@/components/mixins/PoolApyMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state, getter } from '@/store/decorators';
+import { state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, formatDecimalPlaces, asZeroValue, sortPools } from '@/utils';
 
-import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 type TableItem = {
@@ -146,7 +145,6 @@ type TableItem = {
 })
 export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMixin, PoolApyMixin) {
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
-  @getter.wallet.account.whitelist private whitelist!: Whitelist;
 
   // override ExplorePageMixin
   order = SortDirection.DESC;
@@ -155,7 +153,6 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
   poolReserves: Record<string, string[]> = {};
 
   get items(): TableItem[] {
-    const whitelistIsAvailable = !isEmpty(this.whitelist);
     const items = Object.entries(this.poolReserves).reduce<any>((buffer, [key, reserves]) => {
       // dont show empty pools
       if (reserves.some((reserve) => asZeroValue(reserve))) return buffer;
@@ -163,7 +160,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
       const [baseAddress, targetAddress] = key.match(/0x\w{64}/g) ?? [];
 
       if (!(baseAddress && targetAddress)) return buffer;
-      if (whitelistIsAvailable && !(this.whitelist[baseAddress] && this.whitelist[targetAddress])) return buffer;
+      if (!(this.isAllowedAssetAddress(baseAddress) && this.isAllowedAssetAddress(targetAddress))) return buffer;
 
       const baseAsset = this.getAsset(baseAddress);
       const targetAsset = this.getAsset(targetAddress);

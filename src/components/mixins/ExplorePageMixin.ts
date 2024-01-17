@@ -1,3 +1,4 @@
+import { KnownAssets } from '@sora-substrate/util/build/assets/consts';
 import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
@@ -6,7 +7,7 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
 
 import { getter } from '@/store/decorators';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class ExplorePageMixin extends Mixins(
@@ -25,14 +26,23 @@ export default class ExplorePageMixin extends Mixins(
     this.currentPage = 1;
   }
 
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.wallet.account.isLoggedIn public isLoggedIn!: boolean;
   @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.assets.whitelistAssets public whitelistAssets!: Array<Asset>;
 
   order = '';
   property = '';
 
   get loadingState(): boolean {
     return this.parentLoading || this.loading;
+  }
+
+  get allowedAssets(): Array<Asset> {
+    // if whitelist is not available, use KnownAssets
+    if (!this.whitelistAssets.length) {
+      return [...KnownAssets];
+    }
+    return this.whitelistAssets;
   }
 
   get pricesAvailable(): boolean {
@@ -110,6 +120,10 @@ export default class ExplorePageMixin extends Mixins(
 
   async updateExploreData(): Promise<void> {
     console.warn('[ExplorePageMixin]: "updateExploreData" method is not implemented');
+  }
+
+  isAllowedAssetAddress(address: string): boolean {
+    return this.allowedAssets.some((asset) => asset.address === address);
   }
 
   handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {

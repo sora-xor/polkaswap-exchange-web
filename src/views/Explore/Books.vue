@@ -128,7 +128,6 @@
 import { FPNumber } from '@sora-substrate/util';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
-import isEmpty from 'lodash/fp/isEmpty';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
@@ -136,12 +135,11 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { fetchOrderBooks } from '@/indexer/queries/orderBook';
 import { lazyComponent } from '@/router';
-import { getter } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
 import type { OrderBookWithStats } from '@/types/orderBook';
 import { formatAmountWithSuffix, sortPools } from '@/utils';
 
-import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 type TableItem = {
   name: string;
@@ -169,23 +167,19 @@ type TableItem = {
   },
 })
 export default class ExploreBooks extends Mixins(ExplorePageMixin, TranslationMixin) {
-  @getter.wallet.account.whitelist private whitelist!: Whitelist;
-
   orderBooks: readonly OrderBookWithStats[] = [];
   // override ExplorePageMixin
   order = SortDirection.DESC;
   property = 'tvl';
 
   get preparedItems(): TableItem[] {
-    const whitelistIsAvailable = !isEmpty(this.whitelist);
-
     const items = this.orderBooks.reduce<TableItem[]>((buffer, item) => {
       const {
         id: { base, quote },
         stats: { baseAssetReserves, quoteAssetReserves, price, priceChange, volume },
       } = item;
 
-      if (whitelistIsAvailable && !(this.whitelist[base] && this.whitelist[quote])) return buffer;
+      if (!(this.isAllowedAssetAddress(base) && this.isAllowedAssetAddress(quote))) return buffer;
 
       const baseAsset = this.getAsset(base);
       const quoteAsset = this.getAsset(quote);
