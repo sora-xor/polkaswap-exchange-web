@@ -147,7 +147,7 @@ class SoraParachainAdapter extends SubAdapter {
   }
 }
 
-class KusamaAdapter extends SubAdapter {
+class RelaychainAdapter extends SubAdapter {
   protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
 
@@ -202,12 +202,18 @@ class KusamaAdapter extends SubAdapter {
     try {
       return await super.getNetworkFee(asset, sender, recipient);
     } catch {
-      // Hardcoded value for Rococo - 0.000125 ROC
-      if (this.subNetwork === SubNetworkId.Rococo) {
-        return '125810197';
+      switch (this.subNetwork) {
+        case SubNetworkId.Rococo:
+          // Hardcoded value for Rococo - 0.000125 ROC
+          return '125810197';
+        case SubNetworkId.Kusama:
+          // Hardcoded value for Kusama - 0.0007 KSM
+          return '700000000';
+        case SubNetworkId.Polkadot:
+          return '0'; // [TODO] Polkadot
+        default:
+          return '0';
       }
-      // Hardcoded value for Kusama - 0.0007 KSM
-      return '700000000';
     }
   }
 }
@@ -228,10 +234,12 @@ export class SubNetworksConnector {
   public static endpoints: SubNetworkApps = {};
 
   public readonly adapters = {
-    [SubNetworkId.Rococo]: () => new KusamaAdapter(SubNetworkId.Rococo),
-    [SubNetworkId.Kusama]: () => new KusamaAdapter(SubNetworkId.Kusama),
+    [SubNetworkId.Rococo]: () => new RelaychainAdapter(SubNetworkId.Rococo),
+    [SubNetworkId.Kusama]: () => new RelaychainAdapter(SubNetworkId.Kusama),
+    [SubNetworkId.Polkadot]: () => new RelaychainAdapter(SubNetworkId.Polkadot),
     [SubNetworkId.RococoSora]: () => new SoraParachainAdapter(SubNetworkId.RococoSora),
     [SubNetworkId.KusamaSora]: () => new SoraParachainAdapter(SubNetworkId.KusamaSora),
+    [SubNetworkId.PolkadotSora]: () => new SoraParachainAdapter(SubNetworkId.PolkadotSora),
   };
 
   get uniqueConnections(): SubNetworkConnection<SubAdapter>[] {
