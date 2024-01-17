@@ -8,6 +8,7 @@ import { OrderStatus } from '@/types/orderBook';
 import type { OrderBookDealData, OrderBookWithStats, OrderBookUpdateData, OrderData } from '@/types/orderBook';
 
 import type { OrderBookId } from '@sora-substrate/liquidity-proxy';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type {
   SubqueryConnectionQueryResponse,
   SubquerySubscriptionPayload,
@@ -52,8 +53,8 @@ const parseDeals = (lastDeals?: string): OrderBookDealData[] => {
 };
 
 const SubqueryOrderBooksQuery = gql<SubqueryConnectionQueryResponse<OrderBookEntity>>`
-  query OrderBooksQuery($after: Cursor) {
-    data: orderBooks(after: $after) {
+  query OrderBooksQuery($after: Cursor, $filter: OrderBookFilter) {
+    data: orderBooks(after: $after, filter: $filter) {
       pageInfo {
         hasNextPage
         endCursor
@@ -106,15 +107,18 @@ const parseOrderBookEntity = (item: OrderBookEntity): OrderBookWithStats => {
   };
 };
 
-export async function fetchOrderBooks(): Promise<Nullable<OrderBookWithStats[]>> {
+export async function fetchOrderBooks(assets?: Asset[]): Promise<Nullable<OrderBookWithStats[]>> {
+  const ids = assets?.map((item) => item.address) ?? [];
   const indexer = getCurrentIndexer();
 
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
+      const filter = ids.length ? { baseAssetId: { in: ids } } : undefined;
+      const variables = { filter };
       const subqueryIndexer = indexer as SubqueryIndexer;
       const response = await subqueryIndexer.services.explorer.fetchAllEntities(
         SubqueryOrderBooksQuery,
-        {},
+        variables,
         parseOrderBookEntity
       );
       return response;

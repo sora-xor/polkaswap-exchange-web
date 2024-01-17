@@ -179,8 +179,6 @@ export default class ExploreBooks extends Mixins(ExplorePageMixin, TranslationMi
         stats: { baseAssetReserves, quoteAssetReserves, price, priceChange, volume },
       } = item;
 
-      if (!(this.isAllowedAssetAddress(base) && this.isAllowedAssetAddress(quote))) return buffer;
-
       const baseAsset = this.getAsset(base);
       const quoteAsset = this.getAsset(quote);
 
@@ -229,7 +227,7 @@ export default class ExploreBooks extends Mixins(ExplorePageMixin, TranslationMi
   async updateExploreData(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.orderBooks = Object.freeze((await fetchOrderBooks()) ?? []);
+        this.orderBooks = Object.freeze((await fetchOrderBooks(this.allowedAssets)) ?? []);
       });
     });
   }
