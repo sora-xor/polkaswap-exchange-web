@@ -210,8 +210,8 @@ class RelaychainAdapter extends SubAdapter {
           // Hardcoded value for Kusama - 0.0007 KSM
           return '700000000';
         case SubNetworkId.Polkadot:
-          // Hardcoded value for Polkadot - 0.02 DOT
-          return '200000000'; // [TODO] Polkadot
+          // Hardcoded value for Polkadot - 0.01836 DOT
+          return '183600000';
         default:
           return '0';
       }
