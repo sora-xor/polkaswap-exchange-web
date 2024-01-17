@@ -96,7 +96,7 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
   },
   [SubNetworkId.Polkadot]: {
     DOT: {
-      [BridgeTxDirection.Outgoing]: '0', // [TODO] Polkadot
+      [BridgeTxDirection.Outgoing]: '21062795',
       [BridgeTxDirection.Incoming]: '0',
     },
   },
