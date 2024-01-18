@@ -570,12 +570,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     if (value) this.handleInputFieldBase(value.toString());
   }
 
-  handleInputFieldQuote(value: string): void {
+  handleInputFieldQuote(preciseValue: string): void {
+    const value = new FPNumber(preciseValue).dp(this.bookPrecision).toString();
     this.setQuoteValue(value);
     this.checkInputValidation();
   }
 
-  handleInputFieldBase(value: string): void {
+  handleInputFieldBase(preciseValue: string): void {
+    const value = new FPNumber(preciseValue).dp(this.amountPrecision).toString();
     this.setBaseValue(value);
     this.setAmountSliderValue(this.getPercent(value));
     this.checkInputValidation();
