@@ -48,7 +48,6 @@
             fiat-default-rounding
             :font-weight-rate="FontWeightRate.MEDIUM"
             :value="row.priceFormatted"
-            :asset-symbol="row.quoteAsset.symbol"
             class="explore-table-item-price"
           />
           <formatted-amount
@@ -137,7 +136,7 @@ import { fetchOrderBooks } from '@/indexer/queries/orderBook';
 import { lazyComponent } from '@/router';
 import type { AmountWithSuffix } from '@/types/formats';
 import type { OrderBookWithStats } from '@/types/orderBook';
-import { formatAmountWithSuffix, sortPools } from '@/utils';
+import { formatAmountWithSuffix, sortPools, showMostFittingValue } from '@/utils';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
@@ -200,7 +199,7 @@ export default class ExploreBooks extends Mixins(ExplorePageMixin, TranslationMi
         baseAsset,
         quoteAsset,
         price: price.toNumber(),
-        priceFormatted: price.toLocaleString(),
+        priceFormatted: showMostFittingValue(price),
         priceUSDFormatted: fpPriceUSD.toLocaleString(),
         priceChangeDay: priceChange.toNumber(),
         priceChangeDayFP: priceChange,
