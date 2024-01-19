@@ -122,10 +122,6 @@ export default class ExplorePageMixin extends Mixins(
     console.warn('[ExplorePageMixin]: "updateExploreData" method is not implemented');
   }
 
-  isAllowedAssetAddress(address: string): boolean {
-    return this.allowedAssets.some((asset) => asset.address === address);
-  }
-
   handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
     let current = 1;
 
