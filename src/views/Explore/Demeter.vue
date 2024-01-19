@@ -109,7 +109,7 @@
                 value-can-be-hidden
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
-                class="explore-table-item-price explore-table-item-amount"
+                class="explore-table-item-token"
               >
               </formatted-amount>
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />

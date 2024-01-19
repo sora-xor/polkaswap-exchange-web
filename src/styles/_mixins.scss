@@ -621,6 +621,9 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       flex-flow: column nowrap;
       align-items: flex-end;
     }
+    &-token {
+      font-size: var(--s-font-size-small);
+    }
     &-price {
       font-size: var(--s-font-size-medium);
       white-space: nowrap;

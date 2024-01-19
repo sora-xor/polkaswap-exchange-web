@@ -76,7 +76,27 @@
                 value-can-be-hidden
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
-                class="explore-table-item-price explore-table-item-amount"
+                class="explore-table-item-token"
+              >
+              </formatted-amount>
+              <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
+            </div>
+          </div>
+        </template>
+      </s-table-column>
+      <!-- Pool tokens -->
+      <s-table-column width="200" header-align="right" align="right">
+        <template #header>
+          <span class="explore-table__primary">Pool Tokens</span>
+        </template>
+        <template v-slot="{ row }">
+          <div class="explore-table-item-tokens">
+            <div v-for="({ asset, balance }, index) in row.poolTokens" :key="index" class="explore-table-cell">
+              <formatted-amount
+                value-can-be-hidden
+                :font-size-rate="FontSizeRate.SMALL"
+                :value="balance"
+                class="explore-table-item-token"
               >
               </formatted-amount>
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
@@ -141,6 +161,11 @@ import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils'
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
+type PoolToken = {
+  asset: Asset;
+  balance: string;
+};
+
 type TableItem = {
   baseAsset: Asset;
   targetAsset: Asset;
@@ -151,7 +176,8 @@ type TableItem = {
   tvl: number;
   tvlFormatted: AmountWithSuffix;
   isAccountItem: boolean;
-  accountTokens: { asset: Asset; balance: string }[];
+  poolTokens: PoolToken[];
+  accountTokens: PoolToken[];
 };
 
 @Component({
@@ -173,11 +199,11 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
 
   poolReserves: Record<string, string[]> = {};
 
-  poolsData: PoolData[] = [];
+  poolsData: readonly PoolData[] = [];
 
   get items(): TableItem[] {
     const items = this.poolsData.reduce<any>((buffer, pool) => {
-      const { baseAssetId, targetAssetId, priceUSD, tvlUSD, apy } = pool;
+      const { baseAssetId, targetAssetId, priceUSD, apy } = pool;
 
       const baseAsset = this.getAsset(baseAssetId);
       const targetAsset = this.getAsset(targetAssetId);
@@ -185,6 +211,21 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
       if (!(baseAsset && targetAsset)) return buffer;
 
       const name = `${baseAsset.symbol}-${targetAsset.symbol}`; // For search
+
+      const baseAssetReserves = FPNumber.fromCodecValue(pool.baseAssetReserves ?? 0, baseAsset.decimals);
+      const targetAssetReserves = FPNumber.fromCodecValue(pool.targetAssetReserves ?? 0, targetAsset.decimals);
+      const tvlUSD = targetAssetReserves.mul(priceUSD).mul(FPNumber.TWO);
+
+      const poolTokens = [
+        {
+          asset: baseAsset,
+          balance: formatDecimalPlaces(baseAssetReserves),
+        },
+        {
+          asset: targetAsset,
+          balance: formatDecimalPlaces(targetAssetReserves),
+        },
+      ];
 
       const accountPool = this.accountLiquidity.find(
         (liquidity) => liquidity.firstAddress === baseAsset.address && liquidity.secondAddress === targetAsset.address
@@ -212,6 +253,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
         tvlFormatted: formatAmountWithSuffix(tvlUSD),
         isAccountItem: !!accountPool,
         accountTokens,
+        poolTokens,
       });
 
       return buffer;

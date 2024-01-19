@@ -3,6 +3,7 @@ import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
 
+import type { CodecString } from '@sora-substrate/util';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type {
   SubqueryPoolXYKEntity,
@@ -18,8 +19,9 @@ const { IndexerType } = WALLET_CONSTS;
 export type PoolData = {
   baseAssetId: string;
   targetAssetId: string;
+  baseAssetReserves: CodecString;
+  targetAssetReserves: CodecString;
   priceUSD: FPNumber;
-  tvlUSD: FPNumber;
   apy: FPNumber;
 };
 
@@ -34,6 +36,7 @@ const SubqueryPoolsQuery = gql<SubqueryConnectionQueryResponse<SubqueryPoolXYKEn
         node {
           baseAssetId
           targetAssetId
+          baseAssetReserves
           targetAssetReserves
           priceUSD
           strategicBonusApy
@@ -58,6 +61,7 @@ const SubsquidPoolsQuery = gql<SubsquidConnectionQueryResponse<SubsquidPoolXYKEn
           targetAsset {
             id
           }
+          baseAssetReserves
           targetAssetReserves
           priceUSD
           strategicBonusApy
@@ -70,8 +74,6 @@ const SubsquidPoolsQuery = gql<SubsquidConnectionQueryResponse<SubsquidPoolXYKEn
 const parse = (item: SubqueryPoolXYKEntity | SubsquidPoolXYKEntity): PoolData => {
   const apy = new FPNumber(item.strategicBonusApy ?? 0).mul(FPNumber.HUNDRED);
   const priceUSD = new FPNumber(item.priceUSD ?? 0);
-  const targetAssetReserves = FPNumber.fromCodecValue(item.targetAssetReserves ?? 0);
-  const tvlUSD = targetAssetReserves.mul(priceUSD).mul(FPNumber.TWO);
 
   const baseAssetId = 'baseAssetId' in item ? item.baseAssetId : item.baseAsset.id;
   const targetAssetId = 'targetAssetId' in item ? item.targetAssetId : item.targetAsset.id;
@@ -79,8 +81,9 @@ const parse = (item: SubqueryPoolXYKEntity | SubsquidPoolXYKEntity): PoolData =>
   return {
     baseAssetId,
     targetAssetId,
+    baseAssetReserves: item.baseAssetReserves,
+    targetAssetReserves: item.targetAssetReserves,
     priceUSD,
-    tvlUSD,
     apy,
   };
 };
