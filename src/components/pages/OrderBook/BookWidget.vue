@@ -105,7 +105,6 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   readonly maxRowsNumber = 11;
   selectedStep = '10';
   scalerOpen = false;
-  steps: Array<string> = [];
 
   // Widget subscription creation
   @Watch('orderBookId', { immediate: true })
@@ -118,15 +117,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     });
   }
 
-  @Watch('asks', { immediate: true })
-  @Watch('bids', { immediate: true })
-  async prepareLimitOrders(): Promise<void> {
-    this.calculateScalerStep();
-  }
-
   handleSelectStep(value: string): void {
     this.selectedStep = value;
-    this.prepareLimitOrders();
   }
 
   fillPrice(price: string, side: PriceVariant): void {
@@ -134,69 +126,56 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     this.setQuoteValue(Number(price).toString());
   }
 
-  getPrecision(price: FPNumber): number | undefined {
-    if (!price) return;
+  get averagePrice(): FPNumber | undefined {
+    return (this.asks?.[0] ?? this.bids?.[0])?.[0];
+  }
+
+  get averagePricePrecision(): number | undefined {
+    if (!this.averagePrice) return undefined;
+
+    const price = this.averagePrice;
 
     let result = price;
+    let max = FPNumber.ONE;
+
     if (price.isLessThan(FPNumber.ONE)) {
       const order = new FPNumber(0.1);
-      let max = order;
+      max = order;
       while (result.isLessThan(FPNumber.ONE)) {
         result = price.div(max);
         if (result.isGreaterThanOrEqualTo(FPNumber.ONE)) break;
         max = max.mul(order);
       }
-
-      return max.toNumber();
     } else if (price.isGreaterThan(FPNumber.TEN)) {
       const order = FPNumber.TEN;
-      let max = order;
+      max = order;
       while (result.isGreaterThan(FPNumber.ONE)) {
         result = price.div(max);
         if (result.isLessThan(FPNumber.TEN)) break;
         max = max.mul(order);
       }
-
-      return max.toNumber();
-    } else {
-      const max = FPNumber.ONE;
-      return max.toNumber();
     }
+
+    return max.toNumber();
   }
 
-  getAveragePrice(): FPNumber | undefined {
-    if (this.asks?.length) {
-      return this.asks[0][0];
-    }
-
-    if (this.bids?.length) {
-      return this.bids[0][0];
-    }
-  }
-
-  calculateScalerStep(): void {
+  get steps(): string[] {
+    const steps: string[] = [];
     const min = this.currentOrderBook?.tickSize;
 
-    const averagePrice = this.getAveragePrice();
+    if (!(this.averagePricePrecision && min)) return steps;
 
-    if (!averagePrice) {
-      this.steps = [];
-      return;
-    }
-
-    this.steps = [];
-
-    const precision = this.getPrecision(averagePrice);
-
-    const max = new FPNumber(precision ?? 1);
+    const max = new FPNumber(this.averagePricePrecision ?? 1);
 
     for (let inBetweenStep = max; inBetweenStep.isGreaterThanOrEqualTo(min); ) {
-      this.steps.push(inBetweenStep.toString());
+      steps.push(inBetweenStep.toString());
       inBetweenStep = inBetweenStep.div(FPNumber.TEN);
     }
 
     // Remove this line if supporting all precisions
-    this.steps.splice(this.steps.indexOf('1') + 1, Infinity, min.toString());
+    steps.splice(steps.indexOf('1') + 1, Infinity, min.toString());
+
+    return steps;
   }
 
   get showAggregationOptions(): boolean {
@@ -272,7 +251,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return precision === this.currentOrderBook?.tickSize?.toString();
   }
 
-  calculateStepsDistribution(orders, precision = 10): OrderBookPriceVolumeAggregated[] {
+  private calculateStepsDistribution(orders, precision = 10): OrderBookPriceVolumeAggregated[] {
     if (this.isBookPrecisionEqual(precision.toString())) return orders;
 
     const maxPrice = FPNumber.max(...orders.map(([price]) => price)) as FPNumber;
