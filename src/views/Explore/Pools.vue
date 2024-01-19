@@ -36,6 +36,23 @@
           </div>
         </template>
       </s-table-column>
+      <!-- Price -->
+      <s-table-column width="130" header-align="right" align="right">
+        <template #header>
+          <sort-button name="priceUSD" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="explore-table__primary">Price</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <formatted-amount
+            is-fiat-value
+            fiat-default-rounding
+            :font-weight-rate="FontWeightRate.MEDIUM"
+            :value="row.priceUSDFormatted"
+            class="explore-table-item-price"
+          />
+        </template>
+      </s-table-column>
       <!-- APY -->
       <s-table-column v-if="hasApyColumnData" key="apy" width="120" header-align="right" align="right">
         <template #header>
@@ -107,17 +124,19 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
-import { api, components } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import PoolApyMixin from '@/components/mixins/PoolApyMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import { fetchPoolsData } from '@/indexer/queries/pools';
+import type { PoolData } from '@/indexer/queries/pools';
 import { lazyComponent } from '@/router';
 import { state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
-import { formatAmountWithSuffix, formatDecimalPlaces, asZeroValue, sortPools } from '@/utils';
+import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
@@ -125,6 +144,8 @@ import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types'
 type TableItem = {
   baseAsset: Asset;
   targetAsset: Asset;
+  priceUSD: number;
+  priceUSDFormatted: string;
   apy: number;
   apyFormatted: string;
   tvl: number;
@@ -152,18 +173,14 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
 
   poolReserves: Record<string, string[]> = {};
 
+  poolsData: PoolData[] = [];
+
   get items(): TableItem[] {
-    const items = Object.entries(this.poolReserves).reduce<any>((buffer, [key, reserves]) => {
-      // dont show empty pools
-      if (reserves.some((reserve) => asZeroValue(reserve))) return buffer;
+    const items = this.poolsData.reduce<any>((buffer, pool) => {
+      const { baseAssetId, targetAssetId, priceUSD, tvlUSD, apy } = pool;
 
-      const [baseAddress, targetAddress] = key.match(/0x\w{64}/g) ?? [];
-
-      if (!(baseAddress && targetAddress)) return buffer;
-      if (!(this.isAllowedAssetAddress(baseAddress) && this.isAllowedAssetAddress(targetAddress))) return buffer;
-
-      const baseAsset = this.getAsset(baseAddress);
-      const targetAsset = this.getAsset(targetAddress);
+      const baseAsset = this.getAsset(baseAssetId);
+      const targetAsset = this.getAsset(targetAssetId);
 
       if (!(baseAsset && targetAsset)) return buffer;
 
@@ -172,14 +189,6 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
       const accountPool = this.accountLiquidity.find(
         (liquidity) => liquidity.firstAddress === baseAsset.address && liquidity.secondAddress === targetAsset.address
       );
-
-      const fpBaseAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(baseAsset) ?? 0);
-      const fpBaseAssetReserves = FPNumber.fromCodecValue(reserves[0] ?? 0);
-      const fpApy = FPNumber.fromCodecValue(this.getPoolApy(baseAsset.address, targetAsset.address) ?? 0).mul(
-        FPNumber.HUNDRED
-      );
-      const fpTvl = fpBaseAssetPrice.mul(fpBaseAssetReserves).mul(new FPNumber(2));
-
       const accountTokens = [
         {
           asset: baseAsset,
@@ -195,10 +204,12 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
         name,
         baseAsset,
         targetAsset,
-        apy: fpApy.toNumber(),
-        apyFormatted: formatDecimalPlaces(fpApy, true),
-        tvl: fpTvl.toNumber(),
-        tvlFormatted: formatAmountWithSuffix(fpTvl),
+        priceUSD: priceUSD.toNumber(),
+        priceUSDFormatted: priceUSD.toLocaleString(),
+        apy: apy.toNumber(),
+        apyFormatted: formatDecimalPlaces(apy, true),
+        tvl: tvlUSD.toNumber(),
+        tvlFormatted: formatAmountWithSuffix(tvlUSD),
         isAccountItem: !!accountPool,
         accountTokens,
       });
@@ -228,7 +239,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
   async updateExploreData(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.poolReserves = Object.freeze(await api.poolXyk.getAllReserves());
+        this.poolsData = Object.freeze(await fetchPoolsData(this.allowedAssets));
       });
     });
   }
