@@ -131,10 +131,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   @state.settings.faucetUrl faucetUrl!: string;
   @state.router.loading pageLoading!: boolean;
-  @getter.settings.soraCardEnabled private soraCardEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
-  readonly SidebarMenuGroups = SidebarMenuGroups;
   readonly FaucetLink = FaucetLink;
 
   collapsed = false;
@@ -152,8 +150,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   get sidebarMenuItems(): Array<SidebarMenuItemLink> {
-    if (this.soraCardEnabled) return SidebarMenuGroups;
-    return SidebarMenuGroups.filter((menuItem) => menuItem.title !== PageNames.SoraCard);
+    return SidebarMenuGroups;
   }
 
   get currentPath(): string {
