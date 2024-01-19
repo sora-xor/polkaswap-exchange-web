@@ -27,12 +27,12 @@
           <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
           <pair-token-logo
             :first-token="row.baseAsset"
-            :second-token="row.quoteAsset"
+            :second-token="row.targetAsset"
             size="small"
             class="explore-table-item-logo"
           />
           <div class="explore-table-item-info explore-table-item-info--body">
-            <div class="explore-table-item-name">{{ row.baseAsset.symbol }}-{{ row.quoteAsset.symbol }}</div>
+            <div class="explore-table-item-name">{{ row.baseAsset.symbol }}-{{ row.targetAsset.symbol }}</div>
           </div>
         </template>
       </s-table-column>
@@ -143,7 +143,7 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
 type TableItem = {
   name: string;
   baseAsset: Asset;
-  quoteAsset: Asset;
+  targetAsset: Asset;
   price: number;
   priceFormatted: string;
   priceUSDFormatted: string;
@@ -179,16 +179,16 @@ export default class ExploreBooks extends Mixins(ExplorePageMixin, TranslationMi
       } = item;
 
       const baseAsset = this.getAsset(base);
-      const quoteAsset = this.getAsset(quote);
+      const targetAsset = this.getAsset(quote);
 
-      if (!(baseAsset && quoteAsset)) return buffer;
+      if (!(baseAsset && targetAsset)) return buffer;
 
-      const name = `${baseAsset.symbol}-${quoteAsset.symbol}`; // For search
+      const name = `${baseAsset.symbol}-${targetAsset.symbol}`; // For search
 
       const fpBaseAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(baseAsset) ?? 0);
-      const fpQuoteAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(quoteAsset) ?? 0);
+      const fpQuoteAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(targetAsset) ?? 0);
       const fpBaseAssetReserves = FPNumber.fromCodecValue(baseAssetReserves ?? 0, baseAsset.decimals);
-      const fpQuoteAssetReserves = FPNumber.fromCodecValue(quoteAssetReserves ?? 0, quoteAsset.decimals);
+      const fpQuoteAssetReserves = FPNumber.fromCodecValue(quoteAssetReserves ?? 0, targetAsset.decimals);
       const fpBaseAssetTvl = fpBaseAssetPrice.mul(fpBaseAssetReserves);
       const fpQuoteAssetTvl = fpQuoteAssetPrice.mul(fpQuoteAssetReserves);
       const fpTvl = fpBaseAssetTvl.add(fpQuoteAssetTvl);
@@ -197,7 +197,7 @@ export default class ExploreBooks extends Mixins(ExplorePageMixin, TranslationMi
       buffer.push({
         name,
         baseAsset,
-        quoteAsset,
+        targetAsset,
         price: price.toNumber(),
         priceFormatted: showMostFittingValue(price),
         priceUSDFormatted: fpPriceUSD.toLocaleString(),
@@ -214,8 +214,8 @@ export default class ExploreBooks extends Mixins(ExplorePageMixin, TranslationMi
 
     const defaultSorted = [...items].sort((a, b) =>
       sortPools(
-        { baseAsset: a.baseAsset, poolAsset: a.quoteAsset },
-        { baseAsset: b.baseAsset, poolAsset: b.quoteAsset }
+        { baseAsset: a.baseAsset, poolAsset: a.targetAsset },
+        { baseAsset: b.baseAsset, poolAsset: b.targetAsset }
       )
     );
 
