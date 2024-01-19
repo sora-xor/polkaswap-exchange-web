@@ -84,12 +84,8 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
 
         return networks.reduce<NetworkItem[]>((buffer, { disabled, data: { id, name } }) => {
           let content = '';
-          let link = false;
 
-          if (id === SubNetworkId.Polkadot) {
-            content = 'https://parachains.info/details/sora_polkadot';
-            link = true;
-          } else if (disabled) {
+          if (disabled) {
             content = this.t('comingSoonText');
           }
 
@@ -100,7 +96,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
             disabled,
             info: {
               content,
-              link,
+              link: false, // if content should be a link
             },
           });
 
