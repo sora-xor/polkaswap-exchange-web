@@ -14,7 +14,7 @@ export type OrderBookState = {
   deals: readonly OrderBookDealData[];
   asks: readonly OrderBookPriceVolume[];
   bids: readonly OrderBookPriceVolume[];
-  userLimitOrders: readonly LimitOrder[];
+  userLimitOrders: readonly (LimitOrder | null)[];
   baseValue: string;
   quoteValue: string;
   side: PriceVariant;
