@@ -990,4 +990,35 @@ export default {
   connectEthereumWalletText: 'Connect {Ethereum} wallet',
   collapseText: 'Collapse',
   expandText: 'Expand',
+  orderBook: {
+    dialog: {
+      placeMarket: 'Place market order',
+      placeLimit: 'Place limit order',
+      askCancel: 'Are you sure you want to cancel all of your open orders?',
+      cancelAll: 'Yes, cancel all',
+      noCancel: 'No, don’t cancel it',
+    },
+    tradingPair: {
+      choosePair: 'Choose trading pair',
+      tokenPair: 'Token pair',
+      price: 'Price',
+      volume: 'Volume',
+      dailyChange: 'Daily change',
+      status: 'Status',
+    },
+    bookStatus: {
+      active: 'Active',
+      placeable: 'Placeable',
+      cancelable: 'Cancelable',
+      inactive: 'Inactive',
+    },
+    tooltip: {
+      bookStatus: {
+        active: 'Active',
+        placeable: 'Placeable',
+        cancelable: 'Cancelable',
+        inactive: 'Inactive',
+      },
+    },
+  },
 };

@@ -66,13 +66,14 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   }
 
   get title(): string {
-    return this.isMarketType ? 'Place market order' : 'Place limit order';
+    return this.isMarketType ? this.t('orderBook.dialogs.placeMarket') : this.t('orderBook.dialogs.placeLimit');
   }
 
   get upperText(): string {
     const symbol = this.baseAsset?.symbol;
 
     if (this.isMarketType) {
+      // todo
       return this.isBuySide ? `Buy ${this.toValue} ${symbol}` : `Sell ${this.baseValue} ${symbol}`;
     } else {
       return this.isBuySide ? `Buy ${this.baseValue} ${symbol}` : `Sell ${this.baseValue} ${symbol}`;
@@ -83,6 +84,7 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
     const price = this.quoteValue;
     const symbol = this.quoteAsset?.symbol;
 
+    // todo
     return `at ${price} ${symbol}`;
   }
 
