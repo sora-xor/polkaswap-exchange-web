@@ -374,6 +374,8 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get txInternalHash(): string {
+    if (!this.isOutgoing) return this.txSoraHash;
+
     return this.txSoraHash || this.txSoraBlockId || this.txSoraId;
   }
 
