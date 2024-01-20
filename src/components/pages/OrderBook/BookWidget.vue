@@ -101,8 +101,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   @action.orderBook.subscribeToBidsAndAsks private subscribeToBidsAndAsks!: AsyncFnWithoutArgs;
 
   readonly PriceVariant = PriceVariant;
-
   readonly maxRowsNumber = 11;
+
   selectedStep = '10';
   scalerOpen = false;
 
@@ -293,12 +293,16 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return aggregatedOrders.filter((row: OrderBookPriceVolumeAggregated) => !row[1].isZero());
   }
 
-  getAmountProportion(currentAmount: FPNumber, maxAmount: FPNumber): number {
+  get bookPrecision(): number {
+    return this.currentOrderBook?.tickSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length;
+  }
+
+  private getAmountProportion(currentAmount: FPNumber, maxAmount: FPNumber): number {
     return currentAmount.div(maxAmount).mul(FPNumber.HUNDRED).toNumber();
   }
 
-  get bookPrecision(): number {
-    return this.currentOrderBook?.tickSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length;
+  private toBookPrecision(cell: FPNumber): string {
+    return cell.toNumber().toFixed(this.bookPrecision);
   }
 
   private formatPriceVolumes(items: OrderBookPriceVolume[]): LimitOrderForm[] {
@@ -307,24 +311,17 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     const result: LimitOrderForm[] = [];
 
     aggregated.forEach((row: OrderBookPriceVolumeAggregated) => {
-      if (row[1].isZero()) return;
+      const [price, amount, acc] = row;
 
-      let total;
-      const price = row[0].toNumber().toFixed(this.bookPrecision);
-      const amount = row[1].toNumber().toFixed(this.bookPrecision);
-      // const total = row[0].mul(row[1]).toNumber().toFixed(this.bookPrecision);
+      if (amount.isZero()) return;
 
-      if (this.isBookPrecisionEqual(this.selectedStep)) {
-        total = row[0].mul(row[1]).toNumber().toFixed(this.bookPrecision);
-      } else {
-        total = row[2].toNumber().toFixed(this.bookPrecision);
-      }
+      const total = this.isBookPrecisionEqual(this.selectedStep) ? price.mul(amount) : acc;
 
       result.push({
-        price,
-        amount,
-        total,
-        filled: this.getAmountProportion(row[1], maxAmount),
+        price: this.toBookPrecision(price),
+        amount: this.toBookPrecision(amount),
+        total: this.toBookPrecision(total),
+        filled: this.getAmountProportion(amount, maxAmount),
       });
     });
 
