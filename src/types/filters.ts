@@ -10,6 +10,7 @@ export enum Timeframes {
   WEEK = 'WEEK',
   MONTH = 'MONTH',
   QUARTER = 'QUARTER',
+  HALF_YEAR = 'HALF_YEAR',
   YEAR = 'YEAR',
   ALL = 'ALL',
 }

@@ -47,6 +47,13 @@ const QUARTER_IN_DAYS_FILTER = {
   count: 90,
 };
 
+const HALF_YEAR_IN_DAYS_FILTER = {
+  name: Timeframes.HALF_YEAR,
+  label: '6M',
+  type: SnapshotTypes.DAY,
+  count: 180,
+};
+
 const YEAR_IN_MONTHS_FILTER = {
   name: Timeframes.YEAR,
   label: '1Y',
@@ -73,13 +80,15 @@ export const NETWORK_STATS_FILTERS: SnapshotFilter[] = [
   WEEK_IN_HOURS_FILTER,
   MONTH_IN_DAYS_FILTER,
   QUARTER_IN_DAYS_FILTER,
+  HALF_YEAR_IN_DAYS_FILTER,
   YEAR_IN_MONTHS_FILTER,
 ];
 
-export const ASSET_SUPPLY_LINE_FILTERS = [
+export const ASSET_SUPPLY_LINE_FILTERS: SnapshotFilter[] = [
   DAY_IN_HOURS_FILTER,
   WEEK_IN_HOURS_FILTER,
   MONTH_IN_DAYS_FILTER,
   QUARTER_IN_DAYS_FILTER,
+  HALF_YEAR_IN_DAYS_FILTER,
   YEAR_IN_DAYS_FILTER,
 ];
