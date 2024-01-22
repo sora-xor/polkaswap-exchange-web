@@ -60,7 +60,10 @@
             "StakingPayout": "支付奖励",
             "StakingChill": "寒意",
             "StakingSetController": "设置控制器{address}",
-            "StakingSetPayee": "设置收款人{address}"
+            "StakingSetPayee": "设置收款人{address}",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol}以{price} {symbol2}放置",
+            "OrderBookCancelLimitOrder": "限价订单已取消",
+            "OrderBookCancelLimitOrders": "限价订单已取消"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
@@ -92,7 +95,10 @@
             "StakingPayout": "奖励发放失败",
             "StakingChill": "未能冷却",
             "StakingSetController": "无法设置控制器{address}",
-            "StakingSetPayee": "无法设置收款人{address}"
+            "StakingSetPayee": "无法设置收款人{address}",
+            "OrderBookPlaceLimitOrder": "未能以{price} } {symbol}下达{amount} {symbol}限价单",
+            "OrderBookCancelLimitOrder": "未能取消{price} {symbol}的{amount} {symbol}限价订单",
+            "OrderBookCancelLimitOrders": "取消限价单失败"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
@@ -116,7 +122,10 @@
         "StakingPayout": "支付奖励",
         "StakingChill": "寒意",
         "StakingSetController": "设置控制器",
-        "StakingSetPayee": "设置收款人"
+        "StakingSetPayee": "设置收款人",
+        "OrderBookPlaceLimitOrder": "下订单",
+        "OrderBookCancelLimitOrder": "取消订单",
+        "OrderBookCancelLimitOrders": "取消订单"
     },
     "polkadotjs": {
         "noExtensions": "没有找到 {PolkadotJs} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -339,7 +348,9 @@
         "referrer": "推荐人",
         "referral": "推荐",
         "adarTxDetailsTitle": "交易详情",
-        "comment": "评论"
+        "comment": "评论",
+        "price": "价格",
+        "side": "边"
     },
     "appName": "{AppName}",
     "changeNetworkText": "更改钱包中的网络",
@@ -377,7 +388,8 @@
         "Explore\/Pools": "流动池",
         "Explore\/Staking": "质押",
         "Explore\/Farming": "农耕",
-        "Staking": "质押"
+        "Staking": "质押",
+        "OrderBook": "贸易"
     },
     "mainMenu": {
         "Swap": "兑换",
@@ -391,7 +403,8 @@
         "CreatePair": "创建流动性对",
         "StakingContainer": "质押",
         "Explore\/Container": "探索",
-        "SoraCard": "{Sora}卡"
+        "SoraCard": "{Sora}卡",
+        "OrderBook": "贸易"
     },
     "social": {
         "twitter": "推特",
@@ -1383,5 +1396,110 @@
         }
     },
     "collapseText": "崩溃",
-    "expandText": "拓展"
+    "expandText": "拓展",
+    "orderBook": {
+        "Buy": "购买{asset}",
+        "Sell": "出售{asset}",
+        "orderBook": "订单簿",
+        "marketTrades": "市场交易",
+        "market": "市场",
+        "limit": "限制",
+        "price": "价格",
+        "total": "全部的",
+        "amount": "数量",
+        "time": "时间",
+        "month": "月",
+        "change": "改变",
+        "cantPlaceOrder": "无法下订单",
+        "enterAmount": "输入金额",
+        "setPrice": "设定价格",
+        "dayVolume": "一维体积",
+        "stop": "书已停止",
+        "tokenPair": "代币对",
+        "book": {
+            "noAsks": "没有打开询问",
+            "noBids": "没有公开投标"
+        },
+        "history": {
+            "tradeHistory": "贸易历史",
+            "orderHistory": "订单历史",
+            "openOrders": "未结订单{value}",
+            "connect": "连接账户开始交易",
+            "cancel": "取消订单{value}",
+            "cancelAll": "全部取消"
+        },
+        "orderTable": {
+            "time": "时间",
+            "pair": "一对",
+            "side": "边",
+            "filled": "填充",
+            "lifetime": "寿命",
+            "noOrders": "没有订单"
+        },
+        "dialog": {
+            "placeMarket": "下市价单",
+            "placeLimit": "下限价单",
+            "askCancel": "您确定要取消所有未结订单吗？",
+            "cancelAll": "是的，全部取消",
+            "noCancel": "不，不要取消它",
+            "buy": "购买{amount} {symbol}",
+            "sell": "卖出{amount} {symbol}",
+            "at": "以{price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "选择交易对",
+            "volume": "体积",
+            "dailyChange": "每日变化",
+            "status": "地位",
+            "total": "{amount} {symbol} AT {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "积极的",
+            "placeable": "可放置",
+            "cancelable": "可取消",
+            "inactive": "不活跃"
+        },
+        "tooltip": {
+            "limitOrder": "“限价”订单可让您指定您想要购买或出售资产的确切价格。 “限价买入”订单将仅以指定价格或更低价格执行，而“限价卖出”订单将仅以指定价格或更高价格执行。这种控制可确保您支付的费用或售价不会低于您愿意接受的价格。",
+            "marketOrder": "“市价订单”是指以当前最佳价格立即买入或卖出的订单。它不需要设定价格，确保快速执行，但代价是对收到或支付的价格控制较少。当执行的确定性优先于价格控制时，使用这种类型的订单。",
+            "pairsList": "显示加密货币当前买卖订单的实时列表。它可以帮助您了解 SORA 网络和 Polkaswap DEX 上的需求、潜在价格方向和交易量",
+            "bookWidget": "特定资产的实时、不断更新的买入（买入）和卖出（卖出）订单记录，按价格水平组织。订单簿显示市场深度，包括以不同价格提供的资产数量。交易者利用这种详细的视图来衡量市场情绪，确定潜在的阻力位和支撑位，并根据现有的需求和供应预测价格变动",
+            "marketWidget": "该小部件显示市场中已执行交易的实时流，提供有关交易量、近期活动和当前市场趋势的信息。通过观察实际交易的时间、价格和规模，交易者可以深入了解市场动态和情绪，帮助他们发现交易机会并做出明智的决策",
+            "txDetails": {
+                "orderType": "“买入”订单将仅以指定价格或更低价格执行，而“卖出”订单将仅以指定价格或更高价格执行。这种控制可确保您支付的费用或售价不会低于您愿意接受的价格。",
+                "expiryDate": "“到期日”是您的订单执行的最后期限。如果在此日期之前市场未达到您指定的价格，订单将自动取消。如果市场状况与您的交易偏好不符，您不必永远等待。",
+                "amount": "“金额”是指您想要在订单中购买或出售的资产总数。指定很重要，因为它决定了交易规模，影响买入订单的总成本或卖出订单的收入。",
+                "limit": "“限价”是您为限价单设置的精确价格。仅当资产的市场价格达到您的限价时才会执行交易，确保您不会以高于此指定值的价格买入或以低于此指定值的价格卖出。"
+            },
+            "bookStatus": {
+                "active": "启用完整的交易功能。您可以下新订单或取消现有订单。",
+                "placeable": "功能有限。您可以下新订单并取消现有订单，但某些功能可能不可用。",
+                "cancelable": "您只能取消现有订单。目前已禁用新订单放置。",
+                "inactive": "目前所有交易活动均已停止。目前无法下达或取消订单。"
+            }
+        },
+        "txDetails": {
+            "orderType": "订单类型",
+            "limitPrice": "限价",
+            "expiryDate": "到期日"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "输入的价格太精确，无法计算",
+                "reading": "超出精度：输入的金额\/价格小数位数过多。请输入小数位数较少的值"
+            },
+            "marketNotAvailable": {
+                "reason": "没有足够的订单来完成此订单",
+                "reading": "市价订单限制：没有足够的订单来履行此市价限价订单。请调整您的订单大小或等待下更多订单"
+            },
+            "exceedsSpread": {
+                "reason": "价格超出点差",
+                "reading": "价格超出：市场的买价或卖价超出其卖价\/买价"
+            },
+            "outOfBounds": {
+                "reason": "金额超出区块链范围",
+                "reading": "超出区块链范围：您输入的金额超出了区块链允许的范围"
+            }
+        }
+    }
 }
