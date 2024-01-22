@@ -108,7 +108,7 @@
         class="btn s-typography-button--medium"
         :class="computedBtnClass"
         @click="placeLimitOrder"
-        :disabled="buttonDisabled()"
+        :disabled="buttonDisabled"
       >
         <span> {{ t(buttonText) }}</span>
         <s-icon v-if="hasExplainableError" name="info-16" class="book-inform-icon-btn" />
@@ -193,7 +193,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
   @getter.orderBook.orderBookStats orderBookStats!: Nullable<OrderBookStats>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
 
@@ -234,10 +233,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   private setTokens(): void {
     if (!this.baseAsset || !this.quoteAsset) return;
 
-    if (this.side === PriceVariant.Buy) {
+    if (this.isBuySide) {
       this.setTokenFromAddress(this.quoteAsset.address);
       this.setTokenToAddress(this.baseAsset.address);
-    } else if (this.side === PriceVariant.Sell) {
+    } else {
       this.setTokenFromAddress(this.baseAsset.address);
       this.setTokenToAddress(this.quoteAsset.address);
     }
@@ -275,17 +274,15 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get amountAtPrice(): string {
-    if (this.buttonDisabled()) return '';
+    if (this.buttonDisabled) return '';
     if (!this.baseValue) return '';
     if (!this.quoteValue && !this.marketQuotePrice) return '';
     return `${this.baseValue} ${this.baseSymbol} AT ${this.quoteValue || this.marketQuotePrice} ${this.quoteSymbol}`;
   }
 
   get buttonText(): string {
-    if (!this.isLoggedIn) {
-      return 'connectWalletText';
-    }
-
+    if (!this.isLoggedIn) return 'connectWalletText';
+    
     if (this.bookStopped) return 'book stopped';
 
     if (this.userReachedSpotLimit || this.userReachedOwnLimit) return "can't place order";
@@ -306,7 +303,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       }
 
       if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel) {
-        if (this.priceExceedsSpread()) return "can't place order";
+        if (this.priceExceedsSpread) return "can't place order";
       }
 
       if (this.limitForSinglePriceReached) return "can't place order";
@@ -318,11 +315,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     } else {
       if (this.isZeroAmount) return 'enter amount';
       if (!this.marketQuotePrice) return "can't place order";
-      if (this.isOutOfAmountBounds(this.baseValue)) return "can't place order";
-
-      if (this.side === PriceVariant.Buy) return `Buy ${this.baseAsset.symbol}`;
-      else return `Sell ${this.baseAsset.symbol}`;
     }
+
+    if (this.isOutOfAmountBounds) return "can't place order";
+
+    if (this.isBuySide) return `Buy ${this.baseAsset.symbol}`;
+    else return `Sell ${this.baseAsset.symbol}`;
   }
 
   setError({ reason, reading }): void {
@@ -330,12 +328,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.reading = reading;
   }
 
-  buttonDisabled(): boolean {
+  get buttonDisabled(): boolean {
     if (this.bookStopped) return true;
 
     if (this.userReachedSpotLimit || this.userReachedOwnLimit || this.limitForSinglePriceReached) return true;
 
     if (!this.isLoggedIn) return false;
+
+    if (this.isNotAllowedToPlace) return true;
 
     if (this.isInsufficientBalance) return true;
 
@@ -346,15 +346,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       if (!this.isPriceBeyondPrecision) return true;
 
       if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel) {
-        if (this.priceExceedsSpread()) return true;
+        if (this.priceExceedsSpread) return true;
       }
-
-      return this.isOutOfAmountBounds(this.baseValue);
     } else {
-      if (!this.baseValue) return true;
+      if (!this.baseValue) return true; // [TODO] check with btn text
       if (!this.marketQuotePrice) return true;
-      return this.isOutOfAmountBounds(this.baseValue);
     }
+
+    return this.isOutOfAmountBounds;
   }
 
   async checkInputValidation(): Promise<void> {
@@ -412,7 +411,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       }
     }
 
-    if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel && this.priceExceedsSpread())
+    if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel && this.priceExceedsSpread)
       return this.setError({
         reason: 'Price exceeded spread',
         reading: "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
@@ -424,7 +423,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         reading: 'Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill',
       });
 
-    if (!this.isZeroAmount && this.isOutOfAmountBounds(this.baseValue) && this.quoteValue)
+    if (!this.isZeroAmount && this.isOutOfAmountBounds && this.quoteValue)
       return this.setError({
         reason: 'Amount exceeds the blockchain range',
         reading: "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range",
@@ -443,24 +442,20 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return limitReached;
   }
 
-  priceExceedsSpread(): boolean {
-    if (this.side === PriceVariant.Buy) {
+  get priceExceedsSpread(): boolean {
+    if (this.isBuySide) {
       if (!this.asks[this.asks.length - 1]) return false;
       const bestAsk: FPNumber = this.asks[this.asks.length - 1][0];
       const price = new FPNumber(this.quoteValue, 18);
 
       return FPNumber.gte(price, bestAsk);
-    }
-
-    if (this.side === PriceVariant.Sell) {
+    } else {
       if (!this.bids[0]) return false;
       const bestBid: FPNumber = this.bids[0][0];
       const price = new FPNumber(this.quoteValue, 18);
 
       return FPNumber.lte(price, bestBid);
     }
-
-    return false;
   }
 
   get orderBookPrice(): string {
@@ -497,7 +492,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   get isPriceTooHigh(): boolean {
     if (!this.asks.length) return false;
 
-    if (this.side === PriceVariant.Sell) {
+    if (!this.isBuySide) {
       if (!this.asks[this.asks.length - 1]) return false;
       const bestAsk: FPNumber = this.asks[this.asks.length - 1][0];
       const fiftyPercentDelta = bestAsk.mul(new FPNumber(1.5));
@@ -512,7 +507,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   get isPriceTooLow(): boolean {
     if (!this.bids.length) return false;
 
-    if (this.side === PriceVariant.Buy) {
+    if (this.isBuySide) {
       if (!this.bids[0]) return false;
       const bestBid: FPNumber = this.bids[0][0];
       const fiftyPercentDelta = bestBid.div(FPNumber.TWO);
@@ -541,11 +536,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return this.currentOrderBook?.stepLotSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length ?? 2;
   }
 
-  isOutOfAmountBounds(amount: string): boolean {
+  get isOutOfAmountBounds(): boolean {
     if (!this.currentOrderBook) return false;
 
     const { maxLotSize, minLotSize, stepLotSize } = this.currentOrderBook;
-    const amountFP = new FPNumber(amount, 18);
+    const amountFP = new FPNumber(this.baseValue, 18);
 
     return !(
       FPNumber.lte(amountFP, maxLotSize) &&
@@ -556,7 +551,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   get computedBtnClass(): string {
     if (!this.isLoggedIn) return '';
-    return this.side === 'Buy' ? 'buy-btn' : '';
+
+    return this.isBuySide ? 'buy-btn' : '';
   }
 
   get isPriceInputDisabled(): boolean {
@@ -598,16 +594,13 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   getPercent(value: string): number {
     if (!value) return 0;
 
-    const maxAmount = this.getMaxPossibleAmount();
-
-    return new FPNumber(value).div(maxAmount).mul(FPNumber.HUNDRED).toNumber();
+    return new FPNumber(value).div(this.maxPossibleAmount).mul(FPNumber.HUNDRED).toNumber();
   }
 
   handleSlideInputChange(percent: string): void {
     this.setAmountSliderValue(Number(percent));
 
-    const maxAmount = this.getMaxPossibleAmount();
-    const value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(maxAmount).dp(this.amountPrecision);
+    const value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(this.maxPossibleAmount).dp(this.amountPrecision);
 
     if (value) this.handleInputFieldBase(value.toString());
   }
@@ -640,7 +633,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   get isInsufficientBalance(): boolean {
     if (!this.tokenFrom) return false;
 
-    let fromValue;
+    let fromValue!: string;
 
     if (this.isBuySide) {
       const quoteFP = new FPNumber(this.quoteValue);
@@ -659,12 +652,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       return;
     }
 
-    if (!this.isMarketType) {
-      this.showPlaceOrderDialog();
-    } else {
+    if (this.isMarketType) {
       this.subscribeOnBookQuote();
-      this.showPlaceOrderDialog();
     }
+
+    this.showPlaceOrderDialog();
   }
 
   get orderBookStatus(): OrderBookStatus {
@@ -768,7 +760,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.confirmPlaceOrderVisibility = true;
   }
 
-  getMaxPossibleAmount(): FPNumber {
+  get maxPossibleAmount(): FPNumber {
     if (!this.currentOrderBook) return FPNumber.ZERO;
     const max = getMaxValue(this.baseAsset, this.networkFee);
     const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
@@ -779,9 +771,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   handleMaxValue(): void {
-    const maxAmount = this.getMaxPossibleAmount();
-    this.handleInputFieldBase(maxAmount.toString());
-
+    this.handleInputFieldBase(this.maxPossibleAmount.toString());
     this.checkInputValidation();
   }
 
@@ -792,13 +782,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   handleTabClick(): void {
-    if (this.side === PriceVariant.Buy) {
-      this.setTokenFromAddress(this.quoteAsset.address);
-      this.setTokenToAddress(this.baseAsset.address);
-    } else if (this.side === PriceVariant.Sell) {
-      this.setTokenFromAddress(this.baseAsset.address);
-      this.setTokenToAddress(this.quoteAsset.address);
-    }
+    this.setTokens();
 
     if (!this.isMarketType) {
       this.resetQuoteSubscription();

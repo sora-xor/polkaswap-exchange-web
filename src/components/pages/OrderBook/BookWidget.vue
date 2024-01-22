@@ -99,17 +99,12 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
 
   @action.orderBook.subscribeToBidsAndAsks private subscribeToBidsAndAsks!: AsyncFnWithoutArgs;
-  @action.orderBook.unsubscribeFromBidsAndAsks private unsubscribeFromBidsAndAsks!: FnWithoutArgs;
 
   readonly PriceVariant = PriceVariant;
+  readonly maxRowsNumber = 11;
 
-  maxRowsNumber = 11;
   selectedStep = '10';
   scalerOpen = false;
-  steps: Array<string> = [];
-
-  asksFormatted: Array<LimitOrderForm> = [];
-  bidsFormatted: Array<LimitOrderForm> = [];
 
   // Widget subscription creation
   @Watch('orderBookId', { immediate: true })
@@ -124,7 +119,6 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
   handleSelectStep(value: string): void {
     this.selectedStep = value;
-    this.prepareLimitOrders();
   }
 
   fillPrice(price: string, side: PriceVariant): void {
@@ -132,69 +126,56 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     this.setQuoteValue(Number(price).toString());
   }
 
-  getPrecision(price: FPNumber): number | undefined {
-    if (!price) return;
+  get averagePrice(): FPNumber | undefined {
+    return (this.asks?.[0] ?? this.bids?.[0])?.[0];
+  }
+
+  get averagePricePrecision(): number | undefined {
+    if (!this.averagePrice) return undefined;
+
+    const price = this.averagePrice;
 
     let result = price;
+    let max = FPNumber.ONE;
+
     if (price.isLessThan(FPNumber.ONE)) {
       const order = new FPNumber(0.1);
-      let max = order;
+      max = order;
       while (result.isLessThan(FPNumber.ONE)) {
         result = price.div(max);
         if (result.isGreaterThanOrEqualTo(FPNumber.ONE)) break;
         max = max.mul(order);
       }
-
-      return max.toNumber();
     } else if (price.isGreaterThan(FPNumber.TEN)) {
       const order = FPNumber.TEN;
-      let max = order;
+      max = order;
       while (result.isGreaterThan(FPNumber.ONE)) {
         result = price.div(max);
         if (result.isLessThan(FPNumber.TEN)) break;
         max = max.mul(order);
       }
-
-      return max.toNumber();
-    } else {
-      const max = FPNumber.ONE;
-      return max.toNumber();
     }
+
+    return max.toNumber();
   }
 
-  getAveragePrice(): FPNumber | undefined {
-    if (this.asks?.length) {
-      return this.asks[0][0];
-    }
-
-    if (this.bids?.length) {
-      return this.bids[0][0];
-    }
-  }
-
-  calculateScalerStep(): void {
+  get steps(): string[] {
+    const steps: string[] = [];
     const min = this.currentOrderBook?.tickSize;
 
-    const averagePrice = this.getAveragePrice();
+    if (!(this.averagePricePrecision && min)) return steps;
 
-    if (!averagePrice) {
-      this.steps = [];
-      return;
-    }
-
-    this.steps = [];
-
-    const precision = this.getPrecision(averagePrice);
-
-    const max = new FPNumber(precision ?? 1);
+    const max = new FPNumber(this.averagePricePrecision ?? 1);
 
     for (let inBetweenStep = max; inBetweenStep.isGreaterThanOrEqualTo(min); ) {
-      this.steps.push(inBetweenStep.toString());
+      steps.push(inBetweenStep.toString());
       inBetweenStep = inBetweenStep.div(FPNumber.TEN);
     }
 
     // Remove this line if supporting all precisions
-    this.steps.splice(this.steps.indexOf('1') + 1, Infinity, min.toString());
+    steps.splice(steps.indexOf('1') + 1, Infinity, min.toString());
+
+    return steps;
   }
 
   get showAggregationOptions(): boolean {
@@ -241,6 +222,14 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return base.join(' ');
   }
 
+  get asksFormatted() {
+    return this.formatPriceVolumes(this.asks);
+  }
+
+  get bidsFormatted() {
+    return this.formatPriceVolumes(this.bids);
+  }
+
   get sellOrders() {
     return this.asksFormatted.slice(-this.maxRowsNumber);
   }
@@ -258,12 +247,12 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return `width: ${filled}%`;
   }
 
-  isBookPrecisionEqaul(precision: string): boolean {
+  isBookPrecisionEqual(precision: string): boolean {
     return precision === this.currentOrderBook?.tickSize?.toString();
   }
 
-  calculateStepsDistribution(orders, precision = 10): OrderBookPriceVolumeAggregated[] {
-    if (this.isBookPrecisionEqaul(precision.toString())) return orders;
+  private calculateStepsDistribution(orders, precision = 10): OrderBookPriceVolumeAggregated[] {
+    if (this.isBookPrecisionEqual(precision.toString())) return orders;
 
     const maxPrice = FPNumber.max(...orders.map(([price]) => price)) as FPNumber;
 
@@ -304,77 +293,39 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return aggregatedOrders.filter((row: OrderBookPriceVolumeAggregated) => !row[1].isZero());
   }
 
-  getAmountProportion(currentAmount: FPNumber, maxAmount: FPNumber): number {
-    return currentAmount.div(maxAmount).mul(FPNumber.HUNDRED).toNumber();
-  }
-
   get bookPrecision(): number {
     return this.currentOrderBook?.tickSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length;
   }
 
-  @Watch('asks', { immediate: true })
-  @Watch('bids', { immediate: true })
-  async prepareLimitOrders(): Promise<void> {
-    this.calculateScalerStep();
+  private getAmountProportion(currentAmount: FPNumber, maxAmount: FPNumber): number {
+    return currentAmount.div(maxAmount).mul(FPNumber.HUNDRED).toNumber();
+  }
 
-    this.asksFormatted = [];
-    this.bidsFormatted = [];
+  private toBookPrecision(cell: FPNumber): string {
+    return cell.toNumber().toFixed(this.bookPrecision);
+  }
 
-    if (this.asks?.length) {
-      const asks = this.calculateStepsDistribution(this.asks, Number(this.selectedStep));
+  private formatPriceVolumes(items: OrderBookPriceVolume[]): LimitOrderForm[] {
+    const aggregated = this.calculateStepsDistribution(items, Number(this.selectedStep));
+    const maxAmount = FPNumber.max(...aggregated.map((order) => order[1])) as FPNumber;
+    const result: LimitOrderForm[] = [];
 
-      const maxAskAmount = FPNumber.max(...asks.map((order) => order[1])) as FPNumber;
+    aggregated.forEach((row: OrderBookPriceVolumeAggregated) => {
+      const [price, amount, acc] = row;
 
-      asks.forEach((row: OrderBookPriceVolumeAggregated) => {
-        if (row[1].isZero()) return;
+      if (amount.isZero()) return;
 
-        let total;
-        const price = row[0].toNumber().toFixed(this.bookPrecision);
-        const amount = row[1].toNumber().toFixed(this.bookPrecision);
-        // const total = row[0].mul(row[1]).toNumber().toFixed(this.bookPrecision);
+      const total = this.isBookPrecisionEqual(this.selectedStep) ? price.mul(amount) : acc;
 
-        if (this.isBookPrecisionEqaul(this.selectedStep)) {
-          total = row[0].mul(row[1]).toNumber().toFixed(this.bookPrecision);
-        } else {
-          total = row[2].toNumber().toFixed(this.bookPrecision);
-        }
-
-        this.asksFormatted.push({
-          price,
-          amount,
-          total,
-          filled: this.getAmountProportion(row[1], maxAskAmount),
-        });
+      result.push({
+        price: this.toBookPrecision(price),
+        amount: this.toBookPrecision(amount),
+        total: this.toBookPrecision(total),
+        filled: this.getAmountProportion(amount, maxAmount),
       });
-    }
+    });
 
-    if (this.bids?.length) {
-      const bids = this.calculateStepsDistribution(this.bids, Number(this.selectedStep));
-
-      const maxBidAmount = FPNumber.max(...bids.map((order) => order[1])) as FPNumber;
-
-      bids.forEach((row: OrderBookPriceVolumeAggregated) => {
-        if (row[1].isZero()) return;
-
-        let total;
-        const price = row[0].toNumber().toFixed(this.bookPrecision);
-        const amount = row[1].toNumber().toFixed(this.bookPrecision);
-        // const total = row[0].mul(row[1]).toNumber().toFixed(this.bookPrecision);
-
-        if (this.isBookPrecisionEqaul(this.selectedStep)) {
-          total = row[0].mul(row[1]).toNumber().toFixed(this.bookPrecision);
-        } else {
-          total = row[2].toNumber().toFixed(this.bookPrecision);
-        }
-
-        this.bidsFormatted.push({
-          price,
-          amount,
-          total,
-          filled: this.getAmountProportion(row[1], maxBidAmount),
-        });
-      });
-    }
+    return result;
   }
 }
 </script>

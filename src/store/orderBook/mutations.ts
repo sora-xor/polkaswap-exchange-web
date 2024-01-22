@@ -38,7 +38,7 @@ const mutations = defineMutations<OrderBookState>()({
   setStats(state, stats: Record<string, OrderBookStats>): void {
     state.orderBooksStats = Object.freeze({ ...state.orderBooksStats, ...stats });
   },
-  setUserLimitOrders(state, limitOrders: (LimitOrder | null)[] = []): void {
+  setUserLimitOrders(state, limitOrders: LimitOrder[] = []): void {
     state.userLimitOrders = Object.freeze([...limitOrders]);
   },
   setOrderBookUpdates(state, subscriptions: Array<Subscription>): void {
