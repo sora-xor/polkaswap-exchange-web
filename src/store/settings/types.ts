@@ -34,6 +34,7 @@ export type SettingsState = {
   nodeConnectionAllowance: boolean;
   chainGenesisHash: string;
   faucetUrl: string;
+  menuCollapsed: boolean;
   selectNodeDialogVisibility: boolean;
   selectIndexerDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;

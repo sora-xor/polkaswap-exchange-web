@@ -213,7 +213,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
 .min-huge-desktop {
   .order-book-widgets--huge {
-    margin-left: 170px;
+    margin-left: 110px;
     display: flex;
 
     .column-1 {

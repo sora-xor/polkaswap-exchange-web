@@ -67,6 +67,18 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     blockExplorerUrls: [],
     shortName: 'SORA KSM',
   },
+  [SubNetworkId.PolkadotSora]: {
+    id: SubNetworkId.PolkadotSora,
+    name: 'SORA Polkadot Parachain',
+    nativeCurrency: {
+      name: 'XOR',
+      symbol: 'XOR',
+      decimals: 18,
+    },
+    endpointUrls: [],
+    blockExplorerUrls: [],
+    shortName: 'SORA DOT',
+  },
 };
 
 export const SUB_TRANSFER_FEES: SubNetworksFees = {
@@ -79,6 +91,12 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
   [SubNetworkId.Kusama]: {
     KSM: {
       [BridgeTxDirection.Outgoing]: '92003956',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+  },
+  [SubNetworkId.Polkadot]: {
+    DOT: {
+      [BridgeTxDirection.Outgoing]: '21062795',
       [BridgeTxDirection.Incoming]: '0',
     },
   },

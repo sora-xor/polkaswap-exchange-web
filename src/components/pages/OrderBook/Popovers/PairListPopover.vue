@@ -209,7 +209,7 @@ export default class PairListPopover extends Mixins(
 
     .el-table__header-wrapper {
       .el-table__header thead th {
-        background-color: rgba(42, 23, 31, 0.07);
+        background-color: rgba(231, 218, 221, 0.45);
         .cell {
           font-weight: 400 !important;
         }
