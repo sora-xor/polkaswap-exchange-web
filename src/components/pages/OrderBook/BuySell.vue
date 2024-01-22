@@ -282,7 +282,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   get buttonText(): string {
     if (!this.isLoggedIn) return 'connectWalletText';
-    
+
     if (this.bookStopped) return 'book stopped';
 
     if (this.userReachedSpotLimit || this.userReachedOwnLimit) return "can't place order";
@@ -308,7 +308,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
       if (this.limitForSinglePriceReached) return "can't place order";
 
-      if (this.isOutOfAmountBounds(this.baseValue)) return "can't place order";
+      if (this.isOutOfAmountBounds) return "can't place order";
 
       if (this.side === PriceVariant.Buy) return `Buy ${this.baseAsset.symbol}`;
       else return `Sell ${this.baseAsset.symbol}`;
@@ -334,8 +334,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     if (this.userReachedSpotLimit || this.userReachedOwnLimit || this.limitForSinglePriceReached) return true;
 
     if (!this.isLoggedIn) return false;
-
-    if (this.isNotAllowedToPlace) return true;
 
     if (this.isInsufficientBalance) return true;
 
