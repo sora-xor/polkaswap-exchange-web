@@ -2,12 +2,12 @@
   <dialog-base :visible.sync="isVisible">
     <div class="order-book-cancel-dialog">
       <s-icon name="notifications-alert-triangle-24" size="64" />
-      <h4>{{ t('orderBook.dialogs.askCancel') }}</h4>
+      <h4>{{ t('orderBook.dialog.askCancel') }}</h4>
       <s-button type="primary" class="btn s-typography-button--medium" @click="handleCancel">
-        <span> {{ t('orderBook.dialogs.cancelAll') }}</span>
+        <span> {{ t('orderBook.dialog.cancelAll') }}</span>
       </s-button>
       <s-button type="secondary" class="btn s-typography-button--medium" @click="closeDialog">
-        <span> {{ t('orderBook.dialogs.noCancel') }}</span>
+        <span> {{ t('orderBook.dialog.noCancel') }}</span>
       </s-button>
     </div>
   </dialog-base>

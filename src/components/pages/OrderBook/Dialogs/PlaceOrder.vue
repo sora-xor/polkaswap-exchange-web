@@ -66,26 +66,25 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   }
 
   get title(): string {
-    return this.isMarketType ? this.t('orderBook.dialogs.placeMarket') : this.t('orderBook.dialogs.placeLimit');
+    return this.isMarketType ? this.t('orderBook.dialog.placeMarket') : this.t('orderBook.dialog.placeLimit');
   }
 
   get upperText(): string {
     const symbol = this.baseAsset?.symbol;
 
     if (this.isMarketType) {
-      // todo
-      return this.isBuySide ? `Buy ${this.toValue} ${symbol}` : `Sell ${this.baseValue} ${symbol}`;
+      return this.isBuySide
+        ? this.t('orderBook.dialog.buy', { amount: this.toValue, symbol })
+        : this.t('orderBook.dialog.sell', { amount: this.baseValue, symbol });
     } else {
-      return this.isBuySide ? `Buy ${this.baseValue} ${symbol}` : `Sell ${this.baseValue} ${symbol}`;
+      return this.isBuySide
+        ? this.t('orderBook.dialog.buy', { amount: this.baseValue, symbol })
+        : this.t('orderBook.dialog.sell', { amount: this.baseValue, symbol });
     }
   }
 
   get lowerText(): string {
-    const price = this.quoteValue;
-    const symbol = this.quoteAsset?.symbol;
-
-    // todo
-    return `at ${price} ${symbol}`;
+    return this.t('orderBook.dialog.at', { price: this.quoteValue, symbol: this.quoteAsset?.symbol });
   }
 
   get formattedToValue(): string {

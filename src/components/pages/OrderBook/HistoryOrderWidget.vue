@@ -3,11 +3,13 @@
     <div class="order-history-header">
       <div class="order-history-header-filter-buttons">
         <span @click="switchFilter(Filter.open)" :class="getComputedFilterClasses(Filter.open)">{{
-          `Open orders ${openOrdersCount}`
+          openOrdersText
         }}</span>
-        <span @click="switchFilter(Filter.all)" :class="getComputedFilterClasses(Filter.all)"> Order history </span>
+        <span @click="switchFilter(Filter.all)" :class="getComputedFilterClasses(Filter.all)">
+          {{ t('orderBook.history.orderHistory') }}
+        </span>
         <span @click="switchFilter(Filter.executed)" :class="getComputedFilterClasses(Filter.executed)">
-          Trade history
+          {{ t('orderBook.history.tradeHistory') }}
         </span>
       </div>
       <div v-if="isLoggedIn" class="order-history-header-cancel-buttons">
@@ -24,9 +26,9 @@
     </div>
     <div v-else class="order-history-connect-account">
       <div class="order-history-connect-account-button">
-        <h4>Connect an account to start trading</h4>
+        <h4>{{ t('orderBook.history.connect') }}</h4>
         <s-button type="primary" class="btn s-typography-button--medium" @click="connectAccount">
-          Connect account
+          {{ t('connectWalletText') }}
         </s-button>
       </div>
     </div>
@@ -69,15 +71,18 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   readonly Filter = Filter;
   readonly Cancel = Cancel;
 
+  get openOrdersText(): string {
+    return this.t('orderBook.history.openOrders', { value: this.openOrdersCount });
+  }
+
   get cancelText(): string {
-    if (this.hasSelected) {
-      return `Cancel order (${this.ordersToBeCancelled.length})`;
-    }
-    return 'Cancel order';
+    return this.hasSelected
+      ? this.t('orderBook.history.cancel', { value: `(${this.ordersToBeCancelled.length})` })
+      : this.t('orderBook.history.cancel');
   }
 
   get cancelAllText(): string {
-    return 'Cancel all';
+    return this.t('orderBook.history.cancelAll');
   }
 
   get hasSelected(): boolean {
