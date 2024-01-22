@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
-    "@soramitsu/soraneo-wallet-web": "1.27.3",
+    "@soramitsu/soraneo-wallet-web": "1.28.0",
     "@walletconnect/ethereum-provider": "^2.11.0",
     "@walletconnect/modal": "^2.6.2",
     "core-js": "^3.33.2",
@@ -92,7 +92,6 @@
     "vue-template-compiler": "2.7.14"
   },
   "resolutions": {
-    "@sora-substrate/util": "1.27.11",
     "@polkadot/extension-dapp": "^0.44.7",
     "@polkadot/extension-inject": "^0.44.7",
     "@polkadot/util": "^10.4.2",
