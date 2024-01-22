@@ -135,8 +135,9 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   }
 
   openConfirmCancelDialog(): void {
-    if (!this.userLimitOrders.length) return;
     if (this.isBookStopped) return;
+    if (!this.userLimitOrders.length) return;
+
     this.confirmCancelOrderVisibility = true;
   }
 
@@ -144,37 +145,21 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     if (this.isBookStopped) return;
     if (!this.userLimitOrders.length) return;
 
-    if (cancel === Cancel.multiple) {
-      if (this.ordersToBeCancelled.length > 1) {
-        const limitOrderIds = this.ordersToBeCancelled.map((limitOrder: LimitOrder) => limitOrder.id);
-        const { orderBookId } = this.ordersToBeCancelled[0];
-        if (!orderBookId && limitOrderIds.length) return;
-        const { base, quote } = orderBookId;
+    const orders = cancel === Cancel.multiple ? this.ordersToBeCancelled : this.userLimitOrders;
 
-        await this.withNotifications(async () => {
-          await api.orderBook.cancelLimitOrderBatch(base, quote, limitOrderIds);
-        });
+    if (!orders.length) return;
+    const {
+      orderBookId: { base, quote },
+    } = orders[0];
+    const ids = orders.map((order: LimitOrder) => order.id);
+
+    await this.withNotifications(async () => {
+      if (ids.length > 1) {
+        await api.orderBook.cancelLimitOrderBatch(base, quote, ids);
+      } else {
+        await api.orderBook.cancelLimitOrder(base, quote, ids[0]);
       }
-
-      if (this.ordersToBeCancelled.length === 1) {
-        const { id, orderBookId } = this.ordersToBeCancelled[0];
-        if (!orderBookId && id) return;
-        const { base, quote } = orderBookId;
-
-        await this.withNotifications(async () => {
-          await api.orderBook.cancelLimitOrder(base, quote, id);
-        });
-      }
-    } else {
-      const limitOrderIds = this.userLimitOrders.map((limitOrder: LimitOrder) => limitOrder.id);
-      const { orderBookId } = this.userLimitOrders[0];
-      if (!orderBookId && limitOrderIds.length) return;
-      const { base, quote } = orderBookId;
-
-      await this.withNotifications(async () => {
-        await api.orderBook.cancelLimitOrderBatch(base, quote, limitOrderIds);
-      });
-    }
+    });
   }
 }
 </script>
