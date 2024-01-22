@@ -201,7 +201,6 @@ const actions = defineActions({
    */
   async getEvmTokenAddressByAssetId(context, soraAssetId: string): Promise<string> {
     const { getters } = web3ActionContext(context);
-    console.log(soraAssetId);
     try {
       if (!soraAssetId) {
         return '';
