@@ -19,7 +19,7 @@ $country-emoji-font: 'Twemoji Country Flags';
 }
 
 $networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polygon', 'binance-smart-chain', 'rococo', 'karura', 'polkadot', 'kusama';
-$sora-parachains: 'sora' 'rococo', 'sora' 'kusama';
+$sora-parachains: 'sora' 'rococo', 'sora' 'kusama', 'sora' 'polkadot';
 /* Networks Icons */
 .network-icon {
   display: inline-block;
