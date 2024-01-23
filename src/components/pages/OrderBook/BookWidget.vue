@@ -223,6 +223,35 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   get asksFormatted() {
+    const aggregatedAsks = this.formatPriceVolumes(this.asks);
+    const aggregatedBids = this.bidsFormatted;
+
+    if (aggregatedAsks.length && aggregatedBids.length) {
+      const bestAskPrice = aggregatedAsks[aggregatedAsks.length - 1]?.price;
+      const bestBidPrice = aggregatedBids[0]?.price;
+      const hasOverlap = bestAskPrice === bestBidPrice;
+
+      if (hasOverlap) {
+        const lastRecord = aggregatedAsks[aggregatedAsks.length - 1];
+        const fpAmount = new FPNumber(lastRecord?.amount || 0);
+        const fpTotal = new FPNumber(lastRecord?.total || 0);
+
+        const { price, amount, total, filled } = aggregatedAsks[aggregatedAsks.length - 2];
+        const lastButOneRecord = {
+          price,
+          amount: this.toBookPrecision(new FPNumber(amount).add(fpAmount)),
+          total: this.toBookPrecision(new FPNumber(total).add(fpTotal)),
+          filled,
+        };
+
+        aggregatedAsks[aggregatedAsks.length - 2] = lastButOneRecord;
+
+        aggregatedAsks.pop();
+
+        return this.recalcFilledValue(aggregatedAsks);
+      }
+    }
+
     return this.formatPriceVolumes(this.asks);
   }
 
@@ -243,12 +272,24 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return `height: ${24 * margin}px`;
   }
 
-  getStyles(filled): string {
+  getStyles(filled: number | undefined): string {
     return `width: ${filled}%`;
   }
 
   isBookPrecisionEqual(precision: string): boolean {
     return precision === this.currentOrderBook?.tickSize?.toString();
+  }
+
+  private recalcFilledValue(orders: LimitOrderForm[]): LimitOrderForm[] {
+    if (!orders.length) return [];
+
+    const fpAmounts = orders.map((order) => new FPNumber(order.amount));
+    const maxAmount = FPNumber.max(...fpAmounts) as FPNumber;
+
+    return orders.map((record: LimitOrderForm) => ({
+      ...record,
+      filled: this.getAmountProportion(new FPNumber(record.amount), maxAmount),
+    }));
   }
 
   private calculateStepsDistribution(orders, precision = 10): OrderBookPriceVolumeAggregated[] {
