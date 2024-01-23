@@ -1,6 +1,6 @@
 {
   "name": "polkaswap-exchange-web",
-  "version": "1.27.3",
+  "version": "1.28.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/sora-xor/polkaswap-exchange-web.git"
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
-    "@soramitsu/soraneo-wallet-web": "1.27.3",
+    "@soramitsu/soraneo-wallet-web": "1.28.0",
     "@walletconnect/ethereum-provider": "^2.11.0",
     "@walletconnect/modal": "^2.6.2",
     "core-js": "^3.33.2",
