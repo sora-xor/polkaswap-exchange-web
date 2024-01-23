@@ -62,6 +62,7 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { components, mixins, getCurrentIndexer, WALLET_CONSTS, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { IndexerType } from '@soramitsu/soraneo-wallet-web/lib/consts';
 import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
 import last from 'lodash/fp/last';
@@ -578,9 +579,11 @@ export default class SwapChart extends Mixins(
     }
 
     let fetchCount = count;
+    // We use 1000 for subsquid because it works faster
+    const maxCount = getCurrentIndexer().type === IndexerType.SUBSQUID ? 1000 : 100;
 
     do {
-      const first = Math.min(fetchCount, 100); // how many items should be fetched by request
+      const first = Math.min(fetchCount, maxCount); // how many items should be fetched by request
       const indexer = getCurrentIndexer();
       const response = await indexer.services.explorer.price.getHistoricalPriceForAsset(
         address,
