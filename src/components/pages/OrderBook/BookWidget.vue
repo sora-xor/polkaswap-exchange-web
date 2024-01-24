@@ -235,20 +235,29 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
         const lastRecord = aggregatedAsks[aggregatedAsks.length - 1];
         const fpAmount = new FPNumber(lastRecord?.amount || 0);
         const fpTotal = new FPNumber(lastRecord?.total || 0);
+        const lastButOne = aggregatedAsks[aggregatedAsks.length - 2];
 
-        const { price, amount, total, filled } = aggregatedAsks[aggregatedAsks.length - 2];
-        const lastButOneRecord = {
-          price,
-          amount: this.toBookPrecision(new FPNumber(amount).add(fpAmount)),
-          total: this.toBookPrecision(new FPNumber(total).add(fpTotal)),
-          filled,
-        };
+        if (lastButOne) {
+          const { price, amount, total, filled } = lastButOne;
+          const lastButOneRecord = {
+            price,
+            amount: this.toBookPrecision(new FPNumber(amount).add(fpAmount)),
+            total: this.toBookPrecision(new FPNumber(total).add(fpTotal)),
+            filled,
+          };
 
-        aggregatedAsks[aggregatedAsks.length - 2] = lastButOneRecord;
+          aggregatedAsks[aggregatedAsks.length - 2] = lastButOneRecord;
 
-        aggregatedAsks.pop();
+          aggregatedAsks.pop();
 
-        return this.recalcFilledValue(aggregatedAsks);
+          return this.recalcFilledValue(aggregatedAsks);
+        } else {
+          const { price } = aggregatedAsks[aggregatedAsks.length - 1];
+          const newPrice = Number(price) + Number(this.selectedStep);
+          aggregatedAsks[aggregatedAsks.length - 1].price = newPrice.toString();
+
+          return aggregatedAsks;
+        }
       }
     }
 
