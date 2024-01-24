@@ -103,7 +103,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   readonly PriceVariant = PriceVariant;
   readonly maxRowsNumber = 11;
 
-  selectedStep;
+  selectedStep = '';
   scalerOpen = false;
 
   @Watch('currentOrderBook', { immediate: true })
