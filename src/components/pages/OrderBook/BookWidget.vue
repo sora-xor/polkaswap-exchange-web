@@ -254,7 +254,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
         } else {
           const { price } = aggregatedAsks[aggregatedAsks.length - 1];
           const newPrice = Number(price) + Number(this.selectedStep);
-          aggregatedAsks[aggregatedAsks.length - 1].price = newPrice.toString();
+          aggregatedAsks[aggregatedAsks.length - 1].price = this.toBookPrecision(new FPNumber(newPrice));
 
           return aggregatedAsks;
         }
