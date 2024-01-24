@@ -97,7 +97,7 @@
           v-if="stakingInitialized"
           :label="t('soraStaking.info.redeemable')"
           :value="redeemableFundsFormatted"
-          :asset-symbol="rewardAsset?.symbol"
+          :asset-symbol="stakingAsset?.symbol"
           :fiat-value="redeemableFundsFiat"
         />
         <info-line

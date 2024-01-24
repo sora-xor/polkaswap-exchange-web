@@ -136,11 +136,11 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   }
 
   get redeemableFunds(): FPNumber {
-    return this.stakingInfo ? new FPNumber(this.stakingInfo.redeemAmount, this.rewardAsset?.decimals) : FPNumber.ZERO;
+    return this.stakingInfo ? new FPNumber(this.stakingInfo.redeemAmount, this.stakingAsset?.decimals) : FPNumber.ZERO;
   }
 
   get redeemableFundsFiat(): Nullable<string> {
-    return this.rewardAsset ? this.getFiatAmountByFPNumber(this.redeemableFunds, this.rewardAsset) : null;
+    return this.stakingAsset ? this.getFiatAmountByFPNumber(this.redeemableFunds, this.stakingAsset) : null;
   }
 
   get redeemableFundsFormatted(): string {
