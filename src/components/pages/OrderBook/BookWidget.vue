@@ -103,8 +103,13 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   readonly PriceVariant = PriceVariant;
   readonly maxRowsNumber = 11;
 
-  selectedStep = '10';
+  selectedStep;
   scalerOpen = false;
+
+  @Watch('currentOrderBook', { immediate: true })
+  private setSteps() {
+    this.selectedStep = this.currentOrderBook?.tickSize.toString();
+  }
 
   // Widget subscription creation
   @Watch('orderBookId', { immediate: true })
@@ -356,6 +361,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   private formatPriceVolumes(items: OrderBookPriceVolume[]): LimitOrderForm[] {
+    if (!this.selectedStep) return [];
     const aggregated = this.calculateStepsDistribution(items, Number(this.selectedStep));
     const maxAmount = FPNumber.max(...aggregated.map((order) => order[1])) as FPNumber;
     const result: LimitOrderForm[] = [];
