@@ -23,7 +23,7 @@ async function connectSubNetwork(context: ActionContext<any, any>): Promise<void
 
   const ss58 = subBridgeConnector.network.adapter.api.registry.chainSS58;
 
-  if (ss58) commit.setSubSS58(ss58);
+  if (ss58 !== undefined) commit.setSubSS58(ss58);
 }
 
 async function updateProvidedEvmNetwork(context: ActionContext<any, any>, evmNetworkId?: number): Promise<void> {
