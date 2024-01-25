@@ -527,11 +527,13 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get bookPrecision(): number {
-    return this.currentOrderBook?.tickSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length ?? 2;
+    return this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length ?? 2;
   }
 
   get amountPrecision(): number {
-    return this.currentOrderBook?.stepLotSize?.toString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length ?? 2;
+    return (
+      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length ?? 2
+    );
   }
 
   get isOutOfAmountBounds(): boolean {
@@ -625,9 +627,9 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   formatInputValue(value: string): string {
-    return value.slice(-1) === FPNumber.DELIMITERS_CONFIG.decimal
-      ? value
-      : new FPNumber(value).dp(this.amountPrecision).toString();
+    if (!value) return '';
+
+    return value.slice(-1) === '.' ? value : new FPNumber(value).dp(this.amountPrecision).toString();
   }
 
   get preparedForSwap(): boolean {
@@ -672,6 +674,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get userReachedSpotLimit(): boolean {
+    // TODO: Should be improved as user could put into existing price
     return (this.side === PriceVariant.Sell ? this.asks : this.bids).length >= MAX_ORDERS_PER_SIDE;
   }
 
