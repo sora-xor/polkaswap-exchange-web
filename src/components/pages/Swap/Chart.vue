@@ -110,22 +110,43 @@ const CHART_TYPE_ICONS = {
 
 const LINE_CHART_FILTERS: SnapshotFilter[] = [
   {
+    name: Timeframes.FIVE_MINUTES,
+    label: '5m',
+    type: SnapshotTypes.DEFAULT,
+    count: 96, // 5 mins in 8 hours
+  },
+  {
+    name: Timeframes.FIFTEEN_MINUTES,
+    label: '15m',
+    type: SnapshotTypes.DEFAULT,
+    count: 96 * 3, // 5 mins in 24 hours,
+    group: 3, // 5 min in 15 min
+  },
+  {
+    name: Timeframes.THIRTY_MINUTES,
+    label: '30m',
+    type: SnapshotTypes.DEFAULT,
+    count: 96 * 3, // 5 mins in 24 hours,
+    group: 6, // 5 min in 30 min
+  },
+  {
+    name: Timeframes.HOUR,
+    label: '1h',
+    type: SnapshotTypes.HOUR,
+    count: 48, // hours in 2 days,
+  },
+  {
+    name: Timeframes.FOUR_HOURS,
+    label: '4h',
+    type: SnapshotTypes.HOUR,
+    count: 48 * 2, // hours in 2 days,
+    group: 4, // 1 hour in 4 hours
+  },
+  {
     name: Timeframes.DAY,
     label: '1D',
-    type: SnapshotTypes.DEFAULT,
-    count: 288,
-  },
-  {
-    name: Timeframes.WEEK,
-    label: '1W',
-    type: SnapshotTypes.HOUR,
-    count: 24 * 7, // hours in week
-  },
-  {
-    name: Timeframes.MONTH,
-    label: '1M',
     type: SnapshotTypes.DAY,
-    count: 30, // days in month
+    count: 90, // days in 1 month
   },
   {
     name: Timeframes.YEAR,
@@ -580,6 +601,7 @@ export default class SwapChart extends Mixins(
     };
 
     const spec = {
+      animation: false,
       axisPointer: {
         link: [
           {
@@ -873,8 +895,15 @@ export default class SwapChart extends Mixins(
   }
 
   changeFilter(filter: SnapshotFilter): void {
+    const { type, count } = this.selectedFilter;
+
     this.selectedFilter = filter;
-    this.forceUpdatePrices(true);
+
+    if (type !== this.selectedFilter.type) {
+      this.forceUpdatePrices(true);
+    } else if (this.dataset.length < this.selectedFilter.count) {
+      this.updatePrices();
+    }
   }
 
   private async resetAndUpdatePrices(saveReversedState = false): Promise<void> {
