@@ -16,5 +16,3 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 })
 export default class CustomisePage extends Mixins(mixins.DialogMixin, TranslationMixin) {}
 </script>
-
-<style lang="scss"></style>
