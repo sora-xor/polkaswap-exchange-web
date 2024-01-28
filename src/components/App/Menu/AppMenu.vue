@@ -153,10 +153,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   get sidebarMenuItems(): Array<SidebarMenuItemLink> {
-    return SidebarMenuGroups.filter((menuItem) => {
-      if (!this.orderBookEnabled && menuItem.title === PageNames.OrderBook) return false;
-      return true;
-    });
+    if (!this.orderBookEnabled) {
+      return SidebarMenuGroups.filter(({ title }) => title !== PageNames.OrderBook);
+    }
+    return SidebarMenuGroups;
   }
 
   get currentPath(): string {
