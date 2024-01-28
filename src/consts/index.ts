@@ -313,7 +313,7 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     href: '/#/swap',
   },
   {
-    icon: 'el-icon-tickets',
+    icon: 'music-CD-24',
     title: PageNames.OrderBook,
     href: '/#/trade',
   },
@@ -361,7 +361,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     href: '/#/stats',
   },
   {
-    icon: 'el-icon-bank-card',
+    icon: 'music-eject-24',
     title: PageNames.SoraCard,
     href: '/#/card',
   },
