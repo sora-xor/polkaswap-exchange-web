@@ -292,13 +292,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     &:focus {
       background-color: unset !important;
     }
-    i.el-icon-bank-card {
-      width: 28px; // to avoid issue with paddings
-    }
-
-    i.el-icon-tickets {
-      width: 28px;
-    }
   }
 }
 </style>
