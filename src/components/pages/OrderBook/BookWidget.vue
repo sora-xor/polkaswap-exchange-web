@@ -92,8 +92,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.orderBookLastDeal orderBookLastDeal!: Nullable<OrderBookDealData>;
   @getter.orderBook.currentOrderBook currentOrderBook!: OrderBook;
-  @getter.orderBook.orderBookId private orderBookId!: string;
-  @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
+  @getter.orderBook.orderBookId orderBookId!: string;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @mutation.orderBook.setQuoteValue setQuoteValue!: (value: string) => void;
   @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
@@ -101,7 +101,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   @action.orderBook.subscribeToBidsAndAsks private subscribeToBidsAndAsks!: AsyncFnWithoutArgs;
 
   readonly PriceVariant = PriceVariant;
-  readonly maxRowsNumber = 11;
+  readonly maxRowsNumber = 11; // TODO: [Rustem] if I change it to 12 it should be re-rendered correctly
 
   selectedStep = '';
   scalerOpen = false;
@@ -128,7 +128,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
   fillPrice(price: string, side: PriceVariant): void {
     this.setSide(side);
-    this.setQuoteValue(Number(price).toString());
+    this.setQuoteValue(Number(price).toString()); // TODO: [Rustem] string->number->string -- WHY?
   }
 
   get averagePrice(): FPNumber | undefined {
@@ -306,6 +306,9 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     }));
   }
 
+  /**
+   * // TODO: [Rustem] add missed type, add missed docs, it's unclear how this method works
+   */
   private calculateStepsDistribution(orders, precision = 10): OrderBookPriceVolumeAggregated[] {
     if (this.isBookPrecisionEqual(precision.toString())) return orders;
 
@@ -337,7 +340,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
         accumulatedAmount = FPNumber.ZERO;
         accumulatedTotal = FPNumber.ZERO;
         edge = edge.sub(step);
-        index -= 1;
+        index -= 1; // TODO: [Rustem] check it (Remove this assignment of "index". [+1 location]sonarlint(typescript:S2310))
       }
 
       if (index === orders.length - 1) {
@@ -398,7 +401,7 @@ $background-column-color-dark: #693d81;
     display: flex;
     justify-content: space-between;
     transform-style: preserve-3d;
-    font-family: 'JetBrains Mono';
+    font-family: 'JetBrains Mono'; // TODO: [Rustem]: add scss var somewhere with font-name to avoid it (Unexpected missing generic font familysonarlint(css:S4649))
     margin: 2px;
     &:hover {
       cursor: pointer;
