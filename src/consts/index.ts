@@ -388,7 +388,6 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     title: 'twitter',
     href: 'https://twitter.com/polkaswap',
   },
-  // TODO: [FONT] Update these icon names to appropriate one after font fix
   {
     icon: 'symbols-hash-24',
     title: 'reddit',
@@ -399,7 +398,6 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     title: 'medium',
     href: 'https://medium.com/polkaswap',
   },
-  // ____________________________________
   {
     icon: 'symbols-github-24',
     title: 'github',
