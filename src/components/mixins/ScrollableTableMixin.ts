@@ -38,7 +38,7 @@ export default class ScrollableTableMixin extends Mixins(
   }
 
   public handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
-    let current = 1;
+    let current = 1; // First by default (instead of case WALLET_CONSTS.PaginationButton.First)
 
     switch (button) {
       case WALLET_CONSTS.PaginationButton.Prev:
@@ -47,11 +47,9 @@ export default class ScrollableTableMixin extends Mixins(
       case WALLET_CONSTS.PaginationButton.Next:
         current = this.currentPage + 1;
         break;
-      case WALLET_CONSTS.PaginationButton.First:
-        current = 1;
-        break;
       case WALLET_CONSTS.PaginationButton.Last:
         current = this.lastPage;
+        break;
     }
 
     this.currentPage = current;
