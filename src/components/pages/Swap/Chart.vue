@@ -113,20 +113,20 @@ const LINE_CHART_FILTERS: SnapshotFilter[] = [
     name: Timeframes.FIVE_MINUTES,
     label: '5m',
     type: SnapshotTypes.DEFAULT,
-    count: 96, // 5 mins in 8 hours
+    count: 48, // 5 mins in 4 hours
   },
   {
     name: Timeframes.FIFTEEN_MINUTES,
     label: '15m',
     type: SnapshotTypes.DEFAULT,
-    count: 96 * 3, // 5 mins in 24 hours,
+    count: 48 * 3, // 5 mins in 12 hours,
     group: 3, // 5 min in 15 min
   },
   {
     name: Timeframes.THIRTY_MINUTES,
     label: '30m',
     type: SnapshotTypes.DEFAULT,
-    count: 96 * 3, // 5 mins in 24 hours,
+    count: 48 * 6, // 5 mins in 24 hours,
     group: 6, // 5 min in 30 min
   },
   {
@@ -139,7 +139,7 @@ const LINE_CHART_FILTERS: SnapshotFilter[] = [
     name: Timeframes.FOUR_HOURS,
     label: '4h',
     type: SnapshotTypes.HOUR,
-    count: 48 * 2, // hours in 2 days,
+    count: 48 * 4, // hours in 4 days,
     group: 4, // 1 hour in 4 hours
   },
   {
@@ -172,6 +172,8 @@ const AXIS_LABEL_CSS = {
 };
 
 const SYNC_INTERVAL = 6 * 1000;
+
+const ZOOM_ID = 'chartZoom';
 
 const signific =
   (value: FPNumber) =>
@@ -513,6 +515,7 @@ export default class SwapChart extends Mixins(
     });
 
     const dataZoom = {
+      id: ZOOM_ID,
       type: 'inside',
       xAxisIndex: [0, 1],
       start: 0,
@@ -894,15 +897,34 @@ export default class SwapChart extends Mixins(
     this.dataset = Object.freeze(items);
   }
 
-  changeFilter(filter: SnapshotFilter): void {
-    const { type, count } = this.selectedFilter;
+  async changeFilter(filter: SnapshotFilter): Promise<void> {
+    const prevType = this.selectedFilter.type;
 
     this.selectedFilter = filter;
+    const { count, group, type } = this.selectedFilter;
 
-    if (type !== this.selectedFilter.type) {
-      this.forceUpdatePrices(true);
-    } else if (this.dataset.length < this.selectedFilter.count) {
-      this.updatePrices();
+    if (prevType !== type) {
+      await this.forceUpdatePrices(true);
+    } else if (this.dataset.length < count) {
+      await this.updatePrices();
+    } else {
+      await this.$nextTick();
+      const items = this.chartData.length;
+      const visible = count / (group ?? 1);
+      const zoomStart = items > visible ? ((items - visible) * 100) / items : 0;
+      const zoomEnd = 100;
+      const chart = this.$refs.chart as any;
+
+      chart.dispatchAction({
+        type: 'dataZoom',
+        batch: [
+          {
+            dataZoomId: ZOOM_ID,
+            start: zoomStart,
+            end: zoomEnd,
+          },
+        ],
+      });
     }
   }
 
@@ -918,7 +940,6 @@ export default class SwapChart extends Mixins(
 
   selectChartType(type: CHART_TYPES): void {
     this.chartType = type;
-    // this.changeFilter(this.filters[0]);
   }
 
   handleZoom(event: any): void {
@@ -929,9 +950,14 @@ export default class SwapChart extends Mixins(
   }
 
   changeZoomLevel(event: any): void {
+    console.log(event);
     const data = event?.batch?.[0];
-    this.zoomStart = data?.start ?? 0;
-    this.zoomEnd = data?.end ?? 0;
+    this.setZoomLevel(data?.start, data?.end);
+  }
+
+  private setZoomLevel(start: number, end: number): void {
+    this.zoomStart = start ?? 0;
+    this.zoomEnd = end ?? 0;
   }
 
   revertChart(): void {
