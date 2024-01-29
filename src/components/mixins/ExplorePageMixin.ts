@@ -1,23 +1,12 @@
-import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar';
 import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
-import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import Vue from 'vue';
-import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
 import { getter } from '@/store/decorators';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import ScrollableTableMixin from './ScrollableTableMixin';
 
 @Component
-export default class ExplorePageMixin extends Mixins(
-  mixins.LoadingMixin,
-  mixins.PaginationSearchMixin,
-  mixins.FormattedAmountMixin
-) {
-  readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
-  readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
-
-  @Ref('table') readonly tableComponent!: any;
+export default class ExplorePageMixin extends Mixins(ScrollableTableMixin) {
   @Prop({ default: '', type: String }) readonly exploreQuery!: string;
   @Prop({ default: false, type: Boolean }) readonly isAccountItemsOnly!: boolean;
   @Watch('exploreQuery')
@@ -26,14 +15,9 @@ export default class ExplorePageMixin extends Mixins(
   }
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   order = '';
   property = '';
-
-  get loadingState(): boolean {
-    return this.parentLoading || this.loading;
-  }
 
   get pricesAvailable(): boolean {
     return Object.keys(this.fiatPriceObject).length > 0;
@@ -43,26 +27,23 @@ export default class ExplorePageMixin extends Mixins(
     return !(this.order && this.property);
   }
 
-  get preparedItems(): any[] {
-    console.warn('[ExplorePageMixin]: "preparedItems" computed property is not implemented');
+  // items -> prefilteredItems -> filteredItems -> preparedItems
+  get prefilteredItems(): any[] {
+    console.warn('[ExplorePageMixin]: "prefilteredItems" computed property is not implemented');
     return [];
-  }
-
-  get total(): number {
-    return this.filteredItems.length;
   }
 
   get filteredItems() {
     const search = this.exploreQuery.toLowerCase().trim();
 
-    if (!search) return this.preparedItems;
+    if (!search) return this.prefilteredItems;
 
     const filterAsset = (asset): boolean =>
       asset?.name?.toLowerCase?.()?.includes?.(search) ||
       asset?.symbol?.toLowerCase?.()?.includes?.(search) ||
       asset?.address?.toLowerCase?.() === search;
 
-    return this.preparedItems.filter(
+    return this.prefilteredItems.filter(
       (item: any) =>
         filterAsset(item) ||
         filterAsset(item.poolAsset) ||
@@ -72,7 +53,7 @@ export default class ExplorePageMixin extends Mixins(
     );
   }
 
-  get sortedItems() {
+  get preparedItems() {
     if (this.isDefaultSort) return this.filteredItems;
 
     const isAscending = this.order === SortDirection.ASC;
@@ -87,15 +68,7 @@ export default class ExplorePageMixin extends Mixins(
     });
   }
 
-  get tableItems() {
-    return this.getPageItems(this.sortedItems);
-  }
-
   async mounted(): Promise<void> {
-    await this.$nextTick();
-
-    this.initScrollbar();
-
     await this.updateExploreData();
   }
 
@@ -110,55 +83,5 @@ export default class ExplorePageMixin extends Mixins(
 
   async updateExploreData(): Promise<void> {
     console.warn('[ExplorePageMixin]: "updateExploreData" method is not implemented');
-  }
-
-  handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
-    let current = 1;
-
-    switch (button) {
-      case WALLET_CONSTS.PaginationButton.Prev:
-        current = this.currentPage - 1;
-        break;
-      case WALLET_CONSTS.PaginationButton.Next:
-        current = this.currentPage + 1;
-        break;
-      case WALLET_CONSTS.PaginationButton.First:
-        current = 1;
-        break;
-      case WALLET_CONSTS.PaginationButton.Last:
-        current = this.lastPage;
-    }
-
-    this.currentPage = current;
-  }
-
-  private initScrollbar(): void {
-    if (!this.tableComponent) return;
-
-    const Scrollbar = Vue.extend(SScrollbar);
-    const scrollbar = new Scrollbar();
-    scrollbar.$mount();
-
-    const elTable = this.tableComponent.$refs.table;
-    const elTableBodyWrapper = elTable.$refs.bodyWrapper;
-    const elTableHeaderWrapper = elTable.$refs.headerWrapper;
-    const elTableNativeTable = elTableBodyWrapper.getElementsByTagName('table')[0];
-    const scrollbarWrap = scrollbar.$el.getElementsByClassName('el-scrollbar__wrap')[0];
-    const scrollbarView = scrollbar.$el.getElementsByClassName('el-scrollbar__view')[0];
-
-    elTableBodyWrapper.appendChild(scrollbar.$el);
-    scrollbarView.appendChild(elTableNativeTable);
-
-    this.$watch(
-      () => (scrollbar.$children[0] as any).moveX,
-      () => {
-        const scrollLeft = scrollbarWrap.scrollLeft;
-        // to scroll table content
-        elTableBodyWrapper.scrollLeft = scrollLeft;
-        elTableHeaderWrapper.scrollLeft = scrollLeft;
-        // to render box shadow on fixed table
-        elTable.scrollPosition = scrollLeft === 0 ? 'left' : 'right';
-      }
-    );
   }
 }

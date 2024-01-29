@@ -64,6 +64,10 @@ const getters = defineGetters<SettingsState>()({
     const { state } = settingsGetterContext(args);
     return state.featureFlags.soraCard;
   },
+  orderBookEnabled(...args): Nullable<boolean> {
+    const { state } = settingsGetterContext(args);
+    return state.featureFlags.orderBook;
+  },
   notificationActivated(...args): boolean {
     const { state } = settingsGetterContext(args);
     return state.browserNotifsPermission === 'granted';
