@@ -286,8 +286,10 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
     this.showPendingRewardsDialog = true;
   }
 
-  handleStake() {
-    this.showStakeDialog = false;
+  handleStake(confirmed: boolean): void {
+    if (confirmed) {
+      this.showStakeDialog = false;
+    }
   }
 
   handleNominate() {
