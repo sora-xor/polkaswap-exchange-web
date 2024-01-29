@@ -1,8 +1,9 @@
 import { OrderBook } from '@sora-substrate/liquidity-proxy';
+import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineGetters } from 'direct-vuex';
 
 import type { OrderBookStats, OrderBookDealData } from '@/types/orderBook';
-import { serializeKey, getBookDecimals } from '@/utils/orderBook';
+import { getBookDecimals } from '@/utils/orderBook';
 
 import { OrderBookState } from './types';
 
@@ -27,7 +28,7 @@ const getters = defineGetters<OrderBookState>()({
 
     if (!(baseAsset && quoteAsset)) return '';
 
-    return serializeKey(baseAsset.address, quoteAsset.address);
+    return api.orderBook.serializedKey(baseAsset.address, quoteAsset.address);
   },
   currentOrderBook(...args): Nullable<OrderBook> {
     const { getters, state } = orderBookGetterContext(args);

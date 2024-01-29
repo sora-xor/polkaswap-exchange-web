@@ -2,7 +2,6 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
 import { subscribeOnOrderBookUpdates, fetchOrderBooks } from '@/indexer/queries/orderBook';
-import { serializeKey } from '@/utils/orderBook';
 
 import { orderBookActionContext } from '.';
 
@@ -36,7 +35,8 @@ const actions = defineActions({
         id: { base, quote },
         stats,
       } = item;
-      const key = serializeKey(base, quote);
+
+      const key = api.orderBook.serializedKey(base, quote);
       buffer[key] = stats;
       return buffer;
     }, {});
@@ -104,7 +104,7 @@ const actions = defineActions({
           stats,
           deals,
         } = data;
-        const key = serializeKey(base, quote);
+        const key = api.orderBook.serializedKey(base, quote);
         commit.setDeals(deals);
         commit.setStats({ [key]: stats });
       },

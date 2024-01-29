@@ -202,6 +202,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
   &-filter {
     margin-right: $basic-spacing;
+    line-height: 1.5;
 
     &:hover {
       cursor: pointer;
@@ -216,6 +217,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   &-cancel {
     color: var(--s-color-theme-accent);
     margin-left: $basic-spacing;
+    line-height: 1.5;
 
     &:hover {
       cursor: pointer;

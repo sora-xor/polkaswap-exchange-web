@@ -63,6 +63,7 @@
         <div class="input-line input-line--footer">
           <div v-if="hasFiatValue" class="s-flex">
             <s-float-input
+              ref="fiatEl"
               class="token-input--fiat"
               size="mini"
               has-locale-string
@@ -94,6 +95,7 @@
             :show-tooltip="false"
             :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
             @input="handleSlideInputChange"
+            @mousedown.native="handleSlideClick"
           />
         </div>
       </slot>
@@ -148,7 +150,8 @@ export default class TokenInput extends Mixins(
   @Prop({ default: 0, type: Number }) readonly sliderValue!: number;
   @Prop({ default: 2, type: Number }) readonly fiatDecimals!: number;
 
-  @Ref('floatInput') private floatInput!: any;
+  @Ref('floatInput') private readonly floatInput!: any;
+  @Ref('fiatEl') private readonly fiatEl!: any;
 
   fiatValue = '';
   fiatFocus = false;
@@ -192,8 +195,8 @@ export default class TokenInput extends Mixins(
     return this.sliderValue;
   }
 
-  set slideValue(value: string) {
-    this.setAmountSliderValue(Number(value));
+  set slideValue(value: number) {
+    this.setAmountSliderValue(value);
   }
 
   get isBalanceAvailable(): boolean {
@@ -263,6 +266,10 @@ export default class TokenInput extends Mixins(
 
   handleSlideInputChange(value: string): void {
     this.$emit('slide', value);
+  }
+
+  handleSlideClick(): void {
+    this.fiatEl?.$children?.[0]?.blur?.();
   }
 
   async mounted(): Promise<void> {

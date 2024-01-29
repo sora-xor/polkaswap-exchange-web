@@ -269,6 +269,13 @@ export class SubNetworksConnector {
   protected getConnection<Adapter extends SubAdapter>(
     network: SubNetwork,
     connectorAdapter?: Adapter
+  ): SubNetworkConnection<Adapter>;
+
+  protected getConnection<Adapter extends SubAdapter>(network: undefined, connectorAdapter?: Adapter): undefined;
+
+  protected getConnection<Adapter extends SubAdapter>(
+    network?: SubNetwork,
+    connectorAdapter?: Adapter
   ): SubNetworkConnection<Adapter> | undefined {
     if (!network) return undefined;
 
@@ -312,7 +319,7 @@ export class SubNetworksConnector {
   public async init(destination: SubNetwork, connector?: SubNetworksConnector): Promise<void> {
     const [soraParachain, relaychain, parachain] = this.getChains(destination);
     // Create adapters
-    this.soraParachain = this.getConnection(soraParachain, connector?.soraParachain?.adapter)!;
+    this.soraParachain = this.getConnection(soraParachain, connector?.soraParachain?.adapter);
     this.relaychain = this.getConnection(relaychain, connector?.relaychain?.adapter);
     this.parachain = this.getConnection(parachain, connector?.parachain?.adapter);
     // link destination network

@@ -27,7 +27,7 @@
       <div>amount</div>
       <div>total</div>
     </div>
-    <div v-if="asksFormatted.length" class="stock-book-sell">
+    <div v-if="asksFormatted.length" class="stock-book-sell" :class="{ unclickable: isMarketOrder }">
       <div class="margin" :style="getHeight()" />
       <div
         v-for="order in sellOrders"
@@ -49,7 +49,7 @@
         <span class="last-traded-price">{{ fiatValue }}</span>
       </div>
     </div>
-    <div v-if="bidsFormatted.length" class="stock-book-buy">
+    <div v-if="bidsFormatted.length" class="stock-book-buy" :class="{ unclickable: isMarketOrder }">
       <div v-for="order in buyOrders" :key="order.price" class="row" @click="fillPrice(order.price, PriceVariant.Buy)">
         <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
@@ -68,7 +68,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { ZeroStringValue } from '@/consts';
+import { LimitOrderType, ZeroStringValue } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { OrderBookDealData } from '@/types/orderBook';
 
@@ -86,14 +86,15 @@ type OrderBookPriceVolumeAggregated = [FPNumber, FPNumber, FPNumber];
 
 @Component
 export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
+  @state.orderBook.limitOrderType private limitOrderType!: LimitOrderType;
   @state.orderBook.asks asks!: OrderBookPriceVolume[];
   @state.orderBook.bids bids!: OrderBookPriceVolume[];
 
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.orderBookLastDeal orderBookLastDeal!: Nullable<OrderBookDealData>;
   @getter.orderBook.currentOrderBook currentOrderBook!: OrderBook;
-  @getter.orderBook.orderBookId private orderBookId!: string;
-  @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
+  @getter.orderBook.orderBookId orderBookId!: string;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
   @mutation.orderBook.setQuoteValue setQuoteValue!: (value: string) => void;
   @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
@@ -101,7 +102,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   @action.orderBook.subscribeToBidsAndAsks private subscribeToBidsAndAsks!: AsyncFnWithoutArgs;
 
   readonly PriceVariant = PriceVariant;
-  readonly maxRowsNumber = 11;
+  readonly maxRowsNumber = 11; // TODO: [Rustem] if I change it to 12 it should be re-rendered correctly
 
   selectedStep = '';
   scalerOpen = false;
@@ -127,8 +128,15 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   fillPrice(price: string, side: PriceVariant): void {
+    if (this.isMarketOrder) {
+      return;
+    }
     this.setSide(side);
-    this.setQuoteValue(Number(price).toString());
+    this.setQuoteValue(Number(price).toString()); // TODO: [Rustem] string->number->string -- WHY?
+  }
+
+  get isMarketOrder(): boolean {
+    return this.limitOrderType === LimitOrderType.market;
   }
 
   get averagePrice(): FPNumber | undefined {
@@ -306,6 +314,9 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     }));
   }
 
+  /**
+   * // TODO: [Rustem] add missed type, add missed docs, it's unclear how this method works
+   */
   private calculateStepsDistribution(orders, precision = 10): OrderBookPriceVolumeAggregated[] {
     if (this.isBookPrecisionEqual(precision.toString())) return orders;
 
@@ -337,7 +348,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
         accumulatedAmount = FPNumber.ZERO;
         accumulatedTotal = FPNumber.ZERO;
         edge = edge.sub(step);
-        index -= 1;
+        index -= 1; // TODO: [Rustem] check it (Remove this assignment of "index". [+1 location]sonarlint(typescript:S2310))
       }
 
       if (index === orders.length - 1) {
@@ -390,19 +401,21 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 $row-height: 24px;
 $background-column-color-light: #e7dadd;
 $background-column-color-dark: #693d81;
+$mono-font: 'JetBrainsMono';
 
 .stock-book {
   overflow: hidden;
+
+  :not(.unclickable) .row:hover {
+    cursor: pointer;
+  }
 
   .row {
     display: flex;
     justify-content: space-between;
     transform-style: preserve-3d;
-    font-family: 'JetBrains Mono';
+    font-family: $mono-font;
     margin: 2px;
-    &:hover {
-      cursor: pointer;
-    }
   }
 
   &__title {

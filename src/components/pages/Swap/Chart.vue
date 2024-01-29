@@ -601,7 +601,6 @@ export default class SwapChart extends Mixins(
     };
 
     const spec = {
-      animation: false,
       axisPointer: {
         link: [
           {
