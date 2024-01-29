@@ -298,7 +298,7 @@ export default class SwapChart extends Mixins(
   private priceUpdateSubscription: Nullable<FnWithoutArgs> = null;
   private priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
 
-  chartType: CHART_TYPES = CHART_TYPES.CANDLE;
+  chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: SnapshotFilter = LINE_CHART_FILTERS[0];
   isReversedChart = false;
 
