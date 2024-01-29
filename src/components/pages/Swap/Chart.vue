@@ -17,7 +17,7 @@
     </template>
 
     <template #filters>
-      <stats-filter :filters="filters" :value="selectedFilter" :disabled="chartIsLoading" @input="changeFilter" />
+      <stats-filter :filters="filters" :value="selectedFilter" :disabled="chartIsLoading" @change="changeFilter" />
     </template>
 
     <template #types>
@@ -899,33 +899,39 @@ export default class SwapChart extends Mixins(
 
   async changeFilter(filter: SnapshotFilter): Promise<void> {
     const prevType = this.selectedFilter.type;
+    const { count, type } = filter;
 
     this.selectedFilter = filter;
-    const { count, group, type } = this.selectedFilter;
 
     if (prevType !== type) {
       await this.forceUpdatePrices(true);
     } else if (this.dataset.length < count) {
       await this.updatePrices();
     } else {
-      await this.$nextTick();
-      const items = this.chartData.length;
-      const visible = count / (group ?? 1);
-      const zoomStart = items > visible ? ((items - visible) * 100) / items : 0;
-      const zoomEnd = 100;
-      const chart = this.$refs.chart as any;
-
-      chart.dispatchAction({
-        type: 'dataZoom',
-        batch: [
-          {
-            dataZoomId: ZOOM_ID,
-            start: zoomStart,
-            end: zoomEnd,
-          },
-        ],
-      });
+      await this.resetChartTypeZoom();
     }
+  }
+
+  async resetChartTypeZoom() {
+    await this.$nextTick();
+
+    const { count, group } = this.selectedFilter;
+    const items = this.chartData.length;
+    const visible = count / (group ?? 1);
+    const zoomStart = items > visible ? ((items - visible) * 100) / items : 0;
+    const zoomEnd = 100;
+    const chart = this.$refs.chart as any;
+
+    chart.dispatchAction({
+      type: 'dataZoom',
+      batch: [
+        {
+          dataZoomId: ZOOM_ID,
+          start: zoomStart,
+          end: zoomEnd,
+        },
+      ],
+    });
   }
 
   private async resetAndUpdatePrices(saveReversedState = false): Promise<void> {
@@ -950,7 +956,6 @@ export default class SwapChart extends Mixins(
   }
 
   changeZoomLevel(event: any): void {
-    console.log(event);
     const data = event?.batch?.[0];
     this.setZoomLevel(data?.start, data?.end);
   }
