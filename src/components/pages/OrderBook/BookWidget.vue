@@ -401,6 +401,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 $row-height: 24px;
 $background-column-color-light: #e7dadd;
 $background-column-color-dark: #693d81;
+$mono-font: 'JetBrainsMono';
 
 .stock-book {
   overflow: hidden;
@@ -413,7 +414,7 @@ $background-column-color-dark: #693d81;
     display: flex;
     justify-content: space-between;
     transform-style: preserve-3d;
-    font-family: 'JetBrains Mono'; // TODO: [Rustem]: add scss var somewhere with font-name to avoid it (Unexpected missing generic font familysonarlint(css:S4649))
+    font-family: $mono-font;
     margin: 2px;
   }
 
