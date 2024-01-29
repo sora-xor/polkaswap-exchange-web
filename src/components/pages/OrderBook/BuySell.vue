@@ -166,7 +166,6 @@ import type { Subscription } from 'rxjs';
 
 @Component({
   components: {
-    DatePicker: lazyComponent(Components.DatePicker),
     FormattedAmount: components.FormattedAmount,
     TokenInput: lazyComponent(Components.TokenInput),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
