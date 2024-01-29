@@ -918,20 +918,10 @@ export default class SwapChart extends Mixins(
     const { count, group } = this.selectedFilter;
     const items = this.chartData.length;
     const visible = count / (group ?? 1);
-    const zoomStart = items > visible ? ((items - visible) * 100) / items : 0;
-    const zoomEnd = 100;
-    const chart = this.$refs.chart as any;
+    const start = items > visible ? ((items - visible) * 100) / items : 0;
+    const end = 100;
 
-    chart.dispatchAction({
-      type: 'dataZoom',
-      batch: [
-        {
-          dataZoomId: ZOOM_ID,
-          start: zoomStart,
-          end: zoomEnd,
-        },
-      ],
-    });
+    this.setChartZoomLevel(start, end);
   }
 
   private async resetAndUpdatePrices(saveReversedState = false): Promise<void> {
@@ -957,12 +947,23 @@ export default class SwapChart extends Mixins(
 
   changeZoomLevel(event: any): void {
     const data = event?.batch?.[0];
-    this.setZoomLevel(data?.start, data?.end);
+    this.zoomStart = data?.start ?? 0;
+    this.zoomEnd = data?.end ?? 0;
   }
 
-  private setZoomLevel(start: number, end: number): void {
-    this.zoomStart = start ?? 0;
-    this.zoomEnd = end ?? 0;
+  private setChartZoomLevel(start: number, end: number): void {
+    const chart = this.$refs.chart as any;
+
+    chart.dispatchAction({
+      type: 'dataZoom',
+      batch: [
+        {
+          dataZoomId: ZOOM_ID,
+          start,
+          end,
+        },
+      ],
+    });
   }
 
   revertChart(): void {
