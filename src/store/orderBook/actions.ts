@@ -2,11 +2,11 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
 import { subscribeOnOrderBookUpdates, fetchOrderBooks } from '@/indexer/queries/orderBook';
-import { serializeKey } from '@/utils/orderBook';
 
 import { orderBookActionContext } from '.';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { Subscription } from 'rxjs';
 
 const actions = defineActions({
@@ -35,7 +35,8 @@ const actions = defineActions({
         id: { base, quote },
         stats,
       } = item;
-      const key = serializeKey(base, quote);
+
+      const key = api.orderBook.serializedKey(base, quote);
       buffer[key] = stats;
       return buffer;
     }, {});
@@ -103,7 +104,7 @@ const actions = defineActions({
           stats,
           deals,
         } = data;
-        const key = serializeKey(base, quote);
+        const key = api.orderBook.serializedKey(base, quote);
         commit.setDeals(deals);
         commit.setStats({ [key]: stats });
       },
@@ -136,9 +137,9 @@ const actions = defineActions({
       subscription = api.orderBook
         .subscribeOnUserLimitOrdersIds(baseAsset.address, quoteAsset.address, accountAddress)
         .subscribe(async (ids) => {
-          const userLimitOrders = await Promise.all(
+          const userLimitOrders = (await Promise.all(
             ids.map((id) => api.orderBook.getLimitOrder(baseAsset.address, quoteAsset.address, id))
-          );
+          )) as LimitOrder[];
 
           commit.setUserLimitOrders(userLimitOrders);
 

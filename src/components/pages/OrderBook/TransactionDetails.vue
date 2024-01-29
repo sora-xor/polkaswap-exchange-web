@@ -22,6 +22,15 @@
     />
     <info-line
       v-if="!isMarketType"
+      :label="t(`assets.balance.locked`)"
+      :label-tooltip="t('orderBook.tooltip.txDetails.locked')"
+      :value="locked"
+      :asset-symbol="lockedAssetSymbol"
+      :fiat-value="getFiatAmountByCodecString(lockedCodec, lockedAsset)"
+      is-formatted
+    />
+    <info-line
+      v-if="!isMarketType"
       :label="t('orderBook.txDetails.expiryDate')"
       :label-tooltip="t('orderBook.tooltip.txDetails.expiryDate')"
       :value="limitOrderExpiryDate"
@@ -49,7 +58,7 @@ import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
-import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
+import type { CodecString, FPNumber, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
@@ -62,11 +71,12 @@ export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmou
   @state.orderBook.baseValue baseValue!: string;
   @state.orderBook.quoteValue quoteValue!: string;
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
+  @state.orderBook.quoteAssetAddress quoteAssetAddress!: string;
   @state.orderBook.side side!: PriceVariant;
   @state.swap.toValue toValue!: string;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
 
-  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
+  @getter.assets.assetDataByAddress getAsset!: (addr?: string) => AccountAsset;
 
   @Prop({ default: true, type: Boolean }) readonly infoOnly!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMarketType!: boolean;
@@ -79,18 +89,36 @@ export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmou
     return this.getAsset(this.baseAssetAddress)?.symbol;
   }
 
+  get quoteSymbol(): string {
+    return XOR.symbol;
+  }
+
   get sideText(): string {
     return this.side === PriceVariant.Buy ? this.t('orderBook.Buy') : this.t('orderBook.Sell');
   }
 
-  getComputedClass(): string | undefined {
-    if (this.infoOnly) {
-      return this.side === PriceVariant.Buy ? 'limit-order-type--buy' : 'limit-order-type--sell';
-    }
+  get locked(): string {
+    return this.isBuy ? this.total.toString() : this.baseValue;
   }
 
-  get quoteSymbol(): string {
-    return XOR.symbol;
+  get lockedCodec(): string {
+    return this.isBuy ? this.total.toCodecString() : this.getFPNumber(this.baseValue).toCodecString();
+  }
+
+  get lockedAsset(): AccountAsset {
+    return this.isBuy ? this.getAsset(this.quoteAssetAddress) : this.getAsset(this.baseAssetAddress);
+  }
+
+  get lockedAssetSymbol(): string | undefined {
+    return this.isBuy ? this.quoteSymbol : this.baseSymbol;
+  }
+
+  get total(): FPNumber {
+    return this.getFPNumber(this.baseValue).mul(this.getFPNumber(this.quoteValue));
+  }
+
+  get isBuy(): boolean {
+    return this.side === PriceVariant.Buy;
   }
 
   get limitOrderExpiryDate(): Nullable<string> {
@@ -105,6 +133,12 @@ export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmou
 
   formatFee(fee: string, formattedFee: string): string {
     return fee !== ZeroStringValue ? formattedFee : ZeroStringValue;
+  }
+
+  getComputedClass(): string | undefined {
+    if (this.infoOnly) {
+      return this.side === PriceVariant.Buy ? 'limit-order-type--buy' : 'limit-order-type--sell';
+    }
   }
 }
 </script>

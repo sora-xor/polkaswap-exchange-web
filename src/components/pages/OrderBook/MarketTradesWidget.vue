@@ -26,7 +26,15 @@
           <span class="market-trades__header">{{ t('orderBook.price') }}</span>
         </template>
         <template v-slot="{ row }">
-          <span class="order-info price" :class="[{ buy: row.isBuy }]">{{ row.price }}</span>
+          <span class="order-info side" :class="[{ buy: row.side === PriceVariant.Buy }]">{{ row.side }}</span>
+        </template>
+      </s-table-column>
+      <s-table-column>
+        <template #header>
+          <span class="market-trades__header">Price</span>
+        </template>
+        <template v-slot="{ row }">
+          <span class="order-info price">{{ row.price }}</span>
         </template>
       </s-table-column>
       <s-table-column header-align="right" align="right">
@@ -54,6 +62,8 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
 export default class MarketTradesWidget extends Mixins(TranslationMixin) {
+  readonly PriceVariant = PriceVariant;
+
   @state.orderBook.deals deals!: OrderBookDealData[];
 
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
@@ -65,9 +75,8 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
       const time = date.format('M/DD HH:mm:ss');
       const amount = `${deal.amount.toLocaleString()} ${this.baseAsset.symbol}`;
       const price = `${deal.price.toLocaleString()} ${this.quoteAsset.symbol}`;
-      const isBuy = deal.side === PriceVariant.Buy;
 
-      return { time, amount, price, isBuy };
+      return { time, amount, price, side: deal.side };
     });
   }
 }
@@ -94,7 +103,9 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
     &.time {
       color: var(--s-color-base-content-secondary);
     }
-    &.price {
+    &.side {
+      text-transform: uppercase;
+      font-weight: 500;
       color: var(--s-color-status-error);
       &.buy {
         color: var(--s-color-status-success);

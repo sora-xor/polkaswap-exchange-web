@@ -1,6 +1,7 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { defineMutations } from 'direct-vuex';
 
+import { LimitOrderType } from '@/consts';
 import type { OrderBookDealData, OrderBookStats } from '@/types/orderBook';
 
 import type { OrderBookState } from './types';
@@ -26,6 +27,9 @@ const mutations = defineMutations<OrderBookState>()({
   setSide(state, side: PriceVariant): void {
     state.side = side;
   },
+  setLimitOrderType(state, type: LimitOrderType): void {
+    state.limitOrderType = type;
+  },
   setAsks(state, asks: readonly OrderBookPriceVolume[] = []): void {
     state.asks = Object.freeze([...asks]);
   },
@@ -38,7 +42,7 @@ const mutations = defineMutations<OrderBookState>()({
   setStats(state, stats: Record<string, OrderBookStats>): void {
     state.orderBooksStats = Object.freeze({ ...state.orderBooksStats, ...stats });
   },
-  setUserLimitOrders(state, limitOrders: (LimitOrder | null)[] = []): void {
+  setUserLimitOrders(state, limitOrders: LimitOrder[] = []): void {
     state.userLimitOrders = Object.freeze([...limitOrders]);
   },
   setOrderBookUpdates(state, subscriptions: Array<Subscription>): void {

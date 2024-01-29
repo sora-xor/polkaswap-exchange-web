@@ -79,11 +79,6 @@ $s-color-base-on-disabled--dark: #c29ab7;
 
 @import '../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index';
 
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('~@soramitsu/soramitsu-js-ui/lib/assets/fonts/JetBrainsMono-Regular.woff');
-}
-
 :root {
   --s-color-brand-day: #{$s-color-brand-day};
   --s-transition-default: #{$s-transition-default};

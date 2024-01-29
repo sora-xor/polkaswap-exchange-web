@@ -153,10 +153,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   get sidebarMenuItems(): Array<SidebarMenuItemLink> {
-    return SidebarMenuGroups.filter((menuItem) => {
-      if (!this.orderBookEnabled && menuItem.title === PageNames.OrderBook) return false;
-      return true;
-    });
+    if (!this.orderBookEnabled) {
+      return SidebarMenuGroups.filter(({ title }) => title !== PageNames.OrderBook);
+    }
+    return SidebarMenuGroups;
   }
 
   get currentPath(): string {
@@ -292,13 +292,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     &:focus {
       background-color: unset !important;
     }
-    i.el-icon-bank-card {
-      width: 28px; // to avoid issue with paddings
-    }
-
-    i.el-icon-tickets {
-      width: 28px;
-    }
   }
 }
 </style>
@@ -420,6 +413,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       flex-flow: column nowrap;
       justify-content: space-between;
       max-width: $sidebar-max-width;
+      padding-right: $inner-spacing-mini; // for shadow
     }
   }
 }

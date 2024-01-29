@@ -91,7 +91,7 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
   [SubNetworkId.Kusama]: {
     KSM: {
       [BridgeTxDirection.Outgoing]: '92003956',
-      [BridgeTxDirection.Incoming]: '0',
+      [BridgeTxDirection.Incoming]: '10000000000', // [Kusama issue] https://soramitsu.atlassian.net/browse/PW-1433
     },
   },
   [SubNetworkId.Polkadot]: {

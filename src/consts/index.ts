@@ -218,10 +218,10 @@ export enum Components {
   MarketTradesWidget = 'pages/OrderBook/MarketTradesWidget',
   BookChartsWidget = 'pages/OrderBook/BookChartsWidget',
   BuySell = 'pages/OrderBook/BuySell',
-  DatePicker = 'pages/OrderBook/Popovers/DatePicker',
   PairListPopover = 'pages/OrderBook/Popovers/PairListPopover',
   AllOrders = 'pages/OrderBook/Tables/AllOrders',
   OpenOrders = 'pages/OrderBook/Tables/OpenOrders',
+  CustomisePage = 'pages/OrderBook/Dialogs/CustomisePage',
   PlaceOrder = 'pages/OrderBook/Dialogs/PlaceOrder',
   CancelOrders = 'pages/OrderBook/Dialogs/CancelOrders',
   PlaceTransactionDetails = 'pages/OrderBook/TransactionDetails',
@@ -312,7 +312,7 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     href: '/#/swap',
   },
   {
-    icon: 'el-icon-tickets',
+    icon: 'music-CD-24',
     title: PageNames.OrderBook,
     href: '/#/trade',
   },
@@ -360,7 +360,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     href: '/#/stats',
   },
   {
-    icon: 'el-icon-bank-card',
+    icon: 'music-eject-24',
     title: PageNames.SoraCard,
     href: '/#/card',
   },
@@ -387,7 +387,6 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     title: 'twitter',
     href: 'https://twitter.com/polkaswap',
   },
-  // TODO: [FONT] Update these icon names to appropriate one after font fix
   {
     icon: 'symbols-hash-24',
     title: 'reddit',
@@ -398,7 +397,6 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     title: 'medium',
     href: 'https://medium.com/polkaswap',
   },
-  // ____________________________________
   {
     icon: 'symbols-github-24',
     title: 'github',
