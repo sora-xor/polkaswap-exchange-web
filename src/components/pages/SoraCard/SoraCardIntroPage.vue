@@ -297,10 +297,14 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   }
 
   &__links {
-    margin-top: 16px;
+    margin-top: $basic-spacing;
   }
 
   @include mobile-app-logos;
+
+  .logo {
+    margin-bottom: $inner-spacing-mini;
+  }
 
   &__mobile {
     display: flex;
