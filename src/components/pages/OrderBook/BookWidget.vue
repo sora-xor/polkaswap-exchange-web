@@ -27,7 +27,7 @@
       <div>amount</div>
       <div>total</div>
     </div>
-    <div v-if="asksFormatted.length" class="stock-book-sell">
+    <div v-if="asksFormatted.length" class="stock-book-sell" :class="{ unclickable: isMarketOrder }">
       <div class="margin" :style="getHeight()" />
       <div
         v-for="order in sellOrders"
@@ -49,7 +49,7 @@
         <span class="last-traded-price">{{ fiatValue }}</span>
       </div>
     </div>
-    <div v-if="bidsFormatted.length" class="stock-book-buy">
+    <div v-if="bidsFormatted.length" class="stock-book-buy" :class="{ unclickable: isMarketOrder }">
       <div v-for="order in buyOrders" :key="order.price" class="row" @click="fillPrice(order.price, PriceVariant.Buy)">
         <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
@@ -68,7 +68,7 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { ZeroStringValue } from '@/consts';
+import { LimitOrderType, ZeroStringValue } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { OrderBookDealData } from '@/types/orderBook';
 
@@ -86,6 +86,7 @@ type OrderBookPriceVolumeAggregated = [FPNumber, FPNumber, FPNumber];
 
 @Component
 export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
+  @state.orderBook.limitOrderType private limitOrderType!: LimitOrderType;
   @state.orderBook.asks asks!: OrderBookPriceVolume[];
   @state.orderBook.bids bids!: OrderBookPriceVolume[];
 
@@ -127,8 +128,15 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   fillPrice(price: string, side: PriceVariant): void {
+    if (this.isMarketOrder) {
+      return;
+    }
     this.setSide(side);
     this.setQuoteValue(Number(price).toString()); // TODO: [Rustem] string->number->string -- WHY?
+  }
+
+  get isMarketOrder(): boolean {
+    return this.limitOrderType === LimitOrderType.market;
   }
 
   get averagePrice(): FPNumber | undefined {
@@ -397,15 +405,16 @@ $background-column-color-dark: #693d81;
 .stock-book {
   overflow: hidden;
 
+  :not(.unclickable) .row:hover {
+    cursor: pointer;
+  }
+
   .row {
     display: flex;
     justify-content: space-between;
     transform-style: preserve-3d;
     font-family: 'JetBrains Mono'; // TODO: [Rustem]: add scss var somewhere with font-name to avoid it (Unexpected missing generic font familysonarlint(css:S4649))
     margin: 2px;
-    &:hover {
-      cursor: pointer;
-    }
   }
 
   &__title {

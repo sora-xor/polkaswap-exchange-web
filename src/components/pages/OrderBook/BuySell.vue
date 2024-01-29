@@ -37,7 +37,7 @@
       </div>
     </el-popover>
 
-    <s-tabs class="order-book__tab" v-model="limitOrderType" type="rounded" @click="handleTabClick()">
+    <s-tabs class="order-book__tab" v-model="limitOrderType" type="rounded" @click="handleTabClick">
       <s-tab label="limit" name="limit">
         <span slot="label">
           <span>{{ 'Limit' }}</span>
@@ -176,6 +176,8 @@ import type { Subscription } from 'rxjs';
   },
 })
 export default class BuySellWidget extends Mixins(TranslationMixin, mixins.FormattedAmountMixin, mixins.LoadingMixin) {
+  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.orderBook.limitOrderType private _limitOrderType!: LimitOrderType;
   @state.orderBook.baseValue baseValue!: string;
   @state.orderBook.quoteValue quoteValue!: string;
   @state.orderBook.side side!: PriceVariant;
@@ -184,7 +186,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.amountSliderValue sliderValue!: number;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
@@ -202,6 +203,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
   @mutation.swap.setLiquiditySource setLiquiditySource!: (liquiditySource: string) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
+  @mutation.orderBook.setLimitOrderType private setLimitOrderType!: (type: LimitOrderType) => void;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
@@ -212,7 +214,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   confirmPlaceOrderVisibility = false;
   confirmCancelOrderVisibility = false;
   limitForSinglePriceReached = false;
-  limitOrderType: LimitOrderType = LimitOrderType.limit;
   quoteSubscription: Nullable<Subscription> = null;
   timestamp = MAX_TIMESTAMP;
   marketQuotePrice = '';
@@ -253,6 +254,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @Watch('userLimitOrders')
   private checkValidation(): void {
     this.checkInputValidation();
+  }
+
+  get limitOrderType(): LimitOrderType {
+    return this._limitOrderType;
+  }
+
+  set limitOrderType(type: LimitOrderType) {
+    this.setLimitOrderType(type);
   }
 
   get networkFee(): CodecString {

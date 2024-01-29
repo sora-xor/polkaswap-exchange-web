@@ -1,3 +1,4 @@
+import type { LimitOrderType } from '@/consts';
 import type { OrderBookStats, OrderBookDealData } from '@/types/orderBook';
 
 import type { PriceVariant, OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-proxy';
@@ -10,6 +11,7 @@ export type OrderBookState = {
   dexId: DexId;
   baseAssetAddress: Nullable<string>;
   quoteAssetAddress: Nullable<string>;
+  limitOrderType: LimitOrderType;
   orderBooksStats: Record<string, OrderBookStats>;
   deals: readonly OrderBookDealData[];
   asks: readonly OrderBookPriceVolume[];
