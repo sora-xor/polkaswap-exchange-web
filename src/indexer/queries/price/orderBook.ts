@@ -1,10 +1,11 @@
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SubqueryIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
+import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import type { OCLH, SnapshotItem } from '@/types/chart';
 
 import type { SubqueryConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
+import type { SubsquidConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
 import type {
   OrderBookSnapshotEntity,
   ConnectionQueryResponseData,
@@ -43,18 +44,46 @@ const subqueryOrderBookPriceFilter = (orderBookId: string, type: SnapshotTypes) 
   };
 };
 
+const subsquidOrderBookPriceFilter = (orderBookId: string, type: SnapshotTypes) => {
+  return {
+    orderBook: { id_eq: orderBookId },
+    type_eq: type,
+  };
+};
+
 const SubqueryOrderBookPriceQuery = gql<SubqueryConnectionQueryResponse<OrderBookSnapshotEntity>>`
-  query SubqueryOrderBookPriceQuery($after: Cursor = "", $filter: OrderBookSnapshotFilter, $first: Int = null) {
+  query SubqueryOrderBookPriceQuery($after: Cursor = "", $filter: OrderBookSnapshotFilter, $first: Int = 100) {
     data: orderBookSnapshots(after: $after, first: $first, filter: $filter, orderBy: [TIMESTAMP_DESC]) {
       pageInfo {
         hasNextPage
-        hasPreviousPage
-        startCursor
         endCursor
       }
       edges {
         node {
           price
+          timestamp
+          volumeUSD
+        }
+      }
+    }
+  }
+`;
+
+const SubsquidOrderBookPriceQuery = gql<SubsquidConnectionQueryResponse<OrderBookSnapshotEntity>>`
+  query SubsquidOrderBookPriceQuery($after: Cursor = "", $where: OrderBookSnapshotWhereInput, $first: Int = 100) {
+    data: orderBookSnapshots(after: $after, first: $first, where: $where, orderBy: timestamp_DESC) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          price {
+            close
+            high
+            low
+            open
+          }
           timestamp
           volumeUSD
         }
@@ -82,7 +111,11 @@ export async function fetchOrderBookData(
       break;
     }
     case IndexerType.SUBSQUID: {
-      return null;
+      const subsquidIndexer = indexer as SubsquidIndexer;
+      const where = subsquidOrderBookPriceFilter(orderBookId, type);
+      const variables = { where, first, after };
+      data = await subsquidIndexer.services.explorer.fetchEntitiesConnection(SubsquidOrderBookPriceQuery, variables);
+      break;
     }
   }
 

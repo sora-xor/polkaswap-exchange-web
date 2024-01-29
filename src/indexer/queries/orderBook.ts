@@ -1,7 +1,7 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/util';
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SubqueryIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
+import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import { OrderStatus } from '@/types/orderBook';
@@ -12,6 +12,7 @@ import type {
   SubqueryConnectionQueryResponse,
   SubquerySubscriptionPayload,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
+import type { SubsquidConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
 import type {
   OrderBookEntity,
   OrderBookOrderEntity,
@@ -30,6 +31,10 @@ type OrderBookEntityMutation = {
 
 type OrderBookEntityResponse = {
   data: OrderBookEntity;
+};
+
+type SubscriptionResponse<T> = {
+  payload: T;
 };
 
 const { IndexerType } = WALLET_CONSTS;
@@ -52,13 +57,12 @@ const parseDeals = (lastDeals?: string): OrderBookDealData[] => {
 };
 
 const SubqueryOrderBooksQuery = gql<SubqueryConnectionQueryResponse<OrderBookEntity>>`
-  query OrderBooksQuery($after: Cursor) {
+  query SubqueryOrderBooksQuery($after: Cursor) {
     data: orderBooks(after: $after) {
       pageInfo {
         hasNextPage
         endCursor
       }
-      totalCount
       edges {
         node {
           dexId
@@ -74,14 +78,40 @@ const SubqueryOrderBooksQuery = gql<SubqueryConnectionQueryResponse<OrderBookEnt
   }
 `;
 
+const SubsquidOrderBooksQuery = gql<SubsquidConnectionQueryResponse<OrderBookEntity>>`
+  query SubsquidOrderBooksQuery($after: Cursor) {
+    data: orderBooksConnection(after: $after) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          dexId
+          baseAsset {
+            id
+          }
+          quoteAsset {
+            id
+          }
+          price
+          priceChangeDay
+          volumeDayUSD
+          status
+        }
+      }
+    }
+  }
+`;
+
 const parseOrderBookEntity = (item: OrderBookEntity): OrderBookWithStats => {
-  const { dexId, baseAssetId, quoteAssetId, price, priceChangeDay, volumeDayUSD, status } = item;
+  const { dexId, price, priceChangeDay, volumeDayUSD, status } = item;
 
   return {
     id: {
       dexId,
-      base: baseAssetId,
-      quote: quoteAssetId,
+      base: item.baseAssetId ?? item.baseAsset.id,
+      quote: item.quoteAssetId ?? item.quoteAsset.id,
     },
     stats: {
       price: new FPNumber(price ?? 0),
@@ -105,19 +135,27 @@ export async function fetchOrderBooks(): Promise<Nullable<OrderBookWithStats[]>>
       );
       return response;
     }
+    case IndexerType.SUBSQUID: {
+      const subsquidIndexer = indexer as SubsquidIndexer;
+      const response = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
+        SubsquidOrderBooksQuery,
+        {},
+        parseOrderBookEntity
+      );
+      return response;
+    }
   }
 
   return null;
 }
 
 const SubqueryAccountOrdersQuery = gql<SubqueryConnectionQueryResponse<OrderBookOrderEntity>>`
-  query AccountAccountOrdersQuery($after: Cursor, $filter: OrderBookOrderFilter) {
+  query SubqueryAccountOrdersQuery($after: Cursor, $filter: OrderBookOrderFilter) {
     data: orderBookOrders(orderBy: TIMESTAMP_DESC, after: $after, filter: $filter) {
       pageInfo {
         hasNextPage
         endCursor
       }
-      totalCount
       edges {
         node {
           type
@@ -138,8 +176,41 @@ const SubqueryAccountOrdersQuery = gql<SubqueryConnectionQueryResponse<OrderBook
   }
 `;
 
+const SubsquidAccountOrdersQuery = gql<SubsquidConnectionQueryResponse<OrderBookOrderEntity>>`
+  query SubsquidAccountOrdersQuery($after: Cursor, $where: OrderBookOrderWhereInput) {
+    data: orderBookOrdersConnection(orderBy: timestamp_DESC, after: $after, where: $filter) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          type
+          orderId
+          orderBook {
+            id
+          }
+          account {
+            id
+          }
+          timestamp
+          isBuy
+          price
+          amount
+          amountFilled
+          lifetime
+          expiresAt
+          status
+        }
+      }
+    }
+  }
+`;
+
 const parseOrderEntity = (item: OrderBookOrderEntity): OrderData => {
-  const [dexId, base, quote] = item.orderBookId.split('-');
+  const owner = item.accountId ?? (item as any).account.id;
+  const orderBookId = item.orderBookId ?? item.orderBook.id;
+  const [dexId, base, quote] = orderBookId.split('-');
   const originalAmount = new FPNumber(item.amount);
   const filledAmount = new FPNumber(item.amountFilled);
   const amount = originalAmount.sub(filledAmount);
@@ -150,7 +221,7 @@ const parseOrderEntity = (item: OrderBookOrderEntity): OrderData => {
       base,
       quote,
     },
-    owner: item.accountId,
+    owner,
     time: parseTimestamp(item.timestamp),
     side: parseSide(item.isBuy),
     price: new FPNumber(item.price),
@@ -163,10 +234,7 @@ const parseOrderEntity = (item: OrderBookOrderEntity): OrderData => {
   };
 };
 
-export async function fetchOrderBookAccountOrders(
-  accountAddress: string,
-  id?: OrderBookId
-): Promise<Nullable<OrderData[]>> {
+const subqueryAccountOrdersFilter = (accountAddress: string, id?: OrderBookId) => {
   const filter: any = {
     and: [{ accountId: { equalTo: accountAddress } }, { status: { notEqualTo: OrderStatus.Active } }],
   };
@@ -179,14 +247,50 @@ export async function fetchOrderBookAccountOrders(
     });
   }
 
+  return filter;
+};
+
+const subsquidAccountOrdersFilter = (accountAddress: string, id?: OrderBookId) => {
+  const where: any = {
+    account: { id_eq: accountAddress },
+    status_not_eq: OrderStatus.Active,
+  };
+
+  if (id) {
+    const orderBookId = [id.dexId, id.base, id.quote].join('-');
+
+    where.orderBook = { id_eq: orderBookId };
+  }
+
+  return where;
+};
+
+export async function fetchOrderBookAccountOrders(
+  accountAddress: string,
+  id?: OrderBookId
+): Promise<Nullable<OrderData[]>> {
   const indexer = getCurrentIndexer();
 
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
+      const filter = subqueryAccountOrdersFilter(accountAddress, id);
+      const variables = { filter };
       const subqueryIndexer = indexer as SubqueryIndexer;
       const orders = await subqueryIndexer.services.explorer.fetchAllEntities(
         SubqueryAccountOrdersQuery,
-        { filter },
+        variables,
+        parseOrderEntity
+      );
+
+      return orders;
+    }
+    case IndexerType.SUBSQUID: {
+      const where = subsquidAccountOrdersFilter(accountAddress, id);
+      const variables = { where };
+      const subsquidIndexer = indexer as SubsquidIndexer;
+      const orders = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
+        SubsquidAccountOrdersQuery,
+        variables,
         parseOrderEntity
       );
 
@@ -198,8 +302,20 @@ export async function fetchOrderBookAccountOrders(
 }
 
 const SubqueryOrderBookDataQuery = gql<OrderBookEntityResponse>`
-  query OrderBookDataQuery($id: String!) {
+  query SubqueryOrderBookDataQuery($id: String!) {
     data: orderBook(id: $id) {
+      price
+      priceChangeDay
+      volumeDayUSD
+      status
+      lastDeals
+    }
+  }
+`;
+
+const SubsquidOrderBookDataQuery = gql<OrderBookEntityResponse>`
+  query SubsquidOrderBookDataQuery($id: String!) {
+    data: orderBookById(id: $id) {
       price
       priceChangeDay
       volumeDayUSD
@@ -231,11 +347,23 @@ const parseOrderBookResponse =
   };
 
 const SubqueryOrderBookDataSubscription = gql<SubquerySubscriptionPayload<OrderBookEntityMutation>>`
-  subscription OrderBookDataSubscription($id: [ID!]) {
+  subscription SubqueryOrderBookDataSubscription($id: [ID!]) {
     payload: orderBooks(id: $id, mutation: [UPDATE]) {
       id
       mutation_type
       _entity
+    }
+  }
+`;
+
+const SubsquidOrderBookDataSubscription = gql<SubscriptionResponse<OrderBookEntity>>`
+  subscription SubsquidOrderBookDataSubscription($id: String!) {
+    payload: orderBookById(id: $id) {
+      price
+      priceChangeDay
+      volumeDayUSD
+      status
+      lastDeals
     }
   }
 `;
@@ -277,24 +405,43 @@ export async function subscribeOnOrderBookUpdates(
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
       const subqueryIndexer = indexer as SubqueryIndexer;
-      const parseResponse = parseOrderBookResponse(dexId, baseAssetId, quoteAssetId);
-      const parseMutation = parseOrderBookMutation(dexId, baseAssetId, quoteAssetId);
+      const parseQuery = parseOrderBookResponse(dexId, baseAssetId, quoteAssetId);
+      const parseSubscription = parseOrderBookMutation(dexId, baseAssetId, quoteAssetId);
       const response = await subqueryIndexer.services.explorer.request(SubqueryOrderBookDataQuery, variables);
 
       if (!response) return null;
 
-      handler(parseResponse(response));
+      handler(parseQuery(response));
 
       const subscription = subqueryIndexer.services.explorer.createEntitySubscription(
         SubqueryOrderBookDataSubscription,
         variables,
-        parseMutation,
+        parseSubscription,
         handler,
         errorHandler
       );
 
       return subscription;
     }
+    // case IndexerType.SUBSQUID: {
+    //   const subsquidIndexer = indexer as SubsquidIndexer;
+    //   const parseQuery = parseOrderBookResponse(dexId, baseAssetId, quoteAssetId);
+    //   const response = await subsquidIndexer.services.explorer.request(SubsquidOrderBookDataQuery, variables);
+
+    //   if (!response) return null;
+
+    //   handler(parseQuery(response));
+
+    //   const subscription = subsquidIndexer.services.explorer.createEntitySubscription(
+    //     SubsquidOrderBookDataSubscription,
+    //     variables,
+    //     parseQuery,
+    //     handler,
+    //     errorHandler
+    //   );
+
+    //   return subscription;
+    // }
   }
 
   return null;
