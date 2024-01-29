@@ -206,12 +206,8 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.Transaction
       extrinsic = this.bondExtra;
     }
 
-    try {
-      await this.withNotifications(async () => await extrinsic());
-      this.$emit('confirm', true);
-    } catch {
-      this.$emit('confirm');
-    }
+    await this.withNotifications(async () => await extrinsic());
+    this.$emit('confirm');
   }
 }
 </script>

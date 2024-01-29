@@ -38,7 +38,7 @@
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
-        :loading="parentLoading"
+        :loading="parentLoading || loading"
         :disabled="isInsufficientXorForFee || valueFundsEmpty || isInsufficientBalance"
         @click="handleConfirm"
       >
@@ -82,7 +82,7 @@ import type { CodecString } from '@sora-substrate/util';
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
-export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
+export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.TransactionMixin) {
   @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
 
   rewardsDestination = '';
@@ -167,16 +167,18 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   }
 
   async handleConfirm(): Promise<void> {
-    await this.payout({
-      payouts: this.pendingRewards
-        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
-        : [],
-      payee: this.rewardsDestination !== this.payeeAddress ? this.rewardsDestination : undefined,
+    await this.withNotifications(async () => {
+      await this.payout({
+        payouts: this.pendingRewards
+          ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
+          : [],
+        payee: this.rewardsDestination !== this.payeeAddress ? this.rewardsDestination : undefined,
+      });
+
+      await this.getPendingRewards();
+
+      this.closeDialog();
     });
-
-    await this.getPendingRewards();
-
-    this.closeDialog();
   }
 
   checkPendingRewards(): void {

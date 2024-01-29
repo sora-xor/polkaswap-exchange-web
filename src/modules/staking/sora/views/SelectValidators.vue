@@ -64,10 +64,8 @@ export default class SelectValidators extends Mixins(StakingMixin, mixins.Loadin
     this.showStakeDialog = true;
   }
 
-  handleStake(confirmed: boolean): void {
-    if (confirmed) {
-      router.push({ name: SoraStakingPageNames.Overview });
-    }
+  handleStake(): void {
+    router.push({ name: SoraStakingPageNames.Overview });
   }
 }
 </script>
