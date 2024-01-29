@@ -35,7 +35,7 @@
           <span>SIDE</span>
         </template>
         <template v-slot="{ row }">
-          <span class="order-table__side">{{ row.side }}</span>
+          <span class="order-table__side" :class="[{ buy: row.side === PriceVariant.Buy }]">{{ row.side }}</span>
         </template>
       </s-table-column>
       <s-table-column width="126">
@@ -108,6 +108,7 @@
 </template>
 
 <script lang="ts">
+import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/util';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import dayjs from 'dayjs';
@@ -130,6 +131,8 @@ type OrderDataUI = Omit<OrderData, 'owner' | 'lifespan' | 'time' | 'expiresAt'>[
   },
 })
 export default class OrderTable extends Mixins(TranslationMixin, ScrollableTableMixin) {
+  readonly PriceVariant = PriceVariant;
+
   @mutation.orderBook.setOrdersToBeCancelled setOrdersToBeCancelled!: (orders: LimitOrder[]) => void;
 
   @getter.wallet.account.assetsDataTable assetsDataTable!: WALLET_TYPES.AssetsTable;
@@ -245,6 +248,10 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
     &__side {
       text-transform: uppercase;
       font-weight: 500;
+      color: var(--s-color-status-error);
+      &.buy {
+        color: var(--s-color-status-success);
+      }
     }
 
     &__price {
