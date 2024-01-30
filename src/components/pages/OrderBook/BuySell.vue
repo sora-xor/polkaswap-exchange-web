@@ -617,13 +617,13 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   handleInputFieldQuote(preciseValue: string): void {
-    const value = this.formatInputValue(preciseValue);
+    const value = this.formatInputValue(preciseValue, this.bookPrecision);
     this.setQuoteValue(value);
     this.checkInputValidation();
   }
 
   handleInputFieldBase(preciseValue: string): void {
-    const value = this.formatInputValue(preciseValue);
+    const value = this.formatInputValue(preciseValue, this.amountPrecision);
     this.setBaseValue(value);
     this.setAmountSliderValue(this.getPercent(value));
     this.checkInputValidation();
@@ -637,10 +637,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     }
   }
 
-  formatInputValue(value: string): string {
+  formatInputValue(value: string, precision: number): string {
     if (!value) return '';
 
-    return value.endsWith('.') ? value : new FPNumber(value).dp(this.amountPrecision).toString();
+    const [_, decimal] = value.split('.');
+
+    return value.endsWith('.') || decimal?.length <= precision ? value : new FPNumber(value).dp(precision).toString();
   }
 
   get preparedForSwap(): boolean {
