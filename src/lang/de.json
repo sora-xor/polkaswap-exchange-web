@@ -1499,6 +1499,18 @@
             "outOfBounds": {
                 "reason": "Betrag überschreitet den Blockchain-Bereich",
                 "reading": "Blockchain-Bereich überschritten: Ihr eingegebener Betrag liegt außerhalb des zulässigen Bereichs der Blockchain"
+            },
+            "spotLimit": {
+                "reason": "Die Handelsseite wurde besetzt",
+                "reading": "Preisspannenobergrenze: Jede Orderbuchseite ist auf 1024 eindeutige Preispunkte begrenzt. Bitte wählen Sie einen Preis innerhalb der bestehenden Preisspanne aus oder warten Sie, bis Platz frei wird"
+            },
+            "accountLimit": {
+                "reason": "Es sind zu viele Bestellungen im Gange",
+                "reading": "Limit erreicht: Jedes Konto ist auf 1024 Limit-Orders beschränkt. Bitte warten Sie, bis einige Ihrer Bestellungen ausgeführt werden"
+            },
+            "singlePriceLimit": {
+                "reason": "Für diesen Preis laufen zu viele Bestellungen",
+                "reading": "Limit erreicht: Jede Position ist auf 1024 Limit-Orders beschränkt. Bitte warten Sie, bis einige Bestellungen ausgeführt werden"
             }
         }
     }

@@ -1499,6 +1499,18 @@
             "outOfBounds": {
                 "reason": "Iznos premašuje raspon blockchaina",
                 "reading": "Blockchain raspon premašen: Vaš uneseni iznos je izvan dopuštenog blockchaina raspona"
+            },
+            "spotLimit": {
+                "reason": "Trgovačka strana je popunjena",
+                "reading": "Ograničenje raspona cijena: Svaka strana knjige narudžbi ograničena je na 1024 jedinstvena cjenovna boda. Odaberite cijenu unutar postojećeg raspona ili pričekajte da se oslobodi prostor"
+            },
+            "accountLimit": {
+                "reason": "U tijeku je previše narudžbi",
+                "reading": "Dosegnuto ograničenje: Svaki račun je ograničen na 1024 ograničene narudžbe. Pričekajte dok se neke od vaših narudžbi ne ispune"
+            },
+            "singlePriceLimit": {
+                "reason": "U tijeku je previše narudžbi za ovu cijenu",
+                "reading": "Dosegnuto ograničenje: Svaka pozicija ograničena je na 1024 ograničena naloga. Pričekajte dok se neke narudžbe ne ispune"
             }
         }
     }

@@ -1499,6 +1499,18 @@
             "outOfBounds": {
                 "reason": "Iye ju iwọn blockchain lọ",
                 "reading": "Iwọn Blockchain ti kọja: Iye ti o tẹ sii ṣubu ni ita ibiti a gba laaye blockchain"
+            },
+            "spotLimit": {
+                "reason": "Ẹgbẹ iṣowo ti kun",
+                "reading": "Iwọn iye owo: Ẹgbẹ iwe aṣẹ kọọkan ni opin si awọn aaye idiyele alailẹgbẹ 1024. Jọwọ yan iye owo kan laarin iwọn to wa tabi duro fun aaye lati wa"
+            },
+            "accountLimit": {
+                "reason": "Ọpọlọpọ awọn ibere ti nlọ lọwọ",
+                "reading": "Idiwọn ti de: akọọlẹ kọọkan wa ni ihamọ si awọn aṣẹ opin 1024. Jọwọ duro titi diẹ ninu awọn aṣẹ rẹ yoo mu ṣẹ"
+            },
+            "singlePriceLimit": {
+                "reason": "Ọpọlọpọ awọn ibere ti nlọ lọwọ fun idiyele yii",
+                "reading": "Iwọn opin: Ipo kọọkan wa ni ihamọ si awọn aṣẹ opin 1024. Jọwọ duro titi diẹ ninu awọn aṣẹ yoo mu ṣẹ"
             }
         }
     }

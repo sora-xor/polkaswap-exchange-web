@@ -1499,6 +1499,18 @@
             "outOfBounds": {
                 "reason": "Beloppet överstiger blockchain-intervallet",
                 "reading": "Blockchain-intervallet har överskridits: Ditt angivna belopp faller utanför blockkedjans tillåtna intervall"
+            },
+            "spotLimit": {
+                "reason": "Handelssidan har fyllts",
+                "reading": "Prisklasstak: Varje orderboksida är begränsad till 1024 unika prispunkter. Välj ett pris inom det befintliga intervallet eller vänta på att det blir ledigt utrymme"
+            },
+            "accountLimit": {
+                "reason": "För många beställningar pågår",
+                "reading": "Gräns uppnådd: Varje konto är begränsat till 1024 limitorder. Vänta tills några av dina beställningar fullföljs"
+            },
+            "singlePriceLimit": {
+                "reason": "För många beställningar pågår för detta pris",
+                "reading": "Gräns uppnådd: Varje position är begränsad till 1024 limitorder. Vänta tills några beställningar fullföljs"
             }
         }
     }

@@ -1499,6 +1499,18 @@
             "outOfBounds": {
                 "reason": "L'importo supera l'intervallo della blockchain",
                 "reading": "Intervallo blockchain superato: l'importo inserito non rientra nell'intervallo consentito dalla blockchain"
+            },
+            "spotLimit": {
+                "reason": "La parte commerciale è stata riempita",
+                "reading": "Limite della fascia di prezzo: ciascun lato del book degli ordini è limitato a 1024 punti di prezzo unici. Seleziona un prezzo compreso nell'intervallo esistente o attendi che lo spazio diventi disponibile"
+            },
+            "accountLimit": {
+                "reason": "Sono in corso troppi ordini",
+                "reading": "Limite raggiunto: ogni conto è limitato a 1024 ordini limite. Attendi l'evasione di alcuni dei tuoi ordini"
+            },
+            "singlePriceLimit": {
+                "reason": "Sono in corso troppi ordini per questo prezzo",
+                "reading": "Limite raggiunto: ogni posizione è limitata a 1024 ordini limite. Attendi l'evasione di alcuni ordini"
             }
         }
     }

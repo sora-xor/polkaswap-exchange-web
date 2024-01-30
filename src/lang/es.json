@@ -1499,6 +1499,18 @@
             "outOfBounds": {
                 "reason": "La cantidad excede el rango de blockchain",
                 "reading": "Se excedió el rango de blockchain: el monto ingresado está fuera del rango permitido de blockchain"
+            },
+            "spotLimit": {
+                "reason": "La parte comercial se ha llenado",
+                "reading": "Límite de rango de precios: cada lado del libro de pedidos está limitado a 1024 puntos de precios únicos. Seleccione un precio dentro del rango existente o espere a que haya espacio disponible"
+            },
+            "accountLimit": {
+                "reason": "Hay demasiados pedidos en curso",
+                "reading": "Límite alcanzado: cada cuenta está limitada a 1024 órdenes límite. Espere hasta que se cumplan algunos de sus pedidos."
+            },
+            "singlePriceLimit": {
+                "reason": "Hay demasiados pedidos en curso por este precio.",
+                "reading": "Límite alcanzado: cada posición se limita a 1024 órdenes límite. Espere hasta que se completen algunos pedidos."
             }
         }
     }

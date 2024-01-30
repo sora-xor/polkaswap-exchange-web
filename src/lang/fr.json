@@ -1499,6 +1499,18 @@
             "outOfBounds": {
                 "reason": "Le montant dépasse la plage de la blockchain",
                 "reading": "Plage de blockchain dépassée : le montant saisi se situe en dehors de la plage autorisée de la blockchain"
+            },
+            "spotLimit": {
+                "reason": "Le côté commercial a été rempli",
+                "reading": "Plafond de fourchette de prix : chaque côté du carnet de commandes est limité à 1 024 niveaux de prix uniques. Veuillez sélectionner un prix dans la fourchette existante ou attendre qu'une place se libère"
+            },
+            "accountLimit": {
+                "reason": "Trop de commandes sont en cours",
+                "reading": "Limite atteinte : Chaque compte est limité à 1024 ordres limités. Veuillez attendre que certaines de vos commandes soient exécutées"
+            },
+            "singlePriceLimit": {
+                "reason": "Trop de commandes sont en cours pour ce prix",
+                "reading": "Limite atteinte : Chaque position est limitée à 1024 ordres limités. Veuillez attendre que certaines commandes soient exécutées"
             }
         }
     }

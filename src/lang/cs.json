@@ -1499,6 +1499,18 @@
             "outOfBounds": {
                 "reason": "Částka přesahuje rozsah blockchainu",
                 "reading": "Překročen rozsah blockchainu: Zadaná částka je mimo povolený rozsah blockchainu"
+            },
+            "spotLimit": {
+                "reason": "Obchodní strana byla naplněna",
+                "reading": "Omezení cenového rozpětí: Každá strana knihy objednávek je omezena na 1024 jedinečných cenových bodů. Vyberte prosím cenu v rámci stávajícího rozsahu nebo počkejte, až se uvolní místo"
+            },
+            "accountLimit": {
+                "reason": "Probíhá příliš mnoho objednávek",
+                "reading": "Limit dosažen: Každý účet je omezen na 1024 limitních příkazů. Počkejte prosím, až budou některé z vašich objednávek splněny"
+            },
+            "singlePriceLimit": {
+                "reason": "Za tuto cenu probíhá příliš mnoho objednávek",
+                "reading": "Limit dosažen: Každá pozice je omezena na 1024 limitních příkazů. Počkejte prosím, až budou některé objednávky splněny"
             }
         }
     }
