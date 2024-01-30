@@ -178,7 +178,7 @@ import { formatAmountWithSuffix, sortAssets } from '@/utils';
 import { syntheticAssetRegexp } from '@/utils/regexp';
 import storage from '@/utils/storage';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 type TableItem = {
   price: number;

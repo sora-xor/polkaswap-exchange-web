@@ -140,6 +140,9 @@ export enum PageNames {
   ExploreStaking = 'Explore/Staking',
   ExplorePools = 'Explore/Pools',
   ExploreBooks = 'Explore/Books',
+  OrderBook = 'OrderBook',
+  LimitOrderBuy = 'OrderBook/LimitOrderBuy',
+  LimitOrderSell = 'OrderBook/LimitOrderSell',
   SoraCard = 'SoraCard',
 }
 
@@ -209,6 +212,20 @@ export enum Components {
   SwapSettings = 'pages/Swap/Settings/Settings',
   SwapLossWarningDialog = 'pages/Swap/LossWarningDialog',
   SwapDistribution = 'pages/Swap/Distribution',
+  // Order Book
+  BookWidget = 'pages/OrderBook/BookWidget',
+  SetLimitOrderWidget = 'pages/OrderBook/SetLimitOrderWidget',
+  HistoryOrderWidget = 'pages/OrderBook/HistoryOrderWidget',
+  MarketTradesWidget = 'pages/OrderBook/MarketTradesWidget',
+  BookChartsWidget = 'pages/OrderBook/BookChartsWidget',
+  BuySell = 'pages/OrderBook/BuySell',
+  PairListPopover = 'pages/OrderBook/Popovers/PairListPopover',
+  AllOrders = 'pages/OrderBook/Tables/AllOrders',
+  OpenOrders = 'pages/OrderBook/Tables/OpenOrders',
+  CustomisePage = 'pages/OrderBook/Dialogs/CustomisePage',
+  PlaceOrder = 'pages/OrderBook/Dialogs/PlaceOrder',
+  CancelOrders = 'pages/OrderBook/Dialogs/CancelOrders',
+  PlaceTransactionDetails = 'pages/OrderBook/TransactionDetails',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
@@ -253,6 +270,11 @@ export enum Components {
   DataRowSkeleton = 'shared/Skeleton/DataRow',
 }
 
+export enum LimitOrderType {
+  limit = 'limit',
+  market = 'market',
+}
+
 export enum RewardsTabsItems {
   Rewards = PageNames.Rewards,
   ReferralProgram = PageNames.ReferralProgram,
@@ -289,6 +311,11 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     icon: 'arrows-swap-90-24',
     title: PageNames.Swap,
     href: '/#/swap',
+  },
+  {
+    icon: 'music-CD-24',
+    title: PageNames.OrderBook,
+    href: '/#/trade',
   },
   {
     icon: 'basic-drop-24',
@@ -334,7 +361,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     href: '/#/stats',
   },
   {
-    icon: 'el-icon-bank-card',
+    icon: 'music-eject-24',
     title: PageNames.SoraCard,
     href: '/#/card',
   },
@@ -361,7 +388,6 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     title: 'twitter',
     href: 'https://twitter.com/polkaswap',
   },
-  // TODO: [FONT] Update these icon names to appropriate one after font fix
   {
     icon: 'symbols-hash-24',
     title: 'reddit',
@@ -372,7 +398,6 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     title: 'medium',
     href: 'https://medium.com/polkaswap',
   },
-  // ____________________________________
   {
     icon: 'symbols-github-24',
     title: 'github',
@@ -453,7 +478,7 @@ export enum Breakpoint {
   Tablet = 900,
   Desktop = 1024,
   LargeDesktop = 1440,
-  HugeDesktop = 1600,
+  HugeDesktop = 2092,
 }
 
 export enum BreakpointClass {

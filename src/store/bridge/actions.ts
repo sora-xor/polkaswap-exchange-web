@@ -139,7 +139,7 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
     const bridgeRegisteredAsset = rootState.assets.registeredAssets[asset.address];
     const decimals = state.isSoraToEvm ? asset.decimals : asset.externalDecimals;
     // using max balance to not overflow contract calculation
-    const value = FPNumber.fromCodecValue(state.assetSenderBalance!, decimals).toString();
+    const value = FPNumber.fromCodecValue(state.assetSenderBalance ?? 0, decimals).toString();
 
     fee = await getEthNetworkFee(
       asset,

@@ -15,6 +15,7 @@ export type FeatureFlags = {
   x1ex?: boolean;
   charts?: boolean;
   soraCard?: boolean;
+  orderBook?: boolean;
 };
 
 export type SettingsState = {
@@ -33,6 +34,7 @@ export type SettingsState = {
   nodeConnectionAllowance: boolean;
   chainGenesisHash: string;
   faucetUrl: string;
+  menuCollapsed: boolean;
   selectNodeDialogVisibility: boolean;
   selectIndexerDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;

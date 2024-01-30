@@ -265,6 +265,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     text-align: center;
     &.is-active {
       background: var(--s-color-base-background);
+      box-shadow: var(--s-shadow-element);
     }
     @if $withBottomMargin == true {
       &:last-child {
@@ -284,10 +285,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       margin-right: 0;
       flex-shrink: 0;
       position: relative;
-    }
-
-    &.is-active {
-      box-shadow: var(--s-shadow-element);
     }
 
     .el-collapse-item__header {
@@ -319,8 +316,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     & > .el-scrollbar__wrap {
       overflow-x: hidden;
       margin-bottom: 0px !important; // to disable element-ui negative margin
-    }
-    & > .el-scrollbar__wrap {
+
       &,
       & > .el-scrollbar__view {
         display: flex;
@@ -615,6 +611,13 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     &-address {
       display: flex;
       font-size: var(--s-font-size-extra-mini);
+      .tokens-item-address__value {
+        &.token-address {
+          font-size: var(--s-font-size-extra-mini);
+          font-weight: 400;
+          color: var(--s-color-base-content-primary);
+        }
+      }
     }
     &-tokens {
       display: flex;
@@ -630,15 +633,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     }
     &-amount.formatted-amount--fiat-value {
       color: var(--s-color-base-content-primary) !important;
-    }
-    &-address {
-      .tokens-item-address__value {
-        &.token-address {
-          font-size: var(--s-font-size-extra-mini);
-          font-weight: 400;
-          color: var(--s-color-base-content-primary);
-        }
-      }
     }
   }
 }
@@ -682,12 +676,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     &#{$tabs-class} {
       #{$tabs-class}__header {
         width: 100%;
-      }
-      #{$tabs-class} {
-        &__header {
-          #{$tabs-class}__item {
-            font-weight: 600;
-          }
+        #{$tabs-class}__item {
+          font-weight: 600;
         }
       }
     }
