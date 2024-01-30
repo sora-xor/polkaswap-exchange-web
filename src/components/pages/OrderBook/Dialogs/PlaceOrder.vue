@@ -133,11 +133,7 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
       );
       this.$emit('confirm');
     } else if (await this.singlePriceReachedLimit()) {
-      // TODO: [OrderBook translations]
-      this.$alert(
-        'Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill',
-        { title: this.t('errorText') }
-      );
+      this.$alert(this.t('orderBook.error.singlePriceLimit.reading'), { title: this.t('errorText') });
       this.$emit('confirm');
     } else {
       const orderExtrinsic = this.isMarketType ? this.marketOrder : this.limitOrder;

@@ -383,19 +383,16 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.orderBookStatus === OrderBookStatus.Stop) return;
 
-    // TODO: [OrderBook translations]
     if (this.userReachedSpotLimit)
       return this.setError({
-        reason: 'Trading side has been filled',
-        reading:
-          'Price range cap: Each order book side is limited to 1024 unique price points. Please select a price within the existing range or wait for space to become available',
+        reason: this.t('orderBook.error.spotLimit.reason'),
+        reading: this.t('orderBook.error.spotLimit.reading'),
       });
 
     if (this.userReachedOwnLimit)
       return this.setError({
-        reason: 'Too many orders is ongoing',
-        reading:
-          'Limit reached: Each account is confined to 1024 limit orders. Please wait until some of your orders fulfill',
+        reason: this.t('orderBook.error.accountLimit.reason'),
+        reading: this.t('orderBook.error.accountLimit.reading'),
       });
 
     if (this.isInsufficientBalance) return;
@@ -439,10 +436,9 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       });
 
     if ((await this.singlePriceReachedLimit()) && this.quoteValue)
-      // TODO: [OrderBook translations]
       return this.setError({
-        reason: 'Too many orders is ongoing for this price',
-        reading: 'Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill',
+        reason: this.t('orderBook.error.singlePriceLimit.reason'),
+        reading: this.t('orderBook.error.singlePriceLimit.reading'),
       });
 
     if (!this.isZeroAmount && this.isOutOfAmountBounds && this.quoteValue)

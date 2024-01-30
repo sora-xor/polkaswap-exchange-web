@@ -1105,6 +1105,20 @@ export default {
         reason: 'Amount exceeds the blockchain range',
         reading: "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range",
       },
+      spotLimit: {
+        reason: 'Trading side has been filled',
+        reading:
+          'Price range cap: Each order book side is limited to 1024 unique price points. Please select a price within the existing range or wait for space to become available',
+      },
+      accountLimit: {
+        reason: 'Too many orders is ongoing',
+        reading:
+          'Limit reached: Each account is confined to 1024 limit orders. Please wait until some of your orders fulfill',
+      },
+      singlePriceLimit: {
+        reason: 'Too many orders is ongoing for this price',
+        reading: 'Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill',
+      },
     },
   },
 };
