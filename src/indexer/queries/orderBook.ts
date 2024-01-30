@@ -73,8 +73,8 @@ const SubqueryOrderBooksQuery = gql<ConnectionQueryResponse<OrderBookEntity>>`
 `;
 
 const SubsquidOrderBooksQuery = gql<ConnectionQueryResponse<OrderBookEntity>>`
-  query SubsquidOrderBooksQuery($after: Cursor) {
-    data: orderBooksConnection(after: $after) {
+  query SubsquidOrderBooksQuery($after: String = null, $where: OrderBookWhereInput) {
+    data: orderBooksConnection(after: $after, where: $where) {
       pageInfo {
         hasNextPage
         endCursor
@@ -88,6 +88,8 @@ const SubsquidOrderBooksQuery = gql<ConnectionQueryResponse<OrderBookEntity>>`
           quoteAsset {
             id
           }
+          baseAssetReserves
+          quoteAssetReserves
           price
           priceChangeDay
           volumeDayUSD
@@ -138,10 +140,12 @@ export async function fetchOrderBooks(assets?: Asset[]): Promise<Nullable<OrderB
       return response;
     }
     case IndexerType.SUBSQUID: {
+      const where = ids.length ? { baseAsset: { id_in: ids } } : undefined;
+      const variables = { where };
       const subsquidIndexer = indexer as SubsquidIndexer;
       const response = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
         SubsquidOrderBooksQuery,
-        {},
+        variables,
         parseOrderBookEntity
       );
       return response;

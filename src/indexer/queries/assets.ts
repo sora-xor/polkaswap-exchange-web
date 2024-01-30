@@ -102,7 +102,7 @@ export async function fetchTokensData(assets: Asset[]): Promise<Record<string, T
       break;
     }
     case IndexerType.SUBSQUID: {
-      const where = ids.length ? { AND: [{ id_in: ids }] } : undefined;
+      const where = ids.length ? { id_in: ids } : undefined;
       const variables = { where };
       const subsquidIndexer = indexer as SubsquidIndexer;
       items = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(SubsquidAssetsQuery, variables, parse);

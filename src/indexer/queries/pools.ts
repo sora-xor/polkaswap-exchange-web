@@ -5,14 +5,9 @@ import { gql } from '@urql/core';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type {
-  SubqueryPoolXYKEntity,
-  SubqueryConnectionQueryResponse,
-} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
-import type {
-  SubsquidPoolXYKEntity,
-  SubsquidConnectionQueryResponse,
-} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
+import type { SubqueryPoolXYKEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
+import type { SubsquidPoolXYKEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
+import type { ConnectionQueryResponse, PoolXYKEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const { IndexerType } = WALLET_CONSTS;
 
@@ -25,7 +20,7 @@ export type PoolData = {
   apy: FPNumber;
 };
 
-const SubqueryPoolsQuery = gql<SubqueryConnectionQueryResponse<SubqueryPoolXYKEntity>>`
+const SubqueryPoolsQuery = gql<ConnectionQueryResponse<SubqueryPoolXYKEntity>>`
   query SubqueryPoolsQuery($after: Cursor, $filter: PoolXYKFilter) {
     data: poolXYKs(after: $after, filter: $filter) {
       pageInfo {
@@ -46,7 +41,7 @@ const SubqueryPoolsQuery = gql<SubqueryConnectionQueryResponse<SubqueryPoolXYKEn
   }
 `;
 
-const SubsquidPoolsQuery = gql<SubsquidConnectionQueryResponse<SubsquidPoolXYKEntity>>`
+const SubsquidPoolsQuery = gql<ConnectionQueryResponse<SubsquidPoolXYKEntity>>`
   query SubsquidPoolsQuery($after: String, $where: PoolXYKWhereInput) {
     data: poolXyksConnection(after: $after, where: $where) {
       pageInfo {
@@ -71,7 +66,7 @@ const SubsquidPoolsQuery = gql<SubsquidConnectionQueryResponse<SubsquidPoolXYKEn
   }
 `;
 
-const parse = (item: SubqueryPoolXYKEntity | SubsquidPoolXYKEntity): PoolData => {
+const parse = (item: PoolXYKEntity): PoolData => {
   const apy = new FPNumber(item.strategicBonusApy ?? 0).mul(FPNumber.HUNDRED);
   const priceUSD = new FPNumber(item.priceUSD ?? 0);
 
