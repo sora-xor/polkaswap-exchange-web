@@ -4,10 +4,9 @@ import { gql } from '@urql/core';
 
 import type { OCLH, SnapshotItem } from '@/types/chart';
 
-import type { SubqueryConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
-import type { SubsquidConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
 import type {
   OrderBookSnapshotEntity,
+  ConnectionQueryResponse,
   ConnectionQueryResponseData,
   SnapshotTypes,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
@@ -51,7 +50,7 @@ const subsquidOrderBookPriceFilter = (orderBookId: string, type: SnapshotTypes) 
   };
 };
 
-const SubqueryOrderBookPriceQuery = gql<SubqueryConnectionQueryResponse<OrderBookSnapshotEntity>>`
+const SubqueryOrderBookPriceQuery = gql<ConnectionQueryResponse<OrderBookSnapshotEntity>>`
   query SubqueryOrderBookPriceQuery($after: Cursor = "", $filter: OrderBookSnapshotFilter, $first: Int = 100) {
     data: orderBookSnapshots(after: $after, first: $first, filter: $filter, orderBy: [TIMESTAMP_DESC]) {
       pageInfo {
@@ -69,9 +68,9 @@ const SubqueryOrderBookPriceQuery = gql<SubqueryConnectionQueryResponse<OrderBoo
   }
 `;
 
-const SubsquidOrderBookPriceQuery = gql<SubsquidConnectionQueryResponse<OrderBookSnapshotEntity>>`
-  query SubsquidOrderBookPriceQuery($after: Cursor = "", $where: OrderBookSnapshotWhereInput, $first: Int = 100) {
-    data: orderBookSnapshots(after: $after, first: $first, where: $where, orderBy: timestamp_DESC) {
+const SubsquidOrderBookPriceQuery = gql<ConnectionQueryResponse<OrderBookSnapshotEntity>>`
+  query SubsquidOrderBookPriceQuery($after: String = null, $where: OrderBookSnapshotWhereInput, $first: Int = 100) {
+    data: orderBookSnapshotsConnection(after: $after, first: $first, where: $where, orderBy: timestamp_DESC) {
       pageInfo {
         hasNextPage
         endCursor

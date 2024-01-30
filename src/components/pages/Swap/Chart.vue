@@ -656,7 +656,7 @@ export default class SwapChart extends Mixins(
     const nodes: SnapshotItem[] = [];
 
     let hasNextPage = pageInfo?.hasNextPage ?? true;
-    let endCursor = pageInfo?.endCursor ?? '';
+    let endCursor = pageInfo?.endCursor ?? undefined;
 
     if (buffer.length >= count) {
       return {
