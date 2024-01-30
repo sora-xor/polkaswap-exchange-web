@@ -37,7 +37,7 @@
       </div>
     </el-popover>
 
-    <s-tabs class="order-book__tab" v-model="limitOrderType" type="rounded" @click="handleTabClick()">
+    <s-tabs class="order-book__tab" v-model="limitOrderType" type="rounded" @click="handleTabClick">
       <s-tab label="limit" name="limit">
         <span slot="label">
           <span>{{ t('orderBook.limit') }}</span>
@@ -122,7 +122,7 @@
         @click="placeLimitOrder"
         :disabled="buttonDisabled"
       >
-        <span> {{ t(buttonText) }}</span>
+        <span> {{ buttonText }}</span>
         <s-icon v-if="hasExplainableError" name="info-16" class="book-inform-icon-btn" />
       </s-button>
     </el-popover>
@@ -333,19 +333,16 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         if (this.priceExceedsSpread) return this.t('orderBook.cantPlaceOrder');
       }
 
-      if (this.isOutOfAmountBounds) return this.t('orderBook.cantPlaceOrder');
-      this.t('orderBook.Sell', { asset: this.baseAsset.symbol });
-
-      if (this.side === PriceVariant.Buy) return this.t('orderBook.Buy', { asset: this.baseAsset.symbol });
-      else return this.t('orderBook.Sell', { asset: this.baseAsset.symbol });
+      if (this.limitForSinglePriceReached) return this.t('orderBook.cantPlaceOrder');
     } else {
       if (this.isZeroAmount) return this.t('orderBook.enterAmount');
       if (!this.marketQuotePrice) return this.t('orderBook.cantPlaceOrder');
-      if (this.isOutOfAmountBounds) return this.t('orderBook.cantPlaceOrder');
-
-      if (this.side === PriceVariant.Buy) return this.t('orderBook.Buy', { asset: this.baseAsset.symbol });
-      else return this.t('orderBook.Sell', { asset: this.baseAsset.symbol });
     }
+
+    if (this.isOutOfAmountBounds) return this.t('orderBook.cantPlaceOrder');
+
+    if (this.side === PriceVariant.Buy) return this.t('orderBook.Buy', { asset: this.baseAsset.symbol });
+    else return this.t('orderBook.Sell', { asset: this.baseAsset.symbol });
   }
 
   setError({ reason, reading }): void {
