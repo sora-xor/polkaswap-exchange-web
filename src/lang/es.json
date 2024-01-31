@@ -1434,7 +1434,7 @@
             "side": "lado",
             "filled": "completado",
             "lifetime": "toda la vida",
-            "noOrders": "Sin pedidos"
+            "noOrders": "Sin pedidos. ¡Crea el primero!"
         },
         "dialog": {
             "placeMarket": "Realizar orden de mercado",
@@ -1451,7 +1451,7 @@
             "volume": "Volumen",
             "dailyChange": "Cambio diario",
             "status": "Estado",
-            "total": "{amount} {symbol} EN {amount2} {symbol2}"
+            "total": "{amount} {symbol} en {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Activo",
@@ -1469,7 +1469,8 @@
                 "orderType": "La orden de \"Compra\" solo se ejecutará al precio especificado o inferior, mientras que una orden de \"Venta\" se ejecutará únicamente al precio especificado o superior. Este control garantiza que no pagará más ni venderá por menos de lo que le resulte cómodo.",
                 "expiryDate": "La 'Fecha de Vencimiento' es la fecha límite para que se ejecute su orden. Si el mercado no alcanza el precio especificado antes de esta fecha, la orden se cancela automáticamente. No está obligado a una espera perpetua si las condiciones del mercado no se alinean con sus preferencias comerciales.",
                 "amount": "La 'Cantidad' se refiere a la cantidad total de activos que desea comprar o vender en su orden. Es importante especificarlo, ya que determina el tamaño de su transacción, lo que afecta el costo total de las órdenes de compra o los ingresos de las órdenes de venta.",
-                "limit": "El 'Precio límite' es el precio preciso que usted establece para una orden límite. La operación solo se ejecutará cuando el precio de mercado del activo alcance su precio límite, lo que garantiza que no compre por encima ni venda por debajo de este valor especificado."
+                "limit": "El 'Precio límite' es el precio preciso que usted establece para una orden límite. La operación solo se ejecutará cuando el precio de mercado del activo alcance su precio límite, lo que garantiza que no compre por encima ni venda por debajo de este valor especificado.",
+                "locked": "'Bloqueado' muestra la cantidad de activo que se retendrá mientras la orden está en curso."
             },
             "bookStatus": {
                 "active": "Funcionalidad comercial completa habilitada. Puedes realizar nuevos pedidos o cancelar los existentes.",

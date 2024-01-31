@@ -1434,7 +1434,7 @@
             "side": "Seite",
             "filled": "gefüllt",
             "lifetime": "Lebensdauer",
-            "noOrders": "Keine Befehle"
+            "noOrders": "Keine Befehle. Erstellen Sie Ihr erstes!"
         },
         "dialog": {
             "placeMarket": "Marktauftrag erteilen",
@@ -1451,7 +1451,7 @@
             "volume": "Volumen",
             "dailyChange": "Täglicher Wechsel",
             "status": "Status",
-            "total": "{amount} {symbol} BEI {amount2} {symbol2}"
+            "total": "{amount} {symbol} bei {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Aktiv",
@@ -1469,7 +1469,8 @@
                 "orderType": "Eine „Kauf“-Order wird nur zum angegebenen Preis oder niedriger ausgeführt, während eine „Verkaufs“-Order nur zum angegebenen Preis oder höher ausgeführt wird. Diese Kontrolle stellt sicher, dass Sie nicht mehr bezahlen oder für weniger verkaufen, als Ihnen lieb ist.",
                 "expiryDate": "Das „Ablaufdatum“ ist die Frist für die Ausführung Ihrer Bestellung. Wenn der Markt Ihren angegebenen Preis nicht vor diesem Datum erreicht, wird die Bestellung automatisch storniert. Sie müssen nicht ständig warten, wenn die Marktbedingungen nicht Ihren Handelspräferenzen entsprechen.",
                 "amount": "Der „Betrag“ bezieht sich auf die Gesamtzahl der Vermögenswerte, die Sie in Ihrer Bestellung kaufen oder verkaufen möchten. Die Angabe ist wichtig, da sie die Größe Ihrer Transaktion bestimmt und sich auf die Gesamtkosten für Kaufaufträge oder den Umsatz für Verkaufsaufträge auswirkt.",
-                "limit": "Der „Limitpreis“ ist der genaue Preis, den Sie für eine Limitorder festlegen. Der Handel wird nur ausgeführt, wenn der Marktpreis des Vermögenswerts Ihrem Grenzpreis entspricht. Dadurch wird sichergestellt, dass Sie nicht über diesem angegebenen Wert kaufen oder unter diesem Wert verkaufen."
+                "limit": "Der „Limitpreis“ ist der genaue Preis, den Sie für eine Limitorder festlegen. Der Handel wird nur ausgeführt, wenn der Marktpreis des Vermögenswerts Ihrem Grenzpreis entspricht. Dadurch wird sichergestellt, dass Sie nicht über diesem angegebenen Wert kaufen oder unter diesem Wert verkaufen.",
+                "locked": "„Gesperrt“ zeigt die Menge an Vermögenswerten an, die während der laufenden Bestellung gehalten werden soll."
             },
             "bookStatus": {
                 "active": "Vollständige Handelsfunktionalität aktiviert. Sie können neue Bestellungen aufgeben oder bestehende stornieren.",

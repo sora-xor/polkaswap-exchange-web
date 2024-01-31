@@ -1434,7 +1434,7 @@
             "side": "oldal",
             "filled": "megtöltött",
             "lifetime": "élettartam",
-            "noOrders": "Nincs parancs"
+            "noOrders": "Nincs parancs. Hozd létre az elsőt!"
         },
         "dialog": {
             "placeMarket": "Adjon fel piaci rendelést",
@@ -1451,7 +1451,7 @@
             "volume": "Hangerő",
             "dailyChange": "Napi változás",
             "status": "Állapot",
-            "total": "{amount} {symbol} AT {amount2} {symbol2}"
+            "total": "{amount} {symbol} , {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Aktív",
@@ -1469,7 +1469,8 @@
                 "orderType": "A „vételi” megbízás csak a megadott vagy annál alacsonyabb áron, míg az „eladási” megbízás csak a megadott vagy annál magasabb áron kerül végrehajtásra. Ez a vezérlő biztosítja, hogy ne fizessen többet, és ne adjon el kevesebbért, mint amennyit kényelmes.",
                 "expiryDate": "A „Lejárati dátum” a megrendelés teljesítésének határideje. Ha a piac nem éri el a megadott árat ezen időpont előtt, a rendelés automatikusan törlődik. Nem kell állandóan várakoznia, ha a piaci feltételek nem illeszkednek az Ön kereskedési preferenciáihoz.",
                 "amount": "Az „Összeg” a rendelésben vásárolni vagy eladni kívánt eszközök teljes számát jelenti. Fontos meghatározni, mivel ez határozza meg a tranzakció méretét, ami befolyásolja a vételi rendelések teljes költségét vagy az eladási rendelések bevételét.",
-                "limit": "A 'Limit Price' az a pontos ár, amelyet egy limitáras megbízáshoz állít be. A kereskedés csak akkor valósul meg, ha az eszköz piaci ára eléri az Ön limitárát, biztosítva ezzel, hogy ne vásároljon vagy adjon el e meghatározott érték alatt."
+                "limit": "A 'Limit Price' az a pontos ár, amelyet egy limitáras megbízáshoz állít be. A kereskedés csak akkor valósul meg, ha az eszköz piaci ára eléri az Ön limitárát, biztosítva ezzel, hogy ne vásároljon vagy adjon el e meghatározott érték alatt.",
+                "locked": "A „Zárolva” a rendelés folyamatában tartandó eszköz mennyiségét mutatja."
             },
             "bookStatus": {
                 "active": "Teljes kereskedési funkció engedélyezve. Lehetősége van új rendelések leadására vagy a meglévők törlésére.",

@@ -1434,7 +1434,7 @@
             "side": "samping",
             "filled": "dipenuhi",
             "lifetime": "seumur hidup",
-            "noOrders": "Tidak ada perintah"
+            "noOrders": "Tidak ada perintah. Buat yang pertama Anda!"
         },
         "dialog": {
             "placeMarket": "Tempatkan pesanan pasar",
@@ -1451,7 +1451,7 @@
             "volume": "Volume",
             "dailyChange": "Perubahan harian",
             "status": "Status",
-            "total": "{amount} {symbol} DI {amount2} {symbol2}"
+            "total": "{amount} {symbol} di {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Aktif",
@@ -1469,7 +1469,8 @@
                 "orderType": "Order 'Beli' hanya akan dieksekusi pada harga yang ditentukan atau lebih rendah, sedangkan order 'Jual' hanya akan dieksekusi pada harga yang ditentukan atau lebih tinggi. Kontrol ini memastikan Anda tidak membayar lebih atau menjual dengan harga kurang dari yang Anda rasa nyaman.",
                 "expiryDate": "'Tanggal Kedaluwarsa' adalah batas waktu eksekusi pesanan Anda. Jika pasar tidak mencapai harga yang Anda tentukan sebelum tanggal ini, pesanan otomatis dibatalkan. Anda tidak perlu menunggu terus-menerus jika kondisi pasar tidak sesuai dengan preferensi perdagangan Anda.",
                 "amount": "'Jumlah' mengacu pada jumlah total aset yang ingin Anda beli atau jual dalam pesanan Anda. Penting untuk menentukannya, karena ini menentukan ukuran transaksi Anda, yang berdampak pada total biaya untuk pesanan beli atau pendapatan untuk pesanan jual.",
-                "limit": "'Harga Batas' adalah harga persis yang Anda tetapkan untuk pesanan batas. Perdagangan hanya akan dieksekusi ketika harga pasar aset memenuhi harga batas Anda, memastikan Anda tidak membeli di atas atau menjual di bawah nilai yang ditentukan."
+                "limit": "'Harga Batas' adalah harga persis yang Anda tetapkan untuk pesanan batas. Perdagangan hanya akan dieksekusi ketika harga pasar aset memenuhi harga batas Anda, memastikan Anda tidak membeli di atas atau menjual di bawah nilai yang ditentukan.",
+                "locked": "'Terkunci' menunjukkan jumlah aset yang akan ditahan saat pesanan sedang berlangsung."
             },
             "bookStatus": {
                 "active": "Fungsionalitas perdagangan penuh diaktifkan. Anda dapat membuat pesanan baru atau membatalkan pesanan yang sudah ada.",

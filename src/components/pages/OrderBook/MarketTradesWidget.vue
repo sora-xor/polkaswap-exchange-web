@@ -23,7 +23,7 @@
       </s-table-column>
       <s-table-column>
         <template #header>
-          <span class="market-trades__header">{{ t('orderBook.price') }}</span>
+          <span class="market-trades__header">{{ t('orderBook.orderTable.side') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-info side" :class="[{ buy: row.side === PriceVariant.Buy }]">{{ row.side }}</span>
@@ -31,7 +31,7 @@
       </s-table-column>
       <s-table-column>
         <template #header>
-          <span class="market-trades__header">Price</span>
+          <span class="market-trades__header">{{ t('orderBook.price') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-info price">{{ row.price }}</span>
@@ -74,7 +74,7 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
       const date = dayjs(deal.timestamp);
       const time = date.format('M/DD HH:mm:ss');
       const amount = `${deal.amount.toLocaleString()} ${this.baseAsset.symbol}`;
-      const price = `${deal.price.toLocaleString()} ${this.quoteAsset.symbol}`;
+      const price = `${deal.price.dp(2).toLocaleString()} ${this.quoteAsset.symbol}`;
 
       return { time, amount, price, side: deal.side };
     });

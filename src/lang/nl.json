@@ -1434,7 +1434,7 @@
             "side": "kant",
             "filled": "gevuld",
             "lifetime": "levenslang",
-            "noOrders": "Geen bestellingen"
+            "noOrders": "Geen bestellingen. Maak je eerste!"
         },
         "dialog": {
             "placeMarket": "Marktorder plaatsen",
@@ -1451,7 +1451,7 @@
             "volume": "Volume",
             "dailyChange": "Dagelijkse verandering",
             "status": "Toestand",
-            "total": "{amount} {symbol} AT {amount2} {symbol2}"
+            "total": "{amount} {symbol} op {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Actief",
@@ -1469,7 +1469,8 @@
                 "orderType": "'Koop'-order wordt alleen uitgevoerd tegen de opgegeven prijs of lager, terwijl een 'Verkoop'-order alleen wordt uitgevoerd tegen de opgegeven prijs of hoger. Deze controle zorgt ervoor dat u niet meer betaalt of voor minder verkoopt dan u prettig vindt.",
                 "expiryDate": "De 'Vervaldatum' is de uiterste datum waarop uw order moet worden uitgevoerd. Als de markt de door u opgegeven prijs niet vóór deze datum bereikt, wordt de bestelling automatisch geannuleerd. U hoeft niet eeuwig te wachten als de marktomstandigheden niet aansluiten bij uw handelsvoorkeuren.",
                 "amount": "Het 'Bedrag' verwijst naar het totale aantal activa dat u in uw bestelling wilt kopen of verkopen. Het is belangrijk om dit op te geven, omdat dit de omvang van uw transactie bepaalt en van invloed is op de totale kosten voor kooporders of de opbrengst voor verkooporders.",
-                "limit": "De 'Limietprijs' is de exacte prijs die u instelt voor een limietorder. De transactie wordt alleen uitgevoerd als de marktprijs van het actief uw limietprijs bereikt, zodat u niet boven deze gespecificeerde waarde koopt of verkoopt."
+                "limit": "De 'Limietprijs' is de exacte prijs die u instelt voor een limietorder. De transactie wordt alleen uitgevoerd als de marktprijs van het actief uw limietprijs bereikt, zodat u niet boven deze gespecificeerde waarde koopt of verkoopt.",
+                "locked": "'Vergrendeld' toont de hoeveelheid activa die moet worden vastgehouden terwijl de bestelling loopt."
             },
             "bookStatus": {
                 "active": "Volledige handelsfunctionaliteit ingeschakeld. U kunt nieuwe bestellingen plaatsen of bestaande bestellingen annuleren.",

@@ -1434,7 +1434,7 @@
             "side": "strona",
             "filled": "wypełniony",
             "lifetime": "dożywotni",
-            "noOrders": "Brak zamówień"
+            "noOrders": "Brak zamówień. Stwórz swój pierwszy!"
         },
         "dialog": {
             "placeMarket": "Złóż zamówienie rynkowe",
@@ -1451,7 +1451,7 @@
             "volume": "Tom",
             "dailyChange": "Codzienna zmiana",
             "status": "Status",
-            "total": "{amount} {symbol} AT {amount2} {symbol2}"
+            "total": "{amount} {symbol} przy {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Aktywny",
@@ -1469,7 +1469,8 @@
                 "orderType": "Zlecenie „Kup” zostanie zrealizowane wyłącznie po określonej cenie lub niższej, natomiast zlecenie „Sprzedaj” zostanie zrealizowane wyłącznie po określonej cenie lub wyższej. Ta kontrola gwarantuje, że nie zapłacisz więcej ani nie sprzedasz za mniej, niż Ci odpowiada.",
                 "expiryDate": "„Data ważności” to ostateczny termin realizacji zamówienia. Jeśli rynek nie osiągnie określonej ceny przed tą datą, zlecenie zostanie automatycznie anulowane. Nie jesteś zobowiązany do ciągłego czekania, jeśli warunki rynkowe nie odpowiadają Twoim preferencjom handlowym.",
                 "amount": "„Kwota” odnosi się do całkowitej liczby aktywów, które chcesz kupić lub sprzedać w swoim zamówieniu. Określenie jest ważne, ponieważ określa wielkość transakcji, mającą wpływ na całkowity koszt w przypadku zleceń kupna lub przychody w przypadku zleceń sprzedaży.",
-                "limit": "„Cena limitowana” to dokładna cena ustalona dla zlecenia z limitem. Transakcja zostanie zrealizowana tylko wtedy, gdy cena rynkowa aktywa osiągnie cenę graniczną, co gwarantuje, że nie dokonasz zakupu powyżej lub nie sprzedasz poniżej tej określonej wartości."
+                "limit": "„Cena limitowana” to dokładna cena ustalona dla zlecenia z limitem. Transakcja zostanie zrealizowana tylko wtedy, gdy cena rynkowa aktywa osiągnie cenę graniczną, co gwarantuje, że nie dokonasz zakupu powyżej lub nie sprzedasz poniżej tej określonej wartości.",
+                "locked": "„Zablokowane” pokazuje ilość aktywów, które mają być przechowywane w trakcie realizacji zamówienia."
             },
             "bookStatus": {
                 "active": "Włączono pełną funkcjonalność handlową. Możesz składać nowe zamówienia lub anulować istniejące.",

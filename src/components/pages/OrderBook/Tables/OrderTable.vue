@@ -211,6 +211,7 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
   }
 
   .el-table__header-wrapper {
+    text-transform: uppercase;
     background-color: rgba(231, 218, 221, 0.35);
     th {
       background-color: rgba(231, 218, 221, 0.35);

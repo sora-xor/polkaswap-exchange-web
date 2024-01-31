@@ -1434,7 +1434,7 @@
             "side": "côté",
             "filled": "rempli",
             "lifetime": "durée de vie",
-            "noOrders": "Aucune commande"
+            "noOrders": "Aucune commande. Créez votre premier !"
         },
         "dialog": {
             "placeMarket": "Passer un ordre au marché",
@@ -1451,7 +1451,7 @@
             "volume": "Volume",
             "dailyChange": "Changement quotidien",
             "status": "Statut",
-            "total": "{amount} {symbol} AT {amount2} {symbol2}"
+            "total": "{amount} {symbol} à {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Actif",
@@ -1469,7 +1469,8 @@
                 "orderType": "L'ordre « d'achat » ne sera exécuté qu'au prix spécifié ou inférieur, tandis qu'un ordre « de vente » ne sera exécuté qu'au prix spécifié ou supérieur. Ce contrôle garantit que vous ne payez pas plus ou ne vendez pas moins que ce avec quoi vous êtes à l'aise.",
                 "expiryDate": "La « Date d'expiration » est la date limite d'exécution de votre ordre. Si le marché n'atteint pas votre prix spécifié avant cette date, l'ordre est automatiquement annulé. Vous n'êtes pas obligé d'attendre perpétuellement si les conditions du marché ne correspondent pas à vos préférences de trading.",
                 "amount": "Le « Montant » fait référence au nombre total d'actifs que vous souhaitez acheter ou vendre dans le cadre de votre ordre. Il est important de le préciser, car cela détermine la taille de votre transaction, ce qui a un impact sur le coût total des ordres d'achat ou sur les revenus des ordres de vente.",
-                "limit": "Le « Prix limite » est le prix précis que vous fixez pour un ordre limité. La transaction ne sera exécutée que lorsque le prix du marché de l'actif atteint votre prix limite, garantissant ainsi que vous n'achetez pas au-dessus ou ne vendez pas en dessous de cette valeur spécifiée."
+                "limit": "Le « Prix limite » est le prix précis que vous fixez pour un ordre limité. La transaction ne sera exécutée que lorsque le prix du marché de l'actif atteint votre prix limite, garantissant ainsi que vous n'achetez pas au-dessus ou ne vendez pas en dessous de cette valeur spécifiée.",
+                "locked": "Le « Verrouillé » indique le montant de l'actif à conserver pendant que l'ordre est en cours."
             },
             "bookStatus": {
                 "active": "Fonctionnalité de trading complète activée. Vous pouvez passer de nouvelles commandes ou annuler des commandes existantes.",

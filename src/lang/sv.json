@@ -1434,7 +1434,7 @@
             "side": "sida",
             "filled": "fylld",
             "lifetime": "livstid",
-            "noOrders": "Inga beställningar"
+            "noOrders": "Inga beställningar. Skapa din första!"
         },
         "dialog": {
             "placeMarket": "Lägg marknadsorder",
@@ -1451,7 +1451,7 @@
             "volume": "Volym",
             "dailyChange": "Daglig förändring",
             "status": "Status",
-            "total": "{amount} {symbol} AT {amount2} {symbol2}"
+            "total": "{amount} {symbol} på {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Aktiva",
@@ -1469,7 +1469,8 @@
                 "orderType": "'Köp'-order kommer endast att utföras till det angivna priset eller lägre, medan en 'Sälj'-order endast kommer att utföras till det angivna priset eller högre. Denna kontroll säkerställer att du inte betalar mer eller säljer för mindre än du är bekväm med.",
                 "expiryDate": "\"Utgångsdatum\" är deadline för att din beställning ska utföras. Om marknaden inte når ditt angivna pris före detta datum avbryts beställningen automatiskt. Du är inte bunden till en evig väntan om marknadsförhållandena inte överensstämmer med dina handelspreferenser.",
                 "amount": "\"Belopp\" hänvisar till det totala antalet tillgångar du vill köpa eller sälja i din beställning. Det är viktigt att specificera, eftersom det bestämmer storleken på din transaktion, vilket påverkar den totala kostnaden för köporder eller intäkter för säljorder.",
-                "limit": "\"Gränspriset\" är det exakta priset du anger för en limiterad order. Handeln kommer endast att genomföras när tillgångens marknadspris når ditt gränspris, vilket säkerställer att du inte köper över eller säljer under detta angivna värde."
+                "limit": "\"Gränspriset\" är det exakta priset du anger för en limiterad order. Handeln kommer endast att genomföras när tillgångens marknadspris når ditt gränspris, vilket säkerställer att du inte köper över eller säljer under detta angivna värde.",
+                "locked": "\"Låst\" visar mängden tillgång som ska hållas medan beställning pågår."
             },
             "bookStatus": {
                 "active": "Full handelsfunktionalitet aktiverad. Du kan lägga nya beställningar eller avbryta befintliga.",

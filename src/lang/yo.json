@@ -1434,7 +1434,7 @@
             "side": "ẹgbẹ",
             "filled": "kún",
             "lifetime": "igbesi aye",
-            "noOrders": "Ko si ibere"
+            "noOrders": "Ko si ibere. Ṣẹda akọkọ rẹ!"
         },
         "dialog": {
             "placeMarket": "Gbe oja ibere",
@@ -1451,7 +1451,7 @@
             "volume": "Iwọn didun",
             "dailyChange": "Ojoojumọ iyipada",
             "status": "Ipo",
-            "total": "{amount} {symbol} NI {amount2} {symbol2}"
+            "total": "{amount} {symbol} ni {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Ti nṣiṣe lọwọ",
@@ -1469,7 +1469,8 @@
                 "orderType": "Ibere 'Ra' yoo ṣiṣẹ nikan ni idiyele ti a sọ tabi isalẹ, lakoko ti aṣẹ 'Ta' kan yoo ṣiṣẹ ni idiyele ti a pato tabi ga julọ. Iṣakoso yii ṣe idaniloju pe o ko sanwo diẹ sii tabi ta fun kere ju ti o ni itunu pẹlu.",
                 "expiryDate": "Awọn 'Ipari Ọjọ' ni awọn ipari fun ibere re lati wa ni ṣiṣẹ. Ti ọja naa ko ba de idiyele pato rẹ ṣaaju ọjọ yii, aṣẹ naa ti paarẹ laifọwọyi. O ko ni owun si idaduro ayeraye ti awọn ipo ọja ko ba ni ibamu pẹlu awọn ayanfẹ iṣowo rẹ.",
                 "amount": "Awọn 'Oye' ntokasi si lapapọ nọmba ti ìní ti o fẹ lati ra tabi ta ni ibere re. O ṣe pataki lati pato, bi o ṣe n pinnu iwọn idunadura rẹ, ni ipa lori idiyele lapapọ fun awọn ibere rira tabi owo-wiwọle fun awọn ibere tita.",
-                "limit": "Awọn 'Iye iye to' ni kongẹ owo ti o ṣeto fun a iye to ibere. Iṣowo naa yoo ṣiṣẹ nikan nigbati idiyele ọja dukia ba pade idiyele opin rẹ, ni idaniloju pe o ko ra loke tabi ta ni isalẹ iye pàtó kan."
+                "limit": "Awọn 'Iye iye to' ni kongẹ owo ti o ṣeto fun a iye to ibere. Iṣowo naa yoo ṣiṣẹ nikan nigbati idiyele ọja dukia ba pade idiyele opin rẹ, ni idaniloju pe o ko ra loke tabi ta ni isalẹ iye pàtó kan.",
+                "locked": "Awọn 'Titiipa' fihan iye dukia ti yoo waye lakoko ti aṣẹ ti nlọ lọwọ."
             },
             "bookStatus": {
                 "active": "Iṣẹ ṣiṣe iṣowo ni kikun ṣiṣẹ. O le gbe awọn ibere tuntun tabi fagile awọn ti o wa tẹlẹ.",

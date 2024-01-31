@@ -1434,7 +1434,7 @@
             "side": "lato",
             "filled": "riempito",
             "lifetime": "tutta la vita",
-            "noOrders": "Nessun ordine"
+            "noOrders": "Nessun ordine. Crea il tuo primo!"
         },
         "dialog": {
             "placeMarket": "Effettua un ordine di mercato",
@@ -1451,7 +1451,7 @@
             "volume": "Volume",
             "dailyChange": "Cambio quotidiano",
             "status": "Stato",
-            "total": "{amount} {symbol} AT {amount2} {symbol2}"
+            "total": "{amount} {symbol} su {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Attivo",
@@ -1469,7 +1469,8 @@
                 "orderType": "L'ordine di \"acquisto\" verrà eseguito solo al prezzo specificato o inferiore, mentre un ordine di \"vendita\" verrà eseguito solo al prezzo specificato o superiore. Questo controllo ti assicura di non pagare di più o di vendere a meno di quanto ti senti a tuo agio.",
                 "expiryDate": "La \"Data di scadenza\" è il termine ultimo per l'esecuzione dell'ordine. Se il mercato non raggiunge il prezzo specificato prima di questa data, l'ordine verrà automaticamente annullato. Non sei obbligato ad un'attesa perpetua se le condizioni di mercato non sono in linea con le tue preferenze di trading.",
                 "amount": "L'\"Importo\" si riferisce al numero totale di asset che desideri acquistare o vendere nel tuo ordine. È importante specificare, poiché determina la dimensione della transazione, incidendo sul costo totale per gli ordini di acquisto o sulle entrate per gli ordini di vendita.",
-                "limit": "Il \"Prezzo limite\" è il prezzo preciso impostato per un ordine limite. L'operazione verrà eseguita solo quando il prezzo di mercato dell'asset raggiunge il prezzo limite, assicurandoti di non acquistare al di sopra o vendere al di sotto di questo valore specificato."
+                "limit": "Il \"Prezzo limite\" è il prezzo preciso impostato per un ordine limite. L'operazione verrà eseguita solo quando il prezzo di mercato dell'asset raggiunge il prezzo limite, assicurandoti di non acquistare al di sopra o vendere al di sotto di questo valore specificato.",
+                "locked": "La voce \"Bloccato\" mostra la quantità di asset da trattenere mentre l'ordine è in corso."
             },
             "bookStatus": {
                 "active": "Funzionalità di trading completa abilitata. Puoi effettuare nuovi ordini o annullare quelli esistenti.",

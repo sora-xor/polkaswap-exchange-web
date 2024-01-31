@@ -1434,7 +1434,7 @@
             "side": "side",
             "filled": "fylt",
             "lifetime": "livstid",
-            "noOrders": "Ingen bestillinger"
+            "noOrders": "Ingen bestillinger. Lag din første!"
         },
         "dialog": {
             "placeMarket": "Legg inn markedsordre",
@@ -1451,7 +1451,7 @@
             "volume": "Volum",
             "dailyChange": "Daglig endring",
             "status": "Status",
-            "total": "{amount} {symbol} AT {amount2} {symbol2}"
+            "total": "{amount} {symbol} ved {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Aktiv",
@@ -1469,7 +1469,8 @@
                 "orderType": "'Kjøp'-ordre vil kun bli utført til den spesifiserte prisen eller lavere, mens en 'selg'-ordre vil kun utføres til den angitte prisen eller høyere. Denne kontrollen sikrer at du ikke betaler mer eller selger for mindre enn du er komfortabel med.",
                 "expiryDate": "\"Utløpsdatoen\" er fristen for å utføre bestillingen din. Hvis markedet ikke når den angitte prisen før denne datoen, kanselleres bestillingen automatisk. Du er ikke bundet til en evig venting hvis markedsforholdene ikke stemmer overens med dine handelspreferanser.",
                 "amount": "'Beløp' refererer til det totale antallet eiendeler du ønsker å kjøpe eller selge i bestillingen din. Det er viktig å spesifisere, siden det bestemmer størrelsen på transaksjonen din, og påvirker den totale kostnaden for kjøpsordrer eller inntekter for salgsordrer.",
-                "limit": "'Limit Price' er den nøyaktige prisen du angir for en limitordre. Handelen vil bare utføres når eiendelens markedspris oppfyller grenseprisen din, og sikrer at du ikke kjøper over eller selger under denne angitte verdien."
+                "limit": "'Limit Price' er den nøyaktige prisen du angir for en limitordre. Handelen vil bare utføres når eiendelens markedspris oppfyller grenseprisen din, og sikrer at du ikke kjøper over eller selger under denne angitte verdien.",
+                "locked": "'Låst' viser hvor mye eiendel som skal holdes mens bestillingen pågår."
             },
             "bookStatus": {
                 "active": "Full handelsfunksjonalitet aktivert. Du kan legge inn nye bestillinger eller kansellere eksisterende.",

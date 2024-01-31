@@ -1434,7 +1434,7 @@
             "side": "strana",
             "filled": "ispunjena",
             "lifetime": "doživotno",
-            "noOrders": "Nema narudžbi"
+            "noOrders": "Nema narudžbi. Kreirajte svoju prvu!"
         },
         "dialog": {
             "placeMarket": "Postavite tržišni nalog",
@@ -1451,7 +1451,7 @@
             "volume": "Volumen",
             "dailyChange": "Dnevna promjena",
             "status": "Status",
-            "total": "{amount} {symbol} NA {amount2} {symbol2}"
+            "total": "{amount} {symbol} na {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Aktivan",
@@ -1469,7 +1469,8 @@
                 "orderType": "Nalog 'Kupnja' bit će izvršen samo po navedenoj cijeni ili nižoj, dok će nalog 'Prodaja' biti izvršen samo po navedenoj cijeni ili višoj. Ova kontrola osigurava da ne plaćate više ili prodajete za manje nego što vam odgovara.",
                 "expiryDate": "'Datum isteka' je rok za izvršenje vaše narudžbe. Ako tržište ne dosegne vašu navedenu cijenu prije tog datuma, narudžba se automatski poništava. Niste vezani za vječno čekanje ako tržišni uvjeti nisu u skladu s vašim preferencijama trgovanja.",
                 "amount": "'Iznos' se odnosi na ukupan broj sredstava koje želite kupiti ili prodati u svojoj narudžbi. Važno je to navesti jer određuje veličinu vaše transakcije, utječući na ukupne troškove za narudžbe za kupnju ili prihod za narudžbe za prodaju.",
-                "limit": "'Ograničena cijena' je točna cijena koju postavite za ograničenu narudžbu. Trgovina će se izvršiti samo kada tržišna cijena imovine dostigne vašu ograničenu cijenu, čime se osigurava da ne kupujete iznad ili prodajete ispod navedene vrijednosti."
+                "limit": "'Ograničena cijena' je točna cijena koju postavite za ograničenu narudžbu. Trgovina će se izvršiti samo kada tržišna cijena imovine dostigne vašu ograničenu cijenu, čime se osigurava da ne kupujete iznad ili prodajete ispod navedene vrijednosti.",
+                "locked": "'Zaključano' prikazuje količinu imovine koju treba zadržati dok je narudžba u tijeku."
             },
             "bookStatus": {
                 "active": "Omogućena potpuna funkcionalnost trgovanja. Možete postaviti nove narudžbe ili otkazati postojeće.",

@@ -1434,7 +1434,7 @@
             "side": "bên",
             "filled": "điền",
             "lifetime": "cả đời",
-            "noOrders": "Không có đơn đặt hàng"
+            "noOrders": "Không có đơn đặt hàng. Tạo cái đầu tiên của bạn!"
         },
         "dialog": {
             "placeMarket": "Đặt lệnh thị trường",
@@ -1451,7 +1451,7 @@
             "volume": "Âm lượng",
             "dailyChange": "Thay đổi hàng ngày",
             "status": "Trạng thái",
-            "total": "{amount} {symbol} AT {amount2} {symbol2}"
+            "total": "{amount} {symbol} ở mức {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Tích cực",
@@ -1469,7 +1469,8 @@
                 "orderType": "Lệnh 'Mua' sẽ chỉ được thực hiện ở mức giá được chỉ định hoặc thấp hơn, trong khi lệnh 'Bán' sẽ chỉ được thực hiện ở mức giá được chỉ định hoặc cao hơn. Sự kiểm soát này đảm bảo bạn không phải trả nhiều hơn hoặc bán với giá thấp hơn mức bạn cảm thấy thoải mái.",
                 "expiryDate": "'Ngày hết hạn' là thời hạn để lệnh của bạn được thực thi. Nếu thị trường không đạt đến mức giá bạn chỉ định trước ngày này, lệnh sẽ tự động bị hủy. Bạn không bị ràng buộc phải chờ đợi vĩnh viễn nếu điều kiện thị trường không phù hợp với sở thích giao dịch của bạn.",
                 "amount": "'Số tiền' đề cập đến tổng số tài sản bạn muốn mua hoặc bán trong đơn đặt hàng của mình. Điều quan trọng là phải chỉ định vì nó xác định quy mô giao dịch của bạn, ảnh hưởng đến tổng chi phí cho lệnh mua hoặc doanh thu cho lệnh bán.",
-                "limit": "'Giá giới hạn' là mức giá chính xác mà bạn đặt cho lệnh giới hạn. Giao dịch sẽ chỉ thực hiện khi giá thị trường của tài sản đáp ứng giá giới hạn của bạn, đảm bảo bạn không mua cao hơn hoặc bán dưới giá trị được chỉ định này."
+                "limit": "'Giá giới hạn' là mức giá chính xác mà bạn đặt cho lệnh giới hạn. Giao dịch sẽ chỉ thực hiện khi giá thị trường của tài sản đáp ứng giá giới hạn của bạn, đảm bảo bạn không mua cao hơn hoặc bán dưới giá trị được chỉ định này.",
+                "locked": "Phần 'Đã khóa' hiển thị số lượng tài sản sẽ được giữ trong khi lệnh đang diễn ra."
             },
             "bookStatus": {
                 "active": "Chức năng giao dịch đầy đủ được kích hoạt. Bạn có thể đặt đơn hàng mới hoặc hủy đơn hàng hiện có.",

@@ -1434,7 +1434,7 @@
             "side": "side",
             "filled": "filled",
             "lifetime": "lifetime",
-            "noOrders": "No orders"
+            "noOrders": "No orders. Create your first one!"
         },
         "dialog": {
             "placeMarket": "Place market order",
@@ -1451,7 +1451,7 @@
             "volume": "Volume",
             "dailyChange": "Daily change",
             "status": "Status",
-            "total": "{amount} {symbol} AT {amount2} {symbol2}"
+            "total": "{amount} {symbol} at {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Active",
@@ -1469,7 +1469,8 @@
                 "orderType": "'Buy' order will only be executed at the specified price or lower, while a 'Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.",
                 "expiryDate": "The 'Expiry Date' is the deadline for your order to be executed. If the market doesn't reach your specified price before this date, the order is automatically cancelled. You're not bound to a perpetual wait if market conditions don't align with your trading preferences.",
                 "amount": "The 'Amount' refers to the total number of assets you want to buy or sell in your order. It's important to specify, as it determines the size of your transaction, impacting the total cost for buy orders or revenue for sell orders.",
-                "limit": "The 'Limit Price' is the precise price you set for a limit order. The trade will only execute when the asset's market price meets your limit price, ensuring you don't purchase above or sell below this specified value."
+                "limit": "The 'Limit Price' is the precise price you set for a limit order. The trade will only execute when the asset's market price meets your limit price, ensuring you don't purchase above or sell below this specified value.",
+                "locked": "The 'Locked' shows the amount of asset to be held while order is ongoing."
             },
             "bookStatus": {
                 "active": "Full trading functionality enabled. You can place new orders or cancel existing ones.",

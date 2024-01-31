@@ -1434,7 +1434,7 @@
             "side": "strane",
             "filled": "naplnené",
             "lifetime": "život",
-            "noOrders": "Žiadne rozkazy"
+            "noOrders": "Žiadne rozkazy. Vytvorte si svoj prvý!"
         },
         "dialog": {
             "placeMarket": "Zadať trhovú objednávku",
@@ -1451,7 +1451,7 @@
             "volume": "Objem",
             "dailyChange": "Denná zmena",
             "status": "Postavenie",
-            "total": "{amount} {symbol} AT {amount2} {symbol2}"
+            "total": "{amount} {symbol} na adrese {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Aktívne",
@@ -1469,7 +1469,8 @@
                 "orderType": "Príkaz „Kúpiť“ bude vykonaný iba za špecifikovanú cenu alebo nižšiu, zatiaľ čo pokyn „Predať“ sa vykoná iba za špecifikovanú cenu alebo vyššiu. Táto kontrola zaisťuje, že nezaplatíte viac alebo nepredáte za menej, ako vám vyhovuje.",
                 "expiryDate": "„Dátum exspirácie“ je konečný termín na vykonanie vašej objednávky. Ak trh nedosiahne vami určenú cenu pred týmto dátumom, objednávka sa automaticky zruší. Nie ste viazaní na večné čakanie, ak sa podmienky na trhu nezhodujú s vašimi obchodnými preferenciami.",
                 "amount": "„Suma“ sa vzťahuje na celkový počet aktív, ktoré chcete kúpiť alebo predať vo svojej objednávke. Je dôležité špecifikovať, keďže to určuje veľkosť vašej transakcie, čo ovplyvňuje celkové náklady na nákupné objednávky alebo výnosy za predajné objednávky.",
-                "limit": "„Limitná cena“ je presná cena, ktorú ste nastavili pre limitnú objednávku. Obchod sa uskutoční iba vtedy, keď trhová cena aktíva dosiahne vašu limitnú cenu, čím sa zabezpečí, že nenakúpite nad alebo nepredáte pod túto špecifikovanú hodnotu."
+                "limit": "„Limitná cena“ je presná cena, ktorú ste nastavili pre limitnú objednávku. Obchod sa uskutoční iba vtedy, keď trhová cena aktíva dosiahne vašu limitnú cenu, čím sa zabezpečí, že nenakúpite nad alebo nepredáte pod túto špecifikovanú hodnotu.",
+                "locked": "„Zamknuté“ zobrazuje množstvo aktív, ktoré sa majú držať, kým objednávka prebieha."
             },
             "bookStatus": {
                 "active": "Plná funkcia obchodovania povolená. Môžete zadať nové objednávky alebo zrušiť existujúce.",
