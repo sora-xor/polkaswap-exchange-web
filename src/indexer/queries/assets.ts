@@ -5,12 +5,8 @@ import { gql } from '@urql/core';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type {
-  SubqueryAssetEntity,
-  SubqueryConnectionQueryResponse,
-} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
-import type {
-  SubsquidAssetEntity,
-  SubsquidConnectionQueryResponse,
+  AssetEntity,
+  ConnectionQueryResponse,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
 
 const { IndexerType } = WALLET_CONSTS;
@@ -25,7 +21,7 @@ export type TokenData = {
   velocity: FPNumber;
 };
 
-const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetEntity>>`
+const SubqueryAssetsQuery = gql<ConnectionQueryResponse<AssetEntity>>`
   query AssetsQuery($after: Cursor, $filter: AssetFilter) {
     data: assets(orderBy: ID_ASC, after: $after, filter: $filter) {
       pageInfo {
@@ -48,7 +44,7 @@ const SubqueryAssetsQuery = gql<SubqueryConnectionQueryResponse<SubqueryAssetEnt
   }
 `;
 
-const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetEntity>>`
+const SubsquidAssetsQuery = gql<ConnectionQueryResponse<AssetEntity>>`
   query AssetsConnectionQuery($after: String, $where: AssetWhereInput) {
     data: assetsConnection(orderBy: id_ASC, after: $after, where: $where) {
       pageInfo {
@@ -71,7 +67,7 @@ const SubsquidAssetsQuery = gql<SubsquidConnectionQueryResponse<SubsquidAssetEnt
   }
 `;
 
-const parse = (item: SubqueryAssetEntity | SubsquidAssetEntity): Record<string, TokenData> => {
+const parse = (item: AssetEntity): Record<string, TokenData> => {
   const priceUSD = new FPNumber(item.priceUSD ?? 0);
   const liquidityPools = FPNumber.fromCodecValue(item.liquidity ?? 0);
   const liquidity = liquidityPools;

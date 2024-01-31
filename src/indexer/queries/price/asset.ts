@@ -1,13 +1,12 @@
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
-import { SubsquidConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subsquid/types';
 import { gql } from '@urql/core';
 
 import type { OCLH, SnapshotItem } from '@/types/chart';
 
-import type { SubqueryConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
 import type {
   AssetSnapshotEntity,
+  ConnectionQueryResponse,
   ConnectionQueryResponseData,
   SnapshotTypes,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
@@ -44,13 +43,11 @@ const subqueryAssetPriceFilter = (assetAddress: string, type: SnapshotTypes) => 
   };
 };
 
-const SubqueryAssetPriceQuery = gql<SubqueryConnectionQueryResponse<AssetSnapshotEntity>>`
+const SubqueryAssetPriceQuery = gql<ConnectionQueryResponse<AssetSnapshotEntity>>`
   query SubqueryAssetPriceQuery($after: Cursor = "", $filter: AssetSnapshotFilter, $first: Int = null) {
     data: assetSnapshots(after: $after, first: $first, filter: $filter, orderBy: [TIMESTAMP_DESC]) {
       pageInfo {
         hasNextPage
-        hasPreviousPage
-        startCursor
         endCursor
       }
       edges {
@@ -77,13 +74,11 @@ const subsquidAssetPriceFilter = (assetAddress: string, type: SnapshotTypes) => 
   };
 };
 
-const SubsquidAssetPriceQuery = gql<SubsquidConnectionQueryResponse<AssetSnapshotEntity>>`
-  query SubsquidAssetPriceQuery($after: String = null, $filter: AssetSnapshotWhereInput, $first: Int = null) {
+const SubsquidAssetPriceQuery = gql<ConnectionQueryResponse<AssetSnapshotEntity>>`
+  query SubsquidAssetPriceQuery($after: String = null, $filter: AssetSnapshotWhereInput, $first: Int = 1000) {
     data: assetSnapshotsConnection(after: $after, first: $first, where: $filter, orderBy: [timestamp_DESC]) {
       pageInfo {
         hasNextPage
-        hasPreviousPage
-        startCursor
         endCursor
       }
       edges {
