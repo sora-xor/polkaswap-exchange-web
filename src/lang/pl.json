@@ -1513,6 +1513,12 @@
                 "reason": "Zbyt wiele zamówień w tej cenie jest w toku",
                 "reading": "Osiągnięto limit: Każda pozycja jest ograniczona do 1024 zleceń z limitem. Proszę poczekać, aż część zamówień zostanie zrealizowana"
             }
+        },
+        "orderStatus": {
+            "active": "Aktywny",
+            "canceled": "Odwołany",
+            "expired": "Wygasły",
+            "filled": "Wypełniony"
         }
     }
 }

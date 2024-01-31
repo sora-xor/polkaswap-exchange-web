@@ -1513,6 +1513,12 @@
                 "reason": "Túl sok megrendelés van folyamatban ezen az áron",
                 "reading": "Limit elérve: Minden pozíció 1024 limites megbízásra korlátozódik. Kérjük, várja meg, amíg néhány megrendelés teljesül"
             }
+        },
+        "orderStatus": {
+            "active": "Aktív",
+            "canceled": "Törölve",
+            "expired": "Lejárt",
+            "filled": "Megtöltött"
         }
     }
 }

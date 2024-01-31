@@ -1513,6 +1513,12 @@
                 "reason": "Für diesen Preis laufen zu viele Bestellungen",
                 "reading": "Limit erreicht: Jede Position ist auf 1024 Limit-Orders beschränkt. Bitte warten Sie, bis einige Bestellungen ausgeführt werden"
             }
+        },
+        "orderStatus": {
+            "active": "Aktiv",
+            "canceled": "Abgesagt",
+            "expired": "Abgelaufen",
+            "filled": "Gefüllt"
         }
     }
 }

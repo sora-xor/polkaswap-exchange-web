@@ -1513,6 +1513,12 @@
                 "reason": "För många beställningar pågår för detta pris",
                 "reading": "Gräns uppnådd: Varje position är begränsad till 1024 limitorder. Vänta tills några beställningar fullföljs"
             }
+        },
+        "orderStatus": {
+            "active": "Aktiva",
+            "canceled": "Inställt",
+            "expired": "Utgånget",
+            "filled": "Fylld"
         }
     }
 }

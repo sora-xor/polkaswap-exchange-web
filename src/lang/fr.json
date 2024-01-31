@@ -1513,6 +1513,12 @@
                 "reason": "Trop de commandes sont en cours pour ce prix",
                 "reading": "Limite atteinte : Chaque position est limitée à 1024 ordres limités. Veuillez attendre que certaines commandes soient exécutées"
             }
+        },
+        "orderStatus": {
+            "active": "Actif",
+            "canceled": "Annulé",
+            "expired": "Expiré",
+            "filled": "Rempli"
         }
     }
 }

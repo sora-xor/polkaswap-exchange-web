@@ -1513,6 +1513,12 @@
                 "reason": "Terlalu banyak pesanan yang sedang berlangsung untuk harga ini",
                 "reading": "Batas tercapai: Setiap posisi dibatasi pada 1024 limit order. Harap tunggu hingga beberapa pesanan terpenuhi"
             }
+        },
+        "orderStatus": {
+            "active": "Aktif",
+            "canceled": "Dibatalkan",
+            "expired": "Kedaluwarsa",
+            "filled": "Dipenuhi"
         }
     }
 }

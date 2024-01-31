@@ -1513,6 +1513,12 @@
                 "reason": "Za tuto cenu probíhá příliš mnoho objednávek",
                 "reading": "Limit dosažen: Každá pozice je omezena na 1024 limitních příkazů. Počkejte prosím, až budou některé objednávky splněny"
             }
+        },
+        "orderStatus": {
+            "active": "Aktivní",
+            "canceled": "Zrušeno",
+            "expired": "Prošlý",
+            "filled": "Naplněné"
         }
     }
 }

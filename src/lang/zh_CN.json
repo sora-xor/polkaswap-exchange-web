@@ -1513,6 +1513,12 @@
                 "reason": "此价格的订单过多",
                 "reading": "已达限额：每个仓位限价单数量为1024个。请等待部分订单完成"
             }
+        },
+        "orderStatus": {
+            "active": "积极的",
+            "canceled": "取消",
+            "expired": "已到期",
+            "filled": "填充"
         }
     }
 }

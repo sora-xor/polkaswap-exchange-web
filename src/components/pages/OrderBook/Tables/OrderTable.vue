@@ -122,6 +122,7 @@ import type { OrderData } from '@/types/orderBook';
 
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import type { OrderStatus as OrderStatusType } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 type OrderDataUI = Omit<OrderData, 'owner' | 'lifespan' | 'time' | 'expiresAt'>[];
 
@@ -170,13 +171,29 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
         price: price,
         total: total.dp(4).toLocaleString(),
         side,
-        status: status ?? OrderStatus.Active,
+        status: this.getStatusTranslation(status as OrderStatusType),
         created: { date: created.format('M/DD'), time: created.format('HH:mm:ss') },
         expires: expires.format('D[D]'),
       };
 
       return row;
     });
+  }
+
+  getStatusTranslation(status: OrderStatusType | undefined): string {
+    switch (status) {
+      case OrderStatus.Active:
+        return this.t('orderBook.orderStatus.active');
+      case OrderStatus.Aligned:
+      case OrderStatus.Canceled:
+        return this.t('orderBook.orderStatus.canceled');
+      case OrderStatus.Expired:
+        return this.t('orderBook.orderStatus.expired');
+      case OrderStatus.Filled:
+        return this.t('orderBook.orderStatus.filled');
+      default:
+        return this.t('orderBook.orderStatus.active');
+    }
   }
 
   getString(value: FPNumber): string {

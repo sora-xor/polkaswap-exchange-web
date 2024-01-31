@@ -1513,6 +1513,12 @@
                 "reason": "For mange bestillinger pågår for denne prisen",
                 "reading": "Grensen nådd: Hver posisjon er begrenset til 1024 grenseordrer. Vennligst vent til noen bestillinger oppfylles"
             }
+        },
+        "orderStatus": {
+            "active": "Aktiv",
+            "canceled": "Kansellert",
+            "expired": "Utløpt",
+            "filled": "Fylt"
         }
     }
 }

@@ -1513,6 +1513,12 @@
                 "reason": "Ọpọlọpọ awọn ibere ti nlọ lọwọ fun idiyele yii",
                 "reading": "Iwọn opin: Ipo kọọkan wa ni ihamọ si awọn aṣẹ opin 1024. Jọwọ duro titi diẹ ninu awọn aṣẹ yoo mu ṣẹ"
             }
+        },
+        "orderStatus": {
+            "active": "Ti nṣiṣe lọwọ",
+            "canceled": "fagilee",
+            "expired": "Ti pari",
+            "filled": "Ti kun"
         }
     }
 }

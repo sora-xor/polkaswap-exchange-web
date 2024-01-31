@@ -1513,6 +1513,12 @@
                 "reason": "U tijeku je previše narudžbi za ovu cijenu",
                 "reading": "Dosegnuto ograničenje: Svaka pozicija ograničena je na 1024 ograničena naloga. Pričekajte dok se neke narudžbe ne ispune"
             }
+        },
+        "orderStatus": {
+            "active": "Aktivan",
+            "canceled": "Otkazano",
+            "expired": "Istekao",
+            "filled": "Ispunjeno"
         }
     }
 }

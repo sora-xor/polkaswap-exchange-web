@@ -1513,6 +1513,12 @@
                 "reason": "Too many orders is ongoing for this price",
                 "reading": "Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill"
             }
+        },
+        "orderStatus": {
+            "active": "Active",
+            "canceled": "Canceled",
+            "expired": "Expired",
+            "filled": "Filled"
         }
     }
 }

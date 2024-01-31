@@ -1513,6 +1513,12 @@
                 "reason": "Er lopen te veel bestellingen voor deze prijs",
                 "reading": "Limiet bereikt: Elke positie is beperkt tot 1024 limietorders. Wacht tot sommige bestellingen zijn uitgevoerd"
             }
+        },
+        "orderStatus": {
+            "active": "Actief",
+            "canceled": "Geannuleerd",
+            "expired": "Verlopen",
+            "filled": "Gevuld"
         }
     }
 }

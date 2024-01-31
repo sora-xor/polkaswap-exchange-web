@@ -1513,6 +1513,12 @@
                 "reason": "Za túto cenu prebieha príliš veľa objednávok",
                 "reading": "Dosiahnutý limit: Každá pozícia je obmedzená na 1024 limitných príkazov. Počkajte, kým sa splnia niektoré objednávky"
             }
+        },
+        "orderStatus": {
+            "active": "Aktívne",
+            "canceled": "Zrušené",
+            "expired": "Platnosť vypršala",
+            "filled": "Naplnené"
         }
     }
 }

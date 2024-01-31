@@ -1513,6 +1513,12 @@
                 "reason": "Quá nhiều đơn đặt hàng đang diễn ra cho mức giá này",
                 "reading": "Đã đạt đến giới hạn: Mỗi vị trí được giới hạn ở 1024 lệnh giới hạn. Vui lòng đợi cho đến khi một số đơn hàng được thực hiện"
             }
+        },
+        "orderStatus": {
+            "active": "Tích cực",
+            "canceled": "Đã hủy",
+            "expired": "Hết hạn",
+            "filled": "Điền"
         }
     }
 }
