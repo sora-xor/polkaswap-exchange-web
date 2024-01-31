@@ -337,7 +337,7 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
     return defaultSorted;
   }
 
-  get preparedItems(): TableItem[] {
+  get prefilteredItems(): TableItem[] {
     return this.isAccountItemsOnly ? this.items.filter((item) => item.isAccountItem) : this.items;
   }
 

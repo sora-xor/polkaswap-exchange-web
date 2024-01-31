@@ -3,7 +3,7 @@ import type store from '@/store';
 import type { VUEX_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type { VueDecorator } from 'vue-class-component';
 
-type BaseModuleDecorator<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> = {
+type BaseModuleDecorator<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> = {
   router: VUEX_TYPES.BaseDecorator<T1>;
   web3: VUEX_TYPES.BaseDecorator<T2>;
   assets: VUEX_TYPES.BaseDecorator<T3>;
@@ -19,6 +19,7 @@ type BaseModuleDecorator<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13,
   staking: VUEX_TYPES.BaseDecorator<T13>;
   demeterFarming: VUEX_TYPES.BaseDecorator<T14>;
   soraCard: VUEX_TYPES.BaseDecorator<T15>;
+  orderBook: VUEX_TYPES.BaseDecorator<T16>;
 };
 
 export type StateDecorators = BaseModuleDecorator<
@@ -36,7 +37,8 @@ export type StateDecorators = BaseModuleDecorator<
   typeof store.state.rewards,
   typeof store.state.staking,
   typeof store.state.demeterFarming,
-  typeof store.state.soraCard
+  typeof store.state.soraCard,
+  typeof store.state.orderBook
 > &
   VUEX_TYPES.WalletStateDecorators;
 
@@ -55,7 +57,8 @@ export type GettersDecorators = BaseModuleDecorator<
   typeof store.getters.rewards,
   typeof store.getters.staking,
   typeof store.getters.demeterFarming,
-  typeof store.getters.soraCard
+  typeof store.getters.soraCard,
+  typeof store.getters.orderBook
 > &
   VUEX_TYPES.WalletGettersDecorators & { libraryDesignSystem: VueDecorator; libraryTheme: VueDecorator };
 
@@ -74,7 +77,8 @@ export type CommitDecorators = BaseModuleDecorator<
   typeof store.commit.rewards,
   typeof store.commit.staking,
   typeof store.commit.demeterFarming,
-  typeof store.commit.soraCard
+  typeof store.commit.soraCard,
+  typeof store.commit.orderBook
 > &
   VUEX_TYPES.WalletCommitDecorators;
 
@@ -93,6 +97,7 @@ export type DispatchDecorators = BaseModuleDecorator<
   typeof store.dispatch.rewards,
   typeof store.dispatch.staking,
   typeof store.dispatch.demeterFarming,
-  typeof store.dispatch.soraCard
+  typeof store.dispatch.soraCard,
+  typeof store.dispatch.orderBook
 > &
   VUEX_TYPES.WalletDispatchDecorators;

@@ -180,7 +180,7 @@ import { formatAmountWithSuffix, sortAssets } from '@/utils';
 import { syntheticAssetRegexp } from '@/utils/regexp';
 import storage from '@/utils/storage';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 type TableItem = {
   price: number;
@@ -214,6 +214,7 @@ const storageKey = 'exploreSyntheticTokens';
 })
 export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
+  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   private isSynths = storage.get(storageKey) ? JSON.parse(storage.get(storageKey)) : false;
 

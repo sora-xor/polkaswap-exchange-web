@@ -1,5 +1,5 @@
 <template>
-  <s-tabs class="stats-filters" type="rounded" v-model="model">
+  <s-tabs class="stats-filters" type="rounded" v-model="model" @click="handleClick">
     <s-tab v-for="{ name, label } in filters" :key="name" :name="name" :label="label" :disabled="disabled" />
   </s-tabs>
 </template>
@@ -20,11 +20,24 @@ export default class StatsFilter extends Mixins() {
   }
 
   set model(name: string) {
-    const filter = this.filters.find((item) => item.name === name);
+    const filter = this.getFilter(name);
 
     if (filter) {
       this.$emit('input', filter);
     }
+  }
+
+  handleClick(tab: any): void {
+    const name = tab.name;
+    const filter = this.getFilter(name);
+
+    if (filter) {
+      this.$emit('change', filter);
+    }
+  }
+
+  private getFilter(name: string): Nullable<SnapshotFilter> {
+    return this.filters.find((item) => item.name === name);
   }
 }
 </script>

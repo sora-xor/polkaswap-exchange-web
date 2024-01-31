@@ -122,7 +122,7 @@ export async function getIncomingEvmTransactionData({ asset, value, recipient, g
 
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
 
-  const contractAddress = getContractAddress(KnownEthBridgeAsset.Other)!;
+  const contractAddress = getContractAddress(KnownEthBridgeAsset.Other) as string;
   const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi;
   const contract = new ethers.Contract(contractAddress, contractAbi, signer);
 
@@ -159,7 +159,7 @@ export async function getOutgoingEvmTransactionData({
   const symbol = asset.symbol as KnownEthBridgeAsset;
   const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
   const bridgeAsset: KnownEthBridgeAsset = isValOrXor ? symbol : KnownEthBridgeAsset.Other;
-  const contractAddress = getContractAddress(bridgeAsset)!;
+  const contractAddress = getContractAddress(bridgeAsset) as string;
   const contractAbi = SmartContracts[SmartContractType.EthBridge][bridgeAsset].abi;
 
   const contract = new ethers.Contract(contractAddress, contractAbi, signer);
@@ -267,10 +267,10 @@ export async function getEthNetworkFee(
 
     try {
       const { contract, method, args } = await getIncomingEvmTransactionData(txParams);
-      const signer = contract.runner!;
+      const signer = contract.runner;
       const tx = await contract[method].populateTransaction(...args);
 
-      txGasLimit = await signer.estimateGas!(tx);
+      txGasLimit = (await signer?.estimateGas?.(tx)) ?? BigInt(0);
     } catch {
       txGasLimit = getEthBridgeIncomingGasLimit(asset.externalAddress);
     }

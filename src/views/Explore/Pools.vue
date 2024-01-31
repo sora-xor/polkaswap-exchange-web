@@ -120,7 +120,7 @@ import { state, getter } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, formatDecimalPlaces, asZeroValue, sortPools } from '@/utils';
 
-import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
+import type { Asset, RegisteredAccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 type TableItem = {
@@ -147,6 +147,7 @@ type TableItem = {
 export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMixin, PoolApyMixin) {
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
+  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   // override ExplorePageMixin
   order = SortDirection.DESC;
@@ -219,7 +220,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
     return defaultSorted;
   }
 
-  get preparedItems(): TableItem[] {
+  get prefilteredItems(): TableItem[] {
     return this.isAccountItemsOnly ? this.items.filter((item) => item.isAccountItem) : this.items;
   }
 

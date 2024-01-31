@@ -90,6 +90,7 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
         dimensions: ['timestamp', 'value'],
       },
       grid: this.gridSpec({
+        top: 20,
         left: 45,
       }),
       xAxis: this.xAxisSpec(),
