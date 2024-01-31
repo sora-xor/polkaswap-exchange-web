@@ -1451,7 +1451,7 @@
             "volume": "Объем",
             "dailyChange": "Ежедневное изменение",
             "status": "Статус",
-            "total": "{сумма} {symbol} при {amount2} {symbol2}"
+            "total": "{amount} {symbol} при {amount2} {symbol2}"
         },
         "bookStatus": {
             "active": "Активный",
