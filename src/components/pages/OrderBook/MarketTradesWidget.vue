@@ -101,6 +101,7 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
 
   .order-info {
     &.time {
+      font-size: var(--s-font-size-extra-small);
       color: var(--s-color-base-content-secondary);
     }
     &.side {
