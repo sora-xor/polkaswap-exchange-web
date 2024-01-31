@@ -91,16 +91,14 @@ export async function fetchPoolsData(assets?: Asset[]): Promise<PoolData[]> {
 
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
-      const filter = ids.length
-        ? { and: [{ targetAssetId: { in: ids } }, { targetAssetReserves: { greaterThan: '0' } }] }
-        : undefined;
+      const filter = ids.length ? { targetAssetId: { in: ids }, targetAssetReserves: { greaterThan: '0' } } : undefined;
       const variables = { filter };
       const subqueryIndexer = indexer as SubqueryIndexer;
       result = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryPoolsQuery, variables, parse);
       break;
     }
     case IndexerType.SUBSQUID: {
-      const where = ids.length ? { AND: { targetAsset: { id_in: ids }, targetAssetReserves_gt: '0' } } : undefined;
+      const where = ids.length ? { targetAsset: { id_in: ids }, targetAssetReserves_gt: '0' } : undefined;
       const variables = { where };
       const subsquidIndexer = indexer as SubsquidIndexer;
       result = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(SubsquidPoolsQuery, variables, parse);

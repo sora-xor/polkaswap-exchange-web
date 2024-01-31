@@ -77,8 +77,7 @@
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-token"
-              >
-              </formatted-amount>
+              />
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
             </div>
           </div>
@@ -93,12 +92,10 @@
           <div class="explore-table-item-tokens">
             <div v-for="({ asset, balance }, index) in row.poolTokens" :key="index" class="explore-table-cell">
               <formatted-amount
-                value-can-be-hidden
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
                 class="explore-table-item-token"
-              >
-              </formatted-amount>
+              />
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
             </div>
           </div>
@@ -148,8 +145,6 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import PoolApyMixin from '@/components/mixins/PoolApyMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { fetchPoolsData } from '@/indexer/queries/pools';
 import type { PoolData } from '@/indexer/queries/pools';
@@ -190,7 +185,7 @@ type TableItem = {
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMixin, PoolApyMixin) {
+export default class ExplorePools extends Mixins(ExplorePageMixin) {
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
   // override ExplorePageMixin

@@ -130,7 +130,6 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { fetchOrderBooks } from '@/indexer/queries/orderBook';
 import { lazyComponent } from '@/router';
@@ -165,7 +164,7 @@ type TableItem = {
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class ExploreBooks extends Mixins(ExplorePageMixin, TranslationMixin) {
+export default class ExploreBooks extends Mixins(ExplorePageMixin) {
   orderBooks: readonly OrderBookWithStats[] = [];
   // override ExplorePageMixin
   order = SortDirection.DESC;

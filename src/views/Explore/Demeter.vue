@@ -163,7 +163,6 @@ import { api, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { DemeterStakingComponents } from '@/modules/staking/demeter/consts';
 import DemeterBasePageMixin from '@/modules/staking/demeter/mixins/BasePageMixin';
@@ -218,7 +217,7 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBasePageMixin, ExplorePageMixin) {
+export default class ExploreDemeter extends Mixins(DemeterBasePageMixin, ExplorePageMixin) {
   @Watch('pools', { deep: true })
   private async updatePoolsData() {
     await this.updateExploreData();

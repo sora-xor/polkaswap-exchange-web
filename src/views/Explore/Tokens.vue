@@ -168,7 +168,6 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { fetchTokensData } from '@/indexer/queries/assets';
 import type { TokenData } from '@/indexer/queries/assets';
@@ -178,7 +177,7 @@ import { formatAmountWithSuffix, sortAssets } from '@/utils';
 import { syntheticAssetRegexp } from '@/utils/regexp';
 import storage from '@/utils/storage';
 
-import type { Asset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 type TableItem = {
   price: number;
@@ -210,7 +209,7 @@ const storageKey = 'exploreSyntheticTokens';
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
+export default class Tokens extends Mixins(ExplorePageMixin) {
   private isSynths = storage.get(storageKey) ? JSON.parse(storage.get(storageKey)) : false;
 
   get isSynthsOnly(): boolean {
@@ -274,11 +273,9 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
   }
 
   get preparedItems(): TableItem[] {
-    return this.isSynthsOnly ? this.defaultSorted.filter((item) => this.isSynthetic(item.address)) : this.defaultSorted;
-  }
-
-  isSynthetic(address: string): boolean {
-    return syntheticAssetRegexp.test(address);
+    return this.isSynthsOnly
+      ? this.defaultSorted.filter((item) => syntheticAssetRegexp.test(item.address))
+      : this.defaultSorted;
   }
 
   // ExplorePageMixin method implementation
