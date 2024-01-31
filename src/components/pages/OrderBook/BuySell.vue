@@ -618,13 +618,13 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   handleInputFieldQuote(preciseValue: string): void {
-    const value = this.formatInputValue(preciseValue);
+    const value = this.formatInputValue(preciseValue, this.bookPrecision);
     this.setQuoteValue(value);
     this.checkInputValidation();
   }
 
   handleInputFieldBase(preciseValue: string): void {
-    const value = this.formatInputValue(preciseValue);
+    const value = this.formatInputValue(preciseValue, this.amountPrecision);
     this.setBaseValue(value);
     this.setAmountSliderValue(this.getPercent(value));
     this.checkInputValidation();
@@ -638,10 +638,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     }
   }
 
-  formatInputValue(value: string): string {
+  formatInputValue(value: string, precision: number): string {
     if (!value) return '';
 
-    return value.endsWith('.') ? value : new FPNumber(value).dp(this.amountPrecision).toString();
+    const [_, decimal] = value.split('.');
+
+    return value.endsWith('.') || decimal?.length <= precision ? value : new FPNumber(value).dp(precision).toString();
   }
 
   get preparedForSwap(): boolean {
@@ -703,11 +705,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.quoteSubscription = null;
   }
 
-  getFormattedValue(value: string, precision = 7): string {
-    const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
-    return `${integer}.${decimal.substring(0, precision)}`;
-  }
-
   private subscribeOnBookQuote(): void {
     if (!this.baseValue) return;
     this.resetQuoteSubscription();
@@ -733,11 +730,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         return;
       }
 
-      const unformattedMarketQuotePrice = FPNumber.fromCodecValue(amount)
+      this.marketQuotePrice = FPNumber.fromCodecValue(amount)
         .div(FPNumber.fromNatural(this.baseValue))
+        .dp(this.bookPrecision)
         .toString();
-
-      this.marketQuotePrice = this.getFormattedValue(unformattedMarketQuotePrice, this.bookPrecision);
 
       this.prepareValuesForSwap(amount);
     });
@@ -767,6 +763,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.setBaseValue('');
     this.setLiquiditySource(LiquiditySourceTypes.Default);
     this.selectDexId(DexId.XOR);
+    this.limitOrderType = LimitOrderType.limit;
   }
 
   resetValues() {

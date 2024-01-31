@@ -17,7 +17,7 @@
     </template>
 
     <template #filters>
-      <stats-filter :filters="filters" :value="selectedFilter" :disabled="chartIsLoading" @input="changeFilter" />
+      <stats-filter :filters="filters" :value="selectedFilter" :disabled="chartIsLoading" @change="changeFilter" />
     </template>
 
     <template #types>
@@ -110,22 +110,43 @@ const CHART_TYPE_ICONS = {
 
 const LINE_CHART_FILTERS: SnapshotFilter[] = [
   {
+    name: Timeframes.FIVE_MINUTES,
+    label: '5m',
+    type: SnapshotTypes.DEFAULT,
+    count: 48, // 5 mins in 4 hours
+  },
+  {
+    name: Timeframes.FIFTEEN_MINUTES,
+    label: '15m',
+    type: SnapshotTypes.DEFAULT,
+    count: 48 * 3, // 5 mins in 12 hours,
+    group: 3, // 5 min in 15 min
+  },
+  {
+    name: Timeframes.THIRTY_MINUTES,
+    label: '30m',
+    type: SnapshotTypes.DEFAULT,
+    count: 48 * 6, // 5 mins in 24 hours,
+    group: 6, // 5 min in 30 min
+  },
+  {
+    name: Timeframes.HOUR,
+    label: '1h',
+    type: SnapshotTypes.HOUR,
+    count: 48, // hours in 2 days,
+  },
+  {
+    name: Timeframes.FOUR_HOURS,
+    label: '4h',
+    type: SnapshotTypes.HOUR,
+    count: 48 * 4, // hours in 4 days,
+    group: 4, // 1 hour in 4 hours
+  },
+  {
     name: Timeframes.DAY,
     label: '1D',
-    type: SnapshotTypes.DEFAULT,
-    count: 288,
-  },
-  {
-    name: Timeframes.WEEK,
-    label: '1W',
-    type: SnapshotTypes.HOUR,
-    count: 24 * 7, // hours in week
-  },
-  {
-    name: Timeframes.MONTH,
-    label: '1M',
     type: SnapshotTypes.DAY,
-    count: 30, // days in month
+    count: 90, // days in 1 month
   },
   {
     name: Timeframes.YEAR,
@@ -151,6 +172,8 @@ const AXIS_LABEL_CSS = {
 };
 
 const SYNC_INTERVAL = 6 * 1000;
+
+const ZOOM_ID = 'chartZoom';
 
 const signific =
   (value: FPNumber) =>
@@ -492,6 +515,7 @@ export default class SwapChart extends Mixins(
     });
 
     const dataZoom = {
+      id: ZOOM_ID,
       type: 'inside',
       xAxisIndex: [0, 1],
       start: 0,
@@ -580,6 +604,7 @@ export default class SwapChart extends Mixins(
     };
 
     const spec = {
+      animation: false,
       axisPointer: {
         link: [
           {
@@ -631,7 +656,7 @@ export default class SwapChart extends Mixins(
     const nodes: SnapshotItem[] = [];
 
     let hasNextPage = pageInfo?.hasNextPage ?? true;
-    let endCursor = pageInfo?.endCursor ?? '';
+    let endCursor = pageInfo?.endCursor ?? undefined;
 
     if (buffer.length >= count) {
       return {
@@ -872,9 +897,31 @@ export default class SwapChart extends Mixins(
     this.dataset = Object.freeze(items);
   }
 
-  changeFilter(filter: SnapshotFilter): void {
+  async changeFilter(filter: SnapshotFilter): Promise<void> {
+    const prevType = this.selectedFilter.type;
+    const { count, type } = filter;
+
     this.selectedFilter = filter;
-    this.forceUpdatePrices(true);
+
+    if (prevType !== type) {
+      await this.forceUpdatePrices(true);
+    } else if (this.dataset.length < count) {
+      await this.updatePrices();
+    } else {
+      await this.resetChartTypeZoom();
+    }
+  }
+
+  async resetChartTypeZoom() {
+    await this.$nextTick();
+
+    const { count, group } = this.selectedFilter;
+    const items = this.chartData.length;
+    const visible = count / (group ?? 1);
+    const start = items > visible ? ((items - visible) * 100) / items : 0;
+    const end = 100;
+
+    this.setChartZoomLevel(start, end);
   }
 
   private async resetAndUpdatePrices(saveReversedState = false): Promise<void> {
@@ -889,7 +936,6 @@ export default class SwapChart extends Mixins(
 
   selectChartType(type: CHART_TYPES): void {
     this.chartType = type;
-    // this.changeFilter(this.filters[0]);
   }
 
   handleZoom(event: any): void {
@@ -903,6 +949,21 @@ export default class SwapChart extends Mixins(
     const data = event?.batch?.[0];
     this.zoomStart = data?.start ?? 0;
     this.zoomEnd = data?.end ?? 0;
+  }
+
+  private setChartZoomLevel(start: number, end: number): void {
+    const chart = this.$refs.chart as any;
+
+    chart.dispatchAction({
+      type: 'dataZoom',
+      batch: [
+        {
+          dataZoomId: ZOOM_ID,
+          start,
+          end,
+        },
+      ],
+    });
   }
 
   revertChart(): void {
