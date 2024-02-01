@@ -1497,10 +1497,6 @@
                 "reason": "Price exceeded spread",
                 "reading": "Price exceeded: a market's bid or ask price exceeded its ask\/bid price"
             },
-            "outOfBounds": {
-                "reason": "Amount fails to comply with blockchain range",
-                "reading": "Blockchain range departs: Your entered amount falls outside the blockchain allowed range. Min: {min}; Max: {max}"
-            },
             "spotLimit": {
                 "reason": "Trading side has been filled",
                 "reading": "Price range cap: Each order book side is limited to 1024 unique price points. Please select a price within the existing range or wait for space to become available"
@@ -1512,6 +1508,10 @@
             "singlePriceLimit": {
                 "reason": "Too many orders is ongoing for this price",
                 "reading": "Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill"
+            },
+            "outOfBounds": {
+                "reading": "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range. Min: {min}; Max: {max}",
+                "reason": "Amount fails to comply with blockchain range"
             }
         },
         "orderStatus": {

@@ -1497,10 +1497,6 @@
                 "reason": "Cijena premašila raspon",
                 "reading": "Premašena cijena: tržišna ponuda ili tražena cijena premašila je traženu\/ponuđenu cijenu"
             },
-            "outOfBounds": {
-                "reason": "Iznos premašuje raspon blockchaina",
-                "reading": "Blockchain raspon premašen: Vaš uneseni iznos je izvan dopuštenog blockchaina raspona"
-            },
             "spotLimit": {
                 "reason": "Trgovačka strana je popunjena",
                 "reading": "Ograničenje raspona cijena: Svaka strana knjige narudžbi ograničena je na 1024 jedinstvena cjenovna boda. Odaberite cijenu unutar postojećeg raspona ili pričekajte da se oslobodi prostor"
@@ -1512,6 +1508,10 @@
             "singlePriceLimit": {
                 "reason": "U tijeku je previše narudžbi za ovu cijenu",
                 "reading": "Dosegnuto ograničenje: Svaka pozicija ograničena je na 1024 ograničena naloga. Pričekajte dok se neke narudžbe ne ispune"
+            },
+            "outOfBounds": {
+                "reading": "Blockchain raspon premašen: Vaš uneseni iznos je izvan dopuštenog blockchaina raspona. Min: {min} ; Maks.: {max}",
+                "reason": "Iznos nije u skladu s rasponom blockchaina"
             }
         },
         "orderStatus": {

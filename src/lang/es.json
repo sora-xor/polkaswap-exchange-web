@@ -1497,10 +1497,6 @@
                 "reason": "El precio superó el diferencial",
                 "reading": "Precio excedido: el precio de oferta o demanda de un mercado excedió su precio de demanda\/oferta."
             },
-            "outOfBounds": {
-                "reason": "La cantidad excede el rango de blockchain",
-                "reading": "Se excedió el rango de blockchain: el monto ingresado está fuera del rango permitido de blockchain"
-            },
             "spotLimit": {
                 "reason": "La parte comercial se ha llenado",
                 "reading": "Límite de rango de precios: cada lado del libro de pedidos está limitado a 1024 puntos de precios únicos. Seleccione un precio dentro del rango existente o espere a que haya espacio disponible"
@@ -1512,6 +1508,10 @@
             "singlePriceLimit": {
                 "reason": "Hay demasiados pedidos en curso por este precio.",
                 "reading": "Límite alcanzado: cada posición se limita a 1024 órdenes límite. Espere hasta que se completen algunos pedidos."
+            },
+            "outOfBounds": {
+                "reading": "Se excedió el rango de la cadena de bloques: el monto ingresado está fuera del rango permitido de la cadena de bloques. Mín: {min} ; Máximo: {max}",
+                "reason": "La cantidad no cumple con el rango de blockchain"
             }
         },
         "orderStatus": {

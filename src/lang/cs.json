@@ -1497,10 +1497,6 @@
                 "reason": "Cena přesáhla spread",
                 "reading": "Cena překročena: poptávková nebo poptávková cena trhu přesáhla její poptávkovou\/nabídkovou cenu"
             },
-            "outOfBounds": {
-                "reason": "Částka přesahuje rozsah blockchainu",
-                "reading": "Překročen rozsah blockchainu: Zadaná částka je mimo povolený rozsah blockchainu"
-            },
             "spotLimit": {
                 "reason": "Obchodní strana byla naplněna",
                 "reading": "Omezení cenového rozpětí: Každá strana knihy objednávek je omezena na 1024 jedinečných cenových bodů. Vyberte prosím cenu v rámci stávajícího rozsahu nebo počkejte, až se uvolní místo"
@@ -1512,6 +1508,10 @@
             "singlePriceLimit": {
                 "reason": "Za tuto cenu probíhá příliš mnoho objednávek",
                 "reading": "Limit dosažen: Každá pozice je omezena na 1024 limitních příkazů. Počkejte prosím, až budou některé objednávky splněny"
+            },
+            "outOfBounds": {
+                "reading": "Překročen rozsah blockchainu: Zadaná částka je mimo povolený rozsah blockchainu. Min: {min} ; Max: {max}",
+                "reason": "Částka nesplňuje rozsah blockchainu"
             }
         },
         "orderStatus": {

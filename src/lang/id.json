@@ -1497,10 +1497,6 @@
                 "reason": "Harga melebihi spread",
                 "reading": "Harga terlampaui: harga penawaran atau permintaan pasar melebihi harga permintaan\/penawaran"
             },
-            "outOfBounds": {
-                "reason": "Jumlahnya melebihi kisaran blockchain",
-                "reading": "Rentang blockchain terlampaui: Jumlah yang Anda masukkan berada di luar rentang yang diizinkan oleh blockchain"
-            },
             "spotLimit": {
                 "reason": "Sisi perdagangan telah terisi",
                 "reading": "Batas kisaran harga: Setiap sisi buku pesanan dibatasi hingga 1024 titik harga unik. Silakan pilih harga dalam kisaran yang ada atau tunggu hingga ruang tersedia"
@@ -1512,6 +1508,10 @@
             "singlePriceLimit": {
                 "reason": "Terlalu banyak pesanan yang sedang berlangsung untuk harga ini",
                 "reading": "Batas tercapai: Setiap posisi dibatasi pada 1024 limit order. Harap tunggu hingga beberapa pesanan terpenuhi"
+            },
+            "outOfBounds": {
+                "reading": "Rentang blockchain terlampaui: Jumlah yang Anda masukkan berada di luar rentang yang diizinkan oleh blockchain. Minimal: {min} ; Maks: {max}",
+                "reason": "Jumlah gagal mematuhi kisaran blockchain"
             }
         },
         "orderStatus": {

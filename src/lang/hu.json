@@ -1497,10 +1497,6 @@
                 "reason": "Az ár meghaladja a spreadet",
                 "reading": "Ár túllépve: egy piac vételi vagy eladási ára meghaladta az eladási\/vételi árát"
             },
-            "outOfBounds": {
-                "reason": "Az összeg meghaladja a blokklánc tartományt",
-                "reading": "Blockchain tartomány túllépve: A megadott mennyiség kívül esik a blokklánc megengedett tartományán"
-            },
             "spotLimit": {
                 "reason": "A kereskedési oldal megtelt",
                 "reading": "Ártartomány felső határa: Minden rendelési könyv oldala 1024 egyedi árpontra korlátozódik. Kérjük, válasszon egy árat a meglévő tartományon belül, vagy várja meg, amíg szabaddá válik a hely"
@@ -1512,6 +1508,10 @@
             "singlePriceLimit": {
                 "reason": "Túl sok megrendelés van folyamatban ezen az áron",
                 "reading": "Limit elérve: Minden pozíció 1024 limites megbízásra korlátozódik. Kérjük, várja meg, amíg néhány megrendelés teljesül"
+            },
+            "outOfBounds": {
+                "reading": "Blockchain tartomány túllépve: A megadott mennyiség kívül esik a blokklánc megengedett tartományán. Min: {min} ; Max: {max}",
+                "reason": "Az összeg nem felel meg a blokklánc-tartománynak"
             }
         },
         "orderStatus": {

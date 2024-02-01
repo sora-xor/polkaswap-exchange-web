@@ -1497,10 +1497,6 @@
                 "reason": "Cena przekroczyła spread",
                 "reading": "Przekroczona cena: cena kupna lub sprzedaży na rynku przekroczyła cenę sprzedaży\/oferty"
             },
-            "outOfBounds": {
-                "reason": "Kwota przekracza zakres blockchain",
-                "reading": "Przekroczony zakres Blockchain: Wprowadzona kwota wykracza poza dozwolony zakres Blockchain"
-            },
             "spotLimit": {
                 "reason": "Strona handlowa została wypełniona",
                 "reading": "Limit przedziału cenowego: każda strona księgi zamówień jest ograniczona do 1024 unikalnych punktów cenowych. Wybierz cenę z istniejącego zakresu lub poczekaj, aż zwolni się miejsce"
@@ -1512,6 +1508,10 @@
             "singlePriceLimit": {
                 "reason": "Zbyt wiele zamówień w tej cenie jest w toku",
                 "reading": "Osiągnięto limit: Każda pozycja jest ograniczona do 1024 zleceń z limitem. Proszę poczekać, aż część zamówień zostanie zrealizowana"
+            },
+            "outOfBounds": {
+                "reading": "Przekroczony zakres Blockchain: Wprowadzona kwota wykracza poza dozwolony zakres Blockchain. Min.: {min} ; Maks.: {max}",
+                "reason": "Kwota nie jest zgodna z zakresem blockchain"
             }
         },
         "orderStatus": {

@@ -1497,10 +1497,6 @@
                 "reason": "Prix dépassé le spread",
                 "reading": "Prix dépassé : le prix acheteur ou vendeur d'un marché a dépassé son prix vendeur\/acheteur"
             },
-            "outOfBounds": {
-                "reason": "Le montant dépasse la plage de la blockchain",
-                "reading": "Plage de blockchain dépassée : le montant saisi se situe en dehors de la plage autorisée de la blockchain"
-            },
             "spotLimit": {
                 "reason": "Le côté commercial a été rempli",
                 "reading": "Plafond de fourchette de prix : chaque côté du carnet de commandes est limité à 1 024 niveaux de prix uniques. Veuillez sélectionner un prix dans la fourchette existante ou attendre qu'une place se libère"
@@ -1512,6 +1508,10 @@
             "singlePriceLimit": {
                 "reason": "Trop de commandes sont en cours pour ce prix",
                 "reading": "Limite atteinte : Chaque position est limitée à 1024 ordres limités. Veuillez attendre que certaines commandes soient exécutées"
+            },
+            "outOfBounds": {
+                "reading": "Plage de la blockchain dépassée : le montant que vous avez saisi se situe en dehors de la plage autorisée de la blockchain. Min : {min} ; Max : {max}",
+                "reason": "Le montant ne respecte pas la plage de la blockchain"
             }
         },
         "orderStatus": {

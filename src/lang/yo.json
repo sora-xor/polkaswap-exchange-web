@@ -1497,10 +1497,6 @@
                 "reason": "Iye owo ti kọja itankale",
                 "reading": "Iye owo ti kọja: Idiye ọja tabi idiyele idiyele ti kọja idiyele ibeere\/idiwo rẹ"
             },
-            "outOfBounds": {
-                "reason": "Iye ju iwọn blockchain lọ",
-                "reading": "Iwọn Blockchain ti kọja: Iye ti o tẹ sii ṣubu ni ita ibiti a gba laaye blockchain"
-            },
             "spotLimit": {
                 "reason": "Ẹgbẹ iṣowo ti kun",
                 "reading": "Iwọn iye owo: Ẹgbẹ iwe aṣẹ kọọkan ni opin si awọn aaye idiyele alailẹgbẹ 1024. Jọwọ yan iye owo kan laarin iwọn to wa tabi duro fun aaye lati wa"
@@ -1512,6 +1508,10 @@
             "singlePriceLimit": {
                 "reason": "Ọpọlọpọ awọn ibere ti nlọ lọwọ fun idiyele yii",
                 "reading": "Iwọn opin: Ipo kọọkan wa ni ihamọ si awọn aṣẹ opin 1024. Jọwọ duro titi diẹ ninu awọn aṣẹ yoo mu ṣẹ"
+            },
+            "outOfBounds": {
+                "reading": "Iwọn Blockchain ti kọja: Iye ti o tẹ sii ṣubu ni ita ibiti a gba laaye blockchain. Min: {min} ; O pọju: {max}",
+                "reason": "Iye kuna lati ni ibamu pẹlu iwọn blockchain"
             }
         },
         "orderStatus": {

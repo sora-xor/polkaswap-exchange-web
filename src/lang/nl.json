@@ -1497,10 +1497,6 @@
                 "reason": "Prijs overtrof de spread",
                 "reading": "Prijs overschreden: de bied- of laatprijs van een markt overtrof de vraag-\/biedprijs"
             },
-            "outOfBounds": {
-                "reason": "Het bedrag overschrijdt het blockchain-bereik",
-                "reading": "Blockchainbereik overschreden: Uw ingevoerde bedrag valt buiten het toegestane bereik van de blockchain"
-            },
             "spotLimit": {
                 "reason": "Handelszijde is gevuld",
                 "reading": "Prijsbereiklimiet: Elke orderboekkant is beperkt tot 1024 unieke prijspunten. Selecteer een prijs binnen het bestaande aanbod of wacht tot er ruimte vrijkomt"
@@ -1512,6 +1508,10 @@
             "singlePriceLimit": {
                 "reason": "Er lopen te veel bestellingen voor deze prijs",
                 "reading": "Limiet bereikt: Elke positie is beperkt tot 1024 limietorders. Wacht tot sommige bestellingen zijn uitgevoerd"
+            },
+            "outOfBounds": {
+                "reading": "Blockchainbereik overschreden: Uw ingevoerde bedrag valt buiten het toegestane bereik van de blockchain. Min: {min} ; Maximaal: {max}",
+                "reason": "Bedrag voldoet niet aan het blockchain-bereik"
             }
         },
         "orderStatus": {

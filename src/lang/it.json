@@ -1497,10 +1497,6 @@
                 "reason": "Il prezzo ha superato lo spread",
                 "reading": "Prezzo superato: il prezzo bid o ask di un mercato ha superato il suo prezzo ask\/bid"
             },
-            "outOfBounds": {
-                "reason": "L'importo supera l'intervallo della blockchain",
-                "reading": "Intervallo blockchain superato: l'importo inserito non rientra nell'intervallo consentito dalla blockchain"
-            },
             "spotLimit": {
                 "reason": "La parte commerciale è stata riempita",
                 "reading": "Limite della fascia di prezzo: ciascun lato del book degli ordini è limitato a 1024 punti di prezzo unici. Seleziona un prezzo compreso nell'intervallo esistente o attendi che lo spazio diventi disponibile"
@@ -1512,6 +1508,10 @@
             "singlePriceLimit": {
                 "reason": "Sono in corso troppi ordini per questo prezzo",
                 "reading": "Limite raggiunto: ogni posizione è limitata a 1024 ordini limite. Attendi l'evasione di alcuni ordini"
+            },
+            "outOfBounds": {
+                "reading": "Intervallo blockchain superato: l'importo inserito non rientra nell'intervallo consentito dalla blockchain. Min: {min} ; Massimo: {max}",
+                "reason": "L'importo non è conforme all'intervallo blockchain"
             }
         },
         "orderStatus": {

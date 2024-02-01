@@ -1497,10 +1497,6 @@
                 "reason": "Giá vượt quá mức chênh lệch",
                 "reading": "Giá vượt quá: giá chào mua hoặc giá chào bán của thị trường vượt quá giá chào bán\/giá chào mua của nó"
             },
-            "outOfBounds": {
-                "reason": "Số tiền vượt quá phạm vi blockchain",
-                "reading": "Đã vượt quá phạm vi chuỗi khối: Số tiền bạn đã nhập nằm ngoài phạm vi cho phép của chuỗi khối"
-            },
             "spotLimit": {
                 "reason": "Bên giao dịch đã được lấp đầy",
                 "reading": "Giới hạn phạm vi giá: Mỗi mặt sổ đặt hàng được giới hạn ở 1024 điểm giá duy nhất. Vui lòng chọn một mức giá trong phạm vi hiện có hoặc đợi có chỗ trống"
@@ -1512,6 +1508,10 @@
             "singlePriceLimit": {
                 "reason": "Quá nhiều đơn đặt hàng đang diễn ra cho mức giá này",
                 "reading": "Đã đạt đến giới hạn: Mỗi vị trí được giới hạn ở 1024 lệnh giới hạn. Vui lòng đợi cho đến khi một số đơn hàng được thực hiện"
+            },
+            "outOfBounds": {
+                "reading": "Đã vượt quá phạm vi chuỗi khối: Số tiền bạn đã nhập nằm ngoài phạm vi cho phép của chuỗi khối. Tối thiểu: {min} ; Tối đa: {max}",
+                "reason": "Số tiền không tuân thủ phạm vi blockchain"
             }
         },
         "orderStatus": {

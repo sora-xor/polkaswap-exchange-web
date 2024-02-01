@@ -1497,10 +1497,6 @@
                 "reason": "Pris overskredet spredning",
                 "reading": "Pris overskredet: et markeds kjøps- eller salgskurs oversteg kjøps-\/salgskursen"
             },
-            "outOfBounds": {
-                "reason": "Beløpet overskrider blokkjedeområdet",
-                "reading": "Blockchain-området er overskredet: Det angitte beløpet ditt faller utenfor blokkjedens tillatte område"
-            },
             "spotLimit": {
                 "reason": "Handelssiden er fylt",
                 "reading": "Prisklassetak: Hver ordrebokside er begrenset til 1024 unike prispunkter. Velg en pris innenfor det eksisterende området eller vent til det blir ledig plass"
@@ -1512,6 +1508,10 @@
             "singlePriceLimit": {
                 "reason": "For mange bestillinger pågår for denne prisen",
                 "reading": "Grensen nådd: Hver posisjon er begrenset til 1024 grenseordrer. Vennligst vent til noen bestillinger oppfylles"
+            },
+            "outOfBounds": {
+                "reading": "Blockchain-området er overskredet: Det angitte beløpet ditt faller utenfor blokkjedens tillatte område. Min: {min} ; Maks: {max}",
+                "reason": "Beløpet samsvarer ikke med blokkjedeområdet"
             }
         },
         "orderStatus": {
