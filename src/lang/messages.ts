@@ -1080,6 +1080,12 @@ export default {
         cancelable: 'You can only cancel existing orders. New order placement is currently disabled.',
         inactive: 'All trading activities are currently halted. No orders can be placed or canceled at this time.',
       },
+      orderStatus: {
+        active: 'Active',
+        canceled: 'Canceled',
+        expired: 'Expired',
+        filled: 'Filled',
+      },
     },
     txDetails: {
       orderType: 'order type',
@@ -1102,8 +1108,9 @@ export default {
         reading: "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
       },
       outOfBounds: {
-        reason: 'Amount exceeds the blockchain range',
-        reading: "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range",
+        reason: 'Amount fails to comply with blockchain range',
+        reading:
+          "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range. Min: {min}; Max: {max}",
       },
       spotLimit: {
         reason: 'Trading side has been filled',

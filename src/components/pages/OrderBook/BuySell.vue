@@ -443,11 +443,18 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         reading: this.t('orderBook.error.singlePriceLimit.reading'),
       });
 
-    if (!this.isZeroAmount && this.isOutOfAmountBounds && this.quoteValue)
+    if (!this.isZeroAmount && this.isOutOfAmountBounds && this.quoteValue) {
+      const { maxLotSize, minLotSize } = this.currentOrderBook as OrderBook;
+      const { symbol } = this.baseAsset;
+
       return this.setError({
         reason: this.t('orderBook.error.outOfBounds.reason'),
-        reading: this.t('orderBook.error.outOfBounds.reading'),
+        reading: this.t('orderBook.error.outOfBounds.reading', {
+          max: `${maxLotSize?.toLocaleString()} ${symbol}`,
+          min: `${minLotSize?.toLocaleString()} ${symbol}`,
+        }),
       });
+    }
   }
 
   async singlePriceReachedLimit(): Promise<boolean> {

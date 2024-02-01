@@ -1498,8 +1498,8 @@
                 "reading": "Price exceeded: a market's bid or ask price exceeded its ask\/bid price"
             },
             "outOfBounds": {
-                "reason": "Amount exceeds the blockchain range",
-                "reading": "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range"
+                "reason": "Amount fails to comply with blockchain range",
+                "reading": "Blockchain range departs: Your entered amount falls outside the blockchain allowed range. Min: {min}; Max: {max}"
             },
             "spotLimit": {
                 "reason": "Trading side has been filled",
