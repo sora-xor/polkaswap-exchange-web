@@ -252,6 +252,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       this.setTokenFromAddress(this.baseAsset.address);
       this.setTokenToAddress(this.quoteAsset.address);
     }
+
+    this.setAmountSliderValue(0);
   }
 
   @Watch('visibleBookList')
