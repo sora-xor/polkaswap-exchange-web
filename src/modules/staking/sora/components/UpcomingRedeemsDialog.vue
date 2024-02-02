@@ -92,8 +92,7 @@ export default class UpcomingRedeemsDialog extends Mixins(
       const countdownHours = countdownHoursTotal - countdownDays * DAY_HOURS;
       const countdownFormatted = this.t('soraStaking.info.countdown', { days: countdownDays, hours: countdownHours });
 
-      const valueFormatted =
-        formatDecimalPlaces(new FPNumber(value, this.rewardAsset?.decimals)) + ' ' + this.rewardAsset?.symbol;
+      const valueFormatted = formatDecimalPlaces(FPNumber.fromCodecValue(value)) + ' ' + this.stakingAsset?.symbol;
 
       return {
         id: era,

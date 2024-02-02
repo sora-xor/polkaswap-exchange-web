@@ -108,7 +108,15 @@
           v-if="stakingInitialized && countdownFormatted"
           :label="t('soraStaking.info.redeemAvailableIn')"
           :value="countdownFormatted"
-        />
+        >
+          <s-button
+            class="redeem-button"
+            @click="showUpcomingRedeems"
+            type="action"
+            size="small"
+            icon="time-time-history-24"
+          />
+        </info-line>
         <info-line
           v-if="!stakingInitialized"
           :label="t('soraStaking.info.totalLiquidityStaked')"

@@ -149,7 +149,7 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   }
 
   get unbondPeriodHours(): number {
-    return this.unbondPeriod * ERA_HOURS;
+    return this.unbondPeriod * DAY_HOURS;
   }
 
   get unbondPeriodFormatted(): string | null {
