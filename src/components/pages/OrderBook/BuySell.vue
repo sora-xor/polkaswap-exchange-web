@@ -781,10 +781,13 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.limitOrderType = LimitOrderType.limit;
   }
 
-  resetValues() {
+  resetValues(success?: boolean) {
     this.setBaseValue('');
     this.setQuoteValue('');
-    this.limitOrderType = LimitOrderType.limit;
+
+    if (!success) {
+      this.limitOrderType = LimitOrderType.limit;
+    }
   }
 
   showPlaceOrderDialog(): void {
