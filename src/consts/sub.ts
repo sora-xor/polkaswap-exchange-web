@@ -79,6 +79,18 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     blockExplorerUrls: [],
     shortName: 'SORA DOT',
   },
+  [SubNetworkId.Liberland]: {
+    id: SubNetworkId.Liberland,
+    name: 'Liberland',
+    nativeCurrency: {
+      name: 'LLD',
+      symbol: 'LLD',
+      decimals: 12,
+    },
+    endpointUrls: [],
+    blockExplorerUrls: [],
+    shortName: 'Liberland',
+  },
 };
 
 export const SUB_TRANSFER_FEES: SubNetworksFees = {

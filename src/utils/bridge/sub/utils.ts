@@ -2,6 +2,7 @@ import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
+import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
 import { SubTransferType } from '@/utils/bridge/sub/types';
 
 import type { ApiPromise } from '@polkadot/api';
@@ -32,6 +33,8 @@ export const determineTransferType = (network: SubNetwork) => {
     return SubTransferType.SoraParachain;
   } else if (subBridgeApi.isRelayChain(network)) {
     return SubTransferType.Relaychain;
+  } else if (subBridgeApi.isStandalone(network)) {
+    return SubTransferType.Standalone;
   } else {
     return SubTransferType.Parachain;
   }
@@ -47,7 +50,7 @@ export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string 
   return bridgeProxyEvent.event.data[0].toString();
 };
 
-export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): string => {
+const getNativeTokenDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): string => {
   // Native token for network
   const balancesDepositEvent = events.find(
     (e) =>
@@ -58,6 +61,12 @@ export const getDepositedBalance = (events: Array<any>, to: string, api: ApiProm
   if (!balancesDepositEvent) throw new Error(`Unable to find "balances.Deposit" event`);
 
   return balancesDepositEvent.event.data.amount.toString();
+};
+
+export const getDepositedBalance = (events: Array<any>, to: string, adapter: SubAdapter): string => {
+  const api = adapter.api;
+
+  return getNativeTokenDepositedBalance(events, to, api);
 };
 
 export const getReceivedAmount = (sendedAmount: string, receivedAmount: CodecString, decimals?: number) => {

@@ -141,7 +141,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
 
       const [soraAddress, registeredAsset] =
         Object.entries(this.registeredAssets).find(([soraAddress, registeredAsset]) =>
-          ethersUtil.addressesAreEqual(registeredAsset.address, ethTransferData.address)
+          ethersUtil.addressesAreEqual(registeredAsset.address as string, ethTransferData.address)
         ) ?? [];
 
       if (!(soraAddress && registeredAsset)) {
@@ -151,8 +151,11 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         );
       }
 
-      const isExternalNative = ethersUtil.isNativeEvmTokenAddress(registeredAsset.address);
-      const externalBalance = await ethersUtil.getAccountAssetBalance(ethTransferData.to, registeredAsset.address);
+      const isExternalNative = ethersUtil.isNativeEvmTokenAddress(registeredAsset.address as string);
+      const externalBalance = await ethersUtil.getAccountAssetBalance(
+        ethTransferData.to,
+        registeredAsset.address as string
+      );
       const asset = this.getAsset(soraAddress);
 
       const evmNetworkFee: CodecString = await getEthNetworkFee(

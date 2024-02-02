@@ -54,7 +54,7 @@ const getExternalBalance = async (
   isSub: boolean
 ): Promise<CodecString> => {
   return isSub
-    ? await subBridgeConnector.network.adapter.getTokenBalance(accountAddress, asset?.symbol)
+    ? await subBridgeConnector.network.adapter.getTokenBalance(accountAddress, asset?.externalAddress)
     : await ethersUtil.getAccountAssetBalance(accountAddress, asset?.externalAddress);
 };
 
@@ -476,7 +476,7 @@ const actions = defineActions({
 
     let minLimit = FPNumber.ZERO;
 
-    if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
+    if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset && subBridgeConnector.soraParachain) {
       try {
         const value = await subBridgeConnector.soraParachain.adapter.getAssetMinimumAmount(getters.asset.address);
         minLimit = FPNumber.fromCodecValue(value, getters.asset.externalDecimals);

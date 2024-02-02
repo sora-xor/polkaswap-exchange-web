@@ -80,7 +80,7 @@ async function getSubRegisteredAssets(
   const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
     return {
       [soraAddress]: {
-        address: '',
+        address: assetData.address ?? '',
         decimals: assetData.decimals,
         kind: assetData.assetKind,
       },

@@ -2,7 +2,7 @@ import { Connection } from '@sora-substrate/connection';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { formatBalance } from '@sora-substrate/util/build/assets';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { SubNetworkId, LiberlandAssetType } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
 import { ZeroStringValue } from '@/consts';
 import type { SubNetworkApps } from '@/store/web3/types';
@@ -66,10 +66,15 @@ export class SubAdapter {
   }
 
   public getSoraParachainId(): number | undefined {
-    const soraParachain = subBridgeApi.getSoraParachain(this.subNetwork);
-    const soraParachainId = subBridgeApi.getParachainId(soraParachain);
+    try {
+      const soraParachain = subBridgeApi.getSoraParachain(this.subNetwork);
+      const soraParachainId = subBridgeApi.getParachainId(soraParachain);
 
-    return soraParachainId;
+      return soraParachainId;
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
   }
 
   public async getBlockNumber(): Promise<number> {
@@ -120,7 +125,7 @@ export class SubAdapter {
     return new FPNumber(res.partialFee, decimals).toCodecString();
   }
 
-  public async getTokenBalance(accountAddress: string, tokenSymbol?: string): Promise<CodecString> {
+  public async getTokenBalance(accountAddress: string, address?: string): Promise<CodecString> {
     return await this.getAccountBalance(accountAddress);
   }
 
@@ -130,6 +135,27 @@ export class SubAdapter {
     amount: string | number
   ): SubmittableExtrinsic<'promise', ISubmittableResult> {
     throw new Error(`[${this.constructor.name}] "getTransferExtrinsic" method is not implemented`);
+  }
+}
+
+class LiberlandAdapter extends SubAdapter {
+  public async getTokenBalance(accountAddress: string, address: string): Promise<CodecString> {
+    return address === LiberlandAssetType.LLD
+      ? await this.getAccountBalance(accountAddress)
+      : await this.getAccountAssetBalance(accountAddress, address);
+  }
+
+  private async getAccountAssetBalance(accountAddress: string, address: string): Promise<CodecString> {
+    if (!(this.connected && accountAddress)) return ZeroStringValue;
+
+    await this.api.isReady;
+
+    const assetId = Number(address);
+    const result = await (this.api.query.assets as any).account(assetId, accountAddress);
+
+    if (result.isEmpty) return ZeroStringValue;
+
+    return result.unwrap().balance.toString();
   }
 }
 
@@ -225,10 +251,18 @@ type SubNetworkConnection<Adapter extends SubAdapter> = {
   parachainId?: number;
 };
 
+type PathNetworks = {
+  soraParachain?: SubNetwork;
+  relaychain?: SubNetwork;
+  parachain?: SubNetwork;
+  standalone?: SubNetwork;
+};
+
 export class SubNetworksConnector {
-  public soraParachain!: SubNetworkConnection<SoraParachainAdapter>;
+  public soraParachain?: SubNetworkConnection<SoraParachainAdapter>;
   public relaychain?: SubNetworkConnection<SubAdapter>;
   public parachain?: SubNetworkConnection<SubAdapter>;
+  public standalone?: SubNetworkConnection<SubAdapter>;
 
   public network!: SubNetworkConnection<SubAdapter>; // link to the one above
 
@@ -241,37 +275,37 @@ export class SubNetworksConnector {
     [SubNetworkId.RococoSora]: () => new SoraParachainAdapter(SubNetworkId.RococoSora),
     [SubNetworkId.KusamaSora]: () => new SoraParachainAdapter(SubNetworkId.KusamaSora),
     [SubNetworkId.PolkadotSora]: () => new SoraParachainAdapter(SubNetworkId.PolkadotSora),
+    [SubNetworkId.Liberland]: () => new LiberlandAdapter(SubNetworkId.Liberland),
   };
 
   get uniqueConnections(): SubNetworkConnection<SubAdapter>[] {
-    return [this.soraParachain, this.relaychain, this.parachain].filter(
+    return [this.soraParachain, this.relaychain, this.parachain, this.standalone].filter(
       (c) => !!c
     ) as SubNetworkConnection<SubAdapter>[];
   }
 
-  protected getChains(network: SubNetwork): SubNetwork[] {
+  protected getChains(network: SubNetwork): PathNetworks {
+    const path: PathNetworks = {};
     const type = determineTransferType(network);
-    const soraParachain = subBridgeApi.getSoraParachain(network);
-    const path: SubNetwork[] = [soraParachain];
+
+    if (type === SubTransferType.Standalone) {
+      path.standalone = network;
+      return path;
+    }
+
+    path.soraParachain = subBridgeApi.getSoraParachain(network);
 
     if (type === SubTransferType.SoraParachain) return path;
 
     if (type === SubTransferType.Relaychain) {
-      path.push(network);
+      path.relaychain = network;
     } else {
-      const relaychain = subBridgeApi.getRelayChain(network);
-      path.push(relaychain, network);
+      path.relaychain = subBridgeApi.getRelayChain(network);
+      path.parachain = network;
     }
 
     return path;
   }
-
-  protected getConnection<Adapter extends SubAdapter>(
-    network: SubNetwork,
-    connectorAdapter?: Adapter
-  ): SubNetworkConnection<Adapter>;
-
-  protected getConnection<Adapter extends SubAdapter>(network: undefined, connectorAdapter?: Adapter): undefined;
 
   protected getConnection<Adapter extends SubAdapter>(
     network?: SubNetwork,
@@ -279,10 +313,13 @@ export class SubNetworksConnector {
   ): SubNetworkConnection<Adapter> | undefined {
     if (!network) return undefined;
 
-    const parachainId = subBridgeApi.isRelayChain(network) ? undefined : subBridgeApi.getParachainId(network);
     const adapter = this.getAdapterForNetwork<Adapter>(network);
     // reuse api from connectorAdapter if possible
     this.cloneApi(adapter, connectorAdapter);
+
+    // [TODO: Liberland] use subBridgeApi.isParachain
+    const isParachain = !subBridgeApi.isRelayChain(network) && !subBridgeApi.isStandalone(network);
+    const parachainId = isParachain ? subBridgeApi.getParachainId(network) : undefined;
 
     return { adapter, parachainId };
   }
@@ -317,18 +354,22 @@ export class SubNetworksConnector {
    * @param connector Existing bridge connector. Api connections will be reused, if networks matches
    */
   public async init(destination: SubNetwork, connector?: SubNetworksConnector): Promise<void> {
-    const [soraParachain, relaychain, parachain] = this.getChains(destination);
+    const { soraParachain, relaychain, parachain, standalone } = this.getChains(destination);
     // Create adapters
+    this.standalone = this.getConnection(standalone, connector?.soraParachain?.adapter);
     this.soraParachain = this.getConnection(soraParachain, connector?.soraParachain?.adapter);
     this.relaychain = this.getConnection(relaychain, connector?.relaychain?.adapter);
     this.parachain = this.getConnection(parachain, connector?.parachain?.adapter);
+
     // link destination network
     if (this.parachain) {
       this.network = this.parachain;
     } else if (this.relaychain) {
       this.network = this.relaychain;
-    } else {
+    } else if (this.soraParachain) {
       this.network = this.soraParachain;
+    } else if (this.standalone) {
+      this.network = this.standalone;
     }
   }
 
