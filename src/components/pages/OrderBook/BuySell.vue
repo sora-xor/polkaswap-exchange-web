@@ -704,11 +704,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.quoteSubscription = null;
   }
 
-  getFormattedValue(value: string, precision = 7): string {
-    const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
-    return `${integer}.${decimal.substring(0, precision)}`;
-  }
-
   private subscribeOnBookQuote(): void {
     if (!this.baseValue) return;
     this.resetQuoteSubscription();
@@ -734,11 +729,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         return;
       }
 
-      const unformattedMarketQuotePrice = FPNumber.fromCodecValue(amount)
+      this.marketQuotePrice = FPNumber.fromCodecValue(amount)
         .div(FPNumber.fromNatural(this.baseValue))
+        .dp(this.bookPrecision)
         .toString();
-
-      this.marketQuotePrice = this.getFormattedValue(unformattedMarketQuotePrice, this.bookPrecision);
 
       this.prepareValuesForSwap(amount);
     });
@@ -768,6 +762,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.setBaseValue('');
     this.setLiquiditySource(LiquiditySourceTypes.Default);
     this.selectDexId(DexId.XOR);
+    this.limitOrderType = LimitOrderType.limit;
   }
 
   resetValues() {
