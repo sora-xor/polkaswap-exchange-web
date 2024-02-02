@@ -16,6 +16,7 @@ import {
   getMessageAcceptedNonces,
   isMessageDispatchedNonces,
   isAssetAddedToChannel,
+  isSoraBridgeAppMessageSent,
   determineTransferType,
   getReceivedAmount,
   getParachainSystemMessageHash,
@@ -175,7 +176,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       this.updateTransactionParams(id, { externalNetworkFee });
     }
 
-    if (this.transferType !== SubTransferType.SoraParachain) {
+    if (this.transferType === SubTransferType.Relaychain) {
       const xcmEvent = transactionEvents.find((e) =>
         this.connector.network.adapter.api.events.xcmPallet.Attempted.is(e.event)
       );
@@ -198,8 +199,13 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     if (tx.payload?.batchNonce) return;
 
-    const parachainStartBlock = tx.payload.parachainStartBlock as number;
+    const isFirstStep = [SubTransferType.SoraParachain, SubTransferType.Standalone].includes(this.transferType);
+    const isStandalone = this.transferType === SubTransferType.Standalone;
+    const adapter = isStandalone ? this.connector.network.adapter : this.connector.soraParachain!.adapter;
+
+    const startBlockHeight = isStandalone ? tx.externalBlockHeight! : (tx.payload.parachainStartBlock as number);
     const sended = new FPNumber(tx.amount as string, this.asset.externalDecimals).toCodecString();
+    const from = tx.from as string;
     const to = tx.to as string;
 
     let subscription!: Subscription;
@@ -209,16 +215,16 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     let blockNumber!: number;
 
     try {
-      await this.connector.soraParachain!.adapter.connect();
+      await adapter.connect();
 
       await new Promise<void>((resolve, reject) => {
-        const eventsObservable = api.system.getEventsObservable(this.connector.soraParachain!.adapter.apiRx);
-        const blockNumberObservable = api.system.getBlockNumberObservable(this.connector.soraParachain!.adapter.apiRx);
+        const eventsObservable = api.system.getEventsObservable(adapter.apiRx);
+        const blockNumberObservable = api.system.getBlockNumberObservable(adapter.apiRx);
 
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(
           ([eventsVec, blockHeight]) => {
             try {
-              if (blockHeight > parachainStartBlock + 3) {
+              if (blockHeight > startBlockHeight + 3) {
                 throw new Error(
                   `[${this.constructor.name}]: Sora parachain should have received message from ${tx.externalNetwork}`
                 );
@@ -226,20 +232,25 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
               const events = [...eventsVec.toArray()].reverse();
 
-              const assetAddedToChannelEventIndex = events.findIndex((e) =>
-                isAssetAddedToChannel(e, this.asset, to, sended, this.connector.soraParachain!.adapter.api)
-              );
+              let assetSendEventIndex = -1;
 
-              if (assetAddedToChannelEventIndex === -1) {
-                return;
+              if (!isStandalone) {
+                assetSendEventIndex = events.findIndex((e) =>
+                  isAssetAddedToChannel(e, this.asset, to, sended, adapter.api)
+                );
+              } else {
+                assetSendEventIndex = events.findIndex((e) =>
+                  isSoraBridgeAppMessageSent(e, this.asset, from, to, sended, adapter.api)
+                );
               }
 
-              recipientAmount = events[assetAddedToChannelEventIndex].event.data[0].asTransfer.amount.toString();
+              if (assetSendEventIndex === -1) {
+                return;
+              }
+              // [TODO] check compability
+              recipientAmount = events[assetSendEventIndex].event.data[0].asTransfer.amount?.asSubstrate?.toString();
               blockNumber = blockHeight;
-              [batchNonce, messageNonce] = getMessageAcceptedNonces(
-                events.slice(assetAddedToChannelEventIndex),
-                this.connector.soraParachain!.adapter.api
-              );
+              [batchNonce, messageNonce] = getMessageAcceptedNonces(events.slice(assetSendEventIndex), adapter.api);
 
               resolve();
             } catch (error) {
@@ -251,9 +262,9 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     } finally {
       subscription.unsubscribe();
 
-      if (this.transferType !== SubTransferType.SoraParachain) {
+      if (!isFirstStep) {
         // run non blocking process promise
-        this.getHashesByBlockNumber(blockNumber, this.connector.soraParachain!.adapter.apiRx)
+        this.getHashesByBlockNumber(blockNumber, adapter.apiRx)
           .then(({ blockHeight, blockId }) =>
             this.updateTransactionParams(id, {
               parachainBlockHeight: blockHeight, // parachain block number

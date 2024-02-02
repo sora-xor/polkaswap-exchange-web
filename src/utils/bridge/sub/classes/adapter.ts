@@ -1,7 +1,7 @@
 import { Connection } from '@sora-substrate/connection';
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { formatBalance } from '@sora-substrate/util/build/assets';
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { BridgeNetworkType, BridgeAccountType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetworkId, LiberlandAssetType } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
 import { ZeroStringValue } from '@/consts';
@@ -156,6 +156,24 @@ class LiberlandAdapter extends SubAdapter {
     if (result.isEmpty) return ZeroStringValue;
 
     return result.unwrap().balance.toString();
+  }
+
+  protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+    const { externalAddress: address, externalDecimals: decimals } = asset;
+    const value = new FPNumber(amount, decimals).toCodecString();
+
+    const assetId = address === LiberlandAssetType.LLD ? address : { Asset: Number(address) };
+
+    return this.api.tx.soraBridgeApp.burn(
+      // networkId
+      'Mainnet', // [TODO: Liberland] SubNetworkId.Mainnet
+      // assetId
+      assetId,
+      // recipient
+      { [BridgeAccountType.Sora]: recipient },
+      // amount
+      value
+    );
   }
 }
 

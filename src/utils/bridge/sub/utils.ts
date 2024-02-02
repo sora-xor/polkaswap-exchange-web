@@ -160,6 +160,42 @@ export const isAssetAddedToChannel = (
   return true;
 };
 
+// Liberland
+export const isSoraBridgeAppMessageSent = (
+  e: any,
+  asset: RegisteredAccountAsset,
+  from: string,
+  to: string,
+  sended: CodecString,
+  api: ApiPromise
+) => {
+  if (!api.events.soraBridgeApp.MessageSent.is(e.event)) return false;
+
+  const {
+    amount: amountCodec,
+    assetId: asseIdCodec,
+    sender: senderCodec,
+    recipient: recipientCodec,
+  } = e.event.data[0].asTransfer;
+
+  if (!(amountCodec.isSubstrate && asseIdCodec.isSora && recipientCodec.isSora && senderCodec.isSora)) return false;
+
+  const amount = amountCodec.asSubstrate.toString();
+  const assetId = asseIdCodec.asSora.toString();
+  const sender = senderCodec.asSora.toString();
+  const recipient = recipientCodec.asSora.toString();
+
+  // address check
+  if (subBridgeApi.formatAddress(sender) !== subBridgeApi.formatAddress(from)) return false;
+  if (subBridgeApi.formatAddress(recipient) !== subBridgeApi.formatAddress(to)) return false;
+  // asset check
+  if (assetId !== asset.address) return false;
+  // amount check
+  if (amount !== sended) return false;
+
+  return true;
+};
+
 // [TECH] move to js-lib
 export const formatSubAddress = (address: string, ss58: number): string => {
   const publicKey = decodeAddress(address, false);
