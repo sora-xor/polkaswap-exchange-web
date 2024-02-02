@@ -2,8 +2,14 @@
   <div v-loading="loading" class="order-book-widget stock-book book">
     <div class="stock-book__title">
       <div>
-        <span>Orderbook</span>
-        <s-tooltip slot="suffix" border-radius="mini" :content="orderBookTooltip" placement="top" tabindex="-1">
+        <span>{{ t('orderBook.orderBook') }}</span>
+        <s-tooltip
+          slot="suffix"
+          border-radius="mini"
+          :content="t('orderBook.tooltip.bookWidget')"
+          placement="top"
+          tabindex="-1"
+        >
           <s-icon name="info-16" size="14px" />
         </s-tooltip>
       </div>
@@ -23,9 +29,9 @@
       </s-dropdown>
     </div>
     <div class="book-columns">
-      <div>price</div>
-      <div>amount</div>
-      <div>total</div>
+      <div>{{ t('orderBook.price') }}</div>
+      <div>{{ t('orderBook.amount') }}</div>
+      <div>{{ t('orderBook.total') }}</div>
     </div>
     <div v-if="asksFormatted.length" class="stock-book-sell" :class="{ unclickable: isMarketOrder }">
       <div class="margin" :style="getHeight()" />
@@ -41,7 +47,7 @@
         <div class="bar" :style="getStyles(order.filled)" />
       </div>
     </div>
-    <div v-else class="stock-book-sell--no-asks">No opened asks</div>
+    <div v-else class="stock-book-sell--no-asks">{{ t('orderBook.book.noAsks') }}</div>
     <div :class="getComputedClassTrend()">
       <div>
         <span class="mark-price">{{ lastPriceFormatted }}</span>
@@ -57,7 +63,7 @@
         <div class="bar" :style="getStyles(order.filled)" />
       </div>
     </div>
-    <div v-else class="stock-book-buy--no-bids">No opened bids</div>
+    <div v-else class="stock-book-buy--no-bids">{{ t('orderBook.book.noBids') }}</div>
   </div>
 </template>
 
@@ -219,10 +225,6 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return fiat ? `$${fiat}` : '';
   }
 
-  get orderBookTooltip() {
-    return 'A live, constantly updating record of buy (bid) and sell (ask) orders for a specific asset, organized by price level. The order book displays the depth of the market, including the quantities of assets being offered at various prices. Traders utilize this detailed view to gauge market sentiment, identify potential resistance and support levels, and anticipate price movements based on existing demand and supply';
-  }
-
   getComputedClassTrend(): string {
     const base = ['stock-book-delimiter'];
 
@@ -348,7 +350,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
         accumulatedAmount = FPNumber.ZERO;
         accumulatedTotal = FPNumber.ZERO;
         edge = edge.sub(step);
-        index -= 1; // TODO: [Rustem] check it (Remove this assignment of "index". [+1 location]sonarlint(typescript:S2310))
+        index -= 1;
       }
 
       if (index === orders.length - 1) {
