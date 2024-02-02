@@ -3,6 +3,7 @@ import { ValidatorsFilter } from './types';
 import type { Asset } from '@sora-substrate/util/build/assets/types';
 
 export const ERA_HOURS = 6;
+export const DAY_HOURS = 24;
 
 export enum SoraStakingPageNames {
   Overview = 'Overview',
@@ -26,6 +27,8 @@ export enum SoraStakingComponents {
   PendingRewardsDialog = 'PendingRewardsDialog',
   ValidatorsDialog = 'ValidatorsDialog',
   ControllerDialog = 'ControllerDialog',
+  RedeemDialog = 'RedeemDialog',
+  UpcomingRedeemsDialog = 'UpcomingRedeemsDialog',
 }
 
 export const soraStaking = {

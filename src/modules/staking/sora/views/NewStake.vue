@@ -97,6 +97,9 @@ export default class SoraStakingForm extends Mixins(StakingMixin, mixins.Loading
 
   mounted() {
     this.selectValidators(this.validators);
+
+    const input: HTMLInputElement | null = this.$el.querySelector('.s-input .el-input__inner');
+    input?.focus();
   }
 
   get networkFee(): CodecString {

@@ -1288,9 +1288,12 @@
             "controllerAccount": "Controller account"
         },
         "actions": {
+            "confirm": "Confirm Staking",
             "claim": "Claim rewards",
             "remove": "Remove stake",
-            "more": "Stake more"
+            "more": "Stake more",
+            "payout": "Payout",
+            "redeem": "Redeem"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1329,7 +1332,9 @@
             "minimumStake": "Minimum stake",
             "nominators": "Nominators",
             "validators": "Validators",
-            "selectedValidators": "Selected validators"
+            "selectedValidators": "Selected validators",
+            "redeemAvailableIn": "Next redeem available in",
+            "countdown": "{days}D {hours}H"
         },
         "validatorsFilterDialog": {
             "title": "Filters",
@@ -1378,6 +1383,13 @@
             "title": "Pending rewards",
             "noSelectedRewards": "Select rewards",
             "payout": "Payout"
+        },
+        "redeemDialog": {
+          "title": "Redeem",
+          "checkUpcomingRedeems": "Check upcoming redeems"
+        },
+        "upcomingRedeemsDialog": {
+          "title": "Upcoming redeems"
         },
         "selectValidatorsMode": {
             "title": "Stake with validators suggested by the algorithm",

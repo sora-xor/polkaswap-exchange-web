@@ -826,6 +826,7 @@ export default {
       more: 'Stake more',
       payout: 'Payout',
       confirm: 'Confirm Staking',
+      redeem: 'Redeem',
     },
     overview: {
       title: '{Sora} Staking',
@@ -867,6 +868,8 @@ export default {
       nominators: 'Nominators',
       validators: 'Validators',
       selectedValidators: 'Selected validators',
+      redeemAvailableIn: 'Redeem available in',
+      countdown: `{days}D {hours}H`,
     },
     validatorsFilterDialog: {
       title: 'Filters',
@@ -923,6 +926,13 @@ export default {
       payout: 'Payout',
       information:
         'Validators payout the rewards every 2-5 days. However, you can payout them by yourself, especially if rewards are close to expiring, but you will pay the fee.',
+    },
+    redeemDialog: {
+      title: 'Redeem',
+      checkUpcomingRedeems: 'Check upcoming redeems',
+    },
+    upcomingRedeemsDialog: {
+      title: 'Upcoming redeems',
     },
     selectValidatorsMode: {
       title: 'Stake with validators suggested by the algorithm',

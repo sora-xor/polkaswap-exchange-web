@@ -1,28 +1,21 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="title">
-    <div class="claim-rewards-dialog">
+    <div class="redeem-dialog">
       <div class="reward">
         <formatted-amount-with-fiat-value
           class="reward-amount"
           symbol-as-decimal
           value-can-be-hidden
-          :value="rewardedFundsFormatted"
-          :fiat-value="rewardedFundsFiat"
+          :value="redeemableFundsFormatted"
+          :fiat-value="redeemableFundsFiat"
         />
-        <template v-if="rewardAsset">
-          <token-logo class="reward-logo" :tokenSymbol="rewardAsset.symbol" />
+        <template v-if="stakingAsset">
+          <token-logo class="reward-logo" :tokenSymbol="stakingAsset.symbol" />
           <span class="reward-symbol">
-            {{ rewardAsset.symbol }}
+            {{ stakingAsset.symbol }}
           </span>
         </template>
       </div>
-
-      <s-input
-        v-model="rewardsDestination"
-        :placeholder="t('soraStaking.claimRewardsDialog.rewardsDestination')"
-        suffix="s-icon-basic-user-24"
-        :disabled="true"
-      ></s-input>
 
       <div class="info">
         <info-line
@@ -57,15 +50,15 @@
           {{ t('confirmText') }}
         </template>
       </s-button>
-      <div class="check-pending-rewards" @click="checkPendingRewards">
-        {{ t('soraStaking.claimRewardsDialog.checkRewards') }} ({{ pendingRewards?.length ?? 0 }})
+      <div class="check-upcoming-redeems" @click="checkUpcomingRedeems">
+        {{ t('soraStaking.redeemDialog.checkUpcomingRedeems') }} ({{ accountLedger?.unlocking?.length ?? 0 }})
       </div>
     </div>
   </dialog-base>
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber, Operation } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
@@ -82,79 +75,25 @@ import type { CodecString } from '@sora-substrate/util';
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
-export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
-  @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
-
-  rewardsDestination = '';
-  payoutNetworkFee: string | null = null;
-
-  @Watch('visible', { immediate: true })
-  @Watch('payeeAddress', { immediate: true })
-  setRewardsDestination() {
-    if (this.visible) {
-      this.rewardsDestination = this.payeeAddress;
-    }
-  }
-
-  get payeeAddress() {
-    switch (this.payee) {
-      case 'Stash':
-        return this.stash;
-      case 'Controller':
-        return this.controller;
-      default:
-        return this.payee;
-    }
-  }
-
-  @Watch('pendingRewards', { immediate: true })
-  async handlePendingRewardsChange() {
-    this.payoutNetworkFee = await this.getPayoutNetworkFee({
-      payouts: this.pendingRewards
-        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
-        : [],
-      payee: this.rewardsDestination !== this.payeeAddress ? this.rewardsDestination : undefined,
-    });
-  }
-
-  get networkFee() {
-    return this.payoutNetworkFee ?? '0';
+export default class RedeemDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
+  get networkFee(): CodecString {
+    return this.networkFees[Operation.StakingWithdrawUnbonded];
   }
 
   get title(): string {
-    return this.t('soraStaking.claimRewardsDialog.title');
-  }
-
-  get inputTitle(): string {
-    return this.title;
-  }
-
-  get rewardedFundsCodec(): CodecString {
-    return this.rewardedFunds.toCodecString();
-  }
-
-  get part(): FPNumber {
-    return this.rewardedFunds.div(FPNumber.HUNDRED);
+    return this.t('soraStaking.redeemDialog.title');
   }
 
   get valueFundsEmpty(): boolean {
-    return this.rewardedFunds.isZero();
-  }
-
-  get stakingBalance(): FPNumber {
-    return this.availableFunds;
-  }
-
-  get stakingBalanceCodec(): CodecString {
-    return this.stakingBalance.toCodecString();
+    return this.redeemableFunds.isZero();
   }
 
   get isInsufficientBalance(): boolean {
-    return FPNumber.lt(this.rewardedFunds, this.rewardedFunds);
+    return FPNumber.lt(this.redeemableFunds, this.redeemableFunds);
   }
 
   get selectedValidatorsFormatted(): string {
-    return `${this.selectedValidators.length} (MA X: ${this.validators.length})`;
+    return `${this.selectedValidators.length} (M AX: ${this.validators.length})`;
   }
 
   get payouts() {
@@ -167,30 +106,19 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   }
 
   async handleConfirm(): Promise<void> {
-    await this.payout({
-      payouts: this.pendingRewards
-        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
-        : [],
-      payee: this.rewardsDestination !== this.payeeAddress ? this.rewardsDestination : undefined,
-    });
-
     await this.getPendingRewards();
 
     this.closeDialog();
   }
 
-  checkPendingRewards(): void {
-    this.$emit('show-rewards');
+  checkUpcomingRedeems(): void {
+    this.$emit('show-upcoming-redeems');
   }
 }
 </script>
 
 <style lang="scss">
-.s-input.s-input--stake-part {
-  @include input-slider;
-}
-
-.claim-rewards-dialog {
+.redeem-dialog {
   .reward {
     .formatted-amount {
       width: 100%;
@@ -207,7 +135,7 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
 </style>
 
 <style lang="scss" scoped>
-.claim-rewards-dialog {
+.redeem-dialog {
   @include full-width-button('action-button');
 
   & > *:not(:first-child) {
@@ -246,7 +174,7 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   margin-top: 16px;
 }
 
-.check-pending-rewards {
+.check-upcoming-redeems {
   color: var(--s-color-theme-accent);
   text-align: center;
   font-size: 14px;

@@ -99,6 +99,15 @@
           :value="redeemableFundsFormatted"
           :asset-symbol="stakingAsset?.symbol"
           :fiat-value="redeemableFundsFiat"
+        >
+          <s-button class="redeem-button" @click="redeem" type="primary" size="small">{{
+            t('soraStaking.actions.redeem')
+          }}</s-button>
+        </info-line>
+        <info-line
+          v-if="stakingInitialized && countdownFormatted"
+          :label="t('soraStaking.info.redeemAvailableIn')"
+          :value="countdownFormatted"
         />
         <info-line
           v-if="!stakingInitialized"
@@ -143,6 +152,12 @@
       :parent-loading="parentLoading || loading"
       @show-rewards="showRewards"
     />
+    <redeem-dialog
+      :visible.sync="showRedeemDialog"
+      :parent-loading="parentLoading || loading"
+      @show-upcoming-redeems="showUpcomingRedeems"
+    />
+    <upcoming-redeems-dialog :visible.sync="showUpcomingRedeemsDialog" :parent-loading="parentLoading || loading" />
     <pending-rewards-dialog :visible.sync="showPendingRewardsDialog" :parent-loading="parentLoading || loading" />
     <validators-dialog
       :visible.sync="showValidatorsDialog"
@@ -191,6 +206,8 @@ type MenuItem = {
     ClaimRewardsDialog: soraStakingLazyComponent(SoraStakingComponents.ClaimRewardsDialog),
     PendingRewardsDialog: soraStakingLazyComponent(SoraStakingComponents.PendingRewardsDialog),
     ValidatorsDialog: soraStakingLazyComponent(SoraStakingComponents.ValidatorsDialog),
+    RedeemDialog: soraStakingLazyComponent(SoraStakingComponents.RedeemDialog),
+    UpcomingRedeemsDialog: soraStakingLazyComponent(SoraStakingComponents.UpcomingRedeemsDialog),
     // ControllerDialog: soraStakingLazyComponent(SoraStakingComponents.ControllerDialog),
   },
 })
@@ -208,6 +225,8 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
   showPendingRewardsDialog = false;
   showValidatorsDialog = false;
   showControllerDialog = false;
+  showRedeemDialog = false;
+  showUpcomingRedeemsDialog = false;
 
   get lockedFundsFormatted(): string {
     return this.lockedFunds.toLocaleString();
@@ -288,6 +307,15 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
   showRewards() {
     this.showClaimRewardsDialog = false;
     this.showPendingRewardsDialog = true;
+  }
+
+  showUpcomingRedeems() {
+    this.showRedeemDialog = false;
+    this.showUpcomingRedeemsDialog = true;
+  }
+
+  redeem() {
+    this.showRedeemDialog = true;
   }
 
   handleStake() {
@@ -412,5 +440,9 @@ p {
 
 .info {
   margin-top: 25px;
+}
+
+.redeem-button {
+  margin-bottom: 12px;
 }
 </style>

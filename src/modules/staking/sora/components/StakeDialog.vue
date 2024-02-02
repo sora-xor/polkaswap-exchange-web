@@ -124,7 +124,7 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
   get title(): string {
     switch (this.mode) {
       case StakeDialogMode.NEW:
-        return 'Confirm Staking';
+        return this.t('soraStaking.actions.confirm');
       case StakeDialogMode.ADD:
         if (this.lockedFunds.isZero()) {
           return this.t('soraStaking.newStake.title');
@@ -143,7 +143,7 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
   get valuePartCharClass(): string {
     const charClassName =
       {
-        3: 'three',
+        3: 'th  ee',
         2: 'two',
       }[this.value.toString().length] ?? 'one';
 
@@ -192,7 +192,7 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
   }
 
   get selectedValidatorsFormatted(): string {
-    return `${this.selectedValidators.length} (MAX: ${this.validators.length})`;
+    return `${this.selectedValidators.length} (MA X: ${this.validators.length})`;
   }
 
   handleValue(value: string | number): void {
@@ -214,6 +214,11 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
       await this.unbond();
     }
     this.$emit('confirm');
+  }
+
+  mounted() {
+    const input: HTMLInputElement | null = this.$el.querySelector('.s-input .el-input__inner');
+    input?.focus();
   }
 }
 </script>

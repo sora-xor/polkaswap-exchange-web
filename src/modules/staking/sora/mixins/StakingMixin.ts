@@ -8,7 +8,7 @@ import { action, getter, state, mutation } from '@/store/decorators';
 import { getAssetBalance, hasInsufficientXorForFee, formatDecimalPlaces } from '@/utils';
 
 import { StakingPageNames } from '../../consts';
-import { SoraStakingPageNames, ValidatorsListMode, rewardAsset } from '../consts';
+import { DAY_HOURS, ERA_HOURS, SoraStakingPageNames, ValidatorsListMode, rewardAsset } from '../consts';
 import { ValidatorsFilter } from '../types';
 
 import type { NetworkFeesObject, CodecString } from '@sora-substrate/util';
@@ -131,8 +131,34 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
     return this.stakingAsset ? this.getFiatAmountByFPNumber(this.unlockingFunds, this.stakingAsset) : null;
   }
 
-  get unbondPeriodFormatted(): string {
-    return `${this.unbondPeriod} days`;
+  get countdownHours(): number | null {
+    if (!this.accountLedger || !this.accountLedger.unlocking.length) {
+      return null;
+    }
+    const unlockingEras = this.accountLedger.unlocking.map((u) => u.era);
+    return (Math.min(...unlockingEras) - this.currentEra) * ERA_HOURS;
+  }
+
+  get countdownFormatted(): string | null {
+    if (!this.countdownHours) {
+      return null;
+    }
+    const days = Math.floor(this.countdownHours / DAY_HOURS);
+    const hours = this.countdownHours - days * DAY_HOURS;
+    return this.t('soraStaking.info.countdown', { days, hours });
+  }
+
+  get unbondPeriodHours(): number {
+    return this.unbondPeriod * ERA_HOURS;
+  }
+
+  get unbondPeriodFormatted(): string | null {
+    if (!this.unbondPeriodHours) {
+      return null;
+    }
+    const days = Math.floor(this.unbondPeriodHours / DAY_HOURS);
+    const hours = this.unbondPeriodHours - days * DAY_HOURS;
+    return this.t('soraStaking.info.countdown', { days, hours });
   }
 
   get redeemableFunds(): FPNumber {
@@ -184,6 +210,6 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   }
 
   get maxApy(): number {
-    return this.validators.reduce((maxAPY, validator) => Math.max(maxAPY, Number(validator.apy)), 0);
+    return this.validators.reduce((maxAPY, validator) => Math.max(maxAPY, Number(validator.apy)), 0) || 0;
   }
 }
