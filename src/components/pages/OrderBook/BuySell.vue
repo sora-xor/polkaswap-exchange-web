@@ -210,6 +210,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   @mutation.orderBook.setBaseValue setBaseValue!: (value: string) => void;
   @mutation.orderBook.setQuoteValue setQuoteValue!: (value: string) => void;
+  @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
   @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
@@ -266,6 +267,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @Watch('userLimitOrders')
   private checkValidation(): void {
     this.checkInputValidation();
+  }
+
+  @Watch('baseAssetAddress')
+  private resetSlider(): void {
+    this.setAmountSliderValue(0);
   }
 
   get limitOrderType(): LimitOrderType {
@@ -770,6 +776,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.setBaseValue('');
     this.setLiquiditySource(LiquiditySourceTypes.Default);
     this.selectDexId(DexId.XOR);
+    this.setSide(PriceVariant.Buy);
+    this.setAmountSliderValue(0);
     this.limitOrderType = LimitOrderType.limit;
   }
 
