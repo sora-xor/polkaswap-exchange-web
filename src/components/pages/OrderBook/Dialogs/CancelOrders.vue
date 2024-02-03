@@ -6,9 +6,6 @@
       <s-button type="primary" class="btn s-typography-button--medium" @click="handleCancel">
         <span> {{ 'Yes, cancel all' }}</span>
       </s-button>
-      <s-button type="secondary" class="btn s-typography-button--medium" @click="closeDialog">
-        <span> {{ 'No, don’t cancel it' }}</span>
-      </s-button>
     </div>
   </dialog-base>
 </template>
@@ -57,7 +54,8 @@ export default class CancelOrders extends Mixins(mixins.DialogMixin, Translation
   }
 
   .btn {
-    margin: 0 0 $basic-spacing 0;
+    margin-top: $basic-spacing;
+    width: 100%;
   }
 }
 </style>

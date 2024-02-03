@@ -1,16 +1,20 @@
 <template>
-  <div>
+  <div class="s-flex-column order-table__main">
+    <span class="h4 order-table__empty" v-if="isEmpty">No orders. Create your first order!</span>
     <s-table
+      v-show="!isEmpty /* v-show cuz SScrollbar is set during the mounting */"
       v-loading="loadingState"
       class="order-table"
-      empty-text="No orders"
+      empty-text="No orders. Create your first order!"
       ref="table"
+      :row-key="rowKey"
       :data="tableItems"
       :highlight-current-row="false"
       @cell-click="handleSelectRow"
       @selection-change="handleSelectionChange"
+      @select="handleSelect"
     >
-      <s-table-column v-if="selectable" type="selection" :selectable="isSelectable" />
+      <s-table-column v-if="selectable" type="selection" />
       <s-table-column width="88">
         <template #header>
           <span>TIME</span>
@@ -101,7 +105,7 @@
         :total="total"
         :last-page="lastPage"
         :loading="loadingState"
-        @pagination-click="handlePaginationClick"
+        @pagination-click="handlePagination"
       />
     </div>
   </div>
@@ -110,13 +114,14 @@
 <script lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/util';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import dayjs from 'dayjs';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import debounce from 'lodash/debounce';
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
 import ScrollableTableMixin from '@/components/mixins/ScrollableTableMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { getter, mutation } from '@/store/decorators';
+import { getter } from '@/store/decorators';
 import { OrderStatus } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';
 
@@ -133,14 +138,26 @@ type OrderDataUI = Omit<OrderData, 'owner' | 'lifespan' | 'time' | 'expiresAt'>[
 export default class OrderTable extends Mixins(TranslationMixin, ScrollableTableMixin) {
   readonly PriceVariant = PriceVariant;
 
-  @mutation.orderBook.setOrdersToBeCancelled setOrdersToBeCancelled!: (orders: LimitOrder[]) => void;
-
   @getter.wallet.account.assetsDataTable assetsDataTable!: WALLET_TYPES.AssetsTable;
 
   @Prop({ default: () => [], type: Array }) readonly orders!: OrderData[];
   @Prop({ default: false, type: Boolean }) readonly selectable!: boolean;
+  @Prop({ default: 6, type: Number }) declare readonly pageAmount: number;
 
-  pageAmount = 6;
+  private syncTableItems(): void {
+    this.$emit('sync', this.tableItems);
+  }
+
+  @Watch('tableItems', { deep: true, immediate: true })
+  private syncTableItemsDebounced = debounce(this.syncTableItems, 250);
+
+  get isEmpty(): boolean {
+    return !this.orders?.length;
+  }
+
+  get rowKey() {
+    return this.selectable ? 'id' : undefined;
+  }
 
   get preparedItems(): OrderDataUI {
     return this.orders.map((order: OrderData) => {
@@ -183,20 +200,28 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
     return value.toLocaleString();
   }
 
-  isSelectable(): boolean {
-    return this.selectable;
-  }
-
-  handleSelectRow(row): void {
+  handleSelect(rows: LimitOrder[]): void {
     if (!this.selectable) return;
 
-    this.tableComponent?.toggleRowSelection(row);
+    this.$emit('select', rows);
+  }
+
+  handleSelectRow(row: LimitOrder): void {
+    if (!this.selectable) return;
+
+    this.$emit('cell-click', row);
   }
 
   handleSelectionChange(rows: LimitOrder[]): void {
     if (!this.selectable) return;
 
-    this.setOrdersToBeCancelled(rows);
+    this.$emit('selection-change', rows);
+  }
+
+  async handlePagination(button: WALLET_CONSTS.PaginationButton): Promise<void> {
+    this.handlePaginationClick(button);
+    await this.$nextTick(); // For this.tableItems to be loaded
+    this.$emit('page-updated', this.currentPage, this.tableItems);
   }
 }
 </script>
@@ -204,6 +229,12 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
 <style lang="scss">
 .order-table {
   font-size: var(--s-font-size-mini);
+
+  &__main {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+  }
 
   .scrollable-table {
     height: 100%;
@@ -283,8 +314,8 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
   }
 
   &__pagination {
-    margin: 0 $basic-spacing;
-    padding-bottom: $basic-spacing;
+    padding: 0 $basic-spacing $basic-spacing;
+    width: 100%;
   }
 }
 

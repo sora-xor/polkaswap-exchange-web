@@ -1,5 +1,5 @@
 <template>
-  <div class="order-book-widget history">
+  <div class="order-book-widget history s-flex-column">
     <div class="order-history-header">
       <div class="order-history-header-filter-buttons">
         <span @click="switchFilter(Filter.open)" :class="getComputedFilterClasses(Filter.open)">{{
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="delimiter" />
-    <div v-if="isLoggedIn">
+    <div class="order-history-main s-flex-column" v-if="isLoggedIn">
       <open-orders v-if="currentFilter === Filter.open" />
       <all-orders v-else :filter="currentFilter" />
     </div>
@@ -42,7 +42,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
-import { state, getter } from '@/store/decorators';
+import { state, getter, mutation } from '@/store/decorators';
 import { Filter, Cancel } from '@/types/orderBook';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
@@ -61,6 +61,8 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
   @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+
+  @mutation.orderBook.setOrdersToBeCancelled private setOrdersToBeCancelled!: (orders: LimitOrder[]) => void;
 
   confirmCancelOrderVisibility = false;
   currentFilter = Filter.open;
@@ -159,6 +161,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
       } else {
         await api.orderBook.cancelLimitOrder(base, quote, ids[0]);
       }
+      this.setOrdersToBeCancelled([]);
     });
   }
 }
@@ -231,6 +234,10 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
         cursor: not-allowed;
       }
     }
+  }
+
+  &-main {
+    flex: 1;
   }
 
   &-connect-account {
