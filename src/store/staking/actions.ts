@@ -7,17 +7,6 @@ import type { Payouts } from '@sora-substrate/util/build/staking/types';
 import type { Subscription } from 'rxjs';
 
 const actions = defineActions({
-  /** Not used?? */
-  async bond(context): Promise<void> {
-    const { state, getters } = stakingActionContext(context);
-
-    const controller = state.controller || getters.stash;
-
-    if (!state.payee) throw new Error('Payee is not set');
-
-    await api.staking.bond({ controller, value: state.stakeAmount, payee: state.payee });
-  },
-
   async nominate(context): Promise<void> {
     const { state, dispatch } = stakingActionContext(context);
 
@@ -89,7 +78,6 @@ const actions = defineActions({
     await api.staking.unbond({ value: state.stakeAmount });
   },
 
-  /** not used?? */
   async withdraw(context, amount: number): Promise<void> {
     await api.staking.withdrawUnbonded({ value: amount });
   },
@@ -106,11 +94,6 @@ const actions = defineActions({
       payouts,
       payee,
     });
-  },
-
-  /** not used?? */
-  async chill(context): Promise<void> {
-    await api.staking.chill();
   },
 
   async getStakingInfo(context): Promise<void> {
