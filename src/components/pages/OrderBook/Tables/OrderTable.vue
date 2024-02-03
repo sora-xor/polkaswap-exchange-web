@@ -239,6 +239,20 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
   .scrollable-table {
     height: 100%;
     @include scrollbar();
+    // Fix issue with horizontal & vertical scroll
+    &.el-scrollbar {
+      > .el-scrollbar__wrap {
+        position: relative;
+        bottom: -15px;
+        overflow-x: scroll;
+        > .el-scrollbar__view {
+          margin-top: -15px;
+        }
+      }
+      > .el-scrollbar__bar.is-vertical {
+        width: 0;
+      }
+    }
   }
 
   .el-table__header-wrapper {
