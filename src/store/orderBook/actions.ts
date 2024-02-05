@@ -168,7 +168,6 @@ const actions = defineActions({
 
     await new Promise<void>((resolve) => {
       subscription = combineLatest(observables).subscribe((updated) => {
-        console.log('subscribeOnLimitOrders::updated');
         const updatedOrders = updated.filter((item) => !!item) as LimitOrder[];
         if (updatedOrders.length) {
           const userLimitOrders = state.userLimitOrders.map((order) => {
