@@ -66,24 +66,25 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   }
 
   get title(): string {
-    return this.isMarketType ? 'Place market order' : 'Place limit order';
+    return this.isMarketType ? this.t('orderBook.dialog.placeMarket') : this.t('orderBook.dialog.placeLimit');
   }
 
   get upperText(): string {
     const symbol = this.baseAsset?.symbol;
 
     if (this.isMarketType) {
-      return this.isBuySide ? `Buy ${this.toValue} ${symbol}` : `Sell ${this.baseValue} ${symbol}`;
+      return this.isBuySide
+        ? this.t('orderBook.dialog.buy', { amount: this.toValue, symbol })
+        : this.t('orderBook.dialog.sell', { amount: this.baseValue, symbol });
     } else {
-      return this.isBuySide ? `Buy ${this.baseValue} ${symbol}` : `Sell ${this.baseValue} ${symbol}`;
+      return this.isBuySide
+        ? this.t('orderBook.dialog.buy', { amount: this.baseValue, symbol })
+        : this.t('orderBook.dialog.sell', { amount: this.baseValue, symbol });
     }
   }
 
   get lowerText(): string {
-    const price = this.quoteValue;
-    const symbol = this.quoteAsset?.symbol;
-
-    return `at ${price} ${symbol}`;
+    return this.t('orderBook.dialog.at', { price: this.quoteValue, symbol: this.quoteAsset?.symbol });
   }
 
   get formattedToValue(): string {
@@ -132,10 +133,7 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
       );
       this.$emit('confirm');
     } else if (await this.singlePriceReachedLimit()) {
-      this.$alert(
-        'Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill',
-        { title: this.t('errorText') }
-      );
+      this.$alert(this.t('orderBook.error.singlePriceLimit.reading'), { title: this.t('errorText') });
       this.$emit('confirm');
     } else {
       const orderExtrinsic = this.isMarketType ? this.marketOrder : this.limitOrder;

@@ -1,8 +1,14 @@
 <template>
   <div class="order-book-popover">
     <div class="order-book-popover__title">
-      <span>Choose trading pair</span>
-      <s-tooltip slot="suffix" border-radius="mini" :content="chooseOrderbookTooltip" placement="top" tabindex="-1">
+      <span>{{ t('orderBook.tradingPair.choosePair') }}</span>
+      <s-tooltip
+        slot="suffix"
+        border-radius="mini"
+        :content="t('orderBook.tooltip.pairsList')"
+        placement="top"
+        tabindex="-1"
+      >
         <s-icon name="info-16" size="14px" />
       </s-tooltip>
     </div>
@@ -14,7 +20,7 @@
     >
       <s-table-column width="178">
         <template #header>
-          <span>Token pair</span>
+          <span>{{ t('orderBook.tokenPair') }}</span>
         </template>
         <template v-slot="{ row }">
           <pair-token-logo :first-token="row.baseAsset" :second-token="row.targetAsset" size="small" />
@@ -25,7 +31,7 @@
       </s-table-column>
       <s-table-column width="90">
         <template #header>
-          <span>Price</span>
+          <span>{{ t('orderBook.price') }}</span>
         </template>
         <template v-slot="{ row }">
           <formatted-amount :value="row.price" fiatSign="" />
@@ -33,7 +39,7 @@
       </s-table-column>
       <s-table-column width="110">
         <template #header>
-          <span>Volume</span>
+          <span>{{ t('orderBook.tradingPair.volume') }}</span>
         </template>
         <template v-slot="{ row }">
           <formatted-amount :value="row.volume" is-fiat-value />
@@ -41,7 +47,7 @@
       </s-table-column>
       <s-table-column width="140">
         <template #header>
-          <span>Daily change</span>
+          <span>{{ t('orderBook.tradingPair.dailyChange') }}</span>
         </template>
         <template v-slot="{ row }">
           <price-change :value="row.priceChange" />
@@ -49,7 +55,7 @@
       </s-table-column>
       <s-table-column>
         <template #header>
-          <span>Status</span>
+          <span>{{ t('orderBook.tradingPair.status') }}</span>
         </template>
         <template v-slot="{ row }">
           <span :class="calculateColor(row.status)">{{ mapBookStatus(row.status) }}</span>
@@ -115,22 +121,18 @@ export default class PairListPopover extends Mixins(
 
   @mutation.orderBook.setCurrentOrderBook setCurrentOrderBook!: (orderBookId: OrderBookId) => void;
 
-  get chooseOrderbookTooltip(): string {
-    return 'A real-time list showing current buy and sell orders for a cryptocurrency. It helps you understand the demand, potential price direction, and trade volume on the SORA Network and Polkaswap DEX';
-  }
-
   getTooltipText(status: OrderBookStatus): string {
     switch (status) {
       case OrderBookStatus.Trade:
-        return 'Full trading functionality enabled. You can place new orders or cancel existing ones.';
+        return this.t('orderBook.tooltip.bookStatus.active');
       case OrderBookStatus.PlaceAndCancel:
-        return 'Limited functionality. You can place new orders and cancel existing ones, but some features may be unavailable.';
+        return this.t('orderBook.tooltip.bookStatus.placeable');
       case OrderBookStatus.OnlyCancel:
-        return 'You can only cancel existing orders. New order placement is currently disabled.';
+        return this.t('orderBook.tooltip.bookStatus.cancelable');
       case OrderBookStatus.Stop:
-        return 'All trading activities are currently halted. No orders can be placed or canceled at this time.';
+        return this.t('orderBook.tooltip.bookStatus.inactive');
       default:
-        return 'Unknown';
+        return this.t('unknownErrorText');
     }
   }
 
@@ -172,15 +174,15 @@ export default class PairListPopover extends Mixins(
   mapBookStatus(status: OrderBookStatus): string {
     switch (status) {
       case OrderBookStatus.Trade:
-        return 'Active';
+        return this.t('orderBook.bookStatus.active');
       case OrderBookStatus.PlaceAndCancel:
-        return 'Placeable';
+        return this.t('orderBook.bookStatus.placeable');
       case OrderBookStatus.OnlyCancel:
-        return 'Cancelable';
+        return this.t('orderBook.bookStatus.cancelable');
       case OrderBookStatus.Stop:
-        return 'Inactive';
+        return this.t('orderBook.bookStatus.inactive');
       default:
-        return 'Unknown';
+        return this.t('unknownErrorText');
     }
   }
 }

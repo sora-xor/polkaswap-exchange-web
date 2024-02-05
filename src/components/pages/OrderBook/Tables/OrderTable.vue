@@ -5,9 +5,9 @@
       v-show="!isEmpty /* v-show cuz SScrollbar is set during the mounting */"
       v-loading="loadingState"
       class="order-table"
-      empty-text="No orders. Create your first order!"
       ref="table"
       :row-key="rowKey"
+      :empty-text="t('orderBook.orderTable.noOrders')"
       :data="tableItems"
       :highlight-current-row="false"
       @cell-click="handleSelectRow"
@@ -17,7 +17,7 @@
       <s-table-column v-if="selectable" type="selection" />
       <s-table-column width="88">
         <template #header>
-          <span>TIME</span>
+          <span>{{ t('orderBook.orderTable.time') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="order-table__date">
@@ -28,7 +28,7 @@
       </s-table-column>
       <s-table-column width="126">
         <template #header>
-          <span>PAIR</span>
+          <span>{{ t('orderBook.orderTable.pair') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-table__pair">{{ row.pair }}</span>
@@ -36,7 +36,7 @@
       </s-table-column>
       <s-table-column width="62">
         <template #header>
-          <span>SIDE</span>
+          <span>{{ t('orderBook.orderTable.side') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-table__side" :class="[{ buy: row.side === PriceVariant.Buy }]">{{ row.side }}</span>
@@ -44,7 +44,7 @@
       </s-table-column>
       <s-table-column width="126">
         <template #header>
-          <span>PRICE</span>
+          <span>{{ t('orderBook.price') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="order-table__price">
@@ -55,7 +55,7 @@
       </s-table-column>
       <s-table-column width="180">
         <template #header>
-          <span>AMOUNT</span>
+          <span>{{ t('orderBook.amount') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="order-table__amount">
@@ -66,13 +66,13 @@
       </s-table-column>
       <s-table-column width="84">
         <template #header>
-          <span>% FILLED</span>
+          <span>% {{ t('orderBook.orderTable.filled') }}</span>
         </template>
         <template v-slot="{ row }"> {{ row.filled }}% </template>
       </s-table-column>
       <s-table-column width="94">
         <template #header>
-          <span>LIFETIME</span>
+          <span>{{ t('orderBook.orderTable.lifetime') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="order-table__date">
@@ -82,7 +82,7 @@
       </s-table-column>
       <s-table-column width="93">
         <template #header>
-          <span>STATUS</span>
+          <span>{{ t('orderBook.tradingPair.status') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-table__status">{{ row.status }}</span>
@@ -90,7 +90,7 @@
       </s-table-column>
       <s-table-column>
         <template #header>
-          <span>TOTAL</span>
+          <span>{{ t('orderBook.total') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-table__total">${{ row.total }}</span>
@@ -127,6 +127,7 @@ import type { OrderData } from '@/types/orderBook';
 
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import type { OrderStatus as OrderStatusType } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 type OrderDataUI = Omit<OrderData, 'owner' | 'lifespan' | 'time' | 'expiresAt'>[];
 
@@ -178,22 +179,38 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
       const row = {
         id,
         orderBookId,
-        originalAmount: originalAmount,
-        amount: originalAmount.sub(amount),
+        originalAmount: originalAmount.dp(2),
+        amount: originalAmount.sub(amount).dp(2),
         filled: Number(filled),
         baseAssetSymbol,
         quoteAssetSymbol,
         pair,
-        price: price,
-        total: total.dp(4).toLocaleString(),
+        price: price.dp(2),
+        total: total.dp(2).toLocaleString(),
         side,
-        status: status ?? OrderStatus.Active,
+        status: this.getStatusTranslation(status as OrderStatusType),
         created: { date: created.format('M/DD'), time: created.format('HH:mm:ss') },
         expires: expires.format('D[D]'),
       };
 
       return row;
     });
+  }
+
+  getStatusTranslation(status: OrderStatusType | undefined): string {
+    switch (status) {
+      case OrderStatus.Active:
+        return this.t('orderBook.orderStatus.active');
+      case OrderStatus.Aligned:
+      case OrderStatus.Canceled:
+        return this.t('orderBook.orderStatus.canceled');
+      case OrderStatus.Expired:
+        return this.t('orderBook.orderStatus.expired');
+      case OrderStatus.Filled:
+        return this.t('orderBook.orderStatus.filled');
+      default:
+        return this.t('orderBook.orderStatus.active');
+    }
   }
 
   getString(value: FPNumber): string {
@@ -256,6 +273,7 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
   }
 
   .el-table__header-wrapper {
+    text-transform: uppercase;
     background-color: rgba(231, 218, 221, 0.35);
     th {
       background-color: rgba(231, 218, 221, 0.35);

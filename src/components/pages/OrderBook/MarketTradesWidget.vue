@@ -1,8 +1,14 @@
 <template>
   <div class="order-book-widget market-trades">
     <h4 class="market-trades__title">
-      <span>Market trades</span>
-      <s-tooltip slot="suffix" border-radius="mini" :content="tooltipContent" placement="top" tabindex="-1">
+      <span>{{ t('orderBook.marketTrades') }}</span>
+      <s-tooltip
+        slot="suffix"
+        border-radius="mini"
+        :content="t('orderBook.tooltip.marketWidget')"
+        placement="top"
+        tabindex="-1"
+      >
         <s-icon name="info-16" size="14px" />
       </s-tooltip>
     </h4>
@@ -25,7 +31,7 @@
       </s-table-column>
       <s-table-column header-align="right" align="right">
         <template #header>
-          <span class="market-trades__header">Amount</span>
+          <span class="market-trades__header">{{ t('orderBook.amount') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-info">{{ row.amount }}</span>
@@ -54,10 +60,6 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
 
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
-
-  get tooltipContent(): string {
-    return 'This widget shows a real-time stream of executed trades in the market, providing information on transaction volumes, recent activity, and current market trends. By observing the timing, price, and size of actual trades, traders can gain insights into market dynamics and sentiment, helping them to spot trading opportunities and make informed decisions';
-  }
 
   get completedOrders() {
     return this.deals.map((deal) => {
@@ -92,6 +94,7 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
 
   .order-info {
     &.time {
+      font-size: var(--s-font-size-extra-small);
       color: var(--s-color-base-content-secondary);
     }
     &.price {
