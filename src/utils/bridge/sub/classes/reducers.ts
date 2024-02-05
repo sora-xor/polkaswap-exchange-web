@@ -155,19 +155,16 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
   private async updateTxExternalData(id: string): Promise<void> {
     const tx = this.getTransaction(id);
+    const adapter = this.connector.network.adapter;
 
-    await this.connector.network.adapter.connect();
+    await adapter.connect();
 
     const blockHash = tx.externalBlockId as string;
     const transactionHash = tx.externalHash as string;
-    const transactionEvents = await getTransactionEvents(
-      blockHash,
-      transactionHash,
-      this.connector.network.adapter.api
-    );
+    const transactionEvents = await getTransactionEvents(blockHash, transactionHash, adapter.api);
 
     const feeEvent = transactionEvents.find((e) =>
-      this.connector.network.adapter.api.events.transactionPayment.TransactionFeePaid.is(e.event)
+      adapter.api.events.transactionPayment.TransactionFeePaid.is(e.event)
     );
 
     if (feeEvent) {
@@ -177,9 +174,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     }
 
     if (this.transferType === SubTransferType.Relaychain) {
-      const xcmEvent = transactionEvents.find((e) =>
-        this.connector.network.adapter.api.events.xcmPallet.Attempted.is(e.event)
-      );
+      const xcmEvent = transactionEvents.find((e) => adapter.api.events.xcmPallet.Attempted.is(e.event));
 
       if (!xcmEvent?.event?.data?.[0]?.isComplete) {
         throw new Error(`[${this.constructor.name}]: Transaction is not completed`);
@@ -496,7 +491,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
                   amountReceived = getDepositedBalance(
                     events.slice(substrateDispatchEventIndex),
                     tx.to as string,
-                    adapter
+                    adapter.api
                   );
                 }
               } else {
@@ -552,12 +547,14 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     let blockNumber!: number;
     let amount!: string;
 
+    const adapter = this.connector.network.adapter;
+
     try {
-      await this.connector.network.adapter.connect();
+      await adapter.connect();
 
       await new Promise<void>((resolve, reject) => {
-        const eventsObservable = api.system.getEventsObservable(this.connector.network.adapter.apiRx);
-        const blockNumberObservable = api.system.getBlockNumberObservable(this.connector.network.adapter.apiRx);
+        const eventsObservable = api.system.getEventsObservable(adapter.apiRx);
+        const blockNumberObservable = api.system.getBlockNumberObservable(adapter.apiRx);
 
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(
           ([eventsVec, blockHeight]) => {
@@ -565,18 +562,13 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
               const events = [...eventsVec.toArray()].reverse();
               const messageQueueProcessedEventIndex = events.findIndex(
                 (e) =>
-                  this.connector.network.adapter.api.events.messageQueue.Processed.is(e.event) &&
-                  e.event.data[0].toString() === messageHash
+                  adapter.api.events.messageQueue.Processed.is(e.event) && e.event.data[0].toString() === messageHash
               );
 
               if (messageQueueProcessedEventIndex === -1) return;
 
               blockNumber = blockHeight;
-              amount = getDepositedBalance(
-                events.slice(messageQueueProcessedEventIndex),
-                tx.to as string,
-                this.connector.network.adapter
-              );
+              amount = getDepositedBalance(events.slice(messageQueueProcessedEventIndex), tx.to as string, adapter.api);
 
               resolve();
             } catch (error) {
@@ -589,7 +581,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
       subscription.unsubscribe();
 
       // run blocking process promise
-      await this.getHashesByBlockNumber(blockNumber, this.connector.network.adapter.apiRx)
+      await this.getHashesByBlockNumber(blockNumber, adapter.apiRx)
         .then(({ blockHeight, blockId }) =>
           this.updateTransactionParams(id, {
             externalBlockHeight: blockHeight, // parachain block number
@@ -597,7 +589,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           })
         )
         .finally(() => {
-          this.connector.network.adapter.stop();
+          adapter.stop();
         });
     }
 

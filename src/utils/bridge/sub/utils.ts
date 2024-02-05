@@ -2,7 +2,6 @@ import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
-import type { SubAdapter } from '@/utils/bridge/sub/classes/adapter';
 import { SubTransferType } from '@/utils/bridge/sub/types';
 
 import type { ApiPromise } from '@polkadot/api';
@@ -63,9 +62,7 @@ const getNativeTokenDepositedBalance = (events: Array<any>, to: string, api: Api
   return balancesDepositEvent.event.data.amount.toString();
 };
 
-export const getDepositedBalance = (events: Array<any>, to: string, adapter: SubAdapter): string => {
-  const api = adapter.api;
-
+export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): string => {
   return getNativeTokenDepositedBalance(events, to, api);
 };
 

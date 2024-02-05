@@ -243,7 +243,11 @@ class SubBridgeHistory extends SubNetworksConnector {
     extrinsicEvents: any[]
   ): Promise<SubHistory> {
     try {
-      const receivedAmount = getDepositedBalance(extrinsicEvents, history.to as string, this.soraParachain!.adapter);
+      const receivedAmount = getDepositedBalance(
+        extrinsicEvents,
+        history.to as string,
+        this.soraParachain!.adapter.api
+      );
 
       const { amount, transferFee } = getReceivedAmount(
         history.amount as string,
@@ -296,7 +300,7 @@ class SubBridgeHistory extends SubNetworksConnector {
         const receivedAmount = getDepositedBalance(
           blockEventsReversed.slice(messageQueueEventIndex),
           history.to as string,
-          this.network.adapter
+          this.network.adapter.api
         );
         const { amount, transferFee } = getReceivedAmount(
           history.amount as string,
