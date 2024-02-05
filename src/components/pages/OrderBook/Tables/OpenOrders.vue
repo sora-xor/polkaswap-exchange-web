@@ -82,8 +82,8 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   @Watch('sortedUserLimitOrders', { deep: true, immediate: true })
-  private updatePagedOrdersSubscription(orders: LimitOrder[], oldOrders: LimitOrder[]): void {
-    if (!orders.length || orders.length === oldOrders.length) {
+  private updatePagedOrdersSubscription(orders?: LimitOrder[], oldOrders?: LimitOrder[]): void {
+    if (!orders?.length || orders.length === oldOrders?.length) {
       return;
     }
 
