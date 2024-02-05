@@ -389,7 +389,8 @@
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
-        "OrderBook": "Commercio"
+        "OrderBook": "Commercio",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Scambia",

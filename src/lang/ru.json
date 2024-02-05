@@ -389,7 +389,8 @@
         "Explore\/Staking": "Стейкинг",
         "Explore\/Farming": "Фарминг",
         "Staking": "Стейкинг",
-        "OrderBook": "Торговля"
+        "OrderBook": "Торговля",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Обмен",

@@ -389,7 +389,8 @@
         "Explore\/Staking": "Ulaganje",
         "Explore\/Farming": "Farmanje",
         "Staking": "Ulaganje",
-        "OrderBook": "Trgovina"
+        "OrderBook": "Trgovina",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Zamijenite",

@@ -272,7 +272,7 @@ export default class Tokens extends Mixins(ExplorePageMixin) {
     return [...this.items].sort((a, b) => sortAssets(a, b));
   }
 
-  get preparedItems(): TableItem[] {
+  get prefilteredItems(): TableItem[] {
     return this.isSynthsOnly
       ? this.defaultSorted.filter((item) => syntheticAssetRegexp.test(item.address))
       : this.defaultSorted;

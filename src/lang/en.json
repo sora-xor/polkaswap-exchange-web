@@ -388,9 +388,9 @@
         "Explore\/Pools": "Pools",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
-        "Explore\/Books": "Order Books",
         "Staking": "Staking",
-        "OrderBook": "Trade"
+        "OrderBook": "Trade",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Swap",
