@@ -60,7 +60,10 @@
             "StakingPayout": "Nagrody za wypłatę",
             "StakingChill": "Chłod",
             "StakingSetController": "Ustaw kontroler {address}",
-            "StakingSetPayee": "Ustaw odbiorcę płatności {address}"
+            "StakingSetPayee": "Ustaw odbiorcę płatności {address}",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} po {price} {symbol2}",
+            "OrderBookCancelLimitOrder": "Zlecenie limitowane anulowane",
+            "OrderBookCancelLimitOrders": "Zamówienia z limitem anulowane"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -92,7 +95,10 @@
             "StakingPayout": "Nie udało się wypłacić nagród",
             "StakingChill": "Nie udało się ochłodzić",
             "StakingSetController": "Nie udało się ustawić kontrolera {address}",
-            "StakingSetPayee": "Nie udało się ustawić odbiorcy płatności {address}"
+            "StakingSetPayee": "Nie udało się ustawić odbiorcy płatności {address}",
+            "OrderBookPlaceLimitOrder": "Nie udało się złożyć zamówienia z limitem {amount} {symbol} po {price} {symbol}",
+            "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem {amount} {symbol} po {price} {symbol}",
+            "OrderBookCancelLimitOrders": "Nie udało się anulować zleceń z limitem"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
@@ -116,7 +122,10 @@
         "StakingPayout": "Nagrody za wypłatę",
         "StakingChill": "Chłod",
         "StakingSetController": "Ustaw kontroler",
-        "StakingSetPayee": "Ustaw odbiorcę"
+        "StakingSetPayee": "Ustaw odbiorcę",
+        "OrderBookPlaceLimitOrder": "Złożyć zamówienie",
+        "OrderBookCancelLimitOrder": "Anuluj zamówienie",
+        "OrderBookCancelLimitOrders": "Anuluj zamówienia"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia {PolkadotJs}. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -339,7 +348,9 @@
         "referrer": "Osoba polecająca",
         "referral": "Kod polecający",
         "adarTxDetailsTitle": "Szczegóły transakcji",
-        "comment": "Komentarz"
+        "comment": "Komentarz",
+        "price": "Cena",
+        "side": "Strona"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Zmień sieć w portfelu",
@@ -377,7 +388,8 @@
         "Explore\/Pools": "Baseny",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
-        "Staking": "Staking"
+        "Staking": "Staking",
+        "OrderBook": "Handel"
     },
     "mainMenu": {
         "Swap": "Wymiana",
@@ -391,7 +403,8 @@
         "CreatePair": "Utwórz parę",
         "StakingContainer": "Staking",
         "Explore\/Container": "Badać",
-        "SoraCard": "{Sora} Karta"
+        "SoraCard": "{Sora} Karta",
+        "OrderBook": "Handel"
     },
     "social": {
         "twitter": "Twitter",
@@ -1383,5 +1396,129 @@
         }
     },
     "collapseText": "Zawalić się",
-    "expandText": "Zwiększać"
+    "expandText": "Zwiększać",
+    "orderBook": {
+        "Buy": "Kup {asset}",
+        "Sell": "Sprzedaj {asset}",
+        "orderBook": "Księga zamówień",
+        "marketTrades": "Transakcje rynkowe",
+        "market": "Rynek",
+        "limit": "Limit",
+        "price": "Cena",
+        "total": "Całkowity",
+        "amount": "kwota",
+        "time": "czas",
+        "month": "miesiąc",
+        "change": "zmiana",
+        "cantPlaceOrder": "Nie można złożyć zamówienia",
+        "enterAmount": "Wprowadź ilość",
+        "setPrice": "Ustalić cenę",
+        "dayVolume": "Objętość 1D",
+        "stop": "Książka zatrzymana",
+        "tokenPair": "Para tokenów",
+        "book": {
+            "noAsks": "Brak otwartych zapytań",
+            "noBids": "Brak otwartych ofert"
+        },
+        "history": {
+            "tradeHistory": "Historia handlu",
+            "orderHistory": "Historia zamówień",
+            "openOrders": "Otwarte zamówienia {value}",
+            "connect": "Połącz konto, aby rozpocząć handel",
+            "cancel": "Anuluj zamówienie {value}",
+            "cancelAll": "Anulować całość"
+        },
+        "orderTable": {
+            "time": "czas",
+            "pair": "para",
+            "side": "strona",
+            "filled": "wypełniony",
+            "lifetime": "dożywotni",
+            "noOrders": "Brak zamówień. Stwórz swój pierwszy!"
+        },
+        "dialog": {
+            "placeMarket": "Złóż zamówienie rynkowe",
+            "placeLimit": "Złóż zamówienie z limitem",
+            "askCancel": "Czy na pewno chcesz anulować wszystkie otwarte zamówienia?",
+            "cancelAll": "Tak, anuluj wszystko",
+            "noCancel": "Nie, nie odwołuj tego",
+            "buy": "Kup {amount} {symbol}",
+            "sell": "Sprzedaj {amount} {symbol}",
+            "at": "w {price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "Wybierz parę handlową",
+            "volume": "Tom",
+            "dailyChange": "Codzienna zmiana",
+            "status": "Status",
+            "total": "{amount} {symbol} przy {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Aktywny",
+            "placeable": "Możliwość umieszczenia",
+            "cancelable": "Możliwość anulowania",
+            "inactive": "Nieaktywny"
+        },
+        "tooltip": {
+            "limitOrder": "Zlecenie z limitem pozwala określić dokładną cenę, po której chcesz kupić lub sprzedać dany składnik aktywów. Zlecenie „Limit Buy” zostanie zrealizowane wyłącznie po określonej cenie lub niższej, natomiast zlecenie „Limit Sell” zostanie zrealizowane wyłącznie po określonej cenie lub wyższej. Ta kontrola gwarantuje, że nie zapłacisz więcej ani nie sprzedasz za mniej, niż Ci odpowiada.",
+            "marketOrder": "„Zlecenie rynkowe” to zlecenie natychmiastowego kupna lub sprzedaży po najlepszej dostępnej aktualnej cenie. Nie wymaga ustalania ceny, zapewniając szybką realizację, ale za cenę mniejszej kontroli nad otrzymaną lub zapłaconą ceną. Tego typu zlecenie stosuje się, gdy pewność wykonania jest priorytetem nad kontrolą ceny.",
+            "pairsList": "Lista w czasie rzeczywistym pokazująca aktualne zlecenia kupna i sprzedaży kryptowaluty. Pomaga zrozumieć popyt, potencjalny kierunek cen i wolumen handlu w sieci SORA i Polkaswap DEX",
+            "bookWidget": "Bieżący, stale aktualizowany rejestr zleceń kupna (bid) i sprzedaży (ask) dla konkretnego aktywa, uporządkowany według poziomu ceny. Księga zamówień pokazuje głębokość rynku, w tym ilość aktywów oferowanych po różnych cenach. Traderzy wykorzystują ten szczegółowy widok do oceny nastrojów na rynku, identyfikacji potencjalnych poziomów oporu i wsparcia oraz przewidywania ruchów cen w oparciu o istniejący popyt i podaż.",
+            "marketWidget": "Ten widget pokazuje w czasie rzeczywistym strumień zrealizowanych transakcji na rynku, dostarczając informacji o wolumenie transakcji, ostatniej aktywności i aktualnych trendach rynkowych. Obserwując czas, cenę i wielkość rzeczywistych transakcji, inwestorzy mogą uzyskać wgląd w dynamikę i nastroje rynkowe, pomagając im dostrzec możliwości handlowe i podejmować świadome decyzje",
+            "txDetails": {
+                "orderType": "Zlecenie „Kup” zostanie zrealizowane wyłącznie po określonej cenie lub niższej, natomiast zlecenie „Sprzedaj” zostanie zrealizowane wyłącznie po określonej cenie lub wyższej. Ta kontrola gwarantuje, że nie zapłacisz więcej ani nie sprzedasz za mniej, niż Ci odpowiada.",
+                "expiryDate": "„Data ważności” to ostateczny termin realizacji zamówienia. Jeśli rynek nie osiągnie określonej ceny przed tą datą, zlecenie zostanie automatycznie anulowane. Nie jesteś zobowiązany do ciągłego czekania, jeśli warunki rynkowe nie odpowiadają Twoim preferencjom handlowym.",
+                "amount": "„Kwota” odnosi się do całkowitej liczby aktywów, które chcesz kupić lub sprzedać w swoim zamówieniu. Określenie jest ważne, ponieważ określa wielkość transakcji, mającą wpływ na całkowity koszt w przypadku zleceń kupna lub przychody w przypadku zleceń sprzedaży.",
+                "limit": "„Cena limitowana” to dokładna cena ustalona dla zlecenia z limitem. Transakcja zostanie zrealizowana tylko wtedy, gdy cena rynkowa aktywa osiągnie cenę graniczną, co gwarantuje, że nie dokonasz zakupu powyżej lub nie sprzedasz poniżej tej określonej wartości.",
+                "locked": "„Zablokowane” pokazuje ilość aktywów, które mają być przechowywane w trakcie realizacji zamówienia."
+            },
+            "bookStatus": {
+                "active": "Włączono pełną funkcjonalność handlową. Możesz składać nowe zamówienia lub anulować istniejące.",
+                "placeable": "Ograniczona funkcjonalność. Możesz składać nowe zamówienia i anulować istniejące, ale niektóre funkcje mogą być niedostępne.",
+                "cancelable": "Możesz anulować tylko istniejące zamówienia. Składanie nowych zamówień jest aktualnie wyłączone.",
+                "inactive": "Wszelka działalność handlowa jest obecnie wstrzymana. W tej chwili nie można składać ani anulować żadnych zamówień."
+            }
+        },
+        "txDetails": {
+            "orderType": "typ zamówienia",
+            "limitPrice": "cena graniczna",
+            "expiryDate": "Data wygaśnięcia"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "Wprowadzona cena jest zbyt dokładna, aby można ją było obliczyć",
+                "reading": "Przekroczono precyzję: Wprowadzona kwota\/cena ma zbyt wiele miejsc po przecinku. Wprowadź wartość z mniejszą liczbą miejsc po przecinku"
+            },
+            "marketNotAvailable": {
+                "reason": "Nie ma wystarczającej liczby dostępnych zamówień, aby zrealizować to zamówienie",
+                "reading": "Ograniczenie zleceń rynkowych: Nie ma wystarczającej liczby dostępnych zleceń, aby zrealizować to zlecenie z limitem rynkowym. Dostosuj wielkość zamówienia lub poczekaj na złożenie większej liczby zamówień"
+            },
+            "exceedsSpread": {
+                "reason": "Cena przekroczyła spread",
+                "reading": "Przekroczona cena: cena kupna lub sprzedaży na rynku przekroczyła cenę sprzedaży\/oferty"
+            },
+            "spotLimit": {
+                "reason": "Strona handlowa została wypełniona",
+                "reading": "Limit przedziału cenowego: każda strona księgi zamówień jest ograniczona do 1024 unikalnych punktów cenowych. Wybierz cenę z istniejącego zakresu lub poczekaj, aż zwolni się miejsce"
+            },
+            "accountLimit": {
+                "reason": "Zbyt wiele zamówień jest w toku",
+                "reading": "Osiągnięto limit: Każde konto jest ograniczone do 1024 zleceń z limitem. Proszę poczekać, aż część zamówień zostanie zrealizowana"
+            },
+            "singlePriceLimit": {
+                "reason": "Zbyt wiele zamówień w tej cenie jest w toku",
+                "reading": "Osiągnięto limit: Każda pozycja jest ograniczona do 1024 zleceń z limitem. Proszę poczekać, aż część zamówień zostanie zrealizowana"
+            },
+            "outOfBounds": {
+                "reading": "Przekroczony zakres Blockchain: Wprowadzona kwota wykracza poza dozwolony zakres Blockchain. Min.: {min} ; Maks.: {max}",
+                "reason": "Kwota nie jest zgodna z zakresem blockchain"
+            }
+        },
+        "orderStatus": {
+            "active": "Aktywny",
+            "canceled": "Odwołany",
+            "expired": "Wygasły",
+            "filled": "Wypełniony"
+        }
+    }
 }

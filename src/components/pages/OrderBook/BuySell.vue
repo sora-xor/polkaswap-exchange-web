@@ -4,7 +4,7 @@
       <pair-list-popover @close="toggleBookList" />
       <div slot="reference">
         <div class="order-book-choose-pair">
-          <div>TOKEN PAIR</div>
+          <div>{{ t('orderBook.tokenPair') }}</div>
           <div class="order-book-choose-btn">
             <div class="order-book-pair-name">
               <pair-token-logo :first-token="baseAsset" :second-token="quoteAsset" />
@@ -15,19 +15,19 @@
           <div class="delimiter" />
           <div class="order-book-pair-data">
             <div class="order-book-pair-data-item">
-              <span>Price</span>
+              <span>{{ t('orderBook.price') }}</span>
               <span class="order-book-pair-data-item__value order-book-fiat">
                 <formatted-amount :value="orderBookPrice" />
               </span>
             </div>
             <div class="order-book-pair-data-item">
-              <span>Change</span>
+              <span>{{ t('orderBook.change') }}</span>
               <span class="order-book-pair-data-item__value">
                 <price-change :value="orderBookPriceChange" />
               </span>
             </div>
             <div class="order-book-pair-data-item">
-              <span>1D Volume</span>
+              <span>{{ t('orderBook.dayVolume') }}</span>
               <span class="order-book-pair-data-item__value">
                 <formatted-amount :value="orderBookVolume" is-fiat-value />
               </span>
@@ -40,16 +40,28 @@
     <s-tabs class="order-book__tab" v-model="limitOrderType" type="rounded" @click="handleTabClick">
       <s-tab label="limit" name="limit">
         <span slot="label">
-          <span>{{ 'Limit' }}</span>
-          <s-tooltip slot="suffix" border-radius="mini" :content="limitTooltip" placement="top" tabindex="-1">
+          <span>{{ t('orderBook.limit') }}</span>
+          <s-tooltip
+            slot="suffix"
+            border-radius="mini"
+            :content="t('orderBook.tooltip.limitOrder')"
+            placement="top"
+            tabindex="-1"
+          >
             <s-icon name="info-16" size="14px" />
           </s-tooltip>
         </span>
       </s-tab>
       <s-tab label="market" name="market" :disabled="marketOptionDisabled">
         <span slot="label">
-          <span>{{ 'Market' }}</span>
-          <s-tooltip slot="suffix" border-radius="mini" :content="marketTooltip" placement="top" tabindex="-1">
+          <span>{{ t('orderBook.market') }}</span>
+          <s-tooltip
+            slot="suffix"
+            border-radius="mini"
+            :content="t('orderBook.tooltip.marketOrder')"
+            placement="top"
+            tabindex="-1"
+          >
             <s-icon name="info-16" size="14px" />
           </s-tooltip>
         </span>
@@ -59,7 +71,7 @@
     <token-input
       :balance="getTokenBalance(quoteAsset)"
       :is-max-available="false"
-      :title="'price'"
+      :title="t('orderBook.price')"
       :token="quoteAsset"
       :value="quoteValue"
       :disabled="isPriceInputDisabled"
@@ -71,7 +83,7 @@
       :balance="getTokenBalance(baseAsset)"
       :is-max-available="isMaxAmountAvailable"
       :with-slider="isSliderAvailable"
-      :title="'Amount'"
+      :title="t('orderBook.amount')"
       :token="baseAsset"
       :value="baseValue"
       :slider-value="sliderValue"
@@ -82,7 +94,7 @@
     />
 
     <div class="order-book-total">
-      <span class="order-book-total-title">TOTAL</span>
+      <span class="order-book-total-title"> {{ t('orderBook.total') }}</span>
       <div class="order-book-total-value">
         <span class="order-book-total-value-amount">{{ amountAtPrice }}</span>
       </div>
@@ -110,7 +122,7 @@
         @click="placeLimitOrder"
         :disabled="buttonDisabled"
       >
-        <span> {{ t(buttonText) }}</span>
+        <span> {{ buttonText }}</span>
         <s-icon v-if="hasExplainableError" name="info-16" class="book-inform-icon-btn" />
       </s-button>
     </el-popover>
@@ -198,6 +210,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   @mutation.orderBook.setBaseValue setBaseValue!: (value: string) => void;
   @mutation.orderBook.setQuoteValue setQuoteValue!: (value: string) => void;
+  @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
   @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
@@ -256,6 +269,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.checkInputValidation();
   }
 
+  @Watch('baseAssetAddress')
+  private resetSlider(): void {
+    this.setAmountSliderValue(0);
+  }
+
   get limitOrderType(): LimitOrderType {
     return this._limitOrderType;
   }
@@ -285,51 +303,52 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     if (this.buttonDisabled) return '';
     if (!this.baseValue) return '';
     if (!this.quoteValue && !this.marketQuotePrice) return '';
-    return `${this.baseValue} ${this.baseSymbol} AT ${this.quoteValue || this.marketQuotePrice} ${this.quoteSymbol}`;
+
+    return this.t('orderBook.tradingPair.total', {
+      amount: this.baseValue,
+      symbol: this.baseSymbol,
+      amount2: this.quoteValue || this.marketQuotePrice,
+      symbol2: this.quoteSymbol,
+    });
   }
 
   // TODO: [Rustem]: Refactor this function to reduce its Cognitive Complexity from 33 to the 15 allowed. [+22 locations]sonarlint(typescript:S3776)
   get buttonText(): string {
-    if (!this.isLoggedIn) return 'connectWalletText';
+    if (!this.isLoggedIn) return this.t('connectWalletText');
 
-    if (this.bookStopped) return 'book stopped';
+    if (this.bookStopped) return this.t('orderBook.stop');
 
-    if (this.userReachedSpotLimit || this.userReachedOwnLimit) return "can't place order";
+    if (this.userReachedSpotLimit || this.userReachedOwnLimit) return this.t('orderBook.setPrice');
 
     if (this.isInsufficientBalance) return this.t('insufficientBalanceText', { tokenSymbol: this.tokenFrom?.symbol });
 
     if (this.limitOrderType === LimitOrderType.limit) {
-      if (!this.quoteValue) return 'set price';
-      if (!this.baseValue || this.isZeroAmount) return 'enter amount';
+      if (!this.quoteValue) return this.t('orderBook.setPrice');
+      if (!this.baseValue || this.isZeroAmount) return this.t('orderBook.enterAmount');
 
       // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
       // if (this.isPriceTooHigh || this.isPriceTooLow || !this.isPriceBeyondPrecision) {
-      //   return "can't place order";
+      //   return this.t('orderBook.cantPlaceOrder');
       // }
 
       if (!this.isPriceBeyondPrecision) {
-        return "can't place order";
+        return this.t('orderBook.cantPlaceOrder');
       }
 
       if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel) {
-        if (this.priceExceedsSpread) return "can't place order";
+        if (this.priceExceedsSpread) return this.t('orderBook.cantPlaceOrder');
       }
 
-      if (this.limitForSinglePriceReached) return "can't place order";
-
-      if (this.isOutOfAmountBounds) return "can't place order";
-
-      if (this.side === PriceVariant.Buy) return `Buy ${this.baseAsset.symbol}`;
-      else return `Sell ${this.baseAsset.symbol}`;
+      if (this.limitForSinglePriceReached) return this.t('orderBook.cantPlaceOrder');
     } else {
-      if (this.isZeroAmount) return 'enter amount';
-      if (!this.marketQuotePrice) return "can't place order";
+      if (this.isZeroAmount) return this.t('orderBook.enterAmount');
+      if (!this.marketQuotePrice) return this.t('orderBook.cantPlaceOrder');
     }
 
-    if (this.isOutOfAmountBounds) return "can't place order";
+    if (this.isOutOfAmountBounds) return this.t('orderBook.cantPlaceOrder');
 
-    if (this.isBuySide) return `Buy ${this.baseAsset.symbol}`;
-    else return `Sell ${this.baseAsset.symbol}`;
+    if (this.side === PriceVariant.Buy) return this.t('orderBook.Buy', { asset: this.baseAsset.symbol });
+    else return this.t('orderBook.Sell', { asset: this.baseAsset.symbol });
   }
 
   setError({ reason, reading }): void {
@@ -372,16 +391,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.userReachedSpotLimit)
       return this.setError({
-        reason: 'Trading side has been filled',
-        reading:
-          'Price range cap: Each order book side is limited to 1024 unique price points. Please select a price within the existing range or wait for space to become available',
+        reason: this.t('orderBook.error.spotLimit.reason'),
+        reading: this.t('orderBook.error.spotLimit.reading'),
       });
 
     if (this.userReachedOwnLimit)
       return this.setError({
-        reason: 'Too many orders is ongoing',
-        reading:
-          'Limit reached: Each account is confined to 1024 limit orders. Please wait until some of your orders fulfill',
+        reason: this.t('orderBook.error.accountLimit.reason'),
+        reading: this.t('orderBook.error.accountLimit.reading'),
       });
 
     if (this.isInsufficientBalance) return;
@@ -402,9 +419,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (!this.isPriceBeyondPrecision && this.baseValue)
       return this.setError({
-        reason: 'Entered price is too precise to calculate',
-        reading:
-          'Precision exceeded: The amount/price entered has too many decimal places. Please input a value with fewer decimal places',
+        reason: this.t('orderBook.error.beyondPrecision.reason'),
+        reading: this.t('orderBook.error.beyondPrecision.reading'),
       });
 
     if (this.isMarketType) {
@@ -413,30 +429,36 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
       if (!this.marketQuotePrice && !this.isZeroAmount) {
         return this.setError({
-          reason: 'Not enough orders available to fullfill this order',
-          reading:
-            'Market order limitation: There are not enough orders available to fulfill this market limit order. Please adjust your order size or wait for more orders to be placed',
+          reason: this.t('orderBook.error.marketNotAvailable.reason'),
+          reading: this.t('orderBook.error.marketNotAvailable.reading'),
         });
       }
     }
 
     if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel && this.priceExceedsSpread)
       return this.setError({
-        reason: 'Price exceeded spread',
-        reading: "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
+        reason: this.t('orderBook.error.exceedsSpread.reason'),
+        reading: this.t('orderBook.error.exceedsSpread.reading'),
       });
 
     if ((await this.singlePriceReachedLimit()) && this.quoteValue)
       return this.setError({
-        reason: 'Too many orders is ongoing for this price',
-        reading: 'Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill',
+        reason: this.t('orderBook.error.singlePriceLimit.reason'),
+        reading: this.t('orderBook.error.singlePriceLimit.reading'),
       });
 
-    if (!this.isZeroAmount && this.isOutOfAmountBounds && this.quoteValue)
+    if (!this.isZeroAmount && this.isOutOfAmountBounds && this.quoteValue) {
+      const { maxLotSize, minLotSize } = this.currentOrderBook as OrderBook;
+      const { symbol } = this.baseAsset;
+
       return this.setError({
-        reason: 'Amount exceeds the blockchain range',
-        reading: "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range",
+        reason: this.t('orderBook.error.outOfBounds.reason'),
+        reading: this.t('orderBook.error.outOfBounds.reading', {
+          max: `${maxLotSize?.toLocaleString()} ${symbol}`,
+          min: `${minLotSize?.toLocaleString()} ${symbol}`,
+        }),
       });
+    }
   }
 
   async singlePriceReachedLimit(): Promise<boolean> {
@@ -588,14 +610,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   get areTokensSelected(): boolean {
     return !!(this.baseAsset && this.quoteAsset);
-  }
-
-  get limitTooltip(): string {
-    return "A 'Limit' order lets you specify the exact price at which you want to buy or sell an asset. A 'Limit Buy' order will only be executed at the specified price or lower, while a 'Limit Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.";
-  }
-
-  get marketTooltip(): string {
-    return "A 'Market Order' is an order to immediately buy or sell at the best available current price. It doesn't require setting a price, ensuring a fast execution but with the trade-off of less control over the price received or paid. This type of order is used when certainty of execution is a priority over price control.";
   }
 
   toggleBookList(): void {
@@ -762,13 +776,18 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.setBaseValue('');
     this.setLiquiditySource(LiquiditySourceTypes.Default);
     this.selectDexId(DexId.XOR);
+    this.setSide(PriceVariant.Buy);
+    this.setAmountSliderValue(0);
     this.limitOrderType = LimitOrderType.limit;
   }
 
-  resetValues() {
+  resetValues(success?: boolean) {
     this.setBaseValue('');
     this.setQuoteValue('');
-    this.limitOrderType = LimitOrderType.limit;
+
+    if (!success) {
+      this.limitOrderType = LimitOrderType.limit;
+    }
   }
 
   showPlaceOrderDialog(): void {

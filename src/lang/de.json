@@ -60,7 +60,10 @@
             "StakingPayout": "Auszahlungsprämien",
             "StakingChill": "Kühlen",
             "StakingSetController": "Controller- {address} festlegen",
-            "StakingSetPayee": "Zahlungsempfänger {address} festlegen"
+            "StakingSetPayee": "Zahlungsempfänger {address} festlegen",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} zu {price} {symbol2} platziert",
+            "OrderBookCancelLimitOrder": "Limit-Order storniert",
+            "OrderBookCancelLimitOrders": "Limitaufträge storniert"
         },
         "error": {
             "Transfer": "Fehler bei {action} {amount} {symbol} {direction} {address}",
@@ -92,7 +95,10 @@
             "StakingPayout": "Prämien konnten nicht ausgezahlt werden",
             "StakingChill": "Das Abkühlen ist fehlgeschlagen",
             "StakingSetController": "Controller- {address} konnte nicht festgelegt werden",
-            "StakingSetPayee": "Zahlungsempfänger {address} konnte nicht festgelegt werden"
+            "StakingSetPayee": "Zahlungsempfänger {address} konnte nicht festgelegt werden",
+            "OrderBookPlaceLimitOrder": "Limitbestellung von {amount} {symbol} zu {price} {symbol} konnte nicht aufgegeben werden",
+            "OrderBookCancelLimitOrder": "Limitauftrag von {amount} {symbol} zu {price} {symbol} konnte nicht storniert werden",
+            "OrderBookCancelLimitOrders": "Limitaufträge konnten nicht storniert werden"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
@@ -116,7 +122,10 @@
         "StakingPayout": "Auszahlungsprämien",
         "StakingChill": "Kühlen",
         "StakingSetController": "Controller einstellen",
-        "StakingSetPayee": "Zahlungsempfänger festlegen"
+        "StakingSetPayee": "Zahlungsempfänger festlegen",
+        "OrderBookPlaceLimitOrder": "Bestellung aufgeben",
+        "OrderBookCancelLimitOrder": "Bestellung stornieren",
+        "OrderBookCancelLimitOrders": "Bestellungen stornieren"
     },
     "polkadotjs": {
         "noExtensions": "Es wurde keine {PolkadotJs} Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -339,7 +348,9 @@
         "referrer": "Referrer",
         "referral": "Referral",
         "adarTxDetailsTitle": "Transaktionsdetails",
-        "comment": "Kommentar"
+        "comment": "Kommentar",
+        "price": "Preis",
+        "side": "Seite"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Netzwerk im Wallet ändern",
@@ -377,7 +388,8 @@
         "Explore\/Pools": "Toto",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
-        "Staking": "Staking"
+        "Staking": "Staking",
+        "OrderBook": "Handel"
     },
     "mainMenu": {
         "Swap": "Tauschen",
@@ -391,7 +403,8 @@
         "CreatePair": "Erstelle ein Paar",
         "StakingContainer": "Staking",
         "Explore\/Container": "Entdecken",
-        "SoraCard": "{Sora} Karte"
+        "SoraCard": "{Sora} Karte",
+        "OrderBook": "Handel"
     },
     "social": {
         "twitter": "Twitter",
@@ -1383,5 +1396,129 @@
         }
     },
     "collapseText": "Zusammenbruch",
-    "expandText": "Expandieren"
+    "expandText": "Expandieren",
+    "orderBook": {
+        "Buy": "{asset} kaufen",
+        "Sell": "{asset} verkaufen",
+        "orderBook": "Auftragsbuch",
+        "marketTrades": "Markthandel",
+        "market": "Markt",
+        "limit": "Grenze",
+        "price": "Preis",
+        "total": "Gesamt",
+        "amount": "Menge",
+        "time": "Zeit",
+        "month": "Monat",
+        "change": "ändern",
+        "cantPlaceOrder": "Bestellung kann nicht aufgegeben werden",
+        "enterAmount": "Menge eingeben",
+        "setPrice": "Preis festlegen",
+        "dayVolume": "1D-Volumen",
+        "stop": "Das Buch blieb stehen",
+        "tokenPair": "Token-Paar",
+        "book": {
+            "noAsks": "Keine geöffneten Anfragen",
+            "noBids": "Keine offenen Gebote"
+        },
+        "history": {
+            "tradeHistory": "Handelsgeschichte",
+            "orderHistory": "Bestellverlauf",
+            "openOrders": "Offene Bestellungen {value}",
+            "connect": "Verbinden Sie ein Konto, um mit dem Handel zu beginnen",
+            "cancel": "Bestellung {value} stornieren",
+            "cancelAll": "Alle Absagen"
+        },
+        "orderTable": {
+            "time": "Zeit",
+            "pair": "Paar",
+            "side": "Seite",
+            "filled": "gefüllt",
+            "lifetime": "Lebensdauer",
+            "noOrders": "Keine Befehle. Erstellen Sie Ihr erstes!"
+        },
+        "dialog": {
+            "placeMarket": "Marktauftrag erteilen",
+            "placeLimit": "Limit-Order aufgeben",
+            "askCancel": "Sind Sie sicher, dass Sie alle Ihre offenen Bestellungen stornieren möchten?",
+            "cancelAll": "Ja, alles abbrechen",
+            "noCancel": "Nein, stornieren Sie es nicht",
+            "buy": "Kaufen Sie {amount} {symbol}",
+            "sell": "Verkaufe {amount} {symbol}",
+            "at": "zum {price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "Wählen Sie ein Handelspaar",
+            "volume": "Volumen",
+            "dailyChange": "Täglicher Wechsel",
+            "status": "Status",
+            "total": "{amount} {symbol} bei {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Aktiv",
+            "placeable": "Platzierbar",
+            "cancelable": "Stornierbar",
+            "inactive": "Inaktiv"
+        },
+        "tooltip": {
+            "limitOrder": "Mit einer „Limit“-Order können Sie den genauen Preis angeben, zu dem Sie einen Vermögenswert kaufen oder verkaufen möchten. Eine „Limit Buy“-Order wird nur zum angegebenen Preis oder niedriger ausgeführt, während eine „Limit Sell“-Order nur zum angegebenen Preis oder höher ausgeführt wird. Diese Kontrolle stellt sicher, dass Sie nicht mehr bezahlen oder für weniger verkaufen, als Ihnen lieb ist.",
+            "marketOrder": "Eine „Market Order“ ist eine Order zum sofortigen Kauf oder Verkauf zum besten verfügbaren aktuellen Preis. Es ist nicht erforderlich, einen Preis festzulegen, was eine schnelle Ausführung gewährleistet, allerdings mit dem Nachteil einer geringeren Kontrolle über den erhaltenen oder gezahlten Preis. Diese Art von Order wird verwendet, wenn die Sicherheit der Ausführung Vorrang vor der Preiskontrolle hat.",
+            "pairsList": "Eine Echtzeitliste mit aktuellen Kauf- und Verkaufsaufträgen für eine Kryptowährung. Es hilft Ihnen, die Nachfrage, die potenzielle Preisrichtung und das Handelsvolumen im SORA-Netzwerk und Polkaswap DEX zu verstehen",
+            "bookWidget": "Eine live, ständig aktualisierte Aufzeichnung von Kauf- (Bid) und Verkaufsaufträgen (Ask) für einen bestimmten Vermögenswert, geordnet nach Preisniveau. Das Auftragsbuch zeigt die Tiefe des Marktes an, einschließlich der Mengen der zu unterschiedlichen Preisen angebotenen Vermögenswerte. Händler nutzen diese detaillierte Ansicht, um die Marktstimmung einzuschätzen, potenzielle Widerstands- und Unterstützungsniveaus zu identifizieren und Preisbewegungen auf der Grundlage der bestehenden Nachfrage und des Angebots zu antizipieren",
+            "marketWidget": "Dieses Widget zeigt einen Echtzeit-Stream ausgeführter Trades auf dem Markt und bietet Informationen über Transaktionsvolumina, aktuelle Aktivitäten und aktuelle Markttrends. Durch die Beobachtung des Zeitpunkts, des Preises und des Umfangs tatsächlicher Geschäfte können Händler Einblicke in die Marktdynamik und -stimmung gewinnen und so Handelsmöglichkeiten erkennen und fundierte Entscheidungen treffen",
+            "txDetails": {
+                "orderType": "Eine „Kauf“-Order wird nur zum angegebenen Preis oder niedriger ausgeführt, während eine „Verkaufs“-Order nur zum angegebenen Preis oder höher ausgeführt wird. Diese Kontrolle stellt sicher, dass Sie nicht mehr bezahlen oder für weniger verkaufen, als Ihnen lieb ist.",
+                "expiryDate": "Das „Ablaufdatum“ ist die Frist für die Ausführung Ihrer Bestellung. Wenn der Markt Ihren angegebenen Preis nicht vor diesem Datum erreicht, wird die Bestellung automatisch storniert. Sie müssen nicht ständig warten, wenn die Marktbedingungen nicht Ihren Handelspräferenzen entsprechen.",
+                "amount": "Der „Betrag“ bezieht sich auf die Gesamtzahl der Vermögenswerte, die Sie in Ihrer Bestellung kaufen oder verkaufen möchten. Die Angabe ist wichtig, da sie die Größe Ihrer Transaktion bestimmt und sich auf die Gesamtkosten für Kaufaufträge oder den Umsatz für Verkaufsaufträge auswirkt.",
+                "limit": "Der „Limitpreis“ ist der genaue Preis, den Sie für eine Limitorder festlegen. Der Handel wird nur ausgeführt, wenn der Marktpreis des Vermögenswerts Ihrem Grenzpreis entspricht. Dadurch wird sichergestellt, dass Sie nicht über diesem angegebenen Wert kaufen oder unter diesem Wert verkaufen.",
+                "locked": "„Gesperrt“ zeigt die Menge an Vermögenswerten an, die während der laufenden Bestellung gehalten werden soll."
+            },
+            "bookStatus": {
+                "active": "Vollständige Handelsfunktionalität aktiviert. Sie können neue Bestellungen aufgeben oder bestehende stornieren.",
+                "placeable": "Eingeschränkte Funktionalität. Sie können neue Bestellungen aufgeben und bestehende stornieren, einige Funktionen sind jedoch möglicherweise nicht verfügbar.",
+                "cancelable": "Sie können nur bestehende Bestellungen stornieren. Die Platzierung neuer Bestellungen ist derzeit deaktiviert.",
+                "inactive": "Sämtliche Handelsaktivitäten sind derzeit eingestellt. Derzeit können keine Bestellungen aufgegeben oder storniert werden."
+            }
+        },
+        "txDetails": {
+            "orderType": "Auftragsart",
+            "limitPrice": "Grenzpreis",
+            "expiryDate": "Verfallsdatum"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "Der eingegebene Preis ist zu genau, um berechnet zu werden",
+                "reading": "Genauigkeit überschritten: Der eingegebene Betrag\/Preis hat zu viele Dezimalstellen. Bitte geben Sie einen Wert mit weniger Dezimalstellen ein"
+            },
+            "marketNotAvailable": {
+                "reason": "Es sind nicht genügend Bestellungen verfügbar, um diese Bestellung auszuführen",
+                "reading": "Limitierung der Market-Order: Es sind nicht genügend Orders verfügbar, um diese Market-Limit-Order auszuführen. Bitte passen Sie Ihre Bestellgröße an oder warten Sie, bis weitere Bestellungen aufgegeben werden"
+            },
+            "exceedsSpread": {
+                "reason": "Der Preis überstieg die Spanne",
+                "reading": "Preis überschritten: Der Geld- oder Briefkurs eines Marktes überstieg seinen Brief-\/Briefpreis"
+            },
+            "spotLimit": {
+                "reason": "Die Handelsseite wurde besetzt",
+                "reading": "Preisspannenobergrenze: Jede Orderbuchseite ist auf 1024 eindeutige Preispunkte begrenzt. Bitte wählen Sie einen Preis innerhalb der bestehenden Preisspanne aus oder warten Sie, bis Platz frei wird"
+            },
+            "accountLimit": {
+                "reason": "Es sind zu viele Bestellungen im Gange",
+                "reading": "Limit erreicht: Jedes Konto ist auf 1024 Limit-Orders beschränkt. Bitte warten Sie, bis einige Ihrer Bestellungen ausgeführt werden"
+            },
+            "singlePriceLimit": {
+                "reason": "Für diesen Preis laufen zu viele Bestellungen",
+                "reading": "Limit erreicht: Jede Position ist auf 1024 Limit-Orders beschränkt. Bitte warten Sie, bis einige Bestellungen ausgeführt werden"
+            },
+            "outOfBounds": {
+                "reading": "Blockchain-Bereich überschritten: Ihr eingegebener Betrag liegt außerhalb des zulässigen Bereichs der Blockchain. Min: {min} ; Maximal: {max}",
+                "reason": "Der Betrag entspricht nicht dem Blockchain-Bereich"
+            }
+        },
+        "orderStatus": {
+            "active": "Aktiv",
+            "canceled": "Abgesagt",
+            "expired": "Abgelaufen",
+            "filled": "Gefüllt"
+        }
+    }
 }

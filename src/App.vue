@@ -555,6 +555,7 @@ i.icon-divider {
     position: absolute;
     right: initial;
   }
+
   .app-content {
     display: flex;
     justify-content: center;
