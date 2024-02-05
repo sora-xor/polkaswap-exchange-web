@@ -1,7 +1,7 @@
 import { INDEXER_TYPES } from '@soramitsu/soraneo-wallet-web';
 
 import type { OrderBookId, PriceVariant } from '@sora-substrate/liquidity-proxy';
-import type { FPNumber } from '@sora-substrate/util';
+import type { FPNumber, CodecString } from '@sora-substrate/util';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 
 export enum Filter {
@@ -25,6 +25,8 @@ export type OrderBookDealData = {
 };
 
 export type OrderBookStats = {
+  baseAssetReserves?: CodecString;
+  quoteAssetReserves?: CodecString;
   price: FPNumber;
   priceChange: FPNumber;
   volume: FPNumber;

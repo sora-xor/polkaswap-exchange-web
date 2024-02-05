@@ -389,7 +389,8 @@
         "Explore\/Staking": "质押",
         "Explore\/Farming": "农耕",
         "Staking": "质押",
-        "OrderBook": "贸易"
+        "OrderBook": "贸易",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "兑换",

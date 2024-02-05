@@ -389,7 +389,8 @@
         "Explore\/Staking": "Ցուցադրում",
         "Explore\/Farming": "Ֆարմինգ",
         "Staking": "Ցուցադրում",
-        "OrderBook": "Առևտուր"
+        "OrderBook": "Առևտուր",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Փոխանակում",

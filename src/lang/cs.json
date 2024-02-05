@@ -389,7 +389,8 @@
         "Explore\/Staking": "Stakování",
         "Explore\/Farming": "Farming",
         "Staking": "Stakování",
-        "OrderBook": "Obchod"
+        "OrderBook": "Obchod",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Swap",
