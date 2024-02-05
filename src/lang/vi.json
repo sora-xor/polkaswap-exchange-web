@@ -60,7 +60,10 @@
             "StakingPayout": "Phần thưởng thanh toán",
             "StakingChill": "Sự ớn lạnh",
             "StakingSetController": "Đặt bộ điều khiển {address}",
-            "StakingSetPayee": "Đặt người nhận thanh toán {address}"
+            "StakingSetPayee": "Đặt người nhận thanh toán {address}",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ở mức {price} {symbol2} đã đặt",
+            "OrderBookCancelLimitOrder": "Lệnh giới hạn bị hủy",
+            "OrderBookCancelLimitOrders": "Lệnh giới hạn bị hủy"
         },
         "error": {
             "Transfer": "Không gửi được {action} {amount} {symbol} {direction} {address}",
@@ -92,7 +95,10 @@
             "StakingPayout": "Không thể thanh toán phần thưởng",
             "StakingChill": "Không thể thư giãn",
             "StakingSetController": "Không thể đặt bộ điều khiển {address}",
-            "StakingSetPayee": "Không thể đặt người nhận thanh toán {address}"
+            "StakingSetPayee": "Không thể đặt người nhận thanh toán {address}",
+            "OrderBookPlaceLimitOrder": "Không đặt được lệnh giới hạn {amount} {symbol} ở {price} {symbol}",
+            "OrderBookCancelLimitOrder": "Không hủy được lệnh giới hạn {amount} {symbol} ở {price} {symbol}",
+            "OrderBookCancelLimitOrders": "Không thể hủy lệnh giới hạn"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -116,7 +122,10 @@
         "StakingPayout": "Phần thưởng thanh toán",
         "StakingChill": "Sự ớn lạnh",
         "StakingSetController": "Đặt bộ điều khiển",
-        "StakingSetPayee": "Đặt người nhận thanh toán"
+        "StakingSetPayee": "Đặt người nhận thanh toán",
+        "OrderBookPlaceLimitOrder": "Đặt hàng",
+        "OrderBookCancelLimitOrder": "Hủy đơn hàng",
+        "OrderBookCancelLimitOrders": "Hủy đơn hàng"
     },
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) {PolkadotJs}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -339,7 +348,9 @@
         "referrer": "Người giới thiệu",
         "referral": "Giới thiệu",
         "adarTxDetailsTitle": "Chi tiết giao dịch",
-        "comment": "Bình luận"
+        "comment": "Bình luận",
+        "price": "Giá",
+        "side": "Bên"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Thay đổi mạng trong ví",
@@ -377,7 +388,8 @@
         "Explore\/Pools": "hồ bơi",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
-        "Staking": "Staking"
+        "Staking": "Staking",
+        "OrderBook": "Buôn bán"
     },
     "mainMenu": {
         "Swap": "Đổi",
@@ -391,7 +403,8 @@
         "CreatePair": "Tạo một cặp token",
         "StakingContainer": "Staking",
         "Explore\/Container": "Khám phá",
-        "SoraCard": "{Sora} Thẻ"
+        "SoraCard": "{Sora} Thẻ",
+        "OrderBook": "Buôn bán"
     },
     "social": {
         "twitter": "Twitter",
@@ -1383,5 +1396,129 @@
         }
     },
     "collapseText": "Sụp đổ",
-    "expandText": "Mở rộng"
+    "expandText": "Mở rộng",
+    "orderBook": {
+        "Buy": "Mua {asset}",
+        "Sell": "Bán {asset}",
+        "orderBook": "Quyển sổ đặc Mua hàng",
+        "marketTrades": "Giao dịch thị trường",
+        "market": "Chợ",
+        "limit": "Giới hạn",
+        "price": "Giá",
+        "total": "Tổng cộng",
+        "amount": "số lượng",
+        "time": "thời gian",
+        "month": "tháng",
+        "change": "thay đổi",
+        "cantPlaceOrder": "Không thể đặt hàng",
+        "enterAmount": "Nhập số tiền",
+        "setPrice": "Đặt giá",
+        "dayVolume": "Khối lượng 1D",
+        "stop": "Sách đã dừng",
+        "tokenPair": "Cặp mã thông báo",
+        "book": {
+            "noAsks": "Không có câu hỏi nào được mở",
+            "noBids": "Không có giá thầu mở"
+        },
+        "history": {
+            "tradeHistory": "Lịch sử giao dịch",
+            "orderHistory": "Lịch sử đơn hàng",
+            "openOrders": "Lệnh mở {value}",
+            "connect": "Kết nối tài khoản để bắt đầu giao dịch",
+            "cancel": "Hủy đơn hàng {value}",
+            "cancelAll": "Hủy bỏ tất cả"
+        },
+        "orderTable": {
+            "time": "thời gian",
+            "pair": "đôi",
+            "side": "bên",
+            "filled": "điền",
+            "lifetime": "cả đời",
+            "noOrders": "Không có đơn đặt hàng. Tạo cái đầu tiên của bạn!"
+        },
+        "dialog": {
+            "placeMarket": "Đặt lệnh thị trường",
+            "placeLimit": "Đặt lệnh giới hạn",
+            "askCancel": "Bạn có chắc chắn muốn hủy tất cả các lệnh đang mở của mình không?",
+            "cancelAll": "Có, hủy tất cả",
+            "noCancel": "Không, đừng hủy nó",
+            "buy": "Mua {amount} {symbol}",
+            "sell": "Bán {amount} {symbol}",
+            "at": "ở {price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "Chọn cặp giao dịch",
+            "volume": "Âm lượng",
+            "dailyChange": "Thay đổi hàng ngày",
+            "status": "Trạng thái",
+            "total": "{amount} {symbol} ở mức {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Tích cực",
+            "placeable": "Có thể đặt được",
+            "cancelable": "Có thể hủy",
+            "inactive": "Không hoạt động"
+        },
+        "tooltip": {
+            "limitOrder": "Lệnh 'Giới hạn' cho phép bạn chỉ định mức giá chính xác mà bạn muốn mua hoặc bán một tài sản. Lệnh 'Giới hạn Mua' sẽ chỉ được thực hiện ở mức giá được chỉ định hoặc thấp hơn, trong khi lệnh 'Bán Giới hạn' sẽ chỉ được thực hiện ở mức giá được chỉ định hoặc cao hơn. Sự kiểm soát này đảm bảo bạn không phải trả nhiều hơn hoặc bán với giá thấp hơn mức bạn cảm thấy thoải mái.",
+            "marketOrder": "'Lệnh thị trường' là lệnh mua hoặc bán ngay lập tức ở mức giá hiện tại tốt nhất. Nó không yêu cầu đặt giá, đảm bảo thực hiện nhanh chóng nhưng phải đánh đổi bằng việc ít kiểm soát hơn đối với giá nhận hoặc trả. Loại lệnh này được sử dụng khi sự chắc chắn trong việc khớp lệnh được ưu tiên hơn việc kiểm soát giá.",
+            "pairsList": "Danh sách thời gian thực hiển thị các lệnh mua và bán hiện tại đối với tiền điện tử. Nó giúp bạn hiểu nhu cầu, hướng giá tiềm năng và khối lượng giao dịch trên Mạng SORA và Polkaswap DEX",
+            "bookWidget": "Bản ghi trực tiếp, cập nhật liên tục các lệnh mua (giá thầu) và bán (yêu cầu) cho một tài sản cụ thể, được sắp xếp theo mức giá. Sổ lệnh hiển thị độ sâu của thị trường, bao gồm số lượng tài sản được chào bán ở các mức giá khác nhau. Các nhà giao dịch sử dụng chế độ xem chi tiết này để đánh giá tâm lý thị trường, xác định các mức kháng cự và hỗ trợ tiềm năng, đồng thời dự đoán biến động giá dựa trên cung và cầu hiện tại",
+            "marketWidget": "Tiện ích này hiển thị luồng giao dịch được thực hiện trên thị trường theo thời gian thực, cung cấp thông tin về khối lượng giao dịch, hoạt động gần đây và xu hướng thị trường hiện tại. Bằng cách quan sát thời gian, giá cả và quy mô của các giao dịch thực tế, nhà giao dịch có thể hiểu rõ hơn về động lực và tâm lý thị trường, giúp họ phát hiện các cơ hội giao dịch và đưa ra quyết định sáng suốt.",
+            "txDetails": {
+                "orderType": "Lệnh 'Mua' sẽ chỉ được thực hiện ở mức giá được chỉ định hoặc thấp hơn, trong khi lệnh 'Bán' sẽ chỉ được thực hiện ở mức giá được chỉ định hoặc cao hơn. Sự kiểm soát này đảm bảo bạn không phải trả nhiều hơn hoặc bán với giá thấp hơn mức bạn cảm thấy thoải mái.",
+                "expiryDate": "'Ngày hết hạn' là thời hạn để lệnh của bạn được thực thi. Nếu thị trường không đạt đến mức giá bạn chỉ định trước ngày này, lệnh sẽ tự động bị hủy. Bạn không bị ràng buộc phải chờ đợi vĩnh viễn nếu điều kiện thị trường không phù hợp với sở thích giao dịch của bạn.",
+                "amount": "'Số tiền' đề cập đến tổng số tài sản bạn muốn mua hoặc bán trong đơn đặt hàng của mình. Điều quan trọng là phải chỉ định vì nó xác định quy mô giao dịch của bạn, ảnh hưởng đến tổng chi phí cho lệnh mua hoặc doanh thu cho lệnh bán.",
+                "limit": "'Giá giới hạn' là mức giá chính xác mà bạn đặt cho lệnh giới hạn. Giao dịch sẽ chỉ thực hiện khi giá thị trường của tài sản đáp ứng giá giới hạn của bạn, đảm bảo bạn không mua cao hơn hoặc bán dưới giá trị được chỉ định này.",
+                "locked": "Phần 'Đã khóa' hiển thị số lượng tài sản sẽ được giữ trong khi lệnh đang diễn ra."
+            },
+            "bookStatus": {
+                "active": "Chức năng giao dịch đầy đủ được kích hoạt. Bạn có thể đặt đơn hàng mới hoặc hủy đơn hàng hiện có.",
+                "placeable": "Chức năng hạn chế. Bạn có thể đặt đơn hàng mới và hủy đơn hàng hiện có, nhưng một số tính năng có thể không khả dụng.",
+                "cancelable": "Bạn chỉ có thể hủy các đơn đặt hàng hiện có. Vị trí đặt hàng mới hiện bị vô hiệu hóa.",
+                "inactive": "Hiện tại mọi hoạt động giao dịch đều bị tạm dừng. Không có đơn đặt hàng có thể được đặt hoặc hủy bỏ tại thời điểm này."
+            }
+        },
+        "txDetails": {
+            "orderType": "kiểu đơn hàng",
+            "limitPrice": "giá giới hạn",
+            "expiryDate": "ngày hết hạn"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "Giá đã nhập quá chính xác để tính toán",
+                "reading": "Vượt quá độ chính xác: Số tiền\/giá đã nhập có quá nhiều chữ số thập phân. Vui lòng nhập giá trị có ít chữ số thập phân hơn"
+            },
+            "marketNotAvailable": {
+                "reason": "Không có đủ đơn đặt hàng để thực hiện đầy đủ đơn đặt hàng này",
+                "reading": "Giới hạn lệnh thị trường: Không có đủ đơn đặt hàng để thực hiện lệnh giới hạn thị trường này. Vui lòng điều chỉnh kích thước đơn hàng của bạn hoặc chờ đặt thêm đơn hàng"
+            },
+            "exceedsSpread": {
+                "reason": "Giá vượt quá mức chênh lệch",
+                "reading": "Giá vượt quá: giá chào mua hoặc giá chào bán của thị trường vượt quá giá chào bán\/giá chào mua của nó"
+            },
+            "spotLimit": {
+                "reason": "Bên giao dịch đã được lấp đầy",
+                "reading": "Giới hạn phạm vi giá: Mỗi mặt sổ đặt hàng được giới hạn ở 1024 điểm giá duy nhất. Vui lòng chọn một mức giá trong phạm vi hiện có hoặc đợi có chỗ trống"
+            },
+            "accountLimit": {
+                "reason": "Quá nhiều đơn đặt hàng đang diễn ra",
+                "reading": "Đã đạt đến giới hạn: Mỗi tài khoản được giới hạn ở 1024 lệnh giới hạn. Vui lòng đợi cho đến khi một số đơn đặt hàng của bạn được thực hiện"
+            },
+            "singlePriceLimit": {
+                "reason": "Quá nhiều đơn đặt hàng đang diễn ra cho mức giá này",
+                "reading": "Đã đạt đến giới hạn: Mỗi vị trí được giới hạn ở 1024 lệnh giới hạn. Vui lòng đợi cho đến khi một số đơn hàng được thực hiện"
+            },
+            "outOfBounds": {
+                "reading": "Đã vượt quá phạm vi chuỗi khối: Số tiền bạn đã nhập nằm ngoài phạm vi cho phép của chuỗi khối. Tối thiểu: {min} ; Tối đa: {max}",
+                "reason": "Số tiền không tuân thủ phạm vi blockchain"
+            }
+        },
+        "orderStatus": {
+            "active": "Tích cực",
+            "canceled": "Đã hủy",
+            "expired": "Hết hạn",
+            "filled": "Điền"
+        }
+    }
 }
