@@ -1,7 +1,5 @@
-import type { SubAssetId } from '@sora-substrate/util/build/bridgeProxy/sub/types';
-
 export type BridgeRegisteredAsset = {
-  address: string | SubAssetId;
+  address: string;
   decimals: number;
   kind: string;
   contract?: string;

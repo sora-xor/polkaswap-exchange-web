@@ -1,4 +1,5 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { defineActions } from 'direct-vuex';
 
 import { assetsActionContext } from '@/store/assets';
@@ -9,7 +10,7 @@ import { subBridgeApi } from '@/utils/bridge/sub/api';
 import ethersUtil from '@/utils/ethers-util';
 
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { SubNetwork, SubAssetId } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { ActionContext } from 'vuex';
 
 async function updateEthAssetsData(context: ActionContext<any, any>): Promise<void> {
@@ -70,17 +71,31 @@ async function getEvmRegisteredAssets(
   return registeredAssets;
 }
 
+const getSubAssetIdAddress = (address: SubAssetId, network: SubNetwork): string => {
+  if (network === SubNetworkId.Liberland) {
+    const id = typeof address === 'object' ? address?.Asset?.toString() : address;
+
+    return id ?? '';
+  }
+
+  return '';
+};
+
 async function getSubRegisteredAssets(
   context: ActionContext<any, any>
 ): Promise<Record<string, BridgeRegisteredAsset>[]> {
   const { rootState } = assetsActionContext(context);
 
   const subNetwork = rootState.web3.networkSelected;
-  const networkAssets = await subBridgeApi.getRegisteredAssets(subNetwork as SubNetwork);
+
+  if (!subNetwork) return [];
+
+  const subNetworkId = subNetwork as SubNetwork;
+  const networkAssets = await subBridgeApi.getRegisteredAssets(subNetworkId);
   const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
     return {
       [soraAddress]: {
-        address: assetData.address ?? '',
+        address: getSubAssetIdAddress(assetData.address, subNetworkId),
         decimals: assetData.decimals,
         kind: assetData.assetKind,
       },

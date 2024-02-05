@@ -29,14 +29,10 @@ const getters = defineGetters<AssetsState>()({
 
       const { balance } = rootGetters.wallet.account.accountAssetsAddressTable[asset.address] || {};
 
-      // [TODO: Liberland]
-      const externalAddressCasted =
-        typeof externalAddress === 'object' ? externalAddress?.Asset?.toString() ?? '' : externalAddress ?? '';
-
       return {
         ...asset,
         balance,
-        externalAddress: externalAddressCasted,
+        externalAddress: externalAddress,
         externalBalance: ZeroStringValue, // remove externalBalance
         externalDecimals,
       };

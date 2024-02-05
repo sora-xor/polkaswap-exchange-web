@@ -198,8 +198,13 @@ const getters = defineGetters<BridgeState>()({
     const { networkSelected } = rootState.web3;
 
     if (!networkSelected) return null;
+    if (!getters.isSubBridge) return networkSelected;
 
-    return getters.isSubBridge ? subBridgeApi.getRelayChain(networkSelected as SubNetwork) : networkSelected;
+    const subNetworkId = networkSelected as SubNetwork;
+
+    return subBridgeApi.isStandalone(subNetworkId)
+      ? subNetworkId
+      : subBridgeApi.getRelayChain(networkSelected as SubNetwork);
   },
   networkHistoryLoading(...args): boolean {
     const { getters, state } = bridgeGetterContext(args);

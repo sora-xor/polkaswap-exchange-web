@@ -166,7 +166,7 @@ class LiberlandAdapter extends SubAdapter {
 
     return this.api.tx.soraBridgeApp.burn(
       // networkId
-      'Mainnet', // [TODO: Liberland] SubNetworkId.Mainnet
+      SubNetworkId.Mainnet,
       // assetId
       assetId,
       // recipient
@@ -335,9 +335,7 @@ export class SubNetworksConnector {
     // reuse api from connectorAdapter if possible
     this.cloneApi(adapter, connectorAdapter);
 
-    // [TODO: Liberland] use subBridgeApi.isParachain
-    const isParachain = !subBridgeApi.isRelayChain(network) && !subBridgeApi.isStandalone(network);
-    const parachainId = isParachain ? subBridgeApi.getParachainId(network) : undefined;
+    const parachainId = subBridgeApi.isParachain(network) ? subBridgeApi.getParachainId(network) : undefined;
 
     return { adapter, parachainId };
   }
