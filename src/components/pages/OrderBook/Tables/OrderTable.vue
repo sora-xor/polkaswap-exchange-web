@@ -1,8 +1,8 @@
 <template>
   <div class="s-flex-column order-table__main">
-    <span class="h4 order-table__empty" v-if="isEmpty">No orders. Create your first order!</span>
+    <span class="h4 order-table__empty" v-if="shouldEmptyStateBeShown">{{ t('orderBook.orderTable.noOrders') }}</span>
     <s-table
-      v-show="!isEmpty /* v-show cuz SScrollbar is set during the mounting */"
+      v-show="!shouldEmptyStateBeShown /* v-show cuz SScrollbar is set during the mounting */"
       v-loading="loadingState"
       class="order-table"
       ref="table"
@@ -152,8 +152,8 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
   @Watch('tableItems', { deep: true, immediate: true })
   private syncTableItemsDebounced = debounce(this.syncTableItems, 250);
 
-  get isEmpty(): boolean {
-    return !this.orders?.length;
+  get shouldEmptyStateBeShown(): boolean {
+    return !(this.loadingState || this.orders?.length);
   }
 
   get rowKey() {
