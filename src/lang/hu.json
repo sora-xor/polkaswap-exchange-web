@@ -389,7 +389,8 @@
         "Explore\/Staking": "Letét",
         "Explore\/Farming": "Farmolás",
         "Staking": "Letét",
-        "OrderBook": "Kereskedelmi"
+        "OrderBook": "Kereskedelmi",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Váltás",
