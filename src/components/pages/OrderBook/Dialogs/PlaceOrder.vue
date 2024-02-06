@@ -124,8 +124,8 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
       this.isVisible = false;
       return;
     }
-    await this.withNotifications(async () => {
-      try {
+    try {
+      await this.withNotifications(async () => {
         const isLimitReached = await this.singlePriceReachedLimit();
         if (isLimitReached) {
           this.$alert(this.t('orderBook.error.singlePriceLimit.reading'), { title: this.t('errorText') });
@@ -135,13 +135,11 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
           await orderExtrinsic();
           this.$emit('confirm', true);
         }
-      } catch (error) {
-        this.$emit('confirm');
-        console.error(error);
-      } finally {
-        this.isVisible = false;
-      }
-    });
+      });
+    } catch (error) {
+      this.$emit('confirm');
+    }
+    this.isVisible = false;
   }
 }
 </script>
