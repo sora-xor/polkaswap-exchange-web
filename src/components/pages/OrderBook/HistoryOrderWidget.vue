@@ -149,8 +149,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   }
 
   async handleCancel(cancel: Cancel): Promise<void> {
-    if (this.isBookStopped) return;
-    if (!this.userLimitOrders.length) return;
+    if (this.loading || this.isBookStopped || !this.userLimitOrders.length) return;
 
     const orders = cancel === Cancel.multiple ? this.ordersToBeCancelled : this.userLimitOrders;
 
