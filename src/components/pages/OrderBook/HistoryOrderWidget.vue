@@ -43,7 +43,7 @@
     </div>
     <div class="delimiter" />
     <div class="order-history-main s-flex-column" v-if="isLoggedIn">
-      <open-orders v-if="currentFilter === Filter.open" />
+      <open-orders v-if="currentFilter === Filter.open" :parent-loading="openOrdersLoading" />
       <all-orders v-else :filter="currentFilter" />
     </div>
     <div v-else class="order-history-connect-account">
@@ -61,13 +61,14 @@
 <script lang="ts">
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
-import { state, getter, mutation } from '@/store/decorators';
+import { state, getter, mutation, action } from '@/store/decorators';
 import { Filter, Cancel } from '@/types/orderBook';
+import { delay } from '@/utils';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
@@ -80,27 +81,43 @@ import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
   },
 })
 export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.TransactionMixin) {
-  @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
-  @state.orderBook.ordersToBeCancelled ordersToBeCancelled!: Array<LimitOrder>;
-
-  @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-
+  readonly Filter = Filter;
+  readonly Cancel = Cancel;
+  // Open Orders utils
+  @state.orderBook.userLimitOrders private userLimitOrders!: Array<LimitOrder>;
+  @getter.orderBook.accountAddress accountAddress!: string;
+  @getter.orderBook.orderBookId orderBookId!: string;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
+  @action.orderBook.subscribeToUserLimitOrders private subscribeToUserLimitOrders!: AsyncFnWithoutArgs;
+  @action.orderBook.unsubscribeFromUserLimitOrders private unsubscribeFromUserLimitOrders!: AsyncFnWithoutArgs;
+  // Cancel Orders utils
+  @state.orderBook.ordersToBeCancelled private ordersToBeCancelled!: Array<LimitOrder>;
   @mutation.orderBook.setOrdersToBeCancelled private setOrdersToBeCancelled!: (orders: LimitOrder[]) => void;
+  // Additional utils
+  @getter.orderBook.currentOrderBook private currentOrderBook!: Nullable<OrderBook>;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   confirmCancelOrderVisibility = false;
   currentFilter = Filter.open;
-  openLimitOrders: Array<LimitOrder> = [];
+  openOrdersLoading = false;
 
-  readonly Filter = Filter;
-  readonly Cancel = Cancel;
+  // Widget subscription for user limit orders
+  @Watch('orderBookId', { immediate: true })
+  @Watch('accountAddress')
+  @Watch('nodeIsConnected')
+  private async updateSubscription(): Promise<void> {
+    this.openOrdersLoading = true;
+    await this.subscribeToUserLimitOrders();
+    await delay(2_000); // Waiting for selectable logic init
+    this.openOrdersLoading = false;
+  }
 
   get openOrdersText(): string {
     return this.t('orderBook.history.openOrders', { value: this.openOrdersCount });
   }
 
   get cancelText(): string {
-    return this.hasSelected
+    return this.hasSelectedForCancellation
       ? this.t('orderBook.history.cancel', { value: `(${this.ordersToBeCancelled.length})` })
       : this.t('orderBook.history.cancel');
   }
@@ -109,7 +126,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     return this.t('orderBook.history.cancelAll');
   }
 
-  get hasSelected(): boolean {
+  get hasSelectedForCancellation(): boolean {
     return this.ordersToBeCancelled.length > 0;
   }
 
@@ -130,7 +147,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   }
 
   get isCancelMultipleInactive(): boolean {
-    return this.loading || this.isBookStopped || !this.hasSelected;
+    return this.loading || this.isBookStopped || !this.hasSelectedForCancellation;
   }
 
   connectAccount(): void {
@@ -168,6 +185,10 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
       }
       this.setOrdersToBeCancelled([]);
     });
+  }
+
+  beforeDestroy(): void {
+    this.unsubscribeFromUserLimitOrders();
   }
 }
 </script>

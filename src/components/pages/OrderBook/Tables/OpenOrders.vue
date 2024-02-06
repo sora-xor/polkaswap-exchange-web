@@ -4,7 +4,7 @@
     is-open-orders
     :orders="sortedUserLimitOrders"
     :selectable="isSelectionAllowed"
-    :parent-loading="loading"
+    :parent-loading="loadingState"
     :page-amount="pageAmount"
     @cell-click="handleSelectRow"
     @selection-change="handleSelectionChange"
@@ -35,17 +35,11 @@ import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
   },
 })
 export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
-  @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
-  @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
-
-  // Widget subscription data
-  @getter.orderBook.accountAddress accountAddress!: string;
-  @getter.orderBook.orderBookId orderBookId!: string;
-  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
-  @action.orderBook.subscribeToUserLimitOrders subscribeToUserLimitOrders!: AsyncFnWithoutArgs;
-  @action.orderBook.unsubscribeFromUserLimitOrders unsubscribeFromUserLimitOrders!: FnWithoutArgs;
-  @action.orderBook.subscribeOnLimitOrders subscribeOnLimitOrders!: (ids: number[]) => Promise<void>;
-  @mutation.orderBook.resetPagedUserLimitOrdersSubscription resetLimitOrdersSubscription!: FnWithoutArgs;
+  @state.orderBook.userLimitOrders private userLimitOrders!: Array<LimitOrder>;
+  @getter.orderBook.currentOrderBook private currentOrderBook!: Nullable<OrderBook>;
+  // Subscription to open orders on the current page (to track the filled %)
+  @action.orderBook.subscribeOnLimitOrders private subscribeOnLimitOrders!: (ids: number[]) => Promise<void>;
+  @mutation.orderBook.resetPagedUserLimitOrdersSubscription private resetLimitOrdersSubscription!: FnWithoutArgs;
   // Selectable cancel orders
   @state.orderBook.ordersToBeCancelled private ordersToBeCancelled!: LimitOrder[];
   @mutation.orderBook.setOrdersToBeCancelled private setOrdersToBeCancelled!: (orders: LimitOrder[]) => void;
@@ -64,15 +58,8 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     return this.ordersToBeCancelled.map(({ id }) => id);
   }
 
-  // Widget subscription creation
-  @Watch('orderBookId', { immediate: true })
-  @Watch('accountAddress')
-  @Watch('nodeIsConnected')
-  private async updateSubscription(): Promise<void> {
-    await this.withLoading(async () => {
-      await this.subscribeToUserLimitOrders();
-      await delay(2_000); // Waiting for selectable logic init
-    });
+  get loadingState(): boolean {
+    return this.parentLoading || this.loading;
   }
 
   get isSelectionAllowed(): boolean {
@@ -169,7 +156,6 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
     if (this.isSelectionAllowed) {
       this.setOrdersToBeCancelled([]);
     }
-    this.unsubscribeFromUserLimitOrders();
     this.resetLimitOrdersSubscription();
   }
 }
