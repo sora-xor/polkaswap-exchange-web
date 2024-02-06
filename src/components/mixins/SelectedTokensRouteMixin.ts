@@ -84,7 +84,7 @@ export default class SelectedTokenRouteMixin extends Vue {
   }
 
   /**
-   * Sould be used in Add liquidity & Swap during mount
+   * Should be used in Add liquidity & Swap during mount
    *
    * Returns is valid state for routing life cycle
    */

@@ -144,7 +144,6 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
 
   @Prop({ default: () => [], type: Array }) readonly orders!: OrderData[];
   @Prop({ default: false, type: Boolean }) readonly selectable!: boolean;
-  @Prop({ default: 6, type: Number }) declare readonly pageAmount: number;
   @Prop({ default: false, type: Boolean }) readonly isOpenOrders!: boolean;
 
   private async syncTableItems(): Promise<void> {

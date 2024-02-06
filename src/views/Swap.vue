@@ -219,9 +219,9 @@ export default class Swap extends Mixins(
   @state.swap.allowLossPopup private allowLossPopup!: boolean;
 
   @getter.assets.xor private xor!: AccountAsset;
-  @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
+  @getter.swap.swapLiquiditySource liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.settings.chartsFlagEnabled chartsFlagEnabled!: boolean;
-  @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;

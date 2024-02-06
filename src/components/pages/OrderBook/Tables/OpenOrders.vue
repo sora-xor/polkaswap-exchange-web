@@ -5,7 +5,6 @@
     :orders="sortedUserLimitOrders"
     :selectable="isSelectionAllowed"
     :parent-loading="loadingState"
-    :page-amount="pageAmount"
     @cell-click="handleSelectRow"
     @selection-change="handleSelectionChange"
     @select="handleSelect"
@@ -48,7 +47,6 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 
   private currentPage = 1;
   private tableItems: LimitOrder[] = [];
-  pageAmount = 6;
 
   private selectedPageItemIds: number[] = [];
   private needToUpdateSelection = false;
