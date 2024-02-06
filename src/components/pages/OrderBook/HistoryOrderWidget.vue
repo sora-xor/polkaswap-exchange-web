@@ -48,7 +48,7 @@
     </div>
     <div v-else class="order-history-connect-account">
       <div class="order-history-connect-account-button">
-        <h4>{{ t('orderBook.history.connect') }}</h4>
+        <h4 class="h4">{{ t('orderBook.history.connect') }}</h4>
         <s-button type="primary" class="btn s-typography-button--medium" @click="connectAccount">
           {{ t('connectWalletText') }}
         </s-button>
@@ -264,11 +264,6 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     align-items: center;
     justify-content: center;
     min-height: 400px;
-
-    h4 {
-      font-size: var(--s-font-size-large);
-      text-align: center;
-    }
 
     &-button {
       display: flex;
