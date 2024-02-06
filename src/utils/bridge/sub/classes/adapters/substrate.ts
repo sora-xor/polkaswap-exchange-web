@@ -125,6 +125,18 @@ export class SubAdapter {
     return await this.getAccountBalance(accountAddress);
   }
 
+  protected async getExistensionalDeposit(): Promise<CodecString> {
+    await this.connect();
+
+    const value = this.api.consts.balances.existentialDeposit.toString();
+
+    return value;
+  }
+
+  public async getAssetMinimumAmount(assetAddress: string): Promise<CodecString> {
+    return await this.getExistensionalDeposit();
+  }
+
   protected getTransferExtrinsic(
     asset: RegisteredAsset,
     recipient: string,

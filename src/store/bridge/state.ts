@@ -12,6 +12,7 @@ function initialState(): BridgeState {
     assetRecipientBalance: null, // balance for bridge network
     assetLockedBalance: null, // asset balance locked on bridge
     incomingMinLimit: FPNumber.ZERO, // incoming min limit in asset amount
+    outgoingMinLimit: null,
     outgoingMaxLimit: null, // outgoing max limit in asset amount
     outgoingMaxLimitSubscription: null,
     blockUpdatesSubscription: null,

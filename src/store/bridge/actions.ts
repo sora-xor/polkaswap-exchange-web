@@ -451,6 +451,7 @@ const actions = defineActions({
     commit.setAssetRecipientBalance();
 
     await Promise.allSettled([
+      dispatch.updateOutgoingMinLimit(),
       dispatch.updateOutgoingMaxLimit(),
       dispatch.updateIncomingMinLimit(),
       updateBalancesAndFees(context),
@@ -486,6 +487,23 @@ const actions = defineActions({
     }
 
     commit.setIncomingMinLimit(minLimit);
+  },
+
+  async updateOutgoingMinLimit(context): Promise<void> {
+    const { commit, getters } = bridgeActionContext(context);
+
+    let minLimit = FPNumber.ZERO;
+
+    if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
+      try {
+        const value = await subBridgeConnector.network.adapter.getAssetMinimumAmount(getters.asset.externalAddress);
+        minLimit = FPNumber.fromCodecValue(value, getters.asset.externalDecimals);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    commit.setOutgoingMinLimit(minLimit);
   },
 
   async updateOutgoingMaxLimit(context): Promise<void> {

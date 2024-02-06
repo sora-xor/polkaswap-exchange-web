@@ -73,7 +73,7 @@ async function getEvmRegisteredAssets(
 
 const getSubAssetIdAddress = (address: SubAssetId, network: SubNetwork): string => {
   if (network === SubNetworkId.Liberland) {
-    const id = typeof address === 'object' ? address?.Asset?.toString() : address;
+    const id = typeof address === 'object' ? address?.Asset?.toString() : '';
 
     return id ?? '';
   }

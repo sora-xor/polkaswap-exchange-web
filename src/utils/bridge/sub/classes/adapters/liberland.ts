@@ -10,18 +10,37 @@ import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 export class LiberlandAdapter extends SubAdapter {
-  public async getTokenBalance(accountAddress: string, address: string): Promise<CodecString> {
-    return address === LiberlandAssetType.LLD
-      ? await this.getAccountBalance(accountAddress)
-      : await this.getAccountAssetBalance(accountAddress, address);
+  // overrides SubAdapter method
+  public async getTokenBalance(accountAddress: string, assetAddress: string): Promise<CodecString> {
+    return assetAddress
+      ? await this.getAccountAssetBalance(accountAddress, assetAddress)
+      : await this.getAccountBalance(accountAddress);
   }
 
-  private async getAccountAssetBalance(accountAddress: string, address: string): Promise<CodecString> {
+  // overrides SubAdapter method
+  public async getAssetMinimumAmount(assetAddress: string): Promise<CodecString> {
+    return assetAddress ? await this.getAssetMinDeposit(assetAddress) : await this.getExistensionalDeposit();
+  }
+
+  protected async getAssetMinDeposit(assetAddress: string): Promise<CodecString> {
+    await this.connect();
+
+    const assetId = Number(assetAddress);
+    const result = await (this.api.query.assets as any).asset(assetId);
+
+    if (result.isEmpty) return ZeroStringValue;
+
+    const data = result.unwrap();
+
+    return data.minBalance.toString(); // [TODO: Liberland] check that this is CodecString
+  }
+
+  protected async getAccountAssetBalance(accountAddress: string, assetAddress: string): Promise<CodecString> {
     if (!(this.connected && accountAddress)) return ZeroStringValue;
 
     await this.api.isReady;
 
-    const assetId = Number(address);
+    const assetId = Number(assetAddress);
     const result = await (this.api.query.assets as any).account(assetId, accountAddress);
 
     if (result.isEmpty) return ZeroStringValue;
@@ -37,7 +56,7 @@ export class LiberlandAdapter extends SubAdapter {
     const { externalAddress: address, externalDecimals: decimals } = asset;
     const value = new FPNumber(amount, decimals).toCodecString();
 
-    const assetId = address === LiberlandAssetType.LLD ? address : { Asset: Number(address) };
+    const assetId = address ? { Asset: Number(address) } : LiberlandAssetType.LLD;
 
     return this.api.tx.soraBridgeApp.burn(
       // networkId
