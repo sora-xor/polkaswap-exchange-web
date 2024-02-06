@@ -16,9 +16,11 @@ import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/type
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
   @state.bridge.externalNativeBalance externalNativeBalance!: CodecString;
   @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<FPNumber>;
+  @state.bridge.outgoingMinLimit outgoingMinLimit!: Nullable<FPNumber>;
   @state.bridge.outgoingMaxLimit outgoingMaxLimit!: Nullable<FPNumber>;
   @state.bridge.incomingMinLimit incomingMinAmount!: FPNumber;
   @state.bridge.soraNetworkFee soraNetworkFee!: CodecString;
+  @state.bridge.externalTransferFee externalTransferFee!: CodecString;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
 
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
@@ -37,6 +39,14 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     return this.nativeToken?.externalDecimals;
   }
 
+  get isNativeTokenSelected(): boolean {
+    return this.nativeToken?.address === this.asset?.address;
+  }
+
+  get externalTransferFeeFP(): FPNumber {
+    return FPNumber.fromCodecValue(this.externalTransferFee, this.nativeTokenDecimals);
+  }
+
   get assetLockedOnSora(): boolean {
     return !subBridgeApi.isSoraParachain(this.networkSelected as SubNetwork);
   }
@@ -53,6 +63,14 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     return FPNumber.min(...filtered);
   }
 
+  get outgoingMinAmount(): FPNumber | null {
+    if (!this.outgoingMinLimit) return null;
+    // this fee is spend from transfer amount, so we add it to outgoing min limit
+    const transferFee = this.isNativeTokenSelected ? this.externalTransferFeeFP : FPNumber.ZERO;
+
+    return this.outgoingMinLimit.add(transferFee);
+  }
+
   get incomingMaxAmount(): FPNumber | null {
     if (this.assetLockedOnSora) return null;
 
@@ -64,7 +82,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   }
 
   getTransferMinAmount(isOutgoing: boolean): FPNumber | null {
-    return isOutgoing ? null : this.incomingMinAmount;
+    return isOutgoing ? this.outgoingMinAmount : this.incomingMinAmount;
   }
 
   isGreaterThanTransferMaxAmount(

@@ -327,7 +327,6 @@ export default class Bridge extends Mixins(
   readonly KnownSymbols = KnownSymbols;
   readonly FocusedField = FocusedField;
 
-  @state.bridge.externalTransferFee private externalTransferFee!: CodecString;
   @state.bridge.balancesFetching private balancesFetching!: boolean;
   @state.bridge.feesAndLockedFundsFetching private feesAndLockedFundsFetching!: boolean;
   @state.assets.registeredAssetsFetching private registeredAssetsFetching!: boolean;
@@ -416,8 +415,7 @@ export default class Bridge extends Mixins(
     });
 
     if (this.isNativeTokenSelected) {
-      const transferFee = this.getFPNumberFromCodec(this.externalTransferFee, this.asset?.externalDecimals);
-      maxBalance = maxBalance.sub(transferFee).max(FPNumber.ZERO);
+      maxBalance = maxBalance.sub(this.externalTransferFeeFP).max(FPNumber.ZERO);
     }
 
     if (this.transferMaxAmount && FPNumber.gt(maxBalance, this.transferMaxAmount)) {
@@ -515,10 +513,6 @@ export default class Bridge extends Mixins(
       isXor: isXorAccountAsset(this.asset),
       amount: this.getFPNumber(this.amountSend),
     });
-  }
-
-  get isNativeTokenSelected(): boolean {
-    return this.nativeToken?.address === this.asset?.address;
   }
 
   get isNativeTokenSufficientForNextOperation(): boolean {
