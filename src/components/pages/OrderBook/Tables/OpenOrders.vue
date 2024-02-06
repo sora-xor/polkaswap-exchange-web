@@ -20,7 +20,7 @@ import { Component, Mixins, Watch, Ref } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, state, action, mutation } from '@/store/decorators';
-import { delay } from '@/utils';
+import { delay, waitUntil } from '@/utils';
 
 import OrderTable from './OrderTable.vue';
 
@@ -57,6 +57,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 
   private selectedPageItemIds: number[] = [];
   private needToUpdateSelection = false;
+  private syncTableItemsRefreshing = false;
 
   private get ordersToBeCancelledIds(): number[] {
     return this.ordersToBeCancelled.map(({ id }) => id);
@@ -82,10 +83,13 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   @Watch('sortedUserLimitOrders', { deep: true, immediate: true })
-  private updatePagedOrdersSubscription(orders?: LimitOrder[], oldOrders?: LimitOrder[]): void {
+  private async updatePagedOrdersSubscription(orders?: LimitOrder[], oldOrders?: LimitOrder[]): Promise<void> {
     if (!orders?.length || orders.length === oldOrders?.length) {
       return;
     }
+
+    this.syncTableItemsRefreshing = true;
+    await waitUntil(() => !this.syncTableItemsRefreshing);
 
     if (this.ordersToBeCancelledIds.length) {
       const stillRemain = this.tableItems.filter(({ id }) => this.ordersToBeCancelledIds.includes(id));
@@ -103,10 +107,6 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
       this.resetLimitOrdersSubscription();
       if (items.length) {
         await this.subscribeOnLimitOrders(items.map(({ id }) => id));
-      }
-
-      if (this.isSelectionAllowed) {
-        await delay(500); // for selectable items in runtime during page loading
       }
     });
   }
@@ -159,6 +159,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
 
   syncTableItems(items: LimitOrder[]): void {
     this.tableItems = items;
+    this.syncTableItemsRefreshing = false;
     this.restoreSelectedData();
   }
 
