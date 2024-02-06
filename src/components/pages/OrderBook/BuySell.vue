@@ -101,7 +101,7 @@
     </div>
 
     <el-popover popper-class="book-validation__popover" trigger="hover" :visible-arrow="false">
-      <div v-if="hasExplainableError" class="book-validation">
+      <div v-if="shouldErrorTooltipBeShown" class="book-validation">
         <div class="book-validation__disclaimer">
           <h4 class="book-validation__disclaimer-header">
             {{ reason }}
@@ -123,7 +123,7 @@
         :disabled="buttonDisabled"
       >
         <span> {{ buttonText }}</span>
-        <s-icon v-if="hasExplainableError" name="info-16" class="book-inform-icon-btn" />
+        <s-icon v-if="shouldErrorTooltipBeShown" name="info-16" class="book-inform-icon-btn" />
       </s-button>
     </el-popover>
 
@@ -299,9 +299,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return !!this.reason && !!this.reading;
   }
 
+  get shouldErrorTooltipBeShown(): boolean {
+    return this.isLoggedIn && this.hasExplainableError;
+  }
+
   get amountAtPrice(): string {
-    if (this.buttonDisabled) return '';
-    if (!this.baseValue) return '';
+    if (this.buttonDisabled || !this.baseValue) return '';
     if (!this.quoteValue && !this.marketQuotePrice) return '';
 
     return this.t('orderBook.tradingPair.total', {
@@ -998,6 +1001,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       display: flex;
       flex-direction: column;
       margin-right: 42px;
+
+      > span {
+        text-transform: capitalize;
+      }
 
       &__value {
         font-size: var(--s-font-size-small);
