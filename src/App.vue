@@ -550,6 +550,18 @@ i.icon-divider {
   @include icon-styles;
 }
 
+.app-main--orderbook {
+  .app-menu {
+    position: absolute;
+    right: initial;
+  }
+
+  .app-content {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 @include desktop {
   .app-main {
     &.app-main--swap.app-main--has-charts {

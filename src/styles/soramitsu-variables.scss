@@ -1,40 +1,40 @@
-$s-color-brand-day: #A19A9D; // 0d0248
+$s-color-brand-day: #a19a9d; // 0d0248
 // Primary theme colors
-$s-color-theme-accent: #F8087B; // NEU bright pink fluro
-$s-color-theme-accent-hover: #F754A3; // NEU pale quartz pink
+$s-color-theme-accent: #f8087b; // NEU bright pink fluro
+$s-color-theme-accent-hover: #f754a3; // NEU pale quartz pink
 $s-color-theme-accent-pressed: #bf065f;
 $s-color-theme-accent-focused: #ab0555;
 // Secondary theme colors
-$s-color-theme-secondary: #44E5B2;
-$s-color-theme-secondary-hover: #24DAA0;
-$s-color-theme-secondary-pressed: #24DAA0;
-$s-color-theme-secondary-focused: #24DAA0;
+$s-color-theme-secondary: #44e5b2;
+$s-color-theme-secondary-hover: #24daa0;
+$s-color-theme-secondary-pressed: #24daa0;
+$s-color-theme-secondary-focused: #24daa0;
 // Base content colors
-$s-color-base-content-primary: #2A171F;
-$s-color-base-content-secondary: #A19A9D;
-$s-color-base-content-tertiary: #D5CDD0;
+$s-color-base-content-primary: #2a171f;
+$s-color-base-content-secondary: #a19a9d;
+$s-color-base-content-tertiary: #d5cdd0;
 $s-color-base-content-quaternary: #75787b;
 // Base misc colors
-$s-color-base-background: #FAF4F8;
-$s-color-base-border-primary: #F7F3F4;
-$s-color-base-border-secondary: #EDE4E7;
-$s-color-base-background-hover: #F7F3F4;
-$s-color-base-disabled: #FDF7FB;
-$s-color-base-on-disabled: #A19A9D;
-$s-color-base-on-accent: #FFFFFF;
+$s-color-base-background: #faf4f8;
+$s-color-base-border-primary: #f7f3f4;
+$s-color-base-border-secondary: #ede4e7;
+$s-color-base-background-hover: #f7f3f4;
+$s-color-base-disabled: #fdf7fb;
+$s-color-base-on-disabled: #a19a9d;
+$s-color-base-on-accent: #ffffff;
 // Utility colors
-$s-color-utility-body: #F7F3F4;
-$s-color-utility-surface: #FDF7FB;
+$s-color-utility-body: #f7f3f4;
+$s-color-utility-surface: #fdf7fb;
 $s-color-utility-overlay: rgba(42, 23, 31, 0.1);
 // Status colors
-$s-color-status-success: #34AD87;
-$s-color-status-warning: #EBA332;
-$s-color-status-error: #F754A3;
-$s-color-status-info: #479AEF;
-$s-color-status-success-background: #B9EBDB;
-$s-color-status-warning-background: #FCEEBD;
-$s-color-status-error-background: #FFD8EB;
-$s-color-status-info-background: #C6E2FF;
+$s-color-status-success: #34ad87;
+$s-color-status-warning: #eba332;
+$s-color-status-error: #f754a3;
+$s-color-status-info: #479aef;
+$s-color-status-success-background: #b9ebdb;
+$s-color-status-warning-background: #fceebd;
+$s-color-status-error-background: #ffd8eb;
+$s-color-status-info-background: #c6e2ff;
 // Fiat colors
 $s-color-fiat-value: rgba(71, 154, 239, 1) !default;
 $s-color-rewards: #c0e2ff !default;
@@ -46,7 +46,7 @@ $s-size-big: 58px;
 // Shadows
 $s-shadow-surface: 1px 1px 5px var(--s-shadow-color-dark), inset 1px 1px 1px var(--s-shadow-color-dark);
 $s-shadow-tooltip: 0px 1px 4px rgba(13, 2, 72, 0.35);
-$s-shadow-tab: 1px 1px 2px #FFFFFF, inset 1px 1px 2px rgba(0, 0, 0, 0.1); // 0px 1px 1px rgba(0, 0, 0, 0.1);
+$s-shadow-tab: 1px 1px 2px #ffffff, inset 1px 1px 2px rgba(0, 0, 0, 0.1); // 0px 1px 1px rgba(0, 0, 0, 0.1);
 $s-shadow-dropdown: 0px 4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-tap-bar: 0px -4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-side-menu: -4px 4px 8px rgba(19, 19, 19, 0.15);
@@ -75,9 +75,9 @@ $s-transition-default: all 0.125s ease-in-out;
 $s-asset-item-height: 71px;
 $s-asset-item-height--fiat: 86px;
 // override dark theme on disabled
-$s-color-base-on-disabled--dark: #C29AB7;
+$s-color-base-on-disabled--dark: #c29ab7;
 
-@import "../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index";
+@import '../../node_modules/@soramitsu/soramitsu-js-ui/lib/styles/index';
 
 :root {
   --s-color-brand-day: #{$s-color-brand-day};

@@ -113,7 +113,7 @@ import {
   FaucetLink,
 } from '@/consts';
 import { StakingPageNames } from '@/modules/staking/consts';
-import { getter, state } from '@/store/decorators';
+import { getter, mutation, state } from '@/store/decorators';
 
 import AppInfoPopper from './AppInfoPopper.vue';
 import AppSidebarItemContent from './SidebarItemContent.vue';
@@ -131,11 +131,14 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   @state.settings.faucetUrl faucetUrl!: string;
   @state.router.loading pageLoading!: boolean;
+  @state.settings.menuCollapsed collapsed!: boolean;
+
+  @getter.settings.orderBookEnabled private orderBookEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
-  readonly FaucetLink = FaucetLink;
+  @mutation.settings.setMenuCollapsed setMenuCollapsed!: (collapsed: boolean) => void;
 
-  collapsed = false;
+  readonly FaucetLink = FaucetLink;
 
   get collapseIcon(): string {
     return this.collapsed ? 'arrows-chevron-right-24' : 'arrows-chevron-left-24';
@@ -150,6 +153,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   get sidebarMenuItems(): Array<SidebarMenuItemLink> {
+    if (!this.orderBookEnabled) {
+      return SidebarMenuGroups.filter(({ title }) => title !== PageNames.OrderBook);
+    }
     return SidebarMenuGroups;
   }
 
@@ -184,7 +190,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   collapseMenu(e?: PointerEvent) {
     ((e?.target as HTMLElement).closest('#collapse-button') as HTMLElement).blur();
-    this.collapsed = !this.collapsed;
+    this.setMenuCollapsed(!this.collapsed);
   }
 }
 </script>
@@ -281,9 +287,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
     &:focus {
       background-color: unset !important;
-    }
-    i.el-icon-bank-card {
-      width: 28px; // to avoid issue with paddings
     }
   }
 }
@@ -407,6 +410,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       flex: 1;
       flex-flow: column nowrap;
       justify-content: space-between;
+      max-width: $sidebar-max-width;
+      padding-right: $inner-spacing-mini; // for shadow
     }
   }
 }

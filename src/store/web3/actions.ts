@@ -23,7 +23,7 @@ async function connectSubNetwork(context: ActionContext<any, any>): Promise<void
 
   const ss58 = subBridgeConnector.network.adapter.api.registry.chainSS58;
 
-  if (ss58) commit.setSubSS58(ss58);
+  if (ss58 !== undefined) commit.setSubSS58(ss58);
 }
 
 async function updateProvidedEvmNetwork(context: ActionContext<any, any>, evmNetworkId?: number): Promise<void> {
@@ -195,6 +195,10 @@ const actions = defineActions({
     });
   },
 
+  /**
+   * Only for assets, created in SORA network!
+   * "Thischain" for SORA, "Sidechain" for EVM
+   */
   async getEvmTokenAddressByAssetId(context, soraAssetId: string): Promise<string> {
     const { getters } = web3ActionContext(context);
     try {
@@ -210,6 +214,10 @@ const actions = defineActions({
       const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
       const methodArgs = [soraAssetId];
       const externalAddress = await contractInstance._sidechainTokens(...methodArgs);
+      // Not (wrong) registered Sora asset on bridge contract return '0' address (like native token)
+      if (ethersUtil.isNativeEvmTokenAddress(externalAddress)) {
+        throw new Error('Asset is not registered');
+      }
       return externalAddress;
     } catch (error) {
       console.error(soraAssetId, error);
