@@ -206,6 +206,19 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     color: var(--s-color-base-content-secondary);
     font-size: $basic-spacing;
     font-weight: 500;
+    &-cancel-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      justify-content: flex-end;
+      flex: 1;
+    }
+    &-filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      justify-content: flex-start;
+    }
   }
 
   &-filter {

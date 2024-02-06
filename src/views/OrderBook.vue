@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="isScreenHuge()" class="order-book-widgets--huge">
+    <div v-if="isScreenHuge" class="order-book-widgets--huge">
       <div class="column-1">
         <set-limit-order-widget class="set-widget" />
         <customise-page-widget :visible.sync="settingsVisibility" class="setting-widget" />
@@ -89,7 +89,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
     }
   }
 
-  isScreenHuge(): boolean {
+  get isScreenHuge(): boolean {
     return this.responsiveClass === BreakpointClass.HugeDesktop;
   }
 
@@ -177,7 +177,6 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
       .column-3 {
         .order-history-header-filter-buttons {
-          display: flex;
           flex-direction: column;
         }
       }
@@ -195,8 +194,9 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
       .column-3 {
         .order-history-header-cancel-buttons {
-          display: flex;
           flex-direction: column;
+          justify-content: flex-start;
+          flex: none;
         }
       }
     }
