@@ -15,7 +15,7 @@
     <s-table class="market-trades-table" :data="completedOrders">
       <s-table-column>
         <template #header>
-          <span class="market-trades__header">Price</span>
+          <span class="market-trades__header">{{ t('orderBook.price') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-info price" :class="{ buy: row.isBuy }">{{ row.price }}</span>
@@ -23,7 +23,7 @@
       </s-table-column>
       <s-table-column>
         <template #header>
-          <span class="market-trades__header">Time</span>
+          <span class="market-trades__header">{{ t('orderBook.time') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-info time">{{ row.time }}</span>
