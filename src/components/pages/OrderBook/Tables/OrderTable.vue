@@ -68,7 +68,7 @@
         <template #header>
           <span>% {{ t('orderBook.orderTable.filled') }}</span>
         </template>
-        <template v-slot="{ row }"> {{ row.filled }}% </template>
+        <template v-slot="{ row }">{{ row.filled }}</template>
       </s-table-column>
       <s-table-column width="94">
         <template #header>
@@ -121,7 +121,7 @@ import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
 import ScrollableTableMixin from '@/components/mixins/ScrollableTableMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { getter } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
 import { OrderStatus } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';
 
@@ -139,7 +139,8 @@ type OrderDataUI = Omit<OrderData, 'owner' | 'lifespan' | 'time' | 'expiresAt'>[
 export default class OrderTable extends Mixins(TranslationMixin, ScrollableTableMixin) {
   readonly PriceVariant = PriceVariant;
 
-  @getter.wallet.account.assetsDataTable assetsDataTable!: WALLET_TYPES.AssetsTable;
+  @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
+  @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
 
   @Prop({ default: () => [], type: Array }) readonly orders!: OrderData[];
   @Prop({ default: false, type: Boolean }) readonly selectable!: boolean;
@@ -176,8 +177,9 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
       const created = dayjs(time);
       const expires = dayjs.duration(lifespan);
 
-      const proportion = amount.div(originalAmount).mul(FPNumber.HUNDRED);
-      const filled = FPNumber.HUNDRED.sub(proportion).toFixed(2);
+      const proportion = amount.div(originalAmount);
+      const percent = FPNumber.ONE.sub(proportion).toNumber(2);
+      const filled = this.percentFormat?.format?.(percent) ?? `${percent * 100}%`;
       const total = this.getFPNumberFiatAmountByFPNumber(originalAmount.mul(price), quoteAsset) ?? FPNumber.ZERO;
 
       const row = {
@@ -185,7 +187,7 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
         orderBookId,
         originalAmount: originalAmount.dp(2),
         amount: originalAmount.sub(amount).dp(2),
-        filled: Number(filled),
+        filled,
         baseAssetSymbol,
         quoteAssetSymbol,
         pair,
@@ -248,8 +250,11 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
 </script>
 
 <style lang="scss">
+$table-header-background-color: rgba(231, 218, 221, 0.35);
+
 .order-table {
   font-size: var(--s-font-size-mini);
+  background-color: var(--s-color-utility-surface);
 
   &__main {
     flex: 1;
@@ -258,29 +263,15 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
   }
 
   .scrollable-table {
-    height: 100%;
-    @include scrollbar();
-    // Fix issue with horizontal & vertical scroll
-    &.el-scrollbar {
-      > .el-scrollbar__wrap {
-        position: relative;
-        bottom: -15px;
-        overflow-x: scroll;
-        > .el-scrollbar__view {
-          margin-top: -15px;
-        }
-      }
-      > .el-scrollbar__bar.is-vertical {
-        width: 0;
-      }
-    }
+    // Fix issue with horizontal scroll
+    @include scrollbar($withHorizontalScroll: true);
   }
 
   .el-table__header-wrapper {
     text-transform: uppercase;
-    background-color: rgba(231, 218, 221, 0.35);
+    background-color: $table-header-background-color;
     th {
-      background-color: rgba(231, 218, 221, 0.35);
+      background-color: $table-header-background-color;
       color: var(--s-color-base-content-secondary);
     }
   }
