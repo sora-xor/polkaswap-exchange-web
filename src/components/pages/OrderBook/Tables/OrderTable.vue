@@ -145,7 +145,11 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
   @Prop({ default: false, type: Boolean }) readonly selectable!: boolean;
   @Prop({ default: 6, type: Number }) declare readonly pageAmount: number;
 
-  private syncTableItems(): void {
+  private async syncTableItems(): Promise<void> {
+    if (this.currentPage !== 1 && !this.tableItems?.length) {
+      await this.handlePagination(WALLET_CONSTS.PaginationButton.Prev);
+      return;
+    }
     this.$emit('sync', this.tableItems);
   }
 
