@@ -26,7 +26,11 @@ export class LiberlandAdapter extends SubAdapter {
 
     if (result.isEmpty) return ZeroStringValue;
 
-    return result.unwrap().balance.toString();
+    const data = result.unwrap();
+
+    if (data.isFrozen.isTrue) return ZeroStringValue;
+
+    return data.balance.toString();
   }
 
   protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
