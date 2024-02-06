@@ -319,7 +319,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     });
   }
 
-  // TODO: [Rustem]: Refactor this function to reduce its Cognitive Complexity from 33 to the 15 allowed. [+22 locations]sonarlint(typescript:S3776)
   get buttonText(): string {
     if (!this.isLoggedIn) return this.t('connectWalletText');
 
@@ -363,7 +362,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.reading = reading;
   }
 
-  // TODO: [Rustem] Refactor this function to reduce its Cognitive Complexity from 21 to the 15 allowed. [+14 locations]sonarlint(typescript:S3776)
   get buttonDisabled(): boolean {
     if (this.bookStopped) return true;
 
@@ -383,14 +381,13 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         if (this.priceExceedsSpread) return true;
       }
     } else {
-      if (!this.baseValue) return true; // TODO: [Rustem] check with btn text
+      if (!this.baseValue) return true;
       if (!this.marketQuotePrice) return true;
     }
 
     return this.isOutOfAmountBounds;
   }
 
-  // TODO: [Rustem] Refactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed. [+15 locations]sonarlint(typescript:S3776)
   async checkInputValidation(): Promise<void> {
     this.setError({ reason: '', reading: '' });
 
@@ -944,7 +941,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   .buy-btn {
     width: 100%;
-    background-color: #34ad87 !important;
+    background-color: var(--s-color-status-success) !important;
   }
 
   .buy-btn.is-disabled {

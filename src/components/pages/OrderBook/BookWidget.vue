@@ -317,11 +317,17 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   /**
-   * // TODO: [Rustem] add missed type, add missed docs, it's unclear how this method works
+   * Aggregates orders based on selected precision by user
+   * @param orders to be aggregated
+   * @returns aggregated orders
    */
-  private calculateStepsDistribution(orders, precision = 10): OrderBookPriceVolumeAggregated[] {
+  private calculateStepsDistribution(
+    orders: OrderBookPriceVolume[],
+    precision = 10
+  ): OrderBookPriceVolume[] | OrderBookPriceVolumeAggregated[] {
     if (this.isBookPrecisionEqual(precision.toString())) return orders;
 
+    // finds max price to know proper edge in orders distribution
     const maxPrice = FPNumber.max(...orders.map(([price]) => price)) as FPNumber;
 
     if (!maxPrice) return orders;
@@ -335,16 +341,19 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
     if (!edge.isZeroMod(step)) edge = edge.sub(edge.mod(step));
 
+    // iteratively finds a range to be placed
     for (let index = 0; index < orders.length; index++) {
       const [price, amount] = orders[index];
 
       if (FPNumber.lte(edge, FPNumber.ZERO)) break;
       if (FPNumber.lt(edge, price)) break;
 
+      // checks whether eligible for this range
       if (FPNumber.lte(price, edge) && FPNumber.gt(price, edge.sub(step))) {
         accumulatedAmount = accumulatedAmount.add(amount);
         accumulatedTotal = price.mul(amount).add(accumulatedTotal);
       } else {
+        // if not, puts accumulated amount and total in row and starts with next one
         aggregatedOrders.push([edge, accumulatedAmount, accumulatedTotal]);
 
         accumulatedAmount = FPNumber.ZERO;
@@ -353,11 +362,13 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
         index -= 1;
       }
 
+      // scenario when last [price, volume] wasn't recorded in 'else' branch; push it in last row
       if (index === orders.length - 1) {
         aggregatedOrders.push([edge, accumulatedAmount, accumulatedTotal]);
       }
     }
 
+    // filter empty records
     return aggregatedOrders.filter((row: OrderBookPriceVolumeAggregated) => !row[1].isZero());
   }
 
@@ -379,12 +390,12 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     const maxAmount = FPNumber.max(...aggregated.map((order) => order[1])) as FPNumber;
     const result: LimitOrderForm[] = [];
 
-    aggregated.forEach((row: OrderBookPriceVolumeAggregated) => {
+    aggregated.forEach((row: OrderBookPriceVolume | OrderBookPriceVolumeAggregated) => {
       const [price, amount, acc] = row;
 
       if (amount.isZero()) return;
 
-      const total = this.isBookPrecisionEqual(this.selectedStep) ? price.mul(amount) : acc;
+      const total = (this.isBookPrecisionEqual(this.selectedStep) ? price.mul(amount) : acc) as FPNumber;
 
       result.push({
         price: this.toBookPrecision(price),
@@ -490,7 +501,7 @@ $mono-font: 'JetBrainsMono';
     }
 
     .order-info.price {
-      color: var(--status-day-success, #34ad87);
+      color: var(--s-color-status-success);
     }
   }
 
@@ -500,7 +511,7 @@ $mono-font: 'JetBrainsMono';
     }
 
     .order-info.price {
-      color: var(--status-day-error, #f754a3);
+      color: var(--s-color-status-error);
     }
   }
 
@@ -530,14 +541,14 @@ $mono-font: 'JetBrainsMono';
     &--up {
       .mark-price,
       .trend-icon {
-        color: #34ad87;
+        color: var(--s-color-status-success);
       }
     }
 
     &--down {
       .mark-price,
       .trend-icon {
-        color: #f754a3;
+        color: var(--s-color-status-error);
       }
     }
   }
