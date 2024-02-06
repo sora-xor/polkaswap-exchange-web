@@ -58,10 +58,6 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isBuySide!: boolean;
 
-  get formattedFromValue(): string {
-    return this.formatStringValue(this.fromValue, this.tokenFrom?.decimals);
-  }
-
   get title(): string {
     return this.isMarketType ? this.t('orderBook.dialog.placeMarket') : this.t('orderBook.dialog.placeLimit');
   }
@@ -82,10 +78,6 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
 
   get lowerText(): string {
     return this.t('orderBook.dialog.at', { price: this.quoteValue, symbol: this.quoteAsset?.symbol });
-  }
-
-  get formattedToValue(): string {
-    return this.formatStringValue(this.toValue, this.tokenTo?.decimals);
   }
 
   private placeLimitOrder(): Promise<void> {
@@ -112,20 +104,14 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   }
 
   private async singlePriceReachedLimit(): Promise<boolean> {
-    try {
-      const limitReached = !(await api.orderBook.isOrderPlaceable(
-        this.baseAsset.address,
-        this.quoteAsset.address,
-        this.side,
-        this.quoteValue
-      ));
+    const limitReached = !(await api.orderBook.isOrderPlaceable(
+      this.baseAsset.address,
+      this.quoteAsset.address,
+      this.side,
+      this.quoteValue
+    ));
 
-      return limitReached;
-    } catch (err) {
-      this.$alert(this.t('orderBook.error.singlePriceLimit.reading'), { title: this.t('errorText') });
-      this.$emit('confirm');
-      throw err;
-    }
+    return limitReached;
   }
 
   async handleConfirmSwap(): Promise<void> {
@@ -135,20 +121,27 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
         { title: this.t('errorText') }
       );
       this.$emit('confirm');
-    } else if (await this.singlePriceReachedLimit()) {
-      this.$alert(this.t('orderBook.error.singlePriceLimit.reading'), { title: this.t('errorText') });
-      this.$emit('confirm');
-    } else {
-      const orderExtrinsic = this.isMarketType ? this.placeMarketOrder : this.placeLimitOrder;
-
+      this.isVisible = false;
+      return;
+    }
+    await this.withNotifications(async () => {
       try {
-        await this.withNotifications(orderExtrinsic);
-        this.$emit('confirm', true);
+        const isLimitReached = await this.singlePriceReachedLimit();
+        if (isLimitReached) {
+          this.$alert(this.t('orderBook.error.singlePriceLimit.reading'), { title: this.t('errorText') });
+          this.$emit('confirm');
+        } else {
+          const orderExtrinsic = this.isMarketType ? this.placeMarketOrder : this.placeLimitOrder;
+          await orderExtrinsic();
+          this.$emit('confirm', true);
+        }
       } catch (error) {
         this.$emit('confirm');
+        console.error(error);
+      } finally {
+        this.isVisible = false;
       }
-    }
-    this.isVisible = false;
+    });
   }
 }
 </script>
