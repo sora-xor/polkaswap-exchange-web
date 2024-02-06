@@ -2,21 +2,43 @@
   <div class="order-book-widget history s-flex-column">
     <div class="order-history-header">
       <div class="order-history-header-filter-buttons">
-        <span @click="switchFilter(Filter.open)" :class="getComputedFilterClasses(Filter.open)">{{
-          openOrdersText
-        }}</span>
-        <span @click="switchFilter(Filter.all)" :class="getComputedFilterClasses(Filter.all)">
+        <span
+          class="order-history-filter"
+          :class="{ 'order-history-filter--active': currentFilter === Filter.open }"
+          @click="switchFilter(Filter.open)"
+        >
+          {{ openOrdersText }}
+        </span>
+        <span
+          class="order-history-filter"
+          :class="{ 'order-history-filter--active': currentFilter === Filter.all }"
+          @click="switchFilter(Filter.all)"
+        >
           {{ t('orderBook.history.orderHistory') }}
         </span>
-        <span @click="switchFilter(Filter.executed)" :class="getComputedFilterClasses(Filter.executed)">
+        <span
+          class="order-history-filter"
+          :class="{ 'order-history-filter--active': currentFilter === Filter.executed }"
+          @click="switchFilter(Filter.executed)"
+        >
           {{ t('orderBook.history.tradeHistory') }}
         </span>
       </div>
       <div v-if="isLoggedIn" class="order-history-header-cancel-buttons">
-        <span :class="getComputedCancelClasses(Cancel.multiple)" @click="handleCancel(Cancel.multiple)">{{
-          cancelText
-        }}</span>
-        <span :class="getComputedCancelClasses(Cancel.all)" @click="openConfirmCancelDialog">{{ cancelAllText }}</span>
+        <span
+          class="order-history-cancel"
+          :class="{ 'order-history-cancel--inactive': isCancelMultipleInactive }"
+          @click="handleCancel(Cancel.multiple)"
+        >
+          {{ cancelText }}
+        </span>
+        <span
+          class="order-history-cancel"
+          :class="{ 'order-history-cancel--inactive': isCancelAllInactive }"
+          @click="openConfirmCancelDialog"
+        >
+          {{ cancelAllText }}
+        </span>
       </div>
     </div>
     <div class="delimiter" />
@@ -103,34 +125,12 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     return count > 0 ? `(${count})` : ``;
   }
 
-  getComputedFilterClasses(filter: Filter): string[] {
-    const base = ['order-history-filter'];
-
-    if (this.currentFilter === filter) base.push('order-history-filter--active');
-
-    return base;
+  get isCancelAllInactive(): boolean {
+    return this.loading || this.isBookStopped || !this.userLimitOrders.length;
   }
 
-  getComputedCancelClasses(cancel: Cancel): string[] {
-    const base = ['order-history-cancel'];
-    let inactive = true;
-
-    if (this.isBookStopped) {
-      base.push('order-history-cancel--inactive');
-      return base;
-    }
-
-    if (cancel === Cancel.all && this.userLimitOrders.length) {
-      inactive = false;
-    }
-
-    if (cancel === Cancel.multiple && this.hasSelected) {
-      inactive = false;
-    }
-
-    if (inactive) base.push('order-history-cancel--inactive');
-
-    return base;
+  get isCancelMultipleInactive(): boolean {
+    return this.loading || this.isBookStopped || !this.hasSelected;
   }
 
   connectAccount(): void {
@@ -155,12 +155,13 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     const orders = cancel === Cancel.multiple ? this.ordersToBeCancelled : this.userLimitOrders;
 
     if (!orders.length) return;
-    const {
-      orderBookId: { base, quote },
-    } = orders[0];
-    const ids = orders.map((order: LimitOrder) => order.id);
 
     await this.withNotifications(async () => {
+      const {
+        orderBookId: { base, quote },
+      } = orders[0]; // TODO: [STEFAN] issue with ordersToBeCancelled -> orderToBeCancelledIds
+      const ids = orders.map((order: LimitOrder) => order.id);
+
       if (ids.length > 1) {
         await api.orderBook.cancelLimitOrderBatch(base, quote, ids);
       } else {

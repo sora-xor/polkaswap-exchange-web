@@ -1,6 +1,7 @@
 <template>
   <order-table
     ref="orderTable"
+    is-open-orders
     :orders="sortedUserLimitOrders"
     :selectable="isSelectionAllowed"
     :parent-loading="loading"

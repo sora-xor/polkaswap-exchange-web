@@ -312,7 +312,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   $marginOffset: 0,
   $verticalRight: 2px,
   $isLeft: false,
-  $withHorizontalScroll: false
+  $withHorizontalScroll: false,
+  $hideVerticalScroll: false
 ) {
   &.el-scrollbar {
     margin-left: $marginOffset;
@@ -335,6 +336,10 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
       @if $isLeft == true {
         left: 0;
+      }
+
+      @if $hideVerticalScroll == true {
+        width: 0;
       }
     }
   }

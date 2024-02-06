@@ -80,7 +80,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="93">
+      <s-table-column width="93" v-if="!isOpenOrders">
         <template #header>
           <span>{{ t('orderBook.tradingPair.status') }}</span>
         </template>
@@ -145,6 +145,7 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
   @Prop({ default: () => [], type: Array }) readonly orders!: OrderData[];
   @Prop({ default: false, type: Boolean }) readonly selectable!: boolean;
   @Prop({ default: 6, type: Number }) declare readonly pageAmount: number;
+  @Prop({ default: false, type: Boolean }) readonly isOpenOrders!: boolean;
 
   private async syncTableItems(): Promise<void> {
     if (this.currentPage !== 1 && !this.tableItems?.length) {
@@ -263,8 +264,10 @@ $table-header-background-color: rgba(231, 218, 221, 0.35);
   }
 
   .scrollable-table {
-    // Fix issue with horizontal scroll
-    @include scrollbar($withHorizontalScroll: true);
+    height: 100%; // Move horizontal scroll to the bottom corner
+
+    // Fix issue with horizontal and vertical scroll
+    @include scrollbar($withHorizontalScroll: true, $hideVerticalScroll: true);
   }
 
   .el-table__header-wrapper {
