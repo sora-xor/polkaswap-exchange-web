@@ -75,12 +75,13 @@ async function autoselectBridgeAsset(context: ActionContext<any, any>): Promise<
 }
 
 async function autoselectSubAddress(context: ActionContext<any, any>): Promise<void> {
-  const { commit, rootState, state } = web3ActionContext(context);
+  const { commit, rootState } = web3ActionContext(context);
   const { address, name } = rootState.wallet.account;
-  const { networkType, subAddress } = state;
 
-  if (networkType === BridgeNetworkType.Sub && !subAddress && address) {
+  if (address) {
     commit.setSubAddress({ address, name });
+  } else {
+    commit.setSubAddress({ address: '', name: '' });
   }
 }
 
@@ -141,9 +142,9 @@ const actions = defineActions({
     commit.setSelectedNetwork(id);
 
     getRegisteredAssets(context);
-    autoselectSubAddress(context);
 
     if (type === BridgeNetworkType.Sub) {
+      autoselectSubAddress(context);
       await connectSubNetwork(context);
     }
   },
