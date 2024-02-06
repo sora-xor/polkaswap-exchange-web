@@ -60,7 +60,10 @@
             "StakingPayout": "Recompensas de pago",
             "StakingChill": "Enfriar",
             "StakingSetController": "Establecer controlador {address}",
-            "StakingSetPayee": "Establecer beneficiario {address}"
+            "StakingSetPayee": "Establecer beneficiario {address}",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} a {price} {symbol2} colocado",
+            "OrderBookCancelLimitOrder": "Orden límite cancelada",
+            "OrderBookCancelLimitOrders": "Limitar órdenes canceladas"
         },
         "error": {
             "Transfer": "Fallo en {action} {amount} {symbol} {direction} {address}",
@@ -92,7 +95,10 @@
             "StakingPayout": "No se pudieron pagar las recompensas",
             "StakingChill": "No se pudo enfriar",
             "StakingSetController": "No se pudo configurar el controlador {address}",
-            "StakingSetPayee": "No se pudo establecer el beneficiario {address}"
+            "StakingSetPayee": "No se pudo establecer el beneficiario {address}",
+            "OrderBookPlaceLimitOrder": "No se pudo realizar la orden limitada de {amount} {symbol} a {price} {symbol}",
+            "OrderBookCancelLimitOrder": "No se pudo cancelar la orden límite de {amount} {symbol} a {price} {symbol}",
+            "OrderBookCancelLimitOrders": "No se pudieron cancelar las órdenes limitadas"
         },
         "ReferralReserveXor": "Vincular XOR",
         "ReferralUnreserveXor": "Desvincular XOR",
@@ -116,7 +122,10 @@
         "StakingPayout": "Recompensas de pago",
         "StakingChill": "Enfriar",
         "StakingSetController": "Establecer controlador",
-        "StakingSetPayee": "Establecer beneficiario"
+        "StakingSetPayee": "Establecer beneficiario",
+        "OrderBookPlaceLimitOrder": "Realizar pedido",
+        "OrderBookCancelLimitOrder": "Cancelar orden",
+        "OrderBookCancelLimitOrders": "Cancelar pedidos"
     },
     "polkadotjs": {
         "noExtensions": "No se encontró la extensión {PolkadotJs}. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
@@ -339,7 +348,9 @@
         "referrer": "Referente",
         "referral": "Referencia",
         "adarTxDetailsTitle": "Detalles de la transacción",
-        "comment": "Comentario"
+        "comment": "Comentario",
+        "price": "Precio",
+        "side": "Lado"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Cambiar red en billetera",
@@ -377,7 +388,9 @@
         "Explore\/Pools": "Liquidez",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Agricultura",
-        "Staking": "Staking"
+        "Staking": "Staking",
+        "OrderBook": "Comercio",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Intercambio",
@@ -391,7 +404,8 @@
         "CreatePair": "Crear par",
         "StakingContainer": "Staking",
         "Explore\/Container": "Explorar",
-        "SoraCard": "{Sora} Tarjeta"
+        "SoraCard": "{Sora} Tarjeta",
+        "OrderBook": "Comercio"
     },
     "social": {
         "twitter": "Twitter",
@@ -1383,5 +1397,129 @@
         }
     },
     "collapseText": "Colapso",
-    "expandText": "Expandir"
+    "expandText": "Expandir",
+    "orderBook": {
+        "Buy": "Comprar {asset}",
+        "Sell": "Vender {asset}",
+        "orderBook": "Cartera de pedidos",
+        "marketTrades": "Operaciones de mercado",
+        "market": "Mercado",
+        "limit": "Límite",
+        "price": "Precio",
+        "total": "Total",
+        "amount": "cantidad",
+        "time": "tiempo",
+        "month": "mes",
+        "change": "cambiar",
+        "cantPlaceOrder": "No puedo realizar el pedido",
+        "enterAmount": "Ingrese la cantidad",
+        "setPrice": "Fijar precio",
+        "dayVolume": "Volumen 1D",
+        "stop": "Libro detenido",
+        "tokenPair": "par de tokens",
+        "book": {
+            "noAsks": "No hay preguntas abiertas",
+            "noBids": "No hay ofertas abiertas"
+        },
+        "history": {
+            "tradeHistory": "Historia comercial",
+            "orderHistory": "Historial de pedidos",
+            "openOrders": "Órdenes abiertas {value}",
+            "connect": "Conecte una cuenta para comenzar a operar",
+            "cancel": "Cancelar pedido {value}",
+            "cancelAll": "Cancelalo todo"
+        },
+        "orderTable": {
+            "time": "tiempo",
+            "pair": "par",
+            "side": "lado",
+            "filled": "completado",
+            "lifetime": "toda la vida",
+            "noOrders": "Sin pedidos. ¡Crea el primero!"
+        },
+        "dialog": {
+            "placeMarket": "Realizar orden de mercado",
+            "placeLimit": "Realizar orden límite",
+            "askCancel": "¿Está seguro de que desea cancelar todos sus pedidos abiertos?",
+            "cancelAll": "Sí, cancelar todo",
+            "noCancel": "No, no lo canceles",
+            "buy": "Comprar {amount} {symbol}",
+            "sell": "Vender {amount} {symbol}",
+            "at": "a {price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "Elija el par comercial",
+            "volume": "Volumen",
+            "dailyChange": "Cambio diario",
+            "status": "Estado",
+            "total": "{amount} {symbol} en {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Activo",
+            "placeable": "Colocable",
+            "cancelable": "Cancelable",
+            "inactive": "Inactivo"
+        },
+        "tooltip": {
+            "limitOrder": "Una orden 'límite' le permite especificar el precio exacto al que desea comprar o vender un activo. Una orden de 'Compra limitada' solo se ejecutará al precio especificado o inferior, mientras que una orden de 'Venta limitada' se ejecutará únicamente al precio especificado o superior. Este control garantiza que no pagará más ni venderá por menos de lo que le resulte cómodo.",
+            "marketOrder": "Una 'Orden de Mercado' es una orden para comprar o vender inmediatamente al mejor precio actual disponible. No requiere fijar un precio, lo que garantiza una ejecución rápida pero con la contrapartida de un menor control sobre el precio recibido o pagado. Este tipo de orden se utiliza cuando la certeza de la ejecución es una prioridad sobre el control del precio.",
+            "pairsList": "Una lista en tiempo real que muestra las órdenes de compra y venta actuales de una criptomoneda. Le ayuda a comprender la demanda, la dirección potencial del precio y el volumen comercial en SORA Network y Polkaswap DEX.",
+            "bookWidget": "Un registro en vivo y en constante actualización de órdenes de compra (oferta) y venta (demanda) para un activo específico, organizado por nivel de precio. El libro de órdenes muestra la profundidad del mercado, incluidas las cantidades de activos que se ofrecen a distintos precios. Los operadores utilizan esta vista detallada para medir el sentimiento del mercado, identificar posibles niveles de resistencia y soporte, y anticipar movimientos de precios en función de la oferta y la demanda existentes.",
+            "marketWidget": "Este widget muestra un flujo en tiempo real de las operaciones ejecutadas en el mercado, proporcionando información sobre los volúmenes de transacciones, la actividad reciente y las tendencias actuales del mercado. Al observar el momento, el precio y el tamaño de las operaciones reales, los operadores pueden obtener información sobre la dinámica y el sentimiento del mercado, lo que les ayuda a detectar oportunidades comerciales y tomar decisiones informadas.",
+            "txDetails": {
+                "orderType": "La orden de \"Compra\" solo se ejecutará al precio especificado o inferior, mientras que una orden de \"Venta\" se ejecutará únicamente al precio especificado o superior. Este control garantiza que no pagará más ni venderá por menos de lo que le resulte cómodo.",
+                "expiryDate": "La 'Fecha de Vencimiento' es la fecha límite para que se ejecute su orden. Si el mercado no alcanza el precio especificado antes de esta fecha, la orden se cancela automáticamente. No está obligado a una espera perpetua si las condiciones del mercado no se alinean con sus preferencias comerciales.",
+                "amount": "La 'Cantidad' se refiere a la cantidad total de activos que desea comprar o vender en su orden. Es importante especificarlo, ya que determina el tamaño de su transacción, lo que afecta el costo total de las órdenes de compra o los ingresos de las órdenes de venta.",
+                "limit": "El 'Precio límite' es el precio preciso que usted establece para una orden límite. La operación solo se ejecutará cuando el precio de mercado del activo alcance su precio límite, lo que garantiza que no compre por encima ni venda por debajo de este valor especificado.",
+                "locked": "'Bloqueado' muestra la cantidad de activo que se retendrá mientras la orden está en curso."
+            },
+            "bookStatus": {
+                "active": "Funcionalidad comercial completa habilitada. Puedes realizar nuevos pedidos o cancelar los existentes.",
+                "placeable": "Funcionalidad limitada. Puede realizar nuevos pedidos y cancelar los existentes, pero es posible que algunas funciones no estén disponibles.",
+                "cancelable": "Sólo puedes cancelar pedidos existentes. La realización de nuevos pedidos está actualmente deshabilitada.",
+                "inactive": "Todas las actividades comerciales están actualmente detenidas. No se pueden realizar ni cancelar pedidos en este momento."
+            }
+        },
+        "txDetails": {
+            "orderType": "tipo de orden",
+            "limitPrice": "precio límite",
+            "expiryDate": "fecha de caducidad"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "El precio introducido es demasiado preciso para calcularlo.",
+                "reading": "Precisión excedida: El importe\/precio introducido tiene demasiados decimales. Por favor ingrese un valor con menos decimales"
+            },
+            "marketNotAvailable": {
+                "reason": "No hay suficientes pedidos disponibles para completar este pedido",
+                "reading": "Limitación de orden de mercado: no hay suficientes órdenes disponibles para cumplir con esta orden de límite de mercado. Ajuste el tamaño de su pedido o espere a que se realicen más pedidos."
+            },
+            "exceedsSpread": {
+                "reason": "El precio superó el diferencial",
+                "reading": "Precio excedido: el precio de oferta o demanda de un mercado excedió su precio de demanda\/oferta."
+            },
+            "spotLimit": {
+                "reason": "La parte comercial se ha llenado",
+                "reading": "Límite de rango de precios: cada lado del libro de pedidos está limitado a 1024 puntos de precios únicos. Seleccione un precio dentro del rango existente o espere a que haya espacio disponible"
+            },
+            "accountLimit": {
+                "reason": "Hay demasiados pedidos en curso",
+                "reading": "Límite alcanzado: cada cuenta está limitada a 1024 órdenes límite. Espere hasta que se cumplan algunos de sus pedidos."
+            },
+            "singlePriceLimit": {
+                "reason": "Hay demasiados pedidos en curso por este precio.",
+                "reading": "Límite alcanzado: cada posición se limita a 1024 órdenes límite. Espere hasta que se completen algunos pedidos."
+            },
+            "outOfBounds": {
+                "reading": "Se excedió el rango de la cadena de bloques: el monto ingresado está fuera del rango permitido de la cadena de bloques. Mín: {min} ; Máximo: {max}",
+                "reason": "La cantidad no cumple con el rango de blockchain"
+            }
+        },
+        "orderStatus": {
+            "active": "Activo",
+            "canceled": "Cancelado",
+            "expired": "Venció",
+            "filled": "Completado"
+        }
+    }
 }
