@@ -30,7 +30,6 @@ import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
 
-import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
@@ -41,18 +40,16 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
-  @state.orderBook.baseValue baseValue!: string;
-  @state.orderBook.quoteValue quoteValue!: string;
-  @state.orderBook.side side!: PriceVariant;
+  @state.orderBook.baseValue private baseValue!: string;
+  @state.orderBook.quoteValue private quoteValue!: string;
+  @state.orderBook.side private side!: PriceVariant;
   @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.swap.fromValue private fromValue!: string;
   @state.swap.toValue private toValue!: string;
   @state.swap.selectedDexId private selectedDexId!: number;
 
-  @getter.swap.minMaxReceived private minMaxReceived!: CodecString;
-  @getter.swap.swapLiquiditySource private liquiditySource!: LiquiditySourceTypes;
-  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
-  @getter.swap.tokenTo tokenTo!: AccountAsset;
+  @getter.swap.tokenFrom private tokenFrom!: AccountAsset;
+  @getter.swap.tokenTo private tokenTo!: AccountAsset;
 
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
@@ -91,8 +88,8 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
     return this.formatStringValue(this.toValue, this.tokenTo?.decimals);
   }
 
-  async limitOrder() {
-    return await api.orderBook.placeLimitOrder(
+  private placeLimitOrder(): Promise<void> {
+    return api.orderBook.placeLimitOrder(
       this.baseAsset.address,
       this.quoteAsset.address,
       this.quoteValue,
@@ -101,8 +98,8 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
     );
   }
 
-  async marketOrder() {
-    return await api.swap.execute(
+  private placeMarketOrder(): Promise<void> {
+    return api.swap.execute(
       this.tokenFrom,
       this.tokenTo,
       this.fromValue,
@@ -114,15 +111,21 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
     );
   }
 
-  async singlePriceReachedLimit(): Promise<boolean> {
-    const limitReached = !(await api.orderBook.isOrderPlaceable(
-      this.baseAsset.address,
-      this.quoteAsset.address,
-      this.side,
-      this.quoteValue
-    ));
+  private async singlePriceReachedLimit(): Promise<boolean> {
+    try {
+      const limitReached = !(await api.orderBook.isOrderPlaceable(
+        this.baseAsset.address,
+        this.quoteAsset.address,
+        this.side,
+        this.quoteValue
+      ));
 
-    return limitReached;
+      return limitReached;
+    } catch (err) {
+      this.$alert(this.t('orderBook.error.singlePriceLimit.reading'), { title: this.t('errorText') });
+      this.$emit('confirm');
+      throw err;
+    }
   }
 
   async handleConfirmSwap(): Promise<void> {
@@ -136,7 +139,7 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
       this.$alert(this.t('orderBook.error.singlePriceLimit.reading'), { title: this.t('errorText') });
       this.$emit('confirm');
     } else {
-      const orderExtrinsic = this.isMarketType ? this.marketOrder : this.limitOrder;
+      const orderExtrinsic = this.isMarketType ? this.placeMarketOrder : this.placeLimitOrder;
 
       try {
         await this.withNotifications(orderExtrinsic);
