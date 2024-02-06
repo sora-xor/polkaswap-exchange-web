@@ -392,6 +392,8 @@ html {
   font-size: var(--s-font-size-small);
   line-height: var(--s-line-height-base);
   letter-spacing: var(--s-letter-spacing-small);
+  background-color: var(--s-color-utility-surface);
+  scrollbar-color: transparent transparent;
 }
 
 ul ul {
