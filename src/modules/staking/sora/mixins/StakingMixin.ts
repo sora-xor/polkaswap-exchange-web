@@ -136,7 +136,18 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
       return null;
     }
     const unlockingEras = this.accountLedger.unlocking.map((u) => u.era);
-    return (Math.min(...unlockingEras) - this.currentEra) * ERA_HOURS;
+
+    const countdownEras = unlockingEras
+      .map((era) => {
+        return era - this.currentEra;
+      })
+      .filter((eras) => eras > 0);
+
+    if (countdownEras.length) {
+      return Math.min(...countdownEras) * ERA_HOURS;
+    }
+
+    return 0;
   }
 
   get nextWithdrawalCountdownFormatted(): string | null {

@@ -40,6 +40,17 @@
         />
       </div>
 
+      <s-card v-if="mode === StakeDialogMode.REMOVE" class="information" shadow="always" primary>
+        <div class="information-content">
+          <div class="information-text">
+            {{ t('soraStaking.allWithdrawsDialog.information') }}
+          </div>
+          <div class="information-icon">
+            <s-icon name="notifications-alert-triangle-24" size="20px" />
+          </div>
+        </div>
+      </s-card>
+
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
@@ -223,6 +234,12 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
 }
 </script>
 
+<style lang="scss">
+.s-input.s-input--stake-part {
+  @include input-slider;
+}
+</style>
+
 <style lang="scss" scoped>
 .stake-dialog {
   @include full-width-button('action-button');
@@ -235,10 +252,36 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
 .el-form--actions {
   @include buttons;
 }
-</style>
 
-<style lang="scss">
-.s-input.s-input--stake-part {
-  @include input-slider;
+.information {
+  &-content {
+    display: flex;
+    gap: 38px;
+  }
+
+  &-text {
+    font-size: 15px;
+    line-height: 150%;
+  }
+
+  &-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 42px;
+    width: 42px;
+    margin-top: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--s-color-status-info);
+    border: 2px solid var(--s-color-base-border-primary);
+    // box-shadow: 20px 20px 60px 0px rgba(0, 0, 0, 0.1), 1px 1px 10px 0px #fff inset,
+    //   -10px -10px 30px 0px rgba(255, 255, 255, 0.9);
+
+    i {
+      margin-bottom: 2px;
+      color: white;
+    }
+  }
 }
 </style>

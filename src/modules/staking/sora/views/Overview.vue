@@ -87,24 +87,17 @@
                 :fiat-value="withdrawableFundsFiat"
               />
             </div>
-            <div class="withdraw-info">
-              <span class="withdraw-info-title">
-                {{ t('soraStaking.withdraw.withdrawable') }}
-              </span>
-              <formatted-amount-with-fiat-value
-                class="withdraw-info-amount"
-                :asset-symbol="stakingAsset?.symbol"
-                symbol-as-decimal
-                value-can-be-hidden
-                :value="withdrawableFundsFormatted"
-                :fiat-value="withdrawableFundsFiat"
-              />
-            </div>
-            <s-button class="withdraw-button" @click="withdraw" type="primary" size="small">{{
-              t('soraStaking.actions.withdraw')
-            }}</s-button>
+            <s-button
+              class="withdraw-button"
+              @click="handleWithdraw"
+              :disable="withdrawableFunds.isZero()"
+              type="primary"
+              size="small"
+            >
+              {{ t('soraStaking.actions.withdraw') }}
+            </s-button>
           </div>
-          <div class="withdraw-footer">
+          <div v-if="showNextWithdrawal" class="withdraw-footer">
             <span> {{ t('soraStaking.withdraw.nextWithdrawal') }}: {{ nextWithdrawalCountdownFormatted }} </span>
             <div class="withdraw-see-all" @click="showAllWithdraws">
               {{ t('soraStaking.withdraw.seeAll') }}
@@ -277,6 +270,10 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
     return !!this.accountLedger?.unlocking.length;
   }
 
+  get showNextWithdrawal(): boolean {
+    return !!(this.nextWithdrawalCountdownHours && this.nextWithdrawalCountdownHours > 0);
+  }
+
   private getDropdownMenuItems(): Array<MenuItem> {
     return [
       {
@@ -351,7 +348,7 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
     this.showAllWithdrawsDialog = true;
   }
 
-  withdraw() {
+  handleWithdraw() {
     this.showWithdrawDialog = true;
   }
 
@@ -488,9 +485,6 @@ p {
     display: flex;
     align-items: center;
     gap: 40px;
-    border-bottom: 1px solid var(--s-color-base-border-secondary);
-    padding-bottom: 8px;
-    margin-bottom: 16px;
   }
   &-info {
     display: flex;
@@ -514,6 +508,9 @@ p {
   &-footer {
     display: flex;
     justify-content: space-between;
+    border-top: 1px solid var(--s-color-base-border-secondary);
+    padding-top: 8px;
+    margin-top: 16px;
   }
   &-see-all {
     color: var(--s-color-theme-accent);

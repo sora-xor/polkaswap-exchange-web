@@ -11,31 +11,38 @@
           size="mini"
         >
           <div class="withdraw-content">
-            <div class="value">
-              {{ withdraw.valueFormatted }}
-            </div>
-            <s-icon name="el-icon-timer" />
+            <token-logo class="withdraw-logo" :tokenSymbol="stakingAsset?.symbol" />
+            <formatted-amount-with-fiat-value
+              class="amount"
+              :asset-symbol="stakingAsset?.symbol"
+              symbol-as-decimal
+              value-can-be-hidden
+              :value="withdraw.valueFormatted"
+              :fiat-value="withdrawableFundsFiat"
+            />
             <div class="countdown">
               {{ withdraw.countdownFormatted }}
             </div>
           </div>
         </s-card>
-        <s-card class="information" shadow="always" primary>
-          <div class="information-content">
-            <div class="information-text">
-              {{ t('soraStaking.allWithdrawsDialog.information') }}
-            </div>
-            <div class="information-icon">
-              <s-icon name="notifications-alert-triangle-24" size="20px" />
-            </div>
-          </div>
-        </s-card>
       </s-scrollbar>
+      <s-card class="information" shadow="always" primary>
+        <div class="information-content">
+          <div class="information-text">
+            {{ t('soraStaking.allWithdrawsDialog.information') }}
+          </div>
+          <div class="information-icon">
+            <s-icon name="notifications-alert-triangle-24" size="20px" />
+          </div>
+        </div>
+      </s-card>
     </div>
   </dialog-base>
 </template>
 
 <script lang="ts">
+import assert from 'assert';
+
 import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
@@ -52,7 +59,7 @@ import ValidatorsMixin from '../mixins/ValidatorsMixin';
 type Withdraw = {
   id: number;
   era: number;
-  value: string;
+  value: FPNumber;
   valueFormatted: string;
   countdownFormatted: string;
 };
@@ -64,6 +71,8 @@ type Withdraw = {
     DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
     FormattedAmount: components.FormattedAmount,
+    TokenLogo: components.TokenLogo,
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
 export default class AllWithdrawsDialog extends Mixins(
@@ -83,24 +92,49 @@ export default class AllWithdrawsDialog extends Mixins(
   get withdraws(): Withdraw[] {
     if (!this.allWithdraws || !this.stakingAsset) return [];
 
-    return this.allWithdraws.map((element) => {
+    const withdraws = this.allWithdraws.map((element) => {
       const value = element.value;
       const era = element.era;
 
       const hoursTotal = Math.max((element.era - this.currentEra) * ERA_HOURS, 0);
-      const days = Math.floor(hoursTotal / DAY_HOURS);
-      const hours = hoursTotal - days * DAY_HOURS;
-      const minutes = 0;
-      const countdownFormatted = this.t('soraStaking.withdraw.countdown', { days, hours, minutes });
-
-      const valueFormatted = formatDecimalPlaces(FPNumber.fromCodecValue(value)) + ' ' + this.stakingAsset?.symbol;
 
       return {
-        id: era,
         era,
-        value,
-        valueFormatted,
+        value: FPNumber.fromCodecValue(value),
         countdownHours: hoursTotal,
+      };
+    });
+
+    const pendingWithdraws = withdraws.filter((withdraw) => withdraw.countdownHours <= 0);
+    const upcomingWithdraws = withdraws.filter((withdraw) => withdraw.countdownHours > 0);
+
+    // Summing up the values of pending withdraws
+    const pendingWithdrawsValueSum = pendingWithdraws.reduce((acc, withdraw) => acc.add(withdraw.value), FPNumber.ZERO);
+
+    // For pendingWithdrawsCombined, you might not need a detailed object if it's just a sum, but here's an example if you want to include it:
+    const pendingWithdrawsCombined = pendingWithdraws.length
+      ? {
+          era: pendingWithdraws[0].era,
+          value: pendingWithdrawsValueSum,
+          countdownHours: 0,
+        }
+      : null;
+
+    return [...(pendingWithdrawsCombined ? [pendingWithdrawsCombined] : []), ...upcomingWithdraws].map((withdraw) => {
+      assert(this.stakingAsset);
+
+      const days = Math.floor(withdraw.countdownHours / DAY_HOURS);
+      const hours = withdraw.countdownHours - days * DAY_HOURS;
+      const minutes = 0;
+      const countdownFormatted = this.t('soraStaking.withdraw.countdownLeft', { days, hours, minutes });
+      const valueFormatted = formatDecimalPlaces(withdraw.value);
+      const valueFiat = this.getFiatAmountByFPNumber(this.withdrawableFunds, this.stakingAsset);
+
+      return {
+        ...withdraw,
+        id: withdraw.era,
+        valueFormatted,
+        valueFiat,
         countdownFormatted,
       };
     });
@@ -126,15 +160,11 @@ export default class AllWithdrawsDialog extends Mixins(
 <style lang="scss" scoped>
 .all-withdraws-dialog {
   @include full-width-button('action-button');
-
-  & > *:not(:first-child) {
-    margin-top: $inner-spacing-medium;
-  }
 }
 
 .all-withdraws-scrollbar {
   @include scrollbar;
-  height: 410px !important;
+  height: 200px !important;
   margin: 0 -24px !important;
 
   ul {
@@ -159,8 +189,6 @@ export default class AllWithdrawsDialog extends Mixins(
 }
 
 .information {
-  margin: 12px 24px 24px;
-
   &-content {
     display: flex;
     gap: 38px;
@@ -263,8 +291,16 @@ export default class AllWithdrawsDialog extends Mixins(
   }
 }
 
-.value {
-  font-weight: bold;
-  flex: 1;
+.amount {
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.countdown {
+  margin-left: auto;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 </style>

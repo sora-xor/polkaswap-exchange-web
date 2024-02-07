@@ -51,7 +51,7 @@
         </template>
       </s-button>
       <div class="check-all-withdraws" @click="showAllWithdraws">
-        {{ t('soraStaking.withdrawDialog.showAllWithdraws') }} ({{ accountLedger?.unlocking?.length ?? 0 }})
+        {{ t('soraStaking.withdrawDialog.showAllWithdraws') }}
       </div>
     </div>
   </dialog-base>
@@ -60,7 +60,7 @@
 <script lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import StakingMixin from '../mixins/StakingMixin';
 
@@ -96,17 +96,8 @@ export default class WithdrawDialog extends Mixins(StakingMixin, mixins.DialogMi
     return `${this.selectedValidators.length} (M AX: ${this.validators.length})`;
   }
 
-  get payouts() {
-    if (!this.pendingRewards) return [];
-
-    return this.pendingRewards.map((r) => ({
-      era: r.era,
-      validators: r.validators.map((v) => v.address),
-    }));
-  }
-
   async handleConfirm(): Promise<void> {
-    await this.getPendingRewards();
+    await this.withdraw(this.withdrawableFunds.toNumber());
 
     this.closeDialog();
   }
