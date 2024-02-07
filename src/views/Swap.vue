@@ -217,6 +217,7 @@ export default class Swap extends Mixins(
   @state.swap.isAvailable isAvailable!: boolean;
   @state.swap.swapQuote private swapQuote!: Nullable<SwapQuote>;
   @state.swap.allowLossPopup private allowLossPopup!: boolean;
+  @state.router.prev private prevRoute!: Nullable<PageNames>;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.swap.swapLiquiditySource liquiditySource!: Nullable<LiquiditySourceTypes>;
@@ -385,7 +386,9 @@ export default class Swap extends Mixins(
   created(): void {
     this.withApi(async () => {
       this.parseCurrentRoute();
-      if (this.tokenFrom && this.tokenTo) {
+      // Need to wait the previous page beforeDestroy somehow to set the route params
+      // TODO: [STEFAN]: add the core logic for each component using common Mixin + vuex router module
+      if (this.tokenFrom && this.tokenTo && this.prevRoute !== PageNames.OrderBook) {
         this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
       } else if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
         await this.setTokenFromAddress(this.firstRouteAddress);

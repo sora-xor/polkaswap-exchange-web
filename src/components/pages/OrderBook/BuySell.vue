@@ -187,6 +187,7 @@ import type { Subscription } from 'rxjs';
   },
 })
 export default class BuySellWidget extends Mixins(TranslationMixin, mixins.FormattedAmountMixin, mixins.LoadingMixin) {
+  @state.router.prev private prevRoute!: Nullable<PageNames>;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.orderBook.limitOrderType private _limitOrderType!: LimitOrderType;
   @state.orderBook.baseValue baseValue!: string;
@@ -216,11 +217,15 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @mutation.swap.setLiquiditySource setLiquiditySource!: (liquiditySource: string) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
   @mutation.orderBook.setLimitOrderType private setLimitOrderType!: (type: LimitOrderType) => void;
+  @mutation.swap.resetTokenToAddress private resetTokenToAddress!: FnWithoutArgs;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
 
   @action.orderBook.updateOrderBooksStats private updateOrderBooksStats!: AsyncFnWithoutArgs;
+  // It previous route = PageNames.Swap, we need to save 'from' and 'to' tokens to set it during the beforeDestroy
+  private prevSwapFromAddress = '';
+  private prevSwapToAddress = '';
 
   visibleBookList = false;
   confirmPlaceOrderVisibility = false;
@@ -768,11 +773,23 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.checkInputValidation();
   }
 
+  mounted(): void {
+    if (this.prevRoute === PageNames.Swap && this.tokenFrom?.address && this.tokenTo?.address) {
+      this.prevSwapFromAddress = this.tokenFrom?.address;
+      this.prevSwapToAddress = this.tokenTo?.address;
+    }
+  }
+
   beforeDestroy(): void {
     this.resetQuoteSubscription();
-    this.setTokenFromAddress(this.xor.address);
+    if (this.prevSwapFromAddress && this.prevSwapToAddress) {
+      this.setTokenFromAddress(this.prevSwapFromAddress);
+      this.setTokenToAddress(this.prevSwapToAddress);
+    } else {
+      this.setTokenFromAddress(this.xor.address);
+      this.resetTokenToAddress();
+    }
     this.setFromValue('');
-    this.setTokenToAddress();
     this.setToValue('');
     this.setQuoteValue('');
     this.setBaseValue('');
