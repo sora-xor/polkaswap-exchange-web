@@ -14,7 +14,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'KSM',
       decimals: 12,
     },
-    endpointUrls: [],
+    endpointUrls: ['wss://kusama-rpc.polkadot.io', 'wss://kusama-rpc.dwellir.com'],
     blockExplorerUrls: [],
     shortName: 'Kusama',
   },
@@ -26,7 +26,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'DOT',
       decimals: 10,
     },
-    endpointUrls: [],
+    endpointUrls: ['wss://rpc.polkadot.io', 'wss://polkadot-rpc.dwellir.com'],
     blockExplorerUrls: [],
     shortName: 'Polkadot',
   },
@@ -38,7 +38,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'ROC',
       decimals: 12,
     },
-    endpointUrls: [],
+    endpointUrls: ['wss://rococo-rpc.polkadot.io'],
     blockExplorerUrls: [],
     shortName: 'Rococo',
   },
@@ -51,7 +51,9 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'XOR',
       decimals: 18,
     },
-    endpointUrls: [],
+    endpointUrls: [
+      'wss://ws.parachain-collator-1.c1.stg1.sora2.soramitsu.co.jp', // stage
+    ],
     blockExplorerUrls: [],
     shortName: 'SORA ROC',
   },
@@ -63,7 +65,9 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'XOR',
       decimals: 18,
     },
-    endpointUrls: [],
+    endpointUrls: [
+      'wss://ws.parachain-collator-2.c2.sora2.soramitsu.co.jp', // prod
+    ],
     blockExplorerUrls: [],
     shortName: 'SORA KSM',
   },
@@ -75,7 +79,9 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'XOR',
       decimals: 18,
     },
-    endpointUrls: [],
+    endpointUrls: [
+      'wss://ws.parachain-collator-3.pc3.sora2.soramitsu.co.jp', // prod
+    ],
     blockExplorerUrls: [],
     shortName: 'SORA DOT',
   },

@@ -55,6 +55,13 @@ const getters = defineGetters<BridgeState>()({
     return assetDataByAddress(registered.address);
   },
 
+  isNativeTokenSelected(...args): boolean {
+    const { getters } = bridgeGetterContext(args);
+    const { asset, nativeToken } = getters;
+
+    return !!nativeToken && !!asset && nativeToken.address === asset.address;
+  },
+
   isRegisteredAsset(...args): boolean {
     const { getters, rootState } = bridgeGetterContext(args);
 

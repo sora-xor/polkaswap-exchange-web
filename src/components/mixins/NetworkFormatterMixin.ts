@@ -106,18 +106,12 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
       return [];
     }
 
-    const explorerUrl = networkData.blockExplorerUrls[0];
-
-    if (!explorerUrl) {
-      console.error(`"blockExplorerUrls" is not provided for network id "${networkId}"`);
-      return [];
-    }
-
     if (networkType === BridgeNetworkType.Sub) {
       if (type === EvmLinkType.Account) return [];
 
       if (!blockHash) return [];
 
+      const explorerUrl = networkData.endpointUrls[0];
       const baseLink = `https://polkadot.js.org/apps/?rpc=${explorerUrl}#/explorer/query`;
 
       return [
@@ -127,6 +121,13 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
         },
       ];
     } else {
+      const explorerUrl = networkData.blockExplorerUrls[0];
+
+      if (!explorerUrl) {
+        console.error(`"blockExplorerUrls" is not provided for network id "${networkId}"`);
+        return [];
+      }
+
       const path = type === EvmLinkType.Transaction ? 'tx' : 'address';
 
       return [

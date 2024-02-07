@@ -166,11 +166,19 @@ const actions = defineActions({
   },
 
   setSubNetworkApps(context, apps: SubNetworkApps): void {
-    const { commit } = web3ActionContext(context);
+    const { commit, getters } = web3ActionContext(context);
     // update apps in store
     commit.setSubNetworkApps(apps);
+
+    const networks = getters.availableNetworks[BridgeNetworkType.Sub];
+    const endpoints = Object.entries(networks).reduce((acc, [key, value]) => {
+      if (!value || value.disabled) return acc;
+      const endpoints = value.data.endpointUrls;
+      return { ...acc, [key]: endpoints };
+    }, {});
+
     // update endpoints in SubNetworksConnector class
-    SubNetworksConnector.endpoints = apps;
+    SubNetworksConnector.endpoints = endpoints;
   },
 
   /**

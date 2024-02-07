@@ -29,6 +29,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @getter.bridge.sender sender!: string;
   @getter.bridge.recipient recipient!: string;
   @getter.bridge.externalNetworkFee externalNetworkFee!: CodecString;
+  @getter.bridge.isNativeTokenSelected isNativeTokenSelected!: boolean;
   @getter.assets.xor xor!: RegisteredAccountAsset;
 
   get nativeTokenSymbol(): string {
@@ -39,12 +40,8 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     return this.nativeToken?.externalDecimals;
   }
 
-  get isNativeTokenSelected(): boolean {
-    return this.nativeToken?.address === this.asset?.address;
-  }
-
   get externalTransferFeeFP(): FPNumber {
-    return FPNumber.fromCodecValue(this.externalTransferFee, this.nativeTokenDecimals);
+    return FPNumber.fromCodecValue(this.externalTransferFee, this.asset?.externalDecimals);
   }
 
   get assetLockedOnSora(): boolean {
@@ -66,6 +63,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   get outgoingMinAmount(): FPNumber | null {
     if (!this.outgoingMinLimit) return null;
     // this fee is spend from transfer amount, so we add it to outgoing min limit
+    // [TODO] remove when limit will be defined on backend
     const transferFee = this.isNativeTokenSelected ? this.externalTransferFeeFP : FPNumber.ZERO;
 
     return this.outgoingMinLimit.add(transferFee);
