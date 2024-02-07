@@ -389,7 +389,8 @@
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
-        "OrderBook": "Buôn bán"
+        "OrderBook": "Buôn bán",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Đổi",

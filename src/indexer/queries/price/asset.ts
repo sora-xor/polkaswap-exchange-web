@@ -28,18 +28,12 @@ const transformSnapshot = (item: AssetSnapshotEntity): SnapshotItem => {
 
 const subqueryAssetPriceFilter = (assetAddress: string, type: SnapshotTypes) => {
   return {
-    and: [
-      {
-        assetId: {
-          equalTo: assetAddress,
-        },
-      },
-      {
-        type: {
-          equalTo: type,
-        },
-      },
-    ],
+    assetId: {
+      equalTo: assetAddress,
+    },
+    type: {
+      equalTo: type,
+    },
   };
 };
 
@@ -63,14 +57,8 @@ const SubqueryAssetPriceQuery = gql<ConnectionQueryResponse<AssetSnapshotEntity>
 
 const subsquidAssetPriceFilter = (assetAddress: string, type: SnapshotTypes) => {
   return {
-    AND: [
-      {
-        asset: { id_eq: assetAddress },
-      },
-      {
-        type_eq: type,
-      },
-    ],
+    asset: { id_eq: assetAddress },
+    type_eq: type,
   };
 };
 

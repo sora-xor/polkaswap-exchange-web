@@ -81,8 +81,10 @@ export default {
     [PageNames.ExplorePools]: 'Pools',
     [PageNames.ExploreStaking]: 'Staking',
     [PageNames.ExploreFarming]: 'Farming',
+    [PageNames.ExploreBooks]: '@:pageTitle.OrderBook',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
+    [PageNames.OrderBook]: 'Trade',
     [StakingPageNames.Staking]: 'Staking',
   },
   mainMenu: {
@@ -94,6 +96,7 @@ export default {
     [PageNames.Rewards]: 'Rewards',
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Statistics',
+    [PageNames.OrderBook]: 'Trade',
     [PageNames.ExploreContainer]: 'Explore',
     [PageNames.StakingContainer]: 'Staking',
   },

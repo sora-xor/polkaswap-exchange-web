@@ -204,6 +204,11 @@ const routes: Array<RouteConfig> = [
         name: PageNames.ExploreTokens,
         component: lazyView(PageNames.ExploreTokens),
       },
+      {
+        path: 'books',
+        name: PageNames.ExploreBooks,
+        component: lazyView(PageNames.ExploreBooks),
+      },
     ],
   },
   {
