@@ -73,7 +73,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
   settingsVisibility = false;
 
   @Watch('orderBookId', { immediate: true })
-  private updateSubscription() {
+  private updateSubscription(): void {
     this.subscribeToOrderBookStats();
     if (!(this.firstRouteAddress && this.secondRouteAddress)) {
       return;

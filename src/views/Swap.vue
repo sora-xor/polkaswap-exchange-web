@@ -382,7 +382,7 @@ export default class Swap extends Mixins(
     );
   }
 
-  created() {
+  created(): void {
     this.withApi(async () => {
       this.parseCurrentRoute();
       if (this.tokenFrom && this.tokenTo) {
