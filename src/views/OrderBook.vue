@@ -135,6 +135,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
         const orderbook = orderbooks[0];
         if (orderbook) {
           this.setCurrentOrderBook(orderbook.orderBookId);
+          this.updateRouteAfterSelectTokens(this.baseAsset, this.quoteAsset);
         }
       }
     });
