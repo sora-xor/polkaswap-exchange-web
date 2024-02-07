@@ -271,7 +271,7 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.Stats),
   },
   {
-    path: '/trade',
+    path: '/trade/:first?/:second?',
     name: PageNames.OrderBook,
     component: lazyView(PageNames.OrderBook),
   },
