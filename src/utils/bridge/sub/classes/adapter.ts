@@ -101,18 +101,16 @@ export class SubNetworksConnector {
     if (!(network in this.adapters)) {
       throw new Error(`[${this.constructor.name}] Adapter for "${network}" network not implemented`);
     }
-    if (!(network in SubNetworksConnector.endpoints)) {
-      throw new Error(`[${this.constructor.name}] Endpoints for "${network}" network is not defined`);
-    }
-    const endpoint = SubNetworksConnector.endpoints[network]?.[0];
 
-    if (!endpoint) {
-      throw new Error(`[${this.constructor.name}] "${network}" has not endpoints`);
+    const endpoints = SubNetworksConnector.endpoints[network];
+
+    if (!endpoints) {
+      throw new Error(`[${this.constructor.name}] Endpoints for "${network}" network is not defined`);
     }
 
     const adapter = this.adapters[network]();
 
-    adapter.setEndpoint(endpoint);
+    adapter.setEndpoints(endpoints);
 
     return adapter;
   }

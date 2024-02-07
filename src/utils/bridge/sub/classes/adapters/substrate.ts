@@ -14,8 +14,10 @@ import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 export class SubAdapter {
+  /** Endpoint used for connection */
   protected endpoint!: string;
-
+  /** List of all available endpoints */
+  public endpoints!: string[];
   public connection!: Connection;
   public readonly subNetwork!: SubNetwork;
 
@@ -36,7 +38,12 @@ export class SubAdapter {
     return !!this.api?.isConnected;
   }
 
-  public setEndpoint(endpoint: string): void {
+  public setEndpoints(endpoints: string[]): void {
+    this.endpoints = endpoints;
+    this.useEndpoint(this.endpoints[0]);
+  }
+
+  public useEndpoint(endpoint: string): void {
     this.endpoint = endpoint;
   }
 
