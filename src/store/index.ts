@@ -8,6 +8,7 @@ import assets from './assets';
 import bridge from './bridge';
 import demeterFarming from './demeterFarming';
 import moonpay from './moonpay';
+import orderBook from './orderBook';
 import pool from './pool';
 import referrals from './referrals';
 import removeLiquidity from './removeLiquidity';
@@ -40,6 +41,7 @@ const modules = {
   staking,
   demeterFarming,
   soraCard,
+  orderBook,
 };
 
 const { store, rootGetterContext, rootActionContext } = createDirectStore({

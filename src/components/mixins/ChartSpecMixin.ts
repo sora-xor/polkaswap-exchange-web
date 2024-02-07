@@ -18,7 +18,6 @@ const AXIS_LABEL_CSS = {
 export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, TranslationMixin) {
   gridSpec(options: any = {}) {
     return merge({
-      top: 20,
       left: 0,
       right: 0,
       bottom: 20 + AXIS_OFFSET,

@@ -7,8 +7,11 @@ import { gql } from '@urql/core';
 import store from '@/store';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
-import type { SubqueryConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
-import type { SnapshotTypes, AssetSnapshotEntity } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type {
+  SnapshotTypes,
+  AssetSnapshotEntity,
+  ConnectionQueryResponse,
+} from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const { IndexerType } = WALLET_CONSTS;
 
@@ -24,7 +27,7 @@ export type ChartData = {
   burn: number;
 };
 
-const SubqueryAssetSupplyQuery = gql<SubqueryConnectionQueryResponse<AssetSnapshotEntity>>`
+const SubqueryAssetSupplyQuery = gql<ConnectionQueryResponse<AssetSnapshotEntity>>`
   query AssetSupplyQuery($after: Cursor, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
     data: assetSnapshots(
       after: $after
@@ -54,7 +57,7 @@ const SubqueryAssetSupplyQuery = gql<SubqueryConnectionQueryResponse<AssetSnapsh
   }
 `;
 
-const SubsquidAssetSupplyQuery = gql<SubqueryConnectionQueryResponse<AssetSnapshotEntity>>`
+const SubsquidAssetSupplyQuery = gql<ConnectionQueryResponse<AssetSnapshotEntity>>`
   query AssetSupplyQuery($after: String, $type: SnapshotType, $id: String, $from: Int, $to: Int) {
     data: assetSnapshotsConnection(
       after: $after
