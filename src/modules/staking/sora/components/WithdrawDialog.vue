@@ -1,13 +1,13 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="title">
-    <div class="redeem-dialog">
+    <div class="withdraw-dialog">
       <div class="reward">
         <formatted-amount-with-fiat-value
           class="reward-amount"
           symbol-as-decimal
           value-can-be-hidden
-          :value="redeemableFundsFormatted"
-          :fiat-value="redeemableFundsFiat"
+          :value="withdrawableFundsFormatted"
+          :fiat-value="withdrawableFundsFiat"
         />
         <template v-if="stakingAsset">
           <token-logo class="reward-logo" :tokenSymbol="stakingAsset.symbol" />
@@ -50,8 +50,8 @@
           {{ t('confirmText') }}
         </template>
       </s-button>
-      <div class="check-upcoming-redeems" @click="checkUpcomingRedeems">
-        {{ t('soraStaking.redeemDialog.checkUpcomingRedeems') }} ({{ accountLedger?.unlocking?.length ?? 0 }})
+      <div class="check-all-withdraws" @click="showAllWithdraws">
+        {{ t('soraStaking.withdrawDialog.showAllWithdraws') }} ({{ accountLedger?.unlocking?.length ?? 0 }})
       </div>
     </div>
   </dialog-base>
@@ -75,21 +75,21 @@ import type { CodecString } from '@sora-substrate/util';
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
-export default class RedeemDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
+export default class WithdrawDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
   get networkFee(): CodecString {
     return this.networkFees[Operation.StakingWithdrawUnbonded];
   }
 
   get title(): string {
-    return this.t('soraStaking.redeemDialog.title');
+    return this.t('soraStaking.withdrawDialog.title');
   }
 
   get valueFundsEmpty(): boolean {
-    return this.redeemableFunds.isZero();
+    return this.withdrawableFunds.isZero();
   }
 
   get isInsufficientBalance(): boolean {
-    return FPNumber.lt(this.redeemableFunds, this.redeemableFunds);
+    return FPNumber.lt(this.withdrawableFunds, this.withdrawableFunds);
   }
 
   get selectedValidatorsFormatted(): string {
@@ -111,14 +111,14 @@ export default class RedeemDialog extends Mixins(StakingMixin, mixins.DialogMixi
     this.closeDialog();
   }
 
-  checkUpcomingRedeems(): void {
-    this.$emit('show-upcoming-redeems');
+  showAllWithdraws(): void {
+    this.$emit('show-all-withdraws');
   }
 }
 </script>
 
 <style lang="scss">
-.redeem-dialog {
+.withdraw-dialog {
   .reward {
     .formatted-amount {
       width: 100%;
@@ -135,7 +135,7 @@ export default class RedeemDialog extends Mixins(StakingMixin, mixins.DialogMixi
 </style>
 
 <style lang="scss" scoped>
-.redeem-dialog {
+.withdraw-dialog {
   @include full-width-button('action-button');
 
   & > *:not(:first-child) {
@@ -174,7 +174,7 @@ export default class RedeemDialog extends Mixins(StakingMixin, mixins.DialogMixi
   margin-top: 16px;
 }
 
-.check-upcoming-redeems {
+.check-all-withdraws {
   color: var(--s-color-theme-accent);
   text-align: center;
   font-size: 14px;

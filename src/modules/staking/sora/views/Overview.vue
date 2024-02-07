@@ -71,6 +71,47 @@
       >
         {{ stakeMoreText }}
       </s-button>
+      <s-card v-if="showWithdrawCard" class="withdraw" border-radius="medium" shadow="always" size="mini">
+        <div class="withdraw-content">
+          <div class="withdraw-header">
+            <div class="withdraw-info">
+              <span class="withdraw-info-title">
+                {{ t('soraStaking.withdraw.withdrawable') }}
+              </span>
+              <formatted-amount-with-fiat-value
+                class="withdraw-info-amount"
+                :asset-symbol="stakingAsset?.symbol"
+                symbol-as-decimal
+                value-can-be-hidden
+                :value="withdrawableFundsFormatted"
+                :fiat-value="withdrawableFundsFiat"
+              />
+            </div>
+            <div class="withdraw-info">
+              <span class="withdraw-info-title">
+                {{ t('soraStaking.withdraw.withdrawable') }}
+              </span>
+              <formatted-amount-with-fiat-value
+                class="withdraw-info-amount"
+                :asset-symbol="stakingAsset?.symbol"
+                symbol-as-decimal
+                value-can-be-hidden
+                :value="withdrawableFundsFormatted"
+                :fiat-value="withdrawableFundsFiat"
+              />
+            </div>
+            <s-button class="withdraw-button" @click="withdraw" type="primary" size="small">{{
+              t('soraStaking.actions.withdraw')
+            }}</s-button>
+          </div>
+          <div class="withdraw-footer">
+            <span> {{ t('soraStaking.withdraw.nextWithdrawal') }}: {{ nextWithdrawalCountdownFormatted }} </span>
+            <div class="withdraw-see-all" @click="showAllWithdraws">
+              {{ t('soraStaking.withdraw.seeAll') }}
+            </div>
+          </div>
+        </div>
+      </s-card>
       <div class="info">
         <info-line
           v-if="stakingInitialized"
@@ -95,28 +136,11 @@
         />
         <info-line
           v-if="stakingInitialized"
-          :label="t('soraStaking.info.redeemable')"
-          :value="redeemableFundsFormatted"
+          :label="t('soraStaking.withdraw.withdrawable')"
+          :value="withdrawableFundsFormatted"
           :asset-symbol="stakingAsset?.symbol"
-          :fiat-value="redeemableFundsFiat"
-        >
-          <s-button class="redeem-button" @click="redeem" type="primary" size="small">{{
-            t('soraStaking.actions.redeem')
-          }}</s-button>
-        </info-line>
-        <info-line
-          v-if="stakingInitialized && countdownFormatted"
-          :label="t('soraStaking.info.redeemAvailableIn')"
-          :value="countdownFormatted"
-        >
-          <s-button
-            class="redeem-button"
-            @click="showUpcomingRedeems"
-            type="action"
-            size="small"
-            icon="time-time-history-24"
-          />
-        </info-line>
+          :fiat-value="withdrawableFundsFiat"
+        />
         <info-line
           v-if="!stakingInitialized"
           :label="t('soraStaking.info.totalLiquidityStaked')"
@@ -160,12 +184,12 @@
       :parent-loading="parentLoading || loading"
       @show-rewards="showRewards"
     />
-    <redeem-dialog
-      :visible.sync="showRedeemDialog"
+    <withdraw-dialog
+      :visible.sync="showWithdrawDialog"
       :parent-loading="parentLoading || loading"
-      @show-upcoming-redeems="showUpcomingRedeems"
+      @show-all-withdraws="showAllWithdraws"
     />
-    <upcoming-redeems-dialog :visible.sync="showUpcomingRedeemsDialog" :parent-loading="parentLoading || loading" />
+    <all-withdraws-dialog :visible.sync="showAllWithdrawsDialog" :parent-loading="parentLoading || loading" />
     <pending-rewards-dialog :visible.sync="showPendingRewardsDialog" :parent-loading="parentLoading || loading" />
     <validators-dialog
       :visible.sync="showValidatorsDialog"
@@ -214,9 +238,10 @@ type MenuItem = {
     ClaimRewardsDialog: soraStakingLazyComponent(SoraStakingComponents.ClaimRewardsDialog),
     PendingRewardsDialog: soraStakingLazyComponent(SoraStakingComponents.PendingRewardsDialog),
     ValidatorsDialog: soraStakingLazyComponent(SoraStakingComponents.ValidatorsDialog),
-    RedeemDialog: soraStakingLazyComponent(SoraStakingComponents.RedeemDialog),
-    UpcomingRedeemsDialog: soraStakingLazyComponent(SoraStakingComponents.UpcomingRedeemsDialog),
+    WithdrawDialog: soraStakingLazyComponent(SoraStakingComponents.WithdrawDialog),
+    AllWithdrawsDialog: soraStakingLazyComponent(SoraStakingComponents.AllWithdrawsDialog),
     // ControllerDialog: soraStakingLazyComponent(SoraStakingComponents.ControllerDialog),
+    FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
 export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, TranslationMixin) {
@@ -233,8 +258,8 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
   showPendingRewardsDialog = false;
   showValidatorsDialog = false;
   showControllerDialog = false;
-  showRedeemDialog = false;
-  showUpcomingRedeemsDialog = false;
+  showWithdrawDialog = false;
+  showAllWithdrawsDialog = false;
 
   get lockedFundsFormatted(): string {
     return this.lockedFunds.toLocaleString();
@@ -246,6 +271,10 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
 
   get rewardedFundsFormatted(): string {
     return this.rewardedFunds.toLocaleString();
+  }
+
+  get showWithdrawCard(): boolean {
+    return !!this.accountLedger?.unlocking.length;
   }
 
   private getDropdownMenuItems(): Array<MenuItem> {
@@ -317,13 +346,13 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
     this.showPendingRewardsDialog = true;
   }
 
-  showUpcomingRedeems() {
-    this.showRedeemDialog = false;
-    this.showUpcomingRedeemsDialog = true;
+  showAllWithdraws() {
+    this.showWithdrawDialog = false;
+    this.showAllWithdrawsDialog = true;
   }
 
-  redeem() {
-    this.showRedeemDialog = true;
+  withdraw() {
+    this.showWithdrawDialog = true;
   }
 
   handleStake() {
@@ -450,7 +479,51 @@ p {
   margin-top: 25px;
 }
 
-.redeem-button {
-  margin-bottom: 12px;
+.withdraw {
+  margin-top: 16px;
+  &-content {
+    padding: 12px;
+  }
+  &-header {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    border-bottom: 1px solid var(--s-color-base-border-secondary);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+  &-info {
+    display: flex;
+    flex-direction: column;
+    &-title {
+      color: #a19a9d;
+      font-size: var(--s-font-size-mini);
+      margin-bottom: 6px;
+    }
+    &-amount {
+      flex-direction: column;
+      align-items: flex-start !important;
+      text-align: left !important;
+      overflow: hidden;
+      gap: 2px;
+    }
+  }
+  &-button {
+    margin-left: auto;
+  }
+  &-footer {
+    display: flex;
+    justify-content: space-between;
+  }
+  &-see-all {
+    color: var(--s-color-theme-accent);
+    text-align: center;
+    font-size: 14px;
+    line-height: 20px;
+    font-style: normal;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
 }
 </style>

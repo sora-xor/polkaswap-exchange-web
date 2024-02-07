@@ -1,32 +1,32 @@
 <template>
   <dialog-base :visible.sync="isVisible" :title="title">
-    <div class="upcoming-redeems-dialog">
-      <s-scrollbar class="upcoming-redeems-scrollbar">
-        <s-card class="information" shadow="always" primary>
-          <div class="information-content">
-            <div class="information-text">
-              {{ t('soraStaking.upcomingRedeemsDialog.information') }}
-            </div>
-            <div class="information-icon">
-              <s-icon name="notifications-alert-triangle-24" size="20px" />
-            </div>
-          </div>
-        </s-card>
-
+    <div class="all-withdraws-dialog">
+      <s-scrollbar class="all-withdraws-scrollbar">
         <s-card
-          v-for="redeem in redeems"
-          :key="redeem.id"
-          class="redeem"
+          v-for="withdraw in withdraws"
+          :key="withdraw.id"
+          class="withdraw"
           border-radius="medium"
           shadow="always"
           size="mini"
         >
-          <div class="redeem-content">
+          <div class="withdraw-content">
             <div class="value">
-              {{ redeem.valueFormatted }}
+              {{ withdraw.valueFormatted }}
             </div>
+            <s-icon name="el-icon-timer" />
             <div class="countdown">
-              {{ redeem.countdownFormatted }}
+              {{ withdraw.countdownFormatted }}
+            </div>
+          </div>
+        </s-card>
+        <s-card class="information" shadow="always" primary>
+          <div class="information-content">
+            <div class="information-text">
+              {{ t('soraStaking.allWithdrawsDialog.information') }}
+            </div>
+            <div class="information-icon">
+              <s-icon name="notifications-alert-triangle-24" size="20px" />
             </div>
           </div>
         </s-card>
@@ -49,7 +49,7 @@ import { DAY_HOURS, ERA_HOURS, SoraStakingComponents } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
 import ValidatorsMixin from '../mixins/ValidatorsMixin';
 
-type Redeem = {
+type Withdraw = {
   id: number;
   era: number;
   value: string;
@@ -66,31 +66,32 @@ type Redeem = {
     FormattedAmount: components.FormattedAmount,
   },
 })
-export default class UpcomingRedeemsDialog extends Mixins(
+export default class AllWithdrawsDialog extends Mixins(
   StakingMixin,
   ValidatorsMixin,
   mixins.DialogMixin,
   mixins.LoadingMixin
 ) {
   get title(): string {
-    return this.t('soraStaking.upcomingRedeemsDialog.title');
+    return this.t('soraStaking.allWithdrawsDialog.title');
   }
 
-  get upcomingRedeems() {
+  get allWithdraws() {
     return this.accountLedger?.unlocking ?? null;
   }
 
-  get redeems(): Redeem[] {
-    if (!this.upcomingRedeems || !this.stakingAsset) return [];
+  get withdraws(): Withdraw[] {
+    if (!this.allWithdraws || !this.stakingAsset) return [];
 
-    return this.upcomingRedeems.map((element) => {
+    return this.allWithdraws.map((element) => {
       const value = element.value;
       const era = element.era;
 
-      const countdownHoursTotal = (element.era - this.currentEra) * ERA_HOURS;
-      const countdownDays = Math.floor(countdownHoursTotal / DAY_HOURS);
-      const countdownHours = countdownHoursTotal - countdownDays * DAY_HOURS;
-      const countdownFormatted = this.t('soraStaking.info.countdown', { days: countdownDays, hours: countdownHours });
+      const hoursTotal = Math.max((element.era - this.currentEra) * ERA_HOURS, 0);
+      const days = Math.floor(hoursTotal / DAY_HOURS);
+      const hours = hoursTotal - days * DAY_HOURS;
+      const minutes = 0;
+      const countdownFormatted = this.t('soraStaking.withdraw.countdown', { days, hours, minutes });
 
       const valueFormatted = formatDecimalPlaces(FPNumber.fromCodecValue(value)) + ' ' + this.stakingAsset?.symbol;
 
@@ -99,19 +100,20 @@ export default class UpcomingRedeemsDialog extends Mixins(
         era,
         value,
         valueFormatted,
+        countdownHours: hoursTotal,
         countdownFormatted,
       };
     });
   }
 
   get noReward(): boolean {
-    return !this.redeems.length;
+    return !this.withdraws.length;
   }
 }
 </script>
 
 <style lang="scss">
-.upcoming-redeems-scrollbar {
+.all-withdraws-scrollbar {
   .el-scrollbar__wrap {
     overflow-x: hidden;
   }
@@ -122,7 +124,7 @@ export default class UpcomingRedeemsDialog extends Mixins(
 </style>
 
 <style lang="scss" scoped>
-.upcoming-redeems-dialog {
+.all-withdraws-dialog {
   @include full-width-button('action-button');
 
   & > *:not(:first-child) {
@@ -130,7 +132,7 @@ export default class UpcomingRedeemsDialog extends Mixins(
   }
 }
 
-.upcoming-redeems-scrollbar {
+.all-withdraws-scrollbar {
   @include scrollbar;
   height: 410px !important;
   margin: 0 -24px !important;
@@ -190,12 +192,12 @@ export default class UpcomingRedeemsDialog extends Mixins(
   }
 }
 
-.redeem {
+.withdraw {
   margin: 12px 24px;
   cursor: pointer;
 }
 
-.redeem-content {
+.withdraw-content {
   display: flex;
   align-items: center;
   width: 100%;
@@ -204,20 +206,20 @@ export default class UpcomingRedeemsDialog extends Mixins(
   margin: 0;
 }
 
-.redeem-lines {
+.withdraw-lines {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
-.redeem-line {
+.withdraw-line {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 21px;
 }
 
-.redeem-check {
+.withdraw-check {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -263,5 +265,6 @@ export default class UpcomingRedeemsDialog extends Mixins(
 
 .value {
   font-weight: bold;
+  flex: 1;
 }
 </style>

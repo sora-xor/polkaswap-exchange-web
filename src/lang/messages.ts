@@ -826,7 +826,7 @@ export default {
       more: 'Stake more',
       payout: 'Payout',
       confirm: 'Confirm Staking',
-      redeem: 'Redeem',
+      withdraw: 'Withdraw',
     },
     overview: {
       title: '{Sora} Staking',
@@ -857,7 +857,6 @@ export default {
       noValidators: 'There are no validators satisfying the specified filter',
     },
     info: {
-      redeemable: 'Redeemable',
       unstaking: 'Unstaking',
       stakingBalance: 'Staking balance',
       rewarded: 'Rewarded',
@@ -868,8 +867,13 @@ export default {
       nominators: 'Nominators',
       validators: 'Validators',
       selectedValidators: 'Selected validators',
-      redeemAvailableIn: 'Redeem available in',
-      countdown: `{days}D {hours}H`,
+    },
+    withdraw: {
+      countdown: '{days}D {hours}H {minutes}M',
+      withdrawable: 'Withdrawable',
+      beingWithdrawn: 'Being withdrawn',
+      seeAll: 'See all',
+      nextWithdrawal: 'Next withdrawal',
     },
     validatorsFilterDialog: {
       title: 'Filters',
@@ -927,12 +931,14 @@ export default {
       information:
         'Validators payout the rewards every 2-5 days. However, you can payout them by yourself, especially if rewards are close to expiring, but you will pay the fee.',
     },
-    redeemDialog: {
-      title: 'Redeem',
-      checkUpcomingRedeems: 'Check upcoming redeems',
+    withdrawDialog: {
+      title: 'Withdraw unstaked funds',
+      showAllWithdraws: 'Show all withdraws',
     },
-    upcomingRedeemsDialog: {
-      title: 'Upcoming redeems',
+    allWithdrawsDialog: {
+      title: 'Unstaking activity',
+      information:
+        'Once you unstake tokens, there is a mandatory 7-day unstaking period. After this period, your tokens will not be automatically returned to your wallet. You must complete the process by manually withdrawing your tokens.',
     },
     selectValidatorsMode: {
       title: 'Stake with validators suggested by the algorithm',

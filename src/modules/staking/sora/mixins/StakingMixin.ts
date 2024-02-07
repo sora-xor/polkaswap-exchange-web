@@ -131,7 +131,7 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
     return this.stakingAsset ? this.getFiatAmountByFPNumber(this.unlockingFunds, this.stakingAsset) : null;
   }
 
-  get countdownHours(): number | null {
+  get nextWithdrawalCountdownHours(): number | null {
     if (!this.accountLedger || !this.accountLedger.unlocking.length) {
       return null;
     }
@@ -139,13 +139,14 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
     return (Math.min(...unlockingEras) - this.currentEra) * ERA_HOURS;
   }
 
-  get countdownFormatted(): string | null {
-    if (!this.countdownHours) {
+  get nextWithdrawalCountdownFormatted(): string | null {
+    if (!this.nextWithdrawalCountdownHours) {
       return null;
     }
-    const days = Math.floor(this.countdownHours / DAY_HOURS);
-    const hours = this.countdownHours - days * DAY_HOURS;
-    return this.t('soraStaking.info.countdown', { days, hours });
+    const days = Math.floor(this.nextWithdrawalCountdownHours / DAY_HOURS);
+    const hours = this.nextWithdrawalCountdownHours - days * DAY_HOURS;
+    const minutes = 0;
+    return this.t('soraStaking.withdraw.countdown', { days, hours, minutes });
   }
 
   get unbondPeriodHours(): number {
@@ -158,19 +159,20 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
     }
     const days = Math.floor(this.unbondPeriodHours / DAY_HOURS);
     const hours = this.unbondPeriodHours - days * DAY_HOURS;
-    return this.t('soraStaking.info.countdown', { days, hours });
+    const minutes = 0;
+    return this.t('soraStaking.withdraw.countdown', { days, hours, minutes });
   }
 
-  get redeemableFunds(): FPNumber {
+  get withdrawableFunds(): FPNumber {
     return this.stakingInfo ? new FPNumber(this.stakingInfo.redeemAmount, this.stakingAsset?.decimals) : FPNumber.ZERO;
   }
 
-  get redeemableFundsFiat(): Nullable<string> {
-    return this.stakingAsset ? this.getFiatAmountByFPNumber(this.redeemableFunds, this.stakingAsset) : null;
+  get withdrawableFundsFiat(): Nullable<string> {
+    return this.stakingAsset ? this.getFiatAmountByFPNumber(this.withdrawableFunds, this.stakingAsset) : null;
   }
 
-  get redeemableFundsFormatted(): string {
-    return this.redeemableFunds.toLocaleString();
+  get withdrawableFundsFormatted(): string {
+    return this.withdrawableFunds.toLocaleString();
   }
 
   get rewardedFunds(): FPNumber {
