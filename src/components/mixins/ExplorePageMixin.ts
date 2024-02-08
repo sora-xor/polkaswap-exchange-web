@@ -90,7 +90,7 @@ export default class ExplorePageMixin extends Mixins(ScrollableTableMixin, Trans
     await this.updateExploreData();
   }
 
-  changeSort({ order = '', property = '' } = {}): void {
+  changeSort({ order = SortDirection.DESC, property = '' } = {}): void {
     this.order = order;
     this.property = property;
   }
