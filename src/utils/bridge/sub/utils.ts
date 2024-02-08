@@ -158,7 +158,7 @@ export const isAssetAddedToChannel = (
 };
 
 // Liberland
-export const isSoraBridgeAppMessageSent = (
+export const isSoraBridgeAppBurned = (
   e: any,
   asset: RegisteredAccountAsset,
   from: string,
@@ -166,27 +166,22 @@ export const isSoraBridgeAppMessageSent = (
   sended: CodecString,
   api: ApiPromise
 ) => {
-  if (!api.events.soraBridgeApp.MessageSent.is(e.event)) return false;
+  if (!api.events.soraBridgeApp.Burned.is(e.event)) return false;
 
-  const {
-    amount: amountCodec,
-    assetId: asseIdCodec,
-    sender: senderCodec,
-    recipient: recipientCodec,
-  } = e.event.data[0].asTransfer;
+  const [networkIdCodec, assetIdCodec, senderCodec, recipientCodec, amountCodec] = e.event.data;
 
-  if (!(amountCodec.isSubstrate && asseIdCodec.isSora && recipientCodec.isSora && senderCodec.isSora)) return false;
+  if (!(networkIdCodec.isMainnet && recipientCodec.isSora)) return false;
 
-  const amount = amountCodec.asSubstrate.toString();
-  const assetId = asseIdCodec.asSora.toString();
-  const sender = senderCodec.asSora.toString();
+  const sender = senderCodec.toString();
   const recipient = recipientCodec.asSora.toString();
+  const assetId = assetIdCodec.isLld ? '' : assetIdCodec.asAsset.toString();
+  const amount = amountCodec.toString();
 
   // address check
   if (subBridgeApi.formatAddress(sender) !== subBridgeApi.formatAddress(from)) return false;
   if (subBridgeApi.formatAddress(recipient) !== subBridgeApi.formatAddress(to)) return false;
   // asset check
-  if (assetId !== asset.address) return false;
+  if (assetId !== asset.externalAddress) return false;
   // amount check
   if (amount !== sended) return false;
 

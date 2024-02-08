@@ -16,7 +16,7 @@ import {
   getMessageAcceptedNonces,
   isMessageDispatchedNonces,
   isAssetAddedToChannel,
-  isSoraBridgeAppMessageSent,
+  isSoraBridgeAppBurned,
   determineTransferType,
   getReceivedAmount,
   getParachainSystemMessageHash,
@@ -206,7 +206,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     let subscription!: Subscription;
     let messageNonce!: number;
     let batchNonce!: number;
-    let recipientAmount!: number;
+    let recipientAmount!: string;
     let blockNumber!: number;
 
     try {
@@ -233,17 +233,23 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
                 assetSendEventIndex = events.findIndex((e) =>
                   isAssetAddedToChannel(e, this.asset, to, sended, adapter.api)
                 );
+
+                if (assetSendEventIndex !== -1) {
+                  recipientAmount =
+                    events[assetSendEventIndex].event.data[0].asTransfer.amount?.asSubstrate?.toString();
+                }
               } else {
                 assetSendEventIndex = events.findIndex((e) =>
-                  isSoraBridgeAppMessageSent(e, this.asset, from, to, sended, adapter.api)
+                  isSoraBridgeAppBurned(e, this.asset, from, to, sended, adapter.api)
                 );
+
+                if (assetSendEventIndex !== -1) {
+                  recipientAmount = events[assetSendEventIndex].event.data[4].toString();
+                }
               }
 
-              if (assetSendEventIndex === -1) {
-                return;
-              }
-              // [TODO] check compability
-              recipientAmount = events[assetSendEventIndex].event.data[0].asTransfer.amount?.asSubstrate?.toString();
+              if (assetSendEventIndex === -1) return;
+
               blockNumber = blockHeight;
               [batchNonce, messageNonce] = getMessageAcceptedNonces(events.slice(assetSendEventIndex), adapter.api);
 

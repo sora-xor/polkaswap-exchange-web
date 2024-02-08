@@ -160,19 +160,13 @@ const actions = defineActions({
   },
 
   async getSupportedApps(context): Promise<void> {
-    const { commit } = web3ActionContext(context);
+    const { commit, getters } = web3ActionContext(context);
     const supportedApps = await api.bridgeProxy.getListApps();
     commit.setSupportedApps(supportedApps);
-  },
-
-  setSubNetworkApps(context, apps: SubNetworkApps): void {
-    const { commit, getters } = web3ActionContext(context);
-    // update apps in store
-    commit.setSubNetworkApps(apps);
 
     const networks = getters.availableNetworks[BridgeNetworkType.Sub];
     const endpoints = Object.entries(networks).reduce((acc, [key, value]) => {
-      if (!value || value.disabled) return acc;
+      if (!value) return acc;
       const endpoints = value.data.endpointUrls;
       return { ...acc, [key]: endpoints };
     }, {});
