@@ -1,6 +1,6 @@
 <template>
   <dialog-base
-    :visible.sync="visibility"
+    :visible.sync="visible"
     :title="t('selectNodeDialog.title')"
     :class="['select-node-dialog', dialogCustomClass]"
   >
@@ -10,7 +10,7 @@
       :nodes="formattedNodeList"
       :handle-node="navigateToNodeInfo"
       :environment="soraNetwork"
-      :disable-select="!nodeConnectionAllowance"
+      :disable-select="!connectionAllowance"
     />
     <node-info
       v-else
@@ -29,12 +29,12 @@
 <script lang="ts">
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import pick from 'lodash/fp/pick';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter, state, action } from '@/store/decorators';
+import { state } from '@/store/decorators';
 import { Node, NodeItem, ConnectToNodeOptions } from '@/types/nodes';
 import { AppHandledError } from '@/utils/error';
 
@@ -51,28 +51,38 @@ const NodeInfoView = 'NodeInfoView';
   },
 })
 export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.LoadingMixin) {
-  @state.settings.defaultNodes private defaultNodes!: Array<Node>;
-  @state.settings.nodeAddressConnecting private nodeAddressConnecting!: string;
-  @state.settings.selectNodeDialogVisibility private selectNodeDialogVisibility!: boolean;
-  @state.settings.nodeConnectionAllowance nodeConnectionAllowance!: boolean;
+  @Prop({ default: () => [], type: Array }) private readonly defaultNodes!: Array<Node>;
+  @Prop({ default: () => [], type: Array }) private readonly nodeList!: Array<Node>;
+  @Prop({ default: '', type: String }) private readonly nodeAddressConnecting!: string;
+  @Prop({ default: false, type: Boolean }) private readonly connectionAllowance!: boolean;
+
+  @Prop({ default: false, type: Boolean }) private readonly visibility!: boolean;
+  @Prop({ default: () => {}, type: Function }) private readonly setVisibility!: (flag: boolean) => void;
+
+  @Prop({ default: () => {}, type: Function }) private readonly connectToNode!: (
+    args: ConnectToNodeOptions
+  ) => Promise<void>;
+
+  @Prop({ default: () => {}, type: Function }) private readonly addCustomNode!: (node: Node) => Promise<void>;
+  @Prop({ default: () => {}, type: Function }) private readonly updateCustomNode!: (args: {
+    address: string;
+    node: Node;
+  }) => Promise<void>;
+
+  @Prop({ default: () => {}, type: Function }) private readonly removeCustomNode!: (node: Node) => Promise<void>;
+
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-
-  @getter.settings.nodeList private nodeList!: Array<Node>;
-
-  @action.settings.connectToNode private connectToNode!: (args: ConnectToNodeOptions) => Promise<void>;
-  @action.settings.addCustomNode private addCustomNode!: (node: Node) => Promise<void>;
-  @action.settings.updateCustomNode private updateCustomNode!: (args: { address: string; node: Node }) => Promise<void>;
-  @action.settings.removeCustomNode private removeCustomNode!: (node: Node) => Promise<void>;
 
   currentView = NodeListView;
   selectedNode: Partial<NodeItem> = {};
 
-  get visibility(): boolean {
-    return this.selectNodeDialogVisibility;
+  get visible(): boolean {
+    return this.visibility;
   }
 
-  set visibility(flag: boolean) {
-    this.setSelectNodeDialogVisibility(flag);
+  set visible(flag: boolean) {
+    this.setVisibility(flag);
+
     if (!flag) {
       this.handleBack();
     }
@@ -95,7 +105,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   }
 
   get isSelectedNodeLoading(): boolean {
-    return !this.nodeConnectionAllowance || this.isConnectingNode(this.selectedNode);
+    return !this.connectionAllowance || this.isConnectingNode(this.selectedNode);
   }
 
   get isSelectedNodeConnected(): boolean {
@@ -216,11 +226,11 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     return this.findInList(this.formattedNodeList, address);
   }
 
-  private isConnectedNodeAddress(nodeAddress: any): boolean {
-    return !!this.connectedNodeAddress && this.connectedNodeAddress === nodeAddress;
+  private isConnectedNodeAddress(nodeAddress?: string): boolean {
+    return !!this.connectedNodeAddress && !!nodeAddress && this.connectedNodeAddress === nodeAddress;
   }
 
-  private isConnectingNode(node: any): boolean {
+  private isConnectingNode(node?: Partial<Node>): boolean {
     return this.nodeAddressConnecting === node?.address;
   }
 }

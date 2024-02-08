@@ -57,7 +57,18 @@
         <sora-logo :theme="libraryTheme" />
       </a>
     </div>
-    <select-node-dialog />
+    <select-node-dialog
+      :visibility="selectNodeDialogVisibility"
+      :set-visibility="setSelectNodeDialogVisibility"
+      :default-nodes="defaultNodes"
+      :node-list="nodeList"
+      :node-address-connecting="nodeAddressConnecting"
+      :connection-allowance="nodeConnectionAllowance"
+      :connect-to-node="connectToNode"
+      :add-custom-node="addCustomNode"
+      :update-custom-node="updateCustomNode"
+      :remove-custom-node="removeCustomNode"
+    />
     <statistics-dialog />
     <no-internet-dialog />
   </div>
@@ -73,8 +84,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state, getter, mutation } from '@/store/decorators';
-import type { Node } from '@/types/nodes';
+import { action, state, getter, mutation } from '@/store/decorators';
+import type { Node, ConnectToNodeOptions } from '@/types/nodes';
 
 import FooterPopper from './FooterPopper.vue';
 import { formatLocation } from './Node/utils';
@@ -114,13 +125,20 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   }
 
   // Node connection
+  @state.settings.defaultNodes defaultNodes!: Array<Node>;
+  @state.settings.nodeAddressConnecting nodeAddressConnecting!: string;
+  @state.settings.selectNodeDialogVisibility selectNodeDialogVisibility!: boolean;
+  @state.settings.nodeConnectionAllowance nodeConnectionAllowance!: boolean;
   @state.settings.node connectedNode!: Partial<Node>;
+  @getter.settings.nodeList nodeList!: Array<Node>;
   @getter.settings.connectingNode connectingNode!: Nullable<Node>;
   @getter.settings.nodeIsConnected isNodeConnected!: boolean;
-  @mutation.settings.setSelectNodeDialogVisibility private setSelectNodeDialogVisibility!: (flag: boolean) => void;
-  @mutation.settings.setSelectIndexerDialogVisibility private setSelectIndexerDialogVisibility!: (
-    flag: boolean
-  ) => void;
+  @mutation.settings.setSelectNodeDialogVisibility setSelectNodeDialogVisibility!: (flag: boolean) => void;
+
+  @action.settings.connectToNode connectToNode!: (args: ConnectToNodeOptions) => Promise<void>;
+  @action.settings.addCustomNode addCustomNode!: (node: Node) => Promise<void>;
+  @action.settings.updateCustomNode updateCustomNode!: (args: { address: string; node: Node }) => Promise<void>;
+  @action.settings.removeCustomNode removeCustomNode!: (node: Node) => Promise<void>;
 
   private get isNodeConnecting(): boolean {
     return !!this.connectingNode;
@@ -201,6 +219,9 @@ export default class AppFooter extends Mixins(TranslationMixin) {
 
   // Statistics connection
   @state.wallet.settings.indexers private indexersData!: Record<WALLET_CONSTS.IndexerType, WALLET_TYPES.IndexerState>;
+  @mutation.settings.setSelectIndexerDialogVisibility private setSelectIndexerDialogVisibility!: (
+    flag: boolean
+  ) => void;
 
   showStatisticsDialog = false;
 
