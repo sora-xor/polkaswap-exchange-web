@@ -170,7 +170,7 @@ export default class ExploreBooks extends Mixins(ExplorePageMixin) {
   order = SortDirection.DESC;
   property = 'tvl';
 
-  get preparedItems(): TableItem[] {
+  get prefilteredItems(): TableItem[] {
     const items = this.orderBooks.reduce<TableItem[]>((buffer, item) => {
       const {
         id: { base, quote },
