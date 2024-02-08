@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible">CustomisePage</dialog-base>
+  <dialog-base :visible.sync="isVisible">Hi</dialog-base>
 </template>
 
 <script lang="ts">
@@ -14,5 +14,5 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
     NetworkFeeWarning: components.NetworkFeeWarning,
   },
 })
-export default class CustomisePage extends Mixins(mixins.DialogMixin, TranslationMixin) {}
+export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixin) {}
 </script>

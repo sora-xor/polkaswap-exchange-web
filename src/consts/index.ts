@@ -225,6 +225,7 @@ export enum Components {
   OpenOrders = 'pages/OrderBook/Tables/OpenOrders',
   PlaceOrder = 'pages/OrderBook/Dialogs/PlaceOrder',
   CancelOrders = 'pages/OrderBook/Dialogs/CancelOrders',
+  SetColor = 'pages/OrderBook/Dialogs/SetColor',
   PlaceTransactionDetails = 'pages/OrderBook/TransactionDetails',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',

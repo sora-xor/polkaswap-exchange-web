@@ -47,6 +47,10 @@ export default class CustomiseWidget extends Mixins(TranslationMixin) {
 
   &:hover {
     cursor: pointer;
+
+    .s-icon-basic-settings-24 {
+      color: var(--s-color-base-content-secondary);
+    }
   }
 
   .s-icon-basic-settings-24 {
