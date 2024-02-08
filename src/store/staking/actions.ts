@@ -187,7 +187,9 @@ const actions = defineActions({
 
     await new Promise<void>((resolve) => {
       subscription = observable.subscribe((era) => {
-        commit.setActiveEra(era?.index);
+        if (era) {
+          commit.setActiveEra(era);
+        }
         resolve();
       });
     });

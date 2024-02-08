@@ -37,7 +37,7 @@
       >
         <template v-if="isInsufficientXorForFee || isInsufficientBalance">
           <template v-if="isInsufficientBalance">
-            {{ t('soraStaking.withdrawDialog.nothingToWithdraw', { tokenSymbol: stakingAsset?.symbol }) }}
+            {{ t('buttons.enterAmount') }}
           </template>
           <template v-if="isInsufficientXorForFee">
             {{ t('insufficientBalanceText', { tokenSymbol: xor?.symbol }) }}

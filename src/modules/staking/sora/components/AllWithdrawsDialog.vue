@@ -20,9 +20,11 @@
               :value="withdraw.valueFormatted"
               :fiat-value="withdrawableFundsFiat"
             />
-            <div class="countdown">
-              {{ withdraw.countdownFormatted }}
-            </div>
+            <era-countdown
+              class="countdown"
+              translation-key="soraStaking.withdraw.countdownLeft"
+              :target-era="withdraw.era"
+            />
           </div>
         </s-card>
       </s-scrollbar>
@@ -54,20 +56,19 @@ import { formatDecimalPlaces } from '@/utils';
 import { soraStakingLazyComponent } from '../../router';
 import { DAY_HOURS, ERA_HOURS, SoraStakingComponents } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
-import ValidatorsMixin from '../mixins/ValidatorsMixin';
 
 type Withdraw = {
   id: number;
   era: number;
   value: FPNumber;
   valueFormatted: string;
-  countdownFormatted: string;
 };
 
 @Component({
   components: {
     TokenInput: lazyComponent(Components.TokenInput),
     ValidatorAvatar: soraStakingLazyComponent(SoraStakingComponents.ValidatorAvatar),
+    EraCountdown: soraStakingLazyComponent(SoraStakingComponents.EraCountdown),
     DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
     FormattedAmount: components.FormattedAmount,
@@ -75,12 +76,7 @@ type Withdraw = {
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
-export default class AllWithdrawsDialog extends Mixins(
-  StakingMixin,
-  ValidatorsMixin,
-  mixins.DialogMixin,
-  mixins.LoadingMixin
-) {
+export default class AllWithdrawsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
   get title(): string {
     return this.t('soraStaking.allWithdrawsDialog.title');
   }
@@ -123,10 +119,6 @@ export default class AllWithdrawsDialog extends Mixins(
     return [...(pendingWithdrawsCombined ? [pendingWithdrawsCombined] : []), ...upcomingWithdraws].map((withdraw) => {
       assert(this.stakingAsset);
 
-      const days = Math.floor(withdraw.countdownHours / DAY_HOURS);
-      const hours = withdraw.countdownHours - days * DAY_HOURS;
-      const minutes = 0;
-      const countdownFormatted = this.t('soraStaking.withdraw.countdownLeft', { days, hours, minutes });
       const valueFormatted = formatDecimalPlaces(withdraw.value);
       const valueFiat = this.getFiatAmountByFPNumber(this.withdrawableFunds, this.stakingAsset);
 
@@ -135,7 +127,6 @@ export default class AllWithdrawsDialog extends Mixins(
         id: withdraw.era,
         valueFormatted,
         valueFiat,
-        countdownFormatted,
       };
     });
   }

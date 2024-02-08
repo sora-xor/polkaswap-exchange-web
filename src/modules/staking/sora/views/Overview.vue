@@ -103,7 +103,7 @@
             <s-button
               class="withdraw-button"
               @click="handleWithdraw"
-              :disable="withdrawableFunds.isZero()"
+              :disable="withdrawButtonDisabled"
               type="primary"
               size="small"
             >
@@ -111,7 +111,12 @@
             </s-button>
           </div>
           <div v-if="showNextWithdrawal" class="withdraw-footer">
-            <span> {{ t('soraStaking.withdraw.nextWithdrawal') }}: {{ nextWithdrawalCountdownFormatted }} </span>
+            <span> {{ t('soraStaking.withdraw.nextWithdrawal') }}: </span>
+            <era-countdown
+              class="countdown"
+              translation-key="soraStaking.withdraw.countdown"
+              :target-era="nextWithdrawalEra"
+            />
             <div class="withdraw-see-all" @click="showAllWithdraws">
               {{ t('soraStaking.withdraw.seeAll') }}
             </div>
@@ -247,6 +252,7 @@ type MenuItem = {
     WithdrawDialog: soraStakingLazyComponent(SoraStakingComponents.WithdrawDialog),
     AllWithdrawsDialog: soraStakingLazyComponent(SoraStakingComponents.AllWithdrawsDialog),
     // ControllerDialog: soraStakingLazyComponent(SoraStakingComponents.ControllerDialog),
+    EraCountdown: soraStakingLazyComponent(SoraStakingComponents.EraCountdown),
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
@@ -284,7 +290,7 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
   }
 
   get showNextWithdrawal(): boolean {
-    return !!(this.nextWithdrawalCountdownHours && this.nextWithdrawalCountdownHours > 0);
+    return !!this.nextWithdrawalEra;
   }
 
   private getDropdownMenuItems(): Array<MenuItem> {
@@ -310,6 +316,10 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
 
   get stakeMoreText(): string {
     return this.lockedFunds.isZero() ? this.t('soraStaking.newStake.title') : this.t('soraStaking.actions.more');
+  }
+
+  get withdrawButtonDisabled(): boolean {
+    return this.withdrawableFunds.isZero();
   }
 
   handleClickDropdownMenu(): void {

@@ -45,6 +45,8 @@ export type StakingState = {
   activeEra: Nullable<number>;
   activeEraUpdates: Nullable<Subscription>;
 
+  activeEraStart: Nullable<number>;
+
   currentEra: Nullable<number>;
   currentEraUpdates: Nullable<Subscription>;
 

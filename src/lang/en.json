@@ -1388,8 +1388,7 @@
         },
         "withdrawDialog": {
             "title": "Withdraw unstaked funds",
-            "showAllWithdraws": "Show all withdraws",
-            "nothingToWithdraw": "Nothing to withdraw"
+            "showAllWithdraws": "Show all withdraws"
         },
         "allWithdrawsDialog": {
             "title": "Unstaking activity",

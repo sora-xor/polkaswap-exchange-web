@@ -29,6 +29,7 @@ export enum SoraStakingComponents {
   ControllerDialog = 'ControllerDialog',
   WithdrawDialog = 'WithdrawDialog',
   AllWithdrawsDialog = 'AllWithdrawsDialog',
+  EraCountdown = 'EraCountdown',
 }
 
 export const soraStaking = {
