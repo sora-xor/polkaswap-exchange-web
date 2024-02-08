@@ -22,8 +22,8 @@ export default class ExplorePageMixin extends Mixins(ScrollableTableMixin, Trans
   @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
   @getter.assets.whitelistAssets public whitelistAssets!: Array<Asset>;
 
-  order = '';
-  property = '';
+  order = SortDirection.DESC;
+  property = 'tvl';
 
   get loadingState(): boolean {
     return this.parentLoading || this.loading;
