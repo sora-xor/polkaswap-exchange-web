@@ -96,7 +96,7 @@
             "StakingChill": "未能冷却",
             "StakingSetController": "无法设置控制器{address}",
             "StakingSetPayee": "无法设置收款人{address}",
-            "OrderBookPlaceLimitOrder": "未能以{price} } {symbol}下达{amount} {symbol}限价单",
+            "OrderBookPlaceLimitOrder": "未能以{price} } {symbol2}下达{amount} {symbol}限价单",
             "OrderBookCancelLimitOrder": "未能取消{price} {symbol}的{amount} {symbol}限价订单",
             "OrderBookCancelLimitOrders": "取消限价单失败"
         },

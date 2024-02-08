@@ -96,7 +96,7 @@
             "StakingChill": "Failed to chill",
             "StakingSetController": "Failed to set controller {address}",
             "StakingSetPayee": "Failed to set payee {address}",
-            "OrderBookPlaceLimitOrder": "Failed to place limit order of {amount} {symbol} at {price} {symbol}",
+            "OrderBookPlaceLimitOrder": "Failed to place limit order of {amount} {symbol} at {price} {symbol2}",
             "OrderBookCancelLimitOrder": "Failed to cancel limit order of {amount} {symbol} at {price} {symbol}",
             "OrderBookCancelLimitOrders": "Failed to cancel limit orders"
         },

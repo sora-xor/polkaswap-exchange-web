@@ -96,7 +96,7 @@
             "StakingChill": "Impossibile rilassarsi",
             "StakingSetController": "Impossibile impostare il controller {address}",
             "StakingSetPayee": "Impossibile impostare il beneficiario {address}",
-            "OrderBookPlaceLimitOrder": "Impossibile effettuare un ordine limite di {amount} {symbol} a {price} {symbol}",
+            "OrderBookPlaceLimitOrder": "Impossibile effettuare un ordine limite di {amount} {symbol} a {price} {symbol2}",
             "OrderBookCancelLimitOrder": "Impossibile annullare l'ordine limite di {amount} {symbol} a {price} {symbol}",
             "OrderBookCancelLimitOrders": "Impossibile annullare gli ordini limite"
         },

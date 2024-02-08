@@ -96,7 +96,7 @@
             "StakingChill": "Nem sikerült lehűteni",
             "StakingSetController": "Nem sikerült beállítani a( {address} vezérlőt",
             "StakingSetPayee": "Nem sikerült beállítani a kedvezményezettet {address}",
-            "OrderBookPlaceLimitOrder": "Nem sikerült elhelyezni {amount} {symbol} összegű limitrendelést {price} {symbol} áron",
+            "OrderBookPlaceLimitOrder": "Nem sikerült elhelyezni {amount} {symbol} összegű limitrendelést {price} {symbol2} áron",
             "OrderBookCancelLimitOrder": "Nem sikerült törölni a {amount} {symbol} összegű limitrendelést {price} {symbol} áron",
             "OrderBookCancelLimitOrders": "Nem sikerült törölni a limitált rendeléseket"
         },

@@ -96,7 +96,7 @@
             "StakingChill": "Gagal mendinginkan",
             "StakingSetController": "Gagal menyetel pengontrol {address}",
             "StakingSetPayee": "Gagal menetapkan penerima pembayaran {address}",
-            "OrderBookPlaceLimitOrder": "Gagal menempatkan limit order {amount} {symbol} pada {price} {symbol}",
+            "OrderBookPlaceLimitOrder": "Gagal menempatkan limit order {amount} {symbol} pada {price} {symbol2}",
             "OrderBookCancelLimitOrder": "Gagal membatalkan pesanan batas {amount} {symbol} pada {price} {symbol}",
             "OrderBookCancelLimitOrders": "Gagal membatalkan pesanan batas"
         },

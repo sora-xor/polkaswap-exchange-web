@@ -96,7 +96,7 @@
             "StakingChill": "Het is niet gelukt om te chillen",
             "StakingSetController": "Kan controller {address} niet instellen",
             "StakingSetPayee": "Kan begunstigde {address} niet instellen",
-            "OrderBookPlaceLimitOrder": "Het plaatsen van een limietorder van {amount} {symbol} bij {price} {symbol} is niet gelukt",
+            "OrderBookPlaceLimitOrder": "Het plaatsen van een limietorder van {amount} {symbol} bij {price} {symbol2} is niet gelukt",
             "OrderBookCancelLimitOrder": "Kan de limietorder van {amount} {symbol} voor {price} {symbol} niet annuleren",
             "OrderBookCancelLimitOrders": "Kan limietorders niet annuleren"
         },

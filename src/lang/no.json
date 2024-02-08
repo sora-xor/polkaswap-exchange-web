@@ -96,7 +96,7 @@
             "StakingChill": "Klarte ikke å slappe av",
             "StakingSetController": "Kunne ikke angi kontrolleren {address}",
             "StakingSetPayee": "Kunne ikke angi betalingsmottaker {address}",
-            "OrderBookPlaceLimitOrder": "Kunne ikke legge inn grensebestilling på {amount} {symbol} til {price} {symbol}",
+            "OrderBookPlaceLimitOrder": "Kunne ikke legge inn grensebestilling på {amount} {symbol} til {price} {symbol2}",
             "OrderBookCancelLimitOrder": "Kunne ikke kansellere grensebestillingen på {amount} {symbol} til {price} {symbol}",
             "OrderBookCancelLimitOrders": "Kunne ikke kansellere begrensede bestillinger"
         },

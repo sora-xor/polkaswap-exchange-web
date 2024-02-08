@@ -96,7 +96,7 @@
             "StakingChill": "Hlađenje nije uspjelo",
             "StakingSetController": "Nije uspjelo postavljanje kontrolera {address}",
             "StakingSetPayee": "Nije uspjelo postavljanje primatelja {address}",
-            "OrderBookPlaceLimitOrder": "Nije uspjelo postavljanje ograničene narudžbe od {amount} {symbol} po {price} {symbol}",
+            "OrderBookPlaceLimitOrder": "Nije uspjelo postavljanje ograničene narudžbe od {amount} {symbol} po {price} {symbol2}",
             "OrderBookCancelLimitOrder": "Nije uspjelo otkazivanje ograničene narudžbe od {amount} {symbol} po {price} {symbol}",
             "OrderBookCancelLimitOrders": "Otkazivanje ograničenih naloga nije uspjelo"
         },

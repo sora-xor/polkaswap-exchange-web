@@ -96,7 +96,7 @@
             "StakingChill": "Không thể thư giãn",
             "StakingSetController": "Không thể đặt bộ điều khiển {address}",
             "StakingSetPayee": "Không thể đặt người nhận thanh toán {address}",
-            "OrderBookPlaceLimitOrder": "Không đặt được lệnh giới hạn {amount} {symbol} ở {price} {symbol}",
+            "OrderBookPlaceLimitOrder": "Không đặt được lệnh giới hạn {amount} {symbol} ở {price} {symbol2}",
             "OrderBookCancelLimitOrder": "Không hủy được lệnh giới hạn {amount} {symbol} ở {price} {symbol}",
             "OrderBookCancelLimitOrders": "Không thể hủy lệnh giới hạn"
         },

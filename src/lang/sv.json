@@ -96,7 +96,7 @@
             "StakingChill": "Det gick inte att kyla",
             "StakingSetController": "Det gick inte att ställa in controller {address}",
             "StakingSetPayee": "Det gick inte att ange betalningsmottagaren {address}",
-            "OrderBookPlaceLimitOrder": "Det gick inte att lägga en gränsbeställning på {amount} {symbol} till {price} {symbol}",
+            "OrderBookPlaceLimitOrder": "Det gick inte att lägga en gränsbeställning på {amount} {symbol} till {price} {symbol2}",
             "OrderBookCancelLimitOrder": "Det gick inte att avbryta gränsbeställningen på {amount} {symbol} till {price} {symbol}",
             "OrderBookCancelLimitOrders": "Det gick inte att avbryta limiterade beställningar"
         },

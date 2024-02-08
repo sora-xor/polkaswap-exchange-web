@@ -96,7 +96,7 @@
             "StakingChill": "Ochladit se nepodařilo",
             "StakingSetController": "Nepodařilo se nastavit ovladač {address}",
             "StakingSetPayee": "Nepodařilo se nastavit příjemce platby {address}",
-            "OrderBookPlaceLimitOrder": "Nepodařilo se zadat limitní objednávku ve výši {amount} {symbol} za {price} {symbol}",
+            "OrderBookPlaceLimitOrder": "Nepodařilo se zadat limitní objednávku ve výši {amount} {symbol} za {price} {symbol2}",
             "OrderBookCancelLimitOrder": "Nepodařilo se zrušit limitní objednávku ve výši {amount} {symbol} za {price} {symbol}",
             "OrderBookCancelLimitOrders": "Limitní objednávky se nepodařilo zrušit"
         },

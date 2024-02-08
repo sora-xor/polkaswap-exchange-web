@@ -96,7 +96,7 @@
             "StakingChill": "Не удалось охладить",
             "StakingSetController": "Не удалось установить контроллер {address}",
             "StakingSetPayee": "Не удалось установить получателя платежа {address}",
-            "OrderBookPlaceLimitOrder": "Не удалось разместить лимитный ордер на {amount} {symbol} по {price} {symbol}",
+            "OrderBookPlaceLimitOrder": "Не удалось разместить лимитный ордер на {amount} {symbol} по {price} {symbol2}",
             "OrderBookCancelLimitOrder": "Не удалось отменить лимитный ордер на {amount} {symbol} по {price} {symbol}",
             "OrderBookCancelLimitOrders": "Не удалось отменить лимитные ордера"
         },
