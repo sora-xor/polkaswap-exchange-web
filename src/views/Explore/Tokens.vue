@@ -163,7 +163,6 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -221,10 +220,7 @@ export default class Tokens extends Mixins(ExplorePageMixin) {
     this.isSynths = value;
   }
 
-  tokensData: Record<string, TokenData> = {};
-  // override ExplorePageMixin
-  order = SortDirection.DESC;
-  property = 'tvl';
+  private tokensData: Record<string, TokenData> = {};
 
   get hasTokensData(): boolean {
     return Object.keys(this.tokensData).length !== 0;
