@@ -37,14 +37,11 @@
       >
         <template v-if="isInsufficientXorForFee || isInsufficientBalance">
           <template v-if="isInsufficientBalance">
-            {{ t('insufficientBalanceText', { tokenSymbol: rewardAsset?.symbol }) }}
+            {{ t('soraStaking.withdrawDialog.nothingToWithdraw', { tokenSymbol: stakingAsset?.symbol }) }}
           </template>
           <template v-if="isInsufficientXorForFee">
             {{ t('insufficientBalanceText', { tokenSymbol: xor?.symbol }) }}
           </template>
-        </template>
-        <template v-else-if="valueFundsEmpty">
-          {{ t('buttons.enterAmount') }}
         </template>
         <template v-else>
           {{ t('confirmText') }}
@@ -89,7 +86,7 @@ export default class WithdrawDialog extends Mixins(StakingMixin, mixins.DialogMi
   }
 
   get isInsufficientBalance(): boolean {
-    return FPNumber.lt(this.withdrawableFunds, this.withdrawableFunds);
+    return this.withdrawableFunds.isZero();
   }
 
   get selectedValidatorsFormatted(): string {

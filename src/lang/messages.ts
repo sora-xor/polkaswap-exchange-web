@@ -938,6 +938,7 @@ export default {
     withdrawDialog: {
       title: 'Withdraw unstaked funds',
       showAllWithdraws: 'Show all withdraws',
+      nothingToWithdraw: 'Nothing to withdraw',
     },
     allWithdrawsDialog: {
       title: 'Unstaking activity',

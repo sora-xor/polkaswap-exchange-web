@@ -87,6 +87,19 @@
                 :fiat-value="withdrawableFundsFiat"
               />
             </div>
+            <div class="withdraw-info">
+              <span class="withdraw-info-title">
+                {{ t('soraStaking.info.unstaking') }}
+              </span>
+              <formatted-amount-with-fiat-value
+                class="withdraw-info-amount"
+                :asset-symbol="stakingAsset?.symbol"
+                symbol-as-decimal
+                value-can-be-hidden
+                :value="unlockingFundsFormatted"
+                :fiat-value="unlockingFundsFiat"
+              />
+            </div>
             <s-button
               class="withdraw-button"
               @click="handleWithdraw"
@@ -121,14 +134,14 @@
           :fiat-value="rewardedFundsFiat"
         />
         <info-line
-          v-if="stakingInitialized"
+          v-if="stakingInitialized && !showWithdrawCard"
           :label="t('soraStaking.info.unstaking')"
           :value="unlockingFundsFormatted"
           :asset-symbol="stakingAsset?.symbol"
           :fiat-value="unlockingFundsFiat"
         />
         <info-line
-          v-if="stakingInitialized"
+          v-if="stakingInitialized && !showWithdrawCard"
           :label="t('soraStaking.withdraw.withdrawable')"
           :value="withdrawableFundsFormatted"
           :asset-symbol="stakingAsset?.symbol"
