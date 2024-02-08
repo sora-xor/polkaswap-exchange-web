@@ -220,6 +220,7 @@ export enum Components {
   MarketTradesWidget = 'pages/OrderBook/MarketTradesWidget',
   BuySell = 'pages/OrderBook/BuySell',
   PairListPopover = 'pages/OrderBook/Popovers/PairListPopover',
+  SettingsPopover = 'pages/OrderBook/Popovers/Settings',
   AllOrders = 'pages/OrderBook/Tables/AllOrders',
   OpenOrders = 'pages/OrderBook/Tables/OpenOrders',
   PlaceOrder = 'pages/OrderBook/Dialogs/PlaceOrder',

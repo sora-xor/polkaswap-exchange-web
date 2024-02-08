@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="isScreenHuge()" class="order-book-widgets--huge">
+    <div v-if="isScreenHuge" class="order-book-widgets--huge">
       <div class="column-1">
         <set-limit-order-widget class="set-widget" />
         <customise-page-widget class="setting-widget" />
@@ -89,7 +89,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
     }
   }
 
-  isScreenHuge(): boolean {
+  get isScreenHuge(): boolean {
     return this.responsiveClass === BreakpointClass.HugeDesktop;
   }
 

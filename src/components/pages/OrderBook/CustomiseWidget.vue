@@ -1,18 +1,57 @@
 <template>
-  <div class="customise-widget">
-    <span>Customise page</span>
-    <s-icon name="arrow-left-16" />
+  <div class="order-book-widget customise-widget">
+    <el-popover popper-class="order-book-whitelist" trigger="click" v-model="visibleSettings" :visible-arrow="false">
+      <settings-popover />
+      <div slot="reference" class="settings-btn">
+        <span class="customise-widget-title">Customise page</span>
+        <s-icon name="basic-settings-24" size="24px" />
+      </div>
+    </el-popover>
   </div>
 </template>
 
 <script lang="ts">
-import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 
-@Component
-export default class CustomiseWidget extends Mixins(TranslationMixin) {}
+@Component({
+  components: {
+    SettingsPopover: lazyComponent(Components.SettingsPopover),
+  },
+})
+export default class CustomiseWidget extends Mixins(TranslationMixin) {
+  visibleSettings = false;
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.customise-widget {
+  margin-top: 8px;
+  height: 64px;
+
+  .settings-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-title {
+    line-height: 64px;
+    margin-left: $basic-spacing;
+    font-size: var(--s-font-size-medium);
+    font-weight: 500;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  .s-icon-basic-settings-24 {
+    margin-right: 20px;
+    color: var(--s-color-base-content-tertiary);
+  }
+}
+</style>
