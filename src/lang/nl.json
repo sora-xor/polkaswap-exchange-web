@@ -60,7 +60,10 @@
             "StakingPayout": "Uitbetalingsbeloningen",
             "StakingChill": "Chill",
             "StakingSetController": "Stel controller {address} in",
-            "StakingSetPayee": "Begunstigde {address} instellen"
+            "StakingSetPayee": "Begunstigde {address} instellen",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} voor {price} {symbol2} geplaatst",
+            "OrderBookCancelLimitOrder": "Limietorder geannuleerd",
+            "OrderBookCancelLimitOrders": "Limietorders geannuleerd"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -92,7 +95,10 @@
             "StakingPayout": "Kan beloningen niet uitbetalen",
             "StakingChill": "Het is niet gelukt om te chillen",
             "StakingSetController": "Kan controller {address} niet instellen",
-            "StakingSetPayee": "Kan begunstigde {address} niet instellen"
+            "StakingSetPayee": "Kan begunstigde {address} niet instellen",
+            "OrderBookPlaceLimitOrder": "Het plaatsen van een limietorder van {amount} {symbol} bij {price} {symbol} is niet gelukt",
+            "OrderBookCancelLimitOrder": "Kan de limietorder van {amount} {symbol} voor {price} {symbol} niet annuleren",
+            "OrderBookCancelLimitOrders": "Kan limietorders niet annuleren"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -116,7 +122,10 @@
         "StakingPayout": "Uitbetalingsbeloningen",
         "StakingChill": "Chill",
         "StakingSetController": "Regelaar instellen",
-        "StakingSetPayee": "Begunstigde instellen"
+        "StakingSetPayee": "Begunstigde instellen",
+        "OrderBookPlaceLimitOrder": "Plaats bestelling",
+        "OrderBookCancelLimitOrder": "Annuleer bestelling",
+        "OrderBookCancelLimitOrders": "Bestellingen annuleren"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
@@ -339,7 +348,9 @@
         "referrer": "Verwijzer",
         "referral": "Verwijzing",
         "adarTxDetailsTitle": "Transactiegegevens",
-        "comment": "Opmerking"
+        "comment": "Opmerking",
+        "price": "Prijs",
+        "side": "Kant"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Wijzig netwerk in portemonnee",
@@ -377,7 +388,9 @@
         "Explore\/Pools": "Zwembaden",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
-        "Staking": "Staking"
+        "Staking": "Staking",
+        "OrderBook": "Handel",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -391,7 +404,8 @@
         "CreatePair": "Maak Paar",
         "StakingContainer": "Staking",
         "Explore\/Container": "Ontdekken",
-        "SoraCard": "{Sora} Kaart"
+        "SoraCard": "{Sora} Kaart",
+        "OrderBook": "Handel"
     },
     "social": {
         "twitter": "Twitter",
@@ -1383,5 +1397,129 @@
         }
     },
     "collapseText": "Instorten",
-    "expandText": "Uitbreiden"
+    "expandText": "Uitbreiden",
+    "orderBook": {
+        "Buy": "Koop {asset}",
+        "Sell": "Verkoop {asset}",
+        "orderBook": "Orderboek",
+        "marketTrades": "Markttransacties",
+        "market": "Markt",
+        "limit": "Begrenzing",
+        "price": "Prijs",
+        "total": "Totaal",
+        "amount": "hoeveelheid",
+        "time": "tijd",
+        "month": "maand",
+        "change": "wijziging",
+        "cantPlaceOrder": "Kan bestelling niet plaatsen",
+        "enterAmount": "Voer een bedrag in",
+        "setPrice": "Prijs instellen",
+        "dayVolume": "1D-volume",
+        "stop": "Boek gestopt",
+        "tokenPair": "Tokenpaar",
+        "book": {
+            "noAsks": "Geen geopende vragen",
+            "noBids": "Geen geopende biedingen"
+        },
+        "history": {
+            "tradeHistory": "Handelsgeschiedenis",
+            "orderHistory": "Bestelgeschiedenis",
+            "openOrders": "Openstaande bestellingen {value}",
+            "connect": "Koppel een account om te beginnen met handelen",
+            "cancel": "Bestelling annuleren {value}",
+            "cancelAll": "Verwijder alles"
+        },
+        "orderTable": {
+            "time": "tijd",
+            "pair": "paar",
+            "side": "kant",
+            "filled": "gevuld",
+            "lifetime": "levenslang",
+            "noOrders": "Geen bestellingen. Maak je eerste!"
+        },
+        "dialog": {
+            "placeMarket": "Marktorder plaatsen",
+            "placeLimit": "Plaats een limietorder",
+            "askCancel": "Weet u zeker dat u al uw openstaande bestellingen wilt annuleren?",
+            "cancelAll": "Ja, alles annuleren",
+            "noCancel": "Nee, annuleer het niet",
+            "buy": "Koop {amount} {symbol}",
+            "sell": "Verkoop {amount} {symbol}",
+            "at": "tegen {price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "Kies een handelspaar",
+            "volume": "Volume",
+            "dailyChange": "Dagelijkse verandering",
+            "status": "Toestand",
+            "total": "{amount} {symbol} op {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Actief",
+            "placeable": "Plaatsbaar",
+            "cancelable": "Annuleerbaar",
+            "inactive": "Inactief"
+        },
+        "tooltip": {
+            "limitOrder": "Met een 'Limiet'-order kunt u de exacte prijs opgeven waartegen u een actief wilt kopen of verkopen. Een 'Limit Buy'-order wordt alleen uitgevoerd tegen de opgegeven prijs of lager, terwijl een 'Limit Sell'-order alleen tegen de opgegeven prijs of hoger wordt uitgevoerd. Deze controle zorgt ervoor dat u niet meer betaalt of voor minder verkoopt dan u prettig vindt.",
+            "marketOrder": "Een 'Marktorder' is een order om onmiddellijk te kopen of verkopen tegen de best beschikbare huidige prijs. Het vereist geen vaststelling van een prijs, waardoor een snelle uitvoering wordt gegarandeerd, maar met de wisselwerking van minder controle over de ontvangen of betaalde prijs. Dit type order wordt gebruikt wanneer zekerheid van uitvoering prioriteit heeft boven prijscontrole.",
+            "pairsList": "Een realtime lijst met huidige koop- en verkooporders voor een cryptocurrency. Het helpt u de vraag, de potentiële prijsrichting en het handelsvolume op het SORA-netwerk en Polkaswap DEX te begrijpen",
+            "bookWidget": "Een live, voortdurend bijgewerkt record van koop- (bied-) en verkoop- (laat-)orders voor een specifiek activum, georganiseerd op prijsniveau. Het orderboek geeft de diepte van de markt weer, inclusief de hoeveelheden activa die tegen verschillende prijzen worden aangeboden. Handelaren gebruiken dit gedetailleerde overzicht om het marktsentiment te peilen, potentiële weerstands- en ondersteuningsniveaus te identificeren en te anticiperen op prijsbewegingen op basis van de bestaande vraag en aanbod.",
+            "marketWidget": "Deze widget toont een realtime stroom van uitgevoerde transacties op de markt en biedt informatie over transactievolumes, recente activiteiten en huidige markttrends. Door de timing, prijs en omvang van daadwerkelijke transacties te observeren, kunnen handelaren inzicht krijgen in de marktdynamiek en het sentiment, waardoor ze handelsmogelijkheden kunnen herkennen en weloverwogen beslissingen kunnen nemen.",
+            "txDetails": {
+                "orderType": "'Koop'-order wordt alleen uitgevoerd tegen de opgegeven prijs of lager, terwijl een 'Verkoop'-order alleen wordt uitgevoerd tegen de opgegeven prijs of hoger. Deze controle zorgt ervoor dat u niet meer betaalt of voor minder verkoopt dan u prettig vindt.",
+                "expiryDate": "De 'Vervaldatum' is de uiterste datum waarop uw order moet worden uitgevoerd. Als de markt de door u opgegeven prijs niet vóór deze datum bereikt, wordt de bestelling automatisch geannuleerd. U hoeft niet eeuwig te wachten als de marktomstandigheden niet aansluiten bij uw handelsvoorkeuren.",
+                "amount": "Het 'Bedrag' verwijst naar het totale aantal activa dat u in uw bestelling wilt kopen of verkopen. Het is belangrijk om dit op te geven, omdat dit de omvang van uw transactie bepaalt en van invloed is op de totale kosten voor kooporders of de opbrengst voor verkooporders.",
+                "limit": "De 'Limietprijs' is de exacte prijs die u instelt voor een limietorder. De transactie wordt alleen uitgevoerd als de marktprijs van het actief uw limietprijs bereikt, zodat u niet boven deze gespecificeerde waarde koopt of verkoopt.",
+                "locked": "'Vergrendeld' toont de hoeveelheid activa die moet worden vastgehouden terwijl de bestelling loopt."
+            },
+            "bookStatus": {
+                "active": "Volledige handelsfunctionaliteit ingeschakeld. U kunt nieuwe bestellingen plaatsen of bestaande bestellingen annuleren.",
+                "placeable": "Beperkte functionaliteit. U kunt nieuwe bestellingen plaatsen en bestaande bestellingen annuleren, maar sommige functies zijn mogelijk niet beschikbaar.",
+                "cancelable": "U kunt alleen bestaande bestellingen annuleren. Het plaatsen van nieuwe bestellingen is momenteel uitgeschakeld.",
+                "inactive": "Alle handelsactiviteiten zijn momenteel stopgezet. Er kunnen op dit moment geen bestellingen geplaatst of geannuleerd worden."
+            }
+        },
+        "txDetails": {
+            "orderType": "order type",
+            "limitPrice": "limiet prijs",
+            "expiryDate": "vervaldatum"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "De ingevoerde prijs is te nauwkeurig om te berekenen",
+                "reading": "Precisie overschreden: Het ingevoerde bedrag\/de prijs bevat te veel decimalen. Voer een waarde in met minder decimalen"
+            },
+            "marketNotAvailable": {
+                "reason": "Er zijn niet genoeg bestellingen beschikbaar om deze bestelling uit te voeren",
+                "reading": "Marktorderbeperking: Er zijn niet genoeg orders beschikbaar om aan deze marktlimietorder te voldoen. Pas uw bestelgrootte aan of wacht tot er meer bestellingen worden geplaatst"
+            },
+            "exceedsSpread": {
+                "reason": "Prijs overtrof de spread",
+                "reading": "Prijs overschreden: de bied- of laatprijs van een markt overtrof de vraag-\/biedprijs"
+            },
+            "spotLimit": {
+                "reason": "Handelszijde is gevuld",
+                "reading": "Prijsbereiklimiet: Elke orderboekkant is beperkt tot 1024 unieke prijspunten. Selecteer een prijs binnen het bestaande aanbod of wacht tot er ruimte vrijkomt"
+            },
+            "accountLimit": {
+                "reason": "Er lopen te veel bestellingen",
+                "reading": "Limiet bereikt: elk account is beperkt tot 1024 limietorders. Wacht tot een aantal van uw bestellingen zijn uitgevoerd"
+            },
+            "singlePriceLimit": {
+                "reason": "Er lopen te veel bestellingen voor deze prijs",
+                "reading": "Limiet bereikt: Elke positie is beperkt tot 1024 limietorders. Wacht tot sommige bestellingen zijn uitgevoerd"
+            },
+            "outOfBounds": {
+                "reading": "Blockchainbereik overschreden: Uw ingevoerde bedrag valt buiten het toegestane bereik van de blockchain. Min: {min} ; Maximaal: {max}",
+                "reason": "Bedrag voldoet niet aan het blockchain-bereik"
+            }
+        },
+        "orderStatus": {
+            "active": "Actief",
+            "canceled": "Geannuleerd",
+            "expired": "Verlopen",
+            "filled": "Gevuld"
+        }
+    }
 }

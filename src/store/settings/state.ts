@@ -28,6 +28,7 @@ function initialState(): SettingsState {
     nodeConnectionAllowance: true,
     chainGenesisHash: '',
     faucetUrl: '',
+    menuCollapsed: false,
     selectNodeDialogVisibility: false,
     selectIndexerDialogVisibility: false,
     selectLanguageDialogVisibility: false,

@@ -60,7 +60,10 @@
             "StakingPayout": "Récompenses de paiement",
             "StakingChill": "Froideur",
             "StakingSetController": "Définir le contrôleur {address}",
-            "StakingSetPayee": "Définir le bénéficiaire {address}"
+            "StakingSetPayee": "Définir le bénéficiaire {address}",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} à {price} {symbol2} placé",
+            "OrderBookCancelLimitOrder": "Ordre limité annulé",
+            "OrderBookCancelLimitOrders": "Ordres limités annulés"
         },
         "error": {
             "Transfer": "Échec de {action} {amount} {symbol} {direction} {address}",
@@ -92,7 +95,10 @@
             "StakingPayout": "Échec du paiement des récompenses",
             "StakingChill": "Impossible de se détendre",
             "StakingSetController": "Échec de la définition du contrôleur {address}",
-            "StakingSetPayee": "Échec de la définition du bénéficiaire {address}"
+            "StakingSetPayee": "Échec de la définition du bénéficiaire {address}",
+            "OrderBookPlaceLimitOrder": "Échec de la passation d'une commande limitée de {amount} {symbol} à {price} {symbol}",
+            "OrderBookCancelLimitOrder": "Échec de l'annulation de l'ordre limité de {amount} {symbol} à {price} {symbol}",
+            "OrderBookCancelLimitOrders": "Échec de l'annulation des ordres limités"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
@@ -116,7 +122,10 @@
         "StakingPayout": "Récompenses de paiement",
         "StakingChill": "Froideur",
         "StakingSetController": "Définir le contrôleur",
-        "StakingSetPayee": "Définir le bénéficiaire"
+        "StakingSetPayee": "Définir le bénéficiaire",
+        "OrderBookPlaceLimitOrder": "Passer la commande",
+        "OrderBookCancelLimitOrder": "annuler la commande",
+        "OrderBookCancelLimitOrders": "Annuler les commandes"
     },
     "polkadotjs": {
         "noExtensions": "Aucune extension {PolkadotJs} n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
@@ -339,7 +348,9 @@
         "referrer": "Référent",
         "referral": "Référence",
         "adarTxDetailsTitle": "Détails de la transaction",
-        "comment": "Commentaire"
+        "comment": "Commentaire",
+        "price": "Prix",
+        "side": "Côté"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Changer de réseau dans le portefeuille",
@@ -377,7 +388,9 @@
         "Explore\/Pools": "Piscines",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
-        "Staking": "Staking"
+        "Staking": "Staking",
+        "OrderBook": "Commerce",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Échanger",
@@ -391,7 +404,8 @@
         "CreatePair": "Créer une paire",
         "StakingContainer": "Staking",
         "Explore\/Container": "Explorer",
-        "SoraCard": "{Sora} Carte"
+        "SoraCard": "{Sora} Carte",
+        "OrderBook": "Commerce"
     },
     "social": {
         "twitter": "Twitter",
@@ -1383,5 +1397,129 @@
         }
     },
     "collapseText": "Réduire",
-    "expandText": "Agrandir"
+    "expandText": "Agrandir",
+    "orderBook": {
+        "Buy": "Acheter {asset}",
+        "Sell": "Vendre {asset}",
+        "orderBook": "Carnet de commande",
+        "marketTrades": "Métiers du marché",
+        "market": "Marché",
+        "limit": "Limite",
+        "price": "Prix",
+        "total": "Total",
+        "amount": "montant",
+        "time": "temps",
+        "month": "mois",
+        "change": "changement",
+        "cantPlaceOrder": "Impossible de passer commande",
+        "enterAmount": "Entrer le montant",
+        "setPrice": "Fixer le prix",
+        "dayVolume": "Volumes 1D",
+        "stop": "Livre arrêté",
+        "tokenPair": "Paire de jetons",
+        "book": {
+            "noAsks": "Aucune demande ouverte",
+            "noBids": "Aucune offre ouverte"
+        },
+        "history": {
+            "tradeHistory": "Histoire commerciale",
+            "orderHistory": "Historique des commandes",
+            "openOrders": "Commandes ouvertes {value}",
+            "connect": "Connectez un compte pour commencer à trader",
+            "cancel": "Annuler la commande {value}",
+            "cancelAll": "Annuler tout"
+        },
+        "orderTable": {
+            "time": "temps",
+            "pair": "paire",
+            "side": "côté",
+            "filled": "rempli",
+            "lifetime": "durée de vie",
+            "noOrders": "Aucune commande. Créez votre premier !"
+        },
+        "dialog": {
+            "placeMarket": "Passer un ordre au marché",
+            "placeLimit": "Passer un ordre limité",
+            "askCancel": "Êtes-vous sûr de vouloir annuler toutes vos commandes ouvertes ?",
+            "cancelAll": "Oui, tout annuler",
+            "noCancel": "Non, ne l'annule pas",
+            "buy": "Achetez {amount} {symbol}",
+            "sell": "Vendre {amount} {symbol}",
+            "at": "à {price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "Choisissez une paire de trading",
+            "volume": "Volume",
+            "dailyChange": "Changement quotidien",
+            "status": "Statut",
+            "total": "{amount} {symbol} à {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Actif",
+            "placeable": "Plaçable",
+            "cancelable": "Annulable",
+            "inactive": "Inactif"
+        },
+        "tooltip": {
+            "limitOrder": "Un ordre « Limite » vous permet de spécifier le prix exact auquel vous souhaitez acheter ou vendre un actif. Un ordre « Achat limité » ne sera exécuté qu'au prix spécifié ou inférieur, tandis qu'un ordre « Vente limité » ne sera exécuté qu'au prix spécifié ou supérieur. Ce contrôle garantit que vous ne payez pas plus ou ne vendez pas moins que ce avec quoi vous êtes à l'aise.",
+            "marketOrder": "Un « ordre au marché » est un ordre d'achat ou de vente immédiat au meilleur prix actuel disponible. Cela ne nécessite pas de fixer un prix, ce qui garantit une exécution rapide, mais avec pour contrepartie un contrôle moindre sur le prix reçu ou payé. Ce type d'ordre est utilisé lorsque la certitude de l'exécution prime sur le contrôle des prix.",
+            "pairsList": "Une liste en temps réel affichant les ordres d’achat et de vente en cours pour une cryptomonnaie. Il vous aide à comprendre la demande, l'orientation potentielle des prix et le volume des échanges sur le réseau SORA et Polkaswap DEX.",
+            "bookWidget": "Un enregistrement en direct et constamment mis à jour des ordres d'achat (offre) et de vente (demande) pour un actif spécifique, organisés par niveau de prix. Le carnet de commandes affiche la profondeur du marché, y compris les quantités d'actifs proposés à différents prix. Les traders utilisent cette vue détaillée pour évaluer le sentiment du marché, identifier les niveaux potentiels de résistance et de support et anticiper les mouvements de prix en fonction de la demande et de l'offre existantes.",
+            "marketWidget": "Ce widget affiche un flux en temps réel des transactions exécutées sur le marché, fournissant des informations sur les volumes de transactions, l'activité récente et les tendances actuelles du marché. En observant le timing, le prix et la taille des transactions réelles, les traders peuvent obtenir des informations sur la dynamique et le sentiment du marché, les aidant ainsi à repérer les opportunités de trading et à prendre des décisions éclairées.",
+            "txDetails": {
+                "orderType": "L'ordre « d'achat » ne sera exécuté qu'au prix spécifié ou inférieur, tandis qu'un ordre « de vente » ne sera exécuté qu'au prix spécifié ou supérieur. Ce contrôle garantit que vous ne payez pas plus ou ne vendez pas moins que ce avec quoi vous êtes à l'aise.",
+                "expiryDate": "La « Date d'expiration » est la date limite d'exécution de votre ordre. Si le marché n'atteint pas votre prix spécifié avant cette date, l'ordre est automatiquement annulé. Vous n'êtes pas obligé d'attendre perpétuellement si les conditions du marché ne correspondent pas à vos préférences de trading.",
+                "amount": "Le « Montant » fait référence au nombre total d'actifs que vous souhaitez acheter ou vendre dans le cadre de votre ordre. Il est important de le préciser, car cela détermine la taille de votre transaction, ce qui a un impact sur le coût total des ordres d'achat ou sur les revenus des ordres de vente.",
+                "limit": "Le « Prix limite » est le prix précis que vous fixez pour un ordre limité. La transaction ne sera exécutée que lorsque le prix du marché de l'actif atteint votre prix limite, garantissant ainsi que vous n'achetez pas au-dessus ou ne vendez pas en dessous de cette valeur spécifiée.",
+                "locked": "Le « Verrouillé » indique le montant de l'actif à conserver pendant que l'ordre est en cours."
+            },
+            "bookStatus": {
+                "active": "Fonctionnalité de trading complète activée. Vous pouvez passer de nouvelles commandes ou annuler des commandes existantes.",
+                "placeable": "Fonctionnalité limitée. Vous pouvez passer de nouvelles commandes et annuler celles existantes, mais certaines fonctionnalités peuvent ne pas être disponibles.",
+                "cancelable": "Vous ne pouvez annuler que les commandes existantes. Le placement de nouvelles commandes est actuellement désactivé.",
+                "inactive": "Toutes les activités commerciales sont actuellement interrompues. Aucune commande ne peut être passée ou annulée pour le moment."
+            }
+        },
+        "txDetails": {
+            "orderType": "type de commande",
+            "limitPrice": "prix limite",
+            "expiryDate": "date d'expiration"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "Le prix saisi est trop précis pour être calculé",
+                "reading": "Précision dépassée : le montant\/prix saisi comporte trop de décimales. Veuillez saisir une valeur avec moins de décimales"
+            },
+            "marketNotAvailable": {
+                "reason": "Pas assez de commandes disponibles pour exécuter cette commande",
+                "reading": "Limitation des ordres au marché : il n’y a pas suffisamment d’ordres disponibles pour exécuter cet ordre au marché limité. Veuillez ajuster la taille de votre commande ou attendre que d'autres commandes soient passées"
+            },
+            "exceedsSpread": {
+                "reason": "Prix dépassé le spread",
+                "reading": "Prix dépassé : le prix acheteur ou vendeur d'un marché a dépassé son prix vendeur\/acheteur"
+            },
+            "spotLimit": {
+                "reason": "Le côté commercial a été rempli",
+                "reading": "Plafond de fourchette de prix : chaque côté du carnet de commandes est limité à 1 024 niveaux de prix uniques. Veuillez sélectionner un prix dans la fourchette existante ou attendre qu'une place se libère"
+            },
+            "accountLimit": {
+                "reason": "Trop de commandes sont en cours",
+                "reading": "Limite atteinte : Chaque compte est limité à 1024 ordres limités. Veuillez attendre que certaines de vos commandes soient exécutées"
+            },
+            "singlePriceLimit": {
+                "reason": "Trop de commandes sont en cours pour ce prix",
+                "reading": "Limite atteinte : Chaque position est limitée à 1024 ordres limités. Veuillez attendre que certaines commandes soient exécutées"
+            },
+            "outOfBounds": {
+                "reading": "Plage de la blockchain dépassée : le montant que vous avez saisi se situe en dehors de la plage autorisée de la blockchain. Min : {min} ; Max : {max}",
+                "reason": "Le montant ne respecte pas la plage de la blockchain"
+            }
+        },
+        "orderStatus": {
+            "active": "Actif",
+            "canceled": "Annulé",
+            "expired": "Expiré",
+            "filled": "Rempli"
+        }
+    }
 }

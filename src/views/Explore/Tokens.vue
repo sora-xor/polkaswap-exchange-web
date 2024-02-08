@@ -163,18 +163,14 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { KnownAssets } from '@sora-substrate/util/build/assets/consts';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { fetchTokensData } from '@/indexer/queries/assets';
 import type { TokenData } from '@/indexer/queries/assets';
 import { lazyComponent } from '@/router';
-import { getter } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, sortAssets } from '@/utils';
 import { syntheticAssetRegexp } from '@/utils/regexp';
@@ -212,9 +208,7 @@ const storageKey = 'exploreSyntheticTokens';
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
-  @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
-
+export default class Tokens extends Mixins(ExplorePageMixin) {
   private isSynths = storage.get(storageKey) ? JSON.parse(storage.get(storageKey)) : false;
 
   get isSynthsOnly(): boolean {
@@ -226,18 +220,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     this.isSynths = value;
   }
 
-  tokensData: Record<string, TokenData> = {};
-  // override ExplorePageMixin
-  order = SortDirection.DESC;
-  property = 'tvl';
-
-  get allowedAssets(): Array<Asset> {
-    // if whitelist is not available, use KnownAssets
-    if (!this.whitelistAssets.length) {
-      return [...KnownAssets];
-    }
-    return this.whitelistAssets;
-  }
+  private tokensData: Record<string, TokenData> = {};
 
   get hasTokensData(): boolean {
     return Object.keys(this.tokensData).length !== 0;
@@ -251,7 +234,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
         return {
           ...asset,
           price: price.toNumber(),
-          priceFormatted: new FPNumber(price.toFixed(7)).toLocaleString(),
+          priceFormatted: price.toLocaleString(7),
         };
       });
     }
@@ -264,7 +247,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
       buffer.push({
         ...asset,
         price: tokenData.priceUSD.toNumber(),
-        priceFormatted: new FPNumber(tokenData.priceUSD.toFixed(7)).toLocaleString(),
+        priceFormatted: tokenData.priceUSD.toLocaleString(7),
         priceChangeDay: tokenData.priceChangeDay.toNumber(),
         priceChangeDayFP: tokenData.priceChangeDay,
         priceChangeWeek: tokenData.priceChangeWeek.toNumber(),
@@ -285,12 +268,10 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     return [...this.items].sort((a, b) => sortAssets(a, b));
   }
 
-  get preparedItems(): TableItem[] {
-    return this.isSynthsOnly ? this.defaultSorted.filter((item) => this.isSynthetic(item.address)) : this.defaultSorted;
-  }
-
-  isSynthetic(address: string): boolean {
-    return syntheticAssetRegexp.test(address);
+  get prefilteredItems(): TableItem[] {
+    return this.isSynthsOnly
+      ? this.defaultSorted.filter((item) => syntheticAssetRegexp.test(item.address))
+      : this.defaultSorted;
   }
 
   // ExplorePageMixin method implementation
