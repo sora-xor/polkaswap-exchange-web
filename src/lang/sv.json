@@ -97,8 +97,8 @@
             "StakingSetController": "Det gick inte att ställa in controller {address}",
             "StakingSetPayee": "Det gick inte att ange betalningsmottagaren {address}",
             "OrderBookPlaceLimitOrder": "Det gick inte att lägga en gränsbeställning på {amount} {symbol} till {price} {symbol2}",
-            "OrderBookCancelLimitOrder": "Det gick inte att avbryta gränsbeställningen på {amount} {symbol} till {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Det gick inte att avbryta limiterade beställningar"
+            "OrderBookCancelLimitOrders": "Det gick inte att avbryta limiterade beställningar",
+            "OrderBookCancelLimitOrder": "Det gick inte att avbryta begränsningsordern"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",

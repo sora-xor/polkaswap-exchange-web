@@ -97,8 +97,8 @@
             "StakingSetController": "Không thể đặt bộ điều khiển {address}",
             "StakingSetPayee": "Không thể đặt người nhận thanh toán {address}",
             "OrderBookPlaceLimitOrder": "Không đặt được lệnh giới hạn {amount} {symbol} ở {price} {symbol2}",
-            "OrderBookCancelLimitOrder": "Không hủy được lệnh giới hạn {amount} {symbol} ở {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Không thể hủy lệnh giới hạn"
+            "OrderBookCancelLimitOrders": "Không thể hủy lệnh giới hạn",
+            "OrderBookCancelLimitOrder": "Không hủy được lệnh giới hạn"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",

@@ -97,8 +97,8 @@
             "StakingSetController": "Nie udało się ustawić kontrolera {address}",
             "StakingSetPayee": "Nie udało się ustawić odbiorcy płatności {address}",
             "OrderBookPlaceLimitOrder": "Nie udało się złożyć zamówienia z limitem {amount} {symbol} po {price} {symbol2}",
-            "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem {amount} {symbol} po {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Nie udało się anulować zleceń z limitem"
+            "OrderBookCancelLimitOrders": "Nie udało się anulować zleceń z limitem",
+            "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",

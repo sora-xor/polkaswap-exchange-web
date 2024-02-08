@@ -97,8 +97,8 @@
             "StakingSetController": "Не удалось установить контроллер {address}",
             "StakingSetPayee": "Не удалось установить получателя платежа {address}",
             "OrderBookPlaceLimitOrder": "Не удалось разместить лимитный ордер на {amount} {symbol} по {price} {symbol2}",
-            "OrderBookCancelLimitOrder": "Не удалось отменить лимитный ордер на {amount} {symbol} по {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Не удалось отменить лимитные ордера"
+            "OrderBookCancelLimitOrders": "Не удалось отменить лимитные ордера",
+            "OrderBookCancelLimitOrder": "Не удалось отменить лимитный ордер"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",

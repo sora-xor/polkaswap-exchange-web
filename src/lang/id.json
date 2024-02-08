@@ -97,8 +97,8 @@
             "StakingSetController": "Gagal menyetel pengontrol {address}",
             "StakingSetPayee": "Gagal menetapkan penerima pembayaran {address}",
             "OrderBookPlaceLimitOrder": "Gagal menempatkan limit order {amount} {symbol} pada {price} {symbol2}",
-            "OrderBookCancelLimitOrder": "Gagal membatalkan pesanan batas {amount} {symbol} pada {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Gagal membatalkan pesanan batas"
+            "OrderBookCancelLimitOrders": "Gagal membatalkan pesanan batas",
+            "OrderBookCancelLimitOrder": "Gagal membatalkan pesanan batas"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",

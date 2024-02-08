@@ -97,8 +97,8 @@
             "StakingSetController": "Controller- {address} konnte nicht festgelegt werden",
             "StakingSetPayee": "Zahlungsempfänger {address} konnte nicht festgelegt werden",
             "OrderBookPlaceLimitOrder": "Limitbestellung von {amount} {symbol} zu {price} {symbol2} konnte nicht aufgegeben werden",
-            "OrderBookCancelLimitOrder": "Limitauftrag von {amount} {symbol} zu {price} {symbol} konnte nicht storniert werden",
-            "OrderBookCancelLimitOrders": "Limitaufträge konnten nicht storniert werden"
+            "OrderBookCancelLimitOrders": "Limitaufträge konnten nicht storniert werden",
+            "OrderBookCancelLimitOrder": "Limitauftrag konnte nicht storniert werden"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",

@@ -97,8 +97,8 @@
             "StakingSetController": "Չհաջողվեց կարգավորել {address} կարգավորիչը",
             "StakingSetPayee": "Չհաջողվեց սահմանել վճարողի {address}",
             "OrderBookPlaceLimitOrder": "Չհաջողվեց սահմանել {amount} {symbol} ի սահմանային պատվեր {price} {symbol2} ով",
-            "OrderBookCancelLimitOrder": "Չհաջողվեց չեղարկել {amount} {symbol} սահմանաչափի պատվերը {price} {symbol} -ով",
-            "OrderBookCancelLimitOrders": "Չհաջողվեց չեղարկել սահմանափակ պատվերները"
+            "OrderBookCancelLimitOrders": "Չհաջողվեց չեղարկել սահմանափակ պատվերները",
+            "OrderBookCancelLimitOrder": "Չհաջողվեց չեղարկել սահմանաչափի պատվերը"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",

@@ -97,8 +97,8 @@
             "StakingSetController": "No se pudo configurar el controlador {address}",
             "StakingSetPayee": "No se pudo establecer el beneficiario {address}",
             "OrderBookPlaceLimitOrder": "No se pudo realizar la orden limitada de {amount} {symbol} a {price} {symbol2}",
-            "OrderBookCancelLimitOrder": "No se pudo cancelar la orden límite de {amount} {symbol} a {price} {symbol}",
-            "OrderBookCancelLimitOrders": "No se pudieron cancelar las órdenes limitadas"
+            "OrderBookCancelLimitOrders": "No se pudieron cancelar las órdenes limitadas",
+            "OrderBookCancelLimitOrder": "No se pudo cancelar la orden límite"
         },
         "ReferralReserveXor": "Vincular XOR",
         "ReferralUnreserveXor": "Desvincular XOR",

@@ -97,8 +97,8 @@
             "StakingSetController": "Échec de la définition du contrôleur {address}",
             "StakingSetPayee": "Échec de la définition du bénéficiaire {address}",
             "OrderBookPlaceLimitOrder": "Échec de la passation d'une commande limitée de {amount} {symbol} à {price} {symbol2}",
-            "OrderBookCancelLimitOrder": "Échec de l'annulation de l'ordre limité de {amount} {symbol} à {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Échec de l'annulation des ordres limités"
+            "OrderBookCancelLimitOrders": "Échec de l'annulation des ordres limités",
+            "OrderBookCancelLimitOrder": "Échec de l'annulation de l'ordre limité"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
