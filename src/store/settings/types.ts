@@ -25,9 +25,9 @@ export type SettingsState = {
   chartsEnabled: boolean;
   userDisclaimerApprove: boolean;
   transactionDeadline: number;
-  node: Partial<Node>;
   language: string;
   displayRegions: Nullable<Intl.DisplayNames>;
+  node: Partial<Node>;
   defaultNodes: Array<Node>;
   customNodes: Array<Node>;
   nodeAddressConnecting: string;

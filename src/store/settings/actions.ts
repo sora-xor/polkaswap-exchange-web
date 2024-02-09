@@ -67,6 +67,8 @@ const actions = defineActions({
         }
       }
     } catch (error) {
+      onError?.(error, requestedNode);
+
       // if connection failed to node in state, reset node in state
       if (requestedNode && requestedNode.address === state.node.address) {
         commit.resetNode();
@@ -76,10 +78,6 @@ const actions = defineActions({
       if (state.node.address || currentNodeIndex !== state.defaultNodes.length - 1) {
         const nextIndex = requestedNode?.address === defaultNode.address ? currentNodeIndex + 1 : 0;
         await dispatch.connectToNode({ onError, currentNodeIndex: nextIndex, ...restOptions });
-      }
-
-      if (onError && typeof onError === 'function') {
-        onError(error, requestedNode);
       }
 
       throw error;
