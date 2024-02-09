@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { SSkeleton, SSkeletonItem } from '@soramitsu/soramitsu-js-ui/lib/components/Skeleton';
+import { SSkeleton, SSkeletonItem } from '@soramitsu-ui/ui-vue2/lib/components/Skeleton';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({

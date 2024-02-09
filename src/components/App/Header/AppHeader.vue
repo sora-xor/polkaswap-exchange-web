@@ -33,7 +33,7 @@ import AppHeaderMenu from './AppHeaderMenu.vue';
 import AppLogoButton from './AppLogoButton.vue';
 import AppMarketing from './AppMarketing.vue';
 
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
