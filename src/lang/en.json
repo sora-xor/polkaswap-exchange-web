@@ -1280,7 +1280,7 @@
     "disconnectWalletText": "Disconnect",
     "connectEthereumWalletText": "Connect {Ethereum} wallet",
     "soraStaking": {
-        "selectedValidators": "{count} (MAX: {max})",
+        "selectedValidators": "{count} ({Max} {max})",
         "dropdownMenu": {
             "pendingRewards": "Pending rewards",
             "controllerAccount": "Controller account"

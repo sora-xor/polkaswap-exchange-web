@@ -819,7 +819,7 @@ export default {
     rewards: '{symbol} rewards',
   },
   soraStaking: {
-    selectedValidators: '{count} (MAX: {max})',
+    selectedValidators: '{count} ({Max} {max})',
     dropdownMenu: {
       controllerAccount: 'Controller account',
     },
