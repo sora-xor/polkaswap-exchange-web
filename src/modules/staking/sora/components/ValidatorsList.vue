@@ -23,19 +23,19 @@
       </div>
       <div class="table-header-name table-header-item">{{ t('soraStaking.validatorsList.name') }}</div>
       <div class="table-header-info table-header-item">
-        <div class="table-header-commission">
+        <div :class="commissionHeaderClass" @click="setCommissionSort">
           <span>{{ t('soraStaking.validatorsList.commission') }}</span>
           <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.commissionTooltip')">
             <s-icon name="info-16" size="14px" />
           </s-tooltip>
-          <s-icon name="arrows-chevron-top-rounded-24" size="18" />
+          <s-icon class="chevron" name="arrows-chevron-top-rounded-24" size="18" />
         </div>
-        <div class="table-header-return">
+        <div :class="returnHeaderClass" @click="setReturnSort">
           <span>{{ t('soraStaking.validatorsList.return') }}</span>
-          <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.returnTooltip')">
+          <s-tooltip border-radius="mini" :content="t('comingSoonText')">
             <s-icon name="info-16" size="14px" />
           </s-tooltip>
-          <s-icon name="arrows-chevron-top-rounded-24" size="18" />
+          <s-icon class="chevron" name="arrows-chevron-top-rounded-24" size="18" />
         </div>
       </div>
     </div>
@@ -55,9 +55,9 @@
               <formatted-address :value="validator.address" :symbols="16" />
             </div>
             <div class="info">
-              <span class="info-commission">{{ formatCommission(validator.commission) }}%</span>
+              <span :class="commissionClass">{{ formatCommission(validator.commission) }}%</span>
               <br />
-              <span class="info-return">{{ formatReturn(validator.apy) }}%</span>
+              <span :class="returnClass">{{ formatReturn(validator.apy) }}%</span>
             </div>
             <div
               v-if="mode === ValidatorsListMode.SELECT"
@@ -96,6 +96,22 @@ import { ValidatorsFilter } from '../types';
 
 import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types';
 
+enum Sort {
+  COMMISSION_ASC = 'commission-asc',
+  COMMISSION_DESC = 'commission-desc',
+  RETURN_ASC = 'return-asc',
+  RETURN_DESC = 'return-desc',
+}
+
+function calcSortClass(base: string, sort: Sort, sortAsc: Sort, sortDesc: Sort) {
+  return {
+    [base]: true,
+    [`${base}--active`]: sort === sortAsc || sort === sortDesc,
+    [`${base}--asc`]: sort === sortAsc,
+    [`${base}--desc`]: sort === sortDesc,
+  };
+}
+
 @Component({
   components: {
     TokenInput: lazyComponent(Components.TokenInput),
@@ -111,13 +127,27 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
   ValidatorsListMode = ValidatorsListMode;
 
   search = '';
+  sort: Sort = Sort.COMMISSION_DESC;
 
   get isValidatorModeRecommended() {
     return this.mode === ValidatorsListMode.RECOMMENDED;
   }
 
   get sortedValidators() {
-    return [...this.validators].sort((a, b) => Number(a.commission) - Number(b.commission));
+    return [...this.validators].sort((a, b) => {
+      switch (this.sort) {
+        case Sort.COMMISSION_ASC:
+          return Number(a.commission) - Number(b.commission);
+        case Sort.COMMISSION_DESC:
+          return Number(b.commission) - Number(a.commission);
+        case Sort.RETURN_ASC:
+          return Number(a.apy) - Number(b.apy);
+        case Sort.RETURN_DESC:
+          return Number(b.apy) - Number(a.apy);
+        default:
+          throw new Error('Invalid sort type');
+      }
+    });
   }
 
   get filteredValidators() {
@@ -142,6 +172,22 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     return this.t('soraStaking.validatorsList.noValidators');
   }
 
+  get commissionHeaderClass() {
+    return calcSortClass('table-header-commission', this.sort, Sort.COMMISSION_ASC, Sort.COMMISSION_DESC);
+  }
+
+  get returnHeaderClass() {
+    return calcSortClass('table-header-return', this.sort, Sort.RETURN_ASC, Sort.RETURN_DESC);
+  }
+
+  get commissionClass() {
+    return calcSortClass('info-commission', this.sort, Sort.COMMISSION_ASC, Sort.COMMISSION_DESC);
+  }
+
+  get returnClass() {
+    return calcSortClass('info-return', this.sort, Sort.RETURN_ASC, Sort.RETURN_DESC);
+  }
+
   filterValidators(validators: ValidatorInfoFull[], filter: ValidatorsFilter, search = '') {
     return validators.filter((validator) => {
       if (filter.hasIdentity && (!validator.identity || !Object.keys(validator.identity.info).length)) {
@@ -164,6 +210,32 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
       const name = this.decodeName(validator);
       return name.toLowerCase().includes(search.toLowerCase());
     });
+  }
+
+  setCommissionSort() {
+    switch (this.sort) {
+      case Sort.COMMISSION_ASC:
+        this.sort = Sort.COMMISSION_DESC;
+        break;
+      case Sort.COMMISSION_DESC:
+        this.sort = Sort.COMMISSION_ASC;
+        break;
+      default:
+        this.sort = Sort.COMMISSION_ASC;
+    }
+  }
+
+  setReturnSort() {
+    switch (this.sort) {
+      case Sort.RETURN_ASC:
+        this.sort = Sort.RETURN_DESC;
+        break;
+      case Sort.RETURN_DESC:
+        this.sort = Sort.RETURN_ASC;
+        break;
+      default:
+        this.sort = Sort.RETURN_ASC;
+    }
   }
 
   toggleSelectValidator(validator: ValidatorInfoFull) {
@@ -298,15 +370,16 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     justify-content: center;
     align-items: flex-end;
   }
-  &-commission {
+  &-commission:not(&-commission--active),
+  &-return:not(&-return--active) {
     display: flex;
     align-items: center;
     font-style: normal;
     padding-right: 6px;
     cursor: pointer;
   }
-
-  &-return {
+  &-commission--active,
+  &-return--active {
     display: flex;
     align-items: center;
     height: 21px;
@@ -318,6 +391,15 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     background: var(--base-day-background, #f4f0f1);
     color: var(--s-color-base-content-primary);
     cursor: pointer;
+    .chevron {
+      color: var(--s-color-theme-accent);
+    }
+  }
+  &-commission--desc .chevron {
+    transform: rotate(180deg);
+  }
+  &-return--desc .chevron {
+    transform: rotate(180deg);
   }
 
   i {
@@ -387,7 +469,8 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     margin-right: 8px;
   }
 
-  &-commission {
+  &-commission:not(&-commission--active),
+  &-return:not(&-return--active) {
     color: var(--status-day-success, #34ad87);
     font-size: 16px;
     font-style: normal;
@@ -395,7 +478,8 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     letter-spacing: -0.32px;
   }
 
-  &-return {
+  &-return--active,
+  &-commission--active {
     height: 21px;
     padding: 2px 6px;
     border-radius: 8px;
