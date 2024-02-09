@@ -95,9 +95,10 @@ export default class SoraStakingForm extends Mixins(StakingMixin, mixins.Loading
     });
   }
 
-  mounted() {
+  async mounted() {
     this.selectValidators(this.validators);
 
+    await this.$nextTick();
     const input: HTMLInputElement | null = this.$el.querySelector('.s-input .el-input__inner');
     input?.focus();
   }
