@@ -50,7 +50,7 @@
             </validator-avatar>
             <div class="name-and-address">
               <div class="name">
-                {{ validator.identity?.info.name }}
+                {{ formatName(validator) }}
               </div>
               <formatted-address :value="validator.address" :symbols="16" />
             </div>
