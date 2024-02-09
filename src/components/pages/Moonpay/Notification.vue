@@ -20,7 +20,7 @@ import { mutation, state, getter } from '@/store/decorators';
 
 import { MoonpayNotifications } from './consts';
 
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {

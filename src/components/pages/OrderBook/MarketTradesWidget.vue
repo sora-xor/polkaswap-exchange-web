@@ -15,26 +15,18 @@
     <s-table class="market-trades-table" :data="completedOrders">
       <s-table-column>
         <template #header>
+          <span class="market-trades__header">{{ t('orderBook.price') }}</span>
+        </template>
+        <template v-slot="{ row }">
+          <span class="order-info price" :class="{ buy: row.isBuy }">{{ row.price }}</span>
+        </template>
+      </s-table-column>
+      <s-table-column>
+        <template #header>
           <span class="market-trades__header">{{ t('orderBook.time') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-info time">{{ row.time }}</span>
-        </template>
-      </s-table-column>
-      <s-table-column>
-        <template #header>
-          <span class="market-trades__header">{{ t('orderBook.orderTable.side') }}</span>
-        </template>
-        <template v-slot="{ row }">
-          <span class="order-info side" :class="[{ buy: row.side === PriceVariant.Buy }]">{{ row.side }}</span>
-        </template>
-      </s-table-column>
-      <s-table-column>
-        <template #header>
-          <span class="market-trades__header">{{ t('orderBook.price') }}</span>
-        </template>
-        <template v-slot="{ row }">
-          <span class="order-info price">{{ row.price }}</span>
         </template>
       </s-table-column>
       <s-table-column header-align="right" align="right">
@@ -74,9 +66,10 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
       const date = dayjs(deal.timestamp);
       const time = date.format('M/DD HH:mm:ss');
       const amount = `${deal.amount.toLocaleString()} ${this.baseAsset.symbol}`;
-      const price = `${deal.price.dp(2).toLocaleString()} ${this.quoteAsset.symbol}`;
+      const price = `${deal.price.toLocaleString()} ${this.quoteAsset.symbol}`;
+      const isBuy = deal.side === PriceVariant.Buy;
 
-      return { time, amount, price, side: deal.side };
+      return { time, amount, price, isBuy };
     });
   }
 }
@@ -104,9 +97,7 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
       font-size: var(--s-font-size-extra-small);
       color: var(--s-color-base-content-secondary);
     }
-    &.side {
-      text-transform: uppercase;
-      font-weight: 500;
+    &.price {
       color: var(--s-color-status-error);
       &.buy {
         color: var(--s-color-status-success);

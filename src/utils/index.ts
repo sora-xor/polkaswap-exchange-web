@@ -2,6 +2,7 @@ import { FPNumber, CodecString } from '@sora-substrate/util';
 import { isNativeAsset } from '@sora-substrate/util/build/assets';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
 
 import { app, ZeroStringValue } from '@/consts';
@@ -19,6 +20,12 @@ import type { Route } from 'vue-router';
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
 
 type PoolAssets<T extends Asset> = { baseAsset: T; poolAsset: T };
+
+export async function waitUntil(condition: () => boolean): Promise<void> {
+  if (condition()) return;
+  await delay(250);
+  await waitUntil(condition);
+}
 
 export async function waitForSoraNetworkFromEnv(): Promise<WALLET_CONSTS.SoraNetwork> {
   return new Promise<WALLET_CONSTS.SoraNetwork>((resolve) => {
@@ -374,3 +381,5 @@ export const sortPools = <T extends Asset>(a: PoolAssets<T>, b: PoolAssets<T>) =
 
   return byBaseAsset === 0 ? sortAssets(a.poolAsset, b.poolAsset) : byBaseAsset;
 };
+
+export const calcElScrollGutter: () => number = scrollbarWidth;
