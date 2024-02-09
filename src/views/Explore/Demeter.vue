@@ -158,7 +158,6 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { api, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -224,7 +223,6 @@ export default class ExploreDemeter extends Mixins(DemeterBasePageMixin, Explore
   }
 
   // override ExplorePageMixin
-  order = SortDirection.DESC;
   property = 'apr';
 
   poolsData: Record<string, PoolData> = {};

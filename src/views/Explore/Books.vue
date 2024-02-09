@@ -125,7 +125,6 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -165,12 +164,9 @@ type TableItem = {
   },
 })
 export default class ExploreBooks extends Mixins(ExplorePageMixin) {
-  orderBooks: readonly OrderBookWithStats[] = [];
-  // override ExplorePageMixin
-  order = SortDirection.DESC;
-  property = 'tvl';
+  private orderBooks: readonly OrderBookWithStats[] = [];
 
-  get preparedItems(): TableItem[] {
+  get prefilteredItems(): TableItem[] {
     const items = this.orderBooks.reduce<TableItem[]>((buffer, item) => {
       const {
         id: { base, quote },
