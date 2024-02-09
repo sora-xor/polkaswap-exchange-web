@@ -104,10 +104,8 @@ export default class AllWithdrawsDialog extends Mixins(StakingMixin, mixins.Dial
     const pendingWithdraws = withdraws.filter((withdraw) => withdraw.countdownHours <= 0);
     const upcomingWithdraws = withdraws.filter((withdraw) => withdraw.countdownHours > 0);
 
-    // Summing up the values of pending withdraws
     const pendingWithdrawsValueSum = pendingWithdraws.reduce((acc, withdraw) => acc.add(withdraw.value), FPNumber.ZERO);
 
-    // For pendingWithdrawsCombined, you might not need a detailed object if it's just a sum, but here's an example if you want to include it:
     const pendingWithdrawsCombined = pendingWithdraws.length
       ? {
           era: pendingWithdraws[0].era,
