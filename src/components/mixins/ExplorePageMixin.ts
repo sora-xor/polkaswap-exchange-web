@@ -1,5 +1,5 @@
 import { KnownAssets } from '@sora-substrate/util/build/assets/consts';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
+import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
 import { getter } from '@/store/decorators';

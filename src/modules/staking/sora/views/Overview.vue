@@ -377,7 +377,7 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
     this.showWithdrawDialog = true;
   }
 
-  handleStake() {
+  handleStake(): void {
     this.showStakeDialog = false;
   }
 

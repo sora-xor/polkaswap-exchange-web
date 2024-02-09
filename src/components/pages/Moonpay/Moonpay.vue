@@ -21,8 +21,8 @@ import type { MoonpayTransaction } from '@/utils/moonpay';
 
 import MoonpayBridgeInitMixin from './BridgeInitMixin';
 
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {

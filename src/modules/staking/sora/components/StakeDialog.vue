@@ -54,7 +54,7 @@
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
-        :loading="parentLoading"
+        :loading="parentLoading || loading"
         :disabled="isInsufficientXorForFee || valueFundsEmpty || isInsufficientBalance"
         @click="handleConfirm"
       >
@@ -79,7 +79,6 @@ import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state } from '@/store/decorators';
 
 import { StakeDialogMode } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
@@ -94,10 +93,8 @@ import type { CodecString } from '@sora-substrate/util';
     AccountCard: components.AccountCard,
   },
 })
-export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
+export default class StakeDialog extends Mixins(StakingMixin, mixins.TransactionMixin, mixins.DialogMixin) {
   @Prop({ required: true, type: String }) readonly mode!: StakeDialogMode;
-
-  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
 
   @Watch('visible')
   private resetValue() {
@@ -217,13 +214,14 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
   async handleConfirm(): Promise<void> {
     this.setStakeAmount(this.value);
 
+    let extrinsic = this.unbond;
     if (this.mode === StakeDialogMode.NEW) {
-      await this.bondAndNominate();
+      extrinsic = this.bondAndNominate;
     } else if (this.mode === StakeDialogMode.ADD) {
-      await this.bondExtra();
-    } else {
-      await this.unbond();
+      extrinsic = this.bondExtra;
     }
+
+    await this.withNotifications(async () => await extrinsic());
     this.$emit('confirm');
   }
 

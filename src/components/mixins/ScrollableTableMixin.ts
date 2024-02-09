@@ -1,5 +1,5 @@
-import SScrollbar from '@soramitsu/soramitsu-js-ui/lib/components/Scrollbar';
 import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import SScrollbar from '@soramitsu-ui/ui-vue2/lib/components/Scrollbar';
 import Vue from 'vue';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
 

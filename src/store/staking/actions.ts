@@ -7,16 +7,6 @@ import type { Payouts } from '@sora-substrate/util/build/staking/types';
 import type { Subscription } from 'rxjs';
 
 const actions = defineActions({
-  async bond(context): Promise<void> {
-    const { state, getters } = stakingActionContext(context);
-
-    const controller = state.controller || getters.stash;
-
-    if (!state.payee) throw new Error('Payee is not set');
-
-    await api.staking.bond({ controller, value: state.stakeAmount, payee: state.payee });
-  },
-
   async nominate(context): Promise<void> {
     const { state, dispatch } = stakingActionContext(context);
 
@@ -106,10 +96,6 @@ const actions = defineActions({
     });
   },
 
-  async chill(context): Promise<void> {
-    await api.staking.chill();
-  },
-
   async getStakingInfo(context): Promise<void> {
     const { getters, commit } = stakingActionContext(context);
 
@@ -153,7 +139,7 @@ const actions = defineActions({
   async getUnbondPeriod(context): Promise<void> {
     const { commit } = stakingActionContext(context);
 
-    const unbondPeriod = await api.staking.getUnbondPeriod();
+    const unbondPeriod = api.staking.getUnbondPeriod();
 
     commit.setUnbondPeriod(unbondPeriod);
   },
@@ -161,7 +147,7 @@ const actions = defineActions({
   async getMaxNominations(context): Promise<void> {
     const { commit } = stakingActionContext(context);
 
-    const maxNominations = await api.staking.getMaxNominations();
+    const maxNominations = api.staking.getMaxNominations();
 
     commit.setMaxNominations(maxNominations);
   },
@@ -169,7 +155,7 @@ const actions = defineActions({
   async getHistoryDepth(context): Promise<void> {
     const { commit } = stakingActionContext(context);
 
-    const historyDepth = await api.staking.getHistoryDepth();
+    const historyDepth = api.staking.getHistoryDepth();
 
     commit.setHistoryDepth(historyDepth);
   },
@@ -179,7 +165,7 @@ const actions = defineActions({
 
     commit.resetActiveEraUpdates();
 
-    const observable = await api.staking.getActiveEraObservable();
+    const observable = api.staking.getActiveEraObservable();
 
     if (!observable) return;
 
@@ -202,7 +188,7 @@ const actions = defineActions({
 
     commit.resetCurrentEraUpdates();
 
-    const observable = await api.staking.getCurrentEraObservable();
+    const observable = api.staking.getCurrentEraObservable();
 
     if (!observable) return;
 
@@ -225,7 +211,7 @@ const actions = defineActions({
 
     if (state.currentEra === undefined || state.currentEra === null) throw new Error('Current era is not set');
 
-    const observable = await api.staking.getEraTotalStakeObservable(state.currentEra);
+    const observable = api.staking.getEraTotalStakeObservable(state.currentEra);
 
     if (!observable) return;
 
@@ -246,7 +232,7 @@ const actions = defineActions({
 
     commit.resetControllerUpdates();
 
-    const observable = await api.staking.getControllerObservable(getters.stash);
+    const observable = api.staking.getControllerObservable(getters.stash);
 
     if (!observable) return;
 
@@ -267,7 +253,7 @@ const actions = defineActions({
 
     commit.resetPayeeUpdates();
 
-    const observable = await api.staking.getPayeeObservable(getters.stash);
+    const observable = api.staking.getPayeeObservable(getters.stash);
 
     if (!observable) return;
 
@@ -288,7 +274,7 @@ const actions = defineActions({
 
     commit.resetNominationsUpdates();
 
-    const observable = await api.staking.getNominationsObservable(getters.stash);
+    const observable = api.staking.getNominationsObservable(getters.stash);
 
     if (!observable) return;
 
@@ -309,7 +295,7 @@ const actions = defineActions({
 
     commit.resetAccountLedgerUpdates();
 
-    const observable = await api.staking.getAccountLedgerObservable(getters.stash);
+    const observable = api.staking.getAccountLedgerObservable(getters.stash);
 
     if (!observable) return;
 

@@ -1,5 +1,6 @@
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
+import { combineLatest } from 'rxjs';
 
 import { subscribeOnOrderBookUpdates, fetchOrderBooks } from '@/indexer/queries/orderBook';
 
@@ -141,7 +142,13 @@ const actions = defineActions({
             ids.map((id) => api.orderBook.getLimitOrder(baseAsset.address, quoteAsset.address, id))
           )) as LimitOrder[];
 
-          commit.setUserLimitOrders(userLimitOrders);
+          const orders = userLimitOrders.map((el) => {
+            const amountStr = el.amount.toString();
+            const originalAmountStr = el.originalAmount.toString();
+            return { ...el, amountStr, originalAmountStr };
+          });
+
+          commit.setUserLimitOrders(orders);
 
           resolve();
         });
@@ -150,10 +157,37 @@ const actions = defineActions({
     commit.setUserLimitOrderUpdates(subscription);
   },
 
+  async subscribeOnLimitOrders(context, ids: number[]): Promise<void> {
+    const { commit, getters, state } = orderBookActionContext(context);
+    const { baseAsset, quoteAsset, accountAddress } = getters;
+
+    if (!(accountAddress && baseAsset && quoteAsset)) return;
+
+    let subscription!: Subscription;
+    const observables = ids.map((id) => api.orderBook.subscribeOnLimitOrder(baseAsset.address, quoteAsset.address, id));
+
+    await new Promise<void>((resolve) => {
+      subscription = combineLatest(observables).subscribe((updated) => {
+        const updatedOrders = updated.filter((item) => !!item) as LimitOrder[];
+        if (updatedOrders.length) {
+          const userLimitOrders = state.userLimitOrders.map((order) => {
+            const found = updatedOrders.find((item) => item.id === order.id);
+            return found ?? order;
+          });
+          commit.setUserLimitOrders(userLimitOrders);
+          resolve();
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    commit.setPagedUserLimitOrdersSubscription(subscription);
+  },
+
   unsubscribeFromUserLimitOrders(context): void {
     const { commit } = orderBookActionContext(context);
 
-    commit.setUserLimitOrders();
     commit.resetUserLimitOrderUpdates();
   },
 });

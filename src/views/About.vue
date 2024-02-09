@@ -158,7 +158,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import Web3Logo from '@/components/shared/Logo/Web3.vue';
 import { getter } from '@/store/decorators';
 
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {

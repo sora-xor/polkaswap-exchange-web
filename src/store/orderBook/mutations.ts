@@ -66,6 +66,13 @@ const mutations = defineMutations<OrderBookState>()({
     state.userLimitOrderUpdates?.unsubscribe();
     state.userLimitOrderUpdates = null;
   },
+  setPagedUserLimitOrdersSubscription(state, subscription: Subscription): void {
+    state.pagedUserLimitOrdersSubscription = subscription;
+  },
+  resetPagedUserLimitOrdersSubscription(state): void {
+    state.pagedUserLimitOrdersSubscription?.unsubscribe();
+    state.pagedUserLimitOrdersSubscription = null;
+  },
   setOrdersToBeCancelled(state, orders): void {
     state.ordersToBeCancelled = orders;
   },

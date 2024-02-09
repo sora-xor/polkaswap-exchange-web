@@ -30,7 +30,6 @@ import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
 
-import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
@@ -41,18 +40,16 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
-  @state.orderBook.baseValue baseValue!: string;
-  @state.orderBook.quoteValue quoteValue!: string;
-  @state.orderBook.side side!: PriceVariant;
+  @state.orderBook.baseValue private baseValue!: string;
+  @state.orderBook.quoteValue private quoteValue!: string;
+  @state.orderBook.side private side!: PriceVariant;
   @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.swap.fromValue private fromValue!: string;
   @state.swap.toValue private toValue!: string;
   @state.swap.selectedDexId private selectedDexId!: number;
 
-  @getter.swap.minMaxReceived private minMaxReceived!: CodecString;
-  @getter.swap.swapLiquiditySource private liquiditySource!: LiquiditySourceTypes;
-  @getter.swap.tokenFrom tokenFrom!: AccountAsset;
-  @getter.swap.tokenTo tokenTo!: AccountAsset;
+  @getter.swap.tokenFrom private tokenFrom!: AccountAsset;
+  @getter.swap.tokenTo private tokenTo!: AccountAsset;
 
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
@@ -60,10 +57,6 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   @Prop({ default: false, type: Boolean }) readonly isMarketType!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isInsufficientBalance!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isBuySide!: boolean;
-
-  get formattedFromValue(): string {
-    return this.formatStringValue(this.fromValue, this.tokenFrom?.decimals);
-  }
 
   get title(): string {
     return this.isMarketType ? this.t('orderBook.dialog.placeMarket') : this.t('orderBook.dialog.placeLimit');
@@ -87,12 +80,8 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
     return this.t('orderBook.dialog.at', { price: this.quoteValue, symbol: this.quoteAsset?.symbol });
   }
 
-  get formattedToValue(): string {
-    return this.formatStringValue(this.toValue, this.tokenTo?.decimals);
-  }
-
-  async limitOrder() {
-    return await api.orderBook.placeLimitOrder(
+  private placeLimitOrder(): Promise<void> {
+    return api.orderBook.placeLimitOrder(
       this.baseAsset.address,
       this.quoteAsset.address,
       this.quoteValue,
@@ -101,8 +90,8 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
     );
   }
 
-  async marketOrder() {
-    return await api.swap.execute(
+  private placeMarketOrder(): Promise<void> {
+    return api.swap.execute(
       this.tokenFrom,
       this.tokenTo,
       this.fromValue,
@@ -114,7 +103,7 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
     );
   }
 
-  async singlePriceReachedLimit(): Promise<boolean> {
+  private async singlePriceReachedLimit(): Promise<boolean> {
     const limitReached = !(await api.orderBook.isOrderPlaceable(
       this.baseAsset.address,
       this.quoteAsset.address,
@@ -132,18 +121,23 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
         { title: this.t('errorText') }
       );
       this.$emit('confirm');
-    } else if (await this.singlePriceReachedLimit()) {
-      this.$alert(this.t('orderBook.error.singlePriceLimit.reading'), { title: this.t('errorText') });
+      this.isVisible = false;
+      return;
+    }
+    try {
+      await this.withNotifications(async () => {
+        const isLimitReached = await this.singlePriceReachedLimit();
+        if (isLimitReached) {
+          this.$alert(this.t('orderBook.error.singlePriceLimit.reading'), { title: this.t('errorText') });
+          this.$emit('confirm');
+        } else {
+          const orderExtrinsic = this.isMarketType ? this.placeMarketOrder : this.placeLimitOrder;
+          await orderExtrinsic();
+          this.$emit('confirm', true);
+        }
+      });
+    } catch (error) {
       this.$emit('confirm');
-    } else {
-      const orderExtrinsic = this.isMarketType ? this.marketOrder : this.limitOrder;
-
-      try {
-        await this.withNotifications(orderExtrinsic);
-        this.$emit('confirm', true);
-      } catch (error) {
-        this.$emit('confirm');
-      }
     }
     this.isVisible = false;
   }
