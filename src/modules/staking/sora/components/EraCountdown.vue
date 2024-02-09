@@ -77,8 +77,8 @@ export default class EraCountdown extends Mixins(StakingMixin) {
   }
 
   mounted() {
-    this.interval = setInterval(this.calcCountdown, 1000);
     this.calcCountdown();
+    this.interval = setInterval(this.calcCountdown, 1000);
   }
 
   beforeUnmount() {

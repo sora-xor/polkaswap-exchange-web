@@ -1366,8 +1366,8 @@
                 "edit": "Edit My Validators"
             },
             "tabs": {
-                "user": "Your validators",
-                "all": "All validators"
+                "user": "Yours",
+                "all": "All"
             }
         },
         "validatorsAttentionDialog": {

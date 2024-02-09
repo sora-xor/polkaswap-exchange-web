@@ -23,12 +23,20 @@
       </div>
       <div class="table-header-name table-header-item">{{ t('soraStaking.validatorsList.name') }}</div>
       <div class="table-header-info table-header-item">
-        <span>{{ t('soraStaking.validatorsList.commission') }}</span>
-        <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.commissionTooltip')">
-          <s-icon name="info-16" size="14px" />
-        </s-tooltip>
-        <span class="table-header-info-dash"> / </span>
-        <span>{{ t('soraStaking.validatorsList.return') }}</span>
+        <div class="table-header-commission">
+          <span>{{ t('soraStaking.validatorsList.commission') }}</span>
+          <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.commissionTooltip')">
+            <s-icon name="info-16" size="14px" />
+          </s-tooltip>
+          <s-icon name="arrows-chevron-top-rounded-24" size="18" />
+        </div>
+        <div class="table-header-return">
+          <span>{{ t('soraStaking.validatorsList.return') }}</span>
+          <s-tooltip border-radius="mini" :content="t('soraStaking.validatorsList.returnTooltip')">
+            <s-icon name="info-16" size="14px" />
+          </s-tooltip>
+          <s-icon name="arrows-chevron-top-rounded-24" size="18" />
+        </div>
       </div>
     </div>
     <div class="list">
@@ -40,13 +48,16 @@
                 <s-icon name="basic-check-mark-24" size="12px" />
               </div>
             </validator-avatar>
-            <div class="name">
-              {{ formatName(validator) }}
+            <div class="name-and-address">
+              <div class="name">
+                {{ validator.identity?.info.name }}
+              </div>
+              <formatted-address :value="validator.address" :symbols="16" />
             </div>
             <div class="info">
-              <span>{{ formatCommission(validator.commission) }}%</span>
+              <span class="info-commission">{{ formatCommission(validator.commission) }}%</span>
               <br />
-              <span>{{ formatReturn(validator.apy) }}%</span>
+              <span class="info-return">{{ formatReturn(validator.apy) }}%</span>
             </div>
             <div
               v-if="mode === ValidatorsListMode.SELECT"
@@ -89,6 +100,7 @@ import type { ValidatorInfoFull } from '@sora-substrate/util/build/staking/types
   components: {
     TokenInput: lazyComponent(Components.TokenInput),
     InfoLine: components.InfoLine,
+    FormattedAddress: components.FormattedAddress,
     StakingHeader: soraStakingLazyComponent(SoraStakingComponents.StakingHeader),
     ValidatorAvatar: soraStakingLazyComponent(SoraStakingComponents.ValidatorAvatar),
   },
@@ -252,7 +264,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 .table-header {
   display: flex;
   align-content: center;
-  height: 36px;
+  height: 64px;
   margin-top: 16px;
   border-bottom: 1px solid var(--s-color-base-border-secondary);
 
@@ -266,6 +278,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     font-weight: 800;
     line-height: normal;
     letter-spacing: -0.28px;
+    text-transform: uppercase;
   }
   &-avatar {
     display: flex;
@@ -281,12 +294,35 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     margin-left: 8px;
   }
   &-info {
-    &-dash {
-      margin: 0 8px;
-    }
-    span {
-      margin-right: 8px;
-    }
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  &-commission {
+    display: flex;
+    align-items: center;
+    font-style: normal;
+    padding-right: 6px;
+    cursor: pointer;
+  }
+
+  &-return {
+    display: flex;
+    align-items: center;
+    height: 21px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 400;
+    margin-top: 4px;
+    background: var(--base-day-background, #f4f0f1);
+    color: var(--s-color-base-content-primary);
+    cursor: pointer;
+  }
+
+  i {
+    color: var(--s-color-base-content-tertiary);
+    margin-left: 4px;
   }
 }
 
@@ -335,23 +371,36 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
   }
 }
 
-.name {
+.name-and-address {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   font-weight: bold;
   margin-right: 10px;
 }
 
 .info {
-  color: var(--s-color-status-info);
   text-align: right;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 600;
   line-height: 150%;
-  letter-spacing: -0.32px;
 
   span {
     margin-right: 8px;
+  }
+
+  &-commission {
+    color: var(--status-day-success, #34ad87);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: -0.32px;
+  }
+
+  &-return {
+    height: 21px;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 12px;
+    background: var(--base-day-background, #f4f0f1);
   }
 }
 

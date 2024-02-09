@@ -909,8 +909,8 @@ export default {
         edit: 'Edit My Validators',
       },
       tabs: {
-        [ValidatorsListMode.USER]: 'Your validators',
-        [ValidatorsListMode.ALL]: 'All validators',
+        [ValidatorsListMode.USER]: 'Yours',
+        [ValidatorsListMode.ALL]: 'All',
       },
     },
     validatorsAttentionDialog: {
