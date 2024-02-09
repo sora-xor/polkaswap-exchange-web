@@ -224,7 +224,6 @@ export default class ExploreDemeter extends Mixins(DemeterBasePageMixin, Explore
   }
 
   // override ExplorePageMixin
-  order = SortDirection.DESC;
   property = 'apr';
 
   poolsData: Record<string, PoolData> = {};

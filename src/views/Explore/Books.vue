@@ -165,12 +165,9 @@ type TableItem = {
   },
 })
 export default class ExploreBooks extends Mixins(ExplorePageMixin) {
-  orderBooks: readonly OrderBookWithStats[] = [];
-  // override ExplorePageMixin
-  order = SortDirection.DESC;
-  property = 'tvl';
+  private orderBooks: readonly OrderBookWithStats[] = [];
 
-  get preparedItems(): TableItem[] {
+  get prefilteredItems(): TableItem[] {
     const items = this.orderBooks.reduce<TableItem[]>((buffer, item) => {
       const {
         id: { base, quote },
