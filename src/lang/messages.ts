@@ -872,8 +872,7 @@ export default {
       selectedValidators: 'Selected validators',
     },
     withdraw: {
-      countdown: '{days}D {hours}H {minutes}M',
-      countdownLeft: '{days}D {hours}H {minutes}M left',
+      countdownLeft: 'left',
       withdrawable: 'Withdrawable',
       beingWithdrawn: 'Being withdrawn',
       seeAll: 'See all',

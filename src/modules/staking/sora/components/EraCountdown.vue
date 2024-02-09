@@ -1,7 +1,5 @@
 <template>
-  <span>
-    {{ t(translationKey, { days, hours, minutes }) }}
-  </span>
+  <span> {{ days }}D {{ hours }}H {{ minutes }}M {{ translationKey ? t(translationKey) : '' }} </span>
 </template>
 
 <script lang="ts">
