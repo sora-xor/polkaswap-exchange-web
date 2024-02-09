@@ -819,7 +819,7 @@ export default {
     rewards: '{symbol} rewards',
   },
   soraStaking: {
-    title: 'Staking',
+    selectedValidators: '{count} (MAX: {max})',
     dropdownMenu: {
       controllerAccount: 'Controller account',
     },
@@ -934,6 +934,10 @@ export default {
       payout: 'Payout',
       information:
         'Validators payout the rewards every 2-5 days. However, you can payout them by yourself, especially if rewards are close to expiring, but you will pay the fee.',
+    },
+    stakeDialog: {
+      toStake: 'To stake',
+      toRemove: 'To remove',
     },
     withdrawDialog: {
       title: 'Withdraw unstaked funds',

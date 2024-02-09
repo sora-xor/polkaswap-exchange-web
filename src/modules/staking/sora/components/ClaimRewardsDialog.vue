@@ -154,7 +154,10 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   }
 
   get selectedValidatorsFormatted(): string {
-    return `${this.selectedValidators.length} (MA X: ${this.validators.length})`;
+    return this.t('soraStaking.selectedValidators', {
+      count: this.selectedValidators.length,
+      max: this.validators.length,
+    });
   }
 
   get payouts() {

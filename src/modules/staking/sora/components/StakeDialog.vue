@@ -145,17 +145,9 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.Transaction
   }
 
   get inputTitle(): string {
-    return this.mode !== StakeDialogMode.REMOVE ? 'To stake' : 'To remove';
-  }
-
-  get valuePartCharClass(): string {
-    const charClassName =
-      {
-        3: 'th  ee',
-        2: 'two',
-      }[this.value.toString().length] ?? 'one';
-
-    return `${charClassName}-char`;
+    return this.mode !== StakeDialogMode.REMOVE
+      ? this.t('soraStaking.stakeDialog.toStake')
+      : this.t('soraStaking.stakeDialog.toRemove');
   }
 
   get part(): FPNumber {
@@ -200,7 +192,10 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.Transaction
   }
 
   get selectedValidatorsFormatted(): string {
-    return `${this.selectedValidators.length} (MA X: ${this.validators.length})`;
+    return this.t('soraStaking.selectedValidators', {
+      count: this.selectedValidators.length,
+      max: this.validators.length,
+    });
   }
 
   handleValue(value: string | number): void {
@@ -225,7 +220,8 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.Transaction
     this.$emit('confirm');
   }
 
-  mounted() {
+  async mounted() {
+    await this.$nextTick();
     const input: HTMLInputElement | null = this.$el.querySelector('.s-input .el-input__inner');
     input?.focus();
   }
@@ -273,9 +269,6 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.Transaction
     flex-shrink: 0;
     background: var(--s-color-status-info);
     border: 2px solid var(--s-color-base-border-primary);
-    // box-shadow: 20px 20px 60px 0px rgba(0, 0, 0, 0.1), 1px 1px 10px 0px #fff inset,
-    //   -10px -10px 30px 0px rgba(255, 255, 255, 0.9);
-
     i {
       margin-bottom: 2px;
       color: white;

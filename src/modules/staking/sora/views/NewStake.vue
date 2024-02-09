@@ -110,16 +110,6 @@ export default class SoraStakingForm extends Mixins(StakingMixin, mixins.Loading
     return this.t('demeterFarming.amountAdd');
   }
 
-  get valuePartCharClass(): string {
-    const charClassName =
-      {
-        3: 'three',
-        2: 'two',
-      }[this.value.toString().length] ?? 'one';
-
-    return `${charClassName}-char`;
-  }
-
   get part(): FPNumber {
     return new FPNumber(this.value).div(FPNumber.HUNDRED);
   }

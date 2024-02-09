@@ -201,8 +201,6 @@ export default class AllWithdrawsDialog extends Mixins(StakingMixin, mixins.Dial
     flex-shrink: 0;
     background: var(--s-color-status-info);
     border: 2px solid var(--s-color-base-border-primary);
-    // box-shadow: 20px 20px 60px 0px rgba(0, 0, 0, 0.1), 1px 1px 10px 0px #fff inset,
-    //   -10px -10px 30px 0px rgba(255, 255, 255, 0.9);
 
     i {
       margin-bottom: 2px;
