@@ -163,7 +163,7 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
     const days = Math.floor(this.unbondPeriodHours / DAY_HOURS);
     const hours = this.unbondPeriodHours - days * DAY_HOURS;
     const minutes = 0;
-    return this.t('soraStaking.withdraw.countdown', { days, hours, minutes });
+    return `${days}D ${hours}H ${minutes}M`;
   }
 
   get withdrawableFunds(): FPNumber {
