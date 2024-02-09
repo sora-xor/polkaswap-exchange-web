@@ -60,6 +60,7 @@
     <select-node-dialog
       :visibility="selectNodeDialogVisibility"
       :set-visibility="setSelectNodeDialogVisibility"
+      :node="connectedNode"
       :default-nodes="defaultNodes"
       :node-list="nodeList"
       :node-address-connecting="nodeAddressConnecting"

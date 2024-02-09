@@ -51,6 +51,7 @@ const NodeInfoView = 'NodeInfoView';
   },
 })
 export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.LoadingMixin) {
+  @Prop({ default: () => null, type: Object }) private readonly node!: Partial<Node>;
   @Prop({ default: () => [], type: Array }) private readonly defaultNodes!: Array<Node>;
   @Prop({ default: () => [], type: Array }) private readonly nodeList!: Array<Node>;
   @Prop({ default: '', type: String }) private readonly nodeAddressConnecting!: string;
@@ -176,14 +177,14 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
           },
         });
 
-        return this.handleNodeError(error);
+        return this.handleNodeError(error, defaultNode);
       }
     }
 
     if (nodeCopy.address !== this.connectedNodeAddress) {
       await this.connectToNode({
         node: nodeCopy,
-        onError: (error) => this.handleNodeError(error, !isNewOrUpdatedNode),
+        onError: this.handleNodeError,
         onDisconnect: this.handleNodeDisconnect,
         onReconnect: this.handleNodeReconnect,
       });

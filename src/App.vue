@@ -102,6 +102,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.router.loading pageLoading!: boolean;
 
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @getter.settings.chartsEnabled private chartsEnabled!: boolean;
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
@@ -375,7 +376,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   private async runAppConnectionToNode() {
     try {
       await this.connectToNode({
-        onError: (error) => this.handleNodeError(error, true), // prefer notification on connection success
+        onError: this.handleNodeError,
         onDisconnect: this.handleNodeDisconnect,
         onReconnect: this.handleNodeReconnect,
       });

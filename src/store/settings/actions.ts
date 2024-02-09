@@ -42,7 +42,7 @@ const actions = defineActions({
 
     const { node, onError, currentNodeIndex = 0, ...restOptions } = options;
     const defaultNode = getters.nodeList[currentNodeIndex];
-    const requestedNode = (node || (state.node.address ? state.node : defaultNode)) as Nullable<Node>;
+    const requestedNode = (node || (state.node.address ? state.node : defaultNode)) as Node;
     const walletOptions = {
       permissions: WalletPermissions,
       appName: WALLET_CONSTS.TranslationConsts.Polkaswap,
@@ -79,7 +79,7 @@ const actions = defineActions({
       }
 
       if (onError && typeof onError === 'function') {
-        onError(error);
+        onError(error, requestedNode);
       }
 
       throw error;
@@ -159,9 +159,11 @@ const actions = defineActions({
         // just update genesis hash (needed for dev, test stands after their reset)
         commit.setNetworkChainGenesisHash(nodeChainGenesisHash);
       }
-      if (isReconnection && typeof onReconnect === 'function') {
-        onReconnect(node as Node);
+
+      if (isReconnection) {
+        onReconnect?.(node as Node);
       }
+
       commit.setNodeSuccess(node);
     } catch (error) {
       console.error(error);

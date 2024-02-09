@@ -21,7 +21,7 @@ export interface RunConnectionOptions {
 export interface ConnectToNodeOptions {
   node?: Nullable<Node>;
   connectionOptions?: RunConnectionOptions;
-  onError?: (error) => void;
+  onError?: (error, node: Node) => void;
   onReconnect?: (node: Node) => void;
   onDisconnect?: (node: Node) => void;
   currentNodeIndex?: number;
