@@ -127,7 +127,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
   ValidatorsListMode = ValidatorsListMode;
 
   search = '';
-  sort: Sort = Sort.COMMISSION_DESC;
+  sort: Sort = Sort.RETURN_DESC;
 
   get isValidatorModeRecommended() {
     return this.mode === ValidatorsListMode.RECOMMENDED;
