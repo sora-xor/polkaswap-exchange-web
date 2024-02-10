@@ -1,7 +1,7 @@
 <template>
   <div class="settings-popover">
     <h4>Customise page</h4>
-    <div class="settings-popover-color">
+    <div class="settings-popover-color" @click="openSetColorDialog">
       <s-icon name="basic-settings-24" size="24px" />
       <span>Chart color settings</span>
     </div>
@@ -37,7 +37,6 @@
         <span>{{ 'Sound reminder' }}</span>
       </div>
     </div>
-    <set-color-dialog />
   </div>
 </template>
 
@@ -51,9 +50,7 @@ import { lazyComponent } from '@/router';
 import { state, getter, mutation } from '@/store/decorators';
 
 @Component({
-  components: {
-    SetColorDialog: lazyComponent(Components.SetColor),
-  },
+  components: {},
 })
 export default class SettingsPopover extends Mixins(TranslationMixin, mixins.LoadingMixin) {
   one = true;
@@ -63,6 +60,10 @@ export default class SettingsPopover extends Mixins(TranslationMixin, mixins.Loa
   five = true;
   six = true;
   seven = true;
+
+  openSetColorDialog(): void {
+    this.$emit('open-color-setting');
+  }
 }
 </script>
 

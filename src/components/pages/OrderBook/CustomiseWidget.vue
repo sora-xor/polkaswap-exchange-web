@@ -1,12 +1,13 @@
 <template>
   <div class="order-book-widget customise-widget">
     <el-popover popper-class="order-book-whitelist" trigger="click" v-model="visibleSettings" :visible-arrow="false">
-      <settings-popover />
+      <settings-popover @open-color-setting="openSetColorDialog" />
       <div slot="reference" class="settings-btn">
         <span class="customise-widget-title">Customise page</span>
         <s-icon name="basic-settings-24" size="24px" />
       </div>
     </el-popover>
+    <set-color-dialog :visible.sync="colorSettingsOpen" />
   </div>
 </template>
 
@@ -20,10 +21,16 @@ import { lazyComponent } from '@/router';
 @Component({
   components: {
     SettingsPopover: lazyComponent(Components.SettingsPopover),
+    SetColorDialog: lazyComponent(Components.SetColor),
   },
 })
 export default class CustomiseWidget extends Mixins(TranslationMixin) {
   visibleSettings = false;
+  colorSettingsOpen = false;
+
+  openSetColorDialog(): void {
+    this.colorSettingsOpen = !this.colorSettingsOpen;
+  }
 }
 </script>
 
