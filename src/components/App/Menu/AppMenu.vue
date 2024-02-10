@@ -211,6 +211,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
     }
 
+    .collapse-button {
+      pointer-events: none;
+    }
+
     &:hover,
     &:focus {
       box-shadow: 20px 20px 60px 0px #0000001a;
@@ -219,6 +223,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
         & > .icon-container + span {
           display: initial;
         }
+      }
+
+      .collapse-button {
+        pointer-events: all;
       }
     }
   }
