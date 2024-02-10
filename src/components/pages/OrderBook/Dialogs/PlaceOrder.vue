@@ -81,13 +81,7 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   }
 
   private placeLimitOrder(): Promise<void> {
-    return api.orderBook.placeLimitOrder(
-      this.baseAsset.address,
-      this.quoteAsset.address,
-      this.quoteValue,
-      this.baseValue,
-      this.side
-    );
+    return api.orderBook.placeLimitOrder(this.baseAsset, this.quoteAsset, this.quoteValue, this.baseValue, this.side);
   }
 
   private placeMarketOrder(): Promise<void> {
