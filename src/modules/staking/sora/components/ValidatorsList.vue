@@ -388,7 +388,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     font-size: 12px;
     font-weight: 400;
     margin-top: 4px;
-    background: var(--base-day-background, #f4f0f1);
+    background: var(--s-color-base-background);
     color: var(--s-color-base-content-primary);
     cursor: pointer;
     .chevron {
@@ -471,7 +471,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 
   &-commission:not(&-commission--active),
   &-return:not(&-return--active) {
-    color: var(--status-day-success, #34ad87);
+    color: var(--s-color-status-success);
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
@@ -484,7 +484,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     padding: 2px 6px;
     border-radius: 8px;
     font-size: 12px;
-    background: var(--base-day-background, #f4f0f1);
+    background: var(--s-color-base-background);
   }
 }
 
