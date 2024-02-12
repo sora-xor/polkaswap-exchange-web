@@ -29,6 +29,7 @@ export default class CustomiseWidget extends Mixins(TranslationMixin) {
   colorSettingsOpen = false;
 
   openSetColorDialog(): void {
+    this.visibleSettings = false;
     this.colorSettingsOpen = !this.colorSettingsOpen;
   }
 }

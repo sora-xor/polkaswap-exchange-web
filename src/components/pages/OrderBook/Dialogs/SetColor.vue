@@ -11,10 +11,8 @@
           size="medium"
           class="color-dialog__item s-flex"
         >
-          <div class="color-theme">
-            <div class="color-theme__label">
-              <div class="color-theme__name">{{ option.name }}</div>
-            </div>
+          <div class="color-theme option s-flex">
+            <div class="option__name">{{ option.name }}</div>
             <div class="color-theme__picture">
               <span class="sell-color" />
               <span class="buy-color" />
@@ -34,9 +32,11 @@
           size="medium"
           class="statistics-dialog__item s-flex"
         >
-          <div class="color-theme s-flex">
-            <div class="color-theme__label s-flex">
-              <div class="color-theme__name">{{ option.name }}</div>
+          <div class="color-preference option s-flex">
+            <div class="option__name">{{ option.name }}</div>
+            <div class="color-preference__direction">
+              <s-icon :class="getComputedPreferenceClasses('up')" name="arrows-arrow-top-24" size="18" />
+              <s-icon :class="getComputedPreferenceClasses('down')" name="arrows-arrow-bottom-24" size="18" />
             </div>
           </div>
         </s-radio>
@@ -68,6 +68,8 @@ export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixi
   get colorDirections(): any {
     return [{ name: 'Green Up / Red down' }, { name: 'Green down / Red up' }];
   }
+
+  getComputedPreferenceClasses(): any {}
 }
 </script>
 
@@ -96,12 +98,14 @@ export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixi
     }
   }
 }
-.color-theme {
+
+.option {
   display: flex;
   align-items: center;
   justify-content: space-between;
   letter-spacing: var(--s-letter-spacing-small);
   line-height: var(--s-line-height-medium);
+  max-width: 380px;
   margin-bottom: 24px;
 
   &__name {
@@ -109,7 +113,9 @@ export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixi
     font-size: 18px;
     font-weight: 600;
   }
+}
 
+.color-theme {
   &__picture {
     position: relative;
 
@@ -132,6 +138,9 @@ export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixi
       top: 6px;
       left: 10px;
     }
+  }
+
+  .color-prefernce {
   }
 }
 </style>
