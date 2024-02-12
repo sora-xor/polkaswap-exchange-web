@@ -1287,7 +1287,10 @@
         "actions": {
             "claim": "Awọn ere ẹtọ",
             "remove": "Yọ igi kuro",
-            "more": "Gbero diẹ sii"
+            "more": "Gbero diẹ sii",
+            "confirm": "Jẹrisi Staking",
+            "payout": "Owó ìsanwó",
+            "withdraw": ""
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1312,10 +1315,10 @@
             "noNominatedValidators": "O ko ni eyikeyi ti yan afọwọsi",
             "noValidators": "Ko si awọn olufọwọsi ti o ni itẹlọrun àlẹmọ pàtó kan",
             "commission": "Igbimọ",
-            "commissionTooltip": "Igbimọ tọka si ọya ti o gba agbara nipasẹ awọn afọwọsi fun awọn iṣẹ wọn ni ilana isamisi. Ọya yii, ti a ṣalaye bi ipin kan, ni a yọkuro lati awọn ere isinmọ ti o jẹ nipasẹ awọn yiyan ṣaaju pinpin. O ṣe pataki lati ṣe akiyesi pe awọn olufọwọsi le ṣatunṣe awọn oṣuwọn igbimọ wọn nigbakugba"
+            "commissionTooltip": "Igbimọ tọka si ọya ti o gba agbara nipasẹ awọn afọwọsi fun awọn iṣẹ wọn ni ilana isamisi. Ọya yii, ti a ṣalaye bi ipin kan, ni a yọkuro lati awọn ere isinmọ ti o jẹ nipasẹ awọn yiyan ṣaaju pinpin. O ṣe pataki lati ṣe akiyesi pe awọn olufọwọsi le ṣatunṣe awọn oṣuwọn igbimọ wọn nigbakugba",
+            "return": "Pada"
         },
         "info": {
-            "redeemable": "O le rapada",
             "unstaking": "Unstaking",
             "stakingBalance": "Staking iwontunwonsi",
             "rewarded": "Esan",
@@ -1394,6 +1397,26 @@
             "title": "Awọn ere ẹtọ",
             "checkRewards": "Ṣayẹwo awọn ere fun akoko ati afọwọsi",
             "rewardsDestination": "Èrè àdírẹ́sì ibi tí wọ́n ń lọ"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Yiyọ kuro",
+            "beingWithdrawn": "Ti yọkuro",
+            "seeAll": "Wo gbogbo e",
+            "nextWithdrawal": "Iyọkuro ti o tẹle",
+            "countdownLeft": "osi"
+        },
+        "stakeDialog": {
+            "toStake": "Si igi",
+            "toRemove": "Lati yọ kuro"
+        },
+        "withdrawDialog": {
+            "title": "Yiyọ awọn owo ti a ko pin kuro",
+            "showAllWithdraws": "Ṣe afihan gbogbo awọn yiyọ kuro"
+        },
+        "allWithdrawsDialog": {
+            "title": "Iṣẹ ṣiṣe aiṣedeede",
+            "information": "Ni kete ti o ba yọ awọn ami-ami kuro, akoko aiṣiṣẹ ọjọ meje ti o jẹ dandan wa. Lẹhin asiko yii, awọn ami rẹ kii yoo da pada laifọwọyi si apamọwọ rẹ. O gbọdọ pari ilana naa nipa yiyọ awọn ami rẹ kuro pẹlu ọwọ."
         }
     },
     "collapseText": "Subu",

@@ -1287,7 +1287,10 @@
         "actions": {
             "claim": "领取奖励",
             "remove": "移除桩",
-            "more": "质押更多"
+            "more": "质押更多",
+            "confirm": "确认质押",
+            "payout": "支付",
+            "withdraw": "提现"
         },
         "overview": {
             "title": "{Sora}质押",
@@ -1312,10 +1315,10 @@
             "noNominatedValidators": "您没有任何指定的验证人",
             "noValidators": "没有满足指定过滤器的验证器",
             "commission": "委员会",
-            "commissionTooltip": "佣金是指验证者在质押过程中为其提供的服务收取的费用。该费用以百分比表示，在分配前从提名人获得的质押奖励中扣除。需要注意的是，验证者可以随时调整佣金率"
+            "commissionTooltip": "佣金是指验证者在质押过程中为其提供的服务收取的费用。该费用以百分比表示，在分配前从提名人获得的质押奖励中扣除。需要注意的是，验证者可以随时调整佣金率",
+            "return": "返回"
         },
         "info": {
-            "redeemable": "可赎回",
             "unstaking": "取消质押",
             "stakingBalance": "质押余额",
             "rewarded": "奖励",
@@ -1394,6 +1397,26 @@
             "title": "领取奖励",
             "checkRewards": "检查每个时代和验证者的奖励",
             "rewardsDestination": "奖励目标地址"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "可抽出式",
+            "beingWithdrawn": "被撤回",
+            "seeAll": "查看全部",
+            "nextWithdrawal": "下次提款",
+            "countdownLeft": "左边"
+        },
+        "stakeDialog": {
+            "toStake": "质押",
+            "toRemove": "去除"
+        },
+        "withdrawDialog": {
+            "title": "提取未抵押的资金",
+            "showAllWithdraws": "显示所有提款"
+        },
+        "allWithdrawsDialog": {
+            "title": "取消质押活动",
+            "information": "一旦您取消质押代币，就有一个强制性的 7 天取消质押期。在此期限之后，您的代币将不会自动返回您的钱包。您必须通过手动提取代币来完成该过程。"
         }
     },
     "collapseText": "崩溃",

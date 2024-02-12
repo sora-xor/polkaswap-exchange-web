@@ -1287,7 +1287,10 @@
         "actions": {
             "claim": "Reclamar premios",
             "remove": "Quitar estaca",
-            "more": "Apuesta más"
+            "more": "Apuesta más",
+            "confirm": "Confirmar apuesta",
+            "payout": "Pago",
+            "withdraw": "Retirar"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1312,10 +1315,10 @@
             "noNominatedValidators": "No tienes ningún validador nominado.",
             "noValidators": "No hay validadores que cumplan el filtro especificado.",
             "commission": "Comisión",
-            "commissionTooltip": "La comisión se refiere a la tarifa que cobran los validadores por sus servicios en el proceso de apuesta. Esta tarifa, expresada como porcentaje, se deduce de las recompensas obtenidas por los nominadores antes de la distribución. Es importante tener en cuenta que los validadores pueden ajustar sus tasas de comisión en cualquier momento."
+            "commissionTooltip": "La comisión se refiere a la tarifa que cobran los validadores por sus servicios en el proceso de apuesta. Esta tarifa, expresada como porcentaje, se deduce de las recompensas obtenidas por los nominadores antes de la distribución. Es importante tener en cuenta que los validadores pueden ajustar sus tasas de comisión en cualquier momento.",
+            "return": "Devolver"
         },
         "info": {
-            "redeemable": "Redimible",
             "unstaking": "Desestacar",
             "stakingBalance": "Equilibrio de apuesta",
             "rewarded": "Recompensado",
@@ -1394,6 +1397,26 @@
             "title": "Reclamar premios",
             "checkRewards": "Consultar recompensas por era y validador.",
             "rewardsDestination": "Dirección de destino de recompensas"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Retirable",
+            "beingWithdrawn": "siendo retirado",
+            "seeAll": "Ver todo",
+            "nextWithdrawal": "Próximo retiro",
+            "countdownLeft": "izquierda"
+        },
+        "stakeDialog": {
+            "toStake": "Apostar",
+            "toRemove": "Para eliminar"
+        },
+        "withdrawDialog": {
+            "title": "Retirar fondos no apostados",
+            "showAllWithdraws": "Mostrar todos los retiros"
+        },
+        "allWithdrawsDialog": {
+            "title": "Actividad desestacada",
+            "information": "Una vez que retiras los tokens, existe un período obligatorio de retirada de tokens de 7 días. Después de este período, sus tokens no se devolverán automáticamente a su billetera. Debes completar el proceso retirando manualmente tus tokens."
         }
     },
     "collapseText": "Colapso",

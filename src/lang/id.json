@@ -1287,7 +1287,10 @@
         "actions": {
             "claim": "Klaim hadiah",
             "remove": "Hapus taruhan",
-            "more": "Taruhan lebih banyak"
+            "more": "Taruhan lebih banyak",
+            "confirm": "Konfirmasikan Taruhan",
+            "payout": "Pembayaran",
+            "withdraw": "Withdraw"
         },
         "overview": {
             "title": "{Sora} Mempertaruhkan",
@@ -1312,10 +1315,10 @@
             "noNominatedValidators": "Anda tidak memiliki validator yang dinominasikan",
             "noValidators": "Tidak ada validator yang memenuhi filter yang ditentukan",
             "commission": "Komisi",
-            "commissionTooltip": "Komisi mengacu pada biaya yang dibebankan oleh validator atas layanan mereka dalam proses staking. Biaya ini, yang dinyatakan dalam persentase, dipotong dari imbalan staking yang diperoleh nominator sebelum didistribusikan. Penting untuk diperhatikan bahwa validator dapat menyesuaikan tarif komisinya kapan saja"
+            "commissionTooltip": "Komisi mengacu pada biaya yang dibebankan oleh validator atas layanan mereka dalam proses staking. Biaya ini, yang dinyatakan dalam persentase, dipotong dari imbalan staking yang diperoleh nominator sebelum didistribusikan. Penting untuk diperhatikan bahwa validator dapat menyesuaikan tarif komisinya kapan saja",
+            "return": "Kembali"
         },
         "info": {
-            "redeemable": "Dapat ditukarkan",
             "unstaking": "Tidak mempertaruhkan",
             "stakingBalance": "Saldo taruhan",
             "rewarded": "Dihargai",
@@ -1394,6 +1397,26 @@
             "title": "Klaim hadiah",
             "checkRewards": "Periksa hadiah per era dan validator",
             "rewardsDestination": "Alamat tujuan hadiah"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Dapat ditarik",
+            "beingWithdrawn": "Ditarik",
+            "seeAll": "Lihat semua",
+            "nextWithdrawal": "Penarikan berikutnya",
+            "countdownLeft": "kiri"
+        },
+        "stakeDialog": {
+            "toStake": "Untuk mempertaruhkan",
+            "toRemove": "Untuk menghapus"
+        },
+        "withdrawDialog": {
+            "title": "Tarik dana yang belum dipertaruhkan",
+            "showAllWithdraws": "Tampilkan semua penarikan"
+        },
+        "allWithdrawsDialog": {
+            "title": "Aktivitas yang tidak mempertaruhkan",
+            "information": "Setelah Anda membatalkan staking token, ada periode wajib unstaking selama 7 hari. Setelah periode ini, token Anda tidak akan otomatis dikembalikan ke dompet Anda. Anda harus menyelesaikan prosesnya dengan menarik token Anda secara manual."
         }
     },
     "collapseText": "Runtuh",

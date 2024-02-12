@@ -1287,7 +1287,10 @@
         "actions": {
             "claim": "Richiedi premi",
             "remove": "Rimuovi il paletto",
-            "more": "Punta di più"
+            "more": "Punta di più",
+            "confirm": "Conferma puntata",
+            "payout": "Payout",
+            "withdraw": ""
         },
         "overview": {
             "title": "{Sora} Picchettamento",
@@ -1312,10 +1315,10 @@
             "noNominatedValidators": "Non hai validatori nominati",
             "noValidators": "Non sono presenti validatori che soddisfano il filtro specificato",
             "commission": "Commissione",
-            "commissionTooltip": "La commissione si riferisce alla commissione addebitata dai validatori per i loro servizi nel processo di staking. Questa commissione, espressa in percentuale, viene detratta dai premi di staking guadagnati dai nominatori prima della distribuzione. È importante notare che i validatori possono modificare le loro tariffe di commissione in qualsiasi momento"
+            "commissionTooltip": "La commissione si riferisce alla commissione addebitata dai validatori per i loro servizi nel processo di staking. Questa commissione, espressa in percentuale, viene detratta dai premi di staking guadagnati dai nominatori prima della distribuzione. È importante notare che i validatori possono modificare le loro tariffe di commissione in qualsiasi momento",
+            "return": "Ritorno"
         },
         "info": {
-            "redeemable": "Riscattabile",
             "unstaking": "Instabile",
             "stakingBalance": "Saldo della puntata",
             "rewarded": "Premiato",
@@ -1394,6 +1397,26 @@
             "title": "Richiedi premi",
             "checkRewards": "Controlla i premi per epoca e validatore",
             "rewardsDestination": "Indirizzo di destinazione del premio"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Estraibile",
+            "beingWithdrawn": "Essere ritirato",
+            "seeAll": "Vedi tutto",
+            "nextWithdrawal": "Prossimo ritiro",
+            "countdownLeft": "Sinistra"
+        },
+        "stakeDialog": {
+            "toStake": "Puntare",
+            "toRemove": "Rimuovere"
+        },
+        "withdrawDialog": {
+            "title": "Prelevare i fondi non prelevati",
+            "showAllWithdraws": "Mostra tutti i prelievi"
+        },
+        "allWithdrawsDialog": {
+            "title": "Attività non impegnativa",
+            "information": "Una volta annullati i token, è previsto un periodo obbligatorio di annullamento dello staking di 7 giorni. Dopo questo periodo, i tuoi token non verranno automaticamente restituiti al tuo portafoglio. È necessario completare il processo ritirando manualmente i token."
         }
     },
     "collapseText": "Crollo",

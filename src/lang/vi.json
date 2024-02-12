@@ -1287,7 +1287,10 @@
         "actions": {
             "claim": "Yêu cầu phần thưởng",
             "remove": "Xóa cổ phần",
-            "more": "Đặt cược nhiều hơn"
+            "more": "Đặt cược nhiều hơn",
+            "confirm": "Xác nhận đặt cược",
+            "payout": "Thanh toán",
+            "withdraw": "Rút tiền"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1312,10 +1315,10 @@
             "noNominatedValidators": "Bạn không có bất kỳ người xác thực nào được chỉ định",
             "noValidators": "Không có trình xác thực nào đáp ứng bộ lọc được chỉ định",
             "commission": "Nhiệm vụ",
-            "commissionTooltip": "Hoa hồng đề cập đến khoản phí mà người xác nhận tính cho các dịch vụ của họ trong quá trình đặt cược. Khoản phí này, được biểu thị bằng phần trăm, được khấu trừ từ phần thưởng đặt cược mà người đề cử kiếm được trước khi phân phối. Điều quan trọng cần lưu ý là người xác thực có thể điều chỉnh tỷ lệ hoa hồng của họ bất cứ lúc nào"
+            "commissionTooltip": "Hoa hồng đề cập đến khoản phí mà người xác nhận tính cho các dịch vụ của họ trong quá trình đặt cược. Khoản phí này, được biểu thị bằng phần trăm, được khấu trừ từ phần thưởng đặt cược mà người đề cử kiếm được trước khi phân phối. Điều quan trọng cần lưu ý là người xác thực có thể điều chỉnh tỷ lệ hoa hồng của họ bất cứ lúc nào",
+            "return": "Trở lại"
         },
         "info": {
-            "redeemable": "Có thể đổi được",
             "unstaking": "Hủy đặt cược",
             "stakingBalance": "Số dư đặt cược",
             "rewarded": "Được khen thưởng",
@@ -1394,6 +1397,26 @@
             "title": "Yêu cầu phần thưởng",
             "checkRewards": "Kiểm tra phần thưởng theo thời đại và trình xác nhận",
             "rewardsDestination": "Địa chỉ đích thưởng"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Có thể rút",
+            "beingWithdrawn": "Bị rút tiền",
+            "seeAll": "Nhìn thấy tất cả",
+            "nextWithdrawal": "Lần rút tiền tiếp theo",
+            "countdownLeft": "bên trái"
+        },
+        "stakeDialog": {
+            "toStake": "Để cổ phần",
+            "toRemove": "Để loại bỏ"
+        },
+        "withdrawDialog": {
+            "title": "Rút tiền chưa đặt cọc",
+            "showAllWithdraws": "Hiển thị tất cả các lần rút tiền"
+        },
+        "allWithdrawsDialog": {
+            "title": "Hoạt động unstake",
+            "information": "Khi bạn hủy đặt cược mã thông báo, sẽ có khoảng thời gian hủy đặt cược bắt buộc là 7 ngày. Sau khoảng thời gian này, token của bạn sẽ không được tự động trả về ví của bạn. Bạn phải hoàn tất quy trình bằng cách rút token theo cách thủ công."
         }
     },
     "collapseText": "Sụp đổ",
