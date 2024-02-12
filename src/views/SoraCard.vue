@@ -21,7 +21,7 @@ import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
-import { AttemptCounter, UserInfo, VerificationStatus } from '@/types/card';
+import { AttemptCounter, VerificationStatus } from '@/types/card';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
 import type { NavigationGuardNext, Route } from 'vue-router';

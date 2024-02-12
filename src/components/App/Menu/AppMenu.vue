@@ -61,6 +61,7 @@
             active-hover-color="transparent"
           >
             <app-sidebar-item-content
+              v-if="false"
               v-button
               icon="star-16"
               title="Vote on Survey!"
@@ -97,7 +98,7 @@
 </template>
 
 <script lang="ts">
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -113,7 +114,7 @@ import {
   FaucetLink,
 } from '@/consts';
 import { StakingPageNames } from '@/modules/staking/consts';
-import { getter, state } from '@/store/decorators';
+import { getter, mutation, state } from '@/store/decorators';
 
 import AppInfoPopper from './AppInfoPopper.vue';
 import AppSidebarItemContent from './SidebarItemContent.vue';
@@ -131,11 +132,14 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   @state.settings.faucetUrl faucetUrl!: string;
   @state.router.loading pageLoading!: boolean;
+  @state.settings.menuCollapsed collapsed!: boolean;
+
+  @getter.settings.orderBookEnabled private orderBookEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
-  readonly FaucetLink = FaucetLink;
+  @mutation.settings.setMenuCollapsed private setMenuCollapsed!: (collapsed: boolean) => void;
 
-  collapsed = false;
+  readonly FaucetLink = FaucetLink;
 
   get collapseIcon(): string {
     return this.collapsed ? 'arrows-chevron-right-24' : 'arrows-chevron-left-24';
@@ -150,6 +154,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   get sidebarMenuItems(): Array<SidebarMenuItemLink> {
+    if (!this.orderBookEnabled) {
+      return SidebarMenuGroups.filter(({ title }) => title !== PageNames.OrderBook);
+    }
     return SidebarMenuGroups;
   }
 
@@ -183,8 +190,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   collapseMenu(e?: PointerEvent) {
-    ((e?.target as HTMLElement).closest('#collapse-button') as HTMLElement).blur();
-    this.collapsed = !this.collapsed;
+    ((e?.target as HTMLElement | null)?.closest?.('#collapse-button') as HTMLElement | null)?.blur();
+    this.setMenuCollapsed(!this.collapsed);
   }
 }
 </script>
@@ -204,6 +211,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
     }
 
+    .collapse-button {
+      pointer-events: none;
+    }
+
     &:hover,
     &:focus {
       box-shadow: 20px 20px 60px 0px #0000001a;
@@ -212,6 +223,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
         & > .icon-container + span {
           display: initial;
         }
+      }
+
+      .collapse-button {
+        pointer-events: all;
       }
     }
   }
@@ -286,9 +301,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     &:focus {
       background-color: unset !important;
     }
-    i.el-icon-bank-card {
-      width: 28px; // to avoid issue with paddings
-    }
   }
 }
 </style>
@@ -346,6 +358,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
     @include large-mobile(true) {
       position: fixed;
+      right: 0;
 
       &.visible {
         visibility: visible;
@@ -366,10 +379,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
         filter: drop-shadow(32px 0px 64px rgba(0, 0, 0, 0.1));
         transform: translateX(-100%);
       }
-    }
-
-    @include large-mobile(true) {
-      right: 0;
     }
 
     @include large-mobile {
@@ -409,6 +418,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       flex: 1;
       flex-flow: column nowrap;
       justify-content: space-between;
+      max-width: $sidebar-max-width;
+      padding-right: $inner-spacing-mini; // for shadow
     }
   }
 }
@@ -480,4 +491,3 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 }
 </style>
-@/modules/staking/demeter/consts

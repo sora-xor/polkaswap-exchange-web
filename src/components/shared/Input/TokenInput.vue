@@ -2,6 +2,7 @@
   <s-float-input
     class="token-input"
     size="medium"
+    ref="floatInput"
     has-locale-string
     :disabled="disabled"
     :value="value"
@@ -62,6 +63,7 @@
         <div class="input-line input-line--footer">
           <div v-if="hasFiatValue" class="s-flex">
             <s-float-input
+              ref="fiatEl"
               class="token-input--fiat"
               size="mini"
               has-locale-string
@@ -83,6 +85,19 @@
 
           <token-address v-if="address" v-bind="token" :external="external" class="input-value" />
         </div>
+
+        <div v-if="withSlider" class="input-line--footer-with-slider" @click="handleSliderFocus">
+          <div class="delimiter" />
+          <s-slider
+            class="slider-container"
+            :value="slideValue"
+            :disabled="!withSlider"
+            :show-tooltip="false"
+            :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
+            @input="handleSlideInputChange"
+            @mousedown.native="handleSlideClick"
+          />
+        </div>
       </slot>
 
       <slot />
@@ -93,11 +108,12 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
+import { mutation } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -115,6 +131,8 @@ export default class TokenInput extends Mixins(
   mixins.FormattedAmountMixin,
   TranslationMixin
 ) {
+  @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
+
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   @Prop({ type: String }) readonly value!: string;
@@ -127,8 +145,13 @@ export default class TokenInput extends Mixins(
   @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMaxAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isSelectAvailable!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly withSlider!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isFiatEditable!: boolean;
+  @Prop({ default: 0, type: Number }) readonly sliderValue!: number;
   @Prop({ default: 2, type: Number }) readonly fiatDecimals!: number;
+
+  @Ref('floatInput') private readonly floatInput!: any;
+  @Ref('fiatEl') private readonly fiatEl!: any;
 
   fiatValue = '';
   fiatFocus = false;
@@ -159,8 +182,21 @@ export default class TokenInput extends Mixins(
     this.$emit('focus');
   }
 
+  handleSliderFocus(): void {
+    this.floatInput?.$children?.[0]?.focus?.();
+    this.$emit('focus');
+  }
+
   handleFiatBlur(): void {
     this.fiatFocus = false;
+  }
+
+  get slideValue(): number {
+    return this.sliderValue;
+  }
+
+  set slideValue(value: number) {
+    this.setAmountSliderValue(value);
   }
 
   get isBalanceAvailable(): boolean {
@@ -227,6 +263,18 @@ export default class TokenInput extends Mixins(
   handleSelectToken(): void {
     this.$emit('select');
   }
+
+  handleSlideInputChange(value: string): void {
+    this.$emit('slide', value);
+  }
+
+  handleSlideClick(): void {
+    this.fiatEl?.$children?.[0]?.blur?.();
+  }
+
+  async mounted(): Promise<void> {
+    await this.$nextTick();
+  }
 }
 </script>
 
@@ -283,6 +331,39 @@ $el-input-class: '.el-input';
     &:focus-within {
       outline: none;
     }
+  }
+}
+
+.input-line--footer-with-slider {
+  @include input-slider;
+  width: 100%;
+
+  .el-slider__button {
+    background-color: #fff;
+    border-radius: 4px;
+    transform: rotate(-45deg);
+  }
+
+  .el-slider__stop {
+    height: 10px;
+    width: 10px;
+    border-radius: 2px;
+    top: -1.8px;
+    border: 1.3px solid var(--s-color-base-content-tertiary);
+    transform: translateX(-50%) rotate(-45deg);
+  }
+
+  .asset-info {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .delimiter {
+    background-color: var(--s-color-base-border-secondary);
+    width: 100%;
+    height: 1px;
+    margin: 14px 0 4px 0;
   }
 }
 </style>

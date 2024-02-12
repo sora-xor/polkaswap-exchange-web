@@ -60,7 +60,10 @@
             "StakingPayout": "Utbetalningsbelöningar",
             "StakingChill": "Kyla",
             "StakingSetController": "Ställ in kontroller {address}",
-            "StakingSetPayee": "Ange betalningsmottagare {address}"
+            "StakingSetPayee": "Ange betalningsmottagare {address}",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} till {price} {symbol2} placerad",
+            "OrderBookCancelLimitOrder": "Limit order annullerad",
+            "OrderBookCancelLimitOrders": "Limit order annullerade"
         },
         "error": {
             "Transfer": "Det gick inte att {action} {amount} {symbol} {direction} {address}",
@@ -92,7 +95,10 @@
             "StakingPayout": "Det gick inte att betala ut belöningar",
             "StakingChill": "Det gick inte att kyla",
             "StakingSetController": "Det gick inte att ställa in controller {address}",
-            "StakingSetPayee": "Det gick inte att ange betalningsmottagaren {address}"
+            "StakingSetPayee": "Det gick inte att ange betalningsmottagaren {address}",
+            "OrderBookPlaceLimitOrder": "Det gick inte att lägga en gränsbeställning på {amount} {symbol} till {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Det gick inte att avbryta limiterade beställningar",
+            "OrderBookCancelLimitOrder": "Det gick inte att avbryta begränsningsordern"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -116,7 +122,10 @@
         "StakingPayout": "Utbetalningsbelöningar",
         "StakingChill": "Kyla",
         "StakingSetController": "Ställ in styrenhet",
-        "StakingSetPayee": "Ange betalningsmottagare"
+        "StakingSetPayee": "Ange betalningsmottagare",
+        "OrderBookPlaceLimitOrder": "Beställa",
+        "OrderBookCancelLimitOrder": "Avbryt beställning",
+        "OrderBookCancelLimitOrders": "Avbryt beställningar"
     },
     "polkadotjs": {
         "noExtensions": "Inget {PolkadotJs} tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -339,7 +348,9 @@
         "referrer": "Referrer",
         "referral": "Hänvisning",
         "adarTxDetailsTitle": "Transaktionsdetaljer",
-        "comment": "Kommentar"
+        "comment": "Kommentar",
+        "price": "Pris",
+        "side": "Sida"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Byt nätverk i plånboken",
@@ -377,7 +388,9 @@
         "Explore\/Pools": "Pooler",
         "Explore\/Staking": "Utsättning",
         "Explore\/Farming": "Farming",
-        "Staking": "Utsättning"
+        "Staking": "Utsättning",
+        "OrderBook": "Handel",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Byt",
@@ -391,7 +404,8 @@
         "CreatePair": "Skapa Par",
         "StakingContainer": "Utsättning",
         "Explore\/Container": "Utforska",
-        "SoraCard": "{Sora} Kort"
+        "SoraCard": "{Sora} Kort",
+        "OrderBook": "Handel"
     },
     "social": {
         "twitter": "Twitter",
@@ -1383,5 +1397,129 @@
         }
     },
     "collapseText": "Kollaps",
-    "expandText": "Bygga ut"
+    "expandText": "Bygga ut",
+    "orderBook": {
+        "Buy": "Köp {asset}",
+        "Sell": "Sälj {asset}",
+        "orderBook": "Beställa bok",
+        "marketTrades": "Marknadsaffärer",
+        "market": "Marknadsföra",
+        "limit": "Begränsa",
+        "price": "Pris",
+        "total": "Total",
+        "amount": "belopp",
+        "time": "tid",
+        "month": "månad",
+        "change": "förändra",
+        "cantPlaceOrder": "Kan inte beställa",
+        "enterAmount": "Ange belopp",
+        "setPrice": "Sätt pris",
+        "dayVolume": "1D volym",
+        "stop": "Boken stannade",
+        "tokenPair": "Token-par",
+        "book": {
+            "noAsks": "Inga öppnade frågor",
+            "noBids": "Inga öppnade bud"
+        },
+        "history": {
+            "tradeHistory": "Handelshistoria",
+            "orderHistory": "Beställningshistorik",
+            "openOrders": "Öppna beställningar {value}",
+            "connect": "Anslut ett konto för att börja handla",
+            "cancel": "Avbryt beställning {value}",
+            "cancelAll": "Avbryt alla"
+        },
+        "orderTable": {
+            "time": "tid",
+            "pair": "par",
+            "side": "sida",
+            "filled": "fylld",
+            "lifetime": "livstid",
+            "noOrders": "Inga beställningar. Skapa din första!"
+        },
+        "dialog": {
+            "placeMarket": "Lägg marknadsorder",
+            "placeLimit": "Lägg gränsorder",
+            "askCancel": "Är du säker på att du vill avbryta alla dina öppna beställningar?",
+            "cancelAll": "Ja, avbryt alla",
+            "noCancel": "Nej, avbryt det inte",
+            "buy": "Köp {amount} {symbol}",
+            "sell": "Sälj {amount} {symbol}",
+            "at": "till {price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "Välj handelspar",
+            "volume": "Volym",
+            "dailyChange": "Daglig förändring",
+            "status": "Status",
+            "total": "{amount} {symbol} på {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Aktiva",
+            "placeable": "Placerbar",
+            "cancelable": "Kan annulleras",
+            "inactive": "Inaktiv"
+        },
+        "tooltip": {
+            "limitOrder": "En \"Limit\"-order låter dig specificera det exakta priset till vilket du vill köpa eller sälja en tillgång. En \"Limit Buy\"-order kommer endast att utföras till det angivna priset eller lägre, medan en \"Limit Sell\"-order endast kommer att utföras till det specificerade priset eller högre. Denna kontroll säkerställer att du inte betalar mer eller säljer för mindre än du är bekväm med.",
+            "marketOrder": "En \"Marknadsorder\" är en order för att omedelbart köpa eller sälja till bästa tillgängliga aktuella pris. Det kräver inte att man sätter ett pris, säkerställer en snabb utförande men med en avvägning av mindre kontroll över priset som tas emot eller betalas. Denna typ av order används när säkerheten om utförande är en prioritet framför priskontroll.",
+            "pairsList": "En realtidslista som visar aktuella köp- och säljorder för en kryptovaluta. Det hjälper dig att förstå efterfrågan, potentiell prisriktning och handelsvolym på SORA Network och Polkaswap DEX",
+            "bookWidget": "En levande, ständigt uppdaterad registrering av köp- (bud) och sälj- (fråga) order för en specifik tillgång, organiserad efter prisnivå. Orderboken visar marknadens djup, inklusive mängden tillgångar som erbjuds till olika priser. Handlare använder denna detaljerade vy för att mäta marknadssentiment, identifiera potentiella motstånds- och stödnivåer och förutse prisrörelser baserat på befintlig efterfrågan och utbud",
+            "marketWidget": "Denna widget visar en realtidsström av utförda affärer på marknaden, och ger information om transaktionsvolymer, senaste aktivitet och aktuella marknadstrender. Genom att observera tidpunkten, priset och storleken på faktiska affärer kan handlare få insikter i marknadens dynamik och sentiment, vilket hjälper dem att upptäcka handelsmöjligheter och fatta välgrundade beslut",
+            "txDetails": {
+                "orderType": "'Köp'-order kommer endast att utföras till det angivna priset eller lägre, medan en 'Sälj'-order endast kommer att utföras till det angivna priset eller högre. Denna kontroll säkerställer att du inte betalar mer eller säljer för mindre än du är bekväm med.",
+                "expiryDate": "\"Utgångsdatum\" är deadline för att din beställning ska utföras. Om marknaden inte når ditt angivna pris före detta datum avbryts beställningen automatiskt. Du är inte bunden till en evig väntan om marknadsförhållandena inte överensstämmer med dina handelspreferenser.",
+                "amount": "\"Belopp\" hänvisar till det totala antalet tillgångar du vill köpa eller sälja i din beställning. Det är viktigt att specificera, eftersom det bestämmer storleken på din transaktion, vilket påverkar den totala kostnaden för köporder eller intäkter för säljorder.",
+                "limit": "\"Gränspriset\" är det exakta priset du anger för en limiterad order. Handeln kommer endast att genomföras när tillgångens marknadspris når ditt gränspris, vilket säkerställer att du inte köper över eller säljer under detta angivna värde.",
+                "locked": "\"Låst\" visar mängden tillgång som ska hållas medan beställning pågår."
+            },
+            "bookStatus": {
+                "active": "Full handelsfunktionalitet aktiverad. Du kan lägga nya beställningar eller avbryta befintliga.",
+                "placeable": "Begränsad funktionalitet. Du kan lägga nya beställningar och avbryta befintliga, men vissa funktioner kan vara otillgängliga.",
+                "cancelable": "Du kan endast annullera befintliga beställningar. Ny beställningsplacering är för närvarande inaktiverad.",
+                "inactive": "All handelsverksamhet är för närvarande stoppad. Inga beställningar kan göras eller annulleras för närvarande."
+            }
+        },
+        "txDetails": {
+            "orderType": "ordertyp",
+            "limitPrice": "gränspris",
+            "expiryDate": "utgångsdatum"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "Det angivna priset är för exakt för att kunna beräknas",
+                "reading": "Precisionen överskriden: Det angivna beloppet\/priset har för många decimaler. Ange ett värde med färre decimaler"
+            },
+            "marketNotAvailable": {
+                "reason": "Det finns inte tillräckligt med beställningar för att fullfölja denna beställning",
+                "reading": "Marknadsorderbegränsning: Det finns inte tillräckligt med order tillgängliga för att uppfylla denna marknadsbegränsningsorder. Vänligen justera din beställningsstorlek eller vänta på att fler beställningar ska läggas"
+            },
+            "exceedsSpread": {
+                "reason": "Priset översteg spridningen",
+                "reading": "Pris överskridet: en marknads köp- eller säljkurs översteg dess sälj-\/köpkurs"
+            },
+            "spotLimit": {
+                "reason": "Handelssidan har fyllts",
+                "reading": "Prisklasstak: Varje orderboksida är begränsad till 1024 unika prispunkter. Välj ett pris inom det befintliga intervallet eller vänta på att det blir ledigt utrymme"
+            },
+            "accountLimit": {
+                "reason": "För många beställningar pågår",
+                "reading": "Gräns uppnådd: Varje konto är begränsat till 1024 limitorder. Vänta tills några av dina beställningar fullföljs"
+            },
+            "singlePriceLimit": {
+                "reason": "För många beställningar pågår för detta pris",
+                "reading": "Gräns uppnådd: Varje position är begränsad till 1024 limitorder. Vänta tills några beställningar fullföljs"
+            },
+            "outOfBounds": {
+                "reading": "Blockchain-intervallet har överskridits: Ditt angivna belopp faller utanför blockkedjans tillåtna intervall. Min: {min} ; Max: {max}",
+                "reason": "Beloppet överensstämmer inte med blockchain-intervallet"
+            }
+        },
+        "orderStatus": {
+            "active": "Aktiva",
+            "canceled": "Inställt",
+            "expired": "Utgånget",
+            "filled": "Fylld"
+        }
+    }
 }

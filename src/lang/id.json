@@ -60,7 +60,10 @@
             "StakingPayout": "Hadiah pembayaran",
             "StakingChill": "Santai",
             "StakingSetController": "Setel pengontrol {address}",
-            "StakingSetPayee": "Tetapkan penerima pembayaran {address}"
+            "StakingSetPayee": "Tetapkan penerima pembayaran {address}",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} pada {price} {symbol2} ditempatkan",
+            "OrderBookCancelLimitOrder": "Batas pesanan dibatalkan",
+            "OrderBookCancelLimitOrders": "Batasi pesanan dibatalkan"
         },
         "error": {
             "Transfer": "Gagal {action} {amount} {symbol} {direction} {address}",
@@ -92,7 +95,10 @@
             "StakingPayout": "Gagal membayar imbalan",
             "StakingChill": "Gagal mendinginkan",
             "StakingSetController": "Gagal menyetel pengontrol {address}",
-            "StakingSetPayee": "Gagal menetapkan penerima pembayaran {address}"
+            "StakingSetPayee": "Gagal menetapkan penerima pembayaran {address}",
+            "OrderBookPlaceLimitOrder": "Gagal menempatkan limit order {amount} {symbol} pada {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Gagal membatalkan pesanan batas",
+            "OrderBookCancelLimitOrder": "Gagal membatalkan pesanan batas"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
@@ -116,7 +122,10 @@
         "StakingPayout": "Hadiah Pembayaran",
         "StakingChill": "Santai",
         "StakingSetController": "Atur Pengontrol",
-        "StakingSetPayee": "Tetapkan Penerima Pembayaran"
+        "StakingSetPayee": "Tetapkan Penerima Pembayaran",
+        "OrderBookPlaceLimitOrder": "Tempatkan Pesanan",
+        "OrderBookCancelLimitOrder": "Batalkan pesanan",
+        "OrderBookCancelLimitOrders": "Batalkan Pesanan"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi {PolkadotJs} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
@@ -339,7 +348,9 @@
         "referrer": "Perujuk",
         "referral": "Rujukan",
         "adarTxDetailsTitle": "Rincian transaksi",
-        "comment": "Komentar"
+        "comment": "Komentar",
+        "price": "Harga",
+        "side": "Samping"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Ubah jaringan di dompet",
@@ -377,7 +388,9 @@
         "Explore\/Pools": "Kolam",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
-        "Staking": "Staking"
+        "Staking": "Staking",
+        "OrderBook": "Berdagang",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -391,7 +404,8 @@
         "CreatePair": "Buat Pair",
         "StakingContainer": "Staking",
         "Explore\/Container": "Menjelajahi",
-        "SoraCard": "{Sora} Kartu"
+        "SoraCard": "{Sora} Kartu",
+        "OrderBook": "Berdagang"
     },
     "social": {
         "twitter": "Twitter",
@@ -1383,5 +1397,129 @@
         }
     },
     "collapseText": "Runtuh",
-    "expandText": "Memperluas"
+    "expandText": "Memperluas",
+    "orderBook": {
+        "Buy": "Beli {asset}",
+        "Sell": "Jual {asset}",
+        "orderBook": "Memesan buku",
+        "marketTrades": "Perdagangan pasar",
+        "market": "Pasar",
+        "limit": "Membatasi",
+        "price": "Harga",
+        "total": "Total",
+        "amount": "jumlah",
+        "time": "waktu",
+        "month": "bulan",
+        "change": "mengubah",
+        "cantPlaceOrder": "Tidak dapat melakukan pemesanan",
+        "enterAmount": "Masukan jumlah",
+        "setPrice": "Tetapkan harga",
+        "dayVolume": "Jilid 1D",
+        "stop": "Buku berhenti",
+        "tokenPair": "Pasangan token",
+        "book": {
+            "noAsks": "Tidak ada pertanyaan terbuka",
+            "noBids": "Tidak ada tawaran terbuka"
+        },
+        "history": {
+            "tradeHistory": "Sejarah perdagangan",
+            "orderHistory": "Riwayat pesanan",
+            "openOrders": "Buka pesanan {value}",
+            "connect": "Hubungkan akun untuk memulai perdagangan",
+            "cancel": "Batalkan pesanan {value}",
+            "cancelAll": "Batalkan semua"
+        },
+        "orderTable": {
+            "time": "waktu",
+            "pair": "pasangan",
+            "side": "samping",
+            "filled": "dipenuhi",
+            "lifetime": "seumur hidup",
+            "noOrders": "Tidak ada perintah. Buat yang pertama Anda!"
+        },
+        "dialog": {
+            "placeMarket": "Tempatkan pesanan pasar",
+            "placeLimit": "Tempatkan pesanan batas",
+            "askCancel": "Apakah Anda yakin ingin membatalkan semua pesanan terbuka Anda?",
+            "cancelAll": "Ya, batalkan semuanya",
+            "noCancel": "Tidak, jangan batalkan",
+            "buy": "Beli {amount} {symbol}",
+            "sell": "Jual {amount} {symbol}",
+            "at": "pada {price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "Pilih pasangan perdagangan",
+            "volume": "Volume",
+            "dailyChange": "Perubahan harian",
+            "status": "Status",
+            "total": "{amount} {symbol} di {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Aktif",
+            "placeable": "Dapat ditempatkan",
+            "cancelable": "Dapat dibatalkan",
+            "inactive": "Tidak aktif"
+        },
+        "tooltip": {
+            "limitOrder": "Perintah 'Batas' memungkinkan Anda menentukan harga pasti di mana Anda ingin membeli atau menjual suatu aset. Order 'Limit Buy' hanya akan dieksekusi pada harga yang ditentukan atau lebih rendah, sedangkan order 'Limit Sell' hanya akan dieksekusi pada harga yang ditentukan atau lebih tinggi. Kontrol ini memastikan Anda tidak membayar lebih atau menjual dengan harga kurang dari yang Anda rasa nyaman.",
+            "marketOrder": "'Market Order' adalah perintah untuk segera membeli atau menjual pada harga terbaik yang tersedia saat ini. Hal ini tidak memerlukan penetapan harga, memastikan eksekusi yang cepat namun dengan trade-off berupa berkurangnya kendali atas harga yang diterima atau dibayar. Jenis order ini digunakan ketika kepastian eksekusi menjadi prioritas dibandingkan pengendalian harga.",
+            "pairsList": "Daftar real-time yang menunjukkan pesanan beli dan jual saat ini untuk mata uang kripto. Ini membantu Anda memahami permintaan, potensi arah harga, dan volume perdagangan di Jaringan SORA dan Polkaswap DEX",
+            "bookWidget": "Catatan pesanan beli (bid) dan jual (ask) yang langsung dan terus diperbarui untuk aset tertentu, diatur berdasarkan tingkat harga. Buku pesanan menampilkan kedalaman pasar, termasuk jumlah aset yang ditawarkan pada berbagai harga. Trader memanfaatkan tampilan mendetail ini untuk mengukur sentimen pasar, mengidentifikasi potensi level resistance dan support, serta mengantisipasi pergerakan harga berdasarkan permintaan dan penawaran yang ada.",
+            "marketWidget": "Widget ini menunjukkan aliran perdagangan yang dieksekusi di pasar secara real-time, memberikan informasi tentang volume transaksi, aktivitas terkini, dan tren pasar saat ini. Dengan mengamati waktu, harga, dan ukuran perdagangan aktual, pedagang dapat memperoleh wawasan tentang dinamika dan sentimen pasar, membantu mereka melihat peluang perdagangan dan membuat keputusan yang tepat.",
+            "txDetails": {
+                "orderType": "Order 'Beli' hanya akan dieksekusi pada harga yang ditentukan atau lebih rendah, sedangkan order 'Jual' hanya akan dieksekusi pada harga yang ditentukan atau lebih tinggi. Kontrol ini memastikan Anda tidak membayar lebih atau menjual dengan harga kurang dari yang Anda rasa nyaman.",
+                "expiryDate": "'Tanggal Kedaluwarsa' adalah batas waktu eksekusi pesanan Anda. Jika pasar tidak mencapai harga yang Anda tentukan sebelum tanggal ini, pesanan otomatis dibatalkan. Anda tidak perlu menunggu terus-menerus jika kondisi pasar tidak sesuai dengan preferensi perdagangan Anda.",
+                "amount": "'Jumlah' mengacu pada jumlah total aset yang ingin Anda beli atau jual dalam pesanan Anda. Penting untuk menentukannya, karena ini menentukan ukuran transaksi Anda, yang berdampak pada total biaya untuk pesanan beli atau pendapatan untuk pesanan jual.",
+                "limit": "'Harga Batas' adalah harga persis yang Anda tetapkan untuk pesanan batas. Perdagangan hanya akan dieksekusi ketika harga pasar aset memenuhi harga batas Anda, memastikan Anda tidak membeli di atas atau menjual di bawah nilai yang ditentukan.",
+                "locked": "'Terkunci' menunjukkan jumlah aset yang akan ditahan saat pesanan sedang berlangsung."
+            },
+            "bookStatus": {
+                "active": "Fungsionalitas perdagangan penuh diaktifkan. Anda dapat membuat pesanan baru atau membatalkan pesanan yang sudah ada.",
+                "placeable": "Fungsionalitas terbatas. Anda dapat membuat pesanan baru dan membatalkan pesanan yang sudah ada, namun beberapa fitur mungkin tidak tersedia.",
+                "cancelable": "Anda hanya dapat membatalkan pesanan yang sudah ada. Penempatan pesanan baru saat ini dinonaktifkan.",
+                "inactive": "Semua aktivitas perdagangan saat ini dihentikan. Tidak ada pesanan yang dapat dilakukan atau dibatalkan saat ini."
+            }
+        },
+        "txDetails": {
+            "orderType": "jenis pesanan",
+            "limitPrice": "membatasi harga",
+            "expiryDate": "tanggal kadaluarsa"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "Harga yang dimasukkan terlalu tepat untuk dihitung",
+                "reading": "Presisi terlampaui: Jumlah\/harga yang dimasukkan memiliki terlalu banyak angka desimal. Silakan masukkan nilai dengan angka desimal lebih sedikit"
+            },
+            "marketNotAvailable": {
+                "reason": "Pesanan yang tersedia tidak cukup untuk memenuhi pesanan ini",
+                "reading": "Batasan pesanan pasar: Tidak ada cukup pesanan yang tersedia untuk memenuhi pesanan batas pasar ini. Silakan sesuaikan ukuran pesanan Anda atau tunggu pesanan lainnya dilakukan"
+            },
+            "exceedsSpread": {
+                "reason": "Harga melebihi spread",
+                "reading": "Harga terlampaui: harga penawaran atau permintaan pasar melebihi harga permintaan\/penawaran"
+            },
+            "spotLimit": {
+                "reason": "Sisi perdagangan telah terisi",
+                "reading": "Batas kisaran harga: Setiap sisi buku pesanan dibatasi hingga 1024 titik harga unik. Silakan pilih harga dalam kisaran yang ada atau tunggu hingga ruang tersedia"
+            },
+            "accountLimit": {
+                "reason": "Terlalu banyak pesanan sedang berlangsung",
+                "reading": "Batas tercapai: Setiap akun dibatasi hingga 1024 limit order. Harap tunggu hingga beberapa pesanan Anda terpenuhi"
+            },
+            "singlePriceLimit": {
+                "reason": "Terlalu banyak pesanan yang sedang berlangsung untuk harga ini",
+                "reading": "Batas tercapai: Setiap posisi dibatasi pada 1024 limit order. Harap tunggu hingga beberapa pesanan terpenuhi"
+            },
+            "outOfBounds": {
+                "reading": "Rentang blockchain terlampaui: Jumlah yang Anda masukkan berada di luar rentang yang diizinkan oleh blockchain. Minimal: {min} ; Maks: {max}",
+                "reason": "Jumlah gagal mematuhi kisaran blockchain"
+            }
+        },
+        "orderStatus": {
+            "active": "Aktif",
+            "canceled": "Dibatalkan",
+            "expired": "Kedaluwarsa",
+            "filled": "Dipenuhi"
+        }
+    }
 }
