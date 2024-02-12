@@ -34,9 +34,9 @@
         >
           <div class="color-preference option s-flex">
             <div class="option__name">{{ option.name }}</div>
-            <div class="color-preference__direction">
-              <s-icon :class="getComputedPreferenceClasses('up')" name="arrows-arrow-top-24" size="18" />
-              <s-icon :class="getComputedPreferenceClasses('down')" name="arrows-arrow-bottom-24" size="18" />
+            <div class="color-preference__direction" :class="getComputedPreferenceClasses(option.type)">
+              <s-icon name="arrows-arrow-top-24" size="18" />
+              <s-icon name="arrows-arrow-bottom-24" size="18" />
             </div>
           </div>
         </s-radio>
@@ -51,6 +51,21 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
+type ColorType = 'classic' | 'deficiency' | 'traditional';
+type DirectionType = 'classic' | 'inverse';
+type Hex = `#${string}`;
+
+interface Color {
+  name: string;
+  type: ColorType;
+  color: Hex;
+}
+
+interface ColorDirection {
+  name: string;
+  type: DirectionType;
+}
+
 @Component({
   components: {
     DialogBase: components.DialogBase,
@@ -61,15 +76,22 @@ export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixi
   optionType = '';
   colorDirection = '';
 
-  get colorOptions(): any {
-    return [{ name: 'Classic' }, { name: 'Color deficiency' }, { name: 'Traditional' }];
+  get colorOptions(): Color[] {
+    return [
+      { name: 'Classic', type: 'classic', hex: '#345134' },
+      { name: 'Color deficiency', type: 'deficiency' },
+      { name: 'Traditional', type: 'traditional' },
+    ];
   }
 
-  get colorDirections(): any {
-    return [{ name: 'Green Up / Red down' }, { name: 'Green down / Red up' }];
+  get colorDirections(): ColorDirection[] {
+    return [
+      { name: 'Green Up / Red down', type: 'classic' },
+      { name: 'Green down / Red up', type: 'inverse' },
+    ];
   }
 
-  getComputedPreferenceClasses(): any {}
+  getComputedPreferenceClasses(type: DirectionType): any {}
 }
 </script>
 
