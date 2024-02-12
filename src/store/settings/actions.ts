@@ -84,14 +84,14 @@ const actions = defineActions({
     }
   },
   async setNode(context, options: ConnectToNodeOptions = {}): Promise<void> {
-    const { dispatch, commit, state, getters } = settingsActionContext(context);
+    const { dispatch, commit, state } = settingsActionContext(context);
     const { node, connectionOptions = {}, onError, onDisconnect, onReconnect } = options;
 
     const endpoint = node?.address ?? '';
-    const isTrustedEndpoint = endpoint in getters.defaultNodesHashTable;
+    const isTrustedEndpoint = !!state.defaultNodes.find((node) => node.address === endpoint);
     const connectionOpenOptions = {
       once: true, // by default we are trying to connect once, but keep trying after disconnect from connected node
-      timeout: isTrustedEndpoint ? undefined : NODE_CONNECTION_TIMEOUT, // connect to trusted node without connection timeout
+      timeout: NODE_CONNECTION_TIMEOUT,
       ...connectionOptions,
     };
     const isReconnection = !connectionOpenOptions.once;
@@ -135,7 +135,7 @@ const actions = defineActions({
       console.info('[SORA] Connected to node', connection.endpoint);
 
       const nodeChainGenesisHash = connection.api?.genesisHash.toHex();
-      // if connected node is custom node, we should check genesis hash
+
       if (!isTrustedEndpoint) {
         // if genesis hash is not set in state, fetch it
         if (!state.chainGenesisHash) {
@@ -154,7 +154,6 @@ const actions = defineActions({
           );
         }
       } else {
-        // just update genesis hash (needed for dev, test stands after their reset)
         commit.setNetworkChainGenesisHash(nodeChainGenesisHash);
       }
 
@@ -179,6 +178,7 @@ const actions = defineActions({
       throw err;
     }
   },
+
   async addCustomNode(context, node: Node): Promise<void> {
     const { commit, getters } = settingsActionContext(context);
     const nodes = [...getters.customNodes, node];

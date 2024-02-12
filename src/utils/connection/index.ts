@@ -54,6 +54,10 @@ class NodesConnection {
     this._customNodes = [...nodes];
   }
 
+  get nodeList(): Node[] {
+    return [...this.defaultNodes, ...this.customNodes];
+  }
+
   updateCustomNode(node: Node): void {
     this.removeCustomNode(node);
     this.customNodes = [...this.customNodes, node];
