@@ -52,6 +52,7 @@
       </s-card>
 
       <s-button
+        v-if="stakingAsset"
         type="primary"
         class="s-typography-button--large action-button"
         :loading="parentLoading || loading"
@@ -59,7 +60,7 @@
         @click="handleConfirm"
       >
         <template v-if="isInsufficientXorForFee || isInsufficientBalance">
-          {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset?.symbol }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset.symbol }) }}
         </template>
         <template v-else-if="valueFundsEmpty">
           {{ t('buttons.enterAmount') }}

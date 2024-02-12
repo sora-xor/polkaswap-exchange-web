@@ -36,6 +36,7 @@
       </div>
 
       <s-button
+        v-if="xor && rewardAsset"
         type="primary"
         class="s-typography-button--large action-button"
         :loading="parentLoading || loading"
@@ -44,10 +45,10 @@
       >
         <template v-if="isInsufficientXorForFee || isInsufficientBalance">
           <template v-if="isInsufficientBalance">
-            {{ t('insufficientBalanceText', { tokenSymbol: rewardAsset?.symbol }) }}
+            {{ t('insufficientBalanceText', { tokenSymbol: rewardAsset.symbol }) }}
           </template>
           <template v-if="isInsufficientXorForFee">
-            {{ t('insufficientBalanceText', { tokenSymbol: xor?.symbol }) }}
+            {{ t('insufficientBalanceText', { tokenSymbol: xor.symbol }) }}
           </template>
         </template>
         <template v-else-if="valueFundsEmpty">
@@ -57,8 +58,8 @@
           {{ t('confirmText') }}
         </template>
       </s-button>
-      <div class="check-pending-rewards" @click="checkPendingRewards">
-        {{ t('soraStaking.claimRewardsDialog.checkRewards') }} ({{ pendingRewards?.length ?? 0 }})
+      <div v-if="pendingRewards" class="check-pending-rewards" @click="checkPendingRewards">
+        {{ t('soraStaking.claimRewardsDialog.checkRewards') }} ({{ pendingRewards.length ?? 0 }})
       </div>
     </div>
   </dialog-base>

@@ -124,13 +124,13 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
         return this.t('soraStaking.validators.change');
       case ValidatorsListMode.RECOMMENDED:
         return this.isInsufficientXorForFee
-          ? this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol })
+          ? this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol ?? '' })
           : this.hasChanges
           ? this.t('soraStaking.validators.save')
           : this.t('soraStaking.validators.alreadyNominated');
       case ValidatorsListMode.SELECT:
         return this.isInsufficientXorForFee
-          ? this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol })
+          ? this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol ?? '' })
           : this.hasChanges
           ? this.t('soraStaking.validators.selected', {
               selected: this.selectedValidators.length,

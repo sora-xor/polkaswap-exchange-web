@@ -54,7 +54,7 @@ import { lazyComponent } from '@/router';
 import { formatDecimalPlaces } from '@/utils';
 
 import { soraStakingLazyComponent } from '../../router';
-import { DAY_HOURS, ERA_HOURS, SoraStakingComponents } from '../consts';
+import { ERA_HOURS, SoraStakingComponents } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
 
 type Withdraw = {

@@ -16,16 +16,15 @@
       />
     </s-form>
 
-    <div class="min-stake-warning">
+    <div v-if="stakingAsset" class="min-stake-warning">
       <s-icon name="info-16" />
       <span>
-        {{
-          t('soraStaking.newStake.minStakeWarning', { min: minNominatorBondFormatted, symbol: stakingAsset?.symbol })
-        }}
+        {{ t('soraStaking.newStake.minStakeWarning', { min: minNominatorBondFormatted, symbol: stakingAsset.symbol }) }}
       </span>
     </div>
 
     <s-button
+      v-if="stakingAsset"
       type="primary"
       class="s-typography-button--large action-button"
       :loading="parentLoading"
@@ -33,10 +32,10 @@
       @click="handleConfirm"
     >
       <template v-if="isInsufficientXorForFee">
-        {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset?.symbol }) }}
+        {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset.symbol }) }}
       </template>
       <template v-else-if="isInsufficientBalance">
-        {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset?.symbol }) }}
+        {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset.symbol }) }}
       </template>
       <template v-else-if="valueFundsEmpty">
         {{ t('buttons.enterAmount') }}
