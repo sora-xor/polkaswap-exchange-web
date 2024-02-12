@@ -243,7 +243,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @Watch('side')
   @Watch('baseAssetAddress')
   private handleSideChange(): void {
-    this.setAmountSliderValue(0);
     this.handleTabClick();
   }
 
@@ -273,6 +272,25 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @Watch('userLimitOrders')
   private checkValidation(): void {
     this.checkInputValidation();
+  }
+
+  @Watch('baseAssetAddress')
+  private resetSlider(): void {
+    this.setAmountSliderValue(0);
+  }
+
+  @Watch('side')
+  private changeAmount(): void {
+    if (!this.currentOrderBook) return;
+    const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
+    const max = getMaxValue(this.baseAsset, this.networkFee);
+
+    const hasLessBalance = maxLotSize.gt(new FPNumber(max));
+
+    if (!this.isBuySide && hasLessBalance) {
+      this.handleInputFieldBase('');
+      this.resetSlider();
+    }
   }
 
   get limitOrderType(): LimitOrderType {
