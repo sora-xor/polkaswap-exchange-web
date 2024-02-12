@@ -61,6 +61,7 @@
             active-hover-color="transparent"
           >
             <app-sidebar-item-content
+              v-if="false"
               v-button
               icon="star-16"
               title="Vote on Survey!"
@@ -136,7 +137,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @getter.settings.orderBookEnabled private orderBookEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
-  @mutation.settings.setMenuCollapsed setMenuCollapsed!: (collapsed: boolean) => void;
+  @mutation.settings.setMenuCollapsed private setMenuCollapsed!: (collapsed: boolean) => void;
 
   readonly FaucetLink = FaucetLink;
 
@@ -189,7 +190,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   collapseMenu(e?: PointerEvent) {
-    ((e?.target as HTMLElement).closest('#collapse-button') as HTMLElement).blur();
+    ((e?.target as HTMLElement | null)?.closest?.('#collapse-button') as HTMLElement | null)?.blur();
     this.setMenuCollapsed(!this.collapsed);
   }
 }
@@ -349,6 +350,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
     @include large-mobile(true) {
       position: fixed;
+      right: 0;
 
       &.visible {
         visibility: visible;
@@ -371,13 +373,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       }
     }
 
-    @include large-mobile(true) {
-      right: 0;
-    }
-
     @include large-mobile {
       visibility: visible;
       position: relative;
+      transition: all 0.5s ease-in-out;
     }
 
     @include desktop {
@@ -485,4 +484,3 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 }
 </style>
-@/modules/staking/demeter/consts
