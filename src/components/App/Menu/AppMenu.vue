@@ -384,7 +384,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     @include large-mobile {
       visibility: visible;
       position: relative;
-      transition: all 0.5s ease-in-out;
     }
 
     @include desktop {
