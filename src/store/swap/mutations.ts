@@ -67,6 +67,9 @@ const mutations = defineMutations<SwapState>()({
     state.isAvailable = isAvailable;
     state.liquiditySources = liquiditySources;
   },
+  setLiquiditySource(state, liquiditySource): void {
+    state.liquiditySources = [liquiditySource];
+  },
   selectDexId(state, dexId: number) {
     state.selectedDexId = dexId;
   },

@@ -33,7 +33,7 @@ import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {

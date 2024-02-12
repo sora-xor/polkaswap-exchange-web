@@ -15,6 +15,7 @@ export type FeatureFlags = {
   x1ex?: boolean;
   charts?: boolean;
   soraCard?: boolean;
+  orderBook?: boolean;
 };
 
 export type SettingsState = {
@@ -27,12 +28,14 @@ export type SettingsState = {
   node: Partial<Node>;
   language: string;
   displayRegions: Nullable<Intl.DisplayNames>;
+  percentFormat: Nullable<Intl.NumberFormat>;
   defaultNodes: Array<Node>;
   customNodes: Array<Node>;
   nodeAddressConnecting: string;
   nodeConnectionAllowance: boolean;
   chainGenesisHash: string;
   faucetUrl: string;
+  menuCollapsed: boolean;
   selectNodeDialogVisibility: boolean;
   selectIndexerDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;

@@ -46,7 +46,7 @@ import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
 import { delay } from '@/utils';
 
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 type TermsAndConditionsType = 't&c' | 'privacyPolicy' | 'unsupported';
 

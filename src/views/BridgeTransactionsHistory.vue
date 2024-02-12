@@ -235,6 +235,7 @@ export default class BridgeTransactionsHistory extends Mixins(
       case WALLET_CONSTS.PaginationButton.Last:
         current = this.lastPage;
         this.isLtrDirection = false;
+        break;
     }
 
     this.currentPage = current;

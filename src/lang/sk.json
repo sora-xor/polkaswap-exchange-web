@@ -60,7 +60,10 @@
             "StakingPayout": "Výplatné odmeny",
             "StakingChill": "Kľud",
             "StakingSetController": "Nastaviť ovládač {address}",
-            "StakingSetPayee": "Nastaviť príjemcu platby {address}"
+            "StakingSetPayee": "Nastaviť príjemcu platby {address}",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} za {price} {symbol2} umiestnený",
+            "OrderBookCancelLimitOrder": "Limitovaná objednávka bola zrušená",
+            "OrderBookCancelLimitOrders": "Limitné objednávky boli zrušené"
         },
         "error": {
             "Transfer": "Nepodarilo sa {action} {amount} {symbol} {direction} {address}",
@@ -92,7 +95,10 @@
             "StakingPayout": "Nepodarilo sa vyplatiť odmeny",
             "StakingChill": "Ochladiť sa nepodarilo",
             "StakingSetController": "Nepodarilo sa nastaviť ovládač {address}",
-            "StakingSetPayee": "Nepodarilo sa nastaviť príjemcu platby {address}"
+            "StakingSetPayee": "Nepodarilo sa nastaviť príjemcu platby {address}",
+            "OrderBookPlaceLimitOrder": "Nepodarilo sa zadať limitnú objednávku {amount} {symbol} za {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Limitné objednávky sa nepodarilo zrušiť",
+            "OrderBookCancelLimitOrder": "Limitovanú objednávku sa nepodarilo zrušiť"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -116,7 +122,10 @@
         "StakingPayout": "Výplatné odmeny",
         "StakingChill": "Kľud",
         "StakingSetController": "Nastaviť ovládač",
-        "StakingSetPayee": "Nastaviť príjemcu platby"
+        "StakingSetPayee": "Nastaviť príjemcu platby",
+        "OrderBookPlaceLimitOrder": "Zadať objednávku",
+        "OrderBookCancelLimitOrder": "Zrušiť objednávku",
+        "OrderBookCancelLimitOrders": "Zrušte objednávky"
     },
     "polkadotjs": {
         "noExtensions": "Rozšírenie {PolkadotJs} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",
@@ -339,7 +348,9 @@
         "referrer": "Sprostredkovateľ",
         "referral": "Doporučenie",
         "adarTxDetailsTitle": "Detaily transakcie",
-        "comment": "Komentujte"
+        "comment": "Komentujte",
+        "price": "cena",
+        "side": "Side"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Zmeňte sieť v peňaženke",
@@ -377,7 +388,9 @@
         "Explore\/Pools": "Bazény",
         "Explore\/Staking": "Stakovanie",
         "Explore\/Farming": "Farmárčenie",
-        "Staking": "Stakovanie"
+        "Staking": "Stakovanie",
+        "OrderBook": "Obchodovať",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Výmena",
@@ -391,7 +404,8 @@
         "CreatePair": "Vytvoriť pár",
         "StakingContainer": "Stakovanie",
         "Explore\/Container": "Preskúmať",
-        "SoraCard": "{Sora} Karta"
+        "SoraCard": "{Sora} Karta",
+        "OrderBook": "Obchodovať"
     },
     "social": {
         "twitter": "Twitter",
@@ -1383,5 +1397,129 @@
         }
     },
     "collapseText": "Kolaps",
-    "expandText": "Rozbaliť"
+    "expandText": "Rozbaliť",
+    "orderBook": {
+        "Buy": "Kúpiť {asset}",
+        "Sell": "Predajte {asset}",
+        "orderBook": "Kniha objednávok",
+        "marketTrades": "Trhové obchody",
+        "market": "trhu",
+        "limit": "Limit",
+        "price": "cena",
+        "total": "Celkom",
+        "amount": "čiastka",
+        "time": "čas",
+        "month": "mesiac",
+        "change": "zmeniť",
+        "cantPlaceOrder": "Nie je možné zadať objednávku",
+        "enterAmount": "Zadajte sumu",
+        "setPrice": "Stanovte cenu",
+        "dayVolume": "1D objem",
+        "stop": "Kniha zastavená",
+        "tokenPair": "Tokenový pár",
+        "book": {
+            "noAsks": "Žiadne otvorené otázky",
+            "noBids": "Žiadne otvorené ponuky"
+        },
+        "history": {
+            "tradeHistory": "História obchodu",
+            "orderHistory": "História objednávok",
+            "openOrders": "Otvorené objednávky {value}",
+            "connect": "Pripojte účet a začnite obchodovať",
+            "cancel": "Zrušiť objednávku {value}",
+            "cancelAll": "Zrušiť všetky"
+        },
+        "orderTable": {
+            "time": "čas",
+            "pair": "pár",
+            "side": "strane",
+            "filled": "naplnené",
+            "lifetime": "život",
+            "noOrders": "Žiadne rozkazy. Vytvorte si svoj prvý!"
+        },
+        "dialog": {
+            "placeMarket": "Zadať trhovú objednávku",
+            "placeLimit": "Zadajte limitnú objednávku",
+            "askCancel": "Naozaj chcete zrušiť všetky svoje otvorené objednávky?",
+            "cancelAll": "Áno, zrušiť všetky",
+            "noCancel": "Nie, nezrušte to",
+            "buy": "Kúpiť {amount} {symbol}",
+            "sell": "Predajte {amount} {symbol}",
+            "at": "za {price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "Vyberte obchodný pár",
+            "volume": "Objem",
+            "dailyChange": "Denná zmena",
+            "status": "Postavenie",
+            "total": "{amount} {symbol} na adrese {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Aktívne",
+            "placeable": "Umiestniteľné",
+            "cancelable": "Zrušiteľné",
+            "inactive": "Neaktívne"
+        },
+        "tooltip": {
+            "limitOrder": "Príkaz „Limit“ vám umožňuje špecifikovať presnú cenu, za ktorú chcete kúpiť alebo predať aktívum. Pokyn „Limit Buy“ bude vykonaný iba za špecifikovanú cenu alebo nižšiu, zatiaľ čo pokyn „Limit Sell“ bude vykonaný iba za špecifikovanú cenu alebo vyššiu. Táto kontrola zaisťuje, že nezaplatíte viac alebo nepredáte za menej, ako vám vyhovuje.",
+            "marketOrder": "„Trhový príkaz“ je príkaz na okamžitý nákup alebo predaj za najlepšiu dostupnú aktuálnu cenu. Nevyžaduje stanovenie ceny, zabezpečenie rýchlej realizácie, ale kompromisom menšej kontroly nad prijatou alebo zaplatenou cenou. Tento typ príkazu sa používa, keď je istota vykonania prioritou pred kontrolou ceny.",
+            "pairsList": "Zoznam v reálnom čase zobrazujúci aktuálne nákupné a predajné objednávky pre kryptomenu. Pomáha vám porozumieť dopytu, potenciálnemu smerovaniu cien a objemu obchodu v sieti SORA a Polkaswap DEX",
+            "bookWidget": "Živý, neustále aktualizovaný záznam nákupných (bid) a predajných (ask) objednávok na konkrétne aktívum, organizovaný podľa cenovej hladiny. Kniha objednávok zobrazuje hĺbku trhu vrátane množstiev ponúkaných aktív za rôzne ceny. Obchodníci využívajú tento podrobný pohľad na meranie trhového sentimentu, identifikáciu potenciálnej rezistencie a úrovní podpory a predvídanie cenových pohybov na základe existujúceho dopytu a ponuky.",
+            "marketWidget": "Tento widget zobrazuje tok uskutočnených obchodov na trhu v reálnom čase a poskytuje informácie o objemoch transakcií, nedávnej aktivite a aktuálnych trhových trendoch. Pozorovaním načasovania, ceny a veľkosti skutočných obchodov môžu obchodníci získať prehľad o dynamike trhu a sentimente, čo im pomôže odhaliť obchodné príležitosti a robiť informované rozhodnutia.",
+            "txDetails": {
+                "orderType": "Príkaz „Kúpiť“ bude vykonaný iba za špecifikovanú cenu alebo nižšiu, zatiaľ čo pokyn „Predať“ sa vykoná iba za špecifikovanú cenu alebo vyššiu. Táto kontrola zaisťuje, že nezaplatíte viac alebo nepredáte za menej, ako vám vyhovuje.",
+                "expiryDate": "„Dátum exspirácie“ je konečný termín na vykonanie vašej objednávky. Ak trh nedosiahne vami určenú cenu pred týmto dátumom, objednávka sa automaticky zruší. Nie ste viazaní na večné čakanie, ak sa podmienky na trhu nezhodujú s vašimi obchodnými preferenciami.",
+                "amount": "„Suma“ sa vzťahuje na celkový počet aktív, ktoré chcete kúpiť alebo predať vo svojej objednávke. Je dôležité špecifikovať, keďže to určuje veľkosť vašej transakcie, čo ovplyvňuje celkové náklady na nákupné objednávky alebo výnosy za predajné objednávky.",
+                "limit": "„Limitná cena“ je presná cena, ktorú ste nastavili pre limitnú objednávku. Obchod sa uskutoční iba vtedy, keď trhová cena aktíva dosiahne vašu limitnú cenu, čím sa zabezpečí, že nenakúpite nad alebo nepredáte pod túto špecifikovanú hodnotu.",
+                "locked": "„Zamknuté“ zobrazuje množstvo aktív, ktoré sa majú držať, kým objednávka prebieha."
+            },
+            "bookStatus": {
+                "active": "Plná funkcia obchodovania povolená. Môžete zadať nové objednávky alebo zrušiť existujúce.",
+                "placeable": "Obmedzená funkčnosť. Môžete zadať nové objednávky a zrušiť existujúce, ale niektoré funkcie nemusia byť k dispozícii.",
+                "cancelable": "Môžete zrušiť iba existujúce objednávky. Zadávanie novej objednávky je momentálne zakázané.",
+                "inactive": "Všetky obchodné aktivity sú momentálne zastavené. V tejto chvíli nie je možné zadať ani zrušiť žiadne objednávky."
+            }
+        },
+        "txDetails": {
+            "orderType": "typ objednávky",
+            "limitPrice": "limitná cena",
+            "expiryDate": "dátum spotreby"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "Zadaná cena je príliš presná na výpočet",
+                "reading": "Prekročená presnosť: Zadaná suma\/cena má príliš veľa desatinných miest. Zadajte hodnotu s menším počtom desatinných miest"
+            },
+            "marketNotAvailable": {
+                "reason": "Nie je k dispozícii dostatok objednávok na splnenie tejto objednávky",
+                "reading": "Obmedzenie trhového príkazu: Nie je k dispozícii dostatok príkazov na splnenie tohto trhového limitného príkazu. Upravte veľkosť objednávky alebo počkajte na odoslanie ďalších objednávok"
+            },
+            "exceedsSpread": {
+                "reason": "Cena prekročila spread",
+                "reading": "Prekročená cena: trhová cena ponuky alebo dopytu prekročila svoju dopytovú\/ponúkanú cenu"
+            },
+            "spotLimit": {
+                "reason": "Obchodná strana bola naplnená",
+                "reading": "Limit cenového rozpätia: Každá strana knihy objednávok je obmedzená na 1024 jedinečných cenových bodov. Vyberte cenu v rámci existujúceho rozsahu alebo počkajte, kým sa uvoľní miesto"
+            },
+            "accountLimit": {
+                "reason": "Prebieha príliš veľa objednávok",
+                "reading": "Dosiahnutý limit: Každý účet je obmedzený na 1024 limitných príkazov. Počkajte, kým sa splnia niektoré z vašich objednávok"
+            },
+            "singlePriceLimit": {
+                "reason": "Za túto cenu prebieha príliš veľa objednávok",
+                "reading": "Dosiahnutý limit: Každá pozícia je obmedzená na 1024 limitných príkazov. Počkajte, kým sa splnia niektoré objednávky"
+            },
+            "outOfBounds": {
+                "reading": "Prekročený rozsah blockchainu: Vami zadaná suma je mimo povoleného rozsahu blockchainu. Min: {min} ; Max: {max}",
+                "reason": "Suma nespĺňa rozsah blockchainu"
+            }
+        },
+        "orderStatus": {
+            "active": "Aktívne",
+            "canceled": "Zrušené",
+            "expired": "Platnosť vypršala",
+            "filled": "Naplnené"
+        }
+    }
 }

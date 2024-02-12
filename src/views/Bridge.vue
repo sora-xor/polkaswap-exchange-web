@@ -78,7 +78,9 @@
                 v-if="changeSenderWalletEvm"
                 class="connect-wallet-btn disconnect"
                 @click="resetEvmProviderConnection"
-              >{{ t('disconnectWalletText') }}</span>
+              >
+                {{ t('disconnectWalletText') }}
+              </span>
             </div>
           </div>
           <s-button
@@ -141,7 +143,9 @@
                 v-if="changeRecipientWalletEvm"
                 class="connect-wallet-btn disconnect"
                 @click="resetEvmProviderConnection"
-              >{{ t('disconnectWalletText') }}</span>
+              >
+                {{ t('disconnectWalletText') }}
+              </span>
             </div>
           </div>
           <s-button

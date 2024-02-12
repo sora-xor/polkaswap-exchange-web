@@ -147,8 +147,8 @@
     </s-form>
     <swap-chart
       v-if="chartsEnabled"
-      :token-from="tokenFrom"
-      :token-to="tokenTo"
+      :base-asset="tokenFrom"
+      :quote-asset="tokenTo"
       :is-available="isAvailable"
       class="swap-chart"
     />
@@ -217,11 +217,12 @@ export default class Swap extends Mixins(
   @state.swap.isAvailable isAvailable!: boolean;
   @state.swap.swapQuote private swapQuote!: Nullable<SwapQuote>;
   @state.swap.allowLossPopup private allowLossPopup!: boolean;
+  @state.router.prev private prevRoute!: Nullable<PageNames>;
 
   @getter.assets.xor private xor!: AccountAsset;
-  @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
+  @getter.swap.swapLiquiditySource liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.settings.chartsFlagEnabled chartsFlagEnabled!: boolean;
-  @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
@@ -382,10 +383,12 @@ export default class Swap extends Mixins(
     );
   }
 
-  created() {
+  created(): void {
     this.withApi(async () => {
       this.parseCurrentRoute();
-      if (this.tokenFrom && this.tokenTo) {
+      // Need to wait the previous page beforeDestroy somehow to set the route params
+      // TODO: [STEFAN]: add the core logic for each component using common Mixin + vuex router module
+      if (this.tokenFrom && this.tokenTo && this.prevRoute !== PageNames.OrderBook) {
         this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
       } else if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
         await this.setTokenFromAddress(this.firstRouteAddress);
