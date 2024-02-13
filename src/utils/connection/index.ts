@@ -129,7 +129,7 @@ class NodesConnection {
     const { node, onError, currentNodeIndex = 0, ...restOptions } = options;
 
     const defaultNode = this.nodeList[currentNodeIndex];
-    const requestedNode = (node || (this.node?.address ? this.node : defaultNode)) as Node;
+    const requestedNode = node ?? this.node ?? defaultNode;
 
     try {
       await this.setNode({ node: requestedNode, onError, ...restOptions });
@@ -137,13 +137,13 @@ class NodesConnection {
       onError?.(error, requestedNode);
 
       // if connection failed to node in state, reset node in state
-      if (requestedNode && requestedNode.address === this.node?.address) {
+      if (requestedNode.address === this.node?.address) {
         this.resetNode();
       }
 
       // loop through the node list
       if (this.node?.address || currentNodeIndex !== this.defaultNodes.length - 1) {
-        const nextIndex = requestedNode?.address === defaultNode.address ? currentNodeIndex + 1 : 0;
+        const nextIndex = requestedNode.address === defaultNode.address ? currentNodeIndex + 1 : 0;
         await this.connectToNode({ onError, currentNodeIndex: nextIndex, ...restOptions });
       }
 
