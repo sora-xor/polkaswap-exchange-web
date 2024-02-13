@@ -6,6 +6,7 @@ import type { Node } from '@/types/nodes';
 import storage, { settingsStorage } from '@/utils/storage';
 
 import type { Ad, FeatureFlags, SettingsState } from './types';
+import type { ColorType } from '../../consts/color';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<SettingsState>()({
@@ -135,6 +136,9 @@ const mutations = defineMutations<SettingsState>()({
   },
   setAdsArray(state, arr: Array<Ad>): void {
     state.adsArray = arr;
+  },
+  setColorType(state, type: ColorType): void {
+    state.colorType = type;
   },
 });
 

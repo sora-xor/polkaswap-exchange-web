@@ -3,6 +3,7 @@ import { getLocale } from '@/lang';
 import storage, { settingsStorage } from '@/utils/storage';
 
 import type { SettingsState } from './types';
+import type { ColorType } from '../../consts/color';
 
 function initialState(): SettingsState {
   const node = settingsStorage.get('node');
@@ -43,6 +44,7 @@ function initialState(): SettingsState {
     internetConnectionSpeed: undefined,
     screenBreakpointClass: BreakpointClass.LargeDesktop,
     adsArray: [],
+    colorType: 'classic' as ColorType,
   };
 }
 

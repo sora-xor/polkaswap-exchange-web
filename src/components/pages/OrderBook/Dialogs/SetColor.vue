@@ -50,26 +50,8 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-
-type ColorType = 'classic' | 'deficiency' | 'traditional';
-type DirectionType = 'classic' | 'inverse';
-type Hex = `#${string}`;
-
-interface Side {
-  buy: Hex;
-  sell: Hex;
-}
-
-interface Color {
-  name: string;
-  type: ColorType;
-  side: Side;
-}
-
-interface ColorDirection {
-  name: string;
-  type: DirectionType;
-}
+import type { ColorDirection, Color, ColorType, DirectionType } from '@/consts/color';
+import { mutation, state } from '@/store/decorators';
 
 @Component({
   components: {
@@ -78,8 +60,19 @@ interface ColorDirection {
   },
 })
 export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixin) {
-  optionType = 'classic';
-  colorDirection = 'classic';
+  @state.settings.colorType type!: ColorType;
+
+  @mutation.settings.setColorType setColorType!: (type: ColorType) => void;
+
+  colorDirection: DirectionType = 'classic';
+
+  get optionType(): ColorType {
+    return this.type;
+  }
+
+  set optionType(type: ColorType) {
+    this.setColorType(type);
+  }
 
   get colorOptions(): Color[] {
     return [

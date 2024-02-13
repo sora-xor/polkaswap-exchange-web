@@ -1,4 +1,5 @@
 import type { BreakpointClass, MarketAlgorithms } from '@/consts';
+import type { ColorType } from '@/consts/color';
 import type { Node } from '@/types/nodes';
 
 import type { Subscription } from 'rxjs';
@@ -51,6 +52,7 @@ export type SettingsState = {
   internetConnectionSpeed: Nullable<number>;
   screenBreakpointClass: BreakpointClass;
   adsArray: Array<Ad>;
+  colorType: ColorType;
 };
 
 export type NodesHashTable = {
