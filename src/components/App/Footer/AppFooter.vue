@@ -130,7 +130,6 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   @state.settings.selectNodeDialogVisibility selectNodeDialogVisibility!: boolean;
   @state.settings.node connectedNode!: Partial<Node>;
   @getter.settings.nodeList nodeList!: Array<Node>;
-  @getter.settings.connectingNode connectingNode!: Nullable<Node>;
   @getter.settings.nodeIsConnected isNodeConnected!: boolean;
   @mutation.settings.setSelectNodeDialogVisibility setSelectNodeDialogVisibility!: (flag: boolean) => void;
 
@@ -138,6 +137,12 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   @action.settings.addCustomNode addCustomNode!: (node: Node) => Promise<void>;
   @action.settings.updateCustomNode updateCustomNode!: (args: { address: string; node: Node }) => Promise<void>;
   @action.settings.removeCustomNode removeCustomNode!: (node: Node) => Promise<void>;
+
+  private get connectingNode(): Nullable<Node> {
+    if (!this.nodeAddressConnecting) return null;
+
+    return this.nodeList.find((node) => node.address === this.nodeAddressConnecting);
+  }
 
   private get isNodeConnecting(): boolean {
     return !!this.connectingNode;

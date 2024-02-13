@@ -50,7 +50,3 @@ export type SettingsState = {
   screenBreakpointClass: BreakpointClass;
   adsArray: Array<Ad>;
 };
-
-export type NodesHashTable = {
-  [address: string]: Node;
-};
