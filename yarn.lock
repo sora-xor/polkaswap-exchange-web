@@ -2443,10 +2443,10 @@
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
 
-"@soramitsu/soraneo-wallet-web@1.29.4":
-  version "1.29.4"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.29.4.tgz#dd39840bd680449630530ea537ba3d503acb07a0"
-  integrity sha512-3ALaMj7rPuHiNQGymiRYIZXKeDQfRBI+DoKXxq3NMu+lK52bb4lsnMoUazwck/cFJ5492mAH0P3GWfupwqX6rA==
+"@soramitsu/soraneo-wallet-web@1.29.6":
+  version "1.29.6"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.29.6.tgz#6d0fe0a585157c6e20f737d043e61bd9feab1536"
+  integrity sha512-XoIwJ9u/5snGJjZ3rO12MYeXxhwWdMmuK87zEC34CJ6mdvx/Jl89QN1Fp+2H5/HNNwOoTUYN1LLCOhB1i4/i0A==
   dependencies:
     "@polkadot/vue-identicon" "2.12.1"
     "@sora-substrate/util" "1.29.1"
@@ -3109,7 +3109,7 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@typescript-eslint/eslint-plugin@^5.2.0":
+"@typescript-eslint/eslint-plugin@^5.62.0":
   version "5.62.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.62.0.tgz#aeef0328d172b9e37d9bab6dbc13b87ed88977db"
   integrity sha512-TiZzBSJja/LbhNPvk6yc0JrX9XqhQ0hdh6M2svYfsHGejaKFIAGd9MQ+ERIMzLGlN/kZoYIgdxFV0PuljTKXag==
@@ -3125,7 +3125,7 @@
     semver "^7.3.7"
     tsutils "^3.21.0"
 
-"@typescript-eslint/parser@^5.2.0":
+"@typescript-eslint/parser@^5.62.0":
   version "5.62.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.62.0.tgz#1b63d082d849a2fcae8a569248fbe2ee1b8a56c7"
   integrity sha512-VlJEV0fOQ7BExOsHYAGrgbEiZoi8D+Bl2+f6V2RrXerRSylnp+ZBHmPvaIa8cz0Ajx7WO7Z5RqfgYg7ED1nRhA==
