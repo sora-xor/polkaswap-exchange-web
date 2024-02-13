@@ -965,19 +965,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
 .order-book-choose-pair {
   width: 100%;
-  background: var(--base-day-background, #f4f0f1);
+  background: var(--s-color-base-background);
+  box-shadow: var(--s-shadow-element);
   border-radius: var(--s-border-radius-small);
   margin-bottom: $inner-spacing-mini;
   padding: 10px $basic-spacing;
 
   &:hover {
     cursor: pointer;
-  }
-}
-
-[design-system-theme='dark'] {
-  .order-book-choose-pair {
-    background: var(--s-color-base-background);
   }
 }
 </style>
