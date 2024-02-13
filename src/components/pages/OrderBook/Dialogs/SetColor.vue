@@ -5,8 +5,8 @@
       <s-radio-group v-model="optionType" class="color-dialog__block s-flex">
         <s-radio
           v-for="option in colorOptions"
-          :key="option.name"
-          :label="option.name"
+          :key="option.type"
+          :label="option.type"
           :value="option.type"
           size="medium"
           class="color-dialog__item s-flex"
@@ -14,8 +14,8 @@
           <div class="color-theme option s-flex">
             <div class="option__name">{{ option.name }}</div>
             <div class="color-theme__picture">
-              <span class="sell-color" />
-              <span class="buy-color" />
+              <span class="sell-color" :style="`background-color: ${option.side.sell}`" />
+              <span class="buy-color" :style="`background-color: ${option.side.buy}`" />
             </div>
           </div>
         </s-radio>
@@ -26,15 +26,15 @@
       <s-radio-group v-model="colorDirection" class="color-dialog__block s-flex">
         <s-radio
           v-for="option in colorDirections"
-          :key="option.name"
-          :label="option.name"
+          :key="option.type"
+          :label="option.type"
           :value="option.type"
           size="medium"
-          class="statistics-dialog__item s-flex"
+          class="color-dialog__item s-flex"
         >
           <div class="color-preference option s-flex">
             <div class="option__name">{{ option.name }}</div>
-            <div class="color-preference__direction" :class="getComputedPreferenceClasses(option.type)">
+            <div class="color-preference__direction" :class="`${option.type}`">
               <s-icon name="arrows-arrow-top-24" size="18" />
               <s-icon name="arrows-arrow-bottom-24" size="18" />
             </div>
@@ -55,10 +55,15 @@ type ColorType = 'classic' | 'deficiency' | 'traditional';
 type DirectionType = 'classic' | 'inverse';
 type Hex = `#${string}`;
 
+interface Side {
+  buy: Hex;
+  sell: Hex;
+}
+
 interface Color {
   name: string;
   type: ColorType;
-  color: Hex;
+  side: Side;
 }
 
 interface ColorDirection {
@@ -73,14 +78,14 @@ interface ColorDirection {
   },
 })
 export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixin) {
-  optionType = '';
-  colorDirection = '';
+  optionType = 'classic';
+  colorDirection = 'classic';
 
   get colorOptions(): Color[] {
     return [
-      { name: 'Classic', type: 'classic', hex: '#345134' },
-      { name: 'Color deficiency', type: 'deficiency' },
-      { name: 'Traditional', type: 'traditional' },
+      { name: 'Classic', type: 'classic', side: { buy: '#34AD87', sell: '#F754A3' } },
+      { name: 'Color deficiency', type: 'deficiency', side: { buy: '#448BF1', sell: '#D07F3E' } },
+      { name: 'Traditional', type: 'traditional', side: { buy: '#75A390', sell: '#EB001B' } },
     ];
   }
 
@@ -90,8 +95,6 @@ export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixi
       { name: 'Green down / Red up', type: 'inverse' },
     ];
   }
-
-  getComputedPreferenceClasses(type: DirectionType): any {}
 }
 </script>
 
@@ -135,6 +138,38 @@ export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixi
     font-size: 18px;
     font-weight: 600;
   }
+
+  .classic {
+    i:first-of-type {
+      color: var(--s-color-status-success);
+    }
+
+    i:not(:first-of-type) {
+      color: var(--s-color-status-error);
+    }
+  }
+
+  .inverse {
+    i:first-of-type {
+      color: var(--s-color-status-error);
+    }
+
+    i:not(:first-of-type) {
+      color: var(--s-color-status-success);
+    }
+  }
+}
+
+.color-preference {
+  &__direction {
+    position: relative;
+  }
+
+  .s-icon-arrows-arrow-bottom-24 {
+    position: absolute;
+    left: 13px;
+    top: 6px;
+  }
 }
 
 .color-theme {
@@ -149,20 +184,12 @@ export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixi
       padding-right: 0;
     }
 
-    .sell-color {
-      background-color: red;
-    }
-
     .buy-color {
-      background-color: green;
       outline: 1px solid #f4f0f1;
       position: absolute;
       top: 6px;
       left: 10px;
     }
-  }
-
-  .color-prefernce {
   }
 }
 </style>
