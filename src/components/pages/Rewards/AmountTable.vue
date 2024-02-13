@@ -78,8 +78,8 @@
 </template>
 
 <script lang="ts">
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { Component, Prop, Mixins, ModelSync } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';

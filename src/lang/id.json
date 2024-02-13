@@ -96,9 +96,9 @@
             "StakingChill": "Gagal mendinginkan",
             "StakingSetController": "Gagal menyetel pengontrol {address}",
             "StakingSetPayee": "Gagal menetapkan penerima pembayaran {address}",
-            "OrderBookPlaceLimitOrder": "Gagal menempatkan limit order {amount} {symbol} pada {price} {symbol}",
-            "OrderBookCancelLimitOrder": "Gagal membatalkan pesanan batas {amount} {symbol} pada {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Gagal membatalkan pesanan batas"
+            "OrderBookPlaceLimitOrder": "Gagal menempatkan limit order {amount} {symbol} pada {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Gagal membatalkan pesanan batas",
+            "OrderBookCancelLimitOrder": "Gagal membatalkan pesanan batas"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
@@ -389,7 +389,8 @@
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
-        "OrderBook": "Berdagang"
+        "OrderBook": "Berdagang",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Swap",

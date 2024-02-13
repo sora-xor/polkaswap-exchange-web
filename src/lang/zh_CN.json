@@ -96,9 +96,9 @@
             "StakingChill": "未能冷却",
             "StakingSetController": "无法设置控制器{address}",
             "StakingSetPayee": "无法设置收款人{address}",
-            "OrderBookPlaceLimitOrder": "未能以{price} } {symbol}下达{amount} {symbol}限价单",
-            "OrderBookCancelLimitOrder": "未能取消{price} {symbol}的{amount} {symbol}限价订单",
-            "OrderBookCancelLimitOrders": "取消限价单失败"
+            "OrderBookPlaceLimitOrder": "未能以{price} } {symbol2}下达{amount} {symbol}限价单",
+            "OrderBookCancelLimitOrders": "取消限价单失败",
+            "OrderBookCancelLimitOrder": "取消限价单失败"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
@@ -389,7 +389,8 @@
         "Explore\/Staking": "质押",
         "Explore\/Farming": "农耕",
         "Staking": "质押",
-        "OrderBook": "贸易"
+        "OrderBook": "贸易",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "兑换",

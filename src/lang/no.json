@@ -96,9 +96,9 @@
             "StakingChill": "Klarte ikke å slappe av",
             "StakingSetController": "Kunne ikke angi kontrolleren {address}",
             "StakingSetPayee": "Kunne ikke angi betalingsmottaker {address}",
-            "OrderBookPlaceLimitOrder": "Kunne ikke legge inn grensebestilling på {amount} {symbol} til {price} {symbol}",
-            "OrderBookCancelLimitOrder": "Kunne ikke kansellere grensebestillingen på {amount} {symbol} til {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Kunne ikke kansellere begrensede bestillinger"
+            "OrderBookPlaceLimitOrder": "Kunne ikke legge inn grensebestilling på {amount} {symbol} til {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Kunne ikke kansellere begrensede bestillinger",
+            "OrderBookCancelLimitOrder": "Kunne ikke kansellere begrenset ordre"
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",
@@ -389,7 +389,8 @@
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Bytte",

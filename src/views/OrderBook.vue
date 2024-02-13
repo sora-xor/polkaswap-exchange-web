@@ -32,14 +32,17 @@
 
 <script lang="ts">
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import isEmpty from 'lodash/fp/isEmpty';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
+import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { BreakpointClass, Components, PageNames } from '@/consts';
 import { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 
 import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -51,14 +54,16 @@ import type { OrderBook, OrderBookId } from '@sora-substrate/liquidity-proxy';
     CustomisePageWidget: lazyComponent(Components.CustomisePageWidget),
   },
 })
-export default class OrderBookView extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  @state.orderBook.orderBooks orderBooks!: Record<string, OrderBook>;
-  @state.settings.screenBreakpointClass responsiveClass!: BreakpointClass;
+export default class OrderBookView extends Mixins(TranslationMixin, mixins.LoadingMixin, SelectedTokenRouteMixin) {
+  @state.orderBook.orderBooks private orderBooks!: Record<string, OrderBook>;
+  @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
 
   @getter.settings.orderBookEnabled orderBookEnabled!: Nullable<boolean>;
-  @getter.orderBook.orderBookId private orderBookId!: string;
+  @getter.orderBook.orderBookId orderBookId!: string;
+  @getter.orderBook.baseAsset private baseAsset!: Nullable<RegisteredAccountAsset>;
+  @getter.orderBook.quoteAsset private quoteAsset!: Nullable<RegisteredAccountAsset>;
 
-  @mutation.orderBook.setCurrentOrderBook setCurrentOrderBook!: (orderBookId: OrderBookId) => void;
+  @mutation.orderBook.setCurrentOrderBook private setCurrentOrderBook!: (orderBookId: OrderBookId) => void;
 
   @action.orderBook.getOrderBooksInfo private getOrderBooksInfo!: AsyncFnWithoutArgs;
   @action.orderBook.subscribeToOrderBookStats private subscribeToOrderBookStats!: AsyncFnWithoutArgs;
@@ -68,8 +73,15 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
   settingsVisibility = true;
 
   @Watch('orderBookId', { immediate: true })
-  private updateSubscription() {
+  private updateSubscription(): void {
     this.subscribeToOrderBookStats();
+    if (!(this.firstRouteAddress && this.secondRouteAddress)) {
+      return;
+    }
+    // We need to check only base asset cuz quote might be only XOR for now
+    if (this.baseAsset?.address !== this.firstRouteAddress) {
+      this.updateRouteAfterSelectTokens(this.baseAsset, this.quoteAsset);
+    }
   }
 
   @Watch('orderBookEnabled', { immediate: true })
@@ -79,24 +91,53 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
     }
   }
 
-  private checkCurrentOrderBook(): void {
-    if (!this.orderBookId) {
-      const book = Object.values(this.orderBooks)[0];
-
-      if (book) {
-        this.setCurrentOrderBook(book.orderBookId);
-      }
-    }
-  }
-
   get isScreenHuge(): boolean {
     return this.responsiveClass === BreakpointClass.HugeDesktop;
   }
 
-  async mounted(): Promise<void> {
-    await this.withApi(async () => {
+  /** Overrides SelectedTokenRouteMixin */
+  async setData(params: { firstAddress: string; secondAddress: string }): Promise<void> {
+    if (isEmpty(this.orderBooks)) {
       await this.getOrderBooksInfo();
-      this.checkCurrentOrderBook();
+    }
+    const orderbooks = Object.values(this.orderBooks);
+
+    const orderbook = orderbooks.find(
+      ({ orderBookId }) => orderBookId.base === params.firstAddress && orderBookId.quote === params.secondAddress
+    );
+    if (orderbook) {
+      this.setCurrentOrderBook(orderbook.orderBookId);
+    }
+  }
+
+  created(): void {
+    this.withApi(async () => {
+      await this.getOrderBooksInfo();
+      if (this.orderBookId) {
+        this.updateRouteAfterSelectTokens(this.baseAsset, this.quoteAsset);
+        return;
+      }
+
+      const orderbooks = Object.values(this.orderBooks);
+      this.parseCurrentRoute();
+      if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
+        const orderbook = orderbooks.find(
+          ({ orderBookId }) =>
+            orderBookId.base === this.firstRouteAddress && orderBookId.quote === this.secondRouteAddress
+        );
+        if (orderbook) {
+          this.setCurrentOrderBook(orderbook.orderBookId);
+        }
+      }
+
+      // If it's still not set, we need to select 1st from the list
+      if (!this.orderBookId) {
+        const orderbook = orderbooks[0];
+        if (orderbook) {
+          this.setCurrentOrderBook(orderbook.orderBookId);
+          this.updateRouteAfterSelectTokens(this.baseAsset, this.quoteAsset);
+        }
+      }
     });
   }
 
@@ -177,7 +218,6 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
       .column-3 {
         .order-history-header-filter-buttons {
-          display: flex;
           flex-direction: column;
         }
       }
@@ -195,8 +235,9 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 
       .column-3 {
         .order-history-header-cancel-buttons {
-          display: flex;
           flex-direction: column;
+          justify-content: flex-start;
+          flex: none;
         }
       }
     }

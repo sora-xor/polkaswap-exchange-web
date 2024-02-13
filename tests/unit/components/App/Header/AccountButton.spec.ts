@@ -3,7 +3,7 @@
 //
 // import AccountButton from '@/components/App/Header/AccountButton.vue';
 // import { Account } from '@soramitsu/soraneo-wallet-web/lib/types/common';
-// import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+// import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 // import { useDescribe, localVue } from '../../../../utils';
 // import { MOCK_ACCOUNT } from '../../../../mocks/account';
 // import { formatAddress } from '../../../../../src/utils';

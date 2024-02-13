@@ -36,6 +36,10 @@ export default class SelectedTokenRouteMixin extends Vue {
 
     const bothArePresented = !!(firstAddress && secondAddress);
     switch (this.$route.name) {
+      case PageNames.OrderBook:
+        // Second asset address should be used as quote for Orderbook /trade/base/quote
+        // only XOR for now, like /trade/xst/xor
+        return bothArePresented && secondAddress === XOR.address;
       case PageNames.RemoveLiquidity:
         return bothArePresented && api.dex.baseAssetsIds.includes(firstAddress);
       case PageNames.AddLiquidity: {
@@ -75,6 +79,7 @@ export default class SelectedTokenRouteMixin extends Vue {
    * (b) `false` - when assets are equal;
    * (c) SWAP: `true` when both parameters are parsed as asset ids;
    * (d) ADD/REMOVE LIQUIDITY: `true` when both parameters are parsed as asset ids and first is from baseAssetIds;
+   * (e) ORDERBOOK: `true` is second === correct quote asset
    */
   get isValidRoute(): boolean {
     const { first, second } = this.$route.params;
@@ -84,7 +89,7 @@ export default class SelectedTokenRouteMixin extends Vue {
   }
 
   /**
-   * Sould be used in Add liquidity & Swap during mount
+   * Should be used in Add liquidity & Swap during mount
    *
    * Returns is valid state for routing life cycle
    */

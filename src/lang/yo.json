@@ -96,9 +96,9 @@
             "StakingChill": "Kuna lati biba",
             "StakingSetController": "Kuna lati ṣeto oludari {address}",
             "StakingSetPayee": "Kuna lati ṣeto payee {address}",
-            "OrderBookPlaceLimitOrder": "O kuna lati gbe aṣẹ iye to fun {symbol} {amount} {price} {symbol}",
-            "OrderBookCancelLimitOrder": "O kuna lati fagilee aṣẹ opin ti {amount} {symbol} ni {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Kuna lati fagilee awọn ibere opin"
+            "OrderBookPlaceLimitOrder": "O kuna lati gbe aṣẹ iye to fun {symbol} {amount} {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Kuna lati fagilee awọn ibere opin",
+            "OrderBookCancelLimitOrder": "Kuna lati fagilee aṣẹ opin"
         },
         "ReferralReserveXor": "Iwe adehun XOR",
         "ReferralUnreserveXor": "Yọ XOR kuro",
@@ -389,7 +389,8 @@
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Ogbin",
         "Staking": "Staking",
-        "OrderBook": "Iṣowo"
+        "OrderBook": "Iṣowo",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Iŕopo",

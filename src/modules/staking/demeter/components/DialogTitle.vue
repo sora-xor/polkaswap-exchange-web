@@ -46,4 +46,3 @@ export default class DialogTitle extends Mixins() {
   }
 }
 </style>
-@/modules/staking/demeter/types

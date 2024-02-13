@@ -96,9 +96,9 @@
             "StakingChill": "Ochladit se nepodařilo",
             "StakingSetController": "Nepodařilo se nastavit ovladač {address}",
             "StakingSetPayee": "Nepodařilo se nastavit příjemce platby {address}",
-            "OrderBookPlaceLimitOrder": "Nepodařilo se zadat limitní objednávku ve výši {amount} {symbol} za {price} {symbol}",
-            "OrderBookCancelLimitOrder": "Nepodařilo se zrušit limitní objednávku ve výši {amount} {symbol} za {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Limitní objednávky se nepodařilo zrušit"
+            "OrderBookPlaceLimitOrder": "Nepodařilo se zadat limitní objednávku ve výši {amount} {symbol} za {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Limitní objednávky se nepodařilo zrušit",
+            "OrderBookCancelLimitOrder": "Limitní příkaz se nepodařilo zrušit"
         },
         "ReferralReserveXor": "Vázat XOR",
         "ReferralUnreserveXor": "Zrušit vazbu XOR",
@@ -389,7 +389,8 @@
         "Explore\/Staking": "Stakování",
         "Explore\/Farming": "Farming",
         "Staking": "Stakování",
-        "OrderBook": "Obchod"
+        "OrderBook": "Obchod",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Swap",

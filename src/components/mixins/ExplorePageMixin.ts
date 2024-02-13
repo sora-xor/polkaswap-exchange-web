@@ -1,12 +1,16 @@
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
+import { KnownAssets } from '@sora-substrate/util/build/assets/consts';
+import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
 import { getter } from '@/store/decorators';
 
 import ScrollableTableMixin from './ScrollableTableMixin';
+import TranslationMixin from './TranslationMixin';
+
+import type { Asset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
-export default class ExplorePageMixin extends Mixins(ScrollableTableMixin) {
+export default class ExplorePageMixin extends Mixins(ScrollableTableMixin, TranslationMixin) {
   @Prop({ default: '', type: String }) readonly exploreQuery!: string;
   @Prop({ default: false, type: Boolean }) readonly isAccountItemsOnly!: boolean;
   @Watch('exploreQuery')
@@ -14,10 +18,24 @@ export default class ExplorePageMixin extends Mixins(ScrollableTableMixin) {
     this.currentPage = 1;
   }
 
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.wallet.account.isLoggedIn public isLoggedIn!: boolean;
+  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.assets.whitelistAssets public whitelistAssets!: Array<Asset>;
 
-  order = '';
-  property = '';
+  order = SortDirection.DESC;
+  property = 'tvl';
+
+  get loadingState(): boolean {
+    return this.parentLoading || this.loading;
+  }
+
+  get allowedAssets(): Array<Asset> {
+    // if whitelist is not available, use KnownAssets
+    if (!this.whitelistAssets.length) {
+      return [...KnownAssets];
+    }
+    return this.whitelistAssets;
+  }
 
   get pricesAvailable(): boolean {
     return Object.keys(this.fiatPriceObject).length > 0;
@@ -72,7 +90,7 @@ export default class ExplorePageMixin extends Mixins(ScrollableTableMixin) {
     await this.updateExploreData();
   }
 
-  changeSort({ order = '', property = '' } = {}): void {
+  changeSort({ order = SortDirection.DESC, property = '' } = {}): void {
     this.order = order;
     this.property = property;
   }

@@ -22,6 +22,7 @@ function initialState(): SettingsState {
     node: node ? JSON.parse(node) : {},
     language: getLocale(),
     displayRegions: undefined,
+    percentFormat: undefined,
     defaultNodes: [],
     customNodes: customNodes ? JSON.parse(customNodes) : [],
     nodeAddressConnecting: '',

@@ -97,7 +97,7 @@
           v-if="stakingInitialized"
           :label="t('soraStaking.info.redeemable')"
           :value="redeemableFundsFormatted"
-          :asset-symbol="rewardAsset?.symbol"
+          :asset-symbol="stakingAsset?.symbol"
           :fiat-value="redeemableFundsFiat"
         />
         <info-line
@@ -286,7 +286,7 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
     this.showPendingRewardsDialog = true;
   }
 
-  handleStake() {
+  handleStake(): void {
     this.showStakeDialog = false;
   }
 
