@@ -28,6 +28,7 @@ export type SettingsState = {
   node: Partial<Node>;
   language: string;
   displayRegions: Nullable<Intl.DisplayNames>;
+  percentFormat: Nullable<Intl.NumberFormat>;
   defaultNodes: Array<Node>;
   customNodes: Array<Node>;
   nodeAddressConnecting: string;

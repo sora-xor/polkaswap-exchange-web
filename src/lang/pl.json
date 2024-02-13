@@ -96,9 +96,9 @@
             "StakingChill": "Nie udało się ochłodzić",
             "StakingSetController": "Nie udało się ustawić kontrolera {address}",
             "StakingSetPayee": "Nie udało się ustawić odbiorcy płatności {address}",
-            "OrderBookPlaceLimitOrder": "Nie udało się złożyć zamówienia z limitem {amount} {symbol} po {price} {symbol}",
-            "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem {amount} {symbol} po {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Nie udało się anulować zleceń z limitem"
+            "OrderBookPlaceLimitOrder": "Nie udało się złożyć zamówienia z limitem {amount} {symbol} po {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Nie udało się anulować zleceń z limitem",
+            "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
@@ -389,7 +389,8 @@
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Wymiana",

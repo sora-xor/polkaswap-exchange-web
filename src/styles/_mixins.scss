@@ -308,15 +308,22 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   font-weight: 600;
 }
 
-@mixin scrollbar($marginOffset: 0, $verticalRight: 2px, $isLeft: false) {
+@mixin scrollbar(
+  $marginOffset: 0,
+  $verticalRight: 2px,
+  $isLeft: false,
+  $withHorizontalScroll: false,
+  $hideVerticalScroll: false
+) {
   &.el-scrollbar {
     margin-left: $marginOffset;
     margin-right: $marginOffset;
 
     & > .el-scrollbar__wrap {
-      overflow-x: hidden;
-      margin-bottom: 0px !important; // to disable element-ui negative margin
-
+      @if $withHorizontalScroll == false {
+        overflow-x: hidden;
+        margin-bottom: 0px !important; // to disable element-ui negative margin
+      }
       &,
       & > .el-scrollbar__view {
         display: flex;
@@ -324,13 +331,15 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         flex-flow: column nowrap;
       }
     }
-    & > .el-scrollbar__bar {
-      &.is-vertical {
-        right: $verticalRight;
+    & > .el-scrollbar__bar.is-vertical {
+      right: $verticalRight;
 
-        @if $isLeft == true {
-          left: 0;
-        }
+      @if $isLeft == true {
+        left: 0;
+      }
+
+      @if $hideVerticalScroll == true {
+        width: 0;
       }
     }
   }
@@ -623,6 +632,9 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       display: flex;
       flex-flow: column nowrap;
       align-items: flex-end;
+    }
+    &-token {
+      font-size: var(--s-font-size-small);
     }
     &-price {
       font-size: var(--s-font-size-medium);

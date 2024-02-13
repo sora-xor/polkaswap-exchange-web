@@ -8,6 +8,7 @@ import { OrderStatus } from '@/types/orderBook';
 import type { OrderBookDealData, OrderBookWithStats, OrderBookUpdateData, OrderData } from '@/types/orderBook';
 
 import type { OrderBookId } from '@sora-substrate/liquidity-proxy';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { SubquerySubscriptionPayload } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
 import type {
   OrderBookEntity,
@@ -48,8 +49,8 @@ const parseDeals = (lastDeals?: string): OrderBookDealData[] => {
 };
 
 const SubqueryOrderBooksQuery = gql<ConnectionQueryResponse<OrderBookEntity>>`
-  query SubqueryOrderBooksQuery($after: Cursor) {
-    data: orderBooks(after: $after) {
+  query SubqueryOrderBooksQuery($after: Cursor, $filter: OrderBookFilter) {
+    data: orderBooks(after: $after, filter: $filter) {
       pageInfo {
         hasNextPage
         endCursor
@@ -59,6 +60,8 @@ const SubqueryOrderBooksQuery = gql<ConnectionQueryResponse<OrderBookEntity>>`
           dexId
           baseAssetId
           quoteAssetId
+          baseAssetReserves
+          quoteAssetReserves
           price
           priceChangeDay
           volumeDayUSD
@@ -70,8 +73,8 @@ const SubqueryOrderBooksQuery = gql<ConnectionQueryResponse<OrderBookEntity>>`
 `;
 
 const SubsquidOrderBooksQuery = gql<ConnectionQueryResponse<OrderBookEntity>>`
-  query SubsquidOrderBooksQuery($after: Cursor) {
-    data: orderBooksConnection(after: $after) {
+  query SubsquidOrderBooksQuery($after: String = null, $where: OrderBookWhereInput) {
+    data: orderBooksConnection(after: $after, where: $where) {
       pageInfo {
         hasNextPage
         endCursor
@@ -85,6 +88,8 @@ const SubsquidOrderBooksQuery = gql<ConnectionQueryResponse<OrderBookEntity>>`
           quoteAsset {
             id
           }
+          baseAssetReserves
+          quoteAssetReserves
           price
           priceChangeDay
           volumeDayUSD
@@ -96,7 +101,8 @@ const SubsquidOrderBooksQuery = gql<ConnectionQueryResponse<OrderBookEntity>>`
 `;
 
 const parseOrderBookEntity = (item: OrderBookEntity): OrderBookWithStats => {
-  const { dexId, price, priceChangeDay, volumeDayUSD, status } = item;
+  const { dexId, baseAssetReserves, quoteAssetReserves, price, priceChangeDay, volumeDayUSD, status } = item;
+
   const base = 'baseAssetId' in item ? item.baseAssetId : item.baseAsset.id;
   const quote = 'quoteAssetId' in item ? item.quoteAssetId : item.quoteAsset.id;
 
@@ -107,6 +113,8 @@ const parseOrderBookEntity = (item: OrderBookEntity): OrderBookWithStats => {
       quote,
     },
     stats: {
+      baseAssetReserves,
+      quoteAssetReserves,
       price: new FPNumber(price ?? 0),
       priceChange: new FPNumber(priceChangeDay ?? 0),
       volume: new FPNumber(volumeDayUSD ?? 0),
@@ -115,24 +123,29 @@ const parseOrderBookEntity = (item: OrderBookEntity): OrderBookWithStats => {
   };
 };
 
-export async function fetchOrderBooks(): Promise<Nullable<OrderBookWithStats[]>> {
+export async function fetchOrderBooks(assets?: Asset[]): Promise<Nullable<OrderBookWithStats[]>> {
+  const ids = assets?.map((item) => item.address) ?? [];
   const indexer = getCurrentIndexer();
 
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
+      const filter = ids.length ? { baseAssetId: { in: ids } } : undefined;
+      const variables = { filter };
       const subqueryIndexer = indexer as SubqueryIndexer;
       const response = await subqueryIndexer.services.explorer.fetchAllEntities(
         SubqueryOrderBooksQuery,
-        {},
+        variables,
         parseOrderBookEntity
       );
       return response;
     }
     case IndexerType.SUBSQUID: {
+      const where = ids.length ? { baseAsset: { id_in: ids } } : undefined;
+      const variables = { where };
       const subsquidIndexer = indexer as SubsquidIndexer;
       const response = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
         SubsquidOrderBooksQuery,
-        {},
+        variables,
         parseOrderBookEntity
       );
       return response;

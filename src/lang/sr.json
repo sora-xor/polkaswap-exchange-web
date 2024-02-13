@@ -96,9 +96,9 @@
             "StakingChill": "Није успело да се охлади",
             "StakingSetController": "Подешавање контролера {address} није успело",
             "StakingSetPayee": "Подешавање примаоца уплате {address} није успело",
-            "OrderBookPlaceLimitOrder": "Постављање ограничене поруџбине од {amount} {symbol} по {price} {symbol} није успело",
-            "OrderBookCancelLimitOrder": "Отказивање ограничене поруџбине од {amount} {symbol} по {price} {symbol} није успело",
-            "OrderBookCancelLimitOrders": "Отказивање ограничених налога није успело"
+            "OrderBookPlaceLimitOrder": "Постављање ограничене поруџбине од {amount} {symbol} по {price} {symbol2} није успело",
+            "OrderBookCancelLimitOrders": "Отказивање ограничених налога није успело",
+            "OrderBookCancelLimitOrder": "Отказивање ограничене поруџбине није успело"
         },
         "ReferralReserveXor": "Veži XOR",
         "ReferralUnreserveXor": "Razveži XOR",
@@ -389,7 +389,8 @@
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
         "Staking": "Ulaganje",
-        "OrderBook": "Траде"
+        "OrderBook": "Траде",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Замените",

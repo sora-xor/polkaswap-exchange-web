@@ -101,7 +101,7 @@
     </div>
 
     <el-popover popper-class="book-validation__popover" trigger="hover" :visible-arrow="false">
-      <div v-if="hasExplainableError" class="book-validation">
+      <div v-if="shouldErrorTooltipBeShown" class="book-validation">
         <div class="book-validation__disclaimer">
           <h4 class="book-validation__disclaimer-header">
             {{ reason }}
@@ -123,7 +123,7 @@
         :disabled="buttonDisabled"
       >
         <span> {{ buttonText }}</span>
-        <s-icon v-if="hasExplainableError" name="info-16" class="book-inform-icon-btn" />
+        <s-icon v-if="shouldErrorTooltipBeShown" name="info-16" class="book-inform-icon-btn" />
       </s-button>
     </el-popover>
 
@@ -138,7 +138,6 @@
       :visible.sync="confirmPlaceOrderVisibility"
       :isInsufficientBalance="isInsufficientBalance"
       :isBuySide="isBuySide"
-      :type="limitOrderType"
       :is-market-type="isMarketType"
       @confirm="resetValues"
     />
@@ -188,6 +187,7 @@ import type { Subscription } from 'rxjs';
   },
 })
 export default class BuySellWidget extends Mixins(TranslationMixin, mixins.FormattedAmountMixin, mixins.LoadingMixin) {
+  @state.router.prev private prevRoute!: Nullable<PageNames>;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.orderBook.limitOrderType private _limitOrderType!: LimitOrderType;
   @state.orderBook.baseValue baseValue!: string;
@@ -217,11 +217,15 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @mutation.swap.setLiquiditySource setLiquiditySource!: (liquiditySource: string) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
   @mutation.orderBook.setLimitOrderType private setLimitOrderType!: (type: LimitOrderType) => void;
+  @mutation.swap.resetTokenToAddress private resetTokenToAddress!: FnWithoutArgs;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
 
   @action.orderBook.updateOrderBooksStats private updateOrderBooksStats!: AsyncFnWithoutArgs;
+  // It previous route = PageNames.Swap, we need to save 'from' and 'to' tokens to set it during the beforeDestroy
+  private prevSwapFromAddress = '';
+  private prevSwapToAddress = '';
 
   visibleBookList = false;
   confirmPlaceOrderVisibility = false;
@@ -299,9 +303,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return !!this.reason && !!this.reading;
   }
 
+  get shouldErrorTooltipBeShown(): boolean {
+    return this.isLoggedIn && this.hasExplainableError;
+  }
+
   get amountAtPrice(): string {
-    if (this.buttonDisabled) return '';
-    if (!this.baseValue) return '';
+    if (this.buttonDisabled || !this.baseValue) return '';
     if (!this.quoteValue && !this.marketQuotePrice) return '';
 
     return this.t('orderBook.tradingPair.total', {
@@ -766,11 +773,23 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.checkInputValidation();
   }
 
+  mounted(): void {
+    if (this.prevRoute === PageNames.Swap && this.tokenFrom?.address && this.tokenTo?.address) {
+      this.prevSwapFromAddress = this.tokenFrom?.address;
+      this.prevSwapToAddress = this.tokenTo?.address;
+    }
+  }
+
   beforeDestroy(): void {
     this.resetQuoteSubscription();
-    this.setTokenFromAddress(this.xor.address);
+    if (this.prevSwapFromAddress && this.prevSwapToAddress) {
+      this.setTokenFromAddress(this.prevSwapFromAddress);
+      this.setTokenToAddress(this.prevSwapToAddress);
+    } else {
+      this.setTokenFromAddress(this.xor.address);
+      this.resetTokenToAddress();
+    }
     this.setFromValue('');
-    this.setTokenToAddress();
     this.setToValue('');
     this.setQuoteValue('');
     this.setBaseValue('');
@@ -946,19 +965,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
 .order-book-choose-pair {
   width: 100%;
-  background: var(--base-day-background, #f4f0f1);
+  background: var(--s-color-base-background);
+  box-shadow: var(--s-shadow-element);
   border-radius: var(--s-border-radius-small);
   margin-bottom: $inner-spacing-mini;
   padding: 10px $basic-spacing;
 
   &:hover {
     cursor: pointer;
-  }
-}
-
-[design-system-theme='dark'] {
-  .order-book-choose-pair {
-    background: var(--s-color-base-background);
   }
 }
 </style>
@@ -998,6 +1012,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       display: flex;
       flex-direction: column;
       margin-right: 42px;
+
+      > span {
+        text-transform: capitalize;
+      }
 
       &__value {
         font-size: var(--s-font-size-small);

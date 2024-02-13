@@ -23,6 +23,7 @@ export type OrderBookState = {
   orderBookUpdates: Array<Subscription>;
   orderBookStatsUpdates: Nullable<VoidFunction>;
   userLimitOrderUpdates: Nullable<Subscription>;
+  pagedUserLimitOrdersSubscription: Nullable<Subscription>;
   ordersToBeCancelled: Array<LimitOrder>;
   amountSliderValue: number;
 };

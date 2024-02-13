@@ -1,32 +1,54 @@
 <template>
-  <div class="order-book-widget history">
+  <div class="order-book-widget history s-flex-column">
     <div class="order-history-header">
       <div class="order-history-header-filter-buttons">
-        <span @click="switchFilter(Filter.open)" :class="getComputedFilterClasses(Filter.open)">{{
-          openOrdersText
-        }}</span>
-        <span @click="switchFilter(Filter.all)" :class="getComputedFilterClasses(Filter.all)">
+        <span
+          class="order-history-filter"
+          :class="{ 'order-history-filter--active': currentFilter === Filter.open }"
+          @click="switchFilter(Filter.open)"
+        >
+          {{ openOrdersText }}
+        </span>
+        <span
+          class="order-history-filter"
+          :class="{ 'order-history-filter--active': currentFilter === Filter.all }"
+          @click="switchFilter(Filter.all)"
+        >
           {{ t('orderBook.history.orderHistory') }}
         </span>
-        <span @click="switchFilter(Filter.executed)" :class="getComputedFilterClasses(Filter.executed)">
+        <span
+          class="order-history-filter"
+          :class="{ 'order-history-filter--active': currentFilter === Filter.executed }"
+          @click="switchFilter(Filter.executed)"
+        >
           {{ t('orderBook.history.tradeHistory') }}
         </span>
       </div>
       <div v-if="isLoggedIn" class="order-history-header-cancel-buttons">
-        <span :class="getComputedCancelClasses(Cancel.multiple)" @click="handleCancel(Cancel.multiple)">{{
-          cancelText
-        }}</span>
-        <span :class="getComputedCancelClasses(Cancel.all)" @click="openConfirmCancelDialog">{{ cancelAllText }}</span>
+        <span
+          class="order-history-cancel"
+          :class="{ 'order-history-cancel--inactive': isCancelMultipleInactive }"
+          @click="handleCancel(Cancel.multiple)"
+        >
+          {{ cancelText }}
+        </span>
+        <span
+          class="order-history-cancel"
+          :class="{ 'order-history-cancel--inactive': isCancelAllInactive }"
+          @click="openConfirmCancelDialog"
+        >
+          {{ cancelAllText }}
+        </span>
       </div>
     </div>
     <div class="delimiter" />
-    <div v-if="isLoggedIn">
-      <open-orders v-if="currentFilter === Filter.open" />
+    <div class="order-history-main s-flex-column" v-if="isLoggedIn">
+      <open-orders v-if="currentFilter === Filter.open" :parent-loading="openOrdersLoading" />
       <all-orders v-else :filter="currentFilter" />
     </div>
     <div v-else class="order-history-connect-account">
       <div class="order-history-connect-account-button">
-        <h4>{{ t('orderBook.history.connect') }}</h4>
+        <h4 class="h4">{{ t('orderBook.history.connect') }}</h4>
         <s-button type="primary" class="btn s-typography-button--medium" @click="connectAccount">
           {{ t('connectWalletText') }}
         </s-button>
@@ -39,13 +61,14 @@
 <script lang="ts">
 import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
-import { state, getter } from '@/store/decorators';
+import { state, getter, mutation, action } from '@/store/decorators';
 import { Filter, Cancel } from '@/types/orderBook';
+import { delay } from '@/utils';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
@@ -58,25 +81,43 @@ import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
   },
 })
 export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.TransactionMixin) {
-  @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
-  @state.orderBook.ordersToBeCancelled ordersToBeCancelled!: Array<LimitOrder>;
-
-  @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
+  readonly Filter = Filter;
+  readonly Cancel = Cancel;
+  // Open Orders utils
+  @state.orderBook.userLimitOrders private userLimitOrders!: Array<LimitOrder>;
+  @getter.orderBook.accountAddress accountAddress!: string;
+  @getter.orderBook.orderBookId orderBookId!: string;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
+  @action.orderBook.subscribeToUserLimitOrders private subscribeToUserLimitOrders!: AsyncFnWithoutArgs;
+  @action.orderBook.unsubscribeFromUserLimitOrders private unsubscribeFromUserLimitOrders!: AsyncFnWithoutArgs;
+  // Cancel Orders utils
+  @state.orderBook.ordersToBeCancelled private ordersToBeCancelled!: Array<LimitOrder>;
+  @mutation.orderBook.setOrdersToBeCancelled private setOrdersToBeCancelled!: (orders: LimitOrder[]) => void;
+  // Additional utils
+  @getter.orderBook.currentOrderBook private currentOrderBook!: Nullable<OrderBook>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   confirmCancelOrderVisibility = false;
   currentFilter = Filter.open;
-  openLimitOrders: Array<LimitOrder> = [];
+  openOrdersLoading = false;
 
-  readonly Filter = Filter;
-  readonly Cancel = Cancel;
+  // Widget subscription for user limit orders
+  @Watch('orderBookId', { immediate: true })
+  @Watch('accountAddress')
+  @Watch('nodeIsConnected')
+  private async updateSubscription(): Promise<void> {
+    this.openOrdersLoading = true;
+    await this.subscribeToUserLimitOrders();
+    await delay(2_000); // Waiting for selectable logic init
+    this.openOrdersLoading = false;
+  }
 
   get openOrdersText(): string {
     return this.t('orderBook.history.openOrders', { value: this.openOrdersCount });
   }
 
   get cancelText(): string {
-    return this.hasSelected
+    return this.hasSelectedForCancellation
       ? this.t('orderBook.history.cancel', { value: `(${this.ordersToBeCancelled.length})` })
       : this.t('orderBook.history.cancel');
   }
@@ -85,7 +126,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     return this.t('orderBook.history.cancelAll');
   }
 
-  get hasSelected(): boolean {
+  get hasSelectedForCancellation(): boolean {
     return this.ordersToBeCancelled.length > 0;
   }
 
@@ -101,34 +142,12 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     return count > 0 ? `(${count})` : ``;
   }
 
-  getComputedFilterClasses(filter: Filter): string[] {
-    const base = ['order-history-filter'];
-
-    if (this.currentFilter === filter) base.push('order-history-filter--active');
-
-    return base;
+  get isCancelAllInactive(): boolean {
+    return this.loading || this.isBookStopped || !this.userLimitOrders.length;
   }
 
-  getComputedCancelClasses(cancel: Cancel): string[] {
-    const base = ['order-history-cancel'];
-    let inactive = true;
-
-    if (this.isBookStopped) {
-      base.push('order-history-cancel--inactive');
-      return base;
-    }
-
-    if (cancel === Cancel.all && this.userLimitOrders.length) {
-      inactive = false;
-    }
-
-    if (cancel === Cancel.multiple && this.hasSelected) {
-      inactive = false;
-    }
-
-    if (inactive) base.push('order-history-cancel--inactive');
-
-    return base;
+  get isCancelMultipleInactive(): boolean {
+    return this.loading || this.isBookStopped || !this.hasSelectedForCancellation;
   }
 
   connectAccount(): void {
@@ -147,24 +166,29 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   }
 
   async handleCancel(cancel: Cancel): Promise<void> {
-    if (this.isBookStopped) return;
-    if (!this.userLimitOrders.length) return;
+    if (this.loading || this.isBookStopped || !this.userLimitOrders.length) return;
 
     const orders = cancel === Cancel.multiple ? this.ordersToBeCancelled : this.userLimitOrders;
 
     if (!orders.length) return;
-    const {
-      orderBookId: { base, quote },
-    } = orders[0];
-    const ids = orders.map((order: LimitOrder) => order.id);
 
     await this.withNotifications(async () => {
+      const {
+        orderBookId: { base, quote },
+      } = orders[0]; // TODO: [STEFAN] issue with ordersToBeCancelled -> orderToBeCancelledIds
+      const ids = orders.map((order: LimitOrder) => order.id);
+
       if (ids.length > 1) {
         await api.orderBook.cancelLimitOrderBatch(base, quote, ids);
       } else {
         await api.orderBook.cancelLimitOrder(base, quote, ids[0]);
       }
+      this.setOrdersToBeCancelled([]);
     });
+  }
+
+  beforeDestroy(): void {
+    this.unsubscribeFromUserLimitOrders();
   }
 }
 </script>
@@ -179,7 +203,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 .order-book-widget.history {
   min-height: 570px;
 
-  .el-table-column--selection.is-leaf {
+  .el-table-column--selection.is-leaf > .cell {
     visibility: hidden;
   }
 
@@ -203,6 +227,19 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     color: var(--s-color-base-content-secondary);
     font-size: $basic-spacing;
     font-weight: 500;
+    &-cancel-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      justify-content: flex-end;
+      flex: 1;
+    }
+    &-filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      justify-content: flex-start;
+    }
   }
 
   &-filter {
@@ -238,17 +275,16 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     }
   }
 
+  &-main {
+    flex: 1;
+  }
+
   &-connect-account {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 400px;
-
-    h4 {
-      font-size: var(--s-font-size-large);
-      text-align: center;
-    }
 
     &-button {
       display: flex;

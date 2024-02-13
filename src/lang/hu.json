@@ -96,9 +96,9 @@
             "StakingChill": "Nem sikerült lehűteni",
             "StakingSetController": "Nem sikerült beállítani a( {address} vezérlőt",
             "StakingSetPayee": "Nem sikerült beállítani a kedvezményezettet {address}",
-            "OrderBookPlaceLimitOrder": "Nem sikerült elhelyezni {amount} {symbol} összegű limitrendelést {price} {symbol} áron",
-            "OrderBookCancelLimitOrder": "Nem sikerült törölni a {amount} {symbol} összegű limitrendelést {price} {symbol} áron",
-            "OrderBookCancelLimitOrders": "Nem sikerült törölni a limitált rendeléseket"
+            "OrderBookPlaceLimitOrder": "Nem sikerült elhelyezni {amount} {symbol} összegű limitrendelést {price} {symbol2} áron",
+            "OrderBookCancelLimitOrders": "Nem sikerült törölni a limitált rendeléseket",
+            "OrderBookCancelLimitOrder": "Nem sikerült törölni a limitált rendelést"
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
@@ -389,7 +389,8 @@
         "Explore\/Staking": "Letét",
         "Explore\/Farming": "Farmolás",
         "Staking": "Letét",
-        "OrderBook": "Kereskedelmi"
+        "OrderBook": "Kereskedelmi",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Váltás",

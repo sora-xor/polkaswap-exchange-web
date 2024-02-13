@@ -28,18 +28,12 @@ const transformSnapshot = (item: OrderBookSnapshotEntity): SnapshotItem => {
 
 const subqueryOrderBookPriceFilter = (orderBookId: string, type: SnapshotTypes) => {
   return {
-    and: [
-      {
-        orderBookId: {
-          equalTo: orderBookId,
-        },
-      },
-      {
-        type: {
-          equalTo: type,
-        },
-      },
-    ],
+    orderBookId: {
+      equalTo: orderBookId,
+    },
+    type: {
+      equalTo: type,
+    },
   };
 };
 
@@ -51,7 +45,7 @@ const subsquidOrderBookPriceFilter = (orderBookId: string, type: SnapshotTypes) 
 };
 
 const SubqueryOrderBookPriceQuery = gql<ConnectionQueryResponse<OrderBookSnapshotEntity>>`
-  query SubqueryOrderBookPriceQuery($after: Cursor = "", $filter: OrderBookSnapshotFilter, $first: Int = 100) {
+  query SubqueryOrderBookPriceQuery($after: Cursor, $filter: OrderBookSnapshotFilter, $first: Int = 100) {
     data: orderBookSnapshots(after: $after, first: $first, filter: $filter, orderBy: [TIMESTAMP_DESC]) {
       pageInfo {
         hasNextPage
@@ -69,7 +63,7 @@ const SubqueryOrderBookPriceQuery = gql<ConnectionQueryResponse<OrderBookSnapsho
 `;
 
 const SubsquidOrderBookPriceQuery = gql<ConnectionQueryResponse<OrderBookSnapshotEntity>>`
-  query SubsquidOrderBookPriceQuery($after: String = null, $where: OrderBookSnapshotWhereInput, $first: Int = 100) {
+  query SubsquidOrderBookPriceQuery($after: String, $where: OrderBookSnapshotWhereInput, $first: Int = 100) {
     data: orderBookSnapshotsConnection(after: $after, first: $first, where: $where, orderBy: timestamp_DESC) {
       pageInfo {
         hasNextPage

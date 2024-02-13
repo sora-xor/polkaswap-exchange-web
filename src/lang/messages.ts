@@ -1,7 +1,7 @@
 import { Operation, TransactionStatus } from '@sora-substrate/util';
 import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { en as walletEn } from '@soramitsu/soraneo-wallet-web';
+import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
@@ -81,8 +81,10 @@ export default {
     [PageNames.ExplorePools]: 'Pools',
     [PageNames.ExploreStaking]: 'Staking',
     [PageNames.ExploreFarming]: 'Farming',
+    [PageNames.ExploreBooks]: '@:pageTitle.OrderBook',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
+    [PageNames.OrderBook]: 'Trade',
     [StakingPageNames.Staking]: 'Staking',
   },
   mainMenu: {
@@ -94,6 +96,7 @@ export default {
     [PageNames.Rewards]: 'Rewards',
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Statistics',
+    [PageNames.OrderBook]: 'Trade',
     [PageNames.ExploreContainer]: 'Explore',
     [PageNames.StakingContainer]: 'Staking',
   },

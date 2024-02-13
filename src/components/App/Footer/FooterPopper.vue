@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { Status } from '@soramitsu/soramitsu-js-ui/lib/types';
+import { Status } from '@soramitsu-ui/ui-vue2/lib/types';
 import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
 
 import { delay } from '@/utils';

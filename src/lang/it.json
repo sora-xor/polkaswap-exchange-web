@@ -96,9 +96,9 @@
             "StakingChill": "Impossibile rilassarsi",
             "StakingSetController": "Impossibile impostare il controller {address}",
             "StakingSetPayee": "Impossibile impostare il beneficiario {address}",
-            "OrderBookPlaceLimitOrder": "Impossibile effettuare un ordine limite di {amount} {symbol} a {price} {symbol}",
-            "OrderBookCancelLimitOrder": "Impossibile annullare l'ordine limite di {amount} {symbol} a {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Impossibile annullare gli ordini limite"
+            "OrderBookPlaceLimitOrder": "Impossibile effettuare un ordine limite di {amount} {symbol} a {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Impossibile annullare gli ordini limite",
+            "OrderBookCancelLimitOrder": "Impossibile annullare l'ordine limite"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
@@ -389,7 +389,8 @@
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
-        "OrderBook": "Commercio"
+        "OrderBook": "Commercio",
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Scambia",

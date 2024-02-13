@@ -23,6 +23,7 @@ function initialState(): OrderBookState {
     orderBookUpdates: [],
     orderBookStatsUpdates: null,
     userLimitOrderUpdates: null,
+    pagedUserLimitOrdersSubscription: null,
     ordersToBeCancelled: [],
     amountSliderValue: 0,
   };

@@ -3,11 +3,8 @@
     <div class="order-book-cancel-dialog">
       <s-icon name="notifications-alert-triangle-24" size="64" />
       <h4>{{ t('orderBook.dialog.askCancel') }}</h4>
-      <s-button type="primary" class="btn s-typography-button--medium" @click="handleCancel">
+      <s-button type="primary" class="btn s-typography-button--medium" :disabled="!isVisible" @click="handleCancel">
         <span> {{ t('orderBook.dialog.cancelAll') }}</span>
-      </s-button>
-      <s-button type="secondary" class="btn s-typography-button--medium" @click="closeDialog">
-        <span> {{ t('orderBook.dialog.noCancel') }}</span>
       </s-button>
     </div>
   </dialog-base>
@@ -28,7 +25,7 @@ import { Cancel } from '@/types/orderBook';
 })
 export default class CancelOrders extends Mixins(mixins.DialogMixin, TranslationMixin) {
   handleCancel(): void {
-    this.closeDialog();
+    this.isVisible = false;
     this.$emit('confirm', Cancel.all);
   }
 }
@@ -57,7 +54,8 @@ export default class CancelOrders extends Mixins(mixins.DialogMixin, Translation
   }
 
   .btn {
-    margin: 0 0 $basic-spacing 0;
+    margin-top: $basic-spacing;
+    width: 100%;
   }
 }
 </style>
