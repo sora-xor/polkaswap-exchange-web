@@ -186,7 +186,7 @@ export default class PairListPopover extends Mixins(
     }
   }
 
-  handleClickStatusTooltip(e?: Event) {
+  handleClickStatusTooltip(e?: Event): void {
     e?.stopPropagation();
   }
 }
