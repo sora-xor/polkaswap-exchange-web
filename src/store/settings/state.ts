@@ -26,7 +26,6 @@ function initialState(): SettingsState {
     defaultNodes: [],
     customNodes: customNodes ? JSON.parse(customNodes) : [],
     nodeAddressConnecting: '',
-    nodeConnectionAllowance: true,
     chainGenesisHash: '',
     selectNodeDialogVisibility: false,
     // node managment

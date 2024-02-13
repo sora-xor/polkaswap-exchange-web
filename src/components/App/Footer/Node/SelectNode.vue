@@ -10,7 +10,7 @@
           :key="node.address"
           :label="node.address"
           :value="node.address"
-          :disabled="disableSelect"
+          :disabled="node.address === nodeAddressConnecting"
           size="medium"
           class="select-node-list__item s-flex"
         >
@@ -54,10 +54,10 @@ import { formatLocation } from './utils';
 
 @Component
 export default class SelectNode extends Mixins(TranslationMixin) {
-  @Prop({ default: () => [], type: Array }) nodes!: Array<NodeItem>;
-  @Prop({ default: () => {}, type: Function }) handleNode!: (node?: NodeItem) => void;
-  @Prop({ default: '', type: String }) environment!: string;
-  @Prop({ default: false, type: Boolean }) disableSelect!: boolean;
+  @Prop({ default: () => [], type: Array }) readonly nodes!: Array<NodeItem>;
+  @Prop({ default: () => {}, type: Function }) readonly handleNode!: (node?: NodeItem) => void;
+  @Prop({ default: '', type: String }) readonly environment!: string;
+  @Prop({ default: '', type: String }) readonly nodeAddressConnecting!: string;
 
   @ModelSync('value', 'input', { type: String })
   readonly currentAddressValue!: string;

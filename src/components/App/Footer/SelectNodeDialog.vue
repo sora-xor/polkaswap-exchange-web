@@ -7,10 +7,10 @@
     <select-node
       v-if="isNodeListView"
       v-model="connectedNodeAddress"
+      :node-address-connecting="nodeAddressConnecting"
       :nodes="formattedNodeList"
       :handle-node="navigateToNodeInfo"
       :environment="soraNetwork"
-      :disable-select="!connectionAllowance"
     />
     <node-info
       v-else
@@ -55,7 +55,6 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   @Prop({ default: () => [], type: Array }) private readonly defaultNodes!: Array<Node>;
   @Prop({ default: () => [], type: Array }) private readonly nodeList!: Array<Node>;
   @Prop({ default: '', type: String }) private readonly nodeAddressConnecting!: string;
-  @Prop({ default: false, type: Boolean }) private readonly connectionAllowance!: boolean;
 
   @Prop({ default: false, type: Boolean }) private readonly visibility!: boolean;
   @Prop({ default: () => {}, type: Function }) private readonly setVisibility!: (flag: boolean) => void;
@@ -106,7 +105,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   }
 
   get isSelectedNodeLoading(): boolean {
-    return !this.connectionAllowance || this.isConnectingNode(this.selectedNode);
+    return this.isConnectingNode(this.selectedNode);
   }
 
   get isSelectedNodeConnected(): boolean {

@@ -12,7 +12,6 @@ class NodesConnection {
 
   public defaultNodes: Array<Node> = [];
   public nodeAddressConnecting = '';
-  public nodeConnectionAllowance = true;
   public chainGenesisHash = '';
 
   protected storage!: Storage;
@@ -79,9 +78,8 @@ class NodesConnection {
     this.node = defaultNode;
   }
 
-  setNodeRequest(node: Node, isReconnection = false): void {
+  setNodeRequest(node: Node): void {
     this.nodeAddressConnecting = node.address;
-    this.nodeConnectionAllowance = isReconnection;
   }
 
   setNodeSuccess(node: Node): void {
@@ -92,7 +90,6 @@ class NodesConnection {
   // rename
   setNodeFailure(): void {
     this.nodeAddressConnecting = '';
-    this.nodeConnectionAllowance = true;
   }
 
   resetNode(): void {

@@ -9,19 +9,16 @@ import type { Ad, FeatureFlags, SettingsState } from './types';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<SettingsState>()({
-  setNodeRequest(state, { node, isReconnection = false }: { node?: Nullable<Node>; isReconnection?: boolean }): void {
+  setNodeRequest(state, node: Nullable<Node>): void {
     state.nodeAddressConnecting = node?.address ?? '';
-    state.nodeConnectionAllowance = isReconnection;
   },
   setNodeSuccess(state, node: Nullable<Node> = {} as Node): void {
     state.node = { ...node };
     state.nodeAddressConnecting = '';
-    state.nodeConnectionAllowance = true;
     settingsStorage.set('node', JSON.stringify(node));
   },
   setNodeFailure(state): void {
     state.nodeAddressConnecting = '';
-    state.nodeConnectionAllowance = true;
   },
   setDefaultNodes(state, nodes: Array<Node>): void {
     state.defaultNodes = [...nodes];

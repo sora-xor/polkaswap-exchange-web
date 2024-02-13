@@ -38,7 +38,6 @@ async function closeConnectionWithInfo() {
 const actions = defineActions({
   async connectToNode(context, options: ConnectToNodeOptions = {}): Promise<void> {
     const { dispatch, commit, state, rootState, getters } = settingsActionContext(context);
-    if (!state.nodeConnectionAllowance) return;
 
     const { node, onError, currentNodeIndex = 0, ...restOptions } = options;
     const defaultNode = getters.nodeList[currentNodeIndex];
@@ -119,7 +118,8 @@ const actions = defineActions({
       if (!endpoint) {
         throw new Error('Node address is not set');
       }
-      commit.setNodeRequest({ node, isReconnection });
+
+      commit.setNodeRequest(node);
 
       console.info('[SORA] Connection request to node', endpoint);
 

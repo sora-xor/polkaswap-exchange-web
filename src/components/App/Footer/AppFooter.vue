@@ -64,7 +64,6 @@
       :default-nodes="defaultNodes"
       :node-list="nodeList"
       :node-address-connecting="nodeAddressConnecting"
-      :connection-allowance="nodeConnectionAllowance"
       :connect-to-node="connectToNode"
       :add-custom-node="addCustomNode"
       :update-custom-node="updateCustomNode"
@@ -129,7 +128,6 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   @state.settings.defaultNodes defaultNodes!: Array<Node>;
   @state.settings.nodeAddressConnecting nodeAddressConnecting!: string;
   @state.settings.selectNodeDialogVisibility selectNodeDialogVisibility!: boolean;
-  @state.settings.nodeConnectionAllowance nodeConnectionAllowance!: boolean;
   @state.settings.node connectedNode!: Partial<Node>;
   @getter.settings.nodeList nodeList!: Array<Node>;
   @getter.settings.connectingNode connectingNode!: Nullable<Node>;

@@ -31,7 +31,6 @@ export type SettingsState = {
   defaultNodes: Array<Node>;
   customNodes: Array<Node>;
   nodeAddressConnecting: string;
-  nodeConnectionAllowance: boolean;
   chainGenesisHash: string;
   faucetUrl: string;
   menuCollapsed: boolean;
