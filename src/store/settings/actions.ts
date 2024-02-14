@@ -1,8 +1,8 @@
-import { initWallet, waitForCore, connection, api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { connection, api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
 import axiosInstance from '@/api';
-import { Language, WalletPermissions } from '@/consts';
+import { Language } from '@/consts';
 import { getSupportedLocale, setDayJsLocale, setI18nLocale } from '@/lang';
 import { settingsActionContext } from '@/store/settings';
 import type { ConnectToNodeOptions, Node } from '@/types/nodes';
@@ -37,34 +37,14 @@ async function closeConnectionWithInfo() {
 
 const actions = defineActions({
   async connectToNode(context, options: ConnectToNodeOptions = {}): Promise<void> {
-    const { dispatch, commit, state, rootState, getters } = settingsActionContext(context);
+    const { dispatch, commit, state, getters } = settingsActionContext(context);
 
     const { node, onError, currentNodeIndex = 0, ...restOptions } = options;
     const defaultNode = getters.nodeList[currentNodeIndex];
     const requestedNode = (node || (state.node.address ? state.node : defaultNode)) as Node;
-    const walletOptions = {
-      permissions: WalletPermissions,
-      appName: WALLET_CONSTS.TranslationConsts.Polkaswap,
-    };
 
     try {
-      // Run in parallel
-      // 1) Wallet core initialization (node connection independent)
-      // 2) Connection to node
-      await Promise.all([
-        waitForCore(walletOptions),
-        dispatch.setNode({ node: requestedNode, onError, ...restOptions }),
-      ]);
-
-      // Wallet node connection dependent logic
-      if (!rootState.wallet.settings.isWalletLoaded) {
-        try {
-          await initWallet(walletOptions);
-        } catch (error) {
-          console.error(error);
-          throw error;
-        }
-      }
+      await dispatch.setNode({ node: requestedNode, onError, ...restOptions });
     } catch (error) {
       onError?.(error, requestedNode);
 

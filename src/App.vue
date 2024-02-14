@@ -44,6 +44,8 @@ import {
   WALLET_CONSTS,
   WALLET_TYPES,
   AlertsApiService,
+  initWallet,
+  waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
@@ -54,7 +56,7 @@ import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { PageNames, Components, Language, BreakpointClass, Breakpoint } from '@/consts';
+import { PageNames, Components, Language, BreakpointClass, Breakpoint, WalletPermissions } from '@/consts';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -374,12 +376,28 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private async runAppConnectionToNode() {
+    const walletOptions = {
+      permissions: WalletPermissions,
+      appName: WALLET_CONSTS.TranslationConsts.Polkaswap,
+    };
+
     try {
-      await this.connectToNode({
-        onError: this.handleNodeError,
-        onDisconnect: this.handleNodeDisconnect,
-        onReconnect: this.handleNodeReconnect,
-      });
+      // Run in parallel
+      // 1) Wallet core initialization (node connection independent)
+      // 2) Connection to node
+      await Promise.all([
+        waitForCore(walletOptions),
+        this.connectToNode({
+          onError: this.handleNodeError,
+          onDisconnect: this.handleNodeDisconnect,
+          onReconnect: this.handleNodeReconnect,
+        }),
+      ]);
+
+      // Wallet node connection dependent logic
+      if (!this.isWalletLoaded) {
+        await initWallet(walletOptions);
+      }
     } catch (error) {
       // we handled error using callback, do nothing
     }
