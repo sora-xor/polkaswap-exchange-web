@@ -453,6 +453,7 @@ export const ExploreChildPages = [
   PageNames.ExploreStaking,
   PageNames.ExplorePools,
   PageNames.ExploreTokens,
+  PageNames.ExploreBooks,
 ];
 
 export enum Topics {
