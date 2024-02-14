@@ -16,7 +16,7 @@
       v-else
       :node="selectedNode"
       :existing="existingNodeIsSelected"
-      :loading="isSelectedNodeLoading"
+      :node-address-connecting="connection.nodeAddressConnecting"
       :removable="isSelectedNodeRemovable"
       :connected="isSelectedNodeConnected"
       :handle-back="handleBack"
@@ -85,10 +85,6 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
 
   get isSelectedNodeRemovable(): boolean {
     return !this.connection.defaultNodes.find((node) => node.address === this.selectedNode?.address);
-  }
-
-  get isSelectedNodeLoading(): boolean {
-    return this.isConnectingNode(this.selectedNode);
   }
 
   get isSelectedNodeConnected(): boolean {

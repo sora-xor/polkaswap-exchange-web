@@ -107,9 +107,9 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) removeNode!: (node: any) => void;
   @Prop({ default: () => ({}), type: Object }) node!: NodeItem;
   @Prop({ default: false, type: Boolean }) existing!: boolean;
-  @Prop({ default: false, type: Boolean }) loading!: boolean;
   @Prop({ default: false, type: Boolean }) removable!: boolean;
   @Prop({ default: false, type: Boolean }) connected!: boolean;
+  @Prop({ default: '', type: String }) readonly nodeAddressConnecting!: string;
 
   @Ref('nodeNameInput') private readonly nodeNameInput!: HTMLInputElement;
 
@@ -175,6 +175,10 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
     const customNodeText = this.t('selectNodeDialog.customNode');
     if (!this.existing) return customNodeText;
     return this.node.title ?? customNodeText;
+  }
+
+  get loading(): boolean {
+    return this.nodeModel.address === this.nodeAddressConnecting;
   }
 
   get nodeDataChanged(): boolean {
