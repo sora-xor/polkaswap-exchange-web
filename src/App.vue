@@ -61,10 +61,10 @@ import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
+import type { NodesConnection } from '@/utils/connection';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
-import type { ConnectToNodeOptions, Node } from './types/nodes';
 import type { History, HistoryItem } from '@sora-substrate/util';
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
@@ -97,6 +97,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showNotifsDarkPage = false;
   responsiveClass = BreakpointClass.LargeDesktop;
 
+  @state.settings.appConnection appConnection!: NodesConnection;
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
@@ -117,8 +118,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     endpoint: string;
   }) => void;
 
-  @mutation.settings.setDefaultNodes private setDefaultNodes!: (nodes: Array<Node>) => void;
-  @mutation.settings.setNetworkChainGenesisHash private setNetworkChainGenesisHash!: (hash?: string) => void;
   @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
@@ -136,7 +135,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @action.wallet.subscriptions.resetNetworkSubscriptions private resetNetworkSubscriptions!: AsyncFnWithoutArgs;
   @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncFnWithoutArgs;
   @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncFnWithoutArgs;
-  @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
   @action.settings.setBlockNumber private setBlockNumber!: AsyncFnWithoutArgs;
   @action.settings.fetchAdsArray private fetchAdsArray!: AsyncFnWithoutArgs;
@@ -242,7 +240,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       await this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
       this.setSoraNetwork(data.NETWORK_TYPE);
-      this.setDefaultNodes(data?.DEFAULT_NETWORKS);
       this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
       this.setSubNetworkApps(data.SUB_NETWORKS);
 
@@ -256,9 +253,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);
       }
-      if (data.CHAIN_GENESIS_HASH) {
-        this.setNetworkChainGenesisHash(data.CHAIN_GENESIS_HASH);
-      }
+
+      this.appConnection.setDefaultNodes(data?.DEFAULT_NETWORKS);
+      this.appConnection.setNetworkChainGenesisHash(data?.CHAIN_GENESIS_HASH);
 
       // connection to node
       await this.runAppConnectionToNode();
@@ -387,7 +384,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // 2) Connection to node
       await Promise.all([
         waitForCore(walletOptions),
-        this.connectToNode({
+        this.appConnection.connectToNode({
           onError: this.handleNodeError,
           onDisconnect: this.handleNodeDisconnect,
           onReconnect: this.handleNodeReconnect,

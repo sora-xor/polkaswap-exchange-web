@@ -1,33 +1,43 @@
+import { connection } from '@soramitsu/soraneo-wallet-web';
+
 import type { Node, ConnectToNodeOptions } from '@/types/nodes';
 import { AppHandledError } from '@/utils/error';
 import { fetchRpc, getRpcEndpoint } from '@/utils/rpc';
+import { settingsStorage } from '@/utils/storage';
 
 import type { Connection } from '@sora-substrate/connection';
 import type { Storage } from '@sora-substrate/util';
 
 const NODE_CONNECTION_TIMEOUT = 60_000;
 
-class NodesConnection {
+export class NodesConnection {
   private _node: Nullable<Node> = null;
   private _customNodes: Array<Node> = [];
-
-  public defaultNodes: Array<Node> = [];
-  public nodeAddressConnecting = '';
-  public chainGenesisHash = '';
 
   protected storage!: Storage;
   protected connection!: Connection;
 
+  public defaultNodes: Array<Node> = [];
+  public nodeAddressConnecting = '';
+  public chainGenesisHash = '';
+  public nodeIsConnected = false;
+
   constructor(storage: Storage, connection: Connection) {
     this.storage = storage;
     this.connection = connection;
+
+    this.initData();
+  }
+
+  protected initData(): void {
+    const node = this.storage.get('node');
+    const nodes = this.storage.get('customNodes');
+
+    this._node = node ? JSON.parse(node) : null;
+    this._customNodes = nodes ? JSON.parse(nodes) : [];
   }
 
   get node(): Nullable<Node> {
-    const node = this.storage.get('node');
-
-    this._node = node ? JSON.parse(node) : null;
-
     return this._node;
   }
 
@@ -42,15 +52,12 @@ class NodesConnection {
   }
 
   get customNodes(): Node[] {
-    const nodes = this.storage.get('customNodes');
-
-    this._customNodes = nodes ? JSON.parse(nodes) : [];
-
     return this._customNodes;
   }
 
   set customNodes(nodes: Node[]) {
     this.storage.set('customNodes', JSON.stringify(nodes));
+
     this._customNodes = [...nodes];
   }
 
@@ -58,13 +65,21 @@ class NodesConnection {
     return [...this.defaultNodes, ...this.customNodes];
   }
 
-  updateCustomNode(node: Node): void {
-    this.removeCustomNode(node);
+  protected updateConnectionStatus(): void {
+    this.nodeIsConnected = !!this.node?.address && !this.nodeAddressConnecting && this.connection.opened;
+  }
+
+  protected addCustomNode(node: Node): void {
     this.customNodes = [...this.customNodes, node];
   }
 
   removeCustomNode(node: Node): void {
     this.customNodes = this.customNodes.filter((item) => item.address !== node.address);
+  }
+
+  updateCustomNode(node: Node): void {
+    this.removeCustomNode(node);
+    this.addCustomNode(node);
   }
 
   setDefaultNodes(nodes: Array<Node>): void {
@@ -79,25 +94,28 @@ class NodesConnection {
     this.node = defaultNode;
   }
 
-  setNodeRequest(node: Node): void {
+  protected setNodeRequest(node: Node): void {
     this.nodeAddressConnecting = node.address;
+    this.updateConnectionStatus();
   }
 
-  setNodeSuccess(node: Node): void {
+  protected setNodeSuccess(node: Node): void {
     this.node = node;
     this.setNodeFailure();
   }
 
   // rename
-  setNodeFailure(): void {
+  protected setNodeFailure(): void {
     this.nodeAddressConnecting = '';
+    this.updateConnectionStatus();
   }
 
-  resetNode(): void {
+  protected resetNode(): void {
     this.node = null;
+    this.updateConnectionStatus();
   }
 
-  setNetworkChainGenesisHash(hash?: string): void {
+  public setNetworkChainGenesisHash(hash?: string): void {
     this.chainGenesisHash = hash || '';
   }
 

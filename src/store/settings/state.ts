@@ -1,16 +1,18 @@
+import { connection } from '@soramitsu/soraneo-wallet-web';
+
 import { BreakpointClass, DefaultMarketAlgorithm, DefaultSlippageTolerance, MarketAlgorithms } from '@/consts';
 import { getLocale } from '@/lang';
+import { NodesConnection } from '@/utils/connection';
 import storage, { settingsStorage } from '@/utils/storage';
 
 import type { SettingsState } from './types';
 
 function initialState(): SettingsState {
-  const node = settingsStorage.get('node');
-  const customNodes = settingsStorage.get('customNodes');
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
   const chartsEnabled = storage.get('сhartsEnabled');
   const isBrowserNotificationApiAvailable = 'Notification' in window;
   return {
+    appConnection: new NodesConnection(settingsStorage, connection),
     featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: (storage.get('marketAlgorithm') || DefaultMarketAlgorithm) as MarketAlgorithms,
@@ -21,16 +23,9 @@ function initialState(): SettingsState {
     browserNotifsPermission: isBrowserNotificationApiAvailable ? Notification.permission : 'default',
     language: getLocale(),
     displayRegions: undefined,
-    // node managment
-    node: node ? JSON.parse(node) : {},
-    defaultNodes: [],
-    customNodes: customNodes ? JSON.parse(customNodes) : [],
-    nodeAddressConnecting: '',
-    chainGenesisHash: '',
-    selectNodeDialogVisibility: false,
-    // node managment
     faucetUrl: '',
     menuCollapsed: false,
+    selectNodeDialogVisibility: false,
     selectIndexerDialogVisibility: false,
     selectLanguageDialogVisibility: false,
     disclaimerVisibility: false,

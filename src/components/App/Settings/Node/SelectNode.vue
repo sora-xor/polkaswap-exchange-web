@@ -1,6 +1,6 @@
 <template>
   <div class="select-node s-flex">
-    <div class="select-node-description">
+    <div v-if="environment" class="select-node-description">
       {{ t('selectNodeDialog.selectNodeForEnvironment', { environment }) }}
     </div>
     <s-scrollbar class="select-node-scrollbar">
@@ -56,7 +56,7 @@ import { formatLocation } from './utils';
 export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: () => [], type: Array }) readonly nodes!: Array<NodeItem>;
   @Prop({ default: () => {}, type: Function }) readonly handleNode!: (node?: NodeItem) => void;
-  @Prop({ default: '', type: String }) readonly environment!: string;
+  @Prop({ default: () => '', type: String }) readonly environment!: string;
   @Prop({ default: '', type: String }) readonly nodeAddressConnecting!: string;
 
   @ModelSync('value', 'input', { type: String })

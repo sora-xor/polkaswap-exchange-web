@@ -7,10 +7,10 @@
     <select-node
       v-if="isNodeListView"
       v-model="connectedNodeAddress"
-      :node-address-connecting="nodeAddressConnecting"
+      :node-address-connecting="connection.nodeAddressConnecting"
       :nodes="formattedNodeList"
       :handle-node="navigateToNodeInfo"
-      :environment="soraNetwork"
+      :environment="environment"
     />
     <node-info
       v-else
@@ -27,18 +27,18 @@
 </template>
 
 <script lang="ts">
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import pick from 'lodash/fp/pick';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state } from '@/store/decorators';
-import { Node, NodeItem, ConnectToNodeOptions } from '@/types/nodes';
+import { Node, NodeItem } from '@/types/nodes';
+import type { NodesConnection } from '@/utils/connection';
 import { AppHandledError } from '@/utils/error';
 
-import { NodeModel } from './Node/consts';
+import { NodeModel } from './consts';
 
 const NodeListView = 'NodeListView';
 const NodeInfoView = 'NodeInfoView';
@@ -51,27 +51,10 @@ const NodeInfoView = 'NodeInfoView';
   },
 })
 export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.LoadingMixin) {
-  @Prop({ default: () => null, type: Object }) private readonly node!: Partial<Node>;
-  @Prop({ default: () => [], type: Array }) private readonly defaultNodes!: Array<Node>;
-  @Prop({ default: () => [], type: Array }) private readonly nodeList!: Array<Node>;
-  @Prop({ default: '', type: String }) private readonly nodeAddressConnecting!: string;
-
-  @Prop({ default: false, type: Boolean }) private readonly visibility!: boolean;
-  @Prop({ default: () => {}, type: Function }) private readonly setVisibility!: (flag: boolean) => void;
-
-  @Prop({ default: () => {}, type: Function }) private readonly connectToNode!: (
-    args: ConnectToNodeOptions
-  ) => Promise<void>;
-
-  @Prop({ default: () => {}, type: Function }) private readonly addCustomNode!: (node: Node) => Promise<void>;
-  @Prop({ default: () => {}, type: Function }) private readonly updateCustomNode!: (args: {
-    address: string;
-    node: Node;
-  }) => Promise<void>;
-
-  @Prop({ default: () => {}, type: Function }) private readonly removeCustomNode!: (node: Node) => Promise<void>;
-
-  @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
+  @Prop({ required: true, type: Object }) readonly connection!: NodesConnection;
+  @Prop({ required: true, type: Boolean }) readonly visibility!: boolean;
+  @Prop({ required: true, type: Function }) readonly setVisibility!: (flag: boolean) => void;
+  @Prop({ default: () => '', type: String }) readonly environment!: string;
 
   currentView = NodeListView;
   selectedNode: Partial<NodeItem> = {};
@@ -89,11 +72,11 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   }
 
   get connectedNodeAddress(): string {
-    return this.node?.address ?? '';
+    return this.connection.node?.address ?? '';
   }
 
   set connectedNodeAddress(address: string) {
-    if (address === this.node.address) return;
+    if (address === this.connectedNodeAddress) return;
 
     const node = this.findNodeInListByAddress(address);
 
@@ -101,7 +84,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   }
 
   get isSelectedNodeRemovable(): boolean {
-    return !this.defaultNodes.find((node) => node.address === this.selectedNode?.address);
+    return !this.connection.defaultNodes.find((node) => node.address === this.selectedNode?.address);
   }
 
   get isSelectedNodeLoading(): boolean {
@@ -121,7 +104,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   }
 
   get formattedNodeList(): Array<NodeItem> {
-    return this.nodeList.map((node) => this.formatNode(node));
+    return this.connection.nodeList.map((node) => this.formatNode(node));
   }
 
   get dialogCustomClass(): string {
@@ -141,10 +124,10 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   }
 
   async removeNode(node: NodeItem): Promise<void> {
-    this.removeCustomNode(node);
+    this.connection.removeCustomNode(node);
     this.handleBack();
     if (this.isConnectedNodeAddress(node.address)) {
-      await this.setCurrentNode(this.defaultNodes[0]);
+      await this.setCurrentNode(this.connection.defaultNodes[0]);
     }
   }
 
@@ -165,7 +148,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     const nodeCopy = this.getNodePermittedData(node);
 
     if (isNewOrUpdatedNode) {
-      const defaultNode = this.findInList(this.defaultNodes, nodeCopy.address);
+      const defaultNode = this.findInList(this.connection.defaultNodes, nodeCopy.address);
 
       if (defaultNode) {
         const formatted = this.formatNode(defaultNode);
@@ -181,7 +164,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     }
 
     if (nodeCopy.address !== this.connectedNodeAddress) {
-      await this.connectToNode({
+      await this.connection.connectToNode({
         node: nodeCopy,
         onError: this.handleNodeError,
         onDisconnect: this.handleNodeDisconnect,
@@ -190,14 +173,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     }
 
     if (isNewOrUpdatedNode) {
-      const existingNode = this.findNodeInListByAddress(nodeCopy.address);
-      const address = this.selectedNode.address || existingNode?.address;
-
-      if (address) {
-        this.updateCustomNode({ address, node: nodeCopy });
-      } else {
-        this.addCustomNode(nodeCopy);
-      }
+      this.connection.updateCustomNode(nodeCopy);
     }
 
     this.selectedNode = this.findNodeInListByAddress(nodeCopy.address);
@@ -231,7 +207,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   }
 
   private isConnectingNode(node?: Partial<Node>): boolean {
-    return this.nodeAddressConnecting === node?.address;
+    return this.connection.nodeAddressConnecting === node?.address;
   }
 }
 </script>

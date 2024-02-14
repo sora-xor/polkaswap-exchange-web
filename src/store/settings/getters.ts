@@ -1,27 +1,15 @@
-import { connection } from '@soramitsu/soraneo-wallet-web';
 import { defineGetters } from 'direct-vuex';
 
 import { LiquiditySourceForMarketAlgorithm } from '@/consts';
 import { settingsGetterContext } from '@/store/settings';
-import type { Node } from '@/types/nodes';
 
 import type { SettingsState } from './types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 const getters = defineGetters<SettingsState>()({
-  customNodes(...args): Array<Node> {
-    const { state } = settingsGetterContext(args);
-    const defaultAddresses = state.defaultNodes.map((node) => node.address);
-
-    return state.customNodes.filter((node) => !defaultAddresses.includes(node.address));
-  },
-  nodeList(...args): Array<Node> {
-    const { state, getters } = settingsGetterContext(args);
-    return [...state.defaultNodes, ...getters.customNodes];
-  },
   nodeIsConnected(...args): boolean {
     const { state } = settingsGetterContext(args);
-    return !!state.node?.address && !state.nodeAddressConnecting && connection.opened;
+    return state.appConnection.nodeIsConnected;
   },
   liquiditySource(...args): LiquiditySourceTypes {
     const { state } = settingsGetterContext(args);

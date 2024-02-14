@@ -2,44 +2,12 @@ import { defineMutations } from 'direct-vuex';
 
 import { MarketAlgorithms } from '@/consts';
 import type { BreakpointClass, Language } from '@/consts';
-import type { Node } from '@/types/nodes';
 import storage, { settingsStorage } from '@/utils/storage';
 
 import type { Ad, FeatureFlags, SettingsState } from './types';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<SettingsState>()({
-  setNodeRequest(state, node: Nullable<Node>): void {
-    state.nodeAddressConnecting = node?.address ?? '';
-  },
-  setNodeSuccess(state, node: Nullable<Node> = {} as Node): void {
-    state.node = { ...node };
-    state.nodeAddressConnecting = '';
-    settingsStorage.set('node', JSON.stringify(node));
-  },
-  setNodeFailure(state): void {
-    state.nodeAddressConnecting = '';
-  },
-  setDefaultNodes(state, nodes: Array<Node>): void {
-    state.defaultNodes = [...nodes];
-    if (!state.node) return;
-    const defaultNode = state.defaultNodes.find((item) => item.address === state.node.address);
-    if (!defaultNode) return;
-    // If node from default nodes list - keep this node from localstorage up to date
-    state.node = { ...defaultNode };
-    settingsStorage.set('node', JSON.stringify(state.node));
-  },
-  setCustomNodes(state, nodes: Array<Node>): void {
-    state.customNodes = [...nodes];
-    settingsStorage.set('customNodes', JSON.stringify(nodes));
-  },
-  resetNode(state): void {
-    state.node = {};
-    settingsStorage.remove('node');
-  },
-  setNetworkChainGenesisHash(state, hash?: string): void {
-    state.chainGenesisHash = hash || '';
-  },
   setSlippageTolerance(state, value: string): void {
     state.slippageTolerance = value;
     storage.set('slippageTolerance', value);
