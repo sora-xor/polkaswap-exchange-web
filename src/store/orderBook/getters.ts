@@ -15,7 +15,12 @@ const getters = defineGetters<OrderBookState>()({
   baseAsset(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = orderBookGetterContext(args);
     if (!state.baseAssetAddress) return null;
-    return rootGetters.assets.assetDataByAddress(state.baseAssetAddress);
+    const token = rootGetters.assets.assetDataByAddress(state.baseAssetAddress);
+    const balance = state.baseAssetBalance;
+    if (balance) {
+      return { ...token, balance } as RegisteredAccountAsset;
+    }
+    return token;
   },
   quoteAsset(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = orderBookGetterContext(args);

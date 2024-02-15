@@ -3,14 +3,43 @@ import { defineActions } from 'direct-vuex';
 import { combineLatest } from 'rxjs';
 
 import { subscribeOnOrderBookUpdates, fetchOrderBooks } from '@/indexer/queries/orderBook';
+import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 import { orderBookActionContext } from '.';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { Subscription } from 'rxjs';
 
+const balanceSubscriptions = new TokenBalanceSubscriptions();
+
 const actions = defineActions({
+  updateBalanceSubscription(context, reset: boolean): void {
+    const { commit, getters, rootGetters } = orderBookActionContext(context);
+
+    const { baseAsset: token } = getters;
+    const { setBaseAssetBalance } = commit;
+    const field = token?.address as string;
+
+    if (reset) {
+      balanceSubscriptions.resetSubscriptions();
+      return;
+    }
+
+    const updateBalance = (balance: Nullable<AccountBalance>) => setBaseAssetBalance(balance);
+
+    balanceSubscriptions.remove(field);
+
+    if (
+      rootGetters.wallet.account.isLoggedIn &&
+      token?.address &&
+      !(token.address in rootGetters.wallet.account.accountAssetsAddressTable)
+    ) {
+      balanceSubscriptions.add(field, { updateBalance, token });
+    }
+  },
+
   async getOrderBooksInfo(context): Promise<void> {
     const { commit, rootGetters } = orderBookActionContext(context);
     const { whitelist } = rootGetters.wallet.account;
