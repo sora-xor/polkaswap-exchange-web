@@ -3,7 +3,7 @@
     <div v-if="isScreenHuge" class="order-book-widgets--huge">
       <div class="column-1">
         <set-limit-order-widget class="set-widget" />
-        <customise-page-widget :visible.sync="settingsVisibility" class="setting-widget" />
+        <!-- <customise-page-widget  class="setting-widget" /> -->
       </div>
       <div class="column-2">
         <book-charts-widget class="chart-widget" />

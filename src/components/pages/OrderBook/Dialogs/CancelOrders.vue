@@ -31,7 +31,7 @@ export default class CancelOrders extends Mixins(mixins.DialogMixin, Translation
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .order-book-cancel-dialog {
   display: flex;
   flex-direction: column;
