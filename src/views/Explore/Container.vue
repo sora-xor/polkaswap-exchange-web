@@ -124,13 +124,11 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 </script>
 
 <style lang="scss">
-.el-dropdown-menu.el-popper.explore-container-dropdown {
-  &__dropdown-menu {
-    background-color: var(--s-color-utility-body);
-    border-color: var(--s-color-base-border-secondary);
-    .popper__arrow {
-      display: none;
-    }
+.el-dropdown-menu.el-popper.explore-container-dropdown__dropdown-menu {
+  background-color: var(--s-color-utility-body);
+  border-color: var(--s-color-base-border-secondary);
+  .popper__arrow {
+    display: none;
   }
 }
 </style>
