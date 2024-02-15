@@ -221,8 +221,9 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
-
+  @action.orderBook.updateBalanceSubscription private updateBalanceSubscription!: (reset?: boolean) => void;
   @action.orderBook.updateOrderBooksStats private updateOrderBooksStats!: AsyncFnWithoutArgs;
+
   // It previous route = PageNames.Swap, we need to save 'from' and 'to' tokens to set it during the beforeDestroy
   private prevSwapFromAddress = '';
   private prevSwapToAddress = '';
@@ -242,6 +243,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @Watch('side')
   @Watch('baseAssetAddress')
   private handleSideChange(): void {
+    this.updateBalanceSubscription();
     this.handleTabClick();
   }
 
@@ -567,12 +569,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get bookPrecision(): number {
-    return this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length ?? 2;
+    return (
+      this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)?.[1]?.length ?? 0
+    );
   }
 
   get amountPrecision(): number {
     return (
-      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length ?? 2
+      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)?.[1]?.length ?? 0
     );
   }
 
@@ -662,6 +666,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     if (!value) return '';
 
     const [_, decimal] = value.split('.');
+
+    if (value.endsWith('.') && precision === 0) return value.slice(0, -1);
 
     return value.endsWith('.') || decimal?.length <= precision ? value : new FPNumber(value).dp(precision).toString();
   }
@@ -782,6 +788,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   beforeDestroy(): void {
     this.resetQuoteSubscription();
+    this.updateBalanceSubscription(true);
     if (this.prevSwapFromAddress && this.prevSwapToAddress) {
       this.setTokenFromAddress(this.prevSwapFromAddress);
       this.setTokenToAddress(this.prevSwapToAddress);
