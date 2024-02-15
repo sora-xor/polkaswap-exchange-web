@@ -166,6 +166,7 @@ import {
   asZeroValue,
   hasInsufficientBalance,
   delay,
+  hasInsufficientXorForFee,
 } from '@/utils';
 import { getBookDecimals, MAX_ORDERS_PER_SIDE, MAX_ORDERS_PER_USER } from '@/utils/orderBook';
 
@@ -241,8 +242,26 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   @Watch('side')
   @Watch('baseAssetAddress')
-  private handleSideChange(): void {
+  private handleSideChange(oldValue: string, newValue: string): void {
     this.handleTabClick();
+
+    // Checks for slider reset
+    if (oldValue.startsWith('0x') && oldValue !== newValue) {
+      // if base changed, reset slider
+      this.setAmountSliderValue(0);
+    } else if (['Buy', 'Sell'].includes(oldValue) && oldValue !== newValue) {
+      // if side changed, check for need to reset slider
+      if (!this.currentOrderBook) return;
+      const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
+      const maxBalance = getMaxValue(this.baseAsset, this.networkFee);
+
+      const hasLessBalance = maxLotSize.gt(new FPNumber(maxBalance));
+
+      if (hasLessBalance) {
+        this.handleInputFieldBase('');
+        this.setAmountSliderValue(0);
+      }
+    }
   }
 
   @Watch('baseAsset')
@@ -271,11 +290,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @Watch('userLimitOrders')
   private checkValidation(): void {
     this.checkInputValidation();
-  }
-
-  @Watch('baseAssetAddress')
-  private resetSlider(): void {
-    this.setAmountSliderValue(0);
   }
 
   get limitOrderType(): LimitOrderType {
@@ -324,9 +338,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.bookStopped) return this.t('orderBook.stop');
 
-    if (this.userReachedSpotLimit || this.userReachedOwnLimit) return this.t('orderBook.setPrice');
-
-    if (this.isInsufficientBalance) return this.t('insufficientBalanceText', { tokenSymbol: this.tokenFrom?.symbol });
+    if (this.userReachedSpotLimit || this.userReachedOwnLimit) return this.t('orderBook.cantPlaceOrder');
 
     if (this.limitOrderType === LimitOrderType.limit) {
       if (!this.quoteValue) return this.t('orderBook.setPrice');
@@ -353,6 +365,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.isOutOfAmountBounds) return this.t('orderBook.cantPlaceOrder');
 
+    if (this.isInsufficientXorForFee) return this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol });
+
+    if (this.isInsufficientBalance) return this.t('insufficientBalanceText', { tokenSymbol: this.tokenFrom?.symbol });
+
     if (this.side === PriceVariant.Buy) return this.t('orderBook.Buy', { asset: this.baseAsset.symbol });
     else return this.t('orderBook.Sell', { asset: this.baseAsset.symbol });
   }
@@ -368,6 +384,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     if (this.userReachedSpotLimit || this.userReachedOwnLimit || this.limitForSinglePriceReached) return true;
 
     if (!this.isLoggedIn) return false;
+
+    if (this.isInsufficientXorForFee) return true;
 
     if (this.isInsufficientBalance) return true;
 
@@ -405,7 +423,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         reading: this.t('orderBook.error.accountLimit.reading'),
       });
 
-    if (this.isInsufficientBalance) return;
+    if (this.isInsufficientBalance || this.isInsufficientXorForFee) return;
 
     // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
     // if (this.isPriceTooHigh && this.quoteValue && this.baseValue)
@@ -667,6 +685,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return this.isLoggedIn && this.areTokensSelected;
   }
 
+  get isInsufficientXorForFee(): boolean {
+    return hasInsufficientXorForFee(this.xor, this.networkFee);
+  }
+
   get isInsufficientBalance(): boolean {
     if (!this.tokenFrom) return false;
 
@@ -816,6 +838,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
 
     const maxPossible = FPNumber.fromNatural(max, this.bookPrecision);
+
+    if (this.isBuySide) return maxLotSize;
 
     return FPNumber.lte(maxPossible, maxLotSize) ? maxPossible : maxLotSize;
   }
