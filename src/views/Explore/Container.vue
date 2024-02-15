@@ -13,10 +13,12 @@
           <h3 class="explore-container-dropdown__selected">{{ pageTitle }}</h3>
           <template #menu>
             <s-dropdown-item
-              v-for="{ name, label } in tabs"
-              :key="name"
+              v-for="{ name, label, icon } in tabs"
               class="explore-container-dropdown__item"
+              :class="{ selected: name === pageName }"
+              :key="name"
               :value="name"
+              :icon="icon"
             >
               {{ label }}
             </s-dropdown-item>
@@ -82,16 +84,31 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
     this.isAccountItems = value;
   }
 
-  get tabs(): Array<{ name: string; label: string }> {
+  get tabs(): Array<{ name: string; label: string; icon: string }> {
     return [
-      PageNames.ExploreFarming,
-      PageNames.ExplorePools,
-      PageNames.ExploreStaking,
-      PageNames.ExploreTokens,
-      PageNames.ExploreBooks,
-    ].map((name) => ({
-      name,
-      label: this.t(`pageTitle.${name}`),
+      {
+        name: PageNames.ExploreFarming,
+        icon: 'various-toy-horse-24',
+      },
+      {
+        name: PageNames.ExplorePools,
+        icon: 'basic-drop-24',
+      },
+      {
+        name: PageNames.ExploreStaking,
+        icon: 'basic-layers-24',
+      },
+      {
+        name: PageNames.ExploreTokens,
+        icon: 'file-file-text-24',
+      },
+      {
+        name: PageNames.ExploreBooks,
+        icon: 'music-CD-24',
+      },
+    ].map((el) => ({
+      ...el,
+      label: this.t(`pageTitle.${el.name}`),
     }));
   }
 
@@ -124,11 +141,36 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 </script>
 
 <style lang="scss">
-.el-dropdown-menu.el-popper.explore-container-dropdown__dropdown-menu {
-  background-color: var(--s-color-utility-body);
-  border-color: var(--s-color-base-border-secondary);
-  .popper__arrow {
-    display: none;
+$icon-size: 28px;
+
+.el-dropdown-menu.el-popper.explore-container-dropdown {
+  &__dropdown-menu {
+    background-color: var(--s-color-utility-body);
+    border-color: var(--s-color-base-border-secondary);
+    .popper__arrow {
+      display: none;
+    }
+    .explore-container-dropdown__item {
+      i {
+        color: var(--s-color-base-content-tertiary);
+        font-size: $icon-size;
+      }
+      &:not(.is-disabled):not(.selected) {
+        &:hover,
+        &:focus {
+          &,
+          & i {
+            color: var(--s-color-base-content-secondary);
+          }
+        }
+      }
+      &.selected {
+        &,
+        & i {
+          color: var(--s-color-theme-accent);
+        }
+      }
+    }
   }
 }
 </style>
@@ -169,6 +211,8 @@ $search-input-width: 290px;
         font-weight: 300;
         font-size: var(--s-font-size-small);
         color: var(--s-color-base-content-secondary);
+        display: flex;
+        align-items: center;
       }
     }
   }
