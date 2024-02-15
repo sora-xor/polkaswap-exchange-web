@@ -1,13 +1,27 @@
 <template>
   <div class="explore-container">
-    <div class="explore-tabs-container">
-      <s-tabs class="explore-tabs" type="rounded" :value="pageName" @input="handleTabChange">
-        <s-tab v-for="tab in tabs" :key="tab.name" :name="tab.name" :label="tab.label"> </s-tab>
-      </s-tabs>
-    </div>
-
     <div class="container container--explore" v-loading="parentLoading">
-      <generic-page-header :title="pageTitle" class="page-header-title--explore">
+      <div class="explore-container-dropdown s-flex">
+        <s-dropdown
+          popper-class="explore-container-dropdown__dropdown-menu"
+          type="button"
+          button-type="link"
+          placement="bottom-start"
+          trigger="click"
+          @select="handleTabChange"
+        >
+          <h3 class="explore-container-dropdown__selected">{{ pageTitle }}</h3>
+          <template #menu>
+            <s-dropdown-item
+              v-for="{ name, label } in tabs"
+              :key="name"
+              class="explore-container-dropdown__item"
+              :value="name"
+            >
+              {{ label }}
+            </s-dropdown-item>
+          </template>
+        </s-dropdown>
         <search-input
           autofocus
           class="explore-search"
@@ -15,7 +29,7 @@
           :placeholder="t('searchText')"
           @clear="resetSearch"
         />
-      </generic-page-header>
+      </div>
 
       <div v-if="switcherAvailable" class="switcher">
         <s-switch v-model="isAccountItemsOnly" />
@@ -99,6 +113,7 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
   }
 
   handleTabChange(name: string): void {
+    if (this.pageName === name) return;
     router.push({ name });
   }
 
@@ -109,9 +124,13 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 </script>
 
 <style lang="scss">
-.explore-tabs {
-  .el-tabs__header {
-    margin: 0 auto;
+.el-dropdown-menu.el-popper.explore-container-dropdown {
+  &__dropdown-menu {
+    background-color: var(--s-color-utility-body);
+    border-color: var(--s-color-base-border-secondary);
+    .popper__arrow {
+      display: none;
+    }
   }
 }
 </style>
@@ -136,6 +155,24 @@ $search-input-width: 290px;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+
+    &-dropdown {
+      justify-content: space-between;
+      align-items: center;
+
+      &__selected {
+        font-weight: 300;
+        letter-spacing: var(--s-letter-spacing-mini);
+      }
+
+      &__item {
+        min-width: 150px;
+        line-height: 3;
+        font-weight: 300;
+        font-size: var(--s-font-size-small);
+        color: var(--s-color-base-content-secondary);
+      }
+    }
   }
 
   &-search {
@@ -149,11 +186,6 @@ $search-input-width: 290px;
       }
     }
   }
-}
-
-.page-header-title--explore {
-  justify-content: space-between;
-  align-items: center;
 }
 
 .switcher {
