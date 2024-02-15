@@ -111,7 +111,7 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
 
       if (!blockHash) return [];
 
-      const explorerUrl = networkData.endpointUrls[0];
+      const explorerUrl = networkData.nodes?.[0].address;
       const baseLink = `https://polkadot.js.org/apps/?rpc=${explorerUrl}#/explorer/query`;
 
       return [

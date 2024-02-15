@@ -9,7 +9,6 @@ import { web3ActionContext } from '@/store/web3';
 import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil, { Provider, PROVIDER_ERROR } from '@/utils/ethers-util';
 
-import type { SubNetworkApps } from './types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { ActionContext } from 'vuex';
 
@@ -165,14 +164,14 @@ const actions = defineActions({
     commit.setSupportedApps(supportedApps);
 
     const networks = getters.availableNetworks[BridgeNetworkType.Sub];
-    const endpoints = Object.entries(networks).reduce((acc, [key, value]) => {
-      if (!value) return acc;
-      const endpoints = value.data.endpointUrls;
-      return { ...acc, [key]: endpoints };
+
+    const nodes = Object.entries(networks).reduce((acc, [key, value]) => {
+      if (!(value && value.data.nodes)) return acc;
+      return { ...acc, [key]: value.data.nodes };
     }, {});
 
-    // update endpoints in SubNetworksConnector class
-    SubNetworksConnector.endpoints = endpoints;
+    // update nodes in SubNetworksConnector class
+    SubNetworksConnector.nodes = nodes;
   },
 
   /**

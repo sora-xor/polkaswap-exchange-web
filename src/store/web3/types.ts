@@ -1,4 +1,5 @@
 import type { NetworkData } from '@/types/bridge';
+import type { Node } from '@/types/nodes';
 import type { Provider } from '@/utils/ethers-util';
 
 import type { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
@@ -17,7 +18,7 @@ export type EthBridgeSettings = {
   address: EthBridgeContractsAddresses;
 };
 
-export type SubNetworkApps = Partial<Record<SubNetwork, boolean | string | string[]>>;
+export type SubNetworkApps = Partial<Record<SubNetwork, boolean | Node[]>>;
 
 export type AvailableNetwork = {
   /** disabled on networks list */

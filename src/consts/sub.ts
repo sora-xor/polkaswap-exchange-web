@@ -17,6 +17,18 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     endpointUrls: ['wss://kusama-rpc.polkadot.io', 'wss://kusama-rpc.dwellir.com'],
     blockExplorerUrls: [],
     shortName: 'Kusama',
+    nodes: [
+      {
+        chain: 'Kusama',
+        name: 'Parity',
+        address: 'wss://kusama-rpc.polkadot.io',
+      },
+      {
+        chain: 'Kusama',
+        name: 'Dwellir',
+        address: 'wss://kusama-rpc.dwellir.com',
+      },
+    ],
   },
   [SubNetworkId.Polkadot]: {
     id: SubNetworkId.Polkadot,
@@ -29,6 +41,18 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     endpointUrls: ['wss://rpc.polkadot.io', 'wss://polkadot-rpc.dwellir.com'],
     blockExplorerUrls: [],
     shortName: 'Polkadot',
+    nodes: [
+      {
+        chain: 'Polkadot',
+        name: 'Parity',
+        address: 'wss://rpc.polkadot.io',
+      },
+      {
+        chain: 'Polkadot',
+        name: 'Dwellir',
+        address: 'wss://polkadot-rpc.dwellir.com',
+      },
+    ],
   },
   [SubNetworkId.Rococo]: {
     id: SubNetworkId.Rococo,
@@ -41,6 +65,13 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     endpointUrls: ['wss://rococo-rpc.polkadot.io'],
     blockExplorerUrls: [],
     shortName: 'Rococo',
+    nodes: [
+      {
+        chain: 'Rococo',
+        name: 'Parity',
+        address: 'wss://rococo-rpc.polkadot.io',
+      },
+    ],
   },
   // SORA Parachains
   [SubNetworkId.RococoSora]: {
@@ -56,6 +87,13 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     ],
     blockExplorerUrls: [],
     shortName: 'SORA ROC',
+    nodes: [
+      {
+        chain: 'SORA Rococo Parachain Testnet',
+        name: 'Soramitsu',
+        address: 'wss://ws.parachain-collator-1.c1.stg1.sora2.soramitsu.co.jp',
+      },
+    ],
   },
   [SubNetworkId.KusamaSora]: {
     id: SubNetworkId.KusamaSora,
@@ -70,6 +108,13 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     ],
     blockExplorerUrls: [],
     shortName: 'SORA KSM',
+    nodes: [
+      {
+        chain: 'SORA Kusama Parachain',
+        name: 'Soramitsu',
+        address: 'wss://ws.parachain-collator-2.c2.sora2.soramitsu.co.jp',
+      },
+    ],
   },
   [SubNetworkId.PolkadotSora]: {
     id: SubNetworkId.PolkadotSora,
@@ -84,6 +129,13 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     ],
     blockExplorerUrls: [],
     shortName: 'SORA DOT',
+    nodes: [
+      {
+        chain: 'SORA Polkadot Parachain',
+        name: 'Soramitsu',
+        address: 'wss://ws.parachain-collator-3.pc3.sora2.soramitsu.co.jp',
+      },
+    ],
   },
   [SubNetworkId.Liberland]: {
     id: SubNetworkId.Liberland,

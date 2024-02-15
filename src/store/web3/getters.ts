@@ -41,15 +41,15 @@ const getters = defineGetters<Web3State>()({
       return buffer;
     }, {});
 
-    const sub = Object.entries(state.subNetworkApps).reduce((buffer, [id, endpoint]) => {
+    const sub = Object.entries(state.subNetworkApps).reduce((buffer, [id, nodes]) => {
       const data = SUB_NETWORKS[id];
 
       if (data) {
-        const disabled = !endpoint || !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork);
+        const disabled = !nodes || !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork);
 
         // override from config
-        if (endpoint) {
-          data.endpointUrls = Array.isArray(endpoint) ? endpoint : [endpoint];
+        if (nodes) {
+          data.nodes = nodes;
         }
 
         buffer[id] = {

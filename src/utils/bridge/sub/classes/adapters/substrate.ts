@@ -1,10 +1,12 @@
 import { Connection } from '@sora-substrate/connection';
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { FPNumber, Operation, Storage } from '@sora-substrate/util';
 import { formatBalance } from '@sora-substrate/util/build/assets';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import { ZeroStringValue } from '@/consts';
+import type { Node } from '@/types/nodes';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
+import { NodesConnection } from '@/utils/connection';
 
 import type { ApiPromise, ApiRx } from '@polkadot/api';
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
@@ -14,16 +16,16 @@ import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 export class SubAdapter {
-  /** Endpoint used for connection */
-  protected endpoint!: string;
-  /** List of all available endpoints */
-  public endpoints!: string[];
-  public connection!: Connection;
   public readonly subNetwork!: SubNetwork;
+  public readonly subNetworkConnection!: NodesConnection;
 
   constructor(subNetwork: SubNetwork) {
     this.subNetwork = subNetwork;
-    this.connection = new Connection({});
+    this.subNetworkConnection = new NodesConnection(new Storage(this.subNetwork), new Connection({}), this.subNetwork);
+  }
+
+  get connection(): Connection {
+    return this.subNetworkConnection.connection;
   }
 
   get api(): ApiPromise {
@@ -38,13 +40,8 @@ export class SubAdapter {
     return !!this.api?.isConnected;
   }
 
-  public setEndpoints(endpoints: string[]): void {
-    this.endpoints = endpoints;
-    this.useEndpoint(this.endpoints[0]);
-  }
-
-  public useEndpoint(endpoint: string): void {
-    this.endpoint = endpoint;
+  public setNodes(nodes: Node[]): void {
+    this.subNetworkConnection.setDefaultNodes(nodes);
   }
 
   public setApi(api: ApiPromise): void {
@@ -53,19 +50,15 @@ export class SubAdapter {
   }
 
   public async connect(): Promise<void> {
-    if (!this.connected && !this.api && !this.connection.loading && this.endpoint) {
-      console.info(`[${this.subNetwork}] Connection request to node:`, this.endpoint);
-      await this.connection.open(this.endpoint);
-      console.info(`[${this.subNetwork}] Connected to node:`, this.endpoint);
+    if (!this.connected && !this.api! && !this.connection.loading) {
+      await this.subNetworkConnection.connectToNode();
     }
+
     await this.api.isReady;
   }
 
   public async stop(): Promise<void> {
-    if (this.connected) {
-      await this.connection.close();
-      console.info(`[${this.subNetwork}] Disconnected from node:`, this.endpoint);
-    }
+    await this.subNetworkConnection.closeConnection();
   }
 
   public getSoraParachainId(): number | undefined {

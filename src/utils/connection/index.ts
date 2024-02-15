@@ -1,9 +1,6 @@
-import { connection } from '@soramitsu/soraneo-wallet-web';
-
 import type { Node, ConnectToNodeOptions } from '@/types/nodes';
 import { AppHandledError } from '@/utils/error';
 import { fetchRpc, getRpcEndpoint } from '@/utils/rpc';
-import { settingsStorage } from '@/utils/storage';
 
 import type { Connection } from '@sora-substrate/connection';
 import type { Storage } from '@sora-substrate/util';
@@ -15,16 +12,18 @@ export class NodesConnection {
   private _customNodes: Array<Node> = [];
 
   protected storage!: Storage;
-  protected connection!: Connection;
+  public readonly connection!: Connection;
+  public readonly network!: string;
 
   public defaultNodes: Array<Node> = [];
   public nodeAddressConnecting = '';
-  public chainGenesisHash = '';
+  public chainId = '';
   public nodeIsConnected = false;
 
-  constructor(storage: Storage, connection: Connection) {
+  constructor(storage: Storage, connection: Connection, network = 'SORA') {
     this.storage = storage;
     this.connection = connection;
+    this.network = network;
 
     this.initData();
   }
@@ -116,7 +115,7 @@ export class NodesConnection {
   }
 
   public setNetworkChainGenesisHash(hash?: string): void {
-    this.chainGenesisHash = hash || '';
+    this.chainId = hash || '';
   }
 
   protected async updateNetworkChainGenesisHash(): Promise<void> {
@@ -134,16 +133,18 @@ export class NodesConnection {
     return id;
   }
 
-  protected async closeConnectionWithInfo() {
-    const { endpoint, opened } = this.connection;
+  public async closeConnection() {
+    if (!this.connection.api) return;
 
-    if (endpoint && opened) {
-      await this.connection.close();
-      console.info('[SORA] Disconnected from node', endpoint);
-    }
+    const { endpoint } = this.connection;
+
+    await this.connection.api.isReady; // [TODO] update disconnectApi in connection
+    await this.connection.close();
+
+    console.info(`[${this.network}] Disconnected from node`, endpoint);
   }
 
-  async connectToNode(options: ConnectToNodeOptions = {}): Promise<void> {
+  public async connectToNode(options: ConnectToNodeOptions = {}): Promise<void> {
     const { node, onError, currentNodeIndex = 0, ...restOptions } = options;
 
     const defaultNode = this.nodeList[currentNodeIndex];
@@ -169,7 +170,7 @@ export class NodesConnection {
     }
   }
 
-  async setNode(options: ConnectToNodeOptions = {}): Promise<void> {
+  protected async setNode(options: ConnectToNodeOptions = {}): Promise<void> {
     const { node, connectionOptions = {}, onError, onDisconnect, onReconnect } = options;
 
     const endpoint = node?.address ?? '';
@@ -183,7 +184,7 @@ export class NodesConnection {
     const connectingNodeChanged = () => endpoint !== this.nodeAddressConnecting;
 
     const connectionOnDisconnected = async () => {
-      await this.closeConnectionWithInfo();
+      await this.closeConnection();
 
       if (typeof onDisconnect === 'function') {
         onDisconnect(node as Node);
@@ -209,9 +210,9 @@ export class NodesConnection {
 
       this.setNodeRequest(node!);
 
-      console.info('[SORA] Connection request to node', endpoint);
+      console.info(`[${this.network}] Connection request to node`, endpoint);
 
-      await this.closeConnectionWithInfo();
+      await this.closeConnection();
 
       await this.connection.open(endpoint, {
         ...connectionOpenOptions,
@@ -220,30 +221,30 @@ export class NodesConnection {
 
       if (connectingNodeChanged()) return;
 
-      console.info('[SORA] Connected to node', this.connection.endpoint);
+      console.info(`[${this.network}] Connected to node`, this.connection.endpoint);
 
-      const nodeChainGenesisHash = this.connection.api?.genesisHash.toHex();
+      const nodeChainId = this.connection.api?.genesisHash.toHex();
 
       if (!isTrustedEndpoint) {
         // if genesis hash is not set in state, fetch it
-        if (!this.chainGenesisHash) {
+        if (!this.chainId) {
           await this.updateNetworkChainGenesisHash();
         }
 
-        if (this.chainGenesisHash && nodeChainGenesisHash !== this.chainGenesisHash) {
+        if (this.chainId && nodeChainId !== this.chainId) {
           // disconnect from node to prevent network subscriptions activation
-          await this.closeConnectionWithInfo();
+          await this.closeConnection();
 
           throw new AppHandledError(
             {
               key: 'node.errors.network',
               payload: { address: endpoint },
             },
-            `Chain genesis hash doesn't match: "${nodeChainGenesisHash}" received, should be "${this.chainGenesisHash}"`
+            `Chain genesis hash doesn't match: "${nodeChainId}" received, should be "${this.chainId}"`
           );
         }
       } else {
-        this.setNetworkChainGenesisHash(nodeChainGenesisHash);
+        this.setNetworkChainGenesisHash(nodeChainId);
       }
 
       if (isReconnection) {

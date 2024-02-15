@@ -1,5 +1,6 @@
 import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
+import type { Node } from '@/types/nodes';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubTransferType } from '@/utils/bridge/sub/types';
 import { determineTransferType } from '@/utils/bridge/sub/utils';
@@ -32,7 +33,7 @@ export class SubNetworksConnector {
 
   public network!: SubNetworkConnection<SubAdapter>; // link to the one above
 
-  public static endpoints: Partial<Record<SubNetwork, string[]>> = {};
+  public static nodes: Partial<Record<SubNetwork, Node[]>> = {};
 
   public readonly adapters = {
     [SubNetworkId.Rococo]: () => new RelaychainAdapter(SubNetworkId.Rococo),
@@ -102,15 +103,15 @@ export class SubNetworksConnector {
       throw new Error(`[${this.constructor.name}] Adapter for "${network}" network not implemented`);
     }
 
-    const endpoints = SubNetworksConnector.endpoints[network];
+    const nodes = SubNetworksConnector.nodes[network];
 
-    if (!endpoints) {
-      throw new Error(`[${this.constructor.name}] Endpoints for "${network}" network is not defined`);
+    if (!nodes) {
+      throw new Error(`[${this.constructor.name}] Nodes for "${network}" network is not defined`);
     }
 
     const adapter = this.adapters[network]();
 
-    adapter.setEndpoints(endpoints);
+    adapter.setNodes(nodes);
 
     return adapter;
   }
