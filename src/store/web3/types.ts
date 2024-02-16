@@ -47,6 +47,7 @@ export type Web3State = {
   ethBridgeEvmNetwork: EvmNetwork;
   ethBridgeContractAddress: EthBridgeContractsAddresses;
 
+  selectSubNodeDialogVisibility: boolean;
   selectNetworkDialogVisibility: boolean;
   selectAccountDialogVisibility: boolean;
   selectProviderDialogVisibility: boolean;

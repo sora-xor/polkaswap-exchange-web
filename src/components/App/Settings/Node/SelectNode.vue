@@ -17,7 +17,7 @@
           <div class="select-node-item s-flex">
             <div class="select-node-info s-flex">
               <div class="select-node-info__label">
-                {{ node.title }}
+                {{ getTitle(node) }}
               </div>
               <div class="select-node-info__desc s-flex">
                 <div>{{ node.address }}</div>
@@ -25,7 +25,7 @@
               </div>
             </div>
             <div class="select-node-badge">
-              <s-icon v-if="node.connecting" name="el-icon-loading" />
+              <s-icon v-if="node.address === nodeAddressConnecting" name="el-icon-loading" />
             </div>
             <s-button
               class="select-node-details"
@@ -48,14 +48,14 @@
 import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import type { NodeItem } from '@/types/nodes';
+import type { Node } from '@/types/nodes';
 
 import { formatLocation } from './utils';
 
 @Component
 export default class SelectNode extends Mixins(TranslationMixin) {
-  @Prop({ default: () => [], type: Array }) readonly nodes!: Array<NodeItem>;
-  @Prop({ default: () => {}, type: Function }) readonly handleNode!: (node?: NodeItem) => void;
+  @Prop({ default: () => [], type: Array }) readonly nodes!: Array<Node>;
+  @Prop({ default: () => {}, type: Function }) readonly handleNode!: (node?: Node) => void;
   @Prop({ default: () => '', type: String }) readonly environment!: string;
   @Prop({ default: '', type: String }) readonly nodeAddressConnecting!: string;
 
@@ -68,6 +68,12 @@ export default class SelectNode extends Mixins(TranslationMixin) {
     const flag = `<span class="flag-emodji">${location.flag}</span>`;
     if (!location.name) return flag;
     return `${location.name} ${flag}`;
+  }
+
+  getTitle(node: Node) {
+    const { name, chain } = node;
+
+    return !!name && !!chain ? this.t('selectNodeDialog.nodeTitle', { chain, name }) : name || chain;
   }
 
   async mounted(): Promise<void> {

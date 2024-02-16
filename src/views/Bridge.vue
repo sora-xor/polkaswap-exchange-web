@@ -58,8 +58,10 @@
           @select="openSelectAssetDialog"
         >
           <template #title-append>
-            <span class="input-title--network">{{ formatSelectedNetwork(isSoraToEvm) }}</span>
-            <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : networkSelected)}`" />
+            <div @click="handleChangeSubNode">
+              <span class="input-title--network">{{ formatSelectedNetwork(isSoraToEvm) }}</span>
+              <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : networkSelected)}`" />
+            </div>
           </template>
 
           <div v-if="sender" class="connect-wallet-panel">
@@ -237,6 +239,13 @@
     <bridge-select-account />
     <bridge-select-network />
     <select-provider-dialog />
+    <select-node-dialog
+      v-if="subConnection"
+      :connection="subConnection"
+      :environment="networkSelected"
+      :visibility="selectSubNodeDialogVisibility"
+      :set-visibility="setSelectSubNodeDialogVisibility"
+    />
     <confirm-bridge-transaction-dialog
       :visible.sync="showConfirmTransactionDialog"
       :is-sora-to-evm="isSoraToEvm"
@@ -291,9 +300,11 @@ import {
   delay,
   toPrecision,
 } from '@/utils';
+import { subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
+import type { NodesConnection } from '@/utils/connection';
 
-import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
-import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { IBridgeTransaction } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
@@ -304,6 +315,7 @@ import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     BridgeLimitCard: lazyComponent(Components.BridgeLimitCard),
     SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
+    SelectNodeDialog: lazyComponent(Components.SelectNodeDialog),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
     NetworkFeeWarningDialog: lazyComponent(Components.NetworkFeeWarningDialog),
@@ -357,6 +369,19 @@ export default class Bridge extends Mixins(
 
   showWarningExternalFeeDialog = false;
   isWarningExternalFeeDialogConfirmed = false;
+
+  // Sub Node Select
+  @state.web3.selectSubNodeDialogVisibility selectSubNodeDialogVisibility!: boolean;
+  @mutation.web3.setSelectSubNodeDialogVisibility private setSelectSubNodeDialogVisibility!: (flag: boolean) => void;
+
+  private readonly subBridgeConnector = subBridgeConnector;
+
+  get subConnection(): Nullable<NodesConnection> {
+    if (!this.isSubBridge) return null;
+    if (this.networkSelected !== this.subBridgeConnector.network?.adapter.subNetwork) return null;
+
+    return this.subBridgeConnector.network?.adapter.subNetworkConnection;
+  }
 
   confirmExternalNetworkFeeWarningDialog(): void {
     this.isWarningExternalFeeDialogConfirmed = true;
@@ -606,6 +631,10 @@ export default class Bridge extends Mixins(
 
   handleChangeNetwork(): void {
     this.setSelectNetworkDialogVisibility(true);
+  }
+
+  handleChangeSubNode(): void {
+    this.setSelectSubNodeDialogVisibility(true);
   }
 
   openSelectAssetDialog(): void {

@@ -4,7 +4,7 @@ import { formatBalance } from '@sora-substrate/util/build/assets';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import { ZeroStringValue } from '@/consts';
-import type { Node } from '@/types/nodes';
+import type { Node, ConnectToNodeOptions } from '@/types/nodes';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { NodesConnection } from '@/utils/connection';
 
@@ -51,7 +51,9 @@ export class SubAdapter {
 
   public async connect(): Promise<void> {
     if (!this.connected && !this.api! && !this.connection.loading) {
-      await this.subNetworkConnection.connectToNode();
+      try {
+        await this.subNetworkConnection.connectToNode();
+      } catch {}
     }
 
     await this.api.isReady;

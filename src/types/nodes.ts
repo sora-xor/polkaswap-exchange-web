@@ -7,11 +7,6 @@ export interface Node {
   location?: string;
 }
 
-export interface NodeItem extends Node {
-  title?: string;
-  connecting?: boolean;
-}
-
 export interface RunConnectionOptions {
   once?: boolean;
   timeout?: number;

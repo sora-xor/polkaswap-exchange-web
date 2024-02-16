@@ -34,7 +34,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { Node, NodeItem } from '@/types/nodes';
+import { Node } from '@/types/nodes';
 import type { NodesConnection } from '@/utils/connection';
 import { AppHandledError } from '@/utils/error';
 
@@ -57,7 +57,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   @Prop({ default: () => '', type: String }) readonly environment!: string;
 
   currentView = NodeListView;
-  selectedNode: Partial<NodeItem> = {};
+  selectedNode: Partial<Node> = {};
 
   get visible(): boolean {
     return this.visibility;
@@ -99,15 +99,15 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     return this.currentView === NodeListView;
   }
 
-  get formattedNodeList(): Array<NodeItem> {
-    return this.connection.nodeList.map((node) => this.formatNode(node));
+  get formattedNodeList(): Array<Node> {
+    return this.connection.nodeList;
   }
 
   get dialogCustomClass(): string {
     return this.isNodeListView ? '' : 'select-node-dialog--add-node';
   }
 
-  async handleNode(node: NodeItem, isNewOrUpdatedNode = false): Promise<void> {
+  async handleNode(node: Node, isNewOrUpdatedNode = false): Promise<void> {
     try {
       await this.setCurrentNode(node, isNewOrUpdatedNode);
 
@@ -119,7 +119,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     }
   }
 
-  async removeNode(node: NodeItem): Promise<void> {
+  async removeNode(node: Node): Promise<void> {
     this.connection.removeCustomNode(node);
     this.handleBack();
     if (this.isConnectedNodeAddress(node.address)) {
@@ -127,7 +127,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     }
   }
 
-  navigateToNodeInfo(node?: NodeItem): void {
+  navigateToNodeInfo(node?: Node): void {
     this.selectedNode = node || {};
     this.changeView(NodeInfoView);
   }
@@ -136,22 +136,21 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     this.changeView(NodeListView);
   }
 
-  private getNodePermittedData(node: NodeItem): Node {
+  private getNodePermittedData(node: Node): Node {
     return pick(Object.keys(NodeModel))(node) as Node;
   }
 
-  private async setCurrentNode(node: NodeItem, isNewOrUpdatedNode = false): Promise<void> {
+  private async setCurrentNode(node: Node, isNewOrUpdatedNode = false): Promise<void> {
     const nodeCopy = this.getNodePermittedData(node);
 
     if (isNewOrUpdatedNode) {
       const defaultNode = this.findInList(this.connection.defaultNodes, nodeCopy.address);
 
       if (defaultNode) {
-        const formatted = this.formatNode(defaultNode);
         const error = new AppHandledError({
           key: 'node.errors.existing',
           payload: {
-            title: formatted.title,
+            title: defaultNode.chain,
           },
         });
 
@@ -175,22 +174,11 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     this.selectedNode = this.findNodeInListByAddress(nodeCopy.address);
   }
 
-  private formatNode(node: Node): NodeItem {
-    return {
-      ...node,
-      title:
-        !!node.name && !!node.chain
-          ? this.t('selectNodeDialog.nodeTitle', { chain: node.chain, name: node.name })
-          : node.name || node.chain,
-      connecting: this.isConnectingNode(node),
-    };
-  }
-
   private changeView(view: string): void {
     this.currentView = view;
   }
 
-  private findInList(list: NodeItem[], address: string): any {
+  private findInList(list: Node[], address: string): any {
     return list.find((item) => item.address === address);
   }
 
@@ -200,10 +188,6 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
 
   private isConnectedNodeAddress(nodeAddress?: string): boolean {
     return !!this.connectedNodeAddress && !!nodeAddress && this.connectedNodeAddress === nodeAddress;
-  }
-
-  private isConnectingNode(node?: Partial<Node>): boolean {
-    return this.connection.nodeAddressConnecting === node?.address;
   }
 }
 </script>
