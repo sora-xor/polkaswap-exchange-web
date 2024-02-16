@@ -13,7 +13,7 @@
     >
       <template #label>
         <span>{{ t('selectNodeConnected') }}</span>
-        <span v-if="node">{{ node.name }}</span>
+        <span v-if="node">{{ node.chain }}</span>
       </template>
       <template>
         <span v-if="node">{{ node.address }}</span>
@@ -59,7 +59,6 @@
     </div>
     <select-node-dialog
       :connection="appConnection"
-      :environment="soraNetwork"
       :visibility="selectNodeDialogVisibility"
       :set-visibility="setSelectNodeDialogVisibility"
     />

@@ -1,8 +1,5 @@
 <template>
   <div class="select-node s-flex">
-    <div v-if="environment" class="select-node-description">
-      {{ t('selectNodeDialog.selectNodeForEnvironment', { environment }) }}
-    </div>
     <s-scrollbar class="select-node-scrollbar">
       <s-radio-group v-model="currentAddressValue" class="select-node-list s-flex">
         <s-radio
@@ -56,7 +53,6 @@ import { formatLocation } from './utils';
 export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: () => [], type: Array }) readonly nodes!: Array<Node>;
   @Prop({ default: () => {}, type: Function }) readonly handleNode!: (node?: Node) => void;
-  @Prop({ default: () => '', type: String }) readonly environment!: string;
   @Prop({ default: '', type: String }) readonly nodeAddressConnecting!: string;
 
   @ModelSync('value', 'input', { type: String })

@@ -242,7 +242,7 @@
     <select-node-dialog
       v-if="subConnection"
       :connection="subConnection"
-      :environment="networkSelected"
+      :network="networkSelected"
       :visibility="selectSubNodeDialogVisibility"
       :set-visibility="setSelectSubNodeDialogVisibility"
     />

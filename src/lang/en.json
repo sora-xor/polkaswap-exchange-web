@@ -456,13 +456,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "{Sora} Network node selection",
+        "title": "{network} Network node selection",
         "addNode": "Add custom node",
         "customNode": "Custom node",
         "howToSetupOwnNode": "How to setup your own {Sora} node",
         "select": "Select",
         "connected": "Connected",
-        "selectNodeForEnvironment": "Select a node for {environment} environment:",
         "nodeTitle": "{chain} hosted by {name}",
         "messages": {
             "emptyName": "Please input the name of the node",

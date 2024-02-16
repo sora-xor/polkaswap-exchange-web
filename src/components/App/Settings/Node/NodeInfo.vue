@@ -47,7 +47,14 @@
     >
       {{ buttonText }}
     </s-button>
-    <a :href="tutorialLink" class="node-info-button" tabindex="-1" target="_blank" rel="noreferrer noopener">
+    <a
+      v-if="showTutorial"
+      :href="tutorialLink"
+      class="node-info-button"
+      tabindex="-1"
+      target="_blank"
+      rel="noreferrer noopener"
+    >
       <s-button
         type="tertiary"
         class="node-info-tutorial-button s-typography-button--big"
@@ -109,6 +116,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: false, type: Boolean }) existing!: boolean;
   @Prop({ default: false, type: Boolean }) removable!: boolean;
   @Prop({ default: false, type: Boolean }) connected!: boolean;
+  @Prop({ default: false, type: Boolean }) showTutorial!: boolean;
   @Prop({ default: '', type: String }) readonly nodeAddressConnecting!: string;
 
   @Ref('nodeNameInput') private readonly nodeNameInput!: HTMLInputElement;

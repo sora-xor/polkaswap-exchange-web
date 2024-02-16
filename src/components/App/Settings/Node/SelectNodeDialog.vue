@@ -1,7 +1,7 @@
 <template>
   <dialog-base
     :visible.sync="visible"
-    :title="t('selectNodeDialog.title')"
+    :title="t('selectNodeDialog.title', { network })"
     :class="['select-node-dialog', dialogCustomClass]"
   >
     <select-node
@@ -10,7 +10,6 @@
       :node-address-connecting="connection.nodeAddressConnecting"
       :nodes="formattedNodeList"
       :handle-node="navigateToNodeInfo"
-      :environment="environment"
     />
     <node-info
       v-else
@@ -22,6 +21,7 @@
       :handle-back="handleBack"
       :handle-node="handleNode"
       :remove-node="removeNode"
+      :show-tutorial="isSoraNetwork"
     />
   </dialog-base>
 </template>
@@ -38,7 +38,7 @@ import { Node } from '@/types/nodes';
 import type { NodesConnection } from '@/utils/connection';
 import { AppHandledError } from '@/utils/error';
 
-import { NodeModel } from './consts';
+import { NodeModel, SoraNetwork } from './consts';
 
 const NodeListView = 'NodeListView';
 const NodeInfoView = 'NodeInfoView';
@@ -54,7 +54,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   @Prop({ required: true, type: Object }) readonly connection!: NodesConnection;
   @Prop({ required: true, type: Boolean }) readonly visibility!: boolean;
   @Prop({ required: true, type: Function }) readonly setVisibility!: (flag: boolean) => void;
-  @Prop({ default: () => '', type: String }) readonly environment!: string;
+  @Prop({ default: () => SoraNetwork, type: String }) readonly network!: string;
 
   currentView = NodeListView;
   selectedNode: Partial<Node> = {};
@@ -69,6 +69,10 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     if (!flag) {
       this.handleBack();
     }
+  }
+
+  get isSoraNetwork(): boolean {
+    return this.network === SoraNetwork;
   }
 
   get connectedNodeAddress(): string {
