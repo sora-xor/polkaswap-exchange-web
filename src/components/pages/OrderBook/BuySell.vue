@@ -123,10 +123,7 @@
         @click="placeLimitOrder"
         :disabled="buttonDisabled"
       >
-        <template v-if="!isLoggedIn">
-          {{ t('connectWalletText') }}
-        </template>
-        <template v-else-if="bookStopped">
+        <template v-if="bookStopped">
           {{ t('orderBook.stop') }}
         </template>
         <template v-else-if="userReachedSpotLimit || userReachedOwnLimit">
@@ -165,7 +162,10 @@
         :class="computedBtnClass"
         @click="placeLimitOrder"
       >
-        <template v-if="isBuySide">
+        <template v-if="!isLoggedIn">
+          {{ t('connectWalletText') }}
+        </template>
+        <template v-else-if="isBuySide">
           {{ t('orderBook.Buy', { asset: baseAsset?.symbol }) }}
         </template>
         <template v-else>
