@@ -384,6 +384,7 @@ export default class Bridge extends Mixins(
   }
 
   get isExternalNetworkLoading(): boolean {
+    console.log(this.subConnection);
     return this.isSubBridge ? !this.subConnection?.nodeIsConnected : !!this.evmProviderLoading;
   }
 

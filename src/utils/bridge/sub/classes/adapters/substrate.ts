@@ -52,7 +52,7 @@ export class SubAdapter {
   public async connect(): Promise<void> {
     if (!this.connected && !this.api! && !this.connection.loading) {
       try {
-        await this.subNetworkConnection.connectToNode();
+        await this.subNetworkConnection.connect();
       } catch {}
     }
 

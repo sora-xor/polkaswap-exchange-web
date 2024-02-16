@@ -11,8 +11,10 @@ function initialState(): SettingsState {
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
   const chartsEnabled = storage.get('сhartsEnabled');
   const isBrowserNotificationApiAvailable = 'Notification' in window;
+  const appConnection = new NodesConnection(settingsStorage, connection);
+
   return {
-    appConnection: new NodesConnection(settingsStorage, connection),
+    appConnection: appConnection,
     featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: (storage.get('marketAlgorithm') || DefaultMarketAlgorithm) as MarketAlgorithms,

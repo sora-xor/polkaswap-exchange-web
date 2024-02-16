@@ -384,7 +384,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // 2) Connection to node
       await Promise.all([
         waitForCore(walletOptions),
-        this.appConnection.connectToNode({
+        this.appConnection.connect({
           onError: this.handleNodeError,
           onDisconnect: this.handleNodeDisconnect,
           onReconnect: this.handleNodeReconnect,

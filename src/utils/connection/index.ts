@@ -8,72 +8,70 @@ import type { Storage } from '@sora-substrate/util';
 const NODE_CONNECTION_TIMEOUT = 60_000;
 
 export class NodesConnection {
-  private _node: Nullable<Node> = null;
-  private _customNodes: Array<Node> = [];
-
-  protected storage!: Storage;
   public readonly connection!: Connection;
   public readonly network!: string;
+  protected readonly storage!: Storage;
 
-  public defaultNodes: Array<Node> = [];
+  public node: Nullable<Node> = null;
+  public customNodes: readonly Node[] = [];
+  public defaultNodes: readonly Node[] = [];
   public nodeAddressConnecting = '';
   public chainId = '';
-  public nodeIsConnected = false;
+  // public nodeIsConnected = false;
 
   constructor(storage: Storage, connection: Connection, network = 'SORA') {
-    this.storage = storage;
-    this.connection = connection;
     this.network = network;
 
+    // remove vue reactivity
+    Object.defineProperty(this, 'connection', {
+      configurable: false,
+      value: connection,
+    });
+    Object.defineProperty(this, 'storage', {
+      configurable: false,
+      value: storage,
+    });
+
     this.initData();
-  }
-
-  protected initData(): void {
-    const node = this.storage.get('node');
-    const nodes = this.storage.get('customNodes');
-
-    this._node = node ? JSON.parse(node) : null;
-    this._customNodes = nodes ? JSON.parse(nodes) : [];
-  }
-
-  get node(): Nullable<Node> {
-    return this._node;
-  }
-
-  set node(node: Nullable<Node>) {
-    if (node) {
-      this.storage.set('node', JSON.stringify(node));
-    } else {
-      this.storage.remove('node');
-    }
-
-    this._node = node;
-  }
-
-  get customNodes(): Node[] {
-    return this._customNodes;
-  }
-
-  set customNodes(nodes: Node[]) {
-    this.storage.set('customNodes', JSON.stringify(nodes));
-
-    this._customNodes = [...nodes];
   }
 
   get nodeList(): Node[] {
     return [...this.defaultNodes, ...this.customNodes];
   }
 
-  protected updateConnectionStatus(): void {
-    this.nodeIsConnected = !!this.node?.address && !this.nodeAddressConnecting && this.connection.opened;
+  get nodeIsConnected(): boolean {
+    return !!this.node?.address && !this.nodeAddressConnecting && this.connection.opened;
+  }
+
+  protected initData(): void {
+    const node = this.storage.get('node');
+    const nodes = this.storage.get('customNodes');
+
+    this.setNode(node ? JSON.parse(node) : null);
+    this.setCustomNodes(nodes ? JSON.parse(nodes) : []);
   }
 
   protected addCustomNode(node: Node): void {
-    this.customNodes = [...this.customNodes, node];
+    this.setCustomNodes([...this.customNodes, node]);
+  }
+
+  protected setNode(node: Nullable<Node>): void {
+    if (node) {
+      this.storage.set('node', JSON.stringify(node));
+      this.node = Object.freeze({ ...node });
+    } else {
+      this.storage.remove('node');
+      this.node = null;
+    }
+  }
+
+  setCustomNodes(nodes: Node[]): void {
+    this.storage.set('customNodes', JSON.stringify(nodes));
+    this.customNodes = Object.freeze([...nodes]);
   }
 
   removeCustomNode(node: Node): void {
-    this.customNodes = this.customNodes.filter((item) => item.address !== node.address);
+    this.setCustomNodes(this.customNodes.filter((item) => item.address !== node.address));
   }
 
   updateCustomNode(node: Node): void {
@@ -82,7 +80,7 @@ export class NodesConnection {
   }
 
   setDefaultNodes(nodes: Array<Node>): void {
-    this.defaultNodes = [...nodes];
+    this.defaultNodes = Object.freeze([...nodes]);
 
     if (!this.node) return;
 
@@ -90,28 +88,7 @@ export class NodesConnection {
 
     if (!defaultNode) return;
     // If node from default nodes list - keep this node from localstorage up to date
-    this.node = defaultNode;
-  }
-
-  protected setNodeRequest(node: Node): void {
-    this.nodeAddressConnecting = node.address;
-    this.updateConnectionStatus();
-  }
-
-  protected setNodeSuccess(node: Node): void {
-    this.node = node;
-    this.setNodeFailure();
-  }
-
-  // rename
-  protected setNodeFailure(): void {
-    this.nodeAddressConnecting = '';
-    this.updateConnectionStatus();
-  }
-
-  protected resetNode(): void {
-    this.node = null;
-    this.updateConnectionStatus();
+    this.setNode(defaultNode);
   }
 
   public setNetworkChainGenesisHash(hash?: string): void {
@@ -144,37 +121,36 @@ export class NodesConnection {
     console.info(`[${this.network}] Disconnected from node`, endpoint);
   }
 
-  public async connectToNode(options: ConnectToNodeOptions = {}): Promise<void> {
+  public async connect(options: ConnectToNodeOptions = {}): Promise<void> {
     const { node, onError, currentNodeIndex = 0, ...restOptions } = options;
 
     const defaultNode = this.nodeList[currentNodeIndex];
     const requestedNode = node ?? this.node ?? defaultNode;
 
     try {
-      await this.setNode({ node: requestedNode, onError, ...restOptions });
+      await this.connectNode({ node: requestedNode, onError, ...restOptions });
     } catch (error) {
       onError?.(error, requestedNode);
 
       // if connection failed to node in state, reset node in state
       if (requestedNode.address === this.node?.address) {
-        this.resetNode();
+        this.setNode(null);
       }
 
       // loop through the node list
       if (this.node?.address || currentNodeIndex !== this.defaultNodes.length - 1) {
         const nextIndex = requestedNode.address === defaultNode.address ? currentNodeIndex + 1 : 0;
-        await this.connectToNode({ onError, currentNodeIndex: nextIndex, ...restOptions });
+        await this.connect({ onError, currentNodeIndex: nextIndex, ...restOptions });
       }
 
       throw error;
     }
   }
 
-  protected async setNode(options: ConnectToNodeOptions = {}): Promise<void> {
+  protected async connectNode(options: ConnectToNodeOptions = {}): Promise<void> {
     const { node, connectionOptions = {}, onError, onDisconnect, onReconnect } = options;
 
     const endpoint = node?.address ?? '';
-    const isTrustedEndpoint = !!this.defaultNodes.find((node) => node.address === endpoint);
     const connectionOpenOptions = {
       once: true, // by default we are trying to connect once, but keep trying after disconnect from connected node
       timeout: NODE_CONNECTION_TIMEOUT,
@@ -190,7 +166,7 @@ export class NodesConnection {
         onDisconnect(node as Node);
       }
 
-      this.connectToNode({
+      this.connect({
         node,
         onError,
         onDisconnect,
@@ -205,10 +181,10 @@ export class NodesConnection {
 
     try {
       if (!endpoint) {
-        throw new Error('Node address is not set');
+        throw new Error(`[${this.network}] Node address is not set`);
       }
 
-      this.setNodeRequest(node!);
+      this.nodeAddressConnecting = endpoint;
 
       console.info(`[${this.network}] Connection request to node`, endpoint);
 
@@ -224,6 +200,7 @@ export class NodesConnection {
       console.info(`[${this.network}] Connected to node`, this.connection.endpoint);
 
       const nodeChainId = this.connection.api?.genesisHash.toHex();
+      const isTrustedEndpoint = !!this.defaultNodes.find((node) => node.address === endpoint);
 
       if (!isTrustedEndpoint) {
         // if genesis hash is not set in state, fetch it
@@ -251,7 +228,8 @@ export class NodesConnection {
         onReconnect?.(node as Node);
       }
 
-      this.setNodeSuccess(node!);
+      this.setNode(node);
+      this.nodeAddressConnecting = '';
     } catch (error) {
       console.error(error);
       const err =
@@ -263,7 +241,7 @@ export class NodesConnection {
             });
 
       if (!connectingNodeChanged()) {
-        this.setNodeFailure();
+        this.nodeAddressConnecting = '';
       }
       throw err;
     }

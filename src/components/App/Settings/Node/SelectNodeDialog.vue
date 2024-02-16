@@ -8,7 +8,7 @@
       v-if="isNodeListView"
       v-model="connectedNodeAddress"
       :node-address-connecting="connection.nodeAddressConnecting"
-      :nodes="formattedNodeList"
+      :nodes="connection.nodeList"
       :handle-node="navigateToNodeInfo"
     />
     <node-info
@@ -103,10 +103,6 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     return this.currentView === NodeListView;
   }
 
-  get formattedNodeList(): Array<Node> {
-    return this.connection.nodeList;
-  }
-
   get dialogCustomClass(): string {
     return this.isNodeListView ? '' : 'select-node-dialog--add-node';
   }
@@ -163,7 +159,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     }
 
     if (nodeCopy.address !== this.connectedNodeAddress) {
-      await this.connection.connectToNode({
+      await this.connection.connect({
         node: nodeCopy,
         onError: this.handleNodeError,
         onDisconnect: this.handleNodeDisconnect,
@@ -182,12 +178,12 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     this.currentView = view;
   }
 
-  private findInList(list: Node[], address: string): any {
+  private findInList(list: readonly Node[], address: string): any {
     return list.find((item) => item.address === address);
   }
 
   private findNodeInListByAddress(address: string): any {
-    return this.findInList(this.formattedNodeList, address);
+    return this.findInList(this.connection.nodeList, address);
   }
 
   private isConnectedNodeAddress(nodeAddress?: string): boolean {
