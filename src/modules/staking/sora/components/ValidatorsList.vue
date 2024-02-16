@@ -288,6 +288,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 
 <style lang="scss" scoped>
 .validators {
+  overflow: hidden;
   position: relative;
 }
 
