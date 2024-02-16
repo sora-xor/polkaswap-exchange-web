@@ -115,6 +115,7 @@
         </div>
       </div>
       <s-button
+        v-if="buttonDisabled"
         slot="reference"
         type="primary"
         class="btn s-typography-button--medium"
@@ -122,8 +123,60 @@
         @click="placeLimitOrder"
         :disabled="buttonDisabled"
       >
-        <span> {{ buttonText }}</span>
-        <s-icon v-if="shouldErrorTooltipBeShown" name="info-16" class="book-inform-icon-btn" />
+        <template v-if="!isLoggedIn">
+          {{ t('connectWalletText') }}
+        </template>
+        <template v-else-if="bookStopped">
+          {{ t('orderBook.stop') }}
+        </template>
+        <template v-else-if="userReachedSpotLimit || userReachedOwnLimit">
+          <span> {{ t('orderBook.cantPlaceOrder') }}</span>
+          <s-icon name="info-16" class="book-inform-icon-btn" />
+        </template>
+        <template v-else-if="isLimitOrder && !quoteValue">{{ t('orderBook.setPrice') }}</template>
+        <template v-else-if="isLimitOrder && (!baseValue || isZeroAmount)"> {{ t('orderBook.enterAmount') }}</template>
+        <template v-else-if="isLimitOrder && !isPriceBeyondPrecision">
+          <span> {{ t('orderBook.cantPlaceOrder') }}</span>
+          <s-icon name="info-16" class="book-inform-icon-btn" />
+        </template>
+        <template v-else-if="isLimitOrder && isPlaceAndCancelMode">
+          <span> {{ t('orderBook.cantPlaceOrder') }}</span>
+          <s-icon name="info-16" class="book-inform-icon-btn" />
+        </template>
+        <template v-else-if="isLimitOrder && limitForSinglePriceReached">
+          <span> {{ t('orderBook.cantPlaceOrder') }}</span>
+          <s-icon name="info-16" class="book-inform-icon-btn" />
+        </template>
+        <template v-else-if="!isLimitOrder && isZeroAmount"> {{ t('orderBook.enterAmount') }}</template>
+        <template v-else-if="!isLimitOrder && !marketQuotePrice">
+          <span> {{ t('orderBook.cantPlaceOrder') }}</span>
+          <s-icon name="info-16" class="book-inform-icon-btn" />
+        </template>
+        <template v-else-if="isOutOfAmountBounds">
+          <span> {{ t('orderBook.cantPlaceOrder') }}</span>
+          <s-icon name="info-16" class="book-inform-icon-btn" />
+        </template>
+        <template v-else-if="isInsufficientXorForFee">
+          {{ t('insufficientBalanceText', { tokenSymbol: xor?.symbol }) }}
+        </template>
+        <template v-else-if="isInsufficientBalance">
+          {{ t('insufficientBalanceText', { tokenSymbol: tokenFrom?.symbol }) }}
+        </template>
+      </s-button>
+      <s-button
+        v-else
+        slot="reference"
+        type="primary"
+        class="btn s-typography-button--medium"
+        :class="computedBtnClass"
+        @click="placeLimitOrder"
+      >
+        <template v-if="isBuySide">
+          {{ t('orderBook.Buy', { asset: baseAsset?.symbol }) }}
+        </template>
+        <template v-else>
+          {{ t('orderBook.Sell', { asset: baseAsset?.symbol }) }}
+        </template>
       </s-button>
     </el-popover>
 
@@ -200,7 +253,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @state.orderBook.amountSliderValue sliderValue!: number;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
 
-  @getter.assets.xor private xor!: AccountAsset;
+  @getter.assets.xor xor!: AccountAsset;
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
@@ -319,10 +372,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return !!this.reason && !!this.reading;
   }
 
-  get shouldErrorTooltipBeShown(): boolean {
-    return this.isLoggedIn && this.hasExplainableError;
-  }
-
   get amountAtPrice(): string {
     if (this.buttonDisabled || !this.baseValue) return '';
     if (!this.quoteValue && !this.marketQuotePrice) return '';
@@ -335,45 +384,16 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     });
   }
 
-  // TODO: [Rustem]: Refactor this function to reduce its Cognitive Complexity from 33 to the 15 allowed. [+22 locations]sonarlint(typescript:S3776)
-  get buttonText(): string {
-    if (!this.isLoggedIn) return this.t('connectWalletText');
+  get shouldErrorTooltipBeShown(): boolean {
+    return this.isLoggedIn && this.hasExplainableError;
+  }
 
-    if (this.bookStopped) return this.t('orderBook.stop');
+  get isLimitOrder(): boolean {
+    return this.limitOrderType === LimitOrderType.limit;
+  }
 
-    if (this.userReachedSpotLimit || this.userReachedOwnLimit) return this.t('orderBook.cantPlaceOrder');
-
-    if (this.limitOrderType === LimitOrderType.limit) {
-      if (!this.quoteValue) return this.t('orderBook.setPrice');
-      if (!this.baseValue || this.isZeroAmount) return this.t('orderBook.enterAmount');
-
-      // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
-      // if (this.isPriceTooHigh || this.isPriceTooLow || !this.isPriceBeyondPrecision) {
-      //   return this.t('orderBook.cantPlaceOrder');
-      // }
-
-      if (!this.isPriceBeyondPrecision) {
-        return this.t('orderBook.cantPlaceOrder');
-      }
-
-      if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel) {
-        if (this.priceExceedsSpread) return this.t('orderBook.cantPlaceOrder');
-      }
-
-      if (this.limitForSinglePriceReached) return this.t('orderBook.cantPlaceOrder');
-    } else {
-      if (this.isZeroAmount) return this.t('orderBook.enterAmount');
-      if (!this.marketQuotePrice) return this.t('orderBook.cantPlaceOrder');
-    }
-
-    if (this.isOutOfAmountBounds) return this.t('orderBook.cantPlaceOrder');
-
-    if (this.isInsufficientXorForFee) return this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol });
-
-    if (this.isInsufficientBalance) return this.t('insufficientBalanceText', { tokenSymbol: this.tokenFrom?.symbol });
-
-    if (this.side === PriceVariant.Buy) return this.t('orderBook.Buy', { asset: this.baseAsset.symbol });
-    else return this.t('orderBook.Sell', { asset: this.baseAsset.symbol });
+  get isPlaceAndCancelMode(): boolean {
+    return this.orderBookStatus === OrderBookStatus.PlaceAndCancel;
   }
 
   setError({ reason, reading }): void {
@@ -389,10 +409,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (!this.isLoggedIn) return false;
 
-    if (this.isInsufficientXorForFee) return true;
-
-    if (this.isInsufficientBalance) return true;
-
     if (this.limitOrderType === LimitOrderType.limit) {
       if (!this.baseValue || !this.quoteValue) return true;
       // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
@@ -407,7 +423,13 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       if (!this.marketQuotePrice) return true;
     }
 
-    return this.isOutOfAmountBounds;
+    if (this.isOutOfAmountBounds) return true;
+
+    if (this.isInsufficientXorForFee) return true;
+
+    if (this.isInsufficientBalance) return true;
+
+    return false;
   }
 
   // TODO: [Rustem] Refactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed. [+15 locations]sonarlint(typescript:S3776)
@@ -428,8 +450,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         reading: this.t('orderBook.error.accountLimit.reading'),
       });
 
-    if (this.isInsufficientBalance || this.isInsufficientXorForFee) return;
-
     // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
     // if (this.isPriceTooHigh && this.quoteValue && this.baseValue)
     //   return this.setError({
@@ -444,7 +464,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     //       'Price range alert: Your price is more than 50% above or below the current market price. Please enter a more closely aligned market price',
     //   });
 
-    if (!this.isPriceBeyondPrecision && this.baseValue)
+    if (!this.isPriceBeyondPrecision && this.baseValue && this.isLimitOrder)
       return this.setError({
         reason: this.t('orderBook.error.beyondPrecision.reason'),
         reading: this.t('orderBook.error.beyondPrecision.reading'),
