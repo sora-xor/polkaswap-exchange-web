@@ -130,31 +130,25 @@
           {{ t('orderBook.stop') }}
         </template>
         <template v-else-if="userReachedSpotLimit || userReachedOwnLimit">
-          <span> {{ t('orderBook.cantPlaceOrder') }}</span>
-          <s-icon name="info-16" class="book-inform-icon-btn" />
+          <error />
         </template>
         <template v-else-if="isLimitOrder && !quoteValue">{{ t('orderBook.setPrice') }}</template>
         <template v-else-if="isLimitOrder && (!baseValue || isZeroAmount)"> {{ t('orderBook.enterAmount') }}</template>
         <template v-else-if="isLimitOrder && !isPriceBeyondPrecision">
-          <span> {{ t('orderBook.cantPlaceOrder') }}</span>
-          <s-icon name="info-16" class="book-inform-icon-btn" />
+          <error />
         </template>
         <template v-else-if="isLimitOrder && isPlaceAndCancelMode">
-          <span> {{ t('orderBook.cantPlaceOrder') }}</span>
-          <s-icon name="info-16" class="book-inform-icon-btn" />
+          <error />
         </template>
         <template v-else-if="isLimitOrder && limitForSinglePriceReached">
-          <span> {{ t('orderBook.cantPlaceOrder') }}</span>
-          <s-icon name="info-16" class="book-inform-icon-btn" />
+          <error />
         </template>
         <template v-else-if="!isLimitOrder && isZeroAmount"> {{ t('orderBook.enterAmount') }}</template>
         <template v-else-if="!isLimitOrder && !marketQuotePrice">
-          <span> {{ t('orderBook.cantPlaceOrder') }}</span>
-          <s-icon name="info-16" class="book-inform-icon-btn" />
+          <error />
         </template>
         <template v-else-if="isOutOfAmountBounds">
-          <span> {{ t('orderBook.cantPlaceOrder') }}</span>
-          <s-icon name="info-16" class="book-inform-icon-btn" />
+          <error />
         </template>
         <template v-else-if="isInsufficientXorForFee">
           {{ t('insufficientBalanceText', { tokenSymbol: xor?.symbol }) }}
@@ -238,6 +232,7 @@ import type { Subscription } from 'rxjs';
     PlaceConfirm: lazyComponent(Components.PlaceOrder),
     PlaceTransactionDetails: lazyComponent(Components.PlaceTransactionDetails),
     PriceChange: lazyComponent(Components.PriceChange),
+    Error: lazyComponent(Components.ErrorButton),
   },
 })
 export default class BuySellWidget extends Mixins(TranslationMixin, mixins.FormattedAmountMixin, mixins.LoadingMixin) {
@@ -1026,6 +1021,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     cursor: pointer;
   }
 }
+
+.book-inform-icon-btn {
+  margin-left: $inner-spacing-mini;
+}
 </style>
 
 <style lang="scss" scoped>
@@ -1105,10 +1104,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         }
       }
     }
-  }
-
-  .book-inform-icon-btn {
-    margin-left: $inner-spacing-mini;
   }
 
   .delimiter {
