@@ -1,4 +1,5 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { defineGetters } from 'direct-vuex';
 
 import { EVM_NETWORKS } from '@/consts/evm';
@@ -49,7 +50,11 @@ const getters = defineGetters<Web3State>()({
         data.endpointUrls.push(address);
         data.blockExplorerUrls.push(address);
 
-        const disabled = !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork);
+        let disabled = !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork);
+
+        if ([SubNetworkId.Kusama, SubNetworkId.KusamaSora].includes(id as SubNetworkId)) {
+          disabled = true; // Kusama issue: https://github.com/paritytech/polkadot-sdk/issues/3345
+        }
 
         buffer[id] = {
           disabled,
