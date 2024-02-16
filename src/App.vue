@@ -553,9 +553,12 @@ i.icon-divider {
 }
 
 .app-main--orderbook {
-  .app-menu {
-    position: absolute;
-    right: initial;
+  @include large-mobile {
+    .app-menu {
+      // TODO: [Rustem] fix shadow issues between menu and orderbook
+      position: absolute;
+      right: initial;
+    }
   }
 
   .app-content {

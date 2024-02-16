@@ -2,6 +2,7 @@ import type { LimitOrderType } from '@/consts';
 import type { OrderBookStats, OrderBookDealData } from '@/types/orderBook';
 
 import type { PriceVariant, OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { DexId } from '@sora-substrate/util/build/dex/consts';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { Subscription } from 'rxjs';
@@ -26,4 +27,5 @@ export type OrderBookState = {
   pagedUserLimitOrdersSubscription: Nullable<Subscription>;
   ordersToBeCancelled: Array<LimitOrder>;
   amountSliderValue: number;
+  baseAssetBalance: Nullable<AccountBalance>;
 };
