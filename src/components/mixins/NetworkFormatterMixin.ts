@@ -25,12 +25,20 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
 
   readonly EvmLinkType = EvmLinkType;
 
+  get selectedNetworkName(): string {
+    return this.selectedNetwork?.name ?? '';
+  }
+
+  get selectedNetworkShortName(): string {
+    return this.selectedNetwork?.shortName ?? '';
+  }
+
   formatSelectedNetwork(isSora: boolean): string {
     if (isSora && this.soraNetwork) {
       return this.TranslationConsts.soraNetwork[this.soraNetwork];
     }
 
-    return this.selectedNetwork?.name ?? '';
+    return this.selectedNetworkName;
   }
 
   formatNetworkShortName(isSora: boolean): string {
@@ -38,7 +46,7 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
       return this.TranslationConsts.Sora;
     }
 
-    return this.selectedNetwork?.shortName ?? '';
+    return this.selectedNetworkShortName;
   }
 
   getNetworkName(type: Nullable<BridgeNetworkType>, id: Nullable<BridgeNetworkId>): string {

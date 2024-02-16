@@ -23,7 +23,7 @@
 
             <swap-status-action-badge>
               <template #value>
-                {{ selectedNetwork ? selectedNetwork.shortName : '-' }}
+                {{ selectedNetworkShortName || '-' }}
               </template>
               <template #action>
                 <s-button
@@ -242,7 +242,7 @@
     <select-node-dialog
       v-if="subConnection"
       :connection="subConnection"
-      :network="networkSelected"
+      :network="selectedNetworkName"
       :visibility="selectSubNodeDialogVisibility"
       :set-visibility="setSelectSubNodeDialogVisibility"
     />
@@ -381,6 +381,10 @@ export default class Bridge extends Mixins(
     if (this.networkSelected !== this.subBridgeConnector.network?.adapter.subNetwork) return null;
 
     return this.subBridgeConnector.network?.adapter.subNetworkConnection;
+  }
+
+  get isExternalNetworkLoading(): boolean {
+    return this.isSubBridge ? !this.subConnection?.nodeIsConnected : !!this.evmProviderLoading;
   }
 
   confirmExternalNetworkFeeWarningDialog(): void {
@@ -523,6 +527,7 @@ export default class Bridge extends Mixins(
 
   get isConfirmTxLoading(): boolean {
     return (
+      this.isExternalNetworkLoading ||
       this.isSelectAssetLoading ||
       this.balancesFetching ||
       this.feesAndLockedFundsFetching ||
@@ -634,6 +639,8 @@ export default class Bridge extends Mixins(
   }
 
   handleChangeSubNode(): void {
+    if (!this.isSubBridge) return;
+
     this.setSelectSubNodeDialogVisibility(true);
   }
 
