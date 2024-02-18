@@ -396,7 +396,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.reading = reading;
   }
 
-  // TODO: [Rustem] Refactor this function to reduce its Cognitive Complexity from 21 to the 15 allowed. [+14 locations]sonarlint(typescript:S3776)
   get buttonDisabled(): boolean {
     if (this.bookStopped) return true;
 
@@ -414,7 +413,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         if (this.priceExceedsSpread) return true;
       }
     } else {
-      if (!this.baseValue) return true; // TODO: [Rustem] check with btn text
+      if (!this.baseValue) return true;
       if (!this.marketQuotePrice) return true;
     }
 
@@ -427,7 +426,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return false;
   }
 
-  // TODO: [Rustem] Refactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed. [+15 locations]sonarlint(typescript:S3776)
   async checkInputValidation(): Promise<void> {
     this.setError({ reason: '', reading: '' });
 
@@ -695,16 +693,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     }
   }
 
-  formatInputValue(value: string, precision: number): string {
-    if (!value) return '';
-
-    const [_, decimal] = value.split('.');
-
-    if (value.endsWith('.') && precision === 0) return value.slice(0, -1);
-
-    return value.endsWith('.') || decimal?.length <= precision ? value : new FPNumber(value).dp(precision).toString();
-  }
-
   get preparedForSwap(): boolean {
     return this.isLoggedIn && this.areTokensSelected;
   }
@@ -763,6 +751,34 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return this.side === PriceVariant.Buy;
   }
 
+  get isMaxAmountAvailable(): boolean {
+    if (!(this.baseAsset && this.quoteAsset)) return false;
+
+    return this.isLoggedIn && isMaxButtonAvailable(this.baseAsset, this.baseValue, this.networkFee, this.xor, true);
+  }
+
+  get maxPossibleAmount(): FPNumber {
+    if (!this.currentOrderBook) return FPNumber.ZERO;
+    const max = getMaxValue(this.baseAsset, this.networkFee);
+    const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
+
+    const maxPossible = FPNumber.fromNatural(max, this.bookPrecision);
+
+    if (this.isBuySide) return maxLotSize;
+
+    return FPNumber.lte(maxPossible, maxLotSize) ? maxPossible : maxLotSize;
+  }
+
+  formatInputValue(value: string, precision: number): string {
+    if (!value) return '';
+
+    const [_, decimal] = value.split('.');
+
+    if (value.endsWith('.') && precision === 0) return value.slice(0, -1);
+
+    return value.endsWith('.') || decimal?.length <= precision ? value : new FPNumber(value).dp(precision).toString();
+  }
+
   private resetQuoteSubscription(): void {
     this.quoteSubscription?.unsubscribe();
     this.quoteSubscription = null;
@@ -816,7 +832,42 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.checkInputValidation();
   }
 
+  resetValues(success?: boolean) {
+    this.setBaseValue('');
+    this.setQuoteValue('');
+
+    if (!success) {
+      this.limitOrderType = LimitOrderType.limit;
+    }
+  }
+
+  showPlaceOrderDialog(): void {
+    this.confirmPlaceOrderVisibility = true;
+  }
+
+  handleMaxValue(): void {
+    this.handleInputFieldBase(this.maxPossibleAmount.toString());
+    this.checkInputValidation();
+  }
+
+  handleTabClick(): void {
+    this.setTokens();
+
+    if (!this.isMarketType) {
+      this.resetQuoteSubscription();
+    }
+
+    if (this.isMarketType) {
+      this.setQuoteValue('');
+      if (this.baseValue) this.subscribeOnBookQuote();
+    }
+
+    this.checkInputValidation();
+  }
+
   mounted(): void {
+    this.updateBalanceSubscription();
+
     if (this.prevRoute === PageNames.Swap && this.tokenFrom?.address && this.tokenTo?.address) {
       this.prevSwapFromAddress = this.tokenFrom?.address;
       this.prevSwapToAddress = this.tokenTo?.address;
@@ -842,57 +893,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.setSide(PriceVariant.Buy);
     this.setAmountSliderValue(0);
     this.limitOrderType = LimitOrderType.limit;
-  }
-
-  resetValues(success?: boolean) {
-    this.setBaseValue('');
-    this.setQuoteValue('');
-
-    if (!success) {
-      this.limitOrderType = LimitOrderType.limit;
-    }
-  }
-
-  showPlaceOrderDialog(): void {
-    this.confirmPlaceOrderVisibility = true;
-  }
-
-  get maxPossibleAmount(): FPNumber {
-    if (!this.currentOrderBook) return FPNumber.ZERO;
-    const max = getMaxValue(this.baseAsset, this.networkFee);
-    const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
-
-    const maxPossible = FPNumber.fromNatural(max, this.bookPrecision);
-
-    if (this.isBuySide) return maxLotSize;
-
-    return FPNumber.lte(maxPossible, maxLotSize) ? maxPossible : maxLotSize;
-  }
-
-  handleMaxValue(): void {
-    this.handleInputFieldBase(this.maxPossibleAmount.toString());
-    this.checkInputValidation();
-  }
-
-  get isMaxAmountAvailable(): boolean {
-    if (!(this.baseAsset && this.quoteAsset)) return false;
-
-    return this.isLoggedIn && isMaxButtonAvailable(this.baseAsset, this.baseValue, this.networkFee, this.xor, true);
-  }
-
-  handleTabClick(): void {
-    this.setTokens();
-
-    if (!this.isMarketType) {
-      this.resetQuoteSubscription();
-    }
-
-    if (this.isMarketType) {
-      this.setQuoteValue('');
-      if (this.baseValue) this.subscribeOnBookQuote();
-    }
-
-    this.checkInputValidation();
   }
 }
 </script>
