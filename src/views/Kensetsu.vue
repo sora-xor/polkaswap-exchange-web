@@ -276,7 +276,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     .link {
       @include focus-outline;
       font-size: var(--s-heading6-font-size);
-      margin-bottom: $inner-spacing-mini;
+      margin-bottom: 12px;
       color: var(--s-color-status-info);
     }
   }
