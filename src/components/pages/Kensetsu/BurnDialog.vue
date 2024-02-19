@@ -22,6 +22,7 @@
       :asset-symbol="xor.symbol"
       :fiat-value="formattedFiatXorLeft"
       is-formatted
+      value-can-be-hidden
     />
     <info-line
       v-if="isLoggedIn"

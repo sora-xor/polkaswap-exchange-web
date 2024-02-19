@@ -25,12 +25,14 @@
           :value="formattedAccountKenReserved"
           asset-symbol="KEN"
           is-formatted
+          value-can-be-hidden
         />
         <info-line
           label="Your burned XOR tokens"
           :value="formattedAccountXorBurned"
           :asset-symbol="xor.symbol"
           is-formatted
+          value-can-be-hidden
         />
       </template>
       <div class="info-card-container s-flex">
