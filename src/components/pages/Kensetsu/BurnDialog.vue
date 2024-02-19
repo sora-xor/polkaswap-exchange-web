@@ -11,6 +11,7 @@
     />
     <info-line
       label="XOR TO BE BURNED"
+      :key="getKey('xor-burned')"
       :value="formattedXorWillBeBurned"
       :asset-symbol="xor.symbol"
       :fiat-value="formattedFiatXorWillBeBurned"
@@ -18,6 +19,7 @@
     />
     <info-line
       label="YOUR XOR BALANCE LEFT"
+      :key="getKey('xor-left')"
       :value="formattedXorLeft"
       :asset-symbol="xor.symbol"
       :fiat-value="formattedFiatXorLeft"
@@ -106,6 +108,11 @@ export default class BurnDialog extends Mixins(
 
     if (!value) return;
     this.value = '';
+  }
+
+  /** We need to force re-render InfoLine components with dynamic content */
+  getKey(key: string): string {
+    return this.isVisible ? `${key}-opened` : `${key}-closed`;
   }
 
   private get xorWillBeBurned() {
