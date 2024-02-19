@@ -112,17 +112,17 @@ import type { FPNumber } from '@sora-substrate/util';
 })
 export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.FormattedAmountMixin, TranslationMixin) {
   readonly link = 'https://medium.com/@shibarimoto/kensetsu-ken-356077ebee78';
-  readonly blockDuration = 6_000; // 6 seconds
-  readonly million = this.getFPNumber(1_000_000);
   readonly xor = XOR;
+  private readonly blockDuration = 6_000; // 6 seconds
+  private readonly million = this.getFPNumber(1_000_000);
 
-  readonly from = {
+  private readonly from = {
     block: 14_464_000,
     hash: '0xb420a9368c7f4e33039d4125fe7ca42b042789b909e20ce4b1cfee60840169fc',
     timestamp: 1708097280000, // Feb 16 2024 15:28:00 GMT+0000
   } as const;
 
-  readonly to = {
+  private readonly to = {
     block: 14_939_200,
     timestamp: 1710949772883, // Mar 20 2024 15:49:32 GMT+0000
   } as const;
@@ -135,7 +135,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   ended = false; // if time is over
   burnDialogVisible = false;
 
-  @state.settings.blockNumber blockNumber!: number;
+  @state.settings.blockNumber private blockNumber!: number;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   get xorFormattedMillion(): string {
