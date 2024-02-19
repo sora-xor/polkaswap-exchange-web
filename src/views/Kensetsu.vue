@@ -90,7 +90,7 @@
 
 <script lang="ts">
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import dayjs from 'dayjs';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -99,6 +99,7 @@ import BurnDialog from '@/components/pages/Kensetsu/BurnDialog.vue';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
+import { waitForSoraNetworkFromEnv } from '@/utils';
 
 import type { FPNumber } from '@sora-substrate/util';
 
@@ -116,16 +117,15 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   private readonly blockDuration = 6_000; // 6 seconds
   private readonly million = this.getFPNumber(1_000_000);
 
-  private readonly from = {
+  private from = {
     block: 14_464_000,
-    hash: '0xb420a9368c7f4e33039d4125fe7ca42b042789b909e20ce4b1cfee60840169fc',
     timestamp: 1708097280000, // Feb 16 2024 15:28:00 GMT+0000
-  } as const;
+  };
 
-  private readonly to = {
+  private to = {
     block: 14_939_200,
     timestamp: 1710949772883, // Mar 20 2024 15:49:32 GMT+0000
-  } as const;
+  };
 
   private interval: Nullable<ReturnType<typeof setInterval>> = null;
   private totalXorBurned: Nullable<FPNumber> = this.Zero;
@@ -136,6 +136,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   burnDialogVisible = false;
 
   @state.settings.blockNumber private blockNumber!: number;
+  @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   get xorFormattedMillion(): string {
@@ -207,9 +208,14 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     this.burnDialogVisible = true;
   }
 
-  mounted(): void {
+  async mounted(): Promise<void> {
     this.withApi(this.fetchDataAndCalcCountdown);
     this.interval = setInterval(this.fetchDataAndCalcCountdown, 60_000);
+    const soraNetwork = this.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+    if (soraNetwork !== WALLET_CONSTS.SoraNetwork.Prod) {
+      this.from = { block: 0, timestamp: 0 };
+      this.to = { block: 100_000, timestamp: 600_000 };
+    }
   }
 
   beforeUnmount(): void {
@@ -234,11 +240,6 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   &.centered {
     text-align: center;
   }
-}
-.link {
-  @include focus-outline;
-  font-size: var(--s-heading6-font-size);
-  margin-bottom: $inner-spacing-mini;
 }
 .info-card {
   &-container {
@@ -271,6 +272,13 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
 .kensetsu {
   &-container {
     align-items: center;
+
+    .link {
+      @include focus-outline;
+      font-size: var(--s-heading6-font-size);
+      margin-bottom: $inner-spacing-mini;
+      color: var(--s-color-status-info);
+    }
   }
   &-info {
     margin-top: $basic-spacing;
@@ -280,7 +288,6 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     &__content {
       .link {
         margin-bottom: 0;
-        color: var(--s-color-status-info);
       }
     }
     &__desc {
