@@ -144,6 +144,7 @@ export enum PageNames {
   LimitOrderBuy = 'OrderBook/LimitOrderBuy',
   LimitOrderSell = 'OrderBook/LimitOrderSell',
   SoraCard = 'SoraCard',
+  Kensetsu = 'Kensetsu',
 }
 
 export enum Components {
@@ -359,6 +360,11 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     icon: 'various-planet-24',
     title: PageNames.Stats,
     href: '/#/stats',
+  },
+  {
+    icon: 'basic-flame-24',
+    title: PageNames.Kensetsu,
+    href: '/#/kensetsu',
   },
   {
     icon: 'music-eject-24',
