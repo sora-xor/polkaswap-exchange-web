@@ -192,7 +192,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     }
 
     // Remove this line if supporting all precisions
-    steps.splice(steps.indexOf('1') + 1, Infinity, min.toString());
+    // steps.splice(steps.indexOf('1') + 1, Infinity, min.toString());
 
     return steps;
   }
