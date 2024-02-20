@@ -14,7 +14,7 @@
         </s-tooltip>
       </div>
       <s-dropdown
-        v-if="showAggregationOptions"
+        v-if="false"
         class="stock-book__switcher"
         trigger="click"
         :size="18"
@@ -194,7 +194,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     // Remove this line if supporting all precisions
     // steps.splice(steps.indexOf('1') + 1, Infinity, min.toString());
 
-    return steps;
+    // [NOTE]: as there is no corridor check, return only useful step distribution
+    return steps.slice(-6);
   }
 
   get showAggregationOptions(): boolean {
@@ -320,49 +321,52 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
    * // TODO: [Rustem] add missed type, add missed docs, it's unclear how this method works
    */
   private calculateStepsDistribution(orders, precision = 10): OrderBookPriceVolumeAggregated[] {
-    if (this.isBookPrecisionEqual(precision.toString())) return orders;
+    return orders;
 
-    const maxPrice = FPNumber.max(...orders.map(([price]) => price)) as FPNumber;
+    // TODO: Revisit this logic
+    // if (this.isBookPrecisionEqual(precision.toString())) return orders;
 
-    if (!maxPrice) return orders;
+    // const maxPrice = FPNumber.max(...orders.map(([price]) => price)) as FPNumber;
 
-    const step = new FPNumber(precision);
+    // if (!maxPrice) return orders;
 
-    const aggregatedOrders = [] as Array<OrderBookPriceVolumeAggregated>;
-    let accumulatedAmount = FPNumber.ZERO;
-    let accumulatedTotal = FPNumber.ZERO;
-    let edge = maxPrice.add(step);
+    // const step = new FPNumber(precision);
 
-    if (!edge.isZeroMod(step)) edge = edge.sub(edge.mod(step));
+    // const aggregatedOrders = [] as Array<OrderBookPriceVolumeAggregated>;
+    // let accumulatedAmount = FPNumber.ZERO;
+    // let accumulatedTotal = FPNumber.ZERO;
+    // let edge = maxPrice.add(step);
 
-    for (let index = 0; index < orders.length; index++) {
-      const [price, amount] = orders[index];
+    // if (!edge.isZeroMod(step)) edge = edge.sub(edge.mod(step));
 
-      if (FPNumber.lte(edge, FPNumber.ZERO)) break;
-      if (FPNumber.lt(edge, price)) break;
+    // for (let index = 0; index < orders.length; index++) {
+    //   const [price, amount] = orders[index];
 
-      if (FPNumber.lte(price, edge) && FPNumber.gt(price, edge.sub(step))) {
-        accumulatedAmount = accumulatedAmount.add(amount);
-        accumulatedTotal = price.mul(amount).add(accumulatedTotal);
-      } else {
-        aggregatedOrders.push([edge, accumulatedAmount, accumulatedTotal]);
+    //   if (FPNumber.lte(edge, FPNumber.ZERO)) break;
+    //   if (FPNumber.lt(edge, price)) break;
 
-        accumulatedAmount = FPNumber.ZERO;
-        accumulatedTotal = FPNumber.ZERO;
-        edge = edge.sub(step);
-        index -= 1;
-      }
+    //   if (FPNumber.lte(price, edge) && FPNumber.gt(price, edge.sub(step))) {
+    //     accumulatedAmount = accumulatedAmount.add(amount);
+    //     accumulatedTotal = price.mul(amount).add(accumulatedTotal);
+    //   } else {
+    //     aggregatedOrders.push([edge, accumulatedAmount, accumulatedTotal]);
 
-      if (index === orders.length - 1) {
-        aggregatedOrders.push([edge, accumulatedAmount, accumulatedTotal]);
-      }
-    }
+    //     accumulatedAmount = FPNumber.ZERO;
+    //     accumulatedTotal = FPNumber.ZERO;
+    //     edge = edge.sub(step);
+    //     index -= 1;
+    //   }
 
-    return aggregatedOrders.filter((row: OrderBookPriceVolumeAggregated) => !row[1].isZero());
+    //   if (index === orders.length - 1) {
+    //     aggregatedOrders.push([edge, accumulatedAmount, accumulatedTotal]);
+    //   }
+    // }
+
+    // return aggregatedOrders.filter((row: OrderBookPriceVolumeAggregated) => !row[1].isZero());
   }
 
   get bookPrecision(): number {
-    return this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length;
+    return this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length || 0;
   }
 
   private getAmountProportion(currentAmount: FPNumber, maxAmount: FPNumber): number {
