@@ -63,7 +63,9 @@
             "StakingSetPayee": "Սահմանել վճարողի {address}",
             "OrderBookPlaceLimitOrder": "Տեղադրված է {side} {amount} {symbol} {price} {symbol2} ով",
             "OrderBookCancelLimitOrder": "Սահմանափակման պատվերը չեղարկվել է",
-            "OrderBookCancelLimitOrders": "Սահմանափակ պատվերները չեղարկվել են"
+            "OrderBookCancelLimitOrders": "Սահմանափակ պատվերները չեղարկվել են",
+            "Burn": "Այրված {amount} {symbol}",
+            "Mint": "Նշված է {amount} {symbol} {address} -ին"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Չհաջողվեց սահմանել վճարողի {address}",
             "OrderBookPlaceLimitOrder": "Չհաջողվեց սահմանել {amount} {symbol} ի սահմանային պատվեր {price} {symbol2} ով",
             "OrderBookCancelLimitOrders": "Չհաջողվեց չեղարկել սահմանափակ պատվերները",
-            "OrderBookCancelLimitOrder": "Չհաջողվեց չեղարկել սահմանաչափի պատվերը"
+            "OrderBookCancelLimitOrder": "Չհաջողվեց չեղարկել սահմանաչափի պատվերը",
+            "Burn": "Չհաջողվեց այրել {amount} {symbol}",
+            "Mint": "Չհաջողվեց հատել {amount} {symbol} {address} -ին"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Սահմանել վճարողին",
         "OrderBookPlaceLimitOrder": "Պատվիրել",
         "OrderBookCancelLimitOrder": "Չեղարկել պատվերը",
-        "OrderBookCancelLimitOrders": "Չեղարկել պատվերները"
+        "OrderBookCancelLimitOrders": "Չեղարկել պատվերները",
+        "Burn": "Այրվել",
+        "Mint": "անանուխ"
     },
     "polkadotjs": {
         "noExtensions": "{PolkadotJs} ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",
@@ -1287,7 +1293,10 @@
         "actions": {
             "claim": "Պահանջեք պարգևներ",
             "remove": "Հեռացնել ցցը",
-            "more": "Ավելի շատ խաղադրույք կատարեք"
+            "more": "Ավելի շատ խաղադրույք կատարեք",
+            "confirm": "Հաստատեք խաղադրույքը",
+            "payout": "Վճարել",
+            "withdraw": "Հանել"
         },
         "overview": {
             "title": "{Sora} Սաթ",
@@ -1312,10 +1321,10 @@
             "noNominatedValidators": "Դուք առաջադրված վավերացնողներ չունեք",
             "noValidators": "Նշված ֆիլտրը բավարարող վավերացնողներ չկան",
             "commission": "հանձնաժողով",
-            "commissionTooltip": "Հանձնաժողովը վերաբերում է այն վճարին, որը գանձվում է վավերացնողների կողմից խաղադրույքի գործընթացում իրենց ծառայությունների համար: Այս վճարը, արտահայտված որպես տոկոս, հանվում է խաղադրույքի պարգևներից, որոնք վաստակել են առաջադրողները մինչև բաշխումը: Կարևոր է նշել, որ վավերացնողները ցանկացած պահի կարող են հարմարեցնել իրենց միջնորդավճարները"
+            "commissionTooltip": "Հանձնաժողովը վերաբերում է այն վճարին, որը գանձվում է վավերացնողների կողմից խաղադրույքի գործընթացում իրենց ծառայությունների համար: Այս վճարը, արտահայտված որպես տոկոս, հանվում է խաղադրույքի պարգևներից, որոնք վաստակել են առաջադրողները մինչև բաշխումը: Կարևոր է նշել, որ վավերացնողները ցանկացած պահի կարող են հարմարեցնել իրենց միջնորդավճարները",
+            "return": "Վերադարձ"
         },
         "info": {
-            "redeemable": "Հետգնելի",
             "unstaking": "Անցանկալի",
             "stakingBalance": "Խաղադրույքի մնացորդը",
             "rewarded": "Պարգևատրվել է",
@@ -1394,6 +1403,26 @@
             "title": "Պահանջեք պարգևներ",
             "checkRewards": "Ստուգեք պարգեւատրումը մեկ դարաշրջանում եւ վավերական",
             "rewardsDestination": "Պարգևատրման նպատակակետ հասցե"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Հետ կանչելի",
+            "beingWithdrawn": "Հեռացված լինելը",
+            "seeAll": "Տեսնել բոլորը",
+            "nextWithdrawal": "Հաջորդ դուրսբերումը",
+            "countdownLeft": "ձախ"
+        },
+        "stakeDialog": {
+            "toStake": "Խաղադրույք կատարել",
+            "toRemove": "Հեռացնելու համար"
+        },
+        "withdrawDialog": {
+            "title": "Հանեք չստացված միջոցները",
+            "showAllWithdraws": "Ցուցադրել բոլոր դուրսբերումները"
+        },
+        "allWithdrawsDialog": {
+            "title": "Բացասական գործունեություն",
+            "information": "Նշանները հանելուց հետո կա պարտադիր 7-օրյա ժամկետ: Այս ժամանակահատվածից հետո ձեր նշանները ավտոմատ կերպով չեն վերադարձվի ձեր դրամապանակ: Դուք պետք է ավարտեք գործընթացը՝ ձեռքով հանելով ձեր նշանները:"
         }
     },
     "collapseText": "Փլուզվել",

@@ -63,7 +63,9 @@
             "StakingSetPayee": "Postavi primatelja {address}",
             "OrderBookPlaceLimitOrder": "Postavljeno {side} {amount} {symbol} po {price} {symbol2}",
             "OrderBookCancelLimitOrder": "Ograničeni nalog je otkazan",
-            "OrderBookCancelLimitOrders": "Ograničene narudžbe su otkazane"
+            "OrderBookCancelLimitOrders": "Ograničene narudžbe su otkazane",
+            "Burn": "Spaljeno {amount} {symbol}",
+            "Mint": "Kovano {amount} {symbol} na {address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} nije uspio",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Nije uspjelo postavljanje primatelja {address}",
             "OrderBookPlaceLimitOrder": "Nije uspjelo postavljanje ograničene narudžbe od {amount} {symbol} po {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Otkazivanje ograničenih naloga nije uspjelo",
-            "OrderBookCancelLimitOrder": "Otkazivanje ograničenog naloga nije uspjelo"
+            "OrderBookCancelLimitOrder": "Otkazivanje ograničenog naloga nije uspjelo",
+            "Burn": "Nije uspjelo spaljivanje {amount} {symbol}",
+            "Mint": "Nije uspjelo kovati {amount} {symbol} na {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Postavite primatelja uplate",
         "OrderBookPlaceLimitOrder": "Naručiti",
         "OrderBookCancelLimitOrder": "Otkazati narudžbu",
-        "OrderBookCancelLimitOrders": "Otkaži narudžbe"
+        "OrderBookCancelLimitOrders": "Otkaži narudžbe",
+        "Burn": "Spaliti",
+        "Mint": "Kovnica"
     },
     "polkadotjs": {
         "noExtensions": "Nije pronađeno proširenje {PolkadotJs}. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1287,7 +1293,10 @@
         "actions": {
             "claim": "Zatražite nagrade",
             "remove": "Uklonite ulog",
-            "more": "Uložite više"
+            "more": "Uložite više",
+            "confirm": "Potvrdite iskolčenje",
+            "payout": "Isplata",
+            "withdraw": "Povući"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1312,10 +1321,10 @@
             "noNominatedValidators": "Nemate nijednog imenovanog validatora",
             "noValidators": "Nema validatora koji zadovoljavaju navedeni filter",
             "commission": "Komisija",
-            "commissionTooltip": "Provizija se odnosi na naknadu koju naplaćuju validatori za svoje usluge u procesu isplate. Ova naknada, izražena kao postotak, oduzima se od nagrada za ulog koje zarade nominatori prije distribucije. Važno je napomenuti da validatori mogu prilagoditi svoje stope provizije u bilo kojem trenutku"
+            "commissionTooltip": "Provizija se odnosi na naknadu koju naplaćuju validatori za svoje usluge u procesu isplate. Ova naknada, izražena kao postotak, oduzima se od nagrada za ulog koje zarade nominatori prije distribucije. Važno je napomenuti da validatori mogu prilagoditi svoje stope provizije u bilo kojem trenutku",
+            "return": "Povratak"
         },
         "info": {
-            "redeemable": "Iskupivo",
             "unstaking": "Unstaking",
             "stakingBalance": "Staking bilanca",
             "rewarded": "Nagrađeni",
@@ -1394,6 +1403,26 @@
             "title": "Zatražite nagrade",
             "checkRewards": "Provjerite nagrade po razdoblju i validatoru",
             "rewardsDestination": "Odredišna adresa nagrada"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Može se povući",
+            "beingWithdrawn": "Biti povučen",
+            "seeAll": "Vidi sve",
+            "nextWithdrawal": "Sljedeće povlačenje",
+            "countdownLeft": "lijevo"
+        },
+        "stakeDialog": {
+            "toStake": "Uložiti ulog",
+            "toRemove": "Ukloniti"
+        },
+        "withdrawDialog": {
+            "title": "Povucite neuložena sredstva",
+            "showAllWithdraws": "Prikaži sva povlačenja"
+        },
+        "allWithdrawsDialog": {
+            "title": "Neuvjetna aktivnost",
+            "information": "Nakon što poništite ulog tokena, postoji obvezno razdoblje od 7 dana. Nakon tog razdoblja, vaši tokeni neće biti automatski vraćeni u vaš novčanik. Morate dovršiti postupak ručnim povlačenjem tokena."
         }
     },
     "collapseText": "Kolaps",
