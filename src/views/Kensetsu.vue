@@ -149,7 +149,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   }
 
   get formattedTotalKenReserved(): string {
-    return this.totalXorBurned?.div(this.million).toLocaleString(0) ?? ZeroStr;
+    return this.totalXorBurned?.div(this.million).toLocaleString(3) ?? ZeroStr;
   }
 
   get formattedAccountXorBurned(): string {
@@ -157,7 +157,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   }
 
   get formattedAccountKenReserved(): string {
-    return this.accountXorBurned?.div(this.million).toLocaleString(0) ?? ZeroStr;
+    return this.accountXorBurned?.div(this.million).toLocaleString(3) ?? ZeroStr;
   }
 
   get isBurnDisabled(): boolean {
