@@ -97,6 +97,8 @@ import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
+const ZeroStr = '0';
+
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
@@ -143,19 +145,19 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   }
 
   get formattedTotalXorBurned(): string {
-    return this.totalXorBurned?.toLocaleString() ?? '0';
+    return this.totalXorBurned?.toLocaleString() ?? ZeroStr;
   }
 
   get formattedTotalKenReserved(): string {
-    return this.totalXorBurned?.div(this.million).toLocaleString(0) ?? '0';
+    return this.totalXorBurned?.div(this.million).toLocaleString(0) ?? ZeroStr;
   }
 
   get formattedAccountXorBurned(): string {
-    return this.accountXorBurned?.toLocaleString() ?? '0';
+    return this.accountXorBurned?.toLocaleString() ?? ZeroStr;
   }
 
   get formattedAccountKenReserved(): string {
-    return this.accountXorBurned?.div(this.million).toLocaleString(0) ?? '0';
+    return this.accountXorBurned?.div(this.million).toLocaleString(0) ?? ZeroStr;
   }
 
   get isBurnDisabled(): boolean {
@@ -189,9 +191,11 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     let totalXorBurned = FPNumber.ZERO;
 
     burns.forEach((burn) => {
-      totalXorBurned = totalXorBurned.add(burn.amount);
-      if (address === burn.address) {
-        accountXorBurned = accountXorBurned.add(burn.amount);
+      if (burn.amount.gte(this.million)) {
+        totalXorBurned = totalXorBurned.add(burn.amount);
+        if (address === burn.address) {
+          accountXorBurned = accountXorBurned.add(burn.amount);
+        }
       }
     });
 
