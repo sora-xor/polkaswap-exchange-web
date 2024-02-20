@@ -749,11 +749,20 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get userReachedSpotLimit(): boolean {
-    return (
-      (this.side === PriceVariant.Sell ? this.asks : this.bids).length >= MAX_ORDERS_PER_SIDE &&
-      !!this.quoteValue &&
-      this.limitForSinglePriceReached
-    );
+    if ((this.side === PriceVariant.Sell ? this.asks : this.bids).length >= MAX_ORDERS_PER_SIDE && !!this.quoteValue) {
+      if (this.isPriceUnique(this.quoteValue)) return true;
+
+      if (this.limitForSinglePriceReached) return true;
+    }
+
+    return false;
+  }
+
+  isPriceUnique(statedPrice: string): boolean {
+    const rawPrices = (!this.isBuySide ? this.asks : this.bids).map((priceVolume) => priceVolume[0]);
+    const prices = rawPrices.map((price) => price.toString());
+
+    return !prices.includes(statedPrice);
   }
 
   get userReachedOwnLimit(): boolean {
