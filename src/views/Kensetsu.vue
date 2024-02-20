@@ -15,39 +15,31 @@
         is-formatted
       />
       <info-line label="Time left" :value="timeLeftFormatted" />
-      <template v-if="true">
-        <info-line label="Your reserved KEN tokens" value="COMING SOON..." />
-        <info-line label="Your burned XOR tokens" value="COMING SOON..." />
-      </template>
-      <template v-else>
-        <info-line
-          label="Your reserved KEN tokens"
-          :value="formattedAccountKenReserved"
-          asset-symbol="KEN"
-          is-formatted
-          value-can-be-hidden
-        />
-        <info-line
-          label="Your burned XOR tokens"
-          :value="formattedAccountXorBurned"
-          :asset-symbol="xor.symbol"
-          is-formatted
-          value-can-be-hidden
-        />
-      </template>
+      <info-line
+        label="Your reserved KEN tokens"
+        :value="formattedAccountKenReserved"
+        asset-symbol="KEN"
+        is-formatted
+        value-can-be-hidden
+      />
+      <info-line
+        label="Your burned XOR tokens"
+        :value="formattedAccountXorBurned"
+        :asset-symbol="xor.symbol"
+        is-formatted
+        value-can-be-hidden
+      />
       <div class="info-card-container s-flex">
         <div class="info-card-item s-flex-column">
           <span class="info-card-title">TOTAL XOR BURNED</span>
           <span class="info-card-value">
-            <template v-if="true">COMING SOON...</template>
-            <template v-else>{{ formattedTotalXorBurned }}</template>
+            {{ formattedTotalXorBurned }}
           </span>
         </div>
         <div class="info-card-item s-flex-column">
           <span class="info-card-title">TOTAL KEN RESERVED</span>
           <span class="info-card-value">
-            <template v-if="true">COMING SOON...</template>
-            <template v-else>{{ formattedTotalKenReserved }}</template>
+            {{ formattedTotalKenReserved }}
           </span>
         </div>
       </div>
