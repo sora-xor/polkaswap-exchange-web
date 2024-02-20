@@ -63,7 +63,9 @@
             "StakingSetPayee": "Սահմանել վճարողի {address}",
             "OrderBookPlaceLimitOrder": "Տեղադրված է {side} {amount} {symbol} {price} {symbol2} ով",
             "OrderBookCancelLimitOrder": "Սահմանափակման պատվերը չեղարկվել է",
-            "OrderBookCancelLimitOrders": "Սահմանափակ պատվերները չեղարկվել են"
+            "OrderBookCancelLimitOrders": "Սահմանափակ պատվերները չեղարկվել են",
+            "Burn": "Այրված {amount} {symbol}",
+            "Mint": "Նշված է {amount} {symbol} {address} -ին"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Չհաջողվեց սահմանել վճարողի {address}",
             "OrderBookPlaceLimitOrder": "Չհաջողվեց սահմանել {amount} {symbol} ի սահմանային պատվեր {price} {symbol2} ով",
             "OrderBookCancelLimitOrders": "Չհաջողվեց չեղարկել սահմանափակ պատվերները",
-            "OrderBookCancelLimitOrder": "Չհաջողվեց չեղարկել սահմանաչափի պատվերը"
+            "OrderBookCancelLimitOrder": "Չհաջողվեց չեղարկել սահմանաչափի պատվերը",
+            "Burn": "Չհաջողվեց այրել {amount} {symbol}",
+            "Mint": "Չհաջողվեց հատել {amount} {symbol} {address} -ին"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Սահմանել վճարողին",
         "OrderBookPlaceLimitOrder": "Պատվիրել",
         "OrderBookCancelLimitOrder": "Չեղարկել պատվերը",
-        "OrderBookCancelLimitOrders": "Չեղարկել պատվերները"
+        "OrderBookCancelLimitOrders": "Չեղարկել պատվերները",
+        "Burn": "Այրվել",
+        "Mint": "անանուխ"
     },
     "polkadotjs": {
         "noExtensions": "{PolkadotJs} ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",

@@ -63,7 +63,9 @@
             "StakingSetPayee": "Ustaw odbiorcę płatności {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} po {price} {symbol2}",
             "OrderBookCancelLimitOrder": "Zlecenie limitowane anulowane",
-            "OrderBookCancelLimitOrders": "Zamówienia z limitem anulowane"
+            "OrderBookCancelLimitOrders": "Zamówienia z limitem anulowane",
+            "Burn": "Spalony {amount} {symbol}",
+            "Mint": "Wybito {amount} {symbol} na {address}"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Nie udało się ustawić odbiorcy płatności {address}",
             "OrderBookPlaceLimitOrder": "Nie udało się złożyć zamówienia z limitem {amount} {symbol} po {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Nie udało się anulować zleceń z limitem",
-            "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem"
+            "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem",
+            "Burn": "Nie udało się nagrać {amount} {symbol}",
+            "Mint": "Nie udało się wybić {amount} {symbol} na {address}"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Ustaw odbiorcę",
         "OrderBookPlaceLimitOrder": "Złożyć zamówienie",
         "OrderBookCancelLimitOrder": "Anuluj zamówienie",
-        "OrderBookCancelLimitOrders": "Anuluj zamówienia"
+        "OrderBookCancelLimitOrders": "Anuluj zamówienia",
+        "Burn": "Oparzenie",
+        "Mint": "Mennica"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia {PolkadotJs}. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",

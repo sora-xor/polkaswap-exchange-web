@@ -63,7 +63,9 @@
             "StakingSetPayee": "Postavi primatelja {address}",
             "OrderBookPlaceLimitOrder": "Postavljeno {side} {amount} {symbol} po {price} {symbol2}",
             "OrderBookCancelLimitOrder": "Ograničeni nalog je otkazan",
-            "OrderBookCancelLimitOrders": "Ograničene narudžbe su otkazane"
+            "OrderBookCancelLimitOrders": "Ograničene narudžbe su otkazane",
+            "Burn": "Spaljeno {amount} {symbol}",
+            "Mint": "Kovano {amount} {symbol} na {address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} nije uspio",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Nije uspjelo postavljanje primatelja {address}",
             "OrderBookPlaceLimitOrder": "Nije uspjelo postavljanje ograničene narudžbe od {amount} {symbol} po {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Otkazivanje ograničenih naloga nije uspjelo",
-            "OrderBookCancelLimitOrder": "Otkazivanje ograničenog naloga nije uspjelo"
+            "OrderBookCancelLimitOrder": "Otkazivanje ograničenog naloga nije uspjelo",
+            "Burn": "Nije uspjelo spaljivanje {amount} {symbol}",
+            "Mint": "Nije uspjelo kovati {amount} {symbol} na {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Postavite primatelja uplate",
         "OrderBookPlaceLimitOrder": "Naručiti",
         "OrderBookCancelLimitOrder": "Otkazati narudžbu",
-        "OrderBookCancelLimitOrders": "Otkaži narudžbe"
+        "OrderBookCancelLimitOrders": "Otkaži narudžbe",
+        "Burn": "Spaliti",
+        "Mint": "Kovnica"
     },
     "polkadotjs": {
         "noExtensions": "Nije pronađeno proširenje {PolkadotJs}. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",

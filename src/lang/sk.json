@@ -63,7 +63,9 @@
             "StakingSetPayee": "Nastaviť príjemcu platby {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} za {price} {symbol2} umiestnený",
             "OrderBookCancelLimitOrder": "Limitovaná objednávka bola zrušená",
-            "OrderBookCancelLimitOrders": "Limitné objednávky boli zrušené"
+            "OrderBookCancelLimitOrders": "Limitné objednávky boli zrušené",
+            "Burn": "Spálené {amount} {symbol}",
+            "Mint": "Vyrazené {amount} {symbol} na {address}"
         },
         "error": {
             "Transfer": "Nepodarilo sa {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Nepodarilo sa nastaviť príjemcu platby {address}",
             "OrderBookPlaceLimitOrder": "Nepodarilo sa zadať limitnú objednávku {amount} {symbol} za {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Limitné objednávky sa nepodarilo zrušiť",
-            "OrderBookCancelLimitOrder": "Limitovanú objednávku sa nepodarilo zrušiť"
+            "OrderBookCancelLimitOrder": "Limitovanú objednávku sa nepodarilo zrušiť",
+            "Burn": "Nepodarilo sa napáliť {amount} {symbol}",
+            "Mint": "Nepodarilo sa vyraziť {amount} {symbol} na {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Nastaviť príjemcu platby",
         "OrderBookPlaceLimitOrder": "Zadať objednávku",
         "OrderBookCancelLimitOrder": "Zrušiť objednávku",
-        "OrderBookCancelLimitOrders": "Zrušte objednávky"
+        "OrderBookCancelLimitOrders": "Zrušte objednávky",
+        "Burn": "Spáliť",
+        "Mint": "mäta"
     },
     "polkadotjs": {
         "noExtensions": "Rozšírenie {PolkadotJs} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",

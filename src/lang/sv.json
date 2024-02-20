@@ -63,7 +63,9 @@
             "StakingSetPayee": "Ange betalningsmottagare {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} till {price} {symbol2} placerad",
             "OrderBookCancelLimitOrder": "Limit order annullerad",
-            "OrderBookCancelLimitOrders": "Limit order annullerade"
+            "OrderBookCancelLimitOrders": "Limit order annullerade",
+            "Burn": "Brände {amount} {symbol}",
+            "Mint": "Minskade {amount} {symbol} till {address}"
         },
         "error": {
             "Transfer": "Det gick inte att {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Det gick inte att ange betalningsmottagaren {address}",
             "OrderBookPlaceLimitOrder": "Det gick inte att lägga en gränsbeställning på {amount} {symbol} till {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Det gick inte att avbryta limiterade beställningar",
-            "OrderBookCancelLimitOrder": "Det gick inte att avbryta begränsningsordern"
+            "OrderBookCancelLimitOrder": "Det gick inte att avbryta begränsningsordern",
+            "Burn": "Det gick inte att bränna {amount} {symbol}",
+            "Mint": "Det gick inte att prägla {amount} {symbol} till {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Ange betalningsmottagare",
         "OrderBookPlaceLimitOrder": "Beställa",
         "OrderBookCancelLimitOrder": "Avbryt beställning",
-        "OrderBookCancelLimitOrders": "Avbryt beställningar"
+        "OrderBookCancelLimitOrders": "Avbryt beställningar",
+        "Burn": "Bränna",
+        "Mint": "Mynta"
     },
     "polkadotjs": {
         "noExtensions": "Inget {PolkadotJs} tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",

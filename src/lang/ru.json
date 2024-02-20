@@ -63,7 +63,9 @@
             "StakingSetPayee": "Установить получателя платежа {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} по {price} {symbol2} размещено",
             "OrderBookCancelLimitOrder": "Лимитный ордер отменен",
-            "OrderBookCancelLimitOrders": "Лимитные ордера отменены"
+            "OrderBookCancelLimitOrders": "Лимитные ордера отменены",
+            "Burn": "Сожжено {amount} {symbol}",
+            "Mint": "Отчеканено {amount} {symbol} на {address}"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Не удалось установить получателя платежа {address}",
             "OrderBookPlaceLimitOrder": "Не удалось разместить лимитный ордер на {amount} {symbol} по {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Не удалось отменить лимитные ордера",
-            "OrderBookCancelLimitOrder": "Не удалось отменить лимитный ордер"
+            "OrderBookCancelLimitOrder": "Не удалось отменить лимитный ордер",
+            "Burn": "Не удалось сжечь {amount} {symbol}",
+            "Mint": "Не удалось отчеканить {amount} {symbol} на {address}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Установить получателя платежа",
         "OrderBookPlaceLimitOrder": "Разместить заказ",
         "OrderBookCancelLimitOrder": "Отменить заказ",
-        "OrderBookCancelLimitOrders": "Отменить заказы"
+        "OrderBookCancelLimitOrders": "Отменить заказы",
+        "Burn": "Сжигание",
+        "Mint": "Чеканка"
     },
     "polkadotjs": {
         "noExtensions": "Расширение {PolkadotJs} не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",

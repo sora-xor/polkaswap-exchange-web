@@ -63,7 +63,9 @@
             "StakingSetPayee": "Tetapkan penerima pembayaran {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} pada {price} {symbol2} ditempatkan",
             "OrderBookCancelLimitOrder": "Batas pesanan dibatalkan",
-            "OrderBookCancelLimitOrders": "Batasi pesanan dibatalkan"
+            "OrderBookCancelLimitOrders": "Batasi pesanan dibatalkan",
+            "Burn": "Terbakar {amount} {symbol}",
+            "Mint": "Dicetak {amount} {symbol} ke {address}"
         },
         "error": {
             "Transfer": "Gagal {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Gagal menetapkan penerima pembayaran {address}",
             "OrderBookPlaceLimitOrder": "Gagal menempatkan limit order {amount} {symbol} pada {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Gagal membatalkan pesanan batas",
-            "OrderBookCancelLimitOrder": "Gagal membatalkan pesanan batas"
+            "OrderBookCancelLimitOrder": "Gagal membatalkan pesanan batas",
+            "Burn": "Gagal membakar {amount} {symbol}",
+            "Mint": "Gagal mencetak {amount} {symbol} ke {address}"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Tetapkan Penerima Pembayaran",
         "OrderBookPlaceLimitOrder": "Tempatkan Pesanan",
         "OrderBookCancelLimitOrder": "Batalkan pesanan",
-        "OrderBookCancelLimitOrders": "Batalkan Pesanan"
+        "OrderBookCancelLimitOrders": "Batalkan Pesanan",
+        "Burn": "Membakar",
+        "Mint": "daun mint"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi {PolkadotJs} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",

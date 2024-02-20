@@ -63,7 +63,9 @@
             "StakingSetPayee": "Set payee {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} at {price} {symbol2} placed",
             "OrderBookCancelLimitOrder": "Limit order cancelled",
-            "OrderBookCancelLimitOrders": "Limit orders cancelled"
+            "OrderBookCancelLimitOrders": "Limit orders cancelled",
+            "Burn": "Burned {amount} {symbol}",
+            "Mint": "Minted {amount} {symbol} to {address}"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Failed to set payee {address}",
             "OrderBookPlaceLimitOrder": "Failed to place limit order of {amount} {symbol} at {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Failed to cancel limit orders",
-            "OrderBookCancelLimitOrder": "Failed to cancel limit order"
+            "OrderBookCancelLimitOrder": "Failed to cancel limit order",
+            "Burn": "Failed to burn {amount} {symbol}",
+            "Mint": "Failed to mint {amount} {symbol} to {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Set Payee",
         "OrderBookPlaceLimitOrder": "Place Order",
         "OrderBookCancelLimitOrder": "Cancel Order",
-        "OrderBookCancelLimitOrders": "Cancel Orders"
+        "OrderBookCancelLimitOrders": "Cancel Orders",
+        "Burn": "Burn",
+        "Mint": "Mint"
     },
     "polkadotjs": {
         "noExtensions": "No {PolkadotJs} extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",

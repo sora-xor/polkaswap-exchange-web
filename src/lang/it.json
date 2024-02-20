@@ -63,7 +63,9 @@
             "StakingSetPayee": "Imposta beneficiario {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} a {price} {symbol2} piazzato",
             "OrderBookCancelLimitOrder": "Ordine limite annullato",
-            "OrderBookCancelLimitOrders": "Ordini limite annullati"
+            "OrderBookCancelLimitOrders": "Ordini limite annullati",
+            "Burn": "{amount} {symbol} bruciato",
+            "Mint": "Coniato {amount} {symbol} a {address}"
         },
         "error": {
             "Transfer": "Impossibile {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Impossibile impostare il beneficiario {address}",
             "OrderBookPlaceLimitOrder": "Impossibile effettuare un ordine limite di {amount} {symbol} a {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Impossibile annullare gli ordini limite",
-            "OrderBookCancelLimitOrder": "Impossibile annullare l'ordine limite"
+            "OrderBookCancelLimitOrder": "Impossibile annullare l'ordine limite",
+            "Burn": "Impossibile masterizzare {amount} {symbol}",
+            "Mint": "Impossibile coniare {amount} {symbol} su {address}"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Imposta beneficiario",
         "OrderBookPlaceLimitOrder": "Invia ordine",
         "OrderBookCancelLimitOrder": "Annulla Ordine",
-        "OrderBookCancelLimitOrders": "Annulla ordini"
+        "OrderBookCancelLimitOrders": "Annulla ordini",
+        "Burn": "Bruciare",
+        "Mint": "menta"
     },
     "polkadotjs": {
         "noExtensions": "Nessuna estensione {PolkadotJs} trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
