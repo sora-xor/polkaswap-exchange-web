@@ -63,7 +63,9 @@
             "StakingSetPayee": "Begunstigde {address} instellen",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} voor {price} {symbol2} geplaatst",
             "OrderBookCancelLimitOrder": "Limietorder geannuleerd",
-            "OrderBookCancelLimitOrders": "Limietorders geannuleerd"
+            "OrderBookCancelLimitOrders": "Limietorders geannuleerd",
+            "Burn": "Verbrand {amount} {symbol}",
+            "Mint": "Geslagen {amount} {symbol} naar {address}"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Kan begunstigde {address} niet instellen",
             "OrderBookPlaceLimitOrder": "Het plaatsen van een limietorder van {amount} {symbol} bij {price} {symbol2} is niet gelukt",
             "OrderBookCancelLimitOrders": "Kan limietorders niet annuleren",
-            "OrderBookCancelLimitOrder": "Kan limietorder niet annuleren"
+            "OrderBookCancelLimitOrder": "Kan limietorder niet annuleren",
+            "Burn": "Kan {amount} {symbol} niet verbranden",
+            "Mint": "Kan {amount} {symbol} niet aan {address} toevoegen"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Begunstigde instellen",
         "OrderBookPlaceLimitOrder": "Plaats bestelling",
         "OrderBookCancelLimitOrder": "Annuleer bestelling",
-        "OrderBookCancelLimitOrders": "Bestellingen annuleren"
+        "OrderBookCancelLimitOrders": "Bestellingen annuleren",
+        "Burn": "Brandwond",
+        "Mint": "Munt"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",

@@ -63,7 +63,9 @@
             "StakingSetPayee": "Ṣeto payee {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ni {price} {symbol2} gbe",
             "OrderBookCancelLimitOrder": "Ti fagile aṣẹ opin",
-            "OrderBookCancelLimitOrders": "Awọn aṣẹ aropin parẹ"
+            "OrderBookCancelLimitOrders": "Awọn aṣẹ aropin parẹ",
+            "Burn": "jona {amount} {symbol}",
+            "Mint": "Minted {amount} {symbol} si {address}"
         },
         "error": {
             "Transfer": "Kuna lati {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Kuna lati ṣeto payee {address}",
             "OrderBookPlaceLimitOrder": "O kuna lati gbe aṣẹ iye to fun {symbol} {amount} {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Kuna lati fagilee awọn ibere opin",
-            "OrderBookCancelLimitOrder": "Kuna lati fagilee aṣẹ opin"
+            "OrderBookCancelLimitOrder": "Kuna lati fagilee aṣẹ opin",
+            "Burn": "Kuna lati sun {amount} {symbol}",
+            "Mint": "Kuna lati mint {amount} {symbol} si {address}"
         },
         "ReferralReserveXor": "Iwe adehun XOR",
         "ReferralUnreserveXor": "Yọ XOR kuro",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Ṣeto Payee",
         "OrderBookPlaceLimitOrder": "Ibi Bere fun",
         "OrderBookCancelLimitOrder": "Fagilee Bere fun",
-        "OrderBookCancelLimitOrders": "Fagilee Awọn aṣẹ"
+        "OrderBookCancelLimitOrders": "Fagilee Awọn aṣẹ",
+        "Burn": "Iná",
+        "Mint": "Mint"
     },
     "polkadotjs": {
         "noExtensions": "A ko rii itẹsiwaju {PolkadotJs}. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
@@ -1290,7 +1296,7 @@
             "more": "Gbero diẹ sii",
             "confirm": "Jẹrisi Staking",
             "payout": "Owó ìsanwó",
-            "withdraw": ""
+            "withdraw": "Yiyọ kuro"
         },
         "overview": {
             "title": "{Sora} Staking",

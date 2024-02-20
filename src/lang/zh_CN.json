@@ -63,7 +63,9 @@
             "StakingSetPayee": "设置收款人{address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol}以{price} {symbol2}放置",
             "OrderBookCancelLimitOrder": "限价订单已取消",
-            "OrderBookCancelLimitOrders": "限价订单已取消"
+            "OrderBookCancelLimitOrders": "限价订单已取消",
+            "Burn": "烧毁{amount} {symbol}",
+            "Mint": "铸造了{amount} {symbol}到{address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "无法设置收款人{address}",
             "OrderBookPlaceLimitOrder": "未能以{price} } {symbol2}下达{amount} {symbol}限价单",
             "OrderBookCancelLimitOrders": "取消限价单失败",
-            "OrderBookCancelLimitOrder": "取消限价单失败"
+            "OrderBookCancelLimitOrder": "取消限价单失败",
+            "Burn": "刻录{amount} {symbol}失败",
+            "Mint": "无法将{amount} {symbol}铸造到{address}"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "设置收款人",
         "OrderBookPlaceLimitOrder": "下订单",
         "OrderBookCancelLimitOrder": "取消订单",
-        "OrderBookCancelLimitOrders": "取消订单"
+        "OrderBookCancelLimitOrders": "取消订单",
+        "Burn": "烧伤",
+        "Mint": "薄荷"
     },
     "polkadotjs": {
         "noExtensions": "没有找到 {PolkadotJs} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",

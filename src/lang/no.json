@@ -63,7 +63,9 @@
             "StakingSetPayee": "Angi betalingsmottaker {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} til {price} {symbol2} plassert",
             "OrderBookCancelLimitOrder": "Begrensningsbestilling kansellert",
-            "OrderBookCancelLimitOrders": "Limit bestillinger kansellert"
+            "OrderBookCancelLimitOrders": "Limit bestillinger kansellert",
+            "Burn": "Brent {amount} {symbol}",
+            "Mint": "Preget {amount} {symbol} til {address}"
         },
         "error": {
             "Transfer": "Kunne ikke {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Kunne ikke angi betalingsmottaker {address}",
             "OrderBookPlaceLimitOrder": "Kunne ikke legge inn grensebestilling på {amount} {symbol} til {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Kunne ikke kansellere begrensede bestillinger",
-            "OrderBookCancelLimitOrder": "Kunne ikke kansellere begrenset ordre"
+            "OrderBookCancelLimitOrder": "Kunne ikke kansellere begrenset ordre",
+            "Burn": "Kunne ikke brenne {amount} {symbol}",
+            "Mint": "Kunne ikke prege {amount} {symbol} til {address}"
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Angi betalingsmottaker",
         "OrderBookPlaceLimitOrder": "Legg inn bestilling",
         "OrderBookCancelLimitOrder": "Avbryt bestillingen",
-        "OrderBookCancelLimitOrders": "Kanseller bestillinger"
+        "OrderBookCancelLimitOrders": "Kanseller bestillinger",
+        "Burn": "Brenne",
+        "Mint": "Mynte"
     },
     "polkadotjs": {
         "noExtensions": "Finner ingen {PolkadotJs} utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
