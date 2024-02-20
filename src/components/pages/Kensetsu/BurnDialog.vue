@@ -49,6 +49,7 @@
         <template v-if="isZeroAmount">
           {{ t('buttons.enterAmount') }}
         </template>
+        <template v-else-if="isAmountLessThanOne">NEED TO RESERVE MORE THAN 1</template>
         <template v-else-if="isInsufficientBalance">
           {{ t('insufficientBalanceText', { tokenSymbol: xor.symbol }) }}
         </template>
@@ -90,7 +91,7 @@ export default class BurnDialog extends Mixins(
   readonly xor = XOR;
   readonly ken: Asset = {
     address: '',
-    decimals: 0,
+    decimals: 18,
     isMintable: true,
     name: 'KEN',
     symbol: 'KEN',
@@ -117,6 +118,10 @@ export default class BurnDialog extends Mixins(
 
   private get xorWillBeBurned() {
     return this.getFPNumber(+(this.value || '0') * this.million);
+  }
+
+  get isAmountLessThanOne(): boolean {
+    return +(this.value || '0') < 1;
   }
 
   get formattedXorWillBeBurned(): string {
@@ -161,7 +166,7 @@ export default class BurnDialog extends Mixins(
   }
 
   get isBurnDisabled(): boolean {
-    return this.loading || this.isZeroAmount || this.isInsufficientBalance;
+    return this.loading || this.isZeroAmount || this.isAmountLessThanOne || this.isInsufficientBalance;
   }
 
   handleInputField(value: string): void {
