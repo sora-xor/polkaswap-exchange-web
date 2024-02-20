@@ -58,10 +58,13 @@
           @select="openSelectAssetDialog"
         >
           <template #title-append>
-            <div @click="handleChangeSubNode">
-              <span class="input-title--network">{{ formatSelectedNetwork(isSoraToEvm) }}</span>
-              <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : networkSelected)}`" />
-            </div>
+            <span class="input-title--network">{{ formatSelectedNetwork(isSoraToEvm) }}</span>
+            <i :class="`network-icon network-icon--${getNetworkIcon(isSoraToEvm ? 0 : networkSelected)}`" />
+            <bridge-node-icon
+              v-if="isSubBridge && !isSoraToEvm"
+              :connection="subConnection"
+              @click="handleChangeSubNode"
+            />
           </template>
 
           <div v-if="sender" class="connect-wallet-panel">
@@ -123,6 +126,11 @@
           <template #title-append>
             <span class="input-title--network">{{ formatSelectedNetwork(!isSoraToEvm) }}</span>
             <i :class="`network-icon network-icon--${getNetworkIcon(!isSoraToEvm ? 0 : networkSelected)}`" />
+            <bridge-node-icon
+              v-if="isSubBridge && isSoraToEvm"
+              :connection="subConnection"
+              @click="handleChangeSubNode"
+            />
           </template>
 
           <div v-if="recipient" class="connect-wallet-panel">
@@ -312,6 +320,7 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
     BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
     BridgeSelectAccount: lazyComponent(Components.BridgeSelectAccount),
     BridgeAccountPanel: lazyComponent(Components.BridgeAccountPanel),
+    BridgeNodeIcon: lazyComponent(Components.BridgeNodeIcon),
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
     BridgeLimitCard: lazyComponent(Components.BridgeLimitCard),
     SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
@@ -384,7 +393,6 @@ export default class Bridge extends Mixins(
   }
 
   get isExternalNetworkLoading(): boolean {
-    console.log(this.subBridgeConnector);
     return this.isSubBridge ? !this.subConnection?.nodeIsConnected : !!this.evmProviderLoading;
   }
 

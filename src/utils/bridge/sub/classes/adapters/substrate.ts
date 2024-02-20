@@ -4,7 +4,6 @@ import { formatBalance } from '@sora-substrate/util/build/assets';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import { ZeroStringValue } from '@/consts';
-import type { Node } from '@/types/nodes';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { NodesConnection } from '@/utils/connection';
 
