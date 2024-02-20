@@ -399,7 +399,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   get buttonDisabled(): boolean {
     if (this.bookStopped) return true;
 
-    if (this.userReachedSpotLimit || this.userReachedOwnLimit || this.limitForSinglePriceReached) return true;
+    if (this.limitForSinglePriceReached || this.userReachedSpotLimit || this.userReachedOwnLimit) return true;
 
     if (!this.isLoggedIn) return false;
 
@@ -431,16 +431,22 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.orderBookStatus === OrderBookStatus.Stop) return;
 
-    if (this.userReachedSpotLimit)
+    if ((await this.singlePriceReachedLimit()) && this.quoteValue)
       return this.setError({
-        reason: this.t('orderBook.error.spotLimit.reason'),
-        reading: this.t('orderBook.error.spotLimit.reading'),
+        reason: this.t('orderBook.error.singlePriceLimit.reason'),
+        reading: this.t('orderBook.error.singlePriceLimit.reading'),
       });
 
     if (this.userReachedOwnLimit)
       return this.setError({
         reason: this.t('orderBook.error.accountLimit.reason'),
         reading: this.t('orderBook.error.accountLimit.reading'),
+      });
+
+    if (this.userReachedSpotLimit)
+      return this.setError({
+        reason: this.t('orderBook.error.spotLimit.reason'),
+        reading: this.t('orderBook.error.spotLimit.reading'),
       });
 
     // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
@@ -481,12 +487,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         reading: this.t('orderBook.error.exceedsSpread.reading'),
       });
 
-    if ((await this.singlePriceReachedLimit()) && this.quoteValue)
-      return this.setError({
-        reason: this.t('orderBook.error.singlePriceLimit.reason'),
-        reading: this.t('orderBook.error.singlePriceLimit.reading'),
-      });
-
     if (!this.isZeroAmount && this.isOutOfAmountBounds && this.quoteValue) {
       const { maxLotSize, minLotSize } = this.currentOrderBook as OrderBook;
       const { symbol } = this.baseAsset;
@@ -499,18 +499,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         }),
       });
     }
-  }
-
-  async singlePriceReachedLimit(): Promise<boolean> {
-    const limitReached = !(await api.orderBook.isOrderPlaceable(
-      this.baseAsset.address,
-      this.quoteAsset.address,
-      this.side,
-      this.quoteValue
-    ));
-
-    this.limitForSinglePriceReached = limitReached;
-    return limitReached;
   }
 
   get priceExceedsSpread(): boolean {
@@ -738,15 +726,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return ![OrderBookStatus.Trade, OrderBookStatus.PlaceAndCancel].includes(this.orderBookStatus);
   }
 
-  get userReachedSpotLimit(): boolean {
-    // TODO: [Rustem] Should be improved as user could put into existing price
-    return (this.side === PriceVariant.Sell ? this.asks : this.bids).length >= MAX_ORDERS_PER_SIDE;
-  }
-
-  get userReachedOwnLimit(): boolean {
-    return this.userLimitOrders?.length === MAX_ORDERS_PER_USER;
-  }
-
   get isBuySide(): boolean {
     return this.side === PriceVariant.Buy;
   }
@@ -767,6 +746,30 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     if (this.isBuySide) return maxLotSize;
 
     return FPNumber.lte(maxPossible, maxLotSize) ? maxPossible : maxLotSize;
+  }
+
+  get userReachedSpotLimit(): boolean {
+    return (
+      (this.side === PriceVariant.Sell ? this.asks : this.bids).length >= MAX_ORDERS_PER_SIDE &&
+      !!this.quoteValue &&
+      this.limitForSinglePriceReached
+    );
+  }
+
+  get userReachedOwnLimit(): boolean {
+    return this.userLimitOrders?.length === MAX_ORDERS_PER_USER;
+  }
+
+  async singlePriceReachedLimit(): Promise<boolean> {
+    const limitReached = !(await api.orderBook.isOrderPlaceable(
+      this.baseAsset.address,
+      this.quoteAsset.address,
+      this.side,
+      this.quoteValue
+    ));
+
+    this.limitForSinglePriceReached = limitReached;
+    return limitReached;
   }
 
   formatInputValue(value: string, precision: number): string {
