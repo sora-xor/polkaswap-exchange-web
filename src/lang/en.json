@@ -64,7 +64,8 @@
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} at {price} {symbol2} placed",
             "OrderBookCancelLimitOrder": "Limit order cancelled",
             "OrderBookCancelLimitOrders": "Limit orders cancelled",
-            "Burn": "Burned {amount} {symbol}"
+            "Burn": "Burned {amount} {symbol}",
+            "Mint": "Minted {amount} {symbol} to {address}"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -100,7 +101,8 @@
             "OrderBookPlaceLimitOrder": "Failed to place limit order of {amount} {symbol} at {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Failed to cancel limit orders",
             "OrderBookCancelLimitOrder": "Failed to cancel limit order",
-            "Burn": "Failed to burn {amount} {symbol}"
+            "Burn": "Failed to burn {amount} {symbol}",
+            "Mint": "Failed to mint {amount} {symbol} to {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -128,7 +130,8 @@
         "OrderBookPlaceLimitOrder": "Place Order",
         "OrderBookCancelLimitOrder": "Cancel Order",
         "OrderBookCancelLimitOrders": "Cancel Orders",
-        "Burn": "Burn"
+        "Burn": "Burn",
+        "Mint": "Mint"
     },
     "polkadotjs": {
         "noExtensions": "No {PolkadotJs} extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1292,7 +1295,10 @@
         "actions": {
             "claim": "Claim rewards",
             "remove": "Remove stake",
-            "more": "Stake more"
+            "more": "Stake more",
+            "confirm": "Confirm Staking",
+            "payout": "Payout",
+            "withdraw": "Withdraw"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1317,10 +1323,10 @@
             "noNominatedValidators": "You don't have any nominated validators",
             "noValidators": "There are no validators satisfying the specified filter",
             "commission": "Commission",
-            "commissionTooltip": "Commission refers to the fee charged by validators for their services in the staking process. This fee, expressed as a percentage, is deducted from the staking rewards earned by nominators before distribution. It's important to note that validators can adjust their commission rates at any time"
+            "commissionTooltip": "Commission refers to the fee charged by validators for their services in the staking process. This fee, expressed as a percentage, is deducted from the staking rewards earned by nominators before distribution. It's important to note that validators can adjust their commission rates at any time",
+            "return": "Return"
         },
         "info": {
-            "redeemable": "Redeemable",
             "unstaking": "Unstaking",
             "stakingBalance": "Staking balance",
             "rewarded": "Rewarded",
@@ -1360,8 +1366,8 @@
                 "edit": "Edit My Validators"
             },
             "tabs": {
-                "user": "Your validators",
-                "all": "All validators"
+                "user": "Yours",
+                "all": "All"
             }
         },
         "validatorsAttentionDialog": {
@@ -1399,6 +1405,26 @@
             "title": "Claim rewards",
             "checkRewards": "Check rewards per era and validator",
             "rewardsDestination": "Rewards destination address"
+        },
+        "selectedValidators": "{count} ({Max} {max})",
+        "withdraw": {
+            "withdrawable": "Withdrawable",
+            "beingWithdrawn": "Being withdrawn",
+            "seeAll": "See all",
+            "nextWithdrawal": "Next withdrawal",
+            "countdownLeft": "left"
+        },
+        "stakeDialog": {
+            "toStake": "To stake",
+            "toRemove": "To remove"
+        },
+        "withdrawDialog": {
+            "title": "Withdraw unstaked funds",
+            "showAllWithdraws": "Show all withdraws"
+        },
+        "allWithdrawsDialog": {
+            "title": "Unstaking activity",
+            "information": "Once you unstake tokens, there is a mandatory 7-day unstaking period. After this period, your tokens will not be automatically returned to your wallet. You must complete the process by manually withdrawing your tokens."
         }
     },
     "collapseText": "Collapse",

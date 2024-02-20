@@ -63,7 +63,9 @@
             "StakingSetPayee": "Begunstigde {address} instellen",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} voor {price} {symbol2} geplaatst",
             "OrderBookCancelLimitOrder": "Limietorder geannuleerd",
-            "OrderBookCancelLimitOrders": "Limietorders geannuleerd"
+            "OrderBookCancelLimitOrders": "Limietorders geannuleerd",
+            "Burn": "Verbrand {amount} {symbol}",
+            "Mint": "Geslagen {amount} {symbol} naar {address}"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Kan begunstigde {address} niet instellen",
             "OrderBookPlaceLimitOrder": "Het plaatsen van een limietorder van {amount} {symbol} bij {price} {symbol2} is niet gelukt",
             "OrderBookCancelLimitOrders": "Kan limietorders niet annuleren",
-            "OrderBookCancelLimitOrder": "Kan limietorder niet annuleren"
+            "OrderBookCancelLimitOrder": "Kan limietorder niet annuleren",
+            "Burn": "Kan {amount} {symbol} niet verbranden",
+            "Mint": "Kan {amount} {symbol} niet aan {address} toevoegen"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Begunstigde instellen",
         "OrderBookPlaceLimitOrder": "Plaats bestelling",
         "OrderBookCancelLimitOrder": "Annuleer bestelling",
-        "OrderBookCancelLimitOrders": "Bestellingen annuleren"
+        "OrderBookCancelLimitOrders": "Bestellingen annuleren",
+        "Burn": "Brandwond",
+        "Mint": "Munt"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
@@ -1287,7 +1293,10 @@
         "actions": {
             "claim": "Claim beloningen",
             "remove": "Staak verwijderen",
-            "more": "Zet meer in"
+            "more": "Zet meer in",
+            "confirm": "Bevestig het uitzetten",
+            "payout": "Uitbetaling",
+            "withdraw": "Opnemen"
         },
         "overview": {
             "title": "{Sora} Uitzetten",
@@ -1312,10 +1321,10 @@
             "noNominatedValidators": "U heeft geen genomineerde validators",
             "noValidators": "Er zijn geen validators die aan het opgegeven filter voldoen",
             "commission": "Commissie",
-            "commissionTooltip": "Commissie verwijst naar de vergoeding die validators in rekening brengen voor hun diensten in het stakingproces. Deze vergoeding, uitgedrukt als een percentage, wordt afgetrokken van de inzetoefeningen die de nominatoren vóór distributie hebben verdiend. Het is belangrijk op te merken dat validators hun commissietarieven op elk moment kunnen aanpassen"
+            "commissionTooltip": "Commissie verwijst naar de vergoeding die validators in rekening brengen voor hun diensten in het stakingproces. Deze vergoeding, uitgedrukt als een percentage, wordt afgetrokken van de inzetoefeningen die de nominatoren vóór distributie hebben verdiend. Het is belangrijk op te merken dat validators hun commissietarieven op elk moment kunnen aanpassen",
+            "return": "Opbrengst"
         },
         "info": {
-            "redeemable": "Inwisselbaar",
             "unstaking": "Niet uitzetten",
             "stakingBalance": "Balans uitzetten",
             "rewarded": "Beloond",
@@ -1394,6 +1403,26 @@
             "title": "Claim beloningen",
             "checkRewards": "Controleer beloningen per tijdperk en validator",
             "rewardsDestination": "Bestemmingsadres van beloningen"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Opneembaar",
+            "beingWithdrawn": "Teruggetrokken zijn",
+            "seeAll": "Alles zien",
+            "nextWithdrawal": "Volgende terugtrekking",
+            "countdownLeft": "links"
+        },
+        "stakeDialog": {
+            "toStake": "Om in te zetten",
+            "toRemove": "Verwijderen"
+        },
+        "withdrawDialog": {
+            "title": "Niet-uitgezette gelden opnemen",
+            "showAllWithdraws": "Toon alle opnames"
+        },
+        "allWithdrawsDialog": {
+            "title": "Niet-uitzettende activiteit",
+            "information": "Zodra u tokens ongedaan maakt, is er een verplichte periode van zeven dagen. Na deze periode worden uw tokens niet automatisch teruggestuurd naar uw portemonnee. U moet het proces voltooien door uw tokens handmatig in te trekken."
         }
     },
     "collapseText": "Instorten",

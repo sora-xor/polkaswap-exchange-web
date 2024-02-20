@@ -1,5 +1,3 @@
-import type { CodecString } from '@sora-substrate/util';
-
 export enum FocusedField {
   First = 'firstTokenAmount',
   Second = 'secondTokenAmount',

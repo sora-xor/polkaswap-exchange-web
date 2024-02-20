@@ -14,11 +14,11 @@ function updateFirstTokenAmount(context: ActionContext<any, any>): void {
   const value = state.secondTokenAmount;
 
   if (value && Number.isFinite(+value)) {
-    const part = new FPNumber(value).div(getters.secondTokenBalance);
+    const part = new FPNumber(value).div(getters.secondTokenBalance as FPNumber);
 
     commit.setRemovePart(Math.round(part.mul(FPNumber.HUNDRED).toNumber()).toString());
-    commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
-    commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance).toString());
+    commit.setLiquidityAmount(part.mul(getters.liquidityBalance as FPNumber).toString());
+    commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance as FPNumber).toString());
   } else {
     commit.setRemovePart();
     commit.setLiquidityAmount();
@@ -32,11 +32,13 @@ function updateSecondTokenAmount(context: ActionContext<any, any>): void {
   const value = state.firstTokenAmount;
 
   if (value && Number.isFinite(+value)) {
-    const part = Number.isFinite(+value) ? new FPNumber(value).div(getters.firstTokenBalance) : FPNumber.ZERO;
+    const part = Number.isFinite(+value)
+      ? new FPNumber(value).div(getters.firstTokenBalance as FPNumber)
+      : FPNumber.ZERO;
 
     commit.setRemovePart(Math.round(part.mul(FPNumber.HUNDRED).toNumber()).toString());
-    commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
-    commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance).toString());
+    commit.setLiquidityAmount(part.mul(getters.liquidityBalance as FPNumber).toString());
+    commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance as FPNumber).toString());
   } else {
     commit.setRemovePart();
     commit.setLiquidityAmount();
@@ -50,9 +52,9 @@ function updateRemovePart(context: ActionContext<any, any>): void {
   const part = new FPNumber(state.removePart).div(FPNumber.HUNDRED);
 
   if (!part.isZero()) {
-    commit.setLiquidityAmount(part.mul(getters.liquidityBalance).toString());
-    commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance).toString());
-    commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance).toString());
+    commit.setLiquidityAmount(part.mul(getters.liquidityBalance as FPNumber).toString());
+    commit.setFirstTokenAmount(part.mul(getters.firstTokenBalance as FPNumber).toString());
+    commit.setSecondTokenAmount(part.mul(getters.secondTokenBalance as FPNumber).toString());
   } else {
     commit.setLiquidityAmount();
     commit.setFirstTokenAmount();
