@@ -404,6 +404,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     this.asset = { ...asset };
 
     if (tx.txId) return;
+    // transaction not signed
+    await this.beforeSign(id);
     // open connections
     await this.connector.start();
     // sign transaction

@@ -63,7 +63,9 @@
             "StakingSetPayee": "Kedvezményezett {address} beállítása",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} áron {price} {symbol2} elhelyezve",
             "OrderBookCancelLimitOrder": "Limit megbízás törölve",
-            "OrderBookCancelLimitOrders": "Limit megrendelések törölve"
+            "OrderBookCancelLimitOrders": "Limit megrendelések törölve",
+            "Burn": "Égetett {amount} {symbol}",
+            "Mint": "Verte {amount} {symbol} erre: {address}"
         },
         "error": {
             "Transfer": "Nem sikerült {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Nem sikerült beállítani a kedvezményezettet {address}",
             "OrderBookPlaceLimitOrder": "Nem sikerült elhelyezni {amount} {symbol} összegű limitrendelést {price} {symbol2} áron",
             "OrderBookCancelLimitOrders": "Nem sikerült törölni a limitált rendeléseket",
-            "OrderBookCancelLimitOrder": "Nem sikerült törölni a limitált rendelést"
+            "OrderBookCancelLimitOrder": "Nem sikerült törölni a limitált rendelést",
+            "Burn": "Nem sikerült égetni {amount} {symbol}",
+            "Mint": "Nem sikerült menteni {amount} {symbol} címet a következő címre {address}"
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Kedvezményezett beállítása",
         "OrderBookPlaceLimitOrder": "Rendelés leadása",
         "OrderBookCancelLimitOrder": "Megrendelés törlése",
-        "OrderBookCancelLimitOrders": "Megrendelések törlése"
+        "OrderBookCancelLimitOrders": "Megrendelések törlése",
+        "Burn": "Éget",
+        "Mint": "Menta"
     },
     "polkadotjs": {
         "noExtensions": "Nem találtunk {PolkadotJs} kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1287,7 +1293,10 @@
         "actions": {
             "claim": "Kérjen jutalmakat",
             "remove": "Távolítsa el a tétet",
-            "more": "Tételj többet"
+            "more": "Tételj többet",
+            "confirm": "Erősítse meg Staking-et",
+            "payout": "Kifizetés",
+            "withdraw": "Kivét"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1312,10 +1321,10 @@
             "noNominatedValidators": "Nincsenek kijelölt érvényesítői",
             "noValidators": "Nincsenek a megadott szűrőt kielégítő érvényesítők",
             "commission": "jutalék",
-            "commissionTooltip": "A jutalék arra a díjra vonatkozik, amelyet az érvényesítők felszámítanak a licitálási folyamat során nyújtott szolgáltatásaikért. Ezt a százalékban kifejezett díjat levonják a jelölők által a kiosztás előtt szerzett tét jutalmakból. Fontos megjegyezni, hogy az érvényesítők bármikor módosíthatják a jutalék mértékét"
+            "commissionTooltip": "A jutalék arra a díjra vonatkozik, amelyet az érvényesítők felszámítanak a licitálási folyamat során nyújtott szolgáltatásaikért. Ezt a százalékban kifejezett díjat levonják a jelölők által a kiosztás előtt szerzett tét jutalmakból. Fontos megjegyezni, hogy az érvényesítők bármikor módosíthatják a jutalék mértékét",
+            "return": "Visszatérés"
         },
         "info": {
-            "redeemable": "Beváltható",
             "unstaking": "Unstaking",
             "stakingBalance": "Egyensúly kockáztatása",
             "rewarded": "Jutalmazott",
@@ -1394,6 +1403,26 @@
             "title": "Kérjen jutalmakat",
             "checkRewards": "Ellenőrizze a jutalmakat korszakonként és érvényesítőnként",
             "rewardsDestination": "Jutalmak célcíme"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Kivonható",
+            "beingWithdrawn": "Visszahúzódó",
+            "seeAll": "Az összes megtekintése",
+            "nextWithdrawal": "Következő visszavonás",
+            "countdownLeft": "bal"
+        },
+        "stakeDialog": {
+            "toStake": "A téthez",
+            "toRemove": "Eltávolítani"
+        },
+        "withdrawDialog": {
+            "title": "Vonja ki a nem tét nélküli alapokat",
+            "showAllWithdraws": "Az összes visszavonás megjelenítése"
+        },
+        "allWithdrawsDialog": {
+            "title": "Könnyű tevékenység",
+            "information": "Miután visszavonta a tokeneket, van egy kötelező 7 napos tétbevonási időszak. Ezen időszak után a tokenek nem kerülnek automatikusan vissza a pénztárcájába. A folyamatot be kell fejeznie a tokenek manuális visszavonásával."
         }
     },
     "collapseText": "Összeomlás",
