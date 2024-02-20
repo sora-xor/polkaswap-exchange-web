@@ -1287,7 +1287,10 @@
         "actions": {
             "claim": "Захтевајте награде",
             "remove": "Уклоните улог",
-            "more": "Уложите више"
+            "more": "Уложите више",
+            "confirm": "Цонфирм Стакинг",
+            "payout": "Isplata",
+            "withdraw": "Podizanje"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1312,10 +1315,10 @@
             "noNominatedValidators": "Nemaš nominovane validatore",
             "noValidators": "Nema validatora koji zadovoljavaju navedeni filter",
             "commission": "Комисија",
-            "commissionTooltip": "Провизија се односи на накнаду коју наплаћују валидатори за своје услуге у процесу стекинга. Ова накнада, изражена у процентима, одбија се од награда за улагање које су номинатори зарадили пре дистрибуције. Важно је напоменути да валидатори могу прилагодити своје стопе провизије у било ком тренутку"
+            "commissionTooltip": "Провизија се односи на накнаду коју наплаћују валидатори за своје услуге у процесу стекинга. Ова накнада, изражена у процентима, одбија се од награда за улагање које су номинатори зарадили пре дистрибуције. Важно је напоменути да валидатори могу прилагодити своје стопе провизије у било ком тренутку",
+            "return": "Повратак"
         },
         "info": {
-            "redeemable": "Откупљив",
             "unstaking": "Унстакинг",
             "stakingBalance": "Стакинг баланце",
             "rewarded": "Награђени",
@@ -1394,6 +1397,26 @@
             "title": "Захтевајте награде",
             "checkRewards": "Proverite nagrade po eri i validatoru",
             "rewardsDestination": "Nagradna odredišna adresa"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Извлачење",
+            "beingWithdrawn": "Бити повучен",
+            "seeAll": "Видети све",
+            "nextWithdrawal": "Следеће повлачење",
+            "countdownLeft": "лево"
+        },
+        "stakeDialog": {
+            "toStake": "Заложити",
+            "toRemove": "Уклонити"
+        },
+        "withdrawDialog": {
+            "title": "Повуците неуложена средства",
+            "showAllWithdraws": "Прикажи све повлачења"
+        },
+        "allWithdrawsDialog": {
+            "title": "Унстакинг ацтивити",
+            "information": "Када поништите токене, постоји обавезан период од 7 дана. Након овог периода, ваши токени неће бити аутоматски враћени у ваш новчаник. Морате да завршите процес ручним повлачењем ваших токена."
         }
     },
     "collapseText": "Skupi",

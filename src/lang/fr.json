@@ -1287,7 +1287,10 @@
         "actions": {
             "claim": "Réclamez des récompenses",
             "remove": "Supprimer la mise",
-            "more": "Miser davantage"
+            "more": "Miser davantage",
+            "confirm": "Confirmer le jalonnement",
+            "payout": "Paiement",
+            "withdraw": "Virement"
         },
         "overview": {
             "title": "{Sora} Jalonnement",
@@ -1312,10 +1315,10 @@
             "noNominatedValidators": "Vous n'avez aucun validateur nommé",
             "noValidators": "Il n'y a aucun validateur satisfaisant au filtre spécifié",
             "commission": "Commission",
-            "commissionTooltip": "La commission fait référence aux frais facturés par les validateurs pour leurs services dans le processus de jalonnement. Ces frais, exprimés en pourcentage, sont déduits des récompenses de mise gagnées par les proposants avant distribution. Il est important de noter que les validateurs peuvent ajuster leurs taux de commission à tout moment."
+            "commissionTooltip": "La commission fait référence aux frais facturés par les validateurs pour leurs services dans le processus de jalonnement. Ces frais, exprimés en pourcentage, sont déduits des récompenses de mise gagnées par les proposants avant distribution. Il est important de noter que les validateurs peuvent ajuster leurs taux de commission à tout moment.",
+            "return": "Retour"
         },
         "info": {
-            "redeemable": "Rachetable",
             "unstaking": "Détachement",
             "stakingBalance": "Solde de jalonnement",
             "rewarded": "Récompensé",
@@ -1394,6 +1397,26 @@
             "title": "Réclamez des récompenses",
             "checkRewards": "Vérifiez les récompenses par époque et validateur",
             "rewardsDestination": "Adresse de destination des récompenses"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Retirable",
+            "beingWithdrawn": "Être retiré",
+            "seeAll": "Voir tout",
+            "nextWithdrawal": "Prochain retrait",
+            "countdownLeft": "gauche"
+        },
+        "stakeDialog": {
+            "toStake": "Miser",
+            "toRemove": "Retirer"
+        },
+        "withdrawDialog": {
+            "title": "Retirer des fonds non mis en gage",
+            "showAllWithdraws": "Afficher tous les retraits"
+        },
+        "allWithdrawsDialog": {
+            "title": "Activité sans enjeu",
+            "information": "Une fois que vous avez retiré les jetons, il y a une période de retrait obligatoire de 7 jours. Passé ce délai, vos tokens ne seront pas automatiquement restitués dans votre portefeuille. Vous devez terminer le processus en retirant manuellement vos jetons."
         }
     },
     "collapseText": "Réduire",

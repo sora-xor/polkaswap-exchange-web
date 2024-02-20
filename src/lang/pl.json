@@ -1287,7 +1287,10 @@
         "actions": {
             "claim": "Odbieraj nagrody",
             "remove": "Usuń stawkę",
-            "more": "Stawiaj więcej"
+            "more": "Stawiaj więcej",
+            "confirm": "Potwierdź stakowanie",
+            "payout": "Wypłaty",
+            "withdraw": "Wypłacanie"
         },
         "overview": {
             "title": "{Sora} Wytyczania",
@@ -1312,10 +1315,10 @@
             "noNominatedValidators": "Nie masz żadnych wyznaczonych walidatorów",
             "noValidators": "Brak walidatorów spełniających określony filtr",
             "commission": "Zamawiać",
-            "commissionTooltip": "Prowizja odnosi się do opłaty pobieranej przez walidatorów za ich usługi w procesie obstawiania. Opłata ta, wyrażona procentowo, jest odejmowana od nagród za obstawianie zdobytych przez nominatorów przed dystrybucją. Należy pamiętać, że walidatorzy mogą w dowolnym momencie dostosować stawki prowizji"
+            "commissionTooltip": "Prowizja odnosi się do opłaty pobieranej przez walidatorów za ich usługi w procesie obstawiania. Opłata ta, wyrażona procentowo, jest odejmowana od nagród za obstawianie zdobytych przez nominatorów przed dystrybucją. Należy pamiętać, że walidatorzy mogą w dowolnym momencie dostosować stawki prowizji",
+            "return": "Powrót"
         },
         "info": {
-            "redeemable": "Odkupny",
             "unstaking": "Odstawienie",
             "stakingBalance": "Bilans stawek",
             "rewarded": "Wynagrodzony",
@@ -1394,6 +1397,26 @@
             "title": "Odbieraj nagrody",
             "checkRewards": "Sprawdź nagrody według epoki i walidatora",
             "rewardsDestination": "Adres docelowy nagród"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Możliwość wypłaty",
+            "beingWithdrawn": "Będąc wycofanym",
+            "seeAll": "Widzieć wszystko",
+            "nextWithdrawal": "Następne wycofanie",
+            "countdownLeft": "lewy"
+        },
+        "stakeDialog": {
+            "toStake": "Stawiać",
+            "toRemove": "Usuwać"
+        },
+        "withdrawDialog": {
+            "title": "Wypłać niepostawione środki",
+            "showAllWithdraws": "Pokaż wszystkie wypłaty"
+        },
+        "allWithdrawsDialog": {
+            "title": "Bezinteresowna aktywność",
+            "information": "Po odstawieniu tokenów następuje obowiązkowy 7-dniowy okres odstawiania. Po tym okresie Twoje tokeny nie zostaną automatycznie zwrócone do Twojego portfela. Musisz zakończyć proces, ręcznie wycofując swoje tokeny."
         }
     },
     "collapseText": "Zawalić się",

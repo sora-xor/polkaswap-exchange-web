@@ -1287,7 +1287,10 @@
         "actions": {
             "claim": "Belohnung entgegennehmen",
             "remove": "Pfahl entfernen",
-            "more": "Setzen Sie mehr ein"
+            "more": "Setzen Sie mehr ein",
+            "confirm": "Bestätigen Sie das Abstecken",
+            "payout": "Ausschüttung",
+            "withdraw": "Zurückziehen"
         },
         "overview": {
             "title": "{Sora} Wettend",
@@ -1312,10 +1315,10 @@
             "noNominatedValidators": "Sie haben keine nominierten Validatoren",
             "noValidators": "Es gibt keine Validatoren, die den angegebenen Filter erfüllen",
             "commission": "Kommission",
-            "commissionTooltip": "Unter Provision versteht man die Gebühr, die Validatoren für ihre Dienste im Staking-Prozess erheben. Diese als Prozentsatz ausgedrückte Gebühr wird vor der Verteilung von den Einsatzprämien abgezogen, die die Nominatoren erhalten. Es ist wichtig zu beachten, dass Prüfer ihre Provisionssätze jederzeit anpassen können"
+            "commissionTooltip": "Unter Provision versteht man die Gebühr, die Validatoren für ihre Dienste im Staking-Prozess erheben. Diese als Prozentsatz ausgedrückte Gebühr wird vor der Verteilung von den Einsatzprämien abgezogen, die die Nominatoren erhalten. Es ist wichtig zu beachten, dass Prüfer ihre Provisionssätze jederzeit anpassen können",
+            "return": "Zurückkehren"
         },
         "info": {
-            "redeemable": "Einlösbar",
             "unstaking": "Abstecken",
             "stakingBalance": "Absteckguthaben",
             "rewarded": "Belohnt",
@@ -1394,6 +1397,26 @@
             "title": "Belohnung entgegennehmen",
             "checkRewards": "Überprüfen Sie die Belohnungen pro Ära und Validator",
             "rewardsDestination": "Zieladresse für Prämien"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Ausziehbar",
+            "beingWithdrawn": "Zurückgezogen werden",
+            "seeAll": "Alles sehen",
+            "nextWithdrawal": "Nächste Auszahlung",
+            "countdownLeft": "links"
+        },
+        "stakeDialog": {
+            "toStake": "Zum Abstecken",
+            "toRemove": "Zu entfernen"
+        },
+        "withdrawDialog": {
+            "title": "Nicht eingesetzte Gelder abheben",
+            "showAllWithdraws": "Alle Auszahlungen anzeigen"
+        },
+        "allWithdrawsDialog": {
+            "title": "Nicht absteckende Aktivität",
+            "information": "Sobald Sie Tokens abheben, gibt es eine obligatorische 7-tägige Aufhebungsfrist. Nach diesem Zeitraum werden Ihre Token nicht automatisch wieder Ihrem Wallet gutgeschrieben. Sie müssen den Vorgang abschließen, indem Sie Ihre Token manuell abheben."
         }
     },
     "collapseText": "Zusammenbruch",
