@@ -66,7 +66,7 @@ const actions = defineActions({
         stats,
       } = item;
 
-      const key = api.orderBook.serializedKey(base, quote);
+      const key = api.orderBook.serializeKey(base, quote);
       buffer[key] = stats;
       return buffer;
     }, {});
@@ -134,7 +134,7 @@ const actions = defineActions({
           stats,
           deals,
         } = data;
-        const key = api.orderBook.serializedKey(base, quote);
+        const key = api.orderBook.serializeKey(base, quote);
         commit.setDeals(deals);
         commit.setStats({ [key]: stats });
       },

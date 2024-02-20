@@ -33,7 +33,7 @@ const getters = defineGetters<OrderBookState>()({
 
     if (!(baseAsset && quoteAsset)) return '';
 
-    return api.orderBook.serializedKey(baseAsset.address, quoteAsset.address);
+    return api.orderBook.serializeKey(baseAsset.address, quoteAsset.address);
   },
   currentOrderBook(...args): Nullable<OrderBook> {
     const { getters, state } = orderBookGetterContext(args);

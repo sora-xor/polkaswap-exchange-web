@@ -1,5 +1,3 @@
-import { ZeroStringValue } from '@/consts';
-
 import type { RemoveLiquidityState } from './types';
 
 function initialState(): RemoveLiquidityState {
