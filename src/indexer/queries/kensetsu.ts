@@ -16,6 +16,20 @@ type KensetsuBurn = {
   amount: FPNumber;
 };
 
+/**
+ * 1) https://sora.subscan.io/extrinsic/0x626147716deb3059bfb4d0f3f564cb8d336e7d99dbf1d6a99125d852cb449046
+ * 2) https://sora.subscan.io/extrinsic/0xc3319a9bfd7ea92d19b2910d16df189f8cbd81aa7809e8febc2c10a376996ec9
+ * 3) https://sora.subscan.io/extrinsic/0xf1caed8923c9412f682a0181073358c1d0559219831693d9bf37ef6c77f33b6c
+ * 4) https://sora.subscan.io/extrinsic/0xa0fd341cbdb2c6de2873dd3edb2e59a5fbb3e6cdcd056a2f4f8f3ba4663cf68f
+ * 5) https://sora.subscan.io/extrinsic/0xc51f24899e5d89765647bef5663a58db873bffbd4af26b9a6e39787e762bbeb7
+ * 6) https://sora.subscan.io/extrinsic/0x733da9635badd2692ff9c76b4ad761e7460fd88b72f04edb5f7e844dc6ce188e
+ * 7) https://sora.subscan.io/extrinsic/0x580f85275b21e43a2923d4a0e3af9d92832bb8f63c2a9f0b2fa17dd9e97d1533
+ * 8) https://sora.subscan.io/extrinsic/0x6290185892566e17fdc70e29ac0227819d67e9ac85da6981c2036724ffa15dcd
+ * 9) https://sora.subscan.io/extrinsic/0x2db91f8192e84d38956f4335acc3e98a6085be5d3d1ec645e3588854ac6970a0
+ * 10) https://sora.subscan.io/extrinsic/0xb90cb95d71bc43d7c4212b1aa7b97b199436e706cd6ff1a73a9cd81ed8842df9
+ * 11) https://sora.subscan.io/extrinsic/0x2727e182d531ad890f9937beded0527d4a6d68018977b484658391fdd1e80880
+ * 12) https://sora.subscan.io/extrinsic/0xa072a5c6c0d847cef807e57c303fd60fdde67d8e10b1c080de428ba15b78bdb6
+ */
 const dataBeforeIndexing: KensetsuBurn[] = [
   {
     address: 'cnV21a8zn14wUTuxUK6wy5Fmus8PXaGrsBUchz33MqavYqxHE',
