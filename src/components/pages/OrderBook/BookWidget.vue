@@ -239,43 +239,43 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   get asksFormatted() {
-    const aggregatedAsks = this.formatPriceVolumes(this.asks);
-    const aggregatedBids = this.bidsFormatted;
+    // const aggregatedAsks = this.formatPriceVolumes(this.asks);
+    // const aggregatedBids = this.bidsFormatted;
 
-    if (aggregatedAsks.length && aggregatedBids.length) {
-      const bestAskPrice = aggregatedAsks[aggregatedAsks.length - 1]?.price;
-      const bestBidPrice = aggregatedBids[0]?.price;
-      const hasOverlap = bestAskPrice === bestBidPrice;
+    // if (aggregatedAsks.length && aggregatedBids.length) {
+    //   const bestAskPrice = aggregatedAsks[aggregatedAsks.length - 1]?.price;
+    //   const bestBidPrice = aggregatedBids[0]?.price;
+    //   const hasOverlap = bestAskPrice === bestBidPrice;
 
-      if (hasOverlap) {
-        const lastRecord = aggregatedAsks[aggregatedAsks.length - 1];
-        const fpAmount = new FPNumber(lastRecord?.amount || 0);
-        const fpTotal = new FPNumber(lastRecord?.total || 0);
-        const lastButOne = aggregatedAsks[aggregatedAsks.length - 2];
+    //   if (hasOverlap) {
+    //     const lastRecord = aggregatedAsks[aggregatedAsks.length - 1];
+    //     const fpAmount = new FPNumber(lastRecord?.amount || 0);
+    //     const fpTotal = new FPNumber(lastRecord?.total || 0);
+    //     const lastButOne = aggregatedAsks[aggregatedAsks.length - 2];
 
-        if (lastButOne) {
-          const { price, amount, total, filled } = lastButOne;
-          const lastButOneRecord = {
-            price,
-            amount: this.toBookPrecision(new FPNumber(amount).add(fpAmount)),
-            total: this.toBookPrecision(new FPNumber(total).add(fpTotal)),
-            filled,
-          };
+    //     if (lastButOne) {
+    //       const { price, amount, total, filled } = lastButOne;
+    //       const lastButOneRecord = {
+    //         price,
+    //         amount: this.toBookPrecision(new FPNumber(amount).add(fpAmount)),
+    //         total: this.toBookPrecision(new FPNumber(total).add(fpTotal)),
+    //         filled,
+    //       };
 
-          aggregatedAsks[aggregatedAsks.length - 2] = lastButOneRecord;
+    //       aggregatedAsks[aggregatedAsks.length - 2] = lastButOneRecord;
 
-          aggregatedAsks.pop();
+    //       aggregatedAsks.pop();
 
-          return this.recalcFilledValue(aggregatedAsks);
-        } else {
-          const { price } = aggregatedAsks[aggregatedAsks.length - 1];
-          const newPrice = Number(price) + Number(this.selectedStep);
-          aggregatedAsks[aggregatedAsks.length - 1].price = this.toBookPrecision(new FPNumber(newPrice));
+    //       return this.recalcFilledValue(aggregatedAsks);
+    //     } else {
+    //       const { price } = aggregatedAsks[aggregatedAsks.length - 1];
+    //       const newPrice = Number(price) + Number(this.selectedStep);
+    //       aggregatedAsks[aggregatedAsks.length - 1].price = this.toBookPrecision(new FPNumber(newPrice));
 
-          return aggregatedAsks;
-        }
-      }
-    }
+    //       return aggregatedAsks;
+    //     }
+    //   }
+    // }
 
     return this.formatPriceVolumes(this.asks);
   }
@@ -369,12 +369,22 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length || 0;
   }
 
+  get amountPrecision(): number {
+    return (
+      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length || 0
+    );
+  }
+
   private getAmountProportion(currentAmount: FPNumber, maxAmount: FPNumber): number {
     return currentAmount.div(maxAmount).mul(FPNumber.HUNDRED).toNumber();
   }
 
   private toBookPrecision(cell: FPNumber): string {
     return cell.toNumber().toFixed(this.bookPrecision);
+  }
+
+  private toAmountPrecision(cell: FPNumber): string {
+    return cell.toNumber().toFixed(this.amountPrecision);
   }
 
   private formatPriceVolumes(items: OrderBookPriceVolume[]): LimitOrderForm[] {
@@ -392,7 +402,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
       result.push({
         price: this.toBookPrecision(price),
-        amount: this.toBookPrecision(amount),
+        amount: this.toAmountPrecision(amount),
         total: this.toBookPrecision(total),
         filled: this.getAmountProportion(amount, maxAmount),
       });
