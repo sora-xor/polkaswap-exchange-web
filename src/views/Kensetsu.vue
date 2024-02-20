@@ -83,6 +83,7 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import dayjs from 'dayjs';
@@ -91,11 +92,10 @@ import { Component, Mixins } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import BurnDialog from '@/components/pages/Kensetsu/BurnDialog.vue';
 import { Components, PageNames } from '@/consts';
+import { fetchData } from '@/indexer/queries/kensetsu';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { waitForSoraNetworkFromEnv } from '@/utils';
-
-import type { FPNumber } from '@sora-substrate/util';
 
 @Component({
   components: {
@@ -122,14 +122,15 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   };
 
   private interval: Nullable<ReturnType<typeof setInterval>> = null;
-  private totalXorBurned: Nullable<FPNumber> = this.Zero;
-  private accountXorBurned: Nullable<FPNumber> = this.Zero;
+  private totalXorBurned: FPNumber = FPNumber.ZERO;
+  private accountXorBurned: FPNumber = FPNumber.ZERO;
 
   timeLeftFormatted = '30D';
   ended = false; // if time is over
   burnDialogVisible = false;
 
   @state.settings.blockNumber private blockNumber!: number;
+  @state.wallet.account.address soraAccountAddress!: string;
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
@@ -177,16 +178,25 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     this.timeLeftFormatted = expires.format('D[D] HH[H] mm[M]');
   }
 
-  private fetchData() {
-    // TODO: ADD STATS REQUESTS (assets.burn)
-    // 1st for the current account burned xor amount during the period of 'from' and 'to' timestamp
-    // 2nd for whole burned xor amounts during the period of 'from' and 'to' timestamp
-    if (!this.isLoggedIn) {
-      this.accountXorBurned = this.Zero;
-    } else {
-      // this.accountXorBurned = ...
-    }
-    // this.totalXorBurned = ...
+  private async fetchData(): Promise<void> {
+    const start = this.from.block;
+    const end = this.to.block;
+    const address = this.soraAccountAddress;
+
+    const burns = await fetchData(start, end);
+
+    let accountXorBurned = FPNumber.ZERO;
+    let totalXorBurned = FPNumber.ZERO;
+
+    burns.forEach((burn) => {
+      totalXorBurned = totalXorBurned.add(burn.amount);
+      if (address === burn.address) {
+        accountXorBurned = accountXorBurned.add(burn.amount);
+      }
+    });
+
+    this.accountXorBurned = accountXorBurned;
+    this.totalXorBurned = totalXorBurned;
   }
 
   private fetchDataAndCalcCountdown(): void {
@@ -203,13 +213,18 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   }
 
   async mounted(): Promise<void> {
-    this.withApi(this.fetchDataAndCalcCountdown);
-    this.interval = setInterval(this.fetchDataAndCalcCountdown, 60_000);
-    const soraNetwork = this.soraNetwork ?? (await waitForSoraNetworkFromEnv());
-    if (soraNetwork !== WALLET_CONSTS.SoraNetwork.Prod) {
-      this.from = { block: 0, timestamp: 0 };
-      this.to = { block: 100_000, timestamp: 600_000 };
-    }
+    await this.withApi(async () => {
+      const soraNetwork = this.soraNetwork ?? (await waitForSoraNetworkFromEnv());
+
+      if (soraNetwork !== WALLET_CONSTS.SoraNetwork.Prod) {
+        this.from = { block: 0, timestamp: 0 };
+        this.to = { block: 100_000, timestamp: 600_000 };
+      }
+
+      this.fetchDataAndCalcCountdown();
+
+      this.interval = setInterval(this.fetchDataAndCalcCountdown, 60_000);
+    });
   }
 
   beforeUnmount(): void {
