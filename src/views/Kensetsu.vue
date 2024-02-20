@@ -122,8 +122,11 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   };
 
   private interval: Nullable<ReturnType<typeof setInterval>> = null;
+
   private totalXorBurned: FPNumber = FPNumber.ZERO;
+  private totalKenReserved: FPNumber = FPNumber.ZERO;
   private accountXorBurned: FPNumber = FPNumber.ZERO;
+  private accountKenReserved: FPNumber = FPNumber.ZERO;
 
   timeLeftFormatted = '30D';
   ended = false; // if time is over
@@ -147,15 +150,15 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   }
 
   get formattedTotalKenReserved(): string {
-    return this.totalXorBurned?.div(this.million).toLocaleString(0) ?? '0';
+    return this.totalKenReserved.toLocaleString(0) ?? '0';
   }
 
   get formattedAccountXorBurned(): string {
-    return this.accountXorBurned?.toLocaleString() ?? '0';
+    return this.accountXorBurned.toLocaleString() ?? '0';
   }
 
   get formattedAccountKenReserved(): string {
-    return this.accountXorBurned?.div(this.million).toLocaleString(0) ?? '0';
+    return this.accountKenReserved.toLocaleString(0) ?? '0';
   }
 
   get isBurnDisabled(): boolean {
@@ -188,15 +191,27 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     let accountXorBurned = FPNumber.ZERO;
     let totalXorBurned = FPNumber.ZERO;
 
+    let accountKenReserved = 0;
+    let totalKenReserved = 0;
+
     burns.forEach((burn) => {
       totalXorBurned = totalXorBurned.add(burn.amount);
+
+      const kenReserved = Math.floor(burn.amount.div(this.million).toNumber());
+
+      totalKenReserved += kenReserved;
+
       if (address === burn.address) {
         accountXorBurned = accountXorBurned.add(burn.amount);
+        accountKenReserved += kenReserved;
       }
     });
 
     this.accountXorBurned = accountXorBurned;
+    this.accountKenReserved = new FPNumber(accountKenReserved);
+
     this.totalXorBurned = totalXorBurned;
+    this.totalKenReserved = new FPNumber(totalKenReserved);
   }
 
   private fetchDataAndCalcCountdown(): void {
