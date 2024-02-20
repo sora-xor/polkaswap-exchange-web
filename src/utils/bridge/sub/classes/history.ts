@@ -65,11 +65,11 @@ class SubBridgeHistory extends SubNetworksConnector {
   }
 
   get parachainApi(): ApiPromise | undefined {
-    return this.soraParachain?.adapter.api;
+    return this.soraParachain?.api;
   }
 
   get externalApi(): ApiPromise {
-    return this.network.adapter.api;
+    return this.network.api;
   }
 
   public async clearHistory(
@@ -95,7 +95,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
     try {
-      const transactions = await subBridgeApi.getUserTransactions(address, this.network.adapter.subNetwork);
+      const transactions = await subBridgeApi.getUserTransactions(address, this.network.subNetwork);
 
       if (!transactions.length) return;
 
@@ -154,7 +154,7 @@ class SubBridgeHistory extends SubNetworksConnector {
         hash: id,
         transactionState: tx.status,
         externalBlockHeight,
-        externalNetwork: this.network.adapter.subNetwork,
+        externalNetwork: this.network.subNetwork,
         externalNetworkType: BridgeNetworkType.Sub,
         amount,
         assetAddress: asset?.address,
@@ -265,11 +265,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     extrinsicEvents: any[]
   ): Promise<SubHistory> {
     try {
-      const receivedAmount = getDepositedBalance(
-        extrinsicEvents,
-        history.to as string,
-        this.soraParachain!.adapter.api
-      );
+      const receivedAmount = getDepositedBalance(extrinsicEvents, history.to as string, this.parachainApi!);
 
       const { amount, transferFee } = getReceivedAmount(
         history.amount as string,
@@ -320,7 +316,7 @@ class SubBridgeHistory extends SubNetworksConnector {
         const receivedAmount = getDepositedBalance(
           blockEventsReversed.slice(messageQueueEventIndex),
           history.to as string,
-          this.network.adapter.api
+          this.externalApi
         );
         const { amount, transferFee } = getReceivedAmount(
           history.amount as string,
@@ -460,7 +456,7 @@ class SubBridgeHistory extends SubNetworksConnector {
           const receiver = subBridgeApi.formatAddress(accountId);
           const from = subBridgeApi.formatAddress(history.from as string);
 
-          if (!(parachainId === this.soraParachain!.parachainId && receiver === from)) {
+          if (!(parachainId === this.soraParachain!.getParachainId() && receiver === from)) {
             continue;
           }
 

@@ -54,7 +54,7 @@ const getExternalBalance = async (
   isSub: boolean
 ): Promise<CodecString> => {
   return isSub
-    ? await subBridgeConnector.network.adapter.getTokenBalance(accountAddress, asset?.externalAddress)
+    ? await subBridgeConnector.network.getTokenBalance(accountAddress, asset?.externalAddress)
     : await ethersUtil.getAccountAssetBalance(accountAddress, asset?.externalAddress);
 };
 
@@ -160,7 +160,7 @@ async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void>
   let fee = ZeroStringValue;
 
   if (getters.asset && getters.isRegisteredAsset && getters.sender && getters.recipient) {
-    fee = await subBridgeConnector.network.adapter.getNetworkFee(getters.asset, getters.sender, getters.recipient);
+    fee = await subBridgeConnector.network.getNetworkFee(getters.asset, getters.sender, getters.recipient);
   }
 
   commit.setExternalNetworkFee(fee);
@@ -327,7 +327,7 @@ async function updateExternalBlockNumber(context: ActionContext<any, any>): Prom
   const { getters, commit } = bridgeActionContext(context);
   try {
     const blockNumber = getters.isSubBridge
-      ? await subBridgeConnector.network.adapter.getBlockNumber()
+      ? await subBridgeConnector.network.getBlockNumber()
       : await ethersUtil.getBlockNumber();
 
     commit.setExternalBlockNumber(blockNumber);
@@ -479,7 +479,7 @@ const actions = defineActions({
 
     if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset && subBridgeConnector.soraParachain) {
       try {
-        const value = await subBridgeConnector.soraParachain.adapter.getAssetMinimumAmount(getters.asset.address);
+        const value = await subBridgeConnector.soraParachain.getAssetMinimumAmount(getters.asset.address);
         minLimit = FPNumber.fromCodecValue(value, getters.asset.externalDecimals);
       } catch (error) {
         console.error(error);
@@ -496,7 +496,7 @@ const actions = defineActions({
 
     if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
       try {
-        const value = await subBridgeConnector.network.adapter.getAssetMinimumAmount(getters.asset.externalAddress);
+        const value = await subBridgeConnector.network.getAssetMinimumAmount(getters.asset.externalAddress);
         minLimit = FPNumber.fromCodecValue(value, getters.asset.externalDecimals);
       } catch (error) {
         console.error(error);

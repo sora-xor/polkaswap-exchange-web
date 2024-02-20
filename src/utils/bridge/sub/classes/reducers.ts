@@ -75,7 +75,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
 
   async saveParachainBlock(id: string): Promise<void> {
     // get current sora parachain block number
-    const parachainStartBlock = (await this.connector.soraParachain!.adapter.api.query.system.number()).toNumber();
+    const parachainStartBlock = (await this.connector.soraParachain!.api.query.system.number()).toNumber();
     // update history data
     this.updateTransactionParams(id, {
       payload: {
@@ -134,7 +134,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     // open connections
     await this.connector.start();
     // sign transaction
-    await this.connector.network.adapter.transfer(asset, tx.to as string, tx.amount as string, id);
+    await this.connector.network.transfer(asset, tx.to as string, tx.amount as string, id);
 
     if (this.transferType !== SubTransferType.Standalone) {
       // store sora parachain block number when tx was signed
@@ -155,7 +155,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
   private async updateTxExternalData(id: string): Promise<void> {
     const tx = this.getTransaction(id);
-    const adapter = this.connector.network.adapter;
+    const adapter = this.connector.network;
 
     await adapter.connect();
 
@@ -196,7 +196,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     const isFirstStep = [SubTransferType.SoraParachain, SubTransferType.Standalone].includes(this.transferType);
     const isStandalone = this.transferType === SubTransferType.Standalone;
-    const adapter = isStandalone ? this.connector.network.adapter : this.connector.soraParachain!.adapter;
+    const adapter = isStandalone ? this.connector.network : this.connector.soraParachain!;
 
     const startBlockHeight = isStandalone ? tx.externalBlockHeight! : (tx.payload.parachainStartBlock as number);
     const sended = new FPNumber(tx.amount as string, this.asset.externalDecimals).toCodecString();
@@ -470,7 +470,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const isLastStep = [SubTransferType.SoraParachain, SubTransferType.Standalone].includes(this.transferType);
     const isStandalone = SubTransferType.Standalone === this.transferType;
 
-    const adapter = isLastStep ? this.connector.network.adapter : this.connector.soraParachain!.adapter;
+    const adapter = isLastStep ? this.connector.network : this.connector.soraParachain!;
 
     try {
       await adapter.connect();
@@ -553,7 +553,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     let blockNumber!: number;
     let amount!: string;
 
-    const adapter = this.connector.network.adapter;
+    const adapter = this.connector.network;
 
     try {
       await adapter.connect();

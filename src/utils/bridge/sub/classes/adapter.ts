@@ -12,12 +12,6 @@ import { SubAdapter } from './adapters/substrate';
 
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
-type SubNetworkConnection<Adapter extends SubAdapter> = {
-  adapter: Adapter;
-  /** If network is parachain in relaychain */
-  parachainId?: number;
-};
-
 type PathNetworks = {
   soraParachain?: SubNetwork;
   relaychain?: SubNetwork;
@@ -26,16 +20,16 @@ type PathNetworks = {
 };
 
 export class SubNetworksConnector {
-  public soraParachain?: SubNetworkConnection<SoraParachainAdapter>;
-  public relaychain?: SubNetworkConnection<SubAdapter>;
-  public parachain?: SubNetworkConnection<SubAdapter>;
-  public standalone?: SubNetworkConnection<SubAdapter>;
+  public soraParachain?: SoraParachainAdapter;
+  public relaychain?: SubAdapter;
+  public parachain?: SubAdapter;
+  public standalone?: SubAdapter;
 
-  public network!: SubNetworkConnection<SubAdapter>; // link to the one above
+  public network!: SubAdapter; // link to the one above
 
   public static nodes: Partial<Record<SubNetwork, Node[]>> = {};
 
-  public readonly adapters = {
+  public readonly adapters = Object.freeze({
     [SubNetworkId.Rococo]: () => new RelaychainAdapter(SubNetworkId.Rococo),
     [SubNetworkId.Kusama]: () => new RelaychainAdapter(SubNetworkId.Kusama),
     [SubNetworkId.Polkadot]: () => new RelaychainAdapter(SubNetworkId.Polkadot),
@@ -43,12 +37,10 @@ export class SubNetworksConnector {
     [SubNetworkId.KusamaSora]: () => new SoraParachainAdapter(SubNetworkId.KusamaSora),
     [SubNetworkId.PolkadotSora]: () => new SoraParachainAdapter(SubNetworkId.PolkadotSora),
     [SubNetworkId.Liberland]: () => new LiberlandAdapter(SubNetworkId.Liberland),
-  };
+  });
 
-  get uniqueConnections(): SubNetworkConnection<SubAdapter>[] {
-    return [this.soraParachain, this.relaychain, this.parachain, this.standalone].filter(
-      (c) => !!c
-    ) as SubNetworkConnection<SubAdapter>[];
+  get uniqueConnections(): SubAdapter[] {
+    return [this.soraParachain, this.relaychain, this.parachain, this.standalone].filter((c) => !!c) as SubAdapter[];
   }
 
   protected getChains(network: SubNetwork): PathNetworks {
@@ -77,16 +69,14 @@ export class SubNetworksConnector {
   protected getConnection<Adapter extends SubAdapter>(
     network?: SubNetwork,
     connectorAdapter?: Adapter
-  ): SubNetworkConnection<Adapter> | undefined {
+  ): Adapter | undefined {
     if (!network) return undefined;
 
     const adapter = this.getAdapterForNetwork<Adapter>(network);
     // reuse api from connectorAdapter if possible
     this.cloneApi(adapter, connectorAdapter);
 
-    const parachainId = subBridgeApi.isParachain(network) ? subBridgeApi.getParachainId(network) : undefined;
-
-    return { adapter, parachainId };
+    return adapter;
   }
 
   protected cloneApi(adapter?: SubAdapter, connectorAdapter?: SubAdapter): void {
@@ -111,7 +101,7 @@ export class SubNetworksConnector {
 
     const adapter = this.adapters[network]();
 
-    adapter.setNodes(nodes);
+    adapter.subNetworkConnection.setDefaultNodes(nodes);
 
     return adapter;
   }
@@ -124,10 +114,10 @@ export class SubNetworksConnector {
   public async init(destination: SubNetwork, connector?: SubNetworksConnector): Promise<void> {
     const { soraParachain, relaychain, parachain, standalone } = this.getChains(destination);
     // Create adapters
-    this.standalone = this.getConnection(standalone, connector?.soraParachain?.adapter);
-    this.soraParachain = this.getConnection(soraParachain, connector?.soraParachain?.adapter);
-    this.relaychain = this.getConnection(relaychain, connector?.relaychain?.adapter);
-    this.parachain = this.getConnection(parachain, connector?.parachain?.adapter);
+    this.standalone = this.getConnection(standalone, connector?.standalone);
+    this.soraParachain = this.getConnection(soraParachain, connector?.soraParachain);
+    this.relaychain = this.getConnection(relaychain, connector?.relaychain);
+    this.parachain = this.getConnection(parachain, connector?.parachain);
 
     // link destination network
     if (this.parachain) {
@@ -157,14 +147,14 @@ export class SubNetworksConnector {
    * Connect to Substrate network & Sora parachain
    */
   public async start(): Promise<void> {
-    await Promise.all(this.uniqueConnections.map((c) => c.adapter.connect()));
+    await Promise.all(this.uniqueConnections.map((c) => c.connect()));
   }
 
   /**
    * Close connections to Substrate network & Sora parachain
    */
   public async stop(): Promise<void> {
-    await Promise.all(this.uniqueConnections.map((c) => c.adapter.stop()));
+    await Promise.all(this.uniqueConnections.map((c) => c.stop()));
   }
 }
 

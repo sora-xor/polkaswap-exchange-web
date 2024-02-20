@@ -4,7 +4,7 @@ import { formatBalance } from '@sora-substrate/util/build/assets';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import { ZeroStringValue } from '@/consts';
-import type { Node, ConnectToNodeOptions } from '@/types/nodes';
+import type { Node } from '@/types/nodes';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { NodesConnection } from '@/utils/connection';
 
@@ -40,10 +40,6 @@ export class SubAdapter {
     return !!this.api?.isConnected;
   }
 
-  public setNodes(nodes: Node[]): void {
-    this.subNetworkConnection.setDefaultNodes(nodes);
-  }
-
   public setApi(api: ApiPromise): void {
     console.info(`[${this.subNetwork}] Api injected`);
     this.connection.api = api;
@@ -61,6 +57,10 @@ export class SubAdapter {
 
   public async stop(): Promise<void> {
     await this.subNetworkConnection.closeConnection();
+  }
+
+  public getParachainId(): number | undefined {
+    return subBridgeApi.isParachain(this.subNetwork) ? subBridgeApi.getParachainId(this.subNetwork) : undefined;
   }
 
   public getSoraParachainId(): number | undefined {

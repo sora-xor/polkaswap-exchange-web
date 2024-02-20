@@ -378,13 +378,13 @@ export default class Bridge extends Mixins(
 
   get subConnection(): Nullable<NodesConnection> {
     if (!this.isSubBridge) return null;
-    if (this.networkSelected !== this.subBridgeConnector.network?.adapter.subNetwork) return null;
+    if (this.networkSelected !== this.subBridgeConnector.network?.subNetwork) return null;
 
-    return this.subBridgeConnector.network?.adapter.subNetworkConnection;
+    return this.subBridgeConnector.network?.subNetworkConnection;
   }
 
   get isExternalNetworkLoading(): boolean {
-    console.log(this.subConnection);
+    console.log(this.subBridgeConnector);
     return this.isSubBridge ? !this.subConnection?.nodeIsConnected : !!this.evmProviderLoading;
   }
 
