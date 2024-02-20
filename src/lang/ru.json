@@ -63,7 +63,9 @@
             "StakingSetPayee": "Установить получателя платежа {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} по {price} {symbol2} размещено",
             "OrderBookCancelLimitOrder": "Лимитный ордер отменен",
-            "OrderBookCancelLimitOrders": "Лимитные ордера отменены"
+            "OrderBookCancelLimitOrders": "Лимитные ордера отменены",
+            "Burn": "Сожжено {amount} {symbol}",
+            "Mint": "Отчеканено {amount} {symbol} на {address}"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Не удалось установить получателя платежа {address}",
             "OrderBookPlaceLimitOrder": "Не удалось разместить лимитный ордер на {amount} {symbol} по {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Не удалось отменить лимитные ордера",
-            "OrderBookCancelLimitOrder": "Не удалось отменить лимитный ордер"
+            "OrderBookCancelLimitOrder": "Не удалось отменить лимитный ордер",
+            "Burn": "Не удалось сжечь {amount} {symbol}",
+            "Mint": "Не удалось отчеканить {amount} {symbol} на {address}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Установить получателя платежа",
         "OrderBookPlaceLimitOrder": "Разместить заказ",
         "OrderBookCancelLimitOrder": "Отменить заказ",
-        "OrderBookCancelLimitOrders": "Отменить заказы"
+        "OrderBookCancelLimitOrders": "Отменить заказы",
+        "Burn": "Сжигание",
+        "Mint": "Чеканка"
     },
     "polkadotjs": {
         "noExtensions": "Расширение {PolkadotJs} не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",
@@ -1287,7 +1293,10 @@
         "actions": {
             "claim": "Получите награды",
             "remove": "Удалить стейкинг",
-            "more": "Застейкать ещё"
+            "more": "Застейкать ещё",
+            "confirm": "Подтвердить ставку",
+            "payout": "Выплаты",
+            "withdraw": "Вывод"
         },
         "overview": {
             "title": "{Sora} Стейкинг",
@@ -1312,10 +1321,10 @@
             "noNominatedValidators": "У вас нет номинированных валидаторов",
             "noValidators": "Нет валидаторов, удовлетворяющих указанному фильтру",
             "commission": "Комиссия",
-            "commissionTooltip": "Комиссия — это плата, взимаемая валидаторами за свои услуги в процессе размещения стейкинга. Эта комиссия, выраженная в процентах, вычитается из вознаграждений за стейкинг, полученных номинаторами перед распределением. Важно отметить, что валидаторы могут корректировать стейкинг комиссии в любое время."
+            "commissionTooltip": "Комиссия — это плата, взимаемая валидаторами за свои услуги в процессе размещения стейкинга. Эта комиссия, выраженная в процентах, вычитается из вознаграждений за стейкинг, полученных номинаторами перед распределением. Важно отметить, что валидаторы могут корректировать стейкинг комиссии в любое время.",
+            "return": "Возвращаться"
         },
         "info": {
-            "redeemable": "Можно забрать",
             "unstaking": "В процессе вывода",
             "stakingBalance": "Баланс стейкинга",
             "rewarded": "Заработано",
@@ -1394,6 +1403,26 @@
             "title": "Получите награды",
             "checkRewards": "Проверьте награды за эпоху и валидаторов",
             "rewardsDestination": "Адрес для получения наград"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Выкатной",
+            "beingWithdrawn": "Будучи отозванным",
+            "seeAll": "Увидеть все",
+            "nextWithdrawal": "Следующий вывод",
+            "countdownLeft": "левый"
+        },
+        "stakeDialog": {
+            "toStake": "Ставить",
+            "toRemove": "Удалять"
+        },
+        "withdrawDialog": {
+            "title": "Вывод анстейкнутых средств",
+            "showAllWithdraws": "Показать все выплаты"
+        },
+        "allWithdrawsDialog": {
+            "title": "Незакрепленная деятельность",
+            "information": "После анстейкинга токенов наступает обязательный 7-дневный период анстейкинга. По истечении этого периода ваши токены не будут автоматически возвращены на ваш кошелек. Вы должны завершить процесс, выведя свои токены вручную."
         }
     },
     "collapseText": "Свернуть",

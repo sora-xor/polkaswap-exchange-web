@@ -63,7 +63,9 @@
             "StakingSetPayee": "Nastaviť príjemcu platby {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} za {price} {symbol2} umiestnený",
             "OrderBookCancelLimitOrder": "Limitovaná objednávka bola zrušená",
-            "OrderBookCancelLimitOrders": "Limitné objednávky boli zrušené"
+            "OrderBookCancelLimitOrders": "Limitné objednávky boli zrušené",
+            "Burn": "Spálené {amount} {symbol}",
+            "Mint": "Vyrazené {amount} {symbol} na {address}"
         },
         "error": {
             "Transfer": "Nepodarilo sa {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Nepodarilo sa nastaviť príjemcu platby {address}",
             "OrderBookPlaceLimitOrder": "Nepodarilo sa zadať limitnú objednávku {amount} {symbol} za {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Limitné objednávky sa nepodarilo zrušiť",
-            "OrderBookCancelLimitOrder": "Limitovanú objednávku sa nepodarilo zrušiť"
+            "OrderBookCancelLimitOrder": "Limitovanú objednávku sa nepodarilo zrušiť",
+            "Burn": "Nepodarilo sa napáliť {amount} {symbol}",
+            "Mint": "Nepodarilo sa vyraziť {amount} {symbol} na {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Nastaviť príjemcu platby",
         "OrderBookPlaceLimitOrder": "Zadať objednávku",
         "OrderBookCancelLimitOrder": "Zrušiť objednávku",
-        "OrderBookCancelLimitOrders": "Zrušte objednávky"
+        "OrderBookCancelLimitOrders": "Zrušte objednávky",
+        "Burn": "Spáliť",
+        "Mint": "mäta"
     },
     "polkadotjs": {
         "noExtensions": "Rozšírenie {PolkadotJs} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",
@@ -1287,7 +1293,10 @@
         "actions": {
             "claim": "Nárokujte si odmeny",
             "remove": "Odstráňte kolík",
-            "more": "Stavte viac"
+            "more": "Stavte viac",
+            "confirm": "Potvrďte Staking",
+            "payout": "Výplata",
+            "withdraw": "Výber"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1312,10 +1321,10 @@
             "noNominatedValidators": "Nemáte žiadnych nominovaných overovateľov",
             "noValidators": "Neexistujú žiadne validátory, ktoré by vyhovovali zadanému filtru",
             "commission": "Komisia",
-            "commissionTooltip": "Provízia sa vzťahuje na poplatok, ktorý účtujú validátori za svoje služby v procese stávkovania. Tento poplatok, vyjadrený v percentách, sa odpočítava od odmien za stávky, ktoré získali nominanti pred distribúciou. Je dôležité poznamenať, že overovatelia môžu svoje sadzby provízií kedykoľvek upraviť"
+            "commissionTooltip": "Provízia sa vzťahuje na poplatok, ktorý účtujú validátori za svoje služby v procese stávkovania. Tento poplatok, vyjadrený v percentách, sa odpočítava od odmien za stávky, ktoré získali nominanti pred distribúciou. Je dôležité poznamenať, že overovatelia môžu svoje sadzby provízií kedykoľvek upraviť",
+            "return": "Návrat"
         },
         "info": {
-            "redeemable": "Splatný",
             "unstaking": "Neurčenie",
             "stakingBalance": "Stavať rovnováhu",
             "rewarded": "Odmenený",
@@ -1394,6 +1403,26 @@
             "title": "Nárokujte si odmeny",
             "checkRewards": "Skontrolujte odmeny za éru a validátor",
             "rewardsDestination": "Cieľová adresa odmien"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Stiahnuteľné",
+            "beingWithdrawn": "Byť stiahnutý",
+            "seeAll": "Vidieť všetko",
+            "nextWithdrawal": "Ďalší odber",
+            "countdownLeft": "vľavo"
+        },
+        "stakeDialog": {
+            "toStake": "Vsadiť",
+            "toRemove": "Odobrať"
+        },
+        "withdrawDialog": {
+            "title": "Vyberte nevložené prostriedky",
+            "showAllWithdraws": "Zobraziť všetky výbery"
+        },
+        "allWithdrawsDialog": {
+            "title": "Neúnavná aktivita",
+            "information": "Po odstavení tokenov nasleduje povinné 7-dňové obdobie na vyradenie. Po uplynutí tejto doby sa vaše žetóny automaticky nevrátia do vašej peňaženky. Proces musíte dokončiť ručným výberom svojich tokenov."
         }
     },
     "collapseText": "Kolaps",

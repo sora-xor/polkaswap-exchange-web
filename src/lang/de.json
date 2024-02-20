@@ -63,7 +63,9 @@
             "StakingSetPayee": "Zahlungsempfänger {address} festlegen",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} zu {price} {symbol2} platziert",
             "OrderBookCancelLimitOrder": "Limit-Order storniert",
-            "OrderBookCancelLimitOrders": "Limitaufträge storniert"
+            "OrderBookCancelLimitOrders": "Limitaufträge storniert",
+            "Burn": "Verbrannt {amount} {symbol}",
+            "Mint": "Geprägt {amount} {symbol} an {address}"
         },
         "error": {
             "Transfer": "Fehler bei {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Zahlungsempfänger {address} konnte nicht festgelegt werden",
             "OrderBookPlaceLimitOrder": "Limitbestellung von {amount} {symbol} zu {price} {symbol2} konnte nicht aufgegeben werden",
             "OrderBookCancelLimitOrders": "Limitaufträge konnten nicht storniert werden",
-            "OrderBookCancelLimitOrder": "Limitauftrag konnte nicht storniert werden"
+            "OrderBookCancelLimitOrder": "Limitauftrag konnte nicht storniert werden",
+            "Burn": "{amount} {symbol} konnte nicht gebrannt werden",
+            "Mint": "{amount} {symbol} konnte nicht an {address} geprägt werden"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Zahlungsempfänger festlegen",
         "OrderBookPlaceLimitOrder": "Bestellung aufgeben",
         "OrderBookCancelLimitOrder": "Bestellung stornieren",
-        "OrderBookCancelLimitOrders": "Bestellungen stornieren"
+        "OrderBookCancelLimitOrders": "Bestellungen stornieren",
+        "Burn": "Brennen",
+        "Mint": "Minze"
     },
     "polkadotjs": {
         "noExtensions": "Es wurde keine {PolkadotJs} Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1287,7 +1293,10 @@
         "actions": {
             "claim": "Belohnung entgegennehmen",
             "remove": "Pfahl entfernen",
-            "more": "Setzen Sie mehr ein"
+            "more": "Setzen Sie mehr ein",
+            "confirm": "Bestätigen Sie das Abstecken",
+            "payout": "Ausschüttung",
+            "withdraw": "Zurückziehen"
         },
         "overview": {
             "title": "{Sora} Wettend",
@@ -1312,10 +1321,10 @@
             "noNominatedValidators": "Sie haben keine nominierten Validatoren",
             "noValidators": "Es gibt keine Validatoren, die den angegebenen Filter erfüllen",
             "commission": "Kommission",
-            "commissionTooltip": "Unter Provision versteht man die Gebühr, die Validatoren für ihre Dienste im Staking-Prozess erheben. Diese als Prozentsatz ausgedrückte Gebühr wird vor der Verteilung von den Einsatzprämien abgezogen, die die Nominatoren erhalten. Es ist wichtig zu beachten, dass Prüfer ihre Provisionssätze jederzeit anpassen können"
+            "commissionTooltip": "Unter Provision versteht man die Gebühr, die Validatoren für ihre Dienste im Staking-Prozess erheben. Diese als Prozentsatz ausgedrückte Gebühr wird vor der Verteilung von den Einsatzprämien abgezogen, die die Nominatoren erhalten. Es ist wichtig zu beachten, dass Prüfer ihre Provisionssätze jederzeit anpassen können",
+            "return": "Zurückkehren"
         },
         "info": {
-            "redeemable": "Einlösbar",
             "unstaking": "Abstecken",
             "stakingBalance": "Absteckguthaben",
             "rewarded": "Belohnt",
@@ -1394,6 +1403,26 @@
             "title": "Belohnung entgegennehmen",
             "checkRewards": "Überprüfen Sie die Belohnungen pro Ära und Validator",
             "rewardsDestination": "Zieladresse für Prämien"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Ausziehbar",
+            "beingWithdrawn": "Zurückgezogen werden",
+            "seeAll": "Alles sehen",
+            "nextWithdrawal": "Nächste Auszahlung",
+            "countdownLeft": "links"
+        },
+        "stakeDialog": {
+            "toStake": "Zum Abstecken",
+            "toRemove": "Zu entfernen"
+        },
+        "withdrawDialog": {
+            "title": "Nicht eingesetzte Gelder abheben",
+            "showAllWithdraws": "Alle Auszahlungen anzeigen"
+        },
+        "allWithdrawsDialog": {
+            "title": "Nicht absteckende Aktivität",
+            "information": "Sobald Sie Tokens abheben, gibt es eine obligatorische 7-tägige Aufhebungsfrist. Nach diesem Zeitraum werden Ihre Token nicht automatisch wieder Ihrem Wallet gutgeschrieben. Sie müssen den Vorgang abschließen, indem Sie Ihre Token manuell abheben."
         }
     },
     "collapseText": "Zusammenbruch",
