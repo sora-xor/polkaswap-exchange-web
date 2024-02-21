@@ -293,7 +293,7 @@ import {
 } from '@/utils';
 
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
-import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component({
   components: {
