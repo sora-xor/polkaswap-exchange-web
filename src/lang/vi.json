@@ -63,7 +63,9 @@
             "StakingSetPayee": "Đặt người nhận thanh toán {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ở mức {price} {symbol2} đã đặt",
             "OrderBookCancelLimitOrder": "Lệnh giới hạn bị hủy",
-            "OrderBookCancelLimitOrders": "Lệnh giới hạn bị hủy"
+            "OrderBookCancelLimitOrders": "Lệnh giới hạn bị hủy",
+            "Burn": "Đã đốt {amount} {symbol}",
+            "Mint": "Đã đúc {amount} {symbol} thành {address}"
         },
         "error": {
             "Transfer": "Không gửi được {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Không thể đặt người nhận thanh toán {address}",
             "OrderBookPlaceLimitOrder": "Không đặt được lệnh giới hạn {amount} {symbol} ở {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Không thể hủy lệnh giới hạn",
-            "OrderBookCancelLimitOrder": "Không hủy được lệnh giới hạn"
+            "OrderBookCancelLimitOrder": "Không hủy được lệnh giới hạn",
+            "Burn": "Không ghi được {amount} {symbol}",
+            "Mint": "Không đúc được {amount} {symbol} cho {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Đặt người nhận thanh toán",
         "OrderBookPlaceLimitOrder": "Đặt hàng",
         "OrderBookCancelLimitOrder": "Hủy đơn hàng",
-        "OrderBookCancelLimitOrders": "Hủy đơn hàng"
+        "OrderBookCancelLimitOrders": "Hủy đơn hàng",
+        "Burn": "Đốt cháy",
+        "Mint": "cây bạc hà"
     },
     "polkadotjs": {
         "noExtensions": "Không tìm thấy tiện ích (extension) {PolkadotJs}. Vui lòng cài đặt và tải lại trang này\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1536,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Đã vượt quá phạm vi chuỗi khối: Số tiền bạn đã nhập nằm ngoài phạm vi cho phép của chuỗi khối. Tối thiểu: {min} ; Tối đa: {max}",
                 "reason": "Số tiền không tuân thủ phạm vi blockchain"
+            },
+            "multipleOf": {
+                "reading": "Để xử lý đơn đặt hàng của bạn, vui lòng nhập giá là bội số của {value}",
+                "reason": "Giá đã nhập quá cụ thể"
             }
         },
         "orderStatus": {

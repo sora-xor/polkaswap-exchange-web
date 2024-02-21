@@ -63,7 +63,9 @@
             "StakingSetPayee": "Définir le bénéficiaire {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} à {price} {symbol2} placé",
             "OrderBookCancelLimitOrder": "Ordre limité annulé",
-            "OrderBookCancelLimitOrders": "Ordres limités annulés"
+            "OrderBookCancelLimitOrders": "Ordres limités annulés",
+            "Burn": "Brûlé {amount} {symbol}",
+            "Mint": "Frappé {amount} {symbol} à {address}"
         },
         "error": {
             "Transfer": "Échec de {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Échec de la définition du bénéficiaire {address}",
             "OrderBookPlaceLimitOrder": "Échec de la passation d'une commande limitée de {amount} {symbol} à {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Échec de l'annulation des ordres limités",
-            "OrderBookCancelLimitOrder": "Échec de l'annulation de l'ordre limité"
+            "OrderBookCancelLimitOrder": "Échec de l'annulation de l'ordre limité",
+            "Burn": "Échec de la gravure {amount} {symbol}",
+            "Mint": "Échec de la création {amount} {symbol} à {address}"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Définir le bénéficiaire",
         "OrderBookPlaceLimitOrder": "Passer la commande",
         "OrderBookCancelLimitOrder": "annuler la commande",
-        "OrderBookCancelLimitOrders": "Annuler les commandes"
+        "OrderBookCancelLimitOrders": "Annuler les commandes",
+        "Burn": "Brûler",
+        "Mint": "menthe"
     },
     "polkadotjs": {
         "noExtensions": "Aucune extension {PolkadotJs} n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
@@ -1536,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Plage de la blockchain dépassée : le montant que vous avez saisi se situe en dehors de la plage autorisée de la blockchain. Min : {min} ; Max : {max}",
                 "reason": "Le montant ne respecte pas la plage de la blockchain"
+            },
+            "multipleOf": {
+                "reading": "Pour traiter votre commande, veuillez saisir un prix qui est un multiple de {value}",
+                "reason": "Le prix saisi est trop spécifique"
             }
         },
         "orderStatus": {

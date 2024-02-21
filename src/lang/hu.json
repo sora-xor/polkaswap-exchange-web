@@ -63,7 +63,9 @@
             "StakingSetPayee": "Kedvezményezett {address} beállítása",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} áron {price} {symbol2} elhelyezve",
             "OrderBookCancelLimitOrder": "Limit megbízás törölve",
-            "OrderBookCancelLimitOrders": "Limit megrendelések törölve"
+            "OrderBookCancelLimitOrders": "Limit megrendelések törölve",
+            "Burn": "Égetett {amount} {symbol}",
+            "Mint": "Verte {amount} {symbol} erre: {address}"
         },
         "error": {
             "Transfer": "Nem sikerült {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Nem sikerült beállítani a kedvezményezettet {address}",
             "OrderBookPlaceLimitOrder": "Nem sikerült elhelyezni {amount} {symbol} összegű limitrendelést {price} {symbol2} áron",
             "OrderBookCancelLimitOrders": "Nem sikerült törölni a limitált rendeléseket",
-            "OrderBookCancelLimitOrder": "Nem sikerült törölni a limitált rendelést"
+            "OrderBookCancelLimitOrder": "Nem sikerült törölni a limitált rendelést",
+            "Burn": "Nem sikerült égetni {amount} {symbol}",
+            "Mint": "Nem sikerült menteni {amount} {symbol} címet a következő címre {address}"
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Kedvezményezett beállítása",
         "OrderBookPlaceLimitOrder": "Rendelés leadása",
         "OrderBookCancelLimitOrder": "Megrendelés törlése",
-        "OrderBookCancelLimitOrders": "Megrendelések törlése"
+        "OrderBookCancelLimitOrders": "Megrendelések törlése",
+        "Burn": "Éget",
+        "Mint": "Menta"
     },
     "polkadotjs": {
         "noExtensions": "Nem találtunk {PolkadotJs} kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1536,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Blockchain tartomány túllépve: A megadott mennyiség kívül esik a blokklánc megengedett tartományán. Min: {min} ; Max: {max}",
                 "reason": "Az összeg nem felel meg a blokklánc-tartománynak"
+            },
+            "multipleOf": {
+                "reading": "Rendelése feldolgozásához adjon meg egy árat, amely a(z {value} többszöröse",
+                "reason": "A megadott ár túl konkrét"
             }
         },
         "orderStatus": {

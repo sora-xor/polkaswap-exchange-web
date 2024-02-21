@@ -63,7 +63,9 @@
             "StakingSetPayee": "Подесите примаоца уплате {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} по {price} {symbol2} постављено",
             "OrderBookCancelLimitOrder": "Лимит налог је отказан",
-            "OrderBookCancelLimitOrders": "Ограничени налози су отказани"
+            "OrderBookCancelLimitOrders": "Ограничени налози су отказани",
+            "Burn": "Спаљено {amount} {symbol}",
+            "Mint": "Исковано {amount} {symbol} на {address}"
         },
         "error": {
             "Transfer": "Није успело {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Подешавање примаоца уплате {address} није успело",
             "OrderBookPlaceLimitOrder": "Постављање ограничене поруџбине од {amount} {symbol} по {price} {symbol2} није успело",
             "OrderBookCancelLimitOrders": "Отказивање ограничених налога није успело",
-            "OrderBookCancelLimitOrder": "Отказивање ограничене поруџбине није успело"
+            "OrderBookCancelLimitOrder": "Отказивање ограничене поруџбине није успело",
+            "Burn": "{amount} {symbol} није успело",
+            "Mint": "Није успело испоручивање {amount} {symbol} на {address}"
         },
         "ReferralReserveXor": "Veži XOR",
         "ReferralUnreserveXor": "Razveži XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Подесите примаоца уплате",
         "OrderBookPlaceLimitOrder": "Наручите",
         "OrderBookCancelLimitOrder": "Откажи наруџбу",
-        "OrderBookCancelLimitOrders": "Откажите поруџбине"
+        "OrderBookCancelLimitOrders": "Откажите поруџбине",
+        "Burn": "Горети",
+        "Mint": "Нана"
     },
     "polkadotjs": {
         "noExtensions": "Није пронађена ниједна екстензија {PolkadotJs}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1536,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Опсег блокчејна је премашен: Ваш унети износ је изван дозвољеног опсега блокчејна. Мин: {min} ; Макс: {max}",
                 "reason": "Износ није у складу са опсегом блокчејна"
+            },
+            "multipleOf": {
+                "reading": "Да бисте обрадили поруџбину, унесите цену која је вишеструка од {value}",
+                "reason": "Унета цена је превише специфична"
             }
         },
         "orderStatus": {

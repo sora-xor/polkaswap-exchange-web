@@ -63,7 +63,9 @@
             "StakingSetPayee": "Establecer beneficiario {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} a {price} {symbol2} colocado",
             "OrderBookCancelLimitOrder": "Orden límite cancelada",
-            "OrderBookCancelLimitOrders": "Limitar órdenes canceladas"
+            "OrderBookCancelLimitOrders": "Limitar órdenes canceladas",
+            "Burn": "Quemado {amount} {symbol}",
+            "Mint": "Acuñado {amount} {symbol} a {address}"
         },
         "error": {
             "Transfer": "Fallo en {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "No se pudo establecer el beneficiario {address}",
             "OrderBookPlaceLimitOrder": "No se pudo realizar la orden limitada de {amount} {symbol} a {price} {symbol2}",
             "OrderBookCancelLimitOrders": "No se pudieron cancelar las órdenes limitadas",
-            "OrderBookCancelLimitOrder": "No se pudo cancelar la orden límite"
+            "OrderBookCancelLimitOrder": "No se pudo cancelar la orden límite",
+            "Burn": "No se pudo grabar {amount} {symbol}",
+            "Mint": "No se pudo acuñar {amount} {symbol} en {address}"
         },
         "ReferralReserveXor": "Vincular XOR",
         "ReferralUnreserveXor": "Desvincular XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Establecer beneficiario",
         "OrderBookPlaceLimitOrder": "Realizar pedido",
         "OrderBookCancelLimitOrder": "Cancelar orden",
-        "OrderBookCancelLimitOrders": "Cancelar pedidos"
+        "OrderBookCancelLimitOrders": "Cancelar pedidos",
+        "Burn": "Quemar",
+        "Mint": "menta"
     },
     "polkadotjs": {
         "noExtensions": "No se encontró la extensión {PolkadotJs}. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",
@@ -1536,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Se excedió el rango de la cadena de bloques: el monto ingresado está fuera del rango permitido de la cadena de bloques. Mín: {min} ; Máximo: {max}",
                 "reason": "La cantidad no cumple con el rango de blockchain"
+            },
+            "multipleOf": {
+                "reading": "Para procesar su pedido, ingrese un precio que sea múltiplo de {value}",
+                "reason": "El precio introducido es demasiado específico."
             }
         },
         "orderStatus": {

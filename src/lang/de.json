@@ -63,7 +63,9 @@
             "StakingSetPayee": "Zahlungsempfänger {address} festlegen",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} zu {price} {symbol2} platziert",
             "OrderBookCancelLimitOrder": "Limit-Order storniert",
-            "OrderBookCancelLimitOrders": "Limitaufträge storniert"
+            "OrderBookCancelLimitOrders": "Limitaufträge storniert",
+            "Burn": "Verbrannt {amount} {symbol}",
+            "Mint": "Geprägt {amount} {symbol} an {address}"
         },
         "error": {
             "Transfer": "Fehler bei {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Zahlungsempfänger {address} konnte nicht festgelegt werden",
             "OrderBookPlaceLimitOrder": "Limitbestellung von {amount} {symbol} zu {price} {symbol2} konnte nicht aufgegeben werden",
             "OrderBookCancelLimitOrders": "Limitaufträge konnten nicht storniert werden",
-            "OrderBookCancelLimitOrder": "Limitauftrag konnte nicht storniert werden"
+            "OrderBookCancelLimitOrder": "Limitauftrag konnte nicht storniert werden",
+            "Burn": "{amount} {symbol} konnte nicht gebrannt werden",
+            "Mint": "{amount} {symbol} konnte nicht an {address} geprägt werden"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Zahlungsempfänger festlegen",
         "OrderBookPlaceLimitOrder": "Bestellung aufgeben",
         "OrderBookCancelLimitOrder": "Bestellung stornieren",
-        "OrderBookCancelLimitOrders": "Bestellungen stornieren"
+        "OrderBookCancelLimitOrders": "Bestellungen stornieren",
+        "Burn": "Brennen",
+        "Mint": "Minze"
     },
     "polkadotjs": {
         "noExtensions": "Es wurde keine {PolkadotJs} Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -1290,7 +1296,7 @@
             "more": "Setzen Sie mehr ein",
             "confirm": "Bestätigen Sie das Abstecken",
             "payout": "Ausschüttung",
-            "withdraw": ""
+            "withdraw": "Zurückziehen"
         },
         "overview": {
             "title": "{Sora} Wettend",
@@ -1536,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Blockchain-Bereich überschritten: Ihr eingegebener Betrag liegt außerhalb des zulässigen Bereichs der Blockchain. Min: {min} ; Maximal: {max}",
                 "reason": "Der Betrag entspricht nicht dem Blockchain-Bereich"
+            },
+            "multipleOf": {
+                "reading": "Um Ihre Bestellung zu bearbeiten, geben Sie bitte einen Preis ein, der ein Vielfaches von {value} ist.",
+                "reason": "Der eingegebene Preis ist zu spezifisch"
             }
         },
         "orderStatus": {

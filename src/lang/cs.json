@@ -63,7 +63,9 @@
             "StakingSetPayee": "Nastavit příjemce platby {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} za {price} {symbol2} umístěno",
             "OrderBookCancelLimitOrder": "Limitní objednávka zrušena",
-            "OrderBookCancelLimitOrders": "Limitní objednávky zrušeny"
+            "OrderBookCancelLimitOrders": "Limitní objednávky zrušeny",
+            "Burn": "Spáleno {amount} {symbol}",
+            "Mint": "Vyraženo {amount} {symbol} na {address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} se nezdařilo.",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Nepodařilo se nastavit příjemce platby {address}",
             "OrderBookPlaceLimitOrder": "Nepodařilo se zadat limitní objednávku ve výši {amount} {symbol} za {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Limitní objednávky se nepodařilo zrušit",
-            "OrderBookCancelLimitOrder": "Limitní příkaz se nepodařilo zrušit"
+            "OrderBookCancelLimitOrder": "Limitní příkaz se nepodařilo zrušit",
+            "Burn": "Nepodařilo se vypálit {amount} {symbol}",
+            "Mint": "Nepodařilo se vytěžit {amount} {symbol} na {address}"
         },
         "ReferralReserveXor": "Vázat XOR",
         "ReferralUnreserveXor": "Zrušit vazbu XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Nastavit příjemce platby",
         "OrderBookPlaceLimitOrder": "Objednejte si",
         "OrderBookCancelLimitOrder": "Zrušit objednávku",
-        "OrderBookCancelLimitOrders": "Zrušit objednávky"
+        "OrderBookCancelLimitOrders": "Zrušit objednávky",
+        "Burn": "Hořet",
+        "Mint": "Máta"
     },
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření {PolkadotJs}. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
@@ -1536,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Překročen rozsah blockchainu: Zadaná částka je mimo povolený rozsah blockchainu. Min: {min} ; Max: {max}",
                 "reason": "Částka nesplňuje rozsah blockchainu"
+            },
+            "multipleOf": {
+                "reading": "Pro zpracování objednávky zadejte cenu, která je násobkem {value}",
+                "reason": "Zadaná cena je příliš konkrétní"
             }
         },
         "orderStatus": {
