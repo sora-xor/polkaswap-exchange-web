@@ -396,8 +396,7 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Trade",
-        "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": "Kensetsu"
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -412,8 +411,7 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Explore",
         "SoraCard": "{Sora} Card",
-        "OrderBook": "Trade",
-        "Kensetsu": "Kensetsu"
+        "OrderBook": "Trade"
     },
     "social": {
         "twitter": "Twitter",
@@ -1566,6 +1564,10 @@
             "outOfBounds": {
                 "reading": "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range. Min: {min}; Max: {max}",
                 "reason": "Amount fails to comply with blockchain range"
+            },
+            "multipleOf": {
+                "reading": "To process your order, please input a price that is a multiple of {value}",
+                "reason": "Entered price is too specific"
             }
         },
         "orderStatus": {

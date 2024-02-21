@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Blockchain-området er overskredet: Det angitte beløpet ditt faller utenfor blokkjedens tillatte område. Min: {min} ; Maks: {max}",
                 "reason": "Beløpet samsvarer ikke med blokkjedeområdet"
+            },
+            "multipleOf": {
+                "reading": "For å behandle bestillingen din, skriv inn en pris som er et multiplum av {value}",
+                "reason": "Oppgitt pris er for spesifikk"
             }
         },
         "orderStatus": {

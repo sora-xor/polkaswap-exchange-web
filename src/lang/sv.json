@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Blockchain-intervallet har överskridits: Ditt angivna belopp faller utanför blockkedjans tillåtna intervall. Min: {min} ; Max: {max}",
                 "reason": "Beloppet överensstämmer inte med blockchain-intervallet"
+            },
+            "multipleOf": {
+                "reading": "För att behandla din beställning, vänligen ange ett pris som är en multipel av {value}",
+                "reason": "Det angivna priset är för specifikt"
             }
         },
         "orderStatus": {

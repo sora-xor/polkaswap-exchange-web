@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Rentang blockchain terlampaui: Jumlah yang Anda masukkan berada di luar rentang yang diizinkan oleh blockchain. Minimal: {min} ; Maks: {max}",
                 "reason": "Jumlah gagal mematuhi kisaran blockchain"
+            },
+            "multipleOf": {
+                "reading": "Untuk memproses pesanan Anda, harap masukkan harga kelipatan {value}",
+                "reason": "Harga yang dimasukkan terlalu spesifik"
             }
         },
         "orderStatus": {

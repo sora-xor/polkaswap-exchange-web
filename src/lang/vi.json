@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Đã vượt quá phạm vi chuỗi khối: Số tiền bạn đã nhập nằm ngoài phạm vi cho phép của chuỗi khối. Tối thiểu: {min} ; Tối đa: {max}",
                 "reason": "Số tiền không tuân thủ phạm vi blockchain"
+            },
+            "multipleOf": {
+                "reading": "Để xử lý đơn đặt hàng của bạn, vui lòng nhập giá là bội số của {value}",
+                "reason": "Giá đã nhập quá cụ thể"
             }
         },
         "orderStatus": {
