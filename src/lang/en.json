@@ -1544,6 +1544,10 @@
             "outOfBounds": {
                 "reading": "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range. Min: {min}; Max: {max}",
                 "reason": "Amount fails to comply with blockchain range"
+            },
+            "multipleOf": {
+                "reading": "To process your order, please input a price that is a multiple of {value}",
+                "reason": "Entered price is too specific"
             }
         },
         "orderStatus": {

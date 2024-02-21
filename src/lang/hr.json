@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Blockchain raspon premašen: Vaš uneseni iznos je izvan dopuštenog blockchaina raspona. Min: {min} ; Maks.: {max}",
                 "reason": "Iznos nije u skladu s rasponom blockchaina"
+            },
+            "multipleOf": {
+                "reading": "Za obradu vaše narudžbe unesite cijenu koja je višekratnik {value}",
+                "reason": "Unesena cijena je previše konkretna"
             }
         },
         "orderStatus": {

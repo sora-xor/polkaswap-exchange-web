@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Se excedió el rango de la cadena de bloques: el monto ingresado está fuera del rango permitido de la cadena de bloques. Mín: {min} ; Máximo: {max}",
                 "reason": "La cantidad no cumple con el rango de blockchain"
+            },
+            "multipleOf": {
+                "reading": "Para procesar su pedido, ingrese un precio que sea múltiplo de {value}",
+                "reason": "El precio introducido es demasiado específico."
             }
         },
         "orderStatus": {
