@@ -647,29 +647,18 @@ export default class SwapChart extends Mixins(
     this.unsubscribeFromPriceUpdates();
   }
 
-  // ordered ty timestamp DESC
-  private async fetchData(entityId: string) {
+  private async requestData(
+    entityId: string,
+    type: typeof SnapshotTypes,
+    count: number,
+    hasNextPage = true,
+    endCursor?: string
+  ) {
     const handler = this.isOrderBook ? fetchOrderBookData : fetchAssetData;
-    const { type, count } = this.selectedFilter;
-    const pageInfo = this.pageInfos[entityId];
-    const buffer = this.samplesBuffer[entityId] ?? [];
     const nodes: SnapshotItem[] = [];
 
-    let hasNextPage = pageInfo?.hasNextPage ?? true;
-    let endCursor = pageInfo?.endCursor ?? undefined;
-
-    if (buffer.length >= count) {
-      return {
-        nodes,
-        hasNextPage,
-        endCursor,
-      };
-    }
-
-    let fetchCount = count;
-
     do {
-      const first = Math.min(fetchCount, 100); // how many items should be fetched by request
+      const first = Math.min(count, 100); // how many items should be fetched by request
 
       const response = await handler(entityId, type, first, endCursor);
 
@@ -678,10 +667,31 @@ export default class SwapChart extends Mixins(
       hasNextPage = response.pageInfo.hasNextPage;
       endCursor = response.pageInfo.endCursor;
       nodes.push(...response.edges.map((edge) => edge.node));
-      fetchCount -= response.edges.length;
-    } while (hasNextPage && fetchCount > 0);
+      count -= response.edges.length;
+    } while (hasNextPage && count > 0);
 
     return { nodes, hasNextPage, endCursor };
+  }
+
+  // ordered ty timestamp DESC
+  private async fetchData(entityId: string) {
+    const { type, count } = this.selectedFilter;
+
+    const pageInfo = this.pageInfos[entityId];
+    const hasNextPage = pageInfo?.hasNextPage ?? true;
+    const endCursor = pageInfo?.endCursor ?? undefined;
+
+    const buffer = this.samplesBuffer[entityId] ?? [];
+
+    if (buffer.length >= count) {
+      return {
+        nodes: [],
+        hasNextPage,
+        endCursor,
+      };
+    }
+
+    return await this.requestData(entityId, type, count, hasNextPage, endCursor);
   }
 
   private getUpdatedPrecision(min: number, max: number): number {
