@@ -5,7 +5,7 @@ import { fetchRpc, getRpcEndpoint } from '@/utils/rpc';
 import type { Connection } from '@sora-substrate/connection';
 import type { Storage } from '@sora-substrate/util';
 
-const NODE_CONNECTION_TIMEOUT = 60_000;
+const NODE_CONNECTION_TIMEOUT = 30_000;
 
 export class NodesConnection {
   public readonly connection!: Connection;

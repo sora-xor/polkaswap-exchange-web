@@ -182,7 +182,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   get title(): string {
     const customNodeText = this.t('selectNodeDialog.customNode');
     if (!this.existing) return customNodeText;
-    return this.node.chain ?? customNodeText;
+    return this.node.chain || this.node.name || customNodeText;
   }
 
   get loading(): boolean {

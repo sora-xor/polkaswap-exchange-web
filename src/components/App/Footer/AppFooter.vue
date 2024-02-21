@@ -13,7 +13,7 @@
     >
       <template #label>
         <span>{{ t('selectNodeConnected') }}</span>
-        <span v-if="node">{{ node.chain }}</span>
+        <span v-if="node">{{ node.chain || node.name }}</span>
       </template>
       <template>
         <span v-if="node">{{ node.address }}</span>

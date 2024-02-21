@@ -88,7 +88,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   }
 
   get isSelectedNodeRemovable(): boolean {
-    return !this.connection.defaultNodes.find((node) => node.address === this.selectedNode?.address);
+    return !!this.connection.customNodes.find((node) => node.address === this.selectedNode?.address);
   }
 
   get isSelectedNodeConnected(): boolean {
