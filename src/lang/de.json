@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Blockchain-Bereich überschritten: Ihr eingegebener Betrag liegt außerhalb des zulässigen Bereichs der Blockchain. Min: {min} ; Maximal: {max}",
                 "reason": "Der Betrag entspricht nicht dem Blockchain-Bereich"
+            },
+            "multipleOf": {
+                "reading": "Um Ihre Bestellung zu bearbeiten, geben Sie bitte einen Preis ein, der ein Vielfaches von {value} ist.",
+                "reason": "Der eingegebene Preis ist zu spezifisch"
             }
         },
         "orderStatus": {
