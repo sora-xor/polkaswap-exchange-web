@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Blockchainbereik overschreden: Uw ingevoerde bedrag valt buiten het toegestane bereik van de blockchain. Min: {min} ; Maximaal: {max}",
                 "reason": "Bedrag voldoet niet aan het blockchain-bereik"
+            },
+            "multipleOf": {
+                "reading": "Om uw bestelling te verwerken, voert u een prijs in die een veelvoud is van {value}",
+                "reason": "De ingevoerde prijs is te specifiek"
             }
         },
         "orderStatus": {

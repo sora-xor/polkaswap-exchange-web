@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Překročen rozsah blockchainu: Zadaná částka je mimo povolený rozsah blockchainu. Min: {min} ; Max: {max}",
                 "reason": "Částka nesplňuje rozsah blockchainu"
+            },
+            "multipleOf": {
+                "reading": "Pro zpracování objednávky zadejte cenu, která je násobkem {value}",
+                "reason": "Zadaná cena je příliš konkrétní"
             }
         },
         "orderStatus": {

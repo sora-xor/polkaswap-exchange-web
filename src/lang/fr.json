@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Plage de la blockchain dépassée : le montant que vous avez saisi se situe en dehors de la plage autorisée de la blockchain. Min : {min} ; Max : {max}",
                 "reason": "Le montant ne respecte pas la plage de la blockchain"
+            },
+            "multipleOf": {
+                "reading": "Pour traiter votre commande, veuillez saisir un prix qui est un multiple de {value}",
+                "reason": "Le prix saisi est trop spécifique"
             }
         },
         "orderStatus": {

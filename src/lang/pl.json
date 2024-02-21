@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Przekroczony zakres Blockchain: Wprowadzona kwota wykracza poza dozwolony zakres Blockchain. Min.: {min} ; Maks.: {max}",
                 "reason": "Kwota nie jest zgodna z zakresem blockchain"
+            },
+            "multipleOf": {
+                "reading": "Aby zrealizować zamówienie, wprowadź cenę będącą wielokrotnością {value}",
+                "reason": "Wprowadzona cena jest zbyt szczegółowa"
             }
         },
         "orderStatus": {

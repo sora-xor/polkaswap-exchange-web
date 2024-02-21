@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Intervallo blockchain superato: l'importo inserito non rientra nell'intervallo consentito dalla blockchain. Min: {min} ; Massimo: {max}",
                 "reason": "L'importo non è conforme all'intervallo blockchain"
+            },
+            "multipleOf": {
+                "reading": "Per elaborare il tuo ordine, inserisci un prezzo che sia multiplo di {value}",
+                "reason": "Il prezzo inserito è troppo specifico"
             }
         },
         "orderStatus": {
