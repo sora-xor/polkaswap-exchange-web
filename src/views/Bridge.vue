@@ -458,7 +458,10 @@ export default class Bridge extends Mixins(
     return (
       !!this.sender &&
       this.isRegisteredAsset &&
-      hasInsufficientBalance(this.asset, this.amountSend, fee, !this.isSoraToEvm)
+      hasInsufficientBalance(this.asset, this.amountSend, fee, {
+        isExternalBalance: !this.isSoraToEvm,
+        isExternalNative: this.isNativeTokenSelected,
+      })
     );
   }
 
@@ -515,10 +518,6 @@ export default class Bridge extends Mixins(
       isXor: isXorAccountAsset(this.asset),
       amount: this.getFPNumber(this.amountSend),
     });
-  }
-
-  get isNativeTokenSelected(): boolean {
-    return this.nativeToken?.address === this.asset?.address;
   }
 
   get isNativeTokenSufficientForNextOperation(): boolean {
