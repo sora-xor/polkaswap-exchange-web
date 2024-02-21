@@ -463,11 +463,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     //       'Price range alert: Your price is more than 50% above or below the current market price. Please enter a more closely aligned market price',
     //   });
 
-    if (!this.isPriceBeyondPrecision && this.baseValue && this.isLimitOrder)
+    if (!this.isPriceBeyondPrecision && this.baseValue && this.isLimitOrder) {
+      const { tickSize } = this.currentOrderBook as OrderBook;
+
       return this.setError({
-        reason: this.t('orderBook.error.beyondPrecision.reason'),
-        reading: this.t('orderBook.error.beyondPrecision.reading'),
+        reason: this.t('orderBook.error.multipleOf.reason'),
+        reading: this.t('orderBook.error.multipleOf.reading', { value: tickSize?.toString() }),
       });
+    }
 
     if (this.isMarketType) {
       // wait until any market quote being set to avoid error appearance
