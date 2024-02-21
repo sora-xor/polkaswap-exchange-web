@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Trade",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -411,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Explore",
         "SoraCard": "{Sora} Card",
-        "OrderBook": "Trade"
+        "OrderBook": "Trade",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
