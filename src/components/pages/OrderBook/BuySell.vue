@@ -134,7 +134,7 @@
         <template v-else-if="isLimitOrder && !isPriceBeyondPrecision">
           <error />
         </template>
-        <template v-else-if="isLimitOrder && isPlaceAndCancelMode">
+        <template v-else-if="isLimitOrder && isPlaceAndCancelMode && priceExceedsSpread">
           <error />
         </template>
         <template v-else-if="isLimitOrder && limitForSinglePriceReached">
@@ -417,11 +417,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       if (!this.marketQuotePrice) return true;
     }
 
-    if (this.isOutOfAmountBounds) return true;
-
-    if (this.isInsufficientXorForFee) return true;
-
-    if (this.isInsufficientBalance) return true;
+    if (this.isOutOfAmountBounds || this.isInsufficientXorForFee || this.isInsufficientBalance) return true;
 
     return false;
   }
