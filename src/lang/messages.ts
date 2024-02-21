@@ -1096,6 +1096,10 @@ export default {
       expiryDate: 'expiry date',
     },
     error: {
+      multipleOf: {
+        reason: 'Entered price is too specific',
+        reading: 'To process your order, please input a price that is a multiple of {value}',
+      },
       beyondPrecision: {
         reason: 'Entered price is too precise to calculate',
         reading:

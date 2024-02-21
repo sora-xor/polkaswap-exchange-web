@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "超出区块链范围：您输入的金额超出了区块链允许的范围。分钟： {min} ；最大值： {max}",
                 "reason": "金额不符合区块链范围"
+            },
+            "multipleOf": {
+                "reading": "要处理您的订单，请输入{value}倍数的价格",
+                "reason": "输入的价格过于具体"
             }
         },
         "orderStatus": {

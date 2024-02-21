@@ -1542,6 +1542,10 @@
             "outOfBounds": {
                 "reading": "Blockchain tartomány túllépve: A megadott mennyiség kívül esik a blokklánc megengedett tartományán. Min: {min} ; Max: {max}",
                 "reason": "Az összeg nem felel meg a blokklánc-tartománynak"
+            },
+            "multipleOf": {
+                "reading": "Rendelése feldolgozásához adjon meg egy árat, amely a(z {value} többszöröse",
+                "reason": "A megadott ár túl konkrét"
             }
         },
         "orderStatus": {
