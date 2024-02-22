@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Handel",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": ""
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -411,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Ontdekken",
         "SoraCard": "{Sora} Kaart",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "Kensetsu": ""
     },
     "social": {
         "twitter": "Twitter",
@@ -1313,7 +1315,8 @@
             "change": "Validatoren wijzigen",
             "select": "Selecteer validatoren",
             "next": "Volgende",
-            "alreadyNominated": "Geselecteerde validators zijn al genomineerd"
+            "alreadyNominated": "Geselecteerde validators zijn al genomineerd",
+            "tooManyValidators": "Te veel validators geselecteerd ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Zoekopdracht...",

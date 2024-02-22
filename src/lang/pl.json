@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Handel",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": ""
     },
     "mainMenu": {
         "Swap": "Wymiana",
@@ -411,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Badać",
         "SoraCard": "{Sora} Karta",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "Kensetsu": ""
     },
     "social": {
         "twitter": "Twitter",
@@ -1313,7 +1315,8 @@
             "change": "Zmień walidatory",
             "select": "Wybierz walidatory",
             "next": "Dalej",
-            "alreadyNominated": "Wybrani walidatorzy już nominowani"
+            "alreadyNominated": "Wybrani walidatorzy już nominowani",
+            "tooManyValidators": "Wybrano zbyt wiele walidatorów ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Szukaj...",

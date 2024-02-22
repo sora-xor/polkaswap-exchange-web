@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farmárčenie",
         "Staking": "Stakovanie",
         "OrderBook": "Obchodovať",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": ""
     },
     "mainMenu": {
         "Swap": "Výmena",
@@ -411,7 +412,8 @@
         "StakingContainer": "Stakovanie",
         "Explore\/Container": "Preskúmať",
         "SoraCard": "{Sora} Karta",
-        "OrderBook": "Obchodovať"
+        "OrderBook": "Obchodovať",
+        "Kensetsu": ""
     },
     "social": {
         "twitter": "Twitter",
@@ -1313,7 +1315,8 @@
             "change": "Zmeniť validátory",
             "select": "Vyberte validátory",
             "next": "Nasledujúci",
-            "alreadyNominated": "Vybraní validátori sú už nominovaní"
+            "alreadyNominated": "Vybraní validátori sú už nominovaní",
+            "tooManyValidators": "Vybrali ste príliš veľa validátorov ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Vyhľadávanie...",

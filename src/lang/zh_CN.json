@@ -396,7 +396,8 @@
         "Explore\/Farming": "农耕",
         "Staking": "质押",
         "OrderBook": "贸易",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": ""
     },
     "mainMenu": {
         "Swap": "兑换",
@@ -411,7 +412,8 @@
         "StakingContainer": "质押",
         "Explore\/Container": "探索",
         "SoraCard": "{Sora}卡",
-        "OrderBook": "贸易"
+        "OrderBook": "贸易",
+        "Kensetsu": ""
     },
     "social": {
         "twitter": "推特",
@@ -1313,7 +1315,8 @@
             "change": "更改验证器",
             "select": "选择验证器",
             "next": "下一个",
-            "alreadyNominated": "选定的验证者已被提名"
+            "alreadyNominated": "选定的验证者已被提名",
+            "tooManyValidators": "选择的验证器太多 ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "搜索...",

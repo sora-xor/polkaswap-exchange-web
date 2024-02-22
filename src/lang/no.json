@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Handel",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": ""
     },
     "mainMenu": {
         "Swap": "Bytte",
@@ -411,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Utforske",
         "SoraCard": "{Sora} Kort",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "Kensetsu": ""
     },
     "social": {
         "twitter": "Twitter",
@@ -1313,7 +1315,8 @@
             "change": "Endre validatorer",
             "select": "Velg validatorer",
             "next": "Neste",
-            "alreadyNominated": "Utvalgte validatorer er allerede nominert"
+            "alreadyNominated": "Utvalgte validatorer er allerede nominert",
+            "tooManyValidators": "For mange validatorer er valgt ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Søk...",

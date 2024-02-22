@@ -1288,16 +1288,15 @@
     "disconnectWalletText": "Disconnect",
     "connectEthereumWalletText": "Connect {Ethereum} wallet",
     "soraStaking": {
-        "selectedValidators": "{count} ({Max} {max})",
         "dropdownMenu": {
             "pendingRewards": "Pending rewards",
             "controllerAccount": "Controller account"
         },
         "actions": {
-            "confirm": "Confirm Staking",
             "claim": "Claim rewards",
             "remove": "Remove stake",
             "more": "Stake more",
+            "confirm": "Confirm Staking",
             "payout": "Payout",
             "withdraw": "Withdraw"
         },
@@ -1339,13 +1338,6 @@
             "nominators": "Nominators",
             "validators": "Validators",
             "selectedValidators": "Selected validators"
-        },
-        "withdraw": {
-            "countdownLeft": "left",
-            "withdrawable": "Withdrawable",
-            "beingWithdrawn": "Being withdrawn",
-            "seeAll": "See all",
-            "nextWithdrawal": "Next withdrawal"
         },
         "validatorsFilterDialog": {
             "title": "Filters",
@@ -1394,19 +1386,6 @@
             "title": "Pending rewards",
             "noSelectedRewards": "Select rewards",
             "payout": "Payout"
-        },
-        "stakeDialog": {
-          "toStake": "To stake",
-          "toRemove": "To remove"
-        },
-        "withdrawDialog": {
-            "title": "Withdraw unstaked funds",
-            "showAllWithdraws": "Show all withdraws"
-        },
-        "allWithdrawsDialog": {
-            "title": "Unstaking activity",
-            "information":
-                "Once you unstake tokens, there is a mandatory 7-day unstaking period. After this period, your tokens will not be automatically returned to your wallet. You must complete the process by manually withdrawing your tokens."
         },
         "selectValidatorsMode": {
             "title": "Stake with validators suggested by the algorithm",
