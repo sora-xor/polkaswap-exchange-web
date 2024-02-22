@@ -90,7 +90,10 @@ export default class WithdrawDialog extends Mixins(StakingMixin, mixins.DialogMi
   }
 
   get selectedValidatorsFormatted(): string {
-    return `${this.selectedValidators.length} (M AX: ${this.validators.length})`;
+    return this.t('soraStaking.selectedValidators', {
+      count: this.selectedValidators.length,
+      max: this.validators.length,
+    });
   }
 
   async handleConfirm(): Promise<void> {
