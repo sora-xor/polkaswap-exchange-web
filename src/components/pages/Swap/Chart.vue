@@ -540,11 +540,7 @@ export default class SwapChart extends Mixins(
         const [timestamp, open, close, low, high, volume] = data;
         const rows: any[] = [];
 
-        if (seriesType === CHART_TYPES.BAR) {
-          rows.push({ title: 'Volume', data: formatPrice(volume, 2, USD_SYMBOL) });
-        } else if (seriesType === CHART_TYPES.LINE) {
-          rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
-        } else {
+        if (seriesType === CHART_TYPES.CANDLE) {
           const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
           const changeColor = signific(change)(
             this.theme.color.status.success,
@@ -559,6 +555,12 @@ export default class SwapChart extends Mixins(
             { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
             { title: 'Change', data: formatChange(change), color: changeColor }
           );
+        } else {
+          rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
+        }
+
+        if (withVolume) {
+          rows.push({ title: 'Volume', data: formatPrice(volume, 2, USD_SYMBOL) });
         }
 
         return `
