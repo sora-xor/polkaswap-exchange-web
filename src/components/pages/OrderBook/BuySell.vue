@@ -130,6 +130,9 @@
           <error />
         </template>
         <template v-else-if="isLimitOrder && !quoteValue">{{ t('orderBook.setPrice') }}</template>
+        <template v-else-if="isBalanceLessThanStepSize">
+          <error />
+        </template>
         <template v-else-if="isLimitOrder && (!baseValue || isZeroAmount)"> {{ t('orderBook.enterAmount') }}</template>
         <template v-else-if="isLimitOrder && !isPriceBeyondPrecision">
           <error />
@@ -363,6 +366,20 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return this.limitOrderType === LimitOrderType.market;
   }
 
+  get isBalanceLessThanStepSize(): boolean {
+    if (!this.currentOrderBook) return false;
+
+    const { stepLotSize } = this.currentOrderBook;
+    const availableBalance = getMaxValue(this.baseAsset, this.networkFee);
+
+    // if input accepts no decimals
+    if (!this.amountPrecision && this.baseValue === '0' && !this.isBuySide) {
+      return new FPNumber(availableBalance).lt(stepLotSize);
+    }
+
+    return false;
+  }
+
   get hasExplainableError(): boolean {
     return !!this.reason && !!this.reading;
   }
@@ -486,7 +503,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         reading: this.t('orderBook.error.exceedsSpread.reading'),
       });
 
-    if (!this.isZeroAmount && this.isOutOfAmountBounds && this.quoteValue) {
+    if ((!this.isZeroAmount && this.isOutOfAmountBounds && this.quoteValue) || this.isBalanceLessThanStepSize) {
       const { maxLotSize, minLotSize } = this.currentOrderBook as OrderBook;
       const { symbol } = this.baseAsset;
 
