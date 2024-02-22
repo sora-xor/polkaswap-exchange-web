@@ -740,7 +740,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     const max = getMaxValue(this.baseAsset, this.networkFee);
     const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
 
-    const maxPossible = FPNumber.fromNatural(max, this.bookPrecision);
+    const maxPossible = FPNumber.fromNatural(max, this.amountPrecision);
 
     if (this.isBuySide) return maxLotSize;
 
