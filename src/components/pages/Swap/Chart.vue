@@ -459,7 +459,7 @@ export default class SwapChart extends Mixins(
     });
 
     const volumeGrid = this.gridSpec({
-      height: 92,
+      height: 72,
       left: this.gridLeftOffset,
     });
 
@@ -469,7 +469,10 @@ export default class SwapChart extends Mixins(
         show: true,
       },
       axisLine: {
-        show: false,
+        show: true,
+        lineStyle: {
+          color: this.theme.color.base.content.tertiary,
+        },
       },
       axisPointer: {
         label: {
@@ -518,7 +521,7 @@ export default class SwapChart extends Mixins(
           const { amount, suffix } = formatAmountWithSuffix(val);
           return `${amount} ${suffix}`;
         },
-        showMaxLabel: false,
+        showMaxLabel: true,
       },
     });
 
@@ -560,7 +563,7 @@ export default class SwapChart extends Mixins(
         }
 
         if (withVolume) {
-          rows.push({ title: 'Volume', data: formatPrice(volume, 2, USD_SYMBOL) });
+          rows.push({ title: 'Volume', data: `$${formatAmount(volume, 2)}` });
         }
 
         return `
@@ -609,6 +612,7 @@ export default class SwapChart extends Mixins(
           const [_timestamp, open, close] = data;
           return open > close ? this.theme.color.status.error : this.theme.color.status.success;
         },
+        opacity: 0.7,
       },
       encode: { y: 'volume' },
     };
