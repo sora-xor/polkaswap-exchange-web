@@ -1313,7 +1313,8 @@
             "change": "Változtassa meg az érvényesítőket",
             "select": "Válasszon érvényesítőket",
             "next": "Következő",
-            "alreadyNominated": "A kiválasztott érvényesítőket már jelölték"
+            "alreadyNominated": "A kiválasztott érvényesítőket már jelölték",
+            "tooManyValidators": "Túl sok érvényesítő van kiválasztva ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Keresés...",

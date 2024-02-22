@@ -1313,7 +1313,8 @@
             "change": "Endre validatorer",
             "select": "Velg validatorer",
             "next": "Neste",
-            "alreadyNominated": "Utvalgte validatorer er allerede nominert"
+            "alreadyNominated": "Utvalgte validatorer er allerede nominert",
+            "tooManyValidators": "For mange validatorer er valgt ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Søk...",
