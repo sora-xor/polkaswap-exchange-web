@@ -122,7 +122,7 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   }
 
   get unlockingFunds(): FPNumber {
-    return (this.accountLedger?.unlocking || []).reduce((acc, unlock) => {
+    return (this.accountLedger?.unlocking ?? []).reduce((acc, unlock) => {
       return acc.add(FPNumber.fromCodecValue(unlock.value.toString(), this.stakingAsset?.decimals));
     }, FPNumber.ZERO);
   }
@@ -132,7 +132,7 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   }
 
   get nextWithdrawalEra(): number | null {
-    if (!this.accountLedger || !this.accountLedger.unlocking.length || !this.activeEra) {
+    if (!this.accountLedger?.unlocking.length || !this.activeEra) {
       return null;
     }
     const unlockingEras = this.accountLedger.unlocking.map((u) => u.era);
