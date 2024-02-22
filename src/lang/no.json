@@ -396,8 +396,7 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Handel",
-        "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": ""
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Bytte",
@@ -412,8 +411,7 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Utforske",
         "SoraCard": "{Sora} Kort",
-        "OrderBook": "Handel",
-        "Kensetsu": ""
+        "OrderBook": "Handel"
     },
     "social": {
         "twitter": "Twitter",
