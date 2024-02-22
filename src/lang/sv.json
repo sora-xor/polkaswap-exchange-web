@@ -1313,7 +1313,8 @@
             "change": "Byt validatorer",
             "select": "Välj validerare",
             "next": "Nästa",
-            "alreadyNominated": "Utvalda validerare redan nominerade"
+            "alreadyNominated": "Utvalda validerare redan nominerade",
+            "tooManyValidators": "För många validerare har valts ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Sök...",

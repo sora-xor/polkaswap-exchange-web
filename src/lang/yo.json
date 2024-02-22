@@ -1313,7 +1313,8 @@
             "change": "Yi awọn afọwọsi",
             "select": "Yan awọn olufọwọsi",
             "next": "Itele",
-            "alreadyNominated": "Awọn olufọwọsi ti a ti yan tẹlẹ ti yan tẹlẹ"
+            "alreadyNominated": "Awọn olufọwọsi ti a ti yan tẹlẹ ti yan tẹlẹ",
+            "tooManyValidators": "Awọn afọwọsi pupọ ti yan ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Wa...",

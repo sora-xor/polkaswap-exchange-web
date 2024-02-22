@@ -1313,7 +1313,8 @@
             "change": "Thay đổi trình xác thực",
             "select": "Chọn người xác nhận",
             "next": "Kế tiếp",
-            "alreadyNominated": "Người xác thực được chọn đã được đề cử"
+            "alreadyNominated": "Người xác thực được chọn đã được đề cử",
+            "tooManyValidators": "Đã chọn quá nhiều trình xác thực ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Tìm kiếm...",

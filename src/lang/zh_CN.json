@@ -1313,7 +1313,8 @@
             "change": "更改验证器",
             "select": "选择验证器",
             "next": "下一个",
-            "alreadyNominated": "选定的验证者已被提名"
+            "alreadyNominated": "选定的验证者已被提名",
+            "tooManyValidators": "选择的验证器太多 ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "搜索...",
