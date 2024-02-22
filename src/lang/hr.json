@@ -1313,7 +1313,8 @@
             "change": "Promjena validatora",
             "select": "Odaberite validatore",
             "next": "Sljedeći",
-            "alreadyNominated": "Odabrani validatori već su imenovani"
+            "alreadyNominated": "Odabrani validatori već su imenovani",
+            "tooManyValidators": "Odabrano je previše validatora ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Traži...",

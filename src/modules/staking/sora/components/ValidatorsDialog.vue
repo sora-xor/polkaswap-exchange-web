@@ -118,24 +118,30 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
     );
   }
 
+  get tooManySelected() {
+    return this.selectedValidators.length > this.maxNominations;
+  }
+
   get confirmText(): string {
     switch (this.mode) {
       case ValidatorsListMode.USER:
         return this.t('soraStaking.validators.change');
       case ValidatorsListMode.RECOMMENDED:
         return this.isInsufficientXorForFee
-          ? this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol })
+          ? this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol ?? '' })
           : this.hasChanges
           ? this.t('soraStaking.validators.save')
           : this.t('soraStaking.validators.alreadyNominated');
       case ValidatorsListMode.SELECT:
         return this.isInsufficientXorForFee
-          ? this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol })
+          ? this.t('insufficientBalanceText', { tokenSymbol: this.xor?.symbol ?? '' })
           : this.hasChanges
-          ? this.t('soraStaking.validators.selected', {
-              selected: this.selectedValidators.length,
-              total: this.validators.length,
-            })
+          ? this.tooManySelected
+            ? this.t('soraStaking.validators.tooManyValidators')
+            : this.t('soraStaking.validators.selected', {
+                selected: this.selectedValidators.length,
+                total: this.validators.length,
+              })
           : this.t('soraStaking.validators.alreadyNominated');
       default:
         return '';
@@ -153,7 +159,7 @@ export default class ValidatorsDialog extends Mixins(StakingMixin, mixins.Dialog
     if (this.mode === ValidatorsListMode.RECOMMENDED) {
       return !this.hasChanges;
     } else if (this.mode === ValidatorsListMode.SELECT) {
-      return this.selectedValidators.length === 0 || !this.hasChanges;
+      return this.selectedValidators.length === 0 || !this.hasChanges || this.tooManySelected;
     }
     return false;
   }
