@@ -1,7 +1,7 @@
 <template>
   <div class="kensetsu-container s-flex-column">
     <s-form v-loading="parentLoading" class="container container--kensetsu el-form--actions" :show-message="false">
-      <generic-page-header class="page-header--kensetsu" title="Unlock KEN by burning your XOR" />
+      <generic-page-header class="page-header--kensetsu" title="Reserve KEN by burning your XOR" />
       <p class="description centered p4">
         Burn 1M XOR (permanently remove from your wallet) on SORA for KEN in a fair launch; KEN incentivizes liquidity
         and is deflationary token with a status symbol appeal. 30 days only (till Mar 20 2024).
