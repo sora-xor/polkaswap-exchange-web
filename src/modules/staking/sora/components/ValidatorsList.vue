@@ -288,7 +288,10 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 
 <style lang="scss" scoped>
 .validators {
+  overflow: hidden;
   position: relative;
+  padding: 0 8px;
+  margin: 0 -8px;
 }
 
 .search-container {
@@ -347,10 +350,11 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 
     font-size: 14px;
     font-style: normal;
-    font-weight: 800;
+    font-weight: 700;
     line-height: normal;
     letter-spacing: -0.28px;
     text-transform: uppercase;
+    user-select: none;
   }
   &-avatar {
     display: flex;
@@ -370,30 +374,32 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     justify-content: center;
     align-items: flex-end;
   }
-  &-commission:not(&-commission--active),
-  &-return:not(&-return--active) {
+  &-commission,
+  &-return {
     display: flex;
     align-items: center;
+    height: 21px;
+    padding: 2px 6px;
+    border-radius: 8px;
+  }
+  &-commission:not(&-commission--active),
+  &-return:not(&-return--active) {
     font-style: normal;
     padding-right: 6px;
     cursor: pointer;
   }
   &-commission--active,
   &-return--active {
-    display: flex;
-    align-items: center;
-    height: 21px;
-    padding: 2px 6px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 400;
-    margin-top: 4px;
-    background: var(--s-color-base-background);
-    color: var(--s-color-base-content-primary);
+    background: var(--s-color-utility-surface);
+    box-shadow: var(--s-shadow-element-pressed);
+    color: var(--s-color-status-info);
     cursor: pointer;
     .chevron {
-      color: var(--s-color-theme-accent);
+      color: var(--s-color-status-info);
     }
+  }
+  &-return {
+    margin-top: 4px;
   }
   &-commission--desc .chevron {
     transform: rotate(180deg);
@@ -469,22 +475,27 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     margin-right: 8px;
   }
 
+  &-commission,
+  &-return {
+    height: 21px;
+    padding: 2px 6px;
+    font-weight: 600;
+  }
+
   &-commission:not(&-commission--active),
   &-return:not(&-return--active) {
-    color: var(--s-color-status-success);
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
-    font-weight: 600;
     letter-spacing: -0.32px;
   }
 
   &-return--active,
   &-commission--active {
-    height: 21px;
-    padding: 2px 6px;
     border-radius: 8px;
-    font-size: 12px;
-    background: var(--s-color-base-background);
+    font-size: 14px;
+    color: var(--s-color-status-info);
+    background: var(--s-color-utility-surface);
+    box-shadow: var(--s-shadow-element-pressed);
   }
 }
 

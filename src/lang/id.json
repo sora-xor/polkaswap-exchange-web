@@ -1313,7 +1313,8 @@
             "change": "Ubah validator",
             "select": "Pilih validator",
             "next": "Berikutnya",
-            "alreadyNominated": "Validator terpilih sudah dinominasikan"
+            "alreadyNominated": "Validator terpilih sudah dinominasikan",
+            "tooManyValidators": "Terlalu banyak validator yang dipilih ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Mencari...",

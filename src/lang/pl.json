@@ -1313,7 +1313,8 @@
             "change": "Zmień walidatory",
             "select": "Wybierz walidatory",
             "next": "Dalej",
-            "alreadyNominated": "Wybrani walidatorzy już nominowani"
+            "alreadyNominated": "Wybrani walidatorzy już nominowani",
+            "tooManyValidators": "Wybrano zbyt wiele walidatorów ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Szukaj...",

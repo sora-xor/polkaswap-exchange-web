@@ -31,7 +31,7 @@
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
-        :loading="parentLoading"
+        :loading="parentLoading || loading"
         :disabled="isInsufficientXorForFee || valueFundsEmpty || isInsufficientBalance"
         @click="handleConfirm"
       >
@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { FPNumber, Operation } from '@sora-substrate/util';
+import { Operation } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -72,7 +72,7 @@ import type { CodecString } from '@sora-substrate/util';
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
-export default class WithdrawDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
+export default class WithdrawDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.TransactionMixin) {
   get networkFee(): CodecString {
     return this.networkFees[Operation.StakingWithdrawUnbonded];
   }
@@ -90,13 +90,18 @@ export default class WithdrawDialog extends Mixins(StakingMixin, mixins.DialogMi
   }
 
   get selectedValidatorsFormatted(): string {
-    return `${this.selectedValidators.length} (M AX: ${this.validators.length})`;
+    return this.t('soraStaking.selectedValidators', {
+      count: this.selectedValidators.length,
+      max: this.validators.length,
+    });
   }
 
   async handleConfirm(): Promise<void> {
-    await this.withdraw(this.withdrawableFunds.toNumber());
-
-    this.closeDialog();
+    try {
+      await this.withNotifications(async () => await this.withdraw(this.withdrawableFunds.toNumber()));
+    } finally {
+      this.closeDialog();
+    }
   }
 
   showAllWithdraws(): void {

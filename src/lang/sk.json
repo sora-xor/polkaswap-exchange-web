@@ -1313,7 +1313,8 @@
             "change": "Zmeniť validátory",
             "select": "Vyberte validátory",
             "next": "Nasledujúci",
-            "alreadyNominated": "Vybraní validátori sú už nominovaní"
+            "alreadyNominated": "Vybraní validátori sú už nominovaní",
+            "tooManyValidators": "Vybrali ste príliš veľa validátorov ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Vyhľadávanie...",

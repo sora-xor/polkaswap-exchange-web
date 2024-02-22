@@ -1313,7 +1313,8 @@
             "change": "Validatoren wijzigen",
             "select": "Selecteer validatoren",
             "next": "Volgende",
-            "alreadyNominated": "Geselecteerde validators zijn al genomineerd"
+            "alreadyNominated": "Geselecteerde validators zijn al genomineerd",
+            "tooManyValidators": "Te veel validators geselecteerd ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Zoekopdracht...",

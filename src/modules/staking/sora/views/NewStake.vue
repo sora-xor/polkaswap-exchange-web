@@ -44,16 +44,6 @@
         {{ t('confirmText') }}
       </template>
     </s-button>
-
-    <info-line
-      class="info-line"
-      :label="t('networkFeeText')"
-      :label-tooltip="t('networkFeeTooltipText')"
-      :value="networkFeeFormatted"
-      :asset-symbol="xor?.symbol"
-      :fiat-value="getFiatAmountByCodecString(networkFee)"
-      is-formatted
-    />
   </div>
 </template>
 

@@ -1317,7 +1317,8 @@
             "change": "Change validators",
             "select": "Select validators",
             "next": "Next",
-            "alreadyNominated": "Selected validators already nominated"
+            "alreadyNominated": "Selected validators already nominated",
+            "tooManyValidators": "Too many validators selected ({Max} {max})"
         },
         "validatorsList": {
             "search": "Search...",

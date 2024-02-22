@@ -848,6 +848,7 @@ export default {
       change: 'Change validators',
       select: 'Select validators',
       alreadyNominated: 'Selected validators already nominated',
+      tooManyValidators: 'Too many validators selected ({Max} {max})',
     },
     validatorsList: {
       search: 'Search...',
