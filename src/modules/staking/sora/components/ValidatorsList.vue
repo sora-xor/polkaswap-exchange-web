@@ -350,10 +350,11 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 
     font-size: 14px;
     font-style: normal;
-    font-weight: 800;
+    font-weight: 700;
     line-height: normal;
     letter-spacing: -0.28px;
     text-transform: uppercase;
+    user-select: none;
   }
   &-avatar {
     display: flex;
@@ -372,7 +373,6 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
     flex-direction: column;
     justify-content: center;
     align-items: flex-end;
-    font-weight: 800;
   }
   &-commission,
   &-return {
@@ -390,13 +390,12 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
   }
   &-commission--active,
   &-return--active {
-    font-size: 12px;
     background: var(--s-color-utility-surface);
     box-shadow: var(--s-shadow-element-pressed);
     color: var(--s-color-status-info);
     cursor: pointer;
     .chevron {
-      color: var(--s-color-theme-accent);
+      color: var(--s-color-status-info);
     }
   }
   &-return {
