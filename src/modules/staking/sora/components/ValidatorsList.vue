@@ -290,6 +290,8 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 .validators {
   overflow: hidden;
   position: relative;
+  padding: 0 8px;
+  margin: 0 -8px;
 }
 
 .search-container {
