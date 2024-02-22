@@ -31,7 +31,7 @@
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
-        :loading="parentLoading"
+        :loading="parentLoading || loading"
         :disabled="isInsufficientXorForFee || valueFundsEmpty || isInsufficientBalance"
         @click="handleConfirm"
       >
@@ -72,7 +72,7 @@ import type { CodecString } from '@sora-substrate/util';
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
-export default class WithdrawDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
+export default class WithdrawDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.TransactionMixin) {
   get networkFee(): CodecString {
     return this.networkFees[Operation.StakingWithdrawUnbonded];
   }
@@ -94,9 +94,11 @@ export default class WithdrawDialog extends Mixins(StakingMixin, mixins.DialogMi
   }
 
   async handleConfirm(): Promise<void> {
-    await this.withdraw(this.withdrawableFunds.toNumber());
-
-    this.closeDialog();
+    try {
+      await this.withNotifications(async () => await this.withdraw(this.withdrawableFunds.toNumber()));
+    } finally {
+      this.closeDialog();
+    }
   }
 
   showAllWithdraws(): void {
