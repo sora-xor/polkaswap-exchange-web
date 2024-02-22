@@ -88,14 +88,14 @@ import {
 } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { PageInfo, FiatPriceObject } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
-
-const { SnapshotTypes } = SUBQUERY_TYPES;
+import type { PageInfo, SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const USD_SYMBOL = 'USD';
 
 /** "timestamp", "open", "close", "low", "high", "volume" data */
 type ChartDataItem = [number, ...OCLH, number];
+
+type LastUpdates = Record<string, SnapshotItem>;
 
 enum CHART_TYPES {
   LINE = 'line',
@@ -112,52 +112,52 @@ const LINE_CHART_FILTERS: SnapshotFilter[] = [
   {
     name: Timeframes.FIVE_MINUTES,
     label: '5m',
-    type: SnapshotTypes.DEFAULT,
+    type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
     count: 48, // 5 mins in 4 hours
   },
   {
     name: Timeframes.FIFTEEN_MINUTES,
     label: '15m',
-    type: SnapshotTypes.DEFAULT,
+    type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
     count: 48 * 3, // 5 mins in 12 hours,
     group: 3, // 5 min in 15 min
   },
   {
     name: Timeframes.THIRTY_MINUTES,
     label: '30m',
-    type: SnapshotTypes.DEFAULT,
+    type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
     count: 48 * 6, // 5 mins in 24 hours,
     group: 6, // 5 min in 30 min
   },
   {
     name: Timeframes.HOUR,
     label: '1h',
-    type: SnapshotTypes.HOUR,
+    type: SUBQUERY_TYPES.SnapshotTypes.HOUR,
     count: 48, // hours in 2 days,
   },
   {
     name: Timeframes.FOUR_HOURS,
     label: '4h',
-    type: SnapshotTypes.HOUR,
+    type: SUBQUERY_TYPES.SnapshotTypes.HOUR,
     count: 48 * 4, // hours in 4 days,
     group: 4, // 1 hour in 4 hours
   },
   {
     name: Timeframes.DAY,
     label: '1D',
-    type: SnapshotTypes.DAY,
+    type: SUBQUERY_TYPES.SnapshotTypes.DAY,
     count: 90, // days in 1 month
   },
   {
     name: Timeframes.YEAR,
     label: '1Y',
-    type: SnapshotTypes.DAY,
+    type: SUBQUERY_TYPES.SnapshotTypes.DAY,
     count: 365, // days in year
   },
   {
     name: Timeframes.ALL,
     label: 'ALL',
-    type: SnapshotTypes.DAY,
+    type: SUBQUERY_TYPES.SnapshotTypes.DAY,
     count: Infinity,
   },
 ];
@@ -202,6 +202,14 @@ const dividePrice = (priceA: number, priceB: number): number => {
 
 const dividePrices = (priceA: OCLH, priceB: OCLH): OCLH => {
   return priceA.map((price, index) => dividePrice(price, priceB[index])) as OCLH;
+};
+
+const mergeSnapshots = (a: Nullable<SnapshotItem>, b: Nullable<SnapshotItem>): SnapshotItem => {
+  const timestamp = (a?.timestamp ?? b?.timestamp) as number;
+  const price = b?.price && a?.price ? dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0];
+  const volume = b?.volume && a?.volume ? Math.min(b.volume, a.volume) : a?.volume ?? 0;
+
+  return { timestamp, price, volume };
 };
 
 const normalizeSnapshots = (collection: SnapshotItem[], difference: number, lastTimestamp: number): SnapshotItem[] => {
@@ -649,7 +657,7 @@ export default class SwapChart extends Mixins(
 
   private async requestData(
     entityId: string,
-    type: typeof SnapshotTypes,
+    type: SnapshotTypes,
     count: number,
     hasNextPage = true,
     endCursor?: string
@@ -692,6 +700,25 @@ export default class SwapChart extends Mixins(
     }
 
     return await this.requestData(entityId, type, count, hasNextPage, endCursor);
+  }
+
+  private async fetchDataLastUpdates(entities: string[]): Promise<Nullable<LastUpdates>> {
+    const lastUpdates: LastUpdates = {};
+
+    await Promise.all(
+      entities.map(async (entityId) => {
+        try {
+          const update = await this.requestData(entityId, this.selectedFilter.type, 1);
+          const snapshot = update.nodes[0];
+
+          lastUpdates[entityId] = snapshot;
+        } catch {
+          return null;
+        }
+      })
+    );
+
+    return lastUpdates;
   }
 
   private getUpdatedPrecision(min: number, max: number): number {
@@ -743,9 +770,7 @@ export default class SwapChart extends Mixins(
           const a = groups[0]?.[i];
           const b = groups[1]?.[i];
 
-          const timestamp = (a?.timestamp ?? b?.timestamp) as number;
-          const price = b?.price && a?.price ? dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0];
-          const volume = b?.volume && a?.volume ? Math.min(b.volume, a.volume) : a?.volume ?? 0;
+          const { timestamp, price, volume } = mergeSnapshots(a, b);
           // skip item, if one of the prices is incorrect
           if (price.some((part) => !Number.isFinite(part))) continue;
           // if "open" & "close" prices are zero, we are going to time, where pool is not created
@@ -775,6 +800,18 @@ export default class SwapChart extends Mixins(
   }
 
   // common
+  private async subscribeToPriceUpdates(): Promise<void> {
+    this.unsubscribeFromPriceUpdates();
+
+    if (!this.entities.length) return;
+
+    const entities = [...this.entities];
+
+    this.priceUpdateSubscription = await this.getPriceUpdatesSubscription(entities);
+    this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(entities), SYNC_INTERVAL);
+  }
+
+  // common
   private unsubscribeFromPriceUpdates(): void {
     if (this.priceUpdateSubscription) {
       this.priceUpdateSubscription();
@@ -786,45 +823,25 @@ export default class SwapChart extends Mixins(
     this.priceUpdateTimestampSync = null;
   }
 
-  private subscribeToAssetsPriceUpdates(): void {
-    this.unsubscribeFromPriceUpdates();
-
-    const entities = [...this.entities];
-
-    this.priceUpdateSubscription = this.$watch(
-      () => this.fiatPriceObject,
-      (updated, prev) => {
-        if (updated && (!prev || entities.some((addr) => updated[addr] !== prev[addr]))) {
-          this.handlePriceUpdates(entities, updated);
+  private async getPriceUpdatesSubscription(entities: string[]): Promise<Nullable<FnWithoutArgs>> {
+    if (this.isOrderBook) {
+      return await subscribeOnOrderBookUpdates(
+        this.dexId,
+        this.baseAsset!.address,
+        this.quoteAsset!.address,
+        () => this.fetchAndHandleUpdate(entities),
+        console.error
+      );
+    } else {
+      return this.$watch(
+        () => this.fiatPriceObject,
+        async (updated, prev) => {
+          if (updated && (!prev || entities.some((addr) => updated[addr] !== prev[addr]))) {
+            await this.fetchAndHandleUpdate(entities);
+          }
         }
-      }
-    );
-
-    this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(entities), SYNC_INTERVAL);
-  }
-
-  private async subscribeToOrderBookPriceUpdates(): Promise<void> {
-    this.unsubscribeFromPriceUpdates();
-
-    if (!(this.orderBookId && this.baseAsset && this.quoteAsset)) return;
-
-    const entities = [...this.entities];
-
-    this.priceUpdateSubscription = await subscribeOnOrderBookUpdates(
-      this.dexId,
-      this.baseAsset.address,
-      this.quoteAsset.address,
-      (data) => {
-        const {
-          stats: { price },
-        } = data;
-        const updated = { [this.orderBookId as string]: price.toCodecString() };
-        this.handlePriceUpdates(entities, updated);
-      },
-      console.error
-    );
-
-    this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(entities), SYNC_INTERVAL);
+      );
+    }
   }
 
   private getCurrentSnapshotTimestamp(): number {
@@ -855,32 +872,31 @@ export default class SwapChart extends Mixins(
     this.updateDataset([item, ...this.dataset]);
   }
 
-  private handlePriceUpdates(entities: string[], fiatPriceObject: FiatPriceObject): void {
+  private async fetchAndHandleUpdate(entities: string[]): Promise<void> {
     if (!isEqual(entities)(this.entities)) return;
 
-    const timestamp = this.getCurrentSnapshotTimestamp();
-    const lastItem = this.dataset[0];
+    const lastUpdates = await this.fetchDataLastUpdates(entities);
 
-    const [priceA, priceB] = entities.map((address) =>
-      FPNumber.fromCodecValue(fiatPriceObject[address] ?? 0).toNumber()
-    );
-    const price = Number.isFinite(priceB) ? dividePrice(priceA, priceB) : priceA;
-    const min = Math.min(this.limits.min, price);
-    const max = Math.max(this.limits.max, price);
+    if (!lastUpdates) return;
 
-    const open = lastItem?.price?.[0] ?? price;
-    const low = lastItem?.price?.[2] ?? price;
-    const high = lastItem?.price?.[3] ?? price;
-
-    const isCurrentTimeframe = lastItem?.timestamp === timestamp;
-
-    const priceData: OCLH = [isCurrentTimeframe ? open : price, price, Math.min(low, price), Math.max(high, price)];
-    const item = { timestamp, price: priceData, volume: 0 };
     const dataset = [...this.dataset];
-    if (isCurrentTimeframe) {
+    const lastItem = dataset[0];
+    const [a, b] = entities.map((entityId) => lastUpdates[entityId]);
+    const item = mergeSnapshots(a, b);
+    // skip item, if one of the prices is incorrect
+    if (item.price.some((part) => !Number.isFinite(part))) return;
+    // skip item, if snapshot is outdated
+    if (lastItem?.timestamp > item.timestamp) return;
+
+    if (lastItem?.timestamp === item.timestamp) {
       dataset.shift();
     }
+
     dataset.unshift(item);
+
+    const min = Math.min(this.limits.min, ...item.price);
+    const max = Math.max(this.limits.max, ...item.price);
+
     this.precision = this.getUpdatedPrecision(min, max);
     this.limits = { min, max };
     this.updateDataset(dataset);
@@ -937,11 +953,7 @@ export default class SwapChart extends Mixins(
   private async resetAndUpdatePrices(saveReversedState = false): Promise<void> {
     this.clearData(saveReversedState);
     await this.updatePrices();
-    if (this.isOrderBook) {
-      this.subscribeToOrderBookPriceUpdates();
-    } else {
-      this.subscribeToAssetsPriceUpdates();
-    }
+    await this.subscribeToPriceUpdates();
   }
 
   selectChartType(type: CHART_TYPES): void {
