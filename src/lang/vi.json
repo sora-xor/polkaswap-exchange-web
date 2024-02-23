@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Buôn bán",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Đổi",
@@ -411,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Khám phá",
         "SoraCard": "{Sora} Thẻ",
-        "OrderBook": "Buôn bán"
+        "OrderBook": "Buôn bán",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Xóa cổ phần",
             "more": "Đặt cược nhiều hơn",
             "confirm": "Xác nhận đặt cược",
-            "payout": "Thanh toán",
             "withdraw": "Rút tiền"
         },
         "overview": {
@@ -1313,7 +1314,8 @@
             "change": "Thay đổi trình xác thực",
             "select": "Chọn người xác nhận",
             "next": "Kế tiếp",
-            "alreadyNominated": "Người xác thực được chọn đã được đề cử"
+            "alreadyNominated": "Người xác thực được chọn đã được đề cử",
+            "tooManyValidators": "Đã chọn quá nhiều trình xác thực ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Tìm kiếm...",
@@ -1410,7 +1412,7 @@
             "beingWithdrawn": "Bị rút tiền",
             "seeAll": "Nhìn thấy tất cả",
             "nextWithdrawal": "Lần rút tiền tiếp theo",
-            "countdownLeft": "bên trái"
+            "countdownLeft": "còn"
         },
         "stakeDialog": {
             "toStake": "Để cổ phần",
@@ -1471,7 +1473,6 @@
             "placeLimit": "Đặt lệnh giới hạn",
             "askCancel": "Bạn có chắc chắn muốn hủy tất cả các lệnh đang mở của mình không?",
             "cancelAll": "Có, hủy tất cả",
-            "noCancel": "Không, đừng hủy nó",
             "buy": "Mua {amount} {symbol}",
             "sell": "Bán {amount} {symbol}",
             "at": "ở {price} {symbol}"
@@ -1542,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Đã vượt quá phạm vi chuỗi khối: Số tiền bạn đã nhập nằm ngoài phạm vi cho phép của chuỗi khối. Tối thiểu: {min} ; Tối đa: {max}",
                 "reason": "Số tiền không tuân thủ phạm vi blockchain"
+            },
+            "multipleOf": {
+                "reading": "Để xử lý đơn đặt hàng của bạn, vui lòng nhập giá là bội số của {value}",
+                "reason": "Giá đã nhập quá cụ thể"
             }
         },
         "orderStatus": {

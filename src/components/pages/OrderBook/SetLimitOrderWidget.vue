@@ -78,29 +78,32 @@ $book-tabs-height: 64px;
   .el-tabs__nav {
     width: 100%;
   }
-  .el-tabs__header .el-tabs {
-    &__nav,
-    &__nav-wrap,
-    &__item {
-      height: $book-tabs-height;
-      line-height: $book-tabs-height;
-    }
-    &__nav {
-      .el-tabs__item {
-        width: 50%;
+  .el-tabs__header {
+    margin: 0 0 $inner-spacing-mini;
+    .el-tabs {
+      &__nav,
+      &__nav-wrap,
+      &__item {
+        height: $book-tabs-height;
+        line-height: $book-tabs-height;
       }
-    }
-    &__nav-wrap {
-      .el-tabs__item {
-        &,
-        &.is-active {
-          @include page-header-title(true);
-          border-top-right-radius: 0;
-          border-top-left-radius: inherit;
+      &__nav {
+        .el-tabs__item {
+          width: 50%;
         }
-        &:last-child {
-          border-top-right-radius: inherit;
-          border-top-left-radius: 0;
+      }
+      &__nav-wrap {
+        .el-tabs__item {
+          &,
+          &.is-active {
+            @include page-header-title(true);
+            border-top-right-radius: 0;
+            border-top-left-radius: inherit;
+          }
+          &:last-child {
+            border-top-right-radius: inherit;
+            border-top-left-radius: 0;
+          }
         }
       }
     }

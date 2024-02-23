@@ -396,7 +396,8 @@
         "Explore\/Farming": "农耕",
         "Staking": "质押",
         "OrderBook": "贸易",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "兑换",
@@ -411,7 +412,8 @@
         "StakingContainer": "质押",
         "Explore\/Container": "探索",
         "SoraCard": "{Sora}卡",
-        "OrderBook": "贸易"
+        "OrderBook": "贸易",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "推特",
@@ -1295,7 +1297,6 @@
             "remove": "移除桩",
             "more": "质押更多",
             "confirm": "确认质押",
-            "payout": "支付",
             "withdraw": "提现"
         },
         "overview": {
@@ -1313,7 +1314,8 @@
             "change": "更改验证器",
             "select": "选择验证器",
             "next": "下一个",
-            "alreadyNominated": "选定的验证者已被提名"
+            "alreadyNominated": "选定的验证者已被提名",
+            "tooManyValidators": "选择的验证器太多 ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "搜索...",
@@ -1410,7 +1412,7 @@
             "beingWithdrawn": "被撤回",
             "seeAll": "查看全部",
             "nextWithdrawal": "下次提款",
-            "countdownLeft": "左边"
+            "countdownLeft": "还剩"
         },
         "stakeDialog": {
             "toStake": "质押",
@@ -1471,7 +1473,6 @@
             "placeLimit": "下限价单",
             "askCancel": "您确定要取消所有未结订单吗？",
             "cancelAll": "是的，全部取消",
-            "noCancel": "不，不要取消它",
             "buy": "购买{amount} {symbol}",
             "sell": "卖出{amount} {symbol}",
             "at": "以{price} {symbol}"
@@ -1542,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "超出区块链范围：您输入的金额超出了区块链允许的范围。分钟： {min} ；最大值： {max}",
                 "reason": "金额不符合区块链范围"
+            },
+            "multipleOf": {
+                "reading": "要处理您的订单，请输入{value}倍数的价格",
+                "reason": "输入的价格过于具体"
             }
         },
         "orderStatus": {

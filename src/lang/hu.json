@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farmolás",
         "Staking": "Letét",
         "OrderBook": "Kereskedelmi",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Váltás",
@@ -411,7 +412,8 @@
         "StakingContainer": "Letét",
         "Explore\/Container": "Kutat",
         "SoraCard": "{Sora} Kártya",
-        "OrderBook": "Kereskedelmi"
+        "OrderBook": "Kereskedelmi",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Távolítsa el a tétet",
             "more": "Tételj többet",
             "confirm": "Erősítse meg Staking-et",
-            "payout": "Kifizetés",
             "withdraw": "Kivét"
         },
         "overview": {
@@ -1313,7 +1314,8 @@
             "change": "Változtassa meg az érvényesítőket",
             "select": "Válasszon érvényesítőket",
             "next": "Következő",
-            "alreadyNominated": "A kiválasztott érvényesítőket már jelölték"
+            "alreadyNominated": "A kiválasztott érvényesítőket már jelölték",
+            "tooManyValidators": "Túl sok érvényesítő van kiválasztva ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Keresés...",
@@ -1410,7 +1412,7 @@
             "beingWithdrawn": "Visszahúzódó",
             "seeAll": "Az összes megtekintése",
             "nextWithdrawal": "Következő visszavonás",
-            "countdownLeft": "bal"
+            "countdownLeft": "van hátra"
         },
         "stakeDialog": {
             "toStake": "A téthez",
@@ -1471,7 +1473,6 @@
             "placeLimit": "Adjon fel limites megbízást",
             "askCancel": "Biztosan törölni szeretné az összes nyitott rendelést?",
             "cancelAll": "Igen, törölje az összeset",
-            "noCancel": "Nem, ne mondd le",
             "buy": "Vásároljon {amount} {symbol}",
             "sell": "Eladás {amount} {symbol}",
             "at": "{price} {symbol} áron"
@@ -1542,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Blockchain tartomány túllépve: A megadott mennyiség kívül esik a blokklánc megengedett tartományán. Min: {min} ; Max: {max}",
                 "reason": "Az összeg nem felel meg a blokklánc-tartománynak"
+            },
+            "multipleOf": {
+                "reading": "Rendelése feldolgozásához adjon meg egy árat, amely a(z {value} többszöröse",
+                "reason": "A megadott ár túl konkrét"
             }
         },
         "orderStatus": {
