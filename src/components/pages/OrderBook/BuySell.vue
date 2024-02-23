@@ -386,14 +386,29 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   get amountAtPrice(): string {
     if (this.buttonDisabled || !this.baseValue) return '';
-    if (!this.quoteValue && !this.marketQuotePrice) return '';
+    if (!this.quoteValue) return '';
 
-    return this.t('orderBook.tradingPair.total', {
-      amount: this.baseValue,
-      symbol: this.baseSymbol,
-      amount2: this.quoteValue || this.marketQuotePrice,
-      symbol2: this.quoteSymbol,
-    });
+    // TODO: substitute translations
+    return `${this.baseValue} ${this.baseSymbol} at ${this.quoteValue || this.marketQuotePrice} ${
+      this.quoteSymbol
+    } (= ${this.total} ${this.totalAssetSymbol})`;
+
+    // return this.t('orderBook.tradingPair.total', {
+    //   amount: this.baseValue,
+    //   symbol: this.baseSymbol,
+    //   amount2: this.quoteValue || this.marketQuotePrice,
+    //   symbol2: this.quoteSymbol,
+    // });
+  }
+
+  get total(): string {
+    return this.isBuySide
+      ? this.getFPNumber(this.baseValue).mul(this.getFPNumber(this.quoteValue)).toString()
+      : this.getFPNumber(this.baseValue).toString();
+  }
+
+  get totalAssetSymbol(): string | undefined {
+    return this.isBuySide ? this.quoteSymbol : this.baseSymbol;
   }
 
   get shouldErrorTooltipBeShown(): boolean {
@@ -444,23 +459,25 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.orderBookStatus === OrderBookStatus.Stop) return;
 
-    if ((await this.singlePriceReachedLimit()) && this.quoteValue)
-      return this.setError({
-        reason: this.t('orderBook.error.singlePriceLimit.reason'),
-        reading: this.t('orderBook.error.singlePriceLimit.reading'),
-      });
+    if (this.isLimitOrder) {
+      if ((await this.singlePriceReachedLimit()) && this.quoteValue)
+        return this.setError({
+          reason: this.t('orderBook.error.singlePriceLimit.reason'),
+          reading: this.t('orderBook.error.singlePriceLimit.reading'),
+        });
 
-    if (this.userReachedOwnLimit)
-      return this.setError({
-        reason: this.t('orderBook.error.accountLimit.reason'),
-        reading: this.t('orderBook.error.accountLimit.reading'),
-      });
+      if (this.userReachedOwnLimit)
+        return this.setError({
+          reason: this.t('orderBook.error.accountLimit.reason'),
+          reading: this.t('orderBook.error.accountLimit.reading'),
+        });
 
-    if (this.userReachedSpotLimit)
-      return this.setError({
-        reason: this.t('orderBook.error.spotLimit.reason'),
-        reading: this.t('orderBook.error.spotLimit.reading'),
-      });
+      if (this.userReachedSpotLimit)
+        return this.setError({
+          reason: this.t('orderBook.error.spotLimit.reason'),
+          reading: this.t('orderBook.error.spotLimit.reading'),
+        });
+    }
 
     // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
     // if (this.isPriceTooHigh && this.quoteValue && this.baseValue)
@@ -765,6 +782,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get userReachedSpotLimit(): boolean {
+    if (this.isMarketType) return false;
+
     if ((this.side === PriceVariant.Sell ? this.asks : this.bids).length >= MAX_ORDERS_PER_SIDE && !!this.quoteValue) {
       if (this.isPriceUnique(this.quoteValue)) return true;
 
@@ -782,10 +801,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get userReachedOwnLimit(): boolean {
+    if (this.isMarketType) return false;
+
     return this.userLimitOrders?.length === MAX_ORDERS_PER_USER;
   }
 
   async singlePriceReachedLimit(): Promise<boolean> {
+    if (this.isMarketType) return false;
+
     const limitReached = !(await api.orderBook.isOrderPlaceable(
       this.baseAsset.address,
       this.quoteAsset.address,
