@@ -94,10 +94,8 @@
     />
 
     <div class="order-book-total">
-      <span class="order-book-total-title"> {{ t('orderBook.total') }}</span>
-      <div class="order-book-total-value">
-        <span class="order-book-total-value-amount">{{ amountAtPrice }}</span>
-      </div>
+      <info-line class="total-line" :label="t(`orderBook.${side}`)" :value="formattedAmountAtPrice" />
+      <info-line class="total-line" :label="t('orderBook.total')" :value="formattedTotal" :asset-symbol="quoteSymbol" />
     </div>
 
     <el-popover popper-class="book-validation__popover" trigger="hover" :visible-arrow="false">
@@ -229,6 +227,7 @@ import type { Subscription } from 'rxjs';
 @Component({
   components: {
     FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine,
     TokenInput: lazyComponent(Components.TokenInput),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     PairListPopover: lazyComponent(Components.PairListPopover),
@@ -384,31 +383,19 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return !!this.reason && !!this.reading;
   }
 
-  get amountAtPrice(): string {
-    if (this.buttonDisabled || !this.baseValue) return '';
-    if (!this.quoteValue) return '';
+  get formattedAmountAtPrice(): string {
+    if (!(this.baseValue && this.quoteValue)) return '';
 
-    // TODO: substitute translations
-    return `${this.baseValue} ${this.baseSymbol} at ${this.quoteValue || this.marketQuotePrice} ${
-      this.quoteSymbol
-    } (= ${this.total} ${this.totalAssetSymbol})`;
-
-    // return this.t('orderBook.tradingPair.total', {
-    //   amount: this.baseValue,
-    //   symbol: this.baseSymbol,
-    //   amount2: this.quoteValue || this.marketQuotePrice,
-    //   symbol2: this.quoteSymbol,
-    // });
+    return this.t('orderBook.tradingPair.total', {
+      amount: this.formatStringValue(this.baseValue),
+      symbol: this.baseSymbol,
+      amount2: this.formatStringValue(this.quoteValue || this.marketQuotePrice),
+      symbol2: this.quoteSymbol,
+    });
   }
 
-  get total(): string {
-    return this.isBuySide
-      ? this.getFPNumber(this.baseValue).mul(this.getFPNumber(this.quoteValue)).toString()
-      : this.getFPNumber(this.baseValue).toString();
-  }
-
-  get totalAssetSymbol(): string | undefined {
-    return this.isBuySide ? this.quoteSymbol : this.baseSymbol;
+  get formattedTotal(): string {
+    return this.getFPNumber(this.baseValue).mul(this.getFPNumber(this.quoteValue)).toLocaleString();
   }
 
   get shouldErrorTooltipBeShown(): boolean {
@@ -1005,7 +992,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @include custom-tabs;
 
   &__tab {
-    margin-bottom: #{$basic-spacing-medium};
+    margin-bottom: $inner-spacing-mini;
   }
 
   .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
@@ -1133,25 +1120,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   .order-book {
     &-total {
       display: flex;
-      justify-content: space-between;
-      margin: 12px 0 $basic-spacing 0;
-
-      &-value {
-        &-amount {
-          font-weight: 700;
-          margin-right: 6px;
-        }
-        &-fiat {
-          color: var(--s-color-fiat-value);
-          font-family: var(--s-font-family-default);
-          font-weight: 400;
-          line-height: var(--s-line-height-medium);
-          letter-spacing: var(--s-letter-spacing-small);
-
-          .dollar-sign {
-            opacity: 0.6;
-            margin-right: 2px;
-          }
+      flex-direction: column;
+      .total-line {
+        border-bottom: none;
+        &:last-child {
+          margin-bottom: 4px;
         }
       }
     }
