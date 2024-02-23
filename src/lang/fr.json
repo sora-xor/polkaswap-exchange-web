@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Commerce",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Échanger",
@@ -411,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Explorer",
         "SoraCard": "{Sora} Carte",
-        "OrderBook": "Commerce"
+        "OrderBook": "Commerce",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Supprimer la mise",
             "more": "Miser davantage",
             "confirm": "Confirmer le jalonnement",
-            "payout": "Paiement",
             "withdraw": "Virement"
         },
         "overview": {
@@ -1411,7 +1412,7 @@
             "beingWithdrawn": "Être retiré",
             "seeAll": "Voir tout",
             "nextWithdrawal": "Prochain retrait",
-            "countdownLeft": "gauche"
+            "countdownLeft": "il reste"
         },
         "stakeDialog": {
             "toStake": "Miser",
@@ -1472,7 +1473,6 @@
             "placeLimit": "Passer un ordre limité",
             "askCancel": "Êtes-vous sûr de vouloir annuler toutes vos commandes ouvertes ?",
             "cancelAll": "Oui, tout annuler",
-            "noCancel": "Non, ne l'annule pas",
             "buy": "Achetez {amount} {symbol}",
             "sell": "Vendre {amount} {symbol}",
             "at": "à {price} {symbol}"

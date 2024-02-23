@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Handel",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Bytte",
@@ -411,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Utforske",
         "SoraCard": "{Sora} Kort",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Fjern innsatsen",
             "more": "Sats mer",
             "confirm": "Bekreft staking",
-            "payout": "Utbetaling",
             "withdraw": "Ta ut"
         },
         "overview": {
@@ -1411,7 +1412,7 @@
             "beingWithdrawn": "Blir trukket tilbake",
             "seeAll": "Se alt",
             "nextWithdrawal": "Neste uttak",
-            "countdownLeft": "venstre"
+            "countdownLeft": "igjen"
         },
         "stakeDialog": {
             "toStake": "Å satse",
@@ -1472,7 +1473,6 @@
             "placeLimit": "Legg inn grensebestilling",
             "askCancel": "Er du sikker på at du vil kansellere alle åpne bestillinger?",
             "cancelAll": "Ja, avbryt alle",
-            "noCancel": "Nei, ikke avbryt det",
             "buy": "Kjøp {amount} {symbol}",
             "sell": "Selg {amount} {symbol}",
             "at": "til {price} {symbol}"

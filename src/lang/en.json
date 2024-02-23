@@ -1299,7 +1299,6 @@
             "remove": "Remove stake",
             "more": "Stake more",
             "confirm": "Confirm Staking",
-            "payout": "Payout",
             "withdraw": "Withdraw"
         },
         "overview": {
@@ -1496,7 +1495,6 @@
             "placeLimit": "Place limit order",
             "askCancel": "Are you sure you want to cancel all of your open orders?",
             "cancelAll": "Yes, cancel all",
-            "noCancel": "No, don’t cancel it",
             "buy": "Buy {amount} {symbol}",
             "sell": "Sell {amount} {symbol}",
             "at": "at {price} {symbol}"

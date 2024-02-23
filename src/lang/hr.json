@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farmanje",
         "Staking": "Ulaganje",
         "OrderBook": "Trgovina",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Zamijenite",
@@ -411,7 +412,8 @@
         "StakingContainer": "Ulaganje",
         "Explore\/Container": "Istražiti",
         "SoraCard": "Kartica {Sora}",
-        "OrderBook": "Trgovina"
+        "OrderBook": "Trgovina",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Uklonite ulog",
             "more": "Uložite više",
             "confirm": "Potvrdite iskolčenje",
-            "payout": "Isplata",
             "withdraw": "Povući"
         },
         "overview": {
@@ -1411,7 +1412,7 @@
             "beingWithdrawn": "Biti povučen",
             "seeAll": "Vidi sve",
             "nextWithdrawal": "Sljedeće povlačenje",
-            "countdownLeft": "lijevo"
+            "countdownLeft": "još"
         },
         "stakeDialog": {
             "toStake": "Uložiti ulog",
@@ -1472,7 +1473,6 @@
             "placeLimit": "Stavite ograničenu narudžbu",
             "askCancel": "Jeste li sigurni da želite otkazati sve otvorene narudžbe?",
             "cancelAll": "Da, otkaži sve",
-            "noCancel": "Ne, nemoj otkazati",
             "buy": "Kupite {amount} {symbol}",
             "sell": "Prodaj {amount} {symbol}",
             "at": "po {price} {symbol}"
