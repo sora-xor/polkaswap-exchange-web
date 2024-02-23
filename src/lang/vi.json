@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Buôn bán",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Đổi",
@@ -411,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Khám phá",
         "SoraCard": "{Sora} Thẻ",
-        "OrderBook": "Buôn bán"
+        "OrderBook": "Buôn bán",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Xóa cổ phần",
             "more": "Đặt cược nhiều hơn",
             "confirm": "Xác nhận đặt cược",
-            "payout": "Thanh toán",
             "withdraw": "Rút tiền"
         },
         "overview": {
@@ -1411,7 +1412,7 @@
             "beingWithdrawn": "Bị rút tiền",
             "seeAll": "Nhìn thấy tất cả",
             "nextWithdrawal": "Lần rút tiền tiếp theo",
-            "countdownLeft": "bên trái"
+            "countdownLeft": "còn"
         },
         "stakeDialog": {
             "toStake": "Để cổ phần",
@@ -1472,7 +1473,6 @@
             "placeLimit": "Đặt lệnh giới hạn",
             "askCancel": "Bạn có chắc chắn muốn hủy tất cả các lệnh đang mở của mình không?",
             "cancelAll": "Có, hủy tất cả",
-            "noCancel": "Không, đừng hủy nó",
             "buy": "Mua {amount} {symbol}",
             "sell": "Bán {amount} {symbol}",
             "at": "ở {price} {symbol}"
