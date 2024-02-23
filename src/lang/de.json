@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Handel",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Tauschen",
@@ -411,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Entdecken",
         "SoraCard": "{Sora} Karte",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Pfahl entfernen",
             "more": "Setzen Sie mehr ein",
             "confirm": "Bestätigen Sie das Abstecken",
-            "payout": "Ausschüttung",
             "withdraw": "Zurückziehen"
         },
         "overview": {
@@ -1313,7 +1314,8 @@
             "change": "Validatoren ändern",
             "select": "Wählen Sie Validatoren aus",
             "next": "Weiter",
-            "alreadyNominated": "Ausgewählte Validatoren sind bereits nominiert"
+            "alreadyNominated": "Ausgewählte Validatoren sind bereits nominiert",
+            "tooManyValidators": "Zu viele Validatoren ausgewählt ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Suchen...",
@@ -1410,7 +1412,7 @@
             "beingWithdrawn": "Zurückgezogen werden",
             "seeAll": "Alles sehen",
             "nextWithdrawal": "Nächste Auszahlung",
-            "countdownLeft": "links"
+            "countdownLeft": "noch"
         },
         "stakeDialog": {
             "toStake": "Zum Abstecken",
@@ -1471,7 +1473,6 @@
             "placeLimit": "Limit-Order aufgeben",
             "askCancel": "Sind Sie sicher, dass Sie alle Ihre offenen Bestellungen stornieren möchten?",
             "cancelAll": "Ja, alles abbrechen",
-            "noCancel": "Nein, stornieren Sie es nicht",
             "buy": "Kaufen Sie {amount} {symbol}",
             "sell": "Verkaufe {amount} {symbol}",
             "at": "zum {price} {symbol}"
@@ -1542,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Blockchain-Bereich überschritten: Ihr eingegebener Betrag liegt außerhalb des zulässigen Bereichs der Blockchain. Min: {min} ; Maximal: {max}",
                 "reason": "Der Betrag entspricht nicht dem Blockchain-Bereich"
+            },
+            "multipleOf": {
+                "reading": "Um Ihre Bestellung zu bearbeiten, geben Sie bitte einen Preis ein, der ein Vielfaches von {value} ist.",
+                "reason": "Der eingegebene Preis ist zu spezifisch"
             }
         },
         "orderStatus": {

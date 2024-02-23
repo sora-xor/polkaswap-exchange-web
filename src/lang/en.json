@@ -1297,7 +1297,6 @@
             "remove": "Remove stake",
             "more": "Stake more",
             "confirm": "Confirm Staking",
-            "payout": "Payout",
             "withdraw": "Withdraw"
         },
         "overview": {
@@ -1315,7 +1314,8 @@
             "change": "Change validators",
             "select": "Select validators",
             "next": "Next",
-            "alreadyNominated": "Selected validators already nominated"
+            "alreadyNominated": "Selected validators already nominated",
+            "tooManyValidators": "Too many validators selected ({Max} {max})"
         },
         "validatorsList": {
             "search": "Search...",
@@ -1473,7 +1473,6 @@
             "placeLimit": "Place limit order",
             "askCancel": "Are you sure you want to cancel all of your open orders?",
             "cancelAll": "Yes, cancel all",
-            "noCancel": "No, don’t cancel it",
             "buy": "Buy {amount} {symbol}",
             "sell": "Sell {amount} {symbol}",
             "at": "at {price} {symbol}"
@@ -1544,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range. Min: {min}; Max: {max}",
                 "reason": "Amount fails to comply with blockchain range"
+            },
+            "multipleOf": {
+                "reading": "To process your order, please input a price that is a multiple of {value}",
+                "reason": "Entered price is too specific"
             }
         },
         "orderStatus": {

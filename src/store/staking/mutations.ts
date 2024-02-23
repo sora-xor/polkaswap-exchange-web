@@ -11,6 +11,7 @@ import type {
   StashNominatorsInfo,
   AccountStakingLedger,
   NominatorReward,
+  ActiveEra,
 } from '@sora-substrate/util/build/staking/types';
 import type { Subscription } from 'rxjs';
 
@@ -55,8 +56,9 @@ const mutations = defineMutations<StakingState>()({
     state.totalNominators = totalNominators;
   },
 
-  setActiveEra(state, era: Nullable<number>): void {
-    state.activeEra = era;
+  setActiveEra(state, era: ActiveEra): void {
+    state.activeEra = era.index;
+    state.activeEraStart = era.start;
   },
   setActiveEraUpdates(state, updates: Subscription): void {
     state.activeEraUpdates = updates;

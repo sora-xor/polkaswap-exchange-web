@@ -173,7 +173,9 @@ const actions = defineActions({
 
     await new Promise<void>((resolve) => {
       subscription = observable.subscribe((era) => {
-        commit.setActiveEra(era?.index);
+        if (era) {
+          commit.setActiveEra(era);
+        }
         resolve();
       });
     });
@@ -207,7 +209,7 @@ const actions = defineActions({
 
     commit.resetCurrentEraTotalStakeUpdates();
 
-    if (!state.currentEra) throw new Error('Current era is not set');
+    if (state.currentEra === undefined || state.currentEra === null) throw new Error('Current era is not set');
 
     const observable = api.staking.getEraTotalStakeObservable(state.currentEra);
 

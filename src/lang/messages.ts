@@ -819,7 +819,7 @@ export default {
     rewards: '{symbol} rewards',
   },
   soraStaking: {
-    title: 'Staking',
+    selectedValidators: '{count} ({Max} {max})',
     dropdownMenu: {
       controllerAccount: 'Controller account',
     },
@@ -828,6 +828,8 @@ export default {
       remove: 'Remove stake',
       more: 'Stake more',
       payout: 'Payout',
+      confirm: 'Confirm Staking',
+      withdraw: 'Withdraw',
     },
     overview: {
       title: '{Sora} Staking',
@@ -846,6 +848,7 @@ export default {
       change: 'Change validators',
       select: 'Select validators',
       alreadyNominated: 'Selected validators already nominated',
+      tooManyValidators: 'Too many validators selected ({Max} {max})',
     },
     validatorsList: {
       search: 'Search...',
@@ -853,11 +856,11 @@ export default {
       commission: 'Commission',
       commissionTooltip:
         "Commission refers to the fee charged by validators for their services in the staking process. This fee, expressed as a percentage, is deducted from the staking rewards earned by nominators before distribution. It's important to note that validators can adjust their commission rates at any time",
+      return: 'Return',
       noNominatedValidators: "You don't have any nominated validators",
       noValidators: 'There are no validators satisfying the specified filter',
     },
     info: {
-      redeemable: 'Redeemable',
       unstaking: 'Unstaking',
       stakingBalance: 'Staking balance',
       rewarded: 'Rewarded',
@@ -868,6 +871,13 @@ export default {
       nominators: 'Nominators',
       validators: 'Validators',
       selectedValidators: 'Selected validators',
+    },
+    withdraw: {
+      countdownLeft: 'left',
+      withdrawable: 'Withdrawable',
+      beingWithdrawn: 'Being withdrawn',
+      seeAll: 'See all',
+      nextWithdrawal: 'Next withdrawal',
     },
     validatorsFilterDialog: {
       title: 'Filters',
@@ -899,8 +909,8 @@ export default {
         edit: 'Edit My Validators',
       },
       tabs: {
-        [ValidatorsListMode.USER]: 'Your validators',
-        [ValidatorsListMode.ALL]: 'All validators',
+        [ValidatorsListMode.USER]: 'Yours',
+        [ValidatorsListMode.ALL]: 'All',
       },
     },
     validatorsAttentionDialog: {
@@ -924,6 +934,19 @@ export default {
       payout: 'Payout',
       information:
         'Validators payout the rewards every 2-5 days. However, you can payout them by yourself, especially if rewards are close to expiring, but you will pay the fee.',
+    },
+    stakeDialog: {
+      toStake: 'To stake',
+      toRemove: 'To remove',
+    },
+    withdrawDialog: {
+      title: 'Withdraw unstaked funds',
+      showAllWithdraws: 'Show all withdraws',
+    },
+    allWithdrawsDialog: {
+      title: 'Unstaking activity',
+      information:
+        'Once you unstake tokens, there is a mandatory 7-day unstaking period. After this period, your tokens will not be automatically returned to your wallet. You must complete the process by manually withdrawing your tokens.',
     },
     selectValidatorsMode: {
       title: 'Stake with validators suggested by the algorithm',
@@ -1096,6 +1119,10 @@ export default {
       expiryDate: 'expiry date',
     },
     error: {
+      multipleOf: {
+        reason: 'Entered price is too specific',
+        reading: 'To process your order, please input a price that is a multiple of {value}',
+      },
       beyondPrecision: {
         reason: 'Entered price is too precise to calculate',
         reading:

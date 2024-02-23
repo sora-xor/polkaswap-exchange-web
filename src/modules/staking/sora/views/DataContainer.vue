@@ -98,6 +98,8 @@ export default class SoraStakingContainer extends Mixins(StakingMixin, Subscript
 
 <style lang="scss">
 .sora-staking-container {
+  display: flex;
+  flex-direction: column;
   .info-line:last-child {
     border-bottom: none;
   }
