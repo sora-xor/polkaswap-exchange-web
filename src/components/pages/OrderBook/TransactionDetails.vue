@@ -21,7 +21,6 @@
       is-formatted
     />
     <info-line
-      v-if="!isMarketType"
       :label="t(`assets.balance.locked`)"
       :label-tooltip="t('orderBook.tooltip.txDetails.locked')"
       :value="locked"
