@@ -944,16 +944,14 @@ export default class SwapChart extends Mixins(
     }
   }
 
-  async resetChartTypeZoom() {
-    await this.$nextTick();
-
+  private async resetChartTypeZoom(): Promise<void> {
     const { count, group } = this.selectedFilter;
     const items = this.chartData.length;
     const visible = count / (group ?? 1);
     const start = items > visible ? ((items - visible) * 100) / items : 0;
     const end = 100;
 
-    this.setChartZoomLevel(start, end);
+    await this.setChartZoomLevel(start, end);
   }
 
   private async resetAndUpdatePrices(saveReversedState = false): Promise<void> {
@@ -962,8 +960,10 @@ export default class SwapChart extends Mixins(
     await this.subscribeToPriceUpdates();
   }
 
-  selectChartType(type: CHART_TYPES): void {
+  async selectChartType(type: CHART_TYPES): Promise<void> {
     this.chartType = type;
+
+    await this.setChartZoomLevel(this.zoomStart, this.zoomEnd);
   }
 
   handleZoom(event: any): void {
@@ -979,7 +979,9 @@ export default class SwapChart extends Mixins(
     this.zoomEnd = data?.end ?? 0;
   }
 
-  private setChartZoomLevel(start: number, end: number): void {
+  private async setChartZoomLevel(start: number, end: number): Promise<void> {
+    await this.$nextTick();
+
     const chart = this.$refs.chart as any;
 
     chart.dispatchAction({
