@@ -841,9 +841,9 @@ export default class SwapChart extends Mixins(
     } else {
       return this.$watch(
         () => this.fiatPriceObject,
-        async (updated, prev) => {
+        (updated, prev) => {
           if (updated && (!prev || entities.some((addr) => updated[addr] !== prev[addr]))) {
-            await this.fetchAndHandleUpdate(entities);
+            this.fetchAndHandleUpdate(entities);
           }
         }
       );
