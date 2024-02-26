@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Berdagang",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -411,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Menjelajahi",
         "SoraCard": "{Sora} Kartu",
-        "OrderBook": "Berdagang"
+        "OrderBook": "Berdagang",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Hapus taruhan",
             "more": "Taruhan lebih banyak",
             "confirm": "Konfirmasikan Taruhan",
-            "payout": "Pembayaran",
             "withdraw": "Withdraw"
         },
         "overview": {
@@ -1411,7 +1412,7 @@
             "beingWithdrawn": "Ditarik",
             "seeAll": "Lihat semua",
             "nextWithdrawal": "Penarikan berikutnya",
-            "countdownLeft": "kiri"
+            "countdownLeft": "tinggal"
         },
         "stakeDialog": {
             "toStake": "Untuk mempertaruhkan",
@@ -1472,7 +1473,6 @@
             "placeLimit": "Tempatkan pesanan batas",
             "askCancel": "Apakah Anda yakin ingin membatalkan semua pesanan terbuka Anda?",
             "cancelAll": "Ya, batalkan semuanya",
-            "noCancel": "Tidak, jangan batalkan",
             "buy": "Beli {amount} {symbol}",
             "sell": "Jual {amount} {symbol}",
             "at": "pada {price} {symbol}"

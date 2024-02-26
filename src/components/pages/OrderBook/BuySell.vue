@@ -94,10 +94,8 @@
     />
 
     <div class="order-book-total">
-      <span class="order-book-total-title"> {{ t('orderBook.total') }}</span>
-      <div class="order-book-total-value">
-        <span class="order-book-total-value-amount">{{ amountAtPrice }}</span>
-      </div>
+      <info-line class="total-line" :label="t(`orderBook.${side}`)" :value="formattedAmountAtPrice" />
+      <info-line class="total-line" :label="t('orderBook.total')" :value="formattedTotal" :asset-symbol="quoteSymbol" />
     </div>
 
     <el-popover popper-class="book-validation__popover" trigger="hover" :visible-arrow="false">
@@ -229,6 +227,7 @@ import type { Subscription } from 'rxjs';
 @Component({
   components: {
     FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine,
     TokenInput: lazyComponent(Components.TokenInput),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     PairListPopover: lazyComponent(Components.PairListPopover),
@@ -384,16 +383,19 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return !!this.reason && !!this.reading;
   }
 
-  get amountAtPrice(): string {
-    if (this.buttonDisabled || !this.baseValue) return '';
-    if (!this.quoteValue && !this.marketQuotePrice) return '';
+  get formattedAmountAtPrice(): string {
+    if (!(this.baseValue && this.quoteValue)) return '';
 
     return this.t('orderBook.tradingPair.total', {
-      amount: this.baseValue,
+      amount: this.formatStringValue(this.baseValue),
       symbol: this.baseSymbol,
-      amount2: this.quoteValue || this.marketQuotePrice,
+      amount2: this.formatStringValue(this.quoteValue || this.marketQuotePrice),
       symbol2: this.quoteSymbol,
     });
+  }
+
+  get formattedTotal(): string {
+    return this.getFPNumber(this.baseValue).mul(this.getFPNumber(this.quoteValue)).toLocaleString();
   }
 
   get shouldErrorTooltipBeShown(): boolean {
@@ -444,23 +446,25 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
     if (this.orderBookStatus === OrderBookStatus.Stop) return;
 
-    if ((await this.singlePriceReachedLimit()) && this.quoteValue)
-      return this.setError({
-        reason: this.t('orderBook.error.singlePriceLimit.reason'),
-        reading: this.t('orderBook.error.singlePriceLimit.reading'),
-      });
+    if (this.isLimitOrder) {
+      if ((await this.singlePriceReachedLimit()) && this.quoteValue)
+        return this.setError({
+          reason: this.t('orderBook.error.singlePriceLimit.reason'),
+          reading: this.t('orderBook.error.singlePriceLimit.reading'),
+        });
 
-    if (this.userReachedOwnLimit)
-      return this.setError({
-        reason: this.t('orderBook.error.accountLimit.reason'),
-        reading: this.t('orderBook.error.accountLimit.reading'),
-      });
+      if (this.userReachedOwnLimit)
+        return this.setError({
+          reason: this.t('orderBook.error.accountLimit.reason'),
+          reading: this.t('orderBook.error.accountLimit.reading'),
+        });
 
-    if (this.userReachedSpotLimit)
-      return this.setError({
-        reason: this.t('orderBook.error.spotLimit.reason'),
-        reading: this.t('orderBook.error.spotLimit.reading'),
-      });
+      if (this.userReachedSpotLimit)
+        return this.setError({
+          reason: this.t('orderBook.error.spotLimit.reason'),
+          reading: this.t('orderBook.error.spotLimit.reading'),
+        });
+    }
 
     // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
     // if (this.isPriceTooHigh && this.quoteValue && this.baseValue)
@@ -765,6 +769,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get userReachedSpotLimit(): boolean {
+    if (this.isMarketType) return false;
+
     if ((this.side === PriceVariant.Sell ? this.asks : this.bids).length >= MAX_ORDERS_PER_SIDE && !!this.quoteValue) {
       if (this.isPriceUnique(this.quoteValue)) return true;
 
@@ -782,10 +788,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get userReachedOwnLimit(): boolean {
+    if (this.isMarketType) return false;
+
     return this.userLimitOrders?.length === MAX_ORDERS_PER_USER;
   }
 
   async singlePriceReachedLimit(): Promise<boolean> {
+    if (this.isMarketType) return false;
+
     const limitReached = !(await api.orderBook.isOrderPlaceable(
       this.baseAsset.address,
       this.quoteAsset.address,
@@ -982,7 +992,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @include custom-tabs;
 
   &__tab {
-    margin-bottom: #{$basic-spacing-medium};
+    margin-bottom: $inner-spacing-mini;
   }
 
   .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
@@ -1110,25 +1120,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   .order-book {
     &-total {
       display: flex;
-      justify-content: space-between;
-      margin: 12px 0 $basic-spacing 0;
-
-      &-value {
-        &-amount {
-          font-weight: 700;
-          margin-right: 6px;
-        }
-        &-fiat {
-          color: var(--s-color-fiat-value);
-          font-family: var(--s-font-family-default);
-          font-weight: 400;
-          line-height: var(--s-line-height-medium);
-          letter-spacing: var(--s-letter-spacing-small);
-
-          .dollar-sign {
-            opacity: 0.6;
-            margin-right: 2px;
-          }
+      flex-direction: column;
+      .total-line {
+        border-bottom: none;
+        &:last-child {
+          margin-bottom: 4px;
         }
       }
     }

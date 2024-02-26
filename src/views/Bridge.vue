@@ -410,15 +410,11 @@ export default class Bridge extends Mixins(
     if (!(this.asset && this.isRegisteredAsset)) return ZeroStringValue;
 
     const fee = this.isSoraToEvm ? this.soraNetworkFee : this.externalNetworkFee;
+
     let maxBalance = getMaxBalance(this.asset, fee, {
       isExternalBalance: !this.isSoraToEvm,
       isExternalNative: this.isNativeTokenSelected,
     });
-
-    if (this.isNativeTokenSelected) {
-      const transferFee = this.getFPNumberFromCodec(this.externalTransferFee, this.asset?.externalDecimals);
-      maxBalance = maxBalance.sub(transferFee).max(FPNumber.ZERO);
-    }
 
     if (this.transferMaxAmount && FPNumber.gt(maxBalance, this.transferMaxAmount)) {
       maxBalance = this.transferMaxAmount;
@@ -458,7 +454,10 @@ export default class Bridge extends Mixins(
     return (
       !!this.sender &&
       this.isRegisteredAsset &&
-      hasInsufficientBalance(this.asset, this.amountSend, fee, !this.isSoraToEvm)
+      hasInsufficientBalance(this.asset, this.amountSend, fee, {
+        isExternalBalance: !this.isSoraToEvm,
+        isExternalNative: this.isNativeTokenSelected,
+      })
     );
   }
 
@@ -515,10 +514,6 @@ export default class Bridge extends Mixins(
       isXor: isXorAccountAsset(this.asset),
       amount: this.getFPNumber(this.amountSend),
     });
-  }
-
-  get isNativeTokenSelected(): boolean {
-    return this.nativeToken?.address === this.asset?.address;
   }
 
   get isNativeTokenSufficientForNextOperation(): boolean {

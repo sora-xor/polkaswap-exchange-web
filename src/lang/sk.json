@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farmárčenie",
         "Staking": "Stakovanie",
         "OrderBook": "Obchodovať",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Výmena",
@@ -411,7 +412,8 @@
         "StakingContainer": "Stakovanie",
         "Explore\/Container": "Preskúmať",
         "SoraCard": "{Sora} Karta",
-        "OrderBook": "Obchodovať"
+        "OrderBook": "Obchodovať",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Odstráňte kolík",
             "more": "Stavte viac",
             "confirm": "Potvrďte Staking",
-            "payout": "Výplata",
             "withdraw": "Výber"
         },
         "overview": {
@@ -1411,7 +1412,7 @@
             "beingWithdrawn": "Byť stiahnutý",
             "seeAll": "Vidieť všetko",
             "nextWithdrawal": "Ďalší odber",
-            "countdownLeft": "vľavo"
+            "countdownLeft": "zostáva"
         },
         "stakeDialog": {
             "toStake": "Vsadiť",
@@ -1472,7 +1473,6 @@
             "placeLimit": "Zadajte limitnú objednávku",
             "askCancel": "Naozaj chcete zrušiť všetky svoje otvorené objednávky?",
             "cancelAll": "Áno, zrušiť všetky",
-            "noCancel": "Nie, nezrušte to",
             "buy": "Kúpiť {amount} {symbol}",
             "sell": "Predajte {amount} {symbol}",
             "at": "za {price} {symbol}"
