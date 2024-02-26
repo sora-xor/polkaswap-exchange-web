@@ -67,7 +67,7 @@
             tabindex="-1"
             class="status-tooltip"
           >
-            <s-icon name="info-16" size="14px" />
+            <s-icon name="info-16" size="14px" @click.native="handleClickStatusTooltip" />
           </s-tooltip>
         </template>
       </s-table-column>
@@ -184,6 +184,10 @@ export default class PairListPopover extends Mixins(
       default:
         return this.t('unknownErrorText');
     }
+  }
+
+  handleClickStatusTooltip(e?: Event): void {
+    e?.stopPropagation();
   }
 }
 </script>

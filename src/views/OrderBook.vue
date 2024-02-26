@@ -277,10 +277,12 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
 }
 
 .app-main--orderbook {
-  .icon-container {
+  .app-sidebar .icon-container {
     & + span {
-      @include desktop(true) {
-        display: none;
+      @include large-mobile {
+        @include desktop(true) {
+          display: none; // AppMenu - Disable menu titles between large-mobile and desktop
+        }
       }
     }
   }

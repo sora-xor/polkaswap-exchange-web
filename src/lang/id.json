@@ -63,7 +63,9 @@
             "StakingSetPayee": "Tetapkan penerima pembayaran {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} pada {price} {symbol2} ditempatkan",
             "OrderBookCancelLimitOrder": "Batas pesanan dibatalkan",
-            "OrderBookCancelLimitOrders": "Batasi pesanan dibatalkan"
+            "OrderBookCancelLimitOrders": "Batasi pesanan dibatalkan",
+            "Burn": "Terbakar {amount} {symbol}",
+            "Mint": "Dicetak {amount} {symbol} ke {address}"
         },
         "error": {
             "Transfer": "Gagal {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Gagal menetapkan penerima pembayaran {address}",
             "OrderBookPlaceLimitOrder": "Gagal menempatkan limit order {amount} {symbol} pada {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Gagal membatalkan pesanan batas",
-            "OrderBookCancelLimitOrder": "Gagal membatalkan pesanan batas"
+            "OrderBookCancelLimitOrder": "Gagal membatalkan pesanan batas",
+            "Burn": "Gagal membakar {amount} {symbol}",
+            "Mint": "Gagal mencetak {amount} {symbol} ke {address}"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Tetapkan Penerima Pembayaran",
         "OrderBookPlaceLimitOrder": "Tempatkan Pesanan",
         "OrderBookCancelLimitOrder": "Batalkan pesanan",
-        "OrderBookCancelLimitOrders": "Batalkan Pesanan"
+        "OrderBookCancelLimitOrders": "Batalkan Pesanan",
+        "Burn": "Membakar",
+        "Mint": "daun mint"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi {PolkadotJs} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",
@@ -390,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Berdagang",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -405,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Menjelajahi",
         "SoraCard": "{Sora} Kartu",
-        "OrderBook": "Berdagang"
+        "OrderBook": "Berdagang",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1287,7 +1295,9 @@
         "actions": {
             "claim": "Klaim hadiah",
             "remove": "Hapus taruhan",
-            "more": "Taruhan lebih banyak"
+            "more": "Taruhan lebih banyak",
+            "confirm": "Konfirmasikan Taruhan",
+            "withdraw": "Withdraw"
         },
         "overview": {
             "title": "{Sora} Mempertaruhkan",
@@ -1304,7 +1314,8 @@
             "change": "Ubah validator",
             "select": "Pilih validator",
             "next": "Berikutnya",
-            "alreadyNominated": "Validator terpilih sudah dinominasikan"
+            "alreadyNominated": "Validator terpilih sudah dinominasikan",
+            "tooManyValidators": "Terlalu banyak validator yang dipilih ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Mencari...",
@@ -1312,10 +1323,10 @@
             "noNominatedValidators": "Anda tidak memiliki validator yang dinominasikan",
             "noValidators": "Tidak ada validator yang memenuhi filter yang ditentukan",
             "commission": "Komisi",
-            "commissionTooltip": "Komisi mengacu pada biaya yang dibebankan oleh validator atas layanan mereka dalam proses staking. Biaya ini, yang dinyatakan dalam persentase, dipotong dari imbalan staking yang diperoleh nominator sebelum didistribusikan. Penting untuk diperhatikan bahwa validator dapat menyesuaikan tarif komisinya kapan saja"
+            "commissionTooltip": "Komisi mengacu pada biaya yang dibebankan oleh validator atas layanan mereka dalam proses staking. Biaya ini, yang dinyatakan dalam persentase, dipotong dari imbalan staking yang diperoleh nominator sebelum didistribusikan. Penting untuk diperhatikan bahwa validator dapat menyesuaikan tarif komisinya kapan saja",
+            "return": "Kembali"
         },
         "info": {
-            "redeemable": "Dapat ditukarkan",
             "unstaking": "Tidak mempertaruhkan",
             "stakingBalance": "Saldo taruhan",
             "rewarded": "Dihargai",
@@ -1394,6 +1405,26 @@
             "title": "Klaim hadiah",
             "checkRewards": "Periksa hadiah per era dan validator",
             "rewardsDestination": "Alamat tujuan hadiah"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Dapat ditarik",
+            "beingWithdrawn": "Ditarik",
+            "seeAll": "Lihat semua",
+            "nextWithdrawal": "Penarikan berikutnya",
+            "countdownLeft": "tinggal"
+        },
+        "stakeDialog": {
+            "toStake": "Untuk mempertaruhkan",
+            "toRemove": "Untuk menghapus"
+        },
+        "withdrawDialog": {
+            "title": "Tarik dana yang belum dipertaruhkan",
+            "showAllWithdraws": "Tampilkan semua penarikan"
+        },
+        "allWithdrawsDialog": {
+            "title": "Aktivitas yang tidak mempertaruhkan",
+            "information": "Setelah Anda membatalkan staking token, ada periode wajib unstaking selama 7 hari. Setelah periode ini, token Anda tidak akan otomatis dikembalikan ke dompet Anda. Anda harus menyelesaikan prosesnya dengan menarik token Anda secara manual."
         }
     },
     "collapseText": "Runtuh",
@@ -1442,7 +1473,6 @@
             "placeLimit": "Tempatkan pesanan batas",
             "askCancel": "Apakah Anda yakin ingin membatalkan semua pesanan terbuka Anda?",
             "cancelAll": "Ya, batalkan semuanya",
-            "noCancel": "Tidak, jangan batalkan",
             "buy": "Beli {amount} {symbol}",
             "sell": "Jual {amount} {symbol}",
             "at": "pada {price} {symbol}"
@@ -1513,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Rentang blockchain terlampaui: Jumlah yang Anda masukkan berada di luar rentang yang diizinkan oleh blockchain. Minimal: {min} ; Maks: {max}",
                 "reason": "Jumlah gagal mematuhi kisaran blockchain"
+            },
+            "multipleOf": {
+                "reading": "Untuk memproses pesanan Anda, harap masukkan harga kelipatan {value}",
+                "reason": "Harga yang dimasukkan terlalu spesifik"
             }
         },
         "orderStatus": {

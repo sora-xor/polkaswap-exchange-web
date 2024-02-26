@@ -63,7 +63,9 @@
             "StakingSetPayee": "Définir le bénéficiaire {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} à {price} {symbol2} placé",
             "OrderBookCancelLimitOrder": "Ordre limité annulé",
-            "OrderBookCancelLimitOrders": "Ordres limités annulés"
+            "OrderBookCancelLimitOrders": "Ordres limités annulés",
+            "Burn": "Brûlé {amount} {symbol}",
+            "Mint": "Frappé {amount} {symbol} à {address}"
         },
         "error": {
             "Transfer": "Échec de {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Échec de la définition du bénéficiaire {address}",
             "OrderBookPlaceLimitOrder": "Échec de la passation d'une commande limitée de {amount} {symbol} à {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Échec de l'annulation des ordres limités",
-            "OrderBookCancelLimitOrder": "Échec de l'annulation de l'ordre limité"
+            "OrderBookCancelLimitOrder": "Échec de l'annulation de l'ordre limité",
+            "Burn": "Échec de la gravure {amount} {symbol}",
+            "Mint": "Échec de la création {amount} {symbol} à {address}"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Définir le bénéficiaire",
         "OrderBookPlaceLimitOrder": "Passer la commande",
         "OrderBookCancelLimitOrder": "annuler la commande",
-        "OrderBookCancelLimitOrders": "Annuler les commandes"
+        "OrderBookCancelLimitOrders": "Annuler les commandes",
+        "Burn": "Brûler",
+        "Mint": "menthe"
     },
     "polkadotjs": {
         "noExtensions": "Aucune extension {PolkadotJs} n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
@@ -390,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Commerce",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Échanger",
@@ -405,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Explorer",
         "SoraCard": "{Sora} Carte",
-        "OrderBook": "Commerce"
+        "OrderBook": "Commerce",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1287,7 +1295,9 @@
         "actions": {
             "claim": "Réclamez des récompenses",
             "remove": "Supprimer la mise",
-            "more": "Miser davantage"
+            "more": "Miser davantage",
+            "confirm": "Confirmer le jalonnement",
+            "withdraw": "Virement"
         },
         "overview": {
             "title": "{Sora} Jalonnement",
@@ -1304,7 +1314,8 @@
             "change": "Changer les validateurs",
             "select": "Sélectionnez les validateurs",
             "next": "Suivant",
-            "alreadyNominated": "Validateurs sélectionnés déjà nominés"
+            "alreadyNominated": "Validateurs sélectionnés déjà nominés",
+            "tooManyValidators": "Trop de validateurs sélectionnés ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Recherche...",
@@ -1312,10 +1323,10 @@
             "noNominatedValidators": "Vous n'avez aucun validateur nommé",
             "noValidators": "Il n'y a aucun validateur satisfaisant au filtre spécifié",
             "commission": "Commission",
-            "commissionTooltip": "La commission fait référence aux frais facturés par les validateurs pour leurs services dans le processus de jalonnement. Ces frais, exprimés en pourcentage, sont déduits des récompenses de mise gagnées par les proposants avant distribution. Il est important de noter que les validateurs peuvent ajuster leurs taux de commission à tout moment."
+            "commissionTooltip": "La commission fait référence aux frais facturés par les validateurs pour leurs services dans le processus de jalonnement. Ces frais, exprimés en pourcentage, sont déduits des récompenses de mise gagnées par les proposants avant distribution. Il est important de noter que les validateurs peuvent ajuster leurs taux de commission à tout moment.",
+            "return": "Retour"
         },
         "info": {
-            "redeemable": "Rachetable",
             "unstaking": "Détachement",
             "stakingBalance": "Solde de jalonnement",
             "rewarded": "Récompensé",
@@ -1394,6 +1405,26 @@
             "title": "Réclamez des récompenses",
             "checkRewards": "Vérifiez les récompenses par époque et validateur",
             "rewardsDestination": "Adresse de destination des récompenses"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Retirable",
+            "beingWithdrawn": "Être retiré",
+            "seeAll": "Voir tout",
+            "nextWithdrawal": "Prochain retrait",
+            "countdownLeft": "il reste"
+        },
+        "stakeDialog": {
+            "toStake": "Miser",
+            "toRemove": "Retirer"
+        },
+        "withdrawDialog": {
+            "title": "Retirer des fonds non mis en gage",
+            "showAllWithdraws": "Afficher tous les retraits"
+        },
+        "allWithdrawsDialog": {
+            "title": "Activité sans enjeu",
+            "information": "Une fois que vous avez retiré les jetons, il y a une période de retrait obligatoire de 7 jours. Passé ce délai, vos tokens ne seront pas automatiquement restitués dans votre portefeuille. Vous devez terminer le processus en retirant manuellement vos jetons."
         }
     },
     "collapseText": "Réduire",
@@ -1442,7 +1473,6 @@
             "placeLimit": "Passer un ordre limité",
             "askCancel": "Êtes-vous sûr de vouloir annuler toutes vos commandes ouvertes ?",
             "cancelAll": "Oui, tout annuler",
-            "noCancel": "Non, ne l'annule pas",
             "buy": "Achetez {amount} {symbol}",
             "sell": "Vendre {amount} {symbol}",
             "at": "à {price} {symbol}"
@@ -1513,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Plage de la blockchain dépassée : le montant que vous avez saisi se situe en dehors de la plage autorisée de la blockchain. Min : {min} ; Max : {max}",
                 "reason": "Le montant ne respecte pas la plage de la blockchain"
+            },
+            "multipleOf": {
+                "reading": "Pour traiter votre commande, veuillez saisir un prix qui est un multiple de {value}",
+                "reason": "Le prix saisi est trop spécifique"
             }
         },
         "orderStatus": {

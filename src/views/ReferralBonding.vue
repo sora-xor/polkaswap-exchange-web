@@ -134,7 +134,12 @@ export default class ReferralBonding extends Mixins(
   }
 
   get isInsufficientBondedXor(): boolean {
-    return !!this.xor && hasInsufficientBalance(this.xor, this.amount, this.networkFee, false, this.isBondedBalance);
+    return (
+      !!this.xor &&
+      hasInsufficientBalance(this.xor, this.amount, this.networkFee, {
+        isBondedBalance: this.isBondedBalance,
+      })
+    );
   }
 
   get isInsufficientXorForFee(): boolean {

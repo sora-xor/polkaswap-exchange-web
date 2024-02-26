@@ -63,7 +63,9 @@
             "StakingSetPayee": "Ustaw odbiorcę płatności {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} po {price} {symbol2}",
             "OrderBookCancelLimitOrder": "Zlecenie limitowane anulowane",
-            "OrderBookCancelLimitOrders": "Zamówienia z limitem anulowane"
+            "OrderBookCancelLimitOrders": "Zamówienia z limitem anulowane",
+            "Burn": "Spalony {amount} {symbol}",
+            "Mint": "Wybito {amount} {symbol} na {address}"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Nie udało się ustawić odbiorcy płatności {address}",
             "OrderBookPlaceLimitOrder": "Nie udało się złożyć zamówienia z limitem {amount} {symbol} po {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Nie udało się anulować zleceń z limitem",
-            "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem"
+            "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem",
+            "Burn": "Nie udało się nagrać {amount} {symbol}",
+            "Mint": "Nie udało się wybić {amount} {symbol} na {address}"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Ustaw odbiorcę",
         "OrderBookPlaceLimitOrder": "Złożyć zamówienie",
         "OrderBookCancelLimitOrder": "Anuluj zamówienie",
-        "OrderBookCancelLimitOrders": "Anuluj zamówienia"
+        "OrderBookCancelLimitOrders": "Anuluj zamówienia",
+        "Burn": "Oparzenie",
+        "Mint": "Mennica"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia {PolkadotJs}. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -390,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Handel",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Wymiana",
@@ -405,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Badać",
         "SoraCard": "{Sora} Karta",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1287,7 +1295,9 @@
         "actions": {
             "claim": "Odbieraj nagrody",
             "remove": "Usuń stawkę",
-            "more": "Stawiaj więcej"
+            "more": "Stawiaj więcej",
+            "confirm": "Potwierdź stakowanie",
+            "withdraw": "Wypłacanie"
         },
         "overview": {
             "title": "{Sora} Wytyczania",
@@ -1304,7 +1314,8 @@
             "change": "Zmień walidatory",
             "select": "Wybierz walidatory",
             "next": "Dalej",
-            "alreadyNominated": "Wybrani walidatorzy już nominowani"
+            "alreadyNominated": "Wybrani walidatorzy już nominowani",
+            "tooManyValidators": "Wybrano zbyt wiele walidatorów ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Szukaj...",
@@ -1312,10 +1323,10 @@
             "noNominatedValidators": "Nie masz żadnych wyznaczonych walidatorów",
             "noValidators": "Brak walidatorów spełniających określony filtr",
             "commission": "Zamawiać",
-            "commissionTooltip": "Prowizja odnosi się do opłaty pobieranej przez walidatorów za ich usługi w procesie obstawiania. Opłata ta, wyrażona procentowo, jest odejmowana od nagród za obstawianie zdobytych przez nominatorów przed dystrybucją. Należy pamiętać, że walidatorzy mogą w dowolnym momencie dostosować stawki prowizji"
+            "commissionTooltip": "Prowizja odnosi się do opłaty pobieranej przez walidatorów za ich usługi w procesie obstawiania. Opłata ta, wyrażona procentowo, jest odejmowana od nagród za obstawianie zdobytych przez nominatorów przed dystrybucją. Należy pamiętać, że walidatorzy mogą w dowolnym momencie dostosować stawki prowizji",
+            "return": "Powrót"
         },
         "info": {
-            "redeemable": "Odkupny",
             "unstaking": "Odstawienie",
             "stakingBalance": "Bilans stawek",
             "rewarded": "Wynagrodzony",
@@ -1394,6 +1405,26 @@
             "title": "Odbieraj nagrody",
             "checkRewards": "Sprawdź nagrody według epoki i walidatora",
             "rewardsDestination": "Adres docelowy nagród"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Możliwość wypłaty",
+            "beingWithdrawn": "Będąc wycofanym",
+            "seeAll": "Widzieć wszystko",
+            "nextWithdrawal": "Następne wycofanie",
+            "countdownLeft": "pozostało"
+        },
+        "stakeDialog": {
+            "toStake": "Stawiać",
+            "toRemove": "Usuwać"
+        },
+        "withdrawDialog": {
+            "title": "Wypłać niepostawione środki",
+            "showAllWithdraws": "Pokaż wszystkie wypłaty"
+        },
+        "allWithdrawsDialog": {
+            "title": "Bezinteresowna aktywność",
+            "information": "Po odstawieniu tokenów następuje obowiązkowy 7-dniowy okres odstawiania. Po tym okresie Twoje tokeny nie zostaną automatycznie zwrócone do Twojego portfela. Musisz zakończyć proces, ręcznie wycofując swoje tokeny."
         }
     },
     "collapseText": "Zawalić się",
@@ -1442,7 +1473,6 @@
             "placeLimit": "Złóż zamówienie z limitem",
             "askCancel": "Czy na pewno chcesz anulować wszystkie otwarte zamówienia?",
             "cancelAll": "Tak, anuluj wszystko",
-            "noCancel": "Nie, nie odwołuj tego",
             "buy": "Kup {amount} {symbol}",
             "sell": "Sprzedaj {amount} {symbol}",
             "at": "w {price} {symbol}"
@@ -1513,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Przekroczony zakres Blockchain: Wprowadzona kwota wykracza poza dozwolony zakres Blockchain. Min.: {min} ; Maks.: {max}",
                 "reason": "Kwota nie jest zgodna z zakresem blockchain"
+            },
+            "multipleOf": {
+                "reading": "Aby zrealizować zamówienie, wprowadź cenę będącą wielokrotnością {value}",
+                "reason": "Wprowadzona cena jest zbyt szczegółowa"
             }
         },
         "orderStatus": {

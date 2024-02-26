@@ -276,6 +276,11 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.OrderBook),
   },
   {
+    path: '/kensetsu',
+    name: PageNames.Kensetsu,
+    component: lazyView(PageNames.Kensetsu),
+  },
+  {
     path: '*',
     redirect: '/swap',
   },

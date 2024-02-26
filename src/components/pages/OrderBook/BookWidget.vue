@@ -14,7 +14,7 @@
         </s-tooltip>
       </div>
       <s-dropdown
-        v-if="showAggregationOptions"
+        v-if="false"
         class="stock-book__switcher"
         trigger="click"
         :size="18"
@@ -192,9 +192,10 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     }
 
     // Remove this line if supporting all precisions
-    steps.splice(steps.indexOf('1') + 1, Infinity, min.toString());
+    // steps.splice(steps.indexOf('1') + 1, Infinity, min.toString());
 
-    return steps;
+    // [NOTE]: as there is no corridor check, return only useful step distribution
+    return steps.slice(-6);
   }
 
   get showAggregationOptions(): boolean {
@@ -238,44 +239,6 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   get asksFormatted() {
-    const aggregatedAsks = this.formatPriceVolumes(this.asks);
-    const aggregatedBids = this.bidsFormatted;
-
-    if (aggregatedAsks.length && aggregatedBids.length) {
-      const bestAskPrice = aggregatedAsks[aggregatedAsks.length - 1]?.price;
-      const bestBidPrice = aggregatedBids[0]?.price;
-      const hasOverlap = bestAskPrice === bestBidPrice;
-
-      if (hasOverlap) {
-        const lastRecord = aggregatedAsks[aggregatedAsks.length - 1];
-        const fpAmount = new FPNumber(lastRecord?.amount || 0);
-        const fpTotal = new FPNumber(lastRecord?.total || 0);
-        const lastButOne = aggregatedAsks[aggregatedAsks.length - 2];
-
-        if (lastButOne) {
-          const { price, amount, total, filled } = lastButOne;
-          const lastButOneRecord = {
-            price,
-            amount: this.toBookPrecision(new FPNumber(amount).add(fpAmount)),
-            total: this.toBookPrecision(new FPNumber(total).add(fpTotal)),
-            filled,
-          };
-
-          aggregatedAsks[aggregatedAsks.length - 2] = lastButOneRecord;
-
-          aggregatedAsks.pop();
-
-          return this.recalcFilledValue(aggregatedAsks);
-        } else {
-          const { price } = aggregatedAsks[aggregatedAsks.length - 1];
-          const newPrice = Number(price) + Number(this.selectedStep);
-          aggregatedAsks[aggregatedAsks.length - 1].price = this.toBookPrecision(new FPNumber(newPrice));
-
-          return aggregatedAsks;
-        }
-      }
-    }
-
     return this.formatPriceVolumes(this.asks);
   }
 
@@ -321,59 +284,18 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
    * @param orders to be aggregated
    * @returns aggregated orders
    */
-  private calculateStepsDistribution(
-    orders: OrderBookPriceVolume[],
-    precision = 10
-  ): OrderBookPriceVolume[] | OrderBookPriceVolumeAggregated[] {
-    if (this.isBookPrecisionEqual(precision.toString())) return orders;
-
-    // finds max price to know proper edge in orders distribution
-    const maxPrice = FPNumber.max(...orders.map(([price]) => price)) as FPNumber;
-
-    if (!maxPrice) return orders;
-
-    const step = new FPNumber(precision);
-
-    const aggregatedOrders = [] as Array<OrderBookPriceVolumeAggregated>;
-    let accumulatedAmount = FPNumber.ZERO;
-    let accumulatedTotal = FPNumber.ZERO;
-    let edge = maxPrice.add(step);
-
-    if (!edge.isZeroMod(step)) edge = edge.sub(edge.mod(step));
-
-    // iteratively finds a range to be placed
-    for (let index = 0; index < orders.length; index++) {
-      const [price, amount] = orders[index];
-
-      if (FPNumber.lte(edge, FPNumber.ZERO)) break;
-      if (FPNumber.lt(edge, price)) break;
-
-      // checks whether eligible for this range
-      if (FPNumber.lte(price, edge) && FPNumber.gt(price, edge.sub(step))) {
-        accumulatedAmount = accumulatedAmount.add(amount);
-        accumulatedTotal = price.mul(amount).add(accumulatedTotal);
-      } else {
-        // if not, puts accumulated amount and total in row and starts with next one
-        aggregatedOrders.push([edge, accumulatedAmount, accumulatedTotal]);
-
-        accumulatedAmount = FPNumber.ZERO;
-        accumulatedTotal = FPNumber.ZERO;
-        edge = edge.sub(step);
-        index -= 1;
-      }
-
-      // scenario when last [price, volume] wasn't recorded in 'else' branch; push it in last row
-      if (index === orders.length - 1) {
-        aggregatedOrders.push([edge, accumulatedAmount, accumulatedTotal]);
-      }
-    }
-
-    // filter empty records
-    return aggregatedOrders.filter((row: OrderBookPriceVolumeAggregated) => !row[1].isZero());
+  private calculateStepsDistribution(orders, precision = 10): OrderBookPriceVolumeAggregated[] {
+    return orders;
   }
 
   get bookPrecision(): number {
-    return this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length;
+    return this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length || 0;
+  }
+
+  get amountPrecision(): number {
+    return (
+      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length || 0
+    );
   }
 
   private getAmountProportion(currentAmount: FPNumber, maxAmount: FPNumber): number {
@@ -382,6 +304,10 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
   private toBookPrecision(cell: FPNumber): string {
     return cell.toNumber().toFixed(this.bookPrecision);
+  }
+
+  private toAmountPrecision(cell: FPNumber): string {
+    return cell.toNumber().toFixed(this.amountPrecision);
   }
 
   private formatPriceVolumes(items: OrderBookPriceVolume[]): LimitOrderForm[] {
@@ -399,7 +325,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
 
       result.push({
         price: this.toBookPrecision(price),
-        amount: this.toBookPrecision(amount),
+        amount: this.toAmountPrecision(amount),
         total: this.toBookPrecision(total),
         filled: this.getAmountProportion(amount, maxAmount),
       });

@@ -63,7 +63,9 @@
             "StakingSetPayee": "设置收款人{address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol}以{price} {symbol2}放置",
             "OrderBookCancelLimitOrder": "限价订单已取消",
-            "OrderBookCancelLimitOrders": "限价订单已取消"
+            "OrderBookCancelLimitOrders": "限价订单已取消",
+            "Burn": "烧毁{amount} {symbol}",
+            "Mint": "铸造了{amount} {symbol}到{address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "无法设置收款人{address}",
             "OrderBookPlaceLimitOrder": "未能以{price} } {symbol2}下达{amount} {symbol}限价单",
             "OrderBookCancelLimitOrders": "取消限价单失败",
-            "OrderBookCancelLimitOrder": "取消限价单失败"
+            "OrderBookCancelLimitOrder": "取消限价单失败",
+            "Burn": "刻录{amount} {symbol}失败",
+            "Mint": "无法将{amount} {symbol}铸造到{address}"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "设置收款人",
         "OrderBookPlaceLimitOrder": "下订单",
         "OrderBookCancelLimitOrder": "取消订单",
-        "OrderBookCancelLimitOrders": "取消订单"
+        "OrderBookCancelLimitOrders": "取消订单",
+        "Burn": "烧伤",
+        "Mint": "薄荷"
     },
     "polkadotjs": {
         "noExtensions": "没有找到 {PolkadotJs} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -390,7 +396,8 @@
         "Explore\/Farming": "农耕",
         "Staking": "质押",
         "OrderBook": "贸易",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "兑换",
@@ -405,7 +412,8 @@
         "StakingContainer": "质押",
         "Explore\/Container": "探索",
         "SoraCard": "{Sora}卡",
-        "OrderBook": "贸易"
+        "OrderBook": "贸易",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "推特",
@@ -1287,7 +1295,9 @@
         "actions": {
             "claim": "领取奖励",
             "remove": "移除桩",
-            "more": "质押更多"
+            "more": "质押更多",
+            "confirm": "确认质押",
+            "withdraw": "提现"
         },
         "overview": {
             "title": "{Sora}质押",
@@ -1304,7 +1314,8 @@
             "change": "更改验证器",
             "select": "选择验证器",
             "next": "下一个",
-            "alreadyNominated": "选定的验证者已被提名"
+            "alreadyNominated": "选定的验证者已被提名",
+            "tooManyValidators": "选择的验证器太多 ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "搜索...",
@@ -1312,10 +1323,10 @@
             "noNominatedValidators": "您没有任何指定的验证人",
             "noValidators": "没有满足指定过滤器的验证器",
             "commission": "委员会",
-            "commissionTooltip": "佣金是指验证者在质押过程中为其提供的服务收取的费用。该费用以百分比表示，在分配前从提名人获得的质押奖励中扣除。需要注意的是，验证者可以随时调整佣金率"
+            "commissionTooltip": "佣金是指验证者在质押过程中为其提供的服务收取的费用。该费用以百分比表示，在分配前从提名人获得的质押奖励中扣除。需要注意的是，验证者可以随时调整佣金率",
+            "return": "返回"
         },
         "info": {
-            "redeemable": "可赎回",
             "unstaking": "取消质押",
             "stakingBalance": "质押余额",
             "rewarded": "奖励",
@@ -1394,6 +1405,26 @@
             "title": "领取奖励",
             "checkRewards": "检查每个时代和验证者的奖励",
             "rewardsDestination": "奖励目标地址"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "可抽出式",
+            "beingWithdrawn": "被撤回",
+            "seeAll": "查看全部",
+            "nextWithdrawal": "下次提款",
+            "countdownLeft": "还剩"
+        },
+        "stakeDialog": {
+            "toStake": "质押",
+            "toRemove": "去除"
+        },
+        "withdrawDialog": {
+            "title": "提取未抵押的资金",
+            "showAllWithdraws": "显示所有提款"
+        },
+        "allWithdrawsDialog": {
+            "title": "取消质押活动",
+            "information": "一旦您取消质押代币，就有一个强制性的 7 天取消质押期。在此期限之后，您的代币将不会自动返回您的钱包。您必须通过手动提取代币来完成该过程。"
         }
     },
     "collapseText": "崩溃",
@@ -1442,7 +1473,6 @@
             "placeLimit": "下限价单",
             "askCancel": "您确定要取消所有未结订单吗？",
             "cancelAll": "是的，全部取消",
-            "noCancel": "不，不要取消它",
             "buy": "购买{amount} {symbol}",
             "sell": "卖出{amount} {symbol}",
             "at": "以{price} {symbol}"
@@ -1513,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "超出区块链范围：您输入的金额超出了区块链允许的范围。分钟： {min} ；最大值： {max}",
                 "reason": "金额不符合区块链范围"
+            },
+            "multipleOf": {
+                "reading": "要处理您的订单，请输入{value}倍数的价格",
+                "reason": "输入的价格过于具体"
             }
         },
         "orderStatus": {
