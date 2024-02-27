@@ -36,6 +36,8 @@ def pipeline = new org.js.AppPipeline(steps: this,
     sonarTestsPath: 'tests',
     dojoProductType: 'polkaswap',
     movingFiles: [ "*":"./", ".well-known/":"./"],
-    effectJiraTasks: true
+    effectJiraTasks: true,
+    jiraStatusId: '10489',
+    jiraStatusIdAssignee: '-1'
 )
 pipeline.runPipeline()
