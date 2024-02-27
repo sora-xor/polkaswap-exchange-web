@@ -6,6 +6,7 @@ export function initialState(): ReferralsState {
   return {
     referrer: '',
     referrerSubscription: null,
+    referralRewards: null,
     invitedUsers: [],
     invitedUsersSubscription: null,
     amount: '',
