@@ -135,11 +135,11 @@ export const hasInsufficientBalance = (
   asset: AccountAsset | RegisteredAccountAsset,
   amount: string | number,
   fee: CodecString,
-  isExternalBalance = false,
-  isBondedBalance = false
+  { isExternalBalance = false, isExternalNative = false, isBondedBalance = false } = {}
 ): boolean => {
-  const fpAmount = new FPNumber(amount, asset.decimals);
-  const fpMaxBalance = getMaxBalance(asset, fee, { isExternalBalance, isBondedBalance });
+  const decimals = getAssetDecimals(asset, { internal: !isExternalBalance }) as number;
+  const fpAmount = new FPNumber(amount, decimals);
+  const fpMaxBalance = getMaxBalance(asset, fee, { isExternalBalance, isExternalNative, isBondedBalance });
 
   return FPNumber.lt(fpMaxBalance, fpAmount);
 };

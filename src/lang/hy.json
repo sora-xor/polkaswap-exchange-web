@@ -396,7 +396,8 @@
         "Explore\/Farming": "Ֆարմինգ",
         "Staking": "Ցուցադրում",
         "OrderBook": "Առևտուր",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Փոխանակում",
@@ -411,7 +412,8 @@
         "StakingContainer": "Ցուցադրում",
         "Explore\/Container": "Հետազոտել",
         "SoraCard": "{Sora} Քարտ",
-        "OrderBook": "Առևտուր"
+        "OrderBook": "Առևտուր",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Հեռացնել ցցը",
             "more": "Ավելի շատ խաղադրույք կատարեք",
             "confirm": "Հաստատեք խաղադրույքը",
-            "payout": "Վճարել",
             "withdraw": "Հանել"
         },
         "overview": {
@@ -1313,7 +1314,8 @@
             "change": "Փոխել վավերացնողները",
             "select": "Ընտրեք վավերացնողներ",
             "next": "Հաջորդը",
-            "alreadyNominated": "Ընտրված վավերացնողներն արդեն առաջադրված են"
+            "alreadyNominated": "Ընտրված վավերացնողներն արդեն առաջադրված են",
+            "tooManyValidators": "Ընտրված են չափազանց շատ վավերացուցիչներ ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Որոնել...",
@@ -1410,7 +1412,7 @@
             "beingWithdrawn": "Հեռացված լինելը",
             "seeAll": "Տեսնել բոլորը",
             "nextWithdrawal": "Հաջորդ դուրսբերումը",
-            "countdownLeft": "ձախ"
+            "countdownLeft": "Մնաց"
         },
         "stakeDialog": {
             "toStake": "Խաղադրույք կատարել",
@@ -1471,7 +1473,6 @@
             "placeLimit": "Տեղադրեք սահմանաչափի պատվեր",
             "askCancel": "Իսկապե՞ս ուզում եք չեղարկել ձեր բոլոր բաց պատվերները:",
             "cancelAll": "Այո, չեղարկել բոլորը",
-            "noCancel": "Ոչ, մի չեղարկեք այն",
             "buy": "Գնել {amount} {symbol}",
             "sell": "Վաճառել {amount} {symbol}",
             "at": "{price} {symbol} ով"

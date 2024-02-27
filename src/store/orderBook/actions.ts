@@ -22,14 +22,15 @@ const actions = defineActions({
     const { setBaseAssetBalance } = commit;
     const field = token?.address as string;
 
+    setBaseAssetBalance(null);
+    balanceSubscriptions.remove(field);
+
     if (reset) {
       balanceSubscriptions.resetSubscriptions();
       return;
     }
 
     const updateBalance = (balance: Nullable<AccountBalance>) => setBaseAssetBalance(balance);
-
-    balanceSubscriptions.remove(field);
 
     if (
       rootGetters.wallet.account.isLoggedIn &&

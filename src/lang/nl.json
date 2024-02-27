@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Handel",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -411,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Ontdekken",
         "SoraCard": "{Sora} Kaart",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Staak verwijderen",
             "more": "Zet meer in",
             "confirm": "Bevestig het uitzetten",
-            "payout": "Uitbetaling",
             "withdraw": "Opnemen"
         },
         "overview": {
@@ -1313,7 +1314,8 @@
             "change": "Validatoren wijzigen",
             "select": "Selecteer validatoren",
             "next": "Volgende",
-            "alreadyNominated": "Geselecteerde validators zijn al genomineerd"
+            "alreadyNominated": "Geselecteerde validators zijn al genomineerd",
+            "tooManyValidators": "Te veel validators geselecteerd ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Zoekopdracht...",
@@ -1410,7 +1412,7 @@
             "beingWithdrawn": "Teruggetrokken zijn",
             "seeAll": "Alles zien",
             "nextWithdrawal": "Volgende terugtrekking",
-            "countdownLeft": "links"
+            "countdownLeft": "nog"
         },
         "stakeDialog": {
             "toStake": "Om in te zetten",
@@ -1471,7 +1473,6 @@
             "placeLimit": "Plaats een limietorder",
             "askCancel": "Weet u zeker dat u al uw openstaande bestellingen wilt annuleren?",
             "cancelAll": "Ja, alles annuleren",
-            "noCancel": "Nee, annuleer het niet",
             "buy": "Koop {amount} {symbol}",
             "sell": "Verkoop {amount} {symbol}",
             "at": "tegen {price} {symbol}"

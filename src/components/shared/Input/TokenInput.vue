@@ -156,7 +156,7 @@ export default class TokenInput extends Mixins(
   fiatValue = '';
   fiatFocus = false;
 
-  @Watch('fiatAmount')
+  @Watch('fiatAmount', { immediate: true })
   private updateFiatValue(): void {
     if (this.fiatFocus) return;
 
