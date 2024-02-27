@@ -396,7 +396,8 @@
         "Explore\/Farming": "Ogbin",
         "Staking": "Staking",
         "OrderBook": "Iṣowo",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Iŕopo",
@@ -411,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Ye",
         "SoraCard": "Kaadi {Sora}",
-        "OrderBook": "Iṣowo"
+        "OrderBook": "Iṣowo",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Yọ igi kuro",
             "more": "Gbero diẹ sii",
             "confirm": "Jẹrisi Staking",
-            "payout": "Owó ìsanwó",
             "withdraw": "Yiyọ kuro"
         },
         "overview": {
@@ -1313,7 +1314,8 @@
             "change": "Yi awọn afọwọsi",
             "select": "Yan awọn olufọwọsi",
             "next": "Itele",
-            "alreadyNominated": "Awọn olufọwọsi ti a ti yan tẹlẹ ti yan tẹlẹ"
+            "alreadyNominated": "Awọn olufọwọsi ti a ti yan tẹlẹ ti yan tẹlẹ",
+            "tooManyValidators": "Awọn afọwọsi pupọ ti yan ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Wa...",
@@ -1410,7 +1412,7 @@
             "beingWithdrawn": "Ti yọkuro",
             "seeAll": "Wo gbogbo e",
             "nextWithdrawal": "Iyọkuro ti o tẹle",
-            "countdownLeft": "osi"
+            "countdownLeft": "O ku"
         },
         "stakeDialog": {
             "toStake": "Si igi",
@@ -1471,7 +1473,6 @@
             "placeLimit": "Ibi ifilelẹ ibere",
             "askCancel": "Ṣe o da ọ loju pe o fẹ fagilee gbogbo awọn aṣẹ ṣiṣi rẹ bi?",
             "cancelAll": "Bẹẹni, fagilee gbogbo rẹ",
-            "noCancel": "Rara, maṣe fagilee rẹ",
             "buy": "Ra {amount} {symbol}",
             "sell": "Ta {amount} {symbol}",
             "at": "ni {price} {symbol}"

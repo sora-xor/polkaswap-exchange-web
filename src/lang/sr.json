@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Ulaganje",
         "OrderBook": "Траде",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Замените",
@@ -411,7 +412,8 @@
         "StakingContainer": "Стeкинг",
         "Explore\/Container": "Истражите",
         "SoraCard": "{Sora} картица",
-        "OrderBook": "Траде"
+        "OrderBook": "Траде",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Уклоните улог",
             "more": "Уложите више",
             "confirm": "Цонфирм Стакинг",
-            "payout": "Isplata",
             "withdraw": "Podizanje"
         },
         "overview": {
@@ -1313,7 +1314,8 @@
             "change": "Промените валидаторе",
             "select": "Изаберите валидаторе",
             "next": "Следећи",
-            "alreadyNominated": "Одабрани валидатори су већ номиновани"
+            "alreadyNominated": "Одабрани валидатори су већ номиновани",
+            "tooManyValidators": "Изабрано је превише валидатора ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Претрага...",
@@ -1410,7 +1412,7 @@
             "beingWithdrawn": "Бити повучен",
             "seeAll": "Видети све",
             "nextWithdrawal": "Следеће повлачење",
-            "countdownLeft": "лево"
+            "countdownLeft": "остало jе"
         },
         "stakeDialog": {
             "toStake": "Заложити",
@@ -1471,7 +1473,6 @@
             "placeLimit": "Поставите ограничени налог",
             "askCancel": "Да ли сте сигурни да желите да откажете све отворене поруџбине?",
             "cancelAll": "Да, откажи све",
-            "noCancel": "Не, не отказујте",
             "buy": "Купите {amount} {symbol}",
             "sell": "Продај {amount} {symbol}",
             "at": "по {price} {symbol}"

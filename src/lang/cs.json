@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Stakování",
         "OrderBook": "Obchod",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -411,7 +412,8 @@
         "StakingContainer": "Stakování",
         "Explore\/Container": "Prozkoumat",
         "SoraCard": "{Sora} Karta",
-        "OrderBook": "Obchod"
+        "OrderBook": "Obchod",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Odstraňte sázku",
             "more": "Vsaďte více",
             "confirm": "Potvrďte vytyčování",
-            "payout": "Výplata",
             "withdraw": "Vybrat"
         },
         "overview": {
@@ -1313,7 +1314,8 @@
             "change": "Změnit validátory",
             "select": "Vyberte validátory",
             "next": "Další",
-            "alreadyNominated": "Vybraní validátoři již byli nominováni"
+            "alreadyNominated": "Vybraní validátoři již byli nominováni",
+            "tooManyValidators": "Je vybráno příliš mnoho validátorů ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Vyhledávání...",
@@ -1410,7 +1412,7 @@
             "beingWithdrawn": "Být stažen",
             "seeAll": "Vidět vše",
             "nextWithdrawal": "Další stažení",
-            "countdownLeft": "vlevo, odjet"
+            "countdownLeft": "zbývá"
         },
         "stakeDialog": {
             "toStake": "Vsadit",
@@ -1471,7 +1473,6 @@
             "placeLimit": "Zadejte limitní objednávku",
             "askCancel": "Opravdu chcete zrušit všechny své otevřené objednávky?",
             "cancelAll": "Ano, zrušit vše",
-            "noCancel": "Ne, nezrušte to",
             "buy": "Koupit {amount} {symbol}",
             "sell": "Prodej {amount} {symbol}",
             "at": "za {price} {symbol}"

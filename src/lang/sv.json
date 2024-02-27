@@ -396,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Utsättning",
         "OrderBook": "Handel",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Byt",
@@ -411,7 +412,8 @@
         "StakingContainer": "Utsättning",
         "Explore\/Container": "Utforska",
         "SoraCard": "{Sora} Kort",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1295,7 +1297,6 @@
             "remove": "Ta bort insatsen",
             "more": "Satsa mer",
             "confirm": "Bekräfta utsättning",
-            "payout": "Utbetalning",
             "withdraw": "Dra tillbaka"
         },
         "overview": {
@@ -1313,7 +1314,8 @@
             "change": "Byt validatorer",
             "select": "Välj validerare",
             "next": "Nästa",
-            "alreadyNominated": "Utvalda validerare redan nominerade"
+            "alreadyNominated": "Utvalda validerare redan nominerade",
+            "tooManyValidators": "För många validerare har valts ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Sök...",
@@ -1410,7 +1412,7 @@
             "beingWithdrawn": "Att bli tillbakadragen",
             "seeAll": "Se allt",
             "nextWithdrawal": "Nästa uttag",
-            "countdownLeft": "vänster"
+            "countdownLeft": "kvar"
         },
         "stakeDialog": {
             "toStake": "Att satsa",
@@ -1471,7 +1473,6 @@
             "placeLimit": "Lägg gränsorder",
             "askCancel": "Är du säker på att du vill avbryta alla dina öppna beställningar?",
             "cancelAll": "Ja, avbryt alla",
-            "noCancel": "Nej, avbryt det inte",
             "buy": "Köp {amount} {symbol}",
             "sell": "Sälj {amount} {symbol}",
             "at": "till {price} {symbol}"

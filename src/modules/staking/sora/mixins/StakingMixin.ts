@@ -8,7 +8,7 @@ import { action, getter, state, mutation } from '@/store/decorators';
 import { getAssetBalance, hasInsufficientXorForFee, formatDecimalPlaces } from '@/utils';
 
 import { StakingPageNames } from '../../consts';
-import { SoraStakingPageNames, ValidatorsListMode, rewardAsset } from '../consts';
+import { DAY_HOURS, SoraStakingPageNames, ValidatorsListMode, rewardAsset } from '../consts';
 import { ValidatorsFilter } from '../types';
 
 import type { NetworkFeesObject, CodecString } from '@sora-substrate/util';
@@ -30,7 +30,8 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   @state.staking.stakeAmount stakeAmount!: string;
   @state.staking.validatorsInfo validators!: Array<ValidatorInfoFull>;
   @state.staking.selectedValidators selectedValidators!: Array<ValidatorInfoFull>;
-  @state.staking.activeEra activeEra!: number;
+  @state.staking.activeEra activeEra!: Nullable<number>;
+  @state.staking.activeEraStart activeEraStart!: Nullable<number>;
   @state.staking.currentEra currentEra!: number;
   @state.staking.currentEraTotalStake currentEraTotalStake!: string;
   @state.staking.maxNominations maxNominations!: number;
@@ -121,7 +122,7 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   }
 
   get unlockingFunds(): FPNumber {
-    return (this.accountLedger?.unlocking || []).reduce((acc, unlock) => {
+    return (this.accountLedger?.unlocking ?? []).reduce((acc, unlock) => {
       return acc.add(FPNumber.fromCodecValue(unlock.value.toString(), this.stakingAsset?.decimals));
     }, FPNumber.ZERO);
   }
@@ -130,20 +131,51 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
     return this.stakingAsset ? this.getFiatAmountByFPNumber(this.unlockingFunds, this.stakingAsset) : null;
   }
 
-  get unbondPeriodFormatted(): string {
-    return `${this.unbondPeriod} days`;
+  get nextWithdrawalEra(): number | null {
+    if (!this.accountLedger?.unlocking.length || !this.activeEra) {
+      return null;
+    }
+    const unlockingEras = this.accountLedger.unlocking.map((u) => u.era);
+
+    const activeEra = this.activeEra;
+
+    const countdownEras = unlockingEras
+      .map((era) => {
+        return era - activeEra;
+      })
+      .filter((eras) => eras > 0);
+
+    if (countdownEras.length) {
+      return activeEra + Math.min(...countdownEras);
+    }
+
+    return null;
   }
 
-  get redeemableFunds(): FPNumber {
+  get unbondPeriodHours(): number {
+    return this.unbondPeriod * DAY_HOURS;
+  }
+
+  get unbondPeriodFormatted(): string | null {
+    if (!this.unbondPeriodHours) {
+      return null;
+    }
+    const days = Math.floor(this.unbondPeriodHours / DAY_HOURS);
+    const hours = this.unbondPeriodHours - days * DAY_HOURS;
+    const minutes = 0;
+    return `${days}D ${hours}H ${minutes}M`;
+  }
+
+  get withdrawableFunds(): FPNumber {
     return this.stakingInfo ? new FPNumber(this.stakingInfo.redeemAmount, this.stakingAsset?.decimals) : FPNumber.ZERO;
   }
 
-  get redeemableFundsFiat(): Nullable<string> {
-    return this.rewardAsset ? this.getFiatAmountByFPNumber(this.redeemableFunds, this.rewardAsset) : null;
+  get withdrawableFundsFiat(): Nullable<string> {
+    return this.stakingAsset ? this.getFiatAmountByFPNumber(this.withdrawableFunds, this.stakingAsset) : null;
   }
 
-  get redeemableFundsFormatted(): string {
-    return this.redeemableFunds.toLocaleString();
+  get withdrawableFundsFormatted(): string {
+    return this.withdrawableFunds.toLocaleString();
   }
 
   get rewardedFunds(): FPNumber {
@@ -183,6 +215,6 @@ export default class StakingMixin extends Mixins(mixins.FormattedAmountMixin, Tr
   }
 
   get maxApy(): number {
-    return this.validators.reduce((maxAPY, validator) => Math.max(maxAPY, Number(validator.apy)), 0);
+    return this.validators.reduce((maxAPY, validator) => Math.max(maxAPY, Number(validator.apy)), 0) || 0;
   }
 }
