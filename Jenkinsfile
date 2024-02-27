@@ -37,7 +37,7 @@ def pipeline = new org.js.AppPipeline(steps: this,
     dojoProductType: 'polkaswap',
     movingFiles: [ "*":"./", ".well-known/":"./"],
     effectJiraTasks: true,
-    jiraStatusId: '10489',
-    jiraStatusIdAssignee: '-1'
+    jiraStatusId: '10568'
+    // jiraStatusIdAssignee: '-1'
 )
 pipeline.runPipeline()
