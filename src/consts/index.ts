@@ -245,8 +245,10 @@ export enum Components {
   ValueStatusWrapper = 'shared/ValueStatusWrapper',
   TransactionDetails = 'shared/TransactionDetails',
   PoolInfo = 'shared/PoolInfo',
-  Widget = 'shared/Widget',
   StatusBadge = 'shared/StatusBadge',
+  // Shared Widgets
+  IFrameWidget = 'shared/Widget/IFrameWidget',
+  BaseWidget = 'shared/Widget/BaseWidget',
   // Shared Buttons
   SortButton = 'shared/Button/SortButton',
   SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',

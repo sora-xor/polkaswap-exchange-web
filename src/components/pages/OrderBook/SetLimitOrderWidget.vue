@@ -1,5 +1,5 @@
 <template>
-  <div class="order-book-widget" v-loading="loadingState">
+  <base-widget v-loading="loadingState">
     <div class="order-book-tabs">
       <s-tabs :value="currentTab" type="card" @input="handleChangeTab">
         <s-tab
@@ -13,7 +13,7 @@
     <div>
       <buy-sell />
     </div>
-  </div>
+  </base-widget>
 </template>
 
 <script lang="ts">
@@ -28,6 +28,7 @@ import { mutation, state } from '@/store/decorators';
 
 @Component({
   components: {
+    BaseWidget: lazyComponent(Components.BaseWidget),
     BuySell: lazyComponent(Components.BuySell),
   },
 })

@@ -242,14 +242,6 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
       }
     }
   }
-
-  &-widget {
-    padding: unset;
-    background-color: var(--s-color-utility-surface);
-    box-shadow: var(--s-shadow-dialog);
-    color: var(--s-color-base-content-primary);
-    border-radius: var(--s-border-radius-small);
-  }
 }
 
 .min-huge-desktop {

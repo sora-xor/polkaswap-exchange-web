@@ -8,7 +8,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 
 @Component
-export default class Widget extends Vue {
+export default class IFrameWidget extends Vue {
   @Prop({ default: '', type: String }) readonly src!: string;
   @Prop({ default: false, type: Boolean }) readonly withBorder!: boolean;
 

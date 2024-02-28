@@ -1,18 +1,11 @@
 <template>
-  <div v-loading="loading" class="order-book-widget stock-book book">
-    <div class="stock-book__title">
-      <div>
-        <span>{{ t('orderBook.orderBook') }}</span>
-        <s-tooltip
-          slot="suffix"
-          border-radius="mini"
-          :content="t('orderBook.tooltip.bookWidget')"
-          placement="top"
-          tabindex="-1"
-        >
-          <s-icon name="info-16" size="14px" />
-        </s-tooltip>
-      </div>
+  <base-widget
+    v-loading="loading"
+    class="stock-book book"
+    :title="t('orderBook.orderBook')"
+    :tooltip="t('orderBook.tooltip.bookWidget')"
+  >
+    <template #title-append>
       <s-dropdown
         v-if="false"
         class="stock-book__switcher"
@@ -27,7 +20,8 @@
           }}</s-dropdown-item>
         </template>
       </s-dropdown>
-    </div>
+    </template>
+
     <div class="book-columns">
       <div>{{ t('orderBook.price') }}</div>
       <div>{{ t('orderBook.amount') }}</div>
@@ -64,7 +58,7 @@
       </div>
     </div>
     <div v-else class="stock-book-buy--no-bids">{{ t('orderBook.book.noBids') }}</div>
-  </div>
+  </base-widget>
 </template>
 
 <script lang="ts">
@@ -74,7 +68,8 @@ import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { LimitOrderType, ZeroStringValue } from '@/consts';
+import { Components, LimitOrderType, ZeroStringValue } from '@/consts';
+import { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { OrderBookDealData } from '@/types/orderBook';
 
@@ -90,7 +85,11 @@ interface LimitOrderForm {
 
 type OrderBookPriceVolumeAggregated = [FPNumber, FPNumber, FPNumber];
 
-@Component
+@Component({
+  components: {
+    BaseWidget: lazyComponent(Components.BaseWidget),
+  },
+})
 export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
   @state.orderBook.limitOrderType private limitOrderType!: LimitOrderType;
   @state.orderBook.asks asks!: OrderBookPriceVolume[];
@@ -341,8 +340,6 @@ $background-column-color-dark: #693d81;
 $mono-font: 'JetBrainsMono';
 
 .stock-book {
-  overflow: hidden;
-
   :not(.unclickable) .row:hover {
     cursor: pointer;
   }
@@ -353,21 +350,6 @@ $mono-font: 'JetBrainsMono';
     transform-style: preserve-3d;
     font-family: $mono-font;
     margin: 2px;
-  }
-
-  &__title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 40px;
-    line-height: 40px;
-    font-weight: 500;
-    font-size: 17px;
-    margin-left: $basic-spacing;
-
-    .el-tooltip {
-      margin-left: $inner-spacing-mini;
-    }
   }
 
   &__switcher {
@@ -491,11 +473,6 @@ $mono-font: 'JetBrainsMono';
     line-height: 150%;
     letter-spacing: -0.26px;
     text-transform: uppercase;
-  }
-
-  h4 {
-    margin: $basic-spacing 0 10px $basic-spacing;
-    font-weight: 500;
   }
 }
 

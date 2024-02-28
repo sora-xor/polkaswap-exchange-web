@@ -1,17 +1,9 @@
 <template>
-  <div class="order-book-widget market-trades">
-    <h4 class="market-trades__title">
-      <span>{{ t('orderBook.marketTrades') }}</span>
-      <s-tooltip
-        slot="suffix"
-        border-radius="mini"
-        :content="t('orderBook.tooltip.marketWidget')"
-        placement="top"
-        tabindex="-1"
-      >
-        <s-icon name="info-16" size="14px" />
-      </s-tooltip>
-    </h4>
+  <base-widget
+    class="market-trades"
+    :title="t('orderBook.marketTrades')"
+    :tooltip="t('orderBook.tooltip.marketWidget')"
+  >
     <s-table class="market-trades-table" :data="completedOrders">
       <s-table-column>
         <template #header>
@@ -38,7 +30,7 @@
         </template>
       </s-table-column>
     </s-table>
-  </div>
+  </base-widget>
 </template>
 
 <script lang="ts">
@@ -47,12 +39,18 @@ import dayjs from 'dayjs';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import type { OrderBookDealData } from '@/types/orderBook';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
-@Component
+@Component({
+  components: {
+    BaseWidget: lazyComponent(Components.BaseWidget),
+  },
+})
 export default class MarketTradesWidget extends Mixins(TranslationMixin) {
   readonly PriceVariant = PriceVariant;
 
@@ -77,20 +75,7 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .market-trades {
-  overflow: hidden;
   min-height: 272px;
-
-  &__title {
-    height: 40px;
-    line-height: 40px;
-    font-weight: 500;
-    font-size: 17px;
-    margin-left: $basic-spacing;
-
-    .el-tooltip {
-      margin-left: $inner-spacing-mini;
-    }
-  }
 
   .order-info {
     &.time {
