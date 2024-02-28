@@ -1,10 +1,13 @@
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import jwtDecode, { JwtPayload } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 import store from '@/store';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
-import { AttemptCounter, Fees, KycStatus, PhoneCode, Status, UserInfo, VerificationStatus } from '../types/card';
+import { KycStatus, VerificationStatus } from '../types/card';
+
+import type { AttemptCounter, Fees, PhoneCode, Status, UserInfo } from '../types/card';
+import type { JwtPayload } from 'jwt-decode';
 
 const soraCardTestBaseEndpoint = 'https://backend.dev.sora-card.tachi.soramitsu.co.jp';
 const soraCardProdBaseEndpoint = 'https://backend.sora-card.odachi.soramitsu.co.jp';
