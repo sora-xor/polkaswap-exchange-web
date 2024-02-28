@@ -5,6 +5,9 @@
     "type": "git",
     "url": "https://github.com/sora-xor/polkaswap-exchange-web.git"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "license": "Apache-2.0",
   "private": true,
   "author": "jihoon@tutanota.de <jihoon@tutanota.de>",
@@ -83,8 +86,8 @@
     "lint-staged": "^9.5.0",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "prettier": "^2.8.8",
-    "sass": "^1.66.1",
-    "sass-loader": "^13.3.2",
+    "sass": "^1.71.1",
+    "sass-loader": "^14.1.1",
     "ts-jest": "^27.1.5",
     "typescript": "~5.2.2",
     "vue-cli-plugin-electron-builder": "^3.0.0-alpha.4",
