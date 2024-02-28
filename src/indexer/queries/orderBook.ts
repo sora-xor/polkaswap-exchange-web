@@ -422,7 +422,7 @@ export async function subscribeOnOrderBookUpdates(
   dexId: number,
   baseAssetId: string,
   quoteAssetId: string,
-  handler: (entity: OrderBookUpdateData) => void,
+  handler: (entity: OrderBookUpdateData) => void | Promise<void>,
   errorHandler: () => void
 ): Promise<Nullable<FnWithoutArgs>> {
   const orderBookId = [dexId, baseAssetId, quoteAssetId].join('-');
