@@ -3,9 +3,9 @@ import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web'
 import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
 
-import type { SubqueryHistoryElement } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/subquery/types';
 import type {
   ConnectionQueryResponse,
+  HistoryElement,
   HistoryElementAssetBurn,
 } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
@@ -81,7 +81,7 @@ const dataBeforeIndexing: KensetsuBurn[] = [
   },
 ];
 
-const KensetsuQuery = gql<ConnectionQueryResponse<SubqueryHistoryElement>>`
+const KensetsuQuery = gql<ConnectionQueryResponse<HistoryElement>>`
   query ($start: Int = 0, $end: Int = 0, $after: Cursor = "", $first: Int = 100) {
     data: historyElements(
       first: $first
@@ -110,7 +110,7 @@ const KensetsuQuery = gql<ConnectionQueryResponse<SubqueryHistoryElement>>`
   }
 `;
 
-const parse = (item: SubqueryHistoryElement): KensetsuBurn => {
+const parse = (item: HistoryElement): KensetsuBurn => {
   const data = item.data as HistoryElementAssetBurn;
 
   return {
