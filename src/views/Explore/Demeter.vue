@@ -158,8 +158,8 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { api, components } from '@soramitsu/soraneo-wallet-web';
+import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
@@ -224,7 +224,6 @@ export default class ExploreDemeter extends Mixins(DemeterBasePageMixin, Explore
   }
 
   // override ExplorePageMixin
-  order = SortDirection.DESC;
   property = 'apr';
 
   poolsData: Record<string, PoolData> = {};
@@ -233,7 +232,7 @@ export default class ExploreDemeter extends Mixins(DemeterBasePageMixin, Explore
     return Object.values(this.pools)
       .map((poolMap) => Object.values(poolMap))
       .flat(2)
-      .filter((pool) => !pool.isRemoved) as DemeterPool[];
+      .filter((pool) => !pool.isRemoved);
   }
 
   get selectedDerivedPool(): Nullable<DemeterPoolDerivedData> {

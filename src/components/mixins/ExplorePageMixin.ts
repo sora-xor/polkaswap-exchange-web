@@ -1,5 +1,5 @@
 import { KnownAssets } from '@sora-substrate/util/build/assets/consts';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
+import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
 import { getter } from '@/store/decorators';
@@ -22,8 +22,8 @@ export default class ExplorePageMixin extends Mixins(ScrollableTableMixin, Trans
   @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
   @getter.assets.whitelistAssets public whitelistAssets!: Array<Asset>;
 
-  order = '';
-  property = '';
+  order = SortDirection.DESC;
+  property = 'tvl';
 
   get loadingState(): boolean {
     return this.parentLoading || this.loading;
@@ -90,7 +90,7 @@ export default class ExplorePageMixin extends Mixins(ScrollableTableMixin, Trans
     await this.updateExploreData();
   }
 
-  changeSort({ order = '', property = '' } = {}): void {
+  changeSort({ order = SortDirection.DESC, property = '' } = {}): void {
     this.order = order;
     this.property = property;
   }

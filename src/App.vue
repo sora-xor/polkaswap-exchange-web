@@ -66,8 +66,8 @@ import type { ConnectToNodeOptions, Node } from './types/nodes';
 import type { History, HistoryItem } from '@sora-substrate/util';
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
-import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
@@ -392,6 +392,8 @@ html {
   font-size: var(--s-font-size-small);
   line-height: var(--s-line-height-base);
   letter-spacing: var(--s-letter-spacing-small);
+  background-color: var(--s-color-utility-body);
+  scrollbar-color: transparent transparent;
 }
 
 ul ul {
@@ -551,9 +553,12 @@ i.icon-divider {
 }
 
 .app-main--orderbook {
-  .app-menu {
-    position: absolute;
-    right: initial;
+  @include large-mobile {
+    .app-menu {
+      // TODO: [Rustem] fix shadow issues between menu and orderbook
+      position: absolute;
+      right: initial;
+    }
   }
 
   .app-content {

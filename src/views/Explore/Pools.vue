@@ -54,7 +54,7 @@
         </template>
       </s-table-column>
       <!-- APY -->
-      <s-table-column v-if="hasApyColumnData" key="apy" width="120" header-align="right" align="right">
+      <s-table-column width="120" header-align="right" align="right">
         <template #header>
           <sort-button name="apy" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">APY</span>
@@ -140,8 +140,8 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
+import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
@@ -188,13 +188,7 @@ type TableItem = {
 export default class ExplorePools extends Mixins(ExplorePageMixin) {
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
 
-  // override ExplorePageMixin
-  order = SortDirection.DESC;
-  property = 'tvl';
-
-  poolReserves: Record<string, string[]> = {};
-
-  poolsData: readonly PoolData[] = [];
+  private poolsData: readonly PoolData[] = [];
 
   get items(): TableItem[] {
     const items = this.poolsData.reduce<any>((buffer, pool) => {
@@ -266,10 +260,6 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
 
   get prefilteredItems(): TableItem[] {
     return this.isAccountItemsOnly ? this.items.filter((item) => item.isAccountItem) : this.items;
-  }
-
-  get hasApyColumnData(): boolean {
-    return this.items.some((item) => item.apy !== 0);
   }
 
   // ExplorePageMixin method implementation

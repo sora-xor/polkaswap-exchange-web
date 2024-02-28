@@ -63,7 +63,9 @@
             "StakingSetPayee": "Ṣeto payee {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} ni {price} {symbol2} gbe",
             "OrderBookCancelLimitOrder": "Ti fagile aṣẹ opin",
-            "OrderBookCancelLimitOrders": "Awọn aṣẹ aropin parẹ"
+            "OrderBookCancelLimitOrders": "Awọn aṣẹ aropin parẹ",
+            "Burn": "jona {amount} {symbol}",
+            "Mint": "Minted {amount} {symbol} si {address}"
         },
         "error": {
             "Transfer": "Kuna lati {action} {amount} {symbol} {direction} {address}",
@@ -96,9 +98,11 @@
             "StakingChill": "Kuna lati biba",
             "StakingSetController": "Kuna lati ṣeto oludari {address}",
             "StakingSetPayee": "Kuna lati ṣeto payee {address}",
-            "OrderBookPlaceLimitOrder": "O kuna lati gbe aṣẹ iye to fun {symbol} {amount} {price} {symbol}",
-            "OrderBookCancelLimitOrder": "O kuna lati fagilee aṣẹ opin ti {amount} {symbol} ni {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Kuna lati fagilee awọn ibere opin"
+            "OrderBookPlaceLimitOrder": "O kuna lati gbe aṣẹ iye to fun {symbol} {amount} {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Kuna lati fagilee awọn ibere opin",
+            "OrderBookCancelLimitOrder": "Kuna lati fagilee aṣẹ opin",
+            "Burn": "Kuna lati sun {amount} {symbol}",
+            "Mint": "Kuna lati mint {amount} {symbol} si {address}"
         },
         "ReferralReserveXor": "Iwe adehun XOR",
         "ReferralUnreserveXor": "Yọ XOR kuro",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Ṣeto Payee",
         "OrderBookPlaceLimitOrder": "Ibi Bere fun",
         "OrderBookCancelLimitOrder": "Fagilee Bere fun",
-        "OrderBookCancelLimitOrders": "Fagilee Awọn aṣẹ"
+        "OrderBookCancelLimitOrders": "Fagilee Awọn aṣẹ",
+        "Burn": "Iná",
+        "Mint": "Mint"
     },
     "polkadotjs": {
         "noExtensions": "A ko rii itẹsiwaju {PolkadotJs}. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
@@ -390,7 +396,8 @@
         "Explore\/Farming": "Ogbin",
         "Staking": "Staking",
         "OrderBook": "Iṣowo",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Iŕopo",
@@ -405,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Ye",
         "SoraCard": "Kaadi {Sora}",
-        "OrderBook": "Iṣowo"
+        "OrderBook": "Iṣowo",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1287,7 +1295,9 @@
         "actions": {
             "claim": "Awọn ere ẹtọ",
             "remove": "Yọ igi kuro",
-            "more": "Gbero diẹ sii"
+            "more": "Gbero diẹ sii",
+            "confirm": "Jẹrisi Staking",
+            "withdraw": "Yiyọ kuro"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1304,7 +1314,8 @@
             "change": "Yi awọn afọwọsi",
             "select": "Yan awọn olufọwọsi",
             "next": "Itele",
-            "alreadyNominated": "Awọn olufọwọsi ti a ti yan tẹlẹ ti yan tẹlẹ"
+            "alreadyNominated": "Awọn olufọwọsi ti a ti yan tẹlẹ ti yan tẹlẹ",
+            "tooManyValidators": "Awọn afọwọsi pupọ ti yan ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Wa...",
@@ -1312,10 +1323,10 @@
             "noNominatedValidators": "O ko ni eyikeyi ti yan afọwọsi",
             "noValidators": "Ko si awọn olufọwọsi ti o ni itẹlọrun àlẹmọ pàtó kan",
             "commission": "Igbimọ",
-            "commissionTooltip": "Igbimọ tọka si ọya ti o gba agbara nipasẹ awọn afọwọsi fun awọn iṣẹ wọn ni ilana isamisi. Ọya yii, ti a ṣalaye bi ipin kan, ni a yọkuro lati awọn ere isinmọ ti o jẹ nipasẹ awọn yiyan ṣaaju pinpin. O ṣe pataki lati ṣe akiyesi pe awọn olufọwọsi le ṣatunṣe awọn oṣuwọn igbimọ wọn nigbakugba"
+            "commissionTooltip": "Igbimọ tọka si ọya ti o gba agbara nipasẹ awọn afọwọsi fun awọn iṣẹ wọn ni ilana isamisi. Ọya yii, ti a ṣalaye bi ipin kan, ni a yọkuro lati awọn ere isinmọ ti o jẹ nipasẹ awọn yiyan ṣaaju pinpin. O ṣe pataki lati ṣe akiyesi pe awọn olufọwọsi le ṣatunṣe awọn oṣuwọn igbimọ wọn nigbakugba",
+            "return": "Pada"
         },
         "info": {
-            "redeemable": "O le rapada",
             "unstaking": "Unstaking",
             "stakingBalance": "Staking iwontunwonsi",
             "rewarded": "Esan",
@@ -1394,6 +1405,26 @@
             "title": "Awọn ere ẹtọ",
             "checkRewards": "Ṣayẹwo awọn ere fun akoko ati afọwọsi",
             "rewardsDestination": "Èrè àdírẹ́sì ibi tí wọ́n ń lọ"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Yiyọ kuro",
+            "beingWithdrawn": "Ti yọkuro",
+            "seeAll": "Wo gbogbo e",
+            "nextWithdrawal": "Iyọkuro ti o tẹle",
+            "countdownLeft": "O ku"
+        },
+        "stakeDialog": {
+            "toStake": "Si igi",
+            "toRemove": "Lati yọ kuro"
+        },
+        "withdrawDialog": {
+            "title": "Yiyọ awọn owo ti a ko pin kuro",
+            "showAllWithdraws": "Ṣe afihan gbogbo awọn yiyọ kuro"
+        },
+        "allWithdrawsDialog": {
+            "title": "Iṣẹ ṣiṣe aiṣedeede",
+            "information": "Ni kete ti o ba yọ awọn ami-ami kuro, akoko aiṣiṣẹ ọjọ meje ti o jẹ dandan wa. Lẹhin asiko yii, awọn ami rẹ kii yoo da pada laifọwọyi si apamọwọ rẹ. O gbọdọ pari ilana naa nipa yiyọ awọn ami rẹ kuro pẹlu ọwọ."
         }
     },
     "collapseText": "Subu",
@@ -1442,7 +1473,6 @@
             "placeLimit": "Ibi ifilelẹ ibere",
             "askCancel": "Ṣe o da ọ loju pe o fẹ fagilee gbogbo awọn aṣẹ ṣiṣi rẹ bi?",
             "cancelAll": "Bẹẹni, fagilee gbogbo rẹ",
-            "noCancel": "Rara, maṣe fagilee rẹ",
             "buy": "Ra {amount} {symbol}",
             "sell": "Ta {amount} {symbol}",
             "at": "ni {price} {symbol}"
@@ -1513,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Iwọn Blockchain ti kọja: Iye ti o tẹ sii ṣubu ni ita ibiti a gba laaye blockchain. Min: {min} ; O pọju: {max}",
                 "reason": "Iye kuna lati ni ibamu pẹlu iwọn blockchain"
+            },
+            "multipleOf": {
+                "reading": "Lati ṣiṣẹ aṣẹ rẹ, jọwọ ṣagbewọle idiyele kan ti o jẹ ọpọ ti {value}",
+                "reason": "Iye owo ti o wọle jẹ pato pupọ"
             }
         },
         "orderStatus": {

@@ -36,4 +36,13 @@ export class TokenBalanceSubscriptions {
 
     this.subscriptions.delete(key);
   }
+
+  resetSubscriptions(): void {
+    for (const [key, item] of this.subscriptions.entries()) {
+      item?.subscription?.unsubscribe();
+      item?.updateBalance?.(null);
+
+      this.subscriptions.delete(key);
+    }
+  }
 }

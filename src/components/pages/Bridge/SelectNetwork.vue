@@ -26,7 +26,6 @@
 
 <script lang="ts">
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 

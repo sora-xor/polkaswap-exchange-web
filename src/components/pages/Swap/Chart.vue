@@ -88,7 +88,7 @@ import {
 } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { PageInfo, FiatPriceObject } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { PageInfo, FiatPriceObject, SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const { SnapshotTypes } = SUBQUERY_TYPES;
 const { IndexerType } = WALLET_CONSTS;
@@ -97,6 +97,8 @@ const USD_SYMBOL = 'USD';
 
 /** "timestamp", "open", "close", "low", "high", "volume" data */
 type ChartDataItem = [number, ...OCLH, number];
+
+type LastUpdates = Record<string, SnapshotItem>;
 
 enum CHART_TYPES {
   LINE = 'line',
@@ -113,52 +115,52 @@ const LINE_CHART_FILTERS: SnapshotFilter[] = [
   {
     name: Timeframes.FIVE_MINUTES,
     label: '5m',
-    type: SnapshotTypes.DEFAULT,
+    type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
     count: 48, // 5 mins in 4 hours
   },
   {
     name: Timeframes.FIFTEEN_MINUTES,
     label: '15m',
-    type: SnapshotTypes.DEFAULT,
+    type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
     count: 48 * 3, // 5 mins in 12 hours,
     group: 3, // 5 min in 15 min
   },
   {
     name: Timeframes.THIRTY_MINUTES,
     label: '30m',
-    type: SnapshotTypes.DEFAULT,
+    type: SUBQUERY_TYPES.SnapshotTypes.DEFAULT,
     count: 48 * 6, // 5 mins in 24 hours,
     group: 6, // 5 min in 30 min
   },
   {
     name: Timeframes.HOUR,
     label: '1h',
-    type: SnapshotTypes.HOUR,
+    type: SUBQUERY_TYPES.SnapshotTypes.HOUR,
     count: 48, // hours in 2 days,
   },
   {
     name: Timeframes.FOUR_HOURS,
     label: '4h',
-    type: SnapshotTypes.HOUR,
+    type: SUBQUERY_TYPES.SnapshotTypes.HOUR,
     count: 48 * 4, // hours in 4 days,
     group: 4, // 1 hour in 4 hours
   },
   {
     name: Timeframes.DAY,
     label: '1D',
-    type: SnapshotTypes.DAY,
+    type: SUBQUERY_TYPES.SnapshotTypes.DAY,
     count: 90, // days in 1 month
   },
   {
     name: Timeframes.YEAR,
     label: '1Y',
-    type: SnapshotTypes.DAY,
+    type: SUBQUERY_TYPES.SnapshotTypes.DAY,
     count: 365, // days in year
   },
   {
     name: Timeframes.ALL,
     label: 'ALL',
-    type: SnapshotTypes.DAY,
+    type: SUBQUERY_TYPES.SnapshotTypes.DAY,
     count: Infinity,
   },
 ];
@@ -203,6 +205,14 @@ const dividePrice = (priceA: number, priceB: number): number => {
 
 const dividePrices = (priceA: OCLH, priceB: OCLH): OCLH => {
   return priceA.map((price, index) => dividePrice(price, priceB[index])) as OCLH;
+};
+
+const mergeSnapshots = (a: Nullable<SnapshotItem>, b: Nullable<SnapshotItem>): SnapshotItem => {
+  const timestamp = (a?.timestamp ?? b?.timestamp) as number;
+  const price = b?.price && a?.price ? dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0];
+  const volume = b?.volume && a?.volume ? Math.min(b.volume, a.volume) : a?.volume ?? 0;
+
+  return { timestamp, price, volume };
 };
 
 const normalizeSnapshots = (collection: SnapshotItem[], difference: number, lastTimestamp: number): SnapshotItem[] => {
@@ -452,7 +462,7 @@ export default class SwapChart extends Mixins(
     });
 
     const volumeGrid = this.gridSpec({
-      height: 92,
+      height: 72,
       left: this.gridLeftOffset,
     });
 
@@ -462,7 +472,10 @@ export default class SwapChart extends Mixins(
         show: true,
       },
       axisLine: {
-        show: false,
+        show: true,
+        lineStyle: {
+          color: this.theme.color.base.content.tertiary,
+        },
       },
       axisPointer: {
         label: {
@@ -511,7 +524,7 @@ export default class SwapChart extends Mixins(
           const { amount, suffix } = formatAmountWithSuffix(val);
           return `${amount} ${suffix}`;
         },
-        showMaxLabel: false,
+        showMaxLabel: true,
       },
     });
 
@@ -533,11 +546,7 @@ export default class SwapChart extends Mixins(
         const [timestamp, open, close, low, high, volume] = data;
         const rows: any[] = [];
 
-        if (seriesType === CHART_TYPES.BAR) {
-          rows.push({ title: 'Volume', data: formatPrice(volume, 2, USD_SYMBOL) });
-        } else if (seriesType === CHART_TYPES.LINE) {
-          rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
-        } else {
+        if (seriesType === CHART_TYPES.CANDLE) {
           const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
           const changeColor = signific(change)(
             this.theme.color.status.success,
@@ -552,6 +561,12 @@ export default class SwapChart extends Mixins(
             { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
             { title: 'Change', data: formatChange(change), color: changeColor }
           );
+        } else {
+          rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
+        }
+
+        if (withVolume) {
+          rows.push({ title: 'Volume', data: `$${formatAmount(volume, 2)}` });
         }
 
         return `
@@ -600,6 +615,7 @@ export default class SwapChart extends Mixins(
           const [_timestamp, open, close] = data;
           return open > close ? this.theme.color.status.error : this.theme.color.status.success;
         },
+        opacity: 0.7,
       },
       encode: { y: 'volume' },
     };
@@ -648,32 +664,18 @@ export default class SwapChart extends Mixins(
     this.unsubscribeFromPriceUpdates();
   }
 
-  // ordered ty timestamp DESC
-  private async fetchData(entityId: string) {
+  private async requestData(
+    entityId: string,
+    type: SnapshotTypes,
+    count: number,
+    hasNextPage = true,
+    endCursor?: string
+  ) {
     const handler = this.isOrderBook ? fetchOrderBookData : fetchAssetData;
-    const { type, count } = this.selectedFilter;
-    const pageInfo = this.pageInfos[entityId];
-    const buffer = this.samplesBuffer[entityId] ?? [];
     const nodes: SnapshotItem[] = [];
 
-    let hasNextPage = pageInfo?.hasNextPage ?? true;
-    let endCursor = pageInfo?.endCursor ?? undefined;
-
-    if (buffer.length >= count) {
-      return {
-        nodes,
-        hasNextPage,
-        endCursor,
-      };
-    }
-
-    let fetchCount = count;
-    // We use 1000 for subsquid because it works faster
-    const maxCount = getCurrentIndexer().type === IndexerType.SUBSQUID ? 1000 : 100;
-    console.log('maxCount', maxCount);
-
     do {
-      const first = Math.min(fetchCount, 100); // how many items should be fetched by request
+      const first = Math.min(count, 100); // how many items should be fetched by request
 
       const response = await handler(entityId, type, first, endCursor);
 
@@ -682,10 +684,50 @@ export default class SwapChart extends Mixins(
       hasNextPage = response.pageInfo.hasNextPage;
       endCursor = response.pageInfo.endCursor;
       nodes.push(...response.edges.map((edge) => edge.node));
-      fetchCount -= response.edges.length;
-    } while (hasNextPage && fetchCount > 0);
+      count -= response.edges.length;
+    } while (hasNextPage && count > 0);
 
     return { nodes, hasNextPage, endCursor };
+  }
+
+  // ordered ty timestamp DESC
+  private async fetchData(entityId: string) {
+    const { type, count } = this.selectedFilter;
+
+    const pageInfo = this.pageInfos[entityId];
+    const hasNextPage = pageInfo?.hasNextPage ?? true;
+    const endCursor = pageInfo?.endCursor ?? undefined;
+
+    const buffer = this.samplesBuffer[entityId] ?? [];
+
+    if (buffer.length >= count) {
+      return {
+        nodes: [],
+        hasNextPage,
+        endCursor,
+      };
+    }
+
+    return await this.requestData(entityId, type, count, hasNextPage, endCursor);
+  }
+
+  private async fetchDataLastUpdates(entities: string[]): Promise<Nullable<LastUpdates>> {
+    const lastUpdates: LastUpdates = {};
+
+    await Promise.all(
+      entities.map(async (entityId) => {
+        try {
+          const update = await this.requestData(entityId, this.selectedFilter.type, 1);
+          const snapshot = update.nodes[0];
+
+          lastUpdates[entityId] = snapshot;
+        } catch {
+          return null;
+        }
+      })
+    );
+
+    return lastUpdates;
   }
 
   private getUpdatedPrecision(min: number, max: number): number {
@@ -737,9 +779,7 @@ export default class SwapChart extends Mixins(
           const a = groups[0]?.[i];
           const b = groups[1]?.[i];
 
-          const timestamp = (a?.timestamp ?? b?.timestamp) as number;
-          const price = b?.price && a?.price ? dividePrices(a.price, b.price) : a?.price ?? [0, 0, 0, 0];
-          const volume = b?.volume && a?.volume ? Math.min(b.volume, a.volume) : a?.volume ?? 0;
+          const { timestamp, price, volume } = mergeSnapshots(a, b);
           // skip item, if one of the prices is incorrect
           if (price.some((part) => !Number.isFinite(part))) continue;
           // if "open" & "close" prices are zero, we are going to time, where pool is not created
@@ -769,6 +809,18 @@ export default class SwapChart extends Mixins(
   }
 
   // common
+  private async subscribeToPriceUpdates(): Promise<void> {
+    this.unsubscribeFromPriceUpdates();
+
+    if (!this.entities.length) return;
+
+    const entities = [...this.entities];
+
+    this.priceUpdateSubscription = await this.getPriceUpdatesSubscription(entities);
+    this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(entities), SYNC_INTERVAL);
+  }
+
+  // common
   private unsubscribeFromPriceUpdates(): void {
     if (this.priceUpdateSubscription) {
       this.priceUpdateSubscription();
@@ -780,45 +832,25 @@ export default class SwapChart extends Mixins(
     this.priceUpdateTimestampSync = null;
   }
 
-  private subscribeToAssetsPriceUpdates(): void {
-    this.unsubscribeFromPriceUpdates();
-
-    const entities = [...this.entities];
-
-    this.priceUpdateSubscription = this.$watch(
-      () => this.fiatPriceObject,
-      (updated, prev) => {
-        if (updated && (!prev || entities.some((addr) => updated[addr] !== prev[addr]))) {
-          this.handlePriceUpdates(entities, updated);
+  private async getPriceUpdatesSubscription(entities: string[]): Promise<Nullable<FnWithoutArgs>> {
+    if (this.isOrderBook) {
+      return await subscribeOnOrderBookUpdates(
+        this.dexId,
+        this.baseAsset!.address,
+        this.quoteAsset!.address,
+        () => this.fetchAndHandleUpdate(entities),
+        console.error
+      );
+    } else {
+      return this.$watch(
+        () => this.fiatPriceObject,
+        (updated, prev) => {
+          if (updated && (!prev || entities.some((addr) => updated[addr] !== prev[addr]))) {
+            this.fetchAndHandleUpdate(entities);
+          }
         }
-      }
-    );
-
-    this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(entities), SYNC_INTERVAL);
-  }
-
-  private async subscribeToOrderBookPriceUpdates(): Promise<void> {
-    this.unsubscribeFromPriceUpdates();
-
-    if (!(this.orderBookId && this.baseAsset && this.quoteAsset)) return;
-
-    const entities = [...this.entities];
-
-    this.priceUpdateSubscription = await subscribeOnOrderBookUpdates(
-      this.dexId,
-      this.baseAsset.address,
-      this.quoteAsset.address,
-      (data) => {
-        const {
-          stats: { price },
-        } = data;
-        const updated = { [this.orderBookId as string]: price.toCodecString() };
-        this.handlePriceUpdates(entities, updated);
-      },
-      console.error
-    );
-
-    this.priceUpdateTimestampSync = setInterval(() => this.handlePriceTimestampSync(entities), SYNC_INTERVAL);
+      );
+    }
   }
 
   private getCurrentSnapshotTimestamp(): number {
@@ -849,32 +881,31 @@ export default class SwapChart extends Mixins(
     this.updateDataset([item, ...this.dataset]);
   }
 
-  private handlePriceUpdates(entities: string[], fiatPriceObject: FiatPriceObject): void {
+  private async fetchAndHandleUpdate(entities: string[]): Promise<void> {
     if (!isEqual(entities)(this.entities)) return;
 
-    const timestamp = this.getCurrentSnapshotTimestamp();
-    const lastItem = this.dataset[0];
+    const lastUpdates = await this.fetchDataLastUpdates(entities);
 
-    const [priceA, priceB] = entities.map((address) =>
-      FPNumber.fromCodecValue(fiatPriceObject[address] ?? 0).toNumber()
-    );
-    const price = Number.isFinite(priceB) ? dividePrice(priceA, priceB) : priceA;
-    const min = Math.min(this.limits.min, price);
-    const max = Math.max(this.limits.max, price);
+    if (!lastUpdates) return;
 
-    const open = lastItem?.price?.[0] ?? price;
-    const low = lastItem?.price?.[2] ?? price;
-    const high = lastItem?.price?.[3] ?? price;
-
-    const isCurrentTimeframe = lastItem?.timestamp === timestamp;
-
-    const priceData: OCLH = [isCurrentTimeframe ? open : price, price, Math.min(low, price), Math.max(high, price)];
-    const item = { timestamp, price: priceData, volume: 0 };
     const dataset = [...this.dataset];
-    if (isCurrentTimeframe) {
+    const lastItem = dataset[0];
+    const [a, b] = entities.map((entityId) => lastUpdates[entityId]);
+    const item = mergeSnapshots(a, b);
+    // skip item, if one of the prices is incorrect
+    if (item.price.some((part) => !Number.isFinite(part))) return;
+    // skip item, if snapshot is outdated
+    if (lastItem?.timestamp > item.timestamp) return;
+
+    if (lastItem?.timestamp === item.timestamp) {
       dataset.shift();
     }
+
     dataset.unshift(item);
+
+    const min = Math.min(this.limits.min, ...item.price);
+    const max = Math.max(this.limits.max, ...item.price);
+
     this.precision = this.getUpdatedPrecision(min, max);
     this.limits = { min, max };
     this.updateDataset(dataset);
@@ -916,30 +947,26 @@ export default class SwapChart extends Mixins(
     }
   }
 
-  async resetChartTypeZoom() {
-    await this.$nextTick();
-
+  private async resetChartTypeZoom(): Promise<void> {
     const { count, group } = this.selectedFilter;
     const items = this.chartData.length;
     const visible = count / (group ?? 1);
     const start = items > visible ? ((items - visible) * 100) / items : 0;
     const end = 100;
 
-    this.setChartZoomLevel(start, end);
+    await this.setChartZoomLevel(start, end);
   }
 
   private async resetAndUpdatePrices(saveReversedState = false): Promise<void> {
     this.clearData(saveReversedState);
     await this.updatePrices();
-    if (this.isOrderBook) {
-      this.subscribeToOrderBookPriceUpdates();
-    } else {
-      this.subscribeToAssetsPriceUpdates();
-    }
+    await this.subscribeToPriceUpdates();
   }
 
-  selectChartType(type: CHART_TYPES): void {
+  async selectChartType(type: CHART_TYPES): Promise<void> {
     this.chartType = type;
+
+    await this.setChartZoomLevel(this.zoomStart, this.zoomEnd);
   }
 
   handleZoom(event: any): void {
@@ -955,7 +982,9 @@ export default class SwapChart extends Mixins(
     this.zoomEnd = data?.end ?? 0;
   }
 
-  private setChartZoomLevel(start: number, end: number): void {
+  private async setChartZoomLevel(start: number, end: number): Promise<void> {
+    await this.$nextTick();
+
     const chart = this.$refs.chart as any;
 
     chart.dispatchAction({

@@ -85,7 +85,7 @@ import { MoonpayTransactionStatus } from '../../../utils/moonpay';
 
 import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '../../../utils/moonpay';
 import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 const HistoryView = 'history';
 const DetailsView = 'details';

@@ -1,15 +1,46 @@
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
+import { combineLatest } from 'rxjs';
 
 import { subscribeOnOrderBookUpdates, fetchOrderBooks } from '@/indexer/queries/orderBook';
+import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 import { orderBookActionContext } from '.';
 
 import type { OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { Subscription } from 'rxjs';
 
+const balanceSubscriptions = new TokenBalanceSubscriptions();
+
 const actions = defineActions({
+  updateBalanceSubscription(context, reset: boolean): void {
+    const { commit, getters, rootGetters } = orderBookActionContext(context);
+
+    const { baseAsset: token } = getters;
+    const { setBaseAssetBalance } = commit;
+    const field = token?.address as string;
+
+    setBaseAssetBalance(null);
+    balanceSubscriptions.remove(field);
+
+    if (reset) {
+      balanceSubscriptions.resetSubscriptions();
+      return;
+    }
+
+    const updateBalance = (balance: Nullable<AccountBalance>) => setBaseAssetBalance(balance);
+
+    if (
+      rootGetters.wallet.account.isLoggedIn &&
+      token?.address &&
+      !(token.address in rootGetters.wallet.account.accountAssetsAddressTable)
+    ) {
+      balanceSubscriptions.add(field, { updateBalance, token });
+    }
+  },
+
   async getOrderBooksInfo(context): Promise<void> {
     const { commit, rootGetters } = orderBookActionContext(context);
     const { whitelist } = rootGetters.wallet.account;
@@ -36,7 +67,7 @@ const actions = defineActions({
         stats,
       } = item;
 
-      const key = api.orderBook.serializedKey(base, quote);
+      const key = api.orderBook.serializeKey(base, quote);
       buffer[key] = stats;
       return buffer;
     }, {});
@@ -104,7 +135,7 @@ const actions = defineActions({
           stats,
           deals,
         } = data;
-        const key = api.orderBook.serializedKey(base, quote);
+        const key = api.orderBook.serializeKey(base, quote);
         commit.setDeals(deals);
         commit.setStats({ [key]: stats });
       },
@@ -141,7 +172,13 @@ const actions = defineActions({
             ids.map((id) => api.orderBook.getLimitOrder(baseAsset.address, quoteAsset.address, id))
           )) as LimitOrder[];
 
-          commit.setUserLimitOrders(userLimitOrders);
+          const orders = userLimitOrders.map((el) => {
+            const amountStr = el.amount.toString();
+            const originalAmountStr = el.originalAmount.toString();
+            return { ...el, amountStr, originalAmountStr };
+          });
+
+          commit.setUserLimitOrders(orders);
 
           resolve();
         });
@@ -150,10 +187,37 @@ const actions = defineActions({
     commit.setUserLimitOrderUpdates(subscription);
   },
 
+  async subscribeOnLimitOrders(context, ids: number[]): Promise<void> {
+    const { commit, getters, state } = orderBookActionContext(context);
+    const { baseAsset, quoteAsset, accountAddress } = getters;
+
+    if (!(accountAddress && baseAsset && quoteAsset)) return;
+
+    let subscription!: Subscription;
+    const observables = ids.map((id) => api.orderBook.subscribeOnLimitOrder(baseAsset.address, quoteAsset.address, id));
+
+    await new Promise<void>((resolve) => {
+      subscription = combineLatest(observables).subscribe((updated) => {
+        const updatedOrders = updated.filter((item) => !!item) as LimitOrder[];
+        if (updatedOrders.length) {
+          const userLimitOrders = state.userLimitOrders.map((order) => {
+            const found = updatedOrders.find((item) => item.id === order.id);
+            return found ?? order;
+          });
+          commit.setUserLimitOrders(userLimitOrders);
+          resolve();
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    commit.setPagedUserLimitOrdersSubscription(subscription);
+  },
+
   unsubscribeFromUserLimitOrders(context): void {
     const { commit } = orderBookActionContext(context);
 
-    commit.setUserLimitOrders();
     commit.resetUserLimitOrderUpdates();
   },
 });

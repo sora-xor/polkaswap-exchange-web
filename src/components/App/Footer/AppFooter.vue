@@ -65,8 +65,8 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { Status } from '@soramitsu/soramitsu-js-ui/lib/types';
 import { getExplorerLinks, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { Status } from '@soramitsu-ui/ui-vue2/lib/types';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -80,7 +80,7 @@ import FooterPopper from './FooterPopper.vue';
 import { formatLocation } from './Node/utils';
 import NoInternetDialog from './NoInternetDialog.vue';
 
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 /** Max limit provided by navigator.connection.downlink */
 const MAX_INTERNET_CONNECTION_LIMIT = 10;
@@ -101,10 +101,10 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   @state.settings.blockNumber blockNumber!: number;
   @getter.libraryTheme libraryTheme!: Theme;
 
-  get blockExplorerLink(): Nullable<string> {
+  get blockExplorerLink(): string | undefined {
     const links = getExplorerLinks(this.soraNetwork);
     if (!links.length) {
-      return null;
+      return undefined;
     }
     return links[0].value;
   }

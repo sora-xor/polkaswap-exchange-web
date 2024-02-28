@@ -36,18 +36,19 @@
       </div>
 
       <s-button
+        v-if="xor && rewardAsset"
         type="primary"
         class="s-typography-button--large action-button"
-        :loading="parentLoading"
+        :loading="parentLoading || loading"
         :disabled="isInsufficientXorForFee || valueFundsEmpty || isInsufficientBalance"
         @click="handleConfirm"
       >
         <template v-if="isInsufficientXorForFee || isInsufficientBalance">
           <template v-if="isInsufficientBalance">
-            {{ t('insufficientBalanceText', { tokenSymbol: rewardAsset?.symbol }) }}
+            {{ t('insufficientBalanceText', { tokenSymbol: rewardAsset.symbol }) }}
           </template>
           <template v-if="isInsufficientXorForFee">
-            {{ t('insufficientBalanceText', { tokenSymbol: xor?.symbol }) }}
+            {{ t('insufficientBalanceText', { tokenSymbol: xor.symbol }) }}
           </template>
         </template>
         <template v-else-if="valueFundsEmpty">
@@ -57,8 +58,8 @@
           {{ t('confirmText') }}
         </template>
       </s-button>
-      <div class="check-pending-rewards" @click="checkPendingRewards">
-        {{ t('soraStaking.claimRewardsDialog.checkRewards') }} ({{ pendingRewards?.length ?? 0 }})
+      <div v-if="pendingRewards" class="check-pending-rewards" @click="checkPendingRewards">
+        {{ t('soraStaking.claimRewardsDialog.checkRewards') }} ({{ pendingRewards.length ?? 0 }})
       </div>
     </div>
   </dialog-base>
@@ -82,7 +83,7 @@ import type { CodecString } from '@sora-substrate/util';
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
-export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
+export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.TransactionMixin) {
   @Prop({ default: () => true, type: Boolean }) readonly isAdding!: boolean;
 
   rewardsDestination = '';
@@ -154,7 +155,10 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   }
 
   get selectedValidatorsFormatted(): string {
-    return `${this.selectedValidators.length} (MAX: ${this.validators.length})`;
+    return this.t('soraStaking.selectedValidators', {
+      count: this.selectedValidators.length,
+      max: this.validators.length,
+    });
   }
 
   get payouts() {
@@ -167,16 +171,18 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   }
 
   async handleConfirm(): Promise<void> {
-    await this.payout({
-      payouts: this.pendingRewards
-        ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
-        : [],
-      payee: this.rewardsDestination !== this.payeeAddress ? this.rewardsDestination : undefined,
+    await this.withNotifications(async () => {
+      await this.payout({
+        payouts: this.pendingRewards
+          ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
+          : [],
+        payee: this.rewardsDestination !== this.payeeAddress ? this.rewardsDestination : undefined,
+      });
+
+      await this.getPendingRewards();
+
+      this.closeDialog();
     });
-
-    await this.getPendingRewards();
-
-    this.closeDialog();
   }
 
   checkPendingRewards(): void {
