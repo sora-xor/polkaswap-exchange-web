@@ -262,7 +262,7 @@ export default class ReferralProgram extends Mixins(
     return this.getFiatAmountByFPNumber(this.referralRewards.rewards);
   }
 
-  get invitedUserRewards(): Record<string, { rewards: FPNumber }> {
+  get invitedUserRewards(): Record<string, FPNumber> {
     return this.referralRewards?.invitedUserRewards ?? {};
   }
 
@@ -399,7 +399,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   getInvitedUserReward(invitedUser: string): string {
-    const rewards = this.invitedUserRewards[invitedUser]?.rewards;
+    const rewards = this.invitedUserRewards[invitedUser];
     if (typeof invitedUser === 'string' && rewards) {
       return this.formatCodecNumber(rewards.toCodecString());
     }

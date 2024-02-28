@@ -12,9 +12,7 @@ import type {
 export type ReferrerRewards = {
   rewards: FPNumber;
   invitedUserRewards: {
-    [key: string]: {
-      rewards: FPNumber;
-    };
+    [key: string]: FPNumber;
   };
 };
 
@@ -39,7 +37,7 @@ const SubqueryReferrerRewardsQuery = gql<ConnectionQueryResponse<ReferrerRewardE
 
 const SubsquidReferrerRewardsQuery = gql<ConnectionQueryResponse<ReferrerRewardEntity>>`
   query SubsquidReferrerRewardsQuery($first: Int = 1000, $filter: ReferrerRewardWhereInput, $after: String = null) {
-    data: referrerRewards(first: $first, where: $filter, after: $after) {
+    data: referrerRewardsConnection(orderBy: id_ASC, first: $first, where: $filter, after: $after) {
       pageInfo {
         hasNextPage
         endCursor
@@ -84,23 +82,19 @@ export async function getReferralRewards(referrer?: string): Promise<Nullable<Re
 
   if (!result) return null;
 
-  const rewardsInfo: ReferrerRewards = {
-    rewards: FPNumber.ZERO,
-    invitedUserRewards: {},
-  };
+  return result.reduce<ReferrerRewards>(
+    (acc, node) => {
+      const { referral, amount } = node;
+      const value = FPNumber.fromCodecValue(amount, XOR.decimals);
 
-  result.forEach((node) => {
-    const referral = node.referral;
-    const amount = FPNumber.fromCodecValue(node.amount, XOR.decimals);
+      acc.rewards = acc.rewards.add(value);
+      acc.invitedUserRewards[referral] = (acc.invitedUserRewards[referral] ?? FPNumber.ZERO).add(value);
 
-    rewardsInfo.rewards = rewardsInfo.rewards.add(amount);
-
-    if (!rewardsInfo.invitedUserRewards[referral]) {
-      rewardsInfo.invitedUserRewards[referral] = { rewards: FPNumber.ZERO };
+      return acc;
+    },
+    {
+      rewards: FPNumber.ZERO,
+      invitedUserRewards: {},
     }
-
-    rewardsInfo.invitedUserRewards[referral].rewards = rewardsInfo.invitedUserRewards[referral].rewards.add(amount);
-  });
-
-  return rewardsInfo;
+  );
 }
