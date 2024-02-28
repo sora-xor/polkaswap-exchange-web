@@ -177,6 +177,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { getFullBaseUrl, getRouterMode } from '@/api';
 import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { PageNames, ZeroStringValue } from '@/consts';
+import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import router, { lazyView } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
@@ -197,7 +198,6 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 export default class ReferralProgram extends Mixins(
   mixins.LoadingMixin,
   mixins.FormattedAmountMixin,
-  mixins.ReferralRewardsMixin,
   mixins.PaginationSearchMixin,
   mixins.NetworkFeeWarningMixin,
   mixins.CopyAddressMixin,
@@ -209,6 +209,7 @@ export default class ReferralProgram extends Mixins(
   referrerHasApproved = false;
   pageAmount = 5; // override PaginationSearchMixin
 
+  @state.referrals.referralRewards referralRewards!: Nullable<ReferrerRewards>;
   @state.referrals.invitedUsers invitedUsers!: Array<string>;
   @state.referrals.referrer referrer!: string;
   @state.referrals.isReferrerApproved isReferrerApproved!: boolean;
@@ -221,20 +222,25 @@ export default class ReferralProgram extends Mixins(
   @mutation.referrals.setStorageReferrer private setStorageReferrer!: (value: string) => void;
   @action.referrals.subscribeOnInvitedUsers private subscribeOnInvitedUsers!: AsyncFnWithoutArgs;
   @action.referrals.getReferrer private getReferrer!: AsyncFnWithoutArgs;
+  @action.referrals.getAccountReferralRewards private getAccountReferralRewards!: AsyncFnWithoutArgs;
   @action.referrals.subscribeOnReferrer private subscribeOnReferrer!: AsyncFnWithoutArgs;
 
   @Watch('isSoraAccountConnected')
   private async updateSubscriptions(value: boolean): Promise<void> {
     if (value) {
-      if (this.isSoraAccountConnected) {
-        await this.subscribeOnInvitedUsers();
-        await this.getAccountReferralRewards();
-        await this.getReferrer();
-        await this.subscribeOnReferrer();
-      }
+      this.initData();
     } else {
       this.unsubscribeFromInvitedUsers();
       this.resetReferrerSubscription();
+    }
+  }
+
+  private async initData(): Promise<void> {
+    if (this.isSoraAccountConnected) {
+      await this.subscribeOnInvitedUsers();
+      await this.getAccountReferralRewards();
+      await this.getReferrer();
+      await this.subscribeOnReferrer();
     }
   }
 
@@ -247,7 +253,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   get formattedRewards(): string {
-    return this.referralRewards?.rewards.toLocaleString() || ZeroStringValue;
+    return this.referralRewards?.rewards.toLocaleString() ?? ZeroStringValue;
   }
 
   get formattedRewardsFiatValue(): Nullable<string> {
@@ -256,8 +262,8 @@ export default class ReferralProgram extends Mixins(
     return this.getFiatAmountByFPNumber(this.referralRewards.rewards);
   }
 
-  get invitedUserRewards(): Record<string, { rewards: FPNumber }> {
-    return this.referralRewards?.invitedUserRewards;
+  get invitedUserRewards(): Record<string, FPNumber> {
+    return this.referralRewards?.invitedUserRewards ?? {};
   }
 
   get bondedXorCodecBalance(): CodecString {
@@ -383,12 +389,7 @@ export default class ReferralProgram extends Mixins(
 
   created(): void {
     this.withApi(async () => {
-      if (this.isSoraAccountConnected) {
-        await this.subscribeOnInvitedUsers();
-        await this.getAccountReferralRewards();
-        await this.getReferrer();
-        await this.subscribeOnReferrer();
-      }
+      await this.initData();
     });
   }
 
@@ -398,7 +399,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   getInvitedUserReward(invitedUser: string): string {
-    const rewards = this.invitedUserRewards[invitedUser]?.rewards;
+    const rewards = this.invitedUserRewards[invitedUser];
     if (typeof invitedUser === 'string' && rewards) {
       return this.formatCodecNumber(rewards.toCodecString());
     }
