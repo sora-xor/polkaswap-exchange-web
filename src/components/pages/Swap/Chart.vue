@@ -663,7 +663,7 @@ export default class SwapChart extends Mixins(
 
   private async requestData(
     entityId: string,
-    type: SnapshotTypes,
+    type: SUBQUERY_TYPES.SnapshotTypes,
     count: number,
     hasNextPage = true,
     endCursor?: string
