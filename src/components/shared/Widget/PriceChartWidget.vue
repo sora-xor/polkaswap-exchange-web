@@ -262,7 +262,7 @@ const getPrecision = (value: number): number => {
     ChartSkeleton: lazyComponent(Components.ChartSkeleton),
   },
 })
-export default class SwapChart extends Mixins(
+export default class PriceChartWidget extends Mixins(
   ChartSpecMixin,
   mixins.LoadingMixin,
   mixins.NumberFormatterMixin,

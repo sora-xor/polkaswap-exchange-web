@@ -7,6 +7,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
+import { getter, state } from '@/store/decorators';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -15,8 +16,8 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
     BaseWidget: lazyComponent(Components.BaseWidget),
   },
 })
-export default class SwapTransactions extends Vue {
-  @Prop({ default: () => null, type: Object }) readonly baseAsset!: Nullable<AccountAsset>;
-  @Prop({ default: () => null, type: Object }) readonly quoteAsset!: Nullable<AccountAsset>;
+export default class SwapTransactionsWidget extends Vue {
+  @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
+  @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
 }
 </script>

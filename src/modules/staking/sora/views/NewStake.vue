@@ -166,7 +166,7 @@ export default class SoraStakingForm extends Mixins(StakingMixin, mixins.Loading
 
 .container {
   display: flex;
-  width: 464px;
+  width: $inner-window-width;
   flex-direction: column;
   justify-content: center;
   align-items: center;

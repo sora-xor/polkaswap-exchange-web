@@ -68,6 +68,8 @@ export default class ChartSkeleton extends Mixins(mixins.TranslationMixin) {
 $skeleton-label-width: 34px;
 
 .charts-container {
+  width: 100%;
+
   .chart {
     height: 293px;
 

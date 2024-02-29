@@ -1,21 +1,21 @@
 <template>
   <s-card :class="['base-widget', { delimeter }]" border-radius="small" shadow="always" size="big" primary>
     <template #header v-if="hasHeader">
-      <div class="base-widget-header">
-        <slot name="title">
-          <div class="base-widget-title">
+      <div class="base-widget-block base-widget-header">
+        <div class="base-widget-block base-widget-title">
+          <slot name="title">
             <h4 v-if="title">{{ title }}</h4>
             <s-tooltip v-if="tooltip" border-radius="mini" :content="tooltip">
               <s-icon name="info-16" size="14px" />
             </s-tooltip>
-          </div>
-        </slot>
+          </slot>
+        </div>
 
-        <div v-if="$slots.filters" class="s-flex base-widget-filters">
+        <div v-if="$slots.filters" class="base-widget-block base-widget-filters">
           <slot name="filters" />
         </div>
 
-        <div v-if="$slots.types" class="s-flex base-widget-types">
+        <div v-if="$slots.types" class="base-widget-block base-widget-types">
           <slot name="types" />
         </div>
       </div>
@@ -54,26 +54,35 @@ export default class BaseWidget extends Vue {
       border-bottom-color: var(--s-color-base-border-secondary);
     }
 
-    .el-card__body {
+    & > .el-card__body {
       display: flex;
       flex-flow: column nowrap;
       flex: 1;
     }
   }
+
+  .el-button + .el-button {
+    margin-left: unset;
+  }
 }
 </style>
 
 <style lang="scss" scoped>
-$top-offset: $inner-spacing-small;
-$left-offset: $inner-spacing-medium;
+$top: $inner-spacing-medium;
+$between: $top / 2;
+$left: $inner-spacing-medium;
 
 .base-widget {
-  &-header {
+  &-block {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: $top-offset $left-offset;
     gap: $inner-spacing-mini;
+  }
+
+  &-header {
+    flex-flow: row wrap;
+    justify-content: space-between;
+    padding: $top $left $between;
 
     font-size: var(--s-font-size-medium);
     font-weight: 500;
@@ -81,9 +90,8 @@ $left-offset: $inner-spacing-medium;
   }
 
   &-title {
-    display: flex;
-    align-items: center;
-    gap: $inner-spacing-mini;
+    flex: 1;
+    flex-flow: row nowrap;
   }
 
   &-filters {
@@ -101,7 +109,7 @@ $left-offset: $inner-spacing-medium;
     flex-flow: column nowrap;
     flex: 1;
 
-    padding: $top-offset $left-offset;
+    padding: $between $left $top;
 
     &.extensive {
       padding: 0;
