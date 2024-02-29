@@ -206,7 +206,7 @@ export enum Components {
   X1Dialog = 'pages/X1/X1Dialog',
   X1History = 'pages/X1/X1History',
   // Swap Page
-  SwapFormWidget = 'pages/Swap/FormWidget',
+  SwapFormWidget = 'pages/Swap/Form/Widget',
   SwapChartWidget = 'pages/Swap/ChartWidget',
   SwapTransactionsWidget = 'pages/Swap/TransactionsWidget',
   SwapConfirm = 'pages/Swap/Confirm',
@@ -249,9 +249,9 @@ export enum Components {
   PoolInfo = 'shared/PoolInfo',
   StatusBadge = 'shared/StatusBadge',
   // Shared Widgets
-  BaseWidget = 'shared/Widget/BaseWidget',
-  IFrameWidget = 'shared/Widget/IFrameWidget',
-  PriceChartWidget = 'shared/Widget/PriceChartWidget',
+  BaseWidget = 'shared/Widget/Base',
+  IFrameWidget = 'shared/Widget/IFrame',
+  PriceChartWidget = 'shared/Widget/PriceChart',
   // Shared Buttons
   SortButton = 'shared/Button/SortButton',
   SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',

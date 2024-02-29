@@ -2,9 +2,9 @@
   <s-card :class="['base-widget', { delimeter }]" border-radius="small" shadow="always" size="big" primary>
     <template #header v-if="hasHeader">
       <div class="base-widget-block base-widget-header">
-        <div class="base-widget-block base-widget-title">
+        <div :class="['base-widget-block', 'base-widget-title', { primary: primaryTitle }]">
           <slot name="title">
-            <h4 v-if="title">{{ title }}</h4>
+            <span v-if="title">{{ title }}</span>
             <s-tooltip v-if="tooltip" border-radius="mini" :content="tooltip">
               <s-icon name="info-16" size="14px" />
             </s-tooltip>
@@ -36,6 +36,7 @@ export default class BaseWidget extends Vue {
   @Prop({ default: '', type: String }) readonly tooltip!: string;
   @Prop({ default: false, type: Boolean }) readonly delimeter!: boolean;
   @Prop({ default: false, type: Boolean }) readonly extensive!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly primaryTitle!: boolean;
 
   get hasHeader(): boolean {
     return !!this.title || !!this.$slots.title;
@@ -83,15 +84,21 @@ $left: $inner-spacing-medium;
     flex-flow: row wrap;
     justify-content: space-between;
     padding: $top $left $between;
-
-    font-size: var(--s-font-size-medium);
-    font-weight: 500;
-    line-height: var(--s-line-height-medium);
   }
 
   &-title {
     flex: 1;
     flex-flow: row nowrap;
+
+    font-size: var(--s-font-size-medium);
+    font-weight: 500;
+    line-height: var(--s-line-height-medium);
+
+    &.primary {
+      font-size: var(--s-font-size-large);
+      font-weight: 300;
+      line-height: var(--s-line-height-reset);
+    }
   }
 
   &-filters {
