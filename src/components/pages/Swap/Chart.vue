@@ -62,7 +62,7 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
-import { components, mixins, WALLET_CONSTS, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins, WALLET_CONSTS, SUBQUERY_TYPES, getCurrentIndexer } from '@soramitsu/soraneo-wallet-web';
 import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
 import last from 'lodash/fp/last';
@@ -672,7 +672,9 @@ export default class SwapChart extends Mixins(
     const nodes: SnapshotItem[] = [];
 
     do {
-      const first = Math.min(count, 100); // how many items should be fetched by request
+      // We use 1000 for subsquid because it works faster
+      const maxCount = getCurrentIndexer().type === WALLET_CONSTS.IndexerType.SUBSQUID ? 1000 : 100;
+      const first = Math.min(count, maxCount); // how many items should be fetched by request
 
       const response = await handler(entityId, type, first, endCursor);
 
