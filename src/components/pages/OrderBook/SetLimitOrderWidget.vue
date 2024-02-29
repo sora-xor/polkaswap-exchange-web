@@ -1,5 +1,5 @@
 <template>
-  <base-widget v-loading="loadingState">
+  <base-widget extensive v-loading="loadingState">
     <div class="order-book-tabs">
       <s-tabs :value="currentTab" type="card" @input="handleChangeTab">
         <s-tab

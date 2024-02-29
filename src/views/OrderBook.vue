@@ -217,7 +217,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
       }
 
       .column-3 {
-        .order-history-header-filter-buttons {
+        .order-history-buttons--filter-buttons {
           flex-direction: column;
         }
       }

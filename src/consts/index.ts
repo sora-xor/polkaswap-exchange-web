@@ -208,6 +208,7 @@ export enum Components {
   // Swap Page
   SwapConfirm = 'pages/Swap/Confirm',
   SwapChart = 'pages/Swap/Chart',
+  SwapTransactions = 'pages/Swap/Transactions',
   SwapStatusActionBadge = 'pages/Swap/StatusActionBadge',
   SwapTransactionDetails = 'pages/Swap/TransactionDetails',
   SwapSettings = 'pages/Swap/Settings/Settings',
@@ -267,7 +268,6 @@ export enum Components {
   SettingsTabs = 'shared/Settings/Tabs',
   SlippageTolerance = 'shared/Settings/SlippageTolerance',
   // Shared Stats
-  StatsCard = 'shared/Stats/StatsCard',
   StatsFilter = 'shared/Stats/StatsFilter',
   // Shared Chart
   ChartSkeleton = 'shared/Chart/ChartSkeleton',

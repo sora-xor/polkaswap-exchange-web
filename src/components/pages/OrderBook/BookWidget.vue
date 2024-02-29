@@ -1,11 +1,12 @@
 <template>
   <base-widget
+    extensive
     v-loading="loading"
     class="stock-book book"
     :title="t('orderBook.orderBook')"
     :tooltip="t('orderBook.tooltip.bookWidget')"
   >
-    <template #title-append>
+    <template #filters>
       <s-dropdown
         v-if="false"
         class="stock-book__switcher"

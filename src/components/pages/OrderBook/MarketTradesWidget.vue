@@ -1,5 +1,6 @@
 <template>
   <base-widget
+    extensive
     class="market-trades"
     :title="t('orderBook.marketTrades')"
     :tooltip="t('orderBook.tooltip.marketWidget')"

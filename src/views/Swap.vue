@@ -152,6 +152,7 @@
       :is-available="isAvailable"
       class="swap-chart"
     />
+    <swap-transactions :base-asset="tokenFrom" :quote-asset="tokenTo" />
   </div>
 </template>
 
@@ -193,6 +194,7 @@ import type { Subscription } from 'rxjs';
     SwapStatusActionBadge: lazyComponent(Components.SwapStatusActionBadge),
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     SwapChart: lazyComponent(Components.SwapChart),
+    SwapTransactions: lazyComponent(Components.SwapTransactions),
     SwapLossWarningDialog: lazyComponent(Components.SwapLossWarningDialog),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     SlippageTolerance: lazyComponent(Components.SlippageTolerance),
