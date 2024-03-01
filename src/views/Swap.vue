@@ -1,8 +1,8 @@
 <template>
   <div class="swap-container">
     <swap-form-widget :parent-loading="parentLoading" />
-    <swap-chart-widget v-if="chartsEnabled" class="swap-chart" />
-    <swap-transactions-widget />
+    <swap-chart-widget :parent-loading="parentLoading" v-if="chartsEnabled" class="swap-chart" />
+    <swap-transactions-widget :parent-loading="parentLoading" />
   </div>
 </template>
 

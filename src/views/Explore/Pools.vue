@@ -141,7 +141,6 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { components } from '@soramitsu/soraneo-wallet-web';
-import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';

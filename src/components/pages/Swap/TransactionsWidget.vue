@@ -27,6 +27,60 @@
           {{ row.address }}
         </template>
       </s-table-column>
+      <s-table-column width="112">
+        <template #header>
+          <span>Tx ID</span>
+        </template>
+        <template v-slot="{ row }">
+          {{ row.id }}
+        </template>
+      </s-table-column>
+      <s-table-column width="120" header-align="right" align="right">
+        <template #header>
+          <span>Sold Token</span>
+        </template>
+        <template v-slot="{ row }">
+          <div class="explore-table-cell">
+            <token-logo
+              size="small"
+              class="explore-table-item-logo explore-table-item-logo--plain"
+              :token="row.inputAsset"
+            />
+            <span>{{ row.inputAssetSymbol }}</span>
+          </div>
+        </template>
+      </s-table-column>
+      <s-table-column width="120" header-align="right" align="right">
+        <template #header>
+          <span>Bought Token</span>
+        </template>
+        <template v-slot="{ row }">
+          <div class="explore-table-cell">
+            <token-logo
+              size="small"
+              class="explore-table-item-logo explore-table-item-logo--plain"
+              :token="row.outputAsset"
+            />
+            <span>{{ row.outputAssetSymbol }}</span>
+          </div>
+        </template>
+      </s-table-column>
+      <s-table-column width="120" header-align="right" align="right">
+        <template #header>
+          <span>Sold AMount</span>
+        </template>
+        <template v-slot="{ row }">
+          <formatted-amount value-can-be-hidden :font-size-rate="FontSizeRate.SMALL" :value="row.inputAmount" />
+        </template>
+      </s-table-column>
+      <s-table-column width="120" header-align="right" align="right">
+        <template #header>
+          <span>Bought Amount</span>
+        </template>
+        <template v-slot="{ row }">
+          <formatted-amount value-can-be-hidden :font-size-rate="FontSizeRate.SMALL" :value="row.outputAmount" />
+        </template>
+      </s-table-column>
     </s-table>
 
     <history-pagination
@@ -59,6 +113,8 @@ import type { PageInfo } from '@soramitsu/soraneo-wallet-web/lib/services/indexe
 @Component({
   components: {
     BaseWidget: lazyComponent(Components.BaseWidget),
+    TokenLogo: components.TokenLogo,
+    FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
   },
 })
@@ -73,7 +129,7 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
     await this.fetchData();
   }
 
-  private operationNames = [Operation.Swap, Operation.SwapAndSend];
+  private operationNames = [Operation.Swap];
   private pageInfo: Partial<PageInfo> = {};
   private totalCount = 0;
   private transactions: HistoryItem[] = [];
@@ -93,7 +149,9 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
       const id = item.id;
       const address = item.from;
       const inputAsset = this.getAsset(item.assetAddress);
+      const inputAssetSymbol = inputAsset?.symbol ?? '??';
       const outputAsset = this.getAsset(item.asset2Address);
+      const outputAssetSymbol = outputAsset?.symbol ?? '??';
       const inputAmount = new FPNumber(item.amount ?? 0).toLocaleString();
       const outputAmount = new FPNumber(item.amount2 ?? 0).toLocaleString();
       const date = dayjs(item.startTime);
@@ -102,7 +160,9 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
         id,
         address,
         inputAsset,
+        inputAssetSymbol,
         outputAsset,
+        outputAssetSymbol,
         inputAmount,
         outputAmount,
         datetime: { date: date.format('M/DD'), time: date.format('HH:mm:ss') },
@@ -143,25 +203,27 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
     };
 
     await this.withLoading(async () => {
-      const response = await indexer.services.explorer.account.getHistoryPaged(variables);
+      await this.withParentLoading(async () => {
+        const response = await indexer.services.explorer.account.getHistoryPaged(variables);
 
-      if (!response) return;
+        if (!response) return;
 
-      const { edges, totalCount, pageInfo: pageInfoUpdated } = response;
+        const { edges, totalCount, pageInfo: pageInfoUpdated } = response;
 
-      const transactions = [];
+        const transactions = [];
 
-      for (const edge of edges) {
-        const historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(edge.node);
+        for (const edge of edges) {
+          const historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(edge.node);
 
-        if (historyItem) {
-          transactions.push(historyItem);
+          if (historyItem) {
+            transactions.push(historyItem);
+          }
         }
-      }
 
-      this.totalCount = totalCount;
-      this.pageInfo = pageInfoUpdated;
-      this.transactions = transactions;
+        this.totalCount = totalCount;
+        this.pageInfo = pageInfoUpdated;
+        this.transactions = transactions;
+      });
     });
   }
 }

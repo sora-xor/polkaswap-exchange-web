@@ -497,16 +497,18 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       background-color: transparent;
     }
 
-    tr,
-    th {
-      &,
-      &:hover,
-      &.hover-row {
-        & > td,
-        & > th {
-          background: var(--s-color-utility-surface);
-          .cell {
-            padding: $inner-spacing-tiny $inner-spacing-mini;
+    &, &.el-table--enable-row-hover {
+      tr,
+      th {
+        &,
+        &:hover,
+        &.hover-row {
+          & > td,
+          & > th {
+            background: var(--s-color-utility-surface);
+            .cell {
+              padding: $inner-spacing-tiny $inner-spacing-mini;
+            }
           }
         }
       }
