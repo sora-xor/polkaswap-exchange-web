@@ -63,7 +63,9 @@
             "StakingSetPayee": "Nastavit příjemce platby {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} za {price} {symbol2} umístěno",
             "OrderBookCancelLimitOrder": "Limitní objednávka zrušena",
-            "OrderBookCancelLimitOrders": "Limitní objednávky zrušeny"
+            "OrderBookCancelLimitOrders": "Limitní objednávky zrušeny",
+            "Burn": "Spáleno {amount} {symbol}",
+            "Mint": "Vyraženo {amount} {symbol} na {address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} se nezdařilo.",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Nepodařilo se nastavit příjemce platby {address}",
             "OrderBookPlaceLimitOrder": "Nepodařilo se zadat limitní objednávku ve výši {amount} {symbol} za {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Limitní objednávky se nepodařilo zrušit",
-            "OrderBookCancelLimitOrder": "Limitní příkaz se nepodařilo zrušit"
+            "OrderBookCancelLimitOrder": "Limitní příkaz se nepodařilo zrušit",
+            "Burn": "Nepodařilo se vypálit {amount} {symbol}",
+            "Mint": "Nepodařilo se vytěžit {amount} {symbol} na {address}"
         },
         "ReferralReserveXor": "Vázat XOR",
         "ReferralUnreserveXor": "Zrušit vazbu XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Nastavit příjemce platby",
         "OrderBookPlaceLimitOrder": "Objednejte si",
         "OrderBookCancelLimitOrder": "Zrušit objednávku",
-        "OrderBookCancelLimitOrders": "Zrušit objednávky"
+        "OrderBookCancelLimitOrders": "Zrušit objednávky",
+        "Burn": "Hořet",
+        "Mint": "Máta"
     },
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření {PolkadotJs}. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
@@ -390,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Stakování",
         "OrderBook": "Obchod",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -405,7 +412,8 @@
         "StakingContainer": "Stakování",
         "Explore\/Container": "Prozkoumat",
         "SoraCard": "{Sora} Karta",
-        "OrderBook": "Obchod"
+        "OrderBook": "Obchod",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1287,7 +1295,9 @@
         "actions": {
             "claim": "Nárokujte si odměny",
             "remove": "Odstraňte sázku",
-            "more": "Vsaďte více"
+            "more": "Vsaďte více",
+            "confirm": "Potvrďte vytyčování",
+            "withdraw": "Vybrat"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1304,7 +1314,8 @@
             "change": "Změnit validátory",
             "select": "Vyberte validátory",
             "next": "Další",
-            "alreadyNominated": "Vybraní validátoři již byli nominováni"
+            "alreadyNominated": "Vybraní validátoři již byli nominováni",
+            "tooManyValidators": "Je vybráno příliš mnoho validátorů ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Vyhledávání...",
@@ -1312,10 +1323,10 @@
             "noNominatedValidators": "Nemáte žádné nominované validátory",
             "noValidators": "Neexistují žádné validátory splňující zadaný filtr",
             "commission": "Komise",
-            "commissionTooltip": "Provize odkazuje na poplatek, který si validátoři účtují za své služby v procesu sázek. Tento poplatek, vyjádřený v procentech, se odečítá z odměn za sázky, které nominátoři získali před rozdělením. Je důležité si uvědomit, že validátoři mohou své provize kdykoli upravit"
+            "commissionTooltip": "Provize odkazuje na poplatek, který si validátoři účtují za své služby v procesu sázek. Tento poplatek, vyjádřený v procentech, se odečítá z odměn za sázky, které nominátoři získali před rozdělením. Je důležité si uvědomit, že validátoři mohou své provize kdykoli upravit",
+            "return": "Vrátit se"
         },
         "info": {
-            "redeemable": "Splatný",
             "unstaking": "Nestanovení",
             "stakingBalance": "Vyrovnání rovnováhy",
             "rewarded": "Odměněno",
@@ -1394,6 +1405,26 @@
             "title": "Nárokujte si odměny",
             "checkRewards": "Zkontrolujte odměny za éru a validátor",
             "rewardsDestination": "Cílová adresa odměn"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Vyjímatelné",
+            "beingWithdrawn": "Být stažen",
+            "seeAll": "Vidět vše",
+            "nextWithdrawal": "Další stažení",
+            "countdownLeft": "zbývá"
+        },
+        "stakeDialog": {
+            "toStake": "Vsadit",
+            "toRemove": "Odebrat"
+        },
+        "withdrawDialog": {
+            "title": "Vyberte nevložené prostředky",
+            "showAllWithdraws": "Zobrazit všechny výběry"
+        },
+        "allWithdrawsDialog": {
+            "title": "Neustálá aktivita",
+            "information": "Jakmile vyjmete tokeny, nastává povinná 7denní lhůta pro odsazení. Po uplynutí této doby nebudou vaše tokeny automaticky vráceny do vaší peněženky. Proces musíte dokončit ručním stažením svých tokenů."
         }
     },
     "collapseText": "Skrýt",
@@ -1442,7 +1473,6 @@
             "placeLimit": "Zadejte limitní objednávku",
             "askCancel": "Opravdu chcete zrušit všechny své otevřené objednávky?",
             "cancelAll": "Ano, zrušit vše",
-            "noCancel": "Ne, nezrušte to",
             "buy": "Koupit {amount} {symbol}",
             "sell": "Prodej {amount} {symbol}",
             "at": "za {price} {symbol}"
@@ -1513,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Překročen rozsah blockchainu: Zadaná částka je mimo povolený rozsah blockchainu. Min: {min} ; Max: {max}",
                 "reason": "Částka nesplňuje rozsah blockchainu"
+            },
+            "multipleOf": {
+                "reading": "Pro zpracování objednávky zadejte cenu, která je násobkem {value}",
+                "reason": "Zadaná cena je příliš konkrétní"
             }
         },
         "orderStatus": {

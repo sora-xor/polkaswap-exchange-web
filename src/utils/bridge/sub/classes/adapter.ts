@@ -106,7 +106,7 @@ export class SubAdapter {
 
     const extrinsic = this.getTransferExtrinsic(asset, recipient, amount);
 
-    await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account.pair, historyItem);
+    await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account!.pair, historyItem);
   }
 
   /* [Substrate 5] Runtime call transactionPaymentApi */
@@ -207,11 +207,11 @@ class RelaychainAdapter extends SubAdapter {
           // Hardcoded value for Rococo - 0.000125 ROC
           return '125810197';
         case SubNetworkId.Kusama:
-          // Hardcoded value for Kusama - 0.0007 KSM
-          return '700000000';
+          // Hardcoded value for Kusama - 0.002 KSM (0.0007 KSM transaction fee + 0.0013 KSM treasury)
+          return '2000000000';
         case SubNetworkId.Polkadot:
-          // Hardcoded value for Polkadot - 0.01836 DOT
-          return '183600000';
+          // Hardcoded value for Polkadot - 0.059 DOT (0.019 DOT transaction fee + 0.04 DOT treasury)
+          return '590000000';
         default:
           return '0';
       }

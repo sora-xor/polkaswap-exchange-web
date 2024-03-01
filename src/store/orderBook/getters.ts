@@ -15,7 +15,12 @@ const getters = defineGetters<OrderBookState>()({
   baseAsset(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = orderBookGetterContext(args);
     if (!state.baseAssetAddress) return null;
-    return rootGetters.assets.assetDataByAddress(state.baseAssetAddress);
+    const token = rootGetters.assets.assetDataByAddress(state.baseAssetAddress);
+    const balance = state.baseAssetBalance;
+    if (balance) {
+      return { ...token, balance } as RegisteredAccountAsset;
+    }
+    return token;
   },
   quoteAsset(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = orderBookGetterContext(args);
@@ -28,7 +33,7 @@ const getters = defineGetters<OrderBookState>()({
 
     if (!(baseAsset && quoteAsset)) return '';
 
-    return api.orderBook.serializedKey(baseAsset.address, quoteAsset.address);
+    return api.orderBook.serializeKey(baseAsset.address, quoteAsset.address);
   },
   currentOrderBook(...args): Nullable<OrderBook> {
     const { getters, state } = orderBookGetterContext(args);

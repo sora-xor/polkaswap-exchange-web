@@ -63,7 +63,9 @@
             "StakingSetPayee": "Set payee {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} at {price} {symbol2} placed",
             "OrderBookCancelLimitOrder": "Limit order cancelled",
-            "OrderBookCancelLimitOrders": "Limit orders cancelled"
+            "OrderBookCancelLimitOrders": "Limit orders cancelled",
+            "Burn": "Burned {amount} {symbol}",
+            "Mint": "Minted {amount} {symbol} to {address}"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Failed to set payee {address}",
             "OrderBookPlaceLimitOrder": "Failed to place limit order of {amount} {symbol} at {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Failed to cancel limit orders",
-            "OrderBookCancelLimitOrder": "Failed to cancel limit order"
+            "OrderBookCancelLimitOrder": "Failed to cancel limit order",
+            "Burn": "Failed to burn {amount} {symbol}",
+            "Mint": "Failed to mint {amount} {symbol} to {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Set Payee",
         "OrderBookPlaceLimitOrder": "Place Order",
         "OrderBookCancelLimitOrder": "Cancel Order",
-        "OrderBookCancelLimitOrders": "Cancel Orders"
+        "OrderBookCancelLimitOrders": "Cancel Orders",
+        "Burn": "Burn",
+        "Mint": "Mint"
     },
     "polkadotjs": {
         "noExtensions": "No {PolkadotJs} extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -390,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Trade",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -405,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Explore",
         "SoraCard": "{Sora} Card",
-        "OrderBook": "Trade"
+        "OrderBook": "Trade",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1287,7 +1295,9 @@
         "actions": {
             "claim": "Claim rewards",
             "remove": "Remove stake",
-            "more": "Stake more"
+            "more": "Stake more",
+            "confirm": "Confirm Staking",
+            "withdraw": "Withdraw"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1304,7 +1314,8 @@
             "change": "Change validators",
             "select": "Select validators",
             "next": "Next",
-            "alreadyNominated": "Selected validators already nominated"
+            "alreadyNominated": "Selected validators already nominated",
+            "tooManyValidators": "Too many validators selected ({Max} {max})"
         },
         "validatorsList": {
             "search": "Search...",
@@ -1312,10 +1323,10 @@
             "noNominatedValidators": "You don't have any nominated validators",
             "noValidators": "There are no validators satisfying the specified filter",
             "commission": "Commission",
-            "commissionTooltip": "Commission refers to the fee charged by validators for their services in the staking process. This fee, expressed as a percentage, is deducted from the staking rewards earned by nominators before distribution. It's important to note that validators can adjust their commission rates at any time"
+            "commissionTooltip": "Commission refers to the fee charged by validators for their services in the staking process. This fee, expressed as a percentage, is deducted from the staking rewards earned by nominators before distribution. It's important to note that validators can adjust their commission rates at any time",
+            "return": "Return"
         },
         "info": {
-            "redeemable": "Redeemable",
             "unstaking": "Unstaking",
             "stakingBalance": "Staking balance",
             "rewarded": "Rewarded",
@@ -1355,8 +1366,8 @@
                 "edit": "Edit My Validators"
             },
             "tabs": {
-                "user": "Your validators",
-                "all": "All validators"
+                "user": "Yours",
+                "all": "All"
             }
         },
         "validatorsAttentionDialog": {
@@ -1394,6 +1405,26 @@
             "title": "Claim rewards",
             "checkRewards": "Check rewards per era and validator",
             "rewardsDestination": "Rewards destination address"
+        },
+        "selectedValidators": "{count} ({Max} {max})",
+        "withdraw": {
+            "withdrawable": "Withdrawable",
+            "beingWithdrawn": "Being withdrawn",
+            "seeAll": "See all",
+            "nextWithdrawal": "Next withdrawal",
+            "countdownLeft": "left"
+        },
+        "stakeDialog": {
+            "toStake": "To stake",
+            "toRemove": "To remove"
+        },
+        "withdrawDialog": {
+            "title": "Withdraw unstaked funds",
+            "showAllWithdraws": "Show all withdraws"
+        },
+        "allWithdrawsDialog": {
+            "title": "Unstaking activity",
+            "information": "Once you unstake tokens, there is a mandatory 7-day unstaking period. After this period, your tokens will not be automatically returned to your wallet. You must complete the process by manually withdrawing your tokens."
         }
     },
     "collapseText": "Collapse",
@@ -1442,7 +1473,6 @@
             "placeLimit": "Place limit order",
             "askCancel": "Are you sure you want to cancel all of your open orders?",
             "cancelAll": "Yes, cancel all",
-            "noCancel": "No, don’t cancel it",
             "buy": "Buy {amount} {symbol}",
             "sell": "Sell {amount} {symbol}",
             "at": "at {price} {symbol}"
@@ -1513,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range. Min: {min}; Max: {max}",
                 "reason": "Amount fails to comply with blockchain range"
+            },
+            "multipleOf": {
+                "reading": "To process your order, please input a price that is a multiple of {value}",
+                "reason": "Entered price is too specific"
             }
         },
         "orderStatus": {

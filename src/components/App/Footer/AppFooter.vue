@@ -101,10 +101,10 @@ export default class AppFooter extends Mixins(TranslationMixin) {
   @state.settings.blockNumber blockNumber!: number;
   @getter.libraryTheme libraryTheme!: Theme;
 
-  get blockExplorerLink(): Nullable<string> {
+  get blockExplorerLink(): string | undefined {
     const links = getExplorerLinks(this.soraNetwork);
     if (!links.length) {
-      return null;
+      return undefined;
     }
     return links[0].value;
   }

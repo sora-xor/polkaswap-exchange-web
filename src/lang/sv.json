@@ -63,7 +63,9 @@
             "StakingSetPayee": "Ange betalningsmottagare {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} till {price} {symbol2} placerad",
             "OrderBookCancelLimitOrder": "Limit order annullerad",
-            "OrderBookCancelLimitOrders": "Limit order annullerade"
+            "OrderBookCancelLimitOrders": "Limit order annullerade",
+            "Burn": "Brände {amount} {symbol}",
+            "Mint": "Minskade {amount} {symbol} till {address}"
         },
         "error": {
             "Transfer": "Det gick inte att {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Det gick inte att ange betalningsmottagaren {address}",
             "OrderBookPlaceLimitOrder": "Det gick inte att lägga en gränsbeställning på {amount} {symbol} till {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Det gick inte att avbryta limiterade beställningar",
-            "OrderBookCancelLimitOrder": "Det gick inte att avbryta begränsningsordern"
+            "OrderBookCancelLimitOrder": "Det gick inte att avbryta begränsningsordern",
+            "Burn": "Det gick inte att bränna {amount} {symbol}",
+            "Mint": "Det gick inte att prägla {amount} {symbol} till {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Ange betalningsmottagare",
         "OrderBookPlaceLimitOrder": "Beställa",
         "OrderBookCancelLimitOrder": "Avbryt beställning",
-        "OrderBookCancelLimitOrders": "Avbryt beställningar"
+        "OrderBookCancelLimitOrders": "Avbryt beställningar",
+        "Burn": "Bränna",
+        "Mint": "Mynta"
     },
     "polkadotjs": {
         "noExtensions": "Inget {PolkadotJs} tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -390,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Utsättning",
         "OrderBook": "Handel",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Byt",
@@ -405,7 +412,8 @@
         "StakingContainer": "Utsättning",
         "Explore\/Container": "Utforska",
         "SoraCard": "{Sora} Kort",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1287,7 +1295,9 @@
         "actions": {
             "claim": "Gör anspråk på belöningar",
             "remove": "Ta bort insatsen",
-            "more": "Satsa mer"
+            "more": "Satsa mer",
+            "confirm": "Bekräfta utsättning",
+            "withdraw": "Dra tillbaka"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1304,7 +1314,8 @@
             "change": "Byt validatorer",
             "select": "Välj validerare",
             "next": "Nästa",
-            "alreadyNominated": "Utvalda validerare redan nominerade"
+            "alreadyNominated": "Utvalda validerare redan nominerade",
+            "tooManyValidators": "För många validerare har valts ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Sök...",
@@ -1312,10 +1323,10 @@
             "noNominatedValidators": "Du har inga nominerade validerare",
             "noValidators": "Det finns inga validerare som uppfyller det angivna filtret",
             "commission": "Provision",
-            "commissionTooltip": "Kommissionen hänvisar till den avgift som tas ut av validerare för sina tjänster i insatsprocessen. Denna avgift, uttryckt i procent, dras av från insatsbelöningarna som intjänats av nominatorer före utdelning. Det är viktigt att notera att validerare kan justera sina provisionssatser när som helst"
+            "commissionTooltip": "Kommissionen hänvisar till den avgift som tas ut av validerare för sina tjänster i insatsprocessen. Denna avgift, uttryckt i procent, dras av från insatsbelöningarna som intjänats av nominatorer före utdelning. Det är viktigt att notera att validerare kan justera sina provisionssatser när som helst",
+            "return": "Lämna tillbaka"
         },
         "info": {
-            "redeemable": "Inlösbar",
             "unstaking": "Unstaking",
             "stakingBalance": "Satsa balans",
             "rewarded": "Belönad",
@@ -1394,6 +1405,26 @@
             "title": "Gör anspråk på belöningar",
             "checkRewards": "Kontrollera belöningar per era och validator",
             "rewardsDestination": "Destinationsadress för belöningar"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Uttagbar",
+            "beingWithdrawn": "Att bli tillbakadragen",
+            "seeAll": "Se allt",
+            "nextWithdrawal": "Nästa uttag",
+            "countdownLeft": "kvar"
+        },
+        "stakeDialog": {
+            "toStake": "Att satsa",
+            "toRemove": "Att ta bort"
+        },
+        "withdrawDialog": {
+            "title": "Ta ut oinsatta medel",
+            "showAllWithdraws": "Visa alla uttag"
+        },
+        "allWithdrawsDialog": {
+            "title": "Enastående aktivitet",
+            "information": "När du har avsatt tokens finns det en obligatorisk 7-dagars utsättningsperiod. Efter denna period kommer dina tokens inte automatiskt att returneras till din plånbok. Du måste slutföra processen genom att manuellt dra ut dina tokens."
         }
     },
     "collapseText": "Kollaps",
@@ -1442,7 +1473,6 @@
             "placeLimit": "Lägg gränsorder",
             "askCancel": "Är du säker på att du vill avbryta alla dina öppna beställningar?",
             "cancelAll": "Ja, avbryt alla",
-            "noCancel": "Nej, avbryt det inte",
             "buy": "Köp {amount} {symbol}",
             "sell": "Sälj {amount} {symbol}",
             "at": "till {price} {symbol}"
@@ -1513,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Blockchain-intervallet har överskridits: Ditt angivna belopp faller utanför blockkedjans tillåtna intervall. Min: {min} ; Max: {max}",
                 "reason": "Beloppet överensstämmer inte med blockchain-intervallet"
+            },
+            "multipleOf": {
+                "reading": "För att behandla din beställning, vänligen ange ett pris som är en multipel av {value}",
+                "reason": "Det angivna priset är för specifikt"
             }
         },
         "orderStatus": {

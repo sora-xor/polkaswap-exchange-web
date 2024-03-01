@@ -26,6 +26,8 @@ function initialState(): StakingState {
     activeEra: null,
     activeEraUpdates: null,
 
+    activeEraStart: null,
+
     currentEra: null,
     currentEraUpdates: null,
 

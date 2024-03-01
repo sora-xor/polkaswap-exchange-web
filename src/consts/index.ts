@@ -144,6 +144,7 @@ export enum PageNames {
   LimitOrderBuy = 'OrderBook/LimitOrderBuy',
   LimitOrderSell = 'OrderBook/LimitOrderSell',
   SoraCard = 'SoraCard',
+  Kensetsu = 'Kensetsu',
 }
 
 export enum Components {
@@ -226,6 +227,7 @@ export enum Components {
   PlaceOrder = 'pages/OrderBook/Dialogs/PlaceOrder',
   CancelOrders = 'pages/OrderBook/Dialogs/CancelOrders',
   PlaceTransactionDetails = 'pages/OrderBook/TransactionDetails',
+  ErrorButton = 'pages/OrderBook/common/ErrorButton',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
@@ -359,6 +361,11 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     icon: 'various-planet-24',
     title: PageNames.Stats,
     href: '/#/stats',
+  },
+  {
+    icon: 'basic-flame-24',
+    title: PageNames.Kensetsu,
+    href: '/#/kensetsu',
   },
   {
     icon: 'music-eject-24',

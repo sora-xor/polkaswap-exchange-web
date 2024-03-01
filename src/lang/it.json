@@ -63,7 +63,9 @@
             "StakingSetPayee": "Imposta beneficiario {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} a {price} {symbol2} piazzato",
             "OrderBookCancelLimitOrder": "Ordine limite annullato",
-            "OrderBookCancelLimitOrders": "Ordini limite annullati"
+            "OrderBookCancelLimitOrders": "Ordini limite annullati",
+            "Burn": "{amount} {symbol} bruciato",
+            "Mint": "Coniato {amount} {symbol} a {address}"
         },
         "error": {
             "Transfer": "Impossibile {action} {amount} {symbol} {direction} {address}",
@@ -98,7 +100,9 @@
             "StakingSetPayee": "Impossibile impostare il beneficiario {address}",
             "OrderBookPlaceLimitOrder": "Impossibile effettuare un ordine limite di {amount} {symbol} a {price} {symbol2}",
             "OrderBookCancelLimitOrders": "Impossibile annullare gli ordini limite",
-            "OrderBookCancelLimitOrder": "Impossibile annullare l'ordine limite"
+            "OrderBookCancelLimitOrder": "Impossibile annullare l'ordine limite",
+            "Burn": "Impossibile masterizzare {amount} {symbol}",
+            "Mint": "Impossibile coniare {amount} {symbol} su {address}"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Imposta beneficiario",
         "OrderBookPlaceLimitOrder": "Invia ordine",
         "OrderBookCancelLimitOrder": "Annulla Ordine",
-        "OrderBookCancelLimitOrders": "Annulla ordini"
+        "OrderBookCancelLimitOrders": "Annulla ordini",
+        "Burn": "Bruciare",
+        "Mint": "menta"
     },
     "polkadotjs": {
         "noExtensions": "Nessuna estensione {PolkadotJs} trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -390,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Commercio",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Scambia",
@@ -405,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Esplorare",
         "SoraCard": "{Sora} Card",
-        "OrderBook": "Commercio"
+        "OrderBook": "Commercio",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1287,7 +1295,9 @@
         "actions": {
             "claim": "Richiedi premi",
             "remove": "Rimuovi il paletto",
-            "more": "Punta di più"
+            "more": "Punta di più",
+            "confirm": "Conferma puntata",
+            "withdraw": "Ritirare"
         },
         "overview": {
             "title": "{Sora} Picchettamento",
@@ -1304,7 +1314,8 @@
             "change": "Validatori di modifiche",
             "select": "Seleziona validatori",
             "next": "Il prossimo",
-            "alreadyNominated": "Validatori selezionati già nominati"
+            "alreadyNominated": "Validatori selezionati già nominati",
+            "tooManyValidators": "Troppi validatori selezionati ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Ricerca...",
@@ -1312,10 +1323,10 @@
             "noNominatedValidators": "Non hai validatori nominati",
             "noValidators": "Non sono presenti validatori che soddisfano il filtro specificato",
             "commission": "Commissione",
-            "commissionTooltip": "La commissione si riferisce alla commissione addebitata dai validatori per i loro servizi nel processo di staking. Questa commissione, espressa in percentuale, viene detratta dai premi di staking guadagnati dai nominatori prima della distribuzione. È importante notare che i validatori possono modificare le loro tariffe di commissione in qualsiasi momento"
+            "commissionTooltip": "La commissione si riferisce alla commissione addebitata dai validatori per i loro servizi nel processo di staking. Questa commissione, espressa in percentuale, viene detratta dai premi di staking guadagnati dai nominatori prima della distribuzione. È importante notare che i validatori possono modificare le loro tariffe di commissione in qualsiasi momento",
+            "return": "Ritorno"
         },
         "info": {
-            "redeemable": "Riscattabile",
             "unstaking": "Instabile",
             "stakingBalance": "Saldo della puntata",
             "rewarded": "Premiato",
@@ -1394,6 +1405,26 @@
             "title": "Richiedi premi",
             "checkRewards": "Controlla i premi per epoca e validatore",
             "rewardsDestination": "Indirizzo di destinazione del premio"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Estraibile",
+            "beingWithdrawn": "Essere ritirato",
+            "seeAll": "Vedi tutto",
+            "nextWithdrawal": "Prossimo ritiro",
+            "countdownLeft": "rimaste"
+        },
+        "stakeDialog": {
+            "toStake": "Puntare",
+            "toRemove": "Rimuovere"
+        },
+        "withdrawDialog": {
+            "title": "Prelevare i fondi non prelevati",
+            "showAllWithdraws": "Mostra tutti i prelievi"
+        },
+        "allWithdrawsDialog": {
+            "title": "Attività non impegnativa",
+            "information": "Una volta annullati i token, è previsto un periodo obbligatorio di annullamento dello staking di 7 giorni. Dopo questo periodo, i tuoi token non verranno automaticamente restituiti al tuo portafoglio. È necessario completare il processo ritirando manualmente i token."
         }
     },
     "collapseText": "Crollo",
@@ -1442,7 +1473,6 @@
             "placeLimit": "Effettua un ordine limite",
             "askCancel": "Sei sicuro di voler annullare tutti i tuoi ordini aperti?",
             "cancelAll": "Sì, annulla tutto",
-            "noCancel": "No, non cancellarlo",
             "buy": "Acquista {amount} {symbol}",
             "sell": "Vendi {amount} {symbol}",
             "at": "a {price} {symbol}"
@@ -1513,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Intervallo blockchain superato: l'importo inserito non rientra nell'intervallo consentito dalla blockchain. Min: {min} ; Massimo: {max}",
                 "reason": "L'importo non è conforme all'intervallo blockchain"
+            },
+            "multipleOf": {
+                "reading": "Per elaborare il tuo ordine, inserisci un prezzo che sia multiplo di {value}",
+                "reason": "Il prezzo inserito è troppo specifico"
             }
         },
         "orderStatus": {

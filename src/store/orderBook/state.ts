@@ -26,6 +26,7 @@ function initialState(): OrderBookState {
     pagedUserLimitOrdersSubscription: null,
     ordersToBeCancelled: [],
     amountSliderValue: 0,
+    baseAssetBalance: null,
   };
 }
 
