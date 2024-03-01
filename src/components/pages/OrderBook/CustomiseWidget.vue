@@ -1,6 +1,11 @@
 <template>
   <div class="order-book-widget customise-widget">
-    <el-popover popper-class="order-book-whitelist" trigger="click" v-model="visibleSettings" :visible-arrow="false">
+    <el-popover
+      popper-class="customise-widget-popover"
+      trigger="click"
+      v-model="visibleSettings"
+      :visible-arrow="false"
+    >
       <settings-popover @open-color-setting="openSetColorDialog" />
       <div slot="reference" class="settings-btn">
         <span class="customise-widget-title">Customise page</span>
@@ -36,6 +41,12 @@ export default class CustomiseWidget extends Mixins(TranslationMixin) {
 </script>
 
 <style lang="scss">
+.customise-widget-popover.el-popover {
+  border-radius: 18px;
+  border-color: var(--s-color-base-border-secondary);
+  padding: 0;
+}
+
 .customise-widget {
   margin-top: 8px;
   height: 64px;

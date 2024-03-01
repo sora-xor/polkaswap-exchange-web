@@ -8,32 +8,32 @@
     <div class="delimiter" />
     <div class="settings-popover-switches">
       <div class="settings-popover-switches__item">
-        <s-switch v-model="one" :disabled="loading" />
+        <s-switch v-model="one" :disabled="true" />
         <span>{{ 'Charts' }}</span>
       </div>
       <div class="settings-popover-switches__item">
-        <s-switch v-model="two" :disabled="loading" />
+        <s-switch v-model="two" :disabled="true" />
         <span>{{ 'Market trades' }}</span>
       </div>
       <div class="settings-popover-switches__item">
-        <s-switch v-model="three" :disabled="loading" />
+        <s-switch v-model="three" :disabled="true" />
         <span>{{ 'Order placing' }}</span>
       </div>
       <div class="settings-popover-switches__item">
-        <s-switch v-model="four" :disabled="loading" />
+        <s-switch v-model="four" :disabled="true" />
         <span>{{ 'All pairs' }}</span>
       </div>
       <div class="settings-popover-switches__item">
-        <s-switch v-model="five" :disabled="loading" />
+        <s-switch v-model="five" :disabled="true" />
         <span>{{ 'Trading pair' }}</span>
       </div>
       <div class="delimiter" />
       <div class="settings-popover-switches__item">
-        <s-switch v-model="six" :disabled="loading" />
+        <s-switch v-model="six" :disabled="true" />
         <span>{{ 'Trade reminder' }}</span>
       </div>
       <div class="settings-popover-switches__item">
-        <s-switch v-model="seven" :disabled="loading" />
+        <s-switch v-model="seven" :disabled="true" />
         <span>{{ 'Sound reminder' }}</span>
       </div>
     </div>
@@ -58,8 +58,8 @@ export default class SettingsPopover extends Mixins(TranslationMixin, mixins.Loa
   three = true;
   four = true;
   five = true;
-  six = true;
-  seven = true;
+  six = false;
+  seven = false;
 
   openSetColorDialog(): void {
     this.$emit('open-color-setting');

@@ -6,7 +6,7 @@ import type { Node } from '@/types/nodes';
 import storage, { settingsStorage } from '@/utils/storage';
 
 import type { Ad, FeatureFlags, SettingsState } from './types';
-import type { ColorType } from '../../consts/color';
+import type { ColorType, DirectionType } from '../../consts/color';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<SettingsState>()({
@@ -139,6 +139,11 @@ const mutations = defineMutations<SettingsState>()({
   },
   setColorType(state, type: ColorType): void {
     state.colorType = type;
+    // TODO: settingsStorage.set('colorType', type);
+  },
+  setColorDirection(state, direction: DirectionType): void {
+    state.colorDirection = direction;
+    // TODO: settingsStorage.set('colorDirection', direction);
   },
 });
 

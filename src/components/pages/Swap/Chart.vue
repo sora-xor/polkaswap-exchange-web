@@ -539,9 +539,9 @@ export default class SwapChart extends Mixins(
         } else {
           const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
           const changeColor = signific(change)(
-            this.theme.color.status.success,
-            this.theme.color.status.error,
-            this.theme.color.base.content.primary
+            this.chartTheme.color.status.success,
+            this.chartTheme.color.status.error,
+            this.chartTheme.color.base.content.primary
           );
 
           rows.push(
@@ -559,8 +559,8 @@ export default class SwapChart extends Mixins(
               .map(
                 (row) => `
               <tr>
-                <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
-                <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
+                <td align="right" style="color:${this.chartTheme.color.base.content.secondary}">${row.title}</td>
+                <td style="color:${row.color ?? this.chartTheme.color.base.content.primary}">${row.data}</td>
               </tr>
             `
               )
@@ -597,7 +597,7 @@ export default class SwapChart extends Mixins(
       itemStyle: {
         color: ({ data }) => {
           const [_timestamp, open, close] = data;
-          return open > close ? this.theme.color.status.error : this.theme.color.status.success;
+          return open > close ? this.chartTheme.color.status.error : this.chartTheme.color.status.success;
         },
       },
       encode: { y: 'volume' },
@@ -612,7 +612,7 @@ export default class SwapChart extends Mixins(
           },
         ],
       },
-      color: [this.theme.color.theme.accent, this.theme.color.status.success],
+      color: [this.chartTheme.color.theme.accent, this.chartTheme.color.status.success],
       dataset: {
         source: this.chartData,
         dimensions: ['timestamp', 'open', 'close', 'low', 'high', 'volume'],

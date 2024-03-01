@@ -62,18 +62,18 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
             fontWeight: 'bold',
           },
         },
-        color: this.theme.color.base.content.secondary,
+        color: this.chartTheme.color.base.content.secondary,
         offset: AXIS_OFFSET,
         ...AXIS_LABEL_CSS,
       },
       axisPointer: {
         lineStyle: {
-          color: this.theme.color.status.success,
+          color: this.chartTheme.color.status.success,
         },
         label: {
           show: true,
-          backgroundColor: this.theme.color.status.success,
-          color: this.theme.color.base.onAccent,
+          backgroundColor: this.chartTheme.color.status.success,
+          color: this.chartTheme.color.base.onAccent,
           fontSize: 11,
           fontWeight: 400,
           lineHeigth: 1.5,
@@ -99,24 +99,24 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
       },
       axisLine: {
         lineStyle: {
-          color: this.theme.color.base.content.secondary,
+          color: this.chartTheme.color.base.content.secondary,
         },
       },
       axisPointer: {
         lineStyle: {
-          color: this.theme.color.status.success,
+          color: this.chartTheme.color.status.success,
         },
         label: {
           ...AXIS_LABEL_CSS,
-          backgroundColor: this.theme.color.status.success,
+          backgroundColor: this.chartTheme.color.status.success,
           fontWeight: 400,
           padding: [LABEL_PADDING, LABEL_PADDING],
-          color: this.theme.color.base.onAccent,
+          color: this.chartTheme.color.base.onAccent,
         },
       },
       splitLine: {
         lineStyle: {
-          color: this.theme.color.base.content.tertiary,
+          color: this.chartTheme.color.base.content.tertiary,
           opacity: 0.2,
         },
       },
@@ -127,11 +127,11 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
     return merge({
       show: true,
       trigger: 'axis',
-      backgroundColor: this.theme.color.utility.body,
-      borderColor: this.theme.color.base.border.secondary,
-      extraCssText: `box-shadow: ${this.theme.shadow.dialog}; border-radius: ${this.theme.border.radius.mini}`,
+      backgroundColor: this.chartTheme.color.utility.body,
+      borderColor: this.chartTheme.color.base.border.secondary,
+      extraCssText: `box-shadow: ${this.chartTheme.shadow.dialog}; border-radius: ${this.chartTheme.border.radius.mini}`,
       textStyle: {
-        color: this.theme.color.base.content.secondary,
+        color: this.chartTheme.color.base.content.secondary,
         fontSize: 11,
         fontFamily: 'Sora',
         fontWeight: 400,
@@ -146,7 +146,7 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
       },
       showSymbol: false,
       itemStyle: {
-        color: this.theme.color.theme.accent,
+        color: this.chartTheme.color.theme.accent,
       },
     })(options);
   }
@@ -159,7 +159,7 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
       },
       showSymbol: false,
       itemStyle: {
-        color: this.theme.color.theme.accent,
+        color: this.chartTheme.color.theme.accent,
       },
     })(options);
   }
@@ -172,7 +172,7 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
       },
       showSymbol: false,
       itemStyle: {
-        color: this.theme.color.theme.accent,
+        color: this.chartTheme.color.theme.accent,
       },
     })(options);
   }
@@ -182,10 +182,10 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
       type: 'candlestick',
       barMaxWidth: 10,
       itemStyle: {
-        color: this.theme.color.status.success,
-        borderColor: this.theme.color.status.success,
-        color0: this.theme.color.theme.accentHover,
-        borderColor0: this.theme.color.theme.accentHover,
+        color: this.chartTheme.color.status.success,
+        borderColor: this.chartTheme.color.status.success,
+        color0: this.chartTheme.color.theme.accentHover,
+        borderColor0: this.chartTheme.color.theme.accentHover,
         borderWidth: 2,
       },
     })(options);

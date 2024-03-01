@@ -117,7 +117,6 @@
         slot="reference"
         type="primary"
         class="btn s-typography-button--medium"
-        :class="computedBtnClass"
         @click="placeLimitOrder"
         :disabled="buttonDisabled"
       >
@@ -160,7 +159,7 @@
         slot="reference"
         type="primary"
         class="btn s-typography-button--medium"
-        :class="computedBtnClass"
+        :style="getColor()"
         @click="placeLimitOrder"
       >
         <template v-if="!isLoggedIn">
@@ -201,6 +200,7 @@ import { MAX_TIMESTAMP } from '@sora-substrate/util/build/orderBook/consts';
 import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
+import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, LimitOrderType, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
@@ -237,7 +237,12 @@ import type { Subscription } from 'rxjs';
     Error: lazyComponent(Components.ErrorButton),
   },
 })
-export default class BuySellWidget extends Mixins(TranslationMixin, mixins.FormattedAmountMixin, mixins.LoadingMixin) {
+export default class BuySellWidget extends Mixins(
+  TranslationMixin,
+  ThemePaletteMixin,
+  mixins.FormattedAmountMixin,
+  mixins.LoadingMixin
+) {
   @state.router.prev private prevRoute!: Nullable<PageNames>;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.orderBook.limitOrderType private _limitOrderType!: LimitOrderType;
@@ -342,6 +347,13 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @Watch('userLimitOrders')
   private checkValidation(): void {
     this.checkInputValidation();
+  }
+
+  getColor() {
+    const theme = this.getColorPalette();
+    const color = this.isInversed(this.isBuySide) ? theme.side.buy : theme.side.sell;
+
+    return `background-color: ${color}`;
   }
 
   get limitOrderType(): LimitOrderType {
@@ -630,12 +642,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       FPNumber.gte(amountFP, minLotSize) &&
       amountFP.isZeroMod(stepLotSize)
     );
-  }
-
-  get computedBtnClass(): string {
-    if (!this.isLoggedIn) return '';
-
-    return this.isBuySide ? 'buy-btn' : '';
   }
 
   get isPriceInputDisabled(): boolean {
@@ -1024,11 +1030,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   .btn {
     width: 100%;
-  }
-
-  .buy-btn {
-    width: 100%;
-    background-color: #34ad87 !important;
   }
 
   .buy-btn.is-disabled {

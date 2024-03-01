@@ -49,9 +49,9 @@
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
+import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import type { ColorDirection, Color, ColorType, DirectionType } from '@/consts/color';
-import { mutation, state } from '@/store/decorators';
 
 @Component({
   components: {
@@ -59,34 +59,29 @@ import { mutation, state } from '@/store/decorators';
     NetworkFeeWarning: components.NetworkFeeWarning,
   },
 })
-export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixin) {
-  @state.settings.colorType type!: ColorType;
-
-  @mutation.settings.setColorType setColorType!: (type: ColorType) => void;
-
-  colorDirection: DirectionType = 'classic';
-
-  get optionType(): ColorType {
-    return this.type;
+export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixin, ThemePaletteMixin) {
+  get colorDirection(): DirectionType {
+    return this.direction;
   }
 
-  set optionType(type: ColorType) {
-    this.setColorType(type);
+  set colorDirection(direction: DirectionType) {
+    this.direction = direction;
+  }
+
+  get optionType(): ColorType {
+    return this.color;
+  }
+
+  set optionType(color: ColorType) {
+    this.color = color;
   }
 
   get colorOptions(): Color[] {
-    return [
-      { name: 'Classic', type: 'classic', side: { buy: '#34AD87', sell: '#F754A3' } },
-      { name: 'Color deficiency', type: 'deficiency', side: { buy: '#448BF1', sell: '#D07F3E' } },
-      { name: 'Traditional', type: 'traditional', side: { buy: '#75A390', sell: '#EB001B' } },
-    ];
+    return Object.values(this.colors);
   }
 
   get colorDirections(): ColorDirection[] {
-    return [
-      { name: 'Green Up / Red down', type: 'classic' },
-      { name: 'Green down / Red up', type: 'inverse' },
-    ];
+    return Object.values(this.directions);
   }
 }
 </script>
@@ -109,7 +104,7 @@ export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixi
 
   &__item {
     align-items: flex-start;
-    margin-bottom: 16px;
+    margin-bottom: $basic-spacing;
 
     .el-radio__label {
       width: 100%;

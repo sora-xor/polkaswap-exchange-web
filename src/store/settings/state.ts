@@ -3,7 +3,7 @@ import { getLocale } from '@/lang';
 import storage, { settingsStorage } from '@/utils/storage';
 
 import type { SettingsState } from './types';
-import type { ColorType } from '../../consts/color';
+import type { ColorType, DirectionType } from '../../consts/color';
 
 function initialState(): SettingsState {
   const node = settingsStorage.get('node');
@@ -45,6 +45,7 @@ function initialState(): SettingsState {
     screenBreakpointClass: BreakpointClass.LargeDesktop,
     adsArray: [],
     colorType: 'classic' as ColorType,
+    colorDirection: 'classic' as DirectionType,
   };
 }
 

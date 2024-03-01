@@ -18,7 +18,7 @@
           <span class="market-trades__header">{{ t('orderBook.price') }}</span>
         </template>
         <template v-slot="{ row }">
-          <span class="order-info price" :class="{ buy: row.isBuy }">{{ row.price }}</span>
+          <span class="order-info price" :style="getFontColor(row.isBuy)">{{ row.price }}</span>
         </template>
       </s-table-column>
       <s-table-column>
@@ -46,6 +46,7 @@ import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import dayjs from 'dayjs';
 import { Component, Mixins } from 'vue-property-decorator';
 
+import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, state } from '@/store/decorators';
 import type { OrderBookDealData } from '@/types/orderBook';
@@ -53,13 +54,20 @@ import type { OrderBookDealData } from '@/types/orderBook';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 @Component
-export default class MarketTradesWidget extends Mixins(TranslationMixin) {
+export default class MarketTradesWidget extends Mixins(TranslationMixin, ThemePaletteMixin) {
   readonly PriceVariant = PriceVariant;
 
   @state.orderBook.deals deals!: OrderBookDealData[];
 
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
+
+  getFontColor(side: PriceVariant): string {
+    const theme = this.getColorPalette();
+    const color = this.isInversed(side === PriceVariant.Buy) ? theme.side.buy : theme.side.sell;
+
+    return `color: ${color}`;
+  }
 
   get completedOrders() {
     return this.deals.map((deal) => {
@@ -96,12 +104,6 @@ export default class MarketTradesWidget extends Mixins(TranslationMixin) {
     &.time {
       font-size: var(--s-font-size-extra-small);
       color: var(--s-color-base-content-secondary);
-    }
-    &.price {
-      color: var(--s-color-status-error);
-      &.buy {
-        color: var(--s-color-status-success);
-      }
     }
   }
 

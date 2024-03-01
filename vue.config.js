@@ -41,12 +41,12 @@ module.exports = defineConfig({
     vueRule.uses.clear();
     vueRule
       .use('vue-loader')
-        .loader(require.resolve('@vue/vue-loader-v15'))
-        .options({
-          compilerOptions: {
-            whitespace: 'condense'
-          }
-        });
+      .loader(require.resolve('@vue/vue-loader-v15'))
+      .options({
+        compilerOptions: {
+          whitespace: 'condense',
+        },
+      });
 
     const svgRule = config.module.rule('svg');
     const svgGenerator = svgRule.get('generator');
@@ -55,13 +55,13 @@ module.exports = defineConfig({
     svgRule.delete('generator');
     svgRule
       .oneOf('inline')
-        .resourceQuery(/inline/)
-        .type('asset/inline')
-        .end()
+      .resourceQuery(/inline/)
+      .type('asset/inline')
+      .end()
       .oneOf('file')
-        .type('asset/resource')
-        .set('generator', svgGenerator)
-        .end();
+      .type('asset/resource')
+      .set('generator', svgGenerator)
+      .end();
 
     const imagesRule = config.module.rule('images');
     const imagesGenerator = imagesRule.get('generator');
@@ -69,14 +69,14 @@ module.exports = defineConfig({
     imagesRule.delete('type');
     imagesRule.delete('generator');
     imagesRule
-        .oneOf('inline')
-          .resourceQuery(/inline/)
-          .type('asset/inline')
-          .end()
-        .oneOf('asset')
-          .type('asset')
-          .set('generator', imagesGenerator)
-          .end();
+      .oneOf('inline')
+      .resourceQuery(/inline/)
+      .type('asset/inline')
+      .end()
+      .oneOf('asset')
+      .type('asset')
+      .set('generator', imagesGenerator)
+      .end();
   },
   /* eslint-enable */
   /* prettier-ignore-end */
@@ -88,6 +88,7 @@ module.exports = defineConfig({
           @import "@/styles/_layout.scss";
           @import "@/styles/_mixins.scss";
           @import "@/styles/_typography.scss";
+          @import "@/styles/_theme.scss";
         `,
       },
     },

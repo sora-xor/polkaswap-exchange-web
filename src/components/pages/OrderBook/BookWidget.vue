@@ -43,15 +43,15 @@
       >
         <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
-        <span class="order-info price">{{ order.price }}</span>
-        <div class="bar" :style="getStyles(order.filled)" />
+        <span class="order-info price" :style="getFontColor(PriceVariant.Sell)">{{ order.price }}</span>
+        <div class="bar" :style="getStyles(order.filled, PriceVariant.Sell)" />
       </div>
     </div>
     <div v-else class="stock-book-sell--no-asks">{{ t('orderBook.book.noAsks') }}</div>
-    <div :class="getComputedClassTrend()">
+    <div class="stock-book-delimiter">
       <div>
-        <span class="mark-price">{{ lastPriceFormatted }}</span>
-        <s-icon class="trend-icon" :name="iconTrend" size="18" />
+        <span :style="getMarkedPriceStyles()" class="mark-price">{{ lastPriceFormatted }}</span>
+        <s-icon :style="getMarkedPriceStyles()" class="trend-icon" :name="iconTrend" size="18" />
         <span class="last-traded-price">{{ fiatValue }}</span>
       </div>
     </div>
@@ -59,8 +59,8 @@
       <div v-for="order in buyOrders" :key="order.price" class="row" @click="fillPrice(order.price, PriceVariant.Buy)">
         <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
-        <span class="order-info price">{{ order.price }}</span>
-        <div class="bar" :style="getStyles(order.filled)" />
+        <span class="order-info price" :style="getFontColor(PriceVariant.Buy)">{{ order.price }}</span>
+        <div class="bar" :style="getStyles(order.filled, PriceVariant.Buy)" />
       </div>
     </div>
     <div v-else class="stock-book-buy--no-bids">{{ t('orderBook.book.noBids') }}</div>
@@ -73,6 +73,7 @@ import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
+import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { LimitOrderType, ZeroStringValue } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -91,7 +92,12 @@ interface LimitOrderForm {
 type OrderBookPriceVolumeAggregated = [FPNumber, FPNumber, FPNumber];
 
 @Component
-export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
+export default class BookWidget extends Mixins(
+  TranslationMixin,
+  ThemePaletteMixin,
+  mixins.LoadingMixin,
+  mixins.FormattedAmountMixin
+) {
   @state.orderBook.limitOrderType private limitOrderType!: LimitOrderType;
   @state.orderBook.asks asks!: OrderBookPriceVolume[];
   @state.orderBook.bids bids!: OrderBookPriceVolume[];
@@ -138,7 +144,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
       return;
     }
     this.setSide(side);
-    this.setQuoteValue(Number(price).toString()); // TODO: [Rustem] string->number->string -- WHY?
+    this.setQuoteValue(price);
   }
 
   get isMarketOrder(): boolean {
@@ -226,10 +232,37 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return fiat ? `$${fiat}` : '';
   }
 
+  getFontColor(side: PriceVariant): string {
+    const theme = this.getColorPalette();
+    const color = this.isInversed(side === PriceVariant.Buy) ? theme.side.buy : theme.side.sell;
+
+    return `color: ${color}`;
+  }
+
+  getStyles(filled: number | undefined, side: PriceVariant): string {
+    const theme = this.getColorPalette();
+    let color;
+
+    if (theme.bookBars) {
+      color = this.isInversed(side === PriceVariant.Buy) ? theme.bookBars?.buy : theme.bookBars?.sell;
+    } else {
+      color = this.isInversed(side === PriceVariant.Buy) ? theme.side?.buy : theme.side?.sell;
+    }
+
+    return `width: ${filled}%; background-color: ${color};`;
+  }
+
+  getMarkedPriceStyles(): string {
+    const theme = this.getColorPalette();
+    const color = this.isInversed(this.lastDealTrendsUp) ? theme.side.buy : theme.side.sell;
+
+    return `color: ${color}`;
+  }
+
   getComputedClassTrend(): string {
     const base = ['stock-book-delimiter'];
 
-    if (this.lastDealTrendsUp) {
+    if (this.isInversed(this.lastDealTrendsUp)) {
       base.push('stock-book-delimiter--up');
     } else {
       base.push('stock-book-delimiter--down');
@@ -257,10 +290,6 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   getHeight() {
     const margin = this.asksFormatted.length < this.maxRowsNumber ? this.maxRowsNumber - this.asksFormatted.length : 0;
     return `height: ${24 * margin}px`;
-  }
-
-  getStyles(filled: number | undefined): string {
-    return `width: ${filled}%`;
   }
 
   isBookPrecisionEqual(precision: string): boolean {
@@ -421,26 +450,6 @@ $mono-font: 'JetBrainsMono';
     }
   }
 
-  &-buy {
-    .bar {
-      background: rgba(185, 235, 219, 0.4);
-    }
-
-    .order-info.price {
-      color: var(--s-color-status-success);
-    }
-  }
-
-  &-sell {
-    .bar {
-      background: rgba(255, 216, 235, 0.8);
-    }
-
-    .order-info.price {
-      color: var(--s-color-status-error);
-    }
-  }
-
   &-delimiter {
     display: flex;
     align-items: center;
@@ -464,19 +473,19 @@ $mono-font: 'JetBrainsMono';
       margin-left: 4px;
     }
 
-    &--up {
-      .mark-price,
-      .trend-icon {
-        color: var(--s-color-status-success);
-      }
-    }
+    // &--up {
+    //   .mark-price,
+    //   .trend-icon {
+    //     color: var(--s-color-status-success);
+    //   }
+    // }
 
-    &--down {
-      .mark-price,
-      .trend-icon {
-        color: var(--s-color-status-error);
-      }
-    }
+    // &--down {
+    //   .mark-price,
+    //   .trend-icon {
+    //     color: var(--s-color-status-error);
+    //   }
+    // }
   }
 
   .book-columns {
@@ -514,22 +523,6 @@ $mono-font: 'JetBrainsMono';
 [design-system-theme='dark'] {
   .book-columns {
     background-color: #693d81;
-  }
-
-  .stock-book {
-    &-sell {
-      .bar {
-        background-color: rgba(255, 0, 124, 0.3);
-      }
-    }
-    &-buy {
-      .bar {
-        background-color: rgba(1, 202, 139, 0.2);
-      }
-    }
-    &-delimiter {
-      background-color: $background-column-color-dark;
-    }
   }
 }
 </style>
