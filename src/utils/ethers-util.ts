@@ -20,6 +20,7 @@ let ethereumProvider!: any;
 let ethersInstance: ethersProvider | null = null;
 
 export enum Provider {
+  Fearless = 'Fearless',
   Metamask = 'Metamask',
   SubWallet = 'SubWallet',
   TrustWallet = 'TrustWallet',
@@ -114,6 +115,11 @@ async function useExtensionProvider(provider: Provider): Promise<string> {
       break;
     case Provider.TrustWallet:
       ethereumProvider = (window as any).trustwallet;
+      break;
+    case Provider.Fearless:
+      console.log((window as any).fearlessWallet);
+      console.log((window as any).fearlessWallet.provider);
+      ethereumProvider = (window as any).fearlessWallet;
       break;
     default:
       throw new Error('Unknown provider');
