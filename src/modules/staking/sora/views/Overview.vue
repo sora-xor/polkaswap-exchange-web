@@ -214,6 +214,7 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -272,6 +273,8 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
   showWithdrawDialog = false;
   showAllWithdrawsDialog = false;
 
+  claimed: number | null = null;
+
   get lockedFundsFormatted(): string {
     return this.lockedFunds.toLocaleString();
   }
@@ -282,6 +285,17 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
 
   get rewardedFundsFormatted(): string {
     return this.rewardedFunds.toLocaleString();
+  }
+
+  get claimedFunds(): FPNumber {
+    if (this.claimed === null) {
+      return FPNumber.ZERO;
+    }
+    return new FPNumber(this.claimed, this.rewardAsset?.decimals);
+  }
+
+  get claimedFundsFormatted(): string {
+    return this.claimedFunds.toLocaleString();
   }
 
   get showWithdrawCard(): boolean {
@@ -406,18 +420,25 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
   }
 
   @Watch('currentEra')
-  async fetchRewards() {
+  async fetchRewarded() {
     if (!this.activeEra) {
       return;
     }
 
-    const rewards = await this.fetchRewards();
+    const rewards = await fetchStakingRewards();
 
     if (rewards === undefined || rewards === null) {
       return;
     }
 
-    this.setRewarded(rewards);
+    const claimed = rewards.reduce((acc, reward) => {
+      if (reward.data && 'amount' in reward.data) {
+        return acc + Number(reward.data.amount);
+      }
+      return acc;
+    }, 0);
+
+    this.claimed = claimed;
   }
 
   created() {
