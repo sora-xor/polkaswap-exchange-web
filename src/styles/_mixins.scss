@@ -470,10 +470,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         margin-right: $inner-spacing-mini;
       }
     }
-    &-pagination {
-      display: flex;
-      margin-top: $inner-spacing-medium;
-    }
   }
 
   // el-table style overrides
@@ -497,17 +493,33 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       background-color: transparent;
     }
 
+    &:not(.el-table--border) {
+      tr {
+        td, th {
+          & > .cell {
+            padding: $inner-spacing-tiny $inner-spacing-mini;
+          }
+          &:first-child > .cell {
+            padding-left: $inner-spacing-medium;
+          }
+          &:last-child > .cell {
+            padding-right: $inner-spacing-medium;
+          }
+        }
+      }
+    }
+
     &, &.el-table--enable-row-hover {
-      tr,
-      th {
-        &,
-        &:hover,
-        &.hover-row {
-          & > td,
-          & > th {
-            background: var(--s-color-utility-surface);
-            .cell {
-              padding: $inner-spacing-tiny $inner-spacing-mini;
+      .el-table__body,
+      .el-table__header {
+        tr,
+        th {
+          &,
+          &:hover,
+          &.hover-row {
+            & > td,
+            & > th {
+              background-color: var(--s-color-utility-surface);
             }
           }
         }

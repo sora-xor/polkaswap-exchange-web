@@ -1,5 +1,5 @@
 <template>
-  <base-widget title="All trades" tooltip="Some text">
+  <base-widget extensive title="All trades" tooltip="Some text" class="swap-transactions-widget">
     <s-table
       ref="table"
       v-loading="loadingState"
@@ -27,15 +27,7 @@
           <formatted-address :value="row.address" :symbols="10" />
         </template>
       </s-table-column>
-      <s-table-column width="112">
-        <template #header>
-          <span>Tx ID</span>
-        </template>
-        <template v-slot="{ row }">
-          <formatted-address :value="row.id" :symbols="10" :tooltip-text="t('transaction.txId')" />
-        </template>
-      </s-table-column>
-      <s-table-column width="120" header-align="right" align="right">
+      <s-table-column width="120" header-align="left" align="left">
         <template #header>
           <span>Sold Token</span>
         </template>
@@ -50,7 +42,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="120" header-align="right" align="right">
+      <s-table-column width="120" header-align="left" align="left">
         <template #header>
           <span>Bought Token</span>
         </template>
@@ -65,20 +57,25 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="120" header-align="right" align="right">
+      <s-table-column width="140" header-align="center" align="center">
         <template #header>
-          <span>Sold AMount</span>
+          <span>Sold Amount</span>
         </template>
         <template v-slot="{ row }">
           <formatted-amount value-can-be-hidden :font-size-rate="FontSizeRate.SMALL" :value="row.inputAmount" />
         </template>
       </s-table-column>
-      <s-table-column width="120" header-align="right" align="right">
+      <s-table-column width="140" header-align="center" align="center">
         <template #header>
           <span>Bought Amount</span>
         </template>
         <template v-slot="{ row }">
           <formatted-amount value-can-be-hidden :font-size-rate="FontSizeRate.SMALL" :value="row.outputAmount" />
+        </template>
+      </s-table-column>
+      <s-table-column width="40">
+        <template v-slot="{ row }">
+          <links-dropdown v-if="row.links.length" :links="row.links" />
         </template>
       </s-table-column>
     </s-table>
@@ -105,14 +102,13 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import ScrollableTableMixin from '@/components/mixins/ScrollableTableMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { getter } from '@/store/decorators';
-import { debouncedInputHandler } from '@/utils';
+import { getter, state } from '@/store/decorators';
+import { debouncedInputHandler, soraExplorerLinks, showMostFittingValue } from '@/utils';
 
 import type { HistoryItem } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 type TableItem = {
-  id: string;
   address: string;
   inputAsset: Nullable<Asset>;
   inputAssetSymbol: string;
@@ -124,6 +120,7 @@ type TableItem = {
     date: string;
     time: string;
   };
+  links: WALLET_CONSTS.ExplorerLink[];
 };
 
 const UPDATE_INTERVAL = 15_000;
@@ -131,6 +128,7 @@ const UPDATE_INTERVAL = 15_000;
 @Component({
   components: {
     BaseWidget: lazyComponent(Components.BaseWidget),
+    LinksDropdown: lazyComponent(Components.LinksDropdown),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     FormattedAddress: components.FormattedAddress,
@@ -138,6 +136,8 @@ const UPDATE_INTERVAL = 15_000;
   },
 })
 export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin) {
+  @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
+
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
   @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
@@ -170,18 +170,19 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
   // override ScrollableTableMixin
   get tableItems(): TableItem[] {
     return this.transactions.map((item) => {
-      const id = item.id ?? '';
+      const txId = item.id ?? '';
+      const blockId = item.blockId ?? '';
       const address = item.from ?? '';
       const inputAsset = item.assetAddress ? this.assetsDataTable[item.assetAddress] : null;
       const inputAssetSymbol = inputAsset?.symbol ?? '??';
       const outputAsset = item.asset2Address ? this.assetsDataTable[item.asset2Address] : null;
       const outputAssetSymbol = outputAsset?.symbol ?? '??';
-      const inputAmount = new FPNumber(item.amount ?? 0).toLocaleString();
-      const outputAmount = new FPNumber(item.amount2 ?? 0).toLocaleString();
+      const inputAmount = showMostFittingValue(new FPNumber(item.amount ?? 0));
+      const outputAmount = showMostFittingValue(new FPNumber(item.amount2 ?? 0));
       const date = dayjs(item.startTime);
+      const links = soraExplorerLinks(this.soraNetwork, txId, blockId);
 
       return {
-        id,
         address,
         inputAsset,
         inputAssetSymbol,
@@ -190,6 +191,7 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
         inputAmount,
         outputAmount,
         datetime: { date: date.format('M/DD'), time: date.format('HH:mm:ss') },
+        links,
       };
     });
   }
@@ -308,4 +310,12 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
 
 <style lang="scss">
 @include explore-table;
+</style>
+
+<style lang="scss" scoped>
+.swap-transactions-widget {
+  .explore-table-pagination {
+    padding: 0 $inner-spacing-mini $inner-spacing-medium;
+  }
+}
 </style>

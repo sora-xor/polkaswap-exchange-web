@@ -30,17 +30,13 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component
-export default class BridgeLinksDropdown extends Mixins(TranslationMixin) {
+export default class LinksDropdown extends Mixins(TranslationMixin) {
   @Prop({ default: () => [], type: Array }) readonly links!: Array<WALLET_CONSTS.ExplorerLink>;
 }
 </script>
 
 <style lang="scss">
 .s-dropdown--hash-menu {
-  position: absolute;
-  z-index: $app-content-layer;
-  top: 0;
-  bottom: 0;
   margin-top: auto;
   margin-bottom: auto;
   padding: 0;
@@ -52,7 +48,6 @@ export default class BridgeLinksDropdown extends Mixins(TranslationMixin) {
   text-align: center;
   font-size: var(--s-size-mini);
 
-  right: $inner-spacing-medium;
   &,
   .el-tooltip {
     &:focus {

@@ -194,7 +194,6 @@ export enum Components {
   BridgeSelectAsset = 'pages/Bridge/SelectAsset',
   BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
   BridgeSelectAccount = 'pages/Bridge/SelectAccount',
-  BridgeLinksDropdown = 'pages/Bridge/LinksDropdown',
   BridgeLimitCard = 'pages/Bridge/LimitCard',
   BridgeAccountPanel = 'pages/Bridge/AccountPanel',
   // Moonpay Page
@@ -241,13 +240,14 @@ export enum Components {
   WalletAboutNetworkDialog = 'pages/Wallet/AboutNetworkDialog',
   // Shared
   GenericPageHeader = 'shared/GenericPageHeader',
-  TokensRow = 'shared/TokensRow',
+  LinksDropdown = 'shared/LinksDropdown',
   PairTokenLogo = 'shared/PairTokenLogo',
-  PriceChange = 'shared/PriceChange',
-  ValueStatusWrapper = 'shared/ValueStatusWrapper',
-  TransactionDetails = 'shared/TransactionDetails',
   PoolInfo = 'shared/PoolInfo',
+  PriceChange = 'shared/PriceChange',
   StatusBadge = 'shared/StatusBadge',
+  TransactionDetails = 'shared/TransactionDetails',
+  TokensRow = 'shared/TokensRow',
+  ValueStatusWrapper = 'shared/ValueStatusWrapper',
   // Shared Widgets
   BaseWidget = 'shared/Widget/Base',
   IFrameWidget = 'shared/Widget/IFrame',
