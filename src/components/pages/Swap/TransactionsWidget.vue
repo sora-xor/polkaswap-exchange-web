@@ -166,8 +166,9 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
   private readonly operations = [Operation.Swap];
   private interval: Nullable<ReturnType<typeof setInterval>> = null;
   private updateTransactions = debouncedInputHandler(this.updateData, 250, { leading: false });
+  private intervalTimestamp = 0;
+  private fromTimestamp = dayjs().subtract(1, 'month').startOf('day').unix(); // month ago, start of the day
 
-  private timestamp = 0;
   private totalCount = 0;
   private transactions: HistoryItem[] = [];
 
@@ -241,7 +242,7 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
     await this.fetchData();
 
     if (this.currentPage === 1) {
-      this.updateTimestamp();
+      this.updateIntervalTimestamp();
       this.subscribeOnData();
     }
   }
@@ -250,7 +251,7 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
     const { pageAmount, currentPage } = this;
 
     const variables = {
-      filter: this.createFilter(),
+      filter: this.createFilter(this.fromTimestamp),
       first: pageAmount,
       offset: pageAmount * (currentPage - 1),
     };
@@ -266,11 +267,11 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
   }
 
   private async fetchDataUpdates(): Promise<void> {
-    const variables = { filter: this.createFilter(this.timestamp) };
+    const variables = { filter: this.createFilter(this.intervalTimestamp) };
     const { transactions, totalCount } = await this.requestData(variables);
     this.transactions = [...transactions, ...this.transactions].slice(0, this.pageAmount);
     this.totalCount = this.totalCount + totalCount;
-    this.updateTimestamp();
+    this.updateIntervalTimestamp();
   }
 
   private async requestData(variables): Promise<{ transactions: HistoryItem[]; totalCount: number }> {
@@ -298,8 +299,8 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
     return { transactions, totalCount };
   }
 
-  private updateTimestamp(): void {
-    this.timestamp = Math.floor((this.transactions[0]?.startTime ?? 0) / 1000);
+  private updateIntervalTimestamp(): void {
+    this.intervalTimestamp = Math.floor((this.transactions[0]?.startTime ?? 0) / 1000);
   }
 
   private subscribeOnData(): void {
