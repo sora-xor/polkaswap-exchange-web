@@ -476,12 +476,16 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   .explore-table.el-table {
     background: transparent;
     font-size: var(--s-font-size-medium);
-    font-weight: 600;
+    font-weight: 400;
 
     thead {
       text-transform: uppercase;
       font-size: var(--s-font-size-small);
       letter-spacing: var(--s-letter-spacing-mini);
+
+      th > .cell {
+        font-weight: 500 !important;
+      }
 
       [class^='s-icon-'],
       [class*=' s-icon-'] {
@@ -649,10 +653,17 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     }
     &-token {
       font-size: var(--s-font-size-small);
+      font-weight: 400;
     }
     &-price {
       font-size: var(--s-font-size-medium);
       white-space: nowrap;
+    }
+    &-date {
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-mini);
+      font-weight: 400;
+      line-height: var(--s-line-height-small);
     }
     &-amount.formatted-amount--fiat-value {
       color: var(--s-color-base-content-primary) !important;

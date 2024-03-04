@@ -8,28 +8,36 @@
       size="small"
       class="explore-table"
     >
-      <s-table-column width="88">
+      <s-table-column width="48" header-align="center">
+        <template #header>
+          <s-icon name="basic-eye-no-24" size="16px" />
+        </template>
+        <template v-slot="{ row }">
+          <links-dropdown v-if="row.links.length" :links="row.links" />
+        </template>
+      </s-table-column>
+      <s-table-column width="76">
         <template #header>
           <span>Time</span>
         </template>
         <template v-slot="{ row }">
-          <div>
+          <div class="explore-table-item-date">
             <div>{{ row.datetime.date }}</div>
             <div>{{ row.datetime.time }}</div>
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="112">
+      <s-table-column width="94">
         <template #header>
           <span>Account</span>
         </template>
         <template v-slot="{ row }">
-          <formatted-address :value="row.address" :symbols="10" />
+          <formatted-address :value="row.address" :symbols="8" />
         </template>
       </s-table-column>
-      <s-table-column width="120" header-align="left" align="left">
+      <s-table-column width="112" header-align="left" align="left">
         <template #header>
-          <span>Sold Token</span>
+          <span>Input</span>
         </template>
         <template v-slot="{ row }">
           <div class="explore-table-cell">
@@ -38,13 +46,13 @@
               class="explore-table-item-logo explore-table-item-logo--plain"
               :token="row.inputAsset"
             />
-            <span>{{ row.inputAssetSymbol }}</span>
+            <span class="explore-table-item-token">{{ row.inputAssetSymbol }}</span>
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="120" header-align="left" align="left">
+      <s-table-column width="112" header-align="left" align="left">
         <template #header>
-          <span>Bought Token</span>
+          <span>Output</span>
         </template>
         <template v-slot="{ row }">
           <div class="explore-table-cell">
@@ -53,29 +61,32 @@
               class="explore-table-item-logo explore-table-item-logo--plain"
               :token="row.outputAsset"
             />
-            <span>{{ row.outputAssetSymbol }}</span>
+            <span class="explore-table-item-token">{{ row.outputAssetSymbol }}</span>
           </div>
         </template>
       </s-table-column>
       <s-table-column width="140" header-align="center" align="center">
         <template #header>
-          <span>Sold Amount</span>
+          <span>Sold</span>
         </template>
         <template v-slot="{ row }">
-          <formatted-amount value-can-be-hidden :font-size-rate="FontSizeRate.SMALL" :value="row.inputAmount" />
+          <formatted-amount
+            class="explore-table-item-token"
+            :font-size-rate="FontSizeRate.SMALL"
+            :value="row.inputAmount"
+          />
         </template>
       </s-table-column>
       <s-table-column width="140" header-align="center" align="center">
         <template #header>
-          <span>Bought Amount</span>
+          <span>Bought</span>
         </template>
         <template v-slot="{ row }">
-          <formatted-amount value-can-be-hidden :font-size-rate="FontSizeRate.SMALL" :value="row.outputAmount" />
-        </template>
-      </s-table-column>
-      <s-table-column width="40">
-        <template v-slot="{ row }">
-          <links-dropdown v-if="row.links.length" :links="row.links" />
+          <formatted-amount
+            class="explore-table-item-token"
+            :font-size-rate="FontSizeRate.SMALL"
+            :value="row.outputAmount"
+          />
         </template>
       </s-table-column>
     </s-table>
@@ -149,6 +160,8 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
       this.updateTransactions();
     }
   }
+
+  pageAmount = 8; // override PaginationSearchMixin
 
   private readonly operations = [Operation.Swap];
   private interval: Nullable<ReturnType<typeof setInterval>> = null;
@@ -255,8 +268,7 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
   private async fetchDataUpdates(): Promise<void> {
     const variables = { filter: this.createFilter(this.timestamp) };
     const { transactions, totalCount } = await this.requestData(variables);
-
-    this.transactions = [...transactions, ...this.transactions];
+    this.transactions = [...transactions, ...this.transactions].slice(0, this.pageAmount);
     this.totalCount = this.totalCount + totalCount;
     this.updateTimestamp();
   }
