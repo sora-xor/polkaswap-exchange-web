@@ -1,9 +1,17 @@
 <template>
-  <div class="swap-container">
-    <swap-form-widget :parent-loading="parentLoading" />
-    <swap-chart-widget :parent-loading="parentLoading" v-if="chartsEnabled" class="swap-chart" />
-    <swap-transactions-widget :parent-loading="parentLoading" />
-  </div>
+  <widgets-grid :widgets="widgets" class="swap-container">
+    <template v-slot="{ id }">
+      <template v-if="id === 'form'">
+        <swap-form-widget :parent-loading="parentLoading" />
+      </template>
+      <template v-else-if="id === 'chart'">
+        <swap-chart-widget :parent-loading="parentLoading" v-if="chartsEnabled" />
+      </template>
+      <template v-else-if="id === 'transactions'">
+        <swap-transactions-widget :parent-loading="parentLoading" />
+      </template>
+    </template>
+  </widgets-grid>
 </template>
 
 <script lang="ts">
@@ -24,6 +32,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
     SwapFormWidget: lazyComponent(Components.SwapFormWidget),
     SwapChartWidget: lazyComponent(Components.SwapChartWidget),
     SwapTransactionsWidget: lazyComponent(Components.SwapTransactionsWidget),
+    WidgetsGrid: lazyComponent(Components.WidgetsGrid),
   },
 })
 export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, SelectedTokenRouteMixin) {
@@ -36,6 +45,12 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
+
+  widgets = [
+    { spatialData: { x: 0, y: 0, w: 3, h: 8 }, id: 'form' },
+    { spatialData: { x: 3, y: 0, w: 5, h: 5 }, id: 'chart' },
+    { spatialData: { x: 3, y: 5, w: 5, h: 5 }, id: 'transactions' },
+  ];
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
@@ -71,30 +86,3 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   }
 }
 </script>
-
-<style lang="scss">
-.app-main--has-charts {
-  .swap-chart {
-    flex-grow: 1;
-    max-width: $inner-window-width;
-
-    @include desktop {
-      max-width: initial;
-    }
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-.swap-container {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: $inner-spacing-medium;
-
-  @include desktop {
-    flex-flow: row nowrap;
-  }
-}
-</style>

@@ -577,8 +577,6 @@ export default class SwapFormWidget extends Mixins(
 
 <style lang="scss" scoped>
 .swap-widget {
-  max-width: $inner-window-width;
-
   @include buttons;
   @include full-width-button('action-button');
   @include vertical-divider('el-button--switch-tokens', $inner-spacing-medium);
