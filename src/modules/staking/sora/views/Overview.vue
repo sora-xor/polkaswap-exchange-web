@@ -219,7 +219,8 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { PageNames } from '@/consts';
-import { fetchData } from '@/indexer/queries/stakingNominators';
+import { fetchData as fetchStakingNominatorsCount } from '@/indexer/queries/stakingNominators';
+import { fetchData as fetchStakingRewards } from '@/indexer/queries/stakingRewards';
 import router from '@/router';
 import { getter, state, mutation } from '@/store/decorators';
 
@@ -395,13 +396,28 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
       return;
     }
 
-    const nominatorsCount = await fetchData();
+    const nominatorsCount = await fetchStakingNominatorsCount();
 
     if (nominatorsCount === undefined || nominatorsCount === null) {
       return;
     }
 
     this.setTotalNominators(nominatorsCount);
+  }
+
+  @Watch('currentEra')
+  async fetchRewards() {
+    if (!this.activeEra) {
+      return;
+    }
+
+    const rewards = await this.fetchRewards();
+
+    if (rewards === undefined || rewards === null) {
+      return;
+    }
+
+    this.setRewarded(rewards);
   }
 
   created() {
