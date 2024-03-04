@@ -24,7 +24,7 @@
           <span>Account</span>
         </template>
         <template v-slot="{ row }">
-          {{ row.address }}
+          <formatted-address :value="row.address" :symbols="10" />
         </template>
       </s-table-column>
       <s-table-column width="112">
@@ -32,7 +32,7 @@
           <span>Tx ID</span>
         </template>
         <template v-slot="{ row }">
-          {{ row.id }}
+          <formatted-address :value="row.id" :symbols="10" :tooltip-text="t('transaction.txId')" />
         </template>
       </s-table-column>
       <s-table-column width="120" header-align="right" align="right">
@@ -84,53 +84,77 @@
     </s-table>
 
     <history-pagination
-      v-if="hasVisibleTransactions && total > pageAmount"
+      class="explore-table-pagination"
       :current-page="currentPage"
       :page-amount="pageAmount"
       :total="total"
       :loading="loadingState"
       :last-page="lastPage"
-      @pagination-click="handlePaginationClick"
+      @pagination-click="onPaginationClick"
     />
   </base-widget>
 </template>
 
 <script lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/util';
-import { getCurrentIndexer, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { getCurrentIndexer, components, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import dayjs from 'dayjs';
+import isEqual from 'lodash/fp/isEqual';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ScrollableTableMixin from '@/components/mixins/ScrollableTableMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter } from '@/store/decorators';
+import { debouncedInputHandler } from '@/utils';
 
 import type { HistoryItem } from '@sora-substrate/util';
-import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { PageInfo } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
+
+type TableItem = {
+  id: string;
+  address: string;
+  inputAsset: Nullable<Asset>;
+  inputAssetSymbol: string;
+  outputAsset: Nullable<Asset>;
+  outputAssetSymbol: string;
+  inputAmount: string;
+  outputAmount: string;
+  datetime: {
+    date: string;
+    time: string;
+  };
+};
+
+const UPDATE_INTERVAL = 15_000;
 
 @Component({
   components: {
     BaseWidget: lazyComponent(Components.BaseWidget),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
+    FormattedAddress: components.FormattedAddress,
     HistoryPagination: components.HistoryPagination,
   },
 })
 export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin) {
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
-  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
 
   @Watch('assetsAddresses', { immediate: true })
-  private async updateData() {
-    this.resetPage();
-    await this.fetchData();
+  private resetData(current: string[], prev: string[]): void {
+    if (!isEqual(current)(prev)) {
+      this.resetPage();
+      this.updateTransactions();
+    }
   }
 
-  private operationNames = [Operation.Swap];
-  private pageInfo: Partial<PageInfo> = {};
+  private readonly operations = [Operation.Swap];
+  private interval: Nullable<ReturnType<typeof setInterval>> = null;
+  private updateTransactions = debouncedInputHandler(this.updateData, 250, { leading: false });
+
+  private timestamp = 0;
   private totalCount = 0;
   private transactions: HistoryItem[] = [];
 
@@ -144,13 +168,13 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
   }
 
   // override ScrollableTableMixin
-  get tableItems() {
+  get tableItems(): TableItem[] {
     return this.transactions.map((item) => {
-      const id = item.id;
-      const address = item.from;
-      const inputAsset = this.getAsset(item.assetAddress);
+      const id = item.id ?? '';
+      const address = item.from ?? '';
+      const inputAsset = item.assetAddress ? this.assetsDataTable[item.assetAddress] : null;
       const inputAssetSymbol = inputAsset?.symbol ?? '??';
-      const outputAsset = this.getAsset(item.asset2Address);
+      const outputAsset = item.asset2Address ? this.assetsDataTable[item.asset2Address] : null;
       const outputAssetSymbol = outputAsset?.symbol ?? '??';
       const inputAmount = new FPNumber(item.amount ?? 0).toLocaleString();
       const outputAmount = new FPNumber(item.amount2 ?? 0).toLocaleString();
@@ -170,61 +194,114 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
     });
   }
 
-  get hasVisibleTransactions(): boolean {
-    return !!this.transactions.length;
-  }
-
-  get hasVisiblePagination(): boolean {
-    return this.hasVisibleTransactions && this.total > this.pageAmount;
-  }
-
   get assetsAddresses(): string[] {
     const filtered = [this.tokenFrom, this.tokenTo].filter((token) => !!token) as AccountAsset[];
 
-    return filtered.map((token) => token.address);
+    return filtered.map((token) => token.address).sort();
+  }
+
+  private createFilter(timestamp?: number) {
+    const indexer = getCurrentIndexer();
+    const { operations, tokenFrom, tokenTo } = this;
+    const assetAddress = tokenFrom?.address;
+    const assetsAddresses = tokenTo?.address ? [tokenTo.address] : [];
+    const filter = indexer.historyElementsFilter({
+      operations,
+      assetAddress,
+      timestamp,
+      query: { assetsAddresses },
+    });
+
+    return filter;
   }
 
   async onPaginationClick(button: WALLET_CONSTS.PaginationButton): Promise<void> {
     this.handlePaginationClick(button);
-    await this.fetchData();
+    this.updateTransactions();
   }
 
-  async fetchData() {
-    const indexer = getCurrentIndexer();
-    const { assetsAddresses, operationNames, pageAmount, currentPage: page } = this;
-    const filter = indexer.historyElementsFilter({
-      query: { operationNames, assetsAddresses },
-    });
+  private async updateData(): Promise<void> {
+    this.resetDataSubscription();
+
+    await this.fetchData();
+
+    if (this.currentPage === 1) {
+      this.updateTimestamp();
+      this.subscribeOnData();
+    }
+  }
+
+  private async fetchData(): Promise<void> {
+    const { pageAmount, currentPage } = this;
 
     const variables = {
-      filter,
+      filter: this.createFilter(),
       first: pageAmount,
-      offset: pageAmount * (page - 1),
+      offset: pageAmount * (currentPage - 1),
     };
 
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        const response = await indexer.services.explorer.account.getHistoryPaged(variables);
-
-        if (!response) return;
-
-        const { edges, totalCount, pageInfo: pageInfoUpdated } = response;
-
-        const transactions = [];
-
-        for (const edge of edges) {
-          const historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(edge.node);
-
-          if (historyItem) {
-            transactions.push(historyItem);
-          }
-        }
+        const { totalCount, transactions } = await this.requestData(variables);
 
         this.totalCount = totalCount;
-        this.pageInfo = pageInfoUpdated;
         this.transactions = transactions;
       });
     });
+  }
+
+  private async fetchDataUpdates(): Promise<void> {
+    const variables = { filter: this.createFilter(this.timestamp) };
+    const { transactions, totalCount } = await this.requestData(variables);
+
+    this.transactions = [...transactions, ...this.transactions];
+    this.totalCount = this.totalCount + totalCount;
+    this.updateTimestamp();
+  }
+
+  private async requestData(variables): Promise<{ transactions: HistoryItem[]; totalCount: number }> {
+    const indexer = getCurrentIndexer();
+    const response = await indexer.services.explorer.account.getHistory(variables);
+
+    if (!response)
+      return {
+        transactions: [],
+        totalCount: 0,
+      };
+
+    const { nodes, totalCount } = response;
+
+    const transactions: HistoryItem[] = [];
+
+    for (const node of nodes) {
+      const historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(node);
+
+      if (historyItem) {
+        transactions.push(historyItem);
+      }
+    }
+
+    return { transactions, totalCount };
+  }
+
+  private updateTimestamp(): void {
+    this.timestamp = Math.floor((this.transactions[0]?.startTime ?? 0) / 1000);
+  }
+
+  private subscribeOnData(): void {
+    this.resetDataSubscription();
+    this.interval = setInterval(() => this.fetchDataUpdates(), UPDATE_INTERVAL);
+  }
+
+  private resetDataSubscription(): void {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+    this.interval = null;
+  }
+
+  beforeDestroy(): void {
+    this.resetDataSubscription();
   }
 }
 </script>
