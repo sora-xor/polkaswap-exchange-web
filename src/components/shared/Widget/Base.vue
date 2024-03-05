@@ -97,6 +97,7 @@ $left: $inner-spacing-medium;
     font-size: var(--s-font-size-medium);
     font-weight: 500;
     line-height: var(--s-line-height-medium);
+    text-transform: capitalize;
 
     &.primary {
       font-size: var(--s-font-size-large);

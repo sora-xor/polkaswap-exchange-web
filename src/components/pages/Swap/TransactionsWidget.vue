@@ -1,5 +1,5 @@
 <template>
-  <base-widget extensive title="All trades" tooltip="Some text" class="swap-transactions-widget">
+  <base-widget extensive :title="tc('transactionText', 2)" class="swap-transactions-widget">
     <s-table
       ref="table"
       v-loading="loadingState"

@@ -1,11 +1,11 @@
 <template>
   <div class="swap-container">
     <div class="column column--small">
-      <swap-form-widget :parent-loading="parentLoading" class="swap-form" />
+      <swap-form-widget :parent-loading="parentLoading" class="swap-form-widget" />
       <swap-distribution-widget />
     </div>
     <div class="column">
-      <swap-chart-widget :parent-loading="parentLoading" v-if="chartsEnabled" class="swap-chart" />
+      <swap-chart-widget :parent-loading="parentLoading" v-if="chartsEnabled" class="swap-chart-widget" />
       <swap-transactions-widget :parent-loading="parentLoading" />
     </div>
   </div>
@@ -86,8 +86,8 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   align-items: flex-start;
   gap: $inner-spacing-medium;
 
-  .swap-chart,
-  .swap-form {
+  .swap-chart-widget,
+  .swap-form-widget {
     @include desktop {
       min-height: 517px;
     }
