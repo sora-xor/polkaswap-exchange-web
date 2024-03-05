@@ -27,12 +27,18 @@ export default class TransactionDetails extends Mixins(TranslationMixin) {
 
 <style lang="scss">
 .transaction-details-wrapper {
-  margin-bottom: -24px;
-
   .el-collapse-item__header {
     display: flex;
     text-transform: uppercase;
     font-weight: 400;
+  }
+
+  .el-collapse-item__content {
+    padding-bottom: 0;
+  }
+
+  .el-collapse-item__wrap {
+    margin-top: $inner-spacing-medium;
   }
 
   .el-collapse.neumorphic .el-icon-arrow-right {
@@ -55,7 +61,6 @@ export default class TransactionDetails extends Mixins(TranslationMixin) {
     line-height: 13px;
     height: 14px;
     font-size: 13px;
-    margin-bottom: 15px;
 
     .el-icon-arrow-right {
       position: relative;

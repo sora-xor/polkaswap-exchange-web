@@ -1,6 +1,9 @@
 <template>
   <div class="swap-container">
-    <swap-form-widget :parent-loading="parentLoading" />
+    <div class="column column--small">
+      <swap-form-widget :parent-loading="parentLoading" class="swap-form" />
+      <swap-distribution-widget />
+    </div>
     <div class="column">
       <swap-chart-widget :parent-loading="parentLoading" v-if="chartsEnabled" class="swap-chart" />
       <swap-transactions-widget :parent-loading="parentLoading" />
@@ -26,6 +29,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
     SwapFormWidget: lazyComponent(Components.SwapFormWidget),
     SwapChartWidget: lazyComponent(Components.SwapChartWidget),
     SwapTransactionsWidget: lazyComponent(Components.SwapTransactionsWidget),
+    SwapDistributionWidget: lazyComponent(Components.SwapDistribution),
   },
 })
 export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, SelectedTokenRouteMixin) {
@@ -81,10 +85,21 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   justify-content: center;
   align-items: flex-start;
   gap: $inner-spacing-medium;
+
+  .swap-chart,
+  .swap-form {
+    @include desktop {
+      min-height: 517px;
+    }
+  }
 }
 .column {
   display: flex;
   gap: $inner-spacing-medium;
   flex-flow: column nowrap;
+
+  &--small {
+    max-width: $inner-window-width;
+  }
 }
 </style>

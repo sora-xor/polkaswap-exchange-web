@@ -76,6 +76,7 @@ $left: $inner-spacing-medium;
 .base-widget {
   display: flex;
   flex-flow: column nowrap;
+  align-items: normal;
 
   &-block {
     display: flex;

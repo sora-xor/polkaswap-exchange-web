@@ -1,5 +1,5 @@
 <template>
-  <el-popover :visible-arrow="false" placement="right-end" popper-class="swap-distribution-popper" trigger="click">
+  <base-widget :title="t('swap.route')">
     <ul class="distribution">
       <li v-for="{ input, output, amount, sources } in swapPaths" :key="input.address" class="distribution-step">
         <div class="distribution-asset">
@@ -30,10 +30,7 @@
         </div>
       </li>
     </ul>
-    <template #reference>
-      <slot />
-    </template>
-  </el-popover>
+  </base-widget>
 </template>
 
 <script lang="ts">
@@ -42,6 +39,7 @@ import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
@@ -76,10 +74,11 @@ const MARKETS = {
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
+    BaseWidget: lazyComponent(Components.BaseWidget),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
   },
 })
-export default class SwapDistribution extends Mixins(mixins.FormattedAmountMixin) {
+export default class SwapDistribution extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   @state.swap.distribution private distribution!: Distribution[][];
 
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
@@ -126,12 +125,6 @@ export default class SwapDistribution extends Mixins(mixins.FormattedAmountMixin
   }
 }
 </script>
-
-<style lang="scss">
-.swap-distribution-popper {
-  @include popper-content;
-}
-</style>
 
 <style lang="scss" scoped>
 $path-color: var(--s-color-base-content-tertiary);

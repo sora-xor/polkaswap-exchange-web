@@ -75,7 +75,7 @@ $skeleton-label-width: 34px;
     min-height: 293px;
 
     @include tablet {
-      min-height: 336px;
+      min-height: 317px;
     }
 
     &-price {
