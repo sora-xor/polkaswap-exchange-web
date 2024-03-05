@@ -1,12 +1,13 @@
 <template>
   <div ref="gridWrapper" class="grid-wrapper">
     <grid-layout
-      :layout="currentLayout"
+      :layout.sync="layout"
+      :responsive-layouts="layouts"
       :col-num="columns"
       :cols="cols"
       :breakpoints="breakpoints"
       :row-height="rowHeight"
-      :is-draggable="false"
+      :is-draggable="true"
       :is-resizable="false"
       :is-mirrored="false"
       :responsive="true"
@@ -17,7 +18,7 @@
       @layout-ready="onReady"
     >
       <grid-item
-        v-for="item in currentLayout"
+        v-for="item in layout"
         :key="item.i"
         :x="item.x"
         :y="item.y"
@@ -27,7 +28,7 @@
         class="grid-item"
       >
         <template v-if="ready">
-          <slot v-bind="widgets[item.i]" />
+          <slot v-bind="item" />
         </template>
       </grid-item>
     </grid-layout>
@@ -52,9 +53,9 @@ const DEFAULT_BREAKPOINTS = {
   xss: 0,
 };
 const DEFAULT_COLS = {
-  lg: 12,
-  md: 8,
-  sm: 8,
+  lg: 24,
+  md: 12,
+  sm: 12,
   xs: 4,
   xss: 4,
 };
@@ -66,9 +67,9 @@ const DEFAULT_COLS = {
   },
 })
 export default class WidgetsGrid extends Vue {
-  @Prop({ required: true, type: Array }) readonly widgets!: any;
+  @Prop({ required: true, type: Object }) readonly layouts!: any;
   @Prop({ default: 12, type: Number }) readonly columns!: number;
-  @Prop({ default: 100, type: Number }) readonly rowHeight!: number;
+  @Prop({ default: 30, type: Number }) readonly rowHeight!: number;
   @Prop({ default: 16, type: Number }) readonly margin!: number;
   @Prop({ default: true, type: Boolean }) readonly verticalCompact!: boolean;
   @Prop({ default: () => DEFAULT_COLS, type: Object }) readonly cols!: any;
@@ -92,46 +93,40 @@ export default class WidgetsGrid extends Vue {
   onReady = debounce(this.setReady);
   gridLayouts = {};
   breakpoint = DEFAULT_BREAKPOINT;
-  originalLayout = [];
+  layout = [];
 
   created() {
-    this.originalLayout = this.widgets.map((widget, i) => ({
-      i,
-      x: widget.spatialData.x,
-      y: widget.spatialData.y,
-      w: widget.spatialData.w,
-      h: widget.spatialData.h,
-    }));
+    this.layout = this.layouts[DEFAULT_BREAKPOINT];
   }
 
-  mounted(): void {
-    this.updateCurrentBreakpoint();
-    window.addEventListener('resize', this.updateCurrentBreakpoint);
-  }
+  // mounted(): void {
+  //   this.updateCurrentBreakpoint();
+  //   window.addEventListener('resize', this.updateCurrentBreakpoint);
+  // }
 
-  beforeDestroy(): void {
-    window.removeEventListener('resize', this.updateCurrentBreakpoint);
-  }
+  // beforeDestroy(): void {
+  //   window.removeEventListener('resize', this.updateCurrentBreakpoint);
+  // }
 
-  get currentLayout() {
-    return this.gridLayouts[this.breakpoint] ?? this.originalLayout;
-  }
+  // get currentLayout() {
+  //   return this.gridLayouts[this.breakpoint] ?? this.originalLayout;
+  // }
 
-  updateCurrentBreakpoint(): void {
-    const { breakpoints, gridWrapper } = this;
+  // updateCurrentBreakpoint(): void {
+  //   const { breakpoints, gridWrapper } = this;
 
-    if (!gridWrapper) return;
+  //   if (!gridWrapper) return;
 
-    const { clientWidth } = gridWrapper;
+  //   const { clientWidth } = gridWrapper;
 
-    const currentBreakpoint = Object.keys(breakpoints).find((key) => clientWidth >= breakpoints[key]);
+  //   const currentBreakpoint = Object.keys(breakpoints).find((key) => clientWidth >= breakpoints[key]);
 
-    this.breakpoint = currentBreakpoint ?? DEFAULT_BREAKPOINT;
-  }
+  //   this.breakpoint = currentBreakpoint ?? DEFAULT_BREAKPOINT;
+  // }
 
   setReady(): void {
+    console.log('setReady');
     this.ready = true;
-    this.$emit('init');
   }
 }
 </script>

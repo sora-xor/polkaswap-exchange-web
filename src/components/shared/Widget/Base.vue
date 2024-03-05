@@ -1,5 +1,5 @@
 <template>
-  <s-card :class="['base-widget', { delimeter }]" border-radius="small" shadow="always" size="big" primary>
+  <s-card :class="['base-widget', { delimeter, full }]" border-radius="small" shadow="always" size="big" primary>
     <template #header v-if="hasHeader">
       <div class="base-widget-block base-widget-header">
         <div :class="['base-widget-block', 'base-widget-title', { primary: primaryTitle }]">
@@ -34,6 +34,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class BaseWidget extends Vue {
   @Prop({ default: '', type: String }) readonly title!: string;
   @Prop({ default: '', type: String }) readonly tooltip!: string;
+  @Prop({ default: false, type: Boolean }) readonly full!: boolean;
   @Prop({ default: false, type: Boolean }) readonly delimeter!: boolean;
   @Prop({ default: false, type: Boolean }) readonly extensive!: boolean;
   @Prop({ default: false, type: Boolean }) readonly primaryTitle!: boolean;
@@ -46,9 +47,6 @@ export default class BaseWidget extends Vue {
 
 <style lang="scss">
 .base-widget {
-  max-width: 100%;
-  max-height: 100%;
-
   &.s-card.neumorphic.s-size-big {
     padding: 0;
 
@@ -75,6 +73,14 @@ $between: $top / 2;
 $left: $inner-spacing-medium;
 
 .base-widget {
+  display: flex;
+  flex-flow: column nowrap;
+
+  &.full {
+    width: 100%;
+    height: 100%;
+  }
+
   &-block {
     display: flex;
     align-items: center;

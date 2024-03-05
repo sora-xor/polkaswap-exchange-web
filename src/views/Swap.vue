@@ -1,6 +1,6 @@
 <template>
-  <widgets-grid :widgets="widgets" class="swap-container">
-    <template v-slot="{ id }">
+  <widgets-grid :layouts="layouts" class="swap-container">
+    <template v-slot="{ i: id }">
       <template v-if="id === 'form'">
         <swap-form-widget :parent-loading="parentLoading" />
       </template>
@@ -46,11 +46,18 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
 
-  widgets = [
-    { spatialData: { x: 0, y: 0, w: 3, h: 8 }, id: 'form' },
-    { spatialData: { x: 3, y: 0, w: 5, h: 5 }, id: 'chart' },
-    { spatialData: { x: 3, y: 5, w: 5, h: 5 }, id: 'transactions' },
-  ];
+  layouts = {
+    lg: [
+      { x: 0, y: 0, w: 6, h: 15, i: 'form' },
+      { x: 6, y: 0, w: 12, h: 15, i: 'chart' },
+      { x: 18, y: 0, w: 6, h: 15, i: 'transactions' },
+    ],
+    md: [
+      { x: 0, y: 0, w: 4, h: 20, i: 'form' },
+      { x: 4, y: 0, w: 8, h: 12, i: 'chart' },
+      { x: 4, y: 12, w: 8, h: 14, i: 'transactions' },
+    ],
+  };
 
   @Watch('tokenFrom')
   @Watch('tokenTo')

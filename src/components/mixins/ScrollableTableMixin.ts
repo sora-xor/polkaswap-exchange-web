@@ -56,6 +56,7 @@ export default class ScrollableTableMixin extends Mixins(
   }
 
   public initScrollbar(): void {
+    console.log(this.tableComponent);
     if (!this.tableComponent) return;
 
     const Scrollbar = Vue.extend(SScrollbar);

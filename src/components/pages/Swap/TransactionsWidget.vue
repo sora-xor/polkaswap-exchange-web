@@ -1,5 +1,5 @@
 <template>
-  <base-widget extensive title="All trades" tooltip="Some text" class="swap-transactions-widget">
+  <base-widget full extensive title="All trades" tooltip="Some text" class="swap-transactions-widget">
     <s-table
       ref="table"
       v-loading="loadingState"
@@ -313,6 +313,10 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
       clearInterval(this.interval);
     }
     this.interval = null;
+  }
+
+  async mounted() {
+    console.log('widget mounted');
   }
 
   beforeDestroy(): void {

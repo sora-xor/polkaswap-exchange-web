@@ -71,11 +71,7 @@ $skeleton-label-width: 34px;
   width: 100%;
 
   .chart {
-    height: 293px;
-
-    @include tablet {
-      height: 336px;
-    }
+    height: calc(100% - 51px);
 
     &-price {
       display: flex;
