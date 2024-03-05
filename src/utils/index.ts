@@ -392,7 +392,7 @@ export const soraExplorerLinks = (
   if (!soraNetwork) return [];
 
   const baseLinks = getExplorerLinks(soraNetwork);
-  const txId = transactionHash || blockHash;
+  const txId = transactionHash ?? blockHash;
 
   if (!(baseLinks.length && txId)) {
     return [];
