@@ -53,15 +53,15 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   layouts = {
     lg: [
       { x: 0, y: 0, w: 6, h: 15, i: 'form' },
-      { x: 6, y: 0, w: 12, h: 15, i: 'chart' },
+      { x: 6, y: 0, w: 18, h: 15, i: 'chart' },
       { x: 0, y: 15, w: 6, h: 10, i: 'distribution' },
-      { x: 18, y: 0, w: 6, h: 15, i: 'transactions' },
+      { x: 6, y: 15, w: 12, h: 15, i: 'transactions' },
     ],
     md: [
-      { x: 0, y: 0, w: 4, h: 12, i: 'form' },
-      { x: 4, y: 0, w: 8, h: 12, i: 'chart' },
-      { x: 0, y: 12, w: 4, h: 10, i: 'distribution' },
-      { x: 4, y: 12, w: 8, h: 14, i: 'transactions' },
+      { x: 0, y: 0, w: 4, h: 20, i: 'form' },
+      { x: 4, y: 0, w: 8, h: 20, i: 'chart' },
+      { x: 0, y: 20, w: 4, h: 12, i: 'distribution' },
+      { x: 4, y: 20, w: 8, h: 24, i: 'transactions' },
     ],
   };
 

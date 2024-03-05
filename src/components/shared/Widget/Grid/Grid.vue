@@ -8,7 +8,7 @@
       :breakpoints="breakpoints"
       :row-height="rowHeight"
       :is-draggable="true"
-      :is-resizable="false"
+      :is-resizable="true"
       :is-mirrored="false"
       :responsive="true"
       :vertical-compact="verticalCompact"
@@ -69,7 +69,7 @@ const DEFAULT_COLS = {
 export default class WidgetsGrid extends Vue {
   @Prop({ required: true, type: Object }) readonly layouts!: any;
   @Prop({ default: 12, type: Number }) readonly columns!: number;
-  @Prop({ default: 30, type: Number }) readonly rowHeight!: number;
+  @Prop({ default: 10, type: Number }) readonly rowHeight!: number;
   @Prop({ default: 16, type: Number }) readonly margin!: number;
   @Prop({ default: true, type: Boolean }) readonly verticalCompact!: boolean;
   @Prop({ default: () => DEFAULT_COLS, type: Object }) readonly cols!: any;
@@ -130,3 +130,16 @@ export default class WidgetsGrid extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.grid-wrapper {
+  .grid-item {
+    display: flex;
+    flex-flow: column nowrap;
+
+    .base-widget {
+      flex: 1;
+    }
+  }
+}
+</style>
