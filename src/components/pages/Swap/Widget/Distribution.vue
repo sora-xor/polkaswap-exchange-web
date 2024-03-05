@@ -78,7 +78,7 @@ const MARKETS = {
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
   },
 })
-export default class SwapDistribution extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
+export default class SwapDistributionWidget extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   @state.swap.distribution private distribution!: Distribution[][];
 
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;

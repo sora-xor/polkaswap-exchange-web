@@ -29,7 +29,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
     SwapFormWidget: lazyComponent(Components.SwapFormWidget),
     SwapChartWidget: lazyComponent(Components.SwapChartWidget),
     SwapTransactionsWidget: lazyComponent(Components.SwapTransactionsWidget),
-    SwapDistributionWidget: lazyComponent(Components.SwapDistribution),
+    SwapDistributionWidget: lazyComponent(Components.SwapDistributionWidget),
   },
 })
 export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, SelectedTokenRouteMixin) {
