@@ -74,6 +74,9 @@ $between: $top / 2;
 $left: $inner-spacing-medium;
 
 .base-widget {
+  display: flex;
+  flex-flow: column nowrap;
+
   &-block {
     display: flex;
     align-items: center;

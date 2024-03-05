@@ -71,10 +71,11 @@ $skeleton-label-width: 34px;
   width: 100%;
 
   .chart {
-    height: 293px;
+    height: calc(100% - 51px);
+    min-height: 293px;
 
     @include tablet {
-      height: 336px;
+      min-height: 336px;
     }
 
     &-price {
