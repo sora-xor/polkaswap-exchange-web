@@ -348,7 +348,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
 @mixin icon-styles($hasPointerCursor: false, $withHover: true, $hoverColor: var(--s-color-base-content-secondary)) {
   color: var(--s-color-base-content-tertiary);
-  transition: var(--s-transition-default);
+  transition: color var(--s-transition-default);
   @if $hasPointerCursor == true {
     cursor: pointer;
   }
