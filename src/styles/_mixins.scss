@@ -346,14 +346,16 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin icon-styles($hasPointerCursor: false) {
+@mixin icon-styles($hasPointerCursor: false, $withHover: true, $hoverColor: var(--s-color-base-content-secondary)) {
   color: var(--s-color-base-content-tertiary);
   transition: var(--s-transition-default);
   @if $hasPointerCursor == true {
     cursor: pointer;
   }
-  &:hover {
-    color: var(--s-color-base-content-secondary);
+  @if $withHover == true {
+    &:hover {
+      color: $hoverColor;
+    }
   }
 }
 
@@ -488,9 +490,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         font-weight: 500 !important;
       }
 
-      [class^='s-icon-'],
-      [class*=' s-icon-'] {
-        @include icon-styles;
+      i:not(.sort-icon) {
+        @include icon-styles($withHover: false);
       }
     }
 

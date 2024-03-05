@@ -51,7 +51,7 @@ export default class LinksDropdown extends Mixins(TranslationMixin) {
   &,
   .el-tooltip {
     &:focus {
-      outline: auto;
+      @include focus-outline($inner: true);
     }
   }
 }
