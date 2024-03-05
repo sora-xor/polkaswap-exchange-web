@@ -215,13 +215,13 @@ export default class SwapFormWidget extends Mixins(
   @mutation.settings.setChartsEnabled private setChartsEnabled!: (value: boolean) => void;
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
-  @mutation.swap.setAmountWithoutImpact private setAmountWithoutImpact!: (amount: CodecString) => void;
+  @mutation.swap.setAmountWithoutImpact private setAmountWithoutImpact!: (amount?: CodecString) => void;
   @mutation.swap.setExchangeB private setExchangeB!: (isExchangeB: boolean) => void;
-  @mutation.swap.setLiquidityProviderFee private setLiquidityProviderFee!: (value: CodecString) => void;
-  @mutation.swap.setRewards private setRewards!: (rewards: Array<LPRewardsInfo>) => void;
-  @mutation.swap.setRoute private setRoute!: (route: Array<string>) => void;
-  @mutation.swap.setDistribution private setDistribution!: (distribution: Distribution[][]) => void;
-  @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
+  @mutation.swap.setLiquidityProviderFee private setLiquidityProviderFee!: (value?: CodecString) => void;
+  @mutation.swap.setRewards private setRewards!: (rewards?: Array<LPRewardsInfo>) => void;
+  @mutation.swap.setRoute private setRoute!: (route?: Array<string>) => void;
+  @mutation.swap.setDistribution private setDistribution!: (distribution?: Distribution[][]) => void;
+  @mutation.swap.selectDexId private selectDexId!: (dexId?: DexId) => void;
   @mutation.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload?: SwapQuoteData) => void;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
@@ -413,7 +413,17 @@ export default class SwapFormWidget extends Mixins(
 
   private runRecountSwapValues(): void {
     const value = this.isExchangeB ? this.toValue : this.fromValue;
-    if (!this.areTokensSelected || asZeroValue(value) || !this.swapQuote) return;
+
+    if (!this.areTokensSelected || asZeroValue(value) || !this.swapQuote) {
+      this.setAmountWithoutImpact();
+      this.setLiquidityProviderFee();
+      this.setRewards();
+      this.setRoute();
+      this.setDistribution();
+      this.selectDexId();
+      return;
+    }
+
     const setOppositeValue = this.isExchangeB ? this.setFromValue : this.setToValue;
     const resetOppositeValue = this.isExchangeB ? this.resetFieldFrom : this.resetFieldTo;
     const oppositeToken = (this.isExchangeB ? this.tokenFrom : this.tokenTo) as AccountAsset;

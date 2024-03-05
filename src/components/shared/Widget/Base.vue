@@ -75,11 +75,7 @@ $left: $inner-spacing-medium;
 .base-widget {
   display: flex;
   flex-flow: column nowrap;
-
-  &.full {
-    width: 100%;
-    height: 100%;
-  }
+  align-items: normal;
 
   &-block {
     display: flex;
@@ -100,6 +96,7 @@ $left: $inner-spacing-medium;
     font-size: var(--s-font-size-medium);
     font-weight: 500;
     line-height: var(--s-line-height-medium);
+    text-transform: capitalize;
 
     &.primary {
       font-size: var(--s-font-size-large);

@@ -9,7 +9,7 @@
       class="explore-table"
     >
       <!-- Index -->
-      <s-table-column width="240" label="#" fixed-position="left">
+      <s-table-column width="240" label="#">
         <template #header>
           <div class="explore-table-item-index">
             <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">

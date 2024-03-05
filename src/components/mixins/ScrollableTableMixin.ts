@@ -33,8 +33,10 @@ export default class ScrollableTableMixin extends Mixins(
   }
 
   async mounted(): Promise<void> {
-    await this.$nextTick();
-    this.initScrollbar();
+    await this.withParentLoading(async () => {
+      await this.$nextTick();
+      this.initScrollbar();
+    });
   }
 
   public handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {

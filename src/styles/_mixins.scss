@@ -47,6 +47,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     line-height: var(--s-line-height-medium);
 
     &--footer {
+      align-items: flex-start;
       margin-top: $inner-spacing-tiny;
       margin-bottom: 0;
       min-height: $inner-spacing-mini * 2.625; // 21px
@@ -345,14 +346,16 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin icon-styles($hasPointerCursor: false) {
+@mixin icon-styles($hasPointerCursor: false, $withHover: true, $hoverColor: var(--s-color-base-content-secondary)) {
   color: var(--s-color-base-content-tertiary);
-  transition: var(--s-transition-default);
+  transition: color var(--s-transition-default);
   @if $hasPointerCursor == true {
     cursor: pointer;
   }
-  &:hover {
-    color: var(--s-color-base-content-secondary);
+  @if $withHover == true {
+    &:hover {
+      color: $hoverColor;
+    }
   }
 }
 
@@ -487,9 +490,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
         font-weight: 500 !important;
       }
 
-      [class^='s-icon-'],
-      [class*=' s-icon-'] {
-        @include icon-styles;
+      i:not(.sort-icon) {
+        @include icon-styles($withHover: false);
       }
     }
 
@@ -553,12 +555,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
       &.is-scrolling-left ~ .el-table__fixed {
         box-shadow: inherit;
-      }
-
-      .el-scrollbar__bar.is-horizontal {
-        right: 0;
-        left: unset;
-        width: calc(100% - #{$fixed-column-width});
       }
     }
 

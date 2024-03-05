@@ -10,6 +10,9 @@
       <template v-else-if="id === 'transactions'">
         <swap-transactions-widget :parent-loading="parentLoading" />
       </template>
+      <template v-else-if="id === 'distribution'">
+        <swap-distribution-widget :parent-loading="parentLoading" />
+      </template>
     </template>
   </widgets-grid>
 </template>
@@ -33,6 +36,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
     SwapChartWidget: lazyComponent(Components.SwapChartWidget),
     SwapTransactionsWidget: lazyComponent(Components.SwapTransactionsWidget),
     WidgetsGrid: lazyComponent(Components.WidgetsGrid),
+    SwapDistributionWidget: lazyComponent(Components.SwapDistributionWidget),
   },
 })
 export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, SelectedTokenRouteMixin) {
@@ -50,11 +54,13 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
     lg: [
       { x: 0, y: 0, w: 6, h: 15, i: 'form' },
       { x: 6, y: 0, w: 12, h: 15, i: 'chart' },
+      { x: 0, y: 15, w: 6, h: 10, i: 'distribution' },
       { x: 18, y: 0, w: 6, h: 15, i: 'transactions' },
     ],
     md: [
-      { x: 0, y: 0, w: 4, h: 20, i: 'form' },
+      { x: 0, y: 0, w: 4, h: 12, i: 'form' },
       { x: 4, y: 0, w: 8, h: 12, i: 'chart' },
+      { x: 0, y: 12, w: 4, h: 10, i: 'distribution' },
       { x: 4, y: 12, w: 8, h: 14, i: 'transactions' },
     ],
   };

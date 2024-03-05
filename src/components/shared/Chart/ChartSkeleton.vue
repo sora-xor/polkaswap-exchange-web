@@ -68,10 +68,14 @@ export default class ChartSkeleton extends Mixins(mixins.TranslationMixin) {
 $skeleton-label-width: 34px;
 
 .charts-container {
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 1;
   width: 100%;
 
   .chart {
-    height: calc(100% - 51px);
+    flex: 1;
+    min-height: 327px;
 
     &-price {
       display: flex;
@@ -83,9 +87,18 @@ $skeleton-label-width: 34px;
       line-height: var(--s-line-height-extra-small);
     }
   }
+
+  .el-skeleton {
+    display: flex;
+    flex: 1;
+  }
 }
 
 .charts-skeleton {
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 1;
+
   $margin-right: #{$inner-spacing-tiny};
   $skeleton-label-width-mobile: calc((100% - #{$margin-right} * 10) / 11);
   $skeleton-spacing: 18px;

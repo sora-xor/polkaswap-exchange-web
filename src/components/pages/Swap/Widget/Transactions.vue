@@ -1,5 +1,5 @@
 <template>
-  <base-widget full extensive title="All trades" tooltip="Some text" class="swap-transactions-widget">
+  <base-widget extensive :title="tc('transactionText', 2)" class="swap-transactions-widget">
     <s-table
       ref="table"
       v-loading="loadingState"
@@ -65,7 +65,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="140" header-align="center" align="center">
+      <s-table-column width="140" header-align="right" align="right">
         <template #header>
           <span>Sold</span>
         </template>
@@ -77,7 +77,7 @@
           />
         </template>
       </s-table-column>
-      <s-table-column width="140" header-align="center" align="center">
+      <s-table-column width="140" header-align="left" align="left">
         <template #header>
           <span>Bought</span>
         </template>
@@ -133,6 +133,12 @@ type TableItem = {
   };
   links: WALLET_CONSTS.ExplorerLink[];
 };
+
+type RequestVariables = Partial<{
+  filter: any;
+  first: number;
+  offset: number;
+}>;
 
 const UPDATE_INTERVAL = 15_000;
 
@@ -213,7 +219,7 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
   get assetsAddresses(): string[] {
     const filtered = [this.tokenFrom, this.tokenTo].filter((token) => !!token) as AccountAsset[];
 
-    return filtered.map((token) => token.address).sort();
+    return filtered.map((token) => token.address).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
   }
 
   private createFilter(timestamp?: number) {
@@ -250,7 +256,7 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
   private async fetchData(): Promise<void> {
     const { pageAmount, currentPage } = this;
 
-    const variables = {
+    const variables: RequestVariables = {
       filter: this.createFilter(this.fromTimestamp),
       first: pageAmount,
       offset: pageAmount * (currentPage - 1),
@@ -267,14 +273,14 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
   }
 
   private async fetchDataUpdates(): Promise<void> {
-    const variables = { filter: this.createFilter(this.intervalTimestamp) };
+    const variables: RequestVariables = { filter: this.createFilter(this.intervalTimestamp) };
     const { transactions, totalCount } = await this.requestData(variables);
     this.transactions = [...transactions, ...this.transactions].slice(0, this.pageAmount);
     this.totalCount = this.totalCount + totalCount;
     this.updateIntervalTimestamp();
   }
 
-  private async requestData(variables): Promise<{ transactions: HistoryItem[]; totalCount: number }> {
+  private async requestData(variables: RequestVariables): Promise<{ transactions: HistoryItem[]; totalCount: number }> {
     const indexer = getCurrentIndexer();
     const response = await indexer.services.explorer.account.getHistory(variables);
 
