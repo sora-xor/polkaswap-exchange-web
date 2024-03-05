@@ -65,7 +65,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="140" header-align="center" align="center">
+      <s-table-column width="140" header-align="right" align="right">
         <template #header>
           <span>Sold</span>
         </template>
@@ -77,7 +77,7 @@
           />
         </template>
       </s-table-column>
-      <s-table-column width="140" header-align="center" align="center">
+      <s-table-column width="140" header-align="left" align="left">
         <template #header>
           <span>Bought</span>
         </template>

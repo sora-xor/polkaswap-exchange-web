@@ -556,12 +556,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       &.is-scrolling-left ~ .el-table__fixed {
         box-shadow: inherit;
       }
-
-      .el-scrollbar__bar.is-horizontal {
-        right: 0;
-        left: unset;
-        width: calc(100% - #{$fixed-column-width});
-      }
     }
 
     &.el-table--scrollable-x {
