@@ -127,7 +127,7 @@
         <template v-else-if="userReachedSpotLimit || userReachedOwnLimit">
           <error />
         </template>
-        <template v-else-if="isLimitOrder && !quoteValue">{{ t('orderBook.setPrice') }}</template>
+        <template v-else-if="isLimitOrder && (!quoteValue || isZeroPrice)">{{ t('orderBook.setPrice') }}</template>
         <template v-else-if="isBalanceLessThanStepSize">
           <error />
         </template>
@@ -423,7 +423,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     if (!this.isLoggedIn) return false;
 
     if (this.limitOrderType === LimitOrderType.limit) {
-      if (!this.baseValue || !this.quoteValue) return true;
+      if (!this.baseValue || this.isZeroAmount || !this.quoteValue || this.isZeroPrice) return true;
       // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
       // if (this.isPriceTooHigh || this.isPriceTooLow || !this.isPriceBeyondPrecision) return true;
       if (!this.isPriceBeyondPrecision) return true;

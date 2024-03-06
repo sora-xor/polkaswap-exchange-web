@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Det finns inte tillräckligt med beställningar för att fullfölja denna beställning",
-                "reading": "Marknadsorderbegränsning: Det finns inte tillräckligt med order tillgängliga för att uppfylla denna marknadsbegränsningsorder. Vänligen justera din beställningsstorlek eller vänta på att fler beställningar ska läggas"
+                "reading": "Marknadsorderbegränsning: Det finns inte tillräckligt med order tillgängliga för att uppfylla denna marknadsorder. Vänligen justera din beställningsstorlek eller vänta på att fler beställningar ska läggas"
             },
             "exceedsSpread": {
                 "reason": "Priset översteg spridningen",

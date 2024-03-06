@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Es sind nicht genügend Bestellungen verfügbar, um diese Bestellung auszuführen",
-                "reading": "Limitierung der Market-Order: Es sind nicht genügend Orders verfügbar, um diese Market-Limit-Order auszuführen. Bitte passen Sie Ihre Bestellgröße an oder warten Sie, bis weitere Bestellungen aufgegeben werden"
+                "reading": "Limitierung der Market-Order: Es sind nicht genügend Orders verfügbar, um diese Market-Order auszuführen. Bitte passen Sie Ihre Bestellgröße an oder warten Sie, bis weitere Bestellungen aufgegeben werden"
             },
             "exceedsSpread": {
                 "reason": "Der Preis überstieg die Spanne",

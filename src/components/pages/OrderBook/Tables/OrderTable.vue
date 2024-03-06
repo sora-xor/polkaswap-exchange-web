@@ -125,6 +125,7 @@ import { getter, state } from '@/store/decorators';
 import { OrderStatus } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';
 
+import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type { OrderStatus as OrderStatusType } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
@@ -140,7 +141,9 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
   readonly PriceVariant = PriceVariant;
 
   @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
+
   @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
+  @getter.orderBook.currentOrderBook private currentOrderBook!: Nullable<OrderBook>;
 
   @Prop({ default: () => [], type: Array }) readonly orders!: OrderData[];
   @Prop({ default: false, type: Boolean }) readonly selectable!: boolean;
@@ -152,6 +155,18 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
       return;
     }
     this.$emit('sync', this.tableItems);
+  }
+
+  get pricePrecision(): number {
+    return (
+      this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)?.[1]?.length ?? 2
+    );
+  }
+
+  get amountPrecision(): number {
+    return (
+      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)?.[1]?.length ?? 2
+    );
   }
 
   @Watch('tableItems', { deep: true, immediate: true })
@@ -185,13 +200,13 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
       const row = {
         id,
         orderBookId,
-        originalAmount: originalAmount.dp(2),
-        amount: originalAmount.sub(amount).dp(2),
+        originalAmount: originalAmount.dp(this.amountPrecision),
+        amount: originalAmount.sub(amount).dp(this.amountPrecision),
         filled,
         baseAssetSymbol,
         quoteAssetSymbol,
         pair,
-        price: price.dp(2),
+        price: price.dp(this.pricePrecision),
         total: total.dp(2).toLocaleString(),
         side,
         status: this.getStatusTranslation(status as OrderStatusType),

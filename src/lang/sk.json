@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Nie je k dispozícii dostatok objednávok na splnenie tejto objednávky",
-                "reading": "Obmedzenie trhového príkazu: Nie je k dispozícii dostatok príkazov na splnenie tohto trhového limitného príkazu. Upravte veľkosť objednávky alebo počkajte na odoslanie ďalších objednávok"
+                "reading": "Obmedzenie trhovej objednávky: Na splnenie tejto trhovej objednávky nie je k dispozícii dostatok objednávok. Upravte veľkosť objednávky alebo počkajte na odoslanie ďalších objednávok"
             },
             "exceedsSpread": {
                 "reason": "Cena prekročila spread",

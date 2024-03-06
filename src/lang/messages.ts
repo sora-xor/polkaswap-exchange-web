@@ -1131,7 +1131,7 @@ export default {
       marketNotAvailable: {
         reason: 'Not enough orders available to fullfill this order',
         reading:
-          'Market order limitation: There are not enough orders available to fulfill this market limit order. Please adjust your order size or wait for more orders to be placed',
+          'Market order limitation: There are not enough orders available to fulfill this market order. Please adjust your order size or wait for more orders to be placed',
       },
       exceedsSpread: {
         reason: 'Price exceeded spread',
