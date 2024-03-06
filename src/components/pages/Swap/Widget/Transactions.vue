@@ -18,7 +18,7 @@
       </s-table-column>
       <s-table-column width="76">
         <template #header>
-          <span>Time</span>
+          <span>{{ t('transaction.startTime') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="explore-table-item-date">
@@ -29,7 +29,7 @@
       </s-table-column>
       <s-table-column width="94">
         <template #header>
-          <span>Account</span>
+          <span>{{ tc('accountText', 1) }}</span>
         </template>
         <template v-slot="{ row }">
           <formatted-address :value="row.address" :symbols="8" />
@@ -37,7 +37,7 @@
       </s-table-column>
       <s-table-column width="112" header-align="left" align="left">
         <template #header>
-          <span>Input</span>
+          <span>{{ t('transfers.from') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="explore-table-cell">
@@ -52,7 +52,7 @@
       </s-table-column>
       <s-table-column width="112" header-align="left" align="left">
         <template #header>
-          <span>Output</span>
+          <span>{{ t('transfers.to') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="explore-table-cell">
@@ -67,7 +67,7 @@
       </s-table-column>
       <s-table-column width="140" header-align="right" align="right">
         <template #header>
-          <span>Sold</span>
+          <span>{{ t('removeLiquidity.input') }}</span>
         </template>
         <template v-slot="{ row }">
           <formatted-amount
@@ -79,7 +79,7 @@
       </s-table-column>
       <s-table-column width="140" header-align="left" align="left">
         <template #header>
-          <span>Bought</span>
+          <span>{{ t('removeLiquidity.output') }}</span>
         </template>
         <template v-slot="{ row }">
           <formatted-amount
