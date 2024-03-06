@@ -321,10 +321,6 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
     this.interval = null;
   }
 
-  async mounted() {
-    console.log('widget mounted');
-  }
-
   beforeDestroy(): void {
     this.resetDataSubscription();
   }

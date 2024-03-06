@@ -3,19 +3,19 @@
     <grid-layout
       :layout.sync="layout"
       :responsive-layouts="layouts"
-      :col-num="columns"
       :cols="cols"
       :breakpoints="breakpoints"
       :row-height="rowHeight"
-      :is-draggable="true"
-      :is-resizable="true"
-      :is-mirrored="false"
-      :responsive="true"
-      :vertical-compact="verticalCompact"
-      :prevent-collision="true"
+      :is-draggable="draggable"
+      :is-resizable="resizable"
+      :vertical-compact="compact"
       :margin="[margin, margin]"
+      :responsive="true"
+      :prevent-collision="true"
       :use-css-transforms="true"
       @layout-ready="onReady"
+      @layout-updated="onUpdate"
+      @breakpoint-changed="onBreakpointChanged"
     >
       <grid-item
         v-for="item in layout"
@@ -42,8 +42,6 @@ import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator';
 
 import { Breakpoint } from '@/consts';
 
-import { compactItems } from './utils';
-
 const DEFAULT_BREAKPOINT = 'lg';
 const DEFAULT_BREAKPOINTS = {
   lg: Breakpoint.HugeDesktop, // 2092
@@ -68,65 +66,31 @@ const DEFAULT_COLS = {
 })
 export default class WidgetsGrid extends Vue {
   @Prop({ required: true, type: Object }) readonly layouts!: any;
-  @Prop({ default: 12, type: Number }) readonly columns!: number;
   @Prop({ default: 10, type: Number }) readonly rowHeight!: number;
   @Prop({ default: 16, type: Number }) readonly margin!: number;
-  @Prop({ default: true, type: Boolean }) readonly verticalCompact!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly compact!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly draggable!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly resizable!: boolean;
   @Prop({ default: () => DEFAULT_COLS, type: Object }) readonly cols!: any;
   @Prop({ default: () => DEFAULT_BREAKPOINTS, type: Object }) readonly breakpoints!: any;
 
   @Ref('gridWrapper') readonly gridWrapper!: HTMLDivElement;
 
-  // @Watch('breakpoint', { immediate: true })
-  // private calculateBreakpointLayout() {
-  //   const { gridLayouts, originalLayout, breakpoint, cols, verticalCompact } = this;
-
-  //   if (gridLayouts[breakpoint]) return;
-
-  //   const columnsCount = cols[breakpoint];
-  //   const compactLayout = compactItems(originalLayout, columnsCount, verticalCompact);
-
-  //   gridLayouts[breakpoint] = compactLayout;
-  // }
-
   ready = false;
   onReady = debounce(this.setReady);
-  gridLayouts = {};
   breakpoint = DEFAULT_BREAKPOINT;
   layout = [];
 
-  created() {
-    this.layout = this.layouts[DEFAULT_BREAKPOINT];
+  setReady(): void {
+    this.ready = true;
   }
 
-  // mounted(): void {
-  //   this.updateCurrentBreakpoint();
-  //   window.addEventListener('resize', this.updateCurrentBreakpoint);
-  // }
+  onUpdate(newLayout): void {
+    console.log('Updated layout: ', newLayout);
+  }
 
-  // beforeDestroy(): void {
-  //   window.removeEventListener('resize', this.updateCurrentBreakpoint);
-  // }
-
-  // get currentLayout() {
-  //   return this.gridLayouts[this.breakpoint] ?? this.originalLayout;
-  // }
-
-  // updateCurrentBreakpoint(): void {
-  //   const { breakpoints, gridWrapper } = this;
-
-  //   if (!gridWrapper) return;
-
-  //   const { clientWidth } = gridWrapper;
-
-  //   const currentBreakpoint = Object.keys(breakpoints).find((key) => clientWidth >= breakpoints[key]);
-
-  //   this.breakpoint = currentBreakpoint ?? DEFAULT_BREAKPOINT;
-  // }
-
-  setReady(): void {
-    console.log('setReady');
-    this.ready = true;
+  onBreakpointChanged(newBreakpoint, newLayout) {
+    console.log('BREAKPOINT CHANGED breakpoint=', newBreakpoint, ', layout: ', newLayout);
   }
 }
 </script>
