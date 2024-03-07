@@ -24,7 +24,8 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import WalletConnectMixin from '../../../components/mixins/WalletConnectMixin';
 import PolkaswapLogo from '../../../components/shared/Logo/Polkaswap.vue';
-import { PageNames, Components, BreakpointClass } from '../../../consts';
+import { PageNames, Components } from '../../../consts';
+import { BreakpointClass } from '../../../consts/layout';
 import { lazyComponent, goTo } from '../../../router';
 import { state, getter } from '../../../store/decorators';
 

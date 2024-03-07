@@ -1,5 +1,11 @@
 <template>
-  <base-widget v-loading="parentLoading" class="swap-widget" :title="t('exchange.Swap')" primary-title>
+  <base-widget
+    class="swap-widget"
+    :title="t('exchange.Swap')"
+    primary-title
+    v-loading="parentLoading"
+    v-on="$listeners"
+  >
     <template #filters>
       <swap-status-action-badge>
         <template #label>{{ t('marketText') }}:</template>

@@ -1,7 +1,8 @@
 import { defineMutations } from 'direct-vuex';
 
 import { MarketAlgorithms } from '@/consts';
-import type { BreakpointClass, Language } from '@/consts';
+import type { Language } from '@/consts';
+import type { BreakpointClass } from '@/consts/layout';
 import type { Node } from '@/types/nodes';
 import storage, { settingsStorage } from '@/utils/storage';
 

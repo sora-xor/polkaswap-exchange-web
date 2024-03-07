@@ -1,17 +1,17 @@
 <template>
-  <widgets-grid :layouts="layouts" class="swap-container">
-    <template v-slot="{ i: id }">
+  <widgets-grid :layouts="layouts" class="swap-container" draggable resizable>
+    <template v-slot="{ id, resize }">
       <template v-if="id === 'form'">
-        <swap-form-widget :parent-loading="parentLoading" />
+        <swap-form-widget :parent-loading="parentLoading" @resize="resize" />
       </template>
       <template v-else-if="id === 'chart'">
-        <swap-chart-widget :parent-loading="parentLoading" v-if="chartsEnabled" />
-      </template>
-      <template v-else-if="id === 'transactions'">
-        <swap-transactions-widget :parent-loading="parentLoading" />
+        <swap-chart-widget full :parent-loading="parentLoading" v-if="chartsEnabled" />
       </template>
       <template v-else-if="id === 'distribution'">
-        <swap-distribution-widget :parent-loading="parentLoading" />
+        <swap-distribution-widget :parent-loading="parentLoading" @resize="resize" />
+      </template>
+      <template v-else-if="id === 'transactions'">
+        <swap-transactions-widget full :parent-loading="parentLoading" />
       </template>
     </template>
   </widgets-grid>
@@ -52,16 +52,16 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
   layouts = {
     lg: [
-      { x: 0, y: 0, w: 6, h: 15, i: 'form' },
-      { x: 6, y: 0, w: 18, h: 15, i: 'chart' },
-      { x: 0, y: 15, w: 6, h: 10, i: 'distribution' },
-      { x: 6, y: 15, w: 12, h: 15, i: 'transactions' },
+      { x: 0, y: 0, w: 6, h: 20, i: 'form' },
+      { x: 6, y: 0, w: 12, h: 20, i: 'chart' },
+      { x: 18, y: 0, w: 6, h: 24, i: 'transactions' },
+      { x: 0, y: 20, w: 6, h: 6, i: 'distribution' },
     ],
     md: [
       { x: 0, y: 0, w: 4, h: 20, i: 'form' },
       { x: 4, y: 0, w: 8, h: 20, i: 'chart' },
       { x: 0, y: 20, w: 4, h: 12, i: 'distribution' },
-      { x: 4, y: 20, w: 8, h: 24, i: 'transactions' },
+      { x: 4, y: 20, w: 6, h: 24, i: 'transactions' },
     ],
   };
 

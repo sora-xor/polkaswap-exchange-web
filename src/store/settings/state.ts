@@ -1,4 +1,5 @@
-import { BreakpointClass, DefaultMarketAlgorithm, DefaultSlippageTolerance, MarketAlgorithms } from '@/consts';
+import { DefaultMarketAlgorithm, DefaultSlippageTolerance, MarketAlgorithms } from '@/consts';
+import { BreakpointClass } from '@/consts/layout';
 import { getLocale } from '@/lang';
 import storage, { settingsStorage } from '@/utils/storage';
 

@@ -1,5 +1,12 @@
 <template>
-  <s-card :class="['base-widget', { delimeter, full }]" border-radius="small" shadow="always" size="big" primary>
+  <s-card
+    ref="container"
+    border-radius="small"
+    shadow="always"
+    size="big"
+    primary
+    :class="['base-widget', { delimeter, full }]"
+  >
     <template #header v-if="hasHeader">
       <div class="base-widget-block base-widget-header">
         <div :class="['base-widget-block', 'base-widget-title', { primary: primaryTitle }]">
@@ -21,14 +28,16 @@
       </div>
     </template>
 
-    <div :class="['base-widget-content', { extensive }]">
+    <div :class="['base-widget-content', { extensive }]" ref="content">
       <slot />
     </div>
   </s-card>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
+
+import { debouncedInputHandler } from '@/utils';
 
 @Component
 export default class BaseWidget extends Vue {
@@ -39,8 +48,38 @@ export default class BaseWidget extends Vue {
   @Prop({ default: false, type: Boolean }) readonly extensive!: boolean;
   @Prop({ default: false, type: Boolean }) readonly primaryTitle!: boolean;
 
+  @Ref('container') readonly container!: Vue;
+  @Ref('content') readonly content!: HTMLDivElement;
+
+  observer: ResizeObserver | null = null;
+  handleContentResize = debouncedInputHandler(this.onContentResize, 300, { leading: false });
+
   get hasHeader(): boolean {
     return !!this.title || !!this.$slots.title;
+  }
+
+  mounted(): void {
+    this.createContentObserver();
+  }
+
+  beforeDestroy(): void {
+    this.destroyContentObserver();
+  }
+
+  private createContentObserver(): void {
+    this.observer = new ResizeObserver(this.handleContentResize);
+    this.observer.observe(this.content);
+  }
+
+  private destroyContentObserver(): void {
+    this.observer?.disconnect();
+    this.observer = null;
+  }
+
+  onContentResize(): void {
+    const el = this.container.$el;
+    const { clientHeight: height, clientWidth: width } = el;
+    this.$emit('resize', { height, width });
   }
 }
 </script>
@@ -76,6 +115,11 @@ $left: $inner-spacing-medium;
   display: flex;
   flex-flow: column nowrap;
   align-items: normal;
+  overflow: unset;
+
+  &.full {
+    flex: 1;
+  }
 
   &-block {
     display: flex;
