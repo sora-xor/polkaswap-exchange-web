@@ -464,14 +464,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     &-cell {
       display: flex;
       align-items: center;
-
-      & + & {
-        margin-top: $inner-spacing-mini;
-      }
-
-      & > *:not(:last-child) {
-        margin-right: $inner-spacing-mini;
-      }
+      gap: $inner-spacing-mini;
     }
   }
 
@@ -535,6 +528,17 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     th.el-table__cell.is-leaf,
     td.el-table__cell {
       border-color: var(--s-color-base-border-secondary);
+
+      &.is-right {
+        .explore-table-cell {
+          justify-content: right;
+        }
+      }
+      &.is-left {
+        .explore-table-cell {
+          justify-content: left;
+        }
+      }
     }
 
     .el-table__fixed {
