@@ -45,7 +45,7 @@
 import cloneDeep from 'lodash/fp/cloneDeep';
 import debounce from 'lodash.debounce';
 import { GridLayout, GridItem } from 'vue-grid-layout';
-import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
+import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator';
 
 import { Breakpoint, BreakpointKey } from '@/consts/layout';
 import type { Layout, LayoutConfiguration, ResponsiveLayouts } from '@/types/layout';
@@ -98,6 +98,14 @@ export default class WidgetsGrid extends Vue {
       }));
       return acc;
     }, {});
+  }
+
+  @Watch('responsiveLayouts')
+  private updateCurrentLayout() {
+    this.layout =
+      this.breakpoint in this.responsiveLayouts
+        ? this.responsiveLayouts[this.breakpoint]
+        : this.responsiveLayouts[BreakpointKey.lg];
   }
 
   setReady(): void {

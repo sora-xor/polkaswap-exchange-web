@@ -1,20 +1,40 @@
 <template>
-  <widgets-grid :layouts="layouts" class="swap-container" draggable resizable>
-    <template v-slot="{ id, resize }">
-      <template v-if="id === 'form'">
-        <swap-form-widget :parent-loading="parentLoading" @resize="resize" />
+  <div>
+    <div class="controls s-flex" style="gap: 16px; justify-content: space-between">
+      <div class="s-flex">
+        <s-checkbox v-model="draggable" label="Draggable" />
+        <s-checkbox v-model="resizable" label="Resizable" />
+        <s-checkbox v-model="compact" label="Compact" />
+      </div>
+      <div class="s-flex">
+        <s-checkbox v-model="chart" label="Chart" />
+        <s-checkbox v-model="transactions" label="Transactions" />
+        <s-checkbox v-model="distribution" label="Route" />
+      </div>
+    </div>
+    <widgets-grid
+      :draggable="draggable"
+      :resizable="resizable"
+      :compact="compact"
+      :layouts="layouts"
+      class="swap-container"
+    >
+      <template v-slot="{ id, resize }">
+        <template v-if="id === 'form'">
+          <swap-form-widget :parent-loading="parentLoading" @resize="resize" />
+        </template>
+        <template v-else-if="id === 'chart'">
+          <swap-chart-widget full :parent-loading="parentLoading" v-if="chartsEnabled" />
+        </template>
+        <template v-else-if="id === 'distribution'">
+          <swap-distribution-widget :parent-loading="parentLoading" @resize="resize" />
+        </template>
+        <template v-else-if="id === 'transactions'">
+          <swap-transactions-widget full :parent-loading="parentLoading" />
+        </template>
       </template>
-      <template v-else-if="id === 'chart'">
-        <swap-chart-widget full :parent-loading="parentLoading" v-if="chartsEnabled" />
-      </template>
-      <template v-else-if="id === 'distribution'">
-        <swap-distribution-widget :parent-loading="parentLoading" @resize="resize" />
-      </template>
-      <template v-else-if="id === 'transactions'">
-        <swap-transactions-widget full :parent-loading="parentLoading" />
-      </template>
-    </template>
-  </widgets-grid>
+    </widgets-grid>
+  </div>
 </template>
 
 <script lang="ts">
@@ -50,20 +70,44 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
 
-  layouts = {
-    lg: [
-      { x: 0, y: 0, w: 6, h: 20, i: 'form' },
-      { x: 6, y: 0, w: 12, h: 20, i: 'chart' },
-      { x: 18, y: 0, w: 6, h: 24, i: 'transactions' },
-      { x: 0, y: 20, w: 6, h: 6, i: 'distribution' },
-    ],
-    md: [
-      { x: 0, y: 0, w: 4, h: 20, i: 'form' },
-      { x: 4, y: 0, w: 8, h: 20, i: 'chart' },
-      { x: 0, y: 20, w: 4, h: 12, i: 'distribution' },
-      { x: 4, y: 20, w: 6, h: 24, i: 'transactions' },
-    ],
-  };
+  draggable = false;
+  resizable = false;
+  compact = false;
+
+  form = true;
+  chart = true;
+  transactions = true;
+  distribution = true;
+
+  get layouts() {
+    const lg = [];
+    const sm = [];
+
+    if (this.form) {
+      lg.push({ x: 0, y: 0, w: 6, h: 20, i: 'form' });
+      sm.push({ x: 0, y: 0, w: 4, h: 20, i: 'form' });
+    }
+
+    if (this.chart) {
+      lg.push({ x: 6, y: 0, w: 12, h: 20, i: 'chart' });
+      sm.push({ x: 4, y: 0, w: 8, h: 20, i: 'chart' });
+    }
+
+    if (this.transactions) {
+      lg.push({ x: 18, y: 0, w: 6, h: 24, i: 'transactions' });
+      sm.push({ x: 4, y: 20, w: 6, h: 24, i: 'transactions' });
+    }
+
+    if (this.distribution) {
+      lg.push({ x: 0, y: 20, w: 6, h: 6, i: 'distribution' });
+      sm.push({ x: 0, y: 20, w: 4, h: 12, i: 'distribution' });
+    }
+
+    return {
+      lg,
+      sm,
+    };
+  }
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
