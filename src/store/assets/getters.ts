@@ -15,23 +15,13 @@ const getters = defineGetters<AssetsState>()({
       api.assets.isWhitelist(asset, rootGetters.wallet.account.whitelist)
     );
   },
-  assetsDataTable(...args): Record<string, Asset> {
-    const { rootState } = assetsGetterContext(args);
-
-    return rootState.wallet.account.assets.reduce((result, asset) => {
-      return {
-        ...result,
-        [asset.address]: asset,
-      };
-    }, {});
-  },
   assetDataByAddress(...args): (address?: Nullable<string>) => Nullable<RegisteredAccountAsset> {
-    const { getters, state, rootGetters } = assetsGetterContext(args);
+    const { state, rootGetters } = assetsGetterContext(args);
 
     return (address?: Nullable<string>): Nullable<RegisteredAccountAsset> => {
       if (!address) return undefined;
 
-      const asset = getters.assetsDataTable[address];
+      const asset = rootGetters.wallet.account.assetsDataTable[address];
 
       if (!asset) return null;
 

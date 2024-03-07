@@ -38,8 +38,8 @@
 </template>
 
 <script lang="ts">
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
-import { switchTheme } from '@soramitsu/soramitsu-js-ui/lib/utils';
+import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
+import { switchTheme } from '@soramitsu-ui/ui-vue2/lib/utils';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -143,7 +143,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         value: HeaderMenuType.Disclaimer,
         icon: 'info-16',
         text: this.disclaimerText,
-        disabled: this.discalimerDisabled,
+        disabled: this.disclaimerDisabled,
       },
     ];
   }
@@ -156,7 +156,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     return this.getHeaderMenuItems(true);
   }
 
-  get discalimerDisabled(): boolean {
+  get disclaimerDisabled(): boolean {
     return this.disclaimerVisibility && !this.userDisclaimerApprove;
   }
 
@@ -181,7 +181,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         this.setLanguageDialogVisibility(true);
         break;
       case HeaderMenuType.Disclaimer:
-        if (this.discalimerDisabled) return;
+        if (this.disclaimerDisabled) return;
         this.toggleDisclaimerDialogVisibility();
         break;
     }

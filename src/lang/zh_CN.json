@@ -2,14 +2,14 @@
     "closeText": "关闭",
     "backText": "返回",
     "createWalletText": "创建钱包",
-    "nameText": "名字",
+    "nameText": "名称",
     "nextText": "下一个",
     "importText": "导入",
     "settingsText": "设置",
     "addAssetText": "添加资产",
     "successText": "成功",
     "warningText": "警告",
-    "swapText": "交换",
+    "swapText": "兑换",
     "searchText": "搜索",
     "cancelText": "取消",
     "saveText": "保存",
@@ -49,7 +49,23 @@
             "DemeterFarmingGetRewards": "{amount} {symbol}成功申领",
             "EthBridgeIncoming": "将{amount} {symbol}从 {Ethereum} 转移到 {Sora}",
             "EthBridgeOutgoing": "将{amount} {symbol}从 {Sora} 转移到 {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "保税{amount} {symbol}",
+            "StakingBond": "保税{amount} {symbol}",
+            "StakingBondExtra": "保税额外{amount} {symbol}",
+            "StakingUnbond": "非保税{amount} {symbol}",
+            "StakingRebond": "重新粘合{amount} {symbol}",
+            "StakingNominate": "指定验证人",
+            "StakingWithdrawUnbonded": "提款{amount} {symbol}",
+            "StakingPayout": "支付奖励",
+            "StakingChill": "寒意",
+            "StakingSetController": "设置控制器{address}",
+            "StakingSetPayee": "设置收款人{address}",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol}以{price} {symbol2}放置",
+            "OrderBookCancelLimitOrder": "限价订单已取消",
+            "OrderBookCancelLimitOrders": "限价订单已取消",
+            "Burn": "烧毁{amount} {symbol}",
+            "Mint": "铸造了{amount} {symbol}到{address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
@@ -70,7 +86,23 @@
             "DemeterFarmingGetRewards": "申领失败{symbol}",
             "EthBridgeIncoming": "将{amount} {symbol}从 {Ethereum} 转移到 {Sora} 失败",
             "EthBridgeOutgoing": "将{amount} {symbol}从 {Sora} 转移到 {Ethereum} 失败",
-            "SwapTransferBatch": "{action} {amount} {symbol}失败"
+            "SwapTransferBatch": "{action} {amount} {symbol}失败",
+            "StakingBondAndNominate": "绑定{amount} {symbol}失败",
+            "StakingBond": "绑定{amount} {symbol}失败",
+            "StakingBondExtra": "无法绑定额外的{amount} {symbol}",
+            "StakingUnbond": "无法解除绑定{amount} {symbol}",
+            "StakingRebond": "重新绑定{amount} {symbol}失败",
+            "StakingNominate": "未能提名验证人",
+            "StakingWithdrawUnbonded": "提现{amount} {symbol}失败",
+            "StakingPayout": "奖励发放失败",
+            "StakingChill": "未能冷却",
+            "StakingSetController": "无法设置控制器{address}",
+            "StakingSetPayee": "无法设置收款人{address}",
+            "OrderBookPlaceLimitOrder": "未能以{price} } {symbol2}下达{amount} {symbol}限价单",
+            "OrderBookCancelLimitOrders": "取消限价单失败",
+            "OrderBookCancelLimitOrder": "取消限价单失败",
+            "Burn": "刻录{amount} {symbol}失败",
+            "Mint": "无法将{amount} {symbol}铸造到{address}"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
@@ -83,7 +115,23 @@
         "DemeterFarmingGetRewards": "申领奖励",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} 转账"
+        "SwapTransferBatch": "{ADAR} 转账",
+        "StakingBondAndNominate": "债券和提名",
+        "StakingBond": "绑定",
+        "StakingBondExtra": "邦德额外",
+        "StakingUnbond": "解绑",
+        "StakingRebond": "重新结合",
+        "StakingNominate": "提名",
+        "StakingWithdrawUnbonded": "非保税提款",
+        "StakingPayout": "支付奖励",
+        "StakingChill": "寒意",
+        "StakingSetController": "设置控制器",
+        "StakingSetPayee": "设置收款人",
+        "OrderBookPlaceLimitOrder": "下订单",
+        "OrderBookCancelLimitOrder": "取消订单",
+        "OrderBookCancelLimitOrders": "取消订单",
+        "Burn": "烧伤",
+        "Mint": "薄荷"
     },
     "polkadotjs": {
         "noExtensions": "没有找到 {PolkadotJs} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -167,7 +215,7 @@
         "send": "@:sendText",
         "receive": "@:account.copy",
         "liquidity": "增加流动性",
-        "bridge": "转接桥",
+        "bridge": "桥",
         "copy": "复制资产 ID",
         "successCopy": "{symbol}资产 ID 被复制到剪贴板",
         "copied": "已复制！",
@@ -306,7 +354,9 @@
         "referrer": "推荐人",
         "referral": "推荐",
         "adarTxDetailsTitle": "交易详情",
-        "comment": "评论"
+        "comment": "评论",
+        "price": "价格",
+        "side": "边"
     },
     "appName": "{AppName}",
     "changeNetworkText": "更改钱包中的网络",
@@ -316,7 +366,7 @@
     "connectedText": "已连接",
     "connectWalletTextTooltip": "用{PolkadotJs}连接到{Sora}网络",
     "selectNodeText": "选择网络节点",
-    "bridgeText": "转接桥",
+    "bridgeText": "桥",
     "disclaimer": "{disclaimerPrefix} 本网站由{Sora} 社区维护。在继续使用本网站之前，请查看{polkaswapFaqLink} 和文档，其中包括有关 {AppName} 工作原理的详细说明，以及 {memorandumLink} 和 {privacyLink}。这些文档对于安全和积极的用户体验至关重要。通过使用 {AppName}，您承认您已阅读并理解这些文件。您还承认以下内容：1) 您全权负责遵守在您的法律管辖范围内可能适用于您对 {AppName} 的特定使用的所有法律； 2）您对{AppName}当前版本为alpha版本的理解：尚未经过全面测试，部分功能可能无法按设计执行； 3) 您理解并自愿接受使用 {AppName} 所涉及的风险，包括但不限于丢失代币的风险。再一次提醒，在没有阅读{polkaswapFaqLink}、{memorandumLink} 和{privacyLink}之前，请不要继续！",
     "poweredBy": "启动于",
     "confirmTransactionText": "确认交易",
@@ -344,10 +394,13 @@
         "Explore\/Pools": "流动池",
         "Explore\/Staking": "质押",
         "Explore\/Farming": "农耕",
-        "Staking": "质押"
+        "Staking": "质押",
+        "OrderBook": "贸易",
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
-        "Swap": "交换",
+        "Swap": "兑换",
         "Pool": "流动池",
         "Bridge": "@:bridgeText",
         "Farming": "农耕",
@@ -358,7 +411,9 @@
         "CreatePair": "创建流动性对",
         "StakingContainer": "质押",
         "Explore\/Container": "探索",
-        "SoraCard": "{Sora}卡"
+        "SoraCard": "{Sora}卡",
+        "OrderBook": "贸易",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "推特",
@@ -487,7 +542,7 @@
     },
     "swap": {
         "estimated": "估计的",
-        "slippageTolerance": "滑点公差",
+        "slippageTolerance": "滑点容忍度",
         "minReceived": "最低可接收数量",
         "maxSold": "最大可卖数量",
         "minReceivedTooltip": "如果在确认之前有一个较大而不利的价格变动，您的交易将被取消。",
@@ -517,7 +572,7 @@
         "strategicBonusApy": "战略奖励年化收益率"
     },
     "bridge": {
-        "title": "转接桥",
+        "title": "桥",
         "info": "在{Sora}和{Ethereum}网络之间转换代币。",
         "balance": "余额",
         "next": "下一个",
@@ -534,7 +589,7 @@
         "copy": "复制网络地址",
         "soraAddress": "{Sora} 地址",
         "ethereumAddress": "{Ethereum} 地址",
-        "limitMessage": "目前，有一个{type} {amount} {symbol}用于桥接，以确保 {Sora} 网络的稳定性和安全性。我们感谢您的理解。",
+        "limitMessage": "目前，为了确保{Sora}网络的稳定性和安全性，跨链桥转账的{type}金额为{amount} {symbol}。感谢您的理解。",
         "externalTransferFee": "{network} {XCM}费用",
         "externalTransferFeeTooltip": "当您向{network}网络发送桥接交易时，将从您传输的金额中收取少量费用"
     },
@@ -675,7 +730,7 @@
         "marketAlgorithmTooltip": {
             "main": " - 在一级市场 (TBC)、二级市场 (XYK) 或组合智能算法之间进行选择，以保证任何给定交易的最佳价格。"
         },
-        "slippageTolerance": "滑点公差",
+        "slippageTolerance": "滑点容忍度",
         "slippageToleranceHint": "如果价格的不利变化超过此百分比，您的交易将被取消。",
         "slippageToleranceValidation": {
             "warning": "您的交易可能会失败",
@@ -759,7 +814,8 @@
             "checkExtension": "{name}扩展很忙，请检查它",
             "extensionLogin": "请登录到您的{name}扩展",
             "installExtension": "未找到{name}扩展名。请安装它！ \n\n已经安装了扩展？请重新加载页面",
-            "reloadPage": "重新加载页面"
+            "reloadPage": "重新加载页面",
+            "notAvailable": "{name}不可用。"
         }
     },
     "selectLanguageDialog": {
@@ -956,9 +1012,6 @@
         "results": "结果",
         "rewards": "{symbol}奖励"
     },
-    "staking": {
-        "title": "质押"
-    },
     "historyErrorMessages": {
         "generalError": "出问题了",
         "balances": {
@@ -1093,10 +1146,10 @@
     "tooltips": {
         "roi": "{ROI}代表投资回报率。它的计算方法是将投资赚取的利润除以该投资的成本（以等值百分比表示）。",
         "tvl": "{TVL}代表总锁定价值。它表示以美元等值计算的在池中锁定的代币。",
-        "volume": "交易量是指在特定时间段内在网络上交易或交换的资产总量。交易量是衡量网络流动性和整体活动的重要指标。",
+        "volume": "成交量是指在特定时间段内在网络上交易或兑换的资产总量。成交量是衡量网络流动性和整体活动的重要指标。",
         "fees": "{Sora}区块链上的费用是指在网络上执行交易所产生的费用。这些费用以{Sora}网络的原生加密货币 XOR 支付。费用金额取决于正在执行的交易的复杂性和规模",
         "supply": "代币供应量是指已创建并在网络上流通的代币总数。代币供应量可能会根据网络上质押、销毁或转移的代币数量而波动。",
-        "transactions": "交易是指在网络上发送或接收数字资产的过程，包括流动性操作，以及掉期。",
+        "transactions": "交易是指在网络上发送或接收数字资产的过程，包括流动性操作和兑换。",
         "accounts": "帐户是在网络上保存用户资产的数字地址。每个帐户都与一个唯一的公共地址和一个私钥相关联，允许用户访问和管理他们的资产。",
         "bridgeTransactions": "{from} to {to} bridge 是指使用网桥在{from}和{to}网络之间转移资产的过程。该桥允许两个网络的互操作性，使用户能够在它们之间无缝移动资产。",
         "velocity": "Token velocity 是代币在一个时期（月）内平均更换账户的次数。它表明交易活动和流动性的水平。"
@@ -1233,5 +1286,274 @@
     "exceededAmountText": "超出{amount}",
     "multipleRecipients": "多个接收方",
     "disconnectWalletText": "断开连接",
-    "connectEthereumWalletText": "连接{Ethereum}钱包"
+    "connectEthereumWalletText": "连接{Ethereum}钱包",
+    "soraStaking": {
+        "dropdownMenu": {
+            "pendingRewards": "待奖励",
+            "controllerAccount": "控制者账户"
+        },
+        "actions": {
+            "claim": "领取奖励",
+            "remove": "移除桩",
+            "more": "质押更多",
+            "confirm": "确认质押",
+            "withdraw": "提现"
+        },
+        "overview": {
+            "title": "{Sora}质押",
+            "description": "在 {Sora} 网络上质押 {XOR} 代币作为提名人，以验证交易并获得 {VAL} 代币奖励。"
+        },
+        "newStake": {
+            "title": "开始质押",
+            "minStakeWarning": "获得奖励的最低赌注是{min} {symbol}"
+        },
+        "validators": {
+            "save": "保存更改",
+            "selected": "{selected} \/ {total}个已选",
+            "recommended": "推荐验证器",
+            "change": "更改验证器",
+            "select": "选择验证器",
+            "next": "下一个",
+            "alreadyNominated": "选定的验证者已被提名",
+            "tooManyValidators": "选择的验证器太多 ( {Max} {max} )"
+        },
+        "validatorsList": {
+            "search": "搜索...",
+            "name": "名称",
+            "noNominatedValidators": "您没有任何指定的验证人",
+            "noValidators": "没有满足指定过滤器的验证器",
+            "commission": "委员会",
+            "commissionTooltip": "佣金是指验证者在质押过程中为其提供的服务收取的费用。该费用以百分比表示，在分配前从提名人获得的质押奖励中扣除。需要注意的是，验证者可以随时调整佣金率",
+            "return": "返回"
+        },
+        "info": {
+            "unstaking": "取消质押",
+            "stakingBalance": "质押余额",
+            "rewarded": "奖励",
+            "totalLiquidityStaked": "质押的总流动性",
+            "rewardToken": "奖励代币",
+            "unstakingPeriod": "质押期限",
+            "minimumStake": "最低投注额",
+            "nominators": "提名人",
+            "validators": "验证者",
+            "selectedValidators": "选定的验证者"
+        },
+        "validatorsFilterDialog": {
+            "title": "过滤器",
+            "save": "保存过滤器",
+            "reset": "重置全部",
+            "filters": {
+                "hasIdentity": {
+                    "name": "链上身份",
+                    "description": "至少一名身份联系人与该账户相关联"
+                },
+                "notSlashed": {
+                    "name": "没有被砍掉",
+                    "description": "未因不当行为或违反协议而遭受任何处罚或质押资金减少。"
+                },
+                "notOversubscribed": {
+                    "name": "未超额认购",
+                    "description": "账户在分配限额内，避免了 {Polkadot} 质押的超额认购处罚。"
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "每个身份最多有 2 个验证者",
+                    "description": "每个身份最多有两个验证者，以促进权力下放并防止权力集中。"
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "edit": "编辑我的验证器"
+            },
+            "tabs": {
+                "user": "您的验证者",
+                "all": "所有验证者"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "注意力",
+            "description": [
+                "算法验证者建议不构成财务咨询或建议。质押是一项高风险活动，算法验证者的建议并不一定能减轻这种风险。",
+                "算法建议的验证器仍然可能被削减。算法建议的验证者还可以在被建议和\/或选择之后随时改变其参数（例如，佣金率等）。",
+                "您可能会因为这些或其他原因而失去代币或奖励。在进行尽职调查并仔细考虑所涉及的风险后，仅可以自行决定质押代币并使用验证者的建议。"
+            ],
+            "confirm": "是的，我了解风险"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "没有待处理的奖励",
+            "information": "验证者每 2-5 天支付一次奖励。但是，您可以自行支付，特别是当奖励即将到期时，但您需要支付费用。",
+            "title": "待定奖励",
+            "noSelectedRewards": "选择奖励",
+            "payout": "支付"
+        },
+        "selectValidatorsMode": {
+            "title": "与算法建议的验证者进行质押",
+            "description": "{Sora} 网络算法根据以下标准选择了推荐的验证者列表：",
+            "criteria": [
+                "最赚钱",
+                "未超额认购",
+                "拥有链上身份",
+                "没有被砍掉",
+                "每个身份最多有 2 个验证者"
+            ],
+            "confirm": {
+                "suggested": "与建议的股份",
+                "manual": "我会自己选择验证者"
+            }
+        },
+        "claimRewardsDialog": {
+            "title": "领取奖励",
+            "checkRewards": "检查每个时代和验证者的奖励",
+            "rewardsDestination": "奖励目标地址"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "可抽出式",
+            "beingWithdrawn": "被撤回",
+            "seeAll": "查看全部",
+            "nextWithdrawal": "下次提款",
+            "countdownLeft": "还剩"
+        },
+        "stakeDialog": {
+            "toStake": "质押",
+            "toRemove": "去除"
+        },
+        "withdrawDialog": {
+            "title": "提取未抵押的资金",
+            "showAllWithdraws": "显示所有提款"
+        },
+        "allWithdrawsDialog": {
+            "title": "取消质押活动",
+            "information": "一旦您取消质押代币，就有一个强制性的 7 天取消质押期。在此期限之后，您的代币将不会自动返回您的钱包。您必须通过手动提取代币来完成该过程。"
+        }
+    },
+    "collapseText": "崩溃",
+    "expandText": "拓展",
+    "orderBook": {
+        "Buy": "购买{asset}",
+        "Sell": "出售{asset}",
+        "orderBook": "订单簿",
+        "marketTrades": "市场交易",
+        "market": "市场",
+        "limit": "限制",
+        "price": "价格",
+        "total": "全部的",
+        "amount": "数量",
+        "time": "时间",
+        "month": "月",
+        "change": "改变",
+        "cantPlaceOrder": "无法下订单",
+        "enterAmount": "输入金额",
+        "setPrice": "设定价格",
+        "dayVolume": "一维体积",
+        "stop": "书已停止",
+        "tokenPair": "代币对",
+        "book": {
+            "noAsks": "没有打开询问",
+            "noBids": "没有公开投标"
+        },
+        "history": {
+            "tradeHistory": "贸易历史",
+            "orderHistory": "订单历史",
+            "openOrders": "未结订单{value}",
+            "connect": "连接账户开始交易",
+            "cancel": "取消订单{value}",
+            "cancelAll": "全部取消"
+        },
+        "orderTable": {
+            "time": "时间",
+            "pair": "一对",
+            "side": "边",
+            "filled": "填充",
+            "lifetime": "寿命",
+            "noOrders": "没有订单。创建你的第一个！"
+        },
+        "dialog": {
+            "placeMarket": "下市价单",
+            "placeLimit": "下限价单",
+            "askCancel": "您确定要取消所有未结订单吗？",
+            "cancelAll": "是的，全部取消",
+            "buy": "购买{amount} {symbol}",
+            "sell": "卖出{amount} {symbol}",
+            "at": "以{price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "选择交易对",
+            "volume": "体积",
+            "dailyChange": "每日变化",
+            "status": "地位",
+            "total": "{amount} {symbol} 在{amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "积极的",
+            "placeable": "可放置",
+            "cancelable": "可取消",
+            "inactive": "不活跃"
+        },
+        "tooltip": {
+            "limitOrder": "“限价”订单可让您指定您想要购买或出售资产的确切价格。 “限价买入”订单将仅以指定价格或更低价格执行，而“限价卖出”订单将仅以指定价格或更高价格执行。这种控制可确保您支付的费用或售价不会低于您愿意接受的价格。",
+            "marketOrder": "“市价订单”是指以当前最佳价格立即买入或卖出的订单。它不需要设定价格，确保快速执行，但代价是对收到或支付的价格控制较少。当执行的确定性优先于价格控制时，使用这种类型的订单。",
+            "pairsList": "显示加密货币当前买卖订单的实时列表。它可以帮助您了解 SORA 网络和 Polkaswap DEX 上的需求、潜在价格方向和交易量",
+            "bookWidget": "特定资产的实时、不断更新的买入（买入）和卖出（卖出）订单记录，按价格水平组织。订单簿显示市场深度，包括以不同价格提供的资产数量。交易者利用这种详细的视图来衡量市场情绪，确定潜在的阻力位和支撑位，并根据现有的需求和供应预测价格变动",
+            "marketWidget": "该小部件显示市场中已执行交易的实时流，提供有关交易量、近期活动和当前市场趋势的信息。通过观察实际交易的时间、价格和规模，交易者可以深入了解市场动态和情绪，帮助他们发现交易机会并做出明智的决策",
+            "txDetails": {
+                "orderType": "“买入”订单将仅以指定价格或更低价格执行，而“卖出”订单将仅以指定价格或更高价格执行。这种控制可确保您支付的费用或售价不会低于您愿意接受的价格。",
+                "expiryDate": "“到期日”是您的订单执行的最后期限。如果在此日期之前市场未达到您指定的价格，订单将自动取消。如果市场状况与您的交易偏好不符，您不必永远等待。",
+                "amount": "“金额”是指您想要在订单中购买或出售的资产总数。指定很重要，因为它决定了交易规模，影响买入订单的总成本或卖出订单的收入。",
+                "limit": "“限价”是您为限价单设置的精确价格。仅当资产的市场价格达到您的限价时才会执行交易，确保您不会以高于此指定值的价格买入或以低于此指定值的价格卖出。",
+                "locked": "“锁定”显示订单正在进行时要持有的资产数量。"
+            },
+            "bookStatus": {
+                "active": "启用完整的交易功能。您可以下新订单或取消现有订单。",
+                "placeable": "功能有限。您可以下新订单并取消现有订单，但某些功能可能不可用。",
+                "cancelable": "您只能取消现有订单。目前已禁用新订单放置。",
+                "inactive": "目前所有交易活动均已停止。目前无法下达或取消订单。"
+            }
+        },
+        "txDetails": {
+            "orderType": "订单类型",
+            "limitPrice": "限价",
+            "expiryDate": "到期日"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "输入的价格太精确，无法计算",
+                "reading": "超出精度：输入的金额\/价格小数位数过多。请输入小数位数较少的值"
+            },
+            "marketNotAvailable": {
+                "reason": "没有足够的订单来完成此订单",
+                "reading": "市价订单限制：没有足够的订单来履行此市价限价订单。请调整您的订单大小或等待下更多订单"
+            },
+            "exceedsSpread": {
+                "reason": "价格超出点差",
+                "reading": "价格超出：市场的买价或卖价超出其卖价\/买价"
+            },
+            "spotLimit": {
+                "reason": "交易面已满",
+                "reading": "价格范围上限：每个订单方仅限 1024 个唯一价格点。请在现有范围内选择价格或等待有空位"
+            },
+            "accountLimit": {
+                "reason": "正在进行的订单过多",
+                "reading": "达到限额：每个账户限价单数量为1024个。请等待您的部分订单完成"
+            },
+            "singlePriceLimit": {
+                "reason": "此价格的订单过多",
+                "reading": "已达限额：每个仓位限价单数量为1024个。请等待部分订单完成"
+            },
+            "outOfBounds": {
+                "reading": "超出区块链范围：您输入的金额超出了区块链允许的范围。分钟： {min} ；最大值： {max}",
+                "reason": "金额不符合区块链范围"
+            },
+            "multipleOf": {
+                "reading": "要处理您的订单，请输入{value}倍数的价格",
+                "reason": "输入的价格过于具体"
+            }
+        },
+        "orderStatus": {
+            "active": "积极的",
+            "canceled": "取消",
+            "expired": "已到期",
+            "filled": "填充"
+        }
+    }
 }

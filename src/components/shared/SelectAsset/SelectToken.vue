@@ -69,7 +69,7 @@ import { getter, state, action } from '@/store/decorators';
 import { syntheticAssetRegexp } from '@/utils/regexp';
 
 import type { Asset, AccountAsset, Whitelist } from '@sora-substrate/util/build/assets/types';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 enum Tabs {
   Assets = 'assets',
@@ -206,7 +206,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   private get mainLPSources(): Array<Asset> {
     const mainSourceAddresses = api.dex.poolBaseAssetsIds;
 
-    return this.whitelistAssets.filter((asset) => mainSourceAddresses.includes(asset.address));
+    return this.assets.filter((asset) => mainSourceAddresses.includes(asset.address));
   }
 
   async handleAddAsset(): Promise<void> {

@@ -199,10 +199,6 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
     display: none;
   }
 
-  .el-form--actions & {
-    margin-top: $inner-spacing-mini;
-  }
-
   .el-collapse.neumorphic .el-icon-arrow-right {
     transition: transform 0.3s;
 

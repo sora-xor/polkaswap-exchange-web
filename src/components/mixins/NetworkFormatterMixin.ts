@@ -1,6 +1,6 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts';
-import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -71,14 +71,18 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
       case EvmNetworkId.EthereumClassicTestnetMordor:
         return 'ethereum-classic';
       // sub
-      case SubNetwork.Polkadot:
+      case SubNetworkId.Polkadot:
         return 'polkadot';
-      case SubNetwork.Kusama:
+      case SubNetworkId.PolkadotSora:
+        return 'sora-polkadot';
+      case SubNetworkId.Kusama:
         return 'kusama';
-      case SubNetwork.Rococo:
+      case SubNetworkId.Rococo:
         return 'rococo';
-      case SubNetwork.KusamaKarura:
-        return 'karura';
+      case SubNetworkId.RococoSora:
+        return 'sora-rococo';
+      case SubNetworkId.KusamaSora:
+        return 'sora-kusama';
       default:
         return 'ethereum';
     }

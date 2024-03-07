@@ -5,7 +5,7 @@
         <s-button
           type="action"
           icon="arrows-swap-90-24"
-          :disabled="historyLoading"
+          :disabled="networkHistoryLoading"
           :tooltip="t('bridgeHistory.restoreHistory')"
           @click="updateExternalHistory(true)"
         />
@@ -235,6 +235,7 @@ export default class BridgeTransactionsHistory extends Mixins(
       case WALLET_CONSTS.PaginationButton.Last:
         current = this.lastPage;
         this.isLtrDirection = false;
+        break;
     }
 
     this.currentPage = current;
@@ -312,7 +313,7 @@ $separator-margin: calc(var(--s-basic-spacing) / 2);
   }
   &-empty {
     text-align: center;
-    @include empty-search;
+    color: var(--s-color-base-content-tertiary);
   }
 }
 

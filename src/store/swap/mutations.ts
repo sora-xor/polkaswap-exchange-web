@@ -6,7 +6,7 @@ import { settingsStorage } from '@/utils/storage';
 import { initialState } from './state';
 
 import type { SwapState } from './types';
-import type { LPRewardsInfo } from '@sora-substrate/liquidity-proxy/build/types';
+import type { LPRewardsInfo, Distribution } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { SwapQuoteData } from '@sora-substrate/util/build/swap/types';
@@ -58,11 +58,17 @@ const mutations = defineMutations<SwapState>()({
   setRoute(state, route: string[]): void {
     state.route = Object.freeze([...route]);
   },
+  setDistribution(state, distribution: Distribution[][]): void {
+    state.distribution = Object.freeze([...distribution]);
+  },
   setSubscriptionPayload(state, payload?: SwapQuoteData): void {
     const { quote = null, isAvailable = false, liquiditySources = [] } = payload ?? {};
     state.swapQuote = quote;
     state.isAvailable = isAvailable;
     state.liquiditySources = liquiditySources;
+  },
+  setLiquiditySource(state, liquiditySource): void {
+    state.liquiditySources = [liquiditySource];
   },
   selectDexId(state, dexId: number) {
     state.selectedDexId = dexId;

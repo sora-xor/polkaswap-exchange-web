@@ -180,7 +180,7 @@ export default class SoraCardKYC extends Mixins(TranslationMixin, mixins.Loading
   color: var(--s-color-base-content-secondary);
   text-align: center;
   margin-top: $basic-spacing;
-  font-size: $basic-spacing;
+  font-size: var(--s-font-size-medium);
   width: 25%;
   line-height: var(--s-size-mini);
 }

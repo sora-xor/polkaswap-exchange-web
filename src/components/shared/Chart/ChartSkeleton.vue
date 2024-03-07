@@ -23,7 +23,7 @@
               <template v-if="isError">{{ t('swap.errorFetching') }}</template>
               <template v-else>{{ t('noDataText') }}</template>
             </p>
-            <s-button v-if="isError" class="el-button--select-token" type="secondary" size="small" @click="handleRetry">
+            <s-button v-if="isError" type="secondary" size="small" @click="handleRetry">
               {{ t('retryText') }}
             </s-button>
           </div>
@@ -35,8 +35,8 @@
 </template>
 
 <script lang="ts">
-import { SSkeleton, SSkeletonItem } from '@soramitsu/soramitsu-js-ui/lib/components/Skeleton';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import { SSkeleton, SSkeletonItem } from '@soramitsu-ui/ui-vue2/lib/components/Skeleton';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 @Component({
@@ -69,10 +69,10 @@ $skeleton-label-width: 34px;
 
 .charts-container {
   .chart {
-    height: 283px;
+    height: 293px;
 
-    @include large-desktop {
-      height: 323px;
+    @include tablet {
+      height: 336px;
     }
 
     &-price {

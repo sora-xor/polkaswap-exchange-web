@@ -9,6 +9,7 @@ import bridge from './bridge';
 import dashboard from './dashboard';
 import demeterFarming from './demeterFarming';
 import moonpay from './moonpay';
+import orderBook from './orderBook';
 import pool from './pool';
 import referrals from './referrals';
 import removeLiquidity from './removeLiquidity';
@@ -16,6 +17,7 @@ import rewards from './rewards';
 import router from './router';
 import settings from './settings';
 import soraCard from './soraCard';
+import staking from './staking';
 import swap from './swap';
 import web3 from './web3';
 
@@ -37,8 +39,10 @@ const modules = {
   addLiquidity,
   removeLiquidity,
   rewards,
+  staking,
   demeterFarming,
   soraCard,
+  orderBook,
   dashboard,
 };
 

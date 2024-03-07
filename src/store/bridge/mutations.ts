@@ -3,6 +3,7 @@ import omit from 'lodash/fp/omit';
 
 import type { BridgeState, FocusedField } from './types';
 import type { FPNumber, IBridgeTransaction, CodecString } from '@sora-substrate/util';
+import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<BridgeState>()({
@@ -93,13 +94,7 @@ const mutations = defineMutations<BridgeState>()({
    * Set bridge transactions from localstorage (ethBridgeApi or evmBridgeApi)
    */
   setInternalHistory(state, history: Record<string, IBridgeTransaction>): void {
-    state.historyInternal = { ...history };
-  },
-  /**
-   * Set bridge transactions from external sources (f.e. network or etherscan)
-   */
-  setExternalHistory(state, history: Record<string, IBridgeTransaction>): void {
-    state.historyExternal = { ...history };
+    state.historyInternal = Object.freeze({ ...history });
   },
 
   setHistoryPage(state, historyPage?: number): void {
@@ -127,9 +122,13 @@ const mutations = defineMutations<BridgeState>()({
     state.externalBlockNumber = blockNumber;
   },
 
-  setHistoryLoading(state, value: boolean): void {
-    state.historyLoading = value;
+  setNetworkHistoryLoading(state, networkId: BridgeNetworkId): void {
+    state.historyLoading = { ...state.historyLoading, [networkId]: true };
   },
+  resetNetworkHistoryLoading(state, networkId: BridgeNetworkId): void {
+    state.historyLoading = omit([networkId], state.historyLoading);
+  },
+
   setNotificationData(state, tx: Nullable<IBridgeTransaction> = null) {
     state.notificationData = tx;
   },

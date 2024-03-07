@@ -1,10 +1,9 @@
-import { XSTUSD, XOR, XST } from '@sora-substrate/util/build/assets/consts';
+import { XSTUSD, XOR } from '@sora-substrate/util/build/assets/consts';
 import { WALLET_TYPES, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Vue } from 'vue-property-decorator';
 
 import { PageNames } from '@/consts';
 import { getter } from '@/store/decorators';
-import { syntheticAssetRegexp } from '@/utils/regexp';
 
 import type { AccountAsset, Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
 import type { NavigationGuardNext, Route } from 'vue-router';
@@ -15,7 +14,7 @@ const MAX_SYMBOL_LENGTH = 7;
 export default class SelectedTokenRouteMixin extends Vue {
   @getter.wallet.account.whitelist private whitelist!: Whitelist;
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
-  @getter.assets.assetsDataTable private assetsDataTable!: Record<string, Asset>;
+  @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
 
   private wasRedirected = false;
 
@@ -37,6 +36,10 @@ export default class SelectedTokenRouteMixin extends Vue {
 
     const bothArePresented = !!(firstAddress && secondAddress);
     switch (this.$route.name) {
+      case PageNames.OrderBook:
+        // Second asset address should be used as quote for Orderbook /trade/base/quote
+        // only XOR for now, like /trade/xst/xor
+        return bothArePresented && secondAddress === XOR.address;
       case PageNames.RemoveLiquidity:
         return bothArePresented && api.dex.baseAssetsIds.includes(firstAddress);
       case PageNames.AddLiquidity: {
@@ -76,6 +79,7 @@ export default class SelectedTokenRouteMixin extends Vue {
    * (b) `false` - when assets are equal;
    * (c) SWAP: `true` when both parameters are parsed as asset ids;
    * (d) ADD/REMOVE LIQUIDITY: `true` when both parameters are parsed as asset ids and first is from baseAssetIds;
+   * (e) ORDERBOOK: `true` is second === correct quote asset
    */
   get isValidRoute(): boolean {
     const { first, second } = this.$route.params;
@@ -85,7 +89,7 @@ export default class SelectedTokenRouteMixin extends Vue {
   }
 
   /**
-   * Sould be used in Add liquidity & Swap during mount
+   * Should be used in Add liquidity & Swap during mount
    *
    * Returns is valid state for routing life cycle
    */

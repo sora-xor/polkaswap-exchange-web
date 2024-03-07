@@ -44,7 +44,7 @@
         </template>
       </s-table-column>
       <!-- Price -->
-      <s-table-column v-if="pricesAvailable" key="price" width="130" header-align="left" align="left">
+      <s-table-column key="price" width="130" header-align="left" align="left">
         <template #header>
           <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">Price</span>
@@ -163,17 +163,15 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { components } from '@soramitsu/soraneo-wallet-web';
+import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components } from '@/consts';
+import { Components, ZeroStringValue } from '@/consts';
 import { fetchTokensData } from '@/indexer/queries/assets';
 import type { TokenData } from '@/indexer/queries/assets';
 import { lazyComponent } from '@/router';
-import { getter } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, sortAssets } from '@/utils';
 import { syntheticAssetRegexp } from '@/utils/regexp';
@@ -184,18 +182,18 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
 type TableItem = {
   price: number;
   priceFormatted: string;
-  priceChangeDay: number;
-  priceChangeDayFP: FPNumber;
-  priceChangeWeek: number;
-  priceChangeWeekFP: FPNumber;
-  volumeDay: number;
-  volumeDayFormatted: AmountWithSuffix;
-  tvl: number;
-  tvlFormatted: AmountWithSuffix;
+  priceChangeDay?: number;
+  priceChangeDayFP?: FPNumber;
+  priceChangeWeek?: number;
+  priceChangeWeekFP?: FPNumber;
+  volumeDay?: number;
+  volumeDayFormatted?: AmountWithSuffix;
+  tvl?: number;
+  tvlFormatted?: AmountWithSuffix;
   // mcap: number;
   // mcapFormatted: AmountWithSuffix;
-  velocity: number;
-  velocityFormatted: string;
+  velocity?: number;
+  velocityFormatted?: string;
 } & Asset;
 
 const storageKey = 'exploreSyntheticTokens';
@@ -211,9 +209,7 @@ const storageKey = 'exploreSyntheticTokens';
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
-  @getter.assets.whitelistAssets private whitelistAssets!: Array<Asset>;
-
+export default class Tokens extends Mixins(ExplorePageMixin) {
   private isSynths = storage.get(storageKey) ? JSON.parse(storage.get(storageKey)) : false;
 
   get isSynthsOnly(): boolean {
@@ -225,17 +221,26 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
     this.isSynths = value;
   }
 
-  tokensData: Record<string, TokenData> = {};
-  // override ExplorePageMixin
-  order = SortDirection.DESC;
-  property = 'tvl';
+  private tokensData: Record<string, TokenData> = {};
 
   get hasTokensData(): boolean {
     return Object.keys(this.tokensData).length !== 0;
   }
 
   get items(): TableItem[] {
-    const items = Object.entries(this.tokensData).reduce<TableItem[]>((buffer, [address, tokenData]) => {
+    if (!this.hasTokensData) {
+      return this.allowedAssets.map((asset) => {
+        const price = FPNumber.fromCodecValue(this.getAssetFiatPrice(asset) ?? ZeroStringValue);
+
+        return {
+          ...asset,
+          price: price.toNumber(),
+          priceFormatted: price.toLocaleString(7),
+        };
+      });
+    }
+
+    return Object.entries(this.tokensData).reduce<TableItem[]>((buffer, [address, tokenData]) => {
       const asset = this.getAsset(address);
 
       if (!asset) return buffer;
@@ -243,7 +248,7 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
       buffer.push({
         ...asset,
         price: tokenData.priceUSD.toNumber(),
-        priceFormatted: new FPNumber(tokenData.priceUSD.toFixed(7)).toLocaleString(),
+        priceFormatted: tokenData.priceUSD.toLocaleString(7),
         priceChangeDay: tokenData.priceChangeDay.toNumber(),
         priceChangeDayFP: tokenData.priceChangeDay,
         priceChangeWeek: tokenData.priceChangeWeek.toNumber(),
@@ -258,25 +263,23 @@ export default class Tokens extends Mixins(ExplorePageMixin, TranslationMixin) {
 
       return buffer;
     }, []);
-
-    const defaultSorted = [...items].sort((a, b) => sortAssets(a, b));
-
-    return defaultSorted;
   }
 
-  get preparedItems(): TableItem[] {
-    return this.isSynthsOnly ? this.items.filter((item) => this.isSynthetic(item.address)) : this.items;
+  get defaultSorted(): TableItem[] {
+    return [...this.items].sort((a, b) => sortAssets(a, b));
   }
 
-  isSynthetic(address: string): boolean {
-    return syntheticAssetRegexp.test(address);
+  get prefilteredItems(): TableItem[] {
+    return this.isSynthsOnly
+      ? this.defaultSorted.filter((item) => syntheticAssetRegexp.test(item.address))
+      : this.defaultSorted;
   }
 
   // ExplorePageMixin method implementation
   async updateExploreData(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.tokensData = Object.freeze(await fetchTokensData(this.whitelistAssets));
+        this.tokensData = Object.freeze(await fetchTokensData(this.allowedAssets));
       });
     });
   }

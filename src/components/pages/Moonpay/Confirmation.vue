@@ -33,7 +33,7 @@ import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
@@ -45,7 +45,6 @@ export default class MoonpayConfirmation extends Mixins(MoonpayBridgeInitMixin) 
   @state.moonpay.confirmationVisibility private confirmationVisibility!: boolean;
 
   @getter.libraryTheme libraryTheme!: Theme;
-  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   get visibility(): boolean {
     return this.confirmationVisibility;

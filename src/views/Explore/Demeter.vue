@@ -71,17 +71,19 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <span class="explore-table__accent">{{ row.aprFormatted }}</span>
-          <calculator-button
-            @click.native="
-              showPoolCalculator({
-                baseAsset: row.baseAsset.address,
-                poolAsset: row.poolAsset.address,
-                rewardAsset: row.rewardAsset.address,
-                liquidity: row.liquidity,
-              })
-            "
-          />
+          <data-row-skeleton :loading="!hasAprColumnData" rect circle>
+            <span class="explore-table__accent">{{ row.aprFormatted }}</span>
+            <calculator-button
+              @click.native="
+                showPoolCalculator({
+                  baseAsset: row.baseAsset.address,
+                  poolAsset: row.poolAsset.address,
+                  rewardAsset: row.rewardAsset.address,
+                  liquidity: row.liquidity,
+                })
+              "
+            />
+          </data-row-skeleton>
         </template>
       </s-table-column>
       <!-- Fee -->
@@ -107,7 +109,7 @@
                 value-can-be-hidden
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
-                class="explore-table-item-price explore-table-item-amount"
+                class="explore-table-item-token"
               >
               </formatted-amount>
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
@@ -126,14 +128,16 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <formatted-amount
-            is-fiat-value
-            :font-weight-rate="FontWeightRate.MEDIUM"
-            :value="row.tvlFormatted.amount"
-            class="explore-table-item-price explore-table-item-amount"
-          >
-            {{ row.tvlFormatted.suffix }}
-          </formatted-amount>
+          <data-row-skeleton :loading="!pricesAvailable" rect>
+            <formatted-amount
+              is-fiat-value
+              :font-weight-rate="FontWeightRate.MEDIUM"
+              :value="row.tvlFormatted.amount"
+              class="explore-table-item-price explore-table-item-amount"
+            >
+              {{ row.tvlFormatted.suffix }}
+            </formatted-amount>
+          </data-row-skeleton>
         </template>
       </s-table-column>
     </s-table>
@@ -154,17 +158,16 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { api, components } from '@soramitsu/soraneo-wallet-web';
+import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
-import { DemeterComponents } from '@/modules/demeterFarming/consts';
-import DemeterBasePageMixin from '@/modules/demeterFarming/mixins/BasePageMixin';
-import { demeterLazyComponent } from '@/modules/demeterFarming/router';
-import type { DemeterPoolDerivedData } from '@/modules/demeterFarming/types';
+import { DemeterStakingComponents } from '@/modules/staking/demeter/consts';
+import DemeterBasePageMixin from '@/modules/staking/demeter/mixins/BasePageMixin';
+import type { DemeterPoolDerivedData } from '@/modules/staking/demeter/types';
+import { demeterStakingLazyComponent } from '@/modules/staking/router';
 import { lazyComponent } from '@/router';
 import type { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils';
@@ -174,7 +177,7 @@ import type { DemeterPool } from '@sora-substrate/util/build/demeterFarming/type
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
 
 type PoolData = {
-  price: FPNumber;
+  priceCoefficient: FPNumber;
   supply?: FPNumber;
   reserves?: FPNumber[];
   address?: string;
@@ -204,23 +207,23 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
 
 @Component({
   components: {
-    CalculatorButton: demeterLazyComponent(DemeterComponents.CalculatorButton),
-    CalculatorDialog: demeterLazyComponent(DemeterComponents.CalculatorDialog),
+    CalculatorButton: demeterStakingLazyComponent(DemeterStakingComponents.CalculatorButton),
+    CalculatorDialog: demeterStakingLazyComponent(DemeterStakingComponents.CalculatorDialog),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SortButton: lazyComponent(Components.SortButton),
+    DataRowSkeleton: lazyComponent(Components.DataRowSkeleton),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBasePageMixin, ExplorePageMixin) {
+export default class ExploreDemeter extends Mixins(DemeterBasePageMixin, ExplorePageMixin) {
   @Watch('pools', { deep: true })
   private async updatePoolsData() {
     await this.updateExploreData();
   }
 
   // override ExplorePageMixin
-  order = SortDirection.DESC;
   property = 'apr';
 
   poolsData: Record<string, PoolData> = {};
@@ -229,7 +232,7 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
     return Object.values(this.pools)
       .map((poolMap) => Object.values(poolMap))
       .flat(2)
-      .filter((pool) => !pool.isRemoved) as DemeterPool[];
+      .filter((pool) => !pool.isRemoved);
   }
 
   get selectedDerivedPool(): Nullable<DemeterPoolDerivedData> {
@@ -251,7 +254,9 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
       const accountPool = this.getAccountPool(pool);
       const isAccountItem = !!accountPool && this.isActiveAccountPool(accountPool);
       const poolData = this.poolsData[lpKey(pool.baseAsset, pool.poolAsset)];
-      const poolTokenPrice = poolData?.price ?? FPNumber.ZERO;
+      const poolTokenPriceCoefficient = poolData?.priceCoefficient ?? FPNumber.ZERO;
+      const poolAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(poolAsset) ?? 0);
+      const poolTokenPrice = poolAssetPrice.mul(poolTokenPriceCoefficient);
       const poolBaseReserves = poolData?.reserves?.[0] ?? FPNumber.ZERO;
       const poolTargetReserves = poolData?.reserves?.[1] ?? FPNumber.ZERO;
       const poolSupply = poolData?.supply ?? FPNumber.ZERO;
@@ -330,8 +335,12 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
     return defaultSorted;
   }
 
-  get preparedItems(): TableItem[] {
+  get prefilteredItems(): TableItem[] {
     return this.isAccountItemsOnly ? this.items.filter((item) => item.isAccountItem) : this.items;
+  }
+
+  get hasAprColumnData(): boolean {
+    return this.items.some((item) => item.apr !== 0);
   }
 
   // ExplorePageMixin method implementation
@@ -366,8 +375,6 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
   private async getPoolData(key: string, isFarm: boolean): Promise<Nullable<PoolData>> {
     const [baseAsset, poolAsset] = key.split(';');
 
-    const poolAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice({ address: poolAsset } as Asset) ?? 0);
-
     if (isFarm) {
       const poolInfo = api.poolXyk.getInfo(baseAsset, poolAsset);
 
@@ -380,13 +387,11 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
         FPNumber.fromCodecValue(reserve)
       );
       const poolAssetReserves = reserves[1];
-      const poolTokenPrice = supply.isZero()
-        ? FPNumber.ZERO
-        : poolAssetReserves.mul(poolAssetPrice).mul(new FPNumber(2)).div(supply);
+      const priceCoefficient = supply.isZero() ? FPNumber.ZERO : poolAssetReserves.mul(new FPNumber(2)).div(supply);
 
-      return { price: poolTokenPrice, supply, reserves, address };
+      return { priceCoefficient, supply, reserves, address };
     } else {
-      return { price: poolAssetPrice };
+      return { priceCoefficient: FPNumber.ONE };
     }
   }
 }

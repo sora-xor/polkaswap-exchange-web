@@ -1,11 +1,13 @@
 import { BridgeTxDirection } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
 import type { NetworkData, SubNetworksFees } from '@/types/bridge';
 
+import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+
 export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
-  [SubNetwork.Kusama]: {
-    id: SubNetwork.Kusama,
+  [SubNetworkId.Kusama]: {
+    id: SubNetworkId.Kusama,
     name: 'Kusama',
     nativeCurrency: {
       name: 'KSM',
@@ -16,8 +18,8 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     blockExplorerUrls: [],
     shortName: 'Kusama',
   },
-  [SubNetwork.Polkadot]: {
-    id: SubNetwork.Polkadot,
+  [SubNetworkId.Polkadot]: {
+    id: SubNetworkId.Polkadot,
     name: 'Polkadot',
     nativeCurrency: {
       name: 'DOT',
@@ -28,8 +30,8 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     blockExplorerUrls: [],
     shortName: 'Polkadot',
   },
-  [SubNetwork.Rococo]: {
-    id: SubNetwork.Rococo,
+  [SubNetworkId.Rococo]: {
+    id: SubNetworkId.Rococo,
     name: 'Rococo',
     nativeCurrency: {
       name: 'ROC',
@@ -41,42 +43,60 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     shortName: 'Rococo',
   },
   // SORA Parachains
-  [SubNetwork.RococoSora]: {
-    id: SubNetwork.RococoSora,
-    name: 'SORA Parachain',
+  [SubNetworkId.RococoSora]: {
+    id: SubNetworkId.RococoSora,
+    name: 'SORA Rococo Parachain',
     nativeCurrency: {
       name: 'XOR',
       symbol: 'XOR',
-      decimals: 12,
+      decimals: 18,
     },
     endpointUrls: [],
     blockExplorerUrls: [],
-    shortName: 'SORA Parachain',
+    shortName: 'SORA ROC',
   },
-  [SubNetwork.KusamaSora]: {
-    id: SubNetwork.KusamaSora,
-    name: 'SORA Parachain',
+  [SubNetworkId.KusamaSora]: {
+    id: SubNetworkId.KusamaSora,
+    name: 'SORA Kusama Parachain',
     nativeCurrency: {
       name: 'XOR',
       symbol: 'XOR',
-      decimals: 12,
+      decimals: 18,
     },
     endpointUrls: [],
     blockExplorerUrls: [],
-    shortName: 'SORA Parachain',
+    shortName: 'SORA KSM',
+  },
+  [SubNetworkId.PolkadotSora]: {
+    id: SubNetworkId.PolkadotSora,
+    name: 'SORA Polkadot Parachain',
+    nativeCurrency: {
+      name: 'XOR',
+      symbol: 'XOR',
+      decimals: 18,
+    },
+    endpointUrls: [],
+    blockExplorerUrls: [],
+    shortName: 'SORA DOT',
   },
 };
 
 export const SUB_TRANSFER_FEES: SubNetworksFees = {
-  [SubNetwork.Rococo]: {
+  [SubNetworkId.Rococo]: {
     ROC: {
       [BridgeTxDirection.Outgoing]: '10124190',
       [BridgeTxDirection.Incoming]: '0',
     },
   },
-  [SubNetwork.Kusama]: {
+  [SubNetworkId.Kusama]: {
     KSM: {
       [BridgeTxDirection.Outgoing]: '92003956',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+  },
+  [SubNetworkId.Polkadot]: {
+    DOT: {
+      [BridgeTxDirection.Outgoing]: '21062795',
       [BridgeTxDirection.Incoming]: '0',
     },
   },

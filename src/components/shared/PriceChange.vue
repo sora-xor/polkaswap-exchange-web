@@ -10,6 +10,8 @@ import { FPNumber } from '@sora-substrate/util';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
+import { toPrecision } from '@/utils';
+
 @Component({
   components: {
     FormattedAmount: components.FormattedAmount,
@@ -39,9 +41,9 @@ export default class PriceChange extends Vue {
 
   get formatted(): string {
     const value = this.increased ? this.value : this.value.mul(new FPNumber(-1));
-    const number = value.toFixed(2);
+    const number = toPrecision(value, 2);
 
-    return new FPNumber(number).toLocaleString();
+    return number.toLocaleString();
   }
 }
 </script>
@@ -51,7 +53,7 @@ export default class PriceChange extends Vue {
   display: inline-flex;
   align-items: baseline;
   color: var(--s-color-theme-accent);
-  font-size: var(--s-font-size-medium);
+  font-size: inherit;
   font-weight: 600;
   line-height: var(--s-line-height-medium);
 

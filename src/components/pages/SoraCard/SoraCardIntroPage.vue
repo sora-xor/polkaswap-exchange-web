@@ -1,62 +1,88 @@
 <template>
   <div class="container sora-card">
     <s-image src="card/sora-card.png" lazy fit="cover" draggable="false" class="unselectable sora-card__image" />
-    <div class="sora-card__intro">
-      <h3 class="sora-card__intro-title">{{ t('card.getSoraCardTitle') }}</h3>
-      <span class="sora-card__intro-info">
-        {{ t('card.getSoraCardDesc') }}
-      </span>
-    </div>
-    <div v-if="isLoggedIn" class="sora-card__info">
-      <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
-      <p class="sora-card__info-text">
-        <span class="sora-card__info-text">{{ t('card.reIssuanceFee') }}</span>
-      </p>
-    </div>
-    <div v-if="wasEuroBalanceLoaded && isLoggedIn" class="sora-card__balance-indicator">
-      <div v-if="isEuroBalanceEnough" class="sora-card__info">
-        <div class="sora-card__balance-section">
-          <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
-          <div>
-            <p class="sora-card__info-text">{{ t('card.freeCardIssuance') }}</p>
-            <p class="sora-card__info-text-details sora-card__info-text-details--secondary">
-              {{ t('card.holdSufficientXor') }}
-            </p>
-            <span class="progress-bar progress-bar--complete" />
-            <p class="sora-card__info-text-details">{{ t('card.gettingCardForFree') }}</p>
+
+    <template v-if="maintenance">
+      <div class="sora-card__intro">
+        <h3 class="sora-card__intro-title maintenance">{{ MaintenanceTitle }}</h3>
+      </div>
+      <div class="sora-card__info maintenance-desc">
+        <div class="sora-card__info-text">
+          <h4 class="sora-card__info-text">{{ MaintenanceDesc }}</h4>
+          <div class="maintenance-desc__links">
+            <a :href="MaintenanceStoreLinks.AppStore" target="_blank" rel="nofollow noopener" tabindex="-1">
+              <s-button class="logo logo__app-store">App Store</s-button>
+            </a>
+            <a :href="MaintenanceStoreLinks.GooglePlay" target="_blank" rel="nofollow noopener" tabindex="-1">
+              <s-button class="logo logo__google-play">Google Play</s-button>
+            </a>
           </div>
         </div>
+        <div class="maintenance-desc__mobile">
+          <img src="@/assets/img/mobile/sora-app-left.png?inline" alt="mobile-left" class="left-image" />
+          <img src="@/assets/img/mobile/qr-code.svg?inline" alt="qr-code" class="qr-code" />
+          <img src="@/assets/img/mobile/sora-app-right.png?inline" alt="mobile-right" class="right-image" />
+        </div>
       </div>
-      <balance-indicator v-else />
-    </div>
-    <div class="sora-card__unsupported-countries-disclaimer">
-      {{ t('card.unsupportedCountriesDisclaimer') }}
-      <span class="sora-card__unsupported-countries-disclaimer--link" @click="openList">{{
-        t('card.unsupportedCountriesLink')
-      }}</span>
-    </div>
-    <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
-      <s-button
-        type="primary"
-        class="sora-card__btn s-typography-button--large"
-        :loading="btnLoading"
-        @click="handleClick"
-      >
-        <span class="text"> {{ buttonText }}</span>
-      </s-button>
-    </div>
+    </template>
 
-    <tos-dialog :visible.sync="showListDialog" :title="t('card.unsupportedCountries')" />
+    <template v-else>
+      <div class="sora-card__intro">
+        <h3 class="sora-card__intro-title">{{ t('card.getSoraCardTitle') }}</h3>
+        <span class="sora-card__intro-info">
+          {{ t('card.getSoraCardDesc') }}
+        </span>
+      </div>
+      <div v-if="isLoggedIn" class="sora-card__info">
+        <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
+        <p class="sora-card__info-text">
+          <span class="sora-card__info-text">{{ t('card.reIssuanceFee') }}</span>
+        </p>
+      </div>
+      <div v-if="wasEuroBalanceLoaded && isLoggedIn" class="sora-card__balance-indicator">
+        <div v-if="isEuroBalanceEnough" class="sora-card__info">
+          <div class="sora-card__balance-section">
+            <s-icon class="sora-card__icon--checked" name="basic-check-mark-24" size="16px" />
+            <div>
+              <p class="sora-card__info-text">{{ t('card.freeCardIssuance') }}</p>
+              <p class="sora-card__info-text-details sora-card__info-text-details--secondary">
+                {{ t('card.holdSufficientXor') }}
+              </p>
+              <span class="progress-bar progress-bar--complete" />
+              <p class="sora-card__info-text-details">{{ t('card.gettingCardForFree') }}</p>
+            </div>
+          </div>
+        </div>
+        <balance-indicator v-else />
+      </div>
+      <div class="sora-card__unsupported-countries-disclaimer">
+        {{ t('card.unsupportedCountriesDisclaimer') }}
+        <span class="sora-card__unsupported-countries-disclaimer--link" @click="openList">{{
+          t('card.unsupportedCountriesLink')
+        }}</span>
+      </div>
+      <div class="sora-card__options" v-loading="isLoggedIn && !wasEuroBalanceLoaded">
+        <s-button
+          type="primary"
+          class="sora-card__btn s-typography-button--large"
+          :loading="btnLoading"
+          @click="handleClick"
+        >
+          <span class="text"> {{ buttonText }}</span>
+        </s-button>
+      </div>
+
+      <tos-dialog :visible.sync="showListDialog" :title="t('card.unsupportedCountries')" />
+    </template>
   </div>
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/math';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { PageNames, Components } from '@/consts';
+import { PageNames, Components, StoreLinks } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
@@ -67,8 +93,6 @@ enum BuyButtonType {
 }
 type BuyButton = { type: BuyButtonType; text: string; button: 'primary' | 'secondary' | 'tertiary' };
 
-const hundred = '100';
-
 @Component({
   components: {
     X1Dialog: lazyComponent(Components.X1Dialog),
@@ -77,13 +101,16 @@ const hundred = '100';
   },
 })
 export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, TranslationMixin) {
+  readonly MaintenanceStoreLinks = StoreLinks;
+  readonly MaintenanceTitle = 'Web applications are under maintenance';
+  readonly MaintenanceDesc = 'SORA Card is currently available in the SORA Wallet. Download to apply.';
   readonly buyOptions: Array<BuyButton> = [
     { type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' },
     { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: 'secondary' },
   ];
 
-  @state.soraCard.euroBalance private euroBalance!: string;
-  @state.soraCard.xorToDeposit private xorToDeposit!: FPNumber;
+  @Prop({ type: Boolean, default: false }) maintenance!: boolean;
+
   @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
 
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
@@ -219,6 +246,10 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
       font-weight: 600;
       margin-top: var(--s-size-mini);
       font-size: 28px;
+
+      &.maintenance {
+        text-transform: none;
+      }
     }
 
     &-info {
@@ -253,6 +284,50 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 
   &__btn {
     width: 100%;
+  }
+}
+
+.maintenance-desc {
+  display: flex;
+  flex-direction: row;
+  box-shadow: var(--s-shadow-dialog);
+
+  h4 {
+    font-weight: bold;
+  }
+
+  &__links {
+    margin-top: $basic-spacing;
+  }
+
+  @include mobile-app-logos;
+
+  .logo {
+    margin-bottom: $inner-spacing-mini;
+  }
+
+  &__mobile {
+    display: flex;
+    position: relative;
+    .qr-code {
+      width: 165px;
+      height: 165px;
+      position: absolute;
+      left: 24px;
+      border-radius: 8%;
+      z-index: 1;
+    }
+    .left-image {
+      height: 152px;
+      width: 95px;
+      opacity: 0.6;
+    }
+    .right-image {
+      height: 136px;
+      width: 78px;
+      margin-top: 16px;
+      opacity: 0.6;
+    }
   }
 }
 </style>

@@ -27,10 +27,9 @@ function initialState(): BridgeState {
     externalBlockNumber: 0,
     // history sources
     historyInternal: {}, // localstorage history
-    historyExternal: {}, // network history
     historyPage: 1,
     historyId: '',
-    historyLoading: false,
+    historyLoading: {},
     waitingForApprove: {},
     inProgressIds: {},
     notificationData: null,

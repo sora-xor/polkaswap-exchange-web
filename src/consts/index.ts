@@ -1,7 +1,8 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import invert from 'lodash/fp/invert';
 
-import { DemeterPageNames } from '@/modules/demeterFarming/consts';
+import { StakingPageNames } from '@/modules/staking/consts';
+import { SoraStakingPageNames } from '@/modules/staking/sora/consts';
 
 import pkg from '../../package.json';
 
@@ -13,8 +14,6 @@ export const app = {
   email: 'jihoon@tutanota.de',
   title: 'Polkaswap — The DEX for the Interoperable Future.',
 };
-
-export const MAX_ALERTS_NUMBER = 5;
 
 export const WalletPermissions = {
   sendAssets: true, // enable 'send' button in assets list
@@ -96,6 +95,8 @@ export enum MarketAlgorithms {
   SMART = 'SMART',
   TBC = 'TBC',
   XYK = 'XYK',
+  XST = 'XST',
+  ORB = 'Order Book',
 }
 
 export const DefaultMarketAlgorithm = MarketAlgorithms.SMART;
@@ -138,8 +139,13 @@ export enum PageNames {
   ExploreFarming = 'Explore/Farming',
   ExploreStaking = 'Explore/Staking',
   ExplorePools = 'Explore/Pools',
+  ExploreBooks = 'Explore/Books',
   //
+  OrderBook = 'OrderBook',
+  LimitOrderBuy = 'OrderBook/LimitOrderBuy',
+  LimitOrderSell = 'OrderBook/LimitOrderSell',
   SoraCard = 'SoraCard',
+  Kensetsu = 'Kensetsu',
   AssetOwner = 'AssetOwner',
   AssetOwnerDetails = 'AssetOwnerDetails',
 }
@@ -193,6 +199,7 @@ export enum Components {
   BridgeSelectAccount = 'pages/Bridge/SelectAccount',
   BridgeLinksDropdown = 'pages/Bridge/LinksDropdown',
   BridgeLimitCard = 'pages/Bridge/LimitCard',
+  BridgeAccountPanel = 'pages/Bridge/AccountPanel',
   // Moonpay Page
   Moonpay = 'pages/Moonpay/Moonpay',
   MoonpayNotification = 'pages/Moonpay/Notification',
@@ -208,6 +215,22 @@ export enum Components {
   SwapTransactionDetails = 'pages/Swap/TransactionDetails',
   SwapSettings = 'pages/Swap/Settings/Settings',
   SwapLossWarningDialog = 'pages/Swap/LossWarningDialog',
+  SwapDistribution = 'pages/Swap/Distribution',
+  // Order Book
+  BookWidget = 'pages/OrderBook/BookWidget',
+  SetLimitOrderWidget = 'pages/OrderBook/SetLimitOrderWidget',
+  HistoryOrderWidget = 'pages/OrderBook/HistoryOrderWidget',
+  MarketTradesWidget = 'pages/OrderBook/MarketTradesWidget',
+  BookChartsWidget = 'pages/OrderBook/BookChartsWidget',
+  BuySell = 'pages/OrderBook/BuySell',
+  PairListPopover = 'pages/OrderBook/Popovers/PairListPopover',
+  AllOrders = 'pages/OrderBook/Tables/AllOrders',
+  OpenOrders = 'pages/OrderBook/Tables/OpenOrders',
+  CustomisePage = 'pages/OrderBook/Dialogs/CustomisePage',
+  PlaceOrder = 'pages/OrderBook/Dialogs/PlaceOrder',
+  CancelOrders = 'pages/OrderBook/Dialogs/CancelOrders',
+  PlaceTransactionDetails = 'pages/OrderBook/TransactionDetails',
+  ErrorButton = 'pages/OrderBook/common/ErrorButton',
   // Referrals Page
   ReferralsConfirmBonding = 'pages/Referrals/ConfirmBonding',
   ReferralsConfirmInviteUser = 'pages/Referrals/ConfirmInviteUser',
@@ -226,6 +249,7 @@ export enum Components {
   TransactionDetails = 'shared/TransactionDetails',
   PoolInfo = 'shared/PoolInfo',
   Widget = 'shared/Widget',
+  StatusBadge = 'shared/StatusBadge',
   // Shared Buttons
   SortButton = 'shared/Button/SortButton',
   SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',
@@ -248,6 +272,12 @@ export enum Components {
   StatsFilter = 'shared/Stats/StatsFilter',
   // Shared Chart
   ChartSkeleton = 'shared/Chart/ChartSkeleton',
+  DataRowSkeleton = 'shared/Skeleton/DataRow',
+}
+
+export enum LimitOrderType {
+  limit = 'limit',
+  market = 'market',
 }
 
 export enum RewardsTabsItems {
@@ -288,6 +318,11 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     href: '/#/swap',
   },
   {
+    icon: 'music-CD-24',
+    title: PageNames.OrderBook,
+    href: '/#/trade',
+  },
+  {
     icon: 'basic-drop-24',
     title: PageNames.Pool,
     href: '/#/pool',
@@ -296,7 +331,7 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     icon: 'basic-layers-24',
     title: PageNames.StakingContainer,
     href: '/#/staking',
-    index: DemeterPageNames.Staking,
+    index: StakingPageNames.Staking,
   },
   {
     icon: 'grid-block-distribute-vertically-24',
@@ -336,7 +371,12 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     href: '/#/stats',
   },
   {
-    icon: 'el-icon-bank-card',
+    icon: 'basic-flame-24',
+    title: PageNames.Kensetsu,
+    href: '/#/kensetsu',
+  },
+  {
+    icon: 'music-eject-24',
     title: PageNames.SoraCard,
     href: '/#/card',
   },
@@ -363,7 +403,6 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     title: 'twitter',
     href: 'https://twitter.com/polkaswap',
   },
-  // TODO: [FONT] Update these icon names to appropriate one after font fix
   {
     icon: 'symbols-hash-24',
     title: 'reddit',
@@ -374,7 +413,6 @@ export const SocialNetworkLinks: Array<SidebarMenuItemLink> = [
     title: 'medium',
     href: 'https://medium.com/polkaswap',
   },
-  // ____________________________________
   {
     icon: 'symbols-github-24',
     title: 'github',
@@ -418,13 +456,19 @@ export const RewardsChildPages = [
   PageNames.ReferralBonding,
   PageNames.ReferralUnbonding,
 ];
-
-export const StakingChildPages = [DemeterPageNames.Staking];
+export const StakingChildPages = [
+  StakingPageNames.Staking,
+  SoraStakingPageNames.Overview,
+  SoraStakingPageNames.NewStake,
+  SoraStakingPageNames.ValidatorsType,
+  SoraStakingPageNames.SelectValidators,
+];
 export const ExploreChildPages = [
   PageNames.ExploreFarming, // By default
   PageNames.ExploreStaking,
   PageNames.ExplorePools,
   PageNames.ExploreTokens,
+  PageNames.ExploreBooks,
 ];
 
 export enum Topics {
@@ -450,7 +494,7 @@ export enum Breakpoint {
   Tablet = 900,
   Desktop = 1024,
   LargeDesktop = 1440,
-  HugeDesktop = 1600,
+  HugeDesktop = 2092,
 }
 
 export enum BreakpointClass {

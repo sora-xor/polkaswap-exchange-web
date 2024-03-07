@@ -38,7 +38,7 @@
       <info-line
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
-        :value="formattedNetworkFee"
+        :value="networkFeeFormatted"
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
@@ -76,6 +76,7 @@ export default class ReferralBonding extends Mixins(
   TranslationMixin,
   mixins.LoadingMixin
 ) {
+  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.referrals.amount amount!: string;
 
@@ -116,6 +117,9 @@ export default class ReferralBonding extends Mixins(
   }
 
   get isMaxButtonAvailable(): boolean {
+    if (this.shouldBalanceBeHidden) {
+      return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
+    }
     const balance = this.getFPNumberFromCodec(this.xorBalance?.transferable ?? ZeroStringValue, this.xorDecimals);
     const amount = this.getFPNumber(this.amount, this.xorDecimals);
     if (this.fpNumberNetworkFee.isZero()) {
@@ -130,7 +134,12 @@ export default class ReferralBonding extends Mixins(
   }
 
   get isInsufficientBondedXor(): boolean {
-    return !!this.xor && hasInsufficientBalance(this.xor, this.amount, this.networkFee, false, this.isBondedBalance);
+    return (
+      !!this.xor &&
+      hasInsufficientBalance(this.xor, this.amount, this.networkFee, {
+        isBondedBalance: this.isBondedBalance,
+      })
+    );
   }
 
   get isInsufficientXorForFee(): boolean {
@@ -151,7 +160,7 @@ export default class ReferralBonding extends Mixins(
     return this.getFPNumberFromCodec(this.networkFee);
   }
 
-  get formattedNetworkFee(): string {
+  get networkFeeFormatted(): string {
     return this.formatCodecNumber(this.networkFee);
   }
 

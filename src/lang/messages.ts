@@ -1,11 +1,12 @@
 import { Operation, TransactionStatus } from '@sora-substrate/util';
 import { RewardingEvents } from '@sora-substrate/util/build/rewards/consts';
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
 import { en as walletEn } from '@soramitsu/soraneo-wallet-web';
+import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
-import { DemeterPageNames } from '../modules/demeterFarming/consts';
+import { StakingPageNames } from '../modules/staking/consts';
+import { ValidatorsFilterType, ValidatorsListMode } from '../modules/staking/sora/consts';
 import { AlertFrequencyTabs, AlertTypeTabs, FiatOptionTabs } from '../types/tabs';
 
 export default {
@@ -34,7 +35,7 @@ export default {
   bridgeText: 'Bridge',
   acceptText: 'Accept & Hide',
   continueText: 'Continue',
-  acceptOnSctollText: 'Scroll to accept',
+  acceptOnScrollText: 'Scroll to accept',
   comingSoonText: 'Coming Soon',
   releaseNotesText: 'Release notes',
   memorandum: '{AppName} Memorandum and Terms of Services',
@@ -80,9 +81,11 @@ export default {
     [PageNames.ExplorePools]: 'Pools',
     [PageNames.ExploreStaking]: 'Staking',
     [PageNames.ExploreFarming]: 'Farming',
+    [PageNames.ExploreBooks]: '@:pageTitle.OrderBook',
     [PageNames.AddLiquidity]: 'Add Liquidity',
     [PageNames.RemoveLiquidity]: 'Remove Liquidity',
-    [DemeterPageNames.Staking]: 'Staking',
+    [PageNames.OrderBook]: 'Trade',
+    [StakingPageNames.Staking]: 'Staking',
   },
   mainMenu: {
     [PageNames.Swap]: 'Swap',
@@ -93,6 +96,7 @@ export default {
     [PageNames.Rewards]: 'Rewards',
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Statistics',
+    [PageNames.OrderBook]: 'Trade',
     [PageNames.ExploreContainer]: 'Explore',
     [PageNames.StakingContainer]: 'Staking',
   },
@@ -112,7 +116,7 @@ export default {
     finishBtn: 'Finish alert setup',
     enableSwitch: 'Enable asset deposit notifications',
     currentPrice: 'current price',
-    alertTyptTitle: 'Alert type',
+    alertTypeTitle: 'Alert type',
     typeTooltip:
       "Choose either 'drops below' or 'raises above' option to specify the alert condition for tracking important price movements. These options allow you receive timely notifications when the value of your asset either falls below or rises above your designated threshold.",
     alertFrequencyTitle: 'Alert frequency',
@@ -248,6 +252,17 @@ export default {
     [Operation.DemeterFarmingGetRewards]: 'Claim Rewards',
     [Operation.EthBridgeIncoming]: '@:hashiBridgeText',
     [Operation.EthBridgeOutgoing]: '@:hashiBridgeText',
+    [Operation.StakingBondAndNominate]: 'Bond and Nominate',
+    [Operation.StakingBond]: 'Bond',
+    [Operation.StakingBondExtra]: 'Bond Extra',
+    [Operation.StakingUnbond]: 'Unbond',
+    [Operation.StakingRebond]: 'Rebond',
+    [Operation.StakingNominate]: 'Nominate',
+    [Operation.StakingWithdrawUnbonded]: 'Withdraw Unbonded',
+    [Operation.StakingPayout]: 'Payout Rewards',
+    [Operation.StakingChill]: 'Chill',
+    [Operation.StakingSetController]: 'Set Controller',
+    [Operation.StakingSetPayee]: 'Set Payee',
     andText: 'and',
     [TransactionStatus.Finalized]: {
       [Operation.Transfer]: '{action} {amount} {symbol} {direction} {address}',
@@ -265,8 +280,19 @@ export default {
       [Operation.DemeterFarmingStakeToken]: 'Added {amount} {symbol}',
       [Operation.DemeterFarmingUnstakeToken]: 'Removed {amount} {symbol}',
       [Operation.DemeterFarmingGetRewards]: '{amount} {symbol} claimed successfully',
-      [Operation.EthBridgeIncoming]: 'Transfered {amount} {symbol} from {Ethereum} to {Sora}',
-      [Operation.EthBridgeOutgoing]: 'Transfered {amount} {symbol} from {Sora} to {Ethereum}',
+      [Operation.EthBridgeIncoming]: 'Transferred {amount} {symbol} from {Ethereum} to {Sora}',
+      [Operation.EthBridgeOutgoing]: 'Transferred {amount} {symbol} from {Sora} to {Ethereum}',
+      [Operation.StakingBondAndNominate]: 'Bonded {amount} {symbol}',
+      [Operation.StakingBond]: 'Bonded {amount} {symbol}',
+      [Operation.StakingBondExtra]: 'Bonded extra {amount} {symbol}',
+      [Operation.StakingUnbond]: 'Unbonded {amount} {symbol}',
+      [Operation.StakingRebond]: 'Rebonded {amount} {symbol}',
+      [Operation.StakingNominate]: 'Nominated validators',
+      [Operation.StakingWithdrawUnbonded]: 'Withdrew {amount} {symbol}',
+      [Operation.StakingPayout]: 'Payout rewards',
+      [Operation.StakingChill]: 'Chill',
+      [Operation.StakingSetController]: 'Set controller {address}',
+      [Operation.StakingSetPayee]: 'Set payee {address}',
     },
     [TransactionStatus.Error]: {
       [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',
@@ -286,6 +312,17 @@ export default {
       [Operation.DemeterFarmingGetRewards]: 'Failed to claim {symbol}',
       [Operation.EthBridgeIncoming]: 'Failed to transfer {amount} {symbol} from {Ethereum} to {Sora}',
       [Operation.EthBridgeOutgoing]: 'Failed to transfer {amount} {symbol} from {Sora} to {Ethereum}',
+      [Operation.StakingBondAndNominate]: 'Failed to bond {amount} {symbol}',
+      [Operation.StakingBond]: 'Failed to bond {amount} {symbol}',
+      [Operation.StakingBondExtra]: 'Failed to bond extra {amount} {symbol}',
+      [Operation.StakingUnbond]: 'Failed to unbond {amount} {symbol}',
+      [Operation.StakingRebond]: 'Failed to rebond {amount} {symbol}',
+      [Operation.StakingNominate]: 'Failed to nominate validators',
+      [Operation.StakingWithdrawUnbonded]: 'Failed to withdraw {amount} {symbol}',
+      [Operation.StakingPayout]: 'Failed to payout rewards',
+      [Operation.StakingChill]: 'Failed to chill',
+      [Operation.StakingSetController]: 'Failed to set controller {address}',
+      [Operation.StakingSetPayee]: 'Failed to set payee {address}',
     },
   },
   about: {
@@ -781,8 +818,151 @@ export default {
     results: 'Results',
     rewards: '{symbol} rewards',
   },
-  staking: {
-    title: 'Staking',
+  soraStaking: {
+    selectedValidators: '{count} ({Max} {max})',
+    dropdownMenu: {
+      controllerAccount: 'Controller account',
+    },
+    actions: {
+      claim: 'Claim rewards',
+      remove: 'Remove stake',
+      more: 'Stake more',
+      payout: 'Payout',
+      confirm: 'Confirm Staking',
+      withdraw: 'Withdraw',
+    },
+    overview: {
+      title: '{Sora} Staking',
+      description:
+        'Stake {XOR} tokens on {Sora} Network as a nominator to validate transactions and earn {VAL} token rewards.',
+    },
+    newStake: {
+      title: 'Start staking',
+      minStakeWarning: 'The minimum stake to receive the reward is {min} {symbol}',
+    },
+    validators: {
+      save: 'Save changes',
+      selected: '{selected}/{total} selected',
+      recommended: 'Recommended validators',
+      next: 'Next',
+      change: 'Change validators',
+      select: 'Select validators',
+      alreadyNominated: 'Selected validators already nominated',
+      tooManyValidators: 'Too many validators selected ({Max} {max})',
+    },
+    validatorsList: {
+      search: 'Search...',
+      name: 'Name',
+      commission: 'Commission',
+      commissionTooltip:
+        "Commission refers to the fee charged by validators for their services in the staking process. This fee, expressed as a percentage, is deducted from the staking rewards earned by nominators before distribution. It's important to note that validators can adjust their commission rates at any time",
+      return: 'Return',
+      noNominatedValidators: "You don't have any nominated validators",
+      noValidators: 'There are no validators satisfying the specified filter',
+    },
+    info: {
+      unstaking: 'Unstaking',
+      stakingBalance: 'Staking balance',
+      rewarded: 'Rewarded',
+      totalLiquidityStaked: 'Total liquidity staked',
+      rewardToken: 'Reward token',
+      unstakingPeriod: 'Unstaking period',
+      minimumStake: 'Minimum stake',
+      nominators: 'Nominators',
+      validators: 'Validators',
+      selectedValidators: 'Selected validators',
+    },
+    withdraw: {
+      countdownLeft: 'left',
+      withdrawable: 'Withdrawable',
+      beingWithdrawn: 'Being withdrawn',
+      seeAll: 'See all',
+      nextWithdrawal: 'Next withdrawal',
+    },
+    validatorsFilterDialog: {
+      title: 'Filters',
+      save: 'Save filter',
+      reset: 'Reset all',
+      filters: {
+        [ValidatorsFilterType.HAS_IDENTITY]: {
+          name: 'On-chain identity',
+          description: 'At least one identity contact connected to the account',
+        },
+        [ValidatorsFilterType.NOT_SLASHED]: {
+          name: 'Not slashed',
+          description:
+            'Not experienced any penalties or reductions in their staked funds due to misconduct or protocol violations.',
+        },
+        [ValidatorsFilterType.NOT_OVERSUBSCRIBED]: {
+          name: 'Not oversubscribed',
+          description: 'Account within allocation limit, avoids oversubscription penalties on Polkadot staking.',
+        },
+        [ValidatorsFilterType.TWO_VALIDATORS_PER_IDENTITY]: {
+          name: 'Limit of 2 validators per identity',
+          description:
+            'A maximum of two validators per identity to promote decentralization and prevent concentration of power.',
+        },
+      },
+    },
+    validatorsDialog: {
+      title: {
+        edit: 'Edit My Validators',
+      },
+      tabs: {
+        [ValidatorsListMode.USER]: 'Yours',
+        [ValidatorsListMode.ALL]: 'All',
+      },
+    },
+    validatorsAttentionDialog: {
+      title: 'Attention',
+      description: [
+        'Algorithmic validator suggestions do not constitute financial consultation or advice. Staking is a high-risk activity, and algorithmic validator suggestions do not necessarily mitigate this risk.',
+        'A validator suggested by the algorithm could still be slashed. A validator suggested by the algorithm could also change their parameters (e.g.,commission rates, etc.) at any time after having been suggested and/or selected.',
+        'You could lose tokens or rewards for these or other reasons. Only stake tokens and use validator suggestions at your own discretion, after conducting due diligence and carefully considering the risks involved.',
+      ],
+      confirm: 'Yes, I understand the risk',
+    },
+    claimRewardsDialog: {
+      title: 'Claim rewards',
+      checkRewards: 'Check rewards per era and validator',
+      rewardsDestination: 'Rewards destination address',
+    },
+    pendingRewardsDialog: {
+      title: 'Pending rewards',
+      noPendingRewards: 'There are no pending rewards',
+      noSelectedRewards: 'Select rewards',
+      payout: 'Payout',
+      information:
+        'Validators payout the rewards every 2-5 days. However, you can payout them by yourself, especially if rewards are close to expiring, but you will pay the fee.',
+    },
+    stakeDialog: {
+      toStake: 'To stake',
+      toRemove: 'To remove',
+    },
+    withdrawDialog: {
+      title: 'Withdraw unstaked funds',
+      showAllWithdraws: 'Show all withdraws',
+    },
+    allWithdrawsDialog: {
+      title: 'Unstaking activity',
+      information:
+        'Once you unstake tokens, there is a mandatory 7-day unstaking period. After this period, your tokens will not be automatically returned to your wallet. You must complete the process by manually withdrawing your tokens.',
+    },
+    selectValidatorsMode: {
+      title: 'Stake with validators suggested by the algorithm',
+      description: 'SORA Network algorithm has selected a list of recommended validators based on the criteria:',
+      criteria: [
+        'Most profitable',
+        'Not oversubscribed',
+        'Having onchain identity',
+        'Not slashed',
+        'Limit of 2 validators per identity',
+      ],
+      confirm: {
+        suggested: 'Stake with suggested',
+        manual: 'I`ll pick the validators myself',
+      },
+    },
   },
   code: {
     download: 'Download QR Code',
@@ -834,4 +1014,148 @@ export default {
   maxAmountText: 'max. amount',
   exceededAmountText: '{amount} exceeded',
   connectEthereumWalletText: 'Connect {Ethereum} wallet',
+  collapseText: 'Collapse',
+  expandText: 'Expand',
+  orderBook: {
+    Buy: 'Buy {asset}',
+    Sell: 'Sell {asset}',
+    orderBook: 'Orderbook',
+    marketTrades: 'Market trades',
+    market: 'Market',
+    limit: 'Limit',
+    price: 'Price',
+    total: 'Total',
+    amount: 'amount',
+    time: 'time',
+    month: 'month',
+    change: 'change',
+    cantPlaceOrder: "Can't place order",
+    enterAmount: 'Enter amount',
+    setPrice: 'Set price',
+    dayVolume: '1D Volume',
+    stop: 'Book stopped',
+    tokenPair: 'Token pair',
+    book: {
+      noAsks: 'No opened asks',
+      noBids: 'No opened bids',
+    },
+    history: {
+      tradeHistory: 'Trade history',
+      orderHistory: 'Order history',
+      openOrders: 'Open orders {value}',
+      connect: 'Connect an account to start trading',
+      cancel: 'Cancel order {value}',
+      cancelAll: 'Cancel all',
+    },
+    orderTable: {
+      time: 'time',
+      pair: 'pair',
+      side: 'side',
+      filled: 'filled',
+      lifetime: 'lifetime',
+      noOrders: 'No orders',
+    },
+    dialog: {
+      placeMarket: 'Place market order',
+      placeLimit: 'Place limit order',
+      askCancel: 'Are you sure you want to cancel all of your open orders?',
+      cancelAll: 'Yes, cancel all',
+      noCancel: 'No, don’t cancel it',
+      buy: 'Buy {amount} {symbol}',
+      sell: 'Sell {amount} {symbol}',
+      at: 'at {price} {symbol}',
+    },
+    tradingPair: {
+      choosePair: 'Choose trading pair',
+      volume: 'Volume',
+      dailyChange: 'Daily change',
+      status: 'Status',
+      total: '{amount} {symbol} AT {amount2} {symbol2}',
+    },
+    bookStatus: {
+      active: 'Active',
+      placeable: 'Placeable',
+      cancelable: 'Cancelable',
+      inactive: 'Inactive',
+    },
+    tooltip: {
+      limitOrder:
+        "A 'Limit' order lets you specify the exact price at which you want to buy or sell an asset. A 'Limit Buy' order will only be executed at the specified price or lower, while a 'Limit Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.",
+      marketOrder:
+        "A 'Market Order' is an order to immediately buy or sell at the best available current price. It doesn't require setting a price, ensuring a fast execution but with the trade-off of less control over the price received or paid. This type of order is used when certainty of execution is a priority over price control.",
+      pairsList:
+        'A real-time list showing current buy and sell orders for a cryptocurrency. It helps you understand the demand, potential price direction, and trade volume on the SORA Network and Polkaswap DEX',
+      bookWidget:
+        'A live, constantly updating record of buy (bid) and sell (ask) orders for a specific asset, organized by price level. The order book displays the depth of the market, including the quantities of assets being offered at various prices. Traders utilize this detailed view to gauge market sentiment, identify potential resistance and support levels, and anticipate price movements based on existing demand and supply',
+      marketWidget:
+        'This widget shows a real-time stream of executed trades in the market, providing information on transaction volumes, recent activity, and current market trends. By observing the timing, price, and size of actual trades, traders can gain insights into market dynamics and sentiment, helping them to spot trading opportunities and make informed decisions',
+      txDetails: {
+        orderType:
+          "'Buy' order will only be executed at the specified price or lower, while a 'Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.",
+        expiryDate:
+          "The 'Expiry Date' is the deadline for your order to be executed. If the market doesn't reach your specified price before this date, the order is automatically cancelled. You're not bound to a perpetual wait if market conditions don't align with your trading preferences.",
+        amount:
+          "The 'Amount' refers to the total number of assets you want to buy or sell in your order. It's important to specify, as it determines the size of your transaction, impacting the total cost for buy orders or revenue for sell orders.",
+        limit:
+          "The 'Limit Price' is the precise price you set for a limit order. The trade will only execute when the asset's market price meets your limit price, ensuring you don't purchase above or sell below this specified value.",
+      },
+      bookStatus: {
+        active: 'Full trading functionality enabled. You can place new orders or cancel existing ones.',
+        placeable:
+          'Limited functionality. You can place new orders and cancel existing ones, but some features may be unavailable.',
+        cancelable: 'You can only cancel existing orders. New order placement is currently disabled.',
+        inactive: 'All trading activities are currently halted. No orders can be placed or canceled at this time.',
+      },
+      orderStatus: {
+        active: 'Active',
+        canceled: 'Canceled',
+        expired: 'Expired',
+        filled: 'Filled',
+      },
+    },
+    txDetails: {
+      orderType: 'order type',
+      limitPrice: 'limit price',
+      expiryDate: 'expiry date',
+    },
+    error: {
+      multipleOf: {
+        reason: 'Entered price is too specific',
+        reading: 'To process your order, please input a price that is a multiple of {value}',
+      },
+      beyondPrecision: {
+        reason: 'Entered price is too precise to calculate',
+        reading:
+          'Precision exceeded: The amount/price entered has too many decimal places. Please input a value with fewer decimal places',
+      },
+      marketNotAvailable: {
+        reason: 'Not enough orders available to fullfill this order',
+        reading:
+          'Market order limitation: There are not enough orders available to fulfill this market limit order. Please adjust your order size or wait for more orders to be placed',
+      },
+      exceedsSpread: {
+        reason: 'Price exceeded spread',
+        reading: "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
+      },
+      outOfBounds: {
+        reason: 'Amount fails to comply with blockchain range',
+        reading:
+          "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range. Min: {min}; Max: {max}",
+      },
+      spotLimit: {
+        reason: 'Trading side has been filled',
+        reading:
+          'Price range cap: Each order book side is limited to 1024 unique price points. Please select a price within the existing range or wait for space to become available',
+      },
+      accountLimit: {
+        reason: 'Too many orders is ongoing',
+        reading:
+          'Limit reached: Each account is confined to 1024 limit orders. Please wait until some of your orders fulfill',
+      },
+      singlePriceLimit: {
+        reason: 'Too many orders is ongoing for this price',
+        reading: 'Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill',
+      },
+    },
+  },
 };

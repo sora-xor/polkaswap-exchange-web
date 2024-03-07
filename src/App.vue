@@ -1,12 +1,12 @@
 <template>
-  <s-design-system-provider :value="libraryDesignSystem" id="app" class="app" :class="responsiveClass">
+  <s-design-system-provider :value="libraryDesignSystem" id="app" class="app" :class="dsProviderClasses">
     <app-header :loading="loading" @toggle-menu="toggleMenu" />
     <div :class="appClasses">
       <app-menu
         :visible="menuVisibility"
         :on-select="goTo"
         :is-about-page-opened="isAboutPage"
-        @open-download-dialog="openDownloadDialog"
+        @open-product-dialog="openProductDialog"
         @click.native="handleAppMenuClick"
       >
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goToSwap" />
@@ -23,7 +23,7 @@
     <app-footer />
     <referrals-confirm-invite-user :visible.sync="showConfirmInviteUser" />
     <bridge-transfer-notification />
-    <app-mobile-popup :visible.sync="showMobilePopup" />
+    <app-mobile-popup :visible.sync="showSoraMobilePopup" />
     <app-browser-notifs-enable-dialog :visible.sync="showBrowserNotifPopup" @set-dark-page="setDarkPage" />
     <app-browser-notifs-blocked-dialog :visible.sync="showBrowserNotifBlockedPopup" />
     <notification-enabling-page v-if="showNotifsDarkPage">
@@ -59,7 +59,7 @@ import { getLocale } from '@/lang';
 import { isDashboardPage } from '@/modules/dashboard/router';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
-import { preloadFontFace, updateDocumentTitle } from '@/utils';
+import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
@@ -67,8 +67,8 @@ import type { ConnectToNodeOptions, Node } from './types/nodes';
 import type { History, HistoryItem } from '@sora-substrate/util';
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
-import type DesignSystem from '@soramitsu/soramitsu-js-ui/lib/types/DesignSystem';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type DesignSystem from '@soramitsu-ui/ui-vue2/lib/types/DesignSystem';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
@@ -89,9 +89,10 @@ import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
   },
 })
 export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin) {
+  /** Product-based class fields should be like show${product}Popup */
+  showSoraMobilePopup = false;
   menuVisibility = false;
   showConfirmInviteUser = false;
-  showMobilePopup = false;
   showNotifsDarkPage = false;
   responsiveClass = BreakpointClass.LargeDesktop;
 
@@ -273,8 +274,20 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     return isDashboardPage(this.$route.name) || (this.$route.name === PageNames.Swap && this.chartsEnabled);
   }
 
+  private get mobileCssClasses(): string[] | undefined {
+    return getMobileCssClasses();
+  }
+
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
+  }
+
+  get isCurrentPageTooWide(): boolean {
+    return this.isAboutPage || this.isSwapPageWithCharts || this.$route.name === PageNames.Tokens;
+  }
+
+  get dsProviderClasses(): string[] | BreakpointClass {
+    return this.mobileCssClasses?.length ? [...this.mobileCssClasses, this.responsiveClass] : this.responsiveClass;
   }
 
   get appClasses(): Array<string> {
@@ -343,8 +356,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
-  openDownloadDialog(): void {
-    this.showMobilePopup = true;
+  openProductDialog(product: string): void {
+    // Product-based class fields should be like show${product}Popup (like showSoraMobilePopup)
+    const fieldName = `show${product[0].toUpperCase() + product.slice(1)}Popup`;
+    if (typeof this[fieldName] === 'boolean') {
+      this[fieldName] = true;
+    }
   }
 
   async beforeDestroy(): Promise<void> {
@@ -376,6 +393,8 @@ html {
   font-size: var(--s-font-size-small);
   line-height: var(--s-line-height-base);
   letter-spacing: var(--s-letter-spacing-small);
+  background-color: var(--s-color-utility-body);
+  scrollbar-color: transparent transparent;
 }
 
 ul ul {
@@ -395,6 +414,8 @@ ul ul {
 .app {
   .el-loading-mask {
     background-color: var(--s-color-utility-body);
+    z-index: $app-loader-layer;
+
     .el-loading-spinner {
       background-image: url('~@/assets/img/pswap-loader.svg');
       height: var(--s-size-medium);
@@ -418,6 +439,13 @@ ul ul {
   &-body-scrollbar {
     @include scrollbar;
     flex: 1;
+  }
+}
+
+.mobile.ios {
+  .el-scrollbar__bar,
+  .asset-list .scrollbar {
+    opacity: 0.01 !important; // Fix iOS double tap issues
   }
 }
 
@@ -485,34 +513,11 @@ ul ul {
     animation: none;
   }
 }
+
 .el-form--actions {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  $swap-input-class: '.el-input';
-  .s-input--token-value,
-  .s-input-amount {
-    #{$swap-input-class} {
-      #{$swap-input-class}__inner {
-        padding-top: 0;
-      }
-    }
-    #{$swap-input-class}__inner {
-      @include text-ellipsis;
-      height: var(--s-size-small);
-      padding-right: 0;
-      padding-left: 0;
-      border-radius: 0 !important;
-      color: var(--s-color-base-content-primary);
-      font-size: var(--s-font-size-large);
-      line-height: var(--s-line-height-small);
-      font-weight: 800;
-    }
-    .s-placeholder {
-      display: none;
-    }
-  }
 }
 
 .el-message-box {
@@ -548,15 +553,33 @@ i.icon-divider {
   @include icon-styles;
 }
 
+.app-main--orderbook {
+  @include large-mobile {
+    .app-menu {
+      // TODO: [Rustem] fix shadow issues between menu and orderbook
+      position: absolute;
+      right: initial;
+    }
+  }
+
+  .app-content {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 @include desktop {
   .app-main {
     &.app-main--without-menu {
       .app-menu {
-        position: relative;
-      }
-      .app-content {
-        width: 100%;
-        padding-left: $basic-spacing * 2;
+        &:not(.collapsed) {
+          position: relative;
+        }
+        &.collapsed {
+          & + .app-body {
+            margin-left: 74px;
+          }
+        }
       }
     }
   }
@@ -568,7 +591,6 @@ i.icon-divider {
   &-main {
     display: flex;
     align-items: stretch;
-    overflow: hidden;
     height: calc(100vh - #{$header-height} - #{$footer-height});
     position: relative;
   }
@@ -586,8 +608,7 @@ i.icon-divider {
 
   &-content {
     flex: 1;
-    margin: $inner-spacing-big auto;
-    width: 100%;
+    padding: $inner-spacing-medium;
   }
 
   &-footer {

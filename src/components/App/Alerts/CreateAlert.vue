@@ -8,6 +8,7 @@
       <s-tab v-for="tab in AlertTypeTabs" :key="tab" :label="t(`alerts.${tab}`)" :name="tab" />
     </s-tabs>
     <s-float-input
+      ref="floatInput"
       v-model="amount"
       class="price-input"
       size="medium"
@@ -33,10 +34,8 @@
       </div>
       <token-select-button
         slot="right"
-        class="el-button--select-token"
         icon="chevron-down-rounded-16"
         :token="asset"
-        :tabindex="0"
         @click.stop="openSelectAssetDialog"
       />
       <div class="info" slot="bottom">
@@ -69,17 +68,17 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop, Watch, Ref } from 'vue-property-decorator';
 
-import { Components, MAX_ALERTS_NUMBER, ZeroStringValue } from '@/consts';
+import { Components, ZeroStringValue } from '@/consts';
 import type { EditableAlertObject, NumberedAlert } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, mutation, state } from '@/store/decorators';
 import { AlertFrequencyTabs, AlertTypeTabs } from '@/types/tabs';
-import { getDeltaPercent } from '@/utils';
+import { calcPriceChange, showMostFittingValue } from '@/utils';
 
-import type { AccountAsset, Asset, WhitelistIdsBySymbol } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, WhitelistIdsBySymbol } from '@sora-substrate/util/build/assets/types';
 import type { Alert } from '@soramitsu/soraneo-wallet-web/lib/types/common';
 
 @Component({
@@ -101,7 +100,6 @@ export default class CreateAlert extends Mixins(
 ) {
   @state.wallet.settings.alerts alerts!: Array<Alert>;
 
-  @getter.assets.whitelistAssets assets!: Array<Asset>;
   @getter.assets.xor private xor!: AccountAsset;
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WhitelistIdsBySymbol;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => AccountAsset;
@@ -110,12 +108,21 @@ export default class CreateAlert extends Mixins(
   @mutation.wallet.settings.editPriceAlert editPriceAlert!: (alert: EditableAlertObject) => void;
 
   @Prop({ default: null, type: Object }) readonly alertToEdit!: NumberedAlert;
+  @Ref('floatInput') private floatInput!: any;
+
+  @Watch('negativeDelta')
+  private updateChoise(value: boolean): void {
+    if (this.autoChoice) {
+      this.currentTypeTab = value ? AlertTypeTabs.Drop : AlertTypeTabs.Raise;
+    }
+
+    this.autoChoice = true;
+  }
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   amount = '';
   asset = {} as AccountAsset;
-  negativeDelta = false;
   autoChoice = true;
 
   currentTypeTab: AlertTypeTabs = AlertTypeTabs.Drop;
@@ -124,71 +131,35 @@ export default class CreateAlert extends Mixins(
   readonly AlertFrequencyTabs = AlertFrequencyTabs;
   readonly AlertTypeTabs = AlertTypeTabs;
 
+  get assetPrice(): FPNumber {
+    return FPNumber.fromCodecValue(this.getAssetFiatPrice(this.asset) ?? ZeroStringValue);
+  }
+
+  get priceChange(): FPNumber {
+    const price = FPNumber.fromNatural(this.amount);
+    const desired = price.isZero() ? this.assetPrice : price;
+    return calcPriceChange(desired, this.assetPrice);
+  }
+
+  get negativeDelta(): boolean {
+    return FPNumber.lt(this.priceChange, FPNumber.ZERO);
+  }
+
   get deltaPercentage(): string {
-    const desiredPrice = FPNumber.fromNatural(this.amount);
-    const assetPrice = this.getAssetFiatPrice(this.asset) ?? ZeroStringValue;
-    let currentPrice = FPNumber.fromCodecValue(assetPrice);
-
-    // if current price is zero, set minimal value for proper calculations
-    if (FPNumber.eq(currentPrice, FPNumber.ZERO)) {
-      currentPrice = FPNumber.fromNatural('0.0000001');
-    }
-
-    if (FPNumber.eq(desiredPrice, currentPrice) || !this.amount) {
-      this.negativeDelta = false;
-      return '0.00';
-    }
-
-    let percent = getDeltaPercent(desiredPrice, currentPrice);
-    this.negativeDelta = FPNumber.lt(percent, FPNumber.ZERO);
-
-    if (this.negativeDelta) {
-      percent = percent.negative();
-      if (this.autoChoice) this.currentTypeTab = AlertTypeTabs.Drop;
-    } else {
-      if (this.autoChoice) this.currentTypeTab = AlertTypeTabs.Raise;
-    }
-
-    this.autoChoice = true;
-    return this.showMostFittingValue(percent.toLocaleString());
+    const value = this.negativeDelta ? this.priceChange.negative() : this.priceChange;
+    return showMostFittingValue(value);
   }
 
   get placeholder(): string {
-    return this.showMostFittingValue(this.fiatAmountValue);
+    return showMostFittingValue(this.assetPrice);
   }
 
   handleTabClick(): void {
     this.autoChoice = false;
   }
 
-  /**
-   * Returns formatted value in most suitable form
-   * @param value
-   *
-   * 0.152345 -> 0.15
-   * 0.000043 -> 0.000043
-   */
-  showMostFittingValue(value, precisionForLowCostAsset = 18) {
-    const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
-
-    if (parseInt(integer) > 0) {
-      return this.getFormattedValue(value, 2);
-    }
-
-    if (decimal && parseInt(decimal.substring(0, 2)) > 0) {
-      return this.getFormattedValue(value, 2);
-    }
-
-    return this.getFormattedValue(value, precisionForLowCostAsset);
-  }
-
-  getFormattedValue(value: string, precision = 18): string {
-    const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
-    return `${integer}.${decimal.substring(0, precision)}`;
-  }
-
-  get fiatAmountValue() {
-    return this.getFiatAmount('1', this.asset) || '';
+  get fiatAmountValue(): string {
+    return this.assetPrice.toLocaleString();
   }
 
   get btnDisabled(): boolean {
@@ -199,7 +170,7 @@ export default class CreateAlert extends Mixins(
     return this.alertToEdit !== null;
   }
 
-  activeSignClass(sign): string {
+  activeSignClass(sign: string): string {
     if (sign === '+' && this.negativeDelta) return 'delta-percent--not-active';
     if (sign === '-' && !this.negativeDelta) return 'delta-percent--not-active';
     return '';
@@ -232,7 +203,7 @@ export default class CreateAlert extends Mixins(
       return;
     }
 
-    if (this.alerts.length > MAX_ALERTS_NUMBER) return;
+    if (this.alerts.length > WALLET_CONSTS.MAX_ALERTS_NUMBER) return;
 
     this.addPriceAlert({
       token: this.asset.symbol,
@@ -253,7 +224,12 @@ export default class CreateAlert extends Mixins(
     this.asset = selectedAsset;
   }
 
-  mounted(): void {
+  async mounted(): Promise<void> {
+    // Re-center dialog programmatically (need to simplify it). Components lazy loading might break it
+    await this.$nextTick();
+    const sDialog: any = this.$parent?.$parent;
+    sDialog?.computeTop?.();
+
     if (this.isEditMode) {
       this.amount = this.alertToEdit.price;
       this.currentTypeTab = this.alertToEdit.type === 'drop' ? AlertTypeTabs.Drop : AlertTypeTabs.Raise;
@@ -265,6 +241,8 @@ export default class CreateAlert extends Mixins(
       this.currentFrequencyTab = AlertFrequencyTabs.Once;
       this.selectAsset(this.xor);
     }
+
+    this.floatInput?.$children?.[0]?.focus?.(); // price input autofocus
 
     this.$root.$on('selectAlertAsset', (selectedAsset: AccountAsset) => {
       this.selectAsset(selectedAsset);

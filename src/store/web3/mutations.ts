@@ -19,8 +19,9 @@ const mutations = defineMutations<Web3State>()({
     ethersUtil.removeEvmUserAddress();
   },
 
-  setSubAddress(state, address: string): void {
+  setSubAddress(state, { address, name }: { address: string; name: string }): void {
     state.subAddress = address;
+    state.subAddressName = name;
   },
 
   setSubSS58(state, prefix: number) {
@@ -28,13 +29,13 @@ const mutations = defineMutations<Web3State>()({
   },
 
   setEvmNetworksApp(state, networksIds: EvmNetwork[]): void {
-    state.evmNetworkApps = networksIds;
+    state.evmNetworkApps = Object.freeze([...networksIds]);
   },
   setSubNetworkApps(state, apps: SubNetworkApps): void {
-    state.subNetworkApps = apps;
+    state.subNetworkApps = Object.freeze({ ...apps });
   },
   setSupportedApps(state, supportedApps: SupportedApps): void {
-    state.supportedApps = supportedApps;
+    state.supportedApps = Object.freeze({ ...supportedApps });
   },
   setEvmProvider(state, provider: Provider): void {
     state.evmProvider = provider;
@@ -42,8 +43,8 @@ const mutations = defineMutations<Web3State>()({
   resetEvmProvider(state): void {
     state.evmProvider = null;
   },
-  setEvmProviderLoading(state, flag: boolean): void {
-    state.evmProviderLoading = flag;
+  setEvmProviderLoading(state, provider: Nullable<Provider> = null): void {
+    state.evmProviderLoading = provider;
   },
   // by provider
   setProvidedEvmNetwork(state, networkId: BridgeNetworkId | null): void {
@@ -85,11 +86,11 @@ const mutations = defineMutations<Web3State>()({
   // for hashi bridge
   setEthBridgeSettings(state, { evmNetwork, address }: EthBridgeSettings): void {
     state.ethBridgeEvmNetwork = evmNetwork;
-    state.ethBridgeContractAddress = {
+    state.ethBridgeContractAddress = Object.freeze({
       XOR: address.XOR,
       VAL: address.VAL,
       OTHER: address.OTHER,
-    };
+    });
   },
 });
 

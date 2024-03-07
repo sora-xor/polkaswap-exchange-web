@@ -49,7 +49,23 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} a réclamé avec succès",
             "EthBridgeIncoming": "Transféré {amount} {symbol} de {Ethereum} à {Sora}",
             "EthBridgeOutgoing": "Transféré {amount} {symbol} de {Sora} à {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Cautionné {amount} {symbol}",
+            "StakingBond": "Cautionné {amount} {symbol}",
+            "StakingBondExtra": "Supplément cautionné {amount} {symbol}",
+            "StakingUnbond": "Non lié {amount} {symbol}",
+            "StakingRebond": "Rebondi {amount} {symbol}",
+            "StakingNominate": "Validateurs nommés",
+            "StakingWithdrawUnbonded": "Retiré {amount} {symbol}",
+            "StakingPayout": "Récompenses de paiement",
+            "StakingChill": "Froideur",
+            "StakingSetController": "Définir le contrôleur {address}",
+            "StakingSetPayee": "Définir le bénéficiaire {address}",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} à {price} {symbol2} placé",
+            "OrderBookCancelLimitOrder": "Ordre limité annulé",
+            "OrderBookCancelLimitOrders": "Ordres limités annulés",
+            "Burn": "Brûlé {amount} {symbol}",
+            "Mint": "Frappé {amount} {symbol} à {address}"
         },
         "error": {
             "Transfer": "Échec de {action} {amount} {symbol} {direction} {address}",
@@ -70,7 +86,23 @@
             "DemeterFarmingGetRewards": "Échec de la revendication de {symbol}",
             "EthBridgeIncoming": "Échec du transfert de {amount} {symbol} de {Ethereum} vers {Sora}",
             "EthBridgeOutgoing": "Échec du transfert de {amount} {symbol} de {Sora} à {Ethereum}",
-            "SwapTransferBatch": "Échec de {action} {amount} {symbol}"
+            "SwapTransferBatch": "Échec de {action} {amount} {symbol}",
+            "StakingBondAndNominate": "Échec de la liaison {amount} {symbol}",
+            "StakingBond": "Échec de la liaison {amount} {symbol}",
+            "StakingBondExtra": "Échec de la liaison supplémentaire {amount} {symbol}",
+            "StakingUnbond": "Échec de la dissociation {amount} {symbol}",
+            "StakingRebond": "Échec du réapprovisionnement {amount} {symbol}",
+            "StakingNominate": "Échec de la nomination des validateurs",
+            "StakingWithdrawUnbonded": "Échec du retrait {amount} {symbol}",
+            "StakingPayout": "Échec du paiement des récompenses",
+            "StakingChill": "Impossible de se détendre",
+            "StakingSetController": "Échec de la définition du contrôleur {address}",
+            "StakingSetPayee": "Échec de la définition du bénéficiaire {address}",
+            "OrderBookPlaceLimitOrder": "Échec de la passation d'une commande limitée de {amount} {symbol} à {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Échec de l'annulation des ordres limités",
+            "OrderBookCancelLimitOrder": "Échec de l'annulation de l'ordre limité",
+            "Burn": "Échec de la gravure {amount} {symbol}",
+            "Mint": "Échec de la création {amount} {symbol} à {address}"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
@@ -83,7 +115,23 @@
         "DemeterFarmingGetRewards": "Réclamer mes Récompenses",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Transférer"
+        "SwapTransferBatch": "{ADAR} Transférer",
+        "StakingBondAndNominate": "Lier et nommer",
+        "StakingBond": "Réserver",
+        "StakingBondExtra": "Bond supplémentaire",
+        "StakingUnbond": "Délier",
+        "StakingRebond": "Rebond",
+        "StakingNominate": "Désigner",
+        "StakingWithdrawUnbonded": "Retirer sans caution",
+        "StakingPayout": "Récompenses de paiement",
+        "StakingChill": "Froideur",
+        "StakingSetController": "Définir le contrôleur",
+        "StakingSetPayee": "Définir le bénéficiaire",
+        "OrderBookPlaceLimitOrder": "Passer la commande",
+        "OrderBookCancelLimitOrder": "annuler la commande",
+        "OrderBookCancelLimitOrders": "Annuler les commandes",
+        "Burn": "Brûler",
+        "Mint": "menthe"
     },
     "polkadotjs": {
         "noExtensions": "Aucune extension {PolkadotJs} n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",
@@ -306,7 +354,9 @@
         "referrer": "Référent",
         "referral": "Référence",
         "adarTxDetailsTitle": "Détails de la transaction",
-        "comment": "Commentaire"
+        "comment": "Commentaire",
+        "price": "Prix",
+        "side": "Côté"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Changer de réseau dans le portefeuille",
@@ -344,7 +394,10 @@
         "Explore\/Pools": "Piscines",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
-        "Staking": "Staking"
+        "Staking": "Staking",
+        "OrderBook": "Commerce",
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Échanger",
@@ -358,7 +411,9 @@
         "CreatePair": "Créer une paire",
         "StakingContainer": "Staking",
         "Explore\/Container": "Explorer",
-        "SoraCard": "{Sora} Carte"
+        "SoraCard": "{Sora} Carte",
+        "OrderBook": "Commerce",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -759,7 +814,8 @@
             "checkExtension": "L'extension {name} est occupée, veuillez la vérifier",
             "extensionLogin": "Veuillez vous connecter à votre extension {name}",
             "installExtension": "L'extension {name} est introuvable. Veuillez l'installer! \n\nExtension déjà installée? Veuillez recharger la page",
-            "reloadPage": "Recharger la page"
+            "reloadPage": "Recharger la page",
+            "notAvailable": "{name} n'est pas disponible."
         }
     },
     "selectLanguageDialog": {
@@ -955,9 +1011,6 @@
         "calculator": "Calculatrice",
         "results": "Résultats",
         "rewards": "{symbol} récompenses"
-    },
-    "staking": {
-        "title": "Staking"
     },
     "historyErrorMessages": {
         "generalError": "Quelque chose s'est mal passé",
@@ -1233,5 +1286,274 @@
     "exceededAmountText": "{amount} dépassé",
     "multipleRecipients": "Plusieurs destinataires",
     "disconnectWalletText": "Déconnecter",
-    "connectEthereumWalletText": "Connectez le portefeuille {Ethereum}"
+    "connectEthereumWalletText": "Connectez le portefeuille {Ethereum}",
+    "soraStaking": {
+        "dropdownMenu": {
+            "pendingRewards": "Récompenses en attente",
+            "controllerAccount": "Compte contrôleur"
+        },
+        "actions": {
+            "claim": "Réclamez des récompenses",
+            "remove": "Supprimer la mise",
+            "more": "Miser davantage",
+            "confirm": "Confirmer le jalonnement",
+            "withdraw": "Virement"
+        },
+        "overview": {
+            "title": "{Sora} Jalonnement",
+            "description": "Mettez en jeu des tokens {XOR} sur le réseau {Sora} en tant que nominateur pour valider les transactions et gagner des récompenses en tokens {VAL}."
+        },
+        "newStake": {
+            "title": "Commencer à jalonner",
+            "minStakeWarning": "La mise minimale pour recevoir la récompense est {min} {symbol}"
+        },
+        "validators": {
+            "save": "Sauvegarder les modifications",
+            "selected": "{selected} \/ {total} sélectionné",
+            "recommended": "Validateurs recommandés",
+            "change": "Changer les validateurs",
+            "select": "Sélectionnez les validateurs",
+            "next": "Suivant",
+            "alreadyNominated": "Validateurs sélectionnés déjà nominés",
+            "tooManyValidators": "Trop de validateurs sélectionnés ( {Max} {max} )"
+        },
+        "validatorsList": {
+            "search": "Recherche...",
+            "name": "Nom",
+            "noNominatedValidators": "Vous n'avez aucun validateur nommé",
+            "noValidators": "Il n'y a aucun validateur satisfaisant au filtre spécifié",
+            "commission": "Commission",
+            "commissionTooltip": "La commission fait référence aux frais facturés par les validateurs pour leurs services dans le processus de jalonnement. Ces frais, exprimés en pourcentage, sont déduits des récompenses de mise gagnées par les proposants avant distribution. Il est important de noter que les validateurs peuvent ajuster leurs taux de commission à tout moment.",
+            "return": "Retour"
+        },
+        "info": {
+            "unstaking": "Détachement",
+            "stakingBalance": "Solde de jalonnement",
+            "rewarded": "Récompensé",
+            "totalLiquidityStaked": "Liquidité totale mise en jeu",
+            "rewardToken": "Jeton de récompense",
+            "unstakingPeriod": "Période sans mise en jeu",
+            "minimumStake": "Mise minimale",
+            "nominators": "Présentateurs",
+            "validators": "Validateurs",
+            "selectedValidators": "Validateurs sélectionnés"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filtres",
+            "save": "Enregistrer le filtre",
+            "reset": "Effacer tout",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identité en chaîne",
+                    "description": "Au moins un contact d'identité connecté au compte"
+                },
+                "notSlashed": {
+                    "name": "Pas coupé",
+                    "description": "N’a subi aucune pénalité ou réduction de ses fonds mis en jeu en raison d’une mauvaise conduite ou de violations du protocole."
+                },
+                "notOversubscribed": {
+                    "name": "Pas sursouscrit",
+                    "description": "Compte dans la limite d’allocation, évite les pénalités de sursouscription sur le staking {Polkadot}."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Limite de 2 validateurs par identité",
+                    "description": "Un maximum de deux validateurs par identité pour promouvoir la décentralisation et empêcher la concentration du pouvoir."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "edit": "Modifier mes validateurs"
+            },
+            "tabs": {
+                "user": "Vos validateurs",
+                "all": "Tous les validateurs"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Attention",
+            "description": [
+                "Les suggestions du validateur algorithmique ne constituent pas une consultation ou un conseil financier. Le jalonnement est une activité à haut risque, et les suggestions algorithmiques des validateurs n'atténuent pas nécessairement ce risque.",
+                "Un validateur suggéré par l'algorithme pourrait toujours être réduit. Un validateur suggéré par l'algorithme pourrait également modifier ses paramètres (par exemple, les taux de commission, etc.) à tout moment après avoir été suggéré et\/ou sélectionné.",
+                "Vous pourriez perdre des jetons ou des récompenses pour ces raisons ou pour d’autres. Misez uniquement des jetons et utilisez les suggestions du validateur à votre propre discrétion, après avoir fait preuve de diligence raisonnable et soigneusement examiné les risques encourus."
+            ],
+            "confirm": "Oui, je comprends le risque"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Il n'y a aucune récompense en attente",
+            "information": "Les validateurs versent les récompenses tous les 2 à 5 jours. Cependant, vous pouvez les payer vous-même, surtout si les récompenses sont sur le point d'expirer, mais vous paierez les frais.",
+            "title": "Récompenses en attente",
+            "noSelectedRewards": "Sélectionnez les récompenses",
+            "payout": "Paiement"
+        },
+        "selectValidatorsMode": {
+            "title": "Stake avec les validateurs suggérés par l’algorithme",
+            "description": "L'algorithme du réseau {Sora} a sélectionné une liste de validateurs recommandés sur la base des critères :",
+            "criteria": [
+                "La plus rentable",
+                "Pas sursouscrit",
+                "Avoir une identité en chaîne",
+                "Pas coupé",
+                "Limite de 2 validateurs par identité"
+            ],
+            "confirm": {
+                "suggested": "Mise avec suggéré",
+                "manual": "Je choisirai moi-même les validateurs"
+            }
+        },
+        "claimRewardsDialog": {
+            "title": "Réclamez des récompenses",
+            "checkRewards": "Vérifiez les récompenses par époque et validateur",
+            "rewardsDestination": "Adresse de destination des récompenses"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Retirable",
+            "beingWithdrawn": "Être retiré",
+            "seeAll": "Voir tout",
+            "nextWithdrawal": "Prochain retrait",
+            "countdownLeft": "il reste"
+        },
+        "stakeDialog": {
+            "toStake": "Miser",
+            "toRemove": "Retirer"
+        },
+        "withdrawDialog": {
+            "title": "Retirer des fonds non mis en gage",
+            "showAllWithdraws": "Afficher tous les retraits"
+        },
+        "allWithdrawsDialog": {
+            "title": "Activité sans enjeu",
+            "information": "Une fois que vous avez retiré les jetons, il y a une période de retrait obligatoire de 7 jours. Passé ce délai, vos tokens ne seront pas automatiquement restitués dans votre portefeuille. Vous devez terminer le processus en retirant manuellement vos jetons."
+        }
+    },
+    "collapseText": "Réduire",
+    "expandText": "Agrandir",
+    "orderBook": {
+        "Buy": "Acheter {asset}",
+        "Sell": "Vendre {asset}",
+        "orderBook": "Carnet de commande",
+        "marketTrades": "Métiers du marché",
+        "market": "Marché",
+        "limit": "Limite",
+        "price": "Prix",
+        "total": "Total",
+        "amount": "montant",
+        "time": "temps",
+        "month": "mois",
+        "change": "changement",
+        "cantPlaceOrder": "Impossible de passer commande",
+        "enterAmount": "Entrer le montant",
+        "setPrice": "Fixer le prix",
+        "dayVolume": "Volumes 1D",
+        "stop": "Livre arrêté",
+        "tokenPair": "Paire de jetons",
+        "book": {
+            "noAsks": "Aucune demande ouverte",
+            "noBids": "Aucune offre ouverte"
+        },
+        "history": {
+            "tradeHistory": "Histoire commerciale",
+            "orderHistory": "Historique des commandes",
+            "openOrders": "Commandes ouvertes {value}",
+            "connect": "Connectez un compte pour commencer à trader",
+            "cancel": "Annuler la commande {value}",
+            "cancelAll": "Annuler tout"
+        },
+        "orderTable": {
+            "time": "temps",
+            "pair": "paire",
+            "side": "côté",
+            "filled": "rempli",
+            "lifetime": "durée de vie",
+            "noOrders": "Aucune commande. Créez votre premier !"
+        },
+        "dialog": {
+            "placeMarket": "Passer un ordre au marché",
+            "placeLimit": "Passer un ordre limité",
+            "askCancel": "Êtes-vous sûr de vouloir annuler toutes vos commandes ouvertes ?",
+            "cancelAll": "Oui, tout annuler",
+            "buy": "Achetez {amount} {symbol}",
+            "sell": "Vendre {amount} {symbol}",
+            "at": "à {price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "Choisissez une paire de trading",
+            "volume": "Volume",
+            "dailyChange": "Changement quotidien",
+            "status": "Statut",
+            "total": "{amount} {symbol} à {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Actif",
+            "placeable": "Plaçable",
+            "cancelable": "Annulable",
+            "inactive": "Inactif"
+        },
+        "tooltip": {
+            "limitOrder": "Un ordre « Limite » vous permet de spécifier le prix exact auquel vous souhaitez acheter ou vendre un actif. Un ordre « Achat limité » ne sera exécuté qu'au prix spécifié ou inférieur, tandis qu'un ordre « Vente limité » ne sera exécuté qu'au prix spécifié ou supérieur. Ce contrôle garantit que vous ne payez pas plus ou ne vendez pas moins que ce avec quoi vous êtes à l'aise.",
+            "marketOrder": "Un « ordre au marché » est un ordre d'achat ou de vente immédiat au meilleur prix actuel disponible. Cela ne nécessite pas de fixer un prix, ce qui garantit une exécution rapide, mais avec pour contrepartie un contrôle moindre sur le prix reçu ou payé. Ce type d'ordre est utilisé lorsque la certitude de l'exécution prime sur le contrôle des prix.",
+            "pairsList": "Une liste en temps réel affichant les ordres d’achat et de vente en cours pour une cryptomonnaie. Il vous aide à comprendre la demande, l'orientation potentielle des prix et le volume des échanges sur le réseau SORA et Polkaswap DEX.",
+            "bookWidget": "Un enregistrement en direct et constamment mis à jour des ordres d'achat (offre) et de vente (demande) pour un actif spécifique, organisés par niveau de prix. Le carnet de commandes affiche la profondeur du marché, y compris les quantités d'actifs proposés à différents prix. Les traders utilisent cette vue détaillée pour évaluer le sentiment du marché, identifier les niveaux potentiels de résistance et de support et anticiper les mouvements de prix en fonction de la demande et de l'offre existantes.",
+            "marketWidget": "Ce widget affiche un flux en temps réel des transactions exécutées sur le marché, fournissant des informations sur les volumes de transactions, l'activité récente et les tendances actuelles du marché. En observant le timing, le prix et la taille des transactions réelles, les traders peuvent obtenir des informations sur la dynamique et le sentiment du marché, les aidant ainsi à repérer les opportunités de trading et à prendre des décisions éclairées.",
+            "txDetails": {
+                "orderType": "L'ordre « d'achat » ne sera exécuté qu'au prix spécifié ou inférieur, tandis qu'un ordre « de vente » ne sera exécuté qu'au prix spécifié ou supérieur. Ce contrôle garantit que vous ne payez pas plus ou ne vendez pas moins que ce avec quoi vous êtes à l'aise.",
+                "expiryDate": "La « Date d'expiration » est la date limite d'exécution de votre ordre. Si le marché n'atteint pas votre prix spécifié avant cette date, l'ordre est automatiquement annulé. Vous n'êtes pas obligé d'attendre perpétuellement si les conditions du marché ne correspondent pas à vos préférences de trading.",
+                "amount": "Le « Montant » fait référence au nombre total d'actifs que vous souhaitez acheter ou vendre dans le cadre de votre ordre. Il est important de le préciser, car cela détermine la taille de votre transaction, ce qui a un impact sur le coût total des ordres d'achat ou sur les revenus des ordres de vente.",
+                "limit": "Le « Prix limite » est le prix précis que vous fixez pour un ordre limité. La transaction ne sera exécutée que lorsque le prix du marché de l'actif atteint votre prix limite, garantissant ainsi que vous n'achetez pas au-dessus ou ne vendez pas en dessous de cette valeur spécifiée.",
+                "locked": "Le « Verrouillé » indique le montant de l'actif à conserver pendant que l'ordre est en cours."
+            },
+            "bookStatus": {
+                "active": "Fonctionnalité de trading complète activée. Vous pouvez passer de nouvelles commandes ou annuler des commandes existantes.",
+                "placeable": "Fonctionnalité limitée. Vous pouvez passer de nouvelles commandes et annuler celles existantes, mais certaines fonctionnalités peuvent ne pas être disponibles.",
+                "cancelable": "Vous ne pouvez annuler que les commandes existantes. Le placement de nouvelles commandes est actuellement désactivé.",
+                "inactive": "Toutes les activités commerciales sont actuellement interrompues. Aucune commande ne peut être passée ou annulée pour le moment."
+            }
+        },
+        "txDetails": {
+            "orderType": "type de commande",
+            "limitPrice": "prix limite",
+            "expiryDate": "date d'expiration"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "Le prix saisi est trop précis pour être calculé",
+                "reading": "Précision dépassée : le montant\/prix saisi comporte trop de décimales. Veuillez saisir une valeur avec moins de décimales"
+            },
+            "marketNotAvailable": {
+                "reason": "Pas assez de commandes disponibles pour exécuter cette commande",
+                "reading": "Limitation des ordres au marché : il n’y a pas suffisamment d’ordres disponibles pour exécuter cet ordre au marché limité. Veuillez ajuster la taille de votre commande ou attendre que d'autres commandes soient passées"
+            },
+            "exceedsSpread": {
+                "reason": "Prix dépassé le spread",
+                "reading": "Prix dépassé : le prix acheteur ou vendeur d'un marché a dépassé son prix vendeur\/acheteur"
+            },
+            "spotLimit": {
+                "reason": "Le côté commercial a été rempli",
+                "reading": "Plafond de fourchette de prix : chaque côté du carnet de commandes est limité à 1 024 niveaux de prix uniques. Veuillez sélectionner un prix dans la fourchette existante ou attendre qu'une place se libère"
+            },
+            "accountLimit": {
+                "reason": "Trop de commandes sont en cours",
+                "reading": "Limite atteinte : Chaque compte est limité à 1024 ordres limités. Veuillez attendre que certaines de vos commandes soient exécutées"
+            },
+            "singlePriceLimit": {
+                "reason": "Trop de commandes sont en cours pour ce prix",
+                "reading": "Limite atteinte : Chaque position est limitée à 1024 ordres limités. Veuillez attendre que certaines commandes soient exécutées"
+            },
+            "outOfBounds": {
+                "reading": "Plage de la blockchain dépassée : le montant que vous avez saisi se situe en dehors de la plage autorisée de la blockchain. Min : {min} ; Max : {max}",
+                "reason": "Le montant ne respecte pas la plage de la blockchain"
+            },
+            "multipleOf": {
+                "reading": "Pour traiter votre commande, veuillez saisir un prix qui est un multiple de {value}",
+                "reason": "Le prix saisi est trop spécifique"
+            }
+        },
+        "orderStatus": {
+            "active": "Actif",
+            "canceled": "Annulé",
+            "expired": "Expiré",
+            "filled": "Rempli"
+        }
+    }
 }

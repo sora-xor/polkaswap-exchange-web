@@ -147,8 +147,8 @@
     </s-form>
     <swap-chart
       v-if="chartsEnabled"
-      :token-from="tokenFrom"
-      :token-to="tokenTo"
+      :base-asset="tokenFrom"
+      :quote-asset="tokenTo"
       :is-available="isAvailable"
       class="swap-chart"
     />
@@ -164,7 +164,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, MarketAlgorithms, PageNames, ZeroStringValue } from '@/consts';
+import { Components, MarketAlgorithms, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import {
@@ -176,10 +176,10 @@ import {
   getAssetBalance,
   debouncedInputHandler,
 } from '@/utils';
-import { DifferenceStatus, getDifferenceStatus } from '@/utils/swap';
+import { DifferenceStatus, getDifferenceStatus, calcFiatDifference } from '@/utils/swap';
 
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import type { LPRewardsInfo, SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
+import type { LPRewardsInfo, SwapQuote, Distribution } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/types';
 import type { DexId } from '@sora-substrate/util/build/dex/consts';
@@ -217,11 +217,12 @@ export default class Swap extends Mixins(
   @state.swap.isAvailable isAvailable!: boolean;
   @state.swap.swapQuote private swapQuote!: Nullable<SwapQuote>;
   @state.swap.allowLossPopup private allowLossPopup!: boolean;
+  @state.router.prev private prevRoute!: Nullable<PageNames>;
 
   @getter.assets.xor private xor!: AccountAsset;
-  @getter.swap.swapLiquiditySource private liquiditySource!: Nullable<LiquiditySourceTypes>;
+  @getter.swap.swapLiquiditySource liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.settings.chartsFlagEnabled chartsFlagEnabled!: boolean;
-  @getter.settings.nodeIsConnected private nodeIsConnected!: boolean;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
@@ -236,6 +237,7 @@ export default class Swap extends Mixins(
   @mutation.swap.setLiquidityProviderFee private setLiquidityProviderFee!: (value: CodecString) => void;
   @mutation.swap.setRewards private setRewards!: (rewards: Array<LPRewardsInfo>) => void;
   @mutation.swap.setRoute private setRoute!: (route: Array<string>) => void;
+  @mutation.swap.setDistribution private setDistribution!: (distribution: Distribution[][]) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
   @mutation.swap.setSubscriptionPayload private setSubscriptionPayload!: (payload?: SwapQuoteData) => void;
 
@@ -295,31 +297,18 @@ export default class Swap extends Mixins(
     return this.isZeroFromAmount && this.isZeroToAmount;
   }
 
-  get fromFiatAmount(): string {
-    if (!(this.tokenFrom && this.fromValue)) return ZeroStringValue;
-    return this.getFiatAmountByString(this.fromValue, this.tokenFrom) || ZeroStringValue;
+  get fromFiatAmount(): FPNumber {
+    if (!(this.tokenFrom && this.fromValue)) return FPNumber.ZERO;
+    return this.getFPNumberFiatAmountByFPNumber(new FPNumber(this.fromValue), this.tokenFrom) ?? FPNumber.ZERO;
   }
 
-  get toFiatAmount(): string {
-    if (!(this.tokenTo && this.toValue)) return ZeroStringValue;
-    return this.getFiatAmountByString(this.toValue, this.tokenTo) || ZeroStringValue;
+  get toFiatAmount(): FPNumber {
+    if (!(this.tokenTo && this.toValue)) return FPNumber.ZERO;
+    return this.getFPNumberFiatAmountByFPNumber(new FPNumber(this.toValue), this.tokenTo) ?? FPNumber.ZERO;
   }
 
   get fiatDifference(): string {
-    const thousandRegExp = new RegExp(`\\${FPNumber.DELIMITERS_CONFIG.thousand}`, 'g');
-    const decimalsRegExp = new RegExp(`\\${FPNumber.DELIMITERS_CONFIG.decimal}`, 'g');
-    const toNumberString = (value: string) => value.replace(thousandRegExp, '').replace(decimalsRegExp, '.');
-
-    const a = toNumberString(this.fromFiatAmount);
-    const b = toNumberString(this.toFiatAmount);
-
-    if (asZeroValue(a) || asZeroValue(b)) return '0';
-
-    const from = new FPNumber(a);
-    const to = new FPNumber(b);
-    const difference = to.sub(from).div(from).mul(this.Hundred).toFixed(2);
-
-    return difference;
+    return calcFiatDifference(this.fromFiatAmount, this.toFiatAmount).toFixed(2);
   }
 
   get fiatDifferenceFormatted(): string {
@@ -394,10 +383,12 @@ export default class Swap extends Mixins(
     );
   }
 
-  created() {
+  created(): void {
     this.withApi(async () => {
       this.parseCurrentRoute();
-      if (this.tokenFrom && this.tokenTo) {
+      // Need to wait the previous page beforeDestroy somehow to set the route params
+      // TODO: [STEFAN]: add the core logic for each component using common Mixin + vuex router module
+      if (this.tokenFrom && this.tokenTo && this.prevRoute !== PageNames.OrderBook) {
         this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
       } else if (this.isValidRoute && this.firstRouteAddress && this.secondRouteAddress) {
         await this.setTokenFromAddress(this.firstRouteAddress);
@@ -459,7 +450,7 @@ export default class Swap extends Mixins(
     try {
       const {
         dexId,
-        result: { amount, amountWithoutImpact, fee, rewards, route },
+        result: { amount, amountWithoutImpact, fee, rewards, route, distribution },
       } = this.swapQuote(
         (this.tokenFrom as Asset).address,
         (this.tokenTo as Asset).address,
@@ -473,6 +464,7 @@ export default class Swap extends Mixins(
       this.setLiquidityProviderFee(fee);
       this.setRewards(rewards);
       this.setRoute(route as string[]);
+      this.setDistribution(distribution as Distribution[][]);
       this.selectDexId(dexId);
     } catch (error: any) {
       console.error(error);
@@ -628,7 +620,7 @@ export default class Swap extends Mixins(
     max-width: $inner-window-width;
 
     @include desktop {
-      max-width: calc(#{$inner-window-width} * 2);
+      max-width: initial;
     }
   }
 }

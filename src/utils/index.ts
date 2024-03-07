@@ -2,6 +2,7 @@ import { FPNumber, CodecString } from '@sora-substrate/util';
 import { isNativeAsset } from '@sora-substrate/util/build/assets';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
 
 import { app, ZeroStringValue } from '@/consts';
@@ -19,6 +20,12 @@ import type { Route } from 'vue-router';
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
 
 type PoolAssets<T extends Asset> = { baseAsset: T; poolAsset: T };
+
+export async function waitUntil(condition: () => boolean): Promise<void> {
+  if (condition()) return;
+  await delay(250);
+  await waitUntil(condition);
+}
 
 export async function waitForSoraNetworkFromEnv(): Promise<WALLET_CONSTS.SoraNetwork> {
   return new Promise<WALLET_CONSTS.SoraNetwork>((resolve) => {
@@ -56,6 +63,10 @@ export const isMaxButtonAvailable = (
   xorAsset: AccountAsset | RegisteredAccountAsset,
   isXorOutputSwap = false
 ): boolean => {
+  if (store.state.wallet.settings.shouldBalanceBeHidden) {
+    return false; // MAX button behavior discloses hidden balance so it should be hidden in ANY case
+  }
+
   if (!asset || !xorAsset || asZeroValue(getAssetBalance(asset))) {
     return false;
   }
@@ -98,20 +109,37 @@ export const getMaxValue = (
   return getMaxBalance(asset, fee, { isExternalBalance, isExternalNative, isBondedBalance }).toString();
 };
 
-export const getDeltaPercent = (desiredPrice: FPNumber, currentPrice: FPNumber): FPNumber => {
-  const delta = desiredPrice.sub(currentPrice);
-  return delta.div(currentPrice).mul(FPNumber.HUNDRED);
+/** Change FPNumber precision (`FPNumber.dp()` has issues) */
+export const toPrecision = (value: FPNumber, precision: number): FPNumber => {
+  return new FPNumber(value.toFixed(precision), precision);
+};
+
+/**
+ * Returns formatted value in most suitable form
+ * @param value
+ *
+ * 0.152345 -> 0.15
+ * 0.000043 -> 0.000043
+ */
+export const showMostFittingValue = (
+  value: FPNumber,
+  precisionForLowCostAsset = FPNumber.DEFAULT_PRECISION
+): string => {
+  const [integer, decimal = '00'] = value.toString().split('.');
+  const precision = parseInt(integer) > 0 ? 2 : Math.min(decimal.search(/[1-9]/) + 2, precisionForLowCostAsset);
+
+  return toPrecision(value, precision).toLocaleString();
 };
 
 export const hasInsufficientBalance = (
   asset: AccountAsset | RegisteredAccountAsset,
   amount: string | number,
   fee: CodecString,
-  isExternalBalance = false,
-  isBondedBalance = false
+  { isExternalBalance = false, isExternalNative = false, isBondedBalance = false } = {}
 ): boolean => {
-  const fpAmount = new FPNumber(amount, asset.decimals);
-  const fpMaxBalance = getMaxBalance(asset, fee, { isExternalBalance, isBondedBalance });
+  const decimals = getAssetDecimals(asset, { internal: !isExternalBalance }) as number;
+  const fpAmount = new FPNumber(amount, decimals);
+  const fpMaxBalance = getMaxBalance(asset, fee, { isExternalBalance, isExternalNative, isBondedBalance });
 
   return FPNumber.lt(fpMaxBalance, fpAmount);
 };
@@ -145,8 +173,16 @@ export const getWalletAddress = (): string => {
   return storage.get('address');
 };
 
-export async function delay(ms = 50): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, ms));
+export async function delay(ms = 50, success = true): Promise<void> {
+  return await new Promise((resolve, reject) => setTimeout(success ? resolve : reject, ms));
+}
+
+export async function conditionalAwait(func: AsyncFnWithoutArgs, wait: boolean): Promise<void> {
+  if (wait) {
+    await func();
+  } else {
+    func();
+  }
 }
 
 export const asZeroValue = (value: any): boolean => {
@@ -206,6 +242,29 @@ export const updateFpNumberLocale = (locale: string): void => {
   }
 
   FPNumber.DELIMITERS_CONFIG.decimal = Number(1.2).toLocaleString(locale).substring(1, 2);
+};
+
+/** It's used to set css classes for mobile. `[mobile, android | windows | ios]` or `undefined` */
+export const getMobileCssClasses = () => {
+  const win: typeof window & Record<string, any> = window;
+  const userAgent = navigator.userAgent || navigator.vendor || win.opera;
+  const mobileClass = 'mobile';
+  // Windows Phone must come first because its UA also contains "Android"
+  if (/windows phone/i.test(userAgent)) {
+    return [mobileClass, 'windows'];
+  }
+  if (/android/i.test(userAgent)) {
+    return [mobileClass, 'android'];
+  }
+  // iOS detection from: http://stackoverflow.com/a/9039885/177710
+  if (/iPad|iPhone|iPod/.test(userAgent) && !win.MSStream) {
+    return [mobileClass, 'ios'];
+  }
+  // The only difference between iPadPro and the other macos platforms is that iPadPro is touch enabled.
+  if (navigator?.maxTouchPoints > 2 && /Mac/.test(userAgent)) {
+    return [mobileClass, 'ios'];
+  }
+  return undefined;
 };
 
 export const updateDocumentTitle = (to?: Route) => {
@@ -322,3 +381,5 @@ export const sortPools = <T extends Asset>(a: PoolAssets<T>, b: PoolAssets<T>) =
 
   return byBaseAsset === 0 ? sortAssets(a.poolAsset, b.poolAsset) : byBaseAsset;
 };
+
+export const calcElScrollGutter: () => number = scrollbarWidth;

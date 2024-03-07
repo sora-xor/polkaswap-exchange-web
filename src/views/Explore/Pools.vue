@@ -36,8 +36,25 @@
           </div>
         </template>
       </s-table-column>
+      <!-- Price -->
+      <s-table-column width="130" header-align="right" align="right">
+        <template #header>
+          <sort-button name="priceUSD" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="explore-table__primary">Price</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <formatted-amount
+            is-fiat-value
+            fiat-default-rounding
+            :font-weight-rate="FontWeightRate.MEDIUM"
+            :value="row.priceUSDFormatted"
+            class="explore-table-item-price"
+          />
+        </template>
+      </s-table-column>
       <!-- APY -->
-      <s-table-column v-if="hasApyColumnData" key="apy" width="120" header-align="right" align="right">
+      <s-table-column width="120" header-align="right" align="right">
         <template #header>
           <sort-button name="apy" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">APY</span>
@@ -59,16 +76,33 @@
                 value-can-be-hidden
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
-                class="explore-table-item-price explore-table-item-amount"
-              >
-              </formatted-amount>
+                class="explore-table-item-token"
+              />
+              <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
+            </div>
+          </div>
+        </template>
+      </s-table-column>
+      <!-- Pool tokens -->
+      <s-table-column width="200" header-align="right" align="right">
+        <template #header>
+          <span class="explore-table__primary">Pool Tokens</span>
+        </template>
+        <template v-slot="{ row }">
+          <div class="explore-table-item-tokens">
+            <div v-for="({ asset, balance }, index) in row.poolTokens" :key="index" class="explore-table-cell">
+              <formatted-amount
+                :font-size-rate="FontSizeRate.SMALL"
+                :value="balance"
+                class="explore-table-item-token"
+              />
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
             </div>
           </div>
         </template>
       </s-table-column>
       <!-- TVL -->
-      <s-table-column v-if="pricesAvailable" key="tvl" width="104" header-align="right" align="right">
+      <s-table-column key="tvl" width="104" header-align="right" align="right">
         <template #header>
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
@@ -78,14 +112,16 @@
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <formatted-amount
-            is-fiat-value
-            :font-weight-rate="FontWeightRate.MEDIUM"
-            :value="row.tvlFormatted.amount"
-            class="explore-table-item-price explore-table-item-amount"
-          >
-            {{ row.tvlFormatted.suffix }}
-          </formatted-amount>
+          <data-row-skeleton :loading="!pricesAvailable" rect>
+            <formatted-amount
+              is-fiat-value
+              :font-weight-rate="FontWeightRate.MEDIUM"
+              :value="row.tvlFormatted.amount"
+              class="explore-table-item-price explore-table-item-amount"
+            >
+              {{ row.tvlFormatted.suffix }}
+            </formatted-amount>
+          </data-row-skeleton>
         </template>
       </s-table-column>
     </s-table>
@@ -104,80 +140,85 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
-import { api, components } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@soramitsu/soraneo-wallet-web';
+import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import PoolApyMixin from '@/components/mixins/PoolApyMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
+import { fetchPoolsData } from '@/indexer/queries/pools';
+import type { PoolData } from '@/indexer/queries/pools';
 import { lazyComponent } from '@/router';
-import { state, getter } from '@/store/decorators';
+import { state } from '@/store/decorators';
 import type { AmountWithSuffix } from '@/types/formats';
-import { formatAmountWithSuffix, formatDecimalPlaces, asZeroValue, sortPools } from '@/utils';
+import { formatAmountWithSuffix, formatDecimalPlaces, sortPools } from '@/utils';
 
-import type { Asset, Whitelist } from '@sora-substrate/util/build/assets/types';
+import type { Asset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+
+type PoolToken = {
+  asset: Asset;
+  balance: string;
+};
 
 type TableItem = {
   baseAsset: Asset;
   targetAsset: Asset;
+  priceUSD: number;
+  priceUSDFormatted: string;
   apy: number;
   apyFormatted: string;
   tvl: number;
   tvlFormatted: AmountWithSuffix;
   isAccountItem: boolean;
-  accountTokens: { asset: Asset; balance: string }[];
+  poolTokens: PoolToken[];
+  accountTokens: PoolToken[];
 };
 
 @Component({
   components: {
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     SortButton: lazyComponent(Components.SortButton),
+    DataRowSkeleton: lazyComponent(Components.DataRowSkeleton),
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMixin, PoolApyMixin) {
+export default class ExplorePools extends Mixins(ExplorePageMixin) {
   @state.pool.accountLiquidity private accountLiquidity!: Array<AccountLiquidity>;
-  @getter.wallet.account.whitelist private whitelist!: Whitelist;
 
-  // override ExplorePageMixin
-  order = SortDirection.DESC;
-  property = 'tvl';
-
-  poolReserves: Record<string, string[]> = {};
+  private poolsData: readonly PoolData[] = [];
 
   get items(): TableItem[] {
-    const items = Object.entries(this.poolReserves).reduce<any>((buffer, [key, reserves]) => {
-      // dont show empty pools
-      if (reserves.some((reserve) => asZeroValue(reserve))) return buffer;
+    const items = this.poolsData.reduce<any>((buffer, pool) => {
+      const { baseAssetId, targetAssetId, priceUSD, apy } = pool;
 
-      const matches = key.match(/0x\w{64}/g);
-
-      if (!matches || !matches[0] || !matches[1] || !this.whitelist[matches[0]] || !this.whitelist[matches[1]])
-        return buffer;
-
-      const baseAsset = this.getAsset(matches[0]);
-      const targetAsset = this.getAsset(matches[1]);
+      const baseAsset = this.getAsset(baseAssetId);
+      const targetAsset = this.getAsset(targetAssetId);
 
       if (!(baseAsset && targetAsset)) return buffer;
 
       const name = `${baseAsset.symbol}-${targetAsset.symbol}`; // For search
 
+      const baseAssetReserves = FPNumber.fromCodecValue(pool.baseAssetReserves ?? 0, baseAsset.decimals);
+      const targetAssetReserves = FPNumber.fromCodecValue(pool.targetAssetReserves ?? 0, targetAsset.decimals);
+      const tvlUSD = targetAssetReserves.mul(priceUSD).mul(FPNumber.TWO);
+
+      const poolTokens = [
+        {
+          asset: baseAsset,
+          balance: formatDecimalPlaces(baseAssetReserves),
+        },
+        {
+          asset: targetAsset,
+          balance: formatDecimalPlaces(targetAssetReserves),
+        },
+      ];
+
       const accountPool = this.accountLiquidity.find(
         (liquidity) => liquidity.firstAddress === baseAsset.address && liquidity.secondAddress === targetAsset.address
       );
-
-      const fpBaseAssetPrice = FPNumber.fromCodecValue(this.getAssetFiatPrice(baseAsset) ?? 0);
-      const fpBaseAssetReserves = FPNumber.fromCodecValue(reserves[0] ?? 0);
-      const fpApy = FPNumber.fromCodecValue(this.getPoolApy(baseAsset.address, targetAsset.address) ?? 0).mul(
-        FPNumber.HUNDRED
-      );
-      const fpTvl = fpBaseAssetPrice.mul(fpBaseAssetReserves).mul(new FPNumber(2));
-
       const accountTokens = [
         {
           asset: baseAsset,
@@ -193,12 +234,15 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
         name,
         baseAsset,
         targetAsset,
-        apy: fpApy.toNumber(),
-        apyFormatted: formatDecimalPlaces(fpApy, true),
-        tvl: fpTvl.toNumber(),
-        tvlFormatted: formatAmountWithSuffix(fpTvl),
+        priceUSD: priceUSD.toNumber(),
+        priceUSDFormatted: priceUSD.toLocaleString(),
+        apy: apy.toNumber(),
+        apyFormatted: formatDecimalPlaces(apy, true),
+        tvl: tvlUSD.toNumber(),
+        tvlFormatted: formatAmountWithSuffix(tvlUSD),
         isAccountItem: !!accountPool,
         accountTokens,
+        poolTokens,
       });
 
       return buffer;
@@ -214,19 +258,15 @@ export default class ExplorePools extends Mixins(ExplorePageMixin, TranslationMi
     return defaultSorted;
   }
 
-  get preparedItems(): TableItem[] {
+  get prefilteredItems(): TableItem[] {
     return this.isAccountItemsOnly ? this.items.filter((item) => item.isAccountItem) : this.items;
-  }
-
-  get hasApyColumnData(): boolean {
-    return this.items.some((item) => item.apy !== 0);
   }
 
   // ExplorePageMixin method implementation
   async updateExploreData(): Promise<void> {
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
-        this.poolReserves = Object.freeze(await api.poolXyk.getAllReserves());
+        this.poolsData = Object.freeze(await fetchPoolsData(this.allowedAssets));
       });
     });
   }

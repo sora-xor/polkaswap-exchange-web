@@ -49,7 +49,23 @@
             "DemeterFarmingGetRewards": "{amount} {symbol} uspješno potraživan",
             "EthBridgeIncoming": "Preneseno {amount} {symbol} s {Ethereum} na {Sora}",
             "EthBridgeOutgoing": "Preneseno {amount} {symbol} s {Sora} na {Ethereum}",
-            "SwapTransferBatch": "{action} {amount} {symbol}"
+            "SwapTransferBatch": "{action} {amount} {symbol}",
+            "StakingBondAndNominate": "Povezano {amount} {symbol}",
+            "StakingBond": "Povezano {amount} {symbol}",
+            "StakingBondExtra": "Povezani dodatni {amount} {symbol}",
+            "StakingUnbond": "Bez obveznice {amount} {symbol}",
+            "StakingRebond": "Vraćeno {amount} {symbol}",
+            "StakingNominate": "Nominirani validatori",
+            "StakingWithdrawUnbonded": "Povučeno {amount} {symbol}",
+            "StakingPayout": "Nagrade za isplatu",
+            "StakingChill": "Ohladite se",
+            "StakingSetController": "Postavi kontroler {address}",
+            "StakingSetPayee": "Postavi primatelja {address}",
+            "OrderBookPlaceLimitOrder": "Postavljeno {side} {amount} {symbol} po {price} {symbol2}",
+            "OrderBookCancelLimitOrder": "Ograničeni nalog je otkazan",
+            "OrderBookCancelLimitOrders": "Ograničene narudžbe su otkazane",
+            "Burn": "Spaljeno {amount} {symbol}",
+            "Mint": "Kovano {amount} {symbol} na {address}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} nije uspio",
@@ -70,7 +86,23 @@
             "DemeterFarmingGetRewards": "Nije uspjelo potraživanje {symbol}",
             "EthBridgeIncoming": "Prijenos {amount} {symbol} iz {Ethereum} u {Sora} nije uspio",
             "EthBridgeOutgoing": "Prijenos {amount} {symbol} iz {Sora} u {Ethereum} nije uspio",
-            "SwapTransferBatch": "{action} {amount} {symbol} nije uspio"
+            "SwapTransferBatch": "{action} {amount} {symbol} nije uspio",
+            "StakingBondAndNominate": "Povezati {amount} {symbol} nije uspjelo",
+            "StakingBond": "Povezati {amount} {symbol} nije uspjelo",
+            "StakingBondExtra": "Nije uspjelo uplatiti dodatnih {amount} {symbol}",
+            "StakingUnbond": "Nije uspjelo razdvojiti {amount} {symbol}",
+            "StakingRebond": "Nije uspjelo vraćanje {amount} {symbol}",
+            "StakingNominate": "Nije uspjelo imenovanje validatora",
+            "StakingWithdrawUnbonded": "Nije uspjelo podizanje {amount} {symbol}",
+            "StakingPayout": "Isplata nagrada nije uspjela",
+            "StakingChill": "Hlađenje nije uspjelo",
+            "StakingSetController": "Nije uspjelo postavljanje kontrolera {address}",
+            "StakingSetPayee": "Nije uspjelo postavljanje primatelja {address}",
+            "OrderBookPlaceLimitOrder": "Nije uspjelo postavljanje ograničene narudžbe od {amount} {symbol} po {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Otkazivanje ograničenih naloga nije uspjelo",
+            "OrderBookCancelLimitOrder": "Otkazivanje ograničenog naloga nije uspjelo",
+            "Burn": "Nije uspjelo spaljivanje {amount} {symbol}",
+            "Mint": "Nije uspjelo kovati {amount} {symbol} na {address}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -83,7 +115,23 @@
         "DemeterFarmingGetRewards": "Zatražite nagrade",
         "EthBridgeIncoming": "@:hashiBridgeText",
         "EthBridgeOutgoing": "@:hashiBridgeText",
-        "SwapTransferBatch": "{ADAR} Prijenos"
+        "SwapTransferBatch": "{ADAR} Prijenos",
+        "StakingBondAndNominate": "Poveži i nominiraj",
+        "StakingBond": "Bond",
+        "StakingBondExtra": "Bond Extra",
+        "StakingUnbond": "Unbond",
+        "StakingRebond": "Ponovno povezivanje",
+        "StakingNominate": "nominirati",
+        "StakingWithdrawUnbonded": "Povući bez obveznica",
+        "StakingPayout": "Nagrade za isplatu",
+        "StakingChill": "Ohladite se",
+        "StakingSetController": "Postavite kontroler",
+        "StakingSetPayee": "Postavite primatelja uplate",
+        "OrderBookPlaceLimitOrder": "Naručiti",
+        "OrderBookCancelLimitOrder": "Otkazati narudžbu",
+        "OrderBookCancelLimitOrders": "Otkaži narudžbe",
+        "Burn": "Spaliti",
+        "Mint": "Kovnica"
     },
     "polkadotjs": {
         "noExtensions": "Nije pronađeno proširenje {PolkadotJs}. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -306,7 +354,9 @@
         "referrer": "Preporučitelj",
         "referral": "Preporuka",
         "adarTxDetailsTitle": "Detalji transakcije",
-        "comment": "Komentar"
+        "comment": "Komentar",
+        "price": "Cijena",
+        "side": "Strana"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Promijenite mrežu u novčaniku",
@@ -344,7 +394,10 @@
         "Explore\/Pools": "Bazeni",
         "Explore\/Staking": "Ulaganje",
         "Explore\/Farming": "Farmanje",
-        "Staking": "Ulaganje"
+        "Staking": "Ulaganje",
+        "OrderBook": "Trgovina",
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Zamijenite",
@@ -358,7 +411,9 @@
         "CreatePair": "Stvorite par",
         "StakingContainer": "Ulaganje",
         "Explore\/Container": "Istražiti",
-        "SoraCard": "Kartica {Sora}"
+        "SoraCard": "Kartica {Sora}",
+        "OrderBook": "Trgovina",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -759,7 +814,8 @@
             "checkExtension": "Proširenje {name} je zauzeto, provjerite ga",
             "extensionLogin": "Prijavite se u proširenju {name}",
             "installExtension": "Proširenje {name} nije pronađeno. Molim vas, instalirajte ga!\n\nVeć instalirano proširenje? Ponovno učitajte stranicu",
-            "reloadPage": "Ponovno učitajte stranicu"
+            "reloadPage": "Ponovno učitajte stranicu",
+            "notAvailable": "{name} nije dostupan."
         }
     },
     "selectLanguageDialog": {
@@ -955,9 +1011,6 @@
         "calculator": "Kalkulator",
         "results": "Rezultati",
         "rewards": "{symbol} nagrada"
-    },
-    "staking": {
-        "title": "Ulaganje"
     },
     "historyErrorMessages": {
         "generalError": "Nešto je pošlo po zlu",
@@ -1233,5 +1286,274 @@
     "exceededAmountText": "{amount} premašeno",
     "multipleRecipients": "Višestruki primatelji",
     "disconnectWalletText": "Prekini vezu",
-    "connectEthereumWalletText": "Povežite {Ethereum} novčanik"
+    "connectEthereumWalletText": "Povežite {Ethereum} novčanik",
+    "soraStaking": {
+        "dropdownMenu": {
+            "pendingRewards": "Nagrade na čekanju",
+            "controllerAccount": "Račun kontrolora"
+        },
+        "actions": {
+            "claim": "Zatražite nagrade",
+            "remove": "Uklonite ulog",
+            "more": "Uložite više",
+            "confirm": "Potvrdite iskolčenje",
+            "withdraw": "Povući"
+        },
+        "overview": {
+            "title": "{Sora} Staking",
+            "description": "Ulog {XOR} tokeni na mreži {Sora} kao nominator za provjeru valjanosti transakcija i zarađivanje nagrada za tokene {VAL}."
+        },
+        "newStake": {
+            "title": "Počnite ulagati",
+            "minStakeWarning": "Minimalni ulog za dobivanje nagrade je {min} {symbol}"
+        },
+        "validators": {
+            "save": "Spremi promjene",
+            "selected": "{selected} \/ {total} odabrano",
+            "recommended": "Preporučeni validatori",
+            "change": "Promjena validatora",
+            "select": "Odaberite validatore",
+            "next": "Sljedeći",
+            "alreadyNominated": "Odabrani validatori već su imenovani",
+            "tooManyValidators": "Odabrano je previše validatora ( {Max} {max} )"
+        },
+        "validatorsList": {
+            "search": "Traži...",
+            "name": "Ime",
+            "noNominatedValidators": "Nemate nijednog imenovanog validatora",
+            "noValidators": "Nema validatora koji zadovoljavaju navedeni filter",
+            "commission": "Komisija",
+            "commissionTooltip": "Provizija se odnosi na naknadu koju naplaćuju validatori za svoje usluge u procesu isplate. Ova naknada, izražena kao postotak, oduzima se od nagrada za ulog koje zarade nominatori prije distribucije. Važno je napomenuti da validatori mogu prilagoditi svoje stope provizije u bilo kojem trenutku",
+            "return": "Povratak"
+        },
+        "info": {
+            "unstaking": "Unstaking",
+            "stakingBalance": "Staking bilanca",
+            "rewarded": "Nagrađeni",
+            "totalLiquidityStaked": "Uložena ukupna likvidnost",
+            "rewardToken": "Token nagrade",
+            "unstakingPeriod": "Razdoblje nepolaganja",
+            "minimumStake": "Minimalni ulog",
+            "nominators": "Nominatori",
+            "validators": "Validatori",
+            "selectedValidators": "Odabrani validatori"
+        },
+        "validatorsFilterDialog": {
+            "title": "Filteri",
+            "save": "Spremi filter",
+            "reset": "Resetiraj sve",
+            "filters": {
+                "hasIdentity": {
+                    "name": "Identitet na lancu",
+                    "description": "Najmanje jedan identitetski kontakt povezan s računom"
+                },
+                "notSlashed": {
+                    "name": "Nije zarezano",
+                    "description": "Nisu iskusili nikakve kazne ili smanjenja svojih uloženih sredstava zbog lošeg ponašanja ili kršenja protokola."
+                },
+                "notOversubscribed": {
+                    "name": "Nije pretplaćen",
+                    "description": "Račun unutar ograničenja dodjele, izbjegava kazne za prekomjernu pretplatu na {Polkadot} ulaganje."
+                },
+                "twoValidatorsPerIdentity": {
+                    "name": "Ograničenje od 2 validatora po identitetu",
+                    "description": "Najviše dva validatora po identitetu za promicanje decentralizacije i sprječavanje koncentracije moći."
+                }
+            }
+        },
+        "validatorsDialog": {
+            "title": {
+                "edit": "Uredi moje validatore"
+            },
+            "tabs": {
+                "user": "Vaši validatori",
+                "all": "Svi validatori"
+            }
+        },
+        "validatorsAttentionDialog": {
+            "title": "Pažnja",
+            "description": [
+                "Prijedlozi algoritamskog validatora ne predstavljaju financijsku konzultaciju ili savjet. Staking je visokorizična aktivnost, a prijedlozi algoritamskih validatora ne moraju nužno umanjiti ovaj rizik.",
+                "Validator koji je predložio algoritam i dalje bi se mogao smanjiti. Validator kojeg predlaže algoritam također može promijeniti svoje parametre (npr. stope provizije, itd.) u bilo kojem trenutku nakon što je predložen i\/ili odabran.",
+                "Mogli biste izgubiti žetone ili nagrade iz ovih ili drugih razloga. Uložite samo tokene i koristite prijedloge validatora prema vlastitom nahođenju, nakon provođenja dužne pažnje i pažljivog razmatranja uključenih rizika."
+            ],
+            "confirm": "Da, razumijem rizik"
+        },
+        "pendingRewardsDialog": {
+            "noPendingRewards": "Nema nagrada na čekanju",
+            "information": "Validatori isplaćuju nagrade svakih 2-5 dana. Međutim, možete ih sami isplatiti, posebno ako su nagrade blizu isteka, ali ćete platiti naknadu.",
+            "title": "Nagrade na čekanju",
+            "noSelectedRewards": "Odaberite nagrade",
+            "payout": "Isplata"
+        },
+        "selectValidatorsMode": {
+            "title": "Ulog s validatorima koje predlaže algoritam",
+            "description": "{Sora} mrežni algoritam odabrao je popis preporučenih validatora na temelju kriterija:",
+            "criteria": [
+                "Najisplativije",
+                "Nije pretplaćen",
+                "Imati onchain identitet",
+                "Nije zarezano",
+                "Ograničenje od 2 validatora po identitetu"
+            ],
+            "confirm": {
+                "suggested": "Ulog s predloženim",
+                "manual": "Sam ću odabrati validatore"
+            }
+        },
+        "claimRewardsDialog": {
+            "title": "Zatražite nagrade",
+            "checkRewards": "Provjerite nagrade po razdoblju i validatoru",
+            "rewardsDestination": "Odredišna adresa nagrada"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Može se povući",
+            "beingWithdrawn": "Biti povučen",
+            "seeAll": "Vidi sve",
+            "nextWithdrawal": "Sljedeće povlačenje",
+            "countdownLeft": "još"
+        },
+        "stakeDialog": {
+            "toStake": "Uložiti ulog",
+            "toRemove": "Ukloniti"
+        },
+        "withdrawDialog": {
+            "title": "Povucite neuložena sredstva",
+            "showAllWithdraws": "Prikaži sva povlačenja"
+        },
+        "allWithdrawsDialog": {
+            "title": "Neuvjetna aktivnost",
+            "information": "Nakon što poništite ulog tokena, postoji obvezno razdoblje od 7 dana. Nakon tog razdoblja, vaši tokeni neće biti automatski vraćeni u vaš novčanik. Morate dovršiti postupak ručnim povlačenjem tokena."
+        }
+    },
+    "collapseText": "Kolaps",
+    "expandText": "Proširiti",
+    "orderBook": {
+        "Buy": "Kupi {asset}",
+        "Sell": "Prodaj {asset}",
+        "orderBook": "Knjiga narudžbi",
+        "marketTrades": "Trgovine na tržištu",
+        "market": "Tržište",
+        "limit": "Ograničiti",
+        "price": "Cijena",
+        "total": "Ukupno",
+        "amount": "iznos",
+        "time": "vrijeme",
+        "month": "mjesec",
+        "change": "promijeniti",
+        "cantPlaceOrder": "Ne mogu naručiti",
+        "enterAmount": "Unesite iznos",
+        "setPrice": "Postavite cijenu",
+        "dayVolume": "1D volumen",
+        "stop": "Knjiga zaustavljena",
+        "tokenPair": "Par tokena",
+        "book": {
+            "noAsks": "Nema otvorenih upita",
+            "noBids": "Nema otvorenih ponuda"
+        },
+        "history": {
+            "tradeHistory": "Povijest trgovine",
+            "orderHistory": "Povijest Reda",
+            "openOrders": "Otvorene narudžbe {value}",
+            "connect": "Povežite račun za početak trgovanja",
+            "cancel": "Otkaži narudžbu {value}",
+            "cancelAll": "Otkaži sve"
+        },
+        "orderTable": {
+            "time": "vrijeme",
+            "pair": "par",
+            "side": "strana",
+            "filled": "ispunjena",
+            "lifetime": "doživotno",
+            "noOrders": "Nema narudžbi. Kreirajte svoju prvu!"
+        },
+        "dialog": {
+            "placeMarket": "Postavite tržišni nalog",
+            "placeLimit": "Stavite ograničenu narudžbu",
+            "askCancel": "Jeste li sigurni da želite otkazati sve otvorene narudžbe?",
+            "cancelAll": "Da, otkaži sve",
+            "buy": "Kupite {amount} {symbol}",
+            "sell": "Prodaj {amount} {symbol}",
+            "at": "po {price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "Odaberite trgovinski par",
+            "volume": "Volumen",
+            "dailyChange": "Dnevna promjena",
+            "status": "Status",
+            "total": "{amount} {symbol} na {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Aktivan",
+            "placeable": "Može se postaviti",
+            "cancelable": "Može se otkazati",
+            "inactive": "Neaktivan"
+        },
+        "tooltip": {
+            "limitOrder": "'Limit' nalog vam omogućuje da odredite točnu cijenu po kojoj želite kupiti ili prodati imovinu. Nalog 'Ograničena kupnja' bit će izvršen samo po navedenoj cijeni ili nižoj, dok će se nalog 'Ograničena prodaja' izvršiti samo po navedenoj cijeni ili višoj. Ova kontrola osigurava da ne plaćate više ili prodajete za manje nego što vam odgovara.",
+            "marketOrder": "'Tržišni nalog' je nalog za trenutnu kupnju ili prodaju po najboljoj dostupnoj trenutnoj cijeni. Ne zahtijeva postavljanje cijene, osigurava brzo izvršenje, ali uz kompromis manje kontrole nad primljenom ili plaćenom cijenom. Ova vrsta naloga koristi se kada je sigurnost izvršenja prioritet nad kontrolom cijene.",
+            "pairsList": "Popis u stvarnom vremenu koji prikazuje trenutne naloge za kupnju i prodaju kriptovalute. Pomaže vam razumjeti potražnju, potencijalni smjer cijene i obujam trgovine na mreži SORA i Polkaswap DEX",
+            "bookWidget": "Živi, stalno ažurirani zapis naloga za kupnju (ponudu) i prodaju (traženje) za određenu imovinu, organiziran prema razini cijene. Knjiga naloga prikazuje dubinu tržišta, uključujući količine imovine koja se nudi po različitim cijenama. Trgovci koriste ovaj detaljan prikaz kako bi procijenili raspoloženje na tržištu, identificirali potencijalne razine otpora i podrške te predvidjeli kretanja cijena na temelju postojeće potražnje i ponude",
+            "marketWidget": "Ovaj widget prikazuje tok izvršenih trgovanja na tržištu u stvarnom vremenu, pružajući informacije o količini transakcija, nedavnoj aktivnosti i trenutnim tržišnim trendovima. Promatrajući vrijeme, cijenu i veličinu stvarnih trgovina, trgovci mogu dobiti uvid u tržišnu dinamiku i raspoloženje, pomažući im da uoče prilike za trgovanje i donesu informirane odluke",
+            "txDetails": {
+                "orderType": "Nalog 'Kupnja' bit će izvršen samo po navedenoj cijeni ili nižoj, dok će nalog 'Prodaja' biti izvršen samo po navedenoj cijeni ili višoj. Ova kontrola osigurava da ne plaćate više ili prodajete za manje nego što vam odgovara.",
+                "expiryDate": "'Datum isteka' je rok za izvršenje vaše narudžbe. Ako tržište ne dosegne vašu navedenu cijenu prije tog datuma, narudžba se automatski poništava. Niste vezani za vječno čekanje ako tržišni uvjeti nisu u skladu s vašim preferencijama trgovanja.",
+                "amount": "'Iznos' se odnosi na ukupan broj sredstava koje želite kupiti ili prodati u svojoj narudžbi. Važno je to navesti jer određuje veličinu vaše transakcije, utječući na ukupne troškove za narudžbe za kupnju ili prihod za narudžbe za prodaju.",
+                "limit": "'Ograničena cijena' je točna cijena koju postavite za ograničenu narudžbu. Trgovina će se izvršiti samo kada tržišna cijena imovine dostigne vašu ograničenu cijenu, čime se osigurava da ne kupujete iznad ili prodajete ispod navedene vrijednosti.",
+                "locked": "'Zaključano' prikazuje količinu imovine koju treba zadržati dok je narudžba u tijeku."
+            },
+            "bookStatus": {
+                "active": "Omogućena potpuna funkcionalnost trgovanja. Možete postaviti nove narudžbe ili otkazati postojeće.",
+                "placeable": "Ograničena funkcionalnost. Možete postaviti nove narudžbe i otkazati postojeće, ali neke značajke možda neće biti dostupne.",
+                "cancelable": "Možete otkazati samo postojeće narudžbe. Nova narudžba trenutno je onemogućena.",
+                "inactive": "Sve trgovinske aktivnosti trenutno su zaustavljene. U ovom trenutku nije moguće postaviti niti otkazati narudžbe."
+            }
+        },
+        "txDetails": {
+            "orderType": "vrsta naloga",
+            "limitPrice": "granična cijena",
+            "expiryDate": "datum isteka"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "Unesena cijena je precizna za izračunavanje",
+                "reading": "Preciznost premašena: Uneseni iznos\/cijena ima previše decimalnih mjesta. Unesite vrijednost s manje decimalnih mjesta"
+            },
+            "marketNotAvailable": {
+                "reason": "Nema dovoljno dostupnih narudžbi za ispunjavanje ove narudžbe",
+                "reading": "Ograničenje tržišnog naloga: nema dovoljno dostupnih naloga za ispunjavanje ovog ograničenog tržišnog naloga. Prilagodite veličinu svoje narudžbe ili pričekajte da se pošalje više narudžbi"
+            },
+            "exceedsSpread": {
+                "reason": "Cijena premašila raspon",
+                "reading": "Premašena cijena: tržišna ponuda ili tražena cijena premašila je traženu\/ponuđenu cijenu"
+            },
+            "spotLimit": {
+                "reason": "Trgovačka strana je popunjena",
+                "reading": "Ograničenje raspona cijena: Svaka strana knjige narudžbi ograničena je na 1024 jedinstvena cjenovna boda. Odaberite cijenu unutar postojećeg raspona ili pričekajte da se oslobodi prostor"
+            },
+            "accountLimit": {
+                "reason": "U tijeku je previše narudžbi",
+                "reading": "Dosegnuto ograničenje: Svaki račun je ograničen na 1024 ograničene narudžbe. Pričekajte dok se neke od vaših narudžbi ne ispune"
+            },
+            "singlePriceLimit": {
+                "reason": "U tijeku je previše narudžbi za ovu cijenu",
+                "reading": "Dosegnuto ograničenje: Svaka pozicija ograničena je na 1024 ograničena naloga. Pričekajte dok se neke narudžbe ne ispune"
+            },
+            "outOfBounds": {
+                "reading": "Blockchain raspon premašen: Vaš uneseni iznos je izvan dopuštenog blockchaina raspona. Min: {min} ; Maks.: {max}",
+                "reason": "Iznos nije u skladu s rasponom blockchaina"
+            },
+            "multipleOf": {
+                "reading": "Za obradu vaše narudžbe unesite cijenu koja je višekratnik {value}",
+                "reason": "Unesena cijena je previše konkretna"
+            }
+        },
+        "orderStatus": {
+            "active": "Aktivan",
+            "canceled": "Otkazano",
+            "expired": "Istekao",
+            "filled": "Ispunjeno"
+        }
+    }
 }
