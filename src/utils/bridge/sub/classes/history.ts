@@ -224,7 +224,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     );
 
     if (messageDispatchedIndex === -1) {
-      throw new Error(`Message sent from SORA to network is not found in block "${networkBlockId}"`);
+      throw new Error(`[${history.id}] Message sent from SORA to network is not found in block "${networkBlockId}"`);
     }
 
     if (history.externalNetwork === SubNetworkId.Liberland) {
@@ -305,12 +305,18 @@ class SubBridgeHistory extends SubNetworksConnector {
         const blockEvents = await api.system.getBlockEvents(blockId, this.externalApi);
         const blockEventsReversed = [...blockEvents].reverse();
 
-        const messageQueueEventIndex = blockEventsReversed.findIndex(
-          ({ event }) =>
-            this.externalApi.events.messageQueue.Processed.is(event) && event.data[0].toString() === messageHash
-        );
+        const messageQueueEventIndex = blockEventsReversed.findIndex(({ event }) => {
+          if (this.externalApi.events.messageQueue.Processed.is(event)) {
+            return event.data[0].toString() === messageHash;
+          }
+          return false;
+        });
 
         if (messageQueueEventIndex === -1) continue;
+
+        history.externalBlockId = blockId;
+        history.externalBlockHeight = n;
+        history.to = formatSubAddress(history.to as string, this.externalApi.registry.chainSS58 as number);
 
         // Native token for network
         const receivedAmount = getDepositedBalance(
@@ -326,19 +332,19 @@ class SubBridgeHistory extends SubNetworksConnector {
 
         history.amount2 = amount;
         history.externalTransferFee = transferFee;
-        history.externalBlockId = blockId;
-        history.externalBlockHeight = n;
-        history.to = formatSubAddress(history.to as string, this.externalApi.registry.chainSS58 as number);
 
         return history;
-      } catch {
+      } catch (error) {
+        console.error(error);
         continue;
       }
     }
 
     console.info(
-      `Relaychain transaction for SORA Parachain block "${history.parachainBlockId}" not found in blocks range [${startSearch}; ${endSearch}]`
+      `[${history.id}] Relaychain transaction for SORA Parachain block "${history.parachainBlockId}" not found in blocks range [${startSearch}; ${endSearch}]`
     );
+
+    history.transactionState = BridgeTxStatus.Failed;
 
     return history;
   }
@@ -378,7 +384,9 @@ class SubBridgeHistory extends SubNetworksConnector {
     });
 
     if (!messageToSoraEvent) {
-      throw new Error(`Message sended to SORA from external network block "${networkBlockId}" not found`);
+      throw new Error(
+        `[${history.id}] Message sended to SORA from external network block "${networkBlockId}" not found`
+      );
     }
 
     const networkExtrinsicIndex = messageToSoraEvent.phase.asApplyExtrinsic.toNumber();
@@ -480,7 +488,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     }
 
     console.info(
-      `Relaychain transaction for SORA Parachain block "${history.parachainBlockId}" not found in blocks range [${endSearch}; ${startSearch}]`
+      `[${history.id}] Relaychain transaction for SORA Parachain block "${history.parachainBlockId}" not found in blocks range [${endSearch}; ${startSearch}]`
     );
 
     return history;
