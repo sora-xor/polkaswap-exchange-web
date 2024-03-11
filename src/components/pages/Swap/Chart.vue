@@ -840,14 +840,11 @@ export default class SwapChart extends Mixins(
         console.error
       );
     } else {
-      return this.$watch(
-        () => this.fiatPriceObject,
-        (updated, prev) => {
-          if (updated && (!prev || entities.some((addr) => addr === XOR.address || updated[addr] !== prev[addr]))) {
-            this.fetchAndHandleUpdate(entities);
-          }
-        }
-      );
+      const interval = setInterval(() => {
+        this.fetchAndHandleUpdate(entities);
+      }, SYNC_INTERVAL * 5);
+
+      return () => clearInterval(interval);
     }
   }
 
@@ -880,7 +877,6 @@ export default class SwapChart extends Mixins(
   }
 
   private async fetchAndHandleUpdate(entities: string[]): Promise<void> {
-    console.log('fetchAndHandleUpdate');
     if (!isEqual(entities)(this.entities)) return;
 
     const lastUpdates = await this.fetchDataLastUpdates(entities);
