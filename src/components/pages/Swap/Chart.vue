@@ -61,6 +61,7 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
+import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 import { components, mixins, WALLET_CONSTS, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { graphic } from 'echarts';
@@ -842,7 +843,7 @@ export default class SwapChart extends Mixins(
       return this.$watch(
         () => this.fiatPriceObject,
         (updated, prev) => {
-          if (updated && (!prev || entities.some((addr) => updated[addr] !== prev[addr]))) {
+          if (updated && (!prev || entities.some((addr) => addr === XOR.address || updated[addr] !== prev[addr]))) {
             this.fetchAndHandleUpdate(entities);
           }
         }
@@ -879,6 +880,7 @@ export default class SwapChart extends Mixins(
   }
 
   private async fetchAndHandleUpdate(entities: string[]): Promise<void> {
+    console.log('fetchAndHandleUpdate');
     if (!isEqual(entities)(this.entities)) return;
 
     const lastUpdates = await this.fetchDataLastUpdates(entities);

@@ -80,7 +80,7 @@ export const waitForApprovedRequest = async (tx: EthHistory): Promise<EthApprove
 
   subscription.unsubscribe();
 
-  return ethBridgeApi.getApprovedRequest(tx.hash as string);
+  return ethBridgeApi.getApprovedRequest(tx.hash as string) as Promise<EthApprovedRequest>;
 };
 
 export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: string; blockId: string }> => {
