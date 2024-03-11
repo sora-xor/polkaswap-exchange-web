@@ -128,7 +128,7 @@ export class SubAdapter {
     return await this.getAccountBalance(accountAddress);
   }
 
-  protected async getExistensionalDeposit(): Promise<CodecString> {
+  public async getExistentialDeposit(): Promise<CodecString> {
     await this.connect();
 
     const value = this.api.consts.balances.existentialDeposit.toString();
@@ -136,8 +136,9 @@ export class SubAdapter {
     return value;
   }
 
+  // [TODO: Bridge]: should be a backend call in future
   public async getAssetMinimumAmount(assetAddress: string): Promise<CodecString> {
-    return await this.getExistensionalDeposit();
+    return await this.getExistentialDeposit();
   }
 
   protected getTransferExtrinsic(

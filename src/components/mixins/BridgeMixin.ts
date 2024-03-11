@@ -15,6 +15,7 @@ import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/type
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
   @state.bridge.externalNativeBalance externalNativeBalance!: CodecString;
+  @state.bridge.externalNativeMinBalance externalNativeMinBalance!: CodecString;
   @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<FPNumber>;
   @state.bridge.outgoingMinLimit outgoingMinLimit!: Nullable<FPNumber>;
   @state.bridge.outgoingMaxLimit outgoingMaxLimit!: Nullable<FPNumber>;
@@ -63,9 +64,9 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   get outgoingMinAmount(): FPNumber | null {
     if (!this.outgoingMinLimit) return null;
     // this fee is spend from transfer amount, so we add it to outgoing min limit
-    // [TODO] remove when limit will be defined on backend
+    // [TODO: Bridge] remove when limit will be defined on backend
     const transferFee = this.isNativeTokenSelected ? this.externalTransferFeeFP : FPNumber.ZERO;
-    // minimum amount = existensial deposit + xcm fee
+    // minimum amount = existential deposit + xcm fee
     return this.outgoingMinLimit.add(transferFee);
   }
 

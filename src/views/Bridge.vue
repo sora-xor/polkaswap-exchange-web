@@ -453,10 +453,6 @@ export default class Bridge extends Mixins(
       isExternalNative: this.isNativeTokenSelected,
     });
 
-    if (this.isNativeTokenSelected) {
-      maxBalance = maxBalance.sub(this.externalTransferFeeFP).max(FPNumber.ZERO);
-    }
-
     if (this.transferMaxAmount && FPNumber.gt(maxBalance, this.transferMaxAmount)) {
       maxBalance = this.transferMaxAmount;
     }
@@ -561,17 +557,17 @@ export default class Bridge extends Mixins(
   get isNativeTokenSufficientForNextOperation(): boolean {
     if (!this.asset || this.isZeroAmountSend) return false;
 
-    const fpBalance = FPNumber.fromCodecValue(this.externalNativeBalance);
-    const fpFee = FPNumber.fromCodecValue(this.externalNetworkFee);
-    const fpAfterFee = fpBalance.sub(fpFee);
+    const fpFee = FPNumber.fromCodecValue(this.externalNetworkFee, this.nativeTokenDecimals);
+    const fpBalance = FPNumber.fromCodecValue(this.externalNativeBalance, this.nativeTokenDecimals);
 
-    if (!this.isNativeTokenSelected) return FPNumber.gte(fpAfterFee, fpFee);
+    let fpBalanceAfter = fpBalance.sub(fpFee);
 
-    const fpAmount = new FPNumber(this.amountSend, this.asset.externalDecimals);
-    const fpAfterFeeNative = FPNumber.fromCodecValue(fpAfterFee.toCodecString(), this.asset.externalDecimals);
-    const fpAfterTransfer = this.isSoraToEvm ? fpAfterFeeNative.add(fpAmount) : fpAfterFeeNative.sub(fpAmount);
+    if (this.isNativeTokenSelected) {
+      const fpAmount = new FPNumber(this.amountSend, this.nativeTokenDecimals);
+      fpBalanceAfter = this.isSoraToEvm ? fpBalanceAfter.add(fpAmount) : fpBalanceAfter.sub(fpAmount);
+    }
 
-    return FPNumber.gte(fpAfterTransfer, fpFee);
+    return FPNumber.gte(fpBalanceAfter, fpFee);
   }
 
   get amountDecimals(): number {

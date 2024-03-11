@@ -98,7 +98,7 @@ export const getMaxBalance = (
     fpResult = fpResult.sub(fpFee);
   }
 
-  return FPNumber.lt(fpResult, FPNumber.ZERO) ? FPNumber.ZERO : fpResult;
+  return fpResult.max(FPNumber.ZERO);
 };
 
 export const getMaxValue = (

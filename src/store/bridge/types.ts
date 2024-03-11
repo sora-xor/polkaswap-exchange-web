@@ -26,7 +26,8 @@ export type BridgeState = {
   externalNetworkFee: CodecString;
   balancesFetching: boolean;
   feesAndLockedFundsFetching: boolean;
-  externalNativeBalance: Nullable<CodecString>;
+  externalNativeBalance: CodecString;
+  externalNativeMinBalance: CodecString;
   externalBlockNumber: number;
   historyInternal: Record<string, IBridgeTransaction>;
   historyPage: number;

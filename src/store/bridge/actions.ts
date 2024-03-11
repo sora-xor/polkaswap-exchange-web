@@ -200,7 +200,7 @@ async function updateEvmBalances(context: ActionContext<any, any>): Promise<void
 
   commit.setAssetSenderBalance(senderBalance);
   commit.setAssetRecipientBalance(recipientBalance);
-  commit.setExternalBalance(nativeBalance);
+  commit.setExternalNativeBalance(nativeBalance);
 }
 
 async function updateSubBalances(context: ActionContext<any, any>): Promise<void> {
@@ -217,7 +217,7 @@ async function updateSubBalances(context: ActionContext<any, any>): Promise<void
 
   commit.setAssetSenderBalance(senderBalance);
   commit.setAssetRecipientBalance(recipientBalance);
-  commit.setExternalBalance(nativeBalance);
+  commit.setExternalNativeBalance(nativeBalance);
 }
 
 async function updateSubHistory(context: ActionContext<any, any>, clearHistory = false): Promise<void> {
@@ -295,6 +295,18 @@ async function updateExternalTransferFee(context: ActionContext<any, any>): Prom
   }
 
   commit.setExternalTransferFee(fee);
+}
+
+async function updateExternalNativeMinBalance(context: ActionContext<any, any>): Promise<void> {
+  const { commit, getters, state } = bridgeActionContext(context);
+
+  let minBalance = ZeroStringValue;
+
+  if (getters.isSubBridge && !state.isSoraToEvm) {
+    minBalance = await subBridgeConnector.network.getExistentialDeposit();
+  }
+
+  commit.setExternalNativeMinBalance(minBalance);
 }
 
 function calculateMaxLimit(
@@ -381,7 +393,11 @@ async function updateSoraNetworkFee(context: ActionContext<any, any>): Promise<v
 async function updateBalancesAndFees(context: ActionContext<any, any>): Promise<void> {
   const { dispatch } = bridgeActionContext(context);
 
-  await Promise.allSettled([dispatch.updateExternalBalance(), updateFeesAndLockedFunds(context)]);
+  await Promise.allSettled([
+    dispatch.updateExternalBalance(),
+    updateExternalNativeMinBalance(context),
+    updateFeesAndLockedFunds(context),
+  ]);
 }
 
 const actions = defineActions({

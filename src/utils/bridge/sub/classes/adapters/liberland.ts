@@ -19,7 +19,7 @@ export class LiberlandAdapter extends SubAdapter {
 
   // overrides SubAdapter method
   public async getAssetMinimumAmount(assetAddress: string): Promise<CodecString> {
-    return assetAddress ? await this.getAssetMinDeposit(assetAddress) : await this.getExistensionalDeposit();
+    return assetAddress ? await this.getAssetMinDeposit(assetAddress) : await this.getExistentialDeposit();
   }
 
   protected async getAssetMinDeposit(assetAddress: string): Promise<CodecString> {
