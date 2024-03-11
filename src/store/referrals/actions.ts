@@ -1,6 +1,7 @@
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
+import { getReferralRewards } from '@/indexer/queries/referrals';
 import { referralsActionContext } from '@/store/referrals';
 
 const actions = defineActions({
@@ -42,6 +43,19 @@ const actions = defineActions({
     });
 
     commit.setInvitedUsersSubscription(subscription);
+  },
+  async getAccountReferralRewards(context): Promise<void> {
+    const { commit, rootGetters } = referralsActionContext(context);
+
+    commit.clearReferralRewards();
+
+    if (!rootGetters.wallet.account.isLoggedIn) return;
+
+    const data = await getReferralRewards(rootGetters.wallet.account.account.address);
+
+    if (data) {
+      commit.setReferralRewards(data);
+    }
   },
 });
 

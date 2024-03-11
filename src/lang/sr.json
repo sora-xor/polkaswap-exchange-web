@@ -63,7 +63,9 @@
             "StakingSetPayee": "Подесите примаоца уплате {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} по {price} {symbol2} постављено",
             "OrderBookCancelLimitOrder": "Лимит налог је отказан",
-            "OrderBookCancelLimitOrders": "Ограничени налози су отказани"
+            "OrderBookCancelLimitOrders": "Ограничени налози су отказани",
+            "Burn": "Спаљено {amount} {symbol}",
+            "Mint": "Исковано {amount} {symbol} на {address}"
         },
         "error": {
             "Transfer": "Није успело {action} {amount} {symbol} {direction} {address}",
@@ -96,9 +98,11 @@
             "StakingChill": "Није успело да се охлади",
             "StakingSetController": "Подешавање контролера {address} није успело",
             "StakingSetPayee": "Подешавање примаоца уплате {address} није успело",
-            "OrderBookPlaceLimitOrder": "Постављање ограничене поруџбине од {amount} {symbol} по {price} {symbol} није успело",
-            "OrderBookCancelLimitOrder": "Отказивање ограничене поруџбине од {amount} {symbol} по {price} {symbol} није успело",
-            "OrderBookCancelLimitOrders": "Отказивање ограничених налога није успело"
+            "OrderBookPlaceLimitOrder": "Постављање ограничене поруџбине од {amount} {symbol} по {price} {symbol2} није успело",
+            "OrderBookCancelLimitOrders": "Отказивање ограничених налога није успело",
+            "OrderBookCancelLimitOrder": "Отказивање ограничене поруџбине није успело",
+            "Burn": "{amount} {symbol} није успело",
+            "Mint": "Није успело испоручивање {amount} {symbol} на {address}"
         },
         "ReferralReserveXor": "Veži XOR",
         "ReferralUnreserveXor": "Razveži XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Подесите примаоца уплате",
         "OrderBookPlaceLimitOrder": "Наручите",
         "OrderBookCancelLimitOrder": "Откажи наруџбу",
-        "OrderBookCancelLimitOrders": "Откажите поруџбине"
+        "OrderBookCancelLimitOrders": "Откажите поруџбине",
+        "Burn": "Горети",
+        "Mint": "Нана"
     },
     "polkadotjs": {
         "noExtensions": "Није пронађена ниједна екстензија {PolkadotJs}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -390,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Ulaganje",
         "OrderBook": "Траде",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Замените",
@@ -405,7 +412,8 @@
         "StakingContainer": "Стeкинг",
         "Explore\/Container": "Истражите",
         "SoraCard": "{Sora} картица",
-        "OrderBook": "Траде"
+        "OrderBook": "Траде",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1287,7 +1295,9 @@
         "actions": {
             "claim": "Захтевајте награде",
             "remove": "Уклоните улог",
-            "more": "Уложите више"
+            "more": "Уложите више",
+            "confirm": "Цонфирм Стакинг",
+            "withdraw": "Podizanje"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1304,7 +1314,8 @@
             "change": "Промените валидаторе",
             "select": "Изаберите валидаторе",
             "next": "Следећи",
-            "alreadyNominated": "Одабрани валидатори су већ номиновани"
+            "alreadyNominated": "Одабрани валидатори су већ номиновани",
+            "tooManyValidators": "Изабрано је превише валидатора ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Претрага...",
@@ -1312,10 +1323,10 @@
             "noNominatedValidators": "Nemaš nominovane validatore",
             "noValidators": "Nema validatora koji zadovoljavaju navedeni filter",
             "commission": "Комисија",
-            "commissionTooltip": "Провизија се односи на накнаду коју наплаћују валидатори за своје услуге у процесу стекинга. Ова накнада, изражена у процентима, одбија се од награда за улагање које су номинатори зарадили пре дистрибуције. Важно је напоменути да валидатори могу прилагодити своје стопе провизије у било ком тренутку"
+            "commissionTooltip": "Провизија се односи на накнаду коју наплаћују валидатори за своје услуге у процесу стекинга. Ова накнада, изражена у процентима, одбија се од награда за улагање које су номинатори зарадили пре дистрибуције. Важно је напоменути да валидатори могу прилагодити своје стопе провизије у било ком тренутку",
+            "return": "Повратак"
         },
         "info": {
-            "redeemable": "Откупљив",
             "unstaking": "Унстакинг",
             "stakingBalance": "Стакинг баланце",
             "rewarded": "Награђени",
@@ -1394,6 +1405,26 @@
             "title": "Захтевајте награде",
             "checkRewards": "Proverite nagrade po eri i validatoru",
             "rewardsDestination": "Nagradna odredišna adresa"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Извлачење",
+            "beingWithdrawn": "Бити повучен",
+            "seeAll": "Видети све",
+            "nextWithdrawal": "Следеће повлачење",
+            "countdownLeft": "остало jе"
+        },
+        "stakeDialog": {
+            "toStake": "Заложити",
+            "toRemove": "Уклонити"
+        },
+        "withdrawDialog": {
+            "title": "Повуците неуложена средства",
+            "showAllWithdraws": "Прикажи све повлачења"
+        },
+        "allWithdrawsDialog": {
+            "title": "Унстакинг ацтивити",
+            "information": "Када поништите токене, постоји обавезан период од 7 дана. Након овог периода, ваши токени неће бити аутоматски враћени у ваш новчаник. Морате да завршите процес ручним повлачењем ваших токена."
         }
     },
     "collapseText": "Skupi",
@@ -1442,7 +1473,6 @@
             "placeLimit": "Поставите ограничени налог",
             "askCancel": "Да ли сте сигурни да желите да откажете све отворене поруџбине?",
             "cancelAll": "Да, откажи све",
-            "noCancel": "Не, не отказујте",
             "buy": "Купите {amount} {symbol}",
             "sell": "Продај {amount} {symbol}",
             "at": "по {price} {symbol}"
@@ -1513,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Опсег блокчејна је премашен: Ваш унети износ је изван дозвољеног опсега блокчејна. Мин: {min} ; Макс: {max}",
                 "reason": "Износ није у складу са опсегом блокчејна"
+            },
+            "multipleOf": {
+                "reading": "Да бисте обрадили поруџбину, унесите цену која је вишеструка од {value}",
+                "reason": "Унета цена је превише специфична"
             }
         },
         "orderStatus": {

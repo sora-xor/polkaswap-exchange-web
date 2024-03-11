@@ -63,7 +63,9 @@
             "StakingSetPayee": "Angi betalingsmottaker {address}",
             "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} til {price} {symbol2} plassert",
             "OrderBookCancelLimitOrder": "Begrensningsbestilling kansellert",
-            "OrderBookCancelLimitOrders": "Limit bestillinger kansellert"
+            "OrderBookCancelLimitOrders": "Limit bestillinger kansellert",
+            "Burn": "Brent {amount} {symbol}",
+            "Mint": "Preget {amount} {symbol} til {address}"
         },
         "error": {
             "Transfer": "Kunne ikke {action} {amount} {symbol} {direction} {address}",
@@ -96,9 +98,11 @@
             "StakingChill": "Klarte ikke å slappe av",
             "StakingSetController": "Kunne ikke angi kontrolleren {address}",
             "StakingSetPayee": "Kunne ikke angi betalingsmottaker {address}",
-            "OrderBookPlaceLimitOrder": "Kunne ikke legge inn grensebestilling på {amount} {symbol} til {price} {symbol}",
-            "OrderBookCancelLimitOrder": "Kunne ikke kansellere grensebestillingen på {amount} {symbol} til {price} {symbol}",
-            "OrderBookCancelLimitOrders": "Kunne ikke kansellere begrensede bestillinger"
+            "OrderBookPlaceLimitOrder": "Kunne ikke legge inn grensebestilling på {amount} {symbol} til {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Kunne ikke kansellere begrensede bestillinger",
+            "OrderBookCancelLimitOrder": "Kunne ikke kansellere begrenset ordre",
+            "Burn": "Kunne ikke brenne {amount} {symbol}",
+            "Mint": "Kunne ikke prege {amount} {symbol} til {address}"
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",
@@ -125,7 +129,9 @@
         "StakingSetPayee": "Angi betalingsmottaker",
         "OrderBookPlaceLimitOrder": "Legg inn bestilling",
         "OrderBookCancelLimitOrder": "Avbryt bestillingen",
-        "OrderBookCancelLimitOrders": "Kanseller bestillinger"
+        "OrderBookCancelLimitOrders": "Kanseller bestillinger",
+        "Burn": "Brenne",
+        "Mint": "Mynte"
     },
     "polkadotjs": {
         "noExtensions": "Finner ingen {PolkadotJs} utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -390,7 +396,8 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Handel",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Bytte",
@@ -405,7 +412,8 @@
         "StakingContainer": "Staking",
         "Explore\/Container": "Utforske",
         "SoraCard": "{Sora} Kort",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1287,7 +1295,9 @@
         "actions": {
             "claim": "Gjør krav på belønninger",
             "remove": "Fjern innsatsen",
-            "more": "Sats mer"
+            "more": "Sats mer",
+            "confirm": "Bekreft staking",
+            "withdraw": "Ta ut"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1304,7 +1314,8 @@
             "change": "Endre validatorer",
             "select": "Velg validatorer",
             "next": "Neste",
-            "alreadyNominated": "Utvalgte validatorer er allerede nominert"
+            "alreadyNominated": "Utvalgte validatorer er allerede nominert",
+            "tooManyValidators": "For mange validatorer er valgt ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Søk...",
@@ -1312,10 +1323,10 @@
             "noNominatedValidators": "Du har ingen nominerte validatorer",
             "noValidators": "Det er ingen validatorer som tilfredsstiller det angitte filteret",
             "commission": "Kommisjon",
-            "commissionTooltip": "Provisjon refererer til gebyret som kreves av validatorer for deres tjenester i innsatsprosessen. Denne avgiften, uttrykt som en prosentandel, trekkes fra innsatsbelønningene opptjent av nominatorer før utdeling. Det er viktig å merke seg at validatorer kan justere sine provisjonssatser når som helst"
+            "commissionTooltip": "Provisjon refererer til gebyret som kreves av validatorer for deres tjenester i innsatsprosessen. Denne avgiften, uttrykt som en prosentandel, trekkes fra innsatsbelønningene opptjent av nominatorer før utdeling. Det er viktig å merke seg at validatorer kan justere sine provisjonssatser når som helst",
+            "return": "Komme tilbake"
         },
         "info": {
-            "redeemable": "Innløselig",
             "unstaking": "Unstaking",
             "stakingBalance": "Staking balanse",
             "rewarded": "Belønnet",
@@ -1394,6 +1405,26 @@
             "title": "Gjør krav på belønninger",
             "checkRewards": "Sjekk belønninger per epoke og validator",
             "rewardsDestination": "Destinasjonsadresse for belønninger"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Uttrekkbar",
+            "beingWithdrawn": "Blir trukket tilbake",
+            "seeAll": "Se alt",
+            "nextWithdrawal": "Neste uttak",
+            "countdownLeft": "igjen"
+        },
+        "stakeDialog": {
+            "toStake": "Å satse",
+            "toRemove": "Å fjerne"
+        },
+        "withdrawDialog": {
+            "title": "Ta ut uinnsatte midler",
+            "showAllWithdraws": "Vis alle uttak"
+        },
+        "allWithdrawsDialog": {
+            "title": "Ustabil aktivitet",
+            "information": "Når du har trukket ut tokens, er det en obligatorisk 7-dagers utsettingsperiode. Etter denne perioden vil ikke tokens automatisk bli returnert til lommeboken din. Du må fullføre prosessen ved å trekke ut tokens manuelt."
         }
     },
     "collapseText": "Kollapse",
@@ -1442,7 +1473,6 @@
             "placeLimit": "Legg inn grensebestilling",
             "askCancel": "Er du sikker på at du vil kansellere alle åpne bestillinger?",
             "cancelAll": "Ja, avbryt alle",
-            "noCancel": "Nei, ikke avbryt det",
             "buy": "Kjøp {amount} {symbol}",
             "sell": "Selg {amount} {symbol}",
             "at": "til {price} {symbol}"
@@ -1513,6 +1543,10 @@
             "outOfBounds": {
                 "reading": "Blockchain-området er overskredet: Det angitte beløpet ditt faller utenfor blokkjedens tillatte område. Min: {min} ; Maks: {max}",
                 "reason": "Beløpet samsvarer ikke med blokkjedeområdet"
+            },
+            "multipleOf": {
+                "reading": "For å behandle bestillingen din, skriv inn en pris som er et multiplum av {value}",
+                "reason": "Oppgitt pris er for spesifikk"
             }
         },
         "orderStatus": {

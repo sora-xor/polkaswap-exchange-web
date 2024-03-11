@@ -1,7 +1,8 @@
-import { api, getCurrentIndexer } from '@soramitsu/soraneo-wallet-web';
+import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { firstValueFrom } from 'rxjs';
 
+import { getPoolsApyObject, createPoolsApySubscription } from '@/indexer/queries/pools';
 import { poolActionContext } from '@/store/pool';
 import { waitForAccountPair } from '@/utils';
 
@@ -62,8 +63,7 @@ const actions = defineActions({
   async getPoolApyObject(context): Promise<void> {
     const { commit } = poolActionContext(context);
 
-    const indexer = getCurrentIndexer();
-    const data = await indexer.services.explorer.pool.getPoolsApyObject();
+    const data = await getPoolsApyObject();
 
     if (data) {
       commit.setPoolApyObject(data);
@@ -75,17 +75,11 @@ const actions = defineActions({
 
     await dispatch.getPoolApyObject();
 
-    const indexer = getCurrentIndexer();
-    const subscription = indexer.services.explorer.pool.createPoolsApySubscription(
-      (apy) => {
-        commit.updatePoolApyObject(apy);
-      },
-      () => {
-        commit.resetPoolApyObject();
-      }
-    );
+    const subscription = createPoolsApySubscription(commit.updatePoolApyObject, commit.resetPoolApyObject);
 
-    commit.setPoolApySubscription(subscription);
+    if (subscription) {
+      commit.setPoolApySubscription(subscription);
+    }
   },
 });
 

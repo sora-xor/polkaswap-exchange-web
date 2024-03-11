@@ -25,6 +25,7 @@ function initialState(): SettingsState {
     browserNotifsPermission: isBrowserNotificationApiAvailable ? Notification.permission : 'default',
     language: getLocale(),
     displayRegions: undefined,
+    percentFormat: undefined,
     faucetUrl: '',
     menuCollapsed: false,
     selectNodeDialogVisibility: false,

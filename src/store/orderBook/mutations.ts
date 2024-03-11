@@ -6,6 +6,7 @@ import type { OrderBookDealData, OrderBookStats } from '@/types/orderBook';
 
 import type { OrderBookState } from './types';
 import type { OrderBookId, OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-proxy';
+import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { Subscription } from 'rxjs';
 
@@ -66,11 +67,21 @@ const mutations = defineMutations<OrderBookState>()({
     state.userLimitOrderUpdates?.unsubscribe();
     state.userLimitOrderUpdates = null;
   },
+  setPagedUserLimitOrdersSubscription(state, subscription: Subscription): void {
+    state.pagedUserLimitOrdersSubscription = subscription;
+  },
+  resetPagedUserLimitOrdersSubscription(state): void {
+    state.pagedUserLimitOrdersSubscription?.unsubscribe();
+    state.pagedUserLimitOrdersSubscription = null;
+  },
   setOrdersToBeCancelled(state, orders): void {
     state.ordersToBeCancelled = orders;
   },
   setAmountSliderValue(state, percent: number) {
     state.amountSliderValue = percent;
+  },
+  setBaseAssetBalance(state, balance: Nullable<AccountBalance>) {
+    state.baseAssetBalance = balance;
   },
 });
 

@@ -40,15 +40,27 @@
         />
       </div>
 
+      <s-card v-if="mode === StakeDialogMode.REMOVE" class="information" shadow="always" primary>
+        <div class="information-content">
+          <div class="information-text">
+            {{ t('soraStaking.allWithdrawsDialog.information') }}
+          </div>
+          <div class="information-icon">
+            <s-icon name="notifications-alert-triangle-24" size="20px" />
+          </div>
+        </div>
+      </s-card>
+
       <s-button
+        v-if="stakingAsset"
         type="primary"
         class="s-typography-button--large action-button"
-        :loading="parentLoading"
+        :loading="parentLoading || loading"
         :disabled="isInsufficientXorForFee || valueFundsEmpty || isInsufficientBalance"
         @click="handleConfirm"
       >
         <template v-if="isInsufficientXorForFee || isInsufficientBalance">
-          {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset?.symbol }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset.symbol }) }}
         </template>
         <template v-else-if="valueFundsEmpty">
           {{ t('buttons.enterAmount') }}
@@ -68,7 +80,6 @@ import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state } from '@/store/decorators';
 
 import { StakeDialogMode } from '../consts';
 import StakingMixin from '../mixins/StakingMixin';
@@ -83,10 +94,8 @@ import type { CodecString } from '@sora-substrate/util';
     AccountCard: components.AccountCard,
   },
 })
-export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin, mixins.LoadingMixin) {
+export default class StakeDialog extends Mixins(StakingMixin, mixins.TransactionMixin, mixins.DialogMixin) {
   @Prop({ required: true, type: String }) readonly mode!: StakeDialogMode;
-
-  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
 
   @Watch('visible')
   private resetValue() {
@@ -124,26 +133,22 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
   get title(): string {
     switch (this.mode) {
       case StakeDialogMode.NEW:
-        return 'Confirm Staking';
+        return this.t('soraStaking.actions.confirm');
       case StakeDialogMode.ADD:
-        return 'Stake More';
+        if (this.lockedFunds.isZero()) {
+          return this.t('soraStaking.newStake.title');
+        } else {
+          return this.t('soraStaking.actions.more');
+        }
       default:
-        return 'Remove Stake';
+        return this.t('soraStaking.actions.remove');
     }
   }
 
   get inputTitle(): string {
-    return this.mode !== StakeDialogMode.REMOVE ? 'To stake' : 'To remove';
-  }
-
-  get valuePartCharClass(): string {
-    const charClassName =
-      {
-        3: 'three',
-        2: 'two',
-      }[this.value.toString().length] ?? 'one';
-
-    return `${charClassName}-char`;
+    return this.mode !== StakeDialogMode.REMOVE
+      ? this.t('soraStaking.stakeDialog.toStake')
+      : this.t('soraStaking.stakeDialog.toRemove');
   }
 
   get part(): FPNumber {
@@ -188,7 +193,10 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
   }
 
   get selectedValidatorsFormatted(): string {
-    return `${this.selectedValidators.length} (MAX: ${this.validators.length})`;
+    return this.t('soraStaking.selectedValidators', {
+      count: this.selectedValidators.length,
+      max: this.validators.length,
+    });
   }
 
   handleValue(value: string | number): void {
@@ -202,17 +210,30 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
   async handleConfirm(): Promise<void> {
     this.setStakeAmount(this.value);
 
+    let extrinsic = this.unbond;
     if (this.mode === StakeDialogMode.NEW) {
-      await this.bondAndNominate();
+      extrinsic = this.bondAndNominate;
     } else if (this.mode === StakeDialogMode.ADD) {
-      await this.bondExtra();
-    } else {
-      await this.unbond();
+      extrinsic = this.bondExtra;
     }
+
+    await this.withNotifications(async () => await extrinsic());
     this.$emit('confirm');
+  }
+
+  async mounted() {
+    await this.$nextTick();
+    const input: HTMLInputElement | null = this.$el.querySelector('.s-input .el-input__inner');
+    input?.focus();
   }
 }
 </script>
+
+<style lang="scss">
+.s-input.s-input--stake-part {
+  @include input-slider;
+}
+</style>
 
 <style lang="scss" scoped>
 .stake-dialog {
@@ -226,10 +247,33 @@ export default class StakeDialog extends Mixins(StakingMixin, mixins.DialogMixin
 .el-form--actions {
   @include buttons;
 }
-</style>
 
-<style lang="scss">
-.s-input.s-input--stake-part {
-  @include input-slider;
+.information {
+  &-content {
+    display: flex;
+    gap: 38px;
+  }
+
+  &-text {
+    font-size: 15px;
+    line-height: 150%;
+  }
+
+  &-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 42px;
+    width: 42px;
+    margin-top: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--s-color-status-info);
+    border: 2px solid var(--s-color-base-border-primary);
+    i {
+      margin-bottom: 2px;
+      color: white;
+    }
+  }
 }
 </style>

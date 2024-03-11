@@ -60,12 +60,14 @@ const mutations = defineMutations<SettingsState>()({
     state.userDisclaimerApprove = true;
     settingsStorage.set('disclaimerApprove', true);
   },
-  updateDisplayRegions(state): void {
+  updateIntlUtils(state): void {
     try {
       state.displayRegions = new Intl.DisplayNames([state.language], { type: 'region' });
+      state.percentFormat = new Intl.NumberFormat([state.language], { style: 'percent', maximumFractionDigits: 2 });
     } catch (error) {
-      console.warn('Intl.DisplayNames issue', error);
+      console.warn('Intl is not supported!', error);
       state.displayRegions = null;
+      state.percentFormat = null;
     }
   },
   setFeatureFlags(state, featureFlags: FeatureFlags = {}): void {

@@ -498,7 +498,13 @@ export default class BridgeTransaction extends Mixins(
 
     if (!this.asset || !this.amount || !fee) return false;
 
-    return this.txIsUnsigned && hasInsufficientBalance(this.asset, this.amount, fee, !this.isOutgoing);
+    return (
+      this.txIsUnsigned &&
+      hasInsufficientBalance(this.asset, this.amount, fee, {
+        isExternalBalance: !this.isOutgoing,
+        isExternalNative: this.isNativeTokenSelected,
+      })
+    );
   }
 
   get isInsufficientXorForFee(): boolean {

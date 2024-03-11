@@ -28,6 +28,7 @@ export type SettingsState = {
   transactionDeadline: number;
   language: string;
   displayRegions: Nullable<Intl.DisplayNames>;
+  percentFormat: Nullable<Intl.NumberFormat>;
   faucetUrl: string;
   menuCollapsed: boolean;
   selectNodeDialogVisibility: boolean;

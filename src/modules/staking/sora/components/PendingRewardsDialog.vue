@@ -69,7 +69,7 @@
       <s-button
         type="primary"
         class="s-typography-button--large action-button"
-        :loading="parentLoading"
+        :loading="parentLoading || loading"
         :disabled="isInsufficientXorForFee || noReward || noSelectedRewards"
         @click="handleConfirm"
       >
@@ -129,8 +129,8 @@ type Reward = {
 export default class PendingRewardsDialog extends Mixins(
   StakingMixin,
   ValidatorsMixin,
-  mixins.DialogMixin,
-  mixins.LoadingMixin
+  mixins.TransactionMixin,
+  mixins.DialogMixin
 ) {
   payoutNetworkFee: string | null = null;
   selectedRewards: Reward[] = [];
@@ -235,13 +235,15 @@ export default class PendingRewardsDialog extends Mixins(
   }
 
   async handleConfirm(): Promise<void> {
-    await this.payout({
-      payouts: this.payouts,
+    await this.withNotifications(async () => {
+      await this.payout({
+        payouts: this.payouts,
+      });
+
+      await this.getPendingRewards();
+
+      this.closeDialog();
     });
-
-    await this.getPendingRewards();
-
-    this.closeDialog();
   }
 }
 </script>
@@ -316,8 +318,6 @@ export default class PendingRewardsDialog extends Mixins(
     flex-shrink: 0;
     background: var(--s-color-status-info);
     border: 2px solid var(--s-color-base-border-primary);
-    // box-shadow: 20px 20px 60px 0px rgba(0, 0, 0, 0.1), 1px 1px 10px 0px #fff inset,
-    //   -10px -10px 30px 0px rgba(255, 255, 255, 0.9);
 
     i {
       margin-bottom: 2px;
