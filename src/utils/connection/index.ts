@@ -115,7 +115,6 @@ export class NodesConnection {
 
     const { endpoint } = this.connection;
 
-    await this.connection.api.isReady; // [TODO] update disconnectApi in connection
     await this.connection.close();
 
     console.info(`[${this.network}] Disconnected from node`, endpoint);

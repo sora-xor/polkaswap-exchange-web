@@ -32,7 +32,7 @@ export class LiberlandAdapter extends SubAdapter {
 
     const data = result.unwrap();
 
-    return data.minBalance.toString(); // [TODO: Liberland] check that this is CodecString
+    return data.minBalance.toString();
   }
 
   protected async getAccountAssetBalance(accountAddress: string, assetAddress: string): Promise<CodecString> {
