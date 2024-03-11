@@ -74,7 +74,7 @@ const SubqueryOrderBooksQuery = gql<ConnectionQueryResponse<OrderBookEntity>>`
 
 const SubsquidOrderBooksQuery = gql<ConnectionQueryResponse<OrderBookEntity>>`
   query SubsquidOrderBooksQuery($after: String = null, $where: OrderBookWhereInput) {
-    data: orderBooksConnection(after: $after, where: $where) {
+    data: orderBooksConnection(orderBy: id_ASC, after: $after, where: $where) {
       pageInfo {
         hasNextPage
         endCursor
@@ -422,7 +422,7 @@ export async function subscribeOnOrderBookUpdates(
   dexId: number,
   baseAssetId: string,
   quoteAssetId: string,
-  handler: (entity: OrderBookUpdateData) => void,
+  handler: (entity: OrderBookUpdateData) => void | Promise<void>,
   errorHandler: () => void
 ): Promise<Nullable<FnWithoutArgs>> {
   const orderBookId = [dexId, baseAssetId, quoteAssetId].join('-');
