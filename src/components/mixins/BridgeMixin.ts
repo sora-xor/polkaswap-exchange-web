@@ -40,10 +40,6 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     return this.nativeToken?.externalDecimals;
   }
 
-  get isNativeTokenSelected(): boolean {
-    return this.nativeToken?.address === this.asset?.address;
-  }
-
   get externalTransferFeeFP(): FPNumber {
     return FPNumber.fromCodecValue(this.externalTransferFee, this.asset?.externalDecimals);
   }

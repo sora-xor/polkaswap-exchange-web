@@ -97,6 +97,8 @@ export class SubAdapter {
   }
 
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
+    if (!subBridgeApi.account?.pair) throw new Error(`[${this.constructor.name}] Account pair is not set.`);
+
     const historyItem = subBridgeApi.getHistory(historyId as string) ?? {
       type: Operation.SubstrateIncoming,
       symbol: asset.symbol,
