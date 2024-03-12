@@ -17,12 +17,21 @@
       is-formatted
     />
     <info-line
-      v-if="isExternalTransferFeeNotZero"
+      v-if="isNotZero(externalTransferFee)"
       :label="t('bridge.externalTransferFee', { network: networkName })"
       :label-tooltip="t('bridge.externalTransferFeeTooltip', { network: networkName })"
       :value="formatStringValue(externalTransferFee)"
       :asset-symbol="assetSymbol"
       :fiat-value="getFiatAmountByString(externalTransferFee, asset)"
+      is-formatted
+    />
+    <info-line
+      v-if="isNotZero(externalMinBalance)"
+      :label="t('bridge.externalMinDeposit', { network: networkName })"
+      :label-tooltip="t('bridge.externalMinDepositTooltip', { network: networkName, symbol: assetSymbol })"
+      :value="formatStringValue(externalMinBalance)"
+      :asset-symbol="assetSymbol"
+      :fiat-value="getFiatAmountByString(externalMinBalance, asset)"
       is-formatted
     />
   </transaction-details>
@@ -53,6 +62,7 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
   @Prop({ default: () => null, type: Object }) readonly nativeToken!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: ZeroStringValue, type: String }) readonly externalTransferFee!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly externalNetworkFee!: CodecString;
+  @Prop({ default: ZeroStringValue, type: String }) readonly externalMinBalance!: CodecString;
   @Prop({ default: ZeroStringValue, type: String }) readonly soraNetworkFee!: CodecString;
   @Prop({ default: '', type: String }) readonly networkName!: string;
 
@@ -70,6 +80,10 @@ export default class BridgeTransactionDetails extends Mixins(mixins.FormattedAmo
 
   get isExternalTransferFeeNotZero(): boolean {
     return this.externalTransferFee !== ZeroStringValue;
+  }
+
+  isNotZero(value: CodecString): boolean {
+    return value !== ZeroStringValue;
   }
 }
 </script>

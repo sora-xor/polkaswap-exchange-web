@@ -297,16 +297,16 @@ async function updateExternalTransferFee(context: ActionContext<any, any>): Prom
   commit.setExternalTransferFee(fee);
 }
 
-async function updateExternalNativeMinBalance(context: ActionContext<any, any>): Promise<void> {
+async function updateExternalMinBalance(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, state } = bridgeActionContext(context);
 
   let minBalance = ZeroStringValue;
 
-  if (getters.isSubBridge && !state.isSoraToEvm) {
-    minBalance = await subBridgeConnector.network.getExistentialDeposit();
+  if (getters.isSubBridge && getters.asset && !state.isSoraToEvm) {
+    minBalance = await subBridgeConnector.network.getAssetMinDeposit(getters.asset.externalAddress);
   }
 
-  commit.setExternalNativeMinBalance(minBalance);
+  commit.setExternalMinBalance(minBalance);
 }
 
 function calculateMaxLimit(
@@ -395,7 +395,7 @@ async function updateBalancesAndFees(context: ActionContext<any, any>): Promise<
 
   await Promise.allSettled([
     dispatch.updateExternalBalance(),
-    updateExternalNativeMinBalance(context),
+    updateExternalMinBalance(context),
     updateFeesAndLockedFunds(context),
   ]);
 }
@@ -512,7 +512,8 @@ const actions = defineActions({
 
     if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
       try {
-        const value = await subBridgeConnector.network.getAssetMinimumAmount(getters.asset.externalAddress);
+        // [TODO: Bridge] should be a backend call in future. Now it is existential deposit
+        const value = await subBridgeConnector.network.getAssetMinDeposit(getters.asset.externalAddress);
         minLimit = FPNumber.fromCodecValue(value, getters.asset.externalDecimals);
       } catch (error) {
         console.error(error);

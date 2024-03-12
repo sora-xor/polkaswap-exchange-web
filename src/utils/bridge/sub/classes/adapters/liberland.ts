@@ -18,11 +18,11 @@ export class LiberlandAdapter extends SubAdapter {
   }
 
   // overrides SubAdapter method
-  public async getAssetMinimumAmount(assetAddress: string): Promise<CodecString> {
-    return assetAddress ? await this.getAssetMinDeposit(assetAddress) : await this.getExistentialDeposit();
+  public async getAssetMinDeposit(assetAddress: string): Promise<CodecString> {
+    return assetAddress ? await this.getAssetDeposit(assetAddress) : await this.getExistentialDeposit();
   }
 
-  protected async getAssetMinDeposit(assetAddress: string): Promise<CodecString> {
+  protected async getAssetDeposit(assetAddress: string): Promise<CodecString> {
     return await this.withConnection(async () => {
       const assetId = Number(assetAddress);
       const result = await (this.api.query.assets as any).asset(assetId);

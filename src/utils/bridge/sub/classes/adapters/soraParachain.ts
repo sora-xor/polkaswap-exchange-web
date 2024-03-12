@@ -11,7 +11,6 @@ export class SoraParachainAdapter extends SubAdapter {
     return subBridgeApi.soraParachainApi.getTransferExtrinsic(asset, recipient, amount, this.api);
   }
 
-  // overrides SubAdapter method
   public async getAssetMinimumAmount(assetAddress: string): Promise<CodecString> {
     return await this.withConnection(async () => {
       // sora address

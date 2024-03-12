@@ -590,7 +590,9 @@
         "ethereumAddress": "{Ethereum} address",
         "limitMessage": "Currently, there's a {type} {amount} {symbol} for bridging to ensure the stability and security of the {Sora} Network. We appreciate your understanding.",
         "externalTransferFee": "{network} {XCM} fee",
-        "externalTransferFeeTooltip": "When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are transferring"
+        "externalTransferFeeTooltip": "When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are transferring",
+        "externalMinDeposit": "{network} min. deposit",
+        "externalMinDepositTooltip": "Minimum balance {symbol} that must be on your {network} account after the bridge transfer"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",

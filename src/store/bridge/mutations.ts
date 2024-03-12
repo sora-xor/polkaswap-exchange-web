@@ -33,8 +33,8 @@ const mutations = defineMutations<BridgeState>()({
     state.externalNativeBalance = balance;
   },
 
-  setExternalNativeMinBalance(state, balance: CodecString = ZeroStringValue): void {
-    state.externalNativeMinBalance = balance;
+  setExternalMinBalance(state, balance: CodecString = ZeroStringValue): void {
+    state.assetExternalMinBalance = balance;
   },
 
   setIncomingMinLimit(state, amount: FPNumber): void {

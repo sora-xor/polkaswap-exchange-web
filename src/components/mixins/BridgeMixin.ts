@@ -15,8 +15,8 @@ import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/type
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
   @state.bridge.externalNativeBalance externalNativeBalance!: CodecString;
-  @state.bridge.externalNativeMinBalance externalNativeMinBalance!: CodecString;
   @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<FPNumber>;
+  @state.bridge.assetExternalMinBalance assetExternalMinBalance!: CodecString;
   @state.bridge.outgoingMinLimit outgoingMinLimit!: Nullable<FPNumber>;
   @state.bridge.outgoingMaxLimit outgoingMaxLimit!: Nullable<FPNumber>;
   @state.bridge.incomingMinLimit incomingMinAmount!: FPNumber;

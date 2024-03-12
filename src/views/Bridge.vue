@@ -220,7 +220,7 @@
           </s-button>
 
           <bridge-limit-card
-            v-if="!isInsufficientBalance && (isLowerThanMinAmount || isGreaterThanMaxAmount)"
+            v-if="isLowerThanMinAmount || isGreaterThanMaxAmount"
             class="bridge-limit-card"
             :max="isGreaterThanMaxAmount"
             :amount="(isGreaterThanMaxAmount ? transferMaxAmount : transferMinAmount).toLocaleString()"
@@ -234,6 +234,7 @@
             :native-token="nativeToken"
             :external-transfer-fee="formattedExternalTransferFee"
             :external-network-fee="formattedExternalNetworkFee"
+            :external-min-balance="formattedExternalMinBalance"
             :sora-network-fee="formattedSoraNetworkFee"
             :network-name="networkName"
           />
@@ -443,18 +444,31 @@ export default class Bridge extends Mixins(
     return this.getTransferMinAmount(this.isSoraToEvm);
   }
 
-  get maxValue(): string {
-    if (!(this.asset && this.isRegisteredAsset)) return ZeroStringValue;
+  get transferableAmount(): FPNumber {
+    if (!(this.asset && this.isRegisteredAsset)) return FPNumber.ZERO;
 
     const fee = this.isSoraToEvm ? this.soraNetworkFee : this.externalNetworkFee;
 
-    let maxBalance = getMaxBalance(this.asset, fee, {
+    const maxBalance = getMaxBalance(this.asset, fee, {
       isExternalBalance: !this.isSoraToEvm,
       isExternalNative: this.isNativeTokenSelected,
     });
 
+    // if (this.isNativeTokenSelected) {
+    //   const minBalance = FPNumber.fromCodecValue(this.assetExternalMinBalance, this.nativeTokenDecimals);
+    //   maxBalance = maxBalance.sub(minBalance).max(FPNumber.ZERO);
+    // }
+
+    return maxBalance;
+  }
+
+  get maxValue(): string {
+    let maxBalance = this.transferableAmount;
+
     if (this.transferMaxAmount && FPNumber.gt(maxBalance, this.transferMaxAmount)) {
       maxBalance = this.transferMaxAmount;
+    } else if (this.transferMinAmount && FPNumber.lt(maxBalance, this.transferMinAmount)) {
+      maxBalance = FPNumber.ZERO;
     }
 
     return toPrecision(maxBalance, this.amountDecimals).toString();
@@ -484,18 +498,9 @@ export default class Bridge extends Mixins(
   }
 
   get isInsufficientBalance(): boolean {
-    if (!this.asset) return false;
+    if (!(this.asset && this.isRegisteredAsset && this.sender)) return false;
 
-    const fee = this.isSoraToEvm ? this.soraNetworkFee : this.externalNetworkFee;
-
-    return (
-      !!this.sender &&
-      this.isRegisteredAsset &&
-      hasInsufficientBalance(this.asset, this.amountSend, fee, {
-        isExternalBalance: !this.isSoraToEvm,
-        isExternalNative: this.isNativeTokenSelected,
-      })
-    );
+    return FPNumber.gt(FPNumber.fromNatural(this.amountSend), FPNumber.fromNatural(this.maxValue));
   }
 
   get isAssetSelected(): boolean {
@@ -516,6 +521,10 @@ export default class Bridge extends Mixins(
 
   get formattedExternalTransferFee(): string {
     return this.getStringFromCodec(this.externalTransferFee, this.asset?.externalDecimals);
+  }
+
+  get formattedExternalMinBalance(): string {
+    return this.getStringFromCodec(this.assetExternalMinBalance, this.asset?.externalDecimals);
   }
 
   get isConfirmTxDisabled(): boolean {
