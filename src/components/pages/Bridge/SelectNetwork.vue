@@ -142,6 +142,12 @@ $radio-checked-size: 18px;
     padding-left: $inner-spacing-small;
     width: 100%;
   }
+  .network,
+  .el-radio__input {
+    &.is-disabled {
+      cursor: not-allowed;
+    }
+  }
 }
 
 .networks-scrollbar {
