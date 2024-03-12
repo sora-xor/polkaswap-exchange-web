@@ -3,7 +3,7 @@
     <info-line
       :label="t('bridge.soraNetworkFee')"
       :label-tooltip="t('networkFeeTooltipText')"
-      :value="formatStringValue(soraNetworkFee)"
+      :value="formatStringValue(soraNetworkFee, XOR.decimals)"
       :asset-symbol="XOR.symbol"
       :fiat-value="getFiatAmountByString(soraNetworkFee, XOR)"
       is-formatted
@@ -11,7 +11,7 @@
     <info-line
       :label="formattedNetworkFeeLabel"
       :label-tooltip="t('ethNetworkFeeTooltipText', { network: networkName })"
-      :value="formatStringValue(externalNetworkFee)"
+      :value="formatStringValue(externalNetworkFee, nativeToken.externalDecimals)"
       :asset-symbol="nativeTokenSymbol"
       :fiat-value="getFiatAmountByString(externalNetworkFee, nativeToken)"
       is-formatted
@@ -20,7 +20,7 @@
       v-if="isNotZero(externalTransferFee)"
       :label="t('bridge.externalTransferFee', { network: networkName })"
       :label-tooltip="t('bridge.externalTransferFeeTooltip', { network: networkName })"
-      :value="formatStringValue(externalTransferFee)"
+      :value="formatStringValue(externalTransferFee, asset.externalDecimals)"
       :asset-symbol="assetSymbol"
       :fiat-value="getFiatAmountByString(externalTransferFee, asset)"
       is-formatted
@@ -29,7 +29,7 @@
       v-if="isNotZero(externalMinBalance)"
       :label="t('bridge.externalMinDeposit', { network: networkName })"
       :label-tooltip="t('bridge.externalMinDepositTooltip', { network: networkName, symbol: assetSymbol })"
-      :value="formatStringValue(externalMinBalance)"
+      :value="formatStringValue(externalMinBalance, asset.externalDecimals)"
       :asset-symbol="assetSymbol"
       :fiat-value="getFiatAmountByString(externalMinBalance, asset)"
       is-formatted
