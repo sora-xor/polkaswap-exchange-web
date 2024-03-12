@@ -300,14 +300,12 @@ import { FocusedField } from '@/store/bridge/types';
 import { getter, action, mutation, state } from '@/store/decorators';
 import {
   isXorAccountAsset,
-  hasInsufficientBalance,
   hasInsufficientXorForFee,
   hasInsufficientNativeTokenForFee,
   getMaxBalance,
   getAssetBalance,
   asZeroValue,
   delay,
-  toPrecision,
 } from '@/utils';
 import { subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { NodesConnection } from '@/utils/connection';
@@ -445,40 +443,31 @@ export default class Bridge extends Mixins(
   }
 
   get transferableAmount(): FPNumber {
-    if (!(this.asset && this.isRegisteredAsset)) return FPNumber.ZERO;
+    if (!(this.asset && this.isRegisteredAsset && this.areAccountsConnected)) return FPNumber.ZERO;
 
     const fee = this.isSoraToEvm ? this.soraNetworkFee : this.externalNetworkFee;
 
+    const minBalance = FPNumber.fromCodecValue(this.assetExternalMinBalance, this.asset.externalDecimals);
     const maxBalance = getMaxBalance(this.asset, fee, {
       isExternalBalance: !this.isSoraToEvm,
       isExternalNative: this.isNativeTokenSelected,
     });
 
-    // if (this.isNativeTokenSelected) {
-    //   const minBalance = FPNumber.fromCodecValue(this.assetExternalMinBalance, this.nativeTokenDecimals);
-    //   maxBalance = maxBalance.sub(minBalance).max(FPNumber.ZERO);
-    // }
-
-    return maxBalance;
+    return maxBalance.sub(minBalance).max(FPNumber.ZERO);
   }
 
   get maxValue(): string {
-    let maxBalance = this.transferableAmount;
+    let amount = this.transferableAmount;
 
-    if (this.transferMaxAmount && FPNumber.gt(maxBalance, this.transferMaxAmount)) {
-      maxBalance = this.transferMaxAmount;
-    } else if (this.transferMinAmount && FPNumber.lt(maxBalance, this.transferMinAmount)) {
-      maxBalance = FPNumber.ZERO;
+    if (this.transferMaxAmount && FPNumber.gt(amount, this.transferMaxAmount)) {
+      amount = this.transferMaxAmount;
     }
 
-    return toPrecision(maxBalance, this.amountDecimals).toString();
+    return amount.dp(this.amountDecimals).toString();
   }
 
   get isMaxAvailable(): boolean {
-    if (!(this.asset && this.isRegisteredAsset && this.areAccountsConnected && !asZeroValue(this.maxValue)))
-      return false;
-
-    return this.maxValue !== this.amountSend;
+    return !asZeroValue(this.maxValue) && this.maxValue !== this.amountSend;
   }
 
   get isGreaterThanMaxAmount(): boolean {
