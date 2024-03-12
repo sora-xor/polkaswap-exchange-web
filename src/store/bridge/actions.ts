@@ -303,7 +303,11 @@ async function updateExternalMinBalance(context: ActionContext<any, any>): Promi
   let minBalance = ZeroStringValue;
 
   if (getters.isSubBridge && getters.asset && !state.isSoraToEvm) {
-    minBalance = await subBridgeConnector.network.getAssetMinDeposit(getters.asset.externalAddress);
+    const minDepositCodec = await subBridgeConnector.network.getAssetMinDeposit(getters.asset.externalAddress);
+    // is greater than the minimum non-zero value
+    if (minDepositCodec > '1') {
+      minBalance = minDepositCodec;
+    }
   }
 
   commit.setExternalMinBalance(minBalance);
