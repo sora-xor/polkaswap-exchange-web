@@ -69,4 +69,14 @@ export class LiberlandAdapter extends SubAdapter {
       value
     );
   }
+
+  /* Throws error until Substrate 5 migration */
+  public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
+    try {
+      return await super.getNetworkFee(asset, sender, recipient);
+    } catch (error) {
+      // Hardcoded value for Liberland - 0.011153
+      return '11153000000';
+    }
+  }
 }
