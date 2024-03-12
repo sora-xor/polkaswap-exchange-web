@@ -39,6 +39,14 @@ export class SubAdapter {
     return !!this.api?.isConnected;
   }
 
+  protected async withConnection<T>(onSuccess: AsyncFnWithoutArgs<T> | FnWithoutArgs<T>, fallback: T) {
+    if (!this.connected && !this.connection.loading) return fallback;
+
+    await this.api.isReady;
+
+    return await onSuccess();
+  }
+
   public setApi(api: ApiPromise): void {
     console.info(`[${this.subNetwork}] Api injected`);
     this.connection.api = api;
@@ -75,25 +83,22 @@ export class SubAdapter {
   }
 
   public async getBlockNumber(): Promise<number> {
-    if (!this.connected) return 0;
-
-    await this.api.isReady;
-
-    const result = await this.api.query.system.number();
-
-    return result.toNumber();
+    return await this.withConnection(async () => {
+      const result = await this.api.query.system.number();
+      return result.toNumber();
+    }, 0);
   }
 
   protected async getAccountBalance(accountAddress: string): Promise<CodecString> {
-    if (!(this.connected && accountAddress)) return ZeroStringValue;
+    if (!accountAddress) return ZeroStringValue;
 
-    await this.api.isReady;
+    return await this.withConnection(async () => {
+      const accountInfo = await this.api.query.system.account(accountAddress);
+      const accountBalance = formatBalance(accountInfo.data);
+      const balance = accountBalance.transferable;
 
-    const accountInfo = await this.api.query.system.account(accountAddress);
-    const accountBalance = formatBalance(accountInfo.data);
-    const balance = accountBalance.transferable;
-
-    return balance;
+      return balance as string;
+    }, ZeroStringValue);
   }
 
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
@@ -115,13 +120,12 @@ export class SubAdapter {
 
   /* [Substrate 5] Runtime call transactionPaymentApi */
   public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
-    if (!this.connected) return ZeroStringValue;
-
-    await this.api.isReady;
-    const decimals = this.api.registry.chainDecimals[0];
-    const tx = this.getTransferExtrinsic(asset, recipient, ZeroStringValue);
-    const res = await tx.paymentInfo(sender);
-    return new FPNumber(res.partialFee, decimals).toCodecString();
+    return await this.withConnection(async () => {
+      const decimals = this.api.registry.chainDecimals[0];
+      const tx = this.getTransferExtrinsic(asset, recipient, ZeroStringValue);
+      const res = await tx.paymentInfo(sender);
+      return new FPNumber(res.partialFee, decimals).toCodecString();
+    }, ZeroStringValue);
   }
 
   public async getTokenBalance(accountAddress: string, address?: string): Promise<CodecString> {
@@ -129,11 +133,7 @@ export class SubAdapter {
   }
 
   public async getExistentialDeposit(): Promise<CodecString> {
-    await this.connect();
-
-    const value = this.api.consts.balances.existentialDeposit.toString();
-
-    return value;
+    return await this.withConnection(() => this.api.consts.balances.existentialDeposit.toString(), ZeroStringValue);
   }
 
   // [TODO: Bridge]: should be a backend call in future

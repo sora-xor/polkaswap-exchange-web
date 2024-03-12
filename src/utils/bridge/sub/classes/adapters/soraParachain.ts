@@ -1,3 +1,4 @@
+import { ZeroStringValue } from '@/consts';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import { SubAdapter } from './substrate';
@@ -12,10 +13,9 @@ export class SoraParachainAdapter extends SubAdapter {
 
   // overrides SubAdapter method
   public async getAssetMinimumAmount(assetAddress: string): Promise<CodecString> {
-    await this.connect();
-    // sora address
-    const value = await subBridgeApi.soraParachainApi.getAssetMinimumAmount(assetAddress, this.api);
-
-    return value;
+    return await this.withConnection(async () => {
+      // sora address
+      return await subBridgeApi.soraParachainApi.getAssetMinimumAmount(assetAddress, this.api);
+    }, ZeroStringValue);
   }
 }

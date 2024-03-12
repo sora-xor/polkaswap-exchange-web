@@ -39,7 +39,7 @@ export class SubNetworksConnector {
     [SubNetworkId.Liberland]: () => new LiberlandAdapter(SubNetworkId.Liberland),
   });
 
-  get uniqueConnections(): SubAdapter[] {
+  get uniqueAdapters(): SubAdapter[] {
     return [this.soraParachain, this.relaychain, this.parachain, this.standalone].filter((c) => !!c) as SubAdapter[];
   }
 
@@ -147,14 +147,14 @@ export class SubNetworksConnector {
    * Connect to Substrate network & Sora parachain
    */
   public async start(): Promise<void> {
-    await Promise.all(this.uniqueConnections.map((c) => c.connect()));
+    await Promise.all(this.uniqueAdapters.map((c) => c.connect()));
   }
 
   /**
    * Close connections to Substrate network & Sora parachain
    */
   public async stop(): Promise<void> {
-    await Promise.all(this.uniqueConnections.map((c) => c.stop()));
+    await Promise.all(this.uniqueAdapters.map((c) => c.stop()));
   }
 }
 

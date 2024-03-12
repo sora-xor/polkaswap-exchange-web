@@ -23,33 +23,33 @@ export class LiberlandAdapter extends SubAdapter {
   }
 
   protected async getAssetMinDeposit(assetAddress: string): Promise<CodecString> {
-    await this.connect();
+    return await this.withConnection(async () => {
+      const assetId = Number(assetAddress);
+      const result = await (this.api.query.assets as any).asset(assetId);
 
-    const assetId = Number(assetAddress);
-    const result = await (this.api.query.assets as any).asset(assetId);
+      if (result.isEmpty) return ZeroStringValue;
 
-    if (result.isEmpty) return ZeroStringValue;
+      const data = result.unwrap();
 
-    const data = result.unwrap();
-
-    return data.minBalance.toString();
+      return data.minBalance.toString();
+    }, ZeroStringValue);
   }
 
   protected async getAccountAssetBalance(accountAddress: string, assetAddress: string): Promise<CodecString> {
-    if (!(this.connected && accountAddress)) return ZeroStringValue;
+    if (!accountAddress) return ZeroStringValue;
 
-    await this.api.isReady;
+    return await this.withConnection(async () => {
+      const assetId = Number(assetAddress);
+      const result = await (this.api.query.assets as any).account(assetId, accountAddress);
 
-    const assetId = Number(assetAddress);
-    const result = await (this.api.query.assets as any).account(assetId, accountAddress);
+      if (result.isEmpty) return ZeroStringValue;
 
-    if (result.isEmpty) return ZeroStringValue;
+      const data = result.unwrap();
 
-    const data = result.unwrap();
+      if (data.isFrozen.isTrue) return ZeroStringValue;
 
-    if (data.isFrozen.isTrue) return ZeroStringValue;
-
-    return data.balance.toString();
+      return data.balance.toString();
+    }, ZeroStringValue);
   }
 
   protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
