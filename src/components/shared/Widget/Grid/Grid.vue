@@ -1,50 +1,37 @@
 <template>
-  <div class="grid-wrapper">
-    <grid-layout
-      :layout.sync="layout"
-      :responsive-layouts="responsiveLayouts"
-      :cols="cols"
-      :breakpoints="breakpoints"
-      :row-height="rowHeight"
-      :is-draggable="draggable"
-      :is-resizable="resizable"
-      :margin="[margin, margin]"
-      :responsive="true"
-      :prevent-collision="true"
-      :vertical-compact="compact"
-      :use-css-transforms="false"
-      @layout-ready="onReady"
-      @breakpoint-changed="onBreakpointChanged"
-    >
-      <grid-item
-        v-for="item in layout"
-        :key="item.i"
-        :i="item.i"
-        :x="item.x"
-        :y="item.y"
-        :w="item.w"
-        :h="item.h"
-        :min-h="item.minH"
-        :min-w="item.minW"
-        class="grid-item"
-      >
-        <slot
-          v-if="ready"
-          :name="item.i"
-          v-bind="{
-            onResize: ($event) => onWidgetResize($event, item.i),
-          }"
-        />
-      </grid-item>
-    </grid-layout>
-  </div>
+  <grid-layout
+    :layout.sync="layout"
+    :responsive-layouts="responsiveLayouts"
+    :cols="cols"
+    :breakpoints="breakpoints"
+    :row-height="rowHeight"
+    :is-draggable="draggable"
+    :is-resizable="resizable"
+    :margin="[margin, margin]"
+    :responsive="true"
+    :prevent-collision="true"
+    :vertical-compact="compact"
+    :use-css-transforms="false"
+    @layout-ready="onReady"
+    @breakpoint-changed="onBreakpointChanged"
+  >
+    <grid-item v-for="widget in layout" :key="widget.i" v-bind="widget">
+      <slot
+        v-if="ready"
+        :name="widget.i"
+        v-bind="{
+          onResize: ($event) => onWidgetResize($event, widget.i),
+        }"
+      />
+    </grid-item>
+  </grid-layout>
 </template>
 
 <script lang="ts">
 import cloneDeep from 'lodash/fp/cloneDeep';
 import debounce from 'lodash.debounce';
 import { GridLayout, GridItem } from 'vue-grid-layout';
-import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 import { Breakpoint, BreakpointKey } from '@/consts/layout';
 import type { Layout, LayoutConfig, LayoutWidget, LayoutWidgetConfig, ResponsiveLayouts } from '@/types/layout';
@@ -133,12 +120,3 @@ export default class WidgetsGrid extends Vue {
   }
 }
 </script>
-
-<style lang="scss">
-.grid-wrapper {
-  .grid-item {
-    display: flex;
-    flex-flow: column nowrap;
-  }
-}
-</style>

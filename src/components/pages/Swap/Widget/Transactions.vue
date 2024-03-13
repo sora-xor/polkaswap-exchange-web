@@ -27,7 +27,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="94">
+      <s-table-column>
         <template #header>
           <span>{{ tc('accountText', 1) }}</span>
         </template>
@@ -35,7 +35,7 @@
           <formatted-address :value="row.address" :symbols="8" />
         </template>
       </s-table-column>
-      <s-table-column width="112" header-align="left" align="left">
+      <s-table-column header-align="left" align="left">
         <template #header>
           <span>{{ t('transfers.from') }}</span>
         </template>
@@ -50,7 +50,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="112" header-align="left" align="left">
+      <s-table-column header-align="left" align="left">
         <template #header>
           <span>{{ t('transfers.to') }}</span>
         </template>

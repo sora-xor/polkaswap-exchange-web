@@ -80,7 +80,7 @@ const LayoutsConfigDefault: ResponsiveLayouts<LayoutWidgetConfig> = {
     { x: 0, y: 0, w: 4, h: 20, i: SwapWidgets.Form },
     { x: 4, y: 0, w: 8, h: 20, i: SwapWidgets.Chart },
     { x: 0, y: 20, w: 4, h: 12, i: SwapWidgets.Distribution },
-    { x: 4, y: 20, w: 6, h: 24, i: SwapWidgets.Transactions },
+    { x: 4, y: 20, w: 8, h: 24, i: SwapWidgets.Transactions },
   ],
   xs: [
     { x: 0, y: 0, w: 4, h: 20, i: SwapWidgets.Form },
