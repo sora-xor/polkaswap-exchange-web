@@ -1554,6 +1554,7 @@
             "canceled": "Отменен",
             "expired": "Истек",
             "filled": "Заполнен"
-        }
+        },
+        "pricePerToken": "Цена за 1 {token}"
     }
 }

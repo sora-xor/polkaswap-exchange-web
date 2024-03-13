@@ -94,7 +94,8 @@
             :disabled="!withSlider"
             :show-tooltip="false"
             :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
-            @input="handleSlideInputChange"
+            @input="handleSlideInput"
+            @change="handleSlideChange"
             @mousedown.native="handleSlideClick"
           />
         </div>
@@ -264,8 +265,12 @@ export default class TokenInput extends Mixins(
     this.$emit('select');
   }
 
-  handleSlideInputChange(value: string): void {
+  handleSlideInput(value: string): void {
     this.$emit('slide', value);
+  }
+
+  handleSlideChange(value: number): void {
+    this.$emit('change', value);
   }
 
   handleSlideClick(): void {

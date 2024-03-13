@@ -1554,6 +1554,7 @@
             "canceled": "Inställt",
             "expired": "Utgånget",
             "filled": "Fylld"
-        }
+        },
+        "pricePerToken": "Pris per 1 {token}"
     }
 }

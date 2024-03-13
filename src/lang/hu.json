@@ -1554,6 +1554,7 @@
             "canceled": "Törölve",
             "expired": "Lejárt",
             "filled": "Megtöltött"
-        }
+        },
+        "pricePerToken": "1 {token} ár"
     }
 }

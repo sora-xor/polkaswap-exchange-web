@@ -1554,6 +1554,7 @@
             "canceled": "Dibatalkan",
             "expired": "Kedaluwarsa",
             "filled": "Dipenuhi"
-        }
+        },
+        "pricePerToken": "Harga per 1 {token}"
     }
 }

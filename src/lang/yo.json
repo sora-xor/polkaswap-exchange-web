@@ -1554,6 +1554,7 @@
             "canceled": "fagilee",
             "expired": "Ti pari",
             "filled": "Ti kun"
-        }
+        },
+        "pricePerToken": "Iye fun 1 {token}"
     }
 }

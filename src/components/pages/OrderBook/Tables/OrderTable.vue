@@ -119,6 +119,7 @@ import dayjs from 'dayjs';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
+import OrderBookMixin from '@/components/mixins/OrderBookMixin';
 import ScrollableTableMixin from '@/components/mixins/ScrollableTableMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, state } from '@/store/decorators';
@@ -137,13 +138,12 @@ type OrderDataUI = Omit<OrderData, 'owner' | 'lifespan' | 'time' | 'expiresAt'>[
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class OrderTable extends Mixins(TranslationMixin, ScrollableTableMixin) {
+export default class OrderTable extends Mixins(OrderBookMixin, TranslationMixin, ScrollableTableMixin) {
   readonly PriceVariant = PriceVariant;
 
   @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
 
   @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
-  @getter.orderBook.currentOrderBook private currentOrderBook!: Nullable<OrderBook>;
 
   @Prop({ default: () => [], type: Array }) readonly orders!: OrderData[];
   @Prop({ default: false, type: Boolean }) readonly selectable!: boolean;
@@ -155,18 +155,6 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
       return;
     }
     this.$emit('sync', this.tableItems);
-  }
-
-  get pricePrecision(): number {
-    return (
-      this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)?.[1]?.length ?? 2
-    );
-  }
-
-  get amountPrecision(): number {
-    return (
-      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)?.[1]?.length ?? 2
-    );
   }
 
   @Watch('tableItems', { deep: true, immediate: true })

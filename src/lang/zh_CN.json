@@ -1554,6 +1554,7 @@
             "canceled": "取消",
             "expired": "已到期",
             "filled": "填充"
-        }
+        },
+        "pricePerToken": "每 1 个{token}价格"
     }
 }

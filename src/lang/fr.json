@@ -1554,6 +1554,7 @@
             "canceled": "Annulé",
             "expired": "Expiré",
             "filled": "Rempli"
-        }
+        },
+        "pricePerToken": "Prix par 1 {token}"
     }
 }

@@ -1554,6 +1554,7 @@
             "canceled": "Zrušeno",
             "expired": "Prošlý",
             "filled": "Naplněné"
-        }
+        },
+        "pricePerToken": "Cena za 1 {token}"
     }
 }

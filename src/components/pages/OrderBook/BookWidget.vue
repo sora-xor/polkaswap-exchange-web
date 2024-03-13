@@ -73,6 +73,7 @@ import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
+import OrderBookMixin from '@/components/mixins/OrderBookMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { LimitOrderType, ZeroStringValue } from '@/consts';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -91,14 +92,18 @@ interface LimitOrderForm {
 type OrderBookPriceVolumeAggregated = [FPNumber, FPNumber, FPNumber];
 
 @Component
-export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
+export default class BookWidget extends Mixins(
+  OrderBookMixin,
+  TranslationMixin,
+  mixins.LoadingMixin,
+  mixins.FormattedAmountMixin
+) {
   @state.orderBook.limitOrderType private limitOrderType!: LimitOrderType;
   @state.orderBook.asks asks!: OrderBookPriceVolume[];
   @state.orderBook.bids bids!: OrderBookPriceVolume[];
 
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.orderBookLastDeal orderBookLastDeal!: Nullable<OrderBookDealData>;
-  @getter.orderBook.currentOrderBook currentOrderBook!: OrderBook;
   @getter.orderBook.orderBookId orderBookId!: string;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
@@ -110,7 +115,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   readonly PriceVariant = PriceVariant;
   readonly maxRowsNumber = 11; // TODO: [Rustem] if I change it to 12 it should be re-rendered correctly
 
-  selectedStep = '';
+  selectedStep: string | undefined = '';
   scalerOpen = false;
 
   @Watch('currentOrderBook', { immediate: true })
@@ -263,7 +268,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return `width: ${filled}%`;
   }
 
-  isBookPrecisionEqual(precision: string): boolean {
+  isBookPrecisionEqual(precision: string | undefined): boolean {
+    if (!precision) return true;
     return precision === this.currentOrderBook?.tickSize?.toString();
   }
 
@@ -286,22 +292,12 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return orders;
   }
 
-  get bookPrecision(): number {
-    return this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length || 0;
-  }
-
-  get amountPrecision(): number {
-    return (
-      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length || 0
-    );
-  }
-
   private getAmountProportion(currentAmount: FPNumber, maxAmount: FPNumber): number {
     return currentAmount.div(maxAmount).mul(FPNumber.HUNDRED).toNumber();
   }
 
   private toBookPrecision(cell: FPNumber): string {
-    return cell.toNumber().toFixed(this.bookPrecision);
+    return cell.toNumber().toFixed(this.pricePrecision);
   }
 
   private toAmountPrecision(cell: FPNumber): string {

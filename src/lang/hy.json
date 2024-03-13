@@ -1554,6 +1554,7 @@
             "canceled": "Չեղարկված է",
             "expired": "Ժամկետանց",
             "filled": "Լրացված"
-        }
+        },
+        "pricePerToken": "Գինը 1 {token} ի համար"
     }
 }

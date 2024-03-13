@@ -1035,6 +1035,7 @@ export default {
     dayVolume: '1D Volume',
     stop: 'Book stopped',
     tokenPair: 'Token pair',
+    pricePerToken: 'Price per 1 {token}',
     book: {
       noAsks: 'No opened asks',
       noBids: 'No opened bids',

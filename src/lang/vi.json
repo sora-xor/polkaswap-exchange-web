@@ -1554,6 +1554,7 @@
             "canceled": "Đã hủy",
             "expired": "Hết hạn",
             "filled": "Điền"
-        }
+        },
+        "pricePerToken": "Giá mỗi 1 {token}"
     }
 }
