@@ -1,5 +1,5 @@
 <template>
-  <base-widget :title="t('swap.route')">
+  <base-widget v-bind="$attrs" :title="t('swap.route')">
     <ul class="distribution">
       <li v-for="{ input, output, amount, sources } in swapPaths" :key="input.address" class="distribution-step">
         <div class="distribution-asset">

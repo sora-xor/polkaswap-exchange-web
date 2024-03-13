@@ -1,5 +1,5 @@
 <template>
-  <div ref="gridWrapper" class="grid-wrapper">
+  <div class="grid-wrapper">
     <grid-layout
       :layout.sync="layout"
       :responsive-layouts="responsiveLayouts"
@@ -28,14 +28,13 @@
         :min-w="item.minW"
         class="grid-item"
       >
-        <template v-if="ready">
-          <slot
-            v-bind="{
-              id: item.i,
-              resize: ($event) => onWidgetResize($event, item.i),
-            }"
-          />
-        </template>
+        <slot
+          v-if="ready"
+          :name="item.i"
+          v-bind="{
+            onResize: ($event) => onWidgetResize($event, item.i),
+          }"
+        />
       </grid-item>
     </grid-layout>
   </div>
@@ -81,8 +80,6 @@ export default class WidgetsGrid extends Vue {
   @Prop({ default: false, type: Boolean }) readonly compact!: boolean;
   @Prop({ default: () => DEFAULT_COLS, type: Object }) readonly cols!: LayoutConfig;
   @Prop({ default: () => DEFAULT_BREAKPOINTS, type: Object }) readonly breakpoints!: LayoutConfig;
-
-  @Ref('gridWrapper') readonly gridWrapper!: HTMLDivElement;
 
   ready = false;
   onReady = debounce(this.setReady);

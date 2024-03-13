@@ -41,12 +41,32 @@ import { debouncedInputHandler } from '@/utils';
 
 @Component
 export default class BaseWidget extends Vue {
+  /**
+   * The widget title text
+   */
   @Prop({ default: '', type: String }) readonly title!: string;
+  /**
+   * The widget title tooltip text
+   */
   @Prop({ default: '', type: String }) readonly tooltip!: string;
+  /**
+   * The widget stretches to fit its parent
+   */
   @Prop({ default: false, type: Boolean }) readonly full!: boolean;
+  /**
+   * The widget has a delimeter line between header and content
+   */
   @Prop({ default: false, type: Boolean }) readonly delimeter!: boolean;
+  /**
+   * The widget content has a full width
+   */
   @Prop({ default: false, type: Boolean }) readonly extensive!: boolean;
+  /**
+   * The widget title has a large font-size
+   */
   @Prop({ default: false, type: Boolean }) readonly primaryTitle!: boolean;
+
+  @Prop({ default: () => {}, type: Function }) readonly onResize!: (rect: DOMRect) => void;
 
   @Ref('container') readonly container!: Vue;
   @Ref('content') readonly content!: HTMLDivElement;
@@ -78,8 +98,7 @@ export default class BaseWidget extends Vue {
 
   onContentResize(): void {
     const el = this.container.$el;
-    const { clientHeight: height, clientWidth: width } = el;
-    this.$emit('resize', { height, width });
+    this.onResize(el.getBoundingClientRect());
   }
 }
 </script>

@@ -9,13 +9,11 @@ function initialState(): SettingsState {
   const node = settingsStorage.get('node');
   const customNodes = settingsStorage.get('customNodes');
   const disclaimerApprove = settingsStorage.get('disclaimerApprove');
-  const chartsEnabled = storage.get('сhartsEnabled');
   const isBrowserNotificationApiAvailable = 'Notification' in window;
   return {
     featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: (storage.get('marketAlgorithm') || DefaultMarketAlgorithm) as MarketAlgorithms,
-    chartsEnabled: chartsEnabled ? Boolean(JSON.parse(chartsEnabled)) : true,
     userDisclaimerApprove: disclaimerApprove ? JSON.parse(disclaimerApprove) : false,
     transactionDeadline: Number(storage.get('transactionDeadline')) || 20,
     isBrowserNotificationApiAvailable,

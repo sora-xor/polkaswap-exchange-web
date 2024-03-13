@@ -1,5 +1,5 @@
 <template>
-  <price-chart-widget :base-asset="tokenFrom" :quote-asset="tokenTo" :is-available="isAvailable" />
+  <price-chart-widget v-bind="$attrs" :base-asset="tokenFrom" :quote-asset="tokenTo" :is-available="isAvailable" />
 </template>
 
 <script lang="ts">

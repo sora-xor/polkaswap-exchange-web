@@ -19,19 +19,23 @@
       :layouts="layouts"
       class="swap-container"
     >
-      <template v-slot="{ id, resize }">
-        <template v-if="id === SwapWidgets.Form">
-          <swap-form-widget :parent-loading="parentLoading" @resize="resize" />
-        </template>
-        <template v-else-if="id === SwapWidgets.Chart">
-          <swap-chart-widget full :parent-loading="parentLoading" v-if="chartsEnabled" />
-        </template>
-        <template v-else-if="id === SwapWidgets.Distribution">
-          <swap-distribution-widget :parent-loading="parentLoading" @resize="resize" />
-        </template>
-        <template v-else-if="id === SwapWidgets.Transactions">
-          <swap-transactions-widget full :parent-loading="parentLoading" />
-        </template>
+      <template v-slot:[SwapWidgets.Form]="props">
+        <swap-form-widget :id="SwapWidgets.Form" v-bind="props" primary-title :parent-loading="parentLoading" />
+      </template>
+      <template v-slot:[SwapWidgets.Chart]="props">
+        <swap-chart-widget :id="SwapWidgets.Chart" v-bind="props" full :parent-loading="parentLoading" />
+      </template>
+      <template v-slot:[SwapWidgets.Distribution]="props">
+        <swap-distribution-widget :id="SwapWidgets.Distribution" v-bind="props" :parent-loading="parentLoading" />
+      </template>
+      <template v-slot:[SwapWidgets.Transactions]="props">
+        <swap-transactions-widget
+          :id="SwapWidgets.Transactions"
+          v-bind="props"
+          full
+          extensive
+          :parent-loading="parentLoading"
+        />
       </template>
     </widgets-grid>
   </div>
@@ -99,7 +103,6 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   @state.swap.isAvailable isAvailable!: boolean;
   @state.router.prev private prevRoute!: Nullable<PageNames>;
 
-  @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
 
@@ -153,3 +156,12 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.swap-container {
+  #form,
+  #chart {
+    min-height: 502px;
+  }
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <base-widget extensive :title="tc('transactionText', 2)" class="swap-transactions-widget">
+  <base-widget v-bind="$attrs" :title="tc('transactionText', 2)" class="swap-transactions-widget">
     <s-table
       ref="table"
       v-loading="loadingState"
