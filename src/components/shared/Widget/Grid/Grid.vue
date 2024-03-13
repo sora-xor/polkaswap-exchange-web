@@ -54,16 +54,16 @@ const DEFAULT_BREAKPOINTS: LayoutConfig = {
   [BreakpointKey.lg]: Breakpoint.HugeDesktop, // 2092
   [BreakpointKey.md]: Breakpoint.LargeDesktop, // 1440
   [BreakpointKey.sm]: Breakpoint.Desktop, // 1024
-  [BreakpointKey.xs]: Breakpoint.LargeMobile, // 528
-  [BreakpointKey.xss]: 0,
+  [BreakpointKey.xs]: Breakpoint.Tablet, // 900
+  [BreakpointKey.xss]: Breakpoint.Mobile, // 464
 };
 
 const DEFAULT_COLS: LayoutConfig = {
-  [BreakpointKey.lg]: 24,
-  [BreakpointKey.md]: 12,
-  [BreakpointKey.sm]: 12,
-  [BreakpointKey.xs]: 4,
-  [BreakpointKey.xss]: 4,
+  [BreakpointKey.lg]: 24, // 2092
+  [BreakpointKey.md]: 16, // 1440
+  [BreakpointKey.sm]: 12, // 1024
+  [BreakpointKey.xs]: 8, // 900
+  [BreakpointKey.xss]: 4, // 464
 };
 
 @Component({

@@ -20,16 +20,16 @@
       class="swap-container"
     >
       <template v-slot="{ id, resize }">
-        <template v-if="id === 'form'">
+        <template v-if="id === SwapWidgets.Form">
           <swap-form-widget :parent-loading="parentLoading" @resize="resize" />
         </template>
-        <template v-else-if="id === 'chart'">
+        <template v-else-if="id === SwapWidgets.Chart">
           <swap-chart-widget full :parent-loading="parentLoading" v-if="chartsEnabled" />
         </template>
-        <template v-else-if="id === 'distribution'">
+        <template v-else-if="id === SwapWidgets.Distribution">
           <swap-distribution-widget :parent-loading="parentLoading" @resize="resize" />
         </template>
-        <template v-else-if="id === 'transactions'">
+        <template v-else-if="id === SwapWidgets.Transactions">
           <swap-transactions-widget full :parent-loading="parentLoading" />
         </template>
       </template>
@@ -40,6 +40,7 @@
 <script lang="ts">
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import cloneDeep from 'lodash/fp/cloneDeep';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
@@ -50,6 +51,40 @@ import { action, getter, state } from '@/store/decorators';
 import type { Layout, LayoutWidgetConfig, ResponsiveLayouts } from '@/types/layout';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+
+enum SwapWidgets {
+  Form = 'form',
+  Chart = 'chart',
+  Transactions = 'transactions',
+  Distribution = 'distribution',
+}
+
+const LayoutsConfigDefault: ResponsiveLayouts<LayoutWidgetConfig> = {
+  lg: [
+    { x: 0, y: 0, w: 6, h: 20, i: SwapWidgets.Form },
+    { x: 6, y: 0, w: 10, h: 20, i: SwapWidgets.Chart },
+    { x: 16, y: 0, w: 8, h: 24, i: SwapWidgets.Transactions },
+    { x: 0, y: 20, w: 6, h: 6, i: SwapWidgets.Distribution },
+  ],
+  md: [
+    { x: 0, y: 0, w: 4, h: 20, i: SwapWidgets.Form },
+    { x: 4, y: 0, w: 12, h: 20, i: SwapWidgets.Chart },
+    { x: 0, y: 20, w: 4, h: 6, i: SwapWidgets.Distribution },
+    { x: 4, y: 20, w: 8, h: 24, i: SwapWidgets.Transactions },
+  ],
+  sm: [
+    { x: 0, y: 0, w: 4, h: 20, i: SwapWidgets.Form },
+    { x: 4, y: 0, w: 8, h: 20, i: SwapWidgets.Chart },
+    { x: 0, y: 20, w: 4, h: 12, i: SwapWidgets.Distribution },
+    { x: 4, y: 20, w: 6, h: 24, i: SwapWidgets.Transactions },
+  ],
+  xs: [
+    { x: 0, y: 0, w: 4, h: 20, i: SwapWidgets.Form },
+    { x: 4, y: 0, w: 4, h: 20, i: SwapWidgets.Chart },
+    { x: 0, y: 20, w: 4, h: 12, i: SwapWidgets.Distribution },
+    { x: 4, y: 20, w: 4, h: 24, i: SwapWidgets.Transactions },
+  ],
+};
 
 @Component({
   components: {
@@ -71,6 +106,8 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
 
+  readonly SwapWidgets = SwapWidgets;
+
   draggable = false;
   resizable = false;
   compact = false;
@@ -80,35 +117,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   transactions = true;
   distribution = true;
 
-  get layouts(): ResponsiveLayouts<LayoutWidgetConfig> {
-    const lg: Layout<LayoutWidgetConfig> = [];
-    const sm: Layout<LayoutWidgetConfig> = [];
-
-    if (this.form) {
-      lg.push({ x: 0, y: 0, w: 6, h: 20, i: 'form' });
-      sm.push({ x: 0, y: 0, w: 4, h: 20, i: 'form' });
-    }
-
-    if (this.chart) {
-      lg.push({ x: 6, y: 0, w: 12, h: 20, i: 'chart' });
-      sm.push({ x: 4, y: 0, w: 8, h: 20, i: 'chart' });
-    }
-
-    if (this.transactions) {
-      lg.push({ x: 18, y: 0, w: 6, h: 24, i: 'transactions' });
-      sm.push({ x: 4, y: 20, w: 6, h: 24, i: 'transactions' });
-    }
-
-    if (this.distribution) {
-      lg.push({ x: 0, y: 20, w: 6, h: 6, i: 'distribution' });
-      sm.push({ x: 0, y: 20, w: 4, h: 12, i: 'distribution' });
-    }
-
-    return {
-      lg,
-      sm,
-    };
-  }
+  layouts: ResponsiveLayouts<LayoutWidgetConfig> = cloneDeep(LayoutsConfigDefault);
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
