@@ -9,9 +9,9 @@
     :is-resizable="resizable"
     :margin="[margin, margin]"
     :responsive="true"
-    :prevent-collision="true"
+    :prevent-collision="false"
     :vertical-compact="compact"
-    :use-css-transforms="false"
+    :use-css-transforms="true"
     @layout-ready="onReady"
     @breakpoint-changed="onBreakpointChanged"
   >
@@ -20,6 +20,8 @@
         v-if="ready"
         :name="widget.i"
         v-bind="{
+          id: widget.i,
+          loading,
           onResize: ($event) => onWidgetResize($event, widget.i),
         }"
       />
@@ -65,6 +67,7 @@ export default class WidgetsGrid extends Vue {
   @Prop({ default: false, type: Boolean }) readonly draggable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly resizable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly compact!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
   @Prop({ default: () => DEFAULT_COLS, type: Object }) readonly cols!: LayoutConfig;
   @Prop({ default: () => DEFAULT_BREAKPOINTS, type: Object }) readonly breakpoints!: LayoutConfig;
 

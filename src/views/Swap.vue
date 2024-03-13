@@ -17,25 +17,20 @@
       :resizable="resizable"
       :compact="compact"
       :layouts="layouts"
+      :loading="parentLoading"
       class="swap-container"
     >
       <template v-slot:[SwapWidgets.Form]="props">
-        <swap-form-widget :id="SwapWidgets.Form" v-bind="props" primary-title :parent-loading="parentLoading" />
+        <swap-form-widget v-bind="props" primary-title />
       </template>
       <template v-slot:[SwapWidgets.Chart]="props">
-        <swap-chart-widget :id="SwapWidgets.Chart" v-bind="props" full :parent-loading="parentLoading" />
+        <swap-chart-widget v-bind="props" full />
       </template>
       <template v-slot:[SwapWidgets.Distribution]="props">
-        <swap-distribution-widget :id="SwapWidgets.Distribution" v-bind="props" :parent-loading="parentLoading" />
+        <swap-distribution-widget v-bind="props" />
       </template>
       <template v-slot:[SwapWidgets.Transactions]="props">
-        <swap-transactions-widget
-          :id="SwapWidgets.Transactions"
-          v-bind="props"
-          full
-          extensive
-          :parent-loading="parentLoading"
-        />
+        <swap-transactions-widget v-bind="props" full extensive />
       </template>
     </widgets-grid>
   </div>

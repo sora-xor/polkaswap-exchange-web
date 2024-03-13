@@ -6,6 +6,7 @@
     size="big"
     primary
     :class="['base-widget', { delimeter, full }]"
+    v-loading="loading"
   >
     <template #header v-if="hasHeader">
       <div class="base-widget-block base-widget-header">
@@ -42,6 +43,10 @@ import { debouncedInputHandler } from '@/utils';
 @Component
 export default class BaseWidget extends Vue {
   /**
+   * The widget title has a large font-size
+   */
+  @Prop({ default: false, type: Boolean }) readonly primaryTitle!: boolean;
+  /**
    * The widget title text
    */
   @Prop({ default: '', type: String }) readonly title!: string;
@@ -62,9 +67,9 @@ export default class BaseWidget extends Vue {
    */
   @Prop({ default: false, type: Boolean }) readonly extensive!: boolean;
   /**
-   * The widget title has a large font-size
+   * Widget has a loading state
    */
-  @Prop({ default: false, type: Boolean }) readonly primaryTitle!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
 
   @Prop({ default: () => {}, type: Function }) readonly onResize!: (rect: DOMRect) => void;
 
@@ -134,9 +139,12 @@ $left: $inner-spacing-medium;
   display: flex;
   flex-flow: column nowrap;
   align-items: normal;
-  overflow: unset;
+  overflow: hidden;
 
   &.full {
+    width: 100%;
+    height: 100%;
+
     flex: 1;
   }
 
