@@ -15,15 +15,14 @@
       </div>
     </div>
     <div v-else class="order-book-widgets">
-      <div class="column-1">
-        <book-charts-widget class="chart-widget" />
-      </div>
+      <div class="column-1"></div>
       <div class="column-2">
         <set-limit-order-widget class="set-widget" />
         <book-widget class="book-widget" />
       </div>
       <div class="column-3">
         <history-order-widget class="history-widget" />
+        <book-charts-widget class="chart-widget" />
         <market-trades-widget class="trades-widget" />
       </div>
     </div>
@@ -295,6 +294,10 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
     @include large-desktop {
       margin-left: 0;
     }
+  }
+
+  .chart-widget {
+    margin-top: var(--s-size-mini);
   }
 }
 
