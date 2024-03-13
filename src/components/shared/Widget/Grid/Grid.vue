@@ -12,7 +12,6 @@
     :prevent-collision="false"
     :vertical-compact="compact"
     :use-css-transforms="true"
-    @layout-ready="onReady"
     @breakpoint-changed="onBreakpointChanged"
   >
     <grid-item v-for="widget in gridLayout" :key="widget.i" v-bind="widget">
@@ -119,7 +118,7 @@ export default class WidgetsGrid extends Vue {
     // `height = h * (rowHeight + margin) - margin` - library calculates grid-item height (px)
     // `h = (height + margin) / (rowHeight + margin)`
     const calculatedH = Math.ceil((height + this.margin) / (this.rowHeight + this.margin));
-    const updatedH = Math.max(widget.minH, calculatedH);
+    const updatedH = Math.max(widget.minH ?? 1, calculatedH);
     // mutate local layout
     widget.h = updatedH;
     // update component layout

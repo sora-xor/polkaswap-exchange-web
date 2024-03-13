@@ -7,6 +7,7 @@
         <s-checkbox v-model="compact" label="Compact" />
       </div>
       <div class="s-flex">
+        <s-checkbox v-model="form" @change="updateWidget(SwapWidgets.Form, $event)" label="Form" />
         <s-checkbox v-model="chart" @change="updateWidget(SwapWidgets.Chart, $event)" label="Chart" />
         <s-checkbox
           v-model="transactions"
@@ -71,12 +72,12 @@ enum SwapWidgets {
 }
 
 const LayoutsConfigDefault: ResponsiveLayouts<LayoutWidgetConfig> = {
-  lg: [
-    { x: 0, y: 0, w: 6, h: 20, i: SwapWidgets.Form },
-    { x: 6, y: 0, w: 10, h: 20, i: SwapWidgets.Chart },
-    { x: 16, y: 0, w: 8, h: 24, i: SwapWidgets.Transactions },
-    { x: 0, y: 20, w: 6, h: 6, i: SwapWidgets.Distribution },
-  ],
+  // lg: [
+  //   { x: 0, y: 0, w: 6, h: 20, i: SwapWidgets.Form },
+  //   { x: 6, y: 0, w: 10, h: 20, i: SwapWidgets.Chart },
+  //   { x: 16, y: 0, w: 8, h: 24, i: SwapWidgets.Transactions },
+  //   { x: 0, y: 20, w: 6, h: 6, i: SwapWidgets.Distribution },
+  // ],
   md: [
     { x: 0, y: 0, w: 4, h: 20, i: SwapWidgets.Form },
     { x: 4, y: 0, w: 12, h: 20, i: SwapWidgets.Chart },
