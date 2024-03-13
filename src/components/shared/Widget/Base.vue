@@ -36,6 +36,7 @@
 </template>
 
 <script lang="ts">
+import isEqual from 'lodash/fp/isEqual';
 import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
 
 import { debouncedInputHandler } from '@/utils';
@@ -71,13 +72,18 @@ export default class BaseWidget extends Vue {
    */
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
 
-  @Prop({ default: () => {}, type: Function }) readonly onResize!: (rect: DOMRect) => void;
+  @Prop({ default: () => {}, type: Function }) readonly onResize!: (rect: Partial<DOMRect>) => void;
 
   @Ref('container') readonly container!: Vue;
   @Ref('content') readonly content!: HTMLDivElement;
 
-  observer: ResizeObserver | null = null;
-  handleContentResize = debouncedInputHandler(this.onContentResize, 300, { leading: false });
+  private observer: ResizeObserver | null = null;
+  private handleContentResize = debouncedInputHandler(this.onContentResize, 300, { leading: false });
+
+  private rect: Partial<DOMRect> = {
+    width: 0,
+    height: 0,
+  };
 
   get hasHeader(): boolean {
     return !!this.title || !!this.$slots.title;
@@ -85,6 +91,7 @@ export default class BaseWidget extends Vue {
 
   mounted(): void {
     this.createContentObserver();
+    this.updateRect(this.getClientRect()); // initial
   }
 
   beforeDestroy(): void {
@@ -101,9 +108,23 @@ export default class BaseWidget extends Vue {
     this.observer = null;
   }
 
+  private getClientRect(): DOMRect {
+    return this.container.$el.getBoundingClientRect();
+  }
+
+  private updateRect(rect: Partial<DOMRect>): void {
+    this.rect.width = rect.width;
+    this.rect.height = rect.height;
+  }
+
   onContentResize(): void {
-    const el = this.container.$el;
-    this.onResize(el.getBoundingClientRect());
+    const { width, height } = this.getClientRect();
+    const rect = { width, height };
+    // check necessary update
+    if (!isEqual(rect)(this.rect)) {
+      this.updateRect(rect);
+      this.onResize(this.rect);
+    }
   }
 }
 </script>

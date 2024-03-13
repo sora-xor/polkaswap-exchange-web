@@ -1,5 +1,6 @@
 <template>
   <grid-layout
+    class="widgets-grid"
     :layout.sync="gridLayout"
     :responsive-layouts="responsiveLayouts"
     :cols="cols"
@@ -14,6 +15,7 @@
     :use-css-transforms="true"
     @breakpoint-changed="onBreakpointChanged"
   >
+    <div v-if="lines" class="grid-lines" :style="gridLinesStyle" />
     <grid-item v-for="widget in gridLayout" :key="widget.i" v-bind="widget">
       <slot
         :name="widget.i"
@@ -67,6 +69,7 @@ export default class WidgetsGrid extends Vue {
   @Prop({ default: false, type: Boolean }) readonly resizable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly compact!: boolean;
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly lines!: boolean;
   @Prop({ default: () => DEFAULT_COLS, type: Object }) readonly cols!: LayoutConfig;
   @Prop({ default: () => DEFAULT_BREAKPOINTS, type: Object }) readonly breakpoints!: LayoutConfig;
 
@@ -95,6 +98,19 @@ export default class WidgetsGrid extends Vue {
     }, {});
   }
 
+  get gridLinesStyle(): Partial<CSSStyleDeclaration> {
+    const r = this.rowHeight;
+    const m = this.margin / 2;
+    const c = this.cols[this.breakpoint];
+
+    return {
+      backgroundSize: `calc(calc(100% - ${m}px) / ${c}) ${r + m * 2}px`,
+      height: `calc(100% - ${m}px)`,
+      width: `calc(100% - ${m}px)`,
+      margin: `${m}px`,
+    };
+  }
+
   @Watch('responsiveLayouts')
   private updateCurrentLayout(updatedLayouts: ResponsiveLayouts<LayoutWidget>): void {
     const updatedLayout = updatedLayouts[this.breakpoint];
@@ -108,7 +124,7 @@ export default class WidgetsGrid extends Vue {
     this.breakpoint = newBreakpoint;
   }
 
-  onWidgetResize(rect: DOMRectReadOnly, id: string): void {
+  onWidgetResize(rect: DOMRect, id: string): void {
     const layout = cloneDeep(this.gridLayout);
     const widget = layout.find((item) => item.i === id);
 
@@ -125,7 +141,7 @@ export default class WidgetsGrid extends Vue {
     this.gridLayout = layout;
   }
 
-  private emitUpdate(layout: Layout): void {
+  private emitUpdate(layout: Layout<LayoutWidget>): void {
     const update: ResponsiveLayouts<LayoutWidget> = {
       [this.breakpoint]: layout,
     };
@@ -134,3 +150,20 @@ export default class WidgetsGrid extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+$line: var(--s-color-base-border-secondary);
+
+.widgets-grid {
+  .vue-grid-item.vue-grid-placeholder {
+    background: var(--s-color-status-success-background);
+    opacity: 0.5;
+  }
+
+  .grid-lines {
+    position: absolute;
+    background-image: linear-gradient(to right, $line 1px, transparent 1px), linear-gradient($line 1px, transparent 1px);
+    background-repeat: repeat;
+  }
+}
+</style>

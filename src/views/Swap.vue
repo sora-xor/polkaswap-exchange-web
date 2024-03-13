@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div class="s-flex" style="flex-flow: column; height: 100%">
     <div class="controls s-flex" style="gap: 16px; justify-content: space-between">
       <div class="s-flex">
         <s-checkbox v-model="draggable" label="Draggable" />
         <s-checkbox v-model="resizable" label="Resizable" />
         <s-checkbox v-model="compact" label="Compact" />
+        <s-checkbox v-model="lines" label="Show grid" />
       </div>
       <div class="s-flex">
         <s-checkbox v-model="form" @change="updateWidget(SwapWidgets.Form, $event)" label="Form" />
@@ -22,6 +23,7 @@
       :draggable="draggable"
       :resizable="resizable"
       :compact="compact"
+      :lines="lines"
       :layouts="layouts"
       :loading="parentLoading"
       @update="updateLayoutsConfig"
@@ -72,23 +74,17 @@ enum SwapWidgets {
 }
 
 const LayoutsConfigDefault: ResponsiveLayouts<LayoutWidgetConfig> = {
-  // lg: [
-  //   { x: 0, y: 0, w: 6, h: 20, i: SwapWidgets.Form },
-  //   { x: 6, y: 0, w: 10, h: 20, i: SwapWidgets.Chart },
-  //   { x: 16, y: 0, w: 8, h: 24, i: SwapWidgets.Transactions },
-  //   { x: 0, y: 20, w: 6, h: 6, i: SwapWidgets.Distribution },
-  // ],
   md: [
-    { x: 0, y: 0, w: 4, h: 20, i: SwapWidgets.Form },
-    { x: 4, y: 0, w: 12, h: 20, i: SwapWidgets.Chart },
-    { x: 0, y: 20, w: 4, h: 6, i: SwapWidgets.Distribution },
-    { x: 4, y: 20, w: 8, h: 24, i: SwapWidgets.Transactions },
+    { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+    { x: 4, y: 0, w: 12, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+    { x: 0, y: 20, w: 4, h: 6, minW: 4, minH: 6, i: SwapWidgets.Distribution },
+    { x: 4, y: 20, w: 8, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
   ],
   sm: [
-    { x: 0, y: 0, w: 4, h: 20, i: SwapWidgets.Form },
-    { x: 4, y: 0, w: 8, h: 20, i: SwapWidgets.Chart },
-    { x: 0, y: 20, w: 4, h: 12, i: SwapWidgets.Distribution },
-    { x: 4, y: 20, w: 8, h: 24, i: SwapWidgets.Transactions },
+    { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+    { x: 4, y: 0, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+    { x: 0, y: 20, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
+    { x: 4, y: 20, w: 8, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
   ],
   xs: [
     { x: 0, y: 0, w: 4, h: 20, i: SwapWidgets.Form },
@@ -122,6 +118,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   draggable = false;
   resizable = false;
   compact = false;
+  lines = false;
 
   form = true;
   chart = true;
@@ -139,11 +136,10 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   updateWidget(id: SwapWidgets, flag: boolean): void {
     Object.keys(this.layouts).forEach((key) => {
       if (flag) {
-        const defaultWidget = LayoutsConfigDefault[key].find((widget) => widget.i === id);
+        const widget = LayoutsConfigDefault[key].find((widget) => widget.i === id);
 
-        if (defaultWidget) {
-          const updatedWidget = { ...defaultWidget, x: 0, y: 0 }; // add to start point ?
-          this.layouts[key] = [...this.layouts[key], updatedWidget];
+        if (widget) {
+          this.layouts[key] = [...this.layouts[key], { ...widget }];
         }
       } else {
         this.layouts[key] = this.layouts[key].filter((widget) => widget.i !== id);
@@ -188,6 +184,8 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
 <style lang="scss" scoped>
 .swap-container {
+  flex: 1;
+
   #form,
   #chart {
     min-height: 502px;
