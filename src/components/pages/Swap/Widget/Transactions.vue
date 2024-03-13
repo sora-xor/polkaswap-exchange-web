@@ -2,7 +2,7 @@
   <base-widget v-bind="$attrs" :title="tc('transactionText', 2)" class="swap-transactions-widget">
     <s-table
       ref="table"
-      v-loading="loadingState"
+      v-loading="loading"
       :data="tableItems"
       :highlight-current-row="false"
       size="small"
@@ -96,7 +96,7 @@
       :current-page="currentPage"
       :page-amount="pageAmount"
       :total="total"
-      :loading="loadingState"
+      :loading="loading"
       :last-page="lastPage"
       @pagination-click="onPaginationClick"
     />
@@ -177,10 +177,6 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
 
   private totalCount = 0;
   private transactions: HistoryItem[] = [];
-
-  get loadingState(): boolean {
-    return this.parentLoading || this.loading;
-  }
 
   // override ScrollableTableMixin
   get total(): number {

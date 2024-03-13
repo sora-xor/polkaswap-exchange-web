@@ -206,7 +206,6 @@ export enum Components {
   X1History = 'pages/X1/X1History',
   // Swap Page
   SwapFormWidget = 'pages/Swap/Widget/Form',
-  SwapChartWidget = 'pages/Swap/Widget/Chart',
   SwapTransactionsWidget = 'pages/Swap/Widget/Transactions',
   SwapDistributionWidget = 'pages/Swap/Widget/Distribution',
   SwapConfirm = 'pages/Swap/Confirm',

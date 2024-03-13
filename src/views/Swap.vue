@@ -7,24 +7,35 @@
         <s-checkbox v-model="compact" label="Compact" />
       </div>
       <div class="s-flex">
-        <s-checkbox v-model="chart" label="Chart" />
-        <s-checkbox v-model="transactions" label="Transactions" />
-        <s-checkbox v-model="distribution" label="Route" />
+        <s-checkbox v-model="chart" @change="updateWidget(SwapWidgets.Chart, $event)" label="Chart" />
+        <s-checkbox
+          v-model="transactions"
+          @change="updateWidget(SwapWidgets.Transactions, $event)"
+          label="Transactions"
+        />
+        <s-checkbox v-model="distribution" @change="updateWidget(SwapWidgets.Distribution, $event)" label="Route" />
       </div>
     </div>
     <widgets-grid
+      class="swap-container"
       :draggable="draggable"
       :resizable="resizable"
       :compact="compact"
       :layouts="layouts"
       :loading="parentLoading"
-      class="swap-container"
+      @update="updateLayoutsConfig"
     >
       <template v-slot:[SwapWidgets.Form]="props">
         <swap-form-widget v-bind="props" primary-title />
       </template>
       <template v-slot:[SwapWidgets.Chart]="props">
-        <swap-chart-widget v-bind="props" full />
+        <swap-chart-widget
+          v-bind="props"
+          :base-asset="tokenFrom"
+          :quote-asset="tokenTo"
+          :is-available="isAvailable"
+          full
+        />
       </template>
       <template v-slot:[SwapWidgets.Distribution]="props">
         <swap-distribution-widget v-bind="props" />
@@ -40,6 +51,7 @@
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import cloneDeep from 'lodash/fp/cloneDeep';
+import isEqual from 'lodash/fp/isEqual';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
@@ -47,7 +59,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
-import type { Layout, LayoutWidgetConfig, ResponsiveLayouts } from '@/types/layout';
+import type { LayoutWidget, LayoutWidgetConfig, ResponsiveLayouts } from '@/types/layout';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -88,7 +100,7 @@ const LayoutsConfigDefault: ResponsiveLayouts<LayoutWidgetConfig> = {
 @Component({
   components: {
     SwapFormWidget: lazyComponent(Components.SwapFormWidget),
-    SwapChartWidget: lazyComponent(Components.SwapChartWidget),
+    SwapChartWidget: lazyComponent(Components.PriceChartWidget),
     SwapTransactionsWidget: lazyComponent(Components.SwapTransactionsWidget),
     WidgetsGrid: lazyComponent(Components.WidgetsGrid),
     SwapDistributionWidget: lazyComponent(Components.SwapDistributionWidget),
@@ -116,6 +128,27 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   distribution = true;
 
   layouts: ResponsiveLayouts<LayoutWidgetConfig> = cloneDeep(LayoutsConfigDefault);
+
+  updateLayoutsConfig(updated: ResponsiveLayouts<LayoutWidget>): void {
+    if (!isEqual(this.layouts, updated)) {
+      this.layouts = { ...this.layouts, ...updated };
+    }
+  }
+
+  updateWidget(id: SwapWidgets, flag: boolean): void {
+    Object.keys(this.layouts).forEach((key) => {
+      if (flag) {
+        const defaultWidget = LayoutsConfigDefault[key].find((widget) => widget.i === id);
+
+        if (defaultWidget) {
+          const updatedWidget = { ...defaultWidget, x: 0, y: 0 }; // add to start point ?
+          this.layouts[key] = [...this.layouts[key], updatedWidget];
+        }
+      } else {
+        this.layouts[key] = this.layouts[key].filter((widget) => widget.i !== id);
+      }
+    });
+  }
 
   @Watch('tokenFrom')
   @Watch('tokenTo')

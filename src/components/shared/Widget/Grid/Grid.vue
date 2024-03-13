@@ -1,6 +1,6 @@
 <template>
   <grid-layout
-    :layout.sync="layout"
+    :layout.sync="gridLayout"
     :responsive-layouts="responsiveLayouts"
     :cols="cols"
     :breakpoints="breakpoints"
@@ -15,9 +15,8 @@
     @layout-ready="onReady"
     @breakpoint-changed="onBreakpointChanged"
   >
-    <grid-item v-for="widget in layout" :key="widget.i" v-bind="widget">
+    <grid-item v-for="widget in gridLayout" :key="widget.i" v-bind="widget">
       <slot
-        v-if="ready"
         :name="widget.i"
         v-bind="{
           id: widget.i,
@@ -30,8 +29,9 @@
 </template>
 
 <script lang="ts">
+import debounce from 'lodash/debounce';
 import cloneDeep from 'lodash/fp/cloneDeep';
-import debounce from 'lodash.debounce';
+import isEqual from 'lodash/fp/isEqual';
 import { GridLayout, GridItem } from 'vue-grid-layout';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
@@ -71,10 +71,19 @@ export default class WidgetsGrid extends Vue {
   @Prop({ default: () => DEFAULT_COLS, type: Object }) readonly cols!: LayoutConfig;
   @Prop({ default: () => DEFAULT_BREAKPOINTS, type: Object }) readonly breakpoints!: LayoutConfig;
 
-  ready = false;
-  onReady = debounce(this.setReady);
-  breakpoint: BreakpointKey = BreakpointKey.lg;
-  layout: Layout<LayoutWidget> = [];
+  private breakpoint: BreakpointKey = BreakpointKey.lg;
+  private layout: Layout<LayoutWidget> = [];
+
+  get gridLayout() {
+    return this.layout;
+  }
+
+  set gridLayout(updated) {
+    this.layout = updated;
+    this.onUpdate(this.layout);
+  }
+
+  onUpdate = debounce(this.emitUpdate, 500);
 
   get responsiveLayouts(): ResponsiveLayouts<LayoutWidget> {
     return Object.entries(this.layouts).reduce<ResponsiveLayouts<LayoutWidget>>((acc, [key, layout]) => {
@@ -88,17 +97,12 @@ export default class WidgetsGrid extends Vue {
   }
 
   @Watch('responsiveLayouts')
-  private updateCurrentLayout() {
-    const layout =
-      this.breakpoint in this.responsiveLayouts
-        ? this.responsiveLayouts[this.breakpoint]
-        : this.responsiveLayouts[BreakpointKey.lg];
+  private updateCurrentLayout(updatedLayouts: ResponsiveLayouts<LayoutWidget>): void {
+    const updatedLayout = updatedLayouts[this.breakpoint];
 
-    this.layout = cloneDeep(layout) as Layout<LayoutWidget>;
-  }
+    if (!updatedLayout || isEqual(this.layout)(updatedLayout)) return;
 
-  setReady(): void {
-    this.ready = true;
+    this.layout = cloneDeep(updatedLayout) as Layout<LayoutWidget>;
   }
 
   onBreakpointChanged(newBreakpoint: BreakpointKey): void {
@@ -106,7 +110,7 @@ export default class WidgetsGrid extends Vue {
   }
 
   onWidgetResize(rect: DOMRectReadOnly, id: string): void {
-    const layout = cloneDeep(this.layout);
+    const layout = cloneDeep(this.gridLayout);
     const widget = layout.find((item) => item.i === id);
 
     if (!widget) return;
@@ -119,7 +123,15 @@ export default class WidgetsGrid extends Vue {
     // mutate local layout
     widget.h = updatedH;
     // update component layout
-    this.layout = layout;
+    this.gridLayout = layout;
+  }
+
+  private emitUpdate(layout: Layout): void {
+    const update: ResponsiveLayouts<LayoutWidget> = {
+      [this.breakpoint]: layout,
+    };
+
+    this.$emit('update', update);
   }
 }
 </script>
