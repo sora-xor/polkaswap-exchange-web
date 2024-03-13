@@ -47,6 +47,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
+import type { Layout, LayoutWidgetConfig, ResponsiveLayouts } from '@/types/layout';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -79,9 +80,9 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   transactions = true;
   distribution = true;
 
-  get layouts() {
-    const lg = [];
-    const sm = [];
+  get layouts(): ResponsiveLayouts<LayoutWidgetConfig> {
+    const lg: Layout<LayoutWidgetConfig> = [];
+    const sm: Layout<LayoutWidgetConfig> = [];
 
     if (this.form) {
       lg.push({ x: 0, y: 0, w: 6, h: 20, i: 'form' });

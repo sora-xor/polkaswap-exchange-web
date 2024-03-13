@@ -1,6 +1,6 @@
 import type { BreakpointKey } from '@/consts/layout';
 
-export type LayoutWidget = {
+export type LayoutWidgetConfig = {
   i: string;
   x: number;
   y: number;
@@ -10,8 +10,10 @@ export type LayoutWidget = {
   minH?: number;
 };
 
-export type Layout = LayoutWidget[];
+export type LayoutWidget = Required<LayoutWidgetConfig>;
 
-export type LayoutConfiguration = Record<BreakpointKey, number>;
+export type LayoutConfig = Record<BreakpointKey, number>;
 
-export type ResponsiveLayouts = Partial<Record<BreakpointKey, Layout>>;
+export type Layout<T extends LayoutWidgetConfig> = T[];
+
+export type ResponsiveLayouts<T extends LayoutWidgetConfig> = Partial<Record<BreakpointKey, Layout<T>>>;
