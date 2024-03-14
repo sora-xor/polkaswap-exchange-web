@@ -9,23 +9,23 @@
       </div>
       <div class="s-flex">
         <s-checkbox
-          v-for="(_, key) in widgets"
+          v-for="(value, key) in widgetsVisibility"
           :key="key"
           :label="key"
-          v-model="widgets[key]"
-          @change="toggleWidget(key, $event)"
+          :value="value"
+          @input="updateVisibility(key, $event)"
         />
       </div>
     </div>
-    <widgets-grid
+    <widgets-layout
       class="swap-container"
       :draggable="draggable"
       :resizable="resizable"
       :compact="compact"
       :lines="lines"
-      :layouts="layouts"
       :loading="parentLoading"
-      @update="updateLayoutsConfig"
+      :default-layouts="DefaultLayouts"
+      :visibility="widgetsVisibility"
     >
       <template v-slot:[SwapWidgets.Form]="props">
         <swap-form-widget v-bind="props" primary-title />
@@ -45,15 +45,13 @@
       <template v-slot:[SwapWidgets.Transactions]="props">
         <swap-transactions-widget v-bind="props" full extensive />
       </template>
-    </widgets-grid>
+    </widgets-layout>
   </div>
 </template>
 
 <script lang="ts">
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import cloneDeep from 'lodash/fp/cloneDeep';
-import isEqual from 'lodash/fp/isEqual';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
@@ -72,34 +70,13 @@ enum SwapWidgets {
   Distribution = 'distribution',
 }
 
-const DefaultLayouts: ResponsiveLayouts = {
-  md: [
-    { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-    { x: 4, y: 0, w: 12, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-    { x: 0, y: 20, w: 4, h: 6, minW: 4, minH: 6, i: SwapWidgets.Distribution },
-    { x: 4, y: 20, w: 8, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
-  ],
-  sm: [
-    { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-    { x: 4, y: 0, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-    { x: 0, y: 20, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
-    { x: 4, y: 20, w: 8, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
-  ],
-  xs: [
-    { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-    { x: 4, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-    { x: 0, y: 20, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.Distribution },
-    { x: 4, y: 20, w: 4, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
-  ],
-};
-
 @Component({
   components: {
     SwapFormWidget: lazyComponent(Components.SwapFormWidget),
     SwapChartWidget: lazyComponent(Components.PriceChartWidget),
     SwapTransactionsWidget: lazyComponent(Components.SwapTransactionsWidget),
-    WidgetsGrid: lazyComponent(Components.WidgetsGrid),
     SwapDistributionWidget: lazyComponent(Components.SwapDistributionWidget),
+    WidgetsLayout: lazyComponent(Components.WidgetsLayout),
   },
 })
 export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, SelectedTokenRouteMixin) {
@@ -113,39 +90,44 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
 
   readonly SwapWidgets = SwapWidgets;
+  readonly DefaultLayouts: ResponsiveLayouts = {
+    md: [
+      { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 4, y: 0, w: 12, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 0, y: 20, w: 4, h: 6, minW: 4, minH: 6, i: SwapWidgets.Distribution },
+      { x: 4, y: 20, w: 8, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
+    ],
+    sm: [
+      { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 4, y: 0, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 0, y: 20, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
+      { x: 4, y: 20, w: 8, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
+    ],
+    xs: [
+      { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 4, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 0, y: 20, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.Distribution },
+      { x: 4, y: 20, w: 4, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
+    ],
+  };
 
   draggable = false;
   resizable = false;
   compact = false;
   lines = false;
 
-  widgets = {
+  widgetsVisibility = {
     [SwapWidgets.Form]: true,
     [SwapWidgets.Chart]: true,
     [SwapWidgets.Distribution]: true,
     [SwapWidgets.Transactions]: true,
   };
 
-  layouts: ResponsiveLayouts = cloneDeep(DefaultLayouts);
-
-  updateLayoutsConfig(updated: ResponsiveLayouts): void {
-    if (!isEqual(this.layouts, updated)) {
-      this.layouts = { ...this.layouts, ...updated };
-    }
-  }
-
-  toggleWidget(id: SwapWidgets, flag: boolean): void {
-    Object.keys(this.layouts).forEach((key) => {
-      if (flag) {
-        const widget = DefaultLayouts[key].find((widget) => widget.i === id);
-
-        if (widget) {
-          this.layouts[key] = [...this.layouts[key], { ...widget }];
-        }
-      } else {
-        this.layouts[key] = this.layouts[key].filter((widget) => widget.i !== id);
-      }
-    });
+  updateVisibility(key: string, flag: boolean) {
+    this.widgetsVisibility = {
+      ...this.widgetsVisibility,
+      [key]: flag,
+    };
   }
 
   @Watch('tokenFrom')

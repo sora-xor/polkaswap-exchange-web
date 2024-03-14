@@ -250,6 +250,8 @@ export enum Components {
   // Shared Widgets
   BaseWidget = 'shared/Widget/Base',
   WidgetsGrid = 'shared/Widget/Grid/Grid',
+  WidgetsLayout = 'shared/Widget/Grid/Layout',
+  // Shared Widgets Components
   IFrameWidget = 'shared/Widget/IFrame',
   PriceChartWidget = 'shared/Widget/PriceChart',
   // Shared Buttons

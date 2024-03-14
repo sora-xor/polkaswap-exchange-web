@@ -1,5 +1,5 @@
 <template>
-  <widgets-grid :layouts="layouts" @update="updateLayouts">
+  <widgets-grid v-bind="$attrs" :layouts="layouts" @update="updateLayouts">
     <template v-for="(_, scopedSlotName) in $scopedSlots" v-slot:[scopedSlotName]="slotData">
       <slot :name="scopedSlotName" v-bind="slotData" />
     </template>
@@ -10,7 +10,7 @@
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import cloneDeep from 'lodash/fp/cloneDeep';
 import isEqual from 'lodash/fp/isEqual';
-import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
+import { Component, Mixins, Prop, ModelSync, Watch } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
@@ -29,7 +29,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin) {
   /**
    * Layout widgets IDs
    */
-  @Prop({ default: () => [], type: Array }) readonly widgets!: string[];
+  // @Prop({ default: () => [], type: Array }) readonly widgets!: string[];
   /**
    * Default layouts
    */
@@ -42,6 +42,31 @@ export default class Swap extends Mixins(mixins.LoadingMixin) {
 
   layouts!: ResponsiveLayouts;
 
+  @Watch('widgetsVisibility')
+  private updateLayoutWidgets(visibility: Record<string, boolean>) {
+    const layouts = cloneDeep(this.layouts);
+
+    Object.entries(visibility).forEach(([widgetKey, visibilityFlag]) => {
+      Object.keys(layouts).forEach((key) => {
+        if (visibilityFlag) {
+          const currentWidget = layouts[key].find((widget) => widget.i === widgetKey);
+
+          if (!currentWidget) {
+            const defaultWidget = this.defaultLayouts[key].find((widget) => widget.i === widgetKey);
+
+            if (defaultWidget) {
+              layouts[key] = [...layouts[key], { ...defaultWidget }];
+            }
+          }
+        } else {
+          layouts[key] = layouts[key].filter((widget) => widget.i !== widgetKey);
+        }
+      });
+    });
+
+    this.saveLayouts(layouts);
+  }
+
   created(): void {
     if (this.id) {
       // load layouts from storage
@@ -49,6 +74,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin) {
 
     // or use default
     this.saveLayouts(this.defaultLayouts);
+    this.widgetsVisibility = this.getVisibilityFromLayouts(this.layouts);
   }
 
   updateLayouts(updated: ResponsiveLayouts): void {
@@ -61,22 +87,14 @@ export default class Swap extends Mixins(mixins.LoadingMixin) {
     this.layouts = cloneDeep(layouts);
   }
 
-  toggleWidget(widgetId: string, isVisible: boolean): void {
-    const layouts = cloneDeep(this.layouts);
+  getVisibilityFromLayouts(layouts: ResponsiveLayouts) {
+    const layout = Object.values(layouts)[0];
 
-    Object.keys(layouts).forEach((key) => {
-      if (isVisible) {
-        const widget = this.defaultLayouts[key].find((widget) => widget.i === widgetId);
+    return Object.keys(this.widgetsVisibility).reduce((acc, key) => {
+      acc[key] = layout.find((widget) => widget.i === key);
 
-        if (widget) {
-          layouts[key] = [...layouts[key], { ...widget }];
-        }
-      } else {
-        layouts[key] = layouts[key].filter((widget) => widget.i !== widgetId);
-      }
-    });
-
-    this.saveLayouts(layouts);
+      return acc;
+    }, {});
   }
 }
 </script>
