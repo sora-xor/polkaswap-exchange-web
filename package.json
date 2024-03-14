@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
-    "@soramitsu/soraneo-wallet-web": "1.32.0",
+    "@soramitsu/soraneo-wallet-web": "1.32.3",
     "@walletconnect/ethereum-provider": "^2.11.2",
     "@walletconnect/modal": "^2.6.2",
     "core-js": "^3.36.0",
