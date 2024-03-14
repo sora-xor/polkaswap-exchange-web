@@ -20,7 +20,7 @@ export default class NodeErrorMixin extends Mixins(TranslationMixin, mixins.Noti
     this.showAppNotification(this.t('node.warnings.disconnect', { address: node.address }), 'warning');
   }
 
-  protected handleNodeReconnect(node: Node): void {
+  protected handleNodeConnect(node: Node): void {
     this.showAppNotification(this.t('node.messages.connected', { address: node.address }), 'success');
   }
 }

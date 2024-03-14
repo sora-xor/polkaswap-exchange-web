@@ -147,7 +147,7 @@ export class NodesConnection {
   }
 
   protected async connectNode(options: ConnectToNodeOptions = {}): Promise<void> {
-    const { node, connectionOptions = {}, onError, onDisconnect, onReconnect } = options;
+    const { node, connectionOptions = {}, onError, onDisconnect, onReconnect, onConnect } = options;
 
     const endpoint = node?.address ?? '';
     const connectionOpenOptions = {
@@ -170,6 +170,7 @@ export class NodesConnection {
         onError,
         onDisconnect,
         onReconnect,
+        onConnect,
         connectionOptions: { ...connectionOpenOptions, once: false },
       });
     };
@@ -225,6 +226,8 @@ export class NodesConnection {
 
       if (isReconnection) {
         onReconnect?.(node as Node);
+      } else {
+        onConnect?.(node as Node);
       }
 
       this.setNode(node);

@@ -22,20 +22,28 @@
               </div>
             </div>
             <div class="select-node-badge">
-              <s-icon v-if="node.address === nodeAddressConnecting" name="el-icon-loading" />
+              <s-button
+                v-if="node.address === currentAddressValue && !nodeAddressConnecting"
+                class="select-node-details"
+                type="action"
+                alternative
+                icon="arrows-swap-90-24"
+                @click.stop="handleNode(node)"
+              />
+              <s-icon v-else-if="node.address === nodeAddressConnecting" name="el-icon-loading" />
             </div>
             <s-button
               class="select-node-details"
               type="action"
               alternative
               icon="arrows-chevron-right-rounded-24"
-              @click.stop="handleNode(node)"
+              @click.stop="viewNode(node)"
             />
           </div>
         </s-radio>
       </s-radio-group>
     </s-scrollbar>
-    <s-button class="select-node-button s-typography-button--large" @click.stop="handleNode()">
+    <s-button class="select-node-button s-typography-button--large" @click.stop="viewNode()">
       {{ t('selectNodeDialog.addNode') }}
     </s-button>
   </div>
@@ -53,6 +61,7 @@ import { formatLocation } from './utils';
 export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: () => [], type: Array }) readonly nodes!: Array<Node>;
   @Prop({ default: () => {}, type: Function }) readonly handleNode!: (node?: Node) => void;
+  @Prop({ default: () => {}, type: Function }) readonly viewNode!: (node?: Node) => void;
   @Prop({ default: '', type: String }) readonly nodeAddressConnecting!: string;
 
   @ModelSync('value', 'input', { type: String })
@@ -70,6 +79,10 @@ export default class SelectNode extends Mixins(TranslationMixin) {
     const { name, chain } = node;
 
     return !!name && !!chain ? this.t('selectNodeDialog.nodeTitle', { chain, name }) : name || chain;
+  }
+
+  reconnect(node: Node) {
+    this.$emit('input', node.address);
   }
 
   async mounted(): Promise<void> {
@@ -93,6 +106,11 @@ export default class SelectNode extends Mixins(TranslationMixin) {
 }
 .select-node-scrollbar {
   @include scrollbar(-$inner-spacing-big);
+}
+.select-node {
+  .el-button + .el-button {
+    margin-left: 0;
+  }
 }
 </style>
 
@@ -162,10 +180,12 @@ $node-desc-border-radius: 8px;
   }
 
   &-badge {
-    width: var(--s-size-mini);
+    width: var(--s-size-medium);
+    height: var(--s-size-medium);
     display: flex;
-    flex-flow: row nowrap;
+    align-items: center;
     justify-content: center;
+
     .el-icon-loading {
       color: var(--s-color-base-content-tertiary);
     }

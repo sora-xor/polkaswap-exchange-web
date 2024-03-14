@@ -387,7 +387,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         this.appConnection.connect({
           onError: this.handleNodeError,
           onDisconnect: this.handleNodeDisconnect,
-          onReconnect: this.handleNodeReconnect,
+          onReconnect: this.handleNodeConnect,
         }),
       ]);
 

@@ -7,15 +7,16 @@
     <select-node
       v-if="isNodeListView"
       v-model="connectedNodeAddress"
-      :node-address-connecting="connection.nodeAddressConnecting"
+      :node-address-connecting="nodeAddressConnecting"
       :nodes="connection.nodeList"
-      :handle-node="navigateToNodeInfo"
+      :handle-node="handleNode"
+      :view-node="navigateToNodeInfo"
     />
     <node-info
       v-else
       :node="selectedNode"
       :existing="existingNodeIsSelected"
-      :node-address-connecting="connection.nodeAddressConnecting"
+      :node-address-connecting="nodeAddressConnecting"
       :removable="isSelectedNodeRemovable"
       :connected="isSelectedNodeConnected"
       :handle-back="handleBack"
@@ -75,7 +76,13 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
     return this.network === SoraNetwork;
   }
 
+  get nodeAddressConnecting(): string {
+    return this.connection.nodeAddressConnecting;
+  }
+
   get connectedNodeAddress(): string {
+    if (this.nodeAddressConnecting) return '';
+
     return this.connection.node?.address ?? '';
   }
 
@@ -158,14 +165,13 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
       }
     }
 
-    if (nodeCopy.address !== this.connectedNodeAddress) {
-      await this.connection.connect({
-        node: nodeCopy,
-        onError: this.handleNodeError,
-        onDisconnect: this.handleNodeDisconnect,
-        onReconnect: this.handleNodeReconnect,
-      });
-    }
+    await this.connection.connect({
+      node: nodeCopy,
+      onError: this.handleNodeError,
+      onDisconnect: this.handleNodeDisconnect,
+      onReconnect: this.handleNodeConnect,
+      onConnect: this.handleNodeConnect,
+    });
 
     if (isNewOrUpdatedNode) {
       this.connection.updateCustomNode(nodeCopy);
