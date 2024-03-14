@@ -2,7 +2,7 @@
   <grid-layout
     class="widgets-grid"
     :layout.sync="gridLayout"
-    :responsive-layouts="responsiveLayouts"
+    :responsive-layouts="layouts"
     :cols="cols"
     :breakpoints="breakpoints"
     :row-height="rowHeight"
@@ -22,7 +22,7 @@
         v-bind="{
           id: widget.i,
           loading,
-          onResize: ($event) => onWidgetResize($event, widget.i),
+          onResize,
         }"
       />
     </grid-item>
@@ -37,14 +37,14 @@ import { GridLayout, GridItem } from 'vue-grid-layout';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 
 import { Breakpoint, BreakpointKey } from '@/consts/layout';
-import type { Layout, LayoutConfig, LayoutWidget, LayoutWidgetConfig, ResponsiveLayouts } from '@/types/layout';
+import type { Layout, LayoutConfig, ResponsiveLayouts } from '@/types/layout';
 
 const DEFAULT_BREAKPOINTS: LayoutConfig = {
   [BreakpointKey.lg]: Breakpoint.HugeDesktop, // 2092
   [BreakpointKey.md]: Breakpoint.LargeDesktop, // 1440
   [BreakpointKey.sm]: Breakpoint.Desktop, // 1024
   [BreakpointKey.xs]: Breakpoint.Tablet, // 900
-  [BreakpointKey.xss]: Breakpoint.Mobile, // 464
+  [BreakpointKey.xss]: 0,
 };
 
 const DEFAULT_COLS: LayoutConfig = {
@@ -52,7 +52,7 @@ const DEFAULT_COLS: LayoutConfig = {
   [BreakpointKey.md]: 16, // 1440
   [BreakpointKey.sm]: 12, // 1024
   [BreakpointKey.xs]: 8, // 900
-  [BreakpointKey.xss]: 4, // 464
+  [BreakpointKey.xss]: 4,
 };
 
 @Component({
@@ -62,40 +62,28 @@ const DEFAULT_COLS: LayoutConfig = {
   },
 })
 export default class WidgetsGrid extends Vue {
-  @Prop({ required: true, type: Object }) readonly layouts!: ResponsiveLayouts<LayoutWidgetConfig>;
+  @Prop({ required: true, type: Object }) readonly layouts!: ResponsiveLayouts;
   @Prop({ default: 10, type: Number }) readonly rowHeight!: number;
   @Prop({ default: 16, type: Number }) readonly margin!: number;
   @Prop({ default: false, type: Boolean }) readonly draggable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly resizable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly compact!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
   @Prop({ default: false, type: Boolean }) readonly lines!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
   @Prop({ default: () => DEFAULT_COLS, type: Object }) readonly cols!: LayoutConfig;
   @Prop({ default: () => DEFAULT_BREAKPOINTS, type: Object }) readonly breakpoints!: LayoutConfig;
 
   private breakpoint: BreakpointKey = BreakpointKey.lg;
-  private layout: Layout<LayoutWidget> = [];
+  private layout: Layout = [];
+  private onUpdate = debounce(this.emitUpdate, 500);
 
-  get gridLayout() {
+  get gridLayout(): Layout {
     return this.layout;
   }
 
-  set gridLayout(updated) {
+  set gridLayout(updated: Layout) {
     this.layout = updated;
     this.onUpdate(this.layout);
-  }
-
-  onUpdate = debounce(this.emitUpdate, 500);
-
-  get responsiveLayouts(): ResponsiveLayouts<LayoutWidget> {
-    return Object.entries(this.layouts).reduce<ResponsiveLayouts<LayoutWidget>>((acc, [key, layout]) => {
-      acc[key] = layout.map((widget) => ({
-        ...widget,
-        minW: widget.minW ?? widget.w,
-        minH: widget.minH ?? widget.h,
-      }));
-      return acc;
-    }, {});
   }
 
   get gridLinesStyle(): Partial<CSSStyleDeclaration> {
@@ -111,20 +99,20 @@ export default class WidgetsGrid extends Vue {
     };
   }
 
-  @Watch('responsiveLayouts')
-  private updateCurrentLayout(updatedLayouts: ResponsiveLayouts<LayoutWidget>): void {
+  @Watch('layouts', { deep: true })
+  private updateCurrentLayout(updatedLayouts: ResponsiveLayouts): void {
     const updatedLayout = updatedLayouts[this.breakpoint];
 
     if (!updatedLayout || isEqual(this.layout)(updatedLayout)) return;
 
-    this.layout = cloneDeep(updatedLayout) as Layout<LayoutWidget>;
+    this.layout = cloneDeep(updatedLayout) as Layout;
   }
 
   onBreakpointChanged(newBreakpoint: BreakpointKey): void {
     this.breakpoint = newBreakpoint;
   }
 
-  onWidgetResize(rect: DOMRect, id: string): void {
+  onResize(id: string, rect: DOMRect): void {
     const layout = cloneDeep(this.gridLayout);
     const widget = layout.find((item) => item.i === id);
 
@@ -141,8 +129,8 @@ export default class WidgetsGrid extends Vue {
     this.gridLayout = layout;
   }
 
-  private emitUpdate(layout: Layout<LayoutWidget>): void {
-    const update: ResponsiveLayouts<LayoutWidget> = {
+  private emitUpdate(layout: Layout): void {
+    const update: ResponsiveLayouts = {
       [this.breakpoint]: layout,
     };
 

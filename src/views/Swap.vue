@@ -1,6 +1,6 @@
 <template>
   <div class="s-flex" style="flex-flow: column; height: 100%">
-    <div class="controls s-flex" style="gap: 16px; justify-content: space-between">
+    <div class="controls s-flex" style="gap: 16px; justify-content: space-between; flex-flow: row wrap">
       <div class="s-flex">
         <s-checkbox v-model="draggable" label="Draggable" />
         <s-checkbox v-model="resizable" label="Resizable" />
@@ -8,14 +8,13 @@
         <s-checkbox v-model="lines" label="Show grid" />
       </div>
       <div class="s-flex">
-        <s-checkbox v-model="form" @change="updateWidget(SwapWidgets.Form, $event)" label="Form" />
-        <s-checkbox v-model="chart" @change="updateWidget(SwapWidgets.Chart, $event)" label="Chart" />
         <s-checkbox
-          v-model="transactions"
-          @change="updateWidget(SwapWidgets.Transactions, $event)"
-          label="Transactions"
+          v-for="(_, key) in widgets"
+          :key="key"
+          :label="key"
+          v-model="widgets[key]"
+          @change="toggleWidget(key, $event)"
         />
-        <s-checkbox v-model="distribution" @change="updateWidget(SwapWidgets.Distribution, $event)" label="Route" />
       </div>
     </div>
     <widgets-grid
@@ -62,7 +61,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
-import type { LayoutWidget, LayoutWidgetConfig, ResponsiveLayouts } from '@/types/layout';
+import type { ResponsiveLayouts } from '@/types/layout';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -73,7 +72,7 @@ enum SwapWidgets {
   Distribution = 'distribution',
 }
 
-const LayoutsConfigDefault: ResponsiveLayouts<LayoutWidgetConfig> = {
+const DefaultLayouts: ResponsiveLayouts = {
   md: [
     { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
     { x: 4, y: 0, w: 12, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
@@ -87,10 +86,10 @@ const LayoutsConfigDefault: ResponsiveLayouts<LayoutWidgetConfig> = {
     { x: 4, y: 20, w: 8, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
   ],
   xs: [
-    { x: 0, y: 0, w: 4, h: 20, i: SwapWidgets.Form },
-    { x: 4, y: 0, w: 4, h: 20, i: SwapWidgets.Chart },
-    { x: 0, y: 20, w: 4, h: 12, i: SwapWidgets.Distribution },
-    { x: 4, y: 20, w: 4, h: 24, i: SwapWidgets.Transactions },
+    { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+    { x: 4, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+    { x: 0, y: 20, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.Distribution },
+    { x: 4, y: 20, w: 4, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
   ],
 };
 
@@ -120,23 +119,25 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   compact = false;
   lines = false;
 
-  form = true;
-  chart = true;
-  transactions = true;
-  distribution = true;
+  widgets = {
+    [SwapWidgets.Form]: true,
+    [SwapWidgets.Chart]: true,
+    [SwapWidgets.Distribution]: true,
+    [SwapWidgets.Transactions]: true,
+  };
 
-  layouts: ResponsiveLayouts<LayoutWidgetConfig> = cloneDeep(LayoutsConfigDefault);
+  layouts: ResponsiveLayouts = cloneDeep(DefaultLayouts);
 
-  updateLayoutsConfig(updated: ResponsiveLayouts<LayoutWidget>): void {
+  updateLayoutsConfig(updated: ResponsiveLayouts): void {
     if (!isEqual(this.layouts, updated)) {
       this.layouts = { ...this.layouts, ...updated };
     }
   }
 
-  updateWidget(id: SwapWidgets, flag: boolean): void {
+  toggleWidget(id: SwapWidgets, flag: boolean): void {
     Object.keys(this.layouts).forEach((key) => {
       if (flag) {
-        const widget = LayoutsConfigDefault[key].find((widget) => widget.i === id);
+        const widget = DefaultLayouts[key].find((widget) => widget.i === id);
 
         if (widget) {
           this.layouts[key] = [...this.layouts[key], { ...widget }];
@@ -184,8 +185,6 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
 <style lang="scss" scoped>
 .swap-container {
-  flex: 1;
-
   #form,
   #chart {
     min-height: 502px;

@@ -44,6 +44,10 @@ import { debouncedInputHandler } from '@/utils';
 @Component
 export default class BaseWidget extends Vue {
   /**
+   * Widget ID
+   */
+  @Prop({ default: '', type: String }) readonly id!: string;
+  /**
    * The widget title has a large font-size
    */
   @Prop({ default: false, type: Boolean }) readonly primaryTitle!: boolean;
@@ -72,7 +76,7 @@ export default class BaseWidget extends Vue {
    */
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
 
-  @Prop({ default: () => {}, type: Function }) readonly onResize!: (rect: Partial<DOMRect>) => void;
+  @Prop({ default: () => {}, type: Function }) readonly onResize!: (id: string, rect: Partial<DOMRect>) => void;
 
   @Ref('container') readonly container!: Vue;
   @Ref('content') readonly content!: HTMLDivElement;
@@ -120,10 +124,10 @@ export default class BaseWidget extends Vue {
   onContentResize(): void {
     const { width, height } = this.getClientRect();
     const rect = { width, height };
-    // check necessary update
+
     if (!isEqual(rect)(this.rect)) {
       this.updateRect(rect);
-      this.onResize(this.rect);
+      this.onResize(this.id, this.rect);
     }
   }
 }
