@@ -829,21 +829,27 @@ export default class BuySellWidget extends Mixins(
   }
 
   private subscribeOnBookQuote(): void {
-    if (!this.baseValue) return;
     this.resetQuoteSubscription();
 
-    if (!this.areTokensSelected) return;
+    if (!(this.baseValue && this.areTokensSelected)) return;
 
-    const observableQuote = api.swap.subscribeOnResultRpc(
-      (this.tokenFrom as AccountAsset).address,
-      (this.tokenTo as AccountAsset).address,
-      this.baseValue,
-      this.isBuySide,
-      LiquiditySourceTypes.OrderBook
+    const inputAsset = (this.tokenFrom as AccountAsset).address;
+    const outputAsset = (this.tokenTo as AccountAsset).address;
+    const sources = [LiquiditySourceTypes.OrderBook];
+
+    const observableQuote = api.swap.getSwapQuoteObservable(
+      inputAsset,
+      outputAsset,
+      sources,
+      DexId.XOR // subscription only for XOR dex in optimization purposes
     );
 
-    this.quoteSubscription = observableQuote.subscribe(async (quoteData) => {
-      const { amount } = await quoteData;
+    if (!observableQuote) return;
+
+    this.quoteSubscription = observableQuote.subscribe(async ({ quote }) => {
+      const {
+        result: { amount },
+      } = quote(inputAsset, outputAsset, this.baseValue, this.isBuySide, sources);
 
       if (FPNumber.fromCodecValue(amount).isZero() || this.limitOrderType === LimitOrderType.limit) {
         this.resetQuoteSubscription();
