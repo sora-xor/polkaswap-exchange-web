@@ -680,20 +680,15 @@ export default class BuySellWidget extends Mixins(
   getPercent(value: string): number {
     if (!value) return 0;
 
-    return new FPNumber(value).div(this.maxPossibleAmount).mul(FPNumber.HUNDRED).toNumber();
+    return new FPNumber(value).div(this.availableBalance).mul(FPNumber.HUNDRED).toNumber();
   }
 
   handleSlideInputChange(percent: string): void {
     this.setAmountSliderValue(Number(percent));
 
-    const value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(this.maxPossibleAmount).dp(this.amountPrecision);
+    const value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(this.availableBalance).dp(this.amountPrecision);
 
-    const maxLotSize = this.currentOrderBook?.maxLotSize as FPNumber;
-    const currentBaseValue = new FPNumber(this.baseValue);
-
-    if (!currentBaseValue.gt(maxLotSize)) {
-      this.handleInputFieldBase(value.toString());
-    }
+    if (value) this.handleInputFieldBase(value.toString());
   }
 
   handleInputFieldQuote(preciseValue: string): void {
@@ -772,6 +767,11 @@ export default class BuySellWidget extends Mixins(
     if (this.isBuySide && (this.isZeroPrice || this.isPriceBeyondPrecision)) return false;
 
     return this.isLoggedIn && isMaxButtonAvailable(this.baseAsset, this.baseValue, this.networkFee, this.xor, true);
+  }
+
+  get availableBalance(): FPNumber {
+    const max = getMaxValue(this.baseAsset, this.networkFee);
+    return FPNumber.fromNatural(max, this.amountPrecision);
   }
 
   get maxPossibleAmount(): FPNumber {
