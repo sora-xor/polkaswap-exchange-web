@@ -61,7 +61,6 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 import { components, mixins, WALLET_CONSTS, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { graphic } from 'echarts';
