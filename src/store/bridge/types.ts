@@ -35,8 +35,3 @@ export type BridgeState = {
   inProgressIds: Record<string, boolean>;
   notificationData: Nullable<IBridgeTransaction>;
 };
-
-export type SignTxResult = {
-  hash: string;
-  fee: Nullable<CodecString>;
-};
