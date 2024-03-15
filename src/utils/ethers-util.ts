@@ -395,6 +395,13 @@ async function getEvmTransaction(hash: string): Promise<ethers.TransactionRespon
   return tx;
 }
 
+async function waitForEvmTransactionReceipt(hash: string) {
+  const ethersInstance = getEthersInstance();
+  const receipt = await ethersInstance.waitForTransaction(hash);
+
+  return receipt;
+}
+
 async function getEvmTransactionReceipt(hash: string): Promise<ethers.TransactionReceipt | null> {
   const ethersInstance = getEthersInstance();
   const tx = await ethersInstance.getTransactionReceipt(hash);
@@ -493,6 +500,7 @@ export default {
   getEvmNetworkId,
   getEvmTransaction,
   getEvmTransactionReceipt,
+  waitForEvmTransactionReceipt,
   getBlock,
   getBlockNumber,
   addToken,

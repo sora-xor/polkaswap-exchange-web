@@ -3,12 +3,7 @@ import first from 'lodash/fp/first';
 
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import type { IBridgeReducerOptions, GetBridgeHistoryInstance, SignExternal } from '@/utils/bridge/common/types';
-import {
-  getEvmTransactionRecieptByHash,
-  getTransactionEvents,
-  waitForEvmTransactionMined,
-  waitForEvmTransactionStatus,
-} from '@/utils/bridge/common/utils';
+import { getTransactionEvents, waitForEvmTransactionMined } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
 import {
@@ -17,6 +12,7 @@ import {
   waitForApprovedRequest,
   waitForIncomingRequest,
 } from '@/utils/bridge/eth/utils';
+import ethersUtil from '@/utils/ethers-util';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -49,9 +45,9 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
 
     if (!hash) throw new Error(`[${this.constructor.name}]: Ethereum transaction hash is empty`);
 
-    await waitForEvmTransactionStatus(hash);
+    const receipt = await ethersUtil.waitForEvmTransactionReceipt(hash);
 
-    const { fee, blockNumber, blockHash } = (await getEvmTransactionRecieptByHash(hash)) || {};
+    const { fee, blockNumber, blockHash } = receipt || {};
 
     if (!(fee && blockNumber && blockHash)) {
       this.updateTransactionParams(id, { externalHash: undefined, externalNetworkFee: undefined });

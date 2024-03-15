@@ -13,11 +13,6 @@ import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/type
 import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
-export const waitForEvmTransactionStatus = async (hash: string) => {
-  const ethersInstance = ethersUtil.getEthersInstance();
-  await ethersInstance.waitForTransaction(hash);
-};
-
 export const waitForEvmTransactionMined = async (
   tx: ethers.TransactionResponse | null,
   callback?: (tx: ethers.TransactionResponse | ethers.TransactionReceipt | null) => void
@@ -25,22 +20,19 @@ export const waitForEvmTransactionMined = async (
   if (!tx) throw new Error('[waitForEvmTransactionMined]: tx cannot be empty!');
 
   try {
-    const txReceipt = await tx.wait();
-
-    console.log('receipt', txReceipt);
+    const startBlock = tx.blockNumber ?? (await ethersUtil.getBlockNumber());
+    const replaceableTx = tx.replaceableTransaction(startBlock);
+    const txReceipt = await replaceableTx.wait();
 
     callback?.(txReceipt);
   } catch (error) {
-    console.log('tx error', error);
     if (ethers.isError(error, 'TRANSACTION_REPLACED')) {
-      const hash = error.replacement.hash;
-      console.log('new hash', hash);
-      const ethersInstance = ethersUtil.getEthersInstance();
-      const tx = await ethersInstance.getTransaction(hash);
+      const replacedHash = error.replacement.hash;
+      const replacedTx = await ethersUtil.getEvmTransaction(replacedHash);
 
-      callback?.(tx);
+      callback?.(replacedTx);
 
-      return await waitForEvmTransactionMined(tx, callback);
+      return await waitForEvmTransactionMined(replacedTx, callback);
     }
 
     throw error;
