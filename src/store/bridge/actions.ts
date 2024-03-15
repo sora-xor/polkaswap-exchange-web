@@ -33,7 +33,6 @@ import { subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
 import { updateSubBridgeHistory } from '@/utils/bridge/sub/classes/history';
 import ethersUtil from '@/utils/ethers-util';
 
-import type { SignTxResult } from './types';
 import type { SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -686,7 +685,7 @@ const actions = defineActions({
     return bridgeHistory;
   },
 
-  async signEthBridgeOutgoingEvm(context, id: string): Promise<SignTxResult> {
+  async signEthBridgeOutgoingEvm(context, id: string): Promise<ethers.TransactionResponse> {
     const { rootState, rootGetters } = bridgeActionContext(context);
     const tx = ethBridgeApi.getHistory(id) as Nullable<EthHistory>;
 
@@ -717,15 +716,11 @@ const actions = defineActions({
     });
 
     const transaction: ethers.TransactionResponse = await contract[method](...args);
-    const fee = transaction.gasPrice ? ethersUtil.calcEvmFee(transaction.gasPrice, transaction.gasLimit) : undefined;
 
-    return {
-      hash: transaction.hash,
-      fee,
-    };
+    return transaction;
   },
 
-  async signEthBridgeIncomingEvm(context, id: string): Promise<SignTxResult> {
+  async signEthBridgeIncomingEvm(context, id: string): Promise<ethers.TransactionResponse> {
     const { commit, rootState, rootGetters } = bridgeActionContext(context);
     const tx = ethBridgeApi.getHistory(id);
 
@@ -756,14 +751,14 @@ const actions = defineActions({
         MaxUint256, // uint256 amount
       ];
 
-      let transaction: any;
+      let transaction: ethers.TransactionResponse;
       try {
         checkEvmNetwork(context);
         transaction = await tokenInstance.approve(...methodArgs);
       } finally {
         commit.removeTxIdFromApprove(tx.id); // change ui state after approve in client
       }
-      await waitForEvmTransactionMined(transaction.hash); // wait for 1 confirm block
+      await waitForEvmTransactionMined(transaction); // wait for 1 confirm block
     }
 
     const { contract, method, args } = await getIncomingEvmTransactionData({
@@ -776,11 +771,8 @@ const actions = defineActions({
     checkEvmNetwork(context);
 
     const transaction: ethers.TransactionResponse = await contract[method](...args);
-    const fee = transaction.gasPrice ? ethersUtil.calcEvmFee(transaction.gasPrice, transaction.gasLimit) : undefined;
-    return {
-      hash: transaction.hash,
-      fee,
-    };
+
+    return transaction;
   },
 });
 
