@@ -7,10 +7,16 @@ import {
   getEvmTransactionRecieptByHash,
   getTransactionEvents,
   waitForEvmTransactionMined,
+  waitForEvmTransactionStatus,
 } from '@/utils/bridge/common/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
-import { getTransaction, waitForApprovedRequest, waitForIncomingRequest } from '@/utils/bridge/eth/utils';
+import {
+  getTransaction,
+  getTransactionFee,
+  waitForApprovedRequest,
+  waitForIncomingRequest,
+} from '@/utils/bridge/eth/utils';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -39,12 +45,13 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
 
   async onEvmPending(id: string): Promise<void> {
     const tx = this.getTransaction(id);
-    const updatedCallback = (externalHash: string) => this.updateTransactionParams(id, { externalHash });
+    const hash = tx.externalHash;
 
-    await waitForEvmTransactionMined(tx.externalHash, updatedCallback);
+    if (!hash) throw new Error(`[${this.constructor.name}]: Ethereum transaction hash is empty`);
 
-    const { fee, blockNumber, blockHash } =
-      (await getEvmTransactionRecieptByHash(this.getTransaction(id).externalHash as string)) || {};
+    await waitForEvmTransactionStatus(hash);
+
+    const { fee, blockNumber, blockHash } = (await getEvmTransactionRecieptByHash(hash)) || {};
 
     if (!(fee && blockNumber && blockHash)) {
       this.updateTransactionParams(id, { externalHash: undefined, externalNetworkFee: undefined });
@@ -68,11 +75,20 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
       this.beforeSubmit(id);
 
       try {
-        const { hash: externalHash, fee } = await signExternal(id);
-
+        const signedTx = await signExternal(id);
+        // update after sign
         this.updateTransactionParams(id, {
-          externalHash,
-          externalNetworkFee: fee ?? tx.externalNetworkFee,
+          externalHash: signedTx.hash,
+          externalNetworkFee: getTransactionFee(signedTx),
+        });
+        // update after tx mined
+        await waitForEvmTransactionMined(signedTx, (minedTx) => {
+          if (minedTx) {
+            this.updateTransactionParams(id, {
+              externalHash: minedTx.hash,
+              externalNetworkFee: getTransactionFee(minedTx),
+            });
+          }
         });
       } catch (error: any) {
         // maybe transaction already completed, try to restore ethereum transaction hash

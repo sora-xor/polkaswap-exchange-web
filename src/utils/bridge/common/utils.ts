@@ -13,38 +13,38 @@ import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/type
 import type { EvmHistory } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
-const waitForEvmTransactionStatus = async (
-  hash: string,
-  replaceCallback: (hash: string) => any,
-  cancelCallback: (hash: string) => any
-) => {
-  try {
-    const ethersInstance = ethersUtil.getEthersInstance();
-    await ethersInstance.waitForTransaction(hash);
-  } catch (error: any) {
-    if (ethers.isError(error, 'TRANSACTION_REPLACED')) {
-      if (error.reason === 'cancelled') {
-        cancelCallback(error.replacement.hash);
-      } else {
-        replaceCallback(error.replacement.hash);
-      }
-    }
-  }
+export const waitForEvmTransactionStatus = async (hash: string) => {
+  const ethersInstance = ethersUtil.getEthersInstance();
+  await ethersInstance.waitForTransaction(hash);
 };
 
-export const waitForEvmTransactionMined = async (hash?: string, updatedCallback?: (hash: string) => void) => {
-  if (!hash) throw new Error('[waitForEvmTransactionMined]: hash cannot be empty!');
+export const waitForEvmTransactionMined = async (
+  tx: ethers.TransactionResponse | null,
+  callback?: (tx: ethers.TransactionResponse | ethers.TransactionReceipt | null) => void
+): Promise<void> => {
+  if (!tx) throw new Error('[waitForEvmTransactionMined]: tx cannot be empty!');
 
-  await waitForEvmTransactionStatus(
-    hash,
-    async (replaceHash: string) => {
-      updatedCallback?.(replaceHash);
-      await waitForEvmTransactionMined(replaceHash, updatedCallback);
-    },
-    (cancelHash) => {
-      throw new Error(`[waitForEvmTransactionMined]: The transaction was canceled by the user [${cancelHash}]`);
+  try {
+    const txReceipt = await tx.wait();
+
+    console.log('receipt', txReceipt);
+
+    callback?.(txReceipt);
+  } catch (error) {
+    console.log('tx error', error);
+    if (ethers.isError(error, 'TRANSACTION_REPLACED')) {
+      const hash = error.replacement.hash;
+      console.log('new hash', hash);
+      const ethersInstance = ethersUtil.getEthersInstance();
+      const tx = await ethersInstance.getTransaction(hash);
+
+      callback?.(tx);
+
+      return await waitForEvmTransactionMined(tx, callback);
     }
-  );
+
+    throw error;
+  }
 };
 
 export const getEvmTransactionRecieptByHash = async (
