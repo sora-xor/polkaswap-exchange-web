@@ -89,6 +89,8 @@ export const ObjectInit = () => null;
 
 export const ZeroStringValue = '0';
 
+export const HundredNumber = 100;
+
 export const DefaultSlippageTolerance = '0.5';
 
 export enum MarketAlgorithms {
@@ -351,11 +353,6 @@ const AccountMenu: Array<SidebarMenuItemLink> = [
     title: PageNames.Rewards,
     href: '/#/rewards',
   },
-  {
-    icon: 'various-rocket-24',
-    title: PageNames.AssetOwner,
-    href: '/#/dashboard/owner',
-  },
 ];
 
 const OtherPagesMenu: Array<SidebarMenuItemLink> = [
@@ -379,6 +376,11 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     icon: 'music-eject-24',
     title: PageNames.SoraCard,
     href: '/#/card',
+  },
+  {
+    icon: 'various-rocket-24',
+    title: PageNames.AssetOwner,
+    href: '/#/dashboard/owner',
   },
   {
     icon: 'file-file-text-24',
@@ -455,13 +457,6 @@ export const RewardsChildPages = [
   PageNames.ReferralProgram,
   PageNames.ReferralBonding,
   PageNames.ReferralUnbonding,
-];
-export const StakingChildPages = [
-  StakingPageNames.Staking,
-  SoraStakingPageNames.Overview,
-  SoraStakingPageNames.NewStake,
-  SoraStakingPageNames.ValidatorsType,
-  SoraStakingPageNames.SelectValidators,
 ];
 export const ExploreChildPages = [
   PageNames.ExploreFarming, // By default

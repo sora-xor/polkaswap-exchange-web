@@ -272,8 +272,8 @@ export default class TokenInput extends Mixins(
     this.fiatEl?.$children?.[0]?.blur?.();
   }
 
-  async mounted(): Promise<void> {
-    await this.$nextTick();
+  public focus(): void {
+    this.floatInput?.inputComponent?.focus?.();
   }
 }
 </script>

@@ -98,6 +98,8 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   }
 
   private async singlePriceReachedLimit(): Promise<boolean> {
+    if (!this.quoteValue) return false;
+
     const limitReached = !(await api.orderBook.isOrderPlaceable(
       this.baseAsset.address,
       this.quoteAsset.address,

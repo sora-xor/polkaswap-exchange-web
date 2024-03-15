@@ -283,7 +283,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   get isCurrentPageTooWide(): boolean {
-    return this.isAboutPage || this.isSwapPageWithCharts || this.$route.name === PageNames.Tokens;
+    return this.isAboutPage || this.isAppContentWithoutMenu || this.$route.name === PageNames.Tokens;
   }
 
   get dsProviderClasses(): string[] | BreakpointClass {

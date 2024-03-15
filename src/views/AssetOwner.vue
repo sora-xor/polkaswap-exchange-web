@@ -26,7 +26,7 @@
             type="primary"
             @click="handleConnectWallet"
           >
-            {{ t('swap.connectWallet') }}
+            {{ t('connectWalletText') }}
           </s-button>
           <s-button
             v-else
@@ -120,36 +120,41 @@
         </s-col>
       </s-row>
     </template>
+    <create-token-dialog :visible.sync="showCreateTokenDialog" />
   </div>
 </template>
 
 <script lang="ts">
-import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { api, mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { PageNames, Components } from '@/consts';
+import { PageNames } from '@/consts';
+import { DashboardComponents } from '@/modules/dashboard/consts';
+import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset } from '@/modules/dashboard/types';
-import router, { lazyComponent } from '@/router';
+import router from '@/router';
 import { mutation, getter, state } from '@/store/decorators';
 
-import type { Asset } from '@sora-substrate/util/build/assets/types';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
+    CreateTokenDialog: dashboardLazyComponent(DashboardComponents.CreateTokenDialog),
   },
 })
 export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
   @state.wallet.account.address private accountId!: string;
-  @getter.assets.assetsDataTable assetsDataTable!: Record<string, Asset>;
+  @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
+  @getter.libraryTheme private libraryTheme!: Theme;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.libraryTheme libraryTheme!: Theme;
   @mutation.dashboard.setSelectedOwnedAsset private setAsset!: (asset: OwnedAsset) => void;
 
   private assetIds: Array<string> = [];
+
+  showCreateTokenDialog = false;
 
   get isNotLoggedInOrEmptyAssets(): boolean {
     return !(this.isLoggedIn && this.assets.length);
@@ -159,7 +164,9 @@ export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingM
     router.push({ name: PageNames.Wallet });
   }
 
-  handleCreateAsset(): void {}
+  handleCreateAsset(): void {
+    this.showCreateTokenDialog = true;
+  }
 
   handleOpenAssetDetails(asset: OwnedAsset): void {
     this.setAsset(asset);
@@ -206,7 +213,7 @@ export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingM
       .filter((item) => !!item) as Array<OwnedAsset>;
   }
 
-  mounted(): void {
+  created(): void {
     this.withApi(async () => {
       if (!this.isLoggedIn) return;
 
@@ -307,7 +314,7 @@ export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingM
       }
     }
   }
-
+  // To prevent images related issues
   .negative-margin {
     &--top {
       margin-top: -32px;

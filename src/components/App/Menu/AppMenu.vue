@@ -107,13 +107,14 @@ import {
   PoolChildPages,
   BridgeChildPages,
   RewardsChildPages,
-  StakingChildPages,
   ExploreChildPages,
   SidebarMenuGroups,
   SidebarMenuItemLink,
   FaucetLink,
 } from '@/consts';
+import { isDashboardPage } from '@/modules/dashboard/router';
 import { StakingPageNames } from '@/modules/staking/consts';
+import { isStakingPage } from '@/modules/staking/router';
 import { getter, mutation, state } from '@/store/decorators';
 
 import AppInfoPopper from './AppInfoPopper.vue';
@@ -171,11 +172,14 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     if (RewardsChildPages.includes(currentName)) {
       return PageNames.Rewards;
     }
-    if (StakingChildPages.includes(currentName)) {
+    if (isStakingPage(currentName)) {
       return StakingPageNames.Staking;
     }
     if (ExploreChildPages.includes(currentName)) {
       return PageNames.ExploreFarming;
+    }
+    if (isDashboardPage(currentName)) {
+      return PageNames.AssetOwner;
     }
     return currentName as string;
   }
