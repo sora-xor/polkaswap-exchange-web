@@ -45,9 +45,17 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
 
     if (!hash) throw new Error(`[${this.constructor.name}]: Ethereum transaction hash is empty`);
 
-    const receipt = await ethersUtil.waitForEvmTransactionReceipt(hash);
+    const txResponse = await ethersUtil.getEvmTransaction(hash);
+    const txReceipt = await waitForEvmTransactionMined(txResponse, (replacedTx) => {
+      if (replacedTx) {
+        this.updateTransactionParams(id, {
+          externalHash: replacedTx.hash,
+          externalNetworkFee: getTransactionFee(replacedTx),
+        });
+      }
+    });
 
-    const { fee, blockNumber, blockHash } = receipt || {};
+    const { fee, blockNumber, blockHash } = txReceipt || {};
 
     if (!(fee && blockNumber && blockHash)) {
       this.updateTransactionParams(id, { externalHash: undefined, externalNetworkFee: undefined });
@@ -58,7 +66,7 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
 
     // In EthHistory 'blockHeight' will store evm block number
     this.updateTransactionParams(id, {
-      externalNetworkFee: fee,
+      externalNetworkFee: fee.toString(),
       externalBlockHeight: blockNumber,
       externalBlockId: blockHash,
     });
@@ -76,15 +84,6 @@ export class EthBridgeReducer extends BridgeReducer<EthHistory> {
         this.updateTransactionParams(id, {
           externalHash: signedTx.hash,
           externalNetworkFee: getTransactionFee(signedTx),
-        });
-        // update after tx mined
-        await waitForEvmTransactionMined(signedTx, (minedTx) => {
-          if (minedTx) {
-            this.updateTransactionParams(id, {
-              externalHash: minedTx.hash,
-              externalNetworkFee: getTransactionFee(minedTx),
-            });
-          }
         });
       } catch (error: any) {
         // maybe transaction already completed, try to restore ethereum transaction hash

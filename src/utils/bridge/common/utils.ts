@@ -15,8 +15,8 @@ import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/type
 
 export const waitForEvmTransactionMined = async (
   tx: ethers.TransactionResponse | null,
-  callback?: (tx: ethers.TransactionResponse | ethers.TransactionReceipt | null) => void
-): Promise<void> => {
+  replaceCallback?: (tx: ethers.TransactionResponse | null) => void
+): Promise<ethers.TransactionReceipt | null> => {
   if (!tx) throw new Error('[waitForEvmTransactionMined]: tx cannot be empty!');
 
   try {
@@ -24,15 +24,14 @@ export const waitForEvmTransactionMined = async (
     const replaceableTx = tx.replaceableTransaction(startBlock);
     const txReceipt = await replaceableTx.wait();
 
-    callback?.(txReceipt);
+    return txReceipt;
   } catch (error) {
     if (ethers.isError(error, 'TRANSACTION_REPLACED')) {
-      const replacedHash = error.replacement.hash;
-      const replacedTx = await ethersUtil.getEvmTransaction(replacedHash);
+      const replacedTx = error.replacement;
 
-      callback?.(replacedTx);
+      replaceCallback?.(replacedTx);
 
-      return await waitForEvmTransactionMined(replacedTx, callback);
+      return await waitForEvmTransactionMined(replacedTx, replaceCallback);
     }
 
     throw error;
@@ -47,11 +46,9 @@ export const getEvmTransactionRecieptByHash = async (
 
     if (!receipt) throw new Error(`Transaction receipt "${transactionHash}" not found`);
 
-    const { from, gasPrice, gasUsed, blockNumber, blockHash } = receipt;
+    const { fee, from, blockNumber, blockHash } = receipt;
 
-    const fee = ethersUtil.calcEvmFee(gasPrice, gasUsed);
-
-    return { fee, blockHash, blockNumber, from };
+    return { fee: fee.toString(), blockHash, blockNumber, from };
   } catch (error) {
     return null;
   }
