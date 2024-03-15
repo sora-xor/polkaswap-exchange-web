@@ -1,5 +1,6 @@
 import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { TransactionResponse } from 'ethers';
 
 export type AddAsset = (address: string) => Promise<void>;
 export type GetAssetByAddress = (address: string) => Nullable<RegisteredAccountAsset>;
@@ -11,7 +12,7 @@ export type GetTransaction<T> = (id: string) => T;
 export type UpdateTransaction<T> = (id: string, params: Partial<T>) => void;
 export type ShowNotification<T> = (tx: T) => void;
 export type BeforeTransactionSign = () => Promise<void>;
-export type SignExternal = (id: string) => Promise<any>;
+export type SignExternal = (id: string) => Promise<TransactionResponse>;
 export type TransactionBoundaryStates<T extends IBridgeTransaction> = Partial<
   Record<
     T['type'],
