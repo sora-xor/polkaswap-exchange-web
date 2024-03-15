@@ -9,11 +9,11 @@
       </div>
       <div class="s-flex">
         <s-checkbox
-          v-for="(value, key) in widgetsVisibility"
+          v-for="(value, key) in widgets"
           :key="key"
           :label="key"
           :value="value"
-          @input="updateVisibility(key, $event)"
+          @input="toggleWidget(key, $event)"
         />
       </div>
     </div>
@@ -25,7 +25,7 @@
       :lines="lines"
       :loading="parentLoading"
       :default-layouts="DefaultLayouts"
-      :visibility="widgetsVisibility"
+      v-model="widgets"
     >
       <template v-slot:[SwapWidgets.Form]="props">
         <swap-form-widget v-bind="props" primary-title />
@@ -116,18 +116,15 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   compact = false;
   lines = false;
 
-  widgetsVisibility = {
+  widgets = {
     [SwapWidgets.Form]: true,
     [SwapWidgets.Chart]: true,
     [SwapWidgets.Distribution]: true,
     [SwapWidgets.Transactions]: true,
   };
 
-  updateVisibility(key: string, flag: boolean) {
-    this.widgetsVisibility = {
-      ...this.widgetsVisibility,
-      [key]: flag,
-    };
+  toggleWidget(key: string, flag: boolean) {
+    this.widgets = { ...this.widgets, [key]: flag };
   }
 
   @Watch('tokenFrom')

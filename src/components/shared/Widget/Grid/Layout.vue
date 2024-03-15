@@ -10,43 +10,31 @@
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import cloneDeep from 'lodash/fp/cloneDeep';
 import isEqual from 'lodash/fp/isEqual';
-import { Component, Mixins, Prop, ModelSync, Watch } from 'vue-property-decorator';
+import { Component, Emit, Mixins, Prop, Watch } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import type { ResponsiveLayouts } from '@/types/layout';
+import type { Layout, ResponsiveLayouts } from '@/types/layout';
+import { layoutsStorage } from '@/utils/storage';
 
 @Component({
   components: {
     WidgetsGrid: lazyComponent(Components.WidgetsGrid),
   },
 })
-export default class Swap extends Mixins(mixins.LoadingMixin) {
-  /**
-   * Layout ID to sync it with storage
-   */
+export default class WidgetsLayout extends Mixins(mixins.LoadingMixin) {
+  /** Layout ID to sync it with storage */
   @Prop({ default: '', type: String }) readonly id!: string;
-  /**
-   * Layout widgets IDs
-   */
-  // @Prop({ default: () => [], type: Array }) readonly widgets!: string[];
-  /**
-   * Default layouts
-   */
+  /** Default layouts */
   @Prop({ default: () => ({}), type: Object }) readonly defaultLayouts!: ResponsiveLayouts;
-  /**
-   * Layout Widgets visibility by widget ID
-   */
-  @ModelSync('visibility', 'update:visibility', { type: Object })
-  widgetsVisibility!: Record<string, boolean>;
+  /** Widgets visibility by widget ID */
+  @Prop({ default: () => ({}), type: Object }) readonly value!: Record<string, boolean>;
 
-  layouts!: ResponsiveLayouts;
-
-  @Watch('widgetsVisibility')
-  private updateLayoutWidgets(visibility: Record<string, boolean>) {
+  @Watch('value')
+  private updateLayoutWidgets(): void {
     const layouts = cloneDeep(this.layouts);
 
-    Object.entries(visibility).forEach(([widgetKey, visibilityFlag]) => {
+    Object.entries(this.value).forEach(([widgetKey, visibilityFlag]) => {
       Object.keys(layouts).forEach((key) => {
         if (visibilityFlag) {
           const currentWidget = layouts[key].find((widget) => widget.i === widgetKey);
@@ -67,14 +55,13 @@ export default class Swap extends Mixins(mixins.LoadingMixin) {
     this.saveLayouts(layouts);
   }
 
-  created(): void {
-    if (this.id) {
-      // load layouts from storage
-    }
+  layouts!: ResponsiveLayouts;
 
-    // or use default
-    this.saveLayouts(this.defaultLayouts);
-    this.widgetsVisibility = this.getVisibilityFromLayouts(this.layouts);
+  created(): void {
+    const storedLayouts = layoutsStorage.get(this.id);
+    const layouts = storedLayouts ? JSON.parse(storedLayouts) : this.defaultLayouts;
+    this.saveLayouts(layouts);
+    this.updateWidgetsVisibility();
   }
 
   updateLayouts(updated: ResponsiveLayouts): void {
@@ -83,15 +70,25 @@ export default class Swap extends Mixins(mixins.LoadingMixin) {
     }
   }
 
-  saveLayouts(layouts: ResponsiveLayouts) {
+  private saveLayouts(layouts: ResponsiveLayouts): void {
     this.layouts = cloneDeep(layouts);
+    // update layouts in storage
+    if (this.id) {
+      layoutsStorage.set(this.id, JSON.stringify(this.layouts));
+    }
   }
 
-  getVisibilityFromLayouts(layouts: ResponsiveLayouts) {
-    const layout = Object.values(layouts)[0];
-
-    return Object.keys(this.widgetsVisibility).reduce((acc, key) => {
-      acc[key] = layout.find((widget) => widget.i === key);
+  /**
+   * Emits widgets visibility model update.
+   * Occurs after component created and initial layout is loaded from storage.
+   */
+  @Emit('input')
+  private updateWidgetsVisibility() {
+    // chose first layout
+    const layout: Layout = Object.values(this.layouts)[0];
+    // create new model based on chosen layout
+    return Object.keys(this.value).reduce((acc, widgetId) => {
+      acc[widgetId] = !!layout.find((widget) => widget.i === widgetId);
 
       return acc;
     }, {});
