@@ -3,9 +3,9 @@
     <div class="dashboard-mint">
       <address-book-input
         class="dashboard-mint__address"
-        exclude-connected
         v-model="address"
         :is-valid="validAddress"
+        :disabled="loading"
       />
       <p class="p3 dashboard-mint__text">
         ENTER THE AMOUNT YOU WANT TO MINT
@@ -20,6 +20,7 @@
         v-model="value"
         :is-fiat-editable="editableFiat"
         :token="asset"
+        :disabled="loading"
       />
       <s-button
         type="primary"
@@ -106,8 +107,12 @@ export default class MintDialog extends Mixins(
     return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
   }
 
+  get tokenSymbol(): string {
+    return this.asset.symbol;
+  }
+
   get title(): string {
-    return `Mint ${this.asset.symbol}`;
+    return `Mint ${this.tokenSymbol}`;
   }
 
   get networkFee(): CodecString {
@@ -142,7 +147,15 @@ export default class MintDialog extends Mixins(
     return this.loading || this.isInsufficientXorForFee || this.emptyValue || !this.validAddress;
   }
 
-  handleMint(): void {}
+  async handleMint(): Promise<void> {
+    try {
+      await this.withNotifications(async () => {
+        await api.assets.mint(this.asset, this.value, this.address.trim());
+      });
+    } finally {
+      this.isVisible = false;
+    }
+  }
 }
 </script>
 
