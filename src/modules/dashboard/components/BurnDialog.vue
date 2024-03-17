@@ -13,6 +13,7 @@
         :token="asset"
         :balance="balance"
         :slider-value="valuePercent"
+        :disabled="loading"
         @max="handleMaxValue"
         @slide="handlePercentChange"
       />
@@ -29,7 +30,7 @@
           {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('insufficientBalanceText', { tokenSymbol: asset.symbol }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol }) }}
         </template>
         <template v-else>{{ title }}</template>
       </s-button>
@@ -48,7 +49,7 @@
 <script lang="ts">
 import { Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch, Ref, Prop } from 'vue-property-decorator';
 
 import type TokenInput from '@/components/shared/Input/TokenInput.vue';
@@ -106,7 +107,11 @@ export default class BurnDialog extends Mixins(
   }
 
   get title(): string {
-    return `Burn ${this.asset.symbol}`;
+    return `Burn ${this.tokenSymbol}`;
+  }
+
+  get tokenSymbol(): string {
+    return this.asset.symbol;
   }
 
   get networkFee(): CodecString {
@@ -126,12 +131,9 @@ export default class BurnDialog extends Mixins(
   }
 
   get isMaxAvailable(): boolean {
-    return isMaxButtonAvailable(
-      this.assetWithBalance,
-      this.value ?? 0,
-      this.networkFee,
-      this.accountXor as AccountAsset
-    );
+    if (!this.accountXor) return false;
+
+    return isMaxButtonAvailable(this.assetWithBalance, this.value ?? 0, this.networkFee, this.accountXor);
   }
 
   get isInsufficientBalance(): boolean {
@@ -164,7 +166,22 @@ export default class BurnDialog extends Mixins(
     this.value = this.fpBalance.toString();
   }
 
-  handleBurn(): void {}
+  async handleBurn(): Promise<void> {
+    if (this.isInsufficientBalance) {
+      this.$alert(this.t('insufficientBalanceText', { tokenSymbol: this.tokenSymbol }), {
+        title: this.t('errorText'),
+      });
+    } else {
+      try {
+        await this.withNotifications(async () => {
+          await api.assets.burn(this.asset, this.value);
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    this.isVisible = false;
+  }
 }
 </script>
 
