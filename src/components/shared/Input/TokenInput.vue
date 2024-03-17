@@ -91,7 +91,7 @@
           <s-slider
             class="slider-container"
             :value="slideValue"
-            :disabled="!withSlider"
+            :disabled="!withSlider || disabled"
             :show-tooltip="false"
             :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
             @input="handleSlideInputChange"
