@@ -1,7 +1,10 @@
 <template>
-  <dialog-base :title="title" :visible.sync="isVisible" tooltip="COMING SOON...">
+  <dialog-base :title="t('createToken.titleCommon')" :visible.sync="isVisible" tooltip="COMING SOON...">
     <div class="dashboard-create">
-      <p class="p3 dashboard-create__text">COMING SOON...</p>
+      <s-tabs class="token__tab" type="rounded" :value="currentTab" @input="handleChangeTab">
+        <s-tab v-for="tab in TokenTabs" :key="tab" :label="getTabName(tab)" :name="tab" />
+      </s-tabs>
+      <component :is="currentTab" />
       <s-button
         type="primary"
         class="s-typography-button--large action-button dashboard-create__button"
@@ -28,11 +31,12 @@
 <script lang="ts">
 import { Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import { Components, ZeroStringValue } from '@/consts';
-import { lazyComponent } from '@/router';
+import { DashboardComponents } from '@/modules/dashboard/consts';
+import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import { getter, state } from '@/store/decorators';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
@@ -42,7 +46,8 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
   components: {
     DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
-    TokenInput: lazyComponent(Components.TokenInput),
+    CreateSimpleToken: dashboardLazyComponent(DashboardComponents.CreateSimpleToken),
+    CreateNftToken: dashboardLazyComponent(DashboardComponents.CreateNftToken),
   },
 })
 export default class BurnDialog extends Mixins(
@@ -51,9 +56,12 @@ export default class BurnDialog extends Mixins(
   mixins.FormattedAmountMixin
 ) {
   readonly xorSymbol = XOR.symbol;
+  readonly TokenTabs = WALLET_CONSTS.TokenTabs;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
+
+  currentTab = WALLET_CONSTS.TokenTabs.Token;
 
   private get xorBalance() {
     return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
@@ -81,6 +89,17 @@ export default class BurnDialog extends Mixins(
 
   get disabled(): boolean {
     return this.loading || this.isInsufficientXorForFee;
+  }
+
+  getTabName(tab: WALLET_CONSTS.TokenTabs): string {
+    if (tab === WALLET_CONSTS.TokenTabs.NonFungibleToken) {
+      return this.TranslationConsts.NFT;
+    }
+    return this.t(`createToken.${tab}`);
+  }
+
+  handleChangeTab(value: WALLET_CONSTS.TokenTabs): void {
+    this.currentTab = value;
   }
 
   handleCreate(): void {}

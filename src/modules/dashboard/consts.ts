@@ -8,4 +8,6 @@ export enum DashboardComponents {
   BurnDialog = 'BurnDialog',
   CreateTokenDialog = 'CreateTokenDialog',
   SendTokenDialog = 'SendTokenDialog',
+  CreateNftToken = 'CreateNftToken',
+  CreateSimpleToken = 'CreateSimpleToken',
 }
