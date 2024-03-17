@@ -6,6 +6,7 @@
         exclude-connected
         v-model="address"
         :is-valid="validAddress"
+        :disabled="loading"
       />
       <token-input
         ref="tokenInput"
@@ -18,6 +19,7 @@
         :token="asset"
         :balance="balance"
         :slider-value="valuePercent"
+        :disabled="loading"
         @max="handleMaxValue"
         @slide="handlePercentChange"
       />
@@ -26,7 +28,7 @@
         type="textarea"
         placeholder="Comment (Optional)"
         v-model="comment"
-        :rows="3"
+        :rows="4"
         :maxlength="128"
         :disabled="loading"
         @keypress.native="handleCommentInput($event)"
@@ -50,7 +52,7 @@
           {{ t('buttons.enterAmount') }}
         </template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('insufficientBalanceText', { tokenSymbol: asset.symbol }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol }) }}
         </template>
         <template v-else>{{ title }}</template>
       </s-button>
@@ -131,8 +133,12 @@ export default class SendTokenDialog extends Mixins(
     return { ...this.asset, balance: { transferable: this.balance } } as unknown as AccountAsset;
   }
 
+  get tokenSymbol(): string {
+    return this.asset.symbol;
+  }
+
   get title(): string {
-    return `Send ${this.asset.symbol}`;
+    return `Send ${this.tokenSymbol}`;
   }
 
   get networkFee(): CodecString {
@@ -209,9 +215,37 @@ export default class SendTokenDialog extends Mixins(
     e.preventDefault();
   }
 
-  handleSend(): void {}
+  async handleSend(): Promise<void> {
+    const comment = this.comment.trim() || undefined;
+    const address = this.address.trim();
+
+    if (this.isInsufficientBalance) {
+      this.$alert(this.t('insufficientBalanceText', { tokenSymbol: this.tokenSymbol }), {
+        title: this.t('errorText'),
+      });
+    } else {
+      try {
+        await this.withNotifications(async () => {
+          await api.assets.transfer(this.asset, address, this.value, { feeType: 'xor', comment });
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    this.isVisible = false;
+  }
 }
 </script>
+
+<style lang="scss">
+.dashboard-send__comment .el-textarea__inner {
+  max-height: 84px; // rows: 4 (21px*4)
+}
+
+.s-input__input .el-textarea.is-disabled .el-textarea__inner {
+  background-color: var(--s-color-base-background); // TODO: fix in UI lib
+}
+</style>
 
 <style lang="scss" scoped>
 .dashboard-send {
