@@ -84,10 +84,19 @@
           </p>
           <p v-if="hasFixedSupply" class="p3">Minting the asset is unavailable because it is not extensible.</p>
         </s-card>
-        <stats-supply-chart class="details-card" :predefined-token="asset" />
+        <stats-supply-chart
+          :key="getForceRerenderKey('dashboard-supply-chart')"
+          class="details-card"
+          :predefined-token="asset"
+        />
       </s-col>
       <s-col :xs="12" :sm="12" :md="7" :lg="7">
-        <swap-chart class="details-card" :base-asset="asset" :is-available="true" />
+        <swap-chart
+          :key="getForceRerenderKey('dashboard-price-chart')"
+          class="details-card"
+          :base-asset="asset"
+          :is-available="hasFiat"
+        />
         <s-row :gutter="20">
           <s-col :xs="6" :sm="6" :md="6" :lg="4">
             <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
@@ -167,11 +176,11 @@
 <script lang="ts">
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import StatsSupplyChart from '@/components/pages/Stats/SupplyChart.vue';
-import { PageNames, Components, ZeroStringValue } from '@/consts';
+import { PageNames, Components, ZeroStringValue, BreakpointClass } from '@/consts';
 import { DashboardComponents } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset } from '@/modules/dashboard/types';
@@ -196,6 +205,7 @@ import type { Subscription } from 'rxjs';
 export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @state.dashboard.selectedOwnedAsset asset!: OwnedAsset;
+  @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
   @mutation.dashboard.resetSelectedOwnedAsset private reset!: FnWithoutArgs;
 
   private supply: CodecString = ZeroStringValue;
@@ -206,6 +216,11 @@ export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingM
   showSendDialog = false;
   showBurnDialog = false;
   showMintDialog = false;
+
+  /** To force re-render component(s). Currently, it should be applied to charts */
+  getForceRerenderKey(name: string): string {
+    return `${name}-${this.responsiveClass}`;
+  }
 
   get formattedBalance(): string {
     if (!this.balance) return '0';
