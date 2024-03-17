@@ -94,8 +94,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   menuVisibility = false;
   showConfirmInviteUser = false;
   showNotifsDarkPage = false;
-  responsiveClass = BreakpointClass.LargeDesktop;
 
+  @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
@@ -200,20 +200,23 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   private setResponsiveClass(): void {
     const width = window.innerWidth;
+    let newClass = this.responsiveClass;
+
     if (width >= Breakpoint.HugeDesktop) {
-      this.responsiveClass = BreakpointClass.HugeDesktop;
+      newClass = BreakpointClass.HugeDesktop;
     } else if (width >= Breakpoint.LargeDesktop) {
-      this.responsiveClass = BreakpointClass.LargeDesktop;
+      newClass = BreakpointClass.LargeDesktop;
     } else if (width >= Breakpoint.Desktop) {
-      this.responsiveClass = BreakpointClass.Desktop;
+      newClass = BreakpointClass.Desktop;
     } else if (width >= Breakpoint.Tablet) {
-      this.responsiveClass = BreakpointClass.Tablet;
+      newClass = BreakpointClass.Tablet;
     } else if (width >= Breakpoint.LargeMobile) {
-      this.responsiveClass = BreakpointClass.LargeMobile;
+      newClass = BreakpointClass.LargeMobile;
     } else if (width < Breakpoint.LargeMobile) {
-      this.responsiveClass = BreakpointClass.Mobile;
+      newClass = BreakpointClass.Mobile;
     }
-    this.setScreenBreakpointClass(this.responsiveClass);
+
+    this.setScreenBreakpointClass(newClass);
   }
 
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
