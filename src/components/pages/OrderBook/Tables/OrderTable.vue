@@ -126,7 +126,6 @@ import { getter, state } from '@/store/decorators';
 import { OrderStatus } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';
 
-import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import type { OrderStatus as OrderStatusType } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
