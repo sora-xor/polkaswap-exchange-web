@@ -800,7 +800,7 @@ export default class BuySellWidget extends Mixins(
   }
 
   async singlePriceReachedLimit(): Promise<boolean> {
-    if (this.isMarketType) return false;
+    if (this.isMarketType || !this.quoteValue) return false;
 
     const limitReached = !(await api.orderBook.isOrderPlaceable(
       this.baseAsset.address,
