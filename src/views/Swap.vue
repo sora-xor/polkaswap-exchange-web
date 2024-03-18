@@ -17,7 +17,7 @@
         />
       </div>
     </div>
-    <widgets-layout
+    <widgets-grid
       class="swap-container"
       :draggable="draggable"
       :resizable="resizable"
@@ -45,7 +45,7 @@
       <template v-slot:[SwapWidgets.Transactions]="props">
         <swap-transactions-widget v-bind="props" full extensive />
       </template>
-    </widgets-layout>
+    </widgets-grid>
   </div>
 </template>
 
@@ -76,7 +76,7 @@ enum SwapWidgets {
     SwapChartWidget: lazyComponent(Components.PriceChartWidget),
     SwapTransactionsWidget: lazyComponent(Components.SwapTransactionsWidget),
     SwapDistributionWidget: lazyComponent(Components.SwapDistributionWidget),
-    WidgetsLayout: lazyComponent(Components.WidgetsLayout),
+    WidgetsGrid: lazyComponent(Components.WidgetsGrid),
   },
 })
 export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, SelectedTokenRouteMixin) {

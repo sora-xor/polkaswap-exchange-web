@@ -1,7 +1,7 @@
 <template>
   <grid-layout
     class="widgets-grid"
-    :layout.sync="gridLayout"
+    :layout.sync="layout"
     :responsive-layouts="layouts"
     :cols="cols"
     :breakpoints="breakpoints"
@@ -16,7 +16,7 @@
     @breakpoint-changed="onBreakpointChanged"
   >
     <div v-if="lines" class="grid-lines" :style="gridLinesStyle" />
-    <grid-item v-for="widget in gridLayout" :key="widget.i" v-bind="widget">
+    <grid-item v-for="widget in layout" :key="widget.i" v-bind="widget">
       <slot
         :name="widget.i"
         v-bind="{
@@ -34,10 +34,13 @@ import debounce from 'lodash/debounce';
 import cloneDeep from 'lodash/fp/cloneDeep';
 import isEqual from 'lodash/fp/isEqual';
 import { GridLayout, GridItem } from 'vue-grid-layout';
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
 
 import { Breakpoint, BreakpointKey } from '@/consts/layout';
-import type { Layout, LayoutConfig, ResponsiveLayouts } from '@/types/layout';
+import type { Layout, LayoutConfig, ResponsiveLayouts, LayoutWidget } from '@/types/layout';
+import { layoutsStorage } from '@/utils/storage';
+
+type WidgetsVisibilityModel = Record<string, boolean>;
 
 const DEFAULT_BREAKPOINTS: LayoutConfig = {
   [BreakpointKey.lg]: Breakpoint.HugeDesktop, // 2092
@@ -62,7 +65,11 @@ const DEFAULT_COLS: LayoutConfig = {
   },
 })
 export default class WidgetsGrid extends Vue {
-  @Prop({ required: true, type: Object }) readonly layouts!: ResponsiveLayouts;
+  /** Layout ID to sync it with storage */
+  @Prop({ default: '', type: String }) readonly id!: string;
+  /** Default layouts */
+  @Prop({ default: () => ({}), type: Object }) readonly defaultLayouts!: ResponsiveLayouts;
+
   @Prop({ default: 10, type: Number }) readonly rowHeight!: number;
   @Prop({ default: 16, type: Number }) readonly margin!: number;
   @Prop({ default: false, type: Boolean }) readonly draggable!: boolean;
@@ -73,17 +80,62 @@ export default class WidgetsGrid extends Vue {
   @Prop({ default: () => DEFAULT_COLS, type: Object }) readonly cols!: LayoutConfig;
   @Prop({ default: () => DEFAULT_BREAKPOINTS, type: Object }) readonly breakpoints!: LayoutConfig;
 
-  private breakpoint: BreakpointKey = BreakpointKey.lg;
-  private layout: Layout = [];
-  private onUpdate = debounce(this.emitUpdate, 500);
+  /** Widgets visibility by widget ID */
+  @Prop({ default: () => ({}), type: Object }) readonly value!: WidgetsVisibilityModel;
+  /** Update layouts depends on widgets visibility */
+  @Watch('value')
+  private updateLayoutWidgets(curr: WidgetsVisibilityModel, prev: WidgetsVisibilityModel): void {
+    if (!!prev && !!curr && isEqual(curr)(prev)) return;
 
-  get gridLayout(): Layout {
-    return this.layout;
+    const layouts = cloneDeep(this.layouts);
+
+    Object.entries(this.value).forEach(([widgetId, visibilityFlag]) => {
+      Object.keys(layouts).forEach((key) => {
+        if (visibilityFlag) {
+          const currentWidget = layouts[key].find((widget: LayoutWidget) => widget.i === widgetId);
+
+          if (!currentWidget) {
+            const defaultWidget = this.defaultLayouts[key].find((widget: LayoutWidget) => widget.i === widgetId);
+
+            if (defaultWidget) {
+              layouts[key] = [...layouts[key], { ...defaultWidget }];
+            }
+          }
+        } else {
+          layouts[key] = layouts[key].filter((widget: LayoutWidget) => widget.i !== widgetId);
+        }
+      });
+    });
+
+    this.saveLayouts(layouts);
   }
 
-  set gridLayout(updated: Layout) {
-    this.layout = updated;
-    this.onUpdate(this.layout);
+  private breakpoint: BreakpointKey = BreakpointKey.md;
+
+  private updateResponsiveLayouts = debounce(this.saveLayouts, 250);
+
+  public layouts: ResponsiveLayouts = {};
+  @Watch('layouts', { deep: true })
+  private onLayoutsUpdate(): void {
+    if (this.responsiveLayout && this.shouldUpdate) {
+      this.layout = cloneDeep(this.responsiveLayout) as Layout;
+    }
+  }
+
+  public layout: Layout = [];
+  @Watch('layout', { deep: true })
+  private onLayoutUpdate(): void {
+    if (this.shouldUpdate) {
+      this.updateResponsiveLayouts({ ...this.layouts, [this.breakpoint]: this.layout });
+    }
+  }
+
+  get responsiveLayout(): Layout | undefined {
+    return this.layouts[this.breakpoint];
+  }
+
+  get shouldUpdate(): boolean {
+    return !isEqual(this.layout)(this.responsiveLayout);
   }
 
   get gridLinesStyle(): Partial<CSSStyleDeclaration> {
@@ -99,13 +151,20 @@ export default class WidgetsGrid extends Vue {
     };
   }
 
-  @Watch('layouts', { deep: true })
-  private updateCurrentLayout(updatedLayouts: ResponsiveLayouts): void {
-    const updatedLayout = updatedLayouts[this.breakpoint];
+  created(): void {
+    const storedLayouts = layoutsStorage.get(this.id);
 
-    if (!updatedLayout || isEqual(this.layout)(updatedLayout)) return;
+    this.layouts = storedLayouts ? JSON.parse(storedLayouts) : cloneDeep(this.defaultLayouts);
 
-    this.layout = cloneDeep(updatedLayout) as Layout;
+    this.updateWidgetsVisibility();
+  }
+
+  private saveLayouts(layouts: ResponsiveLayouts): void {
+    this.layouts = cloneDeep(layouts);
+    // update layouts in storage
+    if (this.id) {
+      layoutsStorage.set(this.id, JSON.stringify(this.layouts));
+    }
   }
 
   onBreakpointChanged(newBreakpoint: BreakpointKey): void {
@@ -113,8 +172,8 @@ export default class WidgetsGrid extends Vue {
   }
 
   onResize(id: string, rect: DOMRect): void {
-    const layout = cloneDeep(this.gridLayout);
-    const widget = layout.find((item) => item.i === id);
+    const layout = cloneDeep(this.layout);
+    const widget = layout.find((item: LayoutWidget) => item.i === id);
 
     if (!widget) return;
 
@@ -126,15 +185,23 @@ export default class WidgetsGrid extends Vue {
     // mutate local layout
     widget.h = updatedH;
     // update component layout
-    this.gridLayout = layout;
+    this.layout = layout;
   }
 
-  private emitUpdate(layout: Layout): void {
-    const update: ResponsiveLayouts = {
-      [this.breakpoint]: layout,
-    };
+  /**
+   * Emits widgets visibility model update.
+   * Occurs after component created and initial layout is loaded from storage.
+   */
+  @Emit('input')
+  private updateWidgetsVisibility() {
+    // chose first layout
+    const layout: Layout = Object.values(this.layouts)[0];
+    // create new model based on chosen layout
+    return Object.keys(this.value).reduce((acc, widgetId) => {
+      acc[widgetId] = !!layout.find((widget) => widget.i === widgetId);
 
-    this.$emit('update', update);
+      return acc;
+    }, {});
   }
 }
 </script>

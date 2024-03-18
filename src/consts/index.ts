@@ -249,8 +249,7 @@ export enum Components {
   ValueStatusWrapper = 'shared/ValueStatusWrapper',
   // Shared Widgets
   BaseWidget = 'shared/Widget/Base',
-  WidgetsGrid = 'shared/Widget/Grid/Grid',
-  WidgetsLayout = 'shared/Widget/Grid/Layout',
+  WidgetsGrid = 'shared/Widget/Grid',
   // Shared Widgets Components
   IFrameWidget = 'shared/Widget/IFrame',
   PriceChartWidget = 'shared/Widget/PriceChart',
