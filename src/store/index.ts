@@ -19,6 +19,7 @@ import settings from './settings';
 import soraCard from './soraCard';
 import staking from './staking';
 import swap from './swap';
+import vault from './vault';
 import web3 from './web3';
 
 import type { DirectActions, DirectGetters, DirectMutations, DirectState } from 'direct-vuex/types/direct-types';
@@ -44,6 +45,7 @@ const modules = {
   soraCard,
   orderBook,
   dashboard,
+  vault,
 };
 
 const { store, rootGetterContext, rootActionContext } = createDirectStore({
