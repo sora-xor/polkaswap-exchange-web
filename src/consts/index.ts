@@ -1,8 +1,8 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import invert from 'lodash/fp/invert';
 
+import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { StakingPageNames } from '@/modules/staking/consts';
-import { SoraStakingPageNames } from '@/modules/staking/sora/consts';
 
 import pkg from '../../package.json';
 
@@ -148,8 +148,6 @@ export enum PageNames {
   LimitOrderSell = 'OrderBook/LimitOrderSell',
   SoraCard = 'SoraCard',
   Kensetsu = 'Kensetsu',
-  AssetOwner = 'AssetOwner',
-  AssetOwnerDetails = 'AssetOwnerDetails',
   AssetOwnerContainer = 'AssetOwnerContainer',
 }
 
@@ -380,8 +378,9 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
   },
   {
     icon: 'various-rocket-24',
-    title: PageNames.AssetOwner,
+    title: PageNames.AssetOwnerContainer,
     href: '/#/dashboard/owner',
+    index: DashboardPageNames.AssetOwner,
   },
   {
     icon: 'file-file-text-24',

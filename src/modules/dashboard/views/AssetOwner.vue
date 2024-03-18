@@ -130,7 +130,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { PageNames } from '@/consts';
-import { DashboardComponents } from '@/modules/dashboard/consts';
+import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import router from '@/router';
@@ -146,9 +146,9 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
   },
 })
 export default class AssetOwner extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
-  @getter.dashboard.ownedAssets assets!: OwnedAsset[];
   @getter.libraryTheme private libraryTheme!: Theme;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.dashboard.ownedAssets assets!: OwnedAsset[];
 
   showCreateTokenDialog = false;
 
@@ -165,7 +165,7 @@ export default class AssetOwner extends Mixins(TranslationMixin, mixins.Formatte
   }
 
   handleOpenAssetDetails(asset: OwnedAsset): void {
-    router.push({ name: PageNames.AssetOwnerDetails, params: { asset: asset.address } });
+    router.push({ name: DashboardPageNames.AssetOwnerDetails, params: { asset: asset.address } });
   }
 
   get noAssetsImg(): string {

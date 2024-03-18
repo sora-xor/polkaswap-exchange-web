@@ -5,6 +5,7 @@ import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
+import { DashboardPageNames } from '../modules/dashboard/consts';
 import { StakingPageNames } from '../modules/staking/consts';
 import { ValidatorsFilterType, ValidatorsListMode } from '../modules/staking/sora/consts';
 import { AlertFrequencyTabs, AlertTypeTabs, FiatOptionTabs } from '../types/tabs';
@@ -76,16 +77,19 @@ export default {
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Statistics',
     [PageNames.Wallet]: 'Wallet',
+    [PageNames.AddLiquidity]: 'Add Liquidity',
+    [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.Rewards]: 'Rewards',
     [PageNames.ExploreTokens]: 'Tokens',
     [PageNames.ExplorePools]: 'Pools',
     [PageNames.ExploreStaking]: 'Staking',
     [PageNames.ExploreFarming]: 'Farming',
     [PageNames.ExploreBooks]: '@:pageTitle.OrderBook',
-    [PageNames.AddLiquidity]: 'Add Liquidity',
-    [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.OrderBook]: 'Trade',
     [StakingPageNames.Staking]: 'Staking',
+    [PageNames.Kensetsu]: 'Kensetsu',
+    [DashboardPageNames.AssetOwner]: 'Asset owner',
+    [DashboardPageNames.AssetOwnerDetails]: '@:pageTitle.AssetOwner',
   },
   mainMenu: {
     [PageNames.Swap]: 'Swap',
@@ -99,6 +103,9 @@ export default {
     [PageNames.OrderBook]: 'Trade',
     [PageNames.ExploreContainer]: 'Explore',
     [PageNames.StakingContainer]: 'Staking',
+    [PageNames.SoraCard]: '{Sora} Card',
+    [PageNames.Kensetsu]: 'Kensetsu',
+    [PageNames.AssetOwnerContainer]: 'Asset owner',
   },
   alerts: {
     [AlertTypeTabs.Drop]: 'Drops below',

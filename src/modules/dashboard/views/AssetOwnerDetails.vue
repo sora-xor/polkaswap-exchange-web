@@ -182,7 +182,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import StatsSupplyChart from '@/components/pages/Stats/SupplyChart.vue';
 import { PageNames, Components, ZeroStringValue, BreakpointClass } from '@/consts';
-import { DashboardComponents } from '@/modules/dashboard/consts';
+import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import router, { lazyComponent } from '@/router';
@@ -209,9 +209,9 @@ export default class AssetOwnerDetails extends Mixins(
   mixins.LoadingMixin,
   mixins.FormattedAmountMixin
 ) {
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.dashboard.ownedAssets private assets!: OwnedAsset[];
   @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
+  @getter.dashboard.ownedAssets private assets!: OwnedAsset[];
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   private supply: CodecString = ZeroStringValue;
   private supplySubscription: Nullable<Subscription> = null;
@@ -268,13 +268,13 @@ export default class AssetOwnerDetails extends Mixins(
   mounted(): void {
     this.withApi(async () => {
       if (!this.isLoggedIn) {
-        router.push({ name: PageNames.AssetOwner });
+        router.push({ name: DashboardPageNames.AssetOwner });
         return;
       }
 
       await waitUntil(() => !this.parentLoading);
       if (!this.asset) {
-        router.push({ name: PageNames.AssetOwner });
+        router.push({ name: DashboardPageNames.AssetOwner });
         return;
       }
 

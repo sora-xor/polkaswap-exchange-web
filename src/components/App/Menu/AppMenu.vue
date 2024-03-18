@@ -112,6 +112,7 @@ import {
   SidebarMenuItemLink,
   FaucetLink,
 } from '@/consts';
+import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { isDashboardPage } from '@/modules/dashboard/router';
 import { StakingPageNames } from '@/modules/staking/consts';
 import { isStakingPage } from '@/modules/staking/router';
@@ -179,7 +180,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       return PageNames.ExploreFarming;
     }
     if (isDashboardPage(currentName)) {
-      return PageNames.AssetOwner;
+      return DashboardPageNames.AssetOwner;
     }
     return currentName as string;
   }

@@ -385,20 +385,19 @@
         "About": "About",
         "Stats": "Statistics",
         "Wallet": "Wallet",
-        "CreatePair": "Create Pair",
         "AddLiquidity": "Add Liquidity",
-        "AddLiquidityId": "Add Liquidity",
         "RemoveLiquidity": "Remove Liquidity",
         "Rewards": "Rewards",
         "Explore\/Tokens": "Tokens",
         "Explore\/Pools": "Pools",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
-        "Staking": "Staking",
-        "OrderBook": "Trade",
         "Explore\/Books": "@:pageTitle.OrderBook",
+        "OrderBook": "Trade",
+        "Staking": "Staking",
         "Kensetsu": "Kensetsu",
-        "AssetOwner": "Asset owner"
+        "AssetOwner": "Asset owner",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -409,13 +408,12 @@
         "Rewards": "Rewards",
         "About": "About",
         "Stats": "Statistics",
-        "CreatePair": "Create Pair",
-        "StakingContainer": "Staking",
-        "Explore\/Container": "Explore",
-        "SoraCard": "{Sora} Card",
         "OrderBook": "Trade",
+        "Explore\/Container": "Explore",
+        "StakingContainer": "Staking",
+        "SoraCard": "{Sora} Card",
         "Kensetsu": "Kensetsu",
-        "AssetOwner": "Asset owner"
+        "AssetOwnerContainer": "Asset owner"
     },
     "social": {
         "twitter": "Twitter",

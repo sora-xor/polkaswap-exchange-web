@@ -4,6 +4,8 @@ import { Component } from 'vue-property-decorator';
 import VueRouter, { RouteConfig } from 'vue-router';
 
 import { PageNames, BridgeChildPages } from '@/consts';
+import { DashboardPageNames } from '@/modules/dashboard/consts';
+import { dashboardLazyView } from '@/modules/dashboard/router';
 import { StakingPageNames } from '@/modules/staking/consts';
 import { DemeterStakingPageNames } from '@/modules/staking/demeter/consts';
 import { demeterStakingLazyView, soraStakingLazyView, stakingLazyView } from '@/modules/staking/router';
@@ -272,13 +274,13 @@ const routes: Array<RouteConfig> = [
     children: [
       {
         path: '',
-        name: PageNames.AssetOwner,
-        component: lazyView(PageNames.AssetOwner),
+        name: DashboardPageNames.AssetOwner,
+        component: dashboardLazyView(DashboardPageNames.AssetOwner),
       },
       {
         path: '/:asset',
-        name: PageNames.AssetOwnerDetails,
-        component: lazyView(PageNames.AssetOwnerDetails),
+        name: DashboardPageNames.AssetOwnerDetails,
+        component: dashboardLazyView(DashboardPageNames.AssetOwnerDetails),
         meta: {
           requiresAuth: true,
         },
