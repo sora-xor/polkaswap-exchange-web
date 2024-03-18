@@ -839,14 +839,11 @@ export default class SwapChart extends Mixins(
         console.error
       );
     } else {
-      return this.$watch(
-        () => this.fiatPriceObject,
-        (updated, prev) => {
-          if (updated && (!prev || entities.some((addr) => updated[addr] !== prev[addr]))) {
-            this.fetchAndHandleUpdate(entities);
-          }
-        }
-      );
+      const interval = setInterval(() => {
+        this.fetchAndHandleUpdate(entities);
+      }, SYNC_INTERVAL * 5);
+
+      return () => clearInterval(interval);
     }
   }
 
