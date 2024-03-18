@@ -412,7 +412,7 @@ export default class BuySellWidget extends Mixins(
   }
 
   get formattedTotal(): FPNumber {
-    return this.getFPNumber(this.baseValue).mul(this.getFPNumber(this.quoteValue));
+    return this.getFPNumber(this.baseValue || 0).mul(this.getFPNumber(this.quoteValue || 0));
   }
 
   get shouldErrorTooltipBeShown(): boolean {
@@ -459,7 +459,7 @@ export default class BuySellWidget extends Mixins(
   }
 
   get fiatValue() {
-    if (!this.quoteAsset) return '';
+    if (!this.quoteAsset || !this.baseAsset || this.isZeroAmount || this.isZeroPrice) return '';
     const amountCodec = this.formattedTotal?.toCodecString();
     return this.getFiatAmountByCodecString(amountCodec, this.quoteAsset);
   }
