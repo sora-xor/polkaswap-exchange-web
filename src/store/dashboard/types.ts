@@ -1,5 +1,4 @@
-import type { OwnedAsset } from '@/modules/dashboard/types';
-
 export type DashboardState = {
-  selectedOwnedAsset: Nullable<OwnedAsset>;
+  ownedAssetIds: Array<string>;
+  ownedAssetIdsInterval: Nullable<ReturnType<typeof setInterval>>;
 };

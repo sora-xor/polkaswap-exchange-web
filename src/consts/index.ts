@@ -150,6 +150,7 @@ export enum PageNames {
   Kensetsu = 'Kensetsu',
   AssetOwner = 'AssetOwner',
   AssetOwnerDetails = 'AssetOwnerDetails',
+  AssetOwnerContainer = 'AssetOwnerContainer',
 }
 
 export enum Components {

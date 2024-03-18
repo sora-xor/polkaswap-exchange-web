@@ -75,7 +75,7 @@ import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch, Ref, Prop } from 'vue-property-decorator';
 
 import type TokenInput from '@/components/shared/Input/TokenInput.vue';
-import { Components, ZeroStringValue, HundredNumber } from '@/consts';
+import { Components, ZeroStringValue, HundredNumber, ObjectInit } from '@/consts';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
@@ -103,9 +103,9 @@ export default class SendTokenDialog extends Mixins(
 
   @Prop({ default: ZeroStringValue, type: String }) readonly balance!: CodecString;
   @Prop({ default: false, type: Boolean }) readonly editableFiat!: boolean;
+  @Prop({ default: ObjectInit, type: Object }) readonly asset!: OwnedAsset;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @state.dashboard.selectedOwnedAsset asset!: OwnedAsset;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
 
   value = '';

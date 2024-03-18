@@ -2,7 +2,8 @@ import type { DashboardState } from './types';
 
 function initialState(): DashboardState {
   return {
-    selectedOwnedAsset: null,
+    ownedAssetIds: [],
+    ownedAssetIdsInterval: null,
   };
 }
 

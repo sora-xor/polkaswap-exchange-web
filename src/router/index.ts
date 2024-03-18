@@ -267,16 +267,23 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/dashboard/owner',
-    name: PageNames.AssetOwner,
-    component: lazyView(PageNames.AssetOwner),
-  },
-  {
-    path: '/dashboard/owner/:asset',
-    name: PageNames.AssetOwnerDetails,
-    component: lazyView(PageNames.AssetOwnerDetails),
-    meta: {
-      requiresAuth: true,
-    },
+    name: PageNames.AssetOwnerContainer,
+    component: lazyView(PageNames.AssetOwnerContainer),
+    children: [
+      {
+        path: '',
+        name: PageNames.AssetOwner,
+        component: lazyView(PageNames.AssetOwner),
+      },
+      {
+        path: '/:asset',
+        name: PageNames.AssetOwnerDetails,
+        component: lazyView(PageNames.AssetOwnerDetails),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+    ],
   },
   {
     path: '/dashboard',

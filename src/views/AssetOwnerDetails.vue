@@ -167,10 +167,11 @@
         </s-row>
       </s-col>
     </s-row>
-    <mint-dialog :visible.sync="showMintDialog" :editable-fiat="hasFiat" />
-    <burn-dialog :visible.sync="showBurnDialog" :balance="balance" :editable-fiat="hasFiat" />
-    <send-dialog :visible.sync="showSendDialog" :balance="balance" :editable-fiat="hasFiat" />
+    <mint-dialog :visible.sync="showMintDialog" :asset="asset" :editable-fiat="hasFiat" />
+    <burn-dialog :visible.sync="showBurnDialog" :asset="asset" :balance="balance" :editable-fiat="hasFiat" />
+    <send-dialog :visible.sync="showSendDialog" :asset="asset" :balance="balance" :editable-fiat="hasFiat" />
   </div>
+  <div v-else class="asset-owner-details-container empty" />
 </template>
 
 <script lang="ts">
@@ -185,7 +186,8 @@ import { DashboardComponents } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import router, { lazyComponent } from '@/router';
-import { mutation, getter, state } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
+import { waitUntil } from '@/utils';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { Subscription } from 'rxjs';
@@ -202,11 +204,14 @@ import type { Subscription } from 'rxjs';
     SendDialog: dashboardLazyComponent(DashboardComponents.SendTokenDialog),
   },
 })
-export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
+export default class AssetOwnerDetails extends Mixins(
+  TranslationMixin,
+  mixins.LoadingMixin,
+  mixins.FormattedAmountMixin
+) {
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @state.dashboard.selectedOwnedAsset asset!: OwnedAsset;
+  @getter.dashboard.ownedAssets private assets!: OwnedAsset[];
   @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
-  @mutation.dashboard.resetSelectedOwnedAsset private reset!: FnWithoutArgs;
 
   private supply: CodecString = ZeroStringValue;
   private supplySubscription: Nullable<Subscription> = null;
@@ -222,13 +227,19 @@ export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingM
     return `${name}-${this.responsiveClass}`;
   }
 
+  get asset(): Nullable<OwnedAsset> {
+    const assetId = this.$route.params.asset;
+    if (!assetId) return null;
+    return this.assets.find(({ address }) => address === assetId);
+  }
+
   get formattedBalance(): string {
     if (!this.balance) return '0';
-    return this.formatCodecNumber(this.balance, this.asset.decimals);
+    return this.formatCodecNumber(this.balance, this.asset?.decimals);
   }
 
   get fiatBalance(): Nullable<string> {
-    if (!this.balance) return ZeroStringValue;
+    if (!(this.asset && this.balance)) return ZeroStringValue;
     return this.getFiatAmountByCodecString(this.balance, this.asset);
   }
 
@@ -238,28 +249,35 @@ export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingM
 
   get formattedSupply(): string {
     if (!this.supply) return ZeroStringValue;
-    return this.formatCodecNumber(this.supply, this.asset.decimals);
+    return this.formatCodecNumber(this.supply, this.asset?.decimals);
   }
 
   get fiatSupply(): Nullable<string> {
-    if (!this.supply) return ZeroStringValue;
+    if (!(this.asset && this.supply)) return ZeroStringValue;
     return this.getFiatAmountByCodecString(this.supply, this.asset);
   }
 
   get isAddLiquidityDisabled(): boolean {
-    return !this.asset.decimals;
+    return !this.asset?.decimals;
   }
 
   get hasFixedSupply(): boolean {
-    return !this.asset.isMintable;
+    return !this.asset?.isMintable;
   }
 
   mounted(): void {
     this.withApi(async () => {
-      if (!this.isLoggedIn || !this.asset) {
+      if (!this.isLoggedIn) {
         router.push({ name: PageNames.AssetOwner });
         return;
       }
+
+      await waitUntil(() => !this.parentLoading);
+      if (!this.asset) {
+        router.push({ name: PageNames.AssetOwner });
+        return;
+      }
+
       this.balanceSubscription = api.assets.getAssetBalanceObservable(this.asset).subscribe((balance) => {
         this.balance = balance.transferable;
       });
@@ -286,13 +304,13 @@ export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   goToAddLiquidity(): void {
+    if (!this.asset) return;
     router.push({ name: PageNames.AddLiquidity, params: { first: XOR.symbol, second: this.asset.address } });
   }
 
   beforeDestroy(): void {
     this.balanceSubscription?.unsubscribe?.();
     this.supplySubscription?.unsubscribe?.();
-    this.reset();
   }
 }
 </script>
@@ -302,6 +320,10 @@ export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingM
   &-container {
     display: flex;
     gap: 16px;
+
+    &.empty {
+      height: calc(100vh - #{$header-height} - #{$footer-height});
+    }
 
     .details-card {
       margin-bottom: 24px;

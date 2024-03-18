@@ -1,5 +1,5 @@
 <template>
-  <div class="asset-owner-container" v-loading="loading">
+  <div class="asset-owner-container">
     <s-row v-if="isNotLoggedInOrEmptyAssets">
       <s-col class="no-assets__first-col" :xs="12" :sm="12" :md="6" :lg="6">
         <s-card class="no-assets" border-radius="small" shadow="always" size="big" primary>
@@ -125,7 +125,7 @@
 </template>
 
 <script lang="ts">
-import { api, mixins, components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -134,7 +134,7 @@ import { DashboardComponents } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset } from '@/modules/dashboard/types';
 import router from '@/router';
-import { mutation, getter, state } from '@/store/decorators';
+import { getter } from '@/store/decorators';
 
 import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
@@ -145,14 +145,10 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     CreateTokenDialog: dashboardLazyComponent(DashboardComponents.CreateTokenDialog),
   },
 })
-export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
-  @state.wallet.account.address private accountId!: string;
-  @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
+export default class AssetOwner extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
+  @getter.dashboard.ownedAssets assets!: OwnedAsset[];
   @getter.libraryTheme private libraryTheme!: Theme;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @mutation.dashboard.setSelectedOwnedAsset private setAsset!: (asset: OwnedAsset) => void;
-
-  private assetIds: Array<string> = [];
 
   showCreateTokenDialog = false;
 
@@ -169,28 +165,7 @@ export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingM
   }
 
   handleOpenAssetDetails(asset: OwnedAsset): void {
-    this.setAsset(asset);
     router.push({ name: PageNames.AssetOwnerDetails, params: { asset: asset.address } });
-  }
-
-  async getAssetIds(): Promise<Array<string>> {
-    try {
-      const assets = await api.api.query.assets.assetOwners.entries();
-
-      return assets.reduce<Array<string>>((buffer, item) => {
-        const accountId = item[1].unwrapOr('').toString();
-        if (!accountId || accountId !== this.accountId) {
-          return buffer;
-        }
-        const newAsset: string = item[0]?.args?.[0]?.code?.toString?.() ?? '';
-        if (!newAsset) {
-          return buffer;
-        }
-        return [...buffer, newAsset];
-      }, []);
-    } catch {
-      return [];
-    }
   }
 
   get noAssetsImg(): string {
@@ -199,26 +174,6 @@ export default class AssetOwner extends Mixins(TranslationMixin, mixins.LoadingM
 
   get noAssetsImgDemo(): string {
     return `/asset-owner/${this.libraryTheme}.png`;
-  }
-
-  get assets(): Array<OwnedAsset> {
-    return this.assetIds
-      .map((assetId) => {
-        const asset = this.assetsDataTable[assetId];
-        if (!asset) return undefined;
-        const fiatObj = this.getAssetFiatPrice(asset);
-        const fiat = fiatObj ? this.getStringFromCodec(fiatObj) : fiatObj;
-        return { ...asset, fiat };
-      })
-      .filter((item) => !!item) as Array<OwnedAsset>;
-  }
-
-  created(): void {
-    this.withApi(async () => {
-      if (!this.isLoggedIn) return;
-
-      this.assetIds = await this.getAssetIds();
-    });
   }
 }
 </script>

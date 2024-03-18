@@ -1,15 +1,22 @@
 import { defineMutations } from 'direct-vuex';
 
-import type { OwnedAsset } from '@/modules/dashboard/types';
-
 import type { DashboardState } from './types';
 
 const mutations = defineMutations<DashboardState>()({
-  setSelectedOwnedAsset(state, value: OwnedAsset): void {
-    state.selectedOwnedAsset = value;
+  setOwnedAssetIds(state, ids: Array<string>): void {
+    state.ownedAssetIds = ids;
   },
-  resetSelectedOwnedAsset(state): void {
-    state.selectedOwnedAsset = null;
+  resetOwnedAssetIds(state): void {
+    state.ownedAssetIds = [];
+  },
+  setOwnedAssetIdsInterval(state, interval: ReturnType<typeof setInterval>): void {
+    state.ownedAssetIdsInterval = interval;
+  },
+  resetOwnedAssetIdsInterval(state): void {
+    if (state.ownedAssetIdsInterval) {
+      clearInterval(state.ownedAssetIdsInterval);
+    }
+    state.ownedAssetIdsInterval = null;
   },
 });
 
