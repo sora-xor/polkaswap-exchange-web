@@ -288,3 +288,10 @@ export async function getEthNetworkFee(
 
   return ethersUtil.calcEvmFee(gasPrice, gasLimitTotal);
 }
+
+export const getTransactionFee = (tx: ethers.TransactionResponse | ethers.TransactionReceipt) => {
+  const gasPrice = tx.gasPrice;
+  const gasAmount = 'gasUsed' in tx ? tx.gasUsed : tx.gasLimit;
+
+  return ethersUtil.calcEvmFee(gasPrice, gasAmount);
+};
