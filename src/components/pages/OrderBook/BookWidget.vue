@@ -297,11 +297,11 @@ export default class BookWidget extends Mixins(
   }
 
   private toBookPrecision(cell: FPNumber): string {
-    return cell.toNumber().toFixed(this.pricePrecision);
+    return cell.toLocaleString(this.pricePrecision, true);
   }
 
   private toAmountPrecision(cell: FPNumber): string {
-    return cell.toNumber().toFixed(this.amountPrecision);
+    return cell.toLocaleString(this.amountPrecision, true);
   }
 
   private formatPriceVolumes(items: OrderBookPriceVolume[]): LimitOrderForm[] {
