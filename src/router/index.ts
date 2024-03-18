@@ -278,7 +278,7 @@ const routes: Array<RouteConfig> = [
         component: dashboardLazyView(DashboardPageNames.AssetOwner),
       },
       {
-        path: '/:asset',
+        path: ':asset',
         name: DashboardPageNames.AssetOwnerDetails,
         component: dashboardLazyView(DashboardPageNames.AssetOwnerDetails),
         meta: {
