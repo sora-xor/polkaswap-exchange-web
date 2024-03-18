@@ -32,15 +32,14 @@
 <script lang="ts">
 import debounce from 'lodash/debounce';
 import cloneDeep from 'lodash/fp/cloneDeep';
+import isEmpty from 'lodash/fp/isEmpty';
 import isEqual from 'lodash/fp/isEqual';
 import { GridLayout, GridItem } from 'vue-grid-layout';
 import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
 
 import { Breakpoint, BreakpointKey } from '@/consts/layout';
-import type { Layout, LayoutConfig, ResponsiveLayouts, LayoutWidget } from '@/types/layout';
+import type { Layout, LayoutConfig, ResponsiveLayouts, LayoutWidget, WidgetsVisibilityModel } from '@/types/layout';
 import { layoutsStorage } from '@/utils/storage';
-
-type WidgetsVisibilityModel = Record<string, boolean>;
 
 const DEFAULT_BREAKPOINTS: LayoutConfig = {
   [BreakpointKey.lg]: Breakpoint.HugeDesktop, // 2092
@@ -58,6 +57,17 @@ const DEFAULT_COLS: LayoutConfig = {
   [BreakpointKey.xss]: 4,
 };
 
+function findWidgetInLayout(layout: Nullable<Layout>, widgetId: string) {
+  return layout?.find((widget: LayoutWidget) => widget.i === widgetId);
+}
+
+function shallowDiff<T>(a: T, b: T): Partial<T> {
+  return Object.entries(a).reduce(
+    (diff, [key, value]) => (isEqual(b[key], value) ? diff : { ...diff, [key]: value }),
+    {}
+  );
+}
+
 @Component({
   components: {
     GridLayout,
@@ -66,7 +76,7 @@ const DEFAULT_COLS: LayoutConfig = {
 })
 export default class WidgetsGrid extends Vue {
   /** Layout ID to sync it with storage */
-  @Prop({ default: '', type: String }) readonly id!: string;
+  @Prop({ default: '', type: String }) readonly gridId!: string;
   /** Default layouts */
   @Prop({ default: () => ({}), type: Object }) readonly defaultLayouts!: ResponsiveLayouts;
 
@@ -85,27 +95,29 @@ export default class WidgetsGrid extends Vue {
   /** Update layouts depends on widgets visibility */
   @Watch('value')
   private updateLayoutWidgets(curr: WidgetsVisibilityModel, prev: WidgetsVisibilityModel): void {
-    if (!!prev && !!curr && isEqual(curr)(prev)) return;
+    const diff = shallowDiff(curr, prev);
+
+    if (isEmpty(diff)) return;
 
     const layouts = cloneDeep(this.layouts);
 
-    Object.entries(this.value).forEach(([widgetId, visibilityFlag]) => {
-      Object.keys(layouts).forEach((key) => {
+    for (const [widgetId, visibilityFlag] of Object.entries(diff)) {
+      for (const breakpoint in layouts) {
         if (visibilityFlag) {
-          const currentWidget = layouts[key].find((widget: LayoutWidget) => widget.i === widgetId);
+          const currentWidget = findWidgetInLayout(layouts[breakpoint], widgetId);
 
-          if (!currentWidget) {
-            const defaultWidget = this.defaultLayouts[key].find((widget: LayoutWidget) => widget.i === widgetId);
+          if (currentWidget) continue;
 
-            if (defaultWidget) {
-              layouts[key] = [...layouts[key], { ...defaultWidget }];
-            }
+          const defaultWidget = findWidgetInLayout(this.defaultLayouts[breakpoint], widgetId);
+
+          if (defaultWidget) {
+            layouts[breakpoint].push(defaultWidget);
           }
         } else {
-          layouts[key] = layouts[key].filter((widget: LayoutWidget) => widget.i !== widgetId);
+          layouts[breakpoint] = layouts[breakpoint].filter((widget: LayoutWidget) => widget.i !== widgetId);
         }
-      });
-    });
+      }
+    }
 
     this.saveLayouts(layouts);
   }
@@ -152,7 +164,7 @@ export default class WidgetsGrid extends Vue {
   }
 
   created(): void {
-    const storedLayouts = layoutsStorage.get(this.id);
+    const storedLayouts = layoutsStorage.get(this.gridId);
 
     this.layouts = storedLayouts ? JSON.parse(storedLayouts) : cloneDeep(this.defaultLayouts);
 
@@ -162,8 +174,8 @@ export default class WidgetsGrid extends Vue {
   private saveLayouts(layouts: ResponsiveLayouts): void {
     this.layouts = cloneDeep(layouts);
     // update layouts in storage
-    if (this.id) {
-      layoutsStorage.set(this.id, JSON.stringify(this.layouts));
+    if (this.gridId) {
+      layoutsStorage.set(this.gridId, JSON.stringify(this.layouts));
     }
   }
 
@@ -171,9 +183,9 @@ export default class WidgetsGrid extends Vue {
     this.breakpoint = newBreakpoint;
   }
 
-  onResize(id: string, rect: DOMRect): void {
+  onResize(widgetId: string, rect: DOMRect): void {
     const layout = cloneDeep(this.layout);
-    const widget = layout.find((item: LayoutWidget) => item.i === id);
+    const widget = findWidgetInLayout(layout, widgetId);
 
     if (!widget) return;
 

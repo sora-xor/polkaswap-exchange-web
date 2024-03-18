@@ -26,3 +26,5 @@ export type LayoutConfig = BreakpointConfig<number>;
 export type Layout = LayoutWidget[];
 
 export type ResponsiveLayouts = Partial<BreakpointConfig<Layout>>;
+
+export type WidgetsVisibilityModel = Record<string, boolean>;

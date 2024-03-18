@@ -18,6 +18,7 @@
       </div>
     </div>
     <widgets-grid
+      grid-id="swapGrid"
       class="swap-container"
       :draggable="draggable"
       :resizable="resizable"
@@ -59,7 +60,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
-import type { ResponsiveLayouts } from '@/types/layout';
+import type { ResponsiveLayouts, WidgetsVisibilityModel } from '@/types/layout';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -116,7 +117,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   compact = false;
   lines = false;
 
-  widgets = {
+  widgets: WidgetsVisibilityModel = {
     [SwapWidgets.Form]: true,
     [SwapWidgets.Chart]: true,
     [SwapWidgets.Distribution]: true,
