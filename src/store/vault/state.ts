@@ -7,7 +7,6 @@ function initialState(): VaultState {
     accountVaultIdsSubscription: null,
     accountVaults: [],
     accountVaultsSubscription: null,
-    selectedVault: null,
   };
 }
 
