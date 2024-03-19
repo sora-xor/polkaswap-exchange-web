@@ -92,6 +92,12 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
   readonly SwapWidgets = SwapWidgets;
   readonly DefaultLayouts: ResponsiveLayouts = {
+    lg: [
+      { x: 0, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 6, y: 0, w: 9, h: 24, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 15, y: 0, w: 9, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
+      { x: 6, y: 24, w: 6, h: 6, minW: 4, minH: 6, i: SwapWidgets.Distribution },
+    ],
     md: [
       { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
       { x: 4, y: 0, w: 12, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
@@ -109,6 +115,12 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       { x: 4, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
       { x: 0, y: 20, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.Distribution },
       { x: 4, y: 20, w: 4, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
+    ],
+    xss: [
+      { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 0, y: 20, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.Distribution },
+      { x: 0, y: 32, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 0, y: 52, w: 4, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
   };
 

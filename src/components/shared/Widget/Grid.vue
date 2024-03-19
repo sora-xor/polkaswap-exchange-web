@@ -61,7 +61,7 @@ function findWidgetInLayout(layout: Nullable<Layout>, widgetId: string) {
   return layout?.find((widget: LayoutWidget) => widget.i === widgetId);
 }
 
-function shallowDiff<T>(a: T, b: T): Partial<T> {
+function shallowDiff<T extends Record<string, boolean>>(a: T, b: T): Partial<T> {
   return Object.entries(a).reduce(
     (diff, [key, value]) => (isEqual(b[key], value) ? diff : { ...diff, [key]: value }),
     {}
