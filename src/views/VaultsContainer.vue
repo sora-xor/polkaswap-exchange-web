@@ -19,10 +19,15 @@ import { action } from '@/store/decorators';
 export default class VaultsContainer extends Mixins(SubscriptionsMixin) {
   @action.vault.subscribeOnCollaterals private subscribeOnCollaterals!: AsyncFnWithoutArgs;
   @action.vault.subscribeOnAccountVaults private subscribeOnAccountVaults!: AsyncFnWithoutArgs;
+  @action.vault.updateBalanceSubscriptions private updateBalanceSubscriptions!: AsyncFnWithoutArgs;
   @action.vault.reset private reset!: AsyncFnWithoutArgs;
 
   created(): void {
-    this.setStartSubscriptions([this.subscribeOnCollaterals, this.subscribeOnAccountVaults]);
+    this.setStartSubscriptions([
+      this.subscribeOnCollaterals,
+      this.subscribeOnAccountVaults,
+      this.updateBalanceSubscriptions,
+    ]);
     this.setResetSubscriptions([this.reset]);
   }
 }

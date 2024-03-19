@@ -10,6 +10,8 @@ import { StakingPageNames } from '@/modules/staking/consts';
 import { DemeterStakingPageNames } from '@/modules/staking/demeter/consts';
 import { demeterStakingLazyView, soraStakingLazyView, stakingLazyView } from '@/modules/staking/router';
 import { SoraStakingPageNames } from '@/modules/staking/sora/consts';
+import { VaultPageNames } from '@/modules/vault/consts';
+import { vaultLazyView } from '@/modules/vault/router';
 import store from '@/store';
 import { updateDocumentTitle } from '@/utils';
 
@@ -268,8 +270,26 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/vaults',
+    component: lazyView(PageNames.VaultsContainer),
+    children: [
+      {
+        path: '',
+        name: VaultPageNames.Vaults,
+        component: vaultLazyView(VaultPageNames.Vaults),
+      },
+      {
+        path: ':vault',
+        name: VaultPageNames.VaultDetails,
+        component: vaultLazyView(VaultPageNames.VaultDetails),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+    ],
+  },
+  {
     path: '/dashboard/owner',
-    name: PageNames.AssetOwnerContainer,
     component: lazyView(PageNames.AssetOwnerContainer),
     children: [
       {

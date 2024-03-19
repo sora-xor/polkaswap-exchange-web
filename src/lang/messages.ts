@@ -8,6 +8,7 @@ import { PageNames, RewardsTabsItems } from '../consts';
 import { DashboardPageNames } from '../modules/dashboard/consts';
 import { StakingPageNames } from '../modules/staking/consts';
 import { ValidatorsFilterType, ValidatorsListMode } from '../modules/staking/sora/consts';
+import { VaultPageNames } from '../modules/vault/consts';
 import { AlertFrequencyTabs, AlertTypeTabs, FiatOptionTabs } from '../types/tabs';
 
 export default {
@@ -90,6 +91,8 @@ export default {
     [PageNames.Kensetsu]: 'Kensetsu',
     [DashboardPageNames.AssetOwner]: 'Asset owner',
     [DashboardPageNames.AssetOwnerDetails]: '@:pageTitle.AssetOwner',
+    [VaultPageNames.Vaults]: 'Vaults',
+    [VaultPageNames.VaultDetails]: 'Vault details',
   },
   mainMenu: {
     [PageNames.Swap]: 'Swap',
@@ -106,6 +109,7 @@ export default {
     [PageNames.SoraCard]: '{Sora} Card',
     [PageNames.Kensetsu]: 'Kensetsu',
     [PageNames.AssetOwnerContainer]: 'Asset owner',
+    [PageNames.VaultsContainer]: 'Vaults',
   },
   alerts: {
     [AlertTypeTabs.Drop]: 'Drops below',

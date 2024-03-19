@@ -3,6 +3,7 @@ import invert from 'lodash/fp/invert';
 
 import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { StakingPageNames } from '@/modules/staking/consts';
+import { VaultPageNames } from '@/modules/vault/consts';
 
 import pkg from '../../package.json';
 
@@ -149,6 +150,7 @@ export enum PageNames {
   SoraCard = 'SoraCard',
   Kensetsu = 'Kensetsu',
   AssetOwnerContainer = 'AssetOwnerContainer',
+  VaultsContainer = 'VaultsContainer',
 }
 
 export enum Components {
@@ -327,6 +329,12 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     icon: 'basic-drop-24',
     title: PageNames.Pool,
     href: '/#/pool',
+  },
+  {
+    icon: 'basic-layers-24',
+    title: PageNames.VaultsContainer,
+    href: '/#/vault',
+    index: VaultPageNames.Vaults,
   },
   {
     icon: 'basic-layers-24',

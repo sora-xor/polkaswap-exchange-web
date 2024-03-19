@@ -397,7 +397,9 @@
         "Staking": "Staking",
         "Kensetsu": "Kensetsu",
         "AssetOwner": "Asset owner",
-        "AssetOwnerDetails": "@:pageTitle.AssetOwner"
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Vaults",
+        "VaultDetails": "VaultDetails"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -413,7 +415,8 @@
         "StakingContainer": "Staking",
         "SoraCard": "{Sora} Card",
         "Kensetsu": "Kensetsu",
-        "AssetOwnerContainer": "Asset owner"
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults"
     },
     "social": {
         "twitter": "Twitter",

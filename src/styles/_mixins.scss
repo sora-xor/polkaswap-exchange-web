@@ -230,6 +230,9 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   font-weight: 300 !important;
   text-transform: capitalize;
   letter-spacing: var(--s-letter-spacing-mini);
+  &.bold {
+    font-weight: 700 !important;
+  }
 }
 
 @mixin rewards-hint($horizontalPadding: $inner-spacing-medium, $withColor: false) {

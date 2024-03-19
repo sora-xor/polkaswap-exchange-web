@@ -1,6 +1,8 @@
 import { defineMutations } from 'direct-vuex';
 
 import type { VaultState } from './types';
+import type { FPNumber } from '@sora-substrate/math';
+import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
 import type { Subscription } from 'rxjs';
 
@@ -39,6 +41,24 @@ const mutations = defineMutations<VaultState>()({
   resetAccountVaultsSubscription(state): void {
     state.accountVaultsSubscription?.unsubscribe();
     state.accountVaultsSubscription = null;
+  },
+  setCollateralAddress(state, address: string): void {
+    state.collateralAddress = address;
+  },
+  setCollateralTokenBalance(state, balance?: Nullable<AccountBalance>): void {
+    state.collateralTokenBalance = balance ?? null;
+  },
+  setKusdTokenBalance(state, balance?: Nullable<AccountBalance>): void {
+    state.kusdTokenBalance = balance ?? null;
+  },
+  setAverageCollateralPrice(state, price?: Nullable<FPNumber>): void {
+    state.averageCollateralPrice = price ?? null;
+  },
+  setAverageCollateralPriceSubscription(state, subscription?: Nullable<Subscription>): void {
+    if (!subscription) {
+      state.averageCollateralPriceSubscription?.unsubscribe();
+    }
+    state.averageCollateralPriceSubscription = subscription;
   },
 });
 
