@@ -86,8 +86,9 @@ export default class ThemePaletteMixin extends Vue {
         side: { buy: css('--s-color-classic-up'), sell: css('--s-color-classic-down') },
         priceChange: { up: css('--s-color-classic-price-change-up'), down: css('--s-color-classic-price-change-down') },
         bookBars: {
-          buy: theme === Theme.LIGHT ? 'rgba(185, 235, 219, 0.4)' : 'rgba(1, 202, 139, 0.2)',
-          sell: theme === Theme.LIGHT ? 'rgba(255, 216, 235, 0.8)' : 'rgba(255, 0, 124, 0.3)',
+          buy: theme === Theme.LIGHT ? css('--s-color-classic-bar-light-buy') : css('--s-color-classic-bar-dark-buy'),
+          sell:
+            theme === Theme.LIGHT ? css('--s-color-classic-bar-light-sell') : css('--s-color-classic-bar-dark-sell'),
         },
       },
       deficiency: {
