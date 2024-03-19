@@ -1,12 +1,12 @@
 <template>
   <div class="swap-container">
     <div class="column column--small">
-      <swap-form-widget :parent-loading="parentLoading" class="swap-form-widget" />
+      <swap-form-widget :parent-loading="loadingState" class="swap-form-widget" />
       <swap-distribution-widget />
     </div>
     <div class="column">
-      <swap-chart-widget :parent-loading="parentLoading" v-if="chartsEnabled" class="swap-chart-widget" />
-      <swap-transactions-widget :parent-loading="parentLoading" />
+      <swap-chart-widget :parent-loading="loadingState" v-if="chartsEnabled" class="swap-chart-widget" />
+      <swap-transactions-widget :parent-loading="loadingState" />
     </div>
   </div>
 </template>
@@ -47,6 +47,10 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   @Watch('tokenTo')
   private updateRouteTokensParams() {
     this.updateRouteAfterSelectTokens(this.tokenFrom, this.tokenTo);
+  }
+
+  get loadingState(): boolean {
+    return this.parentLoading || this.loading;
   }
 
   created(): void {

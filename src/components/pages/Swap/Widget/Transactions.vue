@@ -219,7 +219,13 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
   get assetsAddresses(): string[] {
     const filtered = [this.tokenFrom, this.tokenTo].filter((token) => !!token) as AccountAsset[];
 
-    return filtered.map((token) => token.address).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+    return filtered
+      .map((token) => token.address)
+      .sort((a, b) => {
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
+      });
   }
 
   private createFilter(timestamp?: number) {
@@ -254,16 +260,16 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
   }
 
   private async fetchData(): Promise<void> {
-    const { pageAmount, currentPage } = this;
-
-    const variables: RequestVariables = {
-      filter: this.createFilter(this.fromTimestamp),
-      first: pageAmount,
-      offset: pageAmount * (currentPage - 1),
-    };
-
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
+        const { pageAmount, currentPage } = this;
+
+        const variables: RequestVariables = {
+          filter: this.createFilter(this.fromTimestamp),
+          first: pageAmount,
+          offset: pageAmount * (currentPage - 1),
+        };
+
         const { totalCount, transactions } = await this.requestData(variables);
 
         this.totalCount = totalCount;
