@@ -5,35 +5,19 @@
       <s-icon name="basic-settings-24" size="24px" />
       <span>Chart color settings</span>
     </div>
-    <div class="delimiter" />
+    <s-divider />
     <div class="settings-popover-switches">
-      <div class="settings-popover-switches__item">
-        <s-switch v-model="one" :disabled="true" />
-        <span>{{ 'Charts' }}</span>
+      <div v-for="(option, index) in options" :key="index" class="settings-popover-switches__item">
+        <s-switch v-model="option[0]" />
+        <span>{{ option[1] }}</span>
       </div>
+      <s-divider />
       <div class="settings-popover-switches__item">
-        <s-switch v-model="two" :disabled="true" />
-        <span>{{ 'Market trades' }}</span>
-      </div>
-      <div class="settings-popover-switches__item">
-        <s-switch v-model="three" :disabled="true" />
-        <span>{{ 'Order placing' }}</span>
-      </div>
-      <div class="settings-popover-switches__item">
-        <s-switch v-model="four" :disabled="true" />
-        <span>{{ 'All pairs' }}</span>
-      </div>
-      <div class="settings-popover-switches__item">
-        <s-switch v-model="five" :disabled="true" />
-        <span>{{ 'Trading pair' }}</span>
-      </div>
-      <div class="delimiter" />
-      <div class="settings-popover-switches__item">
-        <s-switch v-model="six" :disabled="true" />
+        <s-switch v-model="tradeReminder" :disabled="true" />
         <span>{{ 'Trade reminder' }}</span>
       </div>
       <div class="settings-popover-switches__item">
-        <s-switch v-model="seven" :disabled="true" />
+        <s-switch v-model="soundReminder" :disabled="true" />
         <span>{{ 'Sound reminder' }}</span>
       </div>
     </div>
@@ -53,13 +37,22 @@ import { state, getter, mutation } from '@/store/decorators';
   components: {},
 })
 export default class SettingsPopover extends Mixins(TranslationMixin, mixins.LoadingMixin) {
-  one = true;
-  two = true;
-  three = true;
-  four = true;
-  five = true;
-  six = false;
-  seven = false;
+  chart = true;
+  market = true;
+  placing = true;
+  pairs = true;
+  tradingPair = true;
+
+  tradeReminder = false;
+  soundReminder = false;
+
+  options = [
+    [this.chart, 'Charts'],
+    [this.market, 'Market trades'],
+    [this.placing, 'Order placing'],
+    [this.pairs, 'All pairs'],
+    [this.tradingPair, 'Trading pair'],
+  ];
 
   openSetColorDialog(): void {
     this.$emit('open-color-setting');
@@ -110,13 +103,6 @@ export default class SettingsPopover extends Mixins(TranslationMixin, mixins.Loa
         margin: 0 8px;
       }
     }
-  }
-
-  .delimiter {
-    background-color: var(--s-color-base-border-secondary);
-    width: 100%;
-    height: 1px;
-    margin: 14px 0 4px 0;
   }
 }
 </style>
