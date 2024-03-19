@@ -107,11 +107,7 @@
         </template>
       </s-button>
 
-      <swap-transaction-details
-        v-if="areTokensSelected && !hasZeroAmount"
-        class="info-line-container"
-        :info-only="false"
-      />
+      <swap-transaction-details v-if="areTokensSelected && !hasZeroAmount" :info-only="false" />
       <select-token
         :visible.sync="showSelectTokenDialog"
         :connected="isLoggedIn"

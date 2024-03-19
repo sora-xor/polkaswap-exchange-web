@@ -78,7 +78,6 @@ import type { AccountAsset, Asset } from '@sora-substrate/util/build/assets/type
     DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
     InfoLine: components.InfoLine,
-    SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
     TokenInput: lazyComponent(Components.TokenInput),
   },
 })
