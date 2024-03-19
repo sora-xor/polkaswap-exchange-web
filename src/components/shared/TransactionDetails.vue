@@ -11,7 +11,7 @@
     trigger="click"
   >
     <template #reference>
-      <div :class="['transaction-details', { visible }]">
+      <div :class="['transaction-details', { visible }]" v-button>
         <span>{{ t('transactionDetailsText') }}</span>
         <s-icon :name="icon" size="16px" class="transaction-details-icon" />
       </div>
@@ -59,7 +59,9 @@ export default class TransactionDetails extends Mixins(TranslationMixin) {
     color: var(--s-color-theme-accent);
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
+    outline: none;
     color: var(--s-color-theme-accent-hover);
 
     .transaction-details-icon {
