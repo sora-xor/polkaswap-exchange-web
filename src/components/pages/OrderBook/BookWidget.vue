@@ -474,20 +474,6 @@ $mono-font: 'JetBrainsMono';
     .trend-icon {
       margin-left: 4px;
     }
-
-    // &--up {
-    //   .mark-price,
-    //   .trend-icon {
-    //     color: var(--s-color-status-success);
-    //   }
-    // }
-
-    // &--down {
-    //   .mark-price,
-    //   .trend-icon {
-    //     color: var(--s-color-status-error);
-    //   }
-    // }
   }
 
   .book-columns {
