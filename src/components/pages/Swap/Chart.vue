@@ -471,7 +471,7 @@ export default class SwapChart extends Mixins(
       axisLine: {
         show: true,
         lineStyle: {
-          color: this.theme.color.base.content.tertiary,
+          color: this.chartTheme.color.base.content.tertiary,
         },
       },
       axisPointer: {

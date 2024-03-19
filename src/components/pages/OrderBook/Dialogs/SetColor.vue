@@ -77,7 +77,7 @@ export default class SetColor extends Mixins(mixins.DialogMixin, TranslationMixi
   }
 
   get colorOptions(): Color[] {
-    return Object.values(this.colors);
+    return Object.values(this.colors());
   }
 
   get colorDirections(): ColorDirection[] {

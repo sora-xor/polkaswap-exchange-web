@@ -88,4 +88,20 @@ $s-color-base-on-disabled--dark: #c29ab7;
   // Asset item height
   --s-asset-item-height: #{$s-asset-item-height};
   --s-asset-item-height--fiat: #{$s-asset-item-height--fiat};
+
+  // Different color palette based on user preferences
+  --s-color-classic-up: #{$s-color-classic-up};
+  --s-color-classic-down: #{$s-color-classic-down};
+  --s-color-classic-price-change-up: #{$s-color-classic-price-change-up};
+  --s-color-classic-price-change-down: #{$s-color-classic-price-change-down};
+
+  --s-color-deficiency-up: #{$s-color-deficiency-up};
+  --s-color-deficiency-down: #{$s-color-deficiency-down};
+  --s-color-deficiency-price-change-up: #{$s-color-deficiency-price-change-up};
+  --s-color-deficiency-price-change-down: #{$s-color-deficiency-price-change-down};
+
+  --s-color-traditional-up: #{$s-color-traditional-up};
+  --s-color-traditional-down: #{$s-color-traditional-down};
+  --s-color-traditional-price-change-up: #{$s-color-traditional-price-change-up};
+  --s-color-traditional-price-change-down: #{$s-color-traditional-price-change-down};
 }

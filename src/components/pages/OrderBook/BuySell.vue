@@ -208,6 +208,7 @@ import { action, getter, mutation, state } from '@/store/decorators';
 import type { OrderBookStats } from '@/types/orderBook';
 import { OrderBookTabs } from '@/types/tabs';
 import {
+  getCssVariableValue as css,
   isMaxButtonAvailable,
   getMaxValue,
   getAssetBalance,
@@ -350,9 +351,10 @@ export default class BuySellWidget extends Mixins(
   }
 
   getColor() {
+    if (!this.isLoggedIn) return `background-color: ${css('--s-color-theme-accent')}`;
+
     const theme = this.getColorPalette();
     const color = this.isInversed(this.isBuySide) ? theme.side.buy : theme.side.sell;
-
     return `background-color: ${color}`;
   }
 

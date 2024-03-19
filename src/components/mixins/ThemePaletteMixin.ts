@@ -1,5 +1,5 @@
 import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 
 import type { Color, ColorDirection, ColorType, DirectionType } from '@/consts/color';
 import { state, getter } from '@/store/decorators';
@@ -11,13 +11,6 @@ import store from '../../store';
 export default class ThemePaletteMixin extends Vue {
   @state.settings.colorType colorType!: ColorType;
   @getter.libraryTheme libraryTheme!: Theme;
-
-  theme;
-
-  @Watch('libraryTheme')
-  private setTheme() {
-    this.theme = this.libraryTheme;
-  }
 
   get color(): ColorType {
     return store.state.settings.colorType;
@@ -34,54 +27,6 @@ export default class ThemePaletteMixin extends Vue {
   set direction(value: DirectionType) {
     store.commit.settings.setColorDirection(value);
   }
-
-  isInversed = (value: boolean): boolean => {
-    const direction = this.getColorDirection();
-
-    return direction.type === 'classic' ? value : !value;
-  };
-
-  isThemeLight(): boolean {
-    return this.theme === Theme.LIGHT;
-  }
-
-  colors: Record<ColorType, Color> = {
-    classic: {
-      name: 'Classic',
-      type: 'classic',
-      side: { buy: '#34AD87', sell: '#F754A3' },
-      priceChange: { up: '#24DAA0', down: '#f8087b' },
-      bookBars: {
-        buy: this.isThemeLight() ? 'rgba(185, 235, 219, 0.4)' : 'rgba(1, 202, 139, 0.2)',
-        sell: this.isThemeLight() ? 'rgba(255, 216, 235, 0.8)' : 'rgba(255, 0, 124, 0.3)',
-      },
-    },
-    deficiency: {
-      name: 'Color deficiency',
-      type: 'deficiency',
-      side: { buy: '#448BF1', sell: '#D07F3E' },
-      priceChange: { up: '#448BF1', down: '#D07F3E' },
-    },
-    traditional: {
-      name: 'Traditional',
-      type: 'traditional',
-      side: { buy: '#75A390', sell: '#EB001B' },
-      priceChange: { up: '#75A390', down: '#EB001B' },
-    },
-  };
-
-  directions: Record<DirectionType, ColorDirection> = {
-    classic: { name: 'Green Up / Red down', type: 'classic' },
-    inverse: { name: 'Green down / Red up', type: 'inverse' },
-  };
-
-  getColorDirection = (type?: DirectionType): ColorDirection => {
-    return type ? this.directions[type] : this.directions[this.direction];
-  };
-
-  getColorPalette = (type?: ColorType): Color => {
-    return type ? this.colors[type] : this.colors[this.color];
-  };
 
   get chartTheme() {
     const libraryTheme = this.libraryTheme;
@@ -126,4 +71,62 @@ export default class ThemePaletteMixin extends Vue {
 
     return !!libraryTheme && palette;
   }
+
+  isInversed = (value: boolean): boolean => {
+    const direction = this.getColorDirection();
+
+    return direction.type === 'classic' ? value : !value;
+  };
+
+  colors = (type?: ColorType, theme = Theme.LIGHT): any => {
+    const palette = {
+      classic: {
+        name: 'Classic',
+        type: 'classic',
+        side: { buy: css('--s-color-classic-up'), sell: css('--s-color-classic-down') },
+        priceChange: { up: css('--s-color-classic-price-change-up'), down: css('--s-color-classic-price-change-down') },
+        bookBars: {
+          buy: theme === Theme.LIGHT ? 'rgba(185, 235, 219, 0.4)' : 'rgba(1, 202, 139, 0.2)',
+          sell: theme === Theme.LIGHT ? 'rgba(255, 216, 235, 0.8)' : 'rgba(255, 0, 124, 0.3)',
+        },
+      },
+      deficiency: {
+        name: 'Color deficiency',
+        type: 'deficiency',
+        side: { buy: css('--s-color-deficiency-up'), sell: css('--s-color-deficiency-down') },
+        priceChange: {
+          up: css('--s-color-deficiency-price-change-up'),
+          down: css('--s-color-deficiency-price-change-down'),
+        },
+        // TODO: get colors from designer for bookBars: {}
+      },
+      traditional: {
+        name: 'Traditional',
+        type: 'traditional',
+        side: { buy: css('--s-color-traditional-up'), sell: css('--s-color-traditional-down') },
+        priceChange: {
+          up: css('--s-color-traditional-price-change-up'),
+          down: css('--s-color-tradtional-price-change-down'),
+        },
+        // TODO: get colors from designer for bookBars: {}
+      },
+    };
+
+    if (!type) return palette;
+
+    return palette[type];
+  };
+
+  directions: Record<DirectionType, ColorDirection> = {
+    classic: { name: 'Green Up / Red down', type: 'classic' },
+    inverse: { name: 'Green down / Red up', type: 'inverse' },
+  };
+
+  getColorDirection = (type?: DirectionType): ColorDirection => {
+    return type ? this.directions[type] : this.directions[this.direction];
+  };
+
+  getColorPalette = (type?: ColorType, theme = Theme.LIGHT): Color => {
+    return type ? this.colors(type, theme) : this.colors(this.color, theme);
+  };
 }
