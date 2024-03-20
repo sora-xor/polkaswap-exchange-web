@@ -131,9 +131,9 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
   widgets: WidgetsVisibilityModel = {
     [SwapWidgets.Form]: true,
-    [SwapWidgets.Chart]: true,
-    [SwapWidgets.Distribution]: true,
-    [SwapWidgets.Transactions]: true,
+    [SwapWidgets.Chart]: false,
+    [SwapWidgets.Distribution]: false,
+    [SwapWidgets.Transactions]: false,
   };
 
   toggleWidget(key: string, flag: boolean) {

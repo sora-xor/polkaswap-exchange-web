@@ -34,6 +34,7 @@ import debounce from 'lodash/debounce';
 import cloneDeep from 'lodash/fp/cloneDeep';
 import isEmpty from 'lodash/fp/isEmpty';
 import isEqual from 'lodash/fp/isEqual';
+import omit from 'lodash/fp/omit';
 import { GridLayout, GridItem } from 'vue-grid-layout';
 import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
 
@@ -94,7 +95,7 @@ export default class WidgetsGrid extends Vue {
   @Prop({ default: () => ({}), type: Object }) readonly value!: WidgetsVisibilityModel;
   /** Update layouts depends on widgets visibility */
   @Watch('value')
-  private updateLayoutWidgets(curr: WidgetsVisibilityModel, prev: WidgetsVisibilityModel): void {
+  private updateLayoutWidgetsByModel(curr: WidgetsVisibilityModel, prev: WidgetsVisibilityModel, save = true): void {
     const diff = shallowDiff(curr, prev);
 
     if (isEmpty(diff)) return;
@@ -119,7 +120,7 @@ export default class WidgetsGrid extends Vue {
       }
     }
 
-    this.saveLayouts(layouts);
+    this.saveLayouts(layouts, save);
   }
 
   private breakpoint: BreakpointKey = BreakpointKey.md;
@@ -138,7 +139,7 @@ export default class WidgetsGrid extends Vue {
   @Watch('layout', { deep: true })
   private onLayoutUpdate(): void {
     if (this.shouldUpdate) {
-      this.updateResponsiveLayouts({ ...this.layouts, [this.breakpoint]: this.layout });
+      this.updateResponsiveLayouts({ ...this.layouts, [this.breakpoint]: this.gridLayout });
     }
   }
 
@@ -146,8 +147,13 @@ export default class WidgetsGrid extends Vue {
     return this.layouts[this.breakpoint];
   }
 
+  get gridLayout(): Layout {
+    // omit 'moved' property from lib
+    return this.layout.map((widget: LayoutWidget) => omit('moved')(widget)) as Layout;
+  }
+
   get shouldUpdate(): boolean {
-    return !isEqual(this.layout)(this.responsiveLayout);
+    return !isEqual(this.gridLayout)(this.responsiveLayout);
   }
 
   get gridLinesStyle(): Partial<CSSStyleDeclaration> {
@@ -166,15 +172,19 @@ export default class WidgetsGrid extends Vue {
   created(): void {
     const storedLayouts = layoutsStorage.get(this.gridId);
 
-    this.layouts = storedLayouts ? JSON.parse(storedLayouts) : cloneDeep(this.defaultLayouts);
-
-    this.updateWidgetsVisibility();
+    if (storedLayouts) {
+      this.layouts = JSON.parse(storedLayouts);
+      this.updateWidgetsModelByLayout();
+    } else {
+      this.layouts = cloneDeep(this.defaultLayouts);
+      this.updateLayoutWidgetsByModel(this.value, {}, false); // don't save initial layout
+    }
   }
 
-  private saveLayouts(layouts: ResponsiveLayouts): void {
+  private saveLayouts(layouts: ResponsiveLayouts, save = true): void {
     this.layouts = cloneDeep(layouts);
     // update layouts in storage
-    if (this.gridId) {
+    if (save && this.gridId) {
       layoutsStorage.set(this.gridId, JSON.stringify(this.layouts));
     }
   }
@@ -183,6 +193,10 @@ export default class WidgetsGrid extends Vue {
     this.breakpoint = newBreakpoint;
   }
 
+  /**
+   * Calculate widget layout height
+   * Occurs after widget emits resize event with new own rect coordinates
+   */
   onResize(widgetId: string, rect: DOMRect): void {
     const layout = cloneDeep(this.layout);
     const widget = findWidgetInLayout(layout, widgetId);
@@ -205,7 +219,7 @@ export default class WidgetsGrid extends Vue {
    * Occurs after component created and initial layout is loaded from storage.
    */
   @Emit('input')
-  private updateWidgetsVisibility() {
+  private updateWidgetsModelByLayout() {
     // chose first layout
     const layout: Layout = Object.values(this.layouts)[0];
     // create new model based on chosen layout
