@@ -116,6 +116,8 @@ import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { isDashboardPage } from '@/modules/dashboard/router';
 import { StakingPageNames } from '@/modules/staking/consts';
 import { isStakingPage } from '@/modules/staking/router';
+import { VaultPageNames } from '@/modules/vault/consts';
+import { isVaultPage } from '@/modules/vault/router';
 import { getter, mutation, state } from '@/store/decorators';
 
 import AppInfoPopper from './AppInfoPopper.vue';
@@ -181,6 +183,9 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     }
     if (isDashboardPage(currentName)) {
       return DashboardPageNames.AssetOwner;
+    }
+    if (isVaultPage(currentName)) {
+      return VaultPageNames.Vaults;
     }
     return currentName as string;
   }
