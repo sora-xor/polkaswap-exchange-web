@@ -128,6 +128,7 @@ export default class CreateVaultDialog extends Mixins(
   mixins.FormattedAmountMixin
 ) {
   readonly xorSymbol = XOR.symbol;
+  readonly getLtvStatus = getLtvStatus;
 
   @Ref('collateralInput') collateralInput!: Nullable<TokenInput>;
 
@@ -253,7 +254,9 @@ export default class CreateVaultDialog extends Mixins(
       return this.Zero;
 
     const collateralVolume = this.averageCollateralPrice.mul(this.availableCollateralBalanceFp);
-    const maxSafeDebt = collateralVolume.mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0).div(100);
+    const maxSafeDebt = collateralVolume
+      .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
+      .div(HundredNumber);
     return maxSafeDebt.dp(2);
   }
 
@@ -270,7 +273,9 @@ export default class CreateVaultDialog extends Mixins(
     if (!this.averageCollateralPrice || asZeroValue(this.collateralValue)) return this.Zero;
 
     const collateralVolume = this.averageCollateralPrice.mul(this.collateralValue);
-    const maxSafeDebt = collateralVolume.mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0).div(100);
+    const maxSafeDebt = collateralVolume
+      .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
+      .div(HundredNumber);
     return maxSafeDebt;
   }
 
@@ -290,8 +295,6 @@ export default class CreateVaultDialog extends Mixins(
     if (!this.ltv) return ZeroStringValue;
     return this.ltv.toLocaleString(2);
   }
-
-  getLtvStatus = getLtvStatus;
 
   get ltvText(): string {
     return LtvTranslations[getLtvStatus(this.ltvNumber)];
