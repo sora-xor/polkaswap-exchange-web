@@ -133,7 +133,7 @@ export default class CreateVaultDialog extends Mixins(
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.vault.collaterals private collaterals!: Record<string, Collateral>;
-  @state.vault.averageCollateralPrice private averageCollateralPrice!: Nullable<FPNumber>;
+  @getter.vault.averageCollateralPrice private averageCollateralPrice!: Nullable<FPNumber>;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
@@ -148,7 +148,6 @@ export default class CreateVaultDialog extends Mixins(
 
   @Watch('visible')
   private async handleDialogVisibility(value: boolean): Promise<void> {
-    // if (value) {}
     await this.$nextTick();
     this.collateralValue = '';
     this.borrowValue = '';

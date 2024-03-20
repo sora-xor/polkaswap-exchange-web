@@ -8,9 +8,10 @@ import { vaultActionContext } from '@/store/vault';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
+import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 
-const INTERVAL = 60_000;
+const INTERVAL = 2 * 60_000; // Do not decrease this interval due to a lot of data subscriptions updates
 const DaiAddress = DAI.address;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
@@ -37,27 +38,34 @@ function updateTokenSubscription(context: ActionContext<any, any>, field: 'colla
 }
 
 const actions = defineActions({
-  async subscribeOnAverageCollateralPrice(context): Promise<void> {
+  async subscribeOnAverageCollateralPrices(context): Promise<void> {
     const { commit, state } = vaultActionContext(context);
-    const { collateralAddress } = state;
-    commit.setAverageCollateralPriceSubscription();
-    const subs = api.swap.subscribeOnReserves(collateralAddress, DaiAddress)?.subscribe((payload) => {
-      const averagePrice = getAveragePrice(collateralAddress, DaiAddress, PriceVariant.Sell, payload);
-      commit.setAverageCollateralPrice(averagePrice);
-    });
-    commit.setAverageCollateralPriceSubscription(subs);
+    const { collaterals } = state;
+    const collateralIds = Object.keys(collaterals);
+    const subscriptions: Subscription[] = [];
+
+    for (const collateralAddress of collateralIds) {
+      if (collateralAddress !== DaiAddress) {
+        const subs = api.swap.subscribeOnReserves(collateralAddress, DaiAddress)?.subscribe((payload) => {
+          const averagePrice = getAveragePrice(collateralAddress, DaiAddress, PriceVariant.Sell, payload);
+          commit.setAverageCollateralPrice({ address: collateralAddress, price: averagePrice });
+        });
+        if (subs) {
+          subscriptions.push(subs);
+        }
+      }
+    }
+
+    commit.setAverageCollateralPriceSubscriptions(subscriptions);
   },
   async updateBalanceSubscriptions(context): Promise<void> {
-    const { dispatch } = vaultActionContext(context);
     updateTokenSubscription(context, 'kusd');
     updateTokenSubscription(context, 'collateral');
-    await dispatch.subscribeOnAverageCollateralPrice();
   },
   async setCollateralTokenAddress(context, address?: string): Promise<void> {
-    const { commit, dispatch } = vaultActionContext(context);
+    const { commit } = vaultActionContext(context);
     commit.setCollateralAddress(address ?? XOR.address);
     updateTokenSubscription(context, 'collateral');
-    await dispatch.subscribeOnAverageCollateralPrice();
   },
   async subscribeOnAccountVaults(context): Promise<void> {
     const { commit } = vaultActionContext(context);
@@ -79,10 +87,11 @@ const actions = defineActions({
     }
   },
   async requestCollaterals(context): Promise<void> {
-    const { commit } = vaultActionContext(context);
+    const { commit, dispatch } = vaultActionContext(context);
     try {
       const collaterals = await api.kensetsu.getCollaterals();
       commit.setCollaterals(collaterals);
+      await dispatch.subscribeOnAverageCollateralPrices();
     } catch (error) {
       console.error(error);
       commit.resetCollaterals();
@@ -109,10 +118,10 @@ const actions = defineActions({
     commit.resetCollateralsInterval();
     commit.resetAccountVaultIdsSubscription();
     commit.resetAccountVaultsSubscription();
-    commit.setAverageCollateralPriceSubscription();
+    commit.setAverageCollateralPriceSubscriptions();
     commit.resetCollaterals();
     commit.resetAccountVaults();
-    commit.setAverageCollateralPrice();
+    commit.resetAverageCollateralPrices();
   },
 });
 

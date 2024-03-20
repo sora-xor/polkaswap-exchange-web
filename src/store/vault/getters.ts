@@ -4,6 +4,7 @@ import { KusdAddress } from '@/modules/vault/consts';
 import { vaultGetterContext } from '@/store/vault';
 
 import type { VaultState } from './types';
+import type { FPNumber } from '@sora-substrate/math';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
 const getters = defineGetters<VaultState>()({
@@ -24,6 +25,11 @@ const getters = defineGetters<VaultState>()({
       return { ...token, balance } as RegisteredAccountAsset;
     }
     return token;
+  },
+  averageCollateralPrice(...args): Nullable<FPNumber> {
+    const { state } = vaultGetterContext(args);
+    const { averageCollateralPrices, collateralAddress } = state;
+    return averageCollateralPrices[collateralAddress];
   },
 });
 

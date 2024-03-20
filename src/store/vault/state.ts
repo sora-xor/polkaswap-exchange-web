@@ -1,6 +1,11 @@
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { FPNumber } from '@sora-substrate/math';
+import { XOR, DAI } from '@sora-substrate/util/build/assets/consts';
 
 import type { VaultState } from './types';
+
+export const defaultAverageCollateralPrices: Record<string, Nullable<FPNumber>> = {
+  [DAI.address]: FPNumber.ONE,
+};
 
 function initialState(): VaultState {
   return {
@@ -12,8 +17,8 @@ function initialState(): VaultState {
     collateralAddress: XOR.address,
     collateralTokenBalance: null,
     kusdTokenBalance: null,
-    averageCollateralPrice: null,
-    averageCollateralPriceSubscription: null,
+    averageCollateralPrices: defaultAverageCollateralPrices,
+    averageCollateralPriceSubscriptions: [],
   };
 }
 

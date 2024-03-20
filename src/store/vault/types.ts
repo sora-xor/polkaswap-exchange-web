@@ -13,6 +13,6 @@ export type VaultState = {
   collateralAddress: string;
   collateralTokenBalance: Nullable<AccountBalance>;
   kusdTokenBalance: Nullable<AccountBalance>;
-  averageCollateralPrice: Nullable<FPNumber>;
-  averageCollateralPriceSubscription: Nullable<Subscription>;
+  averageCollateralPrices: Record<string, Nullable<FPNumber>>;
+  averageCollateralPriceSubscriptions: Subscription[];
 };

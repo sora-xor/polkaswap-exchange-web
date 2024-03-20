@@ -1,5 +1,7 @@
 import { defineMutations } from 'direct-vuex';
 
+import { defaultAverageCollateralPrices } from './state';
+
 import type { VaultState } from './types';
 import type { FPNumber } from '@sora-substrate/math';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
@@ -51,14 +53,18 @@ const mutations = defineMutations<VaultState>()({
   setKusdTokenBalance(state, balance?: Nullable<AccountBalance>): void {
     state.kusdTokenBalance = balance ?? null;
   },
-  setAverageCollateralPrice(state, price?: Nullable<FPNumber>): void {
-    state.averageCollateralPrice = price ?? null;
+  setAverageCollateralPrice(state, data: { address: string; price?: Nullable<FPNumber> }): void {
+    state.averageCollateralPrices = { ...state.averageCollateralPrices, [data.address]: data.price };
   },
-  setAverageCollateralPriceSubscription(state, subscription?: Nullable<Subscription>): void {
-    if (!subscription) {
-      state.averageCollateralPriceSubscription?.unsubscribe();
+  resetAverageCollateralPrices(state): void {
+    state.averageCollateralPrices = defaultAverageCollateralPrices;
+  },
+  setAverageCollateralPriceSubscriptions(state, subscriptions?: Nullable<Subscription[]>): void {
+    state.averageCollateralPriceSubscriptions.forEach((subscription) => subscription?.unsubscribe?.());
+    state.averageCollateralPriceSubscriptions = [];
+    if (subscriptions?.length) {
+      state.averageCollateralPriceSubscriptions = subscriptions;
     }
-    state.averageCollateralPriceSubscription = subscription;
   },
 });
 
