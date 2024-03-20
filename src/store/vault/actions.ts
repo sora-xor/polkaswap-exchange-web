@@ -108,6 +108,15 @@ const actions = defineActions({
 
     commit.setCollateralsInterval(interval);
   },
+  async getLiquidationPenalty(context): Promise<void> {
+    const { commit } = vaultActionContext(context);
+    try {
+      const penalty = await api.kensetsu.getLiquidationPenalty();
+      commit.setLiquidationPenalty(penalty);
+    } catch (error) {
+      console.error(error);
+    }
+  },
   async reset(context): Promise<void> {
     const { commit } = vaultActionContext(context);
     balanceSubscriptions.remove('kusd');

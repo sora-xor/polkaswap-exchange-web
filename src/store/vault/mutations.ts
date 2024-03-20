@@ -66,6 +66,9 @@ const mutations = defineMutations<VaultState>()({
       state.averageCollateralPriceSubscriptions = subscriptions;
     }
   },
+  setLiquidationPenalty(state, penalty: number): void {
+    state.liquidationPenalty = penalty;
+  },
 });
 
 export default mutations;
