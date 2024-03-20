@@ -57,6 +57,7 @@ import SoraLogo from '@/components/shared/Logo/Sora.vue';
 import { PageNames, Components, Language, BreakpointClass, Breakpoint } from '@/consts';
 import { getLocale } from '@/lang';
 import { isDashboardPage } from '@/modules/dashboard/router';
+import { isVaultPage } from '@/modules/vault/router';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
@@ -274,7 +275,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private get isAppContentWithoutMenu(): boolean {
-    return isDashboardPage(this.$route.name) || (this.$route.name === PageNames.Swap && this.chartsEnabled);
+    return (
+      isDashboardPage(this.$route.name) ||
+      isVaultPage(this.$route.name) ||
+      (this.$route.name === PageNames.Swap && this.chartsEnabled)
+    );
   }
 
   private get mobileCssClasses(): string[] | undefined {
