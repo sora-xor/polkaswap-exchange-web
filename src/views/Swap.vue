@@ -1,5 +1,6 @@
 <template>
   <widgets-grid
+    grid-id="swapGrid"
     class="swap-container"
     :draggable="options.edit"
     :resizable="options.edit"
@@ -27,7 +28,7 @@
     <template v-slot:[SwapWidgets.Transactions]="props">
       <swap-transactions-widget v-bind="props" full extensive />
     </template>
-    <template v-slot:[SwapWidgets.Customize]="props">
+    <template v-slot:[SwapWidgets.Customise]="props">
       <customise-widget v-bind="props" :widgets.sync="widgets" :options.sync="options" />
     </template>
   </widgets-grid>
@@ -52,7 +53,7 @@ enum SwapWidgets {
   Chart = 'chart',
   Transactions = 'transactions',
   Distribution = 'distribution',
-  Customize = 'customize',
+  Customise = 'customise',
 }
 
 @Component({
@@ -80,34 +81,34 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   readonly DefaultLayouts: ResponsiveLayouts = {
     lg: [
       { x: 0, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 0, y: 20, w: 6, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customize },
+      { x: 0, y: 20, w: 6, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
       { x: 0, y: 24, w: 6, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
       { x: 6, y: 0, w: 9, h: 24, minW: 4, minH: 20, i: SwapWidgets.Chart },
       { x: 15, y: 0, w: 9, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
     md: [
       { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 0, y: 20, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customize },
+      { x: 0, y: 20, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
       { x: 0, y: 24, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
       { x: 4, y: 0, w: 12, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
       { x: 4, y: 20, w: 8, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
     sm: [
       { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 0, y: 20, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customize },
+      { x: 0, y: 20, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
       { x: 0, y: 24, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
       { x: 4, y: 0, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
       { x: 4, y: 20, w: 8, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
     xs: [
-      { x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customize },
+      { x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
       { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
       { x: 4, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
       { x: 0, y: 20, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.Distribution },
       { x: 4, y: 20, w: 4, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
     xss: [
-      { x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 12, i: SwapWidgets.Customize },
+      { x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 12, i: SwapWidgets.Customise },
       { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
       { x: 0, y: 20, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.Distribution },
       { x: 0, y: 32, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },

@@ -2,9 +2,7 @@
   <base-widget v-bind="$attrs" title="Customise page">
     <template #filters>
       <el-popover popper-class="customise-widget-popper" trigger="click" v-model="visible" :visible-arrow="false">
-        <template #reference>
-          <s-icon name="basic-settings-24" size="24px" class="customise-widget-icon" />
-        </template>
+        <s-button slot="reference" type="action" alternative size="small" icon="basic-settings-24" />
 
         <div class="customise">
           <div class="customise-title">Customise page</div>
@@ -39,7 +37,7 @@ export default class CustomiseWidget extends Mixins(TranslationMixin) {
   @PropSync('widgets', { default: ObjectInit, type: Object }) readonly widgetsModel!: WidgetsVisibilityModel;
   @PropSync('options', { default: ObjectInit, type: Object }) readonly optionsModel!: WidgetsVisibilityModel;
 
-  @ModelSync('value', 'input', { type: Boolean }) readonly visible!: boolean;
+  @ModelSync('value', 'input', { type: Boolean }) visible!: boolean;
 
   toggle(name: string, model: WidgetsVisibilityModel, key: string, value: boolean) {
     this[name] = { ...model, [key]: value };
