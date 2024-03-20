@@ -1,199 +1,176 @@
 <template>
-  <div v-if="asset" class="asset-owner-details-container">
+  <div v-if="vault" class="vault-details-container">
     <s-button
-      class="asset-owner-details-back"
+      class="vault-details-back"
       type="action"
       size="small"
       alternative
-      :tooltip="t('assets.details')"
+      :tooltip="t('backText')"
       @click="handleBack"
     >
       <s-icon name="arrows-chevron-left-rounded-24" size="24" />
     </s-button>
-    <s-row class="asset-owner-details-main" :gutter="20">
-      <s-col :xs="12" :sm="12" :md="5" :lg="5">
-        <s-card class="asset details-card" border-radius="small" shadow="always" size="big" primary>
-          <p class="p3">Your vault</p>
-          <div class="asset-title s-flex">
-            <div class="asset-title__text s-flex-column">
-              <h3 class="asset-title__name">{{ vault.id }}</h3>
-              <token-address :address="vault.lockedAssetId" symbol="ANY" />
-            </div>
-            <token-logo class="asset-title__icon" size="big" :token="asset" />
+    <s-row class="vault-details-main" :gutter="20">
+      <s-col :xs="12" :sm="12" :md="6" :lg="6">
+        <s-card class="vault details-card" border-radius="small" shadow="always" size="big" primary>
+          <div class="vault-title s-flex">
+            <pair-token-logo class="vault-icon" size="medium" :first-token="kusdToken" :second-token="lockedAsset" />
+            <h3>{{ vaultTitle }}</h3>
           </div>
           <s-divider />
-          <div class="asset-balance s-flex">
-            <div class="asset-balance__info">
-              <p class="p3">Your balance</p>
-              <formatted-amount
-                class="asset__value"
-                value-can-be-hidden
-                :value="formattedBalance"
-                :font-size-rate="FontSizeRate.MEDIUM"
-                :font-weight-rate="FontWeightRate.MEDIUM"
-              />
-              <formatted-amount v-if="fiatBalance" is-fiat-value value-can-be-hidden :value="fiatBalance" />
+          <div class="vault-collateral s-flex-column">
+            <h4>Collateral details</h4>
+            <div class="vault-collateral__details s-flex">
+              <div class="vault-collateral__item s-flex-column">
+                <p class="vault-label p3">
+                  Your collateral
+                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                    <s-icon name="info-16" size="12px" />
+                  </s-tooltip>
+                </p>
+                <formatted-amount :value="formattedLockedAmount" :asset-symbol="lockedSymbol" />
+                <formatted-amount is-fiat-value :value="fiatLockedAmount" />
+              </div>
             </div>
-            <s-button class="s-typography-button--small" size="small" @click="openRemoveVaultDialog">
-              <s-icon name="finance-send-24" size="16" />
-              Remove
-            </s-button>
-          </div>
-        </s-card>
-        <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-          <div class="asset-supply s-flex">
-            <div class="asset-supply__info">
-              <h4>{{ vault.id }} asset supply</h4>
-              <formatted-amount
-                class="asset__value"
-                :value="formattedSupply"
-                :font-size-rate="FontSizeRate.MEDIUM"
-                :font-weight-rate="FontWeightRate.MEDIUM"
-              />
-              <formatted-amount v-if="fiatSupply" is-fiat-value :value="fiatSupply" />
+            <div class="vault-collateral__actions s-flex">
+              <s-button class="s-typography-button--small" size="small">
+                <s-icon name="finance-send-24" size="16" />
+                Add collateral
+              </s-button>
             </div>
-            <s-button class="s-typography-button--small" type="primary" size="small" :disabled="true">
-              <s-icon name="basic-drop-24" size="16" />
-              Add liquidity
-            </s-button>
           </div>
           <s-divider />
-          <div class="asset-supply-actions">
-            <s-button class="s-typography-button--small" size="small" :disabled="true">
-              <s-icon name="printer-16" size="16" />
-              Mint more
-            </s-button>
-            <s-button class="s-typography-button--small" size="small" :disabled="true">
-              <s-icon name="basic-flame-24" size="16" />
-              Burn
-            </s-button>
+          <div class="vault-debt s-flex-column">
+            <h4>Debt details</h4>
+            <div class="vault-debt__details s-flex">
+              <div class="vault-debt__item s-flex-column">
+                <p class="vault-label p3">
+                  Your debt
+                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                    <s-icon name="info-16" size="12px" />
+                  </s-tooltip>
+                </p>
+                <formatted-amount :value="formattedDebtAmount" :asset-symbol="kusdSymbol" />
+                <formatted-amount is-fiat-value :value="fiatDebt" />
+              </div>
+              <div class="vault-debt__item s-flex-column">
+                <p class="vault-label p3">
+                  Available to borrow
+                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                    <s-icon name="info-16" size="12px" />
+                  </s-tooltip>
+                </p>
+                <formatted-amount :value="formattedAvailableToBorrow" :asset-symbol="kusdSymbol" />
+                <formatted-amount is-fiat-value :value="fiatAvailableToBorrow" />
+              </div>
+            </div>
+            <div class="vault-debt__actions s-flex">
+              <s-button class="s-typography-button--small" size="small">
+                <s-icon name="finance-send-24" size="16" />
+                Repay debt
+              </s-button>
+              <s-button class="s-typography-button--small" type="primary" size="small">
+                <s-icon name="finance-send-24" size="16" />
+                Borrow more
+              </s-button>
+            </div>
           </div>
-          <p v-if="true" class="p3">Adding liquidity is not available because the asset is non-divisible.</p>
-          <p v-if="false" class="p3">Minting the asset is unavailable because it is not extensible.</p>
         </s-card>
-        <div class="details-card">SOME DATA 1</div>
+        <s-button class="close-vault-button" type="link" @click="closePosition">Close my position</s-button>
       </s-col>
-      <s-col :xs="12" :sm="12" :md="7" :lg="7">
-        <div class="details-card">SOME DATA 2</div>
-        <s-row :gutter="20">
-          <s-col :xs="6" :sm="6" :md="6" :lg="4">
-            <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-              <p class="p3 asset-stats-card__title">
-                HOLDERS
-                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
-                </s-tooltip>
-              </p>
-              <div class="asset-stats-card__value">N/A</div>
-            </s-card>
-          </s-col>
-          <s-col :xs="6" :sm="6" :md="6" :lg="4">
-            <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-              <p class="p3 asset-stats-card__title">
-                TOTAL TXNS
-                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
-                </s-tooltip>
-              </p>
-              <div class="asset-stats-card__value">N/A</div>
-            </s-card>
-          </s-col>
-          <s-col :xs="6" :sm="6" :md="6" :lg="4">
-            <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-              <p class="p3 asset-stats-card__title">
-                MINTED
-                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
-                </s-tooltip>
-              </p>
-              <div class="asset-stats-card__value">N/A</div>
-            </s-card>
-          </s-col>
-          <s-col :xs="6" :sm="6" :md="6" :lg="4">
-            <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-              <p class="p3 asset-stats-card__title">
-                MINT TXNS
-                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
-                </s-tooltip>
-              </p>
-              <div class="asset-stats-card__value">N/A</div>
-            </s-card>
-          </s-col>
-          <s-col :xs="6" :sm="6" :md="6" :lg="4">
-            <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-              <p class="p3 asset-stats-card__title">
-                BURNED
-                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
-                </s-tooltip>
-              </p>
-              <div class="asset-stats-card__value">N/A</div>
-            </s-card>
-          </s-col>
-          <s-col :xs="6" :sm="6" :md="6" :lg="4">
-            <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
-              <p class="p3 asset-stats-card__title">
-                BURN TXNS
-                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon name="info-16" size="14px" />
-                </s-tooltip>
-              </p>
-              <div class="asset-stats-card__value">N/A</div>
-            </s-card>
-          </s-col>
-        </s-row>
+      <s-col :xs="12" :sm="12" :md="6" :lg="6">
+        <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
+          <div class="position-info s-flex-column">
+            <h4>Position information</h4>
+            <div class="position-info__details s-flex">
+              <div class="position-info__item s-flex-column">
+                <p class="vault-label p3">
+                  Liquidation penalty
+                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                    <s-icon name="info-16" size="12px" />
+                  </s-tooltip>
+                </p>
+                <p class="p3">{{ formattedLiquidationPenalty }}</p>
+              </div>
+              <div class="position-info__item s-flex-column">
+                <p class="vault-label p3">
+                  Stability fee
+                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                    <s-icon name="info-16" size="12px" />
+                  </s-tooltip>
+                </p>
+                <p class="p3">{{ formattedStabilityFee }}</p>
+              </div>
+            </div>
+          </div>
+          <s-divider />
+          <div class="ltv s-flex-column">
+            <h4 class="ltv__title">
+              Loan to value
+              <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                <s-icon name="info-16" size="12px" />
+              </s-tooltip>
+            </h4>
+            <div class="ltv__value s-flex">
+              <h2>{{ formattedLtv }}</h2>
+              <value-status class="ltv__badge" badge :value="ltvNumber" :getStatus="getLtvStatus">
+                {{ ltvText }}
+              </value-status>
+            </div>
+            <ltv-progress-bar :percentage="ltvNumber" />
+            <div class="ltv__legend s-flex">
+              <div class="ltv__legend-item"><span class="ltv__legend-icon success" />Position safe</div>
+              <div class="ltv__legend-item"><span class="ltv__legend-icon warning" />Liquidation close</div>
+              <div class="ltv__legend-item"><span class="ltv__legend-icon error" />High liquidation risk</div>
+            </div>
+          </div>
+        </s-card>
       </s-col>
     </s-row>
     <remove-vault-dialog :visible.sync="showRemoveVaultDialog" />
   </div>
-  <div v-else class="asset-owner-details-container empty" />
+  <div v-else class="vault-details-container empty" />
 </template>
 
 <script lang="ts">
-import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { FPNumber } from '@sora-substrate/math';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { PageNames, Components, ZeroStringValue, BreakpointClass } from '@/consts';
-import type { OwnedAsset } from '@/modules/dashboard/types';
-import { VaultComponents, VaultPageNames } from '@/modules/vault/consts';
+import { Components, ZeroStringValue, HundredNumber } from '@/consts';
+import { LtvTranslations, VaultComponents, VaultPageNames } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
-import router from '@/router';
+import { getLtvStatus } from '@/modules/vault/util';
+import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { waitUntil } from '@/utils';
 
-import type { CodecString } from '@sora-substrate/util';
+import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
-import type { Subscription } from 'rxjs';
 
 @Component({
   components: {
-    TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
-    TokenAddress: components.TokenAddress,
+    PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    ValueStatus: lazyComponent(Components.ValueStatusWrapper),
     RemoveVaultDialog: vaultLazyComponent(VaultComponents.RemoveVaultDialog),
+    LtvProgressBar: vaultLazyComponent(VaultComponents.LtvProgressBar),
   },
 })
 export default class VaultDetails extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
-  // @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
-  // @getter.dashboard.ownedAssets private assets!: OwnedAsset[];
+  readonly getLtvStatus = getLtvStatus;
+
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+  @getter.vault.kusdToken kusdToken!: Nullable<RegisteredAccountAsset>;
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
   @state.vault.accountVaults private accountVaults!: Vault[];
-
-  // private supply: CodecString = ZeroStringValue;
-  // private supplySubscription: Nullable<Subscription> = null;
-  // private balanceSubscription: Nullable<Subscription> = null;
-
-  // balance: CodecString = ZeroStringValue;
+  @state.vault.collaterals private collaterals!: Record<string, Collateral>;
+  @state.vault.averageCollateralPrices private averageCollateralPrices!: Record<string, Nullable<FPNumber>>;
+  @state.vault.liquidationPenalty private liquidationPenalty!: number;
+  @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
 
   showRemoveVaultDialog = false;
-
-  /** To force re-render component(s). Currently, it should be applied to charts */
-  // getForceRerenderKey(name: string): string {
-  //   return `${name}-${this.responsiveClass}`;
-  // }
 
   get vault(): Nullable<Vault> {
     const vaultId = this.$route.params.vault;
@@ -201,29 +178,108 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     return this.accountVaults.find(({ id }) => id === +vaultId);
   }
 
-  // get formattedBalance(): string {
-  //   if (!this.balance) return '0';
-  //   return this.formatCodecNumber(this.balance, this.asset?.decimals);
-  // }
+  get lockedAsset(): Nullable<RegisteredAccountAsset> {
+    if (!this.vault) return null;
+    return this.getAsset(this.vault.lockedAssetId);
+  }
 
-  // get fiatBalance(): Nullable<string> {
-  //   if (!(this.asset && this.balance)) return ZeroStringValue;
-  //   return this.getFiatAmountByCodecString(this.balance, this.asset);
-  // }
+  get kusdSymbol(): string {
+    return this.kusdToken?.symbol ?? '';
+  }
 
-  // get hasFiat(): boolean {
-  //   return !!this.fiatBalance;
-  // }
+  get lockedSymbol(): string {
+    return this.lockedAsset?.symbol ?? '';
+  }
 
-  // get formattedSupply(): string {
-  //   if (!this.supply) return ZeroStringValue;
-  //   return this.formatCodecNumber(this.supply, this.asset?.decimals);
-  // }
+  get vaultTitle(): string {
+    if (!(this.kusdSymbol && this.lockedAsset)) return '';
+    return `${this.kusdSymbol} / ${this.lockedAsset.symbol}`;
+  }
 
-  // get fiatSupply(): Nullable<string> {
-  //   if (!(this.asset && this.supply)) return ZeroStringValue;
-  //   return this.getFiatAmountByCodecString(this.supply, this.asset);
-  // }
+  private get collateral(): Nullable<Collateral> {
+    if (!this.vault) return null;
+
+    return this.collaterals[this.vault.lockedAssetId];
+  }
+
+  private get maxSafeDebt(): Nullable<FPNumber> {
+    if (!this.vault) return null;
+    const averagePrice = this.averageCollateralPrices[this.vault.lockedAssetId] ?? this.Zero;
+    const collateralVolume = averagePrice.mul(this.vault.lockedAmount);
+    return collateralVolume
+      .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
+      .div(HundredNumber)
+      .dp(2);
+  }
+
+  get ltv(): Nullable<FPNumber> {
+    if (!(this.maxSafeDebt && this.vault)) return null;
+    const ltvCoeff = this.vault.debt.div(this.maxSafeDebt);
+    return ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
+  }
+
+  get ltvNumber(): number {
+    return this.ltv?.toNumber() ?? 0;
+  }
+
+  get formattedLtv(): string {
+    const percent = this.ltv?.div(HundredNumber).toNumber() ?? 0;
+    return this.percentFormat?.format?.(percent) ?? `${percent * HundredNumber}%`;
+  }
+
+  get ltvText(): string {
+    return LtvTranslations[getLtvStatus(this.ltvNumber)];
+  }
+
+  private get availableToBorrow(): Nullable<FPNumber> {
+    if (!(this.maxSafeDebt && this.vault)) return null;
+    const available = this.maxSafeDebt.sub(this.vault.debt);
+    return !available.isFinity() || available.isLteZero() ? this.Zero : available;
+  }
+
+  get formattedAvailableToBorrow(): string {
+    return this.availableToBorrow?.toLocaleString(2) ?? ZeroStringValue;
+  }
+
+  get fiatAvailableToBorrow(): string {
+    if (!(this.kusdToken && this.availableToBorrow)) return ZeroStringValue;
+
+    return this.getFiatAmountByFPNumber(this.availableToBorrow, this.kusdToken) ?? ZeroStringValue;
+  }
+
+  get formattedLockedAmount(): string {
+    return this.vault?.lockedAmount.toLocaleString(2) ?? ZeroStringValue;
+  }
+
+  get fiatLockedAmount(): string {
+    if (!(this.vault && this.lockedAsset)) return ZeroStringValue;
+
+    return this.getFiatAmountByFPNumber(this.vault.lockedAmount, this.lockedAsset) ?? ZeroStringValue;
+  }
+
+  get formattedDebtAmount(): string {
+    return this.vault?.debt.toLocaleString(2) ?? ZeroStringValue;
+  }
+
+  get fiatDebt(): string {
+    if (!(this.kusdToken && this.vault)) return ZeroStringValue;
+
+    return this.getFiatAmountByFPNumber(this.vault.debt, this.kusdToken) ?? ZeroStringValue;
+  }
+
+  get formattedLiquidationPenalty(): string {
+    const percent = this.liquidationPenalty / HundredNumber;
+    return this.percentFormat?.format?.(percent) ?? `${percent * HundredNumber}%`;
+  }
+
+  private get stabilityFee(): Nullable<FPNumber> {
+    return this.collateral?.riskParams.rateAnnual;
+  }
+
+  get formattedStabilityFee(): string {
+    const percent = this.stabilityFee?.div(HundredNumber).toNumber() ?? 0;
+    return this.percentFormat?.format?.(percent) ?? `${percent * HundredNumber}%`;
+  }
 
   mounted(): void {
     this.withApi(async () => {
@@ -231,19 +287,10 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
         router.push({ name: VaultPageNames.Vaults });
         return;
       }
-
       await waitUntil(() => !this.parentLoading);
       if (!this.vault) {
         router.push({ name: VaultPageNames.Vaults });
-        // return;
       }
-
-      // this.balanceSubscription = api.assets.getAssetBalanceObservable(this.asset).subscribe((balance) => {
-      //   this.balance = balance.transferable;
-      // });
-      // this.supplySubscription = api.apiRx.query.tokens.totalIssuance(this.asset.address).subscribe((supply) => {
-      //   this.supply = supply.toString();
-      // });
     });
   }
 
@@ -251,51 +298,107 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     router.back();
   }
 
-  openRemoveVaultDialog(): void {
+  closePosition(): void {
     this.showRemoveVaultDialog = true;
-  }
-
-  // goToAddLiquidity(): void {
-  //   if (!this.asset) return;
-  //   router.push({ name: PageNames.AddLiquidity, params: { first: XOR.symbol, second: this.asset.address } });
-  // }
-
-  beforeDestroy(): void {
-    // this.balanceSubscription?.unsubscribe?.();
-    // this.supplySubscription?.unsubscribe?.();
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.asset-owner-details {
-  &-container {
-    display: flex;
-    gap: 16px;
+.vault-details-container {
+  display: flex;
+  gap: $inner-spacing-medium;
 
-    &.empty {
-      height: calc(100vh - #{$header-height} - #{$footer-height});
-    }
+  &.empty {
+    height: calc(100vh - #{$header-height} - #{$footer-height});
+  }
 
-    .details-card {
-      margin-bottom: 24px;
-    }
+  .details-card {
+    margin-bottom: $inner-spacing-big;
   }
 }
-.asset-title,
-.asset-balance,
-.asset-supply {
-  align-items: center;
-}
-.asset-title__text,
-.asset-balance__info,
-.asset-supply__info {
+
+.vault-details-main {
   flex: 1;
+  .close-vault-button {
+    text-transform: none;
+    color: var(--s-color-theme-accent);
+    margin-bottom: $inner-spacing-big;
+  }
 }
-.asset__value {
-  font-size: 20px;
+
+.vault {
+  &-title {
+    align-items: center;
+  }
+  &-label {
+    color: var(--s-color-base-content-secondary);
+  }
 }
-.asset-supply-actions {
-  margin-bottom: 8px;
+
+.position-info,
+.vault-collateral,
+.vault-debt {
+  &__details {
+    margin-top: $inner-spacing-mini;
+    margin-bottom: $inner-spacing-medium;
+  }
+
+  &__item {
+    flex: 1 1 50%;
+
+    > * {
+      line-height: var(--s-line-height-big);
+    }
+  }
+
+  &__fiat {
+    color: var(--s-color-fiat-value);
+  }
+
+  &__fiat,
+  &__item {
+    @include text-ellipsis;
+  }
+}
+
+@mixin ltv-status($status: 'success', $property: 'background-color') {
+  &.#{$status} {
+    #{$property}: var(--s-color-status-#{$status});
+  }
+}
+
+.ltv {
+  &__value {
+    align-items: center;
+    font-size: var(--s-font-size-big);
+    margin-bottom: $inner-spacing-medium;
+  }
+  &__badge {
+    margin-left: $inner-spacing-mini;
+  }
+  &__legend {
+    margin-top: $inner-spacing-medium;
+    flex-wrap: wrap;
+
+    &-item {
+      flex: 1 1 50%;
+      display: flex;
+      align-items: baseline;
+      line-height: var(--s-line-height-big);
+    }
+
+    &-icon {
+      $icon-size: 12px;
+
+      @include ltv-status('success');
+      @include ltv-status('warning');
+      @include ltv-status('error');
+      border-radius: 50%;
+      height: $icon-size;
+      width: $icon-size;
+      margin-right: 2px;
+    }
+  }
 }
 </style>

@@ -6,6 +6,7 @@ export enum VaultPageNames {
 export enum VaultComponents {
   CreateVaultDialog = 'CreateVaultDialog',
   RemoveVaultDialog = 'RemoveVaultDialog',
+  LtvProgressBar = 'LtvProgressBar',
 }
 
 export const KusdAddress = '0x02000b0000000000000000000000000000000000000000000000000000000000';

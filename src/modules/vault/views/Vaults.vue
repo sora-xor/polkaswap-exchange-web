@@ -129,23 +129,19 @@
               </div>
               <div class="vault-details__item s-flex-column">
                 <p class="p3 vault__label">
-                  Withdrawable
+                  Available to borrow
                   <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
-                <p class="p3 vault-details__value">n/a</p>
-                <p class="p3 vault-details__fiat">n/a</p>
-              </div>
-              <div class="vault-details__item s-flex-column">
-                <p class="p3 vault__label">
-                  Available
-                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                    <s-icon name="info-16" size="12px" />
-                  </s-tooltip>
-                </p>
-                <p class="p3 vault-details__value">n/a</p>
-                <p class="p3 vault-details__fiat">n/a</p>
+                <formatted-amount v-if="kusdToken" :value="format(vault.available)" :asset-symbol="kusdSymbol" />
+                <p v-else class="p3 vault-details__value">n/a</p>
+                <formatted-amount
+                  v-if="kusdToken"
+                  is-fiat-value
+                  :value="getFiatAmountByFPNumber(vault.available, kusdToken)"
+                />
+                <p v-else class="p3 vault-details__fiat">n/a</p>
               </div>
             </div>
             <s-divider />
@@ -158,7 +154,7 @@
               </p>
               <span class="vault__ltv-value s-flex">
                 <template v-if="vault.ltv">
-                  {{ format(vault.ltv) }}
+                  {{ format(vault.ltv) }}%
                   <value-status class="vault__ltv-badge" badge :value="toNumber(vault.ltv)" :getStatus="getLtvStatus">
                     {{ getLtvText(vault.ltv) }}
                   </value-status>
@@ -234,7 +230,9 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
         .dp(2);
       const ltvCoeff = vault.debt.div(maxSafeDebt);
       const ltv = ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
-      return { ...vault, lockedAsset, ltv };
+      const availableCoeff = maxSafeDebt.sub(vault.debt);
+      const available = !availableCoeff.isFinity() || availableCoeff.isLteZero() ? this.Zero : availableCoeff;
+      return { ...vault, lockedAsset, ltv, available };
     });
   }
 
