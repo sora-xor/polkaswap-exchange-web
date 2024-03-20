@@ -95,7 +95,7 @@
                 <p class="p3 vault__label">
                   Your collateral
                   <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                    <s-icon class="has-vaults__title-icon" name="info-16" size="12px" />
+                    <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
                 <formatted-amount
@@ -115,7 +115,7 @@
                 <p class="p3 vault__label">
                   Your debt
                   <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                    <s-icon class="has-vaults__title-icon" name="info-16" size="12px" />
+                    <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
                 <formatted-amount v-if="kusdToken" :value="format(vault.debt)" :asset-symbol="kusdSymbol" />
@@ -131,7 +131,7 @@
                 <p class="p3 vault__label">
                   Withdrawable
                   <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                    <s-icon class="has-vaults__title-icon" name="info-16" size="12px" />
+                    <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
                 <p class="p3 vault-details__value">n/a</p>
@@ -141,7 +141,7 @@
                 <p class="p3 vault__label">
                   Available
                   <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                    <s-icon class="has-vaults__title-icon" name="info-16" size="12px" />
+                    <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
                 <p class="p3 vault-details__value">n/a</p>
@@ -153,7 +153,7 @@
               <p class="p3 vault__label">
                 Loan to value
                 <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
-                  <s-icon class="has-vaults__title-icon" name="info-16" size="12px" />
+                  <s-icon name="info-16" size="12px" />
                 </s-tooltip>
               </p>
               <span class="vault__ltv-value s-flex">
@@ -179,7 +179,7 @@ import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, HundredNumber, PageNames } from '@/consts';
+import { Components, HundredNumber, PageNames, ZeroStringValue } from '@/consts';
 import { LtvTranslations, VaultComponents, VaultPageNames } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
 import { getLtvStatus } from '@/modules/vault/util';
@@ -248,7 +248,7 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
   }
 
   format(number?: FPNumber): string {
-    return number?.toLocaleString(2) ?? '0';
+    return number?.toLocaleString(2) ?? ZeroStringValue;
   }
 
   toCodec(number: FPNumber): CodecString {
