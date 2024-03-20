@@ -1,53 +1,36 @@
 <template>
-  <div class="s-flex" style="flex-flow: column; height: 100%">
-    <div class="controls s-flex" style="gap: 16px; justify-content: space-between; flex-flow: row wrap">
-      <div class="s-flex">
-        <s-checkbox v-model="draggable" label="Draggable" />
-        <s-checkbox v-model="resizable" label="Resizable" />
-        <s-checkbox v-model="compact" label="Compact" />
-        <s-checkbox v-model="lines" label="Show grid" />
-      </div>
-      <div class="s-flex">
-        <s-checkbox
-          v-for="(value, key) in widgets"
-          :key="key"
-          :label="key"
-          :value="value"
-          @input="toggleWidget(key, $event)"
-        />
-      </div>
-    </div>
-    <widgets-grid
-      grid-id="swapGrid"
-      class="swap-container"
-      :draggable="draggable"
-      :resizable="resizable"
-      :compact="compact"
-      :lines="lines"
-      :loading="parentLoading"
-      :default-layouts="DefaultLayouts"
-      v-model="widgets"
-    >
-      <template v-slot:[SwapWidgets.Form]="props">
-        <swap-form-widget v-bind="props" primary-title />
-      </template>
-      <template v-slot:[SwapWidgets.Chart]="props">
-        <swap-chart-widget
-          v-bind="props"
-          :base-asset="tokenFrom"
-          :quote-asset="tokenTo"
-          :is-available="isAvailable"
-          full
-        />
-      </template>
-      <template v-slot:[SwapWidgets.Distribution]="props">
-        <swap-distribution-widget v-bind="props" />
-      </template>
-      <template v-slot:[SwapWidgets.Transactions]="props">
-        <swap-transactions-widget v-bind="props" full extensive />
-      </template>
-    </widgets-grid>
-  </div>
+  <widgets-grid
+    class="swap-container"
+    :draggable="options.edit"
+    :resizable="options.edit"
+    :lines="options.edit"
+    :compact="options.compact"
+    :loading="parentLoading"
+    :default-layouts="DefaultLayouts"
+    v-model="widgets"
+  >
+    <template v-slot:[SwapWidgets.Form]="props">
+      <swap-form-widget v-bind="props" primary-title />
+    </template>
+    <template v-slot:[SwapWidgets.Chart]="props">
+      <swap-chart-widget
+        v-bind="props"
+        :base-asset="tokenFrom"
+        :quote-asset="tokenTo"
+        :is-available="isAvailable"
+        full
+      />
+    </template>
+    <template v-slot:[SwapWidgets.Distribution]="props">
+      <swap-distribution-widget v-bind="props" />
+    </template>
+    <template v-slot:[SwapWidgets.Transactions]="props">
+      <swap-transactions-widget v-bind="props" full extensive />
+    </template>
+    <template v-slot:[SwapWidgets.Customize]="props">
+      <customise-widget v-bind="props" :widgets.sync="widgets" :options.sync="options" />
+    </template>
+  </widgets-grid>
 </template>
 
 <script lang="ts">
@@ -69,6 +52,7 @@ enum SwapWidgets {
   Chart = 'chart',
   Transactions = 'transactions',
   Distribution = 'distribution',
+  Customize = 'customize',
 }
 
 @Component({
@@ -77,6 +61,7 @@ enum SwapWidgets {
     SwapChartWidget: lazyComponent(Components.PriceChartWidget),
     SwapTransactionsWidget: lazyComponent(Components.SwapTransactionsWidget),
     SwapDistributionWidget: lazyComponent(Components.SwapDistributionWidget),
+    CustomiseWidget: lazyComponent(Components.CustomiseWidget),
     WidgetsGrid: lazyComponent(Components.WidgetsGrid),
   },
 })
@@ -91,54 +76,56 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
 
   readonly SwapWidgets = SwapWidgets;
+
   readonly DefaultLayouts: ResponsiveLayouts = {
     lg: [
       { x: 0, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 0, y: 20, w: 6, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customize },
+      { x: 0, y: 24, w: 6, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
       { x: 6, y: 0, w: 9, h: 24, minW: 4, minH: 20, i: SwapWidgets.Chart },
       { x: 15, y: 0, w: 9, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
-      { x: 6, y: 24, w: 6, h: 6, minW: 4, minH: 6, i: SwapWidgets.Distribution },
     ],
     md: [
       { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 0, y: 20, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customize },
+      { x: 0, y: 24, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
       { x: 4, y: 0, w: 12, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-      { x: 0, y: 20, w: 4, h: 6, minW: 4, minH: 6, i: SwapWidgets.Distribution },
       { x: 4, y: 20, w: 8, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
     sm: [
       { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 0, y: 20, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customize },
+      { x: 0, y: 24, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
       { x: 4, y: 0, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-      { x: 0, y: 20, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
       { x: 4, y: 20, w: 8, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
     xs: [
-      { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customize },
+      { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
       { x: 4, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
       { x: 0, y: 20, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.Distribution },
       { x: 4, y: 20, w: 4, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
     xss: [
-      { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 12, i: SwapWidgets.Customize },
+      { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
       { x: 0, y: 20, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.Distribution },
       { x: 0, y: 32, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
       { x: 0, y: 52, w: 4, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
   };
 
-  draggable = false;
-  resizable = false;
-  compact = false;
-  lines = false;
+  options = {
+    edit: false,
+    compact: false,
+  };
 
   widgets: WidgetsVisibilityModel = {
     [SwapWidgets.Form]: true,
-    [SwapWidgets.Chart]: false,
-    [SwapWidgets.Distribution]: false,
-    [SwapWidgets.Transactions]: false,
+    [SwapWidgets.Chart]: true,
+    [SwapWidgets.Distribution]: true,
+    [SwapWidgets.Transactions]: true,
   };
-
-  toggleWidget(key: string, flag: boolean) {
-    this.widgets = { ...this.widgets, [key]: flag };
-  }
 
   @Watch('tokenFrom')
   @Watch('tokenTo')

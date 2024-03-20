@@ -9,7 +9,7 @@
     v-loading="loading"
   >
     <template #header v-if="hasHeader">
-      <div class="base-widget-block base-widget-header">
+      <div :class="['base-widget-block', 'base-widget-header', { 'with-content': hasContent }]">
         <div :class="['base-widget-block', 'base-widget-title', { primary: primaryTitle }]">
           <slot name="title">
             <span v-if="title">{{ title }}</span>
@@ -29,7 +29,7 @@
       </div>
     </template>
 
-    <div :class="['base-widget-content', { extensive }]" ref="content">
+    <div v-if="hasContent" :class="['base-widget-content', { extensive }]" ref="content">
       <slot />
     </div>
   </s-card>
@@ -93,6 +93,10 @@ export default class BaseWidget extends Vue {
     return !!this.title || !!this.$slots.title;
   }
 
+  get hasContent(): boolean {
+    return !!this.$slots.default;
+  }
+
   mounted(): void {
     this.createContentObserver();
     this.updateRect(this.getClientRect()); // initial
@@ -103,6 +107,8 @@ export default class BaseWidget extends Vue {
   }
 
   private createContentObserver(): void {
+    if (!this.hasContent) return;
+
     this.observer = new ResizeObserver(this.handleContentResize);
     this.observer.observe(this.content);
   }
@@ -182,7 +188,11 @@ $left: $inner-spacing-medium;
   &-header {
     flex-flow: row wrap;
     justify-content: space-between;
-    padding: $top $left $between;
+    padding: $top $left;
+
+    &.with-content {
+      padding-bottom: $between;
+    }
   }
 
   &-title {
