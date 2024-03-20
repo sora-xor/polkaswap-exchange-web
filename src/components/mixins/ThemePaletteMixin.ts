@@ -99,7 +99,16 @@ export default class ThemePaletteMixin extends Vue {
           up: css('--s-color-deficiency-price-change-up'),
           down: css('--s-color-deficiency-price-change-down'),
         },
-        // TODO: get colors from designer for bookBars: {}
+        bookBars: {
+          buy:
+            theme === Theme.LIGHT
+              ? css('--s-color-deficiency-bar-light-buy')
+              : css('--s-color-deficiency-bar-dark-buy'),
+          sell:
+            theme === Theme.LIGHT
+              ? css('--s-color-deficiency-bar-light-sell')
+              : css('--s-color-deficiency-bar-dark-sell'),
+        },
       },
       traditional: {
         name: 'Traditional',
@@ -109,7 +118,16 @@ export default class ThemePaletteMixin extends Vue {
           up: css('--s-color-traditional-price-change-up'),
           down: css('--s-color-tradtional-price-change-down'),
         },
-        // TODO: get colors from designer for bookBars: {}
+        bookBars: {
+          buy:
+            theme === Theme.LIGHT
+              ? css('--s-color-traditional-bar-light-buy')
+              : css('--s-color-traditional-bar-dark-buy'),
+          sell:
+            theme === Theme.LIGHT
+              ? css('--s-color-traditional-bar-light-sell')
+              : css('--s-color-traditional-bar-dark-sell'),
+        },
       },
     };
 

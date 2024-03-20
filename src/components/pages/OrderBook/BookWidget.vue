@@ -71,7 +71,6 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
