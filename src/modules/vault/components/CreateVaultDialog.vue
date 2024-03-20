@@ -232,6 +232,7 @@ export default class CreateVaultDialog extends Mixins(
   }
 
   get isMaxBorrowAvailable(): boolean {
+    if (asZeroValue(this.collateralValue)) return false;
     if (this.shouldBalanceBeHidden || asZeroValue(this.borrowValue)) return true;
     if (!this.maxBorrowPerCollateralValue.isFinity() || this.maxBorrowPerCollateralValue.isLteZero()) return false;
     return !this.getFPNumber(this.borrowValue).isEqualTo(this.maxBorrowPerCollateralValue);
