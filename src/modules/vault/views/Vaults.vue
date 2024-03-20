@@ -44,25 +44,33 @@
       </s-card>
     </div>
     <template v-else>
-      <s-row>
-        <s-col :xs="12" :sm="6" :md="6" :lg="6">
-          <h3 class="has-assets__title">Your managed vaults</h3>
+      <s-row class="has-vaults">
+        <s-col :xs="12" :sm="12" :md="4" :lg="6">
+          <h2 class="has-vaults__title s-flex">
+            Kensetsu
+            <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+              <s-icon class="has-vaults__title-icon" name="info-16" size="16px" />
+            </s-tooltip>
+          </h2>
         </s-col>
-        <s-col class="s-flex has-assets__action-container" :xs="12" :sm="6" :md="6" :lg="6">
+        <s-col class="s-flex has-vaults__action-container" :xs="12" :sm="12" :md="8" :lg="6">
+          <s-button class="s-typography-button--large has-vaults__action" type="tertiary" @click="handleExploreVaults">
+            EXPLORE VAULTS
+          </s-button>
           <s-button
-            class="s-typography-button--large has-assets__action"
+            class="s-typography-button--large has-vaults__action"
             icon="various-atom-24"
             type="secondary"
             @click="handleCreateVault"
           >
-            CREATE VAULT
+            OPEN POSITION
           </s-button>
         </s-col>
       </s-row>
       <s-row>
         <s-col v-for="vault in vaultsData" :key="'vault_' + vault.id" :xs="12" :sm="6" :md="6" :lg="4">
           <s-card
-            class="asset"
+            class="vault"
             border-radius="small"
             shadow="always"
             size="big"
@@ -70,38 +78,93 @@
             clickable
             @click="handleOpenVaultDetails(vault)"
           >
-            <div class="asset-title s-flex">
+            <div class="vault-title s-flex">
               <pair-token-logo
-                :first-token="vault.lockedAsset"
-                :second-token="kusdToken"
-                size="small"
-                class="explore-table-item-logo"
+                :first-token="kusdToken"
+                :second-token="vault.lockedAsset"
+                size="medium"
+                class="vault-title__icon"
               />
-              <!-- <token-logo class="asset-title__icon" size="big" :token="asset" /> -->
-              <div class="asset-title__text s-flex-column">
-                <h3 class="asset-title__name">{{ vault.id }}</h3>
-                <p class="p3 asset-title__symbol asset__label">{{ vault.id }}</p>
-              </div>
+              <h3 class="vault-title__name">{{ getVaultTitle(vault.lockedAsset) }}</h3>
               <s-button type="action" size="small" alternative :tooltip="t('assets.details')">
                 <s-icon name="arrows-chevron-right-rounded-24" size="24" />
               </s-button>
             </div>
-            <p class="p3 asset-text asset__label">Mint & burn, send the token in the details page</p>
+            <div class="vault-details s-flex">
+              <div class="vault-details__item s-flex-column">
+                <p class="p3 vault__label">
+                  Your collateral
+                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                    <s-icon class="has-vaults__title-icon" name="info-16" size="12px" />
+                  </s-tooltip>
+                </p>
+                <formatted-amount
+                  v-if="vault.lockedAsset"
+                  :value="format(vault.lockedAmount)"
+                  :asset-symbol="getLockedSymbol(vault.lockedAsset)"
+                />
+                <p v-else class="p3 vault-details__value">n/a</p>
+                <formatted-amount
+                  v-if="vault.lockedAsset"
+                  is-fiat-value
+                  :value="getFiatAmountByFPNumber(vault.lockedAmount, vault.lockedAsset)"
+                />
+                <p v-else class="p3 vault-details__fiat">n/a</p>
+              </div>
+              <div class="vault-details__item s-flex-column">
+                <p class="p3 vault__label">
+                  Your debt
+                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                    <s-icon class="has-vaults__title-icon" name="info-16" size="12px" />
+                  </s-tooltip>
+                </p>
+                <formatted-amount v-if="kusdToken" :value="format(vault.debt)" :asset-symbol="kusdSymbol" />
+                <p v-else class="p3 vault-details__value">n/a</p>
+                <formatted-amount
+                  v-if="kusdToken"
+                  is-fiat-value
+                  :value="getFiatAmountByFPNumber(vault.debt, kusdToken)"
+                />
+                <p v-else class="p3 vault-details__fiat">n/a</p>
+              </div>
+              <div class="vault-details__item s-flex-column">
+                <p class="p3 vault__label">
+                  Withdrawable
+                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                    <s-icon class="has-vaults__title-icon" name="info-16" size="12px" />
+                  </s-tooltip>
+                </p>
+                <p class="p3 vault-details__value">n/a</p>
+                <p class="p3 vault-details__fiat">n/a</p>
+              </div>
+              <div class="vault-details__item s-flex-column">
+                <p class="p3 vault__label">
+                  Available
+                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                    <s-icon class="has-vaults__title-icon" name="info-16" size="12px" />
+                  </s-tooltip>
+                </p>
+                <p class="p3 vault-details__value">n/a</p>
+                <p class="p3 vault-details__fiat">n/a</p>
+              </div>
+            </div>
             <s-divider />
-            <div class="asset-details s-flex">
-              <div class="asset-details__item s-flex-column">
-                <p class="p3 asset__label">Price</p>
-                <!--<formatted-amount v-if="asset.fiat" is-fiat-value :value="asset.fiat" />-->
-                <p class="p3 asset-details__fiat">n/a</p>
-              </div>
-              <div class="asset-details__item s-flex-column">
-                <p class="p3 asset__label">1D Change</p>
-                <p class="p3 asset-details__fiat">n/a</p>
-              </div>
-              <div class="asset-details__item s-flex-column">
-                <p class="p3 asset__label">1D Volume</p>
-                <p class="p3 asset-details__fiat">n/a</p>
-              </div>
+            <div class="vault__ltv s-flex">
+              <p class="p3 vault__label">
+                Loan to value
+                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                  <s-icon class="has-vaults__title-icon" name="info-16" size="12px" />
+                </s-tooltip>
+              </p>
+              <span class="vault__ltv-value s-flex">
+                <template v-if="vault.ltv">
+                  {{ format(vault.ltv) }}
+                  <value-status class="vault__ltv-badge" badge :value="toNumber(vault.ltv)" :getStatus="getLtvStatus">
+                    {{ getLtvText(vault.ltv) }}
+                  </value-status>
+                </template>
+                <template v-else>n/a</template>
+              </span>
             </div>
           </s-card>
         </s-col>
@@ -116,12 +179,14 @@ import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, PageNames } from '@/consts';
-import { VaultComponents, VaultPageNames } from '@/modules/vault/consts';
+import { Components, HundredNumber, PageNames } from '@/consts';
+import { LtvTranslations, VaultComponents, VaultPageNames } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
+import { getLtvStatus } from '@/modules/vault/util';
 import router, { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
 
+import type { FPNumber, CodecString } from '@sora-substrate/math';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
 
@@ -133,16 +198,19 @@ import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/type
     CreateVaultDialog: vaultLazyComponent(VaultComponents.CreateVaultDialog),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
+    ValueStatus: lazyComponent(Components.ValueStatusWrapper),
   },
 })
 export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
   readonly link = 'https://medium.com/@shibarimoto/kensetsu-ken-356077ebee78';
+  readonly getLtvStatus = getLtvStatus;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
   @getter.vault.kusdToken kusdToken!: Nullable<RegisteredAccountAsset>;
-  @state.vault.accountVaults vaults!: Vault[];
-  @state.vault.collaterals collaterals!: Record<string, Collateral>;
+  @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @state.vault.accountVaults private vaults!: Vault[];
+  @state.vault.collaterals private collaterals!: Record<string, Collateral>;
+  @state.vault.averageCollateralPrices private averageCollateralPrices!: Record<string, Nullable<FPNumber>>;
 
   showCreateVaultDialog = false;
 
@@ -150,11 +218,49 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
     return !(this.isLoggedIn && this.vaults.length);
   }
 
+  get kusdSymbol(): string {
+    return this.kusdToken?.symbol ?? '';
+  }
+
   get vaultsData() {
     return this.vaults.map((vault) => {
       const lockedAsset = this.getAsset(vault.lockedAssetId);
-      return { ...vault, lockedAsset };
+      const collateral = this.collaterals[vault.lockedAssetId];
+      const averagePrice = this.averageCollateralPrices[vault.lockedAssetId] ?? this.Zero;
+      const collateralVolume = averagePrice.mul(vault.lockedAmount);
+      const maxSafeDebt = collateralVolume
+        .mul(collateral?.riskParams.liquidationRatioReversed ?? 0)
+        .div(HundredNumber)
+        .dp(2);
+      const ltvCoeff = vault.debt.div(maxSafeDebt);
+      const ltv = ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
+      return { ...vault, lockedAsset, ltv };
     });
+  }
+
+  getVaultTitle(lockedAsset?: RegisteredAccountAsset): string {
+    if (!(this.kusdSymbol && lockedAsset)) return '';
+    return `${this.kusdSymbol} / ${lockedAsset.symbol}`;
+  }
+
+  getLockedSymbol(lockedAsset?: RegisteredAccountAsset): string {
+    return lockedAsset?.symbol ?? '';
+  }
+
+  format(number?: FPNumber): string {
+    return number?.toLocaleString(2) ?? '0';
+  }
+
+  toCodec(number: FPNumber): CodecString {
+    return number.codec;
+  }
+
+  getLtvText(ltv: FPNumber): string {
+    return LtvTranslations[getLtvStatus(ltv.toNumber())];
+  }
+
+  toNumber(number?: FPNumber): number {
+    return number?.toNumber() ?? 0;
   }
 
   handleConnectWallet(): void {
@@ -174,27 +280,38 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 </script>
 
 <style lang="scss" scoped>
-.el-form--actions {
-  @include buttons;
-  @include full-width-button('action-button');
-  flex: 1;
-  width: 100%;
+.vaults-container {
+  margin-left: 32px;
+  margin-right: 8px;
 
-  .action-button + .action-button {
+  @include desktop {
     margin-left: 0;
   }
 }
 .no-vaults {
   align-items: center;
 
+  .el-form--actions {
+    @include buttons;
+    @include full-width-button('action-button');
+    flex: 1;
+    width: 100%;
+
+    .action-button + .action-button {
+      margin-left: 0;
+    }
+  }
+
   &__description {
     font-size: 13px;
   }
+
   &__info {
     margin-top: $basic-spacing;
     max-width: $inner-window-width;
     width: 100%;
     flex: 1;
+
     &-desc {
       margin-top: 8px;
       align-items: flex-start;
@@ -202,6 +319,7 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
         flex: 1;
       }
     }
+
     &-badge {
       border-radius: 50%;
       background-color: var(--s-color-status-info);
@@ -209,10 +327,12 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
       box-shadow: var(--s-shadow-element-pressed);
       margin-left: $inner-spacing-mini;
     }
+
     &-icon {
       color: white;
     }
   }
+
   .centered {
     text-align: center;
   }
@@ -225,99 +345,93 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
   }
 }
 
-//
-.vaults-container {
-  // margin-left: 32px;
-  // margin-right: 8px;
-
-  // @include desktop {
-  //   margin-left: 0;
-  // }
-
-  .no-assets {
-    padding-top: 0;
-    margin-bottom: 24px;
-    &-text {
-      text-align: center;
-      margin-bottom: 14px;
-    }
-    &-action {
-      margin-top: 14px;
-      width: 100%;
-    }
-    &,
-    &-demo {
-      margin-right: 24px;
-    }
-    @include large-desktop {
-      &,
-      &-demo {
-        max-width: 700px;
-      }
-      &__first-col {
-        display: flex;
-        justify-content: flex-end;
-      }
+.has-vaults {
+  @include desktop {
+    &__action-container {
+      justify-content: flex-end;
     }
   }
 
-  .has-assets {
-    @include tablet {
-      &__action-container {
-        justify-content: flex-end;
-      }
+  @media (max-width: 639px) {
+    // responsive breakpoint from DS
+    &__action-container {
+      flex-direction: column;
     }
-    &__action {
-      margin-right: 24px;
-    }
-    &__title,
-    &__action {
-      margin-bottom: 24px;
+    &__action + &__action {
+      margin-left: 0;
     }
   }
 
-  .asset {
-    margin-bottom: 24px;
+  &__action {
     margin-right: 24px;
-    &-title {
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
+  }
 
-      &__text {
-        flex: 1;
-        margin: 0 8px;
-      }
+  &__title,
+  &__action {
+    margin-bottom: 24px;
+  }
 
-      &__name,
-      &__text {
-        @include text-ellipsis;
-      }
-    }
-
-    &__label {
-      color: var(--s-color-base-content-secondary);
-    }
-
-    &-details {
-      justify-content: space-between;
-
-      &__fiat {
-        color: var(--s-color-fiat-value);
-      }
-
-      &__item {
-        flex: 1;
-      }
-
-      &__fiat,
-      &__item {
-        @include text-ellipsis;
-      }
+  &__title {
+    align-items: center;
+    &-icon {
+      margin-left: 4px;
     }
   }
-  .item-icon {
-    color: var(--s-color-theme-accent);
+}
+
+.vault {
+  margin-bottom: 24px;
+  margin-right: 24px;
+
+  &-title {
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    &__name {
+      flex: 1;
+      margin: 0 8px;
+      @include text-ellipsis;
+    }
+  }
+
+  &__label {
+    color: var(--s-color-base-content-secondary);
+  }
+
+  &__ltv {
+    align-items: center;
+    justify-content: space-between;
+
+    &-value {
+      font-weight: 500;
+    }
+
+    &-badge {
+      margin-left: 8px;
+    }
+  }
+
+  &-details {
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    &__item {
+      flex: 1 1 50%;
+
+      > * {
+        line-height: var(--s-line-height-big);
+      }
+    }
+
+    &__fiat {
+      color: var(--s-color-fiat-value);
+    }
+
+    &__fiat,
+    &__item {
+      @include text-ellipsis;
+    }
   }
 }
 </style>
