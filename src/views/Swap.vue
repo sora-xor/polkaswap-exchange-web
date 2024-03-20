@@ -28,8 +28,10 @@
     <template v-slot:[SwapWidgets.Transactions]="props">
       <swap-transactions-widget v-bind="props" full extensive />
     </template>
-    <template v-slot:[SwapWidgets.Customise]="props">
-      <customise-widget v-bind="props" :widgets.sync="widgets" :options.sync="options" />
+    <template v-slot:[SwapWidgets.Customise]="{ reset, ...props }">
+      <customise-widget v-bind="props" :widgets.sync="widgets" :options.sync="options">
+        <s-button @click="reset">Reset</s-button>
+      </customise-widget>
     </template>
   </widgets-grid>
 </template>
@@ -108,11 +110,11 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       { x: 4, y: 20, w: 4, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
     xss: [
-      { x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 12, i: SwapWidgets.Customise },
+      { x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
       { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 0, y: 20, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.Distribution },
-      { x: 0, y: 32, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-      { x: 0, y: 52, w: 4, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
+      { x: 0, y: 24, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.Distribution },
+      { x: 0, y: 36, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 0, y: 56, w: 4, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
   };
 

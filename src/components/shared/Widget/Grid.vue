@@ -23,6 +23,7 @@
           id: widget.i,
           loading,
           onResize,
+          reset,
         }"
       />
     </grid-item>
@@ -123,6 +124,8 @@ export default class WidgetsGrid extends Vue {
     this.saveLayouts(layouts, save);
   }
 
+  private defaultValue: WidgetsVisibilityModel = {};
+
   private breakpoint: BreakpointKey = BreakpointKey.md;
 
   private updateResponsiveLayouts = debounce(this.saveLayouts, 250);
@@ -153,7 +156,9 @@ export default class WidgetsGrid extends Vue {
   }
 
   get shouldUpdate(): boolean {
-    return !isEqual(this.gridLayout)(this.responsiveLayout);
+    const notEqual = !isEqual(this.gridLayout)(this.responsiveLayout);
+
+    return notEqual;
   }
 
   get gridLinesStyle(): Partial<CSSStyleDeclaration> {
@@ -170,23 +175,56 @@ export default class WidgetsGrid extends Vue {
   }
 
   created(): void {
-    const storedLayouts = layoutsStorage.get(this.gridId);
+    // save initial model for reset availability
+    this.defaultValue = cloneDeep(this.value);
 
-    if (storedLayouts) {
-      this.layouts = JSON.parse(storedLayouts);
-      this.updateWidgetsModelByLayout();
+    const hasLayoutsInStorage = layoutsStorage.get(this.gridId);
+
+    if (hasLayoutsInStorage) {
+      this.loadLayoutsFromStorage();
     } else {
-      this.layouts = cloneDeep(this.defaultLayouts);
-      this.updateLayoutWidgetsByModel(this.value, {}, false); // don't save initial layout
+      this.loadLayoutsFromConfig();
     }
   }
 
   private saveLayouts(layouts: ResponsiveLayouts, save = true): void {
     this.layouts = cloneDeep(layouts);
     // update layouts in storage
-    if (save && this.gridId) {
+    if (save) {
+      this.saveLayoutsToStorage();
+    }
+  }
+
+  private saveLayoutsToStorage(): void {
+    if (this.gridId) {
       layoutsStorage.set(this.gridId, JSON.stringify(this.layouts));
     }
+  }
+
+  private clearLayoutsFromStorage(): void {
+    if (this.gridId) {
+      layoutsStorage.remove(this.gridId);
+    }
+  }
+
+  private loadLayoutsFromStorage(): void {
+    const storedLayouts = layoutsStorage.get(this.gridId);
+
+    if (!storedLayouts) return;
+
+    this.layouts = JSON.parse(storedLayouts);
+    this.updateWidgetsModelByLayout();
+  }
+
+  private loadLayoutsFromConfig(): void {
+    this.layouts = cloneDeep(this.defaultLayouts);
+    this.updateLayoutWidgetsByModel(this.defaultValue, {}, false); // don't save initial layout
+    this.updateWidgetsModelByLayout();
+  }
+
+  reset(): void {
+    this.clearLayoutsFromStorage();
+    this.loadLayoutsFromConfig();
   }
 
   onBreakpointChanged(newBreakpoint: BreakpointKey): void {

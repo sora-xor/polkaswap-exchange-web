@@ -14,6 +14,8 @@
               <span>{{ key }}</span>
             </label>
           </div>
+
+          <slot />
         </div>
       </el-popover>
     </template>
