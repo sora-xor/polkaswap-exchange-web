@@ -59,7 +59,7 @@ const DEFAULT_COLS: LayoutConfig = {
   [BreakpointKey.xss]: 4,
 };
 
-const EMPTY_LAYOUTS: LayoutConfig = {
+const EMPTY_LAYOUTS: ResponsiveLayouts = {
   [BreakpointKey.lg]: [],
   [BreakpointKey.md]: [],
   [BreakpointKey.sm]: [],
