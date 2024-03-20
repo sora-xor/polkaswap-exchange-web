@@ -83,9 +83,9 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   readonly DefaultLayouts: ResponsiveLayouts = {
     lg: [
       { x: 0, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 0, y: 20, w: 6, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
-      { x: 0, y: 24, w: 6, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
-      { x: 6, y: 0, w: 9, h: 24, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 0, y: 20, w: 6, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
+      { x: 6, y: 0, w: 9, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 6, y: 20, w: 6, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
       { x: 15, y: 0, w: 9, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
     md: [

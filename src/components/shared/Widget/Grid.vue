@@ -136,21 +136,25 @@ export default class WidgetsGrid extends Vue {
 
   private breakpoint: BreakpointKey = BreakpointKey.md;
 
-  private updateResponsiveLayouts = debounce(this.saveLayouts, 250);
-
   public layouts: ResponsiveLayouts = cloneDeep(EMPTY_LAYOUTS);
+
   @Watch('layouts', { deep: true })
-  private onLayoutsUpdate(): void {
+  private onLayoutsUpdate = debounce(this.checkLayoutUpdate, 250, { leading: false });
+
+  public layout: Layout = [];
+
+  @Watch('layout', { deep: true })
+  private onLayoutUpdate = debounce(this.checkLayoutsUpdate, 250, { leading: false });
+
+  private checkLayoutUpdate(): void {
     if (this.responsiveLayout && this.shouldUpdate) {
       this.layout = cloneDeep(this.responsiveLayout) as Layout;
     }
   }
 
-  public layout: Layout = [];
-  @Watch('layout', { deep: true })
-  private onLayoutUpdate(): void {
+  private checkLayoutsUpdate(): void {
     if (this.shouldUpdate) {
-      this.updateResponsiveLayouts({ ...this.layouts, [this.breakpoint]: this.gridLayout });
+      this.saveLayouts({ ...this.layouts, [this.breakpoint]: this.gridLayout });
     }
   }
 
@@ -188,9 +192,12 @@ export default class WidgetsGrid extends Vue {
     this.init();
   }
 
-  private init(): void {
+  private async init(): Promise<void> {
+    // important to reset layout & layouts to initial state
     this.layout = [];
     this.layouts = cloneDeep(EMPTY_LAYOUTS);
+    // to update lib component inner models to initial states
+    await this.$nextTick();
 
     const storedLayouts = layoutsStorage.get(this.gridId);
 
