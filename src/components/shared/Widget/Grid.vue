@@ -59,6 +59,14 @@ const DEFAULT_COLS: LayoutConfig = {
   [BreakpointKey.xss]: 4,
 };
 
+const EMPTY_LAYOUTS: LayoutConfig = {
+  [BreakpointKey.lg]: [],
+  [BreakpointKey.md]: [],
+  [BreakpointKey.sm]: [],
+  [BreakpointKey.xs]: [],
+  [BreakpointKey.xss]: [],
+};
+
 function findWidgetInLayout(layout: Nullable<Layout>, widgetId: string) {
   return layout?.find((widget: LayoutWidget) => widget.i === widgetId);
 }
@@ -130,7 +138,7 @@ export default class WidgetsGrid extends Vue {
 
   private updateResponsiveLayouts = debounce(this.saveLayouts, 250);
 
-  public layouts: ResponsiveLayouts = {};
+  public layouts: ResponsiveLayouts = cloneDeep(EMPTY_LAYOUTS);
   @Watch('layouts', { deep: true })
   private onLayoutsUpdate(): void {
     if (this.responsiveLayout && this.shouldUpdate) {
@@ -177,14 +185,23 @@ export default class WidgetsGrid extends Vue {
   created(): void {
     // save initial model for reset availability
     this.defaultValue = cloneDeep(this.value);
+    this.init();
+  }
 
-    const hasLayoutsInStorage = layoutsStorage.get(this.gridId);
+  private init(): void {
+    this.layout = [];
+    this.layouts = cloneDeep(EMPTY_LAYOUTS);
 
-    if (hasLayoutsInStorage) {
-      this.loadLayoutsFromStorage();
+    const storedLayouts = layoutsStorage.get(this.gridId);
+
+    if (storedLayouts) {
+      this.layouts = JSON.parse(storedLayouts);
     } else {
-      this.loadLayoutsFromConfig();
+      this.layouts = cloneDeep(this.defaultLayouts);
+      this.updateLayoutWidgetsByModel(this.defaultValue, {}, false); // don't save initial layout
     }
+
+    this.updateWidgetsModelByLayout();
   }
 
   private saveLayouts(layouts: ResponsiveLayouts, save = true): void {
@@ -207,24 +224,9 @@ export default class WidgetsGrid extends Vue {
     }
   }
 
-  private loadLayoutsFromStorage(): void {
-    const storedLayouts = layoutsStorage.get(this.gridId);
-
-    if (!storedLayouts) return;
-
-    this.layouts = JSON.parse(storedLayouts);
-    this.updateWidgetsModelByLayout();
-  }
-
-  private loadLayoutsFromConfig(): void {
-    this.layouts = cloneDeep(this.defaultLayouts);
-    this.updateLayoutWidgetsByModel(this.defaultValue, {}, false); // don't save initial layout
-    this.updateWidgetsModelByLayout();
-  }
-
   reset(): void {
     this.clearLayoutsFromStorage();
-    this.loadLayoutsFromConfig();
+    this.init();
   }
 
   onBreakpointChanged(newBreakpoint: BreakpointKey): void {
