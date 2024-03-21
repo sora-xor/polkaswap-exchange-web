@@ -37,13 +37,13 @@
       <div class="margin" :style="getHeight()" />
       <div
         v-for="order in sellOrders"
-        :key="order.price"
+        :key="order.price.toNumber()"
         class="row"
         @click="fillPrice(order.price, PriceVariant.Sell)"
       >
         <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
-        <span class="order-info price">{{ order.price }}</span>
+        <span class="order-info price">{{ toBookPrecision(order.price) }}</span>
         <div class="bar" :style="getStyles(order.filled)" />
       </div>
     </div>
@@ -56,10 +56,15 @@
       </div>
     </div>
     <div v-if="bidsFormatted.length" class="stock-book-buy" :class="{ unclickable: isMarketOrder }">
-      <div v-for="order in buyOrders" :key="order.price" class="row" @click="fillPrice(order.price, PriceVariant.Buy)">
+      <div
+        v-for="order in buyOrders"
+        :key="order.price.toNumber()"
+        class="row"
+        @click="fillPrice(order.price, PriceVariant.Buy)"
+      >
         <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
-        <span class="order-info price">{{ order.price }}</span>
+        <span class="order-info price">{{ toBookPrecision(order.price) }}</span>
         <div class="bar" :style="getStyles(order.filled)" />
       </div>
     </div>
@@ -83,7 +88,7 @@ import type { OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 interface LimitOrderForm {
-  price: string;
+  price: FPNumber;
   amount: string;
   total: string;
   filled?: number;
@@ -138,12 +143,12 @@ export default class BookWidget extends Mixins(
     this.selectedStep = value;
   }
 
-  fillPrice(price: string, side: PriceVariant): void {
+  fillPrice(price: FPNumber, side: PriceVariant): void {
     if (this.isMarketOrder) {
       return;
     }
     this.setSide(side);
-    this.setQuoteValue(Number(price).toString()); // TODO: [Rustem] string->number->string -- WHY?
+    this.setQuoteValue(this.toCommonFormat(price));
   }
 
   get isMarketOrder(): boolean {
@@ -296,11 +301,15 @@ export default class BookWidget extends Mixins(
     return currentAmount.div(maxAmount).mul(FPNumber.HUNDRED).toNumber();
   }
 
-  private toBookPrecision(cell: FPNumber): string {
+  toCommonFormat(cell: FPNumber): string {
+    return cell.toNumber().toFixed(this.pricePrecision);
+  }
+
+  toBookPrecision(cell: FPNumber): string {
     return cell.toLocaleString(this.pricePrecision, true);
   }
 
-  private toAmountPrecision(cell: FPNumber): string {
+  toAmountPrecision(cell: FPNumber): string {
     return cell.toLocaleString(this.amountPrecision, true);
   }
 
@@ -318,7 +327,7 @@ export default class BookWidget extends Mixins(
       const total = this.isBookPrecisionEqual(this.selectedStep) ? price.mul(amount) : acc;
 
       result.push({
-        price: this.toBookPrecision(price),
+        price,
         amount: this.toAmountPrecision(amount),
         total: this.toBookPrecision(total),
         filled: this.getAmountProportion(amount, maxAmount),
