@@ -17,7 +17,7 @@
     @layout-updated="updateLayout"
   >
     <div v-if="lines" class="grid-lines" :style="gridLinesStyle" />
-    <grid-item v-for="widget in layout" :key="widget.i" v-bind="widget">
+    <grid-item v-for="widget in layout" :key="widget.i" :is-resizable="isResizable(widget)" v-bind="widget">
       <slot
         :name="widget.i"
         v-bind="{
@@ -41,7 +41,14 @@ import { GridLayout, GridItem } from 'vue-grid-layout';
 import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
 
 import { Breakpoint, BreakpointKey } from '@/consts/layout';
-import type { Layout, LayoutConfig, ResponsiveLayouts, LayoutWidget, WidgetsVisibilityModel } from '@/types/layout';
+import type {
+  Layout,
+  LayoutConfig,
+  ResponsiveLayouts,
+  LayoutWidget,
+  WidgetsVisibilityModel,
+  Size,
+} from '@/types/layout';
 import { layoutsStorage } from '@/utils/storage';
 
 const DEFAULT_BREAKPOINTS: LayoutConfig = {
@@ -209,11 +216,20 @@ export default class WidgetsGrid extends Vue {
     this.checkLayoutUpdate();
   }
 
+  isResizable(widget: LayoutWidget): boolean {
+    if (!this.resizable) return false;
+
+    const { maxW, maxH, minW, minH } = widget;
+    const fixed = maxW === minW && maxH === minH;
+
+    return !fixed;
+  }
+
   /**
    * Calculate widget layout height
    * Occurs after widget emits resize event with new own rect coordinates
    */
-  onResize(widgetId: string, rect: DOMRect): void {
+  onResize(widgetId: string, rect: Size): void {
     const layout = cloneDeep(this.layout);
     const widget = findWidgetInLayout(layout, widgetId);
 

@@ -1,5 +1,7 @@
 import type { BreakpointKey } from '@/consts/layout';
 
+export type Size = Pick<DOMRect, 'width' | 'height'>;
+
 export type WidgetSize = {
   w: number;
   h: number;

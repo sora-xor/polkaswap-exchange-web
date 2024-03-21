@@ -39,9 +39,8 @@
 import isEqual from 'lodash/fp/isEqual';
 import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
 
+import type { Size } from '@/types/layout';
 import { debouncedInputHandler } from '@/utils';
-
-type Size = Pick<DOMRect, 'width' | 'height'>;
 
 @Component
 export default class BaseWidget extends Vue {
