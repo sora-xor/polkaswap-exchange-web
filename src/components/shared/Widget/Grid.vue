@@ -224,6 +224,7 @@ export default class WidgetsGrid extends Vue {
     // `h = (height + margin) / (rowHeight + margin)`
     const calculatedH = Math.ceil((height + this.margin) / (this.rowHeight + this.margin));
     const updatedH = Math.max(widget.minH ?? 1, calculatedH);
+    console.log(widget.h, updatedH);
     // mutate local layout
     widget.h = updatedH;
     // update component layout

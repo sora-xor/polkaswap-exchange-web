@@ -41,6 +41,8 @@ import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
 
 import { debouncedInputHandler } from '@/utils';
 
+type Size = Pick<DOMRect, 'width' | 'height'>;
+
 @Component
 export default class BaseWidget extends Vue {
   /**
@@ -76,7 +78,7 @@ export default class BaseWidget extends Vue {
    */
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
 
-  @Prop({ default: () => {}, type: Function }) readonly onResize!: (id: string, rect: Partial<DOMRect>) => void;
+  @Prop({ default: () => {}, type: Function }) readonly onResize!: (id: string, size: Size) => void;
 
   @Ref('container') readonly container!: Vue;
   @Ref('content') readonly content!: HTMLDivElement;
@@ -84,7 +86,7 @@ export default class BaseWidget extends Vue {
   private observer: ResizeObserver | null = null;
   private handleContentResize = debouncedInputHandler(this.onContentResize, 300, { leading: false });
 
-  private rect: Partial<DOMRect> = {
+  private size: Size = {
     width: 0,
     height: 0,
   };
@@ -99,7 +101,7 @@ export default class BaseWidget extends Vue {
 
   mounted(): void {
     this.createContentObserver();
-    this.updateRect(this.getClientRect()); // initial
+    this.updateSize(this.getWidgetSize()); // initial
   }
 
   beforeDestroy(): void {
@@ -118,22 +120,33 @@ export default class BaseWidget extends Vue {
     this.observer = null;
   }
 
-  private getClientRect(): DOMRect {
-    return this.container.$el.getBoundingClientRect();
+  private getWidgetSize(): Size {
+    return this.getElementSize(this.container.$el);
   }
 
-  private updateRect(rect: Partial<DOMRect>): void {
-    this.rect.width = rect.width;
-    this.rect.height = rect.height;
+  private getWidgetContentSize(): Size {
+    return this.getElementSize(this.content);
   }
 
-  onContentResize(): void {
-    const { width, height } = this.getClientRect();
-    const rect = { width, height };
+  private getElementSize(el: Element): Size {
+    const { width, height } = el.getBoundingClientRect();
 
-    if (!isEqual(rect)(this.rect)) {
-      this.updateRect(rect);
-      this.onResize(this.id, this.rect);
+    return {
+      width: Math.floor(width),
+      height: Math.floor(height),
+    };
+  }
+
+  private updateSize(size: Size): void {
+    this.size = size;
+  }
+
+  private onContentResize(): void {
+    const size = this.getWidgetContentSize();
+
+    if (!isEqual(size)(this.size)) {
+      this.onResize(this.id, this.getWidgetSize());
+      this.updateSize(this.getWidgetContentSize());
     }
   }
 }
