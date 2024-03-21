@@ -1,5 +1,6 @@
 <template>
   <grid-layout
+    ref="grid"
     class="widgets-grid"
     :layout="layout"
     :responsive-layouts="layouts"
@@ -14,7 +15,7 @@
     :vertical-compact="compact"
     :use-css-transforms="true"
     @breakpoint-changed="onBreakpointChanged"
-    @layout-updated="updateLayout"
+    @layout-updated="onLayoutUpdate"
   >
     <div v-if="lines" class="grid-lines" :style="gridLinesStyle" />
     <grid-item v-for="widget in layout" :key="widget.i" :is-resizable="isResizable(widget)" v-bind="widget">
@@ -32,13 +33,12 @@
 </template>
 
 <script lang="ts">
-import debounce from 'lodash/debounce';
 import cloneDeep from 'lodash/fp/cloneDeep';
 import isEmpty from 'lodash/fp/isEmpty';
 import isEqual from 'lodash/fp/isEqual';
 import omit from 'lodash/fp/omit';
 import { GridLayout, GridItem } from 'vue-grid-layout';
-import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component, Emit, Prop, Vue, Watch, Ref } from 'vue-property-decorator';
 
 import { Breakpoint, BreakpointKey } from '@/consts/layout';
 import type {
@@ -78,6 +78,24 @@ function shallowDiff<T extends Record<string, boolean>>(a: T, b: T): Partial<T> 
   );
 }
 
+function sortBreakpoints(breakpoints: LayoutConfig): BreakpointKey[] {
+  const keys = Object.keys(breakpoints) as BreakpointKey[];
+
+  return keys.sort(function (a, b) {
+    return breakpoints[a] - breakpoints[b];
+  });
+}
+
+function getBreakpointFromWidth(breakpoints: LayoutConfig, width: number): BreakpointKey {
+  const sorted = sortBreakpoints(breakpoints);
+  let matching = sorted[0];
+  for (let i = 1, len = sorted.length; i < len; i++) {
+    const breakpointName = sorted[i];
+    if (width > breakpoints[breakpointName]) matching = breakpointName;
+  }
+  return matching;
+}
+
 @Component({
   components: {
     GridLayout,
@@ -85,6 +103,8 @@ function shallowDiff<T extends Record<string, boolean>>(a: T, b: T): Partial<T> 
   },
 })
 export default class WidgetsGrid extends Vue {
+  @Ref('grid') readonly widgetsGrid!: Vue;
+
   /** Layout ID to sync it with storage */
   @Prop({ default: '', type: String }) readonly gridId!: string;
   /** Default layouts */
@@ -104,54 +124,22 @@ export default class WidgetsGrid extends Vue {
   @Prop({ default: () => ({}), type: Object }) readonly value!: WidgetsVisibilityModel;
   /** Update layouts depends on widgets visibility */
   @Watch('value')
-  private updateLayoutWidgetsByModel(curr: WidgetsVisibilityModel, prev: WidgetsVisibilityModel, save = true): void {
+  private updateLayoutWidgetsByModel(curr: WidgetsVisibilityModel, prev: WidgetsVisibilityModel): void {
     const diff = shallowDiff(curr, prev);
 
     if (isEmpty(diff)) return;
 
-    this.updateLayoutsByWidgetsModel(this.layouts, diff, save);
+    this.updateLayoutsByWidgetsModel(this.layouts, diff, true);
   }
 
   private defaultValue: WidgetsVisibilityModel = {};
-
-  private breakpoint: BreakpointKey = BreakpointKey.md;
+  private breakpoint: BreakpointKey = BreakpointKey.lg;
 
   public layouts: ResponsiveLayouts = {};
-
   public layout: Layout = [];
-
-  updateLayout(updatedLayout: Layout): void {
-    this.layout = updatedLayout;
-  }
-
-  private checkLayoutUpdate(): void {
-    if (this.responsiveLayout && this.shouldUpdate) {
-      this.layout = cloneDeep(this.responsiveLayout) as Layout;
-    }
-  }
-
-  @Watch('layout', { deep: true })
-  private onLayoutUpdate = debounce(this.checkLayoutsUpdate, 250, { leading: false });
-
-  private checkLayoutsUpdate(): void {
-    if (this.shouldUpdate) {
-      this.saveLayouts({ ...this.layouts, [this.breakpoint]: this.gridLayout });
-    }
-  }
 
   get responsiveLayout(): Layout | undefined {
     return this.layouts[this.breakpoint];
-  }
-
-  get gridLayout(): Layout {
-    // omit 'moved' property from lib
-    return this.layout.map((widget: LayoutWidget) => omit('moved')(widget)) as Layout;
-  }
-
-  get shouldUpdate(): boolean {
-    const notEqual = !isEqual(this.gridLayout)(this.responsiveLayout);
-
-    return notEqual;
   }
 
   get gridLinesStyle(): Partial<CSSStyleDeclaration> {
@@ -170,6 +158,11 @@ export default class WidgetsGrid extends Vue {
   created(): void {
     // save initial model for reset availability
     this.defaultValue = cloneDeep(this.value);
+  }
+
+  mounted(): void {
+    // detect initial breakpoint
+    this.breakpoint = getBreakpointFromWidth(this.breakpoints, this.widgetsGrid.$el.clientWidth);
     this.init();
   }
 
@@ -185,11 +178,17 @@ export default class WidgetsGrid extends Vue {
     this.updateWidgetsModelByLayout();
   }
 
-  private saveLayouts(layouts: ResponsiveLayouts, save = true): void {
+  private updateLayout(): void {
+    if (isEqual(this.layout)(this.responsiveLayout)) return;
+
+    this.layout = cloneDeep(this.responsiveLayout) as Layout;
+  }
+
+  private saveLayouts(layouts: ResponsiveLayouts, saveToStorage = true): void {
     this.layouts = cloneDeep(layouts);
-    this.checkLayoutUpdate();
+    this.updateLayout();
     // update layouts in storage
-    if (save) {
+    if (saveToStorage) {
       this.saveLayoutsToStorage();
     }
   }
@@ -213,7 +212,17 @@ export default class WidgetsGrid extends Vue {
 
   onBreakpointChanged(newBreakpoint: BreakpointKey): void {
     this.breakpoint = newBreakpoint;
-    this.checkLayoutUpdate();
+    this.updateLayout();
+  }
+
+  onLayoutUpdate(updated: Layout): void {
+    this.layout = updated;
+
+    const prepared = this.layout.map((widget: LayoutWidget) => omit('moved')(widget)) as Layout;
+
+    if (isEqual(prepared)(this.responsiveLayout)) return;
+
+    this.saveLayouts({ ...this.layouts, [this.breakpoint]: prepared });
   }
 
   isResizable(widget: LayoutWidget): boolean {
@@ -240,7 +249,6 @@ export default class WidgetsGrid extends Vue {
     // `h = (height + margin) / (rowHeight + margin)`
     const calculatedH = Math.ceil((height + this.margin) / (this.rowHeight + this.margin));
     const updatedH = Math.max(widget.minH ?? 1, calculatedH);
-    console.log(widget.h, updatedH);
     // mutate local layout
     widget.h = updatedH;
     // update component layout
@@ -256,7 +264,12 @@ export default class WidgetsGrid extends Vue {
     // create initial model, where widgets are not visible
     const initialModel = Object.keys(this.value).reduce((acc, key) => ({ ...acc, [key]: false }), {});
     // mark widgets from layout as visible in model
-    return this.layout.reduce<WidgetsVisibilityModel>((acc, widget) => ({ ...acc, [widget.i]: true }), initialModel);
+    return this.layout.reduce<WidgetsVisibilityModel>((acc, widget) => {
+      if (widget.i in acc) {
+        acc[widget.i] = true;
+      }
+      return acc;
+    }, initialModel);
   }
 
   private updateLayoutsByWidgetsModel(
