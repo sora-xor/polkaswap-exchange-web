@@ -101,11 +101,13 @@ enum CHART_TYPES {
   LINE = 'line',
   CANDLE = 'candlestick',
   BAR = 'bar',
+  DEPTH = 'depth',
 }
 
 const CHART_TYPE_ICONS = {
   [CHART_TYPES.LINE]: SvgIcons.LineIcon,
   [CHART_TYPES.CANDLE]: SvgIcons.CandleIcon,
+  [CHART_TYPES.DEPTH]: SvgIcons.DepthIcon,
 };
 
 const LINE_CHART_FILTERS: SnapshotFilter[] = [
@@ -355,7 +357,7 @@ export default class SwapChart extends Mixins(
   }
 
   get chartTypeButtons(): { type: CHART_TYPES; icon: any; active: boolean }[] {
-    return [CHART_TYPES.LINE, CHART_TYPES.CANDLE].map((type) => ({
+    return [CHART_TYPES.LINE, CHART_TYPES.CANDLE, CHART_TYPES.DEPTH].map((type) => ({
       type,
       icon: CHART_TYPE_ICONS[type],
       active: this.chartType === type,
