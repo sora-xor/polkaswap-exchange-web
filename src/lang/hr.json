@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Nema dovoljno dostupnih narudžbi za ispunjavanje ove narudžbe",
-                "reading": "Ograničenje tržišnog naloga: nema dovoljno dostupnih naloga za ispunjavanje ovog ograničenog tržišnog naloga. Prilagodite veličinu svoje narudžbe ili pričekajte da se pošalje više narudžbi"
+                "reading": "Ograničenje tržišnog naloga: nema dovoljno dostupnih naloga za ispunjavanje ovog tržišnog naloga. Prilagodite veličinu svoje narudžbe ili pričekajte da se pošalje više narudžbi"
             },
             "exceedsSpread": {
                 "reason": "Cijena premašila raspon",
@@ -1554,6 +1554,7 @@
             "canceled": "Otkazano",
             "expired": "Istekao",
             "filled": "Ispunjeno"
-        }
+        },
+        "pricePerToken": "Cijena za 1 {token}"
     }
 }

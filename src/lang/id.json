@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Pesanan yang tersedia tidak cukup untuk memenuhi pesanan ini",
-                "reading": "Batasan pesanan pasar: Tidak ada cukup pesanan yang tersedia untuk memenuhi pesanan batas pasar ini. Silakan sesuaikan ukuran pesanan Anda atau tunggu pesanan lainnya dilakukan"
+                "reading": "Batasan pesanan pasar: Tidak tersedia cukup pesanan untuk memenuhi pesanan pasar ini. Silakan sesuaikan ukuran pesanan Anda atau tunggu pesanan lainnya dilakukan"
             },
             "exceedsSpread": {
                 "reason": "Harga melebihi spread",
@@ -1554,6 +1554,7 @@
             "canceled": "Dibatalkan",
             "expired": "Kedaluwarsa",
             "filled": "Dipenuhi"
-        }
+        },
+        "pricePerToken": "Harga per 1 {token}"
     }
 }

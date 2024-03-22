@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Er zijn niet genoeg bestellingen beschikbaar om deze bestelling uit te voeren",
-                "reading": "Marktorderbeperking: Er zijn niet genoeg orders beschikbaar om aan deze marktlimietorder te voldoen. Pas uw bestelgrootte aan of wacht tot er meer bestellingen worden geplaatst"
+                "reading": "Beperking van marktorders: Er zijn niet genoeg orders beschikbaar om aan deze marktorder te voldoen. Pas uw bestelgrootte aan of wacht tot er meer bestellingen worden geplaatst"
             },
             "exceedsSpread": {
                 "reason": "Prijs overtrof de spread",
@@ -1554,6 +1554,7 @@
             "canceled": "Geannuleerd",
             "expired": "Verlopen",
             "filled": "Gevuld"
-        }
+        },
+        "pricePerToken": "Prijs per 1 {token}"
     }
 }

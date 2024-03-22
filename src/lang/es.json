@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "No hay suficientes pedidos disponibles para completar este pedido",
-                "reading": "Limitación de orden de mercado: no hay suficientes órdenes disponibles para cumplir con esta orden de límite de mercado. Ajuste el tamaño de su pedido o espere a que se realicen más pedidos."
+                "reading": "Limitación de la orden de mercado: no hay suficientes órdenes disponibles para cumplir con esta orden de mercado. Ajuste el tamaño de su pedido o espere a que se realicen más pedidos."
             },
             "exceedsSpread": {
                 "reason": "El precio superó el diferencial",
@@ -1554,6 +1554,7 @@
             "canceled": "Cancelado",
             "expired": "Venció",
             "filled": "Completado"
-        }
+        },
+        "pricePerToken": "Precio por 1 {token}"
     }
 }
