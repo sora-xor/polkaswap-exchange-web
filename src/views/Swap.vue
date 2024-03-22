@@ -11,10 +11,10 @@
     v-model="widgets"
   >
     <template v-slot:[SwapWidgets.Form]="props">
-      <swap-form-widget v-bind="props" primary-title />
+      <swap-form-widget v-bind="props" primary-title full />
     </template>
     <template v-slot:[SwapWidgets.Chart]="props">
-      <swap-chart-widget
+      <price-chart-widget
         v-bind="props"
         :base-asset="tokenFrom"
         :quote-asset="tokenTo"
@@ -32,6 +32,12 @@
       <customise-widget v-bind="props" :widgets.sync="widgets" :options.sync="options">
         <s-button @click="reset">Reset</s-button>
       </customise-widget>
+    </template>
+    <template v-slot:[SwapWidgets.PriceChartA]="props">
+      <price-chart-widget v-bind="props" :base-asset="tokenFrom" full />
+    </template>
+    <template v-slot:[SwapWidgets.PriceChartB]="props">
+      <price-chart-widget v-bind="props" :base-asset="tokenTo" full />
     </template>
   </widgets-grid>
 </template>
@@ -56,15 +62,18 @@ enum SwapWidgets {
   Transactions = 'transactions',
   Distribution = 'distribution',
   Customise = 'customise',
+  // additional
+  PriceChartA = 'chart_a',
+  PriceChartB = 'chart_b',
 }
 
 @Component({
   components: {
     SwapFormWidget: lazyComponent(Components.SwapFormWidget),
-    SwapChartWidget: lazyComponent(Components.PriceChartWidget),
     SwapTransactionsWidget: lazyComponent(Components.SwapTransactionsWidget),
     SwapDistributionWidget: lazyComponent(Components.SwapDistributionWidget),
     CustomiseWidget: lazyComponent(Components.CustomiseWidget),
+    PriceChartWidget: lazyComponent(Components.PriceChartWidget),
     WidgetsGrid: lazyComponent(Components.WidgetsGrid),
   },
 })
@@ -83,9 +92,9 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   readonly DefaultLayouts: ResponsiveLayouts = {
     lg: [
       { x: 0, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 0, y: 20, w: 6, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
-      { x: 6, y: 0, w: 9, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-      { x: 6, y: 20, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
+      { x: 0, y: 20, w: 6, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
+      { x: 0, y: 24, w: 6, h: 4, minW: 4, minH: 4, i: SwapWidgets.Distribution },
+      { x: 6, y: 0, w: 9, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
       { x: 15, y: 0, w: 9, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
     md: [
@@ -128,6 +137,9 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
     [SwapWidgets.Chart]: true,
     [SwapWidgets.Distribution]: true,
     [SwapWidgets.Transactions]: true,
+    // not configured yet
+    // [SwapWidgets.PriceChartA]: false,
+    // [SwapWidgets.PriceChartB]: false,
   };
 
   @Watch('tokenFrom')
@@ -164,12 +176,3 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.swap-container {
-  #form,
-  #chart {
-    min-height: 502px;
-  }
-}
-</style>
