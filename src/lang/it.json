@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Non ci sono abbastanza ordini disponibili per evadere questo ordine",
-                "reading": "Limitazione dell'ordine di mercato: non ci sono abbastanza ordini disponibili per soddisfare questo ordine limite di mercato. Modifica la dimensione dell'ordine o attendi che vengano effettuati altri ordini"
+                "reading": "Limitazione dell'ordine di mercato: non ci sono abbastanza ordini disponibili per soddisfare questo ordine di mercato. Modifica la dimensione dell'ordine o attendi che vengano effettuati altri ordini"
             },
             "exceedsSpread": {
                 "reason": "Il prezzo ha superato lo spread",
@@ -1554,6 +1554,8 @@
             "canceled": "Annullato",
             "expired": "Scaduto",
             "filled": "Riempito"
-        }
-    }
+        },
+        "pricePerToken": "Prezzo per 1 {token}"
+    },
+    "calculatingText": "Calcolando"
 }

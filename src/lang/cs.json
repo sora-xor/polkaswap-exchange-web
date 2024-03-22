@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "K vyřízení této objednávky není k dispozici dostatek objednávek",
-                "reading": "Omezení tržního příkazu: Pro splnění tohoto tržního limitního příkazu není k dispozici dostatek příkazů. Upravte prosím velikost objednávky nebo počkejte na odeslání dalších objednávek"
+                "reading": "Omezení tržního příkazu: Pro splnění tohoto tržního příkazu není k dispozici dostatek příkazů. Upravte prosím velikost objednávky nebo počkejte na odeslání dalších objednávek"
             },
             "exceedsSpread": {
                 "reason": "Cena přesáhla spread",
@@ -1554,6 +1554,8 @@
             "canceled": "Zrušeno",
             "expired": "Prošlý",
             "filled": "Naplněné"
-        }
-    }
+        },
+        "pricePerToken": "Cena za 1 {token}"
+    },
+    "calculatingText": "Vypočítávání"
 }

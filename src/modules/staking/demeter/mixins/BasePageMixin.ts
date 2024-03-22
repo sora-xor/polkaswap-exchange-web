@@ -80,9 +80,13 @@ export default class BasePageMixin extends Mixins(AprMixin) {
   }
 
   get selectedPool(): Nullable<DemeterPool> {
-    if (!(this.baseAsset && this.poolAsset && this.pools[this.baseAsset]?.[this.poolAsset])) return null;
+    if (!(this.baseAsset && this.poolAsset && this.rewardAsset)) return null;
 
-    return this.pools[this.baseAsset]?.[this.poolAsset]?.find((pool) => pool.rewardAsset === this.rewardAsset);
+    const pools = this.pools[this.baseAsset]?.[this.poolAsset];
+
+    if (!pools) return null;
+
+    return pools.find((pool) => pool.rewardAsset === this.rewardAsset);
   }
 
   get selectedAccountPool(): Nullable<DemeterAccountPool> {
@@ -124,7 +128,7 @@ export default class BasePageMixin extends Mixins(AprMixin) {
     const emission = this.getEmission(pool, tokenInfo);
     const tvl = this.getTvl(pool, poolAsset.price, liquidity);
     const apr = this.getApr(emission, tvl, rewardAsset.price);
-    const aprFormatted = formatDecimalPlaces(apr, true);
+    const aprFormatted = this.formatApr(apr);
     const tvlFormatted = `$${formatDecimalPlaces(tvl)}`;
 
     return {
