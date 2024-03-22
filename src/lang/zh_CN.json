@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "没有足够的订单来完成此订单",
-                "reading": "市价订单限制：没有足够的订单来履行此市价限价订单。请调整您的订单大小或等待下更多订单"
+                "reading": "市价订单限制：没有足够的订单来履行该市价订单。请调整您的订单大小或等待下更多订单"
             },
             "exceedsSpread": {
                 "reason": "价格超出点差",
@@ -1554,6 +1554,8 @@
             "canceled": "取消",
             "expired": "已到期",
             "filled": "填充"
-        }
-    }
+        },
+        "pricePerToken": "每 1 个{token}价格"
+    },
+    "calculatingText": "正在计算"
 }
