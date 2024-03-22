@@ -128,7 +128,7 @@ export default class BasePageMixin extends Mixins(AprMixin) {
     const emission = this.getEmission(pool, tokenInfo);
     const tvl = this.getTvl(pool, poolAsset.price, liquidity);
     const apr = this.getApr(emission, tvl, rewardAsset.price);
-    const aprFormatted = formatDecimalPlaces(apr, true);
+    const aprFormatted = this.formatApr(apr);
     const tvlFormatted = `$${formatDecimalPlaces(tvl)}`;
 
     return {

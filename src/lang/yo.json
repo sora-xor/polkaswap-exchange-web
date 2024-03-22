@@ -1556,5 +1556,6 @@
             "filled": "Ti kun"
         },
         "pricePerToken": "Iye fun 1 {token}"
-    }
+    },
+    "calculatingText": "Ọnàkọnà"
 }

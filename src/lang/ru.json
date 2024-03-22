@@ -1556,5 +1556,6 @@
             "filled": "Заполнен"
         },
         "pricePerToken": "Цена за 1 {token}"
-    }
+    },
+    "calculatingText": "Вычисление"
 }

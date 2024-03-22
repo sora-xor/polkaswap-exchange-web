@@ -1556,5 +1556,6 @@
             "filled": "Լրացված"
         },
         "pricePerToken": "Գինը 1 {token} ի համար"
-    }
+    },
+    "calculatingText": "Հաշվարկում"
 }

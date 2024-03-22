@@ -1556,5 +1556,6 @@
             "filled": "Dipenuhi"
         },
         "pricePerToken": "Harga per 1 {token}"
-    }
+    },
+    "calculatingText": "Menghitung"
 }
