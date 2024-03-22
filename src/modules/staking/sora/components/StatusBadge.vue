@@ -12,7 +12,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
-import { formatDecimalPlaces } from '@/utils';
+import { formatDecimalPlaces, asZeroValue } from '@/utils';
 
 import StakingMixin from '../mixins/StakingMixin';
 
@@ -23,7 +23,7 @@ import StakingMixin from '../mixins/StakingMixin';
 })
 export default class StatusBadge extends Mixins(StakingMixin) {
   get soraStakingAPYFormatted(): string {
-    return formatDecimalPlaces(this.maxApy, true);
+    return asZeroValue(this.maxApy) ? this.t('calculatingText') : formatDecimalPlaces(this.maxApy, true);
   }
 }
 </script>

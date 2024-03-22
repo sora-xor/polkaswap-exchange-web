@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Ikke nok tilgjengelige bestillinger til å fullføre denne bestillingen",
-                "reading": "Markedsordrebegrensning: Det er ikke nok bestillinger tilgjengelig til å oppfylle denne markedsgrenseordren. Vennligst juster bestillingsstørrelsen eller vent på at flere bestillinger legges inn"
+                "reading": "Markedsordrebegrensning: Det er ikke nok bestillinger tilgjengelig til å oppfylle denne markedsordren. Vennligst juster bestillingsstørrelsen eller vent på at flere bestillinger legges inn"
             },
             "exceedsSpread": {
                 "reason": "Pris overskredet spredning",
@@ -1554,6 +1554,8 @@
             "canceled": "Kansellert",
             "expired": "Utløpt",
             "filled": "Fylt"
-        }
-    }
+        },
+        "pricePerToken": "Pris per 1 {token}"
+    },
+    "calculatingText": "Beregner"
 }
