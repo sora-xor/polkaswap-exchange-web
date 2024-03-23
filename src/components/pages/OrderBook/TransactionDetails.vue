@@ -1,28 +1,28 @@
 <template>
   <transaction-details :info-only="infoOnly">
     <info-line
-      :label="'order type'"
-      :label-tooltip="orderType"
-      :value="side.toUpperCase()"
+      :label="t('orderBook.txDetails.orderType')"
+      :label-tooltip="t('orderBook.tooltip.txDetails.orderType')"
+      :value="sideText"
       :class="getComputedClass()"
     />
     <info-line
-      :label="'limit price'"
-      :label-tooltip="limitTooltip"
+      :label="t('orderBook.txDetails.limitPrice')"
+      :label-tooltip="t('orderBook.tooltip.txDetails.limit')"
       :asset-symbol="quoteSymbol"
       :value="quoteValue || toValue || '0'"
       is-formatted
     />
     <info-line
-      :label="'amount'"
-      :label-tooltip="amountTooltip"
+      :label="t('orderBook.amount')"
+      :label-tooltip="t('orderBook.tooltip.txDetails.amount')"
       :asset-symbol="baseSymbol"
       :value="baseValue || '0'"
       is-formatted
     />
     <info-line
       :label="t(`assets.balance.locked`)"
-      :label-tooltip="lockedTooltip"
+      :label-tooltip="t('orderBook.tooltip.txDetails.locked')"
       :value="locked"
       :asset-symbol="lockedAssetSymbol"
       :fiat-value="getFiatAmountByCodecString(lockedCodec, lockedAsset)"
@@ -30,8 +30,8 @@
     />
     <info-line
       v-if="!isMarketType"
-      :label="'expiry date'"
-      :label-tooltip="expiryTooltip"
+      :label="t('orderBook.txDetails.expiryDate')"
+      :label-tooltip="t('orderBook.tooltip.txDetails.expiryDate')"
       :value="limitOrderExpiryDate"
     />
     <info-line
@@ -84,6 +84,18 @@ export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmou
     return this.networkFees[Operation.OrderBookPlaceLimitOrder];
   }
 
+  get baseSymbol(): string | undefined {
+    return this.getAsset(this.baseAssetAddress)?.symbol;
+  }
+
+  get quoteSymbol(): string {
+    return XOR.symbol;
+  }
+
+  get sideText(): string {
+    return this.side === PriceVariant.Buy ? this.t('orderBook.Buy') : this.t('orderBook.Sell');
+  }
+
   get locked(): string {
     return this.isBuy ? this.total.toString() : this.baseValue;
   }
@@ -108,40 +120,6 @@ export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmou
     return this.side === PriceVariant.Buy;
   }
 
-  getComputedClass(): string | undefined {
-    if (this.infoOnly) {
-      return this.side === PriceVariant.Buy ? 'limit-order-type--buy' : 'limit-order-type--sell';
-    }
-  }
-
-  get lockedTooltip(): string {
-    return "The 'Locked' shows the amount of asset to be held while order is ongoing.";
-  }
-
-  get expiryTooltip() {
-    return "The 'Expiry Date' is the deadline for your order to be executed. If the market doesn't reach your specified price before this date, the order is automatically cancelled. You're not bound to a perpetual wait if market conditions don't align with your trading preferences.";
-  }
-
-  get amountTooltip() {
-    return "The 'Amount' refers to the total number of assets you want to buy or sell in your order. It's important to specify, as it determines the size of your transaction, impacting the total cost for buy orders or revenue for sell orders.";
-  }
-
-  get limitTooltip() {
-    return "The 'Limit Price' is the precise price you set for a limit order. The trade will only execute when the asset's market price meets your limit price, ensuring you don't purchase above or sell below this specified value.";
-  }
-
-  get orderType() {
-    return "A 'Limit' order lets you specify the exact price at which you want to buy or sell an asset. A 'Buy' order will only be executed at the specified price or lower, while a 'Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.";
-  }
-
-  get baseSymbol(): string | undefined {
-    return this.getAsset(this.baseAssetAddress)?.symbol;
-  }
-
-  get quoteSymbol(): string {
-    return XOR.symbol;
-  }
-
   get limitOrderExpiryDate(): Nullable<string> {
     const now = new Date();
     const oneMonthAhead = now.setMonth(now.getMonth() + 1);
@@ -154,6 +132,12 @@ export default class PlaceTransactionDetails extends Mixins(mixins.FormattedAmou
 
   formatFee(fee: string, formattedFee: string): string {
     return fee !== ZeroStringValue ? formattedFee : ZeroStringValue;
+  }
+
+  getComputedClass(): string | undefined {
+    if (this.infoOnly) {
+      return this.side === PriceVariant.Buy ? 'limit-order-type--buy' : 'limit-order-type--sell';
+    }
   }
 }
 </script>

@@ -16,7 +16,7 @@
       <div v-if="isLoggedIn" class="pay-options__history-btn" @click="openFiatTxHistory">
         <span>{{ t('fiatPayment.historyBtn') }}</span>
         <div>
-          <span :class="computedCounterClass">{{ hasPendingTx ? 1 : 0 }}</span>
+          <span :class="computedCounterClass">{{ +hasPendingTx }}</span>
           <s-icon name="arrows-chevron-right-rounded-24" size="18" />
         </div>
       </div>
@@ -44,7 +44,7 @@ import { goTo, lazyComponent } from '../router';
 import { mutation, state, getter } from '../store/decorators';
 
 import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
-import type Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 @Component({
   components: {

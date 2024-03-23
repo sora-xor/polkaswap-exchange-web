@@ -1,19 +1,23 @@
 <template>
-  <div>
+  <div class="s-flex-column order-table__main">
+    <span class="h4 order-table__empty" v-if="shouldEmptyStateBeShown">{{ t('orderBook.orderTable.noOrders') }}</span>
     <s-table
+      v-show="!shouldEmptyStateBeShown /* v-show cuz SScrollbar is set during the mounting */"
       v-loading="loadingState"
       class="order-table"
-      empty-text="No orders"
       ref="table"
+      :row-key="rowKey"
+      :empty-text="t('orderBook.orderTable.noOrders')"
       :data="tableItems"
       :highlight-current-row="false"
       @cell-click="handleSelectRow"
       @selection-change="handleSelectionChange"
+      @select="handleSelect"
     >
-      <s-table-column v-if="selectable" type="selection" :selectable="isSelectable" />
+      <s-table-column v-if="selectable" type="selection" />
       <s-table-column width="88">
         <template #header>
-          <span>TIME</span>
+          <span>{{ t('orderBook.orderTable.time') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="order-table__date">
@@ -24,7 +28,7 @@
       </s-table-column>
       <s-table-column width="126">
         <template #header>
-          <span>PAIR</span>
+          <span>{{ t('orderBook.orderTable.pair') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-table__pair">{{ row.pair }}</span>
@@ -32,7 +36,7 @@
       </s-table-column>
       <s-table-column width="62">
         <template #header>
-          <span>SIDE</span>
+          <span>{{ t('orderBook.orderTable.side') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-table__side" :class="[{ buy: row.side === PriceVariant.Buy }]">{{ row.side }}</span>
@@ -40,7 +44,7 @@
       </s-table-column>
       <s-table-column width="126">
         <template #header>
-          <span>PRICE</span>
+          <span>{{ t('orderBook.price') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="order-table__price">
@@ -51,7 +55,7 @@
       </s-table-column>
       <s-table-column width="180">
         <template #header>
-          <span>AMOUNT</span>
+          <span>{{ t('orderBook.amount') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="order-table__amount">
@@ -62,13 +66,13 @@
       </s-table-column>
       <s-table-column width="84">
         <template #header>
-          <span>% FILLED</span>
+          <span>% {{ t('orderBook.orderTable.filled') }}</span>
         </template>
-        <template v-slot="{ row }"> {{ row.filled }}% </template>
+        <template v-slot="{ row }">{{ row.filled }}</template>
       </s-table-column>
       <s-table-column width="94">
         <template #header>
-          <span>LIFETIME</span>
+          <span>{{ t('orderBook.orderTable.lifetime') }}</span>
         </template>
         <template v-slot="{ row }">
           <div class="order-table__date">
@@ -76,9 +80,9 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="93">
+      <s-table-column width="93" v-if="!isOpenOrders">
         <template #header>
-          <span>STATUS</span>
+          <span>{{ t('orderBook.tradingPair.status') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-table__status">{{ row.status }}</span>
@@ -86,7 +90,7 @@
       </s-table-column>
       <s-table-column>
         <template #header>
-          <span>TOTAL</span>
+          <span>{{ t('orderBook.total') }}</span>
         </template>
         <template v-slot="{ row }">
           <span class="order-table__total">${{ row.total }}</span>
@@ -101,7 +105,7 @@
         :total="total"
         :last-page="lastPage"
         :loading="loadingState"
-        @pagination-click="handlePaginationClick"
+        @pagination-click="handlePagination"
       />
     </div>
   </div>
@@ -110,18 +114,20 @@
 <script lang="ts">
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
 import { FPNumber } from '@sora-substrate/util';
-import { components } from '@soramitsu/soraneo-wallet-web';
+import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import dayjs from 'dayjs';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import debounce from 'lodash/debounce';
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
 import ScrollableTableMixin from '@/components/mixins/ScrollableTableMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { getter, mutation } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
 import { OrderStatus } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';
 
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 import type { WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import type { OrderStatus as OrderStatusType } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 type OrderDataUI = Omit<OrderData, 'owner' | 'lifespan' | 'time' | 'expiresAt'>[];
 
@@ -133,14 +139,31 @@ type OrderDataUI = Omit<OrderData, 'owner' | 'lifespan' | 'time' | 'expiresAt'>[
 export default class OrderTable extends Mixins(TranslationMixin, ScrollableTableMixin) {
   readonly PriceVariant = PriceVariant;
 
-  @mutation.orderBook.setOrdersToBeCancelled setOrdersToBeCancelled!: (orders: LimitOrder[]) => void;
-
-  @getter.wallet.account.assetsDataTable assetsDataTable!: WALLET_TYPES.AssetsTable;
+  @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
+  @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
 
   @Prop({ default: () => [], type: Array }) readonly orders!: OrderData[];
   @Prop({ default: false, type: Boolean }) readonly selectable!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly isOpenOrders!: boolean;
 
-  pageAmount = 6;
+  private async syncTableItems(): Promise<void> {
+    if (this.currentPage !== 1 && !this.tableItems?.length) {
+      await this.handlePagination(WALLET_CONSTS.PaginationButton.Prev);
+      return;
+    }
+    this.$emit('sync', this.tableItems);
+  }
+
+  @Watch('tableItems', { deep: true, immediate: true })
+  private syncTableItemsDebounced = debounce(this.syncTableItems, 250);
+
+  get shouldEmptyStateBeShown(): boolean {
+    return !(this.loadingState || this.orders?.length);
+  }
+
+  get rowKey() {
+    return this.selectable ? 'id' : undefined;
+  }
 
   get preparedItems(): OrderDataUI {
     return this.orders.map((order: OrderData) => {
@@ -154,23 +177,24 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
       const created = dayjs(time);
       const expires = dayjs.duration(lifespan);
 
-      const proportion = amount.div(originalAmount).mul(FPNumber.HUNDRED);
-      const filled = FPNumber.HUNDRED.sub(proportion).toFixed(2);
+      const proportion = amount.div(originalAmount);
+      const percent = FPNumber.ONE.sub(proportion).toNumber(2);
+      const filled = this.percentFormat?.format?.(percent) ?? `${percent * 100}%`;
       const total = this.getFPNumberFiatAmountByFPNumber(originalAmount.mul(price), quoteAsset) ?? FPNumber.ZERO;
 
       const row = {
         id,
         orderBookId,
-        originalAmount: originalAmount,
-        amount: originalAmount.sub(amount),
-        filled: Number(filled),
+        originalAmount: originalAmount.dp(2),
+        amount: originalAmount.sub(amount).dp(2),
+        filled,
         baseAssetSymbol,
         quoteAssetSymbol,
         pair,
-        price: price,
-        total: total.dp(4).toLocaleString(),
+        price: price.dp(2),
+        total: total.dp(2).toLocaleString(),
         side,
-        status: status ?? OrderStatus.Active,
+        status: this.getStatusTranslation(status as OrderStatusType),
         created: { date: created.format('M/DD'), time: created.format('HH:mm:ss') },
         expires: expires.format('D[D]'),
       };
@@ -179,41 +203,77 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
     });
   }
 
+  getStatusTranslation(status: OrderStatusType | undefined): string {
+    switch (status) {
+      case OrderStatus.Active:
+        return this.t('orderBook.orderStatus.active');
+      case OrderStatus.Aligned:
+      case OrderStatus.Canceled:
+        return this.t('orderBook.orderStatus.canceled');
+      case OrderStatus.Expired:
+        return this.t('orderBook.orderStatus.expired');
+      case OrderStatus.Filled:
+        return this.t('orderBook.orderStatus.filled');
+      default:
+        return this.t('orderBook.orderStatus.active');
+    }
+  }
+
   getString(value: FPNumber): string {
     return value.toLocaleString();
   }
 
-  isSelectable(): boolean {
-    return this.selectable;
-  }
-
-  handleSelectRow(row): void {
+  handleSelect(rows: LimitOrder[]): void {
     if (!this.selectable) return;
 
-    this.tableComponent?.toggleRowSelection(row);
+    this.$emit('select', rows);
+  }
+
+  handleSelectRow(row: LimitOrder): void {
+    if (!this.selectable) return;
+
+    this.$emit('cell-click', row);
   }
 
   handleSelectionChange(rows: LimitOrder[]): void {
     if (!this.selectable) return;
 
-    this.setOrdersToBeCancelled(rows);
+    this.$emit('selection-change', rows);
+  }
+
+  async handlePagination(button: WALLET_CONSTS.PaginationButton): Promise<void> {
+    this.handlePaginationClick(button);
+    await this.$nextTick(); // For this.tableItems to be loaded
+    this.$emit('page-updated', this.currentPage, this.tableItems);
   }
 }
 </script>
 
 <style lang="scss">
+$table-header-background-color: rgba(231, 218, 221, 0.35);
+
 .order-table {
   font-size: var(--s-font-size-mini);
+  background-color: var(--s-color-utility-surface);
+
+  &__main {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+  }
 
   .scrollable-table {
-    height: 100%;
-    @include scrollbar();
+    height: 100%; // Move horizontal scroll to the bottom corner
+
+    // Fix issue with horizontal and vertical scroll
+    @include scrollbar($withHorizontalScroll: true, $hideVerticalScroll: true);
   }
 
   .el-table__header-wrapper {
-    background-color: rgba(231, 218, 221, 0.35);
+    text-transform: uppercase;
+    background-color: $table-header-background-color;
     th {
-      background-color: rgba(231, 218, 221, 0.35);
+      background-color: $table-header-background-color;
       color: var(--s-color-base-content-secondary);
     }
   }
@@ -283,8 +343,8 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
   }
 
   &__pagination {
-    margin: 0 $basic-spacing;
-    padding-bottom: $basic-spacing;
+    padding: 0 $basic-spacing $basic-spacing;
+    width: 100%;
   }
 }
 

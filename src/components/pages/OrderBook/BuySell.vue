@@ -4,7 +4,7 @@
       <pair-list-popover @close="toggleBookList" />
       <div slot="reference">
         <div class="order-book-choose-pair">
-          <div>TOKEN PAIR</div>
+          <div>{{ t('orderBook.tokenPair') }}</div>
           <div class="order-book-choose-btn">
             <div class="order-book-pair-name">
               <pair-token-logo :first-token="baseAsset" :second-token="quoteAsset" />
@@ -15,19 +15,19 @@
           <div class="delimiter" />
           <div class="order-book-pair-data">
             <div class="order-book-pair-data-item">
-              <span>Price</span>
+              <span>{{ t('orderBook.price') }}</span>
               <span class="order-book-pair-data-item__value order-book-fiat">
                 <formatted-amount :value="orderBookPrice" />
               </span>
             </div>
             <div class="order-book-pair-data-item">
-              <span>Change</span>
+              <span>{{ t('orderBook.change') }}</span>
               <span class="order-book-pair-data-item__value">
                 <price-change :value="orderBookPriceChange" />
               </span>
             </div>
             <div class="order-book-pair-data-item">
-              <span>1D Volume</span>
+              <span>{{ t('orderBook.dayVolume') }}</span>
               <span class="order-book-pair-data-item__value">
                 <formatted-amount :value="orderBookVolume" is-fiat-value />
               </span>
@@ -40,16 +40,28 @@
     <s-tabs class="order-book__tab" v-model="limitOrderType" type="rounded" @click="handleTabClick">
       <s-tab label="limit" name="limit">
         <span slot="label">
-          <span>{{ 'Limit' }}</span>
-          <s-tooltip slot="suffix" border-radius="mini" :content="limitTooltip" placement="top" tabindex="-1">
+          <span>{{ t('orderBook.limit') }}</span>
+          <s-tooltip
+            slot="suffix"
+            border-radius="mini"
+            :content="t('orderBook.tooltip.limitOrder')"
+            placement="top"
+            tabindex="-1"
+          >
             <s-icon name="info-16" size="14px" />
           </s-tooltip>
         </span>
       </s-tab>
       <s-tab label="market" name="market" :disabled="marketOptionDisabled">
         <span slot="label">
-          <span>{{ 'Market' }}</span>
-          <s-tooltip slot="suffix" border-radius="mini" :content="marketTooltip" placement="top" tabindex="-1">
+          <span>{{ t('orderBook.market') }}</span>
+          <s-tooltip
+            slot="suffix"
+            border-radius="mini"
+            :content="t('orderBook.tooltip.marketOrder')"
+            placement="top"
+            tabindex="-1"
+          >
             <s-icon name="info-16" size="14px" />
           </s-tooltip>
         </span>
@@ -59,7 +71,7 @@
     <token-input
       :balance="getTokenBalance(quoteAsset)"
       :is-max-available="false"
-      :title="'price'"
+      :title="t('orderBook.price')"
       :token="quoteAsset"
       :value="quoteValue"
       :disabled="isPriceInputDisabled"
@@ -71,7 +83,7 @@
       :balance="getTokenBalance(baseAsset)"
       :is-max-available="isMaxAmountAvailable"
       :with-slider="isSliderAvailable"
-      :title="'Amount'"
+      :title="t('orderBook.amount')"
       :token="baseAsset"
       :value="baseValue"
       :slider-value="sliderValue"
@@ -82,14 +94,12 @@
     />
 
     <div class="order-book-total">
-      <span class="order-book-total-title">TOTAL</span>
-      <div class="order-book-total-value">
-        <span class="order-book-total-value-amount">{{ amountAtPrice }}</span>
-      </div>
+      <info-line class="total-line" :label="t(`orderBook.${side}`)" :value="formattedAmountAtPrice" />
+      <info-line class="total-line" :label="t('orderBook.total')" :value="formattedTotal" :asset-symbol="quoteSymbol" />
     </div>
 
     <el-popover popper-class="book-validation__popover" trigger="hover" :visible-arrow="false">
-      <div v-if="hasExplainableError" class="book-validation">
+      <div v-if="shouldErrorTooltipBeShown" class="book-validation">
         <div class="book-validation__disclaimer">
           <h4 class="book-validation__disclaimer-header">
             {{ reason }}
@@ -103,6 +113,7 @@
         </div>
       </div>
       <s-button
+        v-if="buttonDisabled"
         slot="reference"
         type="primary"
         class="btn s-typography-button--medium"
@@ -110,8 +121,57 @@
         @click="placeLimitOrder"
         :disabled="buttonDisabled"
       >
-        <span> {{ t(buttonText) }}</span>
-        <s-icon v-if="hasExplainableError" name="info-16" class="book-inform-icon-btn" />
+        <template v-if="bookStopped">
+          {{ t('orderBook.stop') }}
+        </template>
+        <template v-else-if="userReachedSpotLimit || userReachedOwnLimit">
+          <error />
+        </template>
+        <template v-else-if="isLimitOrder && !quoteValue">{{ t('orderBook.setPrice') }}</template>
+        <template v-else-if="isBalanceLessThanStepSize">
+          <error />
+        </template>
+        <template v-else-if="isLimitOrder && (!baseValue || isZeroAmount)"> {{ t('orderBook.enterAmount') }}</template>
+        <template v-else-if="isLimitOrder && !isPriceBeyondPrecision">
+          <error />
+        </template>
+        <template v-else-if="isLimitOrder && isPlaceAndCancelMode && priceExceedsSpread">
+          <error />
+        </template>
+        <template v-else-if="isLimitOrder && limitForSinglePriceReached">
+          <error />
+        </template>
+        <template v-else-if="!isLimitOrder && isZeroAmount"> {{ t('orderBook.enterAmount') }}</template>
+        <template v-else-if="!isLimitOrder && !marketQuotePrice">
+          <error />
+        </template>
+        <template v-else-if="isOutOfAmountBounds">
+          <error />
+        </template>
+        <template v-else-if="isInsufficientXorForFee">
+          {{ t('insufficientBalanceText', { tokenSymbol: xor?.symbol }) }}
+        </template>
+        <template v-else-if="isInsufficientBalance">
+          {{ t('insufficientBalanceText', { tokenSymbol: tokenFrom?.symbol }) }}
+        </template>
+      </s-button>
+      <s-button
+        v-else
+        slot="reference"
+        type="primary"
+        class="btn s-typography-button--medium"
+        :class="computedBtnClass"
+        @click="placeLimitOrder"
+      >
+        <template v-if="!isLoggedIn">
+          {{ t('connectWalletText') }}
+        </template>
+        <template v-else-if="isBuySide">
+          {{ t('orderBook.Buy', { asset: baseAsset?.symbol }) }}
+        </template>
+        <template v-else>
+          {{ t('orderBook.Sell', { asset: baseAsset?.symbol }) }}
+        </template>
       </s-button>
     </el-popover>
 
@@ -126,7 +186,6 @@
       :visible.sync="confirmPlaceOrderVisibility"
       :isInsufficientBalance="isInsufficientBalance"
       :isBuySide="isBuySide"
-      :type="limitOrderType"
       :is-market-type="isMarketType"
       @confirm="resetValues"
     />
@@ -155,6 +214,7 @@ import {
   asZeroValue,
   hasInsufficientBalance,
   delay,
+  hasInsufficientXorForFee,
 } from '@/utils';
 import { getBookDecimals, MAX_ORDERS_PER_SIDE, MAX_ORDERS_PER_USER } from '@/utils/orderBook';
 
@@ -167,15 +227,18 @@ import type { Subscription } from 'rxjs';
 @Component({
   components: {
     FormattedAmount: components.FormattedAmount,
+    InfoLine: components.InfoLine,
     TokenInput: lazyComponent(Components.TokenInput),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     PairListPopover: lazyComponent(Components.PairListPopover),
     PlaceConfirm: lazyComponent(Components.PlaceOrder),
     PlaceTransactionDetails: lazyComponent(Components.PlaceTransactionDetails),
     PriceChange: lazyComponent(Components.PriceChange),
+    Error: lazyComponent(Components.ErrorButton),
   },
 })
 export default class BuySellWidget extends Mixins(TranslationMixin, mixins.FormattedAmountMixin, mixins.LoadingMixin) {
+  @state.router.prev private prevRoute!: Nullable<PageNames>;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.orderBook.limitOrderType private _limitOrderType!: LimitOrderType;
   @state.orderBook.baseValue baseValue!: string;
@@ -187,7 +250,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @state.orderBook.amountSliderValue sliderValue!: number;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
 
-  @getter.assets.xor private xor!: AccountAsset;
+  @getter.assets.xor xor!: AccountAsset;
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
@@ -198,17 +261,23 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   @mutation.orderBook.setBaseValue setBaseValue!: (value: string) => void;
   @mutation.orderBook.setQuoteValue setQuoteValue!: (value: string) => void;
+  @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
   @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
   @mutation.swap.setLiquiditySource setLiquiditySource!: (liquiditySource: string) => void;
   @mutation.swap.selectDexId private selectDexId!: (dexId: DexId) => void;
   @mutation.orderBook.setLimitOrderType private setLimitOrderType!: (type: LimitOrderType) => void;
+  @mutation.swap.resetTokenToAddress private resetTokenToAddress!: FnWithoutArgs;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
-
+  @action.orderBook.updateBalanceSubscription private updateBalanceSubscription!: (reset?: boolean) => void;
   @action.orderBook.updateOrderBooksStats private updateOrderBooksStats!: AsyncFnWithoutArgs;
+
+  // It previous route = PageNames.Swap, we need to save 'from' and 'to' tokens to set it during the beforeDestroy
+  private prevSwapFromAddress = '';
+  private prevSwapToAddress = '';
 
   visibleBookList = false;
   confirmPlaceOrderVisibility = false;
@@ -224,8 +293,27 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   @Watch('side')
   @Watch('baseAssetAddress')
-  private handleSideChange(): void {
+  private handleSideChange(oldValue: string, newValue: string): void {
+    this.updateBalanceSubscription();
     this.handleTabClick();
+
+    // Checks for slider reset
+    if (oldValue.startsWith('0x') && oldValue !== newValue) {
+      // if base changed, reset slider
+      this.setAmountSliderValue(0);
+    } else if (['Buy', 'Sell'].includes(oldValue) && oldValue !== newValue) {
+      // if side changed, check for need to reset slider
+      if (!this.currentOrderBook) return;
+      const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
+      const maxBalance = getMaxValue(this.baseAsset, this.networkFee);
+
+      const hasLessBalance = maxLotSize.gt(new FPNumber(maxBalance));
+
+      if (hasLessBalance) {
+        this.handleInputFieldBase('');
+        this.setAmountSliderValue(0);
+      }
+    }
   }
 
   @Watch('baseAsset')
@@ -277,59 +365,49 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return this.limitOrderType === LimitOrderType.market;
   }
 
+  get isBalanceLessThanStepSize(): boolean {
+    if (!this.currentOrderBook) return false;
+
+    const { stepLotSize } = this.currentOrderBook;
+    const availableBalance = getMaxValue(this.baseAsset, this.networkFee);
+
+    // if input accepts no decimals
+    if (!this.amountPrecision && this.baseValue === '0' && !this.isBuySide) {
+      return new FPNumber(availableBalance).lt(stepLotSize);
+    }
+
+    return false;
+  }
+
   get hasExplainableError(): boolean {
     return !!this.reason && !!this.reading;
   }
 
-  get amountAtPrice(): string {
-    if (this.buttonDisabled) return '';
-    if (!this.baseValue) return '';
-    if (!this.quoteValue && !this.marketQuotePrice) return '';
-    return `${this.baseValue} ${this.baseSymbol} AT ${this.quoteValue || this.marketQuotePrice} ${this.quoteSymbol}`;
+  get formattedAmountAtPrice(): string {
+    if (!(this.baseValue && this.quoteValue)) return '';
+
+    return this.t('orderBook.tradingPair.total', {
+      amount: this.formatStringValue(this.baseValue),
+      symbol: this.baseSymbol,
+      amount2: this.formatStringValue(this.quoteValue || this.marketQuotePrice),
+      symbol2: this.quoteSymbol,
+    });
   }
 
-  // TODO: [Rustem]: Refactor this function to reduce its Cognitive Complexity from 33 to the 15 allowed. [+22 locations]sonarlint(typescript:S3776)
-  get buttonText(): string {
-    if (!this.isLoggedIn) return 'connectWalletText';
+  get formattedTotal(): string {
+    return this.getFPNumber(this.baseValue).mul(this.getFPNumber(this.quoteValue)).toLocaleString();
+  }
 
-    if (this.bookStopped) return 'book stopped';
+  get shouldErrorTooltipBeShown(): boolean {
+    return this.isLoggedIn && this.hasExplainableError;
+  }
 
-    if (this.userReachedSpotLimit || this.userReachedOwnLimit) return "can't place order";
+  get isLimitOrder(): boolean {
+    return this.limitOrderType === LimitOrderType.limit;
+  }
 
-    if (this.isInsufficientBalance) return this.t('insufficientBalanceText', { tokenSymbol: this.tokenFrom?.symbol });
-
-    if (this.limitOrderType === LimitOrderType.limit) {
-      if (!this.quoteValue) return 'set price';
-      if (!this.baseValue || this.isZeroAmount) return 'enter amount';
-
-      // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
-      // if (this.isPriceTooHigh || this.isPriceTooLow || !this.isPriceBeyondPrecision) {
-      //   return "can't place order";
-      // }
-
-      if (!this.isPriceBeyondPrecision) {
-        return "can't place order";
-      }
-
-      if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel) {
-        if (this.priceExceedsSpread) return "can't place order";
-      }
-
-      if (this.limitForSinglePriceReached) return "can't place order";
-
-      if (this.isOutOfAmountBounds) return "can't place order";
-
-      if (this.side === PriceVariant.Buy) return `Buy ${this.baseAsset.symbol}`;
-      else return `Sell ${this.baseAsset.symbol}`;
-    } else {
-      if (this.isZeroAmount) return 'enter amount';
-      if (!this.marketQuotePrice) return "can't place order";
-    }
-
-    if (this.isOutOfAmountBounds) return "can't place order";
-
-    if (this.isBuySide) return `Buy ${this.baseAsset.symbol}`;
-    else return `Sell ${this.baseAsset.symbol}`;
+  get isPlaceAndCancelMode(): boolean {
+    return this.orderBookStatus === OrderBookStatus.PlaceAndCancel;
   }
 
   setError({ reason, reading }): void {
@@ -337,15 +415,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.reading = reading;
   }
 
-  // TODO: [Rustem] Refactor this function to reduce its Cognitive Complexity from 21 to the 15 allowed. [+14 locations]sonarlint(typescript:S3776)
   get buttonDisabled(): boolean {
     if (this.bookStopped) return true;
 
-    if (this.userReachedSpotLimit || this.userReachedOwnLimit || this.limitForSinglePriceReached) return true;
+    if (this.limitForSinglePriceReached || this.userReachedSpotLimit || this.userReachedOwnLimit) return true;
 
     if (!this.isLoggedIn) return false;
-
-    if (this.isInsufficientBalance) return true;
 
     if (this.limitOrderType === LimitOrderType.limit) {
       if (!this.baseValue || !this.quoteValue) return true;
@@ -357,34 +432,39 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         if (this.priceExceedsSpread) return true;
       }
     } else {
-      if (!this.baseValue) return true; // TODO: [Rustem] check with btn text
+      if (!this.baseValue) return true;
       if (!this.marketQuotePrice) return true;
     }
 
-    return this.isOutOfAmountBounds;
+    if (this.isOutOfAmountBounds || this.isInsufficientXorForFee || this.isInsufficientBalance) return true;
+
+    return false;
   }
 
-  // TODO: [Rustem] Refactor this function to reduce its Cognitive Complexity from 16 to the 15 allowed. [+15 locations]sonarlint(typescript:S3776)
   async checkInputValidation(): Promise<void> {
     this.setError({ reason: '', reading: '' });
 
     if (this.orderBookStatus === OrderBookStatus.Stop) return;
 
-    if (this.userReachedSpotLimit)
-      return this.setError({
-        reason: 'Trading side has been filled',
-        reading:
-          'Price range cap: Each order book side is limited to 1024 unique price points. Please select a price within the existing range or wait for space to become available',
-      });
+    if (this.isLimitOrder) {
+      if ((await this.singlePriceReachedLimit()) && this.quoteValue)
+        return this.setError({
+          reason: this.t('orderBook.error.singlePriceLimit.reason'),
+          reading: this.t('orderBook.error.singlePriceLimit.reading'),
+        });
 
-    if (this.userReachedOwnLimit)
-      return this.setError({
-        reason: 'Too many orders is ongoing',
-        reading:
-          'Limit reached: Each account is confined to 1024 limit orders. Please wait until some of your orders fulfill',
-      });
+      if (this.userReachedOwnLimit)
+        return this.setError({
+          reason: this.t('orderBook.error.accountLimit.reason'),
+          reading: this.t('orderBook.error.accountLimit.reading'),
+        });
 
-    if (this.isInsufficientBalance) return;
+      if (this.userReachedSpotLimit)
+        return this.setError({
+          reason: this.t('orderBook.error.spotLimit.reason'),
+          reading: this.t('orderBook.error.spotLimit.reading'),
+        });
+    }
 
     // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
     // if (this.isPriceTooHigh && this.quoteValue && this.baseValue)
@@ -400,12 +480,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     //       'Price range alert: Your price is more than 50% above or below the current market price. Please enter a more closely aligned market price',
     //   });
 
-    if (!this.isPriceBeyondPrecision && this.baseValue)
+    if (!this.isPriceBeyondPrecision && this.baseValue && this.isLimitOrder) {
+      const { tickSize } = this.currentOrderBook as OrderBook;
+
       return this.setError({
-        reason: 'Entered price is too precise to calculate',
-        reading:
-          'Precision exceeded: The amount/price entered has too many decimal places. Please input a value with fewer decimal places',
+        reason: this.t('orderBook.error.multipleOf.reason'),
+        reading: this.t('orderBook.error.multipleOf.reading', { value: tickSize?.toString() }),
       });
+    }
 
     if (this.isMarketType) {
       // wait until any market quote being set to avoid error appearance
@@ -413,42 +495,30 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
       if (!this.marketQuotePrice && !this.isZeroAmount) {
         return this.setError({
-          reason: 'Not enough orders available to fullfill this order',
-          reading:
-            'Market order limitation: There are not enough orders available to fulfill this market limit order. Please adjust your order size or wait for more orders to be placed',
+          reason: this.t('orderBook.error.marketNotAvailable.reason'),
+          reading: this.t('orderBook.error.marketNotAvailable.reading'),
         });
       }
     }
 
     if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel && this.priceExceedsSpread)
       return this.setError({
-        reason: 'Price exceeded spread',
-        reading: "Price exceeded: a market's bid or ask price exceeded its ask/bid price",
+        reason: this.t('orderBook.error.exceedsSpread.reason'),
+        reading: this.t('orderBook.error.exceedsSpread.reading'),
       });
 
-    if ((await this.singlePriceReachedLimit()) && this.quoteValue)
+    if ((!this.isZeroAmount && this.isOutOfAmountBounds && this.quoteValue) || this.isBalanceLessThanStepSize) {
+      const { maxLotSize, minLotSize } = this.currentOrderBook as OrderBook;
+      const { symbol } = this.baseAsset;
+
       return this.setError({
-        reason: 'Too many orders is ongoing for this price',
-        reading: 'Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill',
+        reason: this.t('orderBook.error.outOfBounds.reason'),
+        reading: this.t('orderBook.error.outOfBounds.reading', {
+          max: `${maxLotSize?.toLocaleString()} ${symbol}`,
+          min: `${minLotSize?.toLocaleString()} ${symbol}`,
+        }),
       });
-
-    if (!this.isZeroAmount && this.isOutOfAmountBounds && this.quoteValue)
-      return this.setError({
-        reason: 'Amount exceeds the blockchain range',
-        reading: "Blockchain range exceeded: Your entered amount falls outside the blockchain's allowed range",
-      });
-  }
-
-  async singlePriceReachedLimit(): Promise<boolean> {
-    const limitReached = !(await api.orderBook.isOrderPlaceable(
-      this.baseAsset.address,
-      this.quoteAsset.address,
-      this.side,
-      this.quoteValue
-    ));
-
-    this.limitForSinglePriceReached = limitReached;
-    return limitReached;
+    }
   }
 
   get priceExceedsSpread(): boolean {
@@ -538,12 +608,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get bookPrecision(): number {
-    return this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length ?? 2;
+    return (
+      this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)?.[1]?.length ?? 0
+    );
   }
 
   get amountPrecision(): number {
     return (
-      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1].length ?? 2
+      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)?.[1]?.length ?? 0
     );
   }
 
@@ -590,14 +662,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return !!(this.baseAsset && this.quoteAsset);
   }
 
-  get limitTooltip(): string {
-    return "A 'Limit' order lets you specify the exact price at which you want to buy or sell an asset. A 'Limit Buy' order will only be executed at the specified price or lower, while a 'Limit Sell' order will execute only at the specified price or higher. This control ensures you don't pay more or sell for less than you're comfortable with.";
-  }
-
-  get marketTooltip(): string {
-    return "A 'Market Order' is an order to immediately buy or sell at the best available current price. It doesn't require setting a price, ensuring a fast execution but with the trade-off of less control over the price received or paid. This type of order is used when certainty of execution is a priority over price control.";
-  }
-
   toggleBookList(): void {
     this.visibleBookList = !this.visibleBookList;
   }
@@ -617,13 +681,13 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   handleInputFieldQuote(preciseValue: string): void {
-    const value = this.formatInputValue(preciseValue);
+    const value = this.formatInputValue(preciseValue, this.bookPrecision);
     this.setQuoteValue(value);
     this.checkInputValidation();
   }
 
   handleInputFieldBase(preciseValue: string): void {
-    const value = this.formatInputValue(preciseValue);
+    const value = this.formatInputValue(preciseValue, this.amountPrecision);
     this.setBaseValue(value);
     this.setAmountSliderValue(this.getPercent(value));
     this.checkInputValidation();
@@ -637,14 +701,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     }
   }
 
-  formatInputValue(value: string): string {
-    if (!value) return '';
-
-    return value.endsWith('.') ? value : new FPNumber(value).dp(this.amountPrecision).toString();
-  }
-
   get preparedForSwap(): boolean {
     return this.isLoggedIn && this.areTokensSelected;
+  }
+
+  get isInsufficientXorForFee(): boolean {
+    return hasInsufficientXorForFee(this.xor, this.networkFee);
   }
 
   get isInsufficientBalance(): boolean {
@@ -684,17 +746,75 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return ![OrderBookStatus.Trade, OrderBookStatus.PlaceAndCancel].includes(this.orderBookStatus);
   }
 
+  get isBuySide(): boolean {
+    return this.side === PriceVariant.Buy;
+  }
+
+  get isMaxAmountAvailable(): boolean {
+    if (!(this.baseAsset && this.quoteAsset)) return false;
+
+    return this.isLoggedIn && isMaxButtonAvailable(this.baseAsset, this.baseValue, this.networkFee, this.xor, true);
+  }
+
+  get maxPossibleAmount(): FPNumber {
+    if (!this.currentOrderBook) return FPNumber.ZERO;
+    const max = getMaxValue(this.baseAsset, this.networkFee);
+    const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
+
+    const maxPossible = FPNumber.fromNatural(max, this.amountPrecision);
+
+    if (this.isBuySide) return maxLotSize;
+
+    return FPNumber.lte(maxPossible, maxLotSize) ? maxPossible : maxLotSize;
+  }
+
   get userReachedSpotLimit(): boolean {
-    // TODO: [Rustem] Should be improved as user could put into existing price
-    return (this.side === PriceVariant.Sell ? this.asks : this.bids).length >= MAX_ORDERS_PER_SIDE;
+    if (this.isMarketType) return false;
+
+    if ((this.side === PriceVariant.Sell ? this.asks : this.bids).length >= MAX_ORDERS_PER_SIDE && !!this.quoteValue) {
+      if (this.isPriceUnique(this.quoteValue)) return true;
+
+      if (this.limitForSinglePriceReached) return true;
+    }
+
+    return false;
+  }
+
+  isPriceUnique(statedPrice: string): boolean {
+    const rawPrices = (!this.isBuySide ? this.asks : this.bids).map((priceVolume) => priceVolume[0]);
+    const prices = rawPrices.map((price) => price.toString());
+
+    return !prices.includes(statedPrice);
   }
 
   get userReachedOwnLimit(): boolean {
+    if (this.isMarketType) return false;
+
     return this.userLimitOrders?.length === MAX_ORDERS_PER_USER;
   }
 
-  get isBuySide(): boolean {
-    return this.side === PriceVariant.Buy;
+  async singlePriceReachedLimit(): Promise<boolean> {
+    if (this.isMarketType) return false;
+
+    const limitReached = !(await api.orderBook.isOrderPlaceable(
+      this.baseAsset.address,
+      this.quoteAsset.address,
+      this.side,
+      this.quoteValue
+    ));
+
+    this.limitForSinglePriceReached = limitReached;
+    return limitReached;
+  }
+
+  formatInputValue(value: string, precision: number): string {
+    if (!value) return '';
+
+    const [_, decimal] = value.split('.');
+
+    if (value.endsWith('.') && precision === 0) return value.slice(0, -1);
+
+    return value.endsWith('.') || decimal?.length <= precision ? value : new FPNumber(value).dp(precision).toString();
   }
 
   private resetQuoteSubscription(): void {
@@ -702,27 +822,28 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.quoteSubscription = null;
   }
 
-  getFormattedValue(value: string, precision = 7): string {
-    const [integer, decimal = '00'] = value.split(FPNumber.DELIMITERS_CONFIG.decimal);
-    return `${integer}.${decimal.substring(0, precision)}`;
-  }
-
   private subscribeOnBookQuote(): void {
-    if (!this.baseValue) return;
     this.resetQuoteSubscription();
 
-    if (!this.areTokensSelected) return;
+    if (!(this.baseValue && this.areTokensSelected)) return;
 
-    const observableQuote = api.swap.subscribeOnResultRpc(
-      (this.tokenFrom as AccountAsset).address,
-      (this.tokenTo as AccountAsset).address,
-      this.baseValue,
-      this.isBuySide,
-      LiquiditySourceTypes.OrderBook
+    const inputAsset = (this.tokenFrom as AccountAsset).address;
+    const outputAsset = (this.tokenTo as AccountAsset).address;
+    const sources = [LiquiditySourceTypes.OrderBook];
+
+    const observableQuote = api.swap.getSwapQuoteObservable(
+      inputAsset,
+      outputAsset,
+      sources,
+      DexId.XOR // subscription only for XOR dex in optimization purposes
     );
 
-    this.quoteSubscription = observableQuote.subscribe(async (quoteData) => {
-      const { amount } = await quoteData;
+    if (!observableQuote) return;
+
+    this.quoteSubscription = observableQuote.subscribe(async ({ quote }) => {
+      const {
+        result: { amount },
+      } = quote(inputAsset, outputAsset, this.baseValue, this.isBuySide, sources);
 
       if (FPNumber.fromCodecValue(amount).isZero() || this.limitOrderType === LimitOrderType.limit) {
         this.resetQuoteSubscription();
@@ -732,11 +853,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         return;
       }
 
-      const unformattedMarketQuotePrice = FPNumber.fromCodecValue(amount)
+      this.marketQuotePrice = FPNumber.fromCodecValue(amount)
         .div(FPNumber.fromNatural(this.baseValue))
+        .dp(this.bookPrecision)
         .toString();
-
-      this.marketQuotePrice = this.getFormattedValue(unformattedMarketQuotePrice, this.bookPrecision);
 
       this.prepareValuesForSwap(amount);
     });
@@ -756,47 +876,22 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.checkInputValidation();
   }
 
-  beforeDestroy(): void {
-    this.resetQuoteSubscription();
-    this.setTokenFromAddress(this.xor.address);
-    this.setFromValue('');
-    this.setTokenToAddress();
-    this.setToValue('');
-    this.setQuoteValue('');
+  resetValues(success?: boolean) {
     this.setBaseValue('');
-    this.setLiquiditySource(LiquiditySourceTypes.Default);
-    this.selectDexId(DexId.XOR);
-  }
+    this.setQuoteValue('');
 
-  resetValues() {
-    this.setBaseValue('');
-    this.setQuoteValue('');
-    this.limitOrderType = LimitOrderType.limit;
+    if (!success) {
+      this.limitOrderType = LimitOrderType.limit;
+    }
   }
 
   showPlaceOrderDialog(): void {
     this.confirmPlaceOrderVisibility = true;
   }
 
-  get maxPossibleAmount(): FPNumber {
-    if (!this.currentOrderBook) return FPNumber.ZERO;
-    const max = getMaxValue(this.baseAsset, this.networkFee);
-    const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
-
-    const maxPossible = FPNumber.fromNatural(max, this.bookPrecision);
-
-    return FPNumber.lte(maxPossible, maxLotSize) ? maxPossible : maxLotSize;
-  }
-
   handleMaxValue(): void {
     this.handleInputFieldBase(this.maxPossibleAmount.toString());
     this.checkInputValidation();
-  }
-
-  get isMaxAmountAvailable(): boolean {
-    if (!(this.baseAsset && this.quoteAsset)) return false;
-
-    return this.isLoggedIn && isMaxButtonAvailable(this.baseAsset, this.baseValue, this.networkFee, this.xor, true);
   }
 
   handleTabClick(): void {
@@ -812,6 +907,36 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     }
 
     this.checkInputValidation();
+  }
+
+  mounted(): void {
+    this.updateBalanceSubscription();
+
+    if (this.prevRoute === PageNames.Swap && this.tokenFrom?.address && this.tokenTo?.address) {
+      this.prevSwapFromAddress = this.tokenFrom?.address;
+      this.prevSwapToAddress = this.tokenTo?.address;
+    }
+  }
+
+  beforeDestroy(): void {
+    this.resetQuoteSubscription();
+    this.updateBalanceSubscription(true);
+    if (this.prevSwapFromAddress && this.prevSwapToAddress) {
+      this.setTokenFromAddress(this.prevSwapFromAddress);
+      this.setTokenToAddress(this.prevSwapToAddress);
+    } else {
+      this.setTokenFromAddress(this.xor.address);
+      this.resetTokenToAddress();
+    }
+    this.setFromValue('');
+    this.setToValue('');
+    this.setQuoteValue('');
+    this.setBaseValue('');
+    this.setLiquiditySource(LiquiditySourceTypes.Default);
+    this.selectDexId(DexId.XOR);
+    this.setSide(PriceVariant.Buy);
+    this.setAmountSliderValue(0);
+    this.limitOrderType = LimitOrderType.limit;
   }
 }
 </script>
@@ -873,7 +998,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @include custom-tabs;
 
   &__tab {
-    margin-bottom: #{$basic-spacing-medium};
+    margin-bottom: $inner-spacing-mini;
   }
 
   .s-tabs.s-rounded .el-tabs__nav-wrap .el-tabs__item {
@@ -930,7 +1055,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
 .order-book-choose-pair {
   width: 100%;
-  background: var(--base-day-background, #f4f0f1);
+  background: var(--s-color-base-background);
+  box-shadow: var(--s-shadow-element);
   border-radius: var(--s-border-radius-small);
   margin-bottom: $inner-spacing-mini;
   padding: 10px $basic-spacing;
@@ -940,10 +1066,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 }
 
-[design-system-theme='dark'] {
-  .order-book-choose-pair {
-    background: var(--s-color-base-background);
-  }
+.book-inform-icon-btn {
+  margin-left: $inner-spacing-mini;
 }
 </style>
 
@@ -983,6 +1107,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       flex-direction: column;
       margin-right: 42px;
 
+      > span {
+        text-transform: capitalize;
+      }
+
       &__value {
         font-size: var(--s-font-size-small);
       }
@@ -998,32 +1126,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   .order-book {
     &-total {
       display: flex;
-      justify-content: space-between;
-      margin: 12px 0 $basic-spacing 0;
-
-      &-value {
-        &-amount {
-          font-weight: 700;
-          margin-right: 6px;
-        }
-        &-fiat {
-          color: var(--s-color-fiat-value);
-          font-family: var(--s-font-family-default);
-          font-weight: 400;
-          line-height: var(--s-line-height-medium);
-          letter-spacing: var(--s-letter-spacing-small);
-
-          .dollar-sign {
-            opacity: 0.6;
-            margin-right: 2px;
-          }
+      flex-direction: column;
+      .total-line {
+        border-bottom: none;
+        &:last-child {
+          margin-bottom: 4px;
         }
       }
     }
-  }
-
-  .book-inform-icon-btn {
-    margin-left: $inner-spacing-mini;
   }
 
   .delimiter {

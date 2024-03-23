@@ -1,6 +1,7 @@
 import { defineMutations } from 'direct-vuex';
 import omit from 'lodash/fp/omit';
 
+import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import storage from '@/utils/storage';
 
 import { initialState } from './state';
@@ -58,6 +59,12 @@ const mutations = defineMutations<ReferralsState>()({
     Object.keys(s).forEach((key) => {
       state[key] = s[key];
     });
+  },
+  setReferralRewards(state, referralRewards: ReferrerRewards): void {
+    state.referralRewards = referralRewards;
+  },
+  clearReferralRewards(state): void {
+    state.referralRewards = null;
   },
   unsubscribeFromInvitedUsers(state): void {
     state.invitedUsersSubscription?.unsubscribe();

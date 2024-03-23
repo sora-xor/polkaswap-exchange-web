@@ -60,7 +60,12 @@
             "StakingPayout": "Kifizetési jutalmak",
             "StakingChill": "Hideg",
             "StakingSetController": "A {address} vezérlő beállítása",
-            "StakingSetPayee": "Kedvezményezett {address} beállítása"
+            "StakingSetPayee": "Kedvezményezett {address} beállítása",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} áron {price} {symbol2} elhelyezve",
+            "OrderBookCancelLimitOrder": "Limit megbízás törölve",
+            "OrderBookCancelLimitOrders": "Limit megrendelések törölve",
+            "Burn": "Égetett {amount} {symbol}",
+            "Mint": "Verte {amount} {symbol} erre: {address}"
         },
         "error": {
             "Transfer": "Nem sikerült {action} {amount} {symbol} {direction} {address}",
@@ -92,7 +97,12 @@
             "StakingPayout": "Nem sikerült a jutalmak kifizetése",
             "StakingChill": "Nem sikerült lehűteni",
             "StakingSetController": "Nem sikerült beállítani a( {address} vezérlőt",
-            "StakingSetPayee": "Nem sikerült beállítani a kedvezményezettet {address}"
+            "StakingSetPayee": "Nem sikerült beállítani a kedvezményezettet {address}",
+            "OrderBookPlaceLimitOrder": "Nem sikerült elhelyezni {amount} {symbol} összegű limitrendelést {price} {symbol2} áron",
+            "OrderBookCancelLimitOrders": "Nem sikerült törölni a limitált rendeléseket",
+            "OrderBookCancelLimitOrder": "Nem sikerült törölni a limitált rendelést",
+            "Burn": "Nem sikerült égetni {amount} {symbol}",
+            "Mint": "Nem sikerült menteni {amount} {symbol} címet a következő címre {address}"
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
@@ -116,7 +126,12 @@
         "StakingPayout": "Kifizetési jutalmak",
         "StakingChill": "Hideg",
         "StakingSetController": "Állítsa be a vezérlőt",
-        "StakingSetPayee": "Kedvezményezett beállítása"
+        "StakingSetPayee": "Kedvezményezett beállítása",
+        "OrderBookPlaceLimitOrder": "Rendelés leadása",
+        "OrderBookCancelLimitOrder": "Megrendelés törlése",
+        "OrderBookCancelLimitOrders": "Megrendelések törlése",
+        "Burn": "Éget",
+        "Mint": "Menta"
     },
     "polkadotjs": {
         "noExtensions": "Nem találtunk {PolkadotJs} kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -339,7 +354,9 @@
         "referrer": "Ajánló",
         "referral": "Ajánlás",
         "adarTxDetailsTitle": "Tranzakció részlete",
-        "comment": "Megjegyzés"
+        "comment": "Megjegyzés",
+        "price": "Ár",
+        "side": "Oldal"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Hálózat módosítása a pénztárcában",
@@ -377,7 +394,10 @@
         "Explore\/Pools": "Totó",
         "Explore\/Staking": "Letét",
         "Explore\/Farming": "Farmolás",
-        "Staking": "Letét"
+        "Staking": "Letét",
+        "OrderBook": "Kereskedelmi",
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Váltás",
@@ -391,7 +411,9 @@
         "CreatePair": "Pár létrehozása",
         "StakingContainer": "Letét",
         "Explore\/Container": "Kutat",
-        "SoraCard": "{Sora} Kártya"
+        "SoraCard": "{Sora} Kártya",
+        "OrderBook": "Kereskedelmi",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1273,7 +1295,9 @@
         "actions": {
             "claim": "Kérjen jutalmakat",
             "remove": "Távolítsa el a tétet",
-            "more": "Tételj többet"
+            "more": "Tételj többet",
+            "confirm": "Erősítse meg Staking-et",
+            "withdraw": "Kivét"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1290,7 +1314,8 @@
             "change": "Változtassa meg az érvényesítőket",
             "select": "Válasszon érvényesítőket",
             "next": "Következő",
-            "alreadyNominated": "A kiválasztott érvényesítőket már jelölték"
+            "alreadyNominated": "A kiválasztott érvényesítőket már jelölték",
+            "tooManyValidators": "Túl sok érvényesítő van kiválasztva ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Keresés...",
@@ -1298,10 +1323,10 @@
             "noNominatedValidators": "Nincsenek kijelölt érvényesítői",
             "noValidators": "Nincsenek a megadott szűrőt kielégítő érvényesítők",
             "commission": "jutalék",
-            "commissionTooltip": "A jutalék arra a díjra vonatkozik, amelyet az érvényesítők felszámítanak a licitálási folyamat során nyújtott szolgáltatásaikért. Ezt a százalékban kifejezett díjat levonják a jelölők által a kiosztás előtt szerzett tét jutalmakból. Fontos megjegyezni, hogy az érvényesítők bármikor módosíthatják a jutalék mértékét"
+            "commissionTooltip": "A jutalék arra a díjra vonatkozik, amelyet az érvényesítők felszámítanak a licitálási folyamat során nyújtott szolgáltatásaikért. Ezt a százalékban kifejezett díjat levonják a jelölők által a kiosztás előtt szerzett tét jutalmakból. Fontos megjegyezni, hogy az érvényesítők bármikor módosíthatják a jutalék mértékét",
+            "return": "Visszatérés"
         },
         "info": {
-            "redeemable": "Beváltható",
             "unstaking": "Unstaking",
             "stakingBalance": "Egyensúly kockáztatása",
             "rewarded": "Jutalmazott",
@@ -1380,8 +1405,157 @@
             "title": "Kérjen jutalmakat",
             "checkRewards": "Ellenőrizze a jutalmakat korszakonként és érvényesítőnként",
             "rewardsDestination": "Jutalmak célcíme"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Kivonható",
+            "beingWithdrawn": "Visszahúzódó",
+            "seeAll": "Az összes megtekintése",
+            "nextWithdrawal": "Következő visszavonás",
+            "countdownLeft": "van hátra"
+        },
+        "stakeDialog": {
+            "toStake": "A téthez",
+            "toRemove": "Eltávolítani"
+        },
+        "withdrawDialog": {
+            "title": "Vonja ki a nem tét nélküli alapokat",
+            "showAllWithdraws": "Az összes visszavonás megjelenítése"
+        },
+        "allWithdrawsDialog": {
+            "title": "Könnyű tevékenység",
+            "information": "Miután visszavonta a tokeneket, van egy kötelező 7 napos tétbevonási időszak. Ezen időszak után a tokenek nem kerülnek automatikusan vissza a pénztárcájába. A folyamatot be kell fejeznie a tokenek manuális visszavonásával."
         }
     },
     "collapseText": "Összeomlás",
-    "expandText": "Kiterjed"
+    "expandText": "Kiterjed",
+    "orderBook": {
+        "Buy": "Vásároljon {asset}",
+        "Sell": "{asset} eladása",
+        "orderBook": "Rendelési könyv",
+        "marketTrades": "Piaci kereskedések",
+        "market": "Piac",
+        "limit": "Határ",
+        "price": "Ár",
+        "total": "Teljes",
+        "amount": "összeg",
+        "time": "idő",
+        "month": "hónap",
+        "change": "változás",
+        "cantPlaceOrder": "Nem lehet rendelést leadni",
+        "enterAmount": "Adja meg az összeget",
+        "setPrice": "Állítsa be az árat",
+        "dayVolume": "1D kötet",
+        "stop": "A könyv megállt",
+        "tokenPair": "Token pár",
+        "book": {
+            "noAsks": "Nincsenek nyitott kérdések",
+            "noBids": "Nincsenek nyitott ajánlatok"
+        },
+        "history": {
+            "tradeHistory": "Kereskedelmi történelem",
+            "orderHistory": "Rendelési előzmények",
+            "openOrders": "Nyitott rendelések {value}",
+            "connect": "Csatlakoztasson egy fiókot a kereskedés megkezdéséhez",
+            "cancel": "Megrendelés törlése {value}",
+            "cancelAll": "Törölje az összeset"
+        },
+        "orderTable": {
+            "time": "idő",
+            "pair": "pár",
+            "side": "oldal",
+            "filled": "megtöltött",
+            "lifetime": "élettartam",
+            "noOrders": "Nincs parancs. Hozd létre az elsőt!"
+        },
+        "dialog": {
+            "placeMarket": "Adjon fel piaci rendelést",
+            "placeLimit": "Adjon fel limites megbízást",
+            "askCancel": "Biztosan törölni szeretné az összes nyitott rendelést?",
+            "cancelAll": "Igen, törölje az összeset",
+            "buy": "Vásároljon {amount} {symbol}",
+            "sell": "Eladás {amount} {symbol}",
+            "at": "{price} {symbol} áron"
+        },
+        "tradingPair": {
+            "choosePair": "Válasszon kereskedési párt",
+            "volume": "Hangerő",
+            "dailyChange": "Napi változás",
+            "status": "Állapot",
+            "total": "{amount} {symbol} , {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Aktív",
+            "placeable": "Elhelyezhető",
+            "cancelable": "Lemondható",
+            "inactive": "Inaktív"
+        },
+        "tooltip": {
+            "limitOrder": "A „Limit” megbízás lehetővé teszi, hogy pontosan meghatározza azt az árat, amelyen egy eszközt szeretne vásárolni vagy eladni. A „Limit Buy” megbízás csak a megadott vagy annál alacsonyabb áron, míg a „Limit Sell” megbízás csak a megadott vagy annál magasabb áron kerül végrehajtásra. Ez a vezérlő biztosítja, hogy ne fizessen többet, és ne adjon el kevesebbért, mint amennyit kényelmes.",
+            "marketOrder": "A „piaci megbízás” olyan megbízás, amely azonnali vételre vagy eladásra irányul a legjobb elérhető aktuális áron. Nem igényel árat, gyors végrehajtást biztosítva, hanem a kapott vagy fizetett ár kevésbé befolyásolható kompromisszumával. Ezt a típusú megbízást akkor alkalmazzák, ha a végrehajtás bizonyossága elsőbbséget élvez az árszabályozással szemben.",
+            "pairsList": "Valós idejű lista, amely a kriptovaluták aktuális vételi és eladási megbízásait mutatja. Segít megérteni a keresletet, a lehetséges árirányt és a kereskedelem volumenét a SORA hálózaton és a Polkaswap DEX-en",
+            "bookWidget": "Egy adott eszközre vonatkozó vételi (licit) és eladási (adási) megbízások élő, folyamatosan frissülő nyilvántartása, árszint szerint rendezve. Az ajánlati könyv megjeleníti a piac mélységét, beleértve a különféle áron kínált eszközök mennyiségét. A kereskedők ezt a részletes nézetet arra használják, hogy felmérjék a piaci hangulatot, azonosítsák a lehetséges ellenállási és támogatási szinteket, és előre jelezzék az ármozgásokat a meglévő kereslet és kínálat alapján.",
+            "marketWidget": "Ez a widget a piacon végrehajtott ügyletek valós idejű folyamát mutatja, információt nyújtva a tranzakciók mennyiségéről, a legutóbbi tevékenységről és az aktuális piaci trendekről. A tényleges ügyletek időzítésének, árának és méretének megfigyelésével a kereskedők betekintést nyerhetnek a piac dinamikájába és hangulatába, segítve őket a kereskedési lehetőségek felismerésében és megalapozott döntések meghozatalában.",
+            "txDetails": {
+                "orderType": "A „vételi” megbízás csak a megadott vagy annál alacsonyabb áron, míg az „eladási” megbízás csak a megadott vagy annál magasabb áron kerül végrehajtásra. Ez a vezérlő biztosítja, hogy ne fizessen többet, és ne adjon el kevesebbért, mint amennyit kényelmes.",
+                "expiryDate": "A „Lejárati dátum” a megrendelés teljesítésének határideje. Ha a piac nem éri el a megadott árat ezen időpont előtt, a rendelés automatikusan törlődik. Nem kell állandóan várakoznia, ha a piaci feltételek nem illeszkednek az Ön kereskedési preferenciáihoz.",
+                "amount": "Az „Összeg” a rendelésben vásárolni vagy eladni kívánt eszközök teljes számát jelenti. Fontos meghatározni, mivel ez határozza meg a tranzakció méretét, ami befolyásolja a vételi rendelések teljes költségét vagy az eladási rendelések bevételét.",
+                "limit": "A 'Limit Price' az a pontos ár, amelyet egy limitáras megbízáshoz állít be. A kereskedés csak akkor valósul meg, ha az eszköz piaci ára eléri az Ön limitárát, biztosítva ezzel, hogy ne vásároljon vagy adjon el e meghatározott érték alatt.",
+                "locked": "A „Zárolva” a rendelés folyamatában tartandó eszköz mennyiségét mutatja."
+            },
+            "bookStatus": {
+                "active": "Teljes kereskedési funkció engedélyezve. Lehetősége van új rendelések leadására vagy a meglévők törlésére.",
+                "placeable": "Korlátozott funkcionalitás. Leadhat új rendeléseket és törölheti a meglévőket, de előfordulhat, hogy egyes funkciók nem érhetők el.",
+                "cancelable": "Csak a meglévő rendeléseket törölheti. Az új rendelés leadása jelenleg le van tiltva.",
+                "inactive": "Jelenleg minden kereskedési tevékenység szünetel. Rendeléseket jelenleg nem lehet leadni vagy lemondani."
+            }
+        },
+        "txDetails": {
+            "orderType": "rendelés típusa",
+            "limitPrice": "limitár",
+            "expiryDate": "lejárati dátum"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "A megadott ár túl pontos a kiszámításhoz",
+                "reading": "Túllépte a pontosságot: A megadott összeg\/ár túl sok tizedesjegyet tartalmaz. Kérjük, adjon meg egy kevesebb tizedesjegyet tartalmazó értéket"
+            },
+            "marketNotAvailable": {
+                "reason": "Nincs elég rendelés a rendelés teljesítéséhez",
+                "reading": "Piaci megbízás korlátozása: Nincs elég megbízás a piaci megbízás teljesítéséhez. Kérjük, módosítsa rendelési méretét, vagy várja meg a további rendelések leadását"
+            },
+            "exceedsSpread": {
+                "reason": "Az ár meghaladja a spreadet",
+                "reading": "Ár túllépve: egy piac vételi vagy eladási ára meghaladta az eladási\/vételi árát"
+            },
+            "spotLimit": {
+                "reason": "A kereskedési oldal megtelt",
+                "reading": "Ártartomány felső határa: Minden rendelési könyv oldala 1024 egyedi árpontra korlátozódik. Kérjük, válasszon egy árat a meglévő tartományon belül, vagy várja meg, amíg szabaddá válik a hely"
+            },
+            "accountLimit": {
+                "reason": "Túl sok megrendelés van folyamatban",
+                "reading": "Limit elérve: Minden fiók 1024 limites megbízásra korlátozódik. Kérjük, várja meg, amíg egyes rendelései teljesülnek"
+            },
+            "singlePriceLimit": {
+                "reason": "Túl sok megrendelés van folyamatban ezen az áron",
+                "reading": "Limit elérve: Minden pozíció 1024 limites megbízásra korlátozódik. Kérjük, várja meg, amíg néhány megrendelés teljesül"
+            },
+            "outOfBounds": {
+                "reading": "Blockchain tartomány túllépve: A megadott mennyiség kívül esik a blokklánc megengedett tartományán. Min: {min} ; Max: {max}",
+                "reason": "Az összeg nem felel meg a blokklánc-tartománynak"
+            },
+            "multipleOf": {
+                "reading": "Rendelése feldolgozásához adjon meg egy árat, amely a(z {value} többszöröse",
+                "reason": "A megadott ár túl konkrét"
+            }
+        },
+        "orderStatus": {
+            "active": "Aktív",
+            "canceled": "Törölve",
+            "expired": "Lejárt",
+            "filled": "Megtöltött"
+        },
+        "pricePerToken": "1 {token} ár"
+    },
+    "calculatingText": "Számítás"
 }

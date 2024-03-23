@@ -109,7 +109,7 @@
                 value-can-be-hidden
                 :font-size-rate="FontSizeRate.SMALL"
                 :value="balance"
-                class="explore-table-item-price explore-table-item-amount"
+                class="explore-table-item-token"
               >
               </formatted-amount>
               <token-logo size="small" class="explore-table-item-logo explore-table-item-logo--plain" :token="asset" />
@@ -158,12 +158,11 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { SortDirection } from '@soramitsu/soramitsu-js-ui/lib/components/Table/consts';
 import { api, components } from '@soramitsu/soraneo-wallet-web';
+import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { DemeterStakingComponents } from '@/modules/staking/demeter/consts';
 import DemeterBasePageMixin from '@/modules/staking/demeter/mixins/BasePageMixin';
@@ -218,14 +217,13 @@ const lpKey = (baseAsset: string, poolAsset: string): string => {
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBasePageMixin, ExplorePageMixin) {
+export default class ExploreDemeter extends Mixins(DemeterBasePageMixin, ExplorePageMixin) {
   @Watch('pools', { deep: true })
   private async updatePoolsData() {
     await this.updateExploreData();
   }
 
   // override ExplorePageMixin
-  order = SortDirection.DESC;
   property = 'apr';
 
   poolsData: Record<string, PoolData> = {};
@@ -234,7 +232,7 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
     return Object.values(this.pools)
       .map((poolMap) => Object.values(poolMap))
       .flat(2)
-      .filter((pool) => !pool.isRemoved) as DemeterPool[];
+      .filter((pool) => !pool.isRemoved);
   }
 
   get selectedDerivedPool(): Nullable<DemeterPoolDerivedData> {
@@ -402,4 +400,3 @@ export default class ExploreDemeter extends Mixins(TranslationMixin, DemeterBase
 <style lang="scss">
 @include explore-table;
 </style>
-@/modules/staking/demeter/consts@/modules/staking/demeter/types

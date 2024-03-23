@@ -60,7 +60,12 @@
             "StakingPayout": "Utbetalingsbelønninger",
             "StakingChill": "Slapp av",
             "StakingSetController": "Angi kontroller {address}",
-            "StakingSetPayee": "Angi betalingsmottaker {address}"
+            "StakingSetPayee": "Angi betalingsmottaker {address}",
+            "OrderBookPlaceLimitOrder": "{side} {amount} {symbol} til {price} {symbol2} plassert",
+            "OrderBookCancelLimitOrder": "Begrensningsbestilling kansellert",
+            "OrderBookCancelLimitOrders": "Limit bestillinger kansellert",
+            "Burn": "Brent {amount} {symbol}",
+            "Mint": "Preget {amount} {symbol} til {address}"
         },
         "error": {
             "Transfer": "Kunne ikke {action} {amount} {symbol} {direction} {address}",
@@ -92,7 +97,12 @@
             "StakingPayout": "Kunne ikke utbetale belønninger",
             "StakingChill": "Klarte ikke å slappe av",
             "StakingSetController": "Kunne ikke angi kontrolleren {address}",
-            "StakingSetPayee": "Kunne ikke angi betalingsmottaker {address}"
+            "StakingSetPayee": "Kunne ikke angi betalingsmottaker {address}",
+            "OrderBookPlaceLimitOrder": "Kunne ikke legge inn grensebestilling på {amount} {symbol} til {price} {symbol2}",
+            "OrderBookCancelLimitOrders": "Kunne ikke kansellere begrensede bestillinger",
+            "OrderBookCancelLimitOrder": "Kunne ikke kansellere begrenset ordre",
+            "Burn": "Kunne ikke brenne {amount} {symbol}",
+            "Mint": "Kunne ikke prege {amount} {symbol} til {address}"
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",
@@ -116,7 +126,12 @@
         "StakingPayout": "Utbetalingsbelønninger",
         "StakingChill": "Slapp av",
         "StakingSetController": "Still inn kontrolleren",
-        "StakingSetPayee": "Angi betalingsmottaker"
+        "StakingSetPayee": "Angi betalingsmottaker",
+        "OrderBookPlaceLimitOrder": "Legg inn bestilling",
+        "OrderBookCancelLimitOrder": "Avbryt bestillingen",
+        "OrderBookCancelLimitOrders": "Kanseller bestillinger",
+        "Burn": "Brenne",
+        "Mint": "Mynte"
     },
     "polkadotjs": {
         "noExtensions": "Finner ingen {PolkadotJs} utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -339,7 +354,9 @@
         "referrer": "Henviser",
         "referral": "Henvisning",
         "adarTxDetailsTitle": "Transaksjonsdetaljer",
-        "comment": "Kommentar"
+        "comment": "Kommentar",
+        "price": "Pris",
+        "side": "Side"
     },
     "appName": "{AppName}",
     "changeNetworkText": "Bytt nettverk i lommeboken",
@@ -377,7 +394,10 @@
         "Explore\/Pools": "Bassenger",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
-        "Staking": "Staking"
+        "Staking": "Staking",
+        "OrderBook": "Handel",
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "Kensetsu": "Kensetsu"
     },
     "mainMenu": {
         "Swap": "Bytte",
@@ -391,7 +411,9 @@
         "CreatePair": "Opprett par",
         "StakingContainer": "Staking",
         "Explore\/Container": "Utforske",
-        "SoraCard": "{Sora} Kort"
+        "SoraCard": "{Sora} Kort",
+        "OrderBook": "Handel",
+        "Kensetsu": "Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1273,7 +1295,9 @@
         "actions": {
             "claim": "Gjør krav på belønninger",
             "remove": "Fjern innsatsen",
-            "more": "Sats mer"
+            "more": "Sats mer",
+            "confirm": "Bekreft staking",
+            "withdraw": "Ta ut"
         },
         "overview": {
             "title": "{Sora} Staking",
@@ -1290,7 +1314,8 @@
             "change": "Endre validatorer",
             "select": "Velg validatorer",
             "next": "Neste",
-            "alreadyNominated": "Utvalgte validatorer er allerede nominert"
+            "alreadyNominated": "Utvalgte validatorer er allerede nominert",
+            "tooManyValidators": "For mange validatorer er valgt ( {Max} {max} )"
         },
         "validatorsList": {
             "search": "Søk...",
@@ -1298,10 +1323,10 @@
             "noNominatedValidators": "Du har ingen nominerte validatorer",
             "noValidators": "Det er ingen validatorer som tilfredsstiller det angitte filteret",
             "commission": "Kommisjon",
-            "commissionTooltip": "Provisjon refererer til gebyret som kreves av validatorer for deres tjenester i innsatsprosessen. Denne avgiften, uttrykt som en prosentandel, trekkes fra innsatsbelønningene opptjent av nominatorer før utdeling. Det er viktig å merke seg at validatorer kan justere sine provisjonssatser når som helst"
+            "commissionTooltip": "Provisjon refererer til gebyret som kreves av validatorer for deres tjenester i innsatsprosessen. Denne avgiften, uttrykt som en prosentandel, trekkes fra innsatsbelønningene opptjent av nominatorer før utdeling. Det er viktig å merke seg at validatorer kan justere sine provisjonssatser når som helst",
+            "return": "Komme tilbake"
         },
         "info": {
-            "redeemable": "Innløselig",
             "unstaking": "Unstaking",
             "stakingBalance": "Staking balanse",
             "rewarded": "Belønnet",
@@ -1380,8 +1405,157 @@
             "title": "Gjør krav på belønninger",
             "checkRewards": "Sjekk belønninger per epoke og validator",
             "rewardsDestination": "Destinasjonsadresse for belønninger"
+        },
+        "selectedValidators": "{count} ( {Max} {max} )",
+        "withdraw": {
+            "withdrawable": "Uttrekkbar",
+            "beingWithdrawn": "Blir trukket tilbake",
+            "seeAll": "Se alt",
+            "nextWithdrawal": "Neste uttak",
+            "countdownLeft": "igjen"
+        },
+        "stakeDialog": {
+            "toStake": "Å satse",
+            "toRemove": "Å fjerne"
+        },
+        "withdrawDialog": {
+            "title": "Ta ut uinnsatte midler",
+            "showAllWithdraws": "Vis alle uttak"
+        },
+        "allWithdrawsDialog": {
+            "title": "Ustabil aktivitet",
+            "information": "Når du har trukket ut tokens, er det en obligatorisk 7-dagers utsettingsperiode. Etter denne perioden vil ikke tokens automatisk bli returnert til lommeboken din. Du må fullføre prosessen ved å trekke ut tokens manuelt."
         }
     },
     "collapseText": "Kollapse",
-    "expandText": "Utvide"
+    "expandText": "Utvide",
+    "orderBook": {
+        "Buy": "Kjøp {asset}",
+        "Sell": "Selg {asset}",
+        "orderBook": "Bestillingsbok",
+        "marketTrades": "Markedshandler",
+        "market": "Marked",
+        "limit": "Grense",
+        "price": "Pris",
+        "total": "Total",
+        "amount": "beløp",
+        "time": "tid",
+        "month": "måned",
+        "change": "endring",
+        "cantPlaceOrder": "Kan ikke bestille",
+        "enterAmount": "Tast inn beløp",
+        "setPrice": "Sett pris",
+        "dayVolume": "1D volum",
+        "stop": "Boken stoppet",
+        "tokenPair": "Token-par",
+        "book": {
+            "noAsks": "Ingen åpnet spør",
+            "noBids": "Ingen åpnede bud"
+        },
+        "history": {
+            "tradeHistory": "Handelshistorie",
+            "orderHistory": "Ordrehistorikk",
+            "openOrders": "Åpne bestillinger {value}",
+            "connect": "Koble til en konto for å begynne å handle",
+            "cancel": "Kanseller bestillingen {value}",
+            "cancelAll": "Avbryt alle"
+        },
+        "orderTable": {
+            "time": "tid",
+            "pair": "par",
+            "side": "side",
+            "filled": "fylt",
+            "lifetime": "livstid",
+            "noOrders": "Ingen bestillinger. Lag din første!"
+        },
+        "dialog": {
+            "placeMarket": "Legg inn markedsordre",
+            "placeLimit": "Legg inn grensebestilling",
+            "askCancel": "Er du sikker på at du vil kansellere alle åpne bestillinger?",
+            "cancelAll": "Ja, avbryt alle",
+            "buy": "Kjøp {amount} {symbol}",
+            "sell": "Selg {amount} {symbol}",
+            "at": "til {price} {symbol}"
+        },
+        "tradingPair": {
+            "choosePair": "Velg handelspar",
+            "volume": "Volum",
+            "dailyChange": "Daglig endring",
+            "status": "Status",
+            "total": "{amount} {symbol} ved {amount2} {symbol2}"
+        },
+        "bookStatus": {
+            "active": "Aktiv",
+            "placeable": "Plasserbar",
+            "cancelable": "Kan kanselleres",
+            "inactive": "Inaktiv"
+        },
+        "tooltip": {
+            "limitOrder": "En \"Limit\"-ordre lar deg spesifisere den nøyaktige prisen du vil kjøpe eller selge en eiendel til. En 'Limit Buy'-ordre vil kun bli utført til den angitte prisen eller lavere, mens en 'Limit Sell'-ordre vil kun utføres til den spesifiserte prisen eller høyere. Denne kontrollen sikrer at du ikke betaler mer eller selger for mindre enn du er komfortabel med.",
+            "marketOrder": "En 'markedsordre' er en ordre for å umiddelbart kjøpe eller selge til den beste tilgjengelige gjeldende prisen. Det krever ikke å sette en pris, for å sikre en rask utførelse, men med en avveining av mindre kontroll over prisen som mottas eller betales. Denne typen ordre brukes når sikkerhet for utførelse er en prioritet fremfor priskontroll.",
+            "pairsList": "En sanntidsliste som viser gjeldende kjøps- og salgsordrer for en kryptovaluta. Det hjelper deg å forstå etterspørselen, potensiell prisretning og handelsvolum på SORA Network og Polkaswap DEX",
+            "bookWidget": "En live, konstant oppdatering av kjøps- (bud) og salgs- (spør)-ordrer for en spesifikk eiendel, organisert etter prisnivå. Ordreboken viser dybden av markedet, inkludert mengden eiendeler som tilbys til ulike priser. Traders bruker denne detaljerte visningen for å måle markedssentiment, identifisere potensielle motstands- og støttenivåer og forutse prisbevegelser basert på eksisterende etterspørsel og tilbud",
+            "marketWidget": "Denne widgeten viser en sanntidsstrøm av utførte handler i markedet, og gir informasjon om transaksjonsvolumer, nylig aktivitet og gjeldende markedstrender. Ved å observere timingen, prisen og størrelsen på faktiske handler, kan tradere få innsikt i markedsdynamikk og sentiment, og hjelpe dem med å oppdage handelsmuligheter og ta informerte beslutninger",
+            "txDetails": {
+                "orderType": "'Kjøp'-ordre vil kun bli utført til den spesifiserte prisen eller lavere, mens en 'selg'-ordre vil kun utføres til den angitte prisen eller høyere. Denne kontrollen sikrer at du ikke betaler mer eller selger for mindre enn du er komfortabel med.",
+                "expiryDate": "\"Utløpsdatoen\" er fristen for å utføre bestillingen din. Hvis markedet ikke når den angitte prisen før denne datoen, kanselleres bestillingen automatisk. Du er ikke bundet til en evig venting hvis markedsforholdene ikke stemmer overens med dine handelspreferanser.",
+                "amount": "'Beløp' refererer til det totale antallet eiendeler du ønsker å kjøpe eller selge i bestillingen din. Det er viktig å spesifisere, siden det bestemmer størrelsen på transaksjonen din, og påvirker den totale kostnaden for kjøpsordrer eller inntekter for salgsordrer.",
+                "limit": "'Limit Price' er den nøyaktige prisen du angir for en limitordre. Handelen vil bare utføres når eiendelens markedspris oppfyller grenseprisen din, og sikrer at du ikke kjøper over eller selger under denne angitte verdien.",
+                "locked": "'Låst' viser hvor mye eiendel som skal holdes mens bestillingen pågår."
+            },
+            "bookStatus": {
+                "active": "Full handelsfunksjonalitet aktivert. Du kan legge inn nye bestillinger eller kansellere eksisterende.",
+                "placeable": "Begrenset funksjonalitet. Du kan legge inn nye bestillinger og kansellere eksisterende, men enkelte funksjoner kan være utilgjengelige.",
+                "cancelable": "Du kan kun kansellere eksisterende bestillinger. Ny bestillingsplassering er for øyeblikket deaktivert.",
+                "inactive": "All handelsvirksomhet er for øyeblikket stanset. Ingen bestillinger kan legges inn eller kanselleres på dette tidspunktet."
+            }
+        },
+        "txDetails": {
+            "orderType": "ordretype",
+            "limitPrice": "grensepris",
+            "expiryDate": "utløpsdato"
+        },
+        "error": {
+            "beyondPrecision": {
+                "reason": "Oppgitt pris er for nøyaktig til å beregnes",
+                "reading": "Presisjon overskredet: Beløpet\/prisen som er angitt har for mange desimaler. Skriv inn en verdi med færre desimaler"
+            },
+            "marketNotAvailable": {
+                "reason": "Ikke nok tilgjengelige bestillinger til å fullføre denne bestillingen",
+                "reading": "Markedsordrebegrensning: Det er ikke nok bestillinger tilgjengelig til å oppfylle denne markedsordren. Vennligst juster bestillingsstørrelsen eller vent på at flere bestillinger legges inn"
+            },
+            "exceedsSpread": {
+                "reason": "Pris overskredet spredning",
+                "reading": "Pris overskredet: et markeds kjøps- eller salgskurs oversteg kjøps-\/salgskursen"
+            },
+            "spotLimit": {
+                "reason": "Handelssiden er fylt",
+                "reading": "Prisklassetak: Hver ordrebokside er begrenset til 1024 unike prispunkter. Velg en pris innenfor det eksisterende området eller vent til det blir ledig plass"
+            },
+            "accountLimit": {
+                "reason": "For mange bestillinger pågår",
+                "reading": "Grensen nådd: Hver konto er begrenset til 1024 grenseordrer. Vent til noen av bestillingene dine oppfylles"
+            },
+            "singlePriceLimit": {
+                "reason": "For mange bestillinger pågår for denne prisen",
+                "reading": "Grensen nådd: Hver posisjon er begrenset til 1024 grenseordrer. Vennligst vent til noen bestillinger oppfylles"
+            },
+            "outOfBounds": {
+                "reading": "Blockchain-området er overskredet: Det angitte beløpet ditt faller utenfor blokkjedens tillatte område. Min: {min} ; Maks: {max}",
+                "reason": "Beløpet samsvarer ikke med blokkjedeområdet"
+            },
+            "multipleOf": {
+                "reading": "For å behandle bestillingen din, skriv inn en pris som er et multiplum av {value}",
+                "reason": "Oppgitt pris er for spesifikk"
+            }
+        },
+        "orderStatus": {
+            "active": "Aktiv",
+            "canceled": "Kansellert",
+            "expired": "Utløpt",
+            "filled": "Fylt"
+        },
+        "pricePerToken": "Pris per 1 {token}"
+    },
+    "calculatingText": "Beregner"
 }

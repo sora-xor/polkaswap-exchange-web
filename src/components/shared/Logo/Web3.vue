@@ -98,7 +98,7 @@ h1.3v-4.8C142.4,32.5,141.7,31.3,139.9,31.3z"
 </template>
 
 <script lang="ts">
-import Theme from '@soramitsu/soramitsu-js-ui/lib/types/Theme';
+import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component

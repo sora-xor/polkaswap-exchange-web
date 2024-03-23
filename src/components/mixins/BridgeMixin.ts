@@ -37,6 +37,10 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     return this.nativeToken?.externalDecimals;
   }
 
+  get isNativeTokenSelected(): boolean {
+    return this.nativeToken?.address === this.asset?.address;
+  }
+
   get assetLockedOnSora(): boolean {
     return !subBridgeApi.isSoraParachain(this.networkSelected as SubNetwork);
   }

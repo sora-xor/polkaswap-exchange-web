@@ -16,16 +16,15 @@
       />
     </s-form>
 
-    <div class="min-stake-warning">
+    <div v-if="stakingAsset" class="min-stake-warning">
       <s-icon name="info-16" />
       <span>
-        {{
-          t('soraStaking.newStake.minStakeWarning', { min: minNominatorBondFormatted, symbol: stakingAsset?.symbol })
-        }}
+        {{ t('soraStaking.newStake.minStakeWarning', { min: minNominatorBondFormatted, symbol: stakingAsset.symbol }) }}
       </span>
     </div>
 
     <s-button
+      v-if="stakingAsset"
       type="primary"
       class="s-typography-button--large action-button"
       :loading="parentLoading"
@@ -33,10 +32,10 @@
       @click="handleConfirm"
     >
       <template v-if="isInsufficientXorForFee">
-        {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset?.symbol }) }}
+        {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset.symbol }) }}
       </template>
       <template v-else-if="isInsufficientBalance">
-        {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset?.symbol }) }}
+        {{ t('insufficientBalanceText', { tokenSymbol: stakingAsset.symbol }) }}
       </template>
       <template v-else-if="valueFundsEmpty">
         {{ t('buttons.enterAmount') }}
@@ -45,16 +44,6 @@
         {{ t('confirmText') }}
       </template>
     </s-button>
-
-    <info-line
-      class="info-line"
-      :label="t('networkFeeText')"
-      :label-tooltip="t('networkFeeTooltipText')"
-      :value="networkFeeFormatted"
-      :asset-symbol="xor?.symbol"
-      :fiat-value="getFiatAmountByCodecString(networkFee)"
-      is-formatted
-    />
   </div>
 </template>
 
@@ -95,8 +84,12 @@ export default class SoraStakingForm extends Mixins(StakingMixin, mixins.Loading
     });
   }
 
-  mounted() {
+  async mounted() {
     this.selectValidators(this.validators);
+
+    await this.$nextTick();
+    const input: HTMLInputElement | null = this.$el.querySelector('.s-input .el-input__inner');
+    input?.focus();
   }
 
   get networkFee(): CodecString {
@@ -105,16 +98,6 @@ export default class SoraStakingForm extends Mixins(StakingMixin, mixins.Loading
 
   get inputTitle(): string {
     return this.t('demeterFarming.amountAdd');
-  }
-
-  get valuePartCharClass(): string {
-    const charClassName =
-      {
-        3: 'three',
-        2: 'two',
-      }[this.value.toString().length] ?? 'one';
-
-    return `${charClassName}-char`;
   }
 
   get part(): FPNumber {
