@@ -87,11 +87,11 @@
         </div>
 
         <div v-if="withSlider" class="input-line--footer-with-slider" @click="handleSliderFocus">
-          <div class="delimiter" />
+          <s-divider />
           <s-slider
             class="slider-container"
             :value="slideValue"
-            :disabled="!withSlider"
+            :disabled="sliderDisabled"
             :show-tooltip="false"
             :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
             @input="handleSlideInput"
@@ -144,6 +144,7 @@ export default class TokenInput extends Mixins(
   @Prop({ default: false, type: Boolean }) readonly external!: boolean;
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
   @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly sliderDisabled!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMaxAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isSelectAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly withSlider!: boolean;
@@ -346,7 +347,7 @@ $el-input-class: '.el-input';
   .el-slider__button {
     background-color: #fff;
     border-radius: 4px;
-    transform: rotate(-45deg);
+    transform: rotate(-45deg) !important;
   }
 
   .el-slider__stop {
@@ -364,11 +365,20 @@ $el-input-class: '.el-input';
     justify-content: space-between;
   }
 
-  .delimiter {
+  // overwrite
+  .el-slider__runway.disabled {
+    .el-slider__bar {
+      width: 0 !important;
+    }
+
+    .el-slider__button-wrapper {
+      left: 0 !important;
+    }
+  }
+
+  .el-divider {
     background-color: var(--s-color-base-border-secondary);
-    width: 100%;
-    height: 1px;
-    margin: 14px 0 4px 0;
+    margin: 14px 0 4px 0 !important;
   }
 }
 </style>

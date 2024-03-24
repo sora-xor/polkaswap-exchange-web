@@ -82,11 +82,12 @@
     <token-input
       :balance="getTokenBalance(baseAsset)"
       :is-max-available="isMaxAmountAvailable"
-      :with-slider="isSliderAvailable"
       :title="t('orderBook.amount')"
       :token="baseAsset"
       :value="baseValue"
       :slider-value="sliderValue"
+      :slider-disabled="isSliderDisabled"
+      with-slider
       @slide="handleSlideInputChange"
       @input="handleInputFieldBase"
       @max="handleMaxValue"
@@ -294,6 +295,7 @@ export default class BuySellWidget extends Mixins(
   confirmPlaceOrderVisibility = false;
   confirmCancelOrderVisibility = false;
   limitForSinglePriceReached = false;
+  wasMaxAmountOut = false;
   quoteSubscription: Nullable<Subscription> = null;
   timestamp = MAX_TIMESTAMP;
   marketQuotePrice = '';
@@ -373,9 +375,10 @@ export default class BuySellWidget extends Mixins(
     return this.networkFees[Operation.OrderBookPlaceLimitOrder];
   }
 
-  get isSliderAvailable(): boolean {
-    const availableBalance = getMaxValue(this.baseAsset, this.networkFee);
-    return new FPNumber(availableBalance).gt(FPNumber.ZERO);
+  get isSliderDisabled(): boolean {
+    const asset = this.isBuySide ? this.quoteAsset : this.baseAsset;
+    const availableBalance = getMaxValue(asset, this.networkFee);
+    return !new FPNumber(availableBalance).gt(FPNumber.ZERO);
   }
 
   get isMarketType(): boolean {
@@ -680,15 +683,30 @@ export default class BuySellWidget extends Mixins(
   getPercent(value: string): number {
     if (!value) return 0;
 
-    return new FPNumber(value).div(this.availableBalance).mul(FPNumber.HUNDRED).toNumber();
+    return new FPNumber(value).div(this.maxPossibleAmount()).mul(FPNumber.HUNDRED).toNumber();
   }
 
   handleSlideInputChange(percent: string): void {
     this.setAmountSliderValue(Number(percent));
 
-    const value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(this.availableBalance).dp(this.amountPrecision);
+    // user is able to input any value; unbound logic of setting that relies on slider
+    // when amount goes beyond 100%
+    let value;
+
+    if (this.wasMaxAmountOut) {
+      value = this.baseValue;
+    } else {
+      value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(this.maxPossibleAmount()).dp(this.amountPrecision);
+    }
 
     if (value) this.handleInputFieldBase(value.toString());
+
+    if (Number(percent) === 100) {
+      this.wasMaxAmountOut = true;
+      this.setAmountSliderValue(100);
+    } else {
+      this.wasMaxAmountOut = false;
+    }
   }
 
   handleInputFieldQuote(preciseValue: string): void {
@@ -762,19 +780,23 @@ export default class BuySellWidget extends Mixins(
   }
 
   get isMaxAmountAvailable(): boolean {
+    if (!this.isLoggedIn) return false;
     if (!(this.baseAsset && this.quoteAsset)) return false;
+    if (this.isInsufficientXorForFee) return false;
 
-    if (this.isBuySide && (this.isZeroPrice || this.isPriceBeyondPrecision)) return false;
-
-    return this.isLoggedIn && isMaxButtonAvailable(this.baseAsset, this.baseValue, this.networkFee, this.xor, true);
+    if (this.isBuySide) {
+      if (!this.isZeroPrice && !this.isPriceBeyondPrecision) {
+        if (this.maxPossibleAmount().eq(new FPNumber(this.baseValue))) return false;
+        return isMaxButtonAvailable(this.quoteAsset, this.quoteValue, this.networkFee, this.xor);
+      }
+      return false;
+    } else {
+      if (this.maxPossibleAmount().eq(new FPNumber(this.baseValue))) return false;
+      return isMaxButtonAvailable(this.baseAsset, this.baseValue, this.networkFee, this.xor);
+    }
   }
 
-  get availableBalance(): FPNumber {
-    const max = getMaxValue(this.baseAsset, this.networkFee);
-    return FPNumber.fromNatural(max, this.amountPrecision);
-  }
-
-  get maxPossibleAmount(): FPNumber {
+  maxPossibleAmount(): FPNumber {
     if (!this.currentOrderBook) return FPNumber.ZERO;
     const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
 
@@ -914,7 +936,7 @@ export default class BuySellWidget extends Mixins(
   }
 
   handleMaxValue(): void {
-    this.handleInputFieldBase(this.maxPossibleAmount.toString());
+    this.handleInputFieldBase(this.maxPossibleAmount().toString());
     this.checkInputValidation();
   }
 
