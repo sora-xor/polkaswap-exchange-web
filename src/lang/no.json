@@ -1556,5 +1556,6 @@
             "filled": "Fylt"
         },
         "pricePerToken": "Pris per 1 {token}"
-    }
+    },
+    "calculatingText": "Beregner"
 }

@@ -1556,5 +1556,6 @@
             "filled": "Ispunjeno"
         },
         "pricePerToken": "Cijena za 1 {token}"
-    }
+    },
+    "calculatingText": "Izračunavanje"
 }

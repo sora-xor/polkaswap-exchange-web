@@ -1556,5 +1556,6 @@
             "filled": "Megtöltött"
         },
         "pricePerToken": "1 {token} ár"
-    }
+    },
+    "calculatingText": "Számítás"
 }

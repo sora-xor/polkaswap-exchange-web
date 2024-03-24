@@ -1556,5 +1556,6 @@
             "filled": "填充"
         },
         "pricePerToken": "每 1 个{token}价格"
-    }
+    },
+    "calculatingText": "正在计算"
 }

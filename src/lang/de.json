@@ -1556,5 +1556,6 @@
             "filled": "Gefüllt"
         },
         "pricePerToken": "Preis pro 1 {token}"
-    }
+    },
+    "calculatingText": "Berechnung"
 }
