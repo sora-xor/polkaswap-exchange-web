@@ -8,14 +8,6 @@
       size="small"
       class="explore-table"
     >
-      <s-table-column width="48" header-align="center">
-        <template #header>
-          <s-icon name="basic-eye-no-24" size="16px" />
-        </template>
-        <template v-slot="{ row }">
-          <links-dropdown v-if="row.links.length" :links="row.links" />
-        </template>
-      </s-table-column>
       <s-table-column width="76">
         <template #header>
           <span>{{ t('transaction.startTime') }}</span>
@@ -27,15 +19,31 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column>
+      <s-table-column header-align="right" align="right">
         <template #header>
-          <span>{{ tc('accountText', 1) }}</span>
+          <span>{{ t('removeLiquidity.input') }}</span>
         </template>
         <template v-slot="{ row }">
-          <formatted-address :value="row.address" :symbols="8" />
+          <formatted-amount
+            class="explore-table-item-token"
+            :font-size-rate="FontSizeRate.SMALL"
+            :value="row.inputAmount"
+          />
         </template>
       </s-table-column>
       <s-table-column header-align="left" align="left">
+        <template #header>
+          <span>{{ t('removeLiquidity.output') }}</span>
+        </template>
+        <template v-slot="{ row }">
+          <formatted-amount
+            class="explore-table-item-token"
+            :font-size-rate="FontSizeRate.SMALL"
+            :value="row.outputAmount"
+          />
+        </template>
+      </s-table-column>
+      <s-table-column width="112" header-align="left" align="left">
         <template #header>
           <span>{{ t('transfers.from') }}</span>
         </template>
@@ -50,7 +58,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column header-align="left" align="left">
+      <s-table-column width="112" header-align="left" align="left">
         <template #header>
           <span>{{ t('transfers.to') }}</span>
         </template>
@@ -65,28 +73,20 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column width="140" header-align="right" align="right">
+      <s-table-column width="94">
         <template #header>
-          <span>{{ t('removeLiquidity.input') }}</span>
+          <span>{{ tc('accountText', 1) }}</span>
         </template>
         <template v-slot="{ row }">
-          <formatted-amount
-            class="explore-table-item-token"
-            :font-size-rate="FontSizeRate.SMALL"
-            :value="row.inputAmount"
-          />
+          <formatted-address :value="row.address" :symbols="8" />
         </template>
       </s-table-column>
-      <s-table-column width="140" header-align="left" align="left">
+      <s-table-column width="48" header-align="center">
         <template #header>
-          <span>{{ t('removeLiquidity.output') }}</span>
+          <s-icon name="basic-eye-no-24" size="16px" />
         </template>
         <template v-slot="{ row }">
-          <formatted-amount
-            class="explore-table-item-token"
-            :font-size-rate="FontSizeRate.SMALL"
-            :value="row.outputAmount"
-          />
+          <links-dropdown v-if="row.links.length" :links="row.links" />
         </template>
       </s-table-column>
     </s-table>
@@ -215,7 +215,13 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
   get assetsAddresses(): string[] {
     const filtered = [this.tokenFrom, this.tokenTo].filter((token) => !!token) as AccountAsset[];
 
-    return filtered.map((token) => token.address).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+    return filtered
+      .map((token) => token.address)
+      .sort((a, b) => {
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
+      });
   }
 
   private createFilter(timestamp?: number) {
@@ -250,16 +256,16 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
   }
 
   private async fetchData(): Promise<void> {
-    const { pageAmount, currentPage } = this;
-
-    const variables: RequestVariables = {
-      filter: this.createFilter(this.fromTimestamp),
-      first: pageAmount,
-      offset: pageAmount * (currentPage - 1),
-    };
-
     await this.withLoading(async () => {
       await this.withParentLoading(async () => {
+        const { pageAmount, currentPage } = this;
+
+        const variables: RequestVariables = {
+          filter: this.createFilter(this.fromTimestamp),
+          first: pageAmount,
+          offset: pageAmount * (currentPage - 1),
+        };
+
         const { totalCount, transactions } = await this.requestData(variables);
 
         this.totalCount = totalCount;
