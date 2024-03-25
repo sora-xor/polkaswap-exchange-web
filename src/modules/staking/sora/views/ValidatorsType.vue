@@ -55,7 +55,7 @@ export default class ValidatorsType extends Mixins(StakingMixin, mixins.LoadingM
 <style lang="scss" scoped>
 .container {
   display: flex;
-  width: 464px;
+  width: $inner-window-width;
   flex-direction: column;
   justify-content: center;
   align-items: center;
