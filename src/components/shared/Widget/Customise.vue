@@ -1,17 +1,17 @@
 <template>
-  <base-widget v-bind="$attrs" title="Customise page">
+  <base-widget v-bind="$attrs" :title="t('customisePageText')">
     <template #filters>
       <el-popover popper-class="customise-widget-popper" trigger="click" v-model="visible" :visible-arrow="false">
         <s-button slot="reference" type="action" alternative size="small" icon="basic-settings-24" />
 
         <div class="customise">
-          <div class="customise-title">Customise page</div>
+          <div class="customise-title">{{ t('customisePageText') }}</div>
 
-          <div v-for="(model, name) in { widgetsModel, optionsModel }" :key="name" class="customise-options">
+          <div v-for="(model, name) in { widgets, options }" :key="name" class="customise-options">
             <s-divider />
             <label v-for="(value, key) in model" :key="key" class="customise-option">
               <s-switch :value="value" @input="toggle(name, model, key, $event)" />
-              <span>{{ key }}</span>
+              <span>{{ getLabel(key, name) }}</span>
             </label>
           </div>
 
@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, ModelSync, PropSync } from 'vue-property-decorator';
+import { Component, Mixins, ModelSync, PropSync, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
@@ -36,13 +36,20 @@ import type { WidgetsVisibilityModel } from '@/types/layout';
   },
 })
 export default class CustomiseWidget extends Mixins(TranslationMixin) {
-  @PropSync('widgets', { default: ObjectInit, type: Object }) readonly widgetsModel!: WidgetsVisibilityModel;
-  @PropSync('options', { default: ObjectInit, type: Object }) readonly optionsModel!: WidgetsVisibilityModel;
+  @PropSync('widgetsModel', { default: ObjectInit, type: Object }) readonly widgets!: WidgetsVisibilityModel;
+  @PropSync('optionsModel', { default: ObjectInit, type: Object }) readonly options!: WidgetsVisibilityModel;
+  @Prop({ default: ObjectInit, type: Object }) readonly labels!: Record<string, string>;
 
   @ModelSync('value', 'input', { type: Boolean }) visible!: boolean;
 
-  toggle(name: string, model: WidgetsVisibilityModel, key: string, value: boolean) {
+  toggle(name: string, model: WidgetsVisibilityModel, key: string, value: boolean): void {
     this[name] = { ...model, [key]: value };
+  }
+
+  getLabel(key: string, name: string): string {
+    if (key in this.labels) return this.labels[key];
+
+    return this.t(`${name}.${key}`);
   }
 }
 </script>

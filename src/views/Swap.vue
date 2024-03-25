@@ -5,7 +5,6 @@
     :draggable="options.edit"
     :resizable="options.edit"
     :lines="options.edit"
-    :compact="options.compact"
     :loading="parentLoading"
     :default-layouts="DefaultLayouts"
     v-model="widgets"
@@ -29,8 +28,8 @@
       <swap-transactions-widget v-bind="props" full extensive />
     </template>
     <template v-slot:[SwapWidgets.Customise]="{ reset, ...props }">
-      <customise-widget v-bind="props" :widgets.sync="widgets" :options.sync="options">
-        <s-button @click="reset">Reset</s-button>
+      <customise-widget v-bind="props" :widgets-model.sync="widgets" :options-model.sync="options" :labels="labels">
+        <s-button @click="reset">{{ t('resetText') }}</s-button>
       </customise-widget>
     </template>
     <template v-slot:[SwapWidgets.PriceChartA]="props">
@@ -57,14 +56,15 @@ import type { ResponsiveLayouts, WidgetsVisibilityModel } from '@/types/layout';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 enum SwapWidgets {
-  Form = 'form',
-  Chart = 'chart',
-  Transactions = 'transactions',
-  Distribution = 'distribution',
   Customise = 'customise',
+  // main
+  Form = 'swapForm',
+  Chart = 'swapChart',
+  Transactions = 'swapTransactions',
+  Distribution = 'swapDistribution',
   // additional
-  PriceChartA = 'chart_a',
-  PriceChartB = 'chart_b',
+  PriceChartA = 'swapTokenAPriceChart',
+  PriceChartB = 'swapTokenBPriceChart',
 }
 
 @Component({
@@ -139,7 +139,6 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
   options = {
     edit: false,
-    compact: false,
   };
 
   widgets: WidgetsVisibilityModel = {
@@ -150,6 +149,17 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
     [SwapWidgets.PriceChartA]: false,
     [SwapWidgets.PriceChartB]: false,
   };
+
+  get labels(): Record<string, string> {
+    return {
+      [SwapWidgets.Form]: this.t('swapText'),
+      [SwapWidgets.Chart]: this.t('priceChartText'),
+      [SwapWidgets.Distribution]: this.t('swap.route'),
+      [SwapWidgets.Transactions]: this.tc('transactionText', 2),
+      [SwapWidgets.PriceChartA]: this.t('priceChartText', { symbol: this.tokenFrom?.symbol ?? '' }),
+      [SwapWidgets.PriceChartB]: this.t('priceChartText', { symbol: this.tokenTo?.symbol ?? '' }),
+    };
+  }
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
