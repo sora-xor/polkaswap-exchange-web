@@ -9,7 +9,7 @@
       class="explore-table"
     >
       <!-- Index -->
-      <s-table-column width="240" label="#" fixed-position="left">
+      <s-table-column width="240" label="#">
         <template #header>
           <div class="explore-table-item-index">
             <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
@@ -126,7 +126,6 @@
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
 import { components } from '@soramitsu/soraneo-wallet-web';
-import { SortDirection } from '@soramitsu-ui/ui-vue2/lib/components/Table/consts';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
