@@ -7,7 +7,6 @@ export enum StakingPageNames {
 export const StakingChildPages = [
   StakingPageNames.Staking,
   SoraStakingPageNames.Overview,
-  SoraStakingPageNames.NewStake,
   SoraStakingPageNames.ValidatorsType,
   SoraStakingPageNames.SelectValidators,
 ];
