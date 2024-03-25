@@ -455,7 +455,6 @@ export const RewardsChildPages = [
 export const StakingChildPages = [
   StakingPageNames.Staking,
   SoraStakingPageNames.Overview,
-  SoraStakingPageNames.NewStake,
   SoraStakingPageNames.ValidatorsType,
   SoraStakingPageNames.SelectValidators,
 ];

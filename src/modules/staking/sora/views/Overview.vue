@@ -342,7 +342,7 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
   }
 
   stakeNew() {
-    router.push({ name: SoraStakingPageNames.NewStake });
+    router.push({ name: SoraStakingPageNames.SelectValidators });
   }
 
   stakeMore() {
