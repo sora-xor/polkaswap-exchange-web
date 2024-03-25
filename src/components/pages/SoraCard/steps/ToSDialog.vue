@@ -1,6 +1,6 @@
 <template>
   <dialog-base :visible.sync="isVisible" class="terms-of-service-dialog" :title="title">
-    <widget v-if="srcLink" class="tos__section" with-border :src="srcLink" />
+    <i-frame-widget v-if="srcLink" class="tos__section" with-border :src="srcLink" />
     <template v-else>
       <div class="sora-card__excuse">
         {{ t('card.blacklistedCountriesExcuse') }}
@@ -31,7 +31,7 @@ const BLACKLIST_URL = 'https://whitelist.polkaswap2.io/card/blacklist.json';
 @Component({
   components: {
     DialogBase: components.DialogBase,
-    Widget: lazyComponent(Components.Widget),
+    IFrameWidget: lazyComponent(Components.IFrameWidget),
   },
 })
 export default class TermsAndConditionsDialog extends Mixins(TranslationMixin, mixins.DialogMixin) {
