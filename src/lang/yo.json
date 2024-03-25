@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Ko si awọn aṣẹ to wa lati kun aṣẹ yii",
-                "reading": "Idiwọn aṣẹ ọja: Ko si awọn aṣẹ to wa lati mu aṣẹ opin ọja yii ṣẹ. Jọwọ ṣatunṣe iwọn ibere rẹ tabi duro fun awọn aṣẹ diẹ sii lati gbe"
+                "reading": "Idiwọn aṣẹ ọja: Ko si awọn aṣẹ to wa lati mu aṣẹ ọja yii ṣẹ. Jọwọ ṣatunṣe iwọn ibere rẹ tabi duro fun awọn aṣẹ diẹ sii lati gbe"
             },
             "exceedsSpread": {
                 "reason": "Iye owo ti kọja itankale",
@@ -1554,6 +1554,8 @@
             "canceled": "fagilee",
             "expired": "Ti pari",
             "filled": "Ti kun"
-        }
-    }
+        },
+        "pricePerToken": "Iye fun 1 {token}"
+    },
+    "calculatingText": "Ọnàkọnà"
 }
