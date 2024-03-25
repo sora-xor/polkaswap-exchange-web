@@ -167,7 +167,7 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
     }
   }
 
-  pageAmount = 8; // override PaginationSearchMixin
+  pageAmount = 5; // override PaginationSearchMixin
 
   private readonly operations = [Operation.Swap];
   private interval: Nullable<ReturnType<typeof setInterval>> = null;

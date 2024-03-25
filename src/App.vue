@@ -555,6 +555,21 @@ i.icon-divider {
     justify-content: center;
   }
 }
+
+@include desktop {
+  .app-main {
+    .app-menu {
+      &:not(.collapsed) {
+        position: relative;
+      }
+      &.collapsed {
+        & + .app-body {
+          margin-left: 74px;
+        }
+      }
+    }
+  }
+}
 </style>
 
 <style lang="scss" scoped>
