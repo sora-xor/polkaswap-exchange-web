@@ -18,6 +18,8 @@
         <div v-if="$slots.types" class="base-widget-block base-widget-types">
           <slot name="types" />
         </div>
+
+        <s-button type="tertiary" size="small" v-if="isPipAvailable" @click="openPip">PIP</s-button>
       </div>
     </template>
 
@@ -30,6 +32,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
+declare const documentPictureInPicture: any;
+
 @Component
 export default class BaseWidget extends Vue {
   @Prop({ default: '', type: String }) readonly title!: string;
@@ -38,8 +42,23 @@ export default class BaseWidget extends Vue {
   @Prop({ default: false, type: Boolean }) readonly extensive!: boolean;
   @Prop({ default: false, type: Boolean }) readonly primaryTitle!: boolean;
 
+  get isPipAvailable() {
+    return 'documentPictureInPicture' in window;
+  }
+
   get hasHeader(): boolean {
     return !!this.title || !!this.$slots.title;
+  }
+
+  async openPip() {
+    if (!this.isPipAvailable) return;
+
+    const pipWindow = await documentPictureInPicture.requestWindow({
+      width: this.$el.clientWidth,
+      height: this.$el.clientHeight,
+    });
+
+    pipWindow.document.body.append(this.$el);
   }
 }
 </script>
