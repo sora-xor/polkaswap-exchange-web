@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Không có đủ đơn đặt hàng để thực hiện đầy đủ đơn đặt hàng này",
-                "reading": "Giới hạn lệnh thị trường: Không có đủ đơn đặt hàng để thực hiện lệnh giới hạn thị trường này. Vui lòng điều chỉnh kích thước đơn hàng của bạn hoặc chờ đặt thêm đơn hàng"
+                "reading": "Giới hạn lệnh thị trường: Không có đủ lệnh để thực hiện lệnh thị trường này. Vui lòng điều chỉnh kích thước đơn hàng của bạn hoặc chờ đặt thêm đơn hàng"
             },
             "exceedsSpread": {
                 "reason": "Giá vượt quá mức chênh lệch",
@@ -1554,6 +1554,8 @@
             "canceled": "Đã hủy",
             "expired": "Hết hạn",
             "filled": "Điền"
-        }
-    }
+        },
+        "pricePerToken": "Giá mỗi 1 {token}"
+    },
+    "calculatingText": "Đang tính toán"
 }
