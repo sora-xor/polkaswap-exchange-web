@@ -91,7 +91,7 @@
         />
       </s-col>
       <s-col :xs="12" :sm="12" :md="7" :lg="7">
-        <swap-chart
+        <price-chart-widget
           :key="getForceRerenderKey('dashboard-price-chart')"
           class="details-card"
           :base-asset="asset"
@@ -198,7 +198,7 @@ import type { Subscription } from 'rxjs';
     FormattedAmount: components.FormattedAmount,
     TokenAddress: components.TokenAddress,
     StatsSupplyChart,
-    SwapChart: lazyComponent(Components.SwapChart),
+    PriceChartWidget: lazyComponent(Components.PriceChartWidget),
     MintDialog: dashboardLazyComponent(DashboardComponents.MintDialog),
     BurnDialog: dashboardLazyComponent(DashboardComponents.BurnDialog),
     SendDialog: dashboardLazyComponent(DashboardComponents.SendTokenDialog),
