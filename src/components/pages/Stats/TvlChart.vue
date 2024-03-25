@@ -1,12 +1,5 @@
 <template>
-  <stats-card>
-    <template #title>
-      <span>{{ TranslationConsts.TVL }}</span>
-      <s-tooltip border-radius="mini" :content="t('tooltips.tvl')">
-        <s-icon name="info-16" size="14px" />
-      </s-tooltip>
-    </template>
-
+  <base-widget :title="TranslationConsts.TVL" :tooltip="t('tooltips.tvl')">
     <template #filters>
       <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
     </template>
@@ -24,7 +17,7 @@
       <price-change :value="priceChange" />
       <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
     </chart-skeleton>
-  </stats-card>
+  </base-widget>
 </template>
 
 <script lang="ts">
@@ -46,9 +39,9 @@ import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/
 
 @Component({
   components: {
+    BaseWidget: lazyComponent(Components.BaseWidget),
     ChartSkeleton: lazyComponent(Components.ChartSkeleton),
     PriceChange: lazyComponent(Components.PriceChange),
-    StatsCard: lazyComponent(Components.StatsCard),
     StatsFilter: lazyComponent(Components.StatsFilter),
     FormattedAmount: components.FormattedAmount,
   },

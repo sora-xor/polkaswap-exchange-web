@@ -47,6 +47,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     line-height: var(--s-line-height-medium);
 
     &--footer {
+      align-items: flex-start;
       margin-top: $inner-spacing-tiny;
       margin-bottom: 0;
       min-height: $inner-spacing-mini * 2.625; // 21px
@@ -135,7 +136,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 }
 
 @mixin bridge-container {
-  max-width: $bridge-width;
+  max-width: $inner-window-width;
   width: 100%;
 
   .el-loading-mask {
@@ -348,14 +349,16 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   }
 }
 
-@mixin icon-styles($hasPointerCursor: false) {
+@mixin icon-styles($hasPointerCursor: false, $withHover: true, $hoverColor: var(--s-color-base-content-secondary)) {
   color: var(--s-color-base-content-tertiary);
-  transition: var(--s-transition-default);
+  transition: color var(--s-transition-default);
   @if $hasPointerCursor == true {
     cursor: pointer;
   }
-  &:hover {
-    color: var(--s-color-base-content-secondary);
+  @if $withHover == true {
+    &:hover {
+      color: $hoverColor;
+    }
   }
 }
 
@@ -464,18 +467,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     &-cell {
       display: flex;
       align-items: center;
-
-      & + & {
-        margin-top: $inner-spacing-mini;
-      }
-
-      & > *:not(:last-child) {
-        margin-right: $inner-spacing-mini;
-      }
-    }
-    &-pagination {
-      display: flex;
-      margin-top: $inner-spacing-medium;
+      gap: $inner-spacing-mini;
     }
   }
 
@@ -483,16 +475,19 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   .explore-table.el-table {
     background: transparent;
     font-size: var(--s-font-size-medium);
-    font-weight: 600;
+    font-weight: 400;
 
     thead {
       text-transform: uppercase;
       font-size: var(--s-font-size-small);
       letter-spacing: var(--s-letter-spacing-mini);
 
-      [class^='s-icon-'],
-      [class*=' s-icon-'] {
-        @include icon-styles;
+      th > .cell {
+        font-weight: 500 !important;
+      }
+
+      i:not(.sort-icon) {
+        @include icon-styles($withHover: false);
       }
     }
 
@@ -500,16 +495,34 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
       background-color: transparent;
     }
 
-    tr,
-    th {
-      &,
-      &:hover,
-      &.hover-row {
-        & > td,
-        & > th {
-          background: var(--s-color-utility-surface);
-          .cell {
+    &:not(.el-table--border) {
+      tr {
+        td, th {
+          & > .cell {
             padding: $inner-spacing-tiny $inner-spacing-mini;
+          }
+          &:first-child > .cell {
+            padding-left: $inner-spacing-medium;
+          }
+          &:last-child > .cell {
+            padding-right: $inner-spacing-medium;
+          }
+        }
+      }
+    }
+
+    &, &.el-table--enable-row-hover {
+      .el-table__body,
+      .el-table__header {
+        tr,
+        th {
+          &,
+          &:hover,
+          &.hover-row {
+            & > td,
+            & > th {
+              background-color: var(--s-color-utility-surface);
+            }
           }
         }
       }
@@ -518,6 +531,17 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     th.el-table__cell.is-leaf,
     td.el-table__cell {
       border-color: var(--s-color-base-border-secondary);
+
+      &.is-right {
+        .explore-table-cell {
+          justify-content: right;
+        }
+      }
+      &.is-left {
+        .explore-table-cell {
+          justify-content: left;
+        }
+      }
     }
 
     .el-table__fixed {
@@ -538,12 +562,6 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
       &.is-scrolling-left ~ .el-table__fixed {
         box-shadow: inherit;
-      }
-
-      .el-scrollbar__bar.is-horizontal {
-        right: 0;
-        left: unset;
-        width: calc(100% - #{$fixed-column-width});
       }
     }
 
@@ -638,10 +656,17 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
     }
     &-token {
       font-size: var(--s-font-size-small);
+      font-weight: 400;
     }
     &-price {
       font-size: var(--s-font-size-medium);
       white-space: nowrap;
+    }
+    &-date {
+      color: var(--s-color-base-content-secondary);
+      font-size: var(--s-font-size-mini);
+      font-weight: 400;
+      line-height: var(--s-line-height-small);
     }
     &-amount.formatted-amount--fiat-value {
       color: var(--s-color-base-content-primary) !important;
