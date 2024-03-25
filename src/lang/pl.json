@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Nie ma wystarczającej liczby dostępnych zamówień, aby zrealizować to zamówienie",
-                "reading": "Ograniczenie zleceń rynkowych: Nie ma wystarczającej liczby dostępnych zleceń, aby zrealizować to zlecenie z limitem rynkowym. Dostosuj wielkość zamówienia lub poczekaj na złożenie większej liczby zamówień"
+                "reading": "Ograniczenie zlecenia rynkowego: Nie ma wystarczającej liczby dostępnych zleceń, aby zrealizować to zlecenie rynkowe. Dostosuj wielkość zamówienia lub poczekaj na złożenie większej liczby zamówień"
             },
             "exceedsSpread": {
                 "reason": "Cena przekroczyła spread",
@@ -1554,6 +1554,8 @@
             "canceled": "Odwołany",
             "expired": "Wygasły",
             "filled": "Wypełniony"
-        }
-    }
+        },
+        "pricePerToken": "Cena za 1 {token}"
+    },
+    "calculatingText": "Obliczanie"
 }

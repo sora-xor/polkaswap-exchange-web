@@ -1522,7 +1522,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Nincs elég rendelés a rendelés teljesítéséhez",
-                "reading": "Piaci megbízás korlátozása: Nincs elég megbízás a piaci limites megbízás teljesítéséhez. Kérjük, módosítsa rendelési méretét, vagy várja meg a további rendelések leadását"
+                "reading": "Piaci megbízás korlátozása: Nincs elég megbízás a piaci megbízás teljesítéséhez. Kérjük, módosítsa rendelési méretét, vagy várja meg a további rendelések leadását"
             },
             "exceedsSpread": {
                 "reason": "Az ár meghaladja a spreadet",
@@ -1554,6 +1554,8 @@
             "canceled": "Törölve",
             "expired": "Lejárt",
             "filled": "Megtöltött"
-        }
-    }
+        },
+        "pricePerToken": "1 {token} ár"
+    },
+    "calculatingText": "Számítás"
 }
