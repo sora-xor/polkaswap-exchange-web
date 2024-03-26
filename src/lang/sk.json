@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "Výber uzla v sieti {Sora}",
+        "title": "Výber uzla v sieti",
         "addNode": "Pridať vlastný uzol",
         "customNode": "Vlastný uzol",
         "howToSetupOwnNode": "Ako nastaviť vlastný uzol {Sora}",
         "select": "Vybrať",
         "connected": "Pripojené",
-        "selectNodeForEnvironment": "Vyberte uzol pre {environment} prostredie:",
         "nodeTitle": "{chain} hosťovaný {name}",
         "messages": {
             "emptyName": "Zadajte názov uzla",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} adresa",
         "limitMessage": "V súčasnosti existuje {type} {amount} {symbol} na premostenie na zaistenie stability a bezpečnosti siete {Sora}. Ďakujeme za pochopenie.",
         "externalTransferFee": "{network} poplatok {XCM}",
-        "externalTransferFeeTooltip": "Keď odošlete preklenovaciu transakciu do siete {network} , zo sumy, ktorú prenášate, sa účtuje malý poplatok"
+        "externalTransferFeeTooltip": "Keď odošlete preklenovaciu transakciu do siete {network} , zo sumy, ktorú prenášate, sa účtuje malý poplatok",
+        "externalMinDeposit": "min. {network} Záloha",
+        "externalMinDepositTooltip": "Minimálny zostatok {symbol} , ktorý musí byť na vašom účte {network} po preklenovacom prevode"
     },
     "selectRegisteredAsset": {
         "title": "Vybrať token",

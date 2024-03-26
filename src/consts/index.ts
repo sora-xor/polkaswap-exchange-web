@@ -162,10 +162,11 @@ export enum Components {
   AppDisclaimer = 'App/Header/AppDisclaimer',
   SelectIndexer = 'App/Footer/Indexer/SelectIndexer',
   StatisticsDialog = 'App/Footer/StatisticsDialog',
-  SelectNodeDialog = 'App/Footer/SelectNodeDialog',
-  SelectNode = 'App/Footer/Node/SelectNode',
-  NodeInfo = 'App/Footer/Node/NodeInfo',
   IndexerInfo = 'App/Footer/Indexer/IndexerInfo',
+  // Node select
+  SelectNodeDialog = 'App/Settings/Node/SelectNodeDialog',
+  SelectNode = 'App/Settings/Node/SelectNode',
+  NodeInfo = 'App/Settings/Node/NodeInfo',
   // SORA Card
   Dashboard = 'pages/SoraCard/Dashboard/Dashboard',
   BalanceIndicator = 'pages/SoraCard/common/BalanceIndicator',
@@ -196,6 +197,7 @@ export enum Components {
   BridgeSelectAccount = 'pages/Bridge/SelectAccount',
   BridgeLimitCard = 'pages/Bridge/LimitCard',
   BridgeAccountPanel = 'pages/Bridge/AccountPanel',
+  BridgeNodeIcon = 'pages/Bridge/NodeIcon',
   // Moonpay Page
   Moonpay = 'pages/Moonpay/Moonpay',
   MoonpayNotification = 'pages/Moonpay/Notification',
