@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "{Sora} Nettverk nodevalg",
+        "title": "Nettverk nodevalg",
         "addNode": "Legg til egendefinert node",
         "customNode": "Egendefinert node",
         "howToSetupOwnNode": "Hvordan sette opp din egen {Sora} node",
         "select": "Velg",
         "connected": "Tilkoblet",
-        "selectNodeForEnvironment": "Velg en node for {environment} miljø:",
         "nodeTitle": "{chain} driftet av {name}",
         "messages": {
             "emptyName": "Skriv inn navnet på noden",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} adresse",
         "limitMessage": "For øyeblikket er det en {type} {amount} {symbol} for brobygging for å sikre stabiliteten og sikkerheten til {Sora} -nettverket. Vi setter pris på din forståelse.",
         "externalTransferFee": "{network} {XCM} gebyr",
-        "externalTransferFeeTooltip": "Når du sender en brotransaksjon til {network} -nettverket, tas et mindre gebyr fra beløpet du overfører"
+        "externalTransferFeeTooltip": "Når du sender en brotransaksjon til {network} -nettverket, tas et mindre gebyr fra beløpet du overfører",
+        "externalMinDeposit": "{network} min. innskudd",
+        "externalMinDepositTooltip": "Minimumsaldo {symbol} som må være på {network} -kontoen din etter brooverføringen"
     },
     "selectRegisteredAsset": {
         "title": "Velg token",

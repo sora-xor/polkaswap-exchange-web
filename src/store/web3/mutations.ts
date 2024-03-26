@@ -71,6 +71,11 @@ const mutations = defineMutations<Web3State>()({
     ethersUtil.storeSelectedBridgeType(networkType);
   },
 
+  // dialogs
+  setSelectSubNodeDialogVisibility(state, flag: boolean): void {
+    state.selectSubNodeDialogVisibility = flag;
+  },
+
   setSelectNetworkDialogVisibility(state, flag: boolean): void {
     state.selectNetworkDialogVisibility = flag;
   },
