@@ -1,47 +1,42 @@
 <template>
-  <div class="order-book-widget history s-flex-column">
-    <div class="order-history-header">
-      <div class="order-history-header-filter-buttons">
+  <base-widget class="order-history-widget s-flex-column" extensive delimeter>
+    <template #title>
+      <div class="order-history-buttons order-history-buttons--filter-buttons">
         <span
-          class="order-history-filter"
-          :class="{ 'order-history-filter--active': currentFilter === Filter.open }"
+          :class="['order-history-button', { active: currentFilter === Filter.open }]"
           @click="switchFilter(Filter.open)"
         >
           {{ openOrdersText }}
         </span>
         <span
-          class="order-history-filter"
-          :class="{ 'order-history-filter--active': currentFilter === Filter.all }"
+          :class="['order-history-button', { active: currentFilter === Filter.all }]"
           @click="switchFilter(Filter.all)"
         >
           {{ t('orderBook.history.orderHistory') }}
         </span>
         <span
-          class="order-history-filter"
-          :class="{ 'order-history-filter--active': currentFilter === Filter.executed }"
+          :class="['order-history-button', { active: currentFilter === Filter.executed }]"
           @click="switchFilter(Filter.executed)"
         >
           {{ t('orderBook.history.tradeHistory') }}
         </span>
       </div>
-      <div v-if="isLoggedIn" class="order-history-header-cancel-buttons">
+      <div v-if="isLoggedIn" class="order-history-buttons order-history-buttons--cancel-buttons">
         <span
-          class="order-history-cancel"
-          :class="{ 'order-history-cancel--inactive': isCancelMultipleInactive }"
+          :class="['order-history-button', 'order-history-button--cancel', { inactive: isCancelMultipleInactive }]"
           @click="handleCancel(Cancel.multiple)"
         >
           {{ cancelText }}
         </span>
         <span
-          class="order-history-cancel"
-          :class="{ 'order-history-cancel--inactive': isCancelAllInactive }"
+          :class="['order-history-button', 'order-history-button--cancel', { inactive: isCancelAllInactive }]"
           @click="openConfirmCancelDialog"
         >
           {{ cancelAllText }}
         </span>
       </div>
-    </div>
-    <div class="delimiter" />
+    </template>
+
     <div class="order-history-main s-flex-column" v-if="isLoggedIn">
       <open-orders v-if="currentFilter === Filter.open" :parent-loading="openOrdersLoading" />
       <all-orders v-else :filter="currentFilter" />
@@ -55,7 +50,7 @@
       </div>
     </div>
     <cancel-confirm :visible.sync="confirmCancelOrderVisibility" @confirm="handleCancel" />
-  </div>
+  </base-widget>
 </template>
 
 <script lang="ts">
@@ -75,6 +70,7 @@ import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 
 @Component({
   components: {
+    BaseWidget: lazyComponent(Components.BaseWidget),
     AllOrders: lazyComponent(Components.AllOrders),
     OpenOrders: lazyComponent(Components.OpenOrders),
     CancelConfirm: lazyComponent(Components.CancelOrders),
@@ -194,13 +190,7 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 </script>
 
 <style lang="scss">
-.history-widget {
-  .order-book-widget.history {
-    padding: 0;
-  }
-}
-
-.order-book-widget.history {
+.order-history-widget {
   min-height: 570px;
 
   .el-table-column--selection.is-leaf > .cell {
@@ -220,53 +210,35 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
 
 <style lang="scss" scoped>
 .order-history {
-  &-header {
+  &-buttons {
     display: flex;
-    justify-content: space-between;
-    padding: $basic-spacing $basic-spacing $inner-spacing-mini $basic-spacing;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: flex-end;
+    gap: $inner-spacing-tiny $inner-spacing-medium;
+
     color: var(--s-color-base-content-secondary);
-    font-size: $basic-spacing;
-    font-weight: 500;
-    &-cancel-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      align-content: flex-start;
-      justify-content: flex-end;
+
+    &--cancel-buttons {
       flex: 1;
     }
-    &-filter-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      align-content: flex-start;
-      justify-content: flex-start;
-    }
   }
 
-  &-filter {
-    margin-right: $basic-spacing;
-    line-height: 1.5;
+  &-button {
+    &--cancel {
+      color: var(--s-color-theme-accent);
+    }
 
     &:hover {
       cursor: pointer;
       color: var(--s-color-theme-accent);
     }
 
-    &--active {
-      color: var(--s-color-theme-accent);
-    }
-  }
-
-  &-cancel {
-    color: var(--s-color-theme-accent);
-    margin-left: $basic-spacing;
-    line-height: 1.5;
-
-    &:hover {
-      cursor: pointer;
+    &.active {
       color: var(--s-color-theme-accent);
     }
 
-    &--inactive {
+    &.inactive {
       opacity: 0.5;
 
       &:hover {
@@ -298,12 +270,5 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
       }
     }
   }
-}
-
-.delimiter {
-  background: var(--s-color-base-border-secondary);
-  margin: $inner-spacing-mini 0;
-  height: 1px;
-  width: 100%;
 }
 </style>

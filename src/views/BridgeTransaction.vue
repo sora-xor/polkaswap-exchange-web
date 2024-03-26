@@ -45,7 +45,7 @@
           :tooltip="txExternalAccountCopyTooltip"
           @click="handleCopyAddress(txExternalAccount, $event)"
         />
-        <bridge-links-dropdown v-if="externalAccountLinks.length" :links="externalAccountLinks" />
+        <links-dropdown v-if="externalAccountLinks.length" :links="externalAccountLinks" />
       </div>
 
       <info-line :class="failedClass" :label="t('bridgeTransaction.networkInfo.status')" :value="transactionStatus" />
@@ -111,7 +111,7 @@
           :tooltip="hashCopyTooltip"
           @click="handleCopyAddress(txInternalHash, $event)"
         />
-        <bridge-links-dropdown v-if="soraExplorerLinks.length" :links="soraExplorerLinks" />
+        <links-dropdown v-if="soraExplorerLinks.length" :links="soraExplorerLinks" />
       </div>
 
       <div v-if="txParachainBlockId" class="transaction-hash-container transaction-hash-container--with-dropdown">
@@ -128,7 +128,7 @@
           :tooltip="hashCopyTooltip"
           @click="handleCopyAddress(txParachainBlockId, $event)"
         />
-        <bridge-links-dropdown v-if="parachainExplorerLinks.length" :links="parachainExplorerLinks" />
+        <links-dropdown v-if="parachainExplorerLinks.length" :links="parachainExplorerLinks" />
       </div>
 
       <div v-if="txExternalHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
@@ -141,7 +141,7 @@
           :tooltip="hashCopyTooltip"
           @click="handleCopyAddress(txExternalHash, $event)"
         />
-        <bridge-links-dropdown v-if="externalExplorerLinks.length" :links="externalExplorerLinks" />
+        <links-dropdown v-if="externalExplorerLinks.length" :links="externalExplorerLinks" />
       </div>
 
       <s-button
@@ -201,7 +201,12 @@ import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, state, getter, mutation } from '@/store/decorators';
-import { hasInsufficientBalance, hasInsufficientXorForFee, hasInsufficientNativeTokenForFee } from '@/utils';
+import {
+  hasInsufficientBalance,
+  hasInsufficientXorForFee,
+  hasInsufficientNativeTokenForFee,
+  soraExplorerLinks,
+} from '@/utils';
 import { isOutgoingTransaction, isUnsignedTx } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
@@ -215,7 +220,7 @@ const FORMATTED_HASH_LENGTH = 24;
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     ConfirmBridgeTransactionDialog: lazyComponent(Components.ConfirmBridgeTransactionDialog),
-    BridgeLinksDropdown: lazyComponent(Components.BridgeLinksDropdown),
+    LinksDropdown: lazyComponent(Components.LinksDropdown),
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
   },
@@ -562,40 +567,7 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get soraExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
-    if (!this.soraNetwork) {
-      return [];
-    }
-    const baseLinks = getExplorerLinks(this.soraNetwork);
-    const txId = this.txSoraId || this.txSoraBlockId;
-    if (!(baseLinks.length && txId)) {
-      return [];
-    }
-    if (!this.txSoraId) {
-      // txId is block
-      return baseLinks.map(({ type, value }) => {
-        const link = { type } as WALLET_CONSTS.ExplorerLink;
-        if (type === WALLET_CONSTS.ExplorerType.Polkadot) {
-          link.value = `${value}/${txId}`;
-        } else {
-          link.value = `${value}/block/${txId}`;
-        }
-        return link;
-      });
-    }
-    return baseLinks
-      .map(({ type, value }) => {
-        const link = { type } as WALLET_CONSTS.ExplorerLink;
-        if (type === WALLET_CONSTS.ExplorerType.Sorascan) {
-          link.value = `${value}/transaction/${txId}`;
-        } else if (type === WALLET_CONSTS.ExplorerType.Subscan) {
-          link.value = `${value}/extrinsic/${txId}`;
-        } else if (this.txSoraBlockId) {
-          // ExplorerType.Polkadot
-          link.value = `${value}/${this.txSoraBlockId}`;
-        }
-        return link;
-      })
-      .filter((value) => !!value.value); // Polkadot explorer won't be shown without block
+    return soraExplorerLinks(this.soraNetwork, this.txSoraId, this.txSoraBlockId);
   }
 
   get externalAccountLinks(): Array<WALLET_CONSTS.ExplorerLink> {
@@ -746,6 +718,13 @@ $header-font-size: var(--s-heading3-font-size);
     &--with-dropdown {
       .s-button--hash-copy {
         right: calc(#{$inner-spacing-medium} + var(--s-size-mini));
+      }
+      .s-dropdown--hash-menu {
+        position: absolute;
+        z-index: $app-content-layer;
+        top: 0;
+        bottom: 0;
+        right: $inner-spacing-medium;
       }
     }
     i {

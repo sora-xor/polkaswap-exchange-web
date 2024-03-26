@@ -269,20 +269,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     window.addEventListener('resize', this.setResponsiveClassDebounced);
   }
 
-  private get isSwapPageWithCharts(): boolean {
-    return this.$route.name === PageNames.Swap && this.chartsEnabled;
-  }
-
   private get mobileCssClasses(): string[] | undefined {
     return getMobileCssClasses();
   }
 
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
-  }
-
-  get isCurrentPageTooWide(): boolean {
-    return this.isAboutPage || this.isSwapPageWithCharts || this.$route.name === PageNames.Tokens;
   }
 
   get dsProviderClasses(): string[] | BreakpointClass {
@@ -294,9 +286,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     const cssClasses: Array<string> = [baseClass];
     if (this.$route.name) {
       cssClasses.push(`${baseClass}--${this.$route.name.toLowerCase()}`);
-    }
-    if (this.isSwapPageWithCharts) {
-      cssClasses.push(`${baseClass}--has-charts`);
     }
     return cssClasses;
   }
@@ -564,24 +553,6 @@ i.icon-divider {
   .app-content {
     display: flex;
     justify-content: center;
-  }
-}
-
-@include desktop {
-  .app-main {
-    &.app-main--swap.app-main--has-charts {
-      .app-menu {
-        &:not(.collapsed) {
-          position: relative;
-        }
-
-        &.collapsed {
-          & + .app-body {
-            margin-left: 74px;
-          }
-        }
-      }
-    }
   }
 }
 </style>

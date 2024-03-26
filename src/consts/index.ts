@@ -194,7 +194,6 @@ export enum Components {
   BridgeSelectAsset = 'pages/Bridge/SelectAsset',
   BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
   BridgeSelectAccount = 'pages/Bridge/SelectAccount',
-  BridgeLinksDropdown = 'pages/Bridge/LinksDropdown',
   BridgeLimitCard = 'pages/Bridge/LimitCard',
   BridgeAccountPanel = 'pages/Bridge/AccountPanel',
   // Moonpay Page
@@ -206,13 +205,15 @@ export enum Components {
   X1Dialog = 'pages/X1/X1Dialog',
   X1History = 'pages/X1/X1History',
   // Swap Page
+  SwapFormWidget = 'pages/Swap/Widget/Form',
+  SwapChartWidget = 'pages/Swap/Widget/Chart',
+  SwapTransactionsWidget = 'pages/Swap/Widget/Transactions',
+  SwapDistributionWidget = 'pages/Swap/Widget/Distribution',
   SwapConfirm = 'pages/Swap/Confirm',
-  SwapChart = 'pages/Swap/Chart',
   SwapStatusActionBadge = 'pages/Swap/StatusActionBadge',
   SwapTransactionDetails = 'pages/Swap/TransactionDetails',
   SwapSettings = 'pages/Swap/Settings/Settings',
   SwapLossWarningDialog = 'pages/Swap/LossWarningDialog',
-  SwapDistribution = 'pages/Swap/Distribution',
   // Order Book
   BookWidget = 'pages/OrderBook/BookWidget',
   BookChartsWidget = 'pages/OrderBook/BookChartsWidget',
@@ -241,14 +242,18 @@ export enum Components {
   WalletAboutNetworkDialog = 'pages/Wallet/AboutNetworkDialog',
   // Shared
   GenericPageHeader = 'shared/GenericPageHeader',
-  TokensRow = 'shared/TokensRow',
+  LinksDropdown = 'shared/LinksDropdown',
   PairTokenLogo = 'shared/PairTokenLogo',
-  PriceChange = 'shared/PriceChange',
-  ValueStatusWrapper = 'shared/ValueStatusWrapper',
-  TransactionDetails = 'shared/TransactionDetails',
   PoolInfo = 'shared/PoolInfo',
-  Widget = 'shared/Widget',
+  PriceChange = 'shared/PriceChange',
   StatusBadge = 'shared/StatusBadge',
+  TransactionDetails = 'shared/TransactionDetails',
+  TokensRow = 'shared/TokensRow',
+  ValueStatusWrapper = 'shared/ValueStatusWrapper',
+  // Shared Widgets
+  BaseWidget = 'shared/Widget/Base',
+  IFrameWidget = 'shared/Widget/IFrame',
+  PriceChartWidget = 'shared/Widget/PriceChart',
   // Shared Buttons
   SortButton = 'shared/Button/SortButton',
   SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',
@@ -267,7 +272,6 @@ export enum Components {
   SettingsTabs = 'shared/Settings/Tabs',
   SlippageTolerance = 'shared/Settings/SlippageTolerance',
   // Shared Stats
-  StatsCard = 'shared/Stats/StatsCard',
   StatsFilter = 'shared/Stats/StatsFilter',
   // Shared Chart
   ChartSkeleton = 'shared/Chart/ChartSkeleton',
@@ -453,7 +457,6 @@ export const RewardsChildPages = [
 export const StakingChildPages = [
   StakingPageNames.Staking,
   SoraStakingPageNames.Overview,
-  SoraStakingPageNames.NewStake,
   SoraStakingPageNames.ValidatorsType,
   SoraStakingPageNames.SelectValidators,
 ];
