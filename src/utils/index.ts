@@ -6,6 +6,7 @@ import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
 
 import { app, ZeroStringValue } from '@/consts';
+import { ColorEncoding } from '@/consts/color';
 import i18n from '@/lang';
 import router from '@/router';
 import store from '@/store';
@@ -286,10 +287,10 @@ export const preloadFontFace = async (name: string): Promise<void> => {
   }
 };
 
-export const getCssVariableValue = (name: string): string => {
+export const getCssVariableValue = (name: string): ColorEncoding => {
   return getComputedStyle(document.documentElement as any)
     .getPropertyValue(name)
-    .trim();
+    .trim() as ColorEncoding;
 };
 
 export const toQueryString = (params: any): string => {

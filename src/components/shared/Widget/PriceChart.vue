@@ -471,7 +471,7 @@ export default class PriceChartWidget extends Mixins(
       axisLine: {
         show: true,
         lineStyle: {
-          color: this.theme.color.base.content.tertiary,
+          color: this.chartTheme.color.base.content.tertiary,
         },
       },
       axisPointer: {
@@ -546,9 +546,9 @@ export default class PriceChartWidget extends Mixins(
         if (seriesType === CHART_TYPES.CANDLE) {
           const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
           const changeColor = signific(change)(
-            this.theme.color.status.success,
-            this.theme.color.status.error,
-            this.theme.color.base.content.primary
+            this.chartTheme.color.status.success,
+            this.chartTheme.color.status.error,
+            this.chartTheme.color.base.content.primary
           );
 
           rows.push(
@@ -572,8 +572,8 @@ export default class PriceChartWidget extends Mixins(
               .map(
                 (row) => `
               <tr>
-                <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
-                <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
+                <td align="right" style="color:${this.chartTheme.color.base.content.secondary}">${row.title}</td>
+                <td style="color:${row.color ?? this.chartTheme.color.base.content.primary}">${row.data}</td>
               </tr>
             `
               )
@@ -610,7 +610,7 @@ export default class PriceChartWidget extends Mixins(
       itemStyle: {
         color: ({ data }) => {
           const [_timestamp, open, close] = data;
-          return open > close ? this.theme.color.status.error : this.theme.color.status.success;
+          return open > close ? this.chartTheme.color.status.error : this.chartTheme.color.status.success;
         },
         opacity: 0.7,
       },
@@ -626,7 +626,7 @@ export default class PriceChartWidget extends Mixins(
           },
         ],
       },
-      color: [this.theme.color.theme.accent, this.theme.color.status.success],
+      color: [this.chartTheme.color.theme.accent, this.chartTheme.color.status.success],
       dataset: {
         source: this.chartData,
         dimensions: ['timestamp', 'open', 'close', 'low', 'high', 'volume'],

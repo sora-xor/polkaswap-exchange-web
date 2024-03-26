@@ -182,7 +182,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
         this.lineSeriesSpec({
           encode: { y: 'value' },
           itemStyle: {
-            color: this.theme.color.status.info,
+            color: this.chartTheme.color.status.info,
           },
           name: 'Supply',
           yAxisIndex: 1,
@@ -192,7 +192,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
           type: 'bar',
           encode: { y: 'mint' },
           itemStyle: {
-            color: this.theme.color.status.success,
+            color: this.chartTheme.color.status.success,
             opacity: 0.5,
           },
           name: 'Remint',
@@ -203,7 +203,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
           type: 'bar',
           encode: { y: 'burn' },
           itemStyle: {
-            color: this.theme.color.status.error,
+            color: this.chartTheme.color.status.error,
             opacity: 0.5,
           },
           name: 'Burn',
@@ -217,7 +217,7 @@ export default class StatsSupplyChart extends Mixins(mixins.LoadingMixin, ChartS
         left: 'center',
         icon: 'circle',
         textStyle: {
-          color: this.theme.color.base.content.primary,
+          color: this.chartTheme.color.base.content.primary,
           fontSize: 12,
           fontWeight: 400,
           lineHeight: 1.5,

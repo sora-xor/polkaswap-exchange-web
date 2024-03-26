@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="title" custom-class="dialog--confirm-swap">
+  <dialog-base :visible.sync="isVisible" :title="title">
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ upperText }}</span>
@@ -98,6 +98,8 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   }
 
   private async singlePriceReachedLimit(): Promise<boolean> {
+    if (this.isMarketType || !this.quoteValue) return false;
+
     const limitReached = !(await api.orderBook.isOrderPlaceable(
       this.baseAsset.address,
       this.quoteAsset.address,
@@ -139,37 +141,26 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
 </script>
 
 <style lang="scss">
-.dialog--confirm-swap {
-  .transaction-number {
-    color: var(--s-color-base-content-primary);
-    font-weight: 600;
-    word-break: break-all;
-  }
-}
-
 .limit-order-type--buy {
   .info-line-value {
-    color: #34ad87;
+    color: var(--s-color-status-success);
   }
 }
 
 .limit-order-type--sell {
   .info-line-value {
-    color: #f754a3;
+    color: var(--s-color-status-error);
   }
 }
 </style>
 
 <style lang="scss" scoped>
-.transaction-details {
-  margin-top: $basic-spacing;
-}
-
 .tokens {
   display: flex;
   flex-direction: column;
   font-size: var(--s-heading2-font-size);
   line-height: var(--s-line-height-small);
+
   &-info-container {
     display: flex;
     align-items: center;
@@ -179,5 +170,9 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
   .token-logo {
     margin-left: $basic-spacing;
   }
+}
+
+.transaction-details {
+  margin-top: $basic-spacing;
 }
 </style>

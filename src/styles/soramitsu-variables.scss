@@ -88,4 +88,33 @@ $s-color-base-on-disabled--dark: #c29ab7;
   // Asset item height
   --s-asset-item-height: #{$s-asset-item-height};
   --s-asset-item-height--fiat: #{$s-asset-item-height--fiat};
+
+  // Different color palette based on user preferences
+  // classic
+  --s-color-classic-up: #{$s-color-classic-up};
+  --s-color-classic-down: #{$s-color-classic-down};
+  --s-color-classic-price-change-up: #{$s-color-classic-price-change-up};
+  --s-color-classic-price-change-down: #{$s-color-classic-price-change-down};
+  --s-color-classic-bar-light-buy: #{$s-color-classic-bar-light-buy};
+  --s-color-classic-bar-light-sell: #{$s-color-classic-bar-light-sell};
+  --s-color-classic-bar-dark-buy: #{$s-color-classic-bar-dark-buy};
+  --s-color-classic-bar-dark-sell: #{$s-color-classic-bar-dark-sell};
+  // deficiency
+  --s-color-deficiency-up: #{$s-color-deficiency-up};
+  --s-color-deficiency-down: #{$s-color-deficiency-down};
+  --s-color-deficiency-price-change-up: #{$s-color-deficiency-price-change-up};
+  --s-color-deficiency-price-change-down: #{$s-color-deficiency-price-change-down};
+  --s-color-deficiency-bar-light-buy: #{$s-color-deficiency-bar-light-buy};
+  --s-color-deficiency-bar-light-sell: #{$s-color-deficiency-bar-light-sell};
+  --s-color-deficiency-bar-dark-buy: #{$s-color-deficiency-bar-dark-buy};
+  --s-color-deficiency-bar-dark-sell: #{$s-color-deficiency-bar-dark-sell};
+  // traditional
+  --s-color-traditional-up: #{$s-color-traditional-up};
+  --s-color-traditional-down: #{$s-color-traditional-down};
+  --s-color-traditional-price-change-up: #{$s-color-traditional-price-change-up};
+  --s-color-traditional-price-change-down: #{$s-color-traditional-price-change-down};
+  --s-color-traditional-bar-light-buy: #{$s-color-traditional-bar-light-buy};
+  --s-color-traditional-bar-light-sell: #{$s-color-traditional-bar-light-sell};
+  --s-color-traditional-bar-dark-buy: #{$s-color-traditional-bar-dark-buy};
+  --s-color-traditional-bar-dark-sell: #{$s-color-traditional-bar-dark-sell};
 }

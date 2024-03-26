@@ -279,13 +279,13 @@ export default class PairListPopover extends Mixins(
   }
 
   .status-live {
-    color: var(--status-day-success, #34ad87);
+    color: var(--s-color-status-success);
     text-transform: uppercase;
     font-weight: 600;
   }
 
   .status-stop {
-    color: var(--status-day-error, #f754a3);
+    color: var(--s-color-status-error);
     text-transform: uppercase;
     font-weight: 600;
   }

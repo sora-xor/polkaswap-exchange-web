@@ -1,0 +1,31 @@
+// different color palette based on user preferences
+
+// classic
+$s-color-classic-up: #34ad87;
+$s-color-classic-down: #f754a3;
+$s-color-classic-price-change-up: #24daa0;
+$s-color-classic-price-change-down: #f8087b;
+$s-color-classic-bar-light-buy: rgba(185, 235, 219, 0.4);
+$s-color-classic-bar-light-sell: rgba(255, 216, 235, 0.8);
+$s-color-classic-bar-dark-buy: rgba(1, 202, 139, 0.2);
+$s-color-classic-bar-dark-sell: rgba(255, 0, 124, 0.3);
+
+// deficiency
+$s-color-deficiency-up: #448bf1;
+$s-color-deficiency-down: #d07f3e;
+$s-color-deficiency-price-change-up: #448bf1;
+$s-color-deficiency-price-change-down: #d07f3e;
+$s-color-deficiency-bar-light-buy: rgba(68, 139, 241, 0.12);
+$s-color-deficiency-bar-light-sell: rgba(255, 111, 0, 0.12);
+$s-color-deficiency-bar-dark-buy: rgba(68, 139, 241, 0.12);
+$s-color-deficiency-bar-dark-sell: rgba(255, 111, 0, 0.12);
+
+// traditional
+$s-color-traditional-up: #75a390;
+$s-color-traditional-down: #eb001b;
+$s-color-traditional-price-change-up: #75a390;
+$s-color-traditional-price-change-down: #eb001b;
+$s-color-traditional-bar-light-buy: rgba(13, 201, 124, 0.12);
+$s-color-traditional-bar-light-sell: rgba(235, 0, 27, 0.12);
+$s-color-traditional-bar-dark-buy: rgba(13, 201, 124, 0.12);
+$s-color-traditional-bar-dark-sell: rgba(235, 0, 27, 0.12);

@@ -39,7 +39,7 @@
           <span>{{ t('orderBook.orderTable.side') }}</span>
         </template>
         <template v-slot="{ row }">
-          <span class="order-table__side" :class="[{ buy: row.side === PriceVariant.Buy }]">{{ row.side }}</span>
+          <span class="order-table__side" :style="getFontColor(row.side)">{{ row.side }}</span>
         </template>
       </s-table-column>
       <s-table-column width="126">
@@ -120,6 +120,7 @@ import debounce from 'lodash/debounce';
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
 import ScrollableTableMixin from '@/components/mixins/ScrollableTableMixin';
+import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, state } from '@/store/decorators';
 import { OrderStatus } from '@/types/orderBook';
@@ -136,7 +137,7 @@ type OrderDataUI = Omit<OrderData, 'owner' | 'lifespan' | 'time' | 'expiresAt'>[
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class OrderTable extends Mixins(TranslationMixin, ScrollableTableMixin) {
+export default class OrderTable extends Mixins(TranslationMixin, ThemePaletteMixin, ScrollableTableMixin) {
   readonly PriceVariant = PriceVariant;
 
   @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
@@ -201,6 +202,13 @@ export default class OrderTable extends Mixins(TranslationMixin, ScrollableTable
 
       return row;
     });
+  }
+
+  getFontColor(side: PriceVariant): string {
+    const theme = this.getColorPalette();
+    const color = this.isInversed(side === PriceVariant.Buy) ? theme.side.buy : theme.side.sell;
+
+    return `color: ${color}`;
   }
 
   getStatusTranslation(status: OrderStatusType | undefined): string {
