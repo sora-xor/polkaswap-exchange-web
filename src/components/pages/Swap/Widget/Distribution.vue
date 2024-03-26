@@ -1,35 +1,75 @@
 <template>
   <base-widget :title="t('swap.route')">
-    <ul class="distribution">
-      <li v-for="{ input, output, amount, sources } in swapPaths" :key="input.address" class="distribution-step">
-        <div class="distribution-asset">
-          <token-logo :token="input" size="small" />
-          <span class="distribution-asset-amount">{{ amount }} {{ input.symbol }}</span>
-        </div>
-        <div v-if="sources.length" class="distribution-path">
-          <span class="distribution-path-line"></span>
-          <div class="distribution-path-sources">
-            <div
-              v-for="{ source, income, outcome, fiatDifference } in sources"
-              :key="source"
-              class="distribution-path-source"
-            >
-              <div class="flex-cell">
-                <span>{{ source }}:</span>
-                <value-status-wrapper :value="fiatDifference">
-                  <formatted-amount :value="formatStringValue(fiatDifference)">%</formatted-amount>
-                </value-status-wrapper>
-              </div>
-              <div class="flex-cell">
-                <token-logo :token="input" size="mini" />{{ income }}
-                &rarr;
-                <token-logo :token="output" size="mini" />{{ outcome }}
+    <s-skeleton :loading="!swapPaths.length">
+      <template #template>
+        <div class="distribution">
+          <div class="distribution-step">
+            <div class="distribution-asset">
+              <template v-if="tokenFrom">
+                <token-logo :token="tokenFrom" size="small" class="distribution-asset-logo" />
+                <span class="distribution-asset-amount">{{ fromValue }} {{ tokenFrom.symbol }}</span>
+              </template>
+            </div>
+            <div class="distribution-path">
+              <span class="distribution-path-line"></span>
+              <div class="distribution-path-sources">
+                <div class="distribution-path-source">
+                  <div class="flex-cell">
+                    <s-skeleton-item element="rect" class="distribution-path-source-name" />
+                    <s-skeleton-item element="rect" class="distribution-path-source-change" />
+                  </div>
+                  <div class="flex-cell">
+                    <s-skeleton-item element="circle" />
+                    <s-skeleton-item element="rect" />
+                    <s-skeleton-item element="circle" />
+                    <s-skeleton-item element="rect" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <div class="distribution-step">
+            <div class="distribution-asset">
+              <template v-if="tokenTo">
+                <token-logo :token="tokenTo" size="small" class="distribution-asset-logo" />
+                <span class="distribution-asset-amount">{{ toValue }} {{ tokenTo.symbol }}</span>
+              </template>
+            </div>
+          </div>
         </div>
-      </li>
-    </ul>
+      </template>
+
+      <ul class="distribution">
+        <li v-for="{ input, output, amount, sources } in swapPaths" :key="input.address" class="distribution-step">
+          <div class="distribution-asset">
+            <token-logo :token="input" size="small" class="distribution-asset-logo" />
+            <span class="distribution-asset-amount">{{ amount }} {{ input.symbol }}</span>
+          </div>
+          <div v-if="sources.length" class="distribution-path">
+            <span class="distribution-path-line"></span>
+            <div class="distribution-path-sources">
+              <div
+                v-for="{ source, income, outcome, fiatDifference } in sources"
+                :key="source"
+                class="distribution-path-source"
+              >
+                <div class="flex-cell">
+                  <span class="distribution-path-source-name">{{ source }}:</span>
+                  <value-status-wrapper :value="fiatDifference" class="distribution-path-source-change">
+                    <formatted-amount :value="formatStringValue(fiatDifference)">%</formatted-amount>
+                  </value-status-wrapper>
+                </div>
+                <div class="flex-cell">
+                  <token-logo :token="input" size="mini" />{{ income }}
+                  &rarr;
+                  <token-logo :token="output" size="mini" />{{ outcome }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </s-skeleton>
   </base-widget>
 </template>
 
@@ -37,6 +77,7 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { SSkeleton, SSkeletonItem } from '@soramitsu-ui/ui-vue2/lib/components/Skeleton';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -72,6 +113,8 @@ const MARKETS = {
 
 @Component({
   components: {
+    SSkeleton,
+    SSkeletonItem,
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     BaseWidget: lazyComponent(Components.BaseWidget),
@@ -80,8 +123,12 @@ const MARKETS = {
 })
 export default class SwapDistributionWidget extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
   @state.swap.distribution private distribution!: Distribution[][];
+  @state.swap.fromValue fromValue!: string;
+  @state.swap.toValue toValue!: string;
 
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<AccountAsset>;
+  @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
+  @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
 
   get swapPaths(): SwapPath[] {
     const paths: SwapPath[] = [];
@@ -126,6 +173,29 @@ export default class SwapDistributionWidget extends Mixins(mixins.FormattedAmoun
 }
 </script>
 
+<style lang="scss">
+.s-skeleton .distribution {
+  .el-skeleton__item {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: initial;
+
+    &:not(:last-child) {
+      margin-bottom: 0;
+    }
+
+    &.el-skeleton__circle {
+      width: 16px;
+      height: 16px;
+    }
+    &.el-skeleton__rect {
+      min-width: 48px;
+      min-height: 16px;
+    }
+  }
+}
+</style>
+
 <style lang="scss" scoped>
 $path-color: var(--s-color-base-content-tertiary);
 
@@ -144,6 +214,9 @@ $path-color: var(--s-color-base-content-tertiary);
     flex-flow: row nowrap;
     align-items: center;
     gap: $inner-spacing-mini;
+
+    min-height: 40px;
+    min-width: 120px;
 
     border-radius: var(--s-border-radius-mini);
     background-color: $path-color;
@@ -194,6 +267,13 @@ $path-color: var(--s-color-base-content-tertiary);
         top: 0;
         bottom: 0;
         left: -#{$inner-spacing-medium};
+      }
+
+      &-name {
+        &.el-skeleton__item {
+          height: 16px;
+          width: 64px;
+        }
       }
     }
   }
