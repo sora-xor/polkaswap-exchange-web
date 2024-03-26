@@ -1,8 +1,5 @@
 <template>
   <div class="select-node s-flex">
-    <div class="select-node-description">
-      {{ t('selectNodeDialog.selectNodeForEnvironment', { environment }) }}
-    </div>
     <s-scrollbar class="select-node-scrollbar">
       <s-radio-group v-model="currentAddressValue" class="select-node-list s-flex">
         <s-radio
@@ -10,14 +7,14 @@
           :key="node.address"
           :label="node.address"
           :value="node.address"
-          :disabled="disableSelect"
+          :disabled="node.address === nodeAddressConnecting"
           size="medium"
           class="select-node-list__item s-flex"
         >
           <div class="select-node-item s-flex">
             <div class="select-node-info s-flex">
               <div class="select-node-info__label">
-                {{ node.title }}
+                {{ getTitle(node) }}
               </div>
               <div class="select-node-info__desc s-flex">
                 <div>{{ node.address }}</div>
@@ -25,20 +22,28 @@
               </div>
             </div>
             <div class="select-node-badge">
-              <s-icon v-if="node.connecting" name="el-icon-loading" />
+              <s-button
+                v-if="node.address === currentAddressValue && !nodeAddressConnecting"
+                class="select-node-details"
+                type="action"
+                alternative
+                icon="arrows-swap-90-24"
+                @click.stop="handleNode(node)"
+              />
+              <s-icon v-else-if="node.address === nodeAddressConnecting" name="el-icon-loading" />
             </div>
             <s-button
               class="select-node-details"
               type="action"
               alternative
               icon="arrows-chevron-right-rounded-24"
-              @click.stop="handleNode(node)"
+              @click.stop="viewNode(node)"
             />
           </div>
         </s-radio>
       </s-radio-group>
     </s-scrollbar>
-    <s-button class="select-node-button s-typography-button--large" @click.stop="handleNode()">
+    <s-button class="select-node-button s-typography-button--large" @click.stop="viewNode()">
       {{ t('selectNodeDialog.addNode') }}
     </s-button>
   </div>
@@ -48,16 +53,16 @@
 import { Component, Mixins, Prop, ModelSync } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import type { NodeItem } from '@/types/nodes';
+import type { Node } from '@/types/nodes';
 
 import { formatLocation } from './utils';
 
 @Component
 export default class SelectNode extends Mixins(TranslationMixin) {
-  @Prop({ default: () => [], type: Array }) nodes!: Array<NodeItem>;
-  @Prop({ default: () => {}, type: Function }) handleNode!: (node?: NodeItem) => void;
-  @Prop({ default: '', type: String }) environment!: string;
-  @Prop({ default: false, type: Boolean }) disableSelect!: boolean;
+  @Prop({ default: () => [], type: Array }) readonly nodes!: Array<Node>;
+  @Prop({ default: () => {}, type: Function }) readonly handleNode!: (node?: Node) => void;
+  @Prop({ default: () => {}, type: Function }) readonly viewNode!: (node?: Node) => void;
+  @Prop({ default: '', type: String }) readonly nodeAddressConnecting!: string;
 
   @ModelSync('value', 'input', { type: String })
   readonly currentAddressValue!: string;
@@ -68,6 +73,16 @@ export default class SelectNode extends Mixins(TranslationMixin) {
     const flag = `<span class="flag-emodji">${location.flag}</span>`;
     if (!location.name) return flag;
     return `${location.name} ${flag}`;
+  }
+
+  getTitle(node: Node) {
+    const { name, chain } = node;
+
+    return name && chain ? this.t('selectNodeDialog.nodeTitle', { chain, name }) : name || chain;
+  }
+
+  reconnect(node: Node) {
+    this.$emit('input', node.address);
   }
 
   async mounted(): Promise<void> {
@@ -91,6 +106,11 @@ export default class SelectNode extends Mixins(TranslationMixin) {
 }
 .select-node-scrollbar {
   @include scrollbar(-$inner-spacing-big);
+}
+.select-node {
+  .el-button + .el-button {
+    margin-left: 0;
+  }
 }
 </style>
 
@@ -160,10 +180,12 @@ $node-desc-border-radius: 8px;
   }
 
   &-badge {
-    width: var(--s-size-mini);
+    width: var(--s-size-medium);
+    height: var(--s-size-medium);
     display: flex;
-    flex-flow: row nowrap;
+    align-items: center;
     justify-content: center;
+
     .el-icon-loading {
       color: var(--s-color-base-content-tertiary);
     }
