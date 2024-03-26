@@ -47,7 +47,14 @@
     >
       {{ buttonText }}
     </s-button>
-    <a :href="tutorialLink" class="node-info-button" tabindex="-1" target="_blank" rel="noreferrer noopener">
+    <a
+      v-if="showTutorial"
+      :href="tutorialLink"
+      class="node-info-button"
+      tabindex="-1"
+      target="_blank"
+      rel="noreferrer noopener"
+    >
       <s-button
         type="tertiary"
         class="node-info-tutorial-button s-typography-button--big"
@@ -66,7 +73,7 @@ import { Component, Mixins, Prop, Ref } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import GenericPageHeader from '@/components/shared/GenericPageHeader.vue';
 import { Links } from '@/consts';
-import type { Node, NodeItem } from '@/types/nodes';
+import type { Node } from '@/types/nodes';
 import { wsRegexp, dnsPathRegexp, ipv4Regexp } from '@/utils/regexp';
 
 import { NodeModel } from './consts';
@@ -105,11 +112,12 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) handleBack!: FnWithoutArgs;
   @Prop({ default: () => {}, type: Function }) handleNode!: (node: any, isNewNode: boolean) => void;
   @Prop({ default: () => {}, type: Function }) removeNode!: (node: any) => void;
-  @Prop({ default: () => ({}), type: Object }) node!: NodeItem;
+  @Prop({ default: () => ({}), type: Object }) node!: Node;
   @Prop({ default: false, type: Boolean }) existing!: boolean;
-  @Prop({ default: false, type: Boolean }) loading!: boolean;
   @Prop({ default: false, type: Boolean }) removable!: boolean;
   @Prop({ default: false, type: Boolean }) connected!: boolean;
+  @Prop({ default: false, type: Boolean }) showTutorial!: boolean;
+  @Prop({ default: '', type: String }) readonly nodeAddressConnecting!: string;
 
   @Ref('nodeNameInput') private readonly nodeNameInput!: HTMLInputElement;
 
@@ -174,7 +182,13 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   get title(): string {
     const customNodeText = this.t('selectNodeDialog.customNode');
     if (!this.existing) return customNodeText;
-    return this.node.title ?? customNodeText;
+    return this.node.chain || this.node.name || customNodeText;
+  }
+
+  get loading(): boolean {
+    if (!this.nodeAddressConnecting) return false;
+
+    return this.nodeModel.address === this.nodeAddressConnecting;
   }
 
   get nodeDataChanged(): boolean {
