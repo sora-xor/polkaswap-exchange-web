@@ -191,6 +191,10 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
           margin-top: var(--s-size-mini);
         }
       }
+
+      .chart-widget {
+        margin-top: var(--s-size-mini);
+      }
     }
 
     @include large-desktop(true) {
@@ -286,10 +290,6 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
     @include large-desktop {
       margin-left: 0;
     }
-  }
-
-  .chart-widget {
-    margin-top: var(--s-size-mini);
   }
 }
 
