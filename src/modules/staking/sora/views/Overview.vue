@@ -342,7 +342,7 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
   }
 
   stakeNew() {
-    router.push({ name: SoraStakingPageNames.NewStake });
+    router.push({ name: SoraStakingPageNames.SelectValidators });
   }
 
   stakeMore() {
@@ -428,7 +428,7 @@ $logo-size: 64px;
   flex-direction: column;
   align-self: center;
   width: 100%;
-  max-width: 464px;
+  max-width: $inner-window-width;
   margin: 50px auto;
   padding: 30px;
   border-radius: 20px;

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <staking-header :previous-page="SoraStakingPageNames.NewStake">
+    <staking-header :previous-page="SoraStakingPageNames.Overview">
       {{ t('soraStaking.info.validators') }}
     </staking-header>
     <select-validators-mode @recommended="stakeWithSuggested" @selected="stakeWithSelected" />
@@ -55,7 +55,7 @@ export default class ValidatorsType extends Mixins(StakingMixin, mixins.LoadingM
 <style lang="scss" scoped>
 .container {
   display: flex;
-  width: 464px;
+  width: $inner-window-width;
   flex-direction: column;
   justify-content: center;
   align-items: center;

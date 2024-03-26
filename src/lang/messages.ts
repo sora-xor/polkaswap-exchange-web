@@ -836,10 +836,6 @@ export default {
       description:
         'Stake {XOR} tokens on {Sora} Network as a nominator to validate transactions and earn {VAL} token rewards.',
     },
-    newStake: {
-      title: 'Start staking',
-      minStakeWarning: 'The minimum stake to receive the reward is {min} {symbol}',
-    },
     validators: {
       save: 'Save changes',
       selected: '{selected}/{total} selected',

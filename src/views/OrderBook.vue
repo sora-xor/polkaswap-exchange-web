@@ -216,7 +216,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
       }
 
       .column-3 {
-        .order-history-header-filter-buttons {
+        .order-history-buttons--filter-buttons {
           flex-direction: column;
         }
       }
@@ -240,14 +240,6 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
         }
       }
     }
-  }
-
-  &-widget {
-    padding: unset;
-    background-color: var(--s-color-utility-surface);
-    box-shadow: var(--s-shadow-dialog);
-    color: var(--s-color-base-content-primary);
-    border-radius: var(--s-border-radius-small);
   }
 }
 
