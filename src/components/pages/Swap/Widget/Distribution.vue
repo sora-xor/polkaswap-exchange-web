@@ -60,9 +60,9 @@
                   </value-status-wrapper>
                 </div>
                 <div class="flex-cell">
-                  <token-logo :token="input" size="mini" />{{ income }}
+                  <div class="flex-cell"><token-logo :token="input" size="mini" />{{ income }}</div>
                   &rarr;
-                  <token-logo :token="output" size="mini" />{{ outcome }}
+                  <div class="flex-cell"><token-logo :token="output" size="mini" />{{ outcome }}</div>
                 </div>
               </div>
             </div>
@@ -200,7 +200,8 @@ export default class SwapDistributionWidget extends Mixins(mixins.FormattedAmoun
 $path-color: var(--s-color-base-content-tertiary);
 
 .flex-cell {
-  display: inline-flex;
+  display: flex;
+  flex-flow: row wrap;
   align-items: center;
   gap: $inner-spacing-tiny;
 }
