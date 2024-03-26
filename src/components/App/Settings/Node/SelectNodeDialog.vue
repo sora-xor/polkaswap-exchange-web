@@ -1,7 +1,7 @@
 <template>
   <dialog-base
     :visible.sync="visible"
-    :title="t('selectNodeDialog.title', { network })"
+    :title="t('selectNodeDialog.title')"
     :class="['select-node-dialog', dialogCustomClass]"
   >
     <select-node

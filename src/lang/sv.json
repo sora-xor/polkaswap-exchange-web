@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "{Sora} val av Nätverksnod",
+        "title": "val av Nätverksnod",
         "addNode": "Lägg till anpassad nod",
         "customNode": "Anpassad nod",
         "howToSetupOwnNode": "Hur du installerar din egen {Sora} nod",
         "select": "Välj",
         "connected": "Ansluten",
-        "selectNodeForEnvironment": "Välj en nod för {environment} miljö:",
         "nodeTitle": "{name} är värd för {chain}",
         "messages": {
             "emptyName": "Vänligen ange nodens namn",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} adress",
         "limitMessage": "För närvarande finns det en {type} {amount} {symbol} för överbryggning för att säkerställa stabiliteten och säkerheten i {Sora} -nätverket. Vi uppskattar din förståelse.",
         "externalTransferFee": "{network} {XCM} avgift",
-        "externalTransferFeeTooltip": "När du skickar en bryggtransaktion till {network} -nätverket tas en mindre avgift från beloppet du överför"
+        "externalTransferFeeTooltip": "När du skickar en bryggtransaktion till {network} -nätverket tas en mindre avgift från beloppet du överför",
+        "externalMinDeposit": "{network} min. deposition",
+        "externalMinDepositTooltip": "Minsta saldo {symbol} som måste finnas på ditt {network} -konto efter bryggöverföringen"
     },
     "selectRegisteredAsset": {
         "title": "Välj en token",

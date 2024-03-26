@@ -23,7 +23,9 @@ export class NodesConnection {
   constructor(storage: Storage, connection: Connection, network = SubNetworkId.Mainnet) {
     this.network = network;
 
-    // remove vue reactivity
+    // It is necessary to remove Vue reactivity from instances of "Connection" and "Storage" classes.
+    // When using NodesConnection in the Vue context, Vue does not add reactivity to them.
+    // In this case, Vue does not mark all instances properties with getters and setters
     Object.defineProperty(this, 'connection', {
       configurable: false,
       value: connection,
