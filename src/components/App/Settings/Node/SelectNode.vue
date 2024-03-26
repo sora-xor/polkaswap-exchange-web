@@ -78,7 +78,7 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   getTitle(node: Node) {
     const { name, chain } = node;
 
-    return !!name && !!chain ? this.t('selectNodeDialog.nodeTitle', { chain, name }) : name || chain;
+    return name && chain ? this.t('selectNodeDialog.nodeTitle', { chain, name }) : name || chain;
   }
 
   reconnect(node: Node) {

@@ -59,7 +59,7 @@ const getters = defineGetters<BridgeState>()({
     const { getters } = bridgeGetterContext(args);
     const { asset, nativeToken } = getters;
 
-    return !!nativeToken && !!asset && nativeToken.address === asset.address;
+    return !!(nativeToken && asset && nativeToken.address === asset.address);
   },
 
   isRegisteredAsset(...args): boolean {

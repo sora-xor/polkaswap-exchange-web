@@ -53,7 +53,7 @@ export class SubAdapter {
   }
 
   public async connect(): Promise<void> {
-    if (!this.connected && !this.api! && !this.connection.loading) {
+    if (!this.connected && !this.api && !this.connection.loading) {
       try {
         await this.subNetworkConnection.connect();
       } catch {}
@@ -97,7 +97,7 @@ export class SubAdapter {
       const accountBalance = formatBalance(accountInfo.data);
       const balance = accountBalance.transferable;
 
-      return balance as string;
+      return balance;
     }, ZeroStringValue);
   }
 

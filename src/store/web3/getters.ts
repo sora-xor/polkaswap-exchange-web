@@ -45,7 +45,7 @@ const getters = defineGetters<Web3State>()({
       const data = SUB_NETWORKS[id];
 
       if (data) {
-        const disabled = !nodesOrFlag || !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork);
+        const disabled = !(nodesOrFlag && state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork));
 
         // override from config
         if (Array.isArray(nodesOrFlag)) {

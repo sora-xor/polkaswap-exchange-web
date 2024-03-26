@@ -4,5 +4,3 @@ export const NodeModel = {
   address: '',
   location: '',
 };
-
-export const SoraNetwork = 'SORA';

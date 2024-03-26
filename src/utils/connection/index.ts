@@ -1,3 +1,5 @@
+import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+
 import type { Node, ConnectToNodeOptions } from '@/types/nodes';
 import { AppHandledError } from '@/utils/error';
 import { fetchRpc, getRpcEndpoint } from '@/utils/rpc';
@@ -9,7 +11,7 @@ const NODE_CONNECTION_TIMEOUT = 30_000;
 
 export class NodesConnection {
   public readonly connection!: Connection;
-  public readonly network!: string;
+  public readonly network!: SubNetworkId;
   protected readonly storage!: Storage;
 
   public node: Nullable<Node> = null;
@@ -17,9 +19,8 @@ export class NodesConnection {
   public defaultNodes: readonly Node[] = [];
   public nodeAddressConnecting = '';
   public chainId = '';
-  // public nodeIsConnected = false;
 
-  constructor(storage: Storage, connection: Connection, network = 'SORA') {
+  constructor(storage: Storage, connection: Connection, network = SubNetworkId.Mainnet) {
     this.network = network;
 
     // remove vue reactivity
@@ -92,7 +93,7 @@ export class NodesConnection {
   }
 
   public setNetworkChainGenesisHash(hash?: string): void {
-    this.chainId = hash || '';
+    this.chainId = hash ?? '';
   }
 
   protected async updateNetworkChainGenesisHash(): Promise<void> {

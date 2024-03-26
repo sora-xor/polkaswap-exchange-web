@@ -166,7 +166,7 @@ const actions = defineActions({
     const networks = getters.availableNetworks[BridgeNetworkType.Sub];
 
     const nodes = Object.entries(networks).reduce((acc, [key, value]) => {
-      if (!(value && value.data.nodes)) return acc;
+      if (!value?.data?.nodes) return acc;
       return { ...acc, [key]: value.data.nodes };
     }, {});
 

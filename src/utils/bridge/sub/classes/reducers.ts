@@ -74,8 +74,12 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
   }
 
   async saveParachainBlock(id: string): Promise<void> {
+    const soraParachainApi = this.connector.soraParachain?.api;
+
+    if (!soraParachainApi) throw new Error(`[${this.constructor.name}]: Sora Parachain Api is not exists`);
+
     // get current sora parachain block number
-    const parachainStartBlock = (await this.connector.soraParachain!.api.query.system.number()).toNumber();
+    const parachainStartBlock = (await soraParachainApi.query.system.number()).toNumber();
     // update history data
     this.updateTransactionParams(id, {
       payload: {
@@ -194,11 +198,16 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     if (tx.payload?.batchNonce) return;
 
-    const isFirstStep = [SubTransferType.SoraParachain, SubTransferType.Standalone].includes(this.transferType);
     const isStandalone = this.transferType === SubTransferType.Standalone;
-    const adapter = isStandalone ? this.connector.network : this.connector.soraParachain!;
+    const adapter = isStandalone ? this.connector.network : this.connector.soraParachain;
 
-    const startBlockHeight = isStandalone ? tx.externalBlockHeight! : (tx.payload.parachainStartBlock as number);
+    if (!adapter) throw new Error(`[${this.constructor.name}] adapter is not defined`);
+
+    const startBlockHeight: number = isStandalone ? tx.externalBlockHeight : tx.payload.parachainStartBlock;
+
+    if (!startBlockHeight) throw new Error(`[${this.constructor.name}] startBlockHeight is not defined`);
+
+    const isFirstStep = [SubTransferType.SoraParachain, SubTransferType.Standalone].includes(this.transferType);
     const sended = new FPNumber(tx.amount as string, this.asset.externalDecimals).toCodecString();
     const from = tx.from as string;
     const to = tx.to as string;
@@ -471,8 +480,9 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
     const isLastStep = [SubTransferType.SoraParachain, SubTransferType.Standalone].includes(this.transferType);
     const isStandalone = SubTransferType.Standalone === this.transferType;
+    const adapter = isLastStep ? this.connector.network : this.connector.soraParachain;
 
-    const adapter = isLastStep ? this.connector.network : this.connector.soraParachain!;
+    if (!adapter) throw new Error(`[${this.constructor.name}] adapter is not defined`);
 
     try {
       await adapter.connect();

@@ -14,7 +14,7 @@ function initialState(): SettingsState {
   const appConnection = new NodesConnection(settingsStorage, connection);
 
   return {
-    appConnection: appConnection,
+    appConnection,
     featureFlags: {},
     slippageTolerance: storage.get('slippageTolerance') || DefaultSlippageTolerance,
     marketAlgorithm: (storage.get('marketAlgorithm') || DefaultMarketAlgorithm) as MarketAlgorithms,

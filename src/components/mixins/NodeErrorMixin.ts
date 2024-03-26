@@ -8,7 +8,7 @@ import TranslationMixin from './TranslationMixin';
 
 @Component
 export default class NodeErrorMixin extends Mixins(TranslationMixin, mixins.NotificationMixin) {
-  protected async handleNodeError(error, node: Node): Promise<void> {
+  protected handleNodeError(error, node: Node): void {
     const errorKey = error instanceof AppHandledError ? error.translationKey : 'node.errors.connection';
     const errorPayload = error instanceof AppHandledError ? error.translationPayload : {};
     const errorMessage = this.t(errorKey, errorPayload);

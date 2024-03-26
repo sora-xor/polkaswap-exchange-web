@@ -28,6 +28,7 @@
 </template>
 
 <script lang="ts">
+import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import pick from 'lodash/fp/pick';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
@@ -39,7 +40,7 @@ import { Node } from '@/types/nodes';
 import type { NodesConnection } from '@/utils/connection';
 import { AppHandledError } from '@/utils/error';
 
-import { NodeModel, SoraNetwork } from './consts';
+import { NodeModel } from './consts';
 
 const NodeListView = 'NodeListView';
 const NodeInfoView = 'NodeInfoView';
@@ -55,7 +56,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   @Prop({ required: true, type: Object }) readonly connection!: NodesConnection;
   @Prop({ required: true, type: Boolean }) readonly visibility!: boolean;
   @Prop({ required: true, type: Function }) readonly setVisibility!: (flag: boolean) => void;
-  @Prop({ default: () => SoraNetwork, type: String }) readonly network!: string;
+  @Prop({ default: () => SubNetworkId.Mainnet, type: String }) readonly network!: SubNetworkId;
 
   currentView = NodeListView;
   selectedNode: Partial<Node> = {};
@@ -73,7 +74,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   }
 
   get isSoraNetwork(): boolean {
-    return this.network === SoraNetwork;
+    return this.network === SubNetworkId.Mainnet;
   }
 
   get nodeAddressConnecting(): string {
@@ -135,7 +136,7 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
   }
 
   navigateToNodeInfo(node?: Node): void {
-    this.selectedNode = node || {};
+    this.selectedNode = node ?? {};
     this.changeView(NodeInfoView);
   }
 
