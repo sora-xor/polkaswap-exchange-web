@@ -239,6 +239,7 @@ $path-color: var(--s-color-base-content-tertiary);
 
     &-sources {
       display: flex;
+      flex-flow: column nowrap;
       flex-grow: 1;
       padding: $inner-spacing-medium 0 $inner-spacing-medium $inner-spacing-medium;
       gap: $inner-spacing-medium;
@@ -248,7 +249,6 @@ $path-color: var(--s-color-base-content-tertiary);
       display: flex;
       flex-flow: row wrap;
       flex-grow: 1;
-      align-items: center;
       justify-content: space-between;
       position: relative;
       gap: $inner-spacing-mini;
