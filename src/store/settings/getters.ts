@@ -1,36 +1,15 @@
-import { connection } from '@soramitsu/soraneo-wallet-web';
 import { defineGetters } from 'direct-vuex';
 
 import { LiquiditySourceForMarketAlgorithm } from '@/consts';
 import { settingsGetterContext } from '@/store/settings';
-import type { Node } from '@/types/nodes';
 
-import type { NodesHashTable, SettingsState } from './types';
+import type { SettingsState } from './types';
 import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 
 const getters = defineGetters<SettingsState>()({
-  defaultNodesHashTable(...args): NodesHashTable {
-    const { state } = settingsGetterContext(args);
-    return state.defaultNodes.reduce<NodesHashTable>((result, node: Node) => ({ ...result, [node.address]: node }), {});
-  },
-  customNodes(...args): Array<Node> {
-    const { state, getters } = settingsGetterContext(args);
-    return state.customNodes.filter((node) => !(node.address in getters.defaultNodesHashTable));
-  },
-  nodeList(...args): Array<Node> {
-    const { state, getters } = settingsGetterContext(args);
-    return [...state.defaultNodes, ...getters.customNodes];
-  },
-  connectingNode(...args): Nullable<Node> {
-    const { state, getters } = settingsGetterContext(args);
-
-    if (!state.nodeAddressConnecting) return null;
-
-    return getters.nodeList.find((node) => node.address === state.nodeAddressConnecting);
-  },
   nodeIsConnected(...args): boolean {
     const { state } = settingsGetterContext(args);
-    return !!state.node?.address && !state.nodeAddressConnecting && connection.opened;
+    return state.appConnection.nodeIsConnected;
   },
   liquiditySource(...args): LiquiditySourceTypes {
     const { state } = settingsGetterContext(args);

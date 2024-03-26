@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "{Sora} Odabir mrežnog noda",
+        "title": "Odabir mrežnog noda",
         "addNode": "Dodajte prilagođenog noda",
         "customNode": "Prilagođeni nod",
         "howToSetupOwnNode": "Kako postaviti vlastiti nod {Sora}",
         "select": "Izaberite",
         "connected": "Povezano",
-        "selectNodeForEnvironment": "Odaberite nod za okruženje {environment}:",
         "nodeTitle": "{chain} hostiran od strane {name}",
         "messages": {
             "emptyName": "Molimo unesite naziv noda",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} adresa",
         "limitMessage": "Trenutno postoji {type} {amount} {symbol} za premošćivanje kako bi se osigurala stabilnost i sigurnost {Sora} mreže. Cijenimo vaše razumijevanje.",
         "externalTransferFee": "{network} {XCM} naknada",
-        "externalTransferFeeTooltip": "Kada pošaljete premosnu transakciju na mrežu {network} , od iznosa koji prenosite uzima se manja naknada"
+        "externalTransferFeeTooltip": "Kada pošaljete premosnu transakciju na mrežu {network} , od iznosa koji prenosite uzima se manja naknada",
+        "externalMinDeposit": "{network} min. depozit",
+        "externalMinDepositTooltip": "Minimalni saldo {symbol} koji mora biti na vašem {network} računu nakon prijelaza"
     },
     "selectRegisteredAsset": {
         "title": "Odaberite token",
