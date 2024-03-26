@@ -25,10 +25,6 @@ export default class ExplorePageMixin extends Mixins(ScrollableTableMixin, Trans
   order = SortDirection.DESC;
   property = 'tvl';
 
-  get loadingState(): boolean {
-    return this.parentLoading || this.loading;
-  }
-
   get allowedAssets(): Array<Asset> {
     // if whitelist is not available, use KnownAssets
     if (!this.whitelistAssets.length) {

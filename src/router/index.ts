@@ -148,11 +148,6 @@ const routes: Array<RouteConfig> = [
         component: soraStakingLazyView(SoraStakingPageNames.Overview),
       },
       {
-        path: '/staking/sora/new',
-        name: SoraStakingPageNames.NewStake,
-        component: soraStakingLazyView(SoraStakingPageNames.NewStake),
-      },
-      {
         path: '/staking/sora/validators/type',
         name: SoraStakingPageNames.ValidatorsType,
         component: soraStakingLazyView(SoraStakingPageNames.ValidatorsType),

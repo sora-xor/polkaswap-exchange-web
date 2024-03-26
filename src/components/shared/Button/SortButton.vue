@@ -75,5 +75,7 @@ export default class SortButton extends Vue {
   &--descending {
     transform: rotate(180deg);
   }
+
+  @include icon-styles($hoverColor: var(--s-color-theme-accent-hover));
 }
 </style>

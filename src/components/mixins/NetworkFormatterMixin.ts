@@ -25,12 +25,20 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
 
   readonly EvmLinkType = EvmLinkType;
 
+  get selectedNetworkName(): string {
+    return this.selectedNetwork?.name ?? '';
+  }
+
+  get selectedNetworkShortName(): string {
+    return this.selectedNetwork?.shortName ?? '';
+  }
+
   formatSelectedNetwork(isSora: boolean): string {
     if (isSora && this.soraNetwork) {
       return this.TranslationConsts.soraNetwork[this.soraNetwork];
     }
 
-    return this.selectedNetwork?.name ?? '';
+    return this.selectedNetworkName;
   }
 
   formatNetworkShortName(isSora: boolean): string {
@@ -38,7 +46,7 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
       return this.TranslationConsts.Sora;
     }
 
-    return this.selectedNetwork?.shortName ?? '';
+    return this.selectedNetworkShortName;
   }
 
   getNetworkName(type: Nullable<BridgeNetworkType>, id: Nullable<BridgeNetworkId>): string {
@@ -83,6 +91,8 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
         return 'sora-rococo';
       case SubNetworkId.KusamaSora:
         return 'sora-kusama';
+      case SubNetworkId.Liberland:
+        return 'liberland';
       default:
         return 'ethereum';
     }
@@ -104,18 +114,12 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
       return [];
     }
 
-    const explorerUrl = networkData.blockExplorerUrls[0];
-
-    if (!explorerUrl) {
-      console.error(`"blockExplorerUrls" is not provided for network id "${networkId}"`);
-      return [];
-    }
-
     if (networkType === BridgeNetworkType.Sub) {
       if (type === EvmLinkType.Account) return [];
 
       if (!blockHash) return [];
 
+      const explorerUrl = networkData.nodes?.[0].address;
       const baseLink = `https://polkadot.js.org/apps/?rpc=${explorerUrl}#/explorer/query`;
 
       return [
@@ -125,6 +129,13 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
         },
       ];
     } else {
+      const explorerUrl = networkData.blockExplorerUrls[0];
+
+      if (!explorerUrl) {
+        console.error(`"blockExplorerUrls" is not provided for network id "${networkId}"`);
+        return [];
+      }
+
       const path = type === EvmLinkType.Transaction ? 'tx' : 'address';
 
       return [
