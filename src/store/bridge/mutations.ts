@@ -1,6 +1,8 @@
 import { defineMutations } from 'direct-vuex';
 import omit from 'lodash/fp/omit';
 
+import { ZeroStringValue } from '@/consts';
+
 import type { BridgeState, FocusedField } from './types';
 import type { FPNumber, IBridgeTransaction, CodecString } from '@sora-substrate/util';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
@@ -27,12 +29,20 @@ const mutations = defineMutations<BridgeState>()({
     state.assetLockedBalance = balance;
   },
 
-  setExternalBalance(state, balance: Nullable<CodecString> = null): void {
+  setExternalNativeBalance(state, balance: CodecString = ZeroStringValue): void {
     state.externalNativeBalance = balance;
+  },
+
+  setExternalMinBalance(state, balance: CodecString = ZeroStringValue): void {
+    state.assetExternalMinBalance = balance;
   },
 
   setIncomingMinLimit(state, amount: FPNumber): void {
     state.incomingMinLimit = amount;
+  },
+
+  setOutgoingMinLimit(state, amount: FPNumber): void {
+    state.outgoingMinLimit = amount;
   },
 
   setOutgoingMaxLimit(state, amount: Nullable<FPNumber>): void {

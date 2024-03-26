@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "Pemilihan node {Sora} Network",
+        "title": "Pemilihan node network",
         "addNode": "Tambahkan node kustom",
         "customNode": "Kostum Node",
         "howToSetupOwnNode": "Cara mengatur node {Sora} Anda sendiri",
         "select": "Pilih",
         "connected": "Terhubung",
-        "selectNodeForEnvironment": "Pilih node untuk ekosistem {environment}:",
         "nodeTitle": "{chain} dihosting oleh {name}",
         "messages": {
             "emptyName": "Silakan masukkan nama node",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} alamat",
         "limitMessage": "Saat ini, ada {type} {amount} {symbol} untuk menjembatani guna memastikan stabilitas dan keamanan Jaringan {Sora} . Kami menghargai pengertian Anda.",
         "externalTransferFee": "biaya {network} {XCM}",
-        "externalTransferFeeTooltip": "Saat Anda mengirim transaksi jembatan ke jaringan {network} , sedikit biaya akan diambil dari jumlah yang Anda transfer"
+        "externalTransferFeeTooltip": "Saat Anda mengirim transaksi jembatan ke jaringan {network} , sedikit biaya akan diambil dari jumlah yang Anda transfer",
+        "externalMinDeposit": "{network} menit. menyetorkan",
+        "externalMinDepositTooltip": "Saldo minimum {symbol} yang harus ada di akun {network} Anda setelah transfer jembatan"
     },
     "selectRegisteredAsset": {
         "title": "Pilih token",
