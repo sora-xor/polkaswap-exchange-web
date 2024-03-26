@@ -1,11 +1,10 @@
 <template>
   <s-card
     ref="container"
-    border-radius="small"
-    shadow="always"
     size="big"
     primary
-    :class="['base-widget', { delimeter, full }]"
+    :shadow="shadow"
+    :class="['base-widget', { delimeter, full, flat }]"
     v-loading="loading"
   >
     <template #header v-if="hasHeader">
@@ -73,6 +72,10 @@ export default class BaseWidget extends Vue {
    */
   @Prop({ default: false, type: Boolean }) readonly extensive!: boolean;
   /**
+   * The widget looks like rectangle without shadow
+   */
+  @Prop({ default: false, type: Boolean }) readonly flat!: boolean;
+  /**
    * Widget has a loading state
    */
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
@@ -96,6 +99,10 @@ export default class BaseWidget extends Vue {
 
   get hasContent(): boolean {
     return !!this.$slots.default;
+  }
+
+  get shadow(): string | undefined {
+    return this.flat ? 'never' : 'always';
   }
 
   mounted(): void {
@@ -183,12 +190,21 @@ $left: $inner-spacing-medium;
   flex-flow: column nowrap;
   align-items: normal;
   overflow: hidden;
+  border: 1px solid transparent;
 
   &.full {
     width: 100%;
     height: 100%;
 
     flex: 1;
+  }
+
+  &.flat {
+    border-color: var(--s-color-base-border-secondary);
+
+    &.s-border-radius-small {
+      border-radius: unset;
+    }
   }
 
   &-block {

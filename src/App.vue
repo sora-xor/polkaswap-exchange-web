@@ -98,15 +98,16 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showNotifsDarkPage = false;
   responsiveClass = BreakpointClass.LargeDesktop;
 
-  @state.settings.appConnection appConnection!: NodesConnection;
+  @state.settings.appConnection private appConnection!: NodesConnection;
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
-  @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
-  @state.referrals.storageReferrer storageReferrer!: string;
+  @state.wallet.account.assetsToNotifyQueue private assetsToNotifyQueue!: Array<WhitelistArrayItem>;
+  @state.referrals.storageReferrer private storageReferrer!: string;
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.router.loading pageLoading!: boolean;
 
-  @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
+  @getter.wallet.transactions.firstReadyTx private firstReadyTransaction!: Nullable<HistoryItem>;
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.libraryDesignSystem libraryDesignSystem!: DesignSystem;

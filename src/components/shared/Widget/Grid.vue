@@ -23,6 +23,7 @@
         :name="widget.i"
         v-bind="{
           id: widget.i,
+          flat,
           loading,
           onResize,
           reset,
@@ -116,9 +117,11 @@ export default class WidgetsGrid extends Vue {
   @Prop({ default: false, type: Boolean }) readonly resizable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly compact!: boolean;
   @Prop({ default: false, type: Boolean }) readonly lines!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
   @Prop({ default: () => DEFAULT_COLS, type: Object }) readonly cols!: LayoutConfig;
   @Prop({ default: () => DEFAULT_BREAKPOINTS, type: Object }) readonly breakpoints!: LayoutConfig;
+
+  @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly flat!: boolean;
 
   /** Widgets visibility by widget ID */
   @Prop({ default: () => ({}), type: Object }) readonly value!: WidgetsVisibilityModel;
@@ -306,9 +309,33 @@ export default class WidgetsGrid extends Vue {
 $line: var(--s-color-base-border-secondary);
 
 .widgets-grid {
-  .vue-grid-item.vue-grid-placeholder {
-    background: var(--s-color-status-success-background);
-    opacity: 0.5;
+  .vue-grid-item {
+    &.vue-grid-placeholder {
+      background: var(--s-color-theme-accent-hover);
+      opacity: 0.5;
+    }
+    &.vue-resizable {
+      &:hover {
+        .base-widget {
+          border-color: var(--s-color-theme-accent-focused);
+        }
+      }
+
+      .base-widget {
+        border-bottom-right-radius: 0px;
+      }
+
+      &.resizing {
+        opacity: 1;
+      }
+
+      & > .vue-resizable-handle {
+        width: 23px;
+        height: 27px;
+        padding: 0;
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMyIgaGVpZ2h0PSIyNyIgdmlld0JveD0iMCAwIDIzIDI3IiBmaWxsPSJub25lIj4KPHBhdGggb3BhY2l0eT0iMC40IiBkPSJNMjIuMjAyNSAwLjI0NTExN0wwLjY5NjI4OSAyNi4xODU1SDIyLjIwMjVWMC4yNDUxMTdaIiBmaWxsPSIjRjgwODdCIi8+Cjwvc3ZnPg==');
+      }
+    }
   }
 
   .grid-lines {

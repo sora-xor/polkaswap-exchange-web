@@ -5,6 +5,7 @@
     :draggable="options.edit"
     :resizable="options.edit"
     :lines="options.edit"
+    :flat="options.flat"
     :loading="parentLoading"
     :default-layouts="DefaultLayouts"
     v-model="widgets"
@@ -22,13 +23,19 @@
       />
     </template>
     <template v-slot:[SwapWidgets.Distribution]="props">
-      <swap-distribution-widget v-bind="props" />
+      <swap-distribution-widget v-bind="props" full />
     </template>
     <template v-slot:[SwapWidgets.Transactions]="props">
       <swap-transactions-widget v-bind="props" full extensive />
     </template>
     <template v-slot:[SwapWidgets.Customise]="{ reset, ...props }">
-      <customise-widget v-bind="props" :widgets-model.sync="widgets" :options-model.sync="options" :labels="labels">
+      <customise-widget
+        v-bind="props"
+        :widgets-model.sync="widgets"
+        :options-model.sync="options"
+        :labels="labels"
+        full
+      >
         <s-button @click="reset">{{ t('resetText') }}</s-button>
       </customise-widget>
     </template>
@@ -139,6 +146,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
   options = {
     edit: false,
+    flat: true,
   };
 
   widgets: WidgetsVisibilityModel = {
