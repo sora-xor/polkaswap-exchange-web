@@ -173,6 +173,8 @@ export default class TokenInput extends Mixins(
   }
 
   setFiatValue(fiatValue: string): void {
+    if (!fiatValue) return;
+
     this.fiatValue =
       fiatValue === this.maxFiatValueFormatted ? this.maxFiatValue.toFixed(this.fiatDecimals) : fiatValue;
 
