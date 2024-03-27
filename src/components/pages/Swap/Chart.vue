@@ -676,7 +676,9 @@ export default class SwapChart extends Mixins(
     const dataZoom = {
       id: 'dataZoomDepthChart',
       type: 'inside',
-      minSpan: 50,
+      start: 0,
+      end: 200,
+      minSpan: 20,
     };
 
     // [price, volume]
@@ -692,7 +694,7 @@ export default class SwapChart extends Mixins(
       [100, 2],
     ];
 
-    // price = 60
+    // price = 100
 
     const sell = [
       [101, 1],
@@ -715,7 +717,7 @@ export default class SwapChart extends Mixins(
         trigger: 'axis',
       },
       grid: {
-        left: '3%',
+        left: '10%',
         right: '4%',
         bottom: '3%',
         containLabel: true,
@@ -1013,8 +1015,8 @@ export default class SwapChart extends Mixins(
     this.samplesBuffer = {};
     this.pageInfos = {};
     this.dataset = [];
-    this.zoomStart = 0;
-    this.zoomEnd = 100;
+    this.zoomStart = 10;
+    this.zoomEnd = 80;
     this.limits = {
       min: Infinity,
       max: 0,
@@ -1075,6 +1077,7 @@ export default class SwapChart extends Mixins(
   }
 
   changeZoomLevel(event: any): void {
+    console.log('data', event?.batch);
     const data = event?.batch?.[0];
     this.zoomStart = data?.start ?? 0;
     this.zoomEnd = data?.end ?? 0;
@@ -1134,8 +1137,4 @@ export default class SwapChart extends Mixins(
     z-index: $app-content-layer;
   }
 }
-</style>
-
-<style scoped>
-@import '~vue-depth-chart/dist/vue-depth-chart.css';
 </style>
