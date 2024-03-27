@@ -83,13 +83,17 @@ export default class BridgeTransferNotification extends Mixins(BridgeTransaction
   }
 
   get txLink() {
-    return this.isOutgoing
-      ? this.prepareLink(this.externalExplorerLinks[0], this.externalNetworkId)
-      : this.prepareLink(this.soraExplorerLinks[0]);
+    const link = this.isOutgoing ? this.externalExplorerLinks[0] : this.soraExplorerLinks[0];
+    const network = this.isOutgoing ? this.externalNetworkId : undefined;
+
+    return this.prepareLink(link, network);
   }
 
   get txAccountLink() {
-    return this.prepareLink(this.externalAccountLinks[0], this.txExternalAccountNetwork, false);
+    const link = this.isOutgoing ? this.externalAccountLinks[0] : this.soraAccountLinks[0];
+    const network = this.isOutgoing ? this.externalNetworkId : undefined;
+
+    return this.prepareLink(link, network, false);
   }
 
   private prepareLink(

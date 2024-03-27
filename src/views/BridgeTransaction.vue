@@ -35,17 +35,21 @@
         </h5>
       </div>
 
-      <div v-if="txExternalAccount" class="transaction-hash-container transaction-hash-container--with-dropdown">
-        <s-input :placeholder="txExternalAccountPlaceholder" :value="txExternalAccountFormatted" readonly />
+      <div
+        v-for="{ address, formattedAddress, placeholder, tooltip, links } in accountLinks"
+        class="transaction-hash-container transaction-hash-container--with-dropdown"
+        :key="address"
+      >
+        <s-input :placeholder="placeholder" :value="formattedAddress" readonly />
         <s-button
           class="s-button--hash-copy"
           type="action"
           alternative
           icon="basic-copy-24"
-          :tooltip="txExternalAccountCopyTooltip"
-          @click="handleCopyAddress(txExternalAccount, $event)"
+          :tooltip="tooltip"
+          @click="handleCopyAddress(address, $event)"
         />
-        <links-dropdown v-if="externalAccountLinks.length" :links="externalAccountLinks" />
+        <links-dropdown v-if="links.length" :links="links" />
       </div>
 
       <info-line :class="failedClass" :label="t('bridgeTransaction.networkInfo.status')" :value="transactionStatus" />
@@ -423,16 +427,38 @@ export default class BridgeTransaction extends Mixins(
     return this.t('bridgeTransaction.statuses.pending') + '...';
   }
 
-  get txExternalAccountFormatted(): string {
-    return this.formatAddress(this.txExternalAccount, FORMATTED_HASH_LENGTH);
+  get txSoraAccountLink() {
+    if (!this.txSoraAccount) return null;
+
+    const address = this.txSoraAccount;
+    const placeholder = this.getNetworkText(this.t('accountAddressText'));
+
+    return {
+      address,
+      formattedAddress: this.formatAddress(address, FORMATTED_HASH_LENGTH),
+      placeholder,
+      tooltip: this.copyTooltip(placeholder),
+      links: this.soraAccountLinks,
+    };
   }
 
-  get txExternalAccountPlaceholder(): string {
-    return this.getNetworkText(this.t('accountAddressText'), this.txExternalAccountNetwork);
+  get txExternalAccountLink() {
+    if (!this.txExternalAccount) return null;
+
+    const address = this.txExternalAccount;
+    const placeholder = this.getNetworkText(this.t('accountAddressText'), this.externalNetworkId);
+
+    return {
+      address,
+      formattedAddress: this.formatAddress(address, FORMATTED_HASH_LENGTH),
+      placeholder,
+      tooltip: this.copyTooltip(placeholder),
+      links: this.externalAccountLinks,
+    };
   }
 
-  get txExternalAccountCopyTooltip(): string {
-    return this.copyTooltip(this.txExternalAccountPlaceholder);
+  get accountLinks() {
+    return [this.txSoraAccountLink, this.txExternalAccountLink].filter((link) => !!link);
   }
 
   get isGreaterThanMaxAmount(): boolean {

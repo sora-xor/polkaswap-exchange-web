@@ -134,10 +134,10 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
             });
           }
 
-          links.push({
-            type: 'subId' as WALLET_CONSTS.ExplorerType,
-            value: `https://sub.id/${value}`,
-          });
+          // links.push({
+          //   type: 'subId' as WALLET_CONSTS.ExplorerType,
+          //   value: `https://sub.id/${value}`,
+          // });
           break;
         }
         case EvmLinkType.Transaction: {

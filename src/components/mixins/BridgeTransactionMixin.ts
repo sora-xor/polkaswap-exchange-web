@@ -27,6 +27,10 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
     );
   }
 
+  get txSoraAccount(): string {
+    return this.tx?.from ?? '';
+  }
+
   get txExternalAccount(): string {
     return this.tx?.to ?? '';
   }
@@ -73,10 +77,6 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
     return this.tx?.externalNetwork;
   }
 
-  get txExternalAccountNetwork(): Nullable<BridgeNetworkId> {
-    return this.isEvmTxType || this.isOutgoing ? this.externalNetworkId : undefined;
-  }
-
   get soraExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
     return soraExplorerLinks(this.soraNetwork, this.txSoraId, this.txSoraBlockId);
   }
@@ -91,6 +91,10 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
       this.txExternalBlockId,
       this.EvmLinkType.Transaction
     );
+  }
+
+  get soraAccountLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    return soraExplorerLinks(this.soraNetwork, this.txSoraAccount, this.txSoraBlockId, true);
   }
 
   get externalAccountLinks(): Array<WALLET_CONSTS.ExplorerLink> {
