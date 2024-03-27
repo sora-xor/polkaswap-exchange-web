@@ -7,7 +7,8 @@ import { fetchRpc, getRpcEndpoint } from '@/utils/rpc';
 import type { Connection } from '@sora-substrate/connection';
 import type { Storage } from '@sora-substrate/util';
 
-const NODE_CONNECTION_TIMEOUT = 30_000;
+const NODE_TIMEOUT = 30_000;
+const LOCK_TIMEOUT = 6_000;
 
 export class NodesConnection {
   public readonly connection!: Connection;
@@ -19,6 +20,9 @@ export class NodesConnection {
   public defaultNodes: readonly Node[] = [];
   public nodeAddressConnecting = '';
   public chainId = '';
+
+  protected connectionLocked = false;
+  protected connectionLockTimeout: Nullable<NodeJS.Timeout> = null;
 
   constructor(storage: Storage, connection: Connection, network = SubNetworkId.Mainnet) {
     this.network = network;
@@ -44,6 +48,10 @@ export class NodesConnection {
 
   get nodeIsConnected(): boolean {
     return !!this.node?.address && !this.nodeAddressConnecting && this.connection.opened;
+  }
+
+  get connectionAllowance(): boolean {
+    return !(this.nodeAddressConnecting && this.connectionLocked);
   }
 
   protected initData(): void {
@@ -113,6 +121,19 @@ export class NodesConnection {
     return id;
   }
 
+  protected lockConnection(): void {
+    this.connectionLocked = true;
+    this.connectionLockTimeout = setTimeout(this.unlockConnection.bind(this), LOCK_TIMEOUT);
+  }
+
+  protected unlockConnection(): void {
+    if (this.connectionLockTimeout) {
+      clearTimeout(this.connectionLockTimeout);
+    }
+    this.connectionLockTimeout = null;
+    this.connectionLocked = false;
+  }
+
   public async closeConnection() {
     if (!this.connection.api) return;
 
@@ -130,6 +151,7 @@ export class NodesConnection {
     const requestedNode = node ?? this.node ?? defaultNode;
 
     try {
+      this.lockConnection();
       await this.connectNode({ node: requestedNode, onError, ...restOptions });
     } catch (error) {
       onError?.(error, requestedNode);
@@ -155,7 +177,7 @@ export class NodesConnection {
     const endpoint = node?.address ?? '';
     const connectionOpenOptions = {
       once: true, // by default we are trying to connect once, but keep trying after disconnect from connected node
-      timeout: NODE_CONNECTION_TIMEOUT,
+      timeout: NODE_TIMEOUT,
       ...connectionOptions,
     };
     const isReconnection = !connectionOpenOptions.once;
@@ -235,6 +257,7 @@ export class NodesConnection {
 
       this.setNode(node);
       this.nodeAddressConnecting = '';
+      this.unlockConnection();
     } catch (error) {
       console.error(error);
       const err =

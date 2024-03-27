@@ -7,7 +7,7 @@
           :key="node.address"
           :label="node.address"
           :value="node.address"
-          :disabled="node.address === nodeAddressConnecting"
+          :disabled="disabled || isConnecting(node.address)"
           size="medium"
           class="select-node-list__item s-flex"
         >
@@ -30,7 +30,7 @@
                 icon="arrows-swap-90-24"
                 @click.stop="handleNode(node)"
               />
-              <s-icon v-else-if="node.address === nodeAddressConnecting" name="el-icon-loading" />
+              <s-icon v-else-if="isConnecting(node.address)" name="el-icon-loading" />
             </div>
             <s-button
               class="select-node-details"
@@ -63,6 +63,7 @@ export default class SelectNode extends Mixins(TranslationMixin) {
   @Prop({ default: () => {}, type: Function }) readonly handleNode!: (node?: Node) => void;
   @Prop({ default: () => {}, type: Function }) readonly viewNode!: (node?: Node) => void;
   @Prop({ default: '', type: String }) readonly nodeAddressConnecting!: string;
+  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
 
   @ModelSync('value', 'input', { type: String })
   readonly currentAddressValue!: string;
@@ -73,6 +74,10 @@ export default class SelectNode extends Mixins(TranslationMixin) {
     const flag = `<span class="flag-emodji">${location.flag}</span>`;
     if (!location.name) return flag;
     return `${location.name} ${flag}`;
+  }
+
+  isConnecting(address: string) {
+    return address === this.nodeAddressConnecting;
   }
 
   getTitle(node: Node) {
