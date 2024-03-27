@@ -346,10 +346,24 @@ $el-input-class: '.el-input';
   @include input-slider;
   width: 100%;
 
-  .el-slider__button {
-    background-color: #fff;
-    border-radius: 4px;
-    transform: rotate(-45deg) !important;
+  .asset-info {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  // overwrite UI element styles
+  .el-slider__button-wrapper {
+    .el-slider__button {
+      border-radius: 4px;
+      transform: rotate(-45deg);
+    }
+  }
+
+  .el-slider__button-wrapper.hover {
+    .el-slider__button.hover {
+      transform: rotate(-45deg);
+    }
   }
 
   .el-slider__stop {
@@ -361,13 +375,6 @@ $el-input-class: '.el-input';
     transform: translateX(-50%) rotate(-45deg);
   }
 
-  .asset-info {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  // overwrite
   .el-slider__runway.disabled {
     .el-slider__bar {
       width: 0 !important;

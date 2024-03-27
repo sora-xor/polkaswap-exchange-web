@@ -302,7 +302,7 @@ export default class BookWidget extends Mixins(
   }
 
   toCommonFormat(cell: FPNumber): string {
-    return cell.toNumber().toFixed(this.pricePrecision);
+    return cell.toFixed(this.pricePrecision);
   }
 
   toBookPrecision(cell: FPNumber): string {
