@@ -194,7 +194,7 @@ $left: $inner-spacing-medium;
 
   &.full {
     width: 100%;
-    height: 100%;
+    min-height: 100%;
 
     flex: 1;
   }
