@@ -8,7 +8,7 @@
       size="small"
       class="explore-table"
     >
-      <s-table-column width="76">
+      <s-table-column width="74">
         <template #header>
           <span>{{ t('transaction.startTime') }}</span>
         </template>
@@ -19,7 +19,7 @@
           </div>
         </template>
       </s-table-column>
-      <s-table-column header-align="right" align="right">
+      <s-table-column width="106" header-align="right" align="right">
         <template #header>
           <span>{{ t('removeLiquidity.input') }}</span>
         </template>
@@ -31,7 +31,7 @@
           />
         </template>
       </s-table-column>
-      <s-table-column header-align="left" align="left">
+      <s-table-column width="106" header-align="left" align="left">
         <template #header>
           <span>{{ t('removeLiquidity.output') }}</span>
         </template>
