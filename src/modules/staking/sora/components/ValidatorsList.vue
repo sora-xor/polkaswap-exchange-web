@@ -422,7 +422,7 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 .validators-list-scrollbar {
   @include scrollbar;
   .list & {
-    margin: 0 -24px; // to override scrollbar mixin
+    margin: 0 -24px; // to override scrollbar mixin above
   }
 
   ul {
