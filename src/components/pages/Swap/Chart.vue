@@ -16,7 +16,7 @@
       />
     </template>
 
-    <template #filters>
+    <template #filters v-if="!isDepthChart">
       <stats-filter :filters="filters" :value="selectedFilter" :disabled="chartIsLoading" @change="changeFilter" />
     </template>
 
@@ -314,8 +314,40 @@ export default class SwapChart extends Mixins(
   selectedFilter: SnapshotFilter = LINE_CHART_FILTERS[0];
   isReversedChart = false;
 
+  get isDepthChart(): boolean {
+    return this.chartType === CHART_TYPES.DEPTH;
+  }
+
   get isLineChart(): boolean {
     return this.chartType === CHART_TYPES.LINE;
+  }
+
+  get currentSeriesSpec(): any {
+    switch (this.chartType) {
+      case CHART_TYPES.LINE:
+        return this.lineSeriesSpec({
+          encode: { y: 'close' },
+          areaStyle: {
+            opacity: 0.8,
+            color: new graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgba(248, 8, 123, 0.25)',
+              },
+              {
+                offset: 1,
+                color: 'rgba(255, 49, 148, 0.03)',
+              },
+            ]),
+          },
+        });
+      case CHART_TYPES.CANDLE:
+        return this.candlestickSeriesSpec();
+      case CHART_TYPES.DEPTH:
+        return this.depthSeriesSpec();
+      default:
+        return null;
+    }
   }
 
   get inputTokensAddresses(): string[] {
@@ -560,6 +592,8 @@ export default class SwapChart extends Mixins(
             { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
             { title: 'Change', data: formatChange(change), color: changeColor }
           );
+        } else if (seriesType === CHART_TYPES.DEPTH) {
+          rows.push({ title: 'Delta', data: formatPrice(close, this.precision, this.symbol) });
         } else {
           rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
         }
@@ -585,25 +619,6 @@ export default class SwapChart extends Mixins(
       },
     });
 
-    const priceSeria = this.isLineChart
-      ? this.lineSeriesSpec({
-          encode: { y: 'close' },
-          areaStyle: {
-            opacity: 0.8,
-            color: new graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                color: 'rgba(248, 8, 123, 0.25)',
-              },
-              {
-                offset: 1,
-                color: 'rgba(255, 49, 148, 0.03)',
-              },
-            ]),
-          },
-        })
-      : this.candlestickSeriesSpec();
-
     const volumeSeria = {
       type: 'bar',
       barMaxWidth: 10,
@@ -619,29 +634,31 @@ export default class SwapChart extends Mixins(
       encode: { y: 'volume' },
     };
 
-    const spec = {
-      animation: false,
-      axisPointer: {
-        link: [
-          {
-            xAxisIndex: 'all',
+    const spec = this.isDepthChart
+      ? this.getDepthSpec()
+      : {
+          animation: false,
+          axisPointer: {
+            link: [
+              {
+                xAxisIndex: 'all',
+              },
+            ],
           },
-        ],
-      },
-      color: [this.theme.color.theme.accent, this.theme.color.status.success],
-      dataset: {
-        source: this.chartData,
-        dimensions: ['timestamp', 'open', 'close', 'low', 'high', 'volume'],
-      },
-      dataZoom: [dataZoom],
-      grid: [priceGrid],
-      xAxis: [priceXAxis],
-      yAxis: [priceYAxis],
-      tooltip,
-      series: [priceSeria],
-    };
+          color: [this.theme.color.theme.accent, this.theme.color.status.success],
+          dataset: {
+            source: this.chartData,
+            dimensions: ['timestamp', 'open', 'close', 'low', 'high', 'volume'],
+          },
+          dataZoom: [dataZoom],
+          grid: [priceGrid],
+          xAxis: [priceXAxis],
+          yAxis: [priceYAxis],
+          tooltip,
+          series: [this.currentSeriesSpec],
+        };
 
-    if (withVolume) {
+    if (!this.isDepthChart && withVolume) {
       priceGrid.bottom = 120;
       priceXAxis.axisLabel.show = false;
       priceXAxis.axisPointer.label.show = false;
@@ -653,6 +670,91 @@ export default class SwapChart extends Mixins(
     }
 
     return spec;
+  }
+
+  getDepthSpec(): any {
+    const dataZoom = {
+      id: 'dataZoomDepthChart',
+      type: 'inside',
+      minSpan: 50,
+    };
+
+    // [price, volume]
+    const buy = [
+      [5, 130],
+      [10, 120],
+      [20, 80],
+      [30, 50],
+      [50, 30],
+      [70, 20],
+      [80, 10],
+      [90, 5],
+      [100, 2],
+    ];
+
+    // price = 60
+
+    const sell = [
+      [101, 1],
+      [110, 10],
+      [120, 40],
+      [130, 60],
+      [140, 65],
+      [150, 80],
+      [160, 90],
+      [170, 100],
+      [172, 129],
+      [179, 134],
+      [190, 150],
+    ];
+
+    const option = {
+      animation: false,
+      dataZoom: [dataZoom],
+      tooltip: {
+        trigger: 'axis',
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true,
+      },
+      xAxis: {
+        type: 'value',
+      },
+      yAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          name: 'Buy',
+          type: 'line',
+          step: 'start',
+          data: buy,
+          itemStyle: {
+            color: '#34ad87',
+          },
+          areaStyle: {
+            color: 'rgba(185, 235, 219, 0.4)',
+          },
+        },
+        {
+          name: 'Sell',
+          type: 'line',
+          step: 'end',
+          data: sell,
+          itemStyle: {
+            color: '#f754a3',
+          },
+          areaStyle: {
+            color: 'rgba(255, 216, 235, 0.8)',
+          },
+        },
+      ],
+    };
+
+    return option;
   }
 
   created(): void {
@@ -1032,4 +1134,8 @@ export default class SwapChart extends Mixins(
     z-index: $app-content-layer;
   }
 }
+</style>
+
+<style scoped>
+@import '~vue-depth-chart/dist/vue-depth-chart.css';
 </style>

@@ -151,6 +151,8 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
     })(options);
   }
 
+  depthSeriesSpec(options: any = {}) {}
+
   lineSeriesSpec(options: any = {}) {
     return merge({
       type: 'line',
