@@ -79,10 +79,9 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
-import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { Components, PageNames } from '@/consts';
-import router, { lazyComponent } from '@/router';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { state } from '@/store/decorators';
 
@@ -99,7 +98,6 @@ import type { IBridgeTransaction } from '@sora-substrate/util';
 })
 export default class BridgeTransactionsHistory extends Mixins(
   BridgeMixin,
-  BridgeTransactionMixin,
   BridgeHistoryMixin,
   NetworkFormatterMixin,
   mixins.PaginationSearchMixin,
