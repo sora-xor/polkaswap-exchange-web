@@ -3,12 +3,10 @@ import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { soraExplorerLinks, formatAddress } from '@/utils';
+import { soraExplorerLinks } from '@/utils';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-
-const FORMATTED_HASH_LENGTH = 24;
 
 @Component
 export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin) {
@@ -53,16 +51,8 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
     return this.txSoraHash || this.txSoraBlockId || this.txSoraId;
   }
 
-  get txInternalHashFormatted(): string {
-    return formatAddress(this.txInternalHash, FORMATTED_HASH_LENGTH);
-  }
-
   get txExternalHash(): string {
     return this.tx?.externalHash ?? this.txExternalBlockId;
-  }
-
-  get txExternalHashFormatted(): string {
-    return formatAddress(this.txExternalHash, FORMATTED_HASH_LENGTH);
   }
 
   get txExternalBlockId(): string {
@@ -93,7 +83,7 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
     );
   }
 
-  get soraAccountLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+  get internalAccountLinks(): Array<WALLET_CONSTS.ExplorerLink> {
     return soraExplorerLinks(this.soraNetwork, this.txSoraAccount, this.txSoraBlockId, true);
   }
 

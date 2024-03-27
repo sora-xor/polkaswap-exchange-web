@@ -90,7 +90,7 @@ export default class BridgeTransferNotification extends Mixins(BridgeTransaction
   }
 
   get txAccountLink() {
-    const link = this.isOutgoing ? this.externalAccountLinks[0] : this.soraAccountLinks[0];
+    const link = this.isOutgoing ? this.externalAccountLinks[0] : this.internalAccountLinks[0];
     const network = this.isOutgoing ? this.externalNetworkId : undefined;
 
     return this.prepareLink(link, network, false);

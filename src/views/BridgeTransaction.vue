@@ -36,18 +36,18 @@
       </div>
 
       <div
-        v-for="{ address, formattedAddress, placeholder, tooltip, links } in accountLinks"
+        v-for="{ value, formatted, placeholder, tooltip, links } in accountLinks"
         class="transaction-hash-container transaction-hash-container--with-dropdown"
-        :key="address"
+        :key="value"
       >
-        <s-input :placeholder="placeholder" :value="formattedAddress" readonly />
+        <s-input :placeholder="placeholder" :value="formatted" readonly />
         <s-button
           class="s-button--hash-copy"
           type="action"
           alternative
           icon="basic-copy-24"
           :tooltip="tooltip"
-          @click="handleCopyAddress(address, $event)"
+          @click="handleCopyAddress(value, $event)"
         />
         <links-dropdown v-if="links.length" :links="links" />
       </div>
@@ -101,51 +101,21 @@
         :fiat-value="txExternalTransferFeeFiatValue"
       />
 
-      <div v-if="txInternalHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
-        <s-input
-          :placeholder="getNetworkText(t('bridgeTransaction.transactionHash'))"
-          :value="txInternalHashFormatted"
-          readonly
-        />
+      <div
+        v-for="{ value, formatted, placeholder, tooltip, links } in transactionLinks"
+        class="transaction-hash-container transaction-hash-container--with-dropdown"
+        :key="value"
+      >
+        <s-input :placeholder="placeholder" :value="formatted" readonly />
         <s-button
           class="s-button--hash-copy"
           type="action"
           alternative
           icon="basic-copy-24"
-          :tooltip="hashCopyTooltip"
-          @click="handleCopyAddress(txInternalHash, $event)"
+          :tooltip="tooltip"
+          @click="handleCopyAddress(value, $event)"
         />
-        <links-dropdown v-if="soraExplorerLinks.length" :links="soraExplorerLinks" />
-      </div>
-
-      <div v-if="txParachainBlockId" class="transaction-hash-container transaction-hash-container--with-dropdown">
-        <s-input
-          :placeholder="getNetworkText(t('transaction.blockId'), parachainNetworkId)"
-          :value="txParachainBlockIdFormatted"
-          readonly
-        />
-        <s-button
-          class="s-button--hash-copy"
-          type="action"
-          alternative
-          icon="basic-copy-24"
-          :tooltip="hashCopyTooltip"
-          @click="handleCopyAddress(txParachainBlockId, $event)"
-        />
-        <links-dropdown v-if="parachainExplorerLinks.length" :links="parachainExplorerLinks" />
-      </div>
-
-      <div v-if="txExternalHash" class="transaction-hash-container transaction-hash-container--with-dropdown">
-        <s-input :placeholder="txExternalHashPlaceholder" :value="txExternalHashFormatted" readonly />
-        <s-button
-          class="s-button--hash-copy"
-          type="action"
-          alternative
-          icon="basic-copy-24"
-          :tooltip="hashCopyTooltip"
-          @click="handleCopyAddress(txExternalHash, $event)"
-        />
-        <links-dropdown v-if="externalExplorerLinks.length" :links="externalExplorerLinks" />
+        <links-dropdown v-if="links.length" :links="links" />
       </div>
 
       <s-button
@@ -195,7 +165,7 @@
 
 <script lang="ts">
 import { KnownSymbols } from '@sora-substrate/util/build/assets/consts';
-import { BridgeTxStatus, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -214,6 +184,14 @@ import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgePr
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 
 const FORMATTED_HASH_LENGTH = 24;
+
+type LinkData = {
+  value: string;
+  formatted: string;
+  placeholder: string;
+  tooltip: string;
+  links: Array<WALLET_CONSTS.ExplorerLink>;
+};
 
 @Component({
   components: {
@@ -354,18 +332,8 @@ export default class BridgeTransaction extends Mixins(
     return this.isOutgoing ? this.txSoraId : this.txExternalHash;
   }
 
-  get txExternalHashPlaceholder(): string {
-    const key = this.historyItem?.externalHash ? 'bridgeTransaction.transactionHash' : 'transaction.blockId';
-
-    return this.getNetworkText(this.t(key), this.externalNetworkId);
-  }
-
   get txParachainBlockId(): string {
     return (this.historyItem as SubHistory)?.parachainBlockId ?? '';
-  }
-
-  get txParachainBlockIdFormatted(): string {
-    return this.formatAddress(this.txParachainBlockId, FORMATTED_HASH_LENGTH);
   }
 
   get txDate(): string {
@@ -427,40 +395,6 @@ export default class BridgeTransaction extends Mixins(
     return this.t('bridgeTransaction.statuses.pending') + '...';
   }
 
-  get txSoraAccountLink() {
-    if (!this.txSoraAccount) return null;
-
-    const address = this.txSoraAccount;
-    const placeholder = this.getNetworkText(this.t('accountAddressText'));
-
-    return {
-      address,
-      formattedAddress: this.formatAddress(address, FORMATTED_HASH_LENGTH),
-      placeholder,
-      tooltip: this.copyTooltip(placeholder),
-      links: this.soraAccountLinks,
-    };
-  }
-
-  get txExternalAccountLink() {
-    if (!this.txExternalAccount) return null;
-
-    const address = this.txExternalAccount;
-    const placeholder = this.getNetworkText(this.t('accountAddressText'), this.externalNetworkId);
-
-    return {
-      address,
-      formattedAddress: this.formatAddress(address, FORMATTED_HASH_LENGTH),
-      placeholder,
-      tooltip: this.copyTooltip(placeholder),
-      links: this.externalAccountLinks,
-    };
-  }
-
-  get accountLinks() {
-    return [this.txSoraAccountLink, this.txExternalAccountLink].filter((link) => !!link);
-  }
-
   get isGreaterThanMaxAmount(): boolean {
     return this.txIsUnsigned && this.isGreaterThanTransferMaxAmount(this.amount, this.asset, this.isOutgoing);
   }
@@ -511,10 +445,6 @@ export default class BridgeTransaction extends Mixins(
       this.isInsufficientEvmNativeTokenForFee ||
       this.isTxPending
     );
-  }
-
-  get hashCopyTooltip(): string {
-    return this.copyTooltip(this.t('bridgeTransaction.transactionHash'));
   }
 
   get externalNetworkName(): string {
@@ -579,6 +509,61 @@ export default class BridgeTransaction extends Mixins(
 
   handleBack(): void {
     router.push({ name: this.prevRoute as string | undefined });
+  }
+
+  get accountLinks(): LinkData[] {
+    const name = this.t('accountAddressText');
+    const internal = this.getLinkData(this.txSoraAccount, this.internalAccountLinks, name);
+    const external = this.getLinkData(this.txExternalAccount, this.externalAccountLinks, name, this.externalNetworkId);
+
+    return this.sortLinksByTxDirection([internal, external]);
+  }
+
+  get transactionLinks(): LinkData[] {
+    const internal = this.getLinkData(
+      this.txInternalHash,
+      this.soraExplorerLinks,
+      this.t('bridgeTransaction.transactionHash')
+    );
+    const parachain = this.getLinkData(
+      this.txParachainBlockId,
+      this.parachainExplorerLinks,
+      this.t('transaction.blockId'),
+      this.parachainNetworkId
+    );
+    const external = this.getLinkData(
+      this.txExternalHash,
+      this.externalExplorerLinks,
+      this.t(this.historyItem?.externalHash ? 'bridgeTransaction.transactionHash' : 'transaction.blockId'),
+      this.externalNetworkId
+    );
+
+    return this.sortLinksByTxDirection([internal, parachain, external]);
+  }
+
+  private sortLinksByTxDirection(outgoingOrderedLinks: LinkData[]): LinkData[] {
+    const links = outgoingOrderedLinks.filter((link) => !!link);
+
+    return this.isOutgoing ? links : [...links].reverse();
+  }
+
+  private getLinkData(
+    value: string,
+    links: Array<WALLET_CONSTS.ExplorerLink>,
+    name: string,
+    networkId?: Nullable<BridgeNetworkId>
+  ): LinkData | null {
+    if (!value) return null;
+
+    const placeholder = this.getNetworkText(name, networkId);
+
+    return {
+      value,
+      formatted: this.formatAddress(value, FORMATTED_HASH_LENGTH),
+      placeholder,
+      tooltip: this.copyTooltip(placeholder),
+      links,
+    };
   }
 }
 </script>
