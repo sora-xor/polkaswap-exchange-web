@@ -63,7 +63,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       decimals: 12,
     },
     endpointUrls: ['wss://rococo-rpc.polkadot.io'],
-    blockExplorerUrls: ['https://rococo.subscan.io'],
+    blockExplorerUrls: [],
     shortName: 'Rococo',
     nodes: [
       {
