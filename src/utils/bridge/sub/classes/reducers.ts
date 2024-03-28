@@ -244,8 +244,10 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
                 );
 
                 if (assetSendEventIndex !== -1) {
-                  recipientAmount =
-                    events[assetSendEventIndex].event.data[0].asTransfer.amount?.asSubstrate?.toString();
+                  const amountCodec = events[assetSendEventIndex].event.data[0].asTransfer.amount;
+                  recipientAmount = amountCodec.isSubstrate
+                    ? amountCodec.asSubstrate.toString()
+                    : amountCodec.toString();
                 }
               } else {
                 assetSendEventIndex = events.findIndex((e) =>

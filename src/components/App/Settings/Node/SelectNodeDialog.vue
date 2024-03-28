@@ -11,6 +11,7 @@
       :nodes="connection.nodeList"
       :handle-node="handleNode"
       :view-node="navigateToNodeInfo"
+      :disabled="!connectionAllowance"
     />
     <node-info
       v-else
@@ -23,6 +24,7 @@
       :handle-node="handleNode"
       :remove-node="removeNode"
       :show-tutorial="isSoraNetwork"
+      :disabled="!connectionAllowance"
     />
   </dialog-base>
 </template>
@@ -79,6 +81,10 @@ export default class SelectNodeDialog extends Mixins(NodeErrorMixin, mixins.Load
 
   get nodeAddressConnecting(): string {
     return this.connection.nodeAddressConnecting;
+  }
+
+  get connectionAllowance(): boolean {
+    return this.connection.connectionAllowance;
   }
 
   get connectedNodeAddress(): string {

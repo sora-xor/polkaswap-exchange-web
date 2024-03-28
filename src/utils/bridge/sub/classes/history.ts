@@ -503,7 +503,7 @@ class SubBridgeHistory extends SubNetworksConnector {
           history.externalNetworkFee = feeEvent.event.data[1].toString();
           history.externalBlockId = blockId;
           history.externalBlockHeight = relaychainBlockHeight;
-          history.to = formatSubAddress(signer, this.soraApi.registry.chainSS58 as number);
+          history.to = formatSubAddress(signer, this.externalApi.registry.chainSS58 as number);
 
           return history;
         } catch (error) {
