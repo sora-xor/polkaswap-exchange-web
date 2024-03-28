@@ -1,5 +1,5 @@
 <template>
-  <stats-card v-loading="parentLoading">
+  <base-widget v-loading="parentLoading">
     <template #title>
       <tokens-row border :assets="tokens" size="medium" />
       <div v-if="tokenA" class="token-title">
@@ -56,7 +56,7 @@
         @datazoom="changeZoomLevel"
       />
     </chart-skeleton>
-  </stats-card>
+  </base-widget>
 </template>
 
 <script lang="ts">
@@ -256,15 +256,15 @@ const getPrecision = (value: number): number => {
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
+    BaseWidget: lazyComponent(Components.BaseWidget),
     SvgIconButton: lazyComponent(Components.SvgIconButton),
     TokensRow: lazyComponent(Components.TokensRow),
     PriceChange: lazyComponent(Components.PriceChange),
-    StatsCard: lazyComponent(Components.StatsCard),
     StatsFilter: lazyComponent(Components.StatsFilter),
     ChartSkeleton: lazyComponent(Components.ChartSkeleton),
   },
 })
-export default class SwapChart extends Mixins(
+export default class PriceChartWidget extends Mixins(
   ChartSpecMixin,
   mixins.LoadingMixin,
   mixins.NumberFormatterMixin,
