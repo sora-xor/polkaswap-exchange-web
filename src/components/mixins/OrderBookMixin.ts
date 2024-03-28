@@ -9,15 +9,21 @@ import type { OrderBook } from '@sora-substrate/liquidity-proxy';
 export default class OrderBookMixin extends Vue {
   @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
 
+  /**
+   * Get price and amount precisions based on tickSize and stepLotSize.
+   *
+   * # Example
+   * 10 -> 0
+   * 1 -> 0
+   * 0.1 -> 1
+   * 0.001 -> 3
+   *
+   */
   get pricePrecision(): number {
-    return (
-      this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)?.[1]?.length ?? 0
-    );
+    return this.currentOrderBook?.tickSize?.toString()?.split('.')?.[1]?.length ?? 0;
   }
 
   get amountPrecision(): number {
-    return (
-      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)?.[1]?.length ?? 0
-    );
+    return this.currentOrderBook?.stepLotSize?.toString()?.split('.')?.[1]?.length ?? 0;
   }
 }

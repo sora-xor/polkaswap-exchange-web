@@ -91,7 +91,6 @@
           <s-slider
             class="slider-container"
             :value="slideValue"
-            :disabled="sliderDisabled"
             :show-tooltip="false"
             :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
             @input="handleSlideInput"
@@ -144,7 +143,6 @@ export default class TokenInput extends Mixins(
   @Prop({ default: false, type: Boolean }) readonly external!: boolean;
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
   @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly sliderDisabled!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isMaxAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isSelectAvailable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly withSlider!: boolean;
@@ -353,17 +351,10 @@ $el-input-class: '.el-input';
   }
 
   // overwrite UI element styles
-  .el-slider__button-wrapper {
-    .el-slider__button {
-      border-radius: 4px;
-      transform: rotate(-45deg);
-    }
-  }
-
-  .el-slider__button-wrapper.hover {
-    .el-slider__button.hover {
-      transform: rotate(-45deg);
-    }
+  .el-slider__button {
+    background-color: #fff;
+    border-radius: 4px;
+    transform: rotate(-45deg);
   }
 
   .el-slider__stop {
@@ -375,19 +366,9 @@ $el-input-class: '.el-input';
     transform: translateX(-50%) rotate(-45deg);
   }
 
-  .el-slider__runway.disabled {
-    .el-slider__bar {
-      width: 0 !important;
-    }
-
-    .el-slider__button-wrapper {
-      left: 0 !important;
-    }
-  }
-
   .el-divider {
     background-color: var(--s-color-base-border-secondary);
-    margin: 14px 0 4px 0 !important;
+    margin: 14px 0 4px 0;
   }
 }
 </style>
