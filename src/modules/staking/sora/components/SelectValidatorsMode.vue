@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import { soraStakingLazyComponent } from '../../router';
 import { SoraStakingComponents } from '../consts';
@@ -35,8 +35,6 @@ import StakingMixin from '../mixins/StakingMixin';
   },
 })
 export default class SelectValidatorsMode extends Mixins(StakingMixin, mixins.LoadingMixin) {
-  @Prop({ type: String }) previousPage?: string;
-
   showValidatorsAttentionDialog = false;
 
   get criteria() {
