@@ -1,4 +1,6 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineGetters } from 'direct-vuex';
 
 import { EVM_NETWORKS } from '@/consts/evm';
@@ -13,7 +15,7 @@ import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/typ
 
 const getters = defineGetters<Web3State>()({
   availableNetworks(...args): Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>> {
-    const { state } = web3GetterContext(args);
+    const { state, rootState } = web3GetterContext(args);
 
     const hashi = [state.ethBridgeEvmNetwork].reduce((buffer, id) => {
       const data = EVM_NETWORKS[id];
@@ -45,7 +47,11 @@ const getters = defineGetters<Web3State>()({
       const data = SUB_NETWORKS[id];
 
       if (data) {
-        const disabled = !(nodesOrFlag && state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork));
+        let disabled = !(nodesOrFlag && state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork));
+
+        if (id === SubNetworkId.Liberland && rootState.wallet.settings.soraNetwork === WALLET_CONSTS.SoraNetwork.Prod) {
+          disabled = true; // TODO: [Liberland] Remove it when needed ready
+        }
 
         // override from config
         if (Array.isArray(nodesOrFlag)) {
