@@ -294,7 +294,7 @@ import BridgeMixin from '@/components/mixins/BridgeMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
-import { Components, PageNames, ZeroStringValue } from '@/consts';
+import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { FocusedField } from '@/store/bridge/types';
 import { getter, action, mutation, state } from '@/store/decorators';

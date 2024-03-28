@@ -386,19 +386,27 @@ export const calcElScrollGutter: () => number = scrollbarWidth;
 
 export const soraExplorerLinks = (
   soraNetwork: Nullable<WALLET_CONSTS.SoraNetwork>,
-  transactionHash: Nullable<string>,
-  blockHash: Nullable<string>
+  txValue: Nullable<string>,
+  blockHash: Nullable<string>,
+  isAccount = false
 ): Array<WALLET_CONSTS.ExplorerLink> => {
   if (!soraNetwork) return [];
 
   const baseLinks = getExplorerLinks(soraNetwork);
-  const txId = transactionHash ?? blockHash;
 
-  if (!(baseLinks.length && txId)) {
-    return [];
+  if (!baseLinks.length) return [];
+
+  if (isAccount) {
+    return baseLinks
+      .filter(({ type }) => type !== WALLET_CONSTS.ExplorerType.Polkadot)
+      .map(({ type, value }) => ({ type, value: `${value}/account/${txValue}` }));
   }
 
-  if (!transactionHash) {
+  const txId = txValue ?? blockHash;
+
+  if (!txId) return [];
+
+  if (!txValue) {
     // txId is block
     return baseLinks.map(({ type, value }) => {
       const link = { type } as WALLET_CONSTS.ExplorerLink;
