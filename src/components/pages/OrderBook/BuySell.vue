@@ -691,7 +691,7 @@ export default class BuySellWidget extends Mixins(
     // when amount goes beyond 100%
     let value;
 
-    if (this.wasMaxAmountOut) {
+    if (this.wasMaxAmountOut && Number(percent) === 100) {
       value = this.baseValue;
     } else {
       value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(this.maxPossibleAmount()).dp(this.amountPrecision);
