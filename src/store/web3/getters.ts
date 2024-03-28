@@ -63,8 +63,8 @@ const getters = defineGetters<Web3State>()({
 
     return {
       [BridgeNetworkType.Eth]: hashi,
-      [BridgeNetworkType.Evm]: evm,
       [BridgeNetworkType.Sub]: sub,
+      [BridgeNetworkType.Evm]: evm,
     };
   },
 
