@@ -86,7 +86,6 @@
       :token="baseAsset"
       :value="baseValue"
       :slider-value="sliderValue"
-      :slider-disabled="isSliderDisabled"
       with-slider
       @slide="handleSlideInputChange"
       @input="handleInputFieldBase"
@@ -371,12 +370,6 @@ export default class BuySellWidget extends Mixins(
 
   get networkFee(): CodecString {
     return this.networkFees[Operation.OrderBookPlaceLimitOrder];
-  }
-
-  get isSliderDisabled(): boolean {
-    const asset = this.isBuySide ? this.quoteAsset : this.baseAsset;
-    const availableBalance = getMaxValue(asset, this.networkFee);
-    return !new FPNumber(availableBalance).gt(FPNumber.ZERO);
   }
 
   get isMarketType(): boolean {
@@ -689,7 +682,7 @@ export default class BuySellWidget extends Mixins(
 
     // user is able to input any value; unbound logic of setting that relies on slider
     // when amount goes beyond 100%
-    let value;
+    let value: string | FPNumber;
 
     if (this.wasMaxAmountOut && Number(percent) === 100) {
       value = this.baseValue;
