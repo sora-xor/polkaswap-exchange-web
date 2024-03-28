@@ -15,7 +15,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       decimals: 12,
     },
     endpointUrls: ['wss://kusama-rpc.polkadot.io', 'wss://kusama-rpc.dwellir.com'],
-    blockExplorerUrls: [],
+    blockExplorerUrls: ['https://kusama.subscan.io'],
     shortName: 'Kusama',
     nodes: [
       {
@@ -39,7 +39,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       decimals: 10,
     },
     endpointUrls: ['wss://rpc.polkadot.io', 'wss://polkadot-rpc.dwellir.com'],
-    blockExplorerUrls: [],
+    blockExplorerUrls: ['https://polkadot.subscan.io'],
     shortName: 'Polkadot',
     nodes: [
       {

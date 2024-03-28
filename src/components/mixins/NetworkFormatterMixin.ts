@@ -1,4 +1,4 @@
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { BridgeNetworkType, BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { EvmNetworkId } from '@sora-substrate/util/build/bridgeProxy/evm/consts';
 import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
@@ -9,10 +9,82 @@ import { SUB_NETWORKS } from '@/consts/sub';
 import { state, getter } from '@/store/decorators';
 import type { AvailableNetwork } from '@/store/web3/types';
 import type { NetworkData } from '@/types/bridge';
+import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
+import { isUnsignedToPart } from '@/utils/bridge/eth/utils';
 
 import TranslationMixin from './TranslationMixin';
 
+import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+
+const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
+
+const getSubNetworkLinks = (
+  networkData: NetworkData,
+  type: EvmLinkType,
+  value: string,
+  blockHash: string
+): WALLET_CONSTS.ExplorerLink[] => {
+  const links: Array<WALLET_CONSTS.ExplorerLink> = [];
+  const explorerUrl = networkData.blockExplorerUrls[0];
+
+  switch (type) {
+    case EvmLinkType.Account: {
+      if (explorerUrl) {
+        links.push({
+          type: WALLET_CONSTS.ExplorerType.Subscan,
+          value: `${explorerUrl}/account/${value}`,
+        });
+      }
+      break;
+    }
+    case EvmLinkType.Transaction: {
+      if (explorerUrl) {
+        const path = value === blockHash ? 'block' : 'extrinsic';
+        links.push({
+          type: WALLET_CONSTS.ExplorerType.Subscan,
+          value: `${explorerUrl}/${path}/${value}`,
+        });
+      }
+
+      if (blockHash) {
+        const networkUrl = networkData.nodes?.[0].address;
+        const polkadotBaseLink = `https://polkadot.js.org/apps/?rpc=${networkUrl}#/explorer/query`;
+        const polkadotLink = {
+          type: WALLET_CONSTS.ExplorerType.Polkadot,
+          value: `${polkadotBaseLink}/${blockHash}`,
+        };
+
+        links.push(polkadotLink);
+      }
+      break;
+    }
+  }
+
+  return links;
+};
+
+const getEvmNetworkLinks = (
+  networkData: NetworkData,
+  type: EvmLinkType,
+  value: string,
+  _blockHash: string
+): WALLET_CONSTS.ExplorerLink[] => {
+  const links: Array<WALLET_CONSTS.ExplorerLink> = [];
+  const explorerUrl = networkData.blockExplorerUrls[0];
+
+  if (explorerUrl) {
+    const path = type === EvmLinkType.Transaction ? 'tx' : 'address';
+    const etherscanLink = {
+      type: 'etherscan' as WALLET_CONSTS.ExplorerType,
+      value: `${explorerUrl}/${path}/${value}`,
+    };
+
+    links.push(etherscanLink);
+  }
+
+  return links;
+};
 
 @Component
 export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
@@ -104,7 +176,7 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
     value: string,
     blockHash = '',
     type = EvmLinkType.Transaction
-  ) {
+  ): Array<WALLET_CONSTS.ExplorerLink> {
     if (!value) return [];
 
     const networkData = this.availableNetworks[networkType][networkId]?.data;
@@ -114,36 +186,51 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
       return [];
     }
 
-    if (networkType === BridgeNetworkType.Sub) {
-      if (type === EvmLinkType.Account) return [];
+    return networkType === BridgeNetworkType.Sub
+      ? getSubNetworkLinks(networkData, type, value, blockHash)
+      : getEvmNetworkLinks(networkData, type, value, blockHash);
+  }
 
-      if (!blockHash) return [];
+  isOutgoingTx(item: Nullable<IBridgeTransaction>): boolean {
+    return isOutgoingTransaction(item);
+  }
 
-      const explorerUrl = networkData.nodes?.[0].address;
-      const baseLink = `https://polkadot.js.org/apps/?rpc=${explorerUrl}#/explorer/query`;
+  isFailedState(item: Nullable<IBridgeTransaction>): boolean {
+    if (!item?.transactionState) return false;
+    // ETH
+    if (
+      [ETH_BRIDGE_STATES.EVM_REJECTED as string, ETH_BRIDGE_STATES.SORA_REJECTED as string].includes(
+        item.transactionState
+      )
+    )
+      return true;
+    // EVM
+    if (item.transactionState === BridgeTxStatus.Failed) return true;
+    // OTHER
+    return false;
+  }
 
-      return [
-        {
-          type: WALLET_CONSTS.ExplorerType.Polkadot,
-          value: `${baseLink}/${blockHash}`,
-        },
-      ];
-    } else {
-      const explorerUrl = networkData.blockExplorerUrls[0];
+  isSuccessState(item: Nullable<IBridgeTransaction>): boolean {
+    if (!item) return false;
+    // ETH
+    if (
+      item.transactionState ===
+      (this.isOutgoingTx(item) ? ETH_BRIDGE_STATES.EVM_COMMITED : ETH_BRIDGE_STATES.SORA_COMMITED)
+    )
+      return true;
+    // EVM
+    if (item.transactionState === BridgeTxStatus.Done) return true;
+    // OTHER
+    return false;
+  }
 
-      if (!explorerUrl) {
-        console.error(`"blockExplorerUrls" is not provided for network id "${networkId}"`);
-        return [];
-      }
+  isWaitingForAction(item: Nullable<IBridgeTransaction>): boolean {
+    if (!item) return false;
+    // ETH
+    return item.transactionState === ETH_BRIDGE_STATES.EVM_REJECTED && isUnsignedToPart(item);
+  }
 
-      const path = type === EvmLinkType.Transaction ? 'tx' : 'address';
-
-      return [
-        {
-          type: this.TranslationConsts.Etherscan as WALLET_CONSTS.ExplorerType,
-          value: `${explorerUrl}/${path}/${value}`,
-        },
-      ];
-    }
+  formatDatetime(item: Nullable<IBridgeTransaction>): string {
+    return this.formatDate(item?.startTime ?? Date.now());
   }
 }
