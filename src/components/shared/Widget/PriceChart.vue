@@ -296,8 +296,8 @@ export default class PriceChartWidget extends Mixins(
   private samplesBuffer: Record<string, readonly SnapshotItem[]> = {};
   private pageInfos: Record<string, Partial<PageInfo>> = {};
   private dataset: readonly SnapshotItem[] = [];
-  private zoomStart = 0; // percentage of zoom start position
-  private zoomEnd = 100; // percentage of zoom end position
+  private zoomStart = 20; // percentage of zoom start position
+  private zoomEnd = 80; // percentage of zoom end position
   private precision = 2;
   private limits = {
     min: Infinity,
@@ -676,9 +676,6 @@ export default class PriceChartWidget extends Mixins(
     const dataZoom = {
       id: 'dataZoomDepthChart',
       type: 'inside',
-      start: 0,
-      end: 200,
-      minSpan: 20,
     };
 
     // [price, volume]
@@ -712,14 +709,14 @@ export default class PriceChartWidget extends Mixins(
 
     const option = {
       animation: false,
-      dataZoom: [dataZoom],
+
       tooltip: {
         trigger: 'axis',
       },
       grid: {
-        left: '10%',
-        right: '4%',
-        bottom: '3%',
+        left: '0%',
+        right: '1%',
+        bottom: '1%',
         containLabel: true,
       },
       xAxis: {
@@ -1015,8 +1012,8 @@ export default class PriceChartWidget extends Mixins(
     this.samplesBuffer = {};
     this.pageInfos = {};
     this.dataset = [];
-    this.zoomStart = 10;
-    this.zoomEnd = 80;
+    this.zoomStart = 0;
+    this.zoomEnd = 100;
     this.limits = {
       min: Infinity,
       max: 0,
@@ -1077,7 +1074,6 @@ export default class PriceChartWidget extends Mixins(
   }
 
   changeZoomLevel(event: any): void {
-    console.log('data', event?.batch);
     const data = event?.batch?.[0];
     this.zoomStart = data?.start ?? 0;
     this.zoomEnd = data?.end ?? 0;
