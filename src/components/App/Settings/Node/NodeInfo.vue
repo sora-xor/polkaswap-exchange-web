@@ -109,14 +109,15 @@ const stripEndingSlash = (str: string): string => (str.charAt(str.length - 1) ==
   },
 })
 export default class NodeInfo extends Mixins(TranslationMixin) {
-  @Prop({ default: () => {}, type: Function }) handleBack!: FnWithoutArgs;
-  @Prop({ default: () => {}, type: Function }) handleNode!: (node: any, isNewNode: boolean) => void;
-  @Prop({ default: () => {}, type: Function }) removeNode!: (node: any) => void;
-  @Prop({ default: () => ({}), type: Object }) node!: Node;
-  @Prop({ default: false, type: Boolean }) existing!: boolean;
-  @Prop({ default: false, type: Boolean }) removable!: boolean;
-  @Prop({ default: false, type: Boolean }) connected!: boolean;
-  @Prop({ default: false, type: Boolean }) showTutorial!: boolean;
+  @Prop({ default: () => {}, type: Function }) readonly handleBack!: FnWithoutArgs;
+  @Prop({ default: () => {}, type: Function }) readonly handleNode!: (node: any, isNewNode: boolean) => void;
+  @Prop({ default: () => {}, type: Function }) readonly removeNode!: (node: any) => void;
+  @Prop({ default: () => ({}), type: Object }) readonly node!: Node;
+  @Prop({ default: false, type: Boolean }) readonly existing!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly removable!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly connected!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly showTutorial!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
   @Prop({ default: '', type: String }) readonly nodeAddressConnecting!: string;
 
   @Ref('nodeNameInput') private readonly nodeNameInput!: HTMLInputElement;
@@ -172,7 +173,7 @@ export default class NodeInfo extends Mixins(TranslationMixin) {
   }
 
   get buttonDisabled(): boolean {
-    return this.connected && !this.nodeDataChanged;
+    return this.disabled || (this.connected && !this.nodeDataChanged);
   }
 
   get buttonType(): string {
