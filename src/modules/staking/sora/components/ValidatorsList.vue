@@ -40,7 +40,10 @@
       </div>
     </div>
     <div class="list">
-      <s-scrollbar class="validators-list-scrollbar">
+      <div v-if="!filteredValidators.length" class="empty">
+        <span>{{ emptyText }}</span>
+      </div>
+      <s-scrollbar v-else class="validators-list-scrollbar">
         <ul class="list">
           <li v-for="validator in filteredValidators" :key="validator.address" class="validator">
             <validator-avatar class="avatar" :validator="validator">
@@ -67,10 +70,6 @@
           </li>
         </ul>
       </s-scrollbar>
-
-      <div v-if="!filteredValidators.length" class="empty">
-        {{ emptyText }}
-      </div>
     </div>
     <div class="blackout" />
   </div>
@@ -414,10 +413,17 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
   }
 }
 
+.validators-list-scrollbar,
+.empty {
+  height: 380px;
+  padding-bottom: 64px;
+}
+
 .validators-list-scrollbar {
   @include scrollbar;
-  height: 380px !important;
-  margin: 0 -24px !important;
+  .list & {
+    margin: 0 -24px; // to override scrollbar mixin above
+  }
 
   ul {
     list-style-type: none;
@@ -509,14 +515,10 @@ export default class ValidatorsList extends Mixins(StakingMixin, ValidatorsMixin
 }
 
 .empty {
-  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
   color: var(--s-color-brand-day);
   font-size: 16px;
 }
