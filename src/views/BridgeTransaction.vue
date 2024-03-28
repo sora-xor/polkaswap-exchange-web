@@ -520,29 +520,27 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get transactionLinks(): LinkData[] {
-    const internal = this.getLinkData(
-      this.txInternalHash,
-      this.soraExplorerLinks,
-      this.t('bridgeTransaction.transactionHash')
-    );
+    const txHashName = this.t('bridgeTransaction.transactionHash');
+    const txBlockName = this.t('transaction.blockId');
+    const internal = this.getLinkData(this.txInternalHash, this.soraExplorerLinks, txHashName);
     const parachain = this.getLinkData(
       this.txParachainBlockId,
       this.parachainExplorerLinks,
-      this.t('transaction.blockId'),
+      txBlockName,
       this.parachainNetworkId
     );
     const external = this.getLinkData(
       this.txExternalHash,
       this.externalExplorerLinks,
-      this.t(this.historyItem?.externalHash ? 'bridgeTransaction.transactionHash' : 'transaction.blockId'),
+      this.historyItem?.externalHash ? txHashName : txBlockName,
       this.externalNetworkId
     );
 
     return this.sortLinksByTxDirection([internal, parachain, external]);
   }
 
-  private sortLinksByTxDirection(outgoingOrderedLinks: LinkData[]): LinkData[] {
-    const links = outgoingOrderedLinks.filter((link) => !!link);
+  private sortLinksByTxDirection(outgoingOrderedLinks: Array<LinkData | null>): LinkData[] {
+    const links = outgoingOrderedLinks.filter((link) => !!link) as LinkData[];
 
     return this.isOutgoing ? links : [...links].reverse();
   }
