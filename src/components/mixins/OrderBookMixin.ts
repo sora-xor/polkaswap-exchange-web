@@ -1,4 +1,3 @@
-import { FPNumber } from '@sora-substrate/util';
 import { Vue, Component } from 'vue-property-decorator';
 
 import { getter } from '@/store/decorators';
