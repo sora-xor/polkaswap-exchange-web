@@ -231,16 +231,9 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
         break;
       case WALLET_CONSTS.PaginationButton.Next:
         current = this.currentPage + 1;
-        if (current === this.lastPage) {
-          this.isLtrDirection = false;
-        }
-        break;
-      case WALLET_CONSTS.PaginationButton.First:
-        this.isLtrDirection = true;
         break;
       case WALLET_CONSTS.PaginationButton.Last:
         current = this.lastPage;
-        this.isLtrDirection = false;
         break;
     }
 
