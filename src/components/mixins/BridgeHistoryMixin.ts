@@ -26,10 +26,6 @@ export default class BridgeHistoryMixin<T extends IBridgeTransaction> extends Mi
   @action.bridge.updateInternalHistory updateInternalHistory!: FnWithoutArgs;
   @action.bridge.updateExternalHistory updateExternalHistory!: (clearHistory?: boolean) => Promise<void>;
 
-  isOutgoingType(type: Operation): boolean {
-    return isOutgoingTransaction({ type } as IBridgeTransaction);
-  }
-
   async showHistory(id?: string): Promise<void> {
     if (!id) {
       this.handleBack();
@@ -38,7 +34,7 @@ export default class BridgeHistoryMixin<T extends IBridgeTransaction> extends Mi
       const tx = this.history[id as string];
 
       // to display actual fees in BridgeTransaction
-      this.setSoraToEvm(this.isOutgoingType(tx.type));
+      this.setSoraToEvm(isOutgoingTransaction(tx));
       await this.setAssetAddress(tx.assetAddress);
 
       this.setHistoryId(tx.id);
