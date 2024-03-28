@@ -358,9 +358,7 @@ export default class BuySellWidget extends Mixins(
   }
 
   get priceLabelText(): string {
-    return this.isMarketType
-      ? this.t('orderBook.pricePerToken', { token: this.baseAsset?.symbol })
-      : this.t('orderBook.price');
+    return this.t('orderBook.pricePerToken', { token: this.baseAsset?.symbol });
   }
 
   get limitOrderType(): LimitOrderType {
