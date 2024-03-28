@@ -103,9 +103,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
         }, []);
       })
       .flat(1)
-      .sort((a, b) => {
-        return +a.disabled - +b.disabled;
-      });
+      .sort((a, b) => +a.disabled - +b.disabled);
   }
 
   get selectedNetworkTuple(): string {
