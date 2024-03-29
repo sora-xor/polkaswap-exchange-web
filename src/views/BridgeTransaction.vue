@@ -328,10 +328,6 @@ export default class BridgeTransaction extends Mixins(
     return this.asset ? this.getFiatAmountByCodecString(this.txExternalTransferFee, this.asset) : null;
   }
 
-  get txExternalBlockId(): string {
-    return this.tx?.externalBlockId ?? '';
-  }
-
   get txParachainBlockId(): string {
     return (this.historyItem as SubHistory)?.parachainBlockId ?? '';
   }
@@ -513,9 +509,15 @@ export default class BridgeTransaction extends Mixins(
     router.push({ name: this.prevRoute as string | undefined });
   }
 
+  get txInternalHash(): string {
+    if (!this.isOutgoing) return this.txSoraHash;
+
+    return this.txSoraHash || this.txInternalBlockId || this.txSoraId;
+  }
+
   get accountLinks(): LinkData[] {
     const name = this.t('accountAddressText');
-    const internal = this.getLinkData(this.txSoraAccount, this.internalAccountLinks, name);
+    const internal = this.getLinkData(this.txInternalAccount, this.internalAccountLinks, name);
     const external = this.getLinkData(this.txExternalAccount, this.externalAccountLinks, name, this.externalNetworkId);
 
     return this.sortLinksByTxDirection([internal, external]);
