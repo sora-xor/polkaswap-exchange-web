@@ -280,7 +280,7 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 <style lang="scss" scoped>
 .vaults-container {
   margin-left: 32px;
-  margin-right: 8px;
+  margin-right: $inner-spacing-mini;
 
   @include desktop {
     margin-left: 0;
@@ -311,7 +311,7 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
     flex: 1;
 
     &-desc {
-      margin-top: 8px;
+      margin-top: $inner-spacing-mini;
       align-items: flex-start;
       .no-vaults__description {
         flex: 1;
@@ -338,7 +338,7 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
   .link {
     @include focus-outline;
     font-size: var(--s-heading6-font-size);
-    margin-top: 8px;
+    margin-top: $inner-spacing-mini;
     color: var(--s-color-status-info);
   }
 }
@@ -361,12 +361,12 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
   }
 
   &__action {
-    margin-right: 24px;
+    margin-right: $inner-spacing-big;
   }
 
   &__title,
   &__action {
-    margin-bottom: 24px;
+    margin-bottom: $inner-spacing-big;
   }
 
   &__title {
@@ -378,13 +378,12 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 }
 
 .vault {
-  margin-bottom: 24px;
-  margin-right: 24px;
+  margin-bottom: $inner-spacing-big;
+  margin-right: $inner-spacing-big;
 
   &-title {
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
 
     &__name {
       flex: 1;
@@ -406,7 +405,7 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
     }
 
     &-badge {
-      margin-left: 8px;
+      margin-left: $inner-spacing-mini;
     }
   }
 
@@ -416,6 +415,7 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 
     &__item {
       flex: 1 1 50%;
+      margin-top: $inner-spacing-medium;
 
       > * {
         line-height: var(--s-line-height-big);
