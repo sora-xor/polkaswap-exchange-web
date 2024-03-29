@@ -328,10 +328,6 @@ export default class BridgeTransaction extends Mixins(
     return this.asset ? this.getFiatAmountByCodecString(this.txExternalTransferFee, this.asset) : null;
   }
 
-  get txExternalBlockId(): string {
-    return this.tx?.externalBlockId ?? '';
-  }
-
   get txParachainBlockId(): string {
     return (this.historyItem as SubHistory)?.parachainBlockId ?? '';
   }
@@ -492,10 +488,9 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get confirmationBlocksLeft(): number {
-    if (this.isOutgoing || !this.historyItem?.externalBlockHeight || !this.externalBlockNumber) return 0;
-    if (!Number.isFinite(this.historyItem?.externalBlockHeight)) return 0;
+    if (!(this.isEvmTxType && !this.isOutgoing && this.txExternalBlockNumber && this.externalBlockNumber)) return 0;
 
-    const blocksLeft = +this.historyItem.externalBlockHeight + 30 - this.externalBlockNumber;
+    const blocksLeft = this.txExternalBlockNumber + 30 - this.externalBlockNumber;
 
     return Math.max(blocksLeft, 0);
   }
@@ -514,9 +509,15 @@ export default class BridgeTransaction extends Mixins(
     router.push({ name: this.prevRoute as string | undefined });
   }
 
+  get txInternalHash(): string {
+    if (!this.isOutgoing) return this.txSoraHash;
+
+    return this.txSoraHash || this.txInternalBlockId || this.txSoraId;
+  }
+
   get accountLinks(): LinkData[] {
     const name = this.t('accountAddressText');
-    const internal = this.getLinkData(this.txSoraAccount, this.internalAccountLinks, name);
+    const internal = this.getLinkData(this.txInternalAccount, this.internalAccountLinks, name);
     const external = this.getLinkData(this.txExternalAccount, this.externalAccountLinks, name, this.externalNetworkId);
 
     return this.sortLinksByTxDirection([internal, external]);
@@ -525,7 +526,7 @@ export default class BridgeTransaction extends Mixins(
   get transactionLinks(): LinkData[] {
     const txHashName = this.t('bridgeTransaction.transactionHash');
     const txBlockName = this.t('transaction.blockId');
-    const internal = this.getLinkData(this.txInternalHash, this.soraExplorerLinks, txHashName);
+    const internal = this.getLinkData(this.txInternalHash, this.internalExplorerLinks, txHashName);
     const parachain = this.getLinkData(
       this.txParachainBlockId,
       this.parachainExplorerLinks,
