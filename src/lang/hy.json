@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "{Sora} Ցանցային հանգույցի ընտրություն",
+        "title": "Ցանցային հանգույցի ընտրություն",
         "addNode": "Ավելացրեք օգտատերի հանգույցը",
         "customNode": "Օգտատերի հանգույց",
         "howToSetupOwnNode": "Ինչպես կարգավորել ձեր սեփական {Sora} հանգույցը",
         "select": "Ընտրել",
         "connected": "Միացված է",
-        "selectNodeForEnvironment": "Ընտրեք հանգույց {environment} միջավայրի համար.",
         "nodeTitle": "{name}, որը հյուրընկալվում է {chain}",
         "messages": {
             "emptyName": "Խնդրում ենք մուտքագրել հանգույցի անվանումը",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} հասցե",
         "limitMessage": "Ներկայումս {Sora} ցանցի կայունությունն ու անվտանգությունն ապահովելու համար կամրջելու համար կա {type} {amount} {symbol} : Մենք գնահատում ենք ձեր ըմբռնումը:",
         "externalTransferFee": "{network} {XCM} վճար",
-        "externalTransferFeeTooltip": "Երբ դուք կամուրջ գործարք եք ուղարկում {network} ցանցին, ձեր փոխանցվող գումարից փոքր վճար է վերցվում"
+        "externalTransferFeeTooltip": "Երբ դուք կամուրջ գործարք եք ուղարկում {network} ցանցին, ձեր փոխանցվող գումարից փոքր վճար է վերցվում",
+        "externalMinDeposit": "{network} րոպե ավանդ",
+        "externalMinDepositTooltip": "Նվազագույն մնացորդը {symbol} , որը պետք է լինի ձեր {network} հաշվում կամրջի փոխանցումից հետո"
     },
     "selectRegisteredAsset": {
         "title": "Ընտրեք տոկեն",

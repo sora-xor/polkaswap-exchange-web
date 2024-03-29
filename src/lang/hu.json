@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "{Sora} Hálózati csomópont kiválasztása",
+        "title": "Hálózati csomópont kiválasztása",
         "addNode": "Egyéni csomópont hozzáadása",
         "customNode": "Egyéni csomópont",
         "howToSetupOwnNode": "Hogyan állítsd be a saját {Sora} csomópontodat?",
         "select": "Kiválaszt",
         "connected": "Csatlakozva",
-        "selectNodeForEnvironment": "Válaszd ki a {environment} környezet csomópontját:",
         "nodeTitle": "{chain} házigazda: {name}",
         "messages": {
             "emptyName": "Kérjük, add meg a csomópont nevét",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} cím",
         "limitMessage": "Jelenleg létezik egy {type} {amount} {symbol} áthidalás, amely biztosítja a {Sora} hálózat stabilitását és biztonságát. Köszönjük megértését.",
         "externalTransferFee": "{network} {XCM} díj",
-        "externalTransferFeeTooltip": "Ha hídtranzakciót küld a {network} hálózatra, az átutalt összegből egy kisebb díjat számítanak fel"
+        "externalTransferFeeTooltip": "Ha hídtranzakciót küld a {network} hálózatra, az átutalt összegből egy kisebb díjat számítanak fel",
+        "externalMinDeposit": "{network} min. letét",
+        "externalMinDepositTooltip": "Minimális egyenleg {symbol} , amelynek a {network} fiókján kell lennie a hídtranszfer után"
     },
     "selectRegisteredAsset": {
         "title": "Token kiválasztása",

@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "Chọn node trong Mạng {Sora}",
+        "title": "Chọn node trong Mạng",
         "addNode": "Thêm node tùy chỉnh",
         "customNode": "Node tùy chỉnh",
         "howToSetupOwnNode": "Cách thiết lập node {Sora} cho riêng bạn",
         "select": "Lựa chọn",
         "connected": "Đã kết nối",
-        "selectNodeForEnvironment": "Chọn một node cho môi trường {environment}:",
         "nodeTitle": "{chain} được quản lý bởi {name}",
         "messages": {
             "emptyName": "Vui lòng nhập tên của node",
@@ -591,7 +590,9 @@
         "ethereumAddress": "địa chỉ {Ethereum}",
         "limitMessage": "Hiện tại, có một {type} {amount} {symbol} để kết nối nhằm đảm bảo tính ổn định và bảo mật của Mạng {Sora} . Chúng tôi đánh giá cao sự hiểu biết của bạn.",
         "externalTransferFee": "Phí {network} {XCM}",
-        "externalTransferFeeTooltip": "Khi bạn gửi giao dịch bắc cầu tới mạng {network} , số tiền bạn chuyển sẽ bị tính một khoản phí nhỏ"
+        "externalTransferFeeTooltip": "Khi bạn gửi giao dịch bắc cầu tới mạng {network} , số tiền bạn chuyển sẽ bị tính một khoản phí nhỏ",
+        "externalMinDeposit": "{network} phút. tiền gửi",
+        "externalMinDepositTooltip": "Số dư tối thiểu {symbol} phải có trên tài khoản {network} của bạn sau khi chuyển khoản"
     },
     "selectRegisteredAsset": {
         "title": "Chọn token",

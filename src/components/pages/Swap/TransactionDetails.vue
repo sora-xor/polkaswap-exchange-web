@@ -18,10 +18,6 @@
       </info-line>
       <info-line :label="t('swap.route')">
         <div class="swap-route">
-          <swap-distribution>
-            <s-icon class="el-tooltip" name="info-16" size="14px" />
-          </swap-distribution>
-
           <div class="swap-route-paths s-flex">
             <div v-for="(token, index) in swapRoute" class="swap-route-value" :key="token">
               <span>{{ token }}</span>
@@ -81,7 +77,6 @@ type RewardValue = {
   components: {
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
     TransactionDetails: lazyComponent(Components.TransactionDetails),
-    SwapDistribution: lazyComponent(Components.SwapDistribution),
     FormattedAmount: components.FormattedAmount,
     InfoLine: components.InfoLine,
   },
@@ -186,7 +181,6 @@ export default class SwapTransactionDetails extends Mixins(mixins.FormattedAmoun
   align-items: center;
   justify-content: space-between;
   gap: $inner-spacing-mini;
-  width: 100%;
 
   &-value {
     font-weight: 600;
