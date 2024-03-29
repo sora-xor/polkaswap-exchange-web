@@ -35,6 +35,14 @@
           @slide="handleBorrowPercentChange"
         />
         <info-line
+          label="MIN DEPOSIT COLLATERAL"
+          label-tooltip="COMING SOON..."
+          :value="formattedMinDeposit"
+          :asset-symbol="collateralSymbol"
+          :fiat-value="minDepositFiat"
+          is-formatted
+        />
+        <info-line
           label="MAX AVAILABLE TO BORROW"
           label-tooltip="COMING SOON..."
           :value="formattedMaxBorrow"
@@ -70,6 +78,7 @@
             {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
           </template>
           <template v-else-if="!ltv">ENTER COLLATERAL</template>
+          <template v-else-if="isLessThanMinDeposit">ENTER MORE COLLATERAL</template>
           <template v-else-if="isLtvGtHundred">INSUFFICIENT COLLATERAL</template>
           <template v-else>OPEN</template>
         </s-button>
@@ -190,8 +199,21 @@ export default class CreateVaultDialog extends Mixins(
     return this.ltv?.gt(this.Hundred) ?? false;
   }
 
+  get isLessThanMinDeposit(): boolean {
+    if (!this.collateralValue) return true;
+    const collateralFp = this.getFPNumber(this.collateralValue, this.collateralToken?.decimals);
+    // return collateralFp.lt(this.collateral?.riskParams.minDeposit);
+    return false;
+  }
+
   get disabled(): boolean {
-    return this.loading || this.isInsufficientXorForFee || !this.ltv || this.ltv.gt(this.Hundred);
+    return (
+      this.loading ||
+      this.isInsufficientXorForFee ||
+      this.isLessThanMinDeposit ||
+      !this.ltv ||
+      this.ltv.gt(this.Hundred)
+    );
   }
 
   get collateralAssetBalance(): CodecString {
@@ -245,6 +267,10 @@ export default class CreateVaultDialog extends Mixins(
     return this.kusdToken?.symbol ?? '';
   }
 
+  get collateralSymbol(): string {
+    return this.collateralToken?.symbol ?? '';
+  }
+
   get maxBorrowPerMaxCollateralNumber(): number {
     return this.maxBorrowPerMaxCollateralFp.toNumber();
   }
@@ -262,6 +288,17 @@ export default class CreateVaultDialog extends Mixins(
       .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
       .div(HundredNumber);
     return maxSafeDebt.dp(2);
+  }
+
+  get formattedMinDeposit(): string {
+    // return this.collateral?.riskParams.minDeposit.toLocaleString() ?? ZeroStringValue;
+    return '0';
+  }
+
+  get minDepositFiat(): Nullable<string> {
+    if (!this.collateralToken) return null; // || !this.collateral?.riskParams.minDeposit
+    // return this.getFiatAmountByFPNumber(this.collateral.riskParams.minDeposit, this.collateralToken);
+    return '0';
   }
 
   get formattedMaxBorrow(): string {
@@ -353,7 +390,7 @@ export default class CreateVaultDialog extends Mixins(
         this.$alert(this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol }), {
           title: this.t('errorText'),
         });
-      } else if (!this.ltv || this.isLtvGtHundred) {
+      } else if (!this.ltv || this.isLessThanMinDeposit || this.isLtvGtHundred) {
         this.$alert('Insufficient collateral', {
           title: this.t('errorText'),
         });
