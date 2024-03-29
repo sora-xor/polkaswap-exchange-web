@@ -49,21 +49,20 @@ export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string 
   return bridgeProxyEvent.event.data[0].toString();
 };
 
-const getNativeTokenDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): string => {
-  // Native token for network
-  const balancesDepositEvent = events.find(
+// Native token for network
+export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): [string, number] => {
+  const index = events.findIndex(
     (e) =>
       api.events.balances.Deposit.is(e.event) &&
       subBridgeApi.formatAddress(e.event.data.who.toString()) === subBridgeApi.formatAddress(to)
   );
 
-  if (!balancesDepositEvent) throw new Error(`Unable to find "balances.Deposit" event`);
+  if (index === -1) throw new Error(`Unable to find "balances.Deposit" event`);
 
-  return balancesDepositEvent.event.data.amount.toString();
-};
+  const event = events[index];
+  const balance = event.event.data.amount.toString();
 
-export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): string => {
-  return getNativeTokenDepositedBalance(events, to, api);
+  return [balance, index];
 };
 
 export const getReceivedAmount = (sendedAmount: string, receivedAmount: CodecString, decimals?: number) => {

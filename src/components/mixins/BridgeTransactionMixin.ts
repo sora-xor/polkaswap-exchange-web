@@ -51,12 +51,16 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
     return this.txSoraHash || this.txSoraBlockId || this.txSoraId;
   }
 
-  get txExternalHash(): string {
-    return this.tx?.externalHash ?? this.txExternalBlockId;
+  get txExternalEventIndex(): number | undefined {
+    return this.tx?.payload?.eventIndex;
   }
 
-  get txExternalBlockId(): string {
-    return this.tx?.externalBlockId ?? '';
+  get txExternalHash(): string | undefined {
+    return this.tx?.externalHash;
+  }
+
+  get txExternalBlockNumber(): number | undefined {
+    return this.tx?.externalBlockHeight;
   }
 
   get externalNetworkType(): Nullable<BridgeNetworkType> {
@@ -78,8 +82,8 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
       this.externalNetworkType,
       this.externalNetworkId,
       this.txExternalHash,
-      this.txExternalBlockId,
-      this.EvmLinkType.Transaction
+      this.txExternalBlockNumber,
+      this.txExternalEventIndex
     );
   }
 
@@ -94,7 +98,8 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
       this.externalNetworkType,
       this.externalNetworkId,
       this.txExternalAccount,
-      this.txExternalBlockId,
+      undefined,
+      undefined,
       this.EvmLinkType.Account
     );
   }

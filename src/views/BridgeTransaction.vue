@@ -328,12 +328,16 @@ export default class BridgeTransaction extends Mixins(
     return this.asset ? this.getFiatAmountByCodecString(this.txExternalTransferFee, this.asset) : null;
   }
 
-  get txId(): Nullable<string> {
-    return this.isOutgoing ? this.txSoraId : this.txExternalHash;
+  get txExternalBlockId(): string {
+    return this.tx?.externalBlockId ?? '';
   }
 
   get txParachainBlockId(): string {
     return (this.historyItem as SubHistory)?.parachainBlockId ?? '';
+  }
+
+  get txParachainBlockNumber(): number | undefined {
+    return (this.historyItem as SubHistory)?.parachainBlockHeight;
   }
 
   get txDate(): string {
@@ -459,9 +463,8 @@ export default class BridgeTransaction extends Mixins(
     return this.getNetworkExplorerLinks(
       this.externalNetworkType,
       this.parachainNetworkId,
-      this.txParachainBlockId,
-      this.txParachainBlockId,
-      this.EvmLinkType.Transaction
+      '',
+      this.txParachainBlockNumber
     );
   }
 
@@ -530,9 +533,9 @@ export default class BridgeTransaction extends Mixins(
       this.parachainNetworkId
     );
     const external = this.getLinkData(
-      this.txExternalHash,
+      this.txExternalHash ?? this.txExternalBlockId,
       this.externalExplorerLinks,
-      this.historyItem?.externalHash ? txHashName : txBlockName,
+      this.txExternalHash ? txHashName : txBlockName,
       this.externalNetworkId
     );
 
