@@ -8,6 +8,7 @@ export enum VaultComponents {
   AddCollateralDialog = 'AddCollateralDialog',
   RemoveVaultDialog = 'RemoveVaultDialog',
   LtvProgressBar = 'LtvProgressBar',
+  PrevNextInfoLine = 'PrevNextInfoLine',
 }
 
 export const LtvTranslations = {
