@@ -296,8 +296,8 @@ export default class PriceChartWidget extends Mixins(
   private samplesBuffer: Record<string, readonly SnapshotItem[]> = {};
   private pageInfos: Record<string, Partial<PageInfo>> = {};
   private dataset: readonly SnapshotItem[] = [];
-  private zoomStart = 20; // percentage of zoom start position
-  private zoomEnd = 80; // percentage of zoom end position
+  private zoomStart = 0; // percentage of zoom start position
+  private zoomEnd = 100; // percentage of zoom end position
   private precision = 2;
   private limits = {
     min: Infinity,
