@@ -5,7 +5,7 @@
       <div class="warning" />
       <div class="error" />
     </div>
-    <div class="pointer" :style="{ left: percentage + '%' }" />
+    <div class="pointer" :style="{ left }" />
   </div>
 </template>
 
@@ -15,6 +15,12 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class LtvProgressBar extends Vue {
   @Prop({ default: 0, type: Number, required: true }) readonly percentage!: number;
+
+  get left(): string {
+    if (this.percentage > 100) return '100%';
+    if (this.percentage < 0) return '0%';
+    return `${this.percentage}%`;
+  }
 }
 </script>
 
