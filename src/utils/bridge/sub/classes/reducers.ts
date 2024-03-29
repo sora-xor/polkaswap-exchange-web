@@ -76,16 +76,16 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
 
   updateTransactionPayload(id: string, params: Record<string, any>) {
     const { payload: prevPayload } = this.getTransaction(id);
-    this.updateTransactionParams(id, { ...prevPayload, ...params });
+    this.updateTransactionParams(id, { payload: { ...prevPayload, ...params } });
   }
 
   async saveParachainBlock(id: string): Promise<void> {
-    const soraParachainApi = this.connector.soraParachain?.api;
+    const adapter = this.connector.soraParachain;
 
-    if (!soraParachainApi) throw new Error(`[${this.constructor.name}]: Sora Parachain Api is not exists`);
+    if (!adapter) throw new Error(`[${this.constructor.name}]: Sora Parachain Adapter is not exists`);
 
     // get current sora parachain block number
-    const parachainStartBlock = (await soraParachainApi.query.system.number()).toNumber();
+    const parachainStartBlock = await adapter.getBlockNumber();
     // update history data
     this.updateTransactionPayload(id, { parachainStartBlock });
   }
@@ -151,10 +151,19 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
   private async updateTxSigningData(id: string): Promise<void> {
     const tx = this.getTransaction(id);
 
-    if (!(tx.externalBlockId && tx.externalHash)) {
+    if (!(tx.externalBlockId && tx.externalHash && tx.externalBlockHeight)) {
+      const adapter = this.connector.network;
+
+      await adapter.connect();
+
+      const externalHash = tx.txId as string;
+      const externalBlockId = tx.blockId as string;
+      const externalBlockHeight = await api.system.getBlockNumber(externalBlockId, adapter.api);
+
       this.updateTransactionParams(id, {
-        externalHash: tx.txId, // network tx hash
-        externalBlockId: tx.blockId, // network block hash
+        externalHash,
+        externalBlockId,
+        externalBlockHeight,
       });
     }
   }

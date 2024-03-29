@@ -71,7 +71,7 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
     return this.tx?.externalNetwork;
   }
 
-  get soraExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+  get internalExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
     return soraExplorerLinks(this.soraNetwork, this.txSoraId, this.txSoraBlockId);
   }
 

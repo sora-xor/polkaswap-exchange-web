@@ -492,10 +492,9 @@ export default class BridgeTransaction extends Mixins(
   }
 
   get confirmationBlocksLeft(): number {
-    if (this.isOutgoing || !this.historyItem?.externalBlockHeight || !this.externalBlockNumber) return 0;
-    if (!Number.isFinite(this.historyItem?.externalBlockHeight)) return 0;
+    if (!(this.isEvmTxType && !this.isOutgoing && this.txExternalBlockNumber && this.externalBlockNumber)) return 0;
 
-    const blocksLeft = +this.historyItem.externalBlockHeight + 30 - this.externalBlockNumber;
+    const blocksLeft = this.txExternalBlockNumber + 30 - this.externalBlockNumber;
 
     return Math.max(blocksLeft, 0);
   }
@@ -525,7 +524,7 @@ export default class BridgeTransaction extends Mixins(
   get transactionLinks(): LinkData[] {
     const txHashName = this.t('bridgeTransaction.transactionHash');
     const txBlockName = this.t('transaction.blockId');
-    const internal = this.getLinkData(this.txInternalHash, this.soraExplorerLinks, txHashName);
+    const internal = this.getLinkData(this.txInternalHash, this.internalExplorerLinks, txHashName);
     const parachain = this.getLinkData(
       this.txParachainBlockId,
       this.parachainExplorerLinks,
