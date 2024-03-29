@@ -132,7 +132,9 @@
       :vault="vault"
       :asset="lockedAsset"
       :prev-ltv="ltv"
+      :prev-available="availableToBorrow"
       :collateral="collateral"
+      :average-collateral-price="averageCollateralPrice"
     />
     <remove-vault-dialog :visible.sync="showRemoveVaultDialog" />
   </div>
@@ -211,10 +213,14 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     return this.collaterals[this.vault.lockedAssetId];
   }
 
+  get averageCollateralPrice(): FPNumber {
+    if (!this.vault) return this.Zero;
+    return this.averageCollateralPrices[this.vault.lockedAssetId] ?? this.Zero;
+  }
+
   private get maxSafeDebt(): Nullable<FPNumber> {
     if (!this.vault) return null;
-    const averagePrice = this.averageCollateralPrices[this.vault.lockedAssetId] ?? this.Zero;
-    const collateralVolume = averagePrice.mul(this.vault.lockedAmount);
+    const collateralVolume = this.averageCollateralPrice.mul(this.vault.lockedAmount);
     return collateralVolume
       .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
       .div(HundredNumber)
