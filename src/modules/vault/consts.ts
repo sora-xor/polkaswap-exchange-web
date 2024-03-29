@@ -9,8 +9,6 @@ export enum VaultComponents {
   LtvProgressBar = 'LtvProgressBar',
 }
 
-export const KusdAddress = '0x02000b0000000000000000000000000000000000000000000000000000000000';
-
 export const LtvTranslations = {
   success: 'SAFE',
   warning: 'RISKY',

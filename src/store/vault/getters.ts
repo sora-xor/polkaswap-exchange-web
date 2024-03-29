@@ -1,6 +1,6 @@
+import { KUSD } from '@sora-substrate/util/build/assets/consts';
 import { defineGetters } from 'direct-vuex';
 
-import { KusdAddress } from '@/modules/vault/consts';
 import { vaultGetterContext } from '@/store/vault';
 
 import type { VaultState } from './types';
@@ -10,7 +10,7 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 const getters = defineGetters<VaultState>()({
   kusdToken(...args): Nullable<RegisteredAccountAsset> {
     const { state, rootGetters } = vaultGetterContext(args);
-    const token = rootGetters.assets.assetDataByAddress(KusdAddress);
+    const token = rootGetters.assets.assetDataByAddress(KUSD.address);
     const balance = state.kusdTokenBalance;
     if (balance) {
       return { ...token, balance } as RegisteredAccountAsset;
