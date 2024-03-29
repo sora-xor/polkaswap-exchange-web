@@ -13,6 +13,7 @@ import { SubTransferType } from '@/utils/bridge/sub/types';
 import {
   getBridgeProxyHash,
   getDepositedBalance,
+  getTokensDepositedBalance,
   getMessageAcceptedNonces,
   isMessageDispatchedNonces,
   isAssetAddedToChannel,
@@ -290,8 +291,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       }
     }
 
-    const received = FPNumber.fromCodecValue(recipientAmount, this.asset.externalDecimals);
-    const amount2 = received.toString();
+    const amount2 = FPNumber.fromCodecValue(recipientAmount, this.asset.externalDecimals).toString();
 
     this.updateTransactionPayload(id, { messageNonce, batchNonce });
     this.updateTransactionParams(id, { amount2 });
@@ -310,6 +310,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     let subscription!: Subscription;
     let soraHash!: string;
+    let amount!: string;
+    let eventIndex!: number;
 
     try {
       await new Promise<void>((resolve, reject) => {
@@ -324,7 +326,10 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
             if (substrateDispatchEventIndex === -1) return;
 
-            soraHash = getBridgeProxyHash(events.slice(substrateDispatchEventIndex), subBridgeApi.api);
+            const foundedEvents = events.slice(substrateDispatchEventIndex);
+
+            soraHash = getBridgeProxyHash(foundedEvents, subBridgeApi.api);
+            [amount, eventIndex] = getTokensDepositedBalance(foundedEvents, tx.from as string, subBridgeApi.api);
 
             resolve();
           } catch (error) {
@@ -336,9 +341,10 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       subscription.unsubscribe();
     }
 
-    this.updateTransactionParams(id, {
-      hash: soraHash,
-    });
+    const amount2 = FPNumber.fromCodecValue(amount, this.asset.decimals).toString();
+
+    this.updateTransactionParams(id, { hash: soraHash, amount2 });
+    this.updateTransactionPayload(id, { eventIndex });
   }
 
   private async waitSoraBlockByHash(id: string): Promise<void> {

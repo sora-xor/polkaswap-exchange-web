@@ -64,6 +64,21 @@ export const getDepositedBalance = (events: Array<any>, to: string, api: ApiProm
 
   return [balance, index];
 };
+// for SORA
+export const getTokensDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): [string, number] => {
+  const index = events.findIndex(
+    (e) =>
+      api.events.tokens.Deposited.is(e.event) &&
+      subBridgeApi.formatAddress(e.event.data.who.toString()) === subBridgeApi.formatAddress(to)
+  );
+
+  if (index === -1) throw new Error(`Unable to find "tokens.Deposited" event`);
+
+  const event = events[index];
+  const balance = event.event.data.amount.toString();
+
+  return [balance, index];
+};
 
 export const getReceivedAmount = (sendedAmount: string, receivedAmount: CodecString, decimals?: number) => {
   const sended = new FPNumber(sendedAmount, decimals);
