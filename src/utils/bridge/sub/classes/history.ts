@@ -163,6 +163,7 @@ class SubBridgeHistory extends SubNetworksConnector {
         to: tx.externalAccount,
         soraNetworkFee: ZeroStringValue, // overrides in Outgoing
         externalNetworkFee: ZeroStringValue, // overrides in Incoming
+        payload: {},
       };
 
       const networkApi = this.getIntermediateApi(history);
@@ -277,7 +278,13 @@ class SubBridgeHistory extends SubNetworksConnector {
     if (!this.parachainApi) throw new Error('[processOutgoingToSoraParachain] Parachain Api is not exists');
 
     try {
-      const receivedAmount = getDepositedBalance(extrinsicEvents, history.to as string, this.parachainApi);
+      const [receivedAmount, eventIndex] = getDepositedBalance(
+        extrinsicEvents,
+        history.to as string,
+        this.parachainApi
+      );
+      // balances.Deposit event index
+      history.payload.eventIndex = eventIndex;
 
       const { amount, transferFee } = getReceivedAmount(
         history.amount as string,
@@ -317,11 +324,12 @@ class SubBridgeHistory extends SubNetworksConnector {
       try {
         const blockId = await api.system.getBlockHash(relaychainBlockHeight, this.externalApi);
         const blockEvents = await api.system.getBlockEvents(blockId, this.externalApi);
-        const blockEventsReversed = [...blockEvents].reverse();
 
-        const messageQueueEventIndex = blockEventsReversed.findIndex(({ event }) => {
+        const messageQueueEventIndex = blockEvents.findIndex(({ event }) => {
           if (this.externalApi.events.messageQueue.Processed.is(event)) {
-            return event.data[0].toString() === messageHash;
+            const messageHashMatches = event.data[0].toString() === messageHash;
+
+            return messageHashMatches;
           }
           return false;
         });
@@ -333,11 +341,14 @@ class SubBridgeHistory extends SubNetworksConnector {
         history.to = formatSubAddress(history.to as string, this.externalApi.registry.chainSS58 as number);
 
         // Native token for network
-        const receivedAmount = getDepositedBalance(
-          blockEventsReversed.slice(messageQueueEventIndex),
+        const [receivedAmount, eventIndex] = getDepositedBalance(
+          blockEvents.slice(0, messageQueueEventIndex),
           history.to as string,
           this.externalApi
         );
+        // balances.Deposit event index
+        history.payload.eventIndex = eventIndex;
+
         const { amount, transferFee } = getReceivedAmount(
           history.amount as string,
           receivedAmount,
@@ -503,6 +514,7 @@ class SubBridgeHistory extends SubNetworksConnector {
           history.externalNetworkFee = feeEvent.event.data[1].toString();
           history.externalBlockId = blockId;
           history.externalBlockHeight = relaychainBlockHeight;
+          history.externalHash = extrinsic.hash.toString();
           history.to = formatSubAddress(signer, this.externalApi.registry.chainSS58 as number);
 
           return history;
