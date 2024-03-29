@@ -5,6 +5,7 @@ export enum VaultPageNames {
 
 export enum VaultComponents {
   CreateVaultDialog = 'CreateVaultDialog',
+  AddCollateralDialog = 'AddCollateralDialog',
   RemoveVaultDialog = 'RemoveVaultDialog',
   LtvProgressBar = 'LtvProgressBar',
 }

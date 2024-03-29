@@ -33,7 +33,7 @@
               </div>
             </div>
             <div class="vault-collateral__actions s-flex">
-              <s-button class="s-typography-button--small" size="small">
+              <s-button class="s-typography-button--small" size="small" @click="addCollateral">
                 <s-icon name="finance-send-24" size="16" />
                 Add collateral
               </s-button>
@@ -127,6 +127,13 @@
         </s-card>
       </s-col>
     </s-row>
+    <add-collateral-dialog
+      :visible.sync="showAddCollateralDialog"
+      :vault="vault"
+      :asset="lockedAsset"
+      :prev-ltv="ltv"
+      :collateral="collateral"
+    />
     <remove-vault-dialog :visible.sync="showRemoveVaultDialog" />
   </div>
   <div v-else class="vault-details-container empty" />
@@ -154,6 +161,7 @@ import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/type
     FormattedAmount: components.FormattedAmount,
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ValueStatus: lazyComponent(Components.ValueStatusWrapper),
+    AddCollateralDialog: vaultLazyComponent(VaultComponents.AddCollateralDialog),
     RemoveVaultDialog: vaultLazyComponent(VaultComponents.RemoveVaultDialog),
     LtvProgressBar: vaultLazyComponent(VaultComponents.LtvProgressBar),
   },
@@ -171,6 +179,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
 
   showRemoveVaultDialog = false;
+  showAddCollateralDialog = false;
 
   get vault(): Nullable<Vault> {
     const vaultId = this.$route.params.vault;
@@ -196,7 +205,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     return `${this.kusdSymbol} / ${this.lockedAsset.symbol}`;
   }
 
-  private get collateral(): Nullable<Collateral> {
+  get collateral(): Nullable<Collateral> {
     if (!this.vault) return null;
 
     return this.collaterals[this.vault.lockedAssetId];
@@ -300,6 +309,10 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
 
   closePosition(): void {
     this.showRemoveVaultDialog = true;
+  }
+
+  addCollateral(): void {
+    this.showAddCollateralDialog = true;
   }
 }
 </script>
