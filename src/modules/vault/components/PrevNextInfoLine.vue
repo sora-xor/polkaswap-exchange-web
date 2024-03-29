@@ -15,6 +15,7 @@
       :font-size-rate="fontSize"
       :font-weight-rate="fontWeight"
     />
+    <slot />
   </info-line>
 </template>
 
