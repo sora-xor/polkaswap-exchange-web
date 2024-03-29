@@ -103,13 +103,11 @@
                   :value="format(vault.lockedAmount)"
                   :asset-symbol="getLockedSymbol(vault.lockedAsset)"
                 />
-                <p v-else class="p3 vault-details__value">n/a</p>
                 <formatted-amount
                   v-if="vault.lockedAsset"
                   is-fiat-value
-                  :value="getFiatAmountByFPNumber(vault.lockedAmount, vault.lockedAsset)"
+                  :value="formatFiat(vault.lockedAmount, vault.lockedAsset)"
                 />
-                <p v-else class="p3 vault-details__fiat">n/a</p>
               </div>
               <div class="vault-details__item s-flex-column">
                 <p class="p3 vault__label">
@@ -119,13 +117,7 @@
                   </s-tooltip>
                 </p>
                 <formatted-amount v-if="kusdToken" :value="format(vault.debt)" :asset-symbol="kusdSymbol" />
-                <p v-else class="p3 vault-details__value">n/a</p>
-                <formatted-amount
-                  v-if="kusdToken"
-                  is-fiat-value
-                  :value="getFiatAmountByFPNumber(vault.debt, kusdToken)"
-                />
-                <p v-else class="p3 vault-details__fiat">n/a</p>
+                <formatted-amount v-if="kusdToken" is-fiat-value :value="formatFiat(vault.debt, kusdToken)" />
               </div>
               <div class="vault-details__item s-flex-column">
                 <p class="p3 vault__label">
@@ -135,13 +127,7 @@
                   </s-tooltip>
                 </p>
                 <formatted-amount v-if="kusdToken" :value="format(vault.available)" :asset-symbol="kusdSymbol" />
-                <p v-else class="p3 vault-details__value">n/a</p>
-                <formatted-amount
-                  v-if="kusdToken"
-                  is-fiat-value
-                  :value="getFiatAmountByFPNumber(vault.available, kusdToken)"
-                />
-                <p v-else class="p3 vault-details__fiat">n/a</p>
+                <formatted-amount v-if="kusdToken" is-fiat-value :value="formatFiat(vault.available, kusdToken)" />
               </div>
             </div>
             <s-divider />
@@ -247,6 +233,11 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 
   format(number?: FPNumber): string {
     return number?.toLocaleString(2) ?? ZeroStringValue;
+  }
+
+  formatFiat(amount: Nullable<FPNumber>, asset: Nullable<RegisteredAccountAsset>): string {
+    if (!(amount && asset)) return ZeroStringValue;
+    return this.getFiatAmountByFPNumber(amount, asset) ?? ZeroStringValue;
   }
 
   toCodec(number: FPNumber): CodecString {
@@ -387,7 +378,7 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 
     &__name {
       flex: 1;
-      margin: 0 8px;
+      margin: 0 $inner-spacing-mini;
       @include text-ellipsis;
     }
   }
