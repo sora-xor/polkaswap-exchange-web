@@ -22,15 +22,16 @@ const { ETH_BRIDGE_STATES } = WALLET_CONSTS;
 const getSubNetworkLinks = (
   networkData: NetworkData,
   type: EvmLinkType,
-  value: string,
-  blockHash: string
+  value?: string, // tx hash or account address
+  blockNumber?: number,
+  eventIndex?: number
 ): WALLET_CONSTS.ExplorerLink[] => {
   const links: Array<WALLET_CONSTS.ExplorerLink> = [];
   const explorerUrl = networkData.blockExplorerUrls[0];
 
   switch (type) {
     case EvmLinkType.Account: {
-      if (explorerUrl) {
+      if (explorerUrl && value) {
         links.push({
           type: WALLET_CONSTS.ExplorerType.Subscan,
           value: `${explorerUrl}/account/${value}`,
@@ -40,19 +41,31 @@ const getSubNetworkLinks = (
     }
     case EvmLinkType.Transaction: {
       if (explorerUrl) {
-        const path = value === blockHash ? 'block' : 'extrinsic';
-        links.push({
-          type: WALLET_CONSTS.ExplorerType.Subscan,
-          value: `${explorerUrl}/${path}/${value}`,
-        });
+        if (value) {
+          links.push({
+            type: WALLET_CONSTS.ExplorerType.Subscan,
+            value: `${explorerUrl}/extrinsic/${value}`,
+          });
+        } else if (Number.isFinite(blockNumber)) {
+          let link = `${explorerUrl}/block/${blockNumber}`;
+
+          if (Number.isFinite(eventIndex)) {
+            link += `?tab=event&event=${blockNumber}-${eventIndex}`;
+          }
+
+          links.push({
+            type: WALLET_CONSTS.ExplorerType.Subscan,
+            value: link,
+          });
+        }
       }
 
-      if (blockHash) {
+      if (Number.isFinite(blockNumber)) {
         const networkUrl = networkData.nodes?.[0].address;
         const polkadotBaseLink = `https://polkadot.js.org/apps/?rpc=${networkUrl}#/explorer/query`;
         const polkadotLink = {
           type: WALLET_CONSTS.ExplorerType.Polkadot,
-          value: `${polkadotBaseLink}/${blockHash}`,
+          value: `${polkadotBaseLink}/${blockNumber}`,
         };
 
         links.push(polkadotLink);
@@ -67,13 +80,12 @@ const getSubNetworkLinks = (
 const getEvmNetworkLinks = (
   networkData: NetworkData,
   type: EvmLinkType,
-  value: string,
-  _blockHash: string
+  value?: string
 ): WALLET_CONSTS.ExplorerLink[] => {
   const links: Array<WALLET_CONSTS.ExplorerLink> = [];
   const explorerUrl = networkData.blockExplorerUrls[0];
 
-  if (explorerUrl) {
+  if (explorerUrl && value) {
     const path = type === EvmLinkType.Transaction ? 'tx' : 'address';
     const etherscanLink = {
       type: 'etherscan' as WALLET_CONSTS.ExplorerType,
@@ -173,12 +185,11 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
   getNetworkExplorerLinks(
     networkType: BridgeNetworkType,
     networkId: BridgeNetworkId,
-    value: string,
-    blockHash = '',
+    value?: string,
+    blockNumber?: number,
+    eventIndex?: number,
     type = EvmLinkType.Transaction
   ): Array<WALLET_CONSTS.ExplorerLink> {
-    if (!value) return [];
-
     const networkData = this.availableNetworks[networkType][networkId]?.data;
 
     if (!networkData) {
@@ -187,8 +198,8 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
     }
 
     return networkType === BridgeNetworkType.Sub
-      ? getSubNetworkLinks(networkData, type, value, blockHash)
-      : getEvmNetworkLinks(networkData, type, value, blockHash);
+      ? getSubNetworkLinks(networkData, type, value, blockNumber, eventIndex)
+      : getEvmNetworkLinks(networkData, type, value);
   }
 
   isOutgoingTx(item: Nullable<IBridgeTransaction>): boolean {
