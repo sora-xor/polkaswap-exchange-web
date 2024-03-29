@@ -26,6 +26,5 @@ export type OrderBookState = {
   userLimitOrderUpdates: Nullable<Subscription>;
   pagedUserLimitOrdersSubscription: Nullable<Subscription>;
   ordersToBeCancelled: Array<LimitOrder>;
-  amountSliderValue: number;
   baseAssetBalance: Nullable<AccountBalance>;
 };

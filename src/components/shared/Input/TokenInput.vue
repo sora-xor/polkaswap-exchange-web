@@ -131,8 +131,6 @@ export default class TokenInput extends Mixins(
   mixins.FormattedAmountMixin,
   TranslationMixin
 ) {
-  @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
-
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   @Prop({ type: String }) readonly value!: string;
@@ -198,7 +196,7 @@ export default class TokenInput extends Mixins(
   }
 
   set slideValue(value: number) {
-    this.setAmountSliderValue(value);
+    this.$emit('slide', value);
   }
 
   get isBalanceAvailable(): boolean {

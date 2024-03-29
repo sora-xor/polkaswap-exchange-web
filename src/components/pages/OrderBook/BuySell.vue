@@ -259,7 +259,6 @@ export default class BuySellWidget extends Mixins(
   @state.orderBook.asks asks!: OrderBookPriceVolume[];
   @state.orderBook.bids bids!: OrderBookPriceVolume[];
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
-  @state.orderBook.amountSliderValue sliderValue!: number;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
 
   @getter.assets.xor xor!: AccountAsset;
@@ -273,7 +272,6 @@ export default class BuySellWidget extends Mixins(
   @mutation.orderBook.setBaseValue setBaseValue!: (value: string) => void;
   @mutation.orderBook.setQuoteValue setQuoteValue!: (value: string) => void;
   @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
-  @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
   @mutation.swap.setLiquiditySource setLiquiditySource!: (liquiditySource: string) => void;
@@ -296,6 +294,7 @@ export default class BuySellWidget extends Mixins(
   limitForSinglePriceReached = false;
   wasMaxAmountOut = false;
   quoteSubscription: Nullable<Subscription> = null;
+  sliderValue = 0;
   timestamp = MAX_TIMESTAMP;
   marketQuotePrice = '';
   reason = '';
@@ -665,6 +664,10 @@ export default class BuySellWidget extends Mixins(
 
   get areTokensSelected(): boolean {
     return !!(this.baseAsset && this.quoteAsset);
+  }
+
+  setAmountSliderValue(value: number): void {
+    this.sliderValue = value;
   }
 
   toggleBookList(): void {
