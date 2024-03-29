@@ -73,6 +73,11 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     };
   }
 
+  updateTransactionPayload(id: string, params: Record<string, any>) {
+    const { payload: prevPayload } = this.getTransaction(id);
+    this.updateTransactionParams(id, { ...prevPayload, ...params });
+  }
+
   async saveParachainBlock(id: string): Promise<void> {
     const soraParachainApi = this.connector.soraParachain?.api;
 
@@ -81,11 +86,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     // get current sora parachain block number
     const parachainStartBlock = (await soraParachainApi.query.system.number()).toNumber();
     // update history data
-    this.updateTransactionParams(id, {
-      payload: {
-        parachainStartBlock,
-      },
-    });
+    this.updateTransactionPayload(id, { parachainStartBlock });
   }
 }
 
@@ -289,13 +290,11 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
       }
     }
 
-    const { payload: prevPayload } = this.getTransaction(id);
-
     const received = FPNumber.fromCodecValue(recipientAmount, this.asset.externalDecimals);
     const amount2 = received.toString();
-    const payload = { ...prevPayload, messageNonce, batchNonce };
 
-    this.updateTransactionParams(id, { amount2, payload });
+    this.updateTransactionPayload(id, { messageNonce, batchNonce });
+    this.updateTransactionParams(id, { amount2 });
   }
 
   private async waitForSoraInboundMessageNonce(id: string): Promise<void> {
@@ -395,7 +394,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
               await this.waitForSendingExecution(id);
               await this.waitForIntermediateExecution(id);
-              await this.waitForDestinationExecution(id);
+              await this.waitForRelaychainExecution(id);
 
               await this.onComplete(id);
             } finally {
@@ -460,8 +459,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     this.updateTransactionParams(id, { hash });
 
     const [batchNonce, messageNonce] = getMessageAcceptedNonces(transactionEvents, subBridgeApi.api);
-    const payload = { ...tx.payload, batchNonce, messageNonce };
-    this.updateTransactionParams(id, { payload });
+    this.updateTransactionPayload(id, { batchNonce, messageNonce });
   }
 
   private async waitForIntermediateExecution(id: string): Promise<void> {
@@ -508,7 +506,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
               if (isLastStep) {
                 // Standalone has not comission (Liberland)
                 if (!isStandalone) {
-                  amountReceived = getDepositedBalance(
+                  [amountReceived] = getDepositedBalance(
                     events.slice(substrateDispatchEventIndex),
                     tx.to as string,
                     adapter.api
@@ -550,12 +548,11 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     if (isLastStep) {
       this.updateReceivedAmount(id, amountReceived);
     } else {
-      const payload = { ...tx.payload, messageHash };
-      this.updateTransactionParams(id, { payload });
+      this.updateTransactionPayload(id, { messageHash });
     }
   }
 
-  private async waitForDestinationExecution(id: string): Promise<void> {
+  private async waitForRelaychainExecution(id: string): Promise<void> {
     if (this.transferType !== SubTransferType.Relaychain) return;
 
     const tx = this.getTransaction(id);
@@ -566,6 +563,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     let subscription!: Subscription;
     let blockNumber!: number;
     let amount!: string;
+    let eventIndex!: number;
 
     const adapter = this.connector.network;
 
@@ -579,7 +577,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(
           ([eventsVec, blockHeight]) => {
             try {
-              const events = [...eventsVec.toArray()].reverse();
+              const events = eventsVec.toArray();
               const messageQueueProcessedEventIndex = events.findIndex(
                 (e) =>
                   adapter.api.events.messageQueue.Processed.is(e.event) && e.event.data[0].toString() === messageHash
@@ -588,7 +586,12 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
               if (messageQueueProcessedEventIndex === -1) return;
 
               blockNumber = blockHeight;
-              amount = getDepositedBalance(events.slice(messageQueueProcessedEventIndex), tx.to as string, adapter.api);
+
+              [amount, eventIndex] = getDepositedBalance(
+                events.slice(0, messageQueueProcessedEventIndex),
+                tx.to as string,
+                adapter.api
+              );
 
               resolve();
             } catch (error) {
@@ -614,5 +617,6 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     }
 
     this.updateReceivedAmount(id, amount);
+    this.updateTransactionPayload(id, { eventIndex });
   }
 }
