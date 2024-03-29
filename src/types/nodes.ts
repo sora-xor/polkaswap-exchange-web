@@ -7,11 +7,6 @@ export interface Node {
   location?: string;
 }
 
-export interface NodeItem extends Node {
-  title?: string;
-  connecting?: boolean;
-}
-
 export interface RunConnectionOptions {
   once?: boolean;
   timeout?: number;
@@ -21,7 +16,8 @@ export interface RunConnectionOptions {
 export interface ConnectToNodeOptions {
   node?: Nullable<Node>;
   connectionOptions?: RunConnectionOptions;
-  onError?: (error) => void;
+  onError?: (error, node: Node) => void;
+  onConnect?: (node: Node) => void;
   onReconnect?: (node: Node) => void;
   onDisconnect?: (node: Node) => void;
   currentNodeIndex?: number;

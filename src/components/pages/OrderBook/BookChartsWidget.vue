@@ -1,5 +1,5 @@
 <template>
-  <swap-chart
+  <price-chart-widget
     :dex-id="dexId"
     :base-asset="baseAsset"
     :quote-asset="quoteAsset"
@@ -22,7 +22,7 @@ import type { DexId } from '@sora-substrate/util/build/dex/consts';
 
 @Component({
   components: {
-    SwapChart: lazyComponent(Components.SwapChart),
+    PriceChartWidget: lazyComponent(Components.PriceChartWidget),
   },
 })
 export default class BookChartsWidget extends Mixins(TranslationMixin) {

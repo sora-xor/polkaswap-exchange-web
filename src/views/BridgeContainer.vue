@@ -44,17 +44,20 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
   }
 
   async created(): Promise<void> {
-    this.setStartSubscriptions([this.subscribeOnBlockUpdates, this.updateOutgoingMaxLimit]);
+    this.setStartSubscriptions([this.subscribeOnBlockUpdates, this.updateOutgoingMaxLimit, this.updateBridgeApps]);
     this.setResetSubscriptions([this.resetBlockUpdatesSubscription, this.resetOutgoingMaxLimitSubscription]);
-
-    await this.withParentLoading(async () => {
-      await this.getSupportedApps();
-      await this.restoreSelectedNetwork();
-    });
   }
 
   beforeDestroy(): void {
     this.disconnectExternalNetwork();
+  }
+
+  /**
+   * This is not subscription, but should be called after reconnect to node - so it's added to subscriptions list
+   */
+  private async updateBridgeApps(): Promise<void> {
+    await this.getSupportedApps();
+    await this.restoreSelectedNetwork();
   }
 }
 </script>

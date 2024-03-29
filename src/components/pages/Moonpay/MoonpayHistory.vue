@@ -54,7 +54,7 @@
       />
     </template>
     <template v-else>
-      <widget :src="detailsWidgetUrl" />
+      <i-frame-widget :src="detailsWidgetUrl" />
       <s-button
         v-if="isCompletedTransaction"
         :type="actionButtonType"
@@ -80,7 +80,6 @@ import { Components } from '../../../consts';
 import { lazyComponent } from '../../../router';
 import { action, getter, state } from '../../../store/decorators';
 import { getCssVariableValue, toQueryString } from '../../../utils';
-import ethersUtil from '../../../utils/ethers-util';
 import { MoonpayTransactionStatus } from '../../../utils/moonpay';
 
 import type { MoonpayTransaction, MoonpayCurrency, MoonpayCurrenciesById } from '../../../utils/moonpay';
@@ -96,7 +95,7 @@ const DetailsView = 'details';
     X1exLogo,
     FormattedAmount: components.FormattedAmount,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
-    Widget: lazyComponent(Components.Widget),
+    IFrameWidget: lazyComponent(Components.IFrameWidget),
     HistoryPagination: components.HistoryPagination,
   },
 })
@@ -232,16 +231,9 @@ export default class MoonpayHistory extends Mixins(mixins.PaginationSearchMixin,
         break;
       case WALLET_CONSTS.PaginationButton.Next:
         current = this.currentPage + 1;
-        if (current === this.lastPage) {
-          this.isLtrDirection = false;
-        }
-        break;
-      case WALLET_CONSTS.PaginationButton.First:
-        this.isLtrDirection = true;
         break;
       case WALLET_CONSTS.PaginationButton.Last:
         current = this.lastPage;
-        this.isLtrDirection = false;
         break;
     }
 

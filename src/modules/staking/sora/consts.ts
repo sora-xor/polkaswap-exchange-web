@@ -7,7 +7,6 @@ export const DAY_HOURS = 24;
 
 export enum SoraStakingPageNames {
   Overview = 'Overview',
-  NewStake = 'NewStake',
   ValidatorsType = 'ValidatorsType',
   SelectValidators = 'SelectValidators',
   DataContainer = 'DataContainer',

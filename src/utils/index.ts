@@ -1,7 +1,7 @@
 import { FPNumber, CodecString } from '@sora-substrate/util';
 import { isNativeAsset } from '@sora-substrate/util/build/assets';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { api, WALLET_CONSTS, getExplorerLinks } from '@soramitsu/soraneo-wallet-web';
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
 
@@ -98,7 +98,7 @@ export const getMaxBalance = (
     fpResult = fpResult.sub(fpFee);
   }
 
-  return FPNumber.lt(fpResult, FPNumber.ZERO) ? FPNumber.ZERO : fpResult;
+  return fpResult.max(FPNumber.ZERO);
 };
 
 export const getMaxValue = (
@@ -383,3 +383,54 @@ export const sortPools = <T extends Asset>(a: PoolAssets<T>, b: PoolAssets<T>) =
 };
 
 export const calcElScrollGutter: () => number = scrollbarWidth;
+
+export const soraExplorerLinks = (
+  soraNetwork: Nullable<WALLET_CONSTS.SoraNetwork>,
+  txValue: Nullable<string>,
+  blockHash: Nullable<string>,
+  isAccount = false
+): Array<WALLET_CONSTS.ExplorerLink> => {
+  if (!soraNetwork) return [];
+
+  const baseLinks = getExplorerLinks(soraNetwork);
+
+  if (!baseLinks.length) return [];
+
+  if (isAccount) {
+    return baseLinks
+      .filter(({ type }) => type !== WALLET_CONSTS.ExplorerType.Polkadot)
+      .map(({ type, value }) => ({ type, value: `${value}/account/${txValue}` }));
+  }
+
+  const txId = txValue ?? blockHash;
+
+  if (!txId) return [];
+
+  if (!txValue) {
+    // txId is block
+    return baseLinks.map(({ type, value }) => {
+      const link = { type } as WALLET_CONSTS.ExplorerLink;
+      if (type === WALLET_CONSTS.ExplorerType.Polkadot) {
+        link.value = `${value}/${txId}`;
+      } else {
+        link.value = `${value}/block/${txId}`;
+      }
+      return link;
+    });
+  }
+
+  return baseLinks
+    .map(({ type, value }) => {
+      const link = { type } as WALLET_CONSTS.ExplorerLink;
+      if (type === WALLET_CONSTS.ExplorerType.Sorascan) {
+        link.value = `${value}/transaction/${txId}`;
+      } else if (type === WALLET_CONSTS.ExplorerType.Subscan) {
+        link.value = `${value}/extrinsic/${txId}`;
+      } else if (blockHash) {
+        // ExplorerType.Polkadot
+        link.value = `${value}/${blockHash}`;
+      }
+      return link;
+    })
+    .filter((value) => !!value.value); // Polkadot explorer won't be shown without block
+};

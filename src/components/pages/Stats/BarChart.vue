@@ -1,12 +1,5 @@
 <template>
-  <stats-card>
-    <template #title>
-      <span>{{ title }}</span>
-      <s-tooltip border-radius="mini" :content="tooltip">
-        <s-icon name="info-16" size="14px" />
-      </s-tooltip>
-    </template>
-
+  <base-widget :title="title" :tooltip="tooltip">
     <template #filters>
       <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
     </template>
@@ -25,7 +18,7 @@
       <price-change :value="priceChange" />
       <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
     </chart-skeleton>
-  </stats-card>
+  </base-widget>
 </template>
 
 <script lang="ts">
@@ -76,9 +69,9 @@ const normalizeTo = (sample: ChartData[], difference: number, from: number, to: 
 
 @Component({
   components: {
+    BaseWidget: lazyComponent(Components.BaseWidget),
     ChartSkeleton: lazyComponent(Components.ChartSkeleton),
     PriceChange: lazyComponent(Components.PriceChange),
-    StatsCard: lazyComponent(Components.StatsCard),
     StatsFilter: lazyComponent(Components.StatsFilter),
     FormattedAmount: components.FormattedAmount,
     TokenLogo: components.TokenLogo,
