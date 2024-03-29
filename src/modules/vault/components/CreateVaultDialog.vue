@@ -414,10 +414,10 @@ export default class CreateVaultDialog extends Mixins(
 
   &__button,
   &__token-input {
-    margin-bottom: 16px;
+    margin-bottom: $inner-spacing-medium;
   }
   .ltv-badge-status {
-    margin-left: 8px;
+    margin-left: $inner-spacing-mini;
   }
 }
 </style>
