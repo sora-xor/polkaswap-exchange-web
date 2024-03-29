@@ -203,6 +203,9 @@ export default class CreateVaultDialog extends Mixins(
     let availableCollateralBalance = this.getFPNumberFromCodec(this.collateralAssetBalance);
     if (this.collateralToken?.address === XOR.address) {
       availableCollateralBalance = availableCollateralBalance.sub(this.fpNetworkFee);
+      if (availableCollateralBalance.isLtZero()) {
+        availableCollateralBalance = this.Zero;
+      }
     }
     return availableCollateralBalance;
   }
