@@ -98,14 +98,12 @@ const getters = defineGetters<BridgeState>()({
   },
 
   externalAccountFormatted(...args): string {
-    const { getters, state, rootState } = bridgeGetterContext(args);
+    const { getters, rootState } = bridgeGetterContext(args);
     const { subSS58 } = rootState.web3;
 
-    if (getters.isSubBridge && state.isSoraToEvm && getters.externalAccount) {
-      return formatSubAddress(getters.externalAccount, subSS58);
-    } else {
-      return getters.externalAccount;
-    }
+    if (!getters.isSubBridge) return getters.externalAccount;
+
+    return formatSubAddress(getters.externalAccount, subSS58);
   },
 
   sender(...args): string {
