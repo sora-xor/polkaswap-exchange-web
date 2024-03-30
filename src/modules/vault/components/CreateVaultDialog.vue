@@ -286,7 +286,8 @@ export default class CreateVaultDialog extends Mixins(
     const maxSafeDebt = collateralVolume
       .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
       .div(HundredNumber);
-    return maxSafeDebt.dp(2);
+
+    return maxSafeDebt;
   }
 
   get formattedMinDeposit(): string {

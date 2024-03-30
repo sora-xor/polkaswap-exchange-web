@@ -50,7 +50,7 @@
         <template v-if="isInsufficientXorForFee">
           {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
         </template>
-        <template v-else-if="!ltv">ENTER COLLATERAL</template>
+        <template v-else-if="isCollateralZero">ENTER COLLATERAL</template>
         <template v-else>{{ title }}</template>
       </s-button>
       <info-line
@@ -147,8 +147,12 @@ export default class AddCollateralDialog extends Mixins(
     return this.xorBalance.sub(this.fpNetworkFee).isLtZero();
   }
 
+  get isCollateralZero(): boolean {
+    return asZeroValue(this.collateralValue);
+  }
+
   get disabled(): boolean {
-    return this.loading || this.isInsufficientXorForFee || !this.ltv || this.ltv.gt(this.Hundred);
+    return this.loading || this.isInsufficientXorForFee || this.isCollateralZero;
   }
 
   get collateralAssetBalance(): CodecString {
@@ -168,7 +172,7 @@ export default class AddCollateralDialog extends Mixins(
   }
 
   get isMaxCollateralAvailable(): boolean {
-    if (this.shouldBalanceBeHidden || asZeroValue(this.collateralValue)) return true;
+    if (this.shouldBalanceBeHidden || this.isCollateralZero) return true;
     if (this.availableCollateralBalanceFp.isLteZero()) return false;
     return !this.getFPNumber(this.collateralValue).isEqualTo(this.availableCollateralBalanceFp);
   }
@@ -210,7 +214,7 @@ export default class AddCollateralDialog extends Mixins(
   }
 
   private get maxBorrowPerCollateralValue(): FPNumber {
-    if (asZeroValue(this.collateralValue)) return this.Zero;
+    if (this.isCollateralZero) return this.Zero;
 
     const collateralVolume = this.averageCollateralPrice.mul(this.collateralValue);
     const maxSafeDebt = collateralVolume
@@ -234,10 +238,7 @@ export default class AddCollateralDialog extends Mixins(
   private get maxSafeDebt(): Nullable<FPNumber> {
     if (!this.totalCollateralValue) return null;
     const collateralVolume = this.averageCollateralPrice.mul(this.totalCollateralValue);
-    return collateralVolume
-      .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
-      .div(HundredNumber)
-      .dp(2);
+    return collateralVolume.mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0).div(HundredNumber);
   }
 
   get ltv(): Nullable<FPNumber> {
@@ -269,13 +270,12 @@ export default class AddCollateralDialog extends Mixins(
   }
 
   async handleAddCollateral(): Promise<void> {
-    if (!(this.vault && this.asset)) return;
     if (this.disabled) {
       if (this.isInsufficientXorForFee) {
         this.$alert(this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol }), {
           title: this.t('errorText'),
         });
-      } else if (!this.ltv) {
+      } else if (this.isCollateralZero) {
         this.$alert('Insufficient collateral', {
           title: this.t('errorText'),
         });
@@ -283,7 +283,8 @@ export default class AddCollateralDialog extends Mixins(
     } else {
       try {
         await this.withNotifications(async () => {
-          await api.kensetsu.depositCollateral(this.vault as Vault, this.collateralValue, this.asset as Asset);
+          if (!(this.vault && this.asset)) throw new Error('[api.kensetsu.depositCollateral]: vault or asset is null');
+          await api.kensetsu.depositCollateral(this.vault, this.collateralValue, this.asset);
         });
       } catch (error) {
         console.error(error);

@@ -210,10 +210,7 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
       const collateral = this.collaterals[vault.lockedAssetId];
       const averagePrice = this.averageCollateralPrices[vault.lockedAssetId] ?? this.Zero;
       const collateralVolume = averagePrice.mul(vault.lockedAmount);
-      const maxSafeDebt = collateralVolume
-        .mul(collateral?.riskParams.liquidationRatioReversed ?? 0)
-        .div(HundredNumber)
-        .dp(2);
+      const maxSafeDebt = collateralVolume.mul(collateral?.riskParams.liquidationRatioReversed ?? 0).div(HundredNumber);
       const ltvCoeff = vault.debt.div(maxSafeDebt);
       const ltv = ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
       const availableCoeff = maxSafeDebt.sub(vault.debt);
