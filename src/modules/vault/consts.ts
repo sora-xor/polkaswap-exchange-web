@@ -10,6 +10,7 @@ export enum VaultComponents {
   RemoveVaultDialog = 'RemoveVaultDialog',
   LtvProgressBar = 'LtvProgressBar',
   PrevNextInfoLine = 'PrevNextInfoLine',
+  RepayDebtDialog = 'RepayDebtDialog',
 }
 
 export const LtvTranslations = {

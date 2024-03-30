@@ -65,7 +65,12 @@
               </div>
             </div>
             <div class="vault-debt__actions s-flex">
-              <s-button class="s-typography-button--small" size="small">
+              <s-button
+                class="s-typography-button--small"
+                size="small"
+                :disabled="isRepayDebtUnavailable"
+                @click="repayDebt"
+              >
                 <s-icon name="finance-send-24" size="16" />
                 Repay debt
               </s-button>
@@ -149,6 +154,13 @@
       :available="availableToBorrow"
       :max-safe-debt="maxSafeDebt"
     />
+    <repay-debt-dialog
+      :visible.sync="showRepayDebtDialog"
+      :vault="vault"
+      :prev-ltv="ltv"
+      :available="availableToBorrow"
+      :max-safe-debt="maxSafeDebt"
+    />
     <remove-vault-dialog :visible.sync="showRemoveVaultDialog" />
   </div>
   <div v-else class="vault-details-container empty" />
@@ -178,6 +190,7 @@ import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/type
     ValueStatus: lazyComponent(Components.ValueStatusWrapper),
     AddCollateralDialog: vaultLazyComponent(VaultComponents.AddCollateralDialog),
     BorrowMoreDialog: vaultLazyComponent(VaultComponents.BorrowMoreDialog),
+    RepayDebtDialog: vaultLazyComponent(VaultComponents.RepayDebtDialog),
     RemoveVaultDialog: vaultLazyComponent(VaultComponents.RemoveVaultDialog),
     LtvProgressBar: vaultLazyComponent(VaultComponents.LtvProgressBar),
   },
@@ -197,6 +210,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   showRemoveVaultDialog = false;
   showAddCollateralDialog = false;
   showBorrowMoreDialog = false;
+  showRepayDebtDialog = false;
 
   get vault(): Nullable<Vault> {
     const vaultId = this.$route.params.vault;
@@ -278,6 +292,10 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     return this.availableToBorrow?.isLteZero() ?? true;
   }
 
+  get isRepayDebtUnavailable(): boolean {
+    return this.vault?.debt.isLteZero() ?? true;
+  }
+
   get formattedLockedAmount(): string {
     return this.vault?.lockedAmount.toLocaleString(2) ?? ZeroStringValue;
   }
@@ -339,6 +357,10 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
 
   borrowMore(): void {
     this.showBorrowMoreDialog = true;
+  }
+
+  repayDebt(): void {
+    this.showRepayDebtDialog = true;
   }
 }
 </script>
