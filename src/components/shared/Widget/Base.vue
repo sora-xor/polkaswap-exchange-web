@@ -58,7 +58,36 @@ export default class BaseWidget extends Vue {
       height: this.$el.clientHeight,
     });
 
-    pipWindow.document.body.append(this.$el);
+    // STYLES
+    // Extract all document styles
+    const allStyles = Array.from(document.styleSheets)
+      .map((styleSheet) =>
+        Array.from(styleSheet.cssRules)
+          .map((rule) => rule.cssText)
+          .join('\n')
+      )
+      .join('\n');
+    // Create a new style element in the Picture-in-Picture window
+    const style = pipWindow.document.createElement('style');
+    style.innerHTML = allStyles;
+    // Append style element to the Picture-in-Picture window's head
+    pipWindow.document.head.appendChild(style);
+
+    // THEME
+    // Get the <html> element from the Picture-in-Picture window's document
+    const htmlElement = pipWindow.document.documentElement;
+
+    // Get the <html> element from the original document
+    const originalHtmlElement = document.documentElement;
+
+    // Copy attributes from the original <html> element to the <html> element in the Picture-in-Picture window's document
+    for (let i = 0; i < originalHtmlElement.attributes.length; i++) {
+      const attribute = originalHtmlElement.attributes[i];
+      htmlElement.setAttribute(attribute.nodeName, attribute.nodeValue);
+    }
+
+    // Append Vue component to the Picture-in-Picture window's body
+    pipWindow.document.body.appendChild(this.$el);
   }
 }
 </script>
