@@ -69,7 +69,13 @@
                 <s-icon name="finance-send-24" size="16" />
                 Repay debt
               </s-button>
-              <s-button class="s-typography-button--small" type="primary" size="small">
+              <s-button
+                class="s-typography-button--small"
+                type="primary"
+                size="small"
+                :disable="isBorrowMoreUnavailable"
+                @click="borrowMore"
+              >
                 <s-icon name="finance-send-24" size="16" />
                 Borrow more
               </s-button>
@@ -136,6 +142,13 @@
       :collateral="collateral"
       :average-collateral-price="averageCollateralPrice"
     />
+    <borrow-more-dialog
+      :visible.sync="showBorrowMoreDialog"
+      :vault="vault"
+      :prev-ltv="ltv"
+      :available="availableToBorrow"
+      :max-safe-debt="maxSafeDebt"
+    />
     <remove-vault-dialog :visible.sync="showRemoveVaultDialog" />
   </div>
   <div v-else class="vault-details-container empty" />
@@ -164,6 +177,7 @@ import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/type
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ValueStatus: lazyComponent(Components.ValueStatusWrapper),
     AddCollateralDialog: vaultLazyComponent(VaultComponents.AddCollateralDialog),
+    BorrowMoreDialog: vaultLazyComponent(VaultComponents.BorrowMoreDialog),
     RemoveVaultDialog: vaultLazyComponent(VaultComponents.RemoveVaultDialog),
     LtvProgressBar: vaultLazyComponent(VaultComponents.LtvProgressBar),
   },
@@ -182,6 +196,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
 
   showRemoveVaultDialog = false;
   showAddCollateralDialog = false;
+  showBorrowMoreDialog = false;
 
   get vault(): Nullable<Vault> {
     const vaultId = this.$route.params.vault;
@@ -218,13 +233,10 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     return this.averageCollateralPrices[this.vault.lockedAssetId] ?? this.Zero;
   }
 
-  private get maxSafeDebt(): Nullable<FPNumber> {
+  get maxSafeDebt(): Nullable<FPNumber> {
     if (!this.vault) return null;
     const collateralVolume = this.averageCollateralPrice.mul(this.vault.lockedAmount);
-    return collateralVolume
-      .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
-      .div(HundredNumber)
-      .dp(2);
+    return collateralVolume.mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0).div(HundredNumber);
   }
 
   get ltv(): Nullable<FPNumber> {
@@ -260,6 +272,10 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     if (!(this.kusdToken && this.availableToBorrow)) return ZeroStringValue;
 
     return this.getFiatAmountByFPNumber(this.availableToBorrow, this.kusdToken) ?? ZeroStringValue;
+  }
+
+  get isBorrowMoreUnavailable(): boolean {
+    return this.availableToBorrow?.isLteZero() ?? true;
   }
 
   get formattedLockedAmount(): string {
@@ -319,6 +335,10 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
 
   addCollateral(): void {
     this.showAddCollateralDialog = true;
+  }
+
+  borrowMore(): void {
+    this.showBorrowMoreDialog = true;
   }
 }
 </script>
