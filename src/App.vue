@@ -578,7 +578,11 @@ i.icon-divider {
 }
 
 @include desktop {
-  .app-main--swap {
+  .app-main--swap,
+  .app-main--vaults,
+  .app-main--vaultdetails,
+  .app-main--assetowner,
+  .app-main--assetownerdetails {
     &.app-main {
       .app-menu {
         &:not(.collapsed) {
