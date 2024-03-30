@@ -80,7 +80,7 @@ import { getter, state } from '@/store/decorators';
 import { asZeroValue, getAssetBalance, hasInsufficientBalance } from '@/utils';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
-import type { AccountAsset, Asset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
 
 @Component({

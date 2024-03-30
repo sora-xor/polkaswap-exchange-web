@@ -7,7 +7,7 @@ export enum VaultComponents {
   CreateVaultDialog = 'CreateVaultDialog',
   AddCollateralDialog = 'AddCollateralDialog',
   BorrowMoreDialog = 'BorrowMoreDialog',
-  RemoveVaultDialog = 'RemoveVaultDialog',
+  CloseVaultDialog = 'CloseVaultDialog',
   LtvProgressBar = 'LtvProgressBar',
   PrevNextInfoLine = 'PrevNextInfoLine',
   RepayDebtDialog = 'RepayDebtDialog',

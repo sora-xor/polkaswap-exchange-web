@@ -277,7 +277,7 @@ export default class RepayDebtDialog extends Mixins(
     } else {
       try {
         await this.withNotifications(async () => {
-          if (!this.vault) throw new Error('[api.kensetsu.borrow]: vault is null');
+          if (!this.vault) throw new Error('[api.kensetsu.repayVaultDebt]: vault is null');
           await api.kensetsu.repayVaultDebt(this.vault, this.repayDebtValue);
         });
       } catch (error) {

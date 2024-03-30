@@ -161,13 +161,17 @@
       :available="availableToBorrow"
       :max-safe-debt="maxSafeDebt"
     />
-    <remove-vault-dialog :visible.sync="showRemoveVaultDialog" />
+    <close-vault-dialog
+      :visible.sync="showCloseVaultDialog"
+      :vault="vault"
+      :asset="lockedAsset"
+      @confirm="goToVaults"
+    />
   </div>
   <div v-else class="vault-details-container empty" />
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/math';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -180,6 +184,7 @@ import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { waitUntil } from '@/utils';
 
+import type { FPNumber } from '@sora-substrate/math';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
 
@@ -191,7 +196,7 @@ import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/type
     AddCollateralDialog: vaultLazyComponent(VaultComponents.AddCollateralDialog),
     BorrowMoreDialog: vaultLazyComponent(VaultComponents.BorrowMoreDialog),
     RepayDebtDialog: vaultLazyComponent(VaultComponents.RepayDebtDialog),
-    RemoveVaultDialog: vaultLazyComponent(VaultComponents.RemoveVaultDialog),
+    CloseVaultDialog: vaultLazyComponent(VaultComponents.CloseVaultDialog),
     LtvProgressBar: vaultLazyComponent(VaultComponents.LtvProgressBar),
   },
 })
@@ -207,7 +212,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   @state.vault.liquidationPenalty private liquidationPenalty!: number;
   @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
 
-  showRemoveVaultDialog = false;
+  showCloseVaultDialog = false;
   showAddCollateralDialog = false;
   showBorrowMoreDialog = false;
   showRepayDebtDialog = false;
@@ -330,15 +335,19 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     return this.percentFormat?.format?.(percent) ?? `${percent * HundredNumber}%`;
   }
 
+  goToVaults(): void {
+    router.push({ name: VaultPageNames.Vaults });
+  }
+
   mounted(): void {
     this.withApi(async () => {
       if (!this.isLoggedIn) {
-        router.push({ name: VaultPageNames.Vaults });
+        this.goToVaults();
         return;
       }
       await waitUntil(() => !this.parentLoading);
       if (!this.vault) {
-        router.push({ name: VaultPageNames.Vaults });
+        this.goToVaults();
       }
     });
   }
@@ -348,7 +357,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   closePosition(): void {
-    this.showRemoveVaultDialog = true;
+    this.showCloseVaultDialog = true;
   }
 
   addCollateral(): void {
