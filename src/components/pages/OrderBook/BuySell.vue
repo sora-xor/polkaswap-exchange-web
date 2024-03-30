@@ -226,6 +226,7 @@ import {
 import { getBookDecimals, MAX_ORDERS_PER_SIDE, MAX_ORDERS_PER_USER } from '@/utils/orderBook';
 
 import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
+import type { SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
@@ -294,6 +295,7 @@ export default class BuySellWidget extends Mixins(
   limitForSinglePriceReached = false;
   wasMaxAmountOut = false;
   quoteSubscription: Nullable<Subscription> = null;
+  swapQuote: Nullable<SwapQuote> = null;
   sliderValue = 0;
   timestamp = MAX_TIMESTAMP;
   marketQuotePrice = '';
@@ -715,12 +717,8 @@ export default class BuySellWidget extends Mixins(
     this.setAmountSliderValue(this.getPercent(value));
     this.checkInputValidation();
 
-    if (!value) {
-      this.resetQuoteSubscription();
-    }
-
     if (this.isMarketType) {
-      value ? this.subscribeOnBookQuote() : this.setQuoteValue('');
+      this.updateQuoteData();
     }
   }
 
@@ -860,49 +858,58 @@ export default class BuySellWidget extends Mixins(
   private resetQuoteSubscription(): void {
     this.quoteSubscription?.unsubscribe();
     this.quoteSubscription = null;
+    this.swapQuote = null;
+  }
+
+  private updateQuoteData(): void {
+    if (!this.swapQuote) return;
+
+    const inputAsset = (this.tokenFrom as AccountAsset).address;
+    const outputAsset = (this.tokenTo as AccountAsset).address;
+
+    const {
+      result: { amount },
+    } = this.swapQuote(inputAsset, outputAsset, this.baseValue, this.isBuySide, [LiquiditySourceTypes.OrderBook]);
+
+    if (FPNumber.fromCodecValue(amount).isZero() || this.limitOrderType === LimitOrderType.limit) {
+      this.setQuoteValue('');
+      this.setToValue('');
+      this.marketQuotePrice = '';
+      return;
+    }
+
+    this.marketQuotePrice = FPNumber.fromCodecValue(amount)
+      .div(FPNumber.fromNatural(this.baseValue))
+      .dp(this.pricePrecision)
+      .toString();
+
+    this.prepareValuesForSwap(amount);
   }
 
   private subscribeOnBookQuote(): void {
     this.resetQuoteSubscription();
 
-    if (!(this.baseValue && this.areTokensSelected)) return;
+    if (!this.areTokensSelected) return;
 
     const inputAsset = (this.tokenFrom as AccountAsset).address;
     const outputAsset = (this.tokenTo as AccountAsset).address;
-    const sources = [LiquiditySourceTypes.OrderBook];
 
     const observableQuote = api.swap.getSwapQuoteObservable(
       inputAsset,
       outputAsset,
-      sources,
+      [LiquiditySourceTypes.OrderBook],
       DexId.XOR // subscription only for XOR dex in optimization purposes
     );
 
     if (!observableQuote) return;
 
     this.quoteSubscription = observableQuote.subscribe(async ({ quote }) => {
-      const {
-        result: { amount },
-      } = quote(inputAsset, outputAsset, this.baseValue, this.isBuySide, sources);
-
-      if (FPNumber.fromCodecValue(amount).isZero() || this.limitOrderType === LimitOrderType.limit) {
-        this.resetQuoteSubscription();
-        this.setQuoteValue('');
-        this.setToValue('');
-        this.marketQuotePrice = '';
-        return;
-      }
-
-      this.marketQuotePrice = FPNumber.fromCodecValue(amount)
-        .div(FPNumber.fromNatural(this.baseValue))
-        .dp(this.pricePrecision)
-        .toString();
-
-      this.prepareValuesForSwap(amount);
+      this.swapQuote = quote;
+      this.updateQuoteData();
     });
   }
 
-  prepareValuesForSwap(amount) {
+  prepareValuesForSwap(amount: string) {
     if (!this.areTokensSelected || asZeroValue(this.baseValue)) return;
 
     const fromValue = this.isBuySide ? this.getStringFromCodec(amount) : this.baseValue;
@@ -937,13 +944,11 @@ export default class BuySellWidget extends Mixins(
   handleTabClick(): void {
     this.setTokens();
 
-    if (!this.isMarketType) {
-      this.resetQuoteSubscription();
-    }
-
     if (this.isMarketType) {
       this.setQuoteValue('');
-      if (this.baseValue) this.subscribeOnBookQuote();
+      this.subscribeOnBookQuote();
+    } else {
+      this.resetQuoteSubscription();
     }
 
     this.checkInputValidation();
