@@ -22,7 +22,7 @@
       <div class="input-value">
         <slot name="balance">
           <template v-if="isBalanceAvailable">
-            <span class="input-value--uppercase">{{ t('balanceText') }}</span>
+            <span class="input-value--uppercase">{{ balanceText || t('balanceText') }}</span>
             <formatted-amount-with-fiat-value
               value-can-be-hidden
               with-left-shift
@@ -86,7 +86,7 @@
           <token-address v-if="address" v-bind="token" :external="external" class="input-value" />
         </div>
 
-        <div v-if="withSlider" class="input-line--footer-with-slider" @click="handleSliderFocus">
+        <div v-if="withSlider" class="input-line--footer-with-slider">
           <div class="delimiter" />
           <s-slider
             class="slider-container"
@@ -140,6 +140,7 @@ export default class TokenInput extends Mixins(
   @Prop({ default: () => null, type: Object }) readonly token!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: () => null, type: String }) readonly balance!: Nullable<CodecString>;
   @Prop({ default: '', type: String }) readonly title!: string;
+  @Prop({ default: '', type: String }) readonly balanceText!: string;
   @Prop({ default: false, type: Boolean }) readonly external!: boolean;
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
   @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
@@ -179,11 +180,6 @@ export default class TokenInput extends Mixins(
 
   handleFiatFocus(): void {
     this.fiatFocus = true;
-    this.$emit('focus');
-  }
-
-  handleSliderFocus(): void {
-    this.floatInput?.$children?.[0]?.focus?.();
     this.$emit('focus');
   }
 
