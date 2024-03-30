@@ -1,6 +1,6 @@
 <template>
   <div v-if="adsArray.length" class="marketing s-flex">
-    <span class="marketing-prev" @click="prev()">
+    <span class="marketing-prev" @click="prev">
       <s-icon name="arrows-chevron-left-rounded-24" />
     </span>
     <transition-group tag="div" class="marketing-slider" :name="transitionName">
@@ -22,7 +22,7 @@
         </div>
       </template>
     </transition-group>
-    <span class="marketing-next" @click="next()">
+    <span class="marketing-next" @click="next">
       <s-icon name="arrows-chevron-right-rounded-24" />
     </span>
   </div>
@@ -138,12 +138,13 @@ $max-ad-width: 330px;
     border-radius: var(--s-border-radius-medium);
     background-repeat: no-repeat;
     background-position: right 20px top;
+    background-size: contain;
     background-color: var(--s-color-theme-accent); // by default
     text-decoration: none;
     color: var(--s-color-base-on-accent);
   }
   &-text {
-    flex: 3;
+    flex: 4;
     align-self: center;
     font-size: 18px;
     font-weight: 700;
