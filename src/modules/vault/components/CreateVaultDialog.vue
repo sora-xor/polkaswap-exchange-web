@@ -199,10 +199,14 @@ export default class CreateVaultDialog extends Mixins(
     return this.ltv?.gt(this.Hundred) ?? false;
   }
 
+  private get minDeposit(): FPNumber {
+    return this.collateral?.riskParams.minDeposit ?? this.Zero;
+  }
+
   get isLessThanMinDeposit(): boolean {
     if (!this.collateralValue) return true;
     const collateralFp = this.getFPNumber(this.collateralValue, this.collateralToken?.decimals);
-    return collateralFp.lt(this.collateral?.riskParams.minDeposit);
+    return collateralFp.lt(this.minDeposit);
   }
 
   get disabled(): boolean {
@@ -291,12 +295,12 @@ export default class CreateVaultDialog extends Mixins(
   }
 
   get formattedMinDeposit(): string {
-    return this.collateral?.riskParams.minDeposit.toLocaleString() ?? ZeroStringValue;
+    return this.minDeposit.toLocaleString() ?? ZeroStringValue;
   }
 
   get minDepositFiat(): Nullable<string> {
-    if (!(this.collateralToken && this.collateral?.riskParams.minDeposit)) return null;
-    return this.getFiatAmountByFPNumber(this.collateral.riskParams.minDeposit, this.collateralToken);
+    if (!this.collateralToken) return null;
+    return this.getFiatAmountByFPNumber(this.minDeposit, this.collateralToken);
   }
 
   get formattedMaxBorrow(): string {
