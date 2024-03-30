@@ -41,10 +41,9 @@
         :disabled="disabled"
         @click="handleBorrowMore"
       >
-        <template v-if="isInsufficientXorForFee">
-          {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
+        <template v-if="disabled">
+          {{ errorMessage }}
         </template>
-        <template v-else-if="isBorrowZero">ENTER BORROW</template>
         <template v-else>{{ title }}</template>
       </s-button>
       <info-line
@@ -143,8 +142,17 @@ export default class BorrowMoreDialog extends Mixins(
     return asZeroValue(this.borrowValue);
   }
 
+  private get borrowFp(): FPNumber {
+    if (this.isBorrowZero) return this.Zero;
+    return this.getFPNumber(this.borrowValue, this.kusdToken?.decimals);
+  }
+
+  get isBorrowMoreThanAvailable(): boolean {
+    return this.borrowFp.gt(this.available);
+  }
+
   get disabled(): boolean {
-    return this.loading || this.isInsufficientXorForFee || this.isBorrowZero;
+    return this.loading || this.isInsufficientXorForFee || this.isBorrowZero || this.isBorrowMoreThanAvailable;
   }
 
   get availableCodec(): CodecString {
@@ -154,7 +162,7 @@ export default class BorrowMoreDialog extends Mixins(
   get isMaxBorrowAvailable(): boolean {
     if (this.shouldBalanceBeHidden || this.isBorrowZero) return true;
     if (!this.available.isFinity() || this.available.isLteZero()) return false;
-    return !this.getFPNumber(this.borrowValue).isEqualTo(this.available);
+    return !this.borrowFp.isEqualTo(this.available);
   }
 
   get kusdSymbol(): string {
@@ -202,10 +210,7 @@ export default class BorrowMoreDialog extends Mixins(
   get borrowValuePercent(): number {
     if (!this.borrowValue) return 0;
 
-    const percent = this.getFPNumber(this.borrowValue, this.kusdToken?.decimals)
-      .div(this.available)
-      .mul(HundredNumber)
-      .toNumber(0);
+    const percent = this.borrowFp.div(this.available).mul(HundredNumber).toNumber(0);
     return percent > HundredNumber ? HundredNumber : percent;
   }
 
@@ -217,16 +222,22 @@ export default class BorrowMoreDialog extends Mixins(
     this.borrowValue = this.available.mul(percent / HundredNumber).toString();
   }
 
+  get errorMessage(): string {
+    let error = '';
+    if (this.isInsufficientXorForFee) {
+      error = this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol });
+    } else if (this.isBorrowZero) {
+      error = 'Enter borrow';
+    } else if (this.isBorrowMoreThanAvailable) {
+      error = 'Borrow more than available';
+    }
+    return error;
+  }
+
   async handleBorrowMore(): Promise<void> {
     if (this.disabled) {
-      if (this.isInsufficientXorForFee) {
-        this.$alert(this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol }), {
-          title: this.t('errorText'),
-        });
-      } else if (this.isBorrowZero) {
-        this.$alert('Insufficient borrow', {
-          title: this.t('errorText'),
-        });
+      if (this.errorMessage) {
+        this.$alert(this.errorMessage, { title: this.t('errorText') });
       }
     } else {
       try {

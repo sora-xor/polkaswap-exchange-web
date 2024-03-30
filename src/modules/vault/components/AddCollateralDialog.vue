@@ -47,10 +47,9 @@
         :disabled="disabled"
         @click="handleAddCollateral"
       >
-        <template v-if="isInsufficientXorForFee">
-          {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
+        <template v-if="disabled">
+          {{ errorMessage }}
         </template>
-        <template v-else-if="isCollateralZero">ENTER COLLATERAL</template>
         <template v-else>{{ title }}</template>
       </s-button>
       <info-line
@@ -78,7 +77,7 @@ import { vaultLazyComponent } from '@/modules/vault/router';
 import { getLtvStatus } from '@/modules/vault/util';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
-import { asZeroValue, getAssetBalance } from '@/utils';
+import { asZeroValue, getAssetBalance, hasInsufficientBalance } from '@/utils';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -151,8 +150,18 @@ export default class AddCollateralDialog extends Mixins(
     return asZeroValue(this.collateralValue);
   }
 
+  private get collateralFp(): FPNumber {
+    if (this.isCollateralZero) return this.Zero;
+    return this.getFPNumber(this.collateralValue, this.asset?.decimals);
+  }
+
+  get isInsufficientBalance(): boolean {
+    if (!this.asset) return true;
+    return hasInsufficientBalance(this.asset, this.collateralValue, this.networkFee);
+  }
+
   get disabled(): boolean {
-    return this.loading || this.isInsufficientXorForFee || this.isCollateralZero;
+    return this.loading || this.isInsufficientXorForFee || this.isCollateralZero || this.isInsufficientBalance;
   }
 
   get collateralAssetBalance(): CodecString {
@@ -174,16 +183,13 @@ export default class AddCollateralDialog extends Mixins(
   get isMaxCollateralAvailable(): boolean {
     if (this.shouldBalanceBeHidden || this.isCollateralZero) return true;
     if (this.availableCollateralBalanceFp.isLteZero()) return false;
-    return !this.getFPNumber(this.collateralValue).isEqualTo(this.availableCollateralBalanceFp);
+    return !this.collateralFp.isEqualTo(this.availableCollateralBalanceFp);
   }
 
   get collateralValuePercent(): number {
     if (!this.collateralValue) return 0;
 
-    const percent = this.getFPNumber(this.collateralValue, this.asset?.decimals)
-      .div(this.availableCollateralBalanceFp)
-      .mul(HundredNumber)
-      .toNumber(0);
+    const percent = this.collateralFp.div(this.availableCollateralBalanceFp).mul(HundredNumber).toNumber(0);
     return percent > HundredNumber ? HundredNumber : percent;
   }
 
@@ -269,16 +275,22 @@ export default class AddCollateralDialog extends Mixins(
     this.collateralValue = this.availableCollateralBalanceFp.toString();
   }
 
+  get errorMessage(): string {
+    let error = '';
+    if (this.isInsufficientXorForFee) {
+      error = this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol });
+    } else if (this.isCollateralZero) {
+      error = 'Enter collateral';
+    } else if (this.isInsufficientBalance) {
+      error = this.t('insufficientBalanceText', { tokenSymbol: this.collateralSymbol });
+    }
+    return error;
+  }
+
   async handleAddCollateral(): Promise<void> {
     if (this.disabled) {
-      if (this.isInsufficientXorForFee) {
-        this.$alert(this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol }), {
-          title: this.t('errorText'),
-        });
-      } else if (this.isCollateralZero) {
-        this.$alert('Insufficient collateral', {
-          title: this.t('errorText'),
-        });
+      if (this.errorMessage) {
+        this.$alert(this.errorMessage, { title: this.t('errorText') });
       }
     } else {
       try {

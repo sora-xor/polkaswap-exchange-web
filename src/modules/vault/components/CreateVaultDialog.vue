@@ -79,6 +79,9 @@
           </template>
           <template v-else-if="!ltv">ENTER COLLATERAL</template>
           <template v-else-if="isLessThanMinDeposit">ENTER MORE COLLATERAL</template>
+          <template v-else-if="isInsufficientBalance">
+            {{ t('insufficientBalanceText', { tokenSymbol: collateralSymbol }) }}
+          </template>
           <template v-else-if="isLtvGtHundred">INSUFFICIENT COLLATERAL</template>
           <template v-else>OPEN</template>
         </s-button>
@@ -116,7 +119,7 @@ import { LtvTranslations } from '@/modules/vault/consts';
 import { getLtvStatus } from '@/modules/vault/util';
 import { lazyComponent } from '@/router';
 import { getter, state, action } from '@/store/decorators';
-import { asZeroValue, getAssetBalance } from '@/utils';
+import { asZeroValue, getAssetBalance, hasInsufficientBalance } from '@/utils';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, Asset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -203,10 +206,32 @@ export default class CreateVaultDialog extends Mixins(
     return this.collateral?.riskParams.minDeposit ?? this.Zero;
   }
 
+  private get isCollateralZero(): boolean {
+    return asZeroValue(this.collateralValue);
+  }
+
+  private get isBorrowZero(): boolean {
+    return asZeroValue(this.borrowValue);
+  }
+
+  private get collateralValueFp(): FPNumber {
+    if (this.isCollateralZero) return this.Zero;
+    return this.getFPNumber(this.collateralValue, this.collateralToken?.decimals);
+  }
+
+  private get borrowValueFp(): FPNumber {
+    if (this.isBorrowZero) return this.Zero;
+    return this.getFPNumber(this.borrowValue, this.kusdToken?.decimals);
+  }
+
+  get isInsufficientBalance(): boolean {
+    if (!this.collateralToken) return true;
+    return hasInsufficientBalance(this.collateralToken, this.collateralValue, this.networkFee);
+  }
+
   get isLessThanMinDeposit(): boolean {
     if (!this.collateralValue) return true;
-    const collateralFp = this.getFPNumber(this.collateralValue, this.collateralToken?.decimals);
-    return collateralFp.lt(this.minDeposit);
+    return this.collateralValueFp.lt(this.minDeposit);
   }
 
   get disabled(): boolean {
@@ -214,6 +239,7 @@ export default class CreateVaultDialog extends Mixins(
       this.loading ||
       this.isInsufficientXorForFee ||
       this.isLessThanMinDeposit ||
+      this.isInsufficientBalance ||
       !this.ltv ||
       this.ltv.gt(this.Hundred)
     );
@@ -236,18 +262,15 @@ export default class CreateVaultDialog extends Mixins(
   }
 
   get isMaxCollateralAvailable(): boolean {
-    if (this.shouldBalanceBeHidden || asZeroValue(this.collateralValue)) return true;
+    if (this.shouldBalanceBeHidden || this.isCollateralZero) return true;
     if (this.availableCollateralBalanceFp.isLteZero()) return false;
-    return !this.getFPNumber(this.collateralValue).isEqualTo(this.availableCollateralBalanceFp);
+    return !this.collateralValueFp.isEqualTo(this.availableCollateralBalanceFp);
   }
 
   get collateralValuePercent(): number {
     if (!this.collateralValue) return 0;
 
-    const percent = this.getFPNumber(this.collateralValue, this.collateralToken?.decimals)
-      .div(this.availableCollateralBalanceFp)
-      .mul(HundredNumber)
-      .toNumber(0);
+    const percent = this.collateralValueFp.div(this.availableCollateralBalanceFp).mul(HundredNumber).toNumber(0);
     return percent > HundredNumber ? HundredNumber : percent;
   }
 
@@ -260,10 +283,10 @@ export default class CreateVaultDialog extends Mixins(
   }
 
   get isMaxBorrowAvailable(): boolean {
-    if (asZeroValue(this.collateralValue)) return false;
-    if (this.shouldBalanceBeHidden || asZeroValue(this.borrowValue)) return true;
+    if (this.isCollateralZero) return false;
+    if (this.shouldBalanceBeHidden || this.isBorrowZero) return true;
     if (!this.maxBorrowPerCollateralValue.isFinity() || this.maxBorrowPerCollateralValue.isLteZero()) return false;
-    return !this.getFPNumber(this.borrowValue).isEqualTo(this.maxBorrowPerCollateralValue);
+    return !this.borrowValueFp.isEqualTo(this.maxBorrowPerCollateralValue);
   }
 
   get kusdSymbol(): string {
@@ -313,7 +336,7 @@ export default class CreateVaultDialog extends Mixins(
   }
 
   private get maxBorrowPerCollateralValue(): FPNumber {
-    if (!this.averageCollateralPrice || asZeroValue(this.collateralValue)) return this.Zero;
+    if (!this.averageCollateralPrice || this.isCollateralZero) return this.Zero;
 
     const collateralVolume = this.averageCollateralPrice.mul(this.collateralValue);
     const maxSafeDebt = collateralVolume
@@ -323,9 +346,9 @@ export default class CreateVaultDialog extends Mixins(
   }
 
   get ltv(): Nullable<FPNumber> {
-    if (asZeroValue(this.collateralValue)) return null;
-    if (asZeroValue(this.borrowValue)) return this.Zero;
-    const ltv = this.getFPNumber(this.borrowValue).div(this.maxBorrowPerCollateralValue);
+    if (this.isCollateralZero) return null;
+    if (this.isBorrowZero) return this.Zero;
+    const ltv = this.borrowValueFp.div(this.maxBorrowPerCollateralValue);
     return ltv.isFinity() ? ltv.mul(HundredNumber) : null;
   }
 
@@ -350,10 +373,7 @@ export default class CreateVaultDialog extends Mixins(
   get borrowValuePercent(): number {
     if (!this.borrowValue) return 0;
 
-    const percent = this.getFPNumber(this.borrowValue, this.kusdToken?.decimals)
-      .div(this.maxBorrowPerCollateralValue)
-      .mul(HundredNumber)
-      .toNumber(0);
+    const percent = this.borrowValueFp.div(this.maxBorrowPerCollateralValue).mul(HundredNumber).toNumber(0);
     return percent > HundredNumber ? HundredNumber : percent;
   }
 
