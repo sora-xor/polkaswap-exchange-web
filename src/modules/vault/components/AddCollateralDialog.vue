@@ -1,70 +1,68 @@
 <template>
-  <div>
-    <dialog-base :title="title" :visible.sync="isVisible" tooltip="COMING SOON...">
-      <div class="add-collateral">
-        <token-input
-          ref="collateralInput"
-          class="add-collateral__collateral-input add-collateral__token-input"
-          with-slider
-          title="DEPOSIT COLLATERAL"
-          v-model="collateralValue"
-          is-fiat-editable
-          :is-max-available="isMaxCollateralAvailable"
-          :token="asset"
-          :balance="collateralAssetBalance"
-          :slider-value="collateralValuePercent"
-          :disabled="loading"
-          @max="handleMaxCollateralValue"
-          @slide="handleCollateralPercentChange"
-        />
-        <prev-next-info-line
-          label="TOTAL COLLATERAL"
-          tooltip="COMING SOON..."
-          :symbol="collateralSymbol"
-          :prev="formattedPrevDeposit"
-          :next="formattedNextDeposit"
-        />
-        <prev-next-info-line
-          label="DEBT AVAILABLE"
-          tooltip="COMING SOON..."
-          :symbol="kusdSymbol"
-          :prev="formattedPrevAvailable"
-          :next="formattedNextAvailable"
-        />
-        <prev-next-info-line
-          label="LOAN TO VALUE (LTV)"
-          tooltip="COMING SOON..."
-          symbol="%"
-          :prev="formattedPrevLtv"
-          :next="formattedLtv"
-        >
-          <value-status v-if="ltv" class="ltv-badge-status" badge :value="ltvNumber" :getStatus="getLtvStatus">
-            {{ ltvText }}
-          </value-status>
-        </prev-next-info-line>
-        <s-button
-          type="primary"
-          class="s-typography-button--large action-button add-collateral__button"
-          :disabled="disabled"
-          @click="handleAddCollateral"
-        >
-          <template v-if="isInsufficientXorForFee">
-            {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
-          </template>
-          <template v-else-if="!ltv">ENTER COLLATERAL</template>
-          <template v-else>{{ title }}</template>
-        </s-button>
-        <info-line
-          :label="t('networkFeeText')"
-          :label-tooltip="t('networkFeeTooltipText')"
-          :value="networkFeeFormatted"
-          :asset-symbol="xorSymbol"
-          :fiat-value="getFiatAmountByCodecString(networkFee)"
-          is-formatted
-        />
-      </div>
-    </dialog-base>
-  </div>
+  <dialog-base :title="title" :visible.sync="isVisible" tooltip="COMING SOON...">
+    <div class="add-collateral">
+      <token-input
+        ref="collateralInput"
+        class="add-collateral__collateral-input add-collateral__token-input"
+        with-slider
+        title="DEPOSIT COLLATERAL"
+        v-model="collateralValue"
+        is-fiat-editable
+        :is-max-available="isMaxCollateralAvailable"
+        :token="asset"
+        :balance="collateralAssetBalance"
+        :slider-value="collateralValuePercent"
+        :disabled="loading"
+        @max="handleMaxCollateralValue"
+        @slide="handleCollateralPercentChange"
+      />
+      <prev-next-info-line
+        label="TOTAL COLLATERAL"
+        tooltip="COMING SOON..."
+        :symbol="collateralSymbol"
+        :prev="formattedPrevDeposit"
+        :next="formattedNextDeposit"
+      />
+      <prev-next-info-line
+        label="DEBT AVAILABLE"
+        tooltip="COMING SOON..."
+        :symbol="kusdSymbol"
+        :prev="formattedPrevAvailable"
+        :next="formattedNextAvailable"
+      />
+      <prev-next-info-line
+        label="LOAN TO VALUE (LTV)"
+        tooltip="COMING SOON..."
+        symbol="%"
+        :prev="formattedPrevLtv"
+        :next="formattedLtv"
+      >
+        <value-status v-if="ltv" class="ltv-badge-status" badge :value="ltvNumber" :getStatus="getLtvStatus">
+          {{ ltvText }}
+        </value-status>
+      </prev-next-info-line>
+      <s-button
+        type="primary"
+        class="s-typography-button--large action-button add-collateral__button"
+        :disabled="disabled"
+        @click="handleAddCollateral"
+      >
+        <template v-if="isInsufficientXorForFee">
+          {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
+        </template>
+        <template v-else-if="!ltv">ENTER COLLATERAL</template>
+        <template v-else>{{ title }}</template>
+      </s-button>
+      <info-line
+        :label="t('networkFeeText')"
+        :label-tooltip="t('networkFeeTooltipText')"
+        :value="networkFeeFormatted"
+        :asset-symbol="xorSymbol"
+        :fiat-value="getFiatAmountByCodecString(networkFee)"
+        is-formatted
+      />
+    </div>
+  </dialog-base>
 </template>
 
 <script lang="ts">
