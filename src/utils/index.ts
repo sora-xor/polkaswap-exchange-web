@@ -384,45 +384,64 @@ export const sortPools = <T extends Asset>(a: PoolAssets<T>, b: PoolAssets<T>) =
 
 export const calcElScrollGutter: () => number = scrollbarWidth;
 
+export const getSubscanTxLink = (
+  baseUrl: string,
+  txId?: string,
+  blockId?: number | string,
+  eventIndex?: number
+): string => {
+  if (Number.isFinite(eventIndex) && Number.isFinite(blockId)) {
+    return `${baseUrl}/block/${blockId}?tab=event&event=${blockId}-${eventIndex}`;
+  } else if (txId) {
+    return `${baseUrl}/extrinsic/${txId}`;
+  } else if (blockId) {
+    return `${baseUrl}/block/${blockId}`;
+  }
+  return '';
+};
+
+export const getPolkadotTxLink = (
+  baseUrl: string,
+  txId?: string,
+  blockId?: number | string,
+  eventIndex?: number
+): string => {
+  if (blockId) {
+    return `${baseUrl}/${blockId}`;
+  }
+  return '';
+};
+
 export const soraExplorerLinks = (
   soraNetwork: Nullable<WALLET_CONSTS.SoraNetwork>,
-  transactionHash: Nullable<string>,
-  blockHash: Nullable<string>
+  txValue?: string,
+  blockId?: number | string,
+  eventIndex?: number,
+  isAccount = false
 ): Array<WALLET_CONSTS.ExplorerLink> => {
   if (!soraNetwork) return [];
 
   const baseLinks = getExplorerLinks(soraNetwork);
-  const txId = transactionHash ?? blockHash;
 
-  if (!(baseLinks.length && txId)) {
-    return [];
-  }
+  if (!baseLinks.length) return [];
 
-  if (!transactionHash) {
-    // txId is block
-    return baseLinks.map(({ type, value }) => {
-      const link = { type } as WALLET_CONSTS.ExplorerLink;
-      if (type === WALLET_CONSTS.ExplorerType.Polkadot) {
-        link.value = `${value}/${txId}`;
-      } else {
-        link.value = `${value}/block/${txId}`;
-      }
-      return link;
-    });
+  if (isAccount) {
+    return baseLinks
+      .filter(({ type }) => type !== WALLET_CONSTS.ExplorerType.Polkadot)
+      .map(({ type, value }) => ({ type, value: `${value}/account/${txValue}` }));
   }
 
   return baseLinks
     .map(({ type, value }) => {
       const link = { type } as WALLET_CONSTS.ExplorerLink;
-      if (type === WALLET_CONSTS.ExplorerType.Sorascan) {
-        link.value = `${value}/transaction/${txId}`;
-      } else if (type === WALLET_CONSTS.ExplorerType.Subscan) {
-        link.value = `${value}/extrinsic/${txId}`;
-      } else if (blockHash) {
-        // ExplorerType.Polkadot
-        link.value = `${value}/${blockHash}`;
+
+      if (type === WALLET_CONSTS.ExplorerType.Subscan) {
+        link.value = getSubscanTxLink(value, txValue, blockId, eventIndex);
+      } else if (type === WALLET_CONSTS.ExplorerType.Polkadot) {
+        link.value = getPolkadotTxLink(value, txValue, blockId, eventIndex);
       }
+
       return link;
     })
-    .filter((value) => !!value.value); // Polkadot explorer won't be shown without block
+    .filter((value) => !!value.value);
 };
