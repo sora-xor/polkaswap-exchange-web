@@ -45,6 +45,8 @@ import Vue from 'vue';
 
 import store from '@/store';
 
+import 'shepherd.js/dist/css/shepherd.css';
+
 Vue.use(ElementUIPlugin);
 Vue.use(SoramitsuUIStorePlugin, { store: store.original });
 Vue.use(ElPopover);
