@@ -124,7 +124,7 @@
             </h4>
             <div class="ltv__value s-flex">
               <h2>{{ formattedLtv }}</h2>
-              <value-status class="ltv__badge" badge :value="ltvNumber" :getStatus="getLtvStatus">
+              <value-status class="ltv__badge" badge error-icon-size="15" :value="ltvNumber" :getStatus="getLtvStatus">
                 {{ ltvText }}
               </value-status>
             </div>
