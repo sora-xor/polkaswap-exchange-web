@@ -483,7 +483,10 @@ export default class PriceChartWidget extends Mixins(
     return Object.freeze(groups);
   }
 
-  get chartSpec() {
+  /**
+   * Returns spec of price fluctuations.
+   */
+  get priceSpec(): any {
     // [TODO]: until we haven't two tokens volume
     const withVolume = this.isOrderBook || (!!this.tokenA && !this.tokenB);
 
@@ -603,19 +606,19 @@ export default class PriceChartWidget extends Mixins(
         }
 
         return `
-          <table>
-            ${rows
-              .map(
-                (row) => `
-              <tr>
-                <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
-                <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
-              </tr>
-            `
-              )
-              .join('')}
-          </table>
-        `;
+      <table>
+        ${rows
+          .map(
+            (row) => `
+          <tr>
+            <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
+            <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
+          </tr>
+        `
+          )
+          .join('')}
+      </table>
+    `;
       },
     });
 
@@ -634,31 +637,29 @@ export default class PriceChartWidget extends Mixins(
       encode: { y: 'volume' },
     };
 
-    const spec = this.isDepthChart
-      ? this.getDepthSpec()
-      : {
-          animation: false,
-          axisPointer: {
-            link: [
-              {
-                xAxisIndex: 'all',
-              },
-            ],
+    const spec = {
+      animation: false,
+      axisPointer: {
+        link: [
+          {
+            xAxisIndex: 'all',
           },
-          color: [this.theme.color.theme.accent, this.theme.color.status.success],
-          dataset: {
-            source: this.chartData,
-            dimensions: ['timestamp', 'open', 'close', 'low', 'high', 'volume'],
-          },
-          dataZoom: [dataZoom],
-          grid: [priceGrid],
-          xAxis: [priceXAxis],
-          yAxis: [priceYAxis],
-          tooltip,
-          series: [this.currentSeriesSpec],
-        };
+        ],
+      },
+      color: [this.theme.color.theme.accent, this.theme.color.status.success],
+      dataset: {
+        source: this.chartData,
+        dimensions: ['timestamp', 'open', 'close', 'low', 'high', 'volume'],
+      },
+      dataZoom: [dataZoom],
+      grid: [priceGrid],
+      xAxis: [priceXAxis],
+      yAxis: [priceYAxis],
+      tooltip,
+      series: [this.currentSeriesSpec],
+    };
 
-    if (!this.isDepthChart && withVolume) {
+    if (withVolume) {
       priceGrid.bottom = 120;
       priceXAxis.axisLabel.show = false;
       priceXAxis.axisPointer.label.show = false;
@@ -672,7 +673,11 @@ export default class PriceChartWidget extends Mixins(
     return spec;
   }
 
-  getDepthSpec(): any {
+  /**
+   * Returns spec of demand and supply levels as of now.
+   * Used only on trade page.
+   */
+  get marketDepthSpec(): any {
     const dataZoom = {
       id: 'dataZoomDepthChart',
       type: 'inside',
@@ -754,6 +759,14 @@ export default class PriceChartWidget extends Mixins(
     };
 
     return option;
+  }
+
+  get chartSpec() {
+    if (this.isDepthChart && this.isOrderBook) {
+      return this.marketDepthSpec;
+    }
+
+    return this.priceSpec;
   }
 
   created(): void {
