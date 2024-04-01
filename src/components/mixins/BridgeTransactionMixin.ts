@@ -25,7 +25,7 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
     );
   }
 
-  get txSoraAccount(): string {
+  get txInternalAccount(): string {
     return this.tx?.from ?? '';
   }
 
@@ -37,22 +37,28 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
     return this.tx?.txId ?? '';
   }
 
-  get txSoraBlockId(): string {
-    return this.tx?.blockId ?? '';
-  }
-
   get txSoraHash(): string {
     return this.tx?.hash ?? '';
   }
 
-  get txInternalHash(): string {
-    if (!this.isOutgoing) return this.txSoraHash;
-
-    return this.txSoraHash || this.txSoraBlockId || this.txSoraId;
+  get txInternalBlockNumber(): number | undefined {
+    return this.tx?.blockHeight;
   }
 
-  get txExternalHash(): string {
-    return this.tx?.externalHash ?? this.txExternalBlockId;
+  get txInternalBlockId(): string {
+    return this.tx?.blockId ?? '';
+  }
+
+  get txEventIndex(): number | undefined {
+    return this.tx?.payload?.eventIndex;
+  }
+
+  get txExternalHash(): string | undefined {
+    return this.tx?.externalHash;
+  }
+
+  get txExternalBlockNumber(): number | undefined {
+    return this.tx?.externalBlockHeight;
   }
 
   get txExternalBlockId(): string {
@@ -67,8 +73,13 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
     return this.tx?.externalNetwork;
   }
 
-  get soraExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
-    return soraExplorerLinks(this.soraNetwork, this.txSoraId, this.txSoraBlockId);
+  get internalExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
+    return soraExplorerLinks(
+      this.soraNetwork,
+      this.txSoraId,
+      this.txInternalBlockNumber ?? this.txInternalBlockId,
+      this.txEventIndex
+    );
   }
 
   get externalExplorerLinks(): Array<WALLET_CONSTS.ExplorerLink> {
@@ -78,13 +89,13 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
       this.externalNetworkType,
       this.externalNetworkId,
       this.txExternalHash,
-      this.txExternalBlockId,
-      this.EvmLinkType.Transaction
+      this.txExternalBlockNumber ?? this.txExternalBlockId,
+      this.txEventIndex
     );
   }
 
   get internalAccountLinks(): Array<WALLET_CONSTS.ExplorerLink> {
-    return soraExplorerLinks(this.soraNetwork, this.txSoraAccount, this.txSoraBlockId, true);
+    return soraExplorerLinks(this.soraNetwork, this.txInternalAccount, undefined, undefined, true);
   }
 
   get externalAccountLinks(): Array<WALLET_CONSTS.ExplorerLink> {
@@ -94,7 +105,8 @@ export default class BridgeTransactionMixin extends Mixins(NetworkFormatterMixin
       this.externalNetworkType,
       this.externalNetworkId,
       this.txExternalAccount,
-      this.txExternalBlockId,
+      undefined,
+      undefined,
       this.EvmLinkType.Account
     );
   }
