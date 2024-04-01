@@ -149,7 +149,7 @@ export default class CloseVaultDialog extends Mixins(
   }
 
   get formattedLockedAmount(): string {
-    return this.vault?.lockedAmount.toLocaleString(2) ?? ZeroStringValue;
+    return this.vault?.lockedAmount.toLocaleString() ?? ZeroStringValue;
   }
 
   get fiatLockedAmount(): string {
@@ -163,7 +163,7 @@ export default class CloseVaultDialog extends Mixins(
   }
 
   get formattedDebtAmount(): string {
-    return this.debt.toLocaleString(2) ?? ZeroStringValue;
+    return this.debt.toLocaleString() ?? ZeroStringValue;
   }
 
   get fiatDebt(): string {

@@ -230,7 +230,7 @@ export default class AddCollateralDialog extends Mixins(
   }
 
   get formattedPrevAvailable(): string {
-    return this.prevAvailable.toLocaleString(2);
+    return this.prevAvailable.toLocaleString();
   }
 
   private get nextAvailable(): FPNumber {
@@ -238,7 +238,7 @@ export default class AddCollateralDialog extends Mixins(
   }
 
   get formattedNextAvailable(): string {
-    return this.nextAvailable.toLocaleString(2);
+    return this.nextAvailable.toLocaleString();
   }
 
   private get maxSafeDebt(): Nullable<FPNumber> {
