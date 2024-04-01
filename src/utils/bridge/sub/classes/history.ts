@@ -89,13 +89,14 @@ class SubBridgeHistory extends SubNetworksConnector {
   }
 
   public async updateAccountHistory(
+    network: SubNetwork,
     address: string,
     inProgressIds: Record<string, boolean>,
     assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>,
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
     try {
-      const transactions = await subBridgeApi.getUserTransactions(address, this.network.subNetwork);
+      const transactions = await subBridgeApi.getUserTransactions(address, network);
 
       if (!transactions.length) return;
 
@@ -573,7 +574,13 @@ export const updateSubBridgeHistory =
         await subBridgeHistory.clearHistory(networkSelected as SubNetwork, inProgressIds, updateCallback);
       }
 
-      await subBridgeHistory.updateAccountHistory(address, inProgressIds, assetDataByAddress, updateCallback);
+      await subBridgeHistory.updateAccountHistory(
+        networkSelected as SubNetwork,
+        address,
+        inProgressIds,
+        assetDataByAddress,
+        updateCallback
+      );
     } catch (error) {
       console.error(error);
     }
