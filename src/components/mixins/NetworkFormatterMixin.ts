@@ -9,7 +9,7 @@ import { SUB_NETWORKS } from '@/consts/sub';
 import { state, getter } from '@/store/decorators';
 import type { AvailableNetwork } from '@/store/web3/types';
 import type { NetworkData } from '@/types/bridge';
-import { getSubscanTxLink, getPolkadotTxLink } from '@/utils';
+import { getSubstrateExplorerLinks } from '@/utils';
 import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import { isUnsignedToPart } from '@/utils/bridge/eth/utils';
 
@@ -27,41 +27,28 @@ const getSubNetworkLinks = (
   blockId?: number | string,
   eventIndex?: number
 ): WALLET_CONSTS.ExplorerLink[] => {
-  const links: Array<WALLET_CONSTS.ExplorerLink> = [];
-  const explorerUrl = networkData.blockExplorerUrls[0];
+  const baseLinks: WALLET_CONSTS.ExplorerLink[] = [];
 
-  switch (type) {
-    case EvmLinkType.Account: {
-      if (explorerUrl && value) {
-        links.push({
-          type: WALLET_CONSTS.ExplorerType.Subscan,
-          value: `${explorerUrl}/account/${value}`,
-        });
-      }
-      break;
-    }
-    case EvmLinkType.Transaction: {
-      if (explorerUrl) {
-        links.push({
-          type: WALLET_CONSTS.ExplorerType.Subscan,
-          value: getSubscanTxLink(explorerUrl, value, blockId, eventIndex),
-        });
-      }
+  const subscanLink = networkData.blockExplorerUrls[0];
+  const polkadotUrl = networkData.nodes?.[0].address;
+  const polkadotLink = polkadotUrl
+    ? `https://polkadot.js.org/apps/?rpc=${networkData.nodes?.[0].address}#/explorer/query`
+    : '';
 
-      const networkUrl = networkData.nodes?.[0].address;
-      const polkadotBaseLink = `https://polkadot.js.org/apps/?rpc=${networkUrl}#/explorer/query`;
-      const polkadotLink = {
-        type: WALLET_CONSTS.ExplorerType.Polkadot,
-        value: getPolkadotTxLink(polkadotBaseLink, value, blockId, eventIndex),
-      };
-
-      links.push(polkadotLink);
-
-      break;
-    }
+  if (subscanLink) {
+    baseLinks.push({
+      type: WALLET_CONSTS.ExplorerType.Subscan,
+      value: subscanLink,
+    });
+  }
+  if (polkadotLink) {
+    baseLinks.push({
+      type: WALLET_CONSTS.ExplorerType.Polkadot,
+      value: polkadotLink,
+    });
   }
 
-  return links.filter((link) => !!link.value);
+  return getSubstrateExplorerLinks(baseLinks, type === EvmLinkType.Account, value, blockId, eventIndex);
 };
 
 const getEvmNetworkLinks = (
