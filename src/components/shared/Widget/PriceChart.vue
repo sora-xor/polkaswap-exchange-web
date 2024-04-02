@@ -69,6 +69,7 @@ import last from 'lodash/fp/last';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
+import OrderBookMixin from '@/components/mixins/OrderBookMixin';
 import { SvgIcons } from '@/components/shared/Button/SvgIconButton/icons';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
@@ -266,6 +267,7 @@ const getPrecision = (value: number): number => {
 })
 export default class PriceChartWidget extends Mixins(
   ChartSpecMixin,
+  OrderBookMixin,
   mixins.LoadingMixin,
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin
@@ -389,7 +391,10 @@ export default class PriceChartWidget extends Mixins(
   }
 
   get chartTypeButtons(): { type: CHART_TYPES; icon: any; active: boolean }[] {
-    return [CHART_TYPES.LINE, CHART_TYPES.CANDLE, CHART_TYPES.DEPTH].map((type) => ({
+    const TYPES = [CHART_TYPES.LINE, CHART_TYPES.CANDLE];
+    if (this.isOrderBook) TYPES.push(CHART_TYPES.DEPTH);
+
+    return TYPES.map((type) => ({
       type,
       icon: CHART_TYPE_ICONS[type],
       active: this.chartType === type,
@@ -678,39 +683,12 @@ export default class PriceChartWidget extends Mixins(
    * Used only on trade page.
    */
   get marketDepthSpec(): any {
+    const data = this.getDepthChartData();
+
     const dataZoom = {
       id: 'dataZoomDepthChart',
       type: 'inside',
     };
-
-    // [price, volume]
-    const buy = [
-      [5, 130],
-      [10, 120],
-      [20, 80],
-      [30, 50],
-      [50, 30],
-      [70, 20],
-      [80, 10],
-      [90, 5],
-      [100, 2],
-    ];
-
-    // price = 100
-
-    const sell = [
-      [101, 1],
-      [110, 10],
-      [120, 40],
-      [130, 60],
-      [140, 65],
-      [150, 80],
-      [160, 90],
-      [170, 100],
-      [172, 129],
-      [179, 134],
-      [190, 150],
-    ];
 
     const option = {
       animation: false,
@@ -735,7 +713,7 @@ export default class PriceChartWidget extends Mixins(
           name: 'Buy',
           type: 'line',
           step: 'start',
-          data: buy,
+          data: data.buy,
           itemStyle: {
             color: '#34ad87',
           },
@@ -747,7 +725,7 @@ export default class PriceChartWidget extends Mixins(
           name: 'Sell',
           type: 'line',
           step: 'end',
-          data: sell,
+          data: data.sell,
           itemStyle: {
             color: '#f754a3',
           },
