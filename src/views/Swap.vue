@@ -46,6 +46,9 @@
     <template v-slot:[SwapWidgets.PriceChartB]="props">
       <price-chart-widget v-bind="props" :base-asset="tokenTo" full />
     </template>
+    <template v-slot:[SwapWidgets.SupplyChart]="props">
+      <supply-chart-widget v-bind="props" full />
+    </template>
   </widgets-grid>
 </template>
 
@@ -68,11 +71,12 @@ enum SwapWidgets {
   // main
   Form = 'swapForm',
   Chart = 'swapChart',
-  Transactions = 'swapTransactions',
   Distribution = 'swapDistribution',
   // additional
+  Transactions = 'swapTransactions',
   PriceChartA = 'swapTokenAPriceChart',
   PriceChartB = 'swapTokenBPriceChart',
+  SupplyChart = 'swapSupplyChart',
 }
 
 @Component({
@@ -82,6 +86,7 @@ enum SwapWidgets {
     SwapDistributionWidget: lazyComponent(Components.SwapDistributionWidget),
     CustomiseWidget: lazyComponent(Components.CustomiseWidget),
     PriceChartWidget: lazyComponent(Components.PriceChartWidget),
+    SupplyChartWidget: lazyComponent(Components.SupplyChartWidget),
     WidgetsGrid: lazyComponent(Components.WidgetsGrid),
   },
 })
@@ -106,6 +111,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       { x: 15, y: 0, w: 9, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
       { x: 6, y: 20, w: 9, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
       { x: 15, y: 20, w: 9, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
+      { x: 0, y: 40, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
     ],
     md: [
       { x: 0, y: 0, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
@@ -115,24 +121,27 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       { x: 0, y: 20, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
       { x: 5, y: 20, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
       { x: 10, y: 20, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
+      { x: 0, y: 40, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
     ],
     sm: [
       { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
       { x: 0, y: 20, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
       { x: 0, y: 24, w: 4, h: 9, minW: 4, minH: 9, i: SwapWidgets.Distribution },
       { x: 4, y: 0, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-      { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
-      { x: 8, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
       { x: 4, y: 20, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+      { x: 0, y: 40, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
+      { x: 4, y: 40, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
+      { x: 8, y: 40, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
     ],
     xs: [
       { x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
       { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
       { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
-      { x: 0, y: 32, w: 4, h: 16, minW: 4, minH: 16, i: SwapWidgets.Transactions },
       { x: 4, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 0, y: 32, w: 4, h: 16, minW: 4, minH: 16, i: SwapWidgets.Transactions },
       { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
-      { x: 4, y: 40, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
+      { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
+      { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
     ],
     xss: [
       { x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
@@ -140,8 +149,9 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
       { x: 0, y: 36, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
       { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
-      { x: 0, y: 76, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
-      { x: 0, y: 96, w: 4, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
+      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
+      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
     ],
   };
 
@@ -159,6 +169,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
     [SwapWidgets.Transactions]: false,
     [SwapWidgets.PriceChartA]: false,
     [SwapWidgets.PriceChartB]: false,
+    [SwapWidgets.SupplyChart]: false,
   };
 
   get labels(): Record<string, string> {
@@ -171,6 +182,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       [SwapWidgets.Chart]: priceText,
       [SwapWidgets.PriceChartA]: `${priceText} ${this.tokenFrom?.symbol ?? ''}`,
       [SwapWidgets.PriceChartB]: `${priceText} ${this.tokenTo?.symbol ?? ''}`,
+      [SwapWidgets.SupplyChart]: 'Supply',
     };
   }
 
