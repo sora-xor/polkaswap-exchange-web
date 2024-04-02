@@ -15,7 +15,7 @@ export default class SwapStatusActionBadge extends Vue {}
 
 <style lang="scss">
 .status-action-badge.s-card.neumorphic.s-size-small {
-  padding: $inner-spacing-tiny $inner-spacing-big * 2 $inner-spacing-tiny $inner-spacing-small;
+  padding: $inner-spacing-tiny * 1.75 $inner-spacing-big * 2 $inner-spacing-tiny * 1.75 $inner-spacing-small;
 }
 </style>
 

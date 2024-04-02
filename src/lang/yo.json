@@ -1558,5 +1558,7 @@
         },
         "pricePerToken": "Iye fun 1 {token}"
     },
-    "calculatingText": "Ọnàkọnà"
+    "calculatingText": "Ọnàkọnà",
+    "customisePageText": "Ṣe akanṣe oju-iwe",
+    "priceChartText": "Owo chart"
 }

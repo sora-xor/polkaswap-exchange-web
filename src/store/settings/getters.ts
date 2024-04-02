@@ -31,14 +31,6 @@ const getters = defineGetters<SettingsState>()({
     const { state, getters } = settingsGetterContext(args);
     return !!getters.x1ApiKey && !!state.featureFlags.x1ex;
   },
-  chartsFlagEnabled(...args): boolean {
-    const { state } = settingsGetterContext(args);
-    return !!state.featureFlags.charts;
-  },
-  chartsEnabled(...args): boolean {
-    const { state } = settingsGetterContext(args);
-    return !!state.featureFlags.charts && state.chartsEnabled;
-  },
   soraCardEnabled(...args): Nullable<boolean> {
     const { state } = settingsGetterContext(args);
     return state.featureFlags.soraCard;
