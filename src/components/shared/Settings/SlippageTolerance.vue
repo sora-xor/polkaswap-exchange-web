@@ -221,6 +221,7 @@ export default class SlippageTolerance extends Mixins(mixins.NumberFormatterMixi
 
   .el-collapse-item__content {
     padding: 0 !important;
+    line-height: inherit;
   }
 
   .el-collapse--item .is-active .el-collapse {

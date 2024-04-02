@@ -1558,5 +1558,7 @@
         },
         "pricePerToken": "Cijena za 1 {token}"
     },
-    "calculatingText": "Izračunavanje"
+    "calculatingText": "Izračunavanje",
+    "customisePageText": "Prilagodite stranicu",
+    "priceChartText": "Grafikon cijena"
 }

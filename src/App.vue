@@ -106,7 +106,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.router.loading pageLoading!: boolean;
 
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
-  @getter.settings.chartsEnabled private chartsEnabled!: boolean;
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
@@ -569,6 +568,23 @@ i.icon-divider {
   .app-content {
     display: flex;
     justify-content: center;
+  }
+}
+
+@include desktop {
+  .app-main--swap {
+    &.app-main {
+      .app-menu {
+        &:not(.collapsed) {
+          position: relative;
+        }
+        &.collapsed {
+          & + .app-body {
+            margin-left: 74px;
+          }
+        }
+      }
+    }
   }
 }
 </style>

@@ -8,15 +8,6 @@
           <s-button class="el-button--settings" type="action" icon="basic-settings-24" @click="openSettingsDialog" />
         </template>
       </swap-status-action-badge>
-
-      <svg-icon-button
-        v-if="chartsFlagEnabled"
-        icon="line-icon"
-        size="medium"
-        :tooltip="t('dexSettings.сhartsDescription')"
-        :active="chartsEnabled"
-        @click="toggleChart"
-      />
     </template>
 
     <div class="swap-form">
@@ -184,7 +175,6 @@ import type { Subscription } from 'rxjs';
     SelectToken: lazyComponent(Components.SelectToken),
     TokenInput: lazyComponent(Components.TokenInput),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
-    SvgIconButton: lazyComponent(Components.SvgIconButton),
     FormattedAmount: components.FormattedAmount,
   },
 })
@@ -204,15 +194,12 @@ export default class SwapFormWidget extends Mixins(
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.swap.swapLiquiditySource liquiditySource!: Nullable<LiquiditySourceTypes>;
-  @getter.settings.chartsFlagEnabled chartsFlagEnabled!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
-  @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
 
-  @mutation.settings.setChartsEnabled private setChartsEnabled!: (value: boolean) => void;
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
   @mutation.swap.setAmountWithoutImpact private setAmountWithoutImpact!: (amount?: CodecString) => void;
@@ -559,10 +546,6 @@ export default class SwapFormWidget extends Mixins(
 
   openSettingsDialog(): void {
     this.showSettings = true;
-  }
-
-  toggleChart(): void {
-    this.setChartsEnabled(!this.chartsEnabled);
   }
 
   private enableSwapSubscriptions(): void {
