@@ -160,13 +160,13 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
   },
   [SubNetworkId.Kusama]: {
     KSM: {
-      [BridgeTxDirection.Outgoing]: '92003956',
+      [BridgeTxDirection.Outgoing]: '78327426',
       [BridgeTxDirection.Incoming]: '0',
     },
   },
   [SubNetworkId.Polkadot]: {
     DOT: {
-      [BridgeTxDirection.Outgoing]: '21062795',
+      [BridgeTxDirection.Outgoing]: '19978738',
       [BridgeTxDirection.Incoming]: '0',
     },
   },
