@@ -384,32 +384,57 @@ export const sortPools = <T extends Asset>(a: PoolAssets<T>, b: PoolAssets<T>) =
 
 export const calcElScrollGutter: () => number = scrollbarWidth;
 
-export const getSubscanTxLink = (
-  baseUrl: string,
-  txId?: string,
-  blockId?: number | string,
-  eventIndex?: number
-): string => {
+const getSubscanTxLink = (baseUrl: string, txId?: string, blockId?: number | string, eventIndex?: number): string => {
+  if (!(txId || blockId)) return '';
+
+  let link = txId ? `${baseUrl}/extrinsic/${txId}` : `${baseUrl}/block/${blockId}`;
+
   if (Number.isFinite(eventIndex) && Number.isFinite(blockId)) {
-    return `${baseUrl}/block/${blockId}?tab=event&event=${blockId}-${eventIndex}`;
-  } else if (txId) {
-    return `${baseUrl}/extrinsic/${txId}`;
-  } else if (blockId) {
-    return `${baseUrl}/block/${blockId}`;
+    link += `?event=${blockId}-${eventIndex}`;
+
+    if (!txId) {
+      link += '&tab=event';
+    }
   }
-  return '';
+
+  return link;
 };
 
-export const getPolkadotTxLink = (
-  baseUrl: string,
-  txId?: string,
-  blockId?: number | string,
-  eventIndex?: number
-): string => {
+const getPolkadotTxLink = (baseUrl: string, txId?: string, blockId?: number | string, eventIndex?: number): string => {
   if (blockId) {
     return `${baseUrl}/${blockId}`;
   }
   return '';
+};
+
+export const getSubstrateExplorerLinks = (
+  baseLinks: WALLET_CONSTS.ExplorerLink[],
+  isAccount = false,
+  id?: string, // tx hash or account address
+  blockId?: number | string,
+  eventIndex?: number
+) => {
+  if (!baseLinks.length) return [];
+
+  if (isAccount) {
+    return baseLinks
+      .filter(({ type }) => type !== WALLET_CONSTS.ExplorerType.Polkadot)
+      .map(({ type, value }) => ({ type, value: `${value}/account/${id}` }));
+  }
+
+  return baseLinks
+    .map(({ type, value }) => {
+      const link = { type } as WALLET_CONSTS.ExplorerLink;
+
+      if (type === WALLET_CONSTS.ExplorerType.Subscan) {
+        link.value = getSubscanTxLink(value, id, blockId, eventIndex);
+      } else if (type === WALLET_CONSTS.ExplorerType.Polkadot) {
+        link.value = getPolkadotTxLink(value, id, blockId, eventIndex);
+      }
+
+      return link;
+    })
+    .filter((value) => !!value.value);
 };
 
 export const soraExplorerLinks = (
@@ -421,27 +446,5 @@ export const soraExplorerLinks = (
 ): Array<WALLET_CONSTS.ExplorerLink> => {
   if (!soraNetwork) return [];
 
-  const baseLinks = getExplorerLinks(soraNetwork);
-
-  if (!baseLinks.length) return [];
-
-  if (isAccount) {
-    return baseLinks
-      .filter(({ type }) => type !== WALLET_CONSTS.ExplorerType.Polkadot)
-      .map(({ type, value }) => ({ type, value: `${value}/account/${txValue}` }));
-  }
-
-  return baseLinks
-    .map(({ type, value }) => {
-      const link = { type } as WALLET_CONSTS.ExplorerLink;
-
-      if (type === WALLET_CONSTS.ExplorerType.Subscan) {
-        link.value = getSubscanTxLink(value, txValue, blockId, eventIndex);
-      } else if (type === WALLET_CONSTS.ExplorerType.Polkadot) {
-        link.value = getPolkadotTxLink(value, txValue, blockId, eventIndex);
-      }
-
-      return link;
-    })
-    .filter((value) => !!value.value);
+  return getSubstrateExplorerLinks(getExplorerLinks(soraNetwork), isAccount, txValue, blockId, eventIndex);
 };
