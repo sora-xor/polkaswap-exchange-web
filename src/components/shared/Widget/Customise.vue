@@ -14,7 +14,7 @@
         <div class="customise">
           <div class="customise-title">{{ t('customisePageText') }}</div>
 
-          <div v-for="(model, name) in { widgets, options }" :key="name" class="customise-options">
+          <div v-for="(model, name) in models" :key="name" class="customise-options">
             <s-divider />
             <label v-for="(value, key) in model" :key="key" class="customise-option">
               <s-switch :value="value" @input="toggle(name, model, key, $event)" />
@@ -30,12 +30,14 @@
 </template>
 
 <script lang="ts">
+import isEmpty from 'lodash/fp/isEmpty';
 import { Component, Mixins, ModelSync, PropSync, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 import type { WidgetsVisibilityModel } from '@/types/layout';
+import { capitalize } from '@/utils';
 
 @Component({
   components: {
@@ -49,14 +51,22 @@ export default class CustomiseWidget extends Mixins(TranslationMixin) {
 
   @ModelSync('value', 'input', { type: Boolean }) visible!: boolean;
 
+  get models(): Record<string, WidgetsVisibilityModel> {
+    const { widgets, options } = this;
+    return Object.entries({ widgets, options }).reduce((acc, [name, model]) => {
+      if (isEmpty(model)) return acc;
+      return { ...acc, [name]: model };
+    }, {});
+  }
+
   toggle(name: string, model: WidgetsVisibilityModel, key: string, value: boolean): void {
     this[name] = { ...model, [key]: value };
   }
 
   getLabel(key: string, name: string): string {
-    if (key in this.labels) return this.labels[key];
+    const label = key in this.labels ? this.labels[key] : this.t(`${name}.${key}`);
 
-    return this.t(`${name}.${key}`);
+    return capitalize(label);
   }
 
   toggleVisibility(event: PointerEvent): void {
