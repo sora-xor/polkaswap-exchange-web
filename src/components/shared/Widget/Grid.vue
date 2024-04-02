@@ -62,7 +62,7 @@ const DEFAULT_BREAKPOINTS: LayoutConfig = {
 
 const DEFAULT_COLS: LayoutConfig = {
   [BreakpointKey.lg]: 24, // 2092
-  [BreakpointKey.md]: 16, // 1440
+  [BreakpointKey.md]: 15, // 1440
   [BreakpointKey.sm]: 12, // 1024
   [BreakpointKey.xs]: 8, // 900
   [BreakpointKey.xss]: 4,

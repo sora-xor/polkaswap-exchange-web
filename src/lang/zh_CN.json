@@ -1558,5 +1558,7 @@
         },
         "pricePerToken": "每 1 个{token}价格"
     },
-    "calculatingText": "正在计算"
+    "calculatingText": "正在计算",
+    "customisePageText": "自定义页面",
+    "priceChartText": "价格走势图"
 }

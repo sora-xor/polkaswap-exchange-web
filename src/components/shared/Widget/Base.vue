@@ -11,7 +11,7 @@
       <div :class="['base-widget-block', 'base-widget-header', { 'with-content': hasContent }]">
         <div :class="['base-widget-block', 'base-widget-title', { primary: primaryTitle }]">
           <slot name="title">
-            <span v-if="title">{{ title }}</span>
+            <span v-if="title">{{ capitalize(title) }}</span>
             <s-tooltip v-if="tooltip" border-radius="mini" :content="tooltip">
               <s-icon name="info-16" size="14px" />
             </s-tooltip>
@@ -39,7 +39,7 @@ import isEqual from 'lodash/fp/isEqual';
 import { Component, Prop, Vue, Ref } from 'vue-property-decorator';
 
 import type { Size } from '@/types/layout';
-import { debouncedInputHandler } from '@/utils';
+import { debouncedInputHandler, capitalize } from '@/utils';
 
 @Component
 export default class BaseWidget extends Vue {
@@ -92,6 +92,8 @@ export default class BaseWidget extends Vue {
     width: 0,
     height: 0,
   };
+
+  public capitalize = capitalize;
 
   get hasHeader(): boolean {
     return !!this.title || !!this.$slots.title;
@@ -230,7 +232,8 @@ $left: $inner-spacing-medium;
     font-size: var(--s-font-size-medium);
     font-weight: 500;
     line-height: var(--s-line-height-medium);
-    text-transform: capitalize;
+
+    min-height: var(--s-size-small);
 
     &.primary {
       font-size: var(--s-font-size-large);

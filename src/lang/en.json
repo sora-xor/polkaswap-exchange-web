@@ -1559,10 +1559,10 @@
         "pricePerToken": "Price per 1 {token}"
     },
     "calculatingText": "Calculating",
-    "customisePageText": "Customise page",
+    "customisePageText": "Customize page",
+    "priceChartText": "Price chart",
     "editText": "Edit",
     "resetText": "Reset",
-    "priceChartText": "{symbol} Price chart",
     "options": {
         "edit": "@:editText"
     }

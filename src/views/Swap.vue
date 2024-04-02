@@ -8,7 +8,6 @@
     :flat="options.flat"
     :loading="parentLoading"
     :default-layouts="DefaultLayouts"
-    compact
     v-model="widgets"
   >
     <template v-slot:[SwapWidgets.Form]="props">
@@ -32,6 +31,7 @@
     <template v-slot:[SwapWidgets.Customise]="{ reset, ...props }">
       <customise-widget
         v-bind="props"
+        v-model="customizePopper"
         :widgets-model.sync="widgets"
         :options-model.sync="options"
         :labels="labels"
@@ -71,8 +71,8 @@ enum SwapWidgets {
   Transactions = 'swapTransactions',
   Distribution = 'swapDistribution',
   // additional
-  // PriceChartA = 'swapTokenAPriceChart',
-  // PriceChartB = 'swapTokenBPriceChart',
+  PriceChartA = 'swapTokenAPriceChart',
+  PriceChartB = 'swapTokenBPriceChart',
 }
 
 @Component({
@@ -104,50 +104,52 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       { x: 0, y: 24, w: 6, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
       { x: 6, y: 0, w: 9, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
       { x: 15, y: 0, w: 9, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
-      // { x: 6, y: 20, w: 9, h: 16, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
-      // { x: 6, y: 36, w: 9, h: 16, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
+      { x: 6, y: 20, w: 9, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
+      { x: 15, y: 20, w: 9, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
     ],
     md: [
       { x: 0, y: 0, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 0, y: 20, w: 5, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
-      { x: 5, y: 20, w: 5, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
-      { x: 5, y: 0, w: 11, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
-      { x: 10, y: 20, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
-      // { x: 4, y: 20, w: 6, h: 16, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
-      // { x: 10, y: 20, w: 6, h: 16, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
+      { x: 5, y: 0, w: 5, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
+      { x: 5, y: 4, w: 5, h: 16, minW: 4, minH: 8, i: SwapWidgets.Distribution },
+      { x: 10, y: 0, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+      { x: 0, y: 20, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 5, y: 20, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
+      { x: 10, y: 20, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
     ],
     sm: [
       { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
       { x: 0, y: 20, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
       { x: 0, y: 24, w: 4, h: 9, minW: 4, minH: 9, i: SwapWidgets.Distribution },
       { x: 4, y: 0, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
+      { x: 8, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
       { x: 4, y: 20, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
-      // { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
-      // { x: 8, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
     ],
     xs: [
       { x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
       { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
       { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
+      { x: 0, y: 32, w: 4, h: 16, minW: 4, minH: 16, i: SwapWidgets.Transactions },
       { x: 4, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-      { x: 4, y: 20, w: 4, h: 16, minW: 4, minH: 16, i: SwapWidgets.Transactions },
-      // { x: 0, y: 44, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
-      // { x: 4, y: 44, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
+      { x: 4, y: 20, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
+      { x: 4, y: 40, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
     ],
     xss: [
       { x: 0, y: 0, w: 4, h: 4, minW: 4, minH: 4, i: SwapWidgets.Customise },
       { x: 0, y: 4, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
       { x: 0, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
       { x: 0, y: 36, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-      // { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
-      // { x: 0, y: 76, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
+      { x: 0, y: 56, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
+      { x: 0, y: 76, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
       { x: 0, y: 96, w: 4, h: 24, minW: 4, minH: 24, i: SwapWidgets.Transactions },
     ],
   };
 
+  customizePopper = false;
+
   options = {
-    // edit: false,
-    // flat: false,
+    edit: false,
+    flat: false,
   };
 
   widgets: WidgetsVisibilityModel = {
@@ -155,18 +157,20 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
     [SwapWidgets.Chart]: true,
     [SwapWidgets.Distribution]: true,
     [SwapWidgets.Transactions]: false,
-    // [SwapWidgets.PriceChartA]: false,
-    // [SwapWidgets.PriceChartB]: false,
+    [SwapWidgets.PriceChartA]: false,
+    [SwapWidgets.PriceChartB]: false,
   };
 
   get labels(): Record<string, string> {
+    const priceText = this.t('priceChartText');
+
     return {
       [SwapWidgets.Form]: this.t('swapText'),
-      [SwapWidgets.Chart]: this.t('priceChartText'),
       [SwapWidgets.Distribution]: this.t('swap.route'),
       [SwapWidgets.Transactions]: this.tc('transactionText', 2),
-      // [SwapWidgets.PriceChartA]: this.t('priceChartText', { symbol: this.tokenFrom?.symbol ?? '' }),
-      // [SwapWidgets.PriceChartB]: this.t('priceChartText', { symbol: this.tokenTo?.symbol ?? '' }),
+      [SwapWidgets.Chart]: priceText,
+      [SwapWidgets.PriceChartA]: `${priceText} ${this.tokenFrom?.symbol ?? ''}`,
+      [SwapWidgets.PriceChartB]: `${priceText} ${this.tokenTo?.symbol ?? ''}`,
     };
   }
 
