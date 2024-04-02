@@ -13,7 +13,7 @@ import { SubTransferType } from '@/utils/bridge/sub/types';
 import {
   getBridgeProxyHash,
   getDepositedBalance,
-  getTokensDepositedBalance,
+  getParachainBridgeAppMintedBalance,
   getMessageAcceptedNonces,
   isMessageDispatchedNonces,
   isAssetAddedToChannel,
@@ -338,7 +338,11 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
             const foundedEvents = events.slice(substrateDispatchEventIndex);
 
             soraHash = getBridgeProxyHash(foundedEvents, subBridgeApi.api);
-            [amount, eventIndex] = getTokensDepositedBalance(foundedEvents, tx.from as string, subBridgeApi.api);
+            [amount, eventIndex] = getParachainBridgeAppMintedBalance(
+              foundedEvents,
+              tx.from as string,
+              subBridgeApi.api
+            );
 
             resolve();
           } catch (error) {
