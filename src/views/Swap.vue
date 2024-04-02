@@ -2,11 +2,12 @@
   <div class="swap-container">
     <div class="column column--small">
       <swap-form-widget :parent-loading="loadingState" class="swap-form-widget" />
-      <swap-distribution-widget />
+      <customise-widget v-model="customise" :widgets-model.sync="widgetsSync" :labels="labels" />
+      <swap-distribution-widget v-if="widgets[SwapWidgets.Distribution]" />
     </div>
     <div class="column">
-      <swap-chart-widget :parent-loading="loadingState" v-if="chartsEnabled" class="swap-chart-widget" />
-      <swap-transactions-widget :parent-loading="loadingState" />
+      <swap-chart-widget v-if="widgets[SwapWidgets.Chart]" :parent-loading="loadingState" class="swap-chart-widget" />
+      <swap-transactions-widget v-if="widgets[SwapWidgets.Transactions]" :parent-loading="loadingState" />
     </div>
   </div>
 </template>
@@ -21,8 +22,18 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
+import type { WidgetsVisibilityModel } from '@/types/layout';
+import { layoutsStorage } from '@/utils/storage';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+
+enum SwapWidgets {
+  Chart = 'swapChart',
+  Transactions = 'swapTransactions',
+  Distribution = 'swapDistribution',
+}
+
+const storageTemporaryKey = 'swapWidgets';
 
 @Component({
   components: {
@@ -30,18 +41,45 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
     SwapChartWidget: lazyComponent(Components.SwapChartWidget),
     SwapTransactionsWidget: lazyComponent(Components.SwapTransactionsWidget),
     SwapDistributionWidget: lazyComponent(Components.SwapDistributionWidget),
+    CustomiseWidget: lazyComponent(Components.CustomiseWidget),
   },
 })
 export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, SelectedTokenRouteMixin) {
   @state.swap.isAvailable isAvailable!: boolean;
   @state.router.prev private prevRoute!: Nullable<PageNames>;
 
-  @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
+
+  readonly SwapWidgets = SwapWidgets;
+
+  customise = false;
+
+  widgets: WidgetsVisibilityModel = {
+    [SwapWidgets.Chart]: true,
+    [SwapWidgets.Distribution]: true,
+    [SwapWidgets.Transactions]: false,
+  };
+
+  get widgetsSync(): WidgetsVisibilityModel {
+    return this.widgets;
+  }
+
+  set widgetsSync(widgetsModel: WidgetsVisibilityModel) {
+    this.widgets = widgetsModel;
+    layoutsStorage.set(storageTemporaryKey, JSON.stringify(widgetsModel));
+  }
+
+  get labels(): Record<string, string> {
+    return {
+      [SwapWidgets.Chart]: this.t('priceChartText'),
+      [SwapWidgets.Distribution]: this.t('swap.route'),
+      [SwapWidgets.Transactions]: this.tc('transactionText', 2),
+    };
+  }
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
@@ -54,6 +92,12 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   }
 
   created(): void {
+    const widgetsModel = layoutsStorage.get(storageTemporaryKey);
+
+    if (widgetsModel) {
+      this.widgets = JSON.parse(widgetsModel);
+    }
+
     this.withApi(async () => {
       this.parseCurrentRoute();
       // Need to wait the previous page beforeDestroy somehow to set the route params
@@ -93,7 +137,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   .swap-chart-widget,
   .swap-form-widget {
     @include desktop {
-      min-height: 517px;
+      min-height: 492px;
     }
   }
 }
