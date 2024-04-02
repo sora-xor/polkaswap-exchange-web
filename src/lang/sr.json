@@ -1558,5 +1558,7 @@
         },
         "pricePerToken": "Цена по 1 {token}"
     },
-    "calculatingText": "Računanje"
+    "calculatingText": "Računanje",
+    "customisePageText": "Прилагодите страницу",
+    "priceChartText": "График цена"
 }

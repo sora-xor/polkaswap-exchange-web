@@ -201,9 +201,13 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @include scrollbar(0, 100%, true);
 }
 
+.app-menu {
+  background: var(--s-color-utility-body);
+}
+
 .app-menu.collapsed {
   @include tablet {
-    background: var(--s-color-utility-body);
+    background: transparent;
 
     .sidebar-item-content {
       & > .icon-container + span {
@@ -217,6 +221,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
     &:hover,
     &:focus {
+      background: var(--s-color-utility-body);
       box-shadow: 20px 20px 60px 0px #0000001a;
 
       .sidebar-item-content {

@@ -46,13 +46,17 @@ export default class TokensRow extends Vue {
 
   &__item {
     display: block;
-    border-width: 2px;
     border-style: solid;
     border-color: transparent;
     border-radius: 50%;
+    border-width: 0px;
 
     &.border {
       border-color: var(--s-color-utility-surface);
+
+      & + & {
+        border-left-width: 2px;
+      }
     }
 
     & + & {
