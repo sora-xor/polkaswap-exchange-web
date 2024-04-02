@@ -1558,5 +1558,7 @@
         },
         "pricePerToken": "Harga per 1 {token}"
     },
-    "calculatingText": "Menghitung"
+    "calculatingText": "Menghitung",
+    "customisePageText": "Sesuaikan halaman",
+    "priceChartText": "Grafik harga"
 }

@@ -137,7 +137,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   .swap-chart-widget,
   .swap-form-widget {
     @include desktop {
-      min-height: 517px;
+      min-height: 492px;
     }
   }
 }

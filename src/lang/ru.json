@@ -1558,5 +1558,7 @@
         },
         "pricePerToken": "Цена за 1 {token}"
     },
-    "calculatingText": "Вычисление"
+    "calculatingText": "Вычисление",
+    "customisePageText": "Настроить страницу",
+    "priceChartText": "График цены"
 }
