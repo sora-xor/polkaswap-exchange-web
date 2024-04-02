@@ -1558,5 +1558,7 @@
         },
         "pricePerToken": "Precio por 1 {token}"
     },
-    "calculatingText": "Calculando"
+    "calculatingText": "Calculando",
+    "customisePageText": "Personalizar página",
+    "priceChartText": "Gráfico de precios"
 }

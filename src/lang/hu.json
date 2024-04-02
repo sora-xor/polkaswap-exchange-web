@@ -1558,5 +1558,7 @@
         },
         "pricePerToken": "1 {token} ár"
     },
-    "calculatingText": "Számítás"
+    "calculatingText": "Számítás",
+    "customisePageText": "Az oldal testreszabása",
+    "priceChartText": "Ártáblázat"
 }
