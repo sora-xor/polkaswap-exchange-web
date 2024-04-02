@@ -794,7 +794,7 @@ export default class BuySellWidget extends Mixins(
 
     if (this.isBuySide) {
       const max = getMaxValue(this.quoteAsset, this.networkFee);
-      const fpMax = FPNumber.fromNatural(max, this.pricePrecision);
+      const fpMax = FPNumber.fromNatural(max, this.amountPrecision);
       const maxPossible = fpMax.div(new FPNumber(this.quoteValue));
 
       return FPNumber.lte(maxPossible, maxLotSize) ? maxPossible : maxLotSize;
