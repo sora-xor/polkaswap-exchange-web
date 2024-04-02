@@ -1,8 +1,15 @@
 <template>
-  <base-widget v-bind="$attrs" :title="t('customisePageText')">
+  <base-widget
+    v-bind="$attrs"
+    :title="t('customisePageText')"
+    class="customise-widget"
+    @click.native.stop="toggleVisibility"
+  >
     <template #filters>
       <el-popover popper-class="customise-widget-popper" trigger="click" v-model="visible" :visible-arrow="false">
-        <s-button slot="reference" type="action" alternative size="small" icon="basic-settings-24" />
+        <template #reference>
+          <s-button id="customise-button" type="action" alternative size="small" icon="basic-settings-24" />
+        </template>
 
         <div class="customise">
           <div class="customise-title">{{ t('customisePageText') }}</div>
@@ -51,6 +58,13 @@ export default class CustomiseWidget extends Mixins(TranslationMixin) {
 
     return this.t(`${name}.${key}`);
   }
+
+  toggleVisibility(event: PointerEvent): void {
+    const target = event.target as HTMLElement;
+    if (target.closest('#customise-button')) return;
+
+    this.visible = !this.visible;
+  }
 }
 </script>
 
@@ -61,8 +75,12 @@ export default class CustomiseWidget extends Mixins(TranslationMixin) {
 </style>
 
 <style lang="scss" scoped>
-.customise-widget-icon {
-  @include icon-styles(true);
+.customise-widget {
+  cursor: pointer;
+
+  &-icon {
+    @include icon-styles(true);
+  }
 }
 
 .customise {

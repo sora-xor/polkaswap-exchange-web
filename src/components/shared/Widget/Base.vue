@@ -99,6 +99,8 @@ $left: $inner-spacing-medium;
     line-height: var(--s-line-height-medium);
     text-transform: capitalize;
 
+    min-height: var(--s-size-small);
+
     &.primary {
       font-size: var(--s-font-size-large);
       font-weight: 300;

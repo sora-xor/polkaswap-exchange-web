@@ -2,7 +2,7 @@
   <div class="swap-container">
     <div class="column column--small">
       <swap-form-widget :parent-loading="loadingState" class="swap-form-widget" />
-      <customise-widget :widgets-model.sync="widgetsSync" :labels="labels" />
+      <customise-widget v-model="customise" :widgets-model.sync="widgetsSync" :labels="labels" />
       <swap-distribution-widget v-if="widgets[SwapWidgets.Distribution]" />
     </div>
     <div class="column">
@@ -55,6 +55,8 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
 
   readonly SwapWidgets = SwapWidgets;
+
+  customise = false;
 
   widgets: WidgetsVisibilityModel = {
     [SwapWidgets.Chart]: true,
