@@ -22,6 +22,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, getter, state } from '@/store/decorators';
+import type { WidgetsVisibilityModel } from '@/types/layout';
 import { layoutsStorage } from '@/utils/storage';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -55,17 +56,17 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
   readonly SwapWidgets = SwapWidgets;
 
-  widgets: Record<string, boolean> = {
+  widgets: WidgetsVisibilityModel = {
     [SwapWidgets.Chart]: true,
     [SwapWidgets.Distribution]: true,
     [SwapWidgets.Transactions]: false,
   };
 
-  get widgetsSync() {
+  get widgetsSync(): WidgetsVisibilityModel {
     return this.widgets;
   }
 
-  set widgetsSync(widgetsModel) {
+  set widgetsSync(widgetsModel: WidgetsVisibilityModel) {
     this.widgets = widgetsModel;
     layoutsStorage.set(storageTemporaryKey, JSON.stringify(widgetsModel));
   }
