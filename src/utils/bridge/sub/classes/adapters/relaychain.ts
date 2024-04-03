@@ -69,8 +69,8 @@ export class RelaychainAdapter extends SubAdapter {
           // Hardcoded value for Kusama - 0.002 KSM
           return new FPNumber(0.002, asset.externalDecimals).toCodecString();
         case SubNetworkId.Polkadot:
-          // Hardcoded value for Polkadot - 0.02236 DOT
-          return new FPNumber(0.02236, asset.externalDecimals).toCodecString();
+          // Hardcoded value for Polkadot - 0.059 DOT
+          return new FPNumber(0.059, asset.externalDecimals).toCodecString();
         default:
           return '0';
       }
