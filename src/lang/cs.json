@@ -1558,5 +1558,7 @@
         },
         "pricePerToken": "Cena za 1 {token}"
     },
-    "calculatingText": "Vypočítávání"
+    "calculatingText": "Vypočítávání",
+    "customisePageText": "Přizpůsobit stránku",
+    "priceChartText": "Cenový graf"
 }
