@@ -44,9 +44,9 @@ export class LiberlandAdapter extends SubAdapter {
 
       if (result.isEmpty) return ZeroStringValue;
 
-      const data = result?.unwrap?.() ?? result;
+      const data = result.unwrap();
 
-      if (data?.isFrozen?.isTrue) return ZeroStringValue;
+      if (!data.status.isLiquid) return ZeroStringValue;
 
       return data.balance.toString();
     }, ZeroStringValue);
@@ -75,8 +75,8 @@ export class LiberlandAdapter extends SubAdapter {
     try {
       return await super.getNetworkFee(asset, sender, recipient);
     } catch (error) {
-      // Hardcoded value for Liberland - 0.011153
-      return '11153000000';
+      // Hardcoded value for Liberland - 0.0106
+      return '10600000000';
     }
   }
 }
