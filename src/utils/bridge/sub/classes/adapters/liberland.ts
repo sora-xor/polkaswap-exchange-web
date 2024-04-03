@@ -44,9 +44,9 @@ export class LiberlandAdapter extends SubAdapter {
 
       if (result.isEmpty) return ZeroStringValue;
 
-      const data = result.unwrap();
+      const data = result?.unwrap?.() ?? result;
 
-      if (data.isFrozen.isTrue) return ZeroStringValue;
+      if (data?.isFrozen?.isTrue) return ZeroStringValue;
 
       return data.balance.toString();
     }, ZeroStringValue);
