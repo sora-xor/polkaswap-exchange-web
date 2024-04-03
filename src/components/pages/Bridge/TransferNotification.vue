@@ -83,7 +83,7 @@ export default class BridgeTransferNotification extends Mixins(BridgeTransaction
   }
 
   get txLink() {
-    const link = this.isOutgoing ? this.externalExplorerLinks[0] : this.soraExplorerLinks[0];
+    const link = this.isOutgoing ? this.externalExplorerLinks[0] : this.internalExplorerLinks[0];
     const network = this.isOutgoing ? this.externalNetworkId : undefined;
 
     return this.prepareLink(link, network);

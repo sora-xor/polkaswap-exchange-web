@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/7zip-bin/-/7zip-bin-5.1.1.tgz#9274ec7460652f9c632c59addf24efb1684ef876"
   integrity sha512-sAP4LldeWNz0lNzmTird3uWfFDWWTeg6V/MsmyyLR9X1idwKBWIgt/ZvinqQldJm3LecKEs1emkbquO6PCiLVQ==
 
-"@0no-co/graphql.web@^1.0.1":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@0no-co/graphql.web/-/graphql.web-1.0.4.tgz#9606eb651955499525d068ce0ad8bea596286ce2"
-  integrity sha512-W3ezhHGfO0MS1PtGloaTpg0PbaT8aZSmmaerL7idtU5F7oCI+uu25k+MsMS31BVFlp4aMkHSrNRxiD72IlK8TA==
+"@0no-co/graphql.web@^1.0.5":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@0no-co/graphql.web/-/graphql.web-1.0.6.tgz#3def68bbaf654a301bd910ce3744506cad97ab9a"
+  integrity sha512-KZ7TnwMcQJcFgzjoY623AVxtlDQonkqp3rSz0wb15/jHPyU1v5gynUibEpuutDeoyGJ5Tp+FwxjGyDGDwq3vIw==
 
 "@aashutoshrathi/word-wrap@^1.2.3":
   version "1.2.6"
@@ -2349,69 +2349,69 @@
   resolved "https://registry.yarnpkg.com/@soda/get-current-script/-/get-current-script-1.0.2.tgz#a53515db25d8038374381b73af20bb4f2e508d87"
   integrity sha512-T7VNNlYVM1SgQ+VsMYhnDkcGmWhQdL0bDyGm5TlQ3GBXnJscEClUUOKduWTmm2zCnvNLC1hc3JpuXjs/nFOc5w==
 
-"@sora-substrate/api@1.32.11":
-  version "1.32.11"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.32.11.tgz#ec365d84bab405f51eecd2605dff59f2ff99c625"
-  integrity sha512-/v/rxIj+639k9hXvN2q8BaKIaOxLzEiz1t2jc5UQ8UvisaNHPEC7mPpaHwh+dKYxQ1pOclBKadWoqfnWealoTg==
+"@sora-substrate/api@1.33.2":
+  version "1.33.2"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/api/-/api-1.33.2.tgz#689bedcfcbef0965ba3208a6e1b07eb9a730c191"
+  integrity sha512-2HgxVcHuz/XDJxhM5UmFB/vf1U328FU/4y2e0d1eQZUZ2bdCQBwvBhursRKR3oDsq0k4nmUo56XN/4mDO5JSmg==
   dependencies:
     "@open-web3/orml-api-derive" "1.1.4"
     "@polkadot/api" "9.14.2"
-    "@sora-substrate/types" "1.32.11"
+    "@sora-substrate/types" "1.33.2"
 
-"@sora-substrate/connection@1.32.11":
-  version "1.32.11"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/connection/-/connection-1.32.11.tgz#c60e051d72f906e914b62fbf6ca673a7471b5f75"
-  integrity sha512-uftH+j1d1AfeI4fyNAGy9Fovoql4dvuNXdBAb6dn8hAHXHheiwyKNHoU7IacMGOvg516hXkuRxnR1Hq1apNqxw==
+"@sora-substrate/connection@1.33.2":
+  version "1.33.2"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/connection/-/connection-1.33.2.tgz#c9d2c7e0f303bb04a0b9e5503f82e40291c72c75"
+  integrity sha512-rgsUaHe41ojpZoHtM592DfAvOm8qvopyw6GtG/0Hsq5I+kuW8UjAaNeGnP6BZO1eVnCi2H0/9lu3vFcTPkLT7w==
   dependencies:
-    "@sora-substrate/api" "1.32.11"
+    "@sora-substrate/api" "1.33.2"
 
-"@sora-substrate/liquidity-proxy@1.32.11":
-  version "1.32.11"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/liquidity-proxy/-/liquidity-proxy-1.32.11.tgz#2964ba8a806829a72cef132994521e662c8694b3"
-  integrity sha512-V8qV6utNtCKwo50dfJi5opx0R5HhTAlKUo/KbFnZp+kWEqSZkopCOiPsW3Eqq1y2znZCpMZd4qX3tojV4hWIcg==
+"@sora-substrate/liquidity-proxy@1.33.2":
+  version "1.33.2"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/liquidity-proxy/-/liquidity-proxy-1.33.2.tgz#0568eaf2e920d0611a5e758f87f2dffbb1aa8d33"
+  integrity sha512-UiG+5cp72N2b528nkG5rCzP4LPOjTs+VTaB2CX+7TA2U92Qk55Urf9poK1wiKhXhMMY7E5g2cAuqIVMnF3WyBg==
   dependencies:
-    "@sora-substrate/math" "1.32.11"
+    "@sora-substrate/math" "1.33.2"
 
-"@sora-substrate/math@1.32.11":
-  version "1.32.11"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/math/-/math-1.32.11.tgz#a6e1d8cdd48f2176c4aaf98661c874eefe03a9a9"
-  integrity sha512-9XzIW4+VM4Suyn9u2wKEbdZ25IPau0Fufe9BrXpDI58L/Qm7chRVdg+ebzREQEeVgUdPZ8jwzGBatzjCdgwGcw==
+"@sora-substrate/math@1.33.2":
+  version "1.33.2"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/math/-/math-1.33.2.tgz#def1f6276ab66fccbc3a81e1c07ace2aedc0e68f"
+  integrity sha512-nAFcmBnfS3UBR84YxTYu6TbEu6OdlheghXOlpy8fgvmyXzI4vlEW2eKaqMMRz6pErrHwtzFevCbm6O2g9x6boQ==
   dependencies:
     "@polkadot/types" "9.14.2"
     bignumber.js "^9.1.2"
     lodash "^4.17.21"
 
-"@sora-substrate/type-definitions@1.32.11":
-  version "1.32.11"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.32.11.tgz#bab58056fe12f696395b959e8b8a63a6f599be97"
-  integrity sha512-fC+pSJ20Bp5FMBhxvBec5rdStfi3kwO3xzowIY7hyOHZHiQThU/7pjgnejDGiAMsaOQOFTt/1aMdpcCCeKyG7A==
+"@sora-substrate/type-definitions@1.33.2":
+  version "1.33.2"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/type-definitions/-/type-definitions-1.33.2.tgz#e3874322cefdb41cf2fd390470bce06a002cdaca"
+  integrity sha512-Z3FT+2xbaf3IjRub7E5A8l0PCr79aH+Ocn1+x3QKGA/HL3V+GrI1SDSdgCEQ26bCcbIGtyRA5r+ZrxXodtcxmA==
   dependencies:
     "@open-web3/orml-type-definitions" "1.1.4"
 
-"@sora-substrate/types@1.32.11":
-  version "1.32.11"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.32.11.tgz#55237b33e1e8fe37ef33856169ff3ef9a22f5882"
-  integrity sha512-WF5MH2gzc7zyUqwvJXzw7MtCyaNFPJXtiRX9hOTiTTpsBnNRchfUZkNAHfNsM5xBD+RoOv1XGxVYc62unuuosw==
+"@sora-substrate/types@1.33.2":
+  version "1.33.2"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/types/-/types-1.33.2.tgz#9a0232a40e21c2cd3d6d9a2c0e1f261a23ae2fa4"
+  integrity sha512-w3roB1v2tCWHM1oONQGt72R3oukfIfMzn0QEQ7dgXdJ8xO5jUT1w0pO3E1MyT5vOiy5TtgyyT9uapXjBuJ+DRQ==
   dependencies:
     "@open-web3/api-mobx" "0.9.4-26"
     "@open-web3/orml-types" "1.1.4"
     "@polkadot/api" "9.14.2"
     "@polkadot/typegen" "9.14.2"
     "@polkadot/types" "9.14.2"
-    "@sora-substrate/type-definitions" "1.32.11"
+    "@sora-substrate/type-definitions" "1.33.2"
 
-"@sora-substrate/util@1.32.11":
-  version "1.32.11"
-  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.32.11.tgz#147c7f80842c9151459ffea58a83778c7d3a012a"
-  integrity sha512-gRcixdXEz7QD78yJnus7HfL5IVuPqm2ANZjMmWpHTwrBRMiGRRncZiqNn2J6jP7kNQpKLpLkKtaOTUuvbU8pWA==
+"@sora-substrate/util@1.33.2":
+  version "1.33.2"
+  resolved "https://registry.yarnpkg.com/@sora-substrate/util/-/util-1.33.2.tgz#3f35a53713b846bee8db2cb044dec0da58cbc58a"
+  integrity sha512-/F1+W1TPetsbVO/rFt4mC5eA9+TWn7PsDKlJ4g0ulUT10UOlhJaAZLhIN476qCt9EtvPF0etnXAiCcxal/nbfw==
   dependencies:
     "@polkadot/ui-keyring" "2.12.1"
-    "@sora-substrate/api" "1.32.11"
-    "@sora-substrate/connection" "1.32.11"
-    "@sora-substrate/liquidity-proxy" "1.32.11"
-    "@sora-substrate/math" "1.32.11"
-    "@sora-substrate/types" "1.32.11"
-    axios "^1.6.7"
+    "@sora-substrate/api" "1.33.2"
+    "@sora-substrate/connection" "1.33.2"
+    "@sora-substrate/liquidity-proxy" "1.33.2"
+    "@sora-substrate/math" "1.33.2"
+    "@sora-substrate/types" "1.33.2"
+    axios "^1.6.8"
     crypto-js "^4.2.0"
     lodash "^4.17.21"
 
@@ -2443,27 +2443,27 @@
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
 
-"@soramitsu/soraneo-wallet-web@1.32.6":
-  version "1.32.6"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.32.6.tgz#bf50576ef2111062b57ef4382031a2d0f13b54e0"
-  integrity sha512-BLhpV5m1E8vb40H90Fq+PGe+XrjZcovH6OY6f17kctYt5cySwFXFQBJ5WsUu3RU+dJoFubXUAiAbRQdmBE4xjg==
+"@soramitsu/soraneo-wallet-web@1.32.7":
+  version "1.32.7"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.32.7.tgz#5557a1900d82e2e001ff93985f8cbd593b713d5b"
+  integrity sha512-4maKp1nKpi10itmg748WHgUqVV4UVz/ZQukvcKCGUt8sNuP+0tNqe/BU7nD3One1cSPR4Y38WFiKH59cO810xQ==
   dependencies:
     "@polkadot/vue-identicon" "2.12.1"
-    "@sora-substrate/util" "1.32.11"
+    "@sora-substrate/util" "1.33.2"
     "@sora-test/wallet-connect" "^0.0.9"
     "@soramitsu-ui/ui-vue2" "^1.1.1"
-    "@urql/core" "^4.1.2"
+    "@urql/core" "^5.0.0"
     "@zxing/browser" "^0.1.4"
     "@zxing/library" "^0.20.0"
     base-64 "^1.0.0"
-    core-js "^3.32.2"
+    core-js "^3.36.1"
     crypto-js "^4.2.0"
     crypto-random-string "^5.0.0"
-    dayjs "^1.11.9"
+    dayjs "^1.11.10"
     direct-vuex "^0.12.1"
     file-saver "^2.0.5"
-    graphql "^16.8.0"
-    graphql-ws "^5.13.1"
+    graphql "^16.8.1"
+    graphql-ws "^5.16.0"
     is-electron "^2.2.2"
     lodash "^4.17.21"
     maska "^1.5.1"
@@ -3193,12 +3193,12 @@
     "@typescript-eslint/types" "5.62.0"
     eslint-visitor-keys "^3.3.0"
 
-"@urql/core@^4.1.2":
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/@urql/core/-/core-4.1.3.tgz#8b61f015425f9c96e8e9368d071d3f663a2bd926"
-  integrity sha512-Wapa58olpEJtZzSEuZNDxzBxmOmHuivG6Hb/QPc6HjHfCJ6f36gnlWc9a9TsC8Vddle+6PsS6+quMMTuj+bj7A==
+"@urql/core@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@urql/core/-/core-5.0.0.tgz#690e664cf66f733077c558bf685adbdac2b25823"
+  integrity sha512-kFkZxusq/VBQKEUcQFtf7AilMotLO+oGpE4WFhCiminZm8ZU2aulXSDWla50TaD0pj704FnWlXts6lRm0uHdDg==
   dependencies:
-    "@0no-co/graphql.web" "^1.0.1"
+    "@0no-co/graphql.web" "^1.0.5"
     wonka "^6.3.2"
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.4.0":
@@ -4520,12 +4520,12 @@ available-typed-arrays@^1.0.5:
   resolved "https://registry.yarnpkg.com/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz#92f95616501069d07d10edb2fc37d3e1c65123b7"
   integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
 
-axios@^1.6.7:
-  version "1.6.7"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.7.tgz#7b48c2e27c96f9c68a2f8f31e2ab19f59b06b0a7"
-  integrity sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==
+axios@^1.6.8:
+  version "1.6.8"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
+  integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
   dependencies:
-    follow-redirects "^1.15.4"
+    follow-redirects "^1.15.6"
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
@@ -5662,10 +5662,15 @@ core-js@^2.4.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
   integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
 
-core-js@^3.26.1, core-js@^3.32.2, core-js@^3.36.0, core-js@^3.8.3:
+core-js@^3.26.1, core-js@^3.36.0, core-js@^3.8.3:
   version "3.36.0"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.36.0.tgz#e752fa0b0b462a0787d56e9d73f80b0f7c0dde68"
   integrity sha512-mt7+TUBbTFg5+GngsAxeKBTl5/VS0guFeJacYge9OmHb+m058UwwIm41SE9T4Den7ClatV57B6TYTuJ0CX1MAw==
+
+core-js@^3.36.1:
+  version "3.36.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.36.1.tgz#c97a7160ebd00b2de19e62f4bbd3406ab720e578"
+  integrity sha512-BTvUrwxVBezj5SZ3f10ImnX2oRByMxql3EimVqMysepbC9EeMUOpLwdy6Eoili2x6E4kf+ZUB5k/+Jv55alPfA==
 
 core-util-is@1.0.2:
   version "1.0.2"
@@ -6010,7 +6015,7 @@ date-fns@^1.27.2:
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.30.1.tgz#2e71bf0b119153dbb4cc4e88d9ea5acfb50dc05c"
   integrity sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
 
-dayjs@^1.11.9:
+dayjs@^1.11.10:
   version "1.11.10"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.10.tgz#68acea85317a6e164457d6d6947564029a6a16a0"
   integrity sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==
@@ -7521,7 +7526,7 @@ flatted@^3.2.7:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.7.tgz#609f39207cb614b89d0765b477cb2d437fbf9787"
   integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
 
-follow-redirects@^1.0.0, follow-redirects@^1.15.4:
+follow-redirects@^1.0.0, follow-redirects@^1.15.6:
   version "1.15.6"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
   integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
@@ -7892,12 +7897,12 @@ graphemer@^1.4.0:
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
-graphql-ws@^5.13.1:
-  version "5.14.1"
-  resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.14.1.tgz#d05dba9c2cbf1582c990a2dfec4b8f6a55d99da4"
-  integrity sha512-aqkls1espsygP1PfkAuuLIV96IbztQ6EaADse97pw8wRIMT3+AL/OYfS8V2iCRkc0gzckitoDRGCQEdnySggiA==
+graphql-ws@^5.16.0:
+  version "5.16.0"
+  resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.16.0.tgz#849efe02f384b4332109329be01d74c345842729"
+  integrity sha512-Ju2RCU2dQMgSKtArPbEtsK5gNLnsQyTNIo/T7cZNp96niC1x0KdJNZV0TIoilceBPQwfb5itrGl8pkFeOUMl4A==
 
-graphql@^16.8.0:
+graphql@^16.8.1:
   version "16.8.1"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.1.tgz#1930a965bef1170603702acdb68aedd3f3cf6f07"
   integrity sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==

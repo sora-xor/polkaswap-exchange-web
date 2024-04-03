@@ -1558,5 +1558,7 @@
         },
         "pricePerToken": "Giá mỗi 1 {token}"
     },
-    "calculatingText": "Đang tính toán"
+    "calculatingText": "Đang tính toán",
+    "customisePageText": "Tùy chỉnh trang",
+    "priceChartText": "Biểu đồ giá"
 }

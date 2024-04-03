@@ -1558,5 +1558,7 @@
         },
         "pricePerToken": "Pris per 1 {token}"
     },
-    "calculatingText": "Beregner"
+    "calculatingText": "Beregner",
+    "customisePageText": "Tilpass siden",
+    "priceChartText": "Prisdiagram"
 }
