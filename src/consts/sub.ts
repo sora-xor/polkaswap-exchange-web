@@ -75,14 +75,14 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
   },
   [SubNetworkId.Alphanet]: {
     id: SubNetworkId.Alphanet,
-    name: 'Alphanet Moonbase Relay Testnet',
+    name: 'Moonbase Alphanet relay chain',
     nativeCurrency: null,
     endpointUrls: ['wss://frag-moonbase-relay-rpc-ws.g.moonbase.moonbeam.network'],
     blockExplorerUrls: [],
     shortName: 'Alphanet',
     nodes: [
       {
-        chain: 'Alphanet',
+        chain: 'Moonbase Alphanet relay chain',
         name: 'Parity',
         address: 'wss://frag-moonbase-relay-rpc-ws.g.moonbase.moonbeam.network',
       },
