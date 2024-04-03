@@ -51,16 +51,34 @@ export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string 
 
 // Native token for network
 export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): [string, number] => {
-  const index = events.findIndex(
-    (e) =>
-      api.events.balances.Deposit.is(e.event) &&
-      subBridgeApi.formatAddress(e.event.data.who.toString()) === subBridgeApi.formatAddress(to)
-  );
+  const index = events.findIndex((e) => {
+    if (!api.events.balances.Deposit.is(e.event)) return false;
+    return subBridgeApi.formatAddress(e.event.data.who.toString()) === subBridgeApi.formatAddress(to);
+  });
 
   if (index === -1) throw new Error(`Unable to find "balances.Deposit" event`);
 
   const event = events[index];
   const balance = event.event.data.amount.toString();
+
+  return [balance, index];
+};
+
+// for SORA from Relaychain
+export const getParachainBridgeAppMintedBalance = (
+  events: Array<any>,
+  to: string,
+  api: ApiPromise
+): [string, number] => {
+  const index = events.findIndex((e) => {
+    if (!api.events.parachainBridgeApp.Minted.is(e.event)) return false;
+    return subBridgeApi.formatAddress(e.event.data[3].toString()) === subBridgeApi.formatAddress(to);
+  });
+
+  if (index === -1) throw new Error(`Unable to find "parachainBridgeApp.Minted" event`);
+
+  const event = events[index];
+  const balance = event.event.data[4].toString();
 
   return [balance, index];
 };

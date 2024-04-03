@@ -9,6 +9,7 @@ import { SUB_NETWORKS } from '@/consts/sub';
 import { state, getter } from '@/store/decorators';
 import type { AvailableNetwork } from '@/store/web3/types';
 import type { NetworkData } from '@/types/bridge';
+import { getSubstrateExplorerLinks } from '@/utils';
 import { isOutgoingTransaction } from '@/utils/bridge/common/utils';
 import { isUnsignedToPart } from '@/utils/bridge/eth/utils';
 
@@ -23,58 +24,31 @@ const getSubNetworkLinks = (
   networkData: NetworkData,
   type: EvmLinkType,
   value?: string, // tx hash or account address
-  blockNumber?: number,
+  blockId?: number | string,
   eventIndex?: number
 ): WALLET_CONSTS.ExplorerLink[] => {
-  const links: Array<WALLET_CONSTS.ExplorerLink> = [];
-  const explorerUrl = networkData.blockExplorerUrls[0];
+  const baseLinks: WALLET_CONSTS.ExplorerLink[] = [];
 
-  switch (type) {
-    case EvmLinkType.Account: {
-      if (explorerUrl && value) {
-        links.push({
-          type: WALLET_CONSTS.ExplorerType.Subscan,
-          value: `${explorerUrl}/account/${value}`,
-        });
-      }
-      break;
-    }
-    case EvmLinkType.Transaction: {
-      if (explorerUrl) {
-        if (value) {
-          links.push({
-            type: WALLET_CONSTS.ExplorerType.Subscan,
-            value: `${explorerUrl}/extrinsic/${value}`,
-          });
-        } else if (Number.isFinite(blockNumber)) {
-          let link = `${explorerUrl}/block/${blockNumber}`;
+  const subscanLink = networkData.blockExplorerUrls[0];
+  const polkadotUrl = networkData.nodes?.[0].address;
+  const polkadotLink = polkadotUrl
+    ? `https://polkadot.js.org/apps/?rpc=${networkData.nodes?.[0].address}#/explorer/query`
+    : '';
 
-          if (Number.isFinite(eventIndex)) {
-            link += `?tab=event&event=${blockNumber}-${eventIndex}`;
-          }
-
-          links.push({
-            type: WALLET_CONSTS.ExplorerType.Subscan,
-            value: link,
-          });
-        }
-      }
-
-      if (Number.isFinite(blockNumber)) {
-        const networkUrl = networkData.nodes?.[0].address;
-        const polkadotBaseLink = `https://polkadot.js.org/apps/?rpc=${networkUrl}#/explorer/query`;
-        const polkadotLink = {
-          type: WALLET_CONSTS.ExplorerType.Polkadot,
-          value: `${polkadotBaseLink}/${blockNumber}`,
-        };
-
-        links.push(polkadotLink);
-      }
-      break;
-    }
+  if (subscanLink) {
+    baseLinks.push({
+      type: WALLET_CONSTS.ExplorerType.Subscan,
+      value: subscanLink,
+    });
+  }
+  if (polkadotLink) {
+    baseLinks.push({
+      type: WALLET_CONSTS.ExplorerType.Polkadot,
+      value: polkadotLink,
+    });
   }
 
-  return links;
+  return getSubstrateExplorerLinks(baseLinks, type === EvmLinkType.Account, value, blockId, eventIndex);
 };
 
 const getEvmNetworkLinks = (
@@ -186,7 +160,7 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
     networkType: BridgeNetworkType,
     networkId: BridgeNetworkId,
     value?: string,
-    blockNumber?: number,
+    blockId?: number | string,
     eventIndex?: number,
     type = EvmLinkType.Transaction
   ): Array<WALLET_CONSTS.ExplorerLink> {
@@ -198,7 +172,7 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
     }
 
     return networkType === BridgeNetworkType.Sub
-      ? getSubNetworkLinks(networkData, type, value, blockNumber, eventIndex)
+      ? getSubNetworkLinks(networkData, type, value, blockId, eventIndex)
       : getEvmNetworkLinks(networkData, type, value);
   }
 

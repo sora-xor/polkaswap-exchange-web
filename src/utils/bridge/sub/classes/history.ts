@@ -10,6 +10,7 @@ import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
 import {
   getDepositedBalance,
+  getParachainBridgeAppMintedBalance,
   getMessageAcceptedNonces,
   getMessageDispatchedNonces,
   isMessageDispatchedNonces,
@@ -54,9 +55,8 @@ const findTxInBlock = async (blockHash: string, soraHash: string) => {
   const txEvents = getTxEvents(blockEvents, txIndex);
   const extrinsics = await api.system.getExtrinsicsFromBlock(blockHash);
   const tx = extrinsics[txIndex];
-  const txHash = tx.hash.toString();
 
-  return { hash: txHash, events: txEvents };
+  return { tx, txEvents, blockEvents };
 };
 
 class SubBridgeHistory extends SubNetworksConnector {
@@ -89,13 +89,14 @@ class SubBridgeHistory extends SubNetworksConnector {
   }
 
   public async updateAccountHistory(
+    network: SubNetwork,
     address: string,
     inProgressIds: Record<string, boolean>,
     assetDataByAddress: (address?: Nullable<string>) => Nullable<RegisteredAccountAsset>,
     updateCallback?: FnWithoutArgs | AsyncFnWithoutArgs
   ): Promise<void> {
     try {
-      const transactions = await subBridgeApi.getUserTransactions(address, this.network.subNetwork);
+      const transactions = await subBridgeApi.getUserTransactions(address, network);
 
       if (!transactions.length) return;
 
@@ -176,22 +177,26 @@ class SubBridgeHistory extends SubNetworksConnector {
       history.blockId = blockId;
       history.externalBlockId = externalBlockId;
 
-      const [{ hash, events: soraEvents }, startTime] = await Promise.all([
+      const [{ tx: soraTx, txEvents: soraTxEvents, blockEvents: soraBlockEvents }, startTime] = await Promise.all([
         findTxInBlock(blockId, id),
         api.system.getBlockTimestamp(blockId, this.soraApi),
       ]);
 
-      history.txId = hash;
+      history.txId = soraTx.hash.toString();
       history.startTime = history.endTime = startTime;
 
       if (isOutgoing) {
         return await this.processOutgoingTxExternalData({
           history,
           asset,
-          soraEvents,
+          events: soraTxEvents,
         });
       } else {
-        return await this.processIncomingTxExternalData({ history, soraEvents });
+        return await this.processIncomingTxExternalData({
+          history,
+          txEvents: soraTxEvents,
+          blockEvents: soraBlockEvents,
+        });
       }
     } catch (error) {
       console.error(`[${id}]`, error);
@@ -212,17 +217,17 @@ class SubBridgeHistory extends SubNetworksConnector {
   private async processOutgoingTxExternalData({
     history,
     asset,
-    soraEvents,
+    events,
   }: {
     history: SubHistory;
     asset: Nullable<RegisteredAccountAsset>;
-    soraEvents: any[];
+    events: any[];
   }): Promise<SubHistory> {
     // update SORA network fee
-    const soraFeeEvent = soraEvents.find((e) => this.soraApi.events.transactionPayment.TransactionFeePaid.is(e.event));
+    const soraFeeEvent = events.find((e) => this.soraApi.events.transactionPayment.TransactionFeePaid.is(e.event));
     history.soraNetworkFee = soraFeeEvent.event.data[1].toString();
     // sended from SORA nonces
-    const [soraBatchNonce, soraMessageNonce] = getMessageAcceptedNonces(soraEvents, this.soraApi);
+    const [soraBatchNonce, soraMessageNonce] = getMessageAcceptedNonces(events, this.soraApi);
     // api for Standalone network or SORA parachain
     const networkApi = this.getIntermediateApi(history);
     const networkBlockId = history.externalBlockId as string;
@@ -376,13 +381,15 @@ class SubBridgeHistory extends SubNetworksConnector {
 
   private async processIncomingTxExternalData({
     history,
-    soraEvents,
+    txEvents,
+    blockEvents,
   }: {
     history: SubHistory;
-    soraEvents: any[];
+    txEvents: any[];
+    blockEvents: any[];
   }): Promise<Nullable<SubHistory>> {
     // find SORA hash event index
-    const requestStatusUpdateEventIndex = soraEvents.findIndex((e) => {
+    const requestStatusUpdateEventIndex = txEvents.findIndex((e) => {
       if (!this.soraApi.events.bridgeProxy.RequestStatusUpdate.is(e.event)) return false;
 
       const hash = e.event.data[0].toString();
@@ -391,7 +398,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     });
     // Received on SORA nonces
     const [soraBatchNonce, soraMessageNonce] = getMessageDispatchedNonces(
-      soraEvents.slice(requestStatusUpdateEventIndex),
+      txEvents.slice(requestStatusUpdateEventIndex),
       this.soraApi
     );
     // api for Standalone network or SORA parachain
@@ -429,6 +436,9 @@ class SubBridgeHistory extends SubNetworksConnector {
     const incomingMessageFromRelaychain = networkExtrinsicEvents.find((e) =>
       parachainApi.events.parachainSystem.DownwardMessagesProcessed.is(e.event)
     );
+    // Token is minted to account event
+    const [_, eventIndex] = getParachainBridgeAppMintedBalance(blockEvents, history.from as string, this.soraApi);
+    history.payload.eventIndex = eventIndex;
 
     if (incomingMessageFromRelaychain) {
       history.parachainBlockId = history.externalBlockId;
@@ -564,7 +574,13 @@ export const updateSubBridgeHistory =
         await subBridgeHistory.clearHistory(networkSelected as SubNetwork, inProgressIds, updateCallback);
       }
 
-      await subBridgeHistory.updateAccountHistory(address, inProgressIds, assetDataByAddress, updateCallback);
+      await subBridgeHistory.updateAccountHistory(
+        networkSelected as SubNetwork,
+        address,
+        inProgressIds,
+        assetDataByAddress,
+        updateCallback
+      );
     } catch (error) {
       console.error(error);
     }

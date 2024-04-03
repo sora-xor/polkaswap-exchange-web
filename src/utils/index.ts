@@ -48,6 +48,8 @@ export const copyToClipboard = async (text: string): Promise<void> => {
   }
 };
 
+export const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
 export const formatAddress = (address: string, length = address.length / 2): string => {
   return `${address.slice(0, length / 2)}...${address.slice(-length / 2)}`;
 };
@@ -384,53 +386,67 @@ export const sortPools = <T extends Asset>(a: PoolAssets<T>, b: PoolAssets<T>) =
 
 export const calcElScrollGutter: () => number = scrollbarWidth;
 
-export const soraExplorerLinks = (
-  soraNetwork: Nullable<WALLET_CONSTS.SoraNetwork>,
-  txValue: Nullable<string>,
-  blockHash: Nullable<string>,
-  isAccount = false
-): Array<WALLET_CONSTS.ExplorerLink> => {
-  if (!soraNetwork) return [];
+const getSubscanTxLink = (baseUrl: string, txId?: string, blockId?: number | string, eventIndex?: number): string => {
+  if (!(txId || blockId)) return '';
 
-  const baseLinks = getExplorerLinks(soraNetwork);
+  let link = txId ? `${baseUrl}/extrinsic/${txId}` : `${baseUrl}/block/${blockId}`;
 
+  if (Number.isFinite(eventIndex) && Number.isFinite(blockId)) {
+    link += `?event=${blockId}-${eventIndex}`;
+
+    if (!txId) {
+      link += '&tab=event';
+    }
+  }
+
+  return link;
+};
+
+const getPolkadotTxLink = (baseUrl: string, txId?: string, blockId?: number | string, eventIndex?: number): string => {
+  if (blockId) {
+    return `${baseUrl}/${blockId}`;
+  }
+  return '';
+};
+
+export const getSubstrateExplorerLinks = (
+  baseLinks: WALLET_CONSTS.ExplorerLink[],
+  isAccount = false,
+  id?: string, // tx hash or account address
+  blockId?: number | string,
+  eventIndex?: number
+) => {
   if (!baseLinks.length) return [];
 
   if (isAccount) {
     return baseLinks
       .filter(({ type }) => type !== WALLET_CONSTS.ExplorerType.Polkadot)
-      .map(({ type, value }) => ({ type, value: `${value}/account/${txValue}` }));
-  }
-
-  const txId = txValue ?? blockHash;
-
-  if (!txId) return [];
-
-  if (!txValue) {
-    // txId is block
-    return baseLinks.map(({ type, value }) => {
-      const link = { type } as WALLET_CONSTS.ExplorerLink;
-      if (type === WALLET_CONSTS.ExplorerType.Polkadot) {
-        link.value = `${value}/${txId}`;
-      } else {
-        link.value = `${value}/block/${txId}`;
-      }
-      return link;
-    });
+      .map(({ type, value }) => ({ type, value: `${value}/account/${id}` }));
   }
 
   return baseLinks
     .map(({ type, value }) => {
       const link = { type } as WALLET_CONSTS.ExplorerLink;
-      if (type === WALLET_CONSTS.ExplorerType.Sorascan) {
-        link.value = `${value}/transaction/${txId}`;
-      } else if (type === WALLET_CONSTS.ExplorerType.Subscan) {
-        link.value = `${value}/extrinsic/${txId}`;
-      } else if (blockHash) {
-        // ExplorerType.Polkadot
-        link.value = `${value}/${blockHash}`;
+
+      if (type === WALLET_CONSTS.ExplorerType.Subscan) {
+        link.value = getSubscanTxLink(value, id, blockId, eventIndex);
+      } else if (type === WALLET_CONSTS.ExplorerType.Polkadot) {
+        link.value = getPolkadotTxLink(value, id, blockId, eventIndex);
       }
+
       return link;
     })
-    .filter((value) => !!value.value); // Polkadot explorer won't be shown without block
+    .filter((value) => !!value.value);
+};
+
+export const soraExplorerLinks = (
+  soraNetwork: Nullable<WALLET_CONSTS.SoraNetwork>,
+  txValue?: string,
+  blockId?: number | string,
+  eventIndex?: number,
+  isAccount = false
+): Array<WALLET_CONSTS.ExplorerLink> => {
+  if (!soraNetwork) return [];
+
+  return getSubstrateExplorerLinks(getExplorerLinks(soraNetwork), isAccount, txValue, blockId, eventIndex);
 };

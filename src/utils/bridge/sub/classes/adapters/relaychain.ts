@@ -64,13 +64,13 @@ export class RelaychainAdapter extends SubAdapter {
       switch (this.subNetwork) {
         case SubNetworkId.Rococo:
           // Hardcoded value for Rococo - 0.000125 ROC
-          return '125810197';
+          return new FPNumber(0.000125, asset.externalDecimals).toCodecString();
         case SubNetworkId.Kusama:
-          // Hardcoded value for Kusama - 0.0007 KSM
-          return '700000000';
+          // Hardcoded value for Kusama - 0.002 KSM
+          return new FPNumber(0.002, asset.externalDecimals).toCodecString();
         case SubNetworkId.Polkadot:
-          // Hardcoded value for Polkadot - 0.01836 DOT
-          return '183600000';
+          // Hardcoded value for Polkadot - 0.059 DOT
+          return new FPNumber(0.059, asset.externalDecimals).toCodecString();
         default:
           return '0';
       }
