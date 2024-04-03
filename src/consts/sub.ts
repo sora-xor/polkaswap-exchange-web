@@ -73,6 +73,21 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.Alphanet]: {
+    id: SubNetworkId.Alphanet,
+    name: 'Alphanet Moonbase Relay Testnet',
+    nativeCurrency: null,
+    endpointUrls: ['wss://frag-moonbase-relay-rpc-ws.g.moonbase.moonbeam.network'],
+    blockExplorerUrls: [],
+    shortName: 'Alphanet',
+    nodes: [
+      {
+        chain: 'Alphanet',
+        name: 'Parity',
+        address: 'wss://frag-moonbase-relay-rpc-ws.g.moonbase.moonbeam.network',
+      },
+    ],
+  },
   // SORA Parachains
   [SubNetworkId.RococoSora]: {
     id: SubNetworkId.RococoSora,
@@ -137,6 +152,26 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.AlphanetSora]: {
+    id: SubNetworkId.AlphanetSora,
+    name: 'SORA Alphanet Parachain',
+    nativeCurrency: {
+      name: 'XOR',
+      symbol: 'XOR',
+      decimals: 18,
+    },
+    endpointUrls: ['wss://ws.parachain-collator-2.c1.stg1.sora2.soramitsu.co.jp'],
+    blockExplorerUrls: [],
+    shortName: 'SORA Alphanet',
+    nodes: [
+      {
+        chain: 'SORA Alphanet Parachain',
+        name: 'Soramitsu',
+        address: 'wss://ws.parachain-collator-2.c1.stg1.sora2.soramitsu.co.jp',
+      },
+    ],
+  },
+  // Standalones
   [SubNetworkId.Liberland]: {
     id: SubNetworkId.Liberland,
     name: 'Liberland',

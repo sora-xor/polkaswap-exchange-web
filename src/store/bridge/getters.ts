@@ -46,7 +46,10 @@ const getters = defineGetters<BridgeState>()({
 
     if (!selectedNetwork) return null;
 
-    const { symbol } = selectedNetwork.nativeCurrency;
+    const symbol = selectedNetwork.nativeCurrency?.symbol;
+
+    if (!symbol) return null;
+
     const filteredBySymbol = assets.filter((asset) => asset.symbol === symbol);
     const registered = filteredBySymbol.find((asset) => asset.address in registeredAssets);
 

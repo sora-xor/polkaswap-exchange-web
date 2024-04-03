@@ -29,16 +29,6 @@ export class SubNetworksConnector {
 
   public static nodes: Partial<Record<SubNetwork, Node[]>> = {};
 
-  public readonly adapters = Object.freeze({
-    [SubNetworkId.Rococo]: () => new RelaychainAdapter(SubNetworkId.Rococo),
-    [SubNetworkId.Kusama]: () => new RelaychainAdapter(SubNetworkId.Kusama),
-    [SubNetworkId.Polkadot]: () => new RelaychainAdapter(SubNetworkId.Polkadot),
-    [SubNetworkId.RococoSora]: () => new SoraParachainAdapter(SubNetworkId.RococoSora),
-    [SubNetworkId.KusamaSora]: () => new SoraParachainAdapter(SubNetworkId.KusamaSora),
-    [SubNetworkId.PolkadotSora]: () => new SoraParachainAdapter(SubNetworkId.PolkadotSora),
-    [SubNetworkId.Liberland]: () => new LiberlandAdapter(SubNetworkId.Liberland),
-  });
-
   get uniqueAdapters(): SubAdapter[] {
     return [this.soraParachain, this.relaychain, this.parachain, this.standalone].filter((c) => !!c) as SubAdapter[];
   }
@@ -72,11 +62,11 @@ export class SubNetworksConnector {
   ): Adapter | undefined {
     if (!network) return undefined;
 
-    const adapter = this.getAdapterForNetwork<Adapter>(network);
+    const adapter = this.getAdapterForNetwork(network);
     // reuse api from connectorAdapter if possible
     this.cloneApi(adapter, connectorAdapter);
 
-    return adapter;
+    return adapter as Adapter;
   }
 
   protected cloneApi(adapter?: SubAdapter, connectorAdapter?: SubAdapter): void {
@@ -88,18 +78,31 @@ export class SubNetworksConnector {
     }
   }
 
-  public getAdapterForNetwork<T>(network: SubNetwork): T {
-    if (!(network in this.adapters)) {
-      throw new Error(`[${this.constructor.name}] Adapter for "${network}" network not implemented`);
+  protected getAdapter(network: SubNetwork) {
+    if (subBridgeApi.isRelayChain(network)) {
+      return new RelaychainAdapter(network);
+    }
+    if (subBridgeApi.isSoraParachain(network)) {
+      return new SoraParachainAdapter(network);
+    }
+    if (subBridgeApi.isStandalone(network)) {
+      if (network === SubNetworkId.Liberland) {
+        return new LiberlandAdapter(SubNetworkId.Liberland);
+      }
     }
 
+    console.info(`[${this.constructor.name}] Adapter for "${network}" network not implemented, "SubAdapter" is used`);
+
+    return new SubAdapter(network);
+  }
+
+  public getAdapterForNetwork(network: SubNetwork) {
+    const adapter = this.getAdapter(network);
     const nodes = SubNetworksConnector.nodes[network];
 
     if (!nodes) {
       throw new Error(`[${this.constructor.name}] Nodes for "${network}" network is not defined`);
     }
-
-    const adapter = this.adapters[network]();
 
     adapter.subNetworkConnection.setDefaultNodes(nodes);
 

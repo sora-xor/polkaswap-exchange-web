@@ -12,7 +12,7 @@ export interface NetworkData {
     name: string;
     symbol: string;
     decimals: number;
-  };
+  } | null;
   endpointUrls: string[];
   blockExplorerUrls: string[];
   shortName: string;
