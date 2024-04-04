@@ -14,6 +14,7 @@ import {
   getBridgeProxyHash,
   getDepositedBalance,
   getParachainBridgeAppMintedBalance,
+  getSubstrateBridgeAppMintedBalance,
   getMessageAcceptedNonces,
   isMessageDispatchedNonces,
   isAssetAddedToChannel,
@@ -79,15 +80,17 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     this.updateTransactionParams(id, { payload: { ...prevPayload, ...params } });
   }
 
-  async saveParachainBlock(id: string): Promise<void> {
-    const adapter = this.connector.soraParachain;
+  async saveStartBlock(id: string): Promise<void> {
+    const adapter =
+      this.transferType === SubTransferType.Standalone ? this.connector.network : this.connector.soraParachain;
 
-    if (!adapter) throw new Error(`[${this.constructor.name}]: Sora Parachain Adapter is not exists`);
+    if (!adapter) throw new Error(`[${this.constructor.name}]: Adapter is not exists`);
 
+    await adapter.connect();
     // get current sora parachain block number
-    const parachainStartBlock = await adapter.getBlockNumber();
+    const startBlock = await adapter.getBlockNumber();
     // update history data
-    this.updateTransactionPayload(id, { parachainStartBlock });
+    this.updateTransactionPayload(id, { startBlock });
   }
 }
 
@@ -141,11 +144,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     await this.connector.start();
     // sign transaction
     await this.connector.network.transfer(asset, tx.to as string, tx.amount as string, id);
-
-    if (this.transferType !== SubTransferType.Standalone) {
-      // store sora parachain block number when tx was signed
-      await this.saveParachainBlock(id);
-    }
+    // save start block when tx was signed
+    await this.saveStartBlock(id);
   }
 
   private async updateTxSigningData(id: string): Promise<void> {
@@ -214,7 +214,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     if (!adapter) throw new Error(`[${this.constructor.name}] adapter is not defined`);
 
-    const startBlockHeight: number = isStandalone ? tx.externalBlockHeight : tx.payload.parachainStartBlock;
+    const startBlockHeight: number = tx.payload.startBlock;
 
     if (!startBlockHeight) throw new Error(`[${this.constructor.name}] startBlockHeight is not defined`);
 
@@ -322,6 +322,9 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     let amount!: string;
     let eventIndex!: number;
 
+    const isStandalone = this.transferType === SubTransferType.Standalone;
+    const getMintedBalance = isStandalone ? getSubstrateBridgeAppMintedBalance : getParachainBridgeAppMintedBalance;
+
     try {
       await new Promise<void>((resolve, reject) => {
         const eventsObservable = api.system.getEventsObservable(subBridgeApi.apiRx);
@@ -338,11 +341,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
             const foundedEvents = events.slice(substrateDispatchEventIndex);
 
             soraHash = getBridgeProxyHash(foundedEvents, subBridgeApi.api);
-            [amount, eventIndex] = getParachainBridgeAppMintedBalance(
-              foundedEvents,
-              tx.from as string,
-              subBridgeApi.api
-            );
+
+            [amount, eventIndex] = getMintedBalance(foundedEvents, tx.from as string, subBridgeApi.api);
 
             resolve();
           } catch (error) {
@@ -458,11 +458,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     await this.connector.start();
     // sign transaction
     await subBridgeApi.transfer(asset, tx.to as string, tx.amount as string, tx.externalNetwork as SubNetwork, id);
-
-    if (this.transferType !== SubTransferType.Standalone) {
-      // store sora parachain block number when tx was signed
-      await this.saveParachainBlock(id);
-    }
+    // save start block when tx was signed
+    await this.saveStartBlock(id);
   }
 
   private async waitForSendingExecution(id: string): Promise<void> {
