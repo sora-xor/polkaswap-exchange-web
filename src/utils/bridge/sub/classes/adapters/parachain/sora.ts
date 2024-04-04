@@ -1,7 +1,7 @@
 import { ZeroStringValue } from '@/consts';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 
-import { SubAdapter } from './substrate';
+import { SubAdapter } from '../substrate';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';

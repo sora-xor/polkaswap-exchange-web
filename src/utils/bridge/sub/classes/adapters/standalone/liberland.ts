@@ -4,7 +4,7 @@ import { SubNetworkId, LiberlandAssetType } from '@sora-substrate/util/build/bri
 
 import { ZeroStringValue } from '@/consts';
 
-import { SubAdapter } from './substrate';
+import { SubAdapter } from '../substrate';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';

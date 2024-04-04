@@ -151,6 +151,8 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
         return 'sora-kusama';
       case SubNetworkId.Liberland:
         return 'liberland';
+      case SubNetworkId.AlphanetMoonbase:
+        return 'moonbase';
       default:
         return 'ethereum';
     }
