@@ -601,6 +601,11 @@ export default class PriceChartWidget extends Mixins(
             { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
             { title: 'Change', data: formatChange(change), color: changeColor }
           );
+        } else if (seriesType === CHART_TYPES.DEPTH) {
+          rows.push({
+            title: 'Price',
+            data: '',
+          });
         } else {
           rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
         }
@@ -692,7 +697,58 @@ export default class PriceChartWidget extends Mixins(
     const option = {
       animation: false,
       dataZoom,
-      tooltip: [this.tooltipSpec()],
+      tooltip: [
+        this.tooltipSpec({
+          //       axisPointer: {
+          //         type: 'cross',
+          //       },
+          //       formatter: (params) => {
+          //         const { data, seriesType } = params[0];
+          //         const [timestamp, open, close, low, high, volume] = data;
+          //         const rows: any[] = [];
+          //         if (seriesType === CHART_TYPES.CANDLE) {
+          //           const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
+          //           const changeColor = signific(change)(
+          //             this.theme.color.status.success,
+          //             this.theme.color.status.error,
+          //             this.theme.color.base.content.primary
+          //           );
+          //           rows.push(
+          //             { title: 'Open', data: formatPrice(open, this.precision, this.symbol) },
+          //             { title: 'High', data: formatPrice(high, this.precision, this.symbol) },
+          //             { title: 'Low', data: formatPrice(low, this.precision, this.symbol) },
+          //             { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
+          //             { title: 'Change', data: formatChange(change), color: changeColor }
+          //           );
+          //         } else if (seriesType === CHART_TYPES.DEPTH) {
+          //           rows.push({
+          //             title: 'Price',
+          //             data: '',
+          //           });
+          //         } else {
+          //           rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
+          //         }
+          //         const withVolume = false;
+          //         if (withVolume) {
+          //           rows.push({ title: 'Volume', data: `$${formatAmount(volume, 2)}` });
+          //         }
+          //         return `
+          //   <table>
+          //     ${rows
+          //       .map(
+          //         (row) => `
+          //       <tr>
+          //         <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
+          //         <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
+          //       </tr>
+          //     `
+          //       )
+          //       .join('')}
+          //   </table>
+          // `;
+          //       },
+        }),
+      ],
       xAxis: [
         this.yAxisSpec({
           axisLine: {

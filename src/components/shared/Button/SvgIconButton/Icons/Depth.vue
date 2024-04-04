@@ -1,10 +1,11 @@
 <template>
-  <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-    <g id="SVGRepo_iconCarrier">
-      <path d="M1 0H0V15H15V0H14V5H12V7H11V10H9V12H8V11H7V8H5V5H3V4H1V0Z" fill="#000000"></path>
-    </g>
+  <svg width="25" height="18" viewBox="0 0 25 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M2.02868 1.59421L2.03817 2.54368H3.9209H5.80366L5.81276 5.37434L5.82185 8.205L7.71428 8.2142L9.60671 8.22339V11.0626V13.9018H10.5485H11.4903V15.8008V17.6997H5.80408H0.117918V9.18702C0.117918 4.50502 0.128828 0.663413 0.142191 0.650067C0.155553 0.636757 0.58333 0.630085 1.09285 0.635303L2.01923 0.644744L2.02868 1.59421ZM24.7817 10.1217V17.6997H19.0955H13.4093V16.7414V15.783H15.2926H17.1758L17.185 13.8929L17.1942 12.0029L19.0866 11.9937L20.979 11.9845V9.14528V6.30606H21.9208H22.8626V4.42487V2.54368H23.8221H24.7817V10.1217Z"
+      fill="#F8087B"
+    />
   </svg>
 </template>
 
