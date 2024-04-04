@@ -63,6 +63,7 @@
 import { FPNumber } from '@sora-substrate/util';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 import { components, mixins, WALLET_CONSTS, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
 import last from 'lodash/fp/last';
@@ -600,8 +601,6 @@ export default class PriceChartWidget extends Mixins(
             { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
             { title: 'Change', data: formatChange(change), color: changeColor }
           );
-        } else if (seriesType === CHART_TYPES.DEPTH) {
-          rows.push({ title: 'Delta', data: formatPrice(close, this.precision, this.symbol) });
         } else {
           rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
         }
@@ -683,7 +682,7 @@ export default class PriceChartWidget extends Mixins(
    * Used only on trade page.
    */
   get marketDepthSpec(): any {
-    const data = this.getDepthChartData();
+    const { buy, sell, minBidPrice, maxAskPrice } = this.getDepthChartData();
 
     const dataZoom = {
       id: 'dataZoomDepthChart',
@@ -692,45 +691,54 @@ export default class PriceChartWidget extends Mixins(
 
     const option = {
       animation: false,
+      dataZoom,
+      tooltip: [this.tooltipSpec()],
+      xAxis: [
+        this.yAxisSpec({
+          axisLine: {
+            show: false,
+          },
+          min: minBidPrice,
+          max: maxAskPrice,
+        }),
+      ],
+      yAxis: [
+        this.yAxisSpec({
+          axisLine: {
+            show: false,
+          },
+        }),
+      ],
 
-      tooltip: {
-        trigger: 'axis',
-      },
       grid: {
-        left: '0%',
+        left: '1%',
         right: '1%',
-        bottom: '1%',
+        bottom: '3%',
         containLabel: true,
-      },
-      xAxis: {
-        type: 'value',
-      },
-      yAxis: {
-        type: 'value',
       },
       series: [
         {
           name: 'Buy',
           type: 'line',
-          step: 'start',
-          data: data.buy,
+          step: 'end',
+          data: buy,
           itemStyle: {
             color: '#34ad87',
           },
           areaStyle: {
-            color: 'rgba(185, 235, 219, 0.4)',
+            color: this.libraryTheme === Theme.LIGHT ? 'rgba(185, 235, 219, 0.4)' : 'rgba(1, 202, 139, 0.2)',
           },
         },
         {
           name: 'Sell',
           type: 'line',
           step: 'end',
-          data: data.sell,
+          data: sell,
           itemStyle: {
             color: '#f754a3',
           },
           areaStyle: {
-            color: 'rgba(255, 216, 235, 0.8)',
+            color: this.libraryTheme === Theme.LIGHT ? 'rgba(255, 216, 235, 0.8)' : 'rgba(255, 0, 124, 0.3)',
           },
         },
       ],

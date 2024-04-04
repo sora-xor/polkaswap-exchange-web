@@ -6,3 +6,12 @@ export type SnapshotItem = {
   price: OCLH;
   volume: number;
 };
+
+export type DepthChartStep = [number, number];
+
+export type DepthChartData = {
+  buy: Array<DepthChartStep>;
+  sell: Array<DepthChartStep>;
+  minBidPrice: number;
+  maxAskPrice: number;
+};
