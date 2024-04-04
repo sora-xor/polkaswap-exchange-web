@@ -145,16 +145,9 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'LLD',
       decimals: 12,
     },
-    endpointUrls: ['wss://testchain.liberland.org:443'],
+    endpointUrls: [],
     blockExplorerUrls: [],
     shortName: 'Liberland',
-    nodes: [
-      {
-        chain: 'Liberland Testnet',
-        name: 'Liberland',
-        address: 'wss://testchain.liberland.org:443', // stage
-      },
-    ],
   },
 };
 

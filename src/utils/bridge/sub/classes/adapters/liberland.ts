@@ -30,8 +30,9 @@ export class LiberlandAdapter extends SubAdapter {
       if (result.isEmpty) return ZeroStringValue;
 
       const data = result.unwrap();
+      const minBalance = data.minBalance.toString();
 
-      return data.minBalance.toString();
+      return minBalance > '1' ? minBalance : ZeroStringValue;
     }, ZeroStringValue);
   }
 
