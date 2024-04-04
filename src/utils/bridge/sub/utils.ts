@@ -82,6 +82,24 @@ export const getParachainBridgeAppMintedBalance = (
 
   return [balance, index];
 };
+// for SORA from Liberland
+export const getSubstrateBridgeAppMintedBalance = (
+  events: Array<any>,
+  to: string,
+  api: ApiPromise
+): [string, number] => {
+  const index = events.findIndex((e) => {
+    if (!api.events.substrateBridgeApp.Minted.is(e.event)) return false;
+    return subBridgeApi.formatAddress(e.event.data[3].toString()) === subBridgeApi.formatAddress(to);
+  });
+
+  if (index === -1) throw new Error(`Unable to find "parachainBridgeApp.Minted" event`);
+
+  const event = events[index];
+  const balance = event.event.data[4].toString();
+
+  return [balance, index];
+};
 
 export const getReceivedAmount = (sendedAmount: string, receivedAmount: CodecString, decimals?: number) => {
   const sended = new FPNumber(sendedAmount, decimals);
