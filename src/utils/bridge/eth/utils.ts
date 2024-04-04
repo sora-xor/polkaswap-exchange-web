@@ -123,8 +123,8 @@ export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: st
 
 export async function getIncomingEvmTransactionData({ asset, value, recipient, getContractAddress }: EthTxParams) {
   const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
-
-  const [signer, accountId] = await Promise.all([ethersUtil.getSigner(), ethersUtil.accountAddressToHex(recipient)]);
+  const signer = await ethersUtil.getSigner();
+  const accountId = ethersUtil.accountAddressToHex(recipient);
 
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
 

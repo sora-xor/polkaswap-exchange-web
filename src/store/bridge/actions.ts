@@ -29,7 +29,7 @@ import evmBridge from '@/utils/bridge/evm';
 import { evmBridgeApi } from '@/utils/bridge/evm/api';
 import subBridge from '@/utils/bridge/sub';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
-import { subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
+import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import { updateSubBridgeHistory } from '@/utils/bridge/sub/classes/history';
 import ethersUtil from '@/utils/ethers-util';
 
@@ -50,10 +50,11 @@ const getSoraBalance = async (accountAddress: string, asset: RegisteredAccountAs
 const getExternalBalance = async (
   accountAddress: string,
   asset: RegisteredAccountAsset,
-  isSub: boolean
+  isSub: boolean,
+  subConnector: SubNetworksConnector
 ): Promise<CodecString> => {
   return isSub
-    ? await subBridgeConnector.network.getTokenBalance(accountAddress, asset?.externalAddress)
+    ? await subConnector.network.getTokenBalance(accountAddress, asset?.externalAddress)
     : await ethersUtil.getAccountAssetBalance(accountAddress, asset?.externalAddress);
 };
 
@@ -61,14 +62,15 @@ const getAccountBridgeBalance = async (
   accountAddress: string,
   asset: Nullable<RegisteredAccountAsset>,
   isSora: boolean,
-  isSub: boolean
+  isSub: boolean,
+  subConnector: SubNetworksConnector
 ): Promise<CodecString> => {
   if (!(asset?.address && accountAddress)) return ZeroStringValue;
 
   try {
     return isSora
       ? await getSoraBalance(accountAddress, asset)
-      : await getExternalBalance(accountAddress, asset, isSub);
+      : await getExternalBalance(accountAddress, asset, isSub, subConnector);
   } catch {
     return ZeroStringValue;
   }
@@ -155,11 +157,11 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
 }
 
 async function getSubNetworkFee(context: ActionContext<any, any>): Promise<void> {
-  const { commit, getters } = bridgeActionContext(context);
+  const { commit, getters, state } = bridgeActionContext(context);
   let fee = ZeroStringValue;
 
   if (getters.asset && getters.isRegisteredAsset && getters.sender && getters.recipient) {
-    fee = await subBridgeConnector.network.getNetworkFee(getters.asset, getters.sender, getters.recipient);
+    fee = await state.subBridgeConnector.network.getNetworkFee(getters.asset, getters.sender, getters.recipient);
   }
 
   commit.setExternalNetworkFee(fee);
@@ -188,13 +190,13 @@ async function updateExternalLockedBalance(context: ActionContext<any, any>): Pr
 async function updateEvmBalances(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, state } = bridgeActionContext(context);
   const { sender, recipient, asset, nativeToken } = getters;
-  const { isSoraToEvm } = state;
+  const { isSoraToEvm, subBridgeConnector: subConnector } = state;
   const spender = isSoraToEvm ? recipient : sender;
 
   const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
-    getAccountBridgeBalance(sender, asset, isSoraToEvm, false),
-    getAccountBridgeBalance(recipient, asset, !isSoraToEvm, false),
-    getAccountBridgeBalance(spender, nativeToken, false, false),
+    getAccountBridgeBalance(sender, asset, isSoraToEvm, false, subConnector),
+    getAccountBridgeBalance(recipient, asset, !isSoraToEvm, false, subConnector),
+    getAccountBridgeBalance(spender, nativeToken, false, false, subConnector),
   ]);
 
   commit.setAssetSenderBalance(senderBalance);
@@ -205,13 +207,13 @@ async function updateEvmBalances(context: ActionContext<any, any>): Promise<void
 async function updateSubBalances(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, state } = bridgeActionContext(context);
   const { sender, recipient, asset, nativeToken } = getters;
-  const { isSoraToEvm } = state;
+  const { isSoraToEvm, subBridgeConnector: subConnector } = state;
   const spender = sender;
 
   const [senderBalance, recipientBalance, nativeBalance] = await Promise.all([
-    getAccountBridgeBalance(sender, asset, isSoraToEvm, true),
-    getAccountBridgeBalance(recipient, asset, !isSoraToEvm, true),
-    getAccountBridgeBalance(spender, nativeToken, false, true),
+    getAccountBridgeBalance(sender, asset, isSoraToEvm, true, subConnector),
+    getAccountBridgeBalance(recipient, asset, !isSoraToEvm, true, subConnector),
+    getAccountBridgeBalance(spender, nativeToken, false, true, subConnector),
   ]);
 
   commit.setAssetSenderBalance(senderBalance);
@@ -302,7 +304,7 @@ async function updateExternalMinBalance(context: ActionContext<any, any>): Promi
   let minBalance = ZeroStringValue;
 
   if (getters.isSubBridge && getters.asset && !state.isSoraToEvm) {
-    minBalance = await subBridgeConnector.network.getAssetMinDeposit(getters.asset.externalAddress);
+    minBalance = await state.subBridgeConnector.network.getAssetMinDeposit(getters.asset.externalAddress);
   }
 
   commit.setExternalMinBalance(minBalance);
@@ -335,10 +337,10 @@ function calculateMaxLimit(
 }
 
 async function updateExternalBlockNumber(context: ActionContext<any, any>): Promise<void> {
-  const { getters, commit } = bridgeActionContext(context);
+  const { getters, commit, state } = bridgeActionContext(context);
   try {
     const blockNumber = getters.isSubBridge
-      ? await subBridgeConnector.network.getBlockNumber()
+      ? await state.subBridgeConnector.network.getBlockNumber()
       : await ethersUtil.getBlockNumber();
 
     commit.setExternalBlockNumber(blockNumber);
@@ -488,13 +490,13 @@ const actions = defineActions({
   },
 
   async updateIncomingMinLimit(context): Promise<void> {
-    const { commit, getters } = bridgeActionContext(context);
+    const { commit, getters, state } = bridgeActionContext(context);
 
     let minLimit = FPNumber.ZERO;
 
-    if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset && subBridgeConnector.soraParachain) {
+    if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset && state.subBridgeConnector.soraParachain) {
       try {
-        const value = await subBridgeConnector.soraParachain.getAssetMinimumAmount(getters.asset.address);
+        const value = await state.subBridgeConnector.soraParachain.getAssetMinimumAmount(getters.asset.address);
         minLimit = FPNumber.fromCodecValue(value, getters.asset.externalDecimals);
       } catch (error) {
         console.error(error);
@@ -505,14 +507,14 @@ const actions = defineActions({
   },
 
   async updateOutgoingMinLimit(context): Promise<void> {
-    const { commit, getters } = bridgeActionContext(context);
+    const { commit, getters, state } = bridgeActionContext(context);
 
     let minLimit = FPNumber.ZERO;
 
     if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
       try {
         // [TODO: Bridge] should be a backend call in future. Now it is existential deposit
-        const value = await subBridgeConnector.network.getAssetMinDeposit(getters.asset.externalAddress);
+        const value = await state.subBridgeConnector.network.getAssetMinDeposit(getters.asset.externalAddress);
         minLimit = FPNumber.fromCodecValue(value, getters.asset.externalDecimals);
       } catch (error) {
         console.error(error);

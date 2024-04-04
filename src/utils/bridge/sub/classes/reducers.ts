@@ -4,11 +4,12 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { combineLatest } from 'rxjs';
 
 import { ZeroStringValue } from '@/consts';
+import store from '@/store'; // [TODO] remove
 import { conditionalAwait } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
 import { getTransactionEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
-import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
+import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import { SubTransferType } from '@/utils/bridge/sub/types';
 import {
   getBridgeProxyHash,
@@ -42,7 +43,8 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     this.transferType = determineTransferType(externalNetwork);
 
     this.connector = new SubNetworksConnector();
-    this.connector.init(externalNetwork, subBridgeConnector);
+    // [TODO] pass subBridgeConnector from options
+    this.connector.init(externalNetwork, store.state.bridge.subBridgeConnector);
   }
 
   async closeConnector(): Promise<void> {

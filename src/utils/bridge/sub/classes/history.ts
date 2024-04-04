@@ -7,14 +7,13 @@ import { ZeroStringValue } from '@/consts';
 import { rootActionContext } from '@/store';
 import { getBlockEventsByTxIndex } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
-import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
+import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import {
   getDepositedBalance,
   getParachainBridgeAppMintedBalance,
   getMessageAcceptedNonces,
   getMessageDispatchedNonces,
   isMessageDispatchedNonces,
-  formatSubAddress,
   getReceivedAmount,
 } from '@/utils/bridge/sub/utils';
 
@@ -270,7 +269,7 @@ class SubBridgeHistory extends SubNetworksConnector {
   private async processOutgoingToLiberland(history: SubHistory): Promise<SubHistory> {
     history.amount2 = history.amount;
     history.externalTransferFee = ZeroStringValue;
-    history.to = formatSubAddress(history.to as string, this.externalApi.registry.chainSS58 as number);
+    history.to = this.network.formatAddress(history.to);
 
     return history;
   }
@@ -280,7 +279,8 @@ class SubBridgeHistory extends SubNetworksConnector {
     asset: Nullable<RegisteredAccountAsset>,
     extrinsicEvents: any[]
   ): Promise<SubHistory> {
-    if (!this.parachainApi) throw new Error('[processOutgoingToSoraParachain] Parachain Api is not exists');
+    if (!(this.parachainApi && this.soraParachain))
+      throw new Error('[processOutgoingToSoraParachain] Parachain Api is not exists');
 
     try {
       const [receivedAmount, eventIndex] = getDepositedBalance(
@@ -305,7 +305,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     }
 
     history.externalNetwork = subBridgeApi.getSoraParachain(history.externalNetwork as SubNetwork);
-    history.to = formatSubAddress(history.to as string, this.parachainApi.registry.chainSS58 as number);
+    history.to = this.soraParachain.formatAddress(history.to);
 
     return history;
   }
@@ -343,7 +343,7 @@ class SubBridgeHistory extends SubNetworksConnector {
 
         history.externalBlockId = blockId;
         history.externalBlockHeight = relaychainBlockHeight;
-        history.to = formatSubAddress(history.to as string, this.externalApi.registry.chainSS58 as number);
+        history.to = this.network.formatAddress(history.to);
 
         // Native token for network
         const [receivedAmount, eventIndex] = getDepositedBalance(
@@ -456,7 +456,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     const signer = feeEvent.event.data[0].toString(); // signer is spent balance for fee
 
     history.externalNetworkFee = feeEvent.event.data[1].toString();
-    history.to = formatSubAddress(signer, this.externalApi.registry.chainSS58 as number);
+    history.to = this.network.formatAddress(signer);
 
     return history;
   }
@@ -464,14 +464,15 @@ class SubBridgeHistory extends SubNetworksConnector {
   private async processIncomingFromSoraParachain(history: SubHistory, extrinsicEvents: any[]): Promise<SubHistory> {
     const parachainApi = this.parachainApi;
 
-    if (!parachainApi) throw new Error('[processIncomingFromSoraParachain] Parachain Api is not exists');
+    if (!(parachainApi && this.soraParachain))
+      throw new Error('[processIncomingFromSoraParachain] Parachain Api is not exists');
 
     const feeEvent = extrinsicEvents.find((e) => parachainApi.events.transactionPayment.TransactionFeePaid.is(e.event));
     const signer = feeEvent.event.data[0].toString(); // signer is spent balance for fee
 
     history.externalNetwork = subBridgeApi.getSoraParachain(history.externalNetwork as SubNetwork);
     history.externalNetworkFee = feeEvent.event.data[1].toString();
-    history.to = formatSubAddress(signer, parachainApi.registry.chainSS58 as number);
+    history.to = this.soraParachain.formatAddress(signer);
 
     return history;
   }
@@ -525,7 +526,7 @@ class SubBridgeHistory extends SubNetworksConnector {
           history.externalBlockId = blockId;
           history.externalBlockHeight = relaychainBlockHeight;
           history.externalHash = extrinsic.hash.toString();
-          history.to = formatSubAddress(signer, this.externalApi.registry.chainSS58 as number);
+          history.to = this.network.formatAddress(signer);
 
           return history;
         } catch (error) {
@@ -557,7 +558,7 @@ export const updateSubBridgeHistory =
           account: { address },
         },
         web3: { networkSelected },
-        bridge: { inProgressIds },
+        bridge: { inProgressIds, subBridgeConnector },
       } = rootState;
       const {
         bridge: { networkHistoryId },

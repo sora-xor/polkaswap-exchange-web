@@ -1,5 +1,5 @@
 import detectEthereumProvider from '@metamask/detect-provider';
-import { decodeAddress } from '@polkadot/util-crypto';
+import { decodeAddress, addressToEvm } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { EthereumProvider as WalletConnectEthereumProvider } from '@walletconnect/ethereum-provider';
@@ -424,8 +424,13 @@ async function getBlockNumber(): Promise<number> {
   }
 }
 
-async function accountAddressToHex(address: string): Promise<string> {
-  return ethers.hexlify(decodeAddress(address));
+function accountAddressToHex(address: string): string {
+  const publicKey = decodeAddress(address);
+  return ethers.hexlify(publicKey);
+}
+
+function accountAddressToEvm(address: string): string {
+  return ethers.hexlify(addressToEvm(address));
 }
 
 function hexToNumber(hex: string): number {
@@ -486,6 +491,7 @@ export default {
   getEthersInstance,
   watchEthereum,
   accountAddressToHex,
+  accountAddressToEvm,
   addressesAreEqual,
   calcEvmFee,
   hexToNumber,

@@ -1,4 +1,3 @@
-import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
@@ -221,11 +220,4 @@ export const isSoraBridgeAppBurned = (
   if (amount !== sended) return false;
 
   return true;
-};
-
-// [TECH] move to js-lib
-export const formatSubAddress = (address: string, ss58: number): string => {
-  const publicKey = decodeAddress(address, false);
-
-  return encodeAddress(publicKey, ss58);
 };

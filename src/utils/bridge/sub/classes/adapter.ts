@@ -160,5 +160,3 @@ export class SubNetworksConnector {
     await Promise.all(this.uniqueAdapters.map((c) => c.stop()));
   }
 }
-
-export const subBridgeConnector = new SubNetworksConnector();

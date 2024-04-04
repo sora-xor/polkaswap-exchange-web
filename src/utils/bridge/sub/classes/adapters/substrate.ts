@@ -1,3 +1,4 @@
+import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { Connection } from '@sora-substrate/connection';
 import { FPNumber, Operation, Storage } from '@sora-substrate/util';
 import { formatBalance } from '@sora-substrate/util/build/assets';
@@ -38,6 +39,14 @@ export class SubAdapter {
   get connected(): boolean {
     return !!this.api?.isConnected;
   }
+
+  public formatAddress = (address?: string): string => {
+    if (!address) return '';
+
+    const publicKey = decodeAddress(address, false);
+
+    return encodeAddress(publicKey, this.api.registry.chainSS58);
+  };
 
   protected async withConnection<T>(onSuccess: AsyncFnWithoutArgs<T> | FnWithoutArgs<T>, fallback: T) {
     if (!this.connected && !this.connection.loading) return fallback;
