@@ -1,5 +1,7 @@
 import { Operation } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
+import { SubAssetKind } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { defineGetters } from 'direct-vuex';
 
 import { ZeroStringValue } from '@/consts';
@@ -77,6 +79,21 @@ const getters = defineGetters<BridgeState>()({
     if (isSubBridge) return true;
 
     return !!asset?.externalAddress;
+  },
+
+  isSidechainAsset(...args): boolean {
+    const { getters, rootState } = bridgeGetterContext(args);
+    const { asset, isSubBridge } = getters;
+    const { registeredAssets } = rootState.assets;
+
+    if (!asset) return false;
+    if (!(asset.address in registeredAssets)) return false;
+
+    const registered = registeredAssets[asset.address];
+    const kind = registered.kind;
+    const sidechainKind = isSubBridge ? SubAssetKind.Sidechain : EthAssetKind.Sidechain;
+
+    return kind === sidechainKind;
   },
 
   autoselectedAssetAddress(...args): Nullable<string> {
