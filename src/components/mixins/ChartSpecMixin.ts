@@ -4,6 +4,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import ThemePaletteMixin from '@/components/mixins/ThemePaletteMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
+import { capitalize } from '@/utils';
 
 const LABEL_PADDING = 4;
 const AXIS_OFFSET = 8;
@@ -42,7 +43,7 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
           const formatted = this.formatDate(+value, timeFormat);
 
           if (isNewMonth) {
-            return `{monthStyle|${formatted.charAt(0).toUpperCase() + formatted.slice(1)}}`;
+            return `{monthStyle|${capitalize(formatted)}}`;
           }
           if (isNewDay) {
             return `{dateStyle|${formatted}}`;
