@@ -379,13 +379,13 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
           onReconnect: this.handleNodeConnect,
         }),
       ]);
-
+    } catch (error) {
+      // we handled error using callback, do nothing
+    } finally {
       // Wallet node connection dependent logic
       if (!this.isWalletLoaded) {
         await initWallet(walletOptions);
       }
-    } catch (error) {
-      // we handled error using callback, do nothing
     }
   }
 }
