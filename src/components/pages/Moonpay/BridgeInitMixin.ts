@@ -17,7 +17,6 @@ import { MoonpayEVMTransferAssetData, MoonpayApi } from '@/utils/moonpay';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset, AccountBalance } from '@sora-substrate/util/build/assets/types';
-import type { EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
 import type { EthHistory } from '@sora-substrate/util/build/bridgeProxy/eth/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
@@ -157,7 +156,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
 
       const evmNetworkFee: CodecString = await getEthNetworkFee(
         asset,
-        registeredAsset.kind as EthAssetKind,
+        registeredAsset.kind,
         this.contractAddress,
         ethTransferData.amount,
         false,

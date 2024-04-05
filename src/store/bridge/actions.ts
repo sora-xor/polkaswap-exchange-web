@@ -3,7 +3,6 @@ import { FPNumber } from '@sora-substrate/util';
 import { getAssetBalance } from '@sora-substrate/util/build/assets';
 import { DAI } from '@sora-substrate/util/build/assets/consts';
 import { BridgeTxStatus, BridgeTxDirection, BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 import { api, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
@@ -142,7 +141,7 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
 
     fee = await getEthNetworkFee(
       asset,
-      bridgeRegisteredAsset.kind as EthAssetKind,
+      bridgeRegisteredAsset.kind,
       contractAddress,
       value,
       state.isSoraToEvm,
@@ -235,33 +234,28 @@ async function updateEthHistory(context: ActionContext<any, any>, clearHistory =
 
 async function updateEthLockedBalance(context: ActionContext<any, any>): Promise<void> {
   const { commit, getters, rootGetters, rootState } = bridgeActionContext(context);
-  const { address, decimals, externalAddress } = getters.asset ?? {};
+  const { isRegisteredAsset, isSidechainAsset, asset } = getters;
+  const { address, decimals, externalAddress, externalDecimals } = asset ?? {};
   const { networkSelected } = rootState.web3;
   const { isValidNetwork, contractAddress } = rootGetters.web3;
   const bridgeContractAddress = contractAddress(KnownEthBridgeAsset.Other);
 
-  if (address && networkSelected && isValidNetwork && externalAddress && bridgeContractAddress) {
-    const registeredAsset = rootState.assets.registeredAssets[address];
+  const hasNetworkData = !!networkSelected && isValidNetwork && !!bridgeContractAddress;
+  const hasAssetData = !!address && !!externalAddress && isRegisteredAsset;
 
-    if (registeredAsset) {
-      const { kind, decimals: externalDecimals } = registeredAsset;
-
-      if (kind === EthAssetKind.Sidechain) {
-        const [lockedValue, bridgeValue] = await Promise.all([
-          ethBridgeApi.getLockedAssets(networkSelected as number, address),
-          ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress),
-        ]);
-        const balance = FPNumber.min(
-          FPNumber.fromCodecValue(lockedValue, decimals),
-          FPNumber.fromCodecValue(bridgeValue, externalDecimals)
-        );
-        commit.setAssetLockedBalance(balance);
-        return;
-      }
-    }
+  if (hasNetworkData && hasAssetData && isSidechainAsset) {
+    const [lockedValue, bridgeValue] = await Promise.all([
+      ethBridgeApi.getLockedAssets(networkSelected as number, address),
+      ethersUtil.getAccountAssetBalance(bridgeContractAddress, externalAddress),
+    ]);
+    const balance = FPNumber.min(
+      FPNumber.fromCodecValue(lockedValue, decimals),
+      FPNumber.fromCodecValue(bridgeValue, externalDecimals)
+    );
+    commit.setAssetLockedBalance(balance);
+  } else {
+    commit.setAssetLockedBalance();
   }
-
-  commit.setAssetLockedBalance();
 }
 
 async function updateBridgeProxyLockedBalance(context: ActionContext<any, any>): Promise<void> {
