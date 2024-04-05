@@ -151,7 +151,21 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
     })(options);
   }
 
-  depthSeriesSpec(options: any = {}) {}
+  depthSeriesSpec(options: any = {}) {
+    return merge({
+      animation: false,
+      dataZoom: {
+        id: 'dataZoomDepthChart',
+        type: 'inside',
+      },
+      grid: {
+        left: '1%',
+        right: '1%',
+        bottom: '3%',
+        containLabel: true,
+      },
+    })(options);
+  }
 
   lineSeriesSpec(options: any = {}) {
     return merge({
