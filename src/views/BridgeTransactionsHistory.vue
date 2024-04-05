@@ -87,6 +87,20 @@ import { state } from '@/store/decorators';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
 
+const SearchAttrs = [
+  'assetAddress',
+  'symbol',
+  'hash',
+  'blockId',
+  'txId',
+  'externalBlockId',
+  'externalHash',
+  'parachainBlockId',
+  'parachainHash',
+  'relaychainBlockId',
+  'relaychainHash',
+];
+
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
@@ -154,25 +168,29 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   getFilteredHistory(history: Array<IBridgeTransaction>): Array<IBridgeTransaction> {
-    if (this.query) {
-      const query = this.query.toLowerCase().trim();
-      return history.filter(
-        (item) =>
-          `${item.assetAddress}`.toLowerCase().includes(query) ||
-          `${this.registeredAssets[item.assetAddress as string]?.address}`.toLowerCase().includes(query) ||
-          `${item.symbol}`.toLowerCase().includes(query)
-      );
-    }
+    if (!this.query) return history;
 
-    return history;
+    const query = this.query.toLowerCase().trim();
+
+    return history.filter((item) => {
+      const bridgeRegisteredAsset = this.registeredAssets[item.assetAddress as string];
+      const criterias = [bridgeRegisteredAsset?.address];
+
+      SearchAttrs.forEach((attr) => {
+        if (attr in item) criterias.push(item[attr]);
+      });
+
+      return criterias.some((criteria) => String(criteria).toLowerCase().includes(query));
+    });
   }
 
-  formatAmount(historyItem: IBridgeTransaction, received = false): string {
-    const amount = received ? historyItem.amount2 ?? historyItem.amount : historyItem.amount;
+  formatAmount(item: IBridgeTransaction, received = false): string {
+    const amount = received ? item.amount2 ?? item.amount : item.amount;
 
-    if (!historyItem.assetAddress || !amount) return '';
+    if (!item.assetAddress || !amount) return '';
 
-    const decimals = this.registeredAssets?.[historyItem.assetAddress]?.decimals;
+    const bridgeRegisteredAsset = this.registeredAssets[item.assetAddress];
+    const decimals = bridgeRegisteredAsset?.decimals;
 
     return this.formatStringValue(amount, decimals);
   }
