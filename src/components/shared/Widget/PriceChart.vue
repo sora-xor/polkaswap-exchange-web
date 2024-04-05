@@ -711,8 +711,15 @@ export default class PriceChartWidget extends Mixins(
           axisPointer: {
             type: 'line',
           },
-          formatter: () => {
-            const rows = [];
+          formatter: (params) => {
+            const { data } = params[0];
+            const rows: any = [];
+            rows.push(
+              { title: 'Price', data: data[0] },
+              { title: 'Total amount', data: data[1] },
+              { title: 'Price difference', data: `${data[2]}%` }
+            );
+
             return this.htmlTemplateTooltip(rows);
           },
         }),

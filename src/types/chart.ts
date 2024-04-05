@@ -7,7 +7,8 @@ export type SnapshotItem = {
   volume: number;
 };
 
-export type DepthChartStep = [number, number];
+/** price, total amount, delta price percent data */
+export type DepthChartStep = [number, number, number];
 
 export type DepthChartData = {
   buy: Array<DepthChartStep>;
