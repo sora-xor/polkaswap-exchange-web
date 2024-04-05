@@ -151,20 +151,16 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
     })(options);
   }
 
-  depthSeriesSpec(options: any = {}) {
-    return merge({
-      animation: false,
-      dataZoom: {
-        id: 'dataZoomDepthChart',
-        type: 'inside',
-      },
-      grid: {
-        left: '1%',
-        right: '1%',
-        bottom: '3%',
-        containLabel: true,
-      },
-    })(options);
+  depthSeriesSpec(bidChart: any = {}, askChart: any = {}) {
+    const common = {
+      type: 'line',
+      step: 'end',
+    };
+
+    return [
+      { ...common, ...bidChart },
+      { ...common, ...askChart },
+    ];
   }
 
   lineSeriesSpec(options: any = {}) {

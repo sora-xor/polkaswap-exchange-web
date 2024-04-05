@@ -346,8 +346,31 @@ export default class PriceChartWidget extends Mixins(
         });
       case CHART_TYPES.CANDLE:
         return this.candlestickSeriesSpec();
-      case CHART_TYPES.DEPTH:
-        return this.depthSeriesSpec();
+      case CHART_TYPES.DEPTH: {
+        const { buy, sell } = this.getDepthChartData();
+
+        return this.depthSeriesSpec(
+          {
+            data: buy,
+            itemStyle: {
+              color: '#34ad87',
+            },
+            areaStyle: {
+              color: this.libraryTheme === Theme.LIGHT ? 'rgba(185, 235, 219, 0.4)' : 'rgba(1, 202, 139, 0.2)',
+            },
+          },
+          {
+            data: sell,
+            itemStyle: {
+              color: '#f754a3',
+            },
+            areaStyle: {
+              color: this.libraryTheme === Theme.LIGHT ? 'rgba(255, 216, 235, 0.8)' : 'rgba(255, 0, 124, 0.3)',
+            },
+          }
+        );
+      }
+
       default:
         return null;
     }
@@ -601,11 +624,6 @@ export default class PriceChartWidget extends Mixins(
             { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
             { title: 'Change', data: formatChange(change), color: changeColor }
           );
-        } else if (seriesType === CHART_TYPES.DEPTH) {
-          rows.push({
-            title: 'Price',
-            data: '',
-          });
         } else {
           rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
         }
@@ -674,9 +692,20 @@ export default class PriceChartWidget extends Mixins(
    * Used only on trade page.
    */
   get marketDepthSpec(): any {
-    const { buy, sell, minBidPrice, maxAskPrice } = this.getDepthChartData();
+    const { minBidPrice, maxAskPrice } = this.getDepthChartData();
 
-    return this.depthSeriesSpec({
+    const spec = {
+      animation: false,
+      dataZoom: {
+        id: 'dataZoomDepthChart',
+        type: 'inside',
+      },
+      grid: {
+        left: '1%',
+        right: '1%',
+        bottom: '3%',
+        containLabel: true,
+      },
       tooltip: [
         this.tooltipSpec({
           axisPointer: {
@@ -704,33 +733,10 @@ export default class PriceChartWidget extends Mixins(
           },
         }),
       ],
-      series: [
-        {
-          name: 'Buy',
-          type: 'line',
-          step: 'end',
-          data: buy,
-          itemStyle: {
-            color: '#34ad87',
-          },
-          areaStyle: {
-            color: this.libraryTheme === Theme.LIGHT ? 'rgba(185, 235, 219, 0.4)' : 'rgba(1, 202, 139, 0.2)',
-          },
-        },
-        {
-          name: 'Sell',
-          type: 'line',
-          step: 'end',
-          data: sell,
-          itemStyle: {
-            color: '#f754a3',
-          },
-          areaStyle: {
-            color: this.libraryTheme === Theme.LIGHT ? 'rgba(255, 216, 235, 0.8)' : 'rgba(255, 0, 124, 0.3)',
-          },
-        },
-      ],
-    });
+      series: this.currentSeriesSpec,
+    };
+
+    return spec;
   }
 
   get chartSpec() {
