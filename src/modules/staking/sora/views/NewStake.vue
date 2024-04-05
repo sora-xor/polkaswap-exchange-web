@@ -93,7 +93,7 @@ export default class SoraStakingForm extends Mixins(StakingMixin, mixins.Loading
   }
 
   get networkFee(): CodecString {
-    return this.bondAndNominateNetworkFee || '0';
+    return this.bondAndNominateNetworkFee ?? ZeroStringValue;
   }
 
   get inputTitle(): string {
