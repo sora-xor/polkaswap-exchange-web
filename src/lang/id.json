@@ -1560,5 +1560,7 @@
     },
     "calculatingText": "Menghitung",
     "customisePageText": "Sesuaikan halaman",
-    "priceChartText": "Grafik harga"
+    "priceChartText": "Grafik harga",
+    "editText": "Edit",
+    "resetText": "Reset"
 }

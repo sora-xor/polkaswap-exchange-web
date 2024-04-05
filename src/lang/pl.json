@@ -1560,5 +1560,7 @@
     },
     "calculatingText": "Obliczanie",
     "customisePageText": "Dostosuj stronę",
-    "priceChartText": "Wykres cen"
+    "priceChartText": "Wykres cen",
+    "editText": "Edytuj",
+    "resetText": "Resetowanie"
 }

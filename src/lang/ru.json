@@ -1560,5 +1560,7 @@
     },
     "calculatingText": "Вычисление",
     "customisePageText": "Настроить страницу",
-    "priceChartText": "График цены"
+    "priceChartText": "График цены",
+    "editText": "Редактировать",
+    "resetText": "Сбросить"
 }

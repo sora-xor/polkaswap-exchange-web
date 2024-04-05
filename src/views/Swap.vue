@@ -159,7 +159,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
   options = {
     edit: false,
-    flat: false,
+    // flat: false,
   };
 
   widgets: WidgetsVisibilityModel = {
@@ -176,6 +176,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
     const priceText = this.t('priceChartText');
 
     return {
+      // widgets
       [SwapWidgets.Form]: this.t('swapText'),
       [SwapWidgets.Distribution]: this.t('swap.route'),
       [SwapWidgets.Transactions]: this.tc('transactionText', 2),
@@ -183,6 +184,8 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       [SwapWidgets.PriceChartA]: `${priceText} ${this.tokenFrom?.symbol ?? ''}`,
       [SwapWidgets.PriceChartB]: `${priceText} ${this.tokenTo?.symbol ?? ''}`,
       [SwapWidgets.SupplyChart]: 'Supply',
+      // options
+      edit: this.t('editText'),
     };
   }
 

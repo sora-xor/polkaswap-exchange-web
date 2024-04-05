@@ -1560,5 +1560,7 @@
     },
     "calculatingText": "Beregner",
     "customisePageText": "Tilpass siden",
-    "priceChartText": "Prisdiagram"
+    "priceChartText": "Prisdiagram",
+    "editText": "Redigere",
+    "resetText": "Tilbakestill"
 }

@@ -1560,5 +1560,7 @@
     },
     "calculatingText": "Berekenen",
     "customisePageText": "Pagina aanpassen",
-    "priceChartText": "Prijs grafiek"
+    "priceChartText": "Prijs grafiek",
+    "editText": "Bewerk",
+    "resetText": "Opnieuw instellen"
 }

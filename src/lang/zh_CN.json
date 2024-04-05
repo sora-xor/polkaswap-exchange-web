@@ -1560,5 +1560,7 @@
     },
     "calculatingText": "正在计算",
     "customisePageText": "自定义页面",
-    "priceChartText": "价格走势图"
+    "priceChartText": "价格走势图",
+    "editText": "编辑",
+    "resetText": "重置"
 }

@@ -1560,5 +1560,7 @@
     },
     "calculatingText": "Számítás",
     "customisePageText": "Az oldal testreszabása",
-    "priceChartText": "Ártáblázat"
+    "priceChartText": "Ártáblázat",
+    "editText": "Szerkesztés",
+    "resetText": "Visszaállítás"
 }

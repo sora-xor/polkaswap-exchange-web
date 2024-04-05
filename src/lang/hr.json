@@ -1560,5 +1560,7 @@
     },
     "calculatingText": "Izračunavanje",
     "customisePageText": "Prilagodite stranicu",
-    "priceChartText": "Grafikon cijena"
+    "priceChartText": "Grafikon cijena",
+    "editText": "Uredi",
+    "resetText": "Reset"
 }

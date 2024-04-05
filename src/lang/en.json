@@ -1562,8 +1562,5 @@
     "customisePageText": "Customize page",
     "priceChartText": "Price chart",
     "editText": "Edit",
-    "resetText": "Reset",
-    "options": {
-        "edit": "@:editText"
-    }
+    "resetText": "Reset"
 }

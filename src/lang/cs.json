@@ -1560,5 +1560,7 @@
     },
     "calculatingText": "Vypočítávání",
     "customisePageText": "Přizpůsobit stránku",
-    "priceChartText": "Cenový graf"
+    "priceChartText": "Cenový graf",
+    "editText": "Upravit",
+    "resetText": "Resetovat"
 }

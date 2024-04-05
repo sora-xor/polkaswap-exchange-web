@@ -1560,5 +1560,7 @@
     },
     "calculatingText": "Berechnung",
     "customisePageText": "Seite anpassen",
-    "priceChartText": "Preisdiagramm"
+    "priceChartText": "Preisdiagramm",
+    "editText": "Bearbeiten",
+    "resetText": "Zurücksetzen"
 }

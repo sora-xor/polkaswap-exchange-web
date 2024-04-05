@@ -1560,5 +1560,7 @@
     },
     "calculatingText": "Calculant",
     "customisePageText": "Personnaliser la page",
-    "priceChartText": "Tableau des prix"
+    "priceChartText": "Tableau des prix",
+    "editText": "Modifier",
+    "resetText": "Réinitialiser"
 }
