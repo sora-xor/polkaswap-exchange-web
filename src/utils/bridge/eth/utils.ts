@@ -246,7 +246,7 @@ const getEthBridgeIncomingGasLimit = (assetEvmAddress: string): bigint => {
 
 export async function getEthNetworkFee(
   asset: RegisteredAccountAsset,
-  assetKind: EthAssetKind,
+  assetKind: string,
   getContractAddress: (symbol: KnownEthBridgeAsset) => Nullable<string>,
   value: string,
   isOutgoing: boolean,
@@ -256,7 +256,7 @@ export async function getEthNetworkFee(
   let gasLimitTotal!: bigint;
 
   if (isOutgoing) {
-    gasLimitTotal = getEthBridgeOutgoingGasLimit(asset.externalAddress, assetKind);
+    gasLimitTotal = getEthBridgeOutgoingGasLimit(asset.externalAddress, assetKind as EthAssetKind);
   } else {
     const bridgeContractAddress = getContractAddress(KnownEthBridgeAsset.Other) as string;
     const allowance = await ethersUtil.getAllowance(evmAccount, bridgeContractAddress, asset.externalAddress);
