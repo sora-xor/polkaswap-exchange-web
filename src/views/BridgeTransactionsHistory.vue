@@ -12,7 +12,7 @@
       </generic-page-header>
       <s-form class="history-form" :show-message="false">
         <search-input
-          v-if="history.length"
+          v-if="historyList.length"
           v-model="query"
           :placeholder="t('bridgeHistory.filterPlaceholder')"
           autofocus
