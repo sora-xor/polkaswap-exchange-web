@@ -45,4 +45,5 @@ export type SettingsState = {
   internetConnectionSpeed: Nullable<number>;
   screenBreakpointClass: BreakpointClass;
   adsArray: Array<Ad>;
+  currency: Nullable<string>;
 };

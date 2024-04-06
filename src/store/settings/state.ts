@@ -39,6 +39,8 @@ function initialState(): SettingsState {
     internetConnectionSpeed: undefined,
     screenBreakpointClass: BreakpointClass.LargeDesktop,
     adsArray: [],
+    // TODO: get from localStorage
+    currency: '',
   };
 }
 

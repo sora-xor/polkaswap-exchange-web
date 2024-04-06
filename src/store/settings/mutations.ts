@@ -97,6 +97,9 @@ const mutations = defineMutations<SettingsState>()({
   setAdsArray(state, arr: Array<Ad>): void {
     state.adsArray = arr;
   },
+  setFiatCurrency(state, currency: any): void {
+    state.currency = currency;
+  },
 });
 
 export default mutations;
