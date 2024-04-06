@@ -102,7 +102,8 @@ const getReceiptData = async (externalHash: string) => {
 };
 
 const getEvmBlockNumber = (ethereumTx: ethers.TransactionResponse | null) => {
-  return ethereumTx?.blockNumber;
+  const blockNumber = ethereumTx?.blockNumber; // could be a string
+  return blockNumber ? +blockNumber : null;
 };
 
 const getEvmBlockId = (ethereumTx: ethers.TransactionResponse | null) => {

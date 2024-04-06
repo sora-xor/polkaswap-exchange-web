@@ -6,11 +6,9 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { PageNames } from '@/consts';
 import router from '@/router';
 import { getter, state } from '@/store/decorators';
-import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
@@ -31,6 +29,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @getter.bridge.recipient recipient!: string;
   @getter.bridge.externalNetworkFee externalNetworkFee!: CodecString;
   @getter.bridge.isNativeTokenSelected isNativeTokenSelected!: boolean;
+  @getter.bridge.isSidechainAsset isSidechainAsset!: boolean;
   @getter.assets.xor xor!: RegisteredAccountAsset;
 
   get nativeTokenSymbol(): string {
@@ -45,14 +44,10 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     return FPNumber.fromCodecValue(this.externalTransferFee, this.asset?.externalDecimals);
   }
 
-  get assetLockedOnSora(): boolean {
-    return !subBridgeApi.isSoraParachain(this.networkSelected as SubNetwork);
-  }
-
   get outgoingMaxAmount(): FPNumber | null {
     const locks = [this.outgoingMaxLimit];
 
-    if (this.assetLockedOnSora) locks.push(this.assetLockedBalance);
+    if (this.isSidechainAsset) locks.push(this.assetLockedBalance);
 
     const filtered = locks.filter((item) => !!item) as FPNumber[];
 
@@ -71,7 +66,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   }
 
   get incomingMaxAmount(): FPNumber | null {
-    if (this.assetLockedOnSora) return null;
+    if (this.isSidechainAsset) return null;
 
     return this.assetLockedBalance ?? null;
   }
