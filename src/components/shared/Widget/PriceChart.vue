@@ -561,7 +561,7 @@ export default class PriceChartWidget extends Mixins(
 
     const priceYAxis = this.yAxisSpec({
       axisLabel: {
-        formatter: (value) => {
+        formatter: (value: number) => {
           return formatAmount(value, this.precision);
         },
         showMaxLabel: false,
@@ -583,7 +583,7 @@ export default class PriceChartWidget extends Mixins(
       gridIndex: 1,
       splitNumber: 2,
       axisLabel: {
-        formatter: (value) => {
+        formatter: (value: string | number | bigint) => {
           const val = new FPNumber(value);
           const { amount, suffix } = formatAmountWithSuffix(val);
           return `${amount} ${suffix}`;
@@ -605,7 +605,7 @@ export default class PriceChartWidget extends Mixins(
       axisPointer: {
         type: 'cross',
       },
-      formatter: (params) => {
+      formatter: (params: { data: any; seriesType: any }[]) => {
         const { data, seriesType } = params[0];
         const [timestamp, open, close, low, high, volume] = data;
         const rows: any[] = [];
@@ -712,7 +712,7 @@ export default class PriceChartWidget extends Mixins(
           axisPointer: {
             type: 'line',
           },
-          formatter: (params) => {
+          formatter: (params: { data: any }[]) => {
             const { data } = params[0];
             const rows: any = [];
             rows.push(
@@ -755,12 +755,12 @@ export default class PriceChartWidget extends Mixins(
     return this.priceSpec;
   }
 
-  htmlTemplateTooltip(rows): any {
+  htmlTemplateTooltip(rows: any[]): HTMLTableElement {
     return `
       <table>
         ${rows
           .map(
-            (row) => `
+            (row: { title: string; color: string; data: string }) => `
           <tr>
             <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
             <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
@@ -769,7 +769,7 @@ export default class PriceChartWidget extends Mixins(
           )
           .join('')}
       </table>
-    `;
+    ` as unknown as HTMLTableElement;
   }
 
   created(): void {
