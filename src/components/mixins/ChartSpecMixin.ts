@@ -152,15 +152,15 @@ export default class ChartSpecMixin extends Mixins(ThemePaletteMixin, Translatio
     })(options);
   }
 
-  depthSeriesSpec(bidChart: any = {}, askChart: any = {}) {
+  depthSeriesSpec(buyWall: any = {}, sellWall: any = {}) {
     const common = {
       type: 'line',
       step: 'end',
     };
 
     return [
-      { ...common, ...bidChart },
-      { ...common, ...askChart },
+      { ...common, ...buyWall },
+      { ...common, ...sellWall },
     ];
   }
 
