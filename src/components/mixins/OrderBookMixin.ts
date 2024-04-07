@@ -35,8 +35,20 @@ export default class OrderBookMixin extends Vue {
     return this.currentOrderBook?.stepLotSize?.toString()?.split('.')?.[1]?.length ?? 0;
   }
 
+  /**
+   *
+   * @param bestPrice
+   * @param price
+   * @returns percentage difference
+   *
+   * formula: |V1 - V2| / (V1 + V2) / 2 x 100
+   *
+   */
   getDeltaPercent = (bestPrice: FPNumber, price: FPNumber) => {
-    return bestPrice.sub(price).div(bestPrice).mul(FPNumber.HUNDRED).dp(2);
+    const sum = bestPrice.add(price);
+    const difference = bestPrice.sub(price);
+
+    return difference.negative().div(sum.div(FPNumber.TWO)).mul(FPNumber.HUNDRED).dp(2);
   };
 
   calculateChartRange(bids: DepthChartStep[], asks: DepthChartStep[]): DepthChartData {
@@ -59,16 +71,16 @@ export default class OrderBookMixin extends Vue {
     return { sell: asks, buy: bids, maxAskPrice: rightEdge, minBidPrice: leftEdge };
   }
 
-  marketDepthRepresentation(side: OrderBookPriceVolume[], bidSide = false): DepthChartStep[] {
-    let accumulativeVolume = side[0][1];
-    const bestPrice = side[0][0];
+  marketDepthRepresentation(wall: OrderBookPriceVolume[], buyWall = false): DepthChartStep[] {
+    let accumulativeVolume = wall[0][1];
+    const bestPrice = wall[0][0];
     const steps: DepthChartStep[] = [];
-    const percent = bidSide ? -0.1 : 0.1;
+    const percent = buyWall ? -0.1 : 0.1;
 
     steps.push([bestPrice.toNumber(), accumulativeVolume.toNumber(), percent]);
 
-    for (let index = 1; index < side.length; index++) {
-      const [price, volume] = side[index];
+    for (let index = 1; index < wall.length; index++) {
+      const [price, volume] = wall[index];
       accumulativeVolume = accumulativeVolume.add(volume);
       const deltaPrice = this.getDeltaPercent(bestPrice, price);
 
@@ -79,10 +91,10 @@ export default class OrderBookMixin extends Vue {
   }
 
   getDepthChartData(): DepthChartData {
-    const bids = this.marketDepthRepresentation(this.bids, true);
-    const asks = this.marketDepthRepresentation(this.asks.toReversed());
+    const buyWall = this.marketDepthRepresentation(this.bids, true);
+    const sellWall = this.marketDepthRepresentation(this.asks.toReversed());
 
-    const { sell, buy, maxAskPrice, minBidPrice } = this.calculateChartRange(bids, asks);
+    const { sell, buy, maxAskPrice, minBidPrice } = this.calculateChartRange(buyWall, sellWall);
 
     return {
       buy,

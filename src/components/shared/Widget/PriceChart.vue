@@ -689,7 +689,7 @@ export default class PriceChartWidget extends Mixins(
   }
 
   /**
-   * Returns spec of demand and supply levels as of now.
+   * Returns spec of demand and supply levels at a given moment for a range of prices.
    * Used only on trade page.
    */
   get marketDepthSpec(): any {
