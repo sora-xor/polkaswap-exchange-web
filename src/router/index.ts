@@ -163,7 +163,7 @@ const routes: Array<RouteConfig> = [
     path: '/explore',
     name: PageNames.ExploreContainer,
     component: lazyView(PageNames.ExploreContainer),
-    redirect: { name: PageNames.ExploreFarming },
+    redirect: { name: PageNames.ExploreTokens },
     children: [
       {
         path: 'demeter',
