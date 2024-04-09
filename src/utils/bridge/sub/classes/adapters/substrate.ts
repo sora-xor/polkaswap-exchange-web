@@ -75,6 +75,10 @@ export class SubAdapter {
     await this.subNetworkConnection.closeConnection();
   }
 
+  public getParachainId(): number | undefined {
+    return subBridgeApi.isParachain(this.subNetwork) ? subBridgeApi.getParachainId(this.subNetwork) : undefined;
+  }
+
   public getSoraParachainId(): number | undefined {
     try {
       const soraParachain = subBridgeApi.getSoraParachain(this.subNetwork);

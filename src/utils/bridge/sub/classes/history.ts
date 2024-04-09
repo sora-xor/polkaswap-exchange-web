@@ -484,7 +484,7 @@ class SubBridgeHistory extends SubNetworksConnector {
       throw new Error('[processIncomingFromRelaychain] SORA Parachain Api is not exists');
 
     const [soraParachainId, relayChainBlockNumber] = await Promise.all([
-      subBridgeApi.soraParachainApi.getParachainId(soraParachainApi),
+      soraParachain.getParachainId(),
       subBridgeApi.soraParachainApi.getRelayChainBlockNumber(history.parachainBlockId as string, soraParachainApi),
     ]);
     // relay chain should have send message in this blocks range
