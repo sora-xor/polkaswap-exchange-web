@@ -166,6 +166,11 @@ const routes: Array<RouteConfig> = [
     redirect: { name: PageNames.ExploreTokens },
     children: [
       {
+        path: 'tokens',
+        name: PageNames.ExploreTokens,
+        component: lazyView(PageNames.ExploreTokens),
+      },
+      {
         path: 'demeter',
         component: demeterStakingLazyView(DemeterStakingPageNames.DataContainer),
         children: [
@@ -193,11 +198,6 @@ const routes: Array<RouteConfig> = [
             component: lazyView(PageNames.ExplorePools),
           },
         ],
-      },
-      {
-        path: 'tokens',
-        name: PageNames.ExploreTokens,
-        component: lazyView(PageNames.ExploreTokens),
       },
       {
         path: 'books',
