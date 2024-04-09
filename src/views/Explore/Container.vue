@@ -87,6 +87,10 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
   get tabs(): Array<{ name: string; label: string; icon: string }> {
     return [
       {
+        name: PageNames.ExploreTokens,
+        icon: 'finance-PSWAP-24',
+      },
+      {
         name: PageNames.ExploreFarming,
         icon: 'various-toy-horse-24',
       },
@@ -97,10 +101,6 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
       {
         name: PageNames.ExploreStaking,
         icon: 'basic-layers-24',
-      },
-      {
-        name: PageNames.ExploreTokens,
-        icon: 'file-file-text-24',
       },
       {
         name: PageNames.ExploreBooks,
