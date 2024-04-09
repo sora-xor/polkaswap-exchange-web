@@ -1,4 +1,5 @@
 import { FPNumber } from '@sora-substrate/util';
+import { formatBalance } from '@sora-substrate/util/build/assets';
 
 import { ZeroStringValue } from '@/consts';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
@@ -73,14 +74,34 @@ export class AcalaParachainAdapter extends SubAdapter {
     }
 
     this.assets = Object.freeze(assets);
-
-    console.log(this.assets);
   }
 
   // overrides SubAdapter
   public async connect(): Promise<void> {
     await super.connect();
     await this.getAssetsMetadata();
+  }
+
+  // overrides SubAdapter method
+  public async getTokenBalance(accountAddress: string, asset: RegisteredAsset): Promise<CodecString> {
+    return asset.symbol === this.chainSymbol
+      ? await this.getAccountBalance(accountAddress)
+      : await this.getAccountAssetBalance(accountAddress, asset.symbol);
+  }
+
+  protected async getAccountAssetBalance(accountAddress: string, assetSymbol: string): Promise<CodecString> {
+    if (!(accountAddress && this.assets)) return ZeroStringValue;
+
+    const assetMeta = this.assets[assetSymbol];
+
+    if (!assetMeta) return ZeroStringValue;
+
+    return await this.withConnection(async () => {
+      const ormlTokensAccountData = await (this.api.query.tokens as any).accounts(accountAddress, assetMeta.id);
+      const balance = formatBalance(ormlTokensAccountData, assetMeta.decimals);
+
+      return balance.transferable;
+    }, ZeroStringValue);
   }
 
   // overrides SubAdapter

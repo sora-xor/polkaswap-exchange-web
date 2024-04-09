@@ -40,12 +40,24 @@ export class SubAdapter {
     return !!this.api?.isConnected;
   }
 
+  get chainSymbol(): string | undefined {
+    return this.api?.registry.chainTokens[0];
+  }
+
+  get chainDecimals(): number | undefined {
+    return this.api?.registry.chainDecimals[0];
+  }
+
+  get chainSS58(): number | undefined {
+    return this.api?.registry.chainSS58;
+  }
+
   public formatAddress = (address?: string): string => {
     if (!address) return '';
 
     const publicKey = decodeAddress(address, false);
 
-    return encodeAddress(publicKey, this.api.registry.chainSS58);
+    return encodeAddress(publicKey, this.chainSS58);
   };
 
   protected async withConnection<T>(onSuccess: AsyncFnWithoutArgs<T> | FnWithoutArgs<T>, fallback: T) {
@@ -103,10 +115,9 @@ export class SubAdapter {
 
     return await this.withConnection(async () => {
       const accountInfo = await this.api.query.system.account(accountAddress);
-      const accountBalance = formatBalance(accountInfo.data);
-      const balance = accountBalance.transferable;
+      const balance = formatBalance(accountInfo.data, this.chainDecimals);
 
-      return balance;
+      return balance.transferable;
     }, ZeroStringValue);
   }
 
@@ -130,10 +141,9 @@ export class SubAdapter {
   /* [Substrate 5] Runtime call transactionPaymentApi */
   public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
     return await this.withConnection(async () => {
-      const decimals = this.api.registry.chainDecimals[0];
       const tx = this.getTransferExtrinsic(asset, recipient, ZeroStringValue);
       const res = await tx.paymentInfo(sender);
-      return new FPNumber(res.partialFee, decimals).toCodecString();
+      return new FPNumber(res.partialFee, this.chainDecimals).toCodecString();
     }, ZeroStringValue);
   }
 
