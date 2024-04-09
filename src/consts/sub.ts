@@ -54,6 +54,30 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.PolkadotAcala]: {
+    id: SubNetworkId.PolkadotAcala,
+    name: 'Acala',
+    nativeCurrency: {
+      name: 'ACA',
+      symbol: 'ACA',
+      decimals: 12,
+    },
+    endpointUrls: ['wss://acala-rpc-0.aca-api.network', 'wss://acala-rpc.dwellir.com'],
+    blockExplorerUrls: ['https://acala.subscan.io/'],
+    shortName: 'Acala',
+    nodes: [
+      {
+        chain: 'Acala',
+        name: 'Acala Foundation',
+        address: 'wss://acala-rpc-0.aca-api.network',
+      },
+      {
+        chain: 'Acala',
+        name: 'Dwellir',
+        address: 'wss://acala-rpc.dwellir.com',
+      },
+    ],
+  },
   [SubNetworkId.Rococo]: {
     id: SubNetworkId.Rococo,
     name: 'Rococo',
