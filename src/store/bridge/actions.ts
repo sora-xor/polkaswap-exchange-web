@@ -298,7 +298,7 @@ async function updateExternalMinBalance(context: ActionContext<any, any>): Promi
   let minBalance = ZeroStringValue;
 
   if (getters.isSubBridge && getters.asset && !state.isSoraToEvm) {
-    minBalance = await state.subBridgeConnector.network.getAssetMinDeposit(getters.asset.externalAddress);
+    minBalance = await state.subBridgeConnector.network.getAssetMinDeposit(getters.asset);
   }
 
   commit.setExternalMinBalance(minBalance);
@@ -508,7 +508,7 @@ const actions = defineActions({
     if (getters.isSubBridge && getters.asset && getters.isRegisteredAsset) {
       try {
         // [TODO: Bridge] should be a backend call in future. Now it is existential deposit
-        const value = await state.subBridgeConnector.network.getAssetMinDeposit(getters.asset.externalAddress);
+        const value = await state.subBridgeConnector.network.getAssetMinDeposit(getters.asset);
         minLimit = FPNumber.fromCodecValue(value, getters.asset.externalDecimals);
       } catch (error) {
         console.error(error);

@@ -151,7 +151,7 @@ export class SubAdapter {
     return await this.getAccountBalance(accountAddress);
   }
 
-  public async getAssetMinDeposit(assetAddress: string): Promise<CodecString> {
+  public async getAssetMinDeposit(asset: RegisteredAsset): Promise<CodecString> {
     return await this.getExistentialDeposit();
   }
 

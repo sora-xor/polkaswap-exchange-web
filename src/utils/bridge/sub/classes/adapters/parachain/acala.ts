@@ -89,6 +89,25 @@ export class AcalaParachainAdapter extends SubAdapter {
       : await this.getAccountAssetBalance(accountAddress, asset.symbol);
   }
 
+  // overrides SubAdapter method
+  public async getAssetMinDeposit(asset: RegisteredAsset): Promise<CodecString> {
+    return asset.symbol === this.chainSymbol
+      ? await this.getExistentialDeposit()
+      : await this.getAssetDeposit(asset.symbol);
+  }
+
+  protected async getAssetDeposit(assetSymbol: string): Promise<CodecString> {
+    if (!(assetSymbol && this.assets)) return ZeroStringValue;
+
+    const assetMeta = this.assets[assetSymbol];
+
+    if (!assetMeta) return ZeroStringValue;
+
+    const minBalance = assetMeta.minimalBalance;
+
+    return minBalance > '1' ? minBalance : ZeroStringValue;
+  }
+
   protected async getAccountAssetBalance(accountAddress: string, assetSymbol: string): Promise<CodecString> {
     if (!(accountAddress && this.assets)) return ZeroStringValue;
 
