@@ -5,6 +5,7 @@ import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubTransferType } from '@/utils/bridge/sub/types';
 import { determineTransferType } from '@/utils/bridge/sub/utils';
 
+import { AcalaParachainAdapter } from './adapters/parachain/acala';
 import { MoonbaseParachainAdapter } from './adapters/parachain/moonbase';
 import { SoraParachainAdapter } from './adapters/parachain/sora';
 import { RelaychainAdapter } from './adapters/relaychain';
@@ -85,7 +86,10 @@ export class SubNetworksConnector {
     }
     if (subBridgeApi.isParachain(network)) {
       if (network === SubNetworkId.AlphanetMoonbase) {
-        return new MoonbaseParachainAdapter(SubNetworkId.AlphanetMoonbase);
+        return new MoonbaseParachainAdapter(network);
+      }
+      if (network === SubNetworkId.PolkadotAcala) {
+        return new AcalaParachainAdapter(network);
       }
       if (subBridgeApi.isSoraParachain(network)) {
         return new SoraParachainAdapter(network);
@@ -93,7 +97,7 @@ export class SubNetworksConnector {
     }
     if (subBridgeApi.isStandalone(network)) {
       if (network === SubNetworkId.Liberland) {
-        return new LiberlandAdapter(SubNetworkId.Liberland);
+        return new LiberlandAdapter(network);
       }
     }
 

@@ -53,7 +53,7 @@ const getExternalBalance = async (
   subConnector: SubNetworksConnector
 ): Promise<CodecString> => {
   return isSub
-    ? await subConnector.network.getTokenBalance(accountAddress, asset?.externalAddress)
+    ? await subConnector.network.getTokenBalance(accountAddress, asset)
     : await ethersUtil.getAccountAssetBalance(accountAddress, asset?.externalAddress);
 };
 

@@ -11,9 +11,9 @@ import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 export class LiberlandAdapter extends SubAdapter {
   // overrides SubAdapter method
-  public async getTokenBalance(accountAddress: string, assetAddress: string): Promise<CodecString> {
-    return assetAddress
-      ? await this.getAccountAssetBalance(accountAddress, assetAddress)
+  public async getTokenBalance(accountAddress: string, asset: RegisteredAsset): Promise<CodecString> {
+    return asset.externalAddress
+      ? await this.getAccountAssetBalance(accountAddress, asset.externalAddress)
       : await this.getAccountBalance(accountAddress);
   }
 

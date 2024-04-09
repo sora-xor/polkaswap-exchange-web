@@ -137,7 +137,7 @@ export class SubAdapter {
     }, ZeroStringValue);
   }
 
-  public async getTokenBalance(accountAddress: string, address?: string): Promise<CodecString> {
+  public async getTokenBalance(accountAddress: string, asset?: RegisteredAsset): Promise<CodecString> {
     return await this.getAccountBalance(accountAddress);
   }
 
