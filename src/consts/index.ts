@@ -374,7 +374,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     icon: 'various-items-24',
     title: PageNames.ExploreContainer,
     href: '/#/explore',
-    index: PageNames.ExploreFarming,
+    index: PageNames.ExploreTokens,
   },
   {
     icon: 'various-planet-24',
@@ -398,7 +398,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     index: DashboardPageNames.AssetOwner,
   },
   {
-    icon: 'file-file-text-24',
+    icon: 'finance-PSWAP-24',
     title: PageNames.About,
     href: '/#/about',
   },
@@ -474,10 +474,10 @@ export const RewardsChildPages = [
   PageNames.ReferralUnbonding,
 ];
 export const ExploreChildPages = [
-  PageNames.ExploreFarming, // By default
+  PageNames.ExploreTokens, // By default
   PageNames.ExploreStaking,
   PageNames.ExplorePools,
-  PageNames.ExploreTokens,
+  PageNames.ExploreFarming,
   PageNames.ExploreBooks,
 ];
 

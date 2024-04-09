@@ -179,7 +179,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       return StakingPageNames.Staking;
     }
     if (ExploreChildPages.includes(currentName)) {
-      return PageNames.ExploreFarming;
+      return PageNames.ExploreTokens;
     }
     if (isDashboardPage(currentName)) {
       return DashboardPageNames.AssetOwner;
