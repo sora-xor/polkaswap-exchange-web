@@ -88,7 +88,7 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
     return [
       {
         name: PageNames.ExploreTokens,
-        icon: 'file-file-text-24',
+        icon: 'finance-PSWAP-24',
       },
       {
         name: PageNames.ExploreFarming,
