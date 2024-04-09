@@ -380,7 +380,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     href: '/#/card',
   },
   {
-    icon: 'file-file-text-24',
+    icon: 'finance-PSWAP-24',
     title: PageNames.About,
     href: '/#/about',
   },
