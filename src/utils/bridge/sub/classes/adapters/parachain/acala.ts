@@ -124,52 +124,47 @@ export class AcalaParachainAdapter extends SubAdapter {
   }
 
   // overrides SubAdapter
-  // protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
-  //   const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
+  protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+    if (!this.assets) throw new Error(`[${this.constructor.name}] assets metadata is empty`);
 
-  //   return this.api.tx.xcmPallet.reserveTransferAssets(
-  //     // dest
-  //     {
-  //       V3: {
-  //         parents: 0,
-  //         interior: {
-  //           X1: {
-  //             Parachain: this.getSoraParachainId(),
-  //           },
-  //         },
-  //       },
-  //     },
-  //     // beneficiary
-  //     {
-  //       V3: {
-  //         parents: 0,
-  //         interior: {
-  //           X1: {
-  //             AccountId32: {
-  //               id: this.api.createType('AccountId32', recipient).toHex(),
-  //             },
-  //           },
-  //         },
-  //       },
-  //     },
-  //     // assets
-  //     {
-  //       V3: [
-  //         {
-  //           id: {
-  //             Concrete: {
-  //               parents: 0,
-  //               interior: 'Here',
-  //             },
-  //           },
-  //           fun: {
-  //             Fungible: value,
-  //           },
-  //         },
-  //       ],
-  //     },
-  //     // feeAssetItem
-  //     0
-  //   );
-  // }
+    const { id } = this.assets[asset.symbol];
+    const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
+
+    return this.api.tx.xTokens.transfer(
+      // currencyId: AcalaPrimitivesCurrencyCurrencyId
+      id,
+      // amount: u128
+      value,
+      // dest: XcmVersionedMultiLocation
+      {
+        V3: {
+          parents: 1,
+          interior: {
+            X2: [
+              {
+                Parachain: this.getSoraParachainId(),
+              },
+              {
+                AccountId32: {
+                  id: this.api.createType('AccountId32', recipient).toHex(),
+                },
+              },
+            ],
+          },
+        },
+      },
+      // destWeightLimit: XcmV3WeightLimit
+      'Unlimited'
+    );
+  }
+
+  /* Throws error until Substrate 5 migration */
+  public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
+    try {
+      return await super.getNetworkFee(asset, sender, recipient);
+    } catch (error) {
+      // Hardcoded value for Acala - 0.0027 ACA
+      return '2700000000';
+    }
+  }
 }

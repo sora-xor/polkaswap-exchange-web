@@ -252,4 +252,10 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
       [BridgeTxDirection.Incoming]: '0',
     },
   },
+  [SubNetworkId.PolkadotAcala]: {
+    ACA: {
+      [BridgeTxDirection.Outgoing]: '6429600000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+  },
 };
