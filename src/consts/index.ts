@@ -338,7 +338,7 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     href: '/#/pool',
   },
   {
-    icon: 'basic-layers-24',
+    icon: 'security-shield-24',
     title: PageNames.VaultsContainer,
     href: '/#/vault',
     index: VaultPageNames.Vaults,

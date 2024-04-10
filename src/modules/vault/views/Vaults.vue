@@ -55,7 +55,7 @@
         </s-col>
         <s-col class="s-flex has-vaults__action-container" :xs="12" :sm="12" :md="8" :lg="6">
           <s-button class="s-typography-button--large has-vaults__action" type="tertiary" @click="handleExploreVaults">
-            EXPLORE VAULTS
+            EXPLORE POSITIONS
           </s-button>
           <s-button
             class="s-typography-button--large has-vaults__action"
