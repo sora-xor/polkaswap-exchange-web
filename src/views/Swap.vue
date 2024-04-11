@@ -15,6 +15,7 @@
 <script lang="ts">
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
+import Shepherd from 'shepherd.js';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
@@ -116,6 +117,68 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
         });
       }
     });
+  }
+
+  mounted(): void {
+    const tour = new Shepherd.Tour({
+      defaultStepOptions: {
+        cancelIcon: {
+          enabled: true,
+        },
+        classes: 'class-1 class-2',
+        scrollTo: { behavior: 'smooth', block: 'center' },
+      },
+    });
+
+    tour.addStep({
+      title: 'Polkaswap swap page tour',
+      text: 'Take a short tour demonstrating how to exchange tokens in Polkaswap',
+      attachTo: {
+        element: '.swap-widget',
+        on: 'left',
+      },
+      buttons: [
+        {
+          action() {
+            return this.next();
+          },
+          text: 'Start tour',
+        },
+      ],
+      id: 'start',
+    });
+
+    tour.addStep({
+      title: 'Select token',
+      text: 'Click on this button with the name of the token in order to select the token that you want to exchange',
+      attachTo: {
+        element: '.s-input[data-test-name="swapFrom"] .token-select-button',
+        on: 'bottom',
+      },
+      id: 'open-select-token',
+    });
+
+    tour.addStep({
+      title: 'Select token 2',
+      text: 'Click on this button with the name of the token in order to select the token that you want to exchange',
+      attachTo: {
+        element: '.s-input[data-test-name="swapFrom"] .token-select-button',
+        on: 'bottom',
+      },
+      id: 'select-token',
+    });
+
+    setTimeout(() => {
+      tour.start();
+
+      const element = document.querySelector('.s-input[data-test-name="swapFrom"] .token-select-button');
+
+      if (element) {
+        element.addEventListener('click', () => {
+          tour.show('select-token');
+        });
+      }
+    }, 3000);
   }
 
   /** Overrides SelectedTokenRouteMixin */
