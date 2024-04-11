@@ -14,8 +14,6 @@ import { SubTransferType } from '@/utils/bridge/sub/types';
 import {
   getBridgeProxyHash,
   getDepositedBalance,
-  getParachainBridgeAppMintedBalance,
-  getSubstrateBridgeAppMintedBalance,
   getMessageAcceptedNonces,
   isMessageDispatchedNonces,
   isAssetAddedToChannel,
@@ -324,9 +322,6 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     let amount!: string;
     let eventIndex!: number;
 
-    const isStandalone = this.transferType === SubTransferType.Standalone;
-    const getMintedBalance = isStandalone ? getSubstrateBridgeAppMintedBalance : getParachainBridgeAppMintedBalance;
-
     try {
       await new Promise<void>((resolve, reject) => {
         const eventsObservable = api.system.getEventsObservable(subBridgeApi.apiRx);
@@ -344,7 +339,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
             soraHash = getBridgeProxyHash(foundedEvents, subBridgeApi.api);
 
-            [amount, eventIndex] = getMintedBalance(foundedEvents, tx.from as string, subBridgeApi.api);
+            [amount, eventIndex] = getDepositedBalance(foundedEvents, tx.from as string, subBridgeApi.api);
 
             resolve();
           } catch (error) {
