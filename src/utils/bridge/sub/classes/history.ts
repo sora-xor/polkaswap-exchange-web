@@ -150,7 +150,8 @@ class SubBridgeHistory extends SubNetworksConnector {
       const asset = assetDataByAddress(tx.soraAssetAddress);
 
       if (!asset) {
-        throw new Error(`[${this.constructor.name}] Asset is not exists: "${tx.soraAssetAddress}"`);
+        console.info(`[${this.constructor.name}] Asset is not exists: "${tx.soraAssetAddress}, skip;"`);
+        return null;
       }
 
       const amount = FPNumber.fromCodecValue(tx.amount, asset.decimals).toString();
@@ -350,6 +351,10 @@ class SubBridgeHistory extends SubNetworksConnector {
     txEvents: any[];
     blockEvents: any[];
   }): Promise<Nullable<SubHistory>> {
+    const { soraParachainApi } = this;
+
+    if (!soraParachainApi) throw new Error('SORA Parachain Api is not exists');
+
     // find SORA hash event index
     const requestStatusUpdateEventIndex = txEvents.findIndex((e) => {
       if (!this.soraApi.events.bridgeProxy.RequestStatusUpdate.is(e.event)) return false;
@@ -394,21 +399,34 @@ class SubBridgeHistory extends SubNetworksConnector {
     const [_, eventIndex] = getParachainBridgeAppMintedBalance(blockEvents, history.from as string, this.soraApi);
     history.payload.eventIndex = eventIndex;
 
-    const soraParachainApi = this.soraParachainApi;
-
-    if (!soraParachainApi) throw new Error('SORA Parachain Api is not exists');
-
-    // If transfer received from Relaychain, extrinsic events should have downward message processed
-    const incomingMessageFromRelaychain = networkExtrinsicEvents.find((e) =>
-      soraParachainApi.events.parachainSystem.DownwardMessagesProcessed.is(e.event)
+    // is tx signed on SORA Parachain
+    const feeEvent = networkExtrinsicEvents.find((e) =>
+      soraParachainApi.events.transactionPayment.TransactionFeePaid.is(e.event)
     );
 
-    if (incomingMessageFromRelaychain) {
-      history.parachainBlockId = history.externalBlockId;
-      history.parachainBlockHeight = history.externalBlockHeight;
-      return await this.processIncomingFromRelaychain(history);
+    if (feeEvent) {
+      return await this.processIncomingFromSoraParachain(history, feeEvent);
+    }
+
+    history.parachainBlockId = history.externalBlockId;
+    history.parachainBlockHeight = history.externalBlockHeight;
+
+    const relayChainBlockNumber = await subBridgeApi.soraParachainApi.getRelayChainBlockNumber(
+      history.parachainBlockId as string,
+      soraParachainApi
+    );
+
+    // If transfer received from Parachain, extrinsic events should have xcmpQueue.Success event
+    const messageEvent = networkExtrinsicEvents.find((e) => soraParachainApi.events.xcmpQueue.Success.is(e.event));
+
+    if (messageEvent) {
+      const messageHash = messageEvent.event.data.messageHash.toString();
+      // Parachain block, found through relaychain validation data
+      const parachainBlockId = await this.findParachainBlockIdOnRelaychain(history, relayChainBlockNumber);
+
+      return await this.processIncomingFromParachain(history, parachainBlockId, messageHash);
     } else {
-      return await this.processIncomingFromParachain(history, networkExtrinsicEvents);
+      return await this.processIncomingFromRelaychain(history, relayChainBlockNumber);
     }
   }
 
@@ -424,66 +442,27 @@ class SubBridgeHistory extends SubNetworksConnector {
     return history;
   }
 
-  private async processIncomingFromParachain(history: SubHistory, extrinsicEvents: any[]): Promise<SubHistory> {
-    const { soraParachain, soraParachainApi } = this;
+  private async processIncomingFromSoraParachain(history: SubHistory, feeEvent: any): Promise<SubHistory> {
+    const { soraParachain } = this;
 
-    if (!(soraParachainApi && soraParachain)) throw new Error('SORA Parachain Api is not exists');
+    if (!soraParachain) throw new Error('SORA Parachain Api is not exists');
 
-    // is tx signed on SORA Parachain
-    const feeEvent = extrinsicEvents.find((e) =>
-      soraParachainApi.events.transactionPayment.TransactionFeePaid.is(e.event)
-    );
+    const signer = feeEvent.event.data[0].toString(); // signer is spent balance for fee
 
-    // Incoming from SORA Parachain
-    if (feeEvent) {
-      const signer = feeEvent.event.data[0].toString(); // signer is spent balance for fee
+    history.externalNetwork = subBridgeApi.getSoraParachain(history.externalNetwork as SubNetwork);
+    history.externalNetworkFee = feeEvent.event.data[1].toString();
+    history.to = soraParachain.formatAddress(signer);
 
-      history.externalNetwork = subBridgeApi.getSoraParachain(history.externalNetwork as SubNetwork);
-      history.externalNetworkFee = feeEvent.event.data[1].toString();
-      history.to = soraParachain.formatAddress(signer);
-
-      return history;
-    } else {
-      history.parachainBlockId = history.externalBlockId;
-      history.parachainBlockHeight = history.externalBlockHeight;
-      return await this.processIncomingFromRelayParachain(history, extrinsicEvents);
-    }
+    return history;
   }
 
-  private async processIncomingFromRelayParachain(history: SubHistory, extrinsicEvents: any[]): Promise<SubHistory> {
-    const { soraParachainApi, relaychainApi } = this;
-
-    if (!soraParachainApi) throw new Error('SORA Parachain Api is not exists');
-    if (!relaychainApi) throw new Error('Relaychain Api is not exists');
-
-    const messageEvent = extrinsicEvents.find((e) => soraParachainApi.events.xcmpQueue.Success.is(e.event));
-
-    if (!messageEvent)
-      throw new Error(
-        `[${history.id}] Message sended to SORA Parachain from ${history.externalNetwork} Parachain not found. Block: "${history.parachainBlockId}"`
-      );
-
-    // Recieved on SORA Parachain message from external Parachain
-    const messageHash = messageEvent.event.data.messageHash.toString(); // [TODO: Acala]: check
-    const relayChainBlockNumber = await subBridgeApi.soraParachainApi.getRelayChainBlockNumber(
-      history.parachainBlockId as string,
-      soraParachainApi
-    );
-    // Parachain block, found through relaychain validation data
-    const parachainBlockId = await this.findParachainBlockIdOnRelaychain(history, relayChainBlockNumber);
-
-    return await this.processIncomingTxOnParachain(history, parachainBlockId, messageHash);
-  }
-
-  private async processIncomingFromRelaychain(history: SubHistory): Promise<SubHistory> {
+  private async processIncomingFromRelaychain(history: SubHistory, relayChainBlockNumber: number): Promise<SubHistory> {
     const { soraParachain, soraParachainApi } = this;
 
     if (!(soraParachain && soraParachainApi)) throw new Error('SORA Parachain Api is not exists');
 
-    const [soraParachainId, relayChainBlockNumber] = await Promise.all([
-      soraParachain.getParachainId(),
-      subBridgeApi.soraParachainApi.getRelayChainBlockNumber(history.parachainBlockId as string, soraParachainApi),
-    ]);
+    const soraParachainId = soraParachain.getParachainId();
+
     // relay chain should have send message in this blocks range
     const startSearch = relayChainBlockNumber;
     const endSearch = startSearch - 6;
@@ -573,7 +552,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     );
   }
 
-  private async processIncomingTxOnParachain(history: SubHistory, parachainBlockId: string, messageHash: string) {
+  private async processIncomingFromParachain(history: SubHistory, parachainBlockId: string, messageHash: string) {
     const { externalApi, network } = this;
 
     const parachainId = network.getParachainId();
