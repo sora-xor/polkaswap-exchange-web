@@ -48,10 +48,12 @@ export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string 
   return bridgeProxyEvent.event.data[0].toString();
 };
 
-// Native token for network
 export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): [string, number] => {
   const index = events.findIndex((e) => {
-    if (!api.events.balances.Deposit.is(e.event)) return false;
+    const isNative = api.events.balances.Deposit.is(e.event);
+    const isOther = api.events.tokens.Deposited.is(e.event);
+
+    if (!isNative && !isOther) return false;
     return subBridgeApi.formatAddress(e.event.data.who.toString()) === subBridgeApi.formatAddress(to);
   });
 
