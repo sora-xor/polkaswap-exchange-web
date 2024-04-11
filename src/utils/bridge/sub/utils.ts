@@ -112,7 +112,9 @@ export const getReceivedAmount = (sendedAmount: string, receivedAmount: CodecStr
 };
 
 export const getParachainSystemMessageHash = (events: Array<any>, api: ApiPromise) => {
-  const parachainSystemEvent = events.find((e) => api.events.parachainSystem.UpwardMessageSent.is(e.event));
+  const parachainSystemEvent = events.find(
+    (e) => api.events.parachainSystem.UpwardMessageSent.is(e.event) || api.events.xcmpQueue.XcmpMessageSent.is(e.event)
+  );
 
   if (!parachainSystemEvent) {
     throw new Error(`Unable to find "parachainSystem.UpwardMessageSent" event`);

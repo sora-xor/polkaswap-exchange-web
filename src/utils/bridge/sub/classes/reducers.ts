@@ -415,7 +415,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
               await this.waitForSendingExecution(id);
               await this.waitForIntermediateExecution(id);
-              await this.waitForRelaychainExecution(id);
+              await this.waitForDestinationExecution(id);
 
               await this.onComplete(id);
             } finally {
@@ -570,8 +570,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     }
   }
 
-  private async waitForRelaychainExecution(id: string): Promise<void> {
-    if (this.transferType !== SubTransferType.Relaychain) return;
+  private async waitForDestinationExecution(id: string): Promise<void> {
+    if (![SubTransferType.Relaychain, SubTransferType.Parachain].includes(this.transferType)) return;
 
     const tx = this.getTransaction(id);
     const messageHash = tx.payload.messageHash as string;
