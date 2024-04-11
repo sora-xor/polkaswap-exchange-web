@@ -560,7 +560,7 @@ class SubBridgeHistory extends SubNetworksConnector {
         const messageSentEvent = extrinsicEvents.find((e) => externalApi.events.xcmpQueue.XcmpMessageSent.is(e.event));
 
         if (!messageSentEvent) continue;
-        if (messageSentEvent.event.data[0].toString() !== messageHash) continue; // [TODO] check
+        if (messageSentEvent.event.data[0].toString() !== messageHash) continue;
 
         const parachainBlockHeight = await api.system.getBlockNumber(parachainBlockId, externalApi);
         const signer = extrinsic.signer.toString();
