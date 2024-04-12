@@ -258,4 +258,10 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
       [BridgeTxDirection.Incoming]: '0',
     },
   },
+  [SubNetworkId.AlphanetMoonbase]: {
+    ACA: {
+      [BridgeTxDirection.Outgoing]: '34313700000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+  },
 };
