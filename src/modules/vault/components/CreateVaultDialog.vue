@@ -34,6 +34,7 @@
           @max="handleMaxBorrowValue"
           @slide="handleBorrowPercentChange"
         />
+        <slippage-tolerance class="slippage-tolerance-settings vault-create__slippage" />
         <info-line
           label="MIN DEPOSIT COLLATERAL"
           label-tooltip="COMING SOON..."
@@ -132,6 +133,7 @@ import type { Collateral } from '@sora-substrate/util/build/kensetsu/types';
     TokenInput: lazyComponent(Components.TokenInput),
     SelectToken: lazyComponent(Components.SelectToken),
     ValueStatus: lazyComponent(Components.ValueStatusWrapper),
+    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
   },
 })
 export default class CreateVaultDialog extends Mixins(
@@ -145,6 +147,7 @@ export default class CreateVaultDialog extends Mixins(
   @Ref('collateralInput') collateralInput!: Nullable<TokenInput>;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.vault.collaterals private collaterals!: Record<string, Collateral>;
   @getter.vault.averageCollateralPrice private averageCollateralPrice!: Nullable<FPNumber>;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
@@ -422,7 +425,7 @@ export default class CreateVaultDialog extends Mixins(
         const token = this.collateralToken;
         if (!token) return;
         await this.withNotifications(async () => {
-          await api.kensetsu.createVault(token, this.collateralValue, this.borrowValue);
+          await api.kensetsu.createVault(token, this.collateralValue, this.borrowValue, this.slippageTolerance);
         });
       } catch (error) {
         console.error(error);
@@ -438,7 +441,8 @@ export default class CreateVaultDialog extends Mixins(
   @include full-width-button('action-button');
 
   &__button,
-  &__token-input {
+  &__token-input,
+  &__slippage {
     margin-bottom: $inner-spacing-medium;
   }
   .ltv-badge-status {

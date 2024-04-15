@@ -17,6 +17,7 @@
         @max="handleMaxBorrowValue"
         @slide="handleBorrowPercentChange"
       />
+      <slippage-tolerance class="slippage-tolerance-settings borrow-more__slippage" />
       <prev-next-info-line
         label="OUTSTANDING DEBT"
         tooltip="COMING SOON..."
@@ -84,6 +85,7 @@ import type { Vault } from '@sora-substrate/util/build/kensetsu/types';
     TokenInput: lazyComponent(Components.TokenInput),
     ValueStatus: lazyComponent(Components.ValueStatusWrapper),
     PrevNextInfoLine: vaultLazyComponent(VaultComponents.PrevNextInfoLine),
+    SlippageTolerance: lazyComponent(Components.SlippageTolerance),
   },
 })
 export default class BorrowMoreDialog extends Mixins(
@@ -102,6 +104,7 @@ export default class BorrowMoreDialog extends Mixins(
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly maxSafeDebt!: FPNumber;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.settings.slippageTolerance private slippageTolerance!: string;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
   @getter.vault.kusdToken kusdToken!: Nullable<RegisteredAccountAsset>;
 
@@ -243,7 +246,7 @@ export default class BorrowMoreDialog extends Mixins(
       try {
         await this.withNotifications(async () => {
           if (!this.vault) throw new Error('[api.kensetsu.borrow]: vault is null');
-          await api.kensetsu.borrow(this.vault, this.borrowValue);
+          await api.kensetsu.borrow(this.vault, this.borrowValue, this.slippageTolerance);
         });
       } catch (error) {
         console.error(error);
@@ -259,7 +262,8 @@ export default class BorrowMoreDialog extends Mixins(
   @include full-width-button('action-button');
 
   &__button,
-  &__token-input {
+  &__token-input,
+  &__slippage {
     margin-bottom: $inner-spacing-medium;
   }
   .ltv-badge-status {
