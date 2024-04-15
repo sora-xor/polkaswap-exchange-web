@@ -101,7 +101,7 @@
     "ipfs-unixfs": "6.0.6",
     "ipfs-unixfs-exporter": "7.0.6",
     "ipfs-unixfs-importer": "9.0.6",
-    "@sora-substrate/util": "1.33.2"
+    "@sora-substrate/util": "1.33.10"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
