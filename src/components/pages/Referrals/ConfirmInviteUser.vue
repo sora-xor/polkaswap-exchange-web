@@ -47,7 +47,7 @@ export default class ReferralsConfirmInviteUser extends Mixins(mixins.Transactio
   }
 
   get iconName(): string {
-    return this.hasReferrer ? 'notifications-alert-triangle-24' : 'file-file-text-24';
+    return this.hasReferrer ? 'notifications-alert-triangle-24' : 'finance-PSWAP-24';
   }
 
   get iconSize(): number {
