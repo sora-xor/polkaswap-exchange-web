@@ -33,6 +33,7 @@ export type SettingsState = {
   selectNodeDialogVisibility: boolean;
   selectIndexerDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
+  selectCurrencyDialogVisibility: boolean;
   disclaimerVisibility: boolean;
   alertSettingsVisibility: boolean;
   browserNotifPopupVisibility: boolean;
@@ -45,5 +46,4 @@ export type SettingsState = {
   internetConnectionSpeed: Nullable<number>;
   screenBreakpointClass: BreakpointClass;
   adsArray: Array<Ad>;
-  currency: Nullable<string>;
 };

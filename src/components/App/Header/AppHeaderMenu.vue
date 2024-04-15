@@ -51,6 +51,7 @@ enum HeaderMenuType {
   HideBalances = 'hide-balances',
   Theme = 'theme',
   Language = 'language',
+  Currency = 'currency',
   Notification = 'notification',
   Disclaimer = 'disclaimer',
 }
@@ -83,6 +84,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: FnWithoutArgs;
   @mutation.settings.setAlertSettingsPopup private setAlertSettingsPopup!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
+  @mutation.settings.setSelectCurrencyDialogVisibility private setCurrencyDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
 
   get mediaQueryList(): MediaQueryList {
@@ -140,6 +142,12 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         text: this.t('headerMenu.switchLanguage'),
       },
       {
+        value: HeaderMenuType.Currency,
+        icon: 'el-icon-money',
+        text: 'Select currency',
+      },
+      // TODO: add notification here
+      {
         value: HeaderMenuType.Disclaimer,
         icon: 'info-16',
         text: this.disclaimerText,
@@ -179,6 +187,9 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         break;
       case HeaderMenuType.Language:
         this.setLanguageDialogVisibility(true);
+        break;
+      case HeaderMenuType.Currency:
+        this.setCurrencyDialogVisibility(true);
         break;
       case HeaderMenuType.Disclaimer:
         if (this.disclaimerDisabled) return;

@@ -29,6 +29,7 @@ function initialState(): SettingsState {
     selectNodeDialogVisibility: false,
     selectIndexerDialogVisibility: false,
     selectLanguageDialogVisibility: false,
+    selectCurrencyDialogVisibility: false,
     disclaimerVisibility: false,
     alertSettingsVisibility: false,
     browserNotifPopupVisibility: false,
@@ -39,8 +40,6 @@ function initialState(): SettingsState {
     internetConnectionSpeed: undefined,
     screenBreakpointClass: BreakpointClass.LargeDesktop,
     adsArray: [],
-    // TODO: get from localStorage
-    currency: '',
   };
 }
 

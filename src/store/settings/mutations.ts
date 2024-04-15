@@ -33,6 +33,9 @@ const mutations = defineMutations<SettingsState>()({
   setSelectLanguageDialogVisibility(state, value: boolean): void {
     state.selectLanguageDialogVisibility = value;
   },
+  setSelectCurrencyDialogVisibility(state, value: boolean): void {
+    state.selectCurrencyDialogVisibility = value;
+  },
   toggleDisclaimerDialogVisibility(state): void {
     state.disclaimerVisibility = !state.disclaimerVisibility;
   },
@@ -96,9 +99,6 @@ const mutations = defineMutations<SettingsState>()({
   },
   setAdsArray(state, arr: Array<Ad>): void {
     state.adsArray = arr;
-  },
-  setFiatCurrency(state, currency: any): void {
-    state.currency = currency;
   },
 });
 
