@@ -576,7 +576,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     let subscription!: Subscription;
     let blockNumber!: number;
     let amount!: string;
-    let eventIndex!: number;
+    let externalEventIndex!: number;
 
     const adapter = this.connector.network;
 
@@ -600,7 +600,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
               blockNumber = blockHeight;
 
-              [amount, eventIndex] = getDepositedBalance(
+              [amount, externalEventIndex] = getDepositedBalance(
                 events.slice(0, messageQueueProcessedEventIndex),
                 tx.to as string,
                 adapter.api
@@ -630,6 +630,6 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     }
 
     this.updateReceivedAmount(id, amount);
-    this.updateTransactionPayload(id, { eventIndex });
+    this.updateTransactionParams(id, { externalEventIndex });
   }
 }

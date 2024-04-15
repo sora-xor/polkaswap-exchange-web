@@ -63,7 +63,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       decimals: 12,
     },
     endpointUrls: ['wss://acala-rpc-0.aca-api.network', 'wss://acala-rpc.dwellir.com'],
-    blockExplorerUrls: ['https://acala.subscan.io/'],
+    blockExplorerUrls: ['https://acala.subscan.io'],
     shortName: 'Acala',
     nodes: [
       {

@@ -84,16 +84,20 @@ export class AcalaParachainAdapter extends SubAdapter {
 
   // overrides SubAdapter method
   public async getTokenBalance(accountAddress: string, asset: RegisteredAsset): Promise<CodecString> {
-    return asset.symbol === this.chainSymbol
-      ? await this.getAccountBalance(accountAddress)
-      : await this.getAccountAssetBalance(accountAddress, asset.symbol);
+    return await this.withConnection(async () => {
+      return asset.symbol === this.chainSymbol
+        ? await this.getAccountBalance(accountAddress)
+        : await this.getAccountAssetBalance(accountAddress, asset.symbol);
+    }, ZeroStringValue);
   }
 
   // overrides SubAdapter method
   public async getAssetMinDeposit(asset: RegisteredAsset): Promise<CodecString> {
-    return asset.symbol === this.chainSymbol
-      ? await this.getExistentialDeposit()
-      : await this.getAssetDeposit(asset.symbol);
+    return await this.withConnection(async () => {
+      return asset.symbol === this.chainSymbol
+        ? await this.getExistentialDeposit()
+        : await this.getAssetDeposit(asset.symbol);
+    }, ZeroStringValue);
   }
 
   protected async getAssetDeposit(assetSymbol: string): Promise<CodecString> {
@@ -163,8 +167,8 @@ export class AcalaParachainAdapter extends SubAdapter {
     try {
       return await super.getNetworkFee(asset, sender, recipient);
     } catch (error) {
-      // Hardcoded value for Acala - 0.0027 ACA
-      return '2700000000';
+      // Hardcoded value for Acala - 0.003 ACA
+      return '3000000000';
     }
   }
 }
