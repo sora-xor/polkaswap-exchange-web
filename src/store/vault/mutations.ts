@@ -10,7 +10,7 @@ import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<VaultState>()({
   setCollaterals(state, collaterals: Record<string, Collateral>): void {
-    state.collaterals = collaterals;
+    state.collaterals = { ...collaterals };
   },
   resetCollaterals(state): void {
     state.collaterals = {};
@@ -32,7 +32,7 @@ const mutations = defineMutations<VaultState>()({
     state.accountVaultIdsSubscription = null;
   },
   setAccountVaults(state, accountVaults: Vault[]): void {
-    state.accountVaults = accountVaults;
+    state.accountVaults = [...accountVaults];
   },
   resetAccountVaults(state): void {
     state.accountVaults = [];
@@ -57,7 +57,7 @@ const mutations = defineMutations<VaultState>()({
     state.averageCollateralPrices = { ...state.averageCollateralPrices, [data.address]: data.price };
   },
   resetAverageCollateralPrices(state): void {
-    state.averageCollateralPrices = defaultAverageCollateralPrices;
+    state.averageCollateralPrices = { ...defaultAverageCollateralPrices };
   },
   setAverageCollateralPriceSubscriptions(state, subscriptions?: Nullable<Subscription[]>): void {
     state.averageCollateralPriceSubscriptions.forEach((subscription) => subscription?.unsubscribe?.());
@@ -68,6 +68,25 @@ const mutations = defineMutations<VaultState>()({
   },
   setLiquidationPenalty(state, penalty: number): void {
     state.liquidationPenalty = penalty;
+  },
+  setBorrowTax(state, tax: number): void {
+    state.borrowTax = tax;
+  },
+  setBorrowTaxSubscription(state, subscription: Subscription): void {
+    state.borrowTaxSubscription = subscription;
+  },
+  resetBorrowTaxSubscription(state): void {
+    state.borrowTaxSubscription?.unsubscribe();
+    state.borrowTaxSubscription = null;
+  },
+  setDebtCalculationInterval(state, interval: ReturnType<typeof setInterval>): void {
+    state.debtCalculationInterval = interval;
+  },
+  resetDebtCalculationInterval(state): void {
+    if (state.debtCalculationInterval) {
+      clearInterval(state.debtCalculationInterval);
+    }
+    state.debtCalculationInterval = null;
   },
 });
 

@@ -20,6 +20,9 @@ function initialState(): VaultState {
     averageCollateralPrices: defaultAverageCollateralPrices,
     averageCollateralPriceSubscriptions: [],
     liquidationPenalty: 0,
+    borrowTax: 0,
+    borrowTaxSubscription: null,
+    debtCalculationInterval: null,
   };
 }
 

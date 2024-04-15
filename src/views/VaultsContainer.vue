@@ -21,6 +21,8 @@ export default class VaultsContainer extends Mixins(SubscriptionsMixin) {
   @action.vault.subscribeOnAccountVaults private subscribeOnAccountVaults!: AsyncFnWithoutArgs;
   @action.vault.updateBalanceSubscriptions private updateBalanceSubscriptions!: AsyncFnWithoutArgs;
   @action.vault.getLiquidationPenalty private getLiquidationPenalty!: AsyncFnWithoutArgs;
+  @action.vault.subscribeOnBorrowTax private subscribeOnBorrowTax!: AsyncFnWithoutArgs;
+  @action.vault.subscribeOnDebtCalculation private subscribeOnDebtCalculation!: AsyncFnWithoutArgs;
   @action.vault.reset private reset!: AsyncFnWithoutArgs;
 
   created(): void {
@@ -29,6 +31,8 @@ export default class VaultsContainer extends Mixins(SubscriptionsMixin) {
       this.subscribeOnAccountVaults,
       this.updateBalanceSubscriptions,
       this.getLiquidationPenalty,
+      this.subscribeOnBorrowTax,
+      this.subscribeOnDebtCalculation,
     ]);
     this.setResetSubscriptions([this.reset]);
   }

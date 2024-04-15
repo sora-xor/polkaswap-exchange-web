@@ -100,7 +100,7 @@ export default class RepayDebtDialog extends Mixins(
   @Ref('debtInput') debtInput!: Nullable<TokenInput>;
 
   @Prop({ type: Object, default: ObjectInit }) readonly vault!: Nullable<Vault>;
-  @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: FPNumber;
+  @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: Nullable<FPNumber>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly maxSafeDebt!: FPNumber;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
@@ -206,7 +206,7 @@ export default class RepayDebtDialog extends Mixins(
   }
 
   get formattedPrevLtv(): string {
-    return this.prevLtv.toLocaleString(2);
+    return this.prevLtv?.toLocaleString(2) ?? ZeroStringValue;
   }
 
   get ltv(): Nullable<FPNumber> {
@@ -233,8 +233,6 @@ export default class RepayDebtDialog extends Mixins(
    * It's required for max & slider to realize what value should be used
    * as maximum. When debt is lower than balance debt should be used.
    * Otherwise, balance.
-   *
-   * @todo TODO: discuss with UX designer
    */
   private get maxInputRepay(): FPNumber {
     return this.debt.gt(this.debtAssetBalanceFp) ? this.debtAssetBalanceFp : this.debt;

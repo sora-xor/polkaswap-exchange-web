@@ -105,7 +105,7 @@ export default class AddCollateralDialog extends Mixins(
   @Prop({ type: Object, default: ObjectInit }) readonly collateral!: Nullable<Collateral>;
   @Prop({ type: Object, default: ObjectInit }) readonly vault!: Nullable<Vault>;
   @Prop({ type: Object, default: ObjectInit }) readonly asset!: Nullable<RegisteredAccountAsset>;
-  @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: FPNumber;
+  @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: Nullable<FPNumber>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevAvailable!: FPNumber;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly averageCollateralPrice!: FPNumber;
 
@@ -216,7 +216,7 @@ export default class AddCollateralDialog extends Mixins(
   }
 
   get formattedPrevLtv(): string {
-    return this.prevLtv.toLocaleString(2);
+    return this.prevLtv?.toLocaleString(2) ?? ZeroStringValue;
   }
 
   private get maxBorrowPerCollateralValue(): FPNumber {

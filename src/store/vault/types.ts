@@ -16,4 +16,7 @@ export type VaultState = {
   averageCollateralPrices: Record<string, Nullable<FPNumber>>;
   averageCollateralPriceSubscriptions: Subscription[];
   liquidationPenalty: number;
+  borrowTax: number;
+  borrowTaxSubscription: Nullable<Subscription>;
+  debtCalculationInterval: Nullable<ReturnType<typeof setInterval>>;
 };

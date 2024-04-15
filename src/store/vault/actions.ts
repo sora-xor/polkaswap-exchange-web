@@ -11,7 +11,9 @@ import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 
-const INTERVAL = 2 * 60_000; // Do not decrease this interval due to a lot of data subscriptions updates
+const COLLATERALS_INTERVAL = 2 * 60_000; // Do not decrease this interval due to a lot of data subscriptions updates
+/** Debt calculation in real-time each 6 seconds */
+const DEBT_INTERVAL = 6_000;
 const DaiAddress = DAI.address;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
@@ -74,8 +76,7 @@ const actions = defineActions({
       const idsSubscription = api.kensetsu.subscribeOnAccountVaultIds().subscribe((ids) => {
         commit.resetAccountVaultsSubscription();
         const subscription = api.kensetsu.subscribeOnVaults(ids).subscribe((vaults) => {
-          // TODO: remove map after 1.32.7 of substrate js library
-          commit.setAccountVaults(vaults.map((vault, index) => ({ ...vault, id: ids[index] })));
+          commit.setAccountVaults(vaults);
         });
         commit.setAccountVaultsSubscription(subscription);
       });
@@ -85,6 +86,36 @@ const actions = defineActions({
       commit.resetAccountVaultsSubscription();
       commit.resetAccountVaults();
     }
+  },
+  async subscribeOnDebtCalculation(context): Promise<void> {
+    const { commit, state } = vaultActionContext(context);
+    commit.resetDebtCalculationInterval();
+
+    const interval = setInterval(() => {
+      const vaults = state.accountVaults;
+      if (!vaults.length) {
+        return;
+      }
+
+      const updatedVaults = [...vaults];
+      vaults.forEach((vault, index) => {
+        const collateral = state.collaterals[vault.lockedAssetId];
+        if (!collateral) {
+          return;
+        }
+        // TODO: fix it
+        collateral.riskParams.rateSecondlyCoeff = collateral.riskParams.rateSecondlyCoeff.div(1000);
+
+        const newDebt = api.kensetsu.calcNewDebt(collateral, vault);
+        if (!newDebt) {
+          return;
+        }
+        updatedVaults[index] = { ...vault, debt: newDebt };
+      });
+      commit.setAccountVaults(updatedVaults);
+    }, DEBT_INTERVAL);
+
+    commit.setDebtCalculationInterval(interval);
   },
   async requestCollaterals(context): Promise<void> {
     const { commit, dispatch } = vaultActionContext(context);
@@ -104,9 +135,18 @@ const actions = defineActions({
 
     const interval = setInterval(() => {
       dispatch.requestCollaterals();
-    }, INTERVAL);
+    }, COLLATERALS_INTERVAL);
 
     commit.setCollateralsInterval(interval);
+  },
+  async subscribeOnBorrowTax(context): Promise<void> {
+    const { commit } = vaultActionContext(context);
+    try {
+      const tax = await api.kensetsu.getBorrowTax();
+      commit.setBorrowTax(tax / 100); // Convert to percentage coefficient
+    } catch (error) {
+      console.error(error);
+    }
   },
   async getLiquidationPenalty(context): Promise<void> {
     const { commit } = vaultActionContext(context);
@@ -125,6 +165,8 @@ const actions = defineActions({
     commit.setCollateralTokenBalance();
     commit.setCollateralAddress(XOR.address);
     commit.resetCollateralsInterval();
+    commit.resetDebtCalculationInterval();
+    commit.resetBorrowTaxSubscription();
     commit.resetAccountVaultIdsSubscription();
     commit.resetAccountVaultsSubscription();
     commit.setAverageCollateralPriceSubscriptions();
