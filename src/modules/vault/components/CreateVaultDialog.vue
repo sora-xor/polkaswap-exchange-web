@@ -266,8 +266,9 @@ export default class CreateVaultDialog extends Mixins(
   }
 
   get isMaxCollateralAvailable(): boolean {
-    if (this.shouldBalanceBeHidden || this.isCollateralZero) return true;
+    if (this.shouldBalanceBeHidden) return true;
     if (this.availableCollateralBalanceFp.isLteZero()) return false;
+    if (this.isCollateralZero) return true;
     return !this.collateralValueFp.isEqualTo(this.availableCollateralBalanceFp);
   }
 
