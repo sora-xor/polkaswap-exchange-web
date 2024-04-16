@@ -33,7 +33,12 @@
               </div>
             </div>
             <div class="vault-collateral__actions s-flex">
-              <s-button class="s-typography-button--small" size="small" @click="addCollateral">
+              <s-button
+                class="s-typography-button--small"
+                size="small"
+                :disabled="isAddCollateralUnavailable"
+                @click="addCollateral"
+              >
                 <s-icon name="finance-send-24" size="16" />
                 Add collateral
               </s-button>
@@ -78,7 +83,7 @@
                 class="s-typography-button--small"
                 type="primary"
                 size="small"
-                :disable="isBorrowMoreUnavailable"
+                :disabled="isBorrowMoreUnavailable"
                 @click="borrowMore"
               >
                 <s-icon name="finance-send-24" size="16" />
@@ -183,7 +188,7 @@ import { vaultLazyComponent } from '@/modules/vault/router';
 import { getLtvStatus } from '@/modules/vault/util';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
-import { waitUntil } from '@/utils';
+import { asZeroValue, getAssetBalance, waitUntil } from '@/utils';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
@@ -295,6 +300,11 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     if (!(this.kusdToken && this.availableToBorrow)) return ZeroStringValue;
 
     return this.getFiatAmountByFPNumber(this.availableToBorrow, this.kusdToken) ?? ZeroStringValue;
+  }
+
+  get isAddCollateralUnavailable(): boolean {
+    if (!this.lockedAsset) return true;
+    return asZeroValue(getAssetBalance(this.lockedAsset));
   }
 
   get isBorrowMoreUnavailable(): boolean {
