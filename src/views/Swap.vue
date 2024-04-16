@@ -15,6 +15,7 @@
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import Shepherd from 'shepherd.js';
+import Tour from 'shepherd.js/src/types/tour';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SelectedTokenRouteMixin from '@/components/mixins/SelectedTokensRouteMixin';
@@ -43,6 +44,8 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
   @action.swap.setTokenFromAddress private setTokenFromAddress!: (address?: string) => Promise<void>;
   @action.swap.setTokenToAddress private setTokenToAddress!: (address?: string) => Promise<void>;
+
+  tour: Tour | null = null;
 
   @Watch('tokenFrom')
   @Watch('tokenTo')
@@ -76,7 +79,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   }
 
   mounted(): void {
-    const tour = new Shepherd.Tour({
+    this.tour = new Shepherd.Tour({
       defaultStepOptions: {
         cancelIcon: {
           enabled: true,
@@ -86,7 +89,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       },
     });
 
-    tour.addStep({
+    this.tour.addStep({
       title: 'Polkaswap swap page tour',
       text: 'Take a short tour demonstrating how to exchange tokens in Polkaswap',
       attachTo: {
@@ -104,7 +107,7 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       id: 'start',
     });
 
-    tour.addStep({
+    this.tour.addStep({
       title: 'Select token',
       text: 'Click on this button with the name of the token in order to select the token that you want to exchange',
       attachTo: {
@@ -114,27 +117,88 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
       id: 'open-select-token',
     });
 
-    tour.addStep({
-      title: 'Select token 2',
-      text: 'Click on this button with the name of the token in order to select the token that you want to exchange',
+    this.tour.addStep({
+      title: 'Select token',
+      text: 'Select a token from the list',
       attachTo: {
-        element: '.s-input[data-test-name="swapFrom"] .token-select-button',
+        element: '.el-dialog__body',
         on: 'bottom',
       },
       id: 'select-token',
     });
 
+    this.tour.addStep({
+      title: 'Select second token',
+      text: 'Select a second token from the list',
+      attachTo: {
+        element: '.s-input[data-test-name="swapTo"] .token-select-button',
+        on: 'bottom',
+      },
+      id: 'select-second-token',
+    });
+
+    this.tour.addStep({
+      title: 'Input amount',
+      text: 'Input amount',
+      attachTo: {
+        element: '.s-input[data-test-name="swapFrom"]',
+        on: 'top',
+      },
+      id: 'input-amount',
+    });
+
     setTimeout(() => {
-      tour.start();
+      if (!this.tour) return;
+      this.tour.start();
 
-      const element = document.querySelector('.s-input[data-test-name="swapFrom"] .token-select-button');
+      let firstTokenSelected = false;
+      let secondTokenSelected = false;
+      const swapFromSelectTokenButton = document.querySelector(
+        '.s-input[data-test-name="swapFrom"] .token-select-button'
+      );
+      const swapToSelectTokenButton = document.querySelector('.s-input[data-test-name="swapTo"] .token-select-button');
 
-      if (element) {
-        element.addEventListener('click', () => {
-          tour.show('select-token');
+      if (swapFromSelectTokenButton) {
+        swapFromSelectTokenButton.addEventListener('click', () => {
+          if (!this.tour) return;
+          this.tour.show('select-token');
+
+          const assets = document.querySelectorAll('.asset');
+
+          for (const asset of assets) {
+            asset.addEventListener('click', () => {
+              firstTokenSelected = true;
+
+              if (!this.tour) return;
+              this.tour.show('select-second-token');
+            });
+          }
         });
       }
-    }, 3000);
+
+      if (swapToSelectTokenButton) {
+        swapToSelectTokenButton.addEventListener('click', () => {
+          const assets = document.querySelectorAll('.asset');
+
+          if (!this.tour) return;
+          this.tour.cancel();
+
+          for (const asset of assets) {
+            asset.addEventListener('click', () => {
+              secondTokenSelected = true;
+
+              if (!this.tour) return;
+              this.tour.show('input-amount');
+            });
+          }
+        });
+      }
+    }, 1000);
+  }
+
+  beforeUnmount(): void {
+    if (!this.tour) return;
+    this.tour.cancel();
   }
 
   /** Overrides SelectedTokenRouteMixin */
