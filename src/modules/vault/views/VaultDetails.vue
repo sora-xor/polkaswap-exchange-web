@@ -172,6 +172,7 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/math';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -184,7 +185,6 @@ import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { waitUntil } from '@/utils';
 
-import type { FPNumber } from '@sora-substrate/math';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
 
@@ -298,11 +298,11 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get isBorrowMoreUnavailable(): boolean {
-    return this.availableToBorrow?.isLteZero() ?? true;
+    return this.availableToBorrow?.isLessThan(FPNumber.ONE) ?? true;
   }
 
   get isRepayDebtUnavailable(): boolean {
-    return this.vault?.debt.isLteZero() ?? true;
+    return this.vault?.debt.isLessThan(FPNumber.ONE) ?? true;
   }
 
   get formattedLockedAmount(): string {
