@@ -103,8 +103,6 @@ const actions = defineActions({
         if (!collateral) {
           return;
         }
-        // TODO: fix it
-        collateral.riskParams.rateSecondlyCoeff = collateral.riskParams.rateSecondlyCoeff.div(1000);
 
         const newDebt = api.kensetsu.calcNewDebt(collateral, vault);
         if (!newDebt) {
@@ -141,9 +139,12 @@ const actions = defineActions({
   },
   async subscribeOnBorrowTax(context): Promise<void> {
     const { commit } = vaultActionContext(context);
+    commit.resetBorrowTaxSubscription();
     try {
-      const tax = await api.kensetsu.getBorrowTax();
-      commit.setBorrowTax(tax / 100); // Convert to percentage coefficient
+      const subscription = api.kensetsu.subscribeOnBorrowTax().subscribe((tax) => {
+        commit.setBorrowTax(tax / 100); // Convert to percentage coefficient
+      });
+      commit.setBorrowTaxSubscription(subscription);
     } catch (error) {
       console.error(error);
     }

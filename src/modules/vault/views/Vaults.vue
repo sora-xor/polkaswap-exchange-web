@@ -193,6 +193,7 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
   @state.vault.accountVaults private vaults!: Vault[];
   @state.vault.collaterals private collaterals!: Record<string, Collateral>;
   @state.vault.averageCollateralPrices private averageCollateralPrices!: Record<string, Nullable<FPNumber>>;
+  @state.vault.borrowTax private borrowTax!: number;
 
   showCreateVaultDialog = false;
 
@@ -211,9 +212,10 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
       const averagePrice = this.averageCollateralPrices[vault.lockedAssetId] ?? this.Zero;
       const collateralVolume = averagePrice.mul(vault.lockedAmount);
       const maxSafeDebt = collateralVolume.mul(collateral?.riskParams.liquidationRatioReversed ?? 0).div(HundredNumber);
-      const ltvCoeff = vault.debt.div(maxSafeDebt);
+      const maxSafeDebtWithoutTax = maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
+      const ltvCoeff = vault.debt.div(maxSafeDebtWithoutTax);
       const ltv = ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
-      const availableCoeff = maxSafeDebt.sub(vault.debt);
+      const availableCoeff = maxSafeDebtWithoutTax.sub(vault.debt);
       const available = !availableCoeff.isFinity() || availableCoeff.isLteZero() ? this.Zero : availableCoeff;
       return { ...vault, lockedAsset, ltv, available };
     });

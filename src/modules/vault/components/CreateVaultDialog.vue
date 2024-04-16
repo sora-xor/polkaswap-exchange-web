@@ -149,6 +149,7 @@ export default class CreateVaultDialog extends Mixins(
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.vault.collaterals private collaterals!: Record<string, Collateral>;
+  @state.vault.borrowTax private borrowTax!: number;
   @getter.vault.averageCollateralPrice private averageCollateralPrice!: Nullable<FPNumber>;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
@@ -317,7 +318,7 @@ export default class CreateVaultDialog extends Mixins(
       .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
       .div(HundredNumber);
 
-    return maxSafeDebt;
+    return maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
   }
 
   get formattedMinDeposit(): string {
@@ -345,7 +346,8 @@ export default class CreateVaultDialog extends Mixins(
     const maxSafeDebt = collateralVolume
       .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
       .div(HundredNumber);
-    return maxSafeDebt;
+
+    return maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
   }
 
   get ltv(): Nullable<FPNumber> {
@@ -370,7 +372,7 @@ export default class CreateVaultDialog extends Mixins(
   }
 
   get formattedStabilityFee(): string {
-    return (this.collateral?.riskParams.rateAnnual ?? this.Zero).toLocaleString();
+    return (this.collateral?.riskParams.stabilityFeeAnnual ?? this.Zero).toLocaleString();
   }
 
   get borrowValuePercent(): number {

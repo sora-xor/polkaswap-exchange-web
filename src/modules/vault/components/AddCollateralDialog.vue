@@ -110,6 +110,7 @@ export default class AddCollateralDialog extends Mixins(
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly averageCollateralPrice!: FPNumber;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.vault.borrowTax private borrowTax!: number;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
   @getter.vault.kusdToken private kusdToken!: Nullable<RegisteredAccountAsset>;
 
@@ -226,7 +227,8 @@ export default class AddCollateralDialog extends Mixins(
     const maxSafeDebt = collateralVolume
       .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
       .div(HundredNumber);
-    return maxSafeDebt;
+
+    return maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
   }
 
   get formattedPrevAvailable(): string {

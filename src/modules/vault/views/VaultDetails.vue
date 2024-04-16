@@ -210,6 +210,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   @state.vault.collaterals private collaterals!: Record<string, Collateral>;
   @state.vault.averageCollateralPrices private averageCollateralPrices!: Record<string, Nullable<FPNumber>>;
   @state.vault.liquidationPenalty private liquidationPenalty!: number;
+  @state.vault.borrowTax private borrowTax!: number;
   @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
 
   showCloseVaultDialog = false;
@@ -255,7 +256,10 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   get maxSafeDebt(): Nullable<FPNumber> {
     if (!this.vault) return null;
     const collateralVolume = this.averageCollateralPrice.mul(this.vault.lockedAmount);
-    return collateralVolume.mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0).div(HundredNumber);
+    const maxSafeDebt = collateralVolume
+      .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
+      .div(HundredNumber);
+    return maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
   }
 
   get ltv(): Nullable<FPNumber> {
@@ -327,7 +331,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   private get stabilityFee(): Nullable<FPNumber> {
-    return this.collateral?.riskParams.rateAnnual;
+    return this.collateral?.riskParams.stabilityFeeAnnual;
   }
 
   get formattedStabilityFee(): string {
