@@ -1,6 +1,8 @@
+import { DexId } from '@sora-substrate/util/build/dex/consts';
 import { defineMutations } from 'direct-vuex';
 import omit from 'lodash/fp/omit';
 
+import { ZeroStringValue } from '@/consts';
 import { settingsStorage } from '@/utils/storage';
 
 import { initialState } from './state';
@@ -43,22 +45,22 @@ const mutations = defineMutations<SwapState>()({
   setToValue(state, value: string): void {
     state.toValue = value;
   },
-  setAmountWithoutImpact(state, amount: CodecString): void {
+  setAmountWithoutImpact(state, amount: CodecString = ZeroStringValue): void {
     state.amountWithoutImpact = amount;
   },
   setExchangeB(state, value: boolean): void {
     state.isExchangeB = value;
   },
-  setLiquidityProviderFee(state, value: CodecString): void {
+  setLiquidityProviderFee(state, value: CodecString = ZeroStringValue): void {
     state.liquidityProviderFee = value;
   },
-  setRewards(state, rewards: Array<LPRewardsInfo>): void {
+  setRewards(state, rewards: Array<LPRewardsInfo> = []): void {
     state.rewards = Object.freeze([...rewards]);
   },
-  setRoute(state, route: string[]): void {
+  setRoute(state, route: string[] = []): void {
     state.route = Object.freeze([...route]);
   },
-  setDistribution(state, distribution: Distribution[][]): void {
+  setDistribution(state, distribution: Distribution[][] = []): void {
     state.distribution = Object.freeze([...distribution]);
   },
   setSubscriptionPayload(state, payload?: SwapQuoteData): void {
@@ -70,7 +72,7 @@ const mutations = defineMutations<SwapState>()({
   setLiquiditySource(state, liquiditySource): void {
     state.liquiditySources = [liquiditySource];
   },
-  selectDexId(state, dexId: number) {
+  selectDexId(state, dexId: number = DexId.XOR) {
     state.selectedDexId = dexId;
   },
   setAllowLossPopup(state, flag: boolean) {

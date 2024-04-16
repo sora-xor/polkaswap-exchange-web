@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "Výber uzla v sieti {Sora}",
+        "title": "Výber uzla v sieti",
         "addNode": "Pridať vlastný uzol",
         "customNode": "Vlastný uzol",
         "howToSetupOwnNode": "Ako nastaviť vlastný uzol {Sora}",
         "select": "Vybrať",
         "connected": "Pripojené",
-        "selectNodeForEnvironment": "Vyberte uzol pre {environment} prostredie:",
         "nodeTitle": "{chain} hosťovaný {name}",
         "messages": {
             "emptyName": "Zadajte názov uzla",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} adresa",
         "limitMessage": "V súčasnosti existuje {type} {amount} {symbol} na premostenie na zaistenie stability a bezpečnosti siete {Sora}. Ďakujeme za pochopenie.",
         "externalTransferFee": "{network} poplatok {XCM}",
-        "externalTransferFeeTooltip": "Keď odošlete preklenovaciu transakciu do siete {network} , zo sumy, ktorú prenášate, sa účtuje malý poplatok"
+        "externalTransferFeeTooltip": "Keď odošlete preklenovaciu transakciu do siete {network} , zo sumy, ktorú prenášate, sa účtuje malý poplatok",
+        "externalMinDeposit": "min. {network} Záloha",
+        "externalMinDepositTooltip": "Minimálny zostatok {symbol} , ktorý musí byť na vašom účte {network} po preklenovacom prevode"
     },
     "selectRegisteredAsset": {
         "title": "Vybrať token",
@@ -1522,7 +1523,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Nie je k dispozícii dostatok objednávok na splnenie tejto objednávky",
-                "reading": "Obmedzenie trhového príkazu: Nie je k dispozícii dostatok príkazov na splnenie tohto trhového limitného príkazu. Upravte veľkosť objednávky alebo počkajte na odoslanie ďalších objednávok"
+                "reading": "Obmedzenie trhovej objednávky: Na splnenie tejto trhovej objednávky nie je k dispozícii dostatok objednávok. Upravte veľkosť objednávky alebo počkajte na odoslanie ďalších objednávok"
             },
             "exceedsSpread": {
                 "reason": "Cena prekročila spread",
@@ -1554,6 +1555,10 @@
             "canceled": "Zrušené",
             "expired": "Platnosť vypršala",
             "filled": "Naplnené"
-        }
-    }
+        },
+        "pricePerToken": "Cena za 1 {token}"
+    },
+    "calculatingText": "Výpočet",
+    "customisePageText": "Prispôsobiť stránku",
+    "priceChartText": "Cenový graf"
 }

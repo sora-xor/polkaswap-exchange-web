@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "Selección de nodos de la Red {Sora}",
+        "title": "Selección de nodos de la Red",
         "addNode": "Añadir nodo personalizado",
         "customNode": "Nodo personalizado",
         "howToSetupOwnNode": "Cómo configurar su propio nodo {Sora}",
         "select": "Seleccione",
         "connected": "Conectado",
-        "selectNodeForEnvironment": "Seleccione un nodo para el entorno {environment}:",
         "nodeTitle": "{chain} alojada por {name}",
         "messages": {
             "emptyName": "Por favor ingrese el nombre del nodo",
@@ -591,7 +590,9 @@
         "ethereumAddress": "dirección {Ethereum}",
         "limitMessage": "Actualmente, existe un {type} {amount} {symbol} para establecer puentes para garantizar la estabilidad y seguridad de la red {Sora} . apreciamos su comprensión.",
         "externalTransferFee": "tarifa de {network} {XCM}",
-        "externalTransferFeeTooltip": "Cuando envía una transacción puente a la red {network} , se deduce una tarifa menor del monto que está transfiriendo"
+        "externalTransferFeeTooltip": "Cuando envía una transacción puente a la red {network} , se deduce una tarifa menor del monto que está transfiriendo",
+        "externalMinDeposit": "{network} mín. depósito",
+        "externalMinDepositTooltip": "Saldo mínimo {symbol} que debe haber en su cuenta {network} después de la transferencia puente"
     },
     "selectRegisteredAsset": {
         "title": "Seleccione un Token",
@@ -1304,7 +1305,7 @@
             "description": "Haz staking de tokens {XOR} en {Sora} Network como nominador para validar transacciones y ganar recompensas de tokens {VAL}."
         },
         "newStake": {
-            "title": "Empezar a apostar",
+            "title": "Empezar a participar",
             "minStakeWarning": "La apuesta mínima para recibir la recompensa es {min} {symbol}"
         },
         "validators": {
@@ -1373,7 +1374,7 @@
         "validatorsAttentionDialog": {
             "title": "Atención",
             "description": [
-                "Las sugerencias del validador algorítmico no constituyen consultas ni consejos financieros. Apostar es una actividad de alto riesgo y las sugerencias del validador algorítmico no necesariamente mitigan este riesgo.",
+                "Las sugerencias del validador algorítmico no constituyen consultas ni consejos financieros. La participación (staking)  es una actividad de alto riesgo y las sugerencias del validador algorítmico no necesariamente mitigan este riesgo.",
                 "Un validador sugerido por el algoritmo aún podría ser eliminado. Un validador sugerido por el algoritmo también podría cambiar sus parámetros (por ejemplo, tasas de comisión, etc.) en cualquier momento después de haber sido sugerido y\/o seleccionado.",
                 "Podrías perder tokens o recompensas por estos u otros motivos. Solo apueste tokens y utilice sugerencias de validadores a su propia discreción, después de realizar la debida diligencia y considerar cuidadosamente los riesgos involucrados."
             ],
@@ -1415,7 +1416,7 @@
             "countdownLeft": "quedan"
         },
         "stakeDialog": {
-            "toStake": "Apostar",
+            "toStake": "Participar",
             "toRemove": "Para eliminar"
         },
         "withdrawDialog": {
@@ -1522,7 +1523,7 @@
             },
             "marketNotAvailable": {
                 "reason": "No hay suficientes pedidos disponibles para completar este pedido",
-                "reading": "Limitación de orden de mercado: no hay suficientes órdenes disponibles para cumplir con esta orden de límite de mercado. Ajuste el tamaño de su pedido o espere a que se realicen más pedidos."
+                "reading": "Limitación de la orden de mercado: no hay suficientes órdenes disponibles para cumplir con esta orden de mercado. Ajuste el tamaño de su pedido o espere a que se realicen más pedidos."
             },
             "exceedsSpread": {
                 "reason": "El precio superó el diferencial",
@@ -1554,6 +1555,10 @@
             "canceled": "Cancelado",
             "expired": "Venció",
             "filled": "Completado"
-        }
-    }
+        },
+        "pricePerToken": "Precio por 1 {token}"
+    },
+    "calculatingText": "Calculando",
+    "customisePageText": "Personalizar página",
+    "priceChartText": "Gráfico de precios"
 }

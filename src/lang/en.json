@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "{Sora} Network node selection",
+        "title": "Network node selection",
         "addNode": "Add custom node",
         "customNode": "Custom node",
         "howToSetupOwnNode": "How to setup your own {Sora} node",
         "select": "Select",
         "connected": "Connected",
-        "selectNodeForEnvironment": "Select a node for {environment} environment:",
         "nodeTitle": "{chain} hosted by {name}",
         "messages": {
             "emptyName": "Please input the name of the node",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} address",
         "limitMessage": "Currently, there's a {type} {amount} {symbol} for bridging to ensure the stability and security of the {Sora} Network. We appreciate your understanding.",
         "externalTransferFee": "{network} {XCM} fee",
-        "externalTransferFeeTooltip": "When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are transferring"
+        "externalTransferFeeTooltip": "When you send a bridge transaction to the {network} network, a minor fee is taken from the amount you are transferring",
+        "externalMinDeposit": "{network} min. deposit",
+        "externalMinDepositTooltip": "Minimum balance {symbol} that must be on your {network} account after the bridge transfer"
     },
     "selectRegisteredAsset": {
         "title": "Select a token",
@@ -1522,7 +1523,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Not enough orders available to fullfill this order",
-                "reading": "Market order limitation: There are not enough orders available to fulfill this market limit order. Please adjust your order size or wait for more orders to be placed"
+                "reading": "Market order limitation: There are not enough orders available to fulfill this market order. Please adjust your order size or wait for more orders to be placed"
             },
             "exceedsSpread": {
                 "reason": "Price exceeded spread",
@@ -1554,6 +1555,10 @@
             "canceled": "Canceled",
             "expired": "Expired",
             "filled": "Filled"
-        }
-    }
+        },
+        "pricePerToken": "Price per 1 {token}"
+    },
+    "calculatingText": "Calculating",
+    "customisePageText": "Customize page",
+    "priceChartText": "Price chart"
 }

@@ -1,7 +1,5 @@
 <template>
-  <stats-card>
-    <template #title>{{ t('networkStatisticsText') }}</template>
-
+  <base-widget :title="t('networkStatisticsText')">
     <template #filters>
       <stats-filter :disabled="loading" :filters="filters" :value="filter" @input="changeFilter" />
     </template>
@@ -34,7 +32,7 @@
         </s-card>
       </div>
     </div>
-  </stats-card>
+  </base-widget>
 </template>
 
 <script lang="ts">
@@ -72,7 +70,7 @@ type NetworkStatsColumn = {
 @Component({
   components: {
     PriceChange: lazyComponent(Components.PriceChange),
-    StatsCard: lazyComponent(Components.StatsCard),
+    BaseWidget: lazyComponent(Components.BaseWidget),
     StatsFilter: lazyComponent(Components.StatsFilter),
     FormattedAmount: components.FormattedAmount,
   },
@@ -181,7 +179,6 @@ $gap: $inner-spacing-mini;
   display: flex;
   flex-flow: row wrap;
   gap: $gap;
-  margin-top: $inner-spacing-mini * 2.5;
 
   .stats-column {
     @include columns(2, $gap);

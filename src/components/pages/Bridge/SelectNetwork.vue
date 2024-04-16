@@ -103,9 +103,7 @@ export default class BridgeSelectNetwork extends Mixins(NetworkFormatterMixin) {
         }, []);
       })
       .flat(1)
-      .sort((a, b) => {
-        return +a.disabled - +b.disabled;
-      });
+      .sort((a, b) => +a.disabled - +b.disabled);
   }
 
   get selectedNetworkTuple(): string {
@@ -141,6 +139,12 @@ $radio-checked-size: 18px;
   .el-radio__label {
     padding-left: $inner-spacing-small;
     width: 100%;
+  }
+  .network,
+  .el-radio__input {
+    &.is-disabled {
+      cursor: not-allowed;
+    }
   }
 }
 

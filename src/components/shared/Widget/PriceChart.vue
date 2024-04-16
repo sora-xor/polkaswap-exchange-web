@@ -1,5 +1,5 @@
 <template>
-  <stats-card v-loading="parentLoading">
+  <base-widget v-loading="parentLoading">
     <template #title>
       <tokens-row border :assets="tokens" size="medium" />
       <div v-if="tokenA" class="token-title">
@@ -9,6 +9,7 @@
       <s-button
         v-if="isTokensPair && !isOrderBook"
         :class="{ 's-pressed': isReversedChart }"
+        size="small"
         type="action"
         alternative
         icon="arrows-swap-90-24"
@@ -56,7 +57,7 @@
         @datazoom="changeZoomLevel"
       />
     </chart-skeleton>
-  </stats-card>
+  </base-widget>
 </template>
 
 <script lang="ts">
@@ -254,15 +255,15 @@ const getPrecision = (value: number): number => {
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
+    BaseWidget: lazyComponent(Components.BaseWidget),
     SvgIconButton: lazyComponent(Components.SvgIconButton),
     TokensRow: lazyComponent(Components.TokensRow),
     PriceChange: lazyComponent(Components.PriceChange),
-    StatsCard: lazyComponent(Components.StatsCard),
     StatsFilter: lazyComponent(Components.StatsFilter),
     ChartSkeleton: lazyComponent(Components.ChartSkeleton),
   },
 })
-export default class SwapChart extends Mixins(
+export default class PriceChartWidget extends Mixins(
   ChartSpecMixin,
   mixins.LoadingMixin,
   mixins.NumberFormatterMixin,
@@ -451,7 +452,7 @@ export default class SwapChart extends Mixins(
 
   get chartSpec() {
     // [TODO]: until we haven't two tokens volume
-    const withVolume = this.isOrderBook || (!!this.tokenA && !this.tokenB);
+    const withVolume = this.entities.length === 1;
 
     const priceGrid = this.gridSpec({
       top: 20,
@@ -839,14 +840,11 @@ export default class SwapChart extends Mixins(
         console.error
       );
     } else {
-      return this.$watch(
-        () => this.fiatPriceObject,
-        (updated, prev) => {
-          if (updated && (!prev || entities.some((addr) => updated[addr] !== prev[addr]))) {
-            this.fetchAndHandleUpdate(entities);
-          }
-        }
-      );
+      const interval = setInterval(() => {
+        this.fetchAndHandleUpdate(entities);
+      }, SYNC_INTERVAL * 5);
+
+      return () => clearInterval(interval);
     }
   }
 

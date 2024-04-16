@@ -44,6 +44,8 @@ import {
   WALLET_CONSTS,
   WALLET_TYPES,
   AlertsApiService,
+  initWallet,
+  waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
@@ -54,15 +56,15 @@ import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { PageNames, Components, Language, BreakpointClass, Breakpoint } from '@/consts';
+import { PageNames, Components, Language, BreakpointClass, Breakpoint, WalletPermissions } from '@/consts';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
+import type { NodesConnection } from '@/utils/connection';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
-import type { ConnectToNodeOptions, Node } from './types/nodes';
 import type { History, HistoryItem } from '@sora-substrate/util';
 import type { WhitelistArrayItem } from '@sora-substrate/util/build/assets/types';
 import type { EvmNetwork } from '@sora-substrate/util/build/bridgeProxy/evm/types';
@@ -95,6 +97,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   showNotifsDarkPage = false;
   responsiveClass = BreakpointClass.LargeDesktop;
 
+  @state.settings.appConnection appConnection!: NodesConnection;
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
@@ -102,7 +105,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.router.loading pageLoading!: boolean;
 
-  @getter.settings.chartsEnabled private chartsEnabled!: boolean;
+  @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
@@ -114,8 +117,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     endpoint: string;
   }) => void;
 
-  @mutation.settings.setDefaultNodes private setDefaultNodes!: (nodes: Array<Node>) => void;
-  @mutation.settings.setNetworkChainGenesisHash private setNetworkChainGenesisHash!: (hash?: string) => void;
   @mutation.settings.setFaucetUrl private setFaucetUrl!: (url: string) => void;
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
@@ -125,15 +126,14 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (cssClass: string) => void;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
+  @mutation.web3.setSubNetworkApps private setSubNetworkApps!: (data: SubNetworkApps) => void;
   @mutation.web3.setEthBridgeSettings private setEthBridgeSettings!: (settings: EthBridgeSettings) => Promise<void>;
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
 
-  @action.web3.setSubNetworkApps private setSubNetworkApps!: (data: SubNetworkApps) => void;
   @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
   @action.wallet.subscriptions.resetNetworkSubscriptions private resetNetworkSubscriptions!: AsyncFnWithoutArgs;
   @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncFnWithoutArgs;
   @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncFnWithoutArgs;
-  @action.settings.connectToNode private connectToNode!: (options: ConnectToNodeOptions) => Promise<void>;
   @action.settings.setLanguage private setLanguage!: (lang: Language) => Promise<void>;
   @action.settings.setBlockNumber private setBlockNumber!: AsyncFnWithoutArgs;
   @action.settings.fetchAdsArray private fetchAdsArray!: AsyncFnWithoutArgs;
@@ -239,7 +239,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       await this.setEthBridgeSettings(data.ETH_BRIDGE);
       this.setFeatureFlags(data?.FEATURE_FLAGS);
       this.setSoraNetwork(data.NETWORK_TYPE);
-      this.setDefaultNodes(data?.DEFAULT_NETWORKS);
       this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
       this.setSubNetworkApps(data.SUB_NETWORKS);
 
@@ -253,9 +252,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       if (data.FAUCET_URL) {
         this.setFaucetUrl(data.FAUCET_URL);
       }
-      if (data.CHAIN_GENESIS_HASH) {
-        this.setNetworkChainGenesisHash(data.CHAIN_GENESIS_HASH);
-      }
+
+      this.appConnection.setDefaultNodes(data?.DEFAULT_NETWORKS);
+      this.appConnection.setNetworkChainGenesisHash(data?.CHAIN_GENESIS_HASH);
 
       // connection to node
       await this.runAppConnectionToNode();
@@ -269,20 +268,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     window.addEventListener('resize', this.setResponsiveClassDebounced);
   }
 
-  private get isSwapPageWithCharts(): boolean {
-    return this.$route.name === PageNames.Swap && this.chartsEnabled;
-  }
-
   private get mobileCssClasses(): string[] | undefined {
     return getMobileCssClasses();
   }
 
   get isAboutPage(): boolean {
     return this.$route.name === PageNames.About;
-  }
-
-  get isCurrentPageTooWide(): boolean {
-    return this.isAboutPage || this.isSwapPageWithCharts || this.$route.name === PageNames.Tokens;
   }
 
   get dsProviderClasses(): string[] | BreakpointClass {
@@ -294,9 +285,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     const cssClasses: Array<string> = [baseClass];
     if (this.$route.name) {
       cssClasses.push(`${baseClass}--${this.$route.name.toLowerCase()}`);
-    }
-    if (this.isSwapPageWithCharts) {
-      cssClasses.push(`${baseClass}--has-charts`);
     }
     return cssClasses;
   }
@@ -373,14 +361,30 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private async runAppConnectionToNode() {
+    const walletOptions = {
+      permissions: WalletPermissions,
+      appName: WALLET_CONSTS.TranslationConsts.Polkaswap,
+    };
+
     try {
-      await this.connectToNode({
-        onError: (error) => this.handleNodeError(error, true), // prefer notification on connection success
-        onDisconnect: this.handleNodeDisconnect,
-        onReconnect: this.handleNodeReconnect,
-      });
+      // Run in parallel
+      // 1) Wallet core initialization (node connection independent)
+      // 2) Connection to node
+      await Promise.all([
+        waitForCore(walletOptions),
+        this.appConnection.connect({
+          onError: this.handleNodeError,
+          onDisconnect: this.handleNodeDisconnect,
+          onReconnect: this.handleNodeConnect,
+        }),
+      ]);
     } catch (error) {
       // we handled error using callback, do nothing
+    } finally {
+      // Wallet node connection dependent logic
+      if (!this.isWalletLoaded) {
+        await initWallet(walletOptions);
+      }
     }
   }
 }
@@ -568,13 +572,12 @@ i.icon-divider {
 }
 
 @include desktop {
-  .app-main {
-    &.app-main--swap.app-main--has-charts {
+  .app-main--swap {
+    &.app-main {
       .app-menu {
         &:not(.collapsed) {
           position: relative;
         }
-
         &.collapsed {
           & + .app-body {
             margin-left: 74px;

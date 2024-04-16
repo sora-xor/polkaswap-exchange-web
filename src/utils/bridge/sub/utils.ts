@@ -32,6 +32,8 @@ export const determineTransferType = (network: SubNetwork) => {
     return SubTransferType.SoraParachain;
   } else if (subBridgeApi.isRelayChain(network)) {
     return SubTransferType.Relaychain;
+  } else if (subBridgeApi.isStandalone(network)) {
+    return SubTransferType.Standalone;
   } else {
     return SubTransferType.Parachain;
   }
@@ -47,17 +49,56 @@ export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string 
   return bridgeProxyEvent.event.data[0].toString();
 };
 
-export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): string => {
-  // Native token for network
-  const balancesDepositEvent = events.find(
-    (e) =>
-      api.events.balances.Deposit.is(e.event) &&
-      subBridgeApi.formatAddress(e.event.data.who.toString()) === subBridgeApi.formatAddress(to)
-  );
+// Native token for network
+export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): [string, number] => {
+  const index = events.findIndex((e) => {
+    if (!api.events.balances.Deposit.is(e.event)) return false;
+    return subBridgeApi.formatAddress(e.event.data.who.toString()) === subBridgeApi.formatAddress(to);
+  });
 
-  if (!balancesDepositEvent) throw new Error(`Unable to find "balances.Deposit" event`);
+  if (index === -1) throw new Error(`Unable to find "balances.Deposit" event`);
 
-  return balancesDepositEvent.event.data.amount.toString();
+  const event = events[index];
+  const balance = event.event.data.amount.toString();
+
+  return [balance, index];
+};
+
+// for SORA from Relaychain
+export const getParachainBridgeAppMintedBalance = (
+  events: Array<any>,
+  to: string,
+  api: ApiPromise
+): [string, number] => {
+  const index = events.findIndex((e) => {
+    if (!api.events.parachainBridgeApp.Minted.is(e.event)) return false;
+    return subBridgeApi.formatAddress(e.event.data[3].toString()) === subBridgeApi.formatAddress(to);
+  });
+
+  if (index === -1) throw new Error(`Unable to find "parachainBridgeApp.Minted" event`);
+
+  const event = events[index];
+  const balance = event.event.data[4].toString();
+
+  return [balance, index];
+};
+// for SORA from Liberland
+export const getSubstrateBridgeAppMintedBalance = (
+  events: Array<any>,
+  to: string,
+  api: ApiPromise
+): [string, number] => {
+  const index = events.findIndex((e) => {
+    if (!api.events.substrateBridgeApp.Minted.is(e.event)) return false;
+    return subBridgeApi.formatAddress(e.event.data[3].toString()) === subBridgeApi.formatAddress(to);
+  });
+
+  if (index === -1) throw new Error(`Unable to find "parachainBridgeApp.Minted" event`);
+
+  const event = events[index];
+  const balance = event.event.data[4].toString();
+
+  return [balance, index];
 };
 
 export const getReceivedAmount = (sendedAmount: string, receivedAmount: CodecString, decimals?: number) => {
@@ -147,6 +188,37 @@ export const isAssetAddedToChannel = (
   // amount check
   // [WARNING] Implementation could be changed: sora parachain doesn't spent xcm fee from amount
   if (amount.toString() !== sended) return false;
+
+  return true;
+};
+
+// Liberland
+export const isSoraBridgeAppBurned = (
+  e: any,
+  asset: RegisteredAccountAsset,
+  from: string,
+  to: string,
+  sended: CodecString,
+  api: ApiPromise
+) => {
+  if (!api.events.soraBridgeApp.Burned.is(e.event)) return false;
+
+  const [networkIdCodec, assetIdCodec, senderCodec, recipientCodec, amountCodec] = e.event.data;
+
+  if (!(networkIdCodec.isMainnet && recipientCodec.isSora)) return false;
+
+  const sender = senderCodec.toString();
+  const recipient = recipientCodec.asSora.toString();
+  const assetId = assetIdCodec.isLld ? '' : assetIdCodec.asAsset.toString();
+  const amount = amountCodec.toString();
+
+  // address check
+  if (subBridgeApi.formatAddress(sender) !== subBridgeApi.formatAddress(from)) return false;
+  if (subBridgeApi.formatAddress(recipient) !== subBridgeApi.formatAddress(to)) return false;
+  // asset check
+  if (assetId !== asset.externalAddress) return false;
+  // amount check
+  if (amount !== sended) return false;
 
   return true;
 };

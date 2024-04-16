@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "Wybór węzła sieci {Sora}",
+        "title": "Wybór węzła sieci",
         "addNode": "Dodaj niestandardowy węzeł",
         "customNode": "Węzeł niestandardowy",
         "howToSetupOwnNode": "Jak ustawić własny węzeł sieci {Sora}",
         "select": "Wybierz",
         "connected": "Połączono",
-        "selectNodeForEnvironment": "Wybierz węzeł dla środowiska {environment}:",
         "nodeTitle": "{chain} hostowany przez {name}",
         "messages": {
             "emptyName": "Wprowadź nazwę węzła",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} adres",
         "limitMessage": "Obecnie istnieje {type} {amount} {symbol} do mostkowania, aby zapewnić stabilność i bezpieczeństwo sieci {Sora} . Doceniamy twoje zrozumienie.",
         "externalTransferFee": "Opłata {network} {XCM}",
-        "externalTransferFeeTooltip": "Kiedy wysyłasz transakcję pomostową do sieci {network} , od kwoty przelewu pobierana jest niewielka opłata"
+        "externalTransferFeeTooltip": "Kiedy wysyłasz transakcję pomostową do sieci {network} , od kwoty przelewu pobierana jest niewielka opłata",
+        "externalMinDeposit": "{network} min. depozyt",
+        "externalMinDepositTooltip": "Minimalne saldo {symbol} , które musi znajdować się na Twoim koncie {network} po przeniesieniu pomostowym"
     },
     "selectRegisteredAsset": {
         "title": "Wybierz token",
@@ -1522,7 +1523,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Nie ma wystarczającej liczby dostępnych zamówień, aby zrealizować to zamówienie",
-                "reading": "Ograniczenie zleceń rynkowych: Nie ma wystarczającej liczby dostępnych zleceń, aby zrealizować to zlecenie z limitem rynkowym. Dostosuj wielkość zamówienia lub poczekaj na złożenie większej liczby zamówień"
+                "reading": "Ograniczenie zlecenia rynkowego: Nie ma wystarczającej liczby dostępnych zleceń, aby zrealizować to zlecenie rynkowe. Dostosuj wielkość zamówienia lub poczekaj na złożenie większej liczby zamówień"
             },
             "exceedsSpread": {
                 "reason": "Cena przekroczyła spread",
@@ -1554,6 +1555,10 @@
             "canceled": "Odwołany",
             "expired": "Wygasły",
             "filled": "Wypełniony"
-        }
-    }
+        },
+        "pricePerToken": "Cena za 1 {token}"
+    },
+    "calculatingText": "Obliczanie",
+    "customisePageText": "Dostosuj stronę",
+    "priceChartText": "Wykres cen"
 }

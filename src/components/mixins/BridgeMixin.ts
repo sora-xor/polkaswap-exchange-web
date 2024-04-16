@@ -6,19 +6,20 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { PageNames } from '@/consts';
 import router from '@/router';
 import { getter, state } from '@/store/decorators';
-import { subBridgeApi } from '@/utils/bridge/sub/api';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
 @Component
 export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConnectMixin) {
   @state.bridge.externalNativeBalance externalNativeBalance!: CodecString;
   @state.bridge.assetLockedBalance assetLockedBalance!: Nullable<FPNumber>;
+  @state.bridge.assetExternalMinBalance assetExternalMinBalance!: CodecString;
+  @state.bridge.outgoingMinLimit outgoingMinLimit!: Nullable<FPNumber>;
   @state.bridge.outgoingMaxLimit outgoingMaxLimit!: Nullable<FPNumber>;
   @state.bridge.incomingMinLimit incomingMinAmount!: FPNumber;
   @state.bridge.soraNetworkFee soraNetworkFee!: CodecString;
+  @state.bridge.externalTransferFee externalTransferFee!: CodecString;
   @state.bridge.isSoraToEvm isSoraToEvm!: boolean;
 
   @getter.web3.isValidNetwork isValidNetwork!: boolean;
@@ -27,6 +28,8 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   @getter.bridge.sender sender!: string;
   @getter.bridge.recipient recipient!: string;
   @getter.bridge.externalNetworkFee externalNetworkFee!: CodecString;
+  @getter.bridge.isNativeTokenSelected isNativeTokenSelected!: boolean;
+  @getter.bridge.isSidechainAsset isSidechainAsset!: boolean;
   @getter.assets.xor xor!: RegisteredAccountAsset;
 
   get nativeTokenSymbol(): string {
@@ -37,18 +40,14 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     return this.nativeToken?.externalDecimals;
   }
 
-  get isNativeTokenSelected(): boolean {
-    return this.nativeToken?.address === this.asset?.address;
-  }
-
-  get assetLockedOnSora(): boolean {
-    return !subBridgeApi.isSoraParachain(this.networkSelected as SubNetwork);
+  get externalTransferFeeFP(): FPNumber {
+    return FPNumber.fromCodecValue(this.externalTransferFee, this.asset?.externalDecimals);
   }
 
   get outgoingMaxAmount(): FPNumber | null {
     const locks = [this.outgoingMaxLimit];
 
-    if (this.assetLockedOnSora) locks.push(this.assetLockedBalance);
+    if (this.isSidechainAsset) locks.push(this.assetLockedBalance);
 
     const filtered = locks.filter((item) => !!item) as FPNumber[];
 
@@ -57,8 +56,17 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
     return FPNumber.min(...filtered);
   }
 
+  get outgoingMinAmount(): FPNumber | null {
+    if (!this.outgoingMinLimit) return null;
+    // this fee is spend from transfer amount, so we add it to outgoing min limit
+    // [TODO: Bridge] remove when limit will be defined on backend
+    const transferFee = this.isNativeTokenSelected ? this.externalTransferFeeFP : FPNumber.ZERO;
+    // minimum amount = existential deposit + xcm fee
+    return this.outgoingMinLimit.add(transferFee);
+  }
+
   get incomingMaxAmount(): FPNumber | null {
-    if (this.assetLockedOnSora) return null;
+    if (this.isSidechainAsset) return null;
 
     return this.assetLockedBalance ?? null;
   }
@@ -68,7 +76,7 @@ export default class BridgeMixin extends Mixins(mixins.LoadingMixin, WalletConne
   }
 
   getTransferMinAmount(isOutgoing: boolean): FPNumber | null {
-    return isOutgoing ? null : this.incomingMinAmount;
+    return isOutgoing ? this.outgoingMinAmount : this.incomingMinAmount;
   }
 
   isGreaterThanTransferMaxAmount(

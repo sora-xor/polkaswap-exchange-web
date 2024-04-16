@@ -13,12 +13,12 @@
 import { components, mixins, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import { getIndexerName } from '@/components/App/Footer/Indexer/utils';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { action, state, mutation } from '@/store/decorators';
 import { Indexer } from '@/types/indexers';
+import { capitalize } from '@/utils';
 
 const IndexerListView = 'IndexerListView';
 const IndexerInfoView = 'IndexerInfoView';
@@ -47,7 +47,7 @@ export default class SelectIndexerDialog extends Mixins(TranslationMixin, mixins
     return Object.keys(WALLET_CONSTS.IndexerType).map((key) => {
       const type = WALLET_CONSTS.IndexerType[key];
       return {
-        name: getIndexerName(type),
+        name: capitalize(type),
         type,
         endpoint: this.indexersData[type].endpoint,
         online: this.indexersData[type].status === WALLET_TYPES.ConnectionStatus.Available,

@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "Selezione del nodo di rete {Sora}",
+        "title": "Selezione del nodo di rete",
         "addNode": "Aggiungi nodo personalizzato",
         "customNode": "Nodo personalizzato",
         "howToSetupOwnNode": "Come impostare il proprio nodo {Sora}",
         "select": "Seleziona",
         "connected": "Collegato",
-        "selectNodeForEnvironment": "Selezionare un nodo per {environment} ambiente:",
         "nodeTitle": "{chain} hosted da {name}",
         "messages": {
             "emptyName": "Si prega di inserire il nome del nodo",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} indirizzo",
         "limitMessage": "Attualmente, esiste un {type} {amount} {symbol} per il bridging per garantire la stabilità e la sicurezza della rete {Sora} . Apprezziamo la tua comprensione.",
         "externalTransferFee": "Tariffa {network} {XCM}",
-        "externalTransferFeeTooltip": "Quando invii una transazione bridge alla rete {network} , viene trattenuta una commissione minore dall'importo che stai trasferendo"
+        "externalTransferFeeTooltip": "Quando invii una transazione bridge alla rete {network} , viene trattenuta una commissione minore dall'importo che stai trasferendo",
+        "externalMinDeposit": "{network} min. depositare",
+        "externalMinDepositTooltip": "Saldo minimo {symbol} che deve essere sul tuo account {network} dopo il trasferimento ponte"
     },
     "selectRegisteredAsset": {
         "title": "Seleziona un token",
@@ -1522,7 +1523,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Non ci sono abbastanza ordini disponibili per evadere questo ordine",
-                "reading": "Limitazione dell'ordine di mercato: non ci sono abbastanza ordini disponibili per soddisfare questo ordine limite di mercato. Modifica la dimensione dell'ordine o attendi che vengano effettuati altri ordini"
+                "reading": "Limitazione dell'ordine di mercato: non ci sono abbastanza ordini disponibili per soddisfare questo ordine di mercato. Modifica la dimensione dell'ordine o attendi che vengano effettuati altri ordini"
             },
             "exceedsSpread": {
                 "reason": "Il prezzo ha superato lo spread",
@@ -1554,6 +1555,10 @@
             "canceled": "Annullato",
             "expired": "Scaduto",
             "filled": "Riempito"
-        }
-    }
+        },
+        "pricePerToken": "Prezzo per 1 {token}"
+    },
+    "calculatingText": "Calcolando",
+    "customisePageText": "Personalizza la pagina",
+    "priceChartText": "Grafico dei prezzi"
 }

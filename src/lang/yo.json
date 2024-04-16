@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "{Sora} aṣayan ipade Nẹtiwọọki",
+        "title": "aṣayan ipade Nẹtiwọọki",
         "addNode": "Ṣafikun oju ipade atowunwa",
         "customNode": "Oju ipade Atowunwa",
         "howToSetupOwnNode": "Bii o ṣe le ṣeto ti ara rẹ {Sora} node",
         "select": "Yan",
         "connected": "Ti sopọ",
-        "selectNodeForEnvironment": "Yan oju ipade kan fun {environment}",
         "nodeTitle": "{chain} gbalejo nipasẹ {name}",
         "messages": {
             "emptyName": "Jọwọ tẹ orukọ ipade naa sii",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} adirẹsi",
         "limitMessage": "Lọwọlọwọ, {type} {amount} {symbol} wa fun sisọpọ lati rii daju iduroṣinṣin ati aabo ti Nẹtiwọọki {Sora} . A dupe oye rẹ.",
         "externalTransferFee": "{network} {XCM} ọya",
-        "externalTransferFeeTooltip": "Nigbati o ba fi iṣowo afara ranṣẹ si netiwọki {network} , owo kekere kan yoo gba lati iye ti o n gbe"
+        "externalTransferFeeTooltip": "Nigbati o ba fi iṣowo afara ranṣẹ si netiwọki {network} , owo kekere kan yoo gba lati iye ti o n gbe",
+        "externalMinDeposit": "{network} min. idogo",
+        "externalMinDepositTooltip": "Iwontunwonsi ti o kere ju {symbol} ti o gbọdọ wa lori akọọlẹ {network} rẹ lẹhin gbigbe afara"
     },
     "selectRegisteredAsset": {
         "title": "Yan Tokini kan",
@@ -1522,7 +1523,7 @@
             },
             "marketNotAvailable": {
                 "reason": "Ko si awọn aṣẹ to wa lati kun aṣẹ yii",
-                "reading": "Idiwọn aṣẹ ọja: Ko si awọn aṣẹ to wa lati mu aṣẹ opin ọja yii ṣẹ. Jọwọ ṣatunṣe iwọn ibere rẹ tabi duro fun awọn aṣẹ diẹ sii lati gbe"
+                "reading": "Idiwọn aṣẹ ọja: Ko si awọn aṣẹ to wa lati mu aṣẹ ọja yii ṣẹ. Jọwọ ṣatunṣe iwọn ibere rẹ tabi duro fun awọn aṣẹ diẹ sii lati gbe"
             },
             "exceedsSpread": {
                 "reason": "Iye owo ti kọja itankale",
@@ -1554,6 +1555,10 @@
             "canceled": "fagilee",
             "expired": "Ti pari",
             "filled": "Ti kun"
-        }
-    }
+        },
+        "pricePerToken": "Iye fun 1 {token}"
+    },
+    "calculatingText": "Ọnàkọnà",
+    "customisePageText": "Ṣe akanṣe oju-iwe",
+    "priceChartText": "Owo chart"
 }

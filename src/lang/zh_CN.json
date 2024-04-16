@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "{Sora} 网络节点选择",
+        "title": "网络节点选择",
         "addNode": "添加自定义节点",
         "customNode": "自定义节点",
         "howToSetupOwnNode": "如何设置您自己的{Sora}节点",
         "select": "选择",
         "connected": "已连接",
-        "selectNodeForEnvironment": "{environment}环境选择一个节点：",
         "nodeTitle": "由{chain}托管的{name}。",
         "messages": {
             "emptyName": "请输入节点的名称",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} 地址",
         "limitMessage": "目前，为了确保{Sora}网络的稳定性和安全性，跨链桥转账的{type}金额为{amount} {symbol}。感谢您的理解。",
         "externalTransferFee": "{network} {XCM}费用",
-        "externalTransferFeeTooltip": "当您向{network}网络发送桥接交易时，将从您传输的金额中收取少量费用"
+        "externalTransferFeeTooltip": "当您向{network}网络发送桥接交易时，将从您传输的金额中收取少量费用",
+        "externalMinDeposit": "{network}分钟订金",
+        "externalMinDepositTooltip": "桥接转账后您的{network}帐户中必须存在的最低余额{symbol}"
     },
     "selectRegisteredAsset": {
         "title": "选择一个代币",
@@ -1522,7 +1523,7 @@
             },
             "marketNotAvailable": {
                 "reason": "没有足够的订单来完成此订单",
-                "reading": "市价订单限制：没有足够的订单来履行此市价限价订单。请调整您的订单大小或等待下更多订单"
+                "reading": "市价订单限制：没有足够的订单来履行该市价订单。请调整您的订单大小或等待下更多订单"
             },
             "exceedsSpread": {
                 "reason": "价格超出点差",
@@ -1554,6 +1555,10 @@
             "canceled": "取消",
             "expired": "已到期",
             "filled": "填充"
-        }
-    }
+        },
+        "pricePerToken": "每 1 个{token}价格"
+    },
+    "calculatingText": "正在计算",
+    "customisePageText": "自定义页面",
+    "priceChartText": "价格走势图"
 }

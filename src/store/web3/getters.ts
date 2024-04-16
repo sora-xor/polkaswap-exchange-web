@@ -13,7 +13,7 @@ import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/typ
 
 const getters = defineGetters<Web3State>()({
   availableNetworks(...args): Record<BridgeNetworkType, Partial<Record<BridgeNetworkId, AvailableNetwork>>> {
-    const { state } = web3GetterContext(args);
+    const { state, rootState } = web3GetterContext(args);
 
     const hashi = [state.ethBridgeEvmNetwork].reduce((buffer, id) => {
       const data = EVM_NETWORKS[id];
@@ -41,15 +41,16 @@ const getters = defineGetters<Web3State>()({
       return buffer;
     }, {});
 
-    const sub = Object.entries(state.subNetworkApps).reduce((buffer, [id, address]) => {
+    const sub = Object.entries(state.subNetworkApps).reduce((buffer, [id, nodesOrFlag]) => {
       const data = SUB_NETWORKS[id];
 
       if (data) {
-        // add wss endpoints to endpointUrls
-        data.endpointUrls.push(address);
-        data.blockExplorerUrls.push(address);
+        const disabled = !(nodesOrFlag && state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork));
 
-        const disabled = !state.supportedApps?.[BridgeNetworkType.Sub]?.includes(id as SubNetwork);
+        // override from config
+        if (Array.isArray(nodesOrFlag)) {
+          data.nodes = nodesOrFlag;
+        }
 
         buffer[id] = {
           disabled,
@@ -62,8 +63,8 @@ const getters = defineGetters<Web3State>()({
 
     return {
       [BridgeNetworkType.Eth]: hashi,
-      [BridgeNetworkType.Evm]: evm,
       [BridgeNetworkType.Sub]: sub,
+      [BridgeNetworkType.Evm]: evm,
     };
   },
 

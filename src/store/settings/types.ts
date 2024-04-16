@@ -1,5 +1,5 @@
 import type { BreakpointClass, MarketAlgorithms } from '@/consts';
-import type { Node } from '@/types/nodes';
+import type { NodesConnection } from '@/utils/connection';
 
 import type { Subscription } from 'rxjs';
 
@@ -19,21 +19,15 @@ export type FeatureFlags = {
 };
 
 export type SettingsState = {
+  appConnection: NodesConnection;
   featureFlags: FeatureFlags;
   slippageTolerance: string;
   marketAlgorithm: MarketAlgorithms;
-  chartsEnabled: boolean;
   userDisclaimerApprove: boolean;
   transactionDeadline: number;
-  node: Partial<Node>;
   language: string;
   displayRegions: Nullable<Intl.DisplayNames>;
   percentFormat: Nullable<Intl.NumberFormat>;
-  defaultNodes: Array<Node>;
-  customNodes: Array<Node>;
-  nodeAddressConnecting: string;
-  nodeConnectionAllowance: boolean;
-  chainGenesisHash: string;
   faucetUrl: string;
   menuCollapsed: boolean;
   selectNodeDialogVisibility: boolean;
@@ -51,8 +45,4 @@ export type SettingsState = {
   internetConnectionSpeed: Nullable<number>;
   screenBreakpointClass: BreakpointClass;
   adsArray: Array<Ad>;
-};
-
-export type NodesHashTable = {
-  [address: string]: Node;
 };

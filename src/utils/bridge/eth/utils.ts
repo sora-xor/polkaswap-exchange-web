@@ -57,14 +57,16 @@ export const updateTransaction = async (id: string, params = {}) => {
 };
 
 export const waitForApprovedRequest = async (tx: EthHistory): Promise<EthApprovedRequest> => {
-  if (!tx.hash) throw new Error(`[Bridge]: Tx hash cannot be empty`);
+  const hash = tx.hash;
+
+  if (!hash) throw new Error(`[Bridge]: Tx hash cannot be empty`);
   if (!Number.isFinite(tx.externalNetwork))
     throw new Error(`[Bridge]: Tx externalNetwork should be a number, ${tx.externalNetwork} received`);
 
   let subscription!: Subscription;
 
   await new Promise<void>((resolve, reject) => {
-    subscription = ethBridgeApi.subscribeOnRequestStatus(tx.hash as string).subscribe((status) => {
+    subscription = ethBridgeApi.subscribeOnRequestStatus(hash).subscribe((status) => {
       switch (status) {
         case BridgeTxStatus.Failed:
         case BridgeTxStatus.Frozen:
@@ -80,7 +82,11 @@ export const waitForApprovedRequest = async (tx: EthHistory): Promise<EthApprove
 
   subscription.unsubscribe();
 
-  return ethBridgeApi.getApprovedRequest(tx.hash as string);
+  const request = await ethBridgeApi.getApprovedRequest(hash);
+
+  if (!request) throw new Error(`[Bridge]: getApprovedRequest is empty, hash="${hash}"`);
+
+  return request;
 };
 
 export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: string; blockId: string }> => {
@@ -240,7 +246,7 @@ const getEthBridgeIncomingGasLimit = (assetEvmAddress: string): bigint => {
 
 export async function getEthNetworkFee(
   asset: RegisteredAccountAsset,
-  assetKind: EthAssetKind,
+  assetKind: string,
   getContractAddress: (symbol: KnownEthBridgeAsset) => Nullable<string>,
   value: string,
   isOutgoing: boolean,
@@ -250,7 +256,7 @@ export async function getEthNetworkFee(
   let gasLimitTotal!: bigint;
 
   if (isOutgoing) {
-    gasLimitTotal = getEthBridgeOutgoingGasLimit(asset.externalAddress, assetKind);
+    gasLimitTotal = getEthBridgeOutgoingGasLimit(asset.externalAddress, assetKind as EthAssetKind);
   } else {
     const bridgeContractAddress = getContractAddress(KnownEthBridgeAsset.Other) as string;
     const allowance = await ethersUtil.getAllowance(evmAccount, bridgeContractAddress, asset.externalAddress);
@@ -282,3 +288,10 @@ export async function getEthNetworkFee(
 
   return ethersUtil.calcEvmFee(gasPrice, gasLimitTotal);
 }
+
+export const getTransactionFee = (tx: ethers.TransactionResponse | ethers.TransactionReceipt) => {
+  const gasPrice = tx.gasPrice;
+  const gasAmount = 'gasUsed' in tx ? tx.gasUsed : tx.gasLimit;
+
+  return ethersUtil.calcEvmFee(gasPrice, gasAmount);
+};
