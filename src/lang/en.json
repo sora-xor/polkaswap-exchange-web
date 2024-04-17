@@ -1561,5 +1561,7 @@
     },
     "calculatingText": "Calculating",
     "customisePageText": "Customize page",
-    "priceChartText": "Price chart"
+    "priceChartText": "Price chart",
+    "editText": "Edit",
+    "resetText": "Reset"
 }
