@@ -1558,5 +1558,7 @@
     },
     "calculatingText": "Računanje",
     "customisePageText": "Прилагодите страницу",
-    "priceChartText": "График цена"
+    "priceChartText": "График цена",
+    "editText": "Uredi",
+    "resetText": "Resetovati"
 }

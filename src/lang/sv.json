@@ -1558,5 +1558,7 @@
     },
     "calculatingText": "Beräknar",
     "customisePageText": "Anpassa sidan",
-    "priceChartText": "Prisdiagram"
+    "priceChartText": "Prisdiagram",
+    "editText": "Redigera",
+    "resetText": "Återställa"
 }

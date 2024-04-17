@@ -1558,5 +1558,7 @@
     },
     "calculatingText": "Đang tính toán",
     "customisePageText": "Tùy chỉnh trang",
-    "priceChartText": "Biểu đồ giá"
+    "priceChartText": "Biểu đồ giá",
+    "editText": "Chỉnh sửa",
+    "resetText": "Cài lại"
 }

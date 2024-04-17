@@ -1558,5 +1558,7 @@
     },
     "calculatingText": "Հաշվարկում",
     "customisePageText": "Անհատականացրեք էջը",
-    "priceChartText": "Գնային շրջանագիծ"
+    "priceChartText": "Գնային շրջանագիծ",
+    "editText": "Խմբագրել",
+    "resetText": "Վերականգնել"
 }
