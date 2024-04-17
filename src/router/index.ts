@@ -318,8 +318,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/kensetsu',
-    name: PageNames.Kensetsu,
-    component: lazyView(PageNames.Kensetsu),
+    redirect: '/vaults',
   },
   {
     path: '*',

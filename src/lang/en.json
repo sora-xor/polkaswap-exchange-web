@@ -395,7 +395,6 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "OrderBook": "Trade",
         "Staking": "Staking",
-        "Kensetsu": "Kensetsu",
         "AssetOwner": "Asset owner",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Vaults",
@@ -414,7 +413,6 @@
         "Explore\/Container": "Explore",
         "StakingContainer": "Staking",
         "SoraCard": "{Sora} Card",
-        "Kensetsu": "Kensetsu",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
         "VaultsContainer": "@:pageTitle.Vaults"
     },

@@ -396,8 +396,7 @@
         "Explore\/Farming": "Farming",
         "Staking": "Ulaganje",
         "OrderBook": "Траде",
-        "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": "Kensetsu"
+        "Explore\/Books": "@:pageTitle.OrderBook"
     },
     "mainMenu": {
         "Swap": "Замените",
@@ -412,8 +411,7 @@
         "StakingContainer": "Стeкинг",
         "Explore\/Container": "Истражите",
         "SoraCard": "{Sora} картица",
-        "OrderBook": "Траде",
-        "Kensetsu": "Kensetsu"
+        "OrderBook": "Траде"
     },
     "social": {
         "twitter": "Twitter",
