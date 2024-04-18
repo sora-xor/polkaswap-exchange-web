@@ -1,13 +1,17 @@
 <template>
   <div>
-    <dialog-base :title="title" :visible.sync="isVisible" tooltip="COMING SOON...">
+    <dialog-base
+      :title="t('kensetsu.createVault')"
+      :visible.sync="isVisible"
+      :tooltip="t('kensetsu.createVaultDescription')"
+    >
       <div class="vault-create">
         <token-input
           ref="collateralInput"
           class="vault-create__collateral-input vault-create__token-input"
           with-slider
           is-select-available
-          title="DEPOSIT COLLATERAL"
+          :title="t('kensetsu.depositCollateral')"
           v-model="collateralValue"
           is-fiat-editable
           :is-max-available="isMaxCollateralAvailable"
@@ -23,7 +27,7 @@
           ref="debtInput"
           class="vault-create__debt-input vault-create__token-input"
           with-slider
-          title="BORROW DEBT"
+          :title="t('kensetsu.borrowDebt')"
           v-model="borrowValue"
           is-fiat-editable
           :is-max-available="isMaxBorrowAvailable"
@@ -36,24 +40,31 @@
         />
         <slippage-tolerance class="slippage-tolerance-settings vault-create__slippage" />
         <info-line
-          label="MIN DEPOSIT COLLATERAL"
-          label-tooltip="COMING SOON..."
+          :label="t('kensetsu.minDepositCollateral')"
+          :label-tooltip="t('kensetsu.minDepositCollateralDescription')"
           :value="formattedMinDeposit"
           :asset-symbol="collateralSymbol"
           :fiat-value="minDepositFiat"
           is-formatted
         />
         <info-line
-          label="MAX AVAILABLE TO BORROW"
-          label-tooltip="COMING SOON..."
+          :label="t('kensetsu.maxAvailableToBorrow')"
+          :label-tooltip="t('kensetsu.maxAvailableToBorrowDescription')"
           :value="formattedMaxBorrow"
           :asset-symbol="kusdSymbol"
           :fiat-value="maxBorrowFiat"
           is-formatted
         />
         <info-line
-          label="LOAN TO VALUE (LTV)"
-          label-tooltip="COMING SOON..."
+          :label="t('kensetsu.borrowTax')"
+          :label-tooltip="t('kensetsu.borrowTaxDescription', { value: borrowTaxPercent })"
+          :value="formattedBorrowTax"
+          :asset-symbol="kusdSymbol"
+          is-formatted
+        />
+        <info-line
+          :label="t('kensetsu.ltv')"
+          :label-tooltip="t('kensetsu.ltvDescription')"
           :value="formattedLtv"
           asset-symbol="%"
           is-formatted
@@ -63,8 +74,8 @@
           </value-status>
         </info-line>
         <info-line
-          label="STABILITY FEE"
-          label-tooltip="COMING SOON..."
+          :label="t('kensetsu.stabilityFee')"
+          :label-tooltip="t('kensetsu.stabilityFeeDescription')"
           :value="formattedStabilityFee"
           asset-symbol="%"
           is-formatted
@@ -75,16 +86,10 @@
           :disabled="disabled"
           @click="handleCreate"
         >
-          <template v-if="isInsufficientXorForFee">
-            {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
+          <template v-if="disabled">
+            {{ errorMessage }}
           </template>
-          <template v-else-if="!ltv">ENTER COLLATERAL</template>
-          <template v-else-if="isLessThanMinDeposit">ENTER MORE COLLATERAL</template>
-          <template v-else-if="isInsufficientBalance">
-            {{ t('insufficientBalanceText', { tokenSymbol: collateralSymbol }) }}
-          </template>
-          <template v-else-if="isLtvGtHundred">INSUFFICIENT COLLATERAL</template>
-          <template v-else>OPEN</template>
+          <template v-else>{{ t('kensetsu.createVaultAction') }}</template>
         </s-button>
         <info-line
           :label="t('networkFeeText')"
@@ -146,6 +151,7 @@ export default class CreateVaultDialog extends Mixins(
 
   @Ref('collateralInput') collateralInput!: Nullable<TokenInput>;
 
+  @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.vault.collaterals private collaterals!: Record<string, Collateral>;
@@ -180,10 +186,6 @@ export default class CreateVaultDialog extends Mixins(
 
   private get xorBalance(): FPNumber {
     return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
-  }
-
-  get title(): string {
-    return 'Open a borrow position';
   }
 
   get networkFee(): CodecString {
@@ -331,6 +333,14 @@ export default class CreateVaultDialog extends Mixins(
     return this.getFiatAmountByFPNumber(this.minDeposit, this.collateralToken);
   }
 
+  get borrowTaxPercent(): string {
+    return this.percentFormat?.format?.(this.borrowTax) ?? `${this.borrowTax * HundredNumber}%`;
+  }
+
+  get formattedBorrowTax(): string {
+    return this.borrowValueFp.mul(this.borrowTax ?? 0).toLocaleString();
+  }
+
   get formattedMaxBorrow(): string {
     return this.maxBorrowPerMaxCollateralFp.toLocaleString();
   }
@@ -412,16 +422,26 @@ export default class CreateVaultDialog extends Mixins(
     this.borrowValue = '';
   }
 
+  get errorMessage(): string {
+    let error = '';
+    if (this.isInsufficientXorForFee) {
+      error = this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol });
+    } else if (!this.ltv) {
+      error = this.t('kensetsu.error.enterCollateral');
+    } else if (this.isLessThanMinDeposit) {
+      error = this.t('kensetsu.error.insufficientCollateral');
+    } else if (this.isInsufficientBalance) {
+      error = this.t('insufficientBalanceText', { tokenSymbol: this.collateralSymbol });
+    } else if (this.isLtvGtHundred) {
+      error = this.t('kensetsu.error.insufficientCollateral');
+    }
+    return error;
+  }
+
   async handleCreate(): Promise<void> {
     if (this.disabled) {
-      if (this.isInsufficientXorForFee) {
-        this.$alert(this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol }), {
-          title: this.t('errorText'),
-        });
-      } else if (!this.ltv || this.isLessThanMinDeposit || this.isLtvGtHundred) {
-        this.$alert('Insufficient collateral', {
-          title: this.t('errorText'),
-        });
+      if (this.errorMessage) {
+        this.$alert(this.errorMessage, { title: this.t('errorText') });
       }
     } else {
       try {

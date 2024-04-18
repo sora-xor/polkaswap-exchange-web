@@ -19,12 +19,18 @@
           </div>
           <s-divider />
           <div class="vault-collateral s-flex-column">
-            <h4>Collateral details</h4>
+            <h4>{{ t('kensetsu.collateralDetails') }}</h4>
             <div class="vault-collateral__details s-flex">
               <div class="vault-collateral__item s-flex-column">
                 <p class="vault-label p3">
-                  Your collateral
-                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                  {{ t('kensetsu.yourCollateral') }}
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.yourCollateralDescription')"
+                    placement="top"
+                    tabindex="-1"
+                  >
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
@@ -40,18 +46,24 @@
                 @click="addCollateral"
               >
                 <s-icon name="finance-send-24" size="16" />
-                Add collateral
+                {{ t('kensetsu.addCollateral') }}
               </s-button>
             </div>
           </div>
           <s-divider />
           <div class="vault-debt s-flex-column">
-            <h4>Debt details</h4>
+            <h4>{{ t('kensetsu.debtDetails') }}</h4>
             <div class="vault-debt__details s-flex">
               <div class="vault-debt__item s-flex-column">
                 <p class="vault-label p3">
-                  Your debt
-                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                  {{ t('kensetsu.yourDebt') }}
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.yourDebtDescription')"
+                    placement="top"
+                    tabindex="-1"
+                  >
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
@@ -60,8 +72,14 @@
               </div>
               <div class="vault-debt__item s-flex-column">
                 <p class="vault-label p3">
-                  Available to borrow
-                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                  {{ t('kensetsu.availableToBorrow') }}
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.availableToBorrowDescription')"
+                    placement="top"
+                    tabindex="-1"
+                  >
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
@@ -77,7 +95,7 @@
                 @click="repayDebt"
               >
                 <s-icon name="finance-send-24" size="16" />
-                Repay debt
+                {{ t('kensetsu.repayDebt') }}
               </s-button>
               <s-button
                 class="s-typography-button--small"
@@ -87,22 +105,30 @@
                 @click="borrowMore"
               >
                 <s-icon name="finance-send-24" size="16" />
-                Borrow more
+                {{ t('kensetsu.borrowMore') }}
               </s-button>
             </div>
           </div>
         </s-card>
-        <s-button class="close-vault-button" type="link" @click="closePosition">Close my position</s-button>
+        <s-button class="close-vault-button" type="link" @click="closePosition">
+          {{ t('kensetsu.closeVault') }}
+        </s-button>
       </s-col>
       <s-col :xs="12" :sm="12" :md="6" :lg="6">
         <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
           <div class="position-info s-flex-column">
-            <h4>Position information</h4>
+            <h4>{{ t('kensetsu.positionInfo') }}</h4>
             <div class="position-info__details s-flex">
               <div class="position-info__item s-flex-column">
                 <p class="vault-label p3">
-                  Liquidation penalty
-                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                  {{ t('kensetsu.liquidationPenalty') }}
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.liquidationPenaltyDescription')"
+                    placement="top"
+                    tabindex="-1"
+                  >
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
@@ -110,8 +136,14 @@
               </div>
               <div class="position-info__item s-flex-column">
                 <p class="vault-label p3">
-                  Stability fee
-                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                  {{ t('kensetsu.stabilityFee') }}
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.stabilityFeeDescription')"
+                    placement="top"
+                    tabindex="-1"
+                  >
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
@@ -122,8 +154,14 @@
           <s-divider />
           <div class="ltv s-flex-column">
             <h4 class="ltv__title">
-              Loan to value
-              <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+              {{ t('kensetsu.ltv') }}
+              <s-tooltip
+                slot="suffix"
+                border-radius="mini"
+                :content="t('kensetsu.ltvDescription')"
+                placement="top"
+                tabindex="-1"
+              >
                 <s-icon name="info-16" size="12px" />
               </s-tooltip>
             </h4>
@@ -135,9 +173,18 @@
             </div>
             <ltv-progress-bar :percentage="ltvNumber" />
             <div class="ltv__legend s-flex">
-              <div class="ltv__legend-item"><span class="ltv__legend-icon success" />Position safe</div>
-              <div class="ltv__legend-item"><span class="ltv__legend-icon warning" />Liquidation close</div>
-              <div class="ltv__legend-item"><span class="ltv__legend-icon error" />High liquidation risk</div>
+              <div class="ltv__legend-item">
+                <span class="ltv__legend-icon success" />
+                {{ t('kensetsu.positionSafe') }}
+              </div>
+              <div class="ltv__legend-item">
+                <span class="ltv__legend-icon warning" />
+                {{ t('kensetsu.liquidationClose') }}
+              </div>
+              <div class="ltv__legend-item">
+                <span class="ltv__legend-icon error" />
+                {{ t('kensetsu.highLiquidationRisk') }}
+              </div>
             </div>
           </div>
         </s-card>
@@ -157,7 +204,7 @@
       :vault="vault"
       :prev-ltv="ltv"
       :available="availableToBorrow"
-      :max-safe-debt="maxSafeDebt"
+      :max-safe-debt="maxSafeDebtWithoutTax"
     />
     <repay-debt-dialog
       :visible.sync="showRepayDebtDialog"
@@ -261,10 +308,12 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   get maxSafeDebt(): Nullable<FPNumber> {
     if (!this.vault) return null;
     const collateralVolume = this.averageCollateralPrice.mul(this.vault.lockedAmount);
-    const maxSafeDebt = collateralVolume
-      .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
-      .div(HundredNumber);
-    return maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
+    return collateralVolume.mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0).div(HundredNumber);
+  }
+
+  get maxSafeDebtWithoutTax(): Nullable<FPNumber> {
+    if (!this.maxSafeDebt) return null;
+    return this.maxSafeDebt.sub(this.maxSafeDebt.mul(this.borrowTax));
   }
 
   get ltv(): Nullable<FPNumber> {
@@ -287,8 +336,8 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   private get availableToBorrow(): Nullable<FPNumber> {
-    if (!(this.maxSafeDebt && this.vault)) return null;
-    const available = this.maxSafeDebt.sub(this.vault.debt);
+    if (!(this.maxSafeDebtWithoutTax && this.vault)) return null;
+    const available = this.maxSafeDebtWithoutTax.sub(this.vault.debt);
     return !available.isFinity() || available.isLteZero() ? this.Zero : available;
   }
 

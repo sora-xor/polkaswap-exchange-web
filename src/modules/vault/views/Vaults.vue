@@ -2,14 +2,9 @@
   <div class="vaults-container">
     <div v-if="isNotLoggedInOrEmptyVaults" class="no-vaults s-flex-column">
       <s-form class="no-vaults__main container el-form--actions" :show-message="false">
-        <generic-page-header
-          class="no-vaults__page-header centered"
-          bold
-          title="Open borrow positions & Earn with Kensetsu"
-        />
+        <generic-page-header class="no-vaults__page-header centered" bold :title="t('kensetsu.introTitle')" />
         <p class="no-vaults__description centered p4">
-          Power up your portfolio using SORA Network's cutting-edge automation tools, making borrowing, lending, and
-          multiplying your favorite assets both safe and effortless.
+          {{ t('kensetsu.introDescription') }}
         </p>
         <s-button
           v-if="!isLoggedIn"
@@ -20,7 +15,7 @@
           {{ t('connectWalletText') }}
         </s-button>
         <s-button v-else type="primary" class="action-button s-typography-button--large" @click="handleCreateVault">
-          OPEN POSITION
+          {{ t('kensetsu.createVaultAction') }}
         </s-button>
         <s-button class="action-button s-typography-button--large" @click="handleExploreVaults">
           VIEW STRATEGIES
@@ -28,12 +23,10 @@
       </s-form>
       <s-card class="no-vaults__info" border-radius="small" shadow="always" size="medium" pressed>
         <div class="no-vaults__info-content s-flex-column">
-          <h4>Disclaimer</h4>
+          <h4>{{ t('disclaimerTitle') }}</h4>
           <div class="no-vaults__info-desc s-flex">
             <p class="no-vaults__description p4">
-              Borrowing digital assets through Polkaswap carries significant risk and is entirely at your own risk. The
-              value of digital assets is highly volatile, and any changes in the market prices of the assets you have
-              borrowed or used as collateral can lead to substantial financial losses, possibly even...
+              {{ t('kensetsu.disclaimerDescription') }}
             </p>
             <div class="no-vaults__info-badge">
               <s-icon class="no-vaults__info-icon" name="notifications-alert-triangle-24" size="24" />
@@ -48,7 +41,13 @@
         <s-col :xs="12" :sm="12" :md="4" :lg="6">
           <h2 class="has-vaults__title s-flex">
             Kensetsu
-            <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+            <s-tooltip
+              slot="suffix"
+              border-radius="mini"
+              :content="t('kensetsu.titleDescription')"
+              placement="top"
+              tabindex="-1"
+            >
               <s-icon class="has-vaults__title-icon" name="info-16" size="16px" />
             </s-tooltip>
           </h2>
@@ -63,7 +62,7 @@
             type="secondary"
             @click="handleCreateVault"
           >
-            OPEN POSITION
+            {{ t('kensetsu.createVaultAction') }}
           </s-button>
         </s-col>
       </s-row>
@@ -93,8 +92,14 @@
             <div class="vault-details s-flex">
               <div class="vault-details__item s-flex-column">
                 <p class="p3 vault__label">
-                  Your collateral
-                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                  {{ t('kensetsu.yourCollateral') }}
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.yourCollateralDescription')"
+                    placement="top"
+                    tabindex="-1"
+                  >
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
@@ -111,8 +116,14 @@
               </div>
               <div class="vault-details__item s-flex-column">
                 <p class="p3 vault__label">
-                  Your debt
-                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                  {{ t('kensetsu.yourDebt') }}
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.yourDebtDescription')"
+                    placement="top"
+                    tabindex="-1"
+                  >
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
@@ -121,8 +132,14 @@
               </div>
               <div class="vault-details__item s-flex-column">
                 <p class="p3 vault__label">
-                  Available to borrow
-                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                  {{ t('kensetsu.availableToBorrow') }}
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.availableToBorrowDescription')"
+                    placement="top"
+                    tabindex="-1"
+                  >
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
@@ -133,8 +150,14 @@
             <s-divider />
             <div class="vault__ltv s-flex">
               <p class="p3 vault__label">
-                Loan to value
-                <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON..." placement="top" tabindex="-1">
+                {{ t('kensetsu.ltv') }}
+                <s-tooltip
+                  slot="suffix"
+                  border-radius="mini"
+                  :content="t('kensetsu.ltvDescription')"
+                  placement="top"
+                  tabindex="-1"
+                >
                   <s-icon name="info-16" size="12px" />
                 </s-tooltip>
               </p>
@@ -213,7 +236,7 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
       const collateralVolume = averagePrice.mul(vault.lockedAmount);
       const maxSafeDebt = collateralVolume.mul(collateral?.riskParams.liquidationRatioReversed ?? 0).div(HundredNumber);
       const maxSafeDebtWithoutTax = maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
-      const ltvCoeff = vault.debt.div(maxSafeDebtWithoutTax);
+      const ltvCoeff = vault.debt.div(maxSafeDebt);
       const ltv = ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
       const availableCoeff = maxSafeDebtWithoutTax.sub(vault.debt);
       const available = !availableCoeff.isFinity() || availableCoeff.isLteZero() ? this.Zero : availableCoeff;

@@ -1,11 +1,11 @@
 <template>
-  <dialog-base :title="title" :visible.sync="isVisible" tooltip="COMING SOON...">
+  <dialog-base :title="title" :visible.sync="isVisible" :tooltip="t('kensetsu.addCollateralDescription')">
     <div class="add-collateral">
       <token-input
         ref="collateralInput"
         class="add-collateral__collateral-input add-collateral__token-input"
         with-slider
-        title="DEPOSIT COLLATERAL"
+        :title="t('kensetsu.depositCollateral')"
         v-model="collateralValue"
         is-fiat-editable
         :is-max-available="isMaxCollateralAvailable"
@@ -17,22 +17,22 @@
         @slide="handleCollateralPercentChange"
       />
       <prev-next-info-line
-        label="TOTAL COLLATERAL"
-        tooltip="COMING SOON..."
+        :label="t('kensetsu.totalCollateral')"
+        :tooltip="t('kensetsu.totalCollateralDescription')"
         :symbol="collateralSymbol"
         :prev="formattedPrevDeposit"
         :next="formattedNextDeposit"
       />
       <prev-next-info-line
-        label="DEBT AVAILABLE"
-        tooltip="COMING SOON..."
+        :label="t('kensetsu.debtAvailable')"
+        :tooltip="t('kensetsu.debtAvailableDescription')"
         :symbol="kusdSymbol"
         :prev="formattedPrevAvailable"
         :next="formattedNextAvailable"
       />
       <prev-next-info-line
-        label="LOAN TO VALUE (LTV)"
-        tooltip="COMING SOON..."
+        :label="t('kensetsu.ltv')"
+        :tooltip="t('kensetsu.ltvDescription')"
         symbol="%"
         :prev="formattedPrevLtv"
         :next="formattedLtv"
@@ -128,7 +128,7 @@ export default class AddCollateralDialog extends Mixins(
   }
 
   get title(): string {
-    return 'Add collateral';
+    return this.t('kensetsu.addCollateral');
   }
 
   get networkFee(): CodecString {
@@ -282,7 +282,7 @@ export default class AddCollateralDialog extends Mixins(
     if (this.isInsufficientXorForFee) {
       error = this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol });
     } else if (this.isCollateralZero) {
-      error = 'Enter collateral';
+      error = this.t('kensetsu.error.enterCollateral');
     } else if (this.isInsufficientBalance) {
       error = this.t('insufficientBalanceText', { tokenSymbol: this.collateralSymbol });
     }

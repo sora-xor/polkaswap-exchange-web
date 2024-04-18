@@ -39,6 +39,8 @@ const TranslationConsts = {
   Max: 'Max.',
   XOR: 'XOR',
   VAL: 'VAL',
+  LTV: 'LTV',
+  Kensetsu: 'Kensetsu',
 } as const;
 
 @Component

@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :title="title" :visible.sync="isVisible" tooltip="COMING SOON...">
+  <dialog-base :title="title" :visible.sync="isVisible" :tooltip="t('kensetsu.repayDebtDescription')">
     <div class="repay-debt">
       <token-input
         ref="debtInput"
@@ -17,15 +17,15 @@
         @slide="handleRepayPercentChange"
       />
       <prev-next-info-line
-        label="OUTSTANDING DEBT"
-        tooltip="COMING SOON..."
+        :label="t('kensetsu.outstandingDebt')"
+        :tooltip="t('kensetsu.outstandingDebtDescription')"
         :symbol="kusdSymbol"
         :prev="formattedPrevBorrow"
         :next="formattedNextBorrow"
       />
       <prev-next-info-line
-        label="LOAN TO VALUE (LTV)"
-        tooltip="COMING SOON..."
+        :label="t('kensetsu.ltv')"
+        :tooltip="t('kensetsu.ltvDescription')"
         symbol="%"
         :prev="formattedPrevLtv"
         :next="formattedLtv"
@@ -40,12 +40,8 @@
         :disabled="disabled"
         @click="handleRepayDebt"
       >
-        <template v-if="isInsufficientXorForFee">
-          {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
-        </template>
-        <template v-else-if="isRepayDebtZero">ENTER REPAY DEBT</template>
-        <template v-else-if="isInsufficientBalance">
-          {{ t('insufficientBalanceText', { tokenSymbol: kusdSymbol }) }}
+        <template v-if="disabled">
+          {{ errorMessage }}
         </template>
         <template v-else>{{ title }}</template>
       </s-button>
@@ -121,7 +117,7 @@ export default class RepayDebtDialog extends Mixins(
   }
 
   get title(): string {
-    return 'Repay debt';
+    return this.t('kensetsu.repayDebt');
   }
 
   get networkFee(): CodecString {
@@ -258,9 +254,9 @@ export default class RepayDebtDialog extends Mixins(
     if (this.isInsufficientXorForFee) {
       error = this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol });
     } else if (this.isRepayDebtZero) {
-      error = 'Enter repay debt';
+      error = this.t('kensetsu.error.enterRepayDebt');
     } else if (this.isRepayMoreThanDebt) {
-      error = 'Repay more than debt';
+      error = this.t('kensetsu.error.repayMoreThanDebt');
     } else if (this.isInsufficientBalance) {
       error = this.t('insufficientBalanceText', { tokenSymbol: this.kusdSymbol });
     }

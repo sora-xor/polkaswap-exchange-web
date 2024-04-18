@@ -1,10 +1,10 @@
 <template>
-  <dialog-base :title="title" :visible.sync="isVisible" tooltip="COMING SOON...">
+  <dialog-base :title="title" :visible.sync="isVisible" :tooltip="t('kensetsu.borrowMoreDescription')">
     <div class="borrow-more">
       <token-input
         ref="debtInput"
         class="borrow-more__debt-input borrow-more__token-input"
-        balance-text="AVAILABLE"
+        :balance-text="t('kensetsu.available')"
         with-slider
         :title="title"
         v-model="borrowValue"
@@ -19,15 +19,15 @@
       />
       <slippage-tolerance class="slippage-tolerance-settings borrow-more__slippage" />
       <prev-next-info-line
-        label="OUTSTANDING DEBT"
-        tooltip="COMING SOON..."
+        :label="t('kensetsu.outstandingDebt')"
+        :tooltip="t('kensetsu.outstandingDebtDescription')"
         :symbol="kusdSymbol"
         :prev="formattedPrevBorrow"
         :next="formattedNextBorrow"
       />
       <prev-next-info-line
-        label="LOAN TO VALUE (LTV)"
-        tooltip="COMING SOON..."
+        :label="t('kensetsu.ltv')"
+        :tooltip="t('kensetsu.ltvDescription')"
         symbol="%"
         :prev="formattedPrevLtv"
         :next="formattedLtv"
@@ -122,7 +122,7 @@ export default class BorrowMoreDialog extends Mixins(
   }
 
   get title(): string {
-    return 'Borrow more';
+    return this.t('kensetsu.borrowMore');
   }
 
   get networkFee(): CodecString {
@@ -230,9 +230,9 @@ export default class BorrowMoreDialog extends Mixins(
     if (this.isInsufficientXorForFee) {
       error = this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol });
     } else if (this.isBorrowZero) {
-      error = 'Enter borrow';
+      error = this.t('kensetsu.error.enterBorrow');
     } else if (this.isBorrowMoreThanAvailable) {
-      error = 'Borrow more than available';
+      error = this.t('kensetsu.error.borrowMoreThanAvailable');
     }
     return error;
   }

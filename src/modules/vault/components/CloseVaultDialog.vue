@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :title="title" :visible.sync="isVisible" tooltip="COMING SOON...">
+  <dialog-base :title="title" :visible.sync="isVisible" :tooltip="t('kensetsu.closeVaultDescription')">
     <div class="vault-close">
       <div class="vault-close__title s-flex">
         <pair-token-logo class="vault-close__icon" size="medium" :first-token="kusdToken" :second-token="asset" />
@@ -7,8 +7,8 @@
       </div>
       <info-line
         class="vault-close__collateral"
-        label="YOUR COLLATERAL"
-        label-tooltip="COMING SOON"
+        :label="t('kensetsu.yourCollateral')"
+        :label-tooltip="t('kensetsu.yourCollateralDescription')"
         :value="formattedLockedAmount"
         :asset-symbol="collateralSymbol"
         :fiat-value="fiatLockedAmount"
@@ -16,8 +16,8 @@
       />
       <info-line
         class="vault-close__debt"
-        label="YOUR DEBT"
-        label-tooltip="COMING SOON"
+        :label="t('kensetsu.yourDebt')"
+        :label-tooltip="t('kensetsu.yourDebtDescription')"
         :value="formattedDebtAmount"
         :asset-symbol="kusdSymbol"
         :fiat-value="fiatDebt"
@@ -25,8 +25,7 @@
       />
       <info-line
         class="vault-close__balance"
-        label="YOUR KUSD BALANCE"
-        label-tooltip="COMING SOON"
+        :label="t('kensetsu.yourDebtTokenBalance', { tokenSymbol: kusdSymbol })"
         :value="formattedDebtAssetBalance"
         :asset-symbol="kusdSymbol"
         :fiat-value="fiatDebtAssetBalance"
@@ -34,10 +33,8 @@
       />
       <div v-if="isInsufficientBalance" class="vault-close__error">
         <p class="vault-close__error-message p3">
-          Your vault cannot be closed at this time due to insufficient funds to cover the debt. To successfully close
-          the vault, you must have a minimum of {{ formattedDiff }} {{ kusdSymbol }}, which exceeds your current
-          balance. To cover the required debt and proceed with the closure, you need to acquire
-          {{ formattedDiffWithSlippage }} {{ kusdSymbol }}. You can do so by swapping your existing assets to KUSD.
+          {{ t('kensetsu.requiredAmountWithSlippage') + ' ' + formattedDiffWithSlippage }}
+          {{ t('kensetsu.requiredAmountWithSlippageDescription', { tokenSymbol: kusdSymbol, amount: formattedDiff }) }}
         </p>
         <info-line
           class="vault-close__error-diff"
@@ -48,7 +45,7 @@
           :fiat-value="fiatDiffWithSlippage"
           is-formatted
         />
-        <external-link class="vault-close__error-link" title="Navigate to Swap page" :href="swapLink" />
+        <external-link class="vault-close__error-link" :title="t('kensetsu.openSwap')" :href="swapLink" />
       </div>
       <s-button
         type="primary"
@@ -116,7 +113,7 @@ export default class CloseVaultDialog extends Mixins(
   }
 
   get title(): string {
-    return 'Close position';
+    return this.t('kensetsu.closeVault');
   }
 
   get networkFee(): CodecString {
