@@ -86,9 +86,7 @@
           :disabled="disabled"
           @click="handleCreate"
         >
-          <template v-if="disabled">
-            {{ errorMessage }}
-          </template>
+          <template v-if="disabled">{{ errorMessage }}</template>
           <template v-else>{{ t('kensetsu.createVaultAction') }}</template>
         </s-button>
         <info-line

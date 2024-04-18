@@ -53,9 +53,7 @@
         :disabled="disabled"
         @click="handleCloseVault"
       >
-        <template v-if="disabled">
-          {{ errorMessage }}
-        </template>
+        <template v-if="disabled">{{ errorMessage }}</template>
         <template v-else>{{ title }}</template>
       </s-button>
       <info-line

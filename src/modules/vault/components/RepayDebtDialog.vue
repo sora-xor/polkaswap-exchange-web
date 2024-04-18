@@ -40,9 +40,7 @@
         :disabled="disabled"
         @click="handleRepayDebt"
       >
-        <template v-if="disabled">
-          {{ errorMessage }}
-        </template>
+        <template v-if="disabled">{{ errorMessage }}</template>
         <template v-else>{{ title }}</template>
       </s-button>
       <info-line
