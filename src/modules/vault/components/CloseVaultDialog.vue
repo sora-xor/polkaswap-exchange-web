@@ -31,22 +31,35 @@
         :fiat-value="fiatDebtAssetBalance"
         is-formatted
       />
-      <div v-if="isInsufficientBalance" class="vault-close__error">
+      <s-card
+        v-if="isInsufficientBalance"
+        class="vault-close__error"
+        border-radius="small"
+        shadow="always"
+        size="medium"
+        pressed
+      >
+        <div slot="header" class="vault-close__error-card-header s-flex">
+          <div class="vault-close__error-header s-flex-column">
+            <p class="vault-close__error-title p3">{{ t('kensetsu.requiredAmountWithSlippage') }}</p>
+            <h3 class="vault-close__error-value">{{ formattedDiffWithSlippage }}</h3>
+          </div>
+          <div class="vault-close__error-badge">
+            <s-icon class="vault-close__error-icon" name="notifications-alert-triangle-24" size="24" />
+          </div>
+        </div>
         <p class="vault-close__error-message p3">
-          {{ t('kensetsu.requiredAmountWithSlippage') + ' ' + formattedDiffWithSlippage }}
           {{ t('kensetsu.requiredAmountWithSlippageDescription', { tokenSymbol: kusdSymbol, amount: formattedDiff }) }}
         </p>
-        <info-line
-          class="vault-close__error-diff"
-          label="KUSD REQUIRED"
-          label-tooltip="COMING SOON"
-          :value="formattedDiffWithSlippage"
-          :asset-symbol="kusdSymbol"
-          :fiat-value="fiatDiffWithSlippage"
-          is-formatted
-        />
-        <external-link class="vault-close__error-link" :title="t('kensetsu.openSwap')" :href="swapLink" />
-      </div>
+        <s-button type="primary" class="s-typography-button--large vault-close__button" @click="openSwap">
+          <external-link
+            class="vault-close__error-link s-typography-button--large"
+            tabindex="-1"
+            :title="t('kensetsu.openSwap')"
+            :href="swapLink"
+          />
+        </s-button>
+      </s-card>
       <s-button
         type="primary"
         class="s-typography-button--large action-button vault-close__button"
@@ -97,7 +110,7 @@ export default class CloseVaultDialog extends Mixins(
   mixins.FormattedAmountMixin
 ) {
   readonly xorSymbol = XOR.symbol;
-  readonly swapLink = '/#/swap';
+  readonly swapLink = '/#/swap/XOR/KUSD';
 
   @Prop({ type: Object, default: ObjectInit }) readonly vault!: Nullable<Vault>;
   @Prop({ type: Object, default: ObjectInit }) readonly asset!: Nullable<RegisteredAccountAsset>;
@@ -224,6 +237,10 @@ export default class CloseVaultDialog extends Mixins(
     return error;
   }
 
+  openSwap(): void {
+    window.open(this.swapLink, '_blank');
+  }
+
   async handleCloseVault(): Promise<void> {
     if (this.disabled) {
       if (this.errorMessage) {
@@ -246,30 +263,60 @@ export default class CloseVaultDialog extends Mixins(
 </script>
 
 <style lang="scss" scoped>
+$item-size: 40px;
+
 .vault-close {
   @include full-width-button('action-button');
 
   &__title {
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: $inner-spacing-medium;
   }
 
   &__error {
-    margin-top: 16px;
+    margin-top: $inner-spacing-medium;
 
+    &-card-header {
+      align-items: center;
+    }
+    &-header {
+      flex: 1;
+    }
+    &-value {
+      color: var(--s-color-status-error);
+      font-weight: 700;
+    }
+    &-badge {
+      width: $item-size;
+      height: $item-size;
+      border-radius: 50%;
+      background-color: var(--s-color-status-error);
+      padding: $inner-spacing-mini;
+      box-shadow: var(--s-shadow-element-pressed);
+      margin-left: $inner-spacing-mini;
+    }
+    &-icon {
+      color: white;
+    }
+    &-card-header,
     &-message {
-      margin-bottom: 16px;
+      margin-bottom: $inner-spacing-medium;
     }
-    &-diff {
-      margin-bottom: 16px;
-    }
-    &-link {
-      font-size: var(--s-heading6-font-size);
+    & &-link {
+      color: var(--s-color-base-on-accent);
+      width: 100%;
+      height: $item-size;
+      line-height: $item-size;
+      margin: -$inner-spacing-small;
     }
   }
 
   &__button {
-    margin-bottom: 16px;
+    width: 100%;
   }
+}
+
+.action-button {
+  margin-bottom: $inner-spacing-medium;
 }
 </style>
