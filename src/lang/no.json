@@ -385,9 +385,7 @@
         "About": "Om",
         "Stats": "Statistikk",
         "Wallet": "Lommebok",
-        "CreatePair": "Opprett par",
         "AddLiquidity": "Legg til likviditet",
-        "AddLiquidityId": "Legg til likviditet",
         "RemoveLiquidity": "Fjern likviditet",
         "Rewards": "Belønninger",
         "Explore\/Tokens": "Tokens",
@@ -396,7 +394,11 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Handel",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "AssetOwner": "Eier av eiendeler",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Hvelv",
+        "VaultDetails": "Detaljer om hvelvet"
     },
     "mainMenu": {
         "Swap": "Bytte",
@@ -407,11 +409,12 @@
         "Rewards": "Belønninger",
         "About": "Om",
         "Stats": "Statistikk",
-        "CreatePair": "Opprett par",
         "StakingContainer": "Staking",
         "Explore\/Container": "Utforske",
         "SoraCard": "{Sora} Kort",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults"
     },
     "social": {
         "twitter": "Twitter",

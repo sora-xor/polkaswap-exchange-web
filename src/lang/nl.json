@@ -385,9 +385,7 @@
         "About": "Over ons",
         "Stats": "Stats",
         "Wallet": "Wallet",
-        "CreatePair": "Paar maken",
         "AddLiquidity": "Liquiditeit toevoegen",
-        "AddLiquidityId": "Liquiditeit toevoegen",
         "RemoveLiquidity": "Liquiditeit verwijderen",
         "Rewards": "Beloningen",
         "Explore\/Tokens": "Tokens",
@@ -396,7 +394,11 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Handel",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "AssetOwner": "Eigenaar van activa",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Kluizen",
+        "VaultDetails": "Details kluis"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -407,11 +409,12 @@
         "Rewards": "Beloningen",
         "About": "Over",
         "Stats": "Stats",
-        "CreatePair": "Maak Paar",
         "StakingContainer": "Staking",
         "Explore\/Container": "Ontdekken",
         "SoraCard": "{Sora} Kaart",
-        "OrderBook": "Handel"
+        "OrderBook": "Handel",
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults"
     },
     "social": {
         "twitter": "Twitter",

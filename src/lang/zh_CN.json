@@ -385,9 +385,7 @@
         "About": "关于",
         "Stats": "统计数据",
         "Wallet": "钱包",
-        "CreatePair": "创建一对",
         "AddLiquidity": "增加流动性",
-        "AddLiquidityId": "增加流动性",
         "RemoveLiquidity": "删除流动性",
         "Rewards": "奖励",
         "Explore\/Tokens": "代币",
@@ -396,7 +394,11 @@
         "Explore\/Farming": "农耕",
         "Staking": "质押",
         "OrderBook": "贸易",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "AssetOwner": "资产所有者",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "保险库",
+        "VaultDetails": "保险库详情"
     },
     "mainMenu": {
         "Swap": "兑换",
@@ -407,11 +409,12 @@
         "Rewards": "奖励",
         "About": "关于",
         "Stats": "统计数据",
-        "CreatePair": "创建流动性对",
         "StakingContainer": "质押",
         "Explore\/Container": "探索",
         "SoraCard": "{Sora}卡",
-        "OrderBook": "贸易"
+        "OrderBook": "贸易",
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults"
     },
     "social": {
         "twitter": "推特",

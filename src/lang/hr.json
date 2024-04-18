@@ -385,9 +385,7 @@
         "About": "O",
         "Stats": "Statistika",
         "Wallet": "Novčanik",
-        "CreatePair": "Stvorite par",
         "AddLiquidity": "Dodajte likvidnost",
-        "AddLiquidityId": "Dodajte likvidnost",
         "RemoveLiquidity": "Uklonite likvidnost",
         "Rewards": "Nagrade",
         "Explore\/Tokens": "Tokeni",
@@ -396,7 +394,11 @@
         "Explore\/Farming": "Farmanje",
         "Staking": "Ulaganje",
         "OrderBook": "Trgovina",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "AssetOwner": "Vlasnik imovine",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Trezori",
+        "VaultDetails": "Detalji trezora"
     },
     "mainMenu": {
         "Swap": "Zamijenite",
@@ -407,11 +409,12 @@
         "Rewards": "Nagrade",
         "About": "O",
         "Stats": "Statistika",
-        "CreatePair": "Stvorite par",
         "StakingContainer": "Ulaganje",
         "Explore\/Container": "Istražiti",
         "SoraCard": "Kartica {Sora}",
-        "OrderBook": "Trgovina"
+        "OrderBook": "Trgovina",
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults"
     },
     "social": {
         "twitter": "Twitter",

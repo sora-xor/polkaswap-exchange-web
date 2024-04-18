@@ -385,9 +385,7 @@
         "About": "Acerca de",
         "Stats": "Estadísticas",
         "Wallet": "Cartera",
-        "CreatePair": "Crear par",
         "AddLiquidity": "Añadir Liquidez",
-        "AddLiquidityId": "Añadir Liquidez",
         "RemoveLiquidity": "Remover Liquidez",
         "Rewards": "Recompensas",
         "Explore\/Tokens": "Tokens",
@@ -396,7 +394,11 @@
         "Explore\/Farming": "Agricultura",
         "Staking": "Staking",
         "OrderBook": "Comercio",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "AssetOwner": "Propietario del activo",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Bóvedas",
+        "VaultDetails": "Detalles de la bóveda"
     },
     "mainMenu": {
         "Swap": "Intercambio",
@@ -407,11 +409,12 @@
         "Rewards": "Recompensas",
         "About": "Acerca de",
         "Stats": "Estadísticas",
-        "CreatePair": "Crear par",
         "StakingContainer": "Staking",
         "Explore\/Container": "Explorar",
         "SoraCard": "{Sora} Tarjeta",
-        "OrderBook": "Comercio"
+        "OrderBook": "Comercio",
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults"
     },
     "social": {
         "twitter": "Twitter",

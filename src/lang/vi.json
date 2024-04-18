@@ -385,9 +385,7 @@
         "About": "Giới thiệu",
         "Stats": "Thống kê",
         "Wallet": "Ví",
-        "CreatePair": "Tạo một cặp token",
         "AddLiquidity": "Thêm Thanh Khoản",
-        "AddLiquidityId": "Thêm Thanh Khoản",
         "RemoveLiquidity": "Rút Thanh Khoản",
         "Rewards": "Phần thưởng",
         "Explore\/Tokens": "Token",
@@ -396,7 +394,11 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Buôn bán",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "AssetOwner": "Chủ tài sản",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Hầm",
+        "VaultDetails": "Chi tiết Vault"
     },
     "mainMenu": {
         "Swap": "Đổi",
@@ -407,11 +409,12 @@
         "Rewards": "Phần thưởng",
         "About": "Giới thiệu",
         "Stats": "Thống kê",
-        "CreatePair": "Tạo một cặp token",
         "StakingContainer": "Staking",
         "Explore\/Container": "Khám phá",
         "SoraCard": "{Sora} Thẻ",
-        "OrderBook": "Buôn bán"
+        "OrderBook": "Buôn bán",
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults"
     },
     "social": {
         "twitter": "Twitter",

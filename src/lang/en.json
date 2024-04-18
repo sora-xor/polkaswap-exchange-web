@@ -392,13 +392,13 @@
         "Explore\/Pools": "Pools",
         "Explore\/Staking": "Staking",
         "Explore\/Farming": "Farming",
-        "Explore\/Books": "@:pageTitle.OrderBook",
-        "OrderBook": "Trade",
         "Staking": "Staking",
+        "OrderBook": "Trade",
+        "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Asset owner",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Vaults",
-        "VaultDetails": "VaultDetails"
+        "VaultDetails": "Vault Details"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -409,10 +409,10 @@
         "Rewards": "Rewards",
         "About": "About",
         "Stats": "Statistics",
-        "OrderBook": "Trade",
-        "Explore\/Container": "Explore",
         "StakingContainer": "Staking",
+        "Explore\/Container": "Explore",
         "SoraCard": "{Sora} Card",
+        "OrderBook": "Trade",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
         "VaultsContainer": "@:pageTitle.Vaults"
     },

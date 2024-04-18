@@ -385,9 +385,7 @@
         "About": "Tentang",
         "Stats": "Statistik",
         "Wallet": "Dompet",
-        "CreatePair": "Buat Pair",
         "AddLiquidity": "Tambah Likuiditas",
-        "AddLiquidityId": "Tambah Likuiditas",
         "RemoveLiquidity": "Hapus Likuiditas",
         "Rewards": "Hadiah",
         "Explore\/Tokens": "Token",
@@ -396,7 +394,11 @@
         "Explore\/Farming": "Farming",
         "Staking": "Staking",
         "OrderBook": "Berdagang",
-        "Explore\/Books": "@:pageTitle.OrderBook"
+        "Explore\/Books": "@:pageTitle.OrderBook",
+        "AssetOwner": "Pemilik aset",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Brankas",
+        "VaultDetails": "Detail Vault"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -407,11 +409,12 @@
         "Rewards": "Hadiah",
         "About": "Tentang",
         "Stats": "Statistik",
-        "CreatePair": "Buat Pair",
         "StakingContainer": "Staking",
         "Explore\/Container": "Menjelajahi",
         "SoraCard": "{Sora} Kartu",
-        "OrderBook": "Berdagang"
+        "OrderBook": "Berdagang",
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults"
     },
     "social": {
         "twitter": "Twitter",
