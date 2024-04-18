@@ -175,7 +175,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       return StakingPageNames.Staking;
     }
     if (ExploreChildPages.includes(currentName)) {
-      return PageNames.ExploreFarming;
+      return PageNames.ExploreTokens;
     }
     return currentName as string;
   }
