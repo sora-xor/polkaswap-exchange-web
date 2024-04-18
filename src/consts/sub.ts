@@ -14,7 +14,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'KSM',
       decimals: 12,
     },
-    endpointUrls: ['wss://kusama-rpc.polkadot.io', 'wss://kusama-rpc.dwellir.com'],
     blockExplorerUrls: ['https://kusama.subscan.io'],
     shortName: 'Kusama',
     nodes: [
@@ -38,7 +37,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'DOT',
       decimals: 10,
     },
-    endpointUrls: ['wss://rpc.polkadot.io', 'wss://polkadot-rpc.dwellir.com'],
     blockExplorerUrls: ['https://polkadot.subscan.io'],
     shortName: 'Polkadot',
     nodes: [
@@ -62,7 +60,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'ACA',
       decimals: 12,
     },
-    endpointUrls: ['wss://acala-rpc-0.aca-api.network', 'wss://acala-rpc.dwellir.com'],
     blockExplorerUrls: ['https://acala.subscan.io'],
     shortName: 'Acala',
     nodes: [
@@ -86,7 +83,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'ROC',
       decimals: 12,
     },
-    endpointUrls: ['wss://rococo-rpc.polkadot.io'],
     blockExplorerUrls: [],
     shortName: 'Rococo',
     nodes: [
@@ -105,7 +101,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'ALPHA', // "DEV"
       decimals: 12,
     },
-    endpointUrls: ['wss://frag-moonbase-relay-rpc-ws.g.moonbase.moonbeam.network'],
     blockExplorerUrls: [],
     shortName: 'Alphanet',
     nodes: [
@@ -124,7 +119,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'GLMR', // "DEV"
       decimals: 18,
     },
-    endpointUrls: ['wss://wss.api.moonbase.moonbeam.network'],
     blockExplorerUrls: [],
     shortName: 'Alpha',
     nodes: [
@@ -144,9 +138,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'XOR',
       decimals: 18,
     },
-    endpointUrls: [
-      'wss://ws.parachain-collator-1.c1.stg1.sora2.soramitsu.co.jp', // stage
-    ],
     blockExplorerUrls: [],
     shortName: 'SORA ROC',
     nodes: [
@@ -165,9 +156,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'XOR',
       decimals: 18,
     },
-    endpointUrls: [
-      'wss://ws.parachain-collator-2.c2.sora2.soramitsu.co.jp', // prod
-    ],
     blockExplorerUrls: [],
     shortName: 'SORA KSM',
     nodes: [
@@ -186,9 +174,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'XOR',
       decimals: 18,
     },
-    endpointUrls: [
-      'wss://ws.parachain-collator-3.pc3.sora2.soramitsu.co.jp', // prod
-    ],
     blockExplorerUrls: [],
     shortName: 'SORA DOT',
     nodes: [
@@ -207,7 +192,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'XOR',
       decimals: 18,
     },
-    endpointUrls: ['wss://ws.parachain-collator-2.c1.stg1.sora2.soramitsu.co.jp'],
     blockExplorerUrls: [],
     shortName: 'SORA Alphanet',
     nodes: [
@@ -227,8 +211,19 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'LLD',
       decimals: 12,
     },
-    endpointUrls: [],
-    blockExplorerUrls: [],
+    nodes: [
+      {
+        chain: 'Liberland',
+        name: 'Liberland Governance',
+        address: 'wss://mainnet.liberland.org',
+      },
+      {
+        chain: 'Liberland',
+        name: 'Dwellir',
+        address: 'wss://liberland-rpc.dwellir.com',
+      },
+    ],
+    blockExplorerUrls: ['https://chainscan.mainnet.liberland.org'],
     shortName: 'Liberland',
   },
 };
