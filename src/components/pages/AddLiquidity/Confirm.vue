@@ -133,6 +133,7 @@ export default class ConfirmAddLiquidity extends Mixins(
 
   handleConfirm(): void {
     this.$emit('confirm', true);
+    this.closeDialog();
   }
 }
 </script>

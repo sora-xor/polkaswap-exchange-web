@@ -29,7 +29,12 @@
     <s-divider />
     <swap-transaction-details />
     <template #footer>
-      <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmSwap">
+      <s-button
+        type="primary"
+        class="s-typography-button--large"
+        :disabled="isInsufficientBalance"
+        @click="handleConfirm"
+      >
         {{ t('exchange.confirm') }}
       </s-button>
     </template>
@@ -37,14 +42,13 @@
 </template>
 
 <script lang="ts">
-import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
 
-import type { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -56,14 +60,11 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
   },
 })
 export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
-  @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.swap.fromValue private fromValue!: string;
   @state.swap.toValue private toValue!: string;
   @state.swap.isExchangeB isExchangeB!: boolean;
-  @state.swap.selectedDexId private selectedDexId!: number;
 
   @getter.swap.minMaxReceived private minMaxReceived!: CodecString;
-  @getter.swap.swapLiquiditySource private liquiditySource!: LiquiditySourceTypes;
   @getter.swap.tokenFrom tokenFrom!: AccountAsset;
   @getter.swap.tokenTo tokenTo!: AccountAsset;
 
@@ -82,33 +83,9 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
     return this.formatCodecNumber(this.minMaxReceived, decimals);
   }
 
-  async handleConfirmSwap(): Promise<void> {
-    if (this.isInsufficientBalance) {
-      this.$alert(this.t('insufficientBalanceText', { tokenSymbol: this.tokenFrom ? this.tokenFrom.symbol : '' }), {
-        title: this.t('errorText'),
-      });
-      this.$emit('confirm');
-    } else {
-      try {
-        await this.withNotifications(
-          async () =>
-            await api.swap.execute(
-              this.tokenFrom,
-              this.tokenTo,
-              this.fromValue,
-              this.toValue,
-              this.slippageTolerance,
-              this.isExchangeB,
-              this.liquiditySource,
-              this.selectedDexId
-            )
-        );
-        this.$emit('confirm', true);
-      } catch (error) {
-        this.$emit('confirm');
-      }
-    }
-    this.isVisible = false;
+  async handleConfirm(): Promise<void> {
+    this.$emit('confirm', true);
+    this.closeDialog();
   }
 }
 </script>

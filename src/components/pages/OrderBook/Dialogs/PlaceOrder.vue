@@ -13,7 +13,12 @@
 
     <place-transaction-details class="transaction-details" :is-market-type="isMarketType" />
     <template #footer>
-      <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmSwap">
+      <s-button
+        type="primary"
+        class="s-typography-button--large"
+        :disabled="isInsufficientBalance"
+        @click="handleConfirm"
+      >
         {{ t('exchange.confirm') }}
       </s-button>
     </template>
@@ -21,11 +26,10 @@
 </template>
 
 <script lang="ts">
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
-import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { state, getter } from '@/store/decorators';
@@ -39,17 +43,10 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
     PlaceTransactionDetails: lazyComponent(Components.PlaceTransactionDetails),
   },
 })
-export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mixins.DialogMixin) {
+export default class PlaceLimitOrder extends Mixins(TranslationMixin, mixins.DialogMixin) {
   @state.orderBook.baseValue private baseValue!: string;
   @state.orderBook.quoteValue private quoteValue!: string;
-  @state.orderBook.side private side!: PriceVariant;
-  @state.settings.slippageTolerance private slippageTolerance!: string;
-  @state.swap.fromValue private fromValue!: string;
   @state.swap.toValue private toValue!: string;
-  @state.swap.selectedDexId private selectedDexId!: number;
-
-  @getter.swap.tokenFrom private tokenFrom!: AccountAsset;
-  @getter.swap.tokenTo private tokenTo!: AccountAsset;
 
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
@@ -80,59 +77,8 @@ export default class PlaceLimitOrder extends Mixins(mixins.TransactionMixin, mix
     return this.t('orderBook.dialog.at', { price: this.quoteValue, symbol: this.quoteAsset?.symbol });
   }
 
-  private placeLimitOrder(): Promise<void> {
-    return api.orderBook.placeLimitOrder(this.baseAsset, this.quoteAsset, this.quoteValue, this.baseValue, this.side);
-  }
-
-  private placeMarketOrder(): Promise<void> {
-    return api.swap.execute(
-      this.tokenFrom,
-      this.tokenTo,
-      this.fromValue,
-      this.toValue,
-      this.slippageTolerance,
-      this.isBuySide,
-      LiquiditySourceTypes.OrderBook,
-      this.selectedDexId
-    );
-  }
-
-  private async singlePriceReachedLimit(): Promise<boolean> {
-    const limitReached = !(await api.orderBook.isOrderPlaceable(
-      this.baseAsset.address,
-      this.quoteAsset.address,
-      this.side,
-      this.quoteValue
-    ));
-
-    return limitReached;
-  }
-
-  async handleConfirmSwap(): Promise<void> {
-    if (this.isInsufficientBalance) {
-      this.$alert(
-        this.t('exchange.insufficientBalance', { tokenSymbol: this.tokenFrom ? this.tokenFrom.symbol : '' }),
-        { title: this.t('errorText') }
-      );
-      this.$emit('confirm');
-      this.isVisible = false;
-      return;
-    }
-    try {
-      await this.withNotifications(async () => {
-        const isLimitReached = await this.singlePriceReachedLimit();
-        if (isLimitReached) {
-          this.$alert(this.t('orderBook.error.singlePriceLimit.reading'), { title: this.t('errorText') });
-          this.$emit('confirm');
-        } else {
-          const orderExtrinsic = this.isMarketType ? this.placeMarketOrder : this.placeLimitOrder;
-          await orderExtrinsic();
-          this.$emit('confirm', true);
-        }
-      });
-    } catch (error) {
-      this.$emit('confirm');
-    }
+  async handleConfirm(): Promise<void> {
+    this.$emit('confirm');
     this.isVisible = false;
   }
 }

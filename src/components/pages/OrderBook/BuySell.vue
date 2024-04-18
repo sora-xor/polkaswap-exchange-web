@@ -118,8 +118,8 @@
         type="primary"
         class="btn s-typography-button--medium"
         :class="computedBtnClass"
-        @click="placeLimitOrder"
         :disabled="buttonDisabled"
+        @click="handleOrderPlacement"
       >
         <template v-if="bookStopped">
           {{ t('orderBook.stop') }}
@@ -161,7 +161,7 @@
         type="primary"
         class="btn s-typography-button--medium"
         :class="computedBtnClass"
-        @click="placeLimitOrder"
+        @click="handleOrderPlacement"
       >
         <template v-if="!isLoggedIn">
           {{ t('connectWalletText') }}
@@ -187,7 +187,7 @@
       :isInsufficientBalance="isInsufficientBalance"
       :isBuySide="isBuySide"
       :is-market-type="isMarketType"
-      @confirm="resetValues"
+      @confirm="confirmOrderPlacement"
     />
   </div>
 </template>
@@ -237,7 +237,8 @@ import type { Subscription } from 'rxjs';
     Error: lazyComponent(Components.ErrorButton),
   },
 })
-export default class BuySellWidget extends Mixins(TranslationMixin, mixins.FormattedAmountMixin, mixins.LoadingMixin) {
+export default class BuySellWidget extends Mixins(mixins.TransactionMixin, mixins.FormattedAmountMixin) {
+  @state.wallet.transactions.isConfirmTxDialogEnabled private isConfirmTxEnabled!: boolean;
   @state.router.prev private prevRoute!: Nullable<PageNames>;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.orderBook.limitOrderType private _limitOrderType!: LimitOrderType;
@@ -249,6 +250,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.amountSliderValue sliderValue!: number;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
+
+  @state.settings.slippageTolerance private slippageTolerance!: string;
+  @state.swap.fromValue private fromValue!: string;
+  @state.swap.toValue private toValue!: string;
+  @state.swap.selectedDexId private selectedDexId!: number;
 
   @getter.assets.xor xor!: AccountAsset;
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
@@ -725,7 +731,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return this.preparedForSwap && hasInsufficientBalance(this.tokenFrom, fromValue, this.networkFee);
   }
 
-  async placeLimitOrder(): Promise<void> {
+  async handleOrderPlacement(): Promise<void> {
     if (!this.isLoggedIn) {
       router.push({ name: PageNames.Wallet });
       return;
@@ -735,7 +741,42 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
       this.subscribeOnBookQuote();
     }
 
-    this.showPlaceOrderDialog();
+    if (this.isConfirmTxEnabled) {
+      this.showPlaceOrderDialog();
+    } else {
+      this.confirmOrderPlacement();
+    }
+  }
+
+  async confirmOrderPlacement(): Promise<void> {
+    await this.withNotifications(async () => {
+      const isLimitReached = await this.singlePriceReachedLimit();
+      if (isLimitReached) {
+        this.$alert(this.t('orderBook.error.singlePriceLimit.reading'), { title: this.t('errorText') });
+        return;
+      }
+
+      const orderExtrinsic = this.isMarketType ? this.placeMarketOrder : this.placeLimitOrder;
+      await orderExtrinsic();
+      this.resetValues();
+    });
+  }
+
+  private placeMarketOrder(): Promise<void> {
+    return api.swap.execute(
+      this.tokenFrom as AccountAsset,
+      this.tokenTo as AccountAsset,
+      this.fromValue,
+      this.toValue,
+      this.slippageTolerance,
+      this.isBuySide,
+      LiquiditySourceTypes.OrderBook,
+      this.selectedDexId
+    );
+  }
+
+  private placeLimitOrder(): Promise<void> {
+    return api.orderBook.placeLimitOrder(this.baseAsset, this.quoteAsset, this.quoteValue, this.baseValue, this.side);
   }
 
   get orderBookStatus(): OrderBookStatus {

@@ -75,7 +75,7 @@
         data-test-name="confirmSwap"
         type="primary"
         :disabled="isConfirmSwapDisabled"
-        :loading="loading || isSelectAssetLoading"
+        :loading="loading || quoteLoading || isSelectAssetLoading"
         @click="handleSwapClick"
       >
         <template v-if="!areTokensSelected">
@@ -180,17 +180,21 @@ import type { Subscription } from 'rxjs';
 })
 export default class SwapFormWidget extends Mixins(
   mixins.FormattedAmountMixin,
-  mixins.LoadingMixin,
+  mixins.TransactionMixin,
   TranslationMixin,
   TokenSelectMixin
 ) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  @state.wallet.transactions.isConfirmTxDialogEnabled private isConfirmTxEnabled!: boolean;
+
   @state.swap.isExchangeB isExchangeB!: boolean;
   @state.swap.fromValue fromValue!: string;
   @state.swap.toValue toValue!: string;
   @state.swap.isAvailable isAvailable!: boolean;
   @state.swap.swapQuote private swapQuote!: Nullable<SwapQuote>;
   @state.swap.allowLossPopup private allowLossPopup!: boolean;
+  @state.swap.selectedDexId private selectedDexId!: number;
+  @state.settings.slippageTolerance private slippageTolerance!: string;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.swap.swapLiquiditySource liquiditySource!: Nullable<LiquiditySourceTypes>;
@@ -241,6 +245,7 @@ export default class SwapFormWidget extends Mixins(
   confirmVisibility = false;
   lossWarningVisibility = false;
   quoteSubscription: Nullable<Subscription> = null;
+  quoteLoading = false;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
   get tokenFromSymbol(): string {
@@ -450,7 +455,7 @@ export default class SwapFormWidget extends Mixins(
 
     if (!this.areTokensSelected) return;
 
-    this.loading = true;
+    this.quoteLoading = true;
 
     const observableQuote = api.swap.getDexesSwapQuoteObservable(
       (this.tokenFrom as AccountAsset).address,
@@ -461,7 +466,7 @@ export default class SwapFormWidget extends Mixins(
       this.quoteSubscription = observableQuote.subscribe((quoteData) => {
         this.setSubscriptionPayload(quoteData);
         this.runRecountSwapValues();
-        this.loading = false;
+        this.quoteLoading = false;
       });
     } else {
       this.setSubscriptionPayload();
@@ -533,15 +538,32 @@ export default class SwapFormWidget extends Mixins(
   }
 
   showConfirmDialog(): void {
-    this.confirmVisibility = true;
+    if (this.isConfirmTxEnabled) {
+      this.confirmVisibility = true;
+    } else {
+      this.confirmSwap(!this.isConfirmSwapDisabled);
+    }
   }
 
   async confirmSwap(isSwapConfirmed: boolean): Promise<void> {
-    if (isSwapConfirmed) {
+    if (!isSwapConfirmed) return;
+
+    await this.withNotifications(async () => {
+      await api.swap.execute(
+        this.tokenFrom as AccountAsset,
+        this.tokenTo as AccountAsset,
+        this.fromValue,
+        this.toValue,
+        this.slippageTolerance,
+        this.isExchangeB,
+        this.liquiditySource as LiquiditySourceTypes,
+        this.selectedDexId
+      );
+
       this.resetFieldFrom();
       this.resetFieldTo();
       this.setExchangeB(false);
-    }
+    });
   }
 
   openSettingsDialog(): void {

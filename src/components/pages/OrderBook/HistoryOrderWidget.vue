@@ -79,6 +79,8 @@ import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.TransactionMixin) {
   readonly Filter = Filter;
   readonly Cancel = Cancel;
+
+  @state.wallet.transactions.isConfirmTxDialogEnabled private isConfirmTxEnabled!: boolean;
   // Open Orders utils
   @state.orderBook.userLimitOrders private userLimitOrders!: Array<LimitOrder>;
   @getter.orderBook.accountAddress accountAddress!: string;
@@ -158,7 +160,11 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     if (this.isBookStopped) return;
     if (!this.userLimitOrders.length) return;
 
-    this.confirmCancelOrderVisibility = true;
+    if (this.isConfirmTxEnabled) {
+      this.confirmCancelOrderVisibility = true;
+    } else {
+      this.handleCancel(Cancel.all);
+    }
   }
 
   async handleCancel(cancel: Cancel): Promise<void> {

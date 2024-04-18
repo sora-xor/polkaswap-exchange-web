@@ -43,7 +43,7 @@
         type="primary"
         class="action-button s-typography-button--large"
         :disabled="!areTokensSelected || emptyAssets || isInsufficientBalance"
-        :loading="isSelectAssetLoading"
+        :loading="loading || isSelectAssetLoading"
         @click="handleAddLiquidity"
       >
         <template v-if="!areTokensSelected">
@@ -158,6 +158,7 @@ export default class AddLiquidity extends Mixins(
 ) {
   readonly FocusedField = FocusedField;
 
+  @state.wallet.transactions.isConfirmTxDialogEnabled private isConfirmTxEnabled!: boolean;
   @state.settings.slippageTolerance slippageToleranceValue!: string;
 
   @getter.assets.xor private xor!: AccountAsset;
@@ -277,7 +278,12 @@ export default class AddLiquidity extends Mixins(
       }
       this.isWarningFeeDialogConfirmed = false;
     }
-    this.openConfirmDialog();
+
+    if (this.isConfirmTxEnabled) {
+      this.openConfirmDialog();
+    } else {
+      this.handleConfirmAddLiquidity();
+    }
   }
 
   async handleTokenChange(value: string, setValue: SetValue): Promise<void> {
@@ -312,8 +318,8 @@ export default class AddLiquidity extends Mixins(
   }
 
   async handleConfirmAddLiquidity(): Promise<void> {
-    await this.handleConfirmDialog(async () => {
-      await this.withNotifications(this.addLiquidity);
+    await this.withNotifications(async () => {
+      await this.addLiquidity();
       this.handleBack();
     });
   }

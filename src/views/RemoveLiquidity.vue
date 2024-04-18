@@ -84,6 +84,7 @@
         class="action-button s-typography-button--large"
         border-radius="small"
         :disabled="liquidityLocked || isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee"
+        :loading="loading"
         @click="handleRemoveLiquidity"
       >
         <template v-if="isEmptyAmount">
@@ -162,6 +163,8 @@ export default class RemoveLiquidity extends Mixins(
   readonly XOR_SYMBOL = XOR.symbol;
   readonly MAX_PART = 100;
   readonly FocusedField = FocusedField;
+
+  @state.wallet.transactions.isConfirmTxDialogEnabled private isConfirmTxEnabled!: boolean;
 
   @state.removeLiquidity.liquidityAmount private liquidityAmount!: string;
   @state.removeLiquidity.focusedField private focusedField!: string;
@@ -360,8 +363,8 @@ export default class RemoveLiquidity extends Mixins(
   }
 
   async handleConfirmRemoveLiquidity(): Promise<void> {
-    await this.handleConfirmDialog(async () => {
-      await this.withNotifications(this.removeLiquidity);
+    await this.withNotifications(async () => {
+      await this.removeLiquidity();
       this.handleBack();
     });
   }
@@ -381,7 +384,12 @@ export default class RemoveLiquidity extends Mixins(
       }
       this.isWarningFeeDialogConfirmed = false;
     }
-    this.openConfirmDialog();
+
+    if (this.isConfirmTxEnabled) {
+      this.openConfirmDialog();
+    } else {
+      this.handleConfirmRemoveLiquidity();
+    }
   }
 
   private addListenerToSliderDragButton(): void {
