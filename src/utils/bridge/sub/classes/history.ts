@@ -615,7 +615,7 @@ class SubBridgeHistory extends SubNetworksConnector {
 
         const [receivedAmount, externalEventIndex] = getDepositedBalance(
           blockEvents.slice(0, messageQueueEventIndex),
-          history.to as string,
+          history.to,
           this.externalApi
         );
         // Deposit event index

@@ -4,9 +4,9 @@ import { api } from '@soramitsu/soraneo-wallet-web';
 import { combineLatest } from 'rxjs';
 
 import { ZeroStringValue } from '@/consts';
-import store from '@/store'; // [TODO] remove
 import { conditionalAwait } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
+import type { IBridgeReducerOptions } from '@/utils/bridge/common/types';
 import { getTransactionEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
@@ -24,14 +24,26 @@ import {
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiRx } from '@polkadot/api';
+import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
 
+type SubBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeReducerOptions<T> & {
+  getSubBridgeConnector: () => SubNetworksConnector;
+};
+
 export class SubBridgeReducer extends BridgeReducer<SubHistory> {
   protected asset!: RegisteredAccountAsset;
+  protected getSubBridgeConnector!: () => SubNetworksConnector;
   protected connector!: SubNetworksConnector;
   protected transferType!: SubTransferType;
+
+  constructor(options: SubBridgeReducerOptions<SubHistory>) {
+    super(options);
+
+    this.getSubBridgeConnector = options.getSubBridgeConnector;
+  }
 
   initConnector(id: string): void {
     const { externalNetwork } = this.getTransaction(id);
@@ -41,8 +53,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     this.transferType = determineTransferType(externalNetwork);
 
     this.connector = new SubNetworksConnector();
-    // [TODO] pass subBridgeConnector from options
-    this.connector.init(externalNetwork, store.state.bridge.subBridgeConnector);
+    this.connector.init(externalNetwork, this.getSubBridgeConnector());
   }
 
   async closeConnector(): Promise<void> {
