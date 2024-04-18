@@ -347,6 +347,8 @@ export default class Bridge extends Mixins(
   readonly KnownSymbols = KnownSymbols;
   readonly FocusedField = FocusedField;
 
+  @state.wallet.transactions.isConfirmTxDialogEnabled private isConfirmTxEnabled!: boolean;
+
   @state.bridge.balancesFetching private balancesFetching!: boolean;
   @state.bridge.feesAndLockedFundsFetching private feesAndLockedFundsFetching!: boolean;
   @state.assets.registeredAssetsFetching private registeredAssetsFetching!: boolean;
@@ -638,7 +640,11 @@ export default class Bridge extends Mixins(
       this.isWarningExternalFeeDialogConfirmed = false;
     }
 
-    this.showConfirmTransactionDialog = true;
+    if (this.isConfirmTxEnabled) {
+      this.showConfirmTransactionDialog = true;
+    } else {
+      this.confirmTransaction();
+    }
   }
 
   handleChangeNetwork(): void {
@@ -667,9 +673,7 @@ export default class Bridge extends Mixins(
     });
   }
 
-  async confirmTransaction(isTransactionConfirmed: boolean): Promise<void> {
-    if (!isTransactionConfirmed) return;
-
+  async confirmTransaction(): Promise<void> {
     // create new history item
     const { assetAddress, id } = await this.generateHistoryItem();
 
