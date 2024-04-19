@@ -89,7 +89,7 @@ import {
 } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { PageInfo } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { PageInfo, SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const USD_SYMBOL = 'USD';
 
