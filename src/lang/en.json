@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Limit order cancelled",
             "OrderBookCancelLimitOrders": "Limit orders cancelled",
             "Burn": "Burned {amount} {symbol}",
-            "Mint": "Minted {amount} {symbol} to {address}"
+            "Mint": "Minted {amount} {symbol} to {address}",
+            "CreateVault": "{symbol}/{symbol2} Vault created",
+            "CloseVault": "{symbol}/{symbol2} Vault closed",
+            "DepositCollateral": "Deposited {amount} {symbol}",
+            "RepayVaultDebt": "Repaid {amount} {symbol}",
+            "BorrowVaultDebt": "Borrowed {amount} {symbol}"
         },
         "error": {
             "Transfer": "Failed to {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Failed to cancel limit orders",
             "OrderBookCancelLimitOrder": "Failed to cancel limit order",
             "Burn": "Failed to burn {amount} {symbol}",
-            "Mint": "Failed to mint {amount} {symbol} to {address}"
+            "Mint": "Failed to mint {amount} {symbol} to {address}",
+            "CreateVault": "Failed to create {symbol}/{symbol2} vault",
+            "CloseVault": "Failed to close {symbol}/{symbol2} vault",
+            "DepositCollateral": "Failed to deposit {amount} {symbol}",
+            "RepayVaultDebt": "Failed to repaid {amount} {symbol}",
+            "BorrowVaultDebt": "Failed to borrow {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Cancel Order",
         "OrderBookCancelLimitOrders": "Cancel Orders",
         "Burn": "Burn",
-        "Mint": "Mint"
+        "Mint": "Mint",
+        "CreateVault": "Create Vault",
+        "CloseVault": "Close Vault",
+        "DepositCollateral": "Deposit Vault",
+        "RepayVaultDebt": "Repay Debt",
+        "BorrowVaultDebt": "Borrow Debt"
     },
     "polkadotjs": {
         "noExtensions": "No {PolkadotJs} extension was found. Please install it and reload this page\nhttps:\/\/polkadot.js.org\/extension\/",

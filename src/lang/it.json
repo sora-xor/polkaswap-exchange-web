@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Ordine limite annullato",
             "OrderBookCancelLimitOrders": "Ordini limite annullati",
             "Burn": "{amount} {symbol} bruciato",
-            "Mint": "Coniato {amount} {symbol} a {address}"
+            "Mint": "Coniato {amount} {symbol} a {address}",
+            "CreateVault": "Vault {symbol}/{symbol2} creato",
+            "CloseVault": "Vault {symbol}/{symbol2} chiuso",
+            "DepositCollateral": "Depositato {amount} {symbol}",
+            "RepayVaultDebt": "Debito ripagato {amount} {symbol}",
+            "BorrowVaultDebt": "Debito preso in prestito {amount} {symbol}"
         },
         "error": {
             "Transfer": "Impossibile {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Impossibile annullare gli ordini limite",
             "OrderBookCancelLimitOrder": "Impossibile annullare l'ordine limite",
             "Burn": "Impossibile masterizzare {amount} {symbol}",
-            "Mint": "Impossibile coniare {amount} {symbol} su {address}"
+            "Mint": "Impossibile coniare {amount} {symbol} su {address}",
+            "CreateVault": "Impossibile creare il vault {symbol}/{symbol2}",
+            "CloseVault": "Impossibile chiudere il vault {symbol}/{symbol2}",
+            "DepositCollateral": "Impossibile depositare {amount} {symbol}",
+            "RepayVaultDebt": "Impossibile ripagare {amount} {symbol} di debito",
+            "BorrowVaultDebt": "Impossibile prendere in prestito {amount} {symbol} di debito"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Annulla Ordine",
         "OrderBookCancelLimitOrders": "Annulla ordini",
         "Burn": "Bruciare",
-        "Mint": "menta"
+        "Mint": "Menta",
+        "CreateVault": "Crea Vault",
+        "CloseVault": "Chiudi Vault",
+        "DepositCollateral": "Deposita Collaterale",
+        "RepayVaultDebt": "Ripaga Debito Vault",
+        "BorrowVaultDebt": "Prendi in Prestito Debito Vault"
     },
     "polkadotjs": {
         "noExtensions": "Nessuna estensione {PolkadotJs} trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",

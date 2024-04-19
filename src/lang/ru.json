@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Лимитный ордер отменен",
             "OrderBookCancelLimitOrders": "Лимитные ордера отменены",
             "Burn": "Сожжено {amount} {symbol}",
-            "Mint": "Напечатано {amount} {symbol} на {address}"
+            "Mint": "Напечатано {amount} {symbol} на {address}",
+            "CreateVault": "Позиция {symbol}/{symbol2} создана",
+            "CloseVault": "Позиция {symbol}/{symbol2} закрыта",
+            "DepositCollateral": "Внесено {amount} {symbol}",
+            "RepayVaultDebt": "Погашено {amount} {symbol} долга",
+            "BorrowVaultDebt": "Взято в долг {amount} {symbol}"
         },
         "error": {
             "Transfer": "Не удалось {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Не удалось отменить лимитные ордера",
             "OrderBookCancelLimitOrder": "Не удалось отменить лимитный ордер",
             "Burn": "Не удалось сжечь {amount} {symbol}",
-            "Mint": "Не удалось напечатать {amount} {symbol} на {address}"
+            "Mint": "Не удалось напечатать {amount} {symbol} на {address}",
+            "CreateVault": "Ошибка при открытии {symbol}/{symbol2} позиции",
+            "CloseVault": "Ошибка при закрытии {symbol}/{symbol2} позиции",
+            "DepositCollateral": "Ошибка при внесении залога {amount} {symbol}",
+            "RepayVaultDebt": "Ошибка при погашении долга {amount} {symbol}",
+            "BorrowVaultDebt": "Ошибка при взятии в долг {amount} {symbol}"
         },
         "ReferralReserveXor": "Зарезервировать XOR",
         "ReferralUnreserveXor": "Вывести XOR из резерва",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Отменить ордер",
         "OrderBookCancelLimitOrders": "Отменить ордера",
         "Burn": "Сжигание",
-        "Mint": "Печать"
+        "Mint": "Печать",
+        "CreateVault": "Открыть позицию",
+        "CloseVault": "Закрыть позицию",
+        "DepositCollateral": "Внести залог",
+        "RepayVaultDebt": "Погасить долг",
+        "BorrowVaultDebt": "Взять в долг"
     },
     "polkadotjs": {
         "noExtensions": "Расширение {PolkadotJs} не найдено. Пожалуйста, установите его и перезагрузите эту страницу\n https:\/\/polkadot.js.org\/extension\/",

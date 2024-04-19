@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Limit order annullerad",
             "OrderBookCancelLimitOrders": "Limit order annullerade",
             "Burn": "Brände {amount} {symbol}",
-            "Mint": "Minskade {amount} {symbol} till {address}"
+            "Mint": "Minskade {amount} {symbol} till {address}",
+            "CreateVault": "Kassavalv {symbol}/{symbol2} skapat",
+            "CloseVault": "Kassavalv {symbol}/{symbol2} stängt",
+            "DepositCollateral": "Säkerhet insatt {amount} {symbol}",
+            "RepayVaultDebt": "Skuld återbetald {amount} {symbol}",
+            "BorrowVaultDebt": "Skuld lånad {amount} {symbol}"
         },
         "error": {
             "Transfer": "Det gick inte att {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Det gick inte att avbryta limiterade beställningar",
             "OrderBookCancelLimitOrder": "Det gick inte att avbryta begränsningsordern",
             "Burn": "Det gick inte att bränna {amount} {symbol}",
-            "Mint": "Det gick inte att prägla {amount} {symbol} till {address}"
+            "Mint": "Det gick inte att prägla {amount} {symbol} till {address}",
+            "CreateVault": "Misslyckades med att skapa kassavalv {symbol}/{symbol2}",
+            "CloseVault": "Misslyckades med att stänga kassavalv {symbol}/{symbol2}",
+            "DepositCollateral": "Misslyckades med att sätta in säkerhet {amount} {symbol}",
+            "RepayVaultDebt": "Misslyckades med att betala tillbaka skuld {amount} {symbol}",
+            "BorrowVaultDebt": "Misslyckades med att låna skuld {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Avbryt beställning",
         "OrderBookCancelLimitOrders": "Avbryt beställningar",
         "Burn": "Bränna",
-        "Mint": "Mynta"
+        "Mint": "Mynta",
+        "CreateVault": "Skapa kassavalv",
+        "CloseVault": "Stäng kassavalv",
+        "DepositCollateral": "Sätt in säkerhet",
+        "RepayVaultDebt": "Betala tillbaka skuld",
+        "BorrowVaultDebt": "Låna skuld"
     },
     "polkadotjs": {
         "noExtensions": "Inget {PolkadotJs} tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",

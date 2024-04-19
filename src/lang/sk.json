@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Limitovaná objednávka bola zrušená",
             "OrderBookCancelLimitOrders": "Limitné objednávky boli zrušené",
             "Burn": "Spálené {amount} {symbol}",
-            "Mint": "Vyrazené {amount} {symbol} na {address}"
+            "Mint": "Vyrazené {amount} {symbol} na {address}",
+            "CreateVault": "Pokladnica {symbol}/{symbol2} vytvorená",
+            "CloseVault": "Pokladnica {symbol}/{symbol2} zatvorená",
+            "DepositCollateral": "Vložená záloha {amount} {symbol}",
+            "RepayVaultDebt": "Dlh splatený {amount} {symbol}",
+            "BorrowVaultDebt": "Dlh požičaný {amount} {symbol}"
         },
         "error": {
             "Transfer": "Nepodarilo sa {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Limitné objednávky sa nepodarilo zrušiť",
             "OrderBookCancelLimitOrder": "Limitovanú objednávku sa nepodarilo zrušiť",
             "Burn": "Nepodarilo sa napáliť {amount} {symbol}",
-            "Mint": "Nepodarilo sa vyraziť {amount} {symbol} na {address}"
+            "Mint": "Nepodarilo sa vyraziť {amount} {symbol} na {address}",
+            "CreateVault": "Chyba pri vytváraní pokladnice {symbol}/{symbol2}",
+            "CloseVault": "Chyba pri zatváraní pokladnice {symbol}/{symbol2}",
+            "DepositCollateral": "Chyba pri vkladaní zálohy {amount} {symbol}",
+            "RepayVaultDebt": "Chyba pri splácaní dlhu {amount} {symbol}",
+            "BorrowVaultDebt": "Chyba pri požičiavaní dlhu {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Zrušiť objednávku",
         "OrderBookCancelLimitOrders": "Zrušte objednávky",
         "Burn": "Spáliť",
-        "Mint": "mäta"
+        "Mint": "Mäta",
+        "CreateVault": "Vytvoriť pokladnicu",
+        "CloseVault": "Zatvoriť pokladnicu",
+        "DepositCollateral": "Vložiť zálohu",
+        "RepayVaultDebt": "Splatiť dlh",
+        "BorrowVaultDebt": "Požičať si dlh"
     },
     "polkadotjs": {
         "noExtensions": "Rozšírenie {PolkadotJs} nebolo nájdené. Nainštalujte ho a znova načítajte túto stránku https:\/\/polkadot.js.org\/extension\/",

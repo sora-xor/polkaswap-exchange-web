@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Orden límite cancelada",
             "OrderBookCancelLimitOrders": "Limitar órdenes canceladas",
             "Burn": "Quemado {amount} {symbol}",
-            "Mint": "Acuñado {amount} {symbol} a {address}"
+            "Mint": "Acuñado {amount} {symbol} a {address}",
+            "CreateVault": "Bóveda {symbol}/{symbol2} creada",
+            "CloseVault": "Bóveda {symbol}/{symbol2} cerrada",
+            "DepositCollateral": "Depositar {amount} {symbol}",
+            "RepayVaultDebt": "Reembolsado {amount} {symbol}",
+            "BorrowVaultDebt": "Deuda prestada {amount} {symbol}"
         },
         "error": {
             "Transfer": "Fallo en {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "No se pudieron cancelar las órdenes limitadas",
             "OrderBookCancelLimitOrder": "No se pudo cancelar la orden límite",
             "Burn": "No se pudo grabar {amount} {symbol}",
-            "Mint": "No se pudo acuñar {amount} {symbol} en {address}"
+            "Mint": "No se pudo acuñar {amount} {symbol} en {address}",
+            "CreateVault": "Error al crear la bóveda {symbol}/{symbol2}",
+            "CloseVault": "Error al cerrar la bóveda {symbol}/{symbol2}",
+            "DepositCollateral": "Error al depositar {amount} {symbol}",
+            "RepayVaultDebt": "Error al reembolsar {amount} {symbol}",
+            "BorrowVaultDebt": "Error al tomar prestada {amount} {symbol}"
         },
         "ReferralReserveXor": "Vincular XOR",
         "ReferralUnreserveXor": "Desvincular XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Cancelar orden",
         "OrderBookCancelLimitOrders": "Cancelar pedidos",
         "Burn": "Quemar",
-        "Mint": "menta"
+        "Mint": "Menta",
+        "CreateVault": "Crear bóveda",
+        "CloseVault": "Cerrar bóveda",
+        "DepositCollateral": "Depositar garantía",
+        "RepayVaultDebt": "Reembolsar deuda",
+        "BorrowVaultDebt": "Tomar prestada deuda"
     },
     "polkadotjs": {
         "noExtensions": "No se encontró la extensión {PolkadotJs}. Por favor instálela y vuelva a cargar esta página.\n https:\/\/polkadot.js.org\/extension\/",

@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Limit megbízás törölve",
             "OrderBookCancelLimitOrders": "Limit megrendelések törölve",
             "Burn": "Égetett {amount} {symbol}",
-            "Mint": "Verte {amount} {symbol} erre: {address}"
+            "Mint": "Verte {amount} {symbol} erre: {address}",
+            "CreateVault": "{symbol}/{symbol2} treasury létrehozva",
+            "CloseVault": "{symbol}/{symbol2} treasury bezárva",
+            "DepositCollateral": "{amount} {symbol} letétbe helyezve",
+            "RepayVaultDebt": "{amount} {symbol} adósság visszafizetve",
+            "BorrowVaultDebt": "{amount} {symbol} adósság felvéve"
         },
         "error": {
             "Transfer": "Nem sikerült {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Nem sikerült törölni a limitált rendeléseket",
             "OrderBookCancelLimitOrder": "Nem sikerült törölni a limitált rendelést",
             "Burn": "Nem sikerült égetni {amount} {symbol}",
-            "Mint": "Nem sikerült menteni {amount} {symbol} címet a következő címre {address}"
+            "Mint": "Nem sikerült menteni {amount} {symbol} címet a következő címre {address}",
+            "CreateVault": "{symbol}/{symbol2} treasury létrehozása sikertelen",
+            "CloseVault": "{symbol}/{symbol2} treasury bezárása sikertelen",
+            "DepositCollateral": "{amount} {symbol} letétbe helyezése sikertelen",
+            "RepayVaultDebt": "{amount} {symbol} adósság visszafizetése sikertelen",
+            "BorrowVaultDebt": "{amount} {symbol} adósság felvétele sikertelen"
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Megrendelés törlése",
         "OrderBookCancelLimitOrders": "Megrendelések törlése",
         "Burn": "Éget",
-        "Mint": "Menta"
+        "Mint": "Menta",
+        "CreateVault": "Treasury létrehozása",
+        "CloseVault": "Treasury bezárása",
+        "DepositCollateral": "Letét behelyezése",
+        "RepayVaultDebt": "Adósság visszafizetése",
+        "BorrowVaultDebt": "Adósság felvétele"
     },
     "polkadotjs": {
         "noExtensions": "Nem találtunk {PolkadotJs} kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",

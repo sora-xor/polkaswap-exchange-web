@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Batas pesanan dibatalkan",
             "OrderBookCancelLimitOrders": "Batasi pesanan dibatalkan",
             "Burn": "Terbakar {amount} {symbol}",
-            "Mint": "Dicetak {amount} {symbol} ke {address}"
+            "Mint": "Dicetak {amount} {symbol} ke {address}",
+            "CreateVault": "Vault {symbol}/{symbol2} dibuat",
+            "CloseVault": "Vault {symbol}/{symbol2} ditutup",
+            "DepositCollateral": "Deposito {amount} {symbol}",
+            "RepayVaultDebt": "Utang dibayar {amount} {symbol}",
+            "BorrowVaultDebt": "Utang dipinjam {amount} {symbol}"
         },
         "error": {
             "Transfer": "Gagal {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Gagal membatalkan pesanan batas",
             "OrderBookCancelLimitOrder": "Gagal membatalkan pesanan batas",
             "Burn": "Gagal membakar {amount} {symbol}",
-            "Mint": "Gagal mencetak {amount} {symbol} ke {address}"
+            "Mint": "Gagal mencetak {amount} {symbol} ke {address}",
+            "CreateVault": "Gagal membuat vault {symbol}/{symbol2}",
+            "CloseVault": "Gagal menutup vault {symbol}/{symbol2}",
+            "DepositCollateral": "Gagal melakukan deposit {amount} {symbol}",
+            "RepayVaultDebt": "Gagal membayar {amount} {symbol} utang",
+            "BorrowVaultDebt": "Gagal meminjam {amount} {symbol} utang"
         },
         "ReferralReserveXor": "Ikatan XOR",
         "ReferralUnreserveXor": "Lepaskan ikatan XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Batalkan pesanan",
         "OrderBookCancelLimitOrders": "Batalkan Pesanan",
         "Burn": "Membakar",
-        "Mint": "daun mint"
+        "Mint": "daun mint",
+        "CreateVault": "Buat Vault",
+        "CloseVault": "Tutup Vault",
+        "DepositCollateral": "Deposit Kolateral",
+        "RepayVaultDebt": "Bayar Utang",
+        "BorrowVaultDebt": "Pinjam Utang"
     },
     "polkadotjs": {
         "noExtensions": "Tidak ada ekstensi {PolkadotJs} yang ditemukan. Silakan instal dan muat ulang halaman ini\n https:\/\/polkadot.js.org\/extension\/",

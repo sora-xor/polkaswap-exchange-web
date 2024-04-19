@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Begrensningsbestilling kansellert",
             "OrderBookCancelLimitOrders": "Limit bestillinger kansellert",
             "Burn": "Brent {amount} {symbol}",
-            "Mint": "Preget {amount} {symbol} til {address}"
+            "Mint": "Preget {amount} {symbol} til {address}",
+            "CreateVault": "{symbol}/{symbol2}-skattkammer opprettet",
+            "CloseVault": "{symbol}/{symbol2}-skattkammer lukket",
+            "DepositCollateral": "Innskuddet {amount} {symbol}",
+            "RepayVaultDebt": "Gjelden tilbakebetalt {amount} {symbol}",
+            "BorrowVaultDebt": "Gjeld lånt {amount} {symbol}"
         },
         "error": {
             "Transfer": "Kunne ikke {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Kunne ikke kansellere begrensede bestillinger",
             "OrderBookCancelLimitOrder": "Kunne ikke kansellere begrenset ordre",
             "Burn": "Kunne ikke brenne {amount} {symbol}",
-            "Mint": "Kunne ikke prege {amount} {symbol} til {address}"
+            "Mint": "Kunne ikke prege {amount} {symbol} til {address}",
+            "CreateVault": "Kunne ikke opprette {symbol}/{symbol2}-skattkammer",
+            "CloseVault": "Kunne ikke lukke {symbol}/{symbol2}-skattkammer",
+            "DepositCollateral": "Kunne ikke gjøre innskudd {amount} {symbol}",
+            "RepayVaultDebt": "Kunne ikke tilbakebetale {amount} {symbol} gjeld",
+            "BorrowVaultDebt": "Kunne ikke låne {amount} {symbol} gjeld"
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Avbryt bestillingen",
         "OrderBookCancelLimitOrders": "Kanseller bestillinger",
         "Burn": "Brenne",
-        "Mint": "Mynte"
+        "Mint": "Mynte",
+        "CreateVault": "Opprett skattkammer",
+        "CloseVault": "Lukk skattkammer",
+        "DepositCollateral": "Innskudd Sikkerhet",
+        "RepayVaultDebt": "Betal tilbake gjeld",
+        "BorrowVaultDebt": "Lån gjeld"
     },
     "polkadotjs": {
         "noExtensions": "Finner ingen {PolkadotJs} utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",

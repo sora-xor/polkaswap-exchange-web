@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Limitní objednávka zrušena",
             "OrderBookCancelLimitOrders": "Limitní objednávky zrušeny",
             "Burn": "Spáleno {amount} {symbol}",
-            "Mint": "Vyraženo {amount} {symbol} na {address}"
+            "Mint": "Vyraženo {amount} {symbol} na {address}",
+            "CreateVault": "Vytvořen {symbol}/{symbol2} trezor",
+            "CloseVault": "Uzavřen {symbol}/{symbol2} trezor",
+            "DepositCollateral": "Vloženo {amount} {symbol}",
+            "RepayVaultDebt": "Splatit {amount} {symbol}",
+            "BorrowVaultDebt": "Půjčeno {amount} {symbol}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} se nezdařilo.",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Limitní objednávky se nepodařilo zrušit",
             "OrderBookCancelLimitOrder": "Limitní příkaz se nepodařilo zrušit",
             "Burn": "Nepodařilo se vypálit {amount} {symbol}",
-            "Mint": "Nepodařilo se vytěžit {amount} {symbol} na {address}"
+            "Mint": "Nepodařilo se vytěžit {amount} {symbol} na {address}",
+            "CreateVault": "Nepodařilo se vytvořit {symbol}/{symbol2} trezor",
+            "CloseVault": "Nepodařilo se uzavřít {symbol}/{symbol2} trezor",
+            "DepositCollateral": "Nepodařilo se vložit {amount} {symbol}",
+            "RepayVaultDebt": "Nepodařilo se splatit {amount} {symbol}",
+            "BorrowVaultDebt": "Nepodařilo se půjčit {amount} {symbol}"
         },
         "ReferralReserveXor": "Vázat XOR",
         "ReferralUnreserveXor": "Zrušit vazbu XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Zrušit objednávku",
         "OrderBookCancelLimitOrders": "Zrušit objednávky",
         "Burn": "Hořet",
-        "Mint": "Máta"
+        "Mint": "Máta",
+        "CreateVault": "Vytvořit trezor",
+        "CloseVault": "Zavřít trezor",
+        "DepositCollateral": "Vložit zástavu",
+        "RepayVaultDebt": "Splnit dluh",
+        "BorrowVaultDebt": "Půjčit si dluh"
     },
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření {PolkadotJs}. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",

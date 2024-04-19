@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Zlecenie limitowane anulowane",
             "OrderBookCancelLimitOrders": "Zamówienia z limitem anulowane",
             "Burn": "Spalony {amount} {symbol}",
-            "Mint": "Wybito {amount} {symbol} na {address}"
+            "Mint": "Wybito {amount} {symbol} na {address}",
+            "CreateVault": "Utworzono skarbiec {symbol}/{symbol2}",
+            "CloseVault": "Zamknięto skarbiec {symbol}/{symbol2}",
+            "DepositCollateral": "Wpłacono {amount} {symbol}",
+            "RepayVaultDebt": "Spłacono dług {amount} {symbol}",
+            "BorrowVaultDebt": "Pożyczono dług {amount} {symbol}"
         },
         "error": {
             "Transfer": "Nie udało się {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Nie udało się anulować zleceń z limitem",
             "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem",
             "Burn": "Nie udało się nagrać {amount} {symbol}",
-            "Mint": "Nie udało się wybić {amount} {symbol} na {address}"
+            "Mint": "Nie udało się wybić {amount} {symbol} na {address}",
+            "CreateVault": "Nie udało się utworzyć skarbca {symbol}/{symbol2}",
+            "CloseVault": "Nie udało się zamknąć skarbca {symbol}/{symbol2}",
+            "DepositCollateral": "Nie udało się wpłacić {amount} {symbol}",
+            "RepayVaultDebt": "Nie udało się spłacić długu {amount} {symbol}",
+            "BorrowVaultDebt": "Nie udało się pożyczyć długu {amount} {symbol}"
         },
         "ReferralReserveXor": "Utwórz rezerwy XOR",
         "ReferralUnreserveXor": "Uwolnij rezerwy XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Anuluj zamówienie",
         "OrderBookCancelLimitOrders": "Anuluj zamówienia",
         "Burn": "Oparzenie",
-        "Mint": "Mennica"
+        "Mint": "Mennica",
+        "CreateVault": "Utwórz skarbiec",
+        "CloseVault": "Zamknij skarbiec",
+        "DepositCollateral": "Wpłać zabezpieczenie",
+        "RepayVaultDebt": "Spłać dług skarbca",
+        "BorrowVaultDebt": "Pożycz dług skarbca"
     },
     "polkadotjs": {
         "noExtensions": "Nie znaleziono rozszerzenia {PolkadotJs}. Zainstaluj je i odśwież tę stronę\nhttps:\/\/polkadot.js.org\/extension\/",

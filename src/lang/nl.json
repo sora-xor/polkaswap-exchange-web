@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Limietorder geannuleerd",
             "OrderBookCancelLimitOrders": "Limietorders geannuleerd",
             "Burn": "Verbrand {amount} {symbol}",
-            "Mint": "Geslagen {amount} {symbol} naar {address}"
+            "Mint": "Geslagen {amount} {symbol} naar {address}",
+            "CreateVault": "Vault {symbol}/{symbol2} aangemaakt",
+            "CloseVault": "Vault {symbol}/{symbol2} gesloten",
+            "DepositCollateral": "{amount} {symbol} gestort",
+            "RepayVaultDebt": "{amount} {symbol} schuld terugbetaald",
+            "BorrowVaultDebt": "{amount} {symbol} schuld geleend"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Kan limietorders niet annuleren",
             "OrderBookCancelLimitOrder": "Kan limietorder niet annuleren",
             "Burn": "Kan {amount} {symbol} niet verbranden",
-            "Mint": "Kan {amount} {symbol} niet aan {address} toevoegen"
+            "Mint": "Kan {amount} {symbol} niet aan {address} toevoegen",
+            "CreateVault": "Kon vault {symbol}/{symbol2} niet aanmaken",
+            "CloseVault": "Kon vault {symbol}/{symbol2} niet sluiten",
+            "DepositCollateral": "Kon {amount} {symbol} niet storten",
+            "RepayVaultDebt": "Kon {amount} {symbol} schuld niet terugbetalen",
+            "BorrowVaultDebt": "Kon {amount} {symbol} schuld niet lenen"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Annuleer bestelling",
         "OrderBookCancelLimitOrders": "Bestellingen annuleren",
         "Burn": "Brandwond",
-        "Mint": "Munt"
+        "Mint": "Munt",
+        "CreateVault": "Maak Vault aan",
+        "CloseVault": "Sluit Vault",
+        "DepositCollateral": "Stort Onderpand",
+        "RepayVaultDebt": "Schuld Terugbetalen",
+        "BorrowVaultDebt": "Schuld Lenen"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",

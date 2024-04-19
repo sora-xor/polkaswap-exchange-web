@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Ordre limité annulé",
             "OrderBookCancelLimitOrders": "Ordres limités annulés",
             "Burn": "Brûlé {amount} {symbol}",
-            "Mint": "Frappé {amount} {symbol} à {address}"
+            "Mint": "Frappé {amount} {symbol} à {address}",
+            "CreateVault": "Coffre-fort {symbol}/{symbol2} créé",
+            "CloseVault": "Coffre-fort {symbol}/{symbol2} fermé",
+            "DepositCollateral": "Dépôt de {amount} {symbol}",
+            "RepayVaultDebt": "Dette remboursée {amount} {symbol}",
+            "BorrowVaultDebt": "Dette empruntée {amount} {symbol}"
         },
         "error": {
             "Transfer": "Échec de {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Échec de l'annulation des ordres limités",
             "OrderBookCancelLimitOrder": "Échec de l'annulation de l'ordre limité",
             "Burn": "Échec de la gravure {amount} {symbol}",
-            "Mint": "Échec de la création {amount} {symbol} à {address}"
+            "Mint": "Échec de la création {amount} {symbol} à {address}",
+            "CreateVault": "Impossible de créer le coffre-fort {symbol}/{symbol2}",
+            "CloseVault": "Impossible de fermer le coffre-fort {symbol}/{symbol2}",
+            "DepositCollateral": "Impossible de déposer {amount} {symbol}",
+            "RepayVaultDebt": "Impossible de rembourser {amount} {symbol}",
+            "BorrowVaultDebt": "Impossible d'emprunter {amount} {symbol}"
         },
         "ReferralReserveXor": "Lier XOR",
         "ReferralUnreserveXor": "Délier XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "annuler la commande",
         "OrderBookCancelLimitOrders": "Annuler les commandes",
         "Burn": "Brûler",
-        "Mint": "menthe"
+        "Mint": "Menthe",
+        "CreateVault": "Créer un coffre-fort",
+        "CloseVault": "Fermer le coffre-fort",
+        "DepositCollateral": "Déposer du collatéral",
+        "RepayVaultDebt": "Rembourser la dette",
+        "BorrowVaultDebt": "Emprunter de la dette"
     },
     "polkadotjs": {
         "noExtensions": "Aucune extension {PolkadotJs} n'a été trouvée. Veuillez l'installer et recharger cette page\n https:\/\/polkadot.js.org\/extension\/",

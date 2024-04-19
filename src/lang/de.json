@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Limit-Order storniert",
             "OrderBookCancelLimitOrders": "Limitaufträge storniert",
             "Burn": "Verbrannt {amount} {symbol}",
-            "Mint": "Geprägt {amount} {symbol} an {address}"
+            "Mint": "Geprägt {amount} {symbol} an {address}",
+            "CreateVault": "{symbol}/{symbol2}-Tresor erstellt",
+            "CloseVault": "{symbol}/{symbol2}-Tresor geschlossen",
+            "DepositCollateral": "{amount} {symbol} hinterlegt",
+            "RepayVaultDebt": "{amount} {symbol} beglichen",
+            "BorrowVaultDebt": "{amount} {symbol} aufgenommen"
         },
         "error": {
             "Transfer": "Fehler bei {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Limitaufträge konnten nicht storniert werden",
             "OrderBookCancelLimitOrder": "Limitauftrag konnte nicht storniert werden",
             "Burn": "{amount} {symbol} konnte nicht gebrannt werden",
-            "Mint": "{amount} {symbol} konnte nicht an {address} geprägt werden"
+            "Mint": "{amount} {symbol} konnte nicht an {address} geprägt werden",
+            "CreateVault": "Fehler beim Erstellen des {symbol}/{symbol2}-Tresors",
+            "CloseVault": "Fehler beim Schließen des {symbol}/{symbol2}-Tresors",
+            "DepositCollateral": "Fehler beim Hinterlegen von {amount} {symbol}",
+            "RepayVaultDebt": "Fehler beim Begleichen von {amount} {symbol}",
+            "BorrowVaultDebt": "Fehler beim Aufnehmen von {amount} {symbol}"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Bestellung stornieren",
         "OrderBookCancelLimitOrders": "Bestellungen stornieren",
         "Burn": "Brennen",
-        "Mint": "Minze"
+        "Mint": "Minze",
+        "CreateVault": "Tresor erstellen",
+        "CloseVault": "Tresor schließen",
+        "DepositCollateral": "Pfand hinterlegen",
+        "RepayVaultDebt": "Schulden begleichen",
+        "BorrowVaultDebt": "Schulden aufnehmen"
     },
     "polkadotjs": {
         "noExtensions": "Es wurde keine {PolkadotJs} Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",

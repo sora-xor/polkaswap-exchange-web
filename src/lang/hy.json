@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Սահմանափակման պատվերը չեղարկվել է",
             "OrderBookCancelLimitOrders": "Սահմանափակ պատվերները չեղարկվել են",
             "Burn": "Այրված {amount} {symbol}",
-            "Mint": "Նշված է {amount} {symbol} {address} -ին"
+            "Mint": "Նշված է {amount} {symbol} {address} -ին",
+            "CreateVault": "{symbol}/{symbol2} ավազարկղի ստեղծված է",
+            "CloseVault": "{symbol}/{symbol2} ավազարկղի ավարտվել է",
+            "DepositCollateral": "{amount} {symbol} արտաքին ապրանքը մուտք է գալիս",
+            "RepayVaultDebt": "{amount} {symbol} պարտքը մաքրվել է",
+            "BorrowVaultDebt": "{amount} {symbol} պարտքի վարկի գումարը վարվել է"
         },
         "error": {
             "Transfer": "Չհաջողվեց {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Չհաջողվեց չեղարկել սահմանափակ պատվերները",
             "OrderBookCancelLimitOrder": "Չհաջողվեց չեղարկել սահմանաչափի պատվերը",
             "Burn": "Չհաջողվեց այրել {amount} {symbol}",
-            "Mint": "Չհաջողվեց հատել {amount} {symbol} {address} -ին"
+            "Mint": "Չհաջողվեց հատել {amount} {symbol} {address} -ին",
+            "CreateVault": "Սխալ՝ {symbol}/{symbol2} ավազարկղի ստեղծման ընթացքում",
+            "CloseVault": "Սխալ՝ {symbol}/{symbol2} ավազարկղի ավարտման ընթացքում",
+            "DepositCollateral": "Սխալ՝ {amount} {symbol} արտաքին ապրանքի մուտքի ընթացքում",
+            "RepayVaultDebt": "Սխալ՝ {amount} {symbol} պարտքի մաքրման ընթացքում",
+            "BorrowVaultDebt": "Սխալ՝ {amount} {symbol} պարտքի վարկի գումարի վարվելիքի ընթացքում"
         },
         "ReferralReserveXor": "Բոնդ XOR",
         "ReferralUnreserveXor": "Ունբոնդ XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Չեղարկել պատվերը",
         "OrderBookCancelLimitOrders": "Չեղարկել պատվերները",
         "Burn": "Այրվել",
-        "Mint": "անանուխ"
+        "Mint": "անանուխ",
+        "CreateVault": "Գործարքային ավազարկղի ստեղծում",
+        "CloseVault": "Գործարքային ավազարկղի ավարտում",
+        "DepositCollateral": "Ավազարկղի արտաքին ապրանքի մուտք",
+        "RepayVaultDebt": "Պարտքի մաքրում",
+        "BorrowVaultDebt": "Պարտքի վարկանիշային վերաբերյալ վարկի գումար"
     },
     "polkadotjs": {
         "noExtensions": "{PolkadotJs} ի ոչ մի ընդլայնում չի գտնվել: Տեղադրեք և վերաբեռնեք այս էջը\n https:\/\/polkadot.js.org\/extension\/",

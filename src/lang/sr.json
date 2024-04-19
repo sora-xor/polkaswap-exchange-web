@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Лимит налог је отказан",
             "OrderBookCancelLimitOrders": "Ограничени налози су отказани",
             "Burn": "Спаљено {amount} {symbol}",
-            "Mint": "Исковано {amount} {symbol} на {address}"
+            "Mint": "Исковано {amount} {symbol} на {address}",
+            "CreateVault": "Складиште {symbol}/{symbol2} отворено",
+            "CloseVault": "Складиште {symbol}/{symbol2} затворено",
+            "DepositCollateral": "Уплаћен залог {amount} {symbol}",
+            "RepayVaultDebt": "Дуг враћен {amount} {symbol}",
+            "BorrowVaultDebt": "Дуг позајмљен {amount} {symbol}"
         },
         "error": {
             "Transfer": "Није успело {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Отказивање ограничених налога није успело",
             "OrderBookCancelLimitOrder": "Отказивање ограничене поруџбине није успело",
             "Burn": "{amount} {symbol} није успело",
-            "Mint": "Није успело испоручивање {amount} {symbol} на {address}"
+            "Mint": "Није успело испоручивање {amount} {symbol} на {address}",
+            "CreateVault": "Грешка при отварању складишта {symbol}/{symbol2}",
+            "CloseVault": "Грешка при затварању складишта {symbol}/{symbol2}",
+            "DepositCollateral": "Грешка при уплати залога {amount} {symbol}",
+            "RepayVaultDebt": "Грешка при враћању дуга {amount} {symbol}",
+            "BorrowVaultDebt": "Грешка при позајмљивању дуга {amount} {symbol}"
         },
         "ReferralReserveXor": "Veži XOR",
         "ReferralUnreserveXor": "Razveži XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Откажи наруџбу",
         "OrderBookCancelLimitOrders": "Откажите поруџбине",
         "Burn": "Горети",
-        "Mint": "Нана"
+        "Mint": "Печат",
+        "CreateVault": "Отвори складиште",
+        "CloseVault": "Затвори складиште",
+        "DepositCollateral": "Уплати залог",
+        "RepayVaultDebt": "Врати дуг",
+        "BorrowVaultDebt": "Позајми дуг"
     },
     "polkadotjs": {
         "noExtensions": "Није пронађена ниједна екстензија {PolkadotJs}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
