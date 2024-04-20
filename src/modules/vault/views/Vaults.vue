@@ -44,7 +44,7 @@
             <s-tooltip
               slot="suffix"
               border-radius="mini"
-              :content="t('kensetsu.titleDescription')"
+              :content="t('kensetsu.introDescription')"
               placement="top"
               tabindex="-1"
             >

@@ -1216,7 +1216,6 @@ export default {
       'Power up your portfolio using cutting-edge automation tools of the {SORA} Network, making borrowing, lending, and multiplying your favorite assets both safe and effortless.',
     disclaimerDescription:
       'Borrowing digital assets through {Polkaswap} carries significant risk and is entirely at your own risk. The value of digital assets is highly volatile, and any changes in the market prices of the assets you have borrowed or used as collateral can lead to substantial financial losses, possibly even...',
-    titleDescription: 'Borrow, lend, and multiply your favorite assets with {Kensetsu}',
     availableToBorrow: 'Available to borrow',
     availableToBorrowDescription:
       'The remaining amount you are eligible to draw under the current conditions of your vault, based on your deposited collateral and any existing debt.',
