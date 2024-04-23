@@ -290,6 +290,12 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 }
 </script>
 
+<style lang="scss">
+.no-vaults__page-header > .page-header-title.bold {
+  line-height: var(--s-size-small);
+}
+</style>
+
 <style lang="scss" scoped>
 .vaults-container {
   margin-left: 32px;
@@ -301,6 +307,15 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 }
 .no-vaults {
   align-items: center;
+
+  &__page-header {
+    @include mobile {
+      padding: 0;
+    }
+    @include large-mobile {
+      padding: 0 5em;
+    }
+  }
 
   .el-form--actions {
     @include buttons;
