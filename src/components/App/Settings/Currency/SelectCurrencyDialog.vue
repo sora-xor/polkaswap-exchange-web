@@ -87,7 +87,12 @@ export default class SelectCurrencyDialog extends Mixins(TranslationMixin) {
 
     if (this.query) {
       const query = this.query.toLowerCase().trim();
-      return currencies.filter((item) => item.name.includes(query) || item.symbol.toLowerCase().includes(query));
+      return currencies.filter(
+        (item) =>
+          item.name.toLowerCase().includes(query) ||
+          item.symbol.toLowerCase().includes(query) ||
+          item.key.toLocaleLowerCase().includes(query)
+      );
     }
 
     return currencies;
