@@ -10,10 +10,12 @@
       :is-error="isFetchingError"
       @retry="updateData"
     >
-      <formatted-amount class="chart-price" :value="amount.amount">
-        <template v-if="!fees" #prefix>$</template>
+      <formatted-amount v-if="fees" class="chart-price" :value="amount.amount">
         {{ amount.suffix }}
         <template v-if="fees">&nbsp;{{ XOR.symbol }}</template>
+      </formatted-amount>
+      <formatted-amount v-else class="chart-price" :value="amount.amount" is-fiat-value>
+        {{ amount.suffix }}
       </formatted-amount>
       <price-change :value="priceChange" />
       <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />

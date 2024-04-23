@@ -15,6 +15,7 @@
           :key="currency.key"
           :label="currency.key"
           :value="currency.key"
+          :disabled="currency.disabled"
           size="medium"
           class="select-currency-list__item s-flex"
         >
@@ -37,8 +38,9 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Currencies } from '@/consts';
-import { state, action, mutation } from '@/store/decorators';
+import { state, mutation } from '@/store/decorators';
+
+import type { CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 
 @Component({
   components: {
@@ -47,17 +49,16 @@ import { state, action, mutation } from '@/store/decorators';
   },
 })
 export default class SelectCurrencyDialog extends Mixins(TranslationMixin) {
-  readonly currencies = Currencies;
+  @state.wallet.settings.currencies currencies!: Array<CurrencyFields>;
+
   query = '';
 
   @Ref('selectedEl') selectedEl!: Nullable<[HTMLDivElement]>;
 
   @state.settings.selectCurrencyDialogVisibility private selectCurrencyDialogVisibility!: boolean;
-  // @ts-expect-error error
   @state.wallet.settings.currency private currency: any;
 
   @mutation.settings.setSelectCurrencyDialogVisibility private setDialogVisibility!: (flag: boolean) => void;
-  // @ts-expect-error error
   @mutation.wallet.settings.setFiatCurrency private setCurrency!: (currency: any) => Promise<void>;
 
   get visibility(): boolean {
