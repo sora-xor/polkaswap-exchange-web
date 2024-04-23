@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="visibility" :title="t('selectLanguageDialog.title')" class="select-currency-dialog">
+  <dialog-base :visible.sync="visibility" :title="'Currency'" class="select-currency-dialog">
     <search-input
       ref="search"
       v-model="query"
@@ -133,6 +133,7 @@ $list-items: 7;
   }
 
   .select-currency-item {
+    flex-direction: column;
     &__value {
       color: var(--s-color-base-content-primary);
       font-size: var(--s-font-size-medium);
@@ -145,10 +146,6 @@ $list-items: 7;
       line-height: var(--s-line-height-medium);
       font-weight: 300;
     }
-  }
-
-  .select-currency-item {
-    flex-direction: column;
   }
 }
 
