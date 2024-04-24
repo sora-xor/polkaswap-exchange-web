@@ -214,13 +214,13 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
     nodes: [
       {
         chain: 'Liberland',
-        name: 'Liberland Governance',
-        address: 'wss://mainnet.liberland.org',
+        name: 'Dwellir',
+        address: 'wss://liberland-rpc.dwellir.com',
       },
       {
         chain: 'Liberland',
-        name: 'Dwellir',
-        address: 'wss://liberland-rpc.dwellir.com',
+        name: 'Liberland Governance',
+        address: 'wss://mainnet.liberland.org',
       },
     ],
     blockExplorerUrls: ['https://chainscan.mainnet.liberland.org'],
