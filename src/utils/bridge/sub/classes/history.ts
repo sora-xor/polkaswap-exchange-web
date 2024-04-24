@@ -207,7 +207,7 @@ class SubBridgeHistory extends SubNetworksConnector {
         });
       }
     } catch (error) {
-      console.error(`[${id}]`, error);
+      console.info(`[${id}]`, error);
       return null;
     }
   }
@@ -230,7 +230,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     history: SubHistory;
     asset: RegisteredAccountAsset;
     events: any[];
-  }): Promise<SubHistory> {
+  }): Promise<Nullable<SubHistory>> {
     const { soraParachainApi } = this;
 
     if (!soraParachainApi) throw new Error('SORA Parachain Api is not exists');
@@ -255,7 +255,9 @@ class SubBridgeHistory extends SubNetworksConnector {
       throw new Error(`[${history.id}] Message sent from SORA to network is not found in block "${networkBlockId}"`);
     }
 
-    if (history.externalNetwork === SubNetworkId.Liberland) {
+    const externalNetwork = history.externalNetwork as SubNetwork;
+
+    if (externalNetwork === SubNetworkId.Liberland) {
       return await this.processOutgoingToLiberland(history);
     }
 
@@ -274,6 +276,14 @@ class SubBridgeHistory extends SubNetworksConnector {
       return await this.processOutgoingToSoraParachain(history, asset, parachainExtrinsicEvents);
     }
 
+    const isRelaychain = subBridgeApi.isRelayChain(externalNetwork) && messageToRelaychain;
+    const isParachain = subBridgeApi.isParachain(externalNetwork) && messageToParachain;
+
+    if (!isRelaychain && !isParachain) {
+      console.info(`[${history.id}] not "${externalNetwork}" transaction, skip;`);
+      return null;
+    }
+
     this.updateSoraParachainBlockData(history);
 
     const messageHash = (messageToRelaychain ?? messageToParachain).event.data.messageHash.toString();
@@ -285,7 +295,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     let startSearch!: number;
     let endSearch!: number;
 
-    if (messageToRelaychain) {
+    if (isRelaychain) {
       // Relaychain should have received message in this blocks range
       [startSearch, endSearch] = [relayChainBlockNumber + 2, relayChainBlockNumber + 4];
     } else {
@@ -415,6 +425,18 @@ class SubBridgeHistory extends SubNetworksConnector {
       return history;
     }
 
+    // If transfer received from Parachain, extrinsic events should have xcmpQueue.Success event
+    const messageEvent = networkExtrinsicEvents.find((e) => soraParachainApi.events.xcmpQueue.Success.is(e.event));
+    const externalNetwork = history.externalNetwork as SubNetwork;
+    const isRelayChain = subBridgeApi.isRelayChain(externalNetwork) && !messageEvent;
+    const isParachain =
+      subBridgeApi.isParachain(externalNetwork) && !subBridgeApi.isSoraParachain(externalNetwork) && messageEvent;
+
+    if (!isRelayChain && !isParachain) {
+      console.info(`[${history.id}] not "${externalNetwork}" transaction, skip;`);
+      return null;
+    }
+
     this.updateSoraParachainBlockData(history);
 
     const relayChainBlockNumber = await subBridgeApi.soraParachainApi.getRelayChainBlockNumber(
@@ -422,10 +444,7 @@ class SubBridgeHistory extends SubNetworksConnector {
       soraParachainApi
     );
 
-    // If transfer received from Parachain, extrinsic events should have xcmpQueue.Success event
-    const messageEvent = networkExtrinsicEvents.find((e) => soraParachainApi.events.xcmpQueue.Success.is(e.event));
-
-    if (messageEvent) {
+    if (isParachain) {
       const messageHash = messageEvent.event.data.messageHash.toString();
       // Parachain block, found through relaychain validation data
       const parachainBlockId = await this.findParachainBlockIdOnRelaychain(history, relayChainBlockNumber);
@@ -484,8 +503,7 @@ class SubBridgeHistory extends SubNetworksConnector {
           history.to = this.network.formatAddress(signer);
 
           return history;
-        } catch (error) {
-          console.error(error);
+        } catch {
           continue;
         }
       }
@@ -578,7 +596,6 @@ class SubBridgeHistory extends SubNetworksConnector {
 
         return history;
       } catch (error) {
-        console.error(error);
         continue;
       }
     }
@@ -618,6 +635,7 @@ class SubBridgeHistory extends SubNetworksConnector {
           history.to,
           this.externalApi
         );
+
         // Deposit event index
         history.externalEventIndex = externalEventIndex;
 
@@ -631,8 +649,7 @@ class SubBridgeHistory extends SubNetworksConnector {
         history.externalTransferFee = transferFee;
 
         return history;
-      } catch (error) {
-        console.error(error);
+      } catch {
         continue;
       }
     }

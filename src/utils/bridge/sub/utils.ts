@@ -49,16 +49,26 @@ export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string 
 };
 
 export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): [string, number] => {
-  const index = events.findIndex((e) => {
-    const isDeposit = api.events.balances.Deposit.is(e.event) || api.events.tokens.Deposited.is(e.event);
+  const recipient = subBridgeApi.formatAddress(to);
 
-    return isDeposit && subBridgeApi.formatAddress(e.event.data.who.toString()) === subBridgeApi.formatAddress(to);
+  const index = events.findIndex((e) => {
+    let eventRecipient = '';
+
+    if (api.events.balances?.Deposit.is(e.event) || api.events.tokens?.Deposited.is(e.event)) {
+      eventRecipient = e.event.data.who.toString();
+    } else if (api.events.assets?.Transfer.is(e.event)) {
+      eventRecipient = e.event.data[1].toString();
+    }
+
+    if (!eventRecipient) return false;
+
+    return subBridgeApi.formatAddress(eventRecipient) === recipient;
   });
 
   if (index === -1) throw new Error(`Unable to find "balances.Deposit" or "tokens.Deposited" event`);
 
   const event = events[index];
-  const balance = event.event.data.amount.toString();
+  const balance = event.event.data.amount?.toString() ?? event.event.data[3].toString();
 
   return [balance, index];
 };
