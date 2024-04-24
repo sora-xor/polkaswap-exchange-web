@@ -148,11 +148,6 @@ const routes: Array<RouteConfig> = [
         component: soraStakingLazyView(SoraStakingPageNames.Overview),
       },
       {
-        path: '/staking/sora/new',
-        name: SoraStakingPageNames.NewStake,
-        component: soraStakingLazyView(SoraStakingPageNames.NewStake),
-      },
-      {
         path: '/staking/sora/validators/type',
         name: SoraStakingPageNames.ValidatorsType,
         component: soraStakingLazyView(SoraStakingPageNames.ValidatorsType),
@@ -168,8 +163,13 @@ const routes: Array<RouteConfig> = [
     path: '/explore',
     name: PageNames.ExploreContainer,
     component: lazyView(PageNames.ExploreContainer),
-    redirect: { name: PageNames.ExploreFarming },
+    redirect: { name: PageNames.ExploreTokens },
     children: [
+      {
+        path: 'tokens',
+        name: PageNames.ExploreTokens,
+        component: lazyView(PageNames.ExploreTokens),
+      },
       {
         path: 'demeter',
         component: demeterStakingLazyView(DemeterStakingPageNames.DataContainer),
@@ -198,11 +198,6 @@ const routes: Array<RouteConfig> = [
             component: lazyView(PageNames.ExplorePools),
           },
         ],
-      },
-      {
-        path: 'tokens',
-        name: PageNames.ExploreTokens,
-        component: lazyView(PageNames.ExploreTokens),
       },
       {
         path: 'books',

@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "{Sora} Netwerk node selectie",
+        "title": "Netwerk node selectie",
         "addNode": "Aangepaste node toevoegen",
         "customNode": "Aangepaste node",
         "howToSetupOwnNode": "Hoe je eigen {Sora} node opzetten",
         "select": "Selecteer",
         "connected": "Verbonden",
-        "selectNodeForEnvironment": "Selecteer een knooppunt voor {environment} environment:",
         "nodeTitle": "{chain} gehost door {name}",
         "messages": {
             "emptyName": "Voer de naam van het knooppunt in",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} adres",
         "limitMessage": "Momenteel is er een {type} {amount} {symbol} voor overbrugging om de stabiliteit en veiligheid van het {Sora}-netwerk te garanderen. We waarderen je begrip.",
         "externalTransferFee": "{network} {XCM} kosten",
-        "externalTransferFeeTooltip": "Wanneer u een overbruggingstransactie naar het {network} -netwerk verzendt, wordt er een kleine vergoeding in rekening gebracht op het bedrag dat u overdraagt"
+        "externalTransferFeeTooltip": "Wanneer u een overbruggingstransactie naar het {network} -netwerk verzendt, wordt er een kleine vergoeding in rekening gebracht op het bedrag dat u overdraagt",
+        "externalMinDeposit": "{network} min. borg",
+        "externalMinDepositTooltip": "Minimum saldo {symbol} dat na de overbruggingsoverdracht op uw {network} -account moet staan"
     },
     "selectRegisteredAsset": {
         "title": "Kies een token",
@@ -1557,5 +1558,7 @@
         },
         "pricePerToken": "Prijs per 1 {token}"
     },
-    "calculatingText": "Berekenen"
+    "calculatingText": "Berekenen",
+    "customisePageText": "Pagina aanpassen",
+    "priceChartText": "Prijs grafiek"
 }

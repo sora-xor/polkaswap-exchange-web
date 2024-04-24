@@ -12,7 +12,7 @@
       </generic-page-header>
       <s-form class="history-form" :show-message="false">
         <search-input
-          v-if="history.length"
+          v-if="historyList.length"
           v-model="query"
           :placeholder="t('bridgeHistory.filterPlaceholder')"
           autofocus
@@ -38,14 +38,14 @@
                   />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
-                      isOutgoingType(item.type) ? 0 : item.externalNetwork
+                      isOutgoingTx(item) ? 0 : item.externalNetwork
                     )}`"
                   />
                   <span class="history-item-title-separator"> {{ t('bridgeTransaction.for') }} </span>
                   <formatted-amount value-can-be-hidden :value="formatAmount(item, true)" :asset-symbol="item.symbol" />
                   <i
                     :class="`network-icon network-icon--${getNetworkIcon(
-                      !isOutgoingType(item.type) ? 0 : item.externalNetwork
+                      !isOutgoingTx(item) ? 0 : item.externalNetwork
                     )}`"
                   />
                 </div>
@@ -79,14 +79,27 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeHistoryMixin from '@/components/mixins/BridgeHistoryMixin';
 import BridgeMixin from '@/components/mixins/BridgeMixin';
-import BridgeTransactionMixin from '@/components/mixins/BridgeTransactionMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
-import { Components, PageNames } from '@/consts';
-import router, { lazyComponent } from '@/router';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import type { BridgeRegisteredAsset } from '@/store/assets/types';
 import { state } from '@/store/decorators';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
+
+const SearchAttrs = [
+  'assetAddress',
+  'symbol',
+  'hash',
+  'blockId',
+  'txId',
+  'externalBlockId',
+  'externalHash',
+  'parachainBlockId',
+  'parachainHash',
+  'relaychainBlockId',
+  'relaychainHash',
+];
 
 @Component({
   components: {
@@ -99,7 +112,6 @@ import type { IBridgeTransaction } from '@sora-substrate/util';
 })
 export default class BridgeTransactionsHistory extends Mixins(
   BridgeMixin,
-  BridgeTransactionMixin,
   BridgeHistoryMixin,
   NetworkFormatterMixin,
   mixins.PaginationSearchMixin,
@@ -156,25 +168,29 @@ export default class BridgeTransactionsHistory extends Mixins(
   }
 
   getFilteredHistory(history: Array<IBridgeTransaction>): Array<IBridgeTransaction> {
-    if (this.query) {
-      const query = this.query.toLowerCase().trim();
-      return history.filter(
-        (item) =>
-          `${item.assetAddress}`.toLowerCase().includes(query) ||
-          `${this.registeredAssets[item.assetAddress as string]?.address}`.toLowerCase().includes(query) ||
-          `${item.symbol}`.toLowerCase().includes(query)
-      );
-    }
+    if (!this.query) return history;
 
-    return history;
+    const query = this.query.toLowerCase().trim();
+
+    return history.filter((item) => {
+      const bridgeRegisteredAsset = this.registeredAssets[item.assetAddress as string];
+      const criterias = [bridgeRegisteredAsset?.address];
+
+      SearchAttrs.forEach((attr) => {
+        if (attr in item) criterias.push(item[attr]);
+      });
+
+      return criterias.some((criteria) => String(criteria).toLowerCase().includes(query));
+    });
   }
 
-  formatAmount(historyItem: IBridgeTransaction, received = false): string {
-    const amount = received ? historyItem.amount2 ?? historyItem.amount : historyItem.amount;
+  formatAmount(item: IBridgeTransaction, received = false): string {
+    const amount = received ? item.amount2 ?? item.amount : item.amount;
 
-    if (!historyItem.assetAddress || !amount) return '';
+    if (!item.assetAddress || !amount) return '';
 
-    const decimals = this.registeredAssets?.[historyItem.assetAddress]?.decimals;
+    const bridgeRegisteredAsset = this.registeredAssets[item.assetAddress];
+    const decimals = bridgeRegisteredAsset?.decimals;
 
     return this.formatStringValue(amount, decimals);
   }

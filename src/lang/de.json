@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "{Sora} Netzwerks-Node-Auswahl",
+        "title": "Netzwerks-Node-Auswahl",
         "addNode": "Benutzerdefinierten Node hinzufügen",
         "customNode": "Benutzerdefinierter Node",
         "howToSetupOwnNode": "So richtest du deinen eigenen {Sora} Node ein",
         "select": "Auswählen",
         "connected": "Verbunden",
-        "selectNodeForEnvironment": "Wähle einen Node für das {environment} Umfeld:",
         "nodeTitle": "{chain} gehostet von {name}",
         "messages": {
             "emptyName": "Bitte, gebe den Namen des Nodes ein",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} Adresse",
         "limitMessage": "Derzeit gibt es ein {type} {amount} {symbol} für Bridging, um die Stabilität und Sicherheit des {Sora}-Netzwerks zu gewährleisten. Vielen Dank für Ihr Verständnis.",
         "externalTransferFee": "{network} {XCM} -Gebühr",
-        "externalTransferFeeTooltip": "Wenn Sie eine Bridge-Transaktion an das Netzwerk {network} senden, wird eine geringe Gebühr von dem Betrag erhoben, den Sie überweisen"
+        "externalTransferFeeTooltip": "Wenn Sie eine Bridge-Transaktion an das Netzwerk {network} senden, wird eine geringe Gebühr von dem Betrag erhoben, den Sie überweisen",
+        "externalMinDeposit": "{network} min. Kaution",
+        "externalMinDepositTooltip": "Mindestguthaben {symbol} , das nach der Überbrückungsübertragung auf Ihrem {network} -Konto vorhanden sein muss"
     },
     "selectRegisteredAsset": {
         "title": "Wähle ein Token",
@@ -1557,5 +1558,7 @@
         },
         "pricePerToken": "Preis pro 1 {token}"
     },
-    "calculatingText": "Berechnung"
+    "calculatingText": "Berechnung",
+    "customisePageText": "Seite anpassen",
+    "priceChartText": "Preisdiagramm"
 }

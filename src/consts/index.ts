@@ -162,10 +162,11 @@ export enum Components {
   AppDisclaimer = 'App/Header/AppDisclaimer',
   SelectIndexer = 'App/Footer/Indexer/SelectIndexer',
   StatisticsDialog = 'App/Footer/StatisticsDialog',
-  SelectNodeDialog = 'App/Footer/SelectNodeDialog',
-  SelectNode = 'App/Footer/Node/SelectNode',
-  NodeInfo = 'App/Footer/Node/NodeInfo',
   IndexerInfo = 'App/Footer/Indexer/IndexerInfo',
+  // Node select
+  SelectNodeDialog = 'App/Settings/Node/SelectNodeDialog',
+  SelectNode = 'App/Settings/Node/SelectNode',
+  NodeInfo = 'App/Settings/Node/NodeInfo',
   // SORA Card
   Dashboard = 'pages/SoraCard/Dashboard/Dashboard',
   BalanceIndicator = 'pages/SoraCard/common/BalanceIndicator',
@@ -194,9 +195,9 @@ export enum Components {
   BridgeSelectAsset = 'pages/Bridge/SelectAsset',
   BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
   BridgeSelectAccount = 'pages/Bridge/SelectAccount',
-  BridgeLinksDropdown = 'pages/Bridge/LinksDropdown',
   BridgeLimitCard = 'pages/Bridge/LimitCard',
   BridgeAccountPanel = 'pages/Bridge/AccountPanel',
+  BridgeNodeIcon = 'pages/Bridge/NodeIcon',
   // Moonpay Page
   Moonpay = 'pages/Moonpay/Moonpay',
   MoonpayNotification = 'pages/Moonpay/Notification',
@@ -206,13 +207,15 @@ export enum Components {
   X1Dialog = 'pages/X1/X1Dialog',
   X1History = 'pages/X1/X1History',
   // Swap Page
+  SwapFormWidget = 'pages/Swap/Widget/Form',
+  SwapChartWidget = 'pages/Swap/Widget/Chart',
+  SwapTransactionsWidget = 'pages/Swap/Widget/Transactions',
+  SwapDistributionWidget = 'pages/Swap/Widget/Distribution',
   SwapConfirm = 'pages/Swap/Confirm',
-  SwapChart = 'pages/Swap/Chart',
   SwapStatusActionBadge = 'pages/Swap/StatusActionBadge',
   SwapTransactionDetails = 'pages/Swap/TransactionDetails',
   SwapSettings = 'pages/Swap/Settings/Settings',
   SwapLossWarningDialog = 'pages/Swap/LossWarningDialog',
-  SwapDistribution = 'pages/Swap/Distribution',
   // Order Book
   BookWidget = 'pages/OrderBook/BookWidget',
   SetLimitOrderWidget = 'pages/OrderBook/SetLimitOrderWidget',
@@ -239,14 +242,19 @@ export enum Components {
   WalletAboutNetworkDialog = 'pages/Wallet/AboutNetworkDialog',
   // Shared
   GenericPageHeader = 'shared/GenericPageHeader',
-  TokensRow = 'shared/TokensRow',
+  LinksDropdown = 'shared/LinksDropdown',
   PairTokenLogo = 'shared/PairTokenLogo',
-  PriceChange = 'shared/PriceChange',
-  ValueStatusWrapper = 'shared/ValueStatusWrapper',
-  TransactionDetails = 'shared/TransactionDetails',
   PoolInfo = 'shared/PoolInfo',
-  Widget = 'shared/Widget',
+  PriceChange = 'shared/PriceChange',
   StatusBadge = 'shared/StatusBadge',
+  TransactionDetails = 'shared/TransactionDetails',
+  TokensRow = 'shared/TokensRow',
+  ValueStatusWrapper = 'shared/ValueStatusWrapper',
+  // Shared Widgets
+  BaseWidget = 'shared/Widget/Base',
+  IFrameWidget = 'shared/Widget/IFrame',
+  PriceChartWidget = 'shared/Widget/PriceChart',
+  CustomiseWidget = 'shared/Widget/Customise',
   // Shared Buttons
   SortButton = 'shared/Button/SortButton',
   SvgIconButton = 'shared/Button/SvgIconButton/SvgIconButton',
@@ -265,7 +273,6 @@ export enum Components {
   SettingsTabs = 'shared/Settings/Tabs',
   SlippageTolerance = 'shared/Settings/SlippageTolerance',
   // Shared Stats
-  StatsCard = 'shared/Stats/StatsCard',
   StatsFilter = 'shared/Stats/StatsFilter',
   // Shared Chart
   ChartSkeleton = 'shared/Chart/ChartSkeleton',
@@ -355,7 +362,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     icon: 'various-items-24',
     title: PageNames.ExploreContainer,
     href: '/#/explore',
-    index: PageNames.ExploreFarming,
+    index: PageNames.ExploreTokens,
   },
   {
     icon: 'various-planet-24',
@@ -373,7 +380,7 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     href: '/#/card',
   },
   {
-    icon: 'file-file-text-24',
+    icon: 'finance-PSWAP-24',
     title: PageNames.About,
     href: '/#/about',
   },
@@ -451,15 +458,14 @@ export const RewardsChildPages = [
 export const StakingChildPages = [
   StakingPageNames.Staking,
   SoraStakingPageNames.Overview,
-  SoraStakingPageNames.NewStake,
   SoraStakingPageNames.ValidatorsType,
   SoraStakingPageNames.SelectValidators,
 ];
 export const ExploreChildPages = [
-  PageNames.ExploreFarming, // By default
+  PageNames.ExploreTokens, // By default
   PageNames.ExploreStaking,
   PageNames.ExplorePools,
-  PageNames.ExploreTokens,
+  PageNames.ExploreFarming,
   PageNames.ExploreBooks,
 ];
 

@@ -1,12 +1,5 @@
 <template>
-  <stats-card>
-    <template #title>
-      <span>Supply</span>
-      <s-tooltip border-radius="mini" :content="t('tooltips.supply')">
-        <s-icon name="info-16" size="14px" />
-      </s-tooltip>
-    </template>
-
+  <base-widget title="Supply" :tooltip="t('tooltips.supply')">
     <template #filters>
       <stats-filter :filters="filters" :value="filter" @input="changeFilter" />
     </template>
@@ -33,7 +26,7 @@
       <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
     </chart-skeleton>
     <select-token :visible.sync="showSelectTokenDialog" :asset="token" @select="changeToken" />
-  </stats-card>
+  </base-widget>
 </template>
 
 <script lang="ts">
@@ -70,7 +63,7 @@ const getExtremum = (data: readonly ChartData[], prop: string, min = false) => {
   components: {
     ChartSkeleton: lazyComponent(Components.ChartSkeleton),
     PriceChange: lazyComponent(Components.PriceChange),
-    StatsCard: lazyComponent(Components.StatsCard),
+    BaseWidget: lazyComponent(Components.BaseWidget),
     StatsFilter: lazyComponent(Components.StatsFilter),
     TokenSelectButton: lazyComponent(Components.TokenSelectButton),
     SelectToken: lazyComponent(Components.SelectToken),

@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "{Sora} Sélection du nœud du réseau",
+        "title": "Sélection du nœud du réseau",
         "addNode": "Ajouter nœud personnalisé",
         "customNode": "Nœud personnalisé",
         "howToSetupOwnNode": "Comment configurer propre nœud {Sora}",
         "select": "Sélectionnez",
         "connected": "Connecté",
-        "selectNodeForEnvironment": "Sélectionnez un nœud pour {environment} :",
         "nodeTitle": "{chain} hébergé par {name}",
         "messages": {
             "emptyName": "Veuillez saisir le nom du nœud",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} adresse",
         "limitMessage": "Actuellement, il existe un {type} {amount} {symbol} pour le pontage afin de garantir la stabilité et la sécurité du réseau {Sora}. Nous apprécions votre compréhension.",
         "externalTransferFee": "Frais {network} {XCM}",
-        "externalTransferFeeTooltip": "Lorsque vous envoyez une transaction relais vers le réseau {network} , des frais mineurs sont prélevés sur le montant que vous transférez"
+        "externalTransferFeeTooltip": "Lorsque vous envoyez une transaction relais vers le réseau {network} , des frais mineurs sont prélevés sur le montant que vous transférez",
+        "externalMinDeposit": "{network} min. dépôt",
+        "externalMinDepositTooltip": "Solde minimum {symbol} qui doit être sur votre compte {network} après le transfert pont"
     },
     "selectRegisteredAsset": {
         "title": "Sélectionnez un jeton",
@@ -1557,5 +1558,7 @@
         },
         "pricePerToken": "Prix par 1 {token}"
     },
-    "calculatingText": "Calculant"
+    "calculatingText": "Calculant",
+    "customisePageText": "Personnaliser la page",
+    "priceChartText": "Tableau des prix"
 }

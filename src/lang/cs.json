@@ -464,13 +464,12 @@
         }
     },
     "selectNodeDialog": {
-        "title": "Výběr nodu sítě {Sora}",
+        "title": "Výběr nodu sítě",
         "addNode": "Přidat vlastní node",
         "customNode": "Vlastní node",
         "howToSetupOwnNode": "Jak nastavit svůj vlastní {Sora} node",
         "select": "Vybrat",
         "connected": "Připojeno",
-        "selectNodeForEnvironment": "Vyberte node pro prostředí {environment}:",
         "nodeTitle": "{chain} hostovaný {name}",
         "messages": {
             "emptyName": "Zadejte název nodu, prosím",
@@ -591,7 +590,9 @@
         "ethereumAddress": "{Ethereum} adresa",
         "limitMessage": "V současné době existuje {type} {amount} {symbol} pro přemostění, aby byla zajištěna stabilita a bezpečnost sítě {Sora}. Děkujeme za pochopení.",
         "externalTransferFee": "{network} poplatek {XCM}",
-        "externalTransferFeeTooltip": "Když odešlete překlenovací transakci do sítě {network} , z částky, kterou převádíte, se strhne menší poplatek"
+        "externalTransferFeeTooltip": "Když odešlete překlenovací transakci do sítě {network} , z částky, kterou převádíte, se strhne menší poplatek",
+        "externalMinDeposit": "{network} min. vklad",
+        "externalMinDepositTooltip": "Minimální zůstatek {symbol} , který musí být na vašem účtu {network} po převodu mostu"
     },
     "selectRegisteredAsset": {
         "title": "Vyberte token",
@@ -1557,5 +1558,7 @@
         },
         "pricePerToken": "Cena za 1 {token}"
     },
-    "calculatingText": "Vypočítávání"
+    "calculatingText": "Vypočítávání",
+    "customisePageText": "Přizpůsobit stránku",
+    "priceChartText": "Cenový graf"
 }

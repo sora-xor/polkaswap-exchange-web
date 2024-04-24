@@ -3,7 +3,7 @@
     <template #title>
       <moonpay-logo :theme="libraryTheme" />
     </template>
-    <widget :src="widgetUrl" />
+    <i-frame-widget :src="widgetUrl" />
   </dialog-base>
 </template>
 
@@ -28,7 +28,7 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
   components: {
     DialogBase: components.DialogBase,
     MoonpayLogo,
-    Widget: lazyComponent(Components.Widget),
+    IFrameWidget: lazyComponent(Components.IFrameWidget),
   },
 })
 export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
