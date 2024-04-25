@@ -40,6 +40,10 @@ export class SubAdapter {
     return !!this.api?.isConnected;
   }
 
+  get closed(): boolean {
+    return !this.connected && !this.subNetworkConnection.nodeAddressConnecting;
+  }
+
   get chainSymbol(): string | undefined {
     return this.api?.registry.chainTokens[0];
   }
@@ -61,7 +65,9 @@ export class SubAdapter {
   };
 
   protected async withConnection<T>(onSuccess: AsyncFnWithoutArgs<T> | FnWithoutArgs<T>, fallback: T) {
-    if (!this.connected && !this.connection.loading) return fallback;
+    if (this.closed) {
+      return fallback;
+    }
 
     await this.api.isReady;
 
@@ -74,7 +80,7 @@ export class SubAdapter {
   }
 
   public async connect(): Promise<void> {
-    if (!this.connected && !this.api && !this.connection.loading) {
+    if (this.closed && !this.api) {
       try {
         await this.subNetworkConnection.connect();
       } catch {}
