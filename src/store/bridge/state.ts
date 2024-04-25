@@ -1,6 +1,7 @@
 import { FPNumber } from '@sora-substrate/util';
 
 import { ZeroStringValue } from '@/consts';
+import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 
 import type { BridgeState } from './types';
 
@@ -38,6 +39,8 @@ function initialState(): BridgeState {
     waitingForApprove: {},
     inProgressIds: {},
     notificationData: null,
+    // connector
+    subBridgeConnector: new SubNetworksConnector(),
   };
 }
 
