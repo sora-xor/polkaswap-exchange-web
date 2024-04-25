@@ -430,8 +430,9 @@ async function getBlockNumber(): Promise<number> {
   }
 }
 
-async function accountAddressToHex(address: string): Promise<string> {
-  return ethers.hexlify(decodeAddress(address));
+function accountAddressToHex(address: string): string {
+  const publicKey = decodeAddress(address);
+  return ethers.hexlify(publicKey);
 }
 
 function hexToNumber(hex: string): number {
