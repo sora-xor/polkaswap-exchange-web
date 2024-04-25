@@ -1,3 +1,5 @@
+import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
+
 import type { FPNumber, CodecString, IBridgeTransaction } from '@sora-substrate/util';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { Subscription } from 'rxjs';
@@ -36,4 +38,5 @@ export type BridgeState = {
   waitingForApprove: Record<string, boolean>;
   inProgressIds: Record<string, boolean>;
   notificationData: Nullable<IBridgeTransaction>;
+  subBridgeConnector: SubNetworksConnector;
 };
