@@ -7,6 +7,7 @@ import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 export class RelaychainAdapter extends SubAdapter {
+  // overrides SubAdapter
   protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
 
@@ -61,16 +62,17 @@ export class RelaychainAdapter extends SubAdapter {
     try {
       return await super.getNetworkFee(asset, sender, recipient);
     } catch {
+      const toCodec = (fee: number) => new FPNumber(fee, asset.externalDecimals).toCodecString();
+      // Hardcoded values
       switch (this.subNetwork) {
         case SubNetworkId.Rococo:
-          // Hardcoded value for Rococo - 0.000125 ROC
-          return new FPNumber(0.000125, asset.externalDecimals).toCodecString();
+          return toCodec(0.000125);
+        case SubNetworkId.Alphanet:
+          return toCodec(0.019);
         case SubNetworkId.Kusama:
-          // Hardcoded value for Kusama - 0.002 KSM
-          return new FPNumber(0.002, asset.externalDecimals).toCodecString();
+          return toCodec(0.002);
         case SubNetworkId.Polkadot:
-          // Hardcoded value for Polkadot - 0.059 DOT
-          return new FPNumber(0.059, asset.externalDecimals).toCodecString();
+          return toCodec(0.059);
         default:
           return '0';
       }

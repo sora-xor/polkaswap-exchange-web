@@ -14,7 +14,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'KSM',
       decimals: 12,
     },
-    endpointUrls: ['wss://kusama-rpc.polkadot.io', 'wss://kusama-rpc.dwellir.com'],
     blockExplorerUrls: ['https://kusama.subscan.io'],
     shortName: 'Kusama',
     nodes: [
@@ -38,7 +37,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'DOT',
       decimals: 10,
     },
-    endpointUrls: ['wss://rpc.polkadot.io', 'wss://polkadot-rpc.dwellir.com'],
     blockExplorerUrls: ['https://polkadot.subscan.io'],
     shortName: 'Polkadot',
     nodes: [
@@ -54,6 +52,29 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.PolkadotAcala]: {
+    id: SubNetworkId.PolkadotAcala,
+    name: 'Acala',
+    nativeCurrency: {
+      name: 'ACA',
+      symbol: 'ACA',
+      decimals: 12,
+    },
+    blockExplorerUrls: ['https://acala.subscan.io'],
+    shortName: 'Acala',
+    nodes: [
+      {
+        chain: 'Acala',
+        name: 'Acala Foundation',
+        address: 'wss://acala-rpc-0.aca-api.network',
+      },
+      {
+        chain: 'Acala',
+        name: 'Dwellir',
+        address: 'wss://acala-rpc.dwellir.com',
+      },
+    ],
+  },
   [SubNetworkId.Rococo]: {
     id: SubNetworkId.Rococo,
     name: 'Rococo',
@@ -62,7 +83,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'ROC',
       decimals: 12,
     },
-    endpointUrls: ['wss://rococo-rpc.polkadot.io'],
     blockExplorerUrls: [],
     shortName: 'Rococo',
     nodes: [
@@ -70,6 +90,42 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
         chain: 'Rococo',
         name: 'Parity',
         address: 'wss://rococo-rpc.polkadot.io',
+      },
+    ],
+  },
+  [SubNetworkId.Alphanet]: {
+    id: SubNetworkId.Alphanet,
+    name: 'Moonbase Relay Testnet',
+    nativeCurrency: {
+      name: 'ALPHA',
+      symbol: 'ALPHA', // "DEV"
+      decimals: 12,
+    },
+    blockExplorerUrls: [],
+    shortName: 'Alphanet',
+    nodes: [
+      {
+        chain: 'Moonbase Relay Testnet',
+        name: 'Parity',
+        address: 'wss://frag-moonbase-relay-rpc-ws.g.moonbase.moonbeam.network',
+      },
+    ],
+  },
+  [SubNetworkId.AlphanetMoonbase]: {
+    id: SubNetworkId.AlphanetMoonbase,
+    name: 'Moonbase Alpha',
+    nativeCurrency: {
+      name: 'GLMR',
+      symbol: 'GLMR', // "DEV"
+      decimals: 18,
+    },
+    blockExplorerUrls: [],
+    shortName: 'Alpha',
+    nodes: [
+      {
+        chain: 'Moonbase Alpha',
+        name: 'Parity',
+        address: 'wss://wss.api.moonbase.moonbeam.network',
       },
     ],
   },
@@ -82,9 +138,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'XOR',
       decimals: 18,
     },
-    endpointUrls: [
-      'wss://ws.parachain-collator-1.c1.stg1.sora2.soramitsu.co.jp', // stage
-    ],
     blockExplorerUrls: [],
     shortName: 'SORA ROC',
     nodes: [
@@ -103,9 +156,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'XOR',
       decimals: 18,
     },
-    endpointUrls: [
-      'wss://ws.parachain-collator-2.c2.sora2.soramitsu.co.jp', // prod
-    ],
     blockExplorerUrls: [],
     shortName: 'SORA KSM',
     nodes: [
@@ -124,9 +174,6 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'XOR',
       decimals: 18,
     },
-    endpointUrls: [
-      'wss://ws.parachain-collator-3.pc3.sora2.soramitsu.co.jp', // prod
-    ],
     blockExplorerUrls: [],
     shortName: 'SORA DOT',
     nodes: [
@@ -137,6 +184,25 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.AlphanetSora]: {
+    id: SubNetworkId.AlphanetSora,
+    name: 'SORA Alphanet Parachain',
+    nativeCurrency: {
+      name: 'XOR',
+      symbol: 'XOR',
+      decimals: 18,
+    },
+    blockExplorerUrls: [],
+    shortName: 'SORA Alphanet',
+    nodes: [
+      {
+        chain: 'SORA Alphanet Parachain',
+        name: 'Soramitsu',
+        address: 'wss://ws.parachain-collator-2.c1.stg1.sora2.soramitsu.co.jp',
+      },
+    ],
+  },
+  // Standalones
   [SubNetworkId.Liberland]: {
     id: SubNetworkId.Liberland,
     name: 'Liberland',
@@ -145,8 +211,19 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'LLD',
       decimals: 12,
     },
-    endpointUrls: [],
-    blockExplorerUrls: [],
+    nodes: [
+      {
+        chain: 'Liberland',
+        name: 'Dwellir',
+        address: 'wss://liberland-rpc.dwellir.com',
+      },
+      {
+        chain: 'Liberland',
+        name: 'Liberland Governance',
+        address: 'wss://mainnet.liberland.org',
+      },
+    ],
+    blockExplorerUrls: ['https://chainscan.mainnet.liberland.org'],
     shortName: 'Liberland',
   },
 };
@@ -167,6 +244,18 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
   [SubNetworkId.Polkadot]: {
     DOT: {
       [BridgeTxDirection.Outgoing]: '19978738',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+  },
+  [SubNetworkId.PolkadotAcala]: {
+    ACA: {
+      [BridgeTxDirection.Outgoing]: '6429600000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+  },
+  [SubNetworkId.AlphanetMoonbase]: {
+    ACA: {
+      [BridgeTxDirection.Outgoing]: '34313700000000',
       [BridgeTxDirection.Incoming]: '0',
     },
   },
