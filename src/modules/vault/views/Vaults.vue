@@ -175,6 +175,9 @@
         </s-col>
       </s-row>
     </template>
+    <s-card class="vaults-stats" border-radius="small" shadow="always" size="medium" pressed>
+      <explore-collaterals />
+    </s-card>
     <create-vault-dialog :visible.sync="showCreateVaultDialog" />
   </div>
 </template>
@@ -204,6 +207,7 @@ import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/type
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ValueStatus: lazyComponent(Components.ValueStatusWrapper),
+    ExploreCollaterals: vaultLazyComponent(VaultComponents.ExploreCollaterals),
   },
 })
 export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
@@ -244,7 +248,7 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
     });
   }
 
-  getVaultTitle(lockedAsset?: RegisteredAccountAsset): string {
+  getVaultTitle(lockedAsset?: Nullable<RegisteredAccountAsset>): string {
     if (!(this.kusdSymbol && lockedAsset)) return '';
     return `${this.kusdSymbol} / ${lockedAsset.symbol}`;
   }
@@ -297,12 +301,17 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 </style>
 
 <style lang="scss" scoped>
-.vaults-container {
-  margin-left: 32px;
-  margin-right: $inner-spacing-mini;
+.vaults {
+  &-container {
+    margin-left: 32px;
+    margin-right: $inner-spacing-mini;
 
-  @include desktop {
-    margin-left: 0;
+    @include desktop {
+      margin-left: 0;
+    }
+  }
+  &-stats {
+    background-color: var(--s-color-utility-surface);
   }
 }
 .no-vaults {

@@ -335,7 +335,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     return LtvTranslations[getLtvStatus(this.ltvNumber)];
   }
 
-  private get availableToBorrow(): Nullable<FPNumber> {
+  get availableToBorrow(): Nullable<FPNumber> {
     if (!(this.maxSafeDebtWithoutTax && this.vault)) return null;
     const available = this.maxSafeDebtWithoutTax.sub(this.vault.debt);
     return !available.isFinity() || available.isLteZero() ? this.Zero : available;

@@ -11,6 +11,7 @@ export enum VaultComponents {
   LtvProgressBar = 'LtvProgressBar',
   PrevNextInfoLine = 'PrevNextInfoLine',
   RepayDebtDialog = 'RepayDebtDialog',
+  ExploreCollaterals = 'ExploreCollaterals',
 }
 
 export const LtvTranslations = {
