@@ -116,16 +116,6 @@ const getters = defineGetters<BridgeState>()({
     }
   },
 
-  externalAccountFormatted(...args): string {
-    const { getters, state } = bridgeGetterContext(args);
-
-    if (!getters.isSubBridge) return getters.externalAccount;
-
-    return state.subBridgeConnector.network?.subNetworkConnection.nodeIsConnected
-      ? state.subBridgeConnector.network.formatAddress(getters.externalAccount)
-      : getters.externalAccount;
-  },
-
   sender(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
     const { address: soraAddress } = rootState.wallet.account;
