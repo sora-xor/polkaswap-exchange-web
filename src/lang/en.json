@@ -1561,29 +1561,20 @@
     "calculatingText": "Calculating",
     "customisePageText": "Customize page",
     "priceChartText": "Price chart",
-    "signatureSettings": {
-        "title": "Transaction signature settings",
-        "speedUpHint": "You can disable this option to speed up the transaction signing process.",
-        "password": {
-          "reset": "Reset password",
-          "enter": "Enter password",
-          "enterHint": "You can enter your account password in advance so you do not have to enter it when signing a transaction."
+    "accountSettings": {
+        "title": "Account settings",
+        "hint": "You can enable this back in account settings",
+        "disable": "Disable on",
+        "disabled": "Disabled for",
+        "confirmation": {
+          "title": "Disable transaction confirmation",
+          "description": "A popup screen which displays details about the transactions before the signing."
         },
-        "option": {
-          "confirmation": {
-            "title": "Confirmation dialog",
-            "description": "Shows a confirmation dialog with transaction details before transaction signing."
-          },
-          "signature": {
-            "title": "Signature dialog",
-            "description": "Shows transaction signature dialog using password. If you do not have a saved account password, this dialog will be shown anyway."
-          },
-          "password": {
-            "title": "Password retention period",
-            "description": "Retention period for your account's password while the application is running.",
-            "security": "Make sure that no one else has access to your device while you are using the application.",
-            "reset": "Your account password will be reset once the period is changed."
-          }
-        }
-    }
+        "signature": {
+          "title": "Disable password confirmation",
+          "description": "Enable or disable the need to enter your password during the signature popup in transactions."
+        },
+        "enterPassword": "Enter password",
+        "googleOnly": "{Google} accounts only"
+      }
 }
