@@ -307,7 +307,7 @@ import {
   asZeroValue,
   delay,
 } from '@/utils';
-import { subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
+import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { NodesConnection } from '@/utils/connection';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
@@ -349,6 +349,7 @@ export default class Bridge extends Mixins(
 
   @state.wallet.transactions.isConfirmTxDialogEnabled private isConfirmTxEnabled!: boolean;
 
+  @state.bridge.subBridgeConnector private subBridgeConnector!: SubNetworksConnector;
   @state.bridge.balancesFetching private balancesFetching!: boolean;
   @state.bridge.feesAndLockedFundsFetching private feesAndLockedFundsFetching!: boolean;
   @state.assets.registeredAssetsFetching private registeredAssetsFetching!: boolean;
@@ -383,8 +384,6 @@ export default class Bridge extends Mixins(
   // Sub Node Select
   @state.web3.selectSubNodeDialogVisibility selectSubNodeDialogVisibility!: boolean;
   @mutation.web3.setSelectSubNodeDialogVisibility private setSelectSubNodeDialogVisibility!: (flag: boolean) => void;
-
-  private readonly subBridgeConnector = subBridgeConnector;
 
   get subConnection(): Nullable<NodesConnection> {
     if (!this.isSubBridge) return null;
