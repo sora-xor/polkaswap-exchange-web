@@ -350,7 +350,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
             soraHash = getBridgeProxyHash(foundedEvents, subBridgeApi.api);
 
-            [amount, eventIndex] = getDepositedBalance(foundedEvents, tx.from as string, subBridgeApi.api);
+            [amount, eventIndex] = getDepositedBalance(foundedEvents, tx.to as string, subBridgeApi.api);
 
             resolve();
           } catch (error) {
