@@ -27,10 +27,7 @@
           >
             {{ text }}
           </s-dropdown-item>
-          <div @click="openNotificationDialog" class="notif-option el-dropdown-menu__item header-menu__item">
-            <bell-icon class="notif-option__bell notif-option__bell--dropdown" />
-            <span class="notif-option__text">{{ t('browserNotificationDialog.title') }}</span>
-          </div>
+          <currency-option />
         </template>
       </s-dropdown>
     </s-button>
@@ -46,6 +43,7 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, mutation, state } from '@/store/decorators';
 
 import BellIcon from './BellIcon.vue';
+import CurrencyOption from './MenuOptions/Currency.vue';
 
 enum HeaderMenuType {
   HideBalances = 'hide-balances',
@@ -68,6 +66,7 @@ const BREAKPOINT = 1440;
 @Component({
   components: {
     BellIcon,
+    CurrencyOption,
   },
 })
 export default class AppHeaderMenu extends Mixins(TranslationMixin) {
@@ -84,7 +83,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: FnWithoutArgs;
   @mutation.settings.setAlertSettingsPopup private setAlertSettingsPopup!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
-  @mutation.settings.setSelectCurrencyDialogVisibility private setCurrencyDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
 
   get mediaQueryList(): MediaQueryList {
@@ -141,12 +139,17 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         icon: 'basic-globe-24',
         text: this.t('headerMenu.switchLanguage'),
       },
+
       {
         value: HeaderMenuType.Currency,
         icon: 'el-icon-money',
-        text: 'Select currency',
+        text: 'Select currency Bs.F.',
       },
-      // TODO: add notification here
+      {
+        value: HeaderMenuType.Notification,
+        icon: 'info-16',
+        text: this.t('browserNotificationDialog.title'),
+      },
       {
         value: HeaderMenuType.Disclaimer,
         icon: 'info-16',
@@ -168,10 +171,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     return this.disclaimerVisibility && !this.userDisclaimerApprove;
   }
 
-  openNotificationDialog(): void {
-    this.setAlertSettingsPopup(true);
-  }
-
   handleClickHeaderMenu(): void {
     const dropdown = (this.$refs.headerMenu as any).dropdown;
     dropdown.visible ? dropdown.hide() : dropdown.show();
@@ -188,8 +187,8 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       case HeaderMenuType.Language:
         this.setLanguageDialogVisibility(true);
         break;
-      case HeaderMenuType.Currency:
-        this.setCurrencyDialogVisibility(true);
+      case HeaderMenuType.Notification:
+        this.setAlertSettingsPopup(true);
         break;
       case HeaderMenuType.Disclaimer:
         if (this.disclaimerDisabled) return;
@@ -244,28 +243,6 @@ $icon-size: 28px;
           color: var(--s-color-base-content-secondary);
         }
       }
-    }
-  }
-}
-
-.notif-option {
-  display: flex;
-
-  &__bell {
-    width: $icon-size;
-    height: $icon-size;
-    margin: auto 0;
-    fill: var(--s-color-base-content-tertiary);
-
-    &--dropdown {
-      margin-top: $inner-spacing-mini;
-      margin-right: $basic-spacing-mini;
-    }
-  }
-
-  &:hover {
-    .notif-option__bell {
-      fill: var(--s-color-base-content-secondary);
     }
   }
 }
