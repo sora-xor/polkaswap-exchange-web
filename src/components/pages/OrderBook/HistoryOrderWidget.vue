@@ -49,7 +49,7 @@
         </s-button>
       </div>
     </div>
-    <cancel-confirm :visible.sync="showConfirmDialog" @confirm="cancelOrders" />
+    <cancel-confirm :visible.sync="confirmDialogVisibility" @confirm="cancelOrders" />
   </base-widget>
 </template>
 

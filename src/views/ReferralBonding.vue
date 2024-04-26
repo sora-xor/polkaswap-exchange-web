@@ -44,7 +44,7 @@
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
       />
-      <referrals-confirm-bonding :visible.sync="showConfirmDialog" @confirm="confirmBond" />
+      <referrals-confirm-bonding :visible.sync="confirmDialogVisibility" @confirm="confirmBond" />
     </s-form>
   </div>
 </template>

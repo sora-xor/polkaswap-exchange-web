@@ -89,7 +89,7 @@
     />
 
     <add-liquidity-confirm
-      :visible.sync="showConfirmDialog"
+      :visible.sync="confirmDialogVisibility"
       :parent-loading="parentLoading || loading"
       :share-of-pool="shareOfPool"
       :first-token="firstToken"

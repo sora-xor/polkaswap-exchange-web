@@ -183,9 +183,9 @@
     />
 
     <place-confirm
-      :visible.sync="showConfirmDialog"
-      :isInsufficientBalance="isInsufficientBalance"
-      :isBuySide="isBuySide"
+      :visible.sync="confirmDialogVisibility"
+      :is-insufficient-balance="isInsufficientBalance"
+      :is-buy-side="isBuySide"
       :is-market-type="isMarketType"
       @confirm="placeOrder"
     />

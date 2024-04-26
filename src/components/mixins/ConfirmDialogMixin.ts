@@ -7,10 +7,10 @@ import { state } from '@/store/decorators';
 export default class ConfirmDialogMixin extends Mixins(TranslationMixin) {
   @state.wallet.transactions.isConfirmTxDialogDisabled public isConfirmTxDisabled!: boolean;
 
-  showConfirmDialog = false;
+  confirmDialogVisibility = false;
 
   openConfirmDialog(): void {
-    this.showConfirmDialog = true;
+    this.confirmDialogVisibility = true;
   }
 
   confirmOrExecute(signTxMethod: FnWithoutArgs): void {

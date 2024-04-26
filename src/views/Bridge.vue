@@ -256,7 +256,7 @@
       :set-visibility="setSelectSubNodeDialogVisibility"
     />
     <confirm-bridge-transaction-dialog
-      :visible.sync="showConfirmDialog"
+      :visible.sync="confirmDialogVisibility"
       :is-sora-to-evm="isSoraToEvm"
       :asset="asset"
       :amount-send="amountSend"

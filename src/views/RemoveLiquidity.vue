@@ -109,7 +109,7 @@
     </s-form>
 
     <remove-liquidity-confirm
-      :visible.sync="showConfirmDialog"
+      :visible.sync="confirmDialogVisibility"
       :parent-loading="parentLoading || loading"
       @confirm="withdrawLiquidity"
     />
