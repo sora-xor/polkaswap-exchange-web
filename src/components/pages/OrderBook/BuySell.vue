@@ -183,11 +183,11 @@
     />
 
     <place-confirm
-      :visible.sync="confirmPlaceOrderVisibility"
+      :visible.sync="showConfirmDialog"
       :isInsufficientBalance="isInsufficientBalance"
       :isBuySide="isBuySide"
       :is-market-type="isMarketType"
-      @confirm="confirmOrderPlacement"
+      @confirm="placeOrder"
     />
   </div>
 </template>
@@ -201,7 +201,7 @@ import { MAX_TIMESTAMP } from '@sora-substrate/util/build/orderBook/consts';
 import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import { Components, LimitOrderType, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
@@ -237,8 +237,11 @@ import type { Subscription } from 'rxjs';
     Error: lazyComponent(Components.ErrorButton),
   },
 })
-export default class BuySellWidget extends Mixins(mixins.TransactionMixin, mixins.FormattedAmountMixin) {
-  @state.wallet.transactions.isConfirmTxDialogEnabled private isConfirmTxEnabled!: boolean;
+export default class BuySellWidget extends Mixins(
+  ConfirmDialogMixin,
+  mixins.TransactionMixin,
+  mixins.FormattedAmountMixin
+) {
   @state.router.prev private prevRoute!: Nullable<PageNames>;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.orderBook.limitOrderType private _limitOrderType!: LimitOrderType;
@@ -286,8 +289,6 @@ export default class BuySellWidget extends Mixins(mixins.TransactionMixin, mixin
   private prevSwapToAddress = '';
 
   visibleBookList = false;
-  confirmPlaceOrderVisibility = false;
-  confirmCancelOrderVisibility = false;
   limitForSinglePriceReached = false;
   quoteSubscription: Nullable<Subscription> = null;
   timestamp = MAX_TIMESTAMP;
@@ -741,14 +742,10 @@ export default class BuySellWidget extends Mixins(mixins.TransactionMixin, mixin
       this.subscribeOnBookQuote();
     }
 
-    if (this.isConfirmTxEnabled) {
-      this.showPlaceOrderDialog();
-    } else {
-      this.confirmOrderPlacement();
-    }
+    this.confirmOrExecute(this.placeOrder);
   }
 
-  async confirmOrderPlacement(): Promise<void> {
+  async placeOrder(): Promise<void> {
     await this.withNotifications(async () => {
       const isLimitReached = await this.singlePriceReachedLimit();
       if (isLimitReached) {
@@ -924,10 +921,6 @@ export default class BuySellWidget extends Mixins(mixins.TransactionMixin, mixin
     if (!success) {
       this.limitOrderType = LimitOrderType.limit;
     }
-  }
-
-  showPlaceOrderDialog(): void {
-    this.confirmPlaceOrderVisibility = true;
   }
 
   handleMaxValue(): void {

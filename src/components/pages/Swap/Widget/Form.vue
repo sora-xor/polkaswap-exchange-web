@@ -124,9 +124,9 @@
         @confirm="showConfirmDialog"
       />
       <swap-confirm
-        :visible.sync="confirmVisibility"
+        :visible.sync="showConfirmDialog"
         :isInsufficientBalance="isInsufficientBalance"
-        @confirm="confirmSwap"
+        @confirm="exchangeTokens"
       />
       <swap-settings :visible.sync="showSettings" />
     </div>
@@ -139,6 +139,7 @@ import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, MarketAlgorithms, PageNames } from '@/consts';
@@ -182,10 +183,10 @@ export default class SwapFormWidget extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.TransactionMixin,
   TranslationMixin,
-  TokenSelectMixin
+  TokenSelectMixin,
+  ConfirmDialogMixin
 ) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @state.wallet.transactions.isConfirmTxDialogEnabled private isConfirmTxEnabled!: boolean;
 
   @state.swap.isExchangeB isExchangeB!: boolean;
   @state.swap.fromValue fromValue!: string;
@@ -242,7 +243,6 @@ export default class SwapFormWidget extends Mixins(
   isTokenFromSelected = false;
   showSettings = false;
   showSelectTokenDialog = false;
-  confirmVisibility = false;
   lossWarningVisibility = false;
   quoteSubscription: Nullable<Subscription> = null;
   quoteLoading = false;
@@ -538,15 +538,11 @@ export default class SwapFormWidget extends Mixins(
   }
 
   showConfirmDialog(): void {
-    if (this.isConfirmTxEnabled) {
-      this.confirmVisibility = true;
-    } else {
-      this.confirmSwap(!this.isConfirmSwapDisabled);
-    }
+    this.confirmOrExecute(this.exchangeTokens);
   }
 
-  async confirmSwap(isSwapConfirmed: boolean): Promise<void> {
-    if (!isSwapConfirmed) return;
+  async exchangeTokens(): Promise<void> {
+    if (this.isConfirmSwapDisabled) return;
 
     await this.withNotifications(async () => {
       await api.swap.execute(

@@ -111,7 +111,7 @@
     <remove-liquidity-confirm
       :visible.sync="showConfirmDialog"
       :parent-loading="parentLoading || loading"
-      @confirm="handleConfirmRemoveLiquidity"
+      @confirm="withdrawLiquidity"
     />
 
     <network-fee-warning-dialog
@@ -163,8 +163,6 @@ export default class RemoveLiquidity extends Mixins(
   readonly XOR_SYMBOL = XOR.symbol;
   readonly MAX_PART = 100;
   readonly FocusedField = FocusedField;
-
-  @state.wallet.transactions.isConfirmTxDialogEnabled private isConfirmTxEnabled!: boolean;
 
   @state.removeLiquidity.liquidityAmount private liquidityAmount!: string;
   @state.removeLiquidity.focusedField private focusedField!: string;
@@ -362,7 +360,7 @@ export default class RemoveLiquidity extends Mixins(
     await setValue(value);
   }
 
-  async handleConfirmRemoveLiquidity(): Promise<void> {
+  async withdrawLiquidity(): Promise<void> {
     await this.withNotifications(async () => {
       await this.removeLiquidity();
       this.handleBack();
@@ -385,11 +383,7 @@ export default class RemoveLiquidity extends Mixins(
       this.isWarningFeeDialogConfirmed = false;
     }
 
-    if (this.isConfirmTxEnabled) {
-      this.openConfirmDialog();
-    } else {
-      this.handleConfirmRemoveLiquidity();
-    }
+    this.confirmOrExecute(this.withdrawLiquidity);
   }
 
   private addListenerToSliderDragButton(): void {

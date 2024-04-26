@@ -44,7 +44,7 @@
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
       />
-      <referrals-confirm-bonding :visible.sync="showConfirmBondDialog" @confirm="confirmBond" />
+      <referrals-confirm-bonding :visible.sync="showConfirmDialog" @confirm="confirmBond" />
     </s-form>
   </div>
 </template>
@@ -55,6 +55,7 @@ import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { getter, mutation, state } from '@/store/decorators';
@@ -71,8 +72,11 @@ import type { AccountAsset, AccountBalance } from '@sora-substrate/util/build/as
     InfoLine: components.InfoLine,
   },
 })
-export default class ReferralBonding extends Mixins(mixins.FormattedAmountMixin, mixins.TransactionMixin) {
-  @state.wallet.transactions.isConfirmTxDialogEnabled private isConfirmTxEnabled!: boolean;
+export default class ReferralBonding extends Mixins(
+  mixins.FormattedAmountMixin,
+  mixins.TransactionMixin,
+  ConfirmDialogMixin
+) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.referrals.amount amount!: string;
 
@@ -82,7 +86,6 @@ export default class ReferralBonding extends Mixins(mixins.FormattedAmountMixin,
   @mutation.referrals.resetAmount private resetAmount!: FnWithoutArgs;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-  showConfirmBondDialog = false;
 
   get xorSymbol(): string {
     return XOR.symbol;
@@ -178,11 +181,7 @@ export default class ReferralBonding extends Mixins(mixins.FormattedAmountMixin,
   }
 
   handleConfirmBond(): void {
-    if (this.isConfirmTxEnabled) {
-      this.showConfirmBondDialog = true;
-    } else {
-      this.confirmBond();
-    }
+    this.confirmOrExecute(this.confirmBond);
   }
 
   async confirmBond(): Promise<void> {

@@ -183,7 +183,7 @@
             class="el-button--next s-typography-button--large"
             data-test-name="nextButton"
             type="primary"
-            :disabled="isConfirmTxDisabled"
+            :disabled="isTxConfirmDisabled"
             :loading="isConfirmTxLoading"
             @click="handleConfirmButtonClick"
           >
@@ -256,7 +256,7 @@
       :set-visibility="setSelectSubNodeDialogVisibility"
     />
     <confirm-bridge-transaction-dialog
-      :visible.sync="showConfirmTransactionDialog"
+      :visible.sync="showConfirmDialog"
       :is-sora-to-evm="isSoraToEvm"
       :asset="asset"
       :amount-send="amountSend"
@@ -291,6 +291,7 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
@@ -340,14 +341,13 @@ export default class Bridge extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.NetworkFeeWarningMixin,
   BridgeMixin,
+  ConfirmDialogMixin,
   NetworkFormatterMixin,
   NetworkFeeDialogMixin,
   TokenSelectMixin
 ) {
   readonly KnownSymbols = KnownSymbols;
   readonly FocusedField = FocusedField;
-
-  @state.wallet.transactions.isConfirmTxDialogEnabled private isConfirmTxEnabled!: boolean;
 
   @state.bridge.subBridgeConnector private subBridgeConnector!: SubNetworksConnector;
   @state.bridge.balancesFetching private balancesFetching!: boolean;
@@ -376,7 +376,6 @@ export default class Bridge extends Mixins(
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
 
   showSelectTokenDialog = false;
-  showConfirmTransactionDialog = false;
 
   showWarningExternalFeeDialog = false;
   isWarningExternalFeeDialogConfirmed = false;
@@ -517,7 +516,7 @@ export default class Bridge extends Mixins(
     return this.getStringFromCodec(this.assetExternalMinBalance, this.asset?.externalDecimals);
   }
 
-  get isConfirmTxDisabled(): boolean {
+  get isTxConfirmDisabled(): boolean {
     return (
       !this.isAssetSelected ||
       !this.isRegisteredAsset ||
@@ -639,11 +638,7 @@ export default class Bridge extends Mixins(
       this.isWarningExternalFeeDialogConfirmed = false;
     }
 
-    if (this.isConfirmTxEnabled) {
-      this.showConfirmTransactionDialog = true;
-    } else {
-      this.confirmTransaction();
-    }
+    this.confirmOrExecute(this.confirmTransaction);
   }
 
   handleChangeNetwork(): void {

@@ -100,7 +100,7 @@
       :price-reversed="priceReversed"
       :slippage-tolerance="slippageToleranceValue"
       :insufficient-balance-token-symbol="insufficientBalanceTokenSymbol"
-      @confirm="handleConfirmAddLiquidity"
+      @confirm="depositLiquidity"
     />
 
     <network-fee-warning-dialog
@@ -158,7 +158,6 @@ export default class AddLiquidity extends Mixins(
 ) {
   readonly FocusedField = FocusedField;
 
-  @state.wallet.transactions.isConfirmTxDialogEnabled private isConfirmTxEnabled!: boolean;
   @state.settings.slippageTolerance slippageToleranceValue!: string;
 
   @getter.assets.xor private xor!: AccountAsset;
@@ -279,11 +278,7 @@ export default class AddLiquidity extends Mixins(
       this.isWarningFeeDialogConfirmed = false;
     }
 
-    if (this.isConfirmTxEnabled) {
-      this.openConfirmDialog();
-    } else {
-      this.handleConfirmAddLiquidity();
-    }
+    this.confirmOrExecute(this.depositLiquidity);
   }
 
   async handleTokenChange(value: string, setValue: SetValue): Promise<void> {
@@ -317,7 +312,7 @@ export default class AddLiquidity extends Mixins(
     this.updateRouteAfterSelectTokens(this.firstToken, this.secondToken);
   }
 
-  async handleConfirmAddLiquidity(): Promise<void> {
+  async depositLiquidity(): Promise<void> {
     await this.withNotifications(async () => {
       await this.addLiquidity();
       this.handleBack();
