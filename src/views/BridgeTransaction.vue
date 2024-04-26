@@ -217,7 +217,7 @@ export default class BridgeTransaction extends Mixins(
   @state.router.prev private prevRoute!: Nullable<PageNames>;
 
   @getter.bridge.historyItem private historyItem!: Nullable<IBridgeTransaction>;
-  @getter.bridge.externalAccountFormatted private externalAccountFormatted!: string;
+  @getter.bridge.externalAccount private externalAccount!: string;
 
   @action.bridge.removeHistory private removeHistory!: ({ tx, force }: { tx: any; force?: boolean }) => Promise<void>;
   @action.bridge.handleBridgeTransaction private handleBridgeTransaction!: (id: string) => Promise<void>;
@@ -431,7 +431,7 @@ export default class BridgeTransaction extends Mixins(
   get isAnotherEvmAddress(): boolean {
     if (!this.isEvmTxType) return false;
 
-    return this.txExternalAccount.toLowerCase() !== this.externalAccountFormatted.toLowerCase();
+    return this.txExternalAccount.toLowerCase() !== this.externalAccount.toLowerCase();
   }
 
   get confirmationButtonDisabled(): boolean {
@@ -515,10 +515,21 @@ export default class BridgeTransaction extends Mixins(
     return this.txSoraHash || this.txInternalBlockId || this.txSoraId;
   }
 
+  private getTxAccountAddress(isInternal = true) {
+    const accounts = [this.txInternalAccount, this.txExternalAccount];
+    const [a, b] = isInternal ? accounts : [...accounts].reverse();
+
+    if (this.isEvmTxType) return a;
+
+    return this.isOutgoing ? a : b;
+  }
+
   get accountLinks(): LinkData[] {
     const name = this.t('accountAddressText');
-    const internal = this.getLinkData(this.txInternalAccount, this.internalAccountLinks, name);
-    const external = this.getLinkData(this.txExternalAccount, this.externalAccountLinks, name, this.externalNetworkId);
+    const internalAddress = this.getTxAccountAddress(true);
+    const externalAddress = this.getTxAccountAddress(false);
+    const internal = this.getLinkData(internalAddress, this.internalAccountLinks, name);
+    const external = this.getLinkData(externalAddress, this.externalAccountLinks, name, this.externalNetworkId);
 
     return this.sortLinksByTxDirection([internal, external]);
   }
