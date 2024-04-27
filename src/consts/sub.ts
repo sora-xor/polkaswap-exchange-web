@@ -75,6 +75,29 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.PolkadotAstar]: {
+    id: SubNetworkId.PolkadotAstar,
+    name: 'Astar',
+    nativeCurrency: {
+      name: 'ASTR',
+      symbol: 'ASTR',
+      decimals: 18,
+    },
+    blockExplorerUrls: ['https://astar.subscan.io'],
+    shortName: 'Astar',
+    nodes: [
+      {
+        chain: 'Astar',
+        name: 'Astar',
+        address: 'wss://rpc.astar.network',
+      },
+      {
+        chain: 'Astar',
+        name: 'Dwellir',
+        address: 'wss://astar-rpc.dwellir.com',
+      },
+    ],
+  },
   [SubNetworkId.Rococo]: {
     id: SubNetworkId.Rococo,
     name: 'Rococo',
