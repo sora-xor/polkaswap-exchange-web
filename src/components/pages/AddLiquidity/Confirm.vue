@@ -37,6 +37,7 @@
     <info-line :value="`1 ${secondToken.symbol} = ${formattedPrice}`" :asset-symbol="firstToken.symbol" />
     <info-line v-if="strategicBonusApy" :label="t('pool.strategicBonusApy')" :value="strategicBonusApy" />
     <template #footer>
+      <account-confirmation-option with-hint class="confirmation-option" />
       <s-button
         type="primary"
         class="s-typography-button--large"
@@ -70,6 +71,7 @@ import { lazyComponent } from '@/router';
     DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
     InfoLine: components.InfoLine,
+    AccountConfirmationOption: components.AccountConfirmationOption,
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
   },
 })
@@ -203,5 +205,9 @@ export default class ConfirmAddLiquidity extends Mixins(
   font-weight: 800;
   line-height: var(--s-line-height-medium);
   justify-content: center;
+}
+
+.confirmation-option {
+  margin-bottom: $inner-spacing-medium;
 }
 </style>

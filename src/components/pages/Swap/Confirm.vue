@@ -29,6 +29,7 @@
     <s-divider />
     <swap-transaction-details />
     <template #footer>
+      <account-confirmation-option with-hint class="confirmation-option" />
       <s-button
         type="primary"
         class="s-typography-button--large"
@@ -56,6 +57,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
   components: {
     DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
+    AccountConfirmationOption: components.AccountConfirmationOption,
     SwapTransactionDetails: lazyComponent(Components.SwapTransactionDetails),
   },
 })
@@ -131,6 +133,9 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
   margin-top: $inner-spacing-mini;
   color: var(--s-color-base-content-primary);
   line-height: var(--s-line-height-big);
+}
+.confirmation-option {
+  margin-bottom: $inner-spacing-medium;
 }
 @include vertical-divider;
 @include vertical-divider('el-divider');

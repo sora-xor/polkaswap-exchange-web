@@ -13,6 +13,7 @@
 
     <place-transaction-details class="transaction-details" :is-market-type="isMarketType" />
     <template #footer>
+      <account-confirmation-option with-hint class="confirmation-option" />
       <s-button
         type="primary"
         class="s-typography-button--large"
@@ -40,6 +41,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
   components: {
     DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
+    AccountConfirmationOption: components.AccountConfirmationOption,
     PlaceTransactionDetails: lazyComponent(Components.PlaceTransactionDetails),
   },
 })
@@ -125,5 +127,9 @@ export default class PlaceLimitOrder extends Mixins(TranslationMixin, mixins.Dia
   .token-logo {
     margin-left: $basic-spacing;
   }
+}
+
+.confirmation-option {
+  margin-bottom: $inner-spacing-medium;
 }
 </style>

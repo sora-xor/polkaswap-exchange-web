@@ -33,6 +33,7 @@
       :network-name="networkName"
     />
     <template #footer>
+      <account-confirmation-option with-hint class="confirmation-option" />
       <s-button type="primary" class="s-typography-button--large" :loading="loading" @click="handleConfirm">
         {{ confirmText }}
       </s-button>
@@ -57,6 +58,7 @@ import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/typ
 @Component({
   components: {
     DialogBase: components.DialogBase,
+    AccountConfirmationOption: components.AccountConfirmationOption,
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
   },
 })
@@ -143,5 +145,8 @@ export default class ConfirmBridgeTransactionDialog extends Mixins(
     width: var(--s-size-small);
     height: var(--s-size-small);
   }
+}
+.confirmation-option {
+  margin-bottom: $inner-spacing-medium;
 }
 </style>

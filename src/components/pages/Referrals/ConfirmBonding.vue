@@ -23,6 +23,7 @@
       is-formatted
     />
     <template #footer>
+      <account-confirmation-option with-hint class="confirmation-option" />
       <s-button type="primary" class="s-typography-button--large" @click="handleConfirmBonding">
         {{ t('referralProgram.confirm.text') }}
       </s-button>
@@ -45,6 +46,7 @@ import { state } from '@/store/decorators';
     DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
     TokenLogo: components.TokenLogo,
+    AccountConfirmationOption: components.AccountConfirmationOption,
   },
 })
 export default class ReferralsConfirmBonding extends Mixins(
@@ -84,17 +86,6 @@ export default class ReferralsConfirmBonding extends Mixins(
 }
 </script>
 
-<style lang="scss">
-.dialog--confirm-bond {
-  .el-dialog > .el-dialog__body {
-    padding-bottom: calc(#{$inner-spacing-mini} / 2);
-  }
-  .el-divider {
-    margin-bottom: $inner-spacing-mini;
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 .tokens {
   display: flex;
@@ -124,5 +115,8 @@ export default class ReferralsConfirmBonding extends Mixins(
 }
 .info-line {
   border-bottom: none;
+}
+.confirmation-option {
+  margin-bottom: $inner-spacing-medium;
 }
 </style>
