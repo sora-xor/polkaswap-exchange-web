@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Wprowadź spłacany dług",
             "repayMoreThanDebt": "Dług przepłacony"
         }
+    },
+    "accountSettings": {
+        "title": "USTAWIENIA KONTA",
+        "hint": "Możesz włączyć tę opcję z powrotem w ustawieniach konta",
+        "disable": "Wyłącz włączone",
+        "disabled": "Niepełnosprawny dla",
+        "confirmation": {
+            "title": "Wyłącz potwierdzanie transakcji",
+            "description": "Wyskakujący ekran wyświetlający szczegóły transakcji przed podpisaniem."
+        },
+        "signature": {
+            "title": "Wyłącz potwierdzanie hasła",
+            "description": "Włącz lub wyłącz konieczność podawania hasła podczas wyskakującego okienka podpisu w transakcjach."
+        },
+        "enterPassword": "Wprowadź hasło",
+        "googleOnly": "Tylko konta {Google}"
     }
 }

@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Ingrese la cantidad para pagar la deuda",
             "repayMoreThanDebt": "Deuda sobrepagada"
         }
+    },
+    "accountSettings": {
+        "title": "Ajustes de la cuenta",
+        "hint": "Puedes habilitar esto nuevamente en la configuración de la cuenta.",
+        "disable": "Desactivar en",
+        "disabled": "Discapacitado por",
+        "confirmation": {
+            "title": "Deshabilitar la confirmación de la transacción",
+            "description": "Una pantalla emergente que muestra detalles sobre las transacciones antes de la firma."
+        },
+        "signature": {
+            "title": "Deshabilitar la confirmación de contraseña",
+            "description": "Habilite o deshabilite la necesidad de ingresar su contraseña durante la ventana emergente de firma en las transacciones."
+        },
+        "enterPassword": "Introduzca la contraseña",
+        "googleOnly": "Solo cuentas de {Google}"
     }
 }

@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Geben Sie die Schuldenzahlung ein",
             "repayMoreThanDebt": "Schulden überbezahlt"
         }
+    },
+    "accountSettings": {
+        "title": "Account Einstellungen",
+        "hint": "Sie können dies in den Kontoeinstellungen wieder aktivieren",
+        "disable": "Deaktivieren ein",
+        "disabled": "Deaktiviert für",
+        "confirmation": {
+            "title": "Transaktionsbestätigung deaktivieren",
+            "description": "Ein Popup-Bildschirm, der Details zu den Transaktionen vor der Unterzeichnung anzeigt."
+        },
+        "signature": {
+            "title": "Kennwortbestätigung deaktivieren",
+            "description": "Aktivieren oder deaktivieren Sie die Aufforderung zur Eingabe Ihres Kennworts während des Signatur-Popups bei Transaktionen."
+        },
+        "enterPassword": "Passwort eingeben",
+        "googleOnly": "Nur {Google} -Konten"
     }
 }

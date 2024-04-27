@@ -1646,12 +1646,12 @@
         "disable": "Disable on",
         "disabled": "Disabled for",
         "confirmation": {
-          "title": "Disable transaction confirmation",
-          "description": "A popup screen which displays details about the transactions before the signing."
+            "title": "Disable transaction confirmation",
+            "description": "A popup screen which displays details about the transactions before the signing."
         },
         "signature": {
-          "title": "Disable password confirmation",
-          "description": "Enable or disable the need to enter your password during the signature popup in transactions."
+            "title": "Disable password confirmation",
+            "description": "Enable or disable the need to enter your password during the signature popup in transactions."
         },
         "enterPassword": "Enter password",
         "googleOnly": "{Google} accounts only"

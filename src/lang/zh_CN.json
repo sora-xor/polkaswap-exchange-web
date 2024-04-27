@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "输入偿还债务",
             "repayMoreThanDebt": "偿还的债务过多"
         }
+    },
+    "accountSettings": {
+        "title": "帐号设定",
+        "hint": "您可以在帐户设置中重新启用此功能",
+        "disable": "禁用",
+        "disabled": "禁用于",
+        "confirmation": {
+            "title": "禁用交易确认",
+            "description": "弹出屏幕显示签名前交易的详细信息。"
+        },
+        "signature": {
+            "title": "禁用密码确认",
+            "description": "启用或禁用在交易中签名弹出时输入密码的需要。"
+        },
+        "enterPassword": "请输入密码",
+        "googleOnly": "仅限{Google}帐户"
     }
 }

@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Ange återbetalningsskuld",
             "repayMoreThanDebt": "Skuld överbetald"
         }
+    },
+    "accountSettings": {
+        "title": "Kontoinställningar",
+        "hint": "Du kan aktivera detta igen i kontoinställningarna",
+        "disable": "Inaktivera på",
+        "disabled": "Inaktiverad för",
+        "confirmation": {
+            "title": "Inaktivera transaktionsbekräftelse",
+            "description": "En popup-skärm som visar detaljer om transaktionerna innan undertecknandet."
+        },
+        "signature": {
+            "title": "Inaktivera lösenordsbekräftelse",
+            "description": "Aktivera eller inaktivera behovet av att ange ditt lösenord under signaturpopupen i transaktioner."
+        },
+        "enterPassword": "Skriv in lösenord",
+        "googleOnly": "Endast {Google} -konton"
     }
 }

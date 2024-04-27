@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Tẹ ìdá",
             "repayMoreThanDebt": "Iye iṣẹrọ ti o tẹlẹ"
         }
+    },
+    "accountSettings": {
+        "title": "Eto iroyin",
+        "hint": "O le mu eyi pada si awọn eto akọọlẹ",
+        "disable": "Pa lori",
+        "disabled": "Alaabo fun",
+        "confirmation": {
+            "title": "Pa ìmúdájú idunadura",
+            "description": "Iboju agbejade eyiti o ṣafihan awọn alaye nipa awọn iṣowo ṣaaju iforukọsilẹ."
+        },
+        "signature": {
+            "title": "Pa ìmúdájú ọrọigbaniwọle",
+            "description": "Mu ṣiṣẹ tabi mu iwulo lati tẹ ọrọ igbaniwọle rẹ sii lakoko igarun Ibuwọlu ni awọn iṣowo."
+        },
+        "enterPassword": "Tẹ ọrọ igbaniwọle sii",
+        "googleOnly": "Awọn akọọlẹ {Google} nikan"
     }
 }

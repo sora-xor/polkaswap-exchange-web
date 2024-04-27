@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Unesite vraćanje duga",
             "repayMoreThanDebt": "Dug preplaćen"
         }
+    },
+    "accountSettings": {
+        "title": "POSTAVLJANJE RAČUNA",
+        "hint": "To možete ponovno omogućiti u postavkama računa",
+        "disable": "Onemogući uključeno",
+        "disabled": "Onemogućeno za",
+        "confirmation": {
+            "title": "Onemogući potvrdu transakcije",
+            "description": "Skočni zaslon koji prikazuje detalje o transakcijama prije potpisivanja."
+        },
+        "signature": {
+            "title": "Onemogući potvrdu lozinke",
+            "description": "Omogućite ili onemogućite potrebu za unosom lozinke tijekom skočnog prozora za potpis u transakcijama."
+        },
+        "enterPassword": "Upišite lozinku",
+        "googleOnly": "Samo {Google} računi"
     }
 }

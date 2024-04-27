@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Masukkan hutang yang harus dilunasi",
             "repayMoreThanDebt": "Utang terbayar lebih"
         }
+    },
+    "accountSettings": {
+        "title": "Pengaturan akun",
+        "hint": "Anda dapat mengaktifkannya kembali di pengaturan akun",
+        "disable": "Nonaktifkan",
+        "disabled": "Dinonaktifkan untuk",
+        "confirmation": {
+            "title": "Nonaktifkan konfirmasi transaksi",
+            "description": "Layar popup yang menampilkan detail transaksi sebelum penandatanganan."
+        },
+        "signature": {
+            "title": "Nonaktifkan konfirmasi kata sandi",
+            "description": "Mengaktifkan atau menonaktifkan kebutuhan untuk memasukkan kata sandi Anda saat munculan tanda tangan dalam transaksi."
+        },
+        "enterPassword": "Masukan kata sandi",
+        "googleOnly": "Khusus akun {Google}"
     }
 }

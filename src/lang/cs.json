@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Zadejte částku pro splacení dluhu",
             "repayMoreThanDebt": "Dluh přeplacen"
         }
+    },
+    "accountSettings": {
+        "title": "Nastavení účtu",
+        "hint": "Můžete to povolit zpět v nastavení účtu",
+        "disable": "Zakázat",
+        "disabled": "Zakázáno pro",
+        "confirmation": {
+            "title": "Zakázat potvrzení transakce",
+            "description": "Vyskakovací obrazovka, která zobrazuje podrobnosti o transakcích před podpisem."
+        },
+        "signature": {
+            "title": "Zakázat potvrzení hesla",
+            "description": "Povolte nebo zakažte nutnost zadávat heslo během vyskakovacího okna podpisu v transakcích."
+        },
+        "enterPassword": "Zadejte heslo",
+        "googleOnly": "Pouze účty {Google}"
     }
 }

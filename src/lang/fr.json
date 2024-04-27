@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Entrez le remboursement de la dette",
             "repayMoreThanDebt": "Dette surpayée"
         }
+    },
+    "accountSettings": {
+        "title": "Paramètres du compte",
+        "hint": "Vous pouvez l'activer à nouveau dans les paramètres du compte",
+        "disable": "Désactiver sur",
+        "disabled": "Désactivé pour",
+        "confirmation": {
+            "title": "Désactiver la confirmation de transaction",
+            "description": "Un écran contextuel qui affiche les détails des transactions avant la signature."
+        },
+        "signature": {
+            "title": "Désactiver la confirmation du mot de passe",
+            "description": "Activez ou désactivez la nécessité de saisir votre mot de passe lors de la fenêtre contextuelle de signature dans les transactions."
+        },
+        "enterPassword": "Entrer le mot de passe",
+        "googleOnly": "Comptes {Google} uniquement"
     }
 }

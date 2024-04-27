@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Adja meg a visszafizetendő adósság összegét",
             "repayMoreThanDebt": "Adósság túlfizetve"
         }
+    },
+    "accountSettings": {
+        "title": "FIÓK BEÁLLÍTÁSOK",
+        "hint": "Ezt újra engedélyezheti a fiókbeállításokban",
+        "disable": "Letiltás be",
+        "disabled": "Letiltva",
+        "confirmation": {
+            "title": "A tranzakció megerősítésének letiltása",
+            "description": "Egy felugró képernyő, amely a tranzakciók részleteit jeleníti meg az aláírás előtt."
+        },
+        "signature": {
+            "title": "Jelszó megerősítésének letiltása",
+            "description": "Engedélyezze vagy tiltsa le a jelszavának megadásának szükségességét az aláírás előugró ablakában a tranzakciókban."
+        },
+        "enterPassword": "Írd be a jelszót",
+        "googleOnly": "Csak {Google} -fiókok"
     }
 }

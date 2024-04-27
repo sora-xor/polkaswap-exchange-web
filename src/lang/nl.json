@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Voer de terug te betalen schuld in",
             "repayMoreThanDebt": "Te veel terugbetaald"
         }
+    },
+    "accountSettings": {
+        "title": "Accountinstellingen",
+        "hint": "Je kunt dit weer inschakelen in de accountinstellingen",
+        "disable": "Uitschakelen aan",
+        "disabled": "Uitgeschakeld voor",
+        "confirmation": {
+            "title": "Schakel transactiebevestiging uit",
+            "description": "Een pop-upscherm met details over de transacties vóór de ondertekening."
+        },
+        "signature": {
+            "title": "Schakel wachtwoordbevestiging uit",
+            "description": "Schakel de noodzaak om uw wachtwoord in te voeren tijdens de handtekeningpop-up bij transacties in of uit."
+        },
+        "enterPassword": "Voer wachtwoord in",
+        "googleOnly": "Alleen {Google} -accounts"
     }
 }

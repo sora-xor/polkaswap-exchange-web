@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Nhập số tiền trả nợ",
             "repayMoreThanDebt": "Nợ trả quá"
         }
+    },
+    "accountSettings": {
+        "title": "Thiết lập tài khoản",
+        "hint": "Bạn có thể kích hoạt lại tính năng này trong cài đặt tài khoản",
+        "disable": "Tắt bật",
+        "disabled": "Bị vô hiệu hóa vì",
+        "confirmation": {
+            "title": "Vô hiệu hóa xác nhận giao dịch",
+            "description": "Màn hình bật lên hiển thị chi tiết về các giao dịch trước khi ký."
+        },
+        "signature": {
+            "title": "Vô hiệu hóa xác nhận mật khẩu",
+            "description": "Bật hoặc tắt yêu cầu nhập mật khẩu của bạn trong cửa sổ bật lên chữ ký trong giao dịch."
+        },
+        "enterPassword": "Nhập mật khẩu",
+        "googleOnly": "Chỉ tài khoản {Google}"
     }
 }

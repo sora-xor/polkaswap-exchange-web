@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Inserisci il debito da rimborsare",
             "repayMoreThanDebt": "Debito pagato in eccesso"
         }
+    },
+    "accountSettings": {
+        "title": "Impostazioni dell'account",
+        "hint": "Puoi riattivarlo nelle impostazioni dell'account",
+        "disable": "Disattiva",
+        "disabled": "Disabilitato per",
+        "confirmation": {
+            "title": "Disabilita la conferma della transazione",
+            "description": "Una schermata popup che visualizza i dettagli sulle transazioni prima della firma."
+        },
+        "signature": {
+            "title": "Disabilita la conferma della password",
+            "description": "Abilita o disabilita la necessità di inserire la password durante il popup della firma nelle transazioni."
+        },
+        "enterPassword": "Inserire la password",
+        "googleOnly": "Solo account {Google}"
     }
 }

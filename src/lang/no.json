@@ -1639,5 +1639,21 @@
             "enterRepayDebt": "Skriv inn tilbakebetalt gjeld",
             "repayMoreThanDebt": "Gjeld overbetalt"
         }
+    },
+    "accountSettings": {
+        "title": "Kontoinnstillinger",
+        "hint": "Du kan aktivere dette tilbake i kontoinnstillingene",
+        "disable": "Deaktiver på",
+        "disabled": "Deaktivert for",
+        "confirmation": {
+            "title": "Deaktiver transaksjonsbekreftelse",
+            "description": "En popup-skjerm som viser detaljer om transaksjonene før signeringen."
+        },
+        "signature": {
+            "title": "Deaktiver passordbekreftelse",
+            "description": "Aktiver eller deaktiver behovet for å skrive inn passordet ditt under signatur-popup-vinduet i transaksjoner."
+        },
+        "enterPassword": "Oppgi passord",
+        "googleOnly": "Bare {Google} -kontoer"
     }
 }
