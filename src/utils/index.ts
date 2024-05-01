@@ -2,7 +2,6 @@ import { FPNumber, CodecString } from '@sora-substrate/util';
 import { isNativeAsset } from '@sora-substrate/util/build/assets';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { api, WALLET_CONSTS, getExplorerLinks } from '@soramitsu/soraneo-wallet-web';
-import { Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
 
