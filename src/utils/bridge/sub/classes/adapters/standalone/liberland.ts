@@ -4,22 +4,24 @@ import { SubNetworkId, LiberlandAssetType } from '@sora-substrate/util/build/bri
 
 import { ZeroStringValue } from '@/consts';
 
-import { SubAdapter } from './substrate';
+import { SubAdapter } from '../substrate';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 export class LiberlandAdapter extends SubAdapter {
   // overrides SubAdapter method
-  public async getTokenBalance(accountAddress: string, assetAddress: string): Promise<CodecString> {
-    return assetAddress
-      ? await this.getAccountAssetBalance(accountAddress, assetAddress)
+  public async getTokenBalance(accountAddress: string, asset: RegisteredAsset): Promise<CodecString> {
+    return asset.externalAddress
+      ? await this.getAccountAssetBalance(accountAddress, asset.externalAddress)
       : await this.getAccountBalance(accountAddress);
   }
 
   // overrides SubAdapter method
-  public async getAssetMinDeposit(assetAddress: string): Promise<CodecString> {
-    return assetAddress ? await this.getAssetDeposit(assetAddress) : await this.getExistentialDeposit();
+  public async getAssetMinDeposit(asset: RegisteredAsset): Promise<CodecString> {
+    return asset.externalAddress
+      ? await this.getAssetDeposit(asset.externalAddress)
+      : await this.getExistentialDeposit();
   }
 
   protected async getAssetDeposit(assetAddress: string): Promise<CodecString> {

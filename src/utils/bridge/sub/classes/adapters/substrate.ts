@@ -1,3 +1,4 @@
+import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { Connection } from '@sora-substrate/connection';
 import { FPNumber, Operation, Storage } from '@sora-substrate/util';
 import { formatBalance } from '@sora-substrate/util/build/assets';
@@ -39,8 +40,34 @@ export class SubAdapter {
     return !!this.api?.isConnected;
   }
 
+  get closed(): boolean {
+    return !this.connected && !this.subNetworkConnection.nodeAddressConnecting;
+  }
+
+  get chainSymbol(): string | undefined {
+    return this.api?.registry.chainTokens[0];
+  }
+
+  get chainDecimals(): number | undefined {
+    return this.api?.registry.chainDecimals[0];
+  }
+
+  get chainSS58(): number | undefined {
+    return this.api?.registry.chainSS58;
+  }
+
+  public formatAddress = (address?: string): string => {
+    if (!address) return '';
+
+    const publicKey = decodeAddress(address, false);
+
+    return encodeAddress(publicKey, this.chainSS58);
+  };
+
   protected async withConnection<T>(onSuccess: AsyncFnWithoutArgs<T> | FnWithoutArgs<T>, fallback: T) {
-    if (!this.connected && !this.connection.loading) return fallback;
+    if (this.closed) {
+      return fallback;
+    }
 
     await this.api.isReady;
 
@@ -53,7 +80,7 @@ export class SubAdapter {
   }
 
   public async connect(): Promise<void> {
-    if (!this.connected && !this.api && !this.connection.loading) {
+    if (this.closed && !this.api) {
       try {
         await this.subNetworkConnection.connect();
       } catch {}
@@ -94,10 +121,9 @@ export class SubAdapter {
 
     return await this.withConnection(async () => {
       const accountInfo = await this.api.query.system.account(accountAddress);
-      const accountBalance = formatBalance(accountInfo.data);
-      const balance = accountBalance.transferable;
+      const balance = formatBalance(accountInfo.data, this.chainDecimals);
 
-      return balance;
+      return balance.transferable;
     }, ZeroStringValue);
   }
 
@@ -121,18 +147,17 @@ export class SubAdapter {
   /* [Substrate 5] Runtime call transactionPaymentApi */
   public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
     return await this.withConnection(async () => {
-      const decimals = this.api.registry.chainDecimals[0];
       const tx = this.getTransferExtrinsic(asset, recipient, ZeroStringValue);
       const res = await tx.paymentInfo(sender);
-      return new FPNumber(res.partialFee, decimals).toCodecString();
+      return new FPNumber(res.partialFee, this.chainDecimals).toCodecString();
     }, ZeroStringValue);
   }
 
-  public async getTokenBalance(accountAddress: string, address?: string): Promise<CodecString> {
+  public async getTokenBalance(accountAddress: string, asset?: RegisteredAsset): Promise<CodecString> {
     return await this.getAccountBalance(accountAddress);
   }
 
-  public async getAssetMinDeposit(assetAddress: string): Promise<CodecString> {
+  public async getAssetMinDeposit(asset: RegisteredAsset): Promise<CodecString> {
     return await this.getExistentialDeposit();
   }
 
