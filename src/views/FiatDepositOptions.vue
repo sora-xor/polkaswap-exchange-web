@@ -7,11 +7,11 @@
         <span>{{ t('fiatPayment.moonpayDesc') }}</span>
         <s-button type="primary" @click="openMoonpayDialog">{{ moonpayTextBtn }}</s-button>
       </div>
-      <div v-if="x1Enabled" class="pay-options__option pay-options-x1">
+      <div v-if="true" class="pay-options__option pay-options-x1">
         <x1ex-logo :theme="libraryTheme" />
-        <h4>{{ t('fiatPayment.x1Title') }}</h4>
-        <span>{{ t('fiatPayment.x1Desc') }}</span>
-        <s-button type="primary" @click="openX1">{{ x1TextBtn }}</s-button>
+        <h4>{{ 'Transfer from CEX' }}</h4>
+        <span>{{ 'Transfer any tokens from CEX on Polkadot via cede.store' }}</span>
+        <s-button type="primary" @click="openCedeDialog">{{ 'Transfer from CEX via cede.store' }}</s-button>
       </div>
       <div v-if="isLoggedIn" class="pay-options__history-btn" @click="openFiatTxHistory">
         <span>{{ t('fiatPayment.historyBtn') }}</span>
@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <x1-dialog @error="showErrorMessage" :visible.sync="showX1Dialog" />
+    <!-- <x1-dialog @error="showErrorMessage" :visible.sync="showX1Dialog" /> -->
     <template v-if="moonpayEnabled">
       <moonpay />
       <moonpay-notification />
@@ -49,14 +49,12 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 @Component({
   components: {
     DialogBase: components.DialogBase,
-    X1Dialog: lazyComponent(Components.X1Dialog),
     Moonpay: lazyComponent(Components.Moonpay),
     MoonpayNotification: lazyComponent(Components.MoonpayNotification),
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
     PaymentError: lazyComponent(Components.PaymentErrorDialog),
     SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
     MoonpayLogo,
-    X1exLogo,
   },
 })
 export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, WalletConnectMixin) {
@@ -70,7 +68,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
 
   @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
 
-  showX1Dialog = false;
+  showCedeDialog = false;
   showErrorInfoBanner = false;
 
   get hasPendingTx(): boolean {
@@ -97,12 +95,12 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
     goTo(PageNames.FiatTxHistory);
   }
 
-  openX1(): void {
+  openCedeDialog(): void {
     if (!this.isSoraAccountConnected) {
       return this.connectSoraWallet();
     }
 
-    this.showX1Dialog = true;
+    this.showCedeDialog = true;
   }
 
   showErrorMessage(): void {
