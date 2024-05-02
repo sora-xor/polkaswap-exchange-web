@@ -87,14 +87,14 @@
         </div>
 
         <div v-if="withSlider" class="input-line--footer-with-slider" @click="handleSliderFocus">
-          <div class="delimiter" />
+          <s-divider />
           <s-slider
             class="slider-container"
             :value="slideValue"
-            :disabled="!withSlider"
             :show-tooltip="false"
             :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
-            @input="handleSlideInputChange"
+            @input="handleSlideInput"
+            @change="handleSlideChange"
             @mousedown.native="handleSlideClick"
           />
         </div>
@@ -131,8 +131,6 @@ export default class TokenInput extends Mixins(
   mixins.FormattedAmountMixin,
   TranslationMixin
 ) {
-  @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
-
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
 
   @Prop({ type: String }) readonly value!: string;
@@ -171,6 +169,8 @@ export default class TokenInput extends Mixins(
   }
 
   setFiatValue(fiatValue: string): void {
+    if (!fiatValue) return;
+
     this.fiatValue =
       fiatValue === this.maxFiatValueFormatted ? this.maxFiatValue.toFixed(this.fiatDecimals) : fiatValue;
 
@@ -196,7 +196,7 @@ export default class TokenInput extends Mixins(
   }
 
   set slideValue(value: number) {
-    this.setAmountSliderValue(value);
+    this.$emit('slide', value);
   }
 
   get isBalanceAvailable(): boolean {
@@ -264,8 +264,12 @@ export default class TokenInput extends Mixins(
     this.$emit('select');
   }
 
-  handleSlideInputChange(value: string): void {
+  handleSlideInput(value: string): void {
     this.$emit('slide', value);
+  }
+
+  handleSlideChange(value: number): void {
+    this.$emit('change', value);
   }
 
   handleSlideClick(): void {
@@ -338,6 +342,13 @@ $el-input-class: '.el-input';
   @include input-slider;
   width: 100%;
 
+  .asset-info {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  // overwrite UI element styles
   .el-slider__button {
     background-color: #fff;
     border-radius: 4px;
@@ -353,16 +364,8 @@ $el-input-class: '.el-input';
     transform: translateX(-50%) rotate(-45deg);
   }
 
-  .asset-info {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .delimiter {
+  .el-divider {
     background-color: var(--s-color-base-border-secondary);
-    width: 100%;
-    height: 1px;
     margin: 14px 0 4px 0;
   }
 }

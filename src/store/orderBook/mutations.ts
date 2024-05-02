@@ -77,9 +77,6 @@ const mutations = defineMutations<OrderBookState>()({
   setOrdersToBeCancelled(state, orders): void {
     state.ordersToBeCancelled = orders;
   },
-  setAmountSliderValue(state, percent: number) {
-    state.amountSliderValue = percent;
-  },
   setBaseAssetBalance(state, balance: Nullable<AccountBalance>) {
     state.baseAssetBalance = balance;
   },

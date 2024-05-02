@@ -32,13 +32,13 @@
       <div class="margin" :style="getHeight()" />
       <div
         v-for="order in sellOrders"
-        :key="order.price"
+        :key="order.price.toNumber()"
         class="row"
         @click="fillPrice(order.price, PriceVariant.Sell)"
       >
         <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
-        <span class="order-info price">{{ order.price }}</span>
+        <span class="order-info price">{{ toBookPrecision(order.price) }}</span>
         <div class="bar" :style="getStyles(order.filled)" />
       </div>
     </div>
@@ -51,10 +51,15 @@
       </div>
     </div>
     <div v-if="bidsFormatted.length" class="stock-book-buy" :class="{ unclickable: isMarketOrder }">
-      <div v-for="order in buyOrders" :key="order.price" class="row" @click="fillPrice(order.price, PriceVariant.Buy)">
+      <div
+        v-for="order in buyOrders"
+        :key="order.price.toNumber()"
+        class="row"
+        @click="fillPrice(order.price, PriceVariant.Buy)"
+      >
         <span class="order-info total">{{ order.total }}</span>
         <span class="order-info amount">{{ order.amount }}</span>
-        <span class="order-info price">{{ order.price }}</span>
+        <span class="order-info price">{{ toBookPrecision(order.price) }}</span>
         <div class="bar" :style="getStyles(order.filled)" />
       </div>
     </div>
@@ -68,6 +73,7 @@ import { FPNumber } from '@sora-substrate/util';
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
+import OrderBookMixin from '@/components/mixins/OrderBookMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, LimitOrderType, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
@@ -78,7 +84,7 @@ import type { OrderBookPriceVolume, OrderBook } from '@sora-substrate/liquidity-
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 interface LimitOrderForm {
-  price: string;
+  price: FPNumber;
   amount: string;
   total: string;
   filled?: number;
@@ -91,14 +97,18 @@ type OrderBookPriceVolumeAggregated = [FPNumber, FPNumber, FPNumber];
     BaseWidget: lazyComponent(Components.BaseWidget),
   },
 })
-export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
+export default class BookWidget extends Mixins(
+  OrderBookMixin,
+  TranslationMixin,
+  mixins.LoadingMixin,
+  mixins.FormattedAmountMixin
+) {
   @state.orderBook.limitOrderType private limitOrderType!: LimitOrderType;
   @state.orderBook.asks asks!: OrderBookPriceVolume[];
   @state.orderBook.bids bids!: OrderBookPriceVolume[];
 
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.orderBookLastDeal orderBookLastDeal!: Nullable<OrderBookDealData>;
-  @getter.orderBook.currentOrderBook currentOrderBook!: OrderBook;
   @getter.orderBook.orderBookId orderBookId!: string;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
 
@@ -110,7 +120,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   readonly PriceVariant = PriceVariant;
   readonly maxRowsNumber = 11; // TODO: [Rustem] if I change it to 12 it should be re-rendered correctly
 
-  selectedStep = '';
+  selectedStep: string | undefined = '';
   scalerOpen = false;
 
   @Watch('currentOrderBook', { immediate: true })
@@ -133,12 +143,12 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     this.selectedStep = value;
   }
 
-  fillPrice(price: string, side: PriceVariant): void {
+  fillPrice(price: FPNumber, side: PriceVariant): void {
     if (this.isMarketOrder) {
       return;
     }
     this.setSide(side);
-    this.setQuoteValue(Number(price).toString()); // TODO: [Rustem] string->number->string -- WHY?
+    this.setQuoteValue(this.toCommonFormat(price));
   }
 
   get isMarketOrder(): boolean {
@@ -263,7 +273,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return `width: ${filled}%`;
   }
 
-  isBookPrecisionEqual(precision: string): boolean {
+  isBookPrecisionEqual(precision: string | undefined): boolean {
+    if (!precision) return true;
     return precision === this.currentOrderBook?.tickSize?.toString();
   }
 
@@ -286,26 +297,20 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
     return orders;
   }
 
-  get bookPrecision(): number {
-    return this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length || 0;
-  }
-
-  get amountPrecision(): number {
-    return (
-      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)[1]?.length || 0
-    );
-  }
-
   private getAmountProportion(currentAmount: FPNumber, maxAmount: FPNumber): number {
     return currentAmount.div(maxAmount).mul(FPNumber.HUNDRED).toNumber();
   }
 
-  private toBookPrecision(cell: FPNumber): string {
-    return cell.toNumber().toFixed(this.bookPrecision);
+  toCommonFormat(cell: FPNumber): string {
+    return cell.toFixed(this.pricePrecision);
   }
 
-  private toAmountPrecision(cell: FPNumber): string {
-    return cell.toNumber().toFixed(this.amountPrecision);
+  toBookPrecision(cell: FPNumber): string {
+    return cell.toLocaleString(this.pricePrecision, true);
+  }
+
+  toAmountPrecision(cell: FPNumber): string {
+    return cell.toLocaleString(this.amountPrecision, true);
   }
 
   private formatPriceVolumes(items: OrderBookPriceVolume[]): LimitOrderForm[] {
@@ -322,7 +327,7 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
       const total = this.isBookPrecisionEqual(this.selectedStep) ? price.mul(amount) : acc;
 
       result.push({
-        price: this.toBookPrecision(price),
+        price,
         amount: this.toAmountPrecision(amount),
         total: this.toBookPrecision(total),
         filled: this.getAmountProportion(amount, maxAmount),

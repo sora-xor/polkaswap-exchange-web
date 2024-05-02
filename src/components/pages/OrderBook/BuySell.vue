@@ -71,22 +71,22 @@
     <token-input
       :balance="getTokenBalance(quoteAsset)"
       :is-max-available="false"
-      :title="t('orderBook.price')"
+      :title="priceLabelText"
       :token="quoteAsset"
       :value="quoteValue"
       :disabled="isPriceInputDisabled"
       @input="handleInputFieldQuote"
-      class="order-book-input"
+      class="order-book-input price"
     />
 
     <token-input
       :balance="getTokenBalance(baseAsset)"
       :is-max-available="isMaxAmountAvailable"
-      :with-slider="isSliderAvailable"
       :title="t('orderBook.amount')"
       :token="baseAsset"
       :value="baseValue"
       :slider-value="sliderValue"
+      with-slider
       @slide="handleSlideInputChange"
       @input="handleInputFieldBase"
       @max="handleMaxValue"
@@ -95,7 +95,13 @@
 
     <div class="order-book-total">
       <info-line class="total-line" :label="t(`orderBook.${side}`)" :value="formattedAmountAtPrice" />
-      <info-line class="total-line" :label="t('orderBook.total')" :value="formattedTotal" :asset-symbol="quoteSymbol" />
+      <info-line
+        class="total-line"
+        :label="t('orderBook.total')"
+        :value="formattedTotal?.toLocaleString()"
+        :asset-symbol="quoteSymbol"
+        :fiat-value="fiatValue"
+      />
     </div>
 
     <el-popover popper-class="book-validation__popover" trigger="hover" :visible-arrow="false">
@@ -127,12 +133,12 @@
         <template v-else-if="userReachedSpotLimit || userReachedOwnLimit">
           <error />
         </template>
-        <template v-else-if="isLimitOrder && !quoteValue">{{ t('orderBook.setPrice') }}</template>
+        <template v-else-if="isLimitOrder && (!quoteValue || isZeroPrice)">{{ t('orderBook.setPrice') }}</template>
         <template v-else-if="isBalanceLessThanStepSize">
           <error />
         </template>
         <template v-else-if="isLimitOrder && (!baseValue || isZeroAmount)"> {{ t('orderBook.enterAmount') }}</template>
-        <template v-else-if="isLimitOrder && !isPriceBeyondPrecision">
+        <template v-else-if="isLimitOrder && isPriceBeyondPrecision">
           <error />
         </template>
         <template v-else-if="isLimitOrder && isPlaceAndCancelMode && priceExceedsSpread">
@@ -201,6 +207,7 @@ import { MAX_TIMESTAMP } from '@sora-substrate/util/build/orderBook/consts';
 import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
+import OrderBookMixin from '@/components/mixins/OrderBookMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, LimitOrderType, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
@@ -219,6 +226,7 @@ import {
 import { getBookDecimals, MAX_ORDERS_PER_SIDE, MAX_ORDERS_PER_USER } from '@/utils/orderBook';
 
 import type { OrderBook, OrderBookPriceVolume } from '@sora-substrate/liquidity-proxy';
+import type { SwapQuote } from '@sora-substrate/liquidity-proxy/build/types';
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
@@ -237,7 +245,12 @@ import type { Subscription } from 'rxjs';
     Error: lazyComponent(Components.ErrorButton),
   },
 })
-export default class BuySellWidget extends Mixins(TranslationMixin, mixins.FormattedAmountMixin, mixins.LoadingMixin) {
+export default class BuySellWidget extends Mixins(
+  OrderBookMixin,
+  TranslationMixin,
+  mixins.FormattedAmountMixin,
+  mixins.LoadingMixin
+) {
   @state.router.prev private prevRoute!: Nullable<PageNames>;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.orderBook.limitOrderType private _limitOrderType!: LimitOrderType;
@@ -247,13 +260,11 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @state.orderBook.asks asks!: OrderBookPriceVolume[];
   @state.orderBook.bids bids!: OrderBookPriceVolume[];
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
-  @state.orderBook.amountSliderValue sliderValue!: number;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
 
   @getter.assets.xor xor!: AccountAsset;
   @getter.orderBook.baseAsset baseAsset!: AccountAsset;
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
-  @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
   @getter.orderBook.orderBookStats orderBookStats!: Nullable<OrderBookStats>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
@@ -262,7 +273,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   @mutation.orderBook.setBaseValue setBaseValue!: (value: string) => void;
   @mutation.orderBook.setQuoteValue setQuoteValue!: (value: string) => void;
   @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
-  @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
   @mutation.swap.setLiquiditySource setLiquiditySource!: (liquiditySource: string) => void;
@@ -283,7 +293,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   confirmPlaceOrderVisibility = false;
   confirmCancelOrderVisibility = false;
   limitForSinglePriceReached = false;
+  wasMaxAmountOut = false;
   quoteSubscription: Nullable<Subscription> = null;
+  swapQuote: Nullable<SwapQuote> = null;
+  sliderValue = 0;
   timestamp = MAX_TIMESTAMP;
   marketQuotePrice = '';
   reason = '';
@@ -344,6 +357,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.checkInputValidation();
   }
 
+  get priceLabelText(): string {
+    return this.t('orderBook.pricePerToken', { token: this.baseAsset?.symbol });
+  }
+
   get limitOrderType(): LimitOrderType {
     return this._limitOrderType;
   }
@@ -354,11 +371,6 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
 
   get networkFee(): CodecString {
     return this.networkFees[Operation.OrderBookPlaceLimitOrder];
-  }
-
-  get isSliderAvailable(): boolean {
-    const availableBalance = getMaxValue(this.baseAsset, this.networkFee);
-    return new FPNumber(availableBalance).gt(FPNumber.ZERO);
   }
 
   get isMarketType(): boolean {
@@ -394,8 +406,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     });
   }
 
-  get formattedTotal(): string {
-    return this.getFPNumber(this.baseValue).mul(this.getFPNumber(this.quoteValue)).toLocaleString();
+  get formattedTotal(): FPNumber {
+    return this.getFPNumber(this.baseValue || 0).mul(this.getFPNumber(this.quoteValue || 0));
   }
 
   get shouldErrorTooltipBeShown(): boolean {
@@ -423,10 +435,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     if (!this.isLoggedIn) return false;
 
     if (this.limitOrderType === LimitOrderType.limit) {
-      if (!this.baseValue || !this.quoteValue) return true;
+      if (!this.baseValue || this.isZeroAmount || !this.quoteValue || this.isZeroPrice) return true;
       // NOTE: corridor check could be enabled on blockchain later on; uncomment to return
-      // if (this.isPriceTooHigh || this.isPriceTooLow || !this.isPriceBeyondPrecision) return true;
-      if (!this.isPriceBeyondPrecision) return true;
+      // if (this.isPriceTooHigh || this.isPriceTooLow || this.isPriceBeyondPrecision) return true;
+      if (this.isPriceBeyondPrecision) return true;
 
       if (this.orderBookStatus === OrderBookStatus.PlaceAndCancel) {
         if (this.priceExceedsSpread) return true;
@@ -439,6 +451,12 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     if (this.isOutOfAmountBounds || this.isInsufficientXorForFee || this.isInsufficientBalance) return true;
 
     return false;
+  }
+
+  get fiatValue() {
+    if (!this.quoteAsset || !this.baseAsset || this.isZeroAmount || this.isZeroPrice) return '';
+    const amountCodec = this.formattedTotal?.toCodecString();
+    return this.getFiatAmountByCodecString(amountCodec, this.quoteAsset);
   }
 
   async checkInputValidation(): Promise<void> {
@@ -480,7 +498,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     //       'Price range alert: Your price is more than 50% above or below the current market price. Please enter a more closely aligned market price',
     //   });
 
-    if (!this.isPriceBeyondPrecision && this.baseValue && this.isLimitOrder) {
+    if (this.isPriceBeyondPrecision && this.baseValue && this.isLimitOrder) {
       const { tickSize } = this.currentOrderBook as OrderBook;
 
       return this.setError({
@@ -604,19 +622,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     const tickSize = this.currentOrderBook.tickSize;
     const price = new FPNumber(this.quoteValue);
 
-    return price.isZeroMod(tickSize);
-  }
-
-  get bookPrecision(): number {
-    return (
-      this.currentOrderBook?.tickSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)?.[1]?.length ?? 0
-    );
-  }
-
-  get amountPrecision(): number {
-    return (
-      this.currentOrderBook?.stepLotSize?.toLocaleString()?.split(FPNumber.DELIMITERS_CONFIG.decimal)?.[1]?.length ?? 0
-    );
+    return !price.isZeroMod(tickSize);
   }
 
   get isOutOfAmountBounds(): boolean {
@@ -662,6 +668,10 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     return !!(this.baseAsset && this.quoteAsset);
   }
 
+  setAmountSliderValue(value: number): void {
+    this.sliderValue = value;
+  }
+
   toggleBookList(): void {
     this.visibleBookList = !this.visibleBookList;
   }
@@ -669,19 +679,34 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   getPercent(value: string): number {
     if (!value) return 0;
 
-    return new FPNumber(value).div(this.maxPossibleAmount).mul(FPNumber.HUNDRED).toNumber();
+    return new FPNumber(value).div(this.maxPossibleAmount()).mul(FPNumber.HUNDRED).toNumber();
   }
 
   handleSlideInputChange(percent: string): void {
     this.setAmountSliderValue(Number(percent));
 
-    const value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(this.maxPossibleAmount).dp(this.amountPrecision);
+    // user is able to input any value; unbound logic of setting that relies on slider
+    // when amount goes beyond 100%
+    let value: string | FPNumber;
+
+    if (this.wasMaxAmountOut && Number(percent) === 100) {
+      value = this.baseValue;
+    } else {
+      value = new FPNumber(percent).div(FPNumber.HUNDRED).mul(this.maxPossibleAmount()).dp(this.amountPrecision);
+    }
 
     if (value) this.handleInputFieldBase(value.toString());
+
+    if (Number(percent) === 100) {
+      this.wasMaxAmountOut = true;
+      this.setAmountSliderValue(100);
+    } else {
+      this.wasMaxAmountOut = false;
+    }
   }
 
   handleInputFieldQuote(preciseValue: string): void {
-    const value = this.formatInputValue(preciseValue, this.bookPrecision);
+    const value = this.formatInputValue(preciseValue, this.pricePrecision);
     this.setQuoteValue(value);
     this.checkInputValidation();
   }
@@ -692,12 +717,8 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
     this.setAmountSliderValue(this.getPercent(value));
     this.checkInputValidation();
 
-    if (!value) {
-      this.resetQuoteSubscription();
-    }
-
     if (this.isMarketType) {
-      value ? this.subscribeOnBookQuote() : this.setQuoteValue('');
+      this.updateQuoteData();
     }
   }
 
@@ -751,21 +772,38 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   get isMaxAmountAvailable(): boolean {
+    if (!this.isLoggedIn) return false;
     if (!(this.baseAsset && this.quoteAsset)) return false;
+    if (this.isInsufficientXorForFee) return false;
 
-    return this.isLoggedIn && isMaxButtonAvailable(this.baseAsset, this.baseValue, this.networkFee, this.xor, true);
+    if (this.isBuySide) {
+      if (!this.isZeroPrice && !this.isPriceBeyondPrecision) {
+        if (this.maxPossibleAmount().eq(new FPNumber(this.baseValue))) return false;
+        return isMaxButtonAvailable(this.quoteAsset, this.quoteValue, this.networkFee, this.xor);
+      }
+      return false;
+    } else {
+      if (this.maxPossibleAmount().eq(new FPNumber(this.baseValue))) return false;
+      return isMaxButtonAvailable(this.baseAsset, this.baseValue, this.networkFee, this.xor);
+    }
   }
 
-  get maxPossibleAmount(): FPNumber {
+  maxPossibleAmount(): FPNumber {
     if (!this.currentOrderBook) return FPNumber.ZERO;
-    const max = getMaxValue(this.baseAsset, this.networkFee);
     const maxLotSize: FPNumber = this.currentOrderBook.maxLotSize;
 
-    const maxPossible = FPNumber.fromNatural(max, this.amountPrecision);
+    if (this.isBuySide) {
+      const max = getMaxValue(this.quoteAsset, this.networkFee);
+      const fpMax = FPNumber.fromNatural(max, this.amountPrecision);
+      const maxPossible = fpMax.div(new FPNumber(this.quoteValue));
 
-    if (this.isBuySide) return maxLotSize;
+      return FPNumber.lte(maxPossible, maxLotSize) ? maxPossible : maxLotSize;
+    } else {
+      const max = getMaxValue(this.baseAsset, this.networkFee);
+      const maxPossible = FPNumber.fromNatural(max, this.amountPrecision);
 
-    return FPNumber.lte(maxPossible, maxLotSize) ? maxPossible : maxLotSize;
+      return FPNumber.lte(maxPossible, maxLotSize) ? maxPossible : maxLotSize;
+    }
   }
 
   get userReachedSpotLimit(): boolean {
@@ -794,7 +832,7 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   async singlePriceReachedLimit(): Promise<boolean> {
-    if (this.isMarketType) return false;
+    if (this.isMarketType || !this.quoteValue) return false;
 
     const limitReached = !(await api.orderBook.isOrderPlaceable(
       this.baseAsset.address,
@@ -820,49 +858,58 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   private resetQuoteSubscription(): void {
     this.quoteSubscription?.unsubscribe();
     this.quoteSubscription = null;
+    this.swapQuote = null;
+  }
+
+  private updateQuoteData(): void {
+    if (!this.swapQuote) return;
+
+    const inputAsset = (this.tokenFrom as AccountAsset).address;
+    const outputAsset = (this.tokenTo as AccountAsset).address;
+
+    const {
+      result: { amount },
+    } = this.swapQuote(inputAsset, outputAsset, this.baseValue, this.isBuySide, [LiquiditySourceTypes.OrderBook]);
+
+    if (FPNumber.fromCodecValue(amount).isZero() || this.limitOrderType === LimitOrderType.limit) {
+      this.setQuoteValue('');
+      this.setToValue('');
+      this.marketQuotePrice = '';
+      return;
+    }
+
+    this.marketQuotePrice = FPNumber.fromCodecValue(amount)
+      .div(FPNumber.fromNatural(this.baseValue))
+      .dp(this.pricePrecision)
+      .toString();
+
+    this.prepareValuesForSwap(amount);
   }
 
   private subscribeOnBookQuote(): void {
     this.resetQuoteSubscription();
 
-    if (!(this.baseValue && this.areTokensSelected)) return;
+    if (!this.areTokensSelected) return;
 
     const inputAsset = (this.tokenFrom as AccountAsset).address;
     const outputAsset = (this.tokenTo as AccountAsset).address;
-    const sources = [LiquiditySourceTypes.OrderBook];
 
     const observableQuote = api.swap.getSwapQuoteObservable(
       inputAsset,
       outputAsset,
-      sources,
+      [LiquiditySourceTypes.OrderBook],
       DexId.XOR // subscription only for XOR dex in optimization purposes
     );
 
     if (!observableQuote) return;
 
     this.quoteSubscription = observableQuote.subscribe(async ({ quote }) => {
-      const {
-        result: { amount },
-      } = quote(inputAsset, outputAsset, this.baseValue, this.isBuySide, sources);
-
-      if (FPNumber.fromCodecValue(amount).isZero() || this.limitOrderType === LimitOrderType.limit) {
-        this.resetQuoteSubscription();
-        this.setQuoteValue('');
-        this.setToValue('');
-        this.marketQuotePrice = '';
-        return;
-      }
-
-      this.marketQuotePrice = FPNumber.fromCodecValue(amount)
-        .div(FPNumber.fromNatural(this.baseValue))
-        .dp(this.bookPrecision)
-        .toString();
-
-      this.prepareValuesForSwap(amount);
+      this.swapQuote = quote;
+      this.updateQuoteData();
     });
   }
 
-  prepareValuesForSwap(amount) {
+  prepareValuesForSwap(amount: string) {
     if (!this.areTokensSelected || asZeroValue(this.baseValue)) return;
 
     const fromValue = this.isBuySide ? this.getStringFromCodec(amount) : this.baseValue;
@@ -890,20 +937,18 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
   }
 
   handleMaxValue(): void {
-    this.handleInputFieldBase(this.maxPossibleAmount.toString());
+    this.handleInputFieldBase(this.maxPossibleAmount().toString());
     this.checkInputValidation();
   }
 
   handleTabClick(): void {
     this.setTokens();
 
-    if (!this.isMarketType) {
-      this.resetQuoteSubscription();
-    }
-
     if (this.isMarketType) {
       this.setQuoteValue('');
-      if (this.baseValue) this.subscribeOnBookQuote();
+      this.subscribeOnBookQuote();
+    } else {
+      this.resetQuoteSubscription();
     }
 
     this.checkInputValidation();
@@ -1024,6 +1069,14 @@ export default class BuySellWidget extends Mixins(TranslationMixin, mixins.Forma
         box-shadow: var(--neu-button-tertiary-box-shadow);
         cursor: initial;
         outline: none;
+      }
+    }
+  }
+
+  .order-book-input.price {
+    .is-disabled {
+      .el-input__inner {
+        color: var(--s-color-base-content-secondary);
       }
     }
   }
