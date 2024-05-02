@@ -214,12 +214,14 @@
 </template>
 
 <script lang="ts">
+import { FPNumber } from '@sora-substrate/util';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { PageNames } from '@/consts';
-import { fetchData } from '@/indexer/queries/stakingNominators';
+import { fetchData as fetchStakingNominatorsCount } from '@/indexer/queries/stakingNominators';
+import { fetchData as fetchStakingRewards } from '@/indexer/queries/stakingRewards';
 import router from '@/router';
 import { getter, state, mutation } from '@/store/decorators';
 
@@ -271,6 +273,8 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
   showWithdrawDialog = false;
   showAllWithdrawsDialog = false;
 
+  claimed: number | null = null;
+
   get lockedFundsFormatted(): string {
     return this.lockedFunds.toLocaleString();
   }
@@ -281,6 +285,17 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
 
   get rewardedFundsFormatted(): string {
     return this.rewardedFunds.toLocaleString();
+  }
+
+  get claimedFunds(): FPNumber {
+    if (this.claimed === null) {
+      return FPNumber.ZERO;
+    }
+    return new FPNumber(this.claimed, this.rewardAsset?.decimals);
+  }
+
+  get claimedFundsFormatted(): string {
+    return this.claimedFunds.toLocaleString();
   }
 
   get showWithdrawCard(): boolean {
@@ -395,13 +410,35 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
       return;
     }
 
-    const nominatorsCount = await fetchData();
+    const nominatorsCount = await fetchStakingNominatorsCount();
 
     if (nominatorsCount === undefined || nominatorsCount === null) {
       return;
     }
 
     this.setTotalNominators(nominatorsCount);
+  }
+
+  @Watch('currentEra')
+  async fetchRewarded() {
+    if (!this.activeEra) {
+      return;
+    }
+
+    const rewards = await fetchStakingRewards();
+
+    if (rewards === undefined || rewards === null) {
+      return;
+    }
+
+    const claimed = rewards.reduce((acc, reward) => {
+      if (reward.data && 'amount' in reward.data) {
+        return acc + Number(reward.data.amount);
+      }
+      return acc;
+    }, 0);
+
+    this.claimed = claimed;
   }
 
   created() {
