@@ -77,6 +77,7 @@ import { subscribeOnOrderBookUpdates } from '@/indexer/queries/orderBook';
 import { fetchAssetData } from '@/indexer/queries/price/asset';
 import { fetchOrderBookData } from '@/indexer/queries/price/orderBook';
 import { lazyComponent } from '@/router';
+import { state, getter } from '@/store/decorators';
 import type { OCLH, SnapshotItem } from '@/types/chart';
 import { Timeframes } from '@/types/filters';
 import type { SnapshotFilter } from '@/types/filters';
@@ -86,10 +87,12 @@ import {
   calcPriceChange,
   formatDecimalPlaces,
   formatAmountWithSuffix,
+  getCurrency,
 } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { PageInfo, SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { Currency, CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 
 const USD_SYMBOL = 'USD';
 
@@ -269,6 +272,10 @@ export default class PriceChartWidget extends Mixins(
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin
 ) {
+  @state.wallet.settings.currency private currency!: Currency;
+  @state.wallet.settings.currencies private currencies!: Array<CurrencyFields>;
+  @getter.wallet.settings.exchangeRate private exchangeRate!: number;
+
   @Prop({ default: DexId.XOR, type: Number }) readonly dexId!: DexId;
   @Prop({ default: () => null, type: Object }) readonly baseAsset!: Nullable<AccountAsset>;
   @Prop({ default: () => null, type: Object }) readonly quoteAsset!: Nullable<AccountAsset>;
@@ -372,7 +379,9 @@ export default class PriceChartWidget extends Mixins(
   }
 
   get symbol(): string {
-    return this.tokenB?.symbol ?? USD_SYMBOL;
+    const currentCurrencySymbol = getCurrency(this.currency, this.currencies)?.key.toUpperCase() || USD_SYMBOL;
+
+    return this.tokenB?.symbol ?? currentCurrencySymbol;
   }
 
   get currentPrice(): FPNumber {
@@ -380,7 +389,7 @@ export default class PriceChartWidget extends Mixins(
   }
 
   get currentPriceFormatted(): string {
-    return this.currentPrice.toLocaleString(this.precision);
+    return this.currentPrice.mul(this.exchangeRate).toLocaleString(this.precision);
   }
 
   get isAllHistoricalPricesFetched(): boolean {
