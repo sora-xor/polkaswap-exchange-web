@@ -121,7 +121,7 @@
       <swap-loss-warning-dialog
         :visible.sync="lossWarningVisibility"
         :value="fiatDifferenceFormatted"
-        @confirm="openConfirmDialog"
+        @confirm="handleConfirm"
       />
       <swap-confirm
         :visible.sync="confirmDialogVisibility"
@@ -533,8 +533,12 @@ export default class SwapFormWidget extends Mixins(
     if (this.isErrorFiatDifferenceStatus && this.allowLossPopup) {
       this.lossWarningVisibility = true;
     } else {
-      this.confirmOrExecute(this.exchangeTokens);
+      this.handleConfirm();
     }
+  }
+
+  handleConfirm(): void {
+    this.confirmOrExecute(this.exchangeTokens);
   }
 
   async exchangeTokens(): Promise<void> {
