@@ -143,6 +143,8 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
         return 'sora-polkadot';
       case SubNetworkId.PolkadotAcala:
         return 'acala';
+      case SubNetworkId.PolkadotAstar:
+        return 'astar';
       case SubNetworkId.Kusama:
         return 'kusama';
       case SubNetworkId.Rococo:
