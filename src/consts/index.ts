@@ -531,4 +531,5 @@ export const TranslationConsts = {
   XOR: 'XOR',
   VAL: 'VAL',
   Kensetsu: 'Kensetsu',
+  LTV: 'LTV',
 } as const;
