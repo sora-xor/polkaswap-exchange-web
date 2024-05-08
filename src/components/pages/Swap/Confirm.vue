@@ -86,7 +86,7 @@ export default class ConfirmSwap extends Mixins(mixins.TransactionMixin, mixins.
   }
 
   async handleConfirm(): Promise<void> {
-    this.$emit('confirm', true);
+    this.$emit('confirm');
     this.closeDialog();
   }
 }
