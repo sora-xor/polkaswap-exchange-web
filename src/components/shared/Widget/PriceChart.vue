@@ -9,6 +9,7 @@
       <s-button
         v-if="isTokensPair && !isOrderBook"
         :class="{ 's-pressed': isReversedChart }"
+        :disabled="chartIsLoading"
         size="small"
         type="action"
         alternative
