@@ -17,7 +17,7 @@
       />
     </template>
 
-    <template #filters>
+    <template #filters v-if="!isDepthChart">
       <stats-filter :filters="filters" :value="selectedFilter" :disabled="chartIsLoading" @change="changeFilter" />
     </template>
 
@@ -64,12 +64,14 @@
 import { FPNumber } from '@sora-substrate/util';
 import { DexId } from '@sora-substrate/util/build/dex/consts';
 import { components, mixins, WALLET_CONSTS, SUBQUERY_TYPES } from '@soramitsu/soraneo-wallet-web';
+import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
 import last from 'lodash/fp/last';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
+import OrderBookMixin from '@/components/mixins/OrderBookMixin';
 import { SvgIcons } from '@/components/shared/Button/SvgIconButton/icons';
 import { Components } from '@/consts';
 import { SECONDS_IN_TYPE } from '@/consts/snapshots';
@@ -102,11 +104,13 @@ enum CHART_TYPES {
   LINE = 'line',
   CANDLE = 'candlestick',
   BAR = 'bar',
+  DEPTH = 'depth',
 }
 
 const CHART_TYPE_ICONS = {
   [CHART_TYPES.LINE]: SvgIcons.LineIcon,
   [CHART_TYPES.CANDLE]: SvgIcons.CandleIcon,
+  [CHART_TYPES.DEPTH]: SvgIcons.DepthIcon,
 };
 
 const LINE_CHART_FILTERS: SnapshotFilter[] = [
@@ -265,6 +269,7 @@ const getPrecision = (value: number): number => {
 })
 export default class PriceChartWidget extends Mixins(
   ChartSpecMixin,
+  OrderBookMixin,
   mixins.LoadingMixin,
   mixins.NumberFormatterMixin,
   mixins.FormattedAmountMixin
@@ -313,8 +318,63 @@ export default class PriceChartWidget extends Mixins(
   selectedFilter: SnapshotFilter = LINE_CHART_FILTERS[0];
   isReversedChart = false;
 
+  get isDepthChart(): boolean {
+    return this.chartType === CHART_TYPES.DEPTH;
+  }
+
   get isLineChart(): boolean {
     return this.chartType === CHART_TYPES.LINE;
+  }
+
+  get currentSeriesSpec(): any {
+    switch (this.chartType) {
+      case CHART_TYPES.LINE:
+        return this.lineSeriesSpec({
+          encode: { y: 'close' },
+          areaStyle: {
+            opacity: 0.8,
+            color: new graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgba(248, 8, 123, 0.25)',
+              },
+              {
+                offset: 1,
+                color: 'rgba(255, 49, 148, 0.03)',
+              },
+            ]),
+          },
+        });
+      case CHART_TYPES.CANDLE:
+        return this.candlestickSeriesSpec();
+      case CHART_TYPES.DEPTH: {
+        const { buy, sell } = this.getDepthChartData();
+
+        return this.depthSeriesSpec(
+          {
+            data: buy,
+            itemStyle: {
+              color: '#34ad87',
+            },
+            areaStyle: {
+              color: this.libraryTheme === Theme.LIGHT ? 'rgba(185, 235, 219, 0.4)' : 'rgba(1, 202, 139, 0.2)',
+            },
+          },
+          {
+            data: sell,
+            itemStyle: {
+              color: '#f754a3',
+            },
+            areaStyle: {
+              color: this.libraryTheme === Theme.LIGHT ? 'rgba(255, 216, 235, 0.8)' : 'rgba(255, 0, 124, 0.3)',
+            },
+          }
+        );
+      }
+
+      default:
+        return null;
+    }
   }
 
   get inputTokensAddresses(): string[] {
@@ -356,7 +416,10 @@ export default class PriceChartWidget extends Mixins(
   }
 
   get chartTypeButtons(): { type: CHART_TYPES; icon: any; active: boolean }[] {
-    return [CHART_TYPES.LINE, CHART_TYPES.CANDLE].map((type) => ({
+    const TYPES = [CHART_TYPES.LINE, CHART_TYPES.CANDLE];
+    if (this.isOrderBook) TYPES.push(CHART_TYPES.DEPTH);
+
+    return TYPES.map((type) => ({
       type,
       icon: CHART_TYPE_ICONS[type],
       active: this.chartType === type,
@@ -450,7 +513,10 @@ export default class PriceChartWidget extends Mixins(
     return Object.freeze(groups);
   }
 
-  get chartSpec() {
+  /**
+   * Returns spec of price fluctuations.
+   */
+  get priceSpec(): any {
     // [TODO]: until we haven't two tokens volume
     const withVolume = this.entities.length === 1;
 
@@ -495,7 +561,7 @@ export default class PriceChartWidget extends Mixins(
 
     const priceYAxis = this.yAxisSpec({
       axisLabel: {
-        formatter: (value) => {
+        formatter: (value: number) => {
           return formatAmount(value, this.precision);
         },
         showMaxLabel: false,
@@ -517,7 +583,7 @@ export default class PriceChartWidget extends Mixins(
       gridIndex: 1,
       splitNumber: 2,
       axisLabel: {
-        formatter: (value) => {
+        formatter: (value: string | number | bigint) => {
           const val = new FPNumber(value);
           const { amount, suffix } = formatAmountWithSuffix(val);
           return `${amount} ${suffix}`;
@@ -539,7 +605,7 @@ export default class PriceChartWidget extends Mixins(
       axisPointer: {
         type: 'cross',
       },
-      formatter: (params) => {
+      formatter: (params: { data: any; seriesType: any }[]) => {
         const { data, seriesType } = params[0];
         const [timestamp, open, close, low, high, volume] = data;
         const rows: any[] = [];
@@ -567,41 +633,9 @@ export default class PriceChartWidget extends Mixins(
           rows.push({ title: 'Volume', data: `$${formatAmount(volume, 2)}` });
         }
 
-        return `
-          <table>
-            ${rows
-              .map(
-                (row) => `
-              <tr>
-                <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
-                <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
-              </tr>
-            `
-              )
-              .join('')}
-          </table>
-        `;
+        return this.htmlTemplateTooltip(rows);
       },
     });
-
-    const priceSeria = this.isLineChart
-      ? this.lineSeriesSpec({
-          encode: { y: 'close' },
-          areaStyle: {
-            opacity: 0.8,
-            color: new graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                color: 'rgba(248, 8, 123, 0.25)',
-              },
-              {
-                offset: 1,
-                color: 'rgba(255, 49, 148, 0.03)',
-              },
-            ]),
-          },
-        })
-      : this.candlestickSeriesSpec();
 
     const volumeSeria = {
       type: 'bar',
@@ -637,7 +671,7 @@ export default class PriceChartWidget extends Mixins(
       xAxis: [priceXAxis],
       yAxis: [priceYAxis],
       tooltip,
-      series: [priceSeria],
+      series: [this.currentSeriesSpec],
     };
 
     if (withVolume) {
@@ -652,6 +686,90 @@ export default class PriceChartWidget extends Mixins(
     }
 
     return spec;
+  }
+
+  /**
+   * Returns spec of demand and supply levels at a given moment for a range of prices.
+   * Used only on trade page.
+   */
+  get marketDepthSpec(): any {
+    const { minBidPrice, maxAskPrice } = this.getDepthChartData();
+
+    const spec = {
+      animation: false,
+      dataZoom: {
+        id: 'dataZoomDepthChart',
+        type: 'inside',
+      },
+      grid: {
+        left: '1%',
+        right: '1%',
+        bottom: '3%',
+        containLabel: true,
+      },
+      tooltip: [
+        this.tooltipSpec({
+          axisPointer: {
+            type: 'line',
+          },
+          formatter: (params: { data: any }[]) => {
+            const { data } = params[0];
+            const rows: any = [];
+            rows.push(
+              { title: 'Price', data: data[0] },
+              { title: 'Total amount', data: data[1] },
+              { title: 'Price difference', data: `${data[2]}%` }
+            );
+
+            return this.htmlTemplateTooltip(rows);
+          },
+        }),
+      ],
+      xAxis: [
+        this.yAxisSpec({
+          axisLine: {
+            show: false,
+          },
+          min: minBidPrice,
+          max: maxAskPrice,
+        }),
+      ],
+      yAxis: [
+        this.yAxisSpec({
+          axisLine: {
+            show: false,
+          },
+        }),
+      ],
+      series: this.currentSeriesSpec,
+    };
+
+    return spec;
+  }
+
+  get chartSpec() {
+    if (this.isDepthChart && this.isOrderBook) {
+      return this.marketDepthSpec;
+    }
+
+    return this.priceSpec;
+  }
+
+  htmlTemplateTooltip(rows: any[]): HTMLTableElement {
+    return `
+      <table>
+        ${rows
+          .map(
+            (row: { title: string; color: string; data: string }) => `
+          <tr>
+            <td align="right" style="color:${this.theme.color.base.content.secondary}">${row.title}</td>
+            <td style="color:${row.color ?? this.theme.color.base.content.primary}">${row.data}</td>
+          </tr>
+        `
+          )
+          .join('')}
+      </table>
+    ` as unknown as HTMLTableElement;
   }
 
   created(): void {

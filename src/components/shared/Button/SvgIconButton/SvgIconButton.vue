@@ -12,6 +12,7 @@ import { SvgIcons } from './icons';
 const components = {
   [SvgIcons.LineIcon]: () => import('./Icons/Line.vue'),
   [SvgIcons.CandleIcon]: () => import('./Icons/Candle.vue'),
+  [SvgIcons.DepthIcon]: () => import('./Icons/Depth.vue'),
 };
 
 @Component({

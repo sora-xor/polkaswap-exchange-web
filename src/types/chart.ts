@@ -6,3 +6,13 @@ export type SnapshotItem = {
   price: OCLH;
   volume: number;
 };
+
+/** price, total amount, delta price percent data */
+export type DepthChartStep = [number, number, number];
+
+export type DepthChartData = {
+  buy: Array<DepthChartStep>;
+  sell: Array<DepthChartStep>;
+  minBidPrice: number;
+  maxAskPrice: number;
+};
