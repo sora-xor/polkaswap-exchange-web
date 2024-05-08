@@ -413,7 +413,8 @@
         "AssetOwner": "Владелец активов",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Хранилища",
-        "VaultDetails": "Детали хранилища"
+        "VaultDetails": "Детали хранилища",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Обмен",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} карта",
         "OrderBook": "Торговля",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",

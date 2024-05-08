@@ -413,7 +413,8 @@
         "AssetOwner": "Pemilik aset",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Brankas",
-        "VaultDetails": "Detail Vault"
+        "VaultDetails": "Detail Vault",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Kartu",
         "OrderBook": "Berdagang",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",

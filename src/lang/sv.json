@@ -413,7 +413,8 @@
         "AssetOwner": "Tillgångens ägare",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Valv",
-        "VaultDetails": "Valv detaljer"
+        "VaultDetails": "Valv detaljer",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Byt",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Kort",
         "OrderBook": "Handel",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",

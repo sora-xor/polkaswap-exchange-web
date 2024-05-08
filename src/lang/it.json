@@ -413,7 +413,8 @@
         "AssetOwner": "Proprietario dell'asset",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Volte",
-        "VaultDetails": "Dettagli del Vault"
+        "VaultDetails": "Dettagli del Vault",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Scambia",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Card",
         "OrderBook": "Commercio",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",

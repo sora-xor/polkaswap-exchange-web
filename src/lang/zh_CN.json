@@ -413,7 +413,8 @@
         "AssetOwner": "资产所有者",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "保险库",
-        "VaultDetails": "保险库详情"
+        "VaultDetails": "保险库详情",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "兑换",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora}卡",
         "OrderBook": "贸易",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "推特",

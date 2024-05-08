@@ -413,7 +413,8 @@
         "AssetOwner": "Eier av eiendeler",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Hvelv",
-        "VaultDetails": "Detaljer om hvelvet"
+        "VaultDetails": "Detaljer om hvelvet",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Bytte",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Kort",
         "OrderBook": "Handel",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",

@@ -413,7 +413,8 @@
         "AssetOwner": "Propriétaire d'actifs",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Voûtes",
-        "VaultDetails": "Détails du coffre-fort"
+        "VaultDetails": "Détails du coffre-fort",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Échanger",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Carte",
         "OrderBook": "Commerce",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",

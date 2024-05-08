@@ -413,7 +413,8 @@
         "AssetOwner": "Eigenaar van activa",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Kluizen",
-        "VaultDetails": "Details kluis"
+        "VaultDetails": "Details kluis",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Kaart",
         "OrderBook": "Handel",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",

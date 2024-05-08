@@ -413,7 +413,8 @@
         "AssetOwner": "Oní dúkìá",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Vaults",
-        "VaultDetails": "Vault Details"
+        "VaultDetails": "Vault Details",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Iŕopo",
@@ -429,7 +430,8 @@
         "SoraCard": "Kaadi {Sora}",
         "OrderBook": "Iṣowo",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
