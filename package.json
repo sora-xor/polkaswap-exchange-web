@@ -26,6 +26,7 @@
     "test:all": "yarn test:unit --coverage"
   },
   "dependencies": {
+    "@cedelabs/widgets-universal": "^1.3.0",
     "@metamask/detect-provider": "^2.0.0",
     "@soramitsu/soraneo-wallet-web": "1.33.1",
     "@walletconnect/ethereum-provider": "^2.11.2",

@@ -8,7 +8,7 @@
         <s-button type="primary" @click="openMoonpayDialog">{{ moonpayTextBtn }}</s-button>
       </div>
       <div v-if="true" class="pay-options__option pay-options-x1">
-        <x1ex-logo :theme="libraryTheme" />
+        <!-- <x1ex-logo :theme="libraryTheme" /> -->
         <h4>{{ 'Transfer from CEX' }}</h4>
         <span>{{ 'Transfer any tokens from CEX on Polkadot via cede.store' }}</span>
         <s-button type="primary" @click="openCedeDialog">{{ 'Transfer from CEX via cede.store' }}</s-button>
@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <!-- <x1-dialog @error="showErrorMessage" :visible.sync="showX1Dialog" /> -->
+    <x1-dialog @error="showErrorMessage" :visible.sync="showCedeDialog" />
     <template v-if="moonpayEnabled">
       <moonpay />
       <moonpay-notification />
@@ -54,6 +54,7 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
     PaymentError: lazyComponent(Components.PaymentErrorDialog),
     SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
+    X1Dialog: lazyComponent(Components.X1Dialog),
     MoonpayLogo,
   },
 })
