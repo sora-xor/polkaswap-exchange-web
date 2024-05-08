@@ -93,9 +93,11 @@ export class NodesConnection {
   setDefaultNodes(nodes: Array<Node>): void {
     this.defaultNodes = Object.freeze([...nodes]);
 
-    if (!this.node) return;
+    const { node, defaultNodes } = this;
 
-    const defaultNode = this.defaultNodes.find((item) => item.address === this.node!.address);
+    if (!node) return;
+
+    const defaultNode = defaultNodes.find((item) => item.address === node.address);
 
     if (!defaultNode) return;
     // If node from default nodes list - keep this node from localstorage up to date
