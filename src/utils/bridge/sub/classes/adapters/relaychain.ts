@@ -7,6 +7,11 @@ import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 export class RelaychainAdapter extends SubAdapter {
+  // overrides SubAdapter; asset is always native relaychain token
+  protected override async getAssetDeposit(asset: RegisteredAsset): Promise<string> {
+    return await this.getExistentialDeposit();
+  }
+
   // overrides SubAdapter
   protected override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
