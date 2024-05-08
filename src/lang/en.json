@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limit orders cancelled",
             "Burn": "Burned {amount} {symbol}",
             "Mint": "Minted {amount} {symbol} to {address}",
-            "CreateVault": "{symbol}/{symbol2} Vault created",
-            "CloseVault": "{symbol}/{symbol2} Vault closed",
+            "CreateVault": "{symbol}\/{symbol2} Vault created",
+            "CloseVault": "{symbol}\/{symbol2} Vault closed",
             "DepositCollateral": "Deposited {amount} {symbol}",
             "RepayVaultDebt": "Repaid {amount} {symbol}",
             "BorrowVaultDebt": "Borrowed {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Failed to cancel limit order",
             "Burn": "Failed to burn {amount} {symbol}",
             "Mint": "Failed to mint {amount} {symbol} to {address}",
-            "CreateVault": "Failed to create {symbol}/{symbol2} vault",
-            "CloseVault": "Failed to close {symbol}/{symbol2} vault",
+            "CreateVault": "Failed to create {symbol}\/{symbol2} vault",
+            "CloseVault": "Failed to close {symbol}\/{symbol2} vault",
             "DepositCollateral": "Failed to deposit {amount} {symbol}",
             "RepayVaultDebt": "Failed to repaid {amount} {symbol}",
             "BorrowVaultDebt": "Failed to borrow {amount} {symbol}"
@@ -413,7 +413,8 @@
         "AssetOwner": "Asset owner",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Vaults",
-        "VaultDetails": "Vault Details"
+        "VaultDetails": "Vault Details",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Card",
         "OrderBook": "Trade",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Price per 1 {token}"
     },
+    "calculatingText": "Calculating",
+    "customisePageText": "Customize page",
+    "priceChartText": "Price chart",
+    "editText": "Edit",
+    "resetText": "Reset",
     "kensetsu": {
         "addCollateral": "Add collateral",
         "addCollateralDescription": "Deposit more assets into your vault to increase your borrowing limit or to improve your loan-to-value ratio. This can also help prevent liquidation.",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Debt overpaid"
         }
     },
-    "calculatingText": "Calculating",
-    "customisePageText": "Customize page",
-    "priceChartText": "Price chart",
-    "editText": "Edit",
-    "resetText": "Reset"
+    "accountSettings": {
+        "title": "Account settings",
+        "hint": "You can enable this back in account settings",
+        "disable": "Disable on",
+        "disabled": "Disabled for",
+        "confirmation": {
+            "title": "Disable transaction confirmation",
+            "description": "A popup screen which displays details about the transactions before the signing."
+        },
+        "signature": {
+            "title": "Disable password confirmation",
+            "description": "Enable or disable the need to enter your password during the signature popup in transactions."
+        },
+        "enterPassword": "Enter password",
+        "googleOnly": "{Google} accounts only"
+    }
 }

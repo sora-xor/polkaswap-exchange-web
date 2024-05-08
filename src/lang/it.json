@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Ordini limite annullati",
             "Burn": "{amount} {symbol} bruciato",
             "Mint": "Coniato {amount} {symbol} a {address}",
-            "CreateVault": "Vault {symbol}/{symbol2} creato",
-            "CloseVault": "Vault {symbol}/{symbol2} chiuso",
+            "CreateVault": "Vault {symbol}\/{symbol2} creato",
+            "CloseVault": "Vault {symbol}\/{symbol2} chiuso",
             "DepositCollateral": "Depositato {amount} {symbol}",
             "RepayVaultDebt": "Debito ripagato {amount} {symbol}",
             "BorrowVaultDebt": "Debito preso in prestito {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Impossibile annullare l'ordine limite",
             "Burn": "Impossibile masterizzare {amount} {symbol}",
             "Mint": "Impossibile coniare {amount} {symbol} su {address}",
-            "CreateVault": "Impossibile creare il vault {symbol}/{symbol2}",
-            "CloseVault": "Impossibile chiudere il vault {symbol}/{symbol2}",
+            "CreateVault": "Impossibile creare il vault {symbol}\/{symbol2}",
+            "CloseVault": "Impossibile chiudere il vault {symbol}\/{symbol2}",
             "DepositCollateral": "Impossibile depositare {amount} {symbol}",
             "RepayVaultDebt": "Impossibile ripagare {amount} {symbol} di debito",
             "BorrowVaultDebt": "Impossibile prendere in prestito {amount} {symbol} di debito"
@@ -413,7 +413,8 @@
         "AssetOwner": "Proprietario dell'asset",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Volte",
-        "VaultDetails": "Dettagli del Vault"
+        "VaultDetails": "Dettagli del Vault",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Scambia",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Card",
         "OrderBook": "Commercio",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Prezzo per 1 {token}"
     },
+    "calculatingText": "Calcolando",
+    "customisePageText": "Personalizza la pagina",
+    "priceChartText": "Grafico dei prezzi",
+    "editText": "Modifica",
+    "resetText": "Ripristina",
     "kensetsu": {
         "addCollateral": "Aggiungi garanzia",
         "addCollateralDescription": "Deposita più asset nel tuo caveau per aumentare il tuo limite di prestito o migliorare il rapporto prestito-valore. Questo può anche aiutare a prevenire la liquidazione.",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Debito pagato in eccesso"
         }
     },
-    "calculatingText": "Calcolando",
-    "customisePageText": "Personalizza la pagina",
-    "priceChartText": "Grafico dei prezzi",
-    "editText": "Modifica",
-    "resetText": "Ripristina"
+    "accountSettings": {
+        "title": "Impostazioni dell'account",
+        "hint": "Puoi riattivarlo nelle impostazioni dell'account",
+        "disable": "Disattiva",
+        "disabled": "Disabilitato per",
+        "confirmation": {
+            "title": "Disabilita la conferma della transazione",
+            "description": "Una schermata popup che visualizza i dettagli sulle transazioni prima della firma."
+        },
+        "signature": {
+            "title": "Disabilita la conferma della password",
+            "description": "Abilita o disabilita la necessità di inserire la password durante il popup della firma nelle transazioni."
+        },
+        "enterPassword": "Inserire la password",
+        "googleOnly": "Solo account {Google}"
+    }
 }

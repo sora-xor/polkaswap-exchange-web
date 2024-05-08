@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Սահմանափակ պատվերները չեղարկվել են",
             "Burn": "Այրված {amount} {symbol}",
             "Mint": "Նշված է {amount} {symbol} {address} -ին",
-            "CreateVault": "{symbol}/{symbol2} ավազարկղի ստեղծված է",
-            "CloseVault": "{symbol}/{symbol2} ավազարկղի ավարտվել է",
+            "CreateVault": "{symbol}\/{symbol2} ավազարկղի ստեղծված է",
+            "CloseVault": "{symbol}\/{symbol2} ավազարկղի ավարտվել է",
             "DepositCollateral": "{amount} {symbol} արտաքին ապրանքը մուտք է գալիս",
             "RepayVaultDebt": "{amount} {symbol} պարտքը մաքրվել է",
             "BorrowVaultDebt": "{amount} {symbol} պարտքի վարկի գումարը վարվել է"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Չհաջողվեց չեղարկել սահմանաչափի պատվերը",
             "Burn": "Չհաջողվեց այրել {amount} {symbol}",
             "Mint": "Չհաջողվեց հատել {amount} {symbol} {address} -ին",
-            "CreateVault": "Սխալ՝ {symbol}/{symbol2} ավազարկղի ստեղծման ընթացքում",
-            "CloseVault": "Սխալ՝ {symbol}/{symbol2} ավազարկղի ավարտման ընթացքում",
+            "CreateVault": "Սխալ՝ {symbol}\/{symbol2} ավազարկղի ստեղծման ընթացքում",
+            "CloseVault": "Սխալ՝ {symbol}\/{symbol2} ավազարկղի ավարտման ընթացքում",
             "DepositCollateral": "Սխալ՝ {amount} {symbol} արտաքին ապրանքի մուտքի ընթացքում",
             "RepayVaultDebt": "Սխալ՝ {amount} {symbol} պարտքի մաքրման ընթացքում",
             "BorrowVaultDebt": "Սխալ՝ {amount} {symbol} պարտքի վարկի գումարի վարվելիքի ընթացքում"
@@ -413,7 +413,8 @@
         "AssetOwner": "Ակտիվների սեփականատեր",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Պահոցներ",
-        "VaultDetails": "Պահոցի մանրամասներ"
+        "VaultDetails": "Պահոցի մանրամասներ",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Փոխանակում",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Քարտ",
         "OrderBook": "Առևտուր",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Գինը 1 {token} ի համար"
     },
+    "calculatingText": "Հաշվարկում",
+    "customisePageText": "Անհատականացրեք էջը",
+    "priceChartText": "Գնային շրջանագիծ",
+    "editText": "Խմբագրել",
+    "resetText": "Վերականգնել",
     "kensetsu": {
         "addCollateral": "Ավելացնել գրանցամատ",
         "addCollateralDescription": "Ավելացրեք ավելի շատ ակտիվներ ձեր պահանջարկային բանկատիկում՝ ձեր վարկային սահմանները բարձրացնելու կամ ձեր վարկատեսակի արժույթի համար լավագույնը բարձրացնելու համար: Այդպես՝ դուք կարող եք դադարեցնել դարձավոր վաճառման:",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Վարկագրված ավելի քան վարկագրված գումարը"
         }
     },
-    "calculatingText": "Հաշվարկում",
-    "customisePageText": "Անհատականացրեք էջը",
-    "priceChartText": "Գնային շրջանագիծ",
-    "editText": "Խմբագրել",
-    "resetText": "Վերականգնել"
+    "accountSettings": {
+        "title": "Հաշվի կարգավորումները",
+        "hint": "Դուք կարող եք նորից միացնել սա հաշվի կարգավորումներում",
+        "disable": "Անջատել միացված",
+        "disabled": "Հաշմանդամ է",
+        "confirmation": {
+            "title": "Անջատել գործարքի հաստատումը",
+            "description": "Բացվող էկրան, որը ցույց է տալիս գործարքների մասին մանրամասները մինչև ստորագրումը:"
+        },
+        "signature": {
+            "title": "Անջատել գաղտնաբառի հաստատումը",
+            "description": "Գործարքներում ստորագրության բացվող պատուհանի ժամանակ միացրեք կամ անջատեք ձեր գաղտնաբառը մուտքագրելու անհրաժեշտությունը:"
+        },
+        "enterPassword": "Մուտքագրեք գաղտնաբառը",
+        "googleOnly": "Միայն {Google} հաշիվները"
+    }
 }

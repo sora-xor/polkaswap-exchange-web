@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Ограничени налози су отказани",
             "Burn": "Спаљено {amount} {symbol}",
             "Mint": "Исковано {amount} {symbol} на {address}",
-            "CreateVault": "Складиште {symbol}/{symbol2} отворено",
-            "CloseVault": "Складиште {symbol}/{symbol2} затворено",
+            "CreateVault": "Складиште {symbol}\/{symbol2} отворено",
+            "CloseVault": "Складиште {symbol}\/{symbol2} затворено",
             "DepositCollateral": "Уплаћен залог {amount} {symbol}",
             "RepayVaultDebt": "Дуг враћен {amount} {symbol}",
             "BorrowVaultDebt": "Дуг позајмљен {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Отказивање ограничене поруџбине није успело",
             "Burn": "{amount} {symbol} није успело",
             "Mint": "Није успело испоручивање {amount} {symbol} на {address}",
-            "CreateVault": "Грешка при отварању складишта {symbol}/{symbol2}",
-            "CloseVault": "Грешка при затварању складишта {symbol}/{symbol2}",
+            "CreateVault": "Грешка при отварању складишта {symbol}\/{symbol2}",
+            "CloseVault": "Грешка при затварању складишта {symbol}\/{symbol2}",
             "DepositCollateral": "Грешка при уплати залога {amount} {symbol}",
             "RepayVaultDebt": "Грешка при враћању дуга {amount} {symbol}",
             "BorrowVaultDebt": "Грешка при позајмљивању дуга {amount} {symbol}"
@@ -413,7 +413,8 @@
         "AssetOwner": "Asset Owner",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Trezora",
-        "VaultDetails": "Detalji trezora"
+        "VaultDetails": "Detalji trezora",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Замените",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} картица",
         "OrderBook": "Траде",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Цена по 1 {token}"
     },
+    "calculatingText": "Računanje",
+    "customisePageText": "Прилагодите страницу",
+    "priceChartText": "График цена",
+    "editText": "Uredi",
+    "resetText": "Resetovati",
     "kensetsu": {
         "addCollateral": "Додај залог",
         "addCollateralDescription": "Uložite više sredstava u svoj trezor kako biste povećali limit zaduženja ili poboljšali odnos zaduženosti prema vrednosti. Ovo takođe može pomoći u sprečavanju likvidacije.",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Dug preplaćen"
         }
     },
-    "calculatingText": "Računanje",
-    "customisePageText": "Прилагодите страницу",
-    "priceChartText": "График цена",
-    "editText": "Uredi",
-    "resetText": "Resetovati"
+    "accountSettings": {
+        "title": "ПОДЕШАВАЊА РАЧУНА",
+        "hint": "Ово можете поново да омогућите у подешавањима налога",
+        "disable": "Онемогући укључено",
+        "disabled": "Онемогућено за",
+        "confirmation": {
+            "title": "Онемогућите потврду трансакције",
+            "description": "Искачући екран који приказује детаље о трансакцијама пре потписивања."
+        },
+        "signature": {
+            "title": "Онемогућите потврду лозинке",
+            "description": "Омогућите или онемогућите потребу да унесете лозинку током искачућег прозора за потпис у трансакцијама."
+        },
+        "enterPassword": "Унесите лозинку",
+        "googleOnly": "Само {Google} налози"
+    }
 }

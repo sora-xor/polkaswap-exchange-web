@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Zamówienia z limitem anulowane",
             "Burn": "Spalony {amount} {symbol}",
             "Mint": "Wybito {amount} {symbol} na {address}",
-            "CreateVault": "Utworzono skarbiec {symbol}/{symbol2}",
-            "CloseVault": "Zamknięto skarbiec {symbol}/{symbol2}",
+            "CreateVault": "Utworzono skarbiec {symbol}\/{symbol2}",
+            "CloseVault": "Zamknięto skarbiec {symbol}\/{symbol2}",
             "DepositCollateral": "Wpłacono {amount} {symbol}",
             "RepayVaultDebt": "Spłacono dług {amount} {symbol}",
             "BorrowVaultDebt": "Pożyczono dług {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem",
             "Burn": "Nie udało się nagrać {amount} {symbol}",
             "Mint": "Nie udało się wybić {amount} {symbol} na {address}",
-            "CreateVault": "Nie udało się utworzyć skarbca {symbol}/{symbol2}",
-            "CloseVault": "Nie udało się zamknąć skarbca {symbol}/{symbol2}",
+            "CreateVault": "Nie udało się utworzyć skarbca {symbol}\/{symbol2}",
+            "CloseVault": "Nie udało się zamknąć skarbca {symbol}\/{symbol2}",
             "DepositCollateral": "Nie udało się wpłacić {amount} {symbol}",
             "RepayVaultDebt": "Nie udało się spłacić długu {amount} {symbol}",
             "BorrowVaultDebt": "Nie udało się pożyczyć długu {amount} {symbol}"
@@ -413,7 +413,8 @@
         "AssetOwner": "Właściciel aktywów",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Skarbce",
-        "VaultDetails": "Szczegóły skarbca"
+        "VaultDetails": "Szczegóły skarbca",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Wymiana",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Karta",
         "OrderBook": "Handel",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Cena za 1 {token}"
     },
+    "calculatingText": "Obliczanie",
+    "customisePageText": "Dostosuj stronę",
+    "priceChartText": "Wykres cen",
+    "editText": "Edytuj",
+    "resetText": "Resetowanie",
     "kensetsu": {
         "addCollateral": "Dodaj zabezpieczenie",
         "addCollateralDescription": "Wpłać więcej aktywów do swojego skarbca, aby zwiększyć limit pożyczki lub poprawić wskaźnik pożyczki do wartości. Może to również pomóc zapobiec likwidacji.",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Dług przepłacony"
         }
     },
-    "calculatingText": "Obliczanie",
-    "customisePageText": "Dostosuj stronę",
-    "priceChartText": "Wykres cen",
-    "editText": "Edytuj",
-    "resetText": "Resetowanie"
+    "accountSettings": {
+        "title": "USTAWIENIA KONTA",
+        "hint": "Możesz włączyć tę opcję z powrotem w ustawieniach konta",
+        "disable": "Wyłącz włączone",
+        "disabled": "Niepełnosprawny dla",
+        "confirmation": {
+            "title": "Wyłącz potwierdzanie transakcji",
+            "description": "Wyskakujący ekran wyświetlający szczegóły transakcji przed podpisaniem."
+        },
+        "signature": {
+            "title": "Wyłącz potwierdzanie hasła",
+            "description": "Włącz lub wyłącz konieczność podawania hasła podczas wyskakującego okienka podpisu w transakcjach."
+        },
+        "enterPassword": "Wprowadź hasło",
+        "googleOnly": "Tylko konta {Google}"
+    }
 }

@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limitaufträge storniert",
             "Burn": "Verbrannt {amount} {symbol}",
             "Mint": "Geprägt {amount} {symbol} an {address}",
-            "CreateVault": "{symbol}/{symbol2}-Tresor erstellt",
-            "CloseVault": "{symbol}/{symbol2}-Tresor geschlossen",
+            "CreateVault": "{symbol}\/{symbol2}-Tresor erstellt",
+            "CloseVault": "{symbol}\/{symbol2}-Tresor geschlossen",
             "DepositCollateral": "{amount} {symbol} hinterlegt",
             "RepayVaultDebt": "{amount} {symbol} beglichen",
             "BorrowVaultDebt": "{amount} {symbol} aufgenommen"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Limitauftrag konnte nicht storniert werden",
             "Burn": "{amount} {symbol} konnte nicht gebrannt werden",
             "Mint": "{amount} {symbol} konnte nicht an {address} geprägt werden",
-            "CreateVault": "Fehler beim Erstellen des {symbol}/{symbol2}-Tresors",
-            "CloseVault": "Fehler beim Schließen des {symbol}/{symbol2}-Tresors",
+            "CreateVault": "Fehler beim Erstellen des {symbol}\/{symbol2}-Tresors",
+            "CloseVault": "Fehler beim Schließen des {symbol}\/{symbol2}-Tresors",
             "DepositCollateral": "Fehler beim Hinterlegen von {amount} {symbol}",
             "RepayVaultDebt": "Fehler beim Begleichen von {amount} {symbol}",
             "BorrowVaultDebt": "Fehler beim Aufnehmen von {amount} {symbol}"
@@ -413,7 +413,8 @@
         "AssetOwner": "Eigentümer des Vermögens",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Tresore",
-        "VaultDetails": "Tresor Details"
+        "VaultDetails": "Tresor Details",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Tauschen",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Karte",
         "OrderBook": "Handel",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Preis pro 1 {token}"
     },
+    "calculatingText": "Berechnung",
+    "customisePageText": "Seite anpassen",
+    "priceChartText": "Preisdiagramm",
+    "editText": "Bearbeiten",
+    "resetText": "Zurücksetzen",
     "kensetsu": {
         "addCollateral": "Kollaterale hinzufügen",
         "addCollateralDescription": "Zahlen Sie weitere Vermögenswerte auf Ihr Depot ein, um Ihr Kreditlimit zu erhöhen oder Ihr Darlehensverhältnis zu verbessern. Dies kann auch dazu beitragen, eine Liquidation zu verhindern.",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Schulden überbezahlt"
         }
     },
-    "calculatingText": "Berechnung",
-    "customisePageText": "Seite anpassen",
-    "priceChartText": "Preisdiagramm",
-    "editText": "Bearbeiten",
-    "resetText": "Zurücksetzen"
+    "accountSettings": {
+        "title": "Account Einstellungen",
+        "hint": "Sie können dies in den Kontoeinstellungen wieder aktivieren",
+        "disable": "Deaktivieren ein",
+        "disabled": "Deaktiviert für",
+        "confirmation": {
+            "title": "Transaktionsbestätigung deaktivieren",
+            "description": "Ein Popup-Bildschirm, der Details zu den Transaktionen vor der Unterzeichnung anzeigt."
+        },
+        "signature": {
+            "title": "Kennwortbestätigung deaktivieren",
+            "description": "Aktivieren oder deaktivieren Sie die Aufforderung zur Eingabe Ihres Kennworts während des Signatur-Popups bei Transaktionen."
+        },
+        "enterPassword": "Passwort eingeben",
+        "googleOnly": "Nur {Google} -Konten"
+    }
 }

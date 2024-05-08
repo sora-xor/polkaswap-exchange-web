@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Лимитные ордера отменены",
             "Burn": "Сожжено {amount} {symbol}",
             "Mint": "Напечатано {amount} {symbol} на {address}",
-            "CreateVault": "Позиция {symbol}/{symbol2} создана",
-            "CloseVault": "Позиция {symbol}/{symbol2} закрыта",
+            "CreateVault": "Позиция {symbol}\/{symbol2} создана",
+            "CloseVault": "Позиция {symbol}\/{symbol2} закрыта",
             "DepositCollateral": "Внесено {amount} {symbol}",
             "RepayVaultDebt": "Погашено {amount} {symbol} долга",
             "BorrowVaultDebt": "Взято в долг {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Не удалось отменить лимитный ордер",
             "Burn": "Не удалось сжечь {amount} {symbol}",
             "Mint": "Не удалось напечатать {amount} {symbol} на {address}",
-            "CreateVault": "Ошибка при открытии {symbol}/{symbol2} позиции",
-            "CloseVault": "Ошибка при закрытии {symbol}/{symbol2} позиции",
+            "CreateVault": "Ошибка при открытии {symbol}\/{symbol2} позиции",
+            "CloseVault": "Ошибка при закрытии {symbol}\/{symbol2} позиции",
             "DepositCollateral": "Ошибка при внесении залога {amount} {symbol}",
             "RepayVaultDebt": "Ошибка при погашении долга {amount} {symbol}",
             "BorrowVaultDebt": "Ошибка при взятии в долг {amount} {symbol}"
@@ -413,7 +413,8 @@
         "AssetOwner": "Владелец активов",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Хранилища",
-        "VaultDetails": "Детали хранилища"
+        "VaultDetails": "Детали хранилища",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Обмен",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} карта",
         "OrderBook": "Торговля",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Цена за 1 {token}"
     },
+    "calculatingText": "Вычисление",
+    "customisePageText": "Настроить страницу",
+    "priceChartText": "График цены",
+    "editText": "Редактировать",
+    "resetText": "Сбросить",
     "kensetsu": {
         "addCollateral": "Добавить залог",
         "addCollateralDescription": "Внесите больше активов в свое хранилище, чтобы увеличить ваш лимит по кредиту или улучшить ваш залоговый коэффициент. Это также может помочь предотвратить ликвидацию.",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Долг переплачен"
         }
     },
-    "calculatingText": "Вычисление",
-    "customisePageText": "Настроить страницу",
-    "priceChartText": "График цены",
-    "editText": "Редактировать",
-    "resetText": "Сбросить"
+    "accountSettings": {
+        "title": "Настройки аккаунта",
+        "hint": "Вы можете включить это снова в настройках аккаунта.",
+        "disable": "Отключить на",
+        "disabled": "Отключено на",
+        "confirmation": {
+            "title": "Отключить подтверждение транзакции",
+            "description": "Всплывающий экран, на котором отображаются детали транзакции перед подписанием."
+        },
+        "signature": {
+            "title": "Отключить подтверждение паролем",
+            "description": "Включите или отключите необходимость ввода пароля во время подписи транзакции во всплывающем окне."
+        },
+        "enterPassword": "Введите пароль",
+        "googleOnly": "Только аккаунты {Google}"
+    }
 }

@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Awọn aṣẹ aropin parẹ",
             "Burn": "jona {amount} {symbol}",
             "Mint": "Minted {amount} {symbol} si {address}",
-            "CreateVault": "Gbigbe {symbol}/{symbol2} ti ṣẹda",
-            "CloseVault": "Gbigbe {symbol}/{symbol2} ti fẹ",
+            "CreateVault": "Gbigbe {symbol}\/{symbol2} ti ṣẹda",
+            "CloseVault": "Gbigbe {symbol}\/{symbol2} ti fẹ",
             "DepositCollateral": "{amount} {symbol} ti jẹ́ títẹ",
             "RepayVaultDebt": "{amount} {symbol} ti fọwọ́ sí ìwò",
             "BorrowVaultDebt": "{amount} {symbol} ti kọ láìná"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Kuna lati fagilee aṣẹ opin",
             "Burn": "Kuna lati sun {amount} {symbol}",
             "Mint": "Kuna lati mint {amount} {symbol} si {address}",
-            "CreateVault": "Ọgbọn ti ṣẹda gbigbe {symbol}/{symbol2}",
-            "CloseVault": "Ọgbọn ti fẹ gbigbe {symbol}/{symbol2}",
+            "CreateVault": "Ọgbọn ti ṣẹda gbigbe {symbol}\/{symbol2}",
+            "CloseVault": "Ọgbọn ti fẹ gbigbe {symbol}\/{symbol2}",
             "DepositCollateral": "Ọgbọn ti jẹ́ títẹ káríayé {amount} {symbol}",
             "RepayVaultDebt": "Ọgbọn ti fọwọ́ sí ìwò káríayé {amount} {symbol}",
             "BorrowVaultDebt": "Ọgbọn ti kọ oúnjẹ láìná káríayé {amount} {symbol}"
@@ -413,7 +413,8 @@
         "AssetOwner": "Oní dúkìá",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Vaults",
-        "VaultDetails": "Vault Details"
+        "VaultDetails": "Vault Details",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Iŕopo",
@@ -429,7 +430,8 @@
         "SoraCard": "Kaadi {Sora}",
         "OrderBook": "Iṣowo",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Iye fun 1 {token}"
     },
+    "calculatingText": "Ọnàkọnà",
+    "customisePageText": "Ṣe akanṣe oju-iwe",
+    "priceChartText": "Owo chart",
+    "editText": "Ṣatunkọ",
+    "resetText": "Tunto",
     "kensetsu": {
         "addCollateral": "Fẹẹrẹ afẹẹwọ",
         "addCollateralDescription": "Fidi afẹfẹ eto inuwo rẹ sí inu apọ wo fun ti o ba n ti daradara fi yọ eto ìmọlẹ tabi lati ṣe idarada lọkọja eto rẹ. Yiyan a le fi ṣe daaju lati dide lẹkun.",
@@ -1588,7 +1595,7 @@
         "borrowMoreDescription": "Gba awọn owo ṣiṣe lati inuwo rẹ pupọ titi di bẹ bẹ o ba n gba lati inu rẹ. Ṣe pese pe iye iṣẹrọ rẹ n ṣe jẹ ki o jeṣi nipin alabapin ti o pese lati sọ pe iye iṣẹrọ to dide fun lati dide.",
         "available": "Lára",
         "outstandingDebt": "Ọwọọ tó wá tẹlẹ",
-        "outstandingDebtDescription": "Gbogbo awọn owo ti o le rẹ nigba kan lati awọn owo to fẹ lati inuwo rẹ, ni akoko, ni awọn ọwọ ọtun. Yio fẹ lati pa lati dide inuwo rẹ tabi ti o ba n sọ pe iye iṣẹrọ rẹ jẹ lati jẹ lati rọ nidi inuwo rẹ / iṣẹrọ awo ìmọlẹ.",
+        "outstandingDebtDescription": "Gbogbo awọn owo ti o le rẹ nigba kan lati awọn owo to fẹ lati inuwo rẹ, ni akoko, ni awọn ọwọ ọtun. Yio fẹ lati pa lati dide inuwo rẹ tabi ti o ba n sọ pe iye iṣẹrọ rẹ jẹ lati jẹ lati rọ nidi inuwo rẹ \/ iṣẹrọ awo ìmọlẹ.",
         "createVault": "Fẹẹ vún tó yan",
         "createVaultDescription": "Sìn orí iranlọwọ sí ní ilé ìdì rẹ àti mú àwọn owo sílẹ̀. Yiọwọ sìn ẹ̀wù àdáwọdì tó ń ńi ọ̀bẹ wọn, kò sí bẹrẹ láti dá bó báyìí.",
         "createVaultAction": "Fẹẹ vún",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Iye iṣẹrọ ti o tẹlẹ"
         }
     },
-    "calculatingText": "Ọnàkọnà",
-    "customisePageText": "Ṣe akanṣe oju-iwe",
-    "priceChartText": "Owo chart",
-    "editText": "Ṣatunkọ",
-    "resetText": "Tunto"
+    "accountSettings": {
+        "title": "Eto iroyin",
+        "hint": "O le mu eyi pada si awọn eto akọọlẹ",
+        "disable": "Pa lori",
+        "disabled": "Alaabo fun",
+        "confirmation": {
+            "title": "Pa ìmúdájú idunadura",
+            "description": "Iboju agbejade eyiti o ṣafihan awọn alaye nipa awọn iṣowo ṣaaju iforukọsilẹ."
+        },
+        "signature": {
+            "title": "Pa ìmúdájú ọrọigbaniwọle",
+            "description": "Mu ṣiṣẹ tabi mu iwulo lati tẹ ọrọ igbaniwọle rẹ sii lakoko igarun Ibuwọlu ni awọn iṣowo."
+        },
+        "enterPassword": "Tẹ ọrọ igbaniwọle sii",
+        "googleOnly": "Awọn akọọlẹ {Google} nikan"
+    }
 }

@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limit bestillinger kansellert",
             "Burn": "Brent {amount} {symbol}",
             "Mint": "Preget {amount} {symbol} til {address}",
-            "CreateVault": "{symbol}/{symbol2}-skattkammer opprettet",
-            "CloseVault": "{symbol}/{symbol2}-skattkammer lukket",
+            "CreateVault": "{symbol}\/{symbol2}-skattkammer opprettet",
+            "CloseVault": "{symbol}\/{symbol2}-skattkammer lukket",
             "DepositCollateral": "Innskuddet {amount} {symbol}",
             "RepayVaultDebt": "Gjelden tilbakebetalt {amount} {symbol}",
             "BorrowVaultDebt": "Gjeld lånt {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Kunne ikke kansellere begrenset ordre",
             "Burn": "Kunne ikke brenne {amount} {symbol}",
             "Mint": "Kunne ikke prege {amount} {symbol} til {address}",
-            "CreateVault": "Kunne ikke opprette {symbol}/{symbol2}-skattkammer",
-            "CloseVault": "Kunne ikke lukke {symbol}/{symbol2}-skattkammer",
+            "CreateVault": "Kunne ikke opprette {symbol}\/{symbol2}-skattkammer",
+            "CloseVault": "Kunne ikke lukke {symbol}\/{symbol2}-skattkammer",
             "DepositCollateral": "Kunne ikke gjøre innskudd {amount} {symbol}",
             "RepayVaultDebt": "Kunne ikke tilbakebetale {amount} {symbol} gjeld",
             "BorrowVaultDebt": "Kunne ikke låne {amount} {symbol} gjeld"
@@ -413,7 +413,8 @@
         "AssetOwner": "Eier av eiendeler",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Hvelv",
-        "VaultDetails": "Detaljer om hvelvet"
+        "VaultDetails": "Detaljer om hvelvet",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Bytte",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Kort",
         "OrderBook": "Handel",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Pris per 1 {token}"
     },
+    "calculatingText": "Beregner",
+    "customisePageText": "Tilpass siden",
+    "priceChartText": "Prisdiagram",
+    "editText": "Redigere",
+    "resetText": "Tilbakestill",
     "kensetsu": {
         "addCollateral": "Legg til sikkerhet",
         "addCollateralDescription": "Sett inn flere eiendeler i hvelvet ditt for å øke din lånegrense eller for å forbedre din lån-til-verdi-forhold. Dette kan også bidra til å forhindre likvidasjon.",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Gjeld overbetalt"
         }
     },
-    "calculatingText": "Beregner",
-    "customisePageText": "Tilpass siden",
-    "priceChartText": "Prisdiagram",
-    "editText": "Redigere",
-    "resetText": "Tilbakestill"
+    "accountSettings": {
+        "title": "Kontoinnstillinger",
+        "hint": "Du kan aktivere dette tilbake i kontoinnstillingene",
+        "disable": "Deaktiver på",
+        "disabled": "Deaktivert for",
+        "confirmation": {
+            "title": "Deaktiver transaksjonsbekreftelse",
+            "description": "En popup-skjerm som viser detaljer om transaksjonene før signeringen."
+        },
+        "signature": {
+            "title": "Deaktiver passordbekreftelse",
+            "description": "Aktiver eller deaktiver behovet for å skrive inn passordet ditt under signatur-popup-vinduet i transaksjoner."
+        },
+        "enterPassword": "Oppgi passord",
+        "googleOnly": "Bare {Google} -kontoer"
+    }
 }

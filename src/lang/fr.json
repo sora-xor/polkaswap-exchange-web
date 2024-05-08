@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Ordres limités annulés",
             "Burn": "Brûlé {amount} {symbol}",
             "Mint": "Frappé {amount} {symbol} à {address}",
-            "CreateVault": "Coffre-fort {symbol}/{symbol2} créé",
-            "CloseVault": "Coffre-fort {symbol}/{symbol2} fermé",
+            "CreateVault": "Coffre-fort {symbol}\/{symbol2} créé",
+            "CloseVault": "Coffre-fort {symbol}\/{symbol2} fermé",
             "DepositCollateral": "Dépôt de {amount} {symbol}",
             "RepayVaultDebt": "Dette remboursée {amount} {symbol}",
             "BorrowVaultDebt": "Dette empruntée {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Échec de l'annulation de l'ordre limité",
             "Burn": "Échec de la gravure {amount} {symbol}",
             "Mint": "Échec de la création {amount} {symbol} à {address}",
-            "CreateVault": "Impossible de créer le coffre-fort {symbol}/{symbol2}",
-            "CloseVault": "Impossible de fermer le coffre-fort {symbol}/{symbol2}",
+            "CreateVault": "Impossible de créer le coffre-fort {symbol}\/{symbol2}",
+            "CloseVault": "Impossible de fermer le coffre-fort {symbol}\/{symbol2}",
             "DepositCollateral": "Impossible de déposer {amount} {symbol}",
             "RepayVaultDebt": "Impossible de rembourser {amount} {symbol}",
             "BorrowVaultDebt": "Impossible d'emprunter {amount} {symbol}"
@@ -413,7 +413,8 @@
         "AssetOwner": "Propriétaire d'actifs",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Voûtes",
-        "VaultDetails": "Détails du coffre-fort"
+        "VaultDetails": "Détails du coffre-fort",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Échanger",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Carte",
         "OrderBook": "Commerce",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Prix par 1 {token}"
     },
+    "calculatingText": "Calculant",
+    "customisePageText": "Personnaliser la page",
+    "priceChartText": "Tableau des prix",
+    "editText": "Modifier",
+    "resetText": "Réinitialiser",
     "kensetsu": {
         "addCollateral": "Ajouter du collatéral",
         "addCollateralDescription": "Déposez plus d'actifs dans votre coffre pour augmenter votre limite d'emprunt ou améliorer votre ratio prêt-valeur. Cela peut également aider à prévenir la liquidation.",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Dette surpayée"
         }
     },
-    "calculatingText": "Calculant",
-    "customisePageText": "Personnaliser la page",
-    "priceChartText": "Tableau des prix",
-    "editText": "Modifier",
-    "resetText": "Réinitialiser"
+    "accountSettings": {
+        "title": "Paramètres du compte",
+        "hint": "Vous pouvez l'activer à nouveau dans les paramètres du compte",
+        "disable": "Désactiver sur",
+        "disabled": "Désactivé pour",
+        "confirmation": {
+            "title": "Désactiver la confirmation de transaction",
+            "description": "Un écran contextuel qui affiche les détails des transactions avant la signature."
+        },
+        "signature": {
+            "title": "Désactiver la confirmation du mot de passe",
+            "description": "Activez ou désactivez la nécessité de saisir votre mot de passe lors de la fenêtre contextuelle de signature dans les transactions."
+        },
+        "enterPassword": "Entrer le mot de passe",
+        "googleOnly": "Comptes {Google} uniquement"
+    }
 }

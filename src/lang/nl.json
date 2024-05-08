@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limietorders geannuleerd",
             "Burn": "Verbrand {amount} {symbol}",
             "Mint": "Geslagen {amount} {symbol} naar {address}",
-            "CreateVault": "Vault {symbol}/{symbol2} aangemaakt",
-            "CloseVault": "Vault {symbol}/{symbol2} gesloten",
+            "CreateVault": "Vault {symbol}\/{symbol2} aangemaakt",
+            "CloseVault": "Vault {symbol}\/{symbol2} gesloten",
             "DepositCollateral": "{amount} {symbol} gestort",
             "RepayVaultDebt": "{amount} {symbol} schuld terugbetaald",
             "BorrowVaultDebt": "{amount} {symbol} schuld geleend"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Kan limietorder niet annuleren",
             "Burn": "Kan {amount} {symbol} niet verbranden",
             "Mint": "Kan {amount} {symbol} niet aan {address} toevoegen",
-            "CreateVault": "Kon vault {symbol}/{symbol2} niet aanmaken",
-            "CloseVault": "Kon vault {symbol}/{symbol2} niet sluiten",
+            "CreateVault": "Kon vault {symbol}\/{symbol2} niet aanmaken",
+            "CloseVault": "Kon vault {symbol}\/{symbol2} niet sluiten",
             "DepositCollateral": "Kon {amount} {symbol} niet storten",
             "RepayVaultDebt": "Kon {amount} {symbol} schuld niet terugbetalen",
             "BorrowVaultDebt": "Kon {amount} {symbol} schuld niet lenen"
@@ -413,7 +413,8 @@
         "AssetOwner": "Eigenaar van activa",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Kluizen",
-        "VaultDetails": "Details kluis"
+        "VaultDetails": "Details kluis",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Kaart",
         "OrderBook": "Handel",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Prijs per 1 {token}"
     },
+    "calculatingText": "Berekenen",
+    "customisePageText": "Pagina aanpassen",
+    "priceChartText": "Prijs grafiek",
+    "editText": "Bewerk",
+    "resetText": "Opnieuw instellen",
     "kensetsu": {
         "addCollateral": "Voeg onderpand toe",
         "addCollateralDescription": "Deponeer meer activa in uw kluis om uw leenlimiet te verhogen of uw leen-tot-waardeverhouding te verbeteren. Dit kan ook helpen om liquidatie te voorkomen.",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Te veel terugbetaald"
         }
     },
-    "calculatingText": "Berekenen",
-    "customisePageText": "Pagina aanpassen",
-    "priceChartText": "Prijs grafiek",
-    "editText": "Bewerk",
-    "resetText": "Opnieuw instellen"
+    "accountSettings": {
+        "title": "Accountinstellingen",
+        "hint": "Je kunt dit weer inschakelen in de accountinstellingen",
+        "disable": "Uitschakelen aan",
+        "disabled": "Uitgeschakeld voor",
+        "confirmation": {
+            "title": "Schakel transactiebevestiging uit",
+            "description": "Een pop-upscherm met details over de transacties vóór de ondertekening."
+        },
+        "signature": {
+            "title": "Schakel wachtwoordbevestiging uit",
+            "description": "Schakel de noodzaak om uw wachtwoord in te voeren tijdens de handtekeningpop-up bij transacties in of uit."
+        },
+        "enterPassword": "Voer wachtwoord in",
+        "googleOnly": "Alleen {Google} -accounts"
+    }
 }

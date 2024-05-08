@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Ograničene narudžbe su otkazane",
             "Burn": "Spaljeno {amount} {symbol}",
             "Mint": "Kovano {amount} {symbol} na {address}",
-            "CreateVault": "Trezor {symbol}/{symbol2} stvoren",
-            "CloseVault": "Trezor {symbol}/{symbol2} zatvoren",
+            "CreateVault": "Trezor {symbol}\/{symbol2} stvoren",
+            "CloseVault": "Trezor {symbol}\/{symbol2} zatvoren",
             "DepositCollateral": "Uloženo {amount} {symbol}",
             "RepayVaultDebt": "Dug vraćen {amount} {symbol}",
             "BorrowVaultDebt": "Dug posuđen {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Otkazivanje ograničenog naloga nije uspjelo",
             "Burn": "Nije uspjelo spaljivanje {amount} {symbol}",
             "Mint": "Nije uspjelo kovati {amount} {symbol} na {address}",
-            "CreateVault": "Pogreška prilikom stvaranja trezora {symbol}/{symbol2}",
-            "CloseVault": "Pogreška prilikom zatvaranja trezora {symbol}/{symbol2}",
+            "CreateVault": "Pogreška prilikom stvaranja trezora {symbol}\/{symbol2}",
+            "CloseVault": "Pogreška prilikom zatvaranja trezora {symbol}\/{symbol2}",
             "DepositCollateral": "Pogreška prilikom ulaganja {amount} {symbol}",
             "RepayVaultDebt": "Pogreška prilikom vraćanja {amount} {symbol}",
             "BorrowVaultDebt": "Pogreška prilikom posuđivanja {amount} {symbol}"
@@ -413,7 +413,8 @@
         "AssetOwner": "Vlasnik imovine",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Trezori",
-        "VaultDetails": "Detalji trezora"
+        "VaultDetails": "Detalji trezora",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Zamijenite",
@@ -429,7 +430,8 @@
         "SoraCard": "Kartica {Sora}",
         "OrderBook": "Trgovina",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Cijena za 1 {token}"
     },
+    "calculatingText": "Izračunavanje",
+    "customisePageText": "Prilagodite stranicu",
+    "priceChartText": "Grafikon cijena",
+    "editText": "Uredi",
+    "resetText": "Reset",
     "kensetsu": {
         "addCollateral": "Dodaj kolateral",
         "addCollateralDescription": "Uložite više sredstava u svoj sef kako biste povećali svoj limit zaduženja ili poboljšali omjer kredita i vrijednosti. To također može pomoći u sprječavanju likvidacije.",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Dug preplaćen"
         }
     },
-    "calculatingText": "Izračunavanje",
-    "customisePageText": "Prilagodite stranicu",
-    "priceChartText": "Grafikon cijena",
-    "editText": "Uredi",
-    "resetText": "Reset"
+    "accountSettings": {
+        "title": "POSTAVLJANJE RAČUNA",
+        "hint": "To možete ponovno omogućiti u postavkama računa",
+        "disable": "Onemogući uključeno",
+        "disabled": "Onemogućeno za",
+        "confirmation": {
+            "title": "Onemogući potvrdu transakcije",
+            "description": "Skočni zaslon koji prikazuje detalje o transakcijama prije potpisivanja."
+        },
+        "signature": {
+            "title": "Onemogući potvrdu lozinke",
+            "description": "Omogućite ili onemogućite potrebu za unosom lozinke tijekom skočnog prozora za potpis u transakcijama."
+        },
+        "enterPassword": "Upišite lozinku",
+        "googleOnly": "Samo {Google} računi"
+    }
 }

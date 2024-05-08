@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limit megrendelések törölve",
             "Burn": "Égetett {amount} {symbol}",
             "Mint": "Verte {amount} {symbol} erre: {address}",
-            "CreateVault": "{symbol}/{symbol2} treasury létrehozva",
-            "CloseVault": "{symbol}/{symbol2} treasury bezárva",
+            "CreateVault": "{symbol}\/{symbol2} treasury létrehozva",
+            "CloseVault": "{symbol}\/{symbol2} treasury bezárva",
             "DepositCollateral": "{amount} {symbol} letétbe helyezve",
             "RepayVaultDebt": "{amount} {symbol} adósság visszafizetve",
             "BorrowVaultDebt": "{amount} {symbol} adósság felvéve"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Nem sikerült törölni a limitált rendelést",
             "Burn": "Nem sikerült égetni {amount} {symbol}",
             "Mint": "Nem sikerült menteni {amount} {symbol} címet a következő címre {address}",
-            "CreateVault": "{symbol}/{symbol2} treasury létrehozása sikertelen",
-            "CloseVault": "{symbol}/{symbol2} treasury bezárása sikertelen",
+            "CreateVault": "{symbol}\/{symbol2} treasury létrehozása sikertelen",
+            "CloseVault": "{symbol}\/{symbol2} treasury bezárása sikertelen",
             "DepositCollateral": "{amount} {symbol} letétbe helyezése sikertelen",
             "RepayVaultDebt": "{amount} {symbol} adósság visszafizetése sikertelen",
             "BorrowVaultDebt": "{amount} {symbol} adósság felvétele sikertelen"
@@ -413,7 +413,8 @@
         "AssetOwner": "Eszköz tulajdonosa",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Boltívek",
-        "VaultDetails": "Vault Részletek"
+        "VaultDetails": "Vault Részletek",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Váltás",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Kártya",
         "OrderBook": "Kereskedelmi",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "1 {token} ár"
     },
+    "calculatingText": "Számítás",
+    "customisePageText": "Az oldal testreszabása",
+    "priceChartText": "Ártáblázat",
+    "editText": "Szerkesztés",
+    "resetText": "Visszaállítás",
     "kensetsu": {
         "addCollateral": "Zálog hozzáadása",
         "addCollateralDescription": "Helyezzen el több eszközt a páncélszekrénybe, hogy növelje hitelkeretét vagy javítsa hitel-érték arányát. Ez segíthet a likvidáció elkerülésében is.",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Adósság túlfizetve"
         }
     },
-    "calculatingText": "Számítás",
-    "customisePageText": "Az oldal testreszabása",
-    "priceChartText": "Ártáblázat",
-    "editText": "Szerkesztés",
-    "resetText": "Visszaállítás"
+    "accountSettings": {
+        "title": "FIÓK BEÁLLÍTÁSOK",
+        "hint": "Ezt újra engedélyezheti a fiókbeállításokban",
+        "disable": "Letiltás be",
+        "disabled": "Letiltva",
+        "confirmation": {
+            "title": "A tranzakció megerősítésének letiltása",
+            "description": "Egy felugró képernyő, amely a tranzakciók részleteit jeleníti meg az aláírás előtt."
+        },
+        "signature": {
+            "title": "Jelszó megerősítésének letiltása",
+            "description": "Engedélyezze vagy tiltsa le a jelszavának megadásának szükségességét az aláírás előugró ablakában a tranzakciókban."
+        },
+        "enterPassword": "Írd be a jelszót",
+        "googleOnly": "Csak {Google} -fiókok"
+    }
 }

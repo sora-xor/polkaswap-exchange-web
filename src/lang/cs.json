@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limitní objednávky zrušeny",
             "Burn": "Spáleno {amount} {symbol}",
             "Mint": "Vyraženo {amount} {symbol} na {address}",
-            "CreateVault": "Vytvořen {symbol}/{symbol2} trezor",
-            "CloseVault": "Uzavřen {symbol}/{symbol2} trezor",
+            "CreateVault": "Vytvořen {symbol}\/{symbol2} trezor",
+            "CloseVault": "Uzavřen {symbol}\/{symbol2} trezor",
             "DepositCollateral": "Vloženo {amount} {symbol}",
             "RepayVaultDebt": "Splatit {amount} {symbol}",
             "BorrowVaultDebt": "Půjčeno {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Limitní příkaz se nepodařilo zrušit",
             "Burn": "Nepodařilo se vypálit {amount} {symbol}",
             "Mint": "Nepodařilo se vytěžit {amount} {symbol} na {address}",
-            "CreateVault": "Nepodařilo se vytvořit {symbol}/{symbol2} trezor",
-            "CloseVault": "Nepodařilo se uzavřít {symbol}/{symbol2} trezor",
+            "CreateVault": "Nepodařilo se vytvořit {symbol}\/{symbol2} trezor",
+            "CloseVault": "Nepodařilo se uzavřít {symbol}\/{symbol2} trezor",
             "DepositCollateral": "Nepodařilo se vložit {amount} {symbol}",
             "RepayVaultDebt": "Nepodařilo se splatit {amount} {symbol}",
             "BorrowVaultDebt": "Nepodařilo se půjčit {amount} {symbol}"
@@ -413,7 +413,8 @@
         "AssetOwner": "Vlastník aktiv",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Trezory",
-        "VaultDetails": "Podrobnosti o trezoru"
+        "VaultDetails": "Podrobnosti o trezoru",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Karta",
         "OrderBook": "Obchod",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1635,9 +1637,20 @@
             "repayMoreThanDebt": "Dluh přeplacen"
         }
     },
-    "calculatingText": "Vypočítávání",
-    "customisePageText": "Přizpůsobit stránku",
-    "priceChartText": "Cenový graf",
-    "editText": "Upravit",
-    "resetText": "Resetovat"
+    "accountSettings": {
+        "title": "Nastavení účtu",
+        "hint": "Můžete to povolit zpět v nastavení účtu",
+        "disable": "Zakázat",
+        "disabled": "Zakázáno pro",
+        "confirmation": {
+            "title": "Zakázat potvrzení transakce",
+            "description": "Vyskakovací obrazovka, která zobrazuje podrobnosti o transakcích před podpisem."
+        },
+        "signature": {
+            "title": "Zakázat potvrzení hesla",
+            "description": "Povolte nebo zakažte nutnost zadávat heslo během vyskakovacího okna podpisu v transakcích."
+        },
+        "enterPassword": "Zadejte heslo",
+        "googleOnly": "Pouze účty {Google}"
+    }
 }

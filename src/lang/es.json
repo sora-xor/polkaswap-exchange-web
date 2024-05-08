@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limitar órdenes canceladas",
             "Burn": "Quemado {amount} {symbol}",
             "Mint": "Acuñado {amount} {symbol} a {address}",
-            "CreateVault": "Bóveda {symbol}/{symbol2} creada",
-            "CloseVault": "Bóveda {symbol}/{symbol2} cerrada",
+            "CreateVault": "Bóveda {symbol}\/{symbol2} creada",
+            "CloseVault": "Bóveda {symbol}\/{symbol2} cerrada",
             "DepositCollateral": "Depositar {amount} {symbol}",
             "RepayVaultDebt": "Reembolsado {amount} {symbol}",
             "BorrowVaultDebt": "Deuda prestada {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "No se pudo cancelar la orden límite",
             "Burn": "No se pudo grabar {amount} {symbol}",
             "Mint": "No se pudo acuñar {amount} {symbol} en {address}",
-            "CreateVault": "Error al crear la bóveda {symbol}/{symbol2}",
-            "CloseVault": "Error al cerrar la bóveda {symbol}/{symbol2}",
+            "CreateVault": "Error al crear la bóveda {symbol}\/{symbol2}",
+            "CloseVault": "Error al cerrar la bóveda {symbol}\/{symbol2}",
             "DepositCollateral": "Error al depositar {amount} {symbol}",
             "RepayVaultDebt": "Error al reembolsar {amount} {symbol}",
             "BorrowVaultDebt": "Error al tomar prestada {amount} {symbol}"
@@ -413,7 +413,8 @@
         "AssetOwner": "Propietario del activo",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Bóvedas",
-        "VaultDetails": "Detalles de la bóveda"
+        "VaultDetails": "Detalles de la bóveda",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Intercambio",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Tarjeta",
         "OrderBook": "Comercio",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Precio por 1 {token}"
     },
+    "calculatingText": "Calculando",
+    "customisePageText": "Personalizar página",
+    "priceChartText": "Gráfico de precios",
+    "editText": "Editar",
+    "resetText": "Reiniciar",
     "kensetsu": {
         "addCollateral": "Añadir colateral",
         "addCollateralDescription": "Deposite más activos en su bóveda para aumentar su límite de endeudamiento o mejorar su ratio de préstamo-valor. Esto también puede ayudar a prevenir la liquidación.",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Deuda sobrepagada"
         }
     },
-    "calculatingText": "Calculando",
-    "customisePageText": "Personalizar página",
-    "priceChartText": "Gráfico de precios",
-    "editText": "Editar",
-    "resetText": "Reiniciar"
+    "accountSettings": {
+        "title": "Ajustes de la cuenta",
+        "hint": "Puedes habilitar esto nuevamente en la configuración de la cuenta.",
+        "disable": "Desactivar en",
+        "disabled": "Discapacitado por",
+        "confirmation": {
+            "title": "Deshabilitar la confirmación de la transacción",
+            "description": "Una pantalla emergente que muestra detalles sobre las transacciones antes de la firma."
+        },
+        "signature": {
+            "title": "Deshabilitar la confirmación de contraseña",
+            "description": "Habilite o deshabilite la necesidad de ingresar su contraseña durante la ventana emergente de firma en las transacciones."
+        },
+        "enterPassword": "Introduzca la contraseña",
+        "googleOnly": "Solo cuentas de {Google}"
+    }
 }

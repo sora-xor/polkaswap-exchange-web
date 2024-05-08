@@ -5,7 +5,7 @@ import { api, WALLET_CONSTS, getExplorerLinks } from '@soramitsu/soraneo-wallet-
 import scrollbarWidth from 'element-ui/src/utils/scrollbar-width';
 import debounce from 'lodash/debounce';
 
-import { app, ZeroStringValue } from '@/consts';
+import { app, TranslationConsts, ZeroStringValue } from '@/consts';
 import i18n from '@/lang';
 import router from '@/router';
 import store from '@/store';
@@ -272,9 +272,11 @@ export const getMobileCssClasses = () => {
 export const updateDocumentTitle = (to?: Route) => {
   const page = to ?? router.currentRoute;
   const pageName = page?.name;
+  const pageTitleKey = `pageTitle.${pageName}`;
   // TODO: update pageTitle list: remove duplicates, add missed / change logic
-  if (pageName && i18n.te(`pageTitle.${pageName}`)) {
-    document.title = `${i18n.t(`pageTitle.${pageName}`, WALLET_CONSTS.TranslationConsts)} - ${app.name}`;
+  if (pageName && i18n.te(pageTitleKey)) {
+    const pageTitleValue = i18n.t(pageTitleKey, TranslationConsts) as string;
+    document.title = `${pageTitleValue} - ${app.name}`;
   } else {
     document.title = app.title;
   }

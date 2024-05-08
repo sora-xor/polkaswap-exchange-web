@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limit order annullerade",
             "Burn": "Brände {amount} {symbol}",
             "Mint": "Minskade {amount} {symbol} till {address}",
-            "CreateVault": "Kassavalv {symbol}/{symbol2} skapat",
-            "CloseVault": "Kassavalv {symbol}/{symbol2} stängt",
+            "CreateVault": "Kassavalv {symbol}\/{symbol2} skapat",
+            "CloseVault": "Kassavalv {symbol}\/{symbol2} stängt",
             "DepositCollateral": "Säkerhet insatt {amount} {symbol}",
             "RepayVaultDebt": "Skuld återbetald {amount} {symbol}",
             "BorrowVaultDebt": "Skuld lånad {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Det gick inte att avbryta begränsningsordern",
             "Burn": "Det gick inte att bränna {amount} {symbol}",
             "Mint": "Det gick inte att prägla {amount} {symbol} till {address}",
-            "CreateVault": "Misslyckades med att skapa kassavalv {symbol}/{symbol2}",
-            "CloseVault": "Misslyckades med att stänga kassavalv {symbol}/{symbol2}",
+            "CreateVault": "Misslyckades med att skapa kassavalv {symbol}\/{symbol2}",
+            "CloseVault": "Misslyckades med att stänga kassavalv {symbol}\/{symbol2}",
             "DepositCollateral": "Misslyckades med att sätta in säkerhet {amount} {symbol}",
             "RepayVaultDebt": "Misslyckades med att betala tillbaka skuld {amount} {symbol}",
             "BorrowVaultDebt": "Misslyckades med att låna skuld {amount} {symbol}"
@@ -413,7 +413,8 @@
         "AssetOwner": "Tillgångens ägare",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Valv",
-        "VaultDetails": "Valv detaljer"
+        "VaultDetails": "Valv detaljer",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Byt",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Kort",
         "OrderBook": "Handel",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "Pris per 1 {token}"
     },
+    "calculatingText": "Beräknar",
+    "customisePageText": "Anpassa sidan",
+    "priceChartText": "Prisdiagram",
+    "editText": "Redigera",
+    "resetText": "Återställa",
     "kensetsu": {
         "addCollateral": "Lägg till säkerhet",
         "addCollateralDescription": "Sätt in fler tillgångar i din kassa för att öka din lånelimit eller förbättra din lån-till-värdeförhållande. Detta kan också hjälpa till att förhindra likvidation.",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Skuld överbetald"
         }
     },
-    "calculatingText": "Beräknar",
-    "customisePageText": "Anpassa sidan",
-    "priceChartText": "Prisdiagram",
-    "editText": "Redigera",
-    "resetText": "Återställa"
+    "accountSettings": {
+        "title": "Kontoinställningar",
+        "hint": "Du kan aktivera detta igen i kontoinställningarna",
+        "disable": "Inaktivera på",
+        "disabled": "Inaktiverad för",
+        "confirmation": {
+            "title": "Inaktivera transaktionsbekräftelse",
+            "description": "En popup-skärm som visar detaljer om transaktionerna innan undertecknandet."
+        },
+        "signature": {
+            "title": "Inaktivera lösenordsbekräftelse",
+            "description": "Aktivera eller inaktivera behovet av att ange ditt lösenord under signaturpopupen i transaktioner."
+        },
+        "enterPassword": "Skriv in lösenord",
+        "googleOnly": "Endast {Google} -konton"
+    }
 }

@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "限价订单已取消",
             "Burn": "烧毁{amount} {symbol}",
             "Mint": "铸造了{amount} {symbol}到{address}",
-            "CreateVault": "已创建 {symbol}/{symbol2} 保险库",
-            "CloseVault": "已关闭 {symbol}/{symbol2} 保险库",
+            "CreateVault": "已创建 {symbol}\/{symbol2} 保险库",
+            "CloseVault": "已关闭 {symbol}\/{symbol2} 保险库",
             "DepositCollateral": "已存入 {amount} {symbol}",
             "RepayVaultDebt": "已偿还债务 {amount} {symbol}",
             "BorrowVaultDebt": "已借入债务 {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "取消限价单失败",
             "Burn": "刻录{amount} {symbol}失败",
             "Mint": "无法将{amount} {symbol}铸造到{address}",
-            "CreateVault": "创建 {symbol}/{symbol2} 保险库失败",
-            "CloseVault": "关闭 {symbol}/{symbol2} 保险库失败",
+            "CreateVault": "创建 {symbol}\/{symbol2} 保险库失败",
+            "CloseVault": "关闭 {symbol}\/{symbol2} 保险库失败",
             "DepositCollateral": "存入 {amount} {symbol} 抵押品失败",
             "RepayVaultDebt": "偿还 {amount} {symbol} 债务失败",
             "BorrowVaultDebt": "借入 {amount} {symbol} 债务失败"
@@ -413,7 +413,8 @@
         "AssetOwner": "资产所有者",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "保险库",
-        "VaultDetails": "保险库详情"
+        "VaultDetails": "保险库详情",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "兑换",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora}卡",
         "OrderBook": "贸易",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "推特",
@@ -1574,6 +1576,11 @@
         },
         "pricePerToken": "每 1 个{token}价格"
     },
+    "calculatingText": "正在计算",
+    "customisePageText": "自定义页面",
+    "priceChartText": "价格走势图",
+    "editText": "编辑",
+    "resetText": "重置",
     "kensetsu": {
         "addCollateral": "增加抵押品",
         "addCollateralDescription": "将更多资产存入您的保险库，以增加您的借贷限额或改善您的贷款价值比。这也可以帮助防止清算。",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "偿还的债务过多"
         }
     },
-    "calculatingText": "正在计算",
-    "customisePageText": "自定义页面",
-    "priceChartText": "价格走势图",
-    "editText": "编辑",
-    "resetText": "重置"
+    "accountSettings": {
+        "title": "帐号设定",
+        "hint": "您可以在帐户设置中重新启用此功能",
+        "disable": "禁用",
+        "disabled": "禁用于",
+        "confirmation": {
+            "title": "禁用交易确认",
+            "description": "弹出屏幕显示签名前交易的详细信息。"
+        },
+        "signature": {
+            "title": "禁用密码确认",
+            "description": "启用或禁用在交易中签名弹出时输入密码的需要。"
+        },
+        "enterPassword": "请输入密码",
+        "googleOnly": "仅限{Google}帐户"
+    }
 }

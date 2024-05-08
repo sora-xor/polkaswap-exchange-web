@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Lệnh giới hạn bị hủy",
             "Burn": "Đã đốt {amount} {symbol}",
             "Mint": "Đã đúc {amount} {symbol} thành {address}",
-            "CreateVault": "Kho bảo {symbol}/{symbol2} đã được tạo",
-            "CloseVault": "Kho bảo {symbol}/{symbol2} đã được đóng",
+            "CreateVault": "Kho bảo {symbol}\/{symbol2} đã được tạo",
+            "CloseVault": "Kho bảo {symbol}\/{symbol2} đã được đóng",
             "DepositCollateral": "Đã nộp tài sản đảm bảo {amount} {symbol}",
             "RepayVaultDebt": "Đã trả nợ kho bảo {amount} {symbol}",
             "BorrowVaultDebt": "Đã vay nợ kho bảo {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Không hủy được lệnh giới hạn",
             "Burn": "Không ghi được {amount} {symbol}",
             "Mint": "Không đúc được {amount} {symbol} cho {address}",
-            "CreateVault": "Không thể tạo kho bảo {symbol}/{symbol2}",
-            "CloseVault": "Không thể đóng kho bảo {symbol}/{symbol2}",
+            "CreateVault": "Không thể tạo kho bảo {symbol}\/{symbol2}",
+            "CloseVault": "Không thể đóng kho bảo {symbol}\/{symbol2}",
             "DepositCollateral": "Không thể nộp tài sản đảm bảo {amount} {symbol}",
             "RepayVaultDebt": "Không thể trả nợ kho bảo {amount} {symbol}",
             "BorrowVaultDebt": "Không thể vay nợ kho bảo {amount} {symbol}"
@@ -413,7 +413,8 @@
         "AssetOwner": "Chủ tài sản",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Hầm",
-        "VaultDetails": "Chi tiết Vault"
+        "VaultDetails": "Chi tiết Vault",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Đổi",
@@ -429,7 +430,8 @@
         "SoraCard": "{Sora} Thẻ",
         "OrderBook": "Buôn bán",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
-        "VaultsContainer": "@:pageTitle.Vaults"
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1574,9 +1576,14 @@
         },
         "pricePerToken": "Giá mỗi 1 {token}"
     },
+    "calculatingText": "Đang tính toán",
+    "customisePageText": "Tùy chỉnh trang",
+    "priceChartText": "Biểu đồ giá",
+    "editText": "Chỉnh sửa",
+    "resetText": "Cài lại",
     "kensetsu": {
         "addCollateral": "Thêm tài sản đảm bảo",
-        "addCollateralDescription": "Gửi thêm tài sản vào ngăn kho của bạn để tăng giới hạn vay hoặc cải thiện tỷ lệ vay / giá trị cầm cố của bạn. Điều này cũng có thể giúp ngăn chặn thanh lý.",
+        "addCollateralDescription": "Gửi thêm tài sản vào ngăn kho của bạn để tăng giới hạn vay hoặc cải thiện tỷ lệ vay \/ giá trị cầm cố của bạn. Điều này cũng có thể giúp ngăn chặn thanh lý.",
         "depositCollateral": "Gửi tài sản đảm bảo",
         "totalCollateral": "Tổng tài sản đảm bảo",
         "totalCollateralDescription": "Tổng giá trị của tất cả các tài sản hiện đang được gửi vào ngăn kho của bạn. Giá trị này ảnh hưởng đến khả năng vay của bạn và rủi ro thanh lý.",
@@ -1588,7 +1595,7 @@
         "borrowMoreDescription": "Rút thêm tiền từ ngăn kho của bạn lên đến số tiền tối đa có sẵn. Đảm bảo giá trị đảm bảo của bạn hỗ trợ việc tăng nợ để tránh rủi ro thanh lý.",
         "available": "Có sẵn",
         "outstandingDebt": "Nợ chưa thanh toán",
-        "outstandingDebtDescription": "Tổng số tiền bạn hiện đang nợ từ các khoản tiền rút từ ngăn kho của bạn, bao gồm cả lãi phát sinh. Điều này cần được trả lại để đóng ngăn kho của bạn hoặc duy trì tỷ lệ vay / giá trị cầm cố khỏe mạnh.",
+        "outstandingDebtDescription": "Tổng số tiền bạn hiện đang nợ từ các khoản tiền rút từ ngăn kho của bạn, bao gồm cả lãi phát sinh. Điều này cần được trả lại để đóng ngăn kho của bạn hoặc duy trì tỷ lệ vay \/ giá trị cầm cố khỏe mạnh.",
         "createVault": "Mở vị trí vay",
         "createVaultDescription": "Khởi tạo một giao dịch mới bằng cách gửi tài sản đảm bảo vào két của bạn và rút tiền. Điều này tạo ra một nghĩa vụ nợ phải quản lý.",
         "createVaultAction": "Mở vị trí",
@@ -1635,9 +1642,20 @@
             "repayMoreThanDebt": "Nợ trả quá"
         }
     },
-    "calculatingText": "Đang tính toán",
-    "customisePageText": "Tùy chỉnh trang",
-    "priceChartText": "Biểu đồ giá",
-    "editText": "Chỉnh sửa",
-    "resetText": "Cài lại"
+    "accountSettings": {
+        "title": "Thiết lập tài khoản",
+        "hint": "Bạn có thể kích hoạt lại tính năng này trong cài đặt tài khoản",
+        "disable": "Tắt bật",
+        "disabled": "Bị vô hiệu hóa vì",
+        "confirmation": {
+            "title": "Vô hiệu hóa xác nhận giao dịch",
+            "description": "Màn hình bật lên hiển thị chi tiết về các giao dịch trước khi ký."
+        },
+        "signature": {
+            "title": "Vô hiệu hóa xác nhận mật khẩu",
+            "description": "Bật hoặc tắt yêu cầu nhập mật khẩu của bạn trong cửa sổ bật lên chữ ký trong giao dịch."
+        },
+        "enterPassword": "Nhập mật khẩu",
+        "googleOnly": "Chỉ tài khoản {Google}"
+    }
 }
