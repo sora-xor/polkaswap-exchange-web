@@ -13,7 +13,7 @@ export default class ConfirmDialogMixin extends Mixins(TranslationMixin) {
     this.confirmDialogVisibility = true;
   }
 
-  confirmOrExecute(signTxMethod: FnWithoutArgs): void {
+  confirmOrExecute(signTxMethod: FnWithoutArgs | AsyncFnWithoutArgs): void {
     if (this.isConfirmTxDisabled) {
       signTxMethod();
     } else {

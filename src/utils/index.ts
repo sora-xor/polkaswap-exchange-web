@@ -275,7 +275,8 @@ export const updateDocumentTitle = (to?: Route) => {
   const pageTitleKey = `pageTitle.${pageName}`;
   // TODO: update pageTitle list: remove duplicates, add missed / change logic
   if (pageName && i18n.te(pageTitleKey)) {
-    document.title = `${i18n.t(pageTitleKey, TranslationConsts)} - ${app.name}`;
+    const pageTitleValue = i18n.t(pageTitleKey, TranslationConsts) as string;
+    document.title = `${pageTitleValue} - ${app.name}`;
   } else {
     document.title = app.title;
   }
