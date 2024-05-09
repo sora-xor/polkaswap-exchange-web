@@ -291,7 +291,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
 <style lang="scss">
 @include explore-table;
 
-.collaterals-table.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
+.collaterals-table.explore-table.el-table.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
   background-color: rgba(42, 23, 31, 0.06);
   cursor: pointer;
 }
