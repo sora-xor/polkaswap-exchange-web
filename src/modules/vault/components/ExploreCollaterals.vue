@@ -1,14 +1,15 @@
 <template>
-  <div class="collaterals-container">
+  <div class="collaterals-container container">
     <s-table
       ref="table"
       :data="tableItems"
       :highlight-current-row="false"
       size="small"
       class="collaterals-table explore-table"
+      @cell-click="openSelectedPosition"
     >
       <!-- Index -->
-      <s-table-column width="270" label="#">
+      <s-table-column width="250" label="#">
         <template #header>
           <div class="explore-table-item-index">
             <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
@@ -16,20 +17,21 @@
             </span>
           </div>
           <div class="explore-table-item-info explore-table-item-info--head">
-            <span class="explore-table__primary">DEBT / COLLATERAL TOKEN</span>
+            <span class="explore-table__primary">DEBT / COLLATERAL</span>
           </div>
         </template>
         <template v-slot="{ $index, row }">
           <span class="explore-table-item-index explore-table-item-index--body">{{ $index + startIndex + 1 }}</span>
           <pair-token-logo
+            class="explore-table-item-logo"
+            size="small"
             :first-token="row.debtAsset"
             :second-token="row.lockedAsset"
-            size="small"
-            class="explore-table-item-logo"
           />
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.debtAsset.symbol }} / {{ row.lockedAsset.symbol }}</div>
           </div>
+          <s-icon v-if="isLoggedIn" name="arrows-arrow-top-right-24" size="12" />
         </template>
       </s-table-column>
       <!-- Stability Fee -->
@@ -43,19 +45,51 @@
           <span class="explore-table__accent">{{ row.stabilityFee }}</span>
         </template>
       </s-table-column>
-      <!-- Liquidation penalty -->
-      <s-table-column width="200" header-align="right" align="right">
+      <!-- Max LTV -->
+      <s-table-column width="120" header-align="right" align="right">
         <template #header>
-          <sort-button name="liquidationPenaltyValue" :sort="{ order, property }" @change-sort="changeSort">
+          <sort-button name="maxLtvValue" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">MAX LTV</span>
           </sort-button>
         </template>
         <template v-slot="{ row }">
-          <span class="explore-table__accent">{{ row.liquidationPenalty }}</span>
+          <span class="explore-table__accent">{{ row.maxLtv }}</span>
+        </template>
+      </s-table-column>
+      <!-- Total locked -->
+      <s-table-column min-width="180" header-align="right" align="right">
+        <template #header>
+          <sort-button name="totalLockedValue" :sort="{ order, property }" @change-sort="changeSort">
+            <span class="explore-table__primary">Total locked</span>
+          </sort-button>
+        </template>
+        <template v-slot="{ row }">
+          <div class="explore-table-item-tokens">
+            <div class="explore-table-cell">
+              <formatted-amount
+                class="explore-table-item-token"
+                :font-size-rate="FontSizeRate.SMALL"
+                :value="row.totalLocked"
+              />
+              <token-logo
+                class="explore-table-item-logo explore-table-item-logo--plain"
+                size="small"
+                :token="row.lockedAsset"
+              />
+            </div>
+            <div v-if="row.totalLockedFiat" class="explore-table-cell">
+              <formatted-amount
+                class="explore-table-item-token"
+                is-fiat-value
+                :font-size-rate="FontSizeRate.SMALL"
+                :value="row.totalLockedFiat"
+              />
+            </div>
+          </div>
         </template>
       </s-table-column>
       <!-- Total debt -->
-      <s-table-column width="180" header-align="right" align="right">
+      <s-table-column min-width="180" header-align="right" align="right">
         <template #header>
           <sort-button name="totalDebtValue" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">Total debt</span>
@@ -86,11 +120,11 @@
           </div>
         </template>
       </s-table-column>
-      <!-- Available to borrow -->
-      <s-table-column width="220" header-align="right" align="right">
+      <!-- Available -->
+      <s-table-column min-width="180" header-align="right" align="right">
         <template #header>
           <sort-button name="availableToBorrowValue" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="explore-table__primary">Available to borrow</span>
+            <span class="explore-table__primary">Available</span>
           </sort-button>
         </template>
         <template v-slot="{ row }">
@@ -116,15 +150,6 @@
               />
             </div>
           </div>
-        </template>
-      </s-table-column>
-      <!-- Actions -->
-      <s-table-column width="100" header-align="right" align="right">
-        <template v-slot="{ row }">
-          <s-button class="s-typography-button--small" type="primary" size="small" @click="openSelectedPosition(row)">
-            <s-icon name="finance-send-24" size="16" />
-            {{ t('kensetsu.borrowMore') }}
-          </s-button>
         </template>
       </s-table-column>
     </s-table>
@@ -159,14 +184,17 @@ type TableItem = {
   debtAsset: RegisteredAccountAsset;
   stabilityFeeValue: number;
   stabilityFee: string;
+  totalLockedValue: number;
+  totalLocked: string;
+  totalLockedFiat: Nullable<string>;
   totalDebtValue: number;
   totalDebt: string;
   totalDebtFiat: Nullable<string>;
   availableToBorrowValue: number;
   availableToBorrow: string;
   availableToBorrowFiat: Nullable<string>;
-  liquidationPenalty: string;
-  liquidationPenaltyValue: number;
+  maxLtv: string;
+  maxLtvValue: number;
 };
 
 @Component({
@@ -198,35 +226,52 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
     return Object.entries(this.collaterals).reduce<TableItem[]>((acc, [collateralAssetId, collateral]) => {
       const lockedAsset = this.getAsset(collateralAssetId);
       if (!lockedAsset) return acc;
+      const lockedPrice = this.getFPNumberFiatAmountByFPNumber(FPNumber.ONE, lockedAsset);
+      const debtPrice = this.getFPNumberFiatAmountByFPNumber(FPNumber.ONE, debtAsset);
 
       const stabilityFeeValue = collateral.riskParams.stabilityFeeAnnual.toNumber();
       const stabilityFee = this.formatPercent(stabilityFeeValue);
 
-      const liquidationPenaltyValue = collateral.riskParams.liquidationRatioReversed;
-      const liquidationPenalty = this.formatPercent(liquidationPenaltyValue);
+      const maxLtvValue = collateral.riskParams.liquidationRatioReversed;
+      const maxLtv = this.formatPercent(maxLtvValue);
 
-      const totalDebtValue = collateral.kusdSupply.toNumber();
-      const totalDebt = collateral.kusdSupply.dp(2).toString();
-      const totalDebtFiat = this.getFiatAmount(totalDebt, debtAsset);
+      const totalLocked = collateral.totalLocked.toLocaleString(2);
+      const totalLockedFiatFp = lockedPrice ? collateral.totalLocked.mul(lockedPrice) : this.Zero;
+      const totalLockedValue = totalLockedFiatFp.toNumber();
+      const totalLockedFiat = totalLockedFiatFp.toLocaleString(2);
 
+      const totalDebt = collateral.kusdSupply.toLocaleString(2);
+      const totalDebtFiatFp = debtPrice ? collateral.kusdSupply.mul(debtPrice) : this.Zero;
+      const totalDebtValue = totalDebtFiatFp.toNumber();
+      const totalDebtFiat = totalDebtFiatFp.toLocaleString(2);
+
+      let availableToBorrowValue = 0;
+      let availableToBorrow = '0';
+      let availableToBorrowFiat: Nullable<string> = '0';
       const availableToBorrowFp = collateral.riskParams.hardCap.sub(collateral.kusdSupply);
-      const availableToBorrowValue = availableToBorrowFp.toNumber();
-      const availableToBorrow = availableToBorrowFp.dp(2).toString();
-      const availableToBorrowFiat = this.getFiatAmount(availableToBorrow, debtAsset);
+      if (availableToBorrowFp.isGtZero()) {
+        availableToBorrow = availableToBorrowFp.toLocaleString(2);
+        const availableToBorrowFiatFp = debtPrice ? availableToBorrowFp.mul(debtPrice) : this.Zero;
+        availableToBorrowValue = availableToBorrowFiatFp.toNumber();
+        availableToBorrowFiat = availableToBorrowFiatFp.toLocaleString(2);
+      }
 
       acc.push({
         lockedAsset,
         debtAsset,
         stabilityFeeValue,
         stabilityFee,
+        totalLockedValue,
+        totalLocked,
+        totalLockedFiat,
         totalDebtValue,
         totalDebt,
         totalDebtFiat,
         availableToBorrowValue,
         availableToBorrow,
         availableToBorrowFiat,
-        liquidationPenalty,
-        liquidationPenaltyValue,
+        maxLtv,
+        maxLtvValue,
       });
       return acc;
     }, []);
@@ -238,13 +283,18 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
   }
 
   openSelectedPosition(row: TableItem): void {
-    // Do nothing
+    this.$emit('open', row.lockedAsset, row.debtAsset);
   }
 }
 </script>
 
 <style lang="scss">
 @include explore-table;
+
+.collaterals-table.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
+  background-color: rgba(42, 23, 31, 0.06);
+  cursor: pointer;
+}
 </style>
 
 <style lang="scss" scoped>
@@ -255,11 +305,15 @@ $container-max-width: 75vw;
     display: flex;
     flex-flow: column nowrap;
     gap: $inner-spacing-medium;
-    margin: $inner-spacing-big $inner-spacing-big 0;
+    padding: $inner-spacing-big 0;
 
     @include tablet {
       max-width: $container-max-width;
     }
   }
+}
+.explore-table-pagination {
+  margin-left: $inner-spacing-big;
+  margin-right: $inner-spacing-big;
 }
 </style>

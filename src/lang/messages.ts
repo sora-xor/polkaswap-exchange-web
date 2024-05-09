@@ -90,7 +90,7 @@ export default {
     [StakingPageNames.Staking]: 'Staking',
     [DashboardPageNames.AssetOwner]: 'Asset owner',
     [DashboardPageNames.AssetOwnerDetails]: '@:pageTitle.AssetOwner',
-    [VaultPageNames.Vaults]: 'Vaults',
+    [VaultPageNames.Vaults]: 'Borrow',
     [VaultPageNames.VaultDetails]: 'Vault details',
   },
   mainMenu: {
@@ -107,7 +107,7 @@ export default {
     [PageNames.StakingContainer]: 'Staking',
     [PageNames.SoraCard]: '{Sora} Card',
     [PageNames.AssetOwnerContainer]: 'Asset owner',
-    [PageNames.VaultsContainer]: 'Vaults',
+    [PageNames.VaultsContainer]: 'Borrow',
   },
   alerts: {
     [AlertTypeTabs.Drop]: 'Drops below',
@@ -1182,7 +1182,7 @@ export default {
     createVault: 'Open a borrow position',
     createVaultDescription:
       'Initiate a new transaction by depositing collateral into your vault and drawing funds. This creates a debt obligation that you must manage.',
-    createVaultAction: 'Open position',
+    createVaultAction: 'Borrow',
     borrowDebt: 'Borrow debt',
     minDepositCollateral: 'Min. deposit collateral',
     minDepositCollateralDescription:

@@ -265,7 +265,7 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/vaults',
+    path: '/borrow',
     component: lazyView(PageNames.VaultsContainer),
     children: [
       {
@@ -318,7 +318,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/kensetsu',
-    redirect: '/vaults',
+    redirect: '/borrow',
   },
   {
     path: '*',

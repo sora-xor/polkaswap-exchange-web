@@ -172,7 +172,9 @@ export default class CreateVaultDialog extends Mixins(
     await this.$nextTick();
     this.collateralValue = '';
     this.borrowValue = '';
-    this.setCollateralAddress();
+    if (!value) {
+      this.setCollateralAddress();
+    }
     this.showSelectTokenDialog = false;
     this.collateralInput?.focus();
   }

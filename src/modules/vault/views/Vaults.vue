@@ -1,183 +1,161 @@
 <template>
   <div class="vaults-container">
-    <div v-if="isNotLoggedInOrEmptyVaults" class="no-vaults s-flex-column">
-      <s-form class="no-vaults__main container el-form--actions" :show-message="false">
-        <generic-page-header class="no-vaults__page-header centered" bold :title="t('kensetsu.introTitle')" />
-        <p class="no-vaults__description centered p4">
-          {{ t('kensetsu.introDescription') }}
-        </p>
+    <s-row class="vaults-header">
+      <s-col :xs="12" :sm="6" :md="6" :lg="6">
+        <h2 class="vaults-header__title s-flex">
+          Kensetsu
+          <s-tooltip
+            slot="suffix"
+            border-radius="mini"
+            :content="t('kensetsu.introDescription')"
+            placement="top"
+            tabindex="-1"
+          >
+            <s-icon class="vaults-header__title-icon" name="info-16" size="16px" />
+          </s-tooltip>
+        </h2>
+      </s-col>
+      <s-col class="s-flex vaults-header__action-container" :xs="12" :sm="6" :md="6" :lg="6">
         <s-button
-          v-if="!isLoggedIn"
+          v-if="isLoggedIn"
+          class="vaults-header__action s-typography-button--large"
+          icon="various-atom-24"
           type="primary"
-          class="action-button s-typography-button--large"
+          @click="handleCreateVault"
+        >
+          {{ t('kensetsu.createVaultAction') }}
+        </s-button>
+        <s-button
+          v-else
+          class="vaults-header__action s-typography-button--large"
+          type="primary"
           @click="handleConnectWallet"
         >
           {{ t('connectWalletText') }}
         </s-button>
-        <s-button v-else type="primary" class="action-button s-typography-button--large" @click="handleCreateVault">
-          {{ t('kensetsu.createVaultAction') }}
-        </s-button>
-        <s-button class="action-button s-typography-button--large" @click="handleExploreVaults">
-          VIEW STRATEGIES
-        </s-button>
-      </s-form>
-      <s-card class="no-vaults__info" border-radius="small" shadow="always" size="medium" pressed>
-        <div class="no-vaults__info-content s-flex-column">
-          <h4>{{ t('disclaimerTitle') }}</h4>
-          <div class="no-vaults__info-desc s-flex">
-            <p class="no-vaults__description p4">
-              {{ t('kensetsu.disclaimerDescription') }}
-            </p>
-            <div class="no-vaults__info-badge">
-              <s-icon class="no-vaults__info-icon" name="notifications-alert-triangle-24" size="24" />
-            </div>
+      </s-col>
+    </s-row>
+    <s-row v-if="hasVaults" class="vaults-content">
+      <s-col v-for="vault in vaultsData" :key="'vault_' + vault.id" :xs="12" :sm="6" :md="6" :lg="4">
+        <s-card
+          class="vault"
+          border-radius="small"
+          shadow="always"
+          size="big"
+          primary
+          clickable
+          @click="handleOpenVaultDetails(vault)"
+        >
+          <div class="vault-title s-flex">
+            <pair-token-logo
+              :first-token="kusdToken"
+              :second-token="vault.lockedAsset"
+              size="medium"
+              class="vault-title__icon"
+            />
+            <h3 class="vault-title__name">{{ getVaultTitle(vault.lockedAsset) }}</h3>
+            <s-button type="action" size="small" alternative :tooltip="t('assets.details')">
+              <s-icon name="arrows-chevron-right-rounded-24" size="24" />
+            </s-button>
           </div>
-          <external-link class="p4 link" title="Read more" :href="link" />
-        </div>
-      </s-card>
-    </div>
-    <template v-else>
-      <s-row class="has-vaults">
-        <s-col :xs="12" :sm="12" :md="4" :lg="6">
-          <h2 class="has-vaults__title s-flex">
-            Kensetsu
-            <s-tooltip
-              slot="suffix"
-              border-radius="mini"
-              :content="t('kensetsu.introDescription')"
-              placement="top"
-              tabindex="-1"
-            >
-              <s-icon class="has-vaults__title-icon" name="info-16" size="16px" />
-            </s-tooltip>
-          </h2>
-        </s-col>
-        <s-col class="s-flex has-vaults__action-container" :xs="12" :sm="12" :md="8" :lg="6">
-          <s-button class="s-typography-button--large has-vaults__action" type="tertiary" @click="handleExploreVaults">
-            EXPLORE POSITIONS
-          </s-button>
-          <s-button
-            class="s-typography-button--large has-vaults__action"
-            icon="various-atom-24"
-            type="secondary"
-            @click="handleCreateVault"
-          >
-            {{ t('kensetsu.createVaultAction') }}
-          </s-button>
-        </s-col>
-      </s-row>
-      <s-row>
-        <s-col v-for="vault in vaultsData" :key="'vault_' + vault.id" :xs="12" :sm="6" :md="6" :lg="4">
-          <s-card
-            class="vault"
-            border-radius="small"
-            shadow="always"
-            size="big"
-            primary
-            clickable
-            @click="handleOpenVaultDetails(vault)"
-          >
-            <div class="vault-title s-flex">
-              <pair-token-logo
-                :first-token="kusdToken"
-                :second-token="vault.lockedAsset"
-                size="medium"
-                class="vault-title__icon"
-              />
-              <h3 class="vault-title__name">{{ getVaultTitle(vault.lockedAsset) }}</h3>
-              <s-button type="action" size="small" alternative :tooltip="t('assets.details')">
-                <s-icon name="arrows-chevron-right-rounded-24" size="24" />
-              </s-button>
-            </div>
-            <div class="vault-details s-flex">
-              <div class="vault-details__item s-flex-column">
-                <p class="p3 vault__label">
-                  {{ t('kensetsu.yourCollateral') }}
-                  <s-tooltip
-                    slot="suffix"
-                    border-radius="mini"
-                    :content="t('kensetsu.yourCollateralDescription')"
-                    placement="top"
-                    tabindex="-1"
-                  >
-                    <s-icon name="info-16" size="12px" />
-                  </s-tooltip>
-                </p>
-                <formatted-amount
-                  v-if="vault.lockedAsset"
-                  :value="format(vault.lockedAmount)"
-                  :asset-symbol="getLockedSymbol(vault.lockedAsset)"
-                />
-                <formatted-amount
-                  v-if="vault.lockedAsset"
-                  is-fiat-value
-                  :value="formatFiat(vault.lockedAmount, vault.lockedAsset)"
-                />
-              </div>
-              <div class="vault-details__item s-flex-column">
-                <p class="p3 vault__label">
-                  {{ t('kensetsu.yourDebt') }}
-                  <s-tooltip
-                    slot="suffix"
-                    border-radius="mini"
-                    :content="t('kensetsu.yourDebtDescription')"
-                    placement="top"
-                    tabindex="-1"
-                  >
-                    <s-icon name="info-16" size="12px" />
-                  </s-tooltip>
-                </p>
-                <formatted-amount v-if="kusdToken" :value="format(vault.debt)" :asset-symbol="kusdSymbol" />
-                <formatted-amount v-if="kusdToken" is-fiat-value :value="formatFiat(vault.debt, kusdToken)" />
-              </div>
-              <div class="vault-details__item s-flex-column">
-                <p class="p3 vault__label">
-                  {{ t('kensetsu.availableToBorrow') }}
-                  <s-tooltip
-                    slot="suffix"
-                    border-radius="mini"
-                    :content="t('kensetsu.availableToBorrowDescription')"
-                    placement="top"
-                    tabindex="-1"
-                  >
-                    <s-icon name="info-16" size="12px" />
-                  </s-tooltip>
-                </p>
-                <formatted-amount v-if="kusdToken" :value="format(vault.available)" :asset-symbol="kusdSymbol" />
-                <formatted-amount v-if="kusdToken" is-fiat-value :value="formatFiat(vault.available, kusdToken)" />
-              </div>
-            </div>
-            <s-divider />
-            <div class="vault__ltv s-flex">
+          <div class="vault-details s-flex">
+            <div class="vault-details__item s-flex-column">
               <p class="p3 vault__label">
-                {{ t('kensetsu.ltv') }}
+                {{ t('kensetsu.yourCollateral') }}
                 <s-tooltip
                   slot="suffix"
                   border-radius="mini"
-                  :content="t('kensetsu.ltvDescription')"
+                  :content="t('kensetsu.yourCollateralDescription')"
                   placement="top"
                   tabindex="-1"
                 >
                   <s-icon name="info-16" size="12px" />
                 </s-tooltip>
               </p>
-              <span class="vault__ltv-value s-flex">
-                <template v-if="vault.ltv">
-                  {{ format(vault.ltv) }}%
-                  <value-status class="vault__ltv-badge" badge :value="toNumber(vault.ltv)" :getStatus="getLtvStatus">
-                    {{ getLtvText(vault.ltv) }}
-                  </value-status>
-                </template>
-                <template v-else>n/a</template>
-              </span>
+              <formatted-amount
+                v-if="vault.lockedAsset"
+                :value="format(vault.lockedAmount)"
+                :asset-symbol="getLockedSymbol(vault.lockedAsset)"
+              />
+              <formatted-amount
+                v-if="vault.lockedAsset"
+                is-fiat-value
+                :value="formatFiat(vault.lockedAmount, vault.lockedAsset)"
+              />
             </div>
-          </s-card>
-        </s-col>
-      </s-row>
-    </template>
-    <s-card class="vaults-stats" border-radius="small" shadow="always" size="medium" pressed>
-      <explore-collaterals />
-    </s-card>
+            <div class="vault-details__item s-flex-column">
+              <p class="p3 vault__label">
+                {{ t('kensetsu.yourDebt') }}
+                <s-tooltip
+                  slot="suffix"
+                  border-radius="mini"
+                  :content="t('kensetsu.yourDebtDescription')"
+                  placement="top"
+                  tabindex="-1"
+                >
+                  <s-icon name="info-16" size="12px" />
+                </s-tooltip>
+              </p>
+              <formatted-amount v-if="kusdToken" :value="format(vault.debt)" :asset-symbol="kusdSymbol" />
+              <formatted-amount v-if="kusdToken" is-fiat-value :value="formatFiat(vault.debt, kusdToken)" />
+            </div>
+            <div class="vault-details__item s-flex-column">
+              <p class="p3 vault__label">
+                {{ t('kensetsu.availableToBorrow') }}
+                <s-tooltip
+                  slot="suffix"
+                  border-radius="mini"
+                  :content="t('kensetsu.availableToBorrowDescription')"
+                  placement="top"
+                  tabindex="-1"
+                >
+                  <s-icon name="info-16" size="12px" />
+                </s-tooltip>
+              </p>
+              <formatted-amount v-if="kusdToken" :value="format(vault.available)" :asset-symbol="kusdSymbol" />
+              <formatted-amount v-if="kusdToken" is-fiat-value :value="formatFiat(vault.available, kusdToken)" />
+            </div>
+          </div>
+          <s-divider />
+          <div class="vault__ltv s-flex">
+            <p class="p3 vault__label">
+              {{ TranslationConsts.LTV }}
+              <s-tooltip
+                slot="suffix"
+                border-radius="mini"
+                :content="t('kensetsu.ltvDescription')"
+                placement="top"
+                tabindex="-1"
+              >
+                <s-icon name="info-16" size="12px" />
+              </s-tooltip>
+            </p>
+            <span class="vault__ltv-value s-flex">
+              <template v-if="vault.ltv">
+                {{ format(vault.ltv) }}%
+                <value-status class="vault__ltv-badge" badge :value="toNumber(vault.ltv)" :getStatus="getLtvStatus">
+                  {{ getLtvText(vault.ltv) }}
+                </value-status>
+              </template>
+              <template v-else>n/a</template>
+            </span>
+          </div>
+        </s-card>
+      </s-col>
+    </s-row>
+    <explore-collaterals class="vaults-stats" @open="handleCreateSelectedVault" />
+    <div class="vaults-disclaimer s-flex">
+      <div class="disclaimer s-flex-column">
+        <div class="disclaimer__title s-flex">
+          <div class="disclaimer__badge">
+            <s-icon class="disclaimer__icon" name="notifications-alert-triangle-24" size="14" />
+          </div>
+          <h4>{{ t('disclaimerTitle') }}</h4>
+        </div>
+        <p class="disclaimer__description p4">{{ t('kensetsu.disclaimerDescription') }}</p>
+        <external-link class="disclaimer__link p4" title="Read more" :href="link" />
+      </div>
+    </div>
     <create-vault-dialog :visible.sync="showCreateVaultDialog" />
   </div>
 </template>
@@ -192,7 +170,7 @@ import { LtvTranslations, VaultComponents, VaultPageNames } from '@/modules/vaul
 import { vaultLazyComponent } from '@/modules/vault/router';
 import { getLtvStatus } from '@/modules/vault/util';
 import router, { lazyComponent } from '@/router';
-import { state, getter } from '@/store/decorators';
+import { state, getter, action } from '@/store/decorators';
 
 import type { FPNumber, CodecString } from '@sora-substrate/math';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -222,10 +200,12 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
   @state.vault.averageCollateralPrices private averageCollateralPrices!: Record<string, Nullable<FPNumber>>;
   @state.vault.borrowTax private borrowTax!: number;
 
+  @action.vault.setCollateralTokenAddress private selectCollateral!: (address?: string) => Promise<void>;
+
   showCreateVaultDialog = false;
 
-  get isNotLoggedInOrEmptyVaults(): boolean {
-    return !(this.isLoggedIn && this.vaults.length);
+  get hasVaults(): boolean {
+    return this.isLoggedIn && !!this.vaults.length;
   }
 
   get kusdSymbol(): string {
@@ -288,6 +268,14 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
     this.showCreateVaultDialog = true;
   }
 
+  async handleCreateSelectedVault(
+    lockedAsset: RegisteredAccountAsset,
+    debtAsset: RegisteredAccountAsset
+  ): Promise<void> {
+    await this.selectCollateral(lockedAsset.address);
+    this.showCreateVaultDialog = true;
+  }
+
   handleOpenVaultDetails(vault: Vault): void {
     router.push({ name: VaultPageNames.VaultDetails, params: { vault: `${vault.id}` } });
   }
@@ -310,106 +298,72 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
       margin-left: 0;
     }
   }
-  &-stats {
-    background-color: var(--s-color-utility-surface);
-  }
-}
-.no-vaults {
-  align-items: center;
 
-  &__page-header {
-    @include mobile {
-      padding: 0;
-    }
-    @include large-mobile {
-      padding: 0 5em;
-    }
-  }
-
-  .el-form--actions {
-    @include buttons;
-    @include full-width-button('action-button');
-    flex: 1;
-    width: 100%;
-
-    .action-button + .action-button {
-      margin-left: 0;
-    }
-  }
-
-  &__description {
-    font-size: 13px;
-  }
-
-  &__info {
-    margin-top: $basic-spacing;
-    max-width: $inner-window-width;
-    width: 100%;
-    flex: 1;
-
-    &-desc {
-      margin-top: $inner-spacing-mini;
-      align-items: flex-start;
-      .no-vaults__description {
-        flex: 1;
+  &-header {
+    @media (max-width: 639px) {
+      // responsive breakpoint from DS
+      &__action-container {
+        flex-direction: column;
+      }
+      &__action + &__action {
+        margin-left: 0;
       }
     }
 
-    &-badge {
-      border-radius: 50%;
-      background-color: var(--s-color-status-info);
-      padding: $inner-spacing-mini;
-      box-shadow: var(--s-shadow-element-pressed);
-      margin-left: $inner-spacing-mini;
-    }
-
-    &-icon {
-      color: white;
-    }
-  }
-
-  .centered {
-    text-align: center;
-  }
-
-  .link {
-    @include focus-outline;
-    font-size: var(--s-heading6-font-size);
-    margin-top: $inner-spacing-mini;
-    color: var(--s-color-status-info);
-  }
-}
-
-.has-vaults {
-  @include desktop {
     &__action-container {
       justify-content: flex-end;
     }
-  }
 
-  @media (max-width: 639px) {
-    // responsive breakpoint from DS
-    &__action-container {
-      flex-direction: column;
+    &__action {
+      margin-right: $inner-spacing-big;
     }
-    &__action + &__action {
-      margin-left: 0;
+
+    &__title,
+    &__action {
+      margin-bottom: $inner-spacing-big;
+    }
+
+    &__title {
+      align-items: center;
+      &-icon {
+        margin-left: 4px;
+      }
     }
   }
 
-  &__action {
-    margin-right: $inner-spacing-big;
-  }
-
-  &__title,
-  &__action {
+  &-content,
+  &-stats {
     margin-bottom: $inner-spacing-big;
   }
 
-  &__title {
-    align-items: center;
-    &-icon {
-      margin-left: 4px;
+  &-disclaimer {
+    justify-content: center;
+    .disclaimer {
+      max-width: $inner-window-width;
+      align-items: center;
+      &__title {
+        align-items: center;
+        margin-bottom: $inner-spacing-medium;
+      }
+      &__icon {
+        color: white;
+      }
+      &__badge {
+        border-radius: 50%;
+        background-color: var(--s-color-status-info);
+        padding: 6px $inner-spacing-mini;
+        box-shadow: var(--s-shadow-element-pressed);
+        margin-right: $inner-spacing-mini;
+      }
+      &__description {
+        text-align: center;
+      }
+      &__link {
+        @include focus-outline;
+        font-size: var(--s-heading6-font-size);
+        margin-top: $inner-spacing-mini;
+        color: var(--s-color-status-info);
+      }
     }
   }
 }

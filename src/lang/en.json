@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Asset owner",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Vaults",
+        "Vaults": "Borrow",
         "VaultDetails": "Vault Details",
         "Kensetsu": "{Kensetsu}"
     },
@@ -1598,7 +1598,7 @@
         "outstandingDebtDescription": "The total amount you currently owe from the funds drawn from your vault, including accrued interest. This needs to be repaid to close your vault or maintain healthy loan-to-value ratios.",
         "createVault": "Open a borrow position",
         "createVaultDescription": "Initiate a new transaction by depositing collateral into your vault and drawing funds. This creates a debt obligation that you must manage.",
-        "createVaultAction": "Open position",
+        "createVaultAction": "Borrow",
         "borrowDebt": "Borrow debt",
         "minDepositCollateral": "Min. deposit collateral",
         "minDepositCollateralDescription": "The minimum amount of assets required to open a vault. This initial deposit secures the funds you wish to borrow.",
