@@ -58,6 +58,7 @@
               <s-icon name="arrows-chevron-right-rounded-24" size="24" />
             </s-button>
           </div>
+          <s-divider class="vault-title__divider" />
           <div class="vault-details s-flex">
             <div class="vault-details__item s-flex-column">
               <p class="p3 vault__label">
@@ -380,6 +381,10 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
       flex: 1;
       margin: 0 $inner-spacing-mini;
       @include text-ellipsis;
+    }
+
+    &__divider {
+      margin-bottom: 0;
     }
   }
 
