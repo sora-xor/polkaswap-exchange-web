@@ -131,8 +131,8 @@
               </s-tooltip>
             </p>
             <span class="vault__ltv-value s-flex">
-              <template v-if="vault.ltv">
-                {{ format(vault.ltv) }}%
+              <template v-if="vault.ltv && vault.adjustedLtv">
+                {{ format(vault.adjustedLtv) }}%
                 <value-status class="vault__ltv-badge" badge :value="toNumber(vault.ltv)" :getStatus="getLtvStatus">
                   {{ getLtvText(vault.ltv) }}
                 </value-status>
@@ -218,13 +218,15 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
       const collateral = this.collaterals[vault.lockedAssetId];
       const averagePrice = this.averageCollateralPrices[vault.lockedAssetId] ?? this.Zero;
       const collateralVolume = averagePrice.mul(vault.lockedAmount);
-      const maxSafeDebt = collateralVolume.mul(collateral?.riskParams.liquidationRatioReversed ?? 0).div(HundredNumber);
+      const ratio = collateral?.riskParams.liquidationRatioReversed ?? 0;
+      const maxSafeDebt = collateralVolume.mul(ratio).div(HundredNumber);
       const maxSafeDebtWithoutTax = maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
       const ltvCoeff = vault.debt.div(maxSafeDebt);
       const ltv = ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
+      const adjustedLtv = ltv ? ltvCoeff.mul(ratio) : null;
       const availableCoeff = maxSafeDebtWithoutTax.sub(vault.debt);
       const available = !availableCoeff.isFinity() || availableCoeff.isLteZero() ? this.Zero : availableCoeff;
-      return { ...vault, lockedAsset, ltv, available };
+      return { ...vault, lockedAsset, ltv, adjustedLtv, available };
     });
   }
 
@@ -261,8 +263,6 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
   handleConnectWallet(): void {
     router.push({ name: PageNames.Wallet });
   }
-
-  handleExploreVaults(): void {}
 
   handleCreateVault(): void {
     this.showCreateVaultDialog = true;

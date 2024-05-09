@@ -184,6 +184,10 @@ export default class CreateVaultDialog extends Mixins(
     return this.collaterals[this.collateralToken.address];
   }
 
+  private get collaterizationRatio(): number {
+    return this.collateral ? this.collateral.riskParams.liquidationRatioReversed : HundredNumber;
+  }
+
   private get xorBalance(): FPNumber {
     return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
   }
@@ -361,11 +365,14 @@ export default class CreateVaultDialog extends Mixins(
     return maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
   }
 
-  get ltv(): Nullable<FPNumber> {
+  private get ltvCoeff(): Nullable<FPNumber> {
     if (this.isCollateralZero) return null;
     if (this.isBorrowZero) return this.Zero;
-    const ltv = this.borrowValueFp.div(this.maxBorrowPerCollateralValue);
-    return ltv.isFinity() ? ltv.mul(HundredNumber) : null;
+    return this.borrowValueFp.div(this.maxBorrowPerCollateralValue);
+  }
+
+  get ltv(): Nullable<FPNumber> {
+    return this.ltvCoeff?.isFinity() ? this.ltvCoeff.mul(HundredNumber) : null;
   }
 
   get ltvNumber(): number {
@@ -374,8 +381,8 @@ export default class CreateVaultDialog extends Mixins(
   }
 
   get formattedLtv(): string {
-    if (!this.ltv) return ZeroStringValue;
-    return this.ltv.toLocaleString(2);
+    if (!this.ltvCoeff) return ZeroStringValue;
+    return this.ltvCoeff.mul(this.collaterizationRatio).toLocaleString(2);
   }
 
   get ltvText(): string {

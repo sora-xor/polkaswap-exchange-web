@@ -194,24 +194,27 @@
       :visible.sync="showAddCollateralDialog"
       :vault="vault"
       :asset="lockedAsset"
-      :prev-ltv="ltv"
+      :prev-ltv="adjustedLtv"
       :prev-available="availableToBorrow"
       :collateral="collateral"
+      :collaterization-ratio="collaterizationRatio"
       :average-collateral-price="averageCollateralPrice"
     />
     <borrow-more-dialog
       :visible.sync="showBorrowMoreDialog"
       :vault="vault"
-      :prev-ltv="ltv"
+      :prev-ltv="adjustedLtv"
       :available="availableToBorrow"
       :max-safe-debt="maxSafeDebtWithoutTax"
+      :collaterization-ratio="collaterizationRatio"
     />
     <repay-debt-dialog
       :visible.sync="showRepayDebtDialog"
       :vault="vault"
-      :prev-ltv="ltv"
+      :prev-ltv="adjustedLtv"
       :available="availableToBorrow"
       :max-safe-debt="maxSafeDebt"
+      :collaterization-ratio="collaterizationRatio"
     />
     <close-vault-dialog
       :visible.sync="showCloseVaultDialog"
@@ -316,10 +319,22 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     return this.maxSafeDebt.sub(this.maxSafeDebt.mul(this.borrowTax));
   }
 
-  get ltv(): Nullable<FPNumber> {
+  private get ltvCoeff(): Nullable<FPNumber> {
     if (!(this.maxSafeDebt && this.vault)) return null;
-    const ltvCoeff = this.vault.debt.div(this.maxSafeDebt);
-    return ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
+    return this.vault.debt.div(this.maxSafeDebt);
+  }
+
+  get collaterizationRatio(): number {
+    return this.collateral?.riskParams.liquidationRatioReversed ?? HundredNumber;
+  }
+
+  get adjustedLtv(): Nullable<FPNumber> {
+    if (!this.ltvCoeff) return null;
+    return this.ltvCoeff.mul(this.collaterizationRatio);
+  }
+
+  get ltv(): Nullable<FPNumber> {
+    return this.ltvCoeff?.isFinity() ? this.ltvCoeff.mul(HundredNumber) : null;
   }
 
   get ltvNumber(): number {
@@ -327,7 +342,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get formattedLtv(): string {
-    const percent = this.ltv?.div(HundredNumber).toNumber() ?? 0;
+    const percent = this.adjustedLtv?.div(HundredNumber).toNumber() ?? 0;
     return this.percentFormat?.format?.(percent) ?? `${percent * HundredNumber}%`;
   }
 

@@ -106,6 +106,7 @@ export default class AddCollateralDialog extends Mixins(
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: Nullable<FPNumber>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevAvailable!: FPNumber;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly averageCollateralPrice!: FPNumber;
+  @Prop({ type: Number, default: HundredNumber }) readonly collaterizationRatio!: number;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.vault.borrowTax private borrowTax!: number;
@@ -247,10 +248,13 @@ export default class AddCollateralDialog extends Mixins(
     return collateralVolume.mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0).div(HundredNumber);
   }
 
-  get ltv(): Nullable<FPNumber> {
+  private get ltvCoeff(): Nullable<FPNumber> {
     if (!(this.maxSafeDebt && this.vault)) return null;
-    const ltvCoeff = this.vault.debt.div(this.maxSafeDebt);
-    return ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
+    return this.vault.debt.div(this.maxSafeDebt);
+  }
+
+  get ltv(): Nullable<FPNumber> {
+    return this.ltvCoeff?.isFinity() ? this.ltvCoeff.mul(HundredNumber) : null;
   }
 
   get ltvNumber(): number {
@@ -259,8 +263,8 @@ export default class AddCollateralDialog extends Mixins(
   }
 
   get formattedLtv(): string {
-    if (!this.ltv) return ZeroStringValue;
-    return this.ltv.toLocaleString(2);
+    if (!this.ltvCoeff) return ZeroStringValue;
+    return this.ltvCoeff.mul(this.collaterizationRatio).toLocaleString(2);
   }
 
   get ltvText(): string {

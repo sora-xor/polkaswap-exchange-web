@@ -96,6 +96,7 @@ export default class RepayDebtDialog extends Mixins(
   @Prop({ type: Object, default: ObjectInit }) readonly vault!: Nullable<Vault>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: Nullable<FPNumber>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly maxSafeDebt!: FPNumber;
+  @Prop({ type: Number, default: HundredNumber }) readonly collaterizationRatio!: number;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
@@ -203,10 +204,13 @@ export default class RepayDebtDialog extends Mixins(
     return this.prevLtv?.toLocaleString(2) ?? ZeroStringValue;
   }
 
-  get ltv(): Nullable<FPNumber> {
+  private get ltvCoeff(): Nullable<FPNumber> {
     if (!this.nextBorrow) return null;
-    const ltvCoeff = this.nextBorrow.div(this.maxSafeDebt);
-    return ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
+    return this.nextBorrow.div(this.maxSafeDebt);
+  }
+
+  get ltv(): Nullable<FPNumber> {
+    return this.ltvCoeff?.isFinity() ? this.ltvCoeff.mul(HundredNumber) : null;
   }
 
   get ltvNumber(): number {
@@ -215,8 +219,8 @@ export default class RepayDebtDialog extends Mixins(
   }
 
   get formattedLtv(): string {
-    if (!this.ltv) return ZeroStringValue;
-    return this.ltv.toLocaleString(2);
+    if (!this.ltvCoeff) return ZeroStringValue;
+    return this.ltvCoeff.mul(this.collaterizationRatio).toLocaleString(2);
   }
 
   get ltvText(): string {
