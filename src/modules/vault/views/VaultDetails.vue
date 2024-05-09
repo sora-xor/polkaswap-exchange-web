@@ -342,8 +342,8 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get formattedLtv(): string {
-    const percent = this.adjustedLtv?.div(HundredNumber).toNumber() ?? 0;
-    return this.percentFormat?.format?.(percent) ?? `${percent * HundredNumber}%`;
+    const percent = this.adjustedLtv?.toNumber() ?? 0;
+    return this.percentFormat?.format?.(percent / HundredNumber) ?? `${percent}%`;
   }
 
   get ltvText(): string {
@@ -400,8 +400,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get formattedLiquidationPenalty(): string {
-    const percent = this.liquidationPenalty / HundredNumber;
-    return this.percentFormat?.format?.(percent) ?? `${percent * HundredNumber}%`;
+    return this.percentFormat?.format?.(this.liquidationPenalty / HundredNumber) ?? `${this.liquidationPenalty}%`;
   }
 
   private get stabilityFee(): Nullable<FPNumber> {
@@ -409,8 +408,8 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get formattedStabilityFee(): string {
-    const percent = this.stabilityFee?.div(HundredNumber).toNumber() ?? 0;
-    return this.percentFormat?.format?.(percent) ?? `${percent * HundredNumber}%`;
+    const percent = this.stabilityFee?.toNumber() ?? 0;
+    return this.percentFormat?.format?.(percent / HundredNumber) ?? `${percent}%`;
   }
 
   goToVaults(): void {
