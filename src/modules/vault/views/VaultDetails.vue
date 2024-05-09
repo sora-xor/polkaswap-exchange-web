@@ -149,6 +149,15 @@
                 </p>
                 <p class="p3">{{ formattedStabilityFee }}</p>
               </div>
+              <div class="position-info__item s-flex-column">
+                <p class="vault-label p3">
+                  MAX LTV
+                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON" placement="top" tabindex="-1">
+                    <s-icon name="info-16" size="12px" />
+                  </s-tooltip>
+                </p>
+                <p class="p3">{{ formattedMaxLtv }}</p>
+              </div>
             </div>
           </div>
           <s-divider />
@@ -197,7 +206,7 @@
       :prev-ltv="adjustedLtv"
       :prev-available="availableToBorrow"
       :collateral="collateral"
-      :collaterization-ratio="collaterizationRatio"
+      :max-ltv="maxLtv"
       :average-collateral-price="averageCollateralPrice"
     />
     <borrow-more-dialog
@@ -206,7 +215,7 @@
       :prev-ltv="adjustedLtv"
       :available="availableToBorrow"
       :max-safe-debt="maxSafeDebtWithoutTax"
-      :collaterization-ratio="collaterizationRatio"
+      :max-ltv="maxLtv"
     />
     <repay-debt-dialog
       :visible.sync="showRepayDebtDialog"
@@ -214,7 +223,7 @@
       :prev-ltv="adjustedLtv"
       :available="availableToBorrow"
       :max-safe-debt="maxSafeDebt"
-      :collaterization-ratio="collaterizationRatio"
+      :max-ltv="maxLtv"
     />
     <close-vault-dialog
       :visible.sync="showCloseVaultDialog"
@@ -324,13 +333,13 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     return this.vault.debt.div(this.maxSafeDebt);
   }
 
-  get collaterizationRatio(): number {
+  get maxLtv(): number {
     return this.collateral?.riskParams.liquidationRatioReversed ?? HundredNumber;
   }
 
   get adjustedLtv(): Nullable<FPNumber> {
     if (!this.ltvCoeff) return null;
-    return this.ltvCoeff.mul(this.collaterizationRatio);
+    return this.ltvCoeff.mul(this.maxLtv);
   }
 
   get ltv(): Nullable<FPNumber> {
@@ -348,6 +357,10 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
 
   get ltvText(): string {
     return LtvTranslations[getLtvStatus(this.ltvNumber)];
+  }
+
+  get formattedMaxLtv(): string {
+    return this.percentFormat?.format?.(this.maxLtv / HundredNumber) ?? `${this.maxLtv}%`;
   }
 
   get availableToBorrow(): Nullable<FPNumber> {
@@ -487,12 +500,14 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
 .vault-collateral,
 .vault-debt {
   &__details {
-    margin-top: $inner-spacing-mini;
     margin-bottom: $inner-spacing-medium;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   &__item {
     flex: 1 1 50%;
+    margin-top: $inner-spacing-mini;
 
     > * {
       line-height: var(--s-line-height-big);

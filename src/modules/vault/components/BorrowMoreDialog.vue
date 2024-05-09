@@ -100,7 +100,7 @@ export default class BorrowMoreDialog extends Mixins(
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: Nullable<FPNumber>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly available!: FPNumber;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly maxSafeDebt!: FPNumber;
-  @Prop({ type: Number, default: HundredNumber }) readonly collaterizationRatio!: number;
+  @Prop({ type: Number, default: HundredNumber }) readonly maxLtv!: number;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.settings.slippageTolerance private slippageTolerance!: string;
@@ -205,7 +205,7 @@ export default class BorrowMoreDialog extends Mixins(
 
   get formattedLtv(): string {
     if (!this.ltvCoeff) return ZeroStringValue;
-    return this.ltvCoeff.mul(this.collaterizationRatio).toLocaleString(2);
+    return this.ltvCoeff.mul(this.maxLtv).toLocaleString(2);
   }
 
   get ltvText(): string {

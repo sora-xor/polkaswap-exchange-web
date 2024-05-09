@@ -184,7 +184,7 @@ export default class CreateVaultDialog extends Mixins(
     return this.collaterals[this.collateralToken.address];
   }
 
-  private get collaterizationRatio(): number {
+  private get maxLtv(): number {
     return this.collateral ? this.collateral.riskParams.liquidationRatioReversed : HundredNumber;
   }
 
@@ -382,7 +382,7 @@ export default class CreateVaultDialog extends Mixins(
 
   get formattedLtv(): string {
     if (!this.ltvCoeff) return ZeroStringValue;
-    return this.ltvCoeff.mul(this.collaterizationRatio).toLocaleString(2);
+    return this.ltvCoeff.mul(this.maxLtv).toLocaleString(2);
   }
 
   get ltvText(): string {

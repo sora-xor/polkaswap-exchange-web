@@ -106,7 +106,7 @@ export default class AddCollateralDialog extends Mixins(
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: Nullable<FPNumber>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevAvailable!: FPNumber;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly averageCollateralPrice!: FPNumber;
-  @Prop({ type: Number, default: HundredNumber }) readonly collaterizationRatio!: number;
+  @Prop({ type: Number, default: HundredNumber }) readonly maxLtv!: number;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.vault.borrowTax private borrowTax!: number;
@@ -264,7 +264,7 @@ export default class AddCollateralDialog extends Mixins(
 
   get formattedLtv(): string {
     if (!this.ltvCoeff) return ZeroStringValue;
-    return this.ltvCoeff.mul(this.collaterizationRatio).toLocaleString(2);
+    return this.ltvCoeff.mul(this.maxLtv).toLocaleString(2);
   }
 
   get ltvText(): string {
