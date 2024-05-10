@@ -49,8 +49,13 @@ const actions = defineActions({
     for (const collateralAddress of collateralIds) {
       if (collateralAddress !== DaiAddress) {
         const subs = api.swap.subscribeOnReserves(collateralAddress, DaiAddress)?.subscribe((payload) => {
-          const averagePrice = getAveragePrice(collateralAddress, DaiAddress, PriceVariant.Sell, payload);
-          commit.setAverageCollateralPrice({ address: collateralAddress, price: averagePrice });
+          try {
+            const averagePrice = getAveragePrice(collateralAddress, DaiAddress, PriceVariant.Sell, payload);
+            commit.setAverageCollateralPrice({ address: collateralAddress, price: averagePrice });
+          } catch (error) {
+            commit.setAverageCollateralPrice({ address: collateralAddress, price: null });
+            console.warn(`[Kensetsu] getAveragePrice with ${collateralAddress}`, error);
+          }
         });
         if (subs) {
           subscriptions.push(subs);
