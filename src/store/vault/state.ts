@@ -23,6 +23,8 @@ function initialState(): VaultState {
     borrowTax: 0,
     borrowTaxSubscription: null,
     debtCalculationInterval: null,
+    badDebt: FPNumber.ZERO,
+    badDebtSubscription: null,
   };
 }
 

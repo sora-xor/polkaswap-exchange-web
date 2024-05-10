@@ -91,7 +91,7 @@ export default {
     [DashboardPageNames.AssetOwner]: 'Asset owner',
     [DashboardPageNames.AssetOwnerDetails]: '@:pageTitle.AssetOwner',
     [VaultPageNames.Vaults]: 'Borrow',
-    [VaultPageNames.VaultDetails]: 'Vault details',
+    [VaultPageNames.VaultDetails]: 'Position details',
   },
   mainMenu: {
     [PageNames.Swap]: 'Swap',

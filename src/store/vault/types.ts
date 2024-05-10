@@ -19,4 +19,6 @@ export type VaultState = {
   borrowTax: number;
   borrowTaxSubscription: Nullable<Subscription>;
   debtCalculationInterval: Nullable<ReturnType<typeof setInterval>>;
+  badDebt: FPNumber;
+  badDebtSubscription: Nullable<Subscription>;
 };

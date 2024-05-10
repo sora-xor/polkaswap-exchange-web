@@ -226,8 +226,6 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
     return Object.entries(this.collaterals).reduce<TableItem[]>((acc, [collateralAssetId, collateral]) => {
       const lockedAsset = this.getAsset(collateralAssetId);
       if (!lockedAsset) return acc;
-      const lockedPrice = this.getFPNumberFiatAmountByFPNumber(FPNumber.ONE, lockedAsset);
-      const debtPrice = this.getFPNumberFiatAmountByFPNumber(FPNumber.ONE, debtAsset);
 
       const stabilityFeeValue = collateral.riskParams.stabilityFeeAnnual.toNumber();
       const stabilityFee = this.formatPercent(stabilityFeeValue);
@@ -236,12 +234,12 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
       const maxLtv = this.formatPercent(maxLtvValue);
 
       const totalLocked = collateral.totalLocked.toLocaleString(2);
-      const totalLockedFiatFp = lockedPrice ? collateral.totalLocked.mul(lockedPrice) : this.Zero;
+      const totalLockedFiatFp = this.getFPNumberFiatAmountByFPNumber(collateral.totalLocked, lockedAsset) ?? this.Zero;
       const totalLockedValue = totalLockedFiatFp.toNumber();
       const totalLockedFiat = totalLockedFiatFp.toLocaleString(2);
 
       const totalDebt = collateral.kusdSupply.toLocaleString(2);
-      const totalDebtFiatFp = debtPrice ? collateral.kusdSupply.mul(debtPrice) : this.Zero;
+      const totalDebtFiatFp = this.getFPNumberFiatAmountByFPNumber(collateral.kusdSupply, debtAsset) ?? this.Zero;
       const totalDebtValue = totalDebtFiatFp.toNumber();
       const totalDebtFiat = totalDebtFiatFp.toLocaleString(2);
 
@@ -251,7 +249,8 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
       const availableToBorrowFp = collateral.riskParams.hardCap.sub(collateral.kusdSupply);
       if (availableToBorrowFp.isGtZero()) {
         availableToBorrow = availableToBorrowFp.toLocaleString(2);
-        const availableToBorrowFiatFp = debtPrice ? availableToBorrowFp.mul(debtPrice) : this.Zero;
+        const availableToBorrowFiatFp =
+          this.getFPNumberFiatAmountByFPNumber(availableToBorrowFp, debtAsset) ?? this.Zero;
         availableToBorrowValue = availableToBorrowFiatFp.toNumber();
         availableToBorrowFiat = availableToBorrowFiatFp.toLocaleString(2);
       }

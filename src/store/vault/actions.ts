@@ -158,6 +158,18 @@ const actions = defineActions({
       console.error(error);
     }
   },
+  async subscribeOnBadDebt(context): Promise<void> {
+    const { commit } = vaultActionContext(context);
+    commit.resetBadDebtSubscription();
+    try {
+      const subscription = api.kensetsu.subscribeOnBadDept().subscribe((badDebt) => {
+        commit.setBadDebt(badDebt);
+      });
+      commit.setBadDebtSubscription(subscription);
+    } catch (error) {
+      console.error(error);
+    }
+  },
   async reset(context): Promise<void> {
     const { commit } = vaultActionContext(context);
     balanceSubscriptions.remove('kusd');
@@ -174,6 +186,7 @@ const actions = defineActions({
     commit.resetCollaterals();
     commit.resetAccountVaults();
     commit.resetAverageCollateralPrices();
+    commit.resetBadDebtSubscription();
   },
 });
 

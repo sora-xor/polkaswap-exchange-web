@@ -524,6 +524,10 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 }
 
+.position-info__details {
+  margin-bottom: 0;
+}
+
 @mixin ltv-status($status: 'success', $property: 'background-color') {
   &.#{$status} {
     #{$property}: var(--s-color-status-#{$status});

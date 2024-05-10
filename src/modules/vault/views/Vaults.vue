@@ -42,7 +42,6 @@
           border-radius="small"
           shadow="always"
           size="big"
-          primary
           clickable
           @click="handleOpenVaultDetails(vault)"
         >
@@ -144,6 +143,7 @@
         </s-card>
       </s-col>
     </s-row>
+    <explore-overall-stats />
     <explore-collaterals class="vaults-stats" @open="handleCreateSelectedVault" />
     <div class="vaults-disclaimer s-flex">
       <div class="disclaimer s-flex-column">
@@ -186,6 +186,7 @@ import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/type
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ValueStatus: lazyComponent(Components.ValueStatusWrapper),
+    ExploreOverallStats: vaultLazyComponent(VaultComponents.ExploreOverallStats),
     ExploreCollaterals: vaultLazyComponent(VaultComponents.ExploreCollaterals),
   },
 })

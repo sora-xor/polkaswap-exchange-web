@@ -413,7 +413,7 @@
         "AssetOwner": "Asset owner",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Borrow",
-        "VaultDetails": "Vault Details",
+        "VaultDetails": "Position Details",
         "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {

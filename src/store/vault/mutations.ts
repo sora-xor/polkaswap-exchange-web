@@ -88,6 +88,16 @@ const mutations = defineMutations<VaultState>()({
     }
     state.debtCalculationInterval = null;
   },
+  setBadDebt(state, debt: FPNumber): void {
+    state.badDebt = debt;
+  },
+  setBadDebtSubscription(state, subscription: Subscription): void {
+    state.badDebtSubscription = subscription;
+  },
+  resetBadDebtSubscription(state): void {
+    state.badDebtSubscription?.unsubscribe();
+    state.badDebtSubscription = null;
+  },
 });
 
 export default mutations;

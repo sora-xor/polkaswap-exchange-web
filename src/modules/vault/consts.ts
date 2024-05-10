@@ -12,6 +12,7 @@ export enum VaultComponents {
   PrevNextInfoLine = 'PrevNextInfoLine',
   RepayDebtDialog = 'RepayDebtDialog',
   ExploreCollaterals = 'ExploreCollaterals',
+  ExploreOverallStats = 'ExploreOverallStats',
 }
 
 export const LtvTranslations = {
