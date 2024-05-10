@@ -6,23 +6,28 @@ import { ethers } from 'ethers';
 
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
-import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
+import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil, { Provider, PROVIDER_ERROR } from '@/utils/ethers-util';
 
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { ActionContext } from 'vuex';
 
+async function connectNetworkType(context: ActionContext<any, any>): Promise<void> {
+  const { state } = web3ActionContext(context);
+
+  if (state.networkType === BridgeNetworkType.Sub) {
+    autoselectSubAddress(context);
+    await connectSubNetwork(context);
+  }
+}
+
 async function connectSubNetwork(context: ActionContext<any, any>): Promise<void> {
-  const { getters, commit } = web3ActionContext(context);
+  const { getters, rootState } = web3ActionContext(context);
   const subNetwork = getters.selectedNetwork;
 
   if (!subNetwork) return;
 
-  await subBridgeConnector.open(subNetwork.id as SubNetwork);
-
-  const ss58 = subBridgeConnector.network.api.registry.chainSS58;
-
-  if (ss58 !== undefined) commit.setSubSS58(ss58);
+  await rootState.bridge.subBridgeConnector.open(subNetwork.id as SubNetwork);
 }
 
 async function updateProvidedEvmNetwork(context: ActionContext<any, any>, evmNetworkId?: number): Promise<void> {
@@ -84,13 +89,6 @@ async function autoselectSubAddress(context: ActionContext<any, any>): Promise<v
   }
 }
 
-async function getRegisteredAssets(context: ActionContext<any, any>): Promise<void> {
-  const { rootDispatch } = web3ActionContext(context);
-
-  await rootDispatch.assets.getRegisteredAssets();
-  await autoselectBridgeAsset(context);
-}
-
 const actions = defineActions({
   async selectEvmProvider(context, provider: Provider): Promise<void> {
     const { commit, state } = web3ActionContext(context);
@@ -127,25 +125,23 @@ const actions = defineActions({
     ethersUtil.disconnectEvmProvider(provider);
   },
 
-  async disconnectExternalNetwork(_context): Promise<void> {
+  async disconnectExternalNetwork(context): Promise<void> {
+    const { rootState } = web3ActionContext(context);
     // SUB
-    await subBridgeConnector.stop();
+    await rootState.bridge.subBridgeConnector.stop();
   },
 
   async selectExternalNetwork(context, { id, type }: { id: BridgeNetworkId; type: BridgeNetworkType }): Promise<void> {
-    const { commit, dispatch } = web3ActionContext(context);
+    const { commit, dispatch, rootDispatch } = web3ActionContext(context);
 
     await dispatch.disconnectExternalNetwork();
 
     commit.setNetworkType(type);
     commit.setSelectedNetwork(id);
 
-    getRegisteredAssets(context);
+    await Promise.allSettled([rootDispatch.assets.getRegisteredAssets(), connectNetworkType(context)]);
 
-    if (type === BridgeNetworkType.Sub) {
-      autoselectSubAddress(context);
-      await connectSubNetwork(context);
-    }
+    await autoselectBridgeAsset(context);
   },
 
   async changeEvmNetworkProvided(context): Promise<void> {

@@ -9,6 +9,7 @@
       <s-button
         v-if="isTokensPair && !isOrderBook"
         :class="{ 's-pressed': isReversedChart }"
+        :disabled="chartIsLoading"
         size="small"
         type="action"
         alternative
@@ -836,8 +837,8 @@ export default class PriceChartWidget extends Mixins(
     if (this.isOrderBook) {
       return await subscribeOnOrderBookUpdates(
         this.dexId,
-        this.baseAsset!.address,
-        this.quoteAsset!.address,
+        (this.baseAsset as AccountAsset).address,
+        (this.quoteAsset as AccountAsset).address,
         () => this.fetchAndHandleUpdate(entities),
         console.error
       );

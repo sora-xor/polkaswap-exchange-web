@@ -4,13 +4,18 @@ import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import store from '@/store';
 import { Bridge } from '@/utils/bridge/common/classes';
 import type { IBridgeConstructorOptions } from '@/utils/bridge/common/types';
+import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import { SubBridgeOutgoingReducer, SubBridgeIncomingReducer } from '@/utils/bridge/sub/classes/reducers';
 import type { SubBridgeReducer } from '@/utils/bridge/sub/classes/reducers';
 import { getTransaction, updateTransaction } from '@/utils/bridge/sub/utils';
 
 import type { SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
-type SubBridge = Bridge<SubHistory, SubBridgeReducer, IBridgeConstructorOptions<SubHistory, SubBridgeReducer>>;
+interface SubBridgeConstructorOptions extends IBridgeConstructorOptions<SubHistory, SubBridgeReducer> {
+  getSubBridgeConnector: () => SubNetworksConnector;
+}
+
+type SubBridge = Bridge<SubHistory, SubBridgeReducer, SubBridgeConstructorOptions>;
 
 const subBridge: SubBridge = new Bridge({
   reducers: {
@@ -42,6 +47,8 @@ const subBridge: SubBridge = new Bridge({
   removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
   // transaction signing
   beforeTransactionSign: () => store.dispatch.wallet.transactions.beforeTransactionSign(),
+  // custom
+  getSubBridgeConnector: () => store.state.bridge.subBridgeConnector,
 });
 
 export default subBridge;

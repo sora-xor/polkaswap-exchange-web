@@ -139,9 +139,9 @@ export class EthBridgeOutgoingReducer extends EthBridgeReducer {
             // signed sora transaction has to be parsed by subquery
             if (tx.txId && !tx.blockId) {
               // format account address to sora format
-              const address = ethBridgeApi.formatAddress(ethBridgeApi.account!.pair.address);
+              const { from: address } = getTransaction(id);
               const bridgeHistory = await this.getBridgeHistoryInstance();
-              const historyItem = first(await bridgeHistory.fetchHistoryElements(address, 0, [tx.txId]));
+              const historyItem = first(await bridgeHistory.fetchHistoryElements(address as string, 0, [tx.txId]));
 
               if (historyItem) {
                 this.updateTransactionParams(id, {

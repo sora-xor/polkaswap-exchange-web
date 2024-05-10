@@ -6,15 +6,14 @@ import { combineLatest } from 'rxjs';
 import { ZeroStringValue } from '@/consts';
 import { conditionalAwait } from '@/utils';
 import { BridgeReducer } from '@/utils/bridge/common/classes';
+import type { IBridgeReducerOptions } from '@/utils/bridge/common/types';
 import { getTransactionEvents } from '@/utils/bridge/common/utils';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
-import { SubNetworksConnector, subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
+import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import { SubTransferType } from '@/utils/bridge/sub/types';
 import {
   getBridgeProxyHash,
   getDepositedBalance,
-  getParachainBridgeAppMintedBalance,
-  getSubstrateBridgeAppMintedBalance,
   getMessageAcceptedNonces,
   isMessageDispatchedNonces,
   isAssetAddedToChannel,
@@ -25,14 +24,26 @@ import {
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiRx } from '@polkadot/api';
+import type { IBridgeTransaction } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { Subscription } from 'rxjs';
 
+type SubBridgeReducerOptions<T extends IBridgeTransaction> = IBridgeReducerOptions<T> & {
+  getSubBridgeConnector: () => SubNetworksConnector;
+};
+
 export class SubBridgeReducer extends BridgeReducer<SubHistory> {
   protected asset!: RegisteredAccountAsset;
+  protected getSubBridgeConnector!: () => SubNetworksConnector;
   protected connector!: SubNetworksConnector;
   protected transferType!: SubTransferType;
+
+  constructor(options: SubBridgeReducerOptions<SubHistory>) {
+    super(options);
+
+    this.getSubBridgeConnector = options.getSubBridgeConnector;
+  }
 
   initConnector(id: string): void {
     const { externalNetwork } = this.getTransaction(id);
@@ -42,7 +53,7 @@ export class SubBridgeReducer extends BridgeReducer<SubHistory> {
     this.transferType = determineTransferType(externalNetwork);
 
     this.connector = new SubNetworksConnector();
-    this.connector.init(externalNetwork, subBridgeConnector);
+    this.connector.init(externalNetwork, this.getSubBridgeConnector());
   }
 
   async closeConnector(): Promise<void> {
@@ -322,9 +333,6 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     let amount!: string;
     let eventIndex!: number;
 
-    const isStandalone = this.transferType === SubTransferType.Standalone;
-    const getMintedBalance = isStandalone ? getSubstrateBridgeAppMintedBalance : getParachainBridgeAppMintedBalance;
-
     try {
       await new Promise<void>((resolve, reject) => {
         const eventsObservable = api.system.getEventsObservable(subBridgeApi.apiRx);
@@ -342,7 +350,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
             soraHash = getBridgeProxyHash(foundedEvents, subBridgeApi.api);
 
-            [amount, eventIndex] = getMintedBalance(foundedEvents, tx.from as string, subBridgeApi.api);
+            [amount, eventIndex] = getDepositedBalance(foundedEvents, tx.to as string, subBridgeApi.api);
 
             resolve();
           } catch (error) {
@@ -413,7 +421,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
               await this.waitForSendingExecution(id);
               await this.waitForIntermediateExecution(id);
-              await this.waitForRelaychainExecution(id);
+              await this.waitForDestinationExecution(id);
 
               await this.onComplete(id);
             } finally {
@@ -568,8 +576,8 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     }
   }
 
-  private async waitForRelaychainExecution(id: string): Promise<void> {
-    if (this.transferType !== SubTransferType.Relaychain) return;
+  private async waitForDestinationExecution(id: string): Promise<void> {
+    if (![SubTransferType.Relaychain, SubTransferType.Parachain].includes(this.transferType)) return;
 
     const tx = this.getTransaction(id);
     const messageHash = tx.payload.messageHash as string;
@@ -579,7 +587,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     let subscription!: Subscription;
     let blockNumber!: number;
     let amount!: string;
-    let eventIndex!: number;
+    let externalEventIndex!: number;
 
     const adapter = this.connector.network;
 
@@ -603,7 +611,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
               blockNumber = blockHeight;
 
-              [amount, eventIndex] = getDepositedBalance(
+              [amount, externalEventIndex] = getDepositedBalance(
                 events.slice(0, messageQueueProcessedEventIndex),
                 tx.to as string,
                 adapter.api
@@ -633,6 +641,6 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     }
 
     this.updateReceivedAmount(id, amount);
-    this.updateTransactionPayload(id, { eventIndex });
+    this.updateTransactionParams(id, { externalEventIndex });
   }
 }

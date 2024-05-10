@@ -434,7 +434,9 @@ export default class Rewards extends Mixins(
       if (!isConnected) return;
     }
 
-    await this.withNotifications(async () => await this.claimRewards({ internalAddress, externalAddress }));
+    await this.withNotifications(async () => {
+      await this.claimRewards({ internalAddress, externalAddress });
+    });
   }
 }
 </script>

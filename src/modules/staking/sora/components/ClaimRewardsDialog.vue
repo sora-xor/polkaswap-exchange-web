@@ -173,9 +173,7 @@ export default class ClaimRewardsDialog extends Mixins(StakingMixin, mixins.Dial
   async handleConfirm(): Promise<void> {
     await this.withNotifications(async () => {
       await this.payout({
-        payouts: this.pendingRewards
-          ? this.pendingRewards.map((r) => ({ era: r.era, validators: r.validators.map((v) => v.address) }))
-          : [],
+        payouts: this.payouts,
         payee: this.rewardsDestination !== this.payeeAddress ? this.rewardsDestination : undefined,
       });
 

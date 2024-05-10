@@ -4,6 +4,7 @@ import { EthCurrencyType, EthAssetKind } from '@sora-substrate/util/build/bridge
 import { ethers } from 'ethers';
 
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
+import { asZeroValue } from '@/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import ethersUtil from '@/utils/ethers-util';
 
@@ -123,8 +124,8 @@ export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: st
 
 export async function getIncomingEvmTransactionData({ asset, value, recipient, getContractAddress }: EthTxParams) {
   const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
-
-  const [signer, accountId] = await Promise.all([ethersUtil.getSigner(), ethersUtil.accountAddressToHex(recipient)]);
+  const signer = await ethersUtil.getSigner();
+  const accountId = ethersUtil.accountAddressToHex(recipient);
 
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
 
@@ -262,16 +263,19 @@ export async function getEthNetworkFee(
     const allowance = await ethersUtil.getAllowance(evmAccount, bridgeContractAddress, asset.externalAddress);
     const approveGasLimit = !!allowance && Number(allowance) < Number(value) ? gasLimit.approve : BigInt(0);
 
-    const txParams = {
-      asset,
-      value,
-      recipient: soraAccount,
-      getContractAddress,
-    };
-
     let txGasLimit!: bigint;
 
     try {
+      if (asZeroValue(value)) {
+        throw new Error('Calculation with Zero amount is not allowed');
+      }
+
+      const txParams = {
+        asset,
+        value,
+        recipient: soraAccount,
+        getContractAddress,
+      };
       const { contract, method, args } = await getIncomingEvmTransactionData(txParams);
       const signer = contract.runner;
       const tx = await contract[method].populateTransaction(...args);
