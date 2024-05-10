@@ -214,6 +214,7 @@
       :vault="vault"
       :prev-ltv="adjustedLtv"
       :available="availableToBorrow"
+      :collateral="collateral"
       :max-safe-debt="maxSafeDebtWithoutTax"
       :max-ltv="maxLtv"
     />

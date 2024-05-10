@@ -74,7 +74,7 @@ import { asZeroValue } from '@/utils';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { Vault } from '@sora-substrate/util/build/kensetsu/types';
+import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
 
 @Component({
   components: {
@@ -97,6 +97,7 @@ export default class BorrowMoreDialog extends Mixins(
   @Ref('debtInput') debtInput!: Nullable<TokenInput>;
 
   @Prop({ type: Object, default: ObjectInit }) readonly vault!: Nullable<Vault>;
+  @Prop({ type: Object, default: ObjectInit }) readonly collateral!: Nullable<Collateral>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: Nullable<FPNumber>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly available!: FPNumber;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly maxSafeDebt!: FPNumber;
@@ -149,8 +150,16 @@ export default class BorrowMoreDialog extends Mixins(
     return this.getFPNumber(this.borrowValue, this.kusdToken?.decimals);
   }
 
+  private get kusdAvailable(): FPNumber {
+    return this.collateral?.riskParams.hardCap.sub(this.collateral.kusdSupply) ?? this.Zero;
+  }
+
+  private get availableOrTotal(): FPNumber {
+    return this.available.gt(this.kusdAvailable) ? this.kusdAvailable : this.available;
+  }
+
   get isBorrowMoreThanAvailable(): boolean {
-    return this.borrowFp.gt(this.available);
+    return this.borrowFp.gt(this.availableOrTotal);
   }
 
   get disabled(): boolean {
@@ -158,13 +167,13 @@ export default class BorrowMoreDialog extends Mixins(
   }
 
   get availableCodec(): CodecString {
-    return this.available.toCodecString();
+    return this.availableOrTotal.toCodecString();
   }
 
   get isMaxBorrowAvailable(): boolean {
     if (this.shouldBalanceBeHidden || this.isBorrowZero) return true;
-    if (!this.available.isFinity() || this.available.isLteZero()) return false;
-    return !this.borrowFp.isEqualTo(this.available);
+    if (!this.availableOrTotal.isFinity() || this.availableOrTotal.isLteZero()) return false;
+    return !this.borrowFp.isEqualTo(this.availableOrTotal);
   }
 
   get kusdSymbol(): string {
@@ -215,16 +224,16 @@ export default class BorrowMoreDialog extends Mixins(
   get borrowValuePercent(): number {
     if (!this.borrowValue) return 0;
 
-    const percent = this.borrowFp.div(this.available).mul(HundredNumber).toNumber(0);
+    const percent = this.borrowFp.div(this.availableOrTotal).mul(HundredNumber).toNumber(0);
     return percent > HundredNumber ? HundredNumber : percent;
   }
 
   handleMaxBorrowValue(): void {
-    this.borrowValue = this.available.toString();
+    this.borrowValue = this.availableOrTotal.toString();
   }
 
   handleBorrowPercentChange(percent: number): void {
-    this.borrowValue = this.available.mul(percent / HundredNumber).toString();
+    this.borrowValue = this.availableOrTotal.mul(percent / HundredNumber).toString();
   }
 
   get errorMessage(): string {
