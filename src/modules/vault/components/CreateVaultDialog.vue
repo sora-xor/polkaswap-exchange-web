@@ -26,7 +26,7 @@
         <token-input
           ref="debtInput"
           class="vault-create__debt-input vault-create__token-input"
-          with-slider
+          :with-slider="isBorrowSliderAvailable"
           :title="t('kensetsu.borrowDebt')"
           v-model="borrowValue"
           is-fiat-editable
@@ -295,10 +295,18 @@ export default class CreateVaultDialog extends Mixins(
   }
 
   get isMaxBorrowAvailable(): boolean {
-    if (this.isCollateralZero) return false;
+    if (this.isCollateralZero || this.availableCollateralBalanceFp.lt(this.minDeposit)) return false;
     if (this.shouldBalanceBeHidden || this.isBorrowZero) return true;
-    if (!this.maxBorrowPerCollateralValue.isFinity() || this.maxBorrowPerCollateralValue.isLteZero()) return false;
-    return !this.borrowValueFp.isEqualTo(this.maxBorrowPerCollateralValue);
+    if (
+      !this.maxBorrowPerCollateralValueOrAvailable.isFinity() ||
+      this.maxBorrowPerCollateralValueOrAvailable.isLteZero()
+    )
+      return false;
+    return !this.borrowValueFp.isEqualTo(this.maxBorrowPerCollateralValueOrAvailable);
+  }
+
+  get isBorrowSliderAvailable(): boolean {
+    return this.availableCollateralBalanceFp.gte(this.minDeposit);
   }
 
   get kusdSymbol(): string {
@@ -311,6 +319,10 @@ export default class CreateVaultDialog extends Mixins(
 
   get maxBorrowPerMaxCollateralNumber(): number {
     return this.maxBorrowPerMaxCollateralFp.toNumber();
+  }
+
+  private get kusdAvailable(): FPNumber {
+    return this.collateral?.riskParams.hardCap.sub(this.collateral.kusdSupply) ?? this.Zero;
   }
 
   private get maxBorrowPerMaxCollateralFp(): FPNumber {
@@ -326,7 +338,8 @@ export default class CreateVaultDialog extends Mixins(
       .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
       .div(HundredNumber);
 
-    return maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
+    const maxBorrow = maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
+    return maxBorrow.gt(this.kusdAvailable) ? this.kusdAvailable : maxBorrow;
   }
 
   get formattedMinDeposit(): string {
@@ -347,11 +360,12 @@ export default class CreateVaultDialog extends Mixins(
   }
 
   get formattedMaxBorrow(): string {
+    if (this.availableCollateralBalanceFp.lt(this.minDeposit)) return ZeroStringValue;
     return this.maxBorrowPerMaxCollateralFp.toLocaleString();
   }
 
   get maxBorrowFiat(): Nullable<string> {
-    if (!this.kusdToken) return null;
+    if (!this.kusdToken || this.availableCollateralBalanceFp.lt(this.minDeposit)) return null;
     return this.getFiatAmountByFPNumber(this.maxBorrowPerMaxCollateralFp, this.kusdToken);
   }
 
@@ -364,6 +378,17 @@ export default class CreateVaultDialog extends Mixins(
       .div(HundredNumber);
 
     return maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
+  }
+
+  /**
+   * Cannot be used instead of maxBorrowPerCollateralValue because maxBorrowPerCollateralValue is used to calc LTV.
+   *
+   * This value is used to manage the input field.
+   */
+  private get maxBorrowPerCollateralValueOrAvailable(): FPNumber {
+    return this.maxBorrowPerCollateralValue.gt(this.kusdAvailable)
+      ? this.kusdAvailable
+      : this.maxBorrowPerCollateralValue;
   }
 
   private get ltvCoeff(): Nullable<FPNumber> {
@@ -397,7 +422,7 @@ export default class CreateVaultDialog extends Mixins(
   get borrowValuePercent(): number {
     if (!this.borrowValue) return 0;
 
-    const percent = this.borrowValueFp.div(this.maxBorrowPerCollateralValue).mul(HundredNumber).toNumber(0);
+    const percent = this.borrowValueFp.div(this.maxBorrowPerCollateralValueOrAvailable).mul(HundredNumber).toNumber(0);
     return percent > HundredNumber ? HundredNumber : percent;
   }
 
@@ -410,11 +435,11 @@ export default class CreateVaultDialog extends Mixins(
   }
 
   handleMaxBorrowValue(): void {
-    this.borrowValue = this.maxBorrowPerCollateralValue.toString();
+    this.borrowValue = this.maxBorrowPerCollateralValueOrAvailable.toString();
   }
 
   handleBorrowPercentChange(percent: number): void {
-    this.borrowValue = this.maxBorrowPerCollateralValue.mul(percent / HundredNumber).toString();
+    this.borrowValue = this.maxBorrowPerCollateralValueOrAvailable.mul(percent / HundredNumber).toString();
   }
 
   /**
