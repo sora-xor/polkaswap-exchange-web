@@ -167,7 +167,6 @@
 </template>
 
 <script lang="ts">
-import { FPNumber } from '@sora-substrate/math';
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 

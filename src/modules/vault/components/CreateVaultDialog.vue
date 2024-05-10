@@ -251,6 +251,7 @@ export default class CreateVaultDialog extends Mixins(
       this.isLessThanMinDeposit ||
       this.isInsufficientBalance ||
       !this.ltv ||
+      this.isBorrowZero ||
       this.ltv.gt(this.Hundred)
     );
   }
@@ -435,6 +436,8 @@ export default class CreateVaultDialog extends Mixins(
       error = this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol });
     } else if (!this.ltv) {
       error = this.t('kensetsu.error.enterCollateral');
+    } else if (this.isBorrowZero) {
+      error = this.t('kensetsu.error.enterBorrow');
     } else if (this.isLessThanMinDeposit) {
       error = this.t('kensetsu.error.insufficientCollateral');
     } else if (this.isInsufficientBalance) {
