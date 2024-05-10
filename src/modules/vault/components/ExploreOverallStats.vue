@@ -114,7 +114,7 @@ export default class ExploreOverallStats extends Mixins(TranslationMixin, mixins
       let value: AmountWithSuffix = { amount: '0', suffix: '' };
 
       if (typeof amount === 'number') {
-        value.amount = this.percentFormat?.format?.(amount / HundredNumber) ?? `${amount}%`;
+        value.amount = this.percentFormat?.format?.(amount) ?? `${amount * HundredNumber}%`;
       } else {
         value = formatAmountWithSuffix(amount);
       }
