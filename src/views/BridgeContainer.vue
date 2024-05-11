@@ -57,7 +57,8 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
    */
   private async updateBridgeApps(): Promise<void> {
     await this.getSupportedApps();
-    await this.restoreSelectedNetwork();
+    // don't block ui while connecting to external network
+    this.restoreSelectedNetwork();
   }
 }
 </script>

@@ -140,9 +140,9 @@ async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Re
 const actions = defineActions({
   // for common usage
   async getRegisteredAssets(context): Promise<void> {
-    const { commit } = assetsActionContext(context);
+    const { commit, dispatch } = assetsActionContext(context);
 
-    commit.resetRegisteredAssets();
+    commit.setRegisteredAssets();
     commit.setRegisteredAssetsFetching(true);
 
     try {
@@ -150,9 +150,13 @@ const actions = defineActions({
       const registeredAssets = list.reduce((buffer, asset) => ({ ...buffer, ...asset }), {});
 
       commit.setRegisteredAssets(registeredAssets);
+      // update assets data (for Eth bridge)
+      await dispatch.updateRegisteredAssets();
     } catch (error) {
       console.error(error);
-      commit.resetRegisteredAssets();
+      commit.setRegisteredAssets();
+    } finally {
+      commit.setRegisteredAssetsFetching(false);
     }
   },
 
