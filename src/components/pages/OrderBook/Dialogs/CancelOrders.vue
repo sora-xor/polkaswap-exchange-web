@@ -3,6 +3,7 @@
     <div class="order-book-cancel-dialog">
       <s-icon name="notifications-alert-triangle-24" size="64" />
       <h4>{{ t('orderBook.dialog.askCancel') }}</h4>
+      <account-confirmation-option with-hint class="confirmation-option" />
       <s-button type="primary" class="btn s-typography-button--medium" :disabled="!isVisible" @click="handleCancel">
         <span> {{ t('orderBook.dialog.cancelAll') }}</span>
       </s-button>
@@ -21,6 +22,7 @@ import { Cancel } from '@/types/orderBook';
   components: {
     DialogBase: components.DialogBase,
     NetworkFeeWarning: components.NetworkFeeWarning,
+    AccountConfirmationOption: components.AccountConfirmationOption,
   },
 })
 export default class CancelOrders extends Mixins(mixins.DialogMixin, TranslationMixin) {
