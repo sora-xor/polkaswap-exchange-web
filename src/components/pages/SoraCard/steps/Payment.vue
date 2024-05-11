@@ -23,7 +23,6 @@
       <p>{{ t('card.oneTimeApplicationFee') }}</p>
       <p>{{ t('card.applicationFeeNote') }}</p>
     </div>
-    <x1-dialog :visible.sync="showX1Dialog" />
   </div>
 </template>
 
@@ -41,7 +40,6 @@ import type { FPNumber } from '@sora-substrate/math';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 
 enum BuyButtonType {
-  X1,
   Bridge,
   Paywings,
 }
@@ -52,7 +50,6 @@ type BuyButton = { type: BuyButtonType; text: string; button: 'primary' | 'secon
   components: {
     TokenLogo: components.TokenLogo,
     BalanceIndicator: lazyComponent(Components.BalanceIndicator),
-    X1Dialog: lazyComponent(Components.X1Dialog),
   },
 })
 export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixin) {
@@ -60,7 +57,6 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
   @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
   @state.soraCard.fees fees!: Fees;
 
-  @getter.settings.x1Enabled private x1Enabled!: boolean;
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
@@ -78,12 +74,8 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
   }
 
   get buyOptions(): Array<BuyButton> {
-    const options: Array<BuyButton> = [
-      { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: !this.x1Enabled ? 'primary' : 'secondary' },
-    ];
-    if (this.x1Enabled) {
-      options.push({ type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' });
-    }
+    const options: Array<BuyButton> = [{ type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: 'primary' }];
+
     return options;
   }
 
@@ -106,10 +98,6 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
     return this.t('card.applicationFee', { 0: this.applicationFee });
   }
 
-  private openX1(): void {
-    this.showX1Dialog = true;
-  }
-
   private bridgeTokens(): void {
     if (!this.isEuroBalanceEnough) {
       router.push({ name: PageNames.Bridge, params: { amount: this.xorToDeposit.toString() } });
@@ -118,9 +106,6 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
 
   buyTokens(type: BuyButtonType): void {
     switch (type) {
-      case BuyButtonType.X1:
-        this.openX1();
-        break;
       case BuyButtonType.Bridge:
         this.bridgeTokens();
         break;

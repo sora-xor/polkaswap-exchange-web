@@ -23,7 +23,6 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
 
   @getter.libraryTheme libraryTheme!: Theme;
 
-  renderSendWidget = renderSendWidget;
   rootSelector = '#cede-widget';
 
   @Watch('isVisible', { immediate: true })
@@ -34,84 +33,20 @@ export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingM
           renderSendWidget(this.rootSelector, {
             config: {
               tokenSymbol: 'XOR',
-              network: 'polkadot',
+              network: 'sora',
               address: this.accountAddress,
-              amount: '123.37',
             },
             theme: {
               mode: this.libraryTheme === Theme.LIGHT ? 'light' : 'dark',
               logoTheme: this.libraryTheme === Theme.LIGHT ? 'light' : 'dark',
               width: '450px',
             },
-            title: 'Lorem ipsum sit dolor amet',
-            description: 'Lorem ipsum sit dolor amet',
           });
         }, 0);
       } catch (error) {
-        console.error(error);
+        console.error("[CEDE STORE] wasn't loaded.", error);
       }
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.disclaimer {
-  display: flex;
-  width: 100%;
-  height: auto;
-  border-radius: 28px;
-  background-color: var(--s-color-status-error-background);
-  padding: $basic-spacing;
-  margin-bottom: $inner-spacing-small;
-
-  & &-warning-icon {
-    margin-right: $basic-spacing;
-
-    .s-icon-notifications-alert-triangle-24 {
-      display: block;
-      color: var(--s-color-status-error);
-    }
-  }
-
-  ul {
-    margin-top: $inner-spacing-mini;
-  }
-}
-[design-system-theme='dark'] .disclaimer-warning-icon .s-icon-notifications-alert-triangle-24 {
-  color: var(--s-color-base-content-primary);
-}
-
-.x1-error-info-banner {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  &__header {
-    font-size: var(--s-heading3-font-size);
-    font-weight: 500;
-  }
-
-  &__text {
-    margin-top: var(--s-size-mini);
-    line-height: var(--s-font-size-large);
-    font-size: var(--s-font-size-medium);
-    font-weight: 300;
-    width: 67%;
-  }
-
-  &__icon {
-    display: block;
-    color: var(--s-color-status-error);
-    width: var(--s-size-mini);
-    margin: -20px 20px $basic-spacing 0;
-  }
-
-  &__btn {
-    margin-top: var(--s-size-mini);
-    width: 100%;
-  }
-}
-</style>

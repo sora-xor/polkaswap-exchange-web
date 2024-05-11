@@ -7,8 +7,8 @@
         <span>{{ t('fiatPayment.moonpayDesc') }}</span>
         <s-button type="primary" @click="openMoonpayDialog">{{ moonpayTextBtn }}</s-button>
       </div>
-      <div v-if="true" class="pay-options__option pay-options-x1">
-        <!-- <x1ex-logo :theme="libraryTheme" /> -->
+      <div class="pay-options__option pay-options-cede">
+        <cede-store-logo :theme="libraryTheme" />
         <h4>{{ 'Transfer from CEX' }}</h4>
         <span>{{ 'Transfer any tokens from CEX on Polkadot via cede.store' }}</span>
         <s-button type="primary" @click="openCedeDialog">{{ 'Transfer from CEX via cede.store' }}</s-button>
@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <x1-dialog @error="showErrorMessage" :visible.sync="showCedeDialog" />
+    <cede-store-dialog @error="showErrorMessage" :visible.sync="showCedeDialog" />
     <template v-if="moonpayEnabled">
       <moonpay />
       <moonpay-notification />
@@ -37,8 +37,8 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import WalletConnectMixin from '../components/mixins/WalletConnectMixin';
+import CedeStoreLogo from '../components/shared/Logo/CedeStore.vue';
 import MoonpayLogo from '../components/shared/Logo/Moonpay.vue';
-import X1exLogo from '../components/shared/Logo/X1ex.vue';
 import { Components, PageNames } from '../consts';
 import { goTo, lazyComponent } from '../router';
 import { mutation, state, getter } from '../store/decorators';
@@ -54,8 +54,9 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
     PaymentError: lazyComponent(Components.PaymentErrorDialog),
     SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
-    X1Dialog: lazyComponent(Components.X1Dialog),
+    CedeStoreDialog: lazyComponent(Components.CedeStore),
     MoonpayLogo,
+    CedeStoreLogo,
   },
 })
 export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, WalletConnectMixin) {
@@ -65,7 +66,6 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.settings.moonpayEnabled moonpayEnabled!: boolean;
-  @getter.settings.x1Enabled x1Enabled!: boolean;
 
   @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
 
@@ -150,7 +150,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
     }
 
     svg {
-      width: 100px;
+      width: 140px;
     }
 
     button {
