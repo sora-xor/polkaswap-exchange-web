@@ -61,7 +61,6 @@ export default class Payment extends Mixins(TranslationMixin, mixins.LoadingMixi
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
 
-  showX1Dialog = false;
   showPaywingsDialog = false;
 
   WALLET_CONSTS = WALLET_CONSTS;

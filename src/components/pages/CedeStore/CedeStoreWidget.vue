@@ -17,7 +17,7 @@ import { getter, state } from '@/store/decorators';
     DialogBase: components.DialogBase,
   },
 })
-export default class X1Dialog extends Mixins(mixins.DialogMixin, mixins.LoadingMixin, mixins.TranslationMixin) {
+export default class CedeStoreWidget extends Mixins(mixins.DialogMixin, mixins.LoadingMixin, mixins.TranslationMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.wallet.account.address accountAddress!: string;
 

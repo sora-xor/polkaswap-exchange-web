@@ -73,8 +73,6 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
   showErrorInfoBanner = false;
 
   get hasPendingTx(): boolean {
-    // TODO: add localStorage savings in case user closes tab and returns
-    // (combine with X1 history API)
     return this.startBridgeButtonVisibility && !!this.bridgeTransactionData;
   }
 
@@ -86,10 +84,6 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
 
   get moonpayTextBtn(): string {
     return !this.isSoraAccountConnected ? this.t('connectWalletText') : this.t('fiatPayment.moonpayTitle');
-  }
-
-  get x1TextBtn(): string {
-    return !this.isSoraAccountConnected ? this.t('connectWalletText') : this.t('fiatPayment.x1Btn');
   }
 
   openFiatTxHistory(): void {

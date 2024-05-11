@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" class="x1-dialog">
+  <dialog-base :visible.sync="isVisible">
     <div class="error-info-banner">
       <s-icon class="error-info-banner__icon" name="basic-clear-X-24" size="64px" />
       <h4 class="error-info-banner__header">The payment widget is currently unavailable</h4>
