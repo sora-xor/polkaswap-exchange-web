@@ -29,7 +29,7 @@ export default class CedeStoreWidget extends Mixins(mixins.DialogMixin, mixins.L
   private loadCedeWidget(): void {
     if (this.isVisible) {
       try {
-        setTimeout(() => {
+        this.$nextTick(() => {
           renderSendWidget(this.rootSelector, {
             config: {
               tokenSymbol: 'XOR',
@@ -37,12 +37,12 @@ export default class CedeStoreWidget extends Mixins(mixins.DialogMixin, mixins.L
               address: this.accountAddress,
             },
             theme: {
-              mode: this.libraryTheme === Theme.LIGHT ? 'light' : 'dark',
-              logoTheme: this.libraryTheme === Theme.LIGHT ? 'light' : 'dark',
+              mode: this.libraryTheme,
+              logoTheme: this.libraryTheme,
               width: '450px',
             },
           });
-        }, 0);
+        });
       } catch (error) {
         console.error("[CEDE STORE] wasn't loaded.", error);
       }

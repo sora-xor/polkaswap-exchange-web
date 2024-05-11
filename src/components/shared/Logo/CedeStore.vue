@@ -105,5 +105,3 @@ export default class CedeStoreLogo extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped></style>
