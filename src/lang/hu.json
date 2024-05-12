@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Limit megbízás törölve",
             "OrderBookCancelLimitOrders": "Limit megrendelések törölve",
             "Burn": "Égetett {amount} {symbol}",
-            "Mint": "Verte {amount} {symbol} erre: {address}"
+            "Mint": "Verte {amount} {symbol} erre: {address}",
+            "CreateVault": "{symbol}\/{symbol2} treasury létrehozva",
+            "CloseVault": "{symbol}\/{symbol2} treasury bezárva",
+            "DepositCollateral": "{amount} {symbol} letétbe helyezve",
+            "RepayVaultDebt": "{amount} {symbol} adósság visszafizetve",
+            "BorrowVaultDebt": "{amount} {symbol} adósság felvéve"
         },
         "error": {
             "Transfer": "Nem sikerült {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Nem sikerült törölni a limitált rendeléseket",
             "OrderBookCancelLimitOrder": "Nem sikerült törölni a limitált rendelést",
             "Burn": "Nem sikerült égetni {amount} {symbol}",
-            "Mint": "Nem sikerült menteni {amount} {symbol} címet a következő címre {address}"
+            "Mint": "Nem sikerült menteni {amount} {symbol} címet a következő címre {address}",
+            "CreateVault": "{symbol}\/{symbol2} treasury létrehozása sikertelen",
+            "CloseVault": "{symbol}\/{symbol2} treasury bezárása sikertelen",
+            "DepositCollateral": "{amount} {symbol} letétbe helyezése sikertelen",
+            "RepayVaultDebt": "{amount} {symbol} adósság visszafizetése sikertelen",
+            "BorrowVaultDebt": "{amount} {symbol} adósság felvétele sikertelen"
         },
         "ReferralReserveXor": "XOR lekötése",
         "ReferralUnreserveXor": "XOR feloldása",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Megrendelés törlése",
         "OrderBookCancelLimitOrders": "Megrendelések törlése",
         "Burn": "Éget",
-        "Mint": "Menta"
+        "Mint": "Menta",
+        "CreateVault": "Treasury létrehozása",
+        "CloseVault": "Treasury bezárása",
+        "DepositCollateral": "Letét behelyezése",
+        "RepayVaultDebt": "Adósság visszafizetése",
+        "BorrowVaultDebt": "Adósság felvétele"
     },
     "polkadotjs": {
         "noExtensions": "Nem találtunk {PolkadotJs} kiterjesztést. Kérjük, telepítsd és töltse be újra ezt az oldalt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -385,9 +400,7 @@
         "About": "Leírás",
         "Stats": "Statisztikák",
         "Wallet": "Tárca",
-        "CreatePair": "Pár létrehozása",
         "AddLiquidity": "Poolhoz hozzáadás",
-        "AddLiquidityId": "Poolhoz hozzáadás",
         "RemoveLiquidity": "Poolból eltávolítás",
         "Rewards": "Jutalmak",
         "Explore\/Tokens": "Tokenek",
@@ -397,7 +410,11 @@
         "Staking": "Letét",
         "OrderBook": "Kereskedelmi",
         "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": "Kensetsu"
+        "AssetOwner": "Eszköz tulajdonosa",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Boltívek",
+        "VaultDetails": "Vault Részletek",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Váltás",
@@ -408,12 +425,13 @@
         "Rewards": "Jutalmak",
         "About": "Leírás",
         "Stats": "Statisztikák",
-        "CreatePair": "Pár létrehozása",
         "StakingContainer": "Letét",
         "Explore\/Container": "Kutat",
         "SoraCard": "{Sora} Kártya",
         "OrderBook": "Kereskedelmi",
-        "Kensetsu": "Kensetsu"
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1560,5 +1578,84 @@
     },
     "calculatingText": "Számítás",
     "customisePageText": "Az oldal testreszabása",
-    "priceChartText": "Ártáblázat"
+    "priceChartText": "Ártáblázat",
+    "editText": "Szerkesztés",
+    "resetText": "Visszaállítás",
+    "kensetsu": {
+        "addCollateral": "Zálog hozzáadása",
+        "addCollateralDescription": "Helyezzen el több eszközt a páncélszekrénybe, hogy növelje hitelkeretét vagy javítsa hitel-érték arányát. Ez segíthet a likvidáció elkerülésében is.",
+        "depositCollateral": "Zálog letétbe helyezése",
+        "totalCollateral": "Teljes zálog",
+        "totalCollateralDescription": "Az összes jelenleg a páncélszekrénybe helyezett eszköz értéke. Ez az érték befolyásolja a hitelkapacitását és a likvidáció kockázatát.",
+        "debtAvailable": "Elérhető adósság",
+        "debtAvailableDescription": "Az a pénzösszeg, amelyet még mindig kivehet a páncélszekrényéből, anélkül, hogy meghaladná a hitelkeretét, a jelenlegi fedezete alapján.",
+        "ltv": "Kölcsön értéke ({LTV})",
+        "ltvDescription": "A kivont összeg és a trezorban található zálog értékének aránya, százalékban kifejezve. Egy magasabb {LTV} növeli a potenciális hozamokat, de növeli a kockázatot is, beleértve a likvidáció lehetőségét is.",
+        "borrowMore": "További kölcsön felvétele",
+        "borrowMoreDescription": "Vegyen ki további összeget a páncélszekrényéből a maximálisan elérhető összegig. Győződjön meg róla, hogy a fedezete értéke támogatja az emelt adósságot a likvidációs kockázat elkerülése érdekében.",
+        "available": "Elérhető",
+        "outstandingDebt": "Fennálló adósság",
+        "outstandingDebtDescription": "Az az összeg, amit jelenleg az ön páncélszekrényéből kivett összegekből tartozik, beleértve az elhalasztott kamatokat is. Ezt vissza kell fizetni a páncélszekrénye lezárásához vagy az egészséges hitel-érték arány fenntartásához.",
+        "createVault": "Kölcsön pozíció nyitása",
+        "createVaultDescription": "Kezdjen új tranzakciót, zálogot helyezve a trezorba, és pénzt vonva ki. Ez adósságkötelezettséget teremt, amelyet kezelnie kell.",
+        "createVaultAction": "Pozíció nyitása",
+        "borrowDebt": "Adósság felvétele",
+        "minDepositCollateral": "Min. letét zálog",
+        "minDepositCollateralDescription": "Az a minimális összeg, amelyre szükség van egy trezor megnyitásához. Ez az kezdeti letét biztosítja az Ön által kölcsönkívánt pénzt.",
+        "maxAvailableToBorrow": "Max. elérhető kölcsön",
+        "maxAvailableToBorrowDescription": "Az a maximális összeg, amelyet a trezorából kivehet, a zálog értékétől függően. Ez a határ megváltozik a zálog értékének változásával.",
+        "borrowTax": "Kölcsönadási adó",
+        "borrowTaxDescription": "A kölcsön felvett összegre vonatkozó {value} adó",
+        "stabilityFee": "Stabilitási díj",
+        "stabilityFeeDescription": "Éves díj, amelyet a trezorból kivont összeg után számolnak fel, százalékban kifejezve. Ez a díj a kockázatokat és a piaci ingadozásokat kompenzálja.",
+        "repayDebt": "Adósság visszafizetése",
+        "repayDebtDescription": "Fizesse vissza az összeget, amit kölcsön vett, hogy csökkentse az ön által fennálló adósságot. Ez csökkentheti az érdekelt költségeket, és csökkentheti a likvidációs kockázatot.",
+        "closeVault": "Pozíció bezárása",
+        "closeVaultDescription": "A kiválasztott pozíció bezárása az összes fennálló adósság visszafizetésével és a zálog visszavonásával",
+        "yourCollateral": "Az Ön záloga",
+        "yourCollateralDescription": "Azok az eszközök, amelyeket letétbe helyezett a trezorba annak érdekében, hogy biztosítsa a kivehető pénzt. Ezeket az eszközöket eladhatja a kölcsönadó, ha nem tartja fenn a szükséges kölcsön-érték arányt.",
+        "yourDebt": "Az Ön adóssága",
+        "yourDebtDescription": "Az Ön trezorában jelenleg fennálló teljes összeg, beleértve a kivehető összeget és a felhalmozott kamatokat. Ez az egyenleg idővel növekszik, ha a kamatok felhalmozódnak.",
+        "yourDebtTokenBalance": "Az Ön {tokenSymbol} egyenlege",
+        "requiredAmountWithSlippage": "Szükséges összeg slippage-rel",
+        "requiredAmountWithSlippageDescription": "Egy sima trezorzárás érdekében vásároljon valamivel több {tokenSymbol} -t, mint a szükséges {amount} a lehetséges csúszás miatt. Többre van szükség a hiányzó részfedezéshez. Cserélje ki az eszközeit {tokenSymbol} -re, hogy fedezze ezt a hiányt.",
+        "openSwap": "Nyitott cserék",
+        "introTitle": "Nyisson kölcsön pozíciókat és keressen a {Kensetsu}-val",
+        "introDescription": "Tapasztalja meg a biztonságos és problémamentes kölcsönvételt és hitelezést. Nyisson kölcsön pozíciókat a {Kensetsu} platformon.",
+        "disclaimerDescription": "A digitális eszközök kölcsönzése a {Polkaswap} -on keresztül jelentős kockázatokkal jár, és teljes egészében saját kockázatára történik. A digitális eszközök értéke nagyon változékony, és bármely változás azoknak az eszközöknek a piaci áraiban, amelyeket kölcsönvett vagy használt fedezetként, jelentős pénzügyi veszteségeket okozhat.",
+        "availableToBorrow": "Elérhető kölcsönzésre",
+        "availableToBorrowDescription": "A maradék összeg, amelyre jelenleg jogosult a trezor feltételeinek értelmében, az Ön által letétbe helyezett zálog és a meglévő adósság alapján.",
+        "collateralDetails": "Zálog részletek",
+        "debtDetails": "Adósság részletek",
+        "positionInfo": "Pozíció információ",
+        "liquidationPenalty": "Likvidálási büntetés",
+        "liquidationPenaltyDescription": "Egy díj, amely akkor kerül felszámolásra, ha a zálog értéke egy bizonyos küszöb alá esik, amely megtörténik az eszközök eladásával az adósság fedezésére. Ez a büntetés növeli az Ön teljes adósságát.",
+        "positionSafe": "Pozíció biztonságos",
+        "liquidationClose": "Likvidálási zárás",
+        "highLiquidationRisk": "Magas likvidálási kockázat",
+        "error": {
+            "enterCollateral": "Adja meg a zálogot",
+            "enterBorrow": "Adja meg a kölcsön összegét",
+            "borrowMoreThanAvailable": "Elérhető adósság meghaladva",
+            "insufficientCollateral": "Elégtelen zálog",
+            "enterRepayDebt": "Adja meg a visszafizetendő adósság összegét",
+            "repayMoreThanDebt": "Adósság túlfizetve"
+        }
+    },
+    "accountSettings": {
+        "title": "FIÓK BEÁLLÍTÁSOK",
+        "hint": "Ezt újra engedélyezheti a fiókbeállításokban",
+        "disable": "Letiltás be",
+        "disabled": "Letiltva",
+        "confirmation": {
+            "title": "A tranzakció megerősítésének letiltása",
+            "description": "Egy felugró képernyő, amely a tranzakciók részleteit jeleníti meg az aláírás előtt."
+        },
+        "signature": {
+            "title": "Jelszó megerősítésének letiltása",
+            "description": "Engedélyezze vagy tiltsa le a jelszavának megadásának szükségességét az aláírás előugró ablakában a tranzakciókban."
+        },
+        "enterPassword": "Írd be a jelszót",
+        "googleOnly": "Csak {Google} -fiókok"
+    }
 }

@@ -43,7 +43,7 @@
         type="primary"
         class="action-button s-typography-button--large"
         :disabled="!areTokensSelected || emptyAssets || isInsufficientBalance"
-        :loading="isSelectAssetLoading"
+        :loading="loading || isSelectAssetLoading"
         @click="handleAddLiquidity"
       >
         <template v-if="!areTokensSelected">
@@ -89,7 +89,7 @@
     />
 
     <add-liquidity-confirm
-      :visible.sync="showConfirmDialog"
+      :visible.sync="confirmDialogVisibility"
       :parent-loading="parentLoading || loading"
       :share-of-pool="shareOfPool"
       :first-token="firstToken"
@@ -100,7 +100,7 @@
       :price-reversed="priceReversed"
       :slippage-tolerance="slippageToleranceValue"
       :insufficient-balance-token-symbol="insufficientBalanceTokenSymbol"
-      @confirm="handleConfirmAddLiquidity"
+      @confirm="depositLiquidity"
     />
 
     <network-fee-warning-dialog
@@ -277,7 +277,8 @@ export default class AddLiquidity extends Mixins(
       }
       this.isWarningFeeDialogConfirmed = false;
     }
-    this.openConfirmDialog();
+
+    this.confirmOrExecute(this.depositLiquidity);
   }
 
   async handleTokenChange(value: string, setValue: SetValue): Promise<void> {
@@ -311,9 +312,9 @@ export default class AddLiquidity extends Mixins(
     this.updateRouteAfterSelectTokens(this.firstToken, this.secondToken);
   }
 
-  async handleConfirmAddLiquidity(): Promise<void> {
-    await this.handleConfirmDialog(async () => {
-      await this.withNotifications(this.addLiquidity);
+  async depositLiquidity(): Promise<void> {
+    await this.withNotifications(async () => {
+      await this.addLiquidity();
       this.handleBack();
     });
   }
