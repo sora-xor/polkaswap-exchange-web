@@ -31,7 +31,7 @@
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.debtAsset.symbol }} / {{ row.lockedAsset.symbol }}</div>
           </div>
-          <s-icon v-if="isLoggedIn" name="arrows-arrow-top-right-24" size="12" />
+          <s-icon v-if="isLoggedIn" name="plus-16" size="12" />
         </template>
       </s-table-column>
       <!-- Stability Fee -->
