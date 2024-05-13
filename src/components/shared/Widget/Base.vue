@@ -51,7 +51,7 @@ export default class BaseWidget extends Vue {
 <style lang="scss">
 .base-widget {
   overflow: hidden;
-
+  min-height: 475px;
   &.s-card.neumorphic.s-size-big {
     padding: 0;
 
