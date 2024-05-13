@@ -20,7 +20,6 @@ import { getter, state } from '@/store/decorators';
 export default class CedeStoreWidget extends Mixins(mixins.DialogMixin, mixins.LoadingMixin, mixins.TranslationMixin) {
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @state.wallet.account.address accountAddress!: string;
-
   @getter.libraryTheme libraryTheme!: Theme;
 
   rootSelector = '#cede-widget';
