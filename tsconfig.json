@@ -38,7 +38,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-, "src/indexer/queries/assetSupplyts"  ],
+  ],
   "exclude": [
     "node_modules"
   ]
