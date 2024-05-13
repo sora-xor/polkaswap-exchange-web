@@ -87,14 +87,14 @@ export default class ExploreOverallStats extends Mixins(TranslationMixin, mixins
   get columns() {
     return [
       {
-        title: 'Total debt',
-        tooltip: 'COMING SOON',
-        amount: this.totalDebt,
-      },
-      {
         title: 'Total collateral',
         tooltip: 'COMING SOON',
         amount: this.totalCollateral,
+      },
+      {
+        title: 'Total debt',
+        tooltip: 'COMING SOON',
+        amount: this.totalDebt,
       },
       {
         title: 'Bad debt',

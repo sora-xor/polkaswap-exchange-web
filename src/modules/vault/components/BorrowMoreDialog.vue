@@ -4,11 +4,11 @@
       <token-input
         ref="debtInput"
         class="borrow-more__debt-input borrow-more__token-input"
-        :balance-text="t('kensetsu.available')"
         with-slider
-        :title="title"
-        v-model="borrowValue"
         is-fiat-editable
+        v-model="borrowValue"
+        :title="title"
+        :balance-text="t('kensetsu.available')"
         :is-max-available="isMaxBorrowAvailable"
         :token="kusdToken"
         :balance="availableCodec"
@@ -26,9 +26,9 @@
         :next="formattedNextBorrow"
       />
       <prev-next-info-line
+        symbol="%"
         :label="t('kensetsu.ltv')"
         :tooltip="t('kensetsu.ltvDescription')"
-        symbol="%"
         :prev="formattedPrevLtv"
         :next="formattedLtv"
       >
@@ -37,8 +37,8 @@
         </value-status>
       </prev-next-info-line>
       <s-button
-        type="primary"
         class="s-typography-button--large action-button borrow-more__button"
+        type="primary"
         :disabled="disabled"
         @click="handleBorrowMore"
       >
@@ -46,12 +46,12 @@
         <template v-else>{{ title }}</template>
       </s-button>
       <info-line
+        is-formatted
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
         :value="networkFeeFormatted"
         :asset-symbol="xorSymbol"
         :fiat-value="getFiatAmountByCodecString(networkFee)"
-        is-formatted
       />
     </div>
   </dialog-base>
