@@ -14,7 +14,7 @@ export type VaultState = {
   collateralTokenBalance: Nullable<AccountBalance>;
   kusdTokenBalance: Nullable<AccountBalance>;
   averageCollateralPrices: Record<string, Nullable<FPNumber>>;
-  averageCollateralPriceSubscriptions: Subscription[];
+  averageCollateralPriceSubscriptions: Record<string, Subscription>;
   liquidationPenalty: number;
   borrowTax: number;
   borrowTaxSubscription: Nullable<Subscription>;

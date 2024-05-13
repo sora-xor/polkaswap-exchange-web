@@ -18,7 +18,7 @@ function initialState(): VaultState {
     collateralTokenBalance: null,
     kusdTokenBalance: null,
     averageCollateralPrices: defaultAverageCollateralPrices,
-    averageCollateralPriceSubscriptions: [],
+    averageCollateralPriceSubscriptions: {},
     liquidationPenalty: 0,
     borrowTax: 0,
     borrowTaxSubscription: null,

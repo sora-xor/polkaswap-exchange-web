@@ -59,12 +59,22 @@ const mutations = defineMutations<VaultState>()({
   resetAverageCollateralPrices(state): void {
     state.averageCollateralPrices = { ...defaultAverageCollateralPrices };
   },
-  setAverageCollateralPriceSubscriptions(state, subscriptions?: Nullable<Subscription[]>): void {
-    state.averageCollateralPriceSubscriptions.forEach((subscription) => subscription?.unsubscribe?.());
-    state.averageCollateralPriceSubscriptions = [];
-    if (subscriptions?.length) {
-      state.averageCollateralPriceSubscriptions = subscriptions;
+  setAverageCollateralPriceSubscriptions(state, subscriptions?: Record<string, Subscription>): void {
+    if (!subscriptions) {
+      return;
     }
+    state.averageCollateralPriceSubscriptions = { ...state.averageCollateralPriceSubscriptions, ...subscriptions };
+  },
+  removeAverageCollateralPriceSubscriptions(state, ids: Array<string>): void {
+    ids.forEach((id) => {
+      state.averageCollateralPriceSubscriptions[id]?.unsubscribe();
+      delete state.averageCollateralPriceSubscriptions[id];
+    });
+    state.averageCollateralPrices = { ...state.averageCollateralPrices };
+  },
+  unsubscribeAverageCollateralPriceSubscriptions(state): void {
+    Object.values(state.averageCollateralPriceSubscriptions).forEach((subscription) => subscription?.unsubscribe());
+    state.averageCollateralPriceSubscriptions = {};
   },
   setLiquidationPenalty(state, penalty: number): void {
     state.liquidationPenalty = penalty;

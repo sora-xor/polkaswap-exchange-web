@@ -11,7 +11,7 @@ import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 
-const COLLATERALS_INTERVAL = 2 * 60_000; // Do not decrease this interval due to a lot of data subscriptions updates
+const COLLATERALS_INTERVAL = 30_000;
 /** Debt calculation in real-time each 6 seconds */
 const DEBT_INTERVAL = 6_000;
 const DaiAddress = DAI.address;
@@ -42,13 +42,32 @@ function updateTokenSubscription(context: ActionContext<any, any>, field: 'colla
 const actions = defineActions({
   async subscribeOnAverageCollateralPrices(context): Promise<void> {
     const { commit, state } = vaultActionContext(context);
-    const { collaterals } = state;
-    const collateralIds = Object.keys(collaterals);
-    const subscriptions: Subscription[] = [];
-
-    for (const collateralAddress of collateralIds) {
+    const { collaterals, averageCollateralPriceSubscriptions } = state;
+    const newIds: string[] = [];
+    const idsToRemove: string[] = [];
+    // Check if there are new collateral assets or some of them were removed
+    for (const collateralId in collaterals) {
+      if (!(collateralId in averageCollateralPriceSubscriptions)) {
+        newIds.push(collateralId);
+      }
+    }
+    for (const priceSubId in averageCollateralPriceSubscriptions) {
+      if (!(priceSubId in collaterals)) {
+        idsToRemove.push(priceSubId);
+      }
+    }
+    // Unsubscribe from removed collateral assets
+    if (idsToRemove.length) {
+      commit.removeAverageCollateralPriceSubscriptions(idsToRemove);
+    }
+    if (!newIds.length) {
+      return;
+    }
+    // Subscribe on new collateral assets if they are not subscribed yet
+    const newSubscriptions: Record<string, Subscription> = {};
+    for (const collateralAddress of newIds) {
       if (collateralAddress !== DaiAddress) {
-        const subs = api.swap.subscribeOnReserves(collateralAddress, DaiAddress)?.subscribe((payload) => {
+        const sub = api.swap.subscribeOnReserves(collateralAddress, DaiAddress)?.subscribe((payload) => {
           try {
             const averagePrice = getAveragePrice(collateralAddress, DaiAddress, PriceVariant.Sell, payload);
             commit.setAverageCollateralPrice({ address: collateralAddress, price: averagePrice });
@@ -57,13 +76,12 @@ const actions = defineActions({
             console.warn(`[Kensetsu] getAveragePrice with ${collateralAddress}`, error);
           }
         });
-        if (subs) {
-          subscriptions.push(subs);
+        if (sub) {
+          newSubscriptions[collateralAddress] = sub;
         }
       }
     }
-
-    commit.setAverageCollateralPriceSubscriptions(subscriptions);
+    commit.setAverageCollateralPriceSubscriptions(newSubscriptions);
   },
   async updateBalanceSubscriptions(context): Promise<void> {
     updateTokenSubscription(context, 'kusd');
@@ -187,7 +205,7 @@ const actions = defineActions({
     commit.resetBorrowTaxSubscription();
     commit.resetAccountVaultIdsSubscription();
     commit.resetAccountVaultsSubscription();
-    commit.setAverageCollateralPriceSubscriptions();
+    commit.unsubscribeAverageCollateralPriceSubscriptions();
     commit.resetCollaterals();
     commit.resetAccountVaults();
     commit.resetAverageCollateralPrices();
