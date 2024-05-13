@@ -147,6 +147,8 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
         return 'astar';
       case SubNetworkId.Kusama:
         return 'kusama';
+      case SubNetworkId.KusamaShiden:
+        return 'shiden';
       case SubNetworkId.Rococo:
         return 'rococo';
       case SubNetworkId.RococoSora:

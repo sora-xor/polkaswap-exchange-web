@@ -171,6 +171,29 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.KusamaShiden]: {
+    id: SubNetworkId.KusamaShiden,
+    name: 'Shiden',
+    nativeCurrency: {
+      name: 'SDN',
+      symbol: 'SDN',
+      decimals: 18,
+    },
+    blockExplorerUrls: ['https://astar.subscan.io'],
+    shortName: 'Shiden',
+    nodes: [
+      {
+        chain: 'Shiden',
+        name: 'Astar',
+        address: 'wss://rpc.shiden.astar.network',
+      },
+      {
+        chain: 'Shiden',
+        name: 'Dwellir',
+        address: 'wss://shiden-rpc.dwellir.com',
+      },
+    ],
+  },
   [SubNetworkId.KusamaSora]: {
     id: SubNetworkId.KusamaSora,
     name: 'SORA Kusama Parachain',

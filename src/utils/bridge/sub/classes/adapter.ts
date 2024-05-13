@@ -92,7 +92,7 @@ export class SubNetworksConnector {
       if (network === SubNetworkId.PolkadotAcala) {
         return new AcalaParachainAdapter(network);
       }
-      if (network === SubNetworkId.PolkadotAstar) {
+      if ([SubNetworkId.PolkadotAstar, SubNetworkId.KusamaShiden].includes(network)) {
         return new AstarParachainAdapter(network);
       }
       if (subBridgeApi.isSoraParachain(network)) {
