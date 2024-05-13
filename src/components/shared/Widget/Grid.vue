@@ -13,23 +13,25 @@
     :responsive="true"
     :prevent-collision="false"
     :vertical-compact="compact"
-    :use-css-transforms="true"
+    :use-css-transforms="false"
     @breakpoint-changed="onBreakpointChanged"
     @layout-updated="onLayoutUpdate"
   >
     <div v-if="lines" class="grid-lines" :style="gridLinesStyle" />
-    <grid-item v-for="widget in layout" :key="widget.i" :is-resizable="isResizable(widget)" v-bind="widget">
-      <slot
-        :name="widget.i"
-        v-bind="{
-          id: widget.i,
-          flat,
-          loading,
-          onResize,
-          reset,
-        }"
-      />
-    </grid-item>
+    <transition-group name="list" tag="div">
+      <grid-item v-for="widget in layout" :key="widget.i" :is-resizable="isResizable(widget)" v-bind="widget">
+        <slot
+          :name="widget.i"
+          v-bind="{
+            id: widget.i,
+            flat,
+            loading,
+            onResize,
+            reset,
+          }"
+        />
+      </grid-item>
+    </transition-group>
   </grid-layout>
 </template>
 
@@ -115,7 +117,7 @@ export default class WidgetsGrid extends Vue {
   @Prop({ default: 16, type: Number }) readonly margin!: number;
   @Prop({ default: false, type: Boolean }) readonly draggable!: boolean;
   @Prop({ default: false, type: Boolean }) readonly resizable!: boolean;
-  @Prop({ default: false, type: Boolean }) readonly compact!: boolean;
+  @Prop({ default: true, type: Boolean }) readonly compact!: boolean;
   @Prop({ default: false, type: Boolean }) readonly lines!: boolean;
   @Prop({ default: () => DEFAULT_COLS, type: Object }) readonly cols!: LayoutConfig;
   @Prop({ default: () => DEFAULT_BREAKPOINTS, type: Object }) readonly breakpoints!: LayoutConfig;
@@ -310,6 +312,9 @@ $line: var(--s-color-base-border-secondary);
 
 .widgets-grid {
   .vue-grid-item {
+    transition-property: opacity, scale;
+    transition-duration: 0.3s;
+
     &.vue-grid-placeholder {
       background: var(--s-color-theme-accent-hover);
       opacity: 0.5;
@@ -342,6 +347,13 @@ $line: var(--s-color-base-border-secondary);
     position: absolute;
     background-image: linear-gradient(to right, $line 1px, transparent 1px), linear-gradient($line 1px, transparent 1px);
     background-repeat: repeat;
+  }
+
+  // animation
+  .list-enter,
+  .list-leave-to {
+    opacity: 0;
+    scale: 0.8;
   }
 }
 </style>
