@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Ti fagile aṣẹ opin",
             "OrderBookCancelLimitOrders": "Awọn aṣẹ aropin parẹ",
             "Burn": "jona {amount} {symbol}",
-            "Mint": "Minted {amount} {symbol} si {address}"
+            "Mint": "Minted {amount} {symbol} si {address}",
+            "CreateVault": "Gbigbe {symbol}\/{symbol2} ti ṣẹda",
+            "CloseVault": "Gbigbe {symbol}\/{symbol2} ti fẹ",
+            "DepositCollateral": "{amount} {symbol} ti jẹ́ títẹ",
+            "RepayVaultDebt": "{amount} {symbol} ti fọwọ́ sí ìwò",
+            "BorrowVaultDebt": "{amount} {symbol} ti kọ láìná"
         },
         "error": {
             "Transfer": "Kuna lati {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Kuna lati fagilee awọn ibere opin",
             "OrderBookCancelLimitOrder": "Kuna lati fagilee aṣẹ opin",
             "Burn": "Kuna lati sun {amount} {symbol}",
-            "Mint": "Kuna lati mint {amount} {symbol} si {address}"
+            "Mint": "Kuna lati mint {amount} {symbol} si {address}",
+            "CreateVault": "Ọgbọn ti ṣẹda gbigbe {symbol}\/{symbol2}",
+            "CloseVault": "Ọgbọn ti fẹ gbigbe {symbol}\/{symbol2}",
+            "DepositCollateral": "Ọgbọn ti jẹ́ títẹ káríayé {amount} {symbol}",
+            "RepayVaultDebt": "Ọgbọn ti fọwọ́ sí ìwò káríayé {amount} {symbol}",
+            "BorrowVaultDebt": "Ọgbọn ti kọ oúnjẹ láìná káríayé {amount} {symbol}"
         },
         "ReferralReserveXor": "Iwe adehun XOR",
         "ReferralUnreserveXor": "Yọ XOR kuro",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Fagilee Bere fun",
         "OrderBookCancelLimitOrders": "Fagilee Awọn aṣẹ",
         "Burn": "Iná",
-        "Mint": "Mint"
+        "Mint": "Mint",
+        "CreateVault": "Ṣẹda Gbigbe",
+        "CloseVault": "Fẹ Ki Gbigbe",
+        "DepositCollateral": "Jẹ́ Títẹ Káríayé",
+        "RepayVaultDebt": "Fọwọ́ Ní Ìwò Káríayé",
+        "BorrowVaultDebt": "Kọ Oúnjẹ Láìná"
     },
     "polkadotjs": {
         "noExtensions": "A ko rii itẹsiwaju {PolkadotJs}. Jọwọ fi sii ki o tun gbe oju-iwe yii pada\n https:\/\/polkadot.js.org\/extension\/",
@@ -385,9 +400,7 @@
         "About": "Nipa",
         "Stats": "Iṣiro",
         "Wallet": "Apamọwọ",
-        "CreatePair": "Ṣẹda Pair",
         "AddLiquidity": "Fi liquidity si",
-        "AddLiquidityId": "Fi liquidity si",
         "RemoveLiquidity": "Yọ liquidity kuro",
         "Rewards": "Ere",
         "Explore\/Tokens": "Awọn ami-ami",
@@ -397,7 +410,11 @@
         "Staking": "Staking",
         "OrderBook": "Iṣowo",
         "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": "Kensetsu"
+        "AssetOwner": "Oní dúkìá",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Vaults",
+        "VaultDetails": "Vault Details",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Iŕopo",
@@ -408,12 +425,13 @@
         "Rewards": "Ere",
         "About": "Nipa",
         "Stats": "Iṣiro",
-        "CreatePair": "Ṣẹda Pair",
         "StakingContainer": "Staking",
         "Explore\/Container": "Ye",
         "SoraCard": "Kaadi {Sora}",
         "OrderBook": "Iṣowo",
-        "Kensetsu": "Kensetsu"
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1562,5 +1580,82 @@
     "customisePageText": "Ṣe akanṣe oju-iwe",
     "priceChartText": "Owo chart",
     "editText": "Ṣatunkọ",
-    "resetText": "Tunto"
+    "resetText": "Tunto",
+    "kensetsu": {
+        "addCollateral": "Fẹẹrẹ afẹẹwọ",
+        "addCollateralDescription": "Fidi afẹfẹ eto inuwo rẹ sí inu apọ wo fun ti o ba n ti daradara fi yọ eto ìmọlẹ tabi lati ṣe idarada lọkọja eto rẹ. Yiyan a le fi ṣe daaju lati dide lẹkun.",
+        "depositCollateral": "Fẹẹrẹ iranti",
+        "totalCollateral": "Itoju afẹẹwọ",
+        "totalCollateralDescription": "Gbogbo awọn owo inuwo kan gbogbo ni ti inuwo rẹ ni n gba nigba. Iye yii gba alabapin ọmọẹlẹ ati iṣẹrọ awọn ìfẹrẹ inuwo rẹ.",
+        "debtAvailable": "Ọwọọ pẹlu dandan",
+        "debtAvailableDescription": "Ibẹrẹ owo ti o le ti wa dara ti o le gba lati inuwo rẹ ti o ṣe afi idasile owo rẹ wa, siwaju si awọn awo inuwo rẹ lori awọn owo bẹẹni rẹ.",
+        "ltv": "Kudi titun ({LTV})",
+        "ltvDescription": "Ìdìlé ìdì sínù ìdìkan tó jákèrò ní ilọsíwájú ti iranti ní ilé ìdì kan rẹ, fi gba bẹrẹ sí ọhun {LTV} yóò mu èkó wá láì rí.",
+        "borrowMore": "Kúrò ní kíkó",
+        "borrowMoreDescription": "Gba awọn owo ṣiṣe lati inuwo rẹ pupọ titi di bẹ bẹ o ba n gba lati inu rẹ. Ṣe pese pe iye iṣẹrọ rẹ n ṣe jẹ ki o jeṣi nipin alabapin ti o pese lati sọ pe iye iṣẹrọ to dide fun lati dide.",
+        "available": "Lára",
+        "outstandingDebt": "Ọwọọ tó wá tẹlẹ",
+        "outstandingDebtDescription": "Gbogbo awọn owo ti o le rẹ nigba kan lati awọn owo to fẹ lati inuwo rẹ, ni akoko, ni awọn ọwọ ọtun. Yio fẹ lati pa lati dide inuwo rẹ tabi ti o ba n sọ pe iye iṣẹrọ rẹ jẹ lati jẹ lati rọ nidi inuwo rẹ \/ iṣẹrọ awo ìmọlẹ.",
+        "createVault": "Fẹẹ vún tó yan",
+        "createVaultDescription": "Sìn orí iranlọwọ sí ní ilé ìdì rẹ àti mú àwọn owo sílẹ̀. Yiọwọ sìn ẹ̀wù àdáwọdì tó ń ńi ọ̀bẹ wọn, kò sí bẹrẹ láti dá bó báyìí.",
+        "createVaultAction": "Fẹẹ vún",
+        "borrowDebt": "Kúrò ní ọwọọ",
+        "minDepositCollateral": "Bèèrè fẹẹrẹ iranti",
+        "minDepositCollateralDescription": "Owo alápẹran tó tẹlẹ ní àpèjù yìí. Bèèrè ẹ̀bùn yìí fi ọwọọ tó ní ọwọọ wọn.",
+        "maxAvailableToBorrow": "Ọ̀pọ̀lọpọ̀ tó wá tẹlẹ",
+        "maxAvailableToBorrowDescription": "Ọ̀pọ̀lọpọ̀ owo yóò wá sí àwọn owo wọn, kò sí pẹpẹ lati iranti rẹ. Ìkà jẹ́ ń bẹrẹ sí nígbà tí iranti yóò báyìí.",
+        "borrowTax": "Kúrò ọwọọ",
+        "borrowTaxDescription": "Ọ̀bá kúrò {value} ti bẹ ọwọọ tó ti kúrò",
+        "stabilityFee": "Owó fẹẹrẹ alájọsílẹ",
+        "stabilityFeeDescription": "Ọwọ ọwọọ jìnnà tẹlẹ láti kúrò láti ilé ìdì rẹ, ti wọ́n sì bẹrẹ ní pẹrẹ. Owó yìí jìnnà tẹlẹ ní ìdápadà ìlọsíwájú àti awọn iṣẹ̀tẹ̀ ni òṣìṣẹ̀lú.",
+        "repayDebt": "Ya ọwọọ",
+        "repayDebtDescription": "Dahun awọn owo ti o gba lati jẹ alabapin rẹ diẹ ninu iye ti o le mọ bẹẹrẹ, ṣe pese pe iye iṣẹrọ rẹ ti sọ pe iye iṣẹrọ ti o tẹlẹ, ki o si ti tẹwọgba niwọle ti o ba n daju ni.",
+        "closeVault": "Yẹ ìwọle mi",
+        "closeVaultDescription": "Yẹ ìwọle tó yan láti ya gbogbo ọwọọ tó wá tẹlẹ àti ya gbogbo iranti",
+        "yourCollateral": "Iranti rẹ",
+        "yourCollateralDescription": "Àwọn iranti tó ń dá ilé ìdì rẹ láti mú àwọn owo sílẹ̀ tí o mú. Àwọn iranti wọn yóò ń jí lọ sí olùsẹgun tó báyìí yí màá báyìí.",
+        "yourDebt": "Ọwọọ rẹ",
+        "yourDebtDescription": "Tọmọ́tọmọ ètò tó kúrò láti aládé tó yan rẹ, wọ́n ni àkójọ àpèrí tó kúrò àti àkọsí ìṣẹ́ láti gbogbo òkú kúrò. Nígbà tàbí gbogbo òkú kúrò àti àkọsí àwọn ìṣẹ̀ ìlà rẹ.",
+        "yourDebtTokenBalance": "Ọwọọ rẹ {tokenSymbol}",
+        "requiredAmountWithSlippage": "Ọwọọ tó tẹlẹ nígbà tí kòsí òkú",
+        "requiredAmountWithSlippageDescription": "Fun à ìwé ìwọlé ìwọlé, tó yẹ ẹ̀bùn pẹ̀lu {tokenSymbol} tó pé ìbá yóò fọwọlé tó tẹlẹ {amount} nígbà tí ó báyìí lè dààṣí. Oún kò sì bẹrẹ tó ṣe pàdé ni rẹ làbẹ̀. Gbigba àwọn iranti rẹ sí {tokenSymbol} sílẹ̀ sí àwọn ìṣẹ̀ yìí.",
+        "openSwap": "Fẹẹ ìsọwọpọ",
+        "introTitle": "Fẹẹ vị tẹlẹ & Ẹ wò wọlé pẹ̀lú {Kensetsu}",
+        "introDescription": "A daju ati a niwaju ni ibi kan daju fun ọwo ati iye ọwọ. Fidio ibi titi di daju pẹlu ilu {Kensetsu}.",
+        "disclaimerDescription": "Ọmọ ogun tita ti awọn owo diẹ ninu awọn ati{Polkaswap} inu itakun kan wọlé ni lati di ti o ti awọn owo rẹ ni, ati lati bẹrẹ nigba yii. Iye awọn owo diẹ ninu awọn owo kíakíá, ati gbogbo iye kọọkan lati ibi awọn owo ti o ba gba tabi lo lati ṣe asẹ ni n oju awọn owo ni gbogbo àwọn ifọwọṣẹ ti awọn owo ti o ba gba tabi ti o ba n sọ pe o ti lọ lati ibeere aje.",
+        "availableToBorrow": "Fẹẹ tó tẹlẹ",
+        "availableToBorrowDescription": "Iṣẹ́ pẹ̀lú àṣẹ̀yọọ̀rọ̀ àwọn ìdìtẹ́ ni gbogbo ètò tó tẹlẹ tẹ́lẹ, pẹ̀lú àwọn iranti tẹ́lẹ àti àwọn ọwọọ tẹlẹ wọn.",
+        "collateralDetails": "Ẹ̀tọ̀ iranti",
+        "debtDetails": "Ẹ̀tọ̀ ọwọọ",
+        "positionInfo": "Àkókò ìdì",
+        "liquidationPenalty": "Ọwọọ fun inújẹ",
+        "liquidationPenaltyDescription": "Ìfíyà wọ́n rẹ tún pẹ̀ ní ilà láti iranti rẹ bẹrẹ níbi tó gbọ́ ni ìkọ̀já, tí ó sì kùn ẹ̀bùn. Ìwàjú yìí tó kúrò àwọn ọwọọ rẹ.",
+        "positionSafe": "Ìdì tẹlẹ",
+        "liquidationClose": "Ìwọle inújẹ",
+        "highLiquidationRisk": "Rísk inújẹ tó dáadọ",
+        "error": {
+            "enterCollateral": "Tẹ iranti",
+            "enterBorrow": "Tẹ àwọn ọwọọ tẹlẹ",
+            "borrowMoreThanAvailable": "Owo ti o le ni lọ lori ti wọn tẹlẹ",
+            "insufficientCollateral": "Kó iranti to wà",
+            "enterRepayDebt": "Tẹ ìdá",
+            "repayMoreThanDebt": "Iye iṣẹrọ ti o tẹlẹ"
+        }
+    },
+    "accountSettings": {
+        "title": "Eto iroyin",
+        "hint": "O le mu eyi pada si awọn eto akọọlẹ",
+        "disable": "Pa lori",
+        "disabled": "Alaabo fun",
+        "confirmation": {
+            "title": "Pa ìmúdájú idunadura",
+            "description": "Iboju agbejade eyiti o ṣafihan awọn alaye nipa awọn iṣowo ṣaaju iforukọsilẹ."
+        },
+        "signature": {
+            "title": "Pa ìmúdájú ọrọigbaniwọle",
+            "description": "Mu ṣiṣẹ tabi mu iwulo lati tẹ ọrọ igbaniwọle rẹ sii lakoko igarun Ibuwọlu ni awọn iṣowo."
+        },
+        "enterPassword": "Tẹ ọrọ igbaniwọle sii",
+        "googleOnly": "Awọn akọọlẹ {Google} nikan"
+    }
 }

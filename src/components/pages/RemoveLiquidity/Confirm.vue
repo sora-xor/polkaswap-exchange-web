@@ -23,6 +23,7 @@
     <s-divider />
     <remove-liquidity-transaction-details />
     <template #footer>
+      <account-confirmation-option with-hint class="confirmation-option" />
       <s-button
         type="primary"
         class="s-typography-button--large"
@@ -50,6 +51,7 @@ import type { Asset } from '@sora-substrate/util/build/assets/types';
   components: {
     DialogBase: components.DialogBase,
     TokenLogo: components.TokenLogo,
+    AccountConfirmationOption: components.AccountConfirmationOption,
     RemoveLiquidityTransactionDetails: lazyComponent(Components.RemoveLiquidityTransactionDetails),
   },
 })
@@ -82,6 +84,7 @@ export default class ConfirmRemoveLiquidity extends Mixins(
 
   handleConfirmRemoveLiquidity(): void {
     this.$emit('confirm');
+    this.closeDialog();
   }
 }
 </script>
@@ -114,6 +117,9 @@ export default class ConfirmRemoveLiquidity extends Mixins(
   margin-top: $inner-spacing-big;
   color: var(--s-color-base-content-primary);
   line-height: var(--s-line-height-base);
+}
+.confirmation-option {
+  margin-bottom: $inner-spacing-medium;
 }
 @include vertical-divider;
 @include vertical-divider('el-divider');

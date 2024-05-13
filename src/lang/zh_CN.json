@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "限价订单已取消",
             "OrderBookCancelLimitOrders": "限价订单已取消",
             "Burn": "烧毁{amount} {symbol}",
-            "Mint": "铸造了{amount} {symbol}到{address}"
+            "Mint": "铸造了{amount} {symbol}到{address}",
+            "CreateVault": "已创建 {symbol}\/{symbol2} 保险库",
+            "CloseVault": "已关闭 {symbol}\/{symbol2} 保险库",
+            "DepositCollateral": "已存入 {amount} {symbol}",
+            "RepayVaultDebt": "已偿还债务 {amount} {symbol}",
+            "BorrowVaultDebt": "已借入债务 {amount} {symbol}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address}失败",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "取消限价单失败",
             "OrderBookCancelLimitOrder": "取消限价单失败",
             "Burn": "刻录{amount} {symbol}失败",
-            "Mint": "无法将{amount} {symbol}铸造到{address}"
+            "Mint": "无法将{amount} {symbol}铸造到{address}",
+            "CreateVault": "创建 {symbol}\/{symbol2} 保险库失败",
+            "CloseVault": "关闭 {symbol}\/{symbol2} 保险库失败",
+            "DepositCollateral": "存入 {amount} {symbol} 抵押品失败",
+            "RepayVaultDebt": "偿还 {amount} {symbol} 债务失败",
+            "BorrowVaultDebt": "借入 {amount} {symbol} 债务失败"
         },
         "ReferralReserveXor": "绑定XOR",
         "ReferralUnreserveXor": "解绑XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "取消订单",
         "OrderBookCancelLimitOrders": "取消订单",
         "Burn": "烧伤",
-        "Mint": "薄荷"
+        "Mint": "薄荷",
+        "CreateVault": "创建保险库",
+        "CloseVault": "关闭保险库",
+        "DepositCollateral": "存入抵押品",
+        "RepayVaultDebt": "偿还债务",
+        "BorrowVaultDebt": "借入债务"
     },
     "polkadotjs": {
         "noExtensions": "没有找到 {PolkadotJs} 的扩展。请安装它并重新加载此页面\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -385,9 +400,7 @@
         "About": "关于",
         "Stats": "统计数据",
         "Wallet": "钱包",
-        "CreatePair": "创建一对",
         "AddLiquidity": "增加流动性",
-        "AddLiquidityId": "增加流动性",
         "RemoveLiquidity": "删除流动性",
         "Rewards": "奖励",
         "Explore\/Tokens": "代币",
@@ -397,7 +410,11 @@
         "Staking": "质押",
         "OrderBook": "贸易",
         "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": "Kensetsu"
+        "AssetOwner": "资产所有者",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "保险库",
+        "VaultDetails": "保险库详情",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "兑换",
@@ -408,12 +425,13 @@
         "Rewards": "奖励",
         "About": "关于",
         "Stats": "统计数据",
-        "CreatePair": "创建流动性对",
         "StakingContainer": "质押",
         "Explore\/Container": "探索",
         "SoraCard": "{Sora}卡",
         "OrderBook": "贸易",
-        "Kensetsu": "Kensetsu"
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "推特",
@@ -1562,5 +1580,82 @@
     "customisePageText": "自定义页面",
     "priceChartText": "价格走势图",
     "editText": "编辑",
-    "resetText": "重置"
+    "resetText": "重置",
+    "kensetsu": {
+        "addCollateral": "增加抵押品",
+        "addCollateralDescription": "将更多资产存入您的保险库，以增加您的借贷限额或改善您的贷款价值比。这也可以帮助防止清算。",
+        "depositCollateral": "存入抵押品",
+        "totalCollateral": "总抵押品",
+        "totalCollateralDescription": "目前存入您的保险库的所有资产的总价值。此价值影响您的借贷能力和清算风险。",
+        "debtAvailable": "可借贷的债务",
+        "debtAvailableDescription": "根据您当前的抵押品，您仍然可以从您的保险库中提取的资金金额，而不会超出您的借贷限额。",
+        "ltv": "贷款价值比 ({LTV})",
+        "ltvDescription": "您的保险库中提取的金额与抵押品价值的比率，以百分比表示。较高的{LTV}增加了潜在收益，但也增加了风险，包括清算的可能性。",
+        "borrowMore": "借更多",
+        "borrowMoreDescription": "从您的保险库中提取额外资金，直至最大可用金额。确保您的抵押品价值支持增加的债务，以避免清算风险。",
+        "available": "可用",
+        "outstandingDebt": "未偿还债务",
+        "outstandingDebtDescription": "您目前从您的保险库中提取的资金所欠的总金额，包括应计利息。这需要偿还以关闭您的保险库或维持健康的贷款价值比。",
+        "createVault": "打开借款头寸",
+        "createVaultDescription": "通过向您的保险库存入抵押品并提取资金来启动新交易。这将创建一个您必须管理的债务义务。",
+        "createVaultAction": "打开头寸",
+        "borrowDebt": "借贷债务",
+        "minDepositCollateral": "最低存入抵押品",
+        "minDepositCollateralDescription": "打开保险库所需的最低资产金额。这笔初始存款保证您想要借入的资金。",
+        "maxAvailableToBorrow": "最大可借贷金额",
+        "maxAvailableToBorrowDescription": "您可以从您的保险库中提取的最大金额，由您的抵押品价值决定。随着抵押品价值的变化，此限额会调整。",
+        "borrowTax": "借贷税",
+        "borrowTaxDescription": "借出金额应用的 {value} 税",
+        "stabilityFee": "稳定费用",
+        "stabilityFeeDescription": "从您的保险库中提取的金额收取的年费，以百分比计算。该费用补偿了风险和市场波动。",
+        "repayDebt": "偿还债务",
+        "repayDebtDescription": "归还借入的资金以减少您的未偿债务。这可以减少利息成本并降低清算风险。",
+        "closeVault": "关闭我的头寸",
+        "closeVaultDescription": "通过偿还所有未偿还债务并取出所有抵押品关闭所选头寸",
+        "yourCollateral": "您的抵押品",
+        "yourCollateralDescription": "您存入保险库以确保提取的资金的资产。如果您未能维持所需的贷款价值比率，则放贷人可能会清算这些资产。",
+        "yourDebt": "您的债务",
+        "yourDebtDescription": "您的保险库中当前未偿还的总额，包括提取的金额和任何应计利息。如果利息累积，此余额会随时间增加。",
+        "yourDebtTokenBalance": "您的 {tokenSymbol} 余额",
+        "requiredAmountWithSlippage": "包括滑点的所需金额",
+        "requiredAmountWithSlippageDescription": "为了顺利关闭保险库，请购买略多于所需的 {amount} 的 {tokenSymbol}，因为可能存在滑点。您需要额外的资产来弥补差距。将您的资产交换为 {tokenSymbol} 以满足此需求。",
+        "openSwap": "打开交换",
+        "introTitle": "开放借位 & 与 {Kensetsu} 赚取",
+        "introDescription": "体验安全、轻松的借贷与放贷。使用 {Kensetsu} 平台开放借贷位置。",
+        "disclaimerDescription": "通过 {Polkaswap} 借贷数字资产存在重大风险，并完全由您自行承担。数字资产的价值极易波动，您所借出或用作抵押品的资产的市场价格任何变化都可能导致巨大的财务损失。",
+        "availableToBorrow": "可借贷的金额",
+        "availableToBorrowDescription": "根据您存入的抵押品和任何现有债务的当前条件，您有资格提取的剩余金额。",
+        "collateralDetails": "抵押品详情",
+        "debtDetails": "债务详情",
+        "positionInfo": "头寸信息",
+        "liquidationPenalty": "清算罚款",
+        "liquidationPenaltyDescription": "如果您的抵押品价值低于某一阈值，则会收取费用，从而促使出售资产以偿还债务。此罚款会增加您的总债务。",
+        "positionSafe": "头寸安全",
+        "liquidationClose": "清算关闭",
+        "highLiquidationRisk": "高清算风险",
+        "error": {
+            "enterCollateral": "输入抵押品",
+            "enterBorrow": "输入借贷金额",
+            "borrowMoreThanAvailable": "可用债务超出",
+            "insufficientCollateral": "抵押品不足",
+            "enterRepayDebt": "输入偿还债务",
+            "repayMoreThanDebt": "偿还的债务过多"
+        }
+    },
+    "accountSettings": {
+        "title": "帐号设定",
+        "hint": "您可以在帐户设置中重新启用此功能",
+        "disable": "禁用",
+        "disabled": "禁用于",
+        "confirmation": {
+            "title": "禁用交易确认",
+            "description": "弹出屏幕显示签名前交易的详细信息。"
+        },
+        "signature": {
+            "title": "禁用密码确认",
+            "description": "启用或禁用在交易中签名弹出时输入密码的需要。"
+        },
+        "enterPassword": "请输入密码",
+        "googleOnly": "仅限{Google}帐户"
+    }
 }

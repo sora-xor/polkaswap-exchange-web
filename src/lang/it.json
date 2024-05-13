@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Ordine limite annullato",
             "OrderBookCancelLimitOrders": "Ordini limite annullati",
             "Burn": "{amount} {symbol} bruciato",
-            "Mint": "Coniato {amount} {symbol} a {address}"
+            "Mint": "Coniato {amount} {symbol} a {address}",
+            "CreateVault": "Vault {symbol}\/{symbol2} creato",
+            "CloseVault": "Vault {symbol}\/{symbol2} chiuso",
+            "DepositCollateral": "Depositato {amount} {symbol}",
+            "RepayVaultDebt": "Debito ripagato {amount} {symbol}",
+            "BorrowVaultDebt": "Debito preso in prestito {amount} {symbol}"
         },
         "error": {
             "Transfer": "Impossibile {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Impossibile annullare gli ordini limite",
             "OrderBookCancelLimitOrder": "Impossibile annullare l'ordine limite",
             "Burn": "Impossibile masterizzare {amount} {symbol}",
-            "Mint": "Impossibile coniare {amount} {symbol} su {address}"
+            "Mint": "Impossibile coniare {amount} {symbol} su {address}",
+            "CreateVault": "Impossibile creare il vault {symbol}\/{symbol2}",
+            "CloseVault": "Impossibile chiudere il vault {symbol}\/{symbol2}",
+            "DepositCollateral": "Impossibile depositare {amount} {symbol}",
+            "RepayVaultDebt": "Impossibile ripagare {amount} {symbol} di debito",
+            "BorrowVaultDebt": "Impossibile prendere in prestito {amount} {symbol} di debito"
         },
         "ReferralReserveXor": "Legame XOR",
         "ReferralUnreserveXor": "Svincola XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Annulla Ordine",
         "OrderBookCancelLimitOrders": "Annulla ordini",
         "Burn": "Bruciare",
-        "Mint": "menta"
+        "Mint": "Menta",
+        "CreateVault": "Crea Vault",
+        "CloseVault": "Chiudi Vault",
+        "DepositCollateral": "Deposita Collaterale",
+        "RepayVaultDebt": "Ripaga Debito Vault",
+        "BorrowVaultDebt": "Prendi in Prestito Debito Vault"
     },
     "polkadotjs": {
         "noExtensions": "Nessuna estensione {PolkadotJs} trovata. Si prega di installarla e ricaricare questa pagina\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -385,9 +400,7 @@
         "About": "Informazioni su",
         "Stats": "Statistiche",
         "Wallet": "Portafoglio",
-        "CreatePair": "Crea una Pair",
         "AddLiquidity": "Aggiungi liquidità",
-        "AddLiquidityId": "Aggiungi liquidità",
         "RemoveLiquidity": "Rimuovi liquidità",
         "Rewards": "Ricompense",
         "Explore\/Tokens": "Token",
@@ -397,7 +410,11 @@
         "Staking": "Staking",
         "OrderBook": "Commercio",
         "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": "Kensetsu"
+        "AssetOwner": "Proprietario dell'asset",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Volte",
+        "VaultDetails": "Dettagli del Vault",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Scambia",
@@ -408,12 +425,13 @@
         "Rewards": "Ricompense",
         "About": "Informazioni su",
         "Stats": "Statistiche",
-        "CreatePair": "Crea una pair",
         "StakingContainer": "Staking",
         "Explore\/Container": "Esplorare",
         "SoraCard": "{Sora} Card",
         "OrderBook": "Commercio",
-        "Kensetsu": "Kensetsu"
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1562,5 +1580,82 @@
     "customisePageText": "Personalizza la pagina",
     "priceChartText": "Grafico dei prezzi",
     "editText": "Modifica",
-    "resetText": "Ripristina"
+    "resetText": "Ripristina",
+    "kensetsu": {
+        "addCollateral": "Aggiungi garanzia",
+        "addCollateralDescription": "Deposita più asset nel tuo caveau per aumentare il tuo limite di prestito o migliorare il rapporto prestito-valore. Questo può anche aiutare a prevenire la liquidazione.",
+        "depositCollateral": "Deposito garanzia",
+        "totalCollateral": "Garanzia totale",
+        "totalCollateralDescription": "Il valore totale di tutti gli asset attualmente depositati nel tuo caveau. Questo valore influisce sulla tua capacità di prestito e sul rischio di liquidazione.",
+        "debtAvailable": "Debito disponibile",
+        "debtAvailableDescription": "La quantità di fondi che puoi ancora prelevare dal tuo caveau senza superare il tuo limite di prestito, in base alla tua garanzia attuale.",
+        "ltv": "Prestito sul valore ({LTV})",
+        "ltvDescription": "Il rapporto tra l'importo prelevato e il valore della garanzia nel tuo vault, espresso come percentuale. Un {LTV} più alto aumenta i rendimenti potenziali ma anche il rischio, incluso il rischio di liquidazione.",
+        "borrowMore": "Prendi in prestito di più",
+        "borrowMoreDescription": "Preleva fondi aggiuntivi dal tuo caveau fino all'importo massimo disponibile. Assicurati che il valore della tua garanzia supporti l'incremento del debito per evitare rischi di liquidazione.",
+        "available": "Disponibile",
+        "outstandingDebt": "Debito in sospeso",
+        "outstandingDebtDescription": "L'importo totale che attualmente devi dai fondi prelevati dal tuo caveau, inclusi gli interessi maturati. Questo deve essere rimborsato per chiudere il tuo caveau o mantenere rapporti prestito-valore sani.",
+        "createVault": "Apri una posizione di prestito",
+        "createVaultDescription": "Avvia una nuova transazione depositando garanzie nel tuo vault e prelevando fondi. Questo crea un'obbligazione di debito che devi gestire.",
+        "createVaultAction": "Apri posizione",
+        "borrowDebt": "Prendi in prestito debito",
+        "minDepositCollateral": "Deposito minimo di garanzia",
+        "minDepositCollateralDescription": "La quantità minima di asset richiesta per aprire un vault. Questo deposito iniziale garantisce i fondi che desideri prendere in prestito.",
+        "maxAvailableToBorrow": "Massimo disponibile per il prestito",
+        "maxAvailableToBorrowDescription": "L'importo massimo che puoi prelevare dal tuo vault, determinato dal valore della tua garanzia. Questo limite si aggiusta mentre cambia il valore della garanzia.",
+        "borrowTax": "Tassa di prestito",
+        "borrowTaxDescription": "La tassa di prestito {value} applicata all'importo prelevato",
+        "stabilityFee": "Commissione di stabilità",
+        "stabilityFeeDescription": "Una tassa annuale addebitata sull'importo prelevato dal tuo vault, calcolata come percentuale. Questa tassa compensa i rischi e le fluttuazioni di mercato.",
+        "repayDebt": "Rimborsare il debito",
+        "repayDebtDescription": "Restituisci i fondi presi in prestito per ridurre il tuo debito in sospeso. Questo può ridurre i costi degli interessi e abbassare il rischio di liquidazione.",
+        "closeVault": "Chiudi la mia posizione",
+        "closeVaultDescription": "Chiudi la posizione selezionata rimborsando tutto il debito in sospeso e ritirando tutte le garanzie",
+        "yourCollateral": "La tua garanzia",
+        "yourCollateralDescription": "Gli asset che hai depositato nel tuo vault per garantire i fondi prelevati. Questi asset possono essere liquidati dal creditore se non riesci a mantenere il rapporto di prestito-valore richiesto.",
+        "yourDebt": "Il tuo debito",
+        "yourDebtDescription": "L'importo totale attualmente in sospeso nel tuo vault, inclusa l'importo prelevato e gli interessi accumulati. Questo saldo aumenta nel tempo se gli interessi si accumulano.",
+        "yourDebtTokenBalance": "Il saldo del tuo {tokenSymbol}",
+        "requiredAmountWithSlippage": "Importo richiesto con slippage",
+        "requiredAmountWithSlippageDescription": "Per una chiusura del vault senza problemi, acquista leggermente più {tokenSymbol} di quanto richiesto {amount} a causa dello slippage possibile. Hai bisogno di un extra per coprire il deficit. Scambia i tuoi asset in {tokenSymbol} per soddisfare questa esigenza.",
+        "openSwap": "Apri lo swap",
+        "introTitle": "Apri posizioni di prestito e guadagna con {Kensetsu}",
+        "introDescription": "Vivi l'esperienza di prestiti e prestiti sicuri e senza sforzo. Apri posizioni di prestito con la piattaforma {Kensetsu}.",
+        "disclaimerDescription": "Il prestito di asset digitali tramite {Polkaswap} comporta rischi significativi ed è completamente a tuo rischio. Il valore degli asset digitali è altamente volatile e qualsiasi variazione nei prezzi di mercato degli asset che hai preso in prestito o utilizzato come garanzia può comportare perdite finanziarie significative.",
+        "availableToBorrow": "Disponibile per il prestito",
+        "availableToBorrowDescription": "L'importo rimanente che hai diritto a prelevare nelle condizioni attuali del tuo vault, in base alle garanzie depositate e ai debiti esistenti.",
+        "collateralDetails": "Dettagli della garanzia",
+        "debtDetails": "Dettagli del debito",
+        "positionInfo": "Informazioni sulla posizione",
+        "liquidationPenalty": "Penalità di liquidazione",
+        "liquidationPenaltyDescription": "Una commissione applicata se il valore della tua garanzia scende al di sotto di una certa soglia, provocando la vendita di asset per coprire il debito. Questa penalità aumenta il tuo debito totale.",
+        "positionSafe": "Posizione sicura",
+        "liquidationClose": "Chiusura della liquidazione",
+        "highLiquidationRisk": "Rischio di liquidazione elevato",
+        "error": {
+            "enterCollateral": "Inserisci la garanzia",
+            "enterBorrow": "Inserisci l'importo del prestito",
+            "borrowMoreThanAvailable": "Debito disponibile superato",
+            "insufficientCollateral": "Garanzia insufficiente",
+            "enterRepayDebt": "Inserisci il debito da rimborsare",
+            "repayMoreThanDebt": "Debito pagato in eccesso"
+        }
+    },
+    "accountSettings": {
+        "title": "Impostazioni dell'account",
+        "hint": "Puoi riattivarlo nelle impostazioni dell'account",
+        "disable": "Disattiva",
+        "disabled": "Disabilitato per",
+        "confirmation": {
+            "title": "Disabilita la conferma della transazione",
+            "description": "Una schermata popup che visualizza i dettagli sulle transazioni prima della firma."
+        },
+        "signature": {
+            "title": "Disabilita la conferma della password",
+            "description": "Abilita o disabilita la necessità di inserire la password durante il popup della firma nelle transazioni."
+        },
+        "enterPassword": "Inserire la password",
+        "googleOnly": "Solo account {Google}"
+    }
 }

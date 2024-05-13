@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Limit-Order storniert",
             "OrderBookCancelLimitOrders": "Limitaufträge storniert",
             "Burn": "Verbrannt {amount} {symbol}",
-            "Mint": "Geprägt {amount} {symbol} an {address}"
+            "Mint": "Geprägt {amount} {symbol} an {address}",
+            "CreateVault": "{symbol}\/{symbol2}-Tresor erstellt",
+            "CloseVault": "{symbol}\/{symbol2}-Tresor geschlossen",
+            "DepositCollateral": "{amount} {symbol} hinterlegt",
+            "RepayVaultDebt": "{amount} {symbol} beglichen",
+            "BorrowVaultDebt": "{amount} {symbol} aufgenommen"
         },
         "error": {
             "Transfer": "Fehler bei {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Limitaufträge konnten nicht storniert werden",
             "OrderBookCancelLimitOrder": "Limitauftrag konnte nicht storniert werden",
             "Burn": "{amount} {symbol} konnte nicht gebrannt werden",
-            "Mint": "{amount} {symbol} konnte nicht an {address} geprägt werden"
+            "Mint": "{amount} {symbol} konnte nicht an {address} geprägt werden",
+            "CreateVault": "Fehler beim Erstellen des {symbol}\/{symbol2}-Tresors",
+            "CloseVault": "Fehler beim Schließen des {symbol}\/{symbol2}-Tresors",
+            "DepositCollateral": "Fehler beim Hinterlegen von {amount} {symbol}",
+            "RepayVaultDebt": "Fehler beim Begleichen von {amount} {symbol}",
+            "BorrowVaultDebt": "Fehler beim Aufnehmen von {amount} {symbol}"
         },
         "ReferralReserveXor": "Bonde XOR",
         "ReferralUnreserveXor": "Unbonde XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Bestellung stornieren",
         "OrderBookCancelLimitOrders": "Bestellungen stornieren",
         "Burn": "Brennen",
-        "Mint": "Minze"
+        "Mint": "Minze",
+        "CreateVault": "Tresor erstellen",
+        "CloseVault": "Tresor schließen",
+        "DepositCollateral": "Pfand hinterlegen",
+        "RepayVaultDebt": "Schulden begleichen",
+        "BorrowVaultDebt": "Schulden aufnehmen"
     },
     "polkadotjs": {
         "noExtensions": "Es wurde keine {PolkadotJs} Erweiterung gefunden. Bitte, installiere sie und lade diese Seite erneut\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -385,9 +400,7 @@
         "About": "Über",
         "Stats": "Statistiken",
         "Wallet": "Wallet",
-        "CreatePair": "Erstelle ein Paar",
         "AddLiquidity": "Liquidität hinzufügen",
-        "AddLiquidityId": "Liquidität hinzufügen",
         "RemoveLiquidity": "Liquidität entfernen",
         "Rewards": "Belohnungen",
         "Explore\/Tokens": "Token",
@@ -397,7 +410,11 @@
         "Staking": "Staking",
         "OrderBook": "Handel",
         "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": "Kensetsu"
+        "AssetOwner": "Eigentümer des Vermögens",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Tresore",
+        "VaultDetails": "Tresor Details",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Tauschen",
@@ -408,12 +425,13 @@
         "Rewards": "Belohnungen",
         "About": "Über",
         "Stats": "Statistiken",
-        "CreatePair": "Erstelle ein Paar",
         "StakingContainer": "Staking",
         "Explore\/Container": "Entdecken",
         "SoraCard": "{Sora} Karte",
         "OrderBook": "Handel",
-        "Kensetsu": "Kensetsu"
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1562,5 +1580,82 @@
     "customisePageText": "Seite anpassen",
     "priceChartText": "Preisdiagramm",
     "editText": "Bearbeiten",
-    "resetText": "Zurücksetzen"
+    "resetText": "Zurücksetzen",
+    "kensetsu": {
+        "addCollateral": "Kollaterale hinzufügen",
+        "addCollateralDescription": "Zahlen Sie weitere Vermögenswerte auf Ihr Depot ein, um Ihr Kreditlimit zu erhöhen oder Ihr Darlehensverhältnis zu verbessern. Dies kann auch dazu beitragen, eine Liquidation zu verhindern.",
+        "depositCollateral": "Kollateral einzahlen",
+        "totalCollateral": "Gesamtkollateral",
+        "totalCollateralDescription": "Der Gesamtwert aller derzeit in Ihrem Depot hinterlegten Vermögenswerte. Dieser Wert beeinflusst Ihre Kreditkapazität und das Risiko einer Liquidation.",
+        "debtAvailable": "Verfügbare Schulden",
+        "debtAvailableDescription": "Die Summe, die Sie noch aus Ihrem Depot entnehmen können, ohne Ihr Kreditlimit zu überschreiten, basierend auf Ihrer aktuellen Sicherheit.",
+        "ltv": "Darlehensverhältnis ({LTV})",
+        "ltvDescription": "Das Verhältnis des abgehobenen Betrags zum Wert der Sicherheiten in Ihrem Vault, ausgedrückt als Prozentsatz. Ein höheres {LTV} erhöht potenzielle Renditen, birgt jedoch auch Risiken, einschließlich der Möglichkeit einer Liquidation.",
+        "borrowMore": "Mehr leihen",
+        "borrowMoreDescription": "Entnehmen Sie zusätzliche Mittel aus Ihrem Depot bis zur maximal verfügbaren Menge. Stellen Sie sicher, dass der Wert Ihrer Sicherheiten den erhöhten Schulden unterstützt, um Liquiditätsrisiken zu vermeiden.",
+        "available": "Verfügbar",
+        "outstandingDebt": "Ausstehende Schulden",
+        "outstandingDebtDescription": "Die Gesamtsumme, die Sie derzeit aus den Mitteln Ihres Depots geschuldet haben, einschließlich der angefallenen Zinsen. Dies muss zurückgezahlt werden, um Ihr Depot zu schließen oder gesunde Kredit-zu-Wert-Verhältnisse zu erhalten.",
+        "createVault": "Eine Leihposition eröffnen",
+        "createVaultDescription": "Starten Sie eine neue Transaktion, indem Sie Sicherheiten in Ihren Vault einzahlen und Mittel abheben. Dies erstellt eine Schuldverpflichtung, die Sie verwalten müssen.",
+        "createVaultAction": "Position öffnen",
+        "borrowDebt": "Schulden aufnehmen",
+        "minDepositCollateral": "Mindesteinlagekollateral",
+        "minDepositCollateralDescription": "Der Mindestbetrag an Vermögenswerten, der erforderlich ist, um einen Vault zu öffnen. Diese erste Einzahlung sichert die Mittel, die Sie sich leihen möchten.",
+        "maxAvailableToBorrow": "Max. verfügbar zum Ausleihen",
+        "maxAvailableToBorrowDescription": "Die maximale Menge, die Sie aus Ihrem Vault abheben können, bestimmt durch den Wert Ihrer Sicherheiten. Diese Grenze passt sich an, wenn sich der Wert der Sicherheiten ändert.",
+        "borrowTax": "Kreditsteuer",
+        "borrowTaxDescription": "Die {value} Steuer auf den ausgeliehenen Betrag angewendet",
+        "stabilityFee": "Stabilitätsgebühr",
+        "stabilityFeeDescription": "Eine jährliche Gebühr, die auf den aus Ihrem Vault abgehobenen Betrag erhoben wird, berechnet als Prozentsatz. Diese Gebühr kompensiert Risiken und Marktschwankungen.",
+        "repayDebt": "Schulden zurückzahlen",
+        "repayDebtDescription": "Zahlen Sie geliehene Gelder zurück, um Ihre ausstehenden Schulden zu reduzieren. Dies kann die Zinskosten senken und das Risiko einer Liquidation verringern.",
+        "closeVault": "Meine Position schließen",
+        "closeVaultDescription": "Schließen Sie die ausgewählte Position, indem Sie alle ausstehenden Schulden zurückzahlen und alle Sicherheiten abheben",
+        "yourCollateral": "Ihre Sicherheiten",
+        "yourCollateralDescription": "Die von Ihnen in Ihren Vault eingezahlten Vermögenswerte zur Sicherung der abgehobenen Mittel. Diese Vermögenswerte können vom Kreditgeber liquidiert werden, wenn Sie den erforderlichen Kredit-zu-Wert-Verhältnis nicht einhalten.",
+        "yourDebt": "Ihre Schulden",
+        "yourDebtDescription": "Der Gesamtbetrag, der sich derzeit in Ihrem Vault befindet, einschließlich des abgehobenen Betrags und etwaiger aufgelaufener Zinsen. Dieser Saldo erhöht sich im Laufe der Zeit, wenn sich Zinsen ansammeln.",
+        "yourDebtTokenBalance": "Ihr {tokenSymbol} Guthaben",
+        "requiredAmountWithSlippage": "Erforderlicher Betrag inklusive Schlupf",
+        "requiredAmountWithSlippageDescription": "Für einen reibungslosen Vault-Schluss kaufen Sie etwas mehr {tokenSymbol} als der {amount} erforderlich ist, aufgrund möglicher Schlupf. Sie benötigen einen zusätzlichen, um das Defizit zu decken. Tauschen Sie Ihre Vermögenswerte in {tokenSymbol} um, um diesen Bedarf zu decken.",
+        "openSwap": "Swap öffnen",
+        "introTitle": "Öffnen Sie Leihpositionen & Verdienen Sie mit {Kensetsu}",
+        "introDescription": "Erleben Sie sicheres und müheloses Leihen und Verleihen. Eröffnen Sie Leihpositionen mit der Plattform {Kensetsu}.",
+        "disclaimerDescription": "Das Ausleihen digitaler Vermögenswerte über {Polkaswap} birgt erhebliche Risiken und erfolgt vollständig auf Ihr eigenes Risiko. Der Wert digitaler Vermögenswerte ist stark volatil, und Änderungen der Marktpreise der von Ihnen ausgeliehenen oder als Sicherheit verwendeten Vermögenswerte können zu erheblichen finanziellen Verlusten führen.",
+        "availableToBorrow": "Verfügbar zum Ausleihen",
+        "availableToBorrowDescription": "Die verbleibende Menge, die Sie unter den aktuellen Bedingungen Ihres Vaults abheben können, basierend auf Ihrem hinterlegten Kollateral und eventuell bestehenden Schulden.",
+        "collateralDetails": "Kollateral Details",
+        "debtDetails": "Schulden Details",
+        "positionInfo": "Positionsinformationen",
+        "liquidationPenalty": "Liquidationsstrafe",
+        "liquidationPenaltyDescription": "Eine Gebühr, die erhoben wird, wenn der Wert Ihrer Sicherheiten unter einen bestimmten Schwellenwert fällt und der Verkauf von Vermögenswerten zur Deckung der Schulden veranlasst wird. Diese Strafe erhöht Ihre Gesamtschuld.",
+        "positionSafe": "Position sicher",
+        "liquidationClose": "Liquidationsabschluss",
+        "highLiquidationRisk": "Hohes Liquidationsrisiko",
+        "error": {
+            "enterCollateral": "Geben Sie Sicherheiten ein",
+            "enterBorrow": "Geben Sie den Betrag ein, den Sie ausleihen möchten",
+            "borrowMoreThanAvailable": "Verfügbarer Schuldenbetrag überschritten",
+            "insufficientCollateral": "Unzureichendes Kollateral",
+            "enterRepayDebt": "Geben Sie die Schuldenzahlung ein",
+            "repayMoreThanDebt": "Schulden überbezahlt"
+        }
+    },
+    "accountSettings": {
+        "title": "Account Einstellungen",
+        "hint": "Sie können dies in den Kontoeinstellungen wieder aktivieren",
+        "disable": "Deaktivieren ein",
+        "disabled": "Deaktiviert für",
+        "confirmation": {
+            "title": "Transaktionsbestätigung deaktivieren",
+            "description": "Ein Popup-Bildschirm, der Details zu den Transaktionen vor der Unterzeichnung anzeigt."
+        },
+        "signature": {
+            "title": "Kennwortbestätigung deaktivieren",
+            "description": "Aktivieren oder deaktivieren Sie die Aufforderung zur Eingabe Ihres Kennworts während des Signatur-Popups bei Transaktionen."
+        },
+        "enterPassword": "Passwort eingeben",
+        "googleOnly": "Nur {Google} -Konten"
+    }
 }

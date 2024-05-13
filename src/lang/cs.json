@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Limitní objednávka zrušena",
             "OrderBookCancelLimitOrders": "Limitní objednávky zrušeny",
             "Burn": "Spáleno {amount} {symbol}",
-            "Mint": "Vyraženo {amount} {symbol} na {address}"
+            "Mint": "Vyraženo {amount} {symbol} na {address}",
+            "CreateVault": "Vytvořen {symbol}\/{symbol2} trezor",
+            "CloseVault": "Uzavřen {symbol}\/{symbol2} trezor",
+            "DepositCollateral": "Vloženo {amount} {symbol}",
+            "RepayVaultDebt": "Splatit {amount} {symbol}",
+            "BorrowVaultDebt": "Půjčeno {amount} {symbol}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} se nezdařilo.",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Limitní objednávky se nepodařilo zrušit",
             "OrderBookCancelLimitOrder": "Limitní příkaz se nepodařilo zrušit",
             "Burn": "Nepodařilo se vypálit {amount} {symbol}",
-            "Mint": "Nepodařilo se vytěžit {amount} {symbol} na {address}"
+            "Mint": "Nepodařilo se vytěžit {amount} {symbol} na {address}",
+            "CreateVault": "Nepodařilo se vytvořit {symbol}\/{symbol2} trezor",
+            "CloseVault": "Nepodařilo se uzavřít {symbol}\/{symbol2} trezor",
+            "DepositCollateral": "Nepodařilo se vložit {amount} {symbol}",
+            "RepayVaultDebt": "Nepodařilo se splatit {amount} {symbol}",
+            "BorrowVaultDebt": "Nepodařilo se půjčit {amount} {symbol}"
         },
         "ReferralReserveXor": "Vázat XOR",
         "ReferralUnreserveXor": "Zrušit vazbu XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Zrušit objednávku",
         "OrderBookCancelLimitOrders": "Zrušit objednávky",
         "Burn": "Hořet",
-        "Mint": "Máta"
+        "Mint": "Máta",
+        "CreateVault": "Vytvořit trezor",
+        "CloseVault": "Zavřít trezor",
+        "DepositCollateral": "Vložit zástavu",
+        "RepayVaultDebt": "Splnit dluh",
+        "BorrowVaultDebt": "Půjčit si dluh"
     },
     "polkadotjs": {
         "noExtensions": "Nebylo nalezeno žádné rozšíření {PolkadotJs}. Nainstalujte si jej prosím a znovu načtěte tuto stránku\n https:\/\/polkadot.js.org\/extension\/",
@@ -385,9 +400,7 @@
         "About": "O projektu",
         "Stats": "Statistiky",
         "Wallet": "Peněženka",
-        "CreatePair": "Vytvořit pár",
         "AddLiquidity": "Přidat likviditu",
-        "AddLiquidityId": "Přidat likviditu",
         "RemoveLiquidity": "Odebrat likviditu",
         "Rewards": "Odměny",
         "Explore\/Tokens": "Tokeny",
@@ -397,7 +410,11 @@
         "Staking": "Stakování",
         "OrderBook": "Obchod",
         "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": "Kensetsu"
+        "AssetOwner": "Vlastník aktiv",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Trezory",
+        "VaultDetails": "Podrobnosti o trezoru",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -408,12 +425,13 @@
         "Rewards": "Odměny",
         "About": "O projektu",
         "Stats": "Statistiky",
-        "CreatePair": "Vytvořit pár",
         "StakingContainer": "Stakování",
         "Explore\/Container": "Prozkoumat",
         "SoraCard": "{Sora} Karta",
         "OrderBook": "Obchod",
-        "Kensetsu": "Kensetsu"
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1562,5 +1580,82 @@
     "customisePageText": "Přizpůsobit stránku",
     "priceChartText": "Cenový graf",
     "editText": "Upravit",
-    "resetText": "Resetovat"
+    "resetText": "Resetovat",
+    "kensetsu": {
+        "addCollateral": "Přidat zástavu",
+        "addCollateralDescription": "Vložte do svého trezoru další aktiva, abyste zvýšili svůj úvěrový limit nebo zlepšili poměr půjčky k hodnotě. To také může pomoci předejít likvidaci.",
+        "depositCollateral": "Vložit zástavu",
+        "totalCollateral": "Celková zástava",
+        "totalCollateralDescription": "Celková hodnota všech aktuálně vložených aktiv do vašeho trezoru. Tato hodnota ovlivňuje vaši půjční kapacitu a riziko likvidace.",
+        "debtAvailable": "Dluh k dispozici",
+        "debtAvailableDescription": "Částka, kterou si stále můžete vzít z vašeho trezoru, aniž byste překročili svůj úvěrový limit, na základě vaší stávající zástavy.",
+        "ltv": "Půjčka na hodnotu ({LTV})",
+        "ltvDescription": "Poměr částky vybrané k hodnotě zástavy ve vašem trezoru, vyjádřený v procentech. Vyšší {LTV} zvyšuje potenciální výnosy, ale také rizika, včetně možnosti likvidace.",
+        "borrowMore": "Půjčit si více",
+        "borrowMoreDescription": "Vezměte další finanční prostředky z vašeho trezoru až do maximální dostupné částky. Ujistěte se, že hodnota vaší zástavy podporuje zvýšený dluh, abyste se vyhnuli rizikům likvidace.",
+        "available": "Dostupné",
+        "outstandingDebt": "Vynikající dluh",
+        "outstandingDebtDescription": "Celková částka, kterou momentálně dlužíte z finančních prostředků, které jste si vzali z vašeho trezoru, včetně nashromážděných úroků. Toto musí být splaceno pro uzavření vašeho trezoru nebo udržení zdravých poměrů půjčky k hodnotě.",
+        "createVault": "Otevřít půjčku",
+        "createVaultDescription": "Zahajte novou transakci vkladem zástavy do vašeho trezoru a výběrem finančních prostředků. Tímto vytvoříte dlužní povinnost, kterou musíte řídit.",
+        "createVaultAction": "Otevřít pozici",
+        "borrowDebt": "Půjčit si dluh",
+        "minDepositCollateral": "Min. vklad zástavy",
+        "minDepositCollateralDescription": "Minimální částka aktiv potřebných k otevření trezoru. Tento počáteční vklad zajistí prostředky, které si chcete půjčit.",
+        "maxAvailableToBorrow": "Max. dostupné k půjčení",
+        "maxAvailableToBorrowDescription": "Maximální částka, kterou si můžete vybrat ze svého trezoru, určená hodnotou vaší zástavy. Toto omezení se mění s hodnotou zástavy.",
+        "borrowTax": "Daň z půjčky",
+        "borrowTaxDescription": "{value} daň aplikovaná na vypůjčenou částku",
+        "stabilityFee": "Stabilitní poplatek",
+        "stabilityFeeDescription": "Roční poplatek účtovaný z částky vybrané z vašeho trezoru, vypočítaný jako procento. Tento poplatek kompenzuje rizika a tržní fluktuace.",
+        "repayDebt": "Splacení dluhu",
+        "repayDebtDescription": "Vraťte půjčené peníze, abyste snížili svůj stávající dluh. To může snížit náklady na úroky a snížit riziko likvidace.",
+        "closeVault": "Zavřít mou pozici",
+        "closeVaultDescription": "Zavřete vybranou pozici splacením veškerého vynikajícího dluhu a výběrem veškeré zástavy",
+        "yourCollateral": "Vaše zástava",
+        "yourCollateralDescription": "Aktiva, která jste vložili do svého trezoru k zajištění finančních prostředků vybraných. Tato aktiva mohou být poskytovatelem likvidována, pokud nedodržíte požadovaný poměr půjčky k hodnotě.",
+        "yourDebt": "Váš dluh",
+        "yourDebtDescription": "Celková částka, která je v současné době vynikající ve vašem trezoru, včetně částky vybrané a veškerých vyúčtovaných úroků. Tento zůstatek se časem zvyšuje, pokud úroky rostou.",
+        "yourDebtTokenBalance": "Váš zůstatek {tokenSymbol}",
+        "requiredAmountWithSlippage": "Požadovaná částka včetně klouzání",
+        "requiredAmountWithSlippageDescription": "Pro hladké zavření trezoru si kupte mírně více {tokenSymbol} než {amount} požadované kvůli možnému klouzání. Potřebujete více, abyste pokryli nedostatek. Vyměňte svá aktiva za {tokenSymbol} k pokrytí této potřeby.",
+        "openSwap": "Otevřít swap",
+        "introTitle": "Otevřete si pozice půjčování & Vydělávejte s {Kensetsu}",
+        "introDescription": "Zažijte bezpečné a bezproblémové půjčování a půjčování. Otevřete si pozice půjčování na platformě {Kensetsu}.",
+        "disclaimerDescription": "Půjčování digitálních aktiv přes {Polkaswap} nese významné riziko a je zcela na vaše vlastní riziko. Hodnota digitálních aktiv je velmi volatilní a jakékoliv změny v tržních cenách aktiv, která jste si půjčili nebo použili jako zástavu, mohou vést k významným finančním ztrátám.",
+        "availableToBorrow": "Dostupné k půjčení",
+        "availableToBorrowDescription": "Zbývající částka, kterou můžete podle aktuálních podmínek vašeho trezoru vybrat, na základě vložené zástavy a existujícího dluhu.",
+        "collateralDetails": "Podrobnosti o zástavě",
+        "debtDetails": "Podrobnosti o dluhu",
+        "positionInfo": "Informace o pozici",
+        "liquidationPenalty": "Poplatek za likvidaci",
+        "liquidationPenaltyDescription": "Poplatek uplatňovaný, pokud hodnota vaší zástavy klesne pod určitou hranici, což vede k prodeji aktiv k pokrytí dluhu. Tento poplatek zvyšuje celkový dluh.",
+        "positionSafe": "Pozice v bezpečí",
+        "liquidationClose": "Likvidace uzavření",
+        "highLiquidationRisk": "Vysoké riziko likvidace",
+        "error": {
+            "enterCollateral": "Zadejte zástavu",
+            "enterBorrow": "Zadejte částku k půjčení",
+            "borrowMoreThanAvailable": "Dostupný dluh překročen",
+            "insufficientCollateral": "Nedostatečná zástava",
+            "enterRepayDebt": "Zadejte částku pro splacení dluhu",
+            "repayMoreThanDebt": "Dluh přeplacen"
+        }
+    },
+    "accountSettings": {
+        "title": "Nastavení účtu",
+        "hint": "Můžete to povolit zpět v nastavení účtu",
+        "disable": "Zakázat",
+        "disabled": "Zakázáno pro",
+        "confirmation": {
+            "title": "Zakázat potvrzení transakce",
+            "description": "Vyskakovací obrazovka, která zobrazuje podrobnosti o transakcích před podpisem."
+        },
+        "signature": {
+            "title": "Zakázat potvrzení hesla",
+            "description": "Povolte nebo zakažte nutnost zadávat heslo během vyskakovacího okna podpisu v transakcích."
+        },
+        "enterPassword": "Zadejte heslo",
+        "googleOnly": "Pouze účty {Google}"
+    }
 }

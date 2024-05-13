@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Лимит налог је отказан",
             "OrderBookCancelLimitOrders": "Ограничени налози су отказани",
             "Burn": "Спаљено {amount} {symbol}",
-            "Mint": "Исковано {amount} {symbol} на {address}"
+            "Mint": "Исковано {amount} {symbol} на {address}",
+            "CreateVault": "Складиште {symbol}\/{symbol2} отворено",
+            "CloseVault": "Складиште {symbol}\/{symbol2} затворено",
+            "DepositCollateral": "Уплаћен залог {amount} {symbol}",
+            "RepayVaultDebt": "Дуг враћен {amount} {symbol}",
+            "BorrowVaultDebt": "Дуг позајмљен {amount} {symbol}"
         },
         "error": {
             "Transfer": "Није успело {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Отказивање ограничених налога није успело",
             "OrderBookCancelLimitOrder": "Отказивање ограничене поруџбине није успело",
             "Burn": "{amount} {symbol} није успело",
-            "Mint": "Није успело испоручивање {amount} {symbol} на {address}"
+            "Mint": "Није успело испоручивање {amount} {symbol} на {address}",
+            "CreateVault": "Грешка при отварању складишта {symbol}\/{symbol2}",
+            "CloseVault": "Грешка при затварању складишта {symbol}\/{symbol2}",
+            "DepositCollateral": "Грешка при уплати залога {amount} {symbol}",
+            "RepayVaultDebt": "Грешка при враћању дуга {amount} {symbol}",
+            "BorrowVaultDebt": "Грешка при позајмљивању дуга {amount} {symbol}"
         },
         "ReferralReserveXor": "Veži XOR",
         "ReferralUnreserveXor": "Razveži XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Откажи наруџбу",
         "OrderBookCancelLimitOrders": "Откажите поруџбине",
         "Burn": "Горети",
-        "Mint": "Нана"
+        "Mint": "Печат",
+        "CreateVault": "Отвори складиште",
+        "CloseVault": "Затвори складиште",
+        "DepositCollateral": "Уплати залог",
+        "RepayVaultDebt": "Врати дуг",
+        "BorrowVaultDebt": "Позајми дуг"
     },
     "polkadotjs": {
         "noExtensions": "Није пронађена ниједна екстензија {PolkadotJs}. Инсталирајте га и поново учитајте ову страницу\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -385,9 +400,7 @@
         "About": "О томе",
         "Stats": "Статистикa",
         "Wallet": "Новчаник",
-        "CreatePair": "Направите пар",
         "AddLiquidity": "Додати ликвидност",
-        "AddLiquidityId": "Додати ликвидност",
         "RemoveLiquidity": "Уклони ликвидност",
         "Rewards": "Награде",
         "Explore\/Tokens": "Токени",
@@ -397,7 +410,11 @@
         "Staking": "Ulaganje",
         "OrderBook": "Траде",
         "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": "Kensetsu"
+        "AssetOwner": "Asset Owner",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Trezora",
+        "VaultDetails": "Detalji trezora",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Замените",
@@ -408,12 +425,13 @@
         "Rewards": "Награде",
         "About": "О",
         "Stats": "Статистикa",
-        "CreatePair": "Направите пар",
         "StakingContainer": "Стeкинг",
         "Explore\/Container": "Истражите",
         "SoraCard": "{Sora} картица",
         "OrderBook": "Траде",
-        "Kensetsu": "Kensetsu"
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1562,5 +1580,82 @@
     "customisePageText": "Прилагодите страницу",
     "priceChartText": "График цена",
     "editText": "Uredi",
-    "resetText": "Resetovati"
+    "resetText": "Resetovati",
+    "kensetsu": {
+        "addCollateral": "Додај залог",
+        "addCollateralDescription": "Uložite više sredstava u svoj trezor kako biste povećali limit zaduženja ili poboljšali odnos zaduženosti prema vrednosti. Ovo takođe može pomoći u sprečavanju likvidacije.",
+        "depositCollateral": "Уплати залог",
+        "totalCollateral": "Укупан залог",
+        "totalCollateralDescription": "Ukupna vrednost svih sredstava trenutno deponovanih u vašem trezoru. Ova vrednost utiče na vašu sposobnost zaduživanja i rizik od likvidacije.",
+        "debtAvailable": "Дуг доступан",
+        "debtAvailableDescription": "Iznos sredstava koje još uvek možete povući iz svog trezora, a da ne premašite svoj limit zaduženja, na osnovu vašeg trenutnog zalog.",
+        "ltv": "Заем на вредност ({LTV})",
+        "ltvDescription": "Однос између износа извученог и вредности залога у вашем сефу, изражен у процентима. Већи {LTV} повећава потенцијалне приходе, али и ризик, укључујући шансу за ликвидацију.",
+        "borrowMore": "Позајми више",
+        "borrowMoreDescription": "Povucite dodatna sredstva iz svog trezora do maksimalno dostupnog iznosa. Obezbedite da vrednost vašeg zalogaje podržava povećani dug kako biste izbegli rizike likvidacije.",
+        "available": "Доступно",
+        "outstandingDebt": "Неизмирен дуг",
+        "outstandingDebtDescription": "Ukupan iznos koji trenutno dugujete iz sredstava povučenih iz vašeg trezora, uključujući obračunate kamate. Ovo treba da se vrati kako bi se zatvorio vaš trezor ili održali zdravi odnosi zaduženosti prema vrednosti.",
+        "createVault": "Отвори позицију зајма",
+        "createVaultDescription": "Почните нову трансакцију уплатом залога у ваш сеф и извлачењем средстава. Ово ствара обавезу дуга коју морате управљати.",
+        "createVaultAction": "Отвори позицију",
+        "borrowDebt": "Позајми дуг",
+        "minDepositCollateral": "Минимални депозит залога",
+        "minDepositCollateralDescription": "Минимални износ активности потребан за отварање сефа. Ова уплата обезбеђује средства која желите позајмити.",
+        "maxAvailableToBorrow": "Макс. доступно за позајмљивање",
+        "maxAvailableToBorrowDescription": "Максимални износ који можете извући из свог сефа, одређен вредношћу вашег залога. Ова ограничења се коригују по мери колико се мења вредност залога.",
+        "borrowTax": "Порез на заем",
+        "borrowTaxDescription": "Порез {value} примењен на износ позајмљени.",
+        "stabilityFee": "Накнада за стабилност",
+        "stabilityFeeDescription": "Годишња накнада наплаћена на износ извучен из вашег сефа, израчуната као проценат. Ова накнада накнађује ризике и тржишне флуктуације.",
+        "repayDebt": "Измирите дуг",
+        "repayDebtDescription": "Vratite pozajmljena sredstva kako biste smanjili svoj neplaćeni dug. Ovo može smanjiti troškove kamata i smanjiti rizik od likvidacije.",
+        "closeVault": "Затвори моју позицију",
+        "closeVaultDescription": "Затворите изабрану позицију измиривањем свега неизмиреног дуга и повлачењем свих залога",
+        "yourCollateral": "Ваш залог",
+        "yourCollateralDescription": "Средства која сте уплатили у свој сеф да бисте обезбедили извучена средства. Ова средства могу бити ликвидирана од стране кредитора ако не успете да одржавате потребан однос зајма и вредности.",
+        "yourDebt": "Ваш дуг",
+        "yourDebtDescription": "Укупан износ тренутно неизмирен у вашем сефу, укључујући извучени износ и све накупљене камате. Ово се балансира током времена ако се камате накупљају.",
+        "yourDebtTokenBalance": "Ваше {tokenSymbol} стање",
+        "requiredAmountWithSlippage": "Захтеван износ с преком",
+        "requiredAmountWithSlippageDescription": "За глатко затварање сефа купите мало више {tokenSymbol} него што је потребно {amount} због могућег прекофа. Потребан вам је додатни за покривање недостатка. Замените своје активности за {tokenSymbol} да задовољите ову потребу.",
+        "openSwap": "Отвори свап",
+        "introTitle": "Отворите позиције зајма и Зарадите са {Kensetsu}",
+        "introDescription": "Iskusite sigurno i bezbrižno zaduživanje i pozajmljivanje. Otvorite pozicije zaduživanja sa platformom {Kensetsu}.",
+        "disclaimerDescription": "Zaduživanje digitalnih sredstava putem {Polkaswap} nosi značajan rizik i u potpunosti je na vaš rizik. Vrednost digitalnih sredstava je veoma promenljiva, i bilo kakve promene u tržišnim cenama sredstava koje ste pozajmili ili koristili kao zalog mogu dovesti do značajnih finansijskih gubitaka.",
+        "availableToBorrow": "Доступно за позајмљивање",
+        "availableToBorrowDescription": "Преостали износ на који имате право да извучете по тренутним условима вашег сефа, на основу уплаћеног залога и свих постојећих дугова.",
+        "collateralDetails": "Детаљи залога",
+        "debtDetails": "Детаљи дуга",
+        "positionInfo": "Информације о позицији",
+        "liquidationPenalty": "Казна за ликвидацију",
+        "liquidationPenaltyDescription": "Такса примењена ако вредност вашег залога падне испод одређеног прага, што представља продају средстава ради покривања дуга. Ова казна повећава ваш укупан дуг.",
+        "positionSafe": "Позиција сигурна",
+        "liquidationClose": "Затварање ликвидације",
+        "highLiquidationRisk": "Висок ризик ликвидације",
+        "error": {
+            "enterCollateral": "Унесите залог",
+            "enterBorrow": "Унесите износ за позајмљивање",
+            "borrowMoreThanAvailable": "Dostupni dug premašen",
+            "insufficientCollateral": "Недовољно залога",
+            "enterRepayDebt": "Унесите износ за погашење дуга",
+            "repayMoreThanDebt": "Dug preplaćen"
+        }
+    },
+    "accountSettings": {
+        "title": "ПОДЕШАВАЊА РАЧУНА",
+        "hint": "Ово можете поново да омогућите у подешавањима налога",
+        "disable": "Онемогући укључено",
+        "disabled": "Онемогућено за",
+        "confirmation": {
+            "title": "Онемогућите потврду трансакције",
+            "description": "Искачући екран који приказује детаље о трансакцијама пре потписивања."
+        },
+        "signature": {
+            "title": "Онемогућите потврду лозинке",
+            "description": "Омогућите или онемогућите потребу да унесете лозинку током искачућег прозора за потпис у трансакцијама."
+        },
+        "enterPassword": "Унесите лозинку",
+        "googleOnly": "Само {Google} налози"
+    }
 }

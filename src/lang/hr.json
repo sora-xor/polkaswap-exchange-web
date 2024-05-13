@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Ograničeni nalog je otkazan",
             "OrderBookCancelLimitOrders": "Ograničene narudžbe su otkazane",
             "Burn": "Spaljeno {amount} {symbol}",
-            "Mint": "Kovano {amount} {symbol} na {address}"
+            "Mint": "Kovano {amount} {symbol} na {address}",
+            "CreateVault": "Trezor {symbol}\/{symbol2} stvoren",
+            "CloseVault": "Trezor {symbol}\/{symbol2} zatvoren",
+            "DepositCollateral": "Uloženo {amount} {symbol}",
+            "RepayVaultDebt": "Dug vraćen {amount} {symbol}",
+            "BorrowVaultDebt": "Dug posuđen {amount} {symbol}"
         },
         "error": {
             "Transfer": "{action} {amount} {symbol} {direction} {address} nije uspio",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Otkazivanje ograničenih naloga nije uspjelo",
             "OrderBookCancelLimitOrder": "Otkazivanje ograničenog naloga nije uspjelo",
             "Burn": "Nije uspjelo spaljivanje {amount} {symbol}",
-            "Mint": "Nije uspjelo kovati {amount} {symbol} na {address}"
+            "Mint": "Nije uspjelo kovati {amount} {symbol} na {address}",
+            "CreateVault": "Pogreška prilikom stvaranja trezora {symbol}\/{symbol2}",
+            "CloseVault": "Pogreška prilikom zatvaranja trezora {symbol}\/{symbol2}",
+            "DepositCollateral": "Pogreška prilikom ulaganja {amount} {symbol}",
+            "RepayVaultDebt": "Pogreška prilikom vraćanja {amount} {symbol}",
+            "BorrowVaultDebt": "Pogreška prilikom posuđivanja {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Otkazati narudžbu",
         "OrderBookCancelLimitOrders": "Otkaži narudžbe",
         "Burn": "Spaliti",
-        "Mint": "Kovnica"
+        "Mint": "Kovnica",
+        "CreateVault": "Stvoriti trezor",
+        "CloseVault": "Zatvoriti trezor",
+        "DepositCollateral": "Uložiti kolateral",
+        "RepayVaultDebt": "Vratiti dug",
+        "BorrowVaultDebt": "Posuditi dug"
     },
     "polkadotjs": {
         "noExtensions": "Nije pronađeno proširenje {PolkadotJs}. Molimo instalirajte ga i ponovno učitajte ovu stranicu\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -385,9 +400,7 @@
         "About": "O",
         "Stats": "Statistika",
         "Wallet": "Novčanik",
-        "CreatePair": "Stvorite par",
         "AddLiquidity": "Dodajte likvidnost",
-        "AddLiquidityId": "Dodajte likvidnost",
         "RemoveLiquidity": "Uklonite likvidnost",
         "Rewards": "Nagrade",
         "Explore\/Tokens": "Tokeni",
@@ -397,7 +410,11 @@
         "Staking": "Ulaganje",
         "OrderBook": "Trgovina",
         "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": "Kensetsu"
+        "AssetOwner": "Vlasnik imovine",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Trezori",
+        "VaultDetails": "Detalji trezora",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Zamijenite",
@@ -408,12 +425,13 @@
         "Rewards": "Nagrade",
         "About": "O",
         "Stats": "Statistika",
-        "CreatePair": "Stvorite par",
         "StakingContainer": "Ulaganje",
         "Explore\/Container": "Istražiti",
         "SoraCard": "Kartica {Sora}",
         "OrderBook": "Trgovina",
-        "Kensetsu": "Kensetsu"
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1562,5 +1580,82 @@
     "customisePageText": "Prilagodite stranicu",
     "priceChartText": "Grafikon cijena",
     "editText": "Uredi",
-    "resetText": "Reset"
+    "resetText": "Reset",
+    "kensetsu": {
+        "addCollateral": "Dodaj kolateral",
+        "addCollateralDescription": "Uložite više sredstava u svoj sef kako biste povećali svoj limit zaduženja ili poboljšali omjer kredita i vrijednosti. To također može pomoći u sprječavanju likvidacije.",
+        "depositCollateral": "Depozit kolaterala",
+        "totalCollateral": "Ukupan kolateral",
+        "totalCollateralDescription": "Ukupna vrijednost svih sredstava trenutno položenih u vaš sef. Ova vrijednost utječe na vašu sposobnost zaduživanja i rizik od likvidacije.",
+        "debtAvailable": "Dug dostupan",
+        "debtAvailableDescription": "Iznos sredstava koje još uvijek možete povući iz svog sefa bez prekoračenja vašeg limita zaduženja, na temelju vaše trenutne zaloge.",
+        "ltv": "Zajam na vrijednost ({LTV})",
+        "ltvDescription": "Omjer iznosa povučenog i vrijednosti kolaterala u vašem sefu, izražen kao postotak. Veći {LTV} povećava potencijalne prinose, ali i rizik, uključujući mogućnost likvidacije.",
+        "borrowMore": "Posudite više",
+        "borrowMoreDescription": "Povucite dodatna sredstva iz svog sefa do maksimalno dostupnog iznosa. Pazite da vrijednost vaše zaloge podržava povećani dug kako biste izbjegli rizik od likvidacije.",
+        "available": "Dostupno",
+        "outstandingDebt": "Izvanredan dug",
+        "outstandingDebtDescription": "Ukupan iznos koji trenutno dugujete iz sredstava povučenih iz vašeg sefa, uključujući akumulirane kamate. To treba platiti kako biste zatvorili svoj sef ili održavali zdrav omjer kredita i vrijednosti.",
+        "createVault": "Otvorite poziciju zajma",
+        "createVaultDescription": "Započnite novu transakciju polaganjem kolaterala u svoj sef i povlačenjem sredstava. To stvara obvezu duga koju morate upravljati.",
+        "createVaultAction": "Otvorite poziciju",
+        "borrowDebt": "Posudite dug",
+        "minDepositCollateral": "Minimalni polog kolaterala",
+        "minDepositCollateralDescription": "Minimalni iznos sredstava potreban za otvaranje sefa. Taj početni polog osigurava sredstva koja želite posuditi.",
+        "maxAvailableToBorrow": "Maks. dostupno za posuditi",
+        "maxAvailableToBorrowDescription": "Maksimalni iznos koji možete povući iz svog sefa, određen vrijednošću vašeg kolaterala. Ovaj se limit prilagođava kako se mijenja vrijednost kolaterala.",
+        "borrowTax": "Porez na posudbu",
+        "borrowTaxDescription": "Porez {value} primijenjen na posuđeni iznos",
+        "stabilityFee": "Naknada za stabilnost",
+        "stabilityFeeDescription": "Godišnja naknada naplaćena na iznos povučen iz vašeg sefa, izračunata kao postotak. Ova naknada nadoknađuje rizike i fluktuacije na tržištu.",
+        "repayDebt": "Vratite dug",
+        "repayDebtDescription": "Vratite posuđena sredstva kako biste smanjili svoj trenutni dug. To može smanjiti troškove kamata i smanjiti rizik od likvidacije.",
+        "closeVault": "Zatvorite moju poziciju",
+        "closeVaultDescription": "Zatvorite odabranu poziciju isplatom svih izvanrednih dugova i povlačenjem sveg kolaterala",
+        "yourCollateral": "Vaš kolateral",
+        "yourCollateralDescription": "Sredstva koja ste položili u svoj sef kako biste osigurali povučena sredstva. Ta se sredstva mogu prodati od strane zajmodavca ako ne održavate potrebni omjer zajma i vrijednosti.",
+        "yourDebt": "Vaš dug",
+        "yourDebtDescription": "Ukupni iznos trenutno izvanredan u vašem sefu, uključujući povučeni iznos i svaku akumuliranu kamatu. Taj se saldo povećava s vremenom ako se kamate akumuliraju.",
+        "yourDebtTokenBalance": "Vaš {tokenSymbol} saldo",
+        "requiredAmountWithSlippage": "Potrebni iznos s klizanjem",
+        "requiredAmountWithSlippageDescription": "Za glatko zatvaranje sefa, kupite nešto više {tokenSymbol} od {amount} potrebnog zbog mogućeg klizanja. Trebate više da pokrijete manjak. Zamijenite svoja sredstva u {tokenSymbol} kako biste zadovoljili ovu potrebu.",
+        "openSwap": "Otvori zamjenu",
+        "introTitle": "Otvorite pozicije zajma i zaradite s {Kensetsu}",
+        "introDescription": "Iskusite sigurno i bezbrižno zaduživanje i posuđivanje. Otvorite pozicije zaduživanja s platformom {Kensetsu}.",
+        "disclaimerDescription": "Posuđivanje digitalnih sredstava putem {Polkaswap} nosi značajne rizike i u potpunosti je na vaš vlastiti rizik. Vrijednost digitalnih sredstava izuzetno je volatilna, a bilo kakve promjene u tržišnim cijenama sredstava koje ste posudili ili koristili kao zalogu mogu rezultirati značajnim financijskim gubicima.",
+        "availableToBorrow": "Dostupno za posudbu",
+        "availableToBorrowDescription": "Preostali iznos koji imate pravo povući u trenutačnim uvjetima vašeg sefa, na temelju položenog kolaterala i postojećeg duga.",
+        "collateralDetails": "Detalji kolaterala",
+        "debtDetails": "Detalji duga",
+        "positionInfo": "Informacije o poziciji",
+        "liquidationPenalty": "Kazna za likvidaciju",
+        "liquidationPenaltyDescription": "Naknada koja se primjenjuje ako vrijednost vašeg kolaterala padne ispod određenog praga, potičući prodaju sredstava radi pokrivanja duga. Ova kazna povećava vaš ukupni dug.",
+        "positionSafe": "Pozicija sigurna",
+        "liquidationClose": "Zatvaranje likvidacije",
+        "highLiquidationRisk": "Visok rizik od likvidacije",
+        "error": {
+            "enterCollateral": "Unesite kolateral",
+            "enterBorrow": "Unesite iznos za posudbu",
+            "borrowMoreThanAvailable": "Dostupan dug premašen",
+            "insufficientCollateral": "Nedovoljan kolateral",
+            "enterRepayDebt": "Unesite vraćanje duga",
+            "repayMoreThanDebt": "Dug preplaćen"
+        }
+    },
+    "accountSettings": {
+        "title": "POSTAVLJANJE RAČUNA",
+        "hint": "To možete ponovno omogućiti u postavkama računa",
+        "disable": "Onemogući uključeno",
+        "disabled": "Onemogućeno za",
+        "confirmation": {
+            "title": "Onemogući potvrdu transakcije",
+            "description": "Skočni zaslon koji prikazuje detalje o transakcijama prije potpisivanja."
+        },
+        "signature": {
+            "title": "Onemogući potvrdu lozinke",
+            "description": "Omogućite ili onemogućite potrebu za unosom lozinke tijekom skočnog prozora za potpis u transakcijama."
+        },
+        "enterPassword": "Upišite lozinku",
+        "googleOnly": "Samo {Google} računi"
+    }
 }

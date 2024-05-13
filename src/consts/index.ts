@@ -1,4 +1,5 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import invert from 'lodash/fp/invert';
 
 import { StakingPageNames } from '@/modules/staking/consts';
@@ -487,3 +488,25 @@ export const AboutTopics = [
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
+
+export const TranslationConsts = {
+  // extending consts
+  ...WALLET_CONSTS.TranslationConsts,
+  AppName: app.name,
+  Ceres: 'Ceres',
+  APR: 'APR', // Annual percentage rate
+  APY: 'APY',
+  TVL: 'TVL',
+  EVM: 'EVM',
+  Substrate: 'Substrate',
+  Kusama: 'Kusama',
+  ROI: 'ROI', // Return of investment
+  mbps: 'mbps',
+  online: 'Online',
+  offline: 'Offline',
+  XCM: 'XCM',
+  Max: 'Max.',
+  XOR: 'XOR',
+  VAL: 'VAL',
+  Kensetsu: 'Kensetsu',
+} as const;
