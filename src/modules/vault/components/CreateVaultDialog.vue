@@ -28,6 +28,8 @@
           class="vault-create__debt-input vault-create__token-input"
           :with-slider="isBorrowSliderAvailable"
           :title="t('kensetsu.borrowDebt')"
+          :balance-text="t('kensetsu.available')"
+          :balance="maxBorrowCodec"
           v-model="borrowValue"
           is-fiat-editable
           :is-max-available="isMaxBorrowAvailable"
@@ -40,29 +42,6 @@
         />
         <slippage-tolerance class="slippage-tolerance-settings vault-create__slippage" />
         <info-line
-          :label="t('kensetsu.minDepositCollateral')"
-          :label-tooltip="t('kensetsu.minDepositCollateralDescription')"
-          :value="formattedMinDeposit"
-          :asset-symbol="collateralSymbol"
-          :fiat-value="minDepositFiat"
-          is-formatted
-        />
-        <info-line
-          :label="t('kensetsu.maxAvailableToBorrow')"
-          :label-tooltip="t('kensetsu.maxAvailableToBorrowDescription')"
-          :value="formattedMaxBorrow"
-          :asset-symbol="kusdSymbol"
-          :fiat-value="maxBorrowFiat"
-          is-formatted
-        />
-        <info-line
-          :label="t('kensetsu.borrowTax')"
-          :label-tooltip="t('kensetsu.borrowTaxDescription', { value: borrowTaxPercent })"
-          :value="formattedBorrowTax"
-          :asset-symbol="kusdSymbol"
-          is-formatted
-        />
-        <info-line
           :label="t('kensetsu.ltv')"
           :label-tooltip="t('kensetsu.ltvDescription')"
           :value="formattedLtv"
@@ -73,13 +52,6 @@
             {{ ltvText }}
           </value-status>
         </info-line>
-        <info-line
-          :label="t('kensetsu.stabilityFee')"
-          :label-tooltip="t('kensetsu.stabilityFeeDescription')"
-          :value="formattedStabilityFee"
-          asset-symbol="%"
-          is-formatted
-        />
         <s-button
           type="primary"
           class="s-typography-button--large action-button vault-create__button"
@@ -89,6 +61,28 @@
           <template v-if="disabled">{{ errorMessage }}</template>
           <template v-else>{{ t('kensetsu.createVaultAction') }}</template>
         </s-button>
+        <info-line
+          :label="t('kensetsu.minDepositCollateral')"
+          :label-tooltip="t('kensetsu.minDepositCollateralDescription')"
+          :value="formattedMinDeposit"
+          :asset-symbol="collateralSymbol"
+          :fiat-value="minDepositFiat"
+          is-formatted
+        />
+        <info-line
+          :label="t('kensetsu.stabilityFee')"
+          :label-tooltip="t('kensetsu.stabilityFeeDescription')"
+          :value="formattedStabilityFee"
+          asset-symbol="%"
+          is-formatted
+        />
+        <info-line
+          :label="t('kensetsu.borrowTax')"
+          :label-tooltip="t('kensetsu.borrowTaxDescription', { value: borrowTaxPercent })"
+          :value="formattedBorrowTax"
+          :asset-symbol="kusdSymbol"
+          is-formatted
+        />
         <info-line
           :label="t('networkFeeText')"
           :label-tooltip="t('networkFeeTooltipText')"
@@ -361,14 +355,9 @@ export default class CreateVaultDialog extends Mixins(
     return this.borrowValueFp.mul(this.borrowTax ?? 0).toLocaleString();
   }
 
-  get formattedMaxBorrow(): string {
+  get maxBorrowCodec(): CodecString {
     if (this.availableCollateralBalanceFp.lt(this.minDeposit)) return ZeroStringValue;
-    return this.maxBorrowPerMaxCollateralFp.toLocaleString();
-  }
-
-  get maxBorrowFiat(): Nullable<string> {
-    if (!this.kusdToken || this.availableCollateralBalanceFp.lt(this.minDeposit)) return null;
-    return this.getFiatAmountByFPNumber(this.maxBorrowPerMaxCollateralFp, this.kusdToken);
+    return this.maxBorrowPerMaxCollateralFp.toCodecString();
   }
 
   private get maxBorrowPerCollateralValue(): FPNumber {
@@ -504,6 +493,9 @@ export default class CreateVaultDialog extends Mixins(
   &__token-input,
   &__slippage {
     margin-bottom: $inner-spacing-medium;
+  }
+  &__debt-input {
+    margin-bottom: $inner-spacing-mini;
   }
   .ltv-badge-status {
     margin-left: $inner-spacing-mini;
