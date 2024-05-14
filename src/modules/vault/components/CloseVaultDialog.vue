@@ -51,7 +51,7 @@
         <p class="vault-close__error-message p3">
           {{ t('kensetsu.requiredAmountWithSlippageDescription', { tokenSymbol: kusdSymbol, amount: formattedDiff }) }}
         </p>
-        <s-button type="primary" class="s-typography-button--large vault-close__button" @click="openSwap">
+        <s-button type="primary" class="s-typography-button--large vault-close__button" @click.prevent="openSwap">
           <external-link
             class="vault-close__error-link s-typography-button--large"
             tabindex="-1"
