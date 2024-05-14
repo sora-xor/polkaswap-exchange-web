@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Begrensningsbestilling kansellert",
             "OrderBookCancelLimitOrders": "Limit bestillinger kansellert",
             "Burn": "Brent {amount} {symbol}",
-            "Mint": "Preget {amount} {symbol} til {address}"
+            "Mint": "Preget {amount} {symbol} til {address}",
+            "CreateVault": "{symbol}\/{symbol2}-skattkammer opprettet",
+            "CloseVault": "{symbol}\/{symbol2}-skattkammer lukket",
+            "DepositCollateral": "Innskuddet {amount} {symbol}",
+            "RepayVaultDebt": "Gjelden tilbakebetalt {amount} {symbol}",
+            "BorrowVaultDebt": "Gjeld lånt {amount} {symbol}"
         },
         "error": {
             "Transfer": "Kunne ikke {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Kunne ikke kansellere begrensede bestillinger",
             "OrderBookCancelLimitOrder": "Kunne ikke kansellere begrenset ordre",
             "Burn": "Kunne ikke brenne {amount} {symbol}",
-            "Mint": "Kunne ikke prege {amount} {symbol} til {address}"
+            "Mint": "Kunne ikke prege {amount} {symbol} til {address}",
+            "CreateVault": "Kunne ikke opprette {symbol}\/{symbol2}-skattkammer",
+            "CloseVault": "Kunne ikke lukke {symbol}\/{symbol2}-skattkammer",
+            "DepositCollateral": "Kunne ikke gjøre innskudd {amount} {symbol}",
+            "RepayVaultDebt": "Kunne ikke tilbakebetale {amount} {symbol} gjeld",
+            "BorrowVaultDebt": "Kunne ikke låne {amount} {symbol} gjeld"
         },
         "ReferralReserveXor": "Knytte bånd XOR",
         "ReferralUnreserveXor": "Koble ut XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Avbryt bestillingen",
         "OrderBookCancelLimitOrders": "Kanseller bestillinger",
         "Burn": "Brenne",
-        "Mint": "Mynte"
+        "Mint": "Mynte",
+        "CreateVault": "Opprett skattkammer",
+        "CloseVault": "Lukk skattkammer",
+        "DepositCollateral": "Innskudd Sikkerhet",
+        "RepayVaultDebt": "Betal tilbake gjeld",
+        "BorrowVaultDebt": "Lån gjeld"
     },
     "polkadotjs": {
         "noExtensions": "Finner ingen {PolkadotJs} utvidelse. Installer den og last inn denne siden på nytt\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -385,9 +400,7 @@
         "About": "Om",
         "Stats": "Statistikk",
         "Wallet": "Lommebok",
-        "CreatePair": "Opprett par",
         "AddLiquidity": "Legg til likviditet",
-        "AddLiquidityId": "Legg til likviditet",
         "RemoveLiquidity": "Fjern likviditet",
         "Rewards": "Belønninger",
         "Explore\/Tokens": "Tokens",
@@ -397,7 +410,11 @@
         "Staking": "Staking",
         "OrderBook": "Handel",
         "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": "Kensetsu"
+        "AssetOwner": "Eier av eiendeler",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Hvelv",
+        "VaultDetails": "Detaljer om hvelvet",
+        "Kensetsu": "{Kensetsu}"
     },
     "mainMenu": {
         "Swap": "Bytte",
@@ -408,12 +425,13 @@
         "Rewards": "Belønninger",
         "About": "Om",
         "Stats": "Statistikk",
-        "CreatePair": "Opprett par",
         "StakingContainer": "Staking",
         "Explore\/Container": "Utforske",
         "SoraCard": "{Sora} Kort",
         "OrderBook": "Handel",
-        "Kensetsu": "Kensetsu"
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Kensetsu": "@:pageTitle.Kensetsu"
     },
     "social": {
         "twitter": "Twitter",
@@ -1558,5 +1576,86 @@
         },
         "pricePerToken": "Pris per 1 {token}"
     },
-    "calculatingText": "Beregner"
+    "calculatingText": "Beregner",
+    "customisePageText": "Tilpass siden",
+    "priceChartText": "Prisdiagram",
+    "editText": "Redigere",
+    "resetText": "Tilbakestill",
+    "kensetsu": {
+        "addCollateral": "Legg til sikkerhet",
+        "addCollateralDescription": "Sett inn flere eiendeler i hvelvet ditt for å øke din lånegrense eller for å forbedre din lån-til-verdi-forhold. Dette kan også bidra til å forhindre likvidasjon.",
+        "depositCollateral": "Innskudd sikkerhet",
+        "totalCollateral": "Total sikkerhet",
+        "totalCollateralDescription": "Den totale verdien av alle eiendeler som for øyeblikket er satt inn i hvelvet ditt. Denne verdien påvirker din lånekapasitet og risiko for likvidasjon.",
+        "debtAvailable": "Gjeld tilgjengelig",
+        "debtAvailableDescription": "Beløpet du fremdeles kan trekke fra hvelvet ditt uten å overstige din lånegrense, basert på din nåværende sikkerhet.",
+        "ltv": "Lån til verdi ({LTV})",
+        "ltvDescription": "Forholdet mellom det beløpet som er trukket og verdien av sikkerheten i ditt lager, uttrykt som prosentandel. En høyere {LTV} øker potensiell avkastning, men også risiko, inkludert risikoen for tvangssalg.",
+        "borrowMore": "Lån mer",
+        "borrowMoreDescription": "Trekk ekstra midler fra hvelvet ditt opp til maksimum tilgjengelig beløp. Sørg for at verdien av sikkerheten din støtter økt gjeld for å unngå likvidasjonsrisiko.",
+        "available": "Tilgjengelig",
+        "outstandingDebt": "Utestående gjeld",
+        "outstandingDebtDescription": "Det totale beløpet du for øyeblikket skylder fra midlene som er trukket fra hvelvet ditt, inkludert påløpte renter. Dette må tilbakebetales for å lukke hvelvet ditt eller opprettholde sunne lån-til-verdi-forhold.",
+        "createVault": "Åpne en lånestilling",
+        "createVaultDescription": "Start en ny transaksjon ved å legge inn sikkerhet i lageret ditt og trekke midler. Dette oppretter en gjeldsforpliktelse som du må håndtere.",
+        "createVaultAction": "Åpne posisjon",
+        "borrowDebt": "Lån gjeld",
+        "minDepositCollateral": "Minimum innskudd sikkerhet",
+        "minDepositCollateralDescription": "Minimumsbeløpet av eiendeler som kreves for å åpne et lager. Dette første innskuddet sikrer midlene du ønsker å låne.",
+        "maxAvailableToBorrow": "Maks. tilgjengelig for å låne",
+        "maxAvailableToBorrowDescription": "Maksimumsbeløpet du kan trekke fra lageret ditt, bestemt av verdien av sikkerheten din. Denne grensen justeres når verdien av sikkerheten endres.",
+        "borrowTax": "Lån skatt",
+        "borrowTaxDescription": "Skatten {value} som pålegges det utlånte beløpet",
+        "stabilityFee": "Stabilitetsgebyr",
+        "stabilityFeeDescription": "Et årlig gebyr belastet på det beløpet som trekkes fra lageret ditt, beregnet som prosentandel. Dette gebyret kompenserer for risikoer og markedsfluktuasjoner.",
+        "repayDebt": "Gjeld tilbakebetaling",
+        "repayDebtDescription": "Returner lånte midler for å redusere din utestående gjeld. Dette kan redusere rentekostnader og senke risikoen for likvidasjon.",
+        "closeVault": "Lukk min posisjon",
+        "closeVaultDescription": "Lukk den valgte posisjonen ved å tilbakebetale all utestående gjeld og trekke tilbake all sikkerhet",
+        "yourCollateral": "Din sikkerhet",
+        "yourCollateralDescription": "Eiendelene du har satt inn i lageret ditt for å sikre midlene du trekker ut. Disse eiendelene kan bli likvidert av långiveren hvis du ikke klarer å opprettholde den nødvendige låne-til-verdi-forholdet.",
+        "yourDebt": "Din gjeld",
+        "yourDebtDescription": "Det totale beløpet for tiden utestående i lageret ditt, inkludert det trukkede beløpet og eventuell påløpt rente. Dette saldoen øker over tid hvis renter akkumuleres.",
+        "yourDebtTokenBalance": "Din {tokenSymbol} balanse",
+        "requiredAmountWithSlippage": "Påkrevd beløp inkludert slitasje",
+        "requiredAmountWithSlippageDescription": "For en jevn lagerlukking, kjøp litt mer {tokenSymbol} enn {amount} som kreves på grunn av mulig slitasje. Du trenger en ekstra for å dekke underskuddet. Bytt dine eiendeler til {tokenSymbol} for å møte dette behovet.",
+        "openSwap": "Åpne bytte",
+        "introTitle": "Åpne lånestillinger & Tjen med {Kensetsu}",
+        "introDescription": "Opplev trygg og problemfri utlån og låntagning. Åpne låne-posisjoner med {Kensetsu} plattformen.",
+        "disclaimerDescription": "Å låne digitale eiendeler gjennom {Polkaswap} innebærer betydelig risiko og er helt på egen risiko. Verdien av digitale eiendeler er svært volatil, og endringer i markedsprisene på de eiendelene du har lånt eller brukt som sikkerhet, kan føre til betydelige økonomiske tap.",
+        "availableToBorrow": "Tilgjengelig for å låne",
+        "availableToBorrowDescription": "Det gjenværende beløpet du har rett til å trekke under de nåværende forholdene for lageret ditt, basert på ditt innsatte sikkerhet og eventuelle eksisterende gjeld.",
+        "collateralDetails": "Sikkerhetsdetaljer",
+        "debtDetails": "Gjelddetaljer",
+        "positionInfo": "Posisjonsinformasjon",
+        "liquidationPenalty": "Likvidasjon straff",
+        "liquidationPenaltyDescription": "Et gebyr som pålegges hvis verdien av sikkerheten din faller under en viss terskel, og utløser salg av eiendeler for å dekke gjelden. Denne straffen øker din totale gjeld.",
+        "positionSafe": "Posisjon trygg",
+        "liquidationClose": "Likvidasjon lukk",
+        "highLiquidationRisk": "Høy likvidasjonsrisiko",
+        "error": {
+            "enterCollateral": "Angi sikkerhet",
+            "enterBorrow": "Angi lånebeløpet",
+            "borrowMoreThanAvailable": "Tilgjengelig gjeld overskredet",
+            "insufficientCollateral": "Utilstrekkelig sikkerhet",
+            "enterRepayDebt": "Skriv inn tilbakebetalt gjeld",
+            "repayMoreThanDebt": "Gjeld overbetalt"
+        }
+    },
+    "accountSettings": {
+        "title": "Kontoinnstillinger",
+        "hint": "Du kan aktivere dette tilbake i kontoinnstillingene",
+        "disable": "Deaktiver på",
+        "disabled": "Deaktivert for",
+        "confirmation": {
+            "title": "Deaktiver transaksjonsbekreftelse",
+            "description": "En popup-skjerm som viser detaljer om transaksjonene før signeringen."
+        },
+        "signature": {
+            "title": "Deaktiver passordbekreftelse",
+            "description": "Aktiver eller deaktiver behovet for å skrive inn passordet ditt under signatur-popup-vinduet i transaksjoner."
+        },
+        "enterPassword": "Oppgi passord",
+        "googleOnly": "Bare {Google} -kontoer"
+    }
 }

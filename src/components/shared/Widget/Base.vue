@@ -4,7 +4,7 @@
       <div class="base-widget-block base-widget-header">
         <div :class="['base-widget-block', 'base-widget-title', { primary: primaryTitle }]">
           <slot name="title">
-            <span v-if="title">{{ title }}</span>
+            <span v-if="title">{{ capitalize(title) }}</span>
             <s-tooltip v-if="tooltip" border-radius="mini" :content="tooltip">
               <s-icon name="info-16" size="14px" />
             </s-tooltip>
@@ -32,7 +32,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
+import { capitalize } from '@/utils';
+
 declare const documentPictureInPicture: any;
+
 
 @Component
 export default class BaseWidget extends Vue {
@@ -42,6 +45,8 @@ export default class BaseWidget extends Vue {
   @Prop({ default: false, type: Boolean }) readonly extensive!: boolean;
   @Prop({ default: false, type: Boolean }) readonly primaryTitle!: boolean;
 
+  public capitalize = capitalize;
+  
   get isPipAvailable() {
     return 'documentPictureInPicture' in window;
   }
@@ -145,7 +150,8 @@ $left: $inner-spacing-medium;
     font-size: var(--s-font-size-medium);
     font-weight: 500;
     line-height: var(--s-line-height-medium);
-    text-transform: capitalize;
+
+    min-height: var(--s-size-small);
 
     &.primary {
       font-size: var(--s-font-size-large);

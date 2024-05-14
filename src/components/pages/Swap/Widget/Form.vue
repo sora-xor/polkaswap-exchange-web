@@ -8,15 +8,6 @@
           <s-button class="el-button--settings" type="action" icon="basic-settings-24" @click="openSettingsDialog" />
         </template>
       </swap-status-action-badge>
-
-      <svg-icon-button
-        v-if="chartsFlagEnabled"
-        icon="line-icon"
-        size="medium"
-        :tooltip="t('dexSettings.сhartsDescription')"
-        :active="chartsEnabled"
-        @click="toggleChart"
-      />
     </template>
 
     <div class="swap-form">
@@ -84,7 +75,7 @@
         data-test-name="confirmSwap"
         type="primary"
         :disabled="isConfirmSwapDisabled"
-        :loading="loading || isSelectAssetLoading"
+        :loading="loading || quoteLoading || isSelectAssetLoading"
         @click="handleSwapClick"
       >
         <template v-if="!areTokensSelected">
@@ -130,12 +121,12 @@
       <swap-loss-warning-dialog
         :visible.sync="lossWarningVisibility"
         :value="fiatDifferenceFormatted"
-        @confirm="showConfirmDialog"
+        @confirm="handleConfirm"
       />
       <swap-confirm
-        :visible.sync="confirmVisibility"
-        :isInsufficientBalance="isInsufficientBalance"
-        @confirm="confirmSwap"
+        :visible.sync="confirmDialogVisibility"
+        :is-insufficient-balance="isInsufficientBalance"
+        @confirm="exchangeTokens"
       />
       <swap-settings :visible.sync="showSettings" />
     </div>
@@ -148,6 +139,7 @@ import { KnownSymbols, XOR } from '@sora-substrate/util/build/assets/consts';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, MarketAlgorithms, PageNames } from '@/consts';
@@ -184,35 +176,35 @@ import type { Subscription } from 'rxjs';
     SelectToken: lazyComponent(Components.SelectToken),
     TokenInput: lazyComponent(Components.TokenInput),
     ValueStatusWrapper: lazyComponent(Components.ValueStatusWrapper),
-    SvgIconButton: lazyComponent(Components.SvgIconButton),
     FormattedAmount: components.FormattedAmount,
   },
 })
 export default class SwapFormWidget extends Mixins(
   mixins.FormattedAmountMixin,
-  mixins.LoadingMixin,
+  mixins.TransactionMixin,
   TranslationMixin,
-  TokenSelectMixin
+  TokenSelectMixin,
+  ConfirmDialogMixin
 ) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+
   @state.swap.isExchangeB isExchangeB!: boolean;
   @state.swap.fromValue fromValue!: string;
   @state.swap.toValue toValue!: string;
   @state.swap.isAvailable isAvailable!: boolean;
   @state.swap.swapQuote private swapQuote!: Nullable<SwapQuote>;
   @state.swap.allowLossPopup private allowLossPopup!: boolean;
+  @state.swap.selectedDexId private selectedDexId!: number;
+  @state.settings.slippageTolerance private slippageTolerance!: string;
 
   @getter.assets.xor private xor!: AccountAsset;
   @getter.swap.swapLiquiditySource liquiditySource!: Nullable<LiquiditySourceTypes>;
-  @getter.settings.chartsFlagEnabled chartsFlagEnabled!: boolean;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
-  @getter.settings.chartsEnabled chartsEnabled!: boolean;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
 
-  @mutation.settings.setChartsEnabled private setChartsEnabled!: (value: boolean) => void;
   @mutation.swap.setFromValue private setFromValue!: (value: string) => void;
   @mutation.swap.setToValue private setToValue!: (value: string) => void;
   @mutation.swap.setAmountWithoutImpact private setAmountWithoutImpact!: (amount?: CodecString) => void;
@@ -251,9 +243,9 @@ export default class SwapFormWidget extends Mixins(
   isTokenFromSelected = false;
   showSettings = false;
   showSelectTokenDialog = false;
-  confirmVisibility = false;
   lossWarningVisibility = false;
   quoteSubscription: Nullable<Subscription> = null;
+  quoteLoading = false;
   recountSwapValues = debouncedInputHandler(this.runRecountSwapValues, 100);
 
   get tokenFromSymbol(): string {
@@ -463,7 +455,7 @@ export default class SwapFormWidget extends Mixins(
 
     if (!this.areTokensSelected) return;
 
-    this.loading = true;
+    this.quoteLoading = true;
 
     const observableQuote = api.swap.getDexesSwapQuoteObservable(
       (this.tokenFrom as AccountAsset).address,
@@ -474,7 +466,7 @@ export default class SwapFormWidget extends Mixins(
       this.quoteSubscription = observableQuote.subscribe((quoteData) => {
         this.setSubscriptionPayload(quoteData);
         this.runRecountSwapValues();
-        this.loading = false;
+        this.quoteLoading = false;
       });
     } else {
       this.setSubscriptionPayload();
@@ -541,28 +533,37 @@ export default class SwapFormWidget extends Mixins(
     if (this.isErrorFiatDifferenceStatus && this.allowLossPopup) {
       this.lossWarningVisibility = true;
     } else {
-      this.showConfirmDialog();
+      this.handleConfirm();
     }
   }
 
-  showConfirmDialog(): void {
-    this.confirmVisibility = true;
+  handleConfirm(): void {
+    this.confirmOrExecute(this.exchangeTokens);
   }
 
-  async confirmSwap(isSwapConfirmed: boolean): Promise<void> {
-    if (isSwapConfirmed) {
+  async exchangeTokens(): Promise<void> {
+    if (this.isConfirmSwapDisabled) return;
+
+    await this.withNotifications(async () => {
+      await api.swap.execute(
+        this.tokenFrom as AccountAsset,
+        this.tokenTo as AccountAsset,
+        this.fromValue,
+        this.toValue,
+        this.slippageTolerance,
+        this.isExchangeB,
+        this.liquiditySource as LiquiditySourceTypes,
+        this.selectedDexId
+      );
+
       this.resetFieldFrom();
       this.resetFieldTo();
       this.setExchangeB(false);
-    }
+    });
   }
 
   openSettingsDialog(): void {
     this.showSettings = true;
-  }
-
-  toggleChart(): void {
-    this.setChartsEnabled(!this.chartsEnabled);
   }
 
   private enableSwapSubscriptions(): void {

@@ -6,13 +6,8 @@ const mutations = defineMutations<AssetsState>()({
   setRegisteredAssetsFetching(state, value: boolean): void {
     state.registeredAssetsFetching = value;
   },
-  setRegisteredAssets(state, assets: Record<string, BridgeRegisteredAsset>): void {
+  setRegisteredAssets(state, assets: Record<string, BridgeRegisteredAsset> = {}): void {
     state.registeredAssets = Object.freeze({ ...assets });
-    state.registeredAssetsFetching = false;
-  },
-  resetRegisteredAssets(state): void {
-    state.registeredAssets = {};
-    state.registeredAssetsFetching = false;
   },
 });
 

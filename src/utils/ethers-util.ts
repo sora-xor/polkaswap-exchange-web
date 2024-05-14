@@ -372,12 +372,10 @@ async function getEvmNetworkId(): Promise<number> {
 }
 
 async function getEvmGasPrice(): Promise<bigint> {
-  const toBN = (value: bigint | null) => value ?? BigInt(0);
   const ethersInstance = getEthersInstance();
-  const { maxFeePerGas, maxPriorityFeePerGas } = await ethersInstance.getFeeData();
   const priorityFee = BigInt('1500000000'); // 1.5 GWEI
-  const maxFee = toBN(maxFeePerGas);
-  const baseFee = (maxFee - toBN(maxPriorityFeePerGas)) / BigInt(2);
+  const baseFeeHex = await ethersInstance.send('eth_gasPrice', []); // hex
+  const baseFee = BigInt(parseInt(baseFeeHex, 16));
   const baseFeeMarket = (baseFee * BigInt(1355)) / BigInt(1000); // market rate like in Metamask
   const gasPrice = baseFeeMarket + priorityFee;
 
@@ -424,8 +422,9 @@ async function getBlockNumber(): Promise<number> {
   }
 }
 
-async function accountAddressToHex(address: string): Promise<string> {
-  return ethers.hexlify(decodeAddress(address));
+function accountAddressToHex(address: string): string {
+  const publicKey = decodeAddress(address);
+  return ethers.hexlify(publicKey);
 }
 
 function hexToNumber(hex: string): number {

@@ -23,7 +23,8 @@
       is-formatted
     />
     <template #footer>
-      <s-button type="primary" class="s-typography-button--large" :disabled="loading" @click="handleConfirmBonding">
+      <account-confirmation-option with-hint class="confirmation-option" />
+      <s-button type="primary" class="s-typography-button--large" @click="handleConfirmBonding">
         {{ t('referralProgram.confirm.text') }}
       </s-button>
     </template>
@@ -33,9 +34,10 @@
 <script lang="ts">
 import { Operation, CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { api, mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
+import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { PageNames } from '@/consts';
 import { state } from '@/store/decorators';
 
@@ -44,12 +46,13 @@ import { state } from '@/store/decorators';
     DialogBase: components.DialogBase,
     InfoLine: components.InfoLine,
     TokenLogo: components.TokenLogo,
+    AccountConfirmationOption: components.AccountConfirmationOption,
   },
 })
 export default class ReferralsConfirmBonding extends Mixins(
-  mixins.TransactionMixin,
   mixins.FormattedAmountMixin,
-  mixins.DialogMixin
+  mixins.DialogMixin,
+  TranslationMixin
 ) {
   readonly xor = XOR;
 
@@ -76,33 +79,12 @@ export default class ReferralsConfirmBonding extends Mixins(
     return this.formatCodecNumber(this.networkFee);
   }
 
-  async handleConfirmBonding(): Promise<void> {
-    try {
-      await this.withNotifications(
-        async () =>
-          await (this.isBond
-            ? api.referralSystem.reserveXor(this.amount)
-            : api.referralSystem.unreserveXor(this.amount))
-      );
-      this.$emit('confirm', true);
-    } catch (error) {
-      this.$emit('confirm');
-    }
+  handleConfirmBonding(): void {
+    this.$emit('confirm');
     this.isVisible = false;
   }
 }
 </script>
-
-<style lang="scss">
-.dialog--confirm-bond {
-  .el-dialog > .el-dialog__body {
-    padding-bottom: calc(#{$inner-spacing-mini} / 2);
-  }
-  .el-divider {
-    margin-bottom: $inner-spacing-mini;
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 .tokens {
@@ -133,5 +115,8 @@ export default class ReferralsConfirmBonding extends Mixins(
 }
 .info-line {
   border-bottom: none;
+}
+.confirmation-option {
+  margin-bottom: $inner-spacing-medium;
 }
 </style>

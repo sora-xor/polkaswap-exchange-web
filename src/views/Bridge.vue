@@ -183,7 +183,7 @@
             class="el-button--next s-typography-button--large"
             data-test-name="nextButton"
             type="primary"
-            :disabled="isConfirmTxDisabled"
+            :disabled="isTxConfirmDisabled"
             :loading="isConfirmTxLoading"
             @click="handleConfirmButtonClick"
           >
@@ -256,7 +256,7 @@
       :set-visibility="setSelectSubNodeDialogVisibility"
     />
     <confirm-bridge-transaction-dialog
-      :visible.sync="showConfirmTransactionDialog"
+      :visible.sync="confirmDialogVisibility"
       :is-sora-to-evm="isSoraToEvm"
       :asset="asset"
       :amount-send="amountSend"
@@ -291,6 +291,7 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import BridgeMixin from '@/components/mixins/BridgeMixin';
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import NetworkFeeDialogMixin from '@/components/mixins/NetworkFeeDialogMixin';
 import NetworkFormatterMixin from '@/components/mixins/NetworkFormatterMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
@@ -307,7 +308,7 @@ import {
   asZeroValue,
   delay,
 } from '@/utils';
-import { subBridgeConnector } from '@/utils/bridge/sub/classes/adapter';
+import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import type { NodesConnection } from '@/utils/connection';
 
 import type { IBridgeTransaction } from '@sora-substrate/util';
@@ -340,6 +341,7 @@ export default class Bridge extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.NetworkFeeWarningMixin,
   BridgeMixin,
+  ConfirmDialogMixin,
   NetworkFormatterMixin,
   NetworkFeeDialogMixin,
   TokenSelectMixin
@@ -347,6 +349,7 @@ export default class Bridge extends Mixins(
   readonly KnownSymbols = KnownSymbols;
   readonly FocusedField = FocusedField;
 
+  @state.bridge.subBridgeConnector private subBridgeConnector!: SubNetworksConnector;
   @state.bridge.balancesFetching private balancesFetching!: boolean;
   @state.bridge.feesAndLockedFundsFetching private feesAndLockedFundsFetching!: boolean;
   @state.assets.registeredAssetsFetching private registeredAssetsFetching!: boolean;
@@ -373,7 +376,6 @@ export default class Bridge extends Mixins(
   @action.wallet.account.addAsset private addAssetToAccountAssets!: (address?: string) => Promise<void>;
 
   showSelectTokenDialog = false;
-  showConfirmTransactionDialog = false;
 
   showWarningExternalFeeDialog = false;
   isWarningExternalFeeDialogConfirmed = false;
@@ -381,8 +383,6 @@ export default class Bridge extends Mixins(
   // Sub Node Select
   @state.web3.selectSubNodeDialogVisibility selectSubNodeDialogVisibility!: boolean;
   @mutation.web3.setSelectSubNodeDialogVisibility private setSelectSubNodeDialogVisibility!: (flag: boolean) => void;
-
-  private readonly subBridgeConnector = subBridgeConnector;
 
   get subConnection(): Nullable<NodesConnection> {
     if (!this.isSubBridge) return null;
@@ -516,7 +516,7 @@ export default class Bridge extends Mixins(
     return this.getStringFromCodec(this.assetExternalMinBalance, this.asset?.externalDecimals);
   }
 
-  get isConfirmTxDisabled(): boolean {
+  get isTxConfirmDisabled(): boolean {
     return (
       !this.isAssetSelected ||
       !this.isRegisteredAsset ||
@@ -638,7 +638,7 @@ export default class Bridge extends Mixins(
       this.isWarningExternalFeeDialogConfirmed = false;
     }
 
-    this.showConfirmTransactionDialog = true;
+    this.confirmOrExecute(this.confirmTransaction);
   }
 
   handleChangeNetwork(): void {
@@ -667,9 +667,7 @@ export default class Bridge extends Mixins(
     });
   }
 
-  async confirmTransaction(isTransactionConfirmed: boolean): Promise<void> {
-    if (!isTransactionConfirmed) return;
-
+  async confirmTransaction(): Promise<void> {
     // create new history item
     const { assetAddress, id } = await this.generateHistoryItem();
 

@@ -91,6 +91,20 @@ async function getSubRegisteredAssets(
   if (!subNetwork) return [];
 
   const subNetworkId = subNetwork as SubNetwork;
+
+  // [TODO] remove when non ACA tokens are supported
+  if (subNetworkId === SubNetworkId.PolkadotAcala) {
+    return [
+      {
+        '0x001ddbe1a880031da72f7ea421260bec635fa7d1aa72593d5412795408b6b2ba': {
+          address: '',
+          decimals: 12,
+          kind: 'Sidechain',
+        },
+      },
+    ];
+  }
+
   const networkAssets = await subBridgeApi.getRegisteredAssets(subNetworkId);
   const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
     return {
@@ -126,9 +140,9 @@ async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Re
 const actions = defineActions({
   // for common usage
   async getRegisteredAssets(context): Promise<void> {
-    const { commit } = assetsActionContext(context);
+    const { commit, dispatch } = assetsActionContext(context);
 
-    commit.resetRegisteredAssets();
+    commit.setRegisteredAssets();
     commit.setRegisteredAssetsFetching(true);
 
     try {
@@ -136,9 +150,13 @@ const actions = defineActions({
       const registeredAssets = list.reduce((buffer, asset) => ({ ...buffer, ...asset }), {});
 
       commit.setRegisteredAssets(registeredAssets);
+      // update assets data (for Eth bridge)
+      await dispatch.updateRegisteredAssets();
     } catch (error) {
       console.error(error);
-      commit.resetRegisteredAssets();
+      commit.setRegisteredAssets();
+    } finally {
+      commit.setRegisteredAssetsFetching(false);
     }
   },
 

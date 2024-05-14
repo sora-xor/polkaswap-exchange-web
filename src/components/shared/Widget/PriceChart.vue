@@ -9,6 +9,8 @@
       <s-button
         v-if="isTokensPair && !isOrderBook"
         :class="{ 's-pressed': isReversedChart }"
+        :disabled="chartIsLoading"
+        size="small"
         type="action"
         alternative
         icon="arrows-swap-90-24"
@@ -451,7 +453,7 @@ export default class PriceChartWidget extends Mixins(
 
   get chartSpec() {
     // [TODO]: until we haven't two tokens volume
-    const withVolume = this.isOrderBook || (!!this.tokenA && !this.tokenB);
+    const withVolume = this.entities.length === 1;
 
     const priceGrid = this.gridSpec({
       top: 20,
@@ -833,8 +835,8 @@ export default class PriceChartWidget extends Mixins(
     if (this.isOrderBook) {
       return await subscribeOnOrderBookUpdates(
         this.dexId,
-        this.baseAsset!.address,
-        this.quoteAsset!.address,
+        (this.baseAsset as AccountAsset).address,
+        (this.quoteAsset as AccountAsset).address,
         () => this.fetchAndHandleUpdate(entities),
         console.error
       );
