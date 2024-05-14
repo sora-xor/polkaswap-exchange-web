@@ -31,7 +31,7 @@
           <div class="explore-table-item-info explore-table-item-info--body">
             <div class="explore-table-item-name">{{ row.debtAsset.symbol }} / {{ row.lockedAsset.symbol }}</div>
           </div>
-          <s-icon v-if="isLoggedIn" name="plus-16" size="12" />
+          <s-icon v-if="isLoggedIn && row.availableToBorrowValue" name="plus-16" size="12" />
         </template>
       </s-table-column>
       <!-- Stability Fee -->
@@ -245,7 +245,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
       let availableToBorrowValue = 0;
       let availableToBorrow = '0';
       let availableToBorrowFiat: Nullable<string> = '0';
-      const availableToBorrowFp = collateral.riskParams.hardCap.sub(collateral.kusdSupply);
+      const availableToBorrowFp = collateral.riskParams.hardCap.sub(collateral.kusdSupply).dp(2);
       if (availableToBorrowFp.isGtZero()) {
         availableToBorrow = availableToBorrowFp.toLocaleString(2);
         const availableToBorrowFiatFp =
@@ -281,6 +281,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
   }
 
   openSelectedPosition(row: TableItem): void {
+    if (!row.availableToBorrowValue) return;
     this.$emit('open', row.lockedAsset, row.debtAsset);
   }
 }
