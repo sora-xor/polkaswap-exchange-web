@@ -66,6 +66,7 @@ export default class ChartSkeleton extends Mixins(mixins.TranslationMixin) {
 
 <style lang="scss">
 $skeleton-label-width: 34px;
+$chart-price-amount-max-height: 382px;
 
 .charts-container {
   display: flex;
@@ -98,6 +99,7 @@ $skeleton-label-width: 34px;
   display: flex;
   flex-flow: column nowrap;
   flex: 1;
+  max-height: $chart-price-amount-max-height;
 
   $margin-right: #{$inner-spacing-tiny};
   $skeleton-label-width-mobile: calc((100% - #{$margin-right} * 10) / 11);
