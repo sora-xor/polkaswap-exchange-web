@@ -48,10 +48,11 @@ export default class BaseWidget extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+$graph-price-amount-min-height: 475px;
 .base-widget {
   overflow: hidden;
-  min-height: 475px;
+  min-height: $graph-price-amount-min-height;
   &.s-card.neumorphic.s-size-big {
     padding: 0;
 
