@@ -304,7 +304,7 @@ $container-max-width: calc(100vw - 2 * $inner-spacing-big - 2 * $basic-spacing -
     display: flex;
     flex-flow: column nowrap;
     gap: $inner-spacing-medium;
-    padding: $inner-spacing-big 0;
+    padding: $inner-spacing-big $inner-spacing-tiny;
 
     @include tablet {
       max-width: $container-max-width;
