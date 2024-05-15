@@ -39,7 +39,12 @@ export default class CedeStoreWidget extends Mixins(mixins.DialogMixin, mixins.L
             theme: {
               mode: this.libraryTheme,
               logoTheme: this.libraryTheme,
+              fontFamily: 'Sora',
               width: '450px',
+              accentColor: '#f8087b',
+              logoBorderColor: '#f8087b',
+              warningColor: '#eba332',
+              errorColor: '#f754a3',
             },
           });
         });
