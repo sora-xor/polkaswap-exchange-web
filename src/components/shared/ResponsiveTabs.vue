@@ -32,18 +32,13 @@
 </template>
 
 <script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Prop, Mixins, ModelSync } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import type { ResponsiveTab } from '@/types/tabs';
 
-@Component({
-  components: {
-    TokenLogo: components.TokenLogo,
-  },
-})
-export default class ResponsiveTabs extends Mixins(mixins.FormattedAmountMixin, TranslationMixin) {
+@Component
+export default class ResponsiveTabs extends Mixins(TranslationMixin) {
   @Prop({ default: true, type: Boolean }) readonly isMobile!: boolean;
   @Prop({ default: () => [], type: Array }) readonly tabs!: Array<ResponsiveTab>;
 
