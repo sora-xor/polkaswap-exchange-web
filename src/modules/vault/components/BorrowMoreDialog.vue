@@ -46,6 +46,13 @@
         <template v-else>{{ title }}</template>
       </s-button>
       <info-line
+        :label="t('kensetsu.borrowTax')"
+        :label-tooltip="t('kensetsu.borrowTaxDescription', { value: borrowTaxPercent })"
+        :value="formattedBorrowTax"
+        :asset-symbol="kusdSymbol"
+        is-formatted
+      />
+      <info-line
         is-formatted
         :label="t('networkFeeText')"
         :label-tooltip="t('networkFeeTooltipText')"
@@ -103,8 +110,10 @@ export default class BorrowMoreDialog extends Mixins(
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly maxSafeDebt!: FPNumber;
   @Prop({ type: Number, default: HundredNumber }) readonly maxLtv!: number;
 
+  @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.settings.slippageTolerance private slippageTolerance!: string;
+  @state.vault.borrowTax private borrowTax!: number;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
   @getter.vault.kusdToken kusdToken!: Nullable<RegisteredAccountAsset>;
 
@@ -167,7 +176,7 @@ export default class BorrowMoreDialog extends Mixins(
   }
 
   get availableCodec(): CodecString {
-    return this.availableOrTotal.toCodecString();
+    return this.availableOrTotal.dp(FPNumber.DEFAULT_PRECISION).codec;
   }
 
   get isMaxBorrowAvailable(): boolean {
@@ -219,6 +228,14 @@ export default class BorrowMoreDialog extends Mixins(
 
   get ltvText(): string {
     return LtvTranslations[getLtvStatus(this.ltvNumber)];
+  }
+
+  get borrowTaxPercent(): string {
+    return this.percentFormat?.format?.(this.borrowTax) ?? `${this.borrowTax * HundredNumber}%`;
+  }
+
+  get formattedBorrowTax(): string {
+    return this.borrowFp?.mul(this.borrowTax ?? 0).toLocaleString() ?? ZeroStringValue;
   }
 
   get borrowValuePercent(): number {
@@ -273,9 +290,11 @@ export default class BorrowMoreDialog extends Mixins(
   @include full-width-button('action-button');
 
   &__button,
-  &__token-input,
   &__slippage {
     margin-bottom: $inner-spacing-medium;
+  }
+  &__token-input {
+    margin-bottom: $inner-spacing-mini;
   }
   .ltv-badge-status {
     margin-left: $inner-spacing-mini;
