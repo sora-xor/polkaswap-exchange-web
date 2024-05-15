@@ -256,6 +256,7 @@ export enum Components {
   TransactionDetails = 'shared/TransactionDetails',
   TokensRow = 'shared/TokensRow',
   ValueStatusWrapper = 'shared/ValueStatusWrapper',
+  ResponsiveTabs = 'shared/ResponsiveTabs',
   // Shared Widgets
   BaseWidget = 'shared/Widget/Base',
   IFrameWidget = 'shared/Widget/IFrame',

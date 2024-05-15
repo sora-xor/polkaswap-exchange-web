@@ -2,28 +2,7 @@
   <div class="explore-container">
     <div class="container container--explore" v-loading="parentLoading">
       <div class="explore-container-dropdown s-flex">
-        <s-dropdown
-          popper-class="explore-container-dropdown__dropdown-menu"
-          type="button"
-          button-type="link"
-          placement="bottom-start"
-          trigger="click"
-          @select="handleTabChange"
-        >
-          <h3 class="explore-container-dropdown__selected">{{ pageTitle }}</h3>
-          <template #menu>
-            <s-dropdown-item
-              v-for="{ name, label, icon } in tabs"
-              class="explore-container-dropdown__item"
-              :class="{ selected: name === pageName }"
-              :key="name"
-              :value="name"
-              :icon="icon"
-            >
-              {{ label }}
-            </s-dropdown-item>
-          </template>
-        </s-dropdown>
+        <responsive-tabs :is-mobile="showDropdown" :tabs="tabs" :value="pageName" @input="handleTabChange" />
         <search-input
           autofocus
           class="explore-search"
@@ -56,9 +35,10 @@ import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { PageNames, Components } from '@/consts';
+import { PageNames, Components, BreakpointClass } from '@/consts';
 import router, { lazyComponent } from '@/router';
-import { getter } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
+import type { ResponsiveTab } from '@/types/tabs';
 import storage from '@/utils/storage';
 
 const storageKey = 'exploreAccountItems';
@@ -66,14 +46,20 @@ const storageKey = 'exploreAccountItems';
 @Component({
   components: {
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
+    ResponsiveTabs: lazyComponent(Components.ResponsiveTabs),
     SearchInput: components.SearchInput,
   },
 })
 export default class ExploreContainer extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
+  @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
 
   exploreQuery = '';
   private isAccountItems = storage.get(storageKey) ? JSON.parse(storage.get(storageKey)) : false;
+
+  get showDropdown(): boolean {
+    return ![BreakpointClass.LargeDesktop, BreakpointClass.HugeDesktop].includes(this.screenBreakpointClass);
+  }
 
   get isAccountItemsOnly(): boolean {
     return this.isAccountItems;
@@ -84,7 +70,7 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
     this.isAccountItems = value;
   }
 
-  get tabs(): Array<{ name: string; label: string; icon: string }> {
+  get tabs(): Array<ResponsiveTab> {
     return [
       {
         name: PageNames.ExploreTokens,
@@ -140,41 +126,6 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 }
 </script>
 
-<style lang="scss">
-$icon-size: 28px;
-
-.el-dropdown-menu.el-popper.explore-container-dropdown {
-  &__dropdown-menu {
-    background-color: var(--s-color-utility-body);
-    border-color: var(--s-color-base-border-secondary);
-    .popper__arrow {
-      display: none;
-    }
-    .explore-container-dropdown__item {
-      i {
-        color: var(--s-color-base-content-tertiary);
-        font-size: $icon-size;
-      }
-      &:not(.is-disabled):not(.selected) {
-        &:hover,
-        &:focus {
-          &,
-          & i {
-            color: var(--s-color-base-content-secondary);
-          }
-        }
-      }
-      &.selected {
-        &,
-        & i {
-          color: var(--s-color-theme-accent);
-        }
-      }
-    }
-  }
-}
-</style>
-
 <style lang="scss" scoped>
 $container-max-width: 75vw;
 $search-input-width: 290px;
@@ -199,21 +150,6 @@ $search-input-width: 290px;
     &-dropdown {
       justify-content: space-between;
       align-items: center;
-
-      &__selected {
-        font-weight: 300;
-        letter-spacing: var(--s-letter-spacing-mini);
-      }
-
-      &__item {
-        min-width: 150px;
-        line-height: 3;
-        font-weight: 300;
-        font-size: var(--s-font-size-small);
-        color: var(--s-color-base-content-secondary);
-        display: flex;
-        align-items: center;
-      }
     }
   }
 
