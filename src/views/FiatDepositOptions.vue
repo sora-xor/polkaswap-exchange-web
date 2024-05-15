@@ -10,7 +10,7 @@
       <div class="pay-options__option pay-options-cede">
         <cede-store-logo :theme="libraryTheme" />
         <h4>{{ 'Transfer from CEX' }}</h4>
-        <span>{{ 'Transfer any tokens from CEX on Polkadot via cede.store' }}</span>
+        <span>{{ 'Transfer any tokens from CEX to Polkaswap via cede.store' }}</span>
         <s-button type="primary" @click="openCedeDialog">{{ 'Transfer from CEX via cede.store' }}</s-button>
       </div>
       <div v-if="isLoggedIn" class="pay-options__history-btn" @click="openFiatTxHistory">
