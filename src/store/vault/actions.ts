@@ -11,7 +11,6 @@ import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { Subscription } from 'rxjs';
 import type { ActionContext } from 'vuex';
 
-const COLLATERALS_INTERVAL = 30_000;
 /** Debt calculation in real-time each 6 seconds */
 const DEBT_INTERVAL = 6_000;
 const DaiAddress = DAI.address;
@@ -151,14 +150,13 @@ const actions = defineActions({
   },
   async subscribeOnCollaterals(context): Promise<void> {
     const { commit, dispatch } = vaultActionContext(context);
-    commit.resetCollateralsInterval();
-    await dispatch.requestCollaterals();
+    commit.resetCollateralsSubscription();
 
-    const interval = setInterval(() => {
+    const subscription = api.system.getBlockNumberObservable().subscribe(() => {
       dispatch.requestCollaterals();
-    }, COLLATERALS_INTERVAL);
+    });
 
-    commit.setCollateralsInterval(interval);
+    commit.setCollateralsSubscription(subscription);
   },
   async subscribeOnBorrowTax(context): Promise<void> {
     const { commit } = vaultActionContext(context);
@@ -200,7 +198,7 @@ const actions = defineActions({
     commit.setKusdTokenBalance();
     commit.setCollateralTokenBalance();
     commit.setCollateralAddress(XOR.address);
-    commit.resetCollateralsInterval();
+    commit.resetCollateralsSubscription();
     commit.resetDebtCalculationInterval();
     commit.resetBorrowTaxSubscription();
     commit.resetAccountVaultIdsSubscription();

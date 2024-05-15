@@ -15,14 +15,12 @@ const mutations = defineMutations<VaultState>()({
   resetCollaterals(state): void {
     state.collaterals = {};
   },
-  setCollateralsInterval(state, interval: ReturnType<typeof setInterval>): void {
-    state.collateralsInterval = interval;
+  setCollateralsSubscription(state, subscription: Subscription): void {
+    state.collateralsSubscription = subscription;
   },
-  resetCollateralsInterval(state): void {
-    if (state.collateralsInterval) {
-      clearInterval(state.collateralsInterval);
-    }
-    state.collateralsInterval = null;
+  resetCollateralsSubscription(state): void {
+    state.collateralsSubscription?.unsubscribe();
+    state.collateralsSubscription = null;
   },
   setAccountVaultIdsSubscription(state, subscription: Subscription): void {
     state.accountVaultIdsSubscription = subscription;

@@ -10,7 +10,7 @@ export const defaultAverageCollateralPrices: Record<string, Nullable<FPNumber>> 
 function initialState(): VaultState {
   return {
     collaterals: {},
-    collateralsInterval: null,
+    collateralsSubscription: null,
     accountVaultIdsSubscription: null,
     accountVaults: [],
     accountVaultsSubscription: null,

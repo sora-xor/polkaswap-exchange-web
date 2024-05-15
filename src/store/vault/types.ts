@@ -5,7 +5,7 @@ import type { Subscription } from 'rxjs';
 
 export type VaultState = {
   collaterals: Record<string, Collateral>;
-  collateralsInterval: Nullable<ReturnType<typeof setInterval>>;
+  collateralsSubscription: Nullable<Subscription>;
   accountVaultIdsSubscription: Nullable<Subscription>;
   accountVaults: Vault[];
   accountVaultsSubscription: Nullable<Subscription>;
