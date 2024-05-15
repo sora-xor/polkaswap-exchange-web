@@ -34,6 +34,7 @@ export default class CedeStoreWidget extends Mixins(mixins.DialogMixin, mixins.L
               tokenSymbol: 'XOR',
               network: 'sora',
               address: this.accountAddress,
+              lockNetwork: true,
             },
             theme: {
               mode: this.libraryTheme,

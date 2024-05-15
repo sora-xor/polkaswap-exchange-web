@@ -1059,10 +1059,10 @@
     "@metamask/safe-event-emitter" "^3.0.0"
     json-rpc-engine "^6.1.0"
 
-"@cedelabs/widgets-universal@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@cedelabs/widgets-universal/-/widgets-universal-1.3.0.tgz#5a8713bb3da96a5bbd7cc747b80cce830bbed742"
-  integrity sha512-OurcWJ7JcQ2VsqdvO2IZqI2U0kw90/I0yOtAk1hFFkisfHILb8feZJT9h8F4CCDw87mLigY4Gyi8yRCJRDv7Hw==
+"@cedelabs/widgets-universal@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@cedelabs/widgets-universal/-/widgets-universal-1.3.1.tgz#00155c172840c97d7b682f3d76dcf6305d5bea07"
+  integrity sha512-omuU1PWtYZYouTJrOzvyaE/DTDNYOZQOZhVlwYhnDRetcYJj3MZKj8JIpuFwjRN96UuBSoEM4shJZw78nzBvzg==
   dependencies:
     "@cedelabs/providers" "*"
     "@metamask/providers" "^8.1.1"
