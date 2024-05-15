@@ -227,7 +227,10 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
       const ltv = ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
       const adjustedLtv = ltv ? ltvCoeff.mul(ratio) : null;
       const availableCoeff = maxSafeDebtWithoutTax.sub(vault.debt);
-      const available = !availableCoeff.isFinity() || availableCoeff.isLteZero() ? this.Zero : availableCoeff;
+      let totalAvailable = collateral?.riskParams.hardCap.sub(collateral.kusdSupply) ?? this.Zero;
+      totalAvailable = totalAvailable.sub(totalAvailable.mul(this.borrowTax));
+      let available = totalAvailable.lt(availableCoeff) ? totalAvailable : availableCoeff;
+      available = !available.isFinity() || available.isLteZero() ? this.Zero : available.dp(2);
       return { ...vault, lockedAsset, ltv, adjustedLtv, available };
     });
   }

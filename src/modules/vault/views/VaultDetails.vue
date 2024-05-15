@@ -215,14 +215,13 @@
       :prev-ltv="adjustedLtv"
       :available="availableToBorrow"
       :collateral="collateral"
-      :max-safe-debt="maxSafeDebtWithoutTax"
+      :max-safe-debt="maxSafeDebt"
       :max-ltv="maxLtv"
     />
     <repay-debt-dialog
       :visible.sync="showRepayDebtDialog"
       :vault="vault"
       :prev-ltv="adjustedLtv"
-      :available="availableToBorrow"
       :max-safe-debt="maxSafeDebt"
       :max-ltv="maxLtv"
     />
@@ -324,11 +323,6 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     return collateralVolume.mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0).div(HundredNumber);
   }
 
-  get maxSafeDebtWithoutTax(): Nullable<FPNumber> {
-    if (!this.maxSafeDebt) return null;
-    return this.maxSafeDebt.sub(this.maxSafeDebt.mul(this.borrowTax));
-  }
-
   private get ltvCoeff(): Nullable<FPNumber> {
     if (!(this.maxSafeDebt && this.vault)) return null;
     return this.vault.debt.div(this.maxSafeDebt);
@@ -365,9 +359,16 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get availableToBorrow(): Nullable<FPNumber> {
-    if (!(this.maxSafeDebtWithoutTax && this.vault)) return null;
-    const available = this.maxSafeDebtWithoutTax.sub(this.vault.debt);
-    return !available.isFinity() || available.isLteZero() ? this.Zero : available;
+    if (!(this.maxSafeDebt && this.vault)) return null;
+
+    let available = this.maxSafeDebt.sub(this.vault.debt);
+    available = available.sub(available.mul(this.borrowTax));
+
+    let totalAvailable = this.collateral?.riskParams.hardCap.sub(this.collateral.kusdSupply) ?? this.Zero;
+    totalAvailable = totalAvailable.sub(totalAvailable.mul(this.borrowTax));
+
+    available = totalAvailable.lt(available) ? totalAvailable : available;
+    return !available.isFinity() || available.isLteZero() ? this.Zero : available.dp(2);
   }
 
   get formattedAvailableToBorrow(): string {

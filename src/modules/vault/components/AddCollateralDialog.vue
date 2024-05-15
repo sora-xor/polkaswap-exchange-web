@@ -227,7 +227,13 @@ export default class AddCollateralDialog extends Mixins(
       .mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0)
       .div(HundredNumber);
 
-    return maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
+    let available = maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
+
+    let totalAvailable = this.collateral?.riskParams.hardCap.sub(this.collateral.kusdSupply) ?? this.Zero;
+    totalAvailable = totalAvailable.sub(totalAvailable.mul(this.borrowTax));
+
+    available = available.gt(totalAvailable) ? totalAvailable : available;
+    return !available.isFinity() || available.isLteZero() ? this.Zero : available;
   }
 
   get formattedPrevAvailable(): string {
