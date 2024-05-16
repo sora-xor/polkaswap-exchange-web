@@ -1259,10 +1259,10 @@
         "historyTitle": "betalingshistorie",
         "moonpayTitle": "Kjøp ETH via MoonPay",
         "moonpayDesc": "Kjøp ETH-tokens på {Ethereum} og overfør dem til {SORA}-nettverket via broen",
-        "x1Title": "Kjøp XOR med kortet ditt",
-        "x1Btn": "Kjøp XOR med kort",
         "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere.",
-        "x1Desc": "Kjøp XOR-tokens direkte på {SORA}-nettverket med ditt debet- eller kredittkort"
+        "cedeStoreTitle": "Overføring fra {value}",
+        "cedeStoreDesc": "Overfør eventuelle tokens fra {value1} til {value2} via {value3}",
+        "cedeStoreBtn": "Overfør fra {value1} via {value2}"
     },
     "acceptOnScrollText": "Rull for å godta",
     "addressBook": {

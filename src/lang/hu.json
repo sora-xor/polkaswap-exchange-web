@@ -1259,10 +1259,10 @@
         "historyTitle": "Tranzakciós előzmények",
         "moonpayTitle": "Vásároljon ETH-t a MoonPay-en keresztül",
         "moonpayDesc": "Vásároljon ETH tokeneket az {Ethereum}, és vigye át őket a hídon keresztül a {SORA} hálózatba",
-        "x1Title": "Vásároljon XOR-t a kártyájával",
-        "x1Btn": "Vásároljon XOR-t kártyával",
         "errorMessage": "Elnézést a kellemetlenségért. Szorgalmasan dolgozunk ennek megoldásán. Kérlek, próbáld újra később.",
-        "x1Desc": "Vásároljon XOR tokeneket közvetlenül a {SORA} hálózaton bankkártyájával vagy hitelkártyájával"
+        "cedeStoreTitle": "Átutalás innen {value}",
+        "cedeStoreDesc": "Minden token átvitele a {value1} értékről a(z {value2} értékre {value3} segítségével",
+        "cedeStoreBtn": "Átvitel innen: {value1} a következőn keresztül {value2}"
     },
     "acceptOnScrollText": "Görgessen az elfogadáshoz",
     "addressBook": {

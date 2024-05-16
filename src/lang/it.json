@@ -1259,10 +1259,10 @@
         "historyTitle": "Cronologia delle transazioni",
         "moonpayTitle": "Acquista ETH tramite MoonPay",
         "moonpayDesc": "Acquista token ETH su {Ethereum} e trasferiscili alla rete {SORA} tramite il bridge",
-        "x1Title": "Acquista XOR con la tua carta",
-        "x1Btn": "Acquista XOR con carta",
         "errorMessage": "Scuse per l'inconveniente. Stiamo lavorando diligentemente per risolvere questo problema. Per favore riprova più tardi.",
-        "x1Desc": "Acquista i token XOR direttamente sulla rete {SORA} con la tua carta di debito o credito"
+        "cedeStoreTitle": "Trasferimento da {value}",
+        "cedeStoreDesc": "Trasferisci eventuali token da {value1} a {value2} tramite {value3}",
+        "cedeStoreBtn": "Trasferimento da {value1} tramite {value2}"
     },
     "acceptOnScrollText": "Scorri per accettare",
     "addressBook": {

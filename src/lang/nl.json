@@ -1259,10 +1259,10 @@
         "historyTitle": "Transactie Geschiedenis",
         "moonpayTitle": "Koop ETH via MoonPay",
         "moonpayDesc": "Koop ETH-tokens op {Ethereum} en verplaats ze via de bridge naar het {SORA}-netwerk",
-        "x1Title": "Koop XOR met uw kaart",
-        "x1Btn": "Koop XOR met kaart",
         "errorMessage": "Excuses voor het ongemak. We werken er hard aan om dit op te lossen. Probeer het later opnieuw.",
-        "x1Desc": "Koop XOR-tokens rechtstreeks op het {SORA}-netwerk met uw bankpas of creditcard"
+        "cedeStoreTitle": "Overboeking van {value}",
+        "cedeStoreDesc": "Draag eventuele tokens over van {value1} naar {value2} via {value3}",
+        "cedeStoreBtn": "Overboeking van {value1} via {value2}"
     },
     "acceptOnScrollText": "Scrol om te accepteren",
     "addressBook": {

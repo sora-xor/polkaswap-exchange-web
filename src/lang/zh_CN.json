@@ -1259,10 +1259,10 @@
         "historyTitle": "交易记录",
         "moonpayTitle": "通过 MoonPay 购买 ETH",
         "moonpayDesc": "在{Ethereum}上购买ETH代币并通过网桥将其转移到{SORA}网络",
-        "x1Title": "用您的卡购买 XOR",
-        "x1Btn": "用卡买XOR",
         "errorMessage": "不便之处敬请原谅。我们正在努力解决这个问题。请稍后再试。",
-        "x1Desc": "使用借记卡或信用卡直接在 {SORA} 网络上购买 XOR 代币"
+        "cedeStoreTitle": "从{value}转移",
+        "cedeStoreDesc": "通过{value3}将任意代币从{value1}转移到{value2}",
+        "cedeStoreBtn": "从{value1}转至{value2}"
     },
     "acceptOnScrollText": "滚动接受",
     "addressBook": {

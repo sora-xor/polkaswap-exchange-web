@@ -1259,10 +1259,10 @@
         "historyTitle": "Itan iṣowo",
         "moonpayTitle": "Ra ETH nipasẹ MoonPay",
         "moonpayDesc": "Ra awọn ami ETH lori {Ethereum} ki o gbe wọn lọ si nẹtiwọki {SORA} nipasẹ afara",
-        "x1Title": "Ra XOR pẹlu kaadi rẹ",
-        "x1Btn": "Ra XOR pẹlu kaadi",
         "errorMessage": "Aforiji fun ohun airọrun. A n ṣiṣẹ takuntakun lati yanju eyi. Jọwọ, gbiyanju lẹẹkansi nigbamii.",
-        "x1Desc": "Ra awọn ami XOR taara lori nẹtiwọọki {SORA} pẹlu debiti tabi kaadi kirẹditi rẹ"
+        "cedeStoreTitle": "Gbigbe lati {value}",
+        "cedeStoreDesc": "Gbe eyikeyi awọn ami ami lati {value1} si {value2} nipasẹ {value3}",
+        "cedeStoreBtn": "Gbigbe lati {value1} nipasẹ {value2}"
     },
     "acceptOnScrollText": "Yi lọ lati gba",
     "addressBook": {
