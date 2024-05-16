@@ -182,8 +182,6 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   };
 
   readonly campaigns = Object.values(this.campaignsObj);
-  readonly minBlock = Math.min(...this.campaigns.map((c) => c.from));
-  readonly maxBlock = Math.max(...this.campaigns.map((c) => c.to));
 
   private interval: Nullable<ReturnType<typeof setInterval>> = null;
   private totalXorBurned: Record<CampaignKey, FPNumber> = { ...this.defaultBurned };
@@ -210,6 +208,14 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   @state.wallet.account.address soraAccountAddress!: string;
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+
+  get minBlock(): number {
+    return Math.min(...this.campaigns.map((c) => c.from));
+  }
+
+  get maxBlock(): number {
+    return Math.max(...this.campaigns.map((c) => c.to));
+  }
 
   getFormattedXor(rate: number): string {
     return this.getFPNumber(rate).toLocaleString();
