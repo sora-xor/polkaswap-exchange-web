@@ -1,5 +1,5 @@
 import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { getAveragePrice } from '@sora-substrate/liquidity-proxy/build/quote/price';
+import { getAveragePrice } from '@sora-substrate/liquidity-proxy/build/pallets/priceTools';
 import { XOR, DAI } from '@sora-substrate/util/build/assets/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
@@ -183,7 +183,7 @@ const actions = defineActions({
     const { commit } = vaultActionContext(context);
     commit.resetBadDebtSubscription();
     try {
-      const subscription = api.kensetsu.subscribeOnBadDept().subscribe((badDebt) => {
+      const subscription = api.kensetsu.subscribeOnBadDebt().subscribe((badDebt) => {
         commit.setBadDebt(badDebt);
       });
       commit.setBadDebtSubscription(subscription);
