@@ -414,7 +414,7 @@
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Хранилища",
         "VaultDetails": "Детали хранилища",
-        "Kensetsu": "{Kensetsu}"
+        "Burn": "Сжечь"
     },
     "mainMenu": {
         "Swap": "Обмен",
@@ -431,7 +431,7 @@
         "OrderBook": "Торговля",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
         "VaultsContainer": "@:pageTitle.Vaults",
-        "Kensetsu": "@:pageTitle.Kensetsu"
+        "Burn": "@:pageTitle.Burn"
     },
     "social": {
         "twitter": "Twitter",
@@ -1259,10 +1259,10 @@
         "historyTitle": "История транзакций",
         "moonpayTitle": "Купить ETH через MoonPay",
         "moonpayDesc": "Приобретите токены ETH на {Ethereum} и переведите их в сеть {SORA} через мост.",
-        "x1Title": "Купить XOR с вашей карты",
-        "x1Btn": "Купить XOR с картой",
         "errorMessage": "Приносим извинения за неудобства. Мы прилагаем все усилия, чтобы решить эту проблему. Пожалуйста, повторите попытку позже.",
-        "x1Desc": "Приобретайте токены XOR непосредственно в сети {SORA} с помощью дебетовой или кредитной карты."
+        "cedeStoreTitle": "Перевод из {value} биржи",
+        "cedeStoreDesc": "Перенесите любые токены из {value1} в {value2} через {value3}",
+        "cedeStoreBtn": "Перевести из {value1} через {value2}"
     },
     "acceptOnScrollText": "Прокрутите, чтобы принять",
     "addressBook": {
