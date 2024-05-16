@@ -271,9 +271,13 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.OrderBook),
   },
   {
+    path: '/burn',
+    name: PageNames.Burn,
+    component: lazyView(PageNames.Burn),
+  },
+  {
     path: '/kensetsu',
-    name: PageNames.Kensetsu,
-    component: lazyView(PageNames.Kensetsu),
+    redirect: '/burn',
   },
   {
     path: '*',

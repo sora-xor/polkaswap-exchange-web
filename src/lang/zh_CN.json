@@ -414,7 +414,7 @@
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "保险库",
         "VaultDetails": "保险库详情",
-        "Kensetsu": "{Kensetsu}"
+        "Burn": "烧伤"
     },
     "mainMenu": {
         "Swap": "兑换",
@@ -431,7 +431,7 @@
         "OrderBook": "贸易",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
         "VaultsContainer": "@:pageTitle.Vaults",
-        "Kensetsu": "@:pageTitle.Kensetsu"
+        "Burn": "@:pageTitle.Burn"
     },
     "social": {
         "twitter": "推特",

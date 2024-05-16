@@ -414,7 +414,7 @@
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Voûtes",
         "VaultDetails": "Détails du coffre-fort",
-        "Kensetsu": "{Kensetsu}"
+        "Burn": "Brûler"
     },
     "mainMenu": {
         "Swap": "Échanger",
@@ -431,7 +431,7 @@
         "OrderBook": "Commerce",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
         "VaultsContainer": "@:pageTitle.Vaults",
-        "Kensetsu": "@:pageTitle.Kensetsu"
+        "Burn": "@:pageTitle.Burn"
     },
     "social": {
         "twitter": "Twitter",
