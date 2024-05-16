@@ -304,8 +304,10 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
       const soraNetwork = this.soraNetwork ?? (await waitForSoraNetworkFromEnv());
 
       if (soraNetwork !== WALLET_CONSTS.SoraNetwork.Prod) {
-        // this.from = { block: 0, timestamp: 0 };
-        // this.to = { block: 100_000, timestamp: 600_000 };
+        this.campaignsObj.chameleon.from = 11_000;
+        this.campaignsObj.chameleon.to = 1_000_000;
+        this.campaignsObj.kensetsu.from = 0;
+        this.campaignsObj.kensetsu.to = 10_000;
       }
 
       this.fetchDataAndCalcCountdown();
