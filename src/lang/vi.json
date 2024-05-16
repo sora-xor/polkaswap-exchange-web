@@ -1259,7 +1259,10 @@
         "historyTitle": "Lịch sử giao dịch",
         "moonpayTitle": "Mua ETH qua MoonPay",
         "moonpayDesc": "Mua mã thông báo ETH trên {Ethereum} và chuyển chúng sang mạng {SORA} qua cầu nối",
-        "errorMessage": "Xin lỗi vì sự bất tiện. Chúng tôi đang nỗ lực làm việc để giải quyết vấn đề này. Vui lòng thử lại sau."
+        "errorMessage": "Xin lỗi vì sự bất tiện. Chúng tôi đang nỗ lực làm việc để giải quyết vấn đề này. Vui lòng thử lại sau.",
+        "cedeStoreTitle": "Chuyển từ {value}",
+        "cedeStoreDesc": "Chuyển bất kỳ mã thông báo nào từ {value1} sang {value2} qua {value3}",
+        "cedeStoreBtn": "Chuyển từ {value1} qua {value2}"
     },
     "acceptOnScrollText": "Cuộn để chấp nhận",
     "addressBook": {

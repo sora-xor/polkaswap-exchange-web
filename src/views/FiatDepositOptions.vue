@@ -9,9 +9,17 @@
       </div>
       <div class="pay-options__option pay-options-cede">
         <cede-store-logo :theme="libraryTheme" />
-        <h4>{{ 'Transfer from CEX' }}</h4>
-        <span>{{ 'Transfer any tokens from CEX to Polkaswap via cede.store' }}</span>
-        <s-button type="primary" @click="openCedeDialog">{{ 'Transfer from CEX via cede.store' }}</s-button>
+        <h4>{{ t('fiatPayment.cedeStoreTitle', { value: TranslationConsts.CEX }) }}</h4>
+        <span>{{
+          t('fiatPayment.cedeStoreDesc', {
+            value1: TranslationConsts.CEX,
+            value2: TranslationConsts.Polkaswap,
+            value3: TranslationConsts.CedeStore,
+          })
+        }}</span>
+        <s-button type="primary" @click="openCedeDialog">{{
+          t('fiatPayment.cedeStoreBtn', { value1: TranslationConsts.CEX, value2: TranslationConsts.CedeStore })
+        }}</s-button>
       </div>
       <div v-if="isLoggedIn" class="pay-options__history-btn" @click="openFiatTxHistory">
         <span>{{ t('fiatPayment.historyBtn') }}</span>
@@ -39,7 +47,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import WalletConnectMixin from '../components/mixins/WalletConnectMixin';
 import CedeStoreLogo from '../components/shared/Logo/CedeStore.vue';
 import MoonpayLogo from '../components/shared/Logo/Moonpay.vue';
-import { Components, PageNames } from '../consts';
+import { Components, PageNames, TranslationConsts } from '../consts';
 import { goTo, lazyComponent } from '../router';
 import { mutation, state, getter } from '../store/decorators';
 
@@ -68,6 +76,8 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
   @getter.settings.moonpayEnabled moonpayEnabled!: boolean;
 
   @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
+
+  TranslationConsts = TranslationConsts;
 
   showCedeDialog = false;
   showErrorInfoBanner = false;

@@ -1259,7 +1259,10 @@
         "historyTitle": "betalingshistorie",
         "moonpayTitle": "Kjøp ETH via MoonPay",
         "moonpayDesc": "Kjøp ETH-tokens på {Ethereum} og overfør dem til {SORA}-nettverket via broen",
-        "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere."
+        "errorMessage": "Beklager for ulempen. Vi jobber iherdig med å løse dette. Prøv igjen senere.",
+        "cedeStoreTitle": "Overføring fra {value}",
+        "cedeStoreDesc": "Overfør eventuelle tokens fra {value1} til {value2} via {value3}",
+        "cedeStoreBtn": "Overfør fra {value1} via {value2}"
     },
     "acceptOnScrollText": "Rull for å godta",
     "addressBook": {

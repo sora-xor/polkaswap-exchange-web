@@ -1259,7 +1259,10 @@
         "historyTitle": "Historia transakcji",
         "moonpayTitle": "Kup ETH przez MoonPay",
         "moonpayDesc": "Kup tokeny ETH na {Ethereum} i przenieś je do sieci {SORA} przez most",
-        "errorMessage": "Przepraszam za utrudnienia. Intensywnie pracujemy nad rozwiązaniem tego problemu. Spróbuj ponownie później."
+        "errorMessage": "Przepraszam za utrudnienia. Intensywnie pracujemy nad rozwiązaniem tego problemu. Spróbuj ponownie później.",
+        "cedeStoreTitle": "Przelew z {value}",
+        "cedeStoreDesc": "Przenieś dowolne tokeny z {value1} do {value2} za pośrednictwem {value3}",
+        "cedeStoreBtn": "Przelew z {value1} przez {value2}"
     },
     "acceptOnScrollText": "Przewiń, aby zaakceptować",
     "addressBook": {

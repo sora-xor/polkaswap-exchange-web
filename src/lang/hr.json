@@ -1259,7 +1259,10 @@
         "historyTitle": "Povijest transakcija",
         "moonpayTitle": "Kupite ETH putem MoonPaya",
         "moonpayDesc": "Kupite ETH tokene na {Ethereum} i prenesite ih na {SORA} mrežu putem mosta",
-        "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije."
+        "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije.",
+        "cedeStoreTitle": "Prijenos od {value}",
+        "cedeStoreDesc": "Prenesite sve tokene s {value1} na {value2} putem {value3}",
+        "cedeStoreBtn": "Prijenos s {value1} putem {value2}"
     },
     "acceptOnScrollText": "Pomaknite se za prihvaćanje",
     "addressBook": {

@@ -1259,7 +1259,10 @@
         "historyTitle": "Historique des transactions",
         "moonpayTitle": "Acheter des ETH via MoonPay",
         "moonpayDesc": "Achetez des jetons ETH sur {Ethereum} et transférez-les sur le réseau {SORA} via le pont",
-        "errorMessage": "Mes excuses pour le derangement. Nous travaillons avec diligence pour résoudre ce problème. Veuillez réessayer plus tard."
+        "errorMessage": "Mes excuses pour le derangement. Nous travaillons avec diligence pour résoudre ce problème. Veuillez réessayer plus tard.",
+        "cedeStoreTitle": "Transfert depuis {value}",
+        "cedeStoreDesc": "Transférez tous les jetons de {value1} à {value2} via {value3}",
+        "cedeStoreBtn": "Transfert de {value1} via {value2}"
     },
     "acceptOnScrollText": "Faites défiler pour accepter",
     "addressBook": {

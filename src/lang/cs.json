@@ -1259,7 +1259,10 @@
         "historyTitle": "historie transakcí",
         "moonpayTitle": "Kupte si ETH přes MoonPay",
         "moonpayDesc": "Kupte si ETH tokeny na {Ethereum} a přeneste je do sítě {SORA} přes most",
-        "errorMessage": "Omlouváme se za nepříjemnosti. Na vyřešení tohoto problému usilovně pracujeme. Prosím zkuste to znovu později."
+        "errorMessage": "Omlouváme se za nepříjemnosti. Na vyřešení tohoto problému usilovně pracujeme. Prosím zkuste to znovu později.",
+        "cedeStoreTitle": "Převod z {value}",
+        "cedeStoreDesc": "Převeďte jakékoli tokeny z {value1} na {value2} prostřednictvím {value3}",
+        "cedeStoreBtn": "Převod z {value1} přes {value2}"
     },
     "acceptOnScrollText": "Přejděte k přijetí",
     "addressBook": {

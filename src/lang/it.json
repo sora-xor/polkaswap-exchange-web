@@ -1259,7 +1259,10 @@
         "historyTitle": "Cronologia delle transazioni",
         "moonpayTitle": "Acquista ETH tramite MoonPay",
         "moonpayDesc": "Acquista token ETH su {Ethereum} e trasferiscili alla rete {SORA} tramite il bridge",
-        "errorMessage": "Scuse per l'inconveniente. Stiamo lavorando diligentemente per risolvere questo problema. Per favore riprova più tardi."
+        "errorMessage": "Scuse per l'inconveniente. Stiamo lavorando diligentemente per risolvere questo problema. Per favore riprova più tardi.",
+        "cedeStoreTitle": "Trasferimento da {value}",
+        "cedeStoreDesc": "Trasferisci eventuali token da {value1} a {value2} tramite {value3}",
+        "cedeStoreBtn": "Trasferimento da {value1} tramite {value2}"
     },
     "acceptOnScrollText": "Scorri per accettare",
     "addressBook": {

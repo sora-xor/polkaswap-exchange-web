@@ -1259,7 +1259,10 @@
         "historyTitle": "sejarah transaksi",
         "moonpayTitle": "Beli ETH melalui MoonPay",
         "moonpayDesc": "Beli token ETH di {Ethereum} dan transfer ke jaringan {SORA} melalui jembatan",
-        "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti."
+        "errorMessage": "Mohon maaf atas ketidaknyamanan ini. Kami bekerja keras untuk menyelesaikan ini. Silakan, coba lagi nanti.",
+        "cedeStoreTitle": "Transfer dari {value}",
+        "cedeStoreDesc": "Transfer token apa pun dari {value1} ke {value2} melalui {value3}",
+        "cedeStoreBtn": "Transfer dari {value1} melalui {value2}"
     },
     "acceptOnScrollText": "Gulir untuk menerima",
     "addressBook": {

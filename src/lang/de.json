@@ -1259,7 +1259,10 @@
         "historyTitle": "Verlauf der Transaktionen",
         "moonpayTitle": "Kaufen Sie ETH über MoonPay",
         "moonpayDesc": "Kaufen Sie ETH-Tokens auf {Ethereum} und übertragen Sie sie über die Bridge an das {SORA}-Netzwerk",
-        "errorMessage": "Entschuldigung für die Unannehmlichkeiten. Wir arbeiten fleißig daran, dieses Problem zu lösen. Bitte versuchen Sie es später noch einmal."
+        "errorMessage": "Entschuldigung für die Unannehmlichkeiten. Wir arbeiten fleißig daran, dieses Problem zu lösen. Bitte versuchen Sie es später noch einmal.",
+        "cedeStoreTitle": "Übertragen von {value}",
+        "cedeStoreDesc": "Übertragen Sie alle Token von {value1} nach {value2} über {value3}",
+        "cedeStoreBtn": "Überweisung von {value1} über {value2}"
     },
     "acceptOnScrollText": "Scrollen Sie, um zu akzeptieren",
     "addressBook": {
