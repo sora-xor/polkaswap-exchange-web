@@ -1,103 +1,138 @@
 <template>
-  <div class="kensetsu-container s-flex-column">
-    <s-form v-loading="parentLoading" class="container container--kensetsu el-form--actions" :show-message="false">
-      <generic-page-header class="page-header--kensetsu" title="Reserve KEN by burning your XOR" />
-      <p class="description centered p4">
-        Burn 1M XOR (permanently remove from your wallet) on SORA for KEN in a fair launch; KEN incentivizes liquidity
-        and is deflationary token with a status symbol appeal. 30 days only (till Mar 20 2024).
-      </p>
-      <external-link class="p4 link" title="Read more" :href="link" />
-      <info-line
-        label="1 KEN"
-        :value="xorFormattedMillion"
-        :asset-symbol="xor.symbol"
-        :fiat-value="xorFormattedFiat"
-        is-formatted
-      />
-      <info-line label="Time left" :value="timeLeftFormatted" />
-      <info-line
-        label="Your reserved KEN tokens"
-        :value="formattedAccountKenReserved"
-        asset-symbol="KEN"
-        is-formatted
-        value-can-be-hidden
-      />
-      <info-line
-        label="Your burned XOR tokens"
-        :value="formattedAccountXorBurned"
-        :asset-symbol="xor.symbol"
-        is-formatted
-        value-can-be-hidden
-      />
-      <div class="info-card-container s-flex">
-        <div class="info-card-item s-flex-column">
-          <span class="info-card-title">TOTAL XOR BURNED</span>
-          <span class="info-card-value">
-            {{ formattedTotalXorBurned }}
-          </span>
-        </div>
-        <div class="info-card-item s-flex-column">
-          <span class="info-card-title">TOTAL KEN RESERVED</span>
-          <span class="info-card-value">
-            {{ formattedTotalKenReserved }}
-          </span>
-        </div>
-      </div>
-      <s-button
-        v-if="!isLoggedIn"
-        type="primary"
-        class="action-button s-typography-button--large"
-        @click="handleConnectWallet"
+  <div class="burn-container s-flex-column">
+    <s-row :gutter="16">
+      <s-col
+        v-for="{ id, title, description, link, receivedAsset, rate } in campaigns"
+        :key="id"
+        class="burn-column s-flex"
+        :xs="12"
+        :sm="12"
+        :md="12"
+        :lg="6"
+        :xl="6"
       >
-        {{ t('connectWalletText') }}
-      </s-button>
-      <s-button
-        v-else
-        class="action-button s-typography-button--large"
-        type="primary"
-        :disabled="isBurnDisabled"
-        :loading="loading || parentLoading"
-        @click="handleBurnClick"
-      >
-        <template v-if="ended">TIME IS OVER</template>
-        <template v-else>BURN MY XOR</template>
-      </s-button>
-    </s-form>
-    <s-card class="kensetsu-info" border-radius="small" shadow="always" size="medium" pressed>
-      <div class="kensetsu-info__content s-flex-column">
-        <div class="kensetsu-info__desc s-flex">
-          <p class="description p4">
-            The KEN token is a community-proposed initiative. It’s not officially endorsed by any centralized authority
-            or organization. Participation and interaction with the KEN token should be considered with understanding of
-            its community-driven nature.
+        <s-form v-loading="parentLoading" class="container container--burn el-form--actions" :show-message="false">
+          <generic-page-header class="page-header--burn" :title="title" />
+          <p class="description centered p4">
+            {{ description }}
           </p>
-          <div class="kensetsu-info__badge">
-            <s-icon class="kensetsu-info__icon" name="notifications-alert-triangle-24" size="24" />
+          <external-link class="p4 link" title="Read more" :href="link" />
+          <info-line
+            :label="`1 ${receivedAsset.symbol}`"
+            :value="getFormattedXor(rate)"
+            :asset-symbol="xor.symbol"
+            :fiat-value="getFormattedXorFiat(rate)"
+            is-formatted
+          />
+          <info-line label="Time left" :value="timeLeftFormatted[id]" />
+          <info-line
+            :label="`Your reserved ${receivedAsset.symbol} tokens`"
+            :value="getFormattedAccountReserved(id, rate)"
+            :asset-symbol="receivedAsset.symbol"
+            is-formatted
+            value-can-be-hidden
+          />
+          <info-line
+            label="Your burned XOR tokens"
+            :value="getFormattedAccountXorBurned(id)"
+            :asset-symbol="xor.symbol"
+            is-formatted
+            value-can-be-hidden
+          />
+          <div class="info-card-container s-flex">
+            <div class="info-card-item s-flex-column">
+              <span class="info-card-title">TOTAL XOR BURNED</span>
+              <span class="info-card-value">
+                {{ getFormattedTotalXorBurned(id) }}
+              </span>
+            </div>
+            <div class="info-card-item s-flex-column">
+              <span class="info-card-title">TOTAL {{ receivedAsset.symbol }} RESERVED</span>
+              <span class="info-card-value">
+                {{ getFormattedTotalReserved(id, rate) }}
+              </span>
+            </div>
+          </div>
+          <s-button
+            v-if="!isLoggedIn"
+            type="primary"
+            class="action-button s-typography-button--large"
+            @click="handleConnectWallet"
+          >
+            {{ t('connectWalletText') }}
+          </s-button>
+          <s-button
+            v-else
+            class="action-button s-typography-button--large"
+            type="primary"
+            :disabled="ended[id]"
+            :loading="loading || parentLoading"
+            @click="handleBurnClick(id)"
+          >
+            <template v-if="ended[id]">TIME IS OVER</template>
+            <template v-else>BURN MY XOR</template>
+          </s-button>
+        </s-form>
+      </s-col>
+    </s-row>
+    <s-card class="burn-info" border-radius="small" shadow="always" size="medium" pressed>
+      <div class="burn-info__content s-flex-column">
+        <div class="burn-info__desc s-flex">
+          <p class="description p4">
+            The 'Burn XOR' is a community-proposed initiative. It’s not officially endorsed by any centralized authority
+            or organization. Participation and interaction with the 'Burn XOR' should be considered with understanding
+            of its community-driven nature.
+          </p>
+          <div class="burn-info__badge">
+            <s-icon class="burn-info__icon" name="notifications-alert-triangle-24" size="24" />
           </div>
         </div>
-        <external-link class="p4 link" title="Read more" :href="link" />
       </div>
     </s-card>
-    <burn-dialog :visible.sync="burnDialogVisible" />
+    <burn-dialog
+      :visible.sync="burnDialogVisible"
+      :received-asset="selectedReceivedAsset"
+      :burned-asset="selectedBurnedAsset"
+      :rate="selectedRate"
+      :max="selectedMax"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/util';
-import { XOR } from '@sora-substrate/util/build/assets/consts';
+import { XOR, KEN } from '@sora-substrate/util/build/assets/consts';
 import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import dayjs from 'dayjs';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import BurnDialog from '@/components/pages/Kensetsu/BurnDialog.vue';
+import BurnDialog from '@/components/pages/Burn/BurnDialog.vue';
 import { Components, PageNames } from '@/consts';
-import { fetchData } from '@/indexer/queries/kensetsu';
+import { fetchData } from '@/indexer/queries/burnXor';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
+import type { Asset } from '@sora-substrate/util/build/assets/types';
+
 const ZeroStr = '0';
+
+type CampaignKey = 'chameleon' | 'kensetsu';
+
+type Campaign = {
+  id: CampaignKey;
+  title: string;
+  description: string;
+  link: string;
+  receivedAsset: Asset;
+  rate: number;
+  max: number;
+  from: number;
+  fromTimestamp: number;
+  to: number;
+  toTimestamp: number;
+};
 
 @Component({
   components: {
@@ -108,60 +143,96 @@ const ZeroStr = '0';
   },
 })
 export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.FormattedAmountMixin, TranslationMixin) {
-  readonly link = 'https://medium.com/@shibarimoto/kensetsu-ken-356077ebee78';
   readonly xor = XOR;
   private readonly blockDuration = 6_000; // 6 seconds
-  private readonly million = this.getFPNumber(1_000_000);
-
-  private from = {
-    block: 14_464_000,
-    timestamp: 1708097280000, // Feb 16 2024 15:28:00 GMT+0000
+  private readonly defaultBurned: Record<CampaignKey, FPNumber> = {
+    chameleon: FPNumber.ZERO,
+    kensetsu: FPNumber.ZERO,
   };
 
-  private to = {
-    block: 14_939_200,
-    timestamp: 1710949772883, // Mar 20 2024 15:49:32 GMT+0000
+  private readonly campaignsObj: Record<CampaignKey, Campaign> = {
+    chameleon: {
+      id: 'chameleon',
+      title: 'Reserve KARMA by burning your XOR',
+      description:
+        'Burn 100M XOR (permanently remove from your wallet) on SORA for KARMA in a fair launch; KARMA token is a reward token for LPs who provide liquidity to Chameleon liquidity pools. 22 days only (till Jun 6 2024).',
+      link: 'https://medium.com/@shibarimoto/earn-karma-with-a-sora-chameleon-01b25c12fd49',
+      receivedAsset: { symbol: 'KARMA', address: '', name: 'Chameleon', decimals: 18 } as Asset,
+      rate: 100_000_000,
+      max: 1000,
+      from: 15_739_737,
+      fromTimestamp: 1715791500000, // May 15 2024 16:45:00 GMT+0000
+      to: 16_056_666,
+      toTimestamp: 1717693074000, // Jun 06 2024 16:57:54 GMT+0000
+    },
+    kensetsu: {
+      id: 'kensetsu',
+      title: 'Reserve KEN by burning your XOR',
+      description:
+        'Burn 1M XOR (permanently remove from your wallet) on SORA for KEN in a fair launch of Kensetsu; KEN incentivizes liquidity and is deflationary token with a status symbol appeal. 30 days only (till Mar 20 2024).',
+      link: 'https://medium.com/@shibarimoto/kensetsu-ken-356077ebee78',
+      receivedAsset: KEN,
+      rate: 1_000_000,
+      max: 10_000,
+      from: 14_464_000,
+      fromTimestamp: 1708097280000, // Feb 16 2024 15:28:00 GMT+0000
+      to: 14_939_200,
+      toTimestamp: 1710949772883, // Mar 20 2024 15:49:32 GMT+0000
+    },
   };
+
+  readonly campaigns = Object.values(this.campaignsObj);
+  readonly minBlock = Math.min(...this.campaigns.map((c) => c.from));
+  readonly maxBlock = Math.max(...this.campaigns.map((c) => c.to));
 
   private interval: Nullable<ReturnType<typeof setInterval>> = null;
-  private totalXorBurned: FPNumber = FPNumber.ZERO;
-  private accountXorBurned: FPNumber = FPNumber.ZERO;
+  private totalXorBurned: Record<CampaignKey, FPNumber> = { ...this.defaultBurned };
+  private accountXorBurned: Record<CampaignKey, FPNumber> = { ...this.defaultBurned };
 
-  timeLeftFormatted = '30D';
-  ended = false; // if time is over
+  timeLeftFormatted: Record<CampaignKey, string> = {
+    chameleon: '30D',
+    kensetsu: '30D',
+  };
+
+  ended: Record<CampaignKey, boolean> = {
+    chameleon: false,
+    kensetsu: false,
+  };
+
   burnDialogVisible = false;
+
+  selectedReceivedAsset = this.campaigns[0].receivedAsset;
+  selectedBurnedAsset = XOR;
+  selectedRate = this.campaigns[0].rate;
+  selectedMax = this.campaigns[0].max;
 
   @state.settings.blockNumber private blockNumber!: number;
   @state.wallet.account.address soraAccountAddress!: string;
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
-  get xorFormattedMillion(): string {
-    return this.million.toLocaleString();
+  getFormattedXor(rate: number): string {
+    return this.getFPNumber(rate).toLocaleString();
   }
 
-  get xorFormattedFiat(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.million, this.xor);
+  getFormattedXorFiat(rate: number): Nullable<string> {
+    return this.getFiatAmountByString(`${rate}`, this.xor);
   }
 
-  get formattedTotalXorBurned(): string {
-    return this.totalXorBurned?.toLocaleString() ?? ZeroStr;
+  getFormattedTotalXorBurned(id: CampaignKey): string {
+    return this.totalXorBurned[id]?.toLocaleString() ?? ZeroStr;
   }
 
-  get formattedTotalKenReserved(): string {
-    return this.totalXorBurned?.div(this.million).toLocaleString(3) ?? ZeroStr;
+  getFormattedTotalReserved(id: CampaignKey, rate: number): string {
+    return this.totalXorBurned[id]?.div(rate).toLocaleString(3) ?? ZeroStr;
   }
 
-  get formattedAccountXorBurned(): string {
-    return this.accountXorBurned?.toLocaleString() ?? ZeroStr;
+  getFormattedAccountXorBurned(id: CampaignKey): string {
+    return this.accountXorBurned[id]?.toLocaleString() ?? ZeroStr;
   }
 
-  get formattedAccountKenReserved(): string {
-    return this.accountXorBurned?.div(this.million).toLocaleString(3) ?? ZeroStr;
-  }
-
-  get isBurnDisabled(): boolean {
-    return this.ended;
+  getFormattedAccountReserved(id: CampaignKey, rate: number): string {
+    return this.accountXorBurned[id]?.div(rate).toLocaleString(3) ?? ZeroStr;
   }
 
   /**
@@ -170,37 +241,45 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
    * D[D] HH[H] mm[M] -> M[M] D[D] HH[H] mm[mm]
    */
   private calcCountdown(): void {
-    const msLeft = (this.to.block - this.blockNumber) * this.blockDuration;
-    if (msLeft <= 0) {
-      this.timeLeftFormatted = '0D 0H 0M';
-      this.ended = true;
-      return;
+    for (const campaign of this.campaigns) {
+      const msLeft = (campaign.to - this.blockNumber) * this.blockDuration;
+      if (msLeft <= 0) {
+        this.timeLeftFormatted[campaign.id] = '0D 0H 0M';
+        this.ended[campaign.id] = true;
+        continue;
+      }
+      const expires = dayjs.duration(msLeft);
+      this.timeLeftFormatted[campaign.id] = expires.format('D[D] HH[H] mm[M]');
     }
-    const expires = dayjs.duration(msLeft);
-    this.timeLeftFormatted = expires.format('D[D] HH[H] mm[M]');
   }
 
   private async fetchData(): Promise<void> {
-    const start = this.from.block;
-    const end = this.to.block;
+    const start = this.minBlock;
+    const end = this.maxBlock;
     const address = this.soraAccountAddress;
 
     const burns = await fetchData(start, end);
 
-    let accountXorBurned = FPNumber.ZERO;
-    let totalXorBurned = FPNumber.ZERO;
+    const accountXorBurned = { ...this.defaultBurned };
+    const totalXorBurned = { ...this.defaultBurned };
 
-    burns.forEach((burn) => {
-      if (burn.amount.gte(this.million)) {
-        totalXorBurned = totalXorBurned.add(burn.amount);
-        if (address === burn.address) {
-          accountXorBurned = accountXorBurned.add(burn.amount);
+    for (const campaign of this.campaigns) {
+      const campaignBurns = burns.filter(
+        ({ blockHeight }) => blockHeight >= campaign.from && blockHeight <= campaign.to
+      );
+      const fpRate = new FPNumber(campaign.rate);
+      campaignBurns.forEach((burn) => {
+        if (burn.amount.gte(fpRate)) {
+          totalXorBurned[campaign.id] = totalXorBurned[campaign.id].add(burn.amount);
+          if (address === burn.address) {
+            accountXorBurned[campaign.id] = accountXorBurned[campaign.id].add(burn.amount);
+          }
         }
-      }
-    });
+      });
+    }
 
-    this.accountXorBurned = accountXorBurned;
-    this.totalXorBurned = totalXorBurned;
+    this.accountXorBurned = { ...accountXorBurned };
+    this.totalXorBurned = { ...totalXorBurned };
   }
 
   private fetchDataAndCalcCountdown(): void {
@@ -212,7 +291,11 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     router.push({ name: PageNames.Wallet });
   }
 
-  handleBurnClick(): void {
+  handleBurnClick(id: CampaignKey): void {
+    const campaign = this.campaignsObj[id];
+    this.selectedReceivedAsset = campaign.receivedAsset;
+    this.selectedRate = campaign.rate;
+    this.selectedMax = campaign.max;
     this.burnDialogVisible = true;
   }
 
@@ -221,8 +304,8 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
       const soraNetwork = this.soraNetwork ?? (await waitForSoraNetworkFromEnv());
 
       if (soraNetwork !== WALLET_CONSTS.SoraNetwork.Prod) {
-        this.from = { block: 0, timestamp: 0 };
-        this.to = { block: 100_000, timestamp: 600_000 };
+        // this.from = { block: 0, timestamp: 0 };
+        // this.to = { block: 100_000, timestamp: 600_000 };
       }
 
       this.fetchDataAndCalcCountdown();
@@ -244,7 +327,13 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   @include buttons;
   @include full-width-button('action-button');
 }
-.page-header--kensetsu {
+.container {
+  margin: 0;
+  &--burn {
+    margin-bottom: $basic-spacing;
+  }
+}
+.page-header--burn {
   justify-content: center;
 }
 .description {
@@ -275,6 +364,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   &-title {
     color: var(--s-color-base-content-secondary);
     font-weight: 800;
+    font-size: 13px;
     margin-bottom: $inner-spacing-mini;
   }
   &-value {
@@ -282,7 +372,11 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     font-size: 16px;
   }
 }
-.kensetsu {
+.burn {
+  &-column {
+    align-items: center;
+    justify-content: center;
+  }
   &-container {
     align-items: center;
 
@@ -294,7 +388,6 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     }
   }
   &-info {
-    margin-top: $basic-spacing;
     max-width: $inner-window-width;
     width: 100%;
     flex: 1;
