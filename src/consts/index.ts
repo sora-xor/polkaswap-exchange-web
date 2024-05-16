@@ -1,4 +1,5 @@
 import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/consts';
+import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import invert from 'lodash/fp/invert';
 
 import { StakingPageNames } from '@/modules/staking/consts';
@@ -144,7 +145,7 @@ export enum PageNames {
   LimitOrderBuy = 'OrderBook/LimitOrderBuy',
   LimitOrderSell = 'OrderBook/LimitOrderSell',
   SoraCard = 'SoraCard',
-  Kensetsu = 'Kensetsu',
+  Burn = 'Burn',
 }
 
 export enum Components {
@@ -371,8 +372,8 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
   },
   {
     icon: 'basic-flame-24',
-    title: PageNames.Kensetsu,
-    href: '/#/kensetsu',
+    title: PageNames.Burn,
+    href: '/#/burn',
   },
   {
     icon: 'music-eject-24',
@@ -503,3 +504,25 @@ export enum BreakpointClass {
   LargeDesktop = 'min-large-desktop',
   HugeDesktop = 'min-huge-desktop',
 }
+
+export const TranslationConsts = {
+  // extending consts
+  ...WALLET_CONSTS.TranslationConsts,
+  AppName: app.name,
+  Ceres: 'Ceres',
+  APR: 'APR', // Annual percentage rate
+  APY: 'APY',
+  TVL: 'TVL',
+  EVM: 'EVM',
+  Substrate: 'Substrate',
+  Kusama: 'Kusama',
+  ROI: 'ROI', // Return of investment
+  mbps: 'mbps',
+  online: 'Online',
+  offline: 'Offline',
+  XCM: 'XCM',
+  Max: 'Max.',
+  XOR: 'XOR',
+  VAL: 'VAL',
+  Kensetsu: 'Kensetsu',
+} as const;

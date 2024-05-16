@@ -96,7 +96,7 @@ function bridgeDataToHistoryItem(
   { date = Date.now(), payload = {}, ...params } = {}
 ): IBridgeTransaction {
   const { getters, state, rootState } = bridgeActionContext(context);
-  const { isEthBridge, isEvmBridge } = getters;
+  const { isEthBridge, isEvmBridge, isSubBridge } = getters;
   const transactionState = isEthBridge ? WALLET_CONSTS.ETH_BRIDGE_STATES.INITIAL : BridgeTxStatus.Pending;
   const externalNetwork = rootState.web3.networkSelected as BridgeNetworkId as any;
   const externalNetworkType = isEthBridge
@@ -104,6 +104,10 @@ function bridgeDataToHistoryItem(
     : isEvmBridge
     ? BridgeNetworkType.Evm
     : BridgeNetworkType.Sub;
+
+  const [from, to] = isSubBridge
+    ? [getters.sender, getters.recipient]
+    : [rootState.wallet.account.address, getters.externalAccount];
 
   const data = {
     type: (params as any).type ?? getters.operation,
@@ -119,7 +123,8 @@ function bridgeDataToHistoryItem(
     externalNetworkFee: (params as any).externalNetworkFee,
     externalNetwork,
     externalNetworkType,
-    to: (params as any).to ?? getters.externalAccountFormatted,
+    from: (params as any).from ?? from,
+    to: (params as any).to ?? to,
     payload,
   };
 
@@ -139,7 +144,9 @@ async function getEvmNetworkFee(context: ActionContext<any, any>): Promise<void>
     const bridgeRegisteredAsset = rootState.assets.registeredAssets[asset.address];
     const decimals = state.isSoraToEvm ? asset.decimals : asset.externalDecimals;
     // using max balance to not overflow contract calculation
-    const value = FPNumber.fromCodecValue(state.assetSenderBalance ?? 0, decimals).toString();
+    const maxAmount = FPNumber.fromCodecValue(state.assetSenderBalance ?? 0, decimals);
+    const amount = new FPNumber(state.amountSend ?? 0, decimals);
+    const value = maxAmount.min(amount).toString();
 
     fee = await getEthNetworkFee(
       asset,

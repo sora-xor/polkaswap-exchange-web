@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Limit order annullerad",
             "OrderBookCancelLimitOrders": "Limit order annullerade",
             "Burn": "Brände {amount} {symbol}",
-            "Mint": "Minskade {amount} {symbol} till {address}"
+            "Mint": "Minskade {amount} {symbol} till {address}",
+            "CreateVault": "Kassavalv {symbol}\/{symbol2} skapat",
+            "CloseVault": "Kassavalv {symbol}\/{symbol2} stängt",
+            "DepositCollateral": "Säkerhet insatt {amount} {symbol}",
+            "RepayVaultDebt": "Skuld återbetald {amount} {symbol}",
+            "BorrowVaultDebt": "Skuld lånad {amount} {symbol}"
         },
         "error": {
             "Transfer": "Det gick inte att {action} {amount} {symbol} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Det gick inte att avbryta limiterade beställningar",
             "OrderBookCancelLimitOrder": "Det gick inte att avbryta begränsningsordern",
             "Burn": "Det gick inte att bränna {amount} {symbol}",
-            "Mint": "Det gick inte att prägla {amount} {symbol} till {address}"
+            "Mint": "Det gick inte att prägla {amount} {symbol} till {address}",
+            "CreateVault": "Misslyckades med att skapa kassavalv {symbol}\/{symbol2}",
+            "CloseVault": "Misslyckades med att stänga kassavalv {symbol}\/{symbol2}",
+            "DepositCollateral": "Misslyckades med att sätta in säkerhet {amount} {symbol}",
+            "RepayVaultDebt": "Misslyckades med att betala tillbaka skuld {amount} {symbol}",
+            "BorrowVaultDebt": "Misslyckades med att låna skuld {amount} {symbol}"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Unbond XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Avbryt beställning",
         "OrderBookCancelLimitOrders": "Avbryt beställningar",
         "Burn": "Bränna",
-        "Mint": "Mynta"
+        "Mint": "Mynta",
+        "CreateVault": "Skapa kassavalv",
+        "CloseVault": "Stäng kassavalv",
+        "DepositCollateral": "Sätt in säkerhet",
+        "RepayVaultDebt": "Betala tillbaka skuld",
+        "BorrowVaultDebt": "Låna skuld"
     },
     "polkadotjs": {
         "noExtensions": "Inget {PolkadotJs} tillägg hittades. Vänligen installera det och ladda om den här sidan.\nhttps:\/\/polkadot.js.org\/extension\/",
@@ -385,9 +400,7 @@
         "About": "Om",
         "Stats": "Statistik",
         "Wallet": "Plånbok",
-        "CreatePair": "Skapa Par",
         "AddLiquidity": "Lägg Till Likviditet",
-        "AddLiquidityId": "Lägg till Likviditet",
         "RemoveLiquidity": "Ta Bort Likviditet",
         "Rewards": "Rewards",
         "Explore\/Tokens": "Tokens",
@@ -397,7 +410,11 @@
         "Staking": "Utsättning",
         "OrderBook": "Handel",
         "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": "Kensetsu"
+        "AssetOwner": "Tillgångens ägare",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Valv",
+        "VaultDetails": "Valv detaljer",
+        "Burn": "Bränna"
     },
     "mainMenu": {
         "Swap": "Byt",
@@ -408,12 +425,13 @@
         "Rewards": "Belöningar",
         "About": "Om",
         "Stats": "Statistik",
-        "CreatePair": "Skapa Par",
         "StakingContainer": "Utsättning",
         "Explore\/Container": "Utforska",
         "SoraCard": "{Sora} Kort",
         "OrderBook": "Handel",
-        "Kensetsu": "Kensetsu"
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Burn": "@:pageTitle.Burn"
     },
     "social": {
         "twitter": "Twitter",
@@ -1241,10 +1259,10 @@
         "historyTitle": "Transaktionshistorik",
         "moonpayTitle": "Köp ETH via MoonPay",
         "moonpayDesc": "Köp ETH-tokens på {Ethereum} och överför dem till {SORA}-nätverket via bryggan",
-        "x1Title": "Köp XOR med ditt kort",
-        "x1Btn": "Köp XOR med kort",
         "errorMessage": "Ursäkta besväret. Vi arbetar hårt för att lösa detta. Vänligen försök igen senare.",
-        "x1Desc": "Köp XOR-tokens direkt på {SORA}-nätverket med ditt betal- eller kreditkort"
+        "cedeStoreTitle": "Överför från {value}",
+        "cedeStoreDesc": "Överför eventuella tokens från {value1} till {value2} via {value3}",
+        "cedeStoreBtn": "Överför från {value1} via {value2}"
     },
     "acceptOnScrollText": "Bläddra för att acceptera",
     "addressBook": {
@@ -1560,5 +1578,84 @@
     },
     "calculatingText": "Beräknar",
     "customisePageText": "Anpassa sidan",
-    "priceChartText": "Prisdiagram"
+    "priceChartText": "Prisdiagram",
+    "editText": "Redigera",
+    "resetText": "Återställa",
+    "kensetsu": {
+        "addCollateral": "Lägg till säkerhet",
+        "addCollateralDescription": "Sätt in fler tillgångar i din kassa för att öka din lånelimit eller förbättra din lån-till-värdeförhållande. Detta kan också hjälpa till att förhindra likvidation.",
+        "depositCollateral": "Deposition av säkerhet",
+        "totalCollateral": "Total säkerhet",
+        "totalCollateralDescription": "Det totala värdet på alla tillgångar som för närvarande är insatta i din kassa. Detta värde påverkar din lånekapacitet och risk för likvidation.",
+        "debtAvailable": "Skuld tillgänglig",
+        "debtAvailableDescription": "Beloppet av medel du fortfarande kan dra från din kassa utan att överskrida din lånelimit, baserat på din nuvarande säkerhet.",
+        "ltv": "Lån till värde ({LTV})",
+        "ltvDescription": "Förhållandet mellan det uttagna beloppet till värdet av säkerheten i ditt valv, uttryckt som en procentandel. En högre {LTV} ökar potentiella avkastningen men också risken, inklusive risken för likvidation.",
+        "borrowMore": "Låna mer",
+        "borrowMoreDescription": "Dra ytterligare medel från din kassa upp till maximalt tillgängligt belopp. Se till att värdet på din säkerhet stöder den ökade skulden för att undvika likvidationsrisker.",
+        "available": "Tillgänglig",
+        "outstandingDebt": "Utestående skuld",
+        "outstandingDebtDescription": "Det totala beloppet du för närvarande är skyldig från medel som dragits från din kassa, inklusive ackumulerade räntor. Detta måste återbetalas för att stänga din kassa eller bibehålla sunda låne-till-värdeförhållanden.",
+        "createVault": "Öppna en låneposition",
+        "createVaultDescription": "Initiera en ny transaktion genom att sätta in säkerhet i ditt valv och dra ut medel. Detta skapar en skuldförpliktelse som du måste hantera.",
+        "createVaultAction": "Öppna position",
+        "borrowDebt": "Låna skuld",
+        "minDepositCollateral": "Min. insättning av säkerhet",
+        "minDepositCollateralDescription": "Det minsta beloppet av tillgångar som krävs för att öppna ett valv. Denna initiala insättning säkrar de medel du vill låna.",
+        "maxAvailableToBorrow": "Max. tillgängligt att låna",
+        "maxAvailableToBorrowDescription": "Det maximala belopp du kan dra från ditt valv, bestämt av värdet av din säkerhet. Denna gräns justeras när värdet på säkerheten ändras.",
+        "borrowTax": "Låneskatt",
+        "borrowTaxDescription": "Skatten {value} tillämpas på det utlånade beloppet",
+        "stabilityFee": "Stabilitetsavgift",
+        "stabilityFeeDescription": "En årlig avgift debiterad på det belopp som dras från ditt valv, beräknat som en procentandel. Denna avgift kompenserar för risker och marknadsfluktuationer.",
+        "repayDebt": "Återbetala skuld",
+        "repayDebtDescription": "Returnera lånade medel för att minska din utestående skuld. Detta kan minska räntekostnader och minska risken för likvidation.",
+        "closeVault": "Stäng min position",
+        "closeVaultDescription": "Stäng den valda positionen genom att återbetala all utestående skuld och dra tillbaka all säkerhet",
+        "yourCollateral": "Din säkerhet",
+        "yourCollateralDescription": "De tillgångar du har satt in i ditt valv för att säkra de medel du dragit ut. Dessa tillgångar kan likvideras av långivaren om du inte lyckas upprätthålla det krävda lån-till-värde-förhållandet.",
+        "yourDebt": "Din skuld",
+        "yourDebtDescription": "Det totala beloppet som för närvarande är utestående i ditt valv, inklusive det uttagna beloppet och eventuella ackumulerade räntor. Denna balans ökar över tiden om räntor ackumuleras.",
+        "yourDebtTokenBalance": "Ditt {tokenSymbol}-saldo",
+        "requiredAmountWithSlippage": "Krävt belopp inklusive glidning",
+        "requiredAmountWithSlippageDescription": "För en smidig stängning av valvet, köp något mer {tokenSymbol} än det {amount} som krävs på grund av eventuell glidning. Du behöver extra för att täcka eventuella brister. Byt dina tillgångar till {tokenSymbol} för att uppfylla detta behov.",
+        "openSwap": "Öppna byte",
+        "introTitle": "Öppna låne-positioner & Tjäna med {Kensetsu}",
+        "introDescription": "Upplev säker och problemfri utlåning och lån. Öppna utlåningspositioner med plattformen {Kensetsu}.",
+        "disclaimerDescription": "Att låna digitala tillgångar genom {Polkaswap} innebär betydande risk och är helt på din egen risk. Värdet på digitala tillgångar är mycket volatilt, och alla förändringar i marknadspriserna för tillgångar som du har lånat eller använt som säkerhet kan leda till betydande ekonomiska förluster.",
+        "availableToBorrow": "Tillgängligt att låna",
+        "availableToBorrowDescription": "Det återstående beloppet du är berättigad att dra under de aktuella förhållandena i ditt valv, baserat på din insatta säkerhet och eventuell befintlig skuld.",
+        "collateralDetails": "Säkerhetsinformation",
+        "debtDetails": "Skuldinformation",
+        "positionInfo": "Positionsinformation",
+        "liquidationPenalty": "Likvidationsstraff",
+        "liquidationPenaltyDescription": "En avgift som tas ut om värdet av din säkerhet faller under en viss tröskel, vilket leder till försäljning av tillgångar för att täcka skulden. Denna straff ökar din totala skuld.",
+        "positionSafe": "Position säker",
+        "liquidationClose": "Likvidationsstängning",
+        "highLiquidationRisk": "Hög likviditetsrisk",
+        "error": {
+            "enterCollateral": "Ange säkerhet",
+            "enterBorrow": "Ange lånebelopp",
+            "borrowMoreThanAvailable": "Tillgänglig skuld överskreds",
+            "insufficientCollateral": "Otillräcklig säkerhet",
+            "enterRepayDebt": "Ange återbetalningsskuld",
+            "repayMoreThanDebt": "Skuld överbetald"
+        }
+    },
+    "accountSettings": {
+        "title": "Kontoinställningar",
+        "hint": "Du kan aktivera detta igen i kontoinställningarna",
+        "disable": "Inaktivera på",
+        "disabled": "Inaktiverad för",
+        "confirmation": {
+            "title": "Inaktivera transaktionsbekräftelse",
+            "description": "En popup-skärm som visar detaljer om transaktionerna innan undertecknandet."
+        },
+        "signature": {
+            "title": "Inaktivera lösenordsbekräftelse",
+            "description": "Aktivera eller inaktivera behovet av att ange ditt lösenord under signaturpopupen i transaktioner."
+        },
+        "enterPassword": "Skriv in lösenord",
+        "googleOnly": "Endast {Google} -konton"
+    }
 }

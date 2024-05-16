@@ -24,7 +24,7 @@
       <div v-if="isLoggedIn" class="order-history-buttons order-history-buttons--cancel-buttons">
         <span
           :class="['order-history-button', 'order-history-button--cancel', { inactive: isCancelMultipleInactive }]"
-          @click="handleCancel(Cancel.multiple)"
+          @click="cancelOrders(Cancel.multiple)"
         >
           {{ cancelText }}
         </span>
@@ -49,7 +49,7 @@
         </s-button>
       </div>
     </div>
-    <cancel-confirm :visible.sync="confirmCancelOrderVisibility" @confirm="handleCancel" />
+    <cancel-confirm :visible.sync="confirmDialogVisibility" @confirm="cancelOrders" />
   </base-widget>
 </template>
 
@@ -58,6 +58,7 @@ import { OrderBookStatus } from '@sora-substrate/liquidity-proxy';
 import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
@@ -76,9 +77,15 @@ import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
     CancelConfirm: lazyComponent(Components.CancelOrders),
   },
 })
-export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.TransactionMixin) {
+export default class OrderHistoryWidget extends Mixins(
+  ConfirmDialogMixin,
+  TranslationMixin,
+  mixins.LoadingMixin,
+  mixins.TransactionMixin
+) {
   readonly Filter = Filter;
   readonly Cancel = Cancel;
+
   // Open Orders utils
   @state.orderBook.userLimitOrders private userLimitOrders!: Array<LimitOrder>;
   @getter.orderBook.accountAddress accountAddress!: string;
@@ -93,7 +100,6 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
   @getter.orderBook.currentOrderBook private currentOrderBook!: Nullable<OrderBook>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
-  confirmCancelOrderVisibility = false;
   currentFilter = Filter.open;
   openOrdersLoading = false;
 
@@ -158,10 +164,10 @@ export default class OrderHistoryWidget extends Mixins(TranslationMixin, mixins.
     if (this.isBookStopped) return;
     if (!this.userLimitOrders.length) return;
 
-    this.confirmCancelOrderVisibility = true;
+    this.confirmOrExecute(this.cancelOrders);
   }
 
-  async handleCancel(cancel: Cancel): Promise<void> {
+  async cancelOrders(cancel = Cancel.all): Promise<void> {
     if (this.loading || this.isBookStopped || !this.userLimitOrders.length) return;
 
     const orders = cancel === Cancel.multiple ? this.ordersToBeCancelled : this.userLimitOrders;
