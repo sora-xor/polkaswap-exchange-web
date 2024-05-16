@@ -1,6 +1,6 @@
 import { FPNumber } from '@sora-substrate/util';
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
+import { SubqueryIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import type {
@@ -143,10 +143,7 @@ export async function fetchData(start: number, end: number): Promise<XorBurn[]> 
       return [...(items ?? []), ...dataBeforeIndexing];
     }
     case IndexerType.SUBSQUID: {
-      const variables = { start, end };
-      const subsquidIndexer = indexer as SubsquidIndexer;
-      const items = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(XorBurnQuery, variables, parse);
-      return items ?? [];
+      return [];
     }
   }
 
