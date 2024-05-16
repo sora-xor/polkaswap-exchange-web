@@ -1259,10 +1259,7 @@
         "historyTitle": "Historia transakcji",
         "moonpayTitle": "Kup ETH przez MoonPay",
         "moonpayDesc": "Kup tokeny ETH na {Ethereum} i przenieś je do sieci {SORA} przez most",
-        "x1Title": "Kup XOR za pomocą swojej karty",
-        "x1Btn": "Kup XOR z kartą",
-        "errorMessage": "Przepraszam za utrudnienia. Intensywnie pracujemy nad rozwiązaniem tego problemu. Spróbuj ponownie później.",
-        "x1Desc": "Kup tokeny XOR bezpośrednio w sieci {SORA} za pomocą karty debetowej lub kredytowej"
+        "errorMessage": "Przepraszam za utrudnienia. Intensywnie pracujemy nad rozwiązaniem tego problemu. Spróbuj ponownie później."
     },
     "acceptOnScrollText": "Przewiń, aby zaakceptować",
     "addressBook": {

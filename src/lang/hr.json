@@ -1259,10 +1259,7 @@
         "historyTitle": "Povijest transakcija",
         "moonpayTitle": "Kupite ETH putem MoonPaya",
         "moonpayDesc": "Kupite ETH tokene na {Ethereum} i prenesite ih na {SORA} mrežu putem mosta",
-        "x1Title": "Kupite XOR svojom karticom",
-        "x1Btn": "Kupite XOR karticom",
-        "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije.",
-        "x1Desc": "Kupite XOR tokene izravno na {SORA} mreži svojom debitnom ili kreditnom karticom"
+        "errorMessage": "Ispričavamo se zbog neugodnosti. Marljivo radimo na rješavanju ovoga. Molimo pokušajte ponovo kasnije."
     },
     "acceptOnScrollText": "Pomaknite se za prihvaćanje",
     "addressBook": {

@@ -1259,10 +1259,7 @@
         "historyTitle": "Historial de transacciones",
         "moonpayTitle": "Compre ETH a través de MoonPay",
         "moonpayDesc": "Compre tokens ETH en {Ethereum} y transfiéralos a la red {SORA} a través del puente",
-        "x1Title": "Compra XOR con tu tarjeta",
-        "x1Btn": "Comprar XOR con tarjeta",
-        "errorMessage": "Disculpas por los inconvenientes. Estamos trabajando diligentemente para resolver esto. Por favor, inténtelo de nuevo más tarde.",
-        "x1Desc": "Compra tokens XOR directamente en la red {SORA} con tu tarjeta de débito o crédito"
+        "errorMessage": "Disculpas por los inconvenientes. Estamos trabajando diligentemente para resolver esto. Por favor, inténtelo de nuevo más tarde."
     },
     "acceptOnScrollText": "Desplácese para aceptar",
     "addressBook": {
