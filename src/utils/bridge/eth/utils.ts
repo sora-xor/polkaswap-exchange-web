@@ -4,6 +4,7 @@ import { EthCurrencyType, EthAssetKind } from '@sora-substrate/util/build/bridge
 import { ethers } from 'ethers';
 
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
+import { asZeroValue } from '@/utils';
 import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import ethersUtil from '@/utils/ethers-util';
 
@@ -262,16 +263,19 @@ export async function getEthNetworkFee(
     const allowance = await ethersUtil.getAllowance(evmAccount, bridgeContractAddress, asset.externalAddress);
     const approveGasLimit = !!allowance && Number(allowance) < Number(value) ? gasLimit.approve : BigInt(0);
 
-    const txParams = {
-      asset,
-      value,
-      recipient: soraAccount,
-      getContractAddress,
-    };
-
     let txGasLimit!: bigint;
 
     try {
+      if (asZeroValue(value)) {
+        throw new Error('Calculation with Zero amount is not allowed');
+      }
+
+      const txParams = {
+        asset,
+        value,
+        recipient: soraAccount,
+        getContractAddress,
+      };
       const { contract, method, args } = await getIncomingEvmTransactionData(txParams);
       const signer = contract.runner;
       const tx = await contract[method].populateTransaction(...args);
