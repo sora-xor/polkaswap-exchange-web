@@ -414,7 +414,7 @@
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Tresore",
         "VaultDetails": "Tresor Details",
-        "Kensetsu": "{Kensetsu}"
+        "Burn": "Brennen"
     },
     "mainMenu": {
         "Swap": "Tauschen",
@@ -431,7 +431,7 @@
         "OrderBook": "Handel",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
         "VaultsContainer": "@:pageTitle.Vaults",
-        "Kensetsu": "@:pageTitle.Kensetsu"
+        "Burn": "@:pageTitle.Burn"
     },
     "social": {
         "twitter": "Twitter",
@@ -1259,10 +1259,10 @@
         "historyTitle": "Verlauf der Transaktionen",
         "moonpayTitle": "Kaufen Sie ETH über MoonPay",
         "moonpayDesc": "Kaufen Sie ETH-Tokens auf {Ethereum} und übertragen Sie sie über die Bridge an das {SORA}-Netzwerk",
-        "x1Title": "Kaufen Sie XOR mit Ihrer Karte",
-        "x1Btn": "Kaufen Sie XOR mit Karte",
         "errorMessage": "Entschuldigung für die Unannehmlichkeiten. Wir arbeiten fleißig daran, dieses Problem zu lösen. Bitte versuchen Sie es später noch einmal.",
-        "x1Desc": "Kaufen Sie XOR-Tokens direkt im {SORA}-Netzwerk mit Ihrer Debit- oder Kreditkarte"
+        "cedeStoreTitle": "Übertragen von {value}",
+        "cedeStoreDesc": "Übertragen Sie alle Token von {value1} nach {value2} über {value3}",
+        "cedeStoreBtn": "Überweisung von {value1} über {value2}"
     },
     "acceptOnScrollText": "Scrollen Sie, um zu akzeptieren",
     "addressBook": {
