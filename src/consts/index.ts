@@ -151,6 +151,7 @@ export enum PageNames {
   SoraCard = 'SoraCard',
   AssetOwnerContainer = 'AssetOwnerContainer',
   VaultsContainer = 'VaultsContainer',
+  Burn = 'Burn',
 }
 
 export enum Components {
@@ -381,6 +382,11 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     icon: 'various-planet-24',
     title: PageNames.Stats,
     href: '/#/stats',
+  },
+  {
+    icon: 'basic-flame-24',
+    title: PageNames.Burn,
+    href: '/#/burn',
   },
   {
     icon: 'music-eject-24',

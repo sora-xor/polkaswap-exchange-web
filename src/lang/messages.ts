@@ -140,9 +140,9 @@ export default {
     historyTitle: 'Transaction History',
     moonpayTitle: 'Buy ETH via MoonPay',
     moonpayDesc: 'Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge',
-    x1Title: 'Buy XOR with your card',
-    x1Desc: 'Purchase XOR tokens with your debit or credit card',
-    x1Btn: 'Buy XOR with card',
+    cedeStoreTitle: 'Transfer from {value}',
+    cedeStoreDesc: 'Transfer any tokens from {value1} to {value2} via {value3}',
+    cedeStoreBtn: 'Transfer from {value1} via {value2}',
   },
   headerMenu: {
     showBalances: 'Show Balances',
