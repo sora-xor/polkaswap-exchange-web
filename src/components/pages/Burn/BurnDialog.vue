@@ -1,28 +1,28 @@
 <template>
-  <dialog-base :visible.sync="isVisible" title="Reserve KEN token" custom-class="dialog--confirm-burn">
+  <dialog-base :visible.sync="isVisible" :title="title" custom-class="dialog--confirm-burn">
     <token-input
       class="token-input"
-      max="10000"
-      title="HOW MUCH KEN DO YOU WANT?"
+      :max="max"
+      :title="receivedPlaceholder"
       :is-fiat-editable="false"
-      :token="ken"
+      :token="receivedAsset"
       :value="value"
       @input="handleInputField"
     />
     <info-line
-      label="XOR TO BE BURNED"
-      :key="getKey('xor-burned')"
-      :value="formattedXorWillBeBurned"
-      :asset-symbol="xor.symbol"
-      :fiat-value="formattedFiatXorWillBeBurned"
+      :label="toBeBurnedLabel"
+      :key="toBeBurnedKey"
+      :value="formattedWillBeBurned"
+      :asset-symbol="burnedAsset.symbol"
+      :fiat-value="formattedFiatWillBeBurned"
       is-formatted
     />
     <info-line
-      label="YOUR XOR BALANCE LEFT"
-      :key="getKey('xor-left')"
-      :value="formattedXorLeft"
-      :asset-symbol="xor.symbol"
-      :fiat-value="formattedFiatXorLeft"
+      :label="yourBalanceLeftLabel"
+      :key="yourBalanceLeftKey"
+      :value="formattedTokensLeft"
+      :asset-symbol="burnedAsset.symbol"
+      :fiat-value="formattedFiatTokensLeft"
       is-formatted
       value-can-be-hidden
     />
@@ -37,8 +37,9 @@
     />
     <div class="disclaimer s-flex">
       <p class="disclaimer__text p3">
-        Disclaimer: Burning your XOR tokens is an irreversible action that permanently removes them from your wallet.
-        Please proceed with caution and ensure you fully understand the implications of this transaction
+        Disclaimer: Burning your {{ burnedAsset.symbol }} tokens is an irreversible action that permanently removes them
+        from your wallet. Please proceed with caution and ensure you fully understand the implications of this
+        transaction
       </p>
       <div class="disclaimer__badge s-flex">
         <s-icon class="disclaimer__icon" name="notifications-alert-triangle-24" size="24" />
@@ -51,7 +52,7 @@
         </template>
         <template v-else-if="isAmountLessThanOne">NEED TO RESERVE MORE THAN 1</template>
         <template v-else-if="isInsufficientBalance">
-          {{ t('insufficientBalanceText', { tokenSymbol: xor.symbol }) }}
+          {{ t('insufficientBalanceText', { tokenSymbol: burnedAsset.symbol }) }}
         </template>
         <template v-else>RESERVE</template>
       </s-button>
@@ -63,7 +64,7 @@
 import { Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
@@ -86,15 +87,12 @@ export default class BurnDialog extends Mixins(
   mixins.DialogMixin,
   mixins.FormattedAmountMixin
 ) {
-  private readonly million = 1_000_000;
   readonly xor = XOR;
-  readonly ken: Asset = {
-    address: '',
-    decimals: 18,
-    isMintable: true,
-    name: 'KEN',
-    symbol: 'KEN',
-  } as const;
+
+  @Prop({ type: Object, required: true }) readonly receivedAsset!: Asset;
+  @Prop({ type: Object, required: true }) readonly burnedAsset!: Asset;
+  @Prop({ type: Number, default: 1_000_000 }) readonly rate!: number;
+  @Prop({ type: Number, default: 10_000 }) readonly max!: number;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
@@ -115,20 +113,44 @@ export default class BurnDialog extends Mixins(
     return this.isVisible ? `${key}-opened` : `${key}-closed`;
   }
 
-  private get xorWillBeBurned() {
-    return this.getFPNumber(+(this.value || '0') * this.million);
+  private get willBeBurned() {
+    return this.getFPNumber(+(this.value || '0') * this.rate);
+  }
+
+  get title(): string {
+    return `Reserve ${this.receivedAsset.symbol} token`;
+  }
+
+  get receivedPlaceholder(): string {
+    return `HOW MUCH ${this.receivedAsset.symbol} DO YOU WANT?`;
+  }
+
+  get toBeBurnedLabel(): string {
+    return `${this.burnedAsset.symbol} TO BE BURNED`;
+  }
+
+  get toBeBurnedKey(): string {
+    return this.getKey(`${this.burnedAsset.symbol}-burned`);
+  }
+
+  get yourBalanceLeftLabel(): string {
+    return `YOUR ${this.burnedAsset.symbol} BALANCE LEFT`;
+  }
+
+  get yourBalanceLeftKey(): string {
+    return this.getKey(`${this.burnedAsset.symbol}-left`);
   }
 
   get isAmountLessThanOne(): boolean {
     return +(this.value || '0') < 1;
   }
 
-  get formattedXorWillBeBurned(): string {
-    return this.xorWillBeBurned.toLocaleString();
+  get formattedWillBeBurned(): string {
+    return this.willBeBurned.toLocaleString();
   }
 
-  get formattedFiatXorWillBeBurned(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.xorWillBeBurned, this.xor);
+  get formattedFiatWillBeBurned(): Nullable<string> {
+    return this.getFiatAmountByFPNumber(this.willBeBurned, this.burnedAsset);
   }
 
   get networkFee(): CodecString {
@@ -140,19 +162,20 @@ export default class BurnDialog extends Mixins(
   }
 
   private get xorBalance() {
+    // Replace with burnedAsset if needed
     return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? '0');
   }
 
-  private get xorLeft() {
-    return this.xorBalance.gte(this.xorWillBeBurned) ? this.xorBalance.sub(this.xorWillBeBurned) : this.Zero;
+  private get tokensLeft() {
+    return this.xorBalance.gte(this.willBeBurned) ? this.xorBalance.sub(this.willBeBurned) : this.Zero;
   }
 
-  get formattedXorLeft(): string {
-    return this.xorLeft.toLocaleString();
+  get formattedTokensLeft(): string {
+    return this.tokensLeft.toLocaleString();
   }
 
-  get formattedFiatXorLeft(): Nullable<string> {
-    return this.getFiatAmountByFPNumber(this.xorLeft, this.xor);
+  get formattedFiatTokensLeft(): Nullable<string> {
+    return this.getFiatAmountByFPNumber(this.tokensLeft, this.burnedAsset);
   }
 
   get isZeroAmount(): boolean {
@@ -160,8 +183,9 @@ export default class BurnDialog extends Mixins(
   }
 
   get isInsufficientBalance(): boolean {
-    const xorLeft = this.xorBalance.sub(this.xorWillBeBurned).sub(this.getFPNumberFromCodec(this.networkFee));
-    return xorLeft.isLtZero();
+    // Replace with burnedAsset and add networkFee check with xor balance if needed
+    const left = this.xorBalance.sub(this.willBeBurned).sub(this.getFPNumberFromCodec(this.networkFee));
+    return left.isLtZero();
   }
 
   get isBurnDisabled(): boolean {
@@ -176,14 +200,14 @@ export default class BurnDialog extends Mixins(
 
   async handleConfirmBurn(): Promise<void> {
     if (this.isInsufficientBalance) {
-      this.$alert(this.t('insufficientBalanceText', { tokenSymbol: this.xor.symbol }), {
+      this.$alert(this.t('insufficientBalanceText', { tokenSymbol: this.burnedAsset.symbol }), {
         title: this.t('errorText'),
       });
       this.$emit('confirm');
     } else {
       try {
         await this.withNotifications(async () => {
-          await api.assets.burn(this.xor, this.xorWillBeBurned.toString());
+          await api.assets.burn(this.burnedAsset, this.willBeBurned.toString());
         });
         this.$emit('confirm', true);
       } catch (error) {
