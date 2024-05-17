@@ -10,10 +10,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
-import { action } from '@/store/decorators';
+import { PageNames } from '@/consts';
+import { goTo } from '@/router';
+import { action, getter } from '@/store/decorators';
 
 @Component
 export default class VaultsContainer extends Mixins(SubscriptionsMixin) {
@@ -25,6 +27,15 @@ export default class VaultsContainer extends Mixins(SubscriptionsMixin) {
   @action.vault.subscribeOnDebtCalculation private subscribeOnDebtCalculation!: AsyncFnWithoutArgs;
   @action.vault.subscribeOnBadDebt private subscribeOnBadDebt!: AsyncFnWithoutArgs;
   @action.vault.reset private reset!: AsyncFnWithoutArgs;
+
+  @getter.settings.kensetsuEnabled kensetsuEnabled!: Nullable<boolean>;
+
+  @Watch('kensetsuEnabled', { immediate: true })
+  private checkAvailability(value: Nullable<boolean>): void {
+    if (value === false) {
+      goTo(PageNames.Swap);
+    }
+  }
 
   created(): void {
     this.setStartSubscriptions([

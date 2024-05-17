@@ -139,6 +139,8 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @state.settings.menuCollapsed collapsed!: boolean;
 
   @getter.settings.orderBookEnabled private orderBookEnabled!: boolean;
+  @getter.settings.kensetsuEnabled private kensetsuEnabled!: boolean;
+  @getter.settings.assetOwnerEnabled private assetOwnerEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
   @mutation.settings.setMenuCollapsed private setMenuCollapsed!: (collapsed: boolean) => void;
@@ -158,10 +160,19 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   get sidebarMenuItems(): Array<SidebarMenuItemLink> {
+    let menuItems = SidebarMenuGroups;
+
     if (!this.orderBookEnabled) {
-      return SidebarMenuGroups.filter(({ title }) => title !== PageNames.OrderBook);
+      menuItems = menuItems.filter(({ title }) => title !== PageNames.OrderBook);
     }
-    return SidebarMenuGroups;
+    if (!this.kensetsuEnabled) {
+      menuItems = menuItems.filter(({ title }) => title !== PageNames.VaultsContainer);
+    }
+    if (!this.assetOwnerEnabled) {
+      menuItems = menuItems.filter(({ title }) => title !== PageNames.AssetOwnerContainer);
+    }
+
+    return menuItems;
   }
 
   get currentPath(): string {

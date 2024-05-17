@@ -16,6 +16,8 @@ export type FeatureFlags = {
   charts?: boolean;
   soraCard?: boolean;
   orderBook?: boolean;
+  kensetsu?: boolean;
+  assetOwner?: boolean;
 };
 
 export type SettingsState = {
