@@ -1,5 +1,5 @@
 <template>
-  <div class="collaterals-container container">
+  <div class="collaterals-container container" :class="{ 'menu-collapsed': collapsed }">
     <s-table
       ref="table"
       :data="tableItems"
@@ -210,6 +210,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
   @getter.vault.kusdToken private kusdToken!: Nullable<RegisteredAccountAsset>;
   @state.vault.collaterals private collaterals!: Record<string, Collateral>;
   @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
+  @state.settings.menuCollapsed collapsed!: boolean;
 
   property = 'totalDebtValue';
 
@@ -297,7 +298,8 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
 </style>
 
 <style lang="scss" scoped>
-$container-max-width: calc(100vw - 2 * $inner-spacing-big - 2 * $basic-spacing - $sidebar-max-width);
+$container-max-width: calc(100vw - 2 * $inner-spacing-big - $inner-spacing-mini - $sidebar-max-width);
+$container-max-width--collapsed-menu: calc(100vw - 2 * $inner-spacing-big - $inner-spacing-mini - $sidebar-min-width);
 
 .collaterals {
   &-container {
@@ -305,9 +307,13 @@ $container-max-width: calc(100vw - 2 * $inner-spacing-big - 2 * $basic-spacing -
     flex-flow: column nowrap;
     gap: $inner-spacing-medium;
     padding: $inner-spacing-big $inner-spacing-tiny;
+    box-shadow: var(--s-shadow-element-pressed);
 
     @include tablet {
       max-width: $container-max-width;
+      &.menu-collapsed {
+        max-width: $container-max-width--collapsed-menu;
+      }
     }
   }
 }

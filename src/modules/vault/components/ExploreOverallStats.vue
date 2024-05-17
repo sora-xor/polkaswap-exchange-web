@@ -1,5 +1,5 @@
 <template>
-  <s-row class="stats-row">
+  <s-row :gutter="24">
     <s-col
       v-for="{ title, tooltip, value } in statsColumns"
       :key="title"
@@ -9,7 +9,7 @@
       :md="4"
       :lg="3"
     >
-      <s-card class="stats-card" size="small" border-radius="mini" shadow="always">
+      <s-card class="stats-card" size="small" border-radius="mini" primary>
         <div slot="header" class="stats-card-title">
           <span>{{ title }}</span>
           <s-tooltip border-radius="mini" :content="tooltip">
@@ -127,7 +127,7 @@ export default class ExploreOverallStats extends Mixins(TranslationMixin, mixins
 <style lang="scss" scoped>
 .stats-card {
   margin-bottom: $inner-spacing-big;
-  margin-right: $inner-spacing-big;
+  box-shadow: var(--s-shadow-element-pressed);
 
   &-title {
     display: flex;

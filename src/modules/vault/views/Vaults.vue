@@ -35,16 +35,9 @@
         </s-button>
       </s-col>
     </s-row>
-    <s-row v-if="hasVaults" class="vaults-content">
+    <s-row v-if="hasVaults" class="vaults-content" :gutter="24">
       <s-col v-for="vault in vaultsData" :key="'vault_' + vault.id" :xs="12" :sm="6" :md="6" :lg="4">
-        <s-card
-          class="vault"
-          border-radius="small"
-          shadow="always"
-          size="big"
-          clickable
-          @click="handleOpenVaultDetails(vault)"
-        >
+        <s-card class="vault" border-radius="small" size="big" primary clickable @click="handleOpenVaultDetails(vault)">
           <div class="vault-title s-flex">
             <pair-token-logo
               :first-token="kusdToken"
@@ -296,11 +289,12 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 <style lang="scss" scoped>
 .vaults {
   &-container {
-    margin-left: 32px;
-    margin-right: $inner-spacing-mini;
+    margin-left: 0;
+    margin-right: $inner-spacing-big;
 
-    @include desktop {
-      margin-left: 0;
+    @include tablet(true) {
+      margin-right: $inner-spacing-mini;
+      margin-left: $inner-spacing-mini;
     }
   }
 
@@ -317,10 +311,6 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 
     &__action-container {
       justify-content: flex-end;
-    }
-
-    &__action {
-      margin-right: $inner-spacing-big;
     }
 
     &__title,
@@ -375,7 +365,7 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 
 .vault {
   margin-bottom: $inner-spacing-big;
-  margin-right: $inner-spacing-big;
+  box-shadow: var(--s-shadow-element-pressed);
 
   &-title {
     align-items: center;

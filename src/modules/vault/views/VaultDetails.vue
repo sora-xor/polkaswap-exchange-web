@@ -12,7 +12,7 @@
     </s-button>
     <s-row class="vault-details-main" :gutter="20">
       <s-col :xs="12" :sm="12" :md="6" :lg="6">
-        <s-card class="vault details-card" border-radius="small" shadow="always" size="big" primary>
+        <s-card class="vault details-card" border-radius="small" size="big" primary>
           <div class="vault-title s-flex">
             <pair-token-logo class="vault-icon" size="medium" :first-token="kusdToken" :second-token="lockedAsset" />
             <h3>{{ vaultTitle }}</h3>
@@ -115,7 +115,7 @@
         </s-button>
       </s-col>
       <s-col :xs="12" :sm="12" :md="6" :lg="6">
-        <s-card class="details-card" border-radius="small" shadow="always" size="big" primary>
+        <s-card class="details-card" border-radius="small" size="big" primary>
           <div class="position-info s-flex-column">
             <h4>{{ t('kensetsu.positionInfo') }}</h4>
             <div class="position-info__details s-flex">
@@ -477,6 +477,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
 
   .details-card {
     margin-bottom: $inner-spacing-big;
+    box-shadow: var(--s-shadow-element-pressed);
   }
 }
 
