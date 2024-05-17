@@ -1,7 +1,7 @@
-import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import { app } from '@/consts';
+import { TranslationConsts } from '@/consts';
 import { state } from '@/store/decorators';
 
 const OrdinalRules = {
@@ -18,27 +18,6 @@ const OrdinalRules = {
 
     return `${n}th`;
   },
-} as const;
-
-const TranslationConsts = {
-  // extending consts
-  ...WALLET_CONSTS.TranslationConsts,
-  AppName: app.name,
-  Ceres: 'Ceres',
-  APR: 'APR', // Annual percentage rate
-  APY: 'APY',
-  TVL: 'TVL',
-  EVM: 'EVM',
-  Substrate: 'Substrate',
-  Kusama: 'Kusama',
-  ROI: 'ROI', // Return of investment
-  mbps: 'mbps',
-  online: 'Online',
-  offline: 'Offline',
-  XCM: 'XCM',
-  Max: 'Max.',
-  XOR: 'XOR',
-  VAL: 'VAL',
 } as const;
 
 @Component

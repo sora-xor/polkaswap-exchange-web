@@ -84,6 +84,7 @@
         class="action-button s-typography-button--large"
         border-radius="small"
         :disabled="liquidityLocked || isEmptyAmount || isInsufficientBalance || isInsufficientXorForFee"
+        :loading="loading"
         @click="handleRemoveLiquidity"
       >
         <template v-if="isEmptyAmount">
@@ -108,9 +109,9 @@
     </s-form>
 
     <remove-liquidity-confirm
-      :visible.sync="showConfirmDialog"
+      :visible.sync="confirmDialogVisibility"
       :parent-loading="parentLoading || loading"
-      @confirm="handleConfirmRemoveLiquidity"
+      @confirm="withdrawLiquidity"
     />
 
     <network-fee-warning-dialog
@@ -359,9 +360,9 @@ export default class RemoveLiquidity extends Mixins(
     await setValue(value);
   }
 
-  async handleConfirmRemoveLiquidity(): Promise<void> {
-    await this.handleConfirmDialog(async () => {
-      await this.withNotifications(this.removeLiquidity);
+  async withdrawLiquidity(): Promise<void> {
+    await this.withNotifications(async () => {
+      await this.removeLiquidity();
       this.handleBack();
     });
   }
@@ -381,7 +382,8 @@ export default class RemoveLiquidity extends Mixins(
       }
       this.isWarningFeeDialogConfirmed = false;
     }
-    this.openConfirmDialog();
+
+    this.confirmOrExecute(this.withdrawLiquidity);
   }
 
   private addListenerToSliderDragButton(): void {

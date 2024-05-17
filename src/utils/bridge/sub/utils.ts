@@ -1,4 +1,3 @@
-import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { FPNumber } from '@sora-substrate/util';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
@@ -49,36 +48,27 @@ export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string 
   return bridgeProxyEvent.event.data[0].toString();
 };
 
-// Native token for network
 export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): [string, number] => {
+  const recipient = subBridgeApi.formatAddress(to);
+
   const index = events.findIndex((e) => {
-    if (!api.events.balances.Deposit.is(e.event)) return false;
-    return subBridgeApi.formatAddress(e.event.data.who.toString()) === subBridgeApi.formatAddress(to);
+    let eventRecipient = '';
+
+    if (api.events.balances?.Deposit.is(e.event) || api.events.tokens?.Deposited.is(e.event)) {
+      eventRecipient = e.event.data.who.toString();
+    } else if (api.events.assets?.Transfer.is(e.event)) {
+      eventRecipient = e.event.data[1].toString();
+    }
+
+    if (!eventRecipient) return false;
+
+    return subBridgeApi.formatAddress(eventRecipient) === recipient;
   });
 
-  if (index === -1) throw new Error(`Unable to find "balances.Deposit" event`);
+  if (index === -1) throw new Error(`Unable to find "balances.Deposit" or "tokens.Deposited" event`);
 
   const event = events[index];
-  const balance = event.event.data.amount.toString();
-
-  return [balance, index];
-};
-
-// for SORA from Relaychain
-export const getParachainBridgeAppMintedBalance = (
-  events: Array<any>,
-  to: string,
-  api: ApiPromise
-): [string, number] => {
-  const index = events.findIndex((e) => {
-    if (!api.events.parachainBridgeApp.Minted.is(e.event)) return false;
-    return subBridgeApi.formatAddress(e.event.data[3].toString()) === subBridgeApi.formatAddress(to);
-  });
-
-  if (index === -1) throw new Error(`Unable to find "parachainBridgeApp.Minted" event`);
-
-  const event = events[index];
-  const balance = event.event.data[4].toString();
+  const balance = event.event.data.amount?.toString() ?? event.event.data[3].toString();
 
   return [balance, index];
 };
@@ -93,7 +83,9 @@ export const getReceivedAmount = (sendedAmount: string, receivedAmount: CodecStr
 };
 
 export const getParachainSystemMessageHash = (events: Array<any>, api: ApiPromise) => {
-  const parachainSystemEvent = events.find((e) => api.events.parachainSystem.UpwardMessageSent.is(e.event));
+  const parachainSystemEvent = events.find(
+    (e) => api.events.parachainSystem.UpwardMessageSent.is(e.event) || api.events.xcmpQueue.XcmpMessageSent.is(e.event)
+  );
 
   if (!parachainSystemEvent) {
     throw new Error(`Unable to find "parachainSystem.UpwardMessageSent" event`);
@@ -203,11 +195,4 @@ export const isSoraBridgeAppBurned = (
   if (amount !== sended) return false;
 
   return true;
-};
-
-// [TECH] move to js-lib
-export const formatSubAddress = (address: string, ss58: number): string => {
-  const publicKey = decodeAddress(address, false);
-
-  return encodeAddress(publicKey, ss58);
 };

@@ -163,8 +163,13 @@ const routes: Array<RouteConfig> = [
     path: '/explore',
     name: PageNames.ExploreContainer,
     component: lazyView(PageNames.ExploreContainer),
-    redirect: { name: PageNames.ExploreFarming },
+    redirect: { name: PageNames.ExploreTokens },
     children: [
+      {
+        path: 'tokens',
+        name: PageNames.ExploreTokens,
+        component: lazyView(PageNames.ExploreTokens),
+      },
       {
         path: 'demeter',
         component: demeterStakingLazyView(DemeterStakingPageNames.DataContainer),
@@ -193,11 +198,6 @@ const routes: Array<RouteConfig> = [
             component: lazyView(PageNames.ExplorePools),
           },
         ],
-      },
-      {
-        path: 'tokens',
-        name: PageNames.ExploreTokens,
-        component: lazyView(PageNames.ExploreTokens),
       },
       {
         path: 'books',
@@ -271,9 +271,13 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.OrderBook),
   },
   {
+    path: '/burn',
+    name: PageNames.Burn,
+    component: lazyView(PageNames.Burn),
+  },
+  {
     path: '/kensetsu',
-    name: PageNames.Kensetsu,
-    component: lazyView(PageNames.Kensetsu),
+    redirect: '/burn',
   },
   {
     path: '*',

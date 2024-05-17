@@ -65,7 +65,12 @@
             "OrderBookCancelLimitOrder": "Limietorder geannuleerd",
             "OrderBookCancelLimitOrders": "Limietorders geannuleerd",
             "Burn": "Verbrand {amount} {symbol}",
-            "Mint": "Geslagen {amount} {symbol} naar {address}"
+            "Mint": "Geslagen {amount} {symbol} naar {address}",
+            "CreateVault": "Vault {symbol}\/{symbol2} aangemaakt",
+            "CloseVault": "Vault {symbol}\/{symbol2} gesloten",
+            "DepositCollateral": "{amount} {symbol} gestort",
+            "RepayVaultDebt": "{amount} {symbol} schuld terugbetaald",
+            "BorrowVaultDebt": "{amount} {symbol} schuld geleend"
         },
         "error": {
             "Transfer": "Kon {amount} {symbol} {action} {direction} {address}",
@@ -102,7 +107,12 @@
             "OrderBookCancelLimitOrders": "Kan limietorders niet annuleren",
             "OrderBookCancelLimitOrder": "Kan limietorder niet annuleren",
             "Burn": "Kan {amount} {symbol} niet verbranden",
-            "Mint": "Kan {amount} {symbol} niet aan {address} toevoegen"
+            "Mint": "Kan {amount} {symbol} niet aan {address} toevoegen",
+            "CreateVault": "Kon vault {symbol}\/{symbol2} niet aanmaken",
+            "CloseVault": "Kon vault {symbol}\/{symbol2} niet sluiten",
+            "DepositCollateral": "Kon {amount} {symbol} niet storten",
+            "RepayVaultDebt": "Kon {amount} {symbol} schuld niet terugbetalen",
+            "BorrowVaultDebt": "Kon {amount} {symbol} schuld niet lenen"
         },
         "ReferralReserveXor": "Bond XOR",
         "ReferralUnreserveXor": "Ontbonden XOR",
@@ -131,7 +141,12 @@
         "OrderBookCancelLimitOrder": "Annuleer bestelling",
         "OrderBookCancelLimitOrders": "Bestellingen annuleren",
         "Burn": "Brandwond",
-        "Mint": "Munt"
+        "Mint": "Munt",
+        "CreateVault": "Maak Vault aan",
+        "CloseVault": "Sluit Vault",
+        "DepositCollateral": "Stort Onderpand",
+        "RepayVaultDebt": "Schuld Terugbetalen",
+        "BorrowVaultDebt": "Schuld Lenen"
     },
     "polkadotjs": {
         "noExtensions": "Er is geen {PolkadotJs} extensie gevonden. Installeer het en laad deze pagina opnieuw\n https:\/\/polkadot.js.org\/extension\/",
@@ -385,9 +400,7 @@
         "About": "Over ons",
         "Stats": "Stats",
         "Wallet": "Wallet",
-        "CreatePair": "Paar maken",
         "AddLiquidity": "Liquiditeit toevoegen",
-        "AddLiquidityId": "Liquiditeit toevoegen",
         "RemoveLiquidity": "Liquiditeit verwijderen",
         "Rewards": "Beloningen",
         "Explore\/Tokens": "Tokens",
@@ -397,7 +410,11 @@
         "Staking": "Staking",
         "OrderBook": "Handel",
         "Explore\/Books": "@:pageTitle.OrderBook",
-        "Kensetsu": "Kensetsu"
+        "AssetOwner": "Eigenaar van activa",
+        "AssetOwnerDetails": "@:pageTitle.AssetOwner",
+        "Vaults": "Kluizen",
+        "VaultDetails": "Details kluis",
+        "Burn": "Branden"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -408,12 +425,13 @@
         "Rewards": "Beloningen",
         "About": "Over",
         "Stats": "Stats",
-        "CreatePair": "Maak Paar",
         "StakingContainer": "Staking",
         "Explore\/Container": "Ontdekken",
         "SoraCard": "{Sora} Kaart",
         "OrderBook": "Handel",
-        "Kensetsu": "Kensetsu"
+        "AssetOwnerContainer": "@:pageTitle.AssetOwner",
+        "VaultsContainer": "@:pageTitle.Vaults",
+        "Burn": "@:pageTitle.Burn"
     },
     "social": {
         "twitter": "Twitter",
@@ -1241,10 +1259,10 @@
         "historyTitle": "Transactie Geschiedenis",
         "moonpayTitle": "Koop ETH via MoonPay",
         "moonpayDesc": "Koop ETH-tokens op {Ethereum} en verplaats ze via de bridge naar het {SORA}-netwerk",
-        "x1Title": "Koop XOR met uw kaart",
-        "x1Btn": "Koop XOR met kaart",
         "errorMessage": "Excuses voor het ongemak. We werken er hard aan om dit op te lossen. Probeer het later opnieuw.",
-        "x1Desc": "Koop XOR-tokens rechtstreeks op het {SORA}-netwerk met uw bankpas of creditcard"
+        "cedeStoreTitle": "Overboeking van {value}",
+        "cedeStoreDesc": "Draag eventuele tokens over van {value1} naar {value2} via {value3}",
+        "cedeStoreBtn": "Overboeking van {value1} via {value2}"
     },
     "acceptOnScrollText": "Scrol om te accepteren",
     "addressBook": {
@@ -1560,5 +1578,84 @@
     },
     "calculatingText": "Berekenen",
     "customisePageText": "Pagina aanpassen",
-    "priceChartText": "Prijs grafiek"
+    "priceChartText": "Prijs grafiek",
+    "editText": "Bewerk",
+    "resetText": "Opnieuw instellen",
+    "kensetsu": {
+        "addCollateral": "Voeg onderpand toe",
+        "addCollateralDescription": "Deponeer meer activa in uw kluis om uw leenlimiet te verhogen of uw leen-tot-waardeverhouding te verbeteren. Dit kan ook helpen om liquidatie te voorkomen.",
+        "depositCollateral": "Deponeer onderpand",
+        "totalCollateral": "Totaal onderpand",
+        "totalCollateralDescription": "De totale waarde van alle activa die momenteel zijn gedeponeerd in uw kluis. Deze waarde beïnvloedt uw leencapaciteit en risico op liquidatie.",
+        "debtAvailable": "Beschikbare schuld",
+        "debtAvailableDescription": "Het bedrag aan fondsen dat u nog steeds kunt opnemen uit uw kluis zonder uw leenlimiet te overschrijden, op basis van uw huidige onderpand.",
+        "ltv": "Lening op waarde ({LTV})",
+        "ltvDescription": "De verhouding tussen het opgenomen bedrag en de waarde van het onderpand in uw kluis, uitgedrukt als een percentage. Een hogere {LTV} verhoogt het potentiële rendement, maar ook het risico, inclusief het risico op liquidatie.",
+        "borrowMore": "Leen meer",
+        "borrowMoreDescription": "Trek extra fondsen uit uw kluis tot het maximale beschikbare bedrag. Zorg ervoor dat de waarde van uw onderpand het verhoogde schuldniveau ondersteunt om risico's op liquidatie te vermijden.",
+        "available": "Beschikbaar",
+        "outstandingDebt": "Openstaande schuld",
+        "outstandingDebtDescription": "Het totale bedrag dat u momenteel verschuldigd bent van de fondsen die uit uw kluis zijn opgenomen, inclusief opgebouwde rente. Dit moet worden terugbetaald om uw kluis te sluiten of gezonde leen-tot-waardeverhoudingen te behouden.",
+        "createVault": "Open een leenpositie",
+        "createVaultDescription": "Start een nieuwe transactie door onderpand in uw kluis te storten en geld op te nemen. Dit creëert een schuldverplichting die u moet beheren.",
+        "createVaultAction": "Open positie",
+        "borrowDebt": "Leen schuld",
+        "minDepositCollateral": "Minimale storting onderpand",
+        "minDepositCollateralDescription": "Het minimumbedrag aan activa dat nodig is om een kluis te openen. Deze initiële storting beveiligt de fondsen die u wilt lenen.",
+        "maxAvailableToBorrow": "Max. beschikbaar om te lenen",
+        "maxAvailableToBorrowDescription": "Het maximale bedrag dat u kunt opnemen uit uw kluis, bepaald door de waarde van uw onderpand. Deze limiet past zich aan naarmate de waarde van het onderpand verandert.",
+        "borrowTax": "Leentaks",
+        "borrowTaxDescription": "De {value} belasting die wordt toegepast op het geleende bedrag",
+        "stabilityFee": "Stabiliteitsvergoeding",
+        "stabilityFeeDescription": "Een jaarlijkse vergoeding die in rekening wordt gebracht over het opgenomen bedrag uit uw kluis, berekend als een percentage. Deze vergoeding compenseert voor risico's en marktfluctuaties.",
+        "repayDebt": "Schuld terugbetalen",
+        "repayDebtDescription": "Betaal geleende fondsen terug om uw uitstaande schuld te verminderen. Dit kan rentekosten verlagen en het risico op liquidatie verminderen.",
+        "closeVault": "Sluit mijn positie",
+        "closeVaultDescription": "Sluit de geselecteerde positie door alle openstaande schulden terug te betalen en al het onderpand op te nemen",
+        "yourCollateral": "Uw onderpand",
+        "yourCollateralDescription": "De activa die u in uw kluis heeft gestort om de opgenomen fondsen te beveiligen. Deze activa kunnen worden geliquideerd door de geldschieter als u er niet in slaagt de vereiste uitleenwaarde-verhouding te handhaven.",
+        "yourDebt": "Uw schuld",
+        "yourDebtDescription": "Het totale bedrag dat momenteel openstaat in uw kluis, inclusief het opgenomen bedrag en eventueel opgebouwde rente. Dit saldo neemt toe na verloop van tijd als rente zich opstapelt.",
+        "yourDebtTokenBalance": "Uw {tokenSymbol}-saldo",
+        "requiredAmountWithSlippage": "Vereist bedrag inclusief slippage",
+        "requiredAmountWithSlippageDescription": "Voor een soepele kluisafsluiting, koop iets meer {tokenSymbol} dan nodig is {amount} vanwege mogelijke slippage. U heeft een extra nodig om het tekort te dekken. Ruil uw activa om voor {tokenSymbol} om aan deze behoefte te voldoen.",
+        "openSwap": "Open swap",
+        "introTitle": "Open leenposities & Verdien met {Kensetsu}",
+        "introDescription": "Ervaar veilig en moeiteloos lenen en uitlenen. Open leenposities met het {Kensetsu}-platform.",
+        "disclaimerDescription": "Het lenen van digitale activa via {Polkaswap} brengt aanzienlijke risico's met zich mee en is volledig op eigen risico. De waarde van digitale activa is zeer volatiel en eventuele wijzigingen in de marktprijzen van de activa die u heeft geleend of als onderpand heeft gebruikt, kunnen leiden tot aanzienlijke financiële verliezen.",
+        "availableToBorrow": "Beschikbaar om te lenen",
+        "availableToBorrowDescription": "Het resterende bedrag dat u kunt opnemen onder de huidige voorwaarden van uw kluis, op basis van uw gestorte onderpand en eventuele bestaande schulden.",
+        "collateralDetails": "Onderpand details",
+        "debtDetails": "Schuld details",
+        "positionInfo": "Positie informatie",
+        "liquidationPenalty": "Liquidatieboete",
+        "liquidationPenaltyDescription": "Een vergoeding die wordt toegepast als de waarde van uw onderpand onder een bepaalde drempel daalt, wat leidt tot de verkoop van activa om de schuld af te lossen. Deze boete verhoogt uw totale schuld.",
+        "positionSafe": "Positie veilig",
+        "liquidationClose": "Liquidatie sluiten",
+        "highLiquidationRisk": "Hoog liquidatierisico",
+        "error": {
+            "enterCollateral": "Voer onderpand in",
+            "enterBorrow": "Voer het leenbedrag in",
+            "borrowMoreThanAvailable": "Beschikbare schuld overschreden",
+            "insufficientCollateral": "Onvoldoende onderpand",
+            "enterRepayDebt": "Voer de terug te betalen schuld in",
+            "repayMoreThanDebt": "Te veel terugbetaald"
+        }
+    },
+    "accountSettings": {
+        "title": "Accountinstellingen",
+        "hint": "Je kunt dit weer inschakelen in de accountinstellingen",
+        "disable": "Uitschakelen aan",
+        "disabled": "Uitgeschakeld voor",
+        "confirmation": {
+            "title": "Schakel transactiebevestiging uit",
+            "description": "Een pop-upscherm met details over de transacties vóór de ondertekening."
+        },
+        "signature": {
+            "title": "Schakel wachtwoordbevestiging uit",
+            "description": "Schakel de noodzaak om uw wachtwoord in te voeren tijdens de handtekeningpop-up bij transacties in of uit."
+        },
+        "enterPassword": "Voer wachtwoord in",
+        "googleOnly": "Alleen {Google} -accounts"
+    }
 }

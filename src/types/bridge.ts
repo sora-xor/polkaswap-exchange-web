@@ -12,10 +12,12 @@ export interface NetworkData {
     name: string;
     symbol: string;
     decimals: number;
-  };
-  endpointUrls: string[];
+  } | null;
   blockExplorerUrls: string[];
   shortName: string;
+  /** Endpoints for EVM network */
+  endpointUrls?: string[];
+  /** Nodes for Substrate network */
   nodes?: Node[];
 }
 

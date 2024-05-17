@@ -20,6 +20,7 @@
         class="action-button s-typography-button--large"
         type="primary"
         :disabled="isConfirmBondDisabled"
+        :loading="loading"
         @click="handleConfirmBond"
       >
         <template v-if="hasZeroAmount">
@@ -43,7 +44,7 @@
         :fiat-value="getFiatAmountByCodecString(networkFee)"
         is-formatted
       />
-      <referrals-confirm-bonding :visible.sync="showConfirmBondDialog" @confirm="confirmBond" />
+      <referrals-confirm-bonding :visible.sync="confirmDialogVisibility" @confirm="confirmBond" />
     </s-form>
   </div>
 </template>
@@ -51,10 +52,10 @@
 <script lang="ts">
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
 import { Components, PageNames, ZeroStringValue } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { getter, mutation, state } from '@/store/decorators';
@@ -73,10 +74,9 @@ import type { AccountAsset, AccountBalance } from '@sora-substrate/util/build/as
 })
 export default class ReferralBonding extends Mixins(
   mixins.FormattedAmountMixin,
-  TranslationMixin,
-  mixins.LoadingMixin
+  mixins.TransactionMixin,
+  ConfirmDialogMixin
 ) {
-  @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.referrals.amount amount!: string;
 
@@ -86,7 +86,6 @@ export default class ReferralBonding extends Mixins(
   @mutation.referrals.resetAmount private resetAmount!: FnWithoutArgs;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
-  showConfirmBondDialog = false;
 
   get xorSymbol(): string {
     return XOR.symbol;
@@ -182,14 +181,16 @@ export default class ReferralBonding extends Mixins(
   }
 
   handleConfirmBond(): void {
-    this.showConfirmBondDialog = true;
+    this.confirmOrExecute(this.confirmBond);
   }
 
-  async confirmBond(isBondConfirmed: boolean): Promise<void> {
-    if (isBondConfirmed) {
+  async confirmBond(): Promise<void> {
+    await this.withNotifications(async () => {
+      await (this.isBond ? api.referralSystem.reserveXor(this.amount) : api.referralSystem.unreserveXor(this.amount));
+
       this.resetAmount();
       this.handleBack();
-    }
+    });
   }
 
   handleBack(): void {

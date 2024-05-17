@@ -24,10 +24,6 @@ const mutations = defineMutations<Web3State>()({
     state.subAddressName = name;
   },
 
-  setSubSS58(state, prefix: number) {
-    state.subSS58 = prefix;
-  },
-
   setEvmNetworksApp(state, networksIds: EvmNetwork[]): void {
     state.evmNetworkApps = Object.freeze([...networksIds]);
   },
