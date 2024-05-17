@@ -388,11 +388,11 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     title: PageNames.Burn,
     href: '/#/burn',
   },
-  {
-    icon: 'music-eject-24',
-    title: PageNames.SoraCard,
-    href: '/#/card',
-  },
+  // {
+  //   icon: 'music-eject-24',
+  //   title: PageNames.SoraCard,
+  //   href: '/#/card',
+  // },
   {
     icon: 'various-rocket-24',
     title: PageNames.AssetOwnerContainer,

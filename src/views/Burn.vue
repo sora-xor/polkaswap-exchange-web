@@ -11,7 +11,12 @@
         :lg="6"
         :xl="6"
       >
-        <s-form v-loading="parentLoading" class="container container--burn el-form--actions" :show-message="false">
+        <s-form
+          v-loading="parentLoading"
+          class="container container--burn el-form--actions"
+          :class="{ disabled: ended[id] }"
+          :show-message="false"
+        >
           <generic-page-header class="page-header--burn" :title="title" />
           <p class="description centered p4">
             {{ description }}
@@ -339,6 +344,10 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   margin: 0;
   &--burn {
     margin-bottom: $basic-spacing;
+    box-shadow: var(--s-shadow-element-pressed);
+    &.disabled {
+      box-shadow: var(--s-shadow-element);
+    }
   }
 }
 .page-header--burn {
