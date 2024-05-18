@@ -515,21 +515,10 @@ export default class BridgeTransaction extends Mixins(
     return this.txSoraHash || this.txInternalBlockId || this.txSoraId;
   }
 
-  private getTxAccountAddress(isInternal = true) {
-    const accounts = [this.txInternalAccount, this.txExternalAccount];
-    const [a, b] = isInternal ? accounts : [...accounts].reverse();
-
-    if (this.isEvmTxType) return a;
-
-    return this.isOutgoing ? a : b;
-  }
-
   get accountLinks(): LinkData[] {
     const name = this.t('accountAddressText');
-    const internalAddress = this.getTxAccountAddress(true);
-    const externalAddress = this.getTxAccountAddress(false);
-    const internal = this.getLinkData(internalAddress, this.internalAccountLinks, name);
-    const external = this.getLinkData(externalAddress, this.externalAccountLinks, name, this.externalNetworkId);
+    const internal = this.getLinkData(this.txInternalAccount, this.internalAccountLinks, name);
+    const external = this.getLinkData(this.txExternalAccount, this.externalAccountLinks, name, this.externalNetworkId);
 
     return this.sortLinksByTxDirection([internal, external]);
   }

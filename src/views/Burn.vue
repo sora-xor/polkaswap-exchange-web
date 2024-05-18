@@ -71,7 +71,7 @@
             class="action-button s-typography-button--large"
             type="primary"
             :disabled="ended[id]"
-            :loading="loading || parentLoading"
+            :loading="parentLoading || (!ended[id] && loading)"
             @click="handleBurnClick(id)"
           >
             <template v-if="ended[id]">TIME IS OVER</template>
@@ -100,6 +100,7 @@
       :burned-asset="selectedBurnedAsset"
       :rate="selectedRate"
       :max="selectedMax"
+      @confirm="handleBurnConfirm"
     />
   </div>
 </template>
@@ -278,12 +279,22 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
       const campaignBurns = burns.filter(
         ({ blockHeight }) => blockHeight >= campaign.from && blockHeight <= campaign.to
       );
+
+      const accountsBurned = campaignBurns.reduce<Record<string, FPNumber>>((acc, { address, amount }) => {
+        if (!acc[address]) {
+          acc[address] = FPNumber.ZERO;
+        }
+        acc[address] = acc[address].add(amount);
+        return acc;
+      }, {});
+
       const fpRate = new FPNumber(campaign.rate);
-      campaignBurns.forEach((burn) => {
-        if (burn.amount.gte(fpRate)) {
-          totalXorBurned[campaign.id] = totalXorBurned[campaign.id].add(burn.amount);
-          if (address === burn.address) {
-            accountXorBurned[campaign.id] = accountXorBurned[campaign.id].add(burn.amount);
+
+      Object.entries(accountsBurned).forEach(([addr, amount]) => {
+        if (amount.gte(fpRate)) {
+          totalXorBurned[campaign.id] = totalXorBurned[campaign.id].add(amount);
+          if (address === addr) {
+            accountXorBurned[campaign.id] = accountXorBurned[campaign.id].add(amount);
           }
         }
       });
@@ -293,9 +304,11 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     this.totalXorBurned = { ...totalXorBurned };
   }
 
-  private fetchDataAndCalcCountdown(): void {
-    this.calcCountdown();
-    this.fetchData();
+  private async fetchDataAndCalcCountdown(): Promise<void> {
+    await this.withLoading(async () => {
+      this.calcCountdown();
+      await this.fetchData();
+    });
   }
 
   handleConnectWallet(): void {
@@ -320,11 +333,16 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
         this.campaignsObj.kensetsu.from = 0;
         this.campaignsObj.kensetsu.to = 10_000;
       }
-
-      this.fetchDataAndCalcCountdown();
+      await this.fetchDataAndCalcCountdown();
 
       this.interval = setInterval(this.fetchDataAndCalcCountdown, 60_000);
     });
+  }
+
+  handleBurnConfirm(done?: boolean): void {
+    if (done) {
+      this.loading = true;
+    }
   }
 
   beforeUnmount(): void {
