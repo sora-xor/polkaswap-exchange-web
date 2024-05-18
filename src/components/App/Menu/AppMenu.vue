@@ -147,6 +147,26 @@ export default class AppMenu extends Mixins(TranslationMixin) {
 
   readonly FaucetLink = FaucetLink;
 
+  private resizeObserver: Nullable<ResizeObserver> = null;
+
+  private onMenuWidthChange(): void {
+    const width = this.$el?.clientWidth ?? 0;
+    if (!width) return;
+
+    document.documentElement.style.setProperty('--sidebar-width', `${width}px`);
+  }
+
+  async mounted(): Promise<void> {
+    await this.$nextTick();
+    if (!(this.$el && window.ResizeObserver)) return;
+    this.resizeObserver = new ResizeObserver(this.onMenuWidthChange);
+    this.resizeObserver.observe(this.$el);
+  }
+
+  beforeDestroy(): void {
+    this.resizeObserver?.disconnect();
+  }
+
   get collapseIcon(): string {
     return this.collapsed ? 'arrows-chevron-right-24' : 'arrows-chevron-left-24';
   }
