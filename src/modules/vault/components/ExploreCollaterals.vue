@@ -302,8 +302,10 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
 </style>
 
 <style lang="scss" scoped>
-$container-max-width: calc(100vw - 2 * $inner-spacing-big - $inner-spacing-mini - var(--sidebar-width));
-$container-max-width--collapsed: calc(100vw - 2 * $inner-spacing-big - $inner-spacing-mini - $sidebar-collapsed-width);
+$container-paddings: 2 * $inner-spacing-big - $inner-spacing-mini;
+$container-max: 100vw;
+$container-max-width: calc($container-max - $container-paddings - var(--sidebar-width));
+$container-max-width--collapsed: calc($container-max - $container-paddings - $sidebar-collapsed-width);
 
 .collaterals {
   &-container {

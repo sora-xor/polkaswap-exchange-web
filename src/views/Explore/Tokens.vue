@@ -10,7 +10,7 @@
       class="explore-table"
     >
       <!-- Index -->
-      <s-table-column width="280" label="#">
+      <s-table-column min-width="280" label="#">
         <template #header>
           <div class="explore-table-item-index">
             <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
@@ -44,7 +44,7 @@
         </template>
       </s-table-column>
       <!-- Price -->
-      <s-table-column key="price" width="130" header-align="left" align="left">
+      <s-table-column key="price" min-width="130" header-align="left" align="left">
         <template #header>
           <sort-button name="price" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">Price</span>
@@ -63,7 +63,7 @@
 
       <template v-if="hasTokensData">
         <!-- 1D Price Change -->
-        <s-table-column width="104" header-align="right" align="right">
+        <s-table-column min-width="104" header-align="right" align="right">
           <template #header>
             <sort-button name="priceChangeDay" :sort="{ order, property }" @change-sort="changeSort">
               <span class="explore-table__primary">1D %</span>
@@ -74,7 +74,7 @@
           </template>
         </s-table-column>
         <!-- 7D Price Change -->
-        <s-table-column width="104" header-align="left" align="left">
+        <s-table-column min-width="104" header-align="left" align="left">
           <template #header>
             <sort-button name="priceChangeWeek" :sort="{ order, property }" @change-sort="changeSort">
               <span class="explore-table__primary">7D %</span>
@@ -85,7 +85,7 @@
           </template>
         </s-table-column>
         <!-- 1D Volume -->
-        <s-table-column width="104" header-align="right" align="right">
+        <s-table-column min-width="104" header-align="right" align="right">
           <template #header>
             <sort-button name="volumeDay" :sort="{ order, property }" @change-sort="changeSort">
               <span class="explore-table__primary">1D Vol.</span>
@@ -103,7 +103,7 @@
           </template>
         </s-table-column>
         <!-- TVL -->
-        <s-table-column width="104" header-align="right" align="right">
+        <s-table-column min-width="104" header-align="right" align="right">
           <template #header>
             <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
               <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
@@ -124,7 +124,7 @@
           </template>
         </s-table-column>
         <!-- Velocity -->
-        <s-table-column width="88" header-align="right" align="right">
+        <s-table-column min-width="88" header-align="right" align="right">
           <template #header>
             <sort-button name="velocity" :sort="{ order, property }" @change-sort="changeSort">
               <span class="explore-table__primary">VC.</span>

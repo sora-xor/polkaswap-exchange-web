@@ -443,10 +443,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 }
 
 @mixin explore-table {
-  $fixed-column-width: 280px;
   $cell-index-width: 40px;
   $cell-logo-width: 36px;
-  $tokens-row-width: 52px;
 
   // table misc styles
   .explore-table {

@@ -1,6 +1,6 @@
 <template>
   <div class="explore-container">
-    <div class="container container--explore" v-loading="parentLoading">
+    <div v-loading="parentLoading" class="container container--explore" :class="{ 'menu-collapsed': collapsed }">
       <div class="explore-container-dropdown s-flex">
         <responsive-tabs :is-mobile="showDropdown" :tabs="tabs" :value="pageName" @input="handleTabChange" />
         <search-input
@@ -53,6 +53,7 @@ const storageKey = 'exploreAccountItems';
 export default class ExploreContainer extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   @getter.wallet.account.isLoggedIn private isLoggedIn!: boolean;
   @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
+  @state.settings.menuCollapsed collapsed!: boolean;
 
   exploreQuery = '';
   private isAccountItems = storage.get(storageKey) ? JSON.parse(storage.get(storageKey)) : false;
@@ -127,7 +128,11 @@ export default class ExploreContainer extends Mixins(mixins.LoadingMixin, Transl
 </script>
 
 <style lang="scss" scoped>
-$container-max-width: 75vw;
+$container-max: 100vw;
+$shadow-width: 30px;
+$container-shadow-paddings: 2 * $shadow-width;
+$container-max-width: calc($container-max - $container-shadow-paddings - 2 * var(--sidebar-width));
+$container-max-width--collapsed: calc($container-max - $container-shadow-paddings - 2 * $sidebar-collapsed-width);
 $search-input-width: 290px;
 
 .container--explore {
@@ -137,7 +142,11 @@ $search-input-width: 290px;
   margin: $inner-spacing-big $inner-spacing-big 0;
 
   @include tablet {
+    width: 100%;
     max-width: $container-max-width;
+    &.menu-collapsed {
+      max-width: $container-max-width--collapsed;
+    }
   }
 }
 
