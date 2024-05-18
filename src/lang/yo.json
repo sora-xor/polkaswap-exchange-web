@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Awọn aṣẹ aropin parẹ",
             "Burn": "jona {amount} {symbol}",
             "Mint": "Minted {amount} {symbol} si {address}",
-            "CreateVault": "Gbigbe {symbol}\/{symbol2} ti ṣẹda",
-            "CloseVault": "Gbigbe {symbol}\/{symbol2} ti fẹ",
+            "CreateVault": "{symbol}\/{symbol2} Ipo ti dá",
+            "CloseVault": "{symbol}\/{symbol2} Ipo ti pari",
             "DepositCollateral": "{amount} {symbol} ti jẹ́ títẹ",
             "RepayVaultDebt": "{amount} {symbol} ti fọwọ́ sí ìwò",
             "BorrowVaultDebt": "{amount} {symbol} ti kọ láìná"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Kuna lati fagilee aṣẹ opin",
             "Burn": "Kuna lati sun {amount} {symbol}",
             "Mint": "Kuna lati mint {amount} {symbol} si {address}",
-            "CreateVault": "Ọgbọn ti ṣẹda gbigbe {symbol}\/{symbol2}",
-            "CloseVault": "Ọgbọn ti fẹ gbigbe {symbol}\/{symbol2}",
+            "CreateVault": "Ko le ṣe {symbol}\/{symbol2} ipo",
+            "CloseVault": "Ko le pa {symbol}\/{symbol2} ipo",
             "DepositCollateral": "Ọgbọn ti jẹ́ títẹ káríayé {amount} {symbol}",
             "RepayVaultDebt": "Ọgbọn ti fọwọ́ sí ìwò káríayé {amount} {symbol}",
             "BorrowVaultDebt": "Ọgbọn ti kọ oúnjẹ láìná káríayé {amount} {symbol}"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Fagilee Awọn aṣẹ",
         "Burn": "Iná",
         "Mint": "Mint",
-        "CreateVault": "Ṣẹda Gbigbe",
-        "CloseVault": "Fẹ Ki Gbigbe",
+        "CreateVault": "Ṣẹda ipo",
+        "CloseVault": "Pa ipo",
         "DepositCollateral": "Jẹ́ Títẹ Káríayé",
         "RepayVaultDebt": "Fọwọ́ Ní Ìwò Káríayé",
         "BorrowVaultDebt": "Kọ Oúnjẹ Láìná"

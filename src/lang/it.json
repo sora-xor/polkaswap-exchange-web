@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Ordini limite annullati",
             "Burn": "{amount} {symbol} bruciato",
             "Mint": "Coniato {amount} {symbol} a {address}",
-            "CreateVault": "Vault {symbol}\/{symbol2} creato",
-            "CloseVault": "Vault {symbol}\/{symbol2} chiuso",
+            "CreateVault": "{symbol}\/{symbol2} Posizione creata",
+            "CloseVault": "{symbol}\/{symbol2} Posizione chiusa",
             "DepositCollateral": "Depositato {amount} {symbol}",
             "RepayVaultDebt": "Debito ripagato {amount} {symbol}",
             "BorrowVaultDebt": "Debito preso in prestito {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Impossibile annullare l'ordine limite",
             "Burn": "Impossibile masterizzare {amount} {symbol}",
             "Mint": "Impossibile coniare {amount} {symbol} su {address}",
-            "CreateVault": "Impossibile creare il vault {symbol}\/{symbol2}",
-            "CloseVault": "Impossibile chiudere il vault {symbol}\/{symbol2}",
+            "CreateVault": "Creazione della posizione {symbol}\/{symbol2} fallita",
+            "CloseVault": "Chiusura della posizione {symbol}\/{symbol2} fallita",
             "DepositCollateral": "Impossibile depositare {amount} {symbol}",
             "RepayVaultDebt": "Impossibile ripagare {amount} {symbol} di debito",
             "BorrowVaultDebt": "Impossibile prendere in prestito {amount} {symbol} di debito"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Annulla ordini",
         "Burn": "Bruciare",
         "Mint": "Menta",
-        "CreateVault": "Crea Vault",
-        "CloseVault": "Chiudi Vault",
+        "CreateVault": "Crea posizione",
+        "CloseVault": "Chiudi posizione",
         "DepositCollateral": "Deposita Collaterale",
         "RepayVaultDebt": "Ripaga Debito Vault",
         "BorrowVaultDebt": "Prendi in Prestito Debito Vault"

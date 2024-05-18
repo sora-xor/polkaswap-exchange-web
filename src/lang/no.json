@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limit bestillinger kansellert",
             "Burn": "Brent {amount} {symbol}",
             "Mint": "Preget {amount} {symbol} til {address}",
-            "CreateVault": "{symbol}\/{symbol2}-skattkammer opprettet",
-            "CloseVault": "{symbol}\/{symbol2}-skattkammer lukket",
+            "CreateVault": "{symbol}\/{symbol2} Posisjon opprettet",
+            "CloseVault": "{symbol}\/{symbol2} Posisjon lukket",
             "DepositCollateral": "Innskuddet {amount} {symbol}",
             "RepayVaultDebt": "Gjelden tilbakebetalt {amount} {symbol}",
             "BorrowVaultDebt": "Gjeld lånt {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Kunne ikke kansellere begrenset ordre",
             "Burn": "Kunne ikke brenne {amount} {symbol}",
             "Mint": "Kunne ikke prege {amount} {symbol} til {address}",
-            "CreateVault": "Kunne ikke opprette {symbol}\/{symbol2}-skattkammer",
-            "CloseVault": "Kunne ikke lukke {symbol}\/{symbol2}-skattkammer",
+            "CreateVault": "Kunne ikke opprette posisjon {symbol}\/{symbol2}",
+            "CloseVault": "Kunne ikke lukke posisjon {symbol}\/{symbol2}",
             "DepositCollateral": "Kunne ikke gjøre innskudd {amount} {symbol}",
             "RepayVaultDebt": "Kunne ikke tilbakebetale {amount} {symbol} gjeld",
             "BorrowVaultDebt": "Kunne ikke låne {amount} {symbol} gjeld"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Kanseller bestillinger",
         "Burn": "Brenne",
         "Mint": "Mynte",
-        "CreateVault": "Opprett skattkammer",
-        "CloseVault": "Lukk skattkammer",
+        "CreateVault": "Opprett posisjon",
+        "CloseVault": "Lukk posisjon",
         "DepositCollateral": "Innskudd Sikkerhet",
         "RepayVaultDebt": "Betal tilbake gjeld",
         "BorrowVaultDebt": "Lån gjeld"

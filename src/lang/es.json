@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limitar órdenes canceladas",
             "Burn": "Quemado {amount} {symbol}",
             "Mint": "Acuñado {amount} {symbol} a {address}",
-            "CreateVault": "Bóveda {symbol}\/{symbol2} creada",
-            "CloseVault": "Bóveda {symbol}\/{symbol2} cerrada",
+            "CreateVault": "{symbol}\/{symbol2} Posición creada",
+            "CloseVault": "{symbol}\/{symbol2} Posición cerrada",
             "DepositCollateral": "Depositar {amount} {symbol}",
             "RepayVaultDebt": "Reembolsado {amount} {symbol}",
             "BorrowVaultDebt": "Deuda prestada {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "No se pudo cancelar la orden límite",
             "Burn": "No se pudo grabar {amount} {symbol}",
             "Mint": "No se pudo acuñar {amount} {symbol} en {address}",
-            "CreateVault": "Error al crear la bóveda {symbol}\/{symbol2}",
-            "CloseVault": "Error al cerrar la bóveda {symbol}\/{symbol2}",
+            "CreateVault": "No se pudo crear la posición {symbol}\/{symbol2}",
+            "CloseVault": "No se pudo cerrar la posición {symbol}\/{symbol2}",
             "DepositCollateral": "Error al depositar {amount} {symbol}",
             "RepayVaultDebt": "Error al reembolsar {amount} {symbol}",
             "BorrowVaultDebt": "Error al tomar prestada {amount} {symbol}"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Cancelar pedidos",
         "Burn": "Quemar",
         "Mint": "Menta",
-        "CreateVault": "Crear bóveda",
-        "CloseVault": "Cerrar bóveda",
+        "CreateVault": "Crear posición",
+        "CloseVault": "Cerrar posición",
         "DepositCollateral": "Depositar garantía",
         "RepayVaultDebt": "Reembolsar deuda",
         "BorrowVaultDebt": "Tomar prestada deuda"

@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Ograničene narudžbe su otkazane",
             "Burn": "Spaljeno {amount} {symbol}",
             "Mint": "Kovano {amount} {symbol} na {address}",
-            "CreateVault": "Trezor {symbol}\/{symbol2} stvoren",
-            "CloseVault": "Trezor {symbol}\/{symbol2} zatvoren",
+            "CreateVault": "{symbol}\/{symbol2} Pozicija stvorena",
+            "CloseVault": "{symbol}\/{symbol2} Pozicija zatvorena",
             "DepositCollateral": "Uloženo {amount} {symbol}",
             "RepayVaultDebt": "Dug vraćen {amount} {symbol}",
             "BorrowVaultDebt": "Dug posuđen {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Otkazivanje ograničenog naloga nije uspjelo",
             "Burn": "Nije uspjelo spaljivanje {amount} {symbol}",
             "Mint": "Nije uspjelo kovati {amount} {symbol} na {address}",
-            "CreateVault": "Pogreška prilikom stvaranja trezora {symbol}\/{symbol2}",
-            "CloseVault": "Pogreška prilikom zatvaranja trezora {symbol}\/{symbol2}",
+            "CreateVault": "Neuspjelo stvaranje pozicije {symbol}\/{symbol2}",
+            "CloseVault": "Neuspjelo zatvaranje pozicije {symbol}\/{symbol2}",
             "DepositCollateral": "Pogreška prilikom ulaganja {amount} {symbol}",
             "RepayVaultDebt": "Pogreška prilikom vraćanja {amount} {symbol}",
             "BorrowVaultDebt": "Pogreška prilikom posuđivanja {amount} {symbol}"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Otkaži narudžbe",
         "Burn": "Spaliti",
         "Mint": "Kovnica",
-        "CreateVault": "Stvoriti trezor",
-        "CloseVault": "Zatvoriti trezor",
+        "CreateVault": "Kreiraj poziciju",
+        "CloseVault": "Zatvori poziciju",
         "DepositCollateral": "Uložiti kolateral",
         "RepayVaultDebt": "Vratiti dug",
         "BorrowVaultDebt": "Posuditi dug"

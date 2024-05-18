@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limitní objednávky zrušeny",
             "Burn": "Spáleno {amount} {symbol}",
             "Mint": "Vyraženo {amount} {symbol} na {address}",
-            "CreateVault": "Vytvořen {symbol}\/{symbol2} trezor",
-            "CloseVault": "Uzavřen {symbol}\/{symbol2} trezor",
+            "CreateVault": "{symbol}\/{symbol2} Pozice vytvořena",
+            "CloseVault": "{symbol}\/{symbol2} Pozice uzavřena",
             "DepositCollateral": "Vloženo {amount} {symbol}",
             "RepayVaultDebt": "Splatit {amount} {symbol}",
             "BorrowVaultDebt": "Půjčeno {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Limitní příkaz se nepodařilo zrušit",
             "Burn": "Nepodařilo se vypálit {amount} {symbol}",
             "Mint": "Nepodařilo se vytěžit {amount} {symbol} na {address}",
-            "CreateVault": "Nepodařilo se vytvořit {symbol}\/{symbol2} trezor",
-            "CloseVault": "Nepodařilo se uzavřít {symbol}\/{symbol2} trezor",
+            "CreateVault": "Nepodařilo se vytvořit pozici {symbol}\/{symbol2}",
+            "CloseVault": "Nepodařilo se uzavřít pozici {symbol}\/{symbol2}",
             "DepositCollateral": "Nepodařilo se vložit {amount} {symbol}",
             "RepayVaultDebt": "Nepodařilo se splatit {amount} {symbol}",
             "BorrowVaultDebt": "Nepodařilo se půjčit {amount} {symbol}"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Zrušit objednávky",
         "Burn": "Hořet",
         "Mint": "Máta",
-        "CreateVault": "Vytvořit trezor",
-        "CloseVault": "Zavřít trezor",
+        "CreateVault": "Vytvořit pozici",
+        "CloseVault": "Uzavřít pozici",
         "DepositCollateral": "Vložit zástavu",
         "RepayVaultDebt": "Splnit dluh",
         "BorrowVaultDebt": "Půjčit si dluh"

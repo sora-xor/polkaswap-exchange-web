@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limietorders geannuleerd",
             "Burn": "Verbrand {amount} {symbol}",
             "Mint": "Geslagen {amount} {symbol} naar {address}",
-            "CreateVault": "Vault {symbol}\/{symbol2} aangemaakt",
-            "CloseVault": "Vault {symbol}\/{symbol2} gesloten",
+            "CreateVault": "{symbol}\/{symbol2} Positie aangemaakt",
+            "CloseVault": "{symbol}\/{symbol2} Positie gesloten",
             "DepositCollateral": "{amount} {symbol} gestort",
             "RepayVaultDebt": "{amount} {symbol} schuld terugbetaald",
             "BorrowVaultDebt": "{amount} {symbol} schuld geleend"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Kan limietorder niet annuleren",
             "Burn": "Kan {amount} {symbol} niet verbranden",
             "Mint": "Kan {amount} {symbol} niet aan {address} toevoegen",
-            "CreateVault": "Kon vault {symbol}\/{symbol2} niet aanmaken",
-            "CloseVault": "Kon vault {symbol}\/{symbol2} niet sluiten",
+            "CreateVault": "Mislukt om positie {symbol}\/{symbol2} te creëren",
+            "CloseVault": "Mislukt om positie {symbol}\/{symbol2} te sluiten",
             "DepositCollateral": "Kon {amount} {symbol} niet storten",
             "RepayVaultDebt": "Kon {amount} {symbol} schuld niet terugbetalen",
             "BorrowVaultDebt": "Kon {amount} {symbol} schuld niet lenen"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Bestellingen annuleren",
         "Burn": "Brandwond",
         "Mint": "Munt",
-        "CreateVault": "Maak Vault aan",
-        "CloseVault": "Sluit Vault",
+        "CreateVault": "Positie creëren",
+        "CloseVault": "Positie sluiten",
         "DepositCollateral": "Stort Onderpand",
         "RepayVaultDebt": "Schuld Terugbetalen",
         "BorrowVaultDebt": "Schuld Lenen"

@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Ограничени налози су отказани",
             "Burn": "Спаљено {amount} {symbol}",
             "Mint": "Исковано {amount} {symbol} на {address}",
-            "CreateVault": "Складиште {symbol}\/{symbol2} отворено",
-            "CloseVault": "Складиште {symbol}\/{symbol2} затворено",
+            "CreateVault": "{symbol}\/{symbol2} Pozicija kreirana",
+            "CloseVault": "{symbol}\/{symbol2} Pozicija zatvorena",
             "DepositCollateral": "Уплаћен залог {amount} {symbol}",
             "RepayVaultDebt": "Дуг враћен {amount} {symbol}",
             "BorrowVaultDebt": "Дуг позајмљен {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Отказивање ограничене поруџбине није успело",
             "Burn": "{amount} {symbol} није успело",
             "Mint": "Није успело испоручивање {amount} {symbol} на {address}",
-            "CreateVault": "Грешка при отварању складишта {symbol}\/{symbol2}",
-            "CloseVault": "Грешка при затварању складишта {symbol}\/{symbol2}",
+            "CreateVault": "Neuspešno kreiranje pozicije {symbol}\/{symbol2}",
+            "CloseVault": "Neuspešno zatvaranje pozicije {symbol}\/{symbol2}",
             "DepositCollateral": "Грешка при уплати залога {amount} {symbol}",
             "RepayVaultDebt": "Грешка при враћању дуга {amount} {symbol}",
             "BorrowVaultDebt": "Грешка при позајмљивању дуга {amount} {symbol}"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Откажите поруџбине",
         "Burn": "Горети",
         "Mint": "Печат",
-        "CreateVault": "Отвори складиште",
-        "CloseVault": "Затвори складиште",
+        "CreateVault": "Kreiraj poziciju",
+        "CloseVault": "Zatvori poziciju",
         "DepositCollateral": "Уплати залог",
         "RepayVaultDebt": "Врати дуг",
         "BorrowVaultDebt": "Позајми дуг"

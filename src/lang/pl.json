@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Zamówienia z limitem anulowane",
             "Burn": "Spalony {amount} {symbol}",
             "Mint": "Wybito {amount} {symbol} na {address}",
-            "CreateVault": "Utworzono skarbiec {symbol}\/{symbol2}",
-            "CloseVault": "Zamknięto skarbiec {symbol}\/{symbol2}",
+            "CreateVault": "{symbol}\/{symbol2} Pozycja utworzona",
+            "CloseVault": "{symbol}\/{symbol2} Pozycja zamknięta",
             "DepositCollateral": "Wpłacono {amount} {symbol}",
             "RepayVaultDebt": "Spłacono dług {amount} {symbol}",
             "BorrowVaultDebt": "Pożyczono dług {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Nie udało się anulować zamówienia z limitem",
             "Burn": "Nie udało się nagrać {amount} {symbol}",
             "Mint": "Nie udało się wybić {amount} {symbol} na {address}",
-            "CreateVault": "Nie udało się utworzyć skarbca {symbol}\/{symbol2}",
-            "CloseVault": "Nie udało się zamknąć skarbca {symbol}\/{symbol2}",
+            "CreateVault": "Nie udało się utworzyć pozycji {symbol}\/{symbol2}",
+            "CloseVault": "Nie udało się zamknąć pozycji {symbol}\/{symbol2}",
             "DepositCollateral": "Nie udało się wpłacić {amount} {symbol}",
             "RepayVaultDebt": "Nie udało się spłacić długu {amount} {symbol}",
             "BorrowVaultDebt": "Nie udało się pożyczyć długu {amount} {symbol}"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Anuluj zamówienia",
         "Burn": "Oparzenie",
         "Mint": "Mennica",
-        "CreateVault": "Utwórz skarbiec",
-        "CloseVault": "Zamknij skarbiec",
+        "CreateVault": "Utwórz pozycję",
+        "CloseVault": "Zamknij pozycję",
         "DepositCollateral": "Wpłać zabezpieczenie",
         "RepayVaultDebt": "Spłać dług skarbca",
         "BorrowVaultDebt": "Pożycz dług skarbca"

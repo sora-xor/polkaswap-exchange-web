@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limitaufträge storniert",
             "Burn": "Verbrannt {amount} {symbol}",
             "Mint": "Geprägt {amount} {symbol} an {address}",
-            "CreateVault": "{symbol}\/{symbol2}-Tresor erstellt",
-            "CloseVault": "{symbol}\/{symbol2}-Tresor geschlossen",
+            "CreateVault": "{symbol}\/{symbol2} Position erstellt",
+            "CloseVault": "{symbol}\/{symbol2} Position geschlossen",
             "DepositCollateral": "{amount} {symbol} hinterlegt",
             "RepayVaultDebt": "{amount} {symbol} beglichen",
             "BorrowVaultDebt": "{amount} {symbol} aufgenommen"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Limitauftrag konnte nicht storniert werden",
             "Burn": "{amount} {symbol} konnte nicht gebrannt werden",
             "Mint": "{amount} {symbol} konnte nicht an {address} geprägt werden",
-            "CreateVault": "Fehler beim Erstellen des {symbol}\/{symbol2}-Tresors",
-            "CloseVault": "Fehler beim Schließen des {symbol}\/{symbol2}-Tresors",
+            "CreateVault": "Erstellung der Position {symbol}\/{symbol2} fehlgeschlagen",
+            "CloseVault": "Schließen der Position {symbol}\/{symbol2} fehlgeschlagen",
             "DepositCollateral": "Fehler beim Hinterlegen von {amount} {symbol}",
             "RepayVaultDebt": "Fehler beim Begleichen von {amount} {symbol}",
             "BorrowVaultDebt": "Fehler beim Aufnehmen von {amount} {symbol}"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Bestellungen stornieren",
         "Burn": "Brennen",
         "Mint": "Minze",
-        "CreateVault": "Tresor erstellen",
-        "CloseVault": "Tresor schließen",
+        "CreateVault": "Position erstellen",
+        "CloseVault": "Position schließen",
         "DepositCollateral": "Pfand hinterlegen",
         "RepayVaultDebt": "Schulden begleichen",
         "BorrowVaultDebt": "Schulden aufnehmen"

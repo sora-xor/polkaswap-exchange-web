@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Lệnh giới hạn bị hủy",
             "Burn": "Đã đốt {amount} {symbol}",
             "Mint": "Đã đúc {amount} {symbol} thành {address}",
-            "CreateVault": "Kho bảo {symbol}\/{symbol2} đã được tạo",
-            "CloseVault": "Kho bảo {symbol}\/{symbol2} đã được đóng",
+            "CreateVault": "{symbol}\/{symbol2} Vị thế được tạo",
+            "CloseVault": "{symbol}\/{symbol2} Vị thế được đóng",
             "DepositCollateral": "Đã nộp tài sản đảm bảo {amount} {symbol}",
             "RepayVaultDebt": "Đã trả nợ kho bảo {amount} {symbol}",
             "BorrowVaultDebt": "Đã vay nợ kho bảo {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Không hủy được lệnh giới hạn",
             "Burn": "Không ghi được {amount} {symbol}",
             "Mint": "Không đúc được {amount} {symbol} cho {address}",
-            "CreateVault": "Không thể tạo kho bảo {symbol}\/{symbol2}",
-            "CloseVault": "Không thể đóng kho bảo {symbol}\/{symbol2}",
+            "CreateVault": "Không thể tạo vị thế {symbol}\/{symbol2}",
+            "CloseVault": "Không thể đóng vị thế {symbol}\/{symbol2}",
             "DepositCollateral": "Không thể nộp tài sản đảm bảo {amount} {symbol}",
             "RepayVaultDebt": "Không thể trả nợ kho bảo {amount} {symbol}",
             "BorrowVaultDebt": "Không thể vay nợ kho bảo {amount} {symbol}"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Hủy đơn hàng",
         "Burn": "Đốt cháy",
         "Mint": "cây bạc hà",
-        "CreateVault": "Tạo Kho Bảo",
-        "CloseVault": "Đóng Kho Bảo",
+        "CreateVault": "Tạo vị thế",
+        "CloseVault": "Đóng vị thế",
         "DepositCollateral": "Nộp Tài Sản Đảm Bảo",
         "RepayVaultDebt": "Trả Nợ Kho Bảo",
         "BorrowVaultDebt": "Vay Nợ Kho Bảo"

@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limit order annullerade",
             "Burn": "Brände {amount} {symbol}",
             "Mint": "Minskade {amount} {symbol} till {address}",
-            "CreateVault": "Kassavalv {symbol}\/{symbol2} skapat",
-            "CloseVault": "Kassavalv {symbol}\/{symbol2} stängt",
+            "CreateVault": "{symbol}\/{symbol2} Position skapad",
+            "CloseVault": "{symbol}\/{symbol2} Position stängd",
             "DepositCollateral": "Säkerhet insatt {amount} {symbol}",
             "RepayVaultDebt": "Skuld återbetald {amount} {symbol}",
             "BorrowVaultDebt": "Skuld lånad {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Det gick inte att avbryta begränsningsordern",
             "Burn": "Det gick inte att bränna {amount} {symbol}",
             "Mint": "Det gick inte att prägla {amount} {symbol} till {address}",
-            "CreateVault": "Misslyckades med att skapa kassavalv {symbol}\/{symbol2}",
-            "CloseVault": "Misslyckades med att stänga kassavalv {symbol}\/{symbol2}",
+            "CreateVault": "Misslyckades att skapa position {symbol}\/{symbol2}",
+            "CloseVault": "Misslyckades att stänga position {symbol}\/{symbol2}",
             "DepositCollateral": "Misslyckades med att sätta in säkerhet {amount} {symbol}",
             "RepayVaultDebt": "Misslyckades med att betala tillbaka skuld {amount} {symbol}",
             "BorrowVaultDebt": "Misslyckades med att låna skuld {amount} {symbol}"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Avbryt beställningar",
         "Burn": "Bränna",
         "Mint": "Mynta",
-        "CreateVault": "Skapa kassavalv",
-        "CloseVault": "Stäng kassavalv",
+        "CreateVault": "Skapa position",
+        "CloseVault": "Stäng position",
         "DepositCollateral": "Sätt in säkerhet",
         "RepayVaultDebt": "Betala tillbaka skuld",
         "BorrowVaultDebt": "Låna skuld"

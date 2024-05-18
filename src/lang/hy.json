@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Սահմանափակ պատվերները չեղարկվել են",
             "Burn": "Այրված {amount} {symbol}",
             "Mint": "Նշված է {amount} {symbol} {address} -ին",
-            "CreateVault": "{symbol}\/{symbol2} ավազարկղի ստեղծված է",
-            "CloseVault": "{symbol}\/{symbol2} ավազարկղի ավարտվել է",
+            "CreateVault": "{symbol}\/{symbol2} Դիրքը ստեղծված է",
+            "CloseVault": "{symbol}\/{symbol2} Դիրքը փակված է",
             "DepositCollateral": "{amount} {symbol} արտաքին ապրանքը մուտք է գալիս",
             "RepayVaultDebt": "{amount} {symbol} պարտքը մաքրվել է",
             "BorrowVaultDebt": "{amount} {symbol} պարտքի վարկի գումարը վարվել է"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Չհաջողվեց չեղարկել սահմանաչափի պատվերը",
             "Burn": "Չհաջողվեց այրել {amount} {symbol}",
             "Mint": "Չհաջողվեց հատել {amount} {symbol} {address} -ին",
-            "CreateVault": "Սխալ՝ {symbol}\/{symbol2} ավազարկղի ստեղծման ընթացքում",
-            "CloseVault": "Սխալ՝ {symbol}\/{symbol2} ավազարկղի ավարտման ընթացքում",
+            "CreateVault": "Չհաջողվեց ստեղծել {symbol}\/{symbol2} դիրքը",
+            "CloseVault": "Չհաջողվեց փակել {symbol}\/{symbol2} դիրքը",
             "DepositCollateral": "Սխալ՝ {amount} {symbol} արտաքին ապրանքի մուտքի ընթացքում",
             "RepayVaultDebt": "Սխալ՝ {amount} {symbol} պարտքի մաքրման ընթացքում",
             "BorrowVaultDebt": "Սխալ՝ {amount} {symbol} պարտքի վարկի գումարի վարվելիքի ընթացքում"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Չեղարկել պատվերները",
         "Burn": "Այրվել",
         "Mint": "անանուխ",
-        "CreateVault": "Գործարքային ավազարկղի ստեղծում",
-        "CloseVault": "Գործարքային ավազարկղի ավարտում",
+        "CreateVault": "Ստեղծել դիրք",
+        "CloseVault": "Փակել դիրքը",
         "DepositCollateral": "Ավազարկղի արտաքին ապրանքի մուտք",
         "RepayVaultDebt": "Պարտքի մաքրում",
         "BorrowVaultDebt": "Պարտքի վարկանիշային վերաբերյալ վարկի գումար"

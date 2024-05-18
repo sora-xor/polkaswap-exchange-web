@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Лимитные ордера отменены",
             "Burn": "Сожжено {amount} {symbol}",
             "Mint": "Напечатано {amount} {symbol} на {address}",
-            "CreateVault": "Позиция {symbol}\/{symbol2} создана",
-            "CloseVault": "Позиция {symbol}\/{symbol2} закрыта",
+            "CreateVault": "{symbol}\/{symbol2} Позиция открыта",
+            "CloseVault": "{symbol}\/{symbol2} Позиция закрыта",
             "DepositCollateral": "Внесено {amount} {symbol}",
             "RepayVaultDebt": "Погашено {amount} {symbol} долга",
             "BorrowVaultDebt": "Взято в долг {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Не удалось отменить лимитный ордер",
             "Burn": "Не удалось сжечь {amount} {symbol}",
             "Mint": "Не удалось напечатать {amount} {symbol} на {address}",
-            "CreateVault": "Ошибка при открытии {symbol}\/{symbol2} позиции",
-            "CloseVault": "Ошибка при закрытии {symbol}\/{symbol2} позиции",
+            "CreateVault": "Не удалось открыть позицию {symbol}\/{symbol2}",
+            "CloseVault": "Не удалось закрыть позицию {symbol}\/{symbol2}",
             "DepositCollateral": "Ошибка при внесении залога {amount} {symbol}",
             "RepayVaultDebt": "Ошибка при погашении долга {amount} {symbol}",
             "BorrowVaultDebt": "Ошибка при взятии в долг {amount} {symbol}"

@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Limitné objednávky boli zrušené",
             "Burn": "Spálené {amount} {symbol}",
             "Mint": "Vyrazené {amount} {symbol} na {address}",
-            "CreateVault": "Pokladnica {symbol}\/{symbol2} vytvorená",
-            "CloseVault": "Pokladnica {symbol}\/{symbol2} zatvorená",
+            "CreateVault": "{symbol}\/{symbol2} Pozícia vytvorená",
+            "CloseVault": "{symbol}\/{symbol2} Pozícia zatvorená",
             "DepositCollateral": "Vložená záloha {amount} {symbol}",
             "RepayVaultDebt": "Dlh splatený {amount} {symbol}",
             "BorrowVaultDebt": "Dlh požičaný {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Limitovanú objednávku sa nepodarilo zrušiť",
             "Burn": "Nepodarilo sa napáliť {amount} {symbol}",
             "Mint": "Nepodarilo sa vyraziť {amount} {symbol} na {address}",
-            "CreateVault": "Chyba pri vytváraní pokladnice {symbol}\/{symbol2}",
-            "CloseVault": "Chyba pri zatváraní pokladnice {symbol}\/{symbol2}",
+            "CreateVault": "Nepodarilo sa vytvoriť pozíciu {symbol}\/{symbol2}",
+            "CloseVault": "Nepodarilo sa zatvoriť pozíciu {symbol}\/{symbol2}",
             "DepositCollateral": "Chyba pri vkladaní zálohy {amount} {symbol}",
             "RepayVaultDebt": "Chyba pri splácaní dlhu {amount} {symbol}",
             "BorrowVaultDebt": "Chyba pri požičiavaní dlhu {amount} {symbol}"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Zrušte objednávky",
         "Burn": "Spáliť",
         "Mint": "Mäta",
-        "CreateVault": "Vytvoriť pokladnicu",
-        "CloseVault": "Zatvoriť pokladnicu",
+        "CreateVault": "Vytvoriť pozíciu",
+        "CloseVault": "Uzavrieť pozíciu",
         "DepositCollateral": "Vložiť zálohu",
         "RepayVaultDebt": "Splatiť dlh",
         "BorrowVaultDebt": "Požičať si dlh"

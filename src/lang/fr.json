@@ -66,8 +66,8 @@
             "OrderBookCancelLimitOrders": "Ordres limités annulés",
             "Burn": "Brûlé {amount} {symbol}",
             "Mint": "Frappé {amount} {symbol} à {address}",
-            "CreateVault": "Coffre-fort {symbol}\/{symbol2} créé",
-            "CloseVault": "Coffre-fort {symbol}\/{symbol2} fermé",
+            "CreateVault": "{symbol}\/{symbol2} Position créée",
+            "CloseVault": "{symbol}\/{symbol2} Position fermée",
             "DepositCollateral": "Dépôt de {amount} {symbol}",
             "RepayVaultDebt": "Dette remboursée {amount} {symbol}",
             "BorrowVaultDebt": "Dette empruntée {amount} {symbol}"
@@ -108,8 +108,8 @@
             "OrderBookCancelLimitOrder": "Échec de l'annulation de l'ordre limité",
             "Burn": "Échec de la gravure {amount} {symbol}",
             "Mint": "Échec de la création {amount} {symbol} à {address}",
-            "CreateVault": "Impossible de créer le coffre-fort {symbol}\/{symbol2}",
-            "CloseVault": "Impossible de fermer le coffre-fort {symbol}\/{symbol2}",
+            "CreateVault": "Échec de la création de la position {symbol}\/{symbol2}",
+            "CloseVault": "Échec de la fermeture de la position {symbol}\/{symbol2}",
             "DepositCollateral": "Impossible de déposer {amount} {symbol}",
             "RepayVaultDebt": "Impossible de rembourser {amount} {symbol}",
             "BorrowVaultDebt": "Impossible d'emprunter {amount} {symbol}"
@@ -142,8 +142,8 @@
         "OrderBookCancelLimitOrders": "Annuler les commandes",
         "Burn": "Brûler",
         "Mint": "Menthe",
-        "CreateVault": "Créer un coffre-fort",
-        "CloseVault": "Fermer le coffre-fort",
+        "CreateVault": "Créer une position",
+        "CloseVault": "Fermer la position",
         "DepositCollateral": "Déposer du collatéral",
         "RepayVaultDebt": "Rembourser la dette",
         "BorrowVaultDebt": "Emprunter de la dette"
