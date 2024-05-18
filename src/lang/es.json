@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "La cantidad máxima que puede extraer de su posición, determinada por el valor de su garantía. Este límite se ajusta a medida que cambia el valor de la garantía.",
         "borrowTax": "Impuesto al préstamo",
         "borrowTaxDescription": "El impuesto {value} aplicado a la cantidad prestada",
-        "interest": "Interés",
-        "interestDescription": "Una tarifa anual cobrada sobre la cantidad extraída de su vault, calculada como un porcentaje. Esta tarifa compensa los riesgos y las fluctuaciones del mercado.",
         "repayDebt": "Pagar deuda",
         "repayDebtDescription": "Devuelva los fondos prestados para reducir su deuda pendiente. Esto puede disminuir los costos de interés y reducir el riesgo de liquidación.",
         "closeVault": "Cerrar mi posición",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Colateral insuficiente",
             "enterRepayDebt": "Ingrese la cantidad para pagar la deuda",
             "repayMoreThanDebt": "Deuda sobrepagada"
-        }
+        },
+        "interest": "Interés",
+        "interestDescription": "Una tarifa anual cobrada sobre la cantidad extraída de su vault, calculada como un porcentaje. Esta tarifa compensa los riesgos y las fluctuaciones del mercado."
     },
     "accountSettings": {
         "title": "Ajustes de la cuenta",

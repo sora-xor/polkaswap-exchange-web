@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "Maximálna suma, ktorú môžete čerpať zo svojej pozície, určená hodnotou vášho kolaterálu. Tento limit sa upravuje podľa zmeny hodnoty kolaterálu.",
         "borrowTax": "Daň z požičania",
         "borrowTaxDescription": "Daň {value} použitá na požičanú sumu",
-        "interest": "Úrok",
-        "interestDescription": "Ročný poplatok účtovaný z sumy vyplatené zo vášho trezoru, vypočítaný ako percento. Tento poplatok kompenzuje riziká a fluktuácie trhu.",
         "repayDebt": "Splatiť dlh",
         "repayDebtDescription": "Vráťte si požičané prostriedky na zníženie vášho nezaplateného dlhu. To môže znížiť náklady na úroky a znížiť riziko likvidácie.",
         "closeVault": "Zatvoriť moju pozíciu",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Nedostatočná záloha",
             "enterRepayDebt": "Zadajte splácaný dlh",
             "repayMoreThanDebt": "Dlh preplatil"
-        }
+        },
+        "interest": "Úrok",
+        "interestDescription": "Ročný poplatok účtovaný z sumy vyplatené zo vášho trezoru, vypočítaný ako percento. Tento poplatok kompenzuje riziká a fluktuácie trhu."
     },
     "accountSettings": {
         "title": "Nastavenia účtu",

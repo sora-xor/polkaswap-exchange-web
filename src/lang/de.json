@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "Der maximale Betrag, den Sie aus Ihrer Position entnehmen können, bestimmt durch den Wert Ihrer Sicherheiten. Dieses Limit passt sich an den Wert der Sicherheiten an.",
         "borrowTax": "Kreditsteuer",
         "borrowTaxDescription": "Die {value} Steuer auf den ausgeliehenen Betrag angewendet",
-        "interest": "Zinsen",
-        "interestDescription": "Eine jährliche Gebühr, die auf den aus Ihrem Vault abgehobenen Betrag erhoben wird, berechnet als Prozentsatz. Diese Gebühr kompensiert Risiken und Marktschwankungen.",
         "repayDebt": "Schulden zurückzahlen",
         "repayDebtDescription": "Zahlen Sie geliehene Gelder zurück, um Ihre ausstehenden Schulden zu reduzieren. Dies kann die Zinskosten senken und das Risiko einer Liquidation verringern.",
         "closeVault": "Meine Position schließen",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Unzureichendes Kollateral",
             "enterRepayDebt": "Geben Sie die Schuldenzahlung ein",
             "repayMoreThanDebt": "Schulden überbezahlt"
-        }
+        },
+        "interest": "Zinsen",
+        "interestDescription": "Eine jährliche Gebühr, die auf den aus Ihrem Vault abgehobenen Betrag erhoben wird, berechnet als Prozentsatz. Diese Gebühr kompensiert Risiken und Marktschwankungen."
     },
     "accountSettings": {
         "title": "Account Einstellungen",

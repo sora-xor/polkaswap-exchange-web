@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "Det maksimale beløpet du kan trekke fra din posisjon, bestemt av verdien av din sikkerhet. Denne grensen justeres etter hvert som verdien av sikkerheten endres.",
         "borrowTax": "Lån skatt",
         "borrowTaxDescription": "Skatten {value} som pålegges det utlånte beløpet",
-        "interest": "Renter",
-        "interestDescription": "Et årlig gebyr belastet på det beløpet som trekkes fra lageret ditt, beregnet som prosentandel. Dette gebyret kompenserer for risikoer og markedsfluktuasjoner.",
         "repayDebt": "Gjeld tilbakebetaling",
         "repayDebtDescription": "Returner lånte midler for å redusere din utestående gjeld. Dette kan redusere rentekostnader og senke risikoen for likvidasjon.",
         "closeVault": "Lukk min posisjon",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Utilstrekkelig sikkerhet",
             "enterRepayDebt": "Skriv inn tilbakebetalt gjeld",
             "repayMoreThanDebt": "Gjeld overbetalt"
-        }
+        },
+        "interest": "Renter",
+        "interestDescription": "Et årlig gebyr belastet på det beløpet som trekkes fra lageret ditt, beregnet som prosentandel. Dette gebyret kompenserer for risikoer og markedsfluktuasjoner."
     },
     "accountSettings": {
         "title": "Kontoinnstillinger",

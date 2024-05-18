@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "Le montant maximal que vous pouvez retirer de votre position, déterminé par la valeur de vos garanties. Cette limite s'ajuste à mesure que la valeur des garanties change.",
         "borrowTax": "Taxe d'emprunt",
         "borrowTaxDescription": "La taxe {value} appliquée au montant emprunté",
-        "interest": "Intérêt",
-        "interestDescription": "Une taxe annuelle prélevée sur le montant retiré de votre coffre-fort, calculée en pourcentage. Cette taxe compense les risques et les fluctuations du marché.",
         "repayDebt": "Rembourser la dette",
         "repayDebtDescription": "Remboursez les fonds empruntés pour réduire votre dette en cours. Cela peut réduire les coûts d'intérêt et réduire le risque de liquidation.",
         "closeVault": "Fermer ma position",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Collatéral insuffisant",
             "enterRepayDebt": "Entrez le remboursement de la dette",
             "repayMoreThanDebt": "Dette surpayée"
-        }
+        },
+        "interest": "Intérêt",
+        "interestDescription": "Une taxe annuelle prélevée sur le montant retiré de votre coffre-fort, calculée en pourcentage. Cette taxe compense les risques et les fluctuations du marché."
     },
     "accountSettings": {
         "title": "Paramètres du compte",

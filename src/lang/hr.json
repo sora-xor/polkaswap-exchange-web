@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "Maksimalni iznos koji možete povući sa svoje pozicije, određen vrijednošću vašeg jamstva. Ova granica se prilagođava kako se mijenja vrijednost jamstva.",
         "borrowTax": "Porez na posudbu",
         "borrowTaxDescription": "Porez {value} primijenjen na posuđeni iznos",
-        "interest": "Kamata",
-        "interestDescription": "Godišnja naknada naplaćena na iznos povučen iz vašeg sefa, izračunata kao postotak. Ova naknada nadoknađuje rizike i fluktuacije na tržištu.",
         "repayDebt": "Vratite dug",
         "repayDebtDescription": "Vratite posuđena sredstva kako biste smanjili svoj trenutni dug. To može smanjiti troškove kamata i smanjiti rizik od likvidacije.",
         "closeVault": "Zatvorite moju poziciju",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Nedovoljan kolateral",
             "enterRepayDebt": "Unesite vraćanje duga",
             "repayMoreThanDebt": "Dug preplaćen"
-        }
+        },
+        "interest": "Kamata",
+        "interestDescription": "Godišnja naknada naplaćena na iznos povučen iz vašeg sefa, izračunata kao postotak. Ova naknada nadoknađuje rizike i fluktuacije na tržištu."
     },
     "accountSettings": {
         "title": "POSTAVLJANJE RAČUNA",

@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "L'importo massimo che puoi prelevare dalla tua posizione, determinato dal valore del tuo collaterale. Questo limite si adatta man mano che il valore del collaterale cambia.",
         "borrowTax": "Tassa di prestito",
         "borrowTaxDescription": "La tassa di prestito {value} applicata all'importo prelevato",
-        "interest": "Interesse",
-        "interestDescription": "Una tassa annuale addebitata sull'importo prelevato dal tuo vault, calcolata come percentuale. Questa tassa compensa i rischi e le fluttuazioni di mercato.",
         "repayDebt": "Rimborsare il debito",
         "repayDebtDescription": "Restituisci i fondi presi in prestito per ridurre il tuo debito in sospeso. Questo può ridurre i costi degli interessi e abbassare il rischio di liquidazione.",
         "closeVault": "Chiudi la mia posizione",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Garanzia insufficiente",
             "enterRepayDebt": "Inserisci il debito da rimborsare",
             "repayMoreThanDebt": "Debito pagato in eccesso"
-        }
+        },
+        "interest": "Interesse",
+        "interestDescription": "Una tassa annuale addebitata sull'importo prelevato dal tuo vault, calcolata come percentuale. Questa tassa compensa i rischi e le fluttuazioni di mercato."
     },
     "accountSettings": {
         "title": "Impostazioni dell'account",

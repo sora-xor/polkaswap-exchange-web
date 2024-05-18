@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "Jumlah maksimum yang dapat Anda tarik dari posisi Anda, ditentukan oleh nilai jaminan Anda. Batas ini menyesuaikan seiring perubahan nilai jaminan.",
         "borrowTax": "Pajak pinjaman",
         "borrowTaxDescription": "Pajak {value} yang diterapkan pada jumlah yang dipinjam",
-        "interest": "Bunga",
-        "interestDescription": "Biaya tahunan yang dibebankan pada jumlah yang ditarik dari vault Anda, dihitung sebagai persentase. Biaya ini mengkompensasi risiko dan fluktuasi pasar.",
         "repayDebt": "Lunasi hutang",
         "repayDebtDescription": "Kembalikan dana yang dipinjam untuk mengurangi utang Anda yang masih berjalan. Ini dapat mengurangi biaya bunga dan menurunkan risiko likuidasi.",
         "closeVault": "Tutup posisi saya",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Agunan tidak mencukupi",
             "enterRepayDebt": "Masukkan hutang yang harus dilunasi",
             "repayMoreThanDebt": "Utang terbayar lebih"
-        }
+        },
+        "interest": "Bunga",
+        "interestDescription": "Biaya tahunan yang dibebankan pada jumlah yang ditarik dari vault Anda, dihitung sebagai persentase. Biaya ini mengkompensasi risiko dan fluktuasi pasar."
     },
     "accountSettings": {
         "title": "Pengaturan akun",

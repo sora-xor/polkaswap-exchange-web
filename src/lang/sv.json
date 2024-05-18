@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "Det maximala beloppet som du kan ta ut från din position, bestämt av värdet på dina säkerheter. Denna gräns justeras efterhand som värdet på säkerheterna förändras.",
         "borrowTax": "Låneskatt",
         "borrowTaxDescription": "Skatten {value} tillämpas på det utlånade beloppet",
-        "interest": "Ränta",
-        "interestDescription": "En årlig avgift debiterad på det belopp som dras från ditt valv, beräknat som en procentandel. Denna avgift kompenserar för risker och marknadsfluktuationer.",
         "repayDebt": "Återbetala skuld",
         "repayDebtDescription": "Returnera lånade medel för att minska din utestående skuld. Detta kan minska räntekostnader och minska risken för likvidation.",
         "closeVault": "Stäng min position",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Otillräcklig säkerhet",
             "enterRepayDebt": "Ange återbetalningsskuld",
             "repayMoreThanDebt": "Skuld överbetald"
-        }
+        },
+        "interest": "Ränta",
+        "interestDescription": "En årlig avgift debiterad på det belopp som dras från ditt valv, beräknat som en procentandel. Denna avgift kompenserar för risker och marknadsfluktuationer."
     },
     "accountSettings": {
         "title": "Kontoinställningar",

@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "Maksymalna kwota, którą możesz wypłacić ze swojej pozycji, określona przez wartość Twojego zabezpieczenia. Ten limit dostosowuje się wraz ze zmianą wartości zabezpieczenia.",
         "borrowTax": "Podatek od pożyczek",
         "borrowTaxDescription": "Podatek {value} stosowany do wypożyczonej kwoty",
-        "interest": "Odsetki",
-        "interestDescription": "Opłata roczna naliczana od wypłaconej kwoty z twojego skarbca, obliczana jako procent. Ta opłata rekompensuje ryzyko i wahania rynkowe.",
         "repayDebt": "Spłać dług",
         "repayDebtDescription": "Zwróć pożyczone środki, aby zmniejszyć swoje zadłużenie. Może to zmniejszyć koszty odsetek i obniżyć ryzyko likwidacji.",
         "closeVault": "Zamknij moją pozycję",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Niewystarczające zabezpieczenie",
             "enterRepayDebt": "Wprowadź spłacany dług",
             "repayMoreThanDebt": "Dług przepłacony"
-        }
+        },
+        "interest": "Odsetki",
+        "interestDescription": "Opłata roczna naliczana od wypłaconej kwoty z twojego skarbca, obliczana jako procent. Ta opłata rekompensuje ryzyko i wahania rynkowe."
     },
     "accountSettings": {
         "title": "USTAWIENIA KONTA",

@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "Iye to pọ julọ ti o le fa jade lati ipo rẹ, ti o pinnu nipasẹ iye awọn ohun-ini rẹ. Iwọn yii ṣe atunṣe bi iye awọn ohun-ini ṣe yipada.",
         "borrowTax": "Kúrò ọwọọ",
         "borrowTaxDescription": "Ọ̀bá kúrò {value} ti bẹ ọwọọ tó ti kúrò",
-        "interest": "Èlòkò",
-        "interestDescription": "Ọwọ ọwọọ jìnnà tẹlẹ láti kúrò láti ilé ìdì rẹ, ti wọ́n sì bẹrẹ ní pẹrẹ. Owó yìí jìnnà tẹlẹ ní ìdápadà ìlọsíwájú àti awọn iṣẹ̀tẹ̀ ni òṣìṣẹ̀lú.",
         "repayDebt": "Ya ọwọọ",
         "repayDebtDescription": "Dahun awọn owo ti o gba lati jẹ alabapin rẹ diẹ ninu iye ti o le mọ bẹẹrẹ, ṣe pese pe iye iṣẹrọ rẹ ti sọ pe iye iṣẹrọ ti o tẹlẹ, ki o si ti tẹwọgba niwọle ti o ba n daju ni.",
         "closeVault": "Yẹ ìwọle mi",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Kó iranti to wà",
             "enterRepayDebt": "Tẹ ìdá",
             "repayMoreThanDebt": "Iye iṣẹrọ ti o tẹlẹ"
-        }
+        },
+        "interest": "Èlòkò",
+        "interestDescription": "Ọwọ ọwọọ jìnnà tẹlẹ láti kúrò láti ilé ìdì rẹ, ti wọ́n sì bẹrẹ ní pẹrẹ. Owó yìí jìnnà tẹlẹ ní ìdápadà ìlọsíwájú àti awọn iṣẹ̀tẹ̀ ni òṣìṣẹ̀lú."
     },
     "accountSettings": {
         "title": "Eto iroyin",

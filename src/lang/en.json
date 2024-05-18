@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "The maximum amount you can draw from your position, determined by the value of your collateral. This limit adjusts as the value of the collateral changes.",
         "borrowTax": "Borrow tax",
         "borrowTaxDescription": "The {value} tax applied to the borrowed amount",
-        "interest": "Interest",
-        "interestDescription": "An annual fee charged on the amount drawn from your position, calculated as a percentage. This fee compensates for risks and market fluctuations.",
         "repayDebt": "Repay debt",
         "repayDebtDescription": "Return borrowed funds to reduce your outstanding debt. This can decrease interest costs and lower the risk of liquidation.",
         "closeVault": "Close my position",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Insufficient collateral",
             "enterRepayDebt": "Enter repay debt",
             "repayMoreThanDebt": "Debt overpaid"
-        }
+        },
+        "interest": "Interest",
+        "interestDescription": "An annual fee charged on the amount drawn from your position, calculated as a percentage. This fee compensates for risks and market fluctuations."
     },
     "accountSettings": {
         "title": "Account settings",

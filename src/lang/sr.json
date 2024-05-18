@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "Maksimalni iznos koji možete povući iz svoje pozicije, određen vrednošću vašeg kolaterala. Ova granica se prilagođava kako se vrednost kolaterala menja.",
         "borrowTax": "Порез на заем",
         "borrowTaxDescription": "Порез {value} примењен на износ позајмљени.",
-        "interest": "Камата",
-        "interestDescription": "Годишња накнада наплаћена на износ извучен из вашег сефа, израчуната као проценат. Ова накнада накнађује ризике и тржишне флуктуације.",
         "repayDebt": "Измирите дуг",
         "repayDebtDescription": "Vratite pozajmljena sredstva kako biste smanjili svoj neplaćeni dug. Ovo može smanjiti troškove kamata i smanjiti rizik od likvidacije.",
         "closeVault": "Затвори моју позицију",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Недовољно залога",
             "enterRepayDebt": "Унесите износ за погашење дуга",
             "repayMoreThanDebt": "Dug preplaćen"
-        }
+        },
+        "interest": "Камата",
+        "interestDescription": "Годишња накнада наплаћена на износ извучен из вашег сефа, израчуната као проценат. Ова накнада накнађује ризике и тржишне флуктуације."
     },
     "accountSettings": {
         "title": "ПОДЕШАВАЊА РАЧУНА",

@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "Het maximale bedrag dat u kunt opnemen uit uw positie, bepaald door de waarde van uw onderpand. Deze limiet past zich aan naarmate de waarde van het onderpand verandert.",
         "borrowTax": "Leentaks",
         "borrowTaxDescription": "De {value} belasting die wordt toegepast op het geleende bedrag",
-        "interest": "Rente",
-        "interestDescription": "Een jaarlijkse vergoeding die in rekening wordt gebracht over het opgenomen bedrag uit uw kluis, berekend als een percentage. Deze vergoeding compenseert voor risico's en marktfluctuaties.",
         "repayDebt": "Schuld terugbetalen",
         "repayDebtDescription": "Betaal geleende fondsen terug om uw uitstaande schuld te verminderen. Dit kan rentekosten verlagen en het risico op liquidatie verminderen.",
         "closeVault": "Sluit mijn positie",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Onvoldoende onderpand",
             "enterRepayDebt": "Voer de terug te betalen schuld in",
             "repayMoreThanDebt": "Te veel terugbetaald"
-        }
+        },
+        "interest": "Rente",
+        "interestDescription": "Een jaarlijkse vergoeding die in rekening wordt gebracht over het opgenomen bedrag uit uw kluis, berekend als een percentage. Deze vergoeding compenseert voor risico's en marktfluctuaties."
     },
     "accountSettings": {
         "title": "Accountinstellingen",

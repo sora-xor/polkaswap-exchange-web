@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "Maximální částka, kterou můžete čerpat ze své pozice, určena hodnotou vašeho zajištění. Tento limit se mění podle hodnoty zajištění.",
         "borrowTax": "Daň z půjčky",
         "borrowTaxDescription": "{value} daň aplikovaná na vypůjčenou částku",
-        "interest": "Úrok",
-        "interestDescription": "Roční poplatek účtovaný z částky vybrané z vašeho trezoru, vypočítaný jako procento. Tento poplatek kompenzuje rizika a tržní fluktuace.",
         "repayDebt": "Splacení dluhu",
         "repayDebtDescription": "Vraťte půjčené peníze, abyste snížili svůj stávající dluh. To může snížit náklady na úroky a snížit riziko likvidace.",
         "closeVault": "Zavřít mou pozici",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "Nedostatečná zástava",
             "enterRepayDebt": "Zadejte částku pro splacení dluhu",
             "repayMoreThanDebt": "Dluh přeplacen"
-        }
+        },
+        "interest": "Úrok",
+        "interestDescription": "Roční poplatek účtovaný z částky vybrané z vašeho trezoru, vypočítaný jako procento. Tento poplatek kompenzuje rizika a tržní fluktuace."
     },
     "accountSettings": {
         "title": "Nastavení účtu",

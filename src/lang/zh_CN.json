@@ -1606,8 +1606,6 @@
         "maxAvailableToBorrowDescription": "您可以从仓位中提取的最大金额，由您的抵押品价值决定。此限额会随着抵押品价值的变化而调整。",
         "borrowTax": "借贷税",
         "borrowTaxDescription": "借出金额应用的 {value} 税",
-        "interest": "利息",
-        "interestDescription": "从您的保险库中提取的金额收取的年费，以百分比计算。该费用补偿了风险和市场波动。",
         "repayDebt": "偿还债务",
         "repayDebtDescription": "归还借入的资金以减少您的未偿债务。这可以减少利息成本并降低清算风险。",
         "closeVault": "关闭我的头寸",
@@ -1640,7 +1638,9 @@
             "insufficientCollateral": "抵押品不足",
             "enterRepayDebt": "输入偿还债务",
             "repayMoreThanDebt": "偿还的债务过多"
-        }
+        },
+        "interest": "利息",
+        "interestDescription": "从您的保险库中提取的金额收取的年费，以百分比计算。该费用补偿了风险和市场波动。"
     },
     "accountSettings": {
         "title": "帐号设定",
