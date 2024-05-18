@@ -1576,6 +1576,11 @@
         },
         "pricePerToken": "Cena za 1 {token}"
     },
+    "calculatingText": "Vypočítávání",
+    "customisePageText": "Přizpůsobit stránku",
+    "priceChartText": "Cenový graf",
+    "editText": "Upravit",
+    "resetText": "Resetovat",
     "kensetsu": {
         "addCollateral": "Přidat zástavu",
         "addCollateralDescription": "Vložte do svého trezoru další aktiva, abyste zvýšili svůj úvěrový limit nebo zlepšili poměr půjčky k hodnotě. To také může pomoci předejít likvidaci.",
