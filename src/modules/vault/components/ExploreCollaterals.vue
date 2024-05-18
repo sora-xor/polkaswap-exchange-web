@@ -34,11 +34,14 @@
           <s-icon v-if="isLoggedIn && row.isAvailable" name="plus-16" size="12" />
         </template>
       </s-table-column>
-      <!-- Stability Fee -->
+      <!-- Interest -->
       <s-table-column width="140" header-align="right" align="right">
         <template #header>
           <sort-button name="stabilityFeeValue" :sort="{ order, property }" @change-sort="changeSort">
-            <span class="explore-table__primary">Interest</span>
+            <span class="explore-table__primary">{{ t('kensetsu.interest') }}</span>
+            <s-tooltip border-radius="mini" :content="t('kensetsu.interestDescription')">
+              <s-icon name="info-16" size="14px" />
+            </s-tooltip>
           </sort-button>
         </template>
         <template v-slot="{ row }">

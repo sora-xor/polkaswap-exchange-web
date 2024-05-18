@@ -136,11 +136,11 @@
               </div>
               <div class="position-info__item s-flex-column">
                 <p class="vault-label p3">
-                  {{ t('kensetsu.stabilityFee') }}
+                  {{ t('kensetsu.interest') }}
                   <s-tooltip
                     slot="suffix"
                     border-radius="mini"
-                    :content="t('kensetsu.stabilityFeeDescription')"
+                    :content="t('kensetsu.interestDescription')"
                     placement="top"
                     tabindex="-1"
                   >

@@ -1192,8 +1192,8 @@ export default {
       'The maximum amount you can draw from your vault, determined by the value of your collateral. This limit adjusts as the value of the collateral changes.',
     borrowTax: 'Borrow tax',
     borrowTaxDescription: 'The {value} tax applied to the borrowed amount',
-    stabilityFee: 'Stability fee',
-    stabilityFeeDescription:
+    interest: 'Interest',
+    interestDescription:
       'An annual fee charged on the amount drawn from your vault, calculated as a percentage. This fee compensates for risks and market fluctuations.',
     repayDebt: 'Repay debt',
     repayDebtDescription: 'Repay debt for the selected vault',

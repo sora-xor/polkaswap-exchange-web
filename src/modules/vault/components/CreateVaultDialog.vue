@@ -70,8 +70,8 @@
           is-formatted
         />
         <info-line
-          :label="t('kensetsu.stabilityFee')"
-          :label-tooltip="t('kensetsu.stabilityFeeDescription')"
+          :label="t('kensetsu.interest')"
+          :label-tooltip="t('kensetsu.interestDescription')"
           :value="formattedStabilityFee"
           asset-symbol="%"
           is-formatted
