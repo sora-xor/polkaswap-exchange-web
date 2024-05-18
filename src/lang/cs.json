@@ -412,8 +412,8 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Vlastník aktiv",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Trezory",
-        "VaultDetails": "Podrobnosti o trezoru",
+        "Vaults": "Půjčit",
+        "VaultDetails": "Detaily pozice",
         "Burn": "Hořet"
     },
     "mainMenu": {

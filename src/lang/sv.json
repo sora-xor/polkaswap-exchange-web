@@ -412,8 +412,8 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Tillgångens ägare",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Valv",
-        "VaultDetails": "Valv detaljer",
+        "Vaults": "Låna",
+        "VaultDetails": "Positionsdetaljer",
         "Burn": "Bränna"
     },
     "mainMenu": {

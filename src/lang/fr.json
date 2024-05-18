@@ -412,8 +412,8 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Propriétaire d'actifs",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Voûtes",
-        "VaultDetails": "Détails du coffre-fort",
+        "Vaults": "Emprunter",
+        "VaultDetails": "Détails de la position",
         "Burn": "Brûler"
     },
     "mainMenu": {

@@ -412,8 +412,8 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "资产所有者",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "保险库",
-        "VaultDetails": "保险库详情",
+        "Vaults": "借款",
+        "VaultDetails": "头寸详情",
         "Burn": "烧伤"
     },
     "mainMenu": {

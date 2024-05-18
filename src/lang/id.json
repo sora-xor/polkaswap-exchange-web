@@ -412,8 +412,8 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Pemilik aset",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Brankas",
-        "VaultDetails": "Detail Vault",
+        "Vaults": "Meminjam",
+        "VaultDetails": "Detail Posisi",
         "Burn": "Membakar"
     },
     "mainMenu": {

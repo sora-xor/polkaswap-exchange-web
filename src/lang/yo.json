@@ -412,8 +412,8 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Oní dúkìá",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Vaults",
-        "VaultDetails": "Vault Details",
+        "Vaults": "Yawo",
+        "VaultDetails": "Awọn alaye ipo",
         "Burn": "Iná"
     },
     "mainMenu": {

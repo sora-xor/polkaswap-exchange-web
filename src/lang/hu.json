@@ -412,8 +412,8 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Eszköz tulajdonosa",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Boltívek",
-        "VaultDetails": "Vault Részletek",
+        "Vaults": "Kölcsönözni",
+        "VaultDetails": "Pozíció részletei",
         "Burn": "Éget"
     },
     "mainMenu": {

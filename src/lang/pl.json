@@ -412,8 +412,8 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Właściciel aktywów",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Skarbce",
-        "VaultDetails": "Szczegóły skarbca",
+        "Vaults": "Pożyczyć",
+        "VaultDetails": "Szczegóły pozycji",
         "Burn": "Palić"
     },
     "mainMenu": {

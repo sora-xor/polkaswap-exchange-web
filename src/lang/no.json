@@ -412,8 +412,8 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Eier av eiendeler",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Hvelv",
-        "VaultDetails": "Detaljer om hvelvet",
+        "Vaults": "Låne",
+        "VaultDetails": "Posisjonsdetaljer",
         "Burn": "Brenne"
     },
     "mainMenu": {

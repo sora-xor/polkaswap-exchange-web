@@ -412,8 +412,8 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Vlasnik imovine",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Trezori",
-        "VaultDetails": "Detalji trezora",
+        "Vaults": "Posuditi",
+        "VaultDetails": "Detalji pozicije",
         "Burn": "Spaliti"
     },
     "mainMenu": {

@@ -412,8 +412,8 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Ակտիվների սեփականատեր",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Պահոցներ",
-        "VaultDetails": "Պահոցի մանրամասներ",
+        "Vaults": "Վարկ",
+        "VaultDetails": "Դիրքի մանրամասներ",
         "Burn": "Այրվել"
     },
     "mainMenu": {

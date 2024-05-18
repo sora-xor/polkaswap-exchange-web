@@ -412,8 +412,8 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Владелец активов",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Хранилища",
-        "VaultDetails": "Детали хранилища",
+        "Vaults": "Занять",
+        "VaultDetails": "Детали позиции",
         "Burn": "Сжечь"
     },
     "mainMenu": {

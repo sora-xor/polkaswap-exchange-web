@@ -412,8 +412,8 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Propietario del activo",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Bóvedas",
-        "VaultDetails": "Detalles de la bóveda",
+        "Vaults": "Pedir prestado",
+        "VaultDetails": "Detalles de la posición",
         "Burn": "Quemar"
     },
     "mainMenu": {
