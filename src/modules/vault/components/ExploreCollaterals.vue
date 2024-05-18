@@ -286,7 +286,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
   }
 
   openSelectedPosition(row: TableItem): void {
-    if (!row.isAvailable) return;
+    if (!(this.isLoggedIn && row.isAvailable)) return;
     this.$emit('open', row.lockedAsset, row.debtAsset);
   }
 }
