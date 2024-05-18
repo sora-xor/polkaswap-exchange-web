@@ -1195,60 +1195,66 @@ export default {
   },
   kensetsu: {
     addCollateral: 'Add collateral',
-    addCollateralDescription: 'Add more collateral to the selected vault',
+    addCollateralDescription:
+      'Deposit more assets into your position to increase your borrowing limit or to improve your loan-to-value ratio. This can also help prevent liquidation.',
     depositCollateral: 'Deposit collateral',
     totalCollateral: 'Total collateral',
-    totalCollateralDescription: 'Total amount of collateral being deposited to the selected vault',
+    totalCollateralDescription:
+      'The total value of all assets currently deposited in your position. This value affects your borrowing capacity and risk of liquidation.',
     debtAvailable: 'Debt available',
-    debtAvailableDescription: 'Amount of debt available to be borrowed from the selected vault',
+    debtAvailableDescription:
+      'The amount of funds you can still draw from your position without exceeding your borrowing limit, based on your current collateral.',
     ltv: 'Loan to value ({LTV})',
     ltvDescription:
-      'The ratio of the amount drawn to the value of the collateral in your vault, expressed as a percentage. A higher {LTV} increases potential returns but also risk, including the chance of liquidation.',
+      'The ratio of the amount drawn to the value of the collateral in your position, expressed as a percentage. A higher {LTV} increases potential returns but also risk, including the chance of liquidation.',
     borrowMore: 'Borrow more',
-    borrowMoreDescription: 'Borrow more from the selected vault',
+    borrowMoreDescription:
+      'Draw additional funds from your position up to the maximum available amount. Ensure your collateral value supports the increased debt to avoid liquidation risks.',
     available: 'Available',
     outstandingDebt: 'Outstanding debt',
-    outstandingDebtDescription: 'Amount of debt that has been borrowed from the selected vault',
+    outstandingDebtDescription:
+      'The total amount you currently owe from the funds drawn from your position, including accrued interest. This needs to be repaid to close your position or maintain healthy loan-to-value ratios.',
     createVault: 'Open a borrow position',
     createVaultDescription:
-      'Initiate a new transaction by depositing collateral into your vault and drawing funds. This creates a debt obligation that you must manage.',
+      'Initiate a new transaction by depositing collateral into your position and drawing funds. This creates a debt obligation that you must manage.',
     createVaultAction: 'Borrow',
     borrowDebt: 'Borrow debt',
     minDepositCollateral: 'Min. deposit collateral',
     minDepositCollateralDescription:
-      'The minimum amount of assets required to open a vault. This initial deposit secures the funds you wish to borrow.',
+      'The minimum amount of assets required to open a position. This initial deposit secures the funds you wish to borrow.',
     maxAvailableToBorrow: 'Max. available to borrow',
     maxAvailableToBorrowDescription:
-      'The maximum amount you can draw from your vault, determined by the value of your collateral. This limit adjusts as the value of the collateral changes.',
+      'The maximum amount you can draw from your position, determined by the value of your collateral. This limit adjusts as the value of the collateral changes.',
     borrowTax: 'Borrow tax',
     borrowTaxDescription: 'The {value} tax applied to the borrowed amount',
     interest: 'Interest',
     interestDescription:
-      'An annual fee charged on the amount drawn from your vault, calculated as a percentage. This fee compensates for risks and market fluctuations.',
+      'An annual fee charged on the amount drawn from your position, calculated as a percentage. This fee compensates for risks and market fluctuations.',
     repayDebt: 'Repay debt',
-    repayDebtDescription: 'Repay debt for the selected vault',
+    repayDebtDescription:
+      'Return borrowed funds to reduce your outstanding debt. This can decrease interest costs and lower the risk of liquidation.',
     closeVault: 'Close my position',
     closeVaultDescription:
       'Close the selected position by repaying all outstanding debt and withdrawing all collateral',
     yourCollateral: 'Your collateral',
     yourCollateralDescription:
-      "The assets you've deposited into your vault to secure the funds drawn. These assets may be liquidated by the lender if you fail to maintain the required loan-to-value ratio.",
+      "The assets you've deposited into your position to secure the funds drawn. These assets may be liquidated by the lender if you fail to maintain the required loan-to-value ratio.",
     yourDebt: 'Your debt',
     yourDebtDescription:
-      'The total amount currently outstanding in your vault, including the drawn amount and any accrued interest. This balance increases over time if interest accumulates.',
+      'The total amount currently outstanding in your position, including the drawn amount and any accrued interest. This balance increases over time if interest accumulates.',
     yourDebtTokenBalance: 'Your {tokenSymbol} balance',
     requiredAmountWithSlippage: 'Required amount including slippage',
     requiredAmountWithSlippageDescription:
-      'For a smooth vault closure, buy slightly more {tokenSymbol} than the {amount} required due to possible slippage. You need an extra to cover the shortfall. Swap your assets into {tokenSymbol} to meet this need.',
+      'For a smooth position closure, buy slightly more {tokenSymbol} than the {amount} required due to possible slippage. You need an extra to cover the shortfall. Swap your assets into {tokenSymbol} to meet this need.',
     openSwap: 'Open swap',
     introTitle: 'Open borrow positions & Earn with {Kensetsu}',
     introDescription:
-      'Power up your portfolio using cutting-edge automation tools of the {SORA} Network, making borrowing, lending, and multiplying your favorite assets both safe and effortless.',
+      'Experience safe and effortless borrowing and lending. Open borrowing positions with {Kensetsu} platform.',
     disclaimerDescription:
-      'Borrowing digital assets through {Polkaswap} carries significant risk and is entirely at your own risk. The value of digital assets is highly volatile, and any changes in the market prices of the assets you have borrowed or used as collateral can lead to substantial financial losses, possibly even...',
+      'Borrowing digital assets through {Polkaswap} carries significant risk and is entirely at your own risk. The value of digital assets is highly volatile, and any changes in the market prices of the assets you have borrowed or used as collateral can lead to substantial financial losses.',
     availableToBorrow: 'Available to borrow',
     availableToBorrowDescription:
-      'The remaining amount you are eligible to draw under the current conditions of your vault, based on your deposited collateral and any existing debt.',
+      'The remaining amount you are eligible to draw under the current conditions of your position, based on your deposited collateral and any existing debt.',
     collateralDetails: 'Collateral details',
     debtDetails: 'Debt details',
     positionInfo: 'Position information',
@@ -1261,10 +1267,10 @@ export default {
     error: {
       enterCollateral: 'Enter collateral',
       enterBorrow: 'Enter borrow amount',
-      borrowMoreThanAvailable: 'Borrow more than available',
+      borrowMoreThanAvailable: 'Available debt exceeded',
       insufficientCollateral: 'Insufficient collateral',
       enterRepayDebt: 'Enter repay debt',
-      repayMoreThanDebt: 'Repay more than debt',
+      repayMoreThanDebt: 'Debt overpaid',
     },
   },
 };
