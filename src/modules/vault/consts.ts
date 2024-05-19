@@ -15,6 +15,21 @@ export enum VaultComponents {
   ExploreOverallStats = 'ExploreOverallStats',
 }
 
+export enum VaultStatuses {
+  Opened = 'Opened',
+  Closed = 'Closed',
+  Liquidated = 'Liquidated',
+}
+
+export enum VaultEventTypes {
+  Created = 'Created',
+  DebtIncreased = 'DebtIncreased',
+  CollateralDeposit = 'CollateralDeposit',
+  DebtPayment = 'DebtPayment',
+  Closed = 'Closed',
+  Liquidated = 'Liquidated',
+}
+
 export const LtvTranslations = {
   success: 'SAFE',
   warning: 'RISKY',
