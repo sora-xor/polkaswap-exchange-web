@@ -305,7 +305,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
 </style>
 
 <style lang="scss" scoped>
-$container-paddings: 2 * $inner-spacing-big - $inner-spacing-mini;
+$container-paddings: 2 * $inner-spacing-big + $inner-spacing-mini;
 $container-max: 100vw;
 $container-max-width: calc($container-max - $container-paddings - var(--sidebar-width));
 $container-max-width--collapsed: calc($container-max - $container-paddings - $sidebar-collapsed-width);
@@ -319,6 +319,7 @@ $container-max-width--collapsed: calc($container-max - $container-paddings - $si
     box-shadow: var(--s-shadow-element-pressed);
 
     @include tablet {
+      width: 100%;
       max-width: $container-max-width;
       &.menu-collapsed {
         max-width: $container-max-width--collapsed;
