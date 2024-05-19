@@ -106,7 +106,9 @@ function bridgeDataToHistoryItem(
     : BridgeNetworkType.Sub;
 
   const [from, to] = isSubBridge
-    ? [getters.sender, getters.recipient]
+    ? state.isSoraToEvm
+      ? [getters.sender, getters.recipient]
+      : [getters.recipient, getters.sender]
     : [rootState.wallet.account.address, getters.externalAccount];
 
   const data = {

@@ -231,10 +231,6 @@ class SubBridgeHistory extends SubNetworksConnector {
     asset: RegisteredAccountAsset;
     events: any[];
   }): Promise<Nullable<SubHistory>> {
-    const { soraParachainApi } = this;
-
-    if (!soraParachainApi) throw new Error('SORA Parachain Api is not exists');
-
     // update SORA network fee
     const soraFeeEvent = events.find((e) => this.soraApi.events.transactionPayment.TransactionFeePaid.is(e.event));
     history.soraNetworkFee = soraFeeEvent.event.data[1].toString();
@@ -260,6 +256,10 @@ class SubBridgeHistory extends SubNetworksConnector {
     if (externalNetwork === SubNetworkId.Liberland) {
       return await this.processOutgoingToLiberland(history);
     }
+
+    const { soraParachainApi } = this;
+
+    if (!soraParachainApi) throw new Error('SORA Parachain Api is not exists');
 
     // SORA Parachain extrinsic events for next search
     const parachainExtrinsicEvents = networkEventsReversed.slice(messageDispatchedIndex);
@@ -363,10 +363,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     txEvents: any[];
     blockEvents: any[];
   }): Promise<Nullable<SubHistory>> {
-    const { soraApi, soraParachainApi } = this;
-
-    if (!soraParachainApi) throw new Error('SORA Parachain Api is not exists');
-
+    const { soraApi } = this;
     // Token is minted to account event
     const [_, eventIndex] = getDepositedBalance(blockEvents, history.from as string, this.soraApi);
     history.payload.eventIndex = eventIndex;
@@ -424,6 +421,9 @@ class SubBridgeHistory extends SubNetworksConnector {
 
       return history;
     }
+
+    const { soraParachainApi } = this;
+    if (!soraParachainApi) throw new Error('SORA Parachain Api is not exists');
 
     // If transfer received from Parachain, extrinsic events should have xcmpQueue.Success event
     const messageEvent = networkExtrinsicEvents.find((e) => soraParachainApi.events.xcmpQueue.Success.is(e.event));
