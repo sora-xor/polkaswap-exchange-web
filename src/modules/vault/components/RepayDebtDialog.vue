@@ -276,6 +276,7 @@ export default class RepayDebtDialog extends Mixins(
           if (!this.vault) throw new Error('[api.kensetsu.repayVaultDebt]: vault is null');
           await api.kensetsu.repayVaultDebt(this.vault, this.repayDebtValue);
         });
+        this.$emit('confirm');
       } catch (error) {
         console.error(error);
       }

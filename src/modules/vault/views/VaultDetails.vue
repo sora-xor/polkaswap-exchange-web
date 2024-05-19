@@ -34,8 +34,8 @@
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
-                <formatted-amount :value="formattedLockedAmount" :asset-symbol="lockedSymbol" />
-                <formatted-amount is-fiat-value :value="fiatLockedAmount" />
+                <formatted-amount value-can-be-hidden :value="formattedLockedAmount" :asset-symbol="lockedSymbol" />
+                <formatted-amount value-can-be-hidden is-fiat-value :value="fiatLockedAmount" />
               </div>
             </div>
             <div class="vault-collateral__actions s-flex">
@@ -45,7 +45,6 @@
                 :disabled="isAddCollateralUnavailable"
                 @click="addCollateral"
               >
-                <s-icon name="finance-send-24" size="16" />
                 {{ t('kensetsu.addCollateral') }}
               </s-button>
             </div>
@@ -67,8 +66,8 @@
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
-                <formatted-amount :value="formattedDebtAmount" :asset-symbol="kusdSymbol" />
-                <formatted-amount is-fiat-value :value="fiatDebt" />
+                <formatted-amount value-can-be-hidden :value="formattedDebtAmount" :asset-symbol="kusdSymbol" />
+                <formatted-amount value-can-be-hidden is-fiat-value :value="fiatDebt" />
               </div>
               <div class="vault-debt__item s-flex-column">
                 <p class="vault-label p3">
@@ -83,8 +82,8 @@
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
-                <formatted-amount :value="formattedAvailableToBorrow" :asset-symbol="kusdSymbol" />
-                <formatted-amount is-fiat-value :value="fiatAvailableToBorrow" />
+                <formatted-amount value-can-be-hidden :value="formattedAvailableToBorrow" :asset-symbol="kusdSymbol" />
+                <formatted-amount value-can-be-hidden is-fiat-value :value="fiatAvailableToBorrow" />
               </div>
             </div>
             <div class="vault-debt__actions s-flex">
@@ -94,7 +93,6 @@
                 :disabled="isRepayDebtUnavailable"
                 @click="repayDebt"
               >
-                <s-icon name="finance-send-24" size="16" />
                 {{ t('kensetsu.repayDebt') }}
               </s-button>
               <s-button
@@ -104,7 +102,6 @@
                 :disabled="isBorrowMoreUnavailable"
                 @click="borrowMore"
               >
-                <s-icon name="finance-send-24" size="16" />
                 {{ t('kensetsu.borrowMore') }}
               </s-button>
             </div>
@@ -197,6 +194,12 @@
             </div>
           </div>
         </s-card>
+        <vault-details-history
+          :history-loading="historyLoading"
+          :history="history"
+          :locked-asset="lockedAsset"
+          :debt-asset="kusdToken"
+        />
       </s-col>
     </s-row>
     <add-collateral-dialog
@@ -208,6 +211,7 @@
       :collateral="collateral"
       :max-ltv="maxLtv"
       :average-collateral-price="averageCollateralPrice"
+      @confirm="updateHistoryWithDelay"
     />
     <borrow-more-dialog
       :visible.sync="showBorrowMoreDialog"
@@ -217,6 +221,7 @@
       :collateral="collateral"
       :max-safe-debt="maxSafeDebt"
       :max-ltv="maxLtv"
+      @confirm="updateHistoryWithDelay"
     />
     <repay-debt-dialog
       :visible.sync="showRepayDebtDialog"
@@ -224,6 +229,7 @@
       :prev-ltv="adjustedLtv"
       :max-safe-debt="maxSafeDebt"
       :max-ltv="maxLtv"
+      @confirm="updateHistoryWithDelay"
     />
     <close-vault-dialog
       :visible.sync="showCloseVaultDialog"
@@ -242,15 +248,19 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue, HundredNumber } from '@/consts';
+import { fetchVaultEvents } from '@/indexer/queries/kensetsu';
 import { LtvTranslations, VaultComponents, VaultPageNames } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
+import type { VaultEvent } from '@/modules/vault/types';
 import { getLtvStatus } from '@/modules/vault/util';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
-import { asZeroValue, getAssetBalance, waitUntil } from '@/utils';
+import { asZeroValue, delay, getAssetBalance, waitUntil } from '@/utils';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
+
+const INDEXER_DELAY = 4 * 6_000;
 
 @Component({
   components: {
@@ -262,6 +272,7 @@ import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/type
     RepayDebtDialog: vaultLazyComponent(VaultComponents.RepayDebtDialog),
     CloseVaultDialog: vaultLazyComponent(VaultComponents.CloseVaultDialog),
     LtvProgressBar: vaultLazyComponent(VaultComponents.LtvProgressBar),
+    VaultDetailsHistory: vaultLazyComponent(VaultComponents.VaultDetailsHistory),
   },
 })
 export default class VaultDetails extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
@@ -281,6 +292,9 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   showAddCollateralDialog = false;
   showBorrowMoreDialog = false;
   showRepayDebtDialog = false;
+
+  history: VaultEvent[] = [];
+  historyLoading = false;
 
   get vault(): Nullable<Vault> {
     const vaultId = this.$route.params.vault;
@@ -431,6 +445,16 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     router.push({ name: VaultPageNames.Vaults });
   }
 
+  private async updateHistory(id: number): Promise<void> {
+    this.history = await fetchVaultEvents(id);
+  }
+
+  async updateHistoryWithDelay(): Promise<void> {
+    if (!this.vault) return;
+    await delay(INDEXER_DELAY);
+    await this.updateHistory(this.vault.id);
+  }
+
   mounted(): void {
     this.withApi(async () => {
       if (!this.isLoggedIn) {
@@ -440,7 +464,11 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
       await waitUntil(() => !this.parentLoading);
       if (!this.vault) {
         this.goToVaults();
+        return;
       }
+      this.historyLoading = true;
+      await this.updateHistory(this.vault.id);
+      this.historyLoading = false;
     });
   }
 

@@ -86,7 +86,7 @@ const VaultDetailsQuery = gql<ConnectionQueryResponse<IndexerVaultEvent>>`
 const parseVaultEvents = (event: IndexerVaultEvent): VaultEvent => {
   return {
     amount: event.amount ? new FPNumber(event.amount) : null,
-    timestamp: event.timestamp,
+    timestamp: event.timestamp * 1000,
     type: event.type,
   };
 };
@@ -104,7 +104,8 @@ export async function fetchVaultEvents(vaultId: number | string): Promise<VaultE
         variables,
         parseVaultEvents
       );
-      return items ?? [];
+      // Reverse to show the latest events first, we don't use orderBy to keep the order of events
+      return items?.reverse() ?? [];
     }
     case IndexerType.SUBSQUID: {
       return [];

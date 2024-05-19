@@ -276,6 +276,7 @@ export default class BorrowMoreDialog extends Mixins(
           if (!this.vault) throw new Error('[api.kensetsu.borrow]: vault is null');
           await api.kensetsu.borrow(this.vault, this.borrowValue, this.slippageTolerance);
         });
+        this.$emit('confirm');
       } catch (error) {
         console.error(error);
       }

@@ -65,16 +65,18 @@
                   <s-icon name="info-16" size="12px" />
                 </s-tooltip>
               </p>
-              <formatted-amount
-                v-if="vault.lockedAsset"
-                :value="format(vault.lockedAmount)"
-                :asset-symbol="getLockedSymbol(vault.lockedAsset)"
-              />
-              <formatted-amount
-                v-if="vault.lockedAsset"
-                is-fiat-value
-                :value="formatFiat(vault.lockedAmount, vault.lockedAsset)"
-              />
+              <template v-if="vault.lockedAsset">
+                <formatted-amount
+                  value-can-be-hidden
+                  :value="format(vault.lockedAmount)"
+                  :asset-symbol="getLockedSymbol(vault.lockedAsset)"
+                />
+                <formatted-amount
+                  value-can-be-hidden
+                  is-fiat-value
+                  :value="formatFiat(vault.lockedAmount, vault.lockedAsset)"
+                />
+              </template>
             </div>
             <div class="vault-details__item s-flex-column">
               <p class="p3 vault__label">
@@ -89,8 +91,10 @@
                   <s-icon name="info-16" size="12px" />
                 </s-tooltip>
               </p>
-              <formatted-amount v-if="kusdToken" :value="format(vault.debt)" :asset-symbol="kusdSymbol" />
-              <formatted-amount v-if="kusdToken" is-fiat-value :value="formatFiat(vault.debt, kusdToken)" />
+              <template v-if="kusdToken">
+                <formatted-amount value-can-be-hidden :value="format(vault.debt)" :asset-symbol="kusdSymbol" />
+                <formatted-amount value-can-be-hidden is-fiat-value :value="formatFiat(vault.debt, kusdToken)" />
+              </template>
             </div>
             <div class="vault-details__item s-flex-column">
               <p class="p3 vault__label">
@@ -105,8 +109,10 @@
                   <s-icon name="info-16" size="12px" />
                 </s-tooltip>
               </p>
-              <formatted-amount v-if="kusdToken" :value="format(vault.available)" :asset-symbol="kusdSymbol" />
-              <formatted-amount v-if="kusdToken" is-fiat-value :value="formatFiat(vault.available, kusdToken)" />
+              <template v-if="kusdToken">
+                <formatted-amount value-can-be-hidden :value="format(vault.available)" :asset-symbol="kusdSymbol" />
+                <formatted-amount value-can-be-hidden is-fiat-value :value="formatFiat(vault.available, kusdToken)" />
+              </template>
             </div>
           </div>
           <s-divider />

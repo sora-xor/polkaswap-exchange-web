@@ -308,6 +308,7 @@ export default class AddCollateralDialog extends Mixins(
           if (!(this.vault && this.asset)) throw new Error('[api.kensetsu.depositCollateral]: vault or asset is null');
           await api.kensetsu.depositCollateral(this.vault, this.collateralValue, this.asset);
         });
+        this.$emit('confirm');
       } catch (error) {
         console.error(error);
       }

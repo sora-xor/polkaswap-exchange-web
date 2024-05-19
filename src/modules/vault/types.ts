@@ -8,13 +8,13 @@ export type VaultEventType = keyof typeof VaultEventTypes;
 export type VaultEvent = {
   amount: Nullable<FPNumber>;
   timestamp: number;
-  type: VaultEvent;
+  type: VaultEventType;
 };
 
 export type IndexerVaultEvent = {
   amount: Nullable<string>;
   timestamp: number;
-  type: VaultEvent;
+  type: VaultEventType;
 };
 
 export type IndexerVault = {

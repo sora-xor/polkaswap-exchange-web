@@ -13,6 +13,7 @@ export enum VaultComponents {
   RepayDebtDialog = 'RepayDebtDialog',
   ExploreCollaterals = 'ExploreCollaterals',
   ExploreOverallStats = 'ExploreOverallStats',
+  VaultDetailsHistory = 'VaultDetailsHistory',
 }
 
 export enum VaultStatuses {
