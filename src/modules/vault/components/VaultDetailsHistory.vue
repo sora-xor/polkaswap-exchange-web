@@ -22,7 +22,7 @@
         @pagination-click="handlePaginationClick"
       />
     </template>
-    <div v-else v-loading="historyLoading" class="details-history__empty p4">{{ t('history.empty') }}</div>
+    <div v-else v-loading="historyLoading" class="details-history__empty p4">{{ t('noDataText') }}</div>
   </s-card>
 </template>
 
@@ -178,6 +178,7 @@ $history-items-length: 5;
 
   &__empty {
     margin: $basic-spacing 0;
+    text-align: center;
   }
 
   .history-item {
