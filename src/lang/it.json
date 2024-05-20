@@ -414,7 +414,7 @@
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Volte",
         "VaultDetails": "Dettagli del Vault",
-        "Kensetsu": "{Kensetsu}"
+        "Burn": "Bruciare"
     },
     "mainMenu": {
         "Swap": "Scambia",
@@ -431,7 +431,7 @@
         "OrderBook": "Commercio",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
         "VaultsContainer": "@:pageTitle.Vaults",
-        "Kensetsu": "@:pageTitle.Kensetsu"
+        "Burn": "@:pageTitle.Burn"
     },
     "social": {
         "twitter": "Twitter",

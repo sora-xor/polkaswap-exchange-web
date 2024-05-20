@@ -414,7 +414,7 @@
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Хранилища",
         "VaultDetails": "Детали хранилища",
-        "Kensetsu": "{Kensetsu}"
+        "Burn": "Сжечь"
     },
     "mainMenu": {
         "Swap": "Обмен",
@@ -431,7 +431,7 @@
         "OrderBook": "Торговля",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
         "VaultsContainer": "@:pageTitle.Vaults",
-        "Kensetsu": "@:pageTitle.Kensetsu"
+        "Burn": "@:pageTitle.Burn"
     },
     "social": {
         "twitter": "Twitter",

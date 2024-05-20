@@ -195,7 +195,7 @@
         "fee": "@:networkFeeText",
         "enterAddress": "输入地址",
         "badAddress": "地址不正确",
-        "enterAmount": "输入数额",
+        "enterAmount": "输入数量",
         "badAmount": "@:insufficientBalanceText",
         "confirmTitle": "确认交易",
         "errorAddress": "无效地址。请检查并重试。",
@@ -343,7 +343,7 @@
     "transaction": {
         "title": "交易细节",
         "blockId": "区块 ID",
-        "status": "状况",
+        "status": "状态",
         "statuses": {
             "pending": "等待确认...",
             "failed": "交易失败",
@@ -387,7 +387,7 @@
     "confirmTransactionText": "确认交易",
     "retryText": "重试",
     "networkFeeText": "网络费用",
-    "networkFeeTooltipText": "网络费是用来保证{Sora}系统的增长和稳定的性能。",
+    "networkFeeTooltipText": "网络费用用于确保{Sora}系统的增长和稳定运行。",
     "ethNetworkFeeTooltipText": "请注意， {AppName}上显示的{network}网络费用只是粗略估计，您可以在确认交易前在连接的{network}钱包中查看正确的费用金额。",
     "marketText": "市场",
     "marketAlgorithmText": "市场算法",
@@ -408,13 +408,13 @@
         "Explore\/Staking": "质押",
         "Explore\/Farming": "农耕",
         "Staking": "质押",
-        "OrderBook": "贸易",
+        "OrderBook": "现货交易",
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "资产所有者",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "保险库",
         "VaultDetails": "保险库详情",
-        "Kensetsu": "{Kensetsu}"
+        "Burn": "烧伤"
     },
     "mainMenu": {
         "Swap": "兑换",
@@ -428,10 +428,10 @@
         "StakingContainer": "质押",
         "Explore\/Container": "探索",
         "SoraCard": "{Sora}卡",
-        "OrderBook": "贸易",
+        "OrderBook": "现货交易",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
         "VaultsContainer": "@:pageTitle.Vaults",
-        "Kensetsu": "@:pageTitle.Kensetsu"
+        "Burn": "@:pageTitle.Burn"
     },
     "social": {
         "twitter": "推特",
@@ -502,7 +502,7 @@
         "chooseToken": "选择代币",
         "chooseAToken": "选择一个代币",
         "chooseTokens": "选择代币",
-        "enterAmount": "输入金额"
+        "enterAmount": "输入数量"
     },
     "transfers": {
         "from": "从",
@@ -658,7 +658,7 @@
         "networkTitle": "{network}交易",
         "transactionHash": "交易哈希值",
         "networkInfo": {
-            "status": "状况",
+            "status": "状态",
             "date": "日期",
             "amount": "数量",
             "transactionFee": "交易费用",
@@ -1320,11 +1320,11 @@
         },
         "overview": {
             "title": "{Sora}质押",
-            "description": "在 {Sora} 网络上质押 {XOR} 代币作为提名人，以验证交易并获得 {VAL} 代币奖励。"
+            "description": "在{Sora}网络上作为提名人质押{XOR}代币，以验证交易并赚取{VAL}代币奖励。"
         },
         "newStake": {
             "title": "开始质押",
-            "minStakeWarning": "获得奖励的最低赌注是{min} {symbol}"
+            "minStakeWarning": "领取奖励的最低质押额为{min} {symbol}"
         },
         "validators": {
             "save": "保存更改",
@@ -1351,8 +1351,8 @@
             "rewarded": "奖励",
             "totalLiquidityStaked": "质押的总流动性",
             "rewardToken": "奖励代币",
-            "unstakingPeriod": "质押期限",
-            "minimumStake": "最低投注额",
+            "unstakingPeriod": "解除质押期",
+            "minimumStake": "最低质押额",
             "nominators": "提名人",
             "validators": "验证者",
             "selectedValidators": "选定的验证者"
@@ -1453,18 +1453,18 @@
         "Sell": "出售{asset}",
         "orderBook": "订单簿",
         "marketTrades": "市场交易",
-        "market": "市场",
-        "limit": "限制",
+        "market": "市价",
+        "limit": "限价",
         "price": "价格",
-        "total": "全部的",
+        "total": "总计",
         "amount": "数量",
         "time": "时间",
         "month": "月",
-        "change": "改变",
+        "change": "变化",
         "cantPlaceOrder": "无法下订单",
-        "enterAmount": "输入金额",
+        "enterAmount": "输入数量",
         "setPrice": "设定价格",
-        "dayVolume": "一维体积",
+        "dayVolume": "一天 成交量",
         "stop": "书已停止",
         "tokenPair": "代币对",
         "book": {
@@ -1472,9 +1472,9 @@
             "noBids": "没有公开投标"
         },
         "history": {
-            "tradeHistory": "贸易历史",
+            "tradeHistory": "交易历史",
             "orderHistory": "订单历史",
-            "openOrders": "未结订单{value}",
+            "openOrders": "未完成订单{value}",
             "connect": "连接账户开始交易",
             "cancel": "取消订单{value}",
             "cancelAll": "全部取消"
@@ -1498,13 +1498,13 @@
         },
         "tradingPair": {
             "choosePair": "选择交易对",
-            "volume": "体积",
+            "volume": "成交量",
             "dailyChange": "每日变化",
-            "status": "地位",
+            "status": "状态",
             "total": "{amount} {symbol} 在{amount2} {symbol2}"
         },
         "bookStatus": {
-            "active": "积极的",
+            "active": "活跃",
             "placeable": "可放置",
             "cancelable": "可取消",
             "inactive": "不活跃"
@@ -1516,11 +1516,11 @@
             "bookWidget": "特定资产的实时、不断更新的买入（买入）和卖出（卖出）订单记录，按价格水平组织。订单簿显示市场深度，包括以不同价格提供的资产数量。交易者利用这种详细的视图来衡量市场情绪，确定潜在的阻力位和支撑位，并根据现有的需求和供应预测价格变动",
             "marketWidget": "该小部件显示市场中已执行交易的实时流，提供有关交易量、近期活动和当前市场趋势的信息。通过观察实际交易的时间、价格和规模，交易者可以深入了解市场动态和情绪，帮助他们发现交易机会并做出明智的决策",
             "txDetails": {
-                "orderType": "“买入”订单将仅以指定价格或更低价格执行，而“卖出”订单将仅以指定价格或更高价格执行。这种控制可确保您支付的费用或售价不会低于您愿意接受的价格。",
-                "expiryDate": "“到期日”是您的订单执行的最后期限。如果在此日期之前市场未达到您指定的价格，订单将自动取消。如果市场状况与您的交易偏好不符，您不必永远等待。",
-                "amount": "“金额”是指您想要在订单中购买或出售的资产总数。指定很重要，因为它决定了交易规模，影响买入订单的总成本或卖出订单的收入。",
-                "limit": "“限价”是您为限价单设置的精确价格。仅当资产的市场价格达到您的限价时才会执行交易，确保您不会以高于此指定值的价格买入或以低于此指定值的价格卖出。",
-                "locked": "“锁定”显示订单正在进行时要持有的资产数量。"
+                "orderType": "“买入”订单只会以指定价格或更低价格执行，而“卖出”订单只会以指定价格或更高价格执行。这种控制确保您不会以比您舒适的价格更高的价格购买，或以比您舒适的价格更低的价格出售。",
+                "expiryDate": "“到期日”是您订单执行的截止日期。如果市场在此日期之前未达到您指定的价格，订单将自动取消。如果市场条件与您的交易偏好不符，您不必永远等待。",
+                "amount": "“数量”指的是您在订单中想要购买或出售的资产总数。这一点很重要，因为它决定了您的交易规模，影响着买入订单的总成本或卖出订单的收入。",
+                "limit": "“限价”是您为限价订单设定的精确价格。只有当资产的市场价格达到您的限价时，交易才会执行，确保您不会以高于或低于指定值的价格购买或出售。",
+                "locked": "“已锁定”显示了订单进行时需要持有的资产数量。"
             },
             "bookStatus": {
                 "active": "启用完整的交易功能。您可以下新订单或取消现有订单。",
@@ -1560,7 +1560,7 @@
                 "reading": "已达限额：每个仓位限价单数量为1024个。请等待部分订单完成"
             },
             "outOfBounds": {
-                "reading": "超出区块链范围：您输入的金额超出了区块链允许的范围。分钟： {min} ；最大值： {max}",
+                "reading": "超出区块链范围：您输入的金额超出了区块链允许的范围。最小值： {min} ；最大值： {max}",
                 "reason": "金额不符合区块链范围"
             },
             "multipleOf": {

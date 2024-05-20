@@ -66,11 +66,11 @@ const routes: Array<RouteConfig> = [
     name: PageNames.Wallet,
     component: lazyView(PageNames.Wallet),
   },
-  {
-    path: '/card',
-    name: PageNames.SoraCard,
-    component: lazyView(PageNames.SoraCard),
-  },
+  // {
+  //   path: '/card',
+  //   name: PageNames.SoraCard,
+  //   component: lazyView(PageNames.SoraCard),
+  // },
   {
     path: '/bridge',
     component: lazyView(PageNames.BridgeContainer),
@@ -271,9 +271,13 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.OrderBook),
   },
   {
+    path: '/burn',
+    name: PageNames.Burn,
+    component: lazyView(PageNames.Burn),
+  },
+  {
     path: '/kensetsu',
-    name: PageNames.Kensetsu,
-    component: lazyView(PageNames.Kensetsu),
+    redirect: '/burn',
   },
   {
     path: '*',

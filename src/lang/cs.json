@@ -414,7 +414,7 @@
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
         "Vaults": "Trezory",
         "VaultDetails": "Podrobnosti o trezoru",
-        "Kensetsu": "{Kensetsu}"
+        "Burn": "Hořet"
     },
     "mainMenu": {
         "Swap": "Swap",
@@ -431,7 +431,7 @@
         "OrderBook": "Obchod",
         "AssetOwnerContainer": "@:pageTitle.AssetOwner",
         "VaultsContainer": "@:pageTitle.Vaults",
-        "Kensetsu": "@:pageTitle.Kensetsu"
+        "Burn": "@:pageTitle.Burn"
     },
     "social": {
         "twitter": "Twitter",
