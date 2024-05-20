@@ -518,14 +518,16 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get formattedReturnedAmount(): string {
-    if (!this.vault || this.isOpened(this.vault)) return ZeroStringValue;
-    return this.vault.returned.toLocaleString(2) ?? ZeroStringValue;
+    if (!(this.vault && this.isClosed(this.vault))) return ZeroStringValue;
+    return this.vault.returned?.toLocaleString(2) ?? ZeroStringValue;
   }
 
   get fiatReturnedAmount(): string {
     if (!(this.vault && this.lockedAsset && this.isClosed(this.vault))) return ZeroStringValue;
 
-    return this.getFiatAmountByFPNumber(this.vault.returned, this.lockedAsset) ?? ZeroStringValue;
+    return this.vault.returned
+      ? this.getFiatAmountByFPNumber(this.vault.returned, this.lockedAsset) ?? ZeroStringValue
+      : ZeroStringValue;
   }
 
   goToVaults(): void {
