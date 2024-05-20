@@ -2,7 +2,7 @@
   <div class="explore-container">
     <div v-loading="parentLoading" class="container container--explore" :class="{ 'menu-collapsed': collapsed }">
       <div class="explore-container-dropdown s-flex">
-        <responsive-tabs :is-mobile="showDropdown" :tabs="tabs" :value="pageName" @input="handleTabChange" />
+        <responsive-tabs is-header :is-mobile="showDropdown" :tabs="tabs" :value="pageName" @input="handleTabChange" />
         <search-input
           autofocus
           class="explore-search"

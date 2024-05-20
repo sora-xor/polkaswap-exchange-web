@@ -1631,6 +1631,18 @@
         "positionSafe": "Position safe",
         "liquidationClose": "Liquidation close",
         "highLiquidationRisk": "High liquidation risk",
+        "positionHistory": "Position history",
+        "liquidated": "Liquidated",
+        "liquidatedMessage": "Liquidated {amount} {symbol}",
+        "status": {
+            "Opened": "Active",
+            "Closed": "Closed",
+            "Liquidated": "Liquidated"
+        },
+        "readMore": "Read more",
+        "reopen": "Re-open",
+        "totalCollateralReturned": "Total collateral returned",
+        "totalCollateralReturnedDescription": "The total value of assets returned to you after closing your position, including total remaining collateral.",
         "error": {
             "enterCollateral": "Enter collateral",
             "enterBorrow": "Enter borrow amount",

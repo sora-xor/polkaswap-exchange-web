@@ -1,3 +1,5 @@
+import type { ClosedVault } from '@/modules/vault/types';
+
 import type { FPNumber } from '@sora-substrate/math';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
@@ -8,6 +10,7 @@ export type VaultState = {
   collateralsSubscription: Nullable<Subscription>;
   accountVaultIdsSubscription: Nullable<Subscription>;
   accountVaults: Vault[];
+  closedAccountVaults: ClosedVault[];
   accountVaultsSubscription: Nullable<Subscription>;
   /** Selected collateral asset ID during the vault creation */
   collateralAddress: string;

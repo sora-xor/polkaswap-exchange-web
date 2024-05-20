@@ -4,14 +4,17 @@
       v-if="isMobile"
       popper-class="responsive-tabs__dropdown-menu"
       type="button"
-      button-type="link"
       placement="bottom-start"
       trigger="click"
+      :button-type="buttonType"
       @select="handleTabChange"
     >
-      <h3 class="responsive-tabs__dropdown-selected">
+      <h3 v-if="isHeader" class="responsive-tabs__dropdown-selected">
         {{ selectedName }}
       </h3>
+      <template v-else>
+        {{ selectedName }}
+      </template>
       <template #menu>
         <s-dropdown-item
           v-for="{ name, label, icon } in tabs"
@@ -39,6 +42,7 @@ import type { ResponsiveTab } from '@/types/tabs';
 
 @Component
 export default class ResponsiveTabs extends Mixins(TranslationMixin) {
+  @Prop({ default: false, type: Boolean }) readonly isHeader!: boolean;
   @Prop({ default: true, type: Boolean }) readonly isMobile!: boolean;
   @Prop({ default: () => [], type: Array }) readonly tabs!: Array<ResponsiveTab>;
 
@@ -47,6 +51,10 @@ export default class ResponsiveTabs extends Mixins(TranslationMixin) {
 
   private get selected(): Nullable<ResponsiveTab> {
     return this.tabs.find((tab) => tab.name === this.selectedKey);
+  }
+
+  get buttonType() {
+    return this.isHeader ? 'link' : 'secondary';
   }
 
   get selectedName(): string {

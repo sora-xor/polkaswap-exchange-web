@@ -1,5 +1,7 @@
 import { defineMutations } from 'direct-vuex';
 
+import type { ClosedVault } from '@/modules/vault/types';
+
 import { defaultAverageCollateralPrices } from './state';
 
 import type { VaultState } from './types';
@@ -34,6 +36,12 @@ const mutations = defineMutations<VaultState>()({
   },
   resetAccountVaults(state): void {
     state.accountVaults = [];
+  },
+  setClosedAccountVaults(state, closedAccountVaults: ClosedVault[]): void {
+    state.closedAccountVaults = [...closedAccountVaults];
+  },
+  resetClosedAccountVaults(state): void {
+    state.closedAccountVaults = [];
   },
   setAccountVaultsSubscription(state, subscription: Subscription): void {
     state.accountVaultsSubscription = subscription;

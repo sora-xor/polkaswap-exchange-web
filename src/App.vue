@@ -125,7 +125,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
-  @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (cssClass: string) => void;
+  @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (windowWidth: number) => void;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
   @mutation.web3.setSubNetworkApps private setSubNetworkApps!: (data: SubNetworkApps) => void;
@@ -200,24 +200,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private setResponsiveClass(): void {
-    const width = window.innerWidth;
-    let newClass = this.responsiveClass;
-
-    if (width >= Breakpoint.HugeDesktop) {
-      newClass = BreakpointClass.HugeDesktop;
-    } else if (width >= Breakpoint.LargeDesktop) {
-      newClass = BreakpointClass.LargeDesktop;
-    } else if (width >= Breakpoint.Desktop) {
-      newClass = BreakpointClass.Desktop;
-    } else if (width >= Breakpoint.Tablet) {
-      newClass = BreakpointClass.Tablet;
-    } else if (width >= Breakpoint.LargeMobile) {
-      newClass = BreakpointClass.LargeMobile;
-    } else if (width < Breakpoint.LargeMobile) {
-      newClass = BreakpointClass.Mobile;
-    }
-
-    this.setScreenBreakpointClass(newClass);
+    this.setScreenBreakpointClass(window.innerWidth);
   }
 
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);

@@ -238,7 +238,7 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 
 @mixin rewards-hint($horizontalPadding: $inner-spacing-medium, $withColor: false) {
   &-hint {
-    font-size: 13px;
+    font-size: var(--s-font-size-extra-small);
     font-weight: 300;
     line-height: var(--s-line-height-base);
     padding: 0 $horizontalPadding;

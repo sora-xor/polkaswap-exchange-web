@@ -15,99 +15,124 @@
         <s-card class="vault details-card" border-radius="small" size="big" primary>
           <div class="vault-title s-flex">
             <pair-token-logo class="vault-icon" size="medium" :first-token="kusdToken" :second-token="lockedAsset" />
-            <h3>{{ vaultTitle }}</h3>
-          </div>
-          <s-divider />
-          <div class="vault-collateral s-flex-column">
-            <h4>{{ t('kensetsu.collateralDetails') }}</h4>
-            <div class="vault-collateral__details s-flex">
-              <div class="vault-collateral__item s-flex-column">
-                <p class="vault-label p3">
-                  {{ t('kensetsu.yourCollateral') }}
-                  <s-tooltip
-                    slot="suffix"
-                    border-radius="mini"
-                    :content="t('kensetsu.yourCollateralDescription')"
-                    placement="top"
-                    tabindex="-1"
-                  >
-                    <s-icon name="info-16" size="12px" />
-                  </s-tooltip>
-                </p>
-                <formatted-amount value-can-be-hidden :value="formattedLockedAmount" :asset-symbol="lockedSymbol" />
-                <formatted-amount value-can-be-hidden is-fiat-value :value="fiatLockedAmount" />
-              </div>
-            </div>
-            <div class="vault-collateral__actions s-flex">
-              <s-button
-                class="s-typography-button--small"
-                size="small"
-                :disabled="isAddCollateralUnavailable"
-                @click="addCollateral"
-              >
-                {{ t('kensetsu.addCollateral') }}
-              </s-button>
+            <div class="vault-title__container s-flex-column">
+              <h3>{{ vaultTitle }}</h3>
+              <position-status :status="status" />
             </div>
           </div>
           <s-divider />
-          <div class="vault-debt s-flex-column">
-            <h4>{{ t('kensetsu.debtDetails') }}</h4>
-            <div class="vault-debt__details s-flex">
-              <div class="vault-debt__item s-flex-column">
-                <p class="vault-label p3">
-                  {{ t('kensetsu.yourDebt') }}
-                  <s-tooltip
-                    slot="suffix"
-                    border-radius="mini"
-                    :content="t('kensetsu.yourDebtDescription')"
-                    placement="top"
-                    tabindex="-1"
-                  >
-                    <s-icon name="info-16" size="12px" />
-                  </s-tooltip>
-                </p>
-                <formatted-amount value-can-be-hidden :value="formattedDebtAmount" :asset-symbol="kusdSymbol" />
-                <formatted-amount value-can-be-hidden is-fiat-value :value="fiatDebt" />
+          <template v-if="ltv">
+            <div class="vault-collateral s-flex-column">
+              <h4>{{ t('kensetsu.collateralDetails') }}</h4>
+              <div class="vault-collateral__details s-flex">
+                <div class="vault-collateral__item s-flex-column">
+                  <p class="vault-label p3">
+                    {{ t('kensetsu.yourCollateral') }}
+                    <s-tooltip
+                      slot="suffix"
+                      border-radius="mini"
+                      :content="t('kensetsu.yourCollateralDescription')"
+                      placement="top"
+                      tabindex="-1"
+                    >
+                      <s-icon name="info-16" size="12px" />
+                    </s-tooltip>
+                  </p>
+                  <formatted-amount value-can-be-hidden :value="formattedLockedAmount" :asset-symbol="lockedSymbol" />
+                  <formatted-amount value-can-be-hidden is-fiat-value :value="fiatLockedAmount" />
+                </div>
               </div>
-              <div class="vault-debt__item s-flex-column">
-                <p class="vault-label p3">
-                  {{ t('kensetsu.availableToBorrow') }}
-                  <s-tooltip
-                    slot="suffix"
-                    border-radius="mini"
-                    :content="t('kensetsu.availableToBorrowDescription')"
-                    placement="top"
-                    tabindex="-1"
-                  >
-                    <s-icon name="info-16" size="12px" />
-                  </s-tooltip>
-                </p>
-                <formatted-amount value-can-be-hidden :value="formattedAvailableToBorrow" :asset-symbol="kusdSymbol" />
-                <formatted-amount value-can-be-hidden is-fiat-value :value="fiatAvailableToBorrow" />
+              <div class="vault-collateral__actions s-flex">
+                <s-button
+                  class="s-typography-button--small"
+                  size="small"
+                  :disabled="isAddCollateralUnavailable"
+                  @click="addCollateral"
+                >
+                  {{ t('kensetsu.addCollateral') }}
+                </s-button>
               </div>
             </div>
-            <div class="vault-debt__actions s-flex">
-              <s-button
-                class="s-typography-button--small"
-                size="small"
-                :disabled="isRepayDebtUnavailable"
-                @click="repayDebt"
-              >
-                {{ t('kensetsu.repayDebt') }}
-              </s-button>
-              <s-button
-                class="s-typography-button--small"
-                type="primary"
-                size="small"
-                :disabled="isBorrowMoreUnavailable"
-                @click="borrowMore"
-              >
-                {{ t('kensetsu.borrowMore') }}
-              </s-button>
+            <s-divider />
+            <div class="vault-debt s-flex-column">
+              <h4>{{ t('kensetsu.debtDetails') }}</h4>
+              <div class="vault-debt__details s-flex">
+                <div class="vault-debt__item s-flex-column">
+                  <p class="vault-label p3">
+                    {{ t('kensetsu.yourDebt') }}
+                    <s-tooltip
+                      slot="suffix"
+                      border-radius="mini"
+                      :content="t('kensetsu.yourDebtDescription')"
+                      placement="top"
+                      tabindex="-1"
+                    >
+                      <s-icon name="info-16" size="12px" />
+                    </s-tooltip>
+                  </p>
+                  <formatted-amount value-can-be-hidden :value="formattedDebtAmount" :asset-symbol="kusdSymbol" />
+                  <formatted-amount value-can-be-hidden is-fiat-value :value="fiatDebt" />
+                </div>
+                <div class="vault-debt__item s-flex-column">
+                  <p class="vault-label p3">
+                    {{ t('kensetsu.availableToBorrow') }}
+                    <s-tooltip
+                      slot="suffix"
+                      border-radius="mini"
+                      :content="t('kensetsu.availableToBorrowDescription')"
+                      placement="top"
+                      tabindex="-1"
+                    >
+                      <s-icon name="info-16" size="12px" />
+                    </s-tooltip>
+                  </p>
+                  <formatted-amount
+                    value-can-be-hidden
+                    :value="formattedAvailableToBorrow"
+                    :asset-symbol="kusdSymbol"
+                  />
+                  <formatted-amount value-can-be-hidden is-fiat-value :value="fiatAvailableToBorrow" />
+                </div>
+              </div>
+              <div class="vault-debt__actions s-flex">
+                <s-button
+                  class="s-typography-button--small"
+                  size="small"
+                  :disabled="isRepayDebtUnavailable"
+                  @click="repayDebt"
+                >
+                  {{ t('kensetsu.repayDebt') }}
+                </s-button>
+                <s-button
+                  class="s-typography-button--small"
+                  type="primary"
+                  size="small"
+                  :disabled="isBorrowMoreUnavailable"
+                  @click="borrowMore"
+                >
+                  {{ t('kensetsu.borrowMore') }}
+                </s-button>
+              </div>
             </div>
+          </template>
+          <div v-else class="vault-returned s-flex-column">
+            <p class="vault-label p3">
+              {{ t('kensetsu.totalCollateralReturned') }}
+              <s-tooltip
+                slot="suffix"
+                border-radius="mini"
+                :content="t('kensetsu.totalCollateralReturnedDescription')"
+                placement="top"
+                tabindex="-1"
+              >
+                <s-icon name="info-16" size="12px" />
+              </s-tooltip>
+            </p>
+            <formatted-amount value-can-be-hidden :value="formattedReturnedAmount" :asset-symbol="lockedSymbol" />
+            <formatted-amount value-can-be-hidden is-fiat-value :value="fiatReturnedAmount" />
           </div>
         </s-card>
-        <s-button class="close-vault-button" type="link" @click="closePosition">
+        <s-button v-if="ltv" class="close-vault-button" type="link" @click="closePosition">
           {{ t('kensetsu.closeVault') }}
         </s-button>
       </s-col>
@@ -157,42 +182,50 @@
               </div>
             </div>
           </div>
-          <s-divider />
-          <div class="ltv s-flex-column">
-            <h4 class="ltv__title">
-              {{ t('kensetsu.ltv') }}
-              <s-tooltip
-                slot="suffix"
-                border-radius="mini"
-                :content="t('kensetsu.ltvDescription')"
-                placement="top"
-                tabindex="-1"
-              >
-                <s-icon name="info-16" size="12px" />
-              </s-tooltip>
-            </h4>
-            <div class="ltv__value s-flex">
-              <h2>{{ formattedLtv }}</h2>
-              <value-status class="ltv__badge" badge error-icon-size="15" :value="ltvNumber" :getStatus="getLtvStatus">
-                {{ ltvText }}
-              </value-status>
+          <template v-if="ltv">
+            <s-divider />
+            <div class="ltv s-flex-column">
+              <h4 class="ltv__title">
+                {{ t('kensetsu.ltv') }}
+                <s-tooltip
+                  slot="suffix"
+                  border-radius="mini"
+                  :content="t('kensetsu.ltvDescription')"
+                  placement="top"
+                  tabindex="-1"
+                >
+                  <s-icon name="info-16" size="12px" />
+                </s-tooltip>
+              </h4>
+              <div class="ltv__value s-flex">
+                <h2>{{ formattedLtv }}</h2>
+                <value-status
+                  class="ltv__badge"
+                  badge
+                  error-icon-size="15"
+                  :value="ltvNumber"
+                  :getStatus="getLtvStatus"
+                >
+                  {{ ltvText }}
+                </value-status>
+              </div>
+              <ltv-progress-bar :percentage="ltvNumber" />
+              <div class="ltv__legend s-flex">
+                <div class="ltv__legend-item">
+                  <span class="ltv__legend-icon success" />
+                  {{ t('kensetsu.positionSafe') }}
+                </div>
+                <div class="ltv__legend-item">
+                  <span class="ltv__legend-icon warning" />
+                  {{ t('kensetsu.liquidationClose') }}
+                </div>
+                <div class="ltv__legend-item">
+                  <span class="ltv__legend-icon error" />
+                  {{ t('kensetsu.highLiquidationRisk') }}
+                </div>
+              </div>
             </div>
-            <ltv-progress-bar :percentage="ltvNumber" />
-            <div class="ltv__legend s-flex">
-              <div class="ltv__legend-item">
-                <span class="ltv__legend-icon success" />
-                {{ t('kensetsu.positionSafe') }}
-              </div>
-              <div class="ltv__legend-item">
-                <span class="ltv__legend-icon warning" />
-                {{ t('kensetsu.liquidationClose') }}
-              </div>
-              <div class="ltv__legend-item">
-                <span class="ltv__legend-icon error" />
-                {{ t('kensetsu.highLiquidationRisk') }}
-              </div>
-            </div>
-          </div>
+          </template>
         </s-card>
         <vault-details-history
           :history-loading="historyLoading"
@@ -202,56 +235,60 @@
         />
       </s-col>
     </s-row>
-    <add-collateral-dialog
-      :visible.sync="showAddCollateralDialog"
-      :vault="vault"
-      :asset="lockedAsset"
-      :prev-ltv="adjustedLtv"
-      :prev-available="availableToBorrow"
-      :collateral="collateral"
-      :max-ltv="maxLtv"
-      :average-collateral-price="averageCollateralPrice"
-      @confirm="updateHistoryWithDelay"
-    />
-    <borrow-more-dialog
-      :visible.sync="showBorrowMoreDialog"
-      :vault="vault"
-      :prev-ltv="adjustedLtv"
-      :available="availableToBorrow"
-      :collateral="collateral"
-      :max-safe-debt="maxSafeDebt"
-      :max-ltv="maxLtv"
-      @confirm="updateHistoryWithDelay"
-    />
-    <repay-debt-dialog
-      :visible.sync="showRepayDebtDialog"
-      :vault="vault"
-      :prev-ltv="adjustedLtv"
-      :max-safe-debt="maxSafeDebt"
-      :max-ltv="maxLtv"
-      @confirm="updateHistoryWithDelay"
-    />
-    <close-vault-dialog
-      :visible.sync="showCloseVaultDialog"
-      :vault="vault"
-      :asset="lockedAsset"
-      @confirm="goToVaults"
-    />
+    <template v-if="ltv">
+      <add-collateral-dialog
+        :visible.sync="showAddCollateralDialog"
+        :vault="vault"
+        :asset="lockedAsset"
+        :prev-ltv="adjustedLtv"
+        :prev-available="availableToBorrow"
+        :collateral="collateral"
+        :max-ltv="maxLtv"
+        :average-collateral-price="averageCollateralPrice"
+        @confirm="updateHistoryWithDelay"
+      />
+      <borrow-more-dialog
+        :visible.sync="showBorrowMoreDialog"
+        :vault="vault"
+        :prev-ltv="adjustedLtv"
+        :available="availableToBorrow"
+        :collateral="collateral"
+        :max-safe-debt="maxSafeDebt"
+        :max-ltv="maxLtv"
+        @confirm="updateHistoryWithDelay"
+      />
+      <repay-debt-dialog
+        :visible.sync="showRepayDebtDialog"
+        :vault="vault"
+        :prev-ltv="adjustedLtv"
+        :max-safe-debt="maxSafeDebt"
+        :max-ltv="maxLtv"
+        @confirm="updateHistoryWithDelay"
+      />
+      <close-vault-dialog
+        :visible.sync="showCloseVaultDialog"
+        :vault="vault"
+        :asset="lockedAsset"
+        @confirm="goToVaults"
+      />
+    </template>
   </div>
   <div v-else class="vault-details-container empty" />
 </template>
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
+import { XOR, KUSD } from '@sora-substrate/util/build/assets/consts';
+import { VaultTypes } from '@sora-substrate/util/build/kensetsu/consts';
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue, HundredNumber } from '@/consts';
 import { fetchVaultEvents } from '@/indexer/queries/kensetsu';
-import { LtvTranslations, VaultComponents, VaultPageNames } from '@/modules/vault/consts';
+import { LtvTranslations, VaultComponents, VaultPageNames, VaultStatuses } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
-import type { VaultEvent } from '@/modules/vault/types';
+import type { ClosedVault, VaultEvent, VaultStatus } from '@/modules/vault/types';
 import { getLtvStatus } from '@/modules/vault/util';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
@@ -261,6 +298,8 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
 
 const INDEXER_DELAY = 4 * 6_000;
+
+type AnyVault = Vault | ClosedVault;
 
 @Component({
   components: {
@@ -273,6 +312,7 @@ const INDEXER_DELAY = 4 * 6_000;
     CloseVaultDialog: vaultLazyComponent(VaultComponents.CloseVaultDialog),
     LtvProgressBar: vaultLazyComponent(VaultComponents.LtvProgressBar),
     VaultDetailsHistory: vaultLazyComponent(VaultComponents.VaultDetailsHistory),
+    PositionStatus: vaultLazyComponent(VaultComponents.PositionStatus),
   },
 })
 export default class VaultDetails extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
@@ -282,6 +322,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   @getter.vault.kusdToken kusdToken!: Nullable<RegisteredAccountAsset>;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
   @state.vault.accountVaults private accountVaults!: Vault[];
+  @state.vault.closedAccountVaults private closedAccountVaults!: ClosedVault[];
   @state.vault.collaterals private collaterals!: Record<string, Collateral>;
   @state.vault.averageCollateralPrices private averageCollateralPrices!: Record<string, Nullable<FPNumber>>;
   @state.vault.liquidationPenalty private liquidationPenalty!: number;
@@ -296,10 +337,42 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   history: VaultEvent[] = [];
   historyLoading = false;
 
-  get vault(): Nullable<Vault> {
+  /**
+   * Skeleton that will be used when vault will become null.
+   * Cannot be readonly because we need to get the right id (and other details) during component mount.
+   */
+  private vaultSkeleton: ClosedVault = {
+    id: 0,
+    lockedAssetId: XOR.address,
+    debtAssetId: KUSD.address,
+    vaultType: VaultTypes.V2,
+    status: VaultStatuses.Closed,
+    returned: this.Zero,
+  };
+
+  private get foundVault(): Nullable<AnyVault> {
     const vaultId = this.$route.params.vault;
     if (!vaultId) return null;
-    return this.accountVaults.find(({ id }) => id === +vaultId);
+    const opened = this.accountVaults.find(({ id }) => id === +vaultId);
+    if (opened) return opened;
+    return this.closedAccountVaults.find(({ id }) => id === +vaultId);
+  }
+
+  get vault(): Nullable<AnyVault> {
+    return this.foundVault ?? this.vaultSkeleton;
+  }
+
+  isOpened(vault: AnyVault): vault is Vault {
+    return (vault as Vault).lockedAmount !== undefined;
+  }
+
+  isClosed(vault: AnyVault): vault is ClosedVault {
+    return (vault as Vault).lockedAmount === undefined;
+  }
+
+  get status(): VaultStatus {
+    if (!this.vault) return VaultStatuses.Closed; // temporary skeleton solution
+    return this.isOpened(this.vault) ? VaultStatuses.Opened : this.vault.status;
   }
 
   get lockedAsset(): Nullable<RegisteredAccountAsset> {
@@ -332,13 +405,13 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get maxSafeDebt(): Nullable<FPNumber> {
-    if (!this.vault) return null;
+    if (!(this.vault && this.isOpened(this.vault))) return null;
     const collateralVolume = this.averageCollateralPrice.mul(this.vault.lockedAmount);
     return collateralVolume.mul(this.collateral?.riskParams.liquidationRatioReversed ?? 0).div(HundredNumber);
   }
 
   private get ltvCoeff(): Nullable<FPNumber> {
-    if (!(this.maxSafeDebt && this.vault)) return null;
+    if (!(this.maxSafeDebt && this.vault && this.isOpened(this.vault))) return null;
     return this.vault.debt.div(this.maxSafeDebt);
   }
 
@@ -373,7 +446,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get availableToBorrow(): Nullable<FPNumber> {
-    if (!(this.maxSafeDebt && this.vault)) return null;
+    if (!(this.maxSafeDebt && this.vault && this.isOpened(this.vault))) return null;
 
     let available = this.maxSafeDebt.sub(this.vault.debt);
     available = available.sub(available.mul(this.borrowTax));
@@ -405,25 +478,28 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get isRepayDebtUnavailable(): boolean {
-    return this.vault?.debt.isLessThan(FPNumber.ONE) ?? true;
+    if (!this.vault || this.isClosed(this.vault)) return true;
+    return this.vault.debt.isLessThan(FPNumber.ONE) ?? true;
   }
 
   get formattedLockedAmount(): string {
-    return this.vault?.lockedAmount.toLocaleString(2) ?? ZeroStringValue;
+    if (!this.vault || this.isClosed(this.vault)) return ZeroStringValue;
+    return this.vault.lockedAmount.toLocaleString(2) ?? ZeroStringValue;
   }
 
   get fiatLockedAmount(): string {
-    if (!(this.vault && this.lockedAsset)) return ZeroStringValue;
+    if (!(this.vault && this.lockedAsset && this.isOpened(this.vault))) return ZeroStringValue;
 
     return this.getFiatAmountByFPNumber(this.vault.lockedAmount, this.lockedAsset) ?? ZeroStringValue;
   }
 
   get formattedDebtAmount(): string {
-    return this.vault?.debt.toLocaleString(2) ?? ZeroStringValue;
+    if (!this.vault || this.isClosed(this.vault)) return ZeroStringValue;
+    return this.vault.debt.toLocaleString(2) ?? ZeroStringValue;
   }
 
   get fiatDebt(): string {
-    if (!(this.kusdToken && this.vault)) return ZeroStringValue;
+    if (!(this.kusdToken && this.vault && this.isOpened(this.vault))) return ZeroStringValue;
 
     return this.getFiatAmountByFPNumber(this.vault.debt, this.kusdToken) ?? ZeroStringValue;
   }
@@ -439,6 +515,17 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   get formattedStabilityFee(): string {
     const percent = this.stabilityFee?.toNumber() ?? 0;
     return this.percentFormat?.format?.(percent / HundredNumber) ?? `${percent}%`;
+  }
+
+  get formattedReturnedAmount(): string {
+    if (!this.vault || this.isOpened(this.vault)) return ZeroStringValue;
+    return this.vault.returned.toLocaleString(2) ?? ZeroStringValue;
+  }
+
+  get fiatReturnedAmount(): string {
+    if (!(this.vault && this.lockedAsset && this.isClosed(this.vault))) return ZeroStringValue;
+
+    return this.getFiatAmountByFPNumber(this.vault.returned, this.lockedAsset) ?? ZeroStringValue;
   }
 
   goToVaults(): void {
@@ -462,12 +549,18 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
         return;
       }
       await waitUntil(() => !this.parentLoading);
-      if (!this.vault) {
+      if (!this.foundVault) {
         this.goToVaults();
         return;
       }
+      // Setting vaultSkeleton prop in case vault will become unavailable (closed/liquidated)
+      this.vaultSkeleton.id = this.foundVault.id;
+      this.vaultSkeleton.lockedAssetId = this.foundVault.lockedAssetId;
+      this.vaultSkeleton.debtAssetId = this.foundVault.debtAssetId;
+      this.vaultSkeleton.vaultType = this.foundVault.vaultType;
+
       this.historyLoading = true;
-      await this.updateHistory(this.vault.id);
+      await this.updateHistory(this.foundVault.id);
       this.historyLoading = false;
     });
   }
@@ -521,6 +614,12 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
 .vault {
   &-title {
     align-items: center;
+
+    &__container {
+      flex: 1;
+      align-items: flex-start;
+      margin: 0 $inner-spacing-mini;
+    }
   }
   &-label {
     color: var(--s-color-base-content-secondary);
@@ -545,13 +644,16 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     }
   }
 
-  &__fiat {
-    color: var(--s-color-fiat-value);
-  }
-
-  &__fiat,
   &__item {
     @include text-ellipsis;
+  }
+}
+
+.vault-returned {
+  align-items: center;
+
+  > * {
+    line-height: var(--s-line-height-big);
   }
 }
 

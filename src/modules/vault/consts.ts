@@ -14,6 +14,7 @@ export enum VaultComponents {
   ExploreCollaterals = 'ExploreCollaterals',
   ExploreOverallStats = 'ExploreOverallStats',
   VaultDetailsHistory = 'VaultDetailsHistory',
+  PositionStatus = 'PositionStatus',
 }
 
 export enum VaultStatuses {

@@ -34,10 +34,26 @@
           {{ t('connectWalletText') }}
         </s-button>
       </s-col>
+      <s-col :xs="12" :sm="12" :md="12" :lg="12">
+        <responsive-tabs
+          class="vaults-header__tabs"
+          :is-mobile="showDropdown"
+          :tabs="tabs"
+          :value="selectedTab"
+          @input="handleTabChange"
+        />
+      </s-col>
     </s-row>
     <s-row v-if="hasVaults" class="vaults-content" :gutter="24">
-      <s-col v-for="vault in vaultsData" :key="'vault_' + vault.id" :xs="12" :sm="6" :md="6" :lg="4">
-        <s-card class="vault" border-radius="small" size="big" primary clickable @click="handleOpenVaultDetails(vault)">
+      <s-col v-for="vault in filteredVaultsData" :key="'vault_' + vault.id" :xs="12" :sm="6" :md="6" :lg="4" :xl="3">
+        <s-card
+          class="vault"
+          border-radius="mini"
+          size="medium"
+          primary
+          clickable
+          @click="handleOpenVaultDetails(vault)"
+        >
           <div class="vault-title s-flex">
             <pair-token-logo
               :first-token="kusdToken"
@@ -45,103 +61,153 @@
               size="medium"
               class="vault-title__icon"
             />
-            <h3 class="vault-title__name">{{ getVaultTitle(vault.lockedAsset) }}</h3>
+            <div class="vault-title__container s-flex-column">
+              <h4 class="vault-title__name">{{ getVaultTitle(vault.lockedAsset) }}</h4>
+              <position-status :status="selectedTab" />
+            </div>
             <s-button type="action" size="small" alternative :tooltip="t('assets.details')">
               <s-icon name="arrows-chevron-right-rounded-24" size="24" />
             </s-button>
           </div>
           <s-divider class="vault-title__divider" />
-          <div class="vault-details s-flex">
-            <div class="vault-details__item s-flex-column">
-              <p class="p3 vault__label">
-                {{ t('kensetsu.yourCollateral') }}
+          <template v-if="isOpenedVault(vault)">
+            <div class="vault-details s-flex">
+              <div class="vault-details__item s-flex-column">
+                <p class="p4 vault__label">
+                  {{ t('kensetsu.yourCollateral') }}
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.yourCollateralDescription')"
+                    placement="top"
+                    tabindex="-1"
+                  >
+                    <s-icon name="info-16" size="11px" />
+                  </s-tooltip>
+                </p>
+                <template v-if="vault.lockedAsset">
+                  <formatted-amount
+                    value-can-be-hidden
+                    :value="format(vault.lockedAmount)"
+                    :asset-symbol="getLockedSymbol(vault.lockedAsset)"
+                  />
+                  <formatted-amount
+                    value-can-be-hidden
+                    is-fiat-value
+                    :value="formatFiat(vault.lockedAmount, vault.lockedAsset)"
+                  />
+                </template>
+              </div>
+              <div class="vault-details__item s-flex-column">
+                <p class="p4 vault__label">
+                  {{ t('kensetsu.yourDebt') }}
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.yourDebtDescription')"
+                    placement="top"
+                    tabindex="-1"
+                  >
+                    <s-icon name="info-16" size="11px" />
+                  </s-tooltip>
+                </p>
+                <template v-if="kusdToken">
+                  <formatted-amount value-can-be-hidden :value="format(vault.debt)" :asset-symbol="kusdSymbol" />
+                  <formatted-amount value-can-be-hidden is-fiat-value :value="formatFiat(vault.debt, kusdToken)" />
+                </template>
+              </div>
+              <div class="vault-details__item s-flex-column">
+                <p class="p4 vault__label">
+                  {{ t('kensetsu.availableToBorrow') }}
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.availableToBorrowDescription')"
+                    placement="top"
+                    tabindex="-1"
+                  >
+                    <s-icon name="info-16" size="11px" />
+                  </s-tooltip>
+                </p>
+                <template v-if="kusdToken">
+                  <formatted-amount value-can-be-hidden :value="format(vault.available)" :asset-symbol="kusdSymbol" />
+                  <formatted-amount value-can-be-hidden is-fiat-value :value="formatFiat(vault.available, kusdToken)" />
+                </template>
+              </div>
+            </div>
+            <s-divider class="vault__divider" />
+            <div class="vault__ltv s-flex">
+              <p class="p4 vault__label">
+                {{ TranslationConsts.LTV }}
                 <s-tooltip
                   slot="suffix"
                   border-radius="mini"
-                  :content="t('kensetsu.yourCollateralDescription')"
+                  :content="t('kensetsu.ltvDescription')"
                   placement="top"
                   tabindex="-1"
                 >
-                  <s-icon name="info-16" size="12px" />
+                  <s-icon name="info-16" size="11px" />
+                </s-tooltip>
+              </p>
+              <span class="vault__ltv-value s-flex">
+                <template v-if="vault.ltv && vault.adjustedLtv">
+                  {{ format(vault.adjustedLtv) }}%
+                  <value-status class="vault__ltv-badge" badge :value="toNumber(vault.ltv)" :getStatus="getLtvStatus">
+                    {{ getLtvText(vault.ltv) }}
+                  </value-status>
+                </template>
+                <template v-else>n/a</template>
+              </span>
+            </div>
+          </template>
+          <div v-else class="vault-details s-flex">
+            <div class="vault-details__item centered s-flex-column">
+              <p class="p4 vault__label">
+                {{ t('kensetsu.totalCollateralReturned') }}
+                <s-tooltip
+                  slot="suffix"
+                  border-radius="mini"
+                  :content="t('kensetsu.totalCollateralReturnedDescription')"
+                  placement="top"
+                  tabindex="-1"
+                >
+                  <s-icon name="info-16" size="11px" />
                 </s-tooltip>
               </p>
               <template v-if="vault.lockedAsset">
                 <formatted-amount
                   value-can-be-hidden
-                  :value="format(vault.lockedAmount)"
+                  :value="format(vault.returned)"
                   :asset-symbol="getLockedSymbol(vault.lockedAsset)"
                 />
                 <formatted-amount
                   value-can-be-hidden
                   is-fiat-value
-                  :value="formatFiat(vault.lockedAmount, vault.lockedAsset)"
+                  :value="formatFiat(vault.returned, vault.lockedAsset)"
                 />
-              </template>
-            </div>
-            <div class="vault-details__item s-flex-column">
-              <p class="p3 vault__label">
-                {{ t('kensetsu.yourDebt') }}
-                <s-tooltip
-                  slot="suffix"
-                  border-radius="mini"
-                  :content="t('kensetsu.yourDebtDescription')"
-                  placement="top"
-                  tabindex="-1"
+                <s-button
+                  class="vault-details__action"
+                  size="small"
+                  @click.stop="handleCreateSelectedVault(vault.lockedAsset, kusdToken)"
                 >
-                  <s-icon name="info-16" size="12px" />
-                </s-tooltip>
-              </p>
-              <template v-if="kusdToken">
-                <formatted-amount value-can-be-hidden :value="format(vault.debt)" :asset-symbol="kusdSymbol" />
-                <formatted-amount value-can-be-hidden is-fiat-value :value="formatFiat(vault.debt, kusdToken)" />
+                  {{ t('kensetsu.reopen') }}
+                </s-button>
               </template>
             </div>
-            <div class="vault-details__item s-flex-column">
-              <p class="p3 vault__label">
-                {{ t('kensetsu.availableToBorrow') }}
-                <s-tooltip
-                  slot="suffix"
-                  border-radius="mini"
-                  :content="t('kensetsu.availableToBorrowDescription')"
-                  placement="top"
-                  tabindex="-1"
-                >
-                  <s-icon name="info-16" size="12px" />
-                </s-tooltip>
-              </p>
-              <template v-if="kusdToken">
-                <formatted-amount value-can-be-hidden :value="format(vault.available)" :asset-symbol="kusdSymbol" />
-                <formatted-amount value-can-be-hidden is-fiat-value :value="formatFiat(vault.available, kusdToken)" />
-              </template>
-            </div>
-          </div>
-          <s-divider />
-          <div class="vault__ltv s-flex">
-            <p class="p3 vault__label">
-              {{ TranslationConsts.LTV }}
-              <s-tooltip
-                slot="suffix"
-                border-radius="mini"
-                :content="t('kensetsu.ltvDescription')"
-                placement="top"
-                tabindex="-1"
-              >
-                <s-icon name="info-16" size="12px" />
-              </s-tooltip>
-            </p>
-            <span class="vault__ltv-value s-flex">
-              <template v-if="vault.ltv && vault.adjustedLtv">
-                {{ format(vault.adjustedLtv) }}%
-                <value-status class="vault__ltv-badge" badge :value="toNumber(vault.ltv)" :getStatus="getLtvStatus">
-                  {{ getLtvText(vault.ltv) }}
-                </value-status>
-              </template>
-              <template v-else>n/a</template>
-            </span>
           </div>
         </s-card>
       </s-col>
     </s-row>
+    <history-pagination
+      class="vaults-pagination"
+      :current-page="currentPage"
+      :page-amount="pageAmount"
+      :loading="loading"
+      :total="total"
+      :last-page="lastPage"
+      @pagination-click="handlePaginationClick"
+    />
+    <s-divider class="vaults-divider" />
     <explore-overall-stats />
     <explore-collaterals class="vaults-stats" @open="handleCreateSelectedVault" />
     <div class="vaults-disclaimer s-flex">
@@ -153,7 +219,7 @@
           <h4>{{ t('disclaimerTitle') }}</h4>
         </div>
         <p class="disclaimer__description p4">{{ t('kensetsu.disclaimerDescription') }}</p>
-        <external-link class="disclaimer__link p4" title="Read more" :href="link" />
+        <external-link class="disclaimer__link p4" :title="t('kensetsu.readMore')" :href="link" />
       </div>
     </div>
     <create-vault-dialog :visible.sync="showCreateVaultDialog" />
@@ -161,60 +227,194 @@
 </template>
 
 <script lang="ts">
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, HundredNumber, PageNames, ZeroStringValue } from '@/consts';
-import { LtvTranslations, VaultComponents, VaultPageNames } from '@/modules/vault/consts';
+import { BreakpointClass, Components, DsBreakpoints, HundredNumber, PageNames, ZeroStringValue } from '@/consts';
+import { LtvTranslations, VaultComponents, VaultPageNames, VaultStatuses } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
+import type { ClosedVault, VaultStatus } from '@/modules/vault/types';
 import { getLtvStatus } from '@/modules/vault/util';
 import router, { lazyComponent } from '@/router';
 import { state, getter, action } from '@/store/decorators';
+import type { ResponsiveTab } from '@/types/tabs';
 
 import type { FPNumber, CodecString } from '@sora-substrate/math';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
+
+type OpenedVaultData = Vault & {
+  lockedAsset: Nullable<RegisteredAccountAsset>;
+  ltv: Nullable<FPNumber>;
+  adjustedLtv: Nullable<FPNumber>;
+  available: FPNumber;
+};
+
+type ClosedVaultData = ClosedVault & {
+  lockedAsset: Nullable<RegisteredAccountAsset>;
+};
+
+type VaultData = OpenedVaultData | ClosedVaultData;
 
 @Component({
   components: {
     TokenLogo: components.TokenLogo,
     FormattedAmount: components.FormattedAmount,
     ExternalLink: components.ExternalLink,
+    HistoryPagination: components.HistoryPagination,
     CreateVaultDialog: vaultLazyComponent(VaultComponents.CreateVaultDialog),
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     ValueStatus: lazyComponent(Components.ValueStatusWrapper),
+    ResponsiveTabs: lazyComponent(Components.ResponsiveTabs),
     ExploreOverallStats: vaultLazyComponent(VaultComponents.ExploreOverallStats),
     ExploreCollaterals: vaultLazyComponent(VaultComponents.ExploreCollaterals),
+    PositionStatus: vaultLazyComponent(VaultComponents.PositionStatus),
   },
 })
-export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
+export default class Vaults extends Mixins(
+  TranslationMixin,
+  mixins.FormattedAmountMixin,
+  mixins.PaginationSearchMixin
+) {
   readonly link = 'https://medium.com/@shibarimoto/kensetsu-ken-356077ebee78';
   readonly getLtvStatus = getLtvStatus;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.vault.kusdToken kusdToken!: Nullable<RegisteredAccountAsset>;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
-  @state.vault.accountVaults private vaults!: Vault[];
+  @state.vault.closedAccountVaults private closedAccountVaults!: ClosedVault[];
+  @state.vault.accountVaults private openedVaults!: Vault[];
   @state.vault.collaterals private collaterals!: Record<string, Collateral>;
   @state.vault.averageCollateralPrices private averageCollateralPrices!: Record<string, Nullable<FPNumber>>;
   @state.vault.borrowTax private borrowTax!: number;
+  @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
+  @state.settings.windowWidth windowWidth!: number;
 
   @action.vault.setCollateralTokenAddress private selectCollateral!: (address?: string) => Promise<void>;
 
   showCreateVaultDialog = false;
+  selectedTab: VaultStatus = VaultStatuses.Opened;
+
+  pageAmount = 6; // override PaginationSearchMixin, getter cannot be used, that's why @Watch is used
+
+  @Watch('windowWidth')
+  onWindowWidthChange(): void {
+    let pageAmount = this.pageAmount;
+    if (this.windowWidth <= DsBreakpoints.sm) {
+      pageAmount = 2;
+    } else if (this.windowWidth <= DsBreakpoints.lg) {
+      pageAmount = 4;
+    } else if (this.windowWidth <= DsBreakpoints.xl) {
+      pageAmount = 6;
+    } else {
+      pageAmount = 8;
+    }
+    if (pageAmount !== this.pageAmount) {
+      this.pageAmount = pageAmount;
+      this.resetPage();
+    }
+  }
+
+  get showDropdown(): boolean {
+    return this.screenBreakpointClass === BreakpointClass.Mobile;
+  }
+
+  get tabs(): Array<ResponsiveTab> {
+    return Object.values(VaultStatuses).map((el) => ({
+      name: el,
+      label: this.t(`kensetsu.status.${el}`) + ' ' + `(${this.getVaultsLength(el)})`,
+    }));
+  }
+
+  isOpenedVault(vault: VaultData): vault is OpenedVaultData {
+    return (vault as OpenedVaultData).lockedAmount !== undefined;
+  }
+
+  isClosedVault(vault: VaultData): vault is ClosedVaultData {
+    return (vault as OpenedVaultData).lockedAmount === undefined;
+  }
+
+  private getVaultsLength(status: VaultStatus): number {
+    switch (status) {
+      case VaultStatuses.Closed:
+        return this.closedVaultsLength;
+      case VaultStatuses.Liquidated:
+        return this.liquidatedVaultsLength;
+      case VaultStatuses.Opened:
+        return this.openedVaultsLength;
+      default:
+        return 0;
+    }
+  }
+
+  handleTabChange(tab: VaultStatus): void {
+    this.selectedTab = tab;
+    this.resetPage();
+  }
+
+  handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
+    let current = 1;
+
+    switch (button) {
+      case WALLET_CONSTS.PaginationButton.Prev:
+        current = this.currentPage - 1;
+        break;
+      case WALLET_CONSTS.PaginationButton.Next:
+        current = this.currentPage + 1;
+        if (current === this.lastPage) {
+          this.isLtrDirection = false;
+        }
+        break;
+      case WALLET_CONSTS.PaginationButton.First:
+        this.isLtrDirection = true;
+        break;
+      case WALLET_CONSTS.PaginationButton.Last:
+        current = this.lastPage;
+        this.isLtrDirection = false;
+    }
+
+    this.currentPage = current;
+  }
+
+  private get closedVaultsData(): ClosedVaultData[] {
+    return this.closedAccountVaults.map((item) => {
+      const lockedAsset = this.getAsset(item.lockedAssetId);
+      return { ...item, lockedAsset };
+    });
+  }
+
+  private get closedVaults(): ClosedVaultData[] {
+    return this.closedVaultsData.filter((vault) => vault.status === VaultStatuses.Closed);
+  }
+
+  private get liquidatedVaults(): ClosedVaultData[] {
+    return this.closedVaultsData.filter((vault) => vault.status === VaultStatuses.Liquidated);
+  }
+
+  private get closedVaultsLength(): number {
+    return this.closedVaults.length;
+  }
+
+  private get liquidatedVaultsLength(): number {
+    return this.liquidatedVaults.length;
+  }
+
+  private get openedVaultsLength(): number {
+    return this.openedVaults.length;
+  }
 
   get hasVaults(): boolean {
-    return this.isLoggedIn && !!this.vaults.length;
+    return this.isLoggedIn && !!(this.openedVaultsLength + this.closedVaults.length);
   }
 
   get kusdSymbol(): string {
     return this.kusdToken?.symbol ?? '';
   }
 
-  get vaultsData() {
-    return this.vaults.map((vault) => {
+  private get openedVaultsData(): OpenedVaultData[] {
+    return this.openedVaults.map((vault) => {
       const lockedAsset = this.getAsset(vault.lockedAssetId);
       const collateral = this.collaterals[vault.lockedAssetId];
       const averagePrice = this.averageCollateralPrices[vault.lockedAssetId] ?? this.Zero;
@@ -232,6 +432,27 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
       available = !available.isFinity() || available.isLteZero() ? this.Zero : available.dp(2);
       return { ...vault, lockedAsset, ltv, adjustedLtv, available };
     });
+  }
+
+  get vaultsData(): VaultData[] {
+    switch (this.selectedTab) {
+      case VaultStatuses.Opened:
+        return this.openedVaultsData;
+      case VaultStatuses.Closed:
+        return this.closedVaults;
+      case VaultStatuses.Liquidated:
+        return this.liquidatedVaults;
+      default:
+        return this.openedVaultsData;
+    }
+  }
+
+  get filteredVaultsData(): VaultData[] {
+    return this.getPageItems(this.vaultsData);
+  }
+
+  get total(): number {
+    return this.vaultsData.length;
   }
 
   getVaultTitle(lockedAsset?: Nullable<RegisteredAccountAsset>): string {
@@ -274,13 +495,13 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 
   async handleCreateSelectedVault(
     lockedAsset: RegisteredAccountAsset,
-    debtAsset: RegisteredAccountAsset
+    debtAsset?: Nullable<RegisteredAccountAsset>
   ): Promise<void> {
     await this.selectCollateral(lockedAsset.address);
     this.showCreateVaultDialog = true;
   }
 
-  handleOpenVaultDetails(vault: Vault): void {
+  handleOpenVaultDetails(vault: VaultData): void {
     router.push({ name: VaultPageNames.VaultDetails, params: { vault: `${vault.id}` } });
   }
 }
@@ -310,9 +531,6 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
       &__action-container {
         flex-direction: column;
       }
-      &__action + &__action {
-        margin-left: 0;
-      }
     }
 
     &__action-container {
@@ -321,6 +539,10 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 
     &__title,
     &__action {
+      margin-bottom: $inner-spacing-medium;
+    }
+
+    &__tabs {
       margin-bottom: $inner-spacing-big;
     }
 
@@ -332,9 +554,16 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
     }
   }
 
-  &-content,
   &-stats {
     margin-bottom: $inner-spacing-big;
+  }
+
+  &-pagination {
+    margin-top: 0;
+  }
+
+  &-divider {
+    margin-top: $inner-spacing-mini;
   }
 
   &-disclaimer {
@@ -377,19 +606,30 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
     align-items: center;
     justify-content: space-between;
 
-    &__name {
+    &__container {
       flex: 1;
+      align-items: flex-start;
       margin: 0 $inner-spacing-mini;
+    }
+
+    &__name {
       @include text-ellipsis;
     }
 
     &__divider {
       margin-bottom: 0;
+      margin-top: $basic-spacing-small;
     }
   }
 
   &__label {
     color: var(--s-color-base-content-secondary);
+    font-size: var(--s-font-size-extra-small);
+  }
+
+  &__divider {
+    margin-top: $inner-spacing-small;
+    margin-bottom: $inner-spacing-small;
   }
 
   &__ltv {
@@ -411,7 +651,11 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
 
     &__item {
       flex: 1 1 50%;
-      margin-top: $inner-spacing-medium;
+      margin-top: $inner-spacing-small;
+
+      &.centered {
+        align-items: center;
+      }
 
       > * {
         line-height: var(--s-line-height-big);
@@ -425,6 +669,10 @@ export default class Vaults extends Mixins(TranslationMixin, mixins.FormattedAmo
     &__fiat,
     &__item {
       @include text-ellipsis;
+    }
+
+    &__action {
+      margin: $inner-spacing-small 0;
     }
   }
 }

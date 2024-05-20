@@ -500,6 +500,13 @@ export const AboutTopics = [
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
 
+export enum DsBreakpoints {
+  sm = 640,
+  md = 1024,
+  lg = 1200,
+  xl = 1920,
+}
+
 export enum Breakpoint {
   Mobile = 464,
   LargeMobile = 528,

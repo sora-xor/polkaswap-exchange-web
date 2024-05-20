@@ -4,7 +4,9 @@ import { XOR, DAI } from '@sora-substrate/util/build/assets/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
+import { fetchClosedVaults } from '@/indexer/queries/kensetsu';
 import { vaultActionContext } from '@/store/vault';
+import { delay } from '@/utils';
 import { TokenBalanceSubscriptions } from '@/utils/subscriptions';
 
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
@@ -13,6 +15,7 @@ import type { ActionContext } from 'vuex';
 
 /** Debt calculation in real-time each 6 seconds */
 const DEBT_INTERVAL = 6_000;
+const INDEXER_DELAY = 4 * DEBT_INTERVAL; // 4 blocks delay
 const DaiAddress = DAI.address;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
@@ -91,14 +94,33 @@ const actions = defineActions({
     commit.setCollateralAddress(address ?? XOR.address);
     updateTokenSubscription(context, 'collateral');
   },
+  async fetchClosedVaults(context): Promise<void> {
+    const { commit, rootState } = vaultActionContext(context);
+    const account = rootState.wallet.account.address;
+    try {
+      const closedVaults = await fetchClosedVaults(account);
+      commit.setClosedAccountVaults(closedVaults);
+    } catch (error) {
+      console.error(error);
+      commit.resetClosedAccountVaults();
+    }
+  },
   async subscribeOnAccountVaults(context): Promise<void> {
-    const { commit } = vaultActionContext(context);
+    const { commit, dispatch, state } = vaultActionContext(context);
     commit.resetAccountVaultIdsSubscription();
+    dispatch.fetchClosedVaults();
+    let firstExecution = true;
     try {
       const idsSubscription = api.kensetsu.subscribeOnAccountVaultIds().subscribe((ids) => {
         commit.resetAccountVaultsSubscription();
         const subscription = api.kensetsu.subscribeOnVaults(ids).subscribe((vaults) => {
+          const prevVaultsLength = state.accountVaults.length;
           commit.setAccountVaults(vaults);
+          if (firstExecution) {
+            firstExecution = false;
+          } else if (prevVaultsLength !== vaults.length) {
+            delay(INDEXER_DELAY).then(dispatch.fetchClosedVaults); // cuz it's not so fast
+          }
         });
         commit.setAccountVaultsSubscription(subscription);
       });

@@ -13,6 +13,7 @@ function initialState(): VaultState {
     collateralsSubscription: null,
     accountVaultIdsSubscription: null,
     accountVaults: [],
+    closedAccountVaults: [],
     accountVaultsSubscription: null,
     collateralAddress: XOR.address,
     collateralTokenBalance: null,
