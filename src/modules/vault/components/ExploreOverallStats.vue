@@ -35,6 +35,7 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
+import { KEN } from '@sora-substrate/util/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
@@ -87,23 +88,23 @@ export default class ExploreOverallStats extends Mixins(TranslationMixin, mixins
   get columns() {
     return [
       {
-        title: 'Total collateral',
-        tooltip: 'COMING SOON',
+        title: this.t('kensetsu.overallTotalCollateral'),
+        tooltip: this.t('kensetsu.overallTotalCollateralDescription'),
         amount: this.totalCollateral,
       },
       {
-        title: 'Total debt',
-        tooltip: 'COMING SOON',
+        title: this.t('kensetsu.overallTotalDebt'),
+        tooltip: this.t('kensetsu.overallTotalDebtDescription'),
         amount: this.totalDebt,
       },
       {
-        title: 'Bad debt',
-        tooltip: 'COMING SOON',
+        title: this.t('kensetsu.overallBadDebt'),
+        tooltip: this.t('kensetsu.overallBadDebtDescription'),
         amount: this.badDebt,
       },
       {
-        title: 'Borrow tax',
-        tooltip: 'COMING SOON',
+        title: this.t('kensetsu.overallBorrowTax'),
+        tooltip: this.t('kensetsu.overallBorrowTaxDescription', { KEN: KEN.symbol }),
         amount: this.borrowTax,
       },
     ];

@@ -1264,6 +1264,31 @@ export default {
     positionSafe: 'Position safe',
     liquidationClose: 'Liquidation close',
     highLiquidationRisk: 'High liquidation risk',
+    positionHistory: 'Position history',
+    liquidated: 'Liquidated',
+    liquidatedMessage: 'Liquidated {amount} {symbol}',
+    status: {
+      Opened: 'Active',
+      Closed: 'Closed',
+      Liquidated: 'Liquidated',
+    },
+    readMore: 'Read more',
+    reopen: 'Re-open',
+    totalCollateralReturned: 'Total collateral returned',
+    totalCollateralReturnedDescription:
+      'The total value of assets returned to you after closing your position, including total remaining collateral.',
+    overallTotalCollateral: 'Total collateral',
+    overallTotalCollateralDescription:
+      'The total value of assets deposited by borrowers to secure their borrowing positions on the {Kensetsu} platform.',
+    overallTotalDebt: 'Total debt',
+    overallTotalDebtDescription:
+      'The total amount of debt currently outstanding across all borrowing positions on the {Kensetsu} platform.',
+    overallBadDebt: 'Bad debt',
+    overallBadDebtDescription:
+      'The portion of debt that is unlikely to be recovered due to borrower default or insufficient collateral.',
+    overallBorrowTax: 'Borrow tax',
+    overallBorrowTaxDescription:
+      'A fee charged on borrowed funds, calculated as a percentage of the borrowed amount. Borrow tax is used for the incentivization program of buyback {KEN} tokens.',
     error: {
       enterCollateral: 'Enter collateral',
       enterBorrow: 'Enter borrow amount',
