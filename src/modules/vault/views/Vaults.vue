@@ -317,6 +317,11 @@ export default class Vaults extends Mixins(
     }
   }
 
+  @Watch('total')
+  onTotalChange(): void {
+    this.resetPage();
+  }
+
   get showDropdown(): boolean {
     return this.screenBreakpointClass === BreakpointClass.Mobile;
   }
@@ -406,7 +411,7 @@ export default class Vaults extends Mixins(
   }
 
   get hasVaults(): boolean {
-    return this.isLoggedIn && !!(this.openedVaultsLength + this.closedVaults.length);
+    return this.isLoggedIn && !!(this.openedVaultsLength + this.closedAccountVaults.length);
   }
 
   get kusdSymbol(): string {
