@@ -29,6 +29,9 @@ export default class CedeStoreWidget extends Mixins(mixins.DialogMixin, mixins.L
     if (this.isVisible) {
       try {
         this.$nextTick(() => {
+          console.info('isVisible', this.isVisible);
+          console.info('address: this.accountAddress', this.accountAddress);
+
           renderSendWidget(this.rootSelector, {
             config: {
               tokenSymbol: 'XOR',
