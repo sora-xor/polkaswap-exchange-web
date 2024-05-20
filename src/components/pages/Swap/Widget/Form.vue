@@ -439,7 +439,7 @@ export default class SwapFormWidget extends Mixins(
         this.isExchangeB,
         this.liquiditySource ?? undefined
       );
-
+      // eslint-disable-next-line
       console.table({
         frontend: amount,
         backend: rpcResult.amount,
