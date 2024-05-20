@@ -440,11 +440,11 @@ export default class SwapFormWidget extends Mixins(
         this.liquiditySource ?? undefined
       );
 
-      console.table([
-        amount,
-        rpcResult.amount,
-        FPNumber.fromCodecValue(amount).sub(FPNumber.fromCodecValue(rpcResult.amount)).toString(),
-      ]);
+      console.table({
+        frontend: amount,
+        backend: rpcResult.amount,
+        difference: +amount - +rpcResult.amount,
+      });
 
       setOppositeValue(this.getStringFromCodec(amount, oppositeToken.decimals));
       this.setAmountWithoutImpact(amountWithoutImpact as string);

@@ -218,7 +218,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
 
   async created() {
-    api.swap.isALT = true;
     // [DESKTOP] To Enable Desktop
     // this.setIsDesktop(true);
     // element-icons is not common used, but should be visible after network connection lost
