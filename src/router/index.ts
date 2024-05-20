@@ -66,11 +66,11 @@ const routes: Array<RouteConfig> = [
     name: PageNames.Wallet,
     component: lazyView(PageNames.Wallet),
   },
-  {
-    path: '/card',
-    name: PageNames.SoraCard,
-    component: lazyView(PageNames.SoraCard),
-  },
+  // {
+  //   path: '/card',
+  //   name: PageNames.SoraCard,
+  //   component: lazyView(PageNames.SoraCard),
+  // },
   {
     path: '/bridge',
     component: lazyView(PageNames.BridgeContainer),
