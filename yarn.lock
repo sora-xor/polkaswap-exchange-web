@@ -2443,10 +2443,10 @@
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
 
-"@soramitsu/soraneo-wallet-web@1.34.4":
-  version "1.34.4"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.34.4.tgz#e5bedeb7e305b0fc3a815f684918776c9e6d6ee4"
-  integrity sha512-3ZFjlCUGHo8DEwWkaMgfQzFpH2LdhRHJsQi4B0y4mV/xkmg1b+zdHXNfAHJfYW+Jj39t+ktYx4j4coAPRBAMNA==
+"@soramitsu/soraneo-wallet-web@1.34.6":
+  version "1.34.6"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.34.6.tgz#7f4318d3139e26bda2daf5e9c2b8c7c50e8e1a36"
+  integrity sha512-3+uvkRPs9z2vq3+32p9WFH64K4K0nzJ/cA0jRvRPq9gTgUu4rNaX8ulQH7UJ6Jgg+ZkOjfGV02XZ6RAdLBIyjQ==
   dependencies:
     "@polkadot/vue-identicon" "2.12.1"
     "@sora-substrate/util" "1.34.1"
