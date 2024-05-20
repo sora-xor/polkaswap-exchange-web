@@ -1,6 +1,6 @@
 {
   "name": "polkaswap-exchange-web",
-  "version": "1.34.0",
+  "version": "1.35.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/sora-xor/polkaswap-exchange-web.git"
