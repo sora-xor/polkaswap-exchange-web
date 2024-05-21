@@ -1631,6 +1631,16 @@
         "positionSafe": "Position safe",
         "liquidationClose": "Liquidation close",
         "highLiquidationRisk": "High liquidation risk",
+        "error": {
+            "enterCollateral": "Enter collateral",
+            "enterBorrow": "Enter borrow amount",
+            "borrowMoreThanAvailable": "Available debt exceeded",
+            "insufficientCollateral": "Insufficient collateral",
+            "enterRepayDebt": "Enter repay debt",
+            "repayMoreThanDebt": "Debt overpaid"
+        },
+        "interest": "Interest",
+        "interestDescription": "An annual fee charged on the amount drawn from your position, calculated as a percentage. This fee compensates for risks and market fluctuations.",
         "positionHistory": "Position history",
         "liquidated": "Liquidated",
         "liquidatedMessage": "Liquidated {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "The portion of debt that is unlikely to be recovered due to borrower default or insufficient collateral.",
         "overallBorrowTax": "Borrow tax",
         "overallBorrowTaxDescription": "A fee charged on borrowed funds, calculated as a percentage of the borrowed amount. Borrow tax is used for the incentivization program of buyback {KEN} tokens.",
-        "error": {
-            "enterCollateral": "Enter collateral",
-            "enterBorrow": "Enter borrow amount",
-            "borrowMoreThanAvailable": "Available debt exceeded",
-            "insufficientCollateral": "Insufficient collateral",
-            "enterRepayDebt": "Enter repay debt",
-            "repayMoreThanDebt": "Debt overpaid"
-        },
-        "interest": "Interest",
-        "interestDescription": "An annual fee charged on the amount drawn from your position, calculated as a percentage. This fee compensates for risks and market fluctuations."
+        "ltvMaxTooltip": "The maximum amount of a borrowing position that can be provided in relation to the appraised value of the asset being used as collateral."
     },
     "accountSettings": {
         "title": "Account settings",
