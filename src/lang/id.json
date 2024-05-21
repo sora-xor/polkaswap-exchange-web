@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Pemilik aset",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Meminjam",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Detail Posisi",
         "Burn": "Membakar"
     },

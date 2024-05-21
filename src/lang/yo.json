@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Oní dúkìá",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Yawo",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Awọn alaye ipo",
         "Burn": "Iná"
     },

@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Eigenaar van activa",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Lenen",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Positiedetails",
         "Burn": "Branden"
     },

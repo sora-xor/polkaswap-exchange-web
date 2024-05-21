@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Propriétaire d'actifs",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Emprunter",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Détails de la position",
         "Burn": "Brûler"
     },
