@@ -9,7 +9,7 @@
       class="explore-table"
     >
       <!-- Index -->
-      <s-table-column width="240" label="#">
+      <s-table-column min-width="240" label="#">
         <template #header>
           <div class="explore-table-item-index">
             <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
@@ -46,7 +46,7 @@
         </template>
       </s-table-column>
       <!-- Reward Token -->
-      <s-table-column width="120" header-align="left" align="left">
+      <s-table-column min-width="120" header-align="left" align="left">
         <template #header>
           <sort-button name="rewardAssetSymbol" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">Reward</span>
@@ -64,7 +64,7 @@
         </template>
       </s-table-column>
       <!-- APR -->
-      <s-table-column width="140" header-align="right" align="right">
+      <s-table-column min-width="140" header-align="right" align="right">
         <template #header>
           <sort-button name="apr" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">{{ TranslationConsts.APR }}</span>
@@ -87,7 +87,7 @@
         </template>
       </s-table-column>
       <!-- Fee -->
-      <s-table-column width="80" header-align="right" align="right">
+      <s-table-column min-width="80" header-align="right" align="right">
         <template #header>
           <sort-button name="depositFee" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">Fee</span>
@@ -98,7 +98,7 @@
         </template>
       </s-table-column>
       <!-- Account tokens -->
-      <s-table-column v-if="isLoggedIn" key="logged" width="140" header-align="right" align="right">
+      <s-table-column v-if="isLoggedIn" key="logged" min-width="140" header-align="right" align="right">
         <template #header>
           <span class="explore-table__primary">{{ t('balanceText') }}</span>
         </template>
@@ -118,7 +118,7 @@
         </template>
       </s-table-column>
       <!-- TVL -->
-      <s-table-column width="104" header-align="right" align="right">
+      <s-table-column min-width="104" header-align="right" align="right">
         <template #header>
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>
