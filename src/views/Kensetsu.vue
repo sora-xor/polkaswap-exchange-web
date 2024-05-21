@@ -92,7 +92,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import BurnDialog from '@/components/pages/Kensetsu/BurnDialog.vue';
 import { Components, PageNames } from '@/consts';
-import { fetchData } from '@/indexer/queries/kensetsu';
+import { fetchData } from '@/indexer/queries/burnXor';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { waitForSoraNetworkFromEnv } from '@/utils';
