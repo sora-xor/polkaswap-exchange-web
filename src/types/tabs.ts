@@ -22,3 +22,12 @@ export interface TabItem {
   label: string;
   content?: string;
 }
+
+/** Used for ResponsiveTabs.vue */
+export type ResponsiveTab = {
+  /** Key */
+  name: string;
+  /** Displayed label, might be used with i18n */
+  label: string;
+  icon?: string;
+};

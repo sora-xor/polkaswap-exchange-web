@@ -31,6 +31,14 @@ const getters = defineGetters<SettingsState>()({
     const { state } = settingsGetterContext(args);
     return state.featureFlags.orderBook;
   },
+  kensetsuEnabled(...args): Nullable<boolean> {
+    const { state } = settingsGetterContext(args);
+    return state.featureFlags.kensetsu;
+  },
+  assetOwnerEnabled(...args): Nullable<boolean> {
+    const { state } = settingsGetterContext(args);
+    return state.featureFlags.assetOwner;
+  },
   notificationActivated(...args): boolean {
     const { state } = settingsGetterContext(args);
     return state.browserNotifsPermission === 'granted';

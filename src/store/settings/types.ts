@@ -15,6 +15,8 @@ export type FeatureFlags = {
   charts?: boolean;
   soraCard?: boolean;
   orderBook?: boolean;
+  kensetsu?: boolean;
+  assetOwner?: boolean;
 };
 
 export type SettingsState = {
@@ -43,5 +45,6 @@ export type SettingsState = {
   internetConnection: Nullable<boolean>;
   internetConnectionSpeed: Nullable<number>;
   screenBreakpointClass: BreakpointClass;
+  windowWidth: number;
   adsArray: Array<Ad>;
 };

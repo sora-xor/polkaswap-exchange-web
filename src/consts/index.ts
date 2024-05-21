@@ -2,8 +2,9 @@ import { LiquiditySourceTypes } from '@sora-substrate/liquidity-proxy/build/cons
 import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import invert from 'lodash/fp/invert';
 
+import { DashboardPageNames } from '@/modules/dashboard/consts';
 import { StakingPageNames } from '@/modules/staking/consts';
-import { SoraStakingPageNames } from '@/modules/staking/sora/consts';
+import { VaultPageNames } from '@/modules/vault/consts';
 
 import pkg from '../../package.json';
 
@@ -90,6 +91,8 @@ export const ObjectInit = () => null;
 
 export const ZeroStringValue = '0';
 
+export const HundredNumber = 100;
+
 export const DefaultSlippageTolerance = '0.5';
 
 export enum MarketAlgorithms {
@@ -141,10 +144,13 @@ export enum PageNames {
   ExploreStaking = 'Explore/Staking',
   ExplorePools = 'Explore/Pools',
   ExploreBooks = 'Explore/Books',
+  //
   OrderBook = 'OrderBook',
   LimitOrderBuy = 'OrderBook/LimitOrderBuy',
   LimitOrderSell = 'OrderBook/LimitOrderSell',
   SoraCard = 'SoraCard',
+  AssetOwnerContainer = 'AssetOwnerContainer',
+  VaultsContainer = 'VaultsContainer',
   Burn = 'Burn',
 }
 
@@ -250,6 +256,7 @@ export enum Components {
   TransactionDetails = 'shared/TransactionDetails',
   TokensRow = 'shared/TokensRow',
   ValueStatusWrapper = 'shared/ValueStatusWrapper',
+  ResponsiveTabs = 'shared/ResponsiveTabs',
   // Shared Widgets
   BaseWidget = 'shared/Widget/Base',
   IFrameWidget = 'shared/Widget/IFrame',
@@ -332,6 +339,12 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     href: '/#/pool',
   },
   {
+    icon: 'security-shield-24',
+    title: PageNames.VaultsContainer,
+    href: '/#/borrow',
+    index: VaultPageNames.Vaults,
+  },
+  {
     icon: 'basic-layers-24',
     title: PageNames.StakingContainer,
     href: '/#/staking',
@@ -379,6 +392,12 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
   //   title: PageNames.SoraCard,
   //   href: '/#/card',
   // },
+  {
+    icon: 'various-rocket-24',
+    title: PageNames.AssetOwnerContainer,
+    href: '/#/dashboard/owner',
+    index: DashboardPageNames.AssetOwner,
+  },
   {
     icon: 'finance-PSWAP-24',
     title: PageNames.About,
@@ -455,12 +474,6 @@ export const RewardsChildPages = [
   PageNames.ReferralBonding,
   PageNames.ReferralUnbonding,
 ];
-export const StakingChildPages = [
-  StakingPageNames.Staking,
-  SoraStakingPageNames.Overview,
-  SoraStakingPageNames.ValidatorsType,
-  SoraStakingPageNames.SelectValidators,
-];
 export const ExploreChildPages = [
   PageNames.ExploreTokens, // By default
   PageNames.ExploreStaking,
@@ -485,6 +498,13 @@ export const AboutTopics = [
 
 export const MaxUint256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 export const EthAddress = '0x0000000000000000000000000000000000000000';
+
+export enum DsBreakpoints {
+  sm = 640,
+  md = 1024,
+  lg = 1200,
+  xl = 1920,
+}
 
 export enum Breakpoint {
   Mobile = 464,
@@ -524,4 +544,5 @@ export const TranslationConsts = {
   XOR: 'XOR',
   VAL: 'VAL',
   Kensetsu: 'Kensetsu',
+  LTV: 'LTV',
 } as const;
