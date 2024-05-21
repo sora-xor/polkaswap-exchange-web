@@ -373,7 +373,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
 }
 .description {
   margin-bottom: $inner-spacing-mini;
-  font-size: 13px;
+  font-size: var(--s-font-size-extra-small);
   &.centered {
     text-align: center;
   }
@@ -399,7 +399,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   &-title {
     color: var(--s-color-base-content-secondary);
     font-weight: 800;
-    font-size: 13px;
+    font-size: var(--s-font-size-extra-small);
     margin-bottom: $inner-spacing-mini;
   }
   &-value {

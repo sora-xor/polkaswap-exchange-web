@@ -122,7 +122,7 @@ export default class ValidatorsFilterDialog extends Mixins(StakingMixin, mixins.
 
   &-description {
     margin-top: 8px;
-    font-size: 13px;
+    font-size: var(--s-font-size-extra-small);
     line-height: 140%;
     font-weight: 300;
     color: var(--s-color-text-secondary);
@@ -137,7 +137,7 @@ export default class ValidatorsFilterDialog extends Mixins(StakingMixin, mixins.
 .reset-all {
   color: var(--s-color-theme-accent);
   text-align: center;
-  font-size: 13px;
+  font-size: var(--s-font-size-extra-small);
   font-style: normal;
   font-weight: 300;
   text-transform: uppercase;

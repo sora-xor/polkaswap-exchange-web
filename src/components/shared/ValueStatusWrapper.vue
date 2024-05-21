@@ -1,6 +1,11 @@
 <template>
   <div :class="['value-status-wrapper', status, { badge }]">
-    <s-icon v-if="errorIcon" name="notifications-alert-triangle-24" size="12" class="value-status-wrapper-icon" />
+    <s-icon
+      v-if="errorIcon"
+      class="value-status-wrapper-icon"
+      name="notifications-alert-triangle-24"
+      :size="errorIconSize"
+    />
     <slot />
   </div>
 </template>
@@ -14,6 +19,7 @@ import { DifferenceStatus, getDifferenceStatus } from '@/utils/swap';
 export default class ValueStatusWrapper extends Vue {
   @Prop({ default: false, type: Boolean }) readonly badge!: boolean;
   @Prop({ default: '', type: [String, Number] }) readonly value!: string | number;
+  @Prop({ default: '12', type: [String, Number] }) readonly errorIconSize!: string | number;
   @Prop({ default: getDifferenceStatus, type: Function }) readonly getStatus!: (value: number) => string;
 
   get formatted(): number {
