@@ -7,7 +7,8 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }]);
 
-async function createWindow() {
+async function createWindow(): Promise<void> {
+  const ELECTRON_NODE_INTEGRATION = !!process.env.ELECTRON_NODE_INTEGRATION;
   // Create the browser window.
   const win = new BrowserWindow({
     width: 800,
@@ -17,14 +18,14 @@ async function createWindow() {
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION as unknown as boolean,
-      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
+      nodeIntegration: ELECTRON_NODE_INTEGRATION,
+      contextIsolation: !ELECTRON_NODE_INTEGRATION,
     },
   });
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
+    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
     if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {
     createProtocol('app');
@@ -33,9 +34,10 @@ async function createWindow() {
   }
 
   // It's required for external links
-  win.webContents.on('new-window', function (e, url) {
-    e.preventDefault();
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    // Prevent default behavior
     shell.openExternal(url);
+    return { action: 'deny' };
   });
 }
 

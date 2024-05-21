@@ -5,8 +5,10 @@ import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 
 import { MoonpayNotifications } from '../components/pages/Moonpay/consts';
 import { PageNames, RewardsTabsItems } from '../consts';
+import { DashboardPageNames } from '../modules/dashboard/consts';
 import { StakingPageNames } from '../modules/staking/consts';
 import { ValidatorsFilterType, ValidatorsListMode } from '../modules/staking/sora/consts';
+import { VaultPageNames } from '../modules/vault/consts';
 import { AlertFrequencyTabs, AlertTypeTabs, FiatOptionTabs } from '../types/tabs';
 
 export default {
@@ -76,16 +78,20 @@ export default {
     [PageNames.About]: 'About',
     [PageNames.Stats]: 'Statistics',
     [PageNames.Wallet]: 'Wallet',
+    [PageNames.AddLiquidity]: 'Add Liquidity',
+    [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.Rewards]: 'Rewards',
     [PageNames.ExploreTokens]: 'Tokens',
     [PageNames.ExplorePools]: 'Pools',
     [PageNames.ExploreStaking]: 'Staking',
     [PageNames.ExploreFarming]: 'Farming',
     [PageNames.ExploreBooks]: '@:pageTitle.OrderBook',
-    [PageNames.AddLiquidity]: 'Add Liquidity',
-    [PageNames.RemoveLiquidity]: 'Remove Liquidity',
     [PageNames.OrderBook]: 'Trade',
     [StakingPageNames.Staking]: 'Staking',
+    [DashboardPageNames.AssetOwner]: 'Asset owner',
+    [DashboardPageNames.AssetOwnerDetails]: '@:pageTitle.AssetOwner',
+    [VaultPageNames.Vaults]: 'Borrow',
+    [VaultPageNames.VaultDetails]: 'Position details',
   },
   mainMenu: {
     [PageNames.Swap]: 'Swap',
@@ -99,6 +105,9 @@ export default {
     [PageNames.OrderBook]: 'Trade',
     [PageNames.ExploreContainer]: 'Explore',
     [PageNames.StakingContainer]: 'Staking',
+    [PageNames.SoraCard]: '{Sora} Card',
+    [PageNames.AssetOwnerContainer]: 'Asset owner',
+    [PageNames.VaultsContainer]: 'Borrow',
   },
   alerts: {
     [AlertTypeTabs.Drop]: 'Drops below',
@@ -131,9 +140,9 @@ export default {
     historyTitle: 'Transaction History',
     moonpayTitle: 'Buy ETH via MoonPay',
     moonpayDesc: 'Purchase ETH tokens on Ethereum and transfer them to SORA network via the bridge',
-    x1Title: 'Buy XOR with your card',
-    x1Desc: 'Purchase XOR tokens with your debit or credit card',
-    x1Btn: 'Buy XOR with card',
+    cedeStoreTitle: 'Transfer from {value}',
+    cedeStoreDesc: 'Transfer any tokens from {value1} to {value2} via {value3}',
+    cedeStoreBtn: 'Transfer from {value1} via {value2}',
   },
   headerMenu: {
     showBalances: 'Show Balances',
@@ -263,6 +272,16 @@ export default {
     [Operation.StakingChill]: 'Chill',
     [Operation.StakingSetController]: 'Set Controller',
     [Operation.StakingSetPayee]: 'Set Payee',
+    [Operation.OrderBookPlaceLimitOrder]: 'Place Order',
+    [Operation.OrderBookCancelLimitOrder]: 'Cancel Order',
+    [Operation.OrderBookCancelLimitOrders]: 'Cancel Orders',
+    [Operation.Burn]: 'Burn',
+    [Operation.Mint]: 'Mint',
+    [Operation.CreateVault]: 'Create Position',
+    [Operation.CloseVault]: 'Close Position',
+    [Operation.DepositCollateral]: 'Deposit Position',
+    [Operation.RepayVaultDebt]: 'Repay Debt',
+    [Operation.BorrowVaultDebt]: 'Borrow Debt',
     andText: 'and',
     [TransactionStatus.Finalized]: {
       [Operation.Transfer]: '{action} {amount} {symbol} {direction} {address}',
@@ -293,6 +312,16 @@ export default {
       [Operation.StakingChill]: 'Chill',
       [Operation.StakingSetController]: 'Set controller {address}',
       [Operation.StakingSetPayee]: 'Set payee {address}',
+      [Operation.OrderBookPlaceLimitOrder]: '{side} {amount} {symbol} at {price} {symbol2} placed',
+      [Operation.OrderBookCancelLimitOrder]: 'Limit order cancelled',
+      [Operation.OrderBookCancelLimitOrders]: 'Limit orders cancelled',
+      [Operation.Burn]: 'Burned {amount} {symbol}',
+      [Operation.Mint]: 'Minted {amount} {symbol} to {address}',
+      [Operation.CreateVault]: '{symbol}/{symbol2} Position created',
+      [Operation.CloseVault]: '{symbol}/{symbol2} Position closed',
+      [Operation.DepositCollateral]: 'Deposited {amount} {symbol}',
+      [Operation.RepayVaultDebt]: 'Repaid {amount} {symbol}',
+      [Operation.BorrowVaultDebt]: 'Borrowed {amount} {symbol}',
     },
     [TransactionStatus.Error]: {
       [Operation.Transfer]: 'Failed to send {amount} {symbol} to {address}',
@@ -323,6 +352,16 @@ export default {
       [Operation.StakingChill]: 'Failed to chill',
       [Operation.StakingSetController]: 'Failed to set controller {address}',
       [Operation.StakingSetPayee]: 'Failed to set payee {address}',
+      [Operation.OrderBookPlaceLimitOrder]: 'Failed to place limit order of {amount} {symbol} at {price} {symbol2}',
+      [Operation.OrderBookCancelLimitOrders]: 'Failed to cancel limit orders',
+      [Operation.OrderBookCancelLimitOrder]: 'Failed to cancel limit order',
+      [Operation.Burn]: 'Failed to burn {amount} {symbol}',
+      [Operation.Mint]: 'Failed to mint {amount} {symbol} to {address}',
+      [Operation.CreateVault]: 'Failed to create {symbol}/{symbol2} position',
+      [Operation.CloseVault]: 'Failed to close {symbol}/{symbol2} position',
+      [Operation.DepositCollateral]: 'Failed to deposit {amount} {symbol}',
+      [Operation.RepayVaultDebt]: 'Failed to repaid {amount} {symbol}',
+      [Operation.BorrowVaultDebt]: 'Failed to borrow {amount} {symbol}',
     },
   },
   about: {
@@ -1152,6 +1191,111 @@ export default {
         reason: 'Too many orders is ongoing for this price',
         reading: 'Limit reached: Each position is confined to 1024 limit orders. Please wait until some orders fulfill',
       },
+    },
+  },
+  kensetsu: {
+    addCollateral: 'Add collateral',
+    addCollateralDescription:
+      'Deposit more assets into your position to increase your borrowing limit or to improve your loan-to-value ratio. This can also help prevent liquidation.',
+    depositCollateral: 'Deposit collateral',
+    totalCollateral: 'Total collateral',
+    totalCollateralDescription:
+      'The total value of all assets currently deposited in your position. This value affects your borrowing capacity and risk of liquidation.',
+    debtAvailable: 'Debt available',
+    debtAvailableDescription:
+      'The amount of funds you can still draw from your position without exceeding your borrowing limit, based on your current collateral.',
+    ltv: 'Loan to value ({LTV})',
+    ltvDescription:
+      'The ratio of the amount drawn to the value of the collateral in your position, expressed as a percentage. A higher {LTV} increases potential returns but also risk, including the chance of liquidation.',
+    borrowMore: 'Borrow more',
+    borrowMoreDescription:
+      'Draw additional funds from your position up to the maximum available amount. Ensure your collateral value supports the increased debt to avoid liquidation risks.',
+    available: 'Available',
+    outstandingDebt: 'Outstanding debt',
+    outstandingDebtDescription:
+      'The total amount you currently owe from the funds drawn from your position, including accrued interest. This needs to be repaid to close your position or maintain healthy loan-to-value ratios.',
+    createVault: 'Open a borrow position',
+    createVaultDescription:
+      'Initiate a new transaction by depositing collateral into your position and drawing funds. This creates a debt obligation that you must manage.',
+    createVaultAction: 'Borrow',
+    borrowDebt: 'Borrow debt',
+    minDepositCollateral: 'Min. deposit collateral',
+    minDepositCollateralDescription:
+      'The minimum amount of assets required to open a position. This initial deposit secures the funds you wish to borrow.',
+    maxAvailableToBorrow: 'Max. available to borrow',
+    maxAvailableToBorrowDescription:
+      'The maximum amount you can draw from your position, determined by the value of your collateral. This limit adjusts as the value of the collateral changes.',
+    borrowTax: 'Borrow tax',
+    borrowTaxDescription: 'The {value} tax applied to the borrowed amount',
+    interest: 'Interest',
+    interestDescription:
+      'An annual fee charged on the amount drawn from your position, calculated as a percentage. This fee compensates for risks and market fluctuations.',
+    repayDebt: 'Repay debt',
+    repayDebtDescription:
+      'Return borrowed funds to reduce your outstanding debt. This can decrease interest costs and lower the risk of liquidation.',
+    closeVault: 'Close my position',
+    closeVaultDescription:
+      'Close the selected position by repaying all outstanding debt and withdrawing all collateral',
+    yourCollateral: 'Your collateral',
+    yourCollateralDescription:
+      "The assets you've deposited into your position to secure the funds drawn. These assets may be liquidated by the lender if you fail to maintain the required loan-to-value ratio.",
+    yourDebt: 'Your debt',
+    yourDebtDescription:
+      'The total amount currently outstanding in your position, including the drawn amount and any accrued interest. This balance increases over time if interest accumulates.',
+    yourDebtTokenBalance: 'Your {tokenSymbol} balance',
+    requiredAmountWithSlippage: 'Required amount including slippage',
+    requiredAmountWithSlippageDescription:
+      'For a smooth position closure, buy slightly more {tokenSymbol} than the {amount} required due to possible slippage. You need an extra to cover the shortfall. Swap your assets into {tokenSymbol} to meet this need.',
+    openSwap: 'Open swap',
+    introTitle: 'Open borrow positions & Earn with {Kensetsu}',
+    introDescription:
+      'Experience safe and effortless borrowing and lending. Open borrowing positions with {Kensetsu} platform.',
+    disclaimerDescription:
+      'Borrowing digital assets through {Polkaswap} carries significant risk and is entirely at your own risk. The value of digital assets is highly volatile, and any changes in the market prices of the assets you have borrowed or used as collateral can lead to substantial financial losses.',
+    availableToBorrow: 'Available to borrow',
+    availableToBorrowDescription:
+      'The remaining amount you are eligible to draw under the current conditions of your position, based on your deposited collateral and any existing debt.',
+    collateralDetails: 'Collateral details',
+    debtDetails: 'Debt details',
+    positionInfo: 'Position information',
+    liquidationPenalty: 'Liquidation penalty',
+    liquidationPenaltyDescription:
+      'A fee applied if the value of your collateral falls below a certain threshold, prompting the sale of assets to cover the debt. This penalty increases your total debt.',
+    positionSafe: 'Position safe',
+    liquidationClose: 'Liquidation close',
+    highLiquidationRisk: 'High liquidation risk',
+    positionHistory: 'Position history',
+    liquidated: 'Liquidated',
+    liquidatedMessage: 'Liquidated {amount} {symbol}',
+    status: {
+      Opened: 'Active',
+      Closed: 'Closed',
+      Liquidated: 'Liquidated',
+    },
+    readMore: 'Read more',
+    reopen: 'Re-open',
+    totalCollateralReturned: 'Total collateral returned',
+    totalCollateralReturnedDescription:
+      'The total value of assets returned to you after closing your position, including total remaining collateral.',
+    overallTotalCollateral: 'Total collateral',
+    overallTotalCollateralDescription:
+      'The total value of assets deposited by borrowers to secure their borrowing positions on the {Kensetsu} platform.',
+    overallTotalDebt: 'Total debt',
+    overallTotalDebtDescription:
+      'The total amount of debt currently outstanding across all borrowing positions on the {Kensetsu} platform.',
+    overallBadDebt: 'Bad debt',
+    overallBadDebtDescription:
+      'The portion of debt that is unlikely to be recovered due to borrower default or insufficient collateral.',
+    overallBorrowTax: 'Borrow tax',
+    overallBorrowTaxDescription:
+      'A fee charged on borrowed funds, calculated as a percentage of the borrowed amount. Borrow tax is used for the incentivization program of buyback {KEN} tokens.',
+    error: {
+      enterCollateral: 'Enter collateral',
+      enterBorrow: 'Enter borrow amount',
+      borrowMoreThanAvailable: 'Available debt exceeded',
+      insufficientCollateral: 'Insufficient collateral',
+      enterRepayDebt: 'Enter repay debt',
+      repayMoreThanDebt: 'Debt overpaid',
     },
   },
 };

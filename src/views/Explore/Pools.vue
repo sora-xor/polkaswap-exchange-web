@@ -9,7 +9,7 @@
       class="explore-table"
     >
       <!-- Index -->
-      <s-table-column width="240" label="#">
+      <s-table-column min-width="240" label="#">
         <template #header>
           <div class="explore-table-item-index">
             <span @click="handleResetSort" :class="['explore-table-item-index--head', { active: isDefaultSort }]">
@@ -37,7 +37,7 @@
         </template>
       </s-table-column>
       <!-- Price -->
-      <s-table-column width="130" header-align="right" align="right">
+      <s-table-column min-width="130" header-align="right" align="right">
         <template #header>
           <sort-button name="priceUSD" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">Price</span>
@@ -54,7 +54,7 @@
         </template>
       </s-table-column>
       <!-- APY -->
-      <s-table-column width="120" header-align="right" align="right">
+      <s-table-column min-width="120" header-align="right" align="right">
         <template #header>
           <sort-button name="apy" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">APY</span>
@@ -65,7 +65,7 @@
         </template>
       </s-table-column>
       <!-- Account tokens -->
-      <s-table-column v-if="isLoggedIn" key="logged" width="140" header-align="right" align="right">
+      <s-table-column v-if="isLoggedIn" key="logged" min-width="140" header-align="right" align="right">
         <template #header>
           <span class="explore-table__primary">{{ t('balanceText') }}</span>
         </template>
@@ -84,7 +84,7 @@
         </template>
       </s-table-column>
       <!-- Pool tokens -->
-      <s-table-column width="200" header-align="right" align="right">
+      <s-table-column min-width="200" header-align="right" align="right">
         <template #header>
           <span class="explore-table__primary">Pool Tokens</span>
         </template>
@@ -102,7 +102,7 @@
         </template>
       </s-table-column>
       <!-- TVL -->
-      <s-table-column key="tvl" width="104" header-align="right" align="right">
+      <s-table-column key="tvl" min-width="104" header-align="right" align="right">
         <template #header>
           <sort-button name="tvl" :sort="{ order, property }" @change-sort="changeSort">
             <span class="explore-table__primary">{{ TranslationConsts.TVL }}</span>

@@ -252,7 +252,7 @@ $list-items: 5;
     font-weight: 300;
     font-size: var(--s-font-size-medium);
     line-height: 150%;
-    letter-spacing: -0.02em;
+    letter-spacing: var(--s-letter-spacing-small);
 
     span {
       margin-left: $inner-spacing-mini;

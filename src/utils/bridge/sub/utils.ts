@@ -48,15 +48,19 @@ export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string 
   return bridgeProxyEvent.event.data[0].toString();
 };
 
+const isEvent = (e, section: string, method: string) => {
+  return e.event.section === section && e.event.method === method;
+};
+
 export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): [string, number] => {
   const recipient = subBridgeApi.formatAddress(to);
 
   const index = events.findIndex((e) => {
     let eventRecipient = '';
 
-    if (api.events.balances?.Deposit.is(e.event) || api.events.tokens?.Deposited.is(e.event)) {
+    if (isEvent(e, 'balances', 'Deposit') || isEvent(e, 'balances', 'Minted') || isEvent(e, 'tokens', 'Deposited')) {
       eventRecipient = e.event.data.who.toString();
-    } else if (api.events.assets?.Transfer.is(e.event)) {
+    } else if (isEvent(e, 'assets', 'Transfer')) {
       eventRecipient = e.event.data[1].toString();
     }
 
@@ -65,7 +69,7 @@ export const getDepositedBalance = (events: Array<any>, to: string, api: ApiProm
     return subBridgeApi.formatAddress(eventRecipient) === recipient;
   });
 
-  if (index === -1) throw new Error(`Unable to find "balances.Deposit" or "tokens.Deposited" event`);
+  if (index === -1) throw new Error(`Unable to find balance deposit like event`);
 
   const event = events[index];
   const balance = event.event.data.amount?.toString() ?? event.event.data[3].toString();
