@@ -206,7 +206,7 @@ export default class ReferralBonding extends Mixins(
 <style lang="scss">
 .bonding-preview {
   margin-bottom: $inner-spacing-medium;
-  font-size: 13px;
+  font-size: var(--s-font-size-extra-small);
   line-height: var(--s-line-height-medium);
   text-align: center;
   a {
