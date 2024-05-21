@@ -146,7 +146,6 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         icon: 'el-icon-money',
         text: 'Select currency',
       },
-      // TODO: add notification here
       {
         value: HeaderMenuType.Disclaimer,
         icon: 'info-16',
