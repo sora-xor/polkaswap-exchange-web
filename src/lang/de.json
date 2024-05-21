@@ -1631,6 +1631,16 @@
         "positionSafe": "Position sicher",
         "liquidationClose": "Liquidationsabschluss",
         "highLiquidationRisk": "Hohes Liquidationsrisiko",
+        "error": {
+            "enterCollateral": "Geben Sie Sicherheiten ein",
+            "enterBorrow": "Geben Sie den Betrag ein, den Sie ausleihen möchten",
+            "borrowMoreThanAvailable": "Verfügbarer Schuldenbetrag überschritten",
+            "insufficientCollateral": "Unzureichendes Kollateral",
+            "enterRepayDebt": "Geben Sie die Schuldenzahlung ein",
+            "repayMoreThanDebt": "Schulden überbezahlt"
+        },
+        "interest": "Zinsen",
+        "interestDescription": "Eine jährliche Gebühr, die auf den aus Ihrem Vault abgehobenen Betrag erhoben wird, berechnet als Prozentsatz. Diese Gebühr kompensiert Risiken und Marktschwankungen.",
         "positionHistory": "Positionshistorie",
         "liquidated": "Liquidiert",
         "liquidatedMessage": "Liquidiert {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "Der Teil der Schulden, der aufgrund von Zahlungsausfällen der Kreditnehmer oder unzureichender Sicherheiten wahrscheinlich nicht zurückgefordert wird.",
         "overallBorrowTax": "Kreditsteuer",
         "overallBorrowTaxDescription": "Eine Gebühr, die auf geliehene Mittel erhoben wird, berechnet als Prozentsatz des geliehenen Betrags. Die Kreditsteuer wird für das Anreizprogramm zum Rückkauf von {KEN}-Tokens verwendet.",
-        "error": {
-            "enterCollateral": "Geben Sie Sicherheiten ein",
-            "enterBorrow": "Geben Sie den Betrag ein, den Sie ausleihen möchten",
-            "borrowMoreThanAvailable": "Verfügbarer Schuldenbetrag überschritten",
-            "insufficientCollateral": "Unzureichendes Kollateral",
-            "enterRepayDebt": "Geben Sie die Schuldenzahlung ein",
-            "repayMoreThanDebt": "Schulden überbezahlt"
-        },
-        "interest": "Zinsen",
-        "interestDescription": "Eine jährliche Gebühr, die auf den aus Ihrem Vault abgehobenen Betrag erhoben wird, berechnet als Prozentsatz. Diese Gebühr kompensiert Risiken und Marktschwankungen."
+        "ltvMaxTooltip": "Die maximale Höhe einer Kreditposition, die im Verhältnis zum geschätzten Wert des als Sicherheit verwendeten Vermögens bereitgestellt werden kann."
     },
     "accountSettings": {
         "title": "Account Einstellungen",

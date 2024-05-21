@@ -1631,6 +1631,16 @@
         "positionSafe": "头寸安全",
         "liquidationClose": "清算关闭",
         "highLiquidationRisk": "高清算风险",
+        "error": {
+            "enterCollateral": "输入抵押品",
+            "enterBorrow": "输入借贷金额",
+            "borrowMoreThanAvailable": "可用债务超出",
+            "insufficientCollateral": "抵押品不足",
+            "enterRepayDebt": "输入偿还债务",
+            "repayMoreThanDebt": "偿还的债务过多"
+        },
+        "interest": "利息",
+        "interestDescription": "从您的保险库中提取的金额收取的年费，以百分比计算。该费用补偿了风险和市场波动。",
         "positionHistory": "持仓历史",
         "liquidated": "清算",
         "liquidatedMessage": "清算 {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "由于借款人违约或抵押不足而不太可能收回的债务部分。",
         "overallBorrowTax": "借款税",
         "overallBorrowTaxDescription": "对借入资金征收的费用，按借款金额的百分比计算。借款税用于 {KEN} 代币的回购激励计划。",
-        "error": {
-            "enterCollateral": "输入抵押品",
-            "enterBorrow": "输入借贷金额",
-            "borrowMoreThanAvailable": "可用债务超出",
-            "insufficientCollateral": "抵押品不足",
-            "enterRepayDebt": "输入偿还债务",
-            "repayMoreThanDebt": "偿还的债务过多"
-        },
-        "interest": "利息",
-        "interestDescription": "从您的保险库中提取的金额收取的年费，以百分比计算。该费用补偿了风险和市场波动。"
+        "ltvMaxTooltip": "根据抵押资产的评估价值提供的借款头寸的最大金额。"
     },
     "accountSettings": {
         "title": "帐号设定",

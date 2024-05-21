@@ -1631,6 +1631,16 @@
         "positionSafe": "Pozíció biztonságos",
         "liquidationClose": "Likvidálási zárás",
         "highLiquidationRisk": "Magas likvidálási kockázat",
+        "error": {
+            "enterCollateral": "Adja meg a zálogot",
+            "enterBorrow": "Adja meg a kölcsön összegét",
+            "borrowMoreThanAvailable": "Elérhető adósság meghaladva",
+            "insufficientCollateral": "Elégtelen zálog",
+            "enterRepayDebt": "Adja meg a visszafizetendő adósság összegét",
+            "repayMoreThanDebt": "Adósság túlfizetve"
+        },
+        "interest": "Kamat",
+        "interestDescription": "Éves díj, amelyet a trezorból kivont összeg után számolnak fel, százalékban kifejezve. Ez a díj a kockázatokat és a piaci ingadozásokat kompenzálja.",
         "positionHistory": "Pozíció története",
         "liquidated": "Likvidálva",
         "liquidatedMessage": "Likvidálva {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "Az adósság azon része, amely várhatóan nem kerül behajtásra az adós nem teljesítése vagy a nem megfelelő biztosíték miatt.",
         "overallBorrowTax": "Kölcsönzési adó",
         "overallBorrowTaxDescription": "A kölcsönzött összegek után felszámított díj, amelyet a kölcsönzött összeg százalékában számolnak ki. A kölcsönzési adót a {KEN} tokenek visszavásárlási programjának ösztönzésére használják.",
-        "error": {
-            "enterCollateral": "Adja meg a zálogot",
-            "enterBorrow": "Adja meg a kölcsön összegét",
-            "borrowMoreThanAvailable": "Elérhető adósság meghaladva",
-            "insufficientCollateral": "Elégtelen zálog",
-            "enterRepayDebt": "Adja meg a visszafizetendő adósság összegét",
-            "repayMoreThanDebt": "Adósság túlfizetve"
-        },
-        "interest": "Kamat",
-        "interestDescription": "Éves díj, amelyet a trezorból kivont összeg után számolnak fel, százalékban kifejezve. Ez a díj a kockázatokat és a piaci ingadozásokat kompenzálja."
+        "ltvMaxTooltip": "A kölcsönvételi pozíció maximális összege, amely az eszköz értékének felbecsült értékéhez viszonyítva biztosított lehet."
     },
     "accountSettings": {
         "title": "FIÓK BEÁLLÍTÁSOK",

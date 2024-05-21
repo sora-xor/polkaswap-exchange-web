@@ -174,7 +174,13 @@
               <div class="position-info__item s-flex-column">
                 <p class="vault-label p3">
                   MAX LTV
-                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON" placement="top" tabindex="-1">
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.ltvMaxTooltip')"
+                    placement="top"
+                    tabindex="-1"
+                  >
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>

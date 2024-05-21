@@ -1631,6 +1631,16 @@
         "positionSafe": "Pozicija sigurna",
         "liquidationClose": "Zatvaranje likvidacije",
         "highLiquidationRisk": "Visok rizik od likvidacije",
+        "error": {
+            "enterCollateral": "Unesite kolateral",
+            "enterBorrow": "Unesite iznos za posudbu",
+            "borrowMoreThanAvailable": "Dostupan dug premašen",
+            "insufficientCollateral": "Nedovoljan kolateral",
+            "enterRepayDebt": "Unesite vraćanje duga",
+            "repayMoreThanDebt": "Dug preplaćen"
+        },
+        "interest": "Kamata",
+        "interestDescription": "Godišnja naknada naplaćena na iznos povučen iz vašeg sefa, izračunata kao postotak. Ova naknada nadoknađuje rizike i fluktuacije na tržištu.",
         "positionHistory": "Povijest pozicije",
         "liquidated": "Likvidirano",
         "liquidatedMessage": "Likvidirano {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "Dio duga koji se vjerojatno neće naplatiti zbog neispunjenja obveza zajmoprimca ili nedostatnog kolaterala.",
         "overallBorrowTax": "Porez na zaduživanje",
         "overallBorrowTaxDescription": "Naknada naplaćena na posuđena sredstva, izračunata kao postotak posuđenog iznosa. Porez na zaduživanje koristi se za program poticaja za otkup {KEN} tokena.",
-        "error": {
-            "enterCollateral": "Unesite kolateral",
-            "enterBorrow": "Unesite iznos za posudbu",
-            "borrowMoreThanAvailable": "Dostupan dug premašen",
-            "insufficientCollateral": "Nedovoljan kolateral",
-            "enterRepayDebt": "Unesite vraćanje duga",
-            "repayMoreThanDebt": "Dug preplaćen"
-        },
-        "interest": "Kamata",
-        "interestDescription": "Godišnja naknada naplaćena na iznos povučen iz vašeg sefa, izračunata kao postotak. Ova naknada nadoknađuje rizike i fluktuacije na tržištu."
+        "ltvMaxTooltip": "Najveći iznos pozajmljivanja koji se može pružiti u odnosu na procijenjenu vrijednost imovine koja se koristi kao kolateral."
     },
     "accountSettings": {
         "title": "POSTAVLJANJE RAČUNA",

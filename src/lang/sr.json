@@ -1631,6 +1631,16 @@
         "positionSafe": "Позиција сигурна",
         "liquidationClose": "Затварање ликвидације",
         "highLiquidationRisk": "Висок ризик ликвидације",
+        "error": {
+            "enterCollateral": "Унесите залог",
+            "enterBorrow": "Унесите износ за позајмљивање",
+            "borrowMoreThanAvailable": "Dostupni dug premašen",
+            "insufficientCollateral": "Недовољно залога",
+            "enterRepayDebt": "Унесите износ за погашење дуга",
+            "repayMoreThanDebt": "Dug preplaćen"
+        },
+        "interest": "Камата",
+        "interestDescription": "Годишња накнада наплаћена на износ извучен из вашег сефа, израчуната као проценат. Ова накнада накнађује ризике и тржишне флуктуације.",
         "positionHistory": "Istorija pozicija",
         "liquidated": "Likvidirano",
         "liquidatedMessage": "Likvidirano {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "Deo duga koji je verovatno neće biti naplaćen zbog nesposobnosti pozajmljivača ili nedovoljnog obezbeđenja.",
         "overallBorrowTax": "Porez na zaduživanje",
         "overallBorrowTaxDescription": "Naknada naplaćena na pozajmljeni novac, izračunata kao procenat pozajmljenog iznosa. Porez na zaduživanje koristi se u programu podsticaja otkupa tokena {KEN}.",
-        "error": {
-            "enterCollateral": "Унесите залог",
-            "enterBorrow": "Унесите износ за позајмљивање",
-            "borrowMoreThanAvailable": "Dostupni dug premašen",
-            "insufficientCollateral": "Недовољно залога",
-            "enterRepayDebt": "Унесите износ за погашење дуга",
-            "repayMoreThanDebt": "Dug preplaćen"
-        },
-        "interest": "Камата",
-        "interestDescription": "Годишња накнада наплаћена на износ извучен из вашег сефа, израчуната као проценат. Ова накнада накнађује ризике и тржишне флуктуације."
+        "ltvMaxTooltip": "Maksimalni iznos pozajmice koji se može pružiti u odnosu na procenjenu vrednost imovine koja se koristi kao kolateral."
     },
     "accountSettings": {
         "title": "ПОДЕШАВАЊА РАЧУНА",

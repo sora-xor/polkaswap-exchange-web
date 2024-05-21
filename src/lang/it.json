@@ -1631,6 +1631,16 @@
         "positionSafe": "Posizione sicura",
         "liquidationClose": "Chiusura della liquidazione",
         "highLiquidationRisk": "Rischio di liquidazione elevato",
+        "error": {
+            "enterCollateral": "Inserisci la garanzia",
+            "enterBorrow": "Inserisci l'importo del prestito",
+            "borrowMoreThanAvailable": "Debito disponibile superato",
+            "insufficientCollateral": "Garanzia insufficiente",
+            "enterRepayDebt": "Inserisci il debito da rimborsare",
+            "repayMoreThanDebt": "Debito pagato in eccesso"
+        },
+        "interest": "Interesse",
+        "interestDescription": "Una tassa annuale addebitata sull'importo prelevato dal tuo vault, calcolata come percentuale. Questa tassa compensa i rischi e le fluttuazioni di mercato.",
         "positionHistory": "Storico delle posizioni",
         "liquidated": "Liquidato",
         "liquidatedMessage": "Liquidato {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "La parte del debito che è improbabile che venga recuperata a causa del mancato pagamento da parte del mutuatario o della garanzia insufficiente.",
         "overallBorrowTax": "Imposta sul prestito",
         "overallBorrowTaxDescription": "Una tassa addebitata sui fondi presi in prestito, calcolata come percentuale dell'importo del prestito. L'imposta sul prestito è utilizzata per il programma di incentivazione del riacquisto dei token {KEN}.",
-        "error": {
-            "enterCollateral": "Inserisci la garanzia",
-            "enterBorrow": "Inserisci l'importo del prestito",
-            "borrowMoreThanAvailable": "Debito disponibile superato",
-            "insufficientCollateral": "Garanzia insufficiente",
-            "enterRepayDebt": "Inserisci il debito da rimborsare",
-            "repayMoreThanDebt": "Debito pagato in eccesso"
-        },
-        "interest": "Interesse",
-        "interestDescription": "Una tassa annuale addebitata sull'importo prelevato dal tuo vault, calcolata come percentuale. Questa tassa compensa i rischi e le fluttuazioni di mercato."
+        "ltvMaxTooltip": "La quantità massima di una posizione di prestito che può essere fornita in relazione al valore stimato dell'attivo utilizzato come garanzia."
     },
     "accountSettings": {
         "title": "Impostazioni dell'account",
