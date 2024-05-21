@@ -1631,6 +1631,16 @@
         "positionSafe": "Ìdì tẹlẹ",
         "liquidationClose": "Ìwọle inújẹ",
         "highLiquidationRisk": "Rísk inújẹ tó dáadọ",
+        "error": {
+            "enterCollateral": "Tẹ iranti",
+            "enterBorrow": "Tẹ àwọn ọwọọ tẹlẹ",
+            "borrowMoreThanAvailable": "Owo ti o le ni lọ lori ti wọn tẹlẹ",
+            "insufficientCollateral": "Kó iranti to wà",
+            "enterRepayDebt": "Tẹ ìdá",
+            "repayMoreThanDebt": "Iye iṣẹrọ ti o tẹlẹ"
+        },
+        "interest": "Èlòkò",
+        "interestDescription": "Ọwọ ọwọọ jìnnà tẹlẹ láti kúrò láti ilé ìdì rẹ, ti wọ́n sì bẹrẹ ní pẹrẹ. Owó yìí jìnnà tẹlẹ ní ìdápadà ìlọsíwájú àti awọn iṣẹ̀tẹ̀ ni òṣìṣẹ̀lú.",
         "positionHistory": "Ìtàn ẹ̀kọ́",
         "liquidated": "Ṣe ibaje",
         "liquidatedMessage": "Ṣe ibaje {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "Aabo tí o fẹ́ jẹ́ kikún ló máa rí nítorí ẹsẹ̀ẹsẹ tí ìwòlé ìlúmọ̀ ati tabi àwọn ọjọ́ọdọrù pẹ̀lú ìbẹrẹ.",
         "overallBorrowTax": "Iṣẹ́gbẹ̀sẹ̀ ìwọlé",
         "overallBorrowTaxDescription": "Ọ̀rọ kọkọrọ fún ohun tí ó ti kọjá lára àwọn ohun ìwọlé, ìṣẹ́gbẹ̀sẹ̀ náà ti wà nípa ètò ìwọlé tí kò níì ṣeé fún ẹlẹ́nu lọwọ tó gbọdọwọ àwọn ẹ̀ṣọ tí {KEN}.",
-        "error": {
-            "enterCollateral": "Tẹ iranti",
-            "enterBorrow": "Tẹ àwọn ọwọọ tẹlẹ",
-            "borrowMoreThanAvailable": "Owo ti o le ni lọ lori ti wọn tẹlẹ",
-            "insufficientCollateral": "Kó iranti to wà",
-            "enterRepayDebt": "Tẹ ìdá",
-            "repayMoreThanDebt": "Iye iṣẹrọ ti o tẹlẹ"
-        },
-        "interest": "Èlòkò",
-        "interestDescription": "Ọwọ ọwọọ jìnnà tẹlẹ láti kúrò láti ilé ìdì rẹ, ti wọ́n sì bẹrẹ ní pẹrẹ. Owó yìí jìnnà tẹlẹ ní ìdápadà ìlọsíwájú àti awọn iṣẹ̀tẹ̀ ni òṣìṣẹ̀lú."
+        "ltvMaxTooltip": "Iye ti o pọju ti ipo yiya ti o le pese ni ibatan si iye idiyele ti dukia ti a lo bi alagbera."
     },
     "accountSettings": {
         "title": "Eto iroyin",
