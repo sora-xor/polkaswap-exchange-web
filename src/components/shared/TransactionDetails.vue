@@ -60,7 +60,7 @@ export default class TransactionDetails extends Mixins(TranslationMixin) {
     display: inline-flex;
     line-height: 13px;
     height: 14px;
-    font-size: 13px;
+    font-size: var(--s-font-size-extra-small);
 
     .el-icon-arrow-right {
       position: relative;
