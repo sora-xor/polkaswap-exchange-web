@@ -799,7 +799,7 @@
         },
         "action": {
             "connectExternalWallet": "Подключите {Ethereum} аккаунт",
-            "signAndClaim": "Войти и получить",
+            "signAndClaim": "Подписать и получить",
             "pendingInternal": "{Sora} транзакция в ожидании...",
             "pendingExternal": "{Ethereum} транзакция в ожидании...",
             "checkRewards": "Проверить"
@@ -997,7 +997,7 @@
     "copiedText": "Скопировано!",
     "copyWithValue": "Копировать {value}",
     "copiedWithValue": "{value} скопировано!",
-    "signAndClaimText": "Войти и получить",
+    "signAndClaimText": "Подписать и получить",
     "balanceText": "Баланс",
     "unknownAssetText": "Неизвестный актив",
     "demeterFarming": {
