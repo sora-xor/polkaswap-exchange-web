@@ -1631,6 +1631,16 @@
         "positionSafe": "Pozícia v bezpečí",
         "liquidationClose": "Uzavretie likvidácie",
         "highLiquidationRisk": "Vysoké riziko likvidácie",
+        "error": {
+            "enterCollateral": "Zadajte zálohu",
+            "enterBorrow": "Zadajte sumu požičania",
+            "borrowMoreThanAvailable": "Dostupný dlh prekročený",
+            "insufficientCollateral": "Nedostatočná záloha",
+            "enterRepayDebt": "Zadajte splácaný dlh",
+            "repayMoreThanDebt": "Dlh preplatil"
+        },
+        "interest": "Úrok",
+        "interestDescription": "Ročný poplatok účtovaný z sumy vyplatené zo vášho trezoru, vypočítaný ako percento. Tento poplatok kompenzuje riziká a fluktuácie trhu.",
         "positionHistory": "História pozícií",
         "liquidated": "Likvidované",
         "liquidatedMessage": "Likvidované {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "Časť dlhu, ktorá pravdepodobne nebude vrátená kvôli neschopnosti požičiavateľa alebo nedostatočnému zabezpečeniu.",
         "overallBorrowTax": "Daň z požičiek",
         "overallBorrowTaxDescription": "Poplatok účtovaný za požičané prostriedky, vypočítaný ako percento požičanej sumy. Daň z požičiek sa používa v programe stimulácie odkupu tokenov {KEN}.",
-        "error": {
-            "enterCollateral": "Zadajte zálohu",
-            "enterBorrow": "Zadajte sumu požičania",
-            "borrowMoreThanAvailable": "Dostupný dlh prekročený",
-            "insufficientCollateral": "Nedostatočná záloha",
-            "enterRepayDebt": "Zadajte splácaný dlh",
-            "repayMoreThanDebt": "Dlh preplatil"
-        },
-        "interest": "Úrok",
-        "interestDescription": "Ročný poplatok účtovaný z sumy vyplatené zo vášho trezoru, vypočítaný ako percento. Tento poplatok kompenzuje riziká a fluktuácie trhu."
+        "ltvMaxTooltip": "Najvyššia suma pozície pôžičky, ktorá môže byť poskytnutá v súvislosti s ocenenou hodnotou aktíva, ktoré sa používa ako záruka."
     },
     "accountSettings": {
         "title": "Nastavenia účtu",
