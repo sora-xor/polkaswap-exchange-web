@@ -59,6 +59,8 @@ import SoraLogo from '@/components/shared/Logo/Sora.vue';
 import { PageNames, Components, Language, WalletPermissions } from '@/consts';
 import { BreakpointClass, Breakpoint } from '@/consts/layout';
 import { getLocale } from '@/lang';
+import { isDashboardPage } from '@/modules/dashboard/router';
+import { isVaultPage } from '@/modules/vault/router';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
@@ -96,8 +98,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   menuVisibility = false;
   showConfirmInviteUser = false;
   showNotifsDarkPage = false;
-  responsiveClass = BreakpointClass.LargeDesktop;
 
+  @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
   @state.settings.appConnection private appConnection!: NodesConnection;
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
@@ -124,7 +126,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
-  @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (cssClass: string) => void;
+  @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (windowWidth: number) => void;
   @mutation.referrals.unsubscribeFromInvitedUsers private unsubscribeFromInvitedUsers!: FnWithoutArgs;
   @mutation.web3.setEvmNetworksApp private setEvmNetworksApp!: (data: EvmNetwork[]) => void;
   @mutation.web3.setSubNetworkApps private setSubNetworkApps!: (data: SubNetworkApps) => void;
@@ -199,21 +201,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private setResponsiveClass(): void {
-    const width = window.innerWidth;
-    if (width >= Breakpoint.HugeDesktop) {
-      this.responsiveClass = BreakpointClass.HugeDesktop;
-    } else if (width >= Breakpoint.LargeDesktop) {
-      this.responsiveClass = BreakpointClass.LargeDesktop;
-    } else if (width >= Breakpoint.Desktop) {
-      this.responsiveClass = BreakpointClass.Desktop;
-    } else if (width >= Breakpoint.Tablet) {
-      this.responsiveClass = BreakpointClass.Tablet;
-    } else if (width >= Breakpoint.LargeMobile) {
-      this.responsiveClass = BreakpointClass.LargeMobile;
-    } else if (width < Breakpoint.LargeMobile) {
-      this.responsiveClass = BreakpointClass.Mobile;
-    }
-    this.setScreenBreakpointClass(this.responsiveClass);
+    this.setScreenBreakpointClass(window.innerWidth);
   }
 
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
@@ -573,7 +561,11 @@ i.icon-divider {
 }
 
 @include desktop {
-  .app-main--swap {
+  .app-main--swap,
+  .app-main--vaults,
+  .app-main--vaultdetails,
+  .app-main--assetowner,
+  .app-main--assetownerdetails {
     &.app-main {
       .app-menu {
         &:not(.collapsed) {

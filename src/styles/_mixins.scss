@@ -231,11 +231,14 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   font-weight: 300 !important;
   text-transform: capitalize;
   letter-spacing: var(--s-letter-spacing-mini);
+  &.bold {
+    font-weight: 700 !important;
+  }
 }
 
 @mixin rewards-hint($horizontalPadding: $inner-spacing-medium, $withColor: false) {
   &-hint {
-    font-size: 13px;
+    font-size: var(--s-font-size-extra-small);
     font-weight: 300;
     line-height: var(--s-line-height-base);
     padding: 0 $horizontalPadding;
@@ -440,10 +443,8 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
 }
 
 @mixin explore-table {
-  $fixed-column-width: 280px;
   $cell-index-width: 40px;
   $cell-logo-width: 36px;
-  $tokens-row-width: 52px;
 
   // table misc styles
   .explore-table {

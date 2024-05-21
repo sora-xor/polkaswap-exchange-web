@@ -2,7 +2,7 @@ import { defineMutations } from 'direct-vuex';
 
 import { MarketAlgorithms } from '@/consts';
 import type { Language } from '@/consts';
-import type { BreakpointClass } from '@/consts/layout';
+import { Breakpoint, BreakpointClass } from '@/consts/layout';
 import storage, { settingsStorage } from '@/utils/storage';
 
 import type { Ad, FeatureFlags, SettingsState } from './types';
@@ -92,8 +92,27 @@ const mutations = defineMutations<SettingsState>()({
   setInternetConnectionSpeed(state): void {
     state.internetConnectionSpeed = ((navigator as any)?.connection?.downlink as number) ?? 0;
   },
-  setScreenBreakpointClass(state, breakpoint: BreakpointClass): void {
-    state.screenBreakpointClass = breakpoint;
+  setScreenBreakpointClass(state, width: number): void {
+    let newClass = state.screenBreakpointClass;
+    state.windowWidth = width;
+
+    if (width >= Breakpoint.HugeDesktop) {
+      newClass = BreakpointClass.HugeDesktop;
+    } else if (width >= Breakpoint.LargeDesktop) {
+      newClass = BreakpointClass.LargeDesktop;
+    } else if (width >= Breakpoint.Desktop) {
+      newClass = BreakpointClass.Desktop;
+    } else if (width >= Breakpoint.Tablet) {
+      newClass = BreakpointClass.Tablet;
+    } else if (width >= Breakpoint.LargeMobile) {
+      newClass = BreakpointClass.LargeMobile;
+    } else if (width < Breakpoint.LargeMobile) {
+      newClass = BreakpointClass.Mobile;
+    }
+
+    if (newClass !== state.screenBreakpointClass) {
+      state.screenBreakpointClass = newClass;
+    }
   },
   setAdsArray(state, arr: Array<Ad>): void {
     state.adsArray = arr;

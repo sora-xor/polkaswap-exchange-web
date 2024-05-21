@@ -28,7 +28,7 @@ import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components } from '@/consts';
+import { Components, ObjectInit } from '@/consts';
 import { lazyComponent } from '@/router';
 
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -40,7 +40,7 @@ import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/type
   },
 })
 export default class TokenSelectButton extends Mixins(TranslationMixin) {
-  @Prop({ type: Object, default: () => null }) readonly token!: AccountAsset | Asset;
+  @Prop({ type: Object, default: ObjectInit }) readonly token!: AccountAsset | Asset;
   @Prop({ type: Array, default: () => [] }) readonly tokens!: Array<AccountAsset | Asset>;
   @Prop({ type: String, default: '' }) readonly icon!: string;
   @Prop({ type: [Number, String], default: 0 }) readonly tabindex!: number | string;

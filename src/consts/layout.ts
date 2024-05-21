@@ -7,6 +7,13 @@ export enum Breakpoint {
   HugeDesktop = 2092,
 }
 
+export enum DsBreakpoints {
+  sm = 640,
+  md = 1024,
+  lg = 1200,
+  xl = 1920,
+}
+
 export enum BreakpointKey {
   xss = 'xss',
   xs = 'xs',
