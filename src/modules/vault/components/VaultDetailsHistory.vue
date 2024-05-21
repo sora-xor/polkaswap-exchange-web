@@ -3,9 +3,9 @@
     <template #header>
       <h4>{{ $t('kensetsu.positionHistory') }}</h4>
     </template>
-    <template v-if="hasHistory">
-      <div class="details-history__items s-flex-column">
-        <div v-for="(item, index) in filteredHistory" :key="index" class="history-item s-flex-column">
+    <template v-if="hasItems">
+      <div class="details-history__items s-flex-column" v-loading="loadingState">
+        <div v-for="(item, index) in items" :key="index" class="history-item s-flex-column">
           <div class="history-item-info s-flex">
             <div class="history-item-operation ch3" :data-type="item.type">{{ getTitle(item.type) }}</div>
             <div class="history-item-title p4">{{ getOperationMessage(item) }}</div>
@@ -19,22 +19,25 @@
         :loading="loading"
         :total="total"
         :last-page="lastPage"
-        @pagination-click="handlePaginationClick"
+        @pagination-click="onPaginationClick"
       />
     </template>
-    <div v-else v-loading="historyLoading" class="details-history__empty p4">{{ t('noDataText') }}</div>
+    <div v-else v-loading="loadingState" class="details-history__empty p4">{{ t('noDataText') }}</div>
   </s-card>
 </template>
 
 <script lang="ts">
-import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator';
 
+import IndexerDataFetchMixin from '@/components/mixins/IndexerDataFetchMixin';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { ObjectInit } from '@/consts';
+import { fetchVaultEvents } from '@/indexer/queries/kensetsu';
 import { VaultEventTypes } from '@/modules/vault/consts';
 import type { VaultEvent, VaultEventType } from '@/modules/vault/types';
 import { state } from '@/store/decorators';
+import { type FetchVariables } from '@/types/indexers';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 
@@ -43,16 +46,20 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class VaultDetailsHistory extends Mixins(TranslationMixin, mixins.PaginationSearchMixin) {
+export default class VaultDetailsHistory extends Mixins(TranslationMixin, IndexerDataFetchMixin<VaultEvent>) {
   /** Date format without seconds */
   readonly DateFormat = 'll LT';
 
-  @Prop({ default: () => [], type: Array }) readonly history!: VaultEvent[];
+  @Prop({ default: undefined, type: Number }) readonly id!: number;
   @Prop({ default: ObjectInit, type: Object }) readonly lockedAsset!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: ObjectInit, type: Object }) readonly debtAsset!: Nullable<RegisteredAccountAsset>;
-  @Prop({ default: false, type: Boolean }) readonly historyLoading!: boolean;
 
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
+
+  @Watch('id', { immediate: true })
+  private async updateHistory(curr: number, prev: number) {
+    this.checkTriggerUpdate<number>(curr, prev);
+  }
 
   pageAmount = 5; // override PaginationSearchMixin
 
@@ -64,16 +71,31 @@ export default class VaultDetailsHistory extends Mixins(TranslationMixin, mixins
     return this.debtAsset?.symbol ?? '';
   }
 
-  get total(): number {
-    return this.history.length;
+  // override IndexerDataFetchMixin
+  get dataVariables(): FetchVariables {
+    return {
+      id: this.id,
+      first: this.pageAmount,
+      offset: this.pageAmount * (this.currentPage - 1),
+    };
   }
 
-  get hasHistory(): boolean {
-    return this.total > 0;
+  // override IndexerDataFetchMixin
+  get updateVariables(): FetchVariables {
+    return {
+      id: this.id,
+      fromTimestamp: this.intervalTimestamp,
+    };
   }
 
-  get filteredHistory(): VaultEvent[] {
-    return this.getPageItems(this.history);
+  // override IndexerDataFetchMixin
+  getItemTimestamp(item: Nullable<VaultEvent>): number {
+    return item?.timestamp ?? 0;
+  }
+
+  // override IndexerDataFetchMixin
+  async requestData(variables: FetchVariables): Promise<{ items: VaultEvent[]; totalCount: number }> {
+    return await fetchVaultEvents(variables);
   }
 
   getTitle(type: VaultEventType): string {
@@ -131,30 +153,6 @@ export default class VaultDetailsHistory extends Mixins(TranslationMixin, mixins
       default:
         return '';
     }
-  }
-
-  handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
-    let current = 1;
-
-    switch (button) {
-      case WALLET_CONSTS.PaginationButton.Prev:
-        current = this.currentPage - 1;
-        break;
-      case WALLET_CONSTS.PaginationButton.Next:
-        current = this.currentPage + 1;
-        if (current === this.lastPage) {
-          this.isLtrDirection = false;
-        }
-        break;
-      case WALLET_CONSTS.PaginationButton.First:
-        this.isLtrDirection = true;
-        break;
-      case WALLET_CONSTS.PaginationButton.Last:
-        current = this.lastPage;
-        this.isLtrDirection = false;
-    }
-
-    this.currentPage = current;
   }
 }
 </script>
