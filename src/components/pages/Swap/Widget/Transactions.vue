@@ -107,14 +107,15 @@
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { getCurrentIndexer, components, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import dayjs from 'dayjs';
-import isEqual from 'lodash/fp/isEqual';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
+import IndexerDataFetchMixin from '@/components/mixins/IndexerDataFetchMixin';
 import ScrollableTableMixin from '@/components/mixins/ScrollableTableMixin';
 import { Components } from '@/consts';
 import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
-import { debouncedInputHandler, soraExplorerLinks, showMostFittingValue } from '@/utils';
+import { type FetchVariables } from '@/types/indexers';
+import { soraExplorerLinks, showMostFittingValue } from '@/utils';
 
 import type { HistoryItem } from '@sora-substrate/util';
 import type { Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -134,14 +135,6 @@ type TableItem = {
   links: WALLET_CONSTS.ExplorerLink[];
 };
 
-type RequestVariables = Partial<{
-  filter: any;
-  first: number;
-  offset: number;
-}>;
-
-const UPDATE_INTERVAL = 15_000;
-
 @Component({
   components: {
     BaseWidget: lazyComponent(Components.BaseWidget),
@@ -152,7 +145,7 @@ const UPDATE_INTERVAL = 15_000;
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin) {
+export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin, IndexerDataFetchMixin) {
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
@@ -160,36 +153,18 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
   @getter.wallet.account.assetsDataTable private assetsDataTable!: WALLET_TYPES.AssetsTable;
 
   @Watch('assetsAddresses', { immediate: true })
-  private resetData(current: string[], prev: string[]): void {
-    if (!isEqual(current)(prev)) {
-      this.resetPage();
-      this.updateTransactions();
-    }
+  private resetData(curr: string[], prev: string[]): void {
+    this.checkTriggerUpdate(curr, prev);
   }
 
   pageAmount = 8; // override PaginationSearchMixin
 
   private readonly operations = [Operation.Swap];
-  private interval: Nullable<ReturnType<typeof setInterval>> = null;
-  private updateTransactions = debouncedInputHandler(this.updateData, 250, { leading: false });
-  private intervalTimestamp = 0;
-  private fromTimestamp = dayjs().subtract(1, 'month').startOf('day').unix(); // month ago, start of the day
-
-  private totalCount = 0;
-  private transactions: HistoryItem[] = [];
-
-  get loadingState(): boolean {
-    return this.parentLoading || this.loading;
-  }
-
-  // override ScrollableTableMixin
-  get total(): number {
-    return this.totalCount;
-  }
+  private readonly fromTimestamp = dayjs().subtract(1, 'month').startOf('day').unix(); // month ago, start of the day
 
   // override ScrollableTableMixin
   get tableItems(): TableItem[] {
-    return this.transactions.map((item) => {
+    return this.items.map((item) => {
       const txId = item.id ?? '';
       const blockId = item.blockId ?? '';
       const address = item.from ?? '';
@@ -243,92 +218,51 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin)
     return filter;
   }
 
-  async onPaginationClick(button: WALLET_CONSTS.PaginationButton): Promise<void> {
-    this.handlePaginationClick(button);
-    this.updateTransactions();
+  // override IndexerDataFetchMixin
+  get dataVariables(): FetchVariables {
+    return {
+      filter: this.createFilter(this.fromTimestamp),
+      first: this.pageAmount,
+      offset: this.pageAmount * (this.currentPage - 1),
+    };
   }
 
-  private async updateData(): Promise<void> {
-    this.resetDataSubscription();
-
-    await this.fetchData();
-
-    if (this.currentPage === 1) {
-      this.updateIntervalTimestamp();
-      this.subscribeOnData();
-    }
+  // override IndexerDataFetchMixin
+  get updateVariables(): FetchVariables {
+    return {
+      filter: this.createFilter(this.intervalTimestamp),
+    };
   }
 
-  private async fetchData(): Promise<void> {
-    await this.withLoading(async () => {
-      await this.withParentLoading(async () => {
-        const { pageAmount, currentPage } = this;
-
-        const variables: RequestVariables = {
-          filter: this.createFilter(this.fromTimestamp),
-          first: pageAmount,
-          offset: pageAmount * (currentPage - 1),
-        };
-
-        const { totalCount, transactions } = await this.requestData(variables);
-
-        this.totalCount = totalCount;
-        this.transactions = transactions;
-      });
-    });
+  // override IndexerDataFetchMixin
+  getItemTimestamp(item: Nullable<HistoryItem>): number {
+    return item?.startTime ?? 0;
   }
 
-  private async fetchDataUpdates(): Promise<void> {
-    const variables: RequestVariables = { filter: this.createFilter(this.intervalTimestamp) };
-    const { transactions, totalCount } = await this.requestData(variables);
-    this.transactions = [...transactions, ...this.transactions].slice(0, this.pageAmount);
-    this.totalCount = this.totalCount + totalCount;
-    this.updateIntervalTimestamp();
-  }
-
-  private async requestData(variables: RequestVariables): Promise<{ transactions: HistoryItem[]; totalCount: number }> {
+  // override IndexerDataFetchMixin
+  async requestData(variables: FetchVariables): Promise<{ items: HistoryItem[]; totalCount: number }> {
     const indexer = getCurrentIndexer();
     const response = await indexer.services.explorer.account.getHistory(variables);
 
     if (!response)
       return {
-        transactions: [],
+        items: [],
         totalCount: 0,
       };
 
     const { nodes, totalCount } = response;
 
-    const transactions: HistoryItem[] = [];
+    const items: HistoryItem[] = [];
 
     for (const node of nodes) {
       const historyItem = await indexer.services.dataParser.parseTransactionAsHistoryItem(node);
 
       if (historyItem) {
-        transactions.push(historyItem);
+        items.push(historyItem);
       }
     }
 
-    return { transactions, totalCount };
-  }
-
-  private updateIntervalTimestamp(): void {
-    this.intervalTimestamp = Math.floor((this.transactions[0]?.startTime ?? 0) / 1000);
-  }
-
-  private subscribeOnData(): void {
-    this.resetDataSubscription();
-    this.interval = setInterval(() => this.fetchDataUpdates(), UPDATE_INTERVAL);
-  }
-
-  private resetDataSubscription(): void {
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
-    this.interval = null;
-  }
-
-  beforeDestroy(): void {
-    this.resetDataSubscription();
+    return { items, totalCount };
   }
 }
 </script>
