@@ -174,7 +174,13 @@
               <div class="position-info__item s-flex-column">
                 <p class="vault-label p3">
                   MAX LTV
-                  <s-tooltip slot="suffix" border-radius="mini" content="COMING SOON" placement="top" tabindex="-1">
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.ltvMaxTooltip')"
+                    placement="top"
+                    tabindex="-1"
+                  >
                     <s-icon name="info-16" size="12px" />
                   </s-tooltip>
                 </p>
@@ -227,12 +233,7 @@
             </div>
           </template>
         </s-card>
-        <vault-details-history
-          :history-loading="historyLoading"
-          :history="history"
-          :locked-asset="lockedAsset"
-          :debt-asset="kusdToken"
-        />
+        <vault-details-history :id="vault.id" :locked-asset="lockedAsset" :debt-asset="kusdToken" />
       </s-col>
     </s-row>
     <template v-if="ltv">
@@ -245,7 +246,6 @@
         :collateral="collateral"
         :max-ltv="maxLtv"
         :average-collateral-price="averageCollateralPrice"
-        @confirm="updateHistoryWithDelay"
       />
       <borrow-more-dialog
         :visible.sync="showBorrowMoreDialog"
@@ -255,7 +255,6 @@
         :collateral="collateral"
         :max-safe-debt="maxSafeDebt"
         :max-ltv="maxLtv"
-        @confirm="updateHistoryWithDelay"
       />
       <repay-debt-dialog
         :visible.sync="showRepayDebtDialog"
@@ -263,7 +262,6 @@
         :prev-ltv="adjustedLtv"
         :max-safe-debt="maxSafeDebt"
         :max-ltv="maxLtv"
-        @confirm="updateHistoryWithDelay"
       />
       <close-vault-dialog
         :visible.sync="showCloseVaultDialog"
@@ -285,14 +283,13 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue, HundredNumber } from '@/consts';
-import { fetchVaultEvents } from '@/indexer/queries/kensetsu';
 import { LtvTranslations, VaultComponents, VaultPageNames, VaultStatuses } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
-import type { ClosedVault, VaultEvent, VaultStatus } from '@/modules/vault/types';
+import type { ClosedVault, VaultStatus } from '@/modules/vault/types';
 import { getLtvStatus } from '@/modules/vault/util';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
-import { asZeroValue, delay, getAssetBalance, waitUntil } from '@/utils';
+import { asZeroValue, getAssetBalance, waitUntil } from '@/utils';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
@@ -333,9 +330,6 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   showAddCollateralDialog = false;
   showBorrowMoreDialog = false;
   showRepayDebtDialog = false;
-
-  history: VaultEvent[] = [];
-  historyLoading = false;
 
   /**
    * Skeleton that will be used when vault will become null.
@@ -534,16 +528,6 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     router.push({ name: VaultPageNames.Vaults });
   }
 
-  private async updateHistory(id: number): Promise<void> {
-    this.history = await fetchVaultEvents(id);
-  }
-
-  async updateHistoryWithDelay(): Promise<void> {
-    if (!this.vault) return;
-    await delay(INDEXER_DELAY);
-    await this.updateHistory(this.vault.id);
-  }
-
   mounted(): void {
     this.withApi(async () => {
       if (!this.isLoggedIn) {
@@ -560,10 +544,6 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
       this.vaultSkeleton.lockedAssetId = this.foundVault.lockedAssetId;
       this.vaultSkeleton.debtAssetId = this.foundVault.debtAssetId;
       this.vaultSkeleton.vaultType = this.foundVault.vaultType;
-
-      this.historyLoading = true;
-      await this.updateHistory(this.foundVault.id);
-      this.historyLoading = false;
     });
   }
 

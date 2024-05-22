@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Eier av eiendeler",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Låne",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Posisjonsdetaljer",
         "Burn": "Brenne"
     },
@@ -1631,6 +1631,16 @@
         "positionSafe": "Posisjon trygg",
         "liquidationClose": "Likvidasjon lukk",
         "highLiquidationRisk": "Høy likvidasjonsrisiko",
+        "error": {
+            "enterCollateral": "Angi sikkerhet",
+            "enterBorrow": "Angi lånebeløpet",
+            "borrowMoreThanAvailable": "Tilgjengelig gjeld overskredet",
+            "insufficientCollateral": "Utilstrekkelig sikkerhet",
+            "enterRepayDebt": "Skriv inn tilbakebetalt gjeld",
+            "repayMoreThanDebt": "Gjeld overbetalt"
+        },
+        "interest": "Renter",
+        "interestDescription": "Et årlig gebyr belastet på det beløpet som trekkes fra lageret ditt, beregnet som prosentandel. Dette gebyret kompenserer for risikoer og markedsfluktuasjoner.",
         "positionHistory": "Posisjonshistorikk",
         "liquidated": "Likvidert",
         "liquidatedMessage": "Likvidert {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "Delen av gjelden som sannsynligvis ikke vil bli innkrevd på grunn av mislighold fra låntaker eller utilstrekkelig sikkerhet.",
         "overallBorrowTax": "Låneskatt",
         "overallBorrowTaxDescription": "En avgift belastet på lånte midler, beregnet som en prosentandel av lånebeløpet. Låneskatten brukes til incentivprogrammet for tilbakekjøp av {KEN}-tokens.",
-        "error": {
-            "enterCollateral": "Angi sikkerhet",
-            "enterBorrow": "Angi lånebeløpet",
-            "borrowMoreThanAvailable": "Tilgjengelig gjeld overskredet",
-            "insufficientCollateral": "Utilstrekkelig sikkerhet",
-            "enterRepayDebt": "Skriv inn tilbakebetalt gjeld",
-            "repayMoreThanDebt": "Gjeld overbetalt"
-        },
-        "interest": "Renter",
-        "interestDescription": "Et årlig gebyr belastet på det beløpet som trekkes fra lageret ditt, beregnet som prosentandel. Dette gebyret kompenserer for risikoer og markedsfluktuasjoner."
+        "ltvMaxTooltip": "Den maksimale mengden av en lånestilling som kan tilbys i forhold til den vurderte verdien av eiendelen som brukes som sikkerhet."
     },
     "accountSettings": {
         "title": "Kontoinnstillinger",

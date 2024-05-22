@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Propriétaire d'actifs",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Emprunter",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Détails de la position",
         "Burn": "Brûler"
     },
@@ -1631,6 +1631,16 @@
         "positionSafe": "Position sécurisée",
         "liquidationClose": "Fermeture de liquidation",
         "highLiquidationRisk": "Risque de liquidation élevé",
+        "error": {
+            "enterCollateral": "Entrez le collatéral",
+            "enterBorrow": "Entrez le montant à emprunter",
+            "borrowMoreThanAvailable": "La dette disponible a été dépassée",
+            "insufficientCollateral": "Collatéral insuffisant",
+            "enterRepayDebt": "Entrez le remboursement de la dette",
+            "repayMoreThanDebt": "Dette surpayée"
+        },
+        "interest": "Intérêt",
+        "interestDescription": "Une taxe annuelle prélevée sur le montant retiré de votre coffre-fort, calculée en pourcentage. Cette taxe compense les risques et les fluctuations du marché.",
         "positionHistory": "Historique des positions",
         "liquidated": "Liquidé",
         "liquidatedMessage": "Liquidé {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "La part de la dette qui est peu probable d'être récupérée en raison du défaut de paiement des emprunteurs ou d'un collatéral insuffisant.",
         "overallBorrowTax": "Taxe d'emprunt",
         "overallBorrowTaxDescription": "Une commission prélevée sur les fonds empruntés, calculée en pourcentage du montant emprunté. La taxe d'emprunt est utilisée pour le programme d'incitation au rachat des jetons {KEN}.",
-        "error": {
-            "enterCollateral": "Entrez le collatéral",
-            "enterBorrow": "Entrez le montant à emprunter",
-            "borrowMoreThanAvailable": "La dette disponible a été dépassée",
-            "insufficientCollateral": "Collatéral insuffisant",
-            "enterRepayDebt": "Entrez le remboursement de la dette",
-            "repayMoreThanDebt": "Dette surpayée"
-        },
-        "interest": "Intérêt",
-        "interestDescription": "Une taxe annuelle prélevée sur le montant retiré de votre coffre-fort, calculée en pourcentage. Cette taxe compense les risques et les fluctuations du marché."
+        "ltvMaxTooltip": "La somme maximale d'une position d'emprunt qui peut être fournie par rapport à la valeur estimée de l'actif utilisé comme garantie."
     },
     "accountSettings": {
         "title": "Paramètres du compte",

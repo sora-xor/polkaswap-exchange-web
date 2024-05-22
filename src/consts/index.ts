@@ -210,9 +210,8 @@ export enum Components {
   MoonpayNotification = 'pages/Moonpay/Notification',
   MoonpayConfirmation = 'pages/Moonpay/Confirmation',
   MoonpayHistory = 'pages/Moonpay/MoonpayHistory',
-  // X1 Page
-  X1Dialog = 'pages/X1/X1Dialog',
-  X1History = 'pages/X1/X1History',
+  // CedeStore Page
+  CedeStore = 'pages/CedeStore/CedeStoreWidget',
   // Swap Page
   SwapFormWidget = 'pages/Swap/Widget/Form',
   SwapChartWidget = 'pages/Swap/Widget/Chart',
@@ -342,7 +341,7 @@ const MainMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'security-shield-24',
     title: PageNames.VaultsContainer,
-    href: '/#/borrow',
+    href: '/#/kensetsu',
     index: VaultPageNames.Vaults,
   },
   {
