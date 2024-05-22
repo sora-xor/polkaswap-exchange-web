@@ -13,7 +13,6 @@ export type Ad = {
 
 export type FeatureFlags = {
   moonpay?: boolean;
-  x1ex?: boolean;
   charts?: boolean;
   soraCard?: boolean;
   orderBook?: boolean;

@@ -34,7 +34,7 @@
           {{ t('connectWalletText') }}
         </s-button>
       </s-col>
-      <s-col :xs="12" :sm="12" :md="12" :lg="12">
+      <s-col v-if="hasVaults" :xs="12" :sm="12" :md="12" :lg="12">
         <responsive-tabs
           class="vaults-header__tabs"
           :is-mobile="showDropdown"
@@ -44,41 +44,135 @@
         />
       </s-col>
     </s-row>
-    <s-row v-if="hasVaults" class="vaults-content" :gutter="24">
-      <s-col v-for="vault in filteredVaultsData" :key="'vault_' + vault.id" :xs="12" :sm="6" :md="6" :lg="4" :xl="3">
-        <s-card
-          class="vault"
-          border-radius="mini"
-          size="medium"
-          primary
-          clickable
-          @click="handleOpenVaultDetails(vault)"
-        >
-          <div class="vault-title s-flex">
-            <pair-token-logo
-              :first-token="kusdToken"
-              :second-token="vault.lockedAsset"
-              size="medium"
-              class="vault-title__icon"
-            />
-            <div class="vault-title__container s-flex-column">
-              <h4 class="vault-title__name">{{ getVaultTitle(vault.lockedAsset) }}</h4>
-              <position-status :status="selectedTab" />
+    <template v-if="hasVaults">
+      <s-row class="vaults-content" :gutter="24">
+        <s-col v-for="vault in filteredVaultsData" :key="'vault_' + vault.id" :xs="12" :sm="6" :md="6" :lg="4" :xl="3">
+          <s-card
+            class="vault"
+            border-radius="mini"
+            size="medium"
+            primary
+            clickable
+            @click="handleOpenVaultDetails(vault)"
+          >
+            <div class="vault-title s-flex">
+              <pair-token-logo
+                :first-token="kusdToken"
+                :second-token="vault.lockedAsset"
+                size="medium"
+                class="vault-title__icon"
+              />
+              <div class="vault-title__container s-flex-column">
+                <h4 class="vault-title__name">{{ getVaultTitle(vault.lockedAsset) }}</h4>
+                <position-status :status="selectedTab" />
+              </div>
+              <s-button type="action" size="small" alternative :tooltip="t('assets.details')">
+                <s-icon name="arrows-chevron-right-rounded-24" size="24" />
+              </s-button>
             </div>
-            <s-button type="action" size="small" alternative :tooltip="t('assets.details')">
-              <s-icon name="arrows-chevron-right-rounded-24" size="24" />
-            </s-button>
-          </div>
-          <s-divider class="vault-title__divider" />
-          <template v-if="isOpenedVault(vault)">
-            <div class="vault-details s-flex">
-              <div class="vault-details__item s-flex-column">
+            <s-divider class="vault-title__divider" />
+            <template v-if="isOpenedVault(vault)">
+              <div class="vault-details s-flex">
+                <div class="vault-details__item s-flex-column">
+                  <p class="p4 vault__label">
+                    {{ t('kensetsu.yourCollateral') }}
+                    <s-tooltip
+                      slot="suffix"
+                      border-radius="mini"
+                      :content="t('kensetsu.yourCollateralDescription')"
+                      placement="top"
+                      tabindex="-1"
+                    >
+                      <s-icon name="info-16" size="11px" />
+                    </s-tooltip>
+                  </p>
+                  <template v-if="vault.lockedAsset">
+                    <formatted-amount
+                      value-can-be-hidden
+                      :value="format(vault.lockedAmount)"
+                      :asset-symbol="getLockedSymbol(vault.lockedAsset)"
+                    />
+                    <formatted-amount
+                      value-can-be-hidden
+                      is-fiat-value
+                      :value="formatFiat(vault.lockedAmount, vault.lockedAsset)"
+                    />
+                  </template>
+                </div>
+                <div class="vault-details__item s-flex-column">
+                  <p class="p4 vault__label">
+                    {{ t('kensetsu.yourDebt') }}
+                    <s-tooltip
+                      slot="suffix"
+                      border-radius="mini"
+                      :content="t('kensetsu.yourDebtDescription')"
+                      placement="top"
+                      tabindex="-1"
+                    >
+                      <s-icon name="info-16" size="11px" />
+                    </s-tooltip>
+                  </p>
+                  <template v-if="kusdToken">
+                    <formatted-amount value-can-be-hidden :value="format(vault.debt)" :asset-symbol="kusdSymbol" />
+                    <formatted-amount value-can-be-hidden is-fiat-value :value="formatFiat(vault.debt, kusdToken)" />
+                  </template>
+                </div>
+                <div class="vault-details__item s-flex-column">
+                  <p class="p4 vault__label">
+                    {{ t('kensetsu.availableToBorrow') }}
+                    <s-tooltip
+                      slot="suffix"
+                      border-radius="mini"
+                      :content="t('kensetsu.availableToBorrowDescription')"
+                      placement="top"
+                      tabindex="-1"
+                    >
+                      <s-icon name="info-16" size="11px" />
+                    </s-tooltip>
+                  </p>
+                  <template v-if="kusdToken">
+                    <formatted-amount value-can-be-hidden :value="format(vault.available)" :asset-symbol="kusdSymbol" />
+                    <formatted-amount
+                      value-can-be-hidden
+                      is-fiat-value
+                      :value="formatFiat(vault.available, kusdToken)"
+                    />
+                  </template>
+                </div>
+              </div>
+              <s-divider class="vault__divider" />
+              <div class="vault__ltv s-flex">
                 <p class="p4 vault__label">
-                  {{ t('kensetsu.yourCollateral') }}
+                  {{ TranslationConsts.LTV }}
                   <s-tooltip
                     slot="suffix"
                     border-radius="mini"
-                    :content="t('kensetsu.yourCollateralDescription')"
+                    :content="t('kensetsu.ltvDescription')"
+                    placement="top"
+                    tabindex="-1"
+                  >
+                    <s-icon name="info-16" size="11px" />
+                  </s-tooltip>
+                </p>
+                <span class="vault__ltv-value s-flex">
+                  <template v-if="vault.ltv && vault.adjustedLtv">
+                    {{ format(vault.adjustedLtv) }}%
+                    <value-status class="vault__ltv-badge" badge :value="toNumber(vault.ltv)" :getStatus="getLtvStatus">
+                      {{ getLtvText(vault.ltv) }}
+                    </value-status>
+                  </template>
+                  <template v-else>n/a</template>
+                </span>
+              </div>
+            </template>
+            <div v-else class="vault-details s-flex">
+              <div class="vault-details__item centered s-flex-column">
+                <p class="p4 vault__label">
+                  {{ t('kensetsu.totalCollateralReturned') }}
+                  <s-tooltip
+                    slot="suffix"
+                    border-radius="mini"
+                    :content="t('kensetsu.totalCollateralReturnedDescription')"
                     placement="top"
                     tabindex="-1"
                   >
@@ -88,126 +182,38 @@
                 <template v-if="vault.lockedAsset">
                   <formatted-amount
                     value-can-be-hidden
-                    :value="format(vault.lockedAmount)"
+                    :value="format(vault.returned)"
                     :asset-symbol="getLockedSymbol(vault.lockedAsset)"
                   />
                   <formatted-amount
                     value-can-be-hidden
                     is-fiat-value
-                    :value="formatFiat(vault.lockedAmount, vault.lockedAsset)"
+                    :value="formatFiat(vault.returned, vault.lockedAsset)"
                   />
-                </template>
-              </div>
-              <div class="vault-details__item s-flex-column">
-                <p class="p4 vault__label">
-                  {{ t('kensetsu.yourDebt') }}
-                  <s-tooltip
-                    slot="suffix"
-                    border-radius="mini"
-                    :content="t('kensetsu.yourDebtDescription')"
-                    placement="top"
-                    tabindex="-1"
+                  <s-button
+                    class="vault-details__action"
+                    size="small"
+                    @click.stop="handleCreateSelectedVault(vault.lockedAsset, kusdToken)"
                   >
-                    <s-icon name="info-16" size="11px" />
-                  </s-tooltip>
-                </p>
-                <template v-if="kusdToken">
-                  <formatted-amount value-can-be-hidden :value="format(vault.debt)" :asset-symbol="kusdSymbol" />
-                  <formatted-amount value-can-be-hidden is-fiat-value :value="formatFiat(vault.debt, kusdToken)" />
-                </template>
-              </div>
-              <div class="vault-details__item s-flex-column">
-                <p class="p4 vault__label">
-                  {{ t('kensetsu.availableToBorrow') }}
-                  <s-tooltip
-                    slot="suffix"
-                    border-radius="mini"
-                    :content="t('kensetsu.availableToBorrowDescription')"
-                    placement="top"
-                    tabindex="-1"
-                  >
-                    <s-icon name="info-16" size="11px" />
-                  </s-tooltip>
-                </p>
-                <template v-if="kusdToken">
-                  <formatted-amount value-can-be-hidden :value="format(vault.available)" :asset-symbol="kusdSymbol" />
-                  <formatted-amount value-can-be-hidden is-fiat-value :value="formatFiat(vault.available, kusdToken)" />
+                    {{ t('kensetsu.reopen') }}
+                  </s-button>
                 </template>
               </div>
             </div>
-            <s-divider class="vault__divider" />
-            <div class="vault__ltv s-flex">
-              <p class="p4 vault__label">
-                {{ TranslationConsts.LTV }}
-                <s-tooltip
-                  slot="suffix"
-                  border-radius="mini"
-                  :content="t('kensetsu.ltvDescription')"
-                  placement="top"
-                  tabindex="-1"
-                >
-                  <s-icon name="info-16" size="11px" />
-                </s-tooltip>
-              </p>
-              <span class="vault__ltv-value s-flex">
-                <template v-if="vault.ltv && vault.adjustedLtv">
-                  {{ format(vault.adjustedLtv) }}%
-                  <value-status class="vault__ltv-badge" badge :value="toNumber(vault.ltv)" :getStatus="getLtvStatus">
-                    {{ getLtvText(vault.ltv) }}
-                  </value-status>
-                </template>
-                <template v-else>n/a</template>
-              </span>
-            </div>
-          </template>
-          <div v-else class="vault-details s-flex">
-            <div class="vault-details__item centered s-flex-column">
-              <p class="p4 vault__label">
-                {{ t('kensetsu.totalCollateralReturned') }}
-                <s-tooltip
-                  slot="suffix"
-                  border-radius="mini"
-                  :content="t('kensetsu.totalCollateralReturnedDescription')"
-                  placement="top"
-                  tabindex="-1"
-                >
-                  <s-icon name="info-16" size="11px" />
-                </s-tooltip>
-              </p>
-              <template v-if="vault.lockedAsset">
-                <formatted-amount
-                  value-can-be-hidden
-                  :value="format(vault.returned)"
-                  :asset-symbol="getLockedSymbol(vault.lockedAsset)"
-                />
-                <formatted-amount
-                  value-can-be-hidden
-                  is-fiat-value
-                  :value="formatFiat(vault.returned, vault.lockedAsset)"
-                />
-                <s-button
-                  class="vault-details__action"
-                  size="small"
-                  @click.stop="handleCreateSelectedVault(vault.lockedAsset, kusdToken)"
-                >
-                  {{ t('kensetsu.reopen') }}
-                </s-button>
-              </template>
-            </div>
-          </div>
-        </s-card>
-      </s-col>
-    </s-row>
-    <history-pagination
-      class="vaults-pagination"
-      :current-page="currentPage"
-      :page-amount="pageAmount"
-      :loading="loading"
-      :total="total"
-      :last-page="lastPage"
-      @pagination-click="handlePaginationClick"
-    />
-    <s-divider class="vaults-divider" />
+          </s-card>
+        </s-col>
+      </s-row>
+      <history-pagination
+        class="vaults-pagination"
+        :current-page="currentPage"
+        :page-amount="pageAmount"
+        :loading="loading"
+        :total="total"
+        :last-page="lastPage"
+        @pagination-click="handlePaginationClick"
+      />
+      <s-divider class="vaults-divider" />
+    </template>
     <explore-overall-stats />
     <explore-collaterals class="vaults-stats" @open="handleCreateSelectedVault" />
     <div class="vaults-disclaimer s-flex">

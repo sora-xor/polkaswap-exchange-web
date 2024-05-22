@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Właściciel aktywów",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Pożyczyć",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Szczegóły pozycji",
         "Burn": "Palić"
     },
@@ -1631,6 +1631,16 @@
         "positionSafe": "Pozycja bezpieczna",
         "liquidationClose": "Zamknięcie likwidacji",
         "highLiquidationRisk": "Wysokie ryzyko likwidacji",
+        "error": {
+            "enterCollateral": "Wprowadź zabezpieczenie",
+            "enterBorrow": "Wprowadź kwotę pożyczki",
+            "borrowMoreThanAvailable": "Dostępne zadłużenie przekroczone",
+            "insufficientCollateral": "Niewystarczające zabezpieczenie",
+            "enterRepayDebt": "Wprowadź spłacany dług",
+            "repayMoreThanDebt": "Dług przepłacony"
+        },
+        "interest": "Odsetki",
+        "interestDescription": "Opłata roczna naliczana od wypłaconej kwoty z twojego skarbca, obliczana jako procent. Ta opłata rekompensuje ryzyko i wahania rynkowe.",
         "positionHistory": "Historia pozycji",
         "liquidated": "Likwidacja",
         "liquidatedMessage": "Likwidacja {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "Część długu, która jest mało prawdopodobna do odzyskania ze względu na niewypłacalność pożyczkobiorcy lub niewystarczające zabezpieczenie.",
         "overallBorrowTax": "Podatek od pożyczki",
         "overallBorrowTaxDescription": "Opłata pobierana od pożyczonych środków, obliczana jako procent pożyczonej kwoty. Podatek od pożyczki jest wykorzystywany w programie zachęt do odkupu tokenów {KEN}.",
-        "error": {
-            "enterCollateral": "Wprowadź zabezpieczenie",
-            "enterBorrow": "Wprowadź kwotę pożyczki",
-            "borrowMoreThanAvailable": "Dostępne zadłużenie przekroczone",
-            "insufficientCollateral": "Niewystarczające zabezpieczenie",
-            "enterRepayDebt": "Wprowadź spłacany dług",
-            "repayMoreThanDebt": "Dług przepłacony"
-        },
-        "interest": "Odsetki",
-        "interestDescription": "Opłata roczna naliczana od wypłaconej kwoty z twojego skarbca, obliczana jako procent. Ta opłata rekompensuje ryzyko i wahania rynkowe."
+        "ltvMaxTooltip": "Maksymalna kwota pozycji kredytowej, która może być udzielona w związku z oszacowaną wartością aktywów używanych jako zabezpieczenie."
     },
     "accountSettings": {
         "title": "USTAWIENIA KONTA",
