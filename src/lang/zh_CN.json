@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "资产所有者",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "借款",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "头寸详情",
         "Burn": "烧伤"
     },

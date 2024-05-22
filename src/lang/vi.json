@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Chủ tài sản",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Vay",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Chi tiết vị thế",
         "Burn": "Đốt cháy"
     },
