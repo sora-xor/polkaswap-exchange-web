@@ -88,14 +88,12 @@ import { getter, state } from '@/store/decorators';
 import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
 
 enum BuyButtonType {
-  X1,
   Bridge,
 }
 type BuyButton = { type: BuyButtonType; text: string; button: 'primary' | 'secondary' | 'tertiary' };
 
 @Component({
   components: {
-    X1Dialog: lazyComponent(Components.X1Dialog),
     TosDialog: lazyComponent(Components.ToSDialog),
     BalanceIndicator: lazyComponent(Components.BalanceIndicator),
   },
@@ -105,7 +103,6 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   readonly MaintenanceTitle = 'Web applications are under maintenance';
   readonly MaintenanceDesc = 'SORA Card is currently available in the SORA Wallet. Download to apply.';
   readonly buyOptions: Array<BuyButton> = [
-    { type: BuyButtonType.X1, text: 'card.depositX1Btn', button: 'primary' },
     { type: BuyButtonType.Bridge, text: 'card.bridgeTokensBtn', button: 'secondary' },
   ];
 

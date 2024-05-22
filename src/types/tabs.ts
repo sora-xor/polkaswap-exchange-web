@@ -15,7 +15,6 @@ export enum AlertFrequencyTabs {
 
 export enum FiatOptionTabs {
   moonpay = 'MoonpayHistory',
-  x1ex = 'X1History',
 }
 
 export interface TabItem {
