@@ -145,7 +145,7 @@ type TableItem = {
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin, IndexerDataFetchMixin) {
+export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin, IndexerDataFetchMixin<HistoryItem>) {
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
@@ -235,7 +235,7 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin,
   }
 
   // override IndexerDataFetchMixin
-  getItemTimestamp(item: Nullable<VaultEvent>): number {
+  getItemTimestamp(item: Nullable<HistoryItem>): number {
     return item?.startTime ?? 0;
   }
 
