@@ -1207,6 +1207,8 @@ export default {
     ltv: 'Loan to value ({LTV})',
     ltvDescription:
       'The ratio of the amount drawn to the value of the collateral in your position, expressed as a percentage. A higher {LTV} increases potential returns but also risk, including the chance of liquidation.',
+    ltvMaxTooltip:
+      'The maximum amount of a borrowing position that can be provided in relation to the appraised value of the asset being used as collateral.',
     borrowMore: 'Borrow more',
     borrowMoreDescription:
       'Draw additional funds from your position up to the maximum available amount. Ensure your collateral value supports the increased debt to avoid liquidation risks.',

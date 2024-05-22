@@ -1631,6 +1631,16 @@
         "positionSafe": "Pozice v bezpečí",
         "liquidationClose": "Likvidace uzavření",
         "highLiquidationRisk": "Vysoké riziko likvidace",
+        "error": {
+            "enterCollateral": "Zadejte zástavu",
+            "enterBorrow": "Zadejte částku k půjčení",
+            "borrowMoreThanAvailable": "Dostupný dluh překročen",
+            "insufficientCollateral": "Nedostatečná zástava",
+            "enterRepayDebt": "Zadejte částku pro splacení dluhu",
+            "repayMoreThanDebt": "Dluh přeplacen"
+        },
+        "interest": "Úrok",
+        "interestDescription": "Roční poplatek účtovaný z částky vybrané z vašeho trezoru, vypočítaný jako procento. Tento poplatek kompenzuje rizika a tržní fluktuace.",
         "positionHistory": "Historie pozice",
         "liquidated": "Likvidováno",
         "liquidatedMessage": "Likvidováno {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "Část dluhu, která je nepravděpodobně, že bude splacena, kvůli platební neschopnosti dlužníků nebo nedostatečnému kolaterálu.",
         "overallBorrowTax": "Daň z půjčky",
         "overallBorrowTaxDescription": "Poplatek účtovaný na půjčené prostředky, vypočítaný jako procento z vypůjčené částky. Daň z půjčky se používá pro program incentivizace zpětného odkupu tokenů {KEN}.",
-        "error": {
-            "enterCollateral": "Zadejte zástavu",
-            "enterBorrow": "Zadejte částku k půjčení",
-            "borrowMoreThanAvailable": "Dostupný dluh překročen",
-            "insufficientCollateral": "Nedostatečná zástava",
-            "enterRepayDebt": "Zadejte částku pro splacení dluhu",
-            "repayMoreThanDebt": "Dluh přeplacen"
-        },
-        "interest": "Úrok",
-        "interestDescription": "Roční poplatek účtovaný z částky vybrané z vašeho trezoru, vypočítaný jako procento. Tento poplatek kompenzuje rizika a tržní fluktuace."
+        "ltvMaxTooltip": "Nejvyšší možná výše půjčky, která může být poskytnuta v souvislosti s oceněnou hodnotou aktiva používaného jako zástava."
     },
     "accountSettings": {
         "title": "Nastavení účtu",
