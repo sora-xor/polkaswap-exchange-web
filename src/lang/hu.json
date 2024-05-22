@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Eszköz tulajdonosa",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Kölcsönözni",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Pozíció részletei",
         "Burn": "Éget"
     },

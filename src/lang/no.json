@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Eier av eiendeler",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Låne",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Posisjonsdetaljer",
         "Burn": "Brenne"
     },
