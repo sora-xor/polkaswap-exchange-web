@@ -339,7 +339,7 @@ const MainMenu: Array<SidebarMenuItemLink> = [
     href: '/#/pool',
   },
   {
-    icon: 'security-shield-24',
+    icon: 'call-phone-16',
     title: PageNames.VaultsContainer,
     href: '/#/kensetsu',
     index: VaultPageNames.Vaults,
