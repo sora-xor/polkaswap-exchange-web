@@ -59,7 +59,7 @@ export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, m
     this.updateItems();
   }
 
-  private handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
+  public handlePaginationClick(button: WALLET_CONSTS.PaginationButton): void {
     let current = 1;
 
     switch (button) {
