@@ -6,6 +6,7 @@ import Vuex from 'vuex';
 import addLiquidity from './addLiquidity';
 import assets from './assets';
 import bridge from './bridge';
+import dashboard from './dashboard';
 import demeterFarming from './demeterFarming';
 import moonpay from './moonpay';
 import orderBook from './orderBook';
@@ -18,6 +19,7 @@ import settings from './settings';
 import soraCard from './soraCard';
 import staking from './staking';
 import swap from './swap';
+import vault from './vault';
 import web3 from './web3';
 
 import type { DirectActions, DirectGetters, DirectMutations, DirectState } from 'direct-vuex/types/direct-types';
@@ -42,6 +44,8 @@ const modules = {
   demeterFarming,
   soraCard,
   orderBook,
+  dashboard,
+  vault,
 };
 
 const { store, rootGetterContext, rootActionContext } = createDirectStore({

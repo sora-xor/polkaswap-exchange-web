@@ -11,7 +11,12 @@
         :lg="6"
         :xl="6"
       >
-        <s-form v-loading="parentLoading" class="container container--burn el-form--actions" :show-message="false">
+        <s-form
+          v-loading="parentLoading"
+          class="container container--burn el-form--actions"
+          :class="{ disabled: ended[id] }"
+          :show-message="false"
+        >
           <generic-page-header class="page-header--burn" :title="title" />
           <p class="description centered p4">
             {{ description }}
@@ -66,7 +71,7 @@
             class="action-button s-typography-button--large"
             type="primary"
             :disabled="ended[id]"
-            :loading="loading || parentLoading"
+            :loading="parentLoading || (!ended[id] && loading)"
             @click="handleBurnClick(id)"
           >
             <template v-if="ended[id]">TIME IS OVER</template>
@@ -95,6 +100,7 @@
       :burned-asset="selectedBurnedAsset"
       :rate="selectedRate"
       :max="selectedMax"
+      @confirm="handleBurnConfirm"
     />
   </div>
 </template>
@@ -182,8 +188,6 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   };
 
   readonly campaigns = Object.values(this.campaignsObj);
-  readonly minBlock = Math.min(...this.campaigns.map((c) => c.from));
-  readonly maxBlock = Math.max(...this.campaigns.map((c) => c.to));
 
   private interval: Nullable<ReturnType<typeof setInterval>> = null;
   private totalXorBurned: Record<CampaignKey, FPNumber> = { ...this.defaultBurned };
@@ -210,6 +214,14 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   @state.wallet.account.address soraAccountAddress!: string;
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
+
+  get minBlock(): number {
+    return Math.min(...this.campaigns.map((c) => c.from));
+  }
+
+  get maxBlock(): number {
+    return Math.max(...this.campaigns.map((c) => c.to));
+  }
 
   getFormattedXor(rate: number): string {
     return this.getFPNumber(rate).toLocaleString();
@@ -267,12 +279,22 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
       const campaignBurns = burns.filter(
         ({ blockHeight }) => blockHeight >= campaign.from && blockHeight <= campaign.to
       );
+
+      const accountsBurned = campaignBurns.reduce<Record<string, FPNumber>>((acc, { address, amount }) => {
+        if (!acc[address]) {
+          acc[address] = FPNumber.ZERO;
+        }
+        acc[address] = acc[address].add(amount);
+        return acc;
+      }, {});
+
       const fpRate = new FPNumber(campaign.rate);
-      campaignBurns.forEach((burn) => {
-        if (burn.amount.gte(fpRate)) {
-          totalXorBurned[campaign.id] = totalXorBurned[campaign.id].add(burn.amount);
-          if (address === burn.address) {
-            accountXorBurned[campaign.id] = accountXorBurned[campaign.id].add(burn.amount);
+
+      Object.entries(accountsBurned).forEach(([addr, amount]) => {
+        if (amount.gte(fpRate)) {
+          totalXorBurned[campaign.id] = totalXorBurned[campaign.id].add(amount);
+          if (address === addr) {
+            accountXorBurned[campaign.id] = accountXorBurned[campaign.id].add(amount);
           }
         }
       });
@@ -282,9 +304,11 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     this.totalXorBurned = { ...totalXorBurned };
   }
 
-  private fetchDataAndCalcCountdown(): void {
-    this.calcCountdown();
-    this.fetchData();
+  private async fetchDataAndCalcCountdown(): Promise<void> {
+    await this.withLoading(async () => {
+      this.calcCountdown();
+      await this.fetchData();
+    });
   }
 
   handleConnectWallet(): void {
@@ -309,11 +333,16 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
         this.campaignsObj.kensetsu.from = 0;
         this.campaignsObj.kensetsu.to = 10_000;
       }
-
-      this.fetchDataAndCalcCountdown();
+      await this.fetchDataAndCalcCountdown();
 
       this.interval = setInterval(this.fetchDataAndCalcCountdown, 60_000);
     });
+  }
+
+  handleBurnConfirm(done?: boolean): void {
+    if (done) {
+      this.loading = true;
+    }
   }
 
   beforeUnmount(): void {
@@ -333,6 +362,10 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   margin: 0;
   &--burn {
     margin-bottom: $basic-spacing;
+    box-shadow: var(--s-shadow-element-pressed);
+    &.disabled {
+      box-shadow: var(--s-shadow-element);
+    }
   }
 }
 .page-header--burn {
@@ -340,7 +373,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
 }
 .description {
   margin-bottom: $inner-spacing-mini;
-  font-size: 13px;
+  font-size: var(--s-font-size-extra-small);
   &.centered {
     text-align: center;
   }
@@ -366,7 +399,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   &-title {
     color: var(--s-color-base-content-secondary);
     font-weight: 800;
-    font-size: 13px;
+    font-size: var(--s-font-size-extra-small);
     margin-bottom: $inner-spacing-mini;
   }
   &-value {

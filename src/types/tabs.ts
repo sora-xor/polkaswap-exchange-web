@@ -15,7 +15,6 @@ export enum AlertFrequencyTabs {
 
 export enum FiatOptionTabs {
   moonpay = 'MoonpayHistory',
-  x1ex = 'X1History',
 }
 
 export interface TabItem {
@@ -23,3 +22,12 @@ export interface TabItem {
   label: string;
   content?: string;
 }
+
+/** Used for ResponsiveTabs.vue */
+export type ResponsiveTab = {
+  /** Key */
+  name: string;
+  /** Displayed label, might be used with i18n */
+  label: string;
+  icon?: string;
+};
