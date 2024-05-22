@@ -135,7 +135,6 @@ export default {
   },
   fiatPayment: {
     [FiatOptionTabs.moonpay]: 'MoonPay',
-    [FiatOptionTabs.x1ex]: 'x1ex',
     historyBtn: 'My purchases',
     historyTitle: 'Transaction History',
     moonpayTitle: 'Buy ETH via MoonPay',
