@@ -1,7 +1,7 @@
 <template>
   <div :class="headerClasses">
     <s-button v-if="hasButtonBack" type="action" icon="arrows-chevron-left-rounded-24" @click="handleBack($event)" />
-    <h3 class="page-header-title">
+    <h3 class="page-header-title" :class="{ bold }">
       <slot name="title">
         {{ title }}
       </slot>
@@ -28,7 +28,8 @@ import TranslationMixin from '@/components/mixins/TranslationMixin';
 
 @Component
 export default class GenericPageHeader extends Mixins(TranslationMixin) {
-  @Prop({ default: false, type: Boolean }) readonly hasButtonBack?: boolean;
+  @Prop({ default: false, type: Boolean }) readonly hasButtonBack!: boolean;
+  @Prop({ default: false, type: Boolean }) readonly bold!: boolean;
   @Prop({ default: '', type: String }) readonly title!: string;
   @Prop({ default: '', type: String }) readonly tooltip?: string;
   @Prop({ default: 'right-start', type: String }) readonly tooltipPlacement?: string;

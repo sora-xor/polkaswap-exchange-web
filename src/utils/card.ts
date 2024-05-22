@@ -20,7 +20,6 @@ const SoraProxyEndpoints = {
     ibanEndpoint: `${soraCardTestBaseEndpoint}/ibans`,
     fees: `${soraCardTestBaseEndpoint}/fees`,
     countries: `${soraCardTestBaseEndpoint}/country-codes`,
-    x1TransactionStatus: `${soraCardTestBaseEndpoint}/ws/x1-payment-status`,
     newAccessTokenEndpoint: 'https://api-auth-test.soracard.com/RequestNewAccessToken',
   },
   [WALLET_CONSTS.SoraNetwork.Prod]: {
@@ -31,7 +30,6 @@ const SoraProxyEndpoints = {
     ibanEndpoint: `${soraCardProdBaseEndpoint}/ibans`,
     fees: `${soraCardProdBaseEndpoint}/fees`,
     countries: `${soraCardProdBaseEndpoint}/country-codes`,
-    x1TransactionStatus: `${soraCardProdBaseEndpoint}/ws/x1-payment-status`,
     newAccessTokenEndpoint: 'https://api-auth.soracard.com/RequestNewAccessToken',
   },
 };
