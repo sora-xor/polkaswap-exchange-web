@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Vlasnik imovine",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Posuditi",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Detalji pozicije",
         "Burn": "Spaliti"
     },
