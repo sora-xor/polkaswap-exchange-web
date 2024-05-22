@@ -27,11 +27,11 @@ export default class CedeStoreWidget extends Mixins(mixins.DialogMixin, mixins.L
   @Watch('isVisible', { immediate: true })
   private loadCedeWidget(): void {
     if (this.isVisible) {
+      // NOTE: the line should be removed after extension update.
+      localStorage.removeItem('SendStore');
+
       try {
         this.$nextTick(() => {
-          console.info('isVisible', this.isVisible);
-          console.info('address: this.accountAddress', this.accountAddress);
-
           renderSendWidget(this.rootSelector, {
             config: {
               tokenSymbol: 'XOR',
