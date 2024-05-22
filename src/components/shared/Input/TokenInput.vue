@@ -262,7 +262,10 @@ export default class TokenInput extends Mixins(
 
   calcFiatAmount(value: string | number): FPNumber {
     if (!value) return FPNumber.ZERO;
-    return new FPNumber(value).mul(this.tokenPrice);
+    const currentCurrencyRate = this.fiatExchangeRateObject[this.currency];
+    const tokenPrice = this.tokenPrice.mul(currentCurrencyRate);
+
+    return new FPNumber(value).mul(tokenPrice);
   }
 
   handleMax(): void {
