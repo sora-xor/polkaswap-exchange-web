@@ -6,9 +6,9 @@ import { type FetchVariables } from '@/types/indexers';
 import { debouncedInputHandler } from '@/utils';
 
 @Component
-export default class IndexerDataFetchMixin<T> extends Mixins(mixins.LoadingMixin, mixins.PaginationSearchMixin) {
+export default class IndexerDataFetchMixin extends Mixins(mixins.LoadingMixin, mixins.PaginationSearchMixin) {
   totalCount = 0;
-  items: T[] = [];
+  items: any[] = [];
 
   intervalTimestamp = 0;
   private interval: Nullable<ReturnType<typeof setInterval>> = null;
@@ -37,19 +37,19 @@ export default class IndexerDataFetchMixin<T> extends Mixins(mixins.LoadingMixin
     return {};
   }
 
-  checkTriggerUpdate<Value>(current: Value, prev: Value) {
+  checkTriggerUpdate(current: any, prev: any) {
     if (!isEqual(current)(prev)) {
       this.resetPage();
       this.updateItems();
     }
   }
 
-  async requestData(variables: FetchVariables): Promise<{ items: T[]; totalCount: number }> {
+  async requestData(variables: FetchVariables): Promise<{ items: any[]; totalCount: number }> {
     console.info('[IndexerDataFetchMixin]: requestData is not implemented');
     return { items: [], totalCount: 0 };
   }
 
-  getItemTimestamp(item: T): number {
+  getItemTimestamp(item: any): number {
     console.info('[IndexerDataFetchMixin]: getItemTimestamp is not implemented');
     return 0;
   }

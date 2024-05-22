@@ -46,7 +46,7 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class VaultDetailsHistory extends Mixins(TranslationMixin, IndexerDataFetchMixin<VaultEvent>) {
+export default class VaultDetailsHistory extends Mixins(TranslationMixin, IndexerDataFetchMixin) {
   /** Date format without seconds */
   readonly DateFormat = 'll LT';
 
@@ -58,7 +58,7 @@ export default class VaultDetailsHistory extends Mixins(TranslationMixin, Indexe
 
   @Watch('id', { immediate: true })
   private async updateHistory(curr: number, prev: number) {
-    this.checkTriggerUpdate<number>(curr, prev);
+    this.checkTriggerUpdate(curr, prev);
   }
 
   pageAmount = 5; // override PaginationSearchMixin

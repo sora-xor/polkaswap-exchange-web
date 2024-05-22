@@ -11,5 +11,6 @@ export type FetchVariables = {
   id?: number | string;
   first?: number;
   offset?: number;
+  filter?: any;
   fromTimestamp?: number;
 };

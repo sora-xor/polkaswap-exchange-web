@@ -145,7 +145,7 @@ type TableItem = {
     HistoryPagination: components.HistoryPagination,
   },
 })
-export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin, IndexerDataFetchMixin<HistoryItem>) {
+export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin, IndexerDataFetchMixin) {
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
 
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
@@ -154,7 +154,7 @@ export default class SwapTransactionsWidget extends Mixins(ScrollableTableMixin,
 
   @Watch('assetsAddresses', { immediate: true })
   private resetData(curr: string[], prev: string[]): void {
-    this.checkTriggerUpdate<string[]>(curr, prev);
+    this.checkTriggerUpdate(curr, prev);
   }
 
   pageAmount = 8; // override PaginationSearchMixin
