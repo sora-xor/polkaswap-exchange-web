@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Ակտիվների սեփականատեր",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Վարկ",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Դիրքի մանրամասներ",
         "Burn": "Այրվել"
     },
