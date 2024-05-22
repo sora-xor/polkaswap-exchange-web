@@ -90,7 +90,7 @@ export default {
     [StakingPageNames.Staking]: 'Staking',
     [DashboardPageNames.AssetOwner]: 'Asset owner',
     [DashboardPageNames.AssetOwnerDetails]: '@:pageTitle.AssetOwner',
-    [VaultPageNames.Vaults]: 'Borrow',
+    [VaultPageNames.Vaults]: '{Kensetsu}',
     [VaultPageNames.VaultDetails]: 'Position details',
   },
   mainMenu: {
@@ -107,7 +107,7 @@ export default {
     [PageNames.StakingContainer]: 'Staking',
     [PageNames.SoraCard]: '{Sora} Card',
     [PageNames.AssetOwnerContainer]: 'Asset owner',
-    [PageNames.VaultsContainer]: 'Borrow',
+    [PageNames.VaultsContainer]: '{Kensetsu}',
   },
   alerts: {
     [AlertTypeTabs.Drop]: 'Drops below',
@@ -135,7 +135,6 @@ export default {
   },
   fiatPayment: {
     [FiatOptionTabs.moonpay]: 'MoonPay',
-    [FiatOptionTabs.x1ex]: 'x1ex',
     historyBtn: 'My purchases',
     historyTitle: 'Transaction History',
     moonpayTitle: 'Buy ETH via MoonPay',

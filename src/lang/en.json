@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Asset owner",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Borrow",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Position Details",
         "Burn": "Burn"
     },

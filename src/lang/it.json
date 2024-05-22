@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Proprietario dell'asset",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Prendere in prestito",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Dettagli della posizione",
         "Burn": "Bruciare"
     },

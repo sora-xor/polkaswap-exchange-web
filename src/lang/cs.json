@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Vlastník aktiv",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Půjčit",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Detaily pozice",
         "Burn": "Hořet"
     },
