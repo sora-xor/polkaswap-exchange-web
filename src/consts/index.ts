@@ -342,7 +342,7 @@ const MainMenu: Array<SidebarMenuItemLink> = [
   {
     icon: 'security-shield-24',
     title: PageNames.VaultsContainer,
-    href: '/#/borrow',
+    href: '/#/kensetsu',
     index: VaultPageNames.Vaults,
   },
   {
