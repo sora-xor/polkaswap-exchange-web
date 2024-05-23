@@ -212,7 +212,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     // @ts-expect-error missing api
     const tg = window.Telegram?.WebApp;
 
-    if (!tg) {
+    if (tg) {
       this.showAppNotification('You are in telegram window.');
     }
 
