@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Tillgångens ägare",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Låna",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Positionsdetaljer",
         "Burn": "Bränna"
     },
@@ -1631,6 +1631,16 @@
         "positionSafe": "Position säker",
         "liquidationClose": "Likvidationsstängning",
         "highLiquidationRisk": "Hög likviditetsrisk",
+        "error": {
+            "enterCollateral": "Ange säkerhet",
+            "enterBorrow": "Ange lånebelopp",
+            "borrowMoreThanAvailable": "Tillgänglig skuld överskreds",
+            "insufficientCollateral": "Otillräcklig säkerhet",
+            "enterRepayDebt": "Ange återbetalningsskuld",
+            "repayMoreThanDebt": "Skuld överbetald"
+        },
+        "interest": "Ränta",
+        "interestDescription": "En årlig avgift debiterad på det belopp som dras från ditt valv, beräknat som en procentandel. Denna avgift kompenserar för risker och marknadsfluktuationer.",
         "positionHistory": "Positionshistorik",
         "liquidated": "Likviderad",
         "liquidatedMessage": "Likviderad {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "Delen av skulden som förmodligen inte kommer att återkrävas på grund av låntagarens oförmåga eller otillräcklig säkerhet.",
         "overallBorrowTax": "Låneskatt",
         "overallBorrowTaxDescription": "En avgift som tas ut på lånade medel, beräknad som en procentandel av lånebeloppet. Låneskatten används i programmet för uppmuntran av återköp av {KEN}-token.",
-        "error": {
-            "enterCollateral": "Ange säkerhet",
-            "enterBorrow": "Ange lånebelopp",
-            "borrowMoreThanAvailable": "Tillgänglig skuld överskreds",
-            "insufficientCollateral": "Otillräcklig säkerhet",
-            "enterRepayDebt": "Ange återbetalningsskuld",
-            "repayMoreThanDebt": "Skuld överbetald"
-        },
-        "interest": "Ränta",
-        "interestDescription": "En årlig avgift debiterad på det belopp som dras från ditt valv, beräknat som en procentandel. Denna avgift kompenserar för risker och marknadsfluktuationer."
+        "ltvMaxTooltip": "Den maximala mängden av en låneposition som kan tillhandahållas i förhållande till det värderade värdet av tillgången som används som säkerhet."
     },
     "accountSettings": {
         "title": "Kontoinställningar",

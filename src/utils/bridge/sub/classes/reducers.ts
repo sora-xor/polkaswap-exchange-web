@@ -394,6 +394,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     const soraBlockHash = await api.system.getBlockHash(soraBlockNumber, subBridgeApi.api);
 
     this.updateTransactionParams(id, {
+      txId: '',
       blockId: soraBlockHash,
       blockHeight: soraBlockNumber,
     });

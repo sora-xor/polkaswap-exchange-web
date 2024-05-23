@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Eigenaar van activa",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Lenen",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Positiedetails",
         "Burn": "Branden"
     },
@@ -1631,6 +1631,16 @@
         "positionSafe": "Positie veilig",
         "liquidationClose": "Liquidatie sluiten",
         "highLiquidationRisk": "Hoog liquidatierisico",
+        "error": {
+            "enterCollateral": "Voer onderpand in",
+            "enterBorrow": "Voer het leenbedrag in",
+            "borrowMoreThanAvailable": "Beschikbare schuld overschreden",
+            "insufficientCollateral": "Onvoldoende onderpand",
+            "enterRepayDebt": "Voer de terug te betalen schuld in",
+            "repayMoreThanDebt": "Te veel terugbetaald"
+        },
+        "interest": "Rente",
+        "interestDescription": "Een jaarlijkse vergoeding die in rekening wordt gebracht over het opgenomen bedrag uit uw kluis, berekend als een percentage. Deze vergoeding compenseert voor risico's en marktfluctuaties.",
         "positionHistory": "Positiegeschiedenis",
         "liquidated": "Geliquideerd",
         "liquidatedMessage": "Geliquideerd {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "Het deel van de schuld dat waarschijnlijk niet wordt teruggevorderd als gevolg van wanbetaling door de lener of onvoldoende onderpand.",
         "overallBorrowTax": "Leentaks",
         "overallBorrowTaxDescription": "Een vergoeding die in rekening wordt gebracht over geleende fondsen, berekend als een percentage van het geleende bedrag. De leentaks wordt gebruikt voor het stimuleringsprogramma voor de terugkoop van tokens {KEN}.",
-        "error": {
-            "enterCollateral": "Voer onderpand in",
-            "enterBorrow": "Voer het leenbedrag in",
-            "borrowMoreThanAvailable": "Beschikbare schuld overschreden",
-            "insufficientCollateral": "Onvoldoende onderpand",
-            "enterRepayDebt": "Voer de terug te betalen schuld in",
-            "repayMoreThanDebt": "Te veel terugbetaald"
-        },
-        "interest": "Rente",
-        "interestDescription": "Een jaarlijkse vergoeding die in rekening wordt gebracht over het opgenomen bedrag uit uw kluis, berekend als een percentage. Deze vergoeding compenseert voor risico's en marktfluctuaties."
+        "ltvMaxTooltip": "Het maximale bedrag van een leenpositie dat kan worden verstrekt in verhouding tot de getaxeerde waarde van het activum dat als onderpand wordt gebruikt."
     },
     "accountSettings": {
         "title": "Accountinstellingen",

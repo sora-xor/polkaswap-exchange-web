@@ -5,13 +5,14 @@ import { SubqueryIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/inde
 import { gql } from '@urql/core';
 
 import type { IndexerVault, ClosedVault, VaultEvent, IndexerVaultEvent } from '@/modules/vault/types';
+import type { FetchVariables } from '@/types/indexers';
 
 import type { ConnectionQueryResponse } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 
 const { IndexerType } = WALLET_CONSTS;
 
-const ClosedVaultsQuery = gql<ConnectionQueryResponse<IndexerVault>>`
-  query ($account: String, $after: Cursor = "", $first: Int = 100) {
+const SubqueryClosedVaultsQuery = gql<ConnectionQueryResponse<IndexerVault>>`
+  query ClosedVaultsQuery($account: String, $after: Cursor = "", $first: Int = 100) {
     data: vaults(
       first: $first
       after: $after
@@ -54,7 +55,11 @@ export async function fetchClosedVaults(account: string): Promise<ClosedVault[]>
     case IndexerType.SUBQUERY: {
       const variables = { account };
       const subqueryIndexer = indexer as SubqueryIndexer;
-      const items = await subqueryIndexer.services.explorer.fetchAllEntities(ClosedVaultsQuery, variables, parseVaults);
+      const items = await subqueryIndexer.services.explorer.fetchAllEntities(
+        SubqueryClosedVaultsQuery,
+        variables,
+        parseVaults
+      );
       return items ?? [];
     }
     case IndexerType.SUBSQUID: {
@@ -65,15 +70,17 @@ export async function fetchClosedVaults(account: string): Promise<ClosedVault[]>
   return [];
 }
 
-const VaultDetailsQuery = gql<ConnectionQueryResponse<IndexerVaultEvent>>`
-  query ($id: String, $after: Cursor = "", $first: Int = 100) {
-    data: vaultEvents(first: $first, after: $after, filter: { vaultId: { equalTo: $id } }) {
+const SubqueryVaultDetailsQuery = gql<ConnectionQueryResponse<IndexerVaultEvent>>`
+  query VaultDetailsQuery($first: Int = null, $offset: Int = null, $filter: VaultEventFilter) {
+    data: vaultEvents(first: $first, offset: $offset, filter: $filter, orderBy: [TIMESTAMP_DESC, ID_DESC]) {
       pageInfo {
         hasNextPage
         endCursor
       }
+      totalCount
       edges {
         node {
+          id
           amount
           type
           timestamp
@@ -83,6 +90,14 @@ const VaultDetailsQuery = gql<ConnectionQueryResponse<IndexerVaultEvent>>`
   }
 `;
 
+const subqueryVaultEventsFilter = (vaultId: string | number, fromTimestamp?: number) => {
+  const filter: any = { vaultId: { equalTo: String(vaultId) } };
+
+  if (fromTimestamp) filter.timestamp = { greaterThan: fromTimestamp };
+
+  return filter;
+};
+
 const parseVaultEvents = (event: IndexerVaultEvent): VaultEvent => {
   return {
     amount: event.amount ? new FPNumber(event.amount) : null,
@@ -91,26 +106,30 @@ const parseVaultEvents = (event: IndexerVaultEvent): VaultEvent => {
   };
 };
 
-export async function fetchVaultEvents(vaultId: number | string): Promise<VaultEvent[]> {
+export async function fetchVaultEvents(variables: FetchVariables): Promise<{
+  totalCount: number;
+  items: VaultEvent[];
+}> {
   const indexer = getCurrentIndexer();
-  const id = `${vaultId}`;
+  const { id, first, offset, fromTimestamp } = variables;
+
+  let totalCount = 0;
+  let items: VaultEvent[] = [];
+
+  if (!id) return { totalCount, items };
 
   switch (indexer.type) {
     case IndexerType.SUBQUERY: {
-      const variables = { id };
+      const filter = subqueryVaultEventsFilter(id, fromTimestamp);
+      const variables = { first, offset, filter };
       const subqueryIndexer = indexer as SubqueryIndexer;
-      const items = await subqueryIndexer.services.explorer.fetchAllEntities(
-        VaultDetailsQuery,
-        variables,
-        parseVaultEvents
-      );
-      // Reverse to show the latest events first, we don't use orderBy to keep the order of events
-      return items?.reverse() ?? [];
-    }
-    case IndexerType.SUBSQUID: {
-      return [];
+      const response = await subqueryIndexer.services.explorer.fetchEntities(SubqueryVaultDetailsQuery, variables);
+      if (response) {
+        totalCount = response.totalCount;
+        items = response.edges.map((edge) => parseVaultEvents(edge.node));
+      }
     }
   }
 
-  return [];
+  return { totalCount, items };
 }

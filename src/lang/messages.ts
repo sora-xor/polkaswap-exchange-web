@@ -90,7 +90,7 @@ export default {
     [StakingPageNames.Staking]: 'Staking',
     [DashboardPageNames.AssetOwner]: 'Asset owner',
     [DashboardPageNames.AssetOwnerDetails]: '@:pageTitle.AssetOwner',
-    [VaultPageNames.Vaults]: 'Borrow',
+    [VaultPageNames.Vaults]: '{Kensetsu}',
     [VaultPageNames.VaultDetails]: 'Position details',
   },
   mainMenu: {
@@ -107,7 +107,7 @@ export default {
     [PageNames.StakingContainer]: 'Staking',
     [PageNames.SoraCard]: '{Sora} Card',
     [PageNames.AssetOwnerContainer]: 'Asset owner',
-    [PageNames.VaultsContainer]: 'Borrow',
+    [PageNames.VaultsContainer]: '{Kensetsu}',
   },
   alerts: {
     [AlertTypeTabs.Drop]: 'Drops below',
@@ -135,7 +135,6 @@ export default {
   },
   fiatPayment: {
     [FiatOptionTabs.moonpay]: 'MoonPay',
-    [FiatOptionTabs.x1ex]: 'x1ex',
     historyBtn: 'My purchases',
     historyTitle: 'Transaction History',
     moonpayTitle: 'Buy ETH via MoonPay',
@@ -1207,6 +1206,8 @@ export default {
     ltv: 'Loan to value ({LTV})',
     ltvDescription:
       'The ratio of the amount drawn to the value of the collateral in your position, expressed as a percentage. A higher {LTV} increases potential returns but also risk, including the chance of liquidation.',
+    ltvMaxTooltip:
+      'The maximum amount of a borrowing position that can be provided in relation to the appraised value of the asset being used as collateral.',
     borrowMore: 'Borrow more',
     borrowMoreDescription:
       'Draw additional funds from your position up to the maximum available amount. Ensure your collateral value supports the increased debt to avoid liquidation risks.',

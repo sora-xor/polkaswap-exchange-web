@@ -412,7 +412,7 @@
         "Explore\/Books": "@:pageTitle.OrderBook",
         "AssetOwner": "Владелец активов",
         "AssetOwnerDetails": "@:pageTitle.AssetOwner",
-        "Vaults": "Занять",
+        "Vaults": "{Kensetsu}",
         "VaultDetails": "Детали позиции",
         "Burn": "Сжечь"
     },
@@ -799,7 +799,7 @@
         },
         "action": {
             "connectExternalWallet": "Подключите {Ethereum} аккаунт",
-            "signAndClaim": "Войти и получить",
+            "signAndClaim": "Подписать и получить",
             "pendingInternal": "{Sora} транзакция в ожидании...",
             "pendingExternal": "{Ethereum} транзакция в ожидании...",
             "checkRewards": "Проверить"
@@ -997,7 +997,7 @@
     "copiedText": "Скопировано!",
     "copyWithValue": "Копировать {value}",
     "copiedWithValue": "{value} скопировано!",
-    "signAndClaimText": "Войти и получить",
+    "signAndClaimText": "Подписать и получить",
     "balanceText": "Баланс",
     "unknownAssetText": "Неизвестный актив",
     "demeterFarming": {
@@ -1631,6 +1631,16 @@
         "positionSafe": "Позиция в безопасности",
         "liquidationClose": "Близка к ликвидации",
         "highLiquidationRisk": "Высокий риск ликвидации",
+        "error": {
+            "enterCollateral": "Введите залог",
+            "enterBorrow": "Введите сумму заимствования",
+            "borrowMoreThanAvailable": "Доступный долг превышен",
+            "insufficientCollateral": "Недостаточно залога",
+            "enterRepayDebt": "Введите погашаемый долг",
+            "repayMoreThanDebt": "Долг переплачен"
+        },
+        "interest": "Процент",
+        "interestDescription": "Годовая комиссия, взимаемая за сумму, снятую из вашего хранилища, рассчитанная как процент. Этот сбор компенсирует риски и рыночные колебания.",
         "positionHistory": "История позиций",
         "liquidated": "Ликвидировано",
         "liquidatedMessage": "Ликвидировано {amount} {symbol}",
@@ -1651,16 +1661,7 @@
         "overallBadDebtDescription": "Часть задолженности, которая вероятно не будет возвращена из-за несостоятельности заемщика или недостаточного залогового обеспечения.",
         "overallBorrowTax": "Налог на кредит",
         "overallBorrowTaxDescription": "Плата, взимаемая с заимствованных средств, рассчитанная как процент от суммы долга. Налог на кредит используется в программе поощрения выкупа токенов {KEN}.",
-        "error": {
-            "enterCollateral": "Введите залог",
-            "enterBorrow": "Введите сумму заимствования",
-            "borrowMoreThanAvailable": "Доступный долг превышен",
-            "insufficientCollateral": "Недостаточно залога",
-            "enterRepayDebt": "Введите погашаемый долг",
-            "repayMoreThanDebt": "Долг переплачен"
-        },
-        "interest": "Процент",
-        "interestDescription": "Годовая комиссия, взимаемая за сумму, снятую из вашего хранилища, рассчитанная как процент. Этот сбор компенсирует риски и рыночные колебания."
+        "ltvMaxTooltip": "Максимальная сумма заемной позиции, которую можно предоставить относительно оценочной стоимости актива, используемого в качестве залога."
     },
     "accountSettings": {
         "title": "Настройки аккаунта",
