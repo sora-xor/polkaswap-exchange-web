@@ -23,14 +23,6 @@ const getters = defineGetters<SettingsState>()({
     const { state, getters } = settingsGetterContext(args);
     return !!getters.moonpayApiKey && !!state.featureFlags.moonpay;
   },
-  x1ApiKey(...args): string {
-    const { rootState } = settingsGetterContext(args);
-    return rootState.wallet.settings.apiKeys.x1ex;
-  },
-  x1Enabled(...args): boolean {
-    const { state, getters } = settingsGetterContext(args);
-    return !!getters.x1ApiKey && !!state.featureFlags.x1ex;
-  },
   soraCardEnabled(...args): Nullable<boolean> {
     const { state } = settingsGetterContext(args);
     return state.featureFlags.soraCard;
@@ -38,6 +30,14 @@ const getters = defineGetters<SettingsState>()({
   orderBookEnabled(...args): Nullable<boolean> {
     const { state } = settingsGetterContext(args);
     return state.featureFlags.orderBook;
+  },
+  kensetsuEnabled(...args): Nullable<boolean> {
+    const { state } = settingsGetterContext(args);
+    return state.featureFlags.kensetsu;
+  },
+  assetOwnerEnabled(...args): Nullable<boolean> {
+    const { state } = settingsGetterContext(args);
+    return state.featureFlags.assetOwner;
   },
   notificationActivated(...args): boolean {
     const { state } = settingsGetterContext(args);

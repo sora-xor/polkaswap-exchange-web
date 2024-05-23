@@ -75,7 +75,6 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import MoonpayBridgeInitMixin from '../../../components/pages/Moonpay/BridgeInitMixin';
 import MoonpayLogo from '../../../components/shared/Logo/Moonpay.vue';
-import X1exLogo from '../../../components/shared/Logo/X1ex.vue';
 import { Components } from '../../../consts';
 import { lazyComponent } from '../../../router';
 import { action, getter, state } from '../../../store/decorators';
@@ -92,7 +91,6 @@ const DetailsView = 'details';
 @Component({
   components: {
     MoonpayLogo,
-    X1exLogo,
     FormattedAmount: components.FormattedAmount,
     GenericPageHeader: lazyComponent(Components.GenericPageHeader),
     IFrameWidget: lazyComponent(Components.IFrameWidget),

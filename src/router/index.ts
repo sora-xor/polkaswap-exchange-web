@@ -4,10 +4,14 @@ import { Component } from 'vue-property-decorator';
 import VueRouter, { RouteConfig } from 'vue-router';
 
 import { PageNames, BridgeChildPages } from '@/consts';
+import { DashboardPageNames } from '@/modules/dashboard/consts';
+import { dashboardLazyView } from '@/modules/dashboard/router';
 import { StakingPageNames } from '@/modules/staking/consts';
 import { DemeterStakingPageNames } from '@/modules/staking/demeter/consts';
 import { demeterStakingLazyView, soraStakingLazyView, stakingLazyView } from '@/modules/staking/router';
 import { SoraStakingPageNames } from '@/modules/staking/sora/consts';
+import { VaultPageNames } from '@/modules/vault/consts';
+import { vaultLazyView } from '@/modules/vault/router';
 import store from '@/store';
 import { updateDocumentTitle } from '@/utils';
 
@@ -66,11 +70,11 @@ const routes: Array<RouteConfig> = [
     name: PageNames.Wallet,
     component: lazyView(PageNames.Wallet),
   },
-  {
-    path: '/card',
-    name: PageNames.SoraCard,
-    component: lazyView(PageNames.SoraCard),
-  },
+  // {
+  //   path: '/card',
+  //   name: PageNames.SoraCard,
+  //   component: lazyView(PageNames.SoraCard),
+  // },
   {
     path: '/bridge',
     component: lazyView(PageNames.BridgeContainer),
@@ -261,6 +265,48 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/kensetsu',
+    component: lazyView(PageNames.VaultsContainer),
+    children: [
+      {
+        path: '',
+        name: VaultPageNames.Vaults,
+        component: vaultLazyView(VaultPageNames.Vaults),
+      },
+      {
+        path: ':vault',
+        name: VaultPageNames.VaultDetails,
+        component: vaultLazyView(VaultPageNames.VaultDetails),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+    ],
+  },
+  {
+    path: '/dashboard/owner',
+    component: lazyView(PageNames.AssetOwnerContainer),
+    children: [
+      {
+        path: '',
+        name: DashboardPageNames.AssetOwner,
+        component: dashboardLazyView(DashboardPageNames.AssetOwner),
+      },
+      {
+        path: ':asset',
+        name: DashboardPageNames.AssetOwnerDetails,
+        component: dashboardLazyView(DashboardPageNames.AssetOwnerDetails),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+    ],
+  },
+  {
+    path: '/dashboard',
+    redirect: '/wallet',
+  },
+  {
     path: '/stats',
     name: PageNames.Stats,
     component: lazyView(PageNames.Stats),
@@ -271,9 +317,9 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.OrderBook),
   },
   {
-    path: '/kensetsu',
-    name: PageNames.Kensetsu,
-    component: lazyView(PageNames.Kensetsu),
+    path: '/burn',
+    name: PageNames.Burn,
+    component: lazyView(PageNames.Burn),
   },
   {
     path: '*',
