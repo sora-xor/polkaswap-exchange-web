@@ -307,7 +307,7 @@ export default class Vaults extends Mixins(
 
   @Watch('windowWidth')
   onWindowWidthChange(): void {
-    let pageAmount = this.pageAmount;
+    let pageAmount: number;
     if (this.windowWidth <= DsBreakpoints.sm) {
       pageAmount = 2;
     } else if (this.windowWidth <= DsBreakpoints.lg) {
@@ -329,7 +329,7 @@ export default class Vaults extends Mixins(
   }
 
   get showDropdown(): boolean {
-    return this.screenBreakpointClass === BreakpointClass.Mobile;
+    return [BreakpointClass.Mobile, BreakpointClass.LargeMobile].includes(this.screenBreakpointClass);
   }
 
   get tabs(): Array<ResponsiveTab> {
