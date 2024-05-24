@@ -154,7 +154,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     // open connections
     await this.connector.start();
     // sign transaction
-    await this.connector.network.transfer(asset, tx.to as string, tx.amount as string, id);
+    await this.connector.transfer(asset, tx.to as string, tx.amount as string, id);
     // save start block when tx was signed
     await this.saveStartBlock(id);
   }

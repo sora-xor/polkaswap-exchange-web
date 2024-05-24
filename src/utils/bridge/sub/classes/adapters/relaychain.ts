@@ -8,7 +8,7 @@ import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 export class RelaychainAdapter extends SubAdapter {
   // overrides SubAdapter
-  protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+  public getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
 
     return this.api.tx.xcmPallet.reserveTransferAssets(

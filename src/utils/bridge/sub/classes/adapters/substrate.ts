@@ -11,7 +11,7 @@ import { NodesConnection } from '@/utils/connection';
 import type { ApiPromise, ApiRx } from '@polkadot/api';
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
 import type { ISubmittableResult } from '@polkadot/types/types';
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString, ApiAccount } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
@@ -127,23 +127,6 @@ export class SubAdapter {
     }, ZeroStringValue);
   }
 
-  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
-    if (!subBridgeApi.account?.pair) throw new Error(`[${this.constructor.name}] Account pair is not set.`);
-
-    const historyItem = subBridgeApi.getHistory(historyId as string) ?? {
-      type: Operation.SubstrateIncoming,
-      symbol: asset.symbol,
-      assetAddress: asset.address,
-      amount: `${amount}`,
-      externalNetwork: this.subNetwork,
-      externalNetworkType: BridgeNetworkType.Sub,
-    };
-
-    const extrinsic = this.getTransferExtrinsic(asset, recipient, amount);
-
-    await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account.pair, historyItem);
-  }
-
   /* [Substrate 5] Runtime call transactionPaymentApi */
   public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
     return await this.withConnection(async () => {
@@ -165,7 +148,7 @@ export class SubAdapter {
     return await this.withConnection(() => this.api.consts.balances.existentialDeposit.toString(), ZeroStringValue);
   }
 
-  protected getTransferExtrinsic(
+  public getTransferExtrinsic(
     asset: RegisteredAsset,
     recipient: string,
     amount: string | number

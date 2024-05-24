@@ -55,7 +55,7 @@ export class LiberlandAdapter extends SubAdapter {
     }, ZeroStringValue);
   }
 
-  protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+  public getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     const { externalAddress: address, externalDecimals: decimals } = asset;
     const value = new FPNumber(amount, decimals).toCodecString();
 
