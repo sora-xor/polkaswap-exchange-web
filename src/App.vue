@@ -209,16 +209,18 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     // [DESKTOP] To Enable Desktop
     this.setIsDesktop(true);
 
-    // @ts-expect-error missing api
-    const tg = window.Telegram?.WebApp;
+    setTimeout(() => {
+      // @ts-expect-error missing api
+      const tg = window.Telegram?.WebApp;
 
-    // @ts-expect-error missing api
-    this.showAppNotification(window.Telegram);
-    this.showAppNotification(window.navigator.userAgent);
+      // @ts-expect-error missing api
+      this.showAppNotification(window.Telegram);
+      this.showAppNotification(window.navigator.userAgent);
 
-    if (tg) {
-      this.showAppNotification('You are in telegram window.');
-    }
+      if (tg) {
+        this.showAppNotification('You are in telegram window.');
+      }
+    }, 3000);
 
     // element-icons is not common used, but should be visible after network connection lost
     preloadFontFace('element-icons');
