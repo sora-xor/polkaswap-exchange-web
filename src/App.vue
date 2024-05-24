@@ -211,11 +211,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
     setTimeout(() => {
       // @ts-expect-error missing api
-      const tg = window.Telegram?.WebApp;
+      const tg = window.Telegram?.WebView;
 
       // @ts-expect-error missing api
-      this.showAppNotification(window.Telegram);
-      this.showAppNotification(window.navigator.userAgent);
+      console.log(window.Telegram);
+      console.log('User Agent', window.navigator.userAgent);
 
       if (tg) {
         this.showAppNotification('You are in telegram window.');
