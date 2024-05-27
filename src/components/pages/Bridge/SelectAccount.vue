@@ -1,7 +1,7 @@
 <template>
   <dialog-base :visible.sync="visibility" :title="t('connection.selectAccount')" custom-class="account-select-dialog">
     <div class="account-select">
-      <address-book-input v-model="address" :is-valid="validAddress" ref="input" />
+      <address-book-input ref="input" v-model="address" :is-valid="validAddress" @update-name="updateName" />
 
       <s-button
         class="s-typography-button--large account-select-button"
@@ -35,6 +35,7 @@ export default class BridgeSelectAccount extends Mixins(mixins.LoadingMixin, Tra
   @mutation.web3.setSubAddress private setSubAddress!: (opts: { address: string; name: string }) => Promise<void>;
 
   address = '';
+  private name = '';
 
   @Watch('visibility')
   private updateAddress(isVisible: boolean) {
@@ -54,10 +55,12 @@ export default class BridgeSelectAccount extends Mixins(mixins.LoadingMixin, Tra
   }
 
   handleSelectAddress(): void {
-    // [TODO] emit name from address-book-input
-    const name = this.address ? (this.$refs.input as any).name : '';
-    this.setSubAddress({ address: this.address, name });
+    this.setSubAddress({ address: this.address, name: this.name });
     this.visibility = false;
+  }
+
+  updateName(name: string): void {
+    this.name = name;
   }
 }
 </script>
