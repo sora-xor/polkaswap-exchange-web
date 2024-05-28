@@ -268,9 +268,6 @@ const routes: Array<RouteConfig> = [
     path: '/deposit/cede',
     name: PageNames.CedeStore,
     component: lazyView(PageNames.CedeStore),
-    meta: {
-      requiresAuth: true,
-    },
   },
   {
     path: '/kensetsu',
