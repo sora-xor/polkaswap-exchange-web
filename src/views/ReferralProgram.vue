@@ -181,6 +181,7 @@ import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import router, { lazyView } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
+import { soraWalletRegexp } from '@/utils/regexp';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -352,6 +353,9 @@ export default class ReferralProgram extends Mixins(
   }
 
   get isValidReferrerLink(): boolean {
+    if (!soraWalletRegexp.test(this.referrerAddress)) {
+      return false;
+    }
     if (this.isReferrerLinkEmpty) {
       return false;
     }
