@@ -265,7 +265,7 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/transfer-from-cex',
+    path: '/deposit/cede',
     name: PageNames.CedeStore,
     component: lazyView(PageNames.CedeStore),
     meta: {
