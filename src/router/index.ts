@@ -253,13 +253,13 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/deposit',
-    name: PageNames.FiatDepositOptions,
-    component: lazyView(PageNames.FiatDepositOptions),
+    name: PageNames.DepositOptions,
+    component: lazyView(PageNames.DepositOptions),
   },
   {
     path: '/deposit/history',
-    name: PageNames.FiatTxHistory,
-    component: lazyView(PageNames.FiatTxHistory),
+    name: PageNames.DepositTxHistory,
+    component: lazyView(PageNames.DepositTxHistory),
     meta: {
       requiresAuth: true,
     },

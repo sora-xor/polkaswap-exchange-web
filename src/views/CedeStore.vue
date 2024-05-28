@@ -1,6 +1,6 @@
 <template>
   <div class="container transaction-fiat-history" v-loading="parentLoading">
-    <generic-page-header has-button-back @back="goTo(PageNames.FiatDepositOptions)">
+    <generic-page-header has-button-back @back="goTo(PageNames.DepositOptions)">
       <template #title="">{{ TranslationConsts.CedeStore }}</template>
     </generic-page-header>
     <div id="cede-widget" />

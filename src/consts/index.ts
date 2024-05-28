@@ -133,8 +133,8 @@ export enum PageNames {
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
-  FiatDepositOptions = 'FiatDepositOptions',
-  FiatTxHistory = 'FiatTxHistory',
+  DepositOptions = 'DepositOptions',
+  DepositTxHistory = 'DepositTxHistory',
   CedeStore = 'CedeStore',
   StakingContainer = 'StakingContainer',
   // just for router name & different titles

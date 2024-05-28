@@ -19,7 +19,7 @@
         }}</span>
         <s-button type="primary" @click="openCedeWidget">{{ cedeTextBtn }}</s-button>
       </div>
-      <div v-if="isLoggedIn" class="pay-options__history-btn" @click="openFiatTxHistory">
+      <div v-if="isLoggedIn" class="pay-options__history-btn" @click="openDepositTxHistory">
         <span>{{ t('fiatPayment.historyBtn') }}</span>
         <div>
           <span :class="computedCounterClass">{{ +hasPendingTx }}</span>
@@ -63,7 +63,7 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     CedeStoreLogo,
   },
 })
-export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, WalletConnectMixin) {
+export default class DepositOptions extends Mixins(mixins.TranslationMixin, WalletConnectMixin) {
   @state.moonpay.bridgeTransactionData private bridgeTransactionData!: Nullable<EthHistory>;
   @state.moonpay.startBridgeButtonVisibility private startBridgeButtonVisibility!: boolean;
 
@@ -98,8 +98,8 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
       : this.t('fiatPayment.cedeStoreBtn', { value1: TranslationConsts.CEX, value2: TranslationConsts.CedeStore });
   }
 
-  openFiatTxHistory(): void {
-    goTo(PageNames.FiatTxHistory);
+  openDepositTxHistory(): void {
+    goTo(PageNames.DepositTxHistory);
   }
 
   openCedeWidget(): void {
