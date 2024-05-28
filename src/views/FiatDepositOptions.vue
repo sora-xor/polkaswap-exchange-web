@@ -17,9 +17,7 @@
             value3: TranslationConsts.CedeStore,
           })
         }}</span>
-        <s-button type="primary" @click="openCedeDialog">{{
-          t('fiatPayment.cedeStoreBtn', { value1: TranslationConsts.CEX, value2: TranslationConsts.CedeStore })
-        }}</s-button>
+        <s-button type="primary" @click="openCedeWidget">{{ cedeTextBtn }}</s-button>
       </div>
       <div v-if="isLoggedIn" class="pay-options__history-btn" @click="openFiatTxHistory">
         <span>{{ t('fiatPayment.historyBtn') }}</span>
@@ -29,7 +27,6 @@
         </div>
       </div>
     </div>
-    <cede-store-dialog @error="showErrorMessage" :visible.sync="showCedeDialog" />
     <template v-if="moonpayEnabled">
       <moonpay />
       <moonpay-notification />
@@ -62,7 +59,6 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
     PaymentError: lazyComponent(Components.PaymentErrorDialog),
     SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
-    CedeStoreDialog: lazyComponent(Components.CedeStore),
     MoonpayLogo,
     CedeStoreLogo,
   },
@@ -96,16 +92,22 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
     return !this.isSoraAccountConnected ? this.t('connectWalletText') : this.t('fiatPayment.moonpayTitle');
   }
 
+  get cedeTextBtn(): string {
+    return !this.isSoraAccountConnected
+      ? this.t('connectWalletText')
+      : this.t('fiatPayment.cedeStoreBtn', { value1: TranslationConsts.CEX, value2: TranslationConsts.CedeStore });
+  }
+
   openFiatTxHistory(): void {
     goTo(PageNames.FiatTxHistory);
   }
 
-  openCedeDialog(): void {
+  openCedeWidget(): void {
     if (!this.isSoraAccountConnected) {
       return this.connectSoraWallet();
     }
 
-    this.showCedeDialog = true;
+    goTo(PageNames.CedeStore);
   }
 
   showErrorMessage(): void {

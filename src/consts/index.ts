@@ -135,6 +135,7 @@ export enum PageNames {
   Tokens = 'Tokens',
   FiatDepositOptions = 'FiatDepositOptions',
   FiatTxHistory = 'FiatTxHistory',
+  CedeStore = 'CedeStore',
   StakingContainer = 'StakingContainer',
   // just for router name & different titles
   ExploreContainer = 'Explore/Container',
@@ -210,8 +211,6 @@ export enum Components {
   MoonpayNotification = 'pages/Moonpay/Notification',
   MoonpayConfirmation = 'pages/Moonpay/Confirmation',
   MoonpayHistory = 'pages/Moonpay/MoonpayHistory',
-  // CedeStore Page
-  CedeStore = 'pages/CedeStore/CedeStoreWidget',
   // Swap Page
   SwapFormWidget = 'pages/Swap/Widget/Form',
   SwapChartWidget = 'pages/Swap/Widget/Chart',
