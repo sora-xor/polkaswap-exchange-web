@@ -78,7 +78,8 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
   get fiatBtnClass(): string[] {
     const base = ['app-controls-fiat-btn', 'active'];
 
-    if (this.$route.name === PageNames.DepositOptions) base.push('app-controls-fiat-btn--active', 's-pressed');
+    if ([PageNames.DepositOptions, PageNames.CedeStore].includes(this.$route.name as PageNames))
+      base.push('app-controls-fiat-btn--active', 's-pressed');
 
     return base;
   }
