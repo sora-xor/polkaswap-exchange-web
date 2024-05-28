@@ -13,5 +13,4 @@ const exact = (exp) => `^${exp}$`;
 export const wsRegexp = new RegExp(exactStart(ws));
 export const dnsPathRegexp = new RegExp(exactStart(`${dns}${port}?(${segment})*/?`));
 export const ipv4Regexp = new RegExp(exact(`${ipv4}${port}?(${segment})*/?`));
-export const soraWalletRegexp = /^cn[a-zA-Z0-9]{47}$/;
 export const syntheticAssetRegexp = WALLET_CONSTS.syntheticAssetRegexp;
