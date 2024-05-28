@@ -35,9 +35,6 @@ export default class CedeStore extends Mixins(mixins.TranslationMixin, mixins.Lo
   rootSelector = '#cede-widget';
 
   private loadCedeWidget(): void {
-    // NOTE: the line should be removed after extension update.
-    localStorage.removeItem('SendStore');
-
     try {
       this.$nextTick(() => {
         renderSendWidget(this.rootSelector, {
