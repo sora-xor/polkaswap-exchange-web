@@ -210,23 +210,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     // [DESKTOP] To Enable Desktop
     this.setIsDesktop(true);
 
-    setTimeout(() => {
-      // const telegram = new TelegramBot('7117910481:AAFV3MfOjm8DJE7LPiVsVfOnO3EypgV3nsA');
-      // console.log('telegram', telegram);
-      // @ts-expect-error missing api
-      const tg = window.Telegram;
-
-      tg.WebApp.expand();
-
-      // @ts-expect-error missing api
-      console.info(window.Telegram);
-      console.info('User Agent', window.navigator.userAgent);
-
-      if (tg) {
-        this.showAppNotification('You are in telegram window.');
-      }
-    }, 3000);
-
     // element-icons is not common used, but should be visible after network connection lost
     preloadFontFace('element-icons');
     this.setResponsiveClass();
@@ -272,6 +255,23 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   mounted(): void {
+    // const telegram = new TelegramBot('7117910481:AAFV3MfOjm8DJE7LPiVsVfOnO3EypgV3nsA');
+    // console.log('telegram', telegram);
+    // @ts-expect-error missing api
+    const tg = window.Telegram?.WebApp;
+
+    tg.expand();
+
+    // @ts-expect-error missing api
+    console.info(window.Telegram);
+    console.info('User Agent', window.navigator.userAgent);
+
+    if (tg) {
+      this.showAppNotification('You are in telegram window.');
+    }
+
+    setTimeout(() => {}, 3000);
+
     window.addEventListener('resize', this.setResponsiveClassDebounced);
   }
 
