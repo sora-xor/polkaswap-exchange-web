@@ -265,6 +265,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     // @ts-expect-error missing api
     console.info(window.Telegram);
     console.info('User Agent', window.navigator.userAgent);
+    console.info('window.Telegram.WebApp.viewportHeight', tg.viewportHeight);
 
     if (tg) {
       this.showAppNotification('You are in telegram window.');
