@@ -258,6 +258,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   mounted(): void {
     WebApp.showAlert('Hey there!');
 
+    WebApp.expand();
+
     window.addEventListener('resize', this.setResponsiveClassDebounced);
   }
 
