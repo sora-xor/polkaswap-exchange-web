@@ -256,7 +256,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   mounted(): void {
-    WebApp.showAlert('Hey there!');
+    WebApp.expand();
+
+    console.log('WebApp.platform', WebApp.platform);
 
     WebApp.expand();
 
