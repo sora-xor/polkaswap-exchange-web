@@ -29,6 +29,7 @@
     "@cedelabs/widgets-universal": "^1.3.1",
     "@metamask/detect-provider": "^2.0.0",
     "@soramitsu/soraneo-wallet-web": "1.35.0",
+    "@types/node-telegram-bot-api": "^0.64.6",
     "@walletconnect/ethereum-provider": "^2.12.2",
     "@walletconnect/modal": "^2.6.2",
     "core-js": "^3.37.0",

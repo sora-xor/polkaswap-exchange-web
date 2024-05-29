@@ -48,6 +48,7 @@ import {
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
 import debounce from 'lodash/debounce';
+// import TelegramBot from 'node-telegram-bot-api';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import axiosInstance, { updateBaseUrl, getFullBaseUrl } from '@/api';
@@ -210,8 +211,12 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     this.setIsDesktop(true);
 
     setTimeout(() => {
+      // const telegram = new TelegramBot('7117910481:AAFV3MfOjm8DJE7LPiVsVfOnO3EypgV3nsA');
+      // console.log('telegram', telegram);
       // @ts-expect-error missing api
-      const tg = window.Telegram?.WebView;
+      const tg = window.Telegram;
+
+      tg.WebApp.expand();
 
       // @ts-expect-error missing api
       console.info(window.Telegram);
