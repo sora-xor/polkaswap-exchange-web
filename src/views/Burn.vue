@@ -291,7 +291,8 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
       const fpRate = new FPNumber(campaign.rate);
 
       Object.entries(accountsBurned).forEach(([addr, amount]) => {
-        if (amount.gte(fpRate)) {
+        // remove min burn limit for chameleon campaign
+        if (campaign.id === 'chameleon' || amount.gte(fpRate)) {
           totalXorBurned[campaign.id] = totalXorBurned[campaign.id].add(amount);
           if (address === addr) {
             accountXorBurned[campaign.id] = accountXorBurned[campaign.id].add(amount);

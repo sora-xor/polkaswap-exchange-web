@@ -50,7 +50,6 @@
         <template v-if="isZeroAmount">
           {{ t('buttons.enterAmount') }}
         </template>
-        <template v-else-if="isAmountLessThanOne">NEED TO RESERVE MORE THAN 1</template>
         <template v-else-if="isInsufficientBalance">
           {{ t('insufficientBalanceText', { tokenSymbol: burnedAsset.symbol }) }}
         </template>
@@ -142,10 +141,6 @@ export default class BurnDialog extends Mixins(
     return this.getKey(`${this.burnedAsset.symbol}-left`);
   }
 
-  get isAmountLessThanOne(): boolean {
-    return +(this.value || '0') < 1;
-  }
-
   get formattedWillBeBurned(): string {
     return this.willBeBurned.toLocaleString();
   }
@@ -190,7 +185,7 @@ export default class BurnDialog extends Mixins(
   }
 
   get isBurnDisabled(): boolean {
-    return this.loading || this.isZeroAmount || this.isAmountLessThanOne || this.isInsufficientBalance;
+    return this.loading || this.isZeroAmount || this.isInsufficientBalance;
   }
 
   handleInputField(value: string): void {
