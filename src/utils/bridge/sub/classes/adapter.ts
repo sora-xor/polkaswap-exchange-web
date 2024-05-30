@@ -145,12 +145,13 @@ export class SubNetworksConnector {
     this.soraParachain = this.getConnection(soraParachain, connector?.soraParachain);
     this.relaychain = this.getConnection(relaychain, connector?.relaychain);
     this.parachain = this.getConnection(parachain, connector?.parachain);
-
-    if (connector?.accountApi) {
-      this.accountApi = connector.accountApi;
-    }
     // Link destination network connection to accountApi
     this.accountApi.setConnection(this.network.connection);
+    // Inject account from connector to accountApi
+    if (connector?.accountApi?.account) {
+      this.accountApi.setAccount(connector.accountApi.account);
+      this.accountApi.setSigner(connector.accountApi.signer);
+    }
   }
 
   /**
@@ -184,8 +185,6 @@ export class SubNetworksConnector {
    */
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
     const accountPair = this.accountApi.accountPair;
-
-    console.log(this.accountApi);
 
     if (!accountPair) throw new Error(`[${this.constructor.name}] Account pair is not set.`);
 
