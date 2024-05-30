@@ -1,6 +1,6 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-import { api } from '@soramitsu/soraneo-wallet-web';
+import { api, accountUtils, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
@@ -85,7 +85,7 @@ async function autoselectSubAddress(context: ActionContext<any, any>): Promise<v
   if (address) {
     commit.setSubAddress({ address, name });
   } else {
-    commit.setSubAddress({ address: '', name: '' });
+    commit.setSubAddress();
   }
 }
 
@@ -123,6 +123,40 @@ const actions = defineActions({
     commit.resetEvmProviderSubscription();
     // reset connection
     ethersUtil.disconnectEvmProvider(provider);
+  },
+
+  async selectSubAccount(context, accountData: WALLET_TYPES.PolkadotJsAccount) {
+    const { commit, dispatch, rootState } = web3ActionContext(context);
+    const { accountApi: api } = rootState.bridge.subBridgeConnector;
+    const { logoutApi, updateApiSigner, isInternalSource } = accountUtils;
+
+    const source = (accountData.source ?? '') as WALLET_CONSTS.AppWallet;
+    const isExternal = !isInternalSource(source);
+    const defaultAddress = api.formatAddress(accountData.address, false);
+    const soraAddress = api.formatAddress(defaultAddress);
+
+    logoutApi(api, api.address !== soraAddress);
+
+    if (isExternal) {
+      // we should update signer
+      await updateApiSigner(api, source);
+    }
+
+    await api.loginAccount(defaultAddress, accountData.name, source, isExternal);
+
+    console.log(api.accountPair);
+
+    commit.setSubAddress({ address: soraAddress, name: accountData.name });
+  },
+
+  resetSubAccount(context) {
+    const { commit, rootState } = web3ActionContext(context);
+    const { accountApi } = rootState.bridge.subBridgeConnector;
+    const { logoutApi } = accountUtils;
+
+    logoutApi(accountApi);
+
+    commit.setSubAddress();
   },
 
   async disconnectExternalNetwork(context): Promise<void> {
