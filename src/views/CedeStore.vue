@@ -1,7 +1,7 @@
 <template>
-  <div class="container transaction-fiat-history" v-loading="parentLoading">
+  <div class="container cede-store-page" v-loading="parentLoading">
     <generic-page-header has-button-back @back="goTo(PageNames.DepositOptions)">
-      <template #title="">{{ TranslationConsts.CedeStore }}</template>
+      <template #title="">{{ brandName }}</template>
     </generic-page-header>
     <div id="cede-widget" />
   </div>
@@ -31,6 +31,11 @@ export default class CedeStore extends Mixins(mixins.TranslationMixin, mixins.Lo
 
   goTo = goTo;
   PageNames = PageNames;
+
+  get brandName(): string {
+    const name = this.TranslationConsts.CedeStore;
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  }
 
   rootSelector = '#cede-widget';
 
@@ -66,3 +71,11 @@ export default class CedeStore extends Mixins(mixins.TranslationMixin, mixins.Lo
   }
 }
 </script>
+
+<style lang="scss">
+.cede-store-page {
+  .page-header .page-header-title {
+    text-transform: none;
+  }
+}
+</style>
