@@ -256,6 +256,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   mounted(): void {
+    console.info('ready()', WebApp.ready());
     WebApp.expand();
 
     // @ts-expect-error no inject
@@ -264,6 +265,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     console.info('WebApp.platform', WebApp.platform);
 
     WebApp.expand();
+
+    console.info('WebApp.initData', WebApp.initData);
 
     window.addEventListener('resize', this.setResponsiveClassDebounced);
   }
