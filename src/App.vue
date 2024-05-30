@@ -267,6 +267,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     WebApp.expand();
 
     console.info('WebApp.initData', WebApp.initData);
+    console.info('navigator.userAgent', navigator.userAgent);
 
     window.addEventListener('resize', this.setResponsiveClassDebounced);
   }
