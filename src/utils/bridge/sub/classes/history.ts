@@ -312,7 +312,7 @@ class SubBridgeHistory extends SubNetworksConnector {
   private async processOutgoingToLiberland(history: SubHistory): Promise<SubHistory> {
     history.amount2 = history.amount;
     history.externalTransferFee = ZeroStringValue;
-    history.to = this.network.formatAddress(history.to);
+    history.to = this.network.formatAddress(history.to as string);
 
     return history;
   }
@@ -349,7 +349,7 @@ class SubBridgeHistory extends SubNetworksConnector {
     }
 
     history.externalNetwork = subBridgeApi.getSoraParachain(history.externalNetwork as SubNetwork);
-    history.to = soraParachain.formatAddress(history.to);
+    history.to = soraParachain.formatAddress(history.to as string);
 
     return history;
   }
@@ -628,7 +628,7 @@ class SubBridgeHistory extends SubNetworksConnector {
 
         history.externalBlockId = blockId;
         history.externalBlockHeight = blockHeight;
-        history.to = this.network.formatAddress(history.to);
+        history.to = this.network.formatAddress(history.to as string);
 
         const [receivedAmount, externalEventIndex] = getDepositedBalance(
           blockEvents.slice(0, messageQueueEventIndex),

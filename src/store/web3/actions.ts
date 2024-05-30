@@ -127,7 +127,7 @@ const actions = defineActions({
 
   async selectSubAccount(context, accountData: WALLET_TYPES.PolkadotJsAccount) {
     const { commit, dispatch, rootState } = web3ActionContext(context);
-    const { accountApi: api } = rootState.bridge.subBridgeConnector;
+    const { accountApi } = rootState.bridge.subBridgeConnector;
     const { logoutApi, updateApiSigner, isInternalSource } = accountUtils;
 
     const source = (accountData.source ?? '') as WALLET_CONSTS.AppWallet;
@@ -135,16 +135,16 @@ const actions = defineActions({
     const defaultAddress = api.formatAddress(accountData.address, false);
     const soraAddress = api.formatAddress(defaultAddress);
 
-    logoutApi(api, api.address !== soraAddress);
+    logoutApi(accountApi, accountApi.address !== soraAddress);
 
     if (isExternal) {
       // we should update signer
-      await updateApiSigner(api, source);
+      await updateApiSigner(accountApi, source);
     }
 
-    await api.loginAccount(defaultAddress, accountData.name, source, isExternal);
+    await accountApi.loginAccount(defaultAddress, accountData.name, source, isExternal);
 
-    console.log(api.accountPair);
+    console.log(accountApi.accountPair);
 
     commit.setSubAddress({ address: soraAddress, name: accountData.name });
   },

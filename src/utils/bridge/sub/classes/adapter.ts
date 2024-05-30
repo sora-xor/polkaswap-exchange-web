@@ -1,4 +1,4 @@
-import { ApiAccount, Operation } from '@sora-substrate/util';
+import { ApiAccount, Operation, Storage } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
@@ -31,10 +31,14 @@ export class SubNetworksConnector {
   public standalone?: SubAdapter;
 
   public destinationNetwork!: SubNetwork;
-
-  public accountApi = new ApiAccount('subHistory');
+  public accountApi!: ApiAccount;
 
   public static nodes: Partial<Record<SubNetwork, Node[]>> = {};
+
+  constructor() {
+    this.accountApi = new ApiAccount('subHistory');
+    this.accountApi.setStorage(new Storage());
+  }
 
   get uniqueAdapters(): SubAdapter[] {
     return [this.soraParachain, this.relaychain, this.parachain, this.standalone].filter((c) => !!c) as SubAdapter[];
@@ -141,6 +145,10 @@ export class SubNetworksConnector {
     this.soraParachain = this.getConnection(soraParachain, connector?.soraParachain);
     this.relaychain = this.getConnection(relaychain, connector?.relaychain);
     this.parachain = this.getConnection(parachain, connector?.parachain);
+
+    if (connector?.accountApi) {
+      this.accountApi = connector.accountApi;
+    }
     // Link destination network connection to accountApi
     this.accountApi.setConnection(this.network.connection);
   }
@@ -176,6 +184,8 @@ export class SubNetworksConnector {
    */
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
     const accountPair = this.accountApi.accountPair;
+
+    console.log(this.accountApi);
 
     if (!accountPair) throw new Error(`[${this.constructor.name}] Account pair is not set.`);
 
