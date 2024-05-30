@@ -252,17 +252,22 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/fiat-deposit',
-    name: PageNames.FiatDepositOptions,
-    component: lazyView(PageNames.FiatDepositOptions),
+    path: '/deposit',
+    name: PageNames.DepositOptions,
+    component: lazyView(PageNames.DepositOptions),
   },
   {
-    path: '/fiat-deposit/history',
-    name: PageNames.FiatTxHistory,
-    component: lazyView(PageNames.FiatTxHistory),
+    path: '/deposit/history',
+    name: PageNames.DepositTxHistory,
+    component: lazyView(PageNames.DepositTxHistory),
     meta: {
       requiresAuth: true,
     },
+  },
+  {
+    path: '/deposit/transfer-from-cex',
+    name: PageNames.CedeStore,
+    component: lazyView(PageNames.CedeStore),
   },
   {
     path: '/kensetsu',
