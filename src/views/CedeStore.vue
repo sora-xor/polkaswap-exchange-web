@@ -13,6 +13,8 @@ import { mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
 import { Component, Mixins } from 'vue-property-decorator';
 
+import { capitalize } from '@/utils';
+
 import { Components, PageNames } from '../consts';
 import { goTo, lazyComponent } from '../router';
 import { getter, state } from '../store/decorators';
@@ -33,8 +35,7 @@ export default class CedeStore extends Mixins(mixins.TranslationMixin, mixins.Lo
   PageNames = PageNames;
 
   get brandName(): string {
-    const name = this.TranslationConsts.CedeStore;
-    return name.charAt(0).toUpperCase() + name.slice(1);
+    return capitalize(this.TranslationConsts.CedeStore);
   }
 
   rootSelector = '#cede-widget';
