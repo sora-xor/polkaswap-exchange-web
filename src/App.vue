@@ -258,6 +258,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   mounted(): void {
     WebApp.expand();
 
+    // @ts-expect-error no inject
+    console.info(window.Telegram?.WebView);
+
     console.info('WebApp.platform', WebApp.platform);
 
     WebApp.expand();
