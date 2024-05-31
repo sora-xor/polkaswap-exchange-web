@@ -100,6 +100,7 @@
       :burned-asset="selectedBurnedAsset"
       :rate="selectedRate"
       :max="selectedMax"
+      :min="selectedMin"
       @confirm="handleBurnConfirm"
     />
   </div>
@@ -134,6 +135,7 @@ type Campaign = {
   receivedAsset: Asset;
   rate: number;
   max: number;
+  min: number;
   from: number;
   fromTimestamp: number;
   to: number;
@@ -166,6 +168,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
       receivedAsset: { symbol: 'KARMA', address: '', name: 'Chameleon', decimals: 18 } as Asset,
       rate: 100_000_000,
       max: 1000,
+      min: 0.1,
       from: 15_739_737,
       fromTimestamp: 1715791500000, // May 15 2024 16:45:00 GMT+0000
       to: 16_056_666,
@@ -180,6 +183,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
       receivedAsset: KEN,
       rate: 1_000_000,
       max: 10_000,
+      min: 1,
       from: 14_464_000,
       fromTimestamp: 1708097280000, // Feb 16 2024 15:28:00 GMT+0000
       to: 14_939_200,
@@ -209,6 +213,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   selectedBurnedAsset = XOR;
   selectedRate = this.campaigns[0].rate;
   selectedMax = this.campaigns[0].max;
+  selectedMin = this.campaigns[0].min;
 
   @state.settings.blockNumber private blockNumber!: number;
   @state.wallet.account.address soraAccountAddress!: string;
@@ -288,10 +293,10 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
         return acc;
       }, {});
 
-      const fpRate = new FPNumber(campaign.rate);
+      const minBurned = new FPNumber(campaign.rate * campaign.min);
 
       Object.entries(accountsBurned).forEach(([addr, amount]) => {
-        if (amount.gte(fpRate)) {
+        if (amount.gte(minBurned)) {
           totalXorBurned[campaign.id] = totalXorBurned[campaign.id].add(amount);
           if (address === addr) {
             accountXorBurned[campaign.id] = accountXorBurned[campaign.id].add(amount);
@@ -320,6 +325,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     this.selectedReceivedAsset = campaign.receivedAsset;
     this.selectedRate = campaign.rate;
     this.selectedMax = campaign.max;
+    this.selectedMin = campaign.min;
     this.burnDialogVisible = true;
   }
 
