@@ -30,6 +30,12 @@ export class SubAdapter extends WithConnectionApi {
     return !this.connected && !this.subNetworkConnection.nodeAddressConnecting;
   }
 
+  public override formatAddress = (address?: string): string => {
+    if (!address) return '';
+
+    return super.formatAddress(address);
+  };
+
   protected async withConnection<T>(onSuccess: AsyncFnWithoutArgs<T> | FnWithoutArgs<T>, fallback: T) {
     if (this.closed) {
       return fallback;

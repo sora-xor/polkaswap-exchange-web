@@ -147,9 +147,11 @@ export class SubNetworksConnector {
     this.parachain = this.getConnection(parachain, connector?.parachain);
     // Link destination network connection to accountApi
     this.accountApi.setConnection(this.network.connection);
-    // Inject account from connector to accountApi
+    // Inject account & signer from connector to accountApi
     if (connector?.accountApi?.account) {
       this.accountApi.setAccount(connector.accountApi.account);
+    }
+    if (connector?.accountApi?.signer) {
       this.accountApi.setSigner(connector.accountApi.signer);
     }
   }
@@ -184,21 +186,23 @@ export class SubNetworksConnector {
    * Transfer funds from destination network
    */
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
-    const accountPair = this.accountApi.accountPair;
+    const { api, accountPair, signer } = this.accountApi;
 
     if (!accountPair) throw new Error(`[${this.constructor.name}] Account pair is not set.`);
 
-    const historyItem = this.accountApi.getHistory(historyId as string) ?? {
+    const historyItem = subBridgeApi.getHistory(historyId as string) ?? {
       type: Operation.SubstrateIncoming,
       symbol: asset.symbol,
       assetAddress: asset.address,
       amount: `${amount}`,
       externalNetwork: this.destinationNetwork,
       externalNetworkType: BridgeNetworkType.Sub,
+      from: subBridgeApi.address,
+      to: this.accountApi.address,
     };
 
     const extrinsic = this.network.getTransferExtrinsic(asset, recipient, amount);
 
-    await this.accountApi.submitExtrinsic(extrinsic, accountPair, historyItem);
+    await subBridgeApi.submitApiExtrinsic(api, extrinsic, accountPair, signer, historyItem);
   }
 }
