@@ -2,7 +2,7 @@
   <div class="container transaction-fiat-history" v-loading="parentLoading">
     <generic-page-header
       class="page-header-title--moonpay-history"
-      @back="goTo(PageNames.FiatDepositOptions)"
+      @back="goTo(PageNames.DepositOptions)"
       has-button-back
     >
       <template #title="">{{ t('fiatPayment.historyTitle') }}</template>
@@ -29,7 +29,7 @@ import { FiatOptionTabs } from '../types/tabs';
     MoonpayHistory: lazyComponent(Components.MoonpayHistory),
   },
 })
-export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, mixins.LoadingMixin) {
+export default class DepositTxHistory extends Mixins(mixins.TranslationMixin, mixins.LoadingMixin) {
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   FiatOptionTabs = FiatOptionTabs;
