@@ -36,8 +36,14 @@ export class SubNetworksConnector {
   public static nodes: Partial<Record<SubNetwork, Node[]>> = {};
 
   constructor() {
-    this.accountApi = new ApiAccount('subHistory');
-    this.accountApi.setStorage(new Storage());
+    const accountApiInstance = new ApiAccount('subHistory');
+    accountApiInstance.setStorage(new Storage());
+    // It is necessary to remove Vue reactivity from instance of "ApiAccount" class.
+    // In this case, Vue does not mark all instance properties with getters and setters
+    Object.defineProperty(this, 'accountApi', {
+      configurable: false,
+      value: accountApiInstance,
+    });
   }
 
   get uniqueAdapters(): SubAdapter[] {
@@ -133,6 +139,18 @@ export class SubNetworksConnector {
   }
 
   /**
+   * Inject account & signer from api instance to accountApi
+   */
+  public setAccountFromApi(api?: ApiAccount): void {
+    if (api?.account) {
+      this.accountApi.setAccount(api.account);
+    }
+    if (api?.signer) {
+      this.accountApi.setSigner(api.signer);
+    }
+  }
+
+  /**
    * Initialize params for substrate networks connector
    * @param destination Destination network
    * @param connector Existing bridge connector. Api connections will be reused, if networks matches
@@ -148,12 +166,7 @@ export class SubNetworksConnector {
     // Link destination network connection to accountApi
     this.accountApi.setConnection(this.network.connection);
     // Inject account & signer from connector to accountApi
-    if (connector?.accountApi?.account) {
-      this.accountApi.setAccount(connector.accountApi.account);
-    }
-    if (connector?.accountApi?.signer) {
-      this.accountApi.setSigner(connector.accountApi.signer);
-    }
+    this.setAccountFromApi(connector?.accountApi);
   }
 
   /**
@@ -183,7 +196,7 @@ export class SubNetworksConnector {
   }
 
   /**
-   * Transfer funds from destination network
+   * Transfer funds from destination network to SORA
    */
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
     const { api, accountPair, signer } = this.accountApi;
@@ -197,12 +210,12 @@ export class SubNetworksConnector {
       amount: `${amount}`,
       externalNetwork: this.destinationNetwork,
       externalNetworkType: BridgeNetworkType.Sub,
-      from: subBridgeApi.address,
+      from: subBridgeApi.address, // "from" is always SORA account address
       to: this.accountApi.address,
     };
 
     const extrinsic = this.network.getTransferExtrinsic(asset, recipient, amount);
-
+    // submit extrinsic using SORA api, because current implementation using "subHistory" from SORA api scope
     await subBridgeApi.submitApiExtrinsic(api, extrinsic, accountPair, signer, historyItem);
   }
 }

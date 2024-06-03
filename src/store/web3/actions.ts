@@ -6,6 +6,7 @@ import { ethers } from 'ethers';
 
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
+import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil, { Provider, PROVIDER_ERROR } from '@/utils/ethers-util';
 
@@ -16,8 +17,8 @@ async function connectNetworkType(context: ActionContext<any, any>): Promise<voi
   const { state } = web3ActionContext(context);
 
   if (state.networkType === BridgeNetworkType.Sub) {
-    autoselectSubAddress(context);
     await connectSubNetwork(context);
+    autoselectSubAddress(context);
   }
 }
 
@@ -78,11 +79,14 @@ async function autoselectBridgeAsset(context: ActionContext<any, any>): Promise<
   }
 }
 
-async function autoselectSubAddress(context: ActionContext<any, any>): Promise<void> {
+function autoselectSubAddress(context: ActionContext<any, any>): void {
   const { commit, rootState } = web3ActionContext(context);
   const { address, name } = rootState.wallet.account;
+  const { subBridgeConnector } = rootState.bridge;
 
   if (address) {
+    // inject SORA account to bridge connector (by default)
+    subBridgeConnector.setAccountFromApi(subBridgeApi);
     commit.setSubAddress({ address, name });
   } else {
     commit.setSubAddress();
@@ -126,37 +130,14 @@ const actions = defineActions({
   },
 
   async selectSubAccount(context, accountData: WALLET_TYPES.PolkadotJsAccount) {
-    const { commit, dispatch, rootState } = web3ActionContext(context);
-    const { accountApi } = rootState.bridge.subBridgeConnector;
-    const { logoutApi, updateApiSigner, isInternalSource } = accountUtils;
-
-    const source = (accountData.source ?? '') as WALLET_CONSTS.AppWallet;
-    const isExternal = !isInternalSource(source);
-    const defaultAddress = api.formatAddress(accountData.address, false);
-    const soraAddress = api.formatAddress(defaultAddress);
-
-    logoutApi(accountApi, accountApi.address !== soraAddress);
-
-    if (isExternal) {
-      // we should update signer
-      await updateApiSigner(accountApi, source);
-    }
-
-    await accountApi.loginAccount(defaultAddress, accountData.name, source, isExternal);
-
-    console.log(accountApi.accountPair);
-
-    commit.setSubAddress({ address: soraAddress, name: accountData.name });
-  },
-
-  resetSubAccount(context) {
     const { commit, rootState } = web3ActionContext(context);
+    const { isDesktop } = rootState.wallet.account;
     const { accountApi } = rootState.bridge.subBridgeConnector;
-    const { logoutApi } = accountUtils;
+    const { loginApi } = accountUtils;
 
-    logoutApi(accountApi);
+    await loginApi(accountApi, accountData, isDesktop);
 
-    commit.setSubAddress();
+    commit.setSubAddress({ address: api.formatAddress(accountData.address), name: accountData.name });
   },
 
   async disconnectExternalNetwork(context): Promise<void> {
