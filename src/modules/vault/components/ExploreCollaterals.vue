@@ -310,6 +310,8 @@ $container-max: 100vw;
 $container-max-width: calc($container-max - $container-paddings - var(--sidebar-width));
 $container-max-width--collapsed: calc($container-max - $container-paddings - $sidebar-collapsed-width);
 
+$min_breakpoint_large-mobile: $breakpoint_large-mobile - 1px;
+
 .collaterals {
   &-container {
     display: flex;
@@ -317,6 +319,10 @@ $container-max-width--collapsed: calc($container-max - $container-paddings - $si
     gap: $inner-spacing-medium;
     padding: $inner-spacing-big $inner-spacing-tiny;
     box-shadow: var(--s-shadow-element-pressed);
+
+    @media (min-width: $min_breakpoint_large-mobile) and (max-width: 577px) {
+      max-width: 414px; // TODO: improve this exception related to the responsive design
+    }
 
     @include tablet {
       width: 100%;

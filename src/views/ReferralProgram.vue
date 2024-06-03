@@ -355,7 +355,10 @@ export default class ReferralProgram extends Mixins(
     if (this.isReferrerLinkEmpty) {
       return false;
     }
-    if (!api.validateAddress(this.referrerAddress) || this.referrerAddress === this.account?.address) {
+    if (!api.validateAddress(this.referrerAddress)) {
+      return false;
+    }
+    if (api.formatAddress(this.referrerAddress) === this.account?.address) {
       return false;
     }
     if (this.referrerLinkOrCode === this.referrerAddress) {
