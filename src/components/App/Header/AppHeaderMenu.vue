@@ -27,10 +27,6 @@
           >
             {{ text }}
           </s-dropdown-item>
-          <div @click="openNotificationDialog" class="notif-option el-dropdown-menu__item header-menu__item">
-            <bell-icon class="notif-option__bell notif-option__bell--dropdown" />
-            <span class="notif-option__text">{{ t('browserNotificationDialog.title') }}</span>
-          </div>
         </template>
       </s-dropdown>
     </s-button>
@@ -143,7 +139,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       },
       {
         value: HeaderMenuType.Currency,
-        icon: 'el-icon-money',
+        icon: 'various-lightbulb-24',
         text: 'Select currency',
       },
       {
@@ -151,6 +147,11 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         icon: 'info-16',
         text: this.disclaimerText,
         disabled: this.disclaimerDisabled,
+      },
+      {
+        value: HeaderMenuType.Notification,
+        icon: 'notifications-bell-24',
+        text: this.t('browserNotificationDialog.title'),
       },
     ];
   }
@@ -193,6 +194,9 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       case HeaderMenuType.Disclaimer:
         if (this.disclaimerDisabled) return;
         this.toggleDisclaimerDialogVisibility();
+        break;
+      case HeaderMenuType.Notification:
+        this.openNotificationDialog();
         break;
     }
   }
@@ -243,28 +247,6 @@ $icon-size: 28px;
           color: var(--s-color-base-content-secondary);
         }
       }
-    }
-  }
-}
-
-.notif-option {
-  display: flex;
-
-  &__bell {
-    width: $icon-size;
-    height: $icon-size;
-    margin: auto 0;
-    fill: var(--s-color-base-content-tertiary);
-
-    &--dropdown {
-      margin-top: $inner-spacing-mini;
-      margin-right: $basic-spacing-mini;
-    }
-  }
-
-  &:hover {
-    .notif-option__bell {
-      fill: var(--s-color-base-content-secondary);
     }
   }
 }
