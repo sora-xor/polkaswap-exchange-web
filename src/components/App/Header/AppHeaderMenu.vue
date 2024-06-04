@@ -26,6 +26,9 @@
             :disabled="disabled"
           >
             {{ text }}
+            <span v-if="value === HeaderMenuType.Currency" class="current-currency">
+              {{ currency?.toUpperCase() }}
+            </span>
           </s-dropdown-item>
         </template>
       </s-dropdown>
@@ -41,7 +44,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, mutation, state } from '@/store/decorators';
 
-import BellIcon from './BellIcon.vue';
+import type { Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 
 enum HeaderMenuType {
   HideBalances = 'hide-balances',
@@ -61,11 +64,7 @@ type MenuItem = {
 
 const BREAKPOINT = 1440;
 
-@Component({
-  components: {
-    BellIcon,
-  },
-})
+@Component
 export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
@@ -73,6 +72,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
+  @state.wallet.settings.currency currency!: Currency;
 
   @getter.libraryTheme private libraryTheme!: Theme;
   @getter.settings.notificationActivated notificationActivated!: boolean;
@@ -140,7 +140,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
       {
         value: HeaderMenuType.Currency,
         icon: 'various-lightbulb-24',
-        text: 'Select currency',
+        text: this.t('headerMenu.selectCurrency'),
       },
       {
         value: HeaderMenuType.Disclaimer,
@@ -247,6 +247,11 @@ $icon-size: 28px;
           color: var(--s-color-base-content-secondary);
         }
       }
+    }
+
+    .current-currency {
+      margin-left: 5px;
+      color: var(--s-color-base-content-tertiary);
     }
   }
 }

@@ -903,7 +903,8 @@
         "switchTheme": "Перейти в {theme} режим",
         "switchLanguage": "Изменить язык",
         "showDisclaimer": "Показать дисклеймер",
-        "hideDisclaimer": "Скрыть дисклеймер"
+        "hideDisclaimer": "Скрыть дисклеймер",
+        "selectCurrency": "Выберите валюту"
     },
     "sentText": "Отправить",
     "learnMoreText": "Узнать больше",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Введите пароль",
         "googleOnly": "Только аккаунты {Google}"
+    },
+    "currencyDialog": {
+        "currency": "Валюта",
+        "searchPlaceholder": "Поиск по названию или символу валюты"
     }
 }

@@ -1,11 +1,11 @@
 <template>
-  <dialog-base :visible.sync="visibility" :title="'Currency'" class="select-currency-dialog">
+  <dialog-base :visible.sync="visibility" :title="t('currencyDialog.currency')" class="select-currency-dialog">
     <search-input
       ref="search"
       v-model="query"
       class="select-currency__search"
       autofocus
-      :placeholder="'Search by currency name or symbol'"
+      :placeholder="t('currencyDialog.searchPlaceholder')"
       @clear="handleClearSearch"
     />
     <s-scrollbar class="select-currency-scrollbar">

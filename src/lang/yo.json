@@ -903,7 +903,8 @@
         "switchTheme": "Yipada si {theme} Ipo",
         "switchLanguage": "Yan Ede",
         "showDisclaimer": "Ṣafihan AlAIgBA",
-        "hideDisclaimer": "Tọju AlAIgBA"
+        "hideDisclaimer": "Tọju AlAIgBA",
+        "selectCurrency": "Yan Owo"
     },
     "sentText": "Ti firanṣẹ",
     "learnMoreText": "Kọ ẹkọ si",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Tẹ ọrọ igbaniwọle sii",
         "googleOnly": "Awọn akọọlẹ {Google} nikan"
+    },
+    "currencyDialog": {
+        "currency": "Owo owo",
+        "searchPlaceholder": "Ṣewadii nipasẹ orukọ owo tabi aami"
     }
 }

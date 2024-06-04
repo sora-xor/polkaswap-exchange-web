@@ -903,7 +903,8 @@
         "switchTheme": "Prepnite do režimu {theme}",
         "switchLanguage": "Vyberte Jazyk",
         "showDisclaimer": "Zobraziť vylúčenie zodpovednosti",
-        "hideDisclaimer": "Skryť vylúčenie zodpovednosti"
+        "hideDisclaimer": "Skryť vylúčenie zodpovednosti",
+        "selectCurrency": "Vyberte položku Mena"
     },
     "sentText": "Odoslané",
     "learnMoreText": "Dozvedieť sa viac",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Zadajte heslo",
         "googleOnly": "iba účty {Google}"
+    },
+    "currencyDialog": {
+        "currency": "mena",
+        "searchPlaceholder": "Hľadajte podľa názvu meny alebo symbolu"
     }
 }
