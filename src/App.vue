@@ -47,9 +47,8 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
-import WebApp from '@twa-dev/sdk';
+import { parseInitData, isTMA } from '@tma.js/sdk';
 import debounce from 'lodash/debounce';
-// import TelegramBot from 'node-telegram-bot-api';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import axiosInstance, { updateBaseUrl, getFullBaseUrl } from '@/api';
@@ -255,19 +254,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     this.fetchAdsArray();
   }
 
-  mounted(): void {
-    console.info('ready()', WebApp.ready());
-    WebApp.expand();
-
-    // @ts-expect-error no inject
-    console.info(window.Telegram?.WebView);
-
-    console.info('WebApp.platform', WebApp.platform);
-
-    WebApp.expand();
-
-    console.info('WebApp.initData', WebApp.initData);
-    console.info('navigator.userAgent', navigator.userAgent);
+  async mounted(): Promise<void> {
+    console.log('isTMA', await isTMA());
 
     window.addEventListener('resize', this.setResponsiveClassDebounced);
   }
