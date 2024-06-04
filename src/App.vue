@@ -47,7 +47,7 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
-import { parseInitData, isTMA } from '@tma.js/sdk';
+import { parseInitData, isTMA, setDebug } from '@tma.js/sdk';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -255,6 +255,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async mounted(): Promise<void> {
+    setDebug(true);
     console.log('isTMA', await isTMA());
 
     window.addEventListener('resize', this.setResponsiveClassDebounced);
