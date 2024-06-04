@@ -1,10 +1,6 @@
-import { Telegram } from '@twa-dev/types';
 import Vue, { VNode } from 'vue';
 
 declare global {
-  interface Window {
-    Telegram: Telegram;
-  }
   namespace JSX {
     // tslint:disable no-empty-interface
     interface Element extends VNode {}
