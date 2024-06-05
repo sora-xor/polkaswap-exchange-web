@@ -208,7 +208,13 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   async created() {
     // [DESKTOP] To Enable Desktop
-    this.setIsDesktop(true);
+    // this.setIsDesktop(true);
+
+    if (await isTMA()) {
+      this.setIsDesktop(true);
+      // TODO: rely on environment
+      setDebug(true);
+    }
 
     // element-icons is not common used, but should be visible after network connection lost
     preloadFontFace('element-icons');
@@ -254,10 +260,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     this.fetchAdsArray();
   }
 
-  async mounted(): Promise<void> {
-    setDebug(true);
-    console.log('isTMA', await isTMA());
-
+  mounted(): void {
     window.addEventListener('resize', this.setResponsiveClassDebounced);
   }
 
