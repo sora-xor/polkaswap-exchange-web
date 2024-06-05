@@ -6,8 +6,9 @@ import type { Subscription } from 'rxjs';
 export type Ad = {
   title: string;
   img: string;
-  backgroundColor?: string;
   link: string;
+  backgroundColor?: string;
+  right?: string;
 };
 
 export type FeatureFlags = {

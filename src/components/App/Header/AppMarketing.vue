@@ -68,6 +68,10 @@ export default class AppMarketing extends Mixins(mixins.TranslationMixin) {
     if (ad.backgroundColor) {
       styles.backgroundColor = ad.backgroundColor;
     }
+    if (ad.right) {
+      styles.backgroundPosition = `right ${ad.right} top`;
+      styles.paddingRight = '24px';
+    }
     return styles;
   }
 
@@ -134,10 +138,10 @@ $max-ad-width: 330px;
     height: var(--s-size-medium);
     width: 100%;
     padding-left: 24px;
-    padding-right: 24px;
+    padding-right: 0;
     border-radius: var(--s-border-radius-medium);
     background-repeat: no-repeat;
-    background-position: right 20px top;
+    background-position: right top;
     background-size: contain;
     background-color: var(--s-color-theme-accent); // by default
     text-decoration: none;
