@@ -903,7 +903,8 @@
         "switchTheme": "Přepnout do režimu {theme}",
         "switchLanguage": "Vybrat jazyk",
         "showDisclaimer": "Zobrazit vyloučení odpovědnosti",
-        "hideDisclaimer": "Skrýt vyloučení odpovědnosti"
+        "hideDisclaimer": "Skrýt vyloučení odpovědnosti",
+        "selectCurrency": "Vyberte možnost Měna"
     },
     "sentText": "Odesláno",
     "learnMoreText": "Zjistit více",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Zadejte heslo",
         "googleOnly": "Pouze účty {Google}"
+    },
+    "currencyDialog": {
+        "currency": "Měna",
+        "searchPlaceholder": "Hledejte podle názvu měny nebo symbolu"
     }
 }
