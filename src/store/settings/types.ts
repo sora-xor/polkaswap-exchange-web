@@ -35,6 +35,7 @@ export type SettingsState = {
   selectNodeDialogVisibility: boolean;
   selectIndexerDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
+  selectCurrencyDialogVisibility: boolean;
   disclaimerVisibility: boolean;
   alertSettingsVisibility: boolean;
   browserNotifPopupVisibility: boolean;

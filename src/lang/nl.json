@@ -903,7 +903,8 @@
         "switchTheme": "Overschakelen naar {theme} -modus",
         "switchLanguage": "Kies een taal",
         "showDisclaimer": "Disclaimer tonen",
-        "hideDisclaimer": "Disclaimer verbergen"
+        "hideDisclaimer": "Disclaimer verbergen",
+        "selectCurrency": "selecteer valuta"
     },
     "sentText": "Verzonden",
     "learnMoreText": "Kom meer te weten",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Voer wachtwoord in",
         "googleOnly": "Alleen {Google} -accounts"
+    },
+    "currencyDialog": {
+        "currency": "Munteenheid",
+        "searchPlaceholder": "Zoek op valutanaam of symbool"
     }
 }

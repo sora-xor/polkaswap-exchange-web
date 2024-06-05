@@ -29,6 +29,7 @@ function initialState(): SettingsState {
     selectNodeDialogVisibility: false,
     selectIndexerDialogVisibility: false,
     selectLanguageDialogVisibility: false,
+    selectCurrencyDialogVisibility: false,
     disclaimerVisibility: false,
     alertSettingsVisibility: false,
     browserNotifPopupVisibility: false,

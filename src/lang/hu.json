@@ -903,7 +903,8 @@
         "switchTheme": "Váltás {theme} módra",
         "switchLanguage": "Nyelv kiválasztása",
         "showDisclaimer": "Felelősségi nyilatkozat megjelenítése",
-        "hideDisclaimer": "Felelősségi nyilatkozat elrejtése"
+        "hideDisclaimer": "Felelősségi nyilatkozat elrejtése",
+        "selectCurrency": "Válassza a Pénznem lehetőséget"
     },
     "sentText": "Küldött",
     "learnMoreText": "Tudj meg többet",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Írd be a jelszót",
         "googleOnly": "Csak {Google} -fiókok"
+    },
+    "currencyDialog": {
+        "currency": "Valuta",
+        "searchPlaceholder": "Keresés pénznem neve vagy szimbóluma alapján"
     }
 }

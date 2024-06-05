@@ -903,7 +903,8 @@
         "switchTheme": "Bytt til {theme} -modus",
         "switchLanguage": "Velg språk",
         "showDisclaimer": "Vis ansvarsfraskrivelse",
-        "hideDisclaimer": "Skjul ansvarsfraskrivelse"
+        "hideDisclaimer": "Skjul ansvarsfraskrivelse",
+        "selectCurrency": "Velg Valuta"
     },
     "sentText": "Sendt",
     "learnMoreText": "Lær mer",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Oppgi passord",
         "googleOnly": "Bare {Google} -kontoer"
+    },
+    "currencyDialog": {
+        "currency": "Valuta",
+        "searchPlaceholder": "Søk etter valutanavn eller symbol"
     }
 }
