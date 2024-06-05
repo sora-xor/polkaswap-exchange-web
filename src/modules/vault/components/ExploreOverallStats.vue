@@ -18,14 +18,16 @@
         </div>
         <div class="stats-card-data">
           <formatted-amount
-            v-if="value.suffix"
+            v-if="value.suffix !== '%'"
             class="stats-card-value"
             :font-weight-rate="FontWeightRate.MEDIUM"
             :font-size-rate="FontSizeRate.MEDIUM"
             :value="value.amount"
             :asset-symbol="value.suffix"
             symbol-as-decimal
-          />
+          >
+            <template #prefix>$</template>
+          </formatted-amount>
           <p v-else class="stats-card-value">{{ value.amount }}</p>
         </div>
       </s-card>
@@ -116,6 +118,7 @@ export default class ExploreOverallStats extends Mixins(TranslationMixin, mixins
 
       if (typeof amount === 'number') {
         value.amount = this.percentFormat?.format?.(amount) ?? `${amount * HundredNumber}%`;
+        value.suffix = '%';
       } else {
         value = formatAmountWithSuffix(amount);
       }
