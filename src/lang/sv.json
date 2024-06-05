@@ -903,7 +903,8 @@
         "switchTheme": "Byt till {theme} Läge",
         "switchLanguage": "Välj Språk",
         "showDisclaimer": "Visa ansvarsfriskrivning",
-        "hideDisclaimer": "Dölj ansvarsfriskrivning"
+        "hideDisclaimer": "Dölj ansvarsfriskrivning",
+        "selectCurrency": "Välj valuta"
     },
     "sentText": "Skickat",
     "learnMoreText": "Lär dig mer",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Skriv in lösenord",
         "googleOnly": "Endast {Google} -konton"
+    },
+    "currencyDialog": {
+        "currency": "Valuta",
+        "searchPlaceholder": "Sök efter valutanamn eller symbol"
     }
 }
