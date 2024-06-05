@@ -149,6 +149,7 @@ export default {
     settings: 'Settings',
     switchTheme: 'Switch to {theme} Mode',
     switchLanguage: 'Choose Language',
+    selectCurrency: 'Select Currency',
     showDisclaimer: 'Show Disclaimer',
     hideDisclaimer: 'Hide Disclaimer',
   },
@@ -172,6 +173,10 @@ export default {
     privacyPolicy: 'Privacy Policy',
     appVersion: '{AppName} version',
     contactUs: 'Contact us',
+  },
+  currencyDialog: {
+    currency: 'Currency',
+    searchPlaceholder: 'Search by currency name or symbol',
   },
   aboutNetworkDialog: {
     title: 'About',
