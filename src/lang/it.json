@@ -903,7 +903,8 @@
         "switchTheme": "Passa alla modalità {theme}",
         "switchLanguage": "Scegli la lingua",
         "showDisclaimer": "Mostra esclusione di responsabilità",
-        "hideDisclaimer": "Nascondi Dichiarazione di non responsabilità"
+        "hideDisclaimer": "Nascondi Dichiarazione di non responsabilità",
+        "selectCurrency": "Seleziona Valuta"
     },
     "sentText": "Inviato",
     "learnMoreText": "Per saperne di più",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Inserire la password",
         "googleOnly": "Solo account {Google}"
+    },
+    "currencyDialog": {
+        "currency": "Valuta",
+        "searchPlaceholder": "Cerca per nome o simbolo della valuta"
     }
 }

@@ -133,6 +133,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.referrals.resetStorageReferrer private resetStorageReferrer!: FnWithoutArgs;
 
   @action.wallet.settings.setApiKeys private setApiKeys!: (apiKeys: WALLET_TYPES.ApiKeysObject) => Promise<void>;
+  @action.wallet.settings.subscribeOnExchangeRatesApi subscribeOnExchangeRatesApi!: AsyncFnWithoutArgs;
   @action.wallet.subscriptions.resetNetworkSubscriptions private resetNetworkSubscriptions!: AsyncFnWithoutArgs;
   @action.wallet.subscriptions.resetInternalSubscriptions private resetInternalSubscriptions!: AsyncFnWithoutArgs;
   @action.wallet.subscriptions.activateNetwokSubscriptions private activateNetwokSubscriptions!: AsyncFnWithoutArgs;
@@ -229,6 +230,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       this.setSoraNetwork(data.NETWORK_TYPE);
       this.setEvmNetworksApp(data.EVM_NETWORKS_IDS);
       this.setSubNetworkApps(data.SUB_NETWORKS);
+
+      this.subscribeOnExchangeRatesApi();
 
       if (data.PARACHAIN_IDS) {
         api.bridgeProxy.sub.parachainIds = data.PARACHAIN_IDS;

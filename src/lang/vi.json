@@ -903,7 +903,8 @@
         "switchTheme": "Chuyển sang chế độ {theme}",
         "switchLanguage": "Chọn ngôn ngữ",
         "showDisclaimer": "Hiển thị tuyên bố miễn trừ trách nhiệm",
-        "hideDisclaimer": "Ẩn tuyên bố từ chối trách nhiệm"
+        "hideDisclaimer": "Ẩn tuyên bố từ chối trách nhiệm",
+        "selectCurrency": "Chọn tiền tệ"
     },
     "sentText": "Đã gửi",
     "learnMoreText": "Tìm hiểu thêm",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Nhập mật khẩu",
         "googleOnly": "Chỉ tài khoản {Google}"
+    },
+    "currencyDialog": {
+        "currency": "Tiền tệ",
+        "searchPlaceholder": "Tìm kiếm theo tên hoặc ký hiệu tiền tệ"
     }
 }
