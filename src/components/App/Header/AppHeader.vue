@@ -14,6 +14,7 @@
       <app-header-menu />
     </div>
     <select-language-dialog />
+    <select-currency-dialog />
   </header>
 </template>
 
@@ -44,6 +45,7 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     AppHeaderMenu,
     AppLogoButton,
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
+    SelectCurrencyDialog: lazyComponent(Components.SelectCurrencyDialog),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     WalletAvatar: components.WalletAvatar,
   },

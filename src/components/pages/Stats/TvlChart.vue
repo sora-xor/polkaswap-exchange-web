@@ -10,8 +10,7 @@
       :is-error="isFetchingError"
       @retry="updateData"
     >
-      <formatted-amount class="chart-price" :value="amount.amount">
-        <template #prefix>$</template>
+      <formatted-amount class="chart-price" :value="amount.amount" is-fiat-value>
         {{ amount.suffix }}
       </formatted-amount>
       <price-change :value="priceChange" />

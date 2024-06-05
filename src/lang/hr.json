@@ -903,7 +903,8 @@
         "switchTheme": "Prijeđite na {theme} modus",
         "switchLanguage": "Odaberite jezik",
         "showDisclaimer": "Prikaži Odricanje od odgovornosti",
-        "hideDisclaimer": "Sakrij izjavu o odricanju odgovornosti"
+        "hideDisclaimer": "Sakrij izjavu o odricanju odgovornosti",
+        "selectCurrency": "Odaberite Valutu"
     },
     "sentText": "Poslano",
     "learnMoreText": "Saznajte više",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Upišite lozinku",
         "googleOnly": "Samo {Google} računi"
+    },
+    "currencyDialog": {
+        "currency": "Valuta",
+        "searchPlaceholder": "Pretražujte prema nazivu valute ili simbolu"
     }
 }

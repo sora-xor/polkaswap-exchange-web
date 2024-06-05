@@ -34,6 +34,9 @@ const mutations = defineMutations<SettingsState>()({
   setSelectLanguageDialogVisibility(state, value: boolean): void {
     state.selectLanguageDialogVisibility = value;
   },
+  setSelectCurrencyDialogVisibility(state, value: boolean): void {
+    state.selectCurrencyDialogVisibility = value;
+  },
   toggleDisclaimerDialogVisibility(state): void {
     state.disclaimerVisibility = !state.disclaimerVisibility;
   },
