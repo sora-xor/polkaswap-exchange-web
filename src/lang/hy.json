@@ -903,7 +903,8 @@
         "switchTheme": "Անցնել {theme} ռեժիմի",
         "switchLanguage": "Ընտրեք Լեզուն",
         "showDisclaimer": "Ցույց տալ հերքումը",
-        "hideDisclaimer": "Թաքցնել հերքումը"
+        "hideDisclaimer": "Թաքցնել հերքումը",
+        "selectCurrency": "Ընտրեք արժույթ"
     },
     "sentText": "Ուղարկված է",
     "learnMoreText": "Իմանալ ավելին",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Մուտքագրեք գաղտնաբառը",
         "googleOnly": "Միայն {Google} հաշիվները"
+    },
+    "currencyDialog": {
+        "currency": "Արժույթ",
+        "searchPlaceholder": "Որոնել ըստ արժույթի անվանման կամ խորհրդանիշի"
     }
 }

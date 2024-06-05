@@ -166,6 +166,7 @@ export enum Components {
   CreateAlert = 'App/Alerts/CreateAlert',
   AlertsSelectAsset = 'pages/Alerts/SelectAsset',
   SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
+  SelectCurrencyDialog = 'App/Settings/Currency/SelectCurrencyDialog',
   AppFooter = 'App/Footer/AppFooter',
   AppDisclaimer = 'App/Header/AppDisclaimer',
   SelectIndexer = 'App/Footer/Indexer/SelectIndexer',
