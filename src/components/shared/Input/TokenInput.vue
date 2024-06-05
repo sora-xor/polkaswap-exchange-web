@@ -22,7 +22,7 @@
       <div class="input-value">
         <slot name="balance">
           <template v-if="isBalanceAvailable">
-            <span class="input-value--uppercase">{{ t('balanceText') }}</span>
+            <span class="input-value--uppercase">{{ balanceText || t('balanceText') }}</span>
             <formatted-amount-with-fiat-value
               value-can-be-hidden
               with-left-shift
@@ -77,7 +77,7 @@
               @focus="handleFiatFocus"
               @blur="handleFiatBlur"
             >
-              <span slot="left" class="input-prefix">$</span>
+              <span slot="left" class="input-prefix">{{ currencySymbol }}</span>
             </s-float-input>
 
             <slot name="fiat-amount-append" />
@@ -86,12 +86,12 @@
           <token-address v-if="address" v-bind="token" :external="external" class="input-value" />
         </div>
 
-        <div v-if="withSlider" class="input-line--footer-with-slider" @click="handleSliderFocus">
+        <div v-if="withSlider" class="input-line--footer-with-slider">
           <div class="delimiter" />
           <s-slider
             class="slider-container"
             :value="slideValue"
-            :disabled="!withSlider"
+            :disabled="!withSlider || disabled"
             :show-tooltip="false"
             :marks="{ 0: '', 25: '', 50: '', 75: '', 100: '' }"
             @input="handleSlideInputChange"
@@ -113,10 +113,11 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import { mutation } from '@/store/decorators';
+import { state, getter, mutation } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Currency, FiatExchangeRateObject } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 
 @Component({
   components: {
@@ -131,6 +132,11 @@ export default class TokenInput extends Mixins(
   mixins.FormattedAmountMixin,
   TranslationMixin
 ) {
+  @state.wallet.settings.currency currency!: Currency;
+  @state.wallet.settings.fiatExchangeRateObject fiatExchangeRateObject!: FiatExchangeRateObject;
+
+  @getter.wallet.settings.currencySymbol currencySymbol!: string;
+
   @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
@@ -140,6 +146,7 @@ export default class TokenInput extends Mixins(
   @Prop({ default: () => null, type: Object }) readonly token!: Nullable<RegisteredAccountAsset>;
   @Prop({ default: () => null, type: String }) readonly balance!: Nullable<CodecString>;
   @Prop({ default: '', type: String }) readonly title!: string;
+  @Prop({ default: '', type: String }) readonly balanceText!: string;
   @Prop({ default: false, type: Boolean }) readonly external!: boolean;
   @Prop({ default: false, type: Boolean }) readonly loading!: boolean;
   @Prop({ default: false, type: Boolean }) readonly disabled!: boolean;
@@ -163,9 +170,16 @@ export default class TokenInput extends Mixins(
     this.fiatValue = this.fiatAmount.isZero() ? '' : this.fiatAmount.toFixed(this.fiatDecimals);
   }
 
-  recalcValue(fiatValue: string): void {
-    const result =
-      !this.tokenPrice.isZero() && fiatValue ? new FPNumber(fiatValue).div(this.tokenPrice).toString() : '';
+  @Watch('currency', { immediate: true })
+  private reactToCurrencyChange(): void {
+    this.setFiatValue(this.fiatValue);
+  }
+
+  recalcValue(value: string): void {
+    const currentCurrencyRate = this.fiatExchangeRateObject[this.currency];
+    const fiatValue = new FPNumber(value).div(currentCurrencyRate);
+
+    const result = !this.tokenPrice.isZero() && value ? new FPNumber(fiatValue).div(this.tokenPrice).toString() : '';
 
     this.$emit('input', result);
   }
@@ -179,11 +193,6 @@ export default class TokenInput extends Mixins(
 
   handleFiatFocus(): void {
     this.fiatFocus = true;
-    this.$emit('focus');
-  }
-
-  handleSliderFocus(): void {
-    this.floatInput?.$children?.[0]?.focus?.();
     this.$emit('focus');
   }
 
@@ -253,7 +262,10 @@ export default class TokenInput extends Mixins(
 
   calcFiatAmount(value: string | number): FPNumber {
     if (!value) return FPNumber.ZERO;
-    return new FPNumber(value).mul(this.tokenPrice);
+    const currentCurrencyRate = this.fiatExchangeRateObject[this.currency];
+    const tokenPrice = this.tokenPrice.mul(currentCurrencyRate);
+
+    return new FPNumber(value).mul(tokenPrice);
   }
 
   handleMax(): void {
@@ -272,8 +284,8 @@ export default class TokenInput extends Mixins(
     this.fiatEl?.$children?.[0]?.blur?.();
   }
 
-  async mounted(): Promise<void> {
-    await this.$nextTick();
+  public focus(): void {
+    this.floatInput?.inputComponent?.focus?.();
   }
 }
 </script>

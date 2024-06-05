@@ -107,13 +107,17 @@ import {
   PoolChildPages,
   BridgeChildPages,
   RewardsChildPages,
-  StakingChildPages,
   ExploreChildPages,
   SidebarMenuGroups,
   SidebarMenuItemLink,
   FaucetLink,
 } from '@/consts';
+import { DashboardPageNames } from '@/modules/dashboard/consts';
+import { isDashboardPage } from '@/modules/dashboard/router';
 import { StakingPageNames } from '@/modules/staking/consts';
+import { isStakingPage } from '@/modules/staking/router';
+import { VaultPageNames } from '@/modules/vault/consts';
+import { isVaultPage } from '@/modules/vault/router';
 import { getter, mutation, state } from '@/store/decorators';
 
 import AppInfoPopper from './AppInfoPopper.vue';
@@ -135,11 +139,33 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   @state.settings.menuCollapsed collapsed!: boolean;
 
   @getter.settings.orderBookEnabled private orderBookEnabled!: boolean;
+  @getter.settings.kensetsuEnabled private kensetsuEnabled!: boolean;
+  @getter.settings.assetOwnerEnabled private assetOwnerEnabled!: boolean;
   @getter.libraryTheme private libraryTheme!: Theme;
 
   @mutation.settings.setMenuCollapsed private setMenuCollapsed!: (collapsed: boolean) => void;
 
   readonly FaucetLink = FaucetLink;
+
+  private resizeObserver: Nullable<ResizeObserver> = null;
+
+  private onMenuWidthChange(): void {
+    const width = this.$el?.clientWidth ?? 0;
+    if (!width) return;
+
+    document.documentElement.style.setProperty('--sidebar-width', `${width}px`);
+  }
+
+  async mounted(): Promise<void> {
+    await this.$nextTick();
+    if (!(this.$el && window.ResizeObserver)) return;
+    this.resizeObserver = new ResizeObserver(this.onMenuWidthChange);
+    this.resizeObserver.observe(this.$el);
+  }
+
+  beforeDestroy(): void {
+    this.resizeObserver?.disconnect();
+  }
 
   get collapseIcon(): string {
     return this.collapsed ? 'arrows-chevron-right-24' : 'arrows-chevron-left-24';
@@ -154,10 +180,19 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   }
 
   get sidebarMenuItems(): Array<SidebarMenuItemLink> {
+    let menuItems = SidebarMenuGroups;
+
     if (!this.orderBookEnabled) {
-      return SidebarMenuGroups.filter(({ title }) => title !== PageNames.OrderBook);
+      menuItems = menuItems.filter(({ title }) => title !== PageNames.OrderBook);
     }
-    return SidebarMenuGroups;
+    if (!this.kensetsuEnabled) {
+      menuItems = menuItems.filter(({ title }) => title !== PageNames.VaultsContainer);
+    }
+    if (!this.assetOwnerEnabled) {
+      menuItems = menuItems.filter(({ title }) => title !== PageNames.AssetOwnerContainer);
+    }
+
+    return menuItems;
   }
 
   get currentPath(): string {
@@ -171,11 +206,17 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     if (RewardsChildPages.includes(currentName)) {
       return PageNames.Rewards;
     }
-    if (StakingChildPages.includes(currentName)) {
+    if (isStakingPage(currentName)) {
       return StakingPageNames.Staking;
     }
     if (ExploreChildPages.includes(currentName)) {
       return PageNames.ExploreTokens;
+    }
+    if (isDashboardPage(currentName)) {
+      return DashboardPageNames.AssetOwner;
+    }
+    if (isVaultPage(currentName)) {
+      return VaultPageNames.Vaults;
     }
     return currentName as string;
   }

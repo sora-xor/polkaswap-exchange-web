@@ -29,6 +29,7 @@ function initialState(): SettingsState {
     selectNodeDialogVisibility: false,
     selectIndexerDialogVisibility: false,
     selectLanguageDialogVisibility: false,
+    selectCurrencyDialogVisibility: false,
     disclaimerVisibility: false,
     alertSettingsVisibility: false,
     browserNotifPopupVisibility: false,
@@ -38,6 +39,7 @@ function initialState(): SettingsState {
     internetConnection: undefined,
     internetConnectionSpeed: undefined,
     screenBreakpointClass: BreakpointClass.LargeDesktop,
+    windowWidth: window?.innerWidth ?? 0,
     adsArray: [],
   };
 }

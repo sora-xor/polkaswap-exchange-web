@@ -109,6 +109,7 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   @Prop({ default: false, type: Boolean }) readonly disabledCustom!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isFirstTokenSelected!: boolean;
   @Prop({ default: false, type: Boolean }) readonly isAddLiquidity!: boolean;
+  @Prop({ default: () => true, type: Function }) readonly filter!: (value: AccountAsset) => boolean;
 
   @state.wallet.settings.shouldBalanceBeHidden shouldBalanceBeHidden!: boolean;
   @state.wallet.account.assets private assets!: Asset[];
@@ -179,7 +180,8 @@ export default class SelectToken extends Mixins(TranslationMixin, SelectAssetMix
   }
 
   get activeAssetsList(): Array<AccountAsset> {
-    return this.isCustomTabActive ? this.sortedNonWhitelistAccountAssets : this.filteredWhitelistTokens;
+    const assets = this.isCustomTabActive ? this.sortedNonWhitelistAccountAssets : this.filteredWhitelistTokens;
+    return assets.filter(this.filter);
   }
 
   get activeSearchPlaceholder(): string {

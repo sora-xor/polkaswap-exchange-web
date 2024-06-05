@@ -1,6 +1,6 @@
 {
   "name": "polkaswap-exchange-web",
-  "version": "1.34.0",
+  "version": "1.35.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/sora-xor/polkaswap-exchange-web.git"
@@ -26,8 +26,9 @@
     "test:all": "yarn test:unit --coverage"
   },
   "dependencies": {
+    "@cedelabs/widgets-universal": "^1.3.1",
     "@metamask/detect-provider": "^2.0.0",
-    "@soramitsu/soraneo-wallet-web": "1.34.3",
+    "@soramitsu/soraneo-wallet-web": "1.35.2",
     "@walletconnect/ethereum-provider": "^2.12.2",
     "@walletconnect/modal": "^2.6.2",
     "core-js": "^3.37.0",
@@ -53,7 +54,7 @@
     "@types/electron-devtools-installer": "^2.2.5",
     "@types/jest": "^29.5.12",
     "@types/jsdom": "^21.1.6",
-    "@types/lodash": "^4.17.1",
+    "@types/lodash": "^4.17.3",
     "@types/node": "^20.12.10",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
@@ -72,7 +73,7 @@
     "@vue/vue2-jest": "^27.0.0",
     "babel-plugin-require-context-hook": "^1.0.0",
     "css-unicode-loader": "^1.0.3",
-    "electron": "^13.0.0",
+    "electron": "^30.0.6",
     "electron-devtools-installer": "^3.2.0",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.29.1",

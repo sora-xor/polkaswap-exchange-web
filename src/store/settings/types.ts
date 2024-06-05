@@ -12,10 +12,11 @@ export type Ad = {
 
 export type FeatureFlags = {
   moonpay?: boolean;
-  x1ex?: boolean;
   charts?: boolean;
   soraCard?: boolean;
   orderBook?: boolean;
+  kensetsu?: boolean;
+  assetOwner?: boolean;
 };
 
 export type SettingsState = {
@@ -33,6 +34,7 @@ export type SettingsState = {
   selectNodeDialogVisibility: boolean;
   selectIndexerDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
+  selectCurrencyDialogVisibility: boolean;
   disclaimerVisibility: boolean;
   alertSettingsVisibility: boolean;
   browserNotifPopupVisibility: boolean;
@@ -44,5 +46,6 @@ export type SettingsState = {
   internetConnection: Nullable<boolean>;
   internetConnectionSpeed: Nullable<number>;
   screenBreakpointClass: BreakpointClass;
+  windowWidth: number;
   adsArray: Array<Ad>;
 };

@@ -4,10 +4,14 @@ import { Component } from 'vue-property-decorator';
 import VueRouter, { RouteConfig } from 'vue-router';
 
 import { PageNames, BridgeChildPages } from '@/consts';
+import { DashboardPageNames } from '@/modules/dashboard/consts';
+import { dashboardLazyView } from '@/modules/dashboard/router';
 import { StakingPageNames } from '@/modules/staking/consts';
 import { DemeterStakingPageNames } from '@/modules/staking/demeter/consts';
 import { demeterStakingLazyView, soraStakingLazyView, stakingLazyView } from '@/modules/staking/router';
 import { SoraStakingPageNames } from '@/modules/staking/sora/consts';
+import { VaultPageNames } from '@/modules/vault/consts';
+import { vaultLazyView } from '@/modules/vault/router';
 import store from '@/store';
 import { updateDocumentTitle } from '@/utils';
 
@@ -248,17 +252,64 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/fiat-deposit',
-    name: PageNames.FiatDepositOptions,
-    component: lazyView(PageNames.FiatDepositOptions),
+    path: '/deposit',
+    name: PageNames.DepositOptions,
+    component: lazyView(PageNames.DepositOptions),
   },
   {
-    path: '/fiat-deposit/history',
-    name: PageNames.FiatTxHistory,
-    component: lazyView(PageNames.FiatTxHistory),
+    path: '/deposit/history',
+    name: PageNames.DepositTxHistory,
+    component: lazyView(PageNames.DepositTxHistory),
     meta: {
       requiresAuth: true,
     },
+  },
+  {
+    path: '/deposit/transfer-from-cex',
+    name: PageNames.CedeStore,
+    component: lazyView(PageNames.CedeStore),
+  },
+  {
+    path: '/kensetsu',
+    component: lazyView(PageNames.VaultsContainer),
+    children: [
+      {
+        path: '',
+        name: VaultPageNames.Vaults,
+        component: vaultLazyView(VaultPageNames.Vaults),
+      },
+      {
+        path: ':vault',
+        name: VaultPageNames.VaultDetails,
+        component: vaultLazyView(VaultPageNames.VaultDetails),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+    ],
+  },
+  {
+    path: '/dashboard/owner',
+    component: lazyView(PageNames.AssetOwnerContainer),
+    children: [
+      {
+        path: '',
+        name: DashboardPageNames.AssetOwner,
+        component: dashboardLazyView(DashboardPageNames.AssetOwner),
+      },
+      {
+        path: ':asset',
+        name: DashboardPageNames.AssetOwnerDetails,
+        component: dashboardLazyView(DashboardPageNames.AssetOwnerDetails),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+    ],
+  },
+  {
+    path: '/dashboard',
+    redirect: '/wallet',
   },
   {
     path: '/stats',
@@ -274,10 +325,6 @@ const routes: Array<RouteConfig> = [
     path: '/burn',
     name: PageNames.Burn,
     component: lazyView(PageNames.Burn),
-  },
-  {
-    path: '/kensetsu',
-    redirect: '/burn',
   },
   {
     path: '*',
