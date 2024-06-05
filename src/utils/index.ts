@@ -134,6 +134,7 @@ export const showMostFittingValue = (
   return toPrecision(value, precision).toLocaleString();
 };
 
+// TODO: export from wallet
 export const getCurrency = (currencyName: Currency, currencies: CurrencyFields[]): CurrencyFields | undefined => {
   return currencies.find((currency) => currency.key === currencyName);
 };

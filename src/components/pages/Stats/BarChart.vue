@@ -12,7 +12,7 @@
     >
       <formatted-amount v-if="fees" class="chart-price" :value="amount.amount">
         {{ amount.suffix }}
-        <template v-if="fees">&nbsp;{{ XOR.symbol }}</template>
+        <template>&nbsp;{{ XOR.symbol }}</template>
       </formatted-amount>
       <formatted-amount v-else class="chart-price" :value="amount.amount" is-fiat-value>
         {{ amount.suffix }}

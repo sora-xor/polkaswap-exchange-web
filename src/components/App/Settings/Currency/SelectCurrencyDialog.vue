@@ -40,7 +40,7 @@ import { Component, Mixins, Ref } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { state, mutation } from '@/store/decorators';
 
-import type { CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
+import type { CurrencyFields, Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 
 @Component({
   components: {
@@ -56,10 +56,10 @@ export default class SelectCurrencyDialog extends Mixins(TranslationMixin) {
   @Ref('selectedEl') selectedEl!: Nullable<[HTMLDivElement]>;
 
   @state.settings.selectCurrencyDialogVisibility private selectCurrencyDialogVisibility!: boolean;
-  @state.wallet.settings.currency private currency: any;
+  @state.wallet.settings.currency private currency!: Currency;
 
   @mutation.settings.setSelectCurrencyDialogVisibility private setDialogVisibility!: (flag: boolean) => void;
-  @mutation.wallet.settings.setFiatCurrency private setCurrency!: (currency: any) => Promise<void>;
+  @mutation.wallet.settings.setFiatCurrency private setCurrency!: (currency: Currency) => Promise<void>;
 
   get visibility(): boolean {
     return this.selectCurrencyDialogVisibility;

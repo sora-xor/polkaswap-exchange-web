@@ -276,6 +276,7 @@ export default class PriceChartWidget extends Mixins(
   @state.wallet.settings.currency private currency!: Currency;
   @state.wallet.settings.currencies private currencies!: Array<CurrencyFields>;
   @getter.wallet.settings.exchangeRate private exchangeRate!: number;
+  @getter.wallet.settings.currencySymbol currencySymbol!: any;
 
   @Prop({ default: DexId.XOR, type: Number }) readonly dexId!: DexId;
   @Prop({ default: () => null, type: Object }) readonly baseAsset!: Nullable<AccountAsset>;
@@ -380,9 +381,9 @@ export default class PriceChartWidget extends Mixins(
   }
 
   get symbol(): string {
-    const currentCurrencySymbol = getCurrency(this.currency, this.currencies)?.key.toUpperCase() || USD_SYMBOL;
+    const currentCurrencyAbbr = getCurrency(this.currency, this.currencies)?.key.toUpperCase() || USD_SYMBOL;
 
-    return this.tokenB?.symbol ?? currentCurrencySymbol;
+    return this.tokenB?.symbol ?? currentCurrencyAbbr;
   }
 
   get currentPrice(): FPNumber {
