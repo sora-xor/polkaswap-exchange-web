@@ -903,7 +903,8 @@
         "switchTheme": "Beralih ke Mode {theme}",
         "switchLanguage": "Pilih bahasa",
         "showDisclaimer": "Tampilkan Penafian",
-        "hideDisclaimer": "Sembunyikan Penafian"
+        "hideDisclaimer": "Sembunyikan Penafian",
+        "selectCurrency": "Pilih Mata Uang"
     },
     "sentText": "Terkirim",
     "learnMoreText": "Pelajari lebih lanjut",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Masukan kata sandi",
         "googleOnly": "Khusus akun {Google}"
+    },
+    "currencyDialog": {
+        "currency": "Mata uang",
+        "searchPlaceholder": "Cari berdasarkan nama atau simbol mata uang"
     }
 }

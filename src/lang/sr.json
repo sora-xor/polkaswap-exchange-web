@@ -903,7 +903,8 @@
         "switchTheme": "Пребаците се на {theme} mод",
         "switchLanguage": "Изаберите језик",
         "showDisclaimer": "Схов Дисцлаимер",
-        "hideDisclaimer": "Сакриј одрицање одговорности"
+        "hideDisclaimer": "Сакриј одрицање одговорности",
+        "selectCurrency": "Изаберите Валута"
     },
     "sentText": "Poslato",
     "learnMoreText": "Сазнајте више",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Унесите лозинку",
         "googleOnly": "Само {Google} налози"
+    },
+    "currencyDialog": {
+        "currency": "Валута",
+        "searchPlaceholder": "Претражујте по називу валуте или симболу"
     }
 }
