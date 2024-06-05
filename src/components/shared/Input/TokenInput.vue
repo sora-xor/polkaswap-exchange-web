@@ -77,7 +77,7 @@
               @focus="handleFiatFocus"
               @blur="handleFiatBlur"
             >
-              <span slot="left" class="input-prefix">$</span>
+              <span slot="left" class="input-prefix">{{ currencySymbol }}</span>
             </s-float-input>
 
             <slot name="fiat-amount-append" />
@@ -113,10 +113,11 @@ import { Component, Mixins, Prop, Ref, Watch } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, ZeroStringValue } from '@/consts';
 import { lazyComponent } from '@/router';
-import { mutation } from '@/store/decorators';
+import { state, getter, mutation } from '@/store/decorators';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { Currency, FiatExchangeRateObject } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 
 @Component({
   components: {
@@ -131,6 +132,11 @@ export default class TokenInput extends Mixins(
   mixins.FormattedAmountMixin,
   TranslationMixin
 ) {
+  @state.wallet.settings.currency currency!: Currency;
+  @state.wallet.settings.fiatExchangeRateObject fiatExchangeRateObject!: FiatExchangeRateObject;
+
+  @getter.wallet.settings.currencySymbol currencySymbol!: string;
+
   @mutation.orderBook.setAmountSliderValue setAmountSliderValue!: (value: number) => void;
 
   readonly delimiters = FPNumber.DELIMITERS_CONFIG;
@@ -164,9 +170,16 @@ export default class TokenInput extends Mixins(
     this.fiatValue = this.fiatAmount.isZero() ? '' : this.fiatAmount.toFixed(this.fiatDecimals);
   }
 
-  recalcValue(fiatValue: string): void {
-    const result =
-      !this.tokenPrice.isZero() && fiatValue ? new FPNumber(fiatValue).div(this.tokenPrice).toString() : '';
+  @Watch('currency', { immediate: true })
+  private reactToCurrencyChange(): void {
+    this.setFiatValue(this.fiatValue);
+  }
+
+  recalcValue(value: string): void {
+    const currentCurrencyRate = this.fiatExchangeRateObject[this.currency];
+    const fiatValue = new FPNumber(value).div(currentCurrencyRate);
+
+    const result = !this.tokenPrice.isZero() && value ? new FPNumber(fiatValue).div(this.tokenPrice).toString() : '';
 
     this.$emit('input', result);
   }
@@ -249,7 +262,10 @@ export default class TokenInput extends Mixins(
 
   calcFiatAmount(value: string | number): FPNumber {
     if (!value) return FPNumber.ZERO;
-    return new FPNumber(value).mul(this.tokenPrice);
+    const currentCurrencyRate = this.fiatExchangeRateObject[this.currency];
+    const tokenPrice = this.tokenPrice.mul(currentCurrencyRate);
+
+    return new FPNumber(value).mul(tokenPrice);
   }
 
   handleMax(): void {

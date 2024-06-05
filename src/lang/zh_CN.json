@@ -903,7 +903,8 @@
         "switchTheme": "切换到{theme}模式",
         "switchLanguage": "选择语言",
         "showDisclaimer": "显示免责声明",
-        "hideDisclaimer": "隐藏免责声明"
+        "hideDisclaimer": "隐藏免责声明",
+        "selectCurrency": "选择货币"
     },
     "sentText": "已发送",
     "learnMoreText": "了解更多",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "请输入密码",
         "googleOnly": "仅限{Google}帐户"
+    },
+    "currencyDialog": {
+        "currency": "货币",
+        "searchPlaceholder": "按货币名称或符号搜索"
     }
 }
