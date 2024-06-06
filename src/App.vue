@@ -124,6 +124,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.settings.setFeatureFlags private setFeatureFlags!: (data: FeatureFlags) => void;
   @mutation.settings.setBrowserNotifsPopupEnabled private setBrowserNotifsPopup!: (flag: boolean) => void;
   @mutation.settings.setBrowserNotifsPopupBlocked private setBrowserNotifsPopupBlocked!: (flag: boolean) => void;
+  @mutation.settings.setUserDisclaimerApprove private setUserDisclaimerApprove!: FnWithoutArgs;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
   @mutation.settings.resetBlockNumberSubscription private resetBlockNumberSubscription!: FnWithoutArgs;
   @mutation.settings.setScreenBreakpointClass private setScreenBreakpointClass!: (windowWidth: number) => void;
@@ -212,6 +213,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     // this.setIsDesktop(true);
 
     if (await isTMA()) {
+      this.setUserDisclaimerApprove();
       this.setIsDesktop(true);
       // TODO: rely on environment
       setDebug(true);
