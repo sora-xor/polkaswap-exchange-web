@@ -80,16 +80,12 @@ async function autoselectBridgeAsset(context: ActionContext<any, any>): Promise<
 }
 
 function autoselectSubAddress(context: ActionContext<any, any>): void {
-  const { commit, rootState } = web3ActionContext(context);
-  const { address, name } = rootState.wallet.account;
-  const { subBridgeConnector } = rootState.bridge;
+  const { dispatch, rootGetters } = web3ActionContext(context);
+  const { account } = rootGetters.wallet.account;
 
-  if (address) {
+  if (account.address) {
     // inject SORA account to bridge connector (by default)
-    subBridgeConnector.setAccountFromApi(subBridgeApi);
-    commit.setSubAddress({ address, name });
-  } else {
-    commit.setSubAddress();
+    dispatch.selectSubAccount(account);
   }
 }
 
@@ -137,7 +133,11 @@ const actions = defineActions({
 
     await loginApi(accountApi, accountData, isDesktop);
 
-    commit.setSubAddress({ address: api.formatAddress(accountData.address), name: accountData.name });
+    commit.setSubAccount({
+      address: api.formatAddress(accountData.address),
+      name: accountData.name,
+      source: accountData.source,
+    });
   },
 
   async disconnectExternalNetwork(context): Promise<void> {

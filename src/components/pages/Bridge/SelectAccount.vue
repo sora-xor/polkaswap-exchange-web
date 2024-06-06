@@ -1,56 +1,33 @@
 <template>
-  <dialog-base
-    :visible.sync="visibility"
-    :title="t('connection.selectAccount')"
-    :show-back="!isAccountSelect"
-    @back="setAccountSelectView(true)"
-    class="account-select-dialog"
-  >
-    <template v-if="isAccountSelect">
-      <select-wallet-account />
-
-      <s-button type="secondary" @click="setAccountSelectView(false)">Enter address</s-button>
-    </template>
-
-    <select-address v-else v-model="address" @select="handleSelectAddress" />
+  <dialog-base :visible.sync="visibility" :title="t('connection.selectAccount')" class="account-select-dialog">
+    <connection-view :get-api="getApi" :account="subAccount" :login-account="loginAccount" :close-view="closeView" />
   </dialog-base>
 </template>
 
 <script lang="ts">
-import { components } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins, Watch } from 'vue-property-decorator';
+import { components, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { state, mutation } from '@/store/decorators';
-
-import SelectAddress from './SelectAddress.vue';
-import SelectWalletAccount from './SelectWalletAccount.vue';
+import { action, getter, state, mutation } from '@/store/decorators';
+import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 
 @Component({
   components: {
     DialogBase: components.DialogBase,
-    SelectAddress,
-    SelectWalletAccount,
+    ConnectionView: components.ConnectionView,
   },
 })
 export default class BridgeSelectAccount extends Mixins(TranslationMixin) {
+  @state.bridge.subBridgeConnector private subBridgeConnector!: SubNetworksConnector;
+
+  @getter.web3.subAccount public subAccount!: WALLET_TYPES.PolkadotJsAccount;
+
   @state.web3.subAddress private subAddress!: string;
   @state.web3.selectAccountDialogVisibility private selectAccountDialogVisibility!: boolean;
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
-  @mutation.web3.setSubAddress private setSubAddress!: (contact: { address: string; name: string }) => Promise<void>;
 
-  address = '';
-
-  isAccountSelect = true;
-
-  @Watch('visibility')
-  private reset(isVisible: boolean) {
-    this.address = isVisible ? this.subAddress : '';
-
-    if (!isVisible) {
-      this.isAccountSelect = true;
-    }
-  }
+  @action.web3.selectSubAccount private selectSubAccount!: (account: WALLET_TYPES.PolkadotJsAccount) => Promise<void>;
 
   get visibility(): boolean {
     return this.selectAccountDialogVisibility;
@@ -60,12 +37,16 @@ export default class BridgeSelectAccount extends Mixins(TranslationMixin) {
     this.setSelectAccountDialogVisibility(flag);
   }
 
-  setAccountSelectView(flag: boolean): void {
-    this.isAccountSelect = flag;
+  getApi() {
+    return this.subBridgeConnector.accountApi;
   }
 
-  handleSelectAddress(contact: { address: string; name: string }): void {
-    this.setSubAddress(contact);
+  async loginAccount(account: WALLET_TYPES.PolkadotJsAccount) {
+    await this.selectSubAccount(account);
+    this.closeView();
+  }
+
+  closeView(): void {
     this.visibility = false;
   }
 }

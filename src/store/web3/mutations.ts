@@ -19,10 +19,12 @@ const mutations = defineMutations<Web3State>()({
     ethersUtil.removeEvmUserAddress();
   },
 
-  setSubAddress(state, data?: { address: string; name: string }): void {
-    const { address = '', name = '' } = data ?? {};
+  setSubAccount(state, data?: { address: string; name: string; source?: string }): void {
+    const { address = '', name = '', source = '' } = data ?? {};
+
     state.subAddress = address;
     state.subAddressName = name;
+    state.subAddressSource = source;
   },
 
   setEvmNetworksApp(state, networksIds: EvmNetwork[]): void {

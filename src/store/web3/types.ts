@@ -28,8 +28,10 @@ export type AvailableNetwork = {
 
 export type Web3State = {
   evmAddress: string;
+
   subAddress: string;
   subAddressName: string;
+  subAddressSource: string;
 
   networkType: Nullable<BridgeNetworkType>;
   networkSelected: Nullable<BridgeNetworkId>;

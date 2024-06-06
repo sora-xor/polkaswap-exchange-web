@@ -6,8 +6,10 @@ import type { Web3State } from './types';
 export function initialState(): Web3State {
   return {
     evmAddress: '', // external evm address
+
     subAddress: '', // external sub address
     subAddressName: '',
+    subAddressSource: '',
 
     networkType: null, // network type for selected network
     networkSelected: null, // network selected by user

@@ -30,7 +30,7 @@
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
     <alerts />
-    <confirm-dialog />
+    <confirm-dialog :get-api="getApi" :connected="account.address" />
   </s-design-system-provider>
 </template>
 
@@ -56,10 +56,8 @@ import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { PageNames, Components, Language, BreakpointClass, Breakpoint, WalletPermissions } from '@/consts';
+import { PageNames, Components, Language, BreakpointClass, WalletPermissions } from '@/consts';
 import { getLocale } from '@/lang';
-import { isDashboardPage } from '@/modules/dashboard/router';
-import { isVaultPage } from '@/modules/vault/router';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
@@ -291,6 +289,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   set showBrowserNotifBlockedPopup(value) {
     this.setBrowserNotifsPopupBlocked(value);
+  }
+
+  getApi() {
+    return api;
   }
 
   goTo(name: PageNames): void {
