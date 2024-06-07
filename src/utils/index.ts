@@ -15,6 +15,7 @@ import storage from './storage';
 import type { AmountWithSuffix } from '../types/formats';
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { Currency, CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 import type { Route } from 'vue-router';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
@@ -132,6 +133,11 @@ export const showMostFittingValue = (
   const precision = parseInt(integer) > 0 ? 2 : Math.min(decimal.search(/[1-9]/) + 2, precisionForLowCostAsset);
 
   return toPrecision(value, precision).toLocaleString();
+};
+
+// TODO: export from wallet
+export const getCurrency = (currencyName: Currency, currencies: CurrencyFields[]): CurrencyFields | undefined => {
+  return currencies.find((currency) => currency.key === currencyName);
 };
 
 export const hasInsufficientBalance = (
