@@ -47,6 +47,7 @@ type WalletProvider = {
   },
 })
 export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
+  @state.wallet.account.isDesktop isDesktop!: boolean;
   @state.web3.selectProviderDialogVisibility private selectProviderDialogVisibility!: boolean;
 
   get visibility(): boolean {
@@ -57,17 +58,27 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
     this.setSelectProviderDialogVisibility(flag);
   }
 
-  get providers(): WalletProvider[] {
-    return Object.keys(Provider).map((key) => {
-      const provider = Provider[key];
+  get allowedProviders(): Provider[] {
+    if (this.isDesktop) {
+      return [Provider.WalletConnect];
+    }
 
-      return {
-        name: provider,
-        icon: this.getEvmProviderIcon(provider),
-        connected: provider === this.evmProvider,
-        loading: provider === this.evmProviderLoading,
-      };
-    });
+    return [Provider.Metamask, Provider.SubWallet, Provider.TrustWallet, Provider.WalletConnect];
+  }
+
+  get providers(): WalletProvider[] {
+    return Object.keys(Provider)
+      .filter((key) => this.allowedProviders.includes(key as Provider))
+      .map((key) => {
+        const provider = Provider[key];
+
+        return {
+          name: provider,
+          icon: this.getEvmProviderIcon(provider),
+          connected: provider === this.evmProvider,
+          loading: provider === this.evmProviderLoading,
+        };
+      });
   }
 
   handleProviderClick(provider: Provider): void {

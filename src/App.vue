@@ -516,6 +516,9 @@ ul ul {
     width: 0;
     animation: none;
   }
+  @include mobile(true) {
+    width: 300px;
+  }
 }
 
 .el-form--actions {
@@ -541,6 +544,15 @@ ul ul {
 
 .link {
   color: var(--s-color-base-content-primary);
+}
+
+// TODO: change outline to box-shadow in UI lib to support Safari also
+.search-input {
+  margin-top: 2px;
+}
+.s-input.neumorphic:focus-within {
+  outline: none !important;
+  box-shadow: 0 0 0 0.9px var(--s-color-outline) !important;
 }
 
 // Disabled button large typography
