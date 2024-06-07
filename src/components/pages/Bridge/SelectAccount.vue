@@ -1,6 +1,13 @@
 <template>
-  <dialog-base :visible.sync="visibility" :title="t('connection.selectAccount')" class="account-select-dialog">
-    <connection-view :get-api="getApi" :account="subAccount" :login-account="loginAccount" :close-view="closeView" />
+  <dialog-base :visible.sync="visibility" :show-close-button="false" class="account-select-dialog">
+    <connection-view
+      :get-api="getApi"
+      :account="subAccount"
+      :login-account="loginAccount"
+      :logout-account="resetSubAccount"
+      :close-view="closeView"
+      shadow="never"
+    />
   </dialog-base>
 </template>
 
@@ -23,11 +30,11 @@ export default class BridgeSelectAccount extends Mixins(TranslationMixin) {
 
   @getter.web3.subAccount public subAccount!: WALLET_TYPES.PolkadotJsAccount;
 
-  @state.web3.subAddress private subAddress!: string;
   @state.web3.selectAccountDialogVisibility private selectAccountDialogVisibility!: boolean;
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
 
   @action.web3.selectSubAccount private selectSubAccount!: (account: WALLET_TYPES.PolkadotJsAccount) => Promise<void>;
+  @action.web3.resetSubAccount public resetSubAccount!: () => void;
 
   get visibility(): boolean {
     return this.selectAccountDialogVisibility;
@@ -41,7 +48,7 @@ export default class BridgeSelectAccount extends Mixins(TranslationMixin) {
     return this.subBridgeConnector.accountApi;
   }
 
-  async loginAccount(account: WALLET_TYPES.PolkadotJsAccount) {
+  async loginAccount(account: WALLET_TYPES.PolkadotJsAccount): Promise<void> {
     await this.selectSubAccount(account);
     this.closeView();
   }
@@ -51,6 +58,23 @@ export default class BridgeSelectAccount extends Mixins(TranslationMixin) {
   }
 }
 </script>
+
+<style lang="scss">
+.account-select-dialog.dialog-wrapper {
+  .el-dialog > {
+    .el-dialog__header {
+      display: none;
+    }
+    .el-dialog__body {
+      padding: 0;
+
+      .el-card.base {
+        max-width: 100%;
+      }
+    }
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .account-select {

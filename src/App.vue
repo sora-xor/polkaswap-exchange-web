@@ -30,7 +30,12 @@
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
     <alerts />
-    <confirm-dialog :get-api="getApi" :connected="account.address" />
+    <confirm-dialog
+      :get-api="getApi"
+      :account="account"
+      :visibility="isSignTxDialogVisible"
+      :set-visibility="setSignTxDialogVisibility"
+    />
   </s-design-system-provider>
 </template>
 
@@ -142,6 +147,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     asset: WhitelistArrayItem;
     message: string;
   }) => Promise<void>;
+
+  @state.wallet.transactions.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
+  @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
 
   // [DESKTOP] To Enable Desktop
   // @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;

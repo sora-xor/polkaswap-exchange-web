@@ -29,10 +29,11 @@ export async function waitUntil(condition: () => boolean): Promise<void> {
 
 export async function waitForSoraNetworkFromEnv(): Promise<WALLET_CONSTS.SoraNetwork> {
   return new Promise<WALLET_CONSTS.SoraNetwork>((resolve) => {
-    store.original.watch(
+    const unsubscribe = store.original.watch(
       (state) => state.wallet.settings.soraNetwork,
       (value) => {
         if (value) {
+          unsubscribe();
           resolve(value);
         }
       }

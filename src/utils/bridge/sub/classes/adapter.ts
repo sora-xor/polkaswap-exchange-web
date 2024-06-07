@@ -1,4 +1,4 @@
-import { ApiAccount, Operation, Storage } from '@sora-substrate/util';
+import { WithKeyring, Operation, Storage } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
@@ -31,18 +31,16 @@ export class SubNetworksConnector {
   public standalone?: SubAdapter;
 
   public destinationNetwork!: SubNetwork;
-  public accountApi!: ApiAccount;
+  public accountApi!: WithKeyring;
 
   public static nodes: Partial<Record<SubNetwork, Node[]>> = {};
 
   constructor() {
-    const accountApiInstance = new ApiAccount('subHistory');
-    accountApiInstance.setStorage(new Storage());
-    // It is necessary to remove Vue reactivity from instance of "ApiAccount" class.
+    // It is necessary to remove Vue reactivity from instance of "WithKeyring" class.
     // In this case, Vue does not mark all instance properties with getters and setters
     Object.defineProperty(this, 'accountApi', {
       configurable: false,
-      value: accountApiInstance,
+      value: new WithKeyring(),
     });
   }
 
@@ -141,7 +139,7 @@ export class SubNetworksConnector {
   /**
    * Inject account & signer from api instance to accountApi
    */
-  public setAccountFromApi(api?: ApiAccount): void {
+  public setAccountFromApi(api?: WithKeyring): void {
     if (api?.account) {
       this.accountApi.setAccount(api.account);
     }
@@ -200,6 +198,9 @@ export class SubNetworksConnector {
    */
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
     const { api, accountPair, signer } = this.accountApi;
+
+    console.log('connector', this.accountApi);
+    console.log('recipient', recipient);
 
     if (!accountPair) throw new Error(`[${this.constructor.name}] Account pair is not set.`);
 

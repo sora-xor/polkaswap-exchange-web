@@ -1,12 +1,11 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-import { api, accountUtils, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { api as soraApi, accountUtils, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
-import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil, { Provider, PROVIDER_ERROR } from '@/utils/ethers-util';
 
@@ -18,7 +17,7 @@ async function connectNetworkType(context: ActionContext<any, any>): Promise<voi
 
   if (state.networkType === BridgeNetworkType.Sub) {
     await connectSubNetwork(context);
-    autoselectSubAddress(context);
+    // autoselectSubAddress(context);
   }
 }
 
@@ -125,7 +124,7 @@ const actions = defineActions({
     ethersUtil.disconnectEvmProvider(provider);
   },
 
-  async selectSubAccount(context, accountData: WALLET_TYPES.PolkadotJsAccount) {
+  async selectSubAccount(context, accountData: WALLET_TYPES.PolkadotJsAccount): Promise<void> {
     const { commit, rootState } = web3ActionContext(context);
     const { isDesktop } = rootState.wallet.account;
     const { accountApi } = rootState.bridge.subBridgeConnector;
@@ -134,11 +133,30 @@ const actions = defineActions({
     await loginApi(accountApi, accountData, isDesktop);
 
     commit.setSubAccount({
-      address: api.formatAddress(accountData.address),
+      address: accountApi.formatAddress(accountData.address),
       name: accountData.name,
       source: accountData.source,
     });
   },
+
+  resetSubAccount(context): void {
+    const { commit, rootState } = web3ActionContext(context);
+    const { isDesktop } = rootState.wallet.account;
+    const { accountApi } = rootState.bridge.subBridgeConnector;
+    const { logoutApi } = accountUtils;
+
+    logoutApi(accountApi, !isDesktop);
+
+    commit.setSubAccount();
+  },
+
+  // changeSubAccountName(context, { address, name }: { address: string; name: string; }): void {
+  //   const { commit, rootState } = web3ActionContext(context);
+  //   const { isDesktop } = rootState.wallet.account;
+  //   const { accountApi } = rootState.bridge.subBridgeConnector;
+
+  //   accountApi.changeAccountName()
+  // },
 
   async disconnectExternalNetwork(context): Promise<void> {
     const { rootState } = web3ActionContext(context);
@@ -171,7 +189,7 @@ const actions = defineActions({
 
   async getSupportedApps(context): Promise<void> {
     const { commit, getters } = web3ActionContext(context);
-    const supportedApps = await api.bridgeProxy.getListApps();
+    const supportedApps = await soraApi.bridgeProxy.getListApps();
     commit.setSupportedApps(supportedApps);
 
     const networks = getters.availableNetworks[BridgeNetworkType.Sub];

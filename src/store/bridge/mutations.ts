@@ -139,8 +139,12 @@ const mutations = defineMutations<BridgeState>()({
     state.historyLoading = omit([networkId], state.historyLoading);
   },
 
-  setNotificationData(state, tx: Nullable<IBridgeTransaction> = null) {
+  setNotificationData(state, tx: Nullable<IBridgeTransaction> = null): void {
     state.notificationData = tx;
+  },
+
+  setSignTxDialogVisibility(state, flag: boolean): void {
+    state.isSignTxDialogVisible = flag;
   },
 });
 
