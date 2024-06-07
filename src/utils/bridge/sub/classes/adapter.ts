@@ -199,9 +199,6 @@ export class SubNetworksConnector {
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
     const { api, accountPair, signer } = this.accountApi;
 
-    console.log('connector', this.accountApi);
-    console.log('recipient', recipient);
-
     if (!accountPair) throw new Error(`[${this.constructor.name}] Account pair is not set.`);
 
     const historyItem = subBridgeApi.getHistory(historyId as string) ?? {

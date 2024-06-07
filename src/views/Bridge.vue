@@ -93,7 +93,7 @@
             class="el-button--connect s-typography-button--large"
             data-test-name="connectPolkadot"
             type="primary"
-            @click="connectSenderWallet"
+            @click="connectWallet(isSoraToEvm)"
           >
             {{ t('connectWalletText') }}
           </s-button>
@@ -141,11 +141,7 @@
               </template>
             </bridge-account-panel>
             <div class="connect-wallet-group">
-              <span
-                v-if="isSubBridge || changeRecipientWalletEvm"
-                class="connect-wallet-btn"
-                @click="connectExternalWallet"
-              >
+              <span v-if="changeRecipientWalletEvm" class="connect-wallet-btn" @click="connectExternalWallet">
                 {{ t('changeAccountText') }}
               </span>
               <span v-else>{{ t('connectedText') }}</span>
@@ -163,7 +159,7 @@
             class="el-button--connect s-typography-button--large"
             data-test-name="useMetamaskProvider"
             type="primary"
-            @click="connectRecipientWallet"
+            @click="connectWallet(!isSoraToEvm)"
           >
             {{ t('connectWalletText') }}
           </s-button>
@@ -689,27 +685,11 @@ export default class Bridge extends Mixins(
     }
   }
 
-  connectSenderWallet() {
-    if (this.isSoraToEvm || this.isSubBridge) {
+  connectWallet(isSoraToEvm: boolean): void {
+    if (isSoraToEvm) {
       this.connectSoraWallet();
     } else {
       this.connectExternalWallet();
-    }
-  }
-
-  connectRecipientWallet(): void {
-    if (this.isSoraToEvm) {
-      this.connectExternalWallet();
-    } else {
-      this.connectInternalWallet();
-    }
-  }
-
-  private connectInternalWallet(): void {
-    if (this.isSubBridge) {
-      this.connectSubWallet();
-    } else {
-      this.connectSoraWallet();
     }
   }
 }

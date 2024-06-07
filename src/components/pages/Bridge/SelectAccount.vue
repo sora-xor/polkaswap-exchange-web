@@ -6,6 +6,7 @@
       :login-account="loginAccount"
       :logout-account="resetSubAccount"
       :close-view="closeView"
+      :show-close="!subAccount.address"
       shadow="never"
     />
   </dialog-base>

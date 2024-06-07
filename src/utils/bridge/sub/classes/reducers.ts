@@ -150,8 +150,6 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     if (tx.txId) return;
     // transaction not signed
-    console.log('reducer', this.connector.accountApi);
-    console.log('reducer tx', tx);
     await this.beforeSign(id, this.connector.accountApi, 'bridge/setSignTxDialogVisibility');
     // open connections
     await this.connector.start();
@@ -251,9 +249,8 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(
           ([eventsVec, blockHeight]) => {
-            console.log(blockHeight);
             try {
-              if (blockHeight > startBlockHeight + 3) {
+              if (blockHeight > startBlockHeight + 10) {
                 throw new Error(
                   `[${this.constructor.name}]: Sora parachain should have received message from ${tx.externalNetwork}`
                 );
