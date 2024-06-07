@@ -19,6 +19,7 @@ import { Component, Mixins, ModelSync } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 
+// This component is not used for now, but kept for future
 @Component({
   components: {
     AddressBookInput: components.AddressBookInput,
