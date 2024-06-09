@@ -102,7 +102,7 @@
     "ipfs-unixfs": "6.0.6",
     "ipfs-unixfs-exporter": "7.0.6",
     "ipfs-unixfs-importer": "9.0.6",
-    "@sora-substrate/util": "1.38.0"
+    "@sora-substrate/util": "1.38.1-kensetsu"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
