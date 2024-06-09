@@ -70,17 +70,17 @@
           <div v-if="sender" class="connect-wallet-panel">
             <s-divider type="tertiary" />
             <bridge-account-panel :address="sender" :name="senderName" :tooltip="getCopyTooltip(isSoraToEvm)">
-              <template #icon v-if="changeSenderWalletEvm">
+              <template #icon v-if="changeSenderWallet && evmProvider">
                 <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
               </template>
             </bridge-account-panel>
             <div class="connect-wallet-group">
-              <span v-if="changeSenderWalletEvm" class="connect-wallet-btn" @click="connectExternalWallet">
+              <span v-if="changeSenderWallet" class="connect-wallet-btn" @click="connectExternalWallet">
                 {{ t('changeAccountText') }}
               </span>
               <span v-else>{{ t('connectedText') }}</span>
               <span
-                v-if="changeSenderWalletEvm"
+                v-if="changeSenderWallet && evmProvider"
                 class="connect-wallet-btn disconnect"
                 @click="resetEvmProviderConnection"
               >
@@ -136,17 +136,17 @@
           <div v-if="recipient" class="connect-wallet-panel">
             <s-divider type="tertiary" />
             <bridge-account-panel :address="recipient" :name="recipientName" :tooltip="getCopyTooltip(!isSoraToEvm)">
-              <template #icon v-if="changeRecipientWalletEvm">
+              <template #icon v-if="changeRecipientWallet && evmProvider">
                 <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
               </template>
             </bridge-account-panel>
             <div class="connect-wallet-group">
-              <span v-if="changeRecipientWalletEvm" class="connect-wallet-btn" @click="connectExternalWallet">
+              <span v-if="changeRecipientWallet" class="connect-wallet-btn" @click="connectExternalWallet">
                 {{ t('changeAccountText') }}
               </span>
               <span v-else>{{ t('connectedText') }}</span>
               <span
-                v-if="changeRecipientWalletEvm"
+                v-if="changeRecipientWallet && evmProvider"
                 class="connect-wallet-btn disconnect"
                 @click="resetEvmProviderConnection"
               >
@@ -571,12 +571,12 @@ export default class Bridge extends Mixins(
     return Math.min(internal, external);
   }
 
-  get changeSenderWalletEvm(): boolean {
-    return !this.isSubBridge && !!this.evmProvider && !this.isSoraToEvm;
+  get changeSenderWallet(): boolean {
+    return !this.isSoraToEvm && (this.isSubBridge || !!this.evmProvider);
   }
 
-  get changeRecipientWalletEvm(): boolean {
-    return !this.isSubBridge && !!this.evmProvider && this.isSoraToEvm;
+  get changeRecipientWallet(): boolean {
+    return this.isSoraToEvm && (this.isSubBridge || !!this.evmProvider);
   }
 
   private getBalance(isSora = true): Nullable<FPNumber> {
