@@ -141,7 +141,7 @@ export class SubAdapter {
 
     const extrinsic = this.getTransferExtrinsic(asset, recipient, amount);
 
-    await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account.pair, historyItem);
+    await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account.pair, undefined, historyItem);
   }
 
   /* [Substrate 5] Runtime call transactionPaymentApi */
