@@ -316,7 +316,7 @@ export default class CreateVaultDialog extends Mixins(
   }
 
   private get kusdAvailable(): FPNumber {
-    const available = this.collateral?.riskParams.hardCap.sub(this.collateral.kusdSupply) ?? this.Zero;
+    const available = this.collateral?.riskParams.hardCap.sub(this.collateral.debtSupply) ?? this.Zero;
     const availableExcludedFee = available.sub(available.mul(this.borrowTax ?? 0));
     return availableExcludedFee.isLtZero() ? this.Zero : availableExcludedFee;
   }

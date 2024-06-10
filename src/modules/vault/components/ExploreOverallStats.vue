@@ -67,9 +67,9 @@ export default class ExploreOverallStats extends Mixins(TranslationMixin, mixins
   }
 
   private get totalDebt(): FPNumber {
-    return this.collaterals.reduce((acc, { kusdSupply }) => {
+    return this.collaterals.reduce((acc, { debtSupply }) => {
       if (!this.kusdToken) return acc;
-      const usdDebt = this.getFPNumberFiatAmountByFPNumber(kusdSupply, this.kusdToken);
+      const usdDebt = this.getFPNumberFiatAmountByFPNumber(debtSupply, this.kusdToken);
       if (!usdDebt) return acc;
       return acc.add(usdDebt);
     }, FPNumber.ZERO);

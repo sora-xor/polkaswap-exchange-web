@@ -242,8 +242,8 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
       const totalLockedValue = totalLockedFiatFp.toNumber();
       const totalLockedFiat = totalLockedFiatFp.toLocaleString(2);
 
-      const totalDebt = collateral.kusdSupply.toLocaleString(2);
-      const totalDebtFiatFp = this.getFPNumberFiatAmountByFPNumber(collateral.kusdSupply, debtAsset) ?? this.Zero;
+      const totalDebt = collateral.debtSupply.toLocaleString(2);
+      const totalDebtFiatFp = this.getFPNumberFiatAmountByFPNumber(collateral.debtSupply, debtAsset) ?? this.Zero;
       const totalDebtValue = totalDebtFiatFp.toNumber();
       const totalDebtFiat = totalDebtFiatFp.toLocaleString(2);
 
@@ -251,7 +251,7 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
       let availableToBorrow = '0';
       let availableToBorrowFiat: Nullable<string> = '0';
       let isAvailable = false;
-      const availableToBorrowFp = collateral.riskParams.hardCap.sub(collateral.kusdSupply).dp(2);
+      const availableToBorrowFp = collateral.riskParams.hardCap.sub(collateral.debtSupply).dp(2);
       if (availableToBorrowFp.isGtZero()) {
         isAvailable = true;
         availableToBorrow = availableToBorrowFp.toLocaleString(2);

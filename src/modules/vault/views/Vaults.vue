@@ -437,7 +437,7 @@ export default class Vaults extends Mixins(
       const ltv = ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
       const adjustedLtv = ltv ? ltvCoeff.mul(ratio) : null;
       const availableCoeff = maxSafeDebtWithoutTax.sub(vault.debt);
-      let totalAvailable = collateral?.riskParams.hardCap.sub(collateral.kusdSupply) ?? this.Zero;
+      let totalAvailable = collateral?.riskParams.hardCap.sub(collateral.debtSupply) ?? this.Zero;
       totalAvailable = totalAvailable.sub(totalAvailable.mul(this.borrowTax));
       let available = totalAvailable.lt(availableCoeff) ? totalAvailable : availableCoeff;
       available = !available.isFinity() || available.isLteZero() ? this.Zero : available.dp(2);

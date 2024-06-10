@@ -445,7 +445,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     let available = this.maxSafeDebt.sub(this.vault.debt);
     available = available.sub(available.mul(this.borrowTax));
 
-    let totalAvailable = this.collateral?.riskParams.hardCap.sub(this.collateral.kusdSupply) ?? this.Zero;
+    let totalAvailable = this.collateral?.riskParams.hardCap.sub(this.collateral.debtSupply) ?? this.Zero;
     totalAvailable = totalAvailable.sub(totalAvailable.mul(this.borrowTax));
 
     available = totalAvailable.lt(available) ? totalAvailable : available;

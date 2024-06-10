@@ -160,7 +160,7 @@ export default class BorrowMoreDialog extends Mixins(
   }
 
   private get kusdAvailable(): FPNumber {
-    return this.collateral?.riskParams.hardCap.sub(this.collateral.kusdSupply) ?? this.Zero;
+    return this.collateral?.riskParams.hardCap.sub(this.collateral.debtSupply) ?? this.Zero;
   }
 
   private get availableOrTotal(): FPNumber {
