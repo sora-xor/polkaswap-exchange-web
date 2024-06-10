@@ -4,7 +4,8 @@
       :get-api="getApi"
       :account="subAccount"
       :login-account="loginAccount"
-      :logout-account="resetSubAccount"
+      :logout-account="logoutAccount"
+      :rename-account="renameAccount"
       :close-view="closeView"
       :show-close="!subAccount.address"
       shadow="never"
@@ -35,7 +36,8 @@ export default class BridgeSelectAccount extends Mixins(TranslationMixin) {
   @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
 
   @action.web3.selectSubAccount private selectSubAccount!: (account: WALLET_TYPES.PolkadotJsAccount) => Promise<void>;
-  @action.web3.resetSubAccount public resetSubAccount!: () => void;
+  @action.web3.resetSubAccount public logoutAccount!: () => void;
+  @action.web3.changeSubAccountName public renameAccount!: (data: { address: string; name: string }) => Promise<void>;
 
   get visibility(): boolean {
     return this.selectAccountDialogVisibility;

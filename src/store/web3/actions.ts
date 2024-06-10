@@ -150,13 +150,12 @@ const actions = defineActions({
     commit.setSubAccount();
   },
 
-  // changeSubAccountName(context, { address, name }: { address: string; name: string; }): void {
-  //   const { commit, rootState } = web3ActionContext(context);
-  //   const { isDesktop } = rootState.wallet.account;
-  //   const { accountApi } = rootState.bridge.subBridgeConnector;
+  changeSubAccountName(context, { address, name }: { address: string; name: string }): void {
+    const { rootState } = web3ActionContext(context);
+    const { accountApi } = rootState.bridge.subBridgeConnector;
 
-  //   accountApi.changeAccountName()
-  // },
+    accountApi.changeAccountName(address, name);
+  },
 
   async disconnectExternalNetwork(context): Promise<void> {
     const { rootState } = web3ActionContext(context);
