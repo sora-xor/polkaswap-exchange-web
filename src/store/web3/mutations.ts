@@ -79,12 +79,16 @@ const mutations = defineMutations<Web3State>()({
     state.selectNetworkDialogVisibility = flag;
   },
 
-  setSelectAccountDialogVisibility(state, flag: boolean): void {
-    state.selectAccountDialogVisibility = flag;
-  },
-
   setSelectProviderDialogVisibility(state, flag: boolean): void {
     state.selectProviderDialogVisibility = flag;
+  },
+
+  setSubAccountDialogVisibility(state, flag: boolean): void {
+    state.subAccountDialogVisibility = flag;
+  },
+
+  setSoraAccountDialogVisibility(state, flag: boolean): void {
+    state.soraAccountDialogVisibility = flag;
   },
 
   // for hashi bridge

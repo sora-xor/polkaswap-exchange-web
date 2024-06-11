@@ -39,8 +39,10 @@ export function initialState(): Web3State {
     // dialogs
     selectSubNodeDialogVisibility: false,
     selectNetworkDialogVisibility: false,
-    selectAccountDialogVisibility: false,
     selectProviderDialogVisibility: false,
+
+    subAccountDialogVisibility: false,
+    soraAccountDialogVisibility: false,
   };
 }
 

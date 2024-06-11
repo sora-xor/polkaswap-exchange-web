@@ -1,7 +1,6 @@
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { PageNames } from '@/consts';
 import router from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getWalletAddress, formatAddress } from '@/utils';
@@ -21,7 +20,8 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
   @getter.bridge.isSubBridge isSubBridge!: boolean;
 
-  @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
+  @mutation.web3.setSoraAccountDialogVisibility setSoraAccountDialogVisibility!: (flag: boolean) => void;
+  @mutation.web3.setSubAccountDialogVisibility setSubAccountDialogVisibility!: (flag: boolean) => void;
   @mutation.web3.setSelectProviderDialogVisibility setSelectProviderDialogVisibility!: (flag: boolean) => void;
 
   @action.web3.changeEvmNetworkProvided changeEvmNetworkProvided!: AsyncFnWithoutArgs;
@@ -33,11 +33,11 @@ export default class WalletConnectMixin extends Mixins(TranslationMixin) {
   formatAddress = formatAddress;
 
   connectSoraWallet(): void {
-    router.push({ name: PageNames.Wallet });
+    this.setSoraAccountDialogVisibility(true);
   }
 
   connectSubWallet(): void {
-    this.setSelectAccountDialogVisibility(true);
+    this.setSubAccountDialogVisibility(true);
   }
 
   connectEvmWallet(): void {

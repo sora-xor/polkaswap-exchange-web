@@ -50,6 +50,8 @@ export type Web3State = {
 
   selectSubNodeDialogVisibility: boolean;
   selectNetworkDialogVisibility: boolean;
-  selectAccountDialogVisibility: boolean;
   selectProviderDialogVisibility: boolean;
+
+  subAccountDialogVisibility: boolean;
+  soraAccountDialogVisibility: boolean;
 };

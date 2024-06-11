@@ -70,20 +70,15 @@
           <div v-if="sender" class="connect-wallet-panel">
             <s-divider type="tertiary" />
             <bridge-account-panel :address="sender" :name="senderName" :tooltip="getCopyTooltip(isSoraToEvm)">
-              <template #icon v-if="changeSenderWallet && evmProvider">
+              <template #icon v-if="evmProvider">
                 <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
               </template>
             </bridge-account-panel>
             <div class="connect-wallet-group">
-              <span v-if="changeSenderWallet" class="connect-wallet-btn" @click="connectExternalWallet">
+              <span class="connect-wallet-btn" @click="connectWallet(isSoraToEvm)">
                 {{ t('changeAccountText') }}
               </span>
-              <span v-else>{{ t('connectedText') }}</span>
-              <span
-                v-if="changeSenderWallet && evmProvider"
-                class="connect-wallet-btn disconnect"
-                @click="resetEvmProviderConnection"
-              >
+              <span v-if="evmProvider" class="connect-wallet-btn disconnect" @click="resetEvmProviderConnection">
                 {{ t('disconnectWalletText') }}
               </span>
             </div>
@@ -136,20 +131,15 @@
           <div v-if="recipient" class="connect-wallet-panel">
             <s-divider type="tertiary" />
             <bridge-account-panel :address="recipient" :name="recipientName" :tooltip="getCopyTooltip(!isSoraToEvm)">
-              <template #icon v-if="changeRecipientWallet && evmProvider">
+              <template #icon v-if="evmProvider">
                 <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
               </template>
             </bridge-account-panel>
             <div class="connect-wallet-group">
-              <span v-if="changeRecipientWallet" class="connect-wallet-btn" @click="connectExternalWallet">
+              <span class="connect-wallet-btn" @click="connectWallet(!isSoraToEvm)">
                 {{ t('changeAccountText') }}
               </span>
-              <span v-else>{{ t('connectedText') }}</span>
-              <span
-                v-if="changeRecipientWallet && evmProvider"
-                class="connect-wallet-btn disconnect"
-                @click="resetEvmProviderConnection"
-              >
+              <span v-if="evmProvider" class="connect-wallet-btn disconnect" @click="resetEvmProviderConnection">
                 {{ t('disconnectWalletText') }}
               </span>
             </div>
@@ -241,7 +231,7 @@
     <div v-if="!areAccountsConnected" class="bridge-footer">{{ t('bridge.connectWallets') }}</div>
 
     <bridge-select-asset :visible.sync="showSelectTokenDialog" :asset="asset" @select="selectAsset" />
-    <bridge-select-account />
+    <bridge-select-sub-account />
     <bridge-select-network />
     <select-provider-dialog />
     <select-node-dialog
@@ -314,7 +304,7 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
   components: {
     BridgeSelectAsset: lazyComponent(Components.BridgeSelectAsset),
     BridgeSelectNetwork: lazyComponent(Components.BridgeSelectNetwork),
-    BridgeSelectAccount: lazyComponent(Components.BridgeSelectAccount),
+    BridgeSelectSubAccount: lazyComponent(Components.BridgeSelectSubAccount),
     BridgeAccountPanel: lazyComponent(Components.BridgeAccountPanel),
     BridgeNodeIcon: lazyComponent(Components.BridgeNodeIcon),
     BridgeTransactionDetails: lazyComponent(Components.BridgeTransactionDetails),
@@ -571,14 +561,6 @@ export default class Bridge extends Mixins(
     return Math.min(internal, external);
   }
 
-  get changeSenderWallet(): boolean {
-    return !this.isSoraToEvm && (this.isSubBridge || !!this.evmProvider);
-  }
-
-  get changeRecipientWallet(): boolean {
-    return this.isSoraToEvm && (this.isSubBridge || !!this.evmProvider);
-  }
-
   private getBalance(isSora = true): Nullable<FPNumber> {
     if (!(this.asset && (this.isRegisteredAsset || isSora))) {
       return null;
@@ -642,8 +624,6 @@ export default class Bridge extends Mixins(
   }
 
   handleChangeSubNode(): void {
-    if (!this.isSubBridge) return;
-
     this.setSelectSubNodeDialogVisibility(true);
   }
 
@@ -677,19 +657,19 @@ export default class Bridge extends Mixins(
     router.push({ name: PageNames.BridgeTransaction });
   }
 
-  connectExternalWallet(): void {
-    if (this.isSubBridge) {
-      this.connectSubWallet();
-    } else {
-      this.connectEvmWallet();
-    }
-  }
-
   connectWallet(isSoraToEvm: boolean): void {
     if (isSoraToEvm) {
       this.connectSoraWallet();
     } else {
       this.connectExternalWallet();
+    }
+  }
+
+  private connectExternalWallet(): void {
+    if (this.isSubBridge) {
+      this.connectSubWallet();
+    } else {
+      this.connectEvmWallet();
     }
   }
 }

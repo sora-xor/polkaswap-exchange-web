@@ -3,9 +3,9 @@
     <connection-view
       :get-api="getApi"
       :account="subAccount"
-      :login-account="loginAccount"
-      :logout-account="logoutAccount"
-      :rename-account="renameAccount"
+      :login-account="login"
+      :logout-account="logout"
+      :rename-account="rename"
       :close-view="closeView"
       :show-close="!subAccount.address"
       shadow="never"
@@ -27,31 +27,31 @@ import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
     ConnectionView: components.ConnectionView,
   },
 })
-export default class BridgeSelectAccount extends Mixins(TranslationMixin) {
+export default class BridgeSelectSubAccount extends Mixins(TranslationMixin) {
   @state.bridge.subBridgeConnector private subBridgeConnector!: SubNetworksConnector;
+
+  @state.web3.subAccountDialogVisibility private subAccountDialogVisibility!: boolean;
+  @mutation.web3.setSubAccountDialogVisibility private setSubAccountDialogVisibility!: (flag: boolean) => void;
 
   @getter.web3.subAccount public subAccount!: WALLET_TYPES.PolkadotJsAccount;
 
-  @state.web3.selectAccountDialogVisibility private selectAccountDialogVisibility!: boolean;
-  @mutation.web3.setSelectAccountDialogVisibility private setSelectAccountDialogVisibility!: (flag: boolean) => void;
-
   @action.web3.selectSubAccount private selectSubAccount!: (account: WALLET_TYPES.PolkadotJsAccount) => Promise<void>;
-  @action.web3.resetSubAccount public logoutAccount!: () => void;
-  @action.web3.changeSubAccountName public renameAccount!: (data: { address: string; name: string }) => Promise<void>;
+  @action.web3.resetSubAccount public logout!: () => void;
+  @action.web3.changeSubAccountName public rename!: (data: { address: string; name: string }) => Promise<void>;
 
   get visibility(): boolean {
-    return this.selectAccountDialogVisibility;
+    return this.subAccountDialogVisibility;
   }
 
   set visibility(flag: boolean) {
-    this.setSelectAccountDialogVisibility(flag);
+    this.setSubAccountDialogVisibility(flag);
   }
 
   getApi() {
     return this.subBridgeConnector.accountApi;
   }
 
-  async loginAccount(account: WALLET_TYPES.PolkadotJsAccount): Promise<void> {
+  async login(account: WALLET_TYPES.PolkadotJsAccount): Promise<void> {
     await this.selectSubAccount(account);
     this.closeView();
   }
@@ -76,15 +76,5 @@ export default class BridgeSelectAccount extends Mixins(TranslationMixin) {
       }
     }
   }
-}
-</style>
-
-<style lang="scss" scoped>
-.account-select {
-  display: flex;
-  flex-flow: column nowrap;
-  gap: $inner-spacing-medium;
-
-  @include full-width-button('account-select-button', 0);
 }
 </style>

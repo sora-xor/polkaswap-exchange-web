@@ -36,6 +36,7 @@
       :visibility="isSignTxDialogVisible"
       :set-visibility="setSignTxDialogVisibility"
     />
+    <select-sora-account-dialog />
   </s-design-system-provider>
 </template>
 
@@ -90,6 +91,7 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
+    SelectSoraAccountDialog: lazyComponent(Components.SelectSoraAccountDialog),
     NotificationEnablingPage: components.NotificationEnablingPage,
     ConfirmDialog: components.ConfirmDialog,
   },
