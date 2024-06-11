@@ -243,6 +243,14 @@ export default class Pool extends Mixins(
     }
   }
 }
+
+@include mobile(true) {
+  .pool-info-buttons {
+    button {
+      font-size: var(--s-font-size-mini);
+    }
+  }
+}
 </style>
 
 <style lang="scss" scoped>
