@@ -156,10 +156,10 @@
     <template v-else>
       <p class="referral-program-hint" v-html="t('referralProgram.connectAccount')" />
       <s-button
-        v-if="!(loading || isLoggedIn)"
+        v-if="!isLoggedIn"
         class="connect-button s-typography-button--large"
         type="primary"
-        @click="handleConnect"
+        @click="connectSoraWallet"
       >
         {{ t('connectWalletText') }}
       </s-button>
@@ -407,12 +407,6 @@ export default class ReferralProgram extends Mixins(
       return this.formatCodecNumber(rewards.toCodecString());
     }
     return ZeroStringValue;
-  }
-
-  handleConnect(): void {
-    if (!this.isLoggedIn) {
-      this.connectSoraWallet();
-    }
   }
 
   handleBonding(isBond = false): void {
