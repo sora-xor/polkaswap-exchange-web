@@ -151,10 +151,17 @@ const actions = defineActions({
   },
 
   changeSubAccountName(context, { address, name }: { address: string; name: string }): void {
-    const { rootState } = web3ActionContext(context);
+    const { commit, rootState, getters } = web3ActionContext(context);
     const { accountApi } = rootState.bridge.subBridgeConnector;
 
     accountApi.changeAccountName(address, name);
+
+    if (accountApi.formatAddress(getters.subAccount.address) === accountApi.formatAddress(address)) {
+      commit.setSubAccount({
+        ...getters.subAccount,
+        name,
+      });
+    }
   },
 
   async disconnectExternalNetwork(context): Promise<void> {
