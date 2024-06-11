@@ -178,10 +178,6 @@ export const hasInsufficientNativeTokenForFee = (nativeBalance: CodecString, fee
   return FPNumber.lt(fpBalance, fpFee);
 };
 
-export const getWalletAddress = (): string => {
-  return storage.get('address');
-};
-
 export async function delay(ms = 50, success = true): Promise<void> {
   return await new Promise((resolve, reject) => setTimeout(success ? resolve : reject, ms));
 }

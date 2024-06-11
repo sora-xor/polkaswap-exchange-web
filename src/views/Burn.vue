@@ -62,7 +62,7 @@
             v-if="!isLoggedIn"
             type="primary"
             class="action-button s-typography-button--large"
-            @click="handleConnectWallet"
+            @click="connectSoraWallet"
           >
             {{ t('connectWalletText') }}
           </s-button>
@@ -112,12 +112,12 @@ import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web
 import dayjs from 'dayjs';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import BurnDialog from '@/components/pages/Burn/BurnDialog.vue';
-import { Components, PageNames } from '@/consts';
+import { Components } from '@/consts';
 import { fetchData } from '@/indexer/queries/burnXor';
-import router, { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import { lazyComponent } from '@/router';
+import { state } from '@/store/decorators';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
@@ -148,7 +148,7 @@ type Campaign = {
     BurnDialog,
   },
 })
-export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.FormattedAmountMixin, TranslationMixin) {
+export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.FormattedAmountMixin, InternalConnectMixin) {
   readonly xor = XOR;
   private readonly blockDuration = 6_000; // 6 seconds
   private readonly defaultBurned: Record<CampaignKey, FPNumber> = {
@@ -211,9 +211,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   selectedMax = this.campaigns[0].max;
 
   @state.settings.blockNumber private blockNumber!: number;
-  @state.wallet.account.address soraAccountAddress!: string;
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   get minBlock(): number {
     return Math.min(...this.campaigns.map((c) => c.from));
@@ -268,7 +266,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   private async fetchData(): Promise<void> {
     const start = this.minBlock;
     const end = this.maxBlock;
-    const address = this.soraAccountAddress;
+    const address = this.soraAddress;
 
     const burns = await fetchData(start, end);
 
@@ -309,10 +307,6 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
       this.calcCountdown();
       await this.fetchData();
     });
-  }
-
-  handleConnectWallet(): void {
-    router.push({ name: PageNames.Wallet });
   }
 
   handleBurnClick(id: CampaignKey): void {

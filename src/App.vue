@@ -114,7 +114,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
-  @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.libraryDesignSystem libraryDesignSystem!: DesignSystem;
 
@@ -181,7 +181,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
-  @Watch('isSoraAccountConnected')
+  @Watch('isLoggedIn')
   private async confirmInviteUserIfConnected(isSoraConnected: boolean): Promise<void> {
     if (isSoraConnected) {
       await this.confirmInvititation();
@@ -190,7 +190,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @Watch('storageReferrer', { immediate: true })
   private async confirmInviteUserIfHasStorage(storageReferrerValue: string): Promise<void> {
-    if (this.isSoraAccountConnected && !!storageReferrerValue) {
+    if (this.isLoggedIn && !!storageReferrerValue) {
       await this.confirmInvititation();
     }
   }

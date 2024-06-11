@@ -26,7 +26,7 @@ export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingM
   @Prop({ default: '', type: String }) filter!: string;
 
   @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
-  @getter.orderBook.accountAddress accountAddress!: string;
+  @getter.wallet.account.address accountAddress!: string;
   @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   public orders: OrderData[] = [];

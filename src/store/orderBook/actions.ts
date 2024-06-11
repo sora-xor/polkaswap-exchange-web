@@ -155,8 +155,9 @@ const actions = defineActions({
   },
 
   async subscribeToUserLimitOrders(context): Promise<void> {
-    const { commit, dispatch, getters } = orderBookActionContext(context);
-    const { baseAsset, quoteAsset, accountAddress } = getters;
+    const { commit, dispatch, getters, rootState } = orderBookActionContext(context);
+    const { baseAsset, quoteAsset } = getters;
+    const accountAddress = rootState.wallet.account.address;
 
     dispatch.unsubscribeFromUserLimitOrders();
 
@@ -188,8 +189,9 @@ const actions = defineActions({
   },
 
   async subscribeOnLimitOrders(context, ids: number[]): Promise<void> {
-    const { commit, getters, state } = orderBookActionContext(context);
-    const { baseAsset, quoteAsset, accountAddress } = getters;
+    const { commit, getters, state, rootState } = orderBookActionContext(context);
+    const { baseAsset, quoteAsset } = getters;
+    const accountAddress = rootState.wallet.account.address;
 
     if (!(accountAddress && baseAsset && quoteAsset)) return;
 
