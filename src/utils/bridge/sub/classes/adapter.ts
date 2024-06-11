@@ -1,4 +1,4 @@
-import { WithKeyring, Operation, Storage } from '@sora-substrate/util';
+import { WithKeyring, Operation } from '@sora-substrate/util';
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 

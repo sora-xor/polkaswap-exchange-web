@@ -17,7 +17,6 @@ async function connectNetworkType(context: ActionContext<any, any>): Promise<voi
 
   if (state.networkType === BridgeNetworkType.Sub) {
     await connectSubNetwork(context);
-    // autoselectSubAddress(context);
   }
 }
 
@@ -75,16 +74,6 @@ async function autoselectBridgeAsset(context: ActionContext<any, any>): Promise<
 
   if (assetAddress) {
     await rootDispatch.bridge.setAssetAddress(assetAddress);
-  }
-}
-
-function autoselectSubAddress(context: ActionContext<any, any>): void {
-  const { dispatch, rootGetters } = web3ActionContext(context);
-  const { account } = rootGetters.wallet.account;
-
-  if (account.address) {
-    // inject SORA account to bridge connector (by default)
-    dispatch.selectSubAccount(account);
   }
 }
 
