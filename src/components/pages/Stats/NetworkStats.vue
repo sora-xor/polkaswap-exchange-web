@@ -170,6 +170,14 @@ export default class NetworkStats extends Mixins(mixins.LoadingMixin, Translatio
 .stats-column .el-loading-mask {
   border-radius: var(--s-border-radius-mini);
 }
+
+.stats-card-value {
+  .formatted-amount__value {
+    .formatted-amount__decimal {
+      margin-left: 0;
+    }
+  }
+}
 </style>
 
 <style lang="scss" scoped>
