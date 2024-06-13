@@ -18,7 +18,6 @@
         </div>
         <div class="stats-card-data">
           <formatted-amount
-            v-if="value.suffix !== '%'"
             class="stats-card-value"
             :font-weight-rate="FontWeightRate.MEDIUM"
             :font-size-rate="FontSizeRate.MEDIUM"
@@ -28,7 +27,6 @@
           >
             <template #prefix>$</template>
           </formatted-amount>
-          <p v-else class="stats-card-value">{{ value.amount }}</p>
         </div>
       </s-card>
     </s-col>
@@ -37,18 +35,15 @@
 
 <script lang="ts">
 import { FPNumber } from '@sora-substrate/math';
-import { KEN } from '@sora-substrate/util/build/assets/consts';
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { HundredNumber } from '@/consts';
 import { state, getter } from '@/store/decorators';
-import { AmountWithSuffix } from '@/types/formats';
 import { formatAmountWithSuffix } from '@/utils';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { Collateral } from '@sora-substrate/util/build/kensetsu/types';
+import type { Collateral, StablecoinInfo } from '@sora-substrate/util/build/kensetsu/types';
 
 @Component({
   components: {
@@ -57,34 +52,53 @@ import type { Collateral } from '@sora-substrate/util/build/kensetsu/types';
 })
 export default class ExploreOverallStats extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
   @state.vault.collaterals private collateralsObj!: Record<string, Collateral>;
-  @state.vault.borrowTax private borrowTax!: number;
-  @state.vault.badDebt private badDebt!: FPNumber;
-  @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
+  @state.vault.stablecoinInfos private stablecoinInfos!: Record<string, StablecoinInfo>;
 
-  @getter.vault.kusdToken private kusdToken!: Nullable<RegisteredAccountAsset>;
   @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   private get collaterals() {
-    return Object.entries(this.collateralsObj).map(([lockedAssetId, value]) => ({ lockedAssetId, ...value }));
+    return Object.values(this.collateralsObj);
   }
 
-  private get totalDebt(): FPNumber {
-    return this.collaterals.reduce((acc, { kusdSupply }) => {
-      if (!this.kusdToken) return acc;
-      const usdDebt = this.getFPNumberFiatAmountByFPNumber(kusdSupply, this.kusdToken);
-      if (!usdDebt) return acc;
-      return acc.add(usdDebt);
+  get badDebt(): FPNumber {
+    return Object.entries(this.stablecoinInfos).reduce((acc, [id, info]) => {
+      const debtAsset = this.getAsset(id);
+      if (!debtAsset) return acc;
+
+      const value = this.getFPNumberFiatAmountByFPNumber(info.badDebt, debtAsset);
+      if (!value) return acc;
+
+      return acc.add(value);
     }, FPNumber.ZERO);
   }
 
-  private get totalCollateral(): FPNumber {
-    return this.collaterals.reduce((acc, { totalLocked, lockedAssetId }) => {
-      const lockedAsset = this.getAsset(lockedAssetId);
-      if (!lockedAsset) return acc;
-      const lockedAmount = this.getFPNumberFiatAmountByFPNumber(totalLocked, lockedAsset);
-      if (!lockedAmount) return acc;
-      return acc.add(lockedAmount);
-    }, FPNumber.ZERO);
+  private get total(): { debt: FPNumber; collateral: FPNumber; available: FPNumber } {
+    return this.collaterals.reduce(
+      (acc, { totalLocked, lockedAssetId, debtSupply, debtAssetId, riskParams: { hardCap } }) => {
+        const lockedAsset = this.getAsset(lockedAssetId);
+        if (lockedAsset) {
+          const usdLocked = this.getFPNumberFiatAmountByFPNumber(totalLocked, lockedAsset);
+          if (usdLocked) {
+            acc.collateral = acc.collateral.add(usdLocked);
+          }
+        }
+
+        const debtAsset = this.getAsset(debtAssetId);
+        if (debtAsset) {
+          const usdDebt = this.getFPNumberFiatAmountByFPNumber(debtSupply, debtAsset);
+          if (usdDebt) {
+            acc.debt = acc.debt.add(usdDebt);
+          }
+          const available = this.getFPNumberFiatAmountByFPNumber(hardCap.sub(debtSupply), debtAsset);
+          if (available) {
+            acc.available = acc.available.add(available);
+          }
+        }
+
+        return acc;
+      },
+      { debt: FPNumber.ZERO, collateral: FPNumber.ZERO, available: FPNumber.ZERO }
+    );
   }
 
   get columns() {
@@ -92,36 +106,29 @@ export default class ExploreOverallStats extends Mixins(TranslationMixin, mixins
       {
         title: this.t('kensetsu.overallTotalCollateral'),
         tooltip: this.t('kensetsu.overallTotalCollateralDescription'),
-        amount: this.totalCollateral,
+        amount: this.total.collateral,
       },
       {
         title: this.t('kensetsu.overallTotalDebt'),
         tooltip: this.t('kensetsu.overallTotalDebtDescription'),
-        amount: this.totalDebt,
+        amount: this.total.debt,
+      },
+      {
+        title: this.t('kensetsu.overallAvailable'),
+        tooltip: this.t('kensetsu.overallAvailableDescription'),
+        amount: this.total.available,
       },
       {
         title: this.t('kensetsu.overallBadDebt'),
         tooltip: this.t('kensetsu.overallBadDebtDescription'),
         amount: this.badDebt,
       },
-      {
-        title: this.t('kensetsu.overallBorrowTax'),
-        tooltip: this.t('kensetsu.overallBorrowTaxDescription', { KEN: KEN.symbol }),
-        amount: this.borrowTax,
-      },
     ];
   }
 
   get statsColumns() {
     return this.columns.map(({ amount, title, tooltip }) => {
-      let value: AmountWithSuffix = { amount: '0', suffix: '' };
-
-      if (typeof amount === 'number') {
-        value.amount = this.percentFormat?.format?.(amount) ?? `${amount * HundredNumber}%`;
-        value.suffix = '%';
-      } else {
-        value = formatAmountWithSuffix(amount);
-      }
+      const value = formatAmountWithSuffix(amount);
       return { title, tooltip, value };
     });
   }
