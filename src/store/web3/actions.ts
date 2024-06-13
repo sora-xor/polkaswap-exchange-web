@@ -161,7 +161,15 @@ const actions = defineActions({
     const supportedApps = {
       [BridgeNetworkType.Eth]: {},
       [BridgeNetworkType.Evm]: {},
-      [BridgeNetworkType.Sub]: [SubNetworkId.Polkadot, SubNetworkId.PolkadotAstar, SubNetworkId.PolkadotSora],
+      [BridgeNetworkType.Sub]: [
+        SubNetworkId.Kusama,
+        SubNetworkId.KusamaSora,
+        SubNetworkId.Polkadot,
+        SubNetworkId.PolkadotAstar,
+        SubNetworkId.PolkadotAcala,
+        SubNetworkId.PolkadotSora,
+        SubNetworkId.Liberland,
+      ],
     };
     // const supportedApps = await api.bridgeProxy.getListApps();
 

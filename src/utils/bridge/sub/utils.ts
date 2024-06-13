@@ -52,6 +52,8 @@ export const isEvent = (e, section: string, method: string) => {
   return e.event.section === section && e.event.method === method;
 };
 
+export const isTransactionFeePaid = (e) => isEvent(e, 'transactionPayment', 'TransactionFeePaid');
+
 export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): [string, number] => {
   const recipient = subBridgeApi.formatAddress(to);
 
