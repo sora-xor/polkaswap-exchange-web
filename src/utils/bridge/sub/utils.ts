@@ -48,7 +48,7 @@ export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string 
   return bridgeProxyEvent.event.data[0].toString();
 };
 
-const isEvent = (e, section: string, method: string) => {
+export const isEvent = (e, section: string, method: string) => {
   return e.event.section === section && e.event.method === method;
 };
 
