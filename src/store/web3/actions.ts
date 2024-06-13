@@ -157,7 +157,7 @@ const actions = defineActions({
 
   async getSupportedApps(context): Promise<void> {
     const { commit, getters } = web3ActionContext(context);
-
+    // [TODO] remove this production mock after nodes update
     const supportedApps = {
       [BridgeNetworkType.Eth]: {},
       [BridgeNetworkType.Evm]: {},
@@ -171,6 +171,7 @@ const actions = defineActions({
         SubNetworkId.Liberland,
       ],
     };
+    // [TODO] uncomment
     // const supportedApps = await api.bridgeProxy.getListApps();
 
     commit.setSupportedApps(supportedApps as any);
