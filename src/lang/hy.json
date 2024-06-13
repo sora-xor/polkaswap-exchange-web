@@ -212,7 +212,8 @@
         "walletAddress": "Դրամապանակի հասցեն",
         "delete": "Հաշիվը ջնջել",
         "rename": "Վերանվանել հաշիվը",
-        "export": "Արտահանել .json"
+        "export": "Արտահանել .json",
+        "accountTitle": "Հաշիվ"
     },
     "history": {
         "clearHistory": "Մաքրել պատմությունը",

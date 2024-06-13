@@ -212,7 +212,8 @@
         "walletAddress": "Adresa novčanika",
         "delete": "Izbriši račun",
         "rename": "Preimenuj račun",
-        "export": "Izvezi .json"
+        "export": "Izvezi .json",
+        "accountTitle": "Račun"
     },
     "history": {
         "clearHistory": "Očistite povijest",

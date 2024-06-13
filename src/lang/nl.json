@@ -212,7 +212,8 @@
         "walletAddress": "Portemonnee adres",
         "delete": "Account verwijderen",
         "rename": "Hernoem account",
-        "export": "Exporteer .json"
+        "export": "Exporteer .json",
+        "accountTitle": "Rekening"
     },
     "history": {
         "clearHistory": "Geschiedenis wissen",

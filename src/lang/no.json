@@ -212,7 +212,8 @@
         "walletAddress": "Lommebokadresse",
         "delete": "Slett konto",
         "rename": "Gi nytt navn til kontoen",
-        "export": "Eksporter .json"
+        "export": "Eksporter .json",
+        "accountTitle": "Regnskap"
     },
     "history": {
         "clearHistory": "Slett historikk",

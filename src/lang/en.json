@@ -212,7 +212,8 @@
         "walletAddress": "Wallet address",
         "delete": "Delete account",
         "rename": "Rename account",
-        "export": "Export .json"
+        "export": "Export .json",
+        "accountTitle": "Account"
     },
     "history": {
         "clearHistory": "Clear history",

@@ -212,7 +212,8 @@
         "walletAddress": "Plånboksadress",
         "delete": "Radera konto",
         "rename": "Byt namn på konto",
-        "export": "Exportera .json"
+        "export": "Exportera .json",
+        "accountTitle": "konto"
     },
     "history": {
         "clearHistory": "Rensa historik",

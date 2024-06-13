@@ -212,7 +212,8 @@
         "walletAddress": "Адрес кошелька",
         "delete": "Удалить аккаунт",
         "rename": "Переименовать аккаунт",
-        "export": "Экспорт .json"
+        "export": "Экспорт .json",
+        "accountTitle": "Счет"
     },
     "history": {
         "clearHistory": "Очистить историю",

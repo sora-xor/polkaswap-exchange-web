@@ -212,7 +212,8 @@
         "walletAddress": "钱包地址",
         "delete": "删除帐户",
         "rename": "重命名帐户",
-        "export": "导出.json"
+        "export": "导出.json",
+        "accountTitle": "帐户"
     },
     "history": {
         "clearHistory": "清除历史记录",

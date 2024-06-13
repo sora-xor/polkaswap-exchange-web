@@ -212,7 +212,8 @@
         "walletAddress": "Pénztárca címe",
         "delete": "Fiók törlése",
         "rename": "Fiók átnevezése",
-        "export": ".json exportálása"
+        "export": ".json exportálása",
+        "accountTitle": "fiók"
     },
     "history": {
         "clearHistory": "Előzmények törlése",

@@ -212,7 +212,8 @@
         "walletAddress": "Dirección de la cartera",
         "delete": "Borrar cuenta",
         "rename": "Vuelva a nombrar la cuenta",
-        "export": "Exportar .json"
+        "export": "Exportar .json",
+        "accountTitle": "Cuenta"
     },
     "history": {
         "clearHistory": "Borrar el historial",

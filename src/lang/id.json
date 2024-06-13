@@ -212,7 +212,8 @@
         "walletAddress": "Alamat dompet",
         "delete": "Hapus akun",
         "rename": "Ganti nama akun",
-        "export": "Ekspor .json"
+        "export": "Ekspor .json",
+        "accountTitle": "Akun"
     },
     "history": {
         "clearHistory": "Bersihkan riwayat",

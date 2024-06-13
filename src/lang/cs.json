@@ -212,7 +212,8 @@
         "walletAddress": "Adresa peněženky",
         "delete": "smazat účet",
         "rename": "Přejmenovat účet",
-        "export": "Exportujte soubor .json"
+        "export": "Exportujte soubor .json",
+        "accountTitle": "Účet"
     },
     "history": {
         "clearHistory": "Vymazat historii",

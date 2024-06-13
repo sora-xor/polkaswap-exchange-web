@@ -212,7 +212,8 @@
         "walletAddress": "Adresse du portefeuille",
         "delete": "Supprimer le compte",
         "rename": "Renommer le compte",
-        "export": "Exporter .json"
+        "export": "Exporter .json",
+        "accountTitle": "Compte"
     },
     "history": {
         "clearHistory": "Effacer l'historique",

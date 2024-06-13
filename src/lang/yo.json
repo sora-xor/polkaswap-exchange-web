@@ -212,7 +212,8 @@
         "walletAddress": "Adirẹsi apamọwọ",
         "delete": "Pa akọọlẹ rẹ kuro",
         "rename": "Fun lorukọ mii iroyin",
-        "export": "okeere .json"
+        "export": "okeere .json",
+        "accountTitle": "Iroyin"
     },
     "history": {
         "clearHistory": "Nu itan kuro",

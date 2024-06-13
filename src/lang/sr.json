@@ -212,7 +212,8 @@
         "walletAddress": "Адреса новчаника",
         "delete": "Обрисати налог",
         "rename": "Преименујте налог",
-        "export": "Извези .јсон"
+        "export": "Извези .јсон",
+        "accountTitle": "Рачун"
     },
     "history": {
         "clearHistory": "Очистите историју",

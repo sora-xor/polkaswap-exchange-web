@@ -212,7 +212,8 @@
         "walletAddress": "Địa chỉ ví",
         "delete": "Xóa tài khoản",
         "rename": "Đổi tên tài khoản",
-        "export": "Xuất .json"
+        "export": "Xuất .json",
+        "accountTitle": "Tài khoản"
     },
     "history": {
         "clearHistory": "Xóa lịch sử",
