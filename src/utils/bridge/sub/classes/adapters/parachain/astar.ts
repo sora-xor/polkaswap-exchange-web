@@ -42,7 +42,6 @@ export class AstarParachainAdapter extends SubAdapter {
     return this.assets[asset.symbol];
   }
 
-  // overrides SubAdapter
   public override async connect(): Promise<void> {
     await super.connect();
     await this.getAssetsMetadata();
@@ -69,48 +68,109 @@ export class AstarParachainAdapter extends SubAdapter {
     return await this.assetsAccountRequest(accountAddress, assetMeta.id);
   }
 
-  // // overrides SubAdapter
-  // protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
-  //   if (!this.assets) throw new Error(`[${this.constructor.name}] assets metadata is empty`);
+  /**
+   * Transfer native token (ASTR)
+   */
+  protected getNativeTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: string | number) {
+    const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
 
-  //   const { id } = this.assets[asset.symbol];
-  //   const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
+    return this.api.tx.polkadotXcm.reserveTransferAssets(
+      // dest
+      {
+        V3: {
+          parents: 1,
+          interior: {
+            X1: {
+              Parachain: this.getSoraParachainId(),
+            },
+          },
+        },
+      },
+      // beneficiary
+      {
+        V3: {
+          parents: 0,
+          interior: {
+            X1: {
+              AccountId32: {
+                id: this.api.createType('AccountId32', recipient).toHex(),
+              },
+            },
+          },
+        },
+      },
+      // assets
+      {
+        V3: [
+          {
+            id: {
+              Concrete: {
+                parents: 0,
+                interior: 'Here',
+              },
+            },
+            fun: {
+              Fungible: value,
+            },
+          },
+        ],
+      },
+      // feeAssetItem
+      0
+    );
+  }
 
-  //   return this.api.tx.xTokens.transfer(
-  //     // currencyId: AcalaPrimitivesCurrencyCurrencyId
-  //     id,
-  //     // amount: u128
-  //     value,
-  //     // dest: XcmVersionedMultiLocation
-  //     {
-  //       V3: {
-  //         parents: 1,
-  //         interior: {
-  //           X2: [
-  //             {
-  //               Parachain: this.getSoraParachainId(),
-  //             },
-  //             {
-  //               AccountId32: {
-  //                 id: this.api.createType('AccountId32', recipient).toHex(),
-  //               },
-  //             },
-  //           ],
-  //         },
-  //       },
-  //     },
-  //     // destWeightLimit: XcmV3WeightLimit
-  //     'Unlimited'
-  //   );
-  // }
+  /**
+   * Transfer non native token
+   */
+  protected getAssetTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+    const assetMeta = this.getAssetMeta(asset);
 
-  // /* Throws error until Substrate 5 migration */
-  // public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
-  //   try {
-  //     return await super.getNetworkFee(asset, sender, recipient);
-  //   } catch (error) {
-  //     // Hardcoded value for Acala - 0.003 ACA
-  //     return '3000000000';
-  //   }
-  // }
+    if (!assetMeta) throw new Error(`[${this.constructor.name}] asset metadata is empty`);
+
+    const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
+
+    return this.api.tx.xTokens.transfer(
+      // currencyId
+      assetMeta.id,
+      // amount: u128
+      value,
+      // dest: XcmVersionedMultiLocation
+      {
+        V3: {
+          parents: 1,
+          interior: {
+            X2: [
+              {
+                Parachain: this.getSoraParachainId(),
+              },
+              {
+                AccountId32: {
+                  id: this.api.createType('AccountId32', recipient).toHex(),
+                },
+              },
+            ],
+          },
+        },
+      },
+      // destWeightLimit: XcmV3WeightLimit
+      'Unlimited'
+    );
+  }
+
+  protected override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+    return asset.symbol === this.chainSymbol
+      ? this.getNativeTransferExtrinsic(asset, recipient, amount)
+      : this.getAssetTransferExtrinsic(asset, recipient, amount);
+  }
+
+  /* Throws error until Substrate 5 migration */
+  public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
+    try {
+      return await super.getNetworkFee(asset, sender, recipient);
+    } catch (error) {
+      // Hardcoded value for Astar - 0.057 ASTR
+      return '57000000000000000';
+    }
+  }
 }
