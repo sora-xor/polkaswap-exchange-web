@@ -639,13 +639,11 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     flex: 1 1 50%;
     margin-top: $inner-spacing-mini;
 
+    @include text-ellipsis;
+
     > * {
       line-height: var(--s-line-height-big);
     }
-  }
-
-  &__item {
-    @include text-ellipsis;
   }
 }
 
