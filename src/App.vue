@@ -229,7 +229,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // To start running as Telegram Web App (desktop capabilities)
       if (await isTMA()) {
-        // this.setUserDisclaimerApprove();
         this.setIsDesktop(true);
 
         // sets debug mode in twa
