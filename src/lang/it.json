@@ -157,7 +157,6 @@
         "connectionError": "Si è verificato un errore durante la connessione del portafoglio. Puoi provare a connettere nuovamente il portafoglio tramite {extension}"
     },
     "connection": {
-        "title": "{Sora} Network account",
         "text": "Per gestire gli asset e firmare le transazioni su {Sora} è necessario collegare un account. Gli account {Sora} possono essere creati e collegati utilizzando i nostri portafogli integrati o le estensioni del browser.",
         "noAccounts": "Nessun account trovato nell'estensione del browser {extension} Aggiungi un account e riprova.",
         "selectAccount": "Seleziona l'account con cui lavorare",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora} Network account",
         "WalletAssets": "Assets",
         "createToken": "@:createTokenText",
         "WalletHistory": "Attività"

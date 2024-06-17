@@ -157,7 +157,6 @@
         "connectionError": "Ett fel uppstod vid anslutning av plånboken. Du kan försöka ansluta plånboken via {extension} igen"
     },
     "connection": {
-        "title": "{Sora}-Nätverkskonto",
         "text": "För att hantera tillgångar och signera transaktioner på {Sora} måste ett konto vara anslutet. {Sora} -konton kan skapas och anslutas med hjälp av våra integrerade plånböcker eller webbläsartillägg.",
         "noAccounts": "Inget konto hittades i ditt {extension} webbläsartillägg. Vänligen lägg till ett konto och försök igen.",
         "selectAccount": "Välj konto att arbeta med",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora}-Nätverkskonto",
         "WalletAssets": "Tillgångar",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivitet"

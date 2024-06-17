@@ -157,7 +157,6 @@
         "connectionError": "连接钱包时发生错误。您可以尝试再次通过{extension}连接钱包"
     },
     "connection": {
-        "title": "{Sora}网络账户",
         "text": "为了在{Sora}上管理资产并签署交易，必须连接一个账户。可以使用我们的集成钱包或浏览器扩展来创建和连接{Sora}账户。",
         "noAccounts": "在您的{extension}浏览器扩展中没有找到账户。请添加一个账户并重试。",
         "selectAccount": "选择要使用的账户",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora}网络账户",
         "WalletAssets": "资产",
         "createToken": "@:createTokenText",
         "WalletHistory": "活动"

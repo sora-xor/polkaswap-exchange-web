@@ -157,7 +157,6 @@
         "connectionError": "Det oppstod en feil under tilkobling av lommeboken. Du kan prøve å koble til lommeboken via {extension} igjen"
     },
     "connection": {
-        "title": "{Sora} Nettverkskonto",
         "text": "For å administrere eiendeler og signere transaksjoner på {Sora} , må en konto være tilkoblet. {Sora} -kontoer kan opprettes og kobles til ved hjelp av våre integrerte lommebøker eller nettleserutvidelser.",
         "noAccounts": "Finner ingen konto i nettleserutvidelsen {extension}. Legg til en konto, og prøv på nytt.",
         "selectAccount": "Velg kontoen du vil arbeide med",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora} Nettverkskonto",
         "WalletAssets": "Aktiva",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivitet"

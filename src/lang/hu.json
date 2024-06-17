@@ -157,7 +157,6 @@
         "connectionError": "Hiba történt a pénztárca csatlakoztatása közben. Megpróbálhatja újra csatlakoztatni a pénztárcát a {extension} segítségével"
     },
     "connection": {
-        "title": "{Sora} hálózati fiók",
         "text": "Az eszközök kezeléséhez és a tranzakciók aláírásához a {Sora} webhelyen fiókot kell csatlakoztatni. {Sora} fiókok hozhatók létre és kapcsolhatók össze integrált pénztárcánkkal vagy böngészőbővítményeinkkel.",
         "noAccounts": "Nincs fiók a {extension} böngészőbővítményben. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "selectAccount": "Válaszd ki a használni kívánt fiókot",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora} hálózati fiók",
         "WalletAssets": "Eszközök",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivitás"

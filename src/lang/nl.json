@@ -157,7 +157,6 @@
         "connectionError": "Er is een fout opgetreden tijdens het verbinden van de portemonnee. U kunt opnieuw proberen de portemonnee via {extension} te verbinden"
     },
     "connection": {
-        "title": "{Sora} Netwerk account",
         "text": "Om activa te beheren en transacties op {Sora} te ondertekenen, moet een account zijn gekoppeld. {Sora} accounts kunnen worden gemaakt en verbonden met onze geïntegreerde portefeuilles of browserextensies.",
         "noAccounts": "Geen account gevonden in uw {extension} browser extensie. Voeg een account toe en probeer het opnieuw.",
         "selectAccount": "Selecteer account om mee te werken",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora} Netwerk account",
         "WalletAssets": "Assets",
         "createToken": "@:createTokenText",
         "WalletHistory": "Activiteit"

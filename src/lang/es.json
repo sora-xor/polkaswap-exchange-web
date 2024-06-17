@@ -157,7 +157,6 @@
         "connectionError": "Ocurrió un error al conectar la billetera. Puede intentar conectar la billetera a través de {extension} nuevamente"
     },
     "connection": {
-        "title": "Cuenta de la Red {Sora}",
         "text": "Para administrar activos y firmar transacciones en {Sora}, se debe conectar una cuenta. Las cuentas {Sora} se pueden crear y conectar utilizando nuestras carteras integradas o extensiones de navegador.",
         "noAccounts": "No se ha encontrado ninguna cuenta en su extensión de navegador {extension}. Por favor añade una cuenta e inténtalo de nuevo.",
         "selectAccount": "Seleccione la cuenta con la que desea trabajar",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Cuenta de la Red {Sora}",
         "WalletAssets": "Activos",
         "createToken": "@:createTokenText",
         "WalletHistory": "Actividad"

@@ -157,7 +157,6 @@
         "connectionError": "Aṣiṣe waye lakoko asopọ apamọwọ. O le gbiyanju lati so apamọwọ pọ nipasẹ {extension} lẹẹkansi"
     },
     "connection": {
-        "title": "Ifowosi {Sora} Nẹtiwọọki",
         "text": "Lati le ṣakoso awọn dukia ati fowo si awọn iṣowo lori {Sora} , akọọlẹ kan gbọdọ wa ni asopọ. Awọn akọọlẹ {Sora} le ṣẹda ati so pọ pẹlu lilo awọn apamọwọ ti a ṣepọ tabi awọn amugbooro aṣawakiri wa.",
         "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {extension} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
         "selectAccount": "Yan ifowosi lati ṣiṣẹ pẹlu rẹ",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Ifowosi {Sora} Nẹtiwọọki",
         "WalletAssets": "Awọn dukia",
         "createToken": "@:createTokenText",
         "WalletHistory": "Iṣẹ iṣe"

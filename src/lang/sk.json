@@ -157,7 +157,6 @@
         "connectionError": "Pri pripájaní peňaženky sa vyskytla chyba. Môžete skúsiť znova pripojiť peňaženku cez {extension}"
     },
     "connection": {
-        "title": "Sieťový účet {Sora}",
         "text": "Ak chcete spravovať aktíva a podpisovať transakcie na {Sora}, musí byť pripojený účet. Účty {Sora} je možné vytvoriť a prepojiť pomocou našich integrovaných peňaženiek alebo rozšírení prehliadača.",
         "noAccounts": "Vo vašom rozšírení prehliadača {extension} nebol nájdený žiadny účet. Pridajte účet a skúste to znova.",
         "selectAccount": "Vyberte účet, s ktorým chcete pracovať",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Sieťový účet {Sora}",
         "WalletAssets": "Aktíva",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivita"

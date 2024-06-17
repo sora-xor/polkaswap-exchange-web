@@ -157,7 +157,6 @@
         "connectionError": "Une erreur s'est produite lors de la connexion du portefeuille. Vous pouvez réessayer de connecter le portefeuille via {extension}"
     },
     "connection": {
-        "title": "Compte réseau {Sora}",
         "text": "Afin de gérer des actifs et de signer des transactions sur {Sora}, un compte doit être connecté. Les comptes {Sora} peuvent être créés et connectés à l'aide de nos portefeuilles intégrés ou extensions de navigateur.",
         "noAccounts": "Aucun compte n'a été trouvé dans votre extension de navigateur {extension} Veuillez ajouter un compte et réessayer.",
         "selectAccount": "Sélectionnez le compte approprié",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Compte réseau {Sora}",
         "WalletAssets": "Actifs",
         "createToken": "@:createTokenText",
         "WalletHistory": "Activité"

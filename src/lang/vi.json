@@ -157,7 +157,6 @@
         "connectionError": "Đã xảy ra lỗi khi kết nối ví. Bạn có thể thử kết nối lại ví qua {extension}"
     },
     "connection": {
-        "title": "Tài khoản Mạng {Sora}",
         "text": "Để quản lý tài sản và ký giao dịch trên {Sora} , tài khoản phải được kết nối. Tài khoản {Sora} có thể được tạo và kết nối bằng ví tích hợp hoặc tiện ích mở rộng trình duyệt của chúng tôi.",
         "noAccounts": "Không có tài khoản nào trong tiện ích (extension) {extension} của bạn. Vui lòng thêm tài khoản và thử lại.",
         "selectAccount": "Chọn tài khoản để dùng",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Tài khoản Mạng {Sora}",
         "WalletAssets": "Tài sản",
         "createToken": "@:createTokenText",
         "WalletHistory": "Hoạt động"

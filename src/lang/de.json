@@ -157,7 +157,6 @@
         "connectionError": "Beim Verbinden der Wallet ist ein Fehler aufgetreten. Sie können erneut versuchen, das Wallet über {extension} zu verbinden"
     },
     "connection": {
-        "title": "{Sora}-Netzwerk-Konto",
         "text": "Um Vermögenswerte zu verwalten und Transaktionen auf {Sora} zu signieren, muss ein Konto verbunden sein. {Sora} Konten können mithilfe unserer integrierten Wallets oder Browsererweiterungen erstellt und verbunden werden.",
         "noAccounts": "Es wurde kein Konto in deiner {extension} Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora}-Netzwerk-Konto",
         "WalletAssets": "Assets",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivität"

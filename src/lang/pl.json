@@ -157,7 +157,6 @@
         "connectionError": "Wystąpił błąd podczas łączenia portfela. Możesz spróbować ponownie połączyć portfel przez {extension}"
     },
     "connection": {
-        "title": "Konto sieci {Sora}",
         "text": "Aby zarządzać aktywami i podpisywać transakcje na {Sora}, konto musi być połączone. Konta {Sora} można tworzyć i łączyć za pomocą naszych zintegrowanych portfeli lub rozszerzeń przeglądarki.",
         "noAccounts": "W Twoim rozszerzeniu przeglądarki {extension} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Konto sieci {Sora}",
         "WalletAssets": "Waluty",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktywność"

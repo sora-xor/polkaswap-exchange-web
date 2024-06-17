@@ -157,7 +157,6 @@
         "connectionError": "Došlo je do pogreške prilikom povezivanja novčanika. Možete ponovno pokušati povezati novčanik putem {extension}"
     },
     "connection": {
-        "title": "Račun mreže {Sora}",
         "text": "Za upravljanje imovinom i potpisivanje transakcija na {Sora} mora biti povezan račun. {Sora} računi mogu se kreirati i povezati pomoću naših integriranih novčanika ili proširenja preglednika.",
         "noAccounts": "U proširenju preglednika {extension} nije pronađen račun. Dodajte račun i pokušajte ponovno.",
         "selectAccount": "Odaberite račun za rad",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Račun mreže {Sora}",
         "WalletAssets": "Sredstva",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivnost"

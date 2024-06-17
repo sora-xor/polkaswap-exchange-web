@@ -157,7 +157,6 @@
         "connectionError": "Terjadi kesalahan saat menghubungkan dompet. Anda dapat mencoba menyambungkan dompet melalui {extension} lagi"
     },
     "connection": {
-        "title": "Akun Jaringan {Sora}",
         "text": "Untuk mengelola aset dan menandatangani transaksi di {Sora} , akun harus terhubung. Akun {Sora} dapat dibuat dan dihubungkan menggunakan dompet terintegrasi atau ekstensi browser kami.",
         "noAccounts": "Tidak ada akun yang ditemukan di ekstensi browser {extension} anda. Silakan tambahkan akun, lalu coba kembali.",
         "selectAccount": "Pilih akun untuk dikerjakan",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Akun Jaringan {Sora}",
         "WalletAssets": "Aset",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivitas"
