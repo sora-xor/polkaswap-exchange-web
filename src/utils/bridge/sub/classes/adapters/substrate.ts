@@ -128,7 +128,7 @@ class BaseSubAdapter extends WithConnectionApi {
     throw new Error(`[${this.constructor.name}] "getAssetDeposit" method is not implemented`);
   }
 
-  protected getTransferExtrinsic(
+  public getTransferExtrinsic(
     asset: RegisteredAsset,
     recipient: string,
     amount: string | number
