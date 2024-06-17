@@ -151,7 +151,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
     this.addTransactionToProgress(id);
   }
 
-  async beforeSign(id: string): Promise<void> {
+  async beforeSign(id: string, ...args: any[]): Promise<void> {
     const tx = this.getTransaction(id);
 
     if (!tx) throw new Error(`Transaction not found: ${id}`);
@@ -167,7 +167,7 @@ export class BridgeReducer<Transaction extends IBridgeTransaction> implements IB
 
     if (!asset) throw new Error(`Transaction asset is not registered: ${assetAddress}`);
 
-    await this.beforeTransactionSign();
+    await this.beforeTransactionSign(...args);
   }
 
   async waitForTransactionStatus(id: string): Promise<void> {

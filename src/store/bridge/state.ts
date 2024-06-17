@@ -41,6 +41,7 @@ function initialState(): BridgeState {
     notificationData: null,
     // connector
     subBridgeConnector: new SubNetworksConnector(),
+    isSignTxDialogVisible: false,
   };
 }
 

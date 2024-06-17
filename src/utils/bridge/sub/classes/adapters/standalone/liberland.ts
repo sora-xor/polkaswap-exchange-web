@@ -19,7 +19,7 @@ export class LiberlandAdapter extends SubAdapter {
     return await this.assetsAccountRequest(accountAddress, Number(asset.externalAddress));
   }
 
-  protected override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+  public override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     const { externalAddress: address, externalDecimals: decimals } = asset;
     const value = new FPNumber(amount, decimals).toCodecString();
 

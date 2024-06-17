@@ -13,7 +13,7 @@ export class RelaychainAdapter extends SubAdapter {
   }
 
   // overrides SubAdapter
-  protected override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+  public override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
 
     return this.api.tx.xcmPallet.reserveTransferAssets(

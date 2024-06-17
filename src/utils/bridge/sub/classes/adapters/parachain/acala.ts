@@ -114,7 +114,7 @@ export class AcalaParachainAdapter extends SubAdapter {
   }
 
   // overrides SubAdapter
-  protected override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+  public override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     const assetMeta = this.getAssetMeta(asset);
 
     if (!assetMeta) throw new Error(`[${this.constructor.name}] asset metadata is empty`);

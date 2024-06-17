@@ -158,7 +158,7 @@ export class AstarParachainAdapter extends SubAdapter {
     );
   }
 
-  protected override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+  public override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     return asset.symbol === this.chainSymbol
       ? this.getNativeTransferExtrinsic(asset, recipient, amount)
       : this.getAssetTransferExtrinsic(asset, recipient, amount);

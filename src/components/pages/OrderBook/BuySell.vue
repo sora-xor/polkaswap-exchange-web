@@ -202,8 +202,9 @@ import { components, mixins, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { Components, LimitOrderType, PageNames } from '@/consts';
-import router, { lazyComponent } from '@/router';
+import { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import type { OrderBookStats } from '@/types/orderBook';
 import { OrderBookTabs } from '@/types/tabs';
@@ -239,6 +240,7 @@ import type { Subscription } from 'rxjs';
 })
 export default class BuySellWidget extends Mixins(
   ConfirmDialogMixin,
+  InternalConnectMixin,
   mixins.TransactionMixin,
   mixins.FormattedAmountMixin
 ) {
@@ -264,7 +266,6 @@ export default class BuySellWidget extends Mixins(
   @getter.orderBook.quoteAsset quoteAsset!: AccountAsset;
   @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
   @getter.orderBook.orderBookStats orderBookStats!: Nullable<OrderBookStats>;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
 
@@ -734,7 +735,7 @@ export default class BuySellWidget extends Mixins(
 
   async handleOrderPlacement(): Promise<void> {
     if (!this.isLoggedIn) {
-      router.push({ name: PageNames.Wallet });
+      this.connectSoraWallet();
       return;
     }
 

@@ -152,11 +152,11 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     if (tx.txId) return;
     // transaction not signed
-    await this.beforeSign(id);
+    await this.beforeSign(id, this.connector.accountApi, 'bridge/setSignTxDialogVisibility');
     // open connections
     await this.connector.start();
-    // sign transaction
-    await this.connector.network.transfer(asset, tx.to as string, tx.amount as string, id);
+    // sign transaction (from is sora account)
+    await this.connector.transfer(asset, tx.from as string, tx.amount as string, id);
     // save start block when tx was signed
     await this.saveStartBlock(id);
   }
@@ -462,7 +462,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
     if (tx.txId) return;
     // transaction not signed
-    await this.beforeSign(id);
+    await this.beforeSign(id, subBridgeApi);
     // open connections
     await this.connector.start();
     // sign transaction

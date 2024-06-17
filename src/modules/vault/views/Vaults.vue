@@ -29,7 +29,7 @@
           v-else
           class="vaults-header__action s-typography-button--large"
           type="primary"
-          @click="handleConnectWallet"
+          @click="connectSoraWallet"
         >
           {{ t('connectWalletText') }}
         </s-button>
@@ -248,7 +248,7 @@
 import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { BreakpointClass, Components, DsBreakpoints, HundredNumber, PageNames, ZeroStringValue } from '@/consts';
 import { LtvTranslations, VaultComponents, VaultPageNames, VaultStatuses } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
@@ -294,14 +294,13 @@ type VaultData = OpenedVaultData | ClosedVaultData;
   },
 })
 export default class Vaults extends Mixins(
-  TranslationMixin,
+  InternalConnectMixin,
   mixins.FormattedAmountMixin,
   mixins.PaginationSearchMixin
 ) {
   readonly link = 'https://medium.com/@shibarimoto/kensetsu-ken-356077ebee78';
   readonly getLtvStatus = getLtvStatus;
 
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
   @getter.vault.getBorrowTax private getTax!: (debtAsset: Asset | AccountAsset | string) => number;
   @state.vault.closedAccountVaults private closedAccountVaults!: ClosedVault[];
@@ -512,10 +511,6 @@ export default class Vaults extends Mixins(
 
   toNumber(number?: FPNumber): number {
     return number?.toNumber() ?? 0;
-  }
-
-  handleConnectWallet(): void {
-    router.push({ name: PageNames.Wallet });
   }
 
   handleCreateVault(): void {

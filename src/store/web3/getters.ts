@@ -1,4 +1,5 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { defineGetters } from 'direct-vuex';
 
 import { EVM_NETWORKS } from '@/consts/evm';
@@ -89,6 +90,16 @@ const getters = defineGetters<Web3State>()({
     return (asset: KnownEthBridgeAsset) => {
       const { state } = web3GetterContext(args);
       return state.ethBridgeContractAddress[asset];
+    };
+  },
+
+  subAccount(...args): WALLET_TYPES.PolkadotJsAccount {
+    const { state } = web3GetterContext(args);
+
+    return {
+      address: state.subAddress,
+      name: state.subAddressName,
+      source: state.subAddressSource as WALLET_CONSTS.AppWallet,
     };
   },
 });

@@ -1,68 +1,34 @@
-import { decodeAddress, encodeAddress } from '@polkadot/util-crypto';
 import { Connection } from '@sora-substrate/connection';
-import { FPNumber, Operation, Storage } from '@sora-substrate/util';
+import { WithConnectionApi, FPNumber, Storage } from '@sora-substrate/util';
 import { formatBalance } from '@sora-substrate/util/build/assets';
-import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 
 import { ZeroStringValue } from '@/consts';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { NodesConnection } from '@/utils/connection';
 
-import type { ApiPromise, ApiRx } from '@polkadot/api';
+import type { ApiPromise } from '@polkadot/api';
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
 import type { ISubmittableResult } from '@polkadot/types/types';
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
-class BaseSubAdapter {
+class BaseSubAdapter extends WithConnectionApi {
   public readonly subNetwork!: SubNetwork;
   public readonly subNetworkConnection!: NodesConnection;
 
   constructor(subNetwork: SubNetwork) {
+    super();
+
     this.subNetwork = subNetwork;
     this.subNetworkConnection = new NodesConnection(new Storage(this.subNetwork), new Connection({}), this.subNetwork);
-  }
 
-  get connection(): Connection {
-    return this.subNetworkConnection.connection;
-  }
-
-  get api(): ApiPromise {
-    return this.connection.api as ApiPromise;
-  }
-
-  get apiRx() {
-    return this.api.rx as ApiRx;
-  }
-
-  get connected(): boolean {
-    return !!this.api?.isConnected;
+    this.setConnection(this.subNetworkConnection.connection);
   }
 
   get closed(): boolean {
     return !this.connected && !this.subNetworkConnection.nodeAddressConnecting;
   }
-
-  get chainSymbol(): string | undefined {
-    return this.api?.registry.chainTokens[0];
-  }
-
-  get chainDecimals(): number | undefined {
-    return this.api?.registry.chainDecimals[0];
-  }
-
-  get chainSS58(): number | undefined {
-    return this.api?.registry.chainSS58;
-  }
-
-  public formatAddress = (address?: string): string => {
-    if (!address) return '';
-
-    const publicKey = decodeAddress(address, false);
-
-    return encodeAddress(publicKey, this.chainSS58);
-  };
 
   protected async withConnection<T>(onSuccess: AsyncFnWithoutArgs<T> | FnWithoutArgs<T>, fallback: T) {
     if (this.closed) {
@@ -139,23 +105,6 @@ class BaseSubAdapter {
     throw new Error(`[${this.constructor.name}] "getAccountAssetBalance" method is not implemented`);
   }
 
-  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
-    if (!subBridgeApi.account?.pair) throw new Error(`[${this.constructor.name}] Account pair is not set.`);
-
-    const historyItem = subBridgeApi.getHistory(historyId as string) ?? {
-      type: Operation.SubstrateIncoming,
-      symbol: asset.symbol,
-      assetAddress: asset.address,
-      amount: `${amount}`,
-      externalNetwork: this.subNetwork,
-      externalNetworkType: BridgeNetworkType.Sub,
-    };
-
-    const extrinsic = this.getTransferExtrinsic(asset, recipient, amount);
-
-    await subBridgeApi.submitApiExtrinsic(this.api, extrinsic, subBridgeApi.account.pair, undefined, historyItem);
-  }
-
   /* [Substrate 5] Runtime call transactionPaymentApi */
   public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
     return await this.withConnection(async () => {
@@ -179,7 +128,7 @@ class BaseSubAdapter {
     throw new Error(`[${this.constructor.name}] "getAssetDeposit" method is not implemented`);
   }
 
-  protected getTransferExtrinsic(
+  public getTransferExtrinsic(
     asset: RegisteredAsset,
     recipient: string,
     amount: string | number
