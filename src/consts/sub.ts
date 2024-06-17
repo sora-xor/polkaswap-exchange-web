@@ -179,7 +179,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'SDN',
       decimals: 18,
     },
-    blockExplorerUrls: ['https://astar.subscan.io'],
+    blockExplorerUrls: ['https://shiden.subscan.io'],
     shortName: 'Shiden',
     nodes: [
       {
