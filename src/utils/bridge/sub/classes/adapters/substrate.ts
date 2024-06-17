@@ -13,7 +13,7 @@ import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
-export class SubAdapter extends WithConnectionApi {
+class BaseSubAdapter extends WithConnectionApi {
   public readonly subNetwork!: SubNetwork;
   public readonly subNetworkConnection!: NodesConnection;
 
@@ -82,6 +82,14 @@ export class SubAdapter extends WithConnectionApi {
     }, 0);
   }
 
+  public async getTokenBalance(accountAddress: string, asset: RegisteredAsset): Promise<CodecString> {
+    return await this.withConnection(async () => {
+      return asset.symbol === this.chainSymbol
+        ? await this.getAccountBalance(accountAddress)
+        : await this.getAccountAssetBalance(accountAddress, asset);
+    }, ZeroStringValue);
+  }
+
   protected async getAccountBalance(accountAddress: string): Promise<CodecString> {
     if (!accountAddress) return ZeroStringValue;
 
@@ -93,6 +101,10 @@ export class SubAdapter extends WithConnectionApi {
     }, ZeroStringValue);
   }
 
+  protected async getAccountAssetBalance(accountAddress: string, asset: RegisteredAsset): Promise<CodecString> {
+    throw new Error(`[${this.constructor.name}] "getAccountAssetBalance" method is not implemented`);
+  }
+
   /* [Substrate 5] Runtime call transactionPaymentApi */
   public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
     return await this.withConnection(async () => {
@@ -102,23 +114,56 @@ export class SubAdapter extends WithConnectionApi {
     }, ZeroStringValue);
   }
 
-  public async getTokenBalance(accountAddress: string, asset?: RegisteredAsset): Promise<CodecString> {
-    return await this.getAccountBalance(accountAddress);
-  }
-
   public async getAssetMinDeposit(asset: RegisteredAsset): Promise<CodecString> {
-    return await this.getExistentialDeposit();
+    return await this.withConnection(async () => {
+      return asset.symbol === this.chainSymbol ? await this.getExistentialDeposit() : await this.getAssetDeposit(asset);
+    }, ZeroStringValue);
   }
 
   protected async getExistentialDeposit(): Promise<CodecString> {
     return await this.withConnection(() => this.api.consts.balances.existentialDeposit.toString(), ZeroStringValue);
   }
 
-  public getTransferExtrinsic(
+  protected async getAssetDeposit(asset: RegisteredAsset): Promise<CodecString> {
+    throw new Error(`[${this.constructor.name}] "getAssetDeposit" method is not implemented`);
+  }
+
+  protected getTransferExtrinsic(
     asset: RegisteredAsset,
     recipient: string,
     amount: string | number
   ): SubmittableExtrinsic<'promise', ISubmittableResult> {
     throw new Error(`[${this.constructor.name}] "getTransferExtrinsic" method is not implemented`);
+  }
+}
+
+export class SubAdapter extends BaseSubAdapter {
+  protected async assetsAccountRequest(accountAddress: string, assetId: number | string): Promise<CodecString> {
+    if (!accountAddress) return ZeroStringValue;
+
+    return await this.withConnection(async () => {
+      const result = await (this.api.query.assets as any).account(assetId, accountAddress);
+
+      if (result.isEmpty) return ZeroStringValue;
+
+      const data = result.unwrap();
+
+      if (!data.status.isLiquid) return ZeroStringValue;
+
+      return data.balance.toString();
+    }, ZeroStringValue);
+  }
+
+  protected async assetsAssetMinBalanceRequest(assetId: number | string): Promise<CodecString> {
+    return await this.withConnection(async () => {
+      const result = await (this.api.query.assets as any).asset(assetId);
+
+      if (result.isEmpty) return ZeroStringValue;
+
+      const data = result.unwrap();
+      const minBalance = data.minBalance.toString();
+
+      return minBalance > '1' ? minBalance : ZeroStringValue;
+    }, ZeroStringValue);
   }
 }

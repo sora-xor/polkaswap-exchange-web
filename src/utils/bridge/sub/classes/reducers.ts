@@ -21,6 +21,8 @@ import {
   determineTransferType,
   getReceivedAmount,
   getParachainSystemMessageHash,
+  isEvent,
+  isTransactionFeePaid,
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiRx } from '@polkadot/api';
@@ -189,9 +191,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     const transactionHash = tx.externalHash as string;
     const transactionEvents = await getTransactionEvents(blockHash, transactionHash, adapter.api);
 
-    const feeEvent = transactionEvents.find((e) =>
-      adapter.api.events.transactionPayment.TransactionFeePaid.is(e.event)
-    );
+    const feeEvent = transactionEvents.find((e) => isTransactionFeePaid(e));
 
     if (feeEvent) {
       const externalNetworkFee = feeEvent.event.data[1].toString();
@@ -200,7 +200,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     }
 
     if (this.transferType === SubTransferType.Relaychain) {
-      const xcmEvent = transactionEvents.find((e) => adapter.api.events.xcmPallet.Attempted.is(e.event));
+      const xcmEvent = transactionEvents.find((e) => isEvent(e, 'xcmPallet', 'Attempted'));
 
       if (!xcmEvent?.event?.data?.[0]?.isComplete) {
         throw new Error(`[${this.constructor.name}]: Transaction is not completed`);
@@ -603,10 +603,12 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           ([eventsVec, blockHeight]) => {
             try {
               const events = eventsVec.toArray();
-              const messageQueueProcessedEventIndex = events.findIndex(
-                (e) =>
-                  adapter.api.events.messageQueue.Processed.is(e.event) && e.event.data[0].toString() === messageHash
-              );
+              const messageQueueProcessedEventIndex = events.findIndex((e) => {
+                if (isEvent(e, 'messageQueue', 'Processed') || isEvent(e, 'xcmpQueue', 'Success')) {
+                  return e.event.data[0].toString() === messageHash;
+                }
+                return false;
+              });
 
               if (messageQueueProcessedEventIndex === -1) return;
 
