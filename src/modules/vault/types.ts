@@ -17,12 +17,25 @@ export type IndexerVaultEvent = {
   type: VaultEventType;
 };
 
-export type IndexerVault = {
+export type SubqueryVault = {
   id: string;
   type: 'Type1' | 'Type2';
   status: VaultStatus;
   collateralAssetId: string;
   debtAssetId: string;
+  collateralAmountReturned: string;
+};
+
+export type SubsquidVault = {
+  id: string;
+  type: 'Type1' | 'Type2';
+  status: VaultStatus;
+  collateralAsset: {
+    id: string;
+  };
+  debtAsset: {
+    id: string;
+  };
   collateralAmountReturned: string;
 };
 
