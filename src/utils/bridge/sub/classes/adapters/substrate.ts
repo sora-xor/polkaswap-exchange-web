@@ -1,12 +1,12 @@
 import { Connection } from '@sora-substrate/connection';
 import { WithConnectionApi, FPNumber, Storage } from '@sora-substrate/util';
 import { formatBalance } from '@sora-substrate/util/build/assets';
+import { ApiPromise, WsProvider } from 'polkadotApi';
 
 import { ZeroStringValue } from '@/consts';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { NodesConnection } from '@/utils/connection';
 
-import type { ApiPromise } from '@polkadot/api';
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
 import type { ISubmittableResult } from '@polkadot/types/types';
 import type { CodecString } from '@sora-substrate/util';
@@ -21,7 +21,11 @@ export class SubAdapter extends WithConnectionApi {
     super();
 
     this.subNetwork = subNetwork;
-    this.subNetworkConnection = new NodesConnection(new Storage(this.subNetwork), new Connection({}), this.subNetwork);
+    this.subNetworkConnection = new NodesConnection(
+      new Storage(this.subNetwork),
+      new Connection(ApiPromise, WsProvider, {}),
+      this.subNetwork
+    );
 
     this.setConnection(this.subNetworkConnection.connection);
   }
@@ -114,11 +118,7 @@ export class SubAdapter extends WithConnectionApi {
     return await this.withConnection(() => this.api.consts.balances.existentialDeposit.toString(), ZeroStringValue);
   }
 
-  public getTransferExtrinsic(
-    asset: RegisteredAsset,
-    recipient: string,
-    amount: string | number
-  ): SubmittableExtrinsic<'promise', ISubmittableResult> {
+  public getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: string | number) {
     throw new Error(`[${this.constructor.name}] "getTransferExtrinsic" method is not implemented`);
   }
 }

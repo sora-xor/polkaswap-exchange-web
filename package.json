@@ -40,6 +40,7 @@
     "ethers": "6.12.1",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
+    "polkadotApi": "npm:@polkadot/api@11.2.1",
     "uuidv4": "^6.2.13",
     "vue": "2.7.14",
     "vue-class-component": "^7.2.6",
@@ -98,7 +99,8 @@
   "resolutions": {
     "@polkadot/extension-dapp": "^0.44.7",
     "@polkadot/extension-inject": "^0.44.7",
-    "@polkadot/util": "^10.4.2",
+    "@polkadot/util": "^12.6.2",
+    "@sora-substrate/util": "1.38.11-beta.0",
     "ipfs-unixfs": "6.0.6",
     "ipfs-unixfs-exporter": "7.0.6",
     "ipfs-unixfs-importer": "9.0.6"

@@ -93,7 +93,7 @@ export class SubNetworksConnector {
     if (adapter.api || !connectorAdapter.api) return;
 
     if (connectorAdapter.subNetwork === adapter.subNetwork) {
-      adapter.setApi(connectorAdapter.api.clone());
+      adapter.setApi((connectorAdapter.api as any).clone());
     }
   }
 
@@ -214,6 +214,6 @@ export class SubNetworksConnector {
 
     const extrinsic = this.network.getTransferExtrinsic(asset, recipient, amount);
     // submit extrinsic using SORA api, because current implementation using "subHistory" from SORA api scope
-    await subBridgeApi.submitApiExtrinsic(api, extrinsic, accountPair, signer, historyItem);
+    await subBridgeApi.submitApiExtrinsic(api, extrinsic as any, accountPair, signer, historyItem);
   }
 }
