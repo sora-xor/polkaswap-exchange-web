@@ -52,7 +52,7 @@ const SubqueryPoolsQuery = gql<ConnectionQueryResponse<SubqueryPoolXYKEntity>>`
 
 const SubsquidPoolsQuery = gql<ConnectionQueryResponse<SubsquidPoolXYKEntity>>`
   query SubsquidPoolsQuery($after: String, $where: PoolXYKWhereInput) {
-    data: poolXyksConnection(after: $after, where: $where) {
+    data: poolXyksConnection(orderBy: id_ASC, after: $after, where: $where) {
       pageInfo {
         hasNextPage
         endCursor
