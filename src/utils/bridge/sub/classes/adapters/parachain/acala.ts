@@ -75,34 +75,20 @@ export class AcalaParachainAdapter extends SubAdapter {
     this.assets = Object.freeze(assets);
   }
 
+  private getAssetMeta(asset: RegisteredAsset): Nullable<IAcalaAssetMetadata> {
+    if (!(asset.symbol && this.assets)) return null;
+
+    return this.assets[asset.symbol];
+  }
+
   // overrides SubAdapter
-  public async connect(): Promise<void> {
+  public override async connect(): Promise<void> {
     await super.connect();
     await this.getAssetsMetadata();
   }
 
-  // overrides SubAdapter method
-  public async getTokenBalance(accountAddress: string, asset: RegisteredAsset): Promise<CodecString> {
-    return await this.withConnection(async () => {
-      return asset.symbol === this.chainSymbol
-        ? await this.getAccountBalance(accountAddress)
-        : await this.getAccountAssetBalance(accountAddress, asset.symbol);
-    }, ZeroStringValue);
-  }
-
-  // overrides SubAdapter method
-  public async getAssetMinDeposit(asset: RegisteredAsset): Promise<CodecString> {
-    return await this.withConnection(async () => {
-      return asset.symbol === this.chainSymbol
-        ? await this.getExistentialDeposit()
-        : await this.getAssetDeposit(asset.symbol);
-    }, ZeroStringValue);
-  }
-
-  protected async getAssetDeposit(assetSymbol: string): Promise<CodecString> {
-    if (!(assetSymbol && this.assets)) return ZeroStringValue;
-
-    const assetMeta = this.assets[assetSymbol];
+  protected override async getAssetDeposit(asset: RegisteredAsset): Promise<CodecString> {
+    const assetMeta = this.getAssetMeta(asset);
 
     if (!assetMeta) return ZeroStringValue;
 
@@ -111,12 +97,13 @@ export class AcalaParachainAdapter extends SubAdapter {
     return minBalance > '1' ? minBalance : ZeroStringValue;
   }
 
-  protected async getAccountAssetBalance(accountAddress: string, assetSymbol: string): Promise<CodecString> {
-    if (!(accountAddress && this.assets)) return ZeroStringValue;
+  protected override async getAccountAssetBalance(
+    accountAddress: string,
+    asset: RegisteredAsset
+  ): Promise<CodecString> {
+    const assetMeta = this.getAssetMeta(asset);
 
-    const assetMeta = this.assets[assetSymbol];
-
-    if (!assetMeta) return ZeroStringValue;
+    if (!(accountAddress && assetMeta)) return ZeroStringValue;
 
     return await this.withConnection(async () => {
       const ormlTokensAccountData = await (this.api.query.tokens as any).accounts(accountAddress, assetMeta.id);
@@ -127,15 +114,16 @@ export class AcalaParachainAdapter extends SubAdapter {
   }
 
   // overrides SubAdapter
-  public getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
-    if (!this.assets) throw new Error(`[${this.constructor.name}] assets metadata is empty`);
+  public override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+    const assetMeta = this.getAssetMeta(asset);
 
-    const { id } = this.assets[asset.symbol];
+    if (!assetMeta) throw new Error(`[${this.constructor.name}] asset metadata is empty`);
+
     const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
 
     return this.api.tx.xTokens.transfer(
       // currencyId: AcalaPrimitivesCurrencyCurrencyId
-      id,
+      assetMeta.id,
       // amount: u128
       value,
       // dest: XcmVersionedMultiLocation
@@ -162,7 +150,7 @@ export class AcalaParachainAdapter extends SubAdapter {
   }
 
   /* Throws error until Substrate 5 migration */
-  public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
+  public override async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
     try {
       return await super.getNetworkFee(asset, sender, recipient);
     } catch (error) {

@@ -28,7 +28,7 @@
   "dependencies": {
     "@cedelabs/widgets-universal": "^1.3.1",
     "@metamask/detect-provider": "^2.0.0",
-    "@soramitsu/soraneo-wallet-web": "1.38.0-beta.2",
+    "@soramitsu/soraneo-wallet-web": "1.38.2",
     "@walletconnect/ethereum-provider": "^2.12.2",
     "@walletconnect/modal": "^2.6.2",
     "core-js": "^3.37.0",
@@ -100,7 +100,7 @@
     "@polkadot/extension-dapp": "^0.44.7",
     "@polkadot/extension-inject": "^0.44.7",
     "@polkadot/util": "^12.6.2",
-    "@sora-substrate/util": "1.38.11-beta.0",
+    "@sora-substrate/util": "1.38.12",
     "ipfs-unixfs": "6.0.6",
     "ipfs-unixfs-exporter": "7.0.6",
     "ipfs-unixfs-importer": "9.0.6"
