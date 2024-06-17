@@ -1,6 +1,4 @@
-import { PriceVariant } from '@sora-substrate/liquidity-proxy';
-import { getAveragePrice } from '@sora-substrate/liquidity-proxy/build/pallets/priceTools';
-import { XOR, DAI } from '@sora-substrate/util/build/assets/consts';
+import { XOR, KUSD } from '@sora-substrate/util/build/assets/consts';
 import { api } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 
@@ -16,18 +14,19 @@ import type { ActionContext } from 'vuex';
 /** Debt calculation in real-time each 6 seconds */
 const DEBT_INTERVAL = 6_000;
 const INDEXER_DELAY = 4 * DEBT_INTERVAL; // 4 blocks delay
-const DaiAddress = DAI.address;
 
 const balanceSubscriptions = new TokenBalanceSubscriptions();
 
-function updateTokenSubscription(context: ActionContext<any, any>, field: 'collateral' | 'kusd'): void {
-  const { getters, commit, rootGetters } = vaultActionContext(context);
-  const { kusdToken, collateralToken } = getters;
-  const { setKusdTokenBalance, setCollateralTokenBalance } = commit;
+const areEqual = <T>(prev: T, curr: T): boolean => JSON.stringify(prev) === JSON.stringify(curr);
 
-  const isKusd = field === 'kusd';
-  const token = isKusd ? kusdToken : collateralToken;
-  const setTokenBalance = isKusd ? setKusdTokenBalance : setCollateralTokenBalance;
+function updateTokenSubscription(context: ActionContext<any, any>, field: 'collateral' | 'debt'): void {
+  const { getters, commit, rootGetters } = vaultActionContext(context);
+  const { debtToken, collateralToken } = getters;
+  const { setDebtTokenBalance, setCollateralTokenBalance } = commit;
+
+  const isDebt = field === 'debt';
+  const token = isDebt ? debtToken : collateralToken;
+  const setTokenBalance = isDebt ? setDebtTokenBalance : setCollateralTokenBalance;
   const updateBalance = (balance: Nullable<AccountBalance>) => setTokenBalance(balance);
 
   balanceSubscriptions.remove(field);
@@ -44,7 +43,8 @@ function updateTokenSubscription(context: ActionContext<any, any>, field: 'colla
 const actions = defineActions({
   async subscribeOnAverageCollateralPrices(context): Promise<void> {
     const { commit, state } = vaultActionContext(context);
-    const { collaterals, averageCollateralPriceSubscriptions } = state;
+    const { collaterals, averageCollateralPriceSubscriptions, stablecoinInfos } = state;
+
     const newIds: string[] = [];
     const idsToRemove: string[] = [];
     // Check if there are new collateral assets or some of them were removed
@@ -67,32 +67,40 @@ const actions = defineActions({
     }
     // Subscribe on new collateral assets if they are not subscribed yet
     const newSubscriptions: Record<string, Subscription> = {};
-    for (const collateralAddress of newIds) {
-      if (collateralAddress !== DaiAddress) {
-        const sub = api.swap.subscribeOnReserves(collateralAddress, DaiAddress)?.subscribe((payload) => {
-          try {
-            const averagePrice = getAveragePrice(collateralAddress, DaiAddress, PriceVariant.Sell, payload);
-            commit.setAverageCollateralPrice({ address: collateralAddress, price: averagePrice });
-          } catch (error) {
-            commit.setAverageCollateralPrice({ address: collateralAddress, price: null });
-            console.warn(`[Kensetsu] getAveragePrice with ${collateralAddress}`, error);
-          }
-        });
-        if (sub) {
-          newSubscriptions[collateralAddress] = sub;
-        }
+    for (const newId of newIds) {
+      const keys = api.kensetsu.deserializeKey(newId);
+      if (!(keys?.lockedAssetId && keys.debtAssetId)) {
+        console.warn(`[Kensetsu] getAveragePrice: invalid key ${newId}`);
+        continue;
       }
+      const { lockedAssetId, debtAssetId } = keys;
+      const stablecoinInfo = stablecoinInfos[debtAssetId];
+      const averagePriceObservable = api.kensetsu.subscribeOnAveragePrice(lockedAssetId, debtAssetId, stablecoinInfo);
+
+      if (!averagePriceObservable) {
+        // No stablecoinInfo or DAI/KUSD pair. It's excluded because it has a fixed price 1:1
+        continue;
+      }
+
+      newSubscriptions[newId] = averagePriceObservable.subscribe((price) => {
+        commit.setAverageCollateralPrice({ key: newId, price });
+      });
     }
     commit.setAverageCollateralPriceSubscriptions(newSubscriptions);
   },
   async updateBalanceSubscriptions(context): Promise<void> {
-    updateTokenSubscription(context, 'kusd');
+    updateTokenSubscription(context, 'debt');
     updateTokenSubscription(context, 'collateral');
   },
   async setCollateralTokenAddress(context, address?: string): Promise<void> {
     const { commit } = vaultActionContext(context);
-    commit.setCollateralAddress(address ?? XOR.address);
+    commit.setCollateralAddress(address ?? XOR.address); // Default selected collateral is XOR
     updateTokenSubscription(context, 'collateral');
+  },
+  async setDebtTokenAddress(context, address?: string): Promise<void> {
+    const { commit } = vaultActionContext(context);
+    commit.setDebtAddress(address ?? KUSD.address); // Default selected debt is KUSD
+    updateTokenSubscription(context, 'debt');
   },
   async fetchClosedVaults(context): Promise<void> {
     const { commit, rootState } = vaultActionContext(context);
@@ -143,7 +151,8 @@ const actions = defineActions({
 
       const updatedVaults = [...vaults];
       vaults.forEach((vault, index) => {
-        const collateral = state.collaterals[vault.lockedAssetId];
+        const collateralId = api.kensetsu.serializeKey(vault.lockedAssetId, vault.debtAssetId);
+        const collateral = state.collaterals[collateralId];
         if (!collateral) {
           return;
         }
@@ -160,10 +169,14 @@ const actions = defineActions({
     commit.setDebtCalculationInterval(interval);
   },
   async requestCollaterals(context): Promise<void> {
-    const { commit, dispatch } = vaultActionContext(context);
+    const { state, commit, dispatch } = vaultActionContext(context);
+    const { collaterals } = state;
     try {
-      const collaterals = await api.kensetsu.getCollaterals();
-      commit.setCollaterals(collaterals);
+      const newCollaterals = await api.kensetsu.getCollaterals();
+      if (areEqual(collaterals, newCollaterals)) {
+        return;
+      }
+      commit.setCollaterals(newCollaterals);
       await dispatch.subscribeOnAverageCollateralPrices();
     } catch (error) {
       console.error(error);
@@ -172,7 +185,12 @@ const actions = defineActions({
   },
   async subscribeOnCollaterals(context): Promise<void> {
     const { commit, dispatch } = vaultActionContext(context);
+    commit.resetStablecoinInfosSubscription();
     commit.resetCollateralsSubscription();
+    // Subscribe on stablecoin infos to get the pegAsset for each collateral.
+    // It's necessary to calculate the average price of each collateral asset.
+    // The average price is used to calculate the debt in the vaults.
+    await dispatch.subscribeOnStablecoinInfos();
 
     const subscription = api.system.getBlockNumberObservable().subscribe(() => {
       dispatch.requestCollaterals();
@@ -180,14 +198,14 @@ const actions = defineActions({
 
     commit.setCollateralsSubscription(subscription);
   },
-  async subscribeOnBorrowTax(context): Promise<void> {
+  async subscribeOnBorrowTaxes(context): Promise<void> {
     const { commit } = vaultActionContext(context);
-    commit.resetBorrowTaxSubscription();
+    commit.resetBorrowTaxesSubscription();
     try {
-      const subscription = api.kensetsu.subscribeOnBorrowTax().subscribe((tax) => {
-        commit.setBorrowTax(tax / 100); // Convert to percentage coefficient
+      const subscription = api.kensetsu.subscribeOnBorrowTaxes().subscribe((taxes) => {
+        commit.setBorrowTaxes(taxes);
       });
-      commit.setBorrowTaxSubscription(subscription);
+      commit.setBorrowTaxesSubscription(subscription);
     } catch (error) {
       console.error(error);
     }
@@ -201,35 +219,42 @@ const actions = defineActions({
       console.error(error);
     }
   },
-  async subscribeOnBadDebt(context): Promise<void> {
+  async subscribeOnStablecoinInfos(context): Promise<void> {
     const { commit } = vaultActionContext(context);
-    commit.resetBadDebtSubscription();
+    commit.resetStablecoinInfosSubscription();
     try {
-      const subscription = api.kensetsu.subscribeOnBadDebt().subscribe((badDebt) => {
-        commit.setBadDebt(badDebt);
+      const stablecoinInfosObservable = await api.kensetsu.subscribeOnStablecoinInfos();
+      let subscription!: Subscription;
+      // Wait for the first value to set the initial state
+      await new Promise<void>((resolve) => {
+        subscription = stablecoinInfosObservable.subscribe((infos) => {
+          commit.setStablecoinInfos(infos);
+          resolve();
+        });
       });
-      commit.setBadDebtSubscription(subscription);
+      commit.setStablecoinInfosSubscription(subscription);
     } catch (error) {
       console.error(error);
     }
   },
   async reset(context): Promise<void> {
     const { commit } = vaultActionContext(context);
-    balanceSubscriptions.remove('kusd');
+    balanceSubscriptions.remove('debt');
     balanceSubscriptions.remove('collateral');
-    commit.setKusdTokenBalance();
+    commit.setDebtTokenBalance();
     commit.setCollateralTokenBalance();
     commit.setCollateralAddress(XOR.address);
+    commit.setDebtAddress(KUSD.address);
     commit.resetCollateralsSubscription();
     commit.resetDebtCalculationInterval();
-    commit.resetBorrowTaxSubscription();
+    commit.resetBorrowTaxesSubscription();
     commit.resetAccountVaultIdsSubscription();
     commit.resetAccountVaultsSubscription();
     commit.unsubscribeAverageCollateralPriceSubscriptions();
     commit.resetCollaterals();
     commit.resetAccountVaults();
     commit.resetAverageCollateralPrices();
-    commit.resetBadDebtSubscription();
+    commit.resetStablecoinInfosSubscription();
   },
 });
 
