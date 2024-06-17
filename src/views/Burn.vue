@@ -2,7 +2,7 @@
   <div class="burn-container s-flex-column">
     <s-row :gutter="16">
       <s-col
-        v-for="{ id, title, description, link, receivedAsset, rate } in campaigns"
+        v-for="{ id, title, description, link, receivedAsset, rate, disabledText } in campaigns"
         :key="id"
         class="burn-column s-flex"
         :xs="12"
@@ -74,7 +74,7 @@
             :loading="parentLoading || (!ended[id] && loading)"
             @click="handleBurnClick(id)"
           >
-            <template v-if="ended[id]">TIME IS OVER</template>
+            <template v-if="ended[id]">{{ disabledText ?? 'TIME IS OVER' }}</template>
             <template v-else>BURN MY XOR</template>
           </s-button>
         </s-form>
@@ -130,6 +130,7 @@ type Campaign = {
   id: CampaignKey;
   title: string;
   description: string;
+  disabledText?: string;
   link: string;
   receivedAsset: Asset;
   rate: number;
@@ -170,6 +171,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
       fromTimestamp: 1715791500000, // May 15 2024 16:45:00 GMT+0000
       to: 16_056_666,
       toTimestamp: 1717693074000, // Jun 06 2024 16:57:54 GMT+0000
+      disabledText: 'Will be distributed soon',
     },
     kensetsu: {
       id: 'kensetsu',
@@ -184,6 +186,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
       fromTimestamp: 1708097280000, // Feb 16 2024 15:28:00 GMT+0000
       to: 14_939_200,
       toTimestamp: 1710949772883, // Mar 20 2024 15:49:32 GMT+0000
+      disabledText: 'Already distributed',
     },
   };
 

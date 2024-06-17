@@ -1,6 +1,6 @@
 {
   "name": "polkaswap-exchange-web",
-  "version": "1.35.0",
+  "version": "1.36.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/sora-xor/polkaswap-exchange-web.git"
@@ -101,7 +101,8 @@
     "@polkadot/util": "^10.4.2",
     "ipfs-unixfs": "6.0.6",
     "ipfs-unixfs-exporter": "7.0.6",
-    "ipfs-unixfs-importer": "9.0.6"
+    "ipfs-unixfs-importer": "9.0.6",
+    "@sora-substrate/util": "1.38.9"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
