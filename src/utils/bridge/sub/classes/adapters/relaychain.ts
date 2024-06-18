@@ -62,25 +62,22 @@ export class RelaychainAdapter extends SubAdapter {
     );
   }
 
-  /* Throws error until Substrate 5 migration */
   public override async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
-    try {
-      return await super.getNetworkFee(asset, sender, recipient);
-    } catch {
-      const toCodec = (fee: number) => new FPNumber(fee, asset.externalDecimals).toCodecString();
-      // Hardcoded values
-      switch (this.subNetwork) {
-        case SubNetworkId.Rococo:
-          return toCodec(0.000125);
-        case SubNetworkId.Alphanet:
-          return toCodec(0.019);
-        case SubNetworkId.Kusama:
-          return toCodec(0.002);
-        case SubNetworkId.Polkadot:
-          return toCodec(0.059);
-        default:
-          return '0';
-      }
+    /* Throws error until Substrate 5 migration */
+    // return await super.getNetworkFee(asset, sender, recipient);
+    const toCodec = (fee: number) => new FPNumber(fee, asset.externalDecimals).toCodecString();
+    // Hardcoded values
+    switch (this.subNetwork) {
+      case SubNetworkId.Rococo:
+        return toCodec(0.000125);
+      case SubNetworkId.Alphanet:
+        return toCodec(0.019);
+      case SubNetworkId.Kusama:
+        return toCodec(0.002);
+      case SubNetworkId.Polkadot:
+        return toCodec(0.059);
+      default:
+        return '0';
     }
   }
 }
