@@ -164,13 +164,10 @@ export class AstarParachainAdapter extends SubAdapter {
       : this.getAssetTransferExtrinsic(asset, recipient, amount);
   }
 
-  /* Throws error until Substrate 5 migration */
   public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
-    try {
-      return await super.getNetworkFee(asset, sender, recipient);
-    } catch (error) {
-      // Hardcoded value for Astar - 0.057 ASTR
-      return '57000000000000000';
-    }
+    /* Throws error until Substrate 5 migration */
+    // return await super.getNetworkFee(asset, sender, recipient);
+    // Hardcoded value for Astar - 0.057 ASTR
+    return '57000000000000000';
   }
 }

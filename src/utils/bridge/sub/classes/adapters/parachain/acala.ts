@@ -149,13 +149,10 @@ export class AcalaParachainAdapter extends SubAdapter {
     );
   }
 
-  /* Throws error until Substrate 5 migration */
   public override async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
-    try {
-      return await super.getNetworkFee(asset, sender, recipient);
-    } catch (error) {
-      // Hardcoded value for Acala - 0.003 ACA
-      return '3000000000';
-    }
+    /* Throws error until Substrate 5 migration */
+    // return await super.getNetworkFee(asset, sender, recipient);
+    // Hardcoded value for Acala - 0.003 ACA
+    return '3000000000';
   }
 }
