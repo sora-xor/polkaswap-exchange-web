@@ -1,12 +1,12 @@
 import { Connection } from '@sora-substrate/connection';
 import { WithConnectionApi, FPNumber, Storage } from '@sora-substrate/util';
 import { formatBalance } from '@sora-substrate/util/build/assets';
+import { ApiPromise, WsProvider } from 'polkadotApi';
 
 import { ZeroStringValue } from '@/consts';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { NodesConnection } from '@/utils/connection';
 
-import type { ApiPromise } from '@polkadot/api';
 import type { SubmittableExtrinsic } from '@polkadot/api-base/types';
 import type { ISubmittableResult } from '@polkadot/types/types';
 import type { CodecString } from '@sora-substrate/util';
@@ -21,7 +21,11 @@ class BaseSubAdapter extends WithConnectionApi {
     super();
 
     this.subNetwork = subNetwork;
-    this.subNetworkConnection = new NodesConnection(new Storage(this.subNetwork), new Connection({}), this.subNetwork);
+    this.subNetworkConnection = new NodesConnection(
+      new Storage(this.subNetwork),
+      new Connection(ApiPromise as any, WsProvider as any, {}),
+      this.subNetwork
+    );
 
     this.setConnection(this.subNetworkConnection.connection);
   }
@@ -42,7 +46,7 @@ class BaseSubAdapter extends WithConnectionApi {
 
   public setApi(api: ApiPromise): void {
     console.info(`[${this.subNetwork}] Api injected`);
-    this.connection.api = api;
+    (this.connection as any).api = api;
   }
 
   public async connect(): Promise<void> {
@@ -78,7 +82,7 @@ class BaseSubAdapter extends WithConnectionApi {
   public async getBlockNumber(): Promise<number> {
     return await this.withConnection(async () => {
       const result = await this.api.query.system.number();
-      return result.toNumber();
+      return (result as any).toNumber();
     }, 0);
   }
 
@@ -95,7 +99,7 @@ class BaseSubAdapter extends WithConnectionApi {
 
     return await this.withConnection(async () => {
       const accountInfo = await this.api.query.system.account(accountAddress);
-      const balance = formatBalance(accountInfo.data, this.chainDecimals);
+      const balance = formatBalance((accountInfo as any).data, this.chainDecimals);
 
       return balance.transferable;
     }, ZeroStringValue);
@@ -109,7 +113,7 @@ class BaseSubAdapter extends WithConnectionApi {
   public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
     return await this.withConnection(async () => {
       const tx = this.getTransferExtrinsic(asset, recipient, ZeroStringValue);
-      const res = await tx.paymentInfo(sender);
+      const res = await (tx as any).paymentInfo(sender);
       return new FPNumber(res.partialFee, this.chainDecimals).toCodecString();
     }, ZeroStringValue);
   }
@@ -128,11 +132,7 @@ class BaseSubAdapter extends WithConnectionApi {
     throw new Error(`[${this.constructor.name}] "getAssetDeposit" method is not implemented`);
   }
 
-  public getTransferExtrinsic(
-    asset: RegisteredAsset,
-    recipient: string,
-    amount: string | number
-  ): SubmittableExtrinsic<'promise', ISubmittableResult> {
+  public getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: string | number) {
     throw new Error(`[${this.constructor.name}] "getTransferExtrinsic" method is not implemented`);
   }
 }
