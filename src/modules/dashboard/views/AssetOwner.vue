@@ -24,7 +24,7 @@
             v-if="!isLoggedIn"
             class="no-assets-action s-typography-button--large"
             type="primary"
-            @click="handleConnectWallet"
+            @click="connectSoraWallet"
           >
             {{ t('connectWalletText') }}
           </s-button>
@@ -128,8 +128,7 @@
 import { mixins, components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { PageNames } from '@/consts';
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
 import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import type { OwnedAsset } from '@/modules/dashboard/types';
@@ -145,19 +144,14 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     CreateTokenDialog: dashboardLazyComponent(DashboardComponents.CreateTokenDialog),
   },
 })
-export default class AssetOwner extends Mixins(TranslationMixin, mixins.FormattedAmountMixin) {
+export default class AssetOwner extends Mixins(InternalConnectMixin, mixins.FormattedAmountMixin) {
   @getter.libraryTheme private libraryTheme!: Theme;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.dashboard.ownedAssets assets!: OwnedAsset[];
 
   showCreateTokenDialog = false;
 
   get isNotLoggedInOrEmptyAssets(): boolean {
     return !(this.isLoggedIn && this.assets.length);
-  }
-
-  handleConnectWallet(): void {
-    router.push({ name: PageNames.Wallet });
   }
 
   handleCreateAsset(): void {

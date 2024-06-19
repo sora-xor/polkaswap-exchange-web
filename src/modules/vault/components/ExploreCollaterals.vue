@@ -176,7 +176,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 import ExplorePageMixin from '@/components/mixins/ExplorePageMixin';
 import { Components, HundredNumber } from '@/consts';
 import { lazyComponent } from '@/router';
-import { state, getter } from '@/store/decorators';
+import { state } from '@/store/decorators';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Collateral } from '@sora-substrate/util/build/kensetsu/types';
@@ -211,7 +211,6 @@ type TableItem = {
   },
 })
 export default class ExplorePools extends Mixins(ExplorePageMixin) {
-  @getter.vault.kusdToken private kusdToken!: Nullable<RegisteredAccountAsset>;
   @state.vault.collaterals private collaterals!: Record<string, Collateral>;
   @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
   @state.settings.menuCollapsed collapsed!: boolean;
@@ -224,12 +223,10 @@ export default class ExplorePools extends Mixins(ExplorePageMixin) {
   }
 
   get prefilteredItems(): TableItem[] {
-    const debtAsset = this.kusdToken;
-    if (!debtAsset) return [];
-
-    return Object.entries(this.collaterals).reduce<TableItem[]>((acc, [collateralAssetId, collateral]) => {
-      const lockedAsset = this.getAsset(collateralAssetId);
-      if (!lockedAsset) return acc;
+    return Object.values(this.collaterals).reduce<TableItem[]>((acc, collateral) => {
+      const lockedAsset = this.getAsset(collateral.lockedAssetId);
+      const debtAsset = this.getAsset(collateral.debtAssetId);
+      if (!(lockedAsset && debtAsset)) return acc;
 
       const stabilityFeeValue = collateral.riskParams.stabilityFeeAnnual.toNumber();
       const stabilityFee = this.formatPercent(stabilityFeeValue);

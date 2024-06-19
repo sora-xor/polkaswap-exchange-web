@@ -10,7 +10,7 @@
         :title="title"
         :balance-text="t('kensetsu.available')"
         :is-max-available="isMaxBorrowAvailable"
-        :token="kusdToken"
+        :token="debtAsset"
         :balance="availableCodec"
         :slider-value="borrowValuePercent"
         :disabled="loading"
@@ -21,7 +21,7 @@
       <prev-next-info-line
         :label="t('kensetsu.outstandingDebt')"
         :tooltip="t('kensetsu.outstandingDebtDescription')"
-        :symbol="kusdSymbol"
+        :symbol="debtSymbol"
         :prev="formattedPrevBorrow"
         :next="formattedNextBorrow"
       />
@@ -49,7 +49,7 @@
         :label="t('kensetsu.borrowTax')"
         :label-tooltip="t('kensetsu.borrowTaxDescription', { value: borrowTaxPercent })"
         :value="formattedBorrowTax"
-        :asset-symbol="kusdSymbol"
+        :asset-symbol="debtSymbol"
         is-formatted
       />
       <info-line
@@ -104,18 +104,18 @@ export default class BorrowMoreDialog extends Mixins(
   @Ref('debtInput') debtInput!: Nullable<TokenInput>;
 
   @Prop({ type: Object, default: ObjectInit }) readonly vault!: Nullable<Vault>;
+  @Prop({ type: Object, default: ObjectInit }) readonly debtAsset!: Nullable<RegisteredAccountAsset>;
   @Prop({ type: Object, default: ObjectInit }) readonly collateral!: Nullable<Collateral>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: Nullable<FPNumber>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly available!: FPNumber;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly maxSafeDebt!: FPNumber;
   @Prop({ type: Number, default: HundredNumber }) readonly maxLtv!: number;
+  @Prop({ type: Number, default: 0 }) readonly borrowTax!: number;
 
   @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.settings.slippageTolerance private slippageTolerance!: string;
-  @state.vault.borrowTax private borrowTax!: number;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
-  @getter.vault.kusdToken kusdToken!: Nullable<RegisteredAccountAsset>;
 
   borrowValue = '';
 
@@ -156,15 +156,15 @@ export default class BorrowMoreDialog extends Mixins(
 
   private get borrowFp(): FPNumber {
     if (this.isBorrowZero) return this.Zero;
-    return this.getFPNumber(this.borrowValue, this.kusdToken?.decimals);
+    return this.getFPNumber(this.borrowValue, this.debtAsset?.decimals);
   }
 
-  private get kusdAvailable(): FPNumber {
+  private get debtAvailable(): FPNumber {
     return this.collateral?.riskParams.hardCap.sub(this.collateral.debtSupply) ?? this.Zero;
   }
 
   private get availableOrTotal(): FPNumber {
-    return this.available.gt(this.kusdAvailable) ? this.kusdAvailable : this.available;
+    return this.available.gt(this.debtAvailable) ? this.debtAvailable : this.available;
   }
 
   get isBorrowMoreThanAvailable(): boolean {
@@ -185,8 +185,8 @@ export default class BorrowMoreDialog extends Mixins(
     return !this.borrowFp.isEqualTo(this.availableOrTotal);
   }
 
-  get kusdSymbol(): string {
-    return this.kusdToken?.symbol ?? '';
+  get debtSymbol(): string {
+    return this.debtAsset?.symbol ?? '';
   }
 
   get formattedPrevBorrow(): string {
@@ -273,8 +273,10 @@ export default class BorrowMoreDialog extends Mixins(
     } else {
       try {
         await this.withNotifications(async () => {
-          if (!this.vault) throw new Error('[api.kensetsu.borrow]: vault is null');
-          await api.kensetsu.borrow(this.vault, this.borrowValue, this.slippageTolerance);
+          if (!(this.vault && this.debtAsset)) {
+            throw new Error('[api.kensetsu.borrow]: vault is null');
+          }
+          await api.kensetsu.borrow(this.vault, this.borrowValue, this.debtAsset, this.slippageTolerance);
         });
         this.$emit('confirm');
       } catch (error) {
