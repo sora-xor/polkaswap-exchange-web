@@ -39,4 +39,5 @@ export type BridgeState = {
   inProgressIds: Record<string, boolean>;
   notificationData: Nullable<IBridgeTransaction>;
   subBridgeConnector: SubNetworksConnector;
+  isSignTxDialogVisible: boolean;
 };

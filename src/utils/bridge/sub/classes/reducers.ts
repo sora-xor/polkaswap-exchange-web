@@ -21,6 +21,8 @@ import {
   determineTransferType,
   getReceivedAmount,
   getParachainSystemMessageHash,
+  isEvent,
+  isTransactionFeePaid,
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiRx } from '@polkadot/api';
@@ -150,11 +152,11 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
     if (tx.txId) return;
     // transaction not signed
-    await this.beforeSign(id);
+    await this.beforeSign(id, this.connector.accountApi, 'bridge/setSignTxDialogVisibility');
     // open connections
     await this.connector.start();
-    // sign transaction
-    await this.connector.network.transfer(asset, tx.to as string, tx.amount as string, id);
+    // sign transaction (from is sora account)
+    await this.connector.transfer(asset, tx.from as string, tx.amount as string, id);
     // save start block when tx was signed
     await this.saveStartBlock(id);
   }
@@ -189,9 +191,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     const transactionHash = tx.externalHash as string;
     const transactionEvents = await getTransactionEvents(blockHash, transactionHash, adapter.api);
 
-    const feeEvent = transactionEvents.find((e) =>
-      adapter.api.events.transactionPayment.TransactionFeePaid.is(e.event)
-    );
+    const feeEvent = transactionEvents.find((e) => isTransactionFeePaid(e));
 
     if (feeEvent) {
       const externalNetworkFee = feeEvent.event.data[1].toString();
@@ -200,7 +200,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     }
 
     if (this.transferType === SubTransferType.Relaychain) {
-      const xcmEvent = transactionEvents.find((e) => adapter.api.events.xcmPallet.Attempted.is(e.event));
+      const xcmEvent = transactionEvents.find((e) => isEvent(e, 'xcmPallet', 'Attempted'));
 
       if (!xcmEvent?.event?.data?.[0]?.isComplete) {
         throw new Error(`[${this.constructor.name}]: Transaction is not completed`);
@@ -250,7 +250,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
         subscription = combineLatest([eventsObservable, blockNumberObservable]).subscribe(
           ([eventsVec, blockHeight]) => {
             try {
-              if (blockHeight > startBlockHeight + 3) {
+              if (blockHeight > startBlockHeight + 10) {
                 throw new Error(
                   `[${this.constructor.name}]: Sora parachain should have received message from ${tx.externalNetwork}`
                 );
@@ -462,7 +462,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
 
     if (tx.txId) return;
     // transaction not signed
-    await this.beforeSign(id);
+    await this.beforeSign(id, subBridgeApi);
     // open connections
     await this.connector.start();
     // sign transaction
@@ -603,10 +603,12 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
           ([eventsVec, blockHeight]) => {
             try {
               const events = eventsVec.toArray();
-              const messageQueueProcessedEventIndex = events.findIndex(
-                (e) =>
-                  adapter.api.events.messageQueue.Processed.is(e.event) && e.event.data[0].toString() === messageHash
-              );
+              const messageQueueProcessedEventIndex = events.findIndex((e) => {
+                if (isEvent(e, 'messageQueue', 'Processed') || isEvent(e, 'xcmpQueue', 'Success')) {
+                  return e.event.data[0].toString() === messageHash;
+                }
+                return false;
+              });
 
               if (messageQueueProcessedEventIndex === -1) return;
 

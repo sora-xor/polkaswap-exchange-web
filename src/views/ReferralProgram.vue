@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading" class="referral-program">
-    <template v-if="isSoraAccountConnected">
+    <template v-if="isLoggedIn">
       <div class="rewards-container">
         <span class="rewards-title">{{ t('referralProgram.receivedRewards') }}</span>
         <token-logo :token="xor" :size="WALLET_CONSTS.LogoSize.BIGGER" />
@@ -156,10 +156,10 @@
     <template v-else>
       <p class="referral-program-hint" v-html="t('referralProgram.connectAccount')" />
       <s-button
-        v-if="!(loading || isSoraAccountConnected)"
+        v-if="!isLoggedIn"
         class="connect-button s-typography-button--large"
         type="primary"
-        @click="handleConnect"
+        @click="connectSoraWallet"
       >
         {{ t('connectWalletText') }}
       </s-button>
@@ -175,7 +175,7 @@ import last from 'lodash/fp/last';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import { getFullBaseUrl, getRouterMode } from '@/api';
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { PageNames, ZeroStringValue } from '@/consts';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import router, { lazyView } from '@/router';
@@ -201,7 +201,7 @@ export default class ReferralProgram extends Mixins(
   mixins.PaginationSearchMixin,
   mixins.NetworkFeeWarningMixin,
   mixins.CopyAddressMixin,
-  WalletConnectMixin
+  InternalConnectMixin
 ) {
   readonly WALLET_CONSTS = WALLET_CONSTS;
 
@@ -225,7 +225,7 @@ export default class ReferralProgram extends Mixins(
   @action.referrals.getAccountReferralRewards private getAccountReferralRewards!: AsyncFnWithoutArgs;
   @action.referrals.subscribeOnReferrer private subscribeOnReferrer!: AsyncFnWithoutArgs;
 
-  @Watch('isSoraAccountConnected')
+  @Watch('isLoggedIn')
   private async updateSubscriptions(value: boolean): Promise<void> {
     if (value) {
       this.initData();
@@ -236,7 +236,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   private async initData(): Promise<void> {
-    if (this.isSoraAccountConnected) {
+    if (this.isLoggedIn) {
       await this.subscribeOnInvitedUsers();
       await this.getAccountReferralRewards();
       await this.getReferrer();
@@ -407,12 +407,6 @@ export default class ReferralProgram extends Mixins(
       return this.formatCodecNumber(rewards.toCodecString());
     }
     return ZeroStringValue;
-  }
-
-  handleConnect(): void {
-    if (!this.isSoraAccountConnected) {
-      this.connectSoraWallet();
-    }
   }
 
   handleBonding(isBond = false): void {

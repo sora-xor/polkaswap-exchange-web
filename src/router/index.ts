@@ -211,27 +211,21 @@ const routes: Array<RouteConfig> = [
     ],
   },
   {
-    path: '/rewards',
+    path: '',
     component: lazyView(PageNames.RewardsTabs),
     children: [
       {
-        path: '',
+        path: '/rewards',
         name: PageNames.Rewards,
         component: lazyView(PageNames.Rewards),
       },
       {
-        path: '/referral', // because of leading slash, path will be absolute: #/referral
+        path: '/referral/:referrerAddress?',
         name: PageNames.ReferralProgram,
         component: lazyView(PageNames.ReferralProgram),
-        children: [
-          {
-            path: ':referrerAddress?',
-            meta: {
-              isInvitationRoute: true,
-              requiresAuth: true,
-            },
-          },
-        ],
+        meta: {
+          isInvitationRoute: true,
+        },
       },
     ],
   },
@@ -346,19 +340,24 @@ router.beforeEach((to, from, next) => {
     updateDocumentTitle(to);
   };
   const isLoggedIn = store.getters.wallet.account.isLoggedIn;
+  const isInvitationRoute = to.matched.some((record) => record.meta.isInvitationRoute);
+  const isRequiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+
   if (prev !== PageNames.BridgeTransaction && current === PageNames.BridgeTransactionsHistory) {
     store.commit.bridge.setHistoryPage(1);
   }
-  if (to.matched.some((record) => record.meta.isInvitationRoute)) {
-    if (api.validateAddress(to.params.referrerAddress)) {
-      store.commit.referrals.setStorageReferrer(to.params.referrerAddress);
+  if (isInvitationRoute) {
+    const referrerAddress = to.params.referrerAddress;
+
+    if (api.validateAddress(referrerAddress)) {
+      store.commit.referrals.setStorageReferrer(referrerAddress);
     }
     if (isLoggedIn) {
       setRoute(PageNames.ReferralProgram);
       return;
     }
   }
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
+  if (isRequiresAuth) {
     if (BridgeChildPages.includes(current) && isLoggedIn && !store.getters.bridge.externalAccount) {
       setRoute(PageNames.Bridge);
       return;

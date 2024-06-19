@@ -10,10 +10,10 @@
           ref="collateralInput"
           class="vault-create__collateral-input vault-create__token-input"
           with-slider
-          is-select-available
-          :title="t('kensetsu.depositCollateral')"
-          v-model="collateralValue"
           is-fiat-editable
+          is-select-available
+          v-model="collateralValue"
+          :title="t('kensetsu.depositCollateral')"
           :is-max-available="isMaxCollateralAvailable"
           :token="collateralToken"
           :balance="collateralAssetBalance"
@@ -21,24 +21,26 @@
           :disabled="loading"
           @max="handleMaxCollateralValue"
           @slide="handleCollateralPercentChange"
-          @select="openSelectTokenDialog"
+          @select="openSelectTokenDialog(true)"
         />
         <token-input
           ref="debtInput"
           class="vault-create__debt-input vault-create__token-input"
+          is-fiat-editable
+          is-select-available
+          v-model="borrowValue"
           :with-slider="isBorrowSliderAvailable"
           :title="t('kensetsu.borrowDebt')"
           :balance-text="t('kensetsu.available')"
           :balance="maxBorrowCodec"
-          v-model="borrowValue"
-          is-fiat-editable
           :is-max-available="isMaxBorrowAvailable"
-          :token="kusdToken"
+          :token="debtToken"
           :slider-value="borrowValuePercent"
           :disabled="loading"
           :max="maxBorrowPerMaxCollateralNumber"
           @max="handleMaxBorrowValue"
           @slide="handleBorrowPercentChange"
+          @select="openSelectTokenDialog(false)"
         />
         <slippage-tolerance class="slippage-tolerance-settings vault-create__slippage" />
         <info-line
@@ -80,7 +82,7 @@
           :label="t('kensetsu.borrowTax')"
           :label-tooltip="t('kensetsu.borrowTaxDescription', { value: borrowTaxPercent })"
           :value="formattedBorrowTax"
-          :asset-symbol="kusdSymbol"
+          :asset-symbol="debtSymbol"
           is-formatted
         />
         <info-line
@@ -147,19 +149,21 @@ export default class CreateVaultDialog extends Mixins(
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.vault.collaterals private collaterals!: Record<string, Collateral>;
-  @state.vault.borrowTax private borrowTax!: number;
+  @getter.vault.getBorrowTax private getTax!: (debtAsset: Asset | AccountAsset | string) => number;
   @getter.vault.averageCollateralPrice private averageCollateralPrice!: Nullable<FPNumber>;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
-  @getter.vault.kusdToken kusdToken!: Nullable<RegisteredAccountAsset>;
+  @getter.vault.debtToken debtToken!: Nullable<RegisteredAccountAsset>;
   @getter.vault.collateralToken collateralToken!: Nullable<RegisteredAccountAsset>;
 
   @action.vault.setCollateralTokenAddress private setCollateralAddress!: (address?: string) => Promise<void>;
+  @action.vault.setDebtTokenAddress private setDebtAddress!: (address?: string) => Promise<void>;
 
   collateralValue = '';
   borrowValue = '';
   showSelectTokenDialog = false;
+  isCollateralSelected = true;
 
   @Watch('visible')
   private async handleDialogVisibility(value: boolean): Promise<void> {
@@ -173,9 +177,14 @@ export default class CreateVaultDialog extends Mixins(
     this.collateralInput?.focus();
   }
 
+  private get collateralId(): string {
+    if (!(this.collateralToken && this.debtToken)) return '';
+    return api.kensetsu.serializeKey(this.collateralToken.address, this.debtToken.address);
+  }
+
   private get collateral(): Nullable<Collateral> {
-    if (!this.collateralToken) return null;
-    return this.collaterals[this.collateralToken.address];
+    if (!this.collateralId) return null;
+    return this.collaterals[this.collateralId];
   }
 
   private get maxLtv(): number {
@@ -225,22 +234,29 @@ export default class CreateVaultDialog extends Mixins(
 
   private get borrowValueFp(): FPNumber {
     if (this.isBorrowZero) return this.Zero;
-    return this.getFPNumber(this.borrowValue, this.kusdToken?.decimals);
+    return this.getFPNumber(this.borrowValue, this.debtToken?.decimals);
   }
 
-  get isInsufficientBalance(): boolean {
+  private get isInsufficientBalance(): boolean {
     if (!this.collateralToken) return true;
     return hasInsufficientBalance(this.collateralToken, this.collateralValue, this.networkFee);
   }
 
-  get isLessThanMinDeposit(): boolean {
+  private get isLessThanMinDeposit(): boolean {
     if (!this.collateralValue) return true;
     return this.collateralValueFp.lt(this.minDeposit);
+  }
+
+  private get isIncorrectCollateral(): boolean {
+    if (!(this.collateralToken && this.debtToken)) return false; // Assets are not selected
+
+    return !this.collateral;
   }
 
   get disabled(): boolean {
     return (
       this.loading ||
+      this.isIncorrectCollateral ||
       this.isInsufficientXorForFee ||
       this.isLessThanMinDeposit ||
       this.isInsufficientBalance ||
@@ -280,12 +296,11 @@ export default class CreateVaultDialog extends Mixins(
     return percent > HundredNumber ? HundredNumber : percent;
   }
 
-  private get collateralTokenIds(): string[] {
-    return Object.keys(this.collaterals);
-  }
-
   get selectTokenFilter(): (value: AccountAsset) => boolean {
-    return (value: AccountAsset) => this.collateralTokenIds.includes(value?.address);
+    const tokenIds = Object.values(this.collaterals).map((collateral) =>
+      this.isCollateralSelected ? collateral.lockedAssetId : collateral.debtAssetId
+    );
+    return (value: AccountAsset) => tokenIds.includes(value?.address);
   }
 
   get isMaxBorrowAvailable(): boolean {
@@ -303,8 +318,8 @@ export default class CreateVaultDialog extends Mixins(
     return this.availableCollateralBalanceFp.gte(this.minDeposit);
   }
 
-  get kusdSymbol(): string {
-    return this.kusdToken?.symbol ?? '';
+  get debtSymbol(): string {
+    return this.debtToken?.symbol ?? '';
   }
 
   get collateralSymbol(): string {
@@ -315,8 +330,13 @@ export default class CreateVaultDialog extends Mixins(
     return this.maxBorrowPerMaxCollateralFp.toNumber();
   }
 
+  private get borrowTax(): number {
+    if (!this.debtToken) return 0;
+    return this.getTax(this.debtToken.address);
+  }
+
   private get kusdAvailable(): FPNumber {
-    const available = this.collateral?.riskParams.hardCap.sub(this.collateral.kusdSupply) ?? this.Zero;
+    const available = this.collateral?.riskParams.hardCap.sub(this.collateral.debtSupply) ?? this.Zero;
     const availableExcludedFee = available.sub(available.mul(this.borrowTax ?? 0));
     return availableExcludedFee.isLtZero() ? this.Zero : availableExcludedFee;
   }
@@ -433,15 +453,17 @@ export default class CreateVaultDialog extends Mixins(
     this.borrowValue = this.maxBorrowPerCollateralValueOrAvailable.mul(percent / HundredNumber).toString();
   }
 
-  /**
-   * `isDebtToken` is set for the future when debt token might be selected as well
-   */
-  openSelectTokenDialog(isDebtToken = false): void {
+  openSelectTokenDialog(isCollateral = true): void {
+    this.isCollateralSelected = isCollateral;
     this.showSelectTokenDialog = true;
   }
 
   handleSelectToken(token: Asset): void {
-    this.setCollateralAddress(token?.address);
+    if (this.isCollateralSelected) {
+      this.setCollateralAddress(token?.address);
+    } else {
+      this.setDebtAddress(token?.address);
+    }
     this.collateralValue = '';
     this.borrowValue = '';
   }
@@ -454,6 +476,8 @@ export default class CreateVaultDialog extends Mixins(
       error = this.t('kensetsu.error.enterCollateral');
     } else if (this.isBorrowZero) {
       error = this.t('kensetsu.error.enterBorrow');
+    } else if (this.isIncorrectCollateral) {
+      error = this.t('kensetsu.error.incorrectCollateral');
     } else if (this.isLessThanMinDeposit) {
       error = this.t('kensetsu.error.insufficientCollateral');
     } else if (this.isInsufficientBalance) {
@@ -471,10 +495,17 @@ export default class CreateVaultDialog extends Mixins(
       }
     } else {
       try {
-        const token = this.collateralToken;
-        if (!token) return;
+        const lockedToken = this.collateralToken;
+        const debtToken = this.debtToken;
+        if (!(lockedToken && debtToken)) return;
         await this.withNotifications(async () => {
-          await api.kensetsu.createVault(token, this.collateralValue, this.borrowValue, this.slippageTolerance);
+          await api.kensetsu.createVault(
+            lockedToken,
+            debtToken,
+            this.collateralValue,
+            this.borrowValue,
+            this.slippageTolerance
+          );
         });
       } catch (error) {
         console.error(error);
