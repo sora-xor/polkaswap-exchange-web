@@ -92,13 +92,24 @@ async function getSubRegisteredAssets(
 
   const subNetworkId = subNetwork as SubNetwork;
 
-  // [TODO] remove when non ACA tokens are supported
+  // [TODO] remove when non native parachain tokens are supported
   if (subNetworkId === SubNetworkId.PolkadotAcala) {
     return [
       {
         '0x001ddbe1a880031da72f7ea421260bec635fa7d1aa72593d5412795408b6b2ba': {
           address: '',
           decimals: 12,
+          kind: 'Sidechain',
+        },
+      },
+    ];
+  }
+  if (subNetworkId === SubNetworkId.PolkadotAstar) {
+    return [
+      {
+        '0x009dd037fcb32f4fe17c513abd4641a2ece844d106e30788124f0c0acc6e748e': {
+          address: '',
+          decimals: 18,
           kind: 'Sidechain',
         },
       },

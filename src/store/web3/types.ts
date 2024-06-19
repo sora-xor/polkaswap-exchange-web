@@ -28,8 +28,10 @@ export type AvailableNetwork = {
 
 export type Web3State = {
   evmAddress: string;
+
   subAddress: string;
   subAddressName: string;
+  subAddressSource: string;
 
   networkType: Nullable<BridgeNetworkType>;
   networkSelected: Nullable<BridgeNetworkId>;
@@ -48,6 +50,8 @@ export type Web3State = {
 
   selectSubNodeDialogVisibility: boolean;
   selectNetworkDialogVisibility: boolean;
-  selectAccountDialogVisibility: boolean;
   selectProviderDialogVisibility: boolean;
+
+  subAccountDialogVisibility: boolean;
+  soraAccountDialogVisibility: boolean;
 };

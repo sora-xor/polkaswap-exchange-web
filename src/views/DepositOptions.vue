@@ -38,13 +38,13 @@
 </template>
 
 <script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import WalletConnectMixin from '../components/mixins/WalletConnectMixin';
 import CedeStoreLogo from '../components/shared/Logo/CedeStore.vue';
 import MoonpayLogo from '../components/shared/Logo/Moonpay.vue';
-import { Components, PageNames, TranslationConsts } from '../consts';
+import { Components, PageNames } from '../consts';
 import { goTo, lazyComponent } from '../router';
 import { mutation, state, getter } from '../store/decorators';
 
@@ -63,17 +63,14 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     CedeStoreLogo,
   },
 })
-export default class DepositOptions extends Mixins(mixins.TranslationMixin, WalletConnectMixin) {
+export default class DepositOptions extends Mixins(WalletConnectMixin) {
   @state.moonpay.bridgeTransactionData private bridgeTransactionData!: Nullable<EthHistory>;
   @state.moonpay.startBridgeButtonVisibility private startBridgeButtonVisibility!: boolean;
 
   @getter.libraryTheme libraryTheme!: Theme;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.settings.moonpayEnabled moonpayEnabled!: boolean;
 
   @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
-
-  TranslationConsts = TranslationConsts;
 
   showCedeDialog = false;
   showErrorInfoBanner = false;
@@ -89,13 +86,16 @@ export default class DepositOptions extends Mixins(mixins.TranslationMixin, Wall
   }
 
   get moonpayTextBtn(): string {
-    return !this.isSoraAccountConnected ? this.t('connectWalletText') : this.t('fiatPayment.moonpayTitle');
+    return !this.isLoggedIn ? this.t('connectWalletText') : this.t('fiatPayment.moonpayTitle');
   }
 
   get cedeTextBtn(): string {
-    return !this.isSoraAccountConnected
+    return !this.isLoggedIn
       ? this.t('connectWalletText')
-      : this.t('fiatPayment.cedeStoreBtn', { value1: TranslationConsts.CEX, value2: TranslationConsts.CedeStore });
+      : this.t('fiatPayment.cedeStoreBtn', {
+          value1: this.TranslationConsts.CEX,
+          value2: this.TranslationConsts.CedeStore,
+        });
   }
 
   openDepositTxHistory(): void {
@@ -103,7 +103,7 @@ export default class DepositOptions extends Mixins(mixins.TranslationMixin, Wall
   }
 
   openCedeWidget(): void {
-    if (!this.isSoraAccountConnected) {
+    if (!this.isLoggedIn) {
       return this.connectSoraWallet();
     }
 
@@ -119,7 +119,7 @@ export default class DepositOptions extends Mixins(mixins.TranslationMixin, Wall
       return this.showErrorMessage();
     }
 
-    if (!this.isSoraAccountConnected) {
+    if (!this.isLoggedIn) {
       return this.connectSoraWallet();
     }
 

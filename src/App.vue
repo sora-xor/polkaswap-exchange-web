@@ -30,7 +30,13 @@
       {{ t('browserNotificationDialog.pointer') }}
     </notification-enabling-page>
     <alerts />
-    <confirm-dialog />
+    <confirm-dialog
+      :get-api="getApi"
+      :account="account"
+      :visibility="isSignTxDialogVisible"
+      :set-visibility="setSignTxDialogVisibility"
+    />
+    <select-sora-account-dialog />
   </s-design-system-provider>
 </template>
 
@@ -57,10 +63,8 @@ import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { PageNames, Components, Language, BreakpointClass, Breakpoint, WalletPermissions } from '@/consts';
+import { PageNames, Components, Language, BreakpointClass, WalletPermissions } from '@/consts';
 import { getLocale } from '@/lang';
-import { isDashboardPage } from '@/modules/dashboard/router';
-import { isVaultPage } from '@/modules/vault/router';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
@@ -88,6 +92,7 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
+    SelectSoraAccountDialog: lazyComponent(Components.SelectSoraAccountDialog),
     NotificationEnablingPage: components.NotificationEnablingPage,
     ConfirmDialog: components.ConfirmDialog,
   },
@@ -110,7 +115,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @getter.wallet.transactions.firstReadyTx firstReadyTransaction!: Nullable<HistoryItem>;
-  @getter.wallet.account.isLoggedIn isSoraAccountConnected!: boolean;
+  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
   @getter.libraryDesignSystem libraryDesignSystem!: DesignSystem;
 
@@ -147,6 +152,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     message: string;
   }) => Promise<void>;
 
+  @state.wallet.transactions.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
+  @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
+
   // [DESKTOP] To Enable Desktop
   @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;
 
@@ -174,7 +182,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     }
   }
 
-  @Watch('isSoraAccountConnected')
+  @Watch('isLoggedIn')
   private async confirmInviteUserIfConnected(isSoraConnected: boolean): Promise<void> {
     if (isSoraConnected) {
       await this.confirmInvititation();
@@ -183,7 +191,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @Watch('storageReferrer', { immediate: true })
   private async confirmInviteUserIfHasStorage(storageReferrerValue: string): Promise<void> {
-    if (this.isSoraAccountConnected && !!storageReferrerValue) {
+    if (this.isLoggedIn && !!storageReferrerValue) {
       await this.confirmInvititation();
     }
   }
@@ -304,6 +312,10 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   set showBrowserNotifBlockedPopup(value) {
     this.setBrowserNotifsPopupBlocked(value);
+  }
+
+  getApi() {
+    return api;
   }
 
   goTo(name: PageNames): void {

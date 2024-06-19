@@ -59,10 +59,6 @@ const getters = defineGetters<OrderBookState>()({
 
     return state.deals[0] ?? null;
   },
-  accountAddress(...args): string {
-    const { rootState } = orderBookGetterContext(args);
-    return rootState.wallet.account.address;
-  },
 });
 
 export default getters;

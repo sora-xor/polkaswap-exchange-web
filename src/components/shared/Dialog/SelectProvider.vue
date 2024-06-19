@@ -1,26 +1,12 @@
 <template>
   <dialog-base :visible.sync="visibility" :title="t('connectEthereumWalletText')" append-to-body>
-    <connection-items :size="providers.length">
-      <account-card
-        v-button
-        v-for="provider in providers"
-        :key="provider.name"
-        tabindex="0"
-        @click.native="handleProviderClick(provider.name)"
-        class="provider-card"
-      >
-        <template #avatar>
-          <img :src="provider.icon" :alt="provider.name" class="provider-logo" />
-        </template>
-        <template #name>{{ provider.name }}</template>
-        <template #default>
-          <s-button v-if="provider.connected" size="small" disabled>
-            {{ t('connection.wallet.connected') }}
-          </s-button>
-          <s-icon v-else-if="provider.loading" name="el-icon-loading" size="16" class="provider-loading-icon" />
-        </template>
-      </account-card>
-    </connection-items>
+    <extension-connection-list
+      :wallets="wallets"
+      :connected-wallet="evmProvider"
+      :selected-wallet="selectedProvider"
+      :selected-wallet-loading="!!evmProviderLoading"
+      @select="handleSelectProvider"
+    />
   </dialog-base>
 </template>
 
@@ -32,18 +18,12 @@ import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
 import { state } from '@/store/decorators';
 import { Provider } from '@/utils/ethers-util';
 
-type WalletProvider = {
-  name: Provider;
-  icon: any;
-  connected: boolean;
-  loading: boolean;
-};
+import type { WalletInfo } from '@sora-test/wallet-connect/types';
 
 @Component({
   components: {
-    AccountCard: components.AccountCard,
-    ConnectionItems: components.ConnectionItems,
     DialogBase: components.DialogBase,
+    ExtensionConnectionList: components.ExtensionConnectionList,
   },
 })
 export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
@@ -66,39 +46,32 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
     return [Provider.Metamask, Provider.SubWallet, Provider.TrustWallet, Provider.WalletConnect];
   }
 
-  get providers(): WalletProvider[] {
+  get wallets(): WalletInfo[] {
     return Object.keys(Provider)
       .filter((key) => this.allowedProviders.includes(key as Provider))
       .map((key) => {
         const provider = Provider[key];
 
         return {
-          name: provider,
-          icon: this.getEvmProviderIcon(provider),
-          connected: provider === this.evmProvider,
-          loading: provider === this.evmProviderLoading,
+          extensionName: provider,
+          title: provider,
+          chromeUrl: '',
+          mozillaUrl: '',
+          logo: {
+            src: this.getEvmProviderIcon(provider),
+            alt: provider,
+          },
         };
       });
   }
 
-  handleProviderClick(provider: Provider): void {
-    this.connectEvmProvider(provider);
+  get selectedProvider(): Nullable<Provider> {
+    return this.evmProviderLoading ?? this.evmProvider;
+  }
+
+  handleSelectProvider(wallet: WalletInfo): void {
+    this.connectEvmProvider(wallet.extensionName as Provider);
     this.visibility = false;
   }
 }
 </script>
-
-<style lang="scss">
-.provider-card .account > .account-avatar {
-  border-radius: unset;
-}
-</style>
-
-<style lang="scss" scoped>
-.provider {
-  &-logo {
-    height: var(--s-size-medium);
-    width: var(--s-size-medium);
-  }
-}
-</style>
