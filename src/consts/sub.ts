@@ -75,6 +75,29 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.PolkadotAstar]: {
+    id: SubNetworkId.PolkadotAstar,
+    name: 'Astar',
+    nativeCurrency: {
+      name: 'ASTR',
+      symbol: 'ASTR',
+      decimals: 18,
+    },
+    blockExplorerUrls: ['https://astar.subscan.io'],
+    shortName: 'Astar',
+    nodes: [
+      {
+        chain: 'Astar',
+        name: 'Astar',
+        address: 'wss://rpc.astar.network',
+      },
+      {
+        chain: 'Astar',
+        name: 'Dwellir',
+        address: 'wss://astar-rpc.dwellir.com',
+      },
+    ],
+  },
   [SubNetworkId.Rococo]: {
     id: SubNetworkId.Rococo,
     name: 'Rococo',
@@ -145,6 +168,29 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
         chain: 'SORA Rococo Parachain Testnet',
         name: 'Soramitsu',
         address: 'wss://ws.parachain-collator-1.c1.stg1.sora2.soramitsu.co.jp',
+      },
+    ],
+  },
+  [SubNetworkId.KusamaShiden]: {
+    id: SubNetworkId.KusamaShiden,
+    name: 'Shiden',
+    nativeCurrency: {
+      name: 'SDN',
+      symbol: 'SDN',
+      decimals: 18,
+    },
+    blockExplorerUrls: ['https://shiden.subscan.io'],
+    shortName: 'Shiden',
+    nodes: [
+      {
+        chain: 'Shiden',
+        name: 'Astar',
+        address: 'wss://rpc.shiden.astar.network',
+      },
+      {
+        chain: 'Shiden',
+        name: 'Dwellir',
+        address: 'wss://shiden-rpc.dwellir.com',
       },
     ],
   },
@@ -245,6 +291,12 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
   [SubNetworkId.PolkadotAcala]: {
     ACA: {
       [BridgeTxDirection.Outgoing]: '6429600000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+  },
+  [SubNetworkId.PolkadotAstar]: {
+    ASTR: {
+      [BridgeTxDirection.Outgoing]: '36000000000000000',
       [BridgeTxDirection.Incoming]: '0',
     },
   },

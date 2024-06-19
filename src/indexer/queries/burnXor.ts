@@ -1,6 +1,6 @@
 import { FPNumber } from '@sora-substrate/util';
 import { getCurrentIndexer, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { SubqueryIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
+import { SubqueryIndexer, SubsquidIndexer } from '@soramitsu/soraneo-wallet-web/lib/services/indexer';
 import { gql } from '@urql/core';
 
 import type {
@@ -92,8 +92,8 @@ const dataBeforeIndexing: XorBurn[] = [
   },
 ];
 
-const XorBurnQuery = gql<ConnectionQueryResponse<HistoryElement>>`
-  query ($start: Int = 0, $end: Int = 0, $after: Cursor = "", $first: Int = 100) {
+const SubqueryXorBurnQuery = gql<ConnectionQueryResponse<HistoryElement>>`
+  query XorBurnQuery($start: Int = 0, $end: Int = 0, $after: Cursor = "", $first: Int = 100) {
     data: historyElements(
       first: $first
       after: $after
@@ -104,6 +104,37 @@ const XorBurnQuery = gql<ConnectionQueryResponse<HistoryElement>>`
           { module: { equalTo: "assets" } }
           { method: { equalTo: "burn" } }
           { data: { contains: { assetId: "0x0200000000000000000000000000000000000000000000000000000000000000" } } }
+        ]
+      }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          address
+          data
+          blockHeight
+        }
+      }
+    }
+  }
+`;
+
+const SubsquidXorBurnQuery = gql<ConnectionQueryResponse<HistoryElement>>`
+  query XorBurnQuery($start: Int = 0, $end: Int = 0, $after: String = null, $first: Int = 100) {
+    data: historyElementsConnection(
+      orderBy: id_ASC
+      first: $first
+      after: $after
+      where: {
+        AND: [
+          { blockHeight_gte: $start }
+          { blockHeight_lte: $end }
+          { module_eq: "assets" }
+          { method_eq: "burn" }
+          { data_jsonContains: { assetId: "0x0200000000000000000000000000000000000000000000000000000000000000" } }
         ]
       }
     ) {
@@ -139,11 +170,18 @@ export async function fetchData(start: number, end: number): Promise<XorBurn[]> 
     case IndexerType.SUBQUERY: {
       const variables = { start, end };
       const subqueryIndexer = indexer as SubqueryIndexer;
-      const items = await subqueryIndexer.services.explorer.fetchAllEntities(XorBurnQuery, variables, parse);
+      const items = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryXorBurnQuery, variables, parse);
       return [...(items ?? []), ...dataBeforeIndexing];
     }
     case IndexerType.SUBSQUID: {
-      return [];
+      const variables = { start, end };
+      const subsquidIndexer = indexer as SubsquidIndexer;
+      const items = await subsquidIndexer.services.explorer.fetchAllEntitiesConnection(
+        SubsquidXorBurnQuery,
+        variables,
+        parse
+      );
+      return [...(items ?? []), ...dataBeforeIndexing];
     }
   }
 

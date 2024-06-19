@@ -15,9 +15,6 @@
       </div>
     </div>
     <div v-else class="order-book-widgets">
-      <div class="column-1">
-        <book-charts-widget class="chart-widget" />
-      </div>
       <div class="column-2">
         <set-limit-order-widget class="set-widget" />
         <book-widget class="book-widget" />
@@ -25,6 +22,9 @@
       <div class="column-3">
         <history-order-widget class="history-widget" />
         <market-trades-widget class="trades-widget" />
+      </div>
+      <div class="column-1">
+        <book-charts-widget class="chart-widget" />
       </div>
     </div>
   </div>
@@ -242,6 +242,12 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
         }
       }
     }
+    .column-1 {
+      margin-top: $inner-spacing-mini;
+      @include large-desktop {
+        margin-top: var(--s-size-mini);
+      }
+    }
   }
 }
 
@@ -253,6 +259,7 @@ export default class OrderBookView extends Mixins(TranslationMixin, mixins.Loadi
     .column-1 {
       width: 440px;
       margin-right: $inner-spacing-mini;
+      margin-top: 0;
     }
 
     .column-2 {

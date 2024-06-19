@@ -34,7 +34,6 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
   @state.moonpay.bridgeTransactionData bridgeTransactionData!: Nullable<EthHistory>;
   @state.web3.ethBridgeEvmNetwork ethBridgeEvmNetwork!: EvmNetwork;
   @state.wallet.settings.soraNetwork soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @state.wallet.account.address soraAccountAddress!: string;
   @state.assets.registeredAssets private registeredAssets!: Record<string, BridgeRegisteredAsset>;
 
   @getter.settings.moonpayApiKey moonpayApiKey!: string;
@@ -160,7 +159,7 @@ export default class MoonpayBridgeInitMixin extends Mixins(BridgeHistoryMixin, W
         this.contractAddress,
         ethTransferData.amount,
         false,
-        this.soraAccountAddress,
+        this.soraAddress,
         ethTransferData.to
       );
 

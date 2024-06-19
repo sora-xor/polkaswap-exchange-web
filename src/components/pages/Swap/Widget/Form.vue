@@ -65,7 +65,7 @@
         v-if="!isLoggedIn"
         type="primary"
         class="action-button s-typography-button--large"
-        @click="handleConnectWallet"
+        @click="connectSoraWallet"
       >
         {{ t('connectWalletText') }}
       </s-button>
@@ -136,10 +136,10 @@ import { api, components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import TokenSelectMixin from '@/components/mixins/TokenSelectMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, MarketAlgorithms, PageNames } from '@/consts';
-import router, { lazyComponent } from '@/router';
+import { Components, MarketAlgorithms } from '@/consts';
+import { lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import {
   isMaxButtonAvailable,
@@ -178,9 +178,9 @@ import type { Subscription } from 'rxjs';
 export default class SwapFormWidget extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.TransactionMixin,
-  TranslationMixin,
   TokenSelectMixin,
-  ConfirmDialogMixin
+  ConfirmDialogMixin,
+  InternalConnectMixin
 ) {
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
 
@@ -196,7 +196,6 @@ export default class SwapFormWidget extends Mixins(
   @getter.assets.xor private xor!: AccountAsset;
   @getter.swap.swapLiquiditySource liquiditySource!: Nullable<LiquiditySourceTypes>;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.swap.tokenFrom tokenFrom!: Nullable<AccountAsset>;
   @getter.swap.tokenTo tokenTo!: Nullable<AccountAsset>;
   @getter.swap.swapMarketAlgorithm swapMarketAlgorithm!: MarketAlgorithms;
@@ -501,10 +500,6 @@ export default class SwapFormWidget extends Mixins(
     const max = getMaxValue(this.tokenFrom, this.networkFee);
 
     this.handleInputFieldFrom(max);
-  }
-
-  handleConnectWallet(): void {
-    router.push({ name: PageNames.Wallet });
   }
 
   openSelectTokenDialog(isTokenFrom: boolean): void {
