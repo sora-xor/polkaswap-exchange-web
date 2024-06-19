@@ -70,7 +70,7 @@
           <div v-if="sender" class="connect-wallet-panel">
             <s-divider type="tertiary" />
             <bridge-account-panel :address="sender" :name="senderName" :tooltip="getCopyTooltip(isSoraToEvm)">
-              <template #icon v-if="evmProvider">
+              <template #icon v-if="evmProvider && !isSoraToEvm">
                 <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
               </template>
             </bridge-account-panel>
@@ -131,7 +131,7 @@
           <div v-if="recipient" class="connect-wallet-panel">
             <s-divider type="tertiary" />
             <bridge-account-panel :address="recipient" :name="recipientName" :tooltip="getCopyTooltip(!isSoraToEvm)">
-              <template #icon v-if="evmProvider">
+              <template #icon v-if="evmProvider && isSoraToEvm">
                 <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
               </template>
             </bridge-account-panel>
