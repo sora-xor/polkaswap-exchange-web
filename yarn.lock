@@ -1970,8 +1970,7 @@
     "@polkadot/util-crypto" "^10.4.2"
     rxjs "^7.8.0"
 
-"@polkadot/api@11.2.1", "polkadotApi@npm:@polkadot/api@11.2.1":
-  name polkadotApi
+"@polkadot/api@11.2.1":
   version "11.2.1"
   resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-11.2.1.tgz#b19a8e22367703333e71f3613095f76f0dbbca70"
   integrity sha512-NwcWadMt+mrJ3T7RuwpnaIYtH4x0eix+GiKRtLMtIO32uAfhwVyMnqvLtxDxa4XDJ/es2rtSMYG+t0b1BTM+xQ==
@@ -2831,10 +2830,10 @@
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
 
-"@soramitsu/soraneo-wallet-web@1.38.2":
-  version "1.38.2"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.38.2.tgz#b9b830c4d522bb5ba5cb8f5ec1fea5f9249c7053"
-  integrity sha512-+NsOtdrlTnI7tddvVM2ELVCjfXFmVVHvKofQIDAG9PaR4Xmyvi8fZqMPC+00wM7MbDcs/gfp7l6yJPGoqnHiag==
+"@soramitsu/soraneo-wallet-web@1.38.3":
+  version "1.38.3"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.38.3.tgz#b45134de927e6582f81ac3ccd391b212aa6e9796"
+  integrity sha512-nQ9iBDV5ykepxHePBgpHu0xZudDsM0v0sSipaDWj7PcW/lIc34n2agrlu32bV6zbPzgZ1Uo5xd/mX5Rte/rHog==
   dependencies:
     "@polkadot/vue-identicon" "2.12.1"
     "@sora-substrate/util" "1.38.12"
@@ -12130,6 +12129,29 @@ pngjs@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-5.0.0.tgz#e79dd2b215767fd9c04561c01236df960bce7fbb"
   integrity sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==
+
+"polkadotApi@npm:@polkadot/api@11.2.1":
+  version "11.2.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-11.2.1.tgz#b19a8e22367703333e71f3613095f76f0dbbca70"
+  integrity sha512-NwcWadMt+mrJ3T7RuwpnaIYtH4x0eix+GiKRtLMtIO32uAfhwVyMnqvLtxDxa4XDJ/es2rtSMYG+t0b1BTM+xQ==
+  dependencies:
+    "@polkadot/api-augment" "11.2.1"
+    "@polkadot/api-base" "11.2.1"
+    "@polkadot/api-derive" "11.2.1"
+    "@polkadot/keyring" "^12.6.2"
+    "@polkadot/rpc-augment" "11.2.1"
+    "@polkadot/rpc-core" "11.2.1"
+    "@polkadot/rpc-provider" "11.2.1"
+    "@polkadot/types" "11.2.1"
+    "@polkadot/types-augment" "11.2.1"
+    "@polkadot/types-codec" "11.2.1"
+    "@polkadot/types-create" "11.2.1"
+    "@polkadot/types-known" "11.2.1"
+    "@polkadot/util" "^12.6.2"
+    "@polkadot/util-crypto" "^12.6.2"
+    eventemitter3 "^5.0.1"
+    rxjs "^7.8.1"
+    tslib "^2.6.2"
 
 portfinder@^1.0.26:
   version "1.0.32"
