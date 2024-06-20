@@ -1,10 +1,11 @@
 import { FPNumber } from '@sora-substrate/math';
-import { XOR, DAI } from '@sora-substrate/util/build/assets/consts';
+import { XOR, DAI, KUSD } from '@sora-substrate/util/build/assets/consts';
 
 import type { VaultState } from './types';
 
 export const defaultAverageCollateralPrices: Record<string, Nullable<FPNumber>> = {
-  [DAI.address]: FPNumber.ONE,
+  // api.kensetsu.serializeKey cannot be used here
+  [`${DAI.address},${KUSD.address}`]: FPNumber.ONE,
 };
 
 function initialState(): VaultState {
@@ -16,16 +17,19 @@ function initialState(): VaultState {
     closedAccountVaults: [],
     accountVaultsSubscription: null,
     collateralAddress: XOR.address,
+    debtAddress: KUSD.address,
     collateralTokenBalance: null,
-    kusdTokenBalance: null,
+    debtTokenBalance: null,
     averageCollateralPrices: defaultAverageCollateralPrices,
     averageCollateralPriceSubscriptions: {},
     liquidationPenalty: 0,
     borrowTax: 0,
-    borrowTaxSubscription: null,
+    tbcdBorrowTax: 0,
+    karmaBorrowTax: 0,
+    borrowTaxesSubscription: null,
     debtCalculationInterval: null,
-    badDebt: FPNumber.ZERO,
-    badDebtSubscription: null,
+    stablecoinInfos: {},
+    stablecoinInfosSubscription: null,
   };
 }
 

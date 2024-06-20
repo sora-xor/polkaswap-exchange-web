@@ -50,7 +50,7 @@
         <template v-if="isZeroAmount">
           {{ t('buttons.enterAmount') }}
         </template>
-        <template v-else-if="isAmountLessThanMin">NEED TO RESERVE MORE THAN {{ min }}</template>
+        <template v-else-if="isAmountLessThanOne">NEED TO RESERVE MORE THAN 1</template>
         <template v-else-if="isInsufficientBalance">
           {{ t('insufficientBalanceText', { tokenSymbol: burnedAsset.symbol }) }}
         </template>
@@ -94,7 +94,6 @@ export default class BurnDialog extends Mixins(
   @Prop({ type: Object, required: true }) readonly burnedAsset!: Asset;
   @Prop({ type: Number, default: 1_000_000 }) readonly rate!: number;
   @Prop({ type: Number, default: 10_000 }) readonly max!: number;
-  @Prop({ type: Number, default: 1 }) readonly min!: number;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
@@ -143,8 +142,8 @@ export default class BurnDialog extends Mixins(
     return this.getKey(`${this.burnedAsset.symbol}-left`);
   }
 
-  get isAmountLessThanMin(): boolean {
-    return +(this.value || '0') < this.min;
+  get isAmountLessThanOne(): boolean {
+    return +(this.value || '0') < 1;
   }
 
   get formattedWillBeBurned(): string {
@@ -191,7 +190,7 @@ export default class BurnDialog extends Mixins(
   }
 
   get isBurnDisabled(): boolean {
-    return this.loading || this.isZeroAmount || this.isAmountLessThanMin || this.isInsufficientBalance;
+    return this.loading || this.isZeroAmount || this.isAmountLessThanOne || this.isInsufficientBalance;
   }
 
   handleInputField(value: string): void {

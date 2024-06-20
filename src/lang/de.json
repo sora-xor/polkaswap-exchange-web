@@ -157,7 +157,6 @@
         "connectionError": "Beim Verbinden der Wallet ist ein Fehler aufgetreten. Sie können erneut versuchen, das Wallet über {extension} zu verbinden"
     },
     "connection": {
-        "title": "{Sora}-Netzwerk-Konto",
         "text": "Um Vermögenswerte zu verwalten und Transaktionen auf {Sora} zu signieren, muss ein Konto verbunden sein. {Sora} Konten können mithilfe unserer integrierten Wallets oder Browsererweiterungen erstellt und verbunden werden.",
         "noAccounts": "Es wurde kein Konto in deiner {extension} Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora}-Netzwerk-Konto",
         "WalletAssets": "Assets",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivität"
@@ -212,7 +210,8 @@
         "walletAddress": "Wallet-Adresse",
         "delete": "Konto löschen",
         "rename": "Bennene den Account um",
-        "export": "Exportieren Sie .json"
+        "export": "Exportieren Sie .json",
+        "accountTitle": "Konto"
     },
     "history": {
         "clearHistory": "Verlauf löschen",
@@ -903,7 +902,8 @@
         "switchTheme": "Wechseln Sie in den {theme}-Modus",
         "switchLanguage": "Sprache wählen",
         "showDisclaimer": "Haftungsausschluss anzeigen",
-        "hideDisclaimer": "Haftungsausschluss ausblenden"
+        "hideDisclaimer": "Haftungsausschluss ausblenden",
+        "selectCurrency": "Währung wählen"
     },
     "sentText": "Gesendet",
     "learnMoreText": "Mehr erfahren",
@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "Verfügbarer Schuldenbetrag überschritten",
             "insufficientCollateral": "Unzureichendes Kollateral",
             "enterRepayDebt": "Geben Sie die Schuldenzahlung ein",
-            "repayMoreThanDebt": "Schulden überbezahlt"
+            "repayMoreThanDebt": "Schulden überbezahlt",
+            "incorrectCollateral": "Token-Paar wird nicht unterstützt"
         },
         "interest": "Zinsen",
         "interestDescription": "Eine jährliche Gebühr, die auf den aus Ihrem Vault abgehobenen Betrag erhoben wird, berechnet als Prozentsatz. Diese Gebühr kompensiert Risiken und Marktschwankungen.",
@@ -1659,9 +1660,9 @@
         "overallTotalDebtDescription": "Der Gesamtbetrag der derzeit ausstehenden Schulden über alle Positionen auf der {Kensetsu}-Plattform.",
         "overallBadDebt": "Faule Schulden",
         "overallBadDebtDescription": "Der Teil der Schulden, der aufgrund von Zahlungsausfällen der Kreditnehmer oder unzureichender Sicherheiten wahrscheinlich nicht zurückgefordert wird.",
-        "overallBorrowTax": "Kreditsteuer",
-        "overallBorrowTaxDescription": "Eine Gebühr, die auf geliehene Mittel erhoben wird, berechnet als Prozentsatz des geliehenen Betrags. Die Kreditsteuer wird für das Anreizprogramm zum Rückkauf von {KEN}-Tokens verwendet.",
-        "ltvMaxTooltip": "Die maximale Höhe einer Kreditposition, die im Verhältnis zum geschätzten Wert des als Sicherheit verwendeten Vermögens bereitgestellt werden kann."
+        "ltvMaxTooltip": "Die maximale Höhe einer Kreditposition, die im Verhältnis zum geschätzten Wert des als Sicherheit verwendeten Vermögens bereitgestellt werden kann.",
+        "overallAvailable": "Insgesamt verfügbar",
+        "overallAvailableDescription": "Der Gesamtbetrag der auf der {Kensetsu}-Plattform verfügbaren Mittel zur Ausleihe."
     },
     "accountSettings": {
         "title": "Account Einstellungen",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Passwort eingeben",
         "googleOnly": "Nur {Google} -Konten"
+    },
+    "currencyDialog": {
+        "currency": "Währung",
+        "searchPlaceholder": "Suche nach Währungsnamen oder -symbol"
     }
 }

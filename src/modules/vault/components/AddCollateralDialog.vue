@@ -9,7 +9,7 @@
         v-model="collateralValue"
         is-fiat-editable
         :is-max-available="isMaxCollateralAvailable"
-        :token="asset"
+        :token="lockedAsset"
         :balance="collateralAssetBalance"
         :slider-value="collateralValuePercent"
         :disabled="loading"
@@ -19,14 +19,14 @@
       <prev-next-info-line
         :label="t('kensetsu.totalCollateral')"
         :tooltip="t('kensetsu.totalCollateralDescription')"
-        :symbol="collateralSymbol"
+        :symbol="lockedSymbol"
         :prev="formattedPrevDeposit"
         :next="formattedNextDeposit"
       />
       <prev-next-info-line
         :label="t('kensetsu.debtAvailable')"
         :tooltip="t('kensetsu.debtAvailableDescription')"
-        :symbol="kusdSymbol"
+        :symbol="debtSymbol"
         :prev="formattedPrevAvailable"
         :next="formattedNextAvailable"
       />
@@ -102,16 +102,16 @@ export default class AddCollateralDialog extends Mixins(
 
   @Prop({ type: Object, default: ObjectInit }) readonly collateral!: Nullable<Collateral>;
   @Prop({ type: Object, default: ObjectInit }) readonly vault!: Nullable<Vault>;
-  @Prop({ type: Object, default: ObjectInit }) readonly asset!: Nullable<RegisteredAccountAsset>;
+  @Prop({ type: Object, default: ObjectInit }) readonly lockedAsset!: Nullable<RegisteredAccountAsset>;
+  @Prop({ type: Object, default: ObjectInit }) readonly debtAsset!: Nullable<RegisteredAccountAsset>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: Nullable<FPNumber>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevAvailable!: FPNumber;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly averageCollateralPrice!: FPNumber;
   @Prop({ type: Number, default: HundredNumber }) readonly maxLtv!: number;
+  @Prop({ type: Number, default: 0 }) readonly borrowTax!: number;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
-  @state.vault.borrowTax private borrowTax!: number;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
-  @getter.vault.kusdToken private kusdToken!: Nullable<RegisteredAccountAsset>;
 
   collateralValue = '';
 
@@ -152,12 +152,12 @@ export default class AddCollateralDialog extends Mixins(
 
   private get collateralFp(): FPNumber {
     if (this.isCollateralZero) return this.Zero;
-    return this.getFPNumber(this.collateralValue, this.asset?.decimals);
+    return this.getFPNumber(this.collateralValue, this.lockedAsset?.decimals);
   }
 
   get isInsufficientBalance(): boolean {
-    if (!this.asset) return true;
-    return hasInsufficientBalance(this.asset, this.collateralValue, this.networkFee);
+    if (!this.lockedAsset) return true;
+    return hasInsufficientBalance(this.lockedAsset, this.collateralValue, this.networkFee);
   }
 
   get disabled(): boolean {
@@ -165,13 +165,13 @@ export default class AddCollateralDialog extends Mixins(
   }
 
   get collateralAssetBalance(): CodecString {
-    return getAssetBalance(this.asset);
+    return getAssetBalance(this.lockedAsset);
   }
 
   /** If collateral is XOR then we subtract the network fee */
   private get availableCollateralBalanceFp(): FPNumber {
     let availableCollateralBalance = this.getFPNumberFromCodec(this.collateralAssetBalance);
-    if (this.asset?.address === XOR.address) {
+    if (this.lockedAsset?.address === XOR.address) {
       availableCollateralBalance = availableCollateralBalance.sub(this.fpNetworkFee);
       if (availableCollateralBalance.isLtZero()) {
         availableCollateralBalance = this.Zero;
@@ -193,12 +193,12 @@ export default class AddCollateralDialog extends Mixins(
     return percent > HundredNumber ? HundredNumber : percent;
   }
 
-  get kusdSymbol(): string {
-    return this.kusdToken?.symbol ?? '';
+  get debtSymbol(): string {
+    return this.debtAsset?.symbol ?? '';
   }
 
-  get collateralSymbol(): string {
-    return this.asset?.symbol ?? '';
+  get lockedSymbol(): string {
+    return this.lockedAsset?.symbol ?? '';
   }
 
   private get totalCollateralValue(): Nullable<FPNumber> {
@@ -229,7 +229,7 @@ export default class AddCollateralDialog extends Mixins(
 
     let available = maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
 
-    let totalAvailable = this.collateral?.riskParams.hardCap.sub(this.collateral.kusdSupply) ?? this.Zero;
+    let totalAvailable = this.collateral?.riskParams.hardCap.sub(this.collateral.debtSupply) ?? this.Zero;
     totalAvailable = totalAvailable.sub(totalAvailable.mul(this.borrowTax));
 
     available = available.gt(totalAvailable) ? totalAvailable : available;
@@ -292,7 +292,7 @@ export default class AddCollateralDialog extends Mixins(
     } else if (this.isCollateralZero) {
       error = this.t('kensetsu.error.enterCollateral');
     } else if (this.isInsufficientBalance) {
-      error = this.t('insufficientBalanceText', { tokenSymbol: this.collateralSymbol });
+      error = this.t('insufficientBalanceText', { tokenSymbol: this.lockedSymbol });
     }
     return error;
   }
@@ -305,8 +305,10 @@ export default class AddCollateralDialog extends Mixins(
     } else {
       try {
         await this.withNotifications(async () => {
-          if (!(this.vault && this.asset)) throw new Error('[api.kensetsu.depositCollateral]: vault or asset is null');
-          await api.kensetsu.depositCollateral(this.vault, this.collateralValue, this.asset);
+          if (!(this.vault && this.lockedAsset)) {
+            throw new Error('[api.kensetsu.depositCollateral]: vault or asset is null');
+          }
+          await api.kensetsu.depositCollateral(this.vault, this.collateralValue, this.lockedAsset);
         });
         this.$emit('confirm');
       } catch (error) {

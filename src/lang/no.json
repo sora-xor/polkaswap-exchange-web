@@ -157,7 +157,6 @@
         "connectionError": "Det oppstod en feil under tilkobling av lommeboken. Du kan prøve å koble til lommeboken via {extension} igjen"
     },
     "connection": {
-        "title": "{Sora} Nettverkskonto",
         "text": "For å administrere eiendeler og signere transaksjoner på {Sora} , må en konto være tilkoblet. {Sora} -kontoer kan opprettes og kobles til ved hjelp av våre integrerte lommebøker eller nettleserutvidelser.",
         "noAccounts": "Finner ingen konto i nettleserutvidelsen {extension}. Legg til en konto, og prøv på nytt.",
         "selectAccount": "Velg kontoen du vil arbeide med",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora} Nettverkskonto",
         "WalletAssets": "Aktiva",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivitet"
@@ -212,7 +210,8 @@
         "walletAddress": "Lommebokadresse",
         "delete": "Slett konto",
         "rename": "Gi nytt navn til kontoen",
-        "export": "Eksporter .json"
+        "export": "Eksporter .json",
+        "accountTitle": "Regnskap"
     },
     "history": {
         "clearHistory": "Slett historikk",
@@ -903,7 +902,8 @@
         "switchTheme": "Bytt til {theme} -modus",
         "switchLanguage": "Velg språk",
         "showDisclaimer": "Vis ansvarsfraskrivelse",
-        "hideDisclaimer": "Skjul ansvarsfraskrivelse"
+        "hideDisclaimer": "Skjul ansvarsfraskrivelse",
+        "selectCurrency": "Velg Valuta"
     },
     "sentText": "Sendt",
     "learnMoreText": "Lær mer",
@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "Tilgjengelig gjeld overskredet",
             "insufficientCollateral": "Utilstrekkelig sikkerhet",
             "enterRepayDebt": "Skriv inn tilbakebetalt gjeld",
-            "repayMoreThanDebt": "Gjeld overbetalt"
+            "repayMoreThanDebt": "Gjeld overbetalt",
+            "incorrectCollateral": "Token-par støttes ikke"
         },
         "interest": "Renter",
         "interestDescription": "Et årlig gebyr belastet på det beløpet som trekkes fra lageret ditt, beregnet som prosentandel. Dette gebyret kompenserer for risikoer og markedsfluktuasjoner.",
@@ -1659,9 +1660,9 @@
         "overallTotalDebtDescription": "Det totale beløpet av gjeld som for tiden er utestående på alle låneposisjoner på {Kensetsu}-plattformen.",
         "overallBadDebt": "Dårlig gjeld",
         "overallBadDebtDescription": "Delen av gjelden som sannsynligvis ikke vil bli innkrevd på grunn av mislighold fra låntaker eller utilstrekkelig sikkerhet.",
-        "overallBorrowTax": "Låneskatt",
-        "overallBorrowTaxDescription": "En avgift belastet på lånte midler, beregnet som en prosentandel av lånebeløpet. Låneskatten brukes til incentivprogrammet for tilbakekjøp av {KEN}-tokens.",
-        "ltvMaxTooltip": "Den maksimale mengden av en lånestilling som kan tilbys i forhold til den vurderte verdien av eiendelen som brukes som sikkerhet."
+        "ltvMaxTooltip": "Den maksimale mengden av en lånestilling som kan tilbys i forhold til den vurderte verdien av eiendelen som brukes som sikkerhet.",
+        "overallAvailable": "Totalt tilgjengelig",
+        "overallAvailableDescription": "Det totale beløpet av midler tilgjengelig for utlån på {Kensetsu}-plattformen."
     },
     "accountSettings": {
         "title": "Kontoinnstillinger",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Oppgi passord",
         "googleOnly": "Bare {Google} -kontoer"
+    },
+    "currencyDialog": {
+        "currency": "Valuta",
+        "searchPlaceholder": "Søk etter valutanavn eller symbol"
     }
 }

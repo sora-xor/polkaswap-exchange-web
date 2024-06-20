@@ -44,7 +44,7 @@
     <div v-else class="order-history-connect-account">
       <div class="order-history-connect-account-button">
         <h4 class="h4">{{ t('orderBook.history.connect') }}</h4>
-        <s-button type="primary" class="btn s-typography-button--medium" @click="connectAccount">
+        <s-button type="primary" class="btn s-typography-button--medium" @click="connectSoraWallet">
           {{ t('connectWalletText') }}
         </s-button>
       </div>
@@ -59,9 +59,9 @@ import { api, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import ConfirmDialogMixin from '@/components/mixins/ConfirmDialogMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, PageNames } from '@/consts';
-import router, { lazyComponent } from '@/router';
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
+import { Components } from '@/consts';
+import { lazyComponent } from '@/router';
 import { state, getter, mutation, action } from '@/store/decorators';
 import { Filter, Cancel } from '@/types/orderBook';
 import { delay } from '@/utils';
@@ -79,7 +79,7 @@ import type { LimitOrder } from '@sora-substrate/util/build/orderBook/types';
 })
 export default class OrderHistoryWidget extends Mixins(
   ConfirmDialogMixin,
-  TranslationMixin,
+  InternalConnectMixin,
   mixins.LoadingMixin,
   mixins.TransactionMixin
 ) {
@@ -88,7 +88,6 @@ export default class OrderHistoryWidget extends Mixins(
 
   // Open Orders utils
   @state.orderBook.userLimitOrders private userLimitOrders!: Array<LimitOrder>;
-  @getter.orderBook.accountAddress accountAddress!: string;
   @getter.orderBook.orderBookId orderBookId!: string;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
   @action.orderBook.subscribeToUserLimitOrders private subscribeToUserLimitOrders!: AsyncFnWithoutArgs;
@@ -98,14 +97,13 @@ export default class OrderHistoryWidget extends Mixins(
   @mutation.orderBook.setOrdersToBeCancelled private setOrdersToBeCancelled!: (orders: LimitOrder[]) => void;
   // Additional utils
   @getter.orderBook.currentOrderBook private currentOrderBook!: Nullable<OrderBook>;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   currentFilter = Filter.open;
   openOrdersLoading = false;
 
   // Widget subscription for user limit orders
   @Watch('orderBookId', { immediate: true })
-  @Watch('accountAddress')
+  @Watch('soraAddress')
   @Watch('nodeIsConnected')
   private async updateSubscription(): Promise<void> {
     this.openOrdersLoading = true;
@@ -150,10 +148,6 @@ export default class OrderHistoryWidget extends Mixins(
 
   get isCancelMultipleInactive(): boolean {
     return this.loading || this.isBookStopped || !this.hasSelectedForCancellation;
-  }
-
-  connectAccount(): void {
-    router.push({ name: PageNames.Wallet });
   }
 
   switchFilter(filter: Filter): void {

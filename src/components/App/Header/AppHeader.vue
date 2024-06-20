@@ -10,10 +10,11 @@
       </s-button>
     </div>
     <div class="app-controls s-flex">
-      <app-account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
+      <app-account-button :disabled="loading" @click="navigateToWallet" />
       <app-header-menu />
     </div>
     <select-language-dialog />
+    <select-currency-dialog />
   </header>
 </template>
 
@@ -22,7 +23,7 @@ import { XOR, ETH } from '@sora-substrate/util/build/assets/consts';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import WalletConnectMixin from '../../../components/mixins/WalletConnectMixin';
+import InternalConnectMixin from '../../../components/mixins/InternalConnectMixin';
 import PolkaswapLogo from '../../../components/shared/Logo/Polkaswap.vue';
 import { PageNames, Components, BreakpointClass } from '../../../consts';
 import { lazyComponent, goTo } from '../../../router';
@@ -43,11 +44,12 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     AppHeaderMenu,
     AppLogoButton,
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
+    SelectCurrencyDialog: lazyComponent(Components.SelectCurrencyDialog),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     WalletAvatar: components.WalletAvatar,
   },
 })
-export default class AppHeader extends Mixins(WalletConnectMixin) {
+export default class AppHeader extends Mixins(InternalConnectMixin) {
   readonly PageNames = PageNames;
   readonly xor = XOR;
   readonly eth = ETH;

@@ -2,7 +2,7 @@
   <dialog-base :title="title" :visible.sync="isVisible" :tooltip="t('kensetsu.closeVaultDescription')">
     <div class="vault-close">
       <div class="vault-close__title s-flex">
-        <pair-token-logo class="vault-close__icon" size="medium" :first-token="kusdToken" :second-token="asset" />
+        <pair-token-logo class="vault-close__icon" size="medium" :first-token="debtAsset" :second-token="lockedAsset" />
         <h3>{{ vaultTitle }}</h3>
       </div>
       <info-line
@@ -10,7 +10,7 @@
         :label="t('kensetsu.yourCollateral')"
         :label-tooltip="t('kensetsu.yourCollateralDescription')"
         :value="formattedLockedAmount"
-        :asset-symbol="collateralSymbol"
+        :asset-symbol="lockedSymbol"
         :fiat-value="fiatLockedAmount"
         is-formatted
       />
@@ -19,15 +19,15 @@
         :label="t('kensetsu.yourDebt')"
         :label-tooltip="t('kensetsu.yourDebtDescription')"
         :value="formattedDebtAmount"
-        :asset-symbol="kusdSymbol"
+        :asset-symbol="debtSymbol"
         :fiat-value="fiatDebt"
         is-formatted
       />
       <info-line
         class="vault-close__balance"
-        :label="t('kensetsu.yourDebtTokenBalance', { tokenSymbol: kusdSymbol })"
+        :label="t('kensetsu.yourDebtTokenBalance', { tokenSymbol: debtSymbol })"
         :value="formattedDebtAssetBalance"
-        :asset-symbol="kusdSymbol"
+        :asset-symbol="debtSymbol"
         :fiat-value="fiatDebtAssetBalance"
         is-formatted
       />
@@ -49,7 +49,7 @@
           </div>
         </div>
         <p class="vault-close__error-message p3">
-          {{ t('kensetsu.requiredAmountWithSlippageDescription', { tokenSymbol: kusdSymbol, amount: formattedDiff }) }}
+          {{ t('kensetsu.requiredAmountWithSlippageDescription', { tokenSymbol: debtSymbol, amount: formattedDiff }) }}
         </p>
         <s-button type="primary" class="s-typography-button--large vault-close__button" @click.prevent="openSwap">
           <external-link
@@ -113,11 +113,11 @@ export default class CloseVaultDialog extends Mixins(
   readonly swapLink = '/#/swap/XOR/KUSD';
 
   @Prop({ type: Object, default: ObjectInit }) readonly vault!: Nullable<Vault>;
-  @Prop({ type: Object, default: ObjectInit }) readonly asset!: Nullable<RegisteredAccountAsset>;
+  @Prop({ type: Object, default: ObjectInit }) readonly lockedAsset!: Nullable<RegisteredAccountAsset>;
+  @Prop({ type: Object, default: ObjectInit }) readonly debtAsset!: Nullable<RegisteredAccountAsset>;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
-  @getter.vault.kusdToken kusdToken!: Nullable<RegisteredAccountAsset>;
 
   private get xorBalance() {
     return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
@@ -143,17 +143,17 @@ export default class CloseVaultDialog extends Mixins(
     return this.xorBalance.sub(this.fpNetworkFee).isLtZero();
   }
 
-  private get kusdSymbol(): string {
-    return this.kusdToken?.symbol ?? '';
+  private get debtSymbol(): string {
+    return this.debtAsset?.symbol ?? '';
   }
 
-  get collateralSymbol(): string {
-    return this.asset?.symbol ?? '';
+  get lockedSymbol(): string {
+    return this.lockedAsset?.symbol ?? '';
   }
 
   get vaultTitle(): string {
-    if (!(this.kusdSymbol && this.asset)) return '';
-    return `${this.kusdSymbol} / ${this.collateralSymbol}`;
+    if (!(this.debtSymbol && this.lockedSymbol)) return '';
+    return `${this.debtSymbol} / ${this.lockedSymbol}`;
   }
 
   get formattedLockedAmount(): string {
@@ -161,9 +161,9 @@ export default class CloseVaultDialog extends Mixins(
   }
 
   get fiatLockedAmount(): string {
-    if (!(this.vault && this.asset)) return ZeroStringValue;
+    if (!(this.vault && this.lockedAsset)) return ZeroStringValue;
 
-    return this.getFiatAmountByFPNumber(this.vault.lockedAmount, this.asset) ?? ZeroStringValue;
+    return this.getFiatAmountByFPNumber(this.vault.lockedAmount, this.lockedAsset) ?? ZeroStringValue;
   }
 
   private get debt(): FPNumber {
@@ -175,13 +175,13 @@ export default class CloseVaultDialog extends Mixins(
   }
 
   get fiatDebt(): string {
-    if (!this.kusdToken) return ZeroStringValue;
+    if (!this.debtAsset) return ZeroStringValue;
 
-    return this.getFiatAmountByFPNumber(this.debt, this.kusdToken) ?? ZeroStringValue;
+    return this.getFiatAmountByFPNumber(this.debt, this.debtAsset) ?? ZeroStringValue;
   }
 
   private get debtAssetBalanceFp(): FPNumber {
-    return this.getFPNumberFromCodec(getAssetBalance(this.kusdToken) ?? 0, this.kusdToken?.decimals);
+    return this.getFPNumberFromCodec(getAssetBalance(this.debtAsset) ?? 0, this.debtAsset?.decimals);
   }
 
   get formattedDebtAssetBalance(): string {
@@ -189,9 +189,9 @@ export default class CloseVaultDialog extends Mixins(
   }
 
   get fiatDebtAssetBalance(): string {
-    if (!this.kusdToken) return ZeroStringValue;
+    if (!this.debtAsset) return ZeroStringValue;
 
-    return this.getFiatAmountByFPNumber(this.debtAssetBalanceFp, this.kusdToken) ?? ZeroStringValue;
+    return this.getFiatAmountByFPNumber(this.debtAssetBalanceFp, this.debtAsset) ?? ZeroStringValue;
   }
 
   get isInsufficientBalance(): boolean {
@@ -218,9 +218,9 @@ export default class CloseVaultDialog extends Mixins(
   }
 
   get fiatDiffWithSlippage(): string {
-    if (!this.kusdToken) return ZeroStringValue;
+    if (!this.debtAsset) return ZeroStringValue;
 
-    return this.getFiatAmountByFPNumber(this.diffWithSlippage, this.kusdToken) ?? ZeroStringValue;
+    return this.getFiatAmountByFPNumber(this.diffWithSlippage, this.debtAsset) ?? ZeroStringValue;
   }
 
   get disabled(): boolean {
@@ -232,7 +232,7 @@ export default class CloseVaultDialog extends Mixins(
     if (this.isInsufficientXorForFee) {
       error = this.t('insufficientBalanceText', { tokenSymbol: this.xorSymbol });
     } else if (this.isInsufficientBalance) {
-      error = this.t('insufficientBalanceText', { tokenSymbol: this.kusdSymbol });
+      error = this.t('insufficientBalanceText', { tokenSymbol: this.debtSymbol });
     }
     return error;
   }
@@ -249,8 +249,10 @@ export default class CloseVaultDialog extends Mixins(
     } else {
       try {
         await this.withNotifications(async () => {
-          if (!(this.vault && this.asset)) throw new Error('[api.kensetsu.closeVault]: vault or asset is null');
-          await api.kensetsu.closeVault(this.vault, this.asset);
+          if (!(this.vault && this.lockedAsset && this.debtAsset)) {
+            throw new Error('[api.kensetsu.closeVault]: vault or asset is null');
+          }
+          await api.kensetsu.closeVault(this.vault, this.lockedAsset, this.debtAsset);
         });
       } catch (error) {
         console.error(error);

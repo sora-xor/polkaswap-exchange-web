@@ -157,7 +157,6 @@
         "connectionError": "Hiba történt a pénztárca csatlakoztatása közben. Megpróbálhatja újra csatlakoztatni a pénztárcát a {extension} segítségével"
     },
     "connection": {
-        "title": "{Sora} hálózati fiók",
         "text": "Az eszközök kezeléséhez és a tranzakciók aláírásához a {Sora} webhelyen fiókot kell csatlakoztatni. {Sora} fiókok hozhatók létre és kapcsolhatók össze integrált pénztárcánkkal vagy böngészőbővítményeinkkel.",
         "noAccounts": "Nincs fiók a {extension} böngészőbővítményben. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "selectAccount": "Válaszd ki a használni kívánt fiókot",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora} hálózati fiók",
         "WalletAssets": "Eszközök",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivitás"
@@ -212,7 +210,8 @@
         "walletAddress": "Pénztárca címe",
         "delete": "Fiók törlése",
         "rename": "Fiók átnevezése",
-        "export": ".json exportálása"
+        "export": ".json exportálása",
+        "accountTitle": "fiók"
     },
     "history": {
         "clearHistory": "Előzmények törlése",
@@ -903,7 +902,8 @@
         "switchTheme": "Váltás {theme} módra",
         "switchLanguage": "Nyelv kiválasztása",
         "showDisclaimer": "Felelősségi nyilatkozat megjelenítése",
-        "hideDisclaimer": "Felelősségi nyilatkozat elrejtése"
+        "hideDisclaimer": "Felelősségi nyilatkozat elrejtése",
+        "selectCurrency": "Válassza a Pénznem lehetőséget"
     },
     "sentText": "Küldött",
     "learnMoreText": "Tudj meg többet",
@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "Elérhető adósság meghaladva",
             "insufficientCollateral": "Elégtelen zálog",
             "enterRepayDebt": "Adja meg a visszafizetendő adósság összegét",
-            "repayMoreThanDebt": "Adósság túlfizetve"
+            "repayMoreThanDebt": "Adósság túlfizetve",
+            "incorrectCollateral": "Token pár nem támogatott"
         },
         "interest": "Kamat",
         "interestDescription": "Éves díj, amelyet a trezorból kivont összeg után számolnak fel, százalékban kifejezve. Ez a díj a kockázatokat és a piaci ingadozásokat kompenzálja.",
@@ -1659,9 +1660,9 @@
         "overallTotalDebtDescription": "A {Kensetsu} platform összes hitelpozícióján fennálló adósság teljes összege.",
         "overallBadDebt": "Nem teljesítő adósság",
         "overallBadDebtDescription": "Az adósság azon része, amely várhatóan nem kerül behajtásra az adós nem teljesítése vagy a nem megfelelő biztosíték miatt.",
-        "overallBorrowTax": "Kölcsönzési adó",
-        "overallBorrowTaxDescription": "A kölcsönzött összegek után felszámított díj, amelyet a kölcsönzött összeg százalékában számolnak ki. A kölcsönzési adót a {KEN} tokenek visszavásárlási programjának ösztönzésére használják.",
-        "ltvMaxTooltip": "A kölcsönvételi pozíció maximális összege, amely az eszköz értékének felbecsült értékéhez viszonyítva biztosított lehet."
+        "ltvMaxTooltip": "A kölcsönvételi pozíció maximális összege, amely az eszköz értékének felbecsült értékéhez viszonyítva biztosított lehet.",
+        "overallAvailable": "Összesen elérhető",
+        "overallAvailableDescription": "Az összesen rendelkezésre álló kölcsönözhető pénzösszeg a {Kensetsu} platformon."
     },
     "accountSettings": {
         "title": "FIÓK BEÁLLÍTÁSOK",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Írd be a jelszót",
         "googleOnly": "Csak {Google} -fiókok"
+    },
+    "currencyDialog": {
+        "currency": "Valuta",
+        "searchPlaceholder": "Keresés pénznem neve vagy szimbóluma alapján"
     }
 }
