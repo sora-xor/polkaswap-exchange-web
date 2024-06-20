@@ -42,6 +42,7 @@
         <token-input
           id="bridgeFrom"
           data-test-name="bridgeFrom"
+          with-address
           :balance="firstBalance ? firstBalance.toCodecString() : null"
           :decimals="amountDecimals"
           :disabled="!(areAccountsConnected && isAssetSelected)"
@@ -106,6 +107,7 @@
         <token-input
           id="bridgeTo"
           data-test-name="bridgeTo"
+          with-address
           :balance="secondBalance ? secondBalance.toCodecString() : null"
           :decimals="amountDecimals"
           :disabled="!(areAccountsConnected && isAssetSelected)"
