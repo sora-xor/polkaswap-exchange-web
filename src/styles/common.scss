@@ -55,11 +55,6 @@ $networks: 'sora', 'ethereum', 'ethereum-classic', 'avalanche', 'klaytn', 'polyg
 }
 
 /*________________________________________COMMON LAYOUT________________________________________*/
-// [TODO] fix in wallet: overflow-wrap: anywhere
-.formatted-amount {
-  overflow-wrap: break-word !important;
-}
-
 h3 {
   text-transform: capitalize;
 }
