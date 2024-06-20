@@ -8,7 +8,7 @@ import { Component, Mixins, Prop } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { fetchOrderBookAccountOrders } from '@/indexer/queries/orderBook';
-import { getter } from '@/store/decorators';
+import { getter, state } from '@/store/decorators';
 import { Filter, OrderStatus } from '@/types/orderBook';
 import type { OrderData } from '@/types/orderBook';
 
@@ -25,8 +25,9 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
 export default class OpenOrders extends Mixins(TranslationMixin, mixins.LoadingMixin, mixins.FormattedAmountMixin) {
   @Prop({ default: '', type: String }) filter!: string;
 
+  @state.wallet.account.address accountAddress!: string;
+
   @getter.orderBook.currentOrderBook currentOrderBook!: Nullable<OrderBook>;
-  @getter.orderBook.accountAddress accountAddress!: string;
   @getter.assets.assetDataByAddress public getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
 
   public orders: OrderData[] = [];

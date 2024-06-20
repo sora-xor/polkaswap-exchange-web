@@ -7,7 +7,7 @@ import { defaultAverageCollateralPrices } from './state';
 import type { VaultState } from './types';
 import type { FPNumber } from '@sora-substrate/math';
 import type { AccountBalance } from '@sora-substrate/util/build/assets/types';
-import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
+import type { Collateral, Vault, BorrowTaxes, StablecoinInfo } from '@sora-substrate/util/build/kensetsu/types';
 import type { Subscription } from 'rxjs';
 
 const mutations = defineMutations<VaultState>()({
@@ -53,14 +53,17 @@ const mutations = defineMutations<VaultState>()({
   setCollateralAddress(state, address: string): void {
     state.collateralAddress = address;
   },
+  setDebtAddress(state, address: string): void {
+    state.debtAddress = address;
+  },
   setCollateralTokenBalance(state, balance?: Nullable<AccountBalance>): void {
     state.collateralTokenBalance = balance ?? null;
   },
-  setKusdTokenBalance(state, balance?: Nullable<AccountBalance>): void {
-    state.kusdTokenBalance = balance ?? null;
+  setDebtTokenBalance(state, balance?: Nullable<AccountBalance>): void {
+    state.debtTokenBalance = balance ?? null;
   },
-  setAverageCollateralPrice(state, data: { address: string; price?: Nullable<FPNumber> }): void {
-    state.averageCollateralPrices = { ...state.averageCollateralPrices, [data.address]: data.price };
+  setAverageCollateralPrice(state, data: { key: string; price?: Nullable<FPNumber> }): void {
+    state.averageCollateralPrices = { ...state.averageCollateralPrices, [data.key]: data.price };
   },
   resetAverageCollateralPrices(state): void {
     state.averageCollateralPrices = { ...defaultAverageCollateralPrices };
@@ -85,15 +88,18 @@ const mutations = defineMutations<VaultState>()({
   setLiquidationPenalty(state, penalty: number): void {
     state.liquidationPenalty = penalty;
   },
-  setBorrowTax(state, tax: number): void {
-    state.borrowTax = tax;
+  setBorrowTaxes(state, { borrowTax, karmaBorrowTax, tbcdBorrowTax }: BorrowTaxes): void {
+    // Convert to percentage coefficient
+    state.borrowTax = borrowTax / 100;
+    state.karmaBorrowTax = karmaBorrowTax / 100;
+    state.tbcdBorrowTax = tbcdBorrowTax / 100;
   },
-  setBorrowTaxSubscription(state, subscription: Subscription): void {
-    state.borrowTaxSubscription = subscription;
+  setBorrowTaxesSubscription(state, subscription: Subscription): void {
+    state.borrowTaxesSubscription = subscription;
   },
-  resetBorrowTaxSubscription(state): void {
-    state.borrowTaxSubscription?.unsubscribe();
-    state.borrowTaxSubscription = null;
+  resetBorrowTaxesSubscription(state): void {
+    state.borrowTaxesSubscription?.unsubscribe();
+    state.borrowTaxesSubscription = null;
   },
   setDebtCalculationInterval(state, interval: ReturnType<typeof setInterval>): void {
     state.debtCalculationInterval = interval;
@@ -104,15 +110,15 @@ const mutations = defineMutations<VaultState>()({
     }
     state.debtCalculationInterval = null;
   },
-  setBadDebt(state, debt: FPNumber): void {
-    state.badDebt = debt;
+  setStablecoinInfos(state, stablecoinInfos: Record<string, StablecoinInfo>): void {
+    state.stablecoinInfos = { ...stablecoinInfos };
   },
-  setBadDebtSubscription(state, subscription: Subscription): void {
-    state.badDebtSubscription = subscription;
+  setStablecoinInfosSubscription(state, subscription: Subscription): void {
+    state.stablecoinInfosSubscription = subscription;
   },
-  resetBadDebtSubscription(state): void {
-    state.badDebtSubscription?.unsubscribe();
-    state.badDebtSubscription = null;
+  resetStablecoinInfosSubscription(state): void {
+    state.stablecoinInfosSubscription?.unsubscribe();
+    state.stablecoinInfosSubscription = null;
   },
 });
 

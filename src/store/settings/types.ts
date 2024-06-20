@@ -6,8 +6,9 @@ import type { Subscription } from 'rxjs';
 export type Ad = {
   title: string;
   img: string;
-  backgroundColor?: string;
   link: string;
+  backgroundColor?: string;
+  right?: string;
 };
 
 export type FeatureFlags = {
@@ -34,6 +35,7 @@ export type SettingsState = {
   selectNodeDialogVisibility: boolean;
   selectIndexerDialogVisibility: boolean;
   selectLanguageDialogVisibility: boolean;
+  selectCurrencyDialogVisibility: boolean;
   disclaimerVisibility: boolean;
   alertSettingsVisibility: boolean;
   browserNotifPopupVisibility: boolean;

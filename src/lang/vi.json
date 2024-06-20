@@ -157,7 +157,6 @@
         "connectionError": "Đã xảy ra lỗi khi kết nối ví. Bạn có thể thử kết nối lại ví qua {extension}"
     },
     "connection": {
-        "title": "Tài khoản Mạng {Sora}",
         "text": "Để quản lý tài sản và ký giao dịch trên {Sora} , tài khoản phải được kết nối. Tài khoản {Sora} có thể được tạo và kết nối bằng ví tích hợp hoặc tiện ích mở rộng trình duyệt của chúng tôi.",
         "noAccounts": "Không có tài khoản nào trong tiện ích (extension) {extension} của bạn. Vui lòng thêm tài khoản và thử lại.",
         "selectAccount": "Chọn tài khoản để dùng",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Tài khoản Mạng {Sora}",
         "WalletAssets": "Tài sản",
         "createToken": "@:createTokenText",
         "WalletHistory": "Hoạt động"
@@ -212,7 +210,8 @@
         "walletAddress": "Địa chỉ ví",
         "delete": "Xóa tài khoản",
         "rename": "Đổi tên tài khoản",
-        "export": "Xuất .json"
+        "export": "Xuất .json",
+        "accountTitle": "Tài khoản"
     },
     "history": {
         "clearHistory": "Xóa lịch sử",
@@ -903,7 +902,8 @@
         "switchTheme": "Chuyển sang chế độ {theme}",
         "switchLanguage": "Chọn ngôn ngữ",
         "showDisclaimer": "Hiển thị tuyên bố miễn trừ trách nhiệm",
-        "hideDisclaimer": "Ẩn tuyên bố từ chối trách nhiệm"
+        "hideDisclaimer": "Ẩn tuyên bố từ chối trách nhiệm",
+        "selectCurrency": "Chọn tiền tệ"
     },
     "sentText": "Đã gửi",
     "learnMoreText": "Tìm hiểu thêm",
@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "Nợ có sẵn vượt quá",
             "insufficientCollateral": "Tài sản đảm bảo không đủ",
             "enterRepayDebt": "Nhập số tiền trả nợ",
-            "repayMoreThanDebt": "Nợ trả quá"
+            "repayMoreThanDebt": "Nợ trả quá",
+            "incorrectCollateral": "Cặp mã thông báo không được hỗ trợ"
         },
         "interest": "Lãi suất",
         "interestDescription": "Một khoản phí hàng năm tính trên số tiền đã rút ra từ két của bạn, được tính dưới dạng phần trăm. Phí này bù đắp cho các rủi ro và biến động của thị trường.",
@@ -1659,9 +1660,9 @@
         "overallTotalDebtDescription": "Tổng số nợ hiện đang nợ trên tất cả các vị thế vay trên nền tảng {Kensetsu}.",
         "overallBadDebt": "Nợ xấu",
         "overallBadDebtDescription": "Phần của nợ mà có khả năng không thể thu lại do sự vỡ nợ của người vay hoặc tài sản đảm bảo không đủ.",
-        "overallBorrowTax": "Thuế vay",
-        "overallBorrowTaxDescription": "Một khoản phí được thu trên số tiền vay, được tính dựa trên một phần trăm của số tiền vay. Thuế vay được sử dụng trong chương trình khích lệ mua lại token {KEN}.",
-        "ltvMaxTooltip": "Số tiền tối đa của một vị thế vay mà có thể được cung cấp liên quan đến giá trị định giá của tài sản được sử dụng làm tài sản thế chấp."
+        "ltvMaxTooltip": "Số tiền tối đa của một vị thế vay mà có thể được cung cấp liên quan đến giá trị định giá của tài sản được sử dụng làm tài sản thế chấp.",
+        "overallAvailable": "Tổng cộng có sẵn",
+        "overallAvailableDescription": "Tổng số tiền có sẵn để vay trên nền tảng {Kensetsu}."
     },
     "accountSettings": {
         "title": "Thiết lập tài khoản",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Nhập mật khẩu",
         "googleOnly": "Chỉ tài khoản {Google}"
+    },
+    "currencyDialog": {
+        "currency": "Tiền tệ",
+        "searchPlaceholder": "Tìm kiếm theo tên hoặc ký hiệu tiền tệ"
     }
 }

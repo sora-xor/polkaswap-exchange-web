@@ -157,7 +157,6 @@
         "connectionError": "Дошло је до грешке при повезивању новчаника. Можете поново да покушате да повежете новчаник преко {extension}"
     },
     "connection": {
-        "title": "Рачун мреже {Sora}",
         "text": "Da biste upravljali sredstvima i potpisali transakcije na {Sora}, nalog mora biti povezan. {Sora} nalozi se mogu kreirati i povezati pomoću naših integrisanih novčanika ili proširenja pregledača.",
         "noAccounts": "Није пронађен ниједан рачун у екстензију прегледача {extension} . Додајте рачун и покушајте поново.",
         "selectAccount": "Изаберите рачун са којим ћете радити",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Рачун мреже {Sora}",
         "WalletAssets": "Средства",
         "createToken": "@:createTokenText",
         "WalletHistory": "Активност"
@@ -212,7 +210,8 @@
         "walletAddress": "Адреса новчаника",
         "delete": "Обрисати налог",
         "rename": "Преименујте налог",
-        "export": "Извези .јсон"
+        "export": "Извези .јсон",
+        "accountTitle": "Рачун"
     },
     "history": {
         "clearHistory": "Очистите историју",
@@ -903,7 +902,8 @@
         "switchTheme": "Пребаците се на {theme} mод",
         "switchLanguage": "Изаберите језик",
         "showDisclaimer": "Схов Дисцлаимер",
-        "hideDisclaimer": "Сакриј одрицање одговорности"
+        "hideDisclaimer": "Сакриј одрицање одговорности",
+        "selectCurrency": "Изаберите Валута"
     },
     "sentText": "Poslato",
     "learnMoreText": "Сазнајте више",
@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "Dostupni dug premašen",
             "insufficientCollateral": "Недовољно залога",
             "enterRepayDebt": "Унесите износ за погашење дуга",
-            "repayMoreThanDebt": "Dug preplaćen"
+            "repayMoreThanDebt": "Dug preplaćen",
+            "incorrectCollateral": "Par tokena nije podržan"
         },
         "interest": "Камата",
         "interestDescription": "Годишња накнада наплаћена на износ извучен из вашег сефа, израчуната као проценат. Ова накнада накнађује ризике и тржишне флуктуације.",
@@ -1659,9 +1660,9 @@
         "overallTotalDebtDescription": "Ukupan iznos duga koji trenutno ostaje neplaćen u svim pozicijama zaduživanja na platformi {Kensetsu}.",
         "overallBadDebt": "Loš dug",
         "overallBadDebtDescription": "Deo duga koji je verovatno neće biti naplaćen zbog nesposobnosti pozajmljivača ili nedovoljnog obezbeđenja.",
-        "overallBorrowTax": "Porez na zaduživanje",
-        "overallBorrowTaxDescription": "Naknada naplaćena na pozajmljeni novac, izračunata kao procenat pozajmljenog iznosa. Porez na zaduživanje koristi se u programu podsticaja otkupa tokena {KEN}.",
-        "ltvMaxTooltip": "Maksimalni iznos pozajmice koji se može pružiti u odnosu na procenjenu vrednost imovine koja se koristi kao kolateral."
+        "ltvMaxTooltip": "Maksimalni iznos pozajmice koji se može pružiti u odnosu na procenjenu vrednost imovine koja se koristi kao kolateral.",
+        "overallAvailable": "Ukupno dostupno",
+        "overallAvailableDescription": "Ukupna suma sredstava dostupnih za pozajmljivanje na platformi {Kensetsu}."
     },
     "accountSettings": {
         "title": "ПОДЕШАВАЊА РАЧУНА",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Унесите лозинку",
         "googleOnly": "Само {Google} налози"
+    },
+    "currencyDialog": {
+        "currency": "Валута",
+        "searchPlaceholder": "Претражујте по називу валуте или симболу"
     }
 }

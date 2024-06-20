@@ -101,6 +101,8 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   @getter.orderBook.currentOrderBook currentOrderBook!: OrderBook;
   @getter.orderBook.orderBookId orderBookId!: string;
   @getter.settings.nodeIsConnected nodeIsConnected!: boolean;
+  @getter.wallet.settings.exchangeRate private exchangeRate!: number;
+  @getter.wallet.settings.currencySymbol private currencySymbol!: string;
 
   @mutation.orderBook.setQuoteValue setQuoteValue!: (value: string) => void;
   @mutation.orderBook.setSide setSide!: (side: PriceVariant) => void;
@@ -221,9 +223,11 @@ export default class BookWidget extends Mixins(TranslationMixin, mixins.LoadingM
   get fiatValue(): string {
     if (!this.quoteAsset) return ZeroStringValue;
 
-    const fiat = this.getFiatAmount(this.lastDealPrice.toString(), this.quoteAsset);
+    const fiatUsd = this.getFiatAmount(this.lastDealPrice.toString(), this.quoteAsset) || '0';
 
-    return fiat ? `$${fiat}` : '';
+    const currentFiat = new FPNumber(fiatUsd).mul(this.exchangeRate).toLocaleString();
+
+    return currentFiat ? `${this.currencySymbol}${currentFiat}` : '';
   }
 
   getComputedClassTrend(): string {
@@ -439,6 +443,8 @@ $mono-font: 'JetBrainsMono';
       margin-left: $inner-spacing-big;
       font-size: var(--s-font-size-big);
       font-weight: 450;
+      unicode-bidi: bidi-override;
+      direction: ltr;
     }
 
     .trend-icon {

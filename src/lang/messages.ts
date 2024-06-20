@@ -149,6 +149,7 @@ export default {
     settings: 'Settings',
     switchTheme: 'Switch to {theme} Mode',
     switchLanguage: 'Choose Language',
+    selectCurrency: 'Select Currency',
     showDisclaimer: 'Show Disclaimer',
     hideDisclaimer: 'Hide Disclaimer',
   },
@@ -172,6 +173,10 @@ export default {
     privacyPolicy: 'Privacy Policy',
     appVersion: '{AppName} version',
     contactUs: 'Contact us',
+  },
+  currencyDialog: {
+    currency: 'Currency',
+    searchPlaceholder: 'Search by currency name or symbol',
   },
   aboutNetworkDialog: {
     title: 'About',
@@ -1287,9 +1292,8 @@ export default {
     overallBadDebt: 'Bad debt',
     overallBadDebtDescription:
       'The portion of debt that is unlikely to be recovered due to borrower default or insufficient collateral.',
-    overallBorrowTax: 'Borrow tax',
-    overallBorrowTaxDescription:
-      'A fee charged on borrowed funds, calculated as a percentage of the borrowed amount. Borrow tax is used for the incentivization program of buyback {KEN} tokens.',
+    overallAvailable: 'Total available',
+    overallAvailableDescription: 'The total amount of funds available for borrowing on the {Kensetsu} platform.',
     error: {
       enterCollateral: 'Enter collateral',
       enterBorrow: 'Enter borrow amount',
@@ -1297,6 +1301,7 @@ export default {
       insufficientCollateral: 'Insufficient collateral',
       enterRepayDebt: 'Enter repay debt',
       repayMoreThanDebt: 'Debt overpaid',
+      incorrectCollateral: 'Token pair is not supported',
     },
   },
 };

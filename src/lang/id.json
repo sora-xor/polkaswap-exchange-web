@@ -157,7 +157,6 @@
         "connectionError": "Terjadi kesalahan saat menghubungkan dompet. Anda dapat mencoba menyambungkan dompet melalui {extension} lagi"
     },
     "connection": {
-        "title": "Akun Jaringan {Sora}",
         "text": "Untuk mengelola aset dan menandatangani transaksi di {Sora} , akun harus terhubung. Akun {Sora} dapat dibuat dan dihubungkan menggunakan dompet terintegrasi atau ekstensi browser kami.",
         "noAccounts": "Tidak ada akun yang ditemukan di ekstensi browser {extension} anda. Silakan tambahkan akun, lalu coba kembali.",
         "selectAccount": "Pilih akun untuk dikerjakan",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Akun Jaringan {Sora}",
         "WalletAssets": "Aset",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivitas"
@@ -212,7 +210,8 @@
         "walletAddress": "Alamat dompet",
         "delete": "Hapus akun",
         "rename": "Ganti nama akun",
-        "export": "Ekspor .json"
+        "export": "Ekspor .json",
+        "accountTitle": "Akun"
     },
     "history": {
         "clearHistory": "Bersihkan riwayat",
@@ -903,7 +902,8 @@
         "switchTheme": "Beralih ke Mode {theme}",
         "switchLanguage": "Pilih bahasa",
         "showDisclaimer": "Tampilkan Penafian",
-        "hideDisclaimer": "Sembunyikan Penafian"
+        "hideDisclaimer": "Sembunyikan Penafian",
+        "selectCurrency": "Pilih Mata Uang"
     },
     "sentText": "Terkirim",
     "learnMoreText": "Pelajari lebih lanjut",
@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "Dana yang tersedia melebihi",
             "insufficientCollateral": "Agunan tidak mencukupi",
             "enterRepayDebt": "Masukkan hutang yang harus dilunasi",
-            "repayMoreThanDebt": "Utang terbayar lebih"
+            "repayMoreThanDebt": "Utang terbayar lebih",
+            "incorrectCollateral": "Pasangan token tidak didukung"
         },
         "interest": "Bunga",
         "interestDescription": "Biaya tahunan yang dibebankan pada jumlah yang ditarik dari vault Anda, dihitung sebagai persentase. Biaya ini mengkompensasi risiko dan fluktuasi pasar.",
@@ -1659,9 +1660,9 @@
         "overallTotalDebtDescription": "Jumlah total utang yang saat ini belum dilunasi di semua posisi pinjaman di platform {Kensetsu}.",
         "overallBadDebt": "Utang macet",
         "overallBadDebtDescription": "Bagian dari utang yang kemungkinan besar tidak akan dipulihkan karena gagal bayar oleh peminjam atau jaminan yang tidak mencukupi.",
-        "overallBorrowTax": "Pajak pinjaman",
-        "overallBorrowTaxDescription": "Biaya yang dikenakan pada dana yang dipinjam, dihitung sebagai persentase dari jumlah pinjaman. Pajak pinjaman digunakan untuk program insentif pembelian kembali token {KEN}.",
-        "ltvMaxTooltip": "Jumlah maksimum posisi pinjaman yang dapat disediakan sehubungan dengan nilai yang dinilai dari aset yang digunakan sebagai jaminan."
+        "ltvMaxTooltip": "Jumlah maksimum posisi pinjaman yang dapat disediakan sehubungan dengan nilai yang dinilai dari aset yang digunakan sebagai jaminan.",
+        "overallAvailable": "Total tersedia",
+        "overallAvailableDescription": "Jumlah total dana yang tersedia untuk dipinjam di platform {Kensetsu}."
     },
     "accountSettings": {
         "title": "Pengaturan akun",
@@ -1678,5 +1679,9 @@
         },
         "enterPassword": "Masukan kata sandi",
         "googleOnly": "Khusus akun {Google}"
+    },
+    "currencyDialog": {
+        "currency": "Mata uang",
+        "searchPlaceholder": "Cari berdasarkan nama atau simbol mata uang"
     }
 }

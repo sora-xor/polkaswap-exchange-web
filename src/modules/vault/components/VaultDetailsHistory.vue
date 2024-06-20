@@ -47,6 +47,7 @@ import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/t
   },
 })
 export default class VaultDetailsHistory extends Mixins(TranslationMixin, IndexerDataFetchMixin) {
+  private readonly HiddenValue = WALLET_CONSTS.HiddenValue;
   /** Date format without seconds */
   readonly DateFormat = 'll LT';
 
@@ -117,6 +118,10 @@ export default class VaultDetailsHistory extends Mixins(TranslationMixin, Indexe
     }
   }
 
+  private getAmount(hidden: boolean, item: VaultEvent): string {
+    return hidden ? this.HiddenValue : item.amount?.toLocaleString() ?? '';
+  }
+
   getOperationMessage(item: VaultEvent): string {
     const hidden = this.shouldBalanceBeHidden;
     switch (item.type) {
@@ -133,22 +138,22 @@ export default class VaultDetailsHistory extends Mixins(TranslationMixin, Indexe
       case VaultEventTypes.DebtIncreased:
         return this.t('operations.finalized.BorrowVaultDebt', {
           symbol: this.debtAssetSymbol,
-          amount: hidden ? WALLET_CONSTS.HiddenValue : item.amount?.toLocaleString(),
+          amount: this.getAmount(hidden, item),
         });
       case VaultEventTypes.CollateralDeposit:
         return this.t('operations.finalized.DepositCollateral', {
           symbol: this.lockedAssetSymbol,
-          amount: hidden ? WALLET_CONSTS.HiddenValue : item.amount?.toLocaleString(),
+          amount: this.getAmount(hidden, item),
         });
       case VaultEventTypes.DebtPayment:
         return this.t('operations.finalized.RepayVaultDebt', {
           symbol: this.debtAssetSymbol,
-          amount: hidden ? WALLET_CONSTS.HiddenValue : item.amount?.toLocaleString(),
+          amount: this.getAmount(hidden, item),
         });
       case VaultEventTypes.Liquidated:
         return this.t('kensetsu.liquidatedMessage', {
           symbol: this.lockedAssetSymbol,
-          amount: hidden ? WALLET_CONSTS.HiddenValue : item.amount?.toLocaleString(),
+          amount: this.getAmount(hidden, item),
         });
       default:
         return '';

@@ -153,5 +153,9 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   @include tablet(true) {
     max-width: $inner-window-width;
   }
+
+  @include mobile(true) {
+    max-width: 360px;
+  }
 }
 </style>

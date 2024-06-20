@@ -82,7 +82,7 @@
             type="primary"
             key="disconnected"
             class="s-typography-button--large action-button"
-            @click="handleConnectWallet"
+            @click="connectSoraWallet"
           >
             {{ t('connectWalletText') }}
           </s-button>
@@ -100,10 +100,9 @@
 import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { Components, PageNames, Links } from '@/consts';
-import router, { lazyComponent } from '@/router';
-import { getter } from '@/store/decorators';
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
+import { Components, Links } from '@/consts';
+import { lazyComponent } from '@/router';
 
 import { demeterStakingLazyComponent } from '../../router';
 import { DemeterStakingComponents } from '../consts';
@@ -118,11 +117,9 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
     InfoLine: components.InfoLine,
   },
 })
-export default class PoolCard extends Mixins(PoolCardMixin, TranslationMixin) {
+export default class PoolCard extends Mixins(PoolCardMixin, InternalConnectMixin) {
   @Prop({ default: false, type: Boolean }) readonly border!: boolean;
   @Prop({ default: false, type: Boolean }) readonly showBalance!: boolean;
-
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   readonly link = Links.demeterFarmingPlatform;
 
@@ -142,10 +139,6 @@ export default class PoolCard extends Mixins(PoolCardMixin, TranslationMixin) {
 
   get poolAssetBalanceFiat(): Nullable<string> {
     return this.getFiatAmountByFPNumber(this.poolAssetBalance, this.poolAsset as AccountAsset);
-  }
-
-  handleConnectWallet(): void {
-    router.push({ name: PageNames.Wallet });
   }
 }
 </script>
