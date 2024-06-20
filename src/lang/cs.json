@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "Celková výše aktuálně nesplacených dluhů ve všech pozicích na platformě {Kensetsu}.",
         "overallBadDebt": "Špatný dluh",
         "overallBadDebtDescription": "Část dluhu, která je nepravděpodobně, že bude splacena, kvůli platební neschopnosti dlužníků nebo nedostatečnému kolaterálu.",
+        "ltvMaxTooltip": "Nejvyšší možná výše půjčky, která může být poskytnuta v souvislosti s oceněnou hodnotou aktiva používaného jako zástava.",
         "overallAvailable": "Celkem dostupné",
-        "overallAvailableDescription": "Celková částka dostupná k zapůjčení na platformě {Kensetsu}.",
-        "ltvMaxTooltip": "Nejvyšší možná výše půjčky, která může být poskytnuta v souvislosti s oceněnou hodnotou aktiva používaného jako zástava."
+        "overallAvailableDescription": "Celková částka dostupná k zapůjčení na platformě {Kensetsu}."
     },
     "accountSettings": {
         "title": "Nastavení účtu",

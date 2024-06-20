@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "Le montant total de la dette actuellement en circulation pour toutes les positions de prêt sur la plateforme {Kensetsu}.",
         "overallBadDebt": "Créances irrécouvrables",
         "overallBadDebtDescription": "La part de la dette qui est peu probable d'être récupérée en raison du défaut de paiement des emprunteurs ou d'un collatéral insuffisant.",
+        "ltvMaxTooltip": "La somme maximale d'une position d'emprunt qui peut être fournie par rapport à la valeur estimée de l'actif utilisé comme garantie.",
         "overallAvailable": "Total disponible",
-        "overallAvailableDescription": "Le montant total des fonds disponibles pour emprunter sur la plateforme {Kensetsu}.",
-        "ltvMaxTooltip": "La somme maximale d'une position d'emprunt qui peut être fournie par rapport à la valeur estimée de l'actif utilisé comme garantie."
+        "overallAvailableDescription": "Le montant total des fonds disponibles pour emprunter sur la plateforme {Kensetsu}."
     },
     "accountSettings": {
         "title": "Paramètres du compte",

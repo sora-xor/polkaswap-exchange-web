@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "Tổng số nợ hiện đang nợ trên tất cả các vị thế vay trên nền tảng {Kensetsu}.",
         "overallBadDebt": "Nợ xấu",
         "overallBadDebtDescription": "Phần của nợ mà có khả năng không thể thu lại do sự vỡ nợ của người vay hoặc tài sản đảm bảo không đủ.",
+        "ltvMaxTooltip": "Số tiền tối đa của một vị thế vay mà có thể được cung cấp liên quan đến giá trị định giá của tài sản được sử dụng làm tài sản thế chấp.",
         "overallAvailable": "Tổng cộng có sẵn",
-        "overallAvailableDescription": "Tổng số tiền có sẵn để vay trên nền tảng {Kensetsu}.",
-        "ltvMaxTooltip": "Số tiền tối đa của một vị thế vay mà có thể được cung cấp liên quan đến giá trị định giá của tài sản được sử dụng làm tài sản thế chấp."
+        "overallAvailableDescription": "Tổng số tiền có sẵn để vay trên nền tảng {Kensetsu}."
     },
     "accountSettings": {
         "title": "Thiết lập tài khoản",

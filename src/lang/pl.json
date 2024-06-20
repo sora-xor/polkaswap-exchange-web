@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "Całkowita kwota długu obecnie niewypłacona we wszystkich pozycjach kredytowych na platformie {Kensetsu}.",
         "overallBadDebt": "Zły dług",
         "overallBadDebtDescription": "Część długu, która jest mało prawdopodobna do odzyskania ze względu na niewypłacalność pożyczkobiorcy lub niewystarczające zabezpieczenie.",
+        "ltvMaxTooltip": "Maksymalna kwota pozycji kredytowej, która może być udzielona w związku z oszacowaną wartością aktywów używanych jako zabezpieczenie.",
         "overallAvailable": "Ogółem dostępne",
-        "overallAvailableDescription": "Całkowita kwota dostępnych środków na pożyczki na platformie {Kensetsu}.",
-        "ltvMaxTooltip": "Maksymalna kwota pozycji kredytowej, która może być udzielona w związku z oszacowaną wartością aktywów używanych jako zabezpieczenie."
+        "overallAvailableDescription": "Całkowita kwota dostępnych środków na pożyczki na platformie {Kensetsu}."
     },
     "accountSettings": {
         "title": "USTAWIENIA KONTA",

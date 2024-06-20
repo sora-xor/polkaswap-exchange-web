@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "L'importo totale del debito attualmente in sospeso su tutte le posizioni di prestito sulla piattaforma {Kensetsu}.",
         "overallBadDebt": "Debito inesigibile",
         "overallBadDebtDescription": "La parte del debito che è improbabile che venga recuperata a causa del mancato pagamento da parte del mutuatario o della garanzia insufficiente.",
+        "ltvMaxTooltip": "La quantità massima di una posizione di prestito che può essere fornita in relazione al valore stimato dell'attivo utilizzato come garanzia.",
         "overallAvailable": "Totale disponibile",
-        "overallAvailableDescription": "L'importo totale dei fondi disponibili per il prestito sulla piattaforma {Kensetsu}.",
-        "ltvMaxTooltip": "La quantità massima di una posizione di prestito che può essere fornita in relazione al valore stimato dell'attivo utilizzato come garanzia."
+        "overallAvailableDescription": "L'importo totale dei fondi disponibili per il prestito sulla piattaforma {Kensetsu}."
     },
     "accountSettings": {
         "title": "Impostazioni dell'account",

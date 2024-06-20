@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "Jumlah total utang yang saat ini belum dilunasi di semua posisi pinjaman di platform {Kensetsu}.",
         "overallBadDebt": "Utang macet",
         "overallBadDebtDescription": "Bagian dari utang yang kemungkinan besar tidak akan dipulihkan karena gagal bayar oleh peminjam atau jaminan yang tidak mencukupi.",
+        "ltvMaxTooltip": "Jumlah maksimum posisi pinjaman yang dapat disediakan sehubungan dengan nilai yang dinilai dari aset yang digunakan sebagai jaminan.",
         "overallAvailable": "Total tersedia",
-        "overallAvailableDescription": "Jumlah total dana yang tersedia untuk dipinjam di platform {Kensetsu}.",
-        "ltvMaxTooltip": "Jumlah maksimum posisi pinjaman yang dapat disediakan sehubungan dengan nilai yang dinilai dari aset yang digunakan sebagai jaminan."
+        "overallAvailableDescription": "Jumlah total dana yang tersedia untuk dipinjam di platform {Kensetsu}."
     },
     "accountSettings": {
         "title": "Pengaturan akun",

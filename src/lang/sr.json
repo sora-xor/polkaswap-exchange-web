@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "Ukupan iznos duga koji trenutno ostaje neplaćen u svim pozicijama zaduživanja na platformi {Kensetsu}.",
         "overallBadDebt": "Loš dug",
         "overallBadDebtDescription": "Deo duga koji je verovatno neće biti naplaćen zbog nesposobnosti pozajmljivača ili nedovoljnog obezbeđenja.",
+        "ltvMaxTooltip": "Maksimalni iznos pozajmice koji se može pružiti u odnosu na procenjenu vrednost imovine koja se koristi kao kolateral.",
         "overallAvailable": "Ukupno dostupno",
-        "overallAvailableDescription": "Ukupna suma sredstava dostupnih za pozajmljivanje na platformi {Kensetsu}.",
-        "ltvMaxTooltip": "Maksimalni iznos pozajmice koji se može pružiti u odnosu na procenjenu vrednost imovine koja se koristi kao kolateral."
+        "overallAvailableDescription": "Ukupna suma sredstava dostupnih za pozajmljivanje na platformi {Kensetsu}."
     },
     "accountSettings": {
         "title": "ПОДЕШАВАЊА РАЧУНА",

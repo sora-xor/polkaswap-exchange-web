@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "A {Kensetsu} platform összes hitelpozícióján fennálló adósság teljes összege.",
         "overallBadDebt": "Nem teljesítő adósság",
         "overallBadDebtDescription": "Az adósság azon része, amely várhatóan nem kerül behajtásra az adós nem teljesítése vagy a nem megfelelő biztosíték miatt.",
+        "ltvMaxTooltip": "A kölcsönvételi pozíció maximális összege, amely az eszköz értékének felbecsült értékéhez viszonyítva biztosított lehet.",
         "overallAvailable": "Összesen elérhető",
-        "overallAvailableDescription": "Az összesen rendelkezésre álló kölcsönözhető pénzösszeg a {Kensetsu} platformon.",
-        "ltvMaxTooltip": "A kölcsönvételi pozíció maximális összege, amely az eszköz értékének felbecsült értékéhez viszonyítva biztosított lehet."
+        "overallAvailableDescription": "Az összesen rendelkezésre álló kölcsönözhető pénzösszeg a {Kensetsu} platformon."
     },
     "accountSettings": {
         "title": "FIÓK BEÁLLÍTÁSOK",

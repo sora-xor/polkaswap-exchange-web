@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "Gbigba nípa àwọn òrò ìwọlé ní gbogbo ìdánwò tó dùró fún gbogbo àwọn ìfàjọ fún ilé {Kensetsu}.",
         "overallBadDebt": "Owo ìfọwọsọ",
         "overallBadDebtDescription": "Aabo tí o fẹ́ jẹ́ kikún ló máa rí nítorí ẹsẹ̀ẹsẹ tí ìwòlé ìlúmọ̀ ati tabi àwọn ọjọ́ọdọrù pẹ̀lú ìbẹrẹ.",
+        "ltvMaxTooltip": "Iye ti o pọju ti ipo yiya ti o le pese ni ibatan si iye idiyele ti dukia ti a lo bi alagbera.",
         "overallAvailable": "Lapapọ wa",
-        "overallAvailableDescription": "Lapapọ iye owo ti o wa fun gbigba lori pẹpẹ {Kensetsu}.",
-        "ltvMaxTooltip": "Iye ti o pọju ti ipo yiya ti o le pese ni ibatan si iye idiyele ti dukia ti a lo bi alagbera."
+        "overallAvailableDescription": "Lapapọ iye owo ti o wa fun gbigba lori pẹpẹ {Kensetsu}."
     },
     "accountSettings": {
         "title": "Eto iroyin",

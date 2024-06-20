@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "The total amount of debt currently outstanding across all borrowing positions on the {Kensetsu} platform.",
         "overallBadDebt": "Bad debt",
         "overallBadDebtDescription": "The portion of debt that is unlikely to be recovered due to borrower default or insufficient collateral.",
+        "ltvMaxTooltip": "The maximum amount of a borrowing position that can be provided in relation to the appraised value of the asset being used as collateral.",
         "overallAvailable": "Total available",
-        "overallAvailableDescription": "The total amount of funds available for borrowing on the {Kensetsu} platform.",
-        "ltvMaxTooltip": "The maximum amount of a borrowing position that can be provided in relation to the appraised value of the asset being used as collateral."
+        "overallAvailableDescription": "The total amount of funds available for borrowing on the {Kensetsu} platform."
     },
     "accountSettings": {
         "title": "Account settings",

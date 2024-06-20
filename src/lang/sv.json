@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "Den totala skulden som för närvarande är obetald på alla lånepositioner på {Kensetsu}-plattformen.",
         "overallBadDebt": "Dålig skuld",
         "overallBadDebtDescription": "Delen av skulden som förmodligen inte kommer att återkrävas på grund av låntagarens oförmåga eller otillräcklig säkerhet.",
+        "ltvMaxTooltip": "Den maximala mängden av en låneposition som kan tillhandahållas i förhållande till det värderade värdet av tillgången som används som säkerhet.",
         "overallAvailable": "Totalt tillgängligt",
-        "overallAvailableDescription": "Det totala beloppet av medel som finns tillgängliga för lån på {Kensetsu}-plattformen.",
-        "ltvMaxTooltip": "Den maximala mängden av en låneposition som kan tillhandahållas i förhållande till det värderade värdet av tillgången som används som säkerhet."
+        "overallAvailableDescription": "Det totala beloppet av medel som finns tillgängliga för lån på {Kensetsu}-plattformen."
     },
     "accountSettings": {
         "title": "Kontoinställningar",
