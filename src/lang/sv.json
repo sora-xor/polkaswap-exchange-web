@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "Tillgänglig skuld överskreds",
             "insufficientCollateral": "Otillräcklig säkerhet",
             "enterRepayDebt": "Ange återbetalningsskuld",
-            "repayMoreThanDebt": "Skuld överbetald"
+            "repayMoreThanDebt": "Skuld överbetald",
+            "incorrectCollateral": "Tokenpar stöds inte"
         },
         "interest": "Ränta",
         "interestDescription": "En årlig avgift debiterad på det belopp som dras från ditt valv, beräknat som en procentandel. Denna avgift kompenserar för risker och marknadsfluktuationer.",
@@ -1659,8 +1660,8 @@
         "overallTotalDebtDescription": "Den totala skulden som för närvarande är obetald på alla lånepositioner på {Kensetsu}-plattformen.",
         "overallBadDebt": "Dålig skuld",
         "overallBadDebtDescription": "Delen av skulden som förmodligen inte kommer att återkrävas på grund av låntagarens oförmåga eller otillräcklig säkerhet.",
-        "overallBorrowTax": "Låneskatt",
-        "overallBorrowTaxDescription": "En avgift som tas ut på lånade medel, beräknad som en procentandel av lånebeloppet. Låneskatten används i programmet för uppmuntran av återköp av {KEN}-token.",
+        "overallAvailable": "Totalt tillgängligt",
+        "overallAvailableDescription": "Det totala beloppet av medel som finns tillgängliga för lån på {Kensetsu}-plattformen.",
         "ltvMaxTooltip": "Den maximala mängden av en låneposition som kan tillhandahållas i förhållande till det värderade värdet av tillgången som används som säkerhet."
     },
     "accountSettings": {

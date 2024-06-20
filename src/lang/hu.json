@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "Elérhető adósság meghaladva",
             "insufficientCollateral": "Elégtelen zálog",
             "enterRepayDebt": "Adja meg a visszafizetendő adósság összegét",
-            "repayMoreThanDebt": "Adósság túlfizetve"
+            "repayMoreThanDebt": "Adósság túlfizetve",
+            "incorrectCollateral": "Token pár nem támogatott"
         },
         "interest": "Kamat",
         "interestDescription": "Éves díj, amelyet a trezorból kivont összeg után számolnak fel, százalékban kifejezve. Ez a díj a kockázatokat és a piaci ingadozásokat kompenzálja.",
@@ -1659,8 +1660,8 @@
         "overallTotalDebtDescription": "A {Kensetsu} platform összes hitelpozícióján fennálló adósság teljes összege.",
         "overallBadDebt": "Nem teljesítő adósság",
         "overallBadDebtDescription": "Az adósság azon része, amely várhatóan nem kerül behajtásra az adós nem teljesítése vagy a nem megfelelő biztosíték miatt.",
-        "overallBorrowTax": "Kölcsönzési adó",
-        "overallBorrowTaxDescription": "A kölcsönzött összegek után felszámított díj, amelyet a kölcsönzött összeg százalékában számolnak ki. A kölcsönzési adót a {KEN} tokenek visszavásárlási programjának ösztönzésére használják.",
+        "overallAvailable": "Összesen elérhető",
+        "overallAvailableDescription": "Az összesen rendelkezésre álló kölcsönözhető pénzösszeg a {Kensetsu} platformon.",
         "ltvMaxTooltip": "A kölcsönvételi pozíció maximális összege, amely az eszköz értékének felbecsült értékéhez viszonyítva biztosított lehet."
     },
     "accountSettings": {

@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "La deuda disponible ha sido excedida",
             "insufficientCollateral": "Colateral insuficiente",
             "enterRepayDebt": "Ingrese la cantidad para pagar la deuda",
-            "repayMoreThanDebt": "Deuda sobrepagada"
+            "repayMoreThanDebt": "Deuda sobrepagada",
+            "incorrectCollateral": "Par de tokens no es compatible"
         },
         "interest": "Interés",
         "interestDescription": "Una tarifa anual cobrada sobre la cantidad extraída de su vault, calculada como un porcentaje. Esta tarifa compensa los riesgos y las fluctuaciones del mercado.",
@@ -1659,8 +1660,8 @@
         "overallTotalDebtDescription": "El monto total de la deuda actualmente pendiente en todas las posiciones de préstamo en la plataforma {Kensetsu}.",
         "overallBadDebt": "Deuda incobrable",
         "overallBadDebtDescription": "La parte de la deuda que es poco probable de ser recuperada debido a la morosidad del prestatario o a la falta de colateral suficiente.",
-        "overallBorrowTax": "Impuesto de préstamo",
-        "overallBorrowTaxDescription": "Una tarifa cobrada sobre los fondos prestados, calculada como un porcentaje del monto prestado. El impuesto de préstamo se utiliza para el programa de incentivos de recompra de tokens {KEN}.",
+        "overallAvailable": "Total disponible",
+        "overallAvailableDescription": "La cantidad total de fondos disponibles para préstamos en la plataforma {Kensetsu}.",
         "ltvMaxTooltip": "La cantidad máxima de una posición de préstamo que se puede proporcionar en relación con el valor tasado del activo utilizado como garantía."
     },
     "accountSettings": {

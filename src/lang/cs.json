@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "Dostupný dluh překročen",
             "insufficientCollateral": "Nedostatečná zástava",
             "enterRepayDebt": "Zadejte částku pro splacení dluhu",
-            "repayMoreThanDebt": "Dluh přeplacen"
+            "repayMoreThanDebt": "Dluh přeplacen",
+            "incorrectCollateral": "Pár tokenů není podporován"
         },
         "interest": "Úrok",
         "interestDescription": "Roční poplatek účtovaný z částky vybrané z vašeho trezoru, vypočítaný jako procento. Tento poplatek kompenzuje rizika a tržní fluktuace.",
@@ -1659,8 +1660,8 @@
         "overallTotalDebtDescription": "Celková výše aktuálně nesplacených dluhů ve všech pozicích na platformě {Kensetsu}.",
         "overallBadDebt": "Špatný dluh",
         "overallBadDebtDescription": "Část dluhu, která je nepravděpodobně, že bude splacena, kvůli platební neschopnosti dlužníků nebo nedostatečnému kolaterálu.",
-        "overallBorrowTax": "Daň z půjčky",
-        "overallBorrowTaxDescription": "Poplatek účtovaný na půjčené prostředky, vypočítaný jako procento z vypůjčené částky. Daň z půjčky se používá pro program incentivizace zpětného odkupu tokenů {KEN}.",
+        "overallAvailable": "Celkem dostupné",
+        "overallAvailableDescription": "Celková částka dostupná k zapůjčení na platformě {Kensetsu}.",
         "ltvMaxTooltip": "Nejvyšší možná výše půjčky, která může být poskytnuta v souvislosti s oceněnou hodnotou aktiva používaného jako zástava."
     },
     "accountSettings": {

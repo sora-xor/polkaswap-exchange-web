@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "可用债务超出",
             "insufficientCollateral": "抵押品不足",
             "enterRepayDebt": "输入偿还债务",
-            "repayMoreThanDebt": "偿还的债务过多"
+            "repayMoreThanDebt": "偿还的债务过多",
+            "incorrectCollateral": "代币对不支持"
         },
         "interest": "利息",
         "interestDescription": "从您的保险库中提取的金额收取的年费，以百分比计算。该费用补偿了风险和市场波动。",
@@ -1659,8 +1660,8 @@
         "overallTotalDebtDescription": "当前在 {Kensetsu} 平台上所有借款头寸中尚未偿还的总借款金额。",
         "overallBadDebt": "坏账",
         "overallBadDebtDescription": "由于借款人违约或抵押不足而不太可能收回的债务部分。",
-        "overallBorrowTax": "借款税",
-        "overallBorrowTaxDescription": "对借入资金征收的费用，按借款金额的百分比计算。借款税用于 {KEN} 代币的回购激励计划。",
+        "overallAvailable": "总可用",
+        "overallAvailableDescription": "{Kensetsu} 平台上可借用的资金总额。",
         "ltvMaxTooltip": "根据抵押资产的评估价值提供的借款头寸的最大金额。"
     },
     "accountSettings": {

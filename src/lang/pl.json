@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "Dostępne zadłużenie przekroczone",
             "insufficientCollateral": "Niewystarczające zabezpieczenie",
             "enterRepayDebt": "Wprowadź spłacany dług",
-            "repayMoreThanDebt": "Dług przepłacony"
+            "repayMoreThanDebt": "Dług przepłacony",
+            "incorrectCollateral": "Para tokenów nie jest wspierana"
         },
         "interest": "Odsetki",
         "interestDescription": "Opłata roczna naliczana od wypłaconej kwoty z twojego skarbca, obliczana jako procent. Ta opłata rekompensuje ryzyko i wahania rynkowe.",
@@ -1659,8 +1660,8 @@
         "overallTotalDebtDescription": "Całkowita kwota długu obecnie niewypłacona we wszystkich pozycjach kredytowych na platformie {Kensetsu}.",
         "overallBadDebt": "Zły dług",
         "overallBadDebtDescription": "Część długu, która jest mało prawdopodobna do odzyskania ze względu na niewypłacalność pożyczkobiorcy lub niewystarczające zabezpieczenie.",
-        "overallBorrowTax": "Podatek od pożyczki",
-        "overallBorrowTaxDescription": "Opłata pobierana od pożyczonych środków, obliczana jako procent pożyczonej kwoty. Podatek od pożyczki jest wykorzystywany w programie zachęt do odkupu tokenów {KEN}.",
+        "overallAvailable": "Ogółem dostępne",
+        "overallAvailableDescription": "Całkowita kwota dostępnych środków na pożyczki na platformie {Kensetsu}.",
         "ltvMaxTooltip": "Maksymalna kwota pozycji kredytowej, która może być udzielona w związku z oszacowaną wartością aktywów używanych jako zabezpieczenie."
     },
     "accountSettings": {

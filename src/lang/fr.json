@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "La dette disponible a été dépassée",
             "insufficientCollateral": "Collatéral insuffisant",
             "enterRepayDebt": "Entrez le remboursement de la dette",
-            "repayMoreThanDebt": "Dette surpayée"
+            "repayMoreThanDebt": "Dette surpayée",
+            "incorrectCollateral": "Paire de jetons non prise en charge"
         },
         "interest": "Intérêt",
         "interestDescription": "Une taxe annuelle prélevée sur le montant retiré de votre coffre-fort, calculée en pourcentage. Cette taxe compense les risques et les fluctuations du marché.",
@@ -1659,8 +1660,8 @@
         "overallTotalDebtDescription": "Le montant total de la dette actuellement en circulation pour toutes les positions de prêt sur la plateforme {Kensetsu}.",
         "overallBadDebt": "Créances irrécouvrables",
         "overallBadDebtDescription": "La part de la dette qui est peu probable d'être récupérée en raison du défaut de paiement des emprunteurs ou d'un collatéral insuffisant.",
-        "overallBorrowTax": "Taxe d'emprunt",
-        "overallBorrowTaxDescription": "Une commission prélevée sur les fonds empruntés, calculée en pourcentage du montant emprunté. La taxe d'emprunt est utilisée pour le programme d'incitation au rachat des jetons {KEN}.",
+        "overallAvailable": "Total disponible",
+        "overallAvailableDescription": "Le montant total des fonds disponibles pour emprunter sur la plateforme {Kensetsu}.",
         "ltvMaxTooltip": "La somme maximale d'une position d'emprunt qui peut être fournie par rapport à la valeur estimée de l'actif utilisé comme garantie."
     },
     "accountSettings": {

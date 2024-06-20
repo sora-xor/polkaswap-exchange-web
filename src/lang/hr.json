@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "Dostupan dug premašen",
             "insufficientCollateral": "Nedovoljan kolateral",
             "enterRepayDebt": "Unesite vraćanje duga",
-            "repayMoreThanDebt": "Dug preplaćen"
+            "repayMoreThanDebt": "Dug preplaćen",
+            "incorrectCollateral": "Par tokena nije podržan"
         },
         "interest": "Kamata",
         "interestDescription": "Godišnja naknada naplaćena na iznos povučen iz vašeg sefa, izračunata kao postotak. Ova naknada nadoknađuje rizike i fluktuacije na tržištu.",
@@ -1659,8 +1660,8 @@
         "overallTotalDebtDescription": "Ukupan iznos trenutnog duga na svim pozicijama zaduživanja na platformi {Kensetsu}.",
         "overallBadDebt": "Loš dug",
         "overallBadDebtDescription": "Dio duga koji se vjerojatno neće naplatiti zbog neispunjenja obveza zajmoprimca ili nedostatnog kolaterala.",
-        "overallBorrowTax": "Porez na zaduživanje",
-        "overallBorrowTaxDescription": "Naknada naplaćena na posuđena sredstva, izračunata kao postotak posuđenog iznosa. Porez na zaduživanje koristi se za program poticaja za otkup {KEN} tokena.",
+        "overallAvailable": "Ukupno dostupno",
+        "overallAvailableDescription": "Ukupan iznos sredstava dostupnih za posudbu na platformi {Kensetsu}.",
         "ltvMaxTooltip": "Najveći iznos pozajmljivanja koji se može pružiti u odnosu na procijenjenu vrijednost imovine koja se koristi kao kolateral."
     },
     "accountSettings": {

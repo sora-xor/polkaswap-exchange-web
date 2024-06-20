@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "Owo ti o le ni lọ lori ti wọn tẹlẹ",
             "insufficientCollateral": "Kó iranti to wà",
             "enterRepayDebt": "Tẹ ìdá",
-            "repayMoreThanDebt": "Iye iṣẹrọ ti o tẹlẹ"
+            "repayMoreThanDebt": "Iye iṣẹrọ ti o tẹlẹ",
+            "incorrectCollateral": "Tokun meji ko ni atilẹyin"
         },
         "interest": "Èlòkò",
         "interestDescription": "Ọwọ ọwọọ jìnnà tẹlẹ láti kúrò láti ilé ìdì rẹ, ti wọ́n sì bẹrẹ ní pẹrẹ. Owó yìí jìnnà tẹlẹ ní ìdápadà ìlọsíwájú àti awọn iṣẹ̀tẹ̀ ni òṣìṣẹ̀lú.",
@@ -1659,8 +1660,8 @@
         "overallTotalDebtDescription": "Gbigba nípa àwọn òrò ìwọlé ní gbogbo ìdánwò tó dùró fún gbogbo àwọn ìfàjọ fún ilé {Kensetsu}.",
         "overallBadDebt": "Owo ìfọwọsọ",
         "overallBadDebtDescription": "Aabo tí o fẹ́ jẹ́ kikún ló máa rí nítorí ẹsẹ̀ẹsẹ tí ìwòlé ìlúmọ̀ ati tabi àwọn ọjọ́ọdọrù pẹ̀lú ìbẹrẹ.",
-        "overallBorrowTax": "Iṣẹ́gbẹ̀sẹ̀ ìwọlé",
-        "overallBorrowTaxDescription": "Ọ̀rọ kọkọrọ fún ohun tí ó ti kọjá lára àwọn ohun ìwọlé, ìṣẹ́gbẹ̀sẹ̀ náà ti wà nípa ètò ìwọlé tí kò níì ṣeé fún ẹlẹ́nu lọwọ tó gbọdọwọ àwọn ẹ̀ṣọ tí {KEN}.",
+        "overallAvailable": "Lapapọ wa",
+        "overallAvailableDescription": "Lapapọ iye owo ti o wa fun gbigba lori pẹpẹ {Kensetsu}.",
         "ltvMaxTooltip": "Iye ti o pọju ti ipo yiya ti o le pese ni ibatan si iye idiyele ti dukia ti a lo bi alagbera."
     },
     "accountSettings": {

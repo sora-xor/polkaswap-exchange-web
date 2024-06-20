@@ -1637,7 +1637,8 @@
             "borrowMoreThanAvailable": "Dana yang tersedia melebihi",
             "insufficientCollateral": "Agunan tidak mencukupi",
             "enterRepayDebt": "Masukkan hutang yang harus dilunasi",
-            "repayMoreThanDebt": "Utang terbayar lebih"
+            "repayMoreThanDebt": "Utang terbayar lebih",
+            "incorrectCollateral": "Pasangan token tidak didukung"
         },
         "interest": "Bunga",
         "interestDescription": "Biaya tahunan yang dibebankan pada jumlah yang ditarik dari vault Anda, dihitung sebagai persentase. Biaya ini mengkompensasi risiko dan fluktuasi pasar.",
@@ -1659,8 +1660,8 @@
         "overallTotalDebtDescription": "Jumlah total utang yang saat ini belum dilunasi di semua posisi pinjaman di platform {Kensetsu}.",
         "overallBadDebt": "Utang macet",
         "overallBadDebtDescription": "Bagian dari utang yang kemungkinan besar tidak akan dipulihkan karena gagal bayar oleh peminjam atau jaminan yang tidak mencukupi.",
-        "overallBorrowTax": "Pajak pinjaman",
-        "overallBorrowTaxDescription": "Biaya yang dikenakan pada dana yang dipinjam, dihitung sebagai persentase dari jumlah pinjaman. Pajak pinjaman digunakan untuk program insentif pembelian kembali token {KEN}.",
+        "overallAvailable": "Total tersedia",
+        "overallAvailableDescription": "Jumlah total dana yang tersedia untuk dipinjam di platform {Kensetsu}.",
         "ltvMaxTooltip": "Jumlah maksimum posisi pinjaman yang dapat disediakan sehubungan dengan nilai yang dinilai dari aset yang digunakan sebagai jaminan."
     },
     "accountSettings": {
