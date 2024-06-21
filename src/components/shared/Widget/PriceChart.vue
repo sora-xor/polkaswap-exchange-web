@@ -92,7 +92,7 @@ import {
 } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { PageInfo, SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { PageInfo } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 import type { Currency, CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 
 const USD_SYMBOL = 'USD';
@@ -183,7 +183,9 @@ const ZOOM_ID = 'chartZoom';
 const signific =
   (value: FPNumber) =>
   (positive: string, negative: string, zero: string): string => {
-    return FPNumber.gt(value, FPNumber.ZERO) ? positive : FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
+    if (FPNumber.gt(value, FPNumber.ZERO)) return positive;
+
+    return FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
   };
 
 const formatChange = (value: FPNumber): string => {
@@ -506,9 +508,8 @@ export default class PriceChartWidget extends Mixins(
 
     const priceYAxis = this.yAxisSpec({
       axisLabel: {
-        formatter: (value) => {
-          const currencyValue = new FPNumber(value).mul(this.exchangeRate).toNumber();
-          return formatAmount(currencyValue, this.precision);
+        formatter: (value: number) => {
+          return new FPNumber(value).mul(this.exchangeRate).toLocaleString(this.precision);
         },
         showMaxLabel: false,
         showMinLabel: false,
@@ -553,7 +554,7 @@ export default class PriceChartWidget extends Mixins(
       },
       formatter: (params) => {
         const { data, seriesType } = params[0];
-        const [timestamp, open, close, low, high, volume] = data;
+        const [, open, close, low, high, volume] = data; // [timestamp, open, close, low, high, volume]
         const rows: any[] = [];
 
         if (seriesType === CHART_TYPES.CANDLE) {
@@ -576,8 +577,8 @@ export default class PriceChartWidget extends Mixins(
         }
 
         if (withVolume) {
-          const currencyVolume = new FPNumber(volume).mul(this.exchangeRate).toNumber();
-          rows.push({ title: 'Volume', data: `${this.currencySymbol}${formatAmount(currencyVolume, 2)}` });
+          const currencyVolume = new FPNumber(volume).mul(this.exchangeRate).toLocaleString(2);
+          rows.push({ title: 'Volume', data: `${this.currencySymbol} ${currencyVolume}` });
         }
 
         return `
