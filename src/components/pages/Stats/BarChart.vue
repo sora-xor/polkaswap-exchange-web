@@ -36,6 +36,7 @@ import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
 import { fetchData } from '@/indexer/queries/networkVolume';
 import { lazyComponent } from '@/router';
+import { getter } from '@/store/decorators';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
@@ -80,6 +81,9 @@ const normalizeTo = (sample: ChartData[], difference: number, from: number, to: 
   },
 })
 export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin) {
+  @getter.wallet.settings.exchangeRate private exchangeRate!: number;
+  @getter.wallet.settings.currencySymbol private currencySymbol!: string;
+
   @Prop({ default: false, type: Boolean }) readonly fees!: boolean;
 
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
@@ -119,7 +123,12 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   get amount(): AmountWithSuffix {
-    return formatAmountWithSuffix(this.total);
+    if (this.fees) formatAmountWithSuffix(this.total);
+
+    return {
+      amount: formatAmountWithSuffix(this.total).amount,
+      suffix: formatAmountWithSuffix(this.total.mul(this.exchangeRate)).suffix,
+    };
   }
 
   get priceChange(): FPNumber {
@@ -142,7 +151,7 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
       yAxis: this.yAxisSpec({
         axisLabel: {
           formatter: (value) => {
-            const val = new FPNumber(value);
+            const val = new FPNumber(value).mul(this.exchangeRate);
             const { amount, suffix } = formatAmountWithSuffix(val);
             return `${amount} ${suffix}`;
           },
@@ -153,8 +162,9 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
           const { data } = params[0];
           const [timestamp, value] = data;
           const amount = formatDecimalPlaces(value);
+          const currencyAmount = new FPNumber(formatDecimalPlaces(value)).mul(this.exchangeRate);
 
-          return this.fees ? `${amount} ${XOR.symbol}` : `$ ${amount}`;
+          return this.fees ? `${amount} ${XOR.symbol}` : `${this.currencySymbol} ${currencyAmount}`;
         },
       }),
       series: [

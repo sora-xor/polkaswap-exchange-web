@@ -276,6 +276,7 @@ export default class PriceChartWidget extends Mixins(
   @state.wallet.settings.currency private currency!: Currency;
   @state.wallet.settings.currencies private currencies!: Array<CurrencyFields>;
   @getter.wallet.settings.exchangeRate private exchangeRate!: number;
+  @getter.wallet.settings.currencySymbol private currencySymbol!: string;
 
   @Prop({ default: DexId.XOR, type: Number }) readonly dexId!: DexId;
   @Prop({ default: () => null, type: Object }) readonly baseAsset!: Nullable<AccountAsset>;
@@ -506,7 +507,8 @@ export default class PriceChartWidget extends Mixins(
     const priceYAxis = this.yAxisSpec({
       axisLabel: {
         formatter: (value) => {
-          return formatAmount(value, this.precision);
+          const currencyValue = new FPNumber(value).mul(this.exchangeRate).toNumber();
+          return formatAmount(currencyValue, this.precision);
         },
         showMaxLabel: false,
         showMinLabel: false,
@@ -574,7 +576,8 @@ export default class PriceChartWidget extends Mixins(
         }
 
         if (withVolume) {
-          rows.push({ title: 'Volume', data: `$${formatAmount(volume, 2)}` });
+          const currencyVolume = new FPNumber(volume).mul(this.exchangeRate).toNumber();
+          rows.push({ title: 'Volume', data: `${this.currencySymbol}${formatAmount(currencyVolume, 2)}` });
         }
 
         return `
