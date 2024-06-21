@@ -72,10 +72,7 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   get amount(): AmountWithSuffix {
-    return {
-      amount: formatAmountWithSuffix(this.firstValue).amount,
-      suffix: formatAmountWithSuffix(this.firstValue.mul(this.exchangeRate)).suffix,
-    };
+    return formatAmountWithSuffix(this.firstValue.mul(this.exchangeRate));
   }
 
   get priceChange(): FPNumber {
@@ -105,7 +102,7 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
       tooltip: this.tooltipSpec({
         formatter: (params) => {
           const { data } = params[0];
-          const [timestamp, value] = data;
+          const [, value] = data; // [timestamp, value]
           const currencyValue = new FPNumber(value).mul(this.exchangeRate);
           return `${this.currencySymbol} ${formatDecimalPlaces(currencyValue)}`;
         },
