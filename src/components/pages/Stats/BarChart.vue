@@ -123,12 +123,9 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   get amount(): AmountWithSuffix {
-    if (this.fees) formatAmountWithSuffix(this.total);
+    if (this.fees) formatAmountWithSuffix(this.total); // fees are always in XOR
 
-    return {
-      amount: formatAmountWithSuffix(this.total).amount,
-      suffix: formatAmountWithSuffix(this.total.mul(this.exchangeRate)).suffix,
-    };
+    return formatAmountWithSuffix(this.total.mul(this.exchangeRate)); // amount is in currency
   }
 
   get priceChange(): FPNumber {
@@ -160,11 +157,13 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
       tooltip: this.tooltipSpec({
         formatter: (params) => {
           const { data } = params[0];
-          const [timestamp, value] = data;
-          const amount = formatDecimalPlaces(value);
-          const currencyAmount = new FPNumber(formatDecimalPlaces(value)).mul(this.exchangeRate);
+          const [, value] = data; // [timestamp, value]
 
-          return this.fees ? `${amount} ${XOR.symbol}` : `${this.currencySymbol} ${currencyAmount}`;
+          if (this.fees) {
+            return `${formatDecimalPlaces(value)} ${XOR.symbol}`; // fees are always in XOR
+          }
+          const currencyAmount = new FPNumber(value).mul(this.exchangeRate);
+          return `${this.currencySymbol} ${formatDecimalPlaces(currencyAmount)}`; // amount is in currency
         },
       }),
       series: [
