@@ -10,11 +10,12 @@
       :is-error="isFetchingError"
       @retry="updateData"
     >
-      <formatted-amount class="chart-price" :value="amount.amount" is-fiat-value>
+      <formatted-amount class="chart-price" :value="amount.amount">
+        <template #prefix>{{ currencySymbol }}</template>
         {{ amount.suffix }}
       </formatted-amount>
       <price-change :value="priceChange" />
-      <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
+      <v-chart ref="chart" class="chart" :key="chartKey" :option="chartSpec" autoresize />
     </chart-skeleton>
   </base-widget>
 </template>
@@ -61,6 +62,10 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
 
   created(): void {
     this.updateData();
+  }
+
+  get chartKey(): string {
+    return `chart-${this.currencySymbol}-rate-${this.exchangeRate}`;
   }
 
   get firstValue(): FPNumber {
