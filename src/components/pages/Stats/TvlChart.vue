@@ -65,7 +65,7 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   get chartKey(): string {
-    return `chart-${this.currencySymbol}-rate-${this.exchangeRate}`;
+    return `tvl-chart-${this.currencySymbol}-rate-${this.exchangeRate}`;
   }
 
   get firstValue(): FPNumber {

@@ -347,7 +347,7 @@ export default class PriceChartWidget extends Mixins(
 
   get chartKey(): string | undefined {
     if (this.isTokensPair) return undefined;
-    return `chart-${this.symbol}-rate-${this.exchangeRate}`;
+    return `price-chart-${this.symbol}-rate-${this.exchangeRate}`;
   }
 
   get isLineChart(): boolean {

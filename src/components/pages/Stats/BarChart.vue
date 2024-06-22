@@ -10,15 +10,12 @@
       :is-error="isFetchingError"
       @retry="updateData"
     >
-      <formatted-amount v-if="fees" class="chart-price" :value="amount.amount">
-        {{ amount.suffix }}
-        <template>&nbsp;{{ XOR.symbol }}</template>
-      </formatted-amount>
-      <formatted-amount v-else class="chart-price" :value="amount.amount" is-fiat-value>
+      <formatted-amount class="chart-price" :value="amount.amount">
+        <template #prefix>{{ symbol }}</template>
         {{ amount.suffix }}
       </formatted-amount>
       <price-change :value="priceChange" />
-      <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
+      <v-chart ref="chart" class="chart" :key="chartKey" :option="chartSpec" autoresize />
     </chart-skeleton>
   </base-widget>
 </template>
@@ -100,6 +97,15 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
 
   created(): void {
     this.updateData();
+  }
+
+  get chartKey(): string | undefined {
+    if (this.fees) return undefined;
+    return `bar-chart-${this.currencySymbol}-rate-${this.exchangeRate}`;
+  }
+
+  get symbol(): string {
+    return this.fees ? XOR.symbol : this.currencySymbol;
   }
 
   get title(): string {
