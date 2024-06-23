@@ -558,15 +558,6 @@ ul ul {
   color: var(--s-color-base-content-primary);
 }
 
-// TODO: change outline to box-shadow in UI lib to support Safari also
-.search-input {
-  margin-top: 2px;
-}
-.s-input.neumorphic:focus-within {
-  outline: none !important;
-  box-shadow: 0 0 0 0.9px var(--s-color-outline) !important;
-}
-
 // Disabled button large typography
 .s-typography-button--large.is-disabled {
   font-size: var(--s-font-size-medium) !important;
