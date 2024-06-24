@@ -17,7 +17,7 @@ type XorBurn = {
   blockHeight: number;
 };
 
-const dataBeforeIndexing: XorBurn[] = [
+const dataBeforeSubqueryIndexing: XorBurn[] = [
   // https://sora.subscan.io/extrinsic/0xa072a5c6c0d847cef807e57c303fd60fdde67d8e10b1c080de428ba15b78bdb6
   {
     address: 'cnV21a8zn14wUTuxUK6wy5Fmus8PXaGrsBUchz33MqavYqxHE',
@@ -171,7 +171,7 @@ export async function fetchData(start: number, end: number): Promise<XorBurn[]> 
       const variables = { start, end };
       const subqueryIndexer = indexer as SubqueryIndexer;
       const items = await subqueryIndexer.services.explorer.fetchAllEntities(SubqueryXorBurnQuery, variables, parse);
-      return [...(items ?? []), ...dataBeforeIndexing];
+      return [...(items ?? []), ...dataBeforeSubqueryIndexing];
     }
     case IndexerType.SUBSQUID: {
       const variables = { start, end };
