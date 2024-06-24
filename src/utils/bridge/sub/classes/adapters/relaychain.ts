@@ -7,8 +7,13 @@ import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 export class RelaychainAdapter extends SubAdapter {
+  // overrides SubAdapter; asset is always native relaychain token
+  protected override async getAssetDeposit(asset: RegisteredAsset): Promise<string> {
+    return await this.getExistentialDeposit();
+  }
+
   // overrides SubAdapter
-  protected getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
+  public override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
 
     return this.api.tx.xcmPallet.reserveTransferAssets(
@@ -57,25 +62,22 @@ export class RelaychainAdapter extends SubAdapter {
     );
   }
 
-  /* Throws error until Substrate 5 migration */
-  public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
-    try {
-      return await super.getNetworkFee(asset, sender, recipient);
-    } catch {
-      const toCodec = (fee: number) => new FPNumber(fee, asset.externalDecimals).toCodecString();
-      // Hardcoded values
-      switch (this.subNetwork) {
-        case SubNetworkId.Rococo:
-          return toCodec(0.000125);
-        case SubNetworkId.Alphanet:
-          return toCodec(0.019);
-        case SubNetworkId.Kusama:
-          return toCodec(0.002);
-        case SubNetworkId.Polkadot:
-          return toCodec(0.059);
-        default:
-          return '0';
-      }
+  public override async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
+    /* Throws error until Substrate 5 migration */
+    // return await super.getNetworkFee(asset, sender, recipient);
+    const toCodec = (fee: number) => new FPNumber(fee, asset.externalDecimals).toCodecString();
+    // Hardcoded values
+    switch (this.subNetwork) {
+      case SubNetworkId.Rococo:
+        return toCodec(0.000125);
+      case SubNetworkId.Alphanet:
+        return toCodec(0.019);
+      case SubNetworkId.Kusama:
+        return toCodec(0.002);
+      case SubNetworkId.Polkadot:
+        return toCodec(0.059);
+      default:
+        return '0';
     }
   }
 }

@@ -178,7 +178,7 @@
       type="primary"
       key="disconnected"
       class="action-wallet s-typography-button--large action-button"
-      @click="handleConnectWallet"
+      @click="connectSoraWallet"
     >
       {{ t('connectWalletText') }}
     </s-button>
@@ -217,11 +217,10 @@
 import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { PageNames } from '@/consts';
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { fetchData } from '@/indexer/queries/stakingNominators';
 import router from '@/router';
-import { getter, state, mutation } from '@/store/decorators';
+import { state, mutation } from '@/store/decorators';
 
 import { soraStakingLazyComponent } from '../../router';
 import { SoraStakingComponents, SoraStakingPageNames, StakeDialogMode } from '../consts';
@@ -254,12 +253,10 @@ type MenuItem = {
     FormattedAmountWithFiatValue: components.FormattedAmountWithFiatValue,
   },
 })
-export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, TranslationMixin) {
+export default class Overview extends Mixins(InternalConnectMixin, StakingMixin, mixins.LoadingMixin) {
   @mutation.staking.setTotalNominators setTotalNominators!: (value: number) => void;
 
   @state.staking.totalNominators totalNominators!: number;
-
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   stakeDialogMode: StakeDialogMode = StakeDialogMode.ADD;
 
@@ -385,10 +382,6 @@ export default class Overview extends Mixins(StakingMixin, mixins.LoadingMixin, 
     this.showControllerDialog = false;
   }
 
-  handleConnectWallet(): void {
-    router.push({ name: PageNames.Wallet });
-  }
-
   @Watch('currentEra')
   async fetchNominatorsCount() {
     if (!this.activeEra) {
@@ -482,6 +475,25 @@ p {
 .additional-buttons {
   display: flex;
   margin-top: 4px;
+
+  @include mobile(true) {
+    button {
+      font-size: var(--s-font-size-mini);
+    }
+  }
+}
+
+.withdraw-content {
+  .withdraw-header {
+    @include mobile(true) {
+      flex-wrap: wrap;
+      gap: var(--s-size-mini);
+
+      button {
+        margin: 0;
+      }
+    }
+  }
 }
 
 .additional-button {

@@ -1,5 +1,6 @@
 import { Operation } from '@sora-substrate/util';
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { beforeTransactionSign } from '@soramitsu/soraneo-wallet-web';
 
 import store from '@/store';
 import { Bridge } from '@/utils/bridge/common/classes';
@@ -46,7 +47,7 @@ const subBridge: SubBridge = new Bridge({
   addTransactionToProgress: (id: string) => store.commit.bridge.addTxIdInProgress(id),
   removeTransactionFromProgress: (id: string) => store.commit.bridge.removeTxIdFromProgress(id),
   // transaction signing
-  beforeTransactionSign: () => store.dispatch.wallet.transactions.beforeTransactionSign(),
+  beforeTransactionSign: (api, ...args: any[]) => beforeTransactionSign(store.original, api, ...args),
   // custom
   getSubBridgeConnector: () => store.state.bridge.subBridgeConnector,
 });

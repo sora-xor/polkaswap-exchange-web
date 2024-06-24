@@ -36,7 +36,6 @@ export default class Moonpay extends Mixins(MoonpayBridgeInitMixin) {
   transactionsPolling!: FnWithoutArgs;
 
   @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.libraryTheme libraryTheme!: Theme;
 
   @state.moonpay.transactions private transactions!: Array<MoonpayTransaction>;

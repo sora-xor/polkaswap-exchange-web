@@ -203,7 +203,7 @@ export enum Components {
   BridgeTransferNotification = 'pages/Bridge/TransferNotification',
   BridgeSelectAsset = 'pages/Bridge/SelectAsset',
   BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
-  BridgeSelectAccount = 'pages/Bridge/SelectAccount',
+  BridgeSelectSubAccount = 'pages/Bridge/SelectSubAccount',
   BridgeLimitCard = 'pages/Bridge/LimitCard',
   BridgeAccountPanel = 'pages/Bridge/AccountPanel',
   BridgeNodeIcon = 'pages/Bridge/NodeIcon',
@@ -273,6 +273,7 @@ export enum Components {
   NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',
   PaymentErrorDialog = 'shared/Dialog/PaymentError',
   SelectProviderDialog = 'shared/Dialog/SelectProvider',
+  SelectSoraAccountDialog = 'shared/Dialog/SelectSoraAccount',
   // Shared Asset selection
   SelectAssetList = 'shared/SelectAsset/List',
   SelectToken = 'shared/SelectAsset/SelectToken',

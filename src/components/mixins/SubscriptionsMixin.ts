@@ -56,7 +56,7 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
     // return if updateSubscription is already called by "watch" or "mounted"
     if (this.loading) return;
 
-    await this.withLoading(async () => {
+    await this.withApi(async () => {
       // wait for node connection & wallet init (App.vue)
       await this.withParentLoading(async () => {
         await Promise.all(this.startSubscriptionsList.map((fn) => fn?.()));
