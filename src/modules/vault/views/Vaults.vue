@@ -249,7 +249,7 @@ import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-walle
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
-import { BreakpointClass, Components, DsBreakpoints, HundredNumber, PageNames, ZeroStringValue } from '@/consts';
+import { BreakpointClass, Components, DsBreakpoints, HundredNumber, ZeroStringValue } from '@/consts';
 import { LtvTranslations, VaultComponents, VaultPageNames, VaultStatuses } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
 import type { ClosedVault, VaultStatus } from '@/modules/vault/types';
