@@ -181,7 +181,7 @@ export async function fetchData(start: number, end: number): Promise<XorBurn[]> 
         variables,
         parse
       );
-      return [...(items ?? []), ...dataBeforeIndexing];
+      return items ?? [];
     }
   }
 
