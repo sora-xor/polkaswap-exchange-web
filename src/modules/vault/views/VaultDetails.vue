@@ -486,12 +486,15 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get isBorrowMoreUnavailable(): boolean {
-    return this.availableToBorrow?.isLessThan(FPNumber.ONE) ?? true;
+    if (!(this.debtAsset && this.availableToBorrow)) return true;
+    const availableUsd = this.getFPNumberFiatAmountByFPNumber(this.availableToBorrow, this.debtAsset);
+    return availableUsd?.isLessThan(FPNumber.ONE) ?? false; // Set it to available if fiat is unavailable
   }
 
   get isRepayDebtUnavailable(): boolean {
-    if (!this.vault || this.isClosed(this.vault)) return true;
-    return this.vault.debt.isLessThan(FPNumber.ONE) ?? true;
+    if (!this.vault || !this.debtAsset || this.isClosed(this.vault)) return true;
+    const debtUsd = this.getFPNumberFiatAmountByFPNumber(this.vault.debt, this.debtAsset);
+    return debtUsd?.isLessThan(FPNumber.ONE) ?? false; // Set it to available if fiat is unavailable
   }
 
   get formattedLockedAmount(): string {
