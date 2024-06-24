@@ -30,10 +30,11 @@ export async function waitUntil(condition: () => boolean): Promise<void> {
 
 export async function waitForSoraNetworkFromEnv(): Promise<WALLET_CONSTS.SoraNetwork> {
   return new Promise<WALLET_CONSTS.SoraNetwork>((resolve) => {
-    store.original.watch(
+    const unsubscribe = store.original.watch(
       (state) => state.wallet.settings.soraNetwork,
       (value) => {
         if (value) {
+          unsubscribe();
           resolve(value);
         }
       }
@@ -175,10 +176,6 @@ export const hasInsufficientNativeTokenForFee = (nativeBalance: CodecString, fee
   const fpFee = FPNumber.fromCodecValue(fee);
 
   return FPNumber.lt(fpBalance, fpFee);
-};
-
-export const getWalletAddress = (): string => {
-  return storage.get('address');
 };
 
 export async function delay(ms = 50, success = true): Promise<void> {

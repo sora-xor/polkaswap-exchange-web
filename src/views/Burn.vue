@@ -2,7 +2,7 @@
   <div class="burn-container s-flex-column">
     <s-row :gutter="16">
       <s-col
-        v-for="{ id, title, description, link, receivedAsset, rate } in campaigns"
+        v-for="{ id, title, description, link, receivedAsset, rate, disabledText } in campaigns"
         :key="id"
         class="burn-column s-flex"
         :xs="12"
@@ -62,7 +62,7 @@
             v-if="!isLoggedIn"
             type="primary"
             class="action-button s-typography-button--large"
-            @click="handleConnectWallet"
+            @click="connectSoraWallet"
           >
             {{ t('connectWalletText') }}
           </s-button>
@@ -74,7 +74,7 @@
             :loading="parentLoading || (!ended[id] && loading)"
             @click="handleBurnClick(id)"
           >
-            <template v-if="ended[id]">TIME IS OVER</template>
+            <template v-if="ended[id]">{{ disabledText ?? 'TIME IS OVER' }}</template>
             <template v-else>BURN MY XOR</template>
           </s-button>
         </s-form>
@@ -100,6 +100,7 @@
       :burned-asset="selectedBurnedAsset"
       :rate="selectedRate"
       :max="selectedMax"
+      :min="selectedMin"
       @confirm="handleBurnConfirm"
     />
   </div>
@@ -112,12 +113,12 @@ import { components, mixins, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web
 import dayjs from 'dayjs';
 import { Component, Mixins } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import BurnDialog from '@/components/pages/Burn/BurnDialog.vue';
-import { Components, PageNames } from '@/consts';
+import { Components } from '@/consts';
 import { fetchData } from '@/indexer/queries/burnXor';
-import router, { lazyComponent } from '@/router';
-import { getter, state } from '@/store/decorators';
+import { lazyComponent } from '@/router';
+import { state } from '@/store/decorators';
 import { waitForSoraNetworkFromEnv } from '@/utils';
 
 import type { Asset } from '@sora-substrate/util/build/assets/types';
@@ -130,10 +131,12 @@ type Campaign = {
   id: CampaignKey;
   title: string;
   description: string;
+  disabledText?: string;
   link: string;
   receivedAsset: Asset;
   rate: number;
   max: number;
+  min: number;
   from: number;
   fromTimestamp: number;
   to: number;
@@ -148,7 +151,7 @@ type Campaign = {
     BurnDialog,
   },
 })
-export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.FormattedAmountMixin, TranslationMixin) {
+export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.FormattedAmountMixin, InternalConnectMixin) {
   readonly xor = XOR;
   private readonly blockDuration = 6_000; // 6 seconds
   private readonly defaultBurned: Record<CampaignKey, FPNumber> = {
@@ -166,10 +169,12 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
       receivedAsset: { symbol: 'KARMA', address: '', name: 'Chameleon', decimals: 18 } as Asset,
       rate: 100_000_000,
       max: 1000,
+      min: 0.1,
       from: 15_739_737,
       fromTimestamp: 1715791500000, // May 15 2024 16:45:00 GMT+0000
       to: 16_056_666,
       toTimestamp: 1717693074000, // Jun 06 2024 16:57:54 GMT+0000
+      disabledText: 'Will be distributed soon',
     },
     kensetsu: {
       id: 'kensetsu',
@@ -180,10 +185,12 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
       receivedAsset: KEN,
       rate: 1_000_000,
       max: 10_000,
+      min: 1,
       from: 14_464_000,
       fromTimestamp: 1708097280000, // Feb 16 2024 15:28:00 GMT+0000
       to: 14_939_200,
       toTimestamp: 1710949772883, // Mar 20 2024 15:49:32 GMT+0000
+      disabledText: 'Already distributed',
     },
   };
 
@@ -209,11 +216,10 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   selectedBurnedAsset = XOR;
   selectedRate = this.campaigns[0].rate;
   selectedMax = this.campaigns[0].max;
+  selectedMin = this.campaigns[0].min;
 
   @state.settings.blockNumber private blockNumber!: number;
-  @state.wallet.account.address soraAccountAddress!: string;
   @state.wallet.settings.soraNetwork private soraNetwork!: Nullable<WALLET_CONSTS.SoraNetwork>;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   get minBlock(): number {
     return Math.min(...this.campaigns.map((c) => c.from));
@@ -268,7 +274,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
   private async fetchData(): Promise<void> {
     const start = this.minBlock;
     const end = this.maxBlock;
-    const address = this.soraAccountAddress;
+    const address = this.soraAddress;
 
     const burns = await fetchData(start, end);
 
@@ -288,10 +294,10 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
         return acc;
       }, {});
 
-      const fpRate = new FPNumber(campaign.rate);
+      const minBurned = new FPNumber(campaign.rate * campaign.min);
 
       Object.entries(accountsBurned).forEach(([addr, amount]) => {
-        if (amount.gte(fpRate)) {
+        if (amount.gte(minBurned)) {
           totalXorBurned[campaign.id] = totalXorBurned[campaign.id].add(amount);
           if (address === addr) {
             accountXorBurned[campaign.id] = accountXorBurned[campaign.id].add(amount);
@@ -311,15 +317,12 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
     });
   }
 
-  handleConnectWallet(): void {
-    router.push({ name: PageNames.Wallet });
-  }
-
   handleBurnClick(id: CampaignKey): void {
     const campaign = this.campaignsObj[id];
     this.selectedReceivedAsset = campaign.receivedAsset;
     this.selectedRate = campaign.rate;
     this.selectedMax = campaign.max;
+    this.selectedMin = campaign.min;
     this.burnDialogVisible = true;
   }
 

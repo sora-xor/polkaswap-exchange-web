@@ -157,7 +157,6 @@
         "connectionError": "Er is een fout opgetreden tijdens het verbinden van de portemonnee. U kunt opnieuw proberen de portemonnee via {extension} te verbinden"
     },
     "connection": {
-        "title": "{Sora} Netwerk account",
         "text": "Om activa te beheren en transacties op {Sora} te ondertekenen, moet een account zijn gekoppeld. {Sora} accounts kunnen worden gemaakt en verbonden met onze geïntegreerde portefeuilles of browserextensies.",
         "noAccounts": "Geen account gevonden in uw {extension} browser extensie. Voeg een account toe en probeer het opnieuw.",
         "selectAccount": "Selecteer account om mee te werken",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora} Netwerk account",
         "WalletAssets": "Assets",
         "createToken": "@:createTokenText",
         "WalletHistory": "Activiteit"
@@ -212,7 +210,8 @@
         "walletAddress": "Portemonnee adres",
         "delete": "Account verwijderen",
         "rename": "Hernoem account",
-        "export": "Exporteer .json"
+        "export": "Exporteer .json",
+        "accountTitle": "Rekening"
     },
     "history": {
         "clearHistory": "Geschiedenis wissen",
@@ -1638,7 +1637,8 @@
             "borrowMoreThanAvailable": "Beschikbare schuld overschreden",
             "insufficientCollateral": "Onvoldoende onderpand",
             "enterRepayDebt": "Voer de terug te betalen schuld in",
-            "repayMoreThanDebt": "Te veel terugbetaald"
+            "repayMoreThanDebt": "Te veel terugbetaald",
+            "incorrectCollateral": "Token-paar wordt niet ondersteund"
         },
         "interest": "Rente",
         "interestDescription": "Een jaarlijkse vergoeding die in rekening wordt gebracht over het opgenomen bedrag uit uw kluis, berekend als een percentage. Deze vergoeding compenseert voor risico's en marktfluctuaties.",
@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "Het totale bedrag aan schuld dat momenteel uitstaat over alle leenposities op het {Kensetsu}-platform.",
         "overallBadDebt": "Slechte schuld",
         "overallBadDebtDescription": "Het deel van de schuld dat waarschijnlijk niet wordt teruggevorderd als gevolg van wanbetaling door de lener of onvoldoende onderpand.",
-        "overallBorrowTax": "Leentaks",
-        "overallBorrowTaxDescription": "Een vergoeding die in rekening wordt gebracht over geleende fondsen, berekend als een percentage van het geleende bedrag. De leentaks wordt gebruikt voor het stimuleringsprogramma voor de terugkoop van tokens {KEN}.",
-        "ltvMaxTooltip": "Het maximale bedrag van een leenpositie dat kan worden verstrekt in verhouding tot de getaxeerde waarde van het activum dat als onderpand wordt gebruikt."
+        "ltvMaxTooltip": "Het maximale bedrag van een leenpositie dat kan worden verstrekt in verhouding tot de getaxeerde waarde van het activum dat als onderpand wordt gebruikt.",
+        "overallAvailable": "Totaal beschikbaar",
+        "overallAvailableDescription": "Het totale bedrag aan beschikbare fondsen voor leningen op het {Kensetsu}-platform."
     },
     "accountSettings": {
         "title": "Accountinstellingen",

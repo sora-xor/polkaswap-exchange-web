@@ -157,7 +157,6 @@
         "connectionError": "Ett fel uppstod vid anslutning av plånboken. Du kan försöka ansluta plånboken via {extension} igen"
     },
     "connection": {
-        "title": "{Sora}-Nätverkskonto",
         "text": "För att hantera tillgångar och signera transaktioner på {Sora} måste ett konto vara anslutet. {Sora} -konton kan skapas och anslutas med hjälp av våra integrerade plånböcker eller webbläsartillägg.",
         "noAccounts": "Inget konto hittades i ditt {extension} webbläsartillägg. Vänligen lägg till ett konto och försök igen.",
         "selectAccount": "Välj konto att arbeta med",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora}-Nätverkskonto",
         "WalletAssets": "Tillgångar",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivitet"
@@ -212,7 +210,8 @@
         "walletAddress": "Plånboksadress",
         "delete": "Radera konto",
         "rename": "Byt namn på konto",
-        "export": "Exportera .json"
+        "export": "Exportera .json",
+        "accountTitle": "konto"
     },
     "history": {
         "clearHistory": "Rensa historik",
@@ -1638,7 +1637,8 @@
             "borrowMoreThanAvailable": "Tillgänglig skuld överskreds",
             "insufficientCollateral": "Otillräcklig säkerhet",
             "enterRepayDebt": "Ange återbetalningsskuld",
-            "repayMoreThanDebt": "Skuld överbetald"
+            "repayMoreThanDebt": "Skuld överbetald",
+            "incorrectCollateral": "Tokenpar stöds inte"
         },
         "interest": "Ränta",
         "interestDescription": "En årlig avgift debiterad på det belopp som dras från ditt valv, beräknat som en procentandel. Denna avgift kompenserar för risker och marknadsfluktuationer.",
@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "Den totala skulden som för närvarande är obetald på alla lånepositioner på {Kensetsu}-plattformen.",
         "overallBadDebt": "Dålig skuld",
         "overallBadDebtDescription": "Delen av skulden som förmodligen inte kommer att återkrävas på grund av låntagarens oförmåga eller otillräcklig säkerhet.",
-        "overallBorrowTax": "Låneskatt",
-        "overallBorrowTaxDescription": "En avgift som tas ut på lånade medel, beräknad som en procentandel av lånebeloppet. Låneskatten används i programmet för uppmuntran av återköp av {KEN}-token.",
-        "ltvMaxTooltip": "Den maximala mängden av en låneposition som kan tillhandahållas i förhållande till det värderade värdet av tillgången som används som säkerhet."
+        "ltvMaxTooltip": "Den maximala mängden av en låneposition som kan tillhandahållas i förhållande till det värderade värdet av tillgången som används som säkerhet.",
+        "overallAvailable": "Totalt tillgängligt",
+        "overallAvailableDescription": "Det totala beloppet av medel som finns tillgängliga för lån på {Kensetsu}-plattformen."
     },
     "accountSettings": {
         "title": "Kontoinställningar",

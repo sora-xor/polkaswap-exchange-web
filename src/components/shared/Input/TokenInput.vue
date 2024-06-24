@@ -83,7 +83,7 @@
             <slot name="fiat-amount-append" />
           </div>
 
-          <token-address v-if="address" v-bind="token" :external="external" class="input-value" />
+          <token-address v-if="withAddress && address" v-bind="token" :external="external" class="input-value" />
         </div>
 
         <div v-if="withSlider" class="input-line--footer-with-slider">
@@ -156,6 +156,7 @@ export default class TokenInput extends Mixins(
   @Prop({ default: true, type: Boolean }) readonly isFiatEditable!: boolean;
   @Prop({ default: 0, type: Number }) readonly sliderValue!: number;
   @Prop({ default: 2, type: Number }) readonly fiatDecimals!: number;
+  @Prop({ default: false, type: Boolean }) readonly withAddress!: number;
 
   @Ref('floatInput') private readonly floatInput!: any;
   @Ref('fiatEl') private readonly fiatEl!: any;

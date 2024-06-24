@@ -157,7 +157,6 @@
         "connectionError": "Wystąpił błąd podczas łączenia portfela. Możesz spróbować ponownie połączyć portfel przez {extension}"
     },
     "connection": {
-        "title": "Konto sieci {Sora}",
         "text": "Aby zarządzać aktywami i podpisywać transakcje na {Sora}, konto musi być połączone. Konta {Sora} można tworzyć i łączyć za pomocą naszych zintegrowanych portfeli lub rozszerzeń przeglądarki.",
         "noAccounts": "W Twoim rozszerzeniu przeglądarki {extension} nie znaleziono konta. Dodaj konto i spróbuj ponownie.",
         "selectAccount": "Wybierz konto, na którym chcesz pracować",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Konto sieci {Sora}",
         "WalletAssets": "Waluty",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktywność"
@@ -212,7 +210,8 @@
         "walletAddress": "Adres portfela",
         "delete": "Usuń konto",
         "rename": "Zmień nazwę konta",
-        "export": "Eksportuj .json"
+        "export": "Eksportuj .json",
+        "accountTitle": "Konto"
     },
     "history": {
         "clearHistory": "Wyczyść historię",
@@ -1638,7 +1637,8 @@
             "borrowMoreThanAvailable": "Dostępne zadłużenie przekroczone",
             "insufficientCollateral": "Niewystarczające zabezpieczenie",
             "enterRepayDebt": "Wprowadź spłacany dług",
-            "repayMoreThanDebt": "Dług przepłacony"
+            "repayMoreThanDebt": "Dług przepłacony",
+            "incorrectCollateral": "Para tokenów nie jest wspierana"
         },
         "interest": "Odsetki",
         "interestDescription": "Opłata roczna naliczana od wypłaconej kwoty z twojego skarbca, obliczana jako procent. Ta opłata rekompensuje ryzyko i wahania rynkowe.",
@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "Całkowita kwota długu obecnie niewypłacona we wszystkich pozycjach kredytowych na platformie {Kensetsu}.",
         "overallBadDebt": "Zły dług",
         "overallBadDebtDescription": "Część długu, która jest mało prawdopodobna do odzyskania ze względu na niewypłacalność pożyczkobiorcy lub niewystarczające zabezpieczenie.",
-        "overallBorrowTax": "Podatek od pożyczki",
-        "overallBorrowTaxDescription": "Opłata pobierana od pożyczonych środków, obliczana jako procent pożyczonej kwoty. Podatek od pożyczki jest wykorzystywany w programie zachęt do odkupu tokenów {KEN}.",
-        "ltvMaxTooltip": "Maksymalna kwota pozycji kredytowej, która może być udzielona w związku z oszacowaną wartością aktywów używanych jako zabezpieczenie."
+        "ltvMaxTooltip": "Maksymalna kwota pozycji kredytowej, która może być udzielona w związku z oszacowaną wartością aktywów używanych jako zabezpieczenie.",
+        "overallAvailable": "Ogółem dostępne",
+        "overallAvailableDescription": "Całkowita kwota dostępnych środków na pożyczki na platformie {Kensetsu}."
     },
     "accountSettings": {
         "title": "USTAWIENIA KONTA",

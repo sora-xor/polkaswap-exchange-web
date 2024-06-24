@@ -88,7 +88,7 @@
     >
       {{ t('pool.addLiquidity') }}
     </s-button>
-    <s-button v-else type="primary" class="s-typography-button--large" @click="handleConnectWallet">
+    <s-button v-else type="primary" class="s-typography-button--large" @click="connectSoraWallet">
       {{ t('connectWalletText') }}
     </s-button>
   </div>
@@ -98,8 +98,8 @@
 import { mixins, components, WALLET_CONSTS, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import PoolApyMixin from '@/components/mixins/PoolApyMixin';
-import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { Components, PageNames } from '@/consts';
 import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
@@ -134,7 +134,7 @@ type LiquidityItem = AccountLiquidity & {
 export default class Pool extends Mixins(
   mixins.FormattedAmountMixin,
   mixins.LoadingMixin,
-  TranslationMixin,
+  InternalConnectMixin,
   PoolApyMixin
 ) {
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
@@ -142,7 +142,6 @@ export default class Pool extends Mixins(
 
   @state.pool.accountLiquidity accountLiquidity!: Array<AccountLiquidity>;
 
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
   @getter.wallet.account.whitelistIdsBySymbol private whitelistIdsBySymbol!: WALLET_TYPES.WhitelistIdsBySymbol;
 
@@ -206,10 +205,6 @@ export default class Pool extends Mixins(
     router.push({ name: PageNames.RemoveLiquidity, params: this.getRouteParams(item) });
   }
 
-  handleConnectWallet(): void {
-    router.push({ name: PageNames.Wallet });
-  }
-
   private getAssetSymbol(asset: Nullable<AccountAsset>): string {
     return asset?.symbol ?? this.t('unknownAssetText');
   }
@@ -240,6 +235,14 @@ export default class Pool extends Mixins(
     .pair-logo {
       margin-right: $inner-spacing-medium;
       margin-top: $inner-spacing-tiny;
+    }
+  }
+}
+
+@include mobile(true) {
+  .pool-info-buttons {
+    button {
+      font-size: var(--s-font-size-mini);
     }
   }
 }
