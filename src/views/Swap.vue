@@ -2,13 +2,8 @@
   <div class="swap-container">
     <div class="column column--small">
       <swap-form-widget :parent-loading="loadingState" class="swap-form-widget" />
-      <customise-widget
-        v-model="customise"
-        :widgets-model.sync="widgetsSync"
-        :labels="labels"
-        class="swap-customize-widget"
-      />
-      <swap-distribution-widget v-if="widgets[SwapWidgets.Distribution]" class="swap-customize-widget" />
+      <customise-widget v-model="customise" :widgets-model.sync="widgetsSync" :labels="labels" />
+      <swap-distribution-widget v-if="widgets[SwapWidgets.Distribution]" />
     </div>
     <div class="column">
       <swap-chart-widget v-if="widgets[SwapWidgets.Chart]" :parent-loading="loadingState" class="swap-chart-widget" />
@@ -161,16 +156,6 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
   @include mobile(true) {
     max-width: 360px;
-  }
-}
-[design-system-theme='dark'] {
-  .swap-chart-widget,
-  .swap-form-widget,
-  .swap-customize-widget {
-    @media (min-width: #{$breakpoint_mobile}) and (max-width: 560px) {
-      box-shadow: 0px -10px 30px var(--s-shadow-color-dark-lighten--dark),
-        20px 20px 60px var(--s-color-base-background--dark), inset 1px 1px 10px var(--s-shadow-color-dark-light--dark) !important;
-    }
   }
 }
 </style>
