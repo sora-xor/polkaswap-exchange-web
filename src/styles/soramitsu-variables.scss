@@ -51,7 +51,7 @@ $s-shadow-dropdown: 0px 4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-tap-bar: 0px -4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-mobile-side-menu: -4px 4px 8px rgba(19, 19, 19, 0.15);
 $s-shadow-dialog: -5px -5px 10px var(--s-shadow-color-light), 1px 1px 10px var(--s-shadow-color-dark), inset 1px 1px 2px var(--s-shadow-color-light-dark);
-$s-shadow-dialog-dark: -5px -5px 10px var(--s-shadow-color-dark-lighten--dark), 2px 2px 15px var(--s-color-base-background--dark), inset 1px 1px 2px var(--s-shadow-color-dark-lighten--dark);
+$s-shadow-dialog--dark: -5px -5px 10px var(--s-shadow-color-dark-lighten--dark), 2px 2px 15px var(--s-color-base-background--dark), inset 1px 1px 2px var(--s-shadow-color-dark-lighten--dark);
 
 // Border Radius
 $s-border-radius-base: 16px;
@@ -91,8 +91,4 @@ $s-color-base-on-disabled--dark: #c29ab7;
   // Asset item height
   --s-asset-item-height: #{$s-asset-item-height};
   --s-asset-item-height--fiat: #{$s-asset-item-height--fiat};
-  --s-shadow-dialog: #{$s-shadow-dialog};
-}
-[design-system-theme="dark"] {
-  --s-shadow-dialog: #{$s-shadow-dialog-dark};
 }
