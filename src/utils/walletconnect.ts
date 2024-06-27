@@ -1,23 +1,28 @@
 import { WC } from '@soramitsu/soraneo-wallet-web';
 import { EthereumProvider } from '@walletconnect/ethereum-provider';
 
-import type { ChainsProps } from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
+import type {
+  ChainsProps,
+  ConnectOps,
+  EthereumProviderOptions,
+} from '@walletconnect/ethereum-provider/dist/types/EthereumProvider';
+import type { SessionTypes } from '@walletconnect/types';
 
 export class WcEthereumProvider extends EthereumProvider {
-  static override async init(opts: any): Promise<WcEthereumProvider> {
+  static override async init(opts: EthereumProviderOptions): Promise<WcEthereumProvider> {
     const provider = new WcEthereumProvider();
     await provider.initialize(opts);
     return provider;
   }
 
-  protected _session!: any;
+  protected _session!: SessionTypes.Struct | undefined;
   // protected pairingTopicKey = `${this.STORAGE_KEY}/pairingTopic`;
 
-  override get session() {
+  override get session(): SessionTypes.Struct | undefined {
     return this._session;
   }
 
-  protected async setAppSession(session) {
+  protected async setAppSession(session: SessionTypes.Struct | undefined): Promise<void> {
     if (!session) return;
 
     this._session = session;
@@ -25,12 +30,12 @@ export class WcEthereumProvider extends EthereumProvider {
     // await this.signer.client.core.storage.setItem(this.pairingTopicKey, session.pairingTopic);
   }
 
-  public override async connect() {
+  public override async connect(opts?: ConnectOps): Promise<void> {
     await super.connect();
     this.setAppSession(this.signer.session);
   }
 
-  protected override async loadPersistedSession() {
+  protected override async loadPersistedSession(): Promise<void> {
     // const sessionTopic = await this.signer.client.core.storage.getItem(this.pairingTopicKey);
 
     // if (sessionTopic) {
@@ -64,7 +69,7 @@ export const checkWalletConnectAvailability = async (chainProps: ChainsProps): P
   }
 };
 
-export const getWcEthereumProvider = async (chainProps: ChainsProps) => {
+export const getWcEthereumProvider = async (chainProps: ChainsProps): Promise<WcEthereumProvider> => {
   await checkWalletConnectAvailability(chainProps);
 
   const ethereumProvider = await WcEthereumProvider.init({
