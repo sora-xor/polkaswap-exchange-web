@@ -129,9 +129,9 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   get amount(): AmountWithSuffix {
-    if (this.fees) return formatAmountWithSuffix(this.total); // fees are always in XOR
-
-    return formatAmountWithSuffix(this.total.mul(this.exchangeRate)); // amount is in currency
+    return this.fees
+      ? formatAmountWithSuffix(this.total) // fees are always in XOR
+      : formatAmountWithSuffix(this.total.mul(this.exchangeRate)); // amount is in currency
   }
 
   get priceChange(): FPNumber {
