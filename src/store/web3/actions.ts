@@ -1,7 +1,7 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
-import { api as soraApi, accountUtils, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
+import { accountUtils, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
 import { ethers } from 'ethers';
 
@@ -115,12 +115,11 @@ const actions = defineActions({
   },
 
   async selectSubAccount(context, accountData: WALLET_TYPES.PolkadotJsAccount): Promise<void> {
-    const { commit, rootState } = web3ActionContext(context);
-    const { isDesktop } = rootState.wallet.account;
+    const { commit, rootState, state } = web3ActionContext(context);
     const { accountApi } = rootState.bridge.subBridgeConnector;
-    const { loginApi } = accountUtils;
+    const { loginApi, isAppStorageSource } = accountUtils;
 
-    await loginApi(accountApi, accountData, isDesktop);
+    await loginApi(accountApi, accountData, isAppStorageSource(state.subAddressSource as WALLET_CONSTS.AppWallet));
 
     commit.setSubAccount({
       address: accountApi.formatAddress(accountData.address),
@@ -130,12 +129,12 @@ const actions = defineActions({
   },
 
   resetSubAccount(context): void {
-    const { commit, rootState } = web3ActionContext(context);
-    const { isDesktop } = rootState.wallet.account;
+    const { commit, rootState, state } = web3ActionContext(context);
     const { accountApi } = rootState.bridge.subBridgeConnector;
-    const { logoutApi } = accountUtils;
+    const { logoutApi, isAppStorageSource } = accountUtils;
+    const forgetCurrentAccount = !isAppStorageSource(state.subAddressSource as WALLET_CONSTS.AppWallet);
 
-    logoutApi(accountApi, !isDesktop);
+    logoutApi(accountApi, forgetCurrentAccount);
 
     commit.setSubAccount();
   },

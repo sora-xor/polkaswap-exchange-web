@@ -16,7 +16,6 @@ export class WcEthereumProvider extends EthereumProvider {
   }
 
   protected _session!: SessionTypes.Struct | undefined;
-  // protected pairingTopicKey = `${this.STORAGE_KEY}/pairingTopic`;
 
   override get session(): SessionTypes.Struct | undefined {
     return this._session;
@@ -24,34 +23,12 @@ export class WcEthereumProvider extends EthereumProvider {
 
   protected async setAppSession(session: SessionTypes.Struct | undefined): Promise<void> {
     if (!session) return;
-
     this._session = session;
-
-    // await this.signer.client.core.storage.setItem(this.pairingTopicKey, session.pairingTopic);
   }
 
   public override async connect(opts?: ConnectOps): Promise<void> {
-    await super.connect();
+    await super.connect(opts);
     this.setAppSession(this.signer.session);
-  }
-
-  protected override async loadPersistedSession(): Promise<void> {
-    // const sessionTopic = await this.signer.client.core.storage.getItem(this.pairingTopicKey);
-
-    // if (sessionTopic) {
-    //   try {
-    //     const session = this.signer.client.pairing.get(sessionTopic);
-    //     if (session) {
-    //       this.setAppSession(session);
-    //     } else {
-    //       throw new Error('Session not found');
-    //     }
-    //   } catch {
-    //     this.signer.client.core.storage.removeItem(this.pairingTopicKey);
-    //   }
-    // }
-
-    await super.loadPersistedSession();
   }
 }
 

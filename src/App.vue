@@ -217,7 +217,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   async created() {
     // [DESKTOP] To Enable Desktop
-    // this.setIsDesktop(true);
+    this.setIsDesktop(true);
 
     // element-icons is not common used, but should be visible after network connection lost
     preloadFontFace('element-icons');
