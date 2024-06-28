@@ -320,6 +320,12 @@ export default class PriceChartWidget extends Mixins(
   private priceUpdateRequestId = 0;
   private priceUpdateSubscription: Nullable<FnWithoutArgs> = null;
   private priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
+  private snapshotsCache: (
+    | { nodes: SnapshotItem[]; hasNextPage: boolean; endCursor: string }
+    | { nodes: never[]; hasNextPage: boolean; endCursor: string | undefined }
+  )[] = [];
+
+  private reverseChart = false;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: SnapshotFilter = LINE_CHART_FILTERS[0];
@@ -712,6 +718,7 @@ export default class PriceChartWidget extends Mixins(
     hasNextPage = true,
     endCursor?: string
   ) {
+    // console.info('request data was called');
     const handler = this.isOrderBook ? fetchOrderBookData : fetchAssetData;
     const nodes: SnapshotItem[] = [];
 
@@ -733,6 +740,10 @@ export default class PriceChartWidget extends Mixins(
     return { nodes, hasNextPage, endCursor };
   }
 
+  private async getCacheKey(address: string, period: string) {
+    return `${address}_${period}`;
+  }
+
   // ordered ty timestamp DESC
   private async fetchData(entityId: string) {
     const { type, count } = this.selectedFilter;
@@ -750,7 +761,7 @@ export default class PriceChartWidget extends Mixins(
         endCursor,
       };
     }
-
+    // console.info('we called request data from fetchData');
     return await this.requestData(entityId, type, count, hasNextPage, endCursor);
   }
 
@@ -787,6 +798,8 @@ export default class PriceChartWidget extends Mixins(
     if (this.isTokensPair && !this.isAvailable) return;
 
     const addresses = [...this.entities];
+    // console.info('here are addresses');
+    // console.info(addresses);
     const requestId = Date.now();
     const lastTimestamp = last(this.dataset)?.timestamp ?? Date.now();
 
@@ -794,11 +807,42 @@ export default class PriceChartWidget extends Mixins(
 
     await this.withApi(async () => {
       try {
-        const snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
+        console.info('Current snapshots cache:', this.snapshotsCache);
+        let snapshots: (
+          | { nodes: SnapshotItem[]; hasNextPage: boolean; endCursor: string }
+          | { nodes: never[]; hasNextPage: boolean; endCursor: string | undefined }
+        )[];
 
+        if (this.reverseChart && this.snapshotsCache && this.snapshotsCache[0].nodes.length !== 0) {
+          console.info('Taking data from cache');
+          snapshots = this.snapshotsCache;
+          if (snapshots.length >= 2) {
+            // Swap the elements
+            [snapshots[0], snapshots[1]] = [snapshots[1], snapshots[0]];
+          }
+        } else {
+          console.info('Taking data from API');
+          snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
+          if (snapshots.some((snapshot) => snapshot.nodes.length === 0)) {
+            console.error('Error: Retrieved empty data from API');
+          } else {
+            this.snapshotsCache = snapshots;
+          }
+        }
+
+        if (snapshots.some((snapshot) => snapshot.nodes.length === 0)) {
+          console.error('Error: Using cached data with empty nodes');
+          return;
+        }
+
+        console.info('Retrieved snapshots:', snapshots);
+        // console.info('here are snapshots that we got from fetchData');
+        // console.info(snapshots);
         // if no response, or tokens were changed, return
-        if (!(snapshots && isEqual(addresses)(this.entities) && isEqual(requestId)(this.priceUpdateRequestId))) return;
+        // const = await Promise.all(addresses.map((address) => this.fetchData(address)));
 
+        if (!(snapshots && isEqual(addresses)(this.entities) && isEqual(requestId)(this.priceUpdateRequestId))) return;
+        console.info('we returned');
         const pageInfos: Record<string, Partial<PageInfo>> = {};
         const dataset: SnapshotItem[] = [];
         const groups: SnapshotItem[][] = [];
@@ -849,6 +893,7 @@ export default class PriceChartWidget extends Mixins(
         console.error(error);
       }
     });
+    this.reverseChart = false;
   }
 
   // common
@@ -973,6 +1018,8 @@ export default class PriceChartWidget extends Mixins(
   }
 
   async changeFilter(filter: SnapshotFilter): Promise<void> {
+    console.info('filter changed');
+    this.reverseChart = false;
     const prevType = this.selectedFilter.type;
     const { count, type } = filter;
 
@@ -1004,6 +1051,8 @@ export default class PriceChartWidget extends Mixins(
   }
 
   async selectChartType(type: CHART_TYPES): Promise<void> {
+    console.info('chart type selected');
+    this.reverseChart = false;
     this.chartType = type;
 
     await this.setChartZoomLevel(this.zoomStart, this.zoomEnd);
@@ -1017,6 +1066,8 @@ export default class PriceChartWidget extends Mixins(
   }
 
   changeZoomLevel(event: any): void {
+    this.reverseChart = false;
+    console.info('zoom level changed');
     const data = event?.batch?.[0];
     this.zoomStart = data?.start ?? 0;
     this.zoomEnd = data?.end ?? 0;
@@ -1041,6 +1092,7 @@ export default class PriceChartWidget extends Mixins(
 
   revertChart(): void {
     this.isReversedChart = !this.isReversedChart;
+    this.reverseChart = true;
     this.forceUpdatePrices(true);
   }
 }
