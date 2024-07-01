@@ -98,6 +98,14 @@ export default class SupplyChartWidget extends Mixins(mixins.LoadingMixin, Chart
     return this.parentLoading || this.loading;
   }
 
+  get selectTokenIcon(): Nullable<string> {
+    return !this.areActionsDisabled ? 'chevron-down-rounded-16' : undefined;
+  }
+
+  get tokenTabIndex(): number {
+    return !this.areActionsDisabled ? 0 : -1;
+  }
+
   get firstValue(): FPNumber {
     return new FPNumber(first(this.data)?.value ?? 0);
   }

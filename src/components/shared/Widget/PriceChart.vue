@@ -52,6 +52,7 @@
       <v-chart
         ref="chart"
         class="chart"
+        :key="chartKey"
         :option="chartSpec"
         autoresize
         @zr:mousewheel="handleZoom"
@@ -92,7 +93,7 @@ import {
 } from '@/utils';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-import type { PageInfo, SnapshotTypes } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
+import type { PageInfo } from '@soramitsu/soraneo-wallet-web/lib/services/indexer/types';
 import type { Currency, CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 
 const USD_SYMBOL = 'USD';
@@ -183,7 +184,9 @@ const ZOOM_ID = 'chartZoom';
 const signific =
   (value: FPNumber) =>
   (positive: string, negative: string, zero: string): string => {
-    return FPNumber.gt(value, FPNumber.ZERO) ? positive : FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
+    if (FPNumber.gt(value, FPNumber.ZERO)) return positive;
+
+    return FPNumber.lt(value, FPNumber.ZERO) ? negative : zero;
   };
 
 const formatChange = (value: FPNumber): string => {
@@ -193,11 +196,11 @@ const formatChange = (value: FPNumber): string => {
   return `${sign}${priceChange}`;
 };
 
-const formatAmount = (value: number, precision: number) => {
-  return new FPNumber(value).toLocaleString(precision);
+const formatAmount = (value: FPNumber, precision: number) => {
+  return value.toLocaleString(precision);
 };
 
-const formatPrice = (value: number, precision: number, symbol: string) => {
+const formatPrice = (value: FPNumber, precision: number, symbol: string) => {
   return `${formatAmount(value, precision)} ${symbol}`;
 };
 
@@ -276,6 +279,7 @@ export default class PriceChartWidget extends Mixins(
   @state.wallet.settings.currency private currency!: Currency;
   @state.wallet.settings.currencies private currencies!: Array<CurrencyFields>;
   @getter.wallet.settings.exchangeRate private exchangeRate!: number;
+  @getter.wallet.settings.currencySymbol private currencySymbol!: string;
 
   @Prop({ default: DexId.XOR, type: Number }) readonly dexId!: DexId;
   @Prop({ default: () => null, type: Object }) readonly baseAsset!: Nullable<AccountAsset>;
@@ -320,6 +324,31 @@ export default class PriceChartWidget extends Mixins(
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: SnapshotFilter = LINE_CHART_FILTERS[0];
   isReversedChart = false;
+
+  /**
+   * Works the same like `formatAmount` if `isTokensPair === true`.
+   * Otherwise, it converts amount to fiat amount according to the selected fiat + `formatAmount`.
+   */
+  private toAmount(amount: FPNumber | number, precision: number): string {
+    const fp = amount instanceof FPNumber ? amount : new FPNumber(amount);
+    const value = this.isTokensPair ? fp : fp.mul(this.exchangeRate);
+    return formatAmount(value, precision);
+  }
+
+  /**
+   * Works the same like `formatPrice` if `isTokensPair === true`.
+   * Otherwise, it converts amount to fiat amount according to the selected fiat + `formatPrice`.
+   */
+  private toPrice(price: FPNumber | number, precision: number): string {
+    const fp = price instanceof FPNumber ? price : new FPNumber(price);
+    const value = this.isTokensPair ? fp : fp.mul(this.exchangeRate);
+    return formatPrice(value, precision, this.symbol);
+  }
+
+  get chartKey(): string | undefined {
+    if (this.isTokensPair) return undefined;
+    return `price-chart-${this.symbol}-rate-${this.exchangeRate}`;
+  }
 
   get isLineChart(): boolean {
     return this.chartType === CHART_TYPES.LINE;
@@ -380,9 +409,7 @@ export default class PriceChartWidget extends Mixins(
   }
 
   get symbol(): string {
-    const currentCurrencyAbbr = getCurrency(this.currency, this.currencies)?.key.toUpperCase() || USD_SYMBOL;
-
-    return this.tokenB?.symbol ?? currentCurrencyAbbr;
+    return this.tokenB?.symbol ?? (getCurrency(this.currency, this.currencies)?.key.toUpperCase() || USD_SYMBOL);
   }
 
   get currentPrice(): FPNumber {
@@ -390,7 +417,7 @@ export default class PriceChartWidget extends Mixins(
   }
 
   get currentPriceFormatted(): string {
-    return this.currentPrice.mul(this.exchangeRate).toLocaleString(this.precision);
+    return this.toAmount(this.currentPrice, this.precision);
   }
 
   get isAllHistoricalPricesFetched(): boolean {
@@ -425,7 +452,7 @@ export default class PriceChartWidget extends Mixins(
   get gridLeftOffset(): number {
     const maxLabel = this.limits.max * 10;
     const axisLabelWidth = getTextWidth(
-      formatAmount(maxLabel, this.precision),
+      new FPNumber(maxLabel).toLocaleString(this.precision),
       AXIS_LABEL_CSS.fontFamily,
       AXIS_LABEL_CSS.fontSize
     );
@@ -505,8 +532,8 @@ export default class PriceChartWidget extends Mixins(
 
     const priceYAxis = this.yAxisSpec({
       axisLabel: {
-        formatter: (value) => {
-          return formatAmount(value, this.precision);
+        formatter: (value: number) => {
+          return this.toAmount(value, this.precision);
         },
         showMaxLabel: false,
         showMinLabel: false,
@@ -515,7 +542,7 @@ export default class PriceChartWidget extends Mixins(
         label: {
           precision: this.precision,
           formatter: ({ value }) => {
-            return formatAmount(value, this.precision);
+            return this.toAmount(value, this.precision);
           },
         },
       },
@@ -528,7 +555,7 @@ export default class PriceChartWidget extends Mixins(
       splitNumber: 2,
       axisLabel: {
         formatter: (value) => {
-          const val = new FPNumber(value);
+          const val = new FPNumber(value).mul(this.exchangeRate);
           const { amount, suffix } = formatAmountWithSuffix(val);
           return `${amount} ${suffix}`;
         },
@@ -551,11 +578,13 @@ export default class PriceChartWidget extends Mixins(
       },
       formatter: (params) => {
         const { data, seriesType } = params[0];
-        const [timestamp, open, close, low, high, volume] = data;
+        const [, open, close, low, high, volume] = data; // [timestamp, open, close, low, high, volume]
         const rows: any[] = [];
 
+        const closeFp = new FPNumber(close);
         if (seriesType === CHART_TYPES.CANDLE) {
-          const change = calcPriceChange(new FPNumber(close), new FPNumber(open));
+          const openFp = new FPNumber(open);
+          const change = calcPriceChange(closeFp, openFp);
           const changeColor = signific(change)(
             this.theme.color.status.success,
             this.theme.color.status.error,
@@ -563,18 +592,22 @@ export default class PriceChartWidget extends Mixins(
           );
 
           rows.push(
-            { title: 'Open', data: formatPrice(open, this.precision, this.symbol) },
-            { title: 'High', data: formatPrice(high, this.precision, this.symbol) },
-            { title: 'Low', data: formatPrice(low, this.precision, this.symbol) },
-            { title: 'Close', data: formatPrice(close, this.precision, this.symbol) },
+            { title: 'Open', data: this.toPrice(openFp, this.precision) },
+            { title: 'High', data: this.toPrice(high, this.precision) },
+            { title: 'Low', data: this.toPrice(low, this.precision) },
+            { title: 'Close', data: this.toPrice(closeFp, this.precision) },
             { title: 'Change', data: formatChange(change), color: changeColor }
           );
         } else {
-          rows.push({ title: 'Price', data: formatPrice(close, this.precision, this.symbol) });
+          rows.push({
+            title: 'Price',
+            data: this.toPrice(closeFp, this.precision),
+          });
         }
 
         if (withVolume) {
-          rows.push({ title: 'Volume', data: `$${formatAmount(volume, 2)}` });
+          // `volume` is in $ value here
+          rows.push({ title: 'Volume', data: `${this.currencySymbol} ${this.toAmount(volume, 2)}` });
         }
 
         return `

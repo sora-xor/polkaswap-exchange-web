@@ -53,6 +53,7 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
+import { isTMA, setDebug } from '@tma.js/sdk';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -156,7 +157,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
 
   // [DESKTOP] To Enable Desktop
-  // @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;
+  @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;
 
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
@@ -218,6 +219,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   async created() {
     // [DESKTOP] To Enable Desktop
     // this.setIsDesktop(true);
+
     // element-icons is not common used, but should be visible after network connection lost
     preloadFontFace('element-icons');
     this.setResponsiveClass();
@@ -231,6 +233,13 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       if (!data.NETWORK_TYPE) {
         throw new Error('NETWORK_TYPE is not set');
+      }
+
+      // To start running as Telegram Web App (desktop capabilities)
+      if (await isTMA()) {
+        this.setIsDesktop(true);
+        // sets debug mode in twa
+        if (data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev) setDebug(true);
       }
 
       await this.setApiKeys(data?.API_KEYS);
@@ -518,6 +527,9 @@ ul ul {
   &:hover .loader {
     width: 0;
     animation: none;
+  }
+  @include mobile(true) {
+    width: 300px;
   }
 }
 

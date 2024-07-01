@@ -149,6 +149,11 @@ $search-input-width: 290px;
       max-width: $container-max-width--collapsed;
     }
   }
+
+  @include mobile(true) {
+    width: 100%;
+    max-width: 368px;
+  }
 }
 
 .explore {

@@ -42,6 +42,7 @@
         <token-input
           id="bridgeFrom"
           data-test-name="bridgeFrom"
+          with-address
           :balance="firstBalance ? firstBalance.toCodecString() : null"
           :decimals="amountDecimals"
           :disabled="!(areAccountsConnected && isAssetSelected)"
@@ -70,7 +71,7 @@
           <div v-if="sender" class="connect-wallet-panel">
             <s-divider type="tertiary" />
             <bridge-account-panel :address="sender" :name="senderName" :tooltip="getCopyTooltip(isSoraToEvm)">
-              <template #icon v-if="evmProvider">
+              <template #icon v-if="evmProvider && !isSoraToEvm">
                 <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
               </template>
             </bridge-account-panel>
@@ -106,6 +107,7 @@
         <token-input
           id="bridgeTo"
           data-test-name="bridgeTo"
+          with-address
           :balance="secondBalance ? secondBalance.toCodecString() : null"
           :decimals="amountDecimals"
           :disabled="!(areAccountsConnected && isAssetSelected)"
@@ -131,7 +133,7 @@
           <div v-if="recipient" class="connect-wallet-panel">
             <s-divider type="tertiary" />
             <bridge-account-panel :address="recipient" :name="recipientName" :tooltip="getCopyTooltip(!isSoraToEvm)">
-              <template #icon v-if="evmProvider">
+              <template #icon v-if="evmProvider && isSoraToEvm">
                 <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
               </template>
             </bridge-account-panel>

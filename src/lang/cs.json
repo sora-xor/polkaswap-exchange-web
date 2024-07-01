@@ -157,7 +157,6 @@
         "connectionError": "Při připojování peněženky došlo k chybě. Můžete zkusit znovu připojit peněženku přes {extension}"
     },
     "connection": {
-        "title": "Účet sítě {Sora}",
         "text": "Aby bylo možné spravovat aktiva a podepisovat transakce na {Sora}, musí být připojen účet. Účty {Sora} lze vytvořit a propojit pomocí našich integrovaných peněženek nebo rozšíření prohlížeče.",
         "noAccounts": "V rozšíření prohlížeče {extension} nebyl nalezen žádný účet. Přidejte prosím účet a zkuste to znovu.",
         "selectAccount": "Vyberte účet, se kterým chcete pracovat",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Účet sítě {Sora}",
         "WalletAssets": "Aktiva",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivita"
@@ -212,7 +210,8 @@
         "walletAddress": "Adresa peněženky",
         "delete": "smazat účet",
         "rename": "Přejmenovat účet",
-        "export": "Exportujte soubor .json"
+        "export": "Exportujte soubor .json",
+        "accountTitle": "Účet"
     },
     "history": {
         "clearHistory": "Vymazat historii",
@@ -1638,7 +1637,8 @@
             "borrowMoreThanAvailable": "Dostupný dluh překročen",
             "insufficientCollateral": "Nedostatečná zástava",
             "enterRepayDebt": "Zadejte částku pro splacení dluhu",
-            "repayMoreThanDebt": "Dluh přeplacen"
+            "repayMoreThanDebt": "Dluh přeplacen",
+            "incorrectCollateral": "Pár tokenů není podporován"
         },
         "interest": "Úrok",
         "interestDescription": "Roční poplatek účtovaný z částky vybrané z vašeho trezoru, vypočítaný jako procento. Tento poplatek kompenzuje rizika a tržní fluktuace.",
@@ -1660,9 +1660,9 @@
         "overallTotalDebtDescription": "Celková výše aktuálně nesplacených dluhů ve všech pozicích na platformě {Kensetsu}.",
         "overallBadDebt": "Špatný dluh",
         "overallBadDebtDescription": "Část dluhu, která je nepravděpodobně, že bude splacena, kvůli platební neschopnosti dlužníků nebo nedostatečnému kolaterálu.",
-        "overallBorrowTax": "Daň z půjčky",
-        "overallBorrowTaxDescription": "Poplatek účtovaný na půjčené prostředky, vypočítaný jako procento z vypůjčené částky. Daň z půjčky se používá pro program incentivizace zpětného odkupu tokenů {KEN}.",
-        "ltvMaxTooltip": "Nejvyšší možná výše půjčky, která může být poskytnuta v souvislosti s oceněnou hodnotou aktiva používaného jako zástava."
+        "ltvMaxTooltip": "Nejvyšší možná výše půjčky, která může být poskytnuta v souvislosti s oceněnou hodnotou aktiva používaného jako zástava.",
+        "overallAvailable": "Celkem dostupné",
+        "overallAvailableDescription": "Celková částka dostupná k zapůjčení na platformě {Kensetsu}."
     },
     "accountSettings": {
         "title": "Nastavení účtu",
