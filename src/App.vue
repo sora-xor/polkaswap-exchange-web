@@ -237,7 +237,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       // To start running as Telegram Web App (desktop capabilities)
       if (await isTMA()) {
         this.setIsDesktop(true);
-
         // sets debug mode in twa
         if (data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev) setDebug(true);
       }
@@ -556,15 +555,6 @@ ul ul {
 
 .link {
   color: var(--s-color-base-content-primary);
-}
-
-// TODO: change outline to box-shadow in UI lib to support Safari also
-.search-input {
-  margin-top: 2px;
-}
-.s-input.neumorphic:focus-within {
-  outline: none !important;
-  box-shadow: 0 0 0 0.9px var(--s-color-outline) !important;
 }
 
 // Disabled button large typography

@@ -1,5 +1,6 @@
 <template>
   <router-view
+    class="vaults-view-container"
     v-bind="{
       parentLoading: subscriptionsDataLoading,
       ...$attrs,
@@ -49,3 +50,9 @@ export default class VaultsContainer extends Mixins(SubscriptionsMixin) {
   }
 }
 </script>
+
+<style lang="scss">
+.vaults-view-container > .el-loading-mask {
+  margin: -$inner-spacing-medium; // compensate for the padding of the .app-content from App.vue
+}
+</style>
