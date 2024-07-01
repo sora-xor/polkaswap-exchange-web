@@ -991,7 +991,6 @@ export default class PriceChartWidget extends Mixins(
   }
 
   async changeFilter(filter: SnapshotFilter): Promise<void> {
-    this.reverseChart = false;
     const prevType = this.selectedFilter.type;
     const { count, type } = filter;
 
@@ -1023,7 +1022,6 @@ export default class PriceChartWidget extends Mixins(
   }
 
   async selectChartType(type: CHART_TYPES): Promise<void> {
-    this.reverseChart = false;
     this.chartType = type;
 
     await this.setChartZoomLevel(this.zoomStart, this.zoomEnd);
@@ -1037,7 +1035,6 @@ export default class PriceChartWidget extends Mixins(
   }
 
   changeZoomLevel(event: any): void {
-    this.reverseChart = false;
     const data = event?.batch?.[0];
     this.zoomStart = data?.start ?? 0;
     this.zoomEnd = data?.end ?? 0;
