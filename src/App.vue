@@ -251,8 +251,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
           initData();
         }
       } else {
-        console.info('hi');
-
+        console.info('in Web');
         const clean = initWeb();
         console.info('clean', clean);
 
