@@ -320,6 +320,12 @@ export default class PriceChartWidget extends Mixins(
   private priceUpdateRequestId = 0;
   private priceUpdateSubscription: Nullable<FnWithoutArgs> = null;
   private priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
+  private snapshotsCache: (
+    | { nodes: SnapshotItem[]; hasNextPage: boolean; endCursor: string }
+    | { nodes: never[]; hasNextPage: boolean; endCursor: string | undefined }
+  )[] = [];
+
+  private reverseChart = false;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: SnapshotFilter = LINE_CHART_FILTERS[0];
@@ -750,7 +756,6 @@ export default class PriceChartWidget extends Mixins(
         endCursor,
       };
     }
-
     return await this.requestData(entityId, type, count, hasNextPage, endCursor);
   }
 
@@ -791,14 +796,26 @@ export default class PriceChartWidget extends Mixins(
     const lastTimestamp = last(this.dataset)?.timestamp ?? Date.now();
 
     this.priceUpdateRequestId = requestId;
-
     await this.withApi(async () => {
       try {
-        const snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
+        let snapshots: (
+          | { nodes: SnapshotItem[]; hasNextPage: boolean; endCursor: string }
+          | { nodes: never[]; hasNextPage: boolean; endCursor: string | undefined }
+        )[];
 
-        // if no response, or tokens were changed, return
+        if (this.reverseChart && this.snapshotsCache && this.snapshotsCache[0].nodes.length !== 0) {
+          snapshots = this.snapshotsCache;
+          if (snapshots.length >= 2) {
+            [snapshots[0], snapshots[1]] = [snapshots[1], snapshots[0]];
+          }
+        } else {
+          snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
+          if (!snapshots.some((snapshot) => snapshot.nodes.length === 0)) {
+            this.snapshotsCache = snapshots;
+          }
+        }
+
         if (!(snapshots && isEqual(addresses)(this.entities) && isEqual(requestId)(this.priceUpdateRequestId))) return;
-
         const pageInfos: Record<string, Partial<PageInfo>> = {};
         const dataset: SnapshotItem[] = [];
         const groups: SnapshotItem[][] = [];
@@ -849,6 +866,7 @@ export default class PriceChartWidget extends Mixins(
         console.error(error);
       }
     });
+    this.reverseChart = false;
   }
 
   // common
@@ -1041,6 +1059,7 @@ export default class PriceChartWidget extends Mixins(
 
   revertChart(): void {
     this.isReversedChart = !this.isReversedChart;
+    this.reverseChart = true;
     this.forceUpdatePrices(true);
   }
 }
