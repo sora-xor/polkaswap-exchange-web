@@ -1,5 +1,5 @@
 <template>
-  <base-widget v-loading="parentLoading">
+  <base-widget v-bind="$attrs">
     <template #title>
       <tokens-row border :assets="tokens" size="medium" />
       <div v-if="tokenA" class="token-title">

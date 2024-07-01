@@ -18,8 +18,8 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import StatsBarChart from '@/components/pages/Stats/BarChart.vue';
 import StatsNetworkStats from '@/components/pages/Stats/NetworkStats.vue';
-import StatsSupplyChart from '@/components/pages/Stats/SupplyChart.vue';
 import StatsTvlChart from '@/components/pages/Stats/TvlChart.vue';
+import StatsSupplyChart from '@/components/shared/Widget/SupplyChart.vue';
 
 @Component({
   components: {

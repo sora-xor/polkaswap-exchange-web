@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('selectToken.title')" custom-class="asset-select">
+  <dialog-base :visible.sync="isVisible" :title="t('selectToken.title')" custom-class="asset-select" append-to-body>
     <s-tabs :value="tabValue" class="s-tabs--exchange" type="rounded" @input="handleTabChange">
       <search-input
         ref="search"

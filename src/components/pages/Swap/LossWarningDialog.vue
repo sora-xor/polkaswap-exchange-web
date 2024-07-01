@@ -1,5 +1,5 @@
 <template>
-  <dialog-base :visible.sync="isVisible">
+  <dialog-base :visible.sync="isVisible" append-to-body>
     <simple-notification
       optional
       modal-content

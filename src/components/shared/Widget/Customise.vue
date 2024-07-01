@@ -64,7 +64,7 @@ export default class CustomiseWidget extends Mixins(TranslationMixin) {
   }
 
   getLabel(key: string, name: string): string {
-    const label = key in this.labels ? this.labels[key] : this.t(`${name}.${key}`);
+    const label = key in this.labels ? this.labels[key] : '';
 
     return capitalize(label);
   }

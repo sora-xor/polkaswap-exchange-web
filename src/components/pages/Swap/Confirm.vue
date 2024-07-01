@@ -1,5 +1,10 @@
 <template>
-  <dialog-base :visible.sync="isVisible" :title="t('swap.confirmSwap')" custom-class="dialog--confirm-swap">
+  <dialog-base
+    :visible.sync="isVisible"
+    :title="t('swap.confirmSwap')"
+    custom-class="dialog--confirm-swap"
+    append-to-body
+  >
     <div class="tokens">
       <div class="tokens-info-container">
         <span class="token-value">{{ formattedFromValue }}</span>
