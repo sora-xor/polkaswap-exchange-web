@@ -256,12 +256,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         }
 
         console.info('start params', window.location.hash.slice(1));
-      } else {
-        console.info('in Web');
-        const clean = initWeb();
-        console.info('clean', clean);
-
-        clean();
       }
 
       await this.setApiKeys(data?.API_KEYS);
