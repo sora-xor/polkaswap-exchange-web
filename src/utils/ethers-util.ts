@@ -76,22 +76,8 @@ async function connectEvmProvider(provider: Provider, chains: ChainsProps): Prom
   }
 }
 
-function clearWalletConnectSession(): void {
-  // clear walletconnect localstorage
-  for (const key in localStorage) {
-    if (key.startsWith('wc@2')) {
-      localStorage.removeItem(key);
-    }
-  }
-  localStorage.removeItem('WCM_VERSION');
-}
-
 function disconnectEvmProvider(provider?: Nullable<Provider>): void {
   ethereumProvider?.disconnect?.();
-
-  if (provider === Provider.WalletConnect) {
-    clearWalletConnectSession();
-  }
 }
 
 function createWeb3Instance(provider: any) {
