@@ -53,7 +53,7 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
-import { isTMA, setDebug } from '@tma.js/sdk';
+import { isTMA, setDebug, initWeb, retrieveLaunchParams, initViewport } from '@tma.js/sdk';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -239,6 +239,24 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         this.setIsDesktop(true);
         // sets debug mode in twa
         if (data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev) setDebug(true);
+
+        const [viewport] = initViewport();
+
+        (await viewport).expand();
+
+        const { initDataRaw, initData } = retrieveLaunchParams();
+
+        if (initData) {
+          // @ts-expect-error error
+          initData();
+        }
+      } else {
+        console.info('hi');
+
+        const clean = initWeb();
+        console.info('clean', clean);
+
+        clean();
       }
 
       await this.setApiKeys(data?.API_KEYS);
