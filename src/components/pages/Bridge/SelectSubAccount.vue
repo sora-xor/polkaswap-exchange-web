@@ -1,7 +1,7 @@
 <template>
-  <dialog-base :visible.sync="visibility" :show-close-button="false" class="account-select-dialog">
+  <dialog-base :visible.sync="visibility" :show-close-button="false" append-to-body class="account-select-dialog">
     <connection-view
-      :get-api="getApi"
+      :chain-api="chainApi"
       :account="subAccount"
       :login-account="login"
       :logout-account="logout"
@@ -47,7 +47,7 @@ export default class BridgeSelectSubAccount extends Mixins(TranslationMixin) {
     this.setSubAccountDialogVisibility(flag);
   }
 
-  getApi() {
+  get chainApi() {
     return this.subBridgeConnector.accountApi;
   }
 
