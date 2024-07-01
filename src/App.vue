@@ -234,6 +234,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         throw new Error('NETWORK_TYPE is not set');
       }
 
+      console.info('await isTMA()', await isTMA());
+
       // To start running as Telegram Web App (desktop capabilities)
       if (await isTMA()) {
         this.setIsDesktop(true);
