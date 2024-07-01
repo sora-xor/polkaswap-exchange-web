@@ -250,6 +250,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
           // @ts-expect-error error
           initData();
         }
+
+        console.info('start params', window.location.hash.slice(1));
       } else {
         console.info('in Web');
         const clean = initWeb();
