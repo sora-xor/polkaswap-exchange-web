@@ -240,9 +240,13 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         // sets debug mode in twa
         if (data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev) setDebug(true);
 
+        console.info('start params', window.location.hash.slice(1));
+
         const [viewport] = initViewport();
 
         (await viewport).expand();
+
+        console.info('start params', window.location.hash.slice(1));
 
         const { initDataRaw, initData } = retrieveLaunchParams();
 
