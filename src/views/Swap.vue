@@ -104,34 +104,34 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
 
   readonly DefaultLayouts: ResponsiveLayouts = {
     lg: [
-      { x: 0, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 0, y: 20, w: 6, h: 4, minW: 2, minH: 4, i: SwapWidgets.Customise },
-      { x: 0, y: 24, w: 6, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
-      { x: 6, y: 0, w: 9, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
-      { x: 15, y: 0, w: 9, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
-      { x: 6, y: 20, w: 9, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
-      { x: 15, y: 20, w: 9, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
-      { x: 0, y: 40, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
+      { x: 5, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 5, y: 20, w: 6, h: 4, minW: 2, minH: 4, i: SwapWidgets.Customise },
+      { x: 5, y: 24, w: 6, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
+      { x: 5, y: 24, w: 6, h: 16, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
+      { x: 11, y: 0, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
+      { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+      { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
+      { x: 11, y: 20, w: 8, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
     ],
     md: [
-      { x: 0, y: 0, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 5, y: 0, w: 5, h: 4, minW: 2, minH: 4, i: SwapWidgets.Customise },
-      { x: 5, y: 4, w: 5, h: 16, minW: 4, minH: 8, i: SwapWidgets.Distribution },
-      { x: 10, y: 0, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
-      { x: 0, y: 20, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-      { x: 5, y: 20, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
-      { x: 10, y: 20, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
-      { x: 0, y: 40, w: 5, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
+      { x: 3, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 3, y: 20, w: 4, h: 4, minW: 2, minH: 4, i: SwapWidgets.Customise },
+      { x: 3, y: 24, w: 4, h: 8, minW: 4, minH: 8, i: SwapWidgets.Distribution },
+      { x: 3, y: 24, w: 4, h: 12, minW: 4, minH: 12, i: SwapWidgets.SupplyChart },
+      { x: 7, y: 0, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.Chart },
+      { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+      { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
+      { x: 7, y: 20, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
     ],
     sm: [
-      { x: 0, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
-      { x: 0, y: 20, w: 4, h: 4, minW: 2, minH: 4, i: SwapWidgets.Customise },
-      { x: 0, y: 24, w: 4, h: 9, minW: 4, minH: 9, i: SwapWidgets.Distribution },
-      { x: 4, y: 0, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
-      { x: 4, y: 20, w: 8, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
-      { x: 0, y: 40, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.SupplyChart },
-      { x: 4, y: 40, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartA },
-      { x: 8, y: 40, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.PriceChartB },
+      { x: 1, y: 0, w: 4, h: 20, minW: 4, minH: 20, i: SwapWidgets.Form },
+      { x: 1, y: 20, w: 4, h: 4, minW: 2, minH: 4, i: SwapWidgets.Customise },
+      { x: 1, y: 24, w: 4, h: 9, minW: 4, minH: 9, i: SwapWidgets.Distribution },
+      { x: 1, y: 24, w: 4, h: 20, minW: 4, minH: 16, i: SwapWidgets.SupplyChart },
+      { x: 5, y: 0, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Chart },
+      { x: 5, y: 20, w: 6, h: 20, minW: 4, minH: 20, i: SwapWidgets.Transactions },
+      { x: 5, y: 40, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartA },
+      { x: 5, y: 40, w: 6, h: 20, minW: 4, minH: 16, i: SwapWidgets.PriceChartB },
     ],
     xs: [
       { x: 0, y: 0, w: 4, h: 4, minW: 2, minH: 4, i: SwapWidgets.Customise },
@@ -229,10 +229,6 @@ export default class Swap extends Mixins(mixins.LoadingMixin, TranslationMixin, 
   .swap-container {
     max-width: $inner-window-width;
     margin: auto;
-  }
-
-  @include mobile(true) {
-    max-width: 360px;
   }
 }
 </style>
