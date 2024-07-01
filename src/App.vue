@@ -53,7 +53,7 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
-import { isTMA, setDebug } from '@tma.js/sdk';
+import { isTMA, setDebug, initWeb, retrieveLaunchParams, initViewport } from '@tma.js/sdk';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -234,11 +234,36 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         throw new Error('NETWORK_TYPE is not set');
       }
 
+      console.info('await isTMA()', await isTMA());
+
       // To start running as Telegram Web App (desktop capabilities)
       if (await isTMA()) {
         this.setIsDesktop(true);
         // sets debug mode in twa
         if (data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev) setDebug(true);
+
+        const hash = window.location.hash.slice(1);
+        const params = new URLSearchParams(hash);
+        console.info('tgWebAppStartParam', params.get('tgWebAppStartParam'));
+        console.info('tgWebAppData', params.get('tgWebAppData'));
+
+        console.info('start params', window.location.hash.slice(1));
+
+        const [viewport] = initViewport();
+
+        (await viewport).expand();
+
+        console.info('start params', window.location.hash.slice(1));
+
+        const { initDataRaw, initData } = retrieveLaunchParams();
+
+        if (initData) {
+          // @ts-expect-error error
+          const res = initData();
+          console.info('startParam', res.startParam);
+        }
+
+        console.info('start params', window.location.hash.slice(1));
       }
 
       await this.setApiKeys(data?.API_KEYS);
