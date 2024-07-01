@@ -1,0 +1,1 @@
+.data-row-skeleton{display:flex;align-items:center;gap:4px}.data-row-skeleton>.el-skeleton__item:not(:last-child){margin:0}.data-row-skeleton>.el-skeleton__item.el-skeleton__rect{height:20px}.data-row-skeleton>.el-skeleton__item.el-skeleton__circle{flex-shrink:0;height:20px;width:20px}
