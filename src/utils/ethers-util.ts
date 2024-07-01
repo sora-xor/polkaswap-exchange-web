@@ -122,7 +122,6 @@ async function useWalletConnectProvider(chainProps: ChainsProps): Promise<string
 
     return await getAccount();
   } catch (error: any) {
-    console.log(error);
     // user cancelled qr modal
     if (error.message === 'Connection request reset. Please try again.') {
       return '';
