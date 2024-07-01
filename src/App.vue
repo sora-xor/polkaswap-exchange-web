@@ -242,6 +242,11 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
         // sets debug mode in twa
         if (data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev) setDebug(true);
 
+        const hash = window.location.hash.slice(1);
+        const params = new URLSearchParams(hash);
+        console.info('tgWebAppStartParam', params.get('tgWebAppStartParam'));
+        console.info('tgWebAppData', params.get('tgWebAppData'));
+
         console.info('start params', window.location.hash.slice(1));
 
         const [viewport] = initViewport();
@@ -254,7 +259,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
         if (initData) {
           // @ts-expect-error error
-          initData();
+          const res = initData();
+          console.info('startParam', res.startParam);
         }
 
         console.info('start params', window.location.hash.slice(1));
