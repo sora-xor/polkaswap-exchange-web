@@ -11,7 +11,8 @@ import { AcalaParachainAdapter } from './adapters/parachain/acala';
 import { AstarParachainAdapter } from './adapters/parachain/astar';
 import { MoonbaseParachainAdapter } from './adapters/parachain/moonbase';
 import { SoraParachainAdapter } from './adapters/parachain/sora';
-import { RelaychainAdapter } from './adapters/relaychain';
+import { AlphanetRelaychainAdapter } from './adapters/relaychain/alphanet';
+import { RelaychainAdapter } from './adapters/relaychain/relaychain';
 import { LiberlandAdapter } from './adapters/standalone/liberland';
 import { SubAdapter } from './adapters/substrate';
 
@@ -100,6 +101,9 @@ export class SubNetworksConnector {
 
   protected getAdapter(network: SubNetwork) {
     if (subBridgeApi.isRelayChain(network)) {
+      if (network === SubNetworkId.Alphanet) {
+        return new AlphanetRelaychainAdapter(network);
+      }
       return new RelaychainAdapter(network);
     }
     if (subBridgeApi.isParachain(network)) {

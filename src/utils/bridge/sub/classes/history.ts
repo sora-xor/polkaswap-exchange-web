@@ -466,7 +466,7 @@ class SubBridgeHistory extends SubNetworksConnector {
 
     // relay chain should have send message in this blocks range
     const startSearch = relayChainBlockNumber;
-    const endSearch = startSearch - 6;
+    const endSearch = startSearch - 10;
 
     for (let relaychainBlockHeight = startSearch; relaychainBlockHeight >= endSearch; relaychainBlockHeight--) {
       const blockId = await api.system.getBlockHash(relaychainBlockHeight, this.externalApi);

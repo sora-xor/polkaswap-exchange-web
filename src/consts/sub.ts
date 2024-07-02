@@ -130,7 +130,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       {
         chain: 'Moonbase Relay Testnet',
         name: 'Parity',
-        address: 'wss://frag-moonbase-relay-rpc-ws.g.moonbase.moonbeam.network',
+        address: 'wss://fro-moon-rpc-1-moonbase-relay-rpc-1.moonbase.ol-infra.network',
       },
     ],
   },
@@ -300,8 +300,14 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
       [BridgeTxDirection.Incoming]: '0',
     },
   },
+  [SubNetworkId.Alphanet]: {
+    ALPHA: {
+      [BridgeTxDirection.Outgoing]: '2700000000',
+      [BridgeTxDirection.Incoming]: '0',
+    },
+  },
   [SubNetworkId.AlphanetMoonbase]: {
-    ACA: {
+    GLMR: {
       [BridgeTxDirection.Outgoing]: '34313700000000',
       [BridgeTxDirection.Incoming]: '0',
     },

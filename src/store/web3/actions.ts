@@ -1,5 +1,4 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
-import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import { api as soraApi, accountUtils, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
@@ -185,22 +184,8 @@ const actions = defineActions({
 
   async getSupportedApps(context): Promise<void> {
     const { commit, getters } = web3ActionContext(context);
-    // [TODO] uncomment
-    // const supportedApps = await api.bridgeProxy.getListApps();
-    // [TODO] remove this production mock after nodes update
-    const supportedApps = {
-      [BridgeNetworkType.Eth]: {},
-      [BridgeNetworkType.Evm]: {},
-      [BridgeNetworkType.Sub]: [
-        SubNetworkId.Kusama,
-        SubNetworkId.KusamaSora,
-        SubNetworkId.Polkadot,
-        SubNetworkId.PolkadotAstar,
-        SubNetworkId.PolkadotAcala,
-        SubNetworkId.PolkadotSora,
-        SubNetworkId.Liberland,
-      ],
-    };
+
+    const supportedApps = await soraApi.bridgeProxy.getListApps();
 
     commit.setSupportedApps(supportedApps as any);
 
