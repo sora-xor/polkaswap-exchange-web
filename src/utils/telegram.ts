@@ -10,8 +10,8 @@ export function updateTgTheme(): void {
   const [miniApp] = initMiniApp();
   const colorUtilityBody =
     (getComputedStyle(document.documentElement).getPropertyValue('--s-color-utility-body') as `#${string}`) ||
-    '#000000'; // Default color // f7f3f4
-  console.info('Theme color:', colorUtilityBody);
+    '#f7f3f4'; // Default color
+
   miniApp.setHeaderColor(colorUtilityBody);
   miniApp.setBgColor(colorUtilityBody);
 }
@@ -28,7 +28,7 @@ export async function initTMA(botUrl?: string, isDebug = false): Promise<void> {
   // Check the referrer
   const initData = initInitData();
   const referrerAddress = initData?.startParam;
-  console.info('Referrer address:', referrerAddress);
+
   if (referrerAddress && api.validateAddress(referrerAddress)) {
     store.commit.referrals.setStorageReferrer(referrerAddress);
   }
