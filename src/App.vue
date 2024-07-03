@@ -53,7 +53,7 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
-import { isTMA, setDebug, initViewport, retrieveLaunchParams } from '@tma.js/sdk';
+import { isTMA } from '@tma.js/sdk';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -69,6 +69,7 @@ import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
+import { initTMA } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
@@ -157,6 +158,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   // [DESKTOP] To Enable Desktop
   @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;
+  // [TMA] To Enable TMA
+  @mutation.settings.enableTMA private enableTMA!: FnWithoutArgs;
 
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
@@ -236,21 +239,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // To start running as Telegram Web App (desktop capabilities)
       if (await isTMA()) {
-        const [viewport] = initViewport();
-        (await viewport).expand();
-
+        this.enableTMA();
         this.setIsDesktop(true);
-        // sets debug mode in twa
-        if (data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev) setDebug(true);
-
-        // TODO: move logic to referral functionality
-        const hash = window.location.hash.slice(1);
-        const params = new URLSearchParams(hash);
-        console.info('tgWebAppStartParam', params.get('tgWebAppStartParam'));
-        console.info('tgWebAppData', params.get('tgWebAppData'));
-
-        const launchParams = retrieveLaunchParams();
-        console.info('launchParams', launchParams);
+        await initTMA(data?.TG_BOT_URL, data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev);
       }
 
       await this.setApiKeys(data?.API_KEYS);
