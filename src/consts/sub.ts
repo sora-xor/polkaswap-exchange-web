@@ -142,8 +142,9 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       symbol: 'GLMR', // "DEV"
       decimals: 18,
     },
-    blockExplorerUrls: [],
-    shortName: 'Alpha',
+    endpointUrls: ['https://rpc.api.moonbase.moonbeam.network', 'https://moonbase-rpc.dwellir.com'],
+    blockExplorerUrls: ['https://moonbase.moonscan.io'],
+    shortName: 'Moonbase',
     nodes: [
       {
         chain: 'Moonbase Alpha',
@@ -151,6 +152,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
         address: 'wss://wss.api.moonbase.moonbeam.network',
       },
     ],
+    evmId: 1287,
   },
   // SORA Parachains
   [SubNetworkId.RococoSora]: {

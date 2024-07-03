@@ -17,6 +17,7 @@ export default class WalletConnectMixin extends Mixins(InternalConnectMixin) {
   @state.web3.networkType networkType!: BridgeNetworkType;
 
   @getter.bridge.isSubBridge isSubBridge!: boolean;
+  @getter.bridge.isSubAccountType isSubAccountType!: boolean;
 
   @mutation.web3.setSubAccountDialogVisibility setSubAccountDialogVisibility!: (flag: boolean) => void;
   @mutation.web3.setSelectProviderDialogVisibility setSelectProviderDialogVisibility!: (flag: boolean) => void;

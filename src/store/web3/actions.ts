@@ -173,13 +173,12 @@ const actions = defineActions({
   },
 
   async changeEvmNetworkProvided(context): Promise<void> {
-    const { getters, state } = web3ActionContext(context);
+    const { getters } = web3ActionContext(context);
     const { selectedNetwork } = getters;
-    const { networkType } = state;
 
-    if (selectedNetwork && networkType !== BridgeNetworkType.Sub) {
-      await ethersUtil.switchOrAddChain(selectedNetwork);
-    }
+    if (!selectedNetwork) return;
+
+    await ethersUtil.switchOrAddChain(selectedNetwork);
   },
 
   async getSupportedApps(context): Promise<void> {

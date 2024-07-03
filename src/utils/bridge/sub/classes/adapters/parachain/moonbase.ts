@@ -1,13 +1,14 @@
-import { u8aToHex } from '@polkadot/util';
-import { addressToEvm } from '@polkadot/util-crypto';
+import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
+
+import { SUB_NETWORKS } from '@/consts/sub';
 
 import { SubAdapter } from '../substrate';
 
+const MOONBASE_DATA = SUB_NETWORKS[SubNetworkId.AlphanetMoonbase];
+
 export class MoonbaseParachainAdapter extends SubAdapter {
-  // overrides SubAdapter method
-  public formatAddress = (address?: string): string => {
-    if (!address) return '';
-    // [TODO] research how to get evm address as on moonbase
-    return u8aToHex(addressToEvm(address));
-  };
+  // overrides "WithConnectionApi"
+  override get chainSymbol(): string | undefined {
+    return MOONBASE_DATA?.nativeCurrency?.symbol;
+  }
 }

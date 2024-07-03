@@ -668,7 +668,7 @@ export default class Bridge extends Mixins(
   }
 
   private connectExternalWallet(): void {
-    if (this.isSubBridge) {
+    if (this.isSubAccountType) {
       this.connectSubWallet();
     } else {
       this.connectEvmWallet();

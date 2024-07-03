@@ -326,7 +326,7 @@ async function addToken(address: string, symbol: string, decimals: number, image
  * @param chainName translated chain name
  */
 async function switchOrAddChain(network: NetworkData, chainName?: string): Promise<void> {
-  const chainId = ethers.toQuantity(network.id);
+  const chainId = ethers.toQuantity(network.evmId ?? network.id);
 
   try {
     await ethereumProvider.request({
