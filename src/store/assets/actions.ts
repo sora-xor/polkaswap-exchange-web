@@ -130,6 +130,35 @@ async function getSubRegisteredAssets(
   return registeredAssets;
 }
 
+async function updateSubAssetsData(context: ActionContext<any, any>): Promise<void> {
+  const { state, commit, rootState } = assetsActionContext(context);
+  const { registeredAssets } = state;
+
+  const { destinationNetwork, soraParachain, parachain } = rootState.bridge.subBridgeConnector;
+
+  if (!subBridgeApi.isParachain(destinationNetwork)) return;
+
+  if (!(soraParachain && parachain)) return;
+
+  await Promise.all([soraParachain.connect(), parachain.connect()]);
+
+  const updatedEntries = await Promise.all(
+    Object.entries(registeredAssets).map(async ([soraAddress, assetData]) => {
+      const asset = { ...assetData };
+      if (!asset.address && 'getAssetIdByMultilocation' in parachain) {
+        const multilocation = await subBridgeApi.soraParachainApi.getAssetMulilocation(soraAddress, soraParachain.api);
+        const id = await (parachain as any).getAssetIdByMultilocation(multilocation);
+        asset.address = id;
+      }
+      return [soraAddress, asset];
+    })
+  );
+
+  const assets = Object.fromEntries(updatedEntries);
+
+  commit.setRegisteredAssets(assets);
+}
+
 async function getRegisteredAssets(context: ActionContext<any, any>): Promise<Record<string, BridgeRegisteredAsset>[]> {
   const { rootState } = assetsActionContext(context);
 
@@ -172,15 +201,18 @@ const actions = defineActions({
   },
 
   async updateRegisteredAssets(context): Promise<void> {
+    console.log('updateRegisteredAssets');
     const { commit, rootState } = assetsActionContext(context);
-    // only for ETH bridge, because of sora assets broken registration
-    if (rootState.web3.networkType === BridgeNetworkType.Eth) {
-      commit.setRegisteredAssetsFetching(true);
 
+    commit.setRegisteredAssetsFetching(true);
+
+    if (rootState.web3.networkType === BridgeNetworkType.Sub) {
+      await updateSubAssetsData(context);
+    } else {
       await updateEthAssetsData(context);
-
-      commit.setRegisteredAssetsFetching(false);
     }
+
+    commit.setRegisteredAssetsFetching(false);
   },
 });
 

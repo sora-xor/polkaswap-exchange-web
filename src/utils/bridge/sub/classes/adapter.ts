@@ -10,6 +10,7 @@ import { determineTransferType } from '@/utils/bridge/sub/utils';
 import { AcalaParachainAdapter } from './adapters/parachain/acala';
 import { AstarParachainAdapter } from './adapters/parachain/astar';
 import { MoonbaseParachainAdapter } from './adapters/parachain/moonbase';
+import { ParachainAdapter } from './adapters/parachain/parachain';
 import { SoraParachainAdapter } from './adapters/parachain/sora';
 import { AlphanetRelaychainAdapter } from './adapters/relaychain/alphanet';
 import { RelaychainAdapter } from './adapters/relaychain/relaychain';
@@ -28,8 +29,8 @@ type PathNetworks = {
 
 export class SubNetworksConnector {
   public soraParachain?: SoraParachainAdapter;
-  public relaychain?: SubAdapter;
-  public parachain?: SubAdapter;
+  public relaychain?: RelaychainAdapter;
+  public parachain?: ParachainAdapter<any>;
   public standalone?: SubAdapter;
 
   public destinationNetwork!: SubNetwork;
@@ -119,6 +120,7 @@ export class SubNetworksConnector {
       if (subBridgeApi.isSoraParachain(network)) {
         return new SoraParachainAdapter(network);
       }
+      return new ParachainAdapter(network);
     }
     if (subBridgeApi.isStandalone(network)) {
       if (network === SubNetworkId.Liberland) {

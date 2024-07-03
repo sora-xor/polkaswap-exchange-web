@@ -2,6 +2,8 @@ import { FPNumber } from '@sora-substrate/util';
 import { BridgeAccountType } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { SubNetworkId, LiberlandAssetType } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 
+import { ZeroStringValue } from '@/consts';
+
 import { SubAdapter } from '../substrate';
 
 import type { CodecString } from '@sora-substrate/util';
@@ -9,7 +11,18 @@ import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 export class LiberlandAdapter extends SubAdapter {
   protected override async getAssetDeposit(asset: RegisteredAsset): Promise<CodecString> {
-    return await this.assetsAssetMinBalanceRequest(Number(asset.externalAddress));
+    const assetId = Number(asset.externalAddress);
+
+    return await this.withConnection(async () => {
+      const result = await (this.api.query.assets as any).asset(assetId);
+
+      if (result.isEmpty) return ZeroStringValue;
+
+      const data = result.unwrap();
+      const minBalance = data.minBalance.toString();
+
+      return minBalance > '1' ? minBalance : ZeroStringValue;
+    }, ZeroStringValue);
   }
 
   protected override async getAccountAssetBalance(
