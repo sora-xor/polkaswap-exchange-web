@@ -313,5 +313,9 @@ export const SUB_TRANSFER_FEES: SubNetworksFees = {
       [BridgeTxDirection.Outgoing]: '34313700000000',
       [BridgeTxDirection.Incoming]: '0',
     },
+    XOR: {
+      [BridgeTxDirection.Outgoing]: '8140448382622083802',
+      [BridgeTxDirection.Incoming]: '0',
+    },
   },
 };

@@ -71,11 +71,11 @@ export class RelaychainAdapter extends SubAdapter {
       case SubNetworkId.Rococo:
         return toCodec(0.000125);
       case SubNetworkId.Alphanet:
-        return toCodec(0.019);
+        return toCodec(0.019 + 0.037);
       case SubNetworkId.Kusama:
         return toCodec(0.002);
       case SubNetworkId.Polkadot:
-        return toCodec(0.059);
+        return toCodec(0.019 + 0.037);
       default:
         return '0';
     }

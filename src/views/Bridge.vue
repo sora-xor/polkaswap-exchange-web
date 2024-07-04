@@ -440,8 +440,9 @@ export default class Bridge extends Mixins(
       isExternalBalance: !this.isSoraToEvm,
       isExternalNative: this.isNativeTokenSelected,
     });
+    const result = maxBalance.sub(minBalance).max(FPNumber.ZERO);
 
-    return maxBalance.sub(minBalance).max(FPNumber.ZERO);
+    return result;
   }
 
   get maxValue(): string {
