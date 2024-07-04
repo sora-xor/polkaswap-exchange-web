@@ -43,6 +43,7 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, mutation, state } from '@/store/decorators';
+import { updateTgTheme } from '@/utils/telegram';
 
 import type { Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 
@@ -177,13 +178,15 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     dropdown.visible ? dropdown.hide() : dropdown.show();
   }
 
-  handleSelectHeaderMenu(value: HeaderMenuType): void {
+  async handleSelectHeaderMenu(value: HeaderMenuType): Promise<void> {
     switch (value) {
       case HeaderMenuType.HideBalances:
         this.toggleHideBalance();
         break;
       case HeaderMenuType.Theme:
-        switchTheme();
+        await switchTheme();
+        await this.$nextTick();
+        updateTgTheme();
         break;
       case HeaderMenuType.Language:
         this.setLanguageDialogVisibility(true);

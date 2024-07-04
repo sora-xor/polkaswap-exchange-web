@@ -35,10 +35,10 @@
             class="s-typography-button--mini"
             size="small"
             type="primary"
-            :tooltip="copyTooltip(t('referralProgram.invitationLink'))"
-            @click="handleCopyAddress(referralLink.href, $event)"
+            :tooltip="refLinkTooltip"
+            @click="handleClickRefLink($event)"
           >
-            {{ t('referralProgram.action.copyLink') }}
+            {{ refLinkText }}
             <s-icon name="copy-16" size="16" />
           </s-button>
         </s-card>
@@ -213,6 +213,8 @@ export default class ReferralProgram extends Mixins(
   @state.referrals.invitedUsers invitedUsers!: Array<string>;
   @state.referrals.referrer referrer!: string;
   @state.referrals.isReferrerApproved isReferrerApproved!: boolean;
+  @state.settings.isTMA private isTMA!: boolean;
+  @state.settings.telegramBotUrl private telegramBotUrl!: Nullable<string>;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
   @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
 
@@ -386,6 +388,30 @@ export default class ReferralProgram extends Mixins(
     return this.hasAccountWithBondedXor ? 'secondary' : 'primary';
   }
 
+  private get hasTMALink(): boolean {
+    return this.isTMA && !!this.telegramBotUrl;
+  }
+
+  get refLinkTooltip(): string {
+    return this.hasTMALink ? 'Invite via Telegram' : this.copyTooltip(this.t('referralProgram.invitationLink'));
+  }
+
+  get refLinkText(): string {
+    return this.hasTMALink ? 'Share' : this.t('referralProgram.action.copyLink');
+  }
+
+  handleClickRefLink(event?: MouseEvent): void {
+    if (!this.hasTMALink) {
+      this.handleCopyAddress(this.referralLink.href, event);
+      return;
+    }
+    const botUrl = `${this.telegramBotUrl}/app?startapp=${this.account.address}`;
+    const msg = `https://t.me/share/url?url=${botUrl}&text=${encodeURIComponent(
+      '\nJoin Polkaswap Referral Program and get rewards for inviting friends!'
+    )}`;
+    window.open(msg, '_blank');
+  }
+
   destroyed(): void {
     this.reset();
   }
@@ -396,7 +422,7 @@ export default class ReferralProgram extends Mixins(
     });
   }
 
-  getLinkLabel(address: string): string {
+  private getLinkLabel(address: string): string {
     const routerMode = getRouterMode(router);
     return `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${address}`;
   }

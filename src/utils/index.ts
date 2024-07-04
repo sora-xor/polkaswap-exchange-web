@@ -10,8 +10,6 @@ import i18n from '@/lang';
 import router from '@/router';
 import store from '@/store';
 
-import storage from './storage';
-
 import type { AmountWithSuffix } from '../types/formats';
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';

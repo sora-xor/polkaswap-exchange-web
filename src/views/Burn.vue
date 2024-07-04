@@ -174,7 +174,7 @@ export default class Kensetsu extends Mixins(mixins.LoadingMixin, mixins.Formatt
       fromTimestamp: 1715791500000, // May 15 2024 16:45:00 GMT+0000
       to: 16_056_666,
       toTimestamp: 1717693074000, // Jun 06 2024 16:57:54 GMT+0000
-      disabledText: 'Will be distributed soon',
+      disabledText: 'Already distributed',
     },
     kensetsu: {
       id: 'kensetsu',
