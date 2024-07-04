@@ -201,7 +201,6 @@ const actions = defineActions({
   },
 
   async updateRegisteredAssets(context): Promise<void> {
-    console.log('updateRegisteredAssets');
     const { commit, rootState } = assetsActionContext(context);
 
     commit.setRegisteredAssetsFetching(true);

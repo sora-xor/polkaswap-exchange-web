@@ -24,8 +24,6 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
 
     const id = result.unwrap().toString();
 
-    console.log(id);
-
     return id;
   }
 
@@ -43,5 +41,11 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
   // overrides "WithConnectionApi"
   override get chainSymbol(): string | undefined {
     return MOONBASE_DATA?.nativeCurrency?.symbol;
+  }
+
+  // overrides "WithConnectionApi"
+  public override formatAddress(address: string, _withPrefix = true): string {
+    // return evm address without changes
+    return address;
   }
 }

@@ -262,7 +262,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
               if (!isStandalone) {
                 assetSendEventIndex = events.findIndex((e) =>
-                  isAssetAddedToChannel(e, this.asset, to, sended, adapter.api)
+                  isAssetAddedToChannel(e, this.asset, to, sended, adapter)
                 );
 
                 if (assetSendEventIndex !== -1) {
@@ -273,7 +273,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
                 }
               } else {
                 assetSendEventIndex = events.findIndex((e) =>
-                  isSoraBridgeAppBurned(e, this.asset, from, to, sended, adapter.api)
+                  isSoraBridgeAppBurned(e, this.asset, from, to, sended, adapter)
                 );
 
                 if (assetSendEventIndex !== -1) {
@@ -350,7 +350,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
 
             soraHash = getBridgeProxyHash(foundedEvents, subBridgeApi.api);
 
-            [amount, eventIndex] = getDepositedBalance(foundedEvents, tx.to as string, subBridgeApi.api);
+            [amount, eventIndex] = getDepositedBalance(foundedEvents, tx.to as string, subBridgeApi);
 
             resolve();
           } catch (error) {
@@ -534,7 +534,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
                   [amountReceived] = getDepositedBalance(
                     events.slice(substrateDispatchEventIndex),
                     tx.to as string,
-                    adapter.api
+                    adapter
                   );
                 }
               } else {
@@ -604,7 +604,11 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             try {
               const events = eventsVec.toArray();
               const messageQueueProcessedEventIndex = events.findIndex((e) => {
-                if (isEvent(e, 'messageQueue', 'Processed') || isEvent(e, 'xcmpQueue', 'Success')) {
+                if (
+                  isEvent(e, 'messageQueue', 'Processed') ||
+                  isEvent(e, 'xcmpQueue', 'Success') ||
+                  isEvent(e, 'xcmpQueue', 'Fail')
+                ) {
                   return e.event.data[0].toString() === messageHash;
                 }
                 return false;
@@ -617,7 +621,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
               [amount, externalEventIndex] = getDepositedBalance(
                 events.slice(0, messageQueueProcessedEventIndex),
                 tx.to as string,
-                adapter.api
+                adapter
               );
 
               resolve();

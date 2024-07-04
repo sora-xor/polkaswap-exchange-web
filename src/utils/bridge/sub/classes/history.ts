@@ -334,7 +334,7 @@ class SubBridgeHistory extends SubNetworksConnector {
       const [receivedAmount, externalEventIndex] = getDepositedBalance(
         extrinsicEvents,
         history.to as string,
-        soraParachainApi
+        soraParachain
       );
       // balances.Deposit event index
       history.externalEventIndex = externalEventIndex;
@@ -369,7 +369,7 @@ class SubBridgeHistory extends SubNetworksConnector {
   }): Promise<Nullable<SubHistory>> {
     const { soraApi } = this;
     // Token is minted to account event
-    const [_, eventIndex] = getDepositedBalance(blockEvents, history.from as string, this.soraApi);
+    const [_, eventIndex] = getDepositedBalance(blockEvents, history.from as string, subBridgeApi);
     history.payload.eventIndex = eventIndex;
 
     // find SORA hash event index
@@ -609,7 +609,11 @@ class SubBridgeHistory extends SubNetworksConnector {
         const blockEvents = await api.system.getBlockEvents(blockId, this.externalApi);
 
         const messageEventIndex = blockEvents.findIndex((e) => {
-          if (isEvent(e, 'messageQueue', 'Processed') || isEvent(e, 'xcmpQueue', 'Success')) {
+          if (
+            isEvent(e, 'messageQueue', 'Processed') ||
+            isEvent(e, 'xcmpQueue', 'Success') ||
+            isEvent(e, 'xcmpQueue', 'Fail')
+          ) {
             const messageHashMatches = e.event.data[0].toString() === messageHash;
 
             return messageHashMatches;
@@ -626,7 +630,7 @@ class SubBridgeHistory extends SubNetworksConnector {
         const [receivedAmount, externalEventIndex] = getDepositedBalance(
           blockEvents.slice(0, messageEventIndex),
           history.to,
-          this.externalApi
+          this.network
         );
 
         // Deposit event index

@@ -4,7 +4,7 @@ import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubTransferType } from '@/utils/bridge/sub/types';
 
 import type { ApiPromise } from '@polkadot/api';
-import type { CodecString } from '@sora-substrate/util';
+import type { CodecString, WithConnectionApi } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
@@ -54,8 +54,8 @@ export const isEvent = (e, section: string, method: string) => {
 
 export const isTransactionFeePaid = (e) => isEvent(e, 'transactionPayment', 'TransactionFeePaid');
 
-export const getDepositedBalance = (events: Array<any>, to: string, api: ApiPromise): [string, number] => {
-  const recipient = subBridgeApi.formatAddress(to);
+export const getDepositedBalance = (events: Array<any>, to: string, chainApi: WithConnectionApi): [string, number] => {
+  const recipient = chainApi.formatAddress(to).toLowerCase();
 
   const index = events.findIndex((e) => {
     let eventRecipient = '';
@@ -64,11 +64,15 @@ export const getDepositedBalance = (events: Array<any>, to: string, api: ApiProm
       eventRecipient = e.event.data.who.toString();
     } else if (isEvent(e, 'assets', 'Transfer')) {
       eventRecipient = e.event.data[1].toString();
+    } else if (isEvent(e, 'assets', 'Issued')) {
+      eventRecipient = e.event.data.owner.toString();
     }
 
     if (!eventRecipient) return false;
 
-    return subBridgeApi.formatAddress(eventRecipient) === recipient;
+    const formatted = chainApi.formatAddress(eventRecipient).toLowerCase();
+
+    return formatted === recipient;
   });
 
   if (index === -1) throw new Error(`Unable to find balance deposit like event`);
@@ -156,13 +160,13 @@ export const isAssetAddedToChannel = (
   asset: RegisteredAccountAsset,
   to: string,
   sended: CodecString,
-  api: ApiPromise
+  chainApi: WithConnectionApi
 ): boolean => {
-  if (!api.events.xcmApp.AssetAddedToChannel.is(e.event)) return false;
+  if (!isEvent(e, 'xcmApp', 'AssetAddedToChannel')) return false;
 
   const { amount, assetId, recipient } = e.event.data[0].asTransfer;
   // address check
-  if (subBridgeApi.formatAddress(recipient.toString()) !== subBridgeApi.formatAddress(to)) return false;
+  if (chainApi.formatAddress(recipient.toString()) !== chainApi.formatAddress(to)) return false;
   // asset check
   if (assetId.toString() !== asset.address) return false;
   // amount check
@@ -179,9 +183,9 @@ export const isSoraBridgeAppBurned = (
   from: string,
   to: string,
   sended: CodecString,
-  api: ApiPromise
+  chainApi: WithConnectionApi
 ) => {
-  if (!api.events.soraBridgeApp.Burned.is(e.event)) return false;
+  if (!isEvent(e, 'soraBridgeApp', 'Burned')) return false;
 
   const [networkIdCodec, assetIdCodec, senderCodec, recipientCodec, amountCodec] = e.event.data;
 
@@ -193,8 +197,8 @@ export const isSoraBridgeAppBurned = (
   const amount = amountCodec.toString();
 
   // address check
-  if (subBridgeApi.formatAddress(sender) !== subBridgeApi.formatAddress(from)) return false;
-  if (subBridgeApi.formatAddress(recipient) !== subBridgeApi.formatAddress(to)) return false;
+  if (chainApi.formatAddress(sender) !== chainApi.formatAddress(from)) return false;
+  if (chainApi.formatAddress(recipient) !== chainApi.formatAddress(to)) return false;
   // asset check
   if (assetId !== asset.externalAddress) return false;
   // amount check
