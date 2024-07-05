@@ -111,6 +111,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
   @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.referrals.storageReferrer storageReferrer!: string;
+  @state.referrals.referrer private referrer!: string;
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.router.loading pageLoading!: boolean;
 
@@ -200,19 +201,16 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private async confirmInvititation(): Promise<void> {
-    await this.getReferrer();
-    if (this.storageReferrer) {
-      if (this.storageReferrer === this.account.address) {
-        this.resetStorageReferrer();
-      } else {
-        // wait until it's known if relation already setup
-        setTimeout(() => {
-          this.withApi(() => {
-            this.showConfirmInviteUser = true;
-          });
-        }, 5_000);
+    await this.withApi(async () => {
+      await this.getReferrer();
+      if (this.storageReferrer) {
+        if (this.storageReferrer === this.account.address) {
+          this.resetStorageReferrer();
+        } else if (!this.referrer) {
+          this.showConfirmInviteUser = true;
+        }
       }
-    }
+    });
   }
 
   private setResponsiveClass(): void {
