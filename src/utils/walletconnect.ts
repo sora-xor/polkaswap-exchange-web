@@ -27,8 +27,26 @@ export class WcEthereumProvider extends EthereumProvider {
   }
 
   public override async connect(opts?: ConnectOps): Promise<void> {
-    await super.connect(opts);
-    this.setAppSession(this.signer.session);
+    // eslint-disable-next-line
+    await new Promise<void>(async(resolve, reject) => {
+      const unsub = this.modal?.subscribeModal((state: { open: boolean }) => {
+        // This is the fix of modal close handler to check only ethereum session
+        if (
+          !state.open &&
+          (!this.signer.session || !Object.keys(this.signer.session.namespaces).includes(this.namespace))
+        ) {
+          unsub();
+          this.signer.abortPairingAttempt();
+          reject(new Error('Connection request reset. Please try again.'));
+        }
+      });
+
+      await super.connect(opts);
+
+      this.setAppSession(this.signer.session);
+
+      resolve();
+    });
   }
 }
 
