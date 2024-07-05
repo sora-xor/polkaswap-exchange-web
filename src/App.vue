@@ -53,7 +53,7 @@ import {
   initWallet,
   waitForCore,
 } from '@soramitsu/soraneo-wallet-web';
-import { isTMA, setDebug } from '@tma.js/sdk';
+import { isTMA } from '@tma.js/sdk';
 import debounce from 'lodash/debounce';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -69,6 +69,7 @@ import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
+import { initTMA } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
@@ -157,6 +158,8 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   // [DESKTOP] To Enable Desktop
   @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;
+  // [TMA] To Enable TMA
+  @mutation.settings.enableTMA private enableTMA!: FnWithoutArgs;
 
   @Watch('assetsToNotifyQueue')
   private handleNotifyOnDeposit(whitelistAssetArray: WhitelistArrayItem[]): void {
@@ -236,9 +239,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
       // To start running as Telegram Web App (desktop capabilities)
       if (await isTMA()) {
+        this.enableTMA();
         this.setIsDesktop(true);
-        // sets debug mode in twa
-        if (data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev) setDebug(true);
+        await initTMA(data?.TG_BOT_URL, data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev);
       }
 
       await this.setApiKeys(data?.API_KEYS);
