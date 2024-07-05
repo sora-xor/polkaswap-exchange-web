@@ -30,9 +30,9 @@ import { state } from '@/store/decorators';
 
 @Component
 export default class RewardsTabs extends Mixins(mixins.LoadingMixin, TranslationMixin) {
-  @state.settings.windowWidth windowWidth!: number;
-
   readonly RewardsTabsItems = RewardsTabsItems;
+
+  @state.settings.windowWidth windowWidth!: number;
 
   get currentTab(): string {
     return this.$route.name as string;
