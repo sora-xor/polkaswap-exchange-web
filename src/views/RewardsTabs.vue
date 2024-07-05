@@ -1,6 +1,6 @@
 <template>
   <div class="container rewards-tabs">
-    <s-tabs :value="currentTab" type="card" @input="handleChangeTab">
+    <s-tabs :key="windowWidth" :value="currentTab" type="card" @input="handleChangeTab">
       <s-tab
         v-for="rewardsTab in RewardsTabsItems"
         :key="rewardsTab"
@@ -26,9 +26,12 @@ import { Component, Mixins } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { RewardsTabsItems } from '@/consts';
 import router from '@/router';
+import { state } from '@/store/decorators';
 
 @Component
 export default class RewardsTabs extends Mixins(mixins.LoadingMixin, TranslationMixin) {
+  @state.settings.windowWidth windowWidth!: number;
+
   readonly RewardsTabsItems = RewardsTabsItems;
 
   get currentTab(): string {
