@@ -95,6 +95,16 @@ $rewards-tabs-height: 72px;
       padding-right: $inner-spacing-big;
       padding-left: $inner-spacing-big;
     }
+
+    @include mobile(true) {
+      #tab-Rewards {
+        font-size: var(--s-icon-font-size-medium);
+      }
+
+      #tab-ReferralProgram {
+        font-size: var(--s-icon-font-size-medium);
+      }
+    }
   }
 }
 </style>
