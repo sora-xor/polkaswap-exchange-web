@@ -171,6 +171,7 @@
 import { FPNumber } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components, mixins, api, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { initUtils } from '@tma.js/sdk';
 import last from 'lodash/fp/last';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -182,8 +183,19 @@ import router, { lazyView } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
 
+import env from '../../public/env.json';
+
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+
+const INVITE_MESSAGE = `
+Join me on Polkaswap!
+
+Discover the stylish DEX that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!
+
+🎁 Refer friends and earn 10% of their trading fees
+
+See you there!`;
 
 @Component({
   components: {
@@ -400,16 +412,27 @@ export default class ReferralProgram extends Mixins(
     return this.hasTMALink ? 'Share' : this.t('referralProgram.action.copyLink');
   }
 
+  handleDownloadFile(): void {
+    // const utils = initUtils();
+    // utils.openLink('https://polkaswap.io/env.json', true);
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(env));
+    const link = document.createElement('a');
+    link.setAttribute('href', dataStr);
+    link.setAttribute('download', 'env.json');
+    document.body.appendChild(link); // Required for FF
+    link.click();
+  }
+
   handleClickRefLink(event?: MouseEvent): void {
-    if (!this.hasTMALink) {
-      this.handleCopyAddress(this.referralLink.href, event);
-      return;
-    }
-    const botUrl = `${this.telegramBotUrl}/app?startapp=${this.account.address}`;
-    const msg = `https://t.me/share/url?url=${botUrl}&text=${encodeURIComponent(
-      '\nJoin Polkaswap Referral Program and get rewards for inviting friends!'
-    )}`;
-    window.open(msg, '_blank');
+    this.handleDownloadFile();
+    // if (!this.hasTMALink) {
+    //   this.handleCopyAddress(this.referralLink.href, event);
+    //   return;
+    // }
+
+    // const botUrl = `${this.telegramBotUrl}/app?startapp=${this.account.address}`;
+    // const msg = `https://t.me/share/url?url=${botUrl}&text=${encodeURIComponent(INVITE_MESSAGE)}`;
+    // window.open(msg, '_blank');
   }
 
   destroyed(): void {
