@@ -182,6 +182,7 @@ import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import router, { lazyView } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
+import { TmaSdk } from '@/utils/telegram';
 
 import env from '../../public/env.json';
 
@@ -416,11 +417,12 @@ export default class ReferralProgram extends Mixins(
     // const utils = initUtils();
     // utils.openLink('https://polkaswap.io/env.json', true);
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(env));
-    const link = document.createElement('a');
-    link.setAttribute('href', dataStr);
-    link.setAttribute('download', 'env.json');
-    document.body.appendChild(link); // Required for FF
-    link.click();
+    TmaSdk.openUrl(dataStr);
+    // const link = document.createElement('a');
+    // link.setAttribute('href', dataStr);
+    // link.setAttribute('download', 'env.json');
+    // document.body.appendChild(link); // Required for FF
+    // link.click();
   }
 
   handleClickRefLink(event?: MouseEvent): void {

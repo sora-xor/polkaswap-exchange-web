@@ -73,6 +73,14 @@ export class TmaSdk {
     }
   }
 
+  public static openUrl(url: string): void {
+    try {
+      this.utils.openLink(url);
+    } catch (error) {
+      console.warn('[TMA]: openUrl', error);
+    }
+  }
+
   private static async initViewport(): Promise<void> {
     try {
       const [viewport] = initViewport();
