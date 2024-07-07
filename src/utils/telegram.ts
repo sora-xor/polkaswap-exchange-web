@@ -1,5 +1,5 @@
 import { api } from '@soramitsu/soraneo-wallet-web';
-import { setDebug, initViewport, initInitData, initMiniApp } from '@tma.js/sdk';
+import { setDebug, initViewport, initInitData, initMiniApp, initWeb, isIframe } from '@tma.js/sdk';
 
 import store from '@/store';
 
@@ -22,16 +22,24 @@ export function updateTgTheme(): void {
 
 export async function initTMA(botUrl?: string, isDebug = false): Promise<void> {
   try {
+    // Initialize the app in the web version of Telegram
+    if (isIframe()) {
+      initWeb();
+      console.info('[TMA]: initTMA: Web version of Telegram');
+    }
     // Expand the Mini App to the maximum available height
     const [viewport] = initViewport();
     const viewportInstance = await viewport;
     viewportInstance.expand();
+    console.info('[TMA]: initTMA: Expand the Mini App to the maximum available height');
     // Set theme
     updateTgTheme();
+    console.info('[TMA]: initTMA: Set theme');
     // Enable debugging
     setDebug(isDebug);
     // Check the referrer
     const initData = initInitData();
+    console.info('[TMA]: initTMA: Data initialization', initData);
     const referrerAddress = initData?.startParam;
 
     if (referrerAddress && api.validateAddress(referrerAddress)) {
