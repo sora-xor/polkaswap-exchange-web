@@ -73,11 +73,11 @@ export class TmaSdk {
     }
   }
 
-  public static downloadFile(url: string): void {
+  public static shareLink(url: string, text?: string): void {
     try {
-      this.utils.openLink(url, { tryInstantView: true });
+      this.utils.shareURL(url, text ? encodeURIComponent(text) : text);
     } catch (error) {
-      console.warn('[TMA]: openUrl', error);
+      console.warn('[TMA]: shareLink', error);
     }
   }
 
