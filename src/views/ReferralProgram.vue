@@ -35,10 +35,10 @@
             class="s-typography-button--mini"
             size="small"
             type="primary"
-            :tooltip="copyTooltip(t('referralProgram.invitationLink'))"
-            @click="handleCopyAddress(referralLink.href, $event)"
+            :tooltip="refLinkTooltip"
+            @click="handleClickRefLink($event)"
           >
-            {{ t('referralProgram.action.copyLink') }}
+            {{ refLinkText }}
             <s-icon name="copy-16" size="16" />
           </s-button>
         </s-card>
@@ -181,6 +181,7 @@ import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import router, { lazyView } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
+import { TmaSdk } from '@/utils/telegram';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -213,6 +214,8 @@ export default class ReferralProgram extends Mixins(
   @state.referrals.invitedUsers invitedUsers!: Array<string>;
   @state.referrals.referrer referrer!: string;
   @state.referrals.isReferrerApproved isReferrerApproved!: boolean;
+  @state.settings.isTMA private isTMA!: boolean;
+  @state.settings.telegramBotUrl private telegramBotUrl!: Nullable<string>;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
   @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
 
@@ -386,6 +389,30 @@ export default class ReferralProgram extends Mixins(
     return this.hasAccountWithBondedXor ? 'secondary' : 'primary';
   }
 
+  private get hasTMALink(): boolean {
+    return this.isTMA && !!this.telegramBotUrl;
+  }
+
+  get refLinkTooltip(): string {
+    return this.hasTMALink
+      ? this.t('referralProgram.inviteViaTelegram')
+      : this.copyTooltip(this.t('referralProgram.invitationLink'));
+  }
+
+  get refLinkText(): string {
+    return this.hasTMALink ? this.t('referralProgram.action.shareLink') : this.t('referralProgram.action.copyLink');
+  }
+
+  handleClickRefLink(event?: MouseEvent): void {
+    if (!this.hasTMALink) {
+      this.handleCopyAddress(this.referralLink.href, event);
+      return;
+    }
+
+    const botUrl = `${this.telegramBotUrl}/app?startapp=${this.account.address}`;
+    TmaSdk.shareLink(botUrl, this.t('referralProgram.welcomeMessage'));
+  }
+
   destroyed(): void {
     this.reset();
   }
@@ -396,7 +423,7 @@ export default class ReferralProgram extends Mixins(
     });
   }
 
-  getLinkLabel(address: string): string {
+  private getLinkLabel(address: string): string {
     const routerMode = getRouterMode(router);
     return `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${address}`;
   }

@@ -938,7 +938,8 @@
             "bondMore": "Bond mer",
             "bond": "Knytte bånd",
             "unbond": "Koble ut",
-            "copyLink": "Kopier link"
+            "copyLink": "Kopier link",
+            "shareLink": "Del"
         },
         "transactionDetails": "Transaksjonsdetaljer",
         "receivedRewards": "Mottatte belønninger",
@@ -970,7 +971,9 @@
             "info": "Når du betaler et gebyr for transaksjonen,<br\/>går 10% til henvisningsadressen din",
             "referredLablel": "Henvist adresse"
         },
-        "insufficientBondedAmount": "Hvis du vil invitere flere henvisninger, binder du minst {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Hvis du vil invitere flere henvisninger, binder du minst {inviteUserFee} XOR",
+        "inviteViaTelegram": "Inviter via {Telegram}",
+        "welcomeMessage": "\nBli med meg på {Polkaswap}!\n\nOppdag den stilige {DEX} som lar deg bytte dusinvis av tokens med cross-chain swaps, ordrebok og mange belønninger!\n\n🎁 Inviter venner og tjen 10% av deres handelsgebyrer\n\nVi sees der!"
     },
     "transactionDetailsText": "Transaksjonsdetaljer",
     "code": {

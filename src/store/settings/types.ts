@@ -49,4 +49,6 @@ export type SettingsState = {
   screenBreakpointClass: BreakpointClass;
   windowWidth: number;
   adsArray: Array<Ad>;
+  isTMA: boolean;
+  telegramBotUrl: Nullable<string>;
 };

@@ -118,6 +118,12 @@ const mutations = defineMutations<SettingsState>()({
   setAdsArray(state, arr: Array<Ad>): void {
     state.adsArray = arr;
   },
+  enableTMA(state): void {
+    state.isTMA = true;
+  },
+  setTelegramBotUrl(state, url: Nullable<string>): void {
+    state.telegramBotUrl = url;
+  },
 });
 
 export default mutations;
