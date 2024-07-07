@@ -73,9 +73,9 @@ export class TmaSdk {
     }
   }
 
-  public static openUrl(url: string): void {
+  public static downloadFile(url: string): void {
     try {
-      this.utils.openLink(url);
+      this.utils.openLink(url, { tryBrowser: true });
     } catch (error) {
       console.warn('[TMA]: openUrl', error);
     }

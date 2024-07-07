@@ -417,7 +417,7 @@ export default class ReferralProgram extends Mixins(
     // const utils = initUtils();
     // utils.openLink('https://polkaswap.io/env.json', true);
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(env));
-    TmaSdk.openUrl(dataStr);
+    TmaSdk.downloadFile(dataStr);
     // const link = document.createElement('a');
     // link.setAttribute('href', dataStr);
     // link.setAttribute('download', 'env.json');
