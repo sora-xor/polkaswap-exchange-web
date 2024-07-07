@@ -41,6 +41,8 @@ function initialState(): SettingsState {
     screenBreakpointClass: BreakpointClass.LargeDesktop,
     windowWidth: window?.innerWidth ?? 0,
     adsArray: [],
+    isTMA: false,
+    telegramBotUrl: undefined,
   };
 }
 

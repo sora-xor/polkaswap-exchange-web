@@ -938,7 +938,8 @@
             "bondMore": "Bond More",
             "bond": "Bond",
             "unbond": "Unbond",
-            "copyLink": "Copy link"
+            "copyLink": "Copy link",
+            "shareLink": "Share"
         },
         "transactionDetails": "Transaction Details",
         "receivedRewards": "Received rewards",
@@ -970,7 +971,9 @@
             "info": "When you’ll pay a fee for transaction,<br\/>10% will go to your referrer",
             "referredLablel": "Referred address"
         },
-        "insufficientBondedAmount": "To invite more referrals, bond at least {inviteUserFee} XOR"
+        "insufficientBondedAmount": "To invite more referrals, bond at least {inviteUserFee} XOR",
+        "inviteViaTelegram": "Invite via {Telegram}",
+        "welcomeMessage": "\nJoin me on {Polkaswap}!\n\nDiscover the stylish {DEX} that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!\n\n🎁 Invite friends and earn 10% of their trading fees\n\nSee you there!"
     },
     "transactionDetailsText": "Transaction Details",
     "code": {

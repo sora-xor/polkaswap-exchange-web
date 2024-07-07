@@ -2830,10 +2830,10 @@
     vue-property-decorator "^9.1.2"
     vuex "^3.6.2"
 
-"@soramitsu/soraneo-wallet-web@1.38.7":
-  version "1.38.7"
-  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.38.7.tgz#d59892e29c9a28e17d919913b329448296af1473"
-  integrity sha512-/jIBktY8cFSleqCTS4XjEmrjwvJ52ypkHXK8YRwDR0euCsFE7CZsEghjUZ3Kya0ra0EgDWk17X2ehytGxW+L8w==
+"@soramitsu/soraneo-wallet-web@1.38.8":
+  version "1.38.8"
+  resolved "https://nexus.iroha.tech/repository/npm-group/@soramitsu/soraneo-wallet-web/-/soraneo-wallet-web-1.38.8.tgz#3ccdbf3654306f3ff6633a318c859c4bd44595f8"
+  integrity sha512-MaXiGXAEsm60VA1MiYDjDAmX+/ighO9VXCU/3pmxcy1Beqv9865D1aWyk2xbTeqHej4dVxBIU2lwdyoDGVPd+w==
   dependencies:
     "@polkadot/vue-identicon" "2.12.1"
     "@sora-substrate/util" "1.38.12"
@@ -3078,10 +3078,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@tma.js/sdk@^2.4.0":
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/@tma.js/sdk/-/sdk-2.4.0.tgz#9ea6fc485988a8aa5ff2dc6074d92eed9b88210c"
-  integrity sha512-cSJClNfoI7S0mC7b7RJQwaUCeR83UahqNG4A8kmCO4SeFFYsOX/XXXMQN0NilcQA4BfqwTMLPUbi/dV7r6b7BQ==
+"@tma.js/sdk@^2.7.0":
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/@tma.js/sdk/-/sdk-2.7.0.tgz#1ae1fa6e5b21f6a5d959328ba84096bf5e6cc910"
+  integrity sha512-LRuJdoEbAqKmSYccvXx5emSnye2je8oIbBVPtV+BmcNoa/dCZ0gFVkaeuyBqzroGtfGDyGO/WebU54ie5MKmCQ==
 
 "@tootallnate/once@1":
   version "1.1.2"

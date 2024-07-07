@@ -1,6 +1,6 @@
 <template>
   <div class="container rewards-tabs">
-    <s-tabs :value="currentTab" type="card" @input="handleChangeTab">
+    <s-tabs :key="windowWidth" :value="currentTab" type="card" @input="handleChangeTab">
       <s-tab
         v-for="rewardsTab in RewardsTabsItems"
         :key="rewardsTab"
@@ -26,10 +26,13 @@ import { Component, Mixins } from 'vue-property-decorator';
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { RewardsTabsItems } from '@/consts';
 import router from '@/router';
+import { state } from '@/store/decorators';
 
 @Component
 export default class RewardsTabs extends Mixins(mixins.LoadingMixin, TranslationMixin) {
   readonly RewardsTabsItems = RewardsTabsItems;
+
+  @state.settings.windowWidth windowWidth!: number;
 
   get currentTab(): string {
     return this.$route.name as string;
@@ -94,6 +97,16 @@ $rewards-tabs-height: 72px;
       padding-top: $inner-spacing-big;
       padding-right: $inner-spacing-big;
       padding-left: $inner-spacing-big;
+    }
+
+    @include mobile(true) {
+      #tab-Rewards {
+        font-size: var(--s-icon-font-size-medium);
+      }
+
+      #tab-ReferralProgram {
+        font-size: var(--s-icon-font-size-medium);
+      }
     }
   }
 }
