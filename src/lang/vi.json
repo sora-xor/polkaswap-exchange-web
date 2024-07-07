@@ -938,11 +938,14 @@
             "bondMore": "Bond Thêm",
             "bond": "Bond",
             "unbond": "Unbond",
-            "copyLink": "Sao chép đường dẫn"
+            "copyLink": "Sao chép đường dẫn",
+            "shareLink": "Chia sẻ"
         },
         "transactionDetails": "Chi tiết giao dịch",
         "receivedRewards": "Phần thưởng đã nhận",
         "invitationLink": "Liên kết lời mời",
+        "inviteViaTelegram": "Mời qua {Telegram}",
+        "welcomeMessage": "\nTham gia cùng tôi trên {Polkaswap}!\n\nKhám phá {DEX} phong cách cho phép bạn hoán đổi hàng chục mã thông báo với các giao dịch xuyên chuỗi, sổ lệnh và rất nhiều phần thưởng!\n\n🎁 Mời bạn bè và kiếm 10% phí giao dịch của họ\n\nHẹn gặp lại!",
         "successCopy": "Liên kết giới thiệu được sao chép vào khay nhớ tạm",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",

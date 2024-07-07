@@ -938,11 +938,14 @@
             "bondMore": "Mehr bonden",
             "bond": "Bond",
             "unbond": "Unbond",
-            "copyLink": "Link kopieren"
+            "copyLink": "Link kopieren",
+            "shareLink": "Teilen"
         },
         "transactionDetails": "Transaktionsdetails",
         "receivedRewards": "Erhaltene Belohnungen",
         "invitationLink": "Einladungslink",
+        "inviteViaTelegram": "Einladen über {Telegram}",
+        "welcomeMessage": "\nKomm zu mir auf {Polkaswap}!\n\nEntdecke den stylischen {DEX}, mit dem du Dutzende Token mit Cross-Chain-Swaps, Orderbuch und vielen Belohnungen tauschen kannst!\n\n🎁 Lade Freunde ein und verdiene 10% ihrer Handelsgebühren\n\nBis dann!",
         "successCopy": "Referral-Adresse wird in die Zwischenablage kopiert",
         "bondTitle": "XOR bonden",
         "unbondTitle": "XOR unbonden",

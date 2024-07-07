@@ -938,11 +938,14 @@
             "bondMore": "Bond više",
             "bond": "Bond",
             "unbond": "Unbond",
-            "copyLink": "Kopirajte link"
+            "copyLink": "Kopirajte link",
+            "shareLink": "Podijeli"
         },
         "transactionDetails": "Detalji transakcije",
         "receivedRewards": "Primljene nagrade",
         "invitationLink": "Link za pozivnicu",
+        "inviteViaTelegram": "Pozovi putem {Telegram}",
+        "welcomeMessage": "\nPridruži mi se na {Polkaswap}!\n\nOtkrij stilizirani {DEX} koji ti omogućuje zamjenu desetaka tokena s međulančanim zamjenama, knjigom narudžbi i mnoštvom nagrada!\n\n🎁 Pozovi prijatelje i zaradi 10% njihovih trgovačkih naknada\n\nVidimo se tamo!",
         "successCopy": "Link za preporuku se kopira u međuspremnik",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",

@@ -938,11 +938,14 @@
             "bondMore": "绑定更多",
             "bond": "绑定",
             "unbond": "解绑",
-            "copyLink": "复制链接"
+            "copyLink": "复制链接",
+            "shareLink": "分享"
         },
         "transactionDetails": "交易详情",
         "receivedRewards": "已领取奖励",
         "invitationLink": "邀请链接",
+        "inviteViaTelegram": "通过 {Telegram} 邀请",
+        "welcomeMessage": "\n加入我在 {Polkaswap}！\n\n发现时尚的 {DEX}，可以跨链交换数十种代币，订单簿和丰富的奖励！\n\n🎁 邀请朋友并赚取他们交易费用的 10%\n\n到时见！",
         "successCopy": "推荐链接被复制到剪贴板",
         "bondTitle": "绑定XOR",
         "unbondTitle": "解绑XOR",

@@ -938,11 +938,14 @@
             "bondMore": "Bond More",
             "bond": "Ikatan",
             "unbond": "Tidak terikat",
-            "copyLink": "Salin link"
+            "copyLink": "Salin link",
+            "shareLink": "Bagikan"
         },
         "transactionDetails": "Rincian transaksi",
         "receivedRewards": "Hadiah yang diterima",
         "invitationLink": "Link undangan",
+        "inviteViaTelegram": "Undang melalui {Telegram}",
+        "welcomeMessage": "\nBergabunglah dengan saya di {Polkaswap}!\n\nTemukan {DEX} bergaya yang memungkinkan Anda menukar puluhan token dengan pertukaran lintas rantai, buku pesanan, dan banyak hadiah!\n\n🎁 Undang teman dan dapatkan 10% dari biaya perdagangan mereka\n\nSampai jumpa di sana!",
         "successCopy": "Tautan rujukan disalin ke papan klip",
         "bondTitle": "Ikatan XOR",
         "unbondTitle": "Lepaskan ikatan XOR",

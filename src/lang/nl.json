@@ -938,11 +938,14 @@
             "bondMore": "Bond Meer",
             "bond": "Bond",
             "unbond": "Ontkoppelen",
-            "copyLink": "Kopieer link"
+            "copyLink": "Kopieer link",
+            "shareLink": "Delen"
         },
         "transactionDetails": "Transactiegegevens",
         "receivedRewards": "Beloningen ontvangen",
         "invitationLink": "Uitnodiging link",
+        "inviteViaTelegram": "Uitnodigen via {Telegram}",
+        "welcomeMessage": "\nDoe met mij mee op {Polkaswap}!\n\nOntdek de stijlvolle {DEX} waarmee je tientallen tokens kunt wisselen met cross-chain swaps, orderboek en veel beloningen!\n\n🎁 Nodig vrienden uit en verdien 10% van hun handelskosten\n\nZie je daar!",
         "successCopy": "Verwijzingslink wordt gekopieerd naar het klembord",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Ontbonden XOR",

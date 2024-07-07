@@ -938,11 +938,14 @@
             "bondMore": "Bond Mera",
             "bond": "Bond",
             "unbond": "Unbond",
-            "copyLink": "Kopiera länk"
+            "copyLink": "Kopiera länk",
+            "shareLink": "Dela"
         },
         "transactionDetails": "Transaktions Detaljer",
         "receivedRewards": "Mottagna rewards",
         "invitationLink": "Inbjudningslänk",
+        "inviteViaTelegram": "Bjud in via {Telegram}",
+        "welcomeMessage": "\nGå med mig på {Polkaswap}!\n\nUpptäck den stiliga {DEX} som låter dig byta ut dussintals tokens med cross-chain swaps, orderbok och massor av belöningar!\n\n🎁 Bjud in vänner och tjäna 10% av deras handelsavgifter\n\nVi ses där!",
         "successCopy": "Hänvisningslänk är kopierad till urklipp",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",

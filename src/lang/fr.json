@@ -938,11 +938,14 @@
             "bondMore": "Lier Plus",
             "bond": "Lier",
             "unbond": "Délier",
-            "copyLink": "Copier le lien"
+            "copyLink": "Copier le lien",
+            "shareLink": "Partager"
         },
         "transactionDetails": "Détails de la Transaction",
         "receivedRewards": "Récompenses reçues",
         "invitationLink": "Lien d'invitation",
+        "inviteViaTelegram": "Inviter via {Telegram}",
+        "welcomeMessage": "\nRejoignez-moi sur {Polkaswap} !\n\nDécouvrez le {DEX} élégant qui vous permet d'échanger des dizaines de jetons avec des swaps inter-chaînes, un carnet de commandes et plein de récompenses !\n\n🎁 Invitez des amis et gagnez 10% de leurs frais de trading\n\nÀ bientôt !",
         "successCopy": "Le lien de parrainage est copié dans le presse-papiers",
         "bondTitle": "Lier XOR",
         "unbondTitle": "Délier XOR",

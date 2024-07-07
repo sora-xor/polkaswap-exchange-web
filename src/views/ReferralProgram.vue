@@ -42,16 +42,6 @@
             <s-icon name="copy-16" size="16" />
           </s-button>
         </s-card>
-        <a :href="testDownloadLink" class="test-download-link" tabindex="-1" target="_blank" rel="noreferrer noopener">
-          <s-button
-            type="tertiary"
-            class="test-download-button s-typography-button--big"
-            icon="question-circle-16"
-            icon-position="right"
-          >
-            CLICK
-          </s-button>
-        </a>
       </template>
       <s-collapse :borders="true">
         <s-collapse-item :class="bondedContainerClasses" :disabled="!hasAccountWithBondedXor" name="bondedXOR">
@@ -416,15 +406,13 @@ export default class ReferralProgram extends Mixins(
   }
 
   get refLinkTooltip(): string {
-    return this.hasTMALink ? 'Invite via Telegram' : this.copyTooltip(this.t('referralProgram.invitationLink'));
+    return this.hasTMALink
+      ? this.t('referralProgram.inviteViaTelegram')
+      : this.copyTooltip(this.t('referralProgram.invitationLink'));
   }
 
   get refLinkText(): string {
-    return this.hasTMALink ? 'Share' : this.t('referralProgram.action.copyLink');
-  }
-
-  get testDownloadLink(): string {
-    return 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(env));
+    return this.hasTMALink ? this.t('referralProgram.action.shareLink') : this.t('referralProgram.action.copyLink');
   }
 
   handleClickRefLink(event?: MouseEvent): void {
@@ -434,7 +422,7 @@ export default class ReferralProgram extends Mixins(
     }
 
     const botUrl = `${this.telegramBotUrl}/app?startapp=${this.account.address}`;
-    TmaSdk.shareLink(botUrl, INVITE_MESSAGE);
+    TmaSdk.shareLink(botUrl, this.t('referralProgram.welcomeMessage'));
   }
 
   destroyed(): void {
@@ -655,13 +643,6 @@ export default class ReferralProgram extends Mixins(
 </style>
 
 <style lang="scss" scoped>
-.test-download {
-  &-link,
-  &-button {
-    width: 100%;
-  }
-}
-
 .referral-program {
   @include buttons;
   @include full-width-button('connect-button');

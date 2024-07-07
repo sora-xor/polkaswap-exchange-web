@@ -938,11 +938,14 @@
             "bondMore": "Veži više",
             "bond": "Veži",
             "unbond": "Razveži",
-            "copyLink": "Копирајте линк"
+            "copyLink": "Копирајте линк",
+            "shareLink": "Podeli"
         },
         "transactionDetails": "Детаљи трансакције",
         "receivedRewards": "Примљене награде",
         "invitationLink": "Линк за позивницу",
+        "inviteViaTelegram": "Pozovi preko {Telegram}",
+        "welcomeMessage": "\nPridruži mi se na {Polkaswap}!\n\nOtkrij stajliš {DEX} koji ti omogućava da menjaš desetine tokena sa međulančanim menjanjem, knjigom narudžbina i mnoštvom nagrada!\n\n🎁 Pozovi prijatelje i zaradi 10% njihovih trgovačkih naknada\n\nVidimo se tamo!",
         "successCopy": "Link referenta se kopira u privremenu memoriju",
         "bondTitle": "Veži XOR",
         "unbondTitle": "Razveži XOR",
