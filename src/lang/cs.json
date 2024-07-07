@@ -938,7 +938,8 @@
             "bondMore": "Vázat více",
             "bond": "Vázat",
             "unbond": "Zrušit vazbu",
-            "copyLink": "Kopírovat odkaz"
+            "copyLink": "Kopírovat odkaz",
+            "shareLink": "Sdílet"
         },
         "transactionDetails": "Detaily transakce",
         "receivedRewards": "Přijaté odměny",
@@ -970,7 +971,9 @@
             "info": "Když zaplatíte poplatek za transakci,<br\/>10% dostane váš referrer",
             "referredLablel": "Doporučená adresa"
         },
-        "insufficientBondedAmount": "Chcete-li pozvat více doporučení, spojte alespoň {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Chcete-li pozvat více doporučení, spojte alespoň {inviteUserFee} XOR",
+        "inviteViaTelegram": "Pozvat přes {Telegram}",
+        "welcomeMessage": "\nPřipojte se ke mně na {Polkaswap}!\n\nObjevte stylový {DEX}, který vám umožní vyměňovat desítky tokenů s křížovými řetězovými swapmi, knihou objednávek a spoustou odměn!\n\n🎁 Pozvěte přátele a získejte 10% z jejich obchodních poplatků\n\nUvidíme se tam!"
     },
     "transactionDetailsText": "Detaily transakce",
     "code": {

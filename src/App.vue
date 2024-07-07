@@ -69,7 +69,7 @@ import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
-import { initTMA } from '@/utils/telegram';
+import { TmaSdk } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
@@ -239,7 +239,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       if (await isTMA()) {
         this.enableTMA();
         this.setIsDesktop(true);
-        await initTMA(data?.TG_BOT_URL, data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev);
+        await TmaSdk.init(data?.TG_BOT_URL, data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev);
       }
 
       await this.setApiKeys(data?.API_KEYS);
