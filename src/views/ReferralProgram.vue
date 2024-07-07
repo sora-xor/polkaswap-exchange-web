@@ -171,7 +171,6 @@
 import { FPNumber } from '@sora-substrate/util';
 import { XOR } from '@sora-substrate/util/build/assets/consts';
 import { components, mixins, api, WALLET_TYPES, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
-import { initUtils } from '@tma.js/sdk';
 import last from 'lodash/fp/last';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
@@ -184,19 +183,8 @@ import { action, getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
 import { TmaSdk } from '@/utils/telegram';
 
-import env from '../../public/env.json';
-
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-
-const INVITE_MESSAGE = `
-Join me on Polkaswap!
-
-Discover the stylish DEX that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!
-
-🎁 Refer friends and earn 10% of their trading fees
-
-See you there!`;
 
 @Component({
   components: {
