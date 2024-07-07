@@ -944,8 +944,6 @@
         "transactionDetails": "Rincian transaksi",
         "receivedRewards": "Hadiah yang diterima",
         "invitationLink": "Link undangan",
-        "inviteViaTelegram": "Undang melalui {Telegram}",
-        "welcomeMessage": "\nBergabunglah dengan saya di {Polkaswap}!\n\nTemukan {DEX} bergaya yang memungkinkan Anda menukar puluhan token dengan pertukaran lintas rantai, buku pesanan, dan banyak hadiah!\n\n🎁 Undang teman dan dapatkan 10% dari biaya perdagangan mereka\n\nSampai jumpa di sana!",
         "successCopy": "Tautan rujukan disalin ke papan klip",
         "bondTitle": "Ikatan XOR",
         "unbondTitle": "Lepaskan ikatan XOR",
@@ -973,7 +971,9 @@
             "info": "Ketika Anda akan membayar biaya untuk transaksi,<br\/>10% akan masuk ke perujuk Anda",
             "referredLablel": "Alamat yang dirujuk"
         },
-        "insufficientBondedAmount": "Untuk mengundang lebih banyak rujukan, beri ikatan setidaknya {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Untuk mengundang lebih banyak rujukan, beri ikatan setidaknya {inviteUserFee} XOR",
+        "inviteViaTelegram": "Undang melalui {Telegram}",
+        "welcomeMessage": "\nBergabunglah dengan saya di {Polkaswap}!\n\nTemukan {DEX} bergaya yang memungkinkan Anda menukar puluhan token dengan pertukaran lintas rantai, buku pesanan, dan banyak hadiah!\n\n🎁 Undang teman dan dapatkan 10% dari biaya perdagangan mereka\n\nSampai jumpa di sana!"
     },
     "transactionDetailsText": "Detil transaksi",
     "code": {

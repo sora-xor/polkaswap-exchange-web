@@ -944,8 +944,6 @@
         "transactionDetails": "Idunadura Awọn alaye",
         "receivedRewards": "Awọn ere ti o gba",
         "invitationLink": "Ọna asopọ ifiwepe",
-        "inviteViaTelegram": "Pe nipasẹ {Telegram}",
-        "welcomeMessage": "\nDarapọ mọ mi lori {Polkaswap}!\n\nṢawari {DEX} ti ara ẹni ti o fun ọ laaye lati paarọ awọn aami aami mejila pẹlu awọn paṣipaarọ ẹwọn agbelebu, iwe aṣẹ, ati ọpọlọpọ awọn ere!\n\n🎁 Pe awọn ọrẹ ki o si jo'gun 10% ti awọn owo iṣowo wọn\n\nRi ọ nibẹ!",
         "successCopy": "Ọna asopọ itọkasi jẹ daakọ si agekuru agekuru",
         "bondTitle": "Dipọ XOR",
         "unbondTitle": "Yọ XOR kuro",
@@ -973,7 +971,9 @@
             "info": "Nigbati o ba san owo fun idunadura,<br\/>10% yoo lọ si olutọkasi rẹ",
             "referredLablel": "Adirẹsi ti a tọka si"
         },
-        "insufficientBondedAmount": "Lati pe awọn itọka si diẹ sii, di o kere ju {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Lati pe awọn itọka si diẹ sii, di o kere ju {inviteUserFee} XOR",
+        "inviteViaTelegram": "Pe nipasẹ {Telegram}",
+        "welcomeMessage": "\nDarapọ mọ mi lori {Polkaswap}!\n\nṢawari {DEX} ti ara ẹni ti o fun ọ laaye lati paarọ awọn aami aami mejila pẹlu awọn paṣipaarọ ẹwọn agbelebu, iwe aṣẹ, ati ọpọlọpọ awọn ere!\n\n🎁 Pe awọn ọrẹ ki o si jo'gun 10% ti awọn owo iṣowo wọn\n\nRi ọ nibẹ!"
     },
     "transactionDetailsText": "Idunadura Awọn alaye",
     "code": {

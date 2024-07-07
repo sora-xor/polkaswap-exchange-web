@@ -944,8 +944,6 @@
         "transactionDetails": "Szczegóły transakcji",
         "receivedRewards": "Otrzymane wynagrodzenie",
         "invitationLink": "Link polecający",
-        "inviteViaTelegram": "Zaproś przez {Telegram}",
-        "welcomeMessage": "\nDołącz do mnie na {Polkaswap}!\n\nOdkryj stylowy {DEX}, który umożliwia wymianę dziesiątek tokenów z cross-chain swaps, księgą zamówień i wieloma nagrodami!\n\n🎁 Zaproś znajomych i zarabiaj 10% ich opłat handlowych\n\nDo zobaczenia tam!",
         "successCopy": "Link polecający został skopiowany do schowka.",
         "bondTitle": "Utwórz rezerwy XOR",
         "unbondTitle": "Uwolnij rezerwy XOR",
@@ -973,7 +971,9 @@
             "info": "Kiedy zapłacisz opłatę za transakcję,<br\/>10% trafi do Twojego polecającego",
             "referredLablel": "Polecony adres"
         },
-        "insufficientBondedAmount": "Aby zaprosić więcej poleconych, zwiąż co najmniej {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Aby zaprosić więcej poleconych, zwiąż co najmniej {inviteUserFee} XOR",
+        "inviteViaTelegram": "Zaproś przez {Telegram}",
+        "welcomeMessage": "\nDołącz do mnie na {Polkaswap}!\n\nOdkryj stylowy {DEX}, który umożliwia wymianę dziesiątek tokenów z cross-chain swaps, księgą zamówień i wieloma nagrodami!\n\n🎁 Zaproś znajomych i zarabiaj 10% ich opłat handlowych\n\nDo zobaczenia tam!"
     },
     "transactionDetailsText": "Szczegóły transakcji",
     "code": {

@@ -944,8 +944,6 @@
         "transactionDetails": "Chi tiết giao dịch",
         "receivedRewards": "Phần thưởng đã nhận",
         "invitationLink": "Liên kết lời mời",
-        "inviteViaTelegram": "Mời qua {Telegram}",
-        "welcomeMessage": "\nTham gia cùng tôi trên {Polkaswap}!\n\nKhám phá {DEX} phong cách cho phép bạn hoán đổi hàng chục mã thông báo với các giao dịch xuyên chuỗi, sổ lệnh và rất nhiều phần thưởng!\n\n🎁 Mời bạn bè và kiếm 10% phí giao dịch của họ\n\nHẹn gặp lại!",
         "successCopy": "Liên kết giới thiệu được sao chép vào khay nhớ tạm",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Unbond XOR",
@@ -973,7 +971,9 @@
             "info": "Khi bạn trả phí giao dịch, <br\/> 10% sẽ được chuyển đến người giới thiệu của bạn",
             "referredLablel": "Địa chỉ giới thiệu"
         },
-        "insufficientBondedAmount": "Để mời thêm giới thiệu, hãy bond ít nhất {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Để mời thêm giới thiệu, hãy bond ít nhất {inviteUserFee} XOR",
+        "inviteViaTelegram": "Mời qua {Telegram}",
+        "welcomeMessage": "\nTham gia cùng tôi trên {Polkaswap}!\n\nKhám phá {DEX} phong cách cho phép bạn hoán đổi hàng chục mã thông báo với các giao dịch xuyên chuỗi, sổ lệnh và rất nhiều phần thưởng!\n\n🎁 Mời bạn bè và kiếm 10% phí giao dịch của họ\n\nHẹn gặp lại!"
     },
     "transactionDetailsText": "Chi tiết giao dịch",
     "code": {

@@ -944,8 +944,6 @@
         "transactionDetails": "Detalles de la transacción",
         "receivedRewards": "Recompensas recibidas",
         "invitationLink": "Enlace de invitación",
-        "inviteViaTelegram": "Invitar a través de {Telegram}",
-        "welcomeMessage": "\n¡Únete a mí en {Polkaswap}!\n\nDescubre el elegante {DEX} que te permite intercambiar docenas de tokens con intercambios entre cadenas, libro de órdenes y muchas recompensas!\n\n🎁 Invita a tus amigos y gana el 10% de sus tarifas de comercio\n\n¡Nos vemos allí!",
         "successCopy": "El enlace de referencia se copia en el portapapeles",
         "bondTitle": "Vincular XOR",
         "unbondTitle": "Desvincular XOR",
@@ -973,7 +971,9 @@
             "info": "Cuando pague una tarifa por la transacción,<br\/>el 10% se destinará a su referente",
             "referredLablel": "Dirección de referencia"
         },
-        "insufficientBondedAmount": "Para invitar a más referidos, vincular al menos {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Para invitar a más referidos, vincular al menos {inviteUserFee} XOR",
+        "inviteViaTelegram": "Invitar a través de {Telegram}",
+        "welcomeMessage": "\n¡Únete a mí en {Polkaswap}!\n\nDescubre el elegante {DEX} que te permite intercambiar docenas de tokens con intercambios entre cadenas, libro de órdenes y muchas recompensas!\n\n🎁 Invita a tus amigos y gana el 10% de sus tarifas de comercio\n\n¡Nos vemos allí!"
     },
     "transactionDetailsText": "Detalles de la transacción",
     "code": {

@@ -944,8 +944,6 @@
         "transactionDetails": "Tranzakció részletei",
         "receivedRewards": "Kapott jutalmak",
         "invitationLink": "Meghívó link",
-        "inviteViaTelegram": "Meghívás {Telegram}-on keresztül",
-        "welcomeMessage": "\nCsatlakozz hozzám a {Polkaswap}-on!\n\nFedezd fel a stílusos {DEX}-et, amely lehetővé teszi, hogy több tucat tokent cserélj kereszthálózati cserékkel, rendelési könyvvel és rengeteg jutalommal!\n\n🎁 Hívd meg barátaidat, és keresd meg a kereskedési díjaik 10%-át\n\nTalálkozunk ott!",
         "successCopy": "Az ajánlói hivatkozás a vágólapra másolva",
         "bondTitle": "XOR lekötése",
         "unbondTitle": "XOR feloldása",
@@ -973,7 +971,9 @@
             "info": "Amikor tranzakciós díjat fizet, a <br\/> 10%-ot kap az ajánlója.",
             "referredLablel": "Ajánlói cím"
         },
-        "insufficientBondedAmount": "További hivatkozások meghívásához legalább {inviteUserFee} XOR"
+        "insufficientBondedAmount": "További hivatkozások meghívásához legalább {inviteUserFee} XOR",
+        "inviteViaTelegram": "Meghívás {Telegram}-on keresztül",
+        "welcomeMessage": "\nCsatlakozz hozzám a {Polkaswap}-on!\n\nFedezd fel a stílusos {DEX}-et, amely lehetővé teszi, hogy több tucat tokent cserélj kereszthálózati cserékkel, rendelési könyvvel és rengeteg jutalommal!\n\n🎁 Hívd meg barátaidat, és keresd meg a kereskedési díjaik 10%-át\n\nTalálkozunk ott!"
     },
     "transactionDetailsText": "Tranzakció részletei",
     "code": {

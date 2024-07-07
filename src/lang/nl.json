@@ -944,8 +944,6 @@
         "transactionDetails": "Transactiegegevens",
         "receivedRewards": "Beloningen ontvangen",
         "invitationLink": "Uitnodiging link",
-        "inviteViaTelegram": "Uitnodigen via {Telegram}",
-        "welcomeMessage": "\nDoe met mij mee op {Polkaswap}!\n\nOntdek de stijlvolle {DEX} waarmee je tientallen tokens kunt wisselen met cross-chain swaps, orderboek en veel beloningen!\n\n🎁 Nodig vrienden uit en verdien 10% van hun handelskosten\n\nZie je daar!",
         "successCopy": "Verwijzingslink wordt gekopieerd naar het klembord",
         "bondTitle": "Bond XOR",
         "unbondTitle": "Ontbonden XOR",
@@ -973,7 +971,9 @@
             "info": "Wanneer u transactiekosten betaalt,<br\/>gaat 10% naar uw verwijzer",
             "referredLablel": "Doorverwezen adres"
         },
-        "insufficientBondedAmount": "Om meer verwijzingen uit te nodigen, bindt u ten minste {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Om meer verwijzingen uit te nodigen, bindt u ten minste {inviteUserFee} XOR",
+        "inviteViaTelegram": "Uitnodigen via {Telegram}",
+        "welcomeMessage": "\nDoe met mij mee op {Polkaswap}!\n\nOntdek de stijlvolle {DEX} waarmee je tientallen tokens kunt wisselen met cross-chain swaps, orderboek en veel beloningen!\n\n🎁 Nodig vrienden uit en verdien 10% van hun handelskosten\n\nZie je daar!"
     },
     "transactionDetailsText": "Transactie Details",
     "code": {

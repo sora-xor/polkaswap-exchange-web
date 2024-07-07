@@ -944,8 +944,6 @@
         "transactionDetails": "交易详情",
         "receivedRewards": "已领取奖励",
         "invitationLink": "邀请链接",
-        "inviteViaTelegram": "通过 {Telegram} 邀请",
-        "welcomeMessage": "\n加入我在 {Polkaswap}！\n\n发现时尚的 {DEX}，可以跨链交换数十种代币，订单簿和丰富的奖励！\n\n🎁 邀请朋友并赚取他们交易费用的 10%\n\n到时见！",
         "successCopy": "推荐链接被复制到剪贴板",
         "bondTitle": "绑定XOR",
         "unbondTitle": "解绑XOR",
@@ -973,7 +971,9 @@
             "info": "当您支付交易费用时， <br\/> 10% 将归您的推荐人",
             "referredLablel": "推荐地址"
         },
-        "insufficientBondedAmount": "要邀请更多推荐者，请至少绑定 {inviteUserFee} XOR"
+        "insufficientBondedAmount": "要邀请更多推荐者，请至少绑定 {inviteUserFee} XOR",
+        "inviteViaTelegram": "通过 {Telegram} 邀请",
+        "welcomeMessage": "\n加入我在 {Polkaswap}！\n\n发现时尚的 {DEX}，可以跨链交换数十种代币，订单簿和丰富的奖励！\n\n🎁 邀请朋友并赚取他们交易费用的 10%\n\n到时见！"
     },
     "transactionDetailsText": "交易详情",
     "code": {
