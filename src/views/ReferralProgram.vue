@@ -181,6 +181,7 @@ import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import router, { lazyView } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
+import { TmaSdk } from '@/utils/telegram';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -393,11 +394,13 @@ export default class ReferralProgram extends Mixins(
   }
 
   get refLinkTooltip(): string {
-    return this.hasTMALink ? 'Invite via Telegram' : this.copyTooltip(this.t('referralProgram.invitationLink'));
+    return this.hasTMALink
+      ? this.t('referralProgram.inviteViaTelegram')
+      : this.copyTooltip(this.t('referralProgram.invitationLink'));
   }
 
   get refLinkText(): string {
-    return this.hasTMALink ? 'Share' : this.t('referralProgram.action.copyLink');
+    return this.hasTMALink ? this.t('referralProgram.action.shareLink') : this.t('referralProgram.action.copyLink');
   }
 
   handleClickRefLink(event?: MouseEvent): void {
@@ -405,11 +408,9 @@ export default class ReferralProgram extends Mixins(
       this.handleCopyAddress(this.referralLink.href, event);
       return;
     }
+
     const botUrl = `${this.telegramBotUrl}/app?startapp=${this.account.address}`;
-    const msg = `https://t.me/share/url?url=${botUrl}&text=${encodeURIComponent(
-      '\nJoin Polkaswap Referral Program and get rewards for inviting friends!'
-    )}`;
-    window.open(msg, '_blank');
+    TmaSdk.shareLink(botUrl, this.t('referralProgram.welcomeMessage'));
   }
 
   destroyed(): void {
