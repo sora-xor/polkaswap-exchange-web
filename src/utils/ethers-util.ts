@@ -192,7 +192,7 @@ async function getAccount(): Promise<string> {
 
 async function getTokenContract(tokenAddress: string): Promise<ethers.Contract> {
   const signer = await getSigner();
-  const contract = new ethers.Contract(tokenAddress, SmartContracts[SmartContractType.ERC20].abi, signer);
+  const contract = new ethers.Contract(tokenAddress, SmartContracts[SmartContractType.ERC20], signer);
 
   return contract;
 }

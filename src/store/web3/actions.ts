@@ -232,7 +232,7 @@ const actions = defineActions({
       if (!soraAssetId) {
         return '';
       }
-      const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi;
+      const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other];
       const contractAddress = getters.contractAddress(KnownEthBridgeAsset.Other);
       if (!contractAddress || !contractAbi) {
         throw new Error('Contract address/abi is not found');

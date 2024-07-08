@@ -130,7 +130,7 @@ export async function getIncomingEvmTransactionData({ asset, value, recipient, g
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
 
   const contractAddress = getContractAddress(KnownEthBridgeAsset.Other) as string;
-  const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other].abi;
+  const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other];
   const contract = new ethers.Contract(contractAddress, contractAbi, signer);
 
   const method = isNativeEvmToken ? 'sendEthToSidechain' : 'sendERC20ToSidechain';
@@ -167,7 +167,7 @@ export async function getOutgoingEvmTransactionData({
   const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
   const bridgeAsset: KnownEthBridgeAsset = isValOrXor ? symbol : KnownEthBridgeAsset.Other;
   const contractAddress = getContractAddress(bridgeAsset) as string;
-  const contractAbi = SmartContracts[SmartContractType.EthBridge][bridgeAsset].abi;
+  const contractAbi = SmartContracts[SmartContractType.EthBridge][bridgeAsset];
 
   const contract = new ethers.Contract(contractAddress, contractAbi, signer);
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
