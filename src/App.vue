@@ -443,12 +443,6 @@ ul ul {
     }
   }
 
-  .app-menu {
-    @media (max-width: $breakpoint_large-mobile) {
-      z-index: $app-above-loader-layer;
-    }
-  }
-
   &-main.app-main {
     &--rewards,
     &--referral {
