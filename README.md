@@ -17,7 +17,6 @@ There is `public/env.json` file which contains `BASE_API_URL` and `DEFAULT_NETWO
 ]
 ```
 
-
 `"chain"` is used as the chain name.
 `"name"` is used as the node name.
 `"address"` is used for the address of the node to which the frontend project will be connected.
