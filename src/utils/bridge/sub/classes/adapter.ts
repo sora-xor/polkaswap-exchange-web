@@ -207,23 +207,27 @@ export class SubNetworksConnector {
    * Transfer funds from destination network to SORA
    */
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
-    const { api, accountPair, signer } = this.accountApi;
+    if ('transfer' in this.network) {
+      await (this.network as any).transfer(asset, recipient, amount);
+    } else {
+      const { api, accountPair, signer } = this.accountApi;
 
-    if (!accountPair) throw new Error(`[${this.constructor.name}] Account pair is not set.`);
+      if (!accountPair) throw new Error(`[${this.constructor.name}] Account pair is not set.`);
 
-    const historyItem = subBridgeApi.getHistory(historyId as string) ?? {
-      type: Operation.SubstrateIncoming,
-      symbol: asset.symbol,
-      assetAddress: asset.address,
-      amount: `${amount}`,
-      externalNetwork: this.destinationNetwork,
-      externalNetworkType: BridgeNetworkType.Sub,
-      from: subBridgeApi.address, // "from" is always SORA account address
-      to: this.accountApi.address,
-    };
+      const historyItem = subBridgeApi.getHistory(historyId as string) ?? {
+        type: Operation.SubstrateIncoming,
+        symbol: asset.symbol,
+        assetAddress: asset.address,
+        amount: `${amount}`,
+        externalNetwork: this.destinationNetwork,
+        externalNetworkType: BridgeNetworkType.Sub,
+        from: subBridgeApi.address, // "from" is always SORA account address
+        to: this.accountApi.address,
+      };
 
-    const extrinsic = this.network.getTransferExtrinsic(asset, recipient, amount);
-    // submit extrinsic using SORA api, because current implementation using "subHistory" from SORA api scope
-    await subBridgeApi.submitApiExtrinsic(api, extrinsic as any, accountPair, signer, historyItem);
+      const extrinsic = this.network.getTransferExtrinsic(asset, recipient, amount);
+      // submit extrinsic using SORA api, because current implementation using "subHistory" from SORA api scope
+      await subBridgeApi.submitApiExtrinsic(api, extrinsic as any, accountPair, signer, historyItem);
+    }
   }
 }

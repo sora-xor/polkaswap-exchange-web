@@ -2,7 +2,6 @@ import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts
 import { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import { api as soraApi, accountUtils, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
-import { ethers } from 'ethers';
 
 import { KnownEthBridgeAsset, SmartContracts, SmartContractType } from '@/consts/evm';
 import { web3ActionContext } from '@/store/web3';
@@ -237,8 +236,7 @@ const actions = defineActions({
       if (!contractAddress || !contractAbi) {
         throw new Error('Contract address/abi is not found');
       }
-      const signer = await ethersUtil.getSigner();
-      const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
+      const contractInstance = await ethersUtil.getContract(contractAddress, contractAbi);
       const methodArgs = [soraAssetId];
       const externalAddress = await contractInstance._sidechainTokens(...methodArgs);
       // Not (wrong) registered Sora asset on bridge contract return '0' address (like native token)

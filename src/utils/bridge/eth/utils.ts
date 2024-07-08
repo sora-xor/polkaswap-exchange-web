@@ -1,7 +1,6 @@
 import { Operation, FPNumber } from '@sora-substrate/util';
 import { BridgeTxStatus } from '@sora-substrate/util/build/bridgeProxy/consts';
 import { EthCurrencyType, EthAssetKind } from '@sora-substrate/util/build/bridgeProxy/eth/consts';
-import { ethers } from 'ethers';
 
 import { SmartContractType, KnownEthBridgeAsset, SmartContracts } from '@/consts/evm';
 import { asZeroValue } from '@/utils';
@@ -10,6 +9,7 @@ import ethersUtil from '@/utils/ethers-util';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { EthHistory, EthApprovedRequest } from '@sora-substrate/util/build/bridgeProxy/eth/types';
+import type { ethers } from 'ethers';
 import type { Subscription } from 'rxjs';
 
 type EthTxParams = {
@@ -124,14 +124,12 @@ export const waitForIncomingRequest = async (tx: EthHistory): Promise<{ hash: st
 
 export async function getIncomingEvmTransactionData({ asset, value, recipient, getContractAddress }: EthTxParams) {
   const isNativeEvmToken = ethersUtil.isNativeEvmTokenAddress(asset.externalAddress);
-  const signer = await ethersUtil.getSigner();
   const accountId = ethersUtil.accountAddressToHex(recipient);
-
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
 
   const contractAddress = getContractAddress(KnownEthBridgeAsset.Other) as string;
   const contractAbi = SmartContracts[SmartContractType.EthBridge][KnownEthBridgeAsset.Other];
-  const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+  const contract = await ethersUtil.getContract(contractAddress, contractAbi);
 
   const method = isNativeEvmToken ? 'sendEthToSidechain' : 'sendERC20ToSidechain';
   const methodArgs = isNativeEvmToken
@@ -162,14 +160,14 @@ export async function getOutgoingEvmTransactionData({
 }: EthTxParams) {
   if (!request) throw new Error('request is required!');
 
-  const signer = await ethersUtil.getSigner();
   const symbol = asset.symbol as KnownEthBridgeAsset;
   const isValOrXor = [KnownEthBridgeAsset.XOR, KnownEthBridgeAsset.VAL].includes(symbol);
   const bridgeAsset: KnownEthBridgeAsset = isValOrXor ? symbol : KnownEthBridgeAsset.Other;
+
   const contractAddress = getContractAddress(bridgeAsset) as string;
   const contractAbi = SmartContracts[SmartContractType.EthBridge][bridgeAsset];
+  const contract = await ethersUtil.getContract(contractAddress, contractAbi);
 
-  const contract = new ethers.Contract(contractAddress, contractAbi, signer);
   const amount = new FPNumber(value, asset.externalDecimals).toCodecString();
 
   const isEthereumCurrency = request.currencyType === EthCurrencyType.TokenAddress;
