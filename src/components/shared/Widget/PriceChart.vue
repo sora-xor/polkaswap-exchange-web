@@ -833,9 +833,7 @@ export default class PriceChartWidget extends Mixins(
           }
 
           const existingNodes = this.snapshotBuffer[address].nodes || [];
-
           const normalizedTimestamps = new Set(normalized.map((item) => item.timestamp));
-
           const filteredExistingNodes = existingNodes.filter((item) => !normalizedTimestamps.has(item.timestamp));
 
           this.snapshotBuffer[address].nodes = [...filteredExistingNodes, ...normalized];
