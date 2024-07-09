@@ -321,14 +321,11 @@ export default class PriceChartWidget extends Mixins(
 
   private snapshotBuffer: Record<
     string,
-    Record<
-      string,
-      {
-        nodes: SnapshotItem[];
-        hasNextPage: boolean;
-        endCursor: string | undefined;
-      }
-    >
+    {
+      nodes: SnapshotItem[];
+      hasNextPage: boolean;
+      endCursor: string | undefined;
+    }
   > = {};
 
   private reverseChart = false;
@@ -748,11 +745,7 @@ export default class PriceChartWidget extends Mixins(
   // ordered ty timestamp DESC
   private async fetchData(entityId: string) {
     const { type, count } = this.selectedFilter;
-    console.info('here is this.selectedFilter');
-    console.info(this.selectedFilter);
     const pageInfo = this.pageInfos[entityId];
-    console.info('here is pageinfo');
-    console.info(pageInfo);
     const hasNextPage = pageInfo?.hasNextPage ?? true;
     const endCursor = pageInfo?.endCursor ?? undefined;
 
@@ -813,20 +806,12 @@ export default class PriceChartWidget extends Mixins(
         )[] = [];
 
         if (this.reverseChart) {
-          console.info('Reversing chart');
           snapshots = addresses.flatMap((address) => {
-            return this.snapshotBuffer[address] && this.snapshotBuffer[address][label]
-              ? this.snapshotBuffer[address][label]
-              : [];
+            return this.snapshotBuffer[address] ? this.snapshotBuffer[address] : [];
           });
         } else {
-          console.info('Fetching new data');
           snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
         }
-        console.info('Snapshots:', snapshots);
-        // if (snapshots[0].nodes.length < Number(snapshots[0].endCursor)) {
-        //   snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
-        // }
 
         if (!(snapshots && isEqual(addresses)(this.entities) && isEqual(requestId)(this.priceUpdateRequestId))) return;
         const pageInfos: Record<string, Partial<PageInfo>> = {};
@@ -841,25 +826,22 @@ export default class PriceChartWidget extends Mixins(
           const normalized = normalizeSnapshots(buffer.concat(nodes), this.timeDifference, timestamp);
 
           if (!this.snapshotBuffer[address]) {
-            this.snapshotBuffer[address] = {};
-          }
-          if (!this.snapshotBuffer[address][label]) {
-            this.snapshotBuffer[address][label] = {
+            this.snapshotBuffer[address] = {
               nodes: [],
               hasNextPage: false,
               endCursor: undefined,
             };
           }
 
-          const existingNodes = this.snapshotBuffer[address][label].nodes || [];
+          const existingNodes = this.snapshotBuffer[address].nodes || [];
 
           const normalizedTimestamps = new Set(normalized.map((item) => item.timestamp));
 
           const filteredExistingNodes = existingNodes.filter((item) => !normalizedTimestamps.has(item.timestamp));
 
-          this.snapshotBuffer[address][label].nodes = [...filteredExistingNodes, ...normalized];
-          this.snapshotBuffer[address][label].hasNextPage = hasNextPage;
-          this.snapshotBuffer[address][label].endCursor = endCursor;
+          this.snapshotBuffer[address].nodes = [...filteredExistingNodes, ...normalized];
+          this.snapshotBuffer[address].hasNextPage = hasNextPage;
+          this.snapshotBuffer[address].endCursor = endCursor;
 
           groups.push(normalized);
           pageInfos[address] = { hasNextPage, endCursor };
