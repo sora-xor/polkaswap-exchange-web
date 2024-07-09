@@ -143,7 +143,7 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       decimals: 18,
     },
     endpointUrls: ['https://rpc.api.moonbase.moonbeam.network', 'https://moonbase-rpc.dwellir.com'],
-    blockExplorerUrls: ['https://moonbase.moonscan.io'],
+    blockExplorerUrls: ['https://moonbase.subscan.io'],
     shortName: 'Moonbase',
     nodes: [
       {

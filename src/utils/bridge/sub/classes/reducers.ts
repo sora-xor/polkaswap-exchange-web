@@ -587,8 +587,6 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
   private async waitForDestinationExecution(id: string): Promise<void> {
     if (![SubTransferType.Relaychain, SubTransferType.Parachain].includes(this.transferType)) return;
 
-    console.log('waitForDestinationExecution');
-
     const tx = this.getTransaction(id);
     const messageHash = tx.payload.messageHash as string;
 
