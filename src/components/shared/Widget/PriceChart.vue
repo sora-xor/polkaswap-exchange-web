@@ -795,7 +795,6 @@ export default class PriceChartWidget extends Mixins(
     const addresses = [...this.entities];
     const requestId = Date.now();
     const lastTimestamp = last(this.dataset)?.timestamp ?? Date.now();
-    const { label, count } = this.selectedFilter;
 
     this.priceUpdateRequestId = requestId;
     await this.withApi(async () => {
