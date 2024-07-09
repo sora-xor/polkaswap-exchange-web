@@ -206,9 +206,9 @@ export class SubNetworksConnector {
   /**
    * Transfer funds from destination network to SORA
    */
-  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId?: string) {
+  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId: string) {
     if ('transfer' in this.network) {
-      await (this.network as any).transfer(asset, recipient, amount);
+      await (this.network as any).transfer(asset, recipient, amount, historyId);
     } else {
       const { api, accountPair, signer } = this.accountApi;
 

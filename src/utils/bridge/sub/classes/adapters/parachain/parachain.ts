@@ -67,6 +67,8 @@ export class ParachainAdapter<AssetId> extends SubAdapter {
         return '3000000000';
       case SubNetworkId.PolkadotAstar:
         return '57000000000000000';
+      case SubNetworkId.AlphanetMoonbase:
+        return '40000000000000';
       default:
         return '0';
     }

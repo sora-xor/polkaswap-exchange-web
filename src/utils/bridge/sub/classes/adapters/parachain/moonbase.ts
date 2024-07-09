@@ -1,16 +1,20 @@
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber, TransactionStatus } from '@sora-substrate/util';
 import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import BN from 'bignumber.js';
 
 import xTokensAbi from '@/abi/ethereum/other/moonbeam/xTokens.json';
 import { ZeroStringValue } from '@/consts';
 import { SUB_NETWORKS } from '@/consts/sub';
+import { delay } from '@/utils';
+import { getEvmTransactionFee, onEvmTransactionPending } from '@/utils/bridge/common/utils';
+import { getTransaction, updateTransaction } from '@/utils/bridge/sub/utils';
 import ethersUtil from '@/utils/ethers-util';
 
 import { ParachainAdapter } from './parachain';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
+import type { ethers } from 'ethers';
 
 const MOONBASE_DATA = SUB_NETWORKS[SubNetworkId.AlphanetMoonbase];
 
@@ -79,7 +83,7 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
     return selector + publicKey + networkOption;
   }
 
-  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number) {
+  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId: string) {
     let currencyAddress = this.nativeAssetContractAddress;
 
     if (asset.symbol !== this.chainSymbol) {
@@ -91,7 +95,7 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
     }
 
     const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
-    const weight = 5_000_000_000; // max waight, taken from successful xcm message on SORA parachain
+    const weight = 5_000_000_000; // max weight, taken from successful xcm message on SORA parachain
 
     const parents = 1;
     const parachainJunction = this.toParachainAddress(this.getSoraParachainId());
@@ -101,10 +105,28 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
 
     const xTokens = await ethersUtil.getContract(this.xTokensContractAddress, xTokensAbi);
 
-    const transaction = await xTokens.transfer(currencyAddress, value, destination, weight);
+    const signedTx: ethers.TransactionResponse = await xTokens.transfer(currencyAddress, value, destination, weight);
 
-    // Waits for the transaction to be included in a block
-    await transaction.wait();
-    console.log(transaction);
+    updateTransaction(historyId, {
+      externalHash: signedTx.hash,
+      externalNetworkFee: getEvmTransactionFee(signedTx),
+      status: TransactionStatus.InBlock,
+    });
+
+    // wait a little to update tx in storage
+    await delay();
+
+    // run non blocking promise to update tx data
+    onEvmTransactionPending(historyId, getTransaction, updateTransaction)
+      .then(() => {
+        updateTransaction(historyId, {
+          status: TransactionStatus.Finalized,
+        });
+      })
+      .catch(() => {
+        updateTransaction(historyId, {
+          status: TransactionStatus.Error,
+        });
+      });
   }
 }

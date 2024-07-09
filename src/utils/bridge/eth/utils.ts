@@ -9,7 +9,6 @@ import ethersUtil from '@/utils/ethers-util';
 
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { EthHistory, EthApprovedRequest } from '@sora-substrate/util/build/bridgeProxy/eth/types';
-import type { ethers } from 'ethers';
 import type { Subscription } from 'rxjs';
 
 type EthTxParams = {
@@ -20,13 +19,15 @@ type EthTxParams = {
   request?: EthApprovedRequest;
 };
 
+export const isOutgoingTx = (tx: EthHistory): boolean => {
+  return tx.type === Operation.EthBridgeOutgoing;
+};
+
 export const isUnsignedFromPart = (tx: EthHistory): boolean => {
-  if (tx.type === Operation.EthBridgeOutgoing) {
+  if (isOutgoingTx(tx)) {
     return !tx.blockId && !tx.txId;
-  } else if (tx.type === Operation.EthBridgeIncoming) {
-    return !tx.externalHash;
   } else {
-    return true;
+    return !tx.externalHash;
   }
 };
 
@@ -290,10 +291,3 @@ export async function getEthNetworkFee(
 
   return ethersUtil.calcEvmFee(gasPrice, gasLimitTotal);
 }
-
-export const getTransactionFee = (tx: ethers.TransactionResponse | ethers.TransactionReceipt) => {
-  const gasPrice = tx.gasPrice;
-  const gasAmount = 'gasUsed' in tx ? tx.gasUsed : tx.gasLimit;
-
-  return ethersUtil.calcEvmFee(gasPrice, gasAmount);
-};

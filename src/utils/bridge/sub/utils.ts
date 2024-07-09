@@ -1,4 +1,4 @@
-import { FPNumber } from '@sora-substrate/util';
+import { FPNumber, Operation } from '@sora-substrate/util';
 
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubTransferType } from '@/utils/bridge/sub/types';
@@ -8,8 +8,15 @@ import type { CodecString, WithConnectionApi } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 
+export const isOutgoingTx = (tx: SubHistory): boolean => {
+  return tx.type === Operation.SubstrateOutgoing;
+};
+
 export const isUnsignedTx = (tx: SubHistory): boolean => {
-  return !tx.blockId && !tx.txId;
+  const signId =
+    subBridgeApi.isEvmAccount(tx.externalNetwork as SubNetwork) && !isOutgoingTx(tx) ? tx.externalHash : tx.txId;
+
+  return !tx.blockId && !signId;
 };
 
 export const getTransaction = (id: string): SubHistory => {
