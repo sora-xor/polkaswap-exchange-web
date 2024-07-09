@@ -14,11 +14,12 @@ import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 const MOONBASE_DATA = SUB_NETWORKS[SubNetworkId.AlphanetMoonbase];
 
-const xTokensContractAddress = '0x0000000000000000000000000000000000000804';
-
 type IMoonbaseAssetId = string;
 
 export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId> {
+  protected nativeAssetContractAddress = '0x0000000000000000000000000000000000000802';
+  protected xTokensContractAddress = '0x0000000000000000000000000000000000000804';
+
   // overrides "WithConnectionApi"
   override get chainSymbol(): string | undefined {
     return MOONBASE_DATA?.nativeCurrency?.symbol;
@@ -79,13 +80,18 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
   }
 
   public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number) {
-    const assetMeta = this.getAssetMeta(asset);
+    let currencyAddress = this.nativeAssetContractAddress;
 
-    if (!assetMeta) throw new Error(`[${this.constructor.name}] Asset not found`);
+    if (asset.symbol !== this.chainSymbol) {
+      const assetMeta = this.getAssetMeta(asset);
 
-    const currencyAddress = this.assetIdToEvmContractAddress(assetMeta.id);
+      if (!assetMeta) throw new Error(`[${this.constructor.name}] Asset not found`);
+
+      currencyAddress = this.assetIdToEvmContractAddress(assetMeta.id);
+    }
+
     const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
-    const weight = 4_000_000_000; // taken from successful xcm message on SORA parachain
+    const weight = 5_000_000_000; // max waight, taken from successful xcm message on SORA parachain
 
     const parents = 1;
     const parachainJunction = this.toParachainAddress(this.getSoraParachainId());
@@ -93,7 +99,7 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
     const interior = [parachainJunction, accountJunction]; // interior = X2 (the array has a length of 2)
     const destination = [parents, interior];
 
-    const xTokens = await ethersUtil.getContract(xTokensContractAddress, xTokensAbi);
+    const xTokens = await ethersUtil.getContract(this.xTokensContractAddress, xTokensAbi);
 
     const transaction = await xTokens.transfer(currencyAddress, value, destination, weight);
 
