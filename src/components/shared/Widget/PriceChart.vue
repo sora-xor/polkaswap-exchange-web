@@ -103,6 +103,12 @@ type ChartDataItem = [number, ...OCLH, number];
 
 type LastUpdates = Record<string, SnapshotItem>;
 
+type Snapshot = {
+  nodes: SnapshotItem[];
+  hasNextPage: boolean;
+  endCursor: string | undefined;
+};
+
 enum CHART_TYPES {
   LINE = 'line',
   CANDLE = 'candlestick',
@@ -319,14 +325,7 @@ export default class PriceChartWidget extends Mixins(
   private priceUpdateSubscription: Nullable<FnWithoutArgs> = null;
   private priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
 
-  private snapshotBuffer: Record<
-    string,
-    {
-      nodes: SnapshotItem[];
-      hasNextPage: boolean;
-      endCursor: string | undefined;
-    }
-  > = {};
+  private snapshotBuffer: Record<string, Snapshot> = {};
 
   private reverseChart = false;
 
@@ -799,15 +798,12 @@ export default class PriceChartWidget extends Mixins(
     this.priceUpdateRequestId = requestId;
     await this.withApi(async () => {
       try {
-        let snapshots: (
-          | { nodes: SnapshotItem[]; hasNextPage: boolean; endCursor: string | undefined }
-          | { nodes: never[]; hasNextPage: boolean; endCursor: string | undefined }
-        )[] = [];
+        let snapshots: Snapshot[] = [];
 
         if (this.reverseChart) {
-          snapshots = addresses.flatMap((address) => {
-            return this.snapshotBuffer[address] ? this.snapshotBuffer[address] : [];
-          });
+          snapshots = addresses.map(
+            (address) => this?.snapshotBuffer?.[address] || { nodes: [], hasNextPage: false, endCursor: undefined }
+          );
         } else {
           snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
         }
@@ -832,7 +828,7 @@ export default class PriceChartWidget extends Mixins(
             };
           }
 
-          const existingNodes = this.snapshotBuffer[address].nodes || [];
+          const existingNodes = this.snapshotBuffer[address]?.nodes;
           const normalizedTimestamps = new Set(normalized.map((item) => item.timestamp));
           const filteredExistingNodes = existingNodes.filter((item) => !normalizedTimestamps.has(item.timestamp));
 
