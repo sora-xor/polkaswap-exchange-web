@@ -50,7 +50,7 @@
                   <div v-if="evmAddress" class="rewards-account">
                     <div class="rewards-account-group">
                       <img
-                        v-if="changeWalletEvm"
+                        v-if="evmProvider"
                         :src="getEvmProviderIcon(evmProvider)"
                         :alt="evmProvider"
                         class="rewards-account-logo"
