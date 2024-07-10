@@ -27,6 +27,7 @@ import type { WalletInfo } from '@sora-test/wallet-connect/types';
   },
 })
 export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
+  @state.wallet.account.isDesktop isDesktop!: boolean;
   @state.web3.selectProviderDialogVisibility private selectProviderDialogVisibility!: boolean;
 
   get visibility(): boolean {
@@ -37,21 +38,31 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
     this.setSelectProviderDialogVisibility(flag);
   }
 
-  get wallets(): WalletInfo[] {
-    return Object.keys(Provider).map((key) => {
-      const provider = Provider[key];
+  get allowedProviders(): Provider[] {
+    if (this.isDesktop) {
+      return [Provider.WalletConnect];
+    }
 
-      return {
-        extensionName: provider,
-        title: provider,
-        chromeUrl: '',
-        mozillaUrl: '',
-        logo: {
-          src: this.getEvmProviderIcon(provider),
-          alt: provider,
-        },
-      };
-    });
+    return [Provider.Metamask, Provider.SubWallet, Provider.TrustWallet, Provider.WalletConnect];
+  }
+
+  get wallets(): WalletInfo[] {
+    return Object.keys(Provider)
+      .filter((key) => this.allowedProviders.includes(key as Provider))
+      .map((key) => {
+        const provider = Provider[key];
+
+        return {
+          extensionName: provider,
+          title: provider,
+          chromeUrl: '',
+          mozillaUrl: '',
+          logo: {
+            src: this.getEvmProviderIcon(provider),
+            alt: provider,
+          },
+        };
+      });
   }
 
   get selectedProvider(): Nullable<Provider> {

@@ -475,6 +475,25 @@ p {
 .additional-buttons {
   display: flex;
   margin-top: 4px;
+
+  @include mobile(true) {
+    button {
+      font-size: var(--s-font-size-mini);
+    }
+  }
+}
+
+.withdraw-content {
+  .withdraw-header {
+    @include mobile(true) {
+      flex-wrap: wrap;
+      gap: var(--s-size-mini);
+
+      button {
+        margin: 0;
+      }
+    }
+  }
 }
 
 .additional-button {

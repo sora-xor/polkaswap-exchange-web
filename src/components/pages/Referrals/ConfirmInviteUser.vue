@@ -32,6 +32,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import { state, mutation } from '@/store/decorators';
 
+// TODO: [Rustem] remove hasReferrer logic (localise)
 @Component({
   components: { DialogBase: components.DialogBase },
 })

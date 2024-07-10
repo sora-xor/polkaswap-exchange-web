@@ -157,7 +157,6 @@
         "connectionError": "Beim Verbinden der Wallet ist ein Fehler aufgetreten. Sie können erneut versuchen, das Wallet über {extension} zu verbinden"
     },
     "connection": {
-        "title": "{Sora}-Netzwerk-Konto",
         "text": "Um Vermögenswerte zu verwalten und Transaktionen auf {Sora} zu signieren, muss ein Konto verbunden sein. {Sora} Konten können mithilfe unserer integrierten Wallets oder Browsererweiterungen erstellt und verbunden werden.",
         "noAccounts": "Es wurde kein Konto in deiner {extension} Browser-Erweiterung gefunden. Bitte, füge ein Konto hinzu und versuche es nochmal.",
         "selectAccount": "Wähle das Konto aus, das du verwenden möchtest",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora}-Netzwerk-Konto",
         "WalletAssets": "Assets",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivität"
@@ -212,7 +210,8 @@
         "walletAddress": "Wallet-Adresse",
         "delete": "Konto löschen",
         "rename": "Bennene den Account um",
-        "export": "Exportieren Sie .json"
+        "export": "Exportieren Sie .json",
+        "accountTitle": "Konto"
     },
     "history": {
         "clearHistory": "Verlauf löschen",
@@ -939,7 +938,8 @@
             "bondMore": "Mehr bonden",
             "bond": "Bond",
             "unbond": "Unbond",
-            "copyLink": "Link kopieren"
+            "copyLink": "Link kopieren",
+            "shareLink": "Teilen"
         },
         "transactionDetails": "Transaktionsdetails",
         "receivedRewards": "Erhaltene Belohnungen",
@@ -971,7 +971,9 @@
             "info": "Wenn du eine Transaktionsgebühr zahlst,<br\/>gehen 10% an deinen Referrer",
             "referredLablel": "Empfohlene Adresse"
         },
-        "insufficientBondedAmount": "Um weitere Empfehlungen zu veschicken, bonde mindestens {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Um weitere Empfehlungen zu veschicken, bonde mindestens {inviteUserFee} XOR",
+        "inviteViaTelegram": "Einladen über {Telegram}",
+        "welcomeMessage": "\nKomm zu mir auf {Polkaswap}!\n\nEntdecke den stylischen {DEX}, mit dem du Dutzende Token mit Cross-Chain-Swaps, Orderbuch und vielen Belohnungen tauschen kannst!\n\n🎁 Lade Freunde ein und verdiene 10% ihrer Handelsgebühren\n\nBis dann!"
     },
     "transactionDetailsText": "Transaktionsdetails",
     "code": {
@@ -1638,7 +1640,8 @@
             "borrowMoreThanAvailable": "Verfügbarer Schuldenbetrag überschritten",
             "insufficientCollateral": "Unzureichendes Kollateral",
             "enterRepayDebt": "Geben Sie die Schuldenzahlung ein",
-            "repayMoreThanDebt": "Schulden überbezahlt"
+            "repayMoreThanDebt": "Schulden überbezahlt",
+            "incorrectCollateral": "Token-Paar wird nicht unterstützt"
         },
         "interest": "Zinsen",
         "interestDescription": "Eine jährliche Gebühr, die auf den aus Ihrem Vault abgehobenen Betrag erhoben wird, berechnet als Prozentsatz. Diese Gebühr kompensiert Risiken und Marktschwankungen.",
@@ -1660,9 +1663,9 @@
         "overallTotalDebtDescription": "Der Gesamtbetrag der derzeit ausstehenden Schulden über alle Positionen auf der {Kensetsu}-Plattform.",
         "overallBadDebt": "Faule Schulden",
         "overallBadDebtDescription": "Der Teil der Schulden, der aufgrund von Zahlungsausfällen der Kreditnehmer oder unzureichender Sicherheiten wahrscheinlich nicht zurückgefordert wird.",
-        "overallBorrowTax": "Kreditsteuer",
-        "overallBorrowTaxDescription": "Eine Gebühr, die auf geliehene Mittel erhoben wird, berechnet als Prozentsatz des geliehenen Betrags. Die Kreditsteuer wird für das Anreizprogramm zum Rückkauf von {KEN}-Tokens verwendet.",
-        "ltvMaxTooltip": "Die maximale Höhe einer Kreditposition, die im Verhältnis zum geschätzten Wert des als Sicherheit verwendeten Vermögens bereitgestellt werden kann."
+        "ltvMaxTooltip": "Die maximale Höhe einer Kreditposition, die im Verhältnis zum geschätzten Wert des als Sicherheit verwendeten Vermögens bereitgestellt werden kann.",
+        "overallAvailable": "Insgesamt verfügbar",
+        "overallAvailableDescription": "Der Gesamtbetrag der auf der {Kensetsu}-Plattform verfügbaren Mittel zur Ausleihe."
     },
     "accountSettings": {
         "title": "Account Einstellungen",
