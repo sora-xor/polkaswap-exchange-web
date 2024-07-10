@@ -69,27 +69,14 @@
           </template>
 
           <bridge-account-panel
-            v-if="sender"
+            data-test-name="connectPolkadot"
             :address="sender"
             :name="senderName"
             :tooltip="getCopyTooltip(isSoraToEvm)"
+            :icon="getProviderIcon(isSoraToEvm)"
             @connect="connectWallet(isSoraToEvm)"
             @disconnect="disconnectWallet(isSoraToEvm)"
-          >
-            <template #icon v-if="evmProvider && !isSoraToEvm">
-              <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
-            </template>
-          </bridge-account-panel>
-
-          <s-button
-            v-else
-            class="el-button--connect s-typography-button--large"
-            data-test-name="connectPolkadot"
-            type="primary"
-            @click="connectWallet(isSoraToEvm)"
-          >
-            {{ t('connectWalletText') }}
-          </s-button>
+          />
         </token-input>
 
         <s-button
@@ -128,27 +115,14 @@
           </template>
 
           <bridge-account-panel
-            v-if="recipient"
+            data-test-name="useMetamaskProvider"
             :address="recipient"
             :name="recipientName"
             :tooltip="getCopyTooltip(!isSoraToEvm)"
+            :icon="getProviderIcon(!isSoraToEvm)"
             @connect="connectWallet(!isSoraToEvm)"
             @disconnect="disconnectWallet(!isSoraToEvm)"
-          >
-            <template #icon v-if="evmProvider && isSoraToEvm">
-              <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
-            </template>
-          </bridge-account-panel>
-
-          <s-button
-            v-else
-            class="el-button--connect s-typography-button--large"
-            data-test-name="useMetamaskProvider"
-            type="primary"
-            @click="connectWallet(!isSoraToEvm)"
-          >
-            {{ t('connectWalletText') }}
-          </s-button>
+          />
         </token-input>
 
         <s-button
@@ -588,6 +562,12 @@ export default class Bridge extends Mixins(
     return `${networkName} ${this.t('addressText')}`;
   }
 
+  getProviderIcon(isSoraNetwork = false): string {
+    if (!this.evmProvider || isSoraNetwork) return '';
+
+    return this.getEvmProviderIcon(this.evmProvider);
+  }
+
   handleMaxValue(): void {
     this.setSendedAmount(this.maxValue);
   }
@@ -717,7 +697,6 @@ export default class Bridge extends Mixins(
     @include vertical-divider('s-button--switch', $inner-spacing-medium);
     @include vertical-divider('s-divider-tertiary');
     @include buttons;
-    @include full-width-button('el-button--connect', $inner-spacing-mini);
     @include full-width-button('el-button--next');
     .input-title {
       &--network {

@@ -1,10 +1,11 @@
 <template>
-  <div class="account-panel">
+  <div v-if="address" class="account-panel">
     <s-divider type="tertiary" />
 
     <div class="account-group">
       <slot name="icon">
-        <wallet-avatar :address="address" :size="18" class="account-gravatar" />
+        <img v-if="icon" :src="icon" alt="provider icon" class="account-group-logo" />
+        <wallet-avatar v-else :address="address" :size="18" class="account-gravatar" />
       </slot>
       <span v-if="name" class="account-group-name">
         {{ name }}
@@ -21,6 +22,16 @@
       </span>
     </div>
   </div>
+
+  <s-button
+    v-else
+    class="account-panel-button s-typography-button--large"
+    data-test-name="connectPolkadot"
+    type="primary"
+    @click="handleConnect"
+  >
+    {{ t('connectWalletText') }}
+  </s-button>
 </template>
 
 <script lang="ts">
@@ -39,6 +50,7 @@ export default class BridgeAccountPanel extends Mixins(mixins.CopyAddressMixin, 
   @Prop({ default: '', type: String }) readonly address!: string;
   @Prop({ default: '', type: String }) readonly name!: string;
   @Prop({ default: '', type: String }) readonly tooltip!: string;
+  @Prop({ default: '', type: String }) readonly icon!: string;
 
   handleConnect(): void {
     this.$emit('connect');
@@ -64,6 +76,8 @@ export default class BridgeAccountPanel extends Mixins(mixins.CopyAddressMixin, 
 </style>
 
 <style lang="scss" scoped>
+@include full-width-button('account-panel-button', $inner-spacing-mini);
+
 .account-panel {
   display: flex;
   flex: 1;
@@ -80,6 +94,11 @@ export default class BridgeAccountPanel extends Mixins(mixins.CopyAddressMixin, 
   display: flex;
   align-items: center;
   gap: $inner-spacing-mini;
+
+  &-logo {
+    width: 18px;
+    height: 18px;
+  }
 
   &-name {
     max-width: 80px;
