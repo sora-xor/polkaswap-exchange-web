@@ -68,22 +68,19 @@
             />
           </template>
 
-          <div v-if="sender" class="connect-wallet-panel">
-            <s-divider type="tertiary" />
-            <bridge-account-panel :address="sender" :name="senderName" :tooltip="getCopyTooltip(isSoraToEvm)">
-              <template #icon v-if="evmProvider && !isSoraToEvm">
-                <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
-              </template>
-            </bridge-account-panel>
-            <div class="connect-wallet-group">
-              <span class="connect-wallet-btn" @click="connectWallet(isSoraToEvm)">
-                {{ t('changeAccountText') }}
-              </span>
-              <span v-if="evmProvider" class="connect-wallet-btn disconnect" @click="resetEvmProviderConnection">
-                {{ t('disconnectWalletText') }}
-              </span>
-            </div>
-          </div>
+          <bridge-account-panel
+            v-if="sender"
+            :address="sender"
+            :name="senderName"
+            :tooltip="getCopyTooltip(isSoraToEvm)"
+            @connect="connectWallet(isSoraToEvm)"
+            @disconnect="disconnectWallet(isSoraToEvm)"
+          >
+            <template #icon v-if="evmProvider && !isSoraToEvm">
+              <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
+            </template>
+          </bridge-account-panel>
+
           <s-button
             v-else
             class="el-button--connect s-typography-button--large"
@@ -130,22 +127,19 @@
             />
           </template>
 
-          <div v-if="recipient" class="connect-wallet-panel">
-            <s-divider type="tertiary" />
-            <bridge-account-panel :address="recipient" :name="recipientName" :tooltip="getCopyTooltip(!isSoraToEvm)">
-              <template #icon v-if="evmProvider && isSoraToEvm">
-                <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
-              </template>
-            </bridge-account-panel>
-            <div class="connect-wallet-group">
-              <span class="connect-wallet-btn" @click="connectWallet(!isSoraToEvm)">
-                {{ t('changeAccountText') }}
-              </span>
-              <span v-if="evmProvider" class="connect-wallet-btn disconnect" @click="resetEvmProviderConnection">
-                {{ t('disconnectWalletText') }}
-              </span>
-            </div>
-          </div>
+          <bridge-account-panel
+            v-if="recipient"
+            :address="recipient"
+            :name="recipientName"
+            :tooltip="getCopyTooltip(!isSoraToEvm)"
+            @connect="connectWallet(!isSoraToEvm)"
+            @disconnect="disconnectWallet(!isSoraToEvm)"
+          >
+            <template #icon v-if="evmProvider && isSoraToEvm">
+              <img :src="getEvmProviderIcon(evmProvider)" :alt="evmProvider" class="connect-wallet-logo" />
+            </template>
+          </bridge-account-panel>
+
           <s-button
             v-else
             class="el-button--connect s-typography-button--large"
@@ -668,11 +662,27 @@ export default class Bridge extends Mixins(
     }
   }
 
+  disconnectWallet(isSoraToEvm: boolean): void {
+    if (isSoraToEvm) {
+      this.disconnectSoraWallet();
+    } else {
+      this.disconnectExternalWallet();
+    }
+  }
+
   private connectExternalWallet(): void {
     if (this.isSubAccountType) {
       this.connectSubWallet();
     } else {
       this.connectEvmWallet();
+    }
+  }
+
+  private disconnectExternalWallet(): void {
+    if (this.isSubAccountType) {
+      this.disconnectSubWallet();
+    } else {
+      this.disconnectEvmWallet();
     }
   }
 }
@@ -693,34 +703,9 @@ export default class Bridge extends Mixins(
 </style>
 
 <style lang="scss" scoped>
-.connect-wallet {
-  &-panel {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    font-size: var(--s-font-size-mini);
-    line-height: var(--s-line-height-medium);
-    color: var(--s-color-base-content-primary);
-  }
-
-  &-logo {
-    width: 18px;
-    height: 18px;
-  }
-
-  &-group {
-    display: flex;
-    align-items: center;
-    gap: $inner-spacing-mini;
-  }
-
-  &-btn {
-    @include copy-address;
-
-    &.disconnect {
-      color: var(--s-color-status-error);
-    }
-  }
+.connect-wallet-logo {
+  width: 18px;
+  height: 18px;
 }
 
 .bridge {

@@ -135,6 +135,10 @@ class BaseSubAdapter extends WithConnectionApi {
   public getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: string | number) {
     throw new Error(`[${this.constructor.name}] "getTransferExtrinsic" method is not implemented`);
   }
+
+  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId: string) {
+    throw new Error(`[${this.constructor.name}] "transfer" method is not implemented`);
+  }
 }
 
 export class SubAdapter extends BaseSubAdapter {

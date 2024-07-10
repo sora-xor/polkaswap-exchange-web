@@ -24,8 +24,10 @@ export default class WalletConnectMixin extends Mixins(InternalConnectMixin) {
 
   @action.web3.changeEvmNetworkProvided changeEvmNetworkProvided!: AsyncFnWithoutArgs;
   @action.web3.selectEvmProvider selectEvmProvider!: (provider: Provider) => Promise<void>;
-  @action.web3.resetEvmProviderConnection resetEvmProviderConnection!: FnWithoutArgs;
   @action.web3.disconnectExternalNetwork disconnectExternalNetwork!: AsyncFnWithoutArgs;
+
+  @action.web3.resetEvmProviderConnection disconnectEvmWallet!: FnWithoutArgs;
+  @action.web3.resetSubAccount disconnectSubWallet!: FnWithoutArgs;
 
   connectSubWallet(): void {
     this.setSubAccountDialogVisibility(true);

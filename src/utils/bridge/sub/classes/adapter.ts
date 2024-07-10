@@ -204,11 +204,18 @@ export class SubNetworksConnector {
   }
 
   /**
+   * Transfer funds from SORA to destination network
+   */
+  public async outgoingTransfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId: string) {
+    await subBridgeApi.transfer(asset, recipient, amount, this.destinationNetwork, historyId);
+  }
+
+  /**
    * Transfer funds from destination network to SORA
    */
-  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId: string) {
-    if ('transfer' in this.network) {
-      await (this.network as any).transfer(asset, recipient, amount, historyId);
+  public async incomingTransfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId: string) {
+    if (subBridgeApi.isEvmAccount(this.destinationNetwork)) {
+      await this.network.transfer(asset, recipient, amount, historyId);
     } else {
       const { api, accountPair, signer } = this.accountApi;
 

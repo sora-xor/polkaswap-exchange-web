@@ -161,7 +161,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     // open connections
     await this.connector.start();
     // sign transaction (from is sora account)
-    await this.connector.transfer(asset, tx.from as string, tx.amount as string, id);
+    await this.connector.incomingTransfer(asset, tx.from as string, tx.amount as string, id);
     // save start block when tx was signed
     await this.saveStartBlock(id);
   }
@@ -473,7 +473,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     // open connections
     await this.connector.start();
     // sign transaction
-    await subBridgeApi.transfer(asset, tx.to as string, tx.amount as string, tx.externalNetwork as SubNetwork, id);
+    await this.connector.outgoingTransfer(asset, tx.to as string, tx.amount as string, id);
     // save start block when tx was signed
     await this.saveStartBlock(id);
   }

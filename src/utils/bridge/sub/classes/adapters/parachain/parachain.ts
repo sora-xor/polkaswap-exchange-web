@@ -58,7 +58,7 @@ export class ParachainAdapter<AssetId> extends SubAdapter {
     return minBalance > '1' ? minBalance : ZeroStringValue;
   }
 
-  public async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
+  public override async getNetworkFee(asset: RegisteredAsset, sender: string, recipient: string): Promise<CodecString> {
     /* Throws error until Substrate 5 migration */
     // return await super.getNetworkFee(asset, sender, recipient);
     // Hardcoded values

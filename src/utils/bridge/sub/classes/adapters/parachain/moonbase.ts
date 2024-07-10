@@ -39,11 +39,7 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
     accountAddress: string,
     asset: RegisteredAsset
   ): Promise<CodecString> {
-    const assetMeta = this.getAssetMeta(asset);
-
-    if (!assetMeta) return ZeroStringValue;
-
-    return await this.assetsAccountRequest(accountAddress, assetMeta.id);
+    return await this.assetsAccountRequest(accountAddress, asset.externalAddress);
   }
 
   public async getAssetIdByMultilocation(multilocation: any): Promise<string | null> {
@@ -83,16 +79,16 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
     return selector + publicKey + networkOption;
   }
 
-  public async transfer(asset: RegisteredAsset, recipient: string, amount: string | number, historyId: string) {
-    let currencyAddress = this.nativeAssetContractAddress;
-
-    if (asset.symbol !== this.chainSymbol) {
-      const assetMeta = this.getAssetMeta(asset);
-
-      if (!assetMeta) throw new Error(`[${this.constructor.name}] Asset not found`);
-
-      currencyAddress = this.assetIdToEvmContractAddress(assetMeta.id);
-    }
+  public override async transfer(
+    asset: RegisteredAsset,
+    recipient: string,
+    amount: string | number,
+    historyId: string
+  ) {
+    const currencyAddress =
+      asset.symbol === this.chainSymbol
+        ? this.nativeAssetContractAddress
+        : this.assetIdToEvmContractAddress(asset.externalAddress);
 
     const value = new FPNumber(amount, asset.externalDecimals).toCodecString();
     const weight = 5_000_000_000; // max weight, taken from successful xcm message on SORA parachain
