@@ -327,7 +327,7 @@ export default class PriceChartWidget extends Mixins(
 
   private snapshotBuffer: Record<string, Snapshot> = {};
 
-  private reverseChart = false;
+  private loadDataWhenReverse = false;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: SnapshotFilter = LINE_CHART_FILTERS[0];
@@ -800,7 +800,7 @@ export default class PriceChartWidget extends Mixins(
       try {
         let snapshots: Snapshot[] = [];
 
-        if (this.reverseChart) {
+        if (this.loadDataWhenReverse) {
           snapshots = addresses.map(
             (address) => this?.snapshotBuffer?.[address] || { nodes: [], hasNextPage: false, endCursor: undefined }
           );
@@ -875,6 +875,7 @@ export default class PriceChartWidget extends Mixins(
         console.error(error);
       }
     });
+    this.loadDataWhenReverse = false;
   }
 
   // common
@@ -1006,7 +1007,6 @@ export default class PriceChartWidget extends Mixins(
 
     if (prevType !== type) {
       this.snapshotBuffer = {};
-      this.reverseChart = false;
       await this.forceUpdatePrices(true);
     } else if (this.dataset.length < count) {
       await this.updatePrices();
@@ -1038,7 +1038,6 @@ export default class PriceChartWidget extends Mixins(
   }
 
   handleZoom(event: any): void {
-    this.reverseChart = false;
     event?.stop?.();
     if (event?.wheelDelta < 0 && this.zoomStart === 0 && this.zoomEnd === 100) {
       this.updatePrices();
@@ -1070,7 +1069,7 @@ export default class PriceChartWidget extends Mixins(
 
   revertChart(): void {
     this.isReversedChart = !this.isReversedChart;
-    this.reverseChart = true;
+    this.loadDataWhenReverse = true;
     this.forceUpdatePrices(true);
   }
 }
