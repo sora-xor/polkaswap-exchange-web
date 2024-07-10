@@ -157,7 +157,6 @@
         "connectionError": "Došlo je do pogreške prilikom povezivanja novčanika. Možete ponovno pokušati povezati novčanik putem {extension}"
     },
     "connection": {
-        "title": "Račun mreže {Sora}",
         "text": "Za upravljanje imovinom i potpisivanje transakcija na {Sora} mora biti povezan račun. {Sora} računi mogu se kreirati i povezati pomoću naših integriranih novčanika ili proširenja preglednika.",
         "noAccounts": "U proširenju preglednika {extension} nije pronađen račun. Dodajte račun i pokušajte ponovno.",
         "selectAccount": "Odaberite račun za rad",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Račun mreže {Sora}",
         "WalletAssets": "Sredstva",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivnost"
@@ -212,7 +210,8 @@
         "walletAddress": "Adresa novčanika",
         "delete": "Izbriši račun",
         "rename": "Preimenuj račun",
-        "export": "Izvezi .json"
+        "export": "Izvezi .json",
+        "accountTitle": "Račun"
     },
     "history": {
         "clearHistory": "Očistite povijest",
@@ -939,7 +938,8 @@
             "bondMore": "Bond više",
             "bond": "Bond",
             "unbond": "Unbond",
-            "copyLink": "Kopirajte link"
+            "copyLink": "Kopirajte link",
+            "shareLink": "Podijeli"
         },
         "transactionDetails": "Detalji transakcije",
         "receivedRewards": "Primljene nagrade",
@@ -971,7 +971,9 @@
             "info": "Kada platite naknadu za transakciju, <br\/> 10% će ići vašem refereru",
             "referredLablel": "Preporučena adresa"
         },
-        "insufficientBondedAmount": "Da biste pozvali više preporuka, povežite najmanje {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Da biste pozvali više preporuka, povežite najmanje {inviteUserFee} XOR",
+        "inviteViaTelegram": "Pozovi putem {Telegram}",
+        "welcomeMessage": "\nPridruži mi se na {Polkaswap}!\n\nOtkrij stilizirani {DEX} koji ti omogućuje zamjenu desetaka tokena s međulančanim zamjenama, knjigom narudžbi i mnoštvom nagrada!\n\n🎁 Pozovi prijatelje i zaradi 10% njihovih trgovačkih naknada\n\nVidimo se tamo!"
     },
     "transactionDetailsText": "Detalji transakcije",
     "code": {
@@ -1638,7 +1640,8 @@
             "borrowMoreThanAvailable": "Dostupan dug premašen",
             "insufficientCollateral": "Nedovoljan kolateral",
             "enterRepayDebt": "Unesite vraćanje duga",
-            "repayMoreThanDebt": "Dug preplaćen"
+            "repayMoreThanDebt": "Dug preplaćen",
+            "incorrectCollateral": "Par tokena nije podržan"
         },
         "interest": "Kamata",
         "interestDescription": "Godišnja naknada naplaćena na iznos povučen iz vašeg sefa, izračunata kao postotak. Ova naknada nadoknađuje rizike i fluktuacije na tržištu.",
@@ -1660,9 +1663,9 @@
         "overallTotalDebtDescription": "Ukupan iznos trenutnog duga na svim pozicijama zaduživanja na platformi {Kensetsu}.",
         "overallBadDebt": "Loš dug",
         "overallBadDebtDescription": "Dio duga koji se vjerojatno neće naplatiti zbog neispunjenja obveza zajmoprimca ili nedostatnog kolaterala.",
-        "overallBorrowTax": "Porez na zaduživanje",
-        "overallBorrowTaxDescription": "Naknada naplaćena na posuđena sredstva, izračunata kao postotak posuđenog iznosa. Porez na zaduživanje koristi se za program poticaja za otkup {KEN} tokena.",
-        "ltvMaxTooltip": "Najveći iznos pozajmljivanja koji se može pružiti u odnosu na procijenjenu vrijednost imovine koja se koristi kao kolateral."
+        "ltvMaxTooltip": "Najveći iznos pozajmljivanja koji se može pružiti u odnosu na procijenjenu vrijednost imovine koja se koristi kao kolateral.",
+        "overallAvailable": "Ukupno dostupno",
+        "overallAvailableDescription": "Ukupan iznos sredstava dostupnih za posudbu na platformi {Kensetsu}."
     },
     "accountSettings": {
         "title": "POSTAVLJANJE RAČUNA",

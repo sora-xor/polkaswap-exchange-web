@@ -157,7 +157,6 @@
         "connectionError": "Une erreur s'est produite lors de la connexion du portefeuille. Vous pouvez réessayer de connecter le portefeuille via {extension}"
     },
     "connection": {
-        "title": "Compte réseau {Sora}",
         "text": "Afin de gérer des actifs et de signer des transactions sur {Sora}, un compte doit être connecté. Les comptes {Sora} peuvent être créés et connectés à l'aide de nos portefeuilles intégrés ou extensions de navigateur.",
         "noAccounts": "Aucun compte n'a été trouvé dans votre extension de navigateur {extension} Veuillez ajouter un compte et réessayer.",
         "selectAccount": "Sélectionnez le compte approprié",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Compte réseau {Sora}",
         "WalletAssets": "Actifs",
         "createToken": "@:createTokenText",
         "WalletHistory": "Activité"
@@ -212,7 +210,8 @@
         "walletAddress": "Adresse du portefeuille",
         "delete": "Supprimer le compte",
         "rename": "Renommer le compte",
-        "export": "Exporter .json"
+        "export": "Exporter .json",
+        "accountTitle": "Compte"
     },
     "history": {
         "clearHistory": "Effacer l'historique",
@@ -939,7 +938,8 @@
             "bondMore": "Lier Plus",
             "bond": "Lier",
             "unbond": "Délier",
-            "copyLink": "Copier le lien"
+            "copyLink": "Copier le lien",
+            "shareLink": "Partager"
         },
         "transactionDetails": "Détails de la Transaction",
         "receivedRewards": "Récompenses reçues",
@@ -971,7 +971,9 @@
             "info": "Lorsque vous paierez des frais pour la transaction,<br\/>10% iront à votre parrain",
             "referredLablel": "Adresse référencée"
         },
-        "insufficientBondedAmount": "Pour inviter plus de références, liez au moins {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Pour inviter plus de références, liez au moins {inviteUserFee} XOR",
+        "inviteViaTelegram": "Inviter via {Telegram}",
+        "welcomeMessage": "\nRejoignez-moi sur {Polkaswap} !\n\nDécouvrez le {DEX} élégant qui vous permet d'échanger des dizaines de jetons avec des swaps inter-chaînes, un carnet de commandes et plein de récompenses !\n\n🎁 Invitez des amis et gagnez 10% de leurs frais de trading\n\nÀ bientôt !"
     },
     "transactionDetailsText": "Détails de la transaction",
     "code": {
@@ -1638,7 +1640,8 @@
             "borrowMoreThanAvailable": "La dette disponible a été dépassée",
             "insufficientCollateral": "Collatéral insuffisant",
             "enterRepayDebt": "Entrez le remboursement de la dette",
-            "repayMoreThanDebt": "Dette surpayée"
+            "repayMoreThanDebt": "Dette surpayée",
+            "incorrectCollateral": "Paire de jetons non prise en charge"
         },
         "interest": "Intérêt",
         "interestDescription": "Une taxe annuelle prélevée sur le montant retiré de votre coffre-fort, calculée en pourcentage. Cette taxe compense les risques et les fluctuations du marché.",
@@ -1660,9 +1663,9 @@
         "overallTotalDebtDescription": "Le montant total de la dette actuellement en circulation pour toutes les positions de prêt sur la plateforme {Kensetsu}.",
         "overallBadDebt": "Créances irrécouvrables",
         "overallBadDebtDescription": "La part de la dette qui est peu probable d'être récupérée en raison du défaut de paiement des emprunteurs ou d'un collatéral insuffisant.",
-        "overallBorrowTax": "Taxe d'emprunt",
-        "overallBorrowTaxDescription": "Une commission prélevée sur les fonds empruntés, calculée en pourcentage du montant emprunté. La taxe d'emprunt est utilisée pour le programme d'incitation au rachat des jetons {KEN}.",
-        "ltvMaxTooltip": "La somme maximale d'une position d'emprunt qui peut être fournie par rapport à la valeur estimée de l'actif utilisé comme garantie."
+        "ltvMaxTooltip": "La somme maximale d'une position d'emprunt qui peut être fournie par rapport à la valeur estimée de l'actif utilisé comme garantie.",
+        "overallAvailable": "Total disponible",
+        "overallAvailableDescription": "Le montant total des fonds disponibles pour emprunter sur la plateforme {Kensetsu}."
     },
     "accountSettings": {
         "title": "Paramètres du compte",

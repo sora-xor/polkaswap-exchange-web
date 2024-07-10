@@ -157,7 +157,6 @@
         "connectionError": "An error occured while connecting the wallet. You can try to connect the wallet via {extension} again"
     },
     "connection": {
-        "title": "{Sora} Network account",
         "text": "In order to manage assets and sign transactions on {Sora}, an account must be connected. {Sora} accounts can be created and connected using our integrated wallets or browser extensions.",
         "noAccounts": "No account found in your {extension} browser extension. Please add an account and try again.",
         "selectAccount": "Select account to work with",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora} Network account",
         "WalletAssets": "Assets",
         "createToken": "@:createTokenText",
         "WalletHistory": "Activity"
@@ -212,7 +210,8 @@
         "walletAddress": "Wallet address",
         "delete": "Delete account",
         "rename": "Rename account",
-        "export": "Export .json"
+        "export": "Export .json",
+        "accountTitle": "Account"
     },
     "history": {
         "clearHistory": "Clear history",
@@ -939,7 +938,8 @@
             "bondMore": "Bond More",
             "bond": "Bond",
             "unbond": "Unbond",
-            "copyLink": "Copy link"
+            "copyLink": "Copy link",
+            "shareLink": "Share"
         },
         "transactionDetails": "Transaction Details",
         "receivedRewards": "Received rewards",
@@ -971,7 +971,9 @@
             "info": "When you’ll pay a fee for transaction,<br\/>10% will go to your referrer",
             "referredLablel": "Referred address"
         },
-        "insufficientBondedAmount": "To invite more referrals, bond at least {inviteUserFee} XOR"
+        "insufficientBondedAmount": "To invite more referrals, bond at least {inviteUserFee} XOR",
+        "inviteViaTelegram": "Invite via {Telegram}",
+        "welcomeMessage": "\nJoin me on {Polkaswap}!\n\nDiscover the stylish {DEX} that lets you swap over dozens tokens with cross-chain swaps, order book, and plenty of rewards!\n\n🎁 Invite friends and earn 10% of their trading fees\n\nSee you there!"
     },
     "transactionDetailsText": "Transaction Details",
     "code": {
@@ -1638,7 +1640,8 @@
             "borrowMoreThanAvailable": "Available debt exceeded",
             "insufficientCollateral": "Insufficient collateral",
             "enterRepayDebt": "Enter repay debt",
-            "repayMoreThanDebt": "Debt overpaid"
+            "repayMoreThanDebt": "Debt overpaid",
+            "incorrectCollateral": "Token pair is not supported"
         },
         "interest": "Interest",
         "interestDescription": "An annual fee charged on the amount drawn from your position, calculated as a percentage. This fee compensates for risks and market fluctuations.",
@@ -1660,9 +1663,9 @@
         "overallTotalDebtDescription": "The total amount of debt currently outstanding across all borrowing positions on the {Kensetsu} platform.",
         "overallBadDebt": "Bad debt",
         "overallBadDebtDescription": "The portion of debt that is unlikely to be recovered due to borrower default or insufficient collateral.",
-        "overallBorrowTax": "Borrow tax",
-        "overallBorrowTaxDescription": "A fee charged on borrowed funds, calculated as a percentage of the borrowed amount. Borrow tax is used for the incentivization program of buyback {KEN} tokens.",
-        "ltvMaxTooltip": "The maximum amount of a borrowing position that can be provided in relation to the appraised value of the asset being used as collateral."
+        "ltvMaxTooltip": "The maximum amount of a borrowing position that can be provided in relation to the appraised value of the asset being used as collateral.",
+        "overallAvailable": "Total available",
+        "overallAvailableDescription": "The total amount of funds available for borrowing on the {Kensetsu} platform."
     },
     "accountSettings": {
         "title": "Account settings",

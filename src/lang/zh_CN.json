@@ -157,7 +157,6 @@
         "connectionError": "连接钱包时发生错误。您可以尝试再次通过{extension}连接钱包"
     },
     "connection": {
-        "title": "{Sora}网络账户",
         "text": "为了在{Sora}上管理资产并签署交易，必须连接一个账户。可以使用我们的集成钱包或浏览器扩展来创建和连接{Sora}账户。",
         "noAccounts": "在您的{extension}浏览器扩展中没有找到账户。请添加一个账户并重试。",
         "selectAccount": "选择要使用的账户",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora}网络账户",
         "WalletAssets": "资产",
         "createToken": "@:createTokenText",
         "WalletHistory": "活动"
@@ -212,7 +210,8 @@
         "walletAddress": "钱包地址",
         "delete": "删除帐户",
         "rename": "重命名帐户",
-        "export": "导出.json"
+        "export": "导出.json",
+        "accountTitle": "帐户"
     },
     "history": {
         "clearHistory": "清除历史记录",
@@ -939,7 +938,8 @@
             "bondMore": "绑定更多",
             "bond": "绑定",
             "unbond": "解绑",
-            "copyLink": "复制链接"
+            "copyLink": "复制链接",
+            "shareLink": "分享"
         },
         "transactionDetails": "交易详情",
         "receivedRewards": "已领取奖励",
@@ -971,7 +971,9 @@
             "info": "当您支付交易费用时， <br\/> 10% 将归您的推荐人",
             "referredLablel": "推荐地址"
         },
-        "insufficientBondedAmount": "要邀请更多推荐者，请至少绑定 {inviteUserFee} XOR"
+        "insufficientBondedAmount": "要邀请更多推荐者，请至少绑定 {inviteUserFee} XOR",
+        "inviteViaTelegram": "通过 {Telegram} 邀请",
+        "welcomeMessage": "\n加入我在 {Polkaswap}！\n\n发现时尚的 {DEX}，可以跨链交换数十种代币，订单簿和丰富的奖励！\n\n🎁 邀请朋友并赚取他们交易费用的 10%\n\n到时见！"
     },
     "transactionDetailsText": "交易详情",
     "code": {
@@ -1638,7 +1640,8 @@
             "borrowMoreThanAvailable": "可用债务超出",
             "insufficientCollateral": "抵押品不足",
             "enterRepayDebt": "输入偿还债务",
-            "repayMoreThanDebt": "偿还的债务过多"
+            "repayMoreThanDebt": "偿还的债务过多",
+            "incorrectCollateral": "代币对不支持"
         },
         "interest": "利息",
         "interestDescription": "从您的保险库中提取的金额收取的年费，以百分比计算。该费用补偿了风险和市场波动。",
@@ -1660,9 +1663,9 @@
         "overallTotalDebtDescription": "当前在 {Kensetsu} 平台上所有借款头寸中尚未偿还的总借款金额。",
         "overallBadDebt": "坏账",
         "overallBadDebtDescription": "由于借款人违约或抵押不足而不太可能收回的债务部分。",
-        "overallBorrowTax": "借款税",
-        "overallBorrowTaxDescription": "对借入资金征收的费用，按借款金额的百分比计算。借款税用于 {KEN} 代币的回购激励计划。",
-        "ltvMaxTooltip": "根据抵押资产的评估价值提供的借款头寸的最大金额。"
+        "ltvMaxTooltip": "根据抵押资产的评估价值提供的借款头寸的最大金额。",
+        "overallAvailable": "总可用",
+        "overallAvailableDescription": "{Kensetsu} 平台上可借用的资金总额。"
     },
     "accountSettings": {
         "title": "帐号设定",

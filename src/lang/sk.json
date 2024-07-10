@@ -157,7 +157,6 @@
         "connectionError": "Pri pripájaní peňaženky sa vyskytla chyba. Môžete skúsiť znova pripojiť peňaženku cez {extension}"
     },
     "connection": {
-        "title": "Sieťový účet {Sora}",
         "text": "Ak chcete spravovať aktíva a podpisovať transakcie na {Sora}, musí byť pripojený účet. Účty {Sora} je možné vytvoriť a prepojiť pomocou našich integrovaných peňaženiek alebo rozšírení prehliadača.",
         "noAccounts": "Vo vašom rozšírení prehliadača {extension} nebol nájdený žiadny účet. Pridajte účet a skúste to znova.",
         "selectAccount": "Vyberte účet, s ktorým chcete pracovať",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Sieťový účet {Sora}",
         "WalletAssets": "Aktíva",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivita"
@@ -212,7 +210,8 @@
         "walletAddress": "Adresa peňaženky",
         "delete": "Zmazať účet",
         "rename": "Premenovať účet",
-        "export": "Exportujte súbor .json"
+        "export": "Exportujte súbor .json",
+        "accountTitle": "účtu"
     },
     "history": {
         "clearHistory": "Vymazať históriu",
@@ -939,7 +938,8 @@
             "bondMore": "Bond viac",
             "bond": "Bond",
             "unbond": "Odpojiť",
-            "copyLink": "Skopírovať odkaz"
+            "copyLink": "Skopírovať odkaz",
+            "shareLink": "Zdieľať"
         },
         "transactionDetails": "Detaily transakcie",
         "receivedRewards": "Prijaté odmeny",
@@ -971,7 +971,9 @@
             "info": "Keď zaplatíte poplatok za transakciu, <br\/> 10 % dostane váš sprostredkovateľ",
             "referredLablel": "Odporúčaná adresa"
         },
-        "insufficientBondedAmount": "Ak chcete pozvať ďalšie odporúčania, prepojte aspoň {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Ak chcete pozvať ďalšie odporúčania, prepojte aspoň {inviteUserFee} XOR",
+        "inviteViaTelegram": "Pozvať cez {Telegram}",
+        "welcomeMessage": "\nPripojte sa ku mne na {Polkaswap}!\n\nObjavte štýlový {DEX}, ktorý vám umožňuje vymieňať desiatky tokenov s krížovými výmenami, knihou objednávok a množstvom odmien!\n\n🎁 Pozvite priateľov a získajte 10% z ich obchodných poplatkov\n\nUvidíme sa tam!"
     },
     "transactionDetailsText": "Detaily transakcie",
     "code": {
@@ -1638,7 +1640,8 @@
             "borrowMoreThanAvailable": "Dostupný dlh prekročený",
             "insufficientCollateral": "Nedostatočná záloha",
             "enterRepayDebt": "Zadajte splácaný dlh",
-            "repayMoreThanDebt": "Dlh preplatil"
+            "repayMoreThanDebt": "Dlh preplatil",
+            "incorrectCollateral": "Pár tokenov nie je podporovaný"
         },
         "interest": "Úrok",
         "interestDescription": "Ročný poplatok účtovaný z sumy vyplatené zo vášho trezoru, vypočítaný ako percento. Tento poplatok kompenzuje riziká a fluktuácie trhu.",
@@ -1660,9 +1663,9 @@
         "overallTotalDebtDescription": "Celková suma dlhu, ktorá je momentálne nezaplatená vo všetkých požičiavacích pozíciách na platforme {Kensetsu}.",
         "overallBadDebt": "Zlý dlh",
         "overallBadDebtDescription": "Časť dlhu, ktorá pravdepodobne nebude vrátená kvôli neschopnosti požičiavateľa alebo nedostatočnému zabezpečeniu.",
-        "overallBorrowTax": "Daň z požičiek",
-        "overallBorrowTaxDescription": "Poplatok účtovaný za požičané prostriedky, vypočítaný ako percento požičanej sumy. Daň z požičiek sa používa v programe stimulácie odkupu tokenov {KEN}.",
-        "ltvMaxTooltip": "Najvyššia suma pozície pôžičky, ktorá môže byť poskytnutá v súvislosti s ocenenou hodnotou aktíva, ktoré sa používa ako záruka."
+        "ltvMaxTooltip": "Najvyššia suma pozície pôžičky, ktorá môže byť poskytnutá v súvislosti s ocenenou hodnotou aktíva, ktoré sa používa ako záruka.",
+        "overallAvailable": "Celkovo dostupné",
+        "overallAvailableDescription": "Celková suma dostupných finančných prostriedkov na požičiavanie na platforme {Kensetsu}."
     },
     "accountSettings": {
         "title": "Nastavenia účtu",
