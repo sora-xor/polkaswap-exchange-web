@@ -21,8 +21,9 @@ import {
   determineTransferType,
   getReceivedAmount,
   getParachainSystemMessageHash,
-  isEvent,
+  isXcmPalletAttempted,
   isTransactionFeePaid,
+  isQueueMessage,
 } from '@/utils/bridge/sub/utils';
 
 import type { ApiRx } from '@polkadot/api';
@@ -206,7 +207,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
     }
 
     if (this.transferType === SubTransferType.Relaychain) {
-      const xcmEvent = transactionEvents.find((e) => isEvent(e, 'xcmPallet', 'Attempted'));
+      const xcmEvent = transactionEvents.find((e) => isXcmPalletAttempted(e));
 
       if (!xcmEvent?.event?.data?.[0]?.isComplete) {
         throw new Error(`[${this.constructor.name}]: Transaction is not completed`);
@@ -292,7 +293,7 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
               if (assetSendEventIndex === -1) return;
 
               blockNumber = blockHeight;
-              [batchNonce, messageNonce] = getMessageAcceptedNonces(events.slice(assetSendEventIndex), adapter.api);
+              [batchNonce, messageNonce] = getMessageAcceptedNonces(events.slice(assetSendEventIndex));
 
               resolve();
             } catch (error) {
@@ -349,14 +350,14 @@ export class SubBridgeIncomingReducer extends SubBridgeReducer {
           try {
             const events = [...eventsVec.toArray()].reverse();
             const substrateDispatchEventIndex = events.findIndex((e) =>
-              isMessageDispatchedNonces(tx.payload.batchNonce, tx.payload.messageNonce, e, subBridgeApi.api)
+              isMessageDispatchedNonces(tx.payload.batchNonce, tx.payload.messageNonce, e)
             );
 
             if (substrateDispatchEventIndex === -1) return;
 
             const foundedEvents = events.slice(substrateDispatchEventIndex);
 
-            soraHash = getBridgeProxyHash(foundedEvents, subBridgeApi.api);
+            soraHash = getBridgeProxyHash(foundedEvents);
 
             [amount, eventIndex] = getDepositedBalance(foundedEvents, tx.from as string, subBridgeApi);
 
@@ -487,10 +488,10 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
     const transactionHash = tx.txId as string;
     const transactionEvents = await getTransactionEvents(blockHash, transactionHash, subBridgeApi.api);
 
-    const hash = getBridgeProxyHash(transactionEvents, subBridgeApi.api);
+    const hash = getBridgeProxyHash(transactionEvents);
     this.updateTransactionParams(id, { hash });
 
-    const [batchNonce, messageNonce] = getMessageAcceptedNonces(transactionEvents, subBridgeApi.api);
+    const [batchNonce, messageNonce] = getMessageAcceptedNonces(transactionEvents);
     this.updateTransactionPayload(id, { batchNonce, messageNonce });
   }
 
@@ -528,7 +529,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             try {
               const events = [...eventsVec.toArray()].reverse();
               const substrateDispatchEventIndex = events.findIndex((e) =>
-                isMessageDispatchedNonces(tx.payload.batchNonce, tx.payload.messageNonce, e, adapter.api)
+                isMessageDispatchedNonces(tx.payload.batchNonce, tx.payload.messageNonce, e)
               );
 
               if (substrateDispatchEventIndex === -1) return;
@@ -545,7 +546,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
                   );
                 }
               } else {
-                messageHash = getParachainSystemMessageHash(events.slice(substrateDispatchEventIndex), adapter.api);
+                messageHash = getParachainSystemMessageHash(events.slice(substrateDispatchEventIndex));
               }
 
               resolve();
@@ -614,11 +615,7 @@ export class SubBridgeOutgoingReducer extends SubBridgeReducer {
             try {
               const events = eventsVec.toArray();
               const messageQueueProcessedEventIndex = events.findIndex((e) => {
-                if (
-                  isEvent(e, 'messageQueue', 'Processed') ||
-                  isEvent(e, 'xcmpQueue', 'Success') ||
-                  isEvent(e, 'xcmpQueue', 'Fail')
-                ) {
+                if (isQueueMessage(e)) {
                   isReliableMessage = e.event.data[0].toString() === messageHash;
 
                   return true;

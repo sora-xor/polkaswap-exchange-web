@@ -3,7 +3,6 @@ import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts'
 import BN from 'bignumber.js';
 
 import xTokensAbi from '@/abi/ethereum/other/moonbeam/xTokens.json';
-import { ZeroStringValue } from '@/consts';
 import { SUB_NETWORKS } from '@/consts/sub';
 import { delay } from '@/utils';
 import { getEvmTransactionFee, onEvmTransactionPending } from '@/utils/bridge/common/utils';
@@ -18,7 +17,7 @@ import type { ethers } from 'ethers';
 
 const MOONBASE_DATA = SUB_NETWORKS[SubNetworkId.AlphanetMoonbase];
 
-type IMoonbaseAssetId = string;
+type IMoonbaseAssetId = string; // substrate id
 
 export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId> {
   protected nativeAssetContractAddress = '0x0000000000000000000000000000000000000802';
@@ -56,6 +55,9 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
     return id;
   }
 
+  /**
+   * Convert substrate asset id to evm token contract address
+   */
   protected assetIdToEvmContractAddress(id: string): string {
     const base = new BN(id).toString(16);
     const padded = base.padStart(40, 'f');

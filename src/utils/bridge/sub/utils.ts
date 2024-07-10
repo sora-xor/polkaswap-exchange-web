@@ -3,7 +3,6 @@ import { FPNumber, Operation } from '@sora-substrate/util';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
 import { SubTransferType } from '@/utils/bridge/sub/types';
 
-import type { ApiPromise } from '@polkadot/api';
 import type { CodecString, WithConnectionApi } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork, SubHistory } from '@sora-substrate/util/build/bridgeProxy/sub/types';
@@ -45,8 +44,26 @@ export const determineTransferType = (network: SubNetwork) => {
   }
 };
 
-export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string => {
-  const bridgeProxyEvent = events.find((e) => api.events.bridgeProxy.RequestStatusUpdate.is(e.event));
+export const isEvent = (e, section: string, method: string) => {
+  return e.event.section === section && e.event.method === method;
+};
+
+export const isQueueMessage = (e) =>
+  isEvent(e, 'messageQueue', 'Processed') ||
+  isEvent(e, 'xcmpQueue', 'Success') ||
+  isEvent(e, 'xcmpQueue', 'Fail') ||
+  isEvent(e, 'dmpQueue', 'ExecutedDownward');
+
+export const isParaInclusion = (e) => isEvent(e, 'paraInclusion', 'CandidateIncluded');
+
+export const isXcmPalletAttempted = (e) => isEvent(e, 'xcmPallet', 'Attempted');
+
+export const isTransactionFeePaid = (e) => isEvent(e, 'transactionPayment', 'TransactionFeePaid');
+
+export const isBridgeProxyUpdate = (e) => isEvent(e, 'bridgeProxy', 'RequestStatusUpdate');
+
+export const getBridgeProxyHash = (events: Array<any>): string => {
+  const bridgeProxyEvent = events.find((e) => isBridgeProxyUpdate(e));
 
   if (!bridgeProxyEvent) {
     throw new Error(`Unable to find "bridgeProxy.RequestStatusUpdate" event`);
@@ -55,11 +72,13 @@ export const getBridgeProxyHash = (events: Array<any>, api: ApiPromise): string 
   return bridgeProxyEvent.event.data[0].toString();
 };
 
-export const isEvent = (e, section: string, method: string) => {
-  return e.event.section === section && e.event.method === method;
-};
+export const isBridgeProxyHash = (e: any, hash: string): boolean => {
+  if (!isBridgeProxyUpdate(e)) return false;
 
-export const isTransactionFeePaid = (e) => isEvent(e, 'transactionPayment', 'TransactionFeePaid');
+  const proxyHash = e.event.data[0].toString();
+
+  return hash === proxyHash;
+};
 
 export const getDepositedBalance = (events: Array<any>, to: string, chainApi: WithConnectionApi): [string, number] => {
   const recipient = chainApi.formatAddress(to).toLowerCase();
@@ -99,22 +118,22 @@ export const getReceivedAmount = (sendedAmount: string, receivedAmount: CodecStr
   return { amount: amount2, transferFee };
 };
 
-export const getParachainSystemMessageHash = (events: Array<any>, api: ApiPromise) => {
+export const getParachainSystemMessageHash = (events: Array<any>) => {
   const parachainSystemEvent = events.find(
-    (e) => api.events.parachainSystem.UpwardMessageSent.is(e.event) || api.events.xcmpQueue.XcmpMessageSent.is(e.event)
+    (e) => isEvent(e, 'parachainSystem', 'UpwardMessageSent') || isEvent(e, 'xcmpQueue', 'XcmpMessageSent')
   );
 
   if (!parachainSystemEvent) {
     throw new Error(`Unable to find "parachainSystem.UpwardMessageSent" event`);
   }
 
-  return parachainSystemEvent.event.data.messageHash.toString();
+  return parachainSystemEvent.event.data[0].toString();
 };
 
-export const getMessageAcceptedNonces = (events: Array<any>, api: ApiPromise): [number, number] => {
-  const messageAcceptedEvent = events.find((e) =>
-    api.events.substrateBridgeOutboundChannel.MessageAccepted.is(e.event)
-  );
+export const isMessageAccepted = (e) => isEvent(e, 'substrateBridgeOutboundChannel', 'MessageAccepted');
+
+export const getMessageAcceptedNonces = (events: Array<any>): [number, number] => {
+  const messageAcceptedEvent = events.find((e) => isMessageAccepted(e));
 
   if (!messageAcceptedEvent) {
     throw new Error('Unable to find "substrateBridgeOutboundChannel.MessageAccepted" event');
@@ -126,8 +145,10 @@ export const getMessageAcceptedNonces = (events: Array<any>, api: ApiPromise): [
   return [batchNonce, messageNonce];
 };
 
-export const getMessageDispatchedNonces = (events: Array<any>, api: ApiPromise): [number, number] => {
-  const messageDispatchedEvent = events.find((e) => api.events.substrateDispatch.MessageDispatched.is(e.event));
+export const isMessageDispatched = (e) => isEvent(e, 'substrateDispatch', 'MessageDispatched');
+
+export const getMessageDispatchedNonces = (events: Array<any>): [number, number] => {
+  const messageDispatchedEvent = events.find((e) => isMessageDispatched(e));
 
   if (!messageDispatchedEvent) {
     throw new Error('Unable to find "substrateDispatch.MessageDispatched" event');
@@ -140,13 +161,8 @@ export const getMessageDispatchedNonces = (events: Array<any>, api: ApiPromise):
   return [eventBatchNonce, eventMessageNonce];
 };
 
-export const isMessageDispatchedNonces = (
-  sendedBatchNonce: number,
-  sendedMessageNonce: number,
-  e: any,
-  api: ApiPromise
-): boolean => {
-  if (!api.events.substrateDispatch.MessageDispatched.is(e.event)) return false;
+export const isMessageDispatchedNonces = (sendedBatchNonce: number, sendedMessageNonce: number, e: any): boolean => {
+  if (!isMessageDispatched(e)) return false;
 
   const { batchNonce, messageNonce } = e.event.data[0];
 
