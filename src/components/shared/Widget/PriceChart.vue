@@ -798,15 +798,11 @@ export default class PriceChartWidget extends Mixins(
     this.priceUpdateRequestId = requestId;
     await this.withApi(async () => {
       try {
-        let snapshots: Snapshot[] = [];
-
-        if (this.loadDataWhenReverse) {
-          snapshots = addresses.map(
-            (address) => this?.snapshotBuffer?.[address] || { nodes: [], hasNextPage: false, endCursor: undefined }
-          );
-        } else {
-          snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
-        }
+        const snapshots: Snapshot[] = this.loadDataWhenReverse
+          ? addresses.map(
+              (address) => this?.snapshotBuffer?.[address] || { nodes: [], hasNextPage: false, endCursor: undefined }
+            )
+          : await Promise.all(addresses.map((address) => this.fetchData(address)));
 
         if (!(snapshots && isEqual(addresses)(this.entities) && isEqual(requestId)(this.priceUpdateRequestId))) return;
         const pageInfos: Record<string, Partial<PageInfo>> = {};
