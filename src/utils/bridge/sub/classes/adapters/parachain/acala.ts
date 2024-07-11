@@ -6,7 +6,7 @@ import { ZeroStringValue } from '@/consts';
 import { ParachainAdapter, type IParachainAssetMetadata } from './parachain';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 enum AcalaPrimitivesCurrencyCurrencyId {
   Token = 'Token',
@@ -44,7 +44,14 @@ function getAcalaCurrencyId(nature: any): Nullable<IAcalaCurrencyId> {
 }
 
 export class AcalaParachainAdapter extends ParachainAdapter<IAcalaCurrencyId> {
-  protected async getAssetsMetadata(): Promise<void> {
+  // overrides "SubAdapter"
+  public override async connect(): Promise<void> {
+    await super.connect();
+    await this.getAssetsMetadata();
+  }
+
+  // overrides "ParachainAdapter"
+  protected override async getAssetsMetadata(): Promise<void> {
     if (Array.isArray(this.assets)) return;
 
     const assets: IParachainAssetMetadata<IAcalaCurrencyId>[] = [];
@@ -66,6 +73,32 @@ export class AcalaParachainAdapter extends ParachainAdapter<IAcalaCurrencyId> {
     this.assets = Object.freeze(assets);
   }
 
+  // overrides "ParachainAdapter"
+  protected override getAssetMeta(asset: RegisteredAsset): Nullable<IParachainAssetMetadata<IAcalaCurrencyId>> {
+    if (!Array.isArray(this.assets)) return null;
+
+    return this.assets.find(
+      (item) => JSON.stringify(item.id) === asset.externalAddress || item.symbol === asset.symbol
+    );
+  }
+
+  // overrides "ParachainAdapter"
+  public override async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<string> {
+    const v3Multilocation = multilocation;
+
+    const result = await (this.api.query.assetRegistry as any).locationToCurrencyIds(v3Multilocation);
+
+    let id!: Nullable<IAcalaCurrencyId>;
+
+    if (result.isEmpty) {
+      id = { [AcalaPrimitivesCurrencyCurrencyId.Token]: asset.symbol };
+    } else {
+      id = getAcalaCurrencyId(result.unwrap());
+    }
+
+    return id ? JSON.stringify(id) : '';
+  }
+
   protected override async getAccountAssetBalance(
     accountAddress: string,
     asset: RegisteredAsset
@@ -82,7 +115,7 @@ export class AcalaParachainAdapter extends ParachainAdapter<IAcalaCurrencyId> {
     }, ZeroStringValue);
   }
 
-  // overrides SubAdapter
+  // overrides "SubAdapter"
   public override getTransferExtrinsic(asset: RegisteredAsset, recipient: string, amount: number | string) {
     const assetMeta = this.getAssetMeta(asset);
 

@@ -3,6 +3,7 @@ import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts'
 import BN from 'bignumber.js';
 
 import xTokensAbi from '@/abi/ethereum/other/moonbeam/xTokens.json';
+import { ZeroStringValue } from '@/consts';
 import { SUB_NETWORKS } from '@/consts/sub';
 import { delay } from '@/utils';
 import { getEvmTransactionFee, onEvmTransactionPending } from '@/utils/bridge/common/utils';
@@ -12,14 +13,12 @@ import ethersUtil from '@/utils/ethers-util';
 import { ParachainAdapter } from './parachain';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 import type { ethers } from 'ethers';
 
 const MOONBASE_DATA = SUB_NETWORKS[SubNetworkId.AlphanetMoonbase];
 
-type IMoonbaseAssetId = string; // substrate id
-
-export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId> {
+export class MoonbaseParachainAdapter extends ParachainAdapter<string> {
   protected nativeAssetContractAddress = '0x0000000000000000000000000000000000000802';
   protected xTokensContractAddress = '0x0000000000000000000000000000000000000804';
 
@@ -34,6 +33,7 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
     return address;
   }
 
+  // overrides "SubAdapter"
   protected override async getAccountAssetBalance(
     accountAddress: string,
     asset: RegisteredAsset
@@ -41,14 +41,21 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
     return await this.assetsAccountRequest(accountAddress, asset.externalAddress);
   }
 
-  public async getAssetIdByMultilocation(multilocation: any): Promise<string | null> {
+  // Assets has not minimal deposit on Moonbase
+  // overrides "ParachainAdapter"
+  protected override async getAssetDeposit(asset: RegisteredAsset): Promise<CodecString> {
+    return ZeroStringValue;
+  }
+
+  // overrides "ParachainAdapter"
+  public override async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<string> {
     const assetType = {
       XCM: multilocation,
     };
 
     const result = await (this.api.query.assetManager as any).assetTypeId(assetType);
 
-    if (result.isEmpty) return null;
+    if (result.isEmpty) return '';
 
     const id = result.unwrap().toString();
 
@@ -64,6 +71,9 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
     return `0x${padded}`;
   }
 
+  /**
+   * Convert parachain id to xcm junction
+   */
   protected toParachainAddress(id: number | undefined): string {
     const selector = '0x00'; // Parachain selector
     const address = Number(id ?? 0)
@@ -73,6 +83,9 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<IMoonbaseAssetId>
     return selector + address;
   }
 
+  /**
+   * Convert substrate account address to xcm junction
+   */
   protected toAccountId32(address: string): string {
     const selector = '0x01'; // AccountKey32 selector
     const publicKey = this.getPublicKeyByAddress(address); // AccountId32 address in hex

@@ -1,4 +1,5 @@
 import { BridgeNetworkType } from '@sora-substrate/util/build/bridgeProxy/consts';
+import { SubNetworkId } from '@sora-substrate/util/build/bridgeProxy/sub/consts';
 import { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
 import { api as soraApi, accountUtils, WALLET_TYPES } from '@soramitsu/soraneo-wallet-web';
 import { defineActions } from 'direct-vuex';
@@ -9,6 +10,7 @@ import { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 import ethersUtil, { Provider, PROVIDER_ERROR } from '@/utils/ethers-util';
 
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
+import type { SupportedApps } from '@sora-substrate/util/build/bridgeProxy/types';
 import type { ActionContext } from 'vuex';
 
 async function connectNetworkType(context: ActionContext<any, any>): Promise<void> {
@@ -182,8 +184,26 @@ const actions = defineActions({
 
   async getSupportedApps(context): Promise<void> {
     const { commit, getters } = web3ActionContext(context);
+    // production mock
+    let supportedApps = {
+      [BridgeNetworkType.Eth]: {},
+      [BridgeNetworkType.Evm]: {},
+      [BridgeNetworkType.Sub]: [
+        SubNetworkId.Kusama,
+        SubNetworkId.KusamaSora,
+        SubNetworkId.Polkadot,
+        SubNetworkId.PolkadotAstar,
+        SubNetworkId.PolkadotAcala,
+        SubNetworkId.PolkadotSora,
+        SubNetworkId.Liberland,
+      ],
+    };
 
-    const supportedApps = await soraApi.bridgeProxy.getListApps();
+    const chainApps = await soraApi.bridgeProxy.getListApps();
+    // response is ok
+    if (chainApps[BridgeNetworkType.Sub].length) {
+      supportedApps = chainApps;
+    }
 
     commit.setSupportedApps(supportedApps as any);
 

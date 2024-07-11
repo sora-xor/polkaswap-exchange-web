@@ -5,7 +5,7 @@ import { ZeroStringValue } from '@/consts';
 import { SubAdapter } from '../substrate';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
 export type IParachainAssetMetadata<AssetId = any> = {
   id: AssetId;
@@ -16,12 +16,6 @@ export type IParachainAssetMetadata<AssetId = any> = {
 
 export class ParachainAdapter<AssetId> extends SubAdapter {
   protected assets: readonly IParachainAssetMetadata<AssetId>[] | null = null;
-
-  // overrides SubAdapter
-  public override async connect(): Promise<void> {
-    await super.connect();
-    await this.getAssetsMetadata();
-  }
 
   protected async getAssetsMetadata(): Promise<void> {
     if (Array.isArray(this.assets)) return;
@@ -45,6 +39,13 @@ export class ParachainAdapter<AssetId> extends SubAdapter {
     if (!Array.isArray(this.assets)) return null;
 
     return this.assets.find((item) => item.id === asset.externalAddress || item.symbol === asset.symbol);
+  }
+
+  /**
+   * Get asset external address by multilocation (for "registeredAsset.externalAddress" struct))
+   */
+  public async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<string> {
+    throw new Error(`[${this.constructor.name}] "getAssetIdByMultilocation" method is not implemented`);
   }
 
   // overrides SubAdapter

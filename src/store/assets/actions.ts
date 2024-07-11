@@ -91,31 +91,6 @@ async function getSubRegisteredAssets(
   if (!subNetwork) return [];
 
   const subNetworkId = subNetwork as SubNetwork;
-
-  // [TODO] remove when non native parachain tokens are supported
-  if (subNetworkId === SubNetworkId.PolkadotAcala) {
-    return [
-      {
-        '0x001ddbe1a880031da72f7ea421260bec635fa7d1aa72593d5412795408b6b2ba': {
-          address: '',
-          decimals: 12,
-          kind: 'Sidechain',
-        },
-      },
-    ];
-  }
-  if (subNetworkId === SubNetworkId.PolkadotAstar) {
-    return [
-      {
-        '0x009dd037fcb32f4fe17c513abd4641a2ece844d106e30788124f0c0acc6e748e': {
-          address: '',
-          decimals: 18,
-          kind: 'Sidechain',
-        },
-      },
-    ];
-  }
-
   const networkAssets = await subBridgeApi.getRegisteredAssets(subNetworkId);
   const registeredAssets = Object.entries(networkAssets).map(([soraAddress, assetData]) => {
     return {
@@ -131,7 +106,7 @@ async function getSubRegisteredAssets(
 }
 
 async function updateSubAssetsData(context: ActionContext<any, any>): Promise<void> {
-  const { state, commit, rootState } = assetsActionContext(context);
+  const { state, commit, rootState, rootGetters } = assetsActionContext(context);
   const { registeredAssets } = state;
 
   const { destinationNetwork, soraParachain, parachain } = rootState.bridge.subBridgeConnector;
@@ -145,9 +120,10 @@ async function updateSubAssetsData(context: ActionContext<any, any>): Promise<vo
   const updatedEntries = await Promise.all(
     Object.entries(registeredAssets).map(async ([soraAddress, assetData]) => {
       const asset = { ...assetData };
-      if (!asset.address && 'getAssetIdByMultilocation' in parachain) {
+      const soraAsset = rootGetters.wallet.account.assetsDataTable[soraAddress];
+      if (!asset.address && soraAsset) {
         const multilocation = await subBridgeApi.soraParachainApi.getAssetMulilocation(soraAddress, soraParachain.api);
-        const id = await (parachain as any).getAssetIdByMultilocation(multilocation);
+        const id = await parachain.getAssetIdByMultilocation(soraAsset, multilocation);
         asset.address = id;
       }
       return [soraAddress, asset];

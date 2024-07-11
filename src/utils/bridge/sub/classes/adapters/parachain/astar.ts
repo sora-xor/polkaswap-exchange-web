@@ -5,11 +5,30 @@ import { ZeroStringValue } from '@/consts';
 import { ParachainAdapter } from './parachain';
 
 import type { CodecString } from '@sora-substrate/util';
-import type { RegisteredAsset } from '@sora-substrate/util/build/assets/types';
+import type { Asset, RegisteredAsset } from '@sora-substrate/util/build/assets/types';
 
-type IAstarAssetId = string;
+export class AstarParachainAdapter extends ParachainAdapter<string> {
+  // overrides "SubAdapter"
+  public override async connect(): Promise<void> {
+    await super.connect();
+    await this.getAssetsMetadata();
+  }
 
-export class AstarParachainAdapter extends ParachainAdapter<IAstarAssetId> {
+  // overrides "ParachainAdapter"
+  public override async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<string> {
+    const versionedMultilocation = {
+      V3: multilocation,
+    };
+
+    const result = await (this.api.query.xcAssetConfig as any).assetLocationToId(versionedMultilocation);
+
+    if (result.isEmpty) return '';
+
+    const id = result.unwrap().toString();
+
+    return id;
+  }
+
   protected override async getAccountAssetBalance(
     accountAddress: string,
     asset: RegisteredAsset
