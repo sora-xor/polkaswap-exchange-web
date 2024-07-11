@@ -70,6 +70,11 @@ export const getWcEthereumProvider = async (chainProps: ChainsProps): Promise<Wc
   const ethereumProvider = await WcEthereumProvider.init({
     projectId: WC.WcProvider.projectId,
     showQrModal: true,
+    qrModalOptions: {
+      themeVariables: {
+        '--wcm-z-index': '2100',
+      },
+    },
     ...chainProps,
   });
 
