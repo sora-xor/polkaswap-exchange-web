@@ -1971,7 +1971,6 @@
     rxjs "^7.8.0"
 
 "@polkadot/api@11.2.1", "polkadotApi@npm:@polkadot/api@11.2.1":
-  name polkadotApi
   version "11.2.1"
   resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-11.2.1.tgz#b19a8e22367703333e71f3613095f76f0dbbca70"
   integrity sha512-NwcWadMt+mrJ3T7RuwpnaIYtH4x0eix+GiKRtLMtIO32uAfhwVyMnqvLtxDxa4XDJ/es2rtSMYG+t0b1BTM+xQ==
@@ -3081,10 +3080,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@tma.js/sdk@^2.4.0":
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/@tma.js/sdk/-/sdk-2.4.0.tgz#9ea6fc485988a8aa5ff2dc6074d92eed9b88210c"
-  integrity sha512-cSJClNfoI7S0mC7b7RJQwaUCeR83UahqNG4A8kmCO4SeFFYsOX/XXXMQN0NilcQA4BfqwTMLPUbi/dV7r6b7BQ==
+"@tma.js/sdk@^2.7.0":
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/@tma.js/sdk/-/sdk-2.7.0.tgz#1ae1fa6e5b21f6a5d959328ba84096bf5e6cc910"
+  integrity sha512-LRuJdoEbAqKmSYccvXx5emSnye2je8oIbBVPtV+BmcNoa/dCZ0gFVkaeuyBqzroGtfGDyGO/WebU54ie5MKmCQ==
 
 "@tootallnate/once@1":
   version "1.1.2"

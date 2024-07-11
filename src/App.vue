@@ -69,7 +69,7 @@ import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
-import { initTMA } from '@/utils/telegram';
+import { TmaSdk } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
@@ -109,8 +109,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   @state.settings.appConnection private appConnection!: NodesConnection;
   @state.settings.browserNotifPopupVisibility private browserNotifPopup!: boolean;
   @state.settings.browserNotifPopupBlockedVisibility private browserNotifPopupBlocked!: boolean;
-  @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
+  @state.referrals.referrer private referrer!: string;
   @state.referrals.storageReferrer storageReferrer!: string;
+  @state.wallet.account.assetsToNotifyQueue assetsToNotifyQueue!: Array<WhitelistArrayItem>;
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.router.loading pageLoading!: boolean;
 
@@ -155,7 +156,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   @state.wallet.transactions.isSignTxDialogVisible public isSignTxDialogVisible!: boolean;
   @mutation.wallet.transactions.setSignTxDialogVisibility public setSignTxDialogVisibility!: (flag: boolean) => void;
-
   // [DESKTOP] To Enable Desktop
   @mutation.wallet.account.setIsDesktop private setIsDesktop!: (v: boolean) => void;
   // [TMA] To Enable TMA
@@ -200,16 +200,17 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   private async confirmInvititation(): Promise<void> {
-    await this.getReferrer();
-    if (this.storageReferrer) {
+    await this.withApi(async () => {
+      await this.getReferrer();
+      if (!this.storageReferrer) {
+        return;
+      }
       if (this.storageReferrer === this.account.address) {
         this.resetStorageReferrer();
-      } else {
-        this.withApi(() => {
-          this.showConfirmInviteUser = true;
-        });
+      } else if (!this.referrer) {
+        this.showConfirmInviteUser = true;
       }
-    }
+    });
   }
 
   private setResponsiveClass(): void {
@@ -219,9 +220,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
 
   async created() {
-    // [DESKTOP] To Enable Desktop
-    // this.setIsDesktop(true);
-
     // element-icons is not common used, but should be visible after network connection lost
     preloadFontFace('element-icons');
     this.setResponsiveClass();
@@ -241,7 +239,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
       if (await isTMA()) {
         this.enableTMA();
         this.setIsDesktop(true);
-        await initTMA(data?.TG_BOT_URL, data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev);
+        await TmaSdk.init(data?.TG_BOT_URL, data.NETWORK_TYPE === WALLET_CONSTS.SoraNetwork.Dev);
       }
 
       await this.setApiKeys(data?.API_KEYS);

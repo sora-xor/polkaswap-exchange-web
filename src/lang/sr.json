@@ -938,7 +938,8 @@
             "bondMore": "Veži više",
             "bond": "Veži",
             "unbond": "Razveži",
-            "copyLink": "Копирајте линк"
+            "copyLink": "Копирајте линк",
+            "shareLink": "Podeli"
         },
         "transactionDetails": "Детаљи трансакције",
         "receivedRewards": "Примљене награде",
@@ -970,7 +971,9 @@
             "info": "Када платите накнаду за трансакцију, <br\/> 10% ће отићи вашем referentu",
             "referredLablel": "Препоручена адреса"
         },
-        "insufficientBondedAmount": "Da biste pozvali više preporuka, najmanje povežite {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Da biste pozvali više preporuka, najmanje povežite {inviteUserFee} XOR",
+        "inviteViaTelegram": "Pozovi preko {Telegram}",
+        "welcomeMessage": "\nPridruži mi se na {Polkaswap}!\n\nOtkrij stajliš {DEX} koji ti omogućava da menjaš desetine tokena sa međulančanim menjanjem, knjigom narudžbina i mnoštvom nagrada!\n\n🎁 Pozovi prijatelje i zaradi 10% njihovih trgovačkih naknada\n\nVidimo se tamo!"
     },
     "transactionDetailsText": "Детаљи трансакције",
     "code": {

@@ -405,6 +405,7 @@ export default class AppMenu extends Mixins(TranslationMixin) {
     @include large-mobile(true) {
       position: fixed;
       right: 0;
+      z-index: $app-above-loader-layer;
 
       &.visible {
         visibility: visible;
