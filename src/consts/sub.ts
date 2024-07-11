@@ -98,6 +98,31 @@ export const SUB_NETWORKS: Partial<Record<SubNetwork, NetworkData>> = {
       },
     ],
   },
+  [SubNetworkId.PolkadotMoonbeam]: {
+    id: SubNetworkId.PolkadotMoonbeam,
+    name: 'Moonbeam',
+    nativeCurrency: {
+      name: 'GLMR',
+      symbol: 'GLMR',
+      decimals: 18,
+    },
+    endpointUrls: ['https://rpc.api.moonbeam.network', 'https://moonbeam-rpc.dwellir.com'],
+    blockExplorerUrls: ['https://moonbeam.subscan.io'],
+    shortName: 'Moonbeam',
+    nodes: [
+      {
+        chain: 'Moonbeam',
+        name: 'Moonbeam Foundation',
+        address: 'wss://wss.api.moonbeam.network',
+      },
+      {
+        chain: 'Moonbeam',
+        name: 'Dwellir',
+        address: 'wss://moonbeam-rpc.dwellir.com',
+      },
+    ],
+    evmId: 1284,
+  },
   [SubNetworkId.Rococo]: {
     id: SubNetworkId.Rococo,
     name: 'Rococo',

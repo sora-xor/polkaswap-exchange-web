@@ -145,6 +145,8 @@ export default class NetworkFormatterMixin extends Mixins(TranslationMixin) {
         return 'acala';
       case SubNetworkId.PolkadotAstar:
         return 'astar';
+      case SubNetworkId.PolkadotMoonbeam:
+        return 'moonbeam';
       case SubNetworkId.Kusama:
         return 'kusama';
       case SubNetworkId.KusamaShiden:
