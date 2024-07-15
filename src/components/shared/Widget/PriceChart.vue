@@ -817,19 +817,7 @@ export default class PriceChartWidget extends Mixins(
           const buffer = this.samplesBuffer[address] ?? [];
           const normalized = normalizeSnapshots(buffer.concat(nodes), this.timeDifference, timestamp);
 
-          if (!this.snapshotBuffer[address]) {
-            this.snapshotBuffer[address] = {
-              nodes: [],
-              hasNextPage: false,
-              endCursor: undefined,
-            };
-          }
-
-          const existingNodes = this.snapshotBuffer[address].nodes;
-          const normalizedTimestamps = new Set(normalized.map((item) => item.timestamp));
-          const filteredExistingNodes = existingNodes.filter((item) => !normalizedTimestamps.has(item.timestamp));
-
-          this.fillSnapshotBuffer(address, filteredExistingNodes, normalized, hasNextPage, endCursor);
+          this.fillSnapshotBuffer(address, normalized, hasNextPage, endCursor);
 
           groups.push(normalized);
           pageInfos[address] = { hasNextPage, endCursor };
@@ -876,11 +864,22 @@ export default class PriceChartWidget extends Mixins(
 
   private fillSnapshotBuffer(
     address: string,
-    filteredExistingNodes: SnapshotItem[],
     normalized: SnapshotItem[],
     hasNextPage: boolean,
     endCursor: string | undefined
   ): void {
+    if (!this.snapshotBuffer[address]) {
+      this.snapshotBuffer[address] = {
+        nodes: [],
+        hasNextPage: false,
+        endCursor: undefined,
+      };
+    }
+
+    const existingNodes = this.snapshotBuffer[address].nodes;
+    const normalizedTimestamps = new Set(normalized.map((item) => item.timestamp));
+    const filteredExistingNodes = existingNodes.filter((item) => !normalizedTimestamps.has(item.timestamp));
+
     this.snapshotBuffer[address].nodes = [...filteredExistingNodes, ...normalized];
     this.snapshotBuffer[address].hasNextPage = hasNextPage;
     this.snapshotBuffer[address].endCursor = endCursor;
