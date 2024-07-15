@@ -748,6 +748,10 @@ export default class PriceChartWidget extends Mixins(
     const hasNextPage = pageInfo?.hasNextPage ?? true;
     const endCursor = pageInfo?.endCursor ?? undefined;
 
+    if (this.loadDataWhenReverse) {
+      return this.snapshotBuffer[entityId] || { nodes: [], hasNextPage: false, endCursor: undefined };
+    }
+
     const buffer = this.samplesBuffer[entityId] ?? [];
 
     if (buffer.length >= count) {
@@ -756,10 +760,6 @@ export default class PriceChartWidget extends Mixins(
         hasNextPage,
         endCursor,
       };
-    }
-
-    if (this.loadDataWhenReverse) {
-      return this.snapshotBuffer[entityId] || { nodes: [], hasNextPage: false, endCursor: undefined };
     }
 
     return await this.requestData(entityId, type, count, hasNextPage, endCursor);
