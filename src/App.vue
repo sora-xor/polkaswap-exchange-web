@@ -31,7 +31,7 @@
     </notification-enabling-page>
     <alerts />
     <confirm-dialog
-      :get-api="getApi"
+      :chain-api="chainApi"
       :account="account"
       :visibility="isSignTxDialogVisible"
       :set-visibility="setSignTxDialogVisibility"
@@ -314,7 +314,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     this.setBrowserNotifsPopupBlocked(value);
   }
 
-  getApi() {
+  get chainApi() {
     return api;
   }
 
