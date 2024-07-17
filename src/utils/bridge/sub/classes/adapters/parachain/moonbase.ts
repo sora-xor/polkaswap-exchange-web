@@ -34,6 +34,12 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<string> {
   }
 
   // overrides "SubAdapter"
+  public override async connect(): Promise<void> {
+    await super.connect();
+    await this.getAssetsMetadata();
+  }
+
+  // overrides "SubAdapter"
   protected override async getAccountAssetBalance(
     accountAddress: string,
     asset: RegisteredAsset
@@ -62,10 +68,8 @@ export class MoonbaseParachainAdapter extends ParachainAdapter<string> {
     return id;
   }
 
-  /**
-   * Convert substrate asset id to evm token contract address
-   */
-  protected assetIdToEvmContractAddress(id: string): string {
+  // overrides "ParachainAdapter"
+  public override assetIdToEvmContractAddress(id: string): string {
     const base = new BN(id).toString(16);
     const padded = base.padStart(40, 'f');
     return `0x${padded}`;

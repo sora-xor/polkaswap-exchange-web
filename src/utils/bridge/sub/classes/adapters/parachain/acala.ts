@@ -74,7 +74,7 @@ export class AcalaParachainAdapter extends ParachainAdapter<IAcalaCurrencyId> {
   }
 
   // overrides "ParachainAdapter"
-  protected override getAssetMeta(asset: RegisteredAsset): Nullable<IParachainAssetMetadata<IAcalaCurrencyId>> {
+  public override getAssetMeta(asset: RegisteredAsset): Nullable<IParachainAssetMetadata<IAcalaCurrencyId>> {
     if (!Array.isArray(this.assets)) return null;
 
     return this.assets.find(

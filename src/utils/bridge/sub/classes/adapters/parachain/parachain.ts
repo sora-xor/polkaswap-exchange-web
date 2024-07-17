@@ -35,7 +35,7 @@ export class ParachainAdapter<AssetId> extends SubAdapter {
     this.assets = Object.freeze(assets);
   }
 
-  protected getAssetMeta(asset: RegisteredAsset): Nullable<IParachainAssetMetadata<AssetId>> {
+  public getAssetMeta(asset: RegisteredAsset): Nullable<IParachainAssetMetadata<AssetId>> {
     if (!Array.isArray(this.assets)) return null;
 
     return this.assets.find((item) => item.id === asset.externalAddress || item.symbol === asset.symbol);
@@ -46,6 +46,13 @@ export class ParachainAdapter<AssetId> extends SubAdapter {
    */
   public async getAssetIdByMultilocation(asset: Asset, multilocation: any): Promise<string> {
     throw new Error(`[${this.constructor.name}] "getAssetIdByMultilocation" method is not implemented`);
+  }
+
+  /**
+   * Convert substrate asset id to evm token contract address
+   */
+  public assetIdToEvmContractAddress(id: string): string {
+    throw new Error(`[${this.constructor.name}] "assetIdToEvmContractAddress" method is not implemented`);
   }
 
   // overrides SubAdapter
