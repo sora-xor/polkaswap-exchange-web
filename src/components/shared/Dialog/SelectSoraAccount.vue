@@ -1,7 +1,7 @@
 <template>
   <dialog-base :visible.sync="visibility" :show-close-button="false" class="account-select-dialog">
     <connection-view
-      :get-api="getApi"
+      :chain-api="chainApi"
       :account="soraAccount"
       :login-account="login"
       :logout-account="logout"
@@ -36,7 +36,7 @@ export default class SelectSoraAccountDialog extends Mixins(TranslationMixin) {
   @action.wallet.account.logout public logout!: () => Promise<void>;
   @action.wallet.account.renameAccount public rename!: (data: { address: string; name: string }) => Promise<void>;
 
-  getApi() {
+  get chainApi() {
     return api;
   }
 
