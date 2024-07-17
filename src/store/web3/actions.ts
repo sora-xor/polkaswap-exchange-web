@@ -198,10 +198,10 @@ const actions = defineActions({
       ],
     };
 
-    const chainApps = await soraApi.bridgeProxy.getListApps();
-    // response is ok
-    if (chainApps[BridgeNetworkType.Sub].length) {
-      supportedApps = chainApps;
+    try {
+      supportedApps = await soraApi.bridgeProxy.getListApps();
+    } catch (error) {
+      console.error(error);
     }
 
     commit.setSupportedApps(supportedApps as any);
