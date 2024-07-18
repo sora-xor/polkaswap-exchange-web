@@ -746,26 +746,27 @@ export default class PriceChartWidget extends Mixins(
   // ordered ty timestamp DESC
   private async fetchData(entityId: string): Promise<SnapshotItem[]> {
     const { type, count } = this.selectedFilter;
-    const pageInfo = this.pageInfos[entityId];
-    const hasNextPage = pageInfo?.hasNextPage ?? true;
-    const endCursor = pageInfo?.endCursor ?? undefined;
 
-    const loadedItems = this.dataset.length;
-    const entityBuffer = this.snapshotBuffer[entityId] ?? [];
-    const fromBuffer = entityBuffer.slice(loadedItems);
+    const snapshotsBuffer = this.snapshotBuffer[entityId] ?? [];
+    const snapshotsUsedCount = this.dataset.length;
+    const snapshotsUnused = snapshotsBuffer.slice(snapshotsUsedCount);
 
-    if (fromBuffer.length >= count) {
-      return fromBuffer;
+    if (snapshotsUnused.length >= count) {
+      return snapshotsUnused;
     }
 
-    const snapshots = await this.requestData(entityId, type, count, hasNextPage, endCursor);
-    const lastTimestamp = last(fromBuffer)?.timestamp ?? last(this.dataset)?.timestamp ?? Date.now();
-    const normalized = normalizeSnapshots(snapshots.nodes, this.timeDifference, lastTimestamp);
+    const pageInfoBuffer = this.pageInfos[entityId];
+    const hasNextPage = pageInfoBuffer?.hasNextPage ?? true;
+    const endCursor = pageInfoBuffer?.endCursor ?? undefined;
 
-    this.fillSnapshotBuffer(entityId, normalized);
-    this.pageInfos[entityId] = { hasNextPage: snapshots.hasNextPage, endCursor: snapshots.endCursor };
+    const { nodes, ...pageInfo } = await this.requestData(entityId, type, count, hasNextPage, endCursor);
+    const lastTimestamp = last(snapshotsUnused)?.timestamp ?? last(this.dataset)?.timestamp ?? Date.now();
+    const snapshotsNormalized = normalizeSnapshots(nodes, this.timeDifference, lastTimestamp);
 
-    return [...fromBuffer, ...normalized];
+    this.fillSnapshotBuffer(entityId, snapshotsNormalized);
+    this.pageInfos[entityId] = pageInfo;
+
+    return [...snapshotsUnused, ...snapshotsNormalized];
   }
 
   private async fetchDataLastUpdates(entities: string[]): Promise<Nullable<LastUpdates>> {
