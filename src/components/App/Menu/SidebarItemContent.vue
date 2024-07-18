@@ -52,6 +52,7 @@ $icon-size: 42px;
 
 .icon-container {
   display: flex;
+  flex-shrink: 0;
   padding-left: 1px; // because of inset shadow
   width: $icon-size;
   height: $icon-size;

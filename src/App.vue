@@ -5,13 +5,12 @@
       <app-menu
         :visible="menuVisibility"
         :on-select="goTo"
-        :is-about-page-opened="isAboutPage"
         @open-product-dialog="openProductDialog"
         @click.native="handleAppMenuClick"
       >
         <app-logo-button slot="head" class="app-logo--menu" :theme="libraryTheme" @click="goToSwap" />
       </app-menu>
-      <div class="app-body" :class="{ 'app-body__about': isAboutPage }">
+      <div class="app-body">
         <s-scrollbar class="app-body-scrollbar" v-loading="pageLoading">
           <div class="app-content">
             <router-view :parent-loading="loading || !nodeIsConnected" />
@@ -279,10 +278,6 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   private get mobileCssClasses(): string[] | undefined {
     return getMobileCssClasses();
-  }
-
-  get isAboutPage(): boolean {
-    return this.$route.name === PageNames.About;
   }
 
   get dsProviderClasses(): string[] | BreakpointClass {
@@ -624,9 +619,6 @@ i.icon-divider {
     flex: 1;
     flex-flow: column nowrap;
     max-width: 100%;
-    &__about {
-      overflow: hidden;
-    }
   }
 
   &-content {

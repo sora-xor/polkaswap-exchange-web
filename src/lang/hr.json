@@ -396,7 +396,6 @@
         "Swap": "Zamijenite",
         "Pool": "Pul",
         "Bridge": "@:bridgeText",
-        "About": "O",
         "Stats": "Statistika",
         "Wallet": "Novčanik",
         "AddLiquidity": "Dodajte likvidnost",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "Od",
         "to": "Do"
-    },
-    "about": {
-        "title": "DEX za interoperabilnu budućnost.",
-        "description": "Međulančana razmjena sredstava, jednostavno stvaranje i popisivanje novih sredstava i najlakše zamjene ikad. Interoperabilna budućnost {Polkadot} je ovdje, a mi smo na čelu!",
-        "trading": {
-            "title": "Brže trgovanje",
-            "first": "{AppName} je protokol AMM DEX koji se ne sastoji od skrbnika za zamjenu tokena na temelju relejnih lanaca {Polkadot} i {Kusama}, parachainova {Polkadot} i {Kusama} i blokova koji su izravno povezani mostovima.",
-            "second": "{AppName} uklanja pouzdane posrednike i pruža mogućnost bržeg trgovanja",
-            "third": "{AppName} je projekt zajednice i razvojni programeri surađuju na otvorenom kodu koristeći"
-        },
-        "liquidity": {
-            "title": "Bezgranična likvidnost",
-            "first": "{AppName} kombinira više izvora likvidnosti pod zajedničkim algoritmom za prikupljanje likvidnosti, koji djeluju potpuno na lancu, na način od povjerenja i decentraliziran.",
-            "second": "Kada trgovci pozovu funkciju zamjene, algoritam za prikupljanje likvidnosti ispunit će račune koristeći najbolje ponude iz svih izvora likvidnosti. Izvori likvidnosti mogu biti drugi DEX-ovi, knjige narudžbi ili drugi izvori vođeni API-jem.",
-            "third": "Budući da je {AppName} projekt otvorenog koda, svatko može dodati više izvora likvidnosti doprinoseći bazi koda {AppName}."
-        },
-        "swap": {
-            "title": "Zamijenite bilo koji token",
-            "first": "Prijeđite preko granica trenutnih DEX-a dodavanjem tokena iz {Polkadot} ekosustava, kao i drugih blockchaina.",
-            "second": "Stvorite, navedite i trgujte vlastitim tokenima na mreži {Sora}.",
-            "third": "Naša temeljna infrastruktura koristi Parity Substrate, koji je skalabilniji od {Ethereum} i ne koristi skupo rudarenje za konsenzus."
-        },
-        "pswap": {
-            "title": "PSWAP tokeni",
-            "first": "PSWAP je stvoren upravljanjem zajednicom glasovanjem o njegovu oslobađanju. To je korisni i upravljački token koji se koristi za nagrađivanje pružatelja likvidnosti na {AppName}. Za razliku od većine drugih nagradnih tokena, PSWAP se spaljuje transakcijama i smanjuje opskrbu tijekom vremena.",
-            "second": "Naknada od {percent}% za svaku zamjenu na {AppName} DEX-u koristi se za otkup PSWAP tokena, koji se zatim spaljuju. Isprva se 90% spaljenih PSWAP tokena remintira kako bi se dodijelilo pružateljima likvidnosti, ali s vremenom će se taj postotak smanjiti na 35% nakon 4 godine."
-        },
-        "links": {
-            "first": {
-                "title": "Postanite {Sora} Validator",
-                "desc": "Osigurajte budućnost {Sora} mreže i decentraliziranih aplikacija kao što je {AppName} i usput zaradite nagrade tako što ćete postati {Sora} validator."
-            },
-            "second": {
-                "title": "Spojite lanac na {Sora}",
-                "desc": "Povećajte decentraliziranu svjetsku ekonomiju povezivanjem više lanaca sa {Sora}-om i {AppName} pomoću {Hashi} most protokola."
-            }
-        },
-        "network": "{AppName} je izgrađen na {Sora} mreži, s naglaskom na interoperabilnost za povezivanje ostatka kripto ekosustava s {Polkadot}."
     },
     "exchange": {
         "Swap": "Zamijenite",

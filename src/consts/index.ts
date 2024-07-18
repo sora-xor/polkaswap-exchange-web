@@ -114,7 +114,6 @@ export const LiquiditySourceForMarketAlgorithm = {
 export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm);
 
 export enum PageNames {
-  About = 'About',
   Swap = 'Swap',
   Pool = 'Pool',
   Stats = 'Stats',
@@ -398,11 +397,6 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     title: PageNames.AssetOwnerContainer,
     href: '/#/dashboard/owner',
     index: DashboardPageNames.AssetOwner,
-  },
-  {
-    icon: 'finance-PSWAP-24',
-    title: PageNames.About,
-    href: '/#/about',
   },
 ];
 
