@@ -9,14 +9,26 @@ import {
   initUtils,
   initSwipeBehavior,
   isTMA,
+  initHapticFeedback,
   type MiniApp,
   type LaunchParams,
   type Utils,
   type Viewport,
   type SwipeBehavior,
+  type HapticFeedback,
+  type ImpactHapticFeedbackStyle,
+  type NotificationHapticFeedbackType,
 } from '@telegram-apps/sdk';
 
 import store from '@/store';
+
+export type HapticFeedbackBinding = ImpactHapticFeedbackStyle | NotificationHapticFeedbackType;
+
+const HapticNotificationTypes = ['success', 'warning', 'error'];
+
+function isNotification(value: HapticFeedbackBinding): value is NotificationHapticFeedbackType {
+  return HapticNotificationTypes.includes(value);
+}
 
 class TmaSdk {
   public miniApp: Nullable<MiniApp>;
@@ -24,6 +36,7 @@ class TmaSdk {
   public launchParams: Nullable<LaunchParams>;
   public swipeBehavior: Nullable<SwipeBehavior>;
   private utils: Nullable<Utils>;
+  private hapticFeedback: Nullable<HapticFeedback>;
 
   public async init(botUrl?: string, isDebug = false): Promise<void> {
     try {
@@ -63,6 +76,8 @@ class TmaSdk {
       if (botUrl) {
         store.commit.settings.setTelegramBotUrl(botUrl);
       }
+      // Init haptic feedback
+      this.initHapticFeedback();
       // Init utils
       this.utils = initUtils();
       console.info('[TMA]: Utils were initialized');
@@ -97,6 +112,27 @@ class TmaSdk {
     }
   }
 
+  public useHaptic(type: HapticFeedbackBinding): void {
+    if (!this.hapticFeedback) {
+      return;
+    }
+    try {
+      if (isNotification(type)) {
+        this.hapticFeedback?.notificationOccurred(type);
+        return;
+      }
+      if (this.launchParams?.platform.startsWith('android')) {
+        // 'android' | 'android_x'
+        // Android doesn't support different types of haptic feedback except notifications
+        this.hapticFeedback?.notificationOccurred('success');
+      } else {
+        this.hapticFeedback?.impactOccurred(type);
+      }
+    } catch (error) {
+      console.warn('[TMA]: useHapticFeedback', error);
+    }
+  }
+
   private async initViewport(): Promise<void> {
     try {
       const [viewport] = initViewport();
@@ -114,6 +150,16 @@ class TmaSdk {
       console.info('[TMA]: Swipe behavior was initialized');
     } catch (error) {
       console.warn('[TMA]: initSwipeBehavior', error);
+    }
+  }
+
+  private initHapticFeedback(): void {
+    try {
+      const hapticFeedback = initHapticFeedback();
+      this.hapticFeedback = hapticFeedback;
+      console.info('[TMA]: Haptic feedback was initialized');
+    } catch (error) {
+      console.warn('[TMA]: initHapticFeedback', error);
     }
   }
 
