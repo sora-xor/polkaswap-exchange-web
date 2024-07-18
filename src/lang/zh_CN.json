@@ -396,7 +396,6 @@
         "Swap": "兑换",
         "Pool": "流动池",
         "Bridge": "@:bridgeText",
-        "About": "关于",
         "Stats": "统计数据",
         "Wallet": "钱包",
         "AddLiquidity": "增加流动性",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "从",
         "to": "至"
-    },
-    "about": {
-        "title": "迈向可互操作未来的 DEX。",
-        "description": "资产的跨链交换，新资产的简单创建和上市，以及最简单的兑换。{Polkadot}的可互操作性未来就在这里，并且我们走在最前沿！",
-        "trading": {
-            "title": "更快的交易",
-            "first": "{AppName} 是一种非托管的跨链 AMM DEX 协议，用于互换基于 {Polkadot} 和 {Kusama} 中继链、{Polkadot} 和 {Kusama} 平行链以及通过转接桥直接连接区块链的代币。",
-            "second": "{AppName} 消除了对受信任的中介机构的依赖，并提供了更快速的交易机会",
-            "third": "{AppName}是一个社区项目，开发者们在开源代码上进行合作，使用的是"
-        },
-        "liquidity": {
-            "title": "无限流动性",
-            "first": "{AppName}在一个共同的流动性聚集算法下结合了多个流动性来源，以一种完全无需信任和去中心化的方式在链上运行。",
-            "second": "当交易者调用兑换功能时，流动性聚合算法将使用所有流动性来源的最佳报价来填补订单。流动性来源可以是其他DEXs、订单簿、或其他API驱动的来源。",
-            "third": "由于{AppName}是一个开源项目，任何人都可以通过对{AppName}代码库的贡献增加更多的流动性来源。"
-        },
-        "swap": {
-            "title": "交换任何代币",
-            "first": "通过添加来自{Polkadot}生态系统以及其他区块链的代币，超越当前 DEX 的限制。",
-            "second": "在 {Sora} 网络上创建、列出和交易您自己的代币。",
-            "third": "我们的核心基础设施使用 Parity Substrate，它比{Ethereum}更具可扩展性，并且不使用昂贵的挖矿来达成共识。"
-        },
-        "pswap": {
-            "title": "PSWAP 代币",
-            "first": "PSWAP 是由社区治理通过对其发布进行投票而创建的。它是一种实用和治理代币，用于奖励 {AppName} 上的流动性提供者。与大多数其他奖励代币不同的是，PSWAP 会随着交易而被销毁，并且供应量会随着时间的推移而减少。",
-            "second": "{AppName} DEX 上每次兑换的{percent}% 费用用于回购 PSWAP 代币，然后将其销毁。起初，90% 的PSWAP 代币销毁被重新分配给流动性提供者，但随着时间的推移，这个百分比将在 4 年后降至 35%。"
-        },
-        "links": {
-            "first": {
-                "title": "成为{Sora}验证人",
-                "desc": "保护 {Sora} 网络和 {AppName} 等去中心化应用程序的未来，并通过成为 {Sora} 验证者一路获得奖励。"
-            },
-            "second": {
-                "title": "连接一条链到 {Sora}",
-                "desc": "使用 {Hashi} 桥接协议将更多链连接到 {Sora} 和 {AppName}，从而发展去中心化的世界经济。"
-            }
-        },
-        "network": "{AppName}建立在{Sora}网络之上，专注于将加密生态系统的其余部分连接到{Polkadot}的互操作性。"
     },
     "exchange": {
         "Swap": "兑换",
