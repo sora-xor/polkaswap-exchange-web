@@ -44,6 +44,18 @@
                 />
               </s-menu-item>
             </s-menu-item-group>
+            <s-menu-item-group>
+              <app-sidebar-item-content
+                v-button
+                class="menu-item menu-item--bottom el-menu-item s-flex"
+                icon="finance-PSWAP-24"
+                href="https://about.polkaswap.io"
+                tag="a"
+                target="_blank"
+                rel="nofollow noopener"
+                :title="t('mainMenu.About')"
+              />
+            </s-menu-item-group>
           </s-menu>
 
           <s-menu
@@ -55,16 +67,6 @@
             active-text-color="var(--s-color-base-content-tertiary)"
             active-hover-color="transparent"
           >
-            <app-sidebar-item-content
-              v-button
-              class="menu-item menu-item--bottom el-menu-item s-flex"
-              icon="finance-PSWAP-24"
-              href="https://about.polkaswap.io"
-              tag="a"
-              target="_blank"
-              rel="nofollow noopener"
-              :title="t('mainMenu.About')"
-            />
             <app-sidebar-item-content
               v-if="false"
               v-button
@@ -479,6 +481,10 @@ export default class AppMenu extends Mixins(TranslationMixin) {
   padding: 0;
   border-right: none;
 
+  & + .menu {
+    margin-top: $inner-spacing-small;
+  }
+
   &.s-menu {
     border-bottom: none;
 
@@ -527,10 +533,6 @@ export default class AppMenu extends Mixins(TranslationMixin) {
       @include tablet {
         padding: 0 $inner-spacing-small;
       }
-    }
-
-    &.menu-item--bottom {
-      margin-bottom: $inner-spacing-small;
     }
 
     &.marketing {
