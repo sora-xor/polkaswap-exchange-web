@@ -30,8 +30,40 @@
           @keypress.native="handleTextAreaInput($event)"
         />
         <s-divider class="dashboard-create-token_divider" />
+        <s-button
+          type="primary"
+          class="s-typography-button--large action-button dashboard-create__button"
+          :disabled="isNextDisabled"
+          @click="onNext"
+        >
+          <template v-if="isInsufficientXorForFee">
+            {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
+          </template>
+          <template v-else-if="!tokenSymbol">{{ t('createToken.enterSymbol') }}</template>
+          <template v-else-if="!tokenName.trim()">{{ t('createToken.enterName') }}</template>
+          <template v-else-if="!tokenDescription">{{ t('createToken.enterTokenDescription') }}</template>
+          <template v-else>{{ 'NEXT' }}</template>
+        </s-button>
       </template>
       <template v-else-if="step === Step.AttachImage">
+        <s-input
+          :placeholder="t('createToken.nft.link.placeholder')"
+          :minlength="1"
+          :maxlength="200"
+          :disabled="loading"
+          v-model="tokenContentLink"
+          @input="handleInputLinkChange"
+        >
+          <s-tooltip
+            slot="suffix"
+            popper-class="ipfs-tooltip"
+            :content="t('createToken.nft.link.tooltip')"
+            placement="bottom"
+            tabindex="-1"
+          >
+            <s-icon class="ipfs-tooltip__icon" name="info-16" size="18px" />
+          </s-tooltip>
+        </s-input>
         <file-uploader
           ref="uploader"
           class="preview-image-create-nft"
@@ -63,21 +95,22 @@
             <img class="preview-image-create-nft__content" :src="contentSrcLink" />
           </div>
         </file-uploader>
+        <s-button
+          type="primary"
+          class="s-typography-button--large action-button dashboard-create__button"
+          :disabled="isCreateDisabled"
+          @click="onCreate"
+        >
+          <template v-if="isInsufficientXorForFee">
+            {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
+          </template>
+          <template v-else-if="badSource || !tokenContentLink">{{ t('createToken.provideContent') }}</template>
+          <template v-else>{{ t('createToken.actionNFT') }}</template>
+        </s-button>
       </template>
     </div>
-    <s-button
-      type="primary"
-      class="s-typography-button--large action-button dashboard-create__button"
-      :disabled="disabled"
-      @click="onCreate"
-    >
-      <template v-if="isInsufficientXorForFee">
-        {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
-      </template>
-      <template v-else>{{ title }}</template>
-    </s-button>
 
-    <!-- <wallet-fee v-if="!isCreateDisabled && showFee" :value="fee" /> -->
+    <wallet-fee v-if="!isCreateDisabled && showFee && step === Step.AttachImage" :value="fee" />
   </wallet-base>
 </template>
 
@@ -85,13 +118,29 @@
 import { FPNumber, Operation } from '@sora-substrate/util';
 import { XOR, MaxTotalSupply } from '@sora-substrate/util/build/assets/consts';
 import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import { ZeroStringValue } from '@/consts';
 import { getter, state } from '@/store/decorators';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
+
+export enum IMAGE_EXTENSIONS {
+  SVG = '.svg',
+  PNG = '.png',
+  JPEG = '.jpeg',
+  WEBP = '.webp',
+  GIF = '.gif',
+}
+
+export const IMAGE_MIME_TYPES = {
+  [IMAGE_EXTENSIONS.SVG]: 'image/svg+xml',
+  [IMAGE_EXTENSIONS.PNG]: 'image/png',
+  [IMAGE_EXTENSIONS.JPEG]: 'image/jpeg',
+  [IMAGE_EXTENSIONS.WEBP]: 'image/webp',
+  [IMAGE_EXTENSIONS.GIF]: 'image/gif',
+};
 
 export enum Step {
   FillMetaInfo = 'FillMetaInfo',
@@ -101,7 +150,8 @@ export enum Step {
 @Component({
   components: {
     WalletBase: components.WalletBase,
-    // WalletFee: components.WalletFee,
+    WalletFee: components.WalletFee,
+    FileUploader: components.FileUploader,
   },
 })
 export default class CreateNftToken extends Mixins(
@@ -118,25 +168,26 @@ export default class CreateNftToken extends Mixins(
   readonly TokenTabs = WALLET_CONSTS.TokenTabs;
   readonly Step = Step;
 
+  @Ref('fileInput') readonly fileInput!: HTMLInputElement;
+  @Ref('uploader') readonly uploader!: HTMLFormElement;
+
   step: Step = Step.FillMetaInfo;
   tokenSymbol = '';
   tokenName = '';
-  tokenSupply = '';
   tokenDescription = '';
-  extensibleSupply = false;
   showFee = true;
+  imageLoading = false;
+  fileExceedsLimit = false;
+  badSource = false;
+  contentSrcLink = '';
+  tokenContentIpfsParsed = '';
+  tokenContentLink = '';
+  file: Nullable<File> = null;
 
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
 
-  currentTab = WALLET_CONSTS.TokenTabs.Token;
-
-  private get xorBalance() {
-    return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
-  }
-
-  get title(): string {
-    return 'Create asset';
+  get titleCreate(): string {
+    return this.step === Step.FillMetaInfo ? 'Next' : 'Create NFT';
   }
 
   get networkFee(): CodecString {
@@ -148,7 +199,11 @@ export default class CreateNftToken extends Mixins(
   }
 
   get isCreateDisabled(): boolean {
-    return !(this.tokenSymbol && this.tokenName.trim() && +this.tokenSupply);
+    return (
+      !(this.tokenSymbol && this.tokenName.trim() && this.tokenDescription.trim()) ||
+      this.badSource ||
+      !(this.file || this.tokenContentLink)
+    );
   }
 
   private get fpNetworkFee() {
@@ -163,8 +218,12 @@ export default class CreateNftToken extends Mixins(
     return this.xorBalance.sub(this.fpNetworkFee).isLtZero();
   }
 
-  get disabled(): boolean {
-    return this.loading || this.isInsufficientXorForFee;
+  get isNextDisabled(): boolean {
+    return (
+      !(this.tokenSymbol && this.tokenName.trim() && this.tokenDescription.trim()) ||
+      this.loading ||
+      this.isInsufficientXorForFee
+    );
   }
 
   get hasEnoughXor(): boolean {
@@ -176,8 +235,8 @@ export default class CreateNftToken extends Mixins(
     return FPNumber.gte(fpAccountXor, this.fee);
   }
 
-  handleChangeTab(value: WALLET_CONSTS.TokenTabs): void {
-    this.currentTab = value;
+  isValidType(type: string): boolean {
+    return Object.values(IMAGE_MIME_TYPES).includes(type);
   }
 
   handleTextAreaInput(e: KeyboardEvent): boolean | void {
@@ -185,16 +244,97 @@ export default class CreateNftToken extends Mixins(
     e.preventDefault();
   }
 
-  async registerAsset(): Promise<void> {
-    return api.assets.register(this.tokenSymbol, this.tokenName.trim(), this.tokenSupply, this.extensibleSupply);
-  }
+  handleInputLinkChange(link: string): void {
+    this.uploader.resetFileInput();
+    this.resetFileInput();
+    this.fileExceedsLimit = false;
+    this.contentSrcLink = '';
 
-  async onCreate(): Promise<void> {
-    if (!this.tokenSymbol.length || !this.tokenSupply.length || !this.tokenName.length) {
+    try {
+      const url = new URL(link);
+    } catch {
+      this.badSource = true;
       return;
     }
 
-    this.tokenSupply = this.getCorrectSupply(this.tokenSupply, this.decimals);
+    this.checkImageFromSource(link);
+  }
+
+  async checkImageFromSource(url: string): Promise<void> {
+    this.imageLoading = true;
+    this.badSource = false;
+
+    try {
+      const response = await fetch(url);
+      const buffer = await response.blob();
+      this.imageLoading = false;
+
+      if (this.isValidType(buffer.type)) {
+        this.badSource = false;
+        this.contentSrcLink = url;
+        this.tokenContentIpfsParsed = ''; // IpfsStorage.getIpfsPath(url);
+      } else {
+        this.badSource = true;
+        this.contentSrcLink = '';
+      }
+    } catch (error) {
+      this.badSource = true;
+      this.contentSrcLink = '';
+    }
+
+    this.resetFileInput();
+  }
+
+  async upload(file: File): Promise<void> {
+    this.imageLoading = true;
+    this.file = file;
+    this.contentSrcLink = ''; // await IpfsStorage.fileToBase64(file);
+    this.badSource = false;
+    this.imageLoading = false;
+    this.tokenContentLink = '';
+  }
+
+  clear(): void {
+    this.tokenContentLink = '';
+    this.contentSrcLink = '';
+    this.resetFileInput();
+  }
+
+  resetFileInput(): void {
+    this.file = null;
+    this.imageLoading = false;
+  }
+
+  showLimit(): void {
+    this.contentSrcLink = '';
+    this.fileExceedsLimit = true;
+  }
+
+  hideLimit(): void {
+    this.contentSrcLink = '';
+    this.fileExceedsLimit = false;
+  }
+
+  async registerNftAsset(): Promise<void> {
+    if (!this.tokenContentIpfsParsed.trim()) {
+      throw new Error('IPFS Token issue');
+    }
+    return api.assets.register(this.tokenSymbol, this.tokenName.trim(), 1, false, false, {
+      content: this.tokenContentIpfsParsed,
+      description: this.tokenDescription.trim(),
+    });
+  }
+
+  onNext(): void {
+    if (this.tokenSymbol.length && this.tokenDescription && this.tokenName.length && this.step === Step.FillMetaInfo) {
+      this.step = Step.AttachImage;
+    }
+  }
+
+  async onCreate(): Promise<void> {
+    if (!this.tokenSymbol.length || !this.tokenDescription.length || !this.tokenName.length || this.badSource) {
+      return;
+    }
 
     if (this.allowFeePopup && this.hasEnoughXor && !this.isXorSufficientForNextTx({ type: Operation.RegisterAsset })) {
       this.showFee = false;
@@ -206,13 +346,18 @@ export default class CreateNftToken extends Mixins(
       if (!this.hasEnoughXor) {
         throw new Error('walletSend.badAmount');
       }
-      await this.registerAsset();
+      await this.registerNftAsset();
       // TODO: choose where to follow
       // this.navigate({ name: RouteNames.Wallet });
     });
   }
 
   handleBack(): void {
+    if (this.step === Step.AttachImage) {
+      this.step = Step.FillMetaInfo;
+      return;
+    }
+
     this.$emit('go-back');
   }
 }
@@ -250,6 +395,25 @@ export default class CreateNftToken extends Mixins(
         }
       }
     }
+  }
+}
+
+.preview-image-create-nft {
+  margin: #{$basic-spacing-medium} 0;
+  height: 200px;
+
+  @include drag-drop-content;
+
+  .image {
+    margin: 0 auto;
+    height: 176px;
+  }
+
+  &__content {
+    height: 176px;
+    width: 176px;
+    object-fit: cover;
+    border-radius: calc(var(--s-border-radius-mini) * 0.75);
   }
 }
 </style>

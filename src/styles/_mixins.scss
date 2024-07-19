@@ -30,6 +30,36 @@ $button-custom-shadow: -1px -1px 5px rgba(0, 0, 0, 0.05), 1px 1px 5px rgba(0, 0,
   color: var(--s-color-base-content-primary);
 }
 
+@mixin drag-drop-content {
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__icon {
+    color: var(--s-color-base-content-tertiary);
+    margin-bottom: calc(var(--s-size-small) / 2);
+
+    &.icon--error {
+      color: var(--s-color-theme-accent);
+    }
+  }
+
+  &__btn {
+    margin-top: calc(var(--s-size-small) / 2);
+    height: 32px !important;
+  }
+
+  &__placeholder {
+    letter-spacing: var(--s-letter-spacing-small);
+    color: var(--s-color-base-content-primary);
+    font-size: calc(var(--s-size-small) / 2);
+    text-align: center;
+    padding: 0 50px;
+  }
+}
+
 @mixin text-ellipsis {
   white-space: nowrap;
   text-overflow: ellipsis;

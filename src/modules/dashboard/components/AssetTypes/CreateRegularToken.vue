@@ -47,8 +47,7 @@
       </template>
       <template v-else>{{ title }}</template>
     </s-button>
-
-    <!-- <wallet-fee v-if="!isCreateDisabled && showFee" :value="fee" /> -->
+    <wallet-fee v-if="!isCreateDisabled && showFee" :value="fee" />
   </wallet-base>
 </template>
 
@@ -67,7 +66,7 @@ import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
 @Component({
   components: {
     WalletBase: components.WalletBase,
-    // WalletFee: components.WalletFee,
+    WalletFee: components.WalletFee,
   },
 })
 export default class CreateRegularToken extends Mixins(
@@ -89,14 +88,14 @@ export default class CreateRegularToken extends Mixins(
   extensibleSupply = false;
   showFee = true;
 
-  @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
+  // @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
 
   currentTab = WALLET_CONSTS.TokenTabs.Token;
 
-  private get xorBalance() {
-    return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
-  }
+  // private get xorBalance() {
+  //   return this.getFPNumberFromCodec(this.accountXor?.balance?.transferable ?? ZeroStringValue);
+  // }
 
   get title(): string {
     return 'Create asset';
