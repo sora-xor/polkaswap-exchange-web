@@ -45,7 +45,10 @@
       <template v-if="isInsufficientXorForFee">
         {{ t('insufficientBalanceText', { tokenSymbol: xorSymbol }) }}
       </template>
-      <template v-else>{{ title }}</template>
+      <template v-if="!tokenSymbol">{{ t('createToken.enterSymbol') }}</template>
+      <template v-else-if="!tokenName.trim()">{{ t('createToken.enterName') }}</template>
+      <template v-else-if="!+tokenSupply">{{ t('createToken.enterSupply') }}</template>
+      <template v-else>{{ t('createToken.action') }}</template>
     </s-button>
     <wallet-fee v-if="!isCreateDisabled && showFee" :value="fee" />
   </wallet-base>
@@ -126,7 +129,9 @@ export default class CreateRegularToken extends Mixins(
   }
 
   get disabled(): boolean {
-    return this.loading || this.isInsufficientXorForFee;
+    return (
+      this.loading || this.isInsufficientXorForFee || !(this.tokenSymbol && this.tokenName.trim() && +this.tokenSupply)
+    );
   }
 
   get hasEnoughXor(): boolean {
