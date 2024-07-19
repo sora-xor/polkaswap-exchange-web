@@ -37,8 +37,8 @@
       :set-visibility="setSignTxDialogVisibility"
     />
     <select-sora-account-dialog />
-    <div v-if="showSlippageWarning" class="popup">
-      Warning: Changing slippage tolerance may affect your transactions.
+    <div v-if="showErrorLocalStorageExceed" class="popup">
+      Warning: not enough space to write in localstorage
       <button @click="closeWarning">Close</button>
     </div>
   </s-design-system-provider>
@@ -110,7 +110,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   menuVisibility = false;
   showConfirmInviteUser = false;
   showNotifsDarkPage = false;
-  showSlippageWarning = false;
+  showErrorLocalStorageExceed = false;
 
   @state.settings.screenBreakpointClass private responsiveClass!: BreakpointClass;
   @state.settings.appConnection private appConnection!: NodesConnection;
@@ -227,23 +227,15 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
 
   handleSlippageWarning() {
-    console.info('we are in handleSlippageWarning');
-    this.showSlippageWarning = true;
+    this.showErrorLocalStorageExceed = true;
   }
 
   closeWarning() {
-    this.showSlippageWarning = false;
-  }
-
-  handleLocalStorageChange({ key, value }) {
-    console.info(`LocalStorage changed - Key: ${key}, Value: ${value}`);
-    // Handle the change as needed
+    this.showErrorLocalStorageExceed = false;
   }
 
   async created() {
-    // element-icons is not common used, but should be visible after network connection lost
-    // EventBus.$on('localStorageChanged', this.handleLocalStorageChange);
-    EventBus.$on('showSlippageWarning', this.handleSlippageWarning);
+    EventBus.$on('storageLimitExceeded', this.handleSlippageWarning);
     preloadFontFace('element-icons');
     this.setResponsiveClass();
     updateBaseUrl(router);
@@ -388,8 +380,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
-    // EventBus.$off('localStorageChanged', this.handleLocalStorageChange);
-    EventBus.$off('showSlippageWarning', this.handleSlippageWarning);
+    EventBus.$off('storageLimitExceeded', this.handleSlippageWarning);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();
