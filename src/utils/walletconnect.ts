@@ -72,7 +72,7 @@ export const getWcEthereumProvider = async (chainProps: ChainsProps): Promise<Wc
     showQrModal: true,
     qrModalOptions: {
       themeVariables: {
-        '--wcm-z-index': '2100',
+        '--wcm-z-index': '9999',
       },
     },
     ...chainProps,
