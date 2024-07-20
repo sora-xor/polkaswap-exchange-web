@@ -747,17 +747,17 @@ export default class PriceChartWidget extends Mixins(
   private async fetchData(entityId: string): Promise<SnapshotItem[]> {
     const { type, count } = this.selectedFilter;
 
+    const pageInfoBuffer = this.pageInfos[entityId];
+    const hasNextPage = pageInfoBuffer?.hasNextPage ?? true;
+    const endCursor = pageInfoBuffer?.endCursor ?? undefined;
+
     const snapshotsBuffer = this.snapshotBuffer[entityId] ?? [];
     const snapshotsUsedCount = this.dataset.length;
     const snapshotsUnused = snapshotsBuffer.slice(snapshotsUsedCount);
 
-    if (snapshotsUnused.length >= count) {
+    if (snapshotsUnused.length >= count || !hasNextPage) {
       return snapshotsUnused;
     }
-
-    const pageInfoBuffer = this.pageInfos[entityId];
-    const hasNextPage = pageInfoBuffer?.hasNextPage ?? true;
-    const endCursor = pageInfoBuffer?.endCursor ?? undefined;
 
     const { nodes, ...pageInfo } = await this.requestData(entityId, type, count, hasNextPage, endCursor);
     const lastTimestamp = last(snapshotsUnused)?.timestamp ?? last(this.dataset)?.timestamp ?? Date.now();
