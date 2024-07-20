@@ -20,8 +20,9 @@ export function calculateLocalStorageSize(): number {
   return totalSize;
 }
 
+// TODO delete later
 export function fillLocalStorage(targetPercentage: number): void {
-  const MAX_STORAGE_SIZE = 4 * 1024 * 1024; // 4MB in bytes
+  const MAX_STORAGE_SIZE = 4 * 1024 * 1024;
   const currentSize = calculateLocalStorageSize();
   const targetSize = (targetPercentage / 100) * MAX_STORAGE_SIZE;
   const sizeToFill = targetSize - currentSize;

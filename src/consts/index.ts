@@ -95,6 +95,10 @@ export const HundredNumber = 100;
 
 export const DefaultSlippageTolerance = '0.5';
 
+export const LOCAL_STORAGE_MAX_SIZE = 4 * 1024 * 1024;
+
+export const LOCAL_STORAGE_LIMIT_PERCENTAGE = 95;
+
 export enum MarketAlgorithms {
   SMART = 'SMART',
   TBC = 'TBC',

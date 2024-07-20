@@ -1,25 +1,23 @@
+import { LOCAL_STORAGE_MAX_SIZE, LOCAL_STORAGE_LIMIT_PERCENTAGE } from '@/consts/index';
 import { LocalStorageEvent } from '@/types/customEvent';
 import { calculateLocalStorageSize, fillLocalStorage } from '@/utils/storage';
 
 import { EventBus } from '../eventBus';
 
-const MAX_STORAGE_SIZE = 4 * 1024 * 1024;
-const STORAGE_LIMIT_PERCENTAGE = 95;
-
 function calculateStorageUsagePercentage(): number {
   const currentSize = calculateLocalStorageSize();
-  return (currentSize / MAX_STORAGE_SIZE) * 100;
+  return (currentSize / LOCAL_STORAGE_MAX_SIZE) * 100;
 }
 
-fillLocalStorage(96);
+// fillLocalStorage(96);
 const originalSetItem = localStorage.setItem;
 localStorage.setItem = function (key: string, value: string) {
   const usagePercentage = calculateStorageUsagePercentage();
   console.info(`Current localStorage usage: ${usagePercentage.toFixed(2)}%`);
 
-  if (usagePercentage >= STORAGE_LIMIT_PERCENTAGE) {
+  if (usagePercentage >= LOCAL_STORAGE_LIMIT_PERCENTAGE) {
     console.warn(
-      `Cannot write to localStorage. Usage exceeds ${STORAGE_LIMIT_PERCENTAGE}% (${usagePercentage.toFixed(2)}%)`
+      `Cannot write to localStorage. Usage exceeds ${LOCAL_STORAGE_LIMIT_PERCENTAGE}% (${usagePercentage.toFixed(2)}%)`
     );
     EventBus.$emit('storageLimitExceeded');
     return;

@@ -231,7 +231,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   closeWarning() {
-    localStorage.removeItem('fillerKey');
+    // localStorage.removeItem('fillerKey');
     const keysToRemove: string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
