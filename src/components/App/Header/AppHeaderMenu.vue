@@ -26,11 +26,10 @@
             :disabled="disabled"
           >
             {{ text }}
+            <span v-if="value === HeaderMenuType.Currency" class="current-currency">
+              {{ currency?.toUpperCase() }}
+            </span>
           </s-dropdown-item>
-          <div @click="openNotificationDialog" class="notif-option el-dropdown-menu__item header-menu__item">
-            <bell-icon class="notif-option__bell notif-option__bell--dropdown" />
-            <span class="notif-option__text">{{ t('browserNotificationDialog.title') }}</span>
-          </div>
         </template>
       </s-dropdown>
     </s-button>
@@ -44,13 +43,15 @@ import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
 import { getter, mutation, state } from '@/store/decorators';
+import { TmaSdk } from '@/utils/telegram';
 
-import BellIcon from './BellIcon.vue';
+import type { Currency } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 
 enum HeaderMenuType {
   HideBalances = 'hide-balances',
   Theme = 'theme',
   Language = 'language',
+  Currency = 'currency',
   Notification = 'notification',
   Disclaimer = 'disclaimer',
 }
@@ -64,11 +65,7 @@ type MenuItem = {
 
 const BREAKPOINT = 1440;
 
-@Component({
-  components: {
-    BellIcon,
-  },
-})
+@Component
 export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   readonly iconSize = 28;
   readonly HeaderMenuType = HeaderMenuType;
@@ -76,6 +73,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @state.settings.disclaimerVisibility disclaimerVisibility!: boolean;
   @state.settings.userDisclaimerApprove userDisclaimerApprove!: boolean;
   @state.wallet.settings.shouldBalanceBeHidden private shouldBalanceBeHidden!: boolean;
+  @state.wallet.settings.currency currency!: Currency;
 
   @getter.libraryTheme private libraryTheme!: Theme;
   @getter.settings.notificationActivated notificationActivated!: boolean;
@@ -83,6 +81,7 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
   @mutation.wallet.settings.toggleHideBalance private toggleHideBalance!: FnWithoutArgs;
   @mutation.settings.setAlertSettingsPopup private setAlertSettingsPopup!: (flag: boolean) => void;
   @mutation.settings.setSelectLanguageDialogVisibility private setLanguageDialogVisibility!: (flag: boolean) => void;
+  @mutation.settings.setSelectCurrencyDialogVisibility private setCurrencyDialogVisibility!: (flag: boolean) => void;
   @mutation.settings.toggleDisclaimerDialogVisibility private toggleDisclaimerDialogVisibility!: FnWithoutArgs;
 
   get mediaQueryList(): MediaQueryList {
@@ -140,10 +139,20 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
         text: this.t('headerMenu.switchLanguage'),
       },
       {
+        value: HeaderMenuType.Currency,
+        icon: 'various-lightbulb-24',
+        text: this.t('headerMenu.selectCurrency'),
+      },
+      {
         value: HeaderMenuType.Disclaimer,
         icon: 'info-16',
         text: this.disclaimerText,
         disabled: this.disclaimerDisabled,
+      },
+      {
+        value: HeaderMenuType.Notification,
+        icon: 'notifications-bell-24',
+        text: this.t('browserNotificationDialog.title'),
       },
     ];
   }
@@ -169,20 +178,28 @@ export default class AppHeaderMenu extends Mixins(TranslationMixin) {
     dropdown.visible ? dropdown.hide() : dropdown.show();
   }
 
-  handleSelectHeaderMenu(value: HeaderMenuType): void {
+  async handleSelectHeaderMenu(value: HeaderMenuType): Promise<void> {
     switch (value) {
       case HeaderMenuType.HideBalances:
         this.toggleHideBalance();
         break;
       case HeaderMenuType.Theme:
-        switchTheme();
+        await switchTheme();
+        await this.$nextTick();
+        TmaSdk.updateTheme();
         break;
       case HeaderMenuType.Language:
         this.setLanguageDialogVisibility(true);
         break;
+      case HeaderMenuType.Currency:
+        this.setCurrencyDialogVisibility(true);
+        break;
       case HeaderMenuType.Disclaimer:
         if (this.disclaimerDisabled) return;
         this.toggleDisclaimerDialogVisibility();
+        break;
+      case HeaderMenuType.Notification:
+        this.openNotificationDialog();
         break;
     }
   }
@@ -234,27 +251,10 @@ $icon-size: 28px;
         }
       }
     }
-  }
-}
 
-.notif-option {
-  display: flex;
-
-  &__bell {
-    width: $icon-size;
-    height: $icon-size;
-    margin: auto 0;
-    fill: var(--s-color-base-content-tertiary);
-
-    &--dropdown {
-      margin-top: $inner-spacing-mini;
-      margin-right: $basic-spacing-mini;
-    }
-  }
-
-  &:hover {
-    .notif-option__bell {
-      fill: var(--s-color-base-content-secondary);
+    .current-currency {
+      margin-left: 5px;
+      color: var(--s-color-base-content-tertiary);
     }
   }
 }

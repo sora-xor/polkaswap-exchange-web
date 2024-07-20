@@ -29,6 +29,7 @@ function initialState(): SettingsState {
     selectNodeDialogVisibility: false,
     selectIndexerDialogVisibility: false,
     selectLanguageDialogVisibility: false,
+    selectCurrencyDialogVisibility: false,
     disclaimerVisibility: false,
     alertSettingsVisibility: false,
     browserNotifPopupVisibility: false,
@@ -40,6 +41,8 @@ function initialState(): SettingsState {
     screenBreakpointClass: BreakpointClass.LargeDesktop,
     windowWidth: window?.innerWidth ?? 0,
     adsArray: [],
+    isTMA: false,
+    telegramBotUrl: undefined,
   };
 }
 

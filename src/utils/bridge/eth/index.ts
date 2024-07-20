@@ -1,9 +1,10 @@
 import { Operation } from '@sora-substrate/util';
-import { WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { beforeTransactionSign, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 
 import store from '@/store';
 import { Bridge } from '@/utils/bridge/common/classes';
 import type { GetBridgeHistoryInstance, IBridgeConstructorOptions, SignExternal } from '@/utils/bridge/common/types';
+import { ethBridgeApi } from '@/utils/bridge/eth/api';
 import type { EthBridgeHistory } from '@/utils/bridge/eth/classes/history';
 import { EthBridgeOutgoingReducer, EthBridgeIncomingReducer } from '@/utils/bridge/eth/classes/reducers';
 import type { EthBridgeReducer } from '@/utils/bridge/eth/classes/reducers';
@@ -49,7 +50,7 @@ const ethBridge: EthBridge = new Bridge({
   updateHistory: () => store.dispatch.bridge.updateInternalHistory(),
   getActiveTransaction: () => store.getters.bridge.historyItem as EthHistory,
   // transaction signing
-  beforeTransactionSign: () => store.dispatch.wallet.transactions.beforeTransactionSign(),
+  beforeTransactionSign: (...args: any[]) => beforeTransactionSign(store.original, ethBridgeApi, ...args),
   // custom
   getBridgeHistoryInstance: () => store.dispatch.bridge.getEthBridgeHistoryInstance(),
   signExternalOutgoing: (id: string) => store.dispatch.bridge.signEthBridgeOutgoingEvm(id),

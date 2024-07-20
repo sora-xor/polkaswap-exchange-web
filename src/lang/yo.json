@@ -157,7 +157,6 @@
         "connectionError": "Aṣiṣe waye lakoko asopọ apamọwọ. O le gbiyanju lati so apamọwọ pọ nipasẹ {extension} lẹẹkansi"
     },
     "connection": {
-        "title": "Ifowosi {Sora} Nẹtiwọọki",
         "text": "Lati le ṣakoso awọn dukia ati fowo si awọn iṣowo lori {Sora} , akọọlẹ kan gbọdọ wa ni asopọ. Awọn akọọlẹ {Sora} le ṣẹda ati so pọ pẹlu lilo awọn apamọwọ ti a ṣepọ tabi awọn amugbooro aṣawakiri wa.",
         "noAccounts": "A ko ri akọọlẹ ninu itẹsiwaju {extension} re. Jọwọ ṣafikun akọọlẹ kan ki o gbiyanju lẹẹkansii.",
         "selectAccount": "Yan ifowosi lati ṣiṣẹ pẹlu rẹ",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Ifowosi {Sora} Nẹtiwọọki",
         "WalletAssets": "Awọn dukia",
         "createToken": "@:createTokenText",
         "WalletHistory": "Iṣẹ iṣe"
@@ -212,7 +210,8 @@
         "walletAddress": "Adirẹsi apamọwọ",
         "delete": "Pa akọọlẹ rẹ kuro",
         "rename": "Fun lorukọ mii iroyin",
-        "export": "okeere .json"
+        "export": "okeere .json",
+        "accountTitle": "Iroyin"
     },
     "history": {
         "clearHistory": "Nu itan kuro",
@@ -397,7 +396,6 @@
         "Swap": "Iŕopo",
         "Pool": "Pulu",
         "Bridge": "@:bridgeText",
-        "About": "Nipa",
         "Stats": "Iṣiro",
         "Wallet": "Apamọwọ",
         "AddLiquidity": "Fi liquidity si",
@@ -507,44 +505,6 @@
     "transfers": {
         "from": "Lati",
         "to": "Si"
-    },
-    "about": {
-        "title": "Awọn DEX fun Iwaju Ti a ko le ṣoro.",
-        "description": "Piparọ-pasipaaro awọn ohun-ini, ẹda ti o rọrun ati atokọ ti awọn ohun-ini tuntun, ati awọn iyipada ti o rọrun julọ lailai. Ọjọ iwaju ibaraenisepo ti {Polkadot} wa nibi ati pe a wa ni iwaju!",
-        "trading": {
-            "title": "Iyara Tita",
-            "first": "{AppName} jẹ ti kii ṣe olutọju, ilana AMM DEX ti o ni ilaja fun swapping awọn token ti o da lori awọn ẹwọn atokọ {Polkadot} ati {Kusama}, {Polkadot} ati awọn parachains {Kusama}, ati awọn ẹwọn ti a sopọ taara nipasẹ awọn afara.",
-            "second": "{AppName} yọ awọn alagbata igbẹkẹle kuro ati pese aye fun iṣowo yiyara",
-            "third": "{AppName} jẹ iṣẹ akanṣe agbegbe kan ati awọn devs ṣe ifowosowopo lori koodu orisun ṣiṣi nipa lilo"
-        },
-        "liquidity": {
-            "title": "Liquidity Ailara",
-            "first": "{AppName} daapọ awọn orisun liquidity pupọ labẹ algorithm alaropo idapọ oloomi wọpọ, n ṣiṣẹ patapata lori pq, ni ọna igbẹkẹle ati aila-kaakiri.",
-            "second": "Nigbati awọn oniṣowo ba pe iṣẹ swap, algorithm aggregation liquidity yoo fọwọsi awọn ibere ni lilo awọn ipese ti o dara julọ kọja gbogbo awọn orisun oloomi. Awọn orisun liquidity le jẹ awọn DEX miiran, awọn iwe aṣẹ, tabi awọn orisun ti a ṣakoso API.",
-            "third": "Nitori {AppName} jẹ iṣẹ akanṣe ṣiṣii, ẹnikẹni le ṣafikun awọn orisun liquidity diẹ sii nipasẹ ṣiṣe awọn ifunni si ipilẹ koodu {AppName}."
-        },
-        "swap": {
-            "title": "Serapada Eyikeyi Tokini",
-            "first": "Lọ kọja awọn aropin ti awọn DEX lọwọlọwọ nipa fifi awọn ami sii lati ilolupo eda eniyan {Polkadot} ati awọn iwe-aṣẹ miiran.",
-            "second": "Ṣẹda, ṣe atokọ ati ṣowo awọn ami tirẹ lori nẹtiwọọki {Sora}.",
-            "third": "Awọn amayederun pataki wa lo Substrate Parity, eyiti o jẹ iwọn diẹ sii ju {Ethereum}, ati pe ko lo iwakusa ti o gbowolori fun ifọkanbalẹ."
-        },
-        "pswap": {
-            "title": "Awọn Tokini PSWAP",
-            "first": "PSWAP ni a ṣẹda nipasẹ iṣakoso ijọba agbegbe nipasẹ didibo lori itusilẹ rẹ. O jẹ iwulo ati ami ijọba ti a lo lati san awọn olupese olupese oloomi lori lori {AppName}. Ko dabi awọn ami ẹbun miiran miiran, PSWAP ti jo pẹlu awọn iṣowo ati dinku ni ipese pelu akoko.",
-            "second": "{percent}% fun gbogbo swap lori {AppName} DEX ni a lo lati ra awọn Tokini PSWAP pada, eyiti wọn dana sun. Ni akọkọ, 90% ti awọn ami PSWAP ti a sun ni a ṣe iranti lati pin si awọn olupese oloomi, ṣugbọn pẹlu akoko yii ipin ogorun yii yoo dinku si 35% lẹhin ọdun mẹrin."
-        },
-        "links": {
-            "first": {
-                "title": "Di Olutọju {Sora}",
-                "desc": "Ṣe aabo ọjọ iwaju ti nẹtiwọọki {Sora} ati awọn ohun elo ti a sọ di mimọ bi {AppName}, ki o si jere awọn ere ni ọna nipasẹ didasilẹ afọwọsi {Sora}."
-            },
-            "second": {
-                "title": "So Chain pa pọ mọ {Sora}",
-                "desc": "Dagba eto-ọrọ agbaye tigbọn nipa didopọ awọn ẹwọn diẹ si {Sora} ati {AppName} nipa lilo ilana Afara {Hashi}."
-            }
-        },
-        "network": "{AppName} ti wa ni ori Nẹtiwọọki {Sora}, ni idojukọ lori ibaraenisepo lati sopọ iyoku eto ilolupo ẹda crypto si {Polkadot}."
     },
     "exchange": {
         "Swap": "Iŕopo",
@@ -903,7 +863,8 @@
         "switchTheme": "Yipada si {theme} Ipo",
         "switchLanguage": "Yan Ede",
         "showDisclaimer": "Ṣafihan AlAIgBA",
-        "hideDisclaimer": "Tọju AlAIgBA"
+        "hideDisclaimer": "Tọju AlAIgBA",
+        "selectCurrency": "Yan Owo"
     },
     "sentText": "Ti firanṣẹ",
     "learnMoreText": "Kọ ẹkọ si",
@@ -938,7 +899,8 @@
             "bondMore": "Dipọ Die",
             "bond": "Dipọ",
             "unbond": "Yọọ",
-            "copyLink": "Daakọ ọna asopọ"
+            "copyLink": "Daakọ ọna asopọ",
+            "shareLink": "Pin"
         },
         "transactionDetails": "Idunadura Awọn alaye",
         "receivedRewards": "Awọn ere ti o gba",
@@ -970,7 +932,9 @@
             "info": "Nigbati o ba san owo fun idunadura,<br\/>10% yoo lọ si olutọkasi rẹ",
             "referredLablel": "Adirẹsi ti a tọka si"
         },
-        "insufficientBondedAmount": "Lati pe awọn itọka si diẹ sii, di o kere ju {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Lati pe awọn itọka si diẹ sii, di o kere ju {inviteUserFee} XOR",
+        "inviteViaTelegram": "Pe nipasẹ {Telegram}",
+        "welcomeMessage": "\nDarapọ mọ mi lori {Polkaswap}!\n\nṢawari {DEX} ti ara ẹni ti o fun ọ laaye lati paarọ awọn aami aami mejila pẹlu awọn paṣipaarọ ẹwọn agbelebu, iwe aṣẹ, ati ọpọlọpọ awọn ere!\n\n🎁 Pe awọn ọrẹ ki o si jo'gun 10% ti awọn owo iṣowo wọn\n\nRi ọ nibẹ!"
     },
     "transactionDetailsText": "Idunadura Awọn alaye",
     "code": {
@@ -1637,7 +1601,8 @@
             "borrowMoreThanAvailable": "Owo ti o le ni lọ lori ti wọn tẹlẹ",
             "insufficientCollateral": "Kó iranti to wà",
             "enterRepayDebt": "Tẹ ìdá",
-            "repayMoreThanDebt": "Iye iṣẹrọ ti o tẹlẹ"
+            "repayMoreThanDebt": "Iye iṣẹrọ ti o tẹlẹ",
+            "incorrectCollateral": "Tokun meji ko ni atilẹyin"
         },
         "interest": "Èlòkò",
         "interestDescription": "Ọwọ ọwọọ jìnnà tẹlẹ láti kúrò láti ilé ìdì rẹ, ti wọ́n sì bẹrẹ ní pẹrẹ. Owó yìí jìnnà tẹlẹ ní ìdápadà ìlọsíwájú àti awọn iṣẹ̀tẹ̀ ni òṣìṣẹ̀lú.",
@@ -1659,9 +1624,9 @@
         "overallTotalDebtDescription": "Gbigba nípa àwọn òrò ìwọlé ní gbogbo ìdánwò tó dùró fún gbogbo àwọn ìfàjọ fún ilé {Kensetsu}.",
         "overallBadDebt": "Owo ìfọwọsọ",
         "overallBadDebtDescription": "Aabo tí o fẹ́ jẹ́ kikún ló máa rí nítorí ẹsẹ̀ẹsẹ tí ìwòlé ìlúmọ̀ ati tabi àwọn ọjọ́ọdọrù pẹ̀lú ìbẹrẹ.",
-        "overallBorrowTax": "Iṣẹ́gbẹ̀sẹ̀ ìwọlé",
-        "overallBorrowTaxDescription": "Ọ̀rọ kọkọrọ fún ohun tí ó ti kọjá lára àwọn ohun ìwọlé, ìṣẹ́gbẹ̀sẹ̀ náà ti wà nípa ètò ìwọlé tí kò níì ṣeé fún ẹlẹ́nu lọwọ tó gbọdọwọ àwọn ẹ̀ṣọ tí {KEN}.",
-        "ltvMaxTooltip": "Iye ti o pọju ti ipo yiya ti o le pese ni ibatan si iye idiyele ti dukia ti a lo bi alagbera."
+        "ltvMaxTooltip": "Iye ti o pọju ti ipo yiya ti o le pese ni ibatan si iye idiyele ti dukia ti a lo bi alagbera.",
+        "overallAvailable": "Lapapọ wa",
+        "overallAvailableDescription": "Lapapọ iye owo ti o wa fun gbigba lori pẹpẹ {Kensetsu}."
     },
     "accountSettings": {
         "title": "Eto iroyin",
@@ -1678,5 +1643,9 @@
         },
         "enterPassword": "Tẹ ọrọ igbaniwọle sii",
         "googleOnly": "Awọn akọọlẹ {Google} nikan"
+    },
+    "currencyDialog": {
+        "currency": "Owo owo",
+        "searchPlaceholder": "Ṣewadii nipasẹ orukọ owo tabi aami"
     }
 }

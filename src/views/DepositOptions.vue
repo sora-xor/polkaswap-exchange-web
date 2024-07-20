@@ -17,11 +17,9 @@
             value3: TranslationConsts.CedeStore,
           })
         }}</span>
-        <s-button type="primary" @click="openCedeDialog">{{
-          t('fiatPayment.cedeStoreBtn', { value1: TranslationConsts.CEX, value2: TranslationConsts.CedeStore })
-        }}</s-button>
+        <s-button type="primary" @click="openCedeWidget">{{ cedeTextBtn }}</s-button>
       </div>
-      <div v-if="isLoggedIn" class="pay-options__history-btn" @click="openFiatTxHistory">
+      <div v-if="isLoggedIn" class="pay-options__history-btn" @click="openDepositTxHistory">
         <span>{{ t('fiatPayment.historyBtn') }}</span>
         <div>
           <span :class="computedCounterClass">{{ +hasPendingTx }}</span>
@@ -29,7 +27,6 @@
         </div>
       </div>
     </div>
-    <cede-store-dialog @error="showErrorMessage" :visible.sync="showCedeDialog" />
     <template v-if="moonpayEnabled">
       <moonpay />
       <moonpay-notification />
@@ -41,13 +38,13 @@
 </template>
 
 <script lang="ts">
-import { components, mixins } from '@soramitsu/soraneo-wallet-web';
+import { components } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import WalletConnectMixin from '../components/mixins/WalletConnectMixin';
 import CedeStoreLogo from '../components/shared/Logo/CedeStore.vue';
 import MoonpayLogo from '../components/shared/Logo/Moonpay.vue';
-import { Components, PageNames, TranslationConsts } from '../consts';
+import { Components, PageNames } from '../consts';
 import { goTo, lazyComponent } from '../router';
 import { mutation, state, getter } from '../store/decorators';
 
@@ -62,22 +59,18 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     MoonpayConfirmation: lazyComponent(Components.MoonpayConfirmation),
     PaymentError: lazyComponent(Components.PaymentErrorDialog),
     SelectProviderDialog: lazyComponent(Components.SelectProviderDialog),
-    CedeStoreDialog: lazyComponent(Components.CedeStore),
     MoonpayLogo,
     CedeStoreLogo,
   },
 })
-export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, WalletConnectMixin) {
+export default class DepositOptions extends Mixins(WalletConnectMixin) {
   @state.moonpay.bridgeTransactionData private bridgeTransactionData!: Nullable<EthHistory>;
   @state.moonpay.startBridgeButtonVisibility private startBridgeButtonVisibility!: boolean;
 
   @getter.libraryTheme libraryTheme!: Theme;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
   @getter.settings.moonpayEnabled moonpayEnabled!: boolean;
 
   @mutation.moonpay.setDialogVisibility private setMoonpayVisibility!: (flag: boolean) => void;
-
-  TranslationConsts = TranslationConsts;
 
   showCedeDialog = false;
   showErrorInfoBanner = false;
@@ -93,19 +86,28 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
   }
 
   get moonpayTextBtn(): string {
-    return !this.isSoraAccountConnected ? this.t('connectWalletText') : this.t('fiatPayment.moonpayTitle');
+    return !this.isLoggedIn ? this.t('connectWalletText') : this.t('fiatPayment.moonpayTitle');
   }
 
-  openFiatTxHistory(): void {
-    goTo(PageNames.FiatTxHistory);
+  get cedeTextBtn(): string {
+    return !this.isLoggedIn
+      ? this.t('connectWalletText')
+      : this.t('fiatPayment.cedeStoreBtn', {
+          value1: this.TranslationConsts.CEX,
+          value2: this.TranslationConsts.CedeStore,
+        });
   }
 
-  openCedeDialog(): void {
-    if (!this.isSoraAccountConnected) {
+  openDepositTxHistory(): void {
+    goTo(PageNames.DepositTxHistory);
+  }
+
+  openCedeWidget(): void {
+    if (!this.isLoggedIn) {
       return this.connectSoraWallet();
     }
 
-    this.showCedeDialog = true;
+    goTo(PageNames.CedeStore);
   }
 
   showErrorMessage(): void {
@@ -117,7 +119,7 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, Walle
       return this.showErrorMessage();
     }
 
-    if (!this.isSoraAccountConnected) {
+    if (!this.isLoggedIn) {
       return this.connectSoraWallet();
     }
 

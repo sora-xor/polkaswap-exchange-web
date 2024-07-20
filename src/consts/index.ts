@@ -114,7 +114,6 @@ export const LiquiditySourceForMarketAlgorithm = {
 export const MarketAlgorithmForLiquiditySource = invert(LiquiditySourceForMarketAlgorithm);
 
 export enum PageNames {
-  About = 'About',
   Swap = 'Swap',
   Pool = 'Pool',
   Stats = 'Stats',
@@ -133,8 +132,9 @@ export enum PageNames {
   BridgeTransaction = 'BridgeTransaction',
   BridgeTransactionsHistory = 'BridgeTransactionsHistory',
   Tokens = 'Tokens',
-  FiatDepositOptions = 'FiatDepositOptions',
-  FiatTxHistory = 'FiatTxHistory',
+  DepositOptions = 'DepositOptions',
+  DepositTxHistory = 'DepositTxHistory',
+  CedeStore = 'CedeStore',
   StakingContainer = 'StakingContainer',
   // just for router name & different titles
   ExploreContainer = 'Explore/Container',
@@ -165,6 +165,7 @@ export enum Components {
   CreateAlert = 'App/Alerts/CreateAlert',
   AlertsSelectAsset = 'pages/Alerts/SelectAsset',
   SelectLanguageDialog = 'App/Settings/Language/SelectLanguageDialog',
+  SelectCurrencyDialog = 'App/Settings/Currency/SelectCurrencyDialog',
   AppFooter = 'App/Footer/AppFooter',
   AppDisclaimer = 'App/Header/AppDisclaimer',
   SelectIndexer = 'App/Footer/Indexer/SelectIndexer',
@@ -201,7 +202,7 @@ export enum Components {
   BridgeTransferNotification = 'pages/Bridge/TransferNotification',
   BridgeSelectAsset = 'pages/Bridge/SelectAsset',
   BridgeSelectNetwork = 'pages/Bridge/SelectNetwork',
-  BridgeSelectAccount = 'pages/Bridge/SelectAccount',
+  BridgeSelectSubAccount = 'pages/Bridge/SelectSubAccount',
   BridgeLimitCard = 'pages/Bridge/LimitCard',
   BridgeAccountPanel = 'pages/Bridge/AccountPanel',
   BridgeNodeIcon = 'pages/Bridge/NodeIcon',
@@ -210,8 +211,6 @@ export enum Components {
   MoonpayNotification = 'pages/Moonpay/Notification',
   MoonpayConfirmation = 'pages/Moonpay/Confirmation',
   MoonpayHistory = 'pages/Moonpay/MoonpayHistory',
-  // CedeStore Page
-  CedeStore = 'pages/CedeStore/CedeStoreWidget',
   // Swap Page
   SwapFormWidget = 'pages/Swap/Widget/Form',
   SwapChartWidget = 'pages/Swap/Widget/Chart',
@@ -273,6 +272,7 @@ export enum Components {
   NetworkFeeWarningDialog = 'shared/Dialog/NetworkFeeWarning',
   PaymentErrorDialog = 'shared/Dialog/PaymentError',
   SelectProviderDialog = 'shared/Dialog/SelectProvider',
+  SelectSoraAccountDialog = 'shared/Dialog/SelectSoraAccount',
   // Shared Asset selection
   SelectAssetList = 'shared/SelectAsset/List',
   SelectToken = 'shared/SelectAsset/SelectToken',
@@ -397,11 +397,6 @@ const OtherPagesMenu: Array<SidebarMenuItemLink> = [
     title: PageNames.AssetOwnerContainer,
     href: '/#/dashboard/owner',
     index: DashboardPageNames.AssetOwner,
-  },
-  {
-    icon: 'finance-PSWAP-24',
-    title: PageNames.About,
-    href: '/#/about',
   },
 ];
 
@@ -545,4 +540,6 @@ export const TranslationConsts = {
   VAL: 'VAL',
   Kensetsu: 'Kensetsu',
   LTV: 'LTV',
+  Telegram: 'Telegram',
+  DEX: 'DEX',
 } as const;

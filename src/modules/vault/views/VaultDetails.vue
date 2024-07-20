@@ -14,7 +14,7 @@
       <s-col :xs="12" :sm="12" :md="6" :lg="6">
         <s-card class="vault details-card" border-radius="small" size="big" primary>
           <div class="vault-title s-flex">
-            <pair-token-logo class="vault-icon" size="medium" :first-token="kusdToken" :second-token="lockedAsset" />
+            <pair-token-logo class="vault-icon" size="medium" :first-token="debtAsset" :second-token="lockedAsset" />
             <div class="vault-title__container s-flex-column">
               <h3>{{ vaultTitle }}</h3>
               <position-status :status="status" />
@@ -70,7 +70,7 @@
                       <s-icon name="info-16" size="12px" />
                     </s-tooltip>
                   </p>
-                  <formatted-amount value-can-be-hidden :value="formattedDebtAmount" :asset-symbol="kusdSymbol" />
+                  <formatted-amount value-can-be-hidden :value="formattedDebtAmount" :asset-symbol="debtSymbol" />
                   <formatted-amount value-can-be-hidden is-fiat-value :value="fiatDebt" />
                 </div>
                 <div class="vault-debt__item s-flex-column">
@@ -89,7 +89,7 @@
                   <formatted-amount
                     value-can-be-hidden
                     :value="formattedAvailableToBorrow"
-                    :asset-symbol="kusdSymbol"
+                    :asset-symbol="debtSymbol"
                   />
                   <formatted-amount value-can-be-hidden is-fiat-value :value="fiatAvailableToBorrow" />
                 </div>
@@ -233,32 +233,37 @@
             </div>
           </template>
         </s-card>
-        <vault-details-history :id="vault.id" :locked-asset="lockedAsset" :debt-asset="kusdToken" />
+        <vault-details-history :id="vault.id" :locked-asset="lockedAsset" :debt-asset="debtAsset" />
       </s-col>
     </s-row>
     <template v-if="ltv">
       <add-collateral-dialog
         :visible.sync="showAddCollateralDialog"
         :vault="vault"
-        :asset="lockedAsset"
+        :locked-asset="lockedAsset"
+        :debt-asset="debtAsset"
         :prev-ltv="adjustedLtv"
         :prev-available="availableToBorrow"
         :collateral="collateral"
         :max-ltv="maxLtv"
         :average-collateral-price="averageCollateralPrice"
+        :borrow-tax="borrowTax"
       />
       <borrow-more-dialog
         :visible.sync="showBorrowMoreDialog"
         :vault="vault"
+        :debt-asset="debtAsset"
         :prev-ltv="adjustedLtv"
         :available="availableToBorrow"
         :collateral="collateral"
         :max-safe-debt="maxSafeDebt"
         :max-ltv="maxLtv"
+        :borrow-tax="borrowTax"
       />
       <repay-debt-dialog
         :visible.sync="showRepayDebtDialog"
         :vault="vault"
+        :debt-asset="debtAsset"
         :prev-ltv="adjustedLtv"
         :max-safe-debt="maxSafeDebt"
         :max-ltv="maxLtv"
@@ -266,7 +271,8 @@
       <close-vault-dialog
         :visible.sync="showCloseVaultDialog"
         :vault="vault"
-        :asset="lockedAsset"
+        :locked-asset="lockedAsset"
+        :debt-asset="debtAsset"
         @confirm="goToVaults"
       />
     </template>
@@ -278,7 +284,7 @@
 import { FPNumber } from '@sora-substrate/math';
 import { XOR, KUSD } from '@sora-substrate/util/build/assets/consts';
 import { VaultTypes } from '@sora-substrate/util/build/kensetsu/consts';
-import { mixins, components } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import TranslationMixin from '@/components/mixins/TranslationMixin';
@@ -291,10 +297,8 @@ import router, { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { asZeroValue, getAssetBalance, waitUntil } from '@/utils';
 
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset, Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
-
-const INDEXER_DELAY = 4 * 6_000;
 
 type AnyVault = Vault | ClosedVault;
 
@@ -316,14 +320,13 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   readonly getLtvStatus = getLtvStatus;
 
   @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.vault.kusdToken kusdToken!: Nullable<RegisteredAccountAsset>;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.vault.getBorrowTax private getTax!: (debtAsset: Asset | AccountAsset | string) => number;
   @state.vault.accountVaults private accountVaults!: Vault[];
   @state.vault.closedAccountVaults private closedAccountVaults!: ClosedVault[];
   @state.vault.collaterals private collaterals!: Record<string, Collateral>;
   @state.vault.averageCollateralPrices private averageCollateralPrices!: Record<string, Nullable<FPNumber>>;
   @state.vault.liquidationPenalty private liquidationPenalty!: number;
-  @state.vault.borrowTax private borrowTax!: number;
   @state.settings.percentFormat private percentFormat!: Nullable<Intl.NumberFormat>;
 
   showCloseVaultDialog = false;
@@ -374,8 +377,13 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     return this.getAsset(this.vault.lockedAssetId);
   }
 
-  get kusdSymbol(): string {
-    return this.kusdToken?.symbol ?? '';
+  get debtAsset(): Nullable<RegisteredAccountAsset> {
+    if (!this.vault) return null;
+    return this.getAsset(this.vault.debtAssetId);
+  }
+
+  get debtSymbol(): string {
+    return this.debtAsset?.symbol ?? '';
   }
 
   get lockedSymbol(): string {
@@ -383,19 +391,29 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get vaultTitle(): string {
-    if (!(this.kusdSymbol && this.lockedAsset)) return '';
-    return `${this.kusdSymbol} / ${this.lockedAsset.symbol}`;
+    if (!(this.debtSymbol && this.lockedSymbol)) return '';
+    return `${this.debtSymbol} / ${this.lockedSymbol}`;
+  }
+
+  private get collateralId(): string {
+    if (!this.vault) return '';
+    return api.kensetsu.serializeKey(this.vault.lockedAssetId, this.vault.debtAssetId);
+  }
+
+  get borrowTax(): number {
+    if (!this.vault) return 0;
+    return this.getTax(this.vault.debtAssetId);
   }
 
   get collateral(): Nullable<Collateral> {
-    if (!this.vault) return null;
+    if (!this.collateralId) return null;
 
-    return this.collaterals[this.vault.lockedAssetId];
+    return this.collaterals[this.collateralId];
   }
 
   get averageCollateralPrice(): FPNumber {
-    if (!this.vault) return this.Zero;
-    return this.averageCollateralPrices[this.vault.lockedAssetId] ?? this.Zero;
+    if (!this.collateralId) return this.Zero;
+    return this.averageCollateralPrices[this.collateralId] ?? this.Zero;
   }
 
   get maxSafeDebt(): Nullable<FPNumber> {
@@ -445,7 +463,7 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     let available = this.maxSafeDebt.sub(this.vault.debt);
     available = available.sub(available.mul(this.borrowTax));
 
-    let totalAvailable = this.collateral?.riskParams.hardCap.sub(this.collateral.kusdSupply) ?? this.Zero;
+    let totalAvailable = this.collateral?.riskParams.hardCap.sub(this.collateral.debtSupply) ?? this.Zero;
     totalAvailable = totalAvailable.sub(totalAvailable.mul(this.borrowTax));
 
     available = totalAvailable.lt(available) ? totalAvailable : available;
@@ -457,9 +475,9 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get fiatAvailableToBorrow(): string {
-    if (!(this.kusdToken && this.availableToBorrow)) return ZeroStringValue;
+    if (!(this.debtAsset && this.availableToBorrow)) return ZeroStringValue;
 
-    return this.getFiatAmountByFPNumber(this.availableToBorrow, this.kusdToken) ?? ZeroStringValue;
+    return this.getFiatAmountByFPNumber(this.availableToBorrow, this.debtAsset) ?? ZeroStringValue;
   }
 
   get isAddCollateralUnavailable(): boolean {
@@ -468,12 +486,15 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get isBorrowMoreUnavailable(): boolean {
-    return this.availableToBorrow?.isLessThan(FPNumber.ONE) ?? true;
+    if (!(this.debtAsset && this.availableToBorrow)) return true;
+    const availableUsd = this.getFPNumberFiatAmountByFPNumber(this.availableToBorrow, this.debtAsset);
+    return availableUsd?.isLessThan(FPNumber.ONE) ?? false; // Set it to available if fiat is unavailable
   }
 
   get isRepayDebtUnavailable(): boolean {
-    if (!this.vault || this.isClosed(this.vault)) return true;
-    return this.vault.debt.isLessThan(FPNumber.ONE) ?? true;
+    if (!this.vault || !this.debtAsset || this.isClosed(this.vault)) return true;
+    const debtUsd = this.getFPNumberFiatAmountByFPNumber(this.vault.debt, this.debtAsset);
+    return debtUsd?.isLessThan(FPNumber.ONE) ?? false; // Set it to available if fiat is unavailable
   }
 
   get formattedLockedAmount(): string {
@@ -493,9 +514,9 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
   }
 
   get fiatDebt(): string {
-    if (!(this.kusdToken && this.vault && this.isOpened(this.vault))) return ZeroStringValue;
+    if (!(this.debtAsset && this.vault && this.isOpened(this.vault))) return ZeroStringValue;
 
-    return this.getFiatAmountByFPNumber(this.vault.debt, this.kusdToken) ?? ZeroStringValue;
+    return this.getFiatAmountByFPNumber(this.vault.debt, this.debtAsset) ?? ZeroStringValue;
   }
 
   get formattedLiquidationPenalty(): string {
@@ -621,13 +642,11 @@ export default class VaultDetails extends Mixins(TranslationMixin, mixins.Loadin
     flex: 1 1 50%;
     margin-top: $inner-spacing-mini;
 
+    @include text-ellipsis;
+
     > * {
       line-height: var(--s-line-height-big);
     }
-  }
-
-  &__item {
-    @include text-ellipsis;
   }
 }
 

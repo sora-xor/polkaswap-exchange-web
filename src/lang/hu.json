@@ -157,7 +157,6 @@
         "connectionError": "Hiba történt a pénztárca csatlakoztatása közben. Megpróbálhatja újra csatlakoztatni a pénztárcát a {extension} segítségével"
     },
     "connection": {
-        "title": "{Sora} hálózati fiók",
         "text": "Az eszközök kezeléséhez és a tranzakciók aláírásához a {Sora} webhelyen fiókot kell csatlakoztatni. {Sora} fiókok hozhatók létre és kapcsolhatók össze integrált pénztárcánkkal vagy böngészőbővítményeinkkel.",
         "noAccounts": "Nincs fiók a {extension} böngészőbővítményben. Kérjük, adj hozzá egy fiókot, és próbáld meg újra.",
         "selectAccount": "Válaszd ki a használni kívánt fiókot",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora} hálózati fiók",
         "WalletAssets": "Eszközök",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivitás"
@@ -212,7 +210,8 @@
         "walletAddress": "Pénztárca címe",
         "delete": "Fiók törlése",
         "rename": "Fiók átnevezése",
-        "export": ".json exportálása"
+        "export": ".json exportálása",
+        "accountTitle": "fiók"
     },
     "history": {
         "clearHistory": "Előzmények törlése",
@@ -397,7 +396,6 @@
         "Swap": "Váltás",
         "Pool": "Pool",
         "Bridge": "@:bridgeText",
-        "About": "Leírás",
         "Stats": "Statisztikák",
         "Wallet": "Tárca",
         "AddLiquidity": "Poolhoz hozzáadás",
@@ -507,44 +505,6 @@
     "transfers": {
         "from": "-tól",
         "to": "Számára"
-    },
-    "about": {
-        "title": "A DEX az átjárható jövőért.",
-        "description": "Blokkláncok közötti eszközcsere, új eszközök egyszerű létrehozása és listázása, valamint a valaha volt legegyszerűbb token váltás. {Polkadot} átjárható jövője itt van, és mi az élvonalban vagyunk!",
-        "trading": {
-            "title": "Gyorsabb kereskedés",
-            "first": "A {AppName} egy nem letétkezelő, blokkláncok közti AMM DEX protokoll a {Polkadot} és {Kusama} relayláncokon, {Polkadot} és {Kusama} paraláncokon, valamint a hidakon keresztül közvetlenül összekapcsolt blokkláncokon alapuló tokenek cseréjére.",
-            "second": "A {AppName} helyettesíti a megbízott közvetítőket és lehetőséget biztosít a gyorsabb kereskedésre",
-            "third": "A {AppName} egy közösségi projekt, és a fejlesztők együttműködnek a nyílt forráskódú kódon, a"
-        },
-        "liquidity": {
-            "title": "Határtalan likviditás",
-            "first": "A {AppName} több likviditási forrást egyesít egy közös likviditás-összevonási algoritmus alatt, amely teljesen a blokkláncon működik, megbízható és decentralizált módon.",
-            "second": "Amikor a kereskedők váltás funkciót használják, a likviditás-összevonó algoritmus az összes likviditási forrás legjobb ajánlatának felhasználásával tölti ki a megbízásokat. A likviditási források lehetnek más DEX-ek, ajánlati könyvek vagy más API-alapú források.",
-            "third": "Mivel a {AppName} egy nyílt forráskódú projekt, bárki további likviditási forrásokat adhat hozzá a {AppName} kódbázisához való hozzájárulással."
-        },
-        "swap": {
-            "title": "Bármilyen token váltása",
-            "first": "Lépj túl a jelenlegi DEX-ek határain a {Polkadot} ökoszisztéma és más blokkláncok tokeneinek hozzáadásával.",
-            "second": "Létrehozhatod, listázhatod és kereskedhetsz saját tokenjeiddel a {Sora} hálózaton.",
-            "third": "Alapinfrastruktúránk a Parity Substrate -t használja, amely skálázhatóbb, mint az {Ethereum}, és nem használ drága bányászatot a konszenzus érdekében."
-        },
-        "pswap": {
-            "title": "PSWAP Tokenek",
-            "first": "A PSWAP-ot a közösségi kormányzás hozta létre a kiadásáról szóló szavazással. Ez egy segéd- és kormányzó token, amelyet a likviditási szolgáltatók jutalmazására használnak a {AppName}. A legtöbb más jutalom tokentől eltérően a PSWAP tranzakciókkal elégetésre kerül, és idővel csökken a kínálat.",
-            "second": "A {AppName} DEX-en történő minden egyes váltás után fizetett {percent}%-os díjat a PSWAP tokenek visszavásárlására fordítják, amelyeket aztán elégetnek. Kezdetben az elégetett PSWAP tokenek 90%-át újragenerálják, hogy likviditásszolgáltatóknak osszák ki, de idővel ez az arány 4 év múlva 35%-ra csökken."
-        },
-        "links": {
-            "first": {
-                "title": "Legyél {Sora} Validátor",
-                "desc": "Biztosítsd a {Sora}-hálózatot és az olyan decentralizált alkalmazások jövőjét, mint a {AppName}, és szerezz jutalmakat azzal, ha {Sora} validátorrá válsz."
-            },
-            "second": {
-                "title": "Lánc csatlakoztatása a {Sora}-hoz",
-                "desc": "Gyarapítsd a decentralizált világgazdaságot azáltal, hogy több blokkláncot csatlakoztatsz a {Sora} és a {AppName} rendszerhez a {Hashi} hídprotokoll segítségével."
-            }
-        },
-        "network": "A {AppName} a {Sora} hálózatra épül, amely a kölcsönös átjárhatóságra összpontosít, hogy összekapcsolja a kripto ökoszisztéma többi részét a {Polkadot}."
     },
     "exchange": {
         "Swap": "Váltás",
@@ -903,7 +863,8 @@
         "switchTheme": "Váltás {theme} módra",
         "switchLanguage": "Nyelv kiválasztása",
         "showDisclaimer": "Felelősségi nyilatkozat megjelenítése",
-        "hideDisclaimer": "Felelősségi nyilatkozat elrejtése"
+        "hideDisclaimer": "Felelősségi nyilatkozat elrejtése",
+        "selectCurrency": "Válassza a Pénznem lehetőséget"
     },
     "sentText": "Küldött",
     "learnMoreText": "Tudj meg többet",
@@ -938,7 +899,8 @@
             "bondMore": "Több lekötése",
             "bond": "Lekötés",
             "unbond": "Feloldás",
-            "copyLink": "Link másolása"
+            "copyLink": "Link másolása",
+            "shareLink": "Megosztás"
         },
         "transactionDetails": "Tranzakció részletei",
         "receivedRewards": "Kapott jutalmak",
@@ -970,7 +932,9 @@
             "info": "Amikor tranzakciós díjat fizet, a <br\/> 10%-ot kap az ajánlója.",
             "referredLablel": "Ajánlói cím"
         },
-        "insufficientBondedAmount": "További hivatkozások meghívásához legalább {inviteUserFee} XOR"
+        "insufficientBondedAmount": "További hivatkozások meghívásához legalább {inviteUserFee} XOR",
+        "inviteViaTelegram": "Meghívás {Telegram}-on keresztül",
+        "welcomeMessage": "\nCsatlakozz hozzám a {Polkaswap}-on!\n\nFedezd fel a stílusos {DEX}-et, amely lehetővé teszi, hogy több tucat tokent cserélj kereszthálózati cserékkel, rendelési könyvvel és rengeteg jutalommal!\n\n🎁 Hívd meg barátaidat, és keresd meg a kereskedési díjaik 10%-át\n\nTalálkozunk ott!"
     },
     "transactionDetailsText": "Tranzakció részletei",
     "code": {
@@ -1637,7 +1601,8 @@
             "borrowMoreThanAvailable": "Elérhető adósság meghaladva",
             "insufficientCollateral": "Elégtelen zálog",
             "enterRepayDebt": "Adja meg a visszafizetendő adósság összegét",
-            "repayMoreThanDebt": "Adósság túlfizetve"
+            "repayMoreThanDebt": "Adósság túlfizetve",
+            "incorrectCollateral": "Token pár nem támogatott"
         },
         "interest": "Kamat",
         "interestDescription": "Éves díj, amelyet a trezorból kivont összeg után számolnak fel, százalékban kifejezve. Ez a díj a kockázatokat és a piaci ingadozásokat kompenzálja.",
@@ -1659,9 +1624,9 @@
         "overallTotalDebtDescription": "A {Kensetsu} platform összes hitelpozícióján fennálló adósság teljes összege.",
         "overallBadDebt": "Nem teljesítő adósság",
         "overallBadDebtDescription": "Az adósság azon része, amely várhatóan nem kerül behajtásra az adós nem teljesítése vagy a nem megfelelő biztosíték miatt.",
-        "overallBorrowTax": "Kölcsönzési adó",
-        "overallBorrowTaxDescription": "A kölcsönzött összegek után felszámított díj, amelyet a kölcsönzött összeg százalékában számolnak ki. A kölcsönzési adót a {KEN} tokenek visszavásárlási programjának ösztönzésére használják.",
-        "ltvMaxTooltip": "A kölcsönvételi pozíció maximális összege, amely az eszköz értékének felbecsült értékéhez viszonyítva biztosított lehet."
+        "ltvMaxTooltip": "A kölcsönvételi pozíció maximális összege, amely az eszköz értékének felbecsült értékéhez viszonyítva biztosított lehet.",
+        "overallAvailable": "Összesen elérhető",
+        "overallAvailableDescription": "Az összesen rendelkezésre álló kölcsönözhető pénzösszeg a {Kensetsu} platformon."
     },
     "accountSettings": {
         "title": "FIÓK BEÁLLÍTÁSOK",
@@ -1678,5 +1643,9 @@
         },
         "enterPassword": "Írd be a jelszót",
         "googleOnly": "Csak {Google} -fiókok"
+    },
+    "currencyDialog": {
+        "currency": "Valuta",
+        "searchPlaceholder": "Keresés pénznem neve vagy szimbóluma alapján"
     }
 }

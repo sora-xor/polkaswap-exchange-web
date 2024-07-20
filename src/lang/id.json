@@ -157,7 +157,6 @@
         "connectionError": "Terjadi kesalahan saat menghubungkan dompet. Anda dapat mencoba menyambungkan dompet melalui {extension} lagi"
     },
     "connection": {
-        "title": "Akun Jaringan {Sora}",
         "text": "Untuk mengelola aset dan menandatangani transaksi di {Sora} , akun harus terhubung. Akun {Sora} dapat dibuat dan dihubungkan menggunakan dompet terintegrasi atau ekstensi browser kami.",
         "noAccounts": "Tidak ada akun yang ditemukan di ekstensi browser {extension} anda. Silakan tambahkan akun, lalu coba kembali.",
         "selectAccount": "Pilih akun untuk dikerjakan",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Akun Jaringan {Sora}",
         "WalletAssets": "Aset",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivitas"
@@ -212,7 +210,8 @@
         "walletAddress": "Alamat dompet",
         "delete": "Hapus akun",
         "rename": "Ganti nama akun",
-        "export": "Ekspor .json"
+        "export": "Ekspor .json",
+        "accountTitle": "Akun"
     },
     "history": {
         "clearHistory": "Bersihkan riwayat",
@@ -397,7 +396,6 @@
         "Swap": "Swap",
         "Pool": "Pool",
         "Bridge": "@:bridgeText",
-        "About": "Tentang",
         "Stats": "Statistik",
         "Wallet": "Dompet",
         "AddLiquidity": "Tambah Likuiditas",
@@ -507,44 +505,6 @@
     "transfers": {
         "from": "Dari",
         "to": "Untuk"
-    },
-    "about": {
-        "title": "DEX untuk Masa Depan Interoperabilitas.",
-        "description": "Pertukaran aset lintas rantai, pembuatan sederhana dan pencatatan aset baru, dan swap termudah yang pernah ada. Masa depan {Polkadot} yang dapat dioperasikan ada di sini dan kami berada di garis depan!",
-        "trading": {
-            "title": "Perdagangan Lebih Cepat",
-            "first": "{AppName} merupakan non-custodial, DEX AMM cross-chain untuk swap token berbasis relai chain jaringan {Polkadot} dan {Kusama}, parachain {Polkadot} dan {Kusama}, dan blockchain yang terhubung langsung melalui bridge",
-            "second": "{AppName} meniadakan perantara tepercaya dan memberikan kesempatan untuk perdagangan yang lebih cepat",
-            "third": "{AppName} merupakan proyek kolaborasi antara komunitas dan developer pada kode open source menggunakan"
-        },
-        "liquidity": {
-            "title": "Likuiditas Tanpa Batas",
-            "first": "{AppName} menggabungkan beberapa sumber likuiditas di bawah algoritma agregasi likuiditas umum, beroperasi sepenuhnya on-chain, trustless dan terdesentralisasi.",
-            "second": "Ketika trader memanggil fungsi swap, algoritma agregasi likuiditas akan mengisi pesanan menggunakan penawaran terbaik di semua sumber likuiditas. Sumber likuiditas dapat menjadi DEX lain, daftar pesanan, atau sumber berbasis API lainnya.",
-            "third": "Karena {AppName} adalah proyek open-source, siapa pun dapat menambahkan lebih banyak sumber likuiditas dengan memberikan kontribusi pada basis kode {AppName}."
-        },
-        "swap": {
-            "title": "Swap Token Apapun",
-            "first": "Melampaui batas DEX saat ini dengan menambahkan token dari ekosistem {Polkadot} serta blockchain lainnya.",
-            "second": "Buat, daftar, dan perdagangkan token Anda sendiri di jaringan {Sora}.",
-            "third": "Infrastruktur inti kami menggunakan Parity Substrate, yang lebih dapat diskalakan daripada {Ethereum}, dan tidak menggunakan penambangan mahal untuk konsensus."
-        },
-        "pswap": {
-            "title": "Token PSWAP",
-            "first": "PSWAP diciptakan oleh komunitas governance dengan cara vote pada saat rilis. Merupakan token utilitas dan governance yang digunakan untuk memberi hadiah kepada penyedia likuiditas di {AppName}. Tidak seperti kebanyakan token hadiah lainnya, PSWAP akan diburn setiap kali terjadi transaksi dan penyusutan suplai dari waktu ke waktu.",
-            "second": "Biaya {percent}% untuk setiap swap pada {AppName} DEX digunakan untuk membeli kembali token PSWAP, yang kemudian dibakar. Pada awalnya, 90% token PSWAP yang terbakar diolah untuk mengalokasikan ke penyedia likuiditas, tetapi seiring waktu persentase ini akan menurun menjadi 35% setelah 4 tahun."
-        },
-        "links": {
-            "first": {
-                "title": "Menjadi Validator {Sora}",
-                "desc": "Amankan masa depan jaringan {Sora} dan aplikasi terdesentralisasi seperti {AppName}, dan dapatkan hadiah disepanjang perjalanan dengan menjadi validator {Sora}."
-            },
-            "second": {
-                "title": "Hubungkan Chain ke {Sora}",
-                "desc": "Tumbuhkan ekonomi dunia yang terdesentralisasi dengan menghubungkan lebih banyak Chain ke {Sora} dan {AppName} menggunakan protokol jembatan {Hashi}."
-            }
-        },
-        "network": "{AppName} dibangun di Jaringan {Sora} , dengan fokus pada interoperabilitas untuk menghubungkan ekosistem kripto lainnya ke {Polkadot} ."
     },
     "exchange": {
         "Swap": "Swap",
@@ -903,7 +863,8 @@
         "switchTheme": "Beralih ke Mode {theme}",
         "switchLanguage": "Pilih bahasa",
         "showDisclaimer": "Tampilkan Penafian",
-        "hideDisclaimer": "Sembunyikan Penafian"
+        "hideDisclaimer": "Sembunyikan Penafian",
+        "selectCurrency": "Pilih Mata Uang"
     },
     "sentText": "Terkirim",
     "learnMoreText": "Pelajari lebih lanjut",
@@ -938,7 +899,8 @@
             "bondMore": "Bond More",
             "bond": "Ikatan",
             "unbond": "Tidak terikat",
-            "copyLink": "Salin link"
+            "copyLink": "Salin link",
+            "shareLink": "Bagikan"
         },
         "transactionDetails": "Rincian transaksi",
         "receivedRewards": "Hadiah yang diterima",
@@ -970,7 +932,9 @@
             "info": "Ketika Anda akan membayar biaya untuk transaksi,<br\/>10% akan masuk ke perujuk Anda",
             "referredLablel": "Alamat yang dirujuk"
         },
-        "insufficientBondedAmount": "Untuk mengundang lebih banyak rujukan, beri ikatan setidaknya {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Untuk mengundang lebih banyak rujukan, beri ikatan setidaknya {inviteUserFee} XOR",
+        "inviteViaTelegram": "Undang melalui {Telegram}",
+        "welcomeMessage": "\nBergabunglah dengan saya di {Polkaswap}!\n\nTemukan {DEX} bergaya yang memungkinkan Anda menukar puluhan token dengan pertukaran lintas rantai, buku pesanan, dan banyak hadiah!\n\n🎁 Undang teman dan dapatkan 10% dari biaya perdagangan mereka\n\nSampai jumpa di sana!"
     },
     "transactionDetailsText": "Detil transaksi",
     "code": {
@@ -1637,7 +1601,8 @@
             "borrowMoreThanAvailable": "Dana yang tersedia melebihi",
             "insufficientCollateral": "Agunan tidak mencukupi",
             "enterRepayDebt": "Masukkan hutang yang harus dilunasi",
-            "repayMoreThanDebt": "Utang terbayar lebih"
+            "repayMoreThanDebt": "Utang terbayar lebih",
+            "incorrectCollateral": "Pasangan token tidak didukung"
         },
         "interest": "Bunga",
         "interestDescription": "Biaya tahunan yang dibebankan pada jumlah yang ditarik dari vault Anda, dihitung sebagai persentase. Biaya ini mengkompensasi risiko dan fluktuasi pasar.",
@@ -1659,9 +1624,9 @@
         "overallTotalDebtDescription": "Jumlah total utang yang saat ini belum dilunasi di semua posisi pinjaman di platform {Kensetsu}.",
         "overallBadDebt": "Utang macet",
         "overallBadDebtDescription": "Bagian dari utang yang kemungkinan besar tidak akan dipulihkan karena gagal bayar oleh peminjam atau jaminan yang tidak mencukupi.",
-        "overallBorrowTax": "Pajak pinjaman",
-        "overallBorrowTaxDescription": "Biaya yang dikenakan pada dana yang dipinjam, dihitung sebagai persentase dari jumlah pinjaman. Pajak pinjaman digunakan untuk program insentif pembelian kembali token {KEN}.",
-        "ltvMaxTooltip": "Jumlah maksimum posisi pinjaman yang dapat disediakan sehubungan dengan nilai yang dinilai dari aset yang digunakan sebagai jaminan."
+        "ltvMaxTooltip": "Jumlah maksimum posisi pinjaman yang dapat disediakan sehubungan dengan nilai yang dinilai dari aset yang digunakan sebagai jaminan.",
+        "overallAvailable": "Total tersedia",
+        "overallAvailableDescription": "Jumlah total dana yang tersedia untuk dipinjam di platform {Kensetsu}."
     },
     "accountSettings": {
         "title": "Pengaturan akun",
@@ -1678,5 +1643,9 @@
         },
         "enterPassword": "Masukan kata sandi",
         "googleOnly": "Khusus akun {Google}"
+    },
+    "currencyDialog": {
+        "currency": "Mata uang",
+        "searchPlaceholder": "Cari berdasarkan nama atau simbol mata uang"
     }
 }

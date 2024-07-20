@@ -47,7 +47,7 @@ export class NodesConnection {
   }
 
   get nodeIsConnected(): boolean {
-    return !!this.node?.address && !this.nodeAddressConnecting && this.connection.opened;
+    return !!this.node?.address && !this.nodeAddressConnecting;
   }
 
   get connectionAllowance(): boolean {

@@ -4,16 +4,17 @@
     <app-logo-button class="app-logo--header" responsive :theme="libraryTheme" @click="goTo(PageNames.Swap)" />
     <div class="app-controls app-controls--middle s-flex">
       <app-marketing v-show="!isMobile" />
-      <s-button :class="fiatBtnClass" :type="fiatBtnType" size="medium" @click="goTo(PageNames.FiatDepositOptions)">
+      <s-button :class="fiatBtnClass" :type="fiatBtnType" size="medium" @click="goTo(PageNames.DepositOptions)">
         <pair-token-logo class="payment-icon" :first-token="xor" :second-token="eth" :size="fiatBtnSize" />
         <span v-if="!isAnyMobile">{{ t('moonpay.buttons.buy') }}</span>
       </s-button>
     </div>
     <div class="app-controls s-flex">
-      <app-account-button :disabled="loading" @click="goTo(PageNames.Wallet)" />
+      <app-account-button :disabled="loading" @click="navigateToWallet" />
       <app-header-menu />
     </div>
     <select-language-dialog />
+    <select-currency-dialog />
   </header>
 </template>
 
@@ -22,7 +23,7 @@ import { XOR, ETH } from '@sora-substrate/util/build/assets/consts';
 import { components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import WalletConnectMixin from '../../../components/mixins/WalletConnectMixin';
+import InternalConnectMixin from '../../../components/mixins/InternalConnectMixin';
 import PolkaswapLogo from '../../../components/shared/Logo/Polkaswap.vue';
 import { PageNames, Components, BreakpointClass } from '../../../consts';
 import { lazyComponent, goTo } from '../../../router';
@@ -43,11 +44,12 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     AppHeaderMenu,
     AppLogoButton,
     SelectLanguageDialog: lazyComponent(Components.SelectLanguageDialog),
+    SelectCurrencyDialog: lazyComponent(Components.SelectCurrencyDialog),
     PairTokenLogo: lazyComponent(Components.PairTokenLogo),
     WalletAvatar: components.WalletAvatar,
   },
 })
-export default class AppHeader extends Mixins(WalletConnectMixin) {
+export default class AppHeader extends Mixins(InternalConnectMixin) {
   readonly PageNames = PageNames;
   readonly xor = XOR;
   readonly eth = ETH;
@@ -78,7 +80,8 @@ export default class AppHeader extends Mixins(WalletConnectMixin) {
   get fiatBtnClass(): string[] {
     const base = ['app-controls-fiat-btn', 'active'];
 
-    if (this.$route.name === PageNames.FiatDepositOptions) base.push('app-controls-fiat-btn--active', 's-pressed');
+    if ([PageNames.DepositOptions, PageNames.CedeStore].includes(this.$route.name as PageNames))
+      base.push('app-controls-fiat-btn--active', 's-pressed');
 
     return base;
   }

@@ -157,7 +157,6 @@
         "connectionError": "Đã xảy ra lỗi khi kết nối ví. Bạn có thể thử kết nối lại ví qua {extension}"
     },
     "connection": {
-        "title": "Tài khoản Mạng {Sora}",
         "text": "Để quản lý tài sản và ký giao dịch trên {Sora} , tài khoản phải được kết nối. Tài khoản {Sora} có thể được tạo và kết nối bằng ví tích hợp hoặc tiện ích mở rộng trình duyệt của chúng tôi.",
         "noAccounts": "Không có tài khoản nào trong tiện ích (extension) {extension} của bạn. Vui lòng thêm tài khoản và thử lại.",
         "selectAccount": "Chọn tài khoản để dùng",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Tài khoản Mạng {Sora}",
         "WalletAssets": "Tài sản",
         "createToken": "@:createTokenText",
         "WalletHistory": "Hoạt động"
@@ -212,7 +210,8 @@
         "walletAddress": "Địa chỉ ví",
         "delete": "Xóa tài khoản",
         "rename": "Đổi tên tài khoản",
-        "export": "Xuất .json"
+        "export": "Xuất .json",
+        "accountTitle": "Tài khoản"
     },
     "history": {
         "clearHistory": "Xóa lịch sử",
@@ -397,7 +396,6 @@
         "Swap": "Hoán đổi",
         "Pool": "Pool",
         "Bridge": "@:bridgeText",
-        "About": "Giới thiệu",
         "Stats": "Thống kê",
         "Wallet": "Ví",
         "AddLiquidity": "Thêm Thanh Khoản",
@@ -507,44 +505,6 @@
     "transfers": {
         "from": "Từ",
         "to": "Đến"
-    },
-    "about": {
-        "title": "Sàn DEX của Tương lai thích ứng linh hoạt.",
-        "description": "Giao dịch tài sản xuyên chuỗi, dễ dàng tạo và niêm yết tài sản mới, và hoán đổi dễ dàng hơn bao giờ hết. Tương lai thích ứng linh hoạt của {Polkadot} là đây và chúng tôi đang mở lối tiên phong!",
-        "trading": {
-            "title": "Giao dịch nhanh hơn",
-            "first": "{AppName} là một giao thức AMM DEX xuyên chuỗi, không giám sát để hóa đổi token dựa trên các replay chain {Polkadot} và {Kusama}, parachain {Polkadot} và {Kusama} và các blockchain khác được kết nối trực tiếp qua các cầu nối.",
-            "second": "{AppName} loại bỏ các bên xác tín trung gian để tiến trình giao dịch nhanh hơn",
-            "third": "{AppName} là một dự án cộng đồng và các nhà phát triển cộng tác trên mã nguồn mở bằng cách sử dụng"
-        },
-        "liquidity": {
-            "title": "Thanh khoản không giới hạn",
-            "first": "{AppName} kết hợp nhiều nguồn thanh khoản theo thuật toán tổng hợp thanh khoản chung, hoạt động hoàn toàn on-chain, phi tập trung và đáng tin cậy.",
-            "second": "Khi các nhà giao dịch tiến hành hoán đổi, thuật toán tổng hợp thanh khoản sẽ tìm ra các ưu đãi tốt nhất trong những nguồn thanh khoản. Nguồn ở đây có thể là các DEX khác, sổ cái, hoặc các nguồn dựa trên API khác.",
-            "third": "Bởi vì {AppName} là một dự án nguồn mở, bất cứ ai cũng có thể mở rộng các nguồn thanh khoản thông qua {AppName} codebase."
-        },
-        "swap": {
-            "title": "Hoán đổi Bất kỳ Token nào",
-            "first": "Vượt lên khỏi giới hạn của các DEX hiện tại bằng cách thêm các token từ hệ sinh thái {Polkadot} cũng như các blockchain khác.",
-            "second": "Tạo, niêm yết và giao dịch token của riêng bạn trên Mạng {Sora}.",
-            "third": "Cơ sở hạ tầng cốt lõi của chúng tôi sử dụng Parity Substrate, có khả năng mở rộng hơn {Ethereum} và không sử dụng cơ chế đồng thuận đắt đỏ."
-        },
-        "pswap": {
-            "title": "Token PSWAP",
-            "first": "PSWAP được tạo ra bởi quản trị cộng đồng bằng cách bỏ phiếu về việc phát hành. Nó là một token tiện ích và quản trị, được sử dụng để thưởng cho các nhà cung cấp thanh khoản trên {AppName}. Không giống như hầu hết các token thưởng khác, PSWAP bị đốt cháy cùng với giao dịch và giảm nguồn cung theo thời gian.",
-            "second": "{percent}% phí giao dịch hoán đổi trên {AppName} DEX được sử dụng để mua lại PSWAP token, sau đó sẽ được đốt. Thời gian đầu, 90% số lượng được đốt này sẽ được mint trở lại để phân bổ cho những người cung cấp thanh khoản, nhưng theo thời gian tỷ lệ này sẽ giảm xuống còn 35% sau 4 năm."
-        },
-        "links": {
-            "first": {
-                "title": "Trở thành {Sora} validator",
-                "desc": "Đảm bảo tương lai của Mạng {Sora} và các ứng dụng phi tập trung như {AppName} đồng thời kiếm tiền thưởng khi trở thành một {Sora} validator."
-            },
-            "second": {
-                "title": "Kết nối Chain với {Sora}",
-                "desc": "Phát triển nền kinh tế thế giới phi tập trung bằng cách kết nối nhiều chuỗi hơn vào {Sora} và {AppName} thông qua giao thức cầu {Hashi}."
-            }
-        },
-        "network": "{AppName} được xây dựng trên Mạng {Sora}, tập trung vào khả năng tương tác để kết nối với cả hệ sinh thái {Polkadot}."
     },
     "exchange": {
         "Swap": "Hoán đổi",
@@ -903,7 +863,8 @@
         "switchTheme": "Chuyển sang chế độ {theme}",
         "switchLanguage": "Chọn ngôn ngữ",
         "showDisclaimer": "Hiển thị tuyên bố miễn trừ trách nhiệm",
-        "hideDisclaimer": "Ẩn tuyên bố từ chối trách nhiệm"
+        "hideDisclaimer": "Ẩn tuyên bố từ chối trách nhiệm",
+        "selectCurrency": "Chọn tiền tệ"
     },
     "sentText": "Đã gửi",
     "learnMoreText": "Tìm hiểu thêm",
@@ -938,7 +899,8 @@
             "bondMore": "Bond Thêm",
             "bond": "Bond",
             "unbond": "Unbond",
-            "copyLink": "Sao chép đường dẫn"
+            "copyLink": "Sao chép đường dẫn",
+            "shareLink": "Chia sẻ"
         },
         "transactionDetails": "Chi tiết giao dịch",
         "receivedRewards": "Phần thưởng đã nhận",
@@ -970,7 +932,9 @@
             "info": "Khi bạn trả phí giao dịch, <br\/> 10% sẽ được chuyển đến người giới thiệu của bạn",
             "referredLablel": "Địa chỉ giới thiệu"
         },
-        "insufficientBondedAmount": "Để mời thêm giới thiệu, hãy bond ít nhất {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Để mời thêm giới thiệu, hãy bond ít nhất {inviteUserFee} XOR",
+        "inviteViaTelegram": "Mời qua {Telegram}",
+        "welcomeMessage": "\nTham gia cùng tôi trên {Polkaswap}!\n\nKhám phá {DEX} phong cách cho phép bạn hoán đổi hàng chục mã thông báo với các giao dịch xuyên chuỗi, sổ lệnh và rất nhiều phần thưởng!\n\n🎁 Mời bạn bè và kiếm 10% phí giao dịch của họ\n\nHẹn gặp lại!"
     },
     "transactionDetailsText": "Chi tiết giao dịch",
     "code": {
@@ -1637,7 +1601,8 @@
             "borrowMoreThanAvailable": "Nợ có sẵn vượt quá",
             "insufficientCollateral": "Tài sản đảm bảo không đủ",
             "enterRepayDebt": "Nhập số tiền trả nợ",
-            "repayMoreThanDebt": "Nợ trả quá"
+            "repayMoreThanDebt": "Nợ trả quá",
+            "incorrectCollateral": "Cặp mã thông báo không được hỗ trợ"
         },
         "interest": "Lãi suất",
         "interestDescription": "Một khoản phí hàng năm tính trên số tiền đã rút ra từ két của bạn, được tính dưới dạng phần trăm. Phí này bù đắp cho các rủi ro và biến động của thị trường.",
@@ -1659,9 +1624,9 @@
         "overallTotalDebtDescription": "Tổng số nợ hiện đang nợ trên tất cả các vị thế vay trên nền tảng {Kensetsu}.",
         "overallBadDebt": "Nợ xấu",
         "overallBadDebtDescription": "Phần của nợ mà có khả năng không thể thu lại do sự vỡ nợ của người vay hoặc tài sản đảm bảo không đủ.",
-        "overallBorrowTax": "Thuế vay",
-        "overallBorrowTaxDescription": "Một khoản phí được thu trên số tiền vay, được tính dựa trên một phần trăm của số tiền vay. Thuế vay được sử dụng trong chương trình khích lệ mua lại token {KEN}.",
-        "ltvMaxTooltip": "Số tiền tối đa của một vị thế vay mà có thể được cung cấp liên quan đến giá trị định giá của tài sản được sử dụng làm tài sản thế chấp."
+        "ltvMaxTooltip": "Số tiền tối đa của một vị thế vay mà có thể được cung cấp liên quan đến giá trị định giá của tài sản được sử dụng làm tài sản thế chấp.",
+        "overallAvailable": "Tổng cộng có sẵn",
+        "overallAvailableDescription": "Tổng số tiền có sẵn để vay trên nền tảng {Kensetsu}."
     },
     "accountSettings": {
         "title": "Thiết lập tài khoản",
@@ -1678,5 +1643,9 @@
         },
         "enterPassword": "Nhập mật khẩu",
         "googleOnly": "Chỉ tài khoản {Google}"
+    },
+    "currencyDialog": {
+        "currency": "Tiền tệ",
+        "searchPlaceholder": "Tìm kiếm theo tên hoặc ký hiệu tiền tệ"
     }
 }

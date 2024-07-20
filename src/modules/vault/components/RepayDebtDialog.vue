@@ -9,7 +9,7 @@
         v-model="repayDebtValue"
         is-fiat-editable
         :is-max-available="isMaxRepayAvailable"
-        :token="kusdToken"
+        :token="debtAsset"
         :balance="debtAssetBalance"
         :slider-value="repayDebtValuePercent"
         :disabled="loading"
@@ -19,7 +19,7 @@
       <prev-next-info-line
         :label="t('kensetsu.outstandingDebt')"
         :tooltip="t('kensetsu.outstandingDebtDescription')"
-        :symbol="kusdSymbol"
+        :symbol="debtSymbol"
         :prev="formattedPrevBorrow"
         :next="formattedNextBorrow"
       />
@@ -94,13 +94,13 @@ export default class RepayDebtDialog extends Mixins(
   @Ref('debtInput') debtInput!: Nullable<TokenInput>;
 
   @Prop({ type: Object, default: ObjectInit }) readonly vault!: Nullable<Vault>;
+  @Prop({ type: Object, default: ObjectInit }) readonly debtAsset!: Nullable<RegisteredAccountAsset>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly prevLtv!: Nullable<FPNumber>;
   @Prop({ type: Object, default: () => FPNumber.ZERO }) readonly maxSafeDebt!: FPNumber;
   @Prop({ type: Number, default: HundredNumber }) readonly maxLtv!: number;
 
   @state.wallet.settings.networkFees private networkFees!: NetworkFeesObject;
   @getter.assets.xor private accountXor!: Nullable<AccountAsset>;
-  @getter.vault.kusdToken kusdToken!: Nullable<RegisteredAccountAsset>;
 
   repayDebtValue = '';
 
@@ -149,8 +149,8 @@ export default class RepayDebtDialog extends Mixins(
   }
 
   get isInsufficientBalance(): boolean {
-    if (!this.kusdToken) return true;
-    return hasInsufficientBalance(this.kusdToken, this.repayDebtValue, this.networkFee);
+    if (!this.debtAsset) return true;
+    return hasInsufficientBalance(this.debtAsset, this.repayDebtValue, this.networkFee);
   }
 
   get disabled(): boolean {
@@ -164,11 +164,11 @@ export default class RepayDebtDialog extends Mixins(
   }
 
   get debtAssetBalance(): CodecString {
-    return getAssetBalance(this.kusdToken);
+    return getAssetBalance(this.debtAsset);
   }
 
   private get debtAssetBalanceFp(): FPNumber {
-    return this.getFPNumberFromCodec(this.debtAssetBalance, this.kusdToken?.decimals);
+    return this.getFPNumberFromCodec(this.debtAssetBalance, this.debtAsset?.decimals);
   }
 
   private get debt(): FPNumber {
@@ -181,8 +181,8 @@ export default class RepayDebtDialog extends Mixins(
     return !this.repayDebtFp.isEqualTo(this.debt);
   }
 
-  get kusdSymbol(): string {
-    return this.kusdToken?.symbol ?? '';
+  get debtSymbol(): string {
+    return this.debtAsset?.symbol ?? '';
   }
 
   get formattedPrevBorrow(): string {
@@ -260,7 +260,7 @@ export default class RepayDebtDialog extends Mixins(
     } else if (this.isRepayMoreThanDebt) {
       error = this.t('kensetsu.error.repayMoreThanDebt');
     } else if (this.isInsufficientBalance) {
-      error = this.t('insufficientBalanceText', { tokenSymbol: this.kusdSymbol });
+      error = this.t('insufficientBalanceText', { tokenSymbol: this.debtSymbol });
     }
     return error;
   }
@@ -273,8 +273,10 @@ export default class RepayDebtDialog extends Mixins(
     } else {
       try {
         await this.withNotifications(async () => {
-          if (!this.vault) throw new Error('[api.kensetsu.repayVaultDebt]: vault is null');
-          await api.kensetsu.repayVaultDebt(this.vault, this.repayDebtValue);
+          if (!(this.vault && this.debtAsset)) {
+            throw new Error('[api.kensetsu.repayVaultDebt]: vault is null');
+          }
+          await api.kensetsu.repayVaultDebt(this.vault, this.repayDebtValue, this.debtAsset);
         });
         this.$emit('confirm');
       } catch (error) {

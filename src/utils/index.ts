@@ -10,11 +10,10 @@ import i18n from '@/lang';
 import router from '@/router';
 import store from '@/store';
 
-import storage from './storage';
-
 import type { AmountWithSuffix } from '../types/formats';
 import type { Asset, AccountAsset, RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { AccountLiquidity } from '@sora-substrate/util/build/poolXyk/types';
+import type { Currency, CurrencyFields } from '@soramitsu/soraneo-wallet-web/lib/types/currency';
 import type { Route } from 'vue-router';
 
 type AssetWithBalance = AccountAsset | RegisteredAccountAsset;
@@ -29,10 +28,11 @@ export async function waitUntil(condition: () => boolean): Promise<void> {
 
 export async function waitForSoraNetworkFromEnv(): Promise<WALLET_CONSTS.SoraNetwork> {
   return new Promise<WALLET_CONSTS.SoraNetwork>((resolve) => {
-    store.original.watch(
+    const unsubscribe = store.original.watch(
       (state) => state.wallet.settings.soraNetwork,
       (value) => {
         if (value) {
+          unsubscribe();
           resolve(value);
         }
       }
@@ -133,6 +133,11 @@ export const showMostFittingValue = (
   return toPrecision(value, precision).toLocaleString();
 };
 
+// TODO: export from wallet
+export const getCurrency = (currencyName: Currency, currencies: CurrencyFields[]): CurrencyFields | undefined => {
+  return currencies.find((currency) => currency.key === currencyName);
+};
+
 export const hasInsufficientBalance = (
   asset: AccountAsset | RegisteredAccountAsset,
   amount: string | number,
@@ -169,10 +174,6 @@ export const hasInsufficientNativeTokenForFee = (nativeBalance: CodecString, fee
   const fpFee = FPNumber.fromCodecValue(fee);
 
   return FPNumber.lt(fpBalance, fpFee);
-};
-
-export const getWalletAddress = (): string => {
-  return storage.get('address');
 };
 
 export async function delay(ms = 50, success = true): Promise<void> {

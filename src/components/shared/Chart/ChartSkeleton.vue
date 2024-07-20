@@ -86,6 +86,7 @@ $chart-price-amount-max-height: 382px;
       font-weight: 600;
       font-size: var(--s-heading3-font-size);
       line-height: var(--s-line-height-extra-small);
+      color: var(--s-color-base-content-primary) !important;
     }
   }
 

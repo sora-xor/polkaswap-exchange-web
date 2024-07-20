@@ -11,12 +11,11 @@
       @retry="updateData"
     >
       <formatted-amount class="chart-price" :value="amount.amount">
-        <template v-if="!fees" #prefix>$</template>
+        <template #prefix>{{ symbol }}</template>
         {{ amount.suffix }}
-        <template v-if="fees">&nbsp;{{ XOR.symbol }}</template>
       </formatted-amount>
       <price-change :value="priceChange" />
-      <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
+      <v-chart ref="chart" class="chart" :key="chartKey" :option="chartSpec" autoresize />
     </chart-skeleton>
   </base-widget>
 </template>
@@ -34,6 +33,7 @@ import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
 import { fetchData } from '@/indexer/queries/networkVolume';
 import { lazyComponent } from '@/router';
+import { getter } from '@/store/decorators';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
@@ -78,6 +78,9 @@ const normalizeTo = (sample: ChartData[], difference: number, from: number, to: 
   },
 })
 export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin) {
+  @getter.wallet.settings.exchangeRate private exchangeRate!: number;
+  @getter.wallet.settings.currencySymbol private currencySymbol!: string;
+
   @Prop({ default: false, type: Boolean }) readonly fees!: boolean;
 
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
@@ -94,6 +97,15 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
 
   created(): void {
     this.updateData();
+  }
+
+  get chartKey(): string | undefined {
+    if (this.fees) return undefined;
+    return `bar-chart-${this.currencySymbol}-rate-${this.exchangeRate}`;
+  }
+
+  get symbol(): string {
+    return this.fees ? XOR.symbol : this.currencySymbol;
   }
 
   get title(): string {
@@ -117,7 +129,9 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   get amount(): AmountWithSuffix {
-    return formatAmountWithSuffix(this.total);
+    return this.fees
+      ? formatAmountWithSuffix(this.total) // fees are always in XOR
+      : formatAmountWithSuffix(this.total.mul(this.exchangeRate)); // amount is in currency
   }
 
   get priceChange(): FPNumber {
@@ -140,7 +154,7 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
       yAxis: this.yAxisSpec({
         axisLabel: {
           formatter: (value) => {
-            const val = new FPNumber(value);
+            const val = new FPNumber(value).mul(this.exchangeRate);
             const { amount, suffix } = formatAmountWithSuffix(val);
             return `${amount} ${suffix}`;
           },
@@ -149,10 +163,13 @@ export default class StatsBarChart extends Mixins(mixins.LoadingMixin, ChartSpec
       tooltip: this.tooltipSpec({
         formatter: (params) => {
           const { data } = params[0];
-          const [timestamp, value] = data;
-          const amount = formatDecimalPlaces(value);
+          const [, value] = data; // [timestamp, value]
 
-          return this.fees ? `${amount} ${XOR.symbol}` : `$ ${amount}`;
+          if (this.fees) {
+            return `${formatDecimalPlaces(value)} ${XOR.symbol}`; // fees are always in XOR
+          }
+          const currencyAmount = new FPNumber(value).mul(this.exchangeRate);
+          return `${this.currencySymbol} ${formatDecimalPlaces(currencyAmount)}`; // amount is in currency
         },
       }),
       series: [

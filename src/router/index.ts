@@ -61,11 +61,6 @@ const routes: Array<RouteConfig> = [
     component: lazyView(PageNames.Swap),
   },
   {
-    path: '/about',
-    name: PageNames.About,
-    component: lazyView(PageNames.About),
-  },
-  {
     path: '/wallet',
     name: PageNames.Wallet,
     component: lazyView(PageNames.Wallet),
@@ -211,27 +206,21 @@ const routes: Array<RouteConfig> = [
     ],
   },
   {
-    path: '/rewards',
+    path: '',
     component: lazyView(PageNames.RewardsTabs),
     children: [
       {
-        path: '',
+        path: '/rewards',
         name: PageNames.Rewards,
         component: lazyView(PageNames.Rewards),
       },
       {
-        path: '/referral', // because of leading slash, path will be absolute: #/referral
+        path: '/referral/:referrerAddress?',
         name: PageNames.ReferralProgram,
         component: lazyView(PageNames.ReferralProgram),
-        children: [
-          {
-            path: ':referrerAddress?',
-            meta: {
-              isInvitationRoute: true,
-              requiresAuth: true,
-            },
-          },
-        ],
+        meta: {
+          isInvitationRoute: true,
+        },
       },
     ],
   },
@@ -252,17 +241,22 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/fiat-deposit',
-    name: PageNames.FiatDepositOptions,
-    component: lazyView(PageNames.FiatDepositOptions),
+    path: '/deposit',
+    name: PageNames.DepositOptions,
+    component: lazyView(PageNames.DepositOptions),
   },
   {
-    path: '/fiat-deposit/history',
-    name: PageNames.FiatTxHistory,
-    component: lazyView(PageNames.FiatTxHistory),
+    path: '/deposit/history',
+    name: PageNames.DepositTxHistory,
+    component: lazyView(PageNames.DepositTxHistory),
     meta: {
       requiresAuth: true,
     },
+  },
+  {
+    path: '/deposit/transfer-from-cex',
+    name: PageNames.CedeStore,
+    component: lazyView(PageNames.CedeStore),
   },
   {
     path: '/kensetsu',
@@ -341,19 +335,24 @@ router.beforeEach((to, from, next) => {
     updateDocumentTitle(to);
   };
   const isLoggedIn = store.getters.wallet.account.isLoggedIn;
+  const isInvitationRoute = to.matched.some((record) => record.meta.isInvitationRoute);
+  const isRequiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+
   if (prev !== PageNames.BridgeTransaction && current === PageNames.BridgeTransactionsHistory) {
     store.commit.bridge.setHistoryPage(1);
   }
-  if (to.matched.some((record) => record.meta.isInvitationRoute)) {
-    if (api.validateAddress(to.params.referrerAddress)) {
-      store.commit.referrals.setStorageReferrer(to.params.referrerAddress);
+  if (isInvitationRoute) {
+    const referrerAddress = to.params.referrerAddress;
+
+    if (referrerAddress && api.validateAddress(referrerAddress)) {
+      store.commit.referrals.setStorageReferrer(referrerAddress);
     }
     if (isLoggedIn) {
-      setRoute(PageNames.ReferralProgram);
+      setRoute(PageNames.ReferralProgram, false); // `false` is set to avoid infinite loop
       return;
     }
   }
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
+  if (isRequiresAuth) {
     if (BridgeChildPages.includes(current) && isLoggedIn && !store.getters.bridge.externalAccount) {
       setRoute(PageNames.Bridge);
       return;

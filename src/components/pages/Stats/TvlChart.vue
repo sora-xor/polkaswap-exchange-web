@@ -11,11 +11,11 @@
       @retry="updateData"
     >
       <formatted-amount class="chart-price" :value="amount.amount">
-        <template #prefix>$</template>
+        <template #prefix>{{ currencySymbol }}</template>
         {{ amount.suffix }}
       </formatted-amount>
       <price-change :value="priceChange" />
-      <v-chart ref="chart" class="chart" :option="chartSpec" autoresize />
+      <v-chart ref="chart" class="chart" :key="chartKey" :option="chartSpec" autoresize />
     </chart-skeleton>
   </base-widget>
 </template>
@@ -33,6 +33,7 @@ import { Components } from '@/consts';
 import { SECONDS_IN_TYPE, NETWORK_STATS_FILTERS } from '@/consts/snapshots';
 import { ChartData, fetchData } from '@/indexer/queries/networkTvl';
 import { lazyComponent } from '@/router';
+import { getter } from '@/store/decorators';
 import type { SnapshotFilter } from '@/types/filters';
 import type { AmountWithSuffix } from '@/types/formats';
 import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/utils';
@@ -47,6 +48,9 @@ import { calcPriceChange, formatAmountWithSuffix, formatDecimalPlaces } from '@/
   },
 })
 export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpecMixin) {
+  @getter.wallet.settings.exchangeRate private exchangeRate!: number;
+  @getter.wallet.settings.currencySymbol private currencySymbol!: string;
+
   readonly FontSizeRate = WALLET_CONSTS.FontSizeRate;
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
   readonly filters = NETWORK_STATS_FILTERS;
@@ -60,6 +64,10 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
     this.updateData();
   }
 
+  get chartKey(): string {
+    return `tvl-chart-${this.currencySymbol}-rate-${this.exchangeRate}`;
+  }
+
   get firstValue(): FPNumber {
     return new FPNumber(first(this.data)?.value ?? 0);
   }
@@ -69,7 +77,7 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
   }
 
   get amount(): AmountWithSuffix {
-    return formatAmountWithSuffix(this.firstValue);
+    return formatAmountWithSuffix(this.firstValue.mul(this.exchangeRate));
   }
 
   get priceChange(): FPNumber {
@@ -90,7 +98,7 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
       yAxis: this.yAxisSpec({
         axisLabel: {
           formatter: (value) => {
-            const val = new FPNumber(value);
+            const val = new FPNumber(value).mul(this.exchangeRate);
             const { amount, suffix } = formatAmountWithSuffix(val);
             return `${amount} ${suffix}`;
           },
@@ -99,8 +107,9 @@ export default class StatsTvlChart extends Mixins(mixins.LoadingMixin, ChartSpec
       tooltip: this.tooltipSpec({
         formatter: (params) => {
           const { data } = params[0];
-          const [timestamp, value] = data;
-          return `$ ${formatDecimalPlaces(value)}`;
+          const [, value] = data; // [timestamp, value]
+          const currencyValue = new FPNumber(value).mul(this.exchangeRate);
+          return `${this.currencySymbol} ${formatDecimalPlaces(currencyValue)}`;
         },
       }),
       series: [

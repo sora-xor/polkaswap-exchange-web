@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading" class="referral-program">
-    <template v-if="isSoraAccountConnected">
+    <template v-if="isLoggedIn">
       <div class="rewards-container">
         <span class="rewards-title">{{ t('referralProgram.receivedRewards') }}</span>
         <token-logo :token="xor" :size="WALLET_CONSTS.LogoSize.BIGGER" />
@@ -35,10 +35,10 @@
             class="s-typography-button--mini"
             size="small"
             type="primary"
-            :tooltip="copyTooltip(t('referralProgram.invitationLink'))"
-            @click="handleCopyAddress(referralLink.href, $event)"
+            :tooltip="refLinkTooltip"
+            @click="handleClickRefLink($event)"
           >
-            {{ t('referralProgram.action.copyLink') }}
+            {{ refLinkText }}
             <s-icon name="copy-16" size="16" />
           </s-button>
         </s-card>
@@ -156,10 +156,10 @@
     <template v-else>
       <p class="referral-program-hint" v-html="t('referralProgram.connectAccount')" />
       <s-button
-        v-if="!(loading || isSoraAccountConnected)"
+        v-if="!isLoggedIn"
         class="connect-button s-typography-button--large"
         type="primary"
-        @click="handleConnect"
+        @click="connectSoraWallet"
       >
         {{ t('connectWalletText') }}
       </s-button>
@@ -175,12 +175,13 @@ import last from 'lodash/fp/last';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
 import { getFullBaseUrl, getRouterMode } from '@/api';
-import WalletConnectMixin from '@/components/mixins/WalletConnectMixin';
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
 import { PageNames, ZeroStringValue } from '@/consts';
 import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import router, { lazyView } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
+import { TmaSdk } from '@/utils/telegram';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -201,7 +202,7 @@ export default class ReferralProgram extends Mixins(
   mixins.PaginationSearchMixin,
   mixins.NetworkFeeWarningMixin,
   mixins.CopyAddressMixin,
-  WalletConnectMixin
+  InternalConnectMixin
 ) {
   readonly WALLET_CONSTS = WALLET_CONSTS;
 
@@ -213,6 +214,8 @@ export default class ReferralProgram extends Mixins(
   @state.referrals.invitedUsers invitedUsers!: Array<string>;
   @state.referrals.referrer referrer!: string;
   @state.referrals.isReferrerApproved isReferrerApproved!: boolean;
+  @state.settings.isTMA private isTMA!: boolean;
+  @state.settings.telegramBotUrl private telegramBotUrl!: Nullable<string>;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
   @getter.wallet.account.account private account!: WALLET_TYPES.PolkadotJsAccount;
 
@@ -225,7 +228,7 @@ export default class ReferralProgram extends Mixins(
   @action.referrals.getAccountReferralRewards private getAccountReferralRewards!: AsyncFnWithoutArgs;
   @action.referrals.subscribeOnReferrer private subscribeOnReferrer!: AsyncFnWithoutArgs;
 
-  @Watch('isSoraAccountConnected')
+  @Watch('isLoggedIn')
   private async updateSubscriptions(value: boolean): Promise<void> {
     if (value) {
       this.initData();
@@ -236,7 +239,7 @@ export default class ReferralProgram extends Mixins(
   }
 
   private async initData(): Promise<void> {
-    if (this.isSoraAccountConnected) {
+    if (this.isLoggedIn) {
       await this.subscribeOnInvitedUsers();
       await this.getAccountReferralRewards();
       await this.getReferrer();
@@ -355,7 +358,10 @@ export default class ReferralProgram extends Mixins(
     if (this.isReferrerLinkEmpty) {
       return false;
     }
-    if (!api.validateAddress(this.referrerAddress) || this.referrerAddress === this.account?.address) {
+    if (!api.validateAddress(this.referrerAddress)) {
+      return false;
+    }
+    if (api.formatAddress(this.referrerAddress) === this.account?.address) {
       return false;
     }
     if (this.referrerLinkOrCode === this.referrerAddress) {
@@ -383,6 +389,30 @@ export default class ReferralProgram extends Mixins(
     return this.hasAccountWithBondedXor ? 'secondary' : 'primary';
   }
 
+  private get hasTMALink(): boolean {
+    return this.isTMA && !!this.telegramBotUrl;
+  }
+
+  get refLinkTooltip(): string {
+    return this.hasTMALink
+      ? this.t('referralProgram.inviteViaTelegram')
+      : this.copyTooltip(this.t('referralProgram.invitationLink'));
+  }
+
+  get refLinkText(): string {
+    return this.hasTMALink ? this.t('referralProgram.action.shareLink') : this.t('referralProgram.action.copyLink');
+  }
+
+  handleClickRefLink(event?: MouseEvent): void {
+    if (!this.hasTMALink) {
+      this.handleCopyAddress(this.referralLink.href, event);
+      return;
+    }
+
+    const botUrl = `${this.telegramBotUrl}/app?startapp=${this.account.address}`;
+    TmaSdk.shareLink(botUrl, this.t('referralProgram.welcomeMessage'));
+  }
+
   destroyed(): void {
     this.reset();
   }
@@ -393,7 +423,7 @@ export default class ReferralProgram extends Mixins(
     });
   }
 
-  getLinkLabel(address: string): string {
+  private getLinkLabel(address: string): string {
     const routerMode = getRouterMode(router);
     return `<span class="referral-link-address">Polkaswap.io/</span>${routerMode}referral/${address}`;
   }
@@ -404,12 +434,6 @@ export default class ReferralProgram extends Mixins(
       return this.formatCodecNumber(rewards.toCodecString());
     }
     return ZeroStringValue;
-  }
-
-  handleConnect(): void {
-    if (!this.isSoraAccountConnected) {
-      this.connectSoraWallet();
-    }
   }
 
   handleBonding(isBond = false): void {

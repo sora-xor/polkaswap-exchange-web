@@ -1,14 +1,10 @@
 <template>
   <div class="container transaction-fiat-history" v-loading="parentLoading">
-    <generic-page-header
-      class="page-header-title--moonpay-history"
-      @back="goTo(PageNames.FiatDepositOptions)"
-      has-button-back
-    >
+    <generic-page-header class="page-header-title--moonpay-history" @back="navigateToDepositOptions" has-button-back>
       <template #title="">{{ t('fiatPayment.historyTitle') }}</template>
     </generic-page-header>
     <component :is="currentTab" />
-    <s-button v-if="!isLoggedIn" class="go-wallet-btn" type="primary" @click="goTo(PageNames.Wallet)">{{
+    <s-button v-if="!isLoggedIn" class="go-wallet-btn" type="primary" @click="connectSoraWallet">{{
       t('connectWalletText')
     }}</s-button>
   </div>
@@ -18,9 +14,10 @@
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
+
 import { Components, PageNames } from '../consts';
 import { goTo, lazyComponent } from '../router';
-import { getter } from '../store/decorators';
 import { FiatOptionTabs } from '../types/tabs';
 
 @Component({
@@ -29,14 +26,11 @@ import { FiatOptionTabs } from '../types/tabs';
     MoonpayHistory: lazyComponent(Components.MoonpayHistory),
   },
 })
-export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, mixins.LoadingMixin) {
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-
+export default class DepositTxHistory extends Mixins(InternalConnectMixin, mixins.LoadingMixin) {
   FiatOptionTabs = FiatOptionTabs;
 
   currentTab = FiatOptionTabs.moonpay;
 
-  goTo = goTo;
   PageNames = PageNames;
 
   get moonpay(): string {
@@ -45,6 +39,10 @@ export default class FiatTxHistory extends Mixins(mixins.TranslationMixin, mixin
 
   getLabel(tab: string): string | undefined {
     if (tab === 'MoonpayHistory') return 'MoonPay';
+  }
+
+  navigateToDepositOptions(): void {
+    goTo(PageNames.DepositOptions);
   }
 }
 </script>

@@ -7,7 +7,7 @@
           <div v-if="claimingInProgressOrFinished" class="rewards-claiming-text">
             {{ claimingStatusMessage }}
           </div>
-          <div v-if="isSoraAccountConnected" class="rewards-amount">
+          <div v-if="isLoggedIn" class="rewards-amount">
             <rewards-amount-header :items="rewardsAmountHeaderItems" />
             <template v-if="!claimingInProgressOrFinished">
               <rewards-amount-table
@@ -50,7 +50,7 @@
                   <div v-if="evmAddress" class="rewards-account">
                     <div class="rewards-account-group">
                       <img
-                        v-if="changeWalletEvm"
+                        v-if="evmProvider"
                         :src="getEvmProviderIcon(evmProvider)"
                         :alt="evmProvider"
                         class="rewards-account-logo"
@@ -78,7 +78,7 @@
                 </div>
               </rewards-amount-table>
               <info-line
-                v-if="fee && isSoraAccountConnected && rewardsAvailable && !claimingInProgressOrFinished"
+                v-if="fee && isLoggedIn && rewardsAvailable && !claimingInProgressOrFinished"
                 v-bind="feeInfo"
                 :class="['rewards-fee', libraryTheme]"
                 :fiat-value="getFiatAmountByCodecString(fee)"
@@ -355,7 +355,7 @@ export default class Rewards extends Mixins(
   }
 
   get hintText(): string {
-    if (!this.isSoraAccountConnected) return this.t('rewards.hint.connectAccounts');
+    if (!this.isLoggedIn) return this.t('rewards.hint.connectAccounts');
     if (this.rewardsAvailable) {
       const symbols = this.rewardTokenSymbols.join(` ${this.t('rewards.andText')} `);
       const transactions = this.tc('transactionText', this.transactionStepsCount);
@@ -376,7 +376,7 @@ export default class Rewards extends Mixins(
 
   get actionButtonText(): string {
     if (this.actionButtonLoading) return '';
-    if (!this.isSoraAccountConnected) return this.t('connectWalletText');
+    if (!this.isLoggedIn) return this.t('connectWalletText');
     if (this.transactionError) return this.t('retryText');
     if (this.isInsufficientBalance) return this.t('insufficientBalanceText', { tokenSymbol: KnownSymbols.XOR });
     if (!this.rewardsClaiming) return this.t('rewards.action.signAndClaim');
@@ -390,9 +390,7 @@ export default class Rewards extends Mixins(
   }
 
   get actionButtonDisabled(): boolean {
-    return (
-      this.rewardsClaiming || (this.isSoraAccountConnected && (!this.rewardsAvailable || this.isInsufficientBalance))
-    );
+    return this.rewardsClaiming || (this.isLoggedIn && (!this.rewardsAvailable || this.isInsufficientBalance));
   }
 
   get changeWalletEvm(): boolean {
@@ -400,7 +398,7 @@ export default class Rewards extends Mixins(
   }
 
   async handleAction(): Promise<void> {
-    if (!this.isSoraAccountConnected) {
+    if (!this.isLoggedIn) {
       return this.connectSoraWallet();
     }
     if (this.rewardsAvailable) {
@@ -409,7 +407,7 @@ export default class Rewards extends Mixins(
   }
 
   private async checkExternalRewards(showNotification = false): Promise<void> {
-    if (this.isSoraAccountConnected) {
+    if (this.isLoggedIn) {
       await this.getRewardsProcess(showNotification);
     }
   }
@@ -423,7 +421,7 @@ export default class Rewards extends Mixins(
   }
 
   private async claimRewardsProcess(): Promise<void> {
-    const internalAddress = this.getWalletAddress();
+    const internalAddress = this.soraAddress;
     const externalAddress = this.evmAddress;
 
     if (!internalAddress) return;

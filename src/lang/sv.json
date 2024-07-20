@@ -157,7 +157,6 @@
         "connectionError": "Ett fel uppstod vid anslutning av plånboken. Du kan försöka ansluta plånboken via {extension} igen"
     },
     "connection": {
-        "title": "{Sora}-Nätverkskonto",
         "text": "För att hantera tillgångar och signera transaktioner på {Sora} måste ett konto vara anslutet. {Sora} -konton kan skapas och anslutas med hjälp av våra integrerade plånböcker eller webbläsartillägg.",
         "noAccounts": "Inget konto hittades i ditt {extension} webbläsartillägg. Vänligen lägg till ett konto och försök igen.",
         "selectAccount": "Välj konto att arbeta med",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "{Sora}-Nätverkskonto",
         "WalletAssets": "Tillgångar",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivitet"
@@ -212,7 +210,8 @@
         "walletAddress": "Plånboksadress",
         "delete": "Radera konto",
         "rename": "Byt namn på konto",
-        "export": "Exportera .json"
+        "export": "Exportera .json",
+        "accountTitle": "konto"
     },
     "history": {
         "clearHistory": "Rensa historik",
@@ -397,7 +396,6 @@
         "Swap": "Byt",
         "Pool": "Pool",
         "Bridge": "@:bridgeText",
-        "About": "Om",
         "Stats": "Statistik",
         "Wallet": "Plånbok",
         "AddLiquidity": "Lägg Till Likviditet",
@@ -507,44 +505,6 @@
     "transfers": {
         "from": "Från",
         "to": "Till"
-    },
-    "about": {
-        "title": "DEX:en för den Interoperabla Framtiden",
-        "description": "Cross-chain byte av tillgångar, enkelt skapande samt listning av nya tillgångar och de enklaste bytena någonsin. {Polkadot} interoperabla framtid är här och vi ligger i dess framkant!",
-        "trading": {
-            "title": "Snabbare Handel",
-            "first": "{AppName} är en icke-frihetsberövande, cross-chain AMM DEX for att byta tokens baserat på {Polkadot} och {Kusama} relay chains, {Polkadot} och {Kusama} parachains, och blockkedjor direkt anslutna via bryggor.",
-            "second": "{AppName} tar bort betrodda mellanhänder och ger möjlighet till snabbare handel.",
-            "third": "{AppName} är ett community-projekt och devs samarbetar på den öppna källkoden med hjälp av"
-        },
-        "liquidity": {
-            "title": "Gränslös Likviditet",
-            "first": "{AppName} kombinerar flera likviditetskällor genom att använda en gemensam likviditetsaggregations-algoritm som fungerar helt on-chain på ett tillitsfritt och decentraliserat sätt.",
-            "second": "När handlare anropar swap-funktionen så fyller algoritmen för likviditetsaggregation ordrar med de bästa erbjudandena från alla likviditetskällor. Likviditetskällor kan vara andra DEX:ar, orderböcker, eller andra API-drivna källor.",
-            "third": "Eftersom {AppName} är ett open-source projekt så kan vem som helst lägga till fler likviditetskällor genom att bidra till {AppName}-kodbasen."
-        },
-        "swap": {
-            "title": "Byt Valfri Token",
-            "first": "Gå bortom gränserna för nuvarande DEX:ar genom att lägga till tokens från {Polkadot}-ekosystemet samt andra blockkedjor.",
-            "second": "Skapa, lista och handla med dina egna tokens på {Sora}-nätverket.",
-            "third": "Vår kärninfrastruktur använder Parity Substrate, som är mer skalbar än {Ethereum} och som ej använder dyr mining för konsensus."
-        },
-        "pswap": {
-            "title": "PSWAP Tokens",
-            "first": "PSWAP skapades genom community-styre som röstade om dess lansering. Det är en utility- och governance-token som används för att belöna likviditets-tillhandahållare på {AppName}. Till skillnad från de flesta andra belönings-tokens så bränns PSWAP när transaktioner sker vilket minskar tillgången med tiden.",
-            "second": "{percent}% avgiften för varje byte på {AppName} DEX används för att köpa tillbaka PSWAP-tokens som sedan bränns. Till en början så ompräglas 90% av brända PSWAP-tokens för att tilldelas till likviditets-tillhandahållare, men med tiden så kommer denna procentsats att minska till 35% efter 4 år."
-        },
-        "links": {
-            "first": {
-                "title": "Bli en {Sora}-validerare",
-                "desc": "Säkra framtiden för {Sora}-nätverket och decentraliserade appar som {AppName}, och få belöningar på vägen genom att bli en {Sora}-validerare."
-            },
-            "second": {
-                "title": "Anslut en Kedja till {Sora}",
-                "desc": "Få den decentraliserade världsekonomin att växa genom att koppla fler kedjor till {Sora} och {AppName} med hjälp av {Hashi}:s bryggprotokoll."
-            }
-        },
-        "network": "{AppName} är byggd på {Sora} -nätverket, med fokus på interoperabilitet för att ansluta resten av kryptoekosystemet till {Polkadot}."
     },
     "exchange": {
         "Swap": "Byt",
@@ -903,7 +863,8 @@
         "switchTheme": "Byt till {theme} Läge",
         "switchLanguage": "Välj Språk",
         "showDisclaimer": "Visa ansvarsfriskrivning",
-        "hideDisclaimer": "Dölj ansvarsfriskrivning"
+        "hideDisclaimer": "Dölj ansvarsfriskrivning",
+        "selectCurrency": "Välj valuta"
     },
     "sentText": "Skickat",
     "learnMoreText": "Lär dig mer",
@@ -938,7 +899,8 @@
             "bondMore": "Bond Mera",
             "bond": "Bond",
             "unbond": "Unbond",
-            "copyLink": "Kopiera länk"
+            "copyLink": "Kopiera länk",
+            "shareLink": "Dela"
         },
         "transactionDetails": "Transaktions Detaljer",
         "receivedRewards": "Mottagna rewards",
@@ -970,7 +932,9 @@
             "info": "När du kommer att betala en avgift för transaktion så kommer<br\/>10 % att gå till den som hänvisade dig",
             "referredLablel": "Hänvisad adress"
         },
-        "insufficientBondedAmount": "För att bjuda in fler hänvisningar, bond minst {inviteUserFee} XOR"
+        "insufficientBondedAmount": "För att bjuda in fler hänvisningar, bond minst {inviteUserFee} XOR",
+        "inviteViaTelegram": "Bjud in via {Telegram}",
+        "welcomeMessage": "\nGå med mig på {Polkaswap}!\n\nUpptäck den stiliga {DEX} som låter dig byta ut dussintals tokens med cross-chain swaps, orderbok och massor av belöningar!\n\n🎁 Bjud in vänner och tjäna 10% av deras handelsavgifter\n\nVi ses där!"
     },
     "transactionDetailsText": "Transaktions Detaljer",
     "code": {
@@ -1637,7 +1601,8 @@
             "borrowMoreThanAvailable": "Tillgänglig skuld överskreds",
             "insufficientCollateral": "Otillräcklig säkerhet",
             "enterRepayDebt": "Ange återbetalningsskuld",
-            "repayMoreThanDebt": "Skuld överbetald"
+            "repayMoreThanDebt": "Skuld överbetald",
+            "incorrectCollateral": "Tokenpar stöds inte"
         },
         "interest": "Ränta",
         "interestDescription": "En årlig avgift debiterad på det belopp som dras från ditt valv, beräknat som en procentandel. Denna avgift kompenserar för risker och marknadsfluktuationer.",
@@ -1659,9 +1624,9 @@
         "overallTotalDebtDescription": "Den totala skulden som för närvarande är obetald på alla lånepositioner på {Kensetsu}-plattformen.",
         "overallBadDebt": "Dålig skuld",
         "overallBadDebtDescription": "Delen av skulden som förmodligen inte kommer att återkrävas på grund av låntagarens oförmåga eller otillräcklig säkerhet.",
-        "overallBorrowTax": "Låneskatt",
-        "overallBorrowTaxDescription": "En avgift som tas ut på lånade medel, beräknad som en procentandel av lånebeloppet. Låneskatten används i programmet för uppmuntran av återköp av {KEN}-token.",
-        "ltvMaxTooltip": "Den maximala mängden av en låneposition som kan tillhandahållas i förhållande till det värderade värdet av tillgången som används som säkerhet."
+        "ltvMaxTooltip": "Den maximala mängden av en låneposition som kan tillhandahållas i förhållande till det värderade värdet av tillgången som används som säkerhet.",
+        "overallAvailable": "Totalt tillgängligt",
+        "overallAvailableDescription": "Det totala beloppet av medel som finns tillgängliga för lån på {Kensetsu}-plattformen."
     },
     "accountSettings": {
         "title": "Kontoinställningar",
@@ -1678,5 +1643,9 @@
         },
         "enterPassword": "Skriv in lösenord",
         "googleOnly": "Endast {Google} -konton"
+    },
+    "currencyDialog": {
+        "currency": "Valuta",
+        "searchPlaceholder": "Sök efter valutanamn eller symbol"
     }
 }

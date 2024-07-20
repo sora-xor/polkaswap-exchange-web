@@ -29,7 +29,7 @@
           v-else
           class="vaults-header__action s-typography-button--large"
           type="primary"
-          @click="handleConnectWallet"
+          @click="connectSoraWallet"
         >
           {{ t('connectWalletText') }}
         </s-button>
@@ -57,13 +57,13 @@
           >
             <div class="vault-title s-flex">
               <pair-token-logo
-                :first-token="kusdToken"
+                :first-token="vault.debtAsset"
                 :second-token="vault.lockedAsset"
                 size="medium"
                 class="vault-title__icon"
               />
               <div class="vault-title__container s-flex-column">
-                <h4 class="vault-title__name">{{ getVaultTitle(vault.lockedAsset) }}</h4>
+                <h4 class="vault-title__name">{{ getVaultTitle(vault.lockedAsset, vault.debtAsset) }}</h4>
                 <position-status :status="selectedTab" />
               </div>
               <s-button type="action" size="small" alternative :tooltip="t('assets.details')">
@@ -112,9 +112,17 @@
                       <s-icon name="info-16" size="11px" />
                     </s-tooltip>
                   </p>
-                  <template v-if="kusdToken">
-                    <formatted-amount value-can-be-hidden :value="format(vault.debt)" :asset-symbol="kusdSymbol" />
-                    <formatted-amount value-can-be-hidden is-fiat-value :value="formatFiat(vault.debt, kusdToken)" />
+                  <template v-if="vault.debtAsset">
+                    <formatted-amount
+                      value-can-be-hidden
+                      :value="format(vault.debt)"
+                      :asset-symbol="getDebtSymbol(vault.debtAsset)"
+                    />
+                    <formatted-amount
+                      value-can-be-hidden
+                      is-fiat-value
+                      :value="formatFiat(vault.debt, vault.debtAsset)"
+                    />
                   </template>
                 </div>
                 <div class="vault-details__item s-flex-column">
@@ -130,12 +138,16 @@
                       <s-icon name="info-16" size="11px" />
                     </s-tooltip>
                   </p>
-                  <template v-if="kusdToken">
-                    <formatted-amount value-can-be-hidden :value="format(vault.available)" :asset-symbol="kusdSymbol" />
+                  <template v-if="vault.debtAsset">
+                    <formatted-amount
+                      value-can-be-hidden
+                      :value="format(vault.available)"
+                      :asset-symbol="getDebtSymbol(vault.debtAsset)"
+                    />
                     <formatted-amount
                       value-can-be-hidden
                       is-fiat-value
-                      :value="formatFiat(vault.available, kusdToken)"
+                      :value="formatFiat(vault.available, vault.debtAsset)"
                     />
                   </template>
                 </div>
@@ -179,7 +191,7 @@
                     <s-icon name="info-16" size="11px" />
                   </s-tooltip>
                 </p>
-                <template v-if="vault.lockedAsset">
+                <template v-if="vault.lockedAsset && vault.debtAsset">
                   <formatted-amount
                     value-can-be-hidden
                     :value="format(vault.returned)"
@@ -193,7 +205,7 @@
                   <s-button
                     class="vault-details__action"
                     size="small"
-                    @click.stop="handleCreateSelectedVault(vault.lockedAsset, kusdToken)"
+                    @click.stop="handleCreateSelectedVault(vault.lockedAsset, vault.debtAsset)"
                   >
                     {{ t('kensetsu.reopen') }}
                   </s-button>
@@ -233,11 +245,11 @@
 </template>
 
 <script lang="ts">
-import { mixins, components, WALLET_CONSTS } from '@soramitsu/soraneo-wallet-web';
+import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { BreakpointClass, Components, DsBreakpoints, HundredNumber, PageNames, ZeroStringValue } from '@/consts';
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
+import { BreakpointClass, Components, DsBreakpoints, HundredNumber, ZeroStringValue } from '@/consts';
 import { LtvTranslations, VaultComponents, VaultPageNames, VaultStatuses } from '@/modules/vault/consts';
 import { vaultLazyComponent } from '@/modules/vault/router';
 import type { ClosedVault, VaultStatus } from '@/modules/vault/types';
@@ -247,11 +259,12 @@ import { state, getter, action } from '@/store/decorators';
 import type { ResponsiveTab } from '@/types/tabs';
 
 import type { FPNumber, CodecString } from '@sora-substrate/math';
-import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
+import type { RegisteredAccountAsset, Asset, AccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { Collateral, Vault } from '@sora-substrate/util/build/kensetsu/types';
 
 type OpenedVaultData = Vault & {
   lockedAsset: Nullable<RegisteredAccountAsset>;
+  debtAsset: Nullable<RegisteredAccountAsset>;
   ltv: Nullable<FPNumber>;
   adjustedLtv: Nullable<FPNumber>;
   available: FPNumber;
@@ -259,6 +272,7 @@ type OpenedVaultData = Vault & {
 
 type ClosedVaultData = ClosedVault & {
   lockedAsset: Nullable<RegisteredAccountAsset>;
+  debtAsset: Nullable<RegisteredAccountAsset>;
 };
 
 type VaultData = OpenedVaultData | ClosedVaultData;
@@ -280,25 +294,24 @@ type VaultData = OpenedVaultData | ClosedVaultData;
   },
 })
 export default class Vaults extends Mixins(
-  TranslationMixin,
+  InternalConnectMixin,
   mixins.FormattedAmountMixin,
   mixins.PaginationSearchMixin
 ) {
   readonly link = 'https://medium.com/@shibarimoto/kensetsu-ken-356077ebee78';
   readonly getLtvStatus = getLtvStatus;
 
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
-  @getter.vault.kusdToken kusdToken!: Nullable<RegisteredAccountAsset>;
   @getter.assets.assetDataByAddress private getAsset!: (addr?: string) => Nullable<RegisteredAccountAsset>;
+  @getter.vault.getBorrowTax private getTax!: (debtAsset: Asset | AccountAsset | string) => number;
   @state.vault.closedAccountVaults private closedAccountVaults!: ClosedVault[];
   @state.vault.accountVaults private openedVaults!: Vault[];
   @state.vault.collaterals private collaterals!: Record<string, Collateral>;
   @state.vault.averageCollateralPrices private averageCollateralPrices!: Record<string, Nullable<FPNumber>>;
-  @state.vault.borrowTax private borrowTax!: number;
   @state.settings.screenBreakpointClass private screenBreakpointClass!: BreakpointClass;
   @state.settings.windowWidth windowWidth!: number;
 
   @action.vault.setCollateralTokenAddress private selectCollateral!: (address?: string) => Promise<void>;
+  @action.vault.setDebtTokenAddress private selectDebt!: (address?: string) => Promise<void>;
 
   showCreateVaultDialog = false;
   selectedTab: VaultStatus = VaultStatuses.Opened;
@@ -392,7 +405,8 @@ export default class Vaults extends Mixins(
   private get closedVaultsData(): ClosedVaultData[] {
     return this.closedAccountVaults.map((item) => {
       const lockedAsset = this.getAsset(item.lockedAssetId);
-      return { ...item, lockedAsset };
+      const debtAsset = this.getAsset(item.debtAssetId);
+      return { ...item, lockedAsset, debtAsset };
     });
   }
 
@@ -420,28 +434,27 @@ export default class Vaults extends Mixins(
     return this.isLoggedIn && !!(this.openedVaultsLength + this.closedAccountVaults.length);
   }
 
-  get kusdSymbol(): string {
-    return this.kusdToken?.symbol ?? '';
-  }
-
   private get openedVaultsData(): OpenedVaultData[] {
     return this.openedVaults.map((vault) => {
       const lockedAsset = this.getAsset(vault.lockedAssetId);
-      const collateral = this.collaterals[vault.lockedAssetId];
-      const averagePrice = this.averageCollateralPrices[vault.lockedAssetId] ?? this.Zero;
+      const debtAsset = this.getAsset(vault.debtAssetId);
+      const borrowTax = this.getTax(vault.debtAssetId);
+      const collateralId = api.kensetsu.serializeKey(vault.lockedAssetId, vault.debtAssetId);
+      const collateral = this.collaterals[collateralId];
+      const averagePrice = this.averageCollateralPrices[collateralId] ?? this.Zero;
       const collateralVolume = averagePrice.mul(vault.lockedAmount);
       const ratio = collateral?.riskParams.liquidationRatioReversed ?? 0;
       const maxSafeDebt = collateralVolume.mul(ratio).div(HundredNumber);
-      const maxSafeDebtWithoutTax = maxSafeDebt.sub(maxSafeDebt.mul(this.borrowTax));
+      const maxSafeDebtWithoutTax = maxSafeDebt.sub(maxSafeDebt.mul(borrowTax));
       const ltvCoeff = vault.debt.div(maxSafeDebt);
       const ltv = ltvCoeff.isFinity() ? ltvCoeff.mul(HundredNumber) : null;
       const adjustedLtv = ltv ? ltvCoeff.mul(ratio) : null;
       const availableCoeff = maxSafeDebtWithoutTax.sub(vault.debt);
-      let totalAvailable = collateral?.riskParams.hardCap.sub(collateral.kusdSupply) ?? this.Zero;
-      totalAvailable = totalAvailable.sub(totalAvailable.mul(this.borrowTax));
+      let totalAvailable = collateral?.riskParams.hardCap.sub(collateral.debtSupply) ?? this.Zero;
+      totalAvailable = totalAvailable.sub(totalAvailable.mul(borrowTax));
       let available = totalAvailable.lt(availableCoeff) ? totalAvailable : availableCoeff;
       available = !available.isFinity() || available.isLteZero() ? this.Zero : available.dp(2);
-      return { ...vault, lockedAsset, ltv, adjustedLtv, available };
+      return { ...vault, lockedAsset, debtAsset, ltv, adjustedLtv, available };
     });
   }
 
@@ -466,13 +479,17 @@ export default class Vaults extends Mixins(
     return this.vaultsData.length;
   }
 
-  getVaultTitle(lockedAsset?: Nullable<RegisteredAccountAsset>): string {
-    if (!(this.kusdSymbol && lockedAsset)) return '';
-    return `${this.kusdSymbol} / ${lockedAsset.symbol}`;
+  getVaultTitle(lockedAsset?: Nullable<RegisteredAccountAsset>, debtAsset?: Nullable<RegisteredAccountAsset>): string {
+    if (!(debtAsset && lockedAsset)) return '';
+    return `${debtAsset.symbol} / ${lockedAsset.symbol}`;
   }
 
   getLockedSymbol(lockedAsset?: RegisteredAccountAsset): string {
     return lockedAsset?.symbol ?? '';
+  }
+
+  getDebtSymbol(debtAsset?: RegisteredAccountAsset): string {
+    return debtAsset?.symbol ?? '';
   }
 
   format(number?: FPNumber): string {
@@ -496,19 +513,16 @@ export default class Vaults extends Mixins(
     return number?.toNumber() ?? 0;
   }
 
-  handleConnectWallet(): void {
-    router.push({ name: PageNames.Wallet });
-  }
-
   handleCreateVault(): void {
     this.showCreateVaultDialog = true;
   }
 
   async handleCreateSelectedVault(
     lockedAsset: RegisteredAccountAsset,
-    debtAsset?: Nullable<RegisteredAccountAsset>
+    debtAsset: RegisteredAccountAsset
   ): Promise<void> {
     await this.selectCollateral(lockedAsset.address);
+    await this.selectDebt(debtAsset.address);
     this.showCreateVaultDialog = true;
   }
 

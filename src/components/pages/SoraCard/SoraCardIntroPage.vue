@@ -81,9 +81,9 @@
 import { mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Prop } from 'vue-property-decorator';
 
-import TranslationMixin from '@/components/mixins/TranslationMixin';
-import { PageNames, Components, StoreLinks } from '@/consts';
-import router, { lazyComponent } from '@/router';
+import InternalConnectMixin from '@/components/mixins/InternalConnectMixin';
+import { Components, StoreLinks } from '@/consts';
+import { lazyComponent } from '@/router';
 import { getter, state } from '@/store/decorators';
 import { clearPayWingsKeysFromLocalStorage } from '@/utils/card';
 
@@ -98,7 +98,7 @@ type BuyButton = { type: BuyButtonType; text: string; button: 'primary' | 'secon
     BalanceIndicator: lazyComponent(Components.BalanceIndicator),
   },
 })
-export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, TranslationMixin) {
+export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, InternalConnectMixin) {
   readonly MaintenanceStoreLinks = StoreLinks;
   readonly MaintenanceTitle = 'Web applications are under maintenance';
   readonly MaintenanceDesc = 'SORA Card is currently available in the SORA Wallet. Download to apply.';
@@ -111,7 +111,6 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
   @state.soraCard.wasEuroBalanceLoaded wasEuroBalanceLoaded!: boolean;
 
   @getter.soraCard.isEuroBalanceEnough isEuroBalanceEnough!: boolean;
-  @getter.wallet.account.isLoggedIn isLoggedIn!: boolean;
 
   showListDialog = false;
 
@@ -137,7 +136,7 @@ export default class SoraCardIntroPage extends Mixins(mixins.LoadingMixin, Trans
 
   handleClick(): void {
     if (!this.isLoggedIn) {
-      router.push({ name: PageNames.Wallet });
+      this.connectSoraWallet();
       return;
     }
 

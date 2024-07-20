@@ -1,5 +1,6 @@
 <template>
   <router-view
+    class="vaults-view-container"
     v-bind="{
       parentLoading: subscriptionsDataLoading,
       ...$attrs,
@@ -23,9 +24,8 @@ export default class VaultsContainer extends Mixins(SubscriptionsMixin) {
   @action.vault.subscribeOnAccountVaults private subscribeOnAccountVaults!: AsyncFnWithoutArgs;
   @action.vault.updateBalanceSubscriptions private updateBalanceSubscriptions!: AsyncFnWithoutArgs;
   @action.vault.getLiquidationPenalty private getLiquidationPenalty!: AsyncFnWithoutArgs;
-  @action.vault.subscribeOnBorrowTax private subscribeOnBorrowTax!: AsyncFnWithoutArgs;
+  @action.vault.subscribeOnBorrowTaxes private subscribeOnBorrowTaxes!: AsyncFnWithoutArgs;
   @action.vault.subscribeOnDebtCalculation private subscribeOnDebtCalculation!: AsyncFnWithoutArgs;
-  @action.vault.subscribeOnBadDebt private subscribeOnBadDebt!: AsyncFnWithoutArgs;
   @action.vault.reset private reset!: AsyncFnWithoutArgs;
 
   @getter.settings.kensetsuEnabled kensetsuEnabled!: Nullable<boolean>;
@@ -43,11 +43,16 @@ export default class VaultsContainer extends Mixins(SubscriptionsMixin) {
       this.subscribeOnAccountVaults,
       this.updateBalanceSubscriptions,
       this.getLiquidationPenalty,
-      this.subscribeOnBorrowTax,
+      this.subscribeOnBorrowTaxes,
       this.subscribeOnDebtCalculation,
-      this.subscribeOnBadDebt,
     ]);
     this.setResetSubscriptions([this.reset]);
   }
 }
 </script>
+
+<style lang="scss">
+.vaults-view-container > .el-loading-mask {
+  margin: -$inner-spacing-medium; // compensate for the padding of the .app-content from App.vue
+}
+</style>

@@ -157,7 +157,6 @@
         "connectionError": "Došlo je do pogreške prilikom povezivanja novčanika. Možete ponovno pokušati povezati novčanik putem {extension}"
     },
     "connection": {
-        "title": "Račun mreže {Sora}",
         "text": "Za upravljanje imovinom i potpisivanje transakcija na {Sora} mora biti povezan račun. {Sora} računi mogu se kreirati i povezati pomoću naših integriranih novčanika ili proširenja preglednika.",
         "noAccounts": "U proširenju preglednika {extension} nije pronađen račun. Dodajte račun i pokušajte ponovno.",
         "selectAccount": "Odaberite račun za rad",
@@ -181,7 +180,6 @@
         }
     },
     "wallet": {
-        "title": "Račun mreže {Sora}",
         "WalletAssets": "Sredstva",
         "createToken": "@:createTokenText",
         "WalletHistory": "Aktivnost"
@@ -212,7 +210,8 @@
         "walletAddress": "Adresa novčanika",
         "delete": "Izbriši račun",
         "rename": "Preimenuj račun",
-        "export": "Izvezi .json"
+        "export": "Izvezi .json",
+        "accountTitle": "Račun"
     },
     "history": {
         "clearHistory": "Očistite povijest",
@@ -397,7 +396,6 @@
         "Swap": "Zamijenite",
         "Pool": "Pul",
         "Bridge": "@:bridgeText",
-        "About": "O",
         "Stats": "Statistika",
         "Wallet": "Novčanik",
         "AddLiquidity": "Dodajte likvidnost",
@@ -507,44 +505,6 @@
     "transfers": {
         "from": "Od",
         "to": "Do"
-    },
-    "about": {
-        "title": "DEX za interoperabilnu budućnost.",
-        "description": "Međulančana razmjena sredstava, jednostavno stvaranje i popisivanje novih sredstava i najlakše zamjene ikad. Interoperabilna budućnost {Polkadot} je ovdje, a mi smo na čelu!",
-        "trading": {
-            "title": "Brže trgovanje",
-            "first": "{AppName} je protokol AMM DEX koji se ne sastoji od skrbnika za zamjenu tokena na temelju relejnih lanaca {Polkadot} i {Kusama}, parachainova {Polkadot} i {Kusama} i blokova koji su izravno povezani mostovima.",
-            "second": "{AppName} uklanja pouzdane posrednike i pruža mogućnost bržeg trgovanja",
-            "third": "{AppName} je projekt zajednice i razvojni programeri surađuju na otvorenom kodu koristeći"
-        },
-        "liquidity": {
-            "title": "Bezgranična likvidnost",
-            "first": "{AppName} kombinira više izvora likvidnosti pod zajedničkim algoritmom za prikupljanje likvidnosti, koji djeluju potpuno na lancu, na način od povjerenja i decentraliziran.",
-            "second": "Kada trgovci pozovu funkciju zamjene, algoritam za prikupljanje likvidnosti ispunit će račune koristeći najbolje ponude iz svih izvora likvidnosti. Izvori likvidnosti mogu biti drugi DEX-ovi, knjige narudžbi ili drugi izvori vođeni API-jem.",
-            "third": "Budući da je {AppName} projekt otvorenog koda, svatko može dodati više izvora likvidnosti doprinoseći bazi koda {AppName}."
-        },
-        "swap": {
-            "title": "Zamijenite bilo koji token",
-            "first": "Prijeđite preko granica trenutnih DEX-a dodavanjem tokena iz {Polkadot} ekosustava, kao i drugih blockchaina.",
-            "second": "Stvorite, navedite i trgujte vlastitim tokenima na mreži {Sora}.",
-            "third": "Naša temeljna infrastruktura koristi Parity Substrate, koji je skalabilniji od {Ethereum} i ne koristi skupo rudarenje za konsenzus."
-        },
-        "pswap": {
-            "title": "PSWAP tokeni",
-            "first": "PSWAP je stvoren upravljanjem zajednicom glasovanjem o njegovu oslobađanju. To je korisni i upravljački token koji se koristi za nagrađivanje pružatelja likvidnosti na {AppName}. Za razliku od većine drugih nagradnih tokena, PSWAP se spaljuje transakcijama i smanjuje opskrbu tijekom vremena.",
-            "second": "Naknada od {percent}% za svaku zamjenu na {AppName} DEX-u koristi se za otkup PSWAP tokena, koji se zatim spaljuju. Isprva se 90% spaljenih PSWAP tokena remintira kako bi se dodijelilo pružateljima likvidnosti, ali s vremenom će se taj postotak smanjiti na 35% nakon 4 godine."
-        },
-        "links": {
-            "first": {
-                "title": "Postanite {Sora} Validator",
-                "desc": "Osigurajte budućnost {Sora} mreže i decentraliziranih aplikacija kao što je {AppName} i usput zaradite nagrade tako što ćete postati {Sora} validator."
-            },
-            "second": {
-                "title": "Spojite lanac na {Sora}",
-                "desc": "Povećajte decentraliziranu svjetsku ekonomiju povezivanjem više lanaca sa {Sora}-om i {AppName} pomoću {Hashi} most protokola."
-            }
-        },
-        "network": "{AppName} je izgrađen na {Sora} mreži, s naglaskom na interoperabilnost za povezivanje ostatka kripto ekosustava s {Polkadot}."
     },
     "exchange": {
         "Swap": "Zamijenite",
@@ -903,7 +863,8 @@
         "switchTheme": "Prijeđite na {theme} modus",
         "switchLanguage": "Odaberite jezik",
         "showDisclaimer": "Prikaži Odricanje od odgovornosti",
-        "hideDisclaimer": "Sakrij izjavu o odricanju odgovornosti"
+        "hideDisclaimer": "Sakrij izjavu o odricanju odgovornosti",
+        "selectCurrency": "Odaberite Valutu"
     },
     "sentText": "Poslano",
     "learnMoreText": "Saznajte više",
@@ -938,7 +899,8 @@
             "bondMore": "Bond više",
             "bond": "Bond",
             "unbond": "Unbond",
-            "copyLink": "Kopirajte link"
+            "copyLink": "Kopirajte link",
+            "shareLink": "Podijeli"
         },
         "transactionDetails": "Detalji transakcije",
         "receivedRewards": "Primljene nagrade",
@@ -970,7 +932,9 @@
             "info": "Kada platite naknadu za transakciju, <br\/> 10% će ići vašem refereru",
             "referredLablel": "Preporučena adresa"
         },
-        "insufficientBondedAmount": "Da biste pozvali više preporuka, povežite najmanje {inviteUserFee} XOR"
+        "insufficientBondedAmount": "Da biste pozvali više preporuka, povežite najmanje {inviteUserFee} XOR",
+        "inviteViaTelegram": "Pozovi putem {Telegram}",
+        "welcomeMessage": "\nPridruži mi se na {Polkaswap}!\n\nOtkrij stilizirani {DEX} koji ti omogućuje zamjenu desetaka tokena s međulančanim zamjenama, knjigom narudžbi i mnoštvom nagrada!\n\n🎁 Pozovi prijatelje i zaradi 10% njihovih trgovačkih naknada\n\nVidimo se tamo!"
     },
     "transactionDetailsText": "Detalji transakcije",
     "code": {
@@ -1637,7 +1601,8 @@
             "borrowMoreThanAvailable": "Dostupan dug premašen",
             "insufficientCollateral": "Nedovoljan kolateral",
             "enterRepayDebt": "Unesite vraćanje duga",
-            "repayMoreThanDebt": "Dug preplaćen"
+            "repayMoreThanDebt": "Dug preplaćen",
+            "incorrectCollateral": "Par tokena nije podržan"
         },
         "interest": "Kamata",
         "interestDescription": "Godišnja naknada naplaćena na iznos povučen iz vašeg sefa, izračunata kao postotak. Ova naknada nadoknađuje rizike i fluktuacije na tržištu.",
@@ -1659,9 +1624,9 @@
         "overallTotalDebtDescription": "Ukupan iznos trenutnog duga na svim pozicijama zaduživanja na platformi {Kensetsu}.",
         "overallBadDebt": "Loš dug",
         "overallBadDebtDescription": "Dio duga koji se vjerojatno neće naplatiti zbog neispunjenja obveza zajmoprimca ili nedostatnog kolaterala.",
-        "overallBorrowTax": "Porez na zaduživanje",
-        "overallBorrowTaxDescription": "Naknada naplaćena na posuđena sredstva, izračunata kao postotak posuđenog iznosa. Porez na zaduživanje koristi se za program poticaja za otkup {KEN} tokena.",
-        "ltvMaxTooltip": "Najveći iznos pozajmljivanja koji se može pružiti u odnosu na procijenjenu vrijednost imovine koja se koristi kao kolateral."
+        "ltvMaxTooltip": "Najveći iznos pozajmljivanja koji se može pružiti u odnosu na procijenjenu vrijednost imovine koja se koristi kao kolateral.",
+        "overallAvailable": "Ukupno dostupno",
+        "overallAvailableDescription": "Ukupan iznos sredstava dostupnih za posudbu na platformi {Kensetsu}."
     },
     "accountSettings": {
         "title": "POSTAVLJANJE RAČUNA",
@@ -1678,5 +1643,9 @@
         },
         "enterPassword": "Upišite lozinku",
         "googleOnly": "Samo {Google} računi"
+    },
+    "currencyDialog": {
+        "currency": "Valuta",
+        "searchPlaceholder": "Pretražujte prema nazivu valute ili simbolu"
     }
 }

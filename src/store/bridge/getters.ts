@@ -7,12 +7,17 @@ import { defineGetters } from 'direct-vuex';
 import { ZeroStringValue } from '@/consts';
 import { bridgeGetterContext } from '@/store/bridge';
 import { subBridgeApi } from '@/utils/bridge/sub/api';
+import type { SubNetworksConnector } from '@/utils/bridge/sub/classes/adapter';
 
 import type { BridgeState } from './types';
 import type { IBridgeTransaction, CodecString } from '@sora-substrate/util';
 import type { RegisteredAccountAsset } from '@sora-substrate/util/build/assets/types';
 import type { SubNetwork } from '@sora-substrate/util/build/bridgeProxy/sub/types';
 import type { BridgeNetworkId } from '@sora-substrate/util/build/bridgeProxy/types';
+
+const chainAddress = (address: string, connector: SubNetworksConnector) => {
+  return connector.network?.subNetworkConnection.nodeIsConnected ? connector.network.formatAddress(address) : address;
+};
 
 const getters = defineGetters<BridgeState>()({
   asset(...args): Nullable<RegisteredAccountAsset> {
@@ -119,25 +124,21 @@ const getters = defineGetters<BridgeState>()({
   sender(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
     const { address: soraAddress } = rootState.wallet.account;
-    const { evmAddress } = rootState.web3;
+    const { evmAddress, subAddress } = rootState.web3;
 
-    if (getters.isSubBridge) {
-      if (state.isSoraToEvm) return soraAddress;
+    if (state.isSoraToEvm) return soraAddress;
 
-      return state.subBridgeConnector.network?.subNetworkConnection.nodeIsConnected
-        ? state.subBridgeConnector.network.formatAddress(soraAddress)
-        : soraAddress;
-    }
-
-    return state.isSoraToEvm ? soraAddress : evmAddress;
+    return getters.isSubBridge ? chainAddress(subAddress, state.subBridgeConnector) : evmAddress;
   },
 
   senderName(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
-    if (getters.isSubBridge) {
-      return rootState.wallet.account.name;
-    }
-    return state.isSoraToEvm ? rootState.wallet.account.name : '';
+    const { name: soraName } = rootState.wallet.account;
+    const { subAddressName } = rootState.web3;
+
+    if (state.isSoraToEvm) return soraName;
+
+    return getters.isSubBridge ? subAddressName : '';
   },
 
   recipient(...args): string {
@@ -145,23 +146,19 @@ const getters = defineGetters<BridgeState>()({
     const { address: soraAddress } = rootState.wallet.account;
     const { evmAddress, subAddress } = rootState.web3;
 
-    if (getters.isSubBridge) {
-      if (!state.isSoraToEvm) return subAddress;
+    if (!state.isSoraToEvm) return soraAddress;
 
-      return state.subBridgeConnector.network?.subNetworkConnection.nodeIsConnected
-        ? state.subBridgeConnector.network.formatAddress(subAddress)
-        : subAddress;
-    }
-
-    return state.isSoraToEvm ? evmAddress : soraAddress;
+    return getters.isSubBridge ? chainAddress(subAddress, state.subBridgeConnector) : evmAddress;
   },
 
   recipientName(...args): string {
     const { state, rootState, getters } = bridgeGetterContext(args);
-    if (getters.isSubBridge) {
-      return rootState.web3.subAddressName;
-    }
-    return state.isSoraToEvm ? '' : rootState.wallet.account.name;
+    const { name: soraName } = rootState.wallet.account;
+    const { subAddressName } = rootState.web3;
+
+    if (!state.isSoraToEvm) return soraName;
+
+    return getters.isSubBridge ? subAddressName : '';
   },
 
   isEthBridge(...args): boolean {
