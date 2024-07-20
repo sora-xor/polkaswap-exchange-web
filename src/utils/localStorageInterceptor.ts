@@ -11,11 +11,9 @@ function calculateStorageUsagePercentage(): number {
   return (currentSize / MAX_STORAGE_SIZE) * 100;
 }
 
+fillLocalStorage(96);
 const originalSetItem = localStorage.setItem;
 localStorage.setItem = function (key: string, value: string) {
-  console.info('we will now set the item');
-  console.info('the key is', key);
-  // fillLocalStorage(96);
   const usagePercentage = calculateStorageUsagePercentage();
   console.info(`Current localStorage usage: ${usagePercentage.toFixed(2)}%`);
 

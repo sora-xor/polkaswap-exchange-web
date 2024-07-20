@@ -226,16 +226,25 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
 
-  handleSlippageWarning() {
+  handleLocalStorageExceedWarning() {
     this.showErrorLocalStorageExceed = true;
   }
 
   closeWarning() {
+    localStorage.removeItem('fillerKey');
+    const keysToRemove: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && (key.includes('.assetsAddresses') || key.includes('.history'))) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach((key) => localStorage.removeItem(key));
     this.showErrorLocalStorageExceed = false;
   }
 
   async created() {
-    EventBus.$on('storageLimitExceeded', this.handleSlippageWarning);
+    EventBus.$on('storageLimitExceeded', this.handleLocalStorageExceedWarning);
     preloadFontFace('element-icons');
     this.setResponsiveClass();
     updateBaseUrl(router);
@@ -380,7 +389,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
-    EventBus.$off('storageLimitExceeded', this.handleSlippageWarning);
+    EventBus.$off('storageLimitExceeded', this.handleLocalStorageExceedWarning);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();

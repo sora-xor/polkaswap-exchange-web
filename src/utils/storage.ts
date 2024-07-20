@@ -31,7 +31,7 @@ export function fillLocalStorage(targetPercentage: number): void {
     return;
   }
 
-  const filler = 'x'.repeat(sizeToFill / 2); // Each character is 2 bytes (UTF-16)
+  const filler = 'x'.repeat(sizeToFill / 2);
   try {
     localStorage.setItem('fillerKey', filler);
     console.info(`Filled localStorage to approximately ${targetPercentage}%`);
