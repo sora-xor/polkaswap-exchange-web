@@ -122,25 +122,11 @@ import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import { ZeroStringValue } from '@/consts';
 import { getter, state } from '@/store/decorators';
+import type { IMAGE_MIME_TYPES } from '@/types/image';
+import { IpfsStorage } from '@/utils/ipfsStorage';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
-
-export enum IMAGE_EXTENSIONS {
-  SVG = '.svg',
-  PNG = '.png',
-  JPEG = '.jpeg',
-  WEBP = '.webp',
-  GIF = '.gif',
-}
-
-export const IMAGE_MIME_TYPES = {
-  [IMAGE_EXTENSIONS.SVG]: 'image/svg+xml',
-  [IMAGE_EXTENSIONS.PNG]: 'image/png',
-  [IMAGE_EXTENSIONS.JPEG]: 'image/jpeg',
-  [IMAGE_EXTENSIONS.WEBP]: 'image/webp',
-  [IMAGE_EXTENSIONS.GIF]: 'image/gif',
-};
 
 export enum Step {
   FillMetaInfo = 'FillMetaInfo',
@@ -272,7 +258,7 @@ export default class CreateNftToken extends Mixins(
       if (this.isValidType(buffer.type)) {
         this.badSource = false;
         this.contentSrcLink = url;
-        this.tokenContentIpfsParsed = ''; // IpfsStorage.getIpfsPath(url);
+        this.tokenContentIpfsParsed = IpfsStorage.getIpfsPath(url);
       } else {
         this.badSource = true;
         this.contentSrcLink = '';
@@ -288,7 +274,7 @@ export default class CreateNftToken extends Mixins(
   async upload(file: File): Promise<void> {
     this.imageLoading = true;
     this.file = file;
-    this.contentSrcLink = ''; // await IpfsStorage.fileToBase64(file);
+    this.contentSrcLink = await IpfsStorage.fileToBase64(file);
     this.badSource = false;
     this.imageLoading = false;
     this.tokenContentLink = '';
@@ -414,72 +400,6 @@ export default class CreateNftToken extends Mixins(
     width: 176px;
     object-fit: cover;
     border-radius: calc(var(--s-border-radius-mini) * 0.75);
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-.dashboard-create {
-  &-token {
-    &_desc {
-      color: var(--s-color-base-content-primary);
-      font-size: var(--s-font-size-extra-small);
-      font-weight: 300;
-      line-height: var(--s-line-height-base);
-      padding: var(--s-basic-spacing) #{$basic-spacing-small} #{$basic-spacing-medium};
-    }
-    &_supply-block {
-      @include switch-block;
-      padding: 0 #{$basic-spacing-small};
-    }
-    &_action {
-      margin-top: #{$basic-spacing-medium};
-      width: 100%;
-    }
-    &_type {
-      margin-left: 8px;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--s-color-base-content-secondary);
-    }
-    &_divider {
-      margin: 0 0 20px 0;
-    }
-  }
-
-  .input-textarea {
-    margin-bottom: 16px;
-  }
-
-  .el-textarea {
-    height: 54px;
-
-    &__inner {
-      resize: none;
-      scrollbar-width: none; /* Firefox - not customizable */
-
-      &:hover::-webkit-scrollbar {
-        width: 4px;
-
-        &-thumb {
-          background-color: var(--s-color-base-content-tertiary);
-          border-radius: 6px;
-        }
-      }
-
-      &::-webkit-scrollbar {
-        width: 4px;
-
-        &-track {
-          margin-bottom: calc(var(--s-size-small) * 0.25);
-        }
-      }
-    }
-  }
-
-  &__button {
-    width: 100%;
-    margin-bottom: 16px;
   }
 }
 </style>

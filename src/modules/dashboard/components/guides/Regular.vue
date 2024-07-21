@@ -1,5 +1,8 @@
 <template>
-  <div>Regular guide</div>
+  <div>
+    Create your first token (available variations: NFT and SBT)
+    <p>Launch your unique token efficiently and securely using the established infrastructure of the SORA Network.</p>
+  </div>
 </template>
 
 <script lang="ts">

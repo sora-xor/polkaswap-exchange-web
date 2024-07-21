@@ -2,9 +2,13 @@
   <div>
     <create-token-start v-if="showIntroPage" @select-type="selectType" />
     <div v-else>
-      <create-regular-token v-if="type === AssetType.CreateRegularToken" @go-back="showIntroPage = true" />
-      <create-nft-token v-else-if="type === AssetType.CreateNftToken" @go-back="showIntroPage = true" />
-      <create-sbt-token v-else-if="type === AssetType.CreateSbtToken" />
+      <create-regular-token v-if="type === AssetType.CreateRegularToken" @go-back="showStart" />
+      <create-nft-token v-else-if="type === AssetType.CreateNftToken" @go-back="showStart" />
+      <create-sbt-token
+        v-else-if="type === AssetType.CreateSbtToken"
+        @go-back="showStart"
+        @go-to-create="openRegulatedCreation"
+      />
     </div>
   </div>
 </template>
@@ -38,9 +42,17 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
   type = AssetType.CreateRegularToken;
   showIntroPage = true;
 
+  showStart(): void {
+    this.showIntroPage = true;
+  }
+
   selectType(type: AssetType): void {
     this.type = type;
     this.showIntroPage = false;
+  }
+
+  openRegulatedCreation(): void {
+    this.type = AssetType.CreateRegularToken;
   }
 }
 </script>
@@ -52,5 +64,151 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
   &__tab {
     margin-bottom: #{$basic-spacing-medium};
   }
+}
+</style>
+
+<style lang="scss">
+.dashboard-create {
+  &-token {
+    &_desc {
+      color: var(--s-color-base-content-primary);
+      font-size: var(--s-font-size-extra-small);
+      font-weight: 300;
+      line-height: var(--s-line-height-base);
+      padding: var(--s-basic-spacing) #{$basic-spacing-small} #{$basic-spacing-medium};
+    }
+    &_supply-block {
+      @include switch-block;
+      padding: 0 #{$basic-spacing-small};
+    }
+    &_action {
+      margin-top: #{$basic-spacing-medium};
+      width: 100%;
+    }
+    &_type {
+      margin-left: 8px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--s-color-base-content-secondary);
+    }
+    &_divider {
+      margin: 0 0 20px 0;
+    }
+  }
+
+  .input-textarea {
+    margin-bottom: 16px;
+  }
+
+  .el-textarea {
+    height: 54px;
+
+    &__inner {
+      resize: none;
+      scrollbar-width: none; /* Firefox - not customizable */
+
+      &:hover::-webkit-scrollbar {
+        width: 4px;
+
+        &-thumb {
+          background-color: var(--s-color-base-content-tertiary);
+          border-radius: 6px;
+        }
+      }
+
+      &::-webkit-scrollbar {
+        width: 4px;
+
+        &-track {
+          margin-bottom: calc(var(--s-size-small) * 0.25);
+        }
+      }
+    }
+  }
+
+  &__button {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+}
+</style>
+
+<style lang="scss">
+.sbt-instructions {
+  display: flex;
+  width: 100%;
+
+  &__section {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .text {
+      padding-top: $basic-spacing;
+      width: 400px;
+    }
+
+    &:last-child .text {
+      margin-bottom: $basic-spacing;
+    }
+
+    .line {
+      height: 1px;
+      margin-top: $basic-spacing;
+      background-color: var(--s-color-base-border-secondary);
+
+      &--last {
+        visibility: hidden;
+        margin: 0;
+      }
+    }
+  }
+
+  &__number {
+    display: block;
+    width: var(--s-size-mini);
+    height: var(--s-size-mini);
+    font-weight: 600;
+    font-size: 24px;
+    color: #a19a9d;
+    margin-right: $basic-spacing;
+    margin-top: 4px;
+  }
+
+  &__point {
+    font-weight: 450;
+    font-size: var(--s-font-size-big);
+  }
+
+  &__text-info {
+    width: 120%;
+  }
+
+  &__point-desc {
+    color: var(--s-color-base-content-secondary);
+    margin-top: 3px;
+    display: block;
+    margin-right: 20px;
+  }
+
+  &__point-note {
+    margin-top: $inner-spacing-mini;
+    margin-right: $inner-spacing-mini;
+    font-size: var(--s-font-size-small);
+    font-weight: 550;
+    color: #efac47;
+  }
+
+  .s-icon-basic-check-mark-24 {
+    color: #fff;
+    position: relative;
+    margin-left: 3px;
+  }
+}
+
+.sbt-title {
+  margin-top: 16px;
+  font-weight: 700;
+  font-size: 22px;
 }
 </style>

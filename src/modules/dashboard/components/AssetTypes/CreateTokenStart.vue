@@ -79,6 +79,7 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
 
   &__btn-start {
     width: 100%;
+    font-size: 18px;
   }
 }
 </style>
