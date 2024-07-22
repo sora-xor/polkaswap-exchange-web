@@ -38,7 +38,7 @@
     <select-sora-account-dialog />
     <app-browser-notifs-local-storage-override
       :visible.sync="showErrorLocalStorageExceed"
-      @delete-data-local-storage="closeWarning"
+      @delete-data-local-storage="clearLocalStorage"
     >
     </app-browser-notifs-local-storage-override>
   </s-design-system-provider>
@@ -231,7 +231,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
     this.showErrorLocalStorageExceed = true;
   }
 
-  closeWarning() {
+  clearLocalStorage() {
     // TODO delete later
     // localStorage.removeItem('fillerKey');
 
