@@ -28,7 +28,7 @@
                 <el-checkbox :label="asset.address">
                   <asset-list-item :asset="asset">
                     <template #default>
-                      <span class="label">Regulated asset</span>
+                      <span class="label">Regulated</span>
                     </template>
                   </asset-list-item>
                   <s-divider v-if="index < ownerRegulatedAssets.length - 1" />
@@ -123,8 +123,36 @@
       </div>
       <div v-else-if="step === Step.SbtTxSign">
         <div class="dashboard-create-sbt-preview">
-          <span>SBT</span>
-          <span>SBTname</span>
+          <div class="preview-image">
+            <img
+              :src="'https://ipfs.io/ipfs/bafybeie5zkz3dvhajdipbj6ldq4az4qn5jkgqrn5otsvkprtx6qufcn7oe/OFFICIAL%20DEO%20ARENA%20BOOST%20NFT%20final%20version%20.png'"
+            />
+          </div>
+          <div class="meta">
+            <span class="symbol">SBT</span>
+            <span class="name">SBTname</span>
+          </div>
+        </div>
+        <div class="dashboard-create-regulated-assets-list">
+          <div class="assets-list-subtitle">ATTACHED REGULATED ASSETS <span class="number">2</span></div>
+          <div v-for="(asset, index) in ownerRegulatedAssets" :key="index" class="assets-list">
+            <asset-list-item :asset="asset">
+              <template #default>
+                <s-icon class="delete-icon" name="basic-trash-24" @click.native="removeAsset(asset)" />
+              </template>
+            </asset-list-item>
+            <s-divider v-if="index < ownerRegulatedAssets.length - 1" />
+          </div>
+          <div class="dashboard-create-regulated-asset">
+            <s-button
+              class="el-dialog__close"
+              type="action"
+              icon="plus-16"
+              :disabled="loading"
+              @click="step = Step.AssetsChoice"
+            />
+            <span class="create">{{ 'Add another regulated asset' }}</span>
+          </div>
         </div>
       </div>
       <s-button
@@ -135,17 +163,19 @@
       >
         Continue
       </s-button>
+      <wallet-fee v-if="step === Step.SbtTxSign" :value="fee" />
     </div>
   </wallet-base>
 </template>
 
 <script lang="ts">
+import { FPNumber, Operation } from '@sora-substrate/util';
 import { mixins, components, WALLET_CONSTS, api } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import SubscriptionsMixin from '@/components/mixins/SubscriptionsMixin';
 import { action, getter, state } from '@/store/decorators';
-import type { IMAGE_MIME_TYPES } from '@/types/image';
+import { IMAGE_MIME_TYPES } from '@/types/image';
 import { IpfsStorage } from '@/utils/ipfsStorage';
 
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -163,9 +193,14 @@ enum Step {
     SearchInput: components.SearchInput,
     AssetListItem: components.AssetListItem,
     FileUploader: components.FileUploader,
+    WalletFee: components.WalletFee,
   },
 })
-export default class CreateSbtToken extends Mixins(mixins.TransactionMixin, SubscriptionsMixin) {
+export default class CreateSbtToken extends Mixins(
+  mixins.TransactionMixin,
+  mixins.NetworkFeeWarningMixin,
+  SubscriptionsMixin
+) {
   @state.dashboard.ownedAssetIds ownedAssetIds!: any;
   @getter.assets.assetDataByAddress getAsset!: (addr?: string) => Nullable<AccountAsset>;
   @getter.assets.xor xor!: Nullable<AccountAsset>;
@@ -185,7 +220,6 @@ export default class CreateSbtToken extends Mixins(mixins.TransactionMixin, Subs
   ownerExternalUrl = '';
 
   // image
-  showFee = true;
   imageLoading = false;
   fileExceedsLimit = false;
   badSource = false;
@@ -212,6 +246,18 @@ export default class CreateSbtToken extends Mixins(mixins.TransactionMixin, Subs
 
   set checkList(list) {
     this.selectedAssetsList = list;
+  }
+
+  get fee(): FPNumber {
+    return this.getFPNumberFromCodec(this.networkFees.RegisterAsset);
+  }
+
+  get showFee(): boolean {
+    return (
+      !(this.tokenSymbol && this.tokenName.trim() && this.tokenDescription.trim()) ||
+      this.badSource ||
+      !(this.file || this.tokenContentLink)
+    );
   }
 
   isValidType(type: string): boolean {
@@ -317,6 +363,10 @@ export default class CreateSbtToken extends Mixins(mixins.TransactionMixin, Subs
     }
   }
 
+  removeAsset(asset: AccountAsset): void {
+    console.log('asset', asset);
+  }
+
   handleBack(): void {
     switch (this.step) {
       case Step.AssetsChoice:
@@ -368,7 +418,7 @@ export default class CreateSbtToken extends Mixins(mixins.TransactionMixin, Subs
       background-color: var(--s-color-base-on-accent);
       color: var(--s-color-base-content-secondary);
       font-weight: 650;
-      font-size: 13px;
+      font-size: 12px;
       border-radius: 16px;
       padding: 4px 8px;
     }
@@ -382,6 +432,15 @@ export default class CreateSbtToken extends Mixins(mixins.TransactionMixin, Subs
       .el-checkbox {
         display: flex;
         align-items: center;
+        width: 100%;
+
+        &-group {
+          width: 100%;
+        }
+
+        &__label {
+          width: 100%;
+        }
 
         &__inner {
           border-radius: 50%;
@@ -391,8 +450,60 @@ export default class CreateSbtToken extends Mixins(mixins.TransactionMixin, Subs
   }
 
   &-sbt-preview {
-    background-color: var(--s-color-base-border-secondary);
+    display: flex;
+    background-color: var(--s-color-base-background-hover);
     padding: 16px;
+    border-radius: 16px;
+
+    .preview-image {
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      background-color: var(--s-color-base-on-accent);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 16px;
+
+      img {
+        width: 64px;
+      }
+    }
+
+    .symbol {
+      font-size: 18px;
+      font-weight: 700;
+      display: block;
+    }
+
+    .name {
+      color: var(--s-color-base-content-secondary);
+      font-size: 16px;
+      display: block;
+    }
+  }
+
+  &-regulated-assets-list {
+    .assets-list-subtitle {
+      margin-top: 24px;
+      text-transform: uppercase;
+      align-self: flex-start;
+      font-weight: 650;
+      color: var(--s-color-base-content-secondary);
+
+      .number {
+        margin-left: 8px;
+        color: var(--s-color-base-content-tertiary);
+      }
+    }
+
+    .delete-icon {
+      color: var(--s-color-theme-accent);
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 
   &__button {

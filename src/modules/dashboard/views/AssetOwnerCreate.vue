@@ -130,6 +130,25 @@ export default class CreateToken extends Mixins(mixins.TranslationMixin) {
     width: 100%;
     margin-bottom: 16px;
   }
+
+  .preview-image-create-nft {
+    margin: #{$basic-spacing-medium} 0;
+    height: 200px;
+
+    @include drag-drop-content;
+
+    .image {
+      margin: 0 auto;
+      height: 176px;
+    }
+
+    &__content {
+      height: 176px;
+      width: 176px;
+      object-fit: cover;
+      border-radius: calc(var(--s-border-radius-mini) * 0.75);
+    }
+  }
 }
 </style>
 

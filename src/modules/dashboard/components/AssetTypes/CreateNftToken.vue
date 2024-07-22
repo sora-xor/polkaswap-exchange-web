@@ -122,7 +122,7 @@ import { Component, Mixins, Ref } from 'vue-property-decorator';
 
 import { ZeroStringValue } from '@/consts';
 import { getter, state } from '@/store/decorators';
-import type { IMAGE_MIME_TYPES } from '@/types/image';
+import { IMAGE_MIME_TYPES } from '@/types/image';
 import { IpfsStorage } from '@/utils/ipfsStorage';
 
 import type { CodecString, NetworkFeesObject } from '@sora-substrate/util';
@@ -381,25 +381,6 @@ export default class CreateNftToken extends Mixins(
         }
       }
     }
-  }
-}
-
-.preview-image-create-nft {
-  margin: #{$basic-spacing-medium} 0;
-  height: 200px;
-
-  @include drag-drop-content;
-
-  .image {
-    margin: 0 auto;
-    height: 176px;
-  }
-
-  &__content {
-    height: 176px;
-    width: 176px;
-    object-fit: cover;
-    border-radius: calc(var(--s-border-radius-mini) * 0.75);
   }
 }
 </style>

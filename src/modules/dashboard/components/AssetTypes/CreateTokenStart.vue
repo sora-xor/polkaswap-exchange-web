@@ -19,8 +19,12 @@ import { components, mixins } from '@soramitsu/soraneo-wallet-web';
 import { Component, Mixins } from 'vue-property-decorator';
 
 import { DashboardComponents, DashboardPageNames } from '@/modules/dashboard/consts';
-import { dashboardLazyComponent, dashboardLazyView } from '@/modules/dashboard/router';
+import { dashboardLazyComponent } from '@/modules/dashboard/router';
 import router from '@/router';
+
+import GuideNft from '../guides/Nft.vue';
+import GuideRegular from '../guides/Regular.vue';
+import GuideSbt from '../guides/Sbt.vue';
 
 export enum AssetType {
   CreateRegularToken = 'CreateRegularToken',
@@ -34,9 +38,9 @@ export enum AssetType {
     CreateRegularToken: dashboardLazyComponent(DashboardComponents.CreateRegularToken),
     CreateNftToken: dashboardLazyComponent(DashboardComponents.CreateNftToken),
     CreateSbtToken: dashboardLazyComponent(DashboardComponents.CreateSbtToken),
-    GuideRegular: dashboardLazyComponent(DashboardComponents.GuideRegular),
-    GuideNft: dashboardLazyComponent(DashboardComponents.GuideNft),
-    GuideSbt: dashboardLazyComponent(DashboardComponents.GuideSbt),
+    GuideRegular,
+    GuideNft,
+    GuideSbt,
   },
 })
 export default class CreateToken extends Mixins(mixins.TranslationMixin) {
