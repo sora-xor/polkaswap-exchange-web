@@ -13,14 +13,38 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
   startSubscriptionsList: Array<AsyncFnWithoutArgs> = [];
   resetSubscriptionsList: Array<FnWithoutArgs> = [];
 
-  @Watch('isLoggedIn')
-  @Watch('nodeIsConnected')
-  private async restartSubscriptions(value: boolean): Promise<void> {
-    if (value) {
-      await this.updateSubscriptions();
-    } else {
-      await this.resetSubscriptions();
-    }
+  trackLogin = true;
+  watcherLogin: FnWithoutArgs | null = null;
+
+  protected watchLogin(): void {
+    if (!this.trackLogin) return;
+
+    this.watcherLogin = this.$watch(
+      () => this.isLoggedIn,
+      (value: boolean) => this.restartSubscriptions(value)
+    );
+  }
+
+  protected unwatchLogin(): void {
+    this.watcherLogin?.();
+    this.watcherLogin = null;
+  }
+
+  trackConnection = true;
+  watcherConnection: FnWithoutArgs | null = null;
+
+  protected watchConnection(): void {
+    if (!this.trackConnection) return;
+
+    this.watcherConnection = this.$watch(
+      () => this.nodeIsConnected,
+      (value: boolean) => this.restartSubscriptions(value)
+    );
+  }
+
+  protected unwatchConnection(): void {
+    this.watcherConnection?.();
+    this.watcherConnection = null;
   }
 
   get subscriptionsDataLoading(): boolean {
@@ -28,7 +52,14 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
   }
 
   beforeMount(): void {
+    this.watchLogin();
+    this.watchConnection();
     this.updateSubscriptions();
+  }
+
+  beforeDestroy(): void {
+    this.unwatchLogin();
+    this.unwatchConnection();
   }
 
   // TODO: [TECH]
@@ -66,5 +97,13 @@ export default class SubscriptionsMixin extends Mixins(mixins.LoadingMixin) {
 
   private async resetSubscriptions(): Promise<void> {
     await Promise.all(this.resetSubscriptionsList.map((fn) => fn?.()));
+  }
+
+  private async restartSubscriptions(value: boolean): Promise<void> {
+    if (value) {
+      await this.updateSubscriptions();
+    } else {
+      await this.resetSubscriptions();
+    }
   }
 }

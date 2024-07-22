@@ -60,12 +60,14 @@ export default class BridgeContainer extends Mixins(mixins.LoadingMixin, WalletC
     }
   }
 
+  @Watch('soraAddress')
   @Watch('externalAccount')
   private onExternalAccountChange(): void {
     this.updateExternalBalance();
   }
 
   async created(): Promise<void> {
+    this.trackLogin = false;
     this.setStartSubscriptions([this.subscribeOnBlockUpdates, this.updateOutgoingMaxLimit, this.updateBridgeApps]);
     this.setResetSubscriptions([this.resetBlockUpdatesSubscription, this.resetOutgoingMaxLimitSubscription]);
   }
