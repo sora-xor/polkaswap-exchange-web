@@ -255,7 +255,7 @@ export default class BuySellWidget extends Mixins(
   @state.orderBook.baseAssetAddress baseAssetAddress!: string;
   @state.orderBook.amountSliderValue sliderValue!: number;
   @state.orderBook.userLimitOrders userLimitOrders!: Array<LimitOrder>;
-  @state.orderBook.dexId dexId!: number;
+  @state.orderBook.dexId dexId!: DexId;
 
   @state.settings.slippageTolerance private slippageTolerance!: string;
   @state.swap.fromValue private fromValue!: string;
