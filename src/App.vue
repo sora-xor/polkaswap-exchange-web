@@ -67,15 +67,22 @@ import AppHeader from '@/components/App/Header/AppHeader.vue';
 import AppMenu from '@/components/App/Menu/AppMenu.vue';
 import NodeErrorMixin from '@/components/mixins/NodeErrorMixin';
 import SoraLogo from '@/components/shared/Logo/Sora.vue';
-import { PageNames, Components, Language, BreakpointClass, WalletPermissions } from '@/consts';
+import {
+  PageNames,
+  Components,
+  Language,
+  BreakpointClass,
+  WalletPermissions,
+  listOfRemoveForLocalStorage,
+  LOCAL_STORAGE_LIMIT_PERCENTAGE,
+} from '@/consts';
 import { getLocale } from '@/lang';
 import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
+import { calculateStorageUsagePercentage } from '@/utils/storage';
 import { TmaSdk } from '@/utils/telegram';
-
-import { EventBus } from './eventBus'; // Import the EventBus
 
 import type { FeatureFlags } from './store/settings/types';
 import type { EthBridgeSettings, SubNetworkApps } from './store/web3/types';
@@ -227,27 +234,29 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
 
-  handleLocalStorageExceedWarning() {
-    this.showErrorLocalStorageExceed = true;
+  handleLocalStorageChange() {
+    const usagePercentage = calculateStorageUsagePercentage();
+
+    console.info(`Current localStorage usage: ${usagePercentage.toFixed(2)}%`);
+    if (usagePercentage >= LOCAL_STORAGE_LIMIT_PERCENTAGE) {
+      this.showErrorLocalStorageExceed = true;
+    }
   }
 
   clearLocalStorage() {
-    // TODO delete later
     // localStorage.removeItem('fillerKey');
-
     const keysToRemove: string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key && (key.includes('.assetsAddresses') || key.includes('.history'))) {
+      if (key && listOfRemoveForLocalStorage.some((item) => key.includes(item))) {
         keysToRemove.push(key);
       }
     }
     keysToRemove.forEach((key) => localStorage.removeItem(key));
-    this.showErrorLocalStorageExceed = false;
   }
 
   async created() {
-    EventBus.$on('storageLimitExceeded', this.handleLocalStorageExceedWarning);
+    window.addEventListener('localStorageUpdated', this.handleLocalStorageChange);
     preloadFontFace('element-icons');
     this.setResponsiveClass();
     updateBaseUrl(router);
@@ -388,7 +397,7 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   async beforeDestroy(): Promise<void> {
-    EventBus.$off('storageLimitExceeded', this.handleLocalStorageExceedWarning);
+    window.removeEventListener('localStorageUpdated', this.handleLocalStorageChange);
     window.removeEventListener('resize', this.setResponsiveClassDebounced);
     await this.resetInternalSubscriptions();
     await this.resetNetworkSubscriptions();

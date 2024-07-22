@@ -1045,7 +1045,7 @@
     },
     "browserNotificationLocalStorageOverride": {
         "title": "Clear Localstorage",
-        "info": "The local storage is overloaded, to continue work with Polkaswap need to clean it",
+        "info": "The local storage is overloaded, to continue work with {AppName} need to clean it",
         "agree": "Yes, I agree"
     },
     "assetDeposit": "Asset balance has been deposited",

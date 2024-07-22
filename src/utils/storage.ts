@@ -1,13 +1,14 @@
 import { Storage } from '@sora-substrate/util';
 import { storage as soraStorage } from '@soramitsu/soraneo-wallet-web';
 
+import { LOCAL_STORAGE_MAX_SIZE } from '@/consts/index';
 export { settingsStorage } from '@soramitsu/soraneo-wallet-web';
 
 export default soraStorage;
 
 export const layoutsStorage = new Storage('layouts');
 
-export function calculateLocalStorageSize(): number {
+function calculateLocalStorageSize(): number {
   let totalSize = 0;
   for (const key in localStorage) {
     if (Object.hasOwn(localStorage, key)) {
@@ -18,6 +19,11 @@ export function calculateLocalStorageSize(): number {
     }
   }
   return totalSize;
+}
+
+export function calculateStorageUsagePercentage(): number {
+  const currentSize = calculateLocalStorageSize();
+  return (currentSize / LOCAL_STORAGE_MAX_SIZE) * 100;
 }
 
 // TODO delete later
