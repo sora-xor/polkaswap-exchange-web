@@ -10,7 +10,7 @@ export const layoutsStorage = new Storage('layouts');
 export function calculateLocalStorageSize(): number {
   let totalSize = 0;
   for (const key in localStorage) {
-    if (Object.prototype.hasOwnProperty.call(localStorage, key)) {
+    if (Object.hasOwn(localStorage, key)) {
       const value = localStorage[key];
       const keySize = key.length * 2;
       const valueSize = value.length * 2;
