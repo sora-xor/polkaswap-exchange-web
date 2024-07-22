@@ -69,6 +69,7 @@ import { components, mixins, WALLET_CONSTS, SUBQUERY_TYPES, getCurrentIndexer } 
 import { graphic } from 'echarts';
 import isEqual from 'lodash/fp/isEqual';
 import last from 'lodash/fp/last';
+import pick from 'lodash/fp/pick';
 import { Component, Mixins, Watch, Prop } from 'vue-property-decorator';
 
 import ChartSpecMixin from '@/components/mixins/ChartSpecMixin';
@@ -226,7 +227,11 @@ const mergeSnapshots = (a: Nullable<SnapshotItem>, b: Nullable<SnapshotItem>): S
   return { timestamp, price, volume };
 };
 
-const normalizeSnapshots = (collection: SnapshotItem[], difference: number, lastTimestamp: number): SnapshotItem[] => {
+const normalizeSnapshots = (
+  collection: readonly SnapshotItem[],
+  difference: number,
+  lastTimestamp: number
+): SnapshotItem[] => {
   const sample: SnapshotItem[] = [];
   for (const item of collection) {
     const buffer: SnapshotItem[] = [];
@@ -308,7 +313,7 @@ export default class PriceChartWidget extends Mixins(
   readonly FontWeightRate = WALLET_CONSTS.FontWeightRate;
 
   // ordered by timestamp DESC
-  private samplesBuffer: Record<string, readonly SnapshotItem[]> = {};
+  private snapshotBuffer: Record<string, readonly SnapshotItem[]> = {};
   private pageInfos: Record<string, Partial<PageInfo>> = {};
   private dataset: readonly SnapshotItem[] = [];
   private zoomStart = 0; // percentage of zoom start position
@@ -324,10 +329,6 @@ export default class PriceChartWidget extends Mixins(
   private priceUpdateRequestId = 0;
   private priceUpdateSubscription: Nullable<FnWithoutArgs> = null;
   private priceUpdateTimestampSync: Nullable<NodeJS.Timer | number> = null;
-
-  private snapshotBuffer: Record<string, Snapshot> = {};
-
-  private loadDataWhenReverse = false;
 
   chartType: CHART_TYPES = CHART_TYPES.LINE;
   selectedFilter: SnapshotFilter = LINE_CHART_FILTERS[0];
@@ -430,7 +431,8 @@ export default class PriceChartWidget extends Mixins(
 
   get isAllHistoricalPricesFetched(): boolean {
     return Object.entries(this.pageInfos).some(([address, pageInfo]) => {
-      return !pageInfo.hasNextPage && !this.samplesBuffer[address]?.length;
+      const bufferIsFilled = this.snapshotBuffer[address]?.length === this.dataset.length;
+      return !pageInfo.hasNextPage && bufferIsFilled;
     });
   }
 
@@ -742,27 +744,29 @@ export default class PriceChartWidget extends Mixins(
   }
 
   // ordered ty timestamp DESC
-  private async fetchData(entityId: string): Promise<Snapshot> {
+  private async fetchData(entityId: string): Promise<SnapshotItem[]> {
     const { type, count } = this.selectedFilter;
-    const pageInfo = this.pageInfos[entityId];
-    const hasNextPage = pageInfo?.hasNextPage ?? true;
-    const endCursor = pageInfo?.endCursor ?? undefined;
 
-    if (this.loadDataWhenReverse) {
-      return this.snapshotBuffer[entityId] || { nodes: [], hasNextPage: false, endCursor: undefined };
+    const pageInfoBuffer = this.pageInfos[entityId];
+    const hasNextPage = pageInfoBuffer?.hasNextPage ?? true;
+    const endCursor = pageInfoBuffer?.endCursor ?? undefined;
+
+    const snapshotsBuffer = this.snapshotBuffer[entityId] ?? [];
+    const snapshotsUsedCount = this.dataset.length;
+    const snapshotsUnused = snapshotsBuffer.slice(snapshotsUsedCount);
+
+    if (snapshotsUnused.length >= count || !hasNextPage) {
+      return snapshotsUnused;
     }
 
-    const buffer = this.samplesBuffer[entityId] ?? [];
+    const { nodes, ...pageInfo } = await this.requestData(entityId, type, count, hasNextPage, endCursor);
+    const lastTimestamp = last(snapshotsUnused)?.timestamp ?? last(this.dataset)?.timestamp ?? Date.now();
+    const snapshotsNormalized = normalizeSnapshots(nodes, this.timeDifference, lastTimestamp);
 
-    if (buffer.length >= count) {
-      return {
-        nodes: [],
-        hasNextPage,
-        endCursor,
-      };
-    }
+    this.fillSnapshotBuffer(entityId, snapshotsNormalized);
+    this.pageInfos[entityId] = pageInfo;
 
-    return await this.requestData(entityId, type, count, hasNextPage, endCursor);
+    return [...snapshotsUnused, ...snapshotsNormalized];
   }
 
   private async fetchDataLastUpdates(entities: string[]): Promise<Nullable<LastUpdates>> {
@@ -798,38 +802,26 @@ export default class PriceChartWidget extends Mixins(
 
     const addresses = [...this.entities];
     const requestId = Date.now();
-    const lastTimestamp = last(this.dataset)?.timestamp ?? Date.now();
 
     this.priceUpdateRequestId = requestId;
     await this.withApi(async () => {
       try {
-        const snapshots: Snapshot[] = await Promise.all(addresses.map((address) => this.fetchData(address)));
+        const snapshots = await Promise.all(addresses.map((address) => this.fetchData(address)));
 
-        if (!(snapshots && isEqual(addresses)(this.entities) && isEqual(requestId)(this.priceUpdateRequestId))) return;
-        const pageInfos: Record<string, Partial<PageInfo>> = {};
+        if (!(isEqual(addresses)(this.entities) && isEqual(requestId)(this.priceUpdateRequestId))) return;
+
         const dataset: SnapshotItem[] = [];
-        const groups: SnapshotItem[][] = [];
-        const timestamp =
-          lastTimestamp ??
-          Math.max(snapshots[0]?.nodes[0]?.timestamp ?? 0, snapshots[1]?.nodes[0]?.timestamp ?? 0) * 1000;
-        snapshots.forEach(async ({ hasNextPage, endCursor, nodes }, index) => {
-          const address = addresses[index];
-          const buffer = this.samplesBuffer[address] ?? [];
-          const normalized = normalizeSnapshots(buffer.concat(nodes), this.timeDifference, timestamp);
-
-          this.fillSnapshotBuffer(address, normalized, hasNextPage, endCursor);
-
-          groups.push(normalized);
-          pageInfos[address] = { hasNextPage, endCursor };
-        });
-
-        const size = Math.min(groups[0]?.length ?? Infinity, groups[1]?.length ?? Infinity, this.selectedFilter.count);
+        const size = Math.min(
+          snapshots[0]?.length ?? Infinity,
+          snapshots[1]?.length ?? Infinity,
+          this.selectedFilter.count
+        );
 
         let { min, max } = this.limits;
 
         for (let i = 0; i < size; i++) {
-          const a = groups[0]?.[i];
-          const b = groups[1]?.[i];
+          const a = snapshots[0]?.[i];
+          const b = snapshots[1]?.[i];
 
           const { timestamp, price, volume } = mergeSnapshots(a, b);
           // skip item, if one of the prices is incorrect
@@ -843,12 +835,7 @@ export default class PriceChartWidget extends Mixins(
           max = Math.max(max, ...price);
         }
 
-        addresses.forEach((address, index) => {
-          this.samplesBuffer[address] = Object.freeze(groups[index].slice(size));
-        });
-
         this.limits = { min, max };
-        this.pageInfos = pageInfos;
         this.precision = this.getUpdatedPrecision(min, max);
         this.updateDataset([...this.dataset, ...dataset]);
 
@@ -856,33 +843,13 @@ export default class PriceChartWidget extends Mixins(
       } catch (error) {
         this.isFetchingError = true;
         console.error(error);
-      } finally {
-        this.loadDataWhenReverse = false;
       }
     });
   }
 
-  private fillSnapshotBuffer(
-    address: string,
-    normalized: SnapshotItem[],
-    hasNextPage: boolean,
-    endCursor: string | undefined
-  ): void {
-    if (!this.snapshotBuffer[address]) {
-      this.snapshotBuffer[address] = {
-        nodes: [],
-        hasNextPage: false,
-        endCursor: undefined,
-      };
-    }
-
-    const existingNodes = this.snapshotBuffer[address].nodes;
-    const normalizedTimestamps = new Set(normalized.map((item) => item.timestamp));
-    const filteredExistingNodes = existingNodes.filter((item) => !normalizedTimestamps.has(item.timestamp));
-
-    this.snapshotBuffer[address].nodes = [...filteredExistingNodes, ...normalized];
-    this.snapshotBuffer[address].hasNextPage = hasNextPage;
-    this.snapshotBuffer[address].endCursor = endCursor;
+  private fillSnapshotBuffer(entityId: string, normalized: SnapshotItem[]): void {
+    const existingNodes = this.snapshotBuffer[entityId] ?? [];
+    this.snapshotBuffer[entityId] = Object.freeze([...existingNodes, ...normalized]);
   }
 
   // common
@@ -985,9 +952,10 @@ export default class PriceChartWidget extends Mixins(
     this.updateDataset(dataset);
   }
 
-  private clearData(saveReversedState = false): void {
-    this.samplesBuffer = {};
-    this.pageInfos = {};
+  private clearData(saveReversedState = false, clearBuffer = false): void {
+    this.snapshotBuffer = clearBuffer ? {} : pick(this.entities, this.snapshotBuffer);
+    this.pageInfos = clearBuffer ? {} : pick(this.entities, this.pageInfos);
+
     this.dataset = [];
     this.zoomStart = 0;
     this.zoomEnd = 100;
@@ -999,9 +967,6 @@ export default class PriceChartWidget extends Mixins(
 
     if (!saveReversedState) {
       this.isReversedChart = false;
-    }
-    if (!this.loadDataWhenReverse) {
-      this.snapshotBuffer = {};
     }
   }
 
@@ -1016,7 +981,7 @@ export default class PriceChartWidget extends Mixins(
     this.selectedFilter = filter;
 
     if (prevType !== type) {
-      await this.forceUpdatePrices(true);
+      await this.forceUpdatePrices(true, true);
     } else if (this.dataset.length < count) {
       await this.updatePrices();
     } else {
@@ -1034,8 +999,8 @@ export default class PriceChartWidget extends Mixins(
     await this.setChartZoomLevel(start, end);
   }
 
-  private async resetAndUpdatePrices(saveReversedState = false): Promise<void> {
-    this.clearData(saveReversedState);
+  private async resetAndUpdatePrices(saveReversedState = false, clearBuffer = false): Promise<void> {
+    this.clearData(saveReversedState, clearBuffer);
     await this.updatePrices();
     await this.subscribeToPriceUpdates();
   }
@@ -1078,8 +1043,7 @@ export default class PriceChartWidget extends Mixins(
 
   revertChart(): void {
     this.isReversedChart = !this.isReversedChart;
-    this.loadDataWhenReverse = true;
-    this.forceUpdatePrices(true);
+    this.forceUpdatePrices(true, false);
   }
 }
 </script>

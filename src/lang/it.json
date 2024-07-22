@@ -396,7 +396,6 @@
         "Swap": "Scambia",
         "Pool": "pool",
         "Bridge": "@:bridgeText",
-        "About": "Informazioni su",
         "Stats": "Statistiche",
         "Wallet": "Portafoglio",
         "AddLiquidity": "Aggiungi liquidità",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "Da",
         "to": "A"
-    },
-    "about": {
-        "title": "Il DEX per il Futuro Interoperabile.",
-        "description": "Scambio cross-chain di assets, semplice creazione e listing di nuovi asset e gli swap più facili di sempre. Il futuro interoperabile di {Polkadot} è qui e noi siamo in prima linea!",
-        "trading": {
-            "title": "Trading più veloce",
-            "first": "{AppName} è un protocollo DEX AMM, cross-chain e non-custodial per lo scambio di token basati su {Polkadot} e {Kusama}, sulle parachains di {Polkadot} e {Kusama} e su blockchains collegate direttamente tramite bridges.",
-            "second": "{AppName} rimuove gli intermediari e offre l'opportunità di un trading più veloce",
-            "third": "{AppName} è un progetto della comunità e gli sviluppatori collaborano sul codice open source utilizzando il"
-        },
-        "liquidity": {
-            "title": "Boundless Liquidity",
-            "first": "{AppName} combina più fonti di liquidità sotto un comune algoritmo di aggregazione della liquidità, operando completamente on-chain, in modo affidabile e decentralizzato.",
-            "second": "Quando i trader chiamano la funzione di swap, l'algoritmo di aggregazione della liquidità eseguirà gli ordini utilizzando le migliori offerte tra tutte le fonti di liquidità. Le fonti di liquidità possono essere altri DEX, order books o altre fonti collegate tramite API",
-            "third": "Poiché {AppName} è un progetto open source, chiunque può aggiungere più fonti di liquidità apportando contributi al codebase di {AppName}."
-        },
-        "swap": {
-            "title": "Scambia qualsiasi token",
-            "first": "Vai oltre i limiti degli attuali DEX aggiungendo token dall'ecosistema {Polkadot} e da altre blockchain.",
-            "second": "Crea, metti in lista e scambia i tuoi token sulla rete {Sora}.",
-            "third": "La nostra infrastruttura utilizza Parity Substrate, che è più scalabile di {Ethereum}, e non utilizza un costoso mining per il consenso."
-        },
-        "pswap": {
-            "title": "PSWAP Tokens",
-            "first": "PSWAP è stato creato dalla governance della community votando il suo rilascio. È un token di governance e uno utility token, utilizzato per premiare i liquidity providers su {AppName}. A differenza della maggior parte degli altri token di ricompensa, PSWAP viene bruciato con le transazioni e la sua supply diminuisce nel tempo.",
-            "second": "Lo {percent}% di ogni swap su {AppName} viene utilizzato per riacquistare i token PSWAP, che vengono poi bruciati. All'inizio, il 90% dei token PSWAP bruciati viene riemesso per essere allocato ai liquidity providers, ma con il tempo questa percentuale scenderà fino al 35% dopo 4 anni."
-        },
-        "links": {
-            "first": {
-                "title": "Diventa un Validatore {Sora}",
-                "desc": "Proteggi il futuro della rete {Sora} e delle dapp come {AppName} e guadagna ricompense lungo il percorso diventando un validatore {Sora}."
-            },
-            "second": {
-                "title": "Collega una chain a {Sora}",
-                "desc": "Fai crescere l'economia mondiale decentralizzata collegando più chains a {Sora} e {AppName} utilizzando il protocollo {Hashi} bridge."
-            }
-        },
-        "network": "{AppName} è basato sulla rete {Sora}, concentrandosi sull'interoperabilità per connettere il resto dell'ecosistema crittografico a {Polkadot}."
     },
     "exchange": {
         "Swap": "Scambia",

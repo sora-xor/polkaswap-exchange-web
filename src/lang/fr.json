@@ -396,7 +396,6 @@
         "Swap": "Échanger",
         "Pool": "Pool",
         "Bridge": "@:bridgeText",
-        "About": "À propos",
         "Stats": "Statistiques",
         "Wallet": "Portefeuille",
         "AddLiquidity": "Ajouter de la liquidité",
@@ -506,44 +505,6 @@
     "transfers": {
         "from": "De",
         "to": "À"
-    },
-    "about": {
-        "title": "Le DEX pour l'avenir interopérable.",
-        "description": "Échange inter-chaînes d'actifs, création et listing simples de nouveaux actifs, et les échanges les plus simples jamais réalisés. L'avenir interopérable de {Polkadot} est là et nous sommes aux avant-postes !",
-        "trading": {
-            "title": "Trading plus rapide",
-            "first": "{AppName} est un protocole AMM DEX non dépositaire et inter-chaînes pour l'échange de jetons basé sur les chaînes de relais {Polkadot} et {Kusama} , les parachains {Polkadot} et {Kusama} et les chaînes de blocs directement connectées via des ponts.",
-            "second": "{AppName} supprime les intermédiaires de confiance et offre la possibilité d'un trading plus rapide",
-            "third": "{AppName} est un projet communautaire et les développeurs collaborent sur le code open source en utilisant le"
-        },
-        "liquidity": {
-            "title": "Liquidité illimitée",
-            "first": "{AppName} combine plusieurs sources de liquidité sous un algorithme d'agrégation de liquidité commun, fonctionnant entièrement sur la chaîne, de manière décentralisée et sans recours à des intermédiaries de confiance.",
-            "second": "Lorsque les traders appellent la fonction d'échange, l'algorithme d'agrégation de liquidité remplira les commandes en utilisant les meilleures offres sur toutes les sources de liquidité. Les sources de liquidité peuvent être d'autres DEX, des carnets de commandes ou d'autres sources basées sur des API.",
-            "third": "Parce que {AppName} est un projet open source, n'importe qui peut ajouter plus de sources de liquidités en contribuant au code de base de {AppName}."
-        },
-        "swap": {
-            "title": "Échangez n'importe quel jeton",
-            "first": "Allez au-delà des limites des DEX actuels en ajoutant des jetons de l’écosystème {Polkadot} ainsi que d’autres blockchains.",
-            "second": "Créez, listez et échangez vos propres jetons sur le réseau {Sora}.",
-            "third": "Notre infrastructure de base utilise Parity Substrate, qui est plus évolutif qu’{Ethereum}, et n’utilise pas d’exploitation minière coûteuse pour le consensus."
-        },
-        "pswap": {
-            "title": "Jetons PSWAP",
-            "first": "PSWAP a été créé par la gouvernance communautaire en votant sur sa sortie. Il s'agit d'un jeton d'utilité et de gouvernance utilisé pour récompenser les fournisseurs de liquidités sur {AppName}. Contrairement à la plupart des autres jetons de récompense, PSWAP est brûlé avec les transactions et l'offre diminue au fil du temps.",
-            "second": "Les frais de {percent}% sur chaque échange sur le {AppName} DEX sont utilisés pour racheter des jetons PSWAP, qui sont ensuite brûlés. Au début, 90% des jetons PSWAP brûlés sont réutilisés pour être alloués aux fournisseurs de liquidités, mais avec le temps, ce pourcentage diminuera à 35% après 4 ans."
-        },
-        "links": {
-            "first": {
-                "title": "Devenez un validateur {Sora}",
-                "desc": "Sécurisez l'avenir du réseau {Sora} et des applications décentralisées comme {AppName}, et gagnez des récompenses en devenant un validateur {Sora}."
-            },
-            "second": {
-                "title": "Connecter une chaîne à {Sora}",
-                "desc": "Développez l'économie mondiale décentralisée en connectant davantage de chaînes à {Sora} et {AppName} à l'aide du protocole de pont {Hashi}."
-            }
-        },
-        "network": "{AppName} est construit sur le réseau {Sora}, en se concentrant sur l'interopérabilité pour connecter le reste de l'écosystème crypto à {Polkadot}."
     },
     "exchange": {
         "Swap": "Échanger",
