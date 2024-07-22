@@ -37,10 +37,11 @@
       :set-visibility="setSignTxDialogVisibility"
     />
     <select-sora-account-dialog />
-    <div v-if="showErrorLocalStorageExceed" class="popup">
-      Warning: not enough space to write in localstorage
-      <button @click="closeWarning">Close</button>
-    </div>
+    <app-browser-notifs-local-storage-override
+      :visible.sync="showErrorLocalStorageExceed"
+      @delete-data-local-storage="closeWarning"
+    >
+    </app-browser-notifs-local-storage-override>
   </s-design-system-provider>
 </template>
 
@@ -97,6 +98,7 @@ import type Theme from '@soramitsu-ui/ui-vue2/lib/types/Theme';
     AppDisclaimer: lazyComponent(Components.AppDisclaimer),
     AppBrowserNotifsEnableDialog: lazyComponent(Components.AppBrowserNotifsEnableDialog),
     AppBrowserNotifsBlockedDialog: lazyComponent(Components.AppBrowserNotifsBlockedDialog),
+    AppBrowserNotifsLocalStorageOverride: lazyComponent(Components.AppBrowserNotifsLocalStorageOverride),
     ReferralsConfirmInviteUser: lazyComponent(Components.ReferralsConfirmInviteUser),
     BridgeTransferNotification: lazyComponent(Components.BridgeTransferNotification),
     SelectSoraAccountDialog: lazyComponent(Components.SelectSoraAccountDialog),
@@ -231,7 +233,9 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
   }
 
   closeWarning() {
+    // TODO delete later
     // localStorage.removeItem('fillerKey');
+
     const keysToRemove: string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
@@ -673,14 +677,5 @@ i.icon-divider {
   @include large-mobile {
     display: none;
   }
-}
-.popup {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  padding: 10px;
-  background: red;
-  color: white;
-  z-index: 1000;
 }
 </style>

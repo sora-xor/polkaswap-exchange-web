@@ -9,7 +9,9 @@ function calculateStorageUsagePercentage(): number {
   return (currentSize / LOCAL_STORAGE_MAX_SIZE) * 100;
 }
 
+// TODO delete later
 // fillLocalStorage(96);
+
 const originalSetItem = localStorage.setItem;
 localStorage.setItem = function (key: string, value: string) {
   const usagePercentage = calculateStorageUsagePercentage();

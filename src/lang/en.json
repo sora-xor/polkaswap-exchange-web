@@ -1082,6 +1082,11 @@
         "notificationBlocked": "To receive the notifications about {AppName}, please, allow the notifications in your browser's native settings",
         "pointer": "Press “Allow” to turn notifications on"
     },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Clear Localstorage",
+        "info": "The local storage is overloaded, to continue work with Polkaswap need to clean it",
+        "agree": "Yes, I agree"
+    },
     "assetDeposit": "Asset balance has been deposited",
     "noDataText": "No data",
     "ofText": "{first} of {second}",

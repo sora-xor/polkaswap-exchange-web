@@ -165,6 +165,7 @@ export enum Components {
   AppMobilePopup = 'App/MobilePopup',
   AppBrowserNotifsEnableDialog = 'App/BrowserNotification/BrowserNotifsEnableDialog',
   AppBrowserNotifsBlockedDialog = 'App/BrowserNotification/BrowserNotifsBlockedDialog',
+  AppBrowserNotifsLocalStorageOverride = 'App/BrowserNotification/BrowserNotificationLocalStorageOverride',
   Alerts = 'App/Alerts/Alerts',
   AlertList = 'App/Alerts/AlertList',
   CreateAlert = 'App/Alerts/CreateAlert',
