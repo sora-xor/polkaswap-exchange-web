@@ -181,7 +181,7 @@ import type { ReferrerRewards } from '@/indexer/queries/referrals';
 import router, { lazyView } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { formatAddress } from '@/utils';
-import { TmaSdk } from '@/utils/telegram';
+import { tmaSdkService } from '@/utils/telegram';
 
 import type { CodecString } from '@sora-substrate/util';
 import type { AccountAsset } from '@sora-substrate/util/build/assets/types';
@@ -410,7 +410,7 @@ export default class ReferralProgram extends Mixins(
     }
 
     const botUrl = `${this.telegramBotUrl}/app?startapp=${this.account.address}`;
-    TmaSdk.shareLink(botUrl, this.t('referralProgram.welcomeMessage'));
+    tmaSdkService.shareLink(botUrl, this.t('referralProgram.welcomeMessage'));
   }
 
   destroyed(): void {
