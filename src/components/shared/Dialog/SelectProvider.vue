@@ -43,26 +43,22 @@ export default class SelectProviderDialog extends Mixins(WalletConnectMixin) {
       return [Provider.WalletConnect];
     }
 
-    return [Provider.Metamask, Provider.SubWallet, Provider.TrustWallet, Provider.WalletConnect];
+    return Object.keys(Provider).map((key) => Provider[key]);
   }
 
   get wallets(): WalletInfo[] {
-    return Object.keys(Provider)
-      .filter((key) => this.allowedProviders.includes(key as Provider))
-      .map((key) => {
-        const provider = Provider[key];
-
-        return {
-          extensionName: provider,
-          title: provider,
-          chromeUrl: '',
-          mozillaUrl: '',
-          logo: {
-            src: this.getEvmProviderIcon(provider),
-            alt: provider,
-          },
-        };
-      });
+    return this.allowedProviders.map((provider) => {
+      return {
+        extensionName: provider,
+        title: provider,
+        chromeUrl: '',
+        mozillaUrl: '',
+        logo: {
+          src: this.getEvmProviderIcon(provider),
+          alt: provider,
+        },
+      };
+    });
   }
 
   get selectedProvider(): Nullable<Provider> {
