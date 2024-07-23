@@ -1043,6 +1043,11 @@
         "notificationBlocked": "Da biste primali obavijesti o {AppName}, omogućite obavijesti u izvornim postavkama preglednika",
         "pointer": "Pritisnite \"Dopusti\" za uključivanje obavijesti"
     },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Očisti lokalnu pohranu {AppName}",
+        "info": "Vaša lokalna pohrana je preopterećena, za nastavak rada s {AppName} trebate je očistiti",
+        "agree": "Da, razumijem"
+    },
     "assetDeposit": "Stanje imovine je deponirano",
     "noDataText": "Nema podataka",
     "ofText": "{first} od {second}",

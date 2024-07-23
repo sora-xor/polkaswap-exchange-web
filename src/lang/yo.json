@@ -1043,6 +1043,11 @@
         "notificationBlocked": "Lati gba awọn ifitonileti nipa {AppName}, jọwọ gba awọn iwifunni ni awọn eto abinibi ti aṣawakiri rẹ",
         "pointer": "Tẹ \"Gba laaye\" lati tan awọn iwifunni"
     },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Nu ibi ipamọ agbegbe {AppName} mọ",
+        "info": "Ibi ipamọ agbegbe rẹ ti kun ju, lati tẹsiwaju iṣẹ pẹlu {AppName} o nilo lati nu rẹ",
+        "agree": "Bẹẹni, Mo loye"
+    },
     "assetDeposit": "Iwontunwonsi dukia ti wa ni idogo",
     "noDataText": "Ko si data",
     "ofText": "{first} ti {second}",

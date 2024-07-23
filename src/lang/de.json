@@ -1043,6 +1043,11 @@
         "notificationBlocked": "Um die Benachrichtigungen über {AppName} zu erhalten, erlauben Sie bitte die Benachrichtigungen in den nativen Einstellungen Ihres Browsers",
         "pointer": "Drücken Sie „Zulassen“, um Benachrichtigungen einzuschalten"
     },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Löschen Sie den lokalen {AppName} Speicher",
+        "info": "Ihr lokaler Speicher ist überlastet, um mit {AppName} weiterzuarbeiten, müssen Sie ihn bereinigen",
+        "agree": "Ja ich verstehe"
+    },
     "assetDeposit": "Guthaben wurde hinterlegt",
     "noDataText": "Keine Daten",
     "ofText": "{first} von {second}",

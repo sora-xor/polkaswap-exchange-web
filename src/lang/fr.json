@@ -1043,6 +1043,11 @@
         "notificationBlocked": "Pour recevoir les notifications concernant {AppName} , veuillez autoriser les notifications dans les paramètres natifs de votre navigateur",
         "pointer": "Appuyez sur \"Autoriser\" pour activer les notifications"
     },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Effacer le stockage local {AppName}",
+        "info": "Votre stockage local est surchargé, pour continuer à travailler avec {AppName} il faut le nettoyer",
+        "agree": "Oui je comprends"
+    },
     "assetDeposit": "Le solde de l'actif a été déposé",
     "noDataText": "Pas de données",
     "ofText": "{first} de {second}",

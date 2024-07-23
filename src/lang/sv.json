@@ -1043,6 +1043,11 @@
         "notificationBlocked": "För att få aviseringar om {AppName}, vänligen tillåt aviseringarna i webbläsarens inställningar",
         "pointer": "Tryck på \"Tillåt\" för att aktivera aviseringar"
     },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Rensa lokal {AppName} lagring",
+        "info": "Din lokala lagring är överbelastad, för att fortsätta arbeta med {AppName} måste du rensa den",
+        "agree": "Ja, jag förstår"
+    },
     "assetDeposit": "Tillgångssaldo har satts in",
     "noDataText": "Ingen data",
     "ofText": "{first} av {second}",

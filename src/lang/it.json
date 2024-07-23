@@ -1043,6 +1043,11 @@
         "notificationBlocked": "Per ricevere le notifiche su {AppName}, consenti le notifiche nelle impostazioni native del tuo browser",
         "pointer": "Premi \"Consenti\" per attivare le notifiche"
     },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Cancella l'archiviazione locale {AppName}",
+        "info": "Il tuo spazio di archiviazione locale è sovraccarico, per continuare a lavorare con {AppName} è necessario pulirlo",
+        "agree": "Si, capisco"
+    },
     "assetDeposit": "Il saldo patrimoniale è stato depositato",
     "noDataText": "Nessun dato",
     "ofText": "{first} di {second}",

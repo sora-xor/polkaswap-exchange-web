@@ -1043,6 +1043,11 @@
         "notificationBlocked": "要接收有关{AppName}的通知，请在浏览器的本机设置中允许通知",
         "pointer": "按“允许”打开通知"
     },
+    "browserNotificationLocalStorageOverride": {
+        "title": "清除本地 {AppName} 存储",
+        "info": "您的本地存储已超载，要继续使用 {AppName}，需要清理它",
+        "agree": "是的我明白"
+    },
     "assetDeposit": "资产余额已存入",
     "noDataText": "没有数据",
     "ofText": "{first}的{second}",

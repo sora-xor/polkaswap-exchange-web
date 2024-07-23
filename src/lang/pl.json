@@ -1043,6 +1043,11 @@
         "notificationBlocked": "Aby otrzymywać powiadomienia o {AppName}, należy włączyć powiadomienia w ustawieniach natywnych przeglądarki.",
         "pointer": "Naciśnij „Zezwól”, aby włączyć powiadomienia"
     },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Wyczyść lokalne {AppName} dane",
+        "info": "Twoje lokalne dane są przeciążone, aby kontynuować pracę z {AppName}, musisz je wyczyścić",
+        "agree": "Tak, rozumiem"
+    },
     "assetDeposit": "Saldo aktywów zostało zdeponowane",
     "noDataText": "Brak danych",
     "ofText": "{first} z {second}",

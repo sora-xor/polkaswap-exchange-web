@@ -1044,9 +1044,9 @@
         "pointer": "Press “Allow” to turn notifications on"
     },
     "browserNotificationLocalStorageOverride": {
-        "title": "Clear Localstorage",
-        "info": "The local storage is overloaded, to continue work with {AppName} need to clean it",
-        "agree": "Yes, I agree"
+        "title": "Clear local {AppName} storage",
+        "info": "Your local storage is overloaded, to continue work with {AppName} need to clean it",
+        "agree": "Yes, I understand"
     },
     "assetDeposit": "Asset balance has been deposited",
     "noDataText": "No data",

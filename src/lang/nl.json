@@ -1043,6 +1043,11 @@
         "notificationBlocked": "Als u de meldingen over {AppName} wilt ontvangen, moet u de meldingen toestaan in de systeemeigen instellingen van uw browser",
         "pointer": "Druk op \"Toestaan\" om meldingen in te schakelen"
     },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Lokaal {AppName} opslag wissen",
+        "info": "Uw lokale opslag is overbelast, om door te gaan met {AppName} moet u het opschonen",
+        "agree": "Ja ik begrijp het"
+    },
     "assetDeposit": "Activa-saldo is gestort",
     "noDataText": "Geen informatie",
     "ofText": "{first} van {second}",

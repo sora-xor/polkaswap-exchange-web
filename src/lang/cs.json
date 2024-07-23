@@ -1043,6 +1043,11 @@
         "notificationBlocked": "Chcete-li dostávat oznámení o {AppName}, povolte oznámení v nativním nastavení prohlížeče",
         "pointer": "Stisknutím tlačítka „Povolit“ zapněte oznámení"
     },
+    "browserNotificationLocalStorageOverride": {
+        "title": "Vymazat místní úložiště {AppName}",
+        "info": "Vaše místní úložiště je přetížené, pro pokračování práce s {AppName} je potřeba ho vyčistit",
+        "agree": "Ano, rozumím"
+    },
     "assetDeposit": "Zůstatek aktiv byl uložen",
     "noDataText": "Žádné údaje",
     "ofText": "{first} z {second}",
