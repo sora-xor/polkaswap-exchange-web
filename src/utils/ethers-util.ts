@@ -20,6 +20,7 @@ let ethereumProvider!: any;
 let ethersInstance: ethersProvider | null = null;
 
 export enum Provider {
+  Fearless = 'Fearless',
   Metamask = 'Metamask',
   SubWallet = 'SubWallet',
   TrustWallet = 'TrustWallet',
@@ -87,6 +88,8 @@ function createWeb3Instance(provider: any) {
 }
 
 async function useExtensionProvider(provider: Provider): Promise<string> {
+  const injectedWindow = window as any;
+
   let ethereumProvider!: any;
 
   switch (provider) {
@@ -94,10 +97,13 @@ async function useExtensionProvider(provider: Provider): Promise<string> {
       ethereumProvider = await detectEthereumProvider({ mustBeMetaMask: true, timeout: 0 });
       break;
     case Provider.SubWallet:
-      ethereumProvider = (window as any).SubWallet;
+      ethereumProvider = injectedWindow.SubWallet;
       break;
     case Provider.TrustWallet:
-      ethereumProvider = (window as any).trustwallet;
+      ethereumProvider = injectedWindow.trustwallet;
+      break;
+    case Provider.Fearless:
+      ethereumProvider = injectedWindow.fearlessWallet;
       break;
     default:
       throw new Error('Unknown provider');
