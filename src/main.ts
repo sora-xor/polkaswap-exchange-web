@@ -8,7 +8,6 @@ import store from './store';
 import './store/decorators';
 import './plugins';
 import './styles';
-import './utils/localStorageInterceptor';
 
 Vue.config.productionTip = false;
 Vue.config.devtools = process.env.NODE_ENV === 'development';

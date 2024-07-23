@@ -1,7 +1,7 @@
 import { Storage } from '@sora-substrate/util';
 import { storage as soraStorage } from '@soramitsu/soraneo-wallet-web';
 
-import { LOCAL_STORAGE_MAX_SIZE } from '@/consts/index';
+import { LOCAL_STORAGE_MAX_SIZE, listOfRemoveForLocalStorage } from '@/consts/index';
 export { settingsStorage } from '@soramitsu/soraneo-wallet-web';
 
 export default soraStorage;
@@ -26,23 +26,13 @@ export function calculateStorageUsagePercentage(): number {
   return (currentSize / LOCAL_STORAGE_MAX_SIZE) * 100;
 }
 
-// TODO delete later
-export function fillLocalStorage(targetPercentage: number): void {
-  const MAX_STORAGE_SIZE = 4 * 1024 * 1024;
-  const currentSize = calculateLocalStorageSize();
-  const targetSize = (targetPercentage / 100) * MAX_STORAGE_SIZE;
-  const sizeToFill = targetSize - currentSize;
-
-  if (sizeToFill <= 0) {
-    console.warn('LocalStorage is already filled to or beyond the target percentage.');
-    return;
+export function clearLocalStorage() {
+  const keysToRemove: string[] = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && listOfRemoveForLocalStorage.some((item) => key.includes(item))) {
+      keysToRemove.push(key);
+    }
   }
-
-  const filler = 'x'.repeat(sizeToFill / 2);
-  try {
-    localStorage.setItem('fillerKey', filler);
-    console.info(`Filled localStorage to approximately ${targetPercentage}%`);
-  } catch (e) {
-    console.error('Failed to fill localStorage:', e);
-  }
+  keysToRemove.forEach((key) => localStorage.removeItem(key));
 }

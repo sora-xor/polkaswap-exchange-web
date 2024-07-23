@@ -73,7 +73,6 @@ import {
   Language,
   BreakpointClass,
   WalletPermissions,
-  listOfRemoveForLocalStorage,
   LOCAL_STORAGE_LIMIT_PERCENTAGE,
 } from '@/consts';
 import { getLocale } from '@/lang';
@@ -81,7 +80,7 @@ import router, { goTo, lazyComponent } from '@/router';
 import { action, getter, mutation, state } from '@/store/decorators';
 import { getMobileCssClasses, preloadFontFace, updateDocumentTitle } from '@/utils';
 import type { NodesConnection } from '@/utils/connection';
-import { calculateStorageUsagePercentage } from '@/utils/storage';
+import { calculateStorageUsagePercentage, clearLocalStorage } from '@/utils/storage';
 import { TmaSdk } from '@/utils/telegram';
 
 import type { FeatureFlags } from './store/settings/types';
@@ -234,25 +233,15 @@ export default class App extends Mixins(mixins.TransactionMixin, NodeErrorMixin)
 
   private setResponsiveClassDebounced = debounce(this.setResponsiveClass, 250);
 
-  handleLocalStorageChange() {
-    const usagePercentage = calculateStorageUsagePercentage();
+  private clearLocalStorage(): void {
+    clearLocalStorage();
+  }
 
-    console.info(`Current localStorage usage: ${usagePercentage.toFixed(2)}%`);
+  private handleLocalStorageChange() {
+    const usagePercentage = calculateStorageUsagePercentage();
     if (usagePercentage >= LOCAL_STORAGE_LIMIT_PERCENTAGE) {
       this.showErrorLocalStorageExceed = true;
     }
-  }
-
-  clearLocalStorage() {
-    // localStorage.removeItem('fillerKey');
-    const keysToRemove: string[] = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key && listOfRemoveForLocalStorage.some((item) => key.includes(item))) {
-        keysToRemove.push(key);
-      }
-    }
-    keysToRemove.forEach((key) => localStorage.removeItem(key));
   }
 
   async created() {
